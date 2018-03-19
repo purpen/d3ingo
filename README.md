@@ -1,27 +1,34 @@
-# mallache-page 太火鸟 铟果SaaS
+# D3ingo 铟果SaaS
 
-> 前端
 
-## Build Setup
+### Build Setup
 
-``` bash
-# install dependencies
+#### install dependencies
+```
 npm install
+```
 
-# 打包核心常用插件
+#### 打包核心常用插件
+```
 npm run build:dll
+```
 
-# serve with hot reload at localhost:8080
+#### serve with hot reload at localhost:8080
+```
 npm run dev
+```
 
-# build for production with minification
+#### build for production with minification
+```
 npm run build
+```
 
-# build for production and view the bundle analyzer report
+#### build for production and view the bundle analyzer report
+```
 npm run build --report
 ```
 
-## 依赖库
+### 依赖库
 > Vue2.0: https://cn.vuejs.org/
 > vue-router2: http://router.vuejs.org/zh-cn/
 > Vuex: https://vuex.vuejs.org/zh-cn/
@@ -32,6 +39,6 @@ npm run build --report
 > pdf生成: https://github.com/bpampuch/pdfmake
 
 
-## UI、素材
+### UI、素材
 > element-ui: http://element.eleme.io/#/zh-CN
 > icons: http://fontawesome.io/icons/
