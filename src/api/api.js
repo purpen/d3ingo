@@ -18,10 +18,7 @@ export default {
   login: '/auth/login', // 登录
   logout: '/auth/logout', // 退出登录
   register: '/auth/register', // 注册
-<<<<<<< HEAD
-=======
   inviteRegister: '/auth/childRegister', // POST 邀请注册
->>>>>>> origin/lzh2
   forget: '/auth/forgetPassword', // POST 找回密码
   modifyPwd: '/auth/changePassword', // POST 修改密码
   check_account: '/auth/phoneState/{0}',  // 验证手机号是否存在
@@ -253,18 +250,12 @@ export default {
   adminBlockSetStatus: '/admin/block/changeStatus', // PUT 启用 | 禁用
 
   // 附件管理
-<<<<<<< HEAD
-  adminAssetUrlUpload: '/admin/urlUpload',  // GET 图片地址上传
-=======
   adminAssetUrlUpload: '/admin/urlUpload', // GET 图片地址上传
->>>>>>> origin/lzh2
 
   // veer图片列表
   veerImage: '/veerImage/list',
   block: '/block',
 
-<<<<<<< HEAD
-=======
   /**
    * Tools
    */
@@ -279,7 +270,6 @@ export default {
 
   inviteKey: '/urlKey',  // 生成邀请字符串
   inviteValue: '/urlValue',  // 解析邀请字符串
->>>>>>> origin/lzh2
   // test
   test: '/'  // End
 }

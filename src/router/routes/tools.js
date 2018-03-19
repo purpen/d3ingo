@@ -2,8 +2,6 @@
  ** ###### 管理工具 ##########
  */
 module.exports = [
-<<<<<<< HEAD
-=======
   // 云盘列表
   {
     path: '/vcenter/cloud_drive/list',
@@ -24,5 +22,4 @@ module.exports = [
     },
     component: require('@/components/pages/v_center/tools/member/List')
   }
->>>>>>> origin/lzh2
 ]

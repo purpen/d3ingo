@@ -13,12 +13,9 @@ html {
   box-sizing: inherit;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
-<<<<<<< HEAD
-=======
 *:focus {
   outline: none
 }
->>>>>>> origin/lzh2
 
 body {
   font-family: "Microsoft Yahei", PingFangSC-Regular, "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -37,8 +34,6 @@ body {
   overflow-x: hidden
 }
 
-<<<<<<< HEAD
-=======
 .cancel-icon {
   position: relative;
 }
@@ -57,7 +52,6 @@ body {
 .cancel-icon::after {
   transform: translate(-50%, -50%) rotate(-45deg);
 }
->>>>>>> origin/lzh2
 .el-input-group--append {
   padding-left: 2px;
   min-width: 110px;
@@ -263,13 +257,10 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   margin-top: 20px;
 }
 
-<<<<<<< HEAD
-=======
 .blank30 {
   margin-top: 30px;
 }
 
->>>>>>> origin/lzh2
 .blank40 {
   margin-top: 40px;
 }
@@ -303,8 +294,6 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 
 [class^="fx-icon-"], [class*=" fx-icon-"] {
   margin-right: 6px;
-<<<<<<< HEAD
-=======
   cursor: pointer;
 }
 
@@ -314,7 +303,6 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 
 .fx-0 {
   font-size: 12px;
->>>>>>> origin/lzh2
 }
 
 .fx {
@@ -340,13 +328,9 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 .fx-6 {
   font-size: 24px;
 }
-<<<<<<< HEAD
-
-=======
 .fx-black:hover {
   color: #222!important
 }
->>>>>>> origin/lzh2
 .pointer {
   cursor: pointer;
 }
@@ -1627,8 +1611,6 @@ td.fc-day.fc-widget-content.fc-today::before {
 }
 /*日历 end*/
 
-<<<<<<< HEAD
-=======
 .cloud-menu.el-collapse {
   border: none
 }
@@ -1649,7 +1631,6 @@ td.fc-day.fc-widget-content.fc-today::before {
   float: right;
   line-height: 40px;
 }
->>>>>>> origin/lzh2
 /* css 注释说明：设置了浏览器宽度不小于1200px时  显示1200px宽度 */
 
 @media screen and (min-width: 1180px) {
@@ -1714,8 +1695,6 @@ td.fc-day.fc-widget-content.fc-today::before {
   padding: 6px;
 }
 
-<<<<<<< HEAD
-=======
 /* 云盘上传 */
 
   p.file-icon {
@@ -1767,7 +1746,6 @@ td.fc-day.fc-widget-content.fc-today::before {
     background-size: contain;
   }
 
->>>>>>> origin/lzh2
 /* 设置了浏览器宽度不大于768, footer,关注部分竖列显示 */
 
 @media screen and (max-width: 767px) {

@@ -206,7 +206,6 @@ routes = [
     },
     component: require('@/components/pages/subject/YuQuanGifts')
   },
-<<<<<<< HEAD
   // 小米众生相
   {
     path: '/subject/xiaomiInterview',
@@ -217,8 +216,6 @@ routes = [
     },
     component: require('@/components/pages/subject/XiaoMiInterview')
   },
-=======
->>>>>>> origin/lzh2
   // 创新力指数
   {
     path: '/innovation_index',
@@ -316,8 +313,6 @@ routes = [
     },
     component: require('@/components/pages/auth/Register')
   },
-<<<<<<< HEAD
-=======
   {
     path: '/invite/:code',
     name: 'invite',
@@ -326,7 +321,6 @@ routes = [
     },
     component: require('@/components/pages/auth/Invite')
   },
->>>>>>> origin/lzh2
   // 找回密码
   {
     path: '/forget',

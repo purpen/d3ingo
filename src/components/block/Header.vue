@@ -246,10 +246,7 @@
         this.closeMenu(e)
       },
       addScroll() {
-<<<<<<< HEAD
         // this.$refs.mCover.style.width = '100%'
-=======
->>>>>>> origin/lzh2
         this.$refs.mNav.style.marginLeft = 0
         this.$refs.mMenu.style.width = '100%'
         document.body.setAttribute('class', 'disableScroll')
