@@ -19,6 +19,11 @@ mallache.write_user = function (user) {
     type: user.type,
     design_company_id: user.design_company_id,
     role_id: user.role_id,
+<<<<<<< HEAD
+=======
+    company_role: user.company_role,
+    child_account: user.child_account,
+>>>>>>> origin/lzh2
     status: user.status
   }
   // 写入localStorage

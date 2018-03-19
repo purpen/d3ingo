@@ -10,7 +10,11 @@ Homestead.yaml
 .env
 .DS_Store
 node_modules
+<<<<<<< HEAD
 /dist
+=======
+dist
+>>>>>>> origin/lzh2
 config/dev.env.js
 config/index.js
 config/prod.env.js

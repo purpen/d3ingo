@@ -3,14 +3,22 @@
     <div class="home_banner" :style = "{'height' : calcHeight}">
       <swiper :options="swiperOption" class="banner home-banner">
         <swiper-slide>
+<<<<<<< HEAD
           <div class="slide" :style="{ background: 'url(' + require ('assets/images/home/banner/BG@2x.jpg') + ') no-repeat center', height: calcHeight}">
+=======
+          <div class="slide" :style="{ background: 'url(' + require ('assets/images/home/BG@2x.jpg') + ') no-repeat center', height: calcHeight}">
+>>>>>>> origin/lzh2
             <div class="container clearfix" style="height:100%;">
               <div class="left">
                 <h3 :class="{'m-h3' : isMob}">铟果D³INGO产品创新SaaS平台</h3>
                 <p :class="{'m-p' : isMob}">用设计重塑品质生活</p>
               </div>
               <div class="draw">
+<<<<<<< HEAD
                 <img :src="require('assets/images/home/banner/BG02@2x.png')" width="90%" alt="">
+=======
+                <img :src="require('assets/images/home/BG02@2x.png')" width="90%" alt="">
+>>>>>>> origin/lzh2
               </div>
             </div>
             <div class="head-cover">
@@ -19,6 +27,7 @@
             </div>
           </div>
         </swiper-slide>
+<<<<<<< HEAD
         <swiper-slide v-if="isMob" v-for="(ele, index) in bannerListMob" :key="index">
           <router-link class="banner-link slide"
             :to="ele.url"
@@ -36,6 +45,11 @@
               backgroundSize: 'cover',
               height: calcHeight
             }"></router-link>
+=======
+        <swiper-slide>
+          <router-link v-if="isMob" class="banner-link slide" to="/innovation_index" :style="{ background: 'url(' + require ('assets/images/subject/innovation/home_banner.jpg') + ') no-repeat center',backgroundSize: 'contain', height: calcHeight}"></router-link>
+          <router-link v-else class="banner-link slide" to="/innovation_index" :style="{ background: 'url(' + require ('assets/images/subject/innovation/innovationIndex.jpg') + ') no-repeat center',backgroundSize: 'cover', height: calcHeight}"></router-link>
+>>>>>>> origin/lzh2
         </swiper-slide>
         <div class="swiper-pagination" slot="pagination">
         </div>
@@ -191,6 +205,7 @@
     data() {
       return {
         uType: this.$store.state.event.user.type || 1,
+<<<<<<< HEAD
         bannerListMob: [
           {
             img: require ('assets/images/subject/innovation/home_banner.jpg'),
@@ -211,6 +226,8 @@
             url: '/subject/xiaomiInterview'
           }
         ],
+=======
+>>>>>>> origin/lzh2
         caseSlideList: [
           {
             clickUrl: 'http://d3ingo.taihuoniao.com/article/show/26',
@@ -600,6 +617,11 @@
 
   .anli {
     overflow: hidden;
+<<<<<<< HEAD
+=======
+    max-width: 1280px;
+    margin: 0 auto;
+>>>>>>> origin/lzh2
   }
 
   .el-row {
