@@ -29,16 +29,16 @@ npm run build --report
 ```
 
 ### 依赖库
-> Vue2.0: https://cn.vuejs.org/
-> vue-router2: http://router.vuejs.org/zh-cn/
-> Vuex: https://vuex.vuejs.org/zh-cn/
-> axios: https://github.com/mzabriskie/axios
-> Toast: https://github.com/ktsn/vuex-toast
-> 图片轮播: https://github.com/surmon-china/vue-awesome-swiper
-> 城市联动: https://github.com/QingWei-Li/vue-region-picker
-> pdf生成: https://github.com/bpampuch/pdfmake
+> Vue2.0: https://cn.vuejs.org/  
+> vue-router2: http://router.vuejs.org/zh-cn/  
+> Vuex: https://vuex.vuejs.org/zh-cn/  
+> axios: https://github.com/mzabriskie/axios  
+> Toast: https://github.com/ktsn/vuex-toast  
+> 图片轮播: https://github.com/surmon-china/vue-awesome-swiper  
+> 城市联动: https://github.com/QingWei-Li/vue-region-picker  
+> pdf生成: https://github.com/bpampuch/pdfmake  
 
 
 ### UI、素材
-> element-ui: http://element.eleme.io/#/zh-CN
-> icons: http://fontawesome.io/icons/
+> element-ui: http://element.eleme.io/#/zh-CN  
+> icons: http://fontawesome.io/icons/  
