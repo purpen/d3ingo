@@ -91,6 +91,7 @@
                 'folder': /folder/.test(ele.raw.type),
                 'artboard': /pdf/.test(ele.raw.type),
                 'audio': /audio/.test(ele.raw.type),
+                'compress': /(?:zip|rar|7z)/.test(ele.raw.type),
                 'document': /(?:text|msword)/.test(ele.raw.type),
                 'image': /image/.test(ele.raw.type),
                 'powerpoint': /powerpoint/.test(ele.raw.type),
@@ -132,7 +133,7 @@
         </p>
       </div>
     </section>
-    <el-pagination class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize" :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper">
+    <el-pagination class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize" :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange">
     </el-pagination>
   </div>
 </template>
@@ -186,15 +187,27 @@
       })
     },
     methods: {
+      handleCurrentChange(page) {
+        this.query.page = page
+        this.$router.push({name: this.$route.name, query: {page: this.query.page}})
+        this.getList()
+      },
       getList(id = 0) {
         this.isLoading = true
         this.$http.get(api.yunpanList, {params: {
-          pan_director_id: id
+          pan_director_id: id,
+          page: this.query.page,
+          per_page: this.query.pageSize
         }}).then(
           (res) => {
             this.isLoading = false
             if (res.data.meta.status_code === 200) {
+              this.itemList = res.data.data
+              this.query.totalCount = res.data.meta.pagination.total
+              this.query.totalPges = res.data.meta.total_pages
+
               this.list = res.data.data
+              this.imgList = []
               for (let i of this.list) {
                 // 格式化大小
                 let size = i['size'] / 1024
@@ -216,6 +229,9 @@
                 } else if (/audio/.test(i.mime_type)) {
                   i.format_type = 'audio'
                   i.leixing = '音频'
+                } else if (/(?:zip|rar|7z)/.test(i.mime_type)) {
+                  i.format_type = 'compress'
+                  i.leixing = '压缩文件'
                 } else if (/(?:text|msword)/.test(i.mime_type)) {
                   i.format_type = 'document'
                   i.leixing = '文档'
@@ -348,7 +364,6 @@
             return
           } else {
             this.hasRename = true
-            this.$message.success('rename')
           }
         } else {
           this.$message.error('请选择要重命名的文件')
@@ -365,9 +380,9 @@
       }
     },
     created() {
+      this.query.page = Number(this.$route.query.page) || 1
       this.getUploadUrl()
       this.getList()
-      this.query.page = Number(this.$route.query.page) || 1
     },
     computed: {
       chunkTitle() {

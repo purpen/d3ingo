@@ -8,16 +8,8 @@
               <p class="file-radio">file-radio</p>
             </el-col>
             <el-col :span="2">
-            <p :class="['file-icon', 'other', {
-                'folder': /folder/.test(ele.mime_type),
-                'artboard': /pdf/.test(ele.mime_type),
-                'audio': /audio/.test(ele.mime_type),
-                'document': /(?:text|msword)/.test(ele.mime_type),
-                'image': /image/.test(ele.mime_type),
-                'powerpoint': /powerpoint/.test(ele.mime_type),
-                'spreadsheet': /excel/.test(ele.mime_type),
-                'video': /video/.test(ele.mime_type)
-              }]">file-icon</p>
+            <p v-if="ele.format_type === 'image'" :class="['file-icon', ele.format_type]" :style="{background: 'url(' + ele.url_small + ')'}">file-icon</p>
+            <p v-else :class="['file-icon', ele.format_type]">file-icon</p>
             </el-col>
             <el-col :span="8">
               <p class="file-name">
@@ -55,7 +47,8 @@
         <el-col v-for="(ele, index) in list" :key="ele.name + index" :span="4" v-if="curView === 'chunk'">
           <div :class="[{'active' : chooseList.indexOf(ele.id) !== -1}, 'item2']">
             <p v-if="chooseStatus" @click="liClick(ele.id, index)" :class="['file-radio', ele.name]">file-radio</p>
-            <p :class="['file-icon', ele.format_type]">file-icon</p>
+            <p v-if="ele.format_type === 'image'" :class="['file-icon', ele.format_type]" :style="{background: 'url(' + ele.url_small + ')'}">file-icon</p>
+            <p v-else :class="['file-icon', ele.format_type]">file-icon</p>
             <p class="file-name">
               <span :title="ele.name" class="file-name-span" @click="showView(ele)" v-show="chooseList[0] !== ele.id || !hasRename">{{ele.name}}</span>
               <input v-show="chooseList[0] === ele.id && hasRename" class="rename" type="text" v-model="renameVal">
@@ -217,8 +210,6 @@ export default {
       }
     },
     showView(ele) {
-      document.body.setAttribute('class', 'disableScroll')
-      document.childNodes[1].setAttribute('class', 'disableScroll')
       if (/image/.test(ele.mime_type)) {
         this.imgList.forEach((item, index) => {
           if (ele.id === item.id) {
@@ -228,7 +219,8 @@ export default {
             this.previewObj.index = index
           }
         })
-        // console.log()
+        document.body.setAttribute('class', 'disableScroll')
+        document.childNodes[1].setAttribute('class', 'disableScroll')
       } else {
         console.log('不是图片')
       }
