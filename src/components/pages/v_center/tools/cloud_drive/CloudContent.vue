@@ -12,7 +12,6 @@
                 'folder': /folder/.test(ele.mime_type),
                 'artboard': /pdf/.test(ele.mime_type),
                 'audio': /audio/.test(ele.mime_type),
-                'compress': /compress/.test(ele.mime_type),
                 'document': /(?:text|msword)/.test(ele.mime_type),
                 'image': /image/.test(ele.mime_type),
                 'powerpoint': /powerpoint/.test(ele.mime_type),
@@ -22,7 +21,7 @@
             </el-col>
             <el-col :span="8">
               <p class="file-name">
-                <span @click="showView" v-show="chooseList[0] !== ele.id || !hasRename">{{ele.name}}</span>
+                <span @click="showView(ele)" v-show="chooseList[0] !== ele.id || !hasRename">{{ele.name}}</span>
                 <input v-show="chooseList[0] === ele.id && hasRename" class="rename" type="text" v-model="renameVal">
                 <span @click="renameConfirm(index)" v-show="chooseList[0] === ele.id && hasRename" class="rename-confirm"></span>
                 <span @click="renameCancel" v-show="chooseList[0] === ele.id && hasRename" class="rename-cancel"></span>
@@ -56,19 +55,9 @@
         <el-col v-for="(ele, index) in list" :key="ele.name + index" :span="4" v-if="curView === 'chunk'">
           <div :class="[{'active' : chooseList.indexOf(ele.id) !== -1}, 'item2']">
             <p v-if="chooseStatus" @click="liClick(ele.id, index)" :class="['file-radio', ele.name]">file-radio</p>
-            <p :class="['file-icon', 'other', {
-                'folder': /folder/.test(ele.name),
-                'artboard': /pdf/.test(ele.name),
-                'audio': /audio/.test(ele.name),
-                'compress': /compress/.test(ele.name),
-                'document': /(?:text|msword)/.test(ele.name),
-                'image': /image/.test(ele.name),
-                'powerpoint': /powerpoint/.test(ele.name),
-                'spreadsheet': /excel/.test(ele.name),
-                'video': /video/.test(ele.name)
-              }]">file-icon</p>
+            <p :class="['file-icon', ele.format_type]">file-icon</p>
             <p class="file-name">
-              <span :title="ele.name" class="file-name-span" @click="showView" v-show="chooseList[0] !== ele.id || !hasRename">{{ele.name}}</span>
+              <span :title="ele.name" class="file-name-span" @click="showView(ele)" v-show="chooseList[0] !== ele.id || !hasRename">{{ele.name}}</span>
               <input v-show="chooseList[0] === ele.id && hasRename" class="rename" type="text" v-model="renameVal">
                 <span @click="renameConfirm(index)" v-show="chooseList[0] === ele.id && hasRename" class="rename-confirm"></span>
                 <span @click="renameCancel" v-show="chooseList[0] === ele.id && hasRename" class="rename-cancel"></span>
@@ -90,12 +79,12 @@
         </el-col>
       </el-row>
     </section>
-    <div class="view-cover">
+    <div class="view-cover" v-show="viewCover">
       <div class="view-picture">
         <div class="view-cover-head clearfix">
           <p class="fl">
             <i class="fx fx-icon-nothing-left" @click="closeView"></i>
-            <span class="title">图片01.JPG</span>
+            <span v-if="viewCover" class="title">{{prewiewInfo.name}}</span>
           </p>
           <p class="fr operate">
             <span class="fl">分享</span>
@@ -127,18 +116,18 @@
             </swiper>
           </div>
         </div>
-        <div v-show="showProfile" class="file-profile-cover"></div>
-        <div v-show="showProfile" class="file-profile">
-          <p class="profile-head">详细信息<i class="fx-0 fx-black fx-icon-nothing-close-error"  @click="showProfile = false"></i></p>
+        <div v-if="showProfile" class="file-profile-cover"></div>
+        <div v-if="showProfile" class="file-profile">
+          <p class="profile-head">详细信息<i class="fx-0 fx-black fx-icon-nothing-close-error" @click="showProfile = false"></i></p>
           <article class="profile-body">
-            <p><span>文件名:</span>20180113_071947740_ios.jpg</p>
-            <p><span>类型:</span>图片</p>
-            <p><span>创建时间:</span>2018年1月3日</p>
+            <p><span>文件名:</span>{{prewiewInfo.name}}</p>
+            <p><span>类型:</span>{{prewiewInfo.leixing}}</p>
+            <p><span>创建时间:</span>{{prewiewInfo.date}}</p>
             <p><span>尺寸:</span>2048*2048 px</p>
-            <p><span>大小:</span>3.3MB</p>
-            <p><span>位置:</span>picture</p>
-            <p><span>所有者:</span>张三</p>
-            <p><span>查看权限:</span>管理员可见</p>
+            <p><span>大小:</span>{{prewiewInfo.format_size}}</p>
+            <p><span>位置:</span>{{prewiewInfo.pan_director_id}}</p>
+            <p><span>所有者:</span>{{prewiewInfo.user_name}}</p>
+            <p><span>查看权限:</span></p>
           </article>
         </div>
       </div>
@@ -184,6 +173,10 @@ export default {
       chooseList: [],
       showProfile: false, // 显示详情
       viewCover: false, // 显示预览
+      previewObj: {
+        index: 0,
+        info: {}
+      },
       swiperOption: {
         lazyLoading: true,
         autoplay: 0,
@@ -194,7 +187,7 @@ export default {
       },
       renameVal: '',
       currentPic: '',
-      notNextTick: true // https://github.com/surmon-china/vue-awesome-swiper/tree/v2.6.7#use-in-spa
+      notNextTick: true // 设置之后可以获取swiper对象
     }
   },
   methods: {
@@ -223,10 +216,22 @@ export default {
         return
       }
     },
-    showView(e) {
-      this.viewCover = true
+    showView(ele) {
       document.body.setAttribute('class', 'disableScroll')
       document.childNodes[1].setAttribute('class', 'disableScroll')
+      if (/image/.test(ele.mime_type)) {
+        this.imgList.forEach((item, index) => {
+          if (ele.id === item.id) {
+            this.swiperObj.slideTo(index)
+            this.viewCover = true
+            this.previewObj.info = item
+            this.previewObj.index = index
+          }
+        })
+        // console.log()
+      } else {
+        console.log('不是图片')
+      }
     },
     closeView () {
       this.viewCover = false
@@ -252,8 +257,16 @@ export default {
       console.log(e)
     },
     switchPrevPic() {
+      this.previewObj.index --
+      if (this.previewObj.index < 0) {
+        this.previewObj.index = 0
+      }
     },
     switchNextPic() {
+      this.previewObj.index ++
+      if (this.previewObj.index > this.imgList.length - 1) {
+        this.previewObj.index = this.imgList.length - 1
+      }
     }
   },
   watch: {
@@ -276,8 +289,19 @@ export default {
       }
     }
   },
-  updated() {
-    console.log('this is current swiper instance object', this.$refs.mySwiper)
+  computed: {
+    swiperObj() {
+      return this.$refs.mySwiper.swiper
+    },
+    prewiewInfo() {
+      if (this.imgList.length) {
+        console.log(this.imgList)
+        return this.imgList[this.previewObj['index']]
+      }
+    },
+    isMob() {
+      return this.$store.state.event.isMob
+    }
   },
   components: {
     swiper: (resolve) => {
@@ -291,7 +315,7 @@ export default {
 </script>
 <style scoped>
   .cloud-content {
-    min-height: 600px; 
+    min-height: 600px;
   }
   section .item {
     height: 70px;

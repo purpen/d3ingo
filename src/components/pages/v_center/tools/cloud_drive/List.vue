@@ -91,7 +91,6 @@
                 'folder': /folder/.test(ele.raw.type),
                 'artboard': /pdf/.test(ele.raw.type),
                 'audio': /audio/.test(ele.raw.type),
-                'compress': /compress/.test(ele.raw.type),
                 'document': /(?:text|msword)/.test(ele.raw.type),
                 'image': /image/.test(ele.raw.type),
                 'powerpoint': /powerpoint/.test(ele.raw.type),
@@ -133,6 +132,8 @@
         </p>
       </div>
     </section>
+    <el-pagination class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize" :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper">
+    </el-pagination>
   </div>
 </template>
 <script>
@@ -164,7 +165,13 @@
         showList: true, // 显示全部文件或搜索
         searchWord: '', // 搜索关键字
         hasRename: false, // 重命名状态
-        isLoading: false
+        isLoading: false,
+        query: {
+          page: 1,
+          pageSize: 9,
+          totalPges: 0,
+          totalCount: 0
+        }
       }
     },
     components: {
@@ -181,22 +188,57 @@
     methods: {
       getList(id = 0) {
         this.isLoading = true
-        this.$http.get(api.yunpanList, {params: {pan_director_id: id}}).then(
+        this.$http.get(api.yunpanList, {params: {
+          pan_director_id: id
+        }}).then(
           (res) => {
             this.isLoading = false
             if (res.data.meta.status_code === 200) {
               this.list = res.data.data
               for (let i of this.list) {
-                if (/image/.test(i['mime_type'])) {
-                  this.imgList.push(i)
-                }
+                // 格式化大小
                 let size = i['size'] / 1024
                 if (size > 1024) {
                   i['format_size'] = (size / 1024).toFixed(2) + 'MB'
                 } else {
                   i['format_size'] = size.toFixed(2) + 'KB'
                 }
+                // 格式化日期
+                i['date'] = i['created_at'].date_format().format('yyyy年MM月dd日')
                 i['created_at'] = i['created_at'].date_format().format('yyyy-MM-dd')
+                // 格式化类型
+                if (/folder/.test(i.mime_type)) {
+                  i.format_type = 'folder'
+                  i.leixing = '文件夹'
+                } else if (/pdf/.test(i.mime_type)) {
+                  i.format_type = 'artboard'
+                  i.leixing = 'PDF'
+                } else if (/audio/.test(i.mime_type)) {
+                  i.format_type = 'audio'
+                  i.leixing = '音频'
+                } else if (/(?:text|msword)/.test(i.mime_type)) {
+                  i.format_type = 'document'
+                  i.leixing = '文档'
+                } else if (/image/.test(i.mime_type)) {
+                  i.format_type = 'image'
+                  i.leixing = '图片'
+                } else if (/powerpoint/.test(i.mime_type)) {
+                  i.format_type = 'powerpoint'
+                  i.leixing = '演示文稿'
+                } else if (/spreadsheet/.test(i.mime_type)) {
+                  i.format_type = 'spreadsheet'
+                  i.leixing = '电子表格'
+                } else if (/video/.test(i.mime_type)) {
+                  i.format_type = 'video'
+                  i.leixing = '视频'
+                } else {
+                  i.format_type = 'other'
+                  i.leixing = '其他'
+                }
+
+                if (/image/.test(i['mime_type'])) {
+                  this.imgList.push(i)
+                }
               }
             } else {
               this.$message.error(res.data.meta.message)
@@ -325,6 +367,7 @@
     created() {
       this.getUploadUrl()
       this.getList()
+      this.query.page = Number(this.$route.query.page) || 1
     },
     computed: {
       chunkTitle() {
@@ -342,6 +385,9 @@
           }
         }
         return num
+      },
+      isMob() {
+        return this.$store.state.event.isMob
       }
     },
     watch: {
@@ -786,5 +832,9 @@
   }
   .search-head i:active {
     transform: scale(0.9)
+  }
+
+  .pagination {
+    text-align: center;
   }
 </style>
