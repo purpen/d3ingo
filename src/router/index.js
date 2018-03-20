@@ -474,7 +474,6 @@ routes = [
     },
     component: require('@/components/pages/user/Show')
   },
-
   // 控制面板
   {
     path: '/vcenter/control',
@@ -485,7 +484,6 @@ routes = [
     },
     component: require('@/components/pages/v_center/common/Control')
   },
-
   // 公司主页
   {
     path: '/company/:id',
