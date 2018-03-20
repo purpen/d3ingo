@@ -5,4 +5,5 @@ export const MSG_COUNT = 'MSG_COUNT'  // 消息数量
 export const PREV_URL_NAME = 'PREV_URL_NAME'  // 记录上一次链接名称
 export const CLEAR_PREV_URL_NAME = 'CLEAR_PREV_URL_NAME'  // 清空上一次链接
 export const MENU_STATUS = 'MENU_STATUS' // 个人中心菜单栏状态
-
+export const HIDE_HEADER = 'HIDE_HEADER' // 是否隐藏头部
+export const HIDE_FOOTER = 'HIDE_FOOTER' // 是否隐藏尾部

@@ -14,6 +14,10 @@
            :class="{'item': true, 'is-active': currentName === 'c_item'}">
           项目订单
         </a>
+        <a @click="alick" :to="'/vcenter/cloud_drive/list'"
+           :class="{'item': true, 'is-active': currentName === 'cloud_drive'}">
+          项目云盘
+        </a>
         <a @click="alick" :to="'/vcenter/design_case'"
            :class="{'item': true, 'is-active': currentName === 'design_case'}">
           作品案例
@@ -33,6 +37,10 @@
         <a @click="alick" :to="'/vcenter/modify_pwd'"
            :class="{'item': true, 'is-active': currentName === 'modify_pwd'}">
           安全设置
+        </a>
+        <a @click="alick" :to="'/vcenter/member/list'"
+           :class="{'item': true, 'is-active': currentName === 'member'}">
+          成员管理
         </a>
         <a :class="{'item': true, 'is-active': currentName === 'company'}" @click="redirectCompany" v-if="isMob">
           查看公司主页

@@ -1,5 +1,5 @@
 <template>
-  <div id="header-layout">
+  <div id="header-layout" v-if="!hideHeader">
     <div class="container">
       <div class="nav-header" v-if="!this.isMob">
         <hgroup>
@@ -300,6 +300,9 @@
       },
       isCompany() {
         return this.$store.state.event.user.type === 2
+      },
+      hideHeader() {
+        return this.$store.state.event.hideHeader
       }
     },
     created: function () {
