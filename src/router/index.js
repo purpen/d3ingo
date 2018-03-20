@@ -464,15 +464,25 @@ routes = [
     component: require('@/components/block/Blank')
   },
 
-  // 个人主页
+  // 分享链接登录
   {
-    path: '/user/:id',
+    path: '/user/Show',
     name: 'userShow',
     meta: {
       title: '个人主页',
       requireAuth: false
     },
     component: require('@/components/pages/user/Show')
+  },
+    // 邀请并接受XX链接
+  {
+    path: '/user/userRegister',
+    name: 'userRegister',
+    meta: {
+      title: '邀请登录',
+      requireAuth: false
+    },
+    component: require('@/components/pages/user/Register')
   },
   // 控制面板
   {
