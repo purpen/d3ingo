@@ -33,7 +33,12 @@ body {
   padding-bottom: 296px;
   overflow-x: hidden
 }
-
+#app2 {
+  width: 100%;
+  min-height: 100%;
+  position: relative;
+  overflow-x: hidden
+}
 .cancel-icon {
   position: relative;
 }

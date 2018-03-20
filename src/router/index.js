@@ -568,6 +568,18 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
+
+  if (to.meta['hideHeader']) {
+    store.commit(types.HIDE_HEADER, to.meta.hideHeader)
+  } else {
+    store.commit(types.HIDE_HEADER, false)
+  }
+
+  if (to.meta['hideFooter']) {
+    store.commit(types.HIDE_FOOTER, to.meta.hideFooter)
+  } else {
+    store.commit(types.HIDE_FOOTER, false)
+  }
 })
 
 router.afterEach((to, from) => {

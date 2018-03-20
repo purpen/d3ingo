@@ -1,5 +1,5 @@
 <template>
-  <div class="footer clear">
+  <div class="footer clear" v-if="!hideFooter">
     <el-row class="foot-main">
       <el-col class="item" :xs="12" :sm="6" :md="6" :lg="6">
         <p class="title">铟果</p>
@@ -86,6 +86,9 @@
     computed: {
       isMob() {
         return this.$store.state.event.isMob
+      },
+      hideFooter() {
+        return this.$store.state.event.hideFooter
       }
     },
     methods: {

@@ -5,7 +5,9 @@ import {
   MSG_COUNT,
   PREV_URL_NAME,
   CLEAR_PREV_URL_NAME,
-  MENU_STATUS
+  MENU_STATUS,
+  HIDE_HEADER,
+  HIDE_FOOTER
 } from './mutation-types.js'
 
 // 判断是否登录
@@ -48,6 +50,18 @@ let getMsgCount = function () {
   }
 }
 
+// 是否隐藏头部
+let hashideHeader = function () {
+  let hideHeader = localStorage.getItem('hideHeader')
+  return Boolean(hideHeader)
+}
+
+// 是否隐藏尾部
+let hashideFooter = function () {
+  let hideFooter = localStorage.getItem('hideFooter')
+  return Boolean(hideFooter)
+}
+
 // 判断是否登录
 let getMenustatus = function () {
   let menuStatus = localStorage.getItem('menuStatus')
@@ -75,7 +89,9 @@ const state = {
   },
   pmdHeight: '0px', // 页面大图高度
   isMob: false,
-  menuStatus: getMenustatus() || ''
+  menuStatus: getMenustatus() || '',
+  hideHeader: hashideHeader(),
+  hideFooter: hashideFooter()
 }
 
 let IsMobile = function () {
@@ -129,6 +145,14 @@ const mutations = {
   [MENU_STATUS](state, status) {
     localStorage.setItem('menuStatus', status)
     state.menuStatus = status
+  },
+  [HIDE_HEADER](state, status) {
+    localStorage.setItem('hideHeader', status)
+    state.hideHeader = status
+  },
+  [HIDE_FOOTER](state, status) {
+    localStorage.setItem('hideFooter', status)
+    state.hideFooter = status
   },
   INIT_PAGE(state) {
     if (IsMobile()) {

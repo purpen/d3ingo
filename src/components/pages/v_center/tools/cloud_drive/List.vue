@@ -5,7 +5,7 @@
         <v-menu @getTitle="headTitle"></v-menu>
       </el-col>
       <el-col :xs="24" :sm="18" :md="18" :lg="18">
-        <div class="content">
+        <div class="content" v-loading.body="isLoading">
           <div class="content-head">
             <div class="clearfix" v-show="showList">
               <p class="title fl" v-if="!isChoose">{{title}}</p>
@@ -68,7 +68,7 @@
           <!-- 文件列表 -->
           <transition name="uploadList">
             <vContent v-show="showList" :list="list" :chooseStatus="isChoose" @choose="chooseList" :isChooseAll="isChooseAll" :curView="curView" :hasRename="hasRename" @renameCancel="renameCancel"
-            @changeName="changeName"></vContent>
+            @changeName="changeName" @directRename="directRename" :imgList="imgList"></vContent>
           </transition>
           <!-- 搜索列表 -->
             <vContent v-show="!showList"></vContent>
@@ -155,6 +155,7 @@
           'x:pan_director_id': 0
         },
         list: [], // 获取文件列表
+        imgList: [],
         fileList: [], // 上传列表
         totalNumber: 0,
         webUploader: false, // 上传状态
@@ -162,7 +163,8 @@
         showConfirm: false, // 确认删除?
         showList: true, // 显示全部文件或搜索
         searchWord: '', // 搜索关键字
-        hasRename: false // 重命名状态
+        hasRename: false, // 重命名状态
+        isLoading: false
       }
     },
     components: {
@@ -178,18 +180,30 @@
     },
     methods: {
       getList(id = 0) {
+        this.isLoading = true
         this.$http.get(api.yunpanList, {params: {pan_director_id: id}}).then(
           (res) => {
-            console.log(res.data.data)
-            this.list = res.data.data
-            for (let i of this.list) {
-              let size = i['size'] / 1024
-              if (size > 1024) {
-                i['format_size'] = Number(Math.round(i['size'] / 1024 / 1024)) + 'MB'
-              } else {
-                i['format_size'] = Number(size.toFixed(2)) + 'KB'
+            this.isLoading = false
+            if (res.data.meta.status_code === 200) {
+              this.list = res.data.data
+              for (let i of this.list) {
+                if (/image/.test(i['mime_type'])) {
+                  this.imgList.push(i)
+                }
+                let size = i['size'] / 1024
+                if (size > 1024) {
+                  i['format_size'] = (size / 1024).toFixed(2) + 'MB'
+                } else {
+                  i['format_size'] = size.toFixed(2) + 'KB'
+                }
+                i['created_at'] = i['created_at'].date_format().format('yyyy-MM-dd')
               }
+            } else {
+              this.$message.error(res.data.meta.message)
             }
+          }).catch((err) => {
+            this.isLoading = false
+            console.error(err)
           })
       },
       getSearchList() {
@@ -238,6 +252,23 @@
         })
       },
       uploadSuccess(res, file, fileList) {
+        if (res.success === 1) {
+          let repeat = false
+          for (let i of this.list) {
+            if (i['id'] === res.info['id']) {
+              repeat = true
+            }
+          }
+          if (!repeat) {
+            let size = res.info['size'] / 1024
+            if (size > 1024) {
+              res.info['format_size'] = (size / 1024).toFixed(2) + 'MB'
+            } else {
+              res.info['format_size'] = size.toFixed(2) + 'KB'
+            }
+            this.list.push(res.info)
+          }
+        }
       },
       uploadError(err, file, fileList) {
         console.error(err)
@@ -250,9 +281,9 @@
         this.totalNumber = this.fileList.length
       },
       beforeUpload(file) {
-        const size = file.size / 1024 / 1024 < 1000
+        const size = file.size / 1024 / 1024 < 100
         if (!size) {
-          this.$message.error('文件大小不能超过 1000MB!')
+          this.$message.error('文件大小不能超过 100MB!')
         }
         return size
       },
@@ -280,6 +311,9 @@
         } else {
           this.$message.error('请选择要重命名的文件')
         }
+      },
+      directRename() {
+        this.hasRename = true
       },
       renameCancel() {
         this.hasRename = false
@@ -315,11 +349,11 @@
         handler(val) {
           let a = 0
           for (let i of this.fileList) {
-            let size = Math.round(i['size'] / 1024)
+            let size = i['size'] / 1024
             if (size > 1024) {
-              i['format_size'] = Math.round(i['size'] / 1024 / 1024) + 'MB'
+              i['format_size'] = (size / 1024).toFixed(2) + 'MB'
             } else {
-              i['format_size'] = size + 'KB'
+              i['format_size'] = size.toFixed(2) + 'KB'
             }
             i['format_percentage'] = Number(i.percentage.toFixed(2))
             if (i.percentage === 100) {

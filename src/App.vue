@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div :id="[hideHeader ? 'app2' : 'app']">
     <v-header></v-header>
     <div class="main">
       <router-view></router-view>
@@ -25,6 +25,11 @@ export default {
   watch: {
   },
   created() {
+  },
+  computed: {
+    hideHeader() {
+      return this.$store.state.event.hideHeader
+    }
   }
 }
 </script>

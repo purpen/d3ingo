@@ -32,10 +32,10 @@
               <p :class="['file-size', {'hidden': ele.name === 'folder'}]">{{ele.format_size}}</p>
             </el-col>
             <el-col :span="5">
-              <p :class="['file-uploader']">file-uploader</p>
+              <p :class="['file-uploader']">{{ele.user_name}}</p>
             </el-col>
             <el-col :span="4">
-              <p class="upload-date">{{date}}</p>
+              <p class="upload-date">{{ele.created_at}}</p>
             </el-col>
             <el-col :span="2" v-if="!chooseStatus">
               <div class="more-list" tabindex="100">
@@ -46,7 +46,7 @@
                   <li>下载</li>
                   <li>复制</li>
                   <li>移动</li>
-                  <li @click="rename(index)">重命名</li>
+                  <li @click="rename(ele.id, index)">重命名</li>
                   <li>删除</li>
                 </ul>
               </div>
@@ -68,7 +68,7 @@
                 'video': /video/.test(ele.name)
               }]">file-icon</p>
             <p class="file-name">
-              <span @click="showView" v-show="chooseList[0] !== ele.id || !hasRename">{{ele.name}}</span>
+              <span :title="ele.name" class="file-name-span" @click="showView" v-show="chooseList[0] !== ele.id || !hasRename">{{ele.name}}</span>
               <input v-show="chooseList[0] === ele.id && hasRename" class="rename" type="text" v-model="renameVal">
                 <span @click="renameConfirm(index)" v-show="chooseList[0] === ele.id && hasRename" class="rename-confirm"></span>
                 <span @click="renameCancel" v-show="chooseList[0] === ele.id && hasRename" class="rename-cancel"></span>
@@ -82,7 +82,7 @@
                 <li>下载</li>
                 <li>复制</li>
                 <li>移动</li>
-                  <li @click="rename(index)">重命名</li>
+                  <li @click="rename(ele.id, index)">重命名</li>
                 <li>删除</li>
               </ul>
             </div>
@@ -90,73 +90,57 @@
         </el-col>
       </el-row>
     </section>
-    <div class="view-cover" v-if="viewCover">
-      <div class="view-cover-head clearfix">
-        <p class="fl">
-          <i class="fx fx-icon-nothing-left" @click="closeView"></i>
-          <span class="title">图片01.JPG</span>
-        </p>
-        <p class="fr operate">
-          <span class="fl">分享</span>
-          <span class="fl">下载</span>
-          <span class="fl">移动</span>
-          <span class="fl more" tabindex="300">
-            <i></i>
-            <ul>
-              <li>重命名</li>
-              <li>删除</li>
-              <li>查看权限</li>
-              <li @click="showProfile = true">详细信息</li>
-            </ul>
-          </span>
-        </p>
-      </div>
-      <div class="view-content">
-        <div class="image-preview">
-          <swiper ref="mySwiper" :options="swiperOption">
-            <swiper-slide>
-              <img v-lazy="require('assets/images/tools/cloud_drive/123.jpg')" alt="">
-            </swiper-slide>
-            <swiper-slide>
-              <img v-lazy="require('assets/images/tools/cloud_drive/123.jpg')" alt="">
-            </swiper-slide>
-            <swiper-slide>
-              <img v-lazy="require('assets/images/tools/cloud_drive/123.jpg')" alt="">
-            </swiper-slide>
-            <swiper-slide>
-              <img v-lazy="require('assets/images/tools/cloud_drive/123.jpg')" alt="">
-            </swiper-slide>
-            <swiper-slide>
-              <img v-lazy="require('assets/images/tools/cloud_drive/123.jpg')" alt="">
-            </swiper-slide>
-            <swiper-slide>
-              <img v-lazy="require('assets/images/tools/cloud_drive/123.jpg')" alt="">
-            </swiper-slide>
-            <swiper-slide>
-              <img v-lazy="require('assets/images/tools/cloud_drive/123.jpg')" alt="">
-            </swiper-slide>
-            <div class="swiper-button-prev" slot="button-prev">
-              <i class="el-icon-arrow-left"></i>
-            </div>
-            <div class="swiper-button-next" slot="button-next">
-              <i class="el-icon-arrow-right"></i>
-            </div>
-          </swiper>
+    <div class="view-cover">
+      <div class="view-picture">
+        <div class="view-cover-head clearfix">
+          <p class="fl">
+            <i class="fx fx-icon-nothing-left" @click="closeView"></i>
+            <span class="title">图片01.JPG</span>
+          </p>
+          <p class="fr operate">
+            <span class="fl">分享</span>
+            <span class="fl">下载</span>
+            <span class="fl">移动</span>
+            <span class="fl more" tabindex="300">
+              <i></i>
+              <ul>
+                <li>重命名</li>
+                <li>删除</li>
+                <li>查看权限</li>
+                <li @click="showProfile = true">详细信息</li>
+              </ul>
+            </span>
+          </p>
         </div>
-      </div>
-      <div v-show="showProfile" class="file-profile-cover"></div>
-      <div v-show="showProfile" class="file-profile">
-        <p class="profile-head">详细信息<i class="fx-0 fx-black fx-icon-nothing-close-error"  @click="showProfile = false"></i></p>
-        <article class="profile-body">
-          <p><span>文件名:</span>20180113_071947740_ios.jpg</p>
-          <p><span>类型:</span>图片</p>
-          <p><span>创建时间:</span>2018年1月3日</p>
-          <p><span>尺寸:</span>2048*2048 px</p>
-          <p><span>大小:</span>3.3MB</p>
-          <p><span>位置:</span>picture</p>
-          <p><span>所有者:</span>张三</p>
-          <p><span>查看权限:</span>管理员可见</p>
-        </article>
+        <div class="view-content">
+          <div class="image-preview">
+            <swiper :options="swiperOption" :not-next-tick="notNextTick" ref="mySwiper">
+              <swiper-slide v-for="(ele, index) in imgList" :key="ele.id + index">
+                <img v-lazy="ele.url_file" alt="ele.name">
+              </swiper-slide>
+              <div @click="switchPrevPic" class="swiper-button-prev" slot="button-prev">
+                <i class="el-icon-arrow-left"></i>
+              </div>
+              <div @click="switchNextPic" class="swiper-button-next" slot="button-next">
+                <i class="el-icon-arrow-right"></i>
+              </div>
+            </swiper>
+          </div>
+        </div>
+        <div v-show="showProfile" class="file-profile-cover"></div>
+        <div v-show="showProfile" class="file-profile">
+          <p class="profile-head">详细信息<i class="fx-0 fx-black fx-icon-nothing-close-error"  @click="showProfile = false"></i></p>
+          <article class="profile-body">
+            <p><span>文件名:</span>20180113_071947740_ios.jpg</p>
+            <p><span>类型:</span>图片</p>
+            <p><span>创建时间:</span>2018年1月3日</p>
+            <p><span>尺寸:</span>2048*2048 px</p>
+            <p><span>大小:</span>3.3MB</p>
+            <p><span>位置:</span>picture</p>
+            <p><span>所有者:</span>张三</p>
+            <p><span>查看权限:</span>管理员可见</p>
+          </article>
+        </div>
       </div>
     </div>
   </div>
@@ -186,6 +170,12 @@ export default {
     hasRename: {
       type: Boolean,
       default: false
+    },
+    imgList: {
+      type: Array,
+      default: function () {
+        return []
+      }
     }
   },
   data() {
@@ -196,13 +186,15 @@ export default {
       viewCover: false, // 显示预览
       swiperOption: {
         lazyLoading: true,
-        autoplay: 5000,
+        autoplay: 0,
         prevButton: '.swiper-button-prev',
         nextButton: '.swiper-button-next',
-        spaceBetween: 0
+        spaceBetween: 0,
+        onlyExternal: true
       },
       renameVal: '',
-      hideFileName: -1
+      currentPic: '',
+      notNextTick: true // https://github.com/surmon-china/vue-awesome-swiper/tree/v2.6.7#use-in-spa
     }
   },
   methods: {
@@ -231,7 +223,7 @@ export default {
         return
       }
     },
-    showView() {
+    showView(e) {
       this.viewCover = true
       document.body.setAttribute('class', 'disableScroll')
       document.childNodes[1].setAttribute('class', 'disableScroll')
@@ -249,7 +241,19 @@ export default {
       this.$emit('renameCancel')
       this.$emit('changeName', index, this.renameVal)
     },
-    rename() {
+    rename(id, index) {
+      this.chooseList = []
+      this.chooseList.push(id)
+      this.$emit('choose', this.chooseList)
+      this.renameVal = this.list[index]['name']
+      this.$emit('directRename')
+    },
+    switchPic(e) {
+      console.log(e)
+    },
+    switchPrevPic() {
+    },
+    switchNextPic() {
     }
   },
   watch: {
@@ -270,10 +274,10 @@ export default {
         this.chooseList = []
         this.$emit('choose', this.chooseList, 'empty')
       }
-    },
-    chooseList() {
-      this.hideFileName = this.chooseList[0]
     }
+  },
+  updated() {
+    console.log('this is current swiper instance object', this.$refs.mySwiper)
   },
   components: {
     swiper: (resolve) => {
@@ -286,6 +290,9 @@ export default {
 }
 </script>
 <style scoped>
+  .cloud-content {
+    min-height: 600px; 
+  }
   section .item {
     height: 70px;
     line-height: 70px;
@@ -363,6 +370,12 @@ export default {
     overflow: initial;
     position: relative;
     height: 20px;
+  }
+  section .item2 .file-name-span {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .item2 .rename {
     position: absolute;
@@ -610,12 +623,14 @@ export default {
     width: 380px;
     height: 100vh;
     position: absolute;
+    z-index: 1;
     right: 0;
     top: 60px;
     background: #fff;
   }
   .file-profile-cover {
     position: fixed;
+    z-index: 1;
     left: 0;
     top: 60px;
     width: 100vw;
@@ -660,7 +675,7 @@ export default {
     display: block;
     margin: 0 auto;
     max-width: 800px;
-    max-height: calc(100% - 90px);
+    max-height: calc(100vh - 120px);
   }
 
   .image-preview {
