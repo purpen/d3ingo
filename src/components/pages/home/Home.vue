@@ -207,7 +207,7 @@
             url: '/innovation_index'
           },
           {
-            img: require ('assets/images/home/banner/homebanner_xiaomi.jpg'),
+            img: require ('assets/images/home/banner/home_xiaomi.jpg'),
             url: '/subject/xiaomiInterview'
           }
         ],
