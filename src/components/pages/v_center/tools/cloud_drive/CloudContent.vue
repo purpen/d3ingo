@@ -79,15 +79,6 @@
             </div>
           </div>
         </el-col>
-            <el-col :span="2" v-if="!chooseStatus && modules === 'recycle'">
-              <div class="more-list" tabindex="100">
-                <i></i>
-                <ul>
-                  <li @click="shiftDelete(ele.id, index)">彻底删除</li>
-                  <li>恢复</li>
-                </ul>
-              </div>
-            </el-col>
       </el-row>
     </section>
     <div class="view-cover" v-show="viewCover">
@@ -264,24 +255,23 @@ export default {
       this.$emit('renameCancel')
       this.$emit('changeName', index, this.renameVal)
     },
-    rename(id, index) {
+    directOperate(id) {
       this.chooseList = []
       this.chooseList.push(id)
       this.$emit('choose', this.chooseList)
+    },
+    rename(id, index) {
+      this.directOperate(id)
       this.$emit('directRename')
       this.renameVal = this.list[index]['name']
     },
     deleteFile(id, index) {
-      this.chooseList = []
-      this.chooseList.push(id)
-      this.$emit('choose', this.chooseList)
+      this.directOperate(id)
       this.$emit('deleteFile')
     },
     shiftDelete(id, index) {
-      this.chooseList = []
-      this.chooseList.push(id)
-      this.$emit('choose', this.chooseList)
-      this.$emit('deleteFile')
+      this.directOperate(id)
+      this.$emit('shiftDelete')
     },
     switchPic(e) {
       console.log(e)

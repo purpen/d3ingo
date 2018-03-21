@@ -10,7 +10,7 @@
             <div class="clearfix" v-show="showList">
               <p class="title fl" v-if="!isChoose">{{title}}</p>
               <div class="fr operate" v-if="!isChoose">
-                <p class="add">
+                <p class="add" v-if="modules !== 'recycle'">
                   <span class="add-option">
                     <a class="new-folder">
                       <span>新建文件夹</span>
@@ -35,11 +35,11 @@
                     </a>
                   </span>
                 </p>
-                <p class="search" title="搜索" @click="showList = !showList"></p>
+                <p class="search" title="搜索" @click="showList = !showList" v-if="modules !== 'recycle'"></p>
                 <p :class="[{'chunk': curView === 'list','list': curView === 'chunk'}]" 
                   :title="chunkTitle"
-                  @click="changeFileView"></p>
-                <p class="sequence"></p>
+                  @click="changeFileView" v-if="modules !== 'recycle'"></p>
+                <p class="sequence" v-if="modules !== 'recycle'"></p>
                 <p class="edit" title="编辑模式" @click="changeChooseStatus"></p>
               </div>
               <p class="edit-menu" v-if="isChoose">
@@ -51,12 +51,13 @@
                   <span class="cancel-choose" @click="cancelChoose">取消选择</span>
                 </el-col>
                 <el-col :offset="4" :span="12">
-                  <span>共享</span>
-                  <span>下载</span>
-                  <span>复制</span>
-                  <span>移动</span>
-                  <span @click="rename" :class="[{'disable': alreadyChoose > 1 || !alreadyChoose}]">重命名</span>
-                  <span @click="deleteFile">删除</span>
+                  <span v-if="modules !== 'recycle'">共享</span>
+                  <span v-if="modules !== 'recycle'">下载</span>
+                  <span v-if="modules !== 'recycle'">复制</span>
+                  <span v-if="modules !== 'recycle'">移动</span>
+                  <span v-if="modules !== 'recycle'" @click="rename" :class="[{'disable': alreadyChoose > 1 || !alreadyChoose}]">重命名</span>
+                  <span v-if="modules !== 'recycle'" @click="deleteFile">删除</span>
+                  <span v-if="modules === 'recycle'" @click="shiftDelete">删除</span>
                 </el-col>
               </p>
             </div>
@@ -69,6 +70,7 @@
           <transition name="uploadList">
             <vContent v-show="showList" :list="list" :chooseStatus="isChoose" @choose="chooseList" :isChooseAll="isChooseAll" :curView="curView" :hasRename="hasRename" @renameCancel="renameCancel"
             @changeName="changeName" @directRename="directRename" :imgList="imgList" @deleteFile="deleteFile"
+            @shiftDelete="shiftDelete"
             :modules="modules"></vContent>
           </transition>
           <!-- 搜索列表 -->
@@ -137,7 +139,7 @@
     <section class="dialog-body" v-if="showConfirmDelete">
       <h3 class="dialog-header clearfix">
         确认删除
-        <i class="fr fx fx-icon-nothing-close-error" @click="showCover = false"></i>
+        <i class="fr fx fx-icon-nothing-close-error" @click="showCover = false, showConfirmDelete = false"></i>
       </h3>
       <div class="dialog-conetent">
         <div class="dialog-article">
@@ -146,6 +148,21 @@
         <p class="buttons">
           <button class="cancel-btn" @click="showConfirmDelete = false, showCover = false">取消</button>
           <button  class="confirm-btn" @click="confirmDelete">确定</button>
+        </p>
+      </div>
+    </section>
+    <section class="dialog-body" v-if="showConfirmShiftDelete">
+      <h3 class="dialog-header clearfix">
+        确认删除
+        <i class="fr fx fx-icon-nothing-close-error" @click="showCover = false, showConfirmShiftDelete = false"></i>
+      </h3>
+      <div class="dialog-conetent">
+        <div class="dialog-article">
+          <p>确认要彻底删除文件吗?</p>
+        </div>
+        <p class="buttons">
+          <button class="cancel-btn" @click="showConfirmShiftDelete = false, showCover = false">取消</button>
+          <button  class="confirm-btn" @click="confirmShiftDelete">确定</button>
         </p>
       </div>
     </section>
@@ -182,6 +199,7 @@
         showCover: false, // 确认背景?
         showConfirm: false, // 确认删除上传列表?
         showConfirmDelete: false, // 确认删除文件?
+        showConfirmShiftDelete: false, // 确认彻底删除文件?
         showList: true, // 显示全部文件或搜索
         searchWord: '', // 搜索关键字
         hasRename: false, // 重命名状态
@@ -302,6 +320,9 @@
       headTitle(e) {
         this.title = e.val
         this.modules = e.name
+        this.isChoose = false
+        this.isChooseAll = 'empty'
+        this.curView = 'list'
         this.getList()
       },
       changeChooseStatus() {
@@ -401,7 +422,7 @@
         }
       },
       deleteFile() {
-        if (this.chooseFileList) {
+        if (this.chooseFileList.length) {
           this.showCover = true
           this.showConfirmDelete = true
         } else {
@@ -409,6 +430,7 @@
         }
       },
       confirmDelete() {
+        console.log(this.chooseFileList)
         this.$http.put(api.yunpanDelete, {pan_director_id_arr: this.chooseFileList}).then((res) => {
           if (res.data.meta.status_code !== 200) {
             this.$message.error(res.data.meta.message)
@@ -426,6 +448,33 @@
           this.showConfirmDelete = false
         }).catch((err) => {
           console.error(err)
+        })
+      },
+      shiftDelete() {
+        if (this.chooseFileList.length) {
+          this.showCover = true
+          this.showConfirmShiftDelete = true
+        } else {
+          this.$message.error('请选择要彻底删除的文件')
+        }
+      },
+      confirmShiftDelete() {
+        this.$http.delete(api.recycleBinDelete, {params: {id_arr: this.chooseFileList}}).then((res) => {
+          if (res.data.meta.status_code === 200) {
+            console.log(res)
+            this.list.forEach((item, index) => {
+              this.chooseFileList.forEach((item2, sub) => {
+                if (item2 === item.id) {
+                  this.list.splice(index, 1)
+                  this.isChooseAll = 'empty'
+                }
+              })
+            })
+            this.showCover = false
+            this.showConfirmShiftDelete = false
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
         })
       },
       directRename() {
