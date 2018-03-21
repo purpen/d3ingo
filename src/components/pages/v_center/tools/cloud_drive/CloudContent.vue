@@ -28,7 +28,7 @@
             <el-col :span="4">
               <p class="upload-date">{{ele.created_at}}</p>
             </el-col>
-            <el-col :span="2" v-if="!chooseStatus&& modules !== 'recycle'">
+            <el-col :span="2" v-if="!chooseStatus && modules !== 'recycle'">
               <div class="more-list" tabindex="100">
                 <i></i>
                 <ul>
@@ -42,7 +42,7 @@
                 </ul>
               </div>
             </el-col>
-            <el-col :span="2" v-else>
+            <el-col :span="2" v-if="!chooseStatus && modules === 'recycle'">
               <div class="more-list" tabindex="100">
                 <i></i>
                 <ul>
@@ -79,7 +79,7 @@
             </div>
           </div>
         </el-col>
-            <el-col :span="2" v-else>
+            <el-col :span="2" v-if="!chooseStatus && modules === 'recycle'">
               <div class="more-list" tabindex="100">
                 <i></i>
                 <ul>
