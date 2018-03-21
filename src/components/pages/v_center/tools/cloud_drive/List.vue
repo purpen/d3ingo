@@ -56,7 +56,7 @@
                   <span>复制</span>
                   <span>移动</span>
                   <span @click="rename" :class="[{'disable': alreadyChoose > 1 || !alreadyChoose}]">重命名</span>
-                  <span>删除</span>
+                  <span @click="deleteFile">删除</span>
                 </el-col>
               </p>
             </div>
@@ -68,7 +68,8 @@
           <!-- 文件列表 -->
           <transition name="uploadList">
             <vContent v-show="showList" :list="list" :chooseStatus="isChoose" @choose="chooseList" :isChooseAll="isChooseAll" :curView="curView" :hasRename="hasRename" @renameCancel="renameCancel"
-            @changeName="changeName" @directRename="directRename" :imgList="imgList"></vContent>
+            @changeName="changeName" @directRename="directRename" :imgList="imgList" @deleteFile="deleteFile"
+            :modules="modules"></vContent>
           </transition>
           <!-- 搜索列表 -->
             <vContent v-show="!showList"></vContent>
@@ -77,7 +78,7 @@
     </el-row>
     <footer class="drive-footer clearfix" v-if="webUploader">
       <span class="fl" @click="isShowProgress = true">正在上传文件{{uploadingNumber}}/{{totalNumber}}</span>
-      <span class="fr"><i class="fx-0 fx-icon-nothing-close-error" @click="showConfirm = true"></i></span>
+      <span class="fr"><i class="fx-0 fx-icon-nothing-close-error" @click="showConfirm = true, showCover = true"></i></span>
     </footer>
 
     <div class="web-uploader" v-if="webUploader && isShowProgress">
@@ -116,11 +117,11 @@
         </el-row>
       </div>
     </div>
-    <section class="dialog-bg" v-if="showConfirm" @click="showConfirm = false"></section>
-    <section class="dialog-body" v-if="showConfirm">
+    <section class="dialog-bg" v-if="showCover" @click="showConfirm = false, showCover = false"></section>
+    <section class="dialog-body" v-if="showCover">
       <h3 class="dialog-header clearfix">
         放弃上传
-        <i class="fr fx fx-icon-nothing-close-error" @click="showConfirm = !showConfirm"></i>
+        <i class="fr fx fx-icon-nothing-close-error" @click="showConfirm = false, showCover = false"></i>
       </h3>
       <div class="dialog-conetent">
         <div class="dialog-article">
@@ -128,8 +129,23 @@
           <p>确定要放弃上传吗？</p>
         </div>
         <p class="buttons">
-          <button class="cancel-btn" @click="showConfirm = false">取消</button>
+          <button class="cancel-btn" @click="showConfirm = false, showCover = false">取消</button>
           <button  class="confirm-btn" @click="clearUpload">确定</button>
+        </p>
+      </div>
+    </section>
+    <section class="dialog-body" v-if="showConfirmDelete">
+      <h3 class="dialog-header clearfix">
+        确认删除
+        <i class="fr fx fx-icon-nothing-close-error" @click="showCover = false"></i>
+      </h3>
+      <div class="dialog-conetent">
+        <div class="dialog-article">
+          <p>确认要放入回收站吗?</p>
+        </div>
+        <p class="buttons">
+          <button class="cancel-btn" @click="showConfirmDelete = false, showCover = false">取消</button>
+          <button  class="confirm-btn" @click="confirmDelete">确定</button>
         </p>
       </div>
     </section>
@@ -147,8 +163,9 @@
       return {
         test: 'test',
         title: '全部文件',
+        modules: '',
         isChoose: false, // 切换为选择状态
-        alreadyChoose: 0, // 已选择数目
+        chooseFileList: [], // 已选择的id
         isChooseAll: '', // 是否全选,
         curView: 'list', // 当前视图: 列表: list, 九宫格: chunk, 搜索: search
         uploadUrl: '', // 上传地址
@@ -162,7 +179,9 @@
         totalNumber: 0,
         webUploader: false, // 上传状态
         isShowProgress: false, // 是否显示上传列表
-        showConfirm: false, // 确认删除?
+        showCover: false, // 确认背景?
+        showConfirm: false, // 确认删除上传列表?
+        showConfirmDelete: false, // 确认删除文件?
         showList: true, // 显示全部文件或搜索
         searchWord: '', // 搜索关键字
         hasRename: false, // 重命名状态
@@ -194,7 +213,16 @@
       },
       getList(id = 0) {
         this.isLoading = true
-        this.$http.get(api.yunpanList, {params: {
+        let url = ''
+        if (this.modules === 'all') {
+          url = api.yunpanList
+        } else if (this.modules === 'recycle') {
+          url = api.yunpanRecycleStation
+        } else {
+          this.isLoading = false
+          return
+        }
+        this.$http.get(url, {params: {
           pan_director_id: id,
           page: this.query.page,
           per_page: this.query.pageSize
@@ -272,7 +300,9 @@
         }
       },
       headTitle(e) {
-        this.title = e
+        this.title = e.val
+        this.modules = e.name
+        this.getList()
       },
       changeChooseStatus() {
         this.isChoose = !this.isChoose
@@ -282,7 +312,7 @@
         this.isChoose = false
       },
       chooseList(e, str) {
-        this.alreadyChoose = e.length
+        this.chooseFileList = e
         this.isChooseAll = str
       },
       changeChooseAll() {
@@ -353,6 +383,7 @@
           this.$refs.upload.handleRemove(i)
         }
         this.showConfirm = false
+        this.showCover = false
       },
       clearShowList() {
         this.showList = true
@@ -369,6 +400,34 @@
           this.$message.error('请选择要重命名的文件')
         }
       },
+      deleteFile() {
+        if (this.chooseFileList) {
+          this.showCover = true
+          this.showConfirmDelete = true
+        } else {
+          this.$message.error('请选择要删除的文件')
+        }
+      },
+      confirmDelete() {
+        this.$http.put(api.yunpanDelete, {pan_director_id_arr: this.chooseFileList}).then((res) => {
+          if (res.data.meta.status_code !== 200) {
+            this.$message.error(res.data.meta.message)
+          } else {
+            this.list.forEach((item, index) => {
+              this.chooseFileList.forEach((item2, sub) => {
+                if (item2 === item.id) {
+                  this.list.splice(index, 1)
+                  this.isChooseAll = 'empty'
+                }
+              })
+            })
+          }
+          this.showCover = false
+          this.showConfirmDelete = false
+        }).catch((err) => {
+          console.error(err)
+        })
+      },
       directRename() {
         this.hasRename = true
       },
@@ -381,6 +440,21 @@
     },
     created() {
       this.query.page = Number(this.$route.query.page) || 1
+      this.modules = this.$route.params.module
+      switch (this.modules) {
+        case 'all':
+          this.title = '全部文件'
+          break
+        case 'project':
+          this.title = '项目'
+          break
+        case 'recently-use':
+          this.title = '最近使用'
+          break
+        case 'recycle':
+          this.title = '回收站'
+          break
+      }
       this.getUploadUrl()
       this.getList()
     },
@@ -403,6 +477,9 @@
       },
       isMob() {
         return this.$store.state.event.isMob
+      },
+      alreadyChoose() { // 已选择数目
+        return this.chooseFileList.length
       }
     },
     watch: {

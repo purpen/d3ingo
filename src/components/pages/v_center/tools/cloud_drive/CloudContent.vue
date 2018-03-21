@@ -8,7 +8,7 @@
               <p class="file-radio">file-radio</p>
             </el-col>
             <el-col :span="2">
-            <p v-if="ele.format_type === 'image'" :class="['file-icon', ele.format_type]" :style="{background: 'url(' + ele.url_small + ')'}">file-icon</p>
+            <p v-if="ele.format_type === 'image' && modules !== 'recycle'" :class="['file-icon', ele.format_type]" :style="{background: 'url(' + ele.url_small + ')'}">file-icon</p>
             <p v-else :class="['file-icon', ele.format_type]">file-icon</p>
             </el-col>
             <el-col :span="8">
@@ -28,7 +28,7 @@
             <el-col :span="4">
               <p class="upload-date">{{ele.created_at}}</p>
             </el-col>
-            <el-col :span="2" v-if="!chooseStatus">
+            <el-col :span="2" v-if="!chooseStatus&& modules !== 'recycle'">
               <div class="more-list" tabindex="100">
                 <i></i>
                 <ul>
@@ -38,7 +38,16 @@
                   <li>复制</li>
                   <li>移动</li>
                   <li @click="rename(ele.id, index)">重命名</li>
-                  <li>删除</li>
+                  <li @click="deleteFile(ele.id, index)">删除</li>
+                </ul>
+              </div>
+            </el-col>
+            <el-col :span="2" v-else>
+              <div class="more-list" tabindex="100">
+                <i></i>
+                <ul>
+                  <li @click="shiftDelete(ele.id, index)">彻底删除</li>
+                  <li>恢复</li>
                 </ul>
               </div>
             </el-col>
@@ -47,7 +56,7 @@
         <el-col v-for="(ele, index) in list" :key="ele.name + index" :span="4" v-if="curView === 'chunk'">
           <div :class="[{'active' : chooseList.indexOf(ele.id) !== -1}, 'item2']">
             <p v-if="chooseStatus" @click="liClick(ele.id, index)" :class="['file-radio', ele.name]">file-radio</p>
-            <p v-if="ele.format_type === 'image'" :class="['file-icon', ele.format_type]" :style="{background: 'url(' + ele.url_small + ')'}">file-icon</p>
+            <p v-if="ele.format_type === 'image' && modules !== 'recycle'" :class="['file-icon', ele.format_type]" :style="{background: 'url(' + ele.url_small + ')'}">file-icon</p>
             <p v-else :class="['file-icon', ele.format_type]">file-icon</p>
             <p class="file-name">
               <span :title="ele.name" class="file-name-span" @click="showView(ele)" v-show="chooseList[0] !== ele.id || !hasRename">{{ele.name}}</span>
@@ -56,7 +65,7 @@
                 <span @click="renameCancel" v-show="chooseList[0] === ele.id && hasRename" class="rename-cancel"></span>
             </p>
             <p class="upload-date">{{date}}</p>
-            <div class="more-list" tabindex="200" v-if="!chooseStatus">
+            <div class="more-list" tabindex="200" v-if="!chooseStatus && modules !== 'recycle'">
               <i></i>
               <ul>
                 <li>查看权限</li>
@@ -65,11 +74,20 @@
                 <li>复制</li>
                 <li>移动</li>
                   <li @click="rename(ele.id, index)">重命名</li>
-                <li>删除</li>
+                <li @click="deleteFile(ele.id, index)">删除</li>
               </ul>
             </div>
           </div>
         </el-col>
+            <el-col :span="2" v-else>
+              <div class="more-list" tabindex="100">
+                <i></i>
+                <ul>
+                  <li @click="shiftDelete(ele.id, index)">彻底删除</li>
+                  <li>恢复</li>
+                </ul>
+              </div>
+            </el-col>
       </el-row>
     </section>
     <div class="view-cover" v-show="viewCover">
@@ -158,6 +176,10 @@ export default {
       default: function () {
         return []
       }
+    },
+    modules: {
+      type: String,
+      default: 'all'
     }
   },
   data() {
@@ -210,19 +232,23 @@ export default {
       }
     },
     showView(ele) {
-      if (/image/.test(ele.mime_type)) {
-        this.imgList.forEach((item, index) => {
-          if (ele.id === item.id) {
-            this.swiperObj.slideTo(index)
-            this.viewCover = true
-            this.previewObj.info = item
-            this.previewObj.index = index
-          }
-        })
-        document.body.setAttribute('class', 'disableScroll')
-        document.childNodes[1].setAttribute('class', 'disableScroll')
+      if (this.modules !== 'recycle') {
+        if (/image/.test(ele.mime_type)) {
+          this.imgList.forEach((item, index) => {
+            if (ele.id === item.id) {
+              this.swiperObj.slideTo(index)
+              this.viewCover = true
+              this.previewObj.info = item
+              this.previewObj.index = index
+            }
+          })
+          document.body.setAttribute('class', 'disableScroll')
+          document.childNodes[1].setAttribute('class', 'disableScroll')
+        } else {
+          console.log('不是图片')
+        }
       } else {
-        console.log('不是图片')
+        console.log('回收站不支持预览')
       }
     },
     closeView () {
@@ -242,8 +268,20 @@ export default {
       this.chooseList = []
       this.chooseList.push(id)
       this.$emit('choose', this.chooseList)
-      this.renameVal = this.list[index]['name']
       this.$emit('directRename')
+      this.renameVal = this.list[index]['name']
+    },
+    deleteFile(id, index) {
+      this.chooseList = []
+      this.chooseList.push(id)
+      this.$emit('choose', this.chooseList)
+      this.$emit('deleteFile')
+    },
+    shiftDelete(id, index) {
+      this.chooseList = []
+      this.chooseList.push(id)
+      this.$emit('choose', this.chooseList)
+      this.$emit('deleteFile')
     },
     switchPic(e) {
       console.log(e)

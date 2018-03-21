@@ -5,22 +5,22 @@
       <el-collapse-item title="设计云盘" name="1">
         <ul class="cloud-classify">
           <li>
-            <a :class="['files', {'active': isActive === '全部文件'}]" @click="changeTitle('全部文件')">
+            <a :class="['files', {'active': isActive === 'all'}]" @click="changeTitle({name: 'all', val: '全部文件'})">
               <span>全部文件</span>
             </a>
           </li>
           <li>
-            <a :class="['project', {'active': isActive === '项目'}]" @click="changeTitle('项目')">
+            <a :class="['project', {'active': isActive === 'project'}]" @click="changeTitle({name: 'project', val: '项目'})">
               <span>项目</span>
               </a>
           </li>
           <li>
-            <a :class="['recently', {'active': isActive === '最近使用'}]" @click="changeTitle('最近使用')">
+            <a :class="['recently', {'active': isActive === 'recently-use'}]" @click="changeTitle({name: 'recently-use', val: '最近使用'})">
               <span>最近使用</span>
             </a>
           </li>
           <li>
-            <a :class="['recycle', {'active': isActive === '回收站'}]" @click="changeTitle('回收站')">
+            <a :class="['recycle', {'active': isActive === 'recycle'}]" @click="changeTitle({name: 'recycle', val: '回收站'})">
               <span>回收站</span>
             </a>
           </li>
@@ -82,14 +82,20 @@
       return {
         test: 'test',
         activeNames: ['1', '3'],
-        isActive: '全部文件'
+        isActive: ''
       }
     },
     methods: {
       changeTitle(e) {
-        this.$emit('getTitle', e)
-        this.isActive = e
+        if (this.isActive !== e.name) {
+          this.$emit('getTitle', e)
+          this.isActive = e.name
+          this.$router.push({name: this.$route.name, params: {module: e.name}})
+        }
       }
+    },
+    created() {
+      this.isActive = this.$route.params.module || ''
     }
   }
 </script>

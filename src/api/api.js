@@ -261,9 +261,12 @@ export default {
    */
 
   // 云盘
-  yunpanUpToken: '/upload/yunpanUpToken', // 云盘上传upToken
-  yunpanList: '/yunpan/lists', // 云盘文件列表
-
+  yunpanUpToken: '/upload/yunpanUpToken', // GET 云盘上传upToken
+  yunpanList: '/yunpan/lists', // GET 云盘文件列表
+  yunpanDelete: '/yunpan/delete', // PUT 云盘放入回收站
+  yunpanRecycleStation: '/recycleBin/lists', // GET 云盘回收站
+  recycleBinDelete: '/recycleBin/delete', // DELETE 云盘彻底删除
+  recycleBinRestore: '/recycleBin/restore', // PUT 恢复文件
   // 成员管理
   designMemberList: '/design/members',  // GET 获取成员列表
   designMemberSetRole: '/design/is_admin', // PUT 设计成员权限

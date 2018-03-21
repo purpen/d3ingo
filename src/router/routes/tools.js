@@ -4,7 +4,7 @@
 module.exports = [
   // 云盘列表
   {
-    path: '/vcenter/cloud_drive/list',
+    path: '/vcenter/cloud_drive/list/:module',
     name: 'vcenterCloudDriveList',
     meta: {
       title: '铟果云盘',
