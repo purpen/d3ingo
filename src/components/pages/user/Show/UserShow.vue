@@ -1,17 +1,17 @@
 <template>
 <div>
-      <div class="content" v-show="centerDialogVisible" >
-          <div class="el-dialog" id="t" width="80%"
-            center>
-              <div class="welcome">
-                <p>分享链接邀请成员</p>
-              </div>
-            <i class="fx-icon-nothing-close-error" @click="closeDialog"></i>
-             <div class="boxInput"> <input type="text" ref="input1" class="input"></div>
-                <span>链接7天后失效</span>
-              <el-button class="dialog-footer" type="danger" @click="copyLj"><span>复制链接</span></el-button>
-            </div>
+  <div class="content1" v-show="centerDialogVisible" >
+    <div class="el-dialog" id="t" width="80%"
+      center>
+        <div class="welcome">
+          <p>分享链接邀请成员</p>
+        </div>
+        <i class="fx-icon-nothing-close-error" @click="closeDialog"></i>
+        <div class="boxInput"> <input type="text" ref="input1" class="input"></div>
+          <span>链接7天后失效</span>
+        <el-button class="dialog-footer" type="danger" @click="copyLj"><span>复制链接</span></el-button>
       </div>
+  </div>
 </div>
 </template>
 <script>
@@ -51,8 +51,8 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
-.content{
+<style scoped>
+.content1 {
   opacity: 0.7;
   background: #000000;
   position: fixed;
@@ -65,7 +65,7 @@ export default {
 #t {
   z-index: 1000;
 }
-.content p{
+.content1 p{
   text-align: center;
   height: 50px;
   font-family: PingFangSC-Regular;
