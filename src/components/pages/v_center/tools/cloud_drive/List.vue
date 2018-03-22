@@ -231,7 +231,7 @@
         showConfirmDelete: false, // 确认删除文件?
         showConfirmShiftDelete: false, // 确认彻底删除文件?
         showConfirmRecover: false, // 确认恢复文件?
-        showList: true, // 显示全部文件或搜索
+        showList: true, // 显示全部文件或搜索 false => 搜索
         searchWord: '', // 搜索关键字
         hasRename: false, // 重命名状态
         isLoading: false,
@@ -247,7 +247,7 @@
       vMenu,
       vContent
     },
-    mounted: function () {
+    mounted() {
       window.addEventListener('keydown', e => {
         if (e.keyCode === 13) {
           this.getSearchList()
@@ -332,7 +332,6 @@
               this.itemList = res.data.data
               this.query.totalCount = res.data.meta.pagination.total
               this.query.totalPges = res.data.meta.total_pages
-
               this.list = res.data.data
               this.imgList = []
               this.formatList()
@@ -345,10 +344,29 @@
           })
       },
       getSearchList() {
-        if (!this.showList && this.searchWord) {
-          console.log('getSearchList')
+        this.isLoading = true
+        if (this.searchWord) {
+          this.$http.get(api.yunpanSearch, {params: {
+            page: this.query.page,
+            per_page: this.query.pageSize,
+            name: this.searchWord
+          }}).then(res => {
+            this.isLoading = false
+            if (res.data.meta.status_code === 200) {
+              this.showList = true
+              this.itemList = res.data.data
+              this.query.totalCount = res.data.meta.pagination.total
+              this.query.totalPges = res.data.meta.total_pages
+              this.list = res.data.data
+              this.imgList = []
+              this.formatList()
+            } else {
+              this.$message.error(res.data.meta.message)
+            }
+          })
         } else {
           console.log('enter')
+          this.isLoading = false
         }
       },
       headTitle(e) {
