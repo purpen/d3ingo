@@ -19,7 +19,7 @@
     name: 'exhibition',
     components: {
       vCalendar: (resolve) => {
-        require(['@/components/pages/v_center/Tools/calendar/Calendar'], resolve)
+        require(['@/components/pages/v_center/tools/calendar/Calendar'], resolve)
       },
       ToolsMenu
     },
