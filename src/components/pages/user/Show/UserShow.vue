@@ -1,37 +1,57 @@
 <template>
 <div>
-    <div class="container">
-      <el-button type="text" @click="centerDialogVisible = true">111</el-button>
       <div class="content" v-show="centerDialogVisible" >
-        <p>邀请成员</p>
-          <div class="el-dialog"
-            width="80%"
+          <div class="el-dialog" id="t" width="80%"
             center>
               <div class="welcome">
                 <p>分享链接邀请成员</p>
               </div>
-            <i class="fx-icon-nothing-close-error" @click="centerDialogVisible = false"></i>
-             <div class="boxInput"> <input type="text" placeholder="http://///" class="input"></div>
+            <i class="fx-icon-nothing-close-error" @click="closeDialog"></i>
+             <div class="boxInput"> <input type="text" ref="input1" class="input"></div>
                 <span>链接7天后失效</span>
-              <el-button class="dialog-footer" type="danger"><span>复制链接</span></el-button>
+              <el-button class="dialog-footer" type="danger" @click="copyLj"><span>复制链接</span></el-button>
             </div>
       </div>
-  </div>
 </div>
 </template>
 <script>
+import api from '@/api/api'
+// import userRegister from '../../../../router/index'
 export default {
   name: 'Show',
   data () {
     return {
-      centerDialogVisible: false
+      result: ''
+    }
+  },
+  props: {
+    centerDialogVisible: {
+      default: false
+    }
+  },
+  methods: {
+    closeDialog () {
+      this.$emit('alick')
+    },
+    copyLj () {
+      var resu = this.result = this.$refs.input1.value
+      this.$http.get(api.designMemberList)
+        .then((res) => {
+          if (res.data.meta.status_code === 200) {
+            this.$refs.input1.value = res.data.data.url
+          } else {
+            console.log(res.data.meta.message)
+          }
+          console.log(resu)
+          this.$router.push({ name: this.$route.name, query: resu })
+        })
     }
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
 .content{
   opacity: 0.7;
   background: #000000;
@@ -41,6 +61,9 @@ export default {
   width: 100vw;
   height: 100vh;
   z-index: 999;
+}
+#t {
+  z-index: 1000;
 }
 .content p{
   text-align: center;

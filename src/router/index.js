@@ -471,26 +471,24 @@ routes = [
     },
     component: require('@/components/block/Blank')
   },
-
-  // 分享链接登录
-  {
-    path: '/user/Show',
-    name: 'userShow',
-    meta: {
-      title: '个人主页',
-      requireAuth: false
-    },
-    component: require('@/components/pages/user/Show')
-  },
     // 邀请并接受XX链接
   {
     path: '/user/userRegister',
     name: 'userRegister',
     meta: {
       title: '邀请登录',
-      requireAuth: false
+      requireAuth: true
     },
-    component: require('@/components/pages/user/Register')
+    component: require('@/components/pages/user/UserRegister')
+  },
+  {
+    path: '/user/UserSearch',
+    name: 'Search',
+    meta: {
+      title: '成员搜索页',
+      requireAuth: true
+    },
+    component: require('@/components/pages/user/UserSearch')
   },
   // 控制面板
   {
@@ -501,16 +499,6 @@ routes = [
       requireAuth: true
     },
     component: require('@/components/pages/v_center/common/Control')
-  },
-  // 公司主页
-  {
-    path: '/company/:id',
-    name: 'companyShow',
-    meta: {
-      title: '公司主页',
-      requireAuth: false
-    },
-    component: require('@/components/pages/company/Show')
   },
   // 作品详情
   {
