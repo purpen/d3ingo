@@ -38,7 +38,7 @@
                   <li>复制</li>
                   <li>移动</li>
                   <li @click="rename(ele.id, index)">重命名</li>
-                  <li @click="deleteFile(ele.id, index)">删除</li>
+                  <li @click="deleteFile(ele.id)">删除</li>
                 </ul>
               </div>
             </el-col>
@@ -46,8 +46,8 @@
               <div class="more-list" tabindex="100">
                 <i></i>
                 <ul>
-                  <li @click="shiftDelete(ele.id, index)">彻底删除</li>
-                  <li>恢复</li>
+                  <li @click="shiftDelete(ele.id)">彻底删除</li>
+                  <li @click="recoverFile(ele.id)">恢复</li>
                 </ul>
               </div>
             </el-col>
@@ -106,7 +106,7 @@
         <div class="view-content">
           <div class="image-preview">
             <swiper :options="swiperOption" :not-next-tick="notNextTick" ref="mySwiper">
-              <swiper-slide v-for="(ele, index) in imgList" :key="ele.id + index">
+              <swiper-slide v-for="(ele, index) in imgList" :key="index">
                 <img v-lazy="ele.url_file" alt="ele.name">
               </swiper-slide>
               <div @click="switchPrevPic" class="swiper-button-prev" slot="button-prev">
@@ -258,20 +258,24 @@ export default {
     directOperate(id) {
       this.chooseList = []
       this.chooseList.push(id)
-      this.$emit('choose', this.chooseList)
+      this.$emit('choose', this.chooseList, '')
     },
     rename(id, index) {
       this.directOperate(id)
       this.$emit('directRename')
       this.renameVal = this.list[index]['name']
     },
-    deleteFile(id, index) {
+    deleteFile(id) {
       this.directOperate(id)
       this.$emit('deleteFile')
     },
-    shiftDelete(id, index) {
+    shiftDelete(id) {
       this.directOperate(id)
       this.$emit('shiftDelete')
+    },
+    recoverFile(id) {
+      this.directOperate(id)
+      this.$emit('recoverFile')
     },
     switchPic(e) {
       console.log(e)

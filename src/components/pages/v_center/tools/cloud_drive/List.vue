@@ -58,6 +58,7 @@
                   <span v-if="modules !== 'recycle'" @click="rename" :class="[{'disable': alreadyChoose > 1 || !alreadyChoose}]">重命名</span>
                   <span v-if="modules !== 'recycle'" @click="deleteFile">删除</span>
                   <span v-if="modules === 'recycle'" @click="shiftDelete">删除</span>
+                  <span v-if="modules === 'recycle'" @click="recoverFile">还原</span>
                 </el-col>
               </p>
             </div>
@@ -68,10 +69,22 @@
           </div>
           <!-- 文件列表 -->
           <transition name="uploadList">
-            <vContent v-show="showList" :list="list" :chooseStatus="isChoose" @choose="chooseList" :isChooseAll="isChooseAll" :curView="curView" :hasRename="hasRename" @renameCancel="renameCancel"
-            @changeName="changeName" @directRename="directRename" :imgList="imgList" @deleteFile="deleteFile"
-            @shiftDelete="shiftDelete"
-            :modules="modules"></vContent>
+            <vContent v-show="showList"
+              :list="list"
+              :chooseStatus="isChoose"
+              :isChooseAll="isChooseAll"
+              :curView="curView"
+              :hasRename="hasRename"
+              :imgList="imgList"
+              @choose="chooseList"
+              @renameCancel="renameCancel"
+              @changeName="changeName"
+              @directRename="directRename"
+              @deleteFile="deleteFile"
+              @shiftDelete="shiftDelete"
+              @recoverFile="recoverFile"
+              :modules="modules">
+            </vContent>
           </transition>
           <!-- 搜索列表 -->
             <vContent v-show="!showList"></vContent>
@@ -119,7 +132,7 @@
         </el-row>
       </div>
     </div>
-    <section class="dialog-bg" v-if="showCover" @click="showConfirm = false, showCover = false"></section>
+    <section class="dialog-bg" v-if="showCover"></section>
     <section class="dialog-body" v-if="showCover">
       <h3 class="dialog-header clearfix">
         放弃上传
@@ -166,8 +179,25 @@
         </p>
       </div>
     </section>
-    <el-pagination class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize" :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange">
-    </el-pagination>
+    <section class="dialog-body" v-if="showConfirmRecover">
+      <h3 class="dialog-header clearfix">
+        确认恢复
+        <i class="fr fx fx-icon-nothing-close-error" @click="showCover = false, showConfirmRecover = false"></i>
+      </h3>
+      <div class="dialog-conetent">
+        <div class="dialog-article">
+          <p>确认要恢复文件吗?</p>
+        </div>
+        <p class="buttons">
+          <button class="cancel-btn" @click="showConfirmRecover = false, showCover = false">取消</button>
+          <button  class="confirm-btn" @click="confirmRecover">确定</button>
+        </p>
+      </div>
+    </section>
+    <el-col :span="18" :offset="6">
+      <el-pagination v-if="query.totalCount / query.pageSize > 1" class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize" :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange">
+      </el-pagination>
+    </el-col>
   </div>
 </template>
 <script>
@@ -200,13 +230,14 @@
         showConfirm: false, // 确认删除上传列表?
         showConfirmDelete: false, // 确认删除文件?
         showConfirmShiftDelete: false, // 确认彻底删除文件?
+        showConfirmRecover: false, // 确认恢复文件?
         showList: true, // 显示全部文件或搜索
         searchWord: '', // 搜索关键字
         hasRename: false, // 重命名状态
         isLoading: false,
         query: {
           page: 1,
-          pageSize: 9,
+          pageSize: 30,
           totalPges: 0,
           totalCount: 0
         }
@@ -228,6 +259,56 @@
         this.query.page = page
         this.$router.push({name: this.$route.name, query: {page: this.query.page}})
         this.getList()
+      },
+      formatList() {
+        for (let i of this.list) {
+          // 格式化大小
+          let size = i['size'] / 1024
+          if (size > 1024) {
+            i['format_size'] = (size / 1024).toFixed(2) + 'MB'
+          } else {
+            i['format_size'] = size.toFixed(2) + 'KB'
+          }
+          // 格式化日期
+          i['date'] = i['created_at'].date_format().format('yyyy年MM月dd日')
+          i['created_at'] = i['created_at'].date_format().format('yyyy-MM-dd')
+          // 格式化类型
+          if (/folder/.test(i.mime_type)) {
+            i.format_type = 'folder'
+            i.leixing = '文件夹'
+          } else if (/pdf/.test(i.mime_type)) {
+            i.format_type = 'artboard'
+            i.leixing = 'PDF'
+          } else if (/audio/.test(i.mime_type)) {
+            i.format_type = 'audio'
+            i.leixing = '音频'
+          } else if (/(?:zip|rar|7z)/.test(i.mime_type)) {
+            i.format_type = 'compress'
+            i.leixing = '压缩文件'
+          } else if (/(?:text|msword)/.test(i.mime_type)) {
+            i.format_type = 'document'
+            i.leixing = '文档'
+          } else if (/image/.test(i.mime_type)) {
+            i.format_type = 'image'
+            i.leixing = '图片'
+          } else if (/powerpoint/.test(i.mime_type)) {
+            i.format_type = 'powerpoint'
+            i.leixing = '演示文稿'
+          } else if (/spreadsheet/.test(i.mime_type)) {
+            i.format_type = 'spreadsheet'
+            i.leixing = '电子表格'
+          } else if (/video/.test(i.mime_type)) {
+            i.format_type = 'video'
+            i.leixing = '视频'
+          } else {
+            i.format_type = 'other'
+            i.leixing = '其他'
+          }
+
+          if (/image/.test(i['mime_type'])) {
+            this.imgList.push(i)
+          }
+        }
       },
       getList(id = 0) {
         this.isLoading = true
@@ -254,54 +335,7 @@
 
               this.list = res.data.data
               this.imgList = []
-              for (let i of this.list) {
-                // 格式化大小
-                let size = i['size'] / 1024
-                if (size > 1024) {
-                  i['format_size'] = (size / 1024).toFixed(2) + 'MB'
-                } else {
-                  i['format_size'] = size.toFixed(2) + 'KB'
-                }
-                // 格式化日期
-                i['date'] = i['created_at'].date_format().format('yyyy年MM月dd日')
-                i['created_at'] = i['created_at'].date_format().format('yyyy-MM-dd')
-                // 格式化类型
-                if (/folder/.test(i.mime_type)) {
-                  i.format_type = 'folder'
-                  i.leixing = '文件夹'
-                } else if (/pdf/.test(i.mime_type)) {
-                  i.format_type = 'artboard'
-                  i.leixing = 'PDF'
-                } else if (/audio/.test(i.mime_type)) {
-                  i.format_type = 'audio'
-                  i.leixing = '音频'
-                } else if (/(?:zip|rar|7z)/.test(i.mime_type)) {
-                  i.format_type = 'compress'
-                  i.leixing = '压缩文件'
-                } else if (/(?:text|msword)/.test(i.mime_type)) {
-                  i.format_type = 'document'
-                  i.leixing = '文档'
-                } else if (/image/.test(i.mime_type)) {
-                  i.format_type = 'image'
-                  i.leixing = '图片'
-                } else if (/powerpoint/.test(i.mime_type)) {
-                  i.format_type = 'powerpoint'
-                  i.leixing = '演示文稿'
-                } else if (/spreadsheet/.test(i.mime_type)) {
-                  i.format_type = 'spreadsheet'
-                  i.leixing = '电子表格'
-                } else if (/video/.test(i.mime_type)) {
-                  i.format_type = 'video'
-                  i.leixing = '视频'
-                } else {
-                  i.format_type = 'other'
-                  i.leixing = '其他'
-                }
-
-                if (/image/.test(i['mime_type'])) {
-                  this.imgList.push(i)
-                }
-              }
+              this.formatList()
             } else {
               this.$message.error(res.data.meta.message)
             }
@@ -375,7 +409,51 @@
             } else {
               res.info['format_size'] = size.toFixed(2) + 'KB'
             }
-            this.list.push(res.info)
+             // 格式化日期
+            res['info']['date'] = res['info']['created_at'].date_format().format('yyyy年MM月dd日')
+            res['info']['created_at'] = res['info']['created_at'].date_format().format('yyyy-MM-dd')
+            // 格式化类型
+            if (/folder/.test(res['info']['mime_type'])) {
+              res['info']['format_type'] = 'folder'
+              res['info']['leixing'] = '文件夹'
+            } else if (/pdf/.test(res['info']['mime_type'])) {
+              res['info']['format_type'] = 'artboard'
+              res['info']['leixing'] = 'PDF'
+            } else if (/audio/.test(res['info']['mime_type'])) {
+              res['info']['format_type'] = 'audio'
+              res['info']['leixing'] = '音频'
+            } else if (/(?:zip|rar|7z)/.test(res['info']['mime_type'])) {
+              res['info']['format_type'] = 'compress'
+              res['info']['leixing'] = '压缩文件'
+            } else if (/(?:text|msword)/.test(res['info']['mime_type'])) {
+              res['info']['format_type'] = 'document'
+              res['info']['leixing'] = '文档'
+            } else if (/image/.test(res['info']['mime_type'])) {
+              res['info']['format_type'] = 'image'
+              res['info']['leixing'] = '图片'
+            } else if (/powerpoint/.test(res['info']['mime_type'])) {
+              res['info']['format_type'] = 'powerpoint'
+              res['info']['leixing'] = '演示文稿'
+            } else if (/spreadsheet/.test(res['info']['mime_type'])) {
+              res['info']['format_type'] = 'spreadsheet'
+              res['info']['leixing'] = '电子表格'
+            } else if (/video/.test(res['info']['mime_type'])) {
+              res['info']['format_type'] = 'video'
+              res['info']['leixing'] = '视频'
+            } else {
+              res['info']['format_type'] = 'other'
+              res['info']['leixing'] = '其他'
+            }
+
+            if (/image/.test(res['info']['mime_type'])) {
+              this.imgList.push(res['info'])
+            }
+            if (this.list.length < this.query.pageSize) {
+              this.list.push(res.info)
+            } else {
+              this.query.totalPges++
+            }
+            this.query.totalCount++
           }
         }
       },
@@ -429,20 +507,33 @@
           this.$message.error('请选择要删除的文件')
         }
       },
-      confirmDelete() {
-        console.log(this.chooseFileList)
-        this.$http.put(api.yunpanDelete, {pan_director_id_arr: this.chooseFileList}).then((res) => {
-          if (res.data.meta.status_code !== 200) {
-            this.$message.error(res.data.meta.message)
-          } else {
-            this.list.forEach((item, index) => {
-              this.chooseFileList.forEach((item2, sub) => {
-                if (item2 === item.id) {
-                  this.list.splice(index, 1)
-                  this.isChooseAll = 'empty'
-                }
-              })
+      changeList(method, url) {
+        let row = {id_arr: this.chooseFileList}
+        this.$http({method: method, url: url, data: row})
+        .then((res) => {
+          if (res.data.meta.status_code === 200) {
+            this.$nextTick(function () {
+              this.list = this.list.filter(item => { return this.chooseFileList.indexOf(item.id) === -1 })
+              this.isChooseAll = 'empty'
             })
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+          this.showCover = false
+          this.showConfirmDelete = false
+        }).catch((err) => {
+          console.error(err)
+        })
+      },
+      confirmDelete() {
+        this.$http.put(api.yunpanDelete, {id_arr: this.chooseFileList}).then((res) => {
+          if (res.data.meta.status_code === 200) {
+            this.$nextTick(function () {
+              this.list = this.list.filter(item => { return this.chooseFileList.indexOf(item.id) === -1 })
+              this.isChooseAll = 'empty'
+            })
+          } else {
+            this.$message.error(res.data.meta.message)
           }
           this.showCover = false
           this.showConfirmDelete = false
@@ -451,6 +542,7 @@
         })
       },
       shiftDelete() {
+        console.log(this.chooseFileList, 'chooseFileList')
         if (this.chooseFileList.length) {
           this.showCover = true
           this.showConfirmShiftDelete = true
@@ -461,17 +553,34 @@
       confirmShiftDelete() {
         this.$http.delete(api.recycleBinDelete, {params: {id_arr: this.chooseFileList}}).then((res) => {
           if (res.data.meta.status_code === 200) {
-            console.log(res)
-            this.list.forEach((item, index) => {
-              this.chooseFileList.forEach((item2, sub) => {
-                if (item2 === item.id) {
-                  this.list.splice(index, 1)
-                  this.isChooseAll = 'empty'
-                }
-              })
+            this.$nextTick(function () {
+              this.list = this.list.filter(item => { return this.chooseFileList.indexOf(item.id) === -1 })
+              this.isChooseAll = 'empty'
             })
             this.showCover = false
             this.showConfirmShiftDelete = false
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        })
+      },
+      recoverFile() {
+        if (this.chooseFileList.length) {
+          this.showCover = true
+          this.showConfirmRecover = true
+        } else {
+          this.$message.error('请选择要恢复的文件')
+        }
+      },
+      confirmRecover() {
+        this.$http.put(api.recycleBinRestore, {id_arr: this.chooseFileList}).then((res) => {
+          if (res.data.meta.status_code === 200) {
+            this.$nextTick(function () {
+              this.list = this.list.filter(item => { return this.chooseFileList.indexOf(item.id) === -1 })
+              this.isChooseAll = 'empty'
+            })
+            this.showCover = false
+            this.showConfirmRecover = false
           } else {
             this.$message.error(res.data.meta.message)
           }
