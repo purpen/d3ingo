@@ -11,13 +11,13 @@
           <el-col :span="6">
             <div class="input" @click="searchUsername">
               <input type="text" placeholder="林">
-              <img src="../../../assets/member/search02@2x.png" alt="">
+              <img src="../../../assets/images/member/search02@2x.png" alt="">
             </div>
           <div class="side clearfix">
-            <ul>
+          <ul v-for="(d, index) in itemList" :key="index">
               <li>
                 <img class="active" :src="eventUser.logo_url?eventUser.logo_url:require('assets/images/avatar_100.png')" alt="">
-                <span class="name">{{ eventUser. realname}}</span>
+                <span class="name">{{d.realname}}</span>
               </li>
             </ul>
             <a @click="alick">通过链接邀请</a>
@@ -30,9 +30,9 @@
                 <span>所有成员</span>
               </el-col>
               <el-col :span="6" class="right">
-                <img src="../../../assets/member/add02@2x.png" alt="">
+                <img src="../../../assets/images/member/add02@2x.png" alt="">
                 <a href="javascript:;">添加成员</a>
-                <img class=" ellipsis" src="../../../assets/member/check-icon@2x.png" alt="">
+                <img class=" ellipsis" src="../../../assets/images/member/check-icon@2x.png" alt="">
               </el-col>
           </el-col> 
             <el-col class="tableText">
@@ -45,7 +45,9 @@
             </el-col>
             <el-col class="tableText">
               <el-col :span="20">
-                <span v-for="(d, index) in itemList" :key="index">{{ d.realname }}</span>
+                <ul>
+                  <li v-for="(d, index) in itemList" :key="index">{{ d.realname }}</li>
+                </ul>
               <el-col :span="4">
                 <el-dropdown>
                 <span class="el-dropdown-link">成员
@@ -73,7 +75,7 @@ export default {
   data () {
     return {
       isHide: false,
-      fileDraftList: [],
+      itemList: [],
       item: '',
       query: {
         page: 1,
@@ -91,16 +93,7 @@ export default {
       this.isHide = !this.isHide
     },
     searchUsername () {
-      this.initList()
-    },
-    initList () {
-    // 初始化数据列表
-      this.$http.get(api.designMemberList)
-    .then(res => {
-      if (res.meta.status === 200) {
-        console.log(this.data.data)
-      }
-    })
+      console.log(1)
     }
   },
   computed: {
@@ -243,6 +236,9 @@ export default {
   font-size: 14px;
   color: #FF5A5F;
 }
+.name {
+  padding-left: 10px;
+}
 .tableText{
   height: 60px;
   line-height: 60px;
@@ -255,6 +251,9 @@ export default {
   width: 16px;
   height: 16px;
   vertical-align: text-bottom;
+}
+.tableText ul li {
+  border-bottom: 1px solid #ffffff;
 }
 .avatar {
     width: 30px;

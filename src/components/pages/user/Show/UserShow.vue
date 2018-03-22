@@ -35,7 +35,7 @@ export default {
     },
     copyLj () {
       var resu = this.result = this.$refs.input1.value
-      this.$http.get(api.designMemberList)
+      this.$http.get(api.inviteValue, {resu})
         .then((res) => {
           if (res.data.meta.status_code === 200) {
             this.$refs.input1.value = res.data.data.url
@@ -51,7 +51,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
+<style scoped>
 .content{
   opacity: 0.7;
   background: #000000;

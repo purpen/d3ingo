@@ -11,7 +11,7 @@
           <el-col :span="6">
             <div class="input">
               <input type="text" placeholder="林">
-              <img src="../../../assets/member/search02@2x.png" alt="">
+              <img src="../../../assets/images/member/search02@2x.png" alt="">
             </div>
         </el-col>
         <el-col :span="18" class="AllUser">
@@ -20,9 +20,9 @@
                 <span>所有成员</span>
               </el-col>
               <el-col :span="6" class="right">
-                <img src="../../../assets/member/add02@2x.png" alt="">
+                <img src="../../../assets/images/member/add02@2x.png" alt="">
                 <a href="javascript:;">添加成员</a>
-                <img class=" ellipsis" src="../../../assets/member/check-icon@2x.png" alt="">
+                <img class=" ellipsis" src="../../../assets/images/member/check-icon@2x.png" alt="">
               </el-col>
           </el-col> 
             <el-col class="tableText">

@@ -2,7 +2,7 @@
   <div class="container">
     <div class="register-box">
       <div class="regisiter-title">
-        <img src="../../../assets/member/logo@2x.png" alt="">
+        <img src="../../../assets/images/member/search02@2x.png" alt="">
       </div>
       <div v-if="item">
         <span>登录并接受</span>{{ item.realname }} 邀请,加入企业 <span class="style">上品设计</span>
