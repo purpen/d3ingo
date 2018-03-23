@@ -2,7 +2,7 @@
   <div class="container">
     <div class="register-box">
       <div class="regisiter-title">
-        <img src="../../../assets/images/member/search02@2x.png" alt="">
+        <img src="../../../assets/images/member/logo@2x.png" alt="">
       </div>
       <div v-if="item">
         <span>登录并接受</span>{{ item.realname }} 邀请,加入企业 <span class="style">上品设计</span>
@@ -107,14 +107,14 @@
         },
         item: '',
         ruleForm: {
+          invite_user_id: [
+            {required: true, message: '邀请用户id', trigger: 'blur'}
+          ],
           account: [
             {validator: checkNumber, trigger: 'blur'}
           ],
           realName: [
             {required: true, message: '请输入您的真实姓名', trigger: 'blur'}
-          ],
-          imgCode: [
-            {required: true, message: '请输入图形验证码', trigger: 'blur'}
           ],
           smsCode: [
             {required: true, message: '请输入验证码', trigger: 'blur'},
@@ -143,13 +143,11 @@
             let password = this.form.password
             let smsCode = this.form.smsCode
             let realName = this.form.realName
-            let inviteUserId = this.item.id
-
+            let inviteUserId = this.from.id
             if (!inviteUserId) {
               that.$message.error('缺少请求参数!')
               return
             }
-
             that.isLoadingBtn = true
             // 验证通过，注册
             that.$http.post(api.inviteRegister, {account: account, invite_user_id: inviteUserId, realname: realName, password: password, sms_code: smsCode})
@@ -163,7 +161,6 @@
                     .then(function (response) {
                       if (response.data.meta.status_code === 200) {
                         auth.write_user(response.data.data)
-
                         that.$message({
                           showClose: true,
                           message: '注册成功!',
@@ -360,11 +357,11 @@
     margin: 30px auto 30px auto;
   }
 
-  .regisiter-title {
-    width: 800px;
-    height: 60px;
+  .regisiter-title img{
+    height: 64px;
+    width: 40px;
     font-size: 2rem;
-    display: table-cell;
+    /* display: table-cell; */
     vertical-align: middle;
     text-align: center;
     color: #222;

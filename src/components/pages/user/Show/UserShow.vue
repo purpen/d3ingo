@@ -1,22 +1,22 @@
 <template>
 <div>
-      <div class="content" v-show="centerDialogVisible" >
-          <div class="el-dialog" id="t" width="80%"
-            center>
-              <div class="welcome">
-                <p>分享链接邀请成员</p>
-              </div>
-            <i class="fx-icon-nothing-close-error" @click="closeDialog"></i>
-             <div class="boxInput"> <input type="text" ref="input1" class="input"></div>
-                <span>链接7天后失效</span>
-              <el-button class="dialog-footer" type="danger" @click="copyLj"><span>复制链接</span></el-button>
-            </div>
+  <div class="content1" v-show="centerDialogVisible">
+  </div>
+  <div class="el-dialog" v-show="centerDialogVisible">
+    <div width="80%">
+          <p>分享链接邀请成员</p>
+        <i class="fx-icon-nothing-close-error" @click="closeDialog"></i>
+        <div class="boxInput"> <input type="text" v-model="rand_string" class="input" ></div>
+          <span>链接7天后失效</span>
+        <el-button class="dialog-footer" type="danger" @click="copyLj"><span>
+          <!-- <route-link :to="{path: 'UserRegister'}"></route-link>-->
+          复制链接</span></el-button> 
       </div>
+  </div>
 </div>
 </template>
 <script>
 import api from '@/api/api'
-// import userRegister from '../../../../router/index'
 export default {
   name: 'Show',
   data () {
@@ -27,32 +27,40 @@ export default {
   props: {
     centerDialogVisible: {
       default: false
+    },
+    rand_string: {
+      default: ''
     }
   },
   methods: {
     closeDialog () {
       this.$emit('alick')
     },
-    copyLj () {
-      var resu = this.result = this.$refs.input1.value
-      this.$http.get(api.inviteValue, {resu})
-        .then((res) => {
-          if (res.data.meta.status_code === 200) {
-            this.$refs.input1.value = res.data.data.url
-          } else {
-            console.log(res.data.meta.message)
-          }
-          console.log(resu)
-          this.$router.push({ name: this.$route.name, query: resu })
-        })
+    copyLj() {
+      this.$router.push({name: 'Register'})
     }
+  },
+  created: function () {
+    const that = this
+    that.$http.get(api.designMemberList)
+        .then(function (response) {
+          if (response.data.meta.status_code === 200) {
+            that.itemList = response.data.data
+          }
+          console.log(response.data)
+        })
+        .catch(function (error) {
+          that.$message.error(error.message)
+        })
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.content{
+
+
+.content1 {
   opacity: 0.7;
   background: #000000;
   position: fixed;
@@ -62,10 +70,7 @@ export default {
   height: 100vh;
   z-index: 999;
 }
-#t {
-  z-index: 1000;
-}
-.content p{
+.el-dialog p{
   text-align: center;
   height: 50px;
   font-family: PingFangSC-Regular;
@@ -75,26 +80,18 @@ export default {
 .el-dialog {
   width: 380px;
   height: 229px;
+  position: fixed;
   display: flex;
   top:100px;
+  z-index: 999;
   border-radius: 4px;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
 }
-.welcome {
-  position: absolute;
-  top:0;
+.el-dialog p{
   width: 380px;
+  padding-top:15px;
   height: 50px;
   background: #F7F7F7;
-}
-.welcome p{
-  position: absolute;
-  top: 0px;
-  margin:15px 134px;
-  width: 112px;
-  height: 20px;
   font-family: PingFangSC-Medium;
   font-size: 14px;
   color: #222222;
@@ -105,7 +102,7 @@ export default {
   vertical-align: middle;
 }
 .boxInput .input{
-  margin: 0 auto;
+  margin: 0 0 0 30px;
   width: 320px;
   height: 38px;
   padding: 9px;
@@ -119,6 +116,7 @@ export default {
 .el-dialog  span{
   text-align: center;
   margin: 20px auto;
+  display: block;
   width: 200px;
   height: 20px;
   font-size: 14px;
@@ -126,8 +124,7 @@ export default {
   color: #999999;
 }
 .dialog-footer {
-  position: absolute;
-  bottom: 20px;
+  margin-left: 30px;
   width: 320px;
   height: 34px;
   background: #FF5A5F;

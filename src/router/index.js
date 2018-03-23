@@ -471,24 +471,34 @@ routes = [
     },
     component: require('@/components/block/Blank')
   },
-    // 邀请并接受XX链接
+  // 注册页
   {
     path: '/user/userRegister',
+    name: 'Register',
+    meta: {
+      title: '注册',
+      requireAuth: false
+    },
+    component: require('@/components/pages/user/UserRegister')
+  },
+    // 邀请并接受XX链接
+  {
+    path: '/user/userRegister:rand_string',
     name: 'userRegister',
     meta: {
-      title: '邀请登录',
+      title: '邀请注册',
       requireAuth: true
     },
     component: require('@/components/pages/user/UserRegister')
   },
   {
-    path: '/user/UserSearch',
-    name: 'Search',
+    path: '/user/userList',
+    name: 'userList',
     meta: {
-      title: '成员搜索页',
+      title: '成员页',
       requireAuth: true
     },
-    component: require('@/components/pages/user/UserSearch')
+    component: require('@/components/pages/user/userList')
   },
   // 控制面板
   {
