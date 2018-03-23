@@ -267,6 +267,10 @@ export default {
   yunpanRecycleStation: '/recycleBin/lists', // GET 云盘回收站
   recycleBinDelete: '/recycleBin/delete', // DELETE 云盘彻底删除
   recycleBinRestore: '/recycleBin/restore', // PUT 恢复文件
+  yunpanSearch: '/yunpan/search', // GET 全局搜索
+  yunpanEditName: '/yunpan/editName', // PUT 修改文件名
+  yunpanRecentUseFile: '/yunpan/recentUseFile', // GET 最近使用列表
+  yunpanRecentUseLog: '/yunpan/recentUseLog', // GET 最近使用文件打点
   // 成员管理
   designMemberList: '/design/members',  // GET 获取成员列表
   designMemberSetRole: '/design/is_admin', // PUT 设计成员权限

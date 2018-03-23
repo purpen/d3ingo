@@ -13,7 +13,7 @@
                 <p class="add" v-if="modules !== 'recycle'">
                   <span class="add-option">
                     <a class="new-folder">
-                      <span>新建文件夹</span>
+                      <span @click="newFolder">新建文件夹</span>
                     </a>
                     <a class="upload-files">
                       <el-upload
@@ -35,11 +35,11 @@
                     </a>
                   </span>
                 </p>
-                <p class="search" title="搜索" @click="showList = !showList" v-if="modules !== 'recycle'"></p>
+                <p class="search" title="搜索" @click="searchClick" v-if="modules !== 'recycle'"></p>
                 <p :class="[{'chunk': curView === 'list','list': curView === 'chunk'}]" 
                   :title="chunkTitle"
                   @click="changeFileView" v-if="modules !== 'recycle'"></p>
-                <p class="sequence" v-if="modules !== 'recycle'"></p>
+                <p class="sequence"></p>
                 <p class="edit" title="编辑模式" @click="changeChooseStatus"></p>
               </div>
               <p class="edit-menu" v-if="isChoose">
@@ -69,13 +69,14 @@
           </div>
           <!-- 文件列表 -->
           <transition name="uploadList">
-            <vContent v-show="showList"
+            <vContent
               :list="list"
               :chooseStatus="isChoose"
               :isChooseAll="isChooseAll"
               :curView="curView"
               :hasRename="hasRename"
               :imgList="imgList"
+              :showList="showList"
               @choose="chooseList"
               @renameCancel="renameCancel"
               @changeName="changeName"
@@ -83,11 +84,10 @@
               @deleteFile="deleteFile"
               @shiftDelete="shiftDelete"
               @recoverFile="recoverFile"
+              @changePremission="changePremission"
               :modules="modules">
             </vContent>
           </transition>
-          <!-- 搜索列表 -->
-            <vContent v-show="!showList"></vContent>
         </div>
       </el-col>
     </el-row>
@@ -125,7 +125,7 @@
             <p v-if="ele.status === 'fail'" class="upload-fail">传输失败</p>
             <p v-if="ele.status === 'ready'" class="upload-ready">正在等待</p>
             <p class="percentage" v-if="ele.status === 'uploading'">{{ele.format_percentage}}%</p>
-            <!--ready success  uploading fail-->
+            <!--ready success uploading fail-->
           </el-col>
           <el-col :span="10">
           </el-col>
@@ -133,7 +133,7 @@
       </div>
     </div>
     <section class="dialog-bg" v-if="showCover"></section>
-    <section class="dialog-body" v-if="showCover">
+    <section class="dialog-body" v-if="showConfirm">
       <h3 class="dialog-header clearfix">
         放弃上传
         <i class="fr fx fx-icon-nothing-close-error" @click="showConfirm = false, showCover = false"></i>
@@ -145,7 +145,7 @@
         </div>
         <p class="buttons">
           <button class="cancel-btn" @click="showConfirm = false, showCover = false">取消</button>
-          <button  class="confirm-btn" @click="clearUpload">确定</button>
+          <button class="confirm-btn" @click="clearUpload">确定</button>
         </p>
       </div>
     </section>
@@ -160,7 +160,7 @@
         </div>
         <p class="buttons">
           <button class="cancel-btn" @click="showConfirmDelete = false, showCover = false">取消</button>
-          <button  class="confirm-btn" @click="confirmDelete">确定</button>
+          <button class="confirm-btn" @click="confirmDelete">确定</button>
         </p>
       </div>
     </section>
@@ -175,7 +175,7 @@
         </div>
         <p class="buttons">
           <button class="cancel-btn" @click="showConfirmShiftDelete = false, showCover = false">取消</button>
-          <button  class="confirm-btn" @click="confirmShiftDelete">确定</button>
+          <button class="confirm-btn" @click="confirmShiftDelete">确定</button>
         </p>
       </div>
     </section>
@@ -190,8 +190,34 @@
         </div>
         <p class="buttons">
           <button class="cancel-btn" @click="showConfirmRecover = false, showCover = false">取消</button>
-          <button  class="confirm-btn" @click="confirmRecover">确定</button>
+          <button class="confirm-btn" @click="confirmRecover">确定</button>
         </p>
+      </div>
+    </section>
+    <section class="dialog-body" v-if="showConfirmPremission">
+      <h3 class="dialog-header clearfix">
+        更改权限
+        <i class="fr fx fx-icon-nothing-close-error" @click="showCover = false, showConfirmPremission = false"></i>
+      </h3>
+      <div class="dialog-conetent dialog-floder">
+        <p class="dialog-name">文件夹名称</p>
+        <input placeholder="请填写文件夹名称" v-model="floder.name">
+        <p class="dialog-permission">设置查看权限</p>
+        <input v-model="floder.permission">
+        <button class="create-btn" @click="confirmFolder">创建</button>
+      </div>
+    </section>
+    <section class="dialog-body" v-if="showConfirmFolder">
+      <h3 class="dialog-header clearfix">
+        创建文件夹
+        <i class="fr fx fx-icon-nothing-close-error" @click="showCover = false, showConfirmFolder = false"></i>
+      </h3>
+      <div class="dialog-conetent dialog-floder">
+        <p class="dialog-name">文件夹名称</p>
+        <input placeholder="请填写文件夹名称" v-model="floder.name">
+        <p class="dialog-permission">设置查看权限</p>
+        <input v-model="floder.permission">
+        <button class="create-btn" @click="confirmFolder">设置</button>
       </div>
     </section>
     <el-col :span="18" :offset="6">
@@ -231,10 +257,16 @@
         showConfirmDelete: false, // 确认删除文件?
         showConfirmShiftDelete: false, // 确认彻底删除文件?
         showConfirmRecover: false, // 确认恢复文件?
-        showList: true, // 显示全部文件或搜索
+        showConfirmFolder: false, // 确认新建文件夹
+        showConfirmPremission: false, // 确认更改权限
+        showList: true, // 显示全部文件或搜索 false => 搜索
         searchWord: '', // 搜索关键字
         hasRename: false, // 重命名状态
         isLoading: false,
+        floder: {
+          name: '',
+          permission: ''
+        },
         query: {
           page: 1,
           pageSize: 30,
@@ -247,7 +279,7 @@
       vMenu,
       vContent
     },
-    mounted: function () {
+    mounted() {
       window.addEventListener('keydown', e => {
         if (e.keyCode === 13) {
           this.getSearchList()
@@ -304,7 +336,9 @@
             i.format_type = 'other'
             i.leixing = '其他'
           }
-
+          // if (i.group_id) {
+          //   i.group_id = []
+          // }
           if (/image/.test(i['mime_type'])) {
             this.imgList.push(i)
           }
@@ -315,10 +349,13 @@
         let url = ''
         if (this.modules === 'all') {
           url = api.yunpanList
+        } else if (this.modules === 'recently-use') {
+          url = api.yunpanRecentUseFile
         } else if (this.modules === 'recycle') {
           url = api.yunpanRecycleStation
         } else {
           this.isLoading = false
+          this.list = []
           return
         }
         this.$http.get(url, {params: {
@@ -327,12 +364,18 @@
           per_page: this.query.pageSize
         }}).then(
           (res) => {
+            console.log(res.data)
             this.isLoading = false
+            this.showList = true
             if (res.data.meta.status_code === 200) {
               this.itemList = res.data.data
-              this.query.totalCount = res.data.meta.pagination.total
-              this.query.totalPges = res.data.meta.total_pages
-
+              if (res.data.meta.pagination) {
+                this.query.totalCount = res.data.meta.pagination.total
+                this.query.totalPges = res.data.meta.total_pages
+              } else {
+                this.query.totalCount = 0
+                this.query.totalPges = 0
+              }
               this.list = res.data.data
               this.imgList = []
               this.formatList()
@@ -345,10 +388,28 @@
           })
       },
       getSearchList() {
-        if (!this.showList && this.searchWord) {
-          console.log('getSearchList')
+        this.isLoading = true
+        if (this.searchWord) {
+          this.$http.get(api.yunpanSearch, {params: {
+            page: this.query.page,
+            per_page: this.query.pageSize,
+            name: this.searchWord
+          }}).then(res => {
+            this.isLoading = false
+            if (res.data.meta.status_code === 200) {
+              this.itemList = res.data.data
+              this.query.totalCount = res.data.meta.pagination.total
+              this.query.totalPges = res.data.meta.total_pages
+              this.list = res.data.data
+              this.imgList = []
+              this.formatList()
+            } else {
+              this.$message.error(res.data.meta.message)
+            }
+          })
         } else {
           console.log('enter')
+          this.isLoading = false
         }
       },
       headTitle(e) {
@@ -385,6 +446,12 @@
         } else {
           this.curView = 'list'
         }
+      },
+      newFolder() {
+        this.showConfirmFolder = true
+        this.showCover = true
+      },
+      confirmFolder() {
       },
       getUploadUrl() {
         this.$http.get(api.yunpanUpToken).then((res) => {
@@ -485,8 +552,8 @@
         this.showCover = false
       },
       clearShowList() {
-        this.showList = true
         this.searchWord = ''
+        this.getList()
       },
       rename() {
         if (this.alreadyChoose) {
@@ -592,8 +659,32 @@
       renameCancel() {
         this.hasRename = false
       },
-      changeName(index, name) {
-        this.list[index]['name'] = name
+      changeName(index, id, name) {
+        console.log(index, id, name)
+        this.$http.put(api.yunpanEditName, {
+          id: id,
+          name: name
+        }).then(res => {
+          if (res.data.meta.status_code === 200) {
+            this.list[index]['name'] = name
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(err => {
+          console.error(err)
+        })
+      },
+      searchClick() {
+        this.showList = !this.showList
+        this.list = []
+        this.isChoose = false
+        this.query.totalCount = 0
+      },
+      changePremission() {
+        this.showConfirmPremission = true
+        this.showCover = true
+      },
+      confirmPremission() {
       }
     },
     created() {
@@ -992,7 +1083,6 @@
     top: 50%;
     transform:  translate(-50%, -50%);
     width: 380px;
-    height: 208px;
     margin: auto;
     background: #FFFFFF;
     box-shadow: 0 0 4px 0 rgba(0,0,0,0.10);
@@ -1006,10 +1096,12 @@
     text-align: center;
     background: #F7F7F7;
     border-radius: 4px 4px 0 0;
+    position: relative;
   }
   .dialog-header i {
-    margin-right: 20px;
-    margin-top: 18px;
+    position: absolute;
+    right: 17px;
+    top: 18px;
     color: #666;
   }
   .dialog-header i:hover {
@@ -1018,17 +1110,46 @@
   .dialog-conetent {
     text-align: center
   }
+
+  .dialog-floder {
+    padding: 0 20px;
+  }
+
+  .dialog-floder input {
+    width: 100%;
+    padding: 9px 10px;
+    line-height: 20px;
+    border-radius: 4px;
+    border: 1px solid #d2d2d2;
+    color: #222;
+  }
+
   .dialog-article {
     margin: 32px 0;
     color: #666;
     line-height: 20px;
     font-size: 14px;
   }
+  .create-btn {
+    width: 100%;
+    height: 34px;
+    margin: 20px 0 32px;
+    border-radius: 4px;
+    border-style: solid;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .dialog-name, .dialog-permission {
+    text-align: left;
+    color: #999;
+    padding: 20px 0 10px;
+  }
 
   .buttons {
     display: flex;
     justify-content: center;
-    align-items: center
+    align-items: center;
+    padding-bottom: 34px;
   }
 
   .buttons button {
@@ -1045,7 +1166,7 @@
   .buttons button:last-child {
     margin-right: 0;
   }
-  .buttons button.confirm-btn {
+  .buttons button.confirm-btn, .create-btn {
     color: #fff;
     border-color: #ff5a5f;
     background-color: #ff5a5f
