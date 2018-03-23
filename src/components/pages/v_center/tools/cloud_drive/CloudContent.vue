@@ -2,22 +2,30 @@
   <div class="cloud-content">
     <section>
       <el-row :gutter="20" v-if="list.length">
-        <el-col v-for="(ele, index) in list" :key="index" :span="24" v-if="curView === 'list'">
+        <!-- 默认显示列表 -->
+        <el-col v-for="(ele, index) in list" :key="index" :span="24" v-if="curView === 'list' && showList">
           <div :class="[{'active' : chooseList.indexOf(ele.id) !== -1}, 'item']" @click="liClick(ele.id, index)">
             <el-col :span="2" v-if="chooseStatus">
               <p class="file-radio">file-radio</p>
             </el-col>
             <el-col :span="2">
-            <p v-if="ele.format_type === 'image' && modules !== 'recycle'" :class="['file-icon', ele.format_type]" :style="{background: 'url(' + ele.url_small + ')'}">file-icon</p>
-            <p v-else :class="['file-icon', ele.format_type]">file-icon</p>
+              <p v-if="ele.format_type === 'image' && modules !== 'recycle'" :class="['file-icon', ele.format_type]" :style="{background: 'url(' + ele.url_small + ')'}">file-icon</p>
+              <p v-else :class="['file-icon', ele.format_type]">file-icon</p>
             </el-col>
             <el-col :span="8">
-              <p class="file-name">
+              <div class="file-name">
                 <span @click="showView(ele)" v-show="chooseList[0] !== ele.id || !hasRename">{{ele.name}}</span>
-                <input v-show="chooseList[0] === ele.id && hasRename" class="rename" type="text" v-model="renameVal">
-                <span @click="renameConfirm(index)" v-show="chooseList[0] === ele.id && hasRename" class="rename-confirm"></span>
-                <span @click="renameCancel" v-show="chooseList[0] === ele.id && hasRename" class="rename-cancel"></span>
-              </p>
+                <p v-show="chooseList[0] === ele.id && hasRename">
+                  <input class="rename" type="text" v-model="renameVal">
+                  <span @click="renameConfirm(index, ele.id)" class="rename-confirm"></span>
+                  <span @click="renameCancel" class="rename-cancel"></span>
+                </p>
+                <p v-show="chooseList[0] !== ele.id || !hasRename" class="file-premission" @click="changePremission(ele.id)">
+                  <span v-if="ele.open_set === 1" class="public"></span>
+                  <span v-if="ele.open_set === 2" class="privacy"></span>
+                  <!-- <span v-if="ele.group_id.indexOf(1) > 0" class="group"></span> -->
+                </p>
+              </div>
             </el-col>
             <el-col :span="3">
               <p :class="['file-size', {'hidden': ele.name === 'folder'}]">{{ele.format_size}}</p>
@@ -29,7 +37,7 @@
               <p class="upload-date">{{ele.created_at}}</p>
             </el-col>
             <el-col :span="2" v-if="!chooseStatus && modules !== 'recycle'">
-              <div class="more-list" tabindex="100">
+              <div class="more-list" tabindex="-1">
                 <i></i>
                 <ul>
                   <li>查看权限</li>
@@ -43,7 +51,7 @@
               </div>
             </el-col>
             <el-col :span="2" v-if="!chooseStatus && modules === 'recycle'">
-              <div class="more-list" tabindex="100">
+              <div class="more-list" tabindex="-1">
                 <i></i>
                 <ul>
                   <li @click="shiftDelete(ele.id)">彻底删除</li>
@@ -53,6 +61,27 @@
             </el-col>
           </div>
         </el-col>
+        <!-- 显示搜索内容 -->
+        <el-col v-for="(ele, index) in list" :key="index" :span="24" v-if="!showList">
+          <div :class="[{'active' : chooseList.indexOf(ele.id) !== -1}, 'item']" @click="liClick(ele.id, index)">
+            <el-col :span="2">
+              <p v-if="ele.format_type === 'image' && modules !== 'recycle'" :class="['file-icon', ele.format_type]" :style="{background: 'url(' + ele.url_small + ')'}">file-icon</p>
+              <p v-else :class="['file-icon', ele.format_type]">file-icon</p>
+            </el-col>
+            <el-col :span="8">
+              <p class="file-name">
+                <span @click="showView(ele)" v-show="chooseList[0] !== ele.id || !hasRename">{{ele.name}}</span>
+                <input v-show="chooseList[0] === ele.id && hasRename" class="rename" type="text" v-model="renameVal">
+                <span @click="renameConfirm(index, ele.id)" v-show="chooseList[0] === ele.id && hasRename" class="rename-confirm"></span>
+                <span @click="renameCancel" v-show="chooseList[0] === ele.id && hasRename" class="rename-cancel"></span>
+              </p>
+            </el-col>
+            <el-col :offset="10" :span="4">
+              <p class="upload-date">{{ele.created_at}}</p>
+            </el-col>
+          </div>
+        </el-col>
+        <!-- 显示九宫格 -->
         <el-col v-for="(ele, index) in list" :key="ele.name + index" :span="4" v-if="curView === 'chunk'">
           <div :class="[{'active' : chooseList.indexOf(ele.id) !== -1}, 'item2']">
             <p v-if="chooseStatus" @click="liClick(ele.id, index)" :class="['file-radio', ele.name]">file-radio</p>
@@ -61,11 +90,11 @@
             <p class="file-name">
               <span :title="ele.name" class="file-name-span" @click="showView(ele)" v-show="chooseList[0] !== ele.id || !hasRename">{{ele.name}}</span>
               <input v-show="chooseList[0] === ele.id && hasRename" class="rename" type="text" v-model="renameVal">
-                <span @click="renameConfirm(index)" v-show="chooseList[0] === ele.id && hasRename" class="rename-confirm"></span>
+                <span @click="renameConfirm(index, ele.id)" v-show="chooseList[0] === ele.id && hasRename" class="rename-confirm"></span>
                 <span @click="renameCancel" v-show="chooseList[0] === ele.id && hasRename" class="rename-cancel"></span>
             </p>
             <p class="upload-date">{{date}}</p>
-            <div class="more-list" tabindex="200" v-if="!chooseStatus && modules !== 'recycle'">
+            <div class="more-list" tabindex="-1" v-if="!chooseStatus && modules !== 'recycle'">
               <i></i>
               <ul>
                 <li>查看权限</li>
@@ -92,7 +121,7 @@
             <span class="fl">分享</span>
             <span class="fl">下载</span>
             <span class="fl">移动</span>
-            <span class="fl more" tabindex="300">
+            <span class="fl more" tabindex="-1">
               <i></i>
               <ul>
                 <li>重命名</li>
@@ -118,14 +147,14 @@
             </swiper>
           </div>
         </div>
-        <div v-if="showProfile" class="file-profile-cover"></div>
+        <div v-if="showProfile" class="file-profile-cover" @click="showProfile = false"></div>
         <div v-if="showProfile" class="file-profile">
           <p class="profile-head">详细信息<i class="fx-0 fx-black fx-icon-nothing-close-error" @click="showProfile = false"></i></p>
           <article class="profile-body">
             <p><span>文件名:</span>{{prewiewInfo.name}}</p>
             <p><span>类型:</span>{{prewiewInfo.leixing}}</p>
             <p><span>创建时间:</span>{{prewiewInfo.date}}</p>
-            <p><span>尺寸:</span>2048*2048 px</p>
+            <p><span>尺寸:</span>{{prewiewInfo.width}}px*{{prewiewInfo.height}}px</p>
             <p><span>大小:</span>{{prewiewInfo.format_size}}</p>
             <p><span>位置:</span>{{prewiewInfo.pan_director_id}}</p>
             <p><span>所有者:</span>{{prewiewInfo.user_name}}</p>
@@ -137,6 +166,7 @@
   </div>
 </template>
 <script>
+import api from '@/api/api'
 export default {
   name: 'cloud_content',
   props: {
@@ -171,6 +201,10 @@ export default {
     modules: {
       type: String,
       default: 'all'
+    },
+    showList: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -235,6 +269,11 @@ export default {
           })
           document.body.setAttribute('class', 'disableScroll')
           document.childNodes[1].setAttribute('class', 'disableScroll')
+          this.$http.post(api.yunpanRecentUseLog, {id: ele.id}).then(res => {
+            console.log(res)
+          }).catch(err => {
+            console.error(err)
+          })
         } else {
           console.log('不是图片')
         }
@@ -251,9 +290,9 @@ export default {
     renameCancel() {
       this.$emit('renameCancel')
     },
-    renameConfirm(index) {
+    renameConfirm(index, id) {
       this.$emit('renameCancel')
-      this.$emit('changeName', index, this.renameVal)
+      this.$emit('changeName', index, id, this.renameVal)
     },
     directOperate(id) {
       this.chooseList = []
@@ -291,6 +330,10 @@ export default {
       if (this.previewObj.index > this.imgList.length - 1) {
         this.previewObj.index = this.imgList.length - 1
       }
+    },
+    changePremission(id) {
+      this.directOperate(id)
+      this.$emit('changePremission')
     }
   },
   watch: {
@@ -319,7 +362,6 @@ export default {
     },
     prewiewInfo() {
       if (this.imgList.length) {
-        console.log(this.imgList)
         return this.imgList[this.previewObj['index']]
       }
     },
@@ -339,7 +381,7 @@ export default {
 </script>
 <style scoped>
   .cloud-content {
-    min-height: 600px;
+    min-height: 610px;
   }
   section .item {
     height: 70px;
@@ -348,16 +390,22 @@ export default {
     background: #fff;
     cursor: pointer;
   }
-  
-  section .item p, section .item2 p{
+
+  section .item p, section .item2 p, .file-name {
     overflow: hidden;
     text-overflow:ellipsis;
     white-space: nowrap;
   }
 
+  .file-name {
+    display: flex;
+    align-items: center;
+  }
+
   .item2 p {
     padding: 0 5px
   }
+
   section .item2 {
     height: 160px;
     border: 1px solid #f0f0f0;
@@ -523,6 +571,30 @@ export default {
   .rename-cancel:active::after {
     background: #fff;
   }
+
+  .file-premission {
+    margin-left: 20px;
+  }
+  .file-premission span {
+    display: block;
+    width: 16px;
+    height: 16px;
+  }
+
+  .file-premission .public {
+    background: url('../../../../../assets/images/tools/cloud_drive/permission/public@2x.png') no-repeat;
+    background-size: contain;
+  }
+
+  .file-premission .privacy {
+    background: url('../../../../../assets/images/tools/cloud_drive/permission/privacy@2x.png') no-repeat;
+    background-size: contain;
+  }
+
+  .file-premission .group {
+    background: url('../../../../../assets/images/tools/cloud_drive/permission/group@2x.png') no-repeat;
+    background-size: contain;
+  }
   .file-uploader {
     text-align: center;
   }
@@ -533,13 +605,13 @@ export default {
   .more-list i {
     display: block;
     height: 70px;
-    background: url('../../../../../assets/images/tools/cloud_drive/jurisdiction/more@2x.png') center no-repeat;
+    background: url('../../../../../assets/images/tools/cloud_drive/permission/more@2x.png') center no-repeat;
     background-size: 25px
   }
   
   .item2 .more-list i {
     height: 30px;
-    background: url('../../../../../assets/images/tools/cloud_drive/jurisdiction/more@2x.png') top no-repeat;
+    background: url('../../../../../assets/images/tools/cloud_drive/permission/more@2x.png') top no-repeat;
     background-size: 25px
   }
   .item2 .more-list ul {
