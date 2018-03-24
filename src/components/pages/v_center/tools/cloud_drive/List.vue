@@ -364,7 +364,6 @@
           per_page: this.query.pageSize
         }}).then(
           (res) => {
-            console.log(res.data)
             this.isLoading = false
             this.showList = true
             if (res.data.meta.status_code === 200) {
@@ -418,6 +417,7 @@
         this.isChoose = false
         this.isChooseAll = 'empty'
         this.curView = 'list'
+        this.query.page = 1
         this.getList()
       },
       changeChooseStatus() {

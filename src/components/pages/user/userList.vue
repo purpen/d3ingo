@@ -7,7 +7,7 @@
         </el-breadcrumb>
     </div>
     <div class="container">
-        <el-row class="left">
+        <el-row :gutter="10">
           <el-col :span="isMob?24 : 6">
             <div class="input" @click="searchUsername">
               <input type="text" placeholder="林">
@@ -58,7 +58,7 @@ export default {
       this.$http.get(api.inviteKey)
         .then((res) => {
           if (res.data.meta.status_code === 200) {
-            this.rand_string = `http://localhost:8081/user/userRegister/${res.data.data.rand_string}`
+            this.rand_string = `${location.origin}/user/userRegister/${res.data.data.rand_string}`
           } else {
             console.log(res.data.meta.message)
           }
@@ -114,11 +114,11 @@ export default {
 
 <style scoped>
 .navContent {
-  width: 1440px;
   height: 60px;
   padding-left: 40px;
   padding-top: 20px;
-  margin-bottom: 30px; border: 1px solid #D2D2D2;
+  margin-bottom: 30px;
+  border: 1px solid #D2D2D2;
 }
 .navContent #el-breadcrumb {
   text-align: center;
@@ -126,15 +126,13 @@ export default {
 }
 .input {
   position: relative;
-  background: #FFFFFF; width: 280px;
+  background: #FFFFFF;
   border: 1px solid #D2D2D2;
   border-radius: 4px;
-  width: 280px;
-  height: 40px;
   margin-bottom: 3px;
 }
 .input input {
-   width: 277px;
+  width: 100%;
   height: 37px;
   line-height: 37px;
   border: none;
@@ -145,22 +143,20 @@ export default {
   width: 16px;
   height: 16px;
   left: 10px;
-  top:12px;
+  top: 50%;
+  transform: translate(0, -50%)
 }
 .side {
   position: relative;
-  width: 280px;
-  height: 260px;
   background: #FFFFFF;
   box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
   border-radius: 4px;
 }
 .side .welcome {
-  position: absolute;
-  left: 98px;
-  bottom: 20px;
+  display: block;
+  padding: 10px 20px;
+  text-align: center;
   cursor:pointer;
-  font-family: PingFangSC-Regular;
   font-size: 14px;
   color: #FF5A5F;
 }
