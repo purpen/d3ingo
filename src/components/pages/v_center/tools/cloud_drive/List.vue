@@ -2,7 +2,7 @@
   <div class="container blank30 min-height350">
     <el-row :gutter="20">
       <el-col :xs="24" :sm="6" :md="6" :lg="6">
-        <v-menu @getTitle="headTitle"></v-menu>
+        <v-menu :isActive='modules' @getTitle="headTitle"></v-menu>
       </el-col>
       <el-col :xs="24" :sm="18" :md="18" :lg="18">
         <div class="content" v-loading.body="isLoading">
@@ -55,7 +55,7 @@
                   <span v-if="modules !== 'recycle'">下载</span>
                   <span v-if="modules !== 'recycle'">复制</span>
                   <span v-if="modules !== 'recycle'">移动</span>
-                  <span v-if="modules !== 'recycle'" @click="rename" :class="[{'disable': alreadyChoose > 1 || !alreadyChoose}]">重命名</span>
+                  <span v-if="modules !== 'recycle'" @click="rename" :class="{'disable': alreadyChoose > 1 || !alreadyChoose}">重命名</span>
                   <span v-if="modules !== 'recycle'" @click="deleteFile">删除</span>
                   <span v-if="modules === 'recycle'" @click="shiftDelete">删除</span>
                   <span v-if="modules === 'recycle'" @click="recoverFile">还原</span>
@@ -77,6 +77,7 @@
               :hasRename="hasRename"
               :imgList="imgList"
               :showList="showList"
+              @enterFolder="enterFolder"
               @choose="chooseList"
               @renameCancel="renameCancel"
               @changeName="changeName"
@@ -84,7 +85,7 @@
               @deleteFile="deleteFile"
               @shiftDelete="shiftDelete"
               @recoverFile="recoverFile"
-              @changePremission="changePremission"
+              @changePermission="changePermission"
               :modules="modules">
             </vContent>
           </transition>
@@ -136,7 +137,7 @@
     <section class="dialog-body" v-if="showConfirm">
       <h3 class="dialog-header clearfix">
         放弃上传
-        <i class="fr fx fx-icon-nothing-close-error" @click="showConfirm = false, showCover = false"></i>
+        <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
       </h3>
       <div class="dialog-conetent">
         <div class="dialog-article">
@@ -152,7 +153,7 @@
     <section class="dialog-body" v-if="showConfirmDelete">
       <h3 class="dialog-header clearfix">
         确认删除
-        <i class="fr fx fx-icon-nothing-close-error" @click="showCover = false, showConfirmDelete = false"></i>
+        <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
       </h3>
       <div class="dialog-conetent">
         <div class="dialog-article">
@@ -167,7 +168,7 @@
     <section class="dialog-body" v-if="showConfirmShiftDelete">
       <h3 class="dialog-header clearfix">
         确认删除
-        <i class="fr fx fx-icon-nothing-close-error" @click="showCover = false, showConfirmShiftDelete = false"></i>
+        <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
       </h3>
       <div class="dialog-conetent">
         <div class="dialog-article">
@@ -182,7 +183,7 @@
     <section class="dialog-body" v-if="showConfirmRecover">
       <h3 class="dialog-header clearfix">
         确认恢复
-        <i class="fr fx fx-icon-nothing-close-error" @click="showCover = false, showConfirmRecover = false"></i>
+        <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
       </h3>
       <div class="dialog-conetent">
         <div class="dialog-article">
@@ -194,30 +195,66 @@
         </p>
       </div>
     </section>
-    <section class="dialog-body" v-if="showConfirmPremission">
+    <section class="dialog-body" v-if="showConfirmPermission">
       <h3 class="dialog-header clearfix">
         更改权限
-        <i class="fr fx fx-icon-nothing-close-error" @click="showCover = false, showConfirmPremission = false"></i>
+        <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
       </h3>
-      <div class="dialog-conetent dialog-floder">
+      <div class="dialog-conetent dialog-folder">
         <p class="dialog-name">文件夹名称</p>
-        <input placeholder="请填写文件夹名称" v-model="floder.name">
+        <input placeholder="请填写文件夹名称" v-model="folder.name">
         <p class="dialog-permission">设置查看权限</p>
-        <input v-model="floder.permission">
-        <button class="create-btn" @click="confirmFolder">创建</button>
+        <input v-model="folder.permission">
+        <button class="create-btn" @click="confirmPermission">设置</button>
       </div>
     </section>
     <section class="dialog-body" v-if="showConfirmFolder">
       <h3 class="dialog-header clearfix">
         创建文件夹
-        <i class="fr fx fx-icon-nothing-close-error" @click="showCover = false, showConfirmFolder = false"></i>
+        <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
       </h3>
-      <div class="dialog-conetent dialog-floder">
+      <div class="dialog-conetent dialog-folder">
         <p class="dialog-name">文件夹名称</p>
-        <input placeholder="请填写文件夹名称" v-model="floder.name">
+        <input placeholder="请填写文件夹名称" v-focus="isFocusFolderName"
+          @focus="focusFolderName"
+          @blur="blurFolderName"
+          v-model="folder.name">
         <p class="dialog-permission">设置查看权限</p>
-        <input v-model="floder.permission">
-        <button class="create-btn" @click="confirmFolder">设置</button>
+        <input v-if="folderId === 0"
+          class="select-permission" placeholder="请选择权限"
+          v-focus="isFocusFolderPermission"
+          @focus="focusFolderPermission"
+          @blur="blurFolderPermission"
+          v-model="folder.permission">
+        <ul class="selectFolderPermission list-shadow" v-show="isFocusFolderPermission">
+          <li :class="['public', {'lihover': permissionStatus === 1}]" @click="selectPermission(1)">
+            <i></i>
+            <span>全部成员可见</span>
+          </li>
+          <li :class="['privacy', {'lihover': permissionStatus === 2}]" @click="selectPermission(2)">
+            <i></i>
+            <span>仅自己可见</span>
+          </li>
+          <li :class="['group', {'lihover': permissionStatus === 3}]" @click="selectGroup">
+            <i></i>
+            <span>权限小组可见</span>
+            <div class="grouplist" v-if="isSelectGroup">
+              <!-- <ul v-if="groupList.length"> -->
+              <ul v-if="true">
+                <li :class="{'lihover': group_id_arr.indexOf(index) !== -1}" v-for="(ele, index) in 4" :key="index" @click="changeSelectGroup(index)">
+                  <b :class="{'active': group_id_arr.indexOf(index) !== -1}"></b>
+                  {{index}}
+                </li>
+              </ul>
+              <ul v-else>
+                <li>
+                  暂无群组
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+        <button class="create-btn" @click="CreateDir">创建</button>
       </div>
     </section>
     <el-col :span="18" :offset="6">
@@ -237,6 +274,7 @@
         test: 'test',
         title: '全部文件',
         modules: '',
+        folderId: 0, // 文件夹id
         isChoose: false, // 切换为选择状态
         chooseFileList: [], // 已选择的id
         isChooseAll: '', // 是否全选,
@@ -258,21 +296,28 @@
         showConfirmShiftDelete: false, // 确认彻底删除文件?
         showConfirmRecover: false, // 确认恢复文件?
         showConfirmFolder: false, // 确认新建文件夹
-        showConfirmPremission: false, // 确认更改权限
+        showConfirmPermission: false, // 确认更改权限
         showList: true, // 显示全部文件或搜索 false => 搜索
         searchWord: '', // 搜索关键字
         hasRename: false, // 重命名状态
         isLoading: false,
-        floder: {
+        folder: {
           name: '',
           permission: ''
         },
+        isFocusFolderName: true, // 是否聚焦名字
+        isFocusFolderPermission: false, // 是否聚焦权限
         query: {
           page: 1,
           pageSize: 30,
           totalPges: 0,
           totalCount: 0
-        }
+        },
+        groupList: [], // 群组列表
+        open_set: 0, // 隐私设置
+        group_id_arr: [], // 所属群组ID数组
+        isSelectGroup: false, // 选择群组状态
+        permissionStatus: 0 // 权限 1 全部 2自己 3小组
       }
     },
     components: {
@@ -293,6 +338,7 @@
         this.getList()
       },
       formatList() {
+        this.list.sort(this.$phenix.arr_sort('type', this.$phenix.arr_sort('name')))
         for (let i of this.list) {
           // 格式化大小
           let size = i['size'] / 1024
@@ -303,38 +349,40 @@
           }
           // 格式化日期
           i['date'] = i['created_at'].date_format().format('yyyy年MM月dd日')
-          i['created_at'] = i['created_at'].date_format().format('yyyy-MM-dd')
+          i['created_at_format'] = i['created_at'].date_format().format('yyyy-MM-dd')
           // 格式化类型
-          if (/folder/.test(i.mime_type)) {
+          if (i.mime_type) {
+            if (/pdf/.test(i.mime_type)) {
+              i.format_type = 'artboard'
+              i.leixing = 'PDF'
+            } else if (/audio/.test(i.mime_type)) {
+              i.format_type = 'audio'
+              i.leixing = '音频'
+            } else if (/(?:zip|rar|7z)/.test(i.mime_type)) {
+              i.format_type = 'compress'
+              i.leixing = '压缩文件'
+            } else if (/(?:text|msword)/.test(i.mime_type)) {
+              i.format_type = 'document'
+              i.leixing = '文档'
+            } else if (/image/.test(i.mime_type)) {
+              i.format_type = 'image'
+              i.leixing = '图片'
+            } else if (/powerpoint/.test(i.mime_type)) {
+              i.format_type = 'powerpoint'
+              i.leixing = '演示文稿'
+            } else if (/spreadsheet/.test(i.mime_type)) {
+              i.format_type = 'spreadsheet'
+              i.leixing = '电子表格'
+            } else if (/video/.test(i.mime_type)) {
+              i.format_type = 'video'
+              i.leixing = '视频'
+            } else {
+              i.format_type = 'other'
+              i.leixing = '其他'
+            }
+          } else {
             i.format_type = 'folder'
             i.leixing = '文件夹'
-          } else if (/pdf/.test(i.mime_type)) {
-            i.format_type = 'artboard'
-            i.leixing = 'PDF'
-          } else if (/audio/.test(i.mime_type)) {
-            i.format_type = 'audio'
-            i.leixing = '音频'
-          } else if (/(?:zip|rar|7z)/.test(i.mime_type)) {
-            i.format_type = 'compress'
-            i.leixing = '压缩文件'
-          } else if (/(?:text|msword)/.test(i.mime_type)) {
-            i.format_type = 'document'
-            i.leixing = '文档'
-          } else if (/image/.test(i.mime_type)) {
-            i.format_type = 'image'
-            i.leixing = '图片'
-          } else if (/powerpoint/.test(i.mime_type)) {
-            i.format_type = 'powerpoint'
-            i.leixing = '演示文稿'
-          } else if (/spreadsheet/.test(i.mime_type)) {
-            i.format_type = 'spreadsheet'
-            i.leixing = '电子表格'
-          } else if (/video/.test(i.mime_type)) {
-            i.format_type = 'video'
-            i.leixing = '视频'
-          } else {
-            i.format_type = 'other'
-            i.leixing = '其他'
           }
           // if (i.group_id) {
           //   i.group_id = []
@@ -344,7 +392,7 @@
           }
         }
       },
-      getList(id = 0) {
+      getList() {
         this.isLoading = true
         let url = ''
         if (this.modules === 'all') {
@@ -359,7 +407,7 @@
           return
         }
         this.$http.get(url, {params: {
-          pan_director_id: id,
+          pan_director_id: this.folderId,
           page: this.query.page,
           per_page: this.query.pageSize
         }}).then(
@@ -375,6 +423,7 @@
                 this.query.totalCount = 0
                 this.query.totalPges = 0
               }
+              console.log(res.data.data)
               this.list = res.data.data
               this.imgList = []
               this.formatList()
@@ -411,8 +460,16 @@
           this.isLoading = false
         }
       },
+      getGroupLists() {
+        this.$http.get(api.groupList).then(res => {
+          if (res.data.meta.status_code === 200) {
+            this.groupList = res.data.data
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        })
+      },
       headTitle(e) {
-        this.title = e.val
         this.modules = e.name
         this.isChoose = false
         this.isChooseAll = 'empty'
@@ -450,8 +507,6 @@
       newFolder() {
         this.showConfirmFolder = true
         this.showCover = true
-      },
-      confirmFolder() {
       },
       getUploadUrl() {
         this.$http.get(api.yunpanUpToken).then((res) => {
@@ -551,10 +606,6 @@
         this.showConfirm = false
         this.showCover = false
       },
-      clearShowList() {
-        this.searchWord = ''
-        this.getList()
-      },
       rename() {
         if (this.alreadyChoose) {
           if (this.alreadyChoose > 1) {
@@ -609,7 +660,6 @@
         })
       },
       shiftDelete() {
-        console.log(this.chooseFileList, 'chooseFileList')
         if (this.chooseFileList.length) {
           this.showCover = true
           this.showConfirmShiftDelete = true
@@ -660,7 +710,6 @@
         this.hasRename = false
       },
       changeName(index, id, name) {
-        console.log(index, id, name)
         this.$http.put(api.yunpanEditName, {
           id: id,
           name: name
@@ -679,31 +728,116 @@
         this.list = []
         this.isChoose = false
         this.query.totalCount = 0
+        this.$router.push({name: this.$route.name, params: {modules: 'search'}})
+        this.modules = this.$route.params.modules
       },
-      changePremission() {
-        this.showConfirmPremission = true
+      clearShowList() {
+        this.showList = !this.showList
+        this.searchWord = ''
+        this.$router.push({name: this.$route.name, params: {modules: 'all'}})
+        this.modules = this.$route.params.modules
+        this.getList()
+      },
+      changePermission() {
+        this.showConfirmPermission = true
         this.showCover = true
       },
-      confirmPremission() {
+      confirmPermission() {
+      },
+      focusFolderPermission() {
+        this.isFocusFolderPermission = true
+      },
+      blurFolderPermission() {
+      },
+      focusFolderName() {
+        this.isFocusFolderPermission = false
+        this.isFocusFolderName = true
+      },
+      blurFolderName() {
+        this.isFocusFolderName = false
+      },
+      closeCover() {
+        this.showCover = false
+        this.showConfirm = false
+        this.showConfirmDelete = false
+        this.showConfirmShiftDelete = false
+        this.showConfirmRecover = false
+        this.showConfirmPermission = false
+        this.showConfirmFolder = false
+        this.isFocusFolderName = false
+        this.isFocusFolderPermission = false
+        // 以下几个要不要清空
+        this.group_id_arr = []
+        this.folder.permission = ''
+        this.folder.name = ''
+      },
+      selectPermission(id) {
+        this.openSet = id
+        this.permissionStatus = id
+        this.isSelectGroup = false
+        this.group_id_arr = []
+      },
+      selectGroup() {
+        this.isSelectGroup = true
+        this.openSet = 1
+        this.permissionStatus = 3
+      },
+      changeSelectGroup(index) {
+        let id = this.group_id_arr.indexOf(index)
+        if (id === -1) {
+          this.group_id_arr.push(index)
+        } else {
+          this.group_id_arr.splice(id, 1)
+        }
+      },
+      CreateDir() {
+        if (!this.folder.name) {
+          this.$message.error('请填写文件夹名称')
+        } else if (!this.folder.permission) {
+          this.$message.error('请选择文件夹权限')
+        } else {
+          this.$http.post(api.yunpanCreateDir, {
+            name: this.folder.name,
+            pan_director_id: 0,
+            open_set: this.openSet,
+            group_id_arr: this.group_id_arr
+          }).then(res => {
+            if (res.data.meta.status_code === 200) {
+              this.list.unshift({
+                id: 0,
+                format_type: '',
+                created_at: new Date().getTime(),
+                group_id: this.group_id_arr,
+                open_set: this.openSet,
+                type: 2,
+                name: this.folder.name,
+                user_name: 0,
+                pan_director_id: 0 // 后期params中获取
+              })
+              this.closeCover()
+              this.formatList()
+            } else {
+              this.$message.error(res.data.meta.message)
+            }
+            console.log(res)
+          }).catch(err => {
+            console.error(err)
+          })
+        }
+      },
+      enterFolder(ele) {
+        this.$router.push({
+          name: this.$route.name,
+          params: {modules: this.$route.params.modules},
+          query: {id: ele.id}})
+        this.folderId = this.$route.query.id
+        this.getList()
       }
     },
     created() {
       this.query.page = Number(this.$route.query.page) || 1
-      this.modules = this.$route.params.module
-      switch (this.modules) {
-        case 'all':
-          this.title = '全部文件'
-          break
-        case 'project':
-          this.title = '项目'
-          break
-        case 'recently-use':
-          this.title = '最近使用'
-          break
-        case 'recycle':
-          this.title = '回收站'
-          break
-      }
+      this.folderId = this.$route.query.id || 0
+      this.modules = this.$route.params.modules
       this.getUploadUrl()
       this.getList()
     },
@@ -752,6 +886,57 @@
           }
         },
         deep: true
+      },
+      modules() {
+        switch (this.modules) {
+          case 'all':
+            this.title = '全部文件'
+            break
+          case 'project':
+            this.title = '项目'
+            break
+          case 'recently-use':
+            this.title = '最近使用'
+            break
+          case 'recycle':
+            this.title = '回收站'
+            break
+          case 'search':
+            this.title = '搜索'
+            this.showList = false
+            break
+        }
+      },
+      permissionStatus (newVal, oldVal) {
+        switch (newVal) {
+          case 1:
+            this.folder.permission = '全部成员可见'
+            break
+          case 2:
+            this.folder.permission = '仅自己可见'
+            break
+          case 3:
+            this.folder.permission = '权限小组可见'
+            break
+        }
+      }
+    },
+    directives: {
+      focus: {
+        inserted(el, binding) {
+          if (binding.value) {
+            el.focus()
+          } else {
+            el.blur()
+          }
+        },
+        componentUpdated(el, binding) {
+          if (binding.value) {
+            el.focus()
+          } else {
+            el.blur()
+          }
+        }
       }
     }
   }
@@ -1111,19 +1296,90 @@
     text-align: center
   }
 
-  .dialog-floder {
+  .dialog-folder {
     padding: 0 20px;
   }
 
-  .dialog-floder input {
+  .dialog-folder input, .select-permission {
     width: 100%;
     padding: 9px 10px;
     line-height: 20px;
+    height: 38px;
     border-radius: 4px;
     border: 1px solid #d2d2d2;
     color: #222;
   }
-
+  .selectFolderPermission {
+    margin-top: 10px;
+    text-align: left;
+    width: 100%;
+  }
+  .selectFolderPermission li {
+    color: #999;
+    background: #fff;
+    min-height: 40px;
+    line-height: 40px;
+    padding-left: 40px;
+    position: relative;
+    cursor: pointer;
+  }
+  .selectFolderPermission li:hover,
+  .selectFolderPermission li.lihover {
+    color:#666;
+    background: #f7f7f7;
+  }
+  .selectFolderPermission i {
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    width: 16px;
+    height: 16px;
+  }
+  .grouplist {
+    margin-left: -40px;
+  }
+  .grouplist ul {
+    max-height: 120px;
+    overflow-y: scroll;
+  }
+  .grouplist li b {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid #d2d2d2;
+    background: #fff;
+  }
+  .grouplist li b:before {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: 4px;
+    width: 12px;
+    height: 7px;
+    border: 2px solid #fff;
+    border-top: none;
+    border-right: none;
+    transform: rotate(-45deg);
+  }
+  .grouplist li b.active {
+    background: #999;
+    border: 1px solid #999;
+  }
+  .public i {
+    background: url('../../../../../assets/images/tools/cloud_drive/permission/public@2x.png') no-repeat;
+    background-size: contain;
+  }
+  .privacy i {
+    background: url('../../../../../assets/images/tools/cloud_drive/permission/privacy@2x.png') no-repeat;
+    background-size: contain;
+  }
+  .group i {
+    background: url('../../../../../assets/images/tools/cloud_drive/permission/group@2x.png') no-repeat;
+    background-size: contain;
+  }
   .dialog-article {
     margin: 32px 0;
     color: #666;

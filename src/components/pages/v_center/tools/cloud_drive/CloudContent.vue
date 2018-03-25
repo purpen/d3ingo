@@ -9,8 +9,13 @@
               <p class="file-radio">file-radio</p>
             </el-col>
             <el-col :span="2">
-              <p v-if="ele.format_type === 'image' && modules !== 'recycle'" :class="['file-icon', ele.format_type]" :style="{background: 'url(' + ele.url_small + ')'}">file-icon</p>
-              <p v-else :class="['file-icon', ele.format_type]">file-icon</p>
+              <p v-if="ele.format_type === 'image' && modules !== 'recycle'"
+                @click="showView(ele)"
+                :class="['file-icon', ele.format_type]"
+                :style="{background: 'url(' + ele.url_small + ')'}">file-icon</p>
+              <p v-else 
+                @click="showView(ele)"
+                :class="['file-icon', ele.format_type]">file-icon</p>
             </el-col>
             <el-col :span="8">
               <div class="file-name">
@@ -20,7 +25,7 @@
                   <span @click="renameConfirm(index, ele.id)" class="rename-confirm"></span>
                   <span @click="renameCancel" class="rename-cancel"></span>
                 </p>
-                <p v-show="chooseList[0] !== ele.id || !hasRename" class="file-premission" @click="changePremission(ele.id)">
+                <p v-show="chooseList[0] !== ele.id || !hasRename" class="file-permission" @click="changePermission(ele.id)">
                   <span v-if="ele.open_set === 1" class="public"></span>
                   <span v-if="ele.open_set === 2" class="privacy"></span>
                   <!-- <span v-if="ele.group_id.indexOf(1) > 0" class="group"></span> -->
@@ -28,13 +33,13 @@
               </div>
             </el-col>
             <el-col :span="3">
-              <p :class="['file-size', {'hidden': ele.name === 'folder'}]">{{ele.format_size}}</p>
+              <p :class="['file-size', {'hidden': ele.format_type === 'folder'}]">{{ele.format_size}}</p>
             </el-col>
             <el-col :span="5">
               <p :class="['file-uploader']">{{ele.user_name}}</p>
             </el-col>
             <el-col :span="4">
-              <p class="upload-date">{{ele.created_at}}</p>
+              <p class="upload-date">{{ele.created_at_format}}</p>
             </el-col>
             <el-col :span="2" v-if="!chooseStatus && modules !== 'recycle'">
               <div class="more-list" tabindex="-1">
@@ -77,7 +82,7 @@
               </p>
             </el-col>
             <el-col :offset="10" :span="4">
-              <p class="upload-date">{{ele.created_at}}</p>
+              <p class="upload-date">{{ele.created_at_format}}</p>
             </el-col>
           </div>
         </el-col>
@@ -274,6 +279,8 @@ export default {
           }).catch(err => {
             console.error(err)
           })
+        } else if (/folder/.test(ele.format_type)) {
+          this.$emit('enterFolder', ele)
         } else {
           console.log('不是图片')
         }
@@ -331,9 +338,9 @@ export default {
         this.previewObj.index = this.imgList.length - 1
       }
     },
-    changePremission(id) {
+    changePermission(id) {
       this.directOperate(id)
-      this.$emit('changePremission')
+      this.$emit('changePermission')
     }
   },
   watch: {
@@ -466,6 +473,7 @@ export default {
     overflow: initial;
     position: relative;
     height: 20px;
+    display: block;
   }
   section .item2 .file-name-span {
     display: block;
@@ -572,26 +580,26 @@ export default {
     background: #fff;
   }
 
-  .file-premission {
+  .file-permission {
     margin-left: 20px;
   }
-  .file-premission span {
+  .file-permission span {
     display: block;
     width: 16px;
     height: 16px;
   }
 
-  .file-premission .public {
+  .file-permission .public {
     background: url('../../../../../assets/images/tools/cloud_drive/permission/public@2x.png') no-repeat;
     background-size: contain;
   }
 
-  .file-premission .privacy {
+  .file-permission .privacy {
     background: url('../../../../../assets/images/tools/cloud_drive/permission/privacy@2x.png') no-repeat;
     background-size: contain;
   }
 
-  .file-premission .group {
+  .file-permission .group {
     background: url('../../../../../assets/images/tools/cloud_drive/permission/group@2x.png') no-repeat;
     background-size: contain;
   }

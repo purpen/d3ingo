@@ -78,24 +78,25 @@
 <script>
   export default {
     name: 'cloud_drive_menu',
+    props: {
+      isActive: {
+        type: String,
+        default: 'all'
+      }
+    },
     data() {
       return {
         test: 'test',
-        activeNames: ['1', '3'],
-        isActive: ''
+        activeNames: ['1', '3']
       }
     },
     methods: {
       changeTitle(e) {
         if (this.isActive !== e.name) {
           this.$emit('getTitle', e)
-          this.isActive = e.name
-          this.$router.push({name: this.$route.name, params: {module: e.name}})
+          this.$router.push({name: this.$route.name, params: {modules: e.name}})
         }
       }
-    },
-    created() {
-      this.isActive = this.$route.params.module || ''
     }
   }
 </script>
