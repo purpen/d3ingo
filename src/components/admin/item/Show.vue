@@ -40,7 +40,7 @@
 
             <div class="item">
               <p class="p-key">类别</p>
-              <p class="p-val">{{ item.design_type_value }}</p>
+              <p class="p-val">{{ item.design_types_value.join(', ') }}</p>
             </div>
 
             <div class="item">
