@@ -8,7 +8,10 @@
         <div class="content" v-loading.body="isLoading">
           <div class="content-head">
             <div class="clearfix" v-show="showList">
-              <p class="title fl" v-if="!isChoose">{{title}}</p>
+              <p class="title fl" v-if="!isChoose && folderId === 0" v-html="title"></p>
+              <p class="title fl" v-if="!isChoose && folderId !== 0">
+                <i class="fx fx-icon-nothing-left" @click="backFolder"></i>
+              </p>
               <div class="fr operate" v-if="!isChoose">
                 <p class="add" v-if="modules !== 'recycle'">
                   <span class="add-option">
@@ -77,6 +80,8 @@
               :hasRename="hasRename"
               :imgList="imgList"
               :showList="showList"
+              :modules="modules"
+              :folderId="folderId"
               @enterFolder="enterFolder"
               @choose="chooseList"
               @renameCancel="renameCancel"
@@ -85,8 +90,7 @@
               @deleteFile="deleteFile"
               @shiftDelete="shiftDelete"
               @recoverFile="recoverFile"
-              @changePermission="changePermission"
-              :modules="modules">
+              @changePermission="changePermission">
             </vContent>
           </transition>
         </div>
@@ -239,14 +243,15 @@
             <i></i>
             <span>权限小组可见</span>
             <div class="grouplist" v-if="isSelectGroup">
-              <!-- <ul v-if="groupList.length"> -->
-              <ul v-if="true">
-                <li :class="{'lihover': group_id_arr.indexOf(index) !== -1}" v-for="(ele, index) in 4" :key="index" @click="changeSelectGroup(index)">
-                  <b :class="{'active': group_id_arr.indexOf(index) !== -1}"></b>
-                  {{index}}
+              <ul v-if="groupList.length">
+                <li v-for="(ele, index) in groupList" :key="index"
+                  :class="{'lihover': group_id_arr.indexOf(ele.id) !== -1}"
+                  @click="changeSelectGroup(ele.id)">
+                  <b :class="{'active': group_id_arr.indexOf(ele.id) !== -1}"></b>
+                  {{ele.name}}
                 </li>
               </ul>
-              <ul v-else>
+              <ul style="overflow: hidden" v-else>
                 <li>
                   暂无群组
                 </li>
@@ -317,7 +322,8 @@
         open_set: 0, // 隐私设置
         group_id_arr: [], // 所属群组ID数组
         isSelectGroup: false, // 选择群组状态
-        permissionStatus: 0 // 权限 1 全部 2自己 3小组
+        permissionStatus: 0, // 权限 1 全部 2自己 3小组
+        historyId: []
       }
     },
     components: {
@@ -341,11 +347,15 @@
         this.list.sort(this.$phenix.arr_sort('type', this.$phenix.arr_sort('name')))
         for (let i of this.list) {
           // 格式化大小
-          let size = i['size'] / 1024
-          if (size > 1024) {
-            i['format_size'] = (size / 1024).toFixed(2) + 'MB'
+          if (i.size) {
+            let size = i['size'] / 1024
+            if (size > 1024) {
+              i['format_size'] = (size / 1024).toFixed(2) + 'MB'
+            } else {
+              i['format_size'] = size.toFixed(2) + 'KB'
+            }
           } else {
-            i['format_size'] = size.toFixed(2) + 'KB'
+            i['format_size'] = '0KB'
           }
           // 格式化日期
           i['date'] = i['created_at'].date_format().format('yyyy年MM月dd日')
@@ -384,9 +394,17 @@
             i.format_type = 'folder'
             i.leixing = '文件夹'
           }
-          // if (i.group_id) {
-          //   i.group_id = []
-          // }
+
+          if (i.group_id === null || !i.group_id.length) {
+            i.group_id = []
+            if (i.open_set === 1) {
+              i['filePermission'] = '公开'
+            } else {
+              i['filePermission'] = '仅自己可见'
+            }
+          } else {
+            i['filePermission'] = '群组可见'
+          }
           if (/image/.test(i['mime_type'])) {
             this.imgList.push(i)
           }
@@ -412,10 +430,11 @@
           per_page: this.query.pageSize
         }}).then(
           (res) => {
+            // console.log(res.data.data)
             this.isLoading = false
             this.showList = true
             if (res.data.meta.status_code === 200) {
-              this.itemList = res.data.data
+              console.log(res.data.data)
               if (res.data.meta.pagination) {
                 this.query.totalCount = res.data.meta.pagination.total
                 this.query.totalPges = res.data.meta.total_pages
@@ -423,7 +442,6 @@
                 this.query.totalCount = 0
                 this.query.totalPges = 0
               }
-              console.log(res.data.data)
               this.list = res.data.data
               this.imgList = []
               this.formatList()
@@ -445,7 +463,6 @@
           }}).then(res => {
             this.isLoading = false
             if (res.data.meta.status_code === 200) {
-              this.itemList = res.data.data
               this.query.totalCount = res.data.meta.pagination.total
               this.query.totalPges = res.data.meta.total_pages
               this.list = res.data.data
@@ -533,7 +550,7 @@
             }
              // 格式化日期
             res['info']['date'] = res['info']['created_at'].date_format().format('yyyy年MM月dd日')
-            res['info']['created_at'] = res['info']['created_at'].date_format().format('yyyy-MM-dd')
+            res['info']['created_at_format'] = res['info']['created_at'].date_format().format('yyyy-MM-dd')
             // 格式化类型
             if (/folder/.test(res['info']['mime_type'])) {
               res['info']['format_type'] = 'folder'
@@ -566,7 +583,18 @@
               res['info']['format_type'] = 'other'
               res['info']['leixing'] = '其他'
             }
-
+            // 权限
+            if (res['info']['group_id'] === null || !res['info']['group_id'].length) {
+              res['info']['group_id'] = []
+              if (res['info']['open_set'] === 1) {
+                res['info']['filePermission'] = '公开'
+              } else {
+                res['info']['filePermission'] = '仅自己可见'
+              }
+            } else {
+              res['info']['filePermission'] = '群组可见'
+            }
+            // 图片
             if (/image/.test(res['info']['mime_type'])) {
               this.imgList.push(res['info'])
             }
@@ -769,6 +797,8 @@
         // 以下几个要不要清空
         this.group_id_arr = []
         this.folder.permission = ''
+        this.permissionStatus = 0
+        this.isSelectGroup = false
         this.folder.name = ''
       },
       selectPermission(id) {
@@ -791,47 +821,63 @@
         }
       },
       CreateDir() {
-        if (!this.folder.name) {
-          this.$message.error('请填写文件夹名称')
-        } else if (!this.folder.permission) {
-          this.$message.error('请选择文件夹权限')
+        this.getGroupLists()
+        if (!this.folderId) {
+          if (!this.folder.name) {
+            this.$message.error('请填写文件夹名称')
+            return
+          } else if (!this.folder.permission) {
+            this.$message.error('请选择文件夹权限')
+            return
+          }
         } else {
-          this.$http.post(api.yunpanCreateDir, {
-            name: this.folder.name,
-            pan_director_id: 0,
-            open_set: this.openSet,
-            group_id_arr: this.group_id_arr
-          }).then(res => {
-            if (res.data.meta.status_code === 200) {
-              this.list.unshift({
-                id: 0,
-                format_type: '',
-                created_at: new Date().getTime(),
-                group_id: this.group_id_arr,
-                open_set: this.openSet,
-                type: 2,
-                name: this.folder.name,
-                user_name: 0,
-                pan_director_id: 0 // 后期params中获取
-              })
-              this.closeCover()
-              this.formatList()
-            } else {
-              this.$message.error(res.data.meta.message)
-            }
-            console.log(res)
-          }).catch(err => {
-            console.error(err)
-          })
+          if (!this.folder.name) {
+            this.$message.error('请填写文件夹名称')
+            return
+          }
         }
+        if (this.permissionStatus === 3 && !this.group_id_arr.length) {
+          this.$message.error('请选择权限小组')
+          return
+        }
+        this.$http.post(api.yunpanCreateDir, {
+          name: this.folder.name,
+          pan_director_id: this.folderId,
+          open_set: this.openSet,
+          group_id_arr: this.group_id_arr
+        }).then(res => {
+          if (res.data.meta.status_code === 200) {
+            this.list.unshift(res.data.data)
+            this.closeCover()
+            this.formatList()
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+          // console.log(res)
+        }).catch(err => {
+          console.error(err)
+        })
       },
       enterFolder(ele) {
         this.$router.push({
           name: this.$route.name,
-          params: {modules: this.$route.params.modules},
+          params: this.$route.params,
           query: {id: ele.id}})
         this.folderId = this.$route.query.id
-        this.getList()
+        this.historyId.push(ele.id)
+      },
+      backFolder() {
+        this.historyId.pop()
+        if (this.historyId.length) {
+          this.$router.push({
+            name: this.$route.name,
+            params: this.$route.params,
+            query: {id: this.historyId[this.historyId.length - 1]}})
+        } else {
+          this.$router.push({
+            name: this.$route.name,
+            params: this.$route.params})
+        }
       }
     },
     created() {
@@ -840,6 +886,7 @@
       this.modules = this.$route.params.modules
       this.getUploadUrl()
       this.getList()
+      this.getGroupLists()
     },
     computed: {
       chunkTitle() {
@@ -863,6 +910,9 @@
       },
       alreadyChoose() { // 已选择数目
         return this.chooseFileList.length
+      },
+      realname() {
+        return this.$store.state.event.user.realname
       }
     },
     watch: {
@@ -905,6 +955,9 @@
             this.title = '搜索'
             this.showList = false
             break
+          case 'folder':
+            this.title = '文件夹'
+            break
         }
       },
       permissionStatus (newVal, oldVal) {
@@ -919,6 +972,13 @@
             this.folder.permission = '权限小组可见'
             break
         }
+      },
+      folderId (newVal) {
+        this.uploadParams['x:pan_director_id'] = newVal || 0
+      },
+      '$route' (to, from) {
+        this.folderId = this.$route.query.id || 0
+        this.getList()
       }
     },
     directives: {

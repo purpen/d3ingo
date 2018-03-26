@@ -263,7 +263,9 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 .el-submenu .el-menu-item {
   min-width: initial;
 }
-
+.el-submenu .el-menu-item:hover, .el-submenu__title:hover {
+  background: #f7f7f7
+}
 .blank10 {
   margin-top: 10px;
 }
@@ -882,6 +884,7 @@ button.is-custom.is-outlined.is-loading:after {
 
 .nav-header .nav-item a:hover, a.nav-item:hover {
   color: #222;
+  background: #f7f7f7
 }
 
 .header-buttom-line {
