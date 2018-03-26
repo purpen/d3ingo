@@ -1010,10 +1010,9 @@ export default {
                       for (let j = 0; j < item.design_case.length; j++) {
                         num++
                         if (num > 2) {
-                          return
+                          break
                         }
                         let c = item.design_case[j]
-                        if (j > 1) break
                         let obj = {}
                         obj.id = c.id
                         obj.title = c.title
