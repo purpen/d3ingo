@@ -45,7 +45,7 @@
               <div class="more-list" tabindex="-1">
                 <i></i>
                 <ul>
-                  <li v-if="folderId === 0">查看权限</li>
+                  <li v-if="folderId === 0" @click="changePermission(ele.id)">更改权限</li>
                   <li>分享</li>
                   <li>下载</li>
                   <li>复制</li>
@@ -102,7 +102,7 @@
             <div class="more-list" tabindex="-1" v-if="!chooseStatus && modules !== 'recycle'">
               <i></i>
               <ul>
-                <li v-if="folderId === 0">查看权限</li>
+                <li v-if="folderId === 0" @click="changePermission(ele.id)">更改权限</li>
                 <li>分享</li>
                 <li>下载</li>
                 <li>复制</li>
@@ -136,7 +136,7 @@
               <ul>
                 <li>重命名</li>
                 <li>删除</li>
-                <li v-if="folderId === 0">查看权限</li>
+                <li v-if="folderId === 0" @click="changePermission(prewiewInfo.id)">更改权限</li>
                 <li @click="showProfile = true">详细信息</li>
               </ul>
             </span>
@@ -168,7 +168,7 @@
             <p><span>大小:</span>{{prewiewInfo.format_size}}</p>
             <!-- <p><span>位置:</span>{{prewiewInfo.pan_director_id}}</p> -->
             <p><span>所有者:</span>{{prewiewInfo.user_name}}</p>
-            <p><span>查看权限:</span>{{prewiewInfo.filePermission}}</p>
+            <p><span>更改权限:</span>{{prewiewInfo.filePermission}}</p>
           </article>
         </div>
       </div>
@@ -350,7 +350,7 @@ export default {
     },
     changePermission(id) {
       this.directOperate(id)
-      this.$emit('changePermission')
+      this.$emit('changePermission', id)
     }
   },
   watch: {
