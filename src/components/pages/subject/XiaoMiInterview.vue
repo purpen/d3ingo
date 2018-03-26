@@ -10,14 +10,26 @@
 台，借此契机，采访了小米生态链负责人刘德和生态链内数位企业家，希望从他们的故事中，找到获奖产品背后不
 为人知的细节。</article>
     </div>
-    <div class="banner-liude" v-if="!isMob" :style="{height : calcHeight}">
+    <div class="banner-liude" v-if="!isMob" :style="{height : calcHeight3}">
       <p class="clearfix">
         <span class="title">小米生态链负责人刘德</span>
         <span class="info">工业设计师创业的底牌、痛点与危机</span>
         <a target="_blank" href="https://www.d3ingo.com/article/show/123"></a>
       </p>
+      <div class="liude-bg1"></div>
+      <div class="liude-bg2"></div>
+    </div>
+    <div class="banner-honghua" v-if="!isMob" :style="{height : calcHeight3}">
+      <p class="clearfix">
+        <span class="info">设计师要直面商业世界的残酷</span>
+        <span class="title">一一铟果专访谷仓学院洪华实录</span>
+        <a target="_blank" href="https://www.d3ingo.com/article/show/136"></a>
+      </p>
+      <div class="honghua-bg1"></div>
+      <div class="honghua-bg2"></div>
     </div>
     <a target="_blank" href="https://www.d3ingo.com/article/show/123"><div v-if="isMob" class="banner-liude-m" :style="{height : calcHeight2}"></div></a> <!-- 移动端 -->
+    <a target="_blank" href="https://www.d3ingo.com/article/show/136"><div v-if="isMob" class="banner-honghua-m" :style="{height : calcHeight2}"></div></a> <!-- 移动端 -->
     <div class="people" v-if="!isMob">
       <div class="people-pic"></div>
       <div class="picture-cover">
@@ -40,8 +52,9 @@ export default {
   name: 'xiaomiInterview',
   data() {
     return {
-      calcHeight: '',
-      calcHeight2: ''
+      calcHeight: '', // banner
+      calcHeight2: '', // 移动端
+      calcHeight3: '' // 人物banner
     }
   },
   mounted() {
@@ -50,21 +63,23 @@ export default {
       if (that.isMob) {
         that.calcHeight = calcImgSize(460, 750, false)
       } else {
-        that.calcHeight = calcImgSize(1040, 2880)
+        that.calcHeight = calcImgSize(500, 1440)
       }
-    })
-    if (this.isMob) {
-      this.calcHeight = calcImgSize(460, 750, false)
-    } else {
-      this.calcHeight = calcImgSize(1040, 2880)
-    }
-    window.addEventListener('resize', () => {
+      if (that.isMob) {
+        that.calcHeight3 = calcImgSize(460, 750, false)
+      } else {
+        that.calcHeight3 = calcImgSize(420, 1440)
+      }
       if (that.isMob) {
         that.calcHeight2 = calcImgSize(415, 690, false)
       }
     })
     if (this.isMob) {
+      this.calcHeight = calcImgSize(460, 750, false)
       this.calcHeight2 = calcImgSize(415, 690, false)
+    } else {
+      this.calcHeight = calcImgSize(500, 1440)
+      this.calcHeight3 = calcImgSize(420, 1440)
     }
   },
   computed: {
@@ -84,8 +99,10 @@ export default {
 }
 </script>
 <style scoped>
+
   .banner {
-    background: url('../../../assets/images/subject/xiaomi/mibanner.png') no-repeat bottom;
+    max-height: 500px;
+    background: url('../../../assets/images/home/banner/home_xiaomi.jpg') no-repeat bottom;
     background-size: cover;
   }
   .banner-m {
@@ -105,20 +122,84 @@ export default {
   }
   .banner-liude {
     position: relative;
+    max-height: 500px;
     background: url('../../../assets/images/subject/xiaomi/liude.png') no-repeat top;
     background-size: contain;
     display: flex;
     align-items: center;
-    margin-bottom: 80px;
+    margin-bottom: 50px;
+  }
+
+  .liude-bg1 {
+    position: absolute;
+    z-index: -1;
+    left: 0;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background: #ca1317
+  }
+
+  .liude-bg2 {
+    position: absolute;
+    z-index: -1;
+    left: 50%;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background: url('../../../assets/images/subject/xiaomi/liude_bg.png') repeat-x top;
+    background-size: contain;
+  }
+  .banner-honghua {
+    position: relative;
+    max-height: 500px;
+    background: url('../../../assets/images/subject/xiaomi/honghua.png') no-repeat top;
+    background-size: contain;
+    display: flex;
+    align-items: center;
+    margin-bottom: 100px;
+  }
+  .honghua-bg1 {
+    position: absolute;
+    z-index: -1;
+    left: 0;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background: #cdcdcd
+  }
+  .honghua-bg2 {
+    position: absolute;
+    z-index: -1;
+    left: 50%;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background: #eaeaea
   }
   .banner-liude-m {
+    margin-bottom: 20px;
     background: url('../../../assets/images/subject/xiaomi/Mliude.jpg') no-repeat top;
+    background-size: contain;
+  }
+  .banner-honghua-m {
+    background: url('../../../assets/images/subject/xiaomi/Mhonghua.jpg') no-repeat top;
     background-size: contain;
   }
   .banner-liude p {
     width: 50%;
     padding-right: 68px;
     text-align: right
+  }
+  
+  .banner-honghua p {
+    width: 50%;
+    margin-left: 50%;
+    padding-left: 68px;
+    text-align: left;
+  }
+  .banner-honghua span {
+    color: #222;
   }
   .title {
     white-space: nowrap;
@@ -144,8 +225,17 @@ export default {
     background-size: cover;
     transform: scale(0.8)
   }
+
+  .banner-honghua a {
+    display: inline-block;
+    width: 156px;
+    height: 38px;
+    background: url('../../../assets/images/subject/xiaomi/button2.png') no-repeat top;
+    background-size: cover;
+    transform: scale(0.8)
+  }
   
-  .banner-liude a:active {
+  .banner-liude a:active, .banner-honghua a:active {
     transform: scale(0.76)
   }
   .people {
@@ -156,7 +246,7 @@ export default {
   .people-m {
     background: url('../../../assets/images/subject/xiaomi/Mpeople.jpg') no-repeat top;
     background-size: contain;
-    margin: 30px 0;
+    margin: 20px 0;
   }
   .people-pic {
     max-width: 1176px;

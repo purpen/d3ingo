@@ -15,7 +15,7 @@
                   }} 前完成支付，逾期会关闭交易</p>
               </div>
               <div class="operation">
-                <p v-if="item.status === 0">
+                <p v-if="item.status === -1 || item.status === 0">
                   <el-button class="is-custom" @click="rePay">更改支付方式</el-button>
                 </p>
                 <!--<p><el-button >取消订单</el-button></p>-->
