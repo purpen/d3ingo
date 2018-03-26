@@ -1,9 +1,12 @@
 <template>
-<div>
-  <el-col :span="isMob?24 : 6">
+	<div>
+    <navTitle></navTitle>
+    <div class="container">
+        <el-row :gutter="10">
+          <el-col :span="isMob?24 : 6">
             <div class="input" @click="searchUsername">
               <input type="text" placeholder="搜索成员">
-              <img src="../../../../assets/images/member/search02@2x.png" alt="">
+              <img src="../../../assets/images/member/search02@2x.png" alt="">
             </div>
             <div class="TopUser">
               <router-link :to="{name: 'userAllList'}">成员</router-link> 
@@ -18,7 +21,8 @@
                 </ul>
               </div>
           </el-col>
-  <el-col :span="isMob? 24: 18">
+          <el-col :span="isMob? 24: 18">
+             <el-row>
         <el-col class="Top">
               <el-col :span="21" class="navText">
                 <span>所有成员</span>
@@ -56,37 +60,45 @@
               <div slot-scope="props">
                 <span class="company">{{props.row.company_role_init}}</span>
                 <div class="togger">
-                  <img src="../../../../assets/images/member/Group5@2x.png" alt="">
-                  <img src="../../../../assets/images/member/small-arrow@2x.png" alt="">
+                  <img src="../../../assets/images/member/Group5@2x.png" alt="">
                 </div>
               </div>
             </el-table-column>
           </el-table>
         </el-col>
-    </el-col>
+      </el-row>
+          </el-col>
+      </el-row>
     </div>
+	</div>
 </template>
 <script>
-import api from '@/api/api'
+import navTitle from '@/components/pages/user/userTable/navTitle'
 import user from '@/components/pages/user/Show/UserShow'
+import api from '@/api/api'
 export default {
+  name: 'Search',
   data () {
     return {
-      rand_string: {
-        default: ''
-      },
       isLoading: false,
       isHide: false,
       itemList: [],
-      totalCount: 0
+      // totalCount: 0,
+      item: '',
+      query: {
+        page: 1,
+        pageSize: 5,
+        sort: 0
+      },
+      rand_string: ''
     }
   },
   components: {
-    user
+    user,
+    navTitle
   },
   methods: {
     alick() {
-      this.$emit('alick')
       this.isHide = !this.isHide
       this.$http.get(api.inviteKey)
           .then((res) => {
@@ -110,6 +122,34 @@ export default {
     deleteFile(id) {
       this.directOperate(id)
       this.$emit('deleteFile')
+    },
+    searchUsername () {
+    //     var searchRegex = new RegExp(this.booksearchtext, 'i');
+    //     var arr=[];
+    //     for(var i= 0, j = items.length; i < j; i++){
+    //         arr[i] = {};
+    //         arr[i].contacters = [];
+    //         for(var item = 0, len = items[i].contacters.length; item < len; item++){
+    //             if(searchRegex.test(items[i].contacters[item].name) || searchRegex.test(items[i].contacters[item].enterpriseName) || searchRegex.test(items[i].contacters[item].phoneNumber) || searchRegex.test(items[i].contacters[item].uniqueID)){
+    //                 arr[i].firstLetter = items[i].firstLetter;
+    //                 arr[i].contacters.push(items[i].contacters[item]);
+    //             }
+    //         }
+    //     }
+    //     return arr;
+    // }
+    },
+    newList () {
+      console.log('新加入的成员')
+    },
+    NoList () {
+      console.log('未分配的成员')
+    },
+    stop () {
+      console.log('停用成员')
+    },
+    AlluserList () {
+      console.log('所有成员')
     }
   },
   computed: {
@@ -117,16 +157,25 @@ export default {
       return this.$store.state.event.isMob
     }
   },
-  created: function () {
+  created () {
     const that = this
-    // var userid = [that.itemList.id]
-    // 获取成员管理
     that.$http.get(api.designMemberList)
         .then(function (response) {
           if (response.data.meta.status_code === 200) {
             that.itemList = response.data.data
-            // console.log(that.itemList)
+            // that.query.totalCount = response.data.meta.pagination.total_pages
+            for (let i of that.itemList) {
+              // console.log(i.id)
+              if (i.company_role === 0) {
+                i.company_role_init = '成员'
+              } else if (i.company_role === 10) {
+                i.company_role_init = '管理员'
+              } else if (i.company_role === 20) {
+                i.company_role_init = '超级管理员'
+              }
+            }
           }
+          // console.log(response.data)
         })
         .catch(function (error) {
           that.$message.error(error.message)
@@ -134,44 +183,9 @@ export default {
   }
 }
 </script>
+
 <style scoped>
-.navText span {
-  font-family: PingFangSC-Regular;
-  padding-right: 10px;
-  font-size: 16px;
-  color: #666666;
-  }
-  .Top {
-    background: #FFFFFF;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #D2D2D2;
-  }
-  .Top span {
-    font-family: PingFangSC-Regular;
-    font-size: 16px;
-    color: #666666;
-  }
-.right a {
-  cursor:pointer;
-  font-family: PingFangSC-Regular;
-  font-size: 14px;
-  color: #FF5A5F;
-  position: absolute;
-  left: 29px;
-  top: 5px;
-}
-.right {
-  position: relative;
-}
-.right i{
-  display: block;
-  height: 24px;
-    background: url('../../../../assets/images/member/invitation@2x.png') no-repeat;
-    background-size: 24px 24px;
-    background-position: left;
-}
 .Alluser ul{
-  width: 280px;
   font-size: 14px;
   cursor: pointer;
 }
@@ -258,7 +272,7 @@ export default {
 .right i{
   display: block;
   height: 24px;
-    background: url('../../../../assets/images/member/invitation@2x.png') no-repeat;
+    background: url('../../../assets/images/member/invitation@2x.png') no-repeat;
     background-size: 24px 24px;
     background-position: left;
 }
@@ -305,19 +319,14 @@ export default {
     height: 16px;
     width: 16px;
     position: absolute;
+    cursor: pointer;
     right: 33px;
     top: 12px;
 }
 .togger img {
   height: 16px;
 }
-.togger img:last-child {
-  right: -2px;
-  top: 2px;
-  position: absolute;
-  display: none;
-}
-.togger img:focus+ img {
-  display: block;
+.togger:focus img {
+  transform:rotate(-90deg);
 }
 </style>

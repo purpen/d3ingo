@@ -7,9 +7,9 @@
           <p>分享链接邀请成员</p>
         <i class="fx-icon-nothing-close-error" @click="closeDialog"></i>
         <div class="boxInput"> <input type="text" v-model="rand_string" class="input" ></div>
-          <span>链接7天后失效</span>
+          <span class="day">链接7天后失效</span>
         <el-button class="dialog-footer" type="danger" @click="copyLj"><span>
-          <!-- <route-link :to="{path: 'UserRegister'}"></route-link>-->
+          
           复制链接</span></el-button> 
       </div>
   </div>
@@ -37,7 +37,7 @@ export default {
       this.$emit('alick')
     },
     copyLj() {
-      this.$router.push({name: 'Register'})
+      console.log(this.rand_string)
     }
   },
   created: function () {
@@ -47,7 +47,7 @@ export default {
           if (response.data.meta.status_code === 200) {
             that.itemList = response.data.data
           }
-          console.log(response.data)
+          // console.log(response.data)
         })
         .catch(function (error) {
           that.$message.error(error.message)
@@ -58,8 +58,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-
 .content1 {
   opacity: 0.7;
   background: #000000;
@@ -77,6 +75,9 @@ export default {
   font-size: 14px;
   color: #696969;
 }
+.day {
+  padding-top: 25px;
+}
 .el-dialog {
   width: 380px;
   height: 229px;
@@ -89,11 +90,10 @@ export default {
 }
 .el-dialog p{
   width: 380px;
-  padding-top:15px;
-  height: 50px;
   background: #F7F7F7;
   font-family: PingFangSC-Medium;
   font-size: 14px;
+  line-height: 50px;
   color: #222222;
 }
 .boxInput {
@@ -115,8 +115,8 @@ export default {
 }
 .el-dialog  span{
   text-align: center;
-  margin: 20px auto;
   display: block;
+  margin: 0 auto;
   width: 200px;
   height: 20px;
   font-size: 14px;
@@ -128,6 +128,7 @@ export default {
   width: 320px;
   height: 34px;
   background: #FF5A5F;
+  margin-top: 40px;
   border: 1px solid #FF5A5F;
   border-radius: 4px;
 }
