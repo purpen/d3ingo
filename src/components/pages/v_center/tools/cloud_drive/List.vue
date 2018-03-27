@@ -42,7 +42,14 @@
                 <p :class="[{'chunk': curView === 'list','list': curView === 'chunk'}]" 
                   :title="chunkTitle"
                   @click="changeFileView" v-if="modules !== 'recycle'"></p>
-                <p class="sequence"></p>
+                <p class="sequence">
+                  <i :class="['icon', {'reverse': sortGist.ascend === -1}]" @click="changeSortAscend()"></i>
+                  <span class="add-option">
+                    <a :class="{'checked': sortGist.order_by === 1}" @click="changeSortGist(1)">时间</a>
+                    <a :class="{'checked': sortGist.order_by === 2}" @click="changeSortGist(2)">大小</a>
+                    <a :class="{'checked': sortGist.order_by === 3}" @click="changeSortGist(3)">名称</a>
+                  </span>
+                </p>
                 <p class="edit" title="编辑模式" @click="changeChooseStatus"></p>
               </div>
               <p class="edit-menu" v-if="isChoose">
@@ -50,13 +57,13 @@
                   <i :class="['file-radio', {'active': isChooseAll === 'all'}, {'chunk-view': curView === 'chunk'}]" @click="changeChooseAll">file-icon</i>
                 </el-col>
                 <el-col :span="6" class="choose-info">
-                  <span class="already-choose">已选择{{alreadyChoose}}项</span>
+                  <span class="already-choose" @click="changeChooseAll">已选择{{alreadyChoose}}项</span>
                   <span class="cancel-choose" @click="cancelChoose">取消选择</span>
                 </el-col>
                 <el-col :offset="4" :span="12">
                   <span v-if="modules !== 'recycle'">共享</span>
                   <span v-if="modules !== 'recycle'">下载</span>
-                  <span v-if="modules !== 'recycle'">复制</span>
+                  <span v-if="modules !== 'recycle'" @click="confirmCopy">复制</span>
                   <span v-if="modules !== 'recycle'">移动</span>
                   <span v-if="modules !== 'recycle'" @click="rename" :class="{'disable': alreadyChoose > 1 || !alreadyChoose}">重命名</span>
                   <span v-if="modules !== 'recycle'" @click="deleteFile">删除</span>
@@ -205,10 +212,42 @@
         <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
       </h3>
       <div class="dialog-conetent dialog-folder">
-        <p class="dialog-name">文件夹名称</p>
-        <input placeholder="请填写文件夹名称" v-model="folder.name">
         <p class="dialog-permission">设置查看权限</p>
-        <input v-model="folder.permission">
+        <input v-if="folderId === 0"
+          class="select-permission" placeholder="请选择权限"
+          v-focus="isFocusFolderPermission"
+          @focus="focusFolderPermission"
+          @blur="blurFolderPermission"
+          v-model="folder.permission">
+        <ul class="selectFolderPermission list-shadow" v-show="isFocusFolderPermission">
+          <li :class="['public', {'lihover': permissionStatus === 1}]" @click="selectPermission(1)">
+            <i></i>
+            <span>全部成员可见</span>
+          </li>
+          <li :class="['privacy', {'lihover': permissionStatus === 2}]" @click="selectPermission(2)">
+            <i></i>
+            <span>仅自己可见</span>
+          </li>
+          <li :class="['group', {'lihover': permissionStatus === 3}]" @click="selectGroup">
+            <i></i>
+            <span>权限小组可见</span>
+            <div class="grouplist" v-if="isSelectGroup">
+              <ul v-if="groupList.length">
+                <li v-for="(ele, index) in groupList" :key="index"
+                  :class="{'lihover': group_id_arr.indexOf(ele.id) !== -1}"
+                  @click="changeSelectGroup(ele.id)">
+                  <b :class="{'active': group_id_arr.indexOf(ele.id) !== -1}"></b>
+                  {{ele.name}}
+                </li>
+              </ul>
+              <ul style="overflow: hidden" v-else>
+                <li>
+                  暂无群组
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
         <button class="create-btn" @click="confirmPermission">设置</button>
       </div>
     </section>
@@ -262,6 +301,22 @@
         <button class="create-btn" @click="CreateDir">创建</button>
       </div>
     </section>
+
+    <section class="dialog-body dialog-body-plus" v-if="showConfirmCopy">
+      <h3 class="dialog-header clearfix">
+        复制文件到
+        <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
+      </h3>
+      <div :class="['dialog-conetent', {'dialog-conetent-scroll': folderObj.length > 3}]">
+        <div v-for="(ele,index) in folderObj" :key="index" class="folder-item">
+          <div class="folder-item-head"><p></p></div>
+          <ul class="folder-body">
+            <li v-for="(e, i) in ele.folderList" :key="i" :class="{'checked': ele.checkId === e.id}" @click="clickFolder(e.id, index)">{{e.name}}</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
     <el-col :span="18" :offset="6">
       <el-pagination v-if="query.totalCount / query.pageSize > 1" class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize" :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange">
       </el-pagination>
@@ -302,6 +357,7 @@
         showConfirmRecover: false, // 确认恢复文件?
         showConfirmFolder: false, // 确认新建文件夹
         showConfirmPermission: false, // 确认更改权限
+        showConfirmCopy: false, // 确认更改权限
         showList: true, // 显示全部文件或搜索 false => 搜索
         searchWord: '', // 搜索关键字
         hasRename: false, // 重命名状态
@@ -323,7 +379,17 @@
         group_id_arr: [], // 所属群组ID数组
         isSelectGroup: false, // 选择群组状态
         permissionStatus: 0, // 权限 1 全部 2自己 3小组
-        historyId: []
+        historyId: [], // 文件夹历史
+        setPermissionId: 0,
+        sortGist: {
+          order_by: 1, // date 1, size 2, name 3
+          ascend: 1 // 1 升, -1 降
+        }, // 排序依据
+        folderObj: [{
+          folderId: 0,
+          folderList: [],
+          checkId: 0
+        }]
       }
     },
     components: {
@@ -344,7 +410,7 @@
         this.getList()
       },
       formatList() {
-        this.list.sort(this.$phenix.arr_sort('type', this.$phenix.arr_sort('name')))
+        this.list.sort(this.$phenix.arr_sort('type'))
         for (let i of this.list) {
           // 格式化大小
           if (i.size) {
@@ -413,12 +479,18 @@
       getList() {
         this.isLoading = true
         let url = ''
+        let type = 0
         if (this.modules === 'all') {
           url = api.yunpanList
         } else if (this.modules === 'recently-use') {
           url = api.yunpanRecentUseFile
         } else if (this.modules === 'recycle') {
           url = api.yunpanRecycleStation
+        } else if (/[1-7]/.test(this.modules)) {
+          url = api.yunpanTypeList
+        } else if (this.modules === 0) {
+          url = api.yunpanList
+          type = 1
         } else {
           this.isLoading = false
           this.list = []
@@ -427,7 +499,11 @@
         this.$http.get(url, {params: {
           pan_director_id: this.folderId,
           page: this.query.page,
-          per_page: this.query.pageSize
+          per_page: this.query.pageSize,
+          type: type,
+          resource_type: this.modules,
+          order_by: this.sortGist.order_by,
+          ascend: this.sortGist.ascend
         }}).then(
           (res) => {
             // console.log(res.data.data)
@@ -486,8 +562,8 @@
           }
         })
       },
-      headTitle(e) {
-        this.modules = e.name
+      headTitle(name) {
+        this.modules = name
         this.isChoose = false
         this.isChooseAll = 'empty'
         this.curView = 'list'
@@ -751,6 +827,49 @@
           console.error(err)
         })
       },
+      confirmCopy() {
+        this.showConfirmCopy = true
+        this.showCover = true
+        this.$http.get(api.yunpanList, {params: {
+          pan_director_id: 0,
+          page: 1,
+          per_page: 100,
+          type: 1,
+          order_by: 3,
+          ascend: 1
+        }}).then(res => {
+          if (res.data.meta.status_code === 200) {
+            this.folderObj = [{folderId: 0, folderList: res.data.data, checkId: 0}]
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(err => {
+          console.error(err)
+        })
+      },
+      clickFolder(id, index) {
+        this.folderObj[index].checkId = id
+        this.$http.get(api.yunpanList, {params: {
+          pan_director_id: id,
+          page: 1,
+          per_page: 100,
+          type: 1,
+          order_by: 3,
+          ascend: 1
+        }}).then(res => {
+          if (res.data.meta.status_code === 200) {
+            if (index < this.folderObj.length - 1) {
+              this.folderObj.splice(index + 1, this.folderObj.length)
+            }
+            this.folderObj.push({folderId: id, folderList: res.data.data, checkId: 0})
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        })
+        .catch(err => {
+          console.error(err)
+        })
+      },
       searchClick() {
         this.showList = !this.showList
         this.list = []
@@ -766,11 +885,31 @@
         this.modules = this.$route.params.modules
         this.getList()
       },
-      changePermission() {
+      changePermission(id) {
+        this.setPermissionId = id
         this.showConfirmPermission = true
         this.showCover = true
       },
       confirmPermission() {
+        this.$http.put(api.setPermission, {
+          pan_director_id: this.setPermissionId,
+          open_set: this.openSet,
+          group_id_arr: this.group_id_arr
+        }).then(res => {
+          if (res.data.meta.status_code === 200) {
+            this.list.forEach((item) => {
+              if (item.id === this.setPermissionId) {
+                item.open_set = this.openSet
+                item.group_id_arr = this.group_id_arr
+              }
+            })
+            this.closeCover()
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(err => {
+          console.error(err)
+        })
       },
       focusFolderPermission() {
         this.isFocusFolderPermission = true
@@ -794,6 +933,7 @@
         this.showConfirmFolder = false
         this.isFocusFolderName = false
         this.isFocusFolderPermission = false
+        this.showConfirmCopy = false
         // 以下几个要不要清空
         this.group_id_arr = []
         this.folder.permission = ''
@@ -853,7 +993,6 @@
           } else {
             this.$message.error(res.data.meta.message)
           }
-          // console.log(res)
         }).catch(err => {
           console.error(err)
         })
@@ -878,6 +1017,22 @@
             name: this.$route.name,
             params: this.$route.params})
         }
+      },
+      changeSortGist(type) {
+        if (this.sortGist.order_by !== type) {
+          this.sortGist.order_by = type
+          this.getList()
+        }
+      },
+      changeSortAscend() {
+        let ascend = this.sortGist.ascend
+        if (ascend === 1) {
+          ascend = -1
+        } else {
+          ascend = 1
+        }
+        this.sortGist.ascend = ascend
+        this.getList()
       }
     },
     created() {
@@ -916,6 +1071,10 @@
       }
     },
     watch: {
+      '$route' (to, from) {
+        this.folderId = this.$route.query.id || 0
+        this.getList()
+      },
       fileList: {
         handler(val) {
           let a = 0
@@ -958,6 +1117,30 @@
           case 'folder':
             this.title = '文件夹'
             break
+          case 0:
+            this.title = '文件夹'
+            break
+          case 1:
+            this.title = '图片'
+            break
+          case 2:
+            this.title = '视频'
+            break
+          case 3:
+            this.title = '音频'
+            break
+          case 4:
+            this.title = '文档'
+            break
+          case 5:
+            this.title = '电子表格'
+            break
+          case 6:
+            this.title = '演示文稿'
+            break
+          case 7:
+            this.title = 'PDF'
+            break
         }
       },
       permissionStatus (newVal, oldVal) {
@@ -975,10 +1158,6 @@
       },
       folderId (newVal) {
         this.uploadParams['x:pan_director_id'] = newVal || 0
-      },
-      '$route' (to, from) {
-        this.folderId = this.$route.query.id || 0
-        this.getList()
       }
     },
     directives: {
@@ -1026,7 +1205,7 @@
   .operate {
     height: 30px;
   }
-  .operate p {
+  .operate p, .operate .icon {
     display: inline-block;
     width: 30px;
     height: 30px;
@@ -1035,49 +1214,69 @@
     position: relative;
     opacity: 0.6;
   }
-  
-  .operate p:hover {
+  .operate p:hover,
+  .operate .icon {
     opacity: 1;
   }
-  .operate p.add:hover .add-option {
+  .operate p.add:hover .add-option,
+  .operate p.sequence:hover .add-option {
     display: block;
   }
-
+  i.reverse {
+    transform: rotate(180deg)
+  }
+  .operate p.sequence .add-option a {
+    position: relative;
+    padding: 0 20px;
+  }
+  .operate p.sequence .add-option a.checked {
+    background: #f7f7f7
+  }
+  .operate p.sequence .add-option a.checked:after {
+    content: "";
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    width: 8px;
+    height: 14px;
+    border-right: 2px solid #999;
+    border-bottom: 2px solid #999;
+    transform: rotate(45deg)
+  }
   .operate p.add {
     background: url('../../../../../assets/images/tools/cloud_drive/operate/add@2x.png') top no-repeat;
-    background-size: 24px
+    background-size: 26px
   }
   .operate p.search {
     background: url('../../../../../assets/images/tools/cloud_drive/operate/search@2x.png') top no-repeat;
-    background-size: 24px
+    background-size: 26px
   }
   .operate p.chunk {
     background: url('../../../../../assets/images/tools/cloud_drive/operate/chunk@2x.png') top no-repeat;
-    background-size: 24px
+    background-size: 26px
   }
   .operate p.list {
     background: url('../../../../../assets/images/tools/cloud_drive/operate/list@2x.png') top no-repeat;
-    background-size: 24px
+    background-size: 26px
   }
-  .operate p.sequence {
+  .operate p i.icon {
+    transition: 0.3s all ease;
     background: url('../../../../../assets/images/tools/cloud_drive/operate/sequence@2x.png') top no-repeat;
-    background-size: 24px
+    background-size: 26px
   }
   .operate p.edit {
     background: url('../../../../../assets/images/tools/cloud_drive/operate/edit@2x.png') top no-repeat;
-    background-size: 24px
+    background-size: 26px
   }
   .operate p:last-child {
     margin-right: 0;
   }
   
   span.add-option {
-    display: block;
     position: absolute;
     left: -65px;
     top: 29px;
     width: 160px;
-    height: 82px;
     border: 1px solid #d2d2d2;
     animation: slowShow 0.3s;
     display: none;
@@ -1188,7 +1387,7 @@
     transform: rotate(-45deg);
   }
 
-  i.file-radio.active {    
+  i.file-radio.active {
     border: 1px solid #999;
     background: #999;
   }
@@ -1333,6 +1532,10 @@
     box-shadow: 0 0 4px 0 rgba(0,0,0,0.10);
     border-radius: 4px;
   }
+  .dialog-body-plus {
+    width: 680px;
+    overflow: hidden;
+  }
   .dialog-header {
     font-size: 16px;
     color: #222;
@@ -1355,7 +1558,78 @@
   .dialog-conetent {
     text-align: center
   }
-
+  .dialog-body-plus .dialog-conetent {
+    font-size: 0;
+    text-align: left;
+    min-height: 390px;
+    background: #fff;
+    white-space: nowrap;
+    /* ie 滚动条 */
+    scrollbar-face-color:#D8D8D8;
+    scrollbar-shadow-color:#D8D8D8;
+    scrollbar-highlight-color:#EAEAEA;
+    scrollbar-3dlight-color:#EAEAEA;
+    scrollbar-darkshadow-color:#697074;
+    scrollbar-track-color:#F7F7F7;
+    scrollbar-arrow-color:#666666;
+  }
+  .dialog-body-plus .dialog-conetent-scroll {
+    overflow-x: scroll;
+  }
+  .folder-item {
+    font-size: 14px;
+    display: inline-block;
+    vertical-align: top;
+    height: 390px;
+    width: 200px;
+    border-right: 1px solid #d2d2d2
+  }
+  .folder-item-head {
+    overflow: hidden;
+    height: 40px;
+  }
+  .folder-item-head p {
+    margin-left: 23px;
+    margin-top: 8px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    background: url('../../../../../assets/images/tools/cloud_drive/operate/add_folder@2x.png') no-repeat;
+    background-size: 24px;
+    opacity: 0.6;
+  }
+  .folder-item-head p:hover {
+    opacity: 1
+  }
+  .folder-body {
+  }
+  .folder-body-scroll {
+    overflow-y: scroll;
+  }
+  .folder-body li {
+    height: 50px;
+    line-height: 50px;
+    background: #fff;
+    padding-left: 60px;
+    position: relative;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+  }
+  
+  .folder-body li::before {
+    content: "";
+    position: absolute;
+    left: 20px;
+    top: 12px;
+    width: 30px;
+    height: 25px;
+    background: url('../../../../../assets/images/tools/cloud_drive/type/folder@2x.png') no-repeat;
+    background-size: cover;
+  }
+  .folder-body li:hover, .folder-body li.checked {
+    background: rgba(255,90,95,0.10);
+  }
   .dialog-folder {
     padding: 0 20px;
   }

@@ -40,23 +40,25 @@
               width="80">
             </el-table-column>
             <el-table-column
-              width="120"
-              label="创建人">
+              width="200"
+              label="创建信息">
                 <template slot-scope="scope">
-                  <p>
-                    {{ scope.row.user.account }}[{{ scope.row.user_id }}]
-                  </p>
+                  <p>用户: {{ scope.row.user.account }}[{{ scope.row.user_id }}]</p>
+                  <p>公司: {{ scope.row.company_name }}</p>
                 </template>
             </el-table-column>
             <el-table-column
-              prop="type_value"
-              label="支付类型"
-              width="80">
-            </el-table-column>
-            <el-table-column
-              prop="pay_type_value"
-              label="支付方式"
-              width="100">
+              label="支付信息"
+              width="160">
+                <template slot-scope="scope">
+                  <p>支付类型: {{ scope.row.type_value }}</p>
+                  <p>支付方式: {{ scope.row.pay_type_value }}</p>
+                  <p v-if="scope.row.pay_type !== 5">交易号: {{ scope.row.pay_no }}</p>
+                  <div v-else>
+                    <p>银行: {{ scope.row.bank }}</p>
+                    <p>卡号: {{ scope.row.bank_id }}</p>
+                  </div>
+                </template>
             </el-table-column>
             <el-table-column
               prop="status_value"

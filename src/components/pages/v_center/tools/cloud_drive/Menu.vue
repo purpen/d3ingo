@@ -5,22 +5,22 @@
       <el-collapse-item title="设计云盘" name="1">
         <ul class="cloud-classify">
           <li>
-            <a :class="['files', {'active': isActive === 'all'}]" @click="changeTitle({name: 'all', val: '全部文件'})">
+            <a :class="['files', {'active': isActive === 'all'}]" @click="changeTitle('all')">
               <span>全部文件</span>
             </a>
           </li>
           <li>
-            <a :class="['project', {'active': isActive === 'project'}]" @click="changeTitle({name: 'project', val: '项目'})">
+            <a :class="['project', {'active': isActive === 'project'}]" @click="changeTitle('project')">
               <span>项目</span>
               </a>
           </li>
           <li>
-            <a :class="['recently', {'active': isActive === 'recently-use'}]" @click="changeTitle({name: 'recently-use', val: '最近使用'})">
+            <a :class="['recently', {'active': isActive === 'recently-use'}]" @click="changeTitle('recently-use')">
               <span>最近使用</span>
             </a>
           </li>
           <li>
-            <a :class="['recycle', {'active': isActive === 'recycle'}]" @click="changeTitle({name: 'recycle', val: '回收站'})">
+            <a :class="['recycle', {'active': isActive === 'recycle'}]" @click="changeTitle('recycle')">
               <span>回收站</span>
             </a>
           </li>
@@ -30,46 +30,46 @@
       </el-collapse-item>
       <el-collapse-item title="文件类型" name="3">
         <ul class="cloud-classify">
-          <li>
-            <a class="image">
+          <li @click="changeTitle(1)">
+            <a :class="['image', {'active': isActive === 1}]">
               <span>图片</span>
             </a>
           </li>
-          <li>
-            <a class="artboard">
-              <span>PDF</span>
-              </a>
-          </li>
-          <li>
-            <a class="document">
-              <span>文档</span>
-            </a>
-          </li>
-          <li>
-            <a class="spreadsheet">
-              <span>电子表格</span>
-            </a>
-          </li>
-          <li>
-            <a class="powerpoint">
-              <span>演示文稿</span>
-            </a>
-          </li>
-          <li>
-            <a class="folder">
-              <span>文件夹</span>
-            </a>
-          </li>
-          <li>
-            <a class="video">
+          <li @click="changeTitle(2)">
+            <a :class="['video', {'active': isActive === 2}]">
               <span>视频</span>
             </a>
           </li>
-          <li>
-            <a class="audio">
+          <li @click="changeTitle(3)">
+            <a :class="['audio', {'active': isActive === 3}]">
               <span>音频</span>
             </a>
           </li>
+          <li @click="changeTitle(4)">
+            <a :class="['document', {'active': isActive === 4}]">
+              <span>文档</span>
+            </a>
+          </li>
+          <li @click="changeTitle(5)">
+            <a :class="['spreadsheet', {'active': isActive === 5}]">
+              <span>电子表格</span>
+            </a>
+          </li>
+          <li @click="changeTitle(6)">
+            <a :class="['powerpoint', {'active': isActive === 6}]">
+              <span>演示文稿</span>
+            </a>
+          </li>
+          <li @click="changeTitle(7)">
+            <a :class="['artboard', {'active': isActive === 7}]">
+              <span>PDF</span>
+              </a>
+          </li>
+          <!-- <li @click="changeTitle(0)">
+            <a :class="['folder', {'active': isActive === 0}]">
+              <span>文件夹</span>
+            </a>
+          </li> -->
         </ul>
       </el-collapse-item>
     </el-collapse>
@@ -91,10 +91,10 @@
       }
     },
     methods: {
-      changeTitle(e) {
-        if (this.isActive !== e.name) {
-          this.$emit('getTitle', e)
-          this.$router.push({name: this.$route.name, params: {modules: e.name}})
+      changeTitle(name) {
+        if (this.isActive !== name) {
+          this.$emit('getTitle', name)
+          this.$router.push({name: this.$route.name, params: {modules: name}})
         }
       }
     }
