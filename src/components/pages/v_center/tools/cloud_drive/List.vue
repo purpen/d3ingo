@@ -57,13 +57,13 @@
                   <i :class="['file-radio', {'active': isChooseAll === 'all'}, {'chunk-view': curView === 'chunk'}]" @click="changeChooseAll">file-icon</i>
                 </el-col>
                 <el-col :span="6" class="choose-info">
-                  <span class="already-choose">已选择{{alreadyChoose}}项</span>
+                  <span class="already-choose" @click="changeChooseAll">已选择{{alreadyChoose}}项</span>
                   <span class="cancel-choose" @click="cancelChoose">取消选择</span>
                 </el-col>
                 <el-col :offset="4" :span="12">
                   <span v-if="modules !== 'recycle'">共享</span>
                   <span v-if="modules !== 'recycle'">下载</span>
-                  <span v-if="modules !== 'recycle'">复制</span>
+                  <span v-if="modules !== 'recycle'" @click="confirmCopy">复制</span>
                   <span v-if="modules !== 'recycle'">移动</span>
                   <span v-if="modules !== 'recycle'" @click="rename" :class="{'disable': alreadyChoose > 1 || !alreadyChoose}">重命名</span>
                   <span v-if="modules !== 'recycle'" @click="deleteFile">删除</span>
@@ -301,6 +301,22 @@
         <button class="create-btn" @click="CreateDir">创建</button>
       </div>
     </section>
+
+    <section class="dialog-body dialog-body-plus" v-if="showConfirmCopy">
+      <h3 class="dialog-header clearfix">
+        复制文件到
+        <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
+      </h3>
+      <div :class="['dialog-conetent', {'dialog-conetent-scroll': folderObj.length > 3}]">
+        <div v-for="(ele,index) in folderObj" :key="index" class="folder-item">
+          <div class="folder-item-head"><p></p></div>
+          <ul class="folder-body">
+            <li v-for="(e, i) in ele.folderList" :key="i" :class="{'checked': ele.checkId === e.id}" @click="clickFolder(e.id, index)">{{e.name}}</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
     <el-col :span="18" :offset="6">
       <el-pagination v-if="query.totalCount / query.pageSize > 1" class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize" :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange">
       </el-pagination>
@@ -341,6 +357,7 @@
         showConfirmRecover: false, // 确认恢复文件?
         showConfirmFolder: false, // 确认新建文件夹
         showConfirmPermission: false, // 确认更改权限
+        showConfirmCopy: false, // 确认更改权限
         showList: true, // 显示全部文件或搜索 false => 搜索
         searchWord: '', // 搜索关键字
         hasRename: false, // 重命名状态
@@ -367,7 +384,12 @@
         sortGist: {
           order_by: 1, // date 1, size 2, name 3
           ascend: 1 // 1 升, -1 降
-        } // 排序依据
+        }, // 排序依据
+        folderObj: [{
+          folderId: 0,
+          folderList: [],
+          checkId: 0
+        }]
       }
     },
     components: {
@@ -805,6 +827,49 @@
           console.error(err)
         })
       },
+      confirmCopy() {
+        this.showConfirmCopy = true
+        this.showCover = true
+        this.$http.get(api.yunpanList, {params: {
+          pan_director_id: 0,
+          page: 1,
+          per_page: 100,
+          type: 1,
+          order_by: 3,
+          ascend: 1
+        }}).then(res => {
+          if (res.data.meta.status_code === 200) {
+            this.folderObj = [{folderId: 0, folderList: res.data.data, checkId: 0}]
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(err => {
+          console.error(err)
+        })
+      },
+      clickFolder(id, index) {
+        this.folderObj[index].checkId = id
+        this.$http.get(api.yunpanList, {params: {
+          pan_director_id: id,
+          page: 1,
+          per_page: 100,
+          type: 1,
+          order_by: 3,
+          ascend: 1
+        }}).then(res => {
+          if (res.data.meta.status_code === 200) {
+            if (index < this.folderObj.length - 1) {
+              this.folderObj.splice(index + 1, this.folderObj.length)
+            }
+            this.folderObj.push({folderId: id, folderList: res.data.data, checkId: 0})
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        })
+        .catch(err => {
+          console.error(err)
+        })
+      },
       searchClick() {
         this.showList = !this.showList
         this.list = []
@@ -868,6 +933,7 @@
         this.showConfirmFolder = false
         this.isFocusFolderName = false
         this.isFocusFolderPermission = false
+        this.showConfirmCopy = false
         // 以下几个要不要清空
         this.group_id_arr = []
         this.folder.permission = ''
@@ -1005,6 +1071,10 @@
       }
     },
     watch: {
+      '$route' (to, from) {
+        this.folderId = this.$route.query.id || 0
+        this.getList()
+      },
       fileList: {
         handler(val) {
           let a = 0
@@ -1088,10 +1158,6 @@
       },
       folderId (newVal) {
         this.uploadParams['x:pan_director_id'] = newVal || 0
-      },
-      '$route' (to, from) {
-        this.folderId = this.$route.query.id || 0
-        this.getList()
       }
     },
     directives: {
@@ -1466,6 +1532,10 @@
     box-shadow: 0 0 4px 0 rgba(0,0,0,0.10);
     border-radius: 4px;
   }
+  .dialog-body-plus {
+    width: 680px;
+    overflow: hidden;
+  }
   .dialog-header {
     font-size: 16px;
     color: #222;
@@ -1488,7 +1558,78 @@
   .dialog-conetent {
     text-align: center
   }
-
+  .dialog-body-plus .dialog-conetent {
+    font-size: 0;
+    text-align: left;
+    min-height: 390px;
+    background: #fff;
+    white-space: nowrap;
+    /* ie 滚动条 */
+    scrollbar-face-color:#D8D8D8;
+    scrollbar-shadow-color:#D8D8D8;
+    scrollbar-highlight-color:#EAEAEA;
+    scrollbar-3dlight-color:#EAEAEA;
+    scrollbar-darkshadow-color:#697074;
+    scrollbar-track-color:#F7F7F7;
+    scrollbar-arrow-color:#666666;
+  }
+  .dialog-body-plus .dialog-conetent-scroll {
+    overflow-x: scroll;
+  }
+  .folder-item {
+    font-size: 14px;
+    display: inline-block;
+    vertical-align: top;
+    height: 390px;
+    width: 200px;
+    border-right: 1px solid #d2d2d2
+  }
+  .folder-item-head {
+    overflow: hidden;
+    height: 40px;
+  }
+  .folder-item-head p {
+    margin-left: 23px;
+    margin-top: 8px;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    background: url('../../../../../assets/images/tools/cloud_drive/operate/add_folder@2x.png') no-repeat;
+    background-size: 24px;
+    opacity: 0.6;
+  }
+  .folder-item-head p:hover {
+    opacity: 1
+  }
+  .folder-body {
+  }
+  .folder-body-scroll {
+    overflow-y: scroll;
+  }
+  .folder-body li {
+    height: 50px;
+    line-height: 50px;
+    background: #fff;
+    padding-left: 60px;
+    position: relative;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+  }
+  
+  .folder-body li::before {
+    content: "";
+    position: absolute;
+    left: 20px;
+    top: 12px;
+    width: 30px;
+    height: 25px;
+    background: url('../../../../../assets/images/tools/cloud_drive/type/folder@2x.png') no-repeat;
+    background-size: cover;
+  }
+  .folder-body li:hover, .folder-body li.checked {
+    background: rgba(255,90,95,0.10);
+  }
   .dialog-folder {
     padding: 0 20px;
   }

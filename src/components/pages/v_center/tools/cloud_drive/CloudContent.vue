@@ -209,7 +209,6 @@ export default {
       }
     },
     modules: {
-      type: String,
       default: 'all'
     },
     showList: {

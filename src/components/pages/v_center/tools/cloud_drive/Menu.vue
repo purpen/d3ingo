@@ -65,11 +65,11 @@
               <span>PDF</span>
               </a>
           </li>
-          <li @click="changeTitle(0)">
+          <!-- <li @click="changeTitle(0)">
             <a :class="['folder', {'active': isActive === 0}]">
               <span>文件夹</span>
             </a>
-          </li>
+          </li> -->
         </ul>
       </el-collapse-item>
     </el-collapse>
