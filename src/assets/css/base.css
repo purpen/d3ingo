@@ -134,7 +134,17 @@ ul.el-pager li.number.active {
   background-color: #FF5A5F;
   border-color: #FF5A5F;
 }
+.list-shadow {
+  box-shadow: 0 0 10px 0 rgba(10, 10, 10, 0.1);
+  border-radius: 4px
+}
 
+.list-shadow li:first-child {
+  border-radius: 4px 4px 0 0
+}
+.list-shadow li:last-child {
+  border-radius: 0 0 4px 4px
+}
 /**
 input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
   font-size: 1.2rem;
@@ -253,7 +263,9 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 .el-submenu .el-menu-item {
   min-width: initial;
 }
-
+.el-submenu .el-menu-item:hover, .el-submenu__title:hover {
+  background: #f7f7f7
+}
 .blank10 {
   margin-top: 10px;
 }
@@ -872,6 +884,7 @@ button.is-custom.is-outlined.is-loading:after {
 
 .nav-header .nav-item a:hover, a.nav-item:hover {
   color: #222;
+  background: #f7f7f7
 }
 
 .header-buttom-line {

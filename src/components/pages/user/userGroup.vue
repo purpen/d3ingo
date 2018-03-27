@@ -18,7 +18,6 @@
                </div>
                 <ul>
                   <li @click="group1" v-for="(d, index) in groupNAme" :key="index">{{d.name}}</li>
-                  <li @click="group2">权限小组2</li>
                 </ul>
               </div>
           </el-col>
@@ -26,36 +25,37 @@
           <el-row>
         <el-col class="Top">
               <el-col :span="21" class="navText">
-                <span>权限小组1</span>
+                <span>{{groupNAme}}</span>
                 <span>{{3}}</span>
               </el-col>
               <el-col :span="3" class="right">
                 <div class="addinput">
                   <img src="../../../assets/images/member/add02@2x.png" alt="">
-                <a class="tianjia" href="javascript:;">添加成员</a>
-                  <div class="cententList">
-                    <p>添加成员</p>
-                    <i class="fx-icon-nothing-close-error"></i>
-                    <div class="input">
-                      <input type="text" placeholder="林" @click='searchGroupname'>
-                      <img src="../../../assets/images/member/search02@2x.png" alt="">
-                    </div>
-                    <div class="side clearfix">
-                      <ul>
-                          <li v-for="(d, index) in itemList" :key="index">
-                            <span class="name">{{d.realname}}</span>
-                          </li>
-                        </ul>
-                        <a @click="alick" class="welcome">通过链接邀请</a>
-                        <user :rand_string = "rand_string" :centerDialogVisible="isHide" @alick="alick"></user>
-                    </div>
+                <a @click="adduser" href="javascript:;">添加成员</a>
+                 <!-- 群组添加成员 -->
+                <div class="cententList" v-show="isadd">
+                  <p>添加成员</p>
+                  <i class="fx-icon-nothing-close-error" @click="adduser"></i>
+                  <div class="input">
+                    <input type="text" placeholder="林" @click='searchGroupname'>
+                    <img src="../../../assets/images/member/search02@2x.png" alt="">
                   </div>
+                  <div class="side clearfix">
+                    <ul>
+                        <li v-for="(d, index) in itemList" :key="index">
+                          <span class="name">{{d.realname}}</span>
+                        </li>
+                      </ul>
+                      <a @click="alick" class="welcome">通过链接邀请</a>
+                      <user :rand_string = "rand_string" :centerDialogVisible="isHide" @alick="alick"></user>
+                  </div>
+                </div>
                 </div>
                 <div class="more-list" tabindex="100">
                   <img src="../../../assets/images/member/check-icon@2x.png" alt="">
                 <ul>
-                  <li @click="rename()">重命名</li>
-                  <li @click="deleteFile(id)">删除部门</li>
+                  <li @click="changename()">重命名</li>
+                  <li @click="deleteFile()">删除部门</li>
                 </ul>
               </div>
               </el-col>
@@ -93,25 +93,25 @@
       </div>
       <el-button class="dialog-footer" type="danger" @click="setGroup"><span>创建</span></el-button> 
     </div>
-
+    <!-- 编辑群组 -->
     <div class="content1" v-show="isget"></div>
      <div class="Group" v-show="isget">
        <p>编辑群组</p>
-       <i class="fx-icon-nothing-close-error" @click="rename"></i>
+       <i class="fx-icon-nothing-close-error" @click="changename"></i>
       <div class="creatinput">
         <input type="text" placeholder="{{}}" ref="userName">
       </div>
       <el-button class="dialog-footer" type="danger" @click="getUp"><span>保存</span></el-button> 
     </div>
-
+    <!-- 删除群组 -->
     <div class="content1" v-show="isdelete"></div>
      <div class="Groupdelete" v-show="isdelete">
        <p>确认删除</p>
        <i class="fx-icon-nothing-close-error" @click="deleteFile"></i>
-       <p class="">是否确认删除？</p>
+       <span class="isdele">确认要删除部门吗？</span>
       <div id="deletebtn">
-        <el-button class="delete-footer" @click="getUp" type="danger"><span>保存</span></el-button>
-        <el-button class="delete-footer" @click="deleteFile" type="danger"><span>取消</span></el-button>
+        <el-button class="delete-footer" @click="deleteFile"><span>取消</span></el-button>
+        <el-button class="delete-footer" @click="deleteGroup(id)" type="danger"><span>确定</span></el-button>
       </div>
     </div>
 	</div>
@@ -129,9 +129,11 @@ export default {
       isgroup: false,
       isget: false,
       isdelete: false,
+      isadd: false,
       isLoading: false,
       itemList: [],
       groupNAme: [],
+      sideGroup: [],
       item: '',
       // totalCount: 0,
       query: {
@@ -153,18 +155,25 @@ export default {
     },
     setGroup () {
       // console.log('创建群组提交')
+      this.isgroup = !this.isgroup
       var userID = [this.$store.state.event.user.id]
       var userName = this.$refs.userName.value
-      console.log(userID)
-      console.log(userName)
+      // console.log(userID)
+      // console.log(userName)
       this.$http.post(api.creategroup, {user_id_arr: userID, name: userName})
       .then (function(res) {
         console.log(res)
+        this.Group.push(userName)
       })
     },
     getUp () {
       // 编辑群组
       console.log('编辑群组')
+    },
+    adduser() {
+      // 群组里添加成员
+      this.isadd = !this.isadd
+      console.log('1')
     },
     alick() {
       this.isHide = !this.isHide
@@ -178,22 +187,32 @@ export default {
             }
           })
     },
-    rename(id, index) {
+    changename() {
       this.isget = !this.isget
-      console.log('重命名')
+      // console.log('重命名')
     },
     deleteFile() {
-      console.log('删除')
+      // console.log('删除群组弹框')
       this.isdelete = !this.isdelete
+    },
+    deleteGroup(id) {
+      console.log('确定删除')
+      // let deleteID = this.groupNAme.map(function(arr) {
+      //   return arr.id
+      // })
+      // deleteID.forEach(element => {
+      // });
+      // console.log(deleteID)
+      // this.$http.delete(api.deletegroup, {group_id: deleteID})
+      //   .then(function(res) {
+      //     console.log(deleteID)
+      //   })
     },
     searchGroupname () {
       console.log('搜索成员')
     },
-    group1 () {
-      console.log('权限小组1')
-    },
-    group2 () {
-      console.log('权限小组2')
+    group1 (id) {
+      console.log('点击的群组名称')
     }
   },
   computed: {
@@ -203,7 +222,8 @@ export default {
   },
   created: function () {
     // 获取群组的api接口
-    console.log('群组api')
+    // console.log('群组api')
+    // 获取公司所有自己创建的群组列表
     var that = this
     that.$http.get(api.designgroupLists)
         .then(function (res) {
@@ -221,6 +241,16 @@ export default {
         .catch(function (err) {
           that.$message.error(err.message)
         })
+        // 获取成员信息
+    that.$http.get(api.designMemberList)
+      .then(function (response) {
+        if (response.data.meta.status_code === 200) {
+          that.itemList = response.data.data
+        }
+      })
+      .catch(function (error) {
+        that.$message.error(error.message)
+      })
   }
 }
 </script>
@@ -326,8 +356,12 @@ export default {
     position: absolute;
     left: 6px;
     height: 20px;
+    position: absolute;
+    left: -25px;
+    top: -3px;
+    height: 21px;
   }
-.addinput .tianjia {
+.addinput {
   cursor:pointer;
   font-family: PingFangSC-Regular;
   font-size: 14px;
@@ -337,7 +371,6 @@ export default {
   top: 5px;
 }
 .cententList {
-  display: none;
   background: #FFFFFF;
   box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
   border-radius: 4px;
@@ -345,10 +378,6 @@ export default {
   position: absolute;
   right: 0;
   top: 29px;
-  z-index: 999;
-}
-.addinput:focus .cententList{
-  display: block;
   z-index: 999;
 }
 .right {
@@ -490,7 +519,7 @@ export default {
  transform: translate(-50%,-50%);
 }
 .Groupdelete {
-   width: 280px;
+  width: 280px;
   height: 202px;
   background: #FFFFFF;
   box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
@@ -510,10 +539,9 @@ export default {
     line-height: 50px;
     color: #222222;
 }
-.deletebtn{
+#deletebtn{
   display: flex;
   justify-content: space-around;
-  align-items: center;
 }
 .dialog-footer {
   margin-left: 30px;
@@ -571,7 +599,8 @@ export default {
   width: 120px;
   height: 34px;
 }
-.Groupdelete #isdele {
-  margin: 45px 0;
+.Groupdelete .isdele {
+  display: block;
+  margin: 45px 84px;
 }
 </style>

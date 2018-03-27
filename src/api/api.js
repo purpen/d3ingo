@@ -21,10 +21,10 @@ export default {
   inviteRegister: '/auth/childRegister', // POST 邀请注册
   forget: '/auth/forgetPassword', // POST 找回密码
   modifyPwd: '/auth/changePassword', // POST 修改密码
-  check_account: '/auth/phoneState/{0}',  // 验证手机号是否存在
+  check_account: '/auth/phoneState/{0}', // 验证手机号是否存在
   fetch_msm_code: '/auth/sms', // 获取手机验证码
   fetch_img_captcha: '/captcha/getCaptcha', // 获取图片验证码
-  user: '/auth/user',  // 获取用户信息
+  user: '/auth/user', // 获取用户信息
   authFundInfo: '/auth/fundInfo', // GET 用户钱包信息
   fundLogList: '/fundLogList', // GET 交易记录
   withdrawCreate: '/withdraw/create', // POST 提现
@@ -40,21 +40,21 @@ export default {
   bankUnStatus: '/bank/un/status', // PUT 关闭银行卡
 
   // 支付
-  demandAlipay: '/pay/demandAliPay',  // GET 支付保证金-支付宝
-  demandJdPay: '/pay/demandJdPay',  // GET 支付保证金-京东
-  demandWxPay: '/pay/demandWxPay',  // GET 支付保证金-微信
+  demandAlipay: '/pay/demandAliPay', // GET 支付保证金-支付宝
+  demandJdPay: '/pay/demandJdPay', // GET 支付保证金-京东
+  demandWxPay: '/pay/demandWxPay', // GET 支付保证金-微信
   endPayOrderItemId: '/pay/endPayOrder/{0}', // GET 创建尾款支付订单
-  secondAlipayId: '/pay/itemAliPay/{0}',  // GET 支付尾款-支付宝
-  payItemBankPayId: '/pay/itemBankPay/{0}',  // GET 支付项目尾款--公对公银行转账
+  secondAlipayId: '/pay/itemAliPay/{0}', // GET 支付尾款-支付宝
+  payItemBankPayId: '/pay/itemBankPay/{0}', // GET 支付项目尾款--公对公银行转账
 
   // 项目需求
-  itemList: '/demand/itemList',  // 客户项目列表
-  demand: '/demand',  // 添加项目领域
-  demandId: '/demand/{0}',  // 更改项目领域
+  itemList: '/demand/itemList', // 客户项目列表
+  demand: '/demand', // 添加项目领域
+  demandId: '/demand/{0}', // 更改项目领域
   ProductDesignId: '/ProductDesign/{0}', // 更改产品设计基本资料
   UDesignId: '/UDesign/{0}', // 更改UI设计基本资料
   release: '/demand/release', // 发布项目
-  recommendListId: '/demand/recommendList/{0}',  // 项目获取推荐的设计公司
+  recommendListId: '/demand/recommendList/{0}', // 项目获取推荐的设计公司
   demandPush: '/demand/push', // 选定系统推荐的设计公司
   demandItemDesignListItemId: '/demand/itemDesignList/{0}', // 选择已报价的设计公司
   refuseDesignPrice: '/demand/falseDesign', // 拒绝设计公司报价
@@ -70,7 +70,7 @@ export default {
 
   // 公司项目接口
   // 设计公司获取项目订单
-  designItemList: '/design/itemList',  // 设计公司获取项目列表
+  designItemList: '/design/itemList', // 设计公司获取项目列表
   addQuotation: '/quotation', // 添写报价单
   updateQuotation: '/quotation/{0}', // PUT 更新报价单
   companyRefuseItemId: '/design/refuseItem/{0}', // get 拒绝推送的项目报价
@@ -84,18 +84,18 @@ export default {
   // 合同
   contract: '/contract', // post 保存合同
   contractId: '/contract/{0}', // put/get 更新/查看合同
-  demandTrueContract: '/demand/trueContract',  // POST 需求方确认项目合同
+  demandTrueContract: '/demand/trueContract', // POST 需求方确认项目合同
 
   // 阶段查看
   itemStageDemandLists: '/itemStage/demand/lists', // GET 需求方阶段查看
   itemStageDesignCompanyLists: '/itemStage/designCompany/lists', // GET 设计公司阶段查看
   itemStageId: '/itemStage/{0}', // GET 阶段详情 PUT 编辑
-  itemStage: '/itemStage',  // POST 保存
+  itemStage: '/itemStage', // POST 保存
   demandFirmItemStage: '/itemStage/demandFirmItemStage', // POST 需求方确认阶段完成
 
   // 订单
-  orderId: '/pay/getPayStatus/{0}',  // GET 查看订单详情
-  orderList: '',  // GET 查看订单列表
+  orderId: '/pay/getPayStatus/{0}', // GET 查看订单详情
+  orderList: '', // GET 查看订单列表
 
   // 公司接单设置
   saveDesignItem: '/designItem', // 接单信息保存
@@ -103,8 +103,8 @@ export default {
   designItem: '/designItem/{0}', // 查看/编辑/删除接单信息
 
   // 案例
-  designCase: '/designCase',  // 作品案例
-  designCaseId: '/designCase/{0}',  // 作品案例
+  designCase: '/designCase', // 作品案例
+  designCaseId: '/designCase/{0}', // 作品案例
   designCaseCompanyId: '/designCase/designCompany/{0}', // GET 通过公司ID查看案例
   designCaseOpenLists: '/designCase/openLists', // GET 案例列表
 
@@ -126,7 +126,7 @@ export default {
 
   // 系统通知
   getNoticeList: '/notice/list', // GET 列表
-  getNotice: '/notice',  // GET 详情
+  getNotice: '/notice', // GET 详情
 
   // 文章
   articleList: '/article/list', // GET 列表
@@ -136,8 +136,8 @@ export default {
   categoryList: '/classification/list', // GET 分类列表
 
   // 附件操作
-  asset: '/upload/deleteFile/{0}',  // 删除 | 查看图片
-  upToken: '/upload/upToken',  // 获取上传token
+  asset: '/upload/deleteFile/{0}', // 删除 | 查看图片
+  upToken: '/upload/upToken', // 获取上传token
   updateImageSummary: '/designCase/imageSummary', // PUT 更新图片备注
 
   /** 后台管理 */
@@ -155,9 +155,9 @@ export default {
   // 项目管理
   adminItemList: '/admin/item/lists', // 项目列表
   adminItemShow: '/admin/item/show', // GET 项目详情
-  addItemToCompany: '/admin/item/addDesignToItem',  // 给项目推荐公司
-  ConfirmItemToCompany: '/admin/item/trueItem',  // 确认项目推荐公司
-  forceCloseSubmit: '/admin/item/closeItem',  // POST 强制关闭项目并返还款项
+  addItemToCompany: '/admin/item/addDesignToItem', // 给项目推荐公司
+  ConfirmItemToCompany: '/admin/item/trueItem', // 确认项目推荐公司
+  forceCloseSubmit: '/admin/item/closeItem', // POST 强制关闭项目并返还款项
 
   // 需求公司管理
   adminDemandCompanyList: '/admin/demandCompany/lists', // GET 需求公司列表
@@ -218,18 +218,18 @@ export default {
   dateOfAwardWeek: '/dateOfAward/week', // GET 周历
 
   // 趋势/报告管理
-  adminTrendReportList: '/admin/trendReports/lists',  // GET 列表
+  adminTrendReportList: '/admin/trendReports/lists', // GET 列表
   adminTrendReport: '/admin/trendReports', // GET 详情 | POST 添加 | PUT 更新 | DELETE 删除
   adminTrendReprotSetStatus: '/admin/trendReports/verifyStatus', // PUT 更改状态
-  TrendReportList: '/trendReports/lists',  // GET 列表
+  TrendReportList: '/trendReports/lists', // GET 列表
   trendReports: '/trendReports', // GET 详情
 
   // 常用网站管理
   adminCommonlySite: '/admin/commonlyUsedUrls', // GET 详情 | POST 添加 | PUT 更新 | DELETE 删除
-  adminCommonlySiteList: '/admin/commonlyUsedUrls/list',  // GET 列表
+  adminCommonlySiteList: '/admin/commonlyUsedUrls/list', // GET 列表
   adminCommonlySiteSetStatus: '/admin/commonlyUsedUrls/verifyStatus', // PUT 更改状态
   CommonlySite: '/commonlyUsedUrls', // GET 详情
-  CommonlySiteList: '/commonlyUsedUrls/list',  // GET 列表
+  CommonlySiteList: '/commonlyUsedUrls/list', // GET 列表
 
   // 奖项案例管理
   adminAwardCaseList: '/admin/awardCase/list', // GET 列表
@@ -262,6 +262,7 @@ export default {
 
   // 云盘
   yunpanUpToken: '/upload/yunpanUpToken', // GET 云盘上传upToken
+  yunpanCreateDir: '/yunpan/createDir', // POST 云盘创建文件夹
   yunpanList: '/yunpan/lists', // GET 云盘文件列表
   yunpanDelete: '/yunpan/delete', // PUT 云盘放入回收站
   yunpanRecycleStation: '/recycleBin/lists', // GET 云盘回收站
@@ -271,8 +272,9 @@ export default {
   yunpanEditName: '/yunpan/editName', // PUT 修改文件名
   yunpanRecentUseFile: '/yunpan/recentUseFile', // GET 最近使用列表
   yunpanRecentUseLog: '/yunpan/recentUseLog', // GET 最近使用文件打点
+
   // 成员管理
-  designMemberList: '/design/members',  // GET 获取成员列表
+  designMemberList: '/design/members', // GET 获取成员列表
   designMemberSetRole: '/design/is_admin', // PUT 设计成员权限
 
   // 数组
@@ -282,10 +284,13 @@ export default {
   addgroup: 'group/addUser', // PUT 向群组添加用户（设计公司管理员)
   removegroupuser: 'group/removeUser', // PUT 群组移除用户
   creategroup: 'group/create', // POST 创建群组 设计公司管理员
-  get: 'group/userGroupLists', // 获取某用户所在的群组列表
+  // 群组
+  groupList: '/group/lists', // GET 获取公司所有自己创建的群组列表(设计公司管理员)
 
-  inviteKey: '/urlKey',  // 生成邀请字符串
-  inviteValue: '/urlValue',  // 解析邀请字符串
+  // 邀请码
+  inviteKey: '/urlKey', // 生成邀请字符串
+  inviteValue: '/urlValue', // 解析邀请字符串
+
   // test
-  test: '/'  // End
+  test: '/' // End
 }

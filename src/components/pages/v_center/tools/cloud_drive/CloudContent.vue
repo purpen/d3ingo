@@ -9,38 +9,43 @@
               <p class="file-radio">file-radio</p>
             </el-col>
             <el-col :span="2">
-              <p v-if="ele.format_type === 'image' && modules !== 'recycle'" :class="['file-icon', ele.format_type]" :style="{background: 'url(' + ele.url_small + ')'}">file-icon</p>
-              <p v-else :class="['file-icon', ele.format_type]">file-icon</p>
+              <p v-if="ele.format_type === 'image' && modules !== 'recycle'"
+                @click="showView(ele)"
+                :class="['file-icon', ele.format_type]"
+                :style="{background: 'url(' + ele.url_small + ')'}">file-icon</p>
+              <p v-else 
+                @click="showView(ele)"
+                :class="['file-icon', ele.format_type]">file-icon</p>
             </el-col>
             <el-col :span="8">
               <div class="file-name">
-                <span @click="showView(ele)" v-show="chooseList[0] !== ele.id || !hasRename">{{ele.name}}</span>
+                <span v-show="chooseList[0] !== ele.id || !hasRename" @click="showView(ele)">{{ele.name}}</span>
                 <p v-show="chooseList[0] === ele.id && hasRename">
                   <input class="rename" type="text" v-model="renameVal">
                   <span @click="renameConfirm(index, ele.id)" class="rename-confirm"></span>
                   <span @click="renameCancel" class="rename-cancel"></span>
                 </p>
-                <p v-show="chooseList[0] !== ele.id || !hasRename" class="file-premission" @click="changePremission(ele.id)">
-                  <span v-if="ele.open_set === 1" class="public"></span>
+                <p v-if="folderId === 0" v-show="chooseList[0] !== ele.id || !hasRename" class="file-permission" @click="changePermission(ele.id)">
+                  <span v-if="ele.open_set === 1 && !ele.group_id.length" class="public"></span>
                   <span v-if="ele.open_set === 2" class="privacy"></span>
-                  <!-- <span v-if="ele.group_id.indexOf(1) > 0" class="group"></span> -->
+                  <span v-if="ele.group_id.length" class="group"></span>
                 </p>
               </div>
             </el-col>
             <el-col :span="3">
-              <p :class="['file-size', {'hidden': ele.name === 'folder'}]">{{ele.format_size}}</p>
+              <p :class="['file-size', {'hidden': ele.format_type === 'folder'}]">{{ele.format_size}}</p>
             </el-col>
             <el-col :span="5">
               <p :class="['file-uploader']">{{ele.user_name}}</p>
             </el-col>
             <el-col :span="4">
-              <p class="upload-date">{{ele.created_at}}</p>
+              <p class="upload-date">{{ele.created_at_format}}</p>
             </el-col>
             <el-col :span="2" v-if="!chooseStatus && modules !== 'recycle'">
               <div class="more-list" tabindex="-1">
                 <i></i>
                 <ul>
-                  <li>查看权限</li>
+                  <li v-if="folderId === 0">查看权限</li>
                   <li>分享</li>
                   <li>下载</li>
                   <li>复制</li>
@@ -77,7 +82,7 @@
               </p>
             </el-col>
             <el-col :offset="10" :span="4">
-              <p class="upload-date">{{ele.created_at}}</p>
+              <p class="upload-date">{{ele.created_at_format}}</p>
             </el-col>
           </div>
         </el-col>
@@ -97,7 +102,7 @@
             <div class="more-list" tabindex="-1" v-if="!chooseStatus && modules !== 'recycle'">
               <i></i>
               <ul>
-                <li>查看权限</li>
+                <li v-if="folderId === 0">查看权限</li>
                 <li>分享</li>
                 <li>下载</li>
                 <li>复制</li>
@@ -109,6 +114,11 @@
           </div>
         </el-col>
       </el-row>
+      <div v-if="!list.length" class="empty-list">
+        <span class="empty-img"></span>
+        <p class="empty-content" v-if="modules === 'search'">没有文件与你的搜索匹配～</p>
+        <p class="empty-content" v-else>文件夹为空～</p>
+      </div>
     </section>
     <div class="view-cover" v-show="viewCover">
       <div class="view-picture">
@@ -126,7 +136,7 @@
               <ul>
                 <li>重命名</li>
                 <li>删除</li>
-                <li>查看权限</li>
+                <li v-if="folderId === 0">查看权限</li>
                 <li @click="showProfile = true">详细信息</li>
               </ul>
             </span>
@@ -156,9 +166,9 @@
             <p><span>创建时间:</span>{{prewiewInfo.date}}</p>
             <p><span>尺寸:</span>{{prewiewInfo.width}}px*{{prewiewInfo.height}}px</p>
             <p><span>大小:</span>{{prewiewInfo.format_size}}</p>
-            <p><span>位置:</span>{{prewiewInfo.pan_director_id}}</p>
+            <!-- <p><span>位置:</span>{{prewiewInfo.pan_director_id}}</p> -->
             <p><span>所有者:</span>{{prewiewInfo.user_name}}</p>
-            <p><span>查看权限:</span></p>
+            <p><span>查看权限:</span>{{prewiewInfo.filePermission}}</p>
           </article>
         </div>
       </div>
@@ -205,6 +215,9 @@ export default {
     showList: {
       type: Boolean,
       default: true
+    },
+    folderId: {
+      default: 0
     }
   },
   data() {
@@ -274,6 +287,10 @@ export default {
           }).catch(err => {
             console.error(err)
           })
+        } else if (/folder/.test(ele.format_type)) {
+          if (!this.chooseStatus) {
+            this.$emit('enterFolder', ele)
+          }
         } else {
           console.log('不是图片')
         }
@@ -331,9 +348,9 @@ export default {
         this.previewObj.index = this.imgList.length - 1
       }
     },
-    changePremission(id) {
+    changePermission(id) {
       this.directOperate(id)
-      this.$emit('changePremission')
+      this.$emit('changePermission')
     }
   },
   watch: {
@@ -466,6 +483,7 @@ export default {
     overflow: initial;
     position: relative;
     height: 20px;
+    display: block;
   }
   section .item2 .file-name-span {
     display: block;
@@ -572,26 +590,26 @@ export default {
     background: #fff;
   }
 
-  .file-premission {
+  .file-permission {
     margin-left: 20px;
   }
-  .file-premission span {
+  .file-permission span {
     display: block;
     width: 16px;
     height: 16px;
   }
 
-  .file-premission .public {
+  .file-permission .public {
     background: url('../../../../../assets/images/tools/cloud_drive/permission/public@2x.png') no-repeat;
     background-size: contain;
   }
 
-  .file-premission .privacy {
+  .file-permission .privacy {
     background: url('../../../../../assets/images/tools/cloud_drive/permission/privacy@2x.png') no-repeat;
     background-size: contain;
   }
 
-  .file-premission .group {
+  .file-permission .group {
     background: url('../../../../../assets/images/tools/cloud_drive/permission/group@2x.png') no-repeat;
     background-size: contain;
   }
@@ -696,7 +714,7 @@ export default {
     border-radius: 4px;
     display: none;
     position: fixed;
-    z-index: 1;
+    z-index: 2;
     background: #fff;
     font-size: 14px;
     right: 25px;
@@ -806,5 +824,23 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  .empty-list {
+    height: 610px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .empty-img {
+    width: 140px;
+    height: 140px;
+    background: url('../../../../../assets/images/tools/report/NoContent.png') no-repeat center;
+    background-size: contain;
+  }
+  .empty-content {
+    padding-top: 30px;
+    font-size: 16px;
+    color: #666666;
   }
 </style>

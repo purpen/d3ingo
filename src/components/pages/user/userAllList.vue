@@ -57,7 +57,7 @@
               label="">
             </el-table-column>
             <el-table-column align="center" label="操作">
-              <div slot-scope="props">
+              <div slot-scope="props"  class="rotale">
                 <span class="company">{{props.row.company_role_init}}</span>
                 <div class="togger">
                   <img src="../../../assets/images/member/Group5@2x.png" alt="">
@@ -98,6 +98,16 @@ export default {
     navTitle
   },
   methods: {
+    // 默认头像
+    eventUser() {
+      let user = this.$store.state.event.user
+      if (user.avatar) {
+        user.logo_url = user.avatar.logo
+      } else {
+        user.logo_url = null
+      }
+      return user
+    },
     alick() {
       this.isHide = !this.isHide
       this.$http.get(api.inviteKey)
@@ -108,20 +118,6 @@ export default {
               console.log(res.data.meta.message)
             }
           })
-    },
-    directOperate (id) {
-      this.chooseList = []
-      this.chooseList.push(id)
-      this.$emit('choose', this.chooseList, '')
-    },
-    rename(id, index) {
-      this.directOperate(id)
-      this.$emit('directRename')
-      this.renameVal = this.list[index]['name']
-    },
-    deleteFile(id) {
-      this.directOperate(id)
-      this.$emit('deleteFile')
     },
     searchUsername () {
     //     var searchRegex = new RegExp(this.booksearchtext, 'i');
@@ -163,6 +159,7 @@ export default {
         .then(function (response) {
           if (response.data.meta.status_code === 200) {
             that.itemList = response.data.data
+            // console.log(that.itemList)
             // that.query.totalCount = response.data.meta.pagination.total_pages
             for (let i of that.itemList) {
               // console.log(i.id)
@@ -173,6 +170,7 @@ export default {
               } else if (i.company_role === 20) {
                 i.company_role_init = '超级管理员'
               }
+              // console.log(i.id)
             }
           }
           // console.log(response.data)
@@ -319,14 +317,13 @@ export default {
     height: 16px;
     width: 16px;
     position: absolute;
-    cursor: pointer;
     right: 33px;
     top: 12px;
 }
 .togger img {
   height: 16px;
 }
-.togger:focus img {
-  transform:rotate(-90deg);
+.rotale:focus img {
+  transform:rotate(90deg);
 }
 </style>

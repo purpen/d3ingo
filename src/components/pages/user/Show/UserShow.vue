@@ -9,7 +9,7 @@
         <div class="boxInput"> <input type="text" v-model="rand_string" class="input" ></div>
           <span class="day">链接7天后失效</span>
         <el-button class="dialog-footer" type="danger" @click="copyLj"><span>
-          
+          <!-- <route-link :to="{path: 'UserRegister'}"></route-link>-->
           复制链接</span></el-button> 
       </div>
   </div>
@@ -46,6 +46,7 @@ export default {
         .then(function (response) {
           if (response.data.meta.status_code === 200) {
             that.itemList = response.data.data
+            // console.log(that.itemList)
           }
           // console.log(response.data)
         })
