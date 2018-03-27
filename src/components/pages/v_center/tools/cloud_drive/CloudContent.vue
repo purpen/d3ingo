@@ -48,8 +48,8 @@
                   <li v-if="folderId === 0" @click="changePermission(ele.id)">更改权限</li>
                   <li>分享</li>
                   <li>下载</li>
-                  <li>复制</li>
-                  <li>移动</li>
+                  <li @click="copyFile(ele.id)">复制</li>
+                  <li @click="moveFile(ele.id)">移动</li>
                   <li @click="rename(ele.id, index)">重命名</li>
                   <li @click="deleteFile(ele.id)">删除</li>
                 </ul>
@@ -105,10 +105,10 @@
                 <li v-if="folderId === 0" @click="changePermission(ele.id)">更改权限</li>
                 <li>分享</li>
                 <li>下载</li>
-                <li>复制</li>
-                <li>移动</li>
+                <li @click="copyFile(ele.id)">复制</li>
+                <li @click="moveFile(ele.id)">移动</li>
                   <li @click="rename(ele.id, index)">重命名</li>
-                <li @click="deleteFile(ele.id, index)">删除</li>
+                <li @click="deleteFile(ele.id)">删除</li>
               </ul>
             </div>
           </div>
@@ -350,6 +350,14 @@ export default {
     changePermission(id) {
       this.directOperate(id)
       this.$emit('changePermission', id)
+    },
+    copyFile(id) {
+      this.directOperate(id)
+      this.$emit('confirmCopy')
+    },
+    moveFile(id) {
+      this.directOperate(id)
+      this.$emit('confirmMove')
     }
   },
   watch: {

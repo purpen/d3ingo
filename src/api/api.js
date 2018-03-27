@@ -274,6 +274,8 @@ export default {
   yunpanRecentUseFile: '/yunpan/recentUseFile', // GET 最近使用列表
   yunpanRecentUseLog: '/yunpan/recentUseLog', // GET 最近使用文件打点
   setPermission: '/yunpan/setPermission', // PUT 设置权限
+  yunpanCopy: '/yunpan/copy', // PUT 云盘复制
+  yunpanMove: '/yunpan/move', // PUT 云盘移动
   // 成员管理
   designMemberList: '/design/members', // GET 获取成员列表
   designMemberSetRole: '/design/is_admin', // PUT 设计成员权限

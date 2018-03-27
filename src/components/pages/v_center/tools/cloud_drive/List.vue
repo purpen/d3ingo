@@ -64,7 +64,7 @@
                   <span v-if="modules !== 'recycle'">共享</span>
                   <span v-if="modules !== 'recycle'">下载</span>
                   <span v-if="modules !== 'recycle'" @click="confirmCopy">复制</span>
-                  <span v-if="modules !== 'recycle'">移动</span>
+                  <span v-if="modules !== 'recycle'" @click="confirmMove">移动</span>
                   <span v-if="modules !== 'recycle'" @click="rename" :class="{'disable': alreadyChoose > 1 || !alreadyChoose}">重命名</span>
                   <span v-if="modules !== 'recycle'" @click="deleteFile">删除</span>
                   <span v-if="modules === 'recycle'" @click="shiftDelete">删除</span>
@@ -73,7 +73,7 @@
               </p>
             </div>
             <div class="search-head" v-show="!showList">
-              <input v-model="searchWord" class="search-input" placeholder="搜索...">
+              <input v-model.trim="searchWord" class="search-input" placeholder="搜索...">
               <i class="fr fx-0 fx-icon-nothing-close-error" @click="clearShowList"></i>
             </div>
           </div>
@@ -97,7 +97,9 @@
               @deleteFile="deleteFile"
               @shiftDelete="shiftDelete"
               @recoverFile="recoverFile"
-              @changePermission="changePermission">
+              @changePermission="changePermission"
+              @confirmCopy="confirmCopy"
+              @confirmMove="confirmMove">
             </vContent>
           </transition>
         </div>
@@ -218,7 +220,7 @@
           v-focus="isFocusFolderPermission"
           @focus="focusFolderPermission"
           @blur="blurFolderPermission"
-          v-model="folder.permission">
+          v-model.trim="folder.permission">
         <ul class="selectFolderPermission list-shadow" v-show="isFocusFolderPermission">
           <li :class="['public', {'lihover': permissionStatus === 1}]" @click="selectPermission(1)">
             <i></i>
@@ -261,14 +263,15 @@
         <input placeholder="请填写文件夹名称" v-focus="isFocusFolderName"
           @focus="focusFolderName"
           @blur="blurFolderName"
-          v-model="folder.name">
+          v-model.trim="folder.name">
         <p class="dialog-permission">设置查看权限</p>
         <input v-if="folderId === 0"
           class="select-permission" placeholder="请选择权限"
           v-focus="isFocusFolderPermission"
           @focus="focusFolderPermission"
           @blur="blurFolderPermission"
-          v-model="folder.permission">
+          v-model.trim="folder.permission">
+        <!-- <input v-else v-model="list[0].filePermission" disabled="true"> -->
         <ul class="selectFolderPermission list-shadow" v-show="isFocusFolderPermission">
           <li :class="['public', {'lihover': permissionStatus === 1}]" @click="selectPermission(1)">
             <i></i>
@@ -304,15 +307,78 @@
 
     <section class="dialog-body dialog-body-plus" v-if="showConfirmCopy">
       <h3 class="dialog-header clearfix">
-        复制文件到
+        复制到
         <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
       </h3>
-      <div :class="['dialog-conetent', {'dialog-conetent-scroll': folderObj.length > 3}]">
+      <div class="dialog-conetent">
         <div v-for="(ele,index) in folderObj" :key="index" class="folder-item">
-          <div class="folder-item-head"><p></p></div>
-          <ul class="folder-body">
-            <li v-for="(e, i) in ele.folderList" :key="i" :class="{'checked': ele.checkId === e.id}" @click="clickFolder(e.id, index)">{{e.name}}</li>
+          <div class="folder-item-head">
+            <p @click="confirmCreateDir_copyORmove(ele.folderId, index)"
+              title="创建文件夹" v-if="ele.folderId === 0">根目录</p>
+            <p @click="confirmCreateDir_copyORmove(ele.folderId, index)"
+              title="创建文件夹" v-else></p>
+          </div>
+          <ul class="folder-body"
+            v-loading.body="copyORmoveLoading && index === folderObj['length'] - 1">
+            <li v-if="showFolderInput && ele.folderId === copyORmoveFolderId">
+              <input
+                v-focus="ele.folderId === copyORmoveFolderId"
+                @blur="createDir_copyORmove"
+                type="text" placeholder="按 Enter 新建文件夹"
+                v-model.trim="copyORmoveFolderName">
+              <span></span>
+            </li>
+            <li v-for="(e, i) in ele.folderList" :key="i"
+              v-if="chooseFileList.indexOf(e.id) === -1"
+              :class="{'checked': ele.checkId === e.id}"
+              @click="clickFolder(e.id, index)"
+              >{{e.name}}</li>
           </ul>
+        </div>
+      </div>
+      <div class="dialog-foot">
+        <div class="buttons">
+          <button class="cancel-btn" @click="closeCover">取消</button>
+          <button class="confirm-btn" @click="copyFile">确定</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="dialog-body dialog-body-plus" v-if="showConfirmMove">
+      <h3 class="dialog-header clearfix">
+        移动到
+        <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
+      </h3>
+      <div class="dialog-conetent">
+        <div v-for="(ele,index) in folderObj" :key="index" class="folder-item">
+          <div class="folder-item-head">
+            <p @click="confirmCreateDir_copyORmove(ele.folderId, index)"
+              title="创建文件夹" v-if="ele.folderId === 0">根目录</p>
+            <p @click="confirmCreateDir_copyORmove(ele.folderId, index)"
+              title="创建文件夹" v-else></p>
+          </div>
+          <ul class="folder-body"
+            v-loading.body="copyORmoveLoading && index === folderObj['length'] - 1">
+            <li v-if="showFolderInput && ele.folderId === copyORmoveFolderId">
+              <input
+                v-focus="ele.folderId === copyORmoveFolderId"
+                @blur="createDir_copyORmove"
+                type="text" placeholder="按 Enter 新建文件夹"
+                v-model.trim="copyORmoveFolderName">
+              <span></span>
+            </li>
+            <li v-for="(e, i) in ele.folderList" :key="i"
+              v-if="chooseFileList.indexOf(e.id) === -1"
+              :class="{'checked': ele.checkId === e.id}"
+              @click="clickFolder(e.id, index)"
+              >{{e.name}}</li>
+          </ul>
+        </div>
+      </div>
+      <div class="dialog-foot">
+        <div class="buttons">
+          <button class="cancel-btn" @click="closeCover">取消</button>
+          <button class="confirm-btn" @click="moveFile">确定</button>
         </div>
       </div>
     </section>
@@ -357,7 +423,8 @@
         showConfirmRecover: false, // 确认恢复文件?
         showConfirmFolder: false, // 确认新建文件夹
         showConfirmPermission: false, // 确认更改权限
-        showConfirmCopy: false, // 确认更改权限
+        showConfirmCopy: false, // 确认复制
+        showConfirmMove: false, // 确认移动
         showList: true, // 显示全部文件或搜索 false => 搜索
         searchWord: '', // 搜索关键字
         hasRename: false, // 重命名状态
@@ -366,6 +433,11 @@
           name: '',
           permission: ''
         },
+        copyORmoveLoading: false,
+        copyORmoveFolderId: 0,
+        copyORmoveFolderName: '', // 复制或者移动时创建文件夹
+        copyORmoveFolderIndex: 0,
+        showFolderInput: false, // 复制或者移动时是否显示input
         isFocusFolderName: true, // 是否聚焦名字
         isFocusFolderPermission: false, // 是否聚焦权限
         query: {
@@ -506,11 +578,11 @@
           ascend: this.sortGist.ascend
         }}).then(
           (res) => {
-            // console.log(res.data.data)
+            console.log(res.data)
             this.isLoading = false
             this.showList = true
             if (res.data.meta.status_code === 200) {
-              console.log(res.data.data)
+              // console.log(res.data.data)
               if (res.data.meta.pagination) {
                 this.query.totalCount = res.data.meta.pagination.total
                 this.query.totalPges = res.data.meta.total_pages
@@ -827,9 +899,7 @@
           console.error(err)
         })
       },
-      confirmCopy() {
-        this.showConfirmCopy = true
-        this.showCover = true
+      getFile() {
         this.$http.get(api.yunpanList, {params: {
           pan_director_id: 0,
           page: 1,
@@ -847,7 +917,26 @@
           console.error(err)
         })
       },
+      confirmCopy() {
+        if (this.chooseFileList.length) {
+          this.showConfirmCopy = true
+          this.showCover = true
+          this.getFile()
+        } else {
+          this.$message.error('请选择要复制的文件')
+        }
+      },
+      confirmMove() {
+        if (this.chooseFileList.length) {
+          this.showConfirmMove = true
+          this.showCover = true
+          this.getFile()
+        } else {
+          this.$message.error('请选择要移动的文件')
+        }
+      },
       clickFolder(id, index) {
+        this.copyORmoveLoading = true
         this.folderObj[index].checkId = id
         this.$http.get(api.yunpanList, {params: {
           pan_director_id: id,
@@ -857,6 +946,7 @@
           order_by: 3,
           ascend: 1
         }}).then(res => {
+          this.copyORmoveLoading = false
           if (res.data.meta.status_code === 200) {
             if (index < this.folderObj.length - 1) {
               this.folderObj.splice(index + 1, this.folderObj.length)
@@ -867,8 +957,59 @@
           }
         })
         .catch(err => {
+          this.copyORmoveLoading = false
           console.error(err)
         })
+      },
+      copyFile() {
+        let id = 0
+        if (this.folderObj.length > 1) {
+          id = this.folderObj[this.folderObj.length - 1]['folderId']
+        }
+        if (this.chooseFileList.indexOf(id) === -1) {
+          this.$http.put(api.yunpanCopy, {
+            from_id_arr: this.chooseFileList,
+            to_id: id
+          }).then(res => {
+            if (res.data.meta.status_code === 200) {
+              this.$message.success('复制成功')
+              this.closeCover()
+            } else {
+              this.$message.success(res.data.meta.message)
+            }
+          }).catch(err => {
+            console.error(err)
+          })
+        } else {
+          this.$message.error('不能将文件复制到自身或其子目录下')
+        }
+      },
+      moveFile() {
+        let id = 0
+        if (this.folderObj.length > 1) {
+          id = this.folderObj[this.folderObj.length - 1]['folderId']
+        }
+        if (this.chooseFileList.indexOf(id) === -1) {
+          this.$http.put(api.yunpanMove, {
+            from_id_arr: this.chooseFileList,
+            to_id: id
+          }).then(res => {
+            if (res.data.meta.status_code === 200) {
+              this.$nextTick(function () {
+                this.list = this.list.filter(item => { return this.chooseFileList.indexOf(item.id) === -1 })
+                this.isChooseAll = 'empty'
+              })
+              this.$message.success('移动成功')
+              this.closeCover()
+            } else {
+              this.$message.success(res.data.meta.message)
+            }
+          }).catch(err => {
+            console.error(err)
+          })
+        } else {
+          this.$message.error('不能将文件移动到自身或其子目录下')
+        }
       },
       searchClick() {
         this.showList = !this.showList
@@ -934,12 +1075,15 @@
         this.isFocusFolderName = false
         this.isFocusFolderPermission = false
         this.showConfirmCopy = false
+        this.showConfirmMove = false
+        this.folderObj = [{folderId: 0, folderList: [], checkId: 0}]
         // 以下几个要不要清空
         this.group_id_arr = []
         this.folder.permission = ''
         this.permissionStatus = 0
         this.isSelectGroup = false
         this.folder.name = ''
+        this.copyORmoveFolderName = ''
       },
       selectPermission(id) {
         this.openSet = id
@@ -996,6 +1140,32 @@
         }).catch(err => {
           console.error(err)
         })
+      },
+      confirmCreateDir_copyORmove(id, index) {
+        this.copyORmoveFolderId = id
+        this.copyORmoveFolderIndex = index
+        this.showFolderInput = true
+      },
+      createDir_copyORmove() {
+        if (this.copyORmoveFolderName) {
+          let id = this.copyORmoveFolderId
+          let index = this.copyORmoveFolderIndex
+          this.$http.post(api.yunpanCreateDir, {
+            name: this.copyORmoveFolderName,
+            pan_director_id: id
+          }).then(res => {
+            if (res.data.meta.status_code === 200) {
+              this.folderObj[index]['folderList'].unshift(res.data.data)
+              this.folderObj[index]['folderList'].sort(this.$phenix.arr_sort('name'))
+              this.copyORmoveFolderName = ''
+            } else {
+              this.$message.error(res.data.meta.message)
+            }
+          }).catch(err => {
+            console.error(err)
+          })
+        }
+        this.showFolderInput = false
       },
       enterFolder(ele) {
         this.$router.push({
@@ -1561,9 +1731,15 @@
   .dialog-body-plus .dialog-conetent {
     font-size: 0;
     text-align: left;
-    min-height: 390px;
+    min-height: 330px;
     background: #fff;
-    white-space: nowrap;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    overflow-y: hidden;
+    overflow-x: auto;
     /* ie 滚动条 */
     scrollbar-face-color:#D8D8D8;
     scrollbar-shadow-color:#D8D8D8;
@@ -1573,15 +1749,13 @@
     scrollbar-track-color:#F7F7F7;
     scrollbar-arrow-color:#666666;
   }
-  .dialog-body-plus .dialog-conetent-scroll {
-    overflow-x: scroll;
-  }
   .folder-item {
     font-size: 14px;
-    display: inline-block;
-    vertical-align: top;
-    height: 390px;
+    /* display: inline-block;
+    vertical-align: top; */
+    height: 330px;
     width: 200px;
+    min-width: 200px;
     border-right: 1px solid #d2d2d2
   }
   .folder-item-head {
@@ -1589,9 +1763,12 @@
     height: 40px;
   }
   .folder-item-head p {
+    white-space: nowrap;
     margin-left: 23px;
     margin-top: 8px;
     width: 24px;
+    padding-left: 30px;
+    line-height: 24px;
     height: 24px;
     cursor: pointer;
     background: url('../../../../../assets/images/tools/cloud_drive/operate/add_folder@2x.png') no-repeat;
@@ -1602,9 +1779,8 @@
     opacity: 1
   }
   .folder-body {
-  }
-  .folder-body-scroll {
-    overflow-y: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
   .folder-body li {
     height: 50px;
@@ -1630,6 +1806,22 @@
   .folder-body li:hover, .folder-body li.checked {
     background: rgba(255,90,95,0.10);
   }
+  
+  .folder-body li input {
+    vertical-align: middle;
+    width: 130px;
+    height: 28px;
+    font-size: 12px;
+    padding-left: 8px;
+    border-radius: 4px;
+    border: 1px solid #d2d2d2;
+  }
+  .dialog-foot {
+    height: 60px;
+    border-top: 1px solid #D2D2D2;
+    padding: 14px 20px;
+  }
+
   .dialog-folder {
     padding: 0 20px;
   }
@@ -1742,6 +1934,10 @@
     padding-bottom: 34px;
   }
 
+  .dialog-foot .buttons {
+    padding-bottom: 0;
+    justify-content: flex-end
+  }
   .buttons button {
     width: 118px;
     height: 32px;
@@ -1759,9 +1955,15 @@
   .buttons button.confirm-btn, .create-btn {
     color: #fff;
     border-color: #ff5a5f;
-    background-color: #ff5a5f
+    background-color: #ff5a5f;
+    opacity: 0.6;
   }
-
+  .buttons button.confirm-btn:hover, .create-btn:hover {
+    opacity: 0.8;
+  }
+  .buttons button.confirm-btn:active, .create-btn:active {
+    opacity: 1;
+  }
   .uploadList-enter-active {
     transition: all 0.3s ease
   } 
