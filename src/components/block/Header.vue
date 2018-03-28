@@ -207,6 +207,7 @@
           }
         }).catch((error) => {
           console.error(error)
+          clearInterval(this.requestMessageTask)
         })
       },
       // 定时加载消息数量
@@ -215,13 +216,13 @@
         // 定时请求消息数量
         var limitTimes = 0
         self.requestMessageTask = setInterval(function () {
-          if (limitTimes >= 36) {
+          if (limitTimes >= 18) {
             return
           } else {
             self.fetchMessageCount()
             limitTimes += 1
           }
-        }, 10000)
+        }, 20000)
       },
       // 查看消息
       viewMsg() {

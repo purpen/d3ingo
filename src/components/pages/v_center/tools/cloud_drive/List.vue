@@ -99,7 +99,8 @@
               @recoverFile="recoverFile"
               @changePermission="changePermission"
               @confirmCopy="confirmCopy"
-              @confirmMove="confirmMove">
+              @confirmMove="confirmMove"
+              @changeImgList="changeImgList">
             </vContent>
           </transition>
         </div>
@@ -271,7 +272,7 @@
           @focus="focusFolderPermission"
           @blur="blurFolderPermission"
           v-model.trim="folder.permission">
-        <!-- <input v-else v-model="list[0].filePermission" disabled="true"> -->
+        <input v-else v-model="parentFolder.filePermission" disabled="true">
         <ul class="selectFolderPermission list-shadow" v-show="isFocusFolderPermission">
           <li :class="['public', {'lihover': permissionStatus === 1}]" @click="selectPermission(1)">
             <i></i>
@@ -324,7 +325,7 @@
               <input
                 v-focus="ele.folderId === copyORmoveFolderId"
                 @blur="createDir_copyORmove"
-                type="text" placeholder="按 Enter 新建文件夹"
+                type="text"
                 v-model.trim="copyORmoveFolderName">
               <span></span>
             </li>
@@ -390,965 +391,985 @@
   </div>
 </template>
 <script>
-  import api from '@/api/api'
-  import vMenu from '@/components/pages/v_center/tools/cloud_drive/Menu'
-  import vContent from '@/components/pages/v_center/tools/cloud_drive/CloudContent'
-  export default {
-    name: 'cloud_drive',
-    data() {
-      return {
-        test: 'test',
-        title: '全部文件',
-        modules: '',
-        folderId: 0, // 文件夹id
-        isChoose: false, // 切换为选择状态
-        chooseFileList: [], // 已选择的id
-        isChooseAll: '', // 是否全选,
-        curView: 'list', // 当前视图: 列表: list, 九宫格: chunk, 搜索: search
-        uploadUrl: '', // 上传地址
-        uploadParams: {
-          'token': '',
-          'x:pan_director_id': 0
-        },
-        list: [], // 获取文件列表
-        imgList: [],
-        fileList: [], // 上传列表
-        totalNumber: 0,
-        webUploader: false, // 上传状态
-        isShowProgress: false, // 是否显示上传列表
-        showCover: false, // 确认背景?
-        showConfirm: false, // 确认删除上传列表?
-        showConfirmDelete: false, // 确认删除文件?
-        showConfirmShiftDelete: false, // 确认彻底删除文件?
-        showConfirmRecover: false, // 确认恢复文件?
-        showConfirmFolder: false, // 确认新建文件夹
-        showConfirmPermission: false, // 确认更改权限
-        showConfirmCopy: false, // 确认复制
-        showConfirmMove: false, // 确认移动
-        showList: true, // 显示全部文件或搜索 false => 搜索
-        searchWord: '', // 搜索关键字
-        hasRename: false, // 重命名状态
-        isLoading: false,
-        folder: {
-          name: '',
-          permission: ''
-        },
-        copyORmoveLoading: false,
-        copyORmoveFolderId: 0,
-        copyORmoveFolderName: '', // 复制或者移动时创建文件夹
-        copyORmoveFolderIndex: 0,
-        showFolderInput: false, // 复制或者移动时是否显示input
-        isFocusFolderName: true, // 是否聚焦名字
-        isFocusFolderPermission: false, // 是否聚焦权限
-        query: {
-          page: 1,
-          pageSize: 30,
-          totalPges: 0,
-          totalCount: 0
-        },
-        groupList: [], // 群组列表
-        open_set: 0, // 隐私设置
-        group_id_arr: [], // 所属群组ID数组
-        isSelectGroup: false, // 选择群组状态
-        permissionStatus: 0, // 权限 1 全部 2自己 3小组
-        historyId: [], // 文件夹历史
-        setPermissionId: 0,
-        sortGist: {
-          order_by: 1, // date 1, size 2, name 3
-          ascend: 1 // 1 升, -1 降
-        }, // 排序依据
-        folderObj: [{
-          folderId: 0,
-          folderList: [],
-          checkId: 0
-        }]
+import api from '@/api/api'
+import vMenu from '@/components/pages/v_center/tools/cloud_drive/Menu'
+import vContent from '@/components/pages/v_center/tools/cloud_drive/CloudContent'
+import JSZip from 'jszip'
+// import fileSaver from 'file-saver'
+export default {
+  name: 'cloud_drive',
+  data() {
+    return {
+      test: 'test',
+      title: '全部文件',
+      modules: '',
+      folderId: 0, // 文件夹id
+      isChoose: false, // 切换为选择状态
+      chooseFileList: [], // 已选择的id
+      isChooseAll: '', // 是否全选,
+      curView: 'list', // 当前视图: 列表: list, 九宫格: chunk, 搜索: search
+      uploadUrl: '', // 上传地址
+      uploadParams: {
+        'token': '',
+        'x:pan_director_id': 0
+      },
+      list: [], // 获取文件列表
+      parentFolder: {},
+      imgList: [],
+      fileList: [], // 上传列表
+      totalNumber: 0,
+      webUploader: false, // 上传状态
+      isShowProgress: false, // 是否显示上传列表
+      showCover: false, // 确认背景?
+      showConfirm: false, // 确认删除上传列表?
+      showConfirmDelete: false, // 确认删除文件?
+      showConfirmShiftDelete: false, // 确认彻底删除文件?
+      showConfirmRecover: false, // 确认恢复文件?
+      showConfirmFolder: false, // 确认新建文件夹
+      showConfirmPermission: false, // 确认更改权限
+      showConfirmCopy: false, // 确认复制
+      showConfirmMove: false, // 确认移动
+      showList: true, // 显示全部文件或搜索 false => 搜索
+      searchWord: '', // 搜索关键字
+      hasRename: false, // 重命名状态
+      isLoading: false,
+      folder: {
+        name: '',
+        permission: ''
+      },
+      copyORmoveLoading: false,
+      copyORmoveFolderId: 0,
+      copyORmoveFolderName: '', // 复制或者移动时创建文件夹
+      copyORmoveFolderIndex: 0,
+      showFolderInput: false, // 复制或者移动时是否显示input
+      isFocusFolderName: true, // 是否聚焦名字
+      isFocusFolderPermission: false, // 是否聚焦权限
+      query: {
+        page: 1,
+        pageSize: 30,
+        totalPges: 0,
+        totalCount: 0
+      },
+      groupList: [], // 群组列表
+      open_set: 0, // 隐私设置
+      group_id_arr: [], // 所属群组ID数组
+      isSelectGroup: false, // 选择群组状态
+      permissionStatus: 0, // 权限 1 全部 2自己 3小组
+      historyId: [], // 文件夹历史
+      setPermissionId: 0,
+      sortGist: {
+        order_by: 1, // date 1, size 2, name 3
+        ascend: 1 // 1 升, -1 降
+      }, // 排序依据
+      folderObj: [{
+        folderId: 0,
+        folderList: [],
+        checkId: 0
+      }]
+    }
+  },
+  components: {
+    vMenu,
+    vContent
+  },
+  mounted() {
+    window.addEventListener('keydown', e => {
+      if (e.keyCode === 13) {
+        this.getSearchList()
+        this.createDir_copyORmove()
+      }
+    })
+  },
+  methods: {
+    downloadFile() {
+      let zip = new JSZip()
+      zip
+    },
+    handleCurrentChange(page) {
+      this.query.page = page
+      this.$router.push({name: this.$route.name, query: {page: this.query.page}})
+      this.getList()
+    },
+    formatList(i) {
+      // 格式化大小
+      if (i.size) {
+        let size = i['size'] / 1024
+        if (size > 1024) {
+          i['format_size'] = (size / 1024).toFixed(2) + 'MB'
+        } else {
+          i['format_size'] = size.toFixed(2) + 'KB'
+        }
+      } else {
+        i['format_size'] = '0KB'
+      }
+      // 格式化日期
+      if (i['created_at']) {
+        i['date'] = i['created_at'].date_format().format('yyyy年MM月dd日')
+        i['created_at_format'] = i['created_at'].date_format().format('yyyy-MM-dd')
+      }
+      // 格式化类型
+      if (i.mime_type) {
+        if (/pdf/.test(i.mime_type)) {
+          i.format_type = 'artboard'
+          i.leixing = 'PDF'
+        } else if (/audio/.test(i.mime_type)) {
+          i.format_type = 'audio'
+          i.leixing = '音频'
+        } else if (/(?:zip|rar|7z)/.test(i.mime_type)) {
+          i.format_type = 'compress'
+          i.leixing = '压缩文件'
+        } else if (/(?:text|msword)/.test(i.mime_type)) {
+          i.format_type = 'document'
+          i.leixing = '文档'
+        } else if (/image/.test(i.mime_type)) {
+          i.format_type = 'image'
+          i.leixing = '图片'
+        } else if (/powerpoint/.test(i.mime_type)) {
+          i.format_type = 'powerpoint'
+          i.leixing = '演示文稿'
+        } else if (/spreadsheet/.test(i.mime_type)) {
+          i.format_type = 'spreadsheet'
+          i.leixing = '电子表格'
+        } else if (/video/.test(i.mime_type)) {
+          i.format_type = 'video'
+          i.leixing = '视频'
+        } else {
+          i.format_type = 'other'
+          i.leixing = '其他'
+        }
+      } else {
+        i.format_type = 'folder'
+        i.leixing = '文件夹'
+      }
+      if (!i.group_id) {
+        i.group_id = []
+        if (i.open_set === 1) {
+          i['filePermission'] = '公开'
+        } else {
+          i['filePermission'] = '仅自己可见'
+        }
+      } else {
+        if (i.open_set === 1) {
+          if (i.group_id.length) {
+            i['filePermission'] = '群组可见'
+          } else {
+            i['filePermission'] = '公开'
+          }
+        } else {
+          i['filePermission'] = '仅自己可见'
+        }
       }
     },
-    components: {
-      vMenu,
-      vContent
+    getList() {
+      this.isLoading = true
+      let url = ''
+      let type = 0
+      if (this.modules === 'all') {
+        url = api.yunpanList
+      } else if (this.modules === 'recently-use') {
+        url = api.yunpanRecentUseFile
+      } else if (this.modules === 'recycle') {
+        url = api.yunpanRecycleStation
+      } else if (/[1-7]/.test(this.modules)) {
+        url = api.yunpanTypeList
+      } else if (this.modules === 0) {
+        url = api.yunpanList
+        type = 1
+      } else {
+        this.isLoading = false
+        this.list = []
+        return
+      }
+      this.$http.get(url, {params: {
+        pan_director_id: this.folderId,
+        page: this.query.page,
+        per_page: this.query.pageSize,
+        type: type,
+        resource_type: this.modules,
+        order_by: this.sortGist.order_by,
+        ascend: this.sortGist.ascend
+      }}).then(
+        (res) => {
+          this.isLoading = false
+          this.showList = true
+          if (res.data.meta.status_code === 200) {
+            // console.log(res.data)
+            if (res.data.meta.pagination) {
+              this.query.totalCount = res.data.meta.pagination.total
+              this.query.totalPges = res.data.meta.total_pages
+            } else {
+              this.query.totalCount = 0
+              this.query.totalPges = 0
+            }
+            this.list = res.data.data
+            if (this.list.length) {
+              this.getImgList()
+              if (res.data.meta.info) {
+                if (JSON.stringify(res.data.meta.info) !== '{}') {
+                  this.parentFolder = res.data.meta.info
+                  this.formatList(this.parentFolder)
+                }
+              }
+            }
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch((err) => {
+          this.isLoading = false
+          console.error(err)
+        })
     },
-    mounted() {
-      window.addEventListener('keydown', e => {
-        if (e.keyCode === 13) {
-          this.getSearchList()
+    getSearchList() {
+      this.isLoading = true
+      if (this.searchWord) {
+        this.$http.get(api.yunpanSearch, {params: {
+          page: this.query.page,
+          per_page: this.query.pageSize,
+          name: this.searchWord
+        }}).then(res => {
+          this.isLoading = false
+          if (res.data.meta.status_code === 200) {
+            this.query.totalCount = res.data.meta.pagination.total
+            this.query.totalPges = res.data.meta.total_pages
+            this.list = res.data.data
+            this.imgList = []
+            for (let i of this.list) {
+              this.formatList(i)
+              if (/image/.test(i['mime_type'])) {
+                this.imgList.push(i)
+              }
+            }
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        })
+      } else {
+        console.log('enter')
+        this.isLoading = false
+      }
+    },
+    getGroupLists() {
+      this.$http.get(api.groupList).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.groupList = res.data.data
+        } else {
+          this.$message.error(res.data.meta.message)
         }
       })
     },
-    methods: {
-      handleCurrentChange(page) {
-        this.query.page = page
-        this.$router.push({name: this.$route.name, query: {page: this.query.page}})
-        this.getList()
-      },
-      formatList() {
-        this.list.sort(this.$phenix.arr_sort('type'))
-        for (let i of this.list) {
-          // 格式化大小
-          if (i.size) {
-            let size = i['size'] / 1024
-            if (size > 1024) {
-              i['format_size'] = (size / 1024).toFixed(2) + 'MB'
-            } else {
-              i['format_size'] = size.toFixed(2) + 'KB'
-            }
-          } else {
-            i['format_size'] = '0KB'
-          }
-          // 格式化日期
-          i['date'] = i['created_at'].date_format().format('yyyy年MM月dd日')
-          i['created_at_format'] = i['created_at'].date_format().format('yyyy-MM-dd')
-          // 格式化类型
-          if (i.mime_type) {
-            if (/pdf/.test(i.mime_type)) {
-              i.format_type = 'artboard'
-              i.leixing = 'PDF'
-            } else if (/audio/.test(i.mime_type)) {
-              i.format_type = 'audio'
-              i.leixing = '音频'
-            } else if (/(?:zip|rar|7z)/.test(i.mime_type)) {
-              i.format_type = 'compress'
-              i.leixing = '压缩文件'
-            } else if (/(?:text|msword)/.test(i.mime_type)) {
-              i.format_type = 'document'
-              i.leixing = '文档'
-            } else if (/image/.test(i.mime_type)) {
-              i.format_type = 'image'
-              i.leixing = '图片'
-            } else if (/powerpoint/.test(i.mime_type)) {
-              i.format_type = 'powerpoint'
-              i.leixing = '演示文稿'
-            } else if (/spreadsheet/.test(i.mime_type)) {
-              i.format_type = 'spreadsheet'
-              i.leixing = '电子表格'
-            } else if (/video/.test(i.mime_type)) {
-              i.format_type = 'video'
-              i.leixing = '视频'
-            } else {
-              i.format_type = 'other'
-              i.leixing = '其他'
-            }
-          } else {
-            i.format_type = 'folder'
-            i.leixing = '文件夹'
-          }
-
-          if (i.group_id === null || !i.group_id.length) {
-            i.group_id = []
-            if (i.open_set === 1) {
-              i['filePermission'] = '公开'
-            } else {
-              i['filePermission'] = '仅自己可见'
-            }
-          } else {
-            i['filePermission'] = '群组可见'
-          }
-          if (/image/.test(i['mime_type'])) {
-            this.imgList.push(i)
-          }
+    headTitle(name) {
+      this.modules = name
+      this.isChoose = false
+      this.isChooseAll = 'empty'
+      this.curView = 'list'
+      this.query.page = 1
+      this.getList()
+    },
+    changeChooseStatus() {
+      this.isChoose = !this.isChoose
+    },
+    cancelChoose() {
+      this.hasRename = false
+      this.isChoose = false
+    },
+    chooseList(e, str) {
+      this.chooseFileList = e
+      this.isChooseAll = str
+    },
+    changeChooseAll() {
+      if (!this.hasRename) {
+        if (this.isChooseAll === '' || this.isChooseAll === 'empty') {
+          this.isChooseAll = 'all'
+        } else if (this.isChooseAll === 'all') {
+          this.isChooseAll = 'empty'
         }
-      },
-      getList() {
-        this.isLoading = true
-        let url = ''
-        let type = 0
-        if (this.modules === 'all') {
-          url = api.yunpanList
-        } else if (this.modules === 'recently-use') {
-          url = api.yunpanRecentUseFile
-        } else if (this.modules === 'recycle') {
-          url = api.yunpanRecycleStation
-        } else if (/[1-7]/.test(this.modules)) {
-          url = api.yunpanTypeList
-        } else if (this.modules === 0) {
-          url = api.yunpanList
-          type = 1
-        } else {
-          this.isLoading = false
-          this.list = []
-          return
-        }
-        this.$http.get(url, {params: {
-          pan_director_id: this.folderId,
-          page: this.query.page,
-          per_page: this.query.pageSize,
-          type: type,
-          resource_type: this.modules,
-          order_by: this.sortGist.order_by,
-          ascend: this.sortGist.ascend
-        }}).then(
-          (res) => {
-            console.log(res.data)
-            this.isLoading = false
-            this.showList = true
-            if (res.data.meta.status_code === 200) {
-              // console.log(res.data.data)
-              if (res.data.meta.pagination) {
-                this.query.totalCount = res.data.meta.pagination.total
-                this.query.totalPges = res.data.meta.total_pages
-              } else {
-                this.query.totalCount = 0
-                this.query.totalPges = 0
-              }
-              this.list = res.data.data
-              this.imgList = []
-              this.formatList()
-            } else {
-              this.$message.error(res.data.meta.message)
-            }
-          }).catch((err) => {
-            this.isLoading = false
-            console.error(err)
-          })
-      },
-      getSearchList() {
-        this.isLoading = true
-        if (this.searchWord) {
-          this.$http.get(api.yunpanSearch, {params: {
-            page: this.query.page,
-            per_page: this.query.pageSize,
-            name: this.searchWord
-          }}).then(res => {
-            this.isLoading = false
-            if (res.data.meta.status_code === 200) {
-              this.query.totalCount = res.data.meta.pagination.total
-              this.query.totalPges = res.data.meta.total_pages
-              this.list = res.data.data
-              this.imgList = []
-              this.formatList()
-            } else {
-              this.$message.error(res.data.meta.message)
-            }
-          })
-        } else {
-          console.log('enter')
-          this.isLoading = false
-        }
-      },
-      getGroupLists() {
-        this.$http.get(api.groupList).then(res => {
-          if (res.data.meta.status_code === 200) {
-            this.groupList = res.data.data
-          } else {
-            this.$message.error(res.data.meta.message)
-          }
-        })
-      },
-      headTitle(name) {
-        this.modules = name
-        this.isChoose = false
-        this.isChooseAll = 'empty'
+      }
+    },
+    changeFileView() {
+      if (this.curView === 'list') {
+        this.curView = 'chunk'
+      } else {
         this.curView = 'list'
-        this.query.page = 1
-        this.getList()
-      },
-      changeChooseStatus() {
-        this.isChoose = !this.isChoose
-      },
-      cancelChoose() {
-        this.hasRename = false
-        this.isChoose = false
-      },
-      chooseList(e, str) {
-        this.chooseFileList = e
-        this.isChooseAll = str
-      },
-      changeChooseAll() {
-        if (!this.hasRename) {
-          if (this.isChooseAll === '' || this.isChooseAll === 'empty') {
-            this.isChooseAll = 'all'
-          } else if (this.isChooseAll === 'all') {
+      }
+    },
+    newFolder() {
+      this.showConfirmFolder = true
+      this.showCover = true
+    },
+    getUploadUrl() {
+      this.$http.get(api.yunpanUpToken).then((res) => {
+        if (res.data.meta.status_code === 200) {
+          this.uploadUrl = res.data.data.upload_url
+          this.uploadParams['token'] = res.data.data.upToken
+        }
+      })
+    },
+    uploadSuccess(res, file, fileList) {
+      if (res.success === 1) {
+        let repeat = false
+        for (let i of this.list) {
+          if (i['id'] === res.info['id']) {
+            repeat = true
+          }
+        }
+        if (!repeat) {
+          let size = res.info['size'] / 1024
+          if (size > 1024) {
+            res.info['format_size'] = (size / 1024).toFixed(2) + 'MB'
+          } else {
+            res.info['format_size'] = size.toFixed(2) + 'KB'
+          }
+            // 格式化日期
+          res['info']['date'] = res['info']['created_at'].date_format().format('yyyy年MM月dd日')
+          res['info']['created_at_format'] = res['info']['created_at'].date_format().format('yyyy-MM-dd')
+          // 格式化类型
+          if (/folder/.test(res['info']['mime_type'])) {
+            res['info']['format_type'] = 'folder'
+            res['info']['leixing'] = '文件夹'
+          } else if (/pdf/.test(res['info']['mime_type'])) {
+            res['info']['format_type'] = 'artboard'
+            res['info']['leixing'] = 'PDF'
+          } else if (/audio/.test(res['info']['mime_type'])) {
+            res['info']['format_type'] = 'audio'
+            res['info']['leixing'] = '音频'
+          } else if (/(?:zip|rar|7z)/.test(res['info']['mime_type'])) {
+            res['info']['format_type'] = 'compress'
+            res['info']['leixing'] = '压缩文件'
+          } else if (/(?:text|msword)/.test(res['info']['mime_type'])) {
+            res['info']['format_type'] = 'document'
+            res['info']['leixing'] = '文档'
+          } else if (/image/.test(res['info']['mime_type'])) {
+            res['info']['format_type'] = 'image'
+            res['info']['leixing'] = '图片'
+          } else if (/powerpoint/.test(res['info']['mime_type'])) {
+            res['info']['format_type'] = 'powerpoint'
+            res['info']['leixing'] = '演示文稿'
+          } else if (/spreadsheet/.test(res['info']['mime_type'])) {
+            res['info']['format_type'] = 'spreadsheet'
+            res['info']['leixing'] = '电子表格'
+          } else if (/video/.test(res['info']['mime_type'])) {
+            res['info']['format_type'] = 'video'
+            res['info']['leixing'] = '视频'
+          } else {
+            res['info']['format_type'] = 'other'
+            res['info']['leixing'] = '其他'
+          }
+          // 权限
+          if (res['info']['group_id'] === null || !res['info']['group_id'].length) {
+            res['info']['group_id'] = []
+            if (res['info']['open_set'] === 1) {
+              res['info']['filePermission'] = '公开'
+            } else {
+              res['info']['filePermission'] = '仅自己可见'
+            }
+          } else {
+            res['info']['filePermission'] = '群组可见'
+          }
+          // 图片
+          if (/image/.test(res['info']['mime_type'])) {
+            this.imgList.push(res['info'])
+          }
+          if (this.list.length < this.query.pageSize) {
+            this.list.push(res.info)
+          } else {
+            this.query.totalPges++
+          }
+          this.query.totalCount++
+        }
+      }
+    },
+    uploadError(err, file, fileList) {
+      console.error(err)
+    },
+    uploadRemove(file, fileList) {
+    },
+    uploadProgress(event, file, fileList) {
+      this.webUploader = true
+      this.fileList = fileList
+      this.totalNumber = this.fileList.length
+    },
+    beforeUpload(file) {
+      const size = file.size / 1024 / 1024 < 100
+      if (!size) {
+        this.$message.error('文件大小不能超过 100MB!')
+      }
+      return size
+    },
+    uploadChange(file, fileList) {
+    },
+    clearUpload() {
+      this.$refs.upload.clearFiles()
+      for (let i of this.fileList) {
+        this.$refs.upload.handleRemove(i)
+      }
+      this.showConfirm = false
+      this.showCover = false
+    },
+    rename() {
+      if (this.alreadyChoose) {
+        if (this.alreadyChoose > 1) {
+          return
+        } else {
+          this.hasRename = true
+        }
+      } else {
+        this.$message.error('请选择要重命名的文件')
+      }
+    },
+    deleteFile() {
+      if (this.chooseFileList.length) {
+        this.showCover = true
+        this.showConfirmDelete = true
+      } else {
+        this.$message.error('请选择要删除的文件')
+      }
+    },
+    confirmDelete() {
+      this.$http.put(api.yunpanDelete, {id_arr: this.chooseFileList}).then((res) => {
+        if (res.data.meta.status_code === 200) {
+          this.$nextTick(function () {
+            // this.list = this.list.filter(item => { return this.chooseFileList.indexOf(item.id) === -1 })
             this.isChooseAll = 'empty'
-          }
-        }
-      },
-      changeFileView() {
-        if (this.curView === 'list') {
-          this.curView = 'chunk'
+            this.getList()
+          })
         } else {
-          this.curView = 'list'
+          this.$message.error(res.data.meta.message)
         }
-      },
-      newFolder() {
-        this.showConfirmFolder = true
-        this.showCover = true
-      },
-      getUploadUrl() {
-        this.$http.get(api.yunpanUpToken).then((res) => {
-          if (res.data.meta.status_code === 200) {
-            this.uploadUrl = res.data.data.upload_url
-            this.uploadParams['token'] = res.data.data.upToken
-          }
-        })
-      },
-      uploadSuccess(res, file, fileList) {
-        if (res.success === 1) {
-          let repeat = false
-          for (let i of this.list) {
-            if (i['id'] === res.info['id']) {
-              repeat = true
-            }
-          }
-          if (!repeat) {
-            let size = res.info['size'] / 1024
-            if (size > 1024) {
-              res.info['format_size'] = (size / 1024).toFixed(2) + 'MB'
-            } else {
-              res.info['format_size'] = size.toFixed(2) + 'KB'
-            }
-             // 格式化日期
-            res['info']['date'] = res['info']['created_at'].date_format().format('yyyy年MM月dd日')
-            res['info']['created_at_format'] = res['info']['created_at'].date_format().format('yyyy-MM-dd')
-            // 格式化类型
-            if (/folder/.test(res['info']['mime_type'])) {
-              res['info']['format_type'] = 'folder'
-              res['info']['leixing'] = '文件夹'
-            } else if (/pdf/.test(res['info']['mime_type'])) {
-              res['info']['format_type'] = 'artboard'
-              res['info']['leixing'] = 'PDF'
-            } else if (/audio/.test(res['info']['mime_type'])) {
-              res['info']['format_type'] = 'audio'
-              res['info']['leixing'] = '音频'
-            } else if (/(?:zip|rar|7z)/.test(res['info']['mime_type'])) {
-              res['info']['format_type'] = 'compress'
-              res['info']['leixing'] = '压缩文件'
-            } else if (/(?:text|msword)/.test(res['info']['mime_type'])) {
-              res['info']['format_type'] = 'document'
-              res['info']['leixing'] = '文档'
-            } else if (/image/.test(res['info']['mime_type'])) {
-              res['info']['format_type'] = 'image'
-              res['info']['leixing'] = '图片'
-            } else if (/powerpoint/.test(res['info']['mime_type'])) {
-              res['info']['format_type'] = 'powerpoint'
-              res['info']['leixing'] = '演示文稿'
-            } else if (/spreadsheet/.test(res['info']['mime_type'])) {
-              res['info']['format_type'] = 'spreadsheet'
-              res['info']['leixing'] = '电子表格'
-            } else if (/video/.test(res['info']['mime_type'])) {
-              res['info']['format_type'] = 'video'
-              res['info']['leixing'] = '视频'
-            } else {
-              res['info']['format_type'] = 'other'
-              res['info']['leixing'] = '其他'
-            }
-            // 权限
-            if (res['info']['group_id'] === null || !res['info']['group_id'].length) {
-              res['info']['group_id'] = []
-              if (res['info']['open_set'] === 1) {
-                res['info']['filePermission'] = '公开'
-              } else {
-                res['info']['filePermission'] = '仅自己可见'
-              }
-            } else {
-              res['info']['filePermission'] = '群组可见'
-            }
-            // 图片
-            if (/image/.test(res['info']['mime_type'])) {
-              this.imgList.push(res['info'])
-            }
-            if (this.list.length < this.query.pageSize) {
-              this.list.push(res.info)
-            } else {
-              this.query.totalPges++
-            }
-            this.query.totalCount++
-          }
-        }
-      },
-      uploadError(err, file, fileList) {
-        console.error(err)
-      },
-      uploadRemove(file, fileList) {
-      },
-      uploadProgress(event, file, fileList) {
-        this.webUploader = true
-        this.fileList = fileList
-        this.totalNumber = this.fileList.length
-      },
-      beforeUpload(file) {
-        const size = file.size / 1024 / 1024 < 100
-        if (!size) {
-          this.$message.error('文件大小不能超过 100MB!')
-        }
-        return size
-      },
-      uploadChange(file, fileList) {
-      },
-      clearUpload() {
-        this.$refs.upload.clearFiles()
-        for (let i of this.fileList) {
-          this.$refs.upload.handleRemove(i)
-        }
-        this.showConfirm = false
         this.showCover = false
-      },
-      rename() {
-        if (this.alreadyChoose) {
-          if (this.alreadyChoose > 1) {
-            return
-          } else {
-            this.hasRename = true
-          }
-        } else {
-          this.$message.error('请选择要重命名的文件')
-        }
-      },
-      deleteFile() {
-        if (this.chooseFileList.length) {
-          this.showCover = true
-          this.showConfirmDelete = true
-        } else {
-          this.$message.error('请选择要删除的文件')
-        }
-      },
-      changeList(method, url) {
-        let row = {id_arr: this.chooseFileList}
-        this.$http({method: method, url: url, data: row})
-        .then((res) => {
-          if (res.data.meta.status_code === 200) {
-            this.$nextTick(function () {
-              this.list = this.list.filter(item => { return this.chooseFileList.indexOf(item.id) === -1 })
-              this.isChooseAll = 'empty'
-            })
-          } else {
-            this.$message.error(res.data.meta.message)
-          }
-          this.showCover = false
-          this.showConfirmDelete = false
-        }).catch((err) => {
-          console.error(err)
-        })
-      },
-      confirmDelete() {
-        this.$http.put(api.yunpanDelete, {id_arr: this.chooseFileList}).then((res) => {
-          if (res.data.meta.status_code === 200) {
-            this.$nextTick(function () {
-              this.list = this.list.filter(item => { return this.chooseFileList.indexOf(item.id) === -1 })
-              this.isChooseAll = 'empty'
-            })
-          } else {
-            this.$message.error(res.data.meta.message)
-          }
-          this.showCover = false
-          this.showConfirmDelete = false
-        }).catch((err) => {
-          console.error(err)
-        })
-      },
-      shiftDelete() {
-        if (this.chooseFileList.length) {
-          this.showCover = true
-          this.showConfirmShiftDelete = true
-        } else {
-          this.$message.error('请选择要彻底删除的文件')
-        }
-      },
-      confirmShiftDelete() {
-        this.$http.delete(api.recycleBinDelete, {params: {id_arr: this.chooseFileList}}).then((res) => {
-          if (res.data.meta.status_code === 200) {
-            this.$nextTick(function () {
-              this.list = this.list.filter(item => { return this.chooseFileList.indexOf(item.id) === -1 })
-              this.isChooseAll = 'empty'
-            })
-            this.showCover = false
-            this.showConfirmShiftDelete = false
-          } else {
-            this.$message.error(res.data.meta.message)
-          }
-        })
-      },
-      recoverFile() {
-        if (this.chooseFileList.length) {
-          this.showCover = true
-          this.showConfirmRecover = true
-        } else {
-          this.$message.error('请选择要恢复的文件')
-        }
-      },
-      confirmRecover() {
-        this.$http.put(api.recycleBinRestore, {id_arr: this.chooseFileList}).then((res) => {
-          if (res.data.meta.status_code === 200) {
-            this.$nextTick(function () {
-              this.list = this.list.filter(item => { return this.chooseFileList.indexOf(item.id) === -1 })
-              this.isChooseAll = 'empty'
-            })
-            this.showCover = false
-            this.showConfirmRecover = false
-          } else {
-            this.$message.error(res.data.meta.message)
-          }
-        })
-      },
-      directRename() {
-        this.hasRename = true
-      },
-      renameCancel() {
-        this.hasRename = false
-      },
-      changeName(index, id, name) {
-        this.$http.put(api.yunpanEditName, {
-          id: id,
-          name: name
-        }).then(res => {
-          if (res.data.meta.status_code === 200) {
-            this.list[index]['name'] = name
-          } else {
-            this.$message.error(res.data.meta.message)
-          }
-        }).catch(err => {
-          console.error(err)
-        })
-      },
-      getFile() {
-        this.$http.get(api.yunpanList, {params: {
-          pan_director_id: 0,
-          page: 1,
-          per_page: 100,
-          type: 1,
-          order_by: 3,
-          ascend: 1
-        }}).then(res => {
-          if (res.data.meta.status_code === 200) {
-            this.folderObj = [{folderId: 0, folderList: res.data.data, checkId: 0}]
-          } else {
-            this.$message.error(res.data.meta.message)
-          }
-        }).catch(err => {
-          console.error(err)
-        })
-      },
-      confirmCopy() {
-        if (this.chooseFileList.length) {
-          this.showConfirmCopy = true
-          this.showCover = true
-          this.getFile()
-        } else {
-          this.$message.error('请选择要复制的文件')
-        }
-      },
-      confirmMove() {
-        if (this.chooseFileList.length) {
-          this.showConfirmMove = true
-          this.showCover = true
-          this.getFile()
-        } else {
-          this.$message.error('请选择要移动的文件')
-        }
-      },
-      clickFolder(id, index) {
-        this.copyORmoveLoading = true
-        this.folderObj[index].checkId = id
-        this.$http.get(api.yunpanList, {params: {
-          pan_director_id: id,
-          page: 1,
-          per_page: 100,
-          type: 1,
-          order_by: 3,
-          ascend: 1
-        }}).then(res => {
-          this.copyORmoveLoading = false
-          if (res.data.meta.status_code === 200) {
-            if (index < this.folderObj.length - 1) {
-              this.folderObj.splice(index + 1, this.folderObj.length)
-            }
-            this.folderObj.push({folderId: id, folderList: res.data.data, checkId: 0})
-          } else {
-            this.$message.error(res.data.meta.message)
-          }
-        })
-        .catch(err => {
-          this.copyORmoveLoading = false
-          console.error(err)
-        })
-      },
-      copyFile() {
-        let id = 0
-        if (this.folderObj.length > 1) {
-          id = this.folderObj[this.folderObj.length - 1]['folderId']
-        }
-        if (this.chooseFileList.indexOf(id) === -1) {
-          this.$http.put(api.yunpanCopy, {
-            from_id_arr: this.chooseFileList,
-            to_id: id
-          }).then(res => {
-            if (res.data.meta.status_code === 200) {
-              this.$message.success('复制成功')
-              this.closeCover()
-            } else {
-              this.$message.success(res.data.meta.message)
-            }
-          }).catch(err => {
-            console.error(err)
-          })
-        } else {
-          this.$message.error('不能将文件复制到自身或其子目录下')
-        }
-      },
-      moveFile() {
-        let id = 0
-        if (this.folderObj.length > 1) {
-          id = this.folderObj[this.folderObj.length - 1]['folderId']
-        }
-        if (this.chooseFileList.indexOf(id) === -1) {
-          this.$http.put(api.yunpanMove, {
-            from_id_arr: this.chooseFileList,
-            to_id: id
-          }).then(res => {
-            if (res.data.meta.status_code === 200) {
-              this.$nextTick(function () {
-                this.list = this.list.filter(item => { return this.chooseFileList.indexOf(item.id) === -1 })
-                this.isChooseAll = 'empty'
-              })
-              this.$message.success('移动成功')
-              this.closeCover()
-            } else {
-              this.$message.success(res.data.meta.message)
-            }
-          }).catch(err => {
-            console.error(err)
-          })
-        } else {
-          this.$message.error('不能将文件移动到自身或其子目录下')
-        }
-      },
-      searchClick() {
-        this.showList = !this.showList
-        this.list = []
-        this.isChoose = false
-        this.query.totalCount = 0
-        this.$router.push({name: this.$route.name, params: {modules: 'search'}})
-        this.modules = this.$route.params.modules
-      },
-      clearShowList() {
-        this.showList = !this.showList
-        this.searchWord = ''
-        this.$router.push({name: this.$route.name, params: {modules: 'all'}})
-        this.modules = this.$route.params.modules
-        this.getList()
-      },
-      changePermission(id) {
-        this.setPermissionId = id
-        this.showConfirmPermission = true
+        this.showConfirmDelete = false
+      }).catch((err) => {
+        console.error(err)
+      })
+    },
+    shiftDelete() {
+      if (this.chooseFileList.length) {
         this.showCover = true
-      },
-      confirmPermission() {
-        this.$http.put(api.setPermission, {
-          pan_director_id: this.setPermissionId,
-          open_set: this.openSet,
-          group_id_arr: this.group_id_arr
+        this.showConfirmShiftDelete = true
+      } else {
+        this.$message.error('请选择要彻底删除的文件')
+      }
+    },
+    confirmShiftDelete() {
+      this.$http.delete(api.recycleBinDelete, {params: {id_arr: this.chooseFileList}}).then((res) => {
+        if (res.data.meta.status_code === 200) {
+          this.$nextTick(function () {
+            // this.list = this.list.filter(item => { return this.chooseFileList.indexOf(item.id) === -1 })
+            this.isChooseAll = 'empty'
+            this.getList()
+          })
+          this.showCover = false
+          this.showConfirmShiftDelete = false
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      })
+    },
+    recoverFile() {
+      if (this.chooseFileList.length) {
+        this.showCover = true
+        this.showConfirmRecover = true
+      } else {
+        this.$message.error('请选择要恢复的文件')
+      }
+    },
+    confirmRecover() {
+      this.$http.put(api.recycleBinRestore, {id_arr: this.chooseFileList}).then((res) => {
+        if (res.data.meta.status_code === 200) {
+          this.$nextTick(function () {
+            // this.list = this.list.filter(item => { return this.chooseFileList.indexOf(item.id) === -1 })
+            this.isChooseAll = 'empty'
+            this.getList()
+          })
+          this.showCover = false
+          this.showConfirmRecover = false
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      })
+    },
+    directRename() {
+      this.hasRename = true
+    },
+    renameCancel() {
+      this.hasRename = false
+    },
+    changeName(index, id, name) {
+      this.$http.put(api.yunpanEditName, {
+        id: id,
+        name: name
+      }).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.list[index]['name'] = name
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        console.error(err)
+      })
+    },
+    getFile() {
+      this.$http.get(api.yunpanList, {params: {
+        pan_director_id: 0,
+        page: 1,
+        per_page: 100,
+        type: 1,
+        order_by: 3,
+        ascend: 1
+      }}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.folderObj = [{folderId: 0, folderList: res.data.data, checkId: 0}]
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        console.error(err)
+      })
+    },
+    confirmCopy() {
+      if (this.chooseFileList.length) {
+        this.showConfirmCopy = true
+        this.showCover = true
+        this.getFile()
+      } else {
+        this.$message.error('请选择要复制的文件')
+      }
+    },
+    confirmMove() {
+      if (this.chooseFileList.length) {
+        this.showConfirmMove = true
+        this.showCover = true
+        this.getFile()
+      } else {
+        this.$message.error('请选择要移动的文件')
+      }
+    },
+    clickFolder(id, index) {
+      this.copyORmoveLoading = true
+      this.folderObj[index].checkId = id
+      this.$http.get(api.yunpanList, {params: {
+        pan_director_id: id,
+        page: 1,
+        per_page: 100,
+        type: 1,
+        order_by: 3,
+        ascend: 1
+      }}).then(res => {
+        this.copyORmoveLoading = false
+        if (res.data.meta.status_code === 200) {
+          if (index < this.folderObj.length - 1) {
+            this.folderObj.splice(index + 1, this.folderObj.length)
+          }
+          this.folderObj.push({folderId: id, folderList: res.data.data, checkId: 0})
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      })
+      .catch(err => {
+        this.copyORmoveLoading = false
+        console.error(err)
+      })
+    },
+    copyFile() {
+      let id = 0
+      if (this.folderObj.length > 1) {
+        id = this.folderObj[this.folderObj.length - 1]['folderId']
+      }
+      if (this.chooseFileList.indexOf(id) === -1) {
+        this.$http.put(api.yunpanCopy, {
+          from_id_arr: this.chooseFileList,
+          to_id: id
         }).then(res => {
           if (res.data.meta.status_code === 200) {
-            this.list.forEach((item) => {
-              if (item.id === this.setPermissionId) {
-                item.open_set = this.openSet
-                item.group_id_arr = this.group_id_arr
-              }
-            })
+            this.$message.success('复制成功')
             this.closeCover()
           } else {
-            this.$message.error(res.data.meta.message)
+            this.$message.success(res.data.meta.message)
           }
         }).catch(err => {
           console.error(err)
         })
-      },
-      focusFolderPermission() {
-        this.isFocusFolderPermission = true
-      },
-      blurFolderPermission() {
-      },
-      focusFolderName() {
-        this.isFocusFolderPermission = false
-        this.isFocusFolderName = true
-      },
-      blurFolderName() {
-        this.isFocusFolderName = false
-      },
-      closeCover() {
-        this.showCover = false
-        this.showConfirm = false
-        this.showConfirmDelete = false
-        this.showConfirmShiftDelete = false
-        this.showConfirmRecover = false
-        this.showConfirmPermission = false
-        this.showConfirmFolder = false
-        this.isFocusFolderName = false
-        this.isFocusFolderPermission = false
-        this.showConfirmCopy = false
-        this.showConfirmMove = false
-        this.folderObj = [{folderId: 0, folderList: [], checkId: 0}]
-        // 以下几个要不要清空
-        this.group_id_arr = []
-        this.folder.permission = ''
-        this.permissionStatus = 0
-        this.isSelectGroup = false
-        this.folder.name = ''
-        this.copyORmoveFolderName = ''
-      },
-      selectPermission(id) {
-        this.openSet = id
-        this.permissionStatus = id
-        this.isSelectGroup = false
-        this.group_id_arr = []
-      },
-      selectGroup() {
-        this.isSelectGroup = true
-        this.openSet = 1
-        this.permissionStatus = 3
-      },
-      changeSelectGroup(index) {
-        let id = this.group_id_arr.indexOf(index)
-        if (id === -1) {
-          this.group_id_arr.push(index)
-        } else {
-          this.group_id_arr.splice(id, 1)
-        }
-      },
-      CreateDir() {
-        this.getGroupLists()
-        if (!this.folderId) {
-          if (!this.folder.name) {
-            this.$message.error('请填写文件夹名称')
-            return
-          } else if (!this.folder.permission) {
-            this.$message.error('请选择文件夹权限')
-            return
+      } else {
+        this.$message.error('不能将文件复制到自身或其子目录下')
+      }
+    },
+    moveFile() {
+      let id = 0
+      if (this.folderObj.length > 1) {
+        id = this.folderObj[this.folderObj.length - 1]['folderId']
+      }
+      if (this.chooseFileList.indexOf(id) === -1) {
+        this.$http.put(api.yunpanMove, {
+          from_id_arr: this.chooseFileList,
+          to_id: id
+        }).then(res => {
+          if (res.data.meta.status_code === 200) {
+            this.$nextTick(function () {
+              // this.list = this.list.filter(item => { return this.chooseFileList.indexOf(item.id) === -1 })
+              this.isChooseAll = 'empty'
+              this.getList()
+            })
+            this.$message.success('移动成功')
+            this.closeCover()
+          } else {
+            this.$message.success(res.data.meta.message)
           }
+        }).catch(err => {
+          console.error(err)
+        })
+      } else {
+        this.$message.error('不能将文件移动到自身或其子目录下')
+      }
+    },
+    searchClick() {
+      this.showList = !this.showList
+      this.list = []
+      this.isChoose = false
+      this.query.totalCount = 0
+      this.$router.push({name: this.$route.name, params: {modules: 'search'}})
+      this.modules = this.$route.params.modules
+    },
+    clearShowList() {
+      this.showList = !this.showList
+      this.searchWord = ''
+      this.$router.push({name: this.$route.name, params: {modules: 'all'}})
+      this.modules = this.$route.params.modules
+      this.getList()
+    },
+    changePermission(id) {
+      this.setPermissionId = id
+      this.showConfirmPermission = true
+      this.showCover = true
+    },
+    confirmPermission() {
+      this.$http.put(api.setPermission, {
+        pan_director_id: this.setPermissionId,
+        open_set: this.openSet,
+        group_id_arr: this.group_id_arr
+      }).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.list.forEach((item) => {
+            if (item.id === this.setPermissionId) {
+              item.open_set = this.openSet
+              item.group_id = this.group_id_arr
+            }
+          })
+          this.getImgList()
+          this.closeCover()
         } else {
-          if (!this.folder.name) {
-            this.$message.error('请填写文件夹名称')
-            return
-          }
+          this.$message.error(res.data.meta.message)
         }
-        if (this.permissionStatus === 3 && !this.group_id_arr.length) {
-          this.$message.error('请选择权限小组')
+      }).catch(err => {
+        console.error(err)
+      })
+    },
+    focusFolderPermission() {
+      this.isFocusFolderPermission = true
+    },
+    blurFolderPermission() {
+    },
+    focusFolderName() {
+      this.isFocusFolderPermission = false
+      this.isFocusFolderName = true
+    },
+    blurFolderName() {
+      this.isFocusFolderName = false
+    },
+    closeCover() {
+      this.showCover = false
+      this.showConfirm = false
+      this.showConfirmDelete = false
+      this.showConfirmShiftDelete = false
+      this.showConfirmRecover = false
+      this.showConfirmPermission = false
+      this.showConfirmFolder = false
+      this.isFocusFolderName = false
+      this.isFocusFolderPermission = false
+      this.showConfirmCopy = false
+      this.showConfirmMove = false
+      this.folderObj = [{folderId: 0, folderList: [], checkId: 0}]
+      this.group_id_arr = []
+      this.folder.permission = ''
+      this.permissionStatus = 0
+      this.isSelectGroup = false
+      this.folder.name = ''
+      this.copyORmoveFolderName = ''
+    },
+    selectPermission(id) {
+      this.openSet = id
+      this.permissionStatus = id
+      this.isSelectGroup = false
+      this.group_id_arr = []
+    },
+    selectGroup() {
+      this.isSelectGroup = true
+      this.openSet = 1
+      this.permissionStatus = 3
+    },
+    changeSelectGroup(index) {
+      let id = this.group_id_arr.indexOf(index)
+      if (id === -1) {
+        this.group_id_arr.push(index)
+      } else {
+        this.group_id_arr.splice(id, 1)
+      }
+    },
+    CreateDir() {
+      this.getGroupLists()
+      if (!this.folderId) {
+        if (!this.folder.name) {
+          this.$message.error('请填写文件夹名称')
+          return
+        } else if (!this.folder.permission) {
+          this.$message.error('请选择文件夹权限')
           return
         }
+      } else {
+        if (!this.folder.name) {
+          this.$message.error('请填写文件夹名称')
+          return
+        }
+      }
+      if (this.permissionStatus === 3 && !this.group_id_arr.length) {
+        this.$message.error('请选择权限小组')
+        return
+      }
+      this.$http.post(api.yunpanCreateDir, {
+        name: this.folder.name,
+        pan_director_id: this.folderId,
+        open_set: this.openSet,
+        group_id_arr: this.group_id_arr
+      }).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.formatList(res.data.data)
+          this.list.unshift(res.data.data)
+          this.closeCover()
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        console.error(err)
+      })
+    },
+    confirmCreateDir_copyORmove(id, index) {
+      this.copyORmoveFolderId = id
+      this.copyORmoveFolderIndex = index
+      this.showFolderInput = true
+    },
+    createDir_copyORmove() {
+      if (this.copyORmoveFolderName) {
+        let id = this.copyORmoveFolderId
+        let index = this.copyORmoveFolderIndex
         this.$http.post(api.yunpanCreateDir, {
-          name: this.folder.name,
-          pan_director_id: this.folderId,
-          open_set: this.openSet,
-          group_id_arr: this.group_id_arr
+          name: this.copyORmoveFolderName,
+          pan_director_id: id
         }).then(res => {
           if (res.data.meta.status_code === 200) {
-            this.list.unshift(res.data.data)
-            this.closeCover()
-            this.formatList()
+            this.folderObj[index]['folderList'].unshift(res.data.data)
+            this.folderObj[index]['folderList'].sort(this.$phenix.arr_sort('name'))
+            this.copyORmoveFolderName = ''
           } else {
             this.$message.error(res.data.meta.message)
           }
         }).catch(err => {
           console.error(err)
         })
-      },
-      confirmCreateDir_copyORmove(id, index) {
-        this.copyORmoveFolderId = id
-        this.copyORmoveFolderIndex = index
-        this.showFolderInput = true
-      },
-      createDir_copyORmove() {
-        if (this.copyORmoveFolderName) {
-          let id = this.copyORmoveFolderId
-          let index = this.copyORmoveFolderIndex
-          this.$http.post(api.yunpanCreateDir, {
-            name: this.copyORmoveFolderName,
-            pan_director_id: id
-          }).then(res => {
-            if (res.data.meta.status_code === 200) {
-              this.folderObj[index]['folderList'].unshift(res.data.data)
-              this.folderObj[index]['folderList'].sort(this.$phenix.arr_sort('name'))
-              this.copyORmoveFolderName = ''
-            } else {
-              this.$message.error(res.data.meta.message)
-            }
-          }).catch(err => {
-            console.error(err)
-          })
-        }
-        this.showFolderInput = false
-      },
-      enterFolder(ele) {
+      }
+      this.showFolderInput = false
+    },
+    enterFolder(ele) {
+      this.$router.push({
+        name: this.$route.name,
+        params: this.$route.params,
+        query: {id: ele.id}})
+      this.folderId = this.$route.query.id
+      this.historyId.push(ele.id)
+    },
+    backFolder() {
+      this.historyId.pop()
+      if (this.historyId.length) {
         this.$router.push({
           name: this.$route.name,
           params: this.$route.params,
-          query: {id: ele.id}})
-        this.folderId = this.$route.query.id
-        this.historyId.push(ele.id)
-      },
-      backFolder() {
-        this.historyId.pop()
-        if (this.historyId.length) {
-          this.$router.push({
-            name: this.$route.name,
-            params: this.$route.params,
-            query: {id: this.historyId[this.historyId.length - 1]}})
-        } else {
-          this.$router.push({
-            name: this.$route.name,
-            params: this.$route.params})
-        }
-      },
-      changeSortGist(type) {
-        if (this.sortGist.order_by !== type) {
-          this.sortGist.order_by = type
-          this.getList()
-        }
-      },
-      changeSortAscend() {
-        let ascend = this.sortGist.ascend
-        if (ascend === 1) {
-          ascend = -1
-        } else {
-          ascend = 1
-        }
-        this.sortGist.ascend = ascend
+          query: {id: this.historyId[this.historyId.length - 1]}})
+      } else {
+        this.$router.push({
+          name: this.$route.name,
+          params: this.$route.params})
+      }
+    },
+    changeSortGist(type) {
+      if (this.sortGist.order_by !== type) {
+        this.sortGist.order_by = type
         this.getList()
       }
     },
-    created() {
-      this.query.page = Number(this.$route.query.page) || 1
-      this.folderId = this.$route.query.id || 0
-      this.modules = this.$route.params.modules
-      this.getUploadUrl()
+    changeSortAscend() {
+      let ascend = this.sortGist.ascend
+      if (ascend === 1) {
+        ascend = -1
+      } else {
+        ascend = 1
+      }
+      this.sortGist.ascend = ascend
       this.getList()
-      this.getGroupLists()
     },
-    computed: {
-      chunkTitle() {
-        if (this.curView === 'list') {
-          return '缩略图显示'
-        } else {
-          return '列表显示'
+    changeImgList(ele) {
+      this.imgList = [ele]
+    },
+    getImgList() {
+      this.imgList = []
+      for (let i of this.list) {
+        this.formatList(i)
+        if (/image/.test(i['mime_type'])) {
+          this.imgList.push(i)
         }
-      },
-      uploadingNumber() {
-        let num = 0
+      }
+    }
+  },
+  created() {
+    this.query.page = Number(this.$route.query.page) || 1
+    this.folderId = this.$route.query.id || 0
+    this.modules = this.$route.params.modules || 'all'
+    this.getUploadUrl()
+    this.getList()
+    this.getGroupLists()
+  },
+  computed: {
+    chunkTitle() {
+      if (this.curView === 'list') {
+        return '缩略图显示'
+      } else {
+        return '列表显示'
+      }
+    },
+    uploadingNumber() {
+      let num = 0
+      for (let i of this.fileList) {
+        if (i.percentage === 100) {
+          num++
+        }
+      }
+      return num
+    },
+    isMob() {
+      return this.$store.state.event.isMob
+    },
+    alreadyChoose() { // 已选择数目
+      return this.chooseFileList.length
+    },
+    realname() {
+      return this.$store.state.event.user.realname
+    }
+  },
+  watch: {
+    '$route' (to, from) {
+      this.folderId = this.$route.query.id || 0
+      this.getList()
+    },
+    fileList: {
+      handler(val) {
+        let a = 0
         for (let i of this.fileList) {
+          let size = i['size'] / 1024
+          if (size > 1024) {
+            i['format_size'] = (size / 1024).toFixed(2) + 'MB'
+          } else {
+            i['format_size'] = size.toFixed(2) + 'KB'
+          }
+          i['format_percentage'] = Number(i.percentage.toFixed(2))
           if (i.percentage === 100) {
-            num++
+            a++
           }
         }
-        return num
+        if (a === this.fileList.length) {
+          this.webUploader = false
+        }
       },
-      isMob() {
-        return this.$store.state.event.isMob
-      },
-      alreadyChoose() { // 已选择数目
-        return this.chooseFileList.length
-      },
-      realname() {
-        return this.$store.state.event.user.realname
+      deep: true
+    },
+    modules() {
+      switch (this.modules) {
+        case 'all':
+          this.title = '全部文件'
+          break
+        case 'project':
+          this.title = '项目'
+          break
+        case 'recently-use':
+          this.title = '最近使用'
+          break
+        case 'recycle':
+          this.title = '回收站'
+          break
+        case 'search':
+          this.title = '搜索'
+          this.showList = false
+          break
+        case 'folder':
+          this.title = '文件夹'
+          break
+        case 0:
+          this.title = '文件夹'
+          break
+        case 1:
+          this.title = '图片'
+          break
+        case 2:
+          this.title = '视频'
+          break
+        case 3:
+          this.title = '音频'
+          break
+        case 4:
+          this.title = '文档'
+          break
+        case 5:
+          this.title = '电子表格'
+          break
+        case 6:
+          this.title = '演示文稿'
+          break
+        case 7:
+          this.title = 'PDF'
+          break
       }
     },
-    watch: {
-      '$route' (to, from) {
-        this.folderId = this.$route.query.id || 0
-        this.getList()
-      },
-      fileList: {
-        handler(val) {
-          let a = 0
-          for (let i of this.fileList) {
-            let size = i['size'] / 1024
-            if (size > 1024) {
-              i['format_size'] = (size / 1024).toFixed(2) + 'MB'
-            } else {
-              i['format_size'] = size.toFixed(2) + 'KB'
-            }
-            i['format_percentage'] = Number(i.percentage.toFixed(2))
-            if (i.percentage === 100) {
-              a++
-            }
-          }
-          if (a === this.fileList.length) {
-            this.webUploader = false
-          }
-        },
-        deep: true
-      },
-      modules() {
-        switch (this.modules) {
-          case 'all':
-            this.title = '全部文件'
-            break
-          case 'project':
-            this.title = '项目'
-            break
-          case 'recently-use':
-            this.title = '最近使用'
-            break
-          case 'recycle':
-            this.title = '回收站'
-            break
-          case 'search':
-            this.title = '搜索'
-            this.showList = false
-            break
-          case 'folder':
-            this.title = '文件夹'
-            break
-          case 0:
-            this.title = '文件夹'
-            break
-          case 1:
-            this.title = '图片'
-            break
-          case 2:
-            this.title = '视频'
-            break
-          case 3:
-            this.title = '音频'
-            break
-          case 4:
-            this.title = '文档'
-            break
-          case 5:
-            this.title = '电子表格'
-            break
-          case 6:
-            this.title = '演示文稿'
-            break
-          case 7:
-            this.title = 'PDF'
-            break
-        }
-      },
-      permissionStatus (newVal, oldVal) {
-        switch (newVal) {
-          case 1:
-            this.folder.permission = '全部成员可见'
-            break
-          case 2:
-            this.folder.permission = '仅自己可见'
-            break
-          case 3:
-            this.folder.permission = '权限小组可见'
-            break
-        }
-      },
-      folderId (newVal) {
-        this.uploadParams['x:pan_director_id'] = newVal || 0
+    permissionStatus (newVal, oldVal) {
+      switch (newVal) {
+        case 1:
+          this.folder.permission = '全部成员可见'
+          break
+        case 2:
+          this.folder.permission = '仅自己可见'
+          break
+        case 3:
+          this.folder.permission = '权限小组可见'
+          break
       }
     },
-    directives: {
-      focus: {
-        inserted(el, binding) {
-          if (binding.value) {
-            el.focus()
-          } else {
-            el.blur()
-          }
-        },
-        componentUpdated(el, binding) {
-          if (binding.value) {
-            el.focus()
-          } else {
-            el.blur()
-          }
+    folderId (newVal) {
+      this.uploadParams['x:pan_director_id'] = newVal || 0
+    }
+  },
+  directives: {
+    focus: {
+      inserted(el, binding) {
+        if (binding.value) {
+          el.focus()
+        } else {
+          el.blur()
+        }
+      },
+      componentUpdated(el, binding) {
+        if (binding.value) {
+          el.focus()
+        } else {
+          el.blur()
         }
       }
     }
   }
+}
 </script>
 <style scoped>
   @keyframes slowShow {

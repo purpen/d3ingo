@@ -19,7 +19,7 @@
             </el-col>
             <el-col :span="8">
               <div class="file-name">
-                <span v-show="chooseList[0] !== ele.id || !hasRename" @click="showView(ele)">{{ele.name}}</span>
+                <span class="file-name-span" v-show="chooseList[0] !== ele.id || !hasRename" @click="showView(ele)">{{ele.name}}</span>
                 <p v-show="chooseList[0] === ele.id && hasRename">
                   <input class="rename" type="text" v-model="renameVal">
                   <span @click="renameConfirm(index, ele.id)" class="rename-confirm"></span>
@@ -120,7 +120,7 @@
         <p class="empty-content" v-else>文件夹为空～</p>
       </div>
     </section>
-    <div class="view-cover" v-show="viewCover">
+    <div class="view-cover" v-show="viewCover && prewiewInfo">
       <div class="view-picture">
         <div class="view-cover-head clearfix">
           <p class="fl">
@@ -130,12 +130,12 @@
           <p class="fr operate">
             <span class="fl">分享</span>
             <span class="fl">下载</span>
-            <span class="fl">移动</span>
+            <span class="fl" @click="moveFile(prewiewInfo.id)">移动</span>
             <span class="fl more" tabindex="-1">
               <i></i>
               <ul>
-                <li>重命名</li>
-                <li>删除</li>
+                <!-- <li>重命名</li> -->
+                <li @click="deleteFile(prewiewInfo.id)">删除</li>
                 <li v-if="folderId === 0" @click="changePermission(prewiewInfo.id)">更改权限</li>
                 <li @click="showProfile = true">详细信息</li>
               </ul>
@@ -143,10 +143,10 @@
           </p>
         </div>
         <div class="view-content">
-          <div class="image-preview">
+          <div class="image-preview" v-if="showType === 1">
             <swiper :options="swiperOption" :not-next-tick="notNextTick" ref="mySwiper">
               <swiper-slide v-for="(ele, index) in imgList" :key="index">
-                <img v-lazy="ele.url_file" alt="ele.name">
+                <img :src="ele.url_file" :alt="ele.name">
               </swiper-slide>
               <div @click="switchPrevPic" class="swiper-button-prev" slot="button-prev">
                 <i class="el-icon-arrow-left"></i>
@@ -156,19 +156,26 @@
               </div>
             </swiper>
           </div>
+          <div class="video-preview" v-if="showType === 2">
+            <video :src="urlFile" controls="controls"></video>
+          </div>
+          <div class="audio-preview" v-if="showType === 3">
+            <audio :src="urlFile" controls="controls"></audio>
+          </div>
+          <div class="artboard-preview" v-if="showType === 7"></div>
         </div>
         <div v-if="showProfile" class="file-profile-cover" @click="showProfile = false"></div>
-        <div v-if="showProfile" class="file-profile">
+        <div v-if="showProfile && prewiewInfo" class="file-profile">
           <p class="profile-head">详细信息<i class="fx-0 fx-black fx-icon-nothing-close-error" @click="showProfile = false"></i></p>
           <article class="profile-body">
             <p><span>文件名:</span>{{prewiewInfo.name}}</p>
             <p><span>类型:</span>{{prewiewInfo.leixing}}</p>
             <p><span>创建时间:</span>{{prewiewInfo.date}}</p>
-            <p><span>尺寸:</span>{{prewiewInfo.width}}px*{{prewiewInfo.height}}px</p>
+            <p v-if="prewiewInfo.width"><span>尺寸:</span>{{prewiewInfo.width}}px*{{prewiewInfo.height}}px</p>
             <p><span>大小:</span>{{prewiewInfo.format_size}}</p>
             <!-- <p><span>位置:</span>{{prewiewInfo.pan_director_id}}</p> -->
             <p><span>所有者:</span>{{prewiewInfo.user_name}}</p>
-            <p><span>更改权限:</span>{{prewiewInfo.filePermission}}</p>
+            <p><span>权限:</span>{{prewiewInfo.filePermission}}</p>
           </article>
         </div>
       </div>
@@ -225,6 +232,7 @@ export default {
       chooseList: [],
       showProfile: false, // 显示详情
       viewCover: false, // 显示预览
+      showType: 0,
       previewObj: {
         index: 0,
         info: {}
@@ -239,8 +247,11 @@ export default {
       },
       renameVal: '',
       currentPic: '',
-      notNextTick: true // 设置之后可以获取swiper对象
+      notNextTick: true, // 设置之后可以获取swiper对象
+      urlFile: ''
     }
+  },
+  mounted() {
   },
   methods: {
     liClick(i, index) {
@@ -268,24 +279,42 @@ export default {
         return
       }
     },
+    changeList(id, ele) {
+      this.showType = id
+      this.viewCover = true
+      this.previewObj.index = 0
+      this.previewObj.info = ele
+      this.$emit('changeImgList', ele)
+    },
     showView(ele) {
+      this.urlFile = ele.url_file
+      this.$http.post(api.yunpanRecentUseLog, {id: ele.id}).then(res => {
+      }).catch(err => {
+        console.error(err)
+      })
       if (this.modules !== 'recycle') {
         if (/image/.test(ele.mime_type)) {
-          this.imgList.forEach((item, index) => {
-            if (ele.id === item.id) {
-              this.swiperObj.slideTo(index)
-              this.viewCover = true
-              this.previewObj.info = item
-              this.previewObj.index = index
-            }
-          })
-          document.body.setAttribute('class', 'disableScroll')
-          document.childNodes[1].setAttribute('class', 'disableScroll')
-          this.$http.post(api.yunpanRecentUseLog, {id: ele.id}).then(res => {
-            console.log(res)
-          }).catch(err => {
-            console.error(err)
-          })
+          this.showType = 1
+          if (this.$refs.mySwiper) {
+            this.imgList.forEach((item, index) => {
+              if (ele.id === item.id) {
+                this.swiperObj.slideTo(index)
+                this.viewCover = true
+                this.previewObj.info = item
+                this.previewObj.index = index
+              }
+            })
+            document.body.setAttribute('class', 'disableScroll')
+            document.childNodes[1].setAttribute('class', 'disableScroll')
+          } else {
+            this.$message.info('正在加载组件...')
+          }
+        } else if (/video/.test(ele.format_type)) {
+          this.changeList(2, ele)
+        } else if (/audio/.test(ele.format_type)) {
+          this.changeList(3, ele)
+        } else if (/pdf/.test(ele.format_type)) {
+          this.changeList(4, ele)
         } else if (/folder/.test(ele.format_type)) {
           if (!this.chooseStatus) {
             this.$emit('enterFolder', ele)
@@ -300,6 +329,7 @@ export default {
     closeView () {
       this.viewCover = false
       this.showProfile = false
+      this.urlFile = ''
       document.body.removeAttribute('class', 'disableScroll')
       document.childNodes[1].removeAttribute('class', 'disableScroll')
     },
@@ -320,7 +350,7 @@ export default {
       this.$emit('directRename')
       this.renameVal = this.list[index]['name']
     },
-    deleteFile(id) {
+    deleteFile(id, ObjIndex = -1) {
       this.directOperate(id)
       this.$emit('deleteFile')
     },
@@ -378,6 +408,21 @@ export default {
         this.chooseList = []
         this.$emit('choose', this.chooseList, 'empty')
       }
+    },
+    prewiewInfo(newVal) {
+      if (!newVal) {
+        this.closeView()
+      }
+    },
+    imgList: {
+      handler: function (newVal) {
+        if (newVal.length) {
+          if (this.previewObj['index'] === -1) {
+            this.previewObj['index'] = 0
+          }
+        }
+      },
+      deep: true
     }
   },
   computed: {
@@ -386,7 +431,11 @@ export default {
     },
     prewiewInfo() {
       if (this.imgList.length) {
-        return this.imgList[this.previewObj['index']]
+        if (this.previewObj['index'] !== -1) {
+          return this.imgList[this.previewObj['index']]
+        } else {
+          return false
+        }
       }
     },
     isMob() {
@@ -420,7 +469,12 @@ export default {
     text-overflow:ellipsis;
     white-space: nowrap;
   }
-
+  .item .file-name .file-name-span {
+    max-width: calc(100% - 40px);
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+  }
   .file-name {
     display: flex;
     align-items: center;
@@ -738,7 +792,7 @@ export default {
     display: none;
     border-radius: 4px;
     position: absolute;
-    z-index: 1;
+    z-index: 999;
     top: 50px;
     left: 0;
     width: 140px;
@@ -813,10 +867,20 @@ export default {
     margin-right: 10px;
   }
   .view-content {
+    height: calc(100vh - 60px);
     padding-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
-  
+  audio, video {
+    width: 800px;
+  }
   .view-content img {
+    min-width: 100px;
+    min-height: 100px;
+    background: url('../../../../../assets/images/tools/cloud_drive/status/loading.gif') center no-repeat;
+    background-size: 50px;
     display: block;
     margin: 0 auto;
     max-width: 800px;

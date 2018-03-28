@@ -30,43 +30,43 @@
       </el-collapse-item>
       <el-collapse-item title="文件类型" name="3">
         <ul class="cloud-classify">
-          <li @click="changeTitle(1)">
-            <a :class="['image', {'active': isActive === 1}]">
+          <li @click="changeTitle('1')">
+            <a :class="['image', {'active': isActive === '1'}]">
               <span>图片</span>
             </a>
           </li>
-          <li @click="changeTitle(2)">
-            <a :class="['video', {'active': isActive === 2}]">
+          <li @click="changeTitle('2')">
+            <a :class="['video', {'active': isActive === '2'}]">
               <span>视频</span>
             </a>
           </li>
-          <li @click="changeTitle(3)">
-            <a :class="['audio', {'active': isActive === 3}]">
+          <li @click="changeTitle('3')">
+            <a :class="['audio', {'active': isActive === '3'}]">
               <span>音频</span>
             </a>
           </li>
-          <li @click="changeTitle(4)">
-            <a :class="['document', {'active': isActive === 4}]">
+          <li @click="changeTitle('4')">
+            <a :class="['document', {'active': isActive === '4'}]">
               <span>文档</span>
             </a>
           </li>
-          <li @click="changeTitle(5)">
-            <a :class="['spreadsheet', {'active': isActive === 5}]">
+          <li @click="changeTitle('5')">
+            <a :class="['spreadsheet', {'active': isActive === '5'}]">
               <span>电子表格</span>
             </a>
           </li>
-          <li @click="changeTitle(6)">
-            <a :class="['powerpoint', {'active': isActive === 6}]">
+          <li @click="changeTitle('6')">
+            <a :class="['powerpoint', {'active': isActive === '6'}]">
               <span>演示文稿</span>
             </a>
           </li>
-          <li @click="changeTitle(7)">
-            <a :class="['artboard', {'active': isActive === 7}]">
+          <li @click="changeTitle('7')">
+            <a :class="['artboard', {'active': isActive === '7'}]">
               <span>PDF</span>
               </a>
           </li>
           <!-- <li @click="changeTitle(0)">
-            <a :class="['folder', {'active': isActive === 0}]">
+            <a :class="['folder', {'active': isActive === '0'}]">
               <span>文件夹</span>
             </a>
           </li> -->
@@ -80,7 +80,6 @@
     name: 'cloud_drive_menu',
     props: {
       isActive: {
-        type: String,
         default: 'all'
       }
     },
