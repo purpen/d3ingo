@@ -21,7 +21,7 @@
               <div class="file-name">
                 <span class="file-name-span" v-show="chooseList[0] !== ele.id || !hasRename" @click="showView(ele)">{{ele.name}}</span>
                 <p v-show="chooseList[0] === ele.id && hasRename">
-                  <input class="rename" type="text" v-model="renameVal">
+                  <input class="rename" type="text" v-model.trim="renameVal">
                   <span @click="renameConfirm(index, ele.id)" class="rename-confirm"></span>
                   <span @click="renameCancel" class="rename-cancel"></span>
                 </p>
@@ -76,7 +76,7 @@
             <el-col :span="8">
               <p class="file-name">
                 <span @click="showView(ele)" v-show="chooseList[0] !== ele.id || !hasRename">{{ele.name}}</span>
-                <input v-show="chooseList[0] === ele.id && hasRename" class="rename" type="text" v-model="renameVal">
+                <input v-show="chooseList[0] === ele.id && hasRename" class="rename" type="text" v-model.trim="renameVal">
                 <span @click="renameConfirm(index, ele.id)" v-show="chooseList[0] === ele.id && hasRename" class="rename-confirm"></span>
                 <span @click="renameCancel" v-show="chooseList[0] === ele.id && hasRename" class="rename-cancel"></span>
               </p>
@@ -94,7 +94,7 @@
             <p v-else :class="['file-icon', ele.format_type]">file-icon</p>
             <p class="file-name">
               <span :title="ele.name" class="file-name-span" @click="showView(ele)" v-show="chooseList[0] !== ele.id || !hasRename">{{ele.name}}</span>
-              <input v-show="chooseList[0] === ele.id && hasRename" class="rename" type="text" v-model="renameVal">
+              <input v-show="chooseList[0] === ele.id && hasRename" class="rename" type="text" v-model.trim="renameVal">
                 <span @click="renameConfirm(index, ele.id)" v-show="chooseList[0] === ele.id && hasRename" class="rename-confirm"></span>
                 <span @click="renameCancel" v-show="chooseList[0] === ele.id && hasRename" class="rename-cancel"></span>
             </p>
@@ -125,7 +125,12 @@
         <div class="view-cover-head clearfix">
           <p class="fl">
             <i class="fx fx-icon-nothing-left" @click="closeView"></i>
-            <span v-if="viewCover" class="title">{{prewiewInfo.name}}</span>
+            <span v-if="viewCover && !isEditHeadName" class="title">{{prewiewInfo.name}}</span>
+            <span v-if="isEditHeadName" class="headEdit">
+              <input class="headName" v-model.trim="headName" type="text">
+              <i @click="headRename(prewiewInfo.id)" class="rename-confirm"></i>
+              <i @click="headRenameCancel" class="rename-cancel"></i>
+            </span>
           </p>
           <p class="fr operate">
             <span class="fl">分享</span>
@@ -134,7 +139,7 @@
             <span class="fl more" tabindex="-1">
               <i></i>
               <ul>
-                <!-- <li>重命名</li> -->
+                <li @click="headRenameConfirm()">重命名</li>
                 <li @click="deleteFile(prewiewInfo.id)">删除</li>
                 <li v-if="folderId === 0" @click="changePermission(prewiewInfo.id)">更改权限</li>
                 <li @click="showProfile = true">详细信息</li>
@@ -248,7 +253,9 @@ export default {
       renameVal: '',
       currentPic: '',
       notNextTick: true, // 设置之后可以获取swiper对象
-      urlFile: ''
+      urlFile: '',
+      headName: '',
+      isEditHeadName: false // 重命名状态
     }
   },
   mounted() {
@@ -340,10 +347,21 @@ export default {
       this.$emit('renameCancel')
       this.$emit('changeName', index, id, this.renameVal)
     },
+    headRenameConfirm() {
+      this.isEditHeadName = true
+    },
+    headRenameCancel() {
+      this.isEditHeadName = false
+    },
     directOperate(id) {
       this.chooseList = []
       this.chooseList.push(id)
       this.$emit('choose', this.chooseList, '')
+    },
+    headRename(id) {
+      this.directOperate(id)
+      this.$emit('headDirectRename', id, this.headName)
+      this.isEditHeadName = false
     },
     rename(id, index) {
       this.directOperate(id)
@@ -731,6 +749,13 @@ export default {
     background: #222;
     color: #fff;
   }
+  .view-cover-head p.fl {
+    height: 60px;
+    overflow: hidden;
+    display: flex;
+    align-items: center
+  }
+
   .view-cover-head p {
     font-size: 18px;
     line-height: 60px;
@@ -913,5 +938,26 @@ export default {
     padding-top: 30px;
     font-size: 16px;
     color: #666666;
+  }
+  
+  .headEdit {
+    display: flex;
+    height: 60px;
+    align-items: center;
+  }
+  .headEdit i {
+    margin-top: 0;
+  }
+  .headName {
+    width: 200px;
+    height: 34px;
+    background: #303030;
+    border: none;
+    color: #fff;
+    border-radius: 4px;
+    padding: 0 8px;
+    margin-right: 10px;
+    font-size: 18px;
+    font-family: "Microsoft Yahei", PingFangSC-Regular, "Helvetica Neue", Helvetica, Arial, sans-serif;
   }
 </style>

@@ -25,3 +25,4 @@ deploy.sh
 .idea
 *.jsbeautifyrc
 composer.lock
+/.vscode

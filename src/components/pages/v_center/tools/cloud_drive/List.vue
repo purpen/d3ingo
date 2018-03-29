@@ -94,6 +94,7 @@
               @renameCancel="renameCancel"
               @changeName="changeName"
               @directRename="directRename"
+              @headDirectRename="headDirectRename"
               @deleteFile="deleteFile"
               @shiftDelete="shiftDelete"
               @recoverFile="recoverFile"
@@ -900,6 +901,24 @@ export default {
       }).then(res => {
         if (res.data.meta.status_code === 200) {
           this.list[index]['name'] = name
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        console.error(err)
+      })
+    },
+    headDirectRename(id, name) {
+      this.$http.put(api.yunpanEditName, {
+        id: id,
+        name: name
+      }).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.list.forEach((item) => {
+            if (item.id === id) {
+              item.name = name
+            }
+          })
         } else {
           this.$message.error(res.data.meta.message)
         }
