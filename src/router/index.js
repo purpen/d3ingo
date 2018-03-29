@@ -481,15 +481,6 @@ routes = [
     },
     component: require('@/components/pages/user/userAllList')
   },
-  {
-    path: '/user/userTable/userMessage',
-    name: 'usermessage',
-    meta: {
-      title: '',
-      requireAuth: true
-    },
-    component: require('@/components/pages/user/userTable/userMessage')
-  },
   // 群组页
   {
     path: '/user/uGroup',
