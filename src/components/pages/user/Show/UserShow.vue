@@ -4,14 +4,15 @@
   </div>
   <div class="el-dialog" v-show="centerDialogVisible">
     <div width="80%">
-          <p>分享链接邀请成员</p>
-        <i class="fx-icon-nothing-close-error" @click="closeDialog"></i>
-        <div class="boxInput"> <input type="text" v-model="rand_string" class="input" ></div>
-          <span class="day">链接7天后失效</span>
-        <el-button class="dialog-footer" type="danger" @click="copyLj"><span>
-          <!-- <route-link :to="{path: 'UserRegister'}"></route-link>-->
-          复制链接</span></el-button> 
-      </div>
+        <p>分享链接邀请成员</p>
+      <i class="fx-icon-nothing-close-error" @click="closeDialog"></i>
+      <div class="boxInput"> <input type="text" v-model="rand_string" class="input" ></div>
+        <span class="day">链接7天后失效</span>
+      <el-button class="dialog-footer" type="danger" @click="copyLj">
+        <span>复制链接</span>
+      </el-button>
+        <span id="copy" v-show="isHide">复制链接成功</span>
+    </div>
   </div>
 </div>
 </template>
@@ -21,6 +22,7 @@ export default {
   name: 'Show',
   data () {
     return {
+      isHide: '',
       result: ''
     }
   },
@@ -37,7 +39,8 @@ export default {
       this.$emit('alick')
     },
     copyLj() {
-      console.log(this.rand_string)
+      this.isHide = true
+      // console.log(this.rand_string)
     }
   },
   created: function () {
@@ -76,18 +79,24 @@ export default {
   font-size: 14px;
   color: #696969;
 }
-.day {
-  padding-top: 25px;
-}
 .el-dialog {
   width: 380px;
-  height: 229px;
+  height: 238px;
   position: fixed;
   display: flex;
   top:100px;
   z-index: 999;
   border-radius: 4px;
   justify-content: center;
+}
+#copy {
+  display: block;
+  width: 320px;
+  height: 16px;
+  font-family: PingFangSC-Regular;
+  font-size: 12px;
+  color: #999999;
+  padding-top: 6px;
 }
 .el-dialog p{
   width: 380px;
@@ -101,6 +110,7 @@ export default {
   display: table;
   margin-top: 27px;
   vertical-align: middle;
+  margin-bottom: 20px;
 }
 .boxInput .input{
   margin: 0 0 0 30px;
@@ -129,7 +139,7 @@ export default {
   width: 320px;
   height: 34px;
   background: #FF5A5F;
-  margin-top: 40px;
+  margin-top: 20px;
   border: 1px solid #FF5A5F;
   border-radius: 4px;
 }

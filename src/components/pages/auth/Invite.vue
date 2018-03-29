@@ -45,11 +45,11 @@
           </el-button>
         </el-form>
 
-        <div class="reg">
+        <!-- <div class="reg">
           <p>已有铟果账户，您可以
             <router-link :to="{name: 'login'}">立即登录</router-link>
           </p>
-        </div>
+        </div> -->
 
       </div>
     </div>
@@ -335,6 +335,7 @@
       if (this.$store.state.event.token) {
         this.$message.error('已经登录!')
         this.$router.replace({name: 'home'})
+        return
       }
       const that = this
       let code = this.$route.params.code
@@ -387,7 +388,7 @@
     color: #222;
   }
   .register-content {
-    border: 1px solid #d2d2d2;
+    /*border: 1px solid #d2d2d2;*/
     border-top: none;
     padding-top: 20px;
   }
@@ -424,7 +425,7 @@
     cursor: pointer;
   }
 
-  .reg {
+/*  .reg {
     margin: 32px 0;
   }
 
@@ -434,8 +435,10 @@
 
   .reg p a {
     color: #FF5A5F;
-  }
-
+  }*/
+/*.reg {
+      margin: 20px 0
+    }*/
   .imgCode {
     width: 102px;
     height: 34px;
@@ -467,8 +470,6 @@
       border: none;
       padding-top: 0;
     }
-    .reg {
-      margin: 20px 0
-    }
+    
   }
 </style>

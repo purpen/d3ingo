@@ -278,13 +278,13 @@ export default {
   designMemberList: '/design/members', // GET 获取成员列表
   designMemberSetRole: '/design/is_admin', // PUT 设计成员权限
 
-  // 数组
+  // 群组
   designgroupUserLists: '/group/groupUserLists', // GET 获取一个群组的成员信息
-  designgroupLists: 'group/lists', // get 获取公司所有自己创建的群组列表
-  deletegroup: 'group/delete', // delete 删除群组
-  addgroup: 'group/addUser', // PUT 向群组添加用户（设计公司管理员)
-  removegroupuser: 'group/removeUser', // PUT 群组移除用户
-  creategroup: 'group/create', // POST 创建群组 设计公司管理员
+  designgroupLists: '/group/lists', // get 获取公司所有自己创建的群组列表
+  deletegroup: '/group/delete', // delete 删除群组
+  addgroup: '/group/addUser', // PUT 向群组添加用户（设计公司管理员)
+  removegroupuser: '/group/removeUser', // PUT 群组移除用户
+  creategroup: '/group/create', // POST 创建群组 设计公司管理员
   // 群组
   groupList: '/group/lists', // GET 获取公司所有自己创建的群组列表(设计公司管理员)
 

@@ -9,15 +9,15 @@
               <img src="../../../assets/images/member/search02@2x.png" alt="">
             </div>
             <div class="TopUser">
-              <router-link :to="{name: 'userAllList'}">成员</router-link> 
-              <router-link :to="{name: 'userGroup'}">群组</router-link>
+              <router-link :to="{name: 'userAllList'}"><span>成员</span></router-link> 
+              <router-link :to="{name: 'userGroup'}"><span class="frist">群组</span></router-link>
               </div>
              <div class="Adduser"> 
                <div class="All">
                  <p @click="newGroup">创建群组</p>
                </div>
-                <ul>
-                  <li @click="group1" v-for="(d, index) in groupNAme" :key="index">{{d.name}}</li>
+                <ul class="grouplist">
+                  <li @click="group1(d.name)" v-for="(d, index) in groupNAme" :key="index">{{d.name}}</li>
                 </ul>
               </div>
           </el-col>
@@ -25,25 +25,26 @@
           <el-row>
         <el-col class="Top">
               <el-col :span="21" class="navText">
-                <span>{{groupNAme}}</span>
+                <span>{{consoleName}}</span>
                 <span>{{3}}</span>
               </el-col>
               <el-col :span="3" class="right">
-                <div class="addinput">
+                <div class="addinput" @click="adduser">
                   <img src="../../../assets/images/member/add02@2x.png" alt="">
-                <a @click="adduser" href="javascript:;">添加成员</a>
+                <a href="javascript:;">添加成员</a>
                  <!-- 群组添加成员 -->
                 <div class="cententList" v-show="isadd">
                   <p>添加成员</p>
                   <i class="fx-icon-nothing-close-error" @click="adduser"></i>
                   <div class="input">
-                    <input type="text" placeholder="林" @click='searchGroupname'>
+                    <input type="text" placeholder="搜索关键字" @click='searchGroupname'>
                     <img src="../../../assets/images/member/search02@2x.png" alt="">
                   </div>
                   <div class="side clearfix">
                     <ul>
                         <li v-for="(d, index) in itemList" :key="index">
-                          <span class="name">{{d.realname}}</span>
+                          <span @click="addgroupname(this.groupaddId, [this.d.id])" class="name">{{d.realname}}</span>
+                          <!-- <span>{{d.id}}</span> -->
                         </li>
                       </ul>
                       <a @click="alick" class="welcome">通过链接邀请</a>
@@ -60,25 +61,41 @@
               </div>
               </el-col>
         </el-col>
-        <el-col v-loading.body="isLoading">
+      <div class="toggeradmin">
+        <el-col v-show="tableshow=true" v-loading.body="isLoading">
           <el-table
             key="withdraw"
-            :data="itemList"
+            :groupUserList="groupUserList"
             style="width: 100%">
             <el-table-column
               min-width="100"
-              prop="realname"
+              width="180"
+              prop="username"
               label="成员名称">
+              <div slot-scope="userphoto" class="userphoto">
+                <img class="active" :src="eventUser.logo_url?eventUser.logo_url:require('assets/images/avatar_100.png')" alt="">
+                <span>{{userphoto.row.username}}</span>
+              </div>
             </el-table-column>
             <el-table-column
               prop=""
               label="">
             </el-table-column>
-            <el-table-column width="100">
+            <el-table-column width="180">
               <img src="../../../assets/images/member/small-arrow@2x.png" alt="">
             </el-table-column>
+            <el-table-column align="center" label="操作">
+            <div slot-scope="props"  class="rotale">
+                <span class="company">{{props.row.company_role_init}}</span>
+                <div class="togger">
+                  <img src="../../../assets/images/member/Group5@2x.png" alt="">
+                </div>
+              </div>
+              </el-table-column>
           </el-table>
         </el-col>
+      </div>
+        <div class="default" v-show="tableshow"></div>
       </el-row>
           </el-col>
       </el-row>
@@ -89,7 +106,7 @@
        <p>新建群组</p>
        <i class="fx-icon-nothing-close-error" @click="newGroup"></i>
       <div class="creatinput">
-        <input type="text" placeholder="创建群组" ref="userName">
+        <input type="text" placeholder="创建群组" v-model="inputVal">
       </div>
       <el-button class="dialog-footer" type="danger" @click="setGroup"><span>创建</span></el-button> 
     </div>
@@ -99,7 +116,7 @@
        <p>编辑群组</p>
        <i class="fx-icon-nothing-close-error" @click="changename"></i>
       <div class="creatinput">
-        <input type="text" placeholder="{{}}" ref="userName">
+        <input type="text" :placeholder="consoleName">
       </div>
       <el-button class="dialog-footer" type="danger" @click="getUp"><span>保存</span></el-button> 
     </div>
@@ -111,7 +128,7 @@
        <span class="isdele">确认要删除部门吗？</span>
       <div id="deletebtn">
         <el-button class="delete-footer" @click="deleteFile"><span>取消</span></el-button>
-        <el-button class="delete-footer" @click="deleteGroup(id)" type="danger"><span>确定</span></el-button>
+        <el-button class="delete-footer" @click="deleteGroup(this.groupaddId)" type="danger"><span>确定</span></el-button>
       </div>
     </div>
 	</div>
@@ -124,17 +141,23 @@ export default {
   name: 'Search',
   data () {
     return {
+      groupaddId: '', // 群组id
+      tableshow: false,
       dialogVisible4Add: false,
       isHide: false,
       isgroup: false,
+      inputVal: '',
       isget: false,
       isdelete: false,
       isadd: false,
       isLoading: false,
+      groupuserName: [],
+      groupUserList: [],
+      user_id_arr: '',
+      group_id: '',
       itemList: [],
       groupNAme: [],
-      sideGroup: [],
-      item: '',
+      consoleName: '',
       // totalCount: 0,
       query: {
         page: 1,
@@ -149,32 +172,62 @@ export default {
     navTitle
   },
   methods: {
+     // 默认头像
+    eventUser() {
+      let user = this.$store.state.event.user
+      if (user.avatar) {
+        user.logo_url = user.avatar.logo
+      } else {
+        user.logo_url = null
+      }
+      return user
+    },
+      // 创建群组弹窗
     newGroup () {
-      // console.log('创建群组弹窗')
       this.isgroup = !this.isgroup
     },
+      // 创建群组提交post请求
     setGroup () {
-      // console.log('创建群组提交')
       this.isgroup = !this.isgroup
       var userID = [this.$store.state.event.user.id]
-      var userName = this.$refs.userName.value
+      var userName = this.inputVal
+      var that = this
       // console.log(userID)
       // console.log(userName)
       this.$http.post(api.creategroup, {user_id_arr: userID, name: userName})
       .then (function(res) {
-        console.log(res)
-        this.Group.push(userName)
+        if (res.data.status === 200) {
+          // for (let i of this.groupuserName) {
+          //   if (userName === this.groupuserName[i].name) {
+          //     // 如果用户名重复，提示信息
+          //   }
+          // }
+          that.groupNAme.push(userName)
+        }
       })
     },
+      // 重命名需要id
+    changename() {
+      this.isget = !this.isget
+    },
+      // 编辑群组x需要群组id
     getUp () {
-      // 编辑群组
-      console.log('编辑群组')
+      this.isget = !this.isget
+      console.log('重命名群组')
+      // console.log()
     },
-    adduser() {
       // 群组里添加成员
+    adduser() {
       this.isadd = !this.isadd
-      console.log('1')
     },
+    // 群组添加用户
+    addgroupname (addid, usersid) {
+      this.$http.put(api.addgroup, {group_id: this.groupaddId, user_id_arr: [this.d.id]})
+      .then (function(res) {
+        console.log(res)
+      })
+    },
+    // 邀请链接弹框
     alick() {
       this.isHide = !this.isHide
       // 群组添加用户  没找到链接邀请
@@ -187,32 +240,49 @@ export default {
             }
           })
     },
-    changename() {
-      this.isget = !this.isget
-      // console.log('重命名')
-    },
+      // 删除群组弹框
     deleteFile() {
-      // console.log('删除群组弹框')
       this.isdelete = !this.isdelete
     },
-    deleteGroup(id) {
-      console.log('确定删除')
-      // let deleteID = this.groupNAme.map(function(arr) {
-      //   return arr.id
-      // })
-      // deleteID.forEach(element => {
-      // });
-      // console.log(deleteID)
-      // this.$http.delete(api.deletegroup, {group_id: deleteID})
-      //   .then(function(res) {
-      //     console.log(deleteID)
-      //   })
+      // 确定删除需要群组id
+    deleteGroup(deleteId) {
+      var that = this
+      this.isdelete = !this.isdelete
+      this.$http.delete(api.deletegroup, {params: {group_id: this.groupaddId}})
+        .then(function(res) {
+          console.log(res)
+          if (res.data.meta.status_code === 403) {
+            console.log('删除群组名')
+            that.groupNAme.splice(0, 1)
+            console.log(that.groupNAme)
+          }
+        })
     },
+    // 搜索成员
     searchGroupname () {
       console.log('搜索成员')
     },
-    group1 (id) {
-      console.log('点击的群组名称')
+    group1 (ele) {
+      this.consoleName = ele
+      var that = this
+      // 取左侧某项群组id
+      for (let i = 0; i < this.groupNAme.length; i++) {
+        if (this.groupNAme[i].name === this.consoleName) {
+          this.groupaddId = this.groupNAme[i].id
+          // console.log(this.groupaddId)
+        }
+      }
+      this.$http.get(api.designgroupUserLists, {params: {group_id: this.groupaddId}})
+      .then(function(res) {
+        console.log(res)
+        if (res.data.meta.status_code === 200) {
+          that.groupUserList = res.data.data
+          // console.log(that.groupUserList)
+          if (that.groupUserList === 'null') {
+            this.tableshow = true
+          }
+        }
+      })
     }
   },
   computed: {
@@ -227,13 +297,15 @@ export default {
     var that = this
     that.$http.get(api.designgroupLists)
         .then(function (res) {
+          // console.log(res)
           if (res.data.meta.status_code === 200) {
-            // console.log(res)
             that.Group = res.data.data
-            console.log(that.Group)
+            // console.log(that.Group)
             for (let i in that.Group) {
-              // console.log(that.Group[i].id)
+              console.log(that.Group[i].id)
               that.userGroupID = that.Group[i].id
+              that.groupuserName = that.Group[i].name
+              console.log(that.groupuserName)
               that.groupNAme = that.Group
             }
           }
@@ -243,11 +315,21 @@ export default {
         })
         // 获取成员信息
     that.$http.get(api.designMemberList)
-      .then(function (response) {
-        if (response.data.meta.status_code === 200) {
-          that.itemList = response.data.data
-        }
-      })
+        .then(function (response) {
+          if (response.data.meta.status_code === 200) {
+            that.itemList = response.data.data
+            for (let i of that.itemList) {
+              // console.log(i.id)
+              if (i.company_role === 0) {
+                i.company_role_init = '成员'
+              } else if (i.company_role === 10) {
+                i.company_role_init = '管理员'
+              } else if (i.company_role === 20) {
+                i.company_role_init = '超级管理员'
+              }
+            }
+          }
+        })
       .catch(function (error) {
         that.$message.error(error.message)
       })
@@ -271,7 +353,8 @@ export default {
   background: #F7F7F7;
 }
 .Adduser ul{
-  width: 280px;
+  height: 150px;
+  overflow-y: scroll;
   font-size: 14px;
   cursor: pointer;
 }
@@ -401,9 +484,11 @@ export default {
 .TopUser span{
  display: inline-block;
  height: 50px;
+ font-size: 14px;
 }
-.TopUser span:first-child {
+.TopUser .frist {
   color: #FF5A5F;
+  border-bottom: 1px solid #FF5A5F;
 }
 .TopUser span:hover {
   color: #FF5A5F;
@@ -423,15 +508,6 @@ export default {
   left: 10px;
   top: 50%;
   transform: translate(0, -50%)
-}
-.fx-icon-nothing-close-error {
-  position: absolute;
-  right: 18px;
-  top:20px;
-  color: #999999;
-  display: block;
-  width: 14px;
-  height: 14px;
 }
 .cententList p {
     background: #F7F7F7;
@@ -603,4 +679,83 @@ export default {
   display: block;
   margin: 45px 84px;
 }
+.company{
+  display: block;
+  position: absolute;
+  right: 50px;
+  top: 10px;
+  text-align: right;
+}
+.togger {
+    height: 16px;
+    width: 16px;
+    position: absolute;
+    right: 33px;
+    cursor: pointer;
+    top: 12px;
+}
+.togger img {
+  height: 16px;
+}
+.togger img:hover {
+  transform: rotate(90deg);
+}
+.userphoto img {
+  border-radius: 50%;
+  height: 36px;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+.default {
+  background: url('../../../assets/images/member/NoContent.png') no-repeat;
+  vertical-align: middle;
+}
 </style>
+<style>
+.toggeradmin {
+  overflow: visible;
+  z-index:inherit;
+}
+.tableuser {
+  overflow: visible;
+}
+.toggeradmin .el-table tr {
+  height: 50px;
+  line-height:50px;
+  overflow: visible;
+}
+.toggeradmin .tableposition {
+  overflow: visible;
+}
+.toggeradmin .el-table td {
+    height: 60px;
+    line-height: 60px;
+}
+.toggeradmin .tableoperation {
+  overflow: visible;
+}
+.toggeradmin .tableright {
+  overflow: visible;
+}
+.toggeradmin .el-table .cell 
+.toggeradmin .el-table__footer-wrapper 
+.toggeradmin .el-table__header-wrapper
+.toggeradmin .el-table__body-wrapper{
+  overflow: visible;
+}
+.toggeradmin .el-table th{
+  overflow: visible;
+}
+.toggeradmin .use.userphoto {
+  overflow: visible;
+}
+.toggeradmin .el-table__body-wrapper{
+  overflow: visible;
+}
+.toggeradmin .el-table .cell{
+    white-space: normal;
+    word-break: break-all;
+    line-height: 39px;
+}
+</style>
+
