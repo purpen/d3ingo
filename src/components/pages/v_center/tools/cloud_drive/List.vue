@@ -11,6 +11,7 @@
               <p class="title fl" v-if="!isChoose && folderId === 0" v-html="title"></p>
               <p class="title fl" v-if="!isChoose && folderId !== 0">
                 <i class="fx fx-icon-nothing-left" @click="backFolder"></i>
+                {{parentFolder.name}}
               </p>
               <div class="fr operate" v-if="!isChoose">
                 <p class="add" v-if="modules !== 'recycle'">
@@ -61,7 +62,7 @@
                   <span class="cancel-choose" @click="cancelChoose">取消选择</span>
                 </el-col>
                 <el-col :offset="4" :span="12">
-                  <span v-if="modules !== 'recycle'">共享</span>
+                  <span v-if="modules !== 'recycle'" @click="confirmShare">共享</span>
                   <span v-if="modules !== 'recycle'">下载</span>
                   <span v-if="modules !== 'recycle'" @click="confirmCopy">复制</span>
                   <span v-if="modules !== 'recycle'" @click="confirmMove">移动</span>
@@ -101,7 +102,8 @@
               @changePermission="changePermission"
               @confirmCopy="confirmCopy"
               @confirmMove="confirmMove"
-              @changeImgList="changeImgList">
+              @changeImgList="changeImgList"
+              @confirmShare="confirmShare">
             </vContent>
           </transition>
         </div>
@@ -154,7 +156,7 @@
         放弃上传
         <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
       </h3>
-      <div class="dialog-conetent">
+      <div class="dialog-content">
         <div class="dialog-article">
           <p>列表中有未上传完成的文件</p>
           <p>确定要放弃上传吗？</p>
@@ -170,7 +172,7 @@
         确认删除
         <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
       </h3>
-      <div class="dialog-conetent">
+      <div class="dialog-content">
         <div class="dialog-article">
           <p>确认要放入回收站吗?</p>
         </div>
@@ -185,7 +187,7 @@
         确认删除
         <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
       </h3>
-      <div class="dialog-conetent">
+      <div class="dialog-content">
         <div class="dialog-article">
           <p>确认要彻底删除文件吗?</p>
         </div>
@@ -200,7 +202,7 @@
         确认恢复
         <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
       </h3>
-      <div class="dialog-conetent">
+      <div class="dialog-content">
         <div class="dialog-article">
           <p>确认要恢复文件吗?</p>
         </div>
@@ -215,7 +217,7 @@
         更改权限
         <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
       </h3>
-      <div class="dialog-conetent dialog-folder">
+      <div class="dialog-content dialog-folder">
         <p class="dialog-permission">设置查看权限</p>
         <input v-if="folderId === 0"
           class="select-permission" placeholder="请选择权限"
@@ -260,7 +262,7 @@
         创建文件夹
         <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
       </h3>
-      <div class="dialog-conetent dialog-folder">
+      <div class="dialog-content dialog-folder">
         <p class="dialog-name">文件夹名称</p>
         <input placeholder="请填写文件夹名称" v-focus="isFocusFolderName"
           @focus="focusFolderName"
@@ -312,7 +314,7 @@
         复制到
         <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
       </h3>
-      <div class="dialog-conetent">
+      <div class="dialog-content">
         <div v-for="(ele,index) in folderObj" :key="index" class="folder-item">
           <div class="folder-item-head">
             <p @click="confirmCreateDir_copyORmove(ele.folderId, index)"
@@ -351,7 +353,7 @@
         移动到
         <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
       </h3>
-      <div class="dialog-conetent">
+      <div class="dialog-content">
         <div v-for="(ele,index) in folderObj" :key="index" class="folder-item">
           <div class="folder-item-head">
             <p @click="confirmCreateDir_copyORmove(ele.folderId, index)"
@@ -384,7 +386,40 @@
         </div>
       </div>
     </section>
-
+    <section class="dialog-body dialog-body-share" v-if="showConfirmShare">
+      <h3 class="dialog-header clearfix">
+        文件链接分享
+        <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
+      </h3>
+      <div class="dialog-content" v-if="showShareOrLink">
+        <p class="share-type">
+          <i :class="{'checked': isEncryption}" @click="isEncryption = true">加密</i>
+          <i :class="{'checked': !isEncryption}" @click="isEncryption = false">公开</i>
+        </p>
+        <p class="validity">
+          <el-select v-model="validityKey" placeholder="请选择">
+            <el-option
+              v-for="(item, index) in validityOption"
+              :key="index"
+              :label="item.name"
+              :value="item.id">
+            </el-option>
+          </el-select>
+        </p>
+        <div class="buttons">
+          <button class="cancel-btn" @click="closeCover">取消</button>
+          <button class="confirm-btn" @click="createLink">创建链接</button>
+        </div>
+      </div>
+      <div class="dialog-content" v-else>
+        <p class="link"><span>链接:</span><input v-model.trim="shareInfo.link" type="text"></p>
+        <p v-if="isEncryption" class="share-password"><span>密码:</span><input v-model.trim="shareInfo.pwd" type="text"></p>
+        <div class="buttons">
+          <button class="cancel-btn" @click="closeCover">取消</button>
+          <button class="confirm-btn" @click="setClipboardText">复制链接</button>
+        </div>
+      </div>
+    </section>
     <el-col :span="18" :offset="6">
       <el-pagination v-if="query.totalCount / query.pageSize > 1" class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize" :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange">
       </el-pagination>
@@ -395,8 +430,7 @@
 import api from '@/api/api'
 import vMenu from '@/components/pages/v_center/tools/cloud_drive/Menu'
 import vContent from '@/components/pages/v_center/tools/cloud_drive/CloudContent'
-import JSZip from 'jszip'
-// import fileSaver from 'file-saver'
+import Clipboard from 'clipboard'
 export default {
   name: 'cloud_drive',
   data() {
@@ -430,6 +464,8 @@ export default {
       showConfirmPermission: false, // 确认更改权限
       showConfirmCopy: false, // 确认复制
       showConfirmMove: false, // 确认移动
+      showConfirmShare: false, // 确认分享
+      showShareOrLink: true, // true share, false link
       showList: true, // 显示全部文件或搜索 false => 搜索
       searchWord: '', // 搜索关键字
       hasRename: false, // 重命名状态
@@ -462,11 +498,32 @@ export default {
         order_by: 1, // date 1, size 2, name 3
         ascend: 1 // 1 升, -1 降
       }, // 排序依据
-      folderObj: [{
+      folderObj: [{ // 移动复制文件夹列表
         folderId: 0,
         folderList: [],
         checkId: 0
-      }]
+      }],
+      validityKey: '',
+      validityVal: '',
+      validityOption: [
+        {
+          id: 7,
+          name: '7天有效'
+        },
+        {
+          id: 30,
+          name: '30天有效'
+        },
+        {
+          id: 0,
+          name: '永久有效'
+        }
+      ],
+      isEncryption: false,
+      shareInfo: {
+        link: '',
+        pwd: ''
+      }
     }
   },
   components: {
@@ -477,14 +534,11 @@ export default {
     window.addEventListener('keydown', e => {
       if (e.keyCode === 13) {
         this.getSearchList()
-        this.createDir_copyORmove()
       }
     })
   },
   methods: {
     downloadFile() {
-      let zip = new JSZip()
-      zip
     },
     handleCurrentChange(page) {
       this.query.page = page
@@ -594,7 +648,12 @@ export default {
           this.isLoading = false
           this.showList = true
           if (res.data.meta.status_code === 200) {
-            // console.log(res.data)
+            if (res.data.meta.info) {
+              if (JSON.stringify(res.data.meta.info) !== '{}') {
+                this.parentFolder = res.data.meta.info
+                this.formatList(this.parentFolder)
+              }
+            }
             if (res.data.meta.pagination) {
               this.query.totalCount = res.data.meta.pagination.total
               this.query.totalPges = res.data.meta.total_pages
@@ -605,12 +664,6 @@ export default {
             this.list = res.data.data
             if (this.list.length) {
               this.getImgList()
-              if (res.data.meta.info) {
-                if (JSON.stringify(res.data.meta.info) !== '{}') {
-                  this.parentFolder = res.data.meta.info
-                  this.formatList(this.parentFolder)
-                }
-              }
             }
           } else {
             this.$message.error(res.data.meta.message)
@@ -1113,6 +1166,9 @@ export default {
       this.isFocusFolderPermission = false
       this.showConfirmCopy = false
       this.showConfirmMove = false
+      this.showConfirmShare = false
+      this.showShareOrLink = false
+      this.validityKey = ''
       this.folderObj = [{folderId: 0, folderList: [], checkId: 0}]
       this.group_id_arr = []
       this.folder.permission = ''
@@ -1251,7 +1307,63 @@ export default {
           this.imgList.push(i)
         }
       }
+    },
+    confirmShare() {
+      if (this.chooseFileList.length) {
+        this.showCover = true
+        this.showConfirmShare = true
+        this.showShareOrLink = true
+      } else {
+        this.$message.error('请选择要分享的文件')
+      }
+    },
+    createLink() {
+      if (this.validityKey !== '') {
+        let type = 0
+        switch (this.isEncryption) {
+          case true:
+            type = 2
+            break
+          case false:
+            type = 1
+            break
+        }
+        this.$http.get(api.yunpanShare, {params: {
+          pan_director_id_arr: this.chooseFileList,
+          type: type,
+          share_time: this.validityKey
+        }}).then(res => {
+          if (res.data.meta.status_code === 200) {
+            this.showShareOrLink = false
+            this.shareInfo.link = window.location.origin + '/file/' + res.data.data.url_code
+            this.shareInfo.pwd = res.data.data.password
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(err => {
+          console.error(err)
+        })
+      } else {
+        this.$message.error('请选择有效期')
+      }
+    },
+    setClipboardText() {
+      let clipboard = null
+      if (this.shareInfo.pwd) {
+        clipboard = new Clipboard('.confirm-btn', {
+          text: () => '地址' + this.shareInfo.link + ',密码' + this.shareInfo.pwd + ',有效期' + this.validityVal
+        })
+        console.log(clipboard)
+      } else {
+        clipboard = new Clipboard('.confirm-btn', {
+          text: () => '地址' + this.shareInfo.link + '有效期' + this.validityVal
+        })
+      }
+      this.$message.success('复制成功')
+      this.closeCover()
     }
+  },
+  beforeCreate() {
   },
   created() {
     this.query.page = Number(this.$route.query.page) || 1
@@ -1294,6 +1406,19 @@ export default {
     '$route' (to, from) {
       this.folderId = this.$route.query.id || 0
       this.getList()
+    },
+    validityKey(newVal) {
+      switch (newVal) {
+        case 7:
+          this.validityVal = '7天有效'
+          break
+        case 30:
+          this.validityVal = '30天有效'
+          break
+        case 0:
+          this.validityVal = '永久有效'
+          break
+      }
     },
     fileList: {
       handler(val) {
@@ -1775,10 +1900,94 @@ export default {
   .dialog-header i:hover {
     color: #222;
   }
-  .dialog-conetent {
+  .dialog-content {
     text-align: center
   }
-  .dialog-body-plus .dialog-conetent {
+  .dialog-body-share .dialog-content {
+    text-align: left;
+    padding: 20px 30px;
+    color: #999;
+  }
+  .dialog-body-share .buttons {
+    padding-bottom: 0;
+  }
+  .share-type, .validity {
+    padding-left: 100px;
+    position: relative;
+    margin-bottom: 30px;
+    height: 34px;
+    line-height: 34px;
+  }
+  .link, .share-password {
+    line-height: 34px;
+  }
+  .link {
+    margin-bottom: 15px;
+  }
+  .share-password {
+    margin-bottom: 20px;
+  }
+  .link span, .share-password span {
+    margin-right: 20px;
+  }
+  .link input, .share-password input {
+    width: 260px;
+    height: 34px;
+    border: 1px solid #d2d2d2;
+    border-radius: 4px;
+    padding: 0 8px;
+  }
+  .share-password input {
+    width: 116px;
+  }
+  .share-type {
+    display: flex
+  }
+  
+  .share-type i {
+    flex: 1;
+    padding-left: 30px;
+    position: relative;
+    cursor: pointer;
+  }
+  .share-type i::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 8px;
+    border-radius: 50%;
+    border: 1px solid #d2d2d2;
+    width: 18px;
+    height: 18px;
+  }
+  .share-type i::after {
+    transition: 0.3s background cubic-bezier(0.42, -0.07, 0, 0.98);
+    content: "";
+    position: absolute;
+    left: 3px;
+    top: 11px;
+    border-radius: 50%;
+    background: #fff;
+    width: 12px;
+    height: 12px;
+  }
+  .share-type i.checked::before {
+    border: 1px solid #666;
+  }
+  .share-type i.checked::after {
+    background: #666;
+  }
+  .share-type::before {
+    content: "分享形式";
+    position: absolute;
+    left: 0;
+  }
+  .validity::before {
+    content: "有效期";
+    position: absolute;
+    left: 0;
+  }
+  .dialog-body-plus .dialog-content {
     font-size: 0;
     text-align: left;
     min-height: 330px;

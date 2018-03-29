@@ -41,12 +41,12 @@
             <el-col :span="4">
               <p class="upload-date">{{ele.created_at_format}}</p>
             </el-col>
-            <el-col :span="2" v-if="!chooseStatus && modules !== 'recycle'">
+            <el-col :span="2" v-if="!chooseStatus && modules !== 'recycle' && !driveShare">
               <div class="more-list" tabindex="-1">
                 <i></i>
                 <ul>
                   <li v-if="folderId === 0" @click="changePermission(ele.id)">更改权限</li>
-                  <li>分享</li>
+                  <li @click="shareFile(ele.id)">分享</li>
                   <li>下载</li>
                   <li @click="copyFile(ele.id)">复制</li>
                   <li @click="moveFile(ele.id)">移动</li>
@@ -62,6 +62,11 @@
                   <li @click="shiftDelete(ele.id)">彻底删除</li>
                   <li @click="recoverFile(ele.id)">恢复</li>
                 </ul>
+              </div>
+            </el-col>
+            <el-col :span="2" v-if="driveShare">
+              <div class="more-list download">
+                <i @click="downFile(ele.url_file)"></i>
               </div>
             </el-col>
           </div>
@@ -103,7 +108,7 @@
               <i></i>
               <ul>
                 <li v-if="folderId === 0" @click="changePermission(ele.id)">更改权限</li>
-                <li>分享</li>
+                <li @click="shareFile(ele.id)">分享</li>
                 <li>下载</li>
                 <li @click="copyFile(ele.id)">复制</li>
                 <li @click="moveFile(ele.id)">移动</li>
@@ -132,8 +137,8 @@
               <i @click="headRenameCancel" class="rename-cancel"></i>
             </span>
           </p>
-          <p class="fr operate">
-            <span class="fl">分享</span>
+          <p class="fr operate" v-if="!driveShare">
+            <span class="fl" @click="shareFile(prewiewInfo.id)">分享</span>
             <span class="fl">下载</span>
             <span class="fl" @click="moveFile(prewiewInfo.id)">移动</span>
             <span class="fl more" tabindex="-1">
@@ -229,6 +234,10 @@ export default {
     },
     folderId: {
       default: 0
+    },
+    driveShare: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -407,6 +416,14 @@ export default {
     moveFile(id) {
       this.directOperate(id)
       this.$emit('confirmMove')
+    },
+    shareFile(id) {
+      this.directOperate(id)
+      this.$emit('confirmShare')
+    },
+    downFile(url) {
+      console.log(url)
+      window.open(url + '?attname=123')
     }
   },
   watch: {
@@ -701,9 +718,20 @@ export default {
   }
 
   .more-list i {
+    opacity: 0.8;
     display: block;
     height: 70px;
     background: url('../../../../../assets/images/tools/cloud_drive/permission/more@2x.png') center no-repeat;
+    background-size: 25px
+  }
+  
+  .more-list i:hover {
+    opacity: 1;
+  }
+  .more-list.download i {
+    display: block;
+    height: 70px;
+    background: url('../../../../../assets/images/tools/cloud_drive/permission/download2@2x.png') center no-repeat;
     background-size: 25px
   }
   

@@ -277,6 +277,8 @@ export default {
   setPermission: '/yunpan/setPermission', // PUT 设置权限
   yunpanCopy: '/yunpan/copy', // PUT 云盘复制
   yunpanMove: '/yunpan/move', // PUT 云盘移动
+  yunpanShare: '/yunpan/shareCreate', // GET 创建文件分享
+  yunpanShareShow: '/yunpan/shareShow', // GET 查看分享
   // 成员管理
   designMemberList: '/design/members', // GET 获取成员列表
   designMemberSetRole: '/design/is_admin', // PUT 设计成员权限

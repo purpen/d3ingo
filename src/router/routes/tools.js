@@ -12,6 +12,16 @@ module.exports = [
     },
     component: require('@/components/pages/v_center/tools/cloud_drive/List')
   },
+  // 云盘列表
+  {
+    path: '/file/:file',
+    name: 'driveShare',
+    meta: {
+      title: '资源分享',
+      requireAuth: false
+    },
+    component: require('@/components/pages/v_center/tools/cloud_drive/Share')
+  },
   // 分享链接登录
   {
     path: '/user/Show/UserShow',
