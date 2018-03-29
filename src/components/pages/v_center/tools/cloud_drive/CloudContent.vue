@@ -327,7 +327,7 @@ export default {
             this.$emit('enterFolder', ele)
           }
         } else {
-          console.log('不是图片')
+          console.log('暂不支持预览')
         }
       } else {
         console.log('回收站不支持预览')
@@ -349,6 +349,7 @@ export default {
     },
     headRenameConfirm() {
       this.isEditHeadName = true
+      this.headName = this.prewiewInfo.name
     },
     headRenameCancel() {
       this.isEditHeadName = false

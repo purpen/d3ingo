@@ -232,7 +232,7 @@
             <i></i>
             <span>仅自己可见</span>
           </li>
-          <li :class="['group', {'lihover': permissionStatus === 3}]" @click="selectGroup">
+          <li v-if="company_role === 10 || company_role === 20" :class="['group', {'lihover': permissionStatus === 3}]" @click="selectGroup">
             <i></i>
             <span>权限小组可见</span>
             <div class="grouplist" v-if="isSelectGroup">
@@ -1060,6 +1060,14 @@ export default {
       this.showCover = true
     },
     confirmPermission() {
+      if (!this.folder.permission) {
+        this.$message.error('请选择文件夹权限')
+        return
+      }
+      if (this.permissionStatus === 3 && !this.group_id_arr.length) {
+        this.$message.error('请选择权限小组')
+        return
+      }
       this.$http.put(api.setPermission, {
         pan_director_id: this.setPermissionId,
         open_set: this.openSet,
@@ -1120,6 +1128,7 @@ export default {
       this.group_id_arr = []
     },
     selectGroup() {
+      this.getGroupLists()
       this.isSelectGroup = true
       this.openSet = 1
       this.permissionStatus = 3
@@ -1133,7 +1142,6 @@ export default {
       }
     },
     CreateDir() {
-      this.getGroupLists()
       if (!this.folderId) {
         if (!this.folder.name) {
           this.$message.error('请填写文件夹名称')
@@ -1251,7 +1259,6 @@ export default {
     this.modules = this.$route.params.modules || 'all'
     this.getUploadUrl()
     this.getList()
-    this.getGroupLists()
   },
   computed: {
     chunkTitle() {
@@ -1278,6 +1285,9 @@ export default {
     },
     realname() {
       return this.$store.state.event.user.realname
+    },
+    company_role() {
+      return this.$store.state.event.user.company_role
     }
   },
   watch: {
