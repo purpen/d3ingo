@@ -32,7 +32,6 @@ module.exports = [
     },
     component: require('@/components/pages/v_center/stage/Show')
   },
-
   // 需求方公司设置
   // 公司基本设置
   {
@@ -83,6 +82,16 @@ module.exports = [
       requireAuth: true
     },
     component: require('@/components/pages/v_center/bank/List')
+  },
+  // 个人账户设置
+  {
+    path: '/vcenter/account/base',
+    name: 'vcenterBase',
+    meta: {
+      title: '个人账户设置',
+      requireAuth: true
+    },
+    component: require('@/components/pages/v_center/account/Base')
   },
 
   // ### 安全设置 #####

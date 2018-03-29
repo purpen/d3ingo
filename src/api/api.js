@@ -25,6 +25,7 @@ export default {
   fetch_msm_code: '/auth/sms', // 获取手机验证码
   fetch_img_captcha: '/captcha/getCaptcha', // 获取图片验证码
   user: '/auth/user', // 获取用户信息
+  updateUser: '/auth/updateUser', // POST 修改用户信息
   authFundInfo: '/auth/fundInfo', // GET 用户钱包信息
   fundLogList: '/fundLogList', // GET 交易记录
   withdrawCreate: '/withdraw/create', // POST 提现

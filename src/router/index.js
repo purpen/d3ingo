@@ -14,7 +14,7 @@ Vue.use(VueRouter)
 
 // 页面刷新时，重新赋值token
 if (window.localStorage.getItem('token')) {
-  // console.log(window.localStorage.getItem('token'))
+  console.log(window.localStorage.getItem('token'))
   store.commit(types.USER_SIGNIN, JSON.parse(window.localStorage.getItem('token')))
 }
 
@@ -509,6 +509,16 @@ routes = [
       requireAuth: true
     },
     component: require('@/components/pages/v_center/common/Control')
+  },
+  // 控制面板--子账户
+  {
+    path: '/vcenter/child_control',
+    name: 'vcenterChildControl',
+    meta: {
+      title: '控制面板',
+      requireAuth: true
+    },
+    component: require('@/components/pages/v_center/common/ChildControl')
   },
   // 作品详情
   {
