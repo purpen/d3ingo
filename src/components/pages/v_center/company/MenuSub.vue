@@ -1,12 +1,14 @@
 <template>
   <div :class="['vcenter-menu-sub', isMob ? 'vcenter-menu-sub-m' : '', 'clearfix']">
-    <div :class="['vcenter-menu-sub-list', isMob ? 'vcenter-menu-sub-list-m' : '']">
+    <div :class="['vcenter-menu-sub-list', isMob ? 'vcenter-menu-sub-list-m' : '']" v-if="isChild">
+      <router-link :to="{name: 'vcenterBase'}" class="item">基本信息</router-link>
+    </div>
+    <div :class="['vcenter-menu-sub-list', isMob ? 'vcenter-menu-sub-list-m' : '']" v-else>
       <router-link :to="{name: 'vcenterComputerBase'}" class="item">基本信息</router-link>
       <router-link :to="{name: 'vcenterComputerAccreditation'}"
                    :class="{'item': true, 'is-active': currentSubName === 'identification' ? true : false}">实名认证
       </router-link>
       <router-link :to="{name: 'vcenterComputerTaking'}" class="item">公司接单设置</router-link>
-
     </div>
   </div>
 </template>
@@ -27,6 +29,14 @@
     computed: {
       isMob() {
         return this.$store.state.event.isMob
+      },
+      // 是否是子账号
+      isChild() {
+        let child = this.$store.state.event.user.child_account
+        if (child === 1) {
+          return true
+        }
+        return false
       }
     }
   }
