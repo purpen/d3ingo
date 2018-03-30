@@ -1018,7 +1018,6 @@ button.is-custom.is-outlined.is-loading:after {
   top: 60px;
   left: 10px;
   border: 1px solid #CCCCCC;
-  width: 170px;
   min-width: 170px;
   padding: 0;
   border-radius: 4px;
@@ -1638,8 +1637,9 @@ td.fc-day.fc-widget-content.fc-today::before {
 .cloud-menu .el-collapse-item__header {
   border-bottom: none;
   color: #999;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 40px;
+  padding-left: 0;
 }
 .cloud-menu .el-collapse-item__wrap {
   background-color: #FFFFFF;
@@ -1716,10 +1716,11 @@ td.fc-day.fc-widget-content.fc-today::before {
 /* 云盘上传 */
 
   p.file-icon {
-    display: block;
+    float: left;
     width: 30px;
     height: 30px;
     margin-top: 20px;
+    margin-right: 16px;
     text-indent: -999em;
   }
   

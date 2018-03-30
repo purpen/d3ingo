@@ -5,10 +5,10 @@
         <!-- 默认显示列表 -->
         <el-col v-for="(ele, index) in list" :key="index" :span="24" v-if="curView === 'list' && showList">
           <div :class="[{'active' : chooseList.indexOf(ele.id) !== -1}, 'item']" @click="liClick(ele.id, index)">
-            <el-col :span="2" v-if="chooseStatus">
+            <el-col :span="1" v-if="chooseStatus">
               <p class="file-radio">file-radio</p>
             </el-col>
-            <el-col :span="2">
+            <el-col :span="10">
               <p v-if="ele.format_type === 'image' && modules !== 'recycle'"
                 @click="showView(ele)"
                 :class="['file-icon', ele.format_type]"
@@ -16,8 +16,6 @@
               <p v-else 
                 @click="showView(ele)"
                 :class="['file-icon', ele.format_type]">file-icon</p>
-            </el-col>
-            <el-col :span="8">
               <div class="file-name">
                 <span class="file-name-span" v-show="chooseList[0] !== ele.id || !hasRename" @click="showView(ele)">{{ele.name}}</span>
                 <p v-show="chooseList[0] === ele.id && hasRename">
@@ -25,7 +23,7 @@
                   <span @click="renameConfirm(index, ele.id)" class="rename-confirm"></span>
                   <span @click="renameCancel" class="rename-cancel"></span>
                 </p>
-                <p v-if="folderId === 0" v-show="chooseList[0] !== ele.id || !hasRename" class="file-permission" @click="changePermission(ele.id)">
+                <p v-if="folderId === 0" v-show="chooseList[0] !== ele.id || !hasRename" class="file-permission" @click="changePermission(ele.id, ele.user_id)">
                   <span v-if="ele.open_set === 1 && !ele.group_id.length" class="public"></span>
                   <span v-if="ele.open_set === 2" class="privacy"></span>
                   <span v-if="ele.group_id.length" class="group"></span>
@@ -45,9 +43,9 @@
               <div class="more-list" tabindex="-1">
                 <i></i>
                 <ul>
-                  <li v-if="folderId === 0" @click="changePermission(ele.id)">更改权限</li>
+                  <li v-if="folderId === 0" @click="changePermission(ele.id, ele.user_id)">更改权限</li>
                   <li @click="shareFile(ele.id)">分享</li>
-                  <li>下载</li>
+                  <li @click="downFile(ele.url_file)">下载</li>
                   <li @click="copyFile(ele.id)">复制</li>
                   <li @click="moveFile(ele.id)">移动</li>
                   <li @click="rename(ele.id, index)">重命名</li>
@@ -107,9 +105,9 @@
             <div class="more-list" tabindex="-1" v-if="!chooseStatus && modules !== 'recycle'">
               <i></i>
               <ul>
-                <li v-if="folderId === 0" @click="changePermission(ele.id)">更改权限</li>
+                <li v-if="folderId === 0" @click="changePermission(ele.id, ele.user_id)">更改权限</li>
                 <li @click="shareFile(ele.id)">分享</li>
-                <li>下载</li>
+                <li @click="downFile(ele.url_file)">下载</li>
                 <li @click="copyFile(ele.id)">复制</li>
                 <li @click="moveFile(ele.id)">移动</li>
                   <li @click="rename(ele.id, index)">重命名</li>
@@ -139,14 +137,14 @@
           </p>
           <p class="fr operate" v-if="!driveShare">
             <span class="fl" @click="shareFile(prewiewInfo.id)">分享</span>
-            <span class="fl">下载</span>
+            <span class="fl" @click="downFile(prewiewInfo.url_file)">下载</span>
             <span class="fl" @click="moveFile(prewiewInfo.id)">移动</span>
             <span class="fl more" tabindex="-1">
               <i></i>
               <ul>
                 <li @click="headRenameConfirm()">重命名</li>
                 <li @click="deleteFile(prewiewInfo.id)">删除</li>
-                <li v-if="folderId === 0" @click="changePermission(prewiewInfo.id)">更改权限</li>
+                <li v-if="folderId === 0" @click="changePermission(prewiewInfo.id, prewiewInfo.user_id)">更改权限</li>
                 <li @click="showProfile = true">详细信息</li>
               </ul>
             </span>
@@ -337,6 +335,7 @@ export default {
           }
         } else {
           console.log('暂不支持预览')
+          this.$message.info('暂不支持预览')
         }
       } else {
         console.log('回收站不支持预览')
@@ -405,9 +404,18 @@ export default {
         this.previewObj.index = this.imgList.length - 1
       }
     },
-    changePermission(id) {
-      this.directOperate(id)
-      this.$emit('changePermission', id)
+    changePermission(id, userId) {
+      if (this.user.company_role !== 10 || this.user.company_role !== 20) {
+        if (this.user.id === userId) {
+          this.directOperate(id)
+          this.$emit('changePermission', id)
+        } else {
+          this.$message.error('仅限管理员和所有者修改权限')
+        }
+      } else {
+        this.directOperate(id)
+        this.$emit('changePermission', id)
+      }
     },
     copyFile(id) {
       this.directOperate(id)
@@ -422,8 +430,8 @@ export default {
       this.$emit('confirmShare')
     },
     downFile(url) {
-      console.log(url)
-      window.open(url + '?attname=123')
+      this.$message.info('正在请求中,请稍等..')
+      this.$emit('downloadFile', url)
     }
   },
   watch: {
@@ -476,6 +484,9 @@ export default {
     },
     isMob() {
       return this.$store.state.event.isMob
+    },
+    user() {
+      return this.$store.state.event.user
     }
   },
   components: {
@@ -504,6 +515,8 @@ export default {
     overflow: hidden;
     text-overflow:ellipsis;
     white-space: nowrap;
+    font-size: 14px;
+    color: #666;
   }
   .item .file-name .file-name-span {
     max-width: calc(100% - 40px);
@@ -571,7 +584,11 @@ export default {
     background: #999;
   }
 
+  .item .file-icon {
+    margin-left: 10px;
+  }
   .item2 .file-icon {
+    float: none;
     width: 60px;
     height: 60px;
     margin: 16px auto 20px; 
@@ -859,6 +876,7 @@ export default {
     color: #999;
     line-height: 40px;
     height: 40px;
+    font-size: 14px;
   }
   
   .more ul li:first-child {
@@ -894,7 +912,7 @@ export default {
     background: #f7f7f7;
     height: 50px;
     border-bottom: 1px solid #d2d2d2;
-    font-size: 16px;
+    font-size: 14px;
     color: #222;
     text-align: center;
     line-height: 50px;
@@ -965,7 +983,7 @@ export default {
   }
   .empty-content {
     padding-top: 30px;
-    font-size: 16px;
+    font-size: 14px;
     color: #666666;
   }
   

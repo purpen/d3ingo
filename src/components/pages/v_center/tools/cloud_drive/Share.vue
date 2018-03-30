@@ -31,7 +31,8 @@
           :driveShare="driveShare"
           @enterFolder="enterFolder"
           @choose="chooseList"
-          @changeImgList="changeImgList">
+          @changeImgList="changeImgList"
+          @downloadFile="downloadFile">
         </vContent>
       </transition>
     </div>
@@ -53,6 +54,7 @@
 <script>
 import api from '@/api/api'
 import vContent from '@/components/pages/v_center/tools/cloud_drive/CloudContent'
+import download from 'downloadjs'
 export default {
   name: 'driveShare',
   data() {
@@ -100,6 +102,9 @@ export default {
     vContent
   },
   methods: {
+    downloadFile(url) {
+      download(url)
+    },
     handleCurrentChange(page) {
       this.query.page = page
       this.$router.push({name: this.$route.name, query: {page: this.query.page}})
