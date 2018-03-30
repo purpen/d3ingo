@@ -2,21 +2,21 @@
   <div class="container">
     <div class="register-box">
       <div class="regisiter-title">
-        <h2>注册铟果{{identity}}</h2>
+        <img src="../../../assets/images/member/logo@2x.png" alt="">
       </div>
-      <div v-if="item">
-        {{ item.realname }} 邀请你加入 {{ item.design_company_name }}
+      <div class="style" v-if="item">
+         <p>登录并接受 <span>{{ item.realname }}</span> 邀请，加入企业 <span>{{ item.design_company_name }}</span></p>
       </div>
-
       <div class="register-content">
         <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px"
                  class="input">
+            <el-form-item label="" prop="realName">
+            <el-input v-model="form.realName" name="realName" ref="realName" placeholder="姓名"></el-input>
+          </el-form-item>
           <el-form-item label="" prop="account">
             <el-input v-model="form.account" name="account" ref="account" placeholder="手机号"></el-input>
           </el-form-item>
-          <el-form-item label="" prop="realName">
-            <el-input v-model="form.realName" name="realName" ref="realName" placeholder="真实姓名"></el-input>
-          </el-form-item>
+          
           <el-form-item label="" prop="imgCode">
             <el-input class="imgCodeInput" v-model="form.imgCode" name="imgCode" ref="imgCode" placeholder="图形验证码">
               <template slot="append">
@@ -45,11 +45,11 @@
           </el-button>
         </el-form>
 
-        <div class="reg">
+        <!-- <div class="reg">
           <p>已有铟果账户，您可以
             <router-link :to="{name: 'login'}">立即登录</router-link>
           </p>
-        </div>
+        </div> -->
 
       </div>
     </div>
@@ -335,6 +335,7 @@
       if (this.$store.state.event.token) {
         this.$message.error('已经登录!')
         this.$router.replace({name: 'home'})
+        return
       }
       const that = this
       let code = this.$route.params.code
@@ -367,7 +368,7 @@
     margin: 30px auto 30px auto;
   }
 
-  .regisiter-title {
+  /* .regisiter-title {
     width: 800px;
     height: 60px;
     font-size: 2rem;
@@ -375,12 +376,21 @@
     vertical-align: middle;
     text-align: center;
     color: #222;
+  } */
+  .regisiter-title img{
+    height: 64px;
+    width: 40px;
+    font-size: 2rem;
+    /* display: table-cell; */
+    vertical-align: middle;
+    text-align: center;
+    margin-bottom: 34px;
+    color: #222;
   }
-
   .register-content {
-    border: 1px solid #d2d2d2;
+    /*border: 1px solid #d2d2d2;*/
     border-top: none;
-    padding-top: 30px;
+    padding-top: 20px;
   }
 
   .register-tab h3 {
@@ -403,12 +413,19 @@
   .register-btn {
     width: 100%;
   }
-
+  .style {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #666666;
+  }
+  .style span{
+    color: #FF5A5F;
+  }
   .code-btn {
     cursor: pointer;
   }
 
-  .reg {
+/*  .reg {
     margin: 32px 0;
   }
 
@@ -418,8 +435,10 @@
 
   .reg p a {
     color: #FF5A5F;
-  }
-
+  }*/
+/*.reg {
+      margin: 20px 0
+    }*/
   .imgCode {
     width: 102px;
     height: 34px;
@@ -451,8 +470,6 @@
       border: none;
       padding-top: 0;
     }
-    .reg {
-      margin: 20px 0
-    }
+    
   }
 </style>

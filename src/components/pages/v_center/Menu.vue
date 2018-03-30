@@ -65,7 +65,7 @@
              :class="{'item': true, 'is-active': currentName === 'modify_pwd'}">
             安全设置
           </a>
-          <a @click="alick" :to="'/user/userList'"
+          <a @click="alick" :to="'/user/uAList'"
              :class="{'item': true, 'is-active': currentName === 'member'}">
             成员管理
           </a>
