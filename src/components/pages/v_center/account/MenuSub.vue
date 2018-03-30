@@ -2,7 +2,7 @@
 
   <div :class="['vcenter-menu-sub', isMob ? 'vcenter-menu-sub-m' : '', 'clearfix']">
     <div :class="['vcenter-menu-sub-list', isMob ? 'vcenter-menu-sub-list-m' : '']">
-      <router-link :to="{name: 'vcenterBase'}" class="item" if="isCompany">基本信息</router-link>
+      <router-link :to="{name: 'vcenterBase'}" class="item" v-if="isCompany">基本信息</router-link>
       <router-link :to="{name: 'modifyPwd'}" :class="{'item': true, 'is-active': currentSubName === 'modify_pwd'}">修改密码</router-link>
 
     </div>
