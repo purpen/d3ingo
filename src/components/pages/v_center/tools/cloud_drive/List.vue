@@ -63,7 +63,7 @@
                 </el-col>
                 <el-col :offset="5" :span="12">
                   <span v-if="modules !== 'recycle'" @click="confirmShare">共享</span>
-                  <span v-if="modules !== 'recycle'" @click="downloadFile">下载</span>
+                  <span v-if="modules !== 'recycle'" @click="downloadFile('down')">下载</span>
                   <span v-if="modules !== 'recycle'" @click="confirmCopy">复制</span>
                   <span v-if="modules !== 'recycle'" @click="confirmMove">移动</span>
                   <span v-if="modules !== 'recycle'" @click="rename" :class="{'disable': alreadyChoose > 1 || !alreadyChoose}">重命名</span>
@@ -541,11 +541,16 @@ export default {
   },
   methods: {
     downloadFile(url) {
-      if (this.alreadyChoose > 1) {
-        this.$message.info('只支持下载单个文件')
-        return
+      console.log(url)
+      if (url) {
+        if (this.alreadyChoose > 1) {
+          this.$message.info('只支持下载单个文件')
+          return
+        } else {
+          download(url)
+        }
       } else {
-        download(url)
+        this.$message.info('暂不支持下载文件夹')
       }
     },
     handleCurrentChange(page) {
@@ -1565,12 +1570,12 @@ export default {
 }
 </script>
 <style scoped>
-  @keyframes slowShow {
+  @keyframes slowShow2 {
     0% {
-      height: 0;
+      opacity: 0;
     }
     100% {
-      height: 82px;
+      opacity: 1;
     }
   }
 
@@ -1665,7 +1670,7 @@ export default {
     top: 40px;
     width: 160px;
     border: 1px solid #d2d2d2;
-    animation: slowShow 0.3s linear;
+    animation: slowShow2 0.2s linear;
     display: none;
     overflow: hidden;
   }
@@ -2258,13 +2263,20 @@ export default {
     color: #fff;
     border-color: #ff5a5f;
     background-color: #ff5a5f;
-    opacity: 0.6;
+  }
+  .buttons button.cancel-btn:hover {
+    background: #f5f5f5
+  }
+  .buttons button.cancel-btn:active {
+    background: #ccc
   }
   .buttons button.confirm-btn:hover, .create-btn:hover {
-    opacity: 0.8;
+    border-color: #d23c46;
+    background-color: #d23c46;
   }
   .buttons button.confirm-btn:active, .create-btn:active {
-    opacity: 1;
+    border-color: #a02832;
+    background-color: #a02832;
   }
   .uploadList-enter-active {
     transition: all 0.3s ease

@@ -884,7 +884,6 @@ button.is-custom.is-outlined.is-loading:after {
 
 .nav-header .nav-item a:hover, a.nav-item:hover {
   color: #222;
-  background: #f7f7f7
 }
 
 .header-buttom-line {
@@ -1287,6 +1286,9 @@ img.avatar {
   border: 1px solid #C8C8C8;
 }
 
+img.avatar2 {
+  border: none
+}
 .font-weight {
   font-weight: bold;
 }

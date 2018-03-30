@@ -93,8 +93,8 @@
         <el-col v-for="(ele, index) in list" :key="ele.name + index" :span="4" v-if="curView === 'chunk'">
           <div :class="[{'active' : chooseList.indexOf(ele.id) !== -1}, 'item2']">
             <p v-if="chooseStatus" @click="liClick(ele.id, index)" :class="['file-radio', ele.name]">file-radio</p>
-            <p v-if="ele.format_type === 'image' && modules !== 'recycle'" :class="['file-icon', ele.format_type]" :style="{background: 'url(' + ele.url_small + ')'}">file-icon</p>
-            <p v-else :class="['file-icon', ele.format_type]">file-icon</p>
+            <p v-if="ele.format_type === 'image' && modules !== 'recycle'" :class="['file-icon', ele.format_type]" :style="{background: 'url(' + ele.url_small + ')'}" @click="showView(ele)">file-icon</p>
+            <p v-else @click="showView(ele)" :class="['file-icon', ele.format_type]">file-icon</p>
             <p class="file-name">
               <span :title="ele.name" class="file-name-span" @click="showView(ele)" v-show="chooseList[0] !== ele.id || !hasRename">{{ele.name}}</span>
               <input v-show="chooseList[0] === ele.id && hasRename" class="rename" type="text" v-model.trim="renameVal">
@@ -150,16 +150,16 @@
             </span>
           </p>
         </div>
-        <div class="view-content">
+        <div class="view-content" @click="closeView">
           <div class="image-preview" v-if="showType === 1">
             <swiper :options="swiperOption" :not-next-tick="notNextTick" ref="mySwiper">
               <swiper-slide v-for="(ele, index) in imgList" :key="index">
                 <img :src="ele.url_file" :alt="ele.name">
               </swiper-slide>
-              <div @click="switchPrevPic" class="swiper-button-prev" slot="button-prev">
+              <div @click.stop.prevent="switchPrevPic" class="swiper-button-prev" slot="button-prev">
                 <i class="el-icon-arrow-left"></i>
               </div>
-              <div @click="switchNextPic" class="swiper-button-next" slot="button-next">
+              <div @click.stop.prevent="switchNextPic" class="swiper-button-next" slot="button-next">
                 <i class="el-icon-arrow-right"></i>
               </div>
             </swiper>
@@ -335,7 +335,7 @@ export default {
           }
         } else {
           console.log('暂不支持预览')
-          this.$message.info('暂不支持预览')
+          this.$message.warning('暂不支持预览')
         }
       } else {
         console.log('回收站不支持预览')
@@ -515,7 +515,7 @@ export default {
     overflow: hidden;
     text-overflow:ellipsis;
     white-space: nowrap;
-    font-size: 14px;
+    font-size: 12px;
     color: #666;
   }
   .item .file-name .file-name-span {
@@ -600,6 +600,7 @@ export default {
     display: block;
   }
   section .item2 .file-name-span {
+    font-size: 12px;
     display: block;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -644,18 +645,18 @@ export default {
     height: 30px;
     background: #ff5a5f;
     margin: 20px 10px 0 0;
-    opacity: 0.7;
     border-radius: 4px;
     position: relative;
     user-select:none;
+    border: 1px solid rgba(0, 0, 0, 0);
   }
   .rename-confirm::before {
     content: "";
     position: absolute;
     width: 2px;
     height: 12px;
-    top: 9px;
-    left: 17px;
+    top: 8px;
+    left: 16px;
     background: #fff;
     transform: rotate(45deg)
   }
@@ -664,8 +665,8 @@ export default {
     position: absolute;
     width: 2px;
     height: 6px;
-    top: 14px;
-    left: 11px;
+    top: 13px;
+    left: 10px;
     background: #fff;
     transform: rotate(-45deg)
   }
@@ -682,20 +683,24 @@ export default {
   .rename-cancel::after {
     transform: translate(-50%, -50%) rotate(-45deg);
   }
-  .rename-confirm:hover, .rename-cancel:hover {
-    opacity: 0.9;
+  .rename-confirm:hover{
+    background: #d23c46;
+    border: 1px solid #d23c46;
+
   }
-  .rename-confirm:active, .rename-cancel:active {
-    opacity: 1;
+  .rename-cancel:hover {
+    background: #f5f5f5;
+  }
+  .rename-confirm:active {
+    background: #a02832;
+    border: 1px solid #a02832;
   }
   .rename-cancel {
     background: #fff;
     border: 1px solid #d2d2d2
   }
-  
   .rename-cancel:active {
-    background: #d2d2d2;
-    border: 1px solid #999;
+    background: #ccc;
   }
   .rename-cancel:active::before {
     background: #fff;
@@ -768,7 +773,7 @@ export default {
   .item2 .file-name, .item2 .upload-date {
     text-align: center;
     line-height: 20px;
-    font-size: 14px;
+    font-size: 12px;
   }
 
   .item2 .upload-date {
@@ -876,7 +881,7 @@ export default {
     color: #999;
     line-height: 40px;
     height: 40px;
-    font-size: 14px;
+    font-size: 12px;
   }
   
   .more ul li:first-child {
@@ -1006,5 +1011,28 @@ export default {
     margin-right: 10px;
     font-size: 18px;
     font-family: "Microsoft Yahei", PingFangSC-Regular, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  .swiper-button-next, .swiper-button-prev {
+    cursor: pointer;
+    transition: 0.3s;
+    transform: translate(150%, 0);
+    opacity: 0;
+    background: none;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .swiper-button-prev {
+    transform: translate(-150%, 0);
+  }
+  .swiper-button-next i, .swiper-button-prev i {
+    font-size: 20px;
+  }
+  .swiper-button-next:hover, .swiper-button-prev:hover {
+    background-color: rgba(255, 90, 95, 0.53);
   }
 </style>

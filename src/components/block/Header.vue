@@ -26,8 +26,8 @@
                   <span v-if="messageCount.quantity">{{ messageCount.quantity }}</span>
                 </i>
               </span>
-              <!-- <div :class="['view-msg',{'view-msg-min': !msg.message && !msg.notice}]"> -->
-              <div :class="['view-msg']">
+              <div :class="['view-msg',{'view-msg-min': !msg.message && !msg.notice}]">
+              <!-- <div :class="['view-msg']"> -->
                 <router-link :to="{name: 'vcenterMessageList'}" class="news">
                   <i class="fx-4 fx-icon-notice"></i><i class="fx-4 fx-icon-news-hover"></i>
                   <span v-if="messageCount.message"><b>{{messageCount.message}}</b>条[项目提醒]未查看</span>
@@ -43,7 +43,7 @@
           <el-menu class="el-menu-info" mode="horizontal" router>
             <el-submenu index="2">
               <template slot="title">
-                <img class="avatar" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
+                <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
                 <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
                 <span v-if="eventUser.realname" class="b-nickname">{{ eventUser.realname }}</span>
                 <span v-else class="b-nickname">{{ eventUser.account }}</span>
