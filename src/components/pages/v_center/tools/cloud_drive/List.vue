@@ -62,7 +62,7 @@
                   <span class="cancel-choose" @click="cancelChoose">取消选择</span>
                 </el-col>
                 <el-col :offset="5" :span="12">
-                  <span v-if="modules !== 'recycle'" @click="confirmShare">共享</span>
+                  <span v-if="modules !== 'recycle'" @click="confirmShare">分享</span>
                   <span v-if="modules !== 'recycle'" @click="downloadFile('down')">下载</span>
                   <span v-if="modules !== 'recycle'" @click="confirmCopy">复制</span>
                   <span v-if="modules !== 'recycle'" @click="confirmMove">移动</span>
