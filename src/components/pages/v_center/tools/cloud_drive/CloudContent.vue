@@ -524,6 +524,9 @@ export default {
     text-overflow:ellipsis;
     white-space: nowrap;
   }
+  .item .file-name .file-name-span:hover {
+    color: #222;
+  }
   .file-name {
     display: flex;
     align-items: center;
