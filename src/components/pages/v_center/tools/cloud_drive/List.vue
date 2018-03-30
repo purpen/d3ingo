@@ -62,7 +62,7 @@
                   <span class="cancel-choose" @click="cancelChoose">取消选择</span>
                 </el-col>
                 <el-col :offset="5" :span="12">
-                  <span v-if="modules !== 'recycle'" @click="confirmShare">共享</span>
+                  <span v-if="modules !== 'recycle'" @click="confirmShare">分享</span>
                   <span v-if="modules !== 'recycle'" @click="downloadFile('down')">下载</span>
                   <span v-if="modules !== 'recycle'" @click="confirmCopy">复制</span>
                   <span v-if="modules !== 'recycle'" @click="confirmMove">移动</span>
@@ -110,14 +110,14 @@
         </div>
       </el-col>
     </el-row>
-    <footer class="drive-footer clearfix" v-if="webUploader">
-      <span class="fl" @click="isShowProgress = true">正在上传文件{{uploadingNumber}}/{{totalNumber}}</span>
-      <span class="fr"><i class="fx-0 fx-icon-nothing-close-error" @click="showConfirm = true, showCover = true"></i></span>
+    <footer class="drive-footer clearfix" v-if="webUploader" @click="isShowProgress = true">
+      <span class="fl">正在上传文件{{uploadingNumber}}/{{totalNumber}}</span>
+      <span class="fr"><i class="fx-0 fx-icon-nothing-close-error" @click="confirmClearUpload"></i></span>
     </footer>
 
     <div class="web-uploader" v-if="webUploader && isShowProgress">
-      <div class="web-uploader-header clearfix">
-        上传进度<i class="fr fx-0 fx-icon-nothing-close-error" @click="isShowProgress = !isShowProgress"></i>
+      <div class="web-uploader-header clearfix" @click="isShowProgress = !isShowProgress">
+        上传进度<i class="fr fx-0 fx-icon-nothing-close-error" @click.stop.prevent="isShowProgress = false"></i>
       </div>
       <div class="web-uploader-body">
         <el-row v-for="(ele, index) in fileList" :key="ele.name + index" class="upload-list">
@@ -456,6 +456,7 @@ export default {
       fileList: [], // 上传列表
       totalNumber: 0,
       webUploader: false, // 上传状态
+      uploadComplete: false, // 全部上传成功
       isShowProgress: false, // 是否显示上传列表
       showCover: false, // 确认背景?
       showConfirm: false, // 确认删除上传列表?
@@ -847,6 +848,7 @@ export default {
     },
     uploadError(err, file, fileList) {
       console.error(err)
+      this.$message.error('上传失败')
     },
     uploadRemove(file, fileList) {
     },
@@ -856,6 +858,7 @@ export default {
       this.totalNumber = this.fileList.length
     },
     beforeUpload(file) {
+      this.uploadComplete = false
       const size = file.size / 1024 / 1024 < 100
       if (!size) {
         this.$message.error('文件大小不能超过 100MB!')
@@ -864,6 +867,14 @@ export default {
     },
     uploadChange(file, fileList) {
     },
+    confirmClearUpload() {
+      if (this.uploadComplete) {
+        this.clearUpload()
+      } else {
+        this.showConfirm = true
+        this.showCover = true
+      }
+    },
     clearUpload() {
       this.$refs.upload.clearFiles()
       for (let i of this.fileList) {
@@ -871,6 +882,7 @@ export default {
       }
       this.showConfirm = false
       this.showCover = false
+      this.webUploader = false
     },
     rename() {
       if (this.alreadyChoose) {
@@ -1480,7 +1492,7 @@ export default {
           }
         }
         if (a === this.fileList.length) {
-          this.webUploader = false
+          this.uploadComplete = true
         }
       },
       deep: true
@@ -1808,9 +1820,11 @@ export default {
     right: 0;
     bottom: 60px;
     width: 580px;
-    border: 1px solid #d2d2d2
+    border: 1px solid #d2d2d2;
+    border-radius: 4px;
   }
   .web-uploader-header {
+    border-radius: 4px 4px 0 0;
     height: 50px;
     line-height: 50px;
     text-align: center;
@@ -1820,10 +1834,11 @@ export default {
     border-bottom: 1px solid #d2d2d2;
   }
   .web-uploader-body {
-    overflow-y: scroll;
+    overflow-y: auto;
     background: #fff;
     max-height: 275px;
     line-height: 1.5;
+    border-radius: 0 0 4px 4px
   }
   .upload-list {
     padding: 15px 10px;
@@ -1832,6 +1847,7 @@ export default {
   }
   .upload-list:last-child {
     border-bottom: 0;
+    border-radius: 0 0 4px 4px
   }
   .upload-list-logo {
     display: flex;
