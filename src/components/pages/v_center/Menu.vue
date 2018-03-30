@@ -92,7 +92,7 @@
              :class="{'item': true, 'is-active': currentName === 'company'}">
             公司设置
           </a>
-          <a @click="alick" :to="'/vcenter/modify_pwd'"
+          <a @click="alick" :to="'/vcenter/account/modify_pwd'"
              :class="{'item': true, 'is-active': currentName === 'profile'}">
             账号设置
           </a>

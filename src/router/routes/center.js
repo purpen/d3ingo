@@ -97,7 +97,7 @@ module.exports = [
   // ### 安全设置 #####
   // 修改密码
   {
-    path: '/vcenter/modify_pwd',
+    path: '/vcenter/account/modify_pwd',
     name: 'modifyPwd',
     meta: {
       title: '修改密码',
