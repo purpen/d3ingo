@@ -102,16 +102,13 @@
 <style scoped>
   h3 {
     color: #666;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 20px;
     height: 30px;
     border-bottom: 1px solid #D2D2D2;
   }
   h3 i {
     margin-right: 10px;
-  }
-  .cloud-classify {
-    padding-left: 15px;
   }
   .cloud-classify li {
     font-size: 0;
@@ -191,7 +188,7 @@
   
 
   .cloud-classify li span {
-    font-size: 16px;
+    font-size: 14px;
     line-height: 40px;
   }
   .cloud-classify li:hover a, .active {

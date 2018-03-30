@@ -54,16 +54,16 @@
                 <p class="edit" title="编辑模式" @click="changeChooseStatus"></p>
               </div>
               <p class="edit-menu" v-if="isChoose">
-                <el-col :span="2">
+                <el-col :span="1">
                   <i :class="['file-radio', {'active': isChooseAll === 'all'}, {'chunk-view': curView === 'chunk'}]" @click="changeChooseAll">file-icon</i>
                 </el-col>
                 <el-col :span="6" class="choose-info">
                   <span class="already-choose" @click="changeChooseAll">已选择{{alreadyChoose}}项</span>
                   <span class="cancel-choose" @click="cancelChoose">取消选择</span>
                 </el-col>
-                <el-col :offset="4" :span="12">
+                <el-col :offset="5" :span="12">
                   <span v-if="modules !== 'recycle'" @click="confirmShare">共享</span>
-                  <span v-if="modules !== 'recycle'">下载</span>
+                  <span v-if="modules !== 'recycle'" @click="downloadFile('down')">下载</span>
                   <span v-if="modules !== 'recycle'" @click="confirmCopy">复制</span>
                   <span v-if="modules !== 'recycle'" @click="confirmMove">移动</span>
                   <span v-if="modules !== 'recycle'" @click="rename" :class="{'disable': alreadyChoose > 1 || !alreadyChoose}">重命名</span>
@@ -103,7 +103,8 @@
               @confirmCopy="confirmCopy"
               @confirmMove="confirmMove"
               @changeImgList="changeImgList"
-              @confirmShare="confirmShare">
+              @confirmShare="confirmShare"
+              @downloadFile="downloadFile">
             </vContent>
           </transition>
         </div>
@@ -431,6 +432,7 @@ import api from '@/api/api'
 import vMenu from '@/components/pages/v_center/tools/cloud_drive/Menu'
 import vContent from '@/components/pages/v_center/tools/cloud_drive/CloudContent'
 import Clipboard from 'clipboard'
+import download from 'downloadjs'
 export default {
   name: 'cloud_drive',
   data() {
@@ -538,7 +540,18 @@ export default {
     })
   },
   methods: {
-    downloadFile() {
+    downloadFile(url) {
+      console.log(url)
+      if (url) {
+        if (this.alreadyChoose > 1) {
+          this.$message.info('只支持下载单个文件')
+          return
+        } else {
+          download(url)
+        }
+      } else {
+        this.$message.info('暂不支持下载文件夹')
+      }
     },
     handleCurrentChange(page) {
       this.query.page = page
@@ -1371,6 +1384,9 @@ export default {
     this.modules = this.$route.params.modules || 'all'
     this.getUploadUrl()
     this.getList()
+    if (this.IEVersion !== -1) {
+      this.uploadParams['x:browser'] = 1
+    }
   },
   computed: {
     chunkTitle() {
@@ -1400,6 +1416,34 @@ export default {
     },
     company_role() {
       return this.$store.state.event.user.company_role
+    },
+    IEVersion() {
+      var userAgent = navigator.userAgent // 取得浏览器的userAgent字符串
+      var isIE = userAgent.indexOf('compatible') > -1 && userAgent.indexOf('MSIE') > -1 // 判断是否IE<11浏览器
+      var isEdge = userAgent.indexOf('Edge') > -1 && !isIE // 判断是否IE的Edge浏览器
+      var isIE11 = userAgent.indexOf('Trident') > -1 && userAgent.indexOf('rv:11.0') > -1
+      if (isIE) {
+        var reIE = new RegExp('MSIE (\\d+\\.\\d+)')
+        reIE.test(userAgent)
+        var fIEVersion = parseFloat(RegExp['$1'])
+        if (fIEVersion === 7) {
+          return 7
+        } else if (fIEVersion === 8) {
+          return 8
+        } else if (fIEVersion === 9) {
+          return 9
+        } else if (fIEVersion === 10) {
+          return 10
+        } else {
+          return 6 // IE版本<=7
+        }
+      } else if (isEdge) {
+        return 'edge' // edge
+      } else if (isIE11) {
+        return 11 // IE11
+      } else {
+        return -1 // 不是ie浏览器
+      }
     }
   },
   watch: {
@@ -1526,12 +1570,12 @@ export default {
 }
 </script>
 <style scoped>
-  @keyframes slowShow {
+  @keyframes slowShow2 {
     0% {
-      height: 0;
+      opacity: 0;
     }
     100% {
-      height: 82px;
+      opacity: 1;
     }
   }
 
@@ -1545,15 +1589,18 @@ export default {
     z-index: 10;
   }
   .content-head .title {
-    font-size: 16px;
+    font-size: 14px;
   }
   .operate {
-    height: 30px;
+    height: 40px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
   }
   .operate p, .operate .icon {
     display: inline-block;
     width: 30px;
-    height: 30px;
+    height: 40px;
     margin-right: 20px;
     cursor: pointer;
     position: relative;
@@ -1589,28 +1636,28 @@ export default {
     transform: rotate(45deg)
   }
   .operate p.add {
-    background: url('../../../../../assets/images/tools/cloud_drive/operate/add@2x.png') top no-repeat;
+    background: url('../../../../../assets/images/tools/cloud_drive/operate/add@2x.png') center no-repeat;
     background-size: 26px
   }
   .operate p.search {
-    background: url('../../../../../assets/images/tools/cloud_drive/operate/search@2x.png') top no-repeat;
+    background: url('../../../../../assets/images/tools/cloud_drive/operate/search@2x.png') center no-repeat;
     background-size: 26px
   }
   .operate p.chunk {
-    background: url('../../../../../assets/images/tools/cloud_drive/operate/chunk@2x.png') top no-repeat;
+    background: url('../../../../../assets/images/tools/cloud_drive/operate/chunk@2x.png') center no-repeat;
     background-size: 26px
   }
   .operate p.list {
-    background: url('../../../../../assets/images/tools/cloud_drive/operate/list@2x.png') top no-repeat;
+    background: url('../../../../../assets/images/tools/cloud_drive/operate/list@2x.png') center no-repeat;
     background-size: 26px
   }
   .operate p i.icon {
     transition: 0.3s all ease;
-    background: url('../../../../../assets/images/tools/cloud_drive/operate/sequence@2x.png') top no-repeat;
+    background: url('../../../../../assets/images/tools/cloud_drive/operate/sequence@2x.png') center no-repeat;
     background-size: 26px
   }
   .operate p.edit {
-    background: url('../../../../../assets/images/tools/cloud_drive/operate/edit@2x.png') top no-repeat;
+    background: url('../../../../../assets/images/tools/cloud_drive/operate/edit@2x.png') center no-repeat;
     background-size: 26px
   }
   .operate p:last-child {
@@ -1620,14 +1667,15 @@ export default {
   span.add-option {
     position: absolute;
     left: -65px;
-    top: 29px;
+    top: 40px;
     width: 160px;
     border: 1px solid #d2d2d2;
-    animation: slowShow 0.3s;
+    animation: slowShow2 0.2s linear;
     display: none;
     overflow: hidden;
   }
   .already-choose {
+    margin-left: 10px;
     color: #222;
   }
   .add-option a {
@@ -1668,7 +1716,7 @@ export default {
   .edit-menu {
     font-size: 0;
     text-align: right;
-    line-height: 20px;
+    line-height: 24px;
     height: 30px;
     overflow: hidden;
   }
@@ -1678,7 +1726,7 @@ export default {
   }
   .edit-menu span {
     user-select: none;
-    font-size: 16px;
+    font-size: 14px;
     margin-right: 20px;
     cursor: pointer;
   }
@@ -1768,7 +1816,7 @@ export default {
     text-align: center;
     background: #f7f7f7;
     padding-right: 30px;
-    font-size: 16px;
+    font-size: 14px;
     border-bottom: 1px solid #d2d2d2;
   }
   .web-uploader-body {
@@ -1882,7 +1930,7 @@ export default {
     overflow: hidden;
   }
   .dialog-header {
-    font-size: 16px;
+    font-size: 14px;
     color: #222;
     height: 50px;
     line-height: 50px;
@@ -2215,13 +2263,20 @@ export default {
     color: #fff;
     border-color: #ff5a5f;
     background-color: #ff5a5f;
-    opacity: 0.6;
+  }
+  .buttons button.cancel-btn:hover {
+    background: #f5f5f5
+  }
+  .buttons button.cancel-btn:active {
+    background: #ccc
   }
   .buttons button.confirm-btn:hover, .create-btn:hover {
-    opacity: 0.8;
+    border-color: #d23c46;
+    background-color: #d23c46;
   }
   .buttons button.confirm-btn:active, .create-btn:active {
-    opacity: 1;
+    border-color: #a02832;
+    background-color: #a02832;
   }
   .uploadList-enter-active {
     transition: all 0.3s ease
@@ -2239,7 +2294,7 @@ export default {
     border: none;
     padding-left: 30px;
     height: 20px;
-    font-size: 16px;
+    font-size: 14px;
     color: #666;
     background: url('../../../../../assets/images/tools/cloud_drive/search@2x.png') no-repeat;
     background-size: contain
