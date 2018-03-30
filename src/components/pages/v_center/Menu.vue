@@ -11,17 +11,13 @@
              :class="{'item': true, 'is-active': currentName === 'cloud_drive'}">
             项目云盘
           </a>
-          <a @click="alick" :to="'/user/userList'"
+          <a @click="alick" :to="'/user/uAList'"
              :class="{'item': true, 'is-active': currentName === 'member'}" v-if="isCompanyAdmin">
             成员管理
           </a>
           <a @click="alick" :to="'/vcenter/account/base'"
              :class="{'item': true, 'is-active': currentName === 'profile'}">
             账号设置
-          </a>
-          <a @click="alick" :to="'/vcenter/modify_pwd'"
-             :class="{'item': true, 'is-active': currentName === 'modify_pwd'}">
-            安全设置
           </a>
           <a :class="{'item': true, 'is-active': currentName === 'company'}" @click="redirectCompany" v-if="isMob">
             查看公司主页
@@ -58,12 +54,12 @@
             我的钱包
           </a>
           <a @click="alick" :to="'/vcenter/company/base'"
+             :class="{'item': true, 'is-active': currentName === 'company'}">
+            公司设置
+          </a>
+          <a @click="alick" :to="'/vcenter/account/base'"
              :class="{'item': true, 'is-active': currentName === 'profile'}">
             账号设置
-          </a>
-          <a @click="alick" :to="'/vcenter/modify_pwd'"
-             :class="{'item': true, 'is-active': currentName === 'modify_pwd'}">
-            安全设置
           </a>
           <a @click="alick" :to="'/user/uAList'"
              :class="{'item': true, 'is-active': currentName === 'member'}">
@@ -93,12 +89,12 @@
             我的钱包
           </a>
           <a @click="alick" :to="'/vcenter/d_company/base'"
-             :class="{'item': true, 'is-active': currentName === 'profile'}">
-            账号设置
+             :class="{'item': true, 'is-active': currentName === 'company'}">
+            公司设置
           </a>
           <a @click="alick" :to="'/vcenter/modify_pwd'"
-             :class="{'item': true, 'is-active': currentName === 'modify_pwd'}">
-            安全设置
+             :class="{'item': true, 'is-active': currentName === 'profile'}">
+            账号设置
           </a>
         </div>
       </div>

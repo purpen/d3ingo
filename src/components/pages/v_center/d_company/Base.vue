@@ -1,7 +1,7 @@
 <template>
   <div class="container blank40">
     <el-row :gutter="24">
-      <v-menu currentName="profile" :class="[isMob ? 'v-menu' : '']"></v-menu>
+      <v-menu currentName="company" :class="[isMob ? 'v-menu' : '']"></v-menu>
 
       <el-col :span="isMob ? 24 : 20">
         <div class="right-content">

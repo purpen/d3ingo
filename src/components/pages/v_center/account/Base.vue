@@ -88,7 +88,7 @@
 
 <script>
   import vMenu from '@/components/pages/v_center/Menu'
-  import vMenuSub from '@/components/pages/v_center/company/MenuSub'
+  import vMenuSub from '@/components/pages/v_center/account/MenuSub'
   import api from '@/api/api'
   import '@/assets/js/format'
   import auth from '@/helper/auth'
