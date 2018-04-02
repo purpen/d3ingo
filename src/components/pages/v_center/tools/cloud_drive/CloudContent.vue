@@ -23,7 +23,7 @@
                   <span @click="renameConfirm(index, ele.id)" class="rename-confirm"></span>
                   <span @click="renameCancel" class="rename-cancel"></span>
                 </p>
-                <p v-if="folderId === 0" v-show="chooseList[0] !== ele.id || !hasRename" class="file-permission" @click="changePermission(ele.id, ele.user_id)">
+                <p v-if="folderId === 0 && !driveShare" v-show="chooseList[0] !== ele.id || !hasRename" class="file-permission" @click="changePermission(ele.id, ele.user_id, ele)">
                   <span v-if="ele.open_set === 1 && !ele.group_id.length" class="public"></span>
                   <span v-if="ele.open_set === 2" class="privacy"></span>
                   <span v-if="ele.group_id.length" class="group"></span>
@@ -404,17 +404,18 @@ export default {
         this.previewObj.index = this.imgList.length - 1
       }
     },
-    changePermission(id, userId) {
-      if (this.user.company_role !== 10 || this.user.company_role !== 20) {
-        if (this.user.id === userId) {
+    changePermission(id, userId, ele) {
+      console.log(ele)
+      if (this.user.id === userId) {
+        this.directOperate(id)
+        this.$emit('changePermission', id)
+      } else {
+        if (this.user.company_role !== 10 || this.user.company_role !== 20) {
           this.directOperate(id)
           this.$emit('changePermission', id)
         } else {
           this.$message.error('仅限管理员和所有者修改权限')
         }
-      } else {
-        this.directOperate(id)
-        this.$emit('changePermission', id)
       }
     },
     copyFile(id) {

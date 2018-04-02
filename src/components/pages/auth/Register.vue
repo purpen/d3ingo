@@ -20,7 +20,7 @@
         <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px"
                  class="input">
           <el-form-item label="" prop="account">
-            <el-input v-model="form.account" name="account" ref="account" placeholder="手机号"></el-input>
+            <el-input v-model="form.account" name="username" ref="account" placeholder="手机号"></el-input>
           </el-form-item>
           <el-form-item label="" prop="imgCode">
             <el-input class="imgCodeInput" v-model="form.imgCode" name="imgCode" ref="imgCode" placeholder="图形验证码">

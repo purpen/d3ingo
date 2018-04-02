@@ -3,10 +3,11 @@
     <div class="container" v-loading.body="isLoading">
       <div class="content-head">
         <div class="clearfix">
-          <p class="title fl" v-if="!isChoose">
-            <i class="fx fx-icon-nothing-left" @click="backFolder"></i>
-            {{parentFolder.name}}
-          </p>
+            <p class="title fl" v-if="!isChoose && folderId === 0" v-html="title"></p>
+            <p class="title fl" v-if="!isChoose && folderId !== 0">
+              <i class="fx fx-icon-nothing-left" @click="backFolder"></i>
+              {{parentFolder.name}}
+            </p>
           <p class="edit" title="编辑模式" @click="changeChooseStatus"></p>
           <p class="edit-menu" v-if="isChoose">
             <el-col :span="2">
@@ -59,7 +60,9 @@ export default {
   name: 'driveShare',
   data() {
     return {
+      title: '全部文件',
       urlCode: '', // 地址
+      prevUrl: '',
       password: '',
       isLoading: false,
       driveShare: true, // 分享页面
@@ -82,10 +85,14 @@ export default {
     }
   },
   created() {
-    this.sharePage = true
+    // this.sharePage = true
     this.modules = this.$route.params.file
     this.urlCode = this.$route.params.file
+    this.prevUrl = sessionStorage.getItem('share_url') || ''
     this.password = sessionStorage.getItem('password') || ''
+    if (this.prevUrl) {
+      this.password = ''
+    }
     if (this.urlCode.split('')[0] === '1' || this.password) {
       this.closeCover()
       this.getList()
@@ -194,6 +201,7 @@ export default {
           if (res.data.meta.status_code === 200) {
             this.closeCover()
             sessionStorage.setItem('password', this.password)
+            sessionStorage.setItem('share_url', this.urlCode)
             if (res.data.meta.info) {
               if (JSON.stringify(res.data.meta.info) !== '{}') {
                 this.parentFolder = res.data.meta.info
@@ -213,6 +221,8 @@ export default {
             }
           } else {
             this.$message.error(res.data.meta.message)
+            this.showCover = true
+            this.showConfirm = true
           }
         }).catch((err) => {
           this.isLoading = false

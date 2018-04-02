@@ -1,16 +1,14 @@
 <template>
 	<div>
-    <div class="navContent">
-        <el-breadcrumb id="el-breadcrumb" :separator="'>'">
-            <el-breadcrumb-item :to="{ path: '/' }" class="index">首页</el-breadcrumb-item>
-            <el-breadcrumb-item class="PM">活动管理</el-breadcrumb-item>
-        </el-breadcrumb>
-    </div>
+    <p class="navContent">
+      <router-link :to="{name: 'vcenterControl'}">个人中心</router-link>
+      <router-link :to="{name: 'userList'}">成员管理</router-link>
+    </p>
     <div class="container">
         <el-row :gutter="10">
           <el-col :span="isMob?24 : 6">
             <div class="input" @click="searchUsername">
-              <input type="text" placeholder="林">
+              <input type="text" placeholder="搜索成员">
               <img src="../../../assets/images/member/search02@2x.png" alt="">
             </div>
             <div class="side">
@@ -115,14 +113,38 @@ export default {
 <style scoped>
 .navContent {
   height: 60px;
+  line-height: 60px;
   padding-left: 40px;
-  padding-top: 20px;
   margin-bottom: 30px;
-  border: 1px solid #D2D2D2;
+  border-bottom: 1px solid #D2D2D2;
+  font-size: 0;
 }
-.navContent #el-breadcrumb {
-  text-align: center;
-  margin:0 6px;
+
+.navContent a {
+  margin-right: 24px;
+  font-size: 16px;
+  color: #666;
+  position: relative;
+  cursor: pointer;
+}
+.navContent a:hover {
+  color: #222
+}
+.navContent a::after {
+  content: "";
+  position: absolute;
+  right: -14px;
+  top: 7px;
+  width: 10px;
+  height: 10px;
+  border: 1px solid #d2d2d2;
+  border-top: none;
+  border-left: none;
+  transform: rotate(-45deg)
+}
+
+.navContent a:last-child::after {
+  border: none;
 }
 .input {
   position: relative;

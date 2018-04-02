@@ -491,7 +491,7 @@ routes = [
     component: require('@/components/pages/user/UserRegister')
   },
   {
-    path: '/user/userList',
+    path: '/user/userlist',
     name: 'userList',
     meta: {
       title: '成员页',

@@ -120,7 +120,7 @@
         上传进度<i class="fr fx-0 fx-icon-nothing-close-error" @click.stop.prevent="isShowProgress = false"></i>
       </div>
       <div class="web-uploader-body">
-        <el-row v-for="(ele, index) in fileList" :key="ele.name + index" class="upload-list">
+        <el-row v-for="(ele, index) in fileList" :key="index" class="upload-list">
           <el-col :span="3" class="upload-list-logo">
             <p :class="['file-icon', 'other', {
                 'folder': /folder/.test(ele.raw.type),
@@ -260,7 +260,7 @@
     </section>
     <section class="dialog-body" v-if="showConfirmFolder">
       <h3 class="dialog-header clearfix">
-        创建文件夹
+        新建文件夹
         <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
       </h3>
       <div class="dialog-content dialog-folder">
@@ -368,7 +368,7 @@
               <input
                 v-focus="ele.folderId === copyORmoveFolderId"
                 @blur="createDir_copyORmove"
-                type="text" placeholder="按 Enter 新建文件夹"
+                type="text" placeholder="新建文件夹"
                 v-model.trim="copyORmoveFolderName">
               <span></span>
             </li>
@@ -415,6 +415,7 @@
       <div class="dialog-content" v-else>
         <p class="link"><span>链接:</span><input v-model.trim="shareInfo.link" type="text"></p>
         <p v-if="isEncryption" class="share-password"><span>密码:</span><input v-model.trim="shareInfo.pwd" type="text"></p>
+        <p class="share-password">有效期:{{validityVal}}</p>
         <div class="buttons">
           <button class="cancel-btn" @click="closeCover">取消</button>
           <button class="confirm-btn" @click="setClipboardText">复制链接</button>
@@ -475,11 +476,11 @@ export default {
       isLoading: false,
       folder: {
         name: '',
-        permission: ''
+        permission: '全部成员可见'
       },
       copyORmoveLoading: false,
       copyORmoveFolderId: 0,
-      copyORmoveFolderName: '', // 复制或者移动时创建文件夹
+      copyORmoveFolderName: '新建文件夹', // 复制或者移动时创建文件夹
       copyORmoveFolderIndex: 0,
       showFolderInput: false, // 复制或者移动时是否显示input
       isFocusFolderName: true, // 是否聚焦名字
@@ -491,10 +492,10 @@ export default {
         totalCount: 0
       },
       groupList: [], // 群组列表
-      open_set: 0, // 隐私设置
+      openSet: 1, // 隐私设置
       group_id_arr: [], // 所属群组ID数组
       isSelectGroup: false, // 选择群组状态
-      permissionStatus: 0, // 权限 1 全部 2自己 3小组
+      permissionStatus: 1, // 权限 1 全部 2自己 3小组
       historyId: [], // 文件夹历史
       setPermissionId: 0,
       sortGist: {
@@ -506,7 +507,7 @@ export default {
         folderList: [],
         checkId: 0
       }],
-      validityKey: '',
+      validityKey: 7,
       validityVal: '',
       validityOption: [
         {
@@ -835,10 +836,10 @@ export default {
           }
           // 图片
           if (/image/.test(res['info']['mime_type'])) {
-            this.imgList.push(res['info'])
+            this.imgList.unshift(res['info'])
           }
           if (this.list.length < this.query.pageSize) {
-            this.list.push(res.info)
+            this.list.unshift(res.info)
           } else {
             this.query.totalPges++
           }
@@ -1193,20 +1194,22 @@ export default {
       this.showConfirmMove = false
       this.showConfirmShare = false
       this.showShareOrLink = false
-      this.validityKey = ''
+      this.validityKey = 7
       this.folderObj = [{folderId: 0, folderList: [], checkId: 0}]
       this.group_id_arr = []
-      this.folder.permission = ''
-      this.permissionStatus = 0
+      this.folder.permission = '全部成员可见'
+      this.permissionStatus = 1
       this.isSelectGroup = false
       this.folder.name = ''
-      this.copyORmoveFolderName = ''
+      this.copyORmoveFolderName = '新建文件夹'
     },
     selectPermission(id) {
       this.openSet = id
       this.permissionStatus = id
       this.isSelectGroup = false
-      this.group_id_arr = []
+      if (id === 1) {
+        this.group_id_arr = []
+      }
     },
     selectGroup() {
       this.getGroupLists()
@@ -1264,17 +1267,23 @@ export default {
       this.showFolderInput = true
     },
     createDir_copyORmove() {
+      let openSet = ''
+      if (!this.folderId) {
+        openSet = 1
+      }
       if (this.copyORmoveFolderName) {
         let id = this.copyORmoveFolderId
         let index = this.copyORmoveFolderIndex
         this.$http.post(api.yunpanCreateDir, {
           name: this.copyORmoveFolderName,
-          pan_director_id: id
+          pan_director_id: id,
+          open_set: openSet
         }).then(res => {
           if (res.data.meta.status_code === 200) {
             this.folderObj[index]['folderList'].unshift(res.data.data)
-            this.folderObj[index]['folderList'].sort(this.$phenix.arr_sort('name'))
-            this.copyORmoveFolderName = ''
+            this.formatList(res.data.data)
+            this.list.unshift(res.data.data)
+            this.copyORmoveFolderName = '新建文件夹'
           } else {
             this.$message.error(res.data.meta.message)
           }
@@ -1343,34 +1352,30 @@ export default {
       }
     },
     createLink() {
-      if (this.validityKey !== '') {
-        let type = 0
-        switch (this.isEncryption) {
-          case true:
-            type = 2
-            break
-          case false:
-            type = 1
-            break
-        }
-        this.$http.get(api.yunpanShare, {params: {
-          pan_director_id_arr: this.chooseFileList,
-          type: type,
-          share_time: this.validityKey
-        }}).then(res => {
-          if (res.data.meta.status_code === 200) {
-            this.showShareOrLink = false
-            this.shareInfo.link = window.location.origin + '/file/' + res.data.data.url_code
-            this.shareInfo.pwd = res.data.data.password
-          } else {
-            this.$message.error(res.data.meta.message)
-          }
-        }).catch(err => {
-          console.error(err)
-        })
-      } else {
-        this.$message.error('请选择有效期')
+      let type = 0
+      switch (this.isEncryption) {
+        case true:
+          type = 2
+          break
+        case false:
+          type = 1
+          break
       }
+      this.$http.get(api.yunpanShare, {params: {
+        pan_director_id_arr: this.chooseFileList,
+        type: type,
+        share_time: this.validityKey
+      }}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.showShareOrLink = false
+          this.shareInfo.link = window.location.origin + '/file/' + res.data.data.url_code
+          this.shareInfo.pwd = res.data.data.password
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        console.error(err)
+      })
     },
     setClipboardText() {
       let clipboard = null
@@ -1385,7 +1390,6 @@ export default {
         })
       }
       this.$message.success('复制成功')
-      this.closeCover()
     }
   },
   beforeCreate() {
