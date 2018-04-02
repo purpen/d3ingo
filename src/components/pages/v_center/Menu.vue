@@ -11,7 +11,7 @@
              :class="{'item': true, 'is-active': currentName === 'cloud_drive'}">
             项目云盘
           </a>
-          <a @click="alick" :to="'/user/uAList'"
+          <a @click="alick" :to="'/user/userlist'"
              :class="{'item': true, 'is-active': currentName === 'member'}" v-if="isCompanyAdmin">
             成员管理
           </a>
@@ -61,7 +61,7 @@
              :class="{'item': true, 'is-active': currentName === 'profile'}">
             账号设置
           </a>
-          <a @click="alick" :to="'/user/uAList'"
+          <a @click="alick" :to="'/user/userlist'"
              :class="{'item': true, 'is-active': currentName === 'member'}">
             成员管理
           </a>

@@ -482,8 +482,13 @@ routes = [
   },
   // 群组页
   {
+<<<<<<< HEAD
     path: '/user/uGroup',
     name: 'userGroup',
+=======
+    path: '/user/userlist',
+    name: 'userList',
+>>>>>>> origin/lzh2
     meta: {
       title: '',
       requireAuth: true

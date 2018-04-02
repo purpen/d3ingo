@@ -9,7 +9,7 @@
 
         <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
           <el-form-item label="" prop="account" class="input">
-            <el-input v-model="form.account" name="account" ref="account" auto-complete="on"
+            <el-input v-model="form.account" name="username" ref="account" auto-complete="on"
                       placeholder="手机号"></el-input>
           </el-form-item>
           <el-form-item label="" prop="password" class="input">
