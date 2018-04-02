@@ -30,14 +30,21 @@
     </div>
     <a target="_blank" href="https://www.d3ingo.com/article/show/123"><div v-if="isMob" class="banner-liude-m" :style="{height : calcHeight2}"></div></a> <!-- 移动端 -->
     <a target="_blank" href="https://www.d3ingo.com/article/show/136"><div v-if="isMob" class="banner-honghua-m" :style="{height : calcHeight2}"></div></a> <!-- 移动端 -->
-    <div class="people" v-if="!isMob">
-      <div class="people-pic"></div>
-      <div class="picture-cover">
-        <p class="picture-cover-title">小米生态链企业家</p>
-        <p class="picture-cover-more">更多专访敬请期待...</p>
-      </div>
+    <div class="people">
+      <p class="picture-cover-title">小米生态链企业家</p>
+      <ul class="entrepreneur">
+        <li v-for="(ele, index) in entrepreneur" :key="index"
+          :style="{background: 'url(' + require(`assets/images/subject/xiaomi/${ele.id}.jpg`) + ')' }">
+          <p>
+            <span>{{ele.company}}</span>
+            <span>{{ele.name}}</span>
+          </p>
+      </li>
+      <li>
+        <span>更多专访尽情期待...</span>
+      </li>
+    </ul>
     </div>
-    <div class="people-m" v-if="isMob" :style="{height : calcHeight}"></div>
     <div class="interview-footer">
       <div class="footer-pic">
         <div class="footer-pic-cover">
@@ -54,7 +61,34 @@ export default {
     return {
       calcHeight: '', // banner
       calcHeight2: '', // 移动端
-      calcHeight3: '' // 人物banner
+      calcHeight3: '', // 人物banner
+      entrepreneur: [
+        {
+          id: 1,
+          name: '郭晶晶',
+          company: '柒小佰科技'
+        },
+        {
+          id: 2,
+          name: '傅健',
+          company: '巽一科技'
+        },
+        {
+          id: 3,
+          name: '黄业桃',
+          company: '疯景科技'
+        },
+        {
+          id: 4,
+          name: '章俊',
+          company: '青禾小贝科技'
+        },
+        {
+          id: 5,
+          name: '梁于阳',
+          company: '妙妙测科技'
+        }
+      ]
     }
   },
   mounted() {
@@ -157,7 +191,7 @@ export default {
     background-size: contain;
     display: flex;
     align-items: center;
-    margin-bottom: 100px;
+    /* margin-bottom: 100px; */
   }
   .honghua-bg1 {
     position: absolute;
@@ -239,8 +273,9 @@ export default {
     transform: scale(0.76)
   }
   .people {
-    height: 492px;
-    background: #ededed;
+    padding: 80px 0;
+    min-height: 810px;
+    background: #ca1317;
     position: relative;
   }
   .people-m {
@@ -248,53 +283,82 @@ export default {
     background-size: contain;
     margin: 20px 0;
   }
-  .people-pic {
-    max-width: 1176px;
-    height: 419px;
-    margin: 0 auto;
-    background: url('../../../assets/images/subject/xiaomi/people.png') no-repeat top;
-    background-size: cover;
-  }
   .picture-cover {
     width: calc( 100% - 60px);
-    margin: 0 30px;
-    height: 470px;
+    max-width: 1180px;
     position: absolute;
-    top: -50px;
-    left: 0;
+    top: 92px;
+    left: 50%;
+    transform: translateX(-50%);
+    height: calc( 100% - 300px);
     border-radius: 10px;
-    border: 4px solid #ca1317
+    border: 4px solid #f3cbcc
   }
   
   .picture-cover-title {
-    position: absolute;
+    text-align: center;
     letter-spacing: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    top: -18px;
-    background: #fff;
-    padding: 0 30px;
-    font-size: 36px;
-    color: #ca1317
-  }
-  .picture-cover-more {
-    position: absolute;
-    letter-spacing: 8px;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 60%;
-    font-size: 30px;
-    opacity: 0.6;
-    color: #fff;
-    padding: 10px 52px 10px 60px;
-    border-radius: 10px;
     background: #ca1317;
+    padding: 0 30px;
+    margin-bottom: 50px;
+    font-size: 36px;
+    color: #feffff
   }
+  
   .interview-footer {
     height: 478px;
     padding-bottom: 65px;
     background: #ca1317;
     margin-bottom: -52px;
+  }
+  .entrepreneur {
+    max-width: 1180px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .entrepreneur li {
+    position: relative;
+    width: 381px;
+    height: 275px;
+    background: #f3cbcc;
+    /* margin-right: 22px; */
+    margin-bottom: 22px;
+  }
+  .entrepreneur li p {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 48px;
+    line-height: 48px;
+    font-size: 0;
+    text-align: center;
+    background: #2e2e2e
+  }
+  
+  .entrepreneur li span {
+    font-size: 20px;
+    color: #fff;
+  }
+  .entrepreneur li span:last-child {
+    margin-left: 20px;
+  }
+  
+  .entrepreneur li:last-child {
+    background: #2e2e2e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .entrepreneur li:last-child span {
+    margin-left: 0;
+    letter-spacing: 10px;
   }
   .footer-pic {
     height: 413px;
@@ -318,13 +382,6 @@ export default {
     font-size: 16px;
     line-height: 1.5;
     text-indent: 2em;
-  }
-  @media screen and (max-width: 1176px) {
-    .people-pic {
-      margin: 0 64px;
-      background-size: contain
-    }
-    
   }
   @media screen and (max-width: 768px) {
     .container {
