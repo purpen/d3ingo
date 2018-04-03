@@ -35,10 +35,12 @@
       <ul class="entrepreneur">
         <li v-for="(ele, index) in entrepreneur" :key="index"
           :style="{background: 'url(' + require(`assets/images/subject/xiaomi/${ele.id}.jpg`) + ')' }">
-          <p>
-            <span>{{ele.company}}</span>
-            <span>{{ele.name}}</span>
-          </p>
+          <a :href="ele.url" target="_blank">
+            <p>
+              <span>{{ele.company}}</span>
+              <span>{{ele.name}}</span>
+            </p>
+          </a>
       </li>
       <li>
         <span>更多专访尽情期待...</span>
@@ -66,27 +68,32 @@ export default {
         {
           id: 1,
           name: '郭晶晶',
-          company: '柒小佰科技'
+          company: '柒小佰科技',
+          url: 'https://www.d3ingo.com/article/show/161'
         },
         {
           id: 2,
           name: '傅健',
-          company: '巽一科技'
+          company: '巽一科技',
+          url: 'https://www.d3ingo.com/article/show/128'
         },
         {
           id: 3,
           name: '黄业桃',
-          company: '疯景科技'
+          company: '疯景科技',
+          url: 'https://www.d3ingo.com/article/show/164'
         },
         {
           id: 4,
           name: '章俊',
-          company: '青禾小贝科技'
+          company: '青禾小贝科技',
+          url: 'https://www.d3ingo.com/article/show/126'
         },
         {
           id: 5,
           name: '梁于阳',
-          company: '妙妙测科技'
+          company: '妙妙测科技',
+          url: 'https://www.d3ingo.com/article/show/127'
         }
       ]
     }
@@ -323,11 +330,17 @@ export default {
   }
   .entrepreneur li {
     position: relative;
+    background: #f3cbcc;
+    margin-bottom: 22px;
+  }
+  .entrepreneur li a {
+    display: block;
     width: 381px;
     height: 275px;
-    background: #f3cbcc;
-    /* margin-right: 22px; */
-    margin-bottom: 22px;
+  }
+  .entrepreneur li:last-child {
+    width: 381px;
+    height: 275px;
   }
   .entrepreneur li p {
     position: absolute;
