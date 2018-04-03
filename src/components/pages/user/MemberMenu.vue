@@ -2,8 +2,8 @@
 <section class="member-menu">
   <div class="seach-block">
     <span class="search-icon"></span>
-    <input type="text" class="search">
-    <span class="close-icon-solid"></span>
+    <input type="text" class="search" v-model.trim="searchKey">
+    <span class="close-icon-solid" @click="cancelSearch"></span>
   </div>
   <div class="menu-header">
     <span :class="{'active': isActive === 'member'}" @click="changeActive('member')">成员</span>
@@ -13,8 +13,8 @@
   <ul class="menu-list">
     <li></li>
     <li v-for="(ele, index) in memberLeft" :key="index"
-      :class="{'li-active': liActive === id}"
-      @click="getGroupMember(ele.id)">{{ele.name}}</li>
+      :class="{'li-active': liActive === index}"
+      @click="getGroupMember(index, ele)">{{ele.name}}</li>
   </ul>
 </section>
 </template>
@@ -23,8 +23,9 @@
 export default {
   data() {
     return {
-      isActive: 'isActive',
-      liActive: 0
+      isActive: 'member',
+      liActive: 0,
+      searchKey: ''
     }
   },
   props: {
@@ -39,12 +40,35 @@ export default {
       this.isActive = index
       this.$emit('changeType', index)
     },
-    getGroupMember(id) {
-      this.$emit('getGroupMember', id)
+    getGroupMember(index, ele) {
+      this.liActive = index
+      this.$emit('getGroupMember', ele)
+    },
+    searchMember() {
+      this.$emit('searchMember', this.searchKey)
+    },
+    cancelSearch() {
+      this.searchKey = ''
+      this.$emit('cancelSearch')
     }
   },
   created() {
-    this.isActive = this.$route.query.type
+    this.isActive = this.$route.query.type || 'member'
+  },
+  mounted() {
+    window.addEventListener('keydown', (e) => {
+      if (e.keyCode === 13) {
+        if (this.searchKey) {
+          this.searchMember()
+        }
+      }
+    })
+  },
+  watch: {
+    '$route' (to, from) {
+      this.isActive = this.$route.query.type
+      this.firstGroupId = 0
+    }
   }
 }
 </script>

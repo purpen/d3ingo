@@ -9,15 +9,49 @@
         <member-menu
           :memberLeft="memberLeft"
           @changeType="changeType"
-          @getGroupMember="getGroupMember"></member-menu>
+          @getGroupMember="getGroupMember"
+          @searchMember="searchMember"
+          @cancelSearch="creatGetList"></member-menu>
       </el-col>
       <el-col :span="18">
         <section class="member-list">
           <div class="member-list-header">
             <p class="fl">
-              {{listHeader}}
+              {{firstGroupName}}
             </p>
-            <p class="invite fr" @click="getLink">邀请成员</p>
+            <p v-if="type === 'member'" class="invite fr" @click="getLink">邀请成员</p>
+            <div :class="['fr', 'more-list','more-list-group', {'active': isShowGroup}]"
+              v-if="company_role === 10 || company_role === 20"
+              v-show="type === 'group'">
+              <i @click.stop="isShowGroup = !isShowGroup"></i>
+              <ul>
+                <li @click.stop="confirmRenameGroup">重命名</li>
+                <li @click.stop="removeGroup">删除群组</li>
+              </ul>
+            </div>
+            <div v-if="type === 'group'" class="invite fr" @click="groupConfirmPush">
+              <span>添加成员</span>
+              <div class="cententList" v-if="showGroupPush">
+                <p class="clearfix">添加成员
+                  <i class="fr fx-icon-nothing-close-error" @click.stop="showGroupPush = false"></i>
+                </p>
+                <div class="seach-block" v-if="false">
+                  <span class="search-icon"></span>
+                  <input type="text" class="search">
+                  <span class="close-icon-solid"></span>
+                </div>
+                <div class="side clearfix">
+                  <ul>
+                      <li :class="['info', {'active': addMemberIdList.indexOf(d.id) !== -1}]" v-for="(d, index) in itemList" :key="index" @click="addOrremoveMember(d.id)">
+                        <img v-if="d.logo_image" :src="d.logo_image.logo" alt="">
+                        <img v-else :src="require('assets/images/avatar_100.png')">
+                        <span class="name">{{d.realname}}</span>
+                      </li>
+                    </ul>
+                    <p @click="getLink" class="welcome">通过链接邀请</p>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="member-title">
             <el-col :span="8"><p>成员名称</p></el-col>
@@ -25,12 +59,13 @@
             <el-col :span="4"><p>操作</p></el-col>
           </div>
           <ul class="member-item">
-            <li v-for="(ele, index) in memberList" :key="index">
+            <li v-for="(ele, index) in memberList" :key="index" @click="isShow = -1">
               <el-col :span="8">
-                <div class="info">
+                <div class="info" @click="viewMember(ele)">
                   <img v-if="ele.logo_image" :src="ele.logo_image.logo" alt="">
                   <img v-else :src="require('assets/images/avatar_100.png')">
-                  <span>{{ele.realname}}</span>
+                  <span v-if="ele.realname">{{ele.realname}}</span>
+                  <span v-else>{{ele.username}}</span>
                 </div>
               </el-col>
               <el-col :span="12">
@@ -40,13 +75,23 @@
                 <div class="role">
                   <span>{{ele.company_role_label}}</span>
                   <div :class="['more-list', {'active': isShow === index}]"
-                    v-if="company_role === 10 || company_role === 20">
-                    <i @click="changeActive(index)"></i>
+                    v-if="company_role === 10 || company_role === 20"
+                    v-show="type === 'member'">
+                    <i @click.stop="changeActive(index)"></i>
                     <ul>
-                      <li @click="setRole(ele.id, 10)">管理员</li>
-                      <li @click="setRole(ele.id, 0)">成员</li>
+                      <li @click.stop="setRole(ele.id, 10)">管理员</li>
+                      <li @click.stop="setRole(ele.id, 0)">成员</li>
                       <li v-if="false">停用账号</li>
-                      <li @click="removeMember(ele.id)">从企业移除成员</li>
+                      <li @click.stop="removeMember(ele.id)">从企业移除成员</li>
+                    </ul>
+                  </div>
+                  <div :class="['more-list','more-list-group', {'active': isShow === index}]"
+                    v-if="company_role === 10 || company_role === 20"
+                    v-show="type === 'group'">
+                    <i @click.stop="changeActive(index)"></i>
+                    <ul>
+                      <li @click.stop="removeMemberFromGroup(ele.id)">从群组移除成员</li>
+                      <li @click.stop="removeMember(ele.id)">从企业移除成员</li>
                     </ul>
                   </div>
                 </div>
@@ -56,7 +101,7 @@
         </section>
       </el-col>
     </div>
-    <section class="dialog-bg" v-if="showCover"></section>
+    <section class="dialog-bg" v-if="showCover" @click="closeCover"></section>
     <section class="dialog-body" v-if="isInvite">
       <h3 class="dialog-header clearfix">
         邀请成员
@@ -70,6 +115,43 @@
         </p>
       </div>
     </section>
+    <section class="dialog-body" v-if="isRename">
+      <h3 class="dialog-header clearfix">
+        重命名群组
+        <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
+      </h3>
+      <div class="dialog-content">
+        <input type="text" v-model="firstGroupName">
+        <p class="validity"></p>
+        <p class="buttons">
+          <button class="confirm-btn" @click="setClipboardText">确认修改</button>
+        </p>
+      </div>
+    </section>
+    
+    <section class="dialog-body dialog-body-mini" v-if="showMember">
+      <div v-if="viewObj.logo_image" class="dialog-pic" :style="{background: `url(${viewObj.logo_image.small}) no-repeat center`, backgroundSize: '400px'}">
+        <div class="logo-cover">
+          <p class="logo-mini" :style="{background: `url(${viewObj.logo_image.small}) no-repeat center`, backgroundSize: 'cover'}"></p>
+        </div>
+      </div>
+      <div v-else class="dialog-pic" :style="{background: 'url('+require(`assets/images/avatar_100.png`)+') no-repeat center'
+          , backgroundSize: '400px'}">
+        <div class="logo-cover">
+          <p class="logo-mini" 
+          :style="{background: 'url('+require(`assets/images/avatar_100.png`)+') no-repeat center'
+          , backgroundSize: 'cover'}"></p>
+        </div>
+      </div>
+      <div class="dialog-info">
+        <p v-if="viewObj.realname"><span>姓名:</span>{{viewObj.realname}}</p>
+        <p v-else><span>姓名:</span>{{viewObj.username}}</p>
+        <p><span>职位:</span>{{viewObj.position}}</p>
+        <p v-if="false"><span>部门:</span>{{viewObj.username}}</p>
+        <p v-if="false"><span>邮箱:</span>{{viewObj.username}}</p>
+        <p><span>电话:</span>{{viewObj.username}}</p>
+      </div>
+    </section>
   </section>
 </template>
 <script>
@@ -79,18 +161,41 @@ import Clipboard from 'clipboard'
 export default {
   data() {
     return {
-      listHeader: '所有成员',
       memberList: [], // 成员列表
+      itemList: [], // 公司成员列表
       memberLeft: [{id: 1, name: '所有成员'}], // '新加入的成员', '停用的成员'
       showCover: false, // 背景
       isInvite: false, // 邀请界面
+      isRename: false, // 修改界面
       inviteLink: '', // 邀请链接
       isShow: -1, // 操作列表
+      isShowGroup: false, // 群组操作列表
+      showMember: false, // 显示成员详情
       type: 'member',
-      firstGroupId: -1
+      firstGroupId: -1,
+      firstGroupName: '所有成员',
+      showGroupPush: false, // 选择添加成员
+      addMemberIdList: [],
+      viewObj: {} // 成员详情
     }
   },
   methods: {
+    getItemList() {
+      this.$http.get(api.designMemberList)
+      .then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.itemList = res.data.data
+          this.itemList.forEach(item => {
+            this.formatList(item)
+          })
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      })
+      .catch(err => {
+        this.$message.error(err.message)
+      })
+    },
     getMemberList(id) {
       let url = ''
       let groupId = id
@@ -102,19 +207,21 @@ export default {
       this.$http.get(url, {params: {
         group_id: groupId
       }})
-        .then(res => {
-          if (res.data.meta.status_code === 200) {
-            this.memberList = res.data.data
-            this.memberList.forEach(item => {
-              this.formatList(item)
-            })
-          } else {
-            this.$message.error(res.data.meta.message)
-          }
-        })
-        .catch(err => {
-          this.$message.error(err.message)
-        })
+      .then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.memberList = res.data.data
+          this.addMemberIdList = []
+          this.memberList.forEach(item => {
+            this.formatList(item)
+            this.addMemberIdList.push(item.id)
+          })
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      })
+      .catch(err => {
+        this.$message.error(err.message)
+      })
     },
     formatList(e) {
       switch (e.company_role) {
@@ -133,6 +240,10 @@ export default {
       this.showCover = false
       this.isInvite = false
       this.isShow = -1
+      this.isRename = false
+      this.isShowGroup = false
+      this.showGroupPush = false
+      this.showMember = false
     },
     getLink() {
       this.$http.get(api.inviteKey)
@@ -207,6 +318,24 @@ export default {
         }
       })
     },
+    removeMemberFromGroup(id) {
+      this.$http.put(api.removegroupuser, {
+        user_id_arr: [id],
+        group_id: this.firstGroupId
+      })
+      .then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.$nextTick(() => {
+            this.memberList = this.memberList.filter(item => { return id !== item.id })
+            this.isShow = -1
+            let index = this.addMemberIdList.indexOf(id)
+            this.addMemberIdList.splice(index, 1)
+          })
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      })
+    },
     changeType(type) {
       this.$router.push({name: this.$route.name, query: {type: type}})
     },
@@ -218,15 +347,20 @@ export default {
             this.memberLeft = res.data.data
             if (this.memberLeft.length) {
               this.firstGroupId = this.memberLeft[0]['id']
+              this.firstGroupName = this.memberLeft[0]['name']
               this.getMemberList(this.firstGroupId)
             }
           } else {
             this.$message.error(res.data.meta.message)
           }
         })
+      } else {
+        this.firstGroupName = '所有成员'
+        this.memberLeft = [{id: 1, name: '所有成员'}]
       }
     },
     creatGetList() {
+      this.type = this.$route.query.type || 'member'
       this.changeMemberLeft()
       if (this.$route.query.type === 'group') {
         if (this.firstGroupId !== -1) {
@@ -236,9 +370,88 @@ export default {
         this.getMemberList()
       }
     },
-    getGroupMember(id) {
-      this.firstGroupId = id
-      this.getMemberList(id)
+    getGroupMember(ele) {
+      console.log(ele)
+      this.firstGroupId = ele.id
+      this.firstGroupName = ele.name
+      this.isShow = -1
+      this.getMemberList(ele.id)
+    },
+    groupConfirmPush() {
+      this.showGroupPush = true
+      this.isShow = -1
+      this.getItemList()
+    },
+    addOrremoveMember(id) {
+      let index = this.addMemberIdList.indexOf(id)
+      if (index === -1) {
+        this.addMemberIdList.push(id)
+        this.$http.put(api.addgroup, {
+          group_id: this.firstGroupId,
+          user_id_arr: this.addMemberIdList
+        }).then(res => {
+          if (res.data.meta.status_code === 200) {
+            this.getMemberList(this.firstGroupId)
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(err => {
+          this.$message.error(err.message)
+        })
+      } else {
+        this.addMemberIdList.splice(index, 1)
+        this.removeMemberFromGroup(id)
+      }
+    },
+    confirmRenameGroup() {
+      this.closeCover()
+      this.showCover = true
+      this.isRename = true
+    },
+    renameGroup() {
+      this.$http.put(api.renamegroup, {
+        group_id: this.firstGroupId,
+        group_name: this.firstGroupName
+      }).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.closeCover()
+          this.changeMemberLeft()
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      })
+    },
+    removeGroup() {
+      this.$http.delete(api.deletegroup, {params: {
+        group_id: this.firstGroupId
+      }}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.closeCover()
+          this.changeMemberLeft()
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      })
+    },
+    viewMember(ele) {
+      this.showCover = true
+      this.showMember = true
+      this.viewObj = ele
+    },
+    searchMember(key) {
+      this.firstGroupName = '搜索'
+      this.$http.get(api.designSearch, {params: {
+        realname: key
+      }}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.memberList = res.data.data
+          this.memberList.forEach(item => {
+            this.formatList(item)
+          })
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      })
     }
   },
   created() {
@@ -248,6 +461,10 @@ export default {
     '$route' (to, from) {
       this.type = this.$route.query.type || 'member'
       this.creatGetList()
+      this.changeMemberLeft()
+    },
+    firstGroupId() {
+      this.addMemberIdList = []
     }
   },
   computed: {
@@ -310,6 +527,7 @@ export default {
     font-size: 16px;
   }
   .invite {
+    height: 30px;
     color: #ff5a5f;
     position: relative;
     cursor: pointer;
@@ -333,7 +551,7 @@ export default {
     line-height: 50px;
     border-bottom: 1px solid #d2d2d2;
     font-size: 14px;
-    color: #999999;
+    color: #999;
     padding: 0 10px;
   }
   .member-item li {
@@ -346,6 +564,7 @@ export default {
     background: #f7f7f7
   }
   .info, .role {
+    height: 60px;
     display: flex;
     align-items: center
   }
@@ -355,13 +574,24 @@ export default {
     border-radius: 50%;
     margin-right: 10px;
   }
+  .info.active {
+    background: #f7f7f7;
+  }
+  .info.active::after {
+    content: "已添加,点击移除";
+    font-size: 12px;
+    margin-left: 20px;
+  }
   .align-right {
     text-align: right
   }
-  .more-list {
+  .more-list, .member-list-header .more-list-group {
     cursor: pointer;
     position: relative;
     margin-left: 10px;
+  }
+  .more-list-group {
+    margin-left: 0;
   }
   .more-list i {
     display: block;
@@ -371,6 +601,16 @@ export default {
     background-size: contain;
     transform: rotate(-90deg);
     transition: 0.2s all ease;
+  }
+  .more-list-group i {
+    background: url(../../../assets/images/tools/cloud_drive/permission/more@2x.png) no-repeat center;
+    width: 30px;
+    height: 30px;
+    background-size: 40px;
+    transform: rotate(0);
+  }
+  .member-list-header .more-list-group i {
+    background-position: bottom;
   }
   .more-list.active i {
     transform: rotate(0)
@@ -433,6 +673,9 @@ export default {
     box-shadow: 0 0 4px 0 rgba(0,0,0,0.10);
     border-radius: 4px;
   }
+  .dialog-body-mini {
+    width: 280px;
+  }
   .dialog-header {
     font-size: 14px;
     color: #222;
@@ -460,7 +703,43 @@ export default {
     justify-content: center;
     align-items: center
   }
+  .dialog-pic {
+    height: 240px;
+    background: #ff5a5f;
+  }
+  .logo-cover {
+    height: 100%;
+    background: rgba(0, 0, 0, .5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .logo-cover .logo-mini {
+    border-radius: 50%;
+    border: 1px solid #fff;
+    box-shadow: 0 0 0 4px #d2d2d2;
+    width: 90px;
+    height: 90px;
+  }
+  .dialog-info {
+    padding: 20px;
+  }
+  
+  .dialog-info p {
+    color: #222;
+    line-height: 28px;
+    margin-bottom: 20px;
+  }
 
+  .dialog-info p:last-child {
+    margin-bottom: 0;
+  }
+  
+  .dialog-info span {
+    color: #666;
+    margin-right: 20px;
+  }
   .buttons .confirm-btn {
     width: 320px;
     height: 32px;
@@ -492,5 +771,92 @@ export default {
     margin: 20px 0;
     line-height: 20px;
     color: #999;
+  }
+
+  .cententList {
+    background: #FFFFFF;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
+    border-radius: 4px;
+    top: 100px;
+    position: absolute;
+    right: 0;
+    top: 29px;
+    z-index: 999;
+  }
+
+  .cententList p {
+    background: #F7F7F7;
+    font-size: 14px;
+    text-align: center;
+    line-height: 50px;
+    color: #222222;
+    position: relative;
+  }
+  .cententList .fx-icon-nothing-close-error {
+    position: absolute;
+    right: 15px;
+    top: 18px;
+    color: #999;
+  }
+  .seach-block {
+    position: relative;
+    margin: 20px 20px 10px;
+  }
+  .search {
+    width: 100%;
+    height: 40px;
+    border: 1px solid #d2d2d2;
+    border-radius: 4px;
+    padding: 0 8px 0 34px;
+    font-size: 14px;
+    color: #222;
+  }
+  
+  .search-icon {
+    position: absolute;
+    top: 10px;
+    left: 8px;
+    width: 20px;
+    height: 20px;
+    background: url(../.../../../../assets/images/tools/cloud_drive/search@2x.png) no-repeat center;
+    background-size: contain;
+  }
+  
+  .close-icon-solid {
+    position: absolute;
+    top: 12px;
+    right: 8px;
+  }
+  .side {
+    position: relative;
+    width: 280px;
+    background: #FFFFFF;
+    border-radius: 4px;
+  }
+  .side ul {
+    height: 240px;
+    overflow-y: auto;
+  }
+  
+  .side ul .info {
+    padding: 0 20px;
+  }
+  .side ul .info:hover {
+    background: #f7f7f7
+  }
+  .side img {
+    height: 36px;
+    width: 36px;
+    vertical-align: middle;
+    margin-right: 10px;
+  }
+  .side span {
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    color: #999;
+  }
+  .cententList .welcome {
+    background: #fff;
+    color: #ff5a5f
   }
 </style>
