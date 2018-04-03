@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<section>
    <navTitle></navTitle>
     <div class="container">
         <el-row :gutter="10">
@@ -9,7 +9,7 @@
               <img src="../../../assets/images/member/search02@2x.png" alt="">
             </div>
             <div class="TopUser">
-              <router-link :to="{name: 'userAllList'}"><span>成员</span></router-link> 
+              <router-link :to="{name: 'userList'}"><span>成员</span></router-link> 
               <router-link :to="{name: 'userGroup'}"><span class="frist">群组</span></router-link>
               </div>
              <div class="Adduser"> 
@@ -26,7 +26,7 @@
         <el-col class="Top">
               <el-col :span="21" class="navText">
                 <span>{{consoleName}}</span>
-                <span>{{3}}</span>
+                <span>{{consoleNumber}}</span>
               </el-col>
               <el-col :span="3" class="right">
                 <div class="addinput" @click="adduser">
@@ -101,20 +101,21 @@
       </el-row>
     </div>
     <!-- 创建群组 -->
-     <div class="content1" v-show="isgroup"></div>
-     <div class="Group" v-show="isgroup">
-       <p>新建群组</p>
-       <i class="fx-icon-nothing-close-error" @click="newGroup"></i>
-      <div class="creatinput">
-        <input type="text" placeholder="创建群组" v-model="inputVal">
+     <div class="content1" v-show="isgroup">
+      <div class="Group">
+        <p>新建群组</p>
+        <i class="fx-icon-nothing-close-error" @click="closeCover"></i>
+        <div class="creatinput">
+          <input type="text" placeholder="创建群组" v-model="inputVal">
+        </div>
+        <el-button class="dialog-footer" type="danger" @click="setGroup"><span>创建</span></el-button> 
       </div>
-      <el-button class="dialog-footer" type="danger" @click="setGroup"><span>创建</span></el-button> 
     </div>
     <!-- 编辑群组 -->
     <div class="content1" v-show="isget"></div>
      <div class="Group" v-show="isget">
        <p>编辑群组</p>
-       <i class="fx-icon-nothing-close-error" @click="changename"></i>
+       <i class="fx-icon-nothing-close-error" @click="closeCover"></i>
       <div class="creatinput">
         <input type="text" :placeholder="consoleName">
       </div>
@@ -124,14 +125,14 @@
     <div class="content1" v-show="isdelete"></div>
      <div class="Groupdelete" v-show="isdelete">
        <p>确认删除</p>
-       <i class="fx-icon-nothing-close-error" @click="deleteFile"></i>
+       <i class="fx-icon-nothing-close-error" @click="closeCover"></i>
        <span class="isdele">确认要删除部门吗？</span>
       <div id="deletebtn">
         <el-button class="delete-footer" @click="deleteFile"><span>取消</span></el-button>
         <el-button class="delete-footer" @click="deleteGroup(this.groupaddId)" type="danger"><span>确定</span></el-button>
       </div>
     </div>
-	</div>
+	</section>
 </template>
 <script>
 import navTitle from '@/components/pages/user/userTable/navTitle'
@@ -158,6 +159,7 @@ export default {
       itemList: [],
       groupNAme: [],
       consoleName: '',
+      consoleNumber: 0,
       // totalCount: 0,
       query: {
         page: 1,
@@ -182,13 +184,19 @@ export default {
       }
       return user
     },
+    closeCover() {
+      this.isgroup = false
+      this.isget = false
+      this.isadd = false
+      this.isdelete = false
+    },
       // 创建群组弹窗
     newGroup () {
-      this.isgroup = !this.isgroup
+      this.isgroup = true
     },
       // 创建群组提交post请求
     setGroup () {
-      this.isgroup = !this.isgroup
+      this.isgroup = false
       var userID = [this.$store.state.event.user.id]
       var userName = this.inputVal
       var that = this
@@ -259,10 +267,10 @@ export default {
         })
     },
     // 搜索成员
-    searchGroupname () {
+    searchGroupname() {
       console.log('搜索成员')
     },
-    group1 (ele) {
+    group1(ele) {
       this.consoleName = ele
       var that = this
       // 取左侧某项群组id
@@ -290,57 +298,52 @@ export default {
       return this.$store.state.event.isMob
     }
   },
-  created: function () {
+  created() {
     // 获取群组的api接口
     // console.log('群组api')
     // 获取公司所有自己创建的群组列表
     var that = this
     that.$http.get(api.designgroupLists)
-        .then(function (res) {
-          // console.log(res)
-          if (res.data.meta.status_code === 200) {
-            that.Group = res.data.data
-            // console.log(that.Group)
-            for (let i in that.Group) {
-              console.log(that.Group[i].id)
-              that.userGroupID = that.Group[i].id
-              that.groupuserName = that.Group[i].name
-              console.log(that.groupuserName)
-              that.groupNAme = that.Group
-            }
+      .then(function (res) {
+        if (res.data.meta.status_code === 200) {
+          that.Group = res.data.data
+          for (let i in that.Group) {
+            that.userGroupID = that.Group[i].id
+            that.groupuserName = that.Group[i].name
+            that.groupNAme = that.Group
           }
-        })
-        .catch(function (err) {
-          that.$message.error(err.message)
-        })
-        // 获取成员信息
-    that.$http.get(api.designMemberList)
-        .then(function (response) {
-          if (response.data.meta.status_code === 200) {
-            that.itemList = response.data.data
-            for (let i of that.itemList) {
-              // console.log(i.id)
-              if (i.company_role === 0) {
-                i.company_role_init = '成员'
-              } else if (i.company_role === 10) {
-                i.company_role_init = '管理员'
-              } else if (i.company_role === 20) {
-                i.company_role_init = '超级管理员'
-              }
-            }
-          }
-        })
-      .catch(function (error) {
-        that.$message.error(error.message)
+        }
       })
+      .catch(function (err) {
+        that.$message.error(err.message)
+      })
+      // 获取成员信息
+    that.$http.get(api.designMemberList)
+      .then(function (response) {
+        if (response.data.meta.status_code === 200) {
+          that.itemList = response.data.data
+          for (let i of that.itemList) {
+            // console.log(i.id)
+            if (i.company_role === 0) {
+              i.company_role_init = '成员'
+            } else if (i.company_role === 10) {
+              i.company_role_init = '管理员'
+            } else if (i.company_role === 20) {
+              i.company_role_init = '超级管理员'
+            }
+          }
+        }
+      })
+    .catch(function (error) {
+      that.$message.error(error.message)
+    })
   }
 }
 </script>
 
 <style scoped>
 .content1 {
-  opacity: 0.7;
-  background: #000000;
+  background: rgba(0,0,0,0.3);
   position: fixed;
   left:0px;
   top:0px;
@@ -353,8 +356,6 @@ export default {
   background: #F7F7F7;
 }
 .Adduser ul{
-  height: 150px;
-  overflow-y: scroll;
   font-size: 14px;
   cursor: pointer;
 }
@@ -389,7 +390,7 @@ export default {
     vertical-align: middle;
     width: 24px;
     height: 24px;
-    z-index: 999;
+    z-index: 9;
     position: absolute;
     top: 2px;
     left: 84px;
@@ -469,8 +470,6 @@ export default {
 .inputSearch {
   position: relative;
   background: #FFFFFF;
-  border: 1px solid #D2D2D2;
-  border-radius: 4px;
   margin-bottom: 3px;
 }
 .TopUser {
@@ -498,7 +497,9 @@ export default {
   width: 100%;
   height: 37px;
   line-height: 37px;
-  border: none;
+  border: 1px solid #D2D2D2;
+  font-size: 14px;
+  border-radius: 4px;
   padding-left: 34px;
 }
 .inputSearch img{
@@ -583,7 +584,6 @@ export default {
 /* 创建群组 */
 .Group {
   width: 280px;
-  height: 202px;
   background: #FFFFFF;
   box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
   border-radius: 4px;
@@ -592,7 +592,7 @@ export default {
   position: absolute;
   left: 50%;
   top:50%;
- transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
 }
 .Groupdelete {
   width: 280px;

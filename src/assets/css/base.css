@@ -77,6 +77,36 @@ body {
 .min-height350 {
   min-height: 350px;
 }
+/* icon */
+
+.close-icon-solid {
+  width: 16px;
+  height: 16px;
+  background: #999;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.close-icon-solid:hover {
+  background: #666
+}
+
+.close-icon-solid::before, 
+.close-icon-solid::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 10px;
+  height: 1px;
+  background: #fff;
+} 
+
+.close-icon-solid::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+.close-icon-solid::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
 
 p {
   font-size: 1.4rem;

@@ -472,7 +472,7 @@ routes = [
   },
   // 成员
   {
-    path: '/user/userlist',
+    path: '/user/user_list',
     name: 'userList',
     meta: {
       title: '',
@@ -480,9 +480,19 @@ routes = [
     },
     component: require('@/components/pages/user/userList')
   },
+  // 成员
+  {
+    path: '/user/user_management',
+    name: 'userManagement',
+    meta: {
+      title: '',
+      requireAuth: true
+    },
+    component: require('@/components/pages/user/MemberManagement')
+  },
   // 群组页
   {
-    path: '/user/uGroup',
+    path: '/user/user_group',
     name: 'userGroup',
     meta: {
       title: '',

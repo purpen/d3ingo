@@ -2,25 +2,25 @@
 	<div>
     <navTitle></navTitle>
     <div class="container">
-        <el-row :gutter="10">
-          <el-col :span="isMob?24 : 6">
-            <div class="input" @click="searchUsername">
-              <input type="text" placeholder="搜索成员" v-model="searchVal">
-              <img src="../../../assets/images/member/search02@2x.png" alt="">
+      <el-row :gutter="10">
+        <el-col :span="isMob ? 24 : 6">
+          <div class="input" @click="searchUsername">
+            <input type="text" placeholder="搜索成员" v-model="searchVal">
+            <img src="../../../assets/images/member/search02@2x.png" alt="">
+          </div>
+          <div class="top-user">
+            <router-link :to="{name: 'userList'}"><span class="frist">成员</span></router-link> 
+            <router-link :to="{name: 'userGroup'}"><span>群组</span></router-link>
+          </div>
+            <div class="Alluser">
+              <ul>
+                <li class="All" @click="AlluserList">所有成员</li>
+                <!-- <li @click="newList">新加入的成员</li>
+                <li @click="NoList">未分配的成员</li>
+                <li @click="stop">常用成员</li> -->
+              </ul>
             </div>
-            <div class="TopUser">
-              <router-link :to="{name: 'userAllList'}"><span class="frist">成员</span></router-link> 
-              <router-link :to="{name: 'userGroup'}"><span>群组</span></router-link>
-            </div>
-             <div class="Alluser">
-                <ul>
-                  <li class="All" @click="AlluserList">所有成员</li>
-                  <!-- <li @click="newList">新加入的成员</li>
-                  <li @click="NoList">未分配的成员</li>
-                  <li @click="stop">常用成员</li> -->
-                </ul>
-              </div>
-          </el-col>
+        </el-col>
       <el-col :span="isMob? 24: 18">
         <el-row>
           <el-col class="Top">
@@ -186,14 +186,13 @@ export default {
     alick() {
       this.isHide = !this.isHide
       this.$http.get(api.inviteKey)
-          .then((res) => {
-            if (res.data.meta.status_code === 200) {
-              console.log(res)
-              this.rand_string = `${location.origin}/Invite/${res.data.data.rand_string}`
-            } else {
-              console.log(res.data.meta.message)
-            }
-          })
+      .then((res) => {
+        if (res.data.meta.status_code === 200) {
+          this.rand_string = `${location.origin}/Invite/${res.data.data.rand_string}`
+        } else {
+          console.log(res.data.meta.message)
+        }
+      })
     },
     searchUsername () {
       this.isNolist = !this.isNolist
@@ -358,7 +357,7 @@ export default {
   border-radius: 2px;
   margin-bottom: 3px;
 }
-.TopUser {
+.top-user {
   height: 50px;
   display: flex;
   justify-content: space-around;
@@ -366,16 +365,16 @@ export default {
   border-bottom: 1px solid #D2D2D2;
   cursor: pointer;
 }
-.TopUser .frist {
+.top-user .frist {
   color: #FF5A5F;
   border-bottom: 1px solid #FF5A5F;
 }
-.TopUser span{
+.top-user span{
  display: inline-block;
  height: 50px;
  font-size: 14px;
 }
-.TopUser span:hover {
+.top-user span:hover {
   color: #FF5A5F;
   border-bottom: 1px solid #FF5A5F;
 }
@@ -424,9 +423,9 @@ export default {
 .right i{
   display: block;
   height: 24px;
-    background: url('../../../assets/images/member/invitation@2x.png') no-repeat;
-    background-size: 24px 24px;
-    background-position: left;
+  background: url('../../../assets/images/member/invitation@2x.png') no-repeat;
+  background-size: 24px 24px;
+  background-position: left;
 }
 .right:hover i {
   background: url('../../../assets/images/member/invitation-hover@2x.png') no-repeat;
