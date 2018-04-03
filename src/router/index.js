@@ -472,23 +472,18 @@ routes = [
   },
   // 成员
   {
-    path: '/user/uAList',
-    name: 'userAllList',
+    path: '/user/userlist',
+    name: 'userList',
     meta: {
       title: '',
       requireAuth: true
     },
-    component: require('@/components/pages/user/userAllList')
+    component: require('@/components/pages/user/userList')
   },
   // 群组页
   {
-<<<<<<< HEAD
     path: '/user/uGroup',
     name: 'userGroup',
-=======
-    path: '/user/userlist',
-    name: 'userList',
->>>>>>> origin/lzh2
     meta: {
       title: '',
       requireAuth: true

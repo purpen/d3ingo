@@ -456,7 +456,7 @@ export default {
       imgList: [],
       fileList: [], // 上传列表
       totalNumber: 0,
-      webUploader: false, // 上传状态
+      webUploader: false, // 上传状态底部条状
       uploadComplete: false, // 全部上传成功
       isShowProgress: false, // 是否显示上传列表
       showCover: false, // 确认背景?
@@ -732,6 +732,9 @@ export default {
       this.isChooseAll = 'empty'
       this.curView = 'list'
       this.query.page = 1
+      this.query.totalCount = 0
+      this.isShowProgress = false
+      this.webUploader = false
       this.getList()
     },
     changeChooseStatus() {
