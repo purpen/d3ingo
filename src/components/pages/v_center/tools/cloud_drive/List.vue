@@ -63,7 +63,7 @@
                 </el-col>
                 <el-col :offset="5" :span="12">
                   <span v-if="modules !== 'recycle'" @click="confirmShare">分享</span>
-                  <span v-if="modules !== 'recycle'" @click="downloadFile('')">下载</span>
+                  <span v-if="false" @click="downloadFile('')">下载</span>
                   <span v-if="modules !== 'recycle'" @click="confirmCopy">复制</span>
                   <span v-if="modules !== 'recycle'" @click="confirmMove">移动</span>
                   <span v-if="modules !== 'recycle'" @click="rename" :class="{'disable': alreadyChoose > 1 || !alreadyChoose}">重命名</span>
