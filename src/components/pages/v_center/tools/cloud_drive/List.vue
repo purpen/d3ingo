@@ -63,7 +63,7 @@
                 </el-col>
                 <el-col :offset="5" :span="12">
                   <span v-if="modules !== 'recycle'" @click="confirmShare">分享</span>
-                  <span v-if="modules !== 'recycle'" @click="downloadFile('down')">下载</span>
+                  <span v-if="modules !== 'recycle'" @click="downloadFile('')">下载</span>
                   <span v-if="modules !== 'recycle'" @click="confirmCopy">复制</span>
                   <span v-if="modules !== 'recycle'" @click="confirmMove">移动</span>
                   <span v-if="modules !== 'recycle'" @click="rename" :class="{'disable': alreadyChoose > 1 || !alreadyChoose}">重命名</span>
@@ -543,15 +543,19 @@ export default {
   },
   methods: {
     downloadFile(url) {
-      if (url) {
-        if (this.alreadyChoose > 1) {
-          this.$message.info('只支持下载单个文件')
-          return
+      if (this.alreadyChoose) {
+        if (url) {
+          if (this.alreadyChoose > 1) {
+            this.$message.info('只支持下载单个文件')
+            return
+          } else {
+            download(url)
+          }
         } else {
-          download(url)
+          this.$message.info('暂不支持下载文件夹')
         }
       } else {
-        this.$message.info('暂不支持下载文件夹')
+        this.$message.error('请选择要下载文件')
       }
     },
     handleCurrentChange(page) {

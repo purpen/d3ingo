@@ -45,7 +45,7 @@
                 <ul>
                   <li v-if="folderId === 0 && ele.user_id === user.id" @click="changePermission(ele.id, ele.user_id)">更改权限</li>
                   <li @click="shareFile(ele.id)">分享</li>
-                  <li @click="downFile(ele.url_file)">下载</li>
+                  <li v-if="ele.mime_type" @click="downFile(ele.url_file)">下载</li>
                   <li @click="copyFile(ele.id)">复制</li>
                   <li v-if="ele.user_id === user.id" @click="moveFile(ele.id)">移动</li>
                   <li @click="rename(ele.id, index)">重命名</li>
@@ -57,12 +57,12 @@
               <div class="more-list" tabindex="-1">
                 <i></i>
                 <ul>
-                  <li v-if="ele.user_id === user.id" @click="shiftDelete(ele.id)">彻底删除</li>
+                  <li v-if="ele.user_id === user.id || user.company_role === 10 || user.company_role === 20" @click="shiftDelete(ele.id)">彻底删除</li>
                   <li @click="recoverFile(ele.id)">恢复</li>
                 </ul>
               </div>
             </el-col>
-            <el-col :span="2" v-if="driveShare">
+            <el-col :span="2" v-if="driveShare && ele.mime_type">
               <div class="more-list download">
                 <i @click="downFile(ele.url_file)"></i>
               </div>
@@ -107,7 +107,7 @@
               <ul>
                 <li v-if="folderId === 0 && ele.user_id === user.id" @click="changePermission(ele.id, ele.user_id)">更改权限</li>
                 <li @click="shareFile(ele.id)">分享</li>
-                <li @click="downFile(ele.url_file)">下载</li>
+                <li v-if="ele.mime_type" @click="downFile(ele.url_file)">下载</li>
                 <li @click="copyFile(ele.id)">复制</li>
                 <li @click="moveFile(ele.id)">移动</li>
                   <li @click="rename(ele.id, index)">重命名</li>
@@ -457,7 +457,6 @@ export default {
       }
     },
     prewiewInfo(newVal) {
-      console.log(newVal)
       if (!newVal) {
         this.closeView()
       }
