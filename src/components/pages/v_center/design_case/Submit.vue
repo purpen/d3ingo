@@ -84,9 +84,15 @@
                 </el-col>
               </el-row>
 
-              <el-form-item label="获得奖项" class="fullwidth">
+              <el-form-item label="是否获得奖项" class="fullwidth">
                 <el-row>
-                  <el-col :xs="24" :sm="6" :md="6" :lg="6">
+                  <el-col :xs="24" :sm="3" :md="3" :lg="3">
+                    <el-radio-group v-model="is_prize" @change="isPrize">
+                      <el-radio :label="false">否</el-radio>
+                      <el-radio :label="true">是</el-radio>
+                    </el-radio-group>
+                  </el-col>
+                  <el-col :xs="24" :sm="6" :md="6" :lg="6" v-if="is_prize">
                     <el-form-item prop="">
                       <el-date-picker
                         key="prize_time"
@@ -97,7 +103,7 @@
                       </el-date-picker>
                     </el-form-item>
                   </el-col>
-                  <el-col :xs="24" :sm="6" :md="6" :lg="6">
+                  <el-col :xs="24" :sm="6" :md="6" :lg="6" v-if="is_prize">
                     <el-form-item prop="prize">
                       <el-select v-model.number="form.prize" placeholder="所属奖项">
                         <el-option
@@ -276,6 +282,7 @@
         uploadUrl: '',
         isDisabledProduct: true,
         is_apply: false,
+        is_prize: false,
         typeSwitch1: false,
         typeSwitch2: false,
         uploadParam: {
@@ -360,18 +367,22 @@
               title: that.form.title,
               customer: that.form.customer,
               mass_production: that.form.mass_production,
-              sales_volume: that.form.sales_volume,
+              sales_volume: that.form.sales_volume === '' ? 0 : that.form.sales_volume,
               profile: that.form.profile
             }
             row.cover_id = that.coverId
-            if (that.form.prize_time) {
+            if (that.is_prize && that.form.prize_time) {
               that.form.prize_time = that.form.prize_time.format ('yyyy-MM-dd')
+              row.prizes = JSON.stringify([{time: that.form.prize_time, type: that.form.prize}])
+            } else {
+              row.prizes = null
             }
-            if (that.form.patent_time) {
+            if (that.is_apply && that.form.patent_time) {
               that.form.patent_time = that.form.patent_time.format ('yyyy-MM-dd')
+              row.patent = JSON.stringify([{time: that.form.patent_time, type: that.form.patent_info}])
+            } else {
+              row.patent = null
             }
-            row.prizes = JSON.stringify({time: that.form.prize_time, type: that.form.prize})
-            row.patent = JSON.stringify({time: that.form.patent_time, type: that.form.patent_info})
             let apiUrl = null
             let method = null
 
@@ -426,9 +437,17 @@
       isProduction(val) {
         if (val === 0) {
           this.isDisabledProduct = true
-          this.form.sales_volume = null
+          this.form.sales_volume = ''
         } else if (val === 1) {
           this.isDisabledProduct = false
+        }
+      },
+      // 是否获得奖项
+      isPrize(val) {
+        this.is_prize = val
+        if (!val) {
+          this.form.prize_time = null
+          this.form.prize = 0
         }
       },
       // 是否申请专利
@@ -672,14 +691,15 @@
           .then (function (response) {
             if (response.data.meta.status_code === 200) {
               that.form = response.data.data
-              if (that.form.prizes && that.form.prizes.time) {
-                that.$set(that.form, 'prize_time', that.form.prizes.time)
-                that.$set(that.form, 'prize', that.form.prizes.type)
+              if (that.form.prizes) {
+                that.$set(that, 'is_prize', true)
+                that.$set(that.form, 'prize_time', that.form.prizes[0].time)
+                that.$set(that.form, 'prize', that.form.prizes[0].type)
               }
-              if (that.form.patent && that.form.patent.time) {
+              if (that.form.patent) {
                 that.$set(that, 'is_apply', true)
-                that.$set(that.form, 'patent_time', that.form.patent.time)
-                that.$set(that.form, 'patent_info', that.form.patent.type)
+                that.$set(that.form, 'patent_time', that.form.patent[0].time)
+                that.$set(that.form, 'patent_info', that.form.patent[0].type)
               } else {
                 that.$set(that, 'is_apply', false)
               }
