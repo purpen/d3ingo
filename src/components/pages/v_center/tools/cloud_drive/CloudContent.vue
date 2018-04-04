@@ -43,11 +43,11 @@
               <div class="more-list" tabindex="-1">
                 <i></i>
                 <ul>
-                  <li v-if="folderId === 0" @click="changePermission(ele.id, ele.user_id)">更改权限</li>
+                  <li v-if="folderId === 0 && ele.user_id === user.id" @click="changePermission(ele.id, ele.user_id)">更改权限</li>
                   <li @click="shareFile(ele.id)">分享</li>
                   <li @click="downFile(ele.url_file)">下载</li>
                   <li @click="copyFile(ele.id)">复制</li>
-                  <li @click="moveFile(ele.id)">移动</li>
+                  <li v-if="ele.user_id === user.id" @click="moveFile(ele.id)">移动</li>
                   <li @click="rename(ele.id, index)">重命名</li>
                   <li @click="deleteFile(ele.id)">删除</li>
                 </ul>
@@ -57,7 +57,7 @@
               <div class="more-list" tabindex="-1">
                 <i></i>
                 <ul>
-                  <li @click="shiftDelete(ele.id)">彻底删除</li>
+                  <li v-if="ele.user_id === user.id" @click="shiftDelete(ele.id)">彻底删除</li>
                   <li @click="recoverFile(ele.id)">恢复</li>
                 </ul>
               </div>
@@ -105,7 +105,7 @@
             <div class="more-list" tabindex="-1" v-if="!chooseStatus && modules !== 'recycle'">
               <i></i>
               <ul>
-                <li v-if="folderId === 0" @click="changePermission(ele.id, ele.user_id)">更改权限</li>
+                <li v-if="folderId === 0 && ele.user_id === user.id" @click="changePermission(ele.id, ele.user_id)">更改权限</li>
                 <li @click="shareFile(ele.id)">分享</li>
                 <li @click="downFile(ele.url_file)">下载</li>
                 <li @click="copyFile(ele.id)">复制</li>
@@ -144,7 +144,7 @@
               <ul>
                 <li @click="headRenameConfirm()">重命名</li>
                 <li @click="deleteFile(prewiewInfo.id)">删除</li>
-                <li v-if="folderId === 0" @click="changePermission(prewiewInfo.id, prewiewInfo.user_id)">更改权限</li>
+                <li v-if="prewiewInfo" v-show="folderId === 0 && Number(prewiewInfo.user_id) === Number(user.id)" @click="changePermission(prewiewInfo.id, prewiewInfo.user_id)">更改权限</li>
                 <li @click="showProfile = true">详细信息</li>
               </ul>
             </span>
@@ -302,10 +302,12 @@ export default {
     },
     showView(ele) {
       this.urlFile = ele.url_file
-      this.$http.post(api.yunpanRecentUseLog, {id: ele.id}).then(res => {
-      }).catch(err => {
-        console.error(err)
-      })
+      if (!this.driveShare) {
+        this.$http.post(api.yunpanRecentUseLog, {id: ele.id}).then(res => {
+        }).catch(err => {
+          console.error(err)
+        })
+      }
       if (this.modules !== 'recycle') {
         if (/image/.test(ele.mime_type)) {
           this.showType = 1
@@ -455,6 +457,7 @@ export default {
       }
     },
     prewiewInfo(newVal) {
+      console.log(newVal)
       if (!newVal) {
         this.closeView()
       }
@@ -745,9 +748,11 @@ export default {
 
   .more-list i {
     opacity: 0.8;
-    display: block;
+    float: right;
+    margin-right: -10px;
+    width: 25px;
     height: 70px;
-    background: url('../../../../../assets/images/tools/cloud_drive/permission/more@2x.png') center no-repeat;
+    background: url('../../../../../assets/images/tools/cloud_drive/permission/more@2x.png') right no-repeat;
     background-size: 25px
   }
   

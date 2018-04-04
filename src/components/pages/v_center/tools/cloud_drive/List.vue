@@ -508,7 +508,7 @@ export default {
         checkId: 0
       }],
       validityKey: 7,
-      validityVal: '',
+      validityVal: '7天有效',
       validityOption: [
         {
           id: 7,
@@ -543,7 +543,6 @@ export default {
   },
   methods: {
     downloadFile(url) {
-      console.log(url)
       if (url) {
         if (this.alreadyChoose > 1) {
           this.$message.info('只支持下载单个文件')
@@ -558,6 +557,7 @@ export default {
     handleCurrentChange(page) {
       this.query.page = page
       this.$router.push({name: this.$route.name, query: {page: this.query.page}})
+      this.isChooseAll = 'empty'
       this.getList()
     },
     formatList(i) {
@@ -565,9 +565,9 @@ export default {
       if (i.size) {
         let size = i['size'] / 1024
         if (size > 1024) {
-          i['format_size'] = (size / 1024).toFixed(2) + 'MB'
+          i['format_size'] = (size / 1024).toFixed(3) + 'MB'
         } else {
-          i['format_size'] = size.toFixed(2) + 'KB'
+          i['format_size'] = size.toFixed(3) + 'KB'
         }
       } else {
         i['format_size'] = '0KB'
@@ -787,9 +787,9 @@ export default {
         if (!repeat) {
           let size = res.info['size'] / 1024
           if (size > 1024) {
-            res.info['format_size'] = (size / 1024).toFixed(2) + 'MB'
+            res.info['format_size'] = (size / 1024).toFixed(3) + 'MB'
           } else {
-            res.info['format_size'] = size.toFixed(2) + 'KB'
+            res.info['format_size'] = size.toFixed(3) + 'KB'
           }
             // 格式化日期
           res['info']['date'] = res['info']['created_at'].date_format().format('yyyy年MM月dd日')
@@ -1384,12 +1384,12 @@ export default {
       let clipboard = null
       if (this.shareInfo.pwd) {
         clipboard = new Clipboard('.confirm-btn', {
-          text: () => '地址' + this.shareInfo.link + ',密码' + this.shareInfo.pwd + ',有效期' + this.validityVal
+          text: () => this.shareInfo.link + '   ' + this.shareInfo.pwd
         })
         console.log(clipboard)
       } else {
         clipboard = new Clipboard('.confirm-btn', {
-          text: () => '地址' + this.shareInfo.link + '有效期' + this.validityVal
+          text: () => this.shareInfo.link
         })
       }
       this.$message.success('复制成功')
@@ -1489,11 +1489,11 @@ export default {
         for (let i of this.fileList) {
           let size = i['size'] / 1024
           if (size > 1024) {
-            i['format_size'] = (size / 1024).toFixed(2) + 'MB'
+            i['format_size'] = (size / 1024).toFixed(3) + 'MB'
           } else {
-            i['format_size'] = size.toFixed(2) + 'KB'
+            i['format_size'] = size.toFixed(3) + 'KB'
           }
-          i['format_percentage'] = Number(i.percentage.toFixed(2))
+          i['format_percentage'] = Number(i.percentage.toFixed(3))
           if (i.percentage === 100) {
             a++
           }
@@ -1608,7 +1608,7 @@ export default {
     z-index: 10;
   }
   .content-head .title {
-    font-size: 14px;
+    font-size: 18px;
   }
   .operate {
     height: 40px;

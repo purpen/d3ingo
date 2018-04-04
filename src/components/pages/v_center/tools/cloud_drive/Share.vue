@@ -85,13 +85,16 @@ export default {
     }
   },
   created() {
-    // this.sharePage = true
+    console.log(this.$route)
+    this.sharePage = true
     this.modules = this.$route.params.file
     this.urlCode = this.$route.params.file
     this.prevUrl = sessionStorage.getItem('share_url') || ''
     this.password = sessionStorage.getItem('password') || ''
     if (this.prevUrl) {
-      this.password = ''
+      if (this.urlCode !== this.prevUrl) {
+        this.password = ''
+      }
     }
     if (this.urlCode.split('')[0] === '1' || this.password) {
       this.closeCover()
@@ -122,9 +125,9 @@ export default {
       if (i.size) {
         let size = i['size'] / 1024
         if (size > 1024) {
-          i['format_size'] = (size / 1024).toFixed(2) + 'MB'
+          i['format_size'] = (size / 1024).toFixed(3) + 'MB'
         } else {
-          i['format_size'] = size.toFixed(2) + 'KB'
+          i['format_size'] = size.toFixed(3) + 'KB'
         }
       } else {
         i['format_size'] = '0KB'
@@ -546,7 +549,7 @@ export default {
   }
   .dialog-bg {
     position: fixed;
-    z-index: 999;
+    z-index: 99999;
     left: 50%;
     top: 50%;
     transform:  translate(-50%, -50%);
@@ -556,7 +559,7 @@ export default {
   }
   .dialog-body {
     position: fixed;
-    z-index: 999;
+    z-index: 99999;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);

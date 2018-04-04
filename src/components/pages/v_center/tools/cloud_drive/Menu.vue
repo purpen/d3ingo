@@ -86,7 +86,7 @@
     data() {
       return {
         test: 'test',
-        activeNames: ['1', '3']
+        activeNames: ['1', '2', '3']
       }
     },
     methods: {
