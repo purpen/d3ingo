@@ -8,10 +8,12 @@
       <el-col :span="6">
         <member-menu
           :memberLeft="memberLeft"
+          :liActive="liActive"
           @changeType="changeType"
           @getGroupMember="getGroupMember"
           @searchMember="searchMember"
-          @cancelSearch="creatGetList"></member-menu>
+          @cancelSearch="creatGetList"
+          @createGroup="confirmCreateGroup"></member-menu>
       </el-col>
       <el-col :span="18">
         <section class="member-list">
@@ -19,7 +21,7 @@
             <p class="fl">
               {{firstGroupName}}
             </p>
-            <p v-if="type === 'member'" class="invite fr" @click="getLink">邀请成员</p>
+            <p v-if="type === 'member'" class="invite fr" @click="getVerifyStatus">邀请成员</p>
             <div :class="['fr', 'more-list','more-list-group', {'active': isShowGroup}]"
               v-if="company_role === 10 || company_role === 20"
               v-show="type === 'group'">
@@ -48,7 +50,7 @@
                         <span class="name">{{d.realname}}</span>
                       </li>
                     </ul>
-                    <p @click="getLink" class="welcome">通过链接邀请</p>
+                    <p @click="getVerifyStatus" class="welcome">通过链接邀请</p>
                 </div>
               </div>
             </div>
@@ -76,11 +78,11 @@
                   <span>{{ele.company_role_label}}</span>
                   <div :class="['more-list', {'active': isShow === index}]"
                     v-if="company_role === 10 || company_role === 20"
-                    v-show="type === 'member'">
+                    v-show="type === 'member' && currentId !== ele.id">
                     <i @click.stop="changeActive(index)"></i>
                     <ul>
-                      <li @click.stop="setRole(ele.id, 10)">管理员</li>
-                      <li @click.stop="setRole(ele.id, 0)">成员</li>
+                      <li v-if="company_role === 20" @click.stop="setRole(ele.id, 10)">管理员</li>
+                      <li v-if="company_role === 20" @click.stop="setRole(ele.id, 0)">成员</li>
                       <li v-if="false">停用账号</li>
                       <li @click.stop="removeMember(ele.id)">从企业移除成员</li>
                     </ul>
@@ -122,13 +124,25 @@
       </h3>
       <div class="dialog-content">
         <input type="text" v-model="firstGroupName">
-        <p class="validity"></p>
+        <p class="validity2"></p>
         <p class="buttons">
-          <button class="confirm-btn" @click="setClipboardText">确认修改</button>
+          <button class="confirm-btn" @click="renameGroup">确认修改</button>
         </p>
       </div>
     </section>
-    
+    <section class="dialog-body" v-if="showCreateGroup">
+      <h3 class="dialog-header clearfix">
+        创建群组
+        <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
+      </h3>
+      <div class="dialog-content">
+        <input type="text" v-model="groupName" placeholder="请填写群组名称">
+        <p class="validity2"></p>
+        <p class="buttons">
+          <button class="confirm-btn" @click="createGroup">创建群组</button>
+        </p>
+      </div>
+    </section>    
     <section class="dialog-body dialog-body-mini" v-if="showMember">
       <div v-if="viewObj.logo_image" class="dialog-pic" :style="{background: `url(${viewObj.logo_image.small}) no-repeat center`, backgroundSize: '400px'}">
         <div class="logo-cover">
@@ -176,7 +190,11 @@ export default {
       firstGroupName: '所有成员',
       showGroupPush: false, // 选择添加成员
       addMemberIdList: [],
-      viewObj: {} // 成员详情
+      viewObj: {}, // 成员详情
+      showCreateGroup: false, // 创建群组
+      groupName: '', // 群组名称
+      verifyStatus: -1, // 认证状态 0.未审核；1.审核通过；2.未通过审核 3.审核中
+      liActive: 0 // 左侧列表active
     }
   },
   methods: {
@@ -244,6 +262,22 @@ export default {
       this.isShowGroup = false
       this.showGroupPush = false
       this.showMember = false
+      this.showCreateGroup = false
+    },
+    getVerifyStatus() {
+      this.$http.get(api.designCompany)
+      .then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.verifyStatus = res.data.data.verify_status
+          if (this.verifyStatus === 1) {
+            this.getLink()
+          } else {
+            this.$message.error('必须先通过认证才能邀请成员')
+          }
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      })
     },
     getLink() {
       this.$http.get(api.inviteKey)
@@ -259,6 +293,9 @@ export default {
       .catch(err => {
         this.$message.error(err.message)
       })
+    },
+    showLink() {
+      this.getVerifyStatus()
     },
     setClipboardText() {
       let clipboard = null
@@ -319,7 +356,7 @@ export default {
       })
     },
     removeMemberFromGroup(id) {
-      this.$http.put(api.removegroupuser, {
+      this.$http.put(api.removeGroupMember, {
         user_id_arr: [id],
         group_id: this.firstGroupId
       })
@@ -349,6 +386,10 @@ export default {
               this.firstGroupId = this.memberLeft[0]['id']
               this.firstGroupName = this.memberLeft[0]['name']
               this.getMemberList(this.firstGroupId)
+            } else {
+              this.memberList = []
+              this.firstGroupId = 0
+              this.firstGroupName = ''
             }
           } else {
             this.$message.error(res.data.meta.message)
@@ -370,8 +411,8 @@ export default {
         this.getMemberList()
       }
     },
-    getGroupMember(ele) {
-      console.log(ele)
+    getGroupMember(index, ele) {
+      this.liActive = index
       this.firstGroupId = ele.id
       this.firstGroupName = ele.name
       this.isShow = -1
@@ -386,7 +427,7 @@ export default {
       let index = this.addMemberIdList.indexOf(id)
       if (index === -1) {
         this.addMemberIdList.push(id)
-        this.$http.put(api.addgroup, {
+        this.$http.put(api.addGroup, {
           group_id: this.firstGroupId,
           user_id_arr: this.addMemberIdList
         }).then(res => {
@@ -409,9 +450,9 @@ export default {
       this.isRename = true
     },
     renameGroup() {
-      this.$http.put(api.renamegroup, {
+      this.$http.put(api.renameGroup, {
         group_id: this.firstGroupId,
-        group_name: this.firstGroupName
+        name: this.firstGroupName
       }).then(res => {
         if (res.data.meta.status_code === 200) {
           this.closeCover()
@@ -422,12 +463,17 @@ export default {
       })
     },
     removeGroup() {
-      this.$http.delete(api.deletegroup, {params: {
+      this.$http.delete(api.deleteGroup, {params: {
         group_id: this.firstGroupId
       }}).then(res => {
+        this.closeCover()
         if (res.data.meta.status_code === 200) {
-          this.closeCover()
           this.changeMemberLeft()
+          if (this.memberLeft.length) {
+            this.liActive = 0
+            this.firstGroupId = this.memberLeft[0]['id']
+            this.firstGroupName = this.memberLeft[0]['name']
+          }
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -452,6 +498,28 @@ export default {
           this.$message.error(res.data.meta.message)
         }
       })
+    },
+    confirmCreateGroup() {
+      this.showCreateGroup = true
+      this.showCover = true
+    },
+    createGroup() {
+      if (this.groupName) {
+        this.$http.post(api.createGroup, {
+          name: this.groupName,
+          user_id_arr: [this.currentId]
+        }).then(res => {
+          if (res.data.meta.status_code === 200) {
+            this.groupName = ''
+            this.changeMemberLeft()
+            this.closeCover()
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        })
+      } else {
+        this.$message.error('填写群组名称')
+      }
     }
   },
   created() {
@@ -462,6 +530,7 @@ export default {
       this.type = this.$route.query.type || 'member'
       this.creatGetList()
       this.changeMemberLeft()
+      this.liActive = 0
     },
     firstGroupId() {
       this.addMemberIdList = []
@@ -470,6 +539,9 @@ export default {
   computed: {
     company_role() {
       return this.$store.state.event.user.company_role
+    },
+    currentId() {
+      return this.$store.state.event.user.id
     }
   },
   components: {
@@ -771,6 +843,9 @@ export default {
     margin: 20px 0;
     line-height: 20px;
     color: #999;
+  }
+  .validity2 {
+    margin: 20px 0 0;
   }
 
   .cententList {

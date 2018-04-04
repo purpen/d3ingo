@@ -490,16 +490,16 @@ routes = [
     },
     component: require('@/components/pages/user/MemberManagement')
   },
-  // // 群组页
-  // {
-  //   path: '/user/user_group',
-  //   name: 'userGroup',
-  //   meta: {
-  //     title: '',
-  //     requireAuth: true
-  //   },
-  //   component: require('@/components/pages/user/userGroup')
-  // },
+  // 群组页
+  {
+    path: '/user/user_group',
+    name: 'userGroup',
+    meta: {
+      title: '',
+      requireAuth: true
+    },
+    component: require('@/components/pages/user/userGroup')
+  },
   // 控制面板
   {
     path: '/vcenter/control',

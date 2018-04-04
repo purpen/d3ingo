@@ -202,7 +202,7 @@ export default {
       var that = this
       // console.log(userID)
       // console.log(userName)
-      this.$http.post(api.creategroup, {user_id_arr: userID, name: userName})
+      this.$http.post(api.createGroup, {user_id_arr: userID, name: userName})
       .then (function(res) {
         if (res.data.status === 200) {
           // for (let i of this.groupuserName) {
@@ -230,7 +230,7 @@ export default {
     },
     // 群组添加用户
     addgroupname (addid, usersid) {
-      this.$http.put(api.addgroup, {group_id: this.groupaddId, user_id_arr: [this.d.id]})
+      this.$http.put(api.addGroup, {group_id: this.groupaddId, user_id_arr: [this.d.id]})
       .then (function(res) {
         console.log(res)
       })
@@ -256,7 +256,7 @@ export default {
     deleteGroup(deleteId) {
       var that = this
       this.isdelete = !this.isdelete
-      this.$http.delete(api.deletegroup, {params: {group_id: this.groupaddId}})
+      this.$http.delete(api.deleteGroup, {params: {group_id: this.groupaddId}})
         .then(function(res) {
           console.log(res)
           if (res.data.meta.status_code === 403) {

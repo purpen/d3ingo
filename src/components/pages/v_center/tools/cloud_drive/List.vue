@@ -718,7 +718,7 @@ export default {
       }
     },
     getGroupLists() {
-      this.$http.get(api.groupList).then(res => {
+      this.$http.get(api.designgroupLists).then(res => {
         if (res.data.meta.status_code === 200) {
           this.groupList = res.data.data
         } else {

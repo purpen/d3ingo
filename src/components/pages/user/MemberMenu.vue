@@ -11,7 +11,7 @@
     <span :class="{'active': isActive === 'group'}" @click="changeActive('group')">群组</span>
   </div>
   <ul class="menu-list">
-    <li></li>
+    <p @click="createGroup" class="new-group">创建群组</p>
     <li v-for="(ele, index) in memberLeft" :key="index"
       :class="{'li-active': liActive === index}"
       @click="getGroupMember(index, ele)">{{ele.name}}</li>
@@ -24,7 +24,6 @@ export default {
   data() {
     return {
       isActive: 'member',
-      liActive: 0,
       searchKey: ''
     }
   },
@@ -34,15 +33,19 @@ export default {
       default: function () {
         return []
       }
-    }},
+    },
+    liActive: {
+      type: Number,
+      default: 0
+    }
+  },
   methods: {
     changeActive(index) {
       this.isActive = index
       this.$emit('changeType', index)
     },
     getGroupMember(index, ele) {
-      this.liActive = index
-      this.$emit('getGroupMember', ele)
+      this.$emit('getGroupMember', index, ele)
     },
     searchMember() {
       this.$emit('searchMember', this.searchKey)
@@ -50,6 +53,9 @@ export default {
     cancelSearch() {
       this.searchKey = ''
       this.$emit('cancelSearch')
+    },
+    createGroup() {
+      this.$emit('createGroup')
     }
   },
   created() {
@@ -138,5 +144,25 @@ export default {
   .li-active {
     color: #ff5a5f;
     background: #f7f7f7
+  }
+  .new-group {
+    padding-left: 40px;
+    position: relative;
+    opacity: 0.7;
+    cursor: pointer;
+  }
+  .new-group::before {
+    content: "";
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    width: 20px;
+    height: 20px;
+    background: url('../../../assets/images/member/add03@2x.png') no-repeat center;
+    background-size: 24px 24px;
+  }
+  
+  .new-group:hover {
+    opacity: 1;
   }
 </style>

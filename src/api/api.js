@@ -286,14 +286,12 @@ export default {
   designSearch: '/design/members/search', // GET 设计公司搜索
   // 群组
   designgroupUserLists: '/group/groupUserLists', // GET 获取一个群组的成员信息
-  designgroupLists: '/group/lists', // GET 获取公司所有自己创建的群组列表
-  deletegroup: '/group/delete', // delete 删除群组
-  renamegroup: '/group/rename', // PUT 修改群组名称
-  addgroup: '/group/addUser', // PUT 向群组添加用户（设计公司管理员)
-  removegroupuser: '/group/removeUser', // PUT 群组移除用户
-  creategroup: '/group/create', // POST 创建群组 设计公司管理员
-  // 群组
-  groupList: '/group/lists', // GET 获取公司所有自己创建的群组列表(设计公司管理员)
+  designgroupLists: '/group/lists', // GET 获取公司所有自己创建的群组列表(设计公司管理员)
+  deleteGroup: '/group/delete', // delete 删除群组
+  renameGroup: '/group/updateName', // PUT 修改群组名称
+  addGroup: '/group/addUser', // PUT 向群组添加用户（设计公司管理员)
+  removeGroupMember: '/group/removeUser', // PUT 群组移除用户
+  createGroup: '/group/create', // POST 创建群组 设计公司管理员
 
   // 邀请码
   inviteKey: '/urlKey', // 生成邀请字符串
