@@ -57,6 +57,9 @@
           <menuitem class="rotate" @click="rotate += 90" v-if="isMob">
             <span class="fx-icon-rotate"></span>
           </menuitem>
+          <menuitem v-if="false">
+            <span @click="download" class="fx-icon-download"></span>
+          </menuitem>
           <p class="total-page">
             <i>共{{numPages}}页</i>前往
             <input type="text" class="page-input" v-model.number="page" @blur="gotoPage(page)">
@@ -71,6 +74,7 @@
   import api from '@/api/api'
   import ToolsMenu from '@/components/pages/v_center/ToolsMenu'
   import pdf from 'vue-pdf'
+  import downFile from 'downloadjs'
   export default {
     name: 'trendReport',
     components: {
@@ -200,6 +204,9 @@
         this.isFullscreen = false
         document.body.removeAttribute('class', 'disableScroll')
         document.childNodes[1].removeAttribute('class', 'disableScroll')
+      },
+      download() {
+        downFile(this.pdf.image.file)
       }
     },
     computed: {
@@ -297,7 +304,7 @@
     border: none;
   }
 
-  .fx-icon-full-screen, .fx-icon-nothing-left, .fx-icon-nothing-right {
+  menuitem span {
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -309,12 +316,12 @@
     border: 1px solid #979797;
   }
 
- .fx-icon-full-screen {
+ .fx-icon-full-screen, .fx-icon-download {
     border: none;
     font-size: 20px;
   }
 
-  .fx-icon-nothing-left{
+  .fx-icon-nothing-left {
     padding-right: 2px
   }
 
@@ -326,10 +333,7 @@
     font-size: 24px;
   }
 
-  .fx-icon-rotate:hover,
-  .fx-icon-full-screen:hover,
-  .fx-icon-nothing-left:hover,
-  .fx-icon-nothing-right:hover {
+  menuitem span:hover {
     color: #FF5D62;
     border-color: #FF5D62;
   }

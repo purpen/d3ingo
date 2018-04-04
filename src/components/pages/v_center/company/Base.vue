@@ -1,7 +1,7 @@
 <template>
   <div class="container blank40">
     <el-row :gutter="24">
-      <v-menu currentName="profile" :class="[isMob ? 'v-menu' : '']"></v-menu>
+      <v-menu currentName="company" :class="[isMob ? 'v-menu' : '']"></v-menu>
       <el-col :xs="24" :sm="20" :md="20" :lg="20">
         <div class="right-content">
           <v-menu-sub></v-menu-sub>
@@ -938,9 +938,15 @@
     },
     created: function () {
       let uType = this.$store.state.event.user.type
+      let uChild = this.$store.state.event.user.child_account
       // 如果是需求方，跳转到相应页面
       if (uType !== 2) {
         this.$router.replace({name: 'vcenterDComputerBase'})
+        return
+      }
+      // 如果是子账号，跳转到个人资料页
+      if (uChild === 1) {
+        this.$router.replace({name: 'vcenterBase'})
         return
       }
       const that = this

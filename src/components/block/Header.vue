@@ -1,5 +1,5 @@
 <template>
-  <div id="header-layout">
+  <div id="header-layout" v-if="!hideHeader">
     <div class="container">
       <div class="nav-header" v-if="!this.isMob">
         <hgroup>
@@ -27,6 +27,7 @@
                 </i>
               </span>
               <div :class="['view-msg',{'view-msg-min': !msg.message && !msg.notice}]">
+              <!-- <div :class="['view-msg']"> -->
                 <router-link :to="{name: 'vcenterMessageList'}" class="news">
                   <i class="fx-4 fx-icon-notice"></i><i class="fx-4 fx-icon-news-hover"></i>
                   <span v-if="messageCount.message"><b>{{messageCount.message}}</b>条[项目提醒]未查看</span>
@@ -42,9 +43,10 @@
           <el-menu class="el-menu-info" mode="horizontal" router>
             <el-submenu index="2">
               <template slot="title">
-                <img class="avatar" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
+                <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
                 <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
-                <span class="b-nickname">{{ eventUser.account }}</span>
+                <span v-if="eventUser.realname" class="b-nickname">{{ eventUser.realname }}</span>
+                <span v-else class="b-nickname">{{ eventUser.account }}</span>
               </template>
               <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>个人中心</el-menu-item>
               <el-menu-item index="/admin" v-if="isAdmin > 0 ? true : false"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>后台管理</el-menu-item>
@@ -207,6 +209,7 @@
           }
         }).catch((error) => {
           console.error(error)
+          clearInterval(this.requestMessageTask)
         })
       },
       // 定时加载消息数量
@@ -215,13 +218,13 @@
         // 定时请求消息数量
         var limitTimes = 0
         self.requestMessageTask = setInterval(function () {
-          if (limitTimes >= 36) {
+          if (limitTimes >= 18) {
             return
           } else {
             self.fetchMessageCount()
             limitTimes += 1
           }
-        }, 10000)
+        }, 20000)
       },
       // 查看消息
       viewMsg() {
@@ -300,6 +303,9 @@
       },
       isCompany() {
         return this.$store.state.event.user.type === 2
+      },
+      hideHeader() {
+        return this.$store.state.event.hideHeader
       }
     },
     created: function () {

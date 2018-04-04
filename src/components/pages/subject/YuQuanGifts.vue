@@ -194,7 +194,6 @@ export default {
   height: 158px;
   background: url('../../../assets/images/subject/gifts/bottom@2x.png')
     no-repeat center;
-  -webkit-background-size: cover;
   background-size: contain;
   margin-bottom: -52px;
 }

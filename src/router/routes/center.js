@@ -32,7 +32,6 @@ module.exports = [
     },
     component: require('@/components/pages/v_center/stage/Show')
   },
-
   // 需求方公司设置
   // 公司基本设置
   {
@@ -84,11 +83,21 @@ module.exports = [
     },
     component: require('@/components/pages/v_center/bank/List')
   },
+  // 个人账户设置
+  {
+    path: '/vcenter/account/base',
+    name: 'vcenterBase',
+    meta: {
+      title: '个人账户设置',
+      requireAuth: true
+    },
+    component: require('@/components/pages/v_center/account/Base')
+  },
 
   // ### 安全设置 #####
   // 修改密码
   {
-    path: '/vcenter/modify_pwd',
+    path: '/vcenter/account/modify_pwd',
     name: 'modifyPwd',
     meta: {
       title: '修改密码',

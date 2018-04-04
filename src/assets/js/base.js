@@ -39,4 +39,45 @@ phenix.in_array = function (arr, val) {
   }
   return -1;
 }; // 返回-1表示没找到，返回其他值表示找到的索引
+
+// 数组排序
+// eg arr.sort(arr_sort('id', arr_sort('name')))
+phenix.arr_sort = function (name, minor) {
+  return function (o, p) {
+    var a, b;
+    if (o && p && typeof o === 'object' && typeof p === 'object') {
+      a = o[name];
+      b = p[name];
+      if (a === b) {
+        return typeof minor === 'function' ? minor(o, p) : 0;
+      }
+      if (typeof a === typeof b) {
+        return a < b ? -1 : 1;
+      }
+      return typeof a < typeof b ? -1 : 1;
+    } else {
+      thro("error");
+    }
+  }
+}
+// 倒序
+phenix.arr_sort_reverse = function (name, minor) {
+  return function (o, p) {
+    var a, b;
+    if (o && p && typeof o === 'object' && typeof p === 'object') {
+      a = o[name];
+      b = p[name];
+      if (a === b) {
+        return typeof minor === 'function' ? minor(o, p) : 0;
+      }
+      if (typeof a === typeof b) {
+        return a > b ? -1 : 1;
+      }
+      return typeof a > typeof b ? -1 : 1;
+    } else {
+      thro("error");
+    }
+  }
+}
+
 export default phenix;

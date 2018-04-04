@@ -10,7 +10,7 @@ Homestead.yaml
 .env
 .DS_Store
 node_modules
-/dist
+dist
 config/dev.env.js
 config/index.js
 config/prod.env.js
@@ -25,3 +25,4 @@ deploy.sh
 .idea
 *.jsbeautifyrc
 composer.lock
+/.vscode

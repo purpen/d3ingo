@@ -1,9 +1,9 @@
 <template>
-  <div class="vcenter-menu-sub" v-if="!isMob">
-    <div class="vcenter-menu-sub-list">
-      <router-link :to="{name: 'modifyPwd'}" :class="{'item': true, 'is-active': currentSubName === 'modify_pwd'}">
-        修改密码
-      </router-link>
+
+  <div :class="['vcenter-menu-sub', isMob ? 'vcenter-menu-sub-m' : '', 'clearfix']">
+    <div :class="['vcenter-menu-sub-list', isMob ? 'vcenter-menu-sub-list-m' : '']">
+      <router-link :to="{name: 'vcenterBase'}" class="item" v-if="isCompany">基本信息</router-link>
+      <router-link :to="{name: 'modifyPwd'}" :class="{'item': true, 'is-active': currentSubName === 'modify_pwd'}">修改密码</router-link>
 
     </div>
   </div>
@@ -11,7 +11,7 @@
 
 <script>
   export default {
-    name: 'vcenter_company_menu',
+    name: 'vcenter_account_menu',
     props: {
       currentSubName: {
         default: ''
@@ -25,6 +25,9 @@
     computed: {
       isMob() {
         return this.$store.state.event.isMob
+      },
+      isCompany() {
+        return this.$store.state.event.user.type === 2
       }
     }
   }

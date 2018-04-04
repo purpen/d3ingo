@@ -14,7 +14,6 @@ Vue.use(VueRouter)
 
 // 页面刷新时，重新赋值token
 if (window.localStorage.getItem('token')) {
-  // console.log(window.localStorage.getItem('token'))
   store.commit(types.USER_SIGNIN, JSON.parse(window.localStorage.getItem('token')))
 }
 
@@ -313,6 +312,14 @@ routes = [
     },
     component: require('@/components/pages/auth/Register')
   },
+  {
+    path: '/invite/:code',
+    name: 'invite',
+    meta: {
+      title: '邀请注册'
+    },
+    component: require('@/components/pages/auth/Invite')
+  },
   // 找回密码
   {
     path: '/forget',
@@ -463,18 +470,36 @@ routes = [
     },
     component: require('@/components/block/Blank')
   },
-
-  // 个人主页
+  // // 成员
+  // {
+  //   path: '/user/user_list',
+  //   name: 'userList',
+  //   meta: {
+  //     title: '',
+  //     requireAuth: true
+  //   },
+  //   component: require('@/components/pages/user/userList')
+  // },
+  // 成员
   {
-    path: '/user/:id',
-    name: 'userShow',
+    path: '/user/user_management',
+    name: 'userManagement',
     meta: {
-      title: '个人主页',
-      requireAuth: false
+      title: '',
+      requireAuth: true
     },
-    component: require('@/components/pages/user/Show')
+    component: require('@/components/pages/user/MemberManagement')
   },
-
+  // 群组页
+  {
+    path: '/user/user_group',
+    name: 'userGroup',
+    meta: {
+      title: '',
+      requireAuth: true
+    },
+    component: require('@/components/pages/user/userGroup')
+  },
   // 控制面板
   {
     path: '/vcenter/control',
@@ -485,16 +510,15 @@ routes = [
     },
     component: require('@/components/pages/v_center/common/Control')
   },
-
-  // 公司主页
+  // 控制面板--子账户
   {
-    path: '/company/:id',
-    name: 'companyShow',
+    path: '/vcenter/child_control',
+    name: 'vcenterChildControl',
     meta: {
-      title: '公司主页',
-      requireAuth: false
+      title: '控制面板',
+      requireAuth: true
     },
-    component: require('@/components/pages/company/Show')
+    component: require('@/components/pages/v_center/common/ChildControl')
   },
   // 作品详情
   {
@@ -559,6 +583,18 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     next()
+  }
+
+  if (to.meta['hideHeader']) {
+    store.commit(types.HIDE_HEADER, to.meta.hideHeader)
+  } else {
+    store.commit(types.HIDE_HEADER, false)
+  }
+
+  if (to.meta['hideFooter']) {
+    store.commit(types.HIDE_FOOTER, to.meta.hideFooter)
+  } else {
+    store.commit(types.HIDE_FOOTER, false)
   }
 })
 
