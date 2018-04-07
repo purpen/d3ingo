@@ -11,7 +11,7 @@
     <span :class="{'active': isActive === 'group'}" @click="changeActive('group')">群组</span>
   </div>
   <ul class="menu-list">
-    <p @click="createGroup" class="new-group">创建群组</p>
+    <p v-if="isActive === 'group'" @click="createGroup" class="new-group">创建群组</p>
     <li v-for="(ele, index) in memberLeft" :key="index"
       :class="{'li-active': liActive === index}"
       @click="getGroupMember(index, ele)">{{ele.name}}</li>

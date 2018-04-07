@@ -624,13 +624,13 @@ export default {
     border-bottom: 1px solid #d2d2d2;
     font-size: 14px;
     color: #999;
-    padding: 0 10px;
+    padding-left: 10px;
   }
   .member-item li {
     height: 60px;
     line-height: 60px;
     border-bottom: 1px solid #d2d2d2;
-    padding: 0 10px;
+    padding-left: 10px;
   }
   .member-item li:hover {
     background: #f7f7f7
@@ -661,9 +661,6 @@ export default {
     cursor: pointer;
     position: relative;
     margin-left: 10px;
-  }
-  .more-list-group {
-    margin-left: 0;
   }
   .more-list i {
     display: block;
@@ -697,7 +694,7 @@ export default {
     border-radius: 4px;
     position: absolute;
     z-index: 999;
-    top: 39px;
+    top: 44px;
     left: 0;
     width: 140px;
     background: #fff;

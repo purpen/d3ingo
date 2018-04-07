@@ -93,8 +93,10 @@
       changeTitle(name) {
         if (this.isActive !== name) {
           this.$emit('getTitle', name)
-          this.$router.push({name: this.$route.name, params: {modules: name}})
+        } else {
+          this.$emit('getTitle', name, 'local')
         }
+        this.$router.push({name: this.$route.name, params: {modules: name}})
       }
     }
   }
