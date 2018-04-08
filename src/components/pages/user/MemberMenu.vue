@@ -141,6 +141,9 @@ export default {
   .active {
     color: #ff5a5f
   }
+  .menu-header span.active:hover {
+    color: #ff5a5f
+  }
   .li-active {
     color: #ff5a5f;
     background: #f7f7f7

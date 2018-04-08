@@ -846,7 +846,7 @@ export default {
           } else if (/(?:text|msword)/.test(res['info']['mime_type'])) {
             res['info']['format_type'] = 'document'
             res['info']['leixing'] = '文档'
-          } else if (/image/.test(res['info']['mime_type'])) {
+          } else if (/image\/(?:jpg|jpeg|png|gif)/.test(res['info']['mime_type'])) {
             res['info']['format_type'] = 'image'
             res['info']['leixing'] = '图片'
           } else if (/powerpoint/.test(res['info']['mime_type'])) {
@@ -884,11 +884,13 @@ export default {
           }
           this.query.totalCount++
         }
+      } else {
+        this.$message.error(res.message)
       }
     },
     uploadError(err, file, fileList) {
       console.error(err)
-      this.$message.error('上传失败')
+      this.$message.error(err.message)
     },
     uploadRemove(file, fileList) {
     },
@@ -2272,7 +2274,7 @@ export default {
   }
   .grouplist ul {
     max-height: 120px;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
   .grouplist li b {
     position: absolute;

@@ -24,11 +24,11 @@
             <p v-if="type === 'member'" class="invite fr" @click="getVerifyStatus">邀请成员</p>
             <div :class="['fr', 'more-list','more-list-group', {'active': isShowGroup}]"
               v-if="company_role === 10 || company_role === 20"
-              v-show="type === 'group'">
+              v-show="type === 'group' && memberList.length">
               <i @click.stop="isShowGroup = !isShowGroup"></i>
               <ul>
                 <li @click.stop="confirmRenameGroup">重命名</li>
-                <li @click.stop="removeGroup">删除群组</li>
+                <li @click.stop="confirmRemoveGroup">删除群组</li>
               </ul>
             </div>
             <div v-if="type === 'group'" class="invite fr" @click="groupConfirmPush">
@@ -37,17 +37,13 @@
                 <p class="clearfix">添加成员
                   <i class="fr fx-icon-nothing-close-error" @click.stop="showGroupPush = false"></i>
                 </p>
-                <div class="seach-block" v-if="false">
-                  <span class="search-icon"></span>
-                  <input type="text" class="search">
-                  <span class="close-icon-solid"></span>
-                </div>
                 <div class="side clearfix">
                   <ul>
                       <li :class="['info', {'active': addMemberIdList.indexOf(d.id) !== -1}]" v-for="(d, index) in itemList" :key="index" @click="addOrremoveMember(d.id)">
                         <img v-if="d.logo_image" :src="d.logo_image.logo" alt="">
                         <img v-else :src="require('assets/images/avatar_100.png')">
                         <span class="name">{{d.realname}}</span>
+                        <span class="name">{{d.id}}</span>
                       </li>
                     </ul>
                     <p @click="getVerifyStatus" class="welcome">通过链接邀请</p>
@@ -57,11 +53,12 @@
           </div>
           <div class="member-title">
             <el-col :span="8"><p>成员名称</p></el-col>
-            <el-col :span="12"><p>职位</p></el-col>
-            <el-col :span="4"><p>操作</p></el-col>
+            <el-col :span="type === 'group' ? 8 : 12"><p>职位</p></el-col>
+            <el-col v-if="type === 'group'" :span="6"><p>成员属性</p></el-col>
+            <el-col :class="[{'align-right': type === 'group'}]" :span="type === 'group' ? 2 : 4"><p>操作</p></el-col>
           </div>
           <ul class="member-item">
-            <li v-for="(ele, index) in memberList" :key="index" @click="isShow = -1">
+            <li v-for="(ele, index) in memberList" :key="index" @click="closeCover">
               <el-col :span="8">
                 <div class="info" @click="viewMember(ele)">
                   <img v-if="ele.logo_image" :src="ele.logo_image.logo" alt="">
@@ -70,10 +67,26 @@
                   <span v-else>{{ele.username}}</span>
                 </div>
               </el-col>
-              <el-col :span="12">
+              <el-col :span="type === 'group' ? 8 : 12">
                 <span :style="{display: 'block', height: '60px'}">{{ele.position}}</span>
               </el-col>
-              <el-col class="align-right" :span="4">
+              <el-col v-if="type === 'group'" :span="6">
+                <span>{{ele.company_role_label}}</span>
+              </el-col>
+              <el-col v-if="type === 'group'" :span="2">
+                <div class="role role-group">
+                  <div :class="['more-list','more-list-group', {'active': isShow === index}]"
+                    v-if="company_role === 10 || company_role === 20"
+                    v-show="type === 'group'">
+                    <i @click.stop="changeActive(index)"></i>
+                    <ul>
+                      <li @click.stop="removeMemberFromGroup(ele.id)">从群组移除成员</li>
+                      <li @click.stop="removeMember(ele.id)">从企业移除成员</li>
+                    </ul>
+                  </div>
+                </div>
+              </el-col>
+              <el-col v-if="type === 'member'" :span="4">
                 <div class="role">
                   <span>{{ele.company_role_label}}</span>
                   <div :class="['more-list', {'active': isShow === index}]"
@@ -87,15 +100,6 @@
                       <li @click.stop="removeMember(ele.id)">从企业移除成员</li>
                     </ul>
                   </div>
-                  <div :class="['more-list','more-list-group', {'active': isShow === index}]"
-                    v-if="company_role === 10 || company_role === 20"
-                    v-show="type === 'group'">
-                    <i @click.stop="changeActive(index)"></i>
-                    <ul>
-                      <li @click.stop="removeMemberFromGroup(ele.id)">从群组移除成员</li>
-                      <li @click.stop="removeMember(ele.id)">从企业移除成员</li>
-                    </ul>
-                  </div>
                 </div>
               </el-col>
             </li>
@@ -104,6 +108,7 @@
       </el-col>
     </div>
     <section class="dialog-bg" v-if="showCover" @click="closeCover"></section>
+    <!-- <section class="dialog-bg" v-if="true" @click="closeCover"></section> -->
     <section class="dialog-body" v-if="isInvite">
       <h3 class="dialog-header clearfix">
         邀请成员
@@ -130,6 +135,19 @@
         </p>
       </div>
     </section>
+    <section class="dialog-body" v-if="confirmDeleteGroup">
+      <h3 class="dialog-header clearfix">
+        删除群组
+        <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
+      </h3>
+      <div class="dialog-content">
+        <p class="delete-group">确认要删除群组<span class="group-name">{{firstGroupName}}</span>?</p>
+        <p class="buttons">
+          <button class="cancel-btn" @click="closeCover">取消</button>
+          <button class="confirm-btn" @click="removeGroup">删除</button>
+        </p>
+      </div>
+    </section>
     <section class="dialog-body" v-if="showCreateGroup">
       <h3 class="dialog-header clearfix">
         创建群组
@@ -142,7 +160,7 @@
           <button class="confirm-btn" @click="createGroup">创建群组</button>
         </p>
       </div>
-    </section>    
+    </section>
     <section class="dialog-body dialog-body-mini" v-if="showMember">
       <div v-if="viewObj.logo_image" class="dialog-pic">
         <div class="logo-cover">
@@ -198,6 +216,7 @@ export default {
       firstGroupId: -1,
       firstGroupName: '所有成员',
       showGroupPush: false, // 选择添加成员
+      confirmDeleteGroup: false, // 确认删除群组
       addMemberIdList: [],
       viewObj: {}, // 成员详情
       showCreateGroup: false, // 创建群组
@@ -237,11 +256,11 @@ export default {
       .then(res => {
         if (res.data.meta.status_code === 200) {
           this.memberList = res.data.data
-          this.addMemberIdList = []
           this.memberList.forEach(item => {
             this.formatList(item)
             this.addMemberIdList.push(item.id)
           })
+          this.addMemberIdList = Array.from(new Set(this.addMemberIdList))
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -272,6 +291,7 @@ export default {
       this.showGroupPush = false
       this.showMember = false
       this.showCreateGroup = false
+      this.confirmDeleteGroup = false
     },
     getVerifyStatus() {
       this.$http.get(api.designCompany)
@@ -374,8 +394,6 @@ export default {
           this.$nextTick(() => {
             this.memberList = this.memberList.filter(item => { return id !== item.id })
             this.isShow = -1
-            let index = this.addMemberIdList.indexOf(id)
-            this.addMemberIdList.splice(index, 1)
           })
         } else {
           this.$message.error(res.data.meta.message)
@@ -383,6 +401,7 @@ export default {
       })
     },
     changeType(type) {
+      this.closeCover()
       this.$router.push({name: this.$route.name, query: {type: type}})
     },
     changeMemberLeft() {
@@ -428,6 +447,7 @@ export default {
       this.getMemberList(ele.id)
     },
     groupConfirmPush() {
+      this.closeCover()
       this.showGroupPush = true
       this.isShow = -1
       this.getItemList()
@@ -454,9 +474,22 @@ export default {
       }
     },
     confirmRenameGroup() {
-      this.closeCover()
-      this.showCover = true
-      this.isRename = true
+      if (this.memberList.length) {
+        this.closeCover()
+        this.showCover = true
+        this.isRename = true
+      } else {
+        this.$message.error('没有群组')
+      }
+    },
+    confirmRemoveGroup() {
+      if (this.memberList.length) {
+        this.closeCover()
+        this.showCover = true
+        this.confirmDeleteGroup = true
+      } else {
+        this.$message.error('没有群组')
+      }
     },
     renameGroup() {
       this.$http.put(api.renameGroup, {
@@ -540,9 +573,6 @@ export default {
       this.creatGetList()
       this.changeMemberLeft()
       this.liActive = 0
-    },
-    firstGroupId() {
-      this.addMemberIdList = []
     }
   },
   computed: {
@@ -650,6 +680,9 @@ export default {
     display: flex;
     align-items: center
   }
+  .role-group {
+    justify-content: flex-end
+  }
   .info img {
     width: 40px;
     height: 40px;
@@ -739,6 +772,9 @@ export default {
     width: 100vw;
     height: 100vh;
     background: rgba(0,0,0,0.30)
+  }
+  .group-name {
+    color: #ff5a5f
   }
   .dialog-body {
     position: fixed;
@@ -870,15 +906,36 @@ export default {
     color: #666;
     margin-right: 20px;
   }
-  .buttons .confirm-btn {
-    width: 320px;
+
+  .delete-group {
+    padding: 20px 0 40px;
+  }
+
+  .buttons {
+    display: flex;
+  }
+  
+  .buttons .confirm-btn, .buttons .cancel-btn {
+    width: 118px;
     height: 32px;
     border: 1px solid #d2d2d2;
     border-radius: 4px;
+    background: #fff;
+  }
+  
+  .buttons .confirm-btn {
     color: #fff;
     border-color: #ff5a5f;
     background-color: #ff5a5f;
     cursor: pointer;
+    margin-left: 20px;
+  }
+
+  .buttons button.cancel-btn:hover {
+    background: #f5f5f5
+  }
+  .buttons button.cancel-btn:active {
+    background: #ccc
   }
   .buttons .confirm-btn:hover {
     border-color: #d23c46;
