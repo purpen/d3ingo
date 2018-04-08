@@ -617,7 +617,7 @@ export default {
         } else if (/(?:text|msword)/.test(i.mime_type)) {
           i.format_type = 'document'
           i.leixing = '文档'
-        } else if (/image/.test(i.mime_type)) {
+        } else if (/image\/(?:jpg|jpeg|png|gif)/.test(i.mime_type)) {
           i.format_type = 'image'
           i.leixing = '图片'
         } else if (/powerpoint/.test(i.mime_type)) {
@@ -662,6 +662,8 @@ export default {
       let type = 0
       if (this.modules === 'all') {
         url = api.yunpanList
+      } else if (this.modules === 'search') {
+        url = api.yunpanList
       } else if (this.modules === 'recently-use') {
         url = api.yunpanRecentUseFile
       } else if (this.modules === 'recycle') {
@@ -703,6 +705,12 @@ export default {
               this.query.totalPges = 0
             }
             this.list = res.data.data
+            // this.$http.get(this.list[2].url_file, {responseType: 'blob'})
+            // .then(res => {
+            //   console.log(res)
+            // }).catch(err => {
+            //   console.error(err)
+            // })
             if (this.list.length) {
               this.getImgList()
             }
@@ -957,6 +965,7 @@ export default {
         if (this.company_role === 10 || this.company_role === 20) {
           this.showCover = true
           this.showConfirmShiftDelete = true
+          this.excludeFile = true
         } else {
           let isDelete = true // 默认可是删除选中的
           this.shiftDeleteList = this.list.filter(item => { return this.chooseFileList.indexOf(item.id) !== -1 })
@@ -968,6 +977,7 @@ export default {
           if (isDelete) {
             this.showCover = true
             this.showConfirmShiftDelete = true
+            this.excludeFile = true
           } else {
             this.showCover = true
             this.showPermissionDenied = true
@@ -1443,7 +1453,8 @@ export default {
       let clipboard = null
       if (this.shareInfo.pwd) {
         clipboard = new Clipboard('.confirm-btn', {
-          text: () => this.shareInfo.link + '    ' + this.shareInfo.pwd
+          // text: () => this.shareInfo.link + '密码' + this.shareInfo.pwd
+          text: () => this.shareInfo.link
         })
         console.log(clipboard)
       } else {
@@ -1530,7 +1541,9 @@ export default {
   watch: {
     '$route' (to, from) {
       this.folderId = this.$route.query.id || 0
-      this.getList()
+      if (this.modules !== 'search') {
+        this.getList()
+      }
       // this.modules = this.$route.params.modules || 'all'
     },
     validityKey(newVal) {
@@ -1588,28 +1601,28 @@ export default {
         case 'folder':
           this.title = '文件夹'
           break
-        case 0:
+        case '0':
           this.title = '文件夹'
           break
-        case 1:
+        case '1':
           this.title = '图片'
           break
-        case 2:
+        case '2':
           this.title = '视频'
           break
-        case 3:
+        case '3':
           this.title = '音频'
           break
-        case 4:
+        case '4':
           this.title = '文档'
           break
-        case 5:
+        case '5':
           this.title = '电子表格'
           break
-        case 6:
+        case '6':
           this.title = '演示文稿'
           break
-        case 7:
+        case '7':
           this.title = 'PDF'
           break
       }
@@ -2334,6 +2347,7 @@ export default {
   .buttons button {
     width: 118px;
     height: 32px;
+    font-size: 14px;
     border: 1px solid #d2d2d2;
     margin-right: 25px;
     border-radius: 4px;

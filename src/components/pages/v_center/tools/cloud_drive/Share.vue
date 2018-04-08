@@ -5,9 +5,10 @@
         <div class="clearfix">
             <p class="title fl" v-if="!isChoose && folderId === 0" v-html="title"></p>
             <p class="title fl" v-if="!isChoose && folderId !== 0">
-              <i class="fx fx-icon-nothing-left" @click="backFolder"></i>
+              <i class="fx fx-2 fx-icon-nothing-left" @click="backFolder"></i>
               {{parentFolder.name}}
             </p>
+          <p class="end-time fl">失效时间: {{endTime}}</p>
           <p class="edit" title="编辑模式" @click="changeChooseStatus"></p>
           <p class="edit-menu" v-if="isChoose">
             <el-col :span="2">
@@ -81,11 +82,11 @@ export default {
         totalPges: 0,
         totalCount: 0
       },
-      historyId: []
+      historyId: [],
+      endTime: '' // 失效时间
     }
   },
   created() {
-    console.log(this.$route)
     this.sharePage = true
     this.modules = this.$route.params.file
     this.urlCode = this.$route.params.file
@@ -222,6 +223,9 @@ export default {
             if (this.list.length) {
               this.getImgList()
             }
+            if (res.data.meta.share.end_at) {
+              this.endTime = res.data.meta.share.end_at.date_format().format('yyyy年MM月dd日')
+            }
           } else {
             this.$message.error(res.data.meta.message)
             this.showCover = true
@@ -330,8 +334,13 @@ export default {
     z-index: 10;
     margin-top: 40px
   }
-  .content-head .title i {
-    font-size: 22px;
+
+  .title {
+    font-size: 18px;
+    color: #666;
+  }
+  .end-time {
+    margin-left: 20px;
   }
   .operate {
     height: 30px;
@@ -601,22 +610,24 @@ export default {
     border: 1px solid #999
   }
   .btn {
+    font-size: 14px;
     width: 120px;
     height: 34px;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #ff5a5f;
     margin-right: 25px;
     border-radius: 4px;
     background: #ff5a5f;
     color: #fff;
     cursor: pointer;
-    opacity: 0.6;
   }
   
   .btn:hover {
-    opacity: 0.8;
+    border-color: #d23c46;
+    background-color: #d23c46;
   }
   .btn:active {
-    opacity: 1;
+    border-color: #a02832;
+    background-color: #a02832;
   }
   .pagination {
     text-align: center;

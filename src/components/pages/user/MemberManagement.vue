@@ -144,14 +144,23 @@
       </div>
     </section>    
     <section class="dialog-body dialog-body-mini" v-if="showMember">
-      <div v-if="viewObj.logo_image" class="dialog-pic" :style="{background: `url(${viewObj.logo_image.small}) no-repeat center`, backgroundSize: '400px'}">
+      <div v-if="viewObj.logo_image" class="dialog-pic">
         <div class="logo-cover">
+          <i class="fx fx-icon-nothing-close-error" @click="closeCover"></i>
+          <div class="blur-cover" :style="{background: `url(${viewObj.logo_image.small}) no-repeat center`, backgroundSize: '400px'}"></div>
           <p class="logo-mini" :style="{background: `url(${viewObj.logo_image.small}) no-repeat center`, backgroundSize: 'cover'}"></p>
+          <div class="logo-info">
+            <p class="name" v-if="viewObj.realname">{{viewObj.realname}}</p>
+            <p v-else>{{viewObj.username}}</p>
+            <p>{{viewObj.position}}</p>
+          </div>
         </div>
       </div>
-      <div v-else class="dialog-pic" :style="{background: 'url('+require(`assets/images/avatar_100.png`)+') no-repeat center'
-          , backgroundSize: '400px'}">
+      <div v-else class="dialog-pic">
         <div class="logo-cover">
+          <i class="fx fx-icon-nothing-close-error" @click="closeCover"></i>
+          <div class="blur-cover" :style="{background: 'url('+require(`assets/images/avatar_100.png`)+') no-repeat center'
+          , backgroundSize: '400px'}"></div>
           <p class="logo-mini" 
           :style="{background: 'url('+require(`assets/images/avatar_100.png`)+') no-repeat center'
           , backgroundSize: 'cover'}"></p>
@@ -627,6 +636,7 @@ export default {
     padding-left: 10px;
   }
   .member-item li {
+    font-size: 14px;
     height: 60px;
     line-height: 60px;
     border-bottom: 1px solid #d2d2d2;
@@ -773,23 +783,74 @@ export default {
     align-items: center
   }
   .dialog-pic {
+    border-radius: 4px 4px 0 0;
     height: 240px;
-    background: #ff5a5f;
+  }
+  .blur-cover {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-filter: blur(4px); /* Chrome, Opera */
+    -moz-filter: blur(4px);
+    -ms-filter: blur(4px);
+    filter: blur(4px);
+    filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=4, MakeShadow=false);
+  }
+  
+  .blur-cover::before {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    top:0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4)
   }
   .logo-cover {
+    position: relative;
+    z-index: 1;
+    border-radius: 4px 4px 0 0;
     height: 100%;
-    background: rgba(0, 0, 0, .5);
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
   }
   
   .logo-cover .logo-mini {
+    position: relative;
+    z-index: 2;
     border-radius: 50%;
     border: 1px solid #fff;
-    box-shadow: 0 0 0 4px #d2d2d2;
+    box-shadow: 0 0 0 4px rgba(210, 210, 210, 0.5);
     width: 90px;
     height: 90px;
+  }
+  .logo-cover .fx {
+    position: absolute;
+    z-index: 3;
+    right: 10px;
+    top: 10px;
+    color: #fff;
+    cursor: pointer;
+  }
+  .logo-info {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+    padding-top: 15px;
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: center;
+  }
+  
+  .logo-info .name {
+    font-size: 18px;
+    font-weight: bold;
   }
   .dialog-info {
     padding: 20px;
