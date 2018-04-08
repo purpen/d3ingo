@@ -45,7 +45,7 @@
                 <ul>
                   <li v-if="folderId === 0 && ele.user_id === user.id" @click="changePermission(ele.id, ele.user_id)">更改权限</li>
                   <li @click="shareFile(ele.id)">分享</li>
-                  <li v-if="ele.mime_type" @click="downFile(ele.url_file)">下载</li>
+                  <li v-if="ele.mime_type" @click="downFile(ele.id, ele.url_file)">下载</li>
                   <li @click="copyFile(ele.id)">复制</li>
                   <li v-if="ele.user_id === user.id" @click="moveFile(ele.id)">移动</li>
                   <li @click="rename(ele.id, index)">重命名</li>
@@ -64,7 +64,7 @@
             </el-col>
             <el-col :span="2" v-if="driveShare && ele.mime_type">
               <div class="more-list download">
-                <i @click="downFile(ele.url_file)"></i>
+                <i @click="downFile(ele.id, ele.url_file)"></i>
               </div>
             </el-col>
           </div>
@@ -107,7 +107,7 @@
               <ul>
                 <li v-if="folderId === 0 && ele.user_id === user.id" @click="changePermission(ele.id, ele.user_id)">更改权限</li>
                 <li @click="shareFile(ele.id)">分享</li>
-                <li v-if="ele.mime_type" @click="downFile(ele.url_file)">下载</li>
+                <li v-if="ele.mime_type" @click="downFile(ele.id, ele.url_file)">下载</li>
                 <li @click="copyFile(ele.id)">复制</li>
                 <li @click="moveFile(ele.id)">移动</li>
                   <li @click="rename(ele.id, index)">重命名</li>
@@ -137,7 +137,7 @@
           </p>
           <p class="fr operate" v-if="!driveShare">
             <span class="fl" @click="shareFile(prewiewInfo.id)">分享</span>
-            <span class="fl" @click="downFile(prewiewInfo.url_file)">下载</span>
+            <span class="fl" @click="downFile(prewiewInfo.id, prewiewInfo.url_file)">下载</span>
             <span class="fl" @click="moveFile(prewiewInfo.id)">移动</span>
             <span class="fl more" tabindex="-1">
               <i></i>
@@ -432,7 +432,8 @@ export default {
       this.directOperate(id)
       this.$emit('confirmShare')
     },
-    downFile(url) {
+    downFile(id, url) {
+      this.directOperate(id)
       this.$message.info('正在请求中,请稍等..')
       this.$emit('downloadFile', url)
     }
