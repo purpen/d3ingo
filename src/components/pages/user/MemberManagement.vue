@@ -256,6 +256,7 @@ export default {
       .then(res => {
         if (res.data.meta.status_code === 200) {
           this.memberList = res.data.data
+          this.addMemberIdList = []
           this.memberList.forEach(item => {
             this.formatList(item)
             this.addMemberIdList.push(item.id)
