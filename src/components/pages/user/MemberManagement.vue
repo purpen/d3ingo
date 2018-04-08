@@ -25,7 +25,7 @@
             <div :class="['fr', 'more-list','more-list-group', {'active': isShowGroup}]"
               v-if="company_role === 10 || company_role === 20"
               v-show="type === 'group' && memberList.length">
-              <i @click.stop="isShowGroup = !isShowGroup"></i>
+              <i class="header-icon" @click.stop="isShowGroup = !isShowGroup"></i>
               <ul>
                 <li @click.stop="confirmRenameGroup">重命名</li>
                 <li @click.stop="confirmRemoveGroup">删除群组</li>
@@ -707,24 +707,30 @@ export default {
   }
   .more-list i {
     display: block;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     background: url(../../../assets/images/member/small-arrow@2x.png) no-repeat center;
     background-size: contain;
-    transform: rotate(-90deg);
+    transform: rotate(0);
     transition: 0.2s all ease;
   }
   .more-list-group i {
     background: url(../../../assets/images/tools/cloud_drive/permission/more@2x.png) no-repeat center;
     width: 30px;
     height: 30px;
-    background-size: 40px;
+    background-size: 24px;
     transform: rotate(0);
   }
-  .member-list-header .more-list-group i {
-    background-position: bottom;
+  .more-list-group .header-icon {
+    background: url(../../../assets/images/tools/cloud_drive/permission/more@2x.png) no-repeat;
+    background-position: center -4px;
+    background-size: 30px;
   }
   .more-list.active i {
+    transform: rotate(180deg)
+  }
+
+  .more-list-group.active i {
     transform: rotate(0)
   }
 
@@ -738,7 +744,7 @@ export default {
     position: absolute;
     z-index: 999;
     top: 44px;
-    left: 0;
+    left: -30px;
     width: 140px;
     background: #fff;
     color: #666;
