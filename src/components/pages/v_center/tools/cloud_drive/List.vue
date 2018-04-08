@@ -738,7 +738,7 @@ export default {
             this.imgList = []
             for (let i of this.list) {
               this.formatList(i)
-              if (/image/.test(i['mime_type'])) {
+              if (/image\/(?:jpg|jpeg|png|gif)/.test(i['mime_type'])) {
                 this.imgList.push(i)
               }
             }

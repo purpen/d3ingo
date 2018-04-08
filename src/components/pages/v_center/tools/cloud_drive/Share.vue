@@ -152,7 +152,7 @@ export default {
         } else if (/(?:text|msword)/.test(i.mime_type)) {
           i.format_type = 'document'
           i.leixing = '文档'
-        } else if (/image/.test(i.mime_type)) {
+        } else if (/image\/(?:jpg|jpeg|png|gif)/.test(i.mime_type)) {
           i.format_type = 'image'
           i.leixing = '图片'
         } else if (/powerpoint/.test(i.mime_type)) {
@@ -285,7 +285,7 @@ export default {
       this.imgList = []
       for (let i of this.list) {
         this.formatList(i)
-        if (/image/.test(i['mime_type'])) {
+        if (/image\/(?:jpg|jpeg|png|gif)/.test(i['mime_type'])) {
           this.imgList.push(i)
         }
       }
