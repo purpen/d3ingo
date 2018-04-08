@@ -407,15 +407,16 @@ export default {
       }
     },
     changePermission(id, userId, ele) {
+      console.log(this.user.company_role)
       if (this.user.id === userId) {
         this.directOperate(id)
         this.$emit('changePermission', id)
       } else {
-        if (this.user.company_role !== 10 || this.user.company_role !== 20) {
-          this.$message.error('仅限管理员和所有者修改权限')
-        } else {
+        if (this.user.company_role === 10 || this.user.company_role === 20) {
           this.directOperate(id)
           this.$emit('changePermission', id)
+        } else {
+          this.$message.error('仅限管理员和所有者修改权限')
         }
       }
     },
