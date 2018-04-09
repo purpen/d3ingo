@@ -30,7 +30,7 @@ body {
   width: 100%;
   min-height: 100%;
   position: relative;
-  padding-bottom: 296px;
+  padding-bottom: 340px;
   overflow-x: hidden
 }
 #app2 {
@@ -529,7 +529,6 @@ button.is-custom.is-outlined.is-loading:after {
   width: 100%;
   /* overflow: hidden; */
   text-align: center;
-  padding-bottom: 50px;
   background-color: #333333;
   position: absolute;
   bottom: 0;
@@ -1787,7 +1786,7 @@ td.fc-day.fc-widget-content.fc-today::before {
 
 @media screen and (max-width: 767px) {
   #app {
-    padding-bottom: 360px;
+    padding-bottom: 450px;
   }
 
   .footer .item {
