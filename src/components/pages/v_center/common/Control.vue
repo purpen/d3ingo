@@ -1,7 +1,7 @@
 <template>
   <el-row :gutter="20" class="control min-height350">
     <v-menu currentName="control"></v-menu>
-    <el-col :span="20" v-loading.body="isLoading">
+    <el-col :span="20" :offset="4" v-loading.body="isLoading">
       <div class="container blank40">
         <div :class="['content-item-box', isMob ? 'content-item-box-m' : '']">
           <div class="item ing" v-for="(d, index) in itemIngList" :key="index">
@@ -125,7 +125,7 @@
 </template>
 
 <script>
-  import vMenu from '@/components/pages/v_center/MenuNew'
+  import vMenu from '@/components/pages/v_center/Menu'
   import { MSG_COUNT } from '@/store/mutation-types'
   import api from '@/api/api'
 
