@@ -60,7 +60,7 @@
           <ul class="member-item">
             <li v-for="(ele, index) in memberList" :key="index" @click="closeCover">
               <el-col :span="8">
-                <div class="info" @click="viewMember(ele)">
+                <div class="info" @click.stop="viewMember(ele)">
                   <img v-if="ele.logo_image" :src="ele.logo_image.logo" alt="">
                   <img v-else :src="require('assets/images/avatar_100.png')">
                   <span v-if="ele.realname">{{ele.realname}}</span>
@@ -107,7 +107,7 @@
         </section>
       </el-col>
     </div>
-    <section class="dialog-bg" v-if="showCover" @click="closeCover"></section>
+    <section class="dialog-bg" v-if="showCover" @click.self="closeCover"></section>
     <!-- <section class="dialog-bg" v-if="true" @click="closeCover"></section> -->
     <section class="dialog-body" v-if="isInvite">
       <h3 class="dialog-header clearfix">
@@ -680,6 +680,9 @@ export default {
     height: 60px;
     display: flex;
     align-items: center
+  }
+  .info {
+    cursor: pointer;
   }
   .role-group {
     justify-content: flex-end
