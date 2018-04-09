@@ -1,11 +1,11 @@
 <template>
   <section>
-    OverView
+    communicate
   </section>
 </template>
 <script>
 export default {
-  name: 'projectManagementOverView',
+  name: 'projectManagementCommunicate',
   created() {
   }
 }

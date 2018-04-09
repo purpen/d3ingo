@@ -1,11 +1,11 @@
 <template>
   <section>
-    OverView
+    Task
   </section>
 </template>
 <script>
 export default {
-  name: 'projectManagementOverView',
+  name: 'projectManagementTask',
   created() {
   }
 }

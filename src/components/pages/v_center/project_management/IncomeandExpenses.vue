@@ -1,11 +1,11 @@
 <template>
   <section>
-    OverView
+    IncomeandExpenses
   </section>
 </template>
 <script>
 export default {
-  name: 'projectManagementOverView',
+  name: 'projectManagementIncomeandExpenses',
   created() {
   }
 }

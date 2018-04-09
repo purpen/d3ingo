@@ -37,7 +37,7 @@
              :class="{'item': true, 'is-active': currentName === 'c_item'}">
             项目订单
           </a>
-          <a @click="alick" :to="'/vcenter/project_management/overView'"
+          <a @click="alick" :to="'/vcenter/project_management'"
              :class="{'item': true, 'is-active': currentName === 'project_management'}">
             项目管理
           </a>

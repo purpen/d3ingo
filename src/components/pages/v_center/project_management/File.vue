@@ -1,11 +1,11 @@
 <template>
   <section>
-    OverView
+    file
   </section>
 </template>
 <script>
 export default {
-  name: 'projectManagementOverView',
+  name: 'projectManagementFile',
   created() {
   }
 }
