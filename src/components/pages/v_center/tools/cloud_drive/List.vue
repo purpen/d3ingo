@@ -46,9 +46,12 @@
                 <p class="sequence">
                   <i :class="['icon', {'reverse': sortGist.ascend === -1}]" @click="changeSortAscend()"></i>
                   <span class="add-option">
-                    <a :class="{'checked': sortGist.order_by === 1}" @click="changeSortGist(1)">时间</a>
-                    <a :class="{'checked': sortGist.order_by === 2}" @click="changeSortGist(2)">大小</a>
-                    <a :class="{'checked': sortGist.order_by === 3}" @click="changeSortGist(3)">名称</a>
+                    <a :class="{'checked': sortGist.order_by === 1}"
+                      @click="changeSortGist(1)">时间</a>
+                    <a :class="{'checked': sortGist.order_by === 2}"
+                      @click="changeSortGist(2)">大小</a>
+                    <a :class="{'checked': sortGist.order_by === 3}"
+                      @click="changeSortGist(3)">名称</a>
                   </span>
                 </p>
                 <p class="edit" title="编辑模式" @click="changeChooseStatus"></p>
@@ -195,6 +198,23 @@
         <p class="buttons">
           <button class="cancel-btn" @click="showConfirmShiftDelete = false, showCover = false">取消</button>
           <button class="confirm-btn" @click="confirmShiftDelete">确定</button>
+        </p>
+      </div>
+    </section>
+    <section class="dialog-body" v-if="showPermissionDenied">
+      <h3 class="dialog-header clearfix">
+        确认删除
+        <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
+      </h3>
+      <div class="dialog-content">
+        <div class="dialog-article">
+          <p>您删除的内容包含他人创建文件,请先排除后再进行删除</p>
+          <p class="exclude-file"><span :class="{'checked': excludeFile}"
+            @click="excludePermission">排除他人上传文件</span></p>
+        </div>
+        <p class="buttons">
+          <button class="cancel-btn" @click="showPermissionDenied = false, showCover = false">取消</button>
+          <button :class="['confirm-btn',{'disable': !excludeFile}]" @click="confirmShiftDelete">删除</button>
         </p>
       </div>
     </section>
@@ -466,6 +486,8 @@ export default {
       showConfirmRecover: false, // 确认恢复文件?
       showConfirmFolder: false, // 确认新建文件夹
       showConfirmPermission: false, // 确认更改权限
+      showPermissionDenied: false, // 没有权限删除
+      excludeFile: false, // 如果没有彻底删除权限 => false
       showConfirmCopy: false, // 确认复制
       showConfirmMove: false, // 确认移动
       showConfirmShare: false, // 确认分享
@@ -595,7 +617,7 @@ export default {
         } else if (/(?:text|msword)/.test(i.mime_type)) {
           i.format_type = 'document'
           i.leixing = '文档'
-        } else if (/image/.test(i.mime_type)) {
+        } else if (/image\/(?:jpg|jpeg|png|gif)/.test(i.mime_type)) {
           i.format_type = 'image'
           i.leixing = '图片'
         } else if (/powerpoint/.test(i.mime_type)) {
@@ -640,6 +662,8 @@ export default {
       let type = 0
       if (this.modules === 'all') {
         url = api.yunpanList
+      } else if (this.modules === 'search') {
+        url = api.yunpanList
       } else if (this.modules === 'recently-use') {
         url = api.yunpanRecentUseFile
       } else if (this.modules === 'recycle') {
@@ -681,6 +705,12 @@ export default {
               this.query.totalPges = 0
             }
             this.list = res.data.data
+            // this.$http.get(this.list[2].url_file, {responseType: 'blob'})
+            // .then(res => {
+            //   console.log(res)
+            // }).catch(err => {
+            //   console.error(err)
+            // })
             if (this.list.length) {
               this.getImgList()
             }
@@ -708,7 +738,7 @@ export default {
             this.imgList = []
             for (let i of this.list) {
               this.formatList(i)
-              if (/image/.test(i['mime_type'])) {
+              if (/image\/(?:jpg|jpeg|png|gif)/.test(i['mime_type'])) {
                 this.imgList.push(i)
               }
             }
@@ -730,7 +760,7 @@ export default {
         }
       })
     },
-    headTitle(name) {
+    headTitle(name, str = '') {
       this.modules = name
       this.isChoose = false
       this.isChooseAll = 'empty'
@@ -739,7 +769,9 @@ export default {
       this.query.totalCount = 0
       this.isShowProgress = false
       this.webUploader = false
-      this.getList()
+      if (str) {
+        this.getList()
+      }
     },
     changeChooseStatus() {
       this.isChoose = !this.isChoose
@@ -814,7 +846,7 @@ export default {
           } else if (/(?:text|msword)/.test(res['info']['mime_type'])) {
             res['info']['format_type'] = 'document'
             res['info']['leixing'] = '文档'
-          } else if (/image/.test(res['info']['mime_type'])) {
+          } else if (/image\/(?:jpg|jpeg|png|gif)/.test(res['info']['mime_type'])) {
             res['info']['format_type'] = 'image'
             res['info']['leixing'] = '图片'
           } else if (/powerpoint/.test(res['info']['mime_type'])) {
@@ -852,11 +884,13 @@ export default {
           }
           this.query.totalCount++
         }
+      } else {
+        this.$message.error(res.message)
       }
     },
     uploadError(err, file, fileList) {
       console.error(err)
-      this.$message.error('上传失败')
+      this.$message.error(err.message)
     },
     uploadRemove(file, fileList) {
     },
@@ -930,26 +964,57 @@ export default {
     },
     shiftDelete() {
       if (this.chooseFileList.length) {
-        this.showCover = true
-        this.showConfirmShiftDelete = true
+        if (this.company_role === 10 || this.company_role === 20) {
+          this.showCover = true
+          this.showConfirmShiftDelete = true
+          this.excludeFile = true
+        } else {
+          let isDelete = true // 默认可是删除选中的
+          this.shiftDeleteList = this.list.filter(item => { return this.chooseFileList.indexOf(item.id) !== -1 })
+          this.shiftDeleteList.forEach(item => {
+            if (item.file_user_id !== this.current_user.id) { // 如果有不属于自己的
+              isDelete = false
+            }
+          })
+          if (isDelete) {
+            this.showCover = true
+            this.showConfirmShiftDelete = true
+            this.excludeFile = true
+          } else {
+            this.showCover = true
+            this.showPermissionDenied = true
+            this.excludeFile = false
+          }
+        }
       } else {
         this.$message.error('请选择要彻底删除的文件')
       }
     },
-    confirmShiftDelete() {
-      this.$http.delete(api.recycleBinDelete, {params: {id_arr: this.chooseFileList}}).then((res) => {
-        if (res.data.meta.status_code === 200) {
-          this.$nextTick(function () {
-            // this.list = this.list.filter(item => { return this.chooseFileList.indexOf(item.id) === -1 })
-            this.isChooseAll = 'empty'
-            this.getList()
-          })
-          this.showCover = false
-          this.showConfirmShiftDelete = false
-        } else {
-          this.$message.error(res.data.meta.message)
-        }
+    excludePermission() {
+      this.shiftDeleteList = this.shiftDeleteList.filter(item => {
+        return item.file_user_id === this.current_user.id
       })
+      this.excludeFile = true
+    },
+    confirmShiftDelete() {
+      if (this.excludeFile) {
+        this.$http.delete(api.recycleBinDelete, {params: {id_arr: this.chooseFileList}}).then((res) => {
+          if (res.data.meta.status_code === 200) {
+            this.$nextTick(function () {
+              // this.list = this.list.filter(item => { return this.chooseFileList.indexOf(item.id) === -1 })
+              this.isChooseAll = 'empty'
+              this.getList()
+            })
+            this.showCover = false
+            this.showConfirmShiftDelete = false
+            this.showPermissionDenied = false
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        })
+      } else {
+        this.$message.error('请先排除他人文件')
+      }
     },
     recoverFile() {
       if (this.chooseFileList.length) {
@@ -1201,6 +1266,7 @@ export default {
       this.showConfirmMove = false
       this.showConfirmShare = false
       this.showShareOrLink = false
+      this.showPermissionDenied = false
       this.validityKey = 7
       this.folderObj = [{folderId: 0, folderList: [], checkId: 0}]
       this.group_id_arr = []
@@ -1209,6 +1275,7 @@ export default {
       this.isSelectGroup = false
       this.folder.name = ''
       this.copyORmoveFolderName = '新建文件夹'
+      this.shiftDeleteList = []
     },
     selectPermission(id) {
       this.openSet = id
@@ -1388,7 +1455,8 @@ export default {
       let clipboard = null
       if (this.shareInfo.pwd) {
         clipboard = new Clipboard('.confirm-btn', {
-          text: () => this.shareInfo.link + '   ' + this.shareInfo.pwd
+          // text: () => this.shareInfo.link + '密码' + this.shareInfo.pwd
+          text: () => this.shareInfo.link
         })
         console.log(clipboard)
       } else {
@@ -1440,6 +1508,9 @@ export default {
     company_role() {
       return this.$store.state.event.user.company_role
     },
+    current_user() {
+      return this.$store.state.event.user
+    },
     IEVersion() {
       var userAgent = navigator.userAgent // 取得浏览器的userAgent字符串
       var isIE = userAgent.indexOf('compatible') > -1 && userAgent.indexOf('MSIE') > -1 // 判断是否IE<11浏览器
@@ -1472,7 +1543,10 @@ export default {
   watch: {
     '$route' (to, from) {
       this.folderId = this.$route.query.id || 0
-      this.getList()
+      if (this.modules !== 'search') {
+        this.getList()
+      }
+      // this.modules = this.$route.params.modules || 'all'
     },
     validityKey(newVal) {
       switch (newVal) {
@@ -1529,28 +1603,28 @@ export default {
         case 'folder':
           this.title = '文件夹'
           break
-        case 0:
+        case '0':
           this.title = '文件夹'
           break
-        case 1:
+        case '1':
           this.title = '图片'
           break
-        case 2:
+        case '2':
           this.title = '视频'
           break
-        case 3:
+        case '3':
           this.title = '音频'
           break
-        case 4:
+        case '4':
           this.title = '文档'
           break
-        case 5:
+        case '5':
           this.title = '电子表格'
           break
-        case 6:
+        case '6':
           this.title = '演示文稿'
           break
-        case 7:
+        case '7':
           this.title = 'PDF'
           break
       }
@@ -1932,7 +2006,7 @@ export default {
   }
   .dialog-bg {
     position: fixed;
-    z-index: 999;
+    z-index: 1999;
     left: 50%;
     top: 50%;
     transform:  translate(-50%, -50%);
@@ -1942,7 +2016,7 @@ export default {
   }
   .dialog-body {
     position: fixed;
-    z-index: 999;
+    z-index: 1999;
     left: 50%;
     top: 50%;
     transform:  translate(-50%, -50%);
@@ -2200,7 +2274,7 @@ export default {
   }
   .grouplist ul {
     max-height: 120px;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
   .grouplist li b {
     position: absolute;
@@ -2275,6 +2349,7 @@ export default {
   .buttons button {
     width: 118px;
     height: 32px;
+    font-size: 14px;
     border: 1px solid #d2d2d2;
     margin-right: 25px;
     border-radius: 4px;
@@ -2305,6 +2380,13 @@ export default {
     border-color: #a02832;
     background-color: #a02832;
   }
+  
+  .buttons button.disable, .buttons button.disable:hover, .buttons button.disable:active {
+    background: #EDF1F2;
+    border-color: #d2d2d2;
+    color: #999;
+  }
+
   .uploadList-enter-active {
     transition: all 0.3s ease
   } 
@@ -2340,5 +2422,38 @@ export default {
 
   .pagination {
     text-align: center;
+  }
+  .exclude-file {
+    margin-top: 20px;
+  }
+  .exclude-file span {
+    position: relative;
+    cursor: pointer;
+  }
+  .exclude-file span::before {
+    content: "";
+    position: absolute;
+    left: -28px;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    box-shadow: 0 0 2px 0 rgba(0,0,0,0.30);
+    border-radius: 4px;
+  }
+  
+  .exclude-file span::after {
+    content: "";
+    position: absolute;
+    left: -22px;
+    top: 0;
+    width: 8px;
+    height: 14px;
+    border: 2px solid #fff;
+    border-left: none;
+    border-top: none;
+    transform: rotate(45deg)
+  }
+  .exclude-file span.checked::before {
+    background: #666;
   }
 </style>

@@ -467,7 +467,9 @@ button.is-custom.is-outlined:hover, .button.is-custom.is-outlined:focus {
 button.is-custom.is-outlined.is-loading:after {
   border-color: transparent transparent #FF5A5F #FF5A5F !important;
 }
-
+.el-loading-mask {
+  z-index: 1000
+}
 /* server && design */
 
 .banner {

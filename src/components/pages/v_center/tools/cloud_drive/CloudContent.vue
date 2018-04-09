@@ -33,8 +33,8 @@
             <el-col :span="3">
               <p :class="['file-size', {'hidden': ele.format_type === 'folder'}]">{{ele.format_size}}</p>
             </el-col>
-            <el-col :span="5">
-              <p :class="['file-uploader']">{{ele.user_name}}</p>
+            <el-col :span="5" :style="{height: '70px'}">
+              <p v-if="!driveShare" :class="['file-uploader']">{{ele.user_name}}</p>
             </el-col>
             <el-col :span="4">
               <p class="upload-date">{{ele.created_at_format}}</p>
@@ -45,7 +45,7 @@
                 <ul>
                   <li v-if="folderId === 0 && ele.user_id === user.id" @click="changePermission(ele.id, ele.user_id)">更改权限</li>
                   <li @click="shareFile(ele.id)">分享</li>
-                  <li v-if="ele.mime_type" @click="downFile(ele.url_file)">下载</li>
+                  <li v-if="ele.mime_type" @click="downFile(ele.id, ele.url_file)">下载</li>
                   <li @click="copyFile(ele.id)">复制</li>
                   <li v-if="ele.user_id === user.id" @click="moveFile(ele.id)">移动</li>
                   <li @click="rename(ele.id, index)">重命名</li>
@@ -57,14 +57,14 @@
               <div class="more-list" tabindex="-1">
                 <i></i>
                 <ul>
-                  <li v-if="ele.user_id === user.id || user.company_role === 10 || user.company_role === 20" @click="shiftDelete(ele.id)">彻底删除</li>
+                  <li v-if="ele.file_user_id === user.id || user.company_role === 10 || user.company_role === 20" @click="shiftDelete(ele.id)">彻底删除</li>
                   <li @click="recoverFile(ele.id)">恢复</li>
                 </ul>
               </div>
             </el-col>
             <el-col :span="2" v-if="driveShare && ele.mime_type">
               <div class="more-list download">
-                <i @click="downFile(ele.url_file)"></i>
+                <i @click="downFile(ele.id, ele.url_file)"></i>
               </div>
             </el-col>
           </div>
@@ -107,7 +107,7 @@
               <ul>
                 <li v-if="folderId === 0 && ele.user_id === user.id" @click="changePermission(ele.id, ele.user_id)">更改权限</li>
                 <li @click="shareFile(ele.id)">分享</li>
-                <li v-if="ele.mime_type" @click="downFile(ele.url_file)">下载</li>
+                <li v-if="ele.mime_type" @click="downFile(ele.id, ele.url_file)">下载</li>
                 <li @click="copyFile(ele.id)">复制</li>
                 <li @click="moveFile(ele.id)">移动</li>
                   <li @click="rename(ele.id, index)">重命名</li>
@@ -137,7 +137,7 @@
           </p>
           <p class="fr operate" v-if="!driveShare">
             <span class="fl" @click="shareFile(prewiewInfo.id)">分享</span>
-            <span class="fl" @click="downFile(prewiewInfo.url_file)">下载</span>
+            <span class="fl" @click="downFile(prewiewInfo.id, prewiewInfo.url_file)">下载</span>
             <span class="fl" @click="moveFile(prewiewInfo.id)">移动</span>
             <span class="fl more" tabindex="-1">
               <i></i>
@@ -323,7 +323,7 @@ export default {
             document.body.setAttribute('class', 'disableScroll')
             document.childNodes[1].setAttribute('class', 'disableScroll')
           } else {
-            this.$message.info('正在加载组件...')
+            this.$message.info('正在加载组件, 请稍后尝试...')
           }
         } else if (/video/.test(ele.format_type)) {
           this.changeList(2, ele)
@@ -407,12 +407,12 @@ export default {
       }
     },
     changePermission(id, userId, ele) {
-      console.log(ele)
+      console.log(this.user.company_role)
       if (this.user.id === userId) {
         this.directOperate(id)
         this.$emit('changePermission', id)
       } else {
-        if (this.user.company_role !== 10 || this.user.company_role !== 20) {
+        if (this.user.company_role === 10 || this.user.company_role === 20) {
           this.directOperate(id)
           this.$emit('changePermission', id)
         } else {
@@ -432,7 +432,8 @@ export default {
       this.directOperate(id)
       this.$emit('confirmShare')
     },
-    downFile(url) {
+    downFile(id, url) {
+      this.directOperate(id)
       this.$message.info('正在请求中,请稍等..')
       this.$emit('downloadFile', url)
     }
@@ -744,10 +745,14 @@ export default {
   .upload-date {
     text-align: right;
   }
+  
+  .item .more-list i {
+    float: right
+  }
 
   .more-list i {
     opacity: 0.8;
-    float: right;
+    display: inline-block;
     margin-right: -10px;
     width: 25px;
     height: 70px;
@@ -776,6 +781,7 @@ export default {
   }
   .more-list {
     position: relative;
+    text-align: center;
   }
 
   .item2 .file-name, .item2 .upload-date {

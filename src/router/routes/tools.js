@@ -22,16 +22,6 @@ module.exports = [
     },
     component: require('@/components/pages/v_center/tools/cloud_drive/Share')
   },
-  // 分享链接登录
-  {
-    path: '/user/Show/UserShow',
-    name: 'UserShow',
-    meta: {
-      title: '分享链接邀请成员',
-      requireAuth: true
-    },
-    component: require('@/components/pages/user/Show/UserShow')
-  },
   // 成员管理列表
   {
     path: '/vcenter/member/list',

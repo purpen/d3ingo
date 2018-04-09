@@ -24,11 +24,11 @@
             <p v-if="type === 'member'" class="invite fr" @click="getVerifyStatus">邀请成员</p>
             <div :class="['fr', 'more-list','more-list-group', {'active': isShowGroup}]"
               v-if="company_role === 10 || company_role === 20"
-              v-show="type === 'group'">
-              <i @click.stop="isShowGroup = !isShowGroup"></i>
+              v-show="type === 'group' && memberList.length">
+              <i class="header-icon" @click.stop="isShowGroup = !isShowGroup"></i>
               <ul>
                 <li @click.stop="confirmRenameGroup">重命名</li>
-                <li @click.stop="removeGroup">删除群组</li>
+                <li @click.stop="confirmRemoveGroup">删除群组</li>
               </ul>
             </div>
             <div v-if="type === 'group'" class="invite fr" @click="groupConfirmPush">
@@ -37,17 +37,13 @@
                 <p class="clearfix">添加成员
                   <i class="fr fx-icon-nothing-close-error" @click.stop="showGroupPush = false"></i>
                 </p>
-                <div class="seach-block" v-if="false">
-                  <span class="search-icon"></span>
-                  <input type="text" class="search">
-                  <span class="close-icon-solid"></span>
-                </div>
                 <div class="side clearfix">
                   <ul>
                       <li :class="['info', {'active': addMemberIdList.indexOf(d.id) !== -1}]" v-for="(d, index) in itemList" :key="index" @click="addOrremoveMember(d.id)">
                         <img v-if="d.logo_image" :src="d.logo_image.logo" alt="">
                         <img v-else :src="require('assets/images/avatar_100.png')">
                         <span class="name">{{d.realname}}</span>
+                        <span class="name">{{d.id}}</span>
                       </li>
                     </ul>
                     <p @click="getVerifyStatus" class="welcome">通过链接邀请</p>
@@ -57,11 +53,12 @@
           </div>
           <div class="member-title">
             <el-col :span="8"><p>成员名称</p></el-col>
-            <el-col :span="12"><p>职位</p></el-col>
-            <el-col :span="4"><p>操作</p></el-col>
+            <el-col :span="type === 'group' ? 8 : 12"><p>职位</p></el-col>
+            <el-col v-if="type === 'group'" :span="6"><p>成员属性</p></el-col>
+            <el-col :class="[{'align-right': type === 'group'}]" :span="type === 'group' ? 2 : 4"><p>操作</p></el-col>
           </div>
           <ul class="member-item">
-            <li v-for="(ele, index) in memberList" :key="index" @click="isShow = -1">
+            <li v-for="(ele, index) in memberList" :key="index" @click="closeCover">
               <el-col :span="8">
                 <div class="info" @click="viewMember(ele)">
                   <img v-if="ele.logo_image" :src="ele.logo_image.logo" alt="">
@@ -70,10 +67,26 @@
                   <span v-else>{{ele.username}}</span>
                 </div>
               </el-col>
-              <el-col :span="12">
+              <el-col :span="type === 'group' ? 8 : 12">
                 <span :style="{display: 'block', height: '60px'}">{{ele.position}}</span>
               </el-col>
-              <el-col class="align-right" :span="4">
+              <el-col v-if="type === 'group'" :span="6">
+                <span>{{ele.company_role_label}}</span>
+              </el-col>
+              <el-col v-if="type === 'group'" :span="2">
+                <div class="role role-group">
+                  <div :class="['more-list','more-list-group', {'active': isShow === index}]"
+                    v-if="company_role === 10 || company_role === 20"
+                    v-show="type === 'group'">
+                    <i @click.stop="changeActive(index)"></i>
+                    <ul>
+                      <li @click.stop="removeMemberFromGroup(ele.id)">从群组移除成员</li>
+                      <li @click.stop="removeMember(ele.id)">从企业移除成员</li>
+                    </ul>
+                  </div>
+                </div>
+              </el-col>
+              <el-col v-if="type === 'member'" :span="4">
                 <div class="role">
                   <span>{{ele.company_role_label}}</span>
                   <div :class="['more-list', {'active': isShow === index}]"
@@ -87,15 +100,6 @@
                       <li @click.stop="removeMember(ele.id)">从企业移除成员</li>
                     </ul>
                   </div>
-                  <div :class="['more-list','more-list-group', {'active': isShow === index}]"
-                    v-if="company_role === 10 || company_role === 20"
-                    v-show="type === 'group'">
-                    <i @click.stop="changeActive(index)"></i>
-                    <ul>
-                      <li @click.stop="removeMemberFromGroup(ele.id)">从群组移除成员</li>
-                      <li @click.stop="removeMember(ele.id)">从企业移除成员</li>
-                    </ul>
-                  </div>
                 </div>
               </el-col>
             </li>
@@ -104,6 +108,7 @@
       </el-col>
     </div>
     <section class="dialog-bg" v-if="showCover" @click="closeCover"></section>
+    <!-- <section class="dialog-bg" v-if="true" @click="closeCover"></section> -->
     <section class="dialog-body" v-if="isInvite">
       <h3 class="dialog-header clearfix">
         邀请成员
@@ -130,6 +135,19 @@
         </p>
       </div>
     </section>
+    <section class="dialog-body" v-if="confirmDeleteGroup">
+      <h3 class="dialog-header clearfix">
+        删除群组
+        <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
+      </h3>
+      <div class="dialog-content">
+        <p class="delete-group">确认要删除群组<span class="group-name">{{firstGroupName}}</span>?</p>
+        <p class="buttons">
+          <button class="cancel-btn" @click="closeCover">取消</button>
+          <button class="confirm-btn" @click="removeGroup">删除</button>
+        </p>
+      </div>
+    </section>
     <section class="dialog-body" v-if="showCreateGroup">
       <h3 class="dialog-header clearfix">
         创建群组
@@ -142,16 +160,25 @@
           <button class="confirm-btn" @click="createGroup">创建群组</button>
         </p>
       </div>
-    </section>    
+    </section>
     <section class="dialog-body dialog-body-mini" v-if="showMember">
-      <div v-if="viewObj.logo_image" class="dialog-pic" :style="{background: `url(${viewObj.logo_image.small}) no-repeat center`, backgroundSize: '400px'}">
+      <div v-if="viewObj.logo_image" class="dialog-pic">
         <div class="logo-cover">
+          <i class="fx fx-icon-nothing-close-error" @click="closeCover"></i>
+          <div class="blur-cover" :style="{background: `url(${viewObj.logo_image.small}) no-repeat center`, backgroundSize: '400px'}"></div>
           <p class="logo-mini" :style="{background: `url(${viewObj.logo_image.small}) no-repeat center`, backgroundSize: 'cover'}"></p>
+          <div class="logo-info">
+            <p class="name" v-if="viewObj.realname">{{viewObj.realname}}</p>
+            <p v-else>{{viewObj.username}}</p>
+            <p>{{viewObj.position}}</p>
+          </div>
         </div>
       </div>
-      <div v-else class="dialog-pic" :style="{background: 'url('+require(`assets/images/avatar_100.png`)+') no-repeat center'
-          , backgroundSize: '400px'}">
+      <div v-else class="dialog-pic">
         <div class="logo-cover">
+          <i class="fx fx-icon-nothing-close-error" @click="closeCover"></i>
+          <div class="blur-cover" :style="{background: 'url('+require(`assets/images/avatar_100.png`)+') no-repeat center'
+          , backgroundSize: '400px'}"></div>
           <p class="logo-mini" 
           :style="{background: 'url('+require(`assets/images/avatar_100.png`)+') no-repeat center'
           , backgroundSize: 'cover'}"></p>
@@ -189,6 +216,7 @@ export default {
       firstGroupId: -1,
       firstGroupName: '所有成员',
       showGroupPush: false, // 选择添加成员
+      confirmDeleteGroup: false, // 确认删除群组
       addMemberIdList: [],
       viewObj: {}, // 成员详情
       showCreateGroup: false, // 创建群组
@@ -233,6 +261,7 @@ export default {
             this.formatList(item)
             this.addMemberIdList.push(item.id)
           })
+          this.addMemberIdList = Array.from(new Set(this.addMemberIdList))
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -263,6 +292,7 @@ export default {
       this.showGroupPush = false
       this.showMember = false
       this.showCreateGroup = false
+      this.confirmDeleteGroup = false
     },
     getVerifyStatus() {
       this.$http.get(api.designCompany)
@@ -365,8 +395,6 @@ export default {
           this.$nextTick(() => {
             this.memberList = this.memberList.filter(item => { return id !== item.id })
             this.isShow = -1
-            let index = this.addMemberIdList.indexOf(id)
-            this.addMemberIdList.splice(index, 1)
           })
         } else {
           this.$message.error(res.data.meta.message)
@@ -374,6 +402,7 @@ export default {
       })
     },
     changeType(type) {
+      this.closeCover()
       this.$router.push({name: this.$route.name, query: {type: type}})
     },
     changeMemberLeft() {
@@ -419,6 +448,7 @@ export default {
       this.getMemberList(ele.id)
     },
     groupConfirmPush() {
+      this.closeCover()
       this.showGroupPush = true
       this.isShow = -1
       this.getItemList()
@@ -445,9 +475,22 @@ export default {
       }
     },
     confirmRenameGroup() {
-      this.closeCover()
-      this.showCover = true
-      this.isRename = true
+      if (this.memberList.length) {
+        this.closeCover()
+        this.showCover = true
+        this.isRename = true
+      } else {
+        this.$message.error('没有群组')
+      }
+    },
+    confirmRemoveGroup() {
+      if (this.memberList.length) {
+        this.closeCover()
+        this.showCover = true
+        this.confirmDeleteGroup = true
+      } else {
+        this.$message.error('没有群组')
+      }
     },
     renameGroup() {
       this.$http.put(api.renameGroup, {
@@ -531,9 +574,6 @@ export default {
       this.creatGetList()
       this.changeMemberLeft()
       this.liActive = 0
-    },
-    firstGroupId() {
-      this.addMemberIdList = []
     }
   },
   computed: {
@@ -624,13 +664,14 @@ export default {
     border-bottom: 1px solid #d2d2d2;
     font-size: 14px;
     color: #999;
-    padding: 0 10px;
+    padding-left: 10px;
   }
   .member-item li {
+    font-size: 14px;
     height: 60px;
     line-height: 60px;
     border-bottom: 1px solid #d2d2d2;
-    padding: 0 10px;
+    padding-left: 10px;
   }
   .member-item li:hover {
     background: #f7f7f7
@@ -639,6 +680,9 @@ export default {
     height: 60px;
     display: flex;
     align-items: center
+  }
+  .role-group {
+    justify-content: flex-end
   }
   .info img {
     width: 40px;
@@ -662,29 +706,32 @@ export default {
     position: relative;
     margin-left: 10px;
   }
-  .more-list-group {
-    margin-left: 0;
-  }
   .more-list i {
     display: block;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     background: url(../../../assets/images/member/small-arrow@2x.png) no-repeat center;
     background-size: contain;
-    transform: rotate(-90deg);
+    transform: rotate(0);
     transition: 0.2s all ease;
   }
   .more-list-group i {
     background: url(../../../assets/images/tools/cloud_drive/permission/more@2x.png) no-repeat center;
     width: 30px;
     height: 30px;
-    background-size: 40px;
+    background-size: 24px;
     transform: rotate(0);
   }
-  .member-list-header .more-list-group i {
-    background-position: bottom;
+  .more-list-group .header-icon {
+    background: url(../../../assets/images/tools/cloud_drive/permission/more@2x.png) no-repeat;
+    background-position: center -4px;
+    background-size: 30px;
   }
   .more-list.active i {
+    transform: rotate(180deg)
+  }
+
+  .more-list-group.active i {
     transform: rotate(0)
   }
 
@@ -697,8 +744,8 @@ export default {
     border-radius: 4px;
     position: absolute;
     z-index: 999;
-    top: 39px;
-    left: 0;
+    top: 44px;
+    left: -30px;
     width: 140px;
     background: #fff;
     color: #666;
@@ -732,6 +779,9 @@ export default {
     width: 100vw;
     height: 100vh;
     background: rgba(0,0,0,0.30)
+  }
+  .group-name {
+    color: #ff5a5f
   }
   .dialog-body {
     position: fixed;
@@ -776,23 +826,74 @@ export default {
     align-items: center
   }
   .dialog-pic {
+    border-radius: 4px 4px 0 0;
     height: 240px;
-    background: #ff5a5f;
+  }
+  .blur-cover {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-filter: blur(4px); /* Chrome, Opera */
+    -moz-filter: blur(4px);
+    -ms-filter: blur(4px);
+    filter: blur(4px);
+    filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=4, MakeShadow=false);
+  }
+  
+  .blur-cover::before {
+    content: "";
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    top:0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4)
   }
   .logo-cover {
+    position: relative;
+    z-index: 1;
+    border-radius: 4px 4px 0 0;
     height: 100%;
-    background: rgba(0, 0, 0, .5);
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
   }
   
   .logo-cover .logo-mini {
+    position: relative;
+    z-index: 2;
     border-radius: 50%;
     border: 1px solid #fff;
-    box-shadow: 0 0 0 4px #d2d2d2;
+    box-shadow: 0 0 0 4px rgba(210, 210, 210, 0.5);
     width: 90px;
     height: 90px;
+  }
+  .logo-cover .fx {
+    position: absolute;
+    z-index: 3;
+    right: 10px;
+    top: 10px;
+    color: #fff;
+    cursor: pointer;
+  }
+  .logo-info {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+    padding-top: 15px;
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: center;
+  }
+  
+  .logo-info .name {
+    font-size: 18px;
+    font-weight: bold;
   }
   .dialog-info {
     padding: 20px;
@@ -812,15 +913,36 @@ export default {
     color: #666;
     margin-right: 20px;
   }
-  .buttons .confirm-btn {
-    width: 320px;
+
+  .delete-group {
+    padding: 20px 0 40px;
+  }
+
+  .buttons {
+    display: flex;
+  }
+  
+  .buttons .confirm-btn, .buttons .cancel-btn {
+    width: 118px;
     height: 32px;
     border: 1px solid #d2d2d2;
     border-radius: 4px;
+    background: #fff;
+  }
+  
+  .buttons .confirm-btn {
     color: #fff;
     border-color: #ff5a5f;
     background-color: #ff5a5f;
     cursor: pointer;
+    margin-left: 20px;
+  }
+
+  .buttons button.cancel-btn:hover {
+    background: #f5f5f5
+  }
+  .buttons button.cancel-btn:active {
+    background: #ccc
   }
   .buttons .confirm-btn:hover {
     border-color: #d23c46;
