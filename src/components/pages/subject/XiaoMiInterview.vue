@@ -92,7 +92,7 @@ export default {
         {
           id: 5,
           name: '梁于阳',
-          company: '妙妙测科技',
+          company: '秒秒测科技',
           url: 'https://www.d3ingo.com/article/show/127'
         }
       ]
