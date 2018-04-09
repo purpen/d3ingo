@@ -176,7 +176,7 @@
           <img v-lazy="require('assets/images/home/2logo.jpg')" />
           <img v-lazy="require('assets/images/home/3logo.jpg')" />
           <img v-lazy="require('assets/images/home/4logo.jpg')" />
-          <img v-lazy="require('assets/images/home/5logo.png')" />
+          <img v-lazy="require('assets/images/home/5logo.jpg')" />
           <img v-lazy="require('assets/images/home/6logo.jpg')" />
           <img v-lazy="require('assets/images/home/7logo.jpg')" />
         </span>
