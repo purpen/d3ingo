@@ -150,16 +150,16 @@
             </span>
           </p>
         </div>
-        <div class="view-content" @click="closeView">
+        <div class="view-content" @click.self="closeView">
           <div class="image-preview" v-if="showType === 1">
             <swiper :options="swiperOption" :not-next-tick="notNextTick" ref="mySwiper">
               <swiper-slide v-for="(ele, index) in imgList" :key="index">
                 <img :src="ele.url_file" :alt="ele.name">
               </swiper-slide>
-              <div @click.stop.prevent="switchPrevPic" class="swiper-button-prev" slot="button-prev">
+              <div @click="switchPrevPic" class="swiper-button-prev" slot="button-prev">
                 <i class="el-icon-arrow-left"></i>
               </div>
-              <div @click.stop.prevent="switchNextPic" class="swiper-button-next" slot="button-next">
+              <div @click="switchNextPic" class="swiper-button-next" slot="button-next">
                 <i class="el-icon-arrow-right"></i>
               </div>
             </swiper>

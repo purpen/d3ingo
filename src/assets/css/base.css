@@ -808,7 +808,7 @@ button.is-custom.is-outlined.is-loading:after {
   position: absolute;
   top: 60px;
   left: 0;
-  width: 200px;
+  width: 140;
   background: #fff;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .12),
   0 0 6px 0 rgba(0, 0, 0, .04);
@@ -817,8 +817,8 @@ button.is-custom.is-outlined.is-loading:after {
   border-radius: 4px;
 }
 
-.nav-item .view-msg-min {
-  width: 140px;
+.nav-item .view-msg-plus {
+  width: 200px;
 }
 
 .nav-item .view-msg .news, .nav-item .view-msg .notice {
