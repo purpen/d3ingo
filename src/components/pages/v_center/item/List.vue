@@ -1,10 +1,10 @@
 <template>
-  <div class="container blank40">
-    <el-row :gutter="20" class="anli-elrow">
+  <div class="blank20">
+    <el-row>
       <v-menu currentName="item"></v-menu>
 
-      <el-col :span="isMob ? 24 : 20">
-        <div class="right-content">
+      <el-col :span="isMob ? 24 : 20" :offset="!isMob? 4 : 0">
+        <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
           <div class="content-item-box" v-loading.body="isLoading">
             <div class="pub">

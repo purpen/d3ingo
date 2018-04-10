@@ -5,9 +5,7 @@
         <hgroup>
           <el-menu class="el-menu-header nav-left" :default-active="menuactive" mode="horizontal" router>
             <!--<img src="../../assets/images/logo.png" width="120" alt="太火鸟">-->
-            <div class="el-menu-item logo">
-              <span class="logo">太火鸟 SaaS</span>
-            </div>
+            <router-link :to="{name: 'home'}" class="el-menu-item  logo">太火鸟 SaaS</router-link>
             <el-menu-item index="home" :route="menu.home">首页</el-menu-item>
             <el-menu-item index="server" :route="menu.server">服务</el-menu-item>
             <el-menu-item index="article" :route="menu.article">铟果说</el-menu-item>
@@ -26,7 +24,7 @@
                   <span v-if="messageCount.quantity">{{ messageCount.quantity }}</span>
                 </i>
               </span>
-              <div :class="['view-msg',{'view-msg-min': !msg.message && !msg.notice}]">
+              <div :class="['view-msg',{'view-msg-plus': msg.message || msg.notice}]">
               <!-- <div :class="['view-msg']"> -->
                 <router-link :to="{name: 'vcenterMessageList'}" class="news">
                   <i class="fx-4 fx-icon-notice"></i><i class="fx-4 fx-icon-news-hover"></i>
@@ -330,32 +328,16 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  @keyframes slow {
-    0% {
-      transform: translateY(-60px);
-    }
-    100% {
-      transform: translateY(0px);
-    }
-  }
-
-  @keyframes slowShow {
-    0% {
-      height: 0;
-    }
-    100% {
-      height: 81.5px;
-    }
-  }
-
   .nav-right .el-menu-header {
     min-width: 120px;
   }
 
   #header-layout {
-    position: relative;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
     z-index: 999;
-    animation: slow 0.4s;
   }
 
   .Flogin {
@@ -452,10 +434,6 @@
     height: 100vh;
     background: #0006
   } */
-
-  .view-msg {
-    animation: slowShow 0.3s;
-  }
 
   .container {
     overflow:visible

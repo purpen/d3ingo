@@ -486,7 +486,9 @@ routes = [
     name: 'vcenterControl',
     meta: {
       title: '控制面板',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/common/Control')
   },

@@ -1,111 +1,122 @@
 <template>
-  <el-col :span="isMob ? 24 : 4">
-    <section :class="['menuHide', isMob ? 'MmenuHide' : '']">
-      <div v-if="isCompany">
-        <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist" v-if="isChild">
-          <a @click="alick" :to="'/vcenter/child_control'"
-             :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
-            控制面板
-          </a>
-          <a @click="alick" :to="'/vcenter/cloud_drive/list/all'"
-             :class="['item', 'cloud', {'is-active': currentName === 'cloud_drive'}]">
-            项目云盘
-          </a>
-          <a @click="alick" :to="'/user/user_management'"
-             :class="['item', 'user-management', {'is-active': currentName === 'member'}]" v-if="isCompanyAdmin">
-            成员管理
-          </a>
-          <a @click="alick" :to="'/vcenter/account/base'"
-             :class="['item', 'account-management', {'is-active': currentName === 'profile'}]">
-            账号设置
-          </a>
-          <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" v-if="isMob">
-            查看公司主页
-          </a>
-        </div>
-
-        <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist" v-else>
-          <div class="computer-btn" v-if="isCompany && !isMob" @click="redirectCompany">
-            查看公司主页
+  <section>
+    <header class="menu-header">
+      <div class="menu-left">
+        <span class="menu-icon"></span>
+        <p class="home-icon"><router-link :to="{name: 'home'}" class="logo-icon"></router-link></p>
+      </div>
+      <div class="menu-right">
+        <span class="avatar"></span>
+      </div>
+    </header>
+    <el-col :span="isMob ? 24 : 4">
+      <section :class="['menuHide', isMob ? 'MmenuHide' : '']">
+        <div v-if="isCompany">
+          <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist" v-if="isChild">
+            <a @click="alick" :to="'/vcenter/child_control'"
+              :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
+              控制面板
+            </a>
+            <a @click="alick" :to="'/vcenter/cloud_drive/list/all'"
+              :class="['item', 'cloud', {'is-active': currentName === 'cloud_drive'}]">
+              项目云盘
+            </a>
+            <a @click="alick" :to="'/user/user_management'"
+              :class="['item', 'user-management', {'is-active': currentName === 'member'}]" v-if="isCompanyAdmin">
+              成员管理
+            </a>
+            <a @click="alick" :to="'/vcenter/account/base'"
+              :class="['item', 'account-management', {'is-active': currentName === 'profile'}]">
+              账号设置
+            </a>
+            <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" v-if="isMob">
+              查看公司主页
+            </a>
           </div>
-          <a @click="alick" :to="'/vcenter/control'"
-             :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
-            控制面板
-          </a>
-          <a @click="alick" :to="'/vcenter/message'"
-             :class="['item', 'message', {'is-active': currentName === 'message'}]">
-            消息
-          </a>
-          <a @click="alick" :to="'/vcenter/citem/list'"
-             :class="['item', 'order', {'is-active': currentName === 'c_item'}]">
-            项目订单
-          </a>
-          <a @click="alick" :to="'/vcenter/project_management'"
-             :class="['item', 'management', {'is-active': currentName === 'project_management'}]">
-            项目管理
-          </a>
-          <a @click="alick" :to="'/vcenter/cloud_drive/list/all'"
-             :class="['item', 'cloud', {'is-active': currentName === 'cloud_drive'}]">
-            项目云盘
-          </a>
-          <a @click="alick" :to="'/vcenter/design_case'"
-             :class="['item', 'case', {'is-active': currentName === 'design_case'}]">
-            作品案例
-          </a>
-          <a @click="alick" :to="'/vcenter/match_case'"
-             :class="['item', 'match-case', {'is-active': currentName === 'match_case'}]">
-            提交作品
-          </a>
-          <a @click="alick" :to="'/vcenter/wallet/list'"
-             :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
-            我的钱包
-          </a>
-          <a @click="alick" :to="'/vcenter/company/base'"
-             :class="['item', 'company', {'is-active': currentName === 'company'}]">
-            公司设置
-          </a>
-          <a @click="alick" :to="'/vcenter/account/base'"
-             :class="['item', 'account-management', {'is-active': currentName === 'profile'}]">
-            账号设置
-          </a>
-          <a @click="alick" :to="'/user/user_management'"
-             :class="['item','user-management', {'is-active': currentName === 'member'}]">
-            成员管理
-          </a>
-          <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" v-if="isMob">
-            查看公司主页
-          </a>
+
+          <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist" v-else>
+            <div class="computer-btn" v-if="isCompany && !isMob" @click="redirectCompany">
+              查看公司主页
+            </div>
+            <a @click="alick" :to="'/vcenter/control'"
+              :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
+              控制面板
+            </a>
+            <a @click="alick" :to="'/vcenter/message'"
+              :class="['item', 'message', {'is-active': currentName === 'message'}]">
+              消息
+            </a>
+            <a @click="alick" :to="'/vcenter/citem/list'"
+              :class="['item', 'order', {'is-active': currentName === 'c_item'}]">
+              项目订单
+            </a>
+            <a @click="alick" :to="'/vcenter/project_management'"
+              :class="['item', 'management', {'is-active': currentName === 'project_management'}]">
+              项目管理
+            </a>
+            <a @click="alick" :to="'/vcenter/cloud_drive/list/all'"
+              :class="['item', 'cloud', {'is-active': currentName === 'cloud_drive'}]">
+              项目云盘
+            </a>
+            <a @click="alick" :to="'/vcenter/design_case'"
+              :class="['item', 'case', {'is-active': currentName === 'design_case'}]">
+              作品案例
+            </a>
+            <a @click="alick" :to="'/vcenter/match_case'"
+              :class="['item', 'match-case', {'is-active': currentName === 'match_case'}]">
+              提交作品
+            </a>
+            <a @click="alick" :to="'/vcenter/wallet/list'"
+              :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
+              我的钱包
+            </a>
+            <a @click="alick" :to="'/vcenter/company/base'"
+              :class="['item', 'company', {'is-active': currentName === 'company'}]">
+              公司设置
+            </a>
+            <a @click="alick" :to="'/vcenter/account/base'"
+              :class="['item', 'account-management', {'is-active': currentName === 'profile'}]">
+              账号设置
+            </a>
+            <a @click="alick" :to="'/user/user_management'"
+              :class="['item','user-management', {'is-active': currentName === 'member'}]">
+              成员管理
+            </a>
+            <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" v-if="isMob">
+              查看公司主页
+            </a>
+          </div>
         </div>
-      </div>
-      <div v-else>
-        <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist">
-          <a @click="alick" :to="'/vcenter/control'" :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
-            控制面板
-          </a>
-          <a @click="alick" :to="'/vcenter/message'"
-             :class="['item', 'message', {'is-active': currentName === 'message'}]">
-            消息
-          </a>
-          <a @click="alick" :to="'/vcenter/item/list'"
-             :class="['item', 'wallet', {'is-active': currentName === 'item'}]">
-            我的项目
-          </a>
-          <a @click="alick" :to="'/vcenter/wallet/list'"
-             :class="['item', {'is-active': currentName === 'wallet'}]">
-            我的钱包
-          </a>
-          <a @click="alick" :to="'/vcenter/d_company/base'"
-             :class="['item', 'company', {'is-active': currentName === 'company'}]">
-            公司设置
-          </a>
-          <a @click="alick" :to="'/vcenter/account/modify_pwd'"
-             :class="['item', 'account-management', {'is-active': currentName === 'profile'}]">
-            账号设置
-          </a>
+        <div v-else>
+          <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist">
+            <a @click="alick" :to="'/vcenter/control'" :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
+              控制面板
+            </a>
+            <a @click="alick" :to="'/vcenter/message'"
+              :class="['item', 'message', {'is-active': currentName === 'message'}]">
+              消息
+            </a>
+            <a @click="alick" :to="'/vcenter/item/list'"
+              :class="['item', 'wallet', {'is-active': currentName === 'item'}]">
+              我的项目
+            </a>
+            <a @click="alick" :to="'/vcenter/wallet/list'"
+              :class="['item', {'is-active': currentName === 'wallet'}]">
+              我的钱包
+            </a>
+            <a @click="alick" :to="'/vcenter/d_company/base'"
+              :class="['item', 'company', {'is-active': currentName === 'company'}]">
+              公司设置
+            </a>
+            <a @click="alick" :to="'/vcenter/account/modify_pwd'"
+              :class="['item', 'account-management', {'is-active': currentName === 'profile'}]">
+              账号设置
+            </a>
+          </div>
         </div>
-      </div>
-    </section>
-  </el-col>
+      </section>
+    </el-col>
+  </section>
 </template>
 
 <script>
@@ -165,6 +176,9 @@
           return true
         }
         return false
+      },
+      hideHeader() {
+        return this.$store.state.event.hideHeader
       }
     },
     mounted() {
@@ -178,6 +192,7 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .menuHide {
+    /* min-width: 160px; */
     background: #1B1D24;
   }
   .menu-list .item {
@@ -229,17 +244,87 @@
     background-color: #2E2F34;
     color: #fff;
   }
+  .menu-header {
+    background: #fff;
+    position: fixed;
+    z-index: 9;
+    display: flex;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.10);
+  }
+  .menu-left {
+    flex: 1;
+    display: flex;
+    align-items: center
+  }
+  .menu-right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 30px;
+  }
+  .menu-icon {
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    background: url(../../../assets/images/v_center_menu/SideBar.png) no-repeat center #fff;
+    background-size: 24px;
+  }
+  .menu-icon:hover, .menu-icon:active {
+    background: url(../../../assets/images/v_center_menu/SideBar.png) no-repeat center #f7f7f7;
+    background-size: 24px;
+  }
+  .home-icon {
+    padding:0 20px;
+    display: flex;
+    align-items: center;
+  }
+  .logo-icon {
+    width: 30px;
+    height: 50px;
+    background: url(../../../assets/images/logo.png) no-repeat 0 5px;
+    background-size: contain;
+  }
+  .avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #f7f7f7;
+  }
   @media screen and (min-width: 768px) {
     .menuHide {
       position: fixed;
       left: 0;
       top: 60px;
+      width: inherit;
+      max-width: 240px;
       height: calc(100% - 60px);
     }
     .menu-list {
-      max-width: 240px;
-      min-width: 160px;
-      width: 100%
+      width: inherit;
+    }
+  }
+  @media screen and (max-width: 767px) {
+    .menuHide {
+      background: #fff;
+    }
+    .menu-list .item {
+      color: #666;
+    }
+    .menu-list .item:hover {
+      color: #222;
+      background: #fff;
+    }
+
+    .item.is-active {
+      background: #fff;
+      color: #222;
+      font-weight: bold;
+      border-color: #fff
     }
   }
 </style>

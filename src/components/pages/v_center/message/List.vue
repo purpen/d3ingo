@@ -1,13 +1,11 @@
 <template>
-  <div class="container blank40 min-height350">
-    <el-row :gutter="20" class="anli-elrow">
+  <div class="blank20 min-height350">
+    <el-row>
       <v-menu currentName="message"></v-menu>
-
-      <el-col :span="isMob ? 24 : 20" v-loading="isLoading">
-        <div class="right-content">
+      <el-col :span="isMob ? 24 : 20" :offset="!isMob? 4 : 0">
+        <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
-          <div class="content-box">
-
+          <div class="content-box" v-loading="isLoading">
             <div class="item" v-for="(d, index) in itemList" @click="showDes(d, index)" :key="index">
               <div class="banner2">
                 <p class="read" v-if="d.status === 0"><i class="alert"></i></p>
@@ -217,7 +215,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .container {
+  .vcenter-container {
     overflow: hidden;
   }
 

@@ -27,7 +27,9 @@ module.exports = [
     name: 'projectManagementList',
     meta: {
       title: '项目列表',
-      requireAuth: false
+      requireAuth: false,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/project_management/List')
   },

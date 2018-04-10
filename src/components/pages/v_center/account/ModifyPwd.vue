@@ -1,15 +1,14 @@
 <template>
-  <div class="container blank40">
-    <el-row :gutter="20">
+  <div class="blank20">
+    <el-row>
       <v-menu currentName="profile" :class="[isMob ? 'v-menu' : '']"></v-menu>
-
-      <el-col :span="isMob ? 24 : 20">
-        <div class="right-content modify-content">
+        <el-col :span="isMob ? 24 : 20" :offset="!isMob? 4 : 0">
+        <div class="right-content modify-content vcenter-container">
           <v-menu-sub></v-menu-sub>
           <v-menu-sub v-if="false" currentSubName="identification"></v-menu-sub>
           <div :class="['content-box' , isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
             <div :class="['form-title', isMob ? 'form-title-m' : '']">
-              <span>修改密码</span>
+              <span v-if="!isMob">修改密码</span>
             </div>
             <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
 
@@ -179,5 +178,8 @@
 
   .el-form-item {
     margin-bottom: 0;
+  }
+  .right-content .content-box-m {
+    padding: 0;
   }
 </style>

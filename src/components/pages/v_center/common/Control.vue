@@ -1,8 +1,8 @@
 <template>
-  <el-row :gutter="20" class="control min-height350">
+  <el-row class="control blank20 min-height350">
     <v-menu currentName="control"></v-menu>
-    <el-col :span="20" :offset="4" v-loading.body="isLoading">
-      <div class="container blank40">
+    <el-col :span="!isMob? 20 : 24" :offset="!isMob? 4 : 0" v-loading.body="isLoading">
+      <div class="vcenter-container">
         <div :class="['content-item-box', isMob ? 'content-item-box-m' : '']">
           <div class="item ing" v-for="(d, index) in itemIngList" :key="index">
             <div class="banner">
@@ -15,7 +15,7 @@
                 <p class="c-title-pro">{{ d.item.name }}</p>
                 <p class="progress-line">
                   <el-progress :text-inside="true" :show-text="false" :stroke-width="18" :percentage="d.item.progress"
-                                status="exception"></el-progress>
+                  status="exception"></el-progress>
                 </p>
                 <p class="prefect">您的项目需求填写已经完成了{{ d.item.progress }}%。</p>
                 <p>

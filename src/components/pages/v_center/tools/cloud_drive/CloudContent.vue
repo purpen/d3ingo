@@ -504,9 +504,6 @@ export default {
 }
 </script>
 <style scoped>
-  .cloud-content {
-    min-height: 610px;
-  }
   section .item {
     height: 70px;
     line-height: 70px;

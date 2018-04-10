@@ -1,11 +1,11 @@
 <template>
-  <div class="container">
-    <div v-if="!isMob" class="blank20"></div>
-    <el-row :gutter="24">
+  <div class="design-case-edit blank20">
+    <div v-if="!isMob"></div>
+    <el-row>
       <v-menu currentName="design_case"></v-menu>
 
-      <el-col :span="isMob ? 24 : 20">
-        <div class="right-content">
+      <el-col :span="isMob ? 24 : 20" :offset="!isMob? 4 : 0">
+        <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
           <div class="content-box">
             <div class="form-title">
@@ -804,8 +804,7 @@
     .right-content .content-box {
       border: none;
       border-top: 1px solid #D9D9D9;
-
-      }
-
+      padding: 0;
     }
+  }
 </style>

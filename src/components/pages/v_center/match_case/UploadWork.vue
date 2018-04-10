@@ -1,96 +1,110 @@
 <template>
-  <div class="uploads">
-    <div class="upload">
-      <h2>上传作品</h2>
-      <p class="match-type">类型</p>
-      <el-radio-group class="match" v-model="match" fill="#FF5A5F">
-        <el-radio-button label="羽泉的礼物"></el-radio-button>
-        <el-radio-button label="敬请期待.." disabled></el-radio-button>
-      </el-radio-group>
+  <div class="design-case-edit blank20">
+    <div v-if="!isMob"></div>
+    <el-row>
+      <v-menu currentName="match_case"></v-menu>
 
-      <el-form label-position="top" :model="form" :rules="rules" class="uploadform" ref="ruleForm">
+      <el-col :span="isMob ? 24 : 20" :offset="!isMob? 4 : 0">
+        <div class="right-content vcenter-container">
+          <v-menu-sub></v-menu-sub>
+          <div class="uploads">
+            <div class="upload">
+              <h2>上传作品</h2>
+              <p class="match-type">类型</p>
+              <el-radio-group class="match" v-model="match" fill="#FF5A5F">
+                <el-radio-button label="羽泉的礼物"></el-radio-button>
+                <el-radio-button label="敬请期待.." disabled></el-radio-button>
+              </el-radio-group>
 
-        <el-form-item label="作品标题" prop="title" class="color222">
-          <el-input v-model="form.title" class="title"></el-input>
-        </el-form-item>
+              <el-form label-position="top" :model="form" :rules="rules" class="uploadform" ref="ruleForm">
 
-        <el-form-item label="作品介绍" prop="content" class="color222">
-          <el-input type="textarea" :rows="rows" v-model="form.content" class="content"></el-input>
-        </el-form-item>
+                <el-form-item label="作品标题" prop="title" class="color222">
+                  <el-input v-model="form.title" class="title"></el-input>
+                </el-form-item>
 
-        <p class="upload-pic">上传图片</p>
-        <el-upload
-          class="upload-demo"
-          :action="uploadUrl"
-          :on-remove="handleRemove"
-          :file-list="fileList"
-          :data="uploadParam"
-          :on-progress="uploadProgress"
-          :on-error="uploadError"
-          :on-success="uploadSuccess"
-          :before-upload="beforeUpload"
-          :show-file-list="false"
-          list-type="picture-card">
-          <i class="el-icon-plus"></i>
-          <div slot="tip" class="el-upload__tip" v-html="uploadMsg"></div>
-        </el-upload>
-        <el-dialog size="tiny">
-          <img width="100%" alt="">
-        </el-dialog>
+                <el-form-item label="作品介绍" prop="content" class="color222">
+                  <el-input type="textarea" :rows="rows" v-model="form.content" class="content"></el-input>
+                </el-form-item>
 
-        <div class="file-list">
-          <el-row :gutter="10">
-            <el-col :span="isMob ? 24 : 8" v-for="(d, index) in fileList" :key="index">
-              <el-card :body-style="{ padding: '0px' }" class="item">
-                <div class="image-box">
-                  <img v-lazy="d.url">
+                <p class="upload-pic">上传图片</p>
+                <el-upload
+                  class="upload-demo"
+                  :action="uploadUrl"
+                  :on-remove="handleRemove"
+                  :file-list="fileList"
+                  :data="uploadParam"
+                  :on-progress="uploadProgress"
+                  :on-error="uploadError"
+                  :on-success="uploadSuccess"
+                  :before-upload="beforeUpload"
+                  :show-file-list="false"
+                  list-type="picture-card">
+                  <i class="el-icon-plus"></i>
+                  <div slot="tip" class="el-upload__tip" v-html="uploadMsg"></div>
+                </el-upload>
+                <el-dialog size="tiny">
+                  <img width="100%" alt="">
+                </el-dialog>
+
+                <div class="file-list">
+                  <el-row :gutter="10">
+                    <el-col :span="isMob ? 24 : 8" v-for="(d, index) in fileList" :key="index">
+                      <el-card :body-style="{ padding: '0px' }" class="item">
+                        <div class="image-box">
+                          <img v-lazy="d.url">
+                        </div>
+                        <div class="content">
+                          <p>{{ d.name }}</p>
+                          <div class="summary-edit" v-if="d.edit">
+                            <textarea v-model="d.summary"></textarea>
+                          </div>
+                          <div class="summary" v-else>
+                            <p v-if="d.summary">{{ d.summary }}</p>
+                            <p class="image-no-summary" v-else>暂无描述信息</p>
+                          </div>
+                          <div class="opt" v-if="d.edit">
+                            <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"
+                              @click="saveAssetSummary">保存</a>
+                          </div>
+                          <div class="opt" v-else>
+                            <el-tooltip class="item" effect="dark" content="删除图片" placement="top">
+                              <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"
+                                @click="delAsset"><i class="fa fa-times" aria-hidden="true"></i></a>
+                            </el-tooltip>
+                            <el-tooltip class="item" effect="dark" content="编辑文字" placement="top">
+                              <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"
+                                @click="editAssetBtn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                            </el-tooltip>
+                            <el-tooltip class="item" effect="dark" content="设为封面" placement="top">
+                              <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"
+                                @click="setCoverBtn"><i
+                                :class="{'fa': true, 'fa-flag': true, 'is-active': parseInt(coverId) === d.response.asset_id ? true : false }"
+                                aria-hidden="true"></i></a>
+                            </el-tooltip>
+                          </div>
+                        </div>
+                      </el-card>
+                    </el-col>
+                  </el-row>
                 </div>
-                <div class="content">
-                  <p>{{ d.name }}</p>
-                  <div class="summary-edit" v-if="d.edit">
-                    <textarea v-model="d.summary"></textarea>
-                  </div>
-                  <div class="summary" v-else>
-                    <p v-if="d.summary">{{ d.summary }}</p>
-                    <p class="image-no-summary" v-else>暂无描述信息</p>
-                  </div>
-                  <div class="opt" v-if="d.edit">
-                    <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"
-                       @click="saveAssetSummary">保存</a>
-                  </div>
-                  <div class="opt" v-else>
-                    <el-tooltip class="item" effect="dark" content="删除图片" placement="top">
-                      <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"
-                         @click="delAsset"><i class="fa fa-times" aria-hidden="true"></i></a>
-                    </el-tooltip>
-                    <el-tooltip class="item" effect="dark" content="编辑文字" placement="top">
-                      <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"
-                         @click="editAssetBtn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                    </el-tooltip>
-                    <el-tooltip class="item" effect="dark" content="设为封面" placement="top">
-                      <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"
-                         @click="setCoverBtn"><i
-                        :class="{'fa': true, 'fa-flag': true, 'is-active': parseInt(coverId) === d.response.asset_id ? true : false }"
-                        aria-hidden="true"></i></a>
-                    </el-tooltip>
-                  </div>
-                </div>
-              </el-card>
-            </el-col>
-          </el-row>
+              </el-form>
+            </div>
+            <div class="buttons clearfix">
+              <el-button type="primary" class="fr submit" @click="submit('ruleForm')" :loading="isLoadingBtn">发布</el-button>
+              <el-button class="fr cancel" @click="returnGifts">取消</el-button>
+            </div>
+          </div>
         </div>
-      </el-form>
-    </div>
-    <div class="buttons clearfix">
-      <el-button type="primary" class="fr submit" @click="submit('ruleForm')" :loading="isLoadingBtn">发布</el-button>
-      <el-button class="fr cancel" @click="returnGifts">取消</el-button>
-    </div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 <script>
   import api from '@/api/api'
   import '@/assets/js/format'
   import '@/assets/js/date_format'
+  import vMenu from '@/components/pages/v_center/Menu'
+  import vMenuSub from '@/components/pages/v_center/match_case/MenuSub'
 
   export default {
     name: 'uploadWork',
@@ -391,16 +405,18 @@
             break
         }
       }
+    },
+    components: {
+      vMenu,
+      vMenuSub
     }
   }
 </script>
 <style scoped>
   .upload {
-    max-width: 1180px;
-    margin: 30px auto 0;
     background: #FFFFFF;
     border: 1px solid #D2D2D2;
-    padding: 0 15px;
+    padding: 0 30px;
   }
 
   h2 {
@@ -412,7 +428,6 @@
 
   .match, .match-type {
     display:block;
-    max-width: 800px;
     margin: 0 auto;
     margin-bottom: 30px;
   }
@@ -423,7 +438,6 @@
   }
 
   .uploadform {
-    max-width: 800px;
     margin: 0 auto;
   }
 
@@ -439,7 +453,7 @@
   .buttons {
     max-width: 1180px;
     margin: 0 auto;
-    padding: 10px 15px;
+    padding: 10px 30px;
     border: 1px solid #D2D2D2;
     border-top: none;
   }
@@ -483,6 +497,7 @@
   @media screen and (max-width: 767px) {
     .upload {
       margin-top: 0;
+      padding: 0;
     }
 
     .upload h2{
