@@ -193,7 +193,7 @@
 <style scoped>
   .menuHide {
     /* min-width: 160px; */
-    background: #1B1D24;
+    background: #222;
   }
   .menu-list .item {
     padding: 0;
@@ -210,11 +210,11 @@
 
   .menu-list .item:hover {
     color: #fff;
-    background: #2E2F34;
+    background: #333;
   }
 
   .item.is-active {
-    background: #2E2F34;
+    background: #333;
     color: #fff;
     font-weight: bold;
     border-color: #ff5a5f

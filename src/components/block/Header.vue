@@ -5,7 +5,7 @@
         <hgroup>
           <el-menu class="el-menu-header nav-left" :default-active="menuactive" mode="horizontal" router>
             <!--<img src="../../assets/images/logo.png" width="120" alt="太火鸟">-->
-            <router-link :to="{name: 'home'}" class="el-menu-item  logo">太火鸟 SaaS</router-link>
+            <router-link :to="{name: 'home'}" class="el-menu-item logo">太火鸟 SaaS</router-link>
             <el-menu-item index="home" :route="menu.home">首页</el-menu-item>
             <el-menu-item index="server" :route="menu.server">服务</el-menu-item>
             <el-menu-item index="article" :route="menu.article">铟果说</el-menu-item>
