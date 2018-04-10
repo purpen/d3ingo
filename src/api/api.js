@@ -297,6 +297,23 @@ export default {
   inviteKey: '/urlKey', // 生成邀请字符串
   inviteValue: '/urlValue', // 解析邀请字符串
 
+  /**
+   * 任务接口
+   */
+  task: '/tasks', // POST 创建 | GET 列表
+  taskId: 'tasks/{0}', // PUT 更新 | DELETE 删除 | GET 详情
+  childTaskId: '/tasks/childDelete/{0}', // DELETE 子任务删除
+  tasksExecuteUser: '/tasks/executeUser', // POST 领取任务
+  taskStage: '/tasks/is/stage', // PUT 任务是否完成操作
+
+  // 任务成员
+  taskUsers: '/taskUsers',  // GET 列表 | POST 创建
+  taskUsersId: '',
+
+  // 标签
+  itemTags: '/tags',  // POST 创建 | GET 列表
+  itemTagsId: '/tags/{0}',  // GET 详情 | PUT 更新 | DELETE 删除
+
   // test
   test: '/' // End
 }
