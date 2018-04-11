@@ -476,7 +476,9 @@ routes = [
     name: 'userManagement',
     meta: {
       title: '',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/user/MemberManagement')
   },

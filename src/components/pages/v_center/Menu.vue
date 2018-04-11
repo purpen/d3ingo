@@ -10,7 +10,7 @@
       </div>
     </header>
     <el-col v-if="leftWidth === 2" :span="isMob ? 24 : 2">
-      <section :class="['menuHide', {'MmenuHide': isMob, 'menuHide-min': leftWidth === 2}]">
+      <section :class="['menuHide', {'MmenuHide': isMob, 'menuHide-mini': leftWidth === 2}]">
         <div v-if="isCompany">
           <div :class="['menu-list', 'clearfix', {'Mmenulist': isMob, }]" ref="Mmenulist" v-if="isChild">
             <el-tooltip class="item" :effect="DarkorLight" content="控制面板" placement="right">
@@ -165,7 +165,7 @@
       </section>
     </el-col>
     <el-col v-if="leftWidth === 4" :span="isMob ? 24 : 4">
-      <section :class="['menuHide', {'MmenuHide': isMob, 'menuHide-min': leftWidth === 2}]">
+      <section :class="['menuHide', {'MmenuHide': isMob, 'menuHide-mini': leftWidth === 2}]">
         <div v-if="isCompany">
           <div :class="['menu-list', 'clearfix', {'Mmenulist': isMob, }]" ref="Mmenulist" v-if="isChild">
               <a @click="alick" :to="'/vcenter/child_control'"
@@ -521,10 +521,10 @@
       width: inherit;
     }
 
-    .menuHide-min {
+    .menuHide-mini {
       max-width: 60px;
     }    
-    .menuHide-min .menu-list .item {
+    .menuHide-mini .menu-list .item {
       text-indent: -999rem;
     }
   }

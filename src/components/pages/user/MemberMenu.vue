@@ -82,25 +82,29 @@ export default {
 <style scoped>
   .member-menu {
     font-size: 14px;
-    color: #222;
+    color: rgba(255, 255, 255, 0.5);
+    background: #333;
+    max-width: 240px;
   }
   .seach-block {
     position: relative;
+    padding: 10px;
   }
   .search {
     width: 100%;
     height: 40px;
-    border: 1px solid #d2d2d2;
+    border: none;
     border-radius: 4px;
     padding: 0 8px 0 34px;
     font-size: 14px;
-    color: #222;
+    color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.1);
   }
   
   .search-icon {
     position: absolute;
-    top: 10px;
-    left: 8px;
+    top: 20px;
+    left: 18px;
     width: 20px;
     height: 20px;
     background: url(../.../../../../assets/images/tools/cloud_drive/search@2x.png) no-repeat center;
@@ -109,8 +113,8 @@ export default {
   
   .close-icon-solid {
     position: absolute;
-    top: 12px;
-    right: 8px;
+    top: 22px;
+    right: 18px;
   }
   .menu-header {
     height: 48px;
@@ -119,13 +123,12 @@ export default {
     align-items: center;
     padding: 0 50px;
     color: #666;
-    border-bottom: 1px solid #d2d2d2;
   }
   .menu-header span {
     cursor: pointer
   }
   .menu-header span:hover {
-    color: #222
+    color: #fff
   }
   .menu-list {
     line-height: 40px;
@@ -136,17 +139,22 @@ export default {
   }
   
   .menu-list li:hover {
-    background: #f7f7f7
+    color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.1);
   }
   .active {
-    color: #ff5a5f
+    color: #fff
   }
   .menu-header span.active:hover {
-    color: #ff5a5f
+    color: #fff
   }
   .li-active {
-    color: #ff5a5f;
-    background: #f7f7f7
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  .menu-list .li-active:hover {
+    color: #fff;
   }
   .new-group {
     padding-left: 40px;

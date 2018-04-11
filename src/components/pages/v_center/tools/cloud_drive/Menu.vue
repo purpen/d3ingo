@@ -116,6 +116,7 @@
     transition: 0.2s all ease;
     max-width: 240px;
     background: #333;
+    height: calc(100vh - 60px);
   }
   h3 {
     color: #666;
@@ -223,12 +224,12 @@
     .menu {
       position: absolute;
       width: 100%;
-      height: calc(100vh - 60px);
       top: 0;
       left: 240px;
     }
     .menu-mini {
       left: 60px;
+      transition: 0.2s all ease;
     }
   }
 </style>

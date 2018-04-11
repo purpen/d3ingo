@@ -1682,8 +1682,14 @@ export default {
       opacity: 1;
     }
   }
+  .cloud-content {
+    transition: 0.2s all ease;
+  }
   .slide-mini {
     padding-left: 60px;
+  }
+  .content {
+    transition: 0.2s all ease;
   }
   .content-head {
     color: #999;
@@ -2475,7 +2481,6 @@ export default {
 
   @media screen and (min-width: 1440px) {
     .content {
-      transition: 0.2s all ease;
       position: absolute;
       width: calc(100% - 480px);
       top: 0;
@@ -2486,6 +2491,7 @@ export default {
       width: calc(100% - 300px);
       top: 0;
       left: 300px;
+      transition: 0.2s all ease;
     }
   }
 </style>
