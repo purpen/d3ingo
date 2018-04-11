@@ -1,5 +1,5 @@
 <template>
-  <el-row class="control blank20 min-height350">
+  <el-row class="blank20 min-height350">
     <v-menu currentName="control"></v-menu>
     <el-col :span="!isMob? rightWidth : 24" :offset="!isMob? leftWidth : 0" v-loading.body="isLoading">
       <div class="vcenter-container">

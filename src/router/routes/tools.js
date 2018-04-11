@@ -8,7 +8,9 @@ module.exports = [
     name: 'vcenterCloudDriveList',
     meta: {
       title: '铟果云盘',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/tools/cloud_drive/List')
   },
