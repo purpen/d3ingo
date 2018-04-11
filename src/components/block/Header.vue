@@ -26,7 +26,7 @@
                   <span v-if="messageCount.quantity">{{ messageCount.quantity }}</span>
                 </i>
               </span>
-              <div :class="['view-msg',{'view-msg-min': !msg.message && !msg.notice}]">
+              <div :class="['view-msg',{'view-msg-plus': msg.message || msg.notice}]">
               <!-- <div :class="['view-msg']"> -->
                 <router-link :to="{name: 'vcenterMessageList'}" class="news">
                   <i class="fx-4 fx-icon-notice"></i><i class="fx-4 fx-icon-news-hover"></i>

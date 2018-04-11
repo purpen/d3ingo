@@ -131,7 +131,7 @@
                 'audio': /audio/.test(ele.raw.type),
                 'compress': /(?:zip|rar|7z)/.test(ele.raw.type),
                 'document': /(?:text|msword)/.test(ele.raw.type),
-                'image': /image/.test(ele.raw.type),
+                'image': /image\/(?:jpg|jpeg|png|gif)/.test(ele.raw.type),
                 'powerpoint': /powerpoint/.test(ele.raw.type),
                 'spreadsheet': /excel/.test(ele.raw.type),
                 'video': /video/.test(ele.raw.type)
@@ -154,7 +154,7 @@
         </el-row>
       </div>
     </div>
-    <section class="dialog-bg" v-if="showCover"></section>
+    <section class="dialog-bg" v-if="showCover" @click.self="closeCover"></section>
     <section class="dialog-body" v-if="showConfirm">
       <h3 class="dialog-header clearfix">
         放弃上传
@@ -874,7 +874,7 @@ export default {
             res['info']['filePermission'] = '群组可见'
           }
           // 图片
-          if (/image/.test(res['info']['mime_type'])) {
+          if (/image\/(?:jpg|jpeg|png|gif)/.test(res['info']['mime_type'])) {
             this.imgList.unshift(res['info'])
           }
           if (this.list.length < this.query.pageSize) {
@@ -1411,7 +1411,7 @@ export default {
       this.imgList = []
       for (let i of this.list) {
         this.formatList(i)
-        if (/image/.test(i['mime_type'])) {
+        if (/image\/(?:jpg|jpeg|png|gif)/.test(i['mime_type'])) {
           this.imgList.push(i)
         }
       }
