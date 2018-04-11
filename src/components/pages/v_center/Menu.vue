@@ -2,26 +2,182 @@
   <section>
     <header class="menu-header">
       <div class="menu-left">
-        <span class="menu-icon"></span>
+        <span class="menu-icon" @click="changeWidth"></span>
         <p class="home-icon"><router-link :to="{name: 'home'}" class="logo-icon"></router-link></p>
       </div>
       <div class="menu-right">
         <span class="avatar"></span>
       </div>
     </header>
-    <el-col :span="isMob ? 24 : 4">
-      <section :class="['menuHide', isMob ? 'MmenuHide' : '']">
+    <el-col v-if="leftWidth === 2" :span="isMob ? 24 : 2">
+      <section :class="['menuHide', {'MmenuHide': isMob, 'menuHide-min': leftWidth === 2}]">
         <div v-if="isCompany">
-          <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist" v-if="isChild">
-            <a @click="alick" :to="'/vcenter/child_control'"
+          <div :class="['menu-list', 'clearfix', {'Mmenulist': isMob, }]" ref="Mmenulist" v-if="isChild">
+            <el-tooltip class="item" effect="dark" content="控制面板" placement="right">
+              <a @click="alick" :to="'/vcenter/child_control'"
+                :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
+                控制面板
+              </a>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="项目云盘" placement="right">
+            <a @click="alick" :to="'/vcenter/cloud_drive/list/all'"
+              :class="['item', 'cloud', {'is-active': currentName === 'cloud_drive'}]">
+              项目云盘
+            </a>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="成员管理" placement="right">
+            <a @click="alick" :to="'/user/user_management'"
+              
+              :class="['item', 'user-management', {'is-active': currentName === 'member'}]" v-if="isCompanyAdmin">
+              成员管理
+            </a>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="账号设置" placement="right">
+            <a @click="alick" :to="'/vcenter/account/base'"
+              :class="['item', 'account-management', {'is-active': currentName === 'profile'}]">
+              账号设置
+            </a>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="查看公司主页" placement="right">
+            <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" 
+               v-if="isMob">
+              查看公司主页
+            </a>
+            </el-tooltip>
+          </div>
+
+          <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist" v-else>
+            <div class="computer-btn" v-if="isCompany && !isMob" @click="redirectCompany">
+              查看公司主页
+            </div>
+            
+            <el-tooltip class="item" effect="dark" content="控制面板" placement="right">
+            <a @click="alick" :to="'/vcenter/control'"
               :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
               控制面板
             </a>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="消息" placement="right">
+            <a @click="alick" :to="'/vcenter/message'"
+              :class="['item', 'message', {'is-active': currentName === 'message'}]">
+              消息
+            </a>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="项目订单" placement="right">
+            <a @click="alick" :to="'/vcenter/citem/list'"
+              :class="['item', 'order', {'is-active': currentName === 'c_item'}]">
+              项目订单
+            </a>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="项目管理" placement="right">
+            <a @click="alick" :to="'/vcenter/project_management'"
+              :class="['item', 'management', {'is-active': currentName === 'project_management'}]">
+              项目管理
+            </a>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="项目云盘" placement="right">
+            <a @click="alick" :to="'/vcenter/cloud_drive/list/all'"
+              :class="['item', 'cloud', {'is-active': currentName === 'cloud_drive'}]">
+              项目云盘
+            </a>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="作品案例" placement="right">
+            <a @click="alick" :to="'/vcenter/design_case'" 
+              :class="['item', 'case', {'is-active': currentName === 'design_case'}]">
+              作品案例
+            </a>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="提交作品" placement="right">
+            <a @click="alick" :to="'/vcenter/match_case'"
+              :class="['item', 'match-case', {'is-active': currentName === 'match_case'}]">
+              提交作品
+            </a>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="我的钱包" placement="right">
+            <a @click="alick" :to="'/vcenter/wallet/list'" 
+              :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
+              我的钱包
+            </a>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="公司设置" placement="right">
+            <a @click="alick" :to="'/vcenter/company/base'"
+              :class="['item', 'company', {'is-active': currentName === 'company'}]">
+              公司设置
+            </a>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="账号设置" placement="right">
+            <a @click="alick" :to="'/vcenter/account/base'"
+              :class="['item', 'account-management', {'is-active': currentName === 'profile'}]">
+              账号设置
+            </a>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="成员管理" placement="right">
+            <a @click="alick" :to="'/user/user_management'"
+              :class="['item','user-management', {'is-active': currentName === 'member'}]">
+              成员管理
+            </a>
+            </el-tooltip>
+            <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" 
+               v-if="isMob">
+              查看公司主页
+            </a>
+          </div>
+        </div>
+        <div v-else>
+          <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist">
+            <el-tooltip class="item" effect="dark" content="控制面板" placement="right">
+            <a @click="alick" :to="'/vcenter/control'" :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
+              控制面板
+            </a>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="消息" placement="right">
+            <a @click="alick" :to="'/vcenter/message'"
+              :class="['item', 'message', {'is-active': currentName === 'message'}]">
+              消息
+            </a>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="我的项目" placement="right">
+            <a @click="alick" :to="'/vcenter/item/list'"
+              :class="['item', 'wallet', {'is-active': currentName === 'item'}]">
+              我的项目
+            </a>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="我的钱包" placement="right">
+            <a @click="alick" :to="'/vcenter/wallet/list'"
+              :class="['item', {'is-active': currentName === 'wallet'}]">
+              我的钱包
+            </a>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="公司设置" placement="right">
+            <a @click="alick" :to="'/vcenter/d_company/base'"
+              :class="['item', 'company', {'is-active': currentName === 'company'}]">
+              公司设置
+            </a>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="账号设置" placement="right">
+            <a @click="alick" :to="'/vcenter/account/modify_pwd'"
+              :class="['item', 'account-management', {'is-active': currentName === 'profile'}]">
+              账号设置
+            </a>
+            </el-tooltip>
+          </div>
+        </div>
+      </section>
+    </el-col>
+    <el-col v-if="leftWidth === 4" :span="isMob ? 24 : 4">
+      <section :class="['menuHide', {'MmenuHide': isMob, 'menuHide-min': leftWidth === 2}]">
+        <div v-if="isCompany">
+          <div :class="['menu-list', 'clearfix', {'Mmenulist': isMob, }]" ref="Mmenulist" v-if="isChild">
+              <a @click="alick" :to="'/vcenter/child_control'"
+                :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
+                控制面板
+              </a>
             <a @click="alick" :to="'/vcenter/cloud_drive/list/all'"
               :class="['item', 'cloud', {'is-active': currentName === 'cloud_drive'}]">
               项目云盘
             </a>
             <a @click="alick" :to="'/user/user_management'"
+              
               :class="['item', 'user-management', {'is-active': currentName === 'member'}]" v-if="isCompanyAdmin">
               成员管理
             </a>
@@ -29,7 +185,8 @@
               :class="['item', 'account-management', {'is-active': currentName === 'profile'}]">
               账号设置
             </a>
-            <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" v-if="isMob">
+            <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" 
+               v-if="isMob">
               查看公司主页
             </a>
           </div>
@@ -58,7 +215,7 @@
               :class="['item', 'cloud', {'is-active': currentName === 'cloud_drive'}]">
               项目云盘
             </a>
-            <a @click="alick" :to="'/vcenter/design_case'"
+            <a @click="alick" :to="'/vcenter/design_case'" 
               :class="['item', 'case', {'is-active': currentName === 'design_case'}]">
               作品案例
             </a>
@@ -66,7 +223,7 @@
               :class="['item', 'match-case', {'is-active': currentName === 'match_case'}]">
               提交作品
             </a>
-            <a @click="alick" :to="'/vcenter/wallet/list'"
+            <a @click="alick" :to="'/vcenter/wallet/list'" 
               :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
               我的钱包
             </a>
@@ -82,13 +239,15 @@
               :class="['item','user-management', {'is-active': currentName === 'member'}]">
               成员管理
             </a>
-            <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" v-if="isMob">
+            <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" 
+               v-if="isMob">
               查看公司主页
             </a>
           </div>
         </div>
         <div v-else>
           <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist">
+            
             <a @click="alick" :to="'/vcenter/control'" :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
               控制面板
             </a>
@@ -120,6 +279,7 @@
 </template>
 
 <script>
+  import { LEFT_WIDTH } from '@/store/mutation-types'
   export default {
     name: 'vcenter_menu',
     props: {
@@ -144,7 +304,20 @@
       alick(e) {
         sessionStorage.setItem('MENU_BAR', e.target.offsetLeft)
         this.$router.push(e.target.getAttribute('to'))
+      },
+      changeWidth() {
+        if (this.leftWidth === 2) {
+          this.$store.commit(LEFT_WIDTH, 4)
+        } else {
+          this.$store.commit(LEFT_WIDTH, 2)
+        }
       }
+    },
+    created() {
+    },
+    mounted() {
+      let menu = sessionStorage.getItem('MENU_BAR')
+      this.$refs.Mmenulist.scrollLeft = menu - document.documentElement.clientWidth / 2 + 38
     },
     computed: {
       isMob() {
@@ -179,11 +352,10 @@
       },
       hideHeader() {
         return this.$store.state.event.hideHeader
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
       }
-    },
-    mounted() {
-      let menu = sessionStorage.getItem('MENU_BAR')
-      this.$refs.Mmenulist.scrollLeft = menu - document.documentElement.clientWidth / 2 + 38
     }
   }
 
@@ -196,6 +368,7 @@
     background: #222;
   }
   .menu-list .item {
+    overflow: hidden;
     padding: 0;
     height: 50px;
     line-height: 50px;
@@ -223,13 +396,45 @@
   .menu-list .item::before {
     content: "";
     position: absolute;
-    left: 20px;
+    left: 13px;
     top: 13px;
     background: #fff;
     width: 24px;
     height: 24px;
   }
 
+  .menu-list .item.dashboard::before {
+    background: url(../../../assets/images/v_center_menu/Dashboard.png) no-repeat center;
+    background-size: contain
+  }
+  .menu-list .item.management::before {
+    background: url(../../../assets/images/v_center_menu/Management.png) no-repeat center;
+    background-size: contain
+  }
+  .menu-list .item.cloud::before {
+    background: url(../../../assets/images/v_center_menu/Cloud.png) no-repeat center;
+    background-size: contain
+  }
+  .menu-list .item.case::before {
+    background: url(../../../assets/images/v_center_menu/Case.png) no-repeat center;
+    background-size: contain
+  }
+  .menu-list .item.wallet::before {
+    background: url(../../../assets/images/v_center_menu/Wallet.png) no-repeat center;
+    background-size: contain
+  }
+  .menu-list .item.account-management::before {
+    background: url(../../../assets/images/v_center_menu/AccountManagement.png) no-repeat center;
+    background-size: contain
+  }
+  .menu-list .item.user-management::before {
+    background: url(../../../assets/images/v_center_menu/UserManagement.png) no-repeat center;
+    background-size: contain
+  }
+  .menu-list .item.company::before {
+    background: url(../../../assets/images/v_center_menu/Company.png) no-repeat center;
+    background-size: contain
+  }
   .computer-btn {
     display: flex;
     align-items: center;
@@ -304,8 +509,16 @@
       max-width: 240px;
       height: calc(100% - 60px);
     }
+
     .menu-list {
       width: inherit;
+    }
+
+    .menuHide-min {
+      max-width: 60px;
+    }    
+    .menuHide-min .menu-list .item {
+      text-indent: -999rem;
     }
   }
   @media screen and (max-width: 767px) {

@@ -1,6 +1,6 @@
 <template>
   <div class="" v-if="power">
-    <h3>标签组件引入测试 <a href="javascript:void(0)" @click="closeTagsBtn()">点击关闭</a></h3>
+    <h3>标签组件引入测试 <a href="javascript:void(0)" @click="closeTagsBtn">点击关闭</a></h3>
 
   </div>
 </template>
@@ -22,11 +22,10 @@
     data () {
       return {
         itemId: '',
-        tagsList: [],
         msg: ''
       }
     },
-    method: {
+    methods: {
       // 标签列表
       tagsList() {
         if (this.tagsList) {

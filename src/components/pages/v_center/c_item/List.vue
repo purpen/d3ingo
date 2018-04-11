@@ -1,8 +1,7 @@
 <template>
   <div class="blank20 clearfix">
-    <!-- <v-menu currentName="c_item" :class="{'v-menu': isMob}"></v-menu> -->
     <v-menu currentName="c_item"></v-menu>
-      <el-col :span="isMob ? 24 : 20" :offset="!isMob? 4 : 0">
+      <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
       <div class="right-content vcenter-container">
         <v-menu-sub :waitCountProp="waitCount" :ingCountProp="ingCount"></v-menu-sub>
         <div :class="['content-item-box', isMob ? 'content-item-box-m' : '' ]" v-loading="isLoading">
@@ -260,6 +259,12 @@
     computed: {
       isMob() {
         return this.$store.state.event.isMob
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
+      },
+      rightWidth() {
+        return 24 - this.$store.state.event.leftWidth
       }
     },
     created: function () {

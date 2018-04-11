@@ -3,7 +3,7 @@
     <el-row>
       <v-menu currentName="company" :class="[isMob ? 'v-menu' : '']"></v-menu>
 
-      <el-col :span="isMob ? 24 : 20" :offset="!isMob? 4 : 0">
+      <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
         <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
           <section v-loading.body="isLoading">
@@ -157,6 +157,12 @@
     computed: {
       isMob() {
         return this.$store.state.event.isMob
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
+      },
+      rightWidth() {
+        return 24 - this.$store.state.event.leftWidth
       }
     }
   }

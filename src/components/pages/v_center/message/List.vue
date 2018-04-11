@@ -2,7 +2,7 @@
   <div class="blank20 min-height350">
     <el-row>
       <v-menu currentName="message"></v-menu>
-      <el-col :span="isMob ? 24 : 20" :offset="!isMob? 4 : 0">
+      <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
         <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
           <div class="content-box" v-loading="isLoading">
@@ -186,6 +186,12 @@
     computed: {
       isMob() {
         return this.$store.state.event.isMob
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
+      },
+      rightWidth() {
+        return 24 - this.$store.state.event.leftWidth
       }
     },
     created: function () {

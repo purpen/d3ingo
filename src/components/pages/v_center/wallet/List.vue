@@ -3,7 +3,7 @@
     <el-row>
       <v-menu currentName="wallet"></v-menu>
 
-      <el-col :span="isMob ? 24 : 20" :offset="!isMob? 4 : 0" v-loading.body="walletLoading">
+      <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
         <div class="right-content vcenter-container">
           <div :class="['my-wallet', isMob ? 'my-wallet-m' : '' ]">
             <div class="wallet-box">
@@ -386,6 +386,12 @@
     computed: {
       isMob() {
         return this.$store.state.event.isMob
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
+      },
+      rightWidth() {
+        return 24 - this.$store.state.event.leftWidth
       }
     },
     created: function () {

@@ -3,7 +3,7 @@
     <el-row>
       <v-menu :class="[isMob ? 'v-menu' : '']" currentName="match_case"></v-menu>
 
-      <el-col :span="isMob ? 24 : 20" :offset="!isMob? 4 : 0">
+      <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
         <div class="right-content vcenter-container">
           <v-menu-sub v-if="false"></v-menu-sub>
           <div :class="['content-box', isMob ? 'content-box-m' : '']">
@@ -29,7 +29,7 @@
                       <div class="opt">
                         <a href="javascript:void(0);" :item_id="d.id" :index="index"
                            @click="delItem">删除</a>
-                        <router-link :to="{name: 'vcenterMatchCaseSubmit', params: {id: d.id, match_id: d.match_id}}">
+                        <router-link :to="{name: 'vcenterMatchCaseEdit', params: {id: d.id, match_id: d.match_id}}">
                           编辑
                         </router-link>
                       </div>
@@ -102,7 +102,7 @@
       },
       // 添加作品案例
       add() {
-        this.$router.push ({name: 'vcenterMatchCaseSubmit'})
+        this.$router.push ({name: 'vcenterMatchCaseCreated'})
       },
       getDesignCase () {
         const that = this
@@ -125,6 +125,12 @@
     computed: {
       isMob() {
         return this.$store.state.event.isMob
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
+      },
+      rightWidth() {
+        return 24 - this.$store.state.event.leftWidth
       }
     },
     watch: {},

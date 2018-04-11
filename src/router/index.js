@@ -502,6 +502,16 @@ routes = [
     },
     component: require('@/components/pages/v_center/common/ChildControl')
   },
+  // 公司主页
+  {
+    path: '/company/:id',
+    name: 'companyShow',
+    meta: {
+      title: '公司主页',
+      requireAuth: false
+    },
+    component: require('@/components/pages/company/Show')
+  },
   // 作品详情
   {
     path: '/design_case/show/:id',

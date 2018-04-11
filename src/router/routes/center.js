@@ -438,10 +438,32 @@ module.exports = [
     component: require('@/components/pages/v_center/match_case/MatchCase')
   },
   {
-    path: '/v_center/match_case/submit',
-    name: 'vcenterMatchCaseSubmit',
+    path: '/v_center/match_case/submit/:match_id/:id',
+    name: 'vcenterMatchCaseEdit',
+    meta: {
+      title: '编辑作品',
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/v_center/match_case/UploadWork')
+  },
+  {
+    path: '/v_center/match_case/submit/:match_id',
+    name: 'vcenterMatchCaseUpload',
     meta: {
       title: '上传作品',
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/v_center/match_case/UploadWork')
+  },
+  {
+    path: '/v_center/match_case/submit',
+    name: 'vcenterMatchCaseCreated',
+    meta: {
+      title: '新建作品',
       requireAuth: true,
       hideHeader: true,
       hideFooter: true

@@ -1,7 +1,7 @@
 <template>
   <el-row class="control blank20 min-height350">
     <v-menu currentName="control"></v-menu>
-    <el-col :span="!isMob? 20 : 24" :offset="!isMob? 4 : 0" v-loading.body="isLoading">
+    <el-col :span="!isMob? rightWidth : 24" :offset="!isMob? leftWidth : 0" v-loading.body="isLoading">
       <div class="vcenter-container">
         <div :class="['content-item-box', isMob ? 'content-item-box-m' : '']">
           <div class="item ing" v-for="(d, index) in itemIngList" :key="index">
@@ -218,6 +218,12 @@
       },
       isMob() {
         return this.$store.state.event.isMob
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
+      },
+      rightWidth() {
+        return 24 - this.$store.state.event.leftWidth
       }
     },
     created: function () {
