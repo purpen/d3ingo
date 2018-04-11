@@ -153,7 +153,7 @@
         </el-row>
       </div>
     </div>
-    <section class="dialog-bg" v-if="showCover"></section>
+    <section class="dialog-bg" v-if="showCover" @click.self="closeCover"></section>
     <section class="dialog-body" v-if="showConfirm">
       <h3 class="dialog-header clearfix">
         放弃上传
