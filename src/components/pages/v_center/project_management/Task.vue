@@ -1,8 +1,31 @@
 <template>
   <section>
-    <v-tags :power="propsTags.power"></v-tags>
+    <v-tags :propParam="propsTags" @changePropsTags="changePropsTags"></v-tags>
     Task
-    <el-button @click="addTagBtn">添加标签</el-button>
+    <el-button @click="addTagBtn">显示标签</el-button>
+    <hr />
+    <div>
+      <h1>阶段测试</h1>
+      <el-button @click="addStageBtn()">添加阶段</el-button>
+      <p v-for="(d, index) in stageList" :key="index">
+        {{ d.id }} | {{ d.title }} | <el-button @click="editStageBtn(d.id, index)">编辑</el-button> | <el-button @click="deleteStageBtn(d.id, index)">删除</el-button>
+      </p>
+      <div v-if="currentStageStat.event">
+        <el-input v-model="currentStageForm.title" placeholder=""></el-input>
+        <el-button @click="submitStage()">提交阶段</el-button>
+      </div>
+      
+    </div>
+    <hr />
+    <div>
+      <h2>任务列表</h2>
+      <el-button @click="addTaskBtn()">添加任务</el-button>
+      <p v-for="(d, index) in taskList" :key="index">
+        {{ d.id }} | {{ d.title }} | <el-button @click="editStageBtn(d.id, index)">编辑</el-button> | <el-button @click="deleteStageBtn(d.id, index)">删除</el-button>
+      </p>
+
+    <v-task :propParam="propsTask" @changePropsTask="changePropsTask"></v-task>
+    </div>
   </section>
 </template>
 <script>
@@ -11,11 +34,14 @@
   // import typeData from '@/config'
   // 标签
   import vTags from '@/components/tools_block/Tags'
+  // 任务
+  import vTask from '@/components/tools_block/Task'
 
   export default {
     name: 'projectManagementTask',
     components: {
-      vTags
+      vTags,
+      vTask
     },
     data () {
       return {
@@ -42,13 +68,23 @@
           level: 1,
           test: ''
         },
-        currentTagsForm: {   // 当前标签表单
+        currentStageForm: {   // 当前阶段表单
           title: '',
-          type: 1,
           item_id: 0,
           test: ''
         },
+        currentStageStat: {   // 当前阶段操作事件
+          event: '',
+          id: 0,
+          index: 0
+        },
         propsTags: {
+          itemId: 0,
+          power: 0,
+          test: ''
+        },
+        propsTask: {
+          itemId: 0,
           power: 0,
           test: ''
         },
@@ -73,9 +109,123 @@
       },
       // 项目阶段列表
       fetchStage() {
-        if (this.stageList) {
+        if (this.stageList.length > 0) {
           return this.stageList
         }
+        const self = this
+        this.$http.get(api.toolsStage, {params: {item_id: self.itemId}}).then(function (response) {
+          if (response.data.meta.status_code === 200) {
+            self.stageList = response.data.data
+            console.log(response.data.data)
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          self.$message.error(error.message)
+          console.error(error.message)
+        })
+      },
+      // 添加阶段点击事件
+      addStageBtn() {
+        this.currentStageStat = {
+          event: 'create',
+          id: 0,
+          index: 0
+        }
+        this.currentStageForm = {
+          title: '',
+          item_id: 0,
+          test: ''
+        }
+      },
+      // 编辑阶段按钮点击事件
+      editStageBtn(id, index) {
+        this.currentStageForm = this.stageList[index]
+        this.currentStageStat = {
+          event: 'update',
+          id: id,
+          index: index
+        }
+      },
+      // 删除阶段点击事件
+      deleteStageBtn(id, index) {
+        this.currentStageStat = {
+          event: 'delete',
+          id: id,
+          index: index
+        }
+        this.deleteStage()
+      },
+      // 提交阶段
+      submitStage() {
+        let event = this.currentStageStat.event
+        if (event === 'create') {
+          this.createStage()
+        } else if (event === 'update') {
+          this.updateStage()
+        } else if (event === 'delete') {
+          this.deleteStage()
+        }
+      },
+      // 创建阶段事件
+      createStage() {
+        const self = this
+        if (!self.currentStageForm.title) {
+          self.$message.error('名称不能为空!')
+          return false
+        }
+        self.currentStageForm.item_id = self.itemId
+        this.$http.post(api.toolsStage, self.currentStageForm).then(function (response) {
+          if (response.data.meta.status_code === 200) {
+            console.log(response.data.data)
+            self.stageList.unshift(response.data.data)
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          self.$message.error(error.message)
+          console.error(error.message)
+        })
+      },
+      // 更新阶段
+      updateStage() {
+        const self = this
+        let id = self.currentStageStat.id
+        let index = self.currentStageStat.index
+        if (!id) {
+          self.$message.error('ID不能为空!')
+          return false
+        }
+        self.$http.put(api.toolsStageId.format(id), self.currentStageForm).then(function (response) {
+          if (response.data.meta.status_code === 200) {
+            self.$set(self.stageList, index, self.currentStageForm)
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          self.$message.error(error.message)
+          console.error(error.message)
+        })
+      },
+      // 删除阶段
+      deleteStage() {
+        const self = this
+        let id = self.currentStageStat.id
+        let index = self.currentStageStat.index
+        if (!id) {
+          self.$message.error('ID不能为空!')
+          return false
+        }
+        self.$http.delete(api.toolsStageId.format(id), {}).then(function (response) {
+          if (response.data.meta.status_code === 200) {
+            self.stageList.splice(index, 1)
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          self.$message.error(error.message)
+          console.error(error.message)
+        })
       },
       // 项目成员列表
       fetchItemUser() {
@@ -156,6 +306,20 @@
       // 添加标签
       addTagBtn() {
         this.$set(this.propsTags, 'power', 1)
+        this.$set(this.propsTags, 'itemId', this.itemId)
+      },
+      // 添加任务
+      addTaskBtn() {
+        this.$set(this.propsTask, 'power', 1)
+        this.$set(this.propsTask, 'itemId', this.itemId)
+      },
+      // 更新标签组件传回数据
+      changePropsTags(obj) {
+        this.propsTags = obj
+      },
+      // 更新任务组件传回数据
+      changePropsTask(obj) {
+        this.propsTask = obj
       }
     },
     computed: {
@@ -198,6 +362,9 @@
       }
       // 请求项目详情，判断项目是否存在或有效
       self.itemId = itemId
+
+      // 获取阶段列表
+      self.fetchStage()
     }
   }
 </script>

@@ -314,6 +314,10 @@ export default {
   itemTags: '/tags',  // POST 创建 | GET 列表
   itemTagsId: '/tags/{0}',  // GET 详情 | PUT 更新 | DELETE 删除
 
+  // 项目阶段
+  toolsStage: '/stages', // GET 列表 | POST 创建
+  toolsStageId: '/stages/{0}', // PUT 更新 | GET 详情 | DELETE 删除
+
   // test
   test: '/' // End
 }
