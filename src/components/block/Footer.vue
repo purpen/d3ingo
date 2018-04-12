@@ -36,7 +36,7 @@
 
       <el-col class="item fllow" :xs="12" :sm="6" :md="6" :lg="6">
         <p class="title">关注我们</p>
-        <p class="call clearfix"><span>电话：</span><span><a href="tel:4008798751">4008-798-751</a></span></p>
+        <!-- <p class="call clearfix"><span>电话：</span><span><a href="tel:4008798751">4008-798-751</a></span></p> -->
         <div class="Fshare-box">
           <p class="share" @click="clickwx">
             <i class="wechat"></i>
@@ -52,6 +52,16 @@
         </div>
       </el-col>
     </el-row>
+    <div class="copy-right" v-if="!isMob">
+      <p>Copyright © 2018 <a href="https://www.d3ingo.com">www.d3ingo.com</a> 版权所有.All rights reserved.</p>
+      <p>太火鸟 营业执照【京ICP备14025430号-2】经营许可证:【京ICP证150139号】</p>
+    </div>
+    <div class="copy-right" v-if="isMob">
+      <p>Copyright © 2018 <a href="https://www.d3ingo.com">www.d3ingo.com</a></p>
+      <p>版权所有.All rights reserved.</p>
+      <p>太火鸟 营业执照【京ICP备14025430号-2】</p>
+      <p>经营许可证:【京ICP证150139号】</p>
+    </div>
     <transition name="fade">
       <section class="hidweixin" v-if="iswxhide && !isMob">
         <div class="hidebox" @click="clickwx"></div>
@@ -129,6 +139,7 @@
   .foot-main {
     max-width: 1180px;
     margin: 0 auto;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1)
   }
 
   .server {
@@ -242,7 +253,14 @@
   .fade-leave-to {
     opacity: 0;
   }
-
+  .copy-right {
+    padding: 20px 0;
+    color: #999;
+  }
+  .copy-right p {
+    line-height: 1;
+    font-size: 12px;
+  }
   @media screen and (min-width: 768px) and (max-width: 1055px) {
     .footer .fllow {
       padding-left: 56px;
@@ -256,6 +274,10 @@
 
     .call span {
       float: left;
+    }  
+    .copy-right {
+     text-align: left;
+     margin-right: 40px;
     }
   }
 </style>

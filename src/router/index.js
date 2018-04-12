@@ -477,7 +477,9 @@ routes = [
     name: 'userManagement',
     meta: {
       title: '',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/user/MemberManagement')
   },
@@ -487,7 +489,9 @@ routes = [
     name: 'vcenterControl',
     meta: {
       title: '控制面板',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/common/Control')
   },
@@ -500,6 +504,16 @@ routes = [
       requireAuth: true
     },
     component: require('@/components/pages/v_center/common/ChildControl')
+  },
+  // 公司主页
+  {
+    path: '/company/:id',
+    name: 'companyShow',
+    meta: {
+      title: '公司主页',
+      requireAuth: false
+    },
+    component: require('@/components/pages/company/Show')
   },
   // 作品详情
   {

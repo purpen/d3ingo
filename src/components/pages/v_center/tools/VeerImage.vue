@@ -53,7 +53,7 @@
   import api from '@/api/api'
   import Waterfall from 'vue-waterfall/lib/waterfall'
   import WaterfallSlot from 'vue-waterfall/lib/waterfall-slot'
-  import ToolsMenu from '@/components/pages/v_center/ToolsMenu'
+  import ToolsMenu from '@/components/pages/v_center/tools/ToolsMenu'
   export default {
     name: 'veerImage',
     components: {

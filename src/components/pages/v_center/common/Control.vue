@@ -1,8 +1,8 @@
 <template>
-  <div class="container blank40 control min-height350">
-    <el-row :gutter="20" class="anli-elrow">
-      <v-menu currentName="control"></v-menu>
-      <el-col :span="isMob ? 24 : 20" v-loading.body="isLoading">
+  <el-row class="blank20 min-height350">
+    <v-menu currentName="control"></v-menu>
+    <el-col :span="!isMob? rightWidth : 24" :offset="!isMob? leftWidth : 0" v-loading.body="isLoading">
+      <div class="vcenter-container">
         <div :class="['content-item-box', isMob ? 'content-item-box-m' : '']">
           <div class="item ing" v-for="(d, index) in itemIngList" :key="index">
             <div class="banner">
@@ -15,12 +15,12 @@
                 <p class="c-title-pro">{{ d.item.name }}</p>
                 <p class="progress-line">
                   <el-progress :text-inside="true" :show-text="false" :stroke-width="18" :percentage="d.item.progress"
-                               status="exception"></el-progress>
+                  status="exception"></el-progress>
                 </p>
                 <p class="prefect">您的项目需求填写已经完成了{{ d.item.progress }}%。</p>
                 <p>
                   <el-button class="is-custom" :progress="d.item.stage_status" :item_id="d.item.id"
-                             :item_type="d.item.type" @click="editItem" size="" type="primary">
+                              :item_type="d.item.type" @click="editItem" size="" type="primary">
                     <i class="el-icon-edit"></i>
                     完善项目
                   </el-button>
@@ -119,10 +119,9 @@
             </div>
           </div>
         </div>
-
-      </el-col>
-    </el-row>
-  </div>
+      </div>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
@@ -219,6 +218,12 @@
       },
       isMob() {
         return this.$store.state.event.isMob
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
+      },
+      rightWidth() {
+        return 24 - this.$store.state.event.leftWidth
       }
     },
     created: function () {

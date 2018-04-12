@@ -1,33 +1,31 @@
 <template>
-  <div class="container blank40 control min-height350">
-    <el-row :gutter="20" class="anli-elrow">
-      <v-menu currentName="control"></v-menu>
-      <el-col :span="isMob ? 24 : 20" v-loading.body="isLoading">
+  <el-row class="control blank20 min-height350">
+    <v-menu currentName="control"></v-menu>
+    <el-col :span="!isMob? rightWidth : 24" :offset="!isMob ? leftWidth : 0" v-loading.body="isLoading">
 
-        <div class="right-content message">
-          <div class="content-box clearfix">
-            <div class="form-title">
-              <span>待处理事项</span>
-            </div>
-            <p class="alert-title clearfix" v-if="messageCount.quantity">{{ messageCount.quantity }} 条消息</p>
-            <div class="message-btn" v-if="!messageCount.quantity">
-              <img src="../../../../assets/images/icon/control_icon.png"/>
-              <p>当前无待处理事项</p>
-            </div>
-            <div class="message-btn clearfix" v-else>
-              <router-link :to="{name: 'home'}">
-                <el-button class="is-custom">返回首页</el-button>
-              </router-link> &nbsp;&nbsp;
-              <router-link :to="{name: 'vcenterMessageList'}">
-                <el-button type="primary" class="is-custom">查看消息</el-button>
-              </router-link>
-            </div>
+      <div class="right-content message">
+        <div class="content-box clearfix">
+          <div class="form-title">
+            <span>待处理事项</span>
+          </div>
+          <p class="alert-title clearfix" v-if="messageCount.quantity">{{ messageCount.quantity }} 条消息</p>
+          <div class="message-btn" v-if="!messageCount.quantity">
+            <img src="../../../../assets/images/icon/control_icon.png"/>
+            <p>当前无待处理事项</p>
+          </div>
+          <div class="message-btn clearfix" v-else>
+            <router-link :to="{name: 'home'}">
+              <el-button class="is-custom">返回首页</el-button>
+            </router-link> &nbsp;&nbsp;
+            <router-link :to="{name: 'vcenterMessageList'}">
+              <el-button type="primary" class="is-custom">查看消息</el-button>
+            </router-link>
           </div>
         </div>
+      </div>
 
-      </el-col>
-    </el-row>
-  </div>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
@@ -124,6 +122,12 @@
       },
       isMob() {
         return this.$store.state.event.isMob
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
+      },
+      rightWidth() {
+        return 24 - this.$store.state.event.leftWidth
       }
     },
     created: function () {

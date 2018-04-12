@@ -1,5 +1,5 @@
 <template>
-  <div :class="['vcenter-menu-sub', isMob ? 'vcenter-menu-sub-m' : '', 'clearfix']">
+  <div :class="['container', 'vcenter-menu-sub', isMob ? 'vcenter-menu-sub-m' : '', 'clearfix']">
     <div :class="['vcenter-menu-sub-list', isMob ? 'vcenter-menu-sub-list-m' : '']">
       <router-link :to="{name: 'vcenterMessageList'}"
         active-class="false" :class="{'item': true, 'is-active': menuType === 'vcenterMessageList'}">

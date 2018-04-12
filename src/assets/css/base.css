@@ -30,14 +30,15 @@ body {
   width: 100%;
   min-height: 100%;
   position: relative;
-  padding-bottom: 296px;
+  padding: 60px 0 340px;
   overflow-x: hidden
 }
 #app2 {
   width: 100%;
   min-height: 100%;
   position: relative;
-  overflow-x: hidden
+  overflow-x: hidden;
+  padding: 60px 0 0;
 }
 .cancel-icon {
   position: relative;
@@ -70,10 +71,13 @@ body {
   min-width: auto;
 }
 .container {
-  /* overflow: hidden; */
   margin: 0 auto;
 }
-
+.vcenter-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 30px;
+}
 .min-height350 {
   min-height: 350px;
 }
@@ -127,6 +131,52 @@ input {
 
 .markdown-body p {
   font-size: 1.6rem
+}
+
+.markdown-body h1 {
+  font-weight: bold;
+  font-size: 22px
+}
+.markdown-body h2 {
+  font-weight: bold;
+  font-size: 20px
+}
+.markdown-body h3 {
+  font-weight: bold;
+  font-size: 18px
+}
+.markdown-body h4 {
+  font-weight: bold;
+  font-size: 16px
+}
+
+.markdown-body em {
+  font-style: italic
+}
+
+.markdown-body blockquote {
+  border-left: 6px solid #d2d2d2;
+  padding-left: 8px;
+  background: #f7f7f7;
+  margin: 20px 0
+}
+
+.markdown-body code {
+  background: #f7f7f7;
+  padding: 0 8px;
+}
+
+.markdown-body table {
+  border: 1px solid #d2d2d2;
+  margin: 20px 0;
+}
+.markdown-body th , .markdown-body td {
+  border-right: 1px solid #d2d2d2;
+  border-bottom: 1px solid #d2d2d2;
+  padding: 10px;
+}
+.markdown-body table thead {
+  font-weight: bold;
 }
 
 .markdown-body img {
@@ -529,7 +579,6 @@ button.is-custom.is-outlined.is-loading:after {
   width: 100%;
   /* overflow: hidden; */
   text-align: center;
-  padding-bottom: 50px;
   background-color: #333333;
   position: absolute;
   bottom: 0;
@@ -705,16 +754,21 @@ button.is-custom.is-outlined.is-loading:after {
 }
 
 .nav-header .el-menu--horizontal > .el-menu-item.logo {
+  display: block;
   width: 40px;
   height: 60px;
   transition: none;
   padding: 0 16px;
   margin-right: 30px;
-  background: url(../../assets/images/logo.png) no-repeat 0 5px !important;
-  background-size: 30px 50px !important;
+  background: url(../../assets/images/logo.png) no-repeat 0 5px;
+  background-size: 30px 50px;
   text-indent: -9999px;
 }
 
+.nav-header .el-menu--horizontal > .el-menu-item.logo:hover {
+  background: url(../../assets/images/logo.png) no-repeat 0 5px;
+  background-size: 30px 50px;
+}
 .nav-header .el-menu--horizontal > .el-menu-item.logo:hover, .el-menu--horizontal > .el-menu-item.logo.is-active {
   border: none
 }
@@ -809,7 +863,7 @@ button.is-custom.is-outlined.is-loading:after {
   position: absolute;
   top: 60px;
   left: 0;
-  width: 200px;
+  width: 140px;
   background: #fff;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .12),
   0 0 6px 0 rgba(0, 0, 0, .04);
@@ -818,8 +872,8 @@ button.is-custom.is-outlined.is-loading:after {
   border-radius: 4px;
 }
 
-.nav-item .view-msg-min {
-  width: 140px;
+.nav-item .view-msg-plus {
+  width: 200px;
 }
 
 .nav-item .view-msg .news, .nav-item .view-msg .notice {
@@ -1216,7 +1270,7 @@ button.is-custom.is-outlined.is-loading:after {
   border: none;
   height: auto;
   text-align: left;
-  font-size: 1.5rem;
+  font-size: 14px;
   line-height: 1;
   color: #666;
   text-transform: none;
@@ -1239,24 +1293,14 @@ button.is-custom.is-outlined.is-loading:after {
   font-weight: bold;
 }
 
-.computer-btn {
-  margin: 15px 0 20px;
-  text-align: left;
-}
-
-.computer-btn a {
-  font-size: 1.2rem;
-}
-
 .MmenuHide {
   width: 100vw;
-  height: 20px;
+  height: 50px;
   overflow-y: hidden;
-  margin: 15px 0 15px -15px;
 }
 
 .Mmenulist {
-  overflow: scroll;
+  overflow: auto;
   padding-bottom: 30px;
 }
 
@@ -1663,7 +1707,7 @@ td.fc-day.fc-widget-content.fc-today::before {
 /*日历 end*/
 
 .cloud-menu.el-collapse {
-  border: none
+  border: none;
 }
 .cloud-menu .el-collapse-item__content {
   padding: 0;
@@ -1672,8 +1716,10 @@ td.fc-day.fc-widget-content.fc-today::before {
   border-bottom: none;
   color: #999;
   font-size: 12px;
+  height: 40px;
   line-height: 40px;
-  padding-left: 0;
+  padding-left: 20px;
+  background: #333;
 }
 .cloud-menu .el-collapse-item__wrap {
   background-color: #FFFFFF;
@@ -1720,13 +1766,6 @@ td.fc-day.fc-widget-content.fc-today::before {
 
 .el-row::after, .el-row::before {
   display: block;
-}
-
-/*查看公司主页按钮*/
-.computer-btn .companyBtn:hover, .computer-btn .companyBtn:focus {
-  background-color: #FFFFFF;
-  border-color: #FF5A5F;
-  color: #FF5A5F;
 }
 
 /*上传图片*/
@@ -1803,7 +1842,7 @@ td.fc-day.fc-widget-content.fc-today::before {
 
 @media screen and (max-width: 767px) {
   #app {
-    padding-bottom: 360px;
+    padding-bottom: 450px;
   }
 
   .footer .item {
@@ -2080,7 +2119,7 @@ td.fc-day.fc-widget-content.fc-today::before {
     display: flex;
     justify-content: center;
     position: relative;
-    margin: 0 -15px;
+    margin: 0 -35px;
   }
 
   .vcenter-menu-sub-list-m:before {
@@ -2115,7 +2154,15 @@ td.fc-day.fc-widget-content.fc-today::before {
   .markdown-body img {
     width: 100%;
   }
-
+  .MmenuHide {
+    margin-top: -20px;
+  }
+  .menu-list .item::before {
+    background: transparent!important;
+  }
+  .vcenter-container {
+    padding: 0 15px;
+  }
   /*767 end*/
 }
 

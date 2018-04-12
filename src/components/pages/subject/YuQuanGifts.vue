@@ -69,7 +69,7 @@ export default {
             duration: 3000
           })
         } else {
-          this.$router.push({name: 'vcenterMatchCaseSubmit', params: {match_id: 1}})
+          this.$router.push({name: 'vcenterMatchCaseUpload', params: {match_id: 1}})
         }
       } else {
         store.commit(types.PREV_URL_NAME, 'YuQuanGifts')
