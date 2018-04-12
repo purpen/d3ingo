@@ -1,8 +1,29 @@
 <template>
   <section>
-    <v-tags :power="propsTags.power"></v-tags>
-    Task
-    <el-button @click="addTagBtn">添加标签</el-button>
+    <v-tags :propParam="propsTags" @changePropsTags="changePropsTags"></v-tags>
+    <el-button @click="addTagBtn" v-if="false">显示标签</el-button>
+    <div v-if="false">
+      <h1>阶段测试</h1>
+      <el-button @click="addStageBtn()">添加阶段</el-button>
+      <p v-for="(d, index) in stageList" :key="index">
+        {{ d.id }} | {{ d.title }} | <el-button @click="editStageBtn(d.id, index)">编辑</el-button> | <el-button @click="deleteStageBtn(d.id, index)">删除</el-button>
+      </p>
+      <div v-if="currentStageStat.event">
+        <el-input v-model="currentStageForm.title" placeholder=""></el-input>
+        <el-button @click="submitStage()">提交阶段</el-button>
+      </div>
+    </div>
+    <div>
+      <div class="add-btn">
+        <button class="add-task middle-button full-red-button" @click="addTaskBtn()">添加任务</button>
+        <button class="add-stage small-button white-button" @click="addStageBtn()">添加阶段</button>
+      </div>
+      <p v-for="(d, index) in taskList" :key="index">
+        {{ d.id }} | {{ d.name }} | <el-button @click="editTaskBtn(d.id, index)">编辑</el-button> | <el-button @click="deleteStageBtn(d.id, index)">删除</el-button> | <el-button @click="showTaskBtn(d.id, index)">详情</el-button>
+      </p>
+
+    <v-task :propsParam="propsTask" :propsStat="propsTaskStat" :propsForm="propsTaskForm" @changePropsTask="changePropsTask" @changePropsStat="changePropsTaskStat" @changePropsForm="changePropsTaskForm"></v-task>
+    </div>
   </section>
 </template>
 <script>
@@ -11,11 +32,14 @@
   // import typeData from '@/config'
   // 标签
   import vTags from '@/components/tools_block/Tags'
+  // 任务
+  import vTask from '@/components/tools_block/Task'
 
   export default {
     name: 'projectManagementTask',
     components: {
-      vTags
+      vTags,
+      vTask
     },
     data () {
       return {
@@ -23,33 +47,39 @@
         sureDialogMessage: '确认执行此操作？',
         sureDialogLoadingBtn: false,
         isLoading: false,
-        itemId: '',   // 项目ID
+        itemId: 0,   // 项目ID
         itemList: [],
         taskList: [],
         stageList: [],  // 项目阶段列表
         tagsList: [],   // 标签列表
         itemUserList: [],   // 项目成员列表
-        currentTaskForm: {   // 当前任务表单
-          tier: 0,
-          pid: 0,
-          execute_user_id: 0,
-          name: '',
-          summary: '',
-          tags: '',
-          start_time: '',
-          over_time: '',
+        currentStageForm: {   // 当前阶段表单
+          title: '',
           item_id: 0,
-          level: 1,
           test: ''
         },
-        currentTagsForm: {   // 当前标签表单
-          title: '',
-          type: 1,
-          item_id: 0,
-          test: ''
+        propsTaskForm: {   // 当前任务表单
+        },
+        currentStageStat: {   // 当前阶段操作事件
+          event: '',
+          id: 0,
+          index: 0
         },
         propsTags: {
+          itemId: 0,
           power: 0,
+          test: ''
+        },
+        propsTask: {
+          itemId: 0,
+          power: 0,
+          test: ''
+        },
+        propsTaskStat: {
+          id: 0,
+          index: 0,
+          event: '',
+          sync: 0,
           test: ''
         },
         pagination: {},
@@ -73,9 +103,123 @@
       },
       // 项目阶段列表
       fetchStage() {
-        if (this.stageList) {
+        if (this.stageList.length > 0) {
           return this.stageList
         }
+        const self = this
+        this.$http.get(api.toolsStage, {params: {item_id: self.itemId}}).then(function (response) {
+          if (response.data.meta.status_code === 200) {
+            self.stageList = response.data.data
+            console.log(response.data.data)
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          self.$message.error(error.message)
+          console.error(error.message)
+        })
+      },
+      // 添加阶段点击事件
+      addStageBtn() {
+        this.currentStageStat = {
+          event: 'create',
+          id: 0,
+          index: 0
+        }
+        this.currentStageForm = {
+          title: '',
+          item_id: 0,
+          test: ''
+        }
+      },
+      // 编辑阶段按钮点击事件
+      editStageBtn(id, index) {
+        this.currentStageForm = this.stageList[index]
+        this.currentStageStat = {
+          event: 'update',
+          id: id,
+          index: index
+        }
+      },
+      // 删除阶段点击事件
+      deleteStageBtn(id, index) {
+        this.currentStageStat = {
+          event: 'delete',
+          id: id,
+          index: index
+        }
+        this.deleteStage()
+      },
+      // 提交阶段
+      submitStage() {
+        let event = this.currentStageStat.event
+        if (event === 'create') {
+          this.createStage()
+        } else if (event === 'update') {
+          this.updateStage()
+        } else if (event === 'delete') {
+          this.deleteStage()
+        }
+      },
+      // 创建阶段事件
+      createStage() {
+        const self = this
+        if (!self.currentStageForm.title) {
+          self.$message.error('名称不能为空!')
+          return false
+        }
+        self.currentStageForm.item_id = self.itemId
+        this.$http.post(api.toolsStage, self.currentStageForm).then(function (response) {
+          if (response.data.meta.status_code === 200) {
+            console.log(response.data.data)
+            self.stageList.unshift(response.data.data)
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          self.$message.error(error.message)
+          console.error(error.message)
+        })
+      },
+      // 更新阶段
+      updateStage() {
+        const self = this
+        let id = self.currentStageStat.id
+        let index = self.currentStageStat.index
+        if (!id) {
+          self.$message.error('ID不能为空!')
+          return false
+        }
+        self.$http.put(api.toolsStageId.format(id), self.currentStageForm).then(function (response) {
+          if (response.data.meta.status_code === 200) {
+            self.$set(self.stageList, index, self.currentStageForm)
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          self.$message.error(error.message)
+          console.error(error.message)
+        })
+      },
+      // 删除阶段
+      deleteStage() {
+        const self = this
+        let id = self.currentStageStat.id
+        let index = self.currentStageStat.index
+        if (!id) {
+          self.$message.error('ID不能为空!')
+          return false
+        }
+        self.$http.delete(api.toolsStageId.format(id), {}).then(function (response) {
+          if (response.data.meta.status_code === 200) {
+            self.stageList.splice(index, 1)
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          self.$message.error(error.message)
+          console.error(error.message)
+        })
       },
       // 项目成员列表
       fetchItemUser() {
@@ -83,40 +227,13 @@
           return this.itemUserList
         }
       },
-      // 创建任务
-      createTask() {
+      // 主任务列表
+      fetchTask() {
         const self = this
-        this.$http.post(api.task, self.currentTaskForm).then(function (response) {
+        self.$http.get(api.task, {params: {item_id: self.itemId}}).then(function (response) {
           if (response.data.meta.status_code === 200) {
+            self.taskList = response.data.data
             console.log(response.data.data)
-          } else {
-            self.$message.error(response.data.meta.message)
-          }
-        }).catch((error) => {
-          self.$message.error(error.message)
-          console.error(error.message)
-        })
-      },
-      // 编辑任务
-      editTask(id) {
-        const self = this
-        this.$http.put(api.taskId.format(id), self.currentTaskForm).then(function (response) {
-          if (response.data.meta.status_code === 200) {
-            console.log(response.data.data)
-          } else {
-            self.$message.error(response.data.meta.message)
-          }
-        }).catch((error) => {
-          self.$message.error(error.message)
-          console.error(error.message)
-        })
-      },
-      // 删除任务
-      deleteTask(id) {
-        const self = this
-        this.$http.delete(api.taskId.format(id), {}).then(function (response) {
-          if (response.data.meta.status_code === 200) {
-            self.$message.success('删除成功!')
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -153,9 +270,49 @@
           console.error(error.message)
         })
       },
+      // 同步任务列表
+      syncTaskList() {
+        let event = this.propsTaskStat.event
+        if (event === 'create') {
+          this.taskList.unshift(this.propsTaskForm)
+        }
+      },
       // 添加标签
       addTagBtn() {
         this.$set(this.propsTags, 'power', 1)
+      },
+      // 添加任务
+      addTaskBtn() {
+        this.$set(this.propsTask, 'power', 1)
+        this.$set(this.propsTaskStat, 'event', 'create')
+      },
+      // 编辑任务
+      editTaskBtn(id, index) {
+        this.$set(this.propsTask, 'power', 1)
+        this.$set(this.propsTaskStat, 'id', id)
+        this.$set(this.propsTaskStat, 'event', 'update')
+      },
+      // 查看任务详情
+      showTaskBtn(id, index) {
+        this.$set(this.propsTask, 'power', 1)
+        this.$set(this.propsTaskStat, 'id', id)
+        this.$set(this.propsTaskStat, 'event', 'view')
+      },
+      // 更新标签组件传回数据
+      changePropsTags(obj) {
+        this.propsTags = obj
+      },
+      // 更新任务组件传回数据
+      changePropsTask(obj) {
+        this.propsTask = obj
+      },
+      // 更新任务组件状态传回数据
+      changePropsTaskStat(obj) {
+        this.propsTaskStat = obj
+      },
+      // 更新任务表单数据
+      changePropsTaskForm(obj) {
+        this.propsTaskForm = obj
       }
     },
     computed: {
@@ -190,6 +347,18 @@
         return false
       }
     },
+    watch: {
+      // 监听任务组件更新当前任务列表
+      propsTaskStat: {
+        handler(val, oldVal) {
+          if (val.sync === 1) {
+            // 同步任务列表信息
+            this.syncTaskList()
+          }
+        },
+        deep: true
+      }
+    },
     created() {
       const self = this
       let itemId = self.$route.params.id
@@ -198,6 +367,25 @@
       }
       // 请求项目详情，判断项目是否存在或有效
       self.itemId = itemId
+
+      // 向子组件注入项目ID
+      self.$set(this.propsTask, 'itemId', itemId)
+      self.$set(this.propsTags, 'itemId', itemId)
+
+      // 获取阶段列表
+      self.fetchStage()
+      // 获取主任务列表
+      self.fetchTask()
     }
   }
 </script>
+
+<style scoped>
+  .add-stage {
+    display: none;
+  }
+
+  .add-btn:hover .add-stage {
+    display: inline-block;
+  }
+</style>

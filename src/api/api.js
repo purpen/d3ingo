@@ -302,7 +302,6 @@ export default {
    */
   task: '/tasks', // POST 创建 | GET 列表
   taskId: 'tasks/{0}', // PUT 更新 | DELETE 删除 | GET 详情
-  childTaskId: '/tasks/childDelete/{0}', // DELETE 子任务删除
   tasksExecuteUser: '/tasks/executeUser', // POST 领取任务
   taskStage: '/tasks/is/stage', // PUT 任务是否完成操作
 
@@ -313,6 +312,10 @@ export default {
   // 标签
   itemTags: '/tags',  // POST 创建 | GET 列表
   itemTagsId: '/tags/{0}',  // GET 详情 | PUT 更新 | DELETE 删除
+
+  // 项目阶段
+  toolsStage: '/stages', // GET 列表 | POST 创建
+  toolsStageId: '/stages/{0}', // PUT 更新 | GET 详情 | DELETE 删除
 
   // test
   test: '/' // End

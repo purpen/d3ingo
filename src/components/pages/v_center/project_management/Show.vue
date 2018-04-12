@@ -15,23 +15,7 @@ export default {
   },
   methods: {
     changeRoute(name) {
-      switch (name) {
-        case 'projectManagementOverView':
-          this.currentRoute = 'overview'
-          break
-        case 'projectManagementTask':
-          this.currentRoute = 'task'
-          break
-        case 'projectManagementCommunicate':
-          this.currentRoute = 'communicate'
-          break
-        case 'projectManagementFile':
-          this.currentRoute = 'file'
-          break
-        case 'projectManagementIncomeandExpenses':
-          this.currentRoute = 'IncomeandExpenses'
-          break
-      }
+      this.currentRoute = name
     }
   },
   created() {
