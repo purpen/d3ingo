@@ -12,7 +12,7 @@
         @createGroup="confirmCreateGroup"></member-menu>
     </el-col>
     <el-col :xs="24" :sm="16" :md="16" :lg="16">
-      <section class="member-list">
+      <section :class="['member-list', {'member-list-mini' : !leftWidth}]">
         <div class="member-list-header">
           <p class="fl">
             {{firstGroupName}}
@@ -597,6 +597,10 @@ export default {
   .member-management-mini {
     padding-left: 60px;
   }
+  .member-list-mini {
+    width: 100%;
+    position: absolute;
+  }
   .member-list {
     padding: 0 30px;
     font-size: 16px;
@@ -1030,5 +1034,21 @@ export default {
   .cententList .welcome {
     background: #fff;
     color: #ff5a5f
+  }
+  
+  @media screen and (min-width: 1440px) {
+    .member-list {
+      position: absolute;
+      width: calc(100% - 480px);
+      top: 0;
+      left: 480px;
+    }
+    .member-list-mini {
+      position: absolute;
+      width: calc(100% - 300px);
+      top: 0;
+      left: 300px;
+      transition: 0.2s all ease;
+    }
   }
 </style>

@@ -507,6 +507,12 @@
     border-radius: 50%;
     background: #f7f7f7;
   }
+  @media screen and (max-width: 1439px) {
+    .menuHide {
+      transition: 0.1s all ease
+    }
+
+  }
   @media screen and (min-width: 768px) {
     .menuHide {
       position: fixed;

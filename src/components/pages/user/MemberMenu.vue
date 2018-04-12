@@ -1,5 +1,5 @@
 <template>
-<section class="member-menu">
+<section :class="['member-menu', {'member-menu-mini': !leftWidth}]">
   <div class="seach-block">
     <span class="search-icon"></span>
     <input type="text" class="search" v-model.trim="searchKey">
@@ -75,6 +75,16 @@ export default {
       this.isActive = this.$route.query.type
       this.firstGroupId = 0
     }
+  },
+  computed: {
+    leftWidth() {
+      let leftWidth = this.$store.state.event.leftWidth
+      if (leftWidth === 2) {
+        return 0
+      } else if (leftWidth === 4) {
+        return leftWidth
+      }
+    }
   }
 }
 </script>
@@ -85,6 +95,8 @@ export default {
     color: rgba(255, 255, 255, 0.5);
     background: #333;
     max-width: 240px;
+    height: calc(100vh - 60px);
+    transition: 0.2s all ease;
   }
   .seach-block {
     position: relative;
@@ -175,5 +187,22 @@ export default {
   
   .new-group:hover {
     opacity: 1;
+  }
+  
+  @media screen and (min-width: 1440px) {
+    .member-menu {
+      position: absolute;
+      left: 240px;
+    }
+
+    .member-menu-mini {
+      left: 60px;
+      transition: 0.2s all ease;
+    }
+  }
+  @media screen and (max-width: 1180px) {
+    .member-menu .menu-header {
+      padding: 0 10px;
+    }
   }
 </style>

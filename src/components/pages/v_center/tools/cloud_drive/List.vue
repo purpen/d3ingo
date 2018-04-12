@@ -1682,14 +1682,14 @@ export default {
       opacity: 1;
     }
   }
-  .cloud-content {
-    transition: 0.2s all ease;
-  }
   .slide-mini {
     padding-left: 60px;
   }
   .content {
     transition: 0.2s all ease;
+  }
+  .content-mini {
+    position: absolute;
   }
   .content-head {
     color: #999;
