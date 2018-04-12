@@ -133,6 +133,52 @@ input {
   font-size: 1.6rem
 }
 
+.markdown-body h1 {
+  font-weight: bold;
+  font-size: 22px
+}
+.markdown-body h2 {
+  font-weight: bold;
+  font-size: 20px
+}
+.markdown-body h3 {
+  font-weight: bold;
+  font-size: 18px
+}
+.markdown-body h4 {
+  font-weight: bold;
+  font-size: 16px
+}
+
+.markdown-body em {
+  font-style: italic
+}
+
+.markdown-body blockquote {
+  border-left: 6px solid #d2d2d2;
+  padding-left: 8px;
+  background: #f7f7f7;
+  margin: 20px 0
+}
+
+.markdown-body code {
+  background: #f7f7f7;
+  padding: 0 8px;
+}
+
+.markdown-body table {
+  border: 1px solid #d2d2d2;
+  margin: 20px 0;
+}
+.markdown-body th , .markdown-body td {
+  border-right: 1px solid #d2d2d2;
+  border-bottom: 1px solid #d2d2d2;
+  padding: 10px;
+}
+.markdown-body table thead {
+  font-weight: bold;
+}
+
 .markdown-body img {
   display: block;
   margin: 20px auto;
