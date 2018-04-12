@@ -32,9 +32,6 @@
           power: 0,
           test: ''
         }
-      },
-      tagId: {
-        default: 0
       }
     },
     data () {

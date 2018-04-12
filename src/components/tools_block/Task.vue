@@ -1,11 +1,15 @@
 <template>
   <div class="" v-if="attr.power">
     <h3>任务组件引入测试 <a href="javascript:void(0)" @click="closeBtn()">点击关闭</a></h3>
-    <el-button @click="addBtn()">添加任务</el-button>
+    <!--<el-button @click="addBtn()">添加任务</el-button>-->
 
     <div v-if="currentStat.event">
-      <el-input v-model="currentForm.title" placeholder="任务名称"></el-input>
-      <el-input v-model="currentForm.type" placeholder="色值"></el-input>
+      <el-input v-model="currentForm.name" placeholder="任务名称"></el-input>
+      <el-input v-model="currentForm.tier" placeholder="层级"></el-input>
+      <el-input v-model="currentForm.pid" placeholder="父ID"></el-input>
+      <el-input v-model="currentForm.execute_user_id" placeholder="执行人ID"></el-input>
+      <el-input v-model="currentForm.stage_id" placeholder="阶段ID"></el-input>
+      <el-input v-model="currentForm.level" placeholder="级别1,5,8"></el-input>
 
       <el-button @click="submit()">提交</el-button>
     </div>
@@ -21,16 +25,23 @@
   export default {
     name: 'toolsBlockTask',
     props: {
-      propParam: {
+      propsParam: {
         default: {
           itemId: 0,
           power: 0,
           test: ''
         }
       },
-      tagId: {
-        default: 0
-      }
+      propsStat: {
+        default: {
+          id: 0,
+          index: 0,
+          event: '',
+          sync: 0,
+          test: ''
+        }
+      },
+      propsForm: {}
     },
     data () {
       return {
@@ -42,22 +53,13 @@
           test: ''
         },
         currentForm: {   // 当前任务表单
-          tier: 0,
-          pid: 0,
-          execute_user_id: 0,
-          name: '',
-          summary: '',
-          tags: '',
-          start_time: '',
-          over_time: '',
-          item_id: 0,
-          level: 1,
-          test: ''
         },
         currentStat: {   // 当前任务操作事件
           event: '',
           id: 0,
-          index: 0
+          index: 0,
+          sync: 0,
+          test: ''
         },
         msg: ''
       }
@@ -126,20 +128,46 @@
           this.update()
         } else if (event === 'delete') {
           this.delete()
+        } else if (event === 'view') {
+          this.view()
         }
       },
-      // 创建
-      create() {
+      // 查详情
+      view() {
         const self = this
-        if (!self.currentForm.title) {
+        if (!self.currentForm.name) {
           self.$message.error('名称不能为空!')
           return false
         }
         self.currentForm.item_id = self.attr.itemId
-        this.$http.post(api.itemTags, self.currentForm).then(function (response) {
+        this.$http.get(api.taskId.format(self.currentStat.id), {}).then(function (response) {
+          if (response.data.meta.status_code === 200) {
+            console.log('aaaa')
+            console.log(response.data.data)
+            // 更新整个对象到view层
+            Object.assign(self.currentForm, response.data.data)
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          self.$message.error(error.message)
+          console.error(error.message)
+        })
+      },
+      // 创建
+      create() {
+        const self = this
+        if (!self.currentForm.name) {
+          self.$message.error('名称不能为空!')
+          return false
+        }
+        self.currentForm.item_id = self.attr.itemId
+        this.$http.post(api.task, self.currentForm).then(function (response) {
           if (response.data.meta.status_code === 200) {
             console.log(response.data.data)
-            self.taskList.unshift(response.data.data)
+            // 更新整个对象到view层
+            Object.assign(self.currentForm, response.data.data)
+            self.currentStat.sync = 1
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -157,7 +185,7 @@
           self.$message.error('ID不能为空!')
           return false
         }
-        self.$http.put(api.itemTagsId.format(id), self.currentForm).then(function (response) {
+        self.$http.put(api.taskId.format(id), self.currentForm).then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.$set(self.taskList, index, self.currentForm)
           } else {
@@ -177,7 +205,7 @@
           self.$message.error('ID不能为空!')
           return false
         }
-        self.$http.delete(api.itemTagsId.format(id), {}).then(function (response) {
+        self.$http.delete(api.taskId.format(id), {}).then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.taskList.splice(index, 1)
           } else {
@@ -194,7 +222,7 @@
     computed: {
     },
     watch: {
-      propParam: {
+      propsParam: {
         handler(val, oldVal) {
           this.attr = val
         },
@@ -202,7 +230,31 @@
       },
       attr: {
         handler(val, oldVal) {
-          this.$emit('changePropsTask', this.attr)
+          this.$emit('changePropsTask', val)
+        },
+        deep: true
+      },
+      propsStat: {
+        handler(val, oldVal) {
+          this.currentStat = val
+        },
+        deep: true
+      },
+      currentStat: {
+        handler(val, oldVal) {
+          this.$emit('changePropsStat', val)
+        },
+        deep: true
+      },
+      propsForm: {
+        handler(val, oldVal) {
+          this.currentForm = val
+        },
+        deep: true
+      },
+      currentForm: {
+        handler(val, oldVal) {
+          this.$emit('changePropsForm', val)
         },
         deep: true
       }

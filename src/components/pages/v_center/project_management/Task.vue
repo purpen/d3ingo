@@ -21,10 +21,10 @@
       <h2>任务列表</h2>
       <el-button @click="addTaskBtn()">添加任务</el-button>
       <p v-for="(d, index) in taskList" :key="index">
-        {{ d.id }} | {{ d.title }} | <el-button @click="editStageBtn(d.id, index)">编辑</el-button> | <el-button @click="deleteStageBtn(d.id, index)">删除</el-button>
+        {{ d.id }} | {{ d.name }} | <el-button @click="editTaskBtn(d.id, index)">编辑</el-button> | <el-button @click="deleteStageBtn(d.id, index)">删除</el-button> | <el-button @click="showTaskBtn(d.id, index)">详情</el-button>
       </p>
 
-    <v-task :propParam="propsTask" @changePropsTask="changePropsTask"></v-task>
+    <v-task :propsParam="propsTask" :propsStat="propsTaskStat" :propsForm="propsTaskForm" @changePropsTask="changePropsTask" @changePropsStat="changePropsTaskStat" @changePropsForm="changePropsTaskForm"></v-task>
     </div>
   </section>
 </template>
@@ -49,29 +49,18 @@
         sureDialogMessage: '确认执行此操作？',
         sureDialogLoadingBtn: false,
         isLoading: false,
-        itemId: '',   // 项目ID
+        itemId: 0,   // 项目ID
         itemList: [],
         taskList: [],
         stageList: [],  // 项目阶段列表
         tagsList: [],   // 标签列表
         itemUserList: [],   // 项目成员列表
-        currentTaskForm: {   // 当前任务表单
-          tier: 0,
-          pid: 0,
-          execute_user_id: 0,
-          name: '',
-          summary: '',
-          tags: '',
-          start_time: '',
-          over_time: '',
-          item_id: 0,
-          level: 1,
-          test: ''
-        },
         currentStageForm: {   // 当前阶段表单
           title: '',
           item_id: 0,
           test: ''
+        },
+        propsTaskForm: {   // 当前任务表单
         },
         currentStageStat: {   // 当前阶段操作事件
           event: '',
@@ -86,6 +75,13 @@
         propsTask: {
           itemId: 0,
           power: 0,
+          test: ''
+        },
+        propsTaskStat: {
+          id: 0,
+          index: 0,
+          event: '',
+          sync: 0,
           test: ''
         },
         pagination: {},
@@ -233,40 +229,13 @@
           return this.itemUserList
         }
       },
-      // 创建任务
-      createTask() {
+      // 主任务列表
+      fetchTask() {
         const self = this
-        this.$http.post(api.task, self.currentTaskForm).then(function (response) {
+        self.$http.get(api.task, {params: {item_id: self.itemId}}).then(function (response) {
           if (response.data.meta.status_code === 200) {
+            self.taskList = response.data.data
             console.log(response.data.data)
-          } else {
-            self.$message.error(response.data.meta.message)
-          }
-        }).catch((error) => {
-          self.$message.error(error.message)
-          console.error(error.message)
-        })
-      },
-      // 编辑任务
-      editTask(id) {
-        const self = this
-        this.$http.put(api.taskId.format(id), self.currentTaskForm).then(function (response) {
-          if (response.data.meta.status_code === 200) {
-            console.log(response.data.data)
-          } else {
-            self.$message.error(response.data.meta.message)
-          }
-        }).catch((error) => {
-          self.$message.error(error.message)
-          console.error(error.message)
-        })
-      },
-      // 删除任务
-      deleteTask(id) {
-        const self = this
-        this.$http.delete(api.taskId.format(id), {}).then(function (response) {
-          if (response.data.meta.status_code === 200) {
-            self.$message.success('删除成功!')
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -303,15 +272,33 @@
           console.error(error.message)
         })
       },
+      // 同步任务列表
+      syncTaskList() {
+        let event = this.propsTaskStat.event
+        if (event === 'create') {
+          this.taskList.unshift(this.propsTaskForm)
+        }
+      },
       // 添加标签
       addTagBtn() {
         this.$set(this.propsTags, 'power', 1)
-        this.$set(this.propsTags, 'itemId', this.itemId)
       },
       // 添加任务
       addTaskBtn() {
         this.$set(this.propsTask, 'power', 1)
-        this.$set(this.propsTask, 'itemId', this.itemId)
+        this.$set(this.propsTaskStat, 'event', 'create')
+      },
+      // 编辑任务
+      editTaskBtn(id, index) {
+        this.$set(this.propsTask, 'power', 1)
+        this.$set(this.propsTaskStat, 'id', id)
+        this.$set(this.propsTaskStat, 'event', 'update')
+      },
+      // 查看任务详情
+      showTaskBtn(id, index) {
+        this.$set(this.propsTask, 'power', 1)
+        this.$set(this.propsTaskStat, 'id', id)
+        this.$set(this.propsTaskStat, 'event', 'view')
       },
       // 更新标签组件传回数据
       changePropsTags(obj) {
@@ -320,6 +307,14 @@
       // 更新任务组件传回数据
       changePropsTask(obj) {
         this.propsTask = obj
+      },
+      // 更新任务组件状态传回数据
+      changePropsTaskStat(obj) {
+        this.propsTaskStat = obj
+      },
+      // 更新任务表单数据
+      changePropsTaskForm(obj) {
+        this.propsTaskForm = obj
       }
     },
     computed: {
@@ -354,6 +349,18 @@
         return false
       }
     },
+    watch: {
+      // 监听任务组件更新当前任务列表
+      propsTaskStat: {
+        handler(val, oldVal) {
+          if (val.sync === 1) {
+            // 同步任务列表信息
+            this.syncTaskList()
+          }
+        },
+        deep: true
+      }
+    },
     created() {
       const self = this
       let itemId = self.$route.params.id
@@ -363,8 +370,14 @@
       // 请求项目详情，判断项目是否存在或有效
       self.itemId = itemId
 
+      // 向子组件注入项目ID
+      self.$set(this.propsTask, 'itemId', itemId)
+      self.$set(this.propsTags, 'itemId', itemId)
+
       // 获取阶段列表
       self.fetchStage()
+      // 获取主任务列表
+      self.fetchTask()
     }
   }
 </script>
