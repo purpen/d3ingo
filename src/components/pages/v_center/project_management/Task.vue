@@ -21,7 +21,7 @@
       <h2>任务列表</h2>
       <el-button @click="addTaskBtn()">添加任务</el-button>
       <p v-for="(d, index) in taskList" :key="index">
-        {{ d.id }} | {{ d.name }} | <el-button @click="editTaskBtn(d.id, index)">编辑</el-button> | <el-button @click="deleteStageBtn(d.id, index)">删除</el-button> | <el-button @click="showTaskBtn(d.id, index)">详情</el-button>
+        {{ d.id }} | {{ d.name }} | <el-button @click="showTaskBtn(d.id, index)">详情</el-button>
       </p>
 
     <v-task :propsParam="propsTask" :propsStat="propsTaskStat" :propsForm="propsTaskForm" @changePropsTask="changePropsTask" @changePropsStat="changePropsTaskStat" @changePropsForm="changePropsTaskForm"></v-task>
@@ -275,8 +275,29 @@
       // 同步任务列表
       syncTaskList() {
         let event = this.propsTaskStat.event
-        if (event === 'create') {
+        if (event === 'create') {   // 添加同步
           this.taskList.unshift(this.propsTaskForm)
+          this.propsTask.power = 0
+        } else if (event === 'update') {  // 更新同步
+          this.syncTaskListFor(event)
+        } else if (event === 'delete') {
+          this.syncTaskListFor(event)
+        }
+        this.propsTaskStat.event = ''
+        this.propsTaskStat.sync = 0
+      },
+      // 同步任务列表detail
+      syncTaskListFor(event) {
+        for (var i = 0; i < this.taskList.length; i++) {
+          let d = this.taskList[i]
+          if (d.id === this.propsTaskStat.id) {
+            if (event === 'update') {
+              this.$set(this.taskList, i, this.propsTaskForm)
+            } else if (event === 'delete') {
+              this.taskList.splice(i, 1)
+            }
+            break
+          }
         }
       },
       // 添加标签
@@ -285,20 +306,14 @@
       },
       // 添加任务
       addTaskBtn() {
-        this.$set(this.propsTask, 'power', 1)
-        this.$set(this.propsTaskStat, 'event', 'create')
+        this.propsTask.power = 1
+        this.propsTaskStat.event = 'create'
       },
-      // 编辑任务
-      editTaskBtn(id, index) {
-        this.$set(this.propsTask, 'power', 1)
-        this.$set(this.propsTaskStat, 'id', id)
-        this.$set(this.propsTaskStat, 'event', 'update')
-      },
-      // 查看任务详情
+      // 展开任务详情
       showTaskBtn(id, index) {
-        this.$set(this.propsTask, 'power', 1)
-        this.$set(this.propsTaskStat, 'id', id)
-        this.$set(this.propsTaskStat, 'event', 'view')
+        this.propsTask.power = 1
+        this.propsTaskStat.id = id
+        this.propsTaskStat.event = 'update'
       },
       // 更新标签组件传回数据
       changePropsTags(obj) {
