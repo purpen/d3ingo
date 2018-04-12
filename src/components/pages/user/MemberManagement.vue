@@ -298,8 +298,10 @@ export default {
       this.confirmDeleteGroup = false
     },
     getVerifyStatus() {
+      this.loading = true
       this.$http.get(api.designCompany)
       .then(res => {
+        this.loading = false
         if (res.data.meta.status_code === 200) {
           this.verifyStatus = res.data.data.verify_status
           if (this.verifyStatus === 1) {
@@ -310,6 +312,9 @@ export default {
         } else {
           this.$message.error(res.data.meta.message)
         }
+      }).catch(err => {
+        this.loading = false
+        this.$message.error(err.message)
       })
     },
     getLink() {
