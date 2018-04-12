@@ -16,7 +16,7 @@
           @createGroup="confirmCreateGroup"></member-menu>
       </el-col>
       <el-col :span="18">
-        <section class="member-list">
+        <section class="member-list" v-loading.body="loading">
           <div class="member-list-header">
             <p class="fl">
               {{firstGroupName}}
@@ -202,6 +202,7 @@ import Clipboard from 'clipboard'
 export default {
   data() {
     return {
+      loading: false,
       memberList: [], // 成员列表
       itemList: [], // 公司成员列表
       memberLeft: [{id: 1, name: '所有成员'}], // '新加入的成员', '停用的成员'
@@ -227,8 +228,10 @@ export default {
   },
   methods: {
     getItemList() {
+      this.loading = true
       this.$http.get(api.designMemberList)
       .then(res => {
+        this.loading = false
         if (res.data.meta.status_code === 200) {
           this.itemList = res.data.data
           this.itemList.forEach(item => {
@@ -239,10 +242,12 @@ export default {
         }
       })
       .catch(err => {
+        this.loading = false
         this.$message.error(err.message)
       })
     },
     getMemberList(id) {
+      this.loading = true
       let url = ''
       let groupId = id
       if (this.type === 'member') {
@@ -254,6 +259,7 @@ export default {
         group_id: groupId
       }})
       .then(res => {
+        this.loading = false
         if (res.data.meta.status_code === 200) {
           this.memberList = res.data.data
           this.addMemberIdList = []
@@ -267,6 +273,7 @@ export default {
         }
       })
       .catch(err => {
+        this.loading = false
         this.$message.error(err.message)
       })
     },
@@ -345,10 +352,12 @@ export default {
       }
     },
     setRole(id, role) {
+      this.loading = true
       this.$http.put(api.designMemberSetRole, {
         set_user_id: id,
         company_role: role
       }).then(res => {
+        this.loading = false
         if (res.data.meta.status_code === 200) {
           this.$nextTick(() => {
             this.memberList.forEach(item => {
@@ -367,6 +376,7 @@ export default {
           this.$message.error(res.data.meta.message)
         }
       }).catch(err => {
+        this.loading = false
         this.$message.error(err.message)
       })
     },
@@ -406,9 +416,11 @@ export default {
       this.$router.push({name: this.$route.name, query: {type: type}})
     },
     changeMemberLeft() {
+      this.loading = true
       if (this.$route.query.type === 'group') {
         this.$http.get(api.designgroupLists)
         .then(res => {
+          this.loading = false
           if (res.data.meta.status_code === 200) {
             this.memberLeft = res.data.data
             if (this.memberLeft.length) {
@@ -423,6 +435,9 @@ export default {
           } else {
             this.$message.error(res.data.meta.message)
           }
+        }).catch(err => {
+          this.loading = false
+          this.$message.error(err.massage)
         })
       } else {
         this.firstGroupName = '所有成员'
@@ -430,6 +445,7 @@ export default {
       }
     },
     creatGetList() {
+      this.loading = true
       this.type = this.$route.query.type || 'member'
       this.changeMemberLeft()
       if (this.$route.query.type === 'group') {
@@ -981,7 +997,7 @@ export default {
     position: absolute;
     right: 0;
     top: 29px;
-    z-index: 999;
+    z-index: 1999;
   }
 
   .cententList p {
