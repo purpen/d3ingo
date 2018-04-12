@@ -3,7 +3,7 @@
     <h3>任务组件引入测试 <a href="javascript:void(0)" @click="closeBtn()">点击关闭</a></h3>
     <!--<el-button @click="addBtn()">添加任务</el-button>-->
 
-    <div v-if="currentStat.event">
+    <div>
       <el-input v-model="currentForm.name" placeholder="任务名称"></el-input>
       <el-input v-model="currentForm.tier" placeholder="层级"></el-input>
       <el-input v-model="currentForm.pid" placeholder="父ID"></el-input>
@@ -12,6 +12,7 @@
       <el-input v-model="currentForm.level" placeholder="级别1,5,8"></el-input>
 
       <el-button @click="submit()">提交</el-button>
+      <el-button @click="deleteBtn()">删除</el-button>
     </div>
 
   </div>
@@ -45,8 +46,6 @@
     },
     data () {
       return {
-        taskList: [],
-        childList: [],
         attr: {
           itemId: 0,
           power: 0,
@@ -65,24 +64,6 @@
       }
     },
     methods: {
-      // 子任务列表
-      fetchChild() {
-        if (this.tagsList.length > 0) {
-          return this.childList
-        }
-        const self = this
-        this.$http.get(api.itemTags, {params: {item_id: self.attr.itemId}}).then(function (response) {
-          if (response.data.meta.status_code === 200) {
-            self.childList = response.data.data
-            console.log(response.data.data)
-          } else {
-            self.$message.error(response.data.meta.message)
-          }
-        }).catch((error) => {
-          self.$message.error(error.message)
-          console.error(error.message)
-        })
-      },
       // 关闭任务
       closeBtn() {
         this.attr.power = 0
@@ -94,29 +75,12 @@
           id: 0,
           index: 0
         }
-        this.currentForm = {
-          title: '',
-          item_id: 0,
-          type: 0,
-          test: ''
-        }
-      },
-      // 编辑任务按钮点击事件
-      editBtn(id, index) {
-        this.currentForm = this.taskList[index]
-        this.currentStat = {
-          event: 'update',
-          id: id,
-          index: index
-        }
+        this.currentForm = {}
       },
       // 删除任务点击事件
-      deleteBtn(id, index) {
-        this.currentStat = {
-          event: 'delete',
-          id: id,
-          index: index
-        }
+      deleteBtn() {
+        // this.currentStat.event = 'delete'
+        this.$set(this.currentStat, 'event', 'delete')
         this.delete()
       },
       // 提交任务
@@ -128,24 +92,15 @@
           this.update()
         } else if (event === 'delete') {
           this.delete()
-        } else if (event === 'view') {
-          this.view()
         }
       },
       // 查详情
       view() {
         const self = this
-        if (!self.currentForm.name) {
-          self.$message.error('名称不能为空!')
-          return false
-        }
-        self.currentForm.item_id = self.attr.itemId
         this.$http.get(api.taskId.format(self.currentStat.id), {}).then(function (response) {
           if (response.data.meta.status_code === 200) {
-            console.log('aaaa')
             console.log(response.data.data)
-            // 更新整个对象到view层
-            Object.assign(self.currentForm, response.data.data)
+            self.currentForm = response.data.data
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -180,14 +135,15 @@
       update() {
         const self = this
         let id = self.currentStat.id
-        let index = self.currentStat.index
         if (!id) {
           self.$message.error('ID不能为空!')
           return false
         }
         self.$http.put(api.taskId.format(id), self.currentForm).then(function (response) {
           if (response.data.meta.status_code === 200) {
-            self.$set(self.taskList, index, self.currentForm)
+            // 更新整个对象到view层
+            Object.assign(self.currentForm, response.data.data)
+            self.currentStat.sync = 1
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -200,14 +156,15 @@
       delete() {
         const self = this
         let id = self.currentStat.id
-        let index = self.currentStat.index
         if (!id) {
           self.$message.error('ID不能为空!')
           return false
         }
         self.$http.delete(api.taskId.format(id), {}).then(function (response) {
           if (response.data.meta.status_code === 200) {
-            self.taskList.splice(index, 1)
+            self.currentForm = {}
+            self.currentStat.sync = 1
+            self.attr.power = 0
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -237,6 +194,13 @@
       propsStat: {
         handler(val, oldVal) {
           this.currentStat = val
+          // 加载任务详情
+          if (this.currentStat.event === 'update') {
+            this.view()
+          } else if (this.currentStat.event === 'create') {
+            this.currentForm = {}
+          }
+          console.log(this.currentStat)
         },
         deep: true
       },
