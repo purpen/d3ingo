@@ -381,6 +381,7 @@
       let itemId = self.$route.params.id
       if (!itemId) {
         self.redirectItemList(1, '缺少请求参数！')
+        return
       }
       // 请求项目详情，判断项目是否存在或有效
       self.itemId = itemId

@@ -317,6 +317,10 @@ export default {
   toolsStage: '/stages', // GET 列表 | POST 创建
   toolsStageId: '/stages/{0}', // PUT 更新 | GET 详情 | DELETE 删除
 
+  // 沟通纪要
+  communeSummaries: '/communeSummaries',  // GET 列表 | POST 创建
+  communeSummariesId: '/communeSummaries/{0}',  // PUT 更新 | GET 详情 | DELETE 删除
+
   // test
   test: '/' // End
 }
