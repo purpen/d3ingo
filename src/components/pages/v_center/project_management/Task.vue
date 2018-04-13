@@ -21,7 +21,7 @@
       <h2>任务列表</h2>
       <el-button @click="addTaskBtn()">添加任务</el-button>
       <p v-for="(d, index) in taskList" :key="index">
-        {{ d.id }} | {{ d.name }} | <el-button @click="showTaskBtn(d.id, index)">详情</el-button>
+        {{ d.id }} | {{ d.name }} | {{ d.stage }} | <el-button @click="showTaskBtn(d.id, index)">详情</el-button> | <el-button @click="completeTaskBtn(d.id, index, d.stage)">完成</el-button>
       </p>
 
     <v-task :propsParam="propsTask" :propsStat="propsTaskStat" :propsForm="propsTaskForm" @changePropsTask="changePropsTask" @changePropsStat="changePropsTaskStat" @changePropsForm="changePropsTaskForm"></v-task>
@@ -244,34 +244,6 @@
           console.error(error.message)
         })
       },
-      // 认领任务
-      claimTask(id, userId) {
-        const self = this
-        this.$http.post(api.tasksExecuteUser, {task_id: id, execute_user_id: userId}).then(function (response) {
-          if (response.data.meta.status_code === 200) {
-            self.$message.success('认领成功!')
-          } else {
-            self.$message.error(response.data.meta.message)
-          }
-        }).catch((error) => {
-          self.$message.error(error.message)
-          console.error(error.message)
-        })
-      },
-      // 任务完成/取消完成
-      setStageTask(id, stage) {
-        const self = this
-        this.$http.put(api.taskStage, {task_id: id, stage: stage}).then(function (response) {
-          if (response.data.meta.status_code === 200) {
-            self.$message.success('操作成功!')
-          } else {
-            self.$message.error(response.data.meta.message)
-          }
-        }).catch((error) => {
-          self.$message.error(error.message)
-          console.error(error.message)
-        })
-      },
       // 同步任务列表
       syncTaskList() {
         let event = this.propsTaskStat.event
@@ -281,6 +253,8 @@
         } else if (event === 'update') {  // 更新同步
           this.syncTaskListFor(event)
         } else if (event === 'delete') {
+          this.syncTaskListFor(event)
+        } else if (event === 'complete') {
           this.syncTaskListFor(event)
         }
         this.propsTaskStat.event = ''
@@ -295,6 +269,8 @@
               this.$set(this.taskList, i, this.propsTaskForm)
             } else if (event === 'delete') {
               this.taskList.splice(i, 1)
+            } else if (event === 'complete') {
+              this.$set(this.taskList[i], 'stage', this.propsTaskStat.complete)
             }
             break
           }
@@ -314,6 +290,12 @@
         this.propsTask.power = 1
         this.propsTaskStat.id = id
         this.propsTaskStat.event = 'update'
+      },
+      // 完成/取消任务
+      completeTaskBtn(id, index, stage) {
+        this.propsTaskStat.id = id
+        this.propsTaskStat.event = 'complete'
+        this.propsTaskStat.complete = stage === 0 ? 2 : 0
       },
       // 更新标签组件传回数据
       changePropsTags(obj) {

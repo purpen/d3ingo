@@ -38,6 +38,7 @@
           id: 0,
           index: 0,
           event: '',
+          complete: 0,
           sync: 0,
           test: ''
         }
@@ -57,6 +58,7 @@
           event: '',
           id: 0,
           index: 0,
+          complete: 0,
           sync: 0,
           test: ''
         },
@@ -172,6 +174,41 @@
           self.$message.error(error.message)
           console.error(error.message)
         })
+      },
+      // 认领任务
+      claimTask(id, userId) {
+        const self = this
+        this.$http.post(api.tasksExecuteUser, {task_id: id, execute_user_id: userId}).then(function (response) {
+          if (response.data.meta.status_code === 200) {
+            self.$message.success('认领成功!')
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          self.$message.error(error.message)
+          console.error(error.message)
+        })
+      },
+      // 任务完成/取消完成
+      setStageTask() {
+        const self = this
+        let id = self.currentStat.id
+        let complate = self.currentStat.complete
+        if (!id) {
+          self.$message.error('ID不能为空!')
+          return false
+        }
+        this.$http.put(api.taskStage, {task_id: id, stage: complate}).then(function (response) {
+          if (response.data.meta.status_code === 200) {
+            self.currentStat.sync = 1
+            self.$message.success('操作成功!')
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          self.$message.error(error.message)
+          console.error(error.message)
+        })
       }
     },
     mounted: function () {
@@ -199,6 +236,8 @@
             this.view()
           } else if (this.currentStat.event === 'create') {
             this.currentForm = {}
+          } else if (this.currentStat.event === 'complete') {   // 点击完成/取消完成事件
+            this.setStageTask()
           }
           console.log(this.currentStat)
         },
