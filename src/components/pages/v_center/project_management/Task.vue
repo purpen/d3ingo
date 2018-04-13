@@ -53,12 +53,12 @@
         <section class="task-detail">
           <div class="task-detail-header">
             <span class="task-detail-name">笔记本设计</span>
-            <div class="select-parent" tabindex="-1">
+            <div ref="selectParent" class="select-parent" tabindex="-1">
               <span class="select-show">调研阶段部分</span>
               <ul class="stage-list">
-                <li>阶段一</li>
-                <li>阶段二</li>
-                <li>阶段三</li>
+                <li @click="selectBlur">阶段一</li>
+                <li @click="selectBlur">阶段二</li>
+                <li @click="selectBlur">阶段三</li>
               </ul>
             </div>
           </div>
@@ -429,6 +429,10 @@
         for (let i in this.showElement) {
           this.showElement[i] = false
         }
+      },
+      selectBlur() {
+        this.$refs.selectParent.blur()
+        console.log(this.$refs.selectParent)
       }
     },
     computed: {
@@ -701,7 +705,7 @@
     box-shadow: 0 0 5px rgba(0,0,0,0.10);
     position: absolute;
     left: 0;
-    top: 40px;
+    top: 34px;
     z-index: 1;
   }
   .stage-list li {
@@ -732,10 +736,12 @@
     border-left: none;
     border-top: none;
   }
+  .select-parent:hover .stage-list,
   .select-parent:focus .stage-list {
     display: block
   }
   
+  .select-parent:hover .select-show::after,
   .select-parent:focus .select-show::after {
     transform: rotate(-135deg);
   }

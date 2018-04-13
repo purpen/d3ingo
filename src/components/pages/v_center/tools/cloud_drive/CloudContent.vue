@@ -139,13 +139,13 @@
             <span class="fl" @click="shareFile(prewiewInfo.id)">分享</span>
             <span class="fl" @click="downFile(prewiewInfo.id, prewiewInfo.url_file)">下载</span>
             <span class="fl" @click="moveFile(prewiewInfo.id)">移动</span>
-            <span class="fl more" tabindex="-1">
+            <span ref="moreRight" class="fl more" tabindex="-1">
               <i></i>
               <ul>
                 <li @click="headRenameConfirm()">重命名</li>
                 <li @click="deleteFile(prewiewInfo.id)">删除</li>
                 <li v-if="prewiewInfo" v-show="folderId === 0 && Number(prewiewInfo.user_id) === Number(user.id)" @click="changePermission(prewiewInfo.id, prewiewInfo.user_id)">更改权限</li>
-                <li @click="showProfile = true">详细信息</li>
+                <li @click="showProfile = true, $refs.moreRight.blur()">详细信息</li>
               </ul>
             </span>
           </p>
@@ -358,6 +358,7 @@ export default {
       this.$emit('changeName', index, id, this.renameVal)
     },
     headRenameConfirm() {
+      this.$refs.moreRight.blur()
       this.isEditHeadName = true
       this.headName = this.prewiewInfo.name
     },
@@ -380,6 +381,7 @@ export default {
       this.renameVal = this.list[index]['name']
     },
     deleteFile(id, ObjIndex = -1) {
+      this.$refs.moreRight.blur()
       this.directOperate(id)
       this.$emit('deleteFile')
     },
