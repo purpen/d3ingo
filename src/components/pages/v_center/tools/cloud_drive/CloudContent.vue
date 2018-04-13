@@ -344,6 +344,7 @@ export default {
       }
     },
     closeView () {
+      this.isEditHeadName = false
       this.viewCover = false
       this.showProfile = false
       this.urlFile = ''
@@ -409,6 +410,7 @@ export default {
       }
     },
     changePermission(id, userId, ele) {
+      this.$refs.moreRight.blur()
       console.log(this.user.company_role)
       if (this.user.id === userId) {
         this.directOperate(id)
