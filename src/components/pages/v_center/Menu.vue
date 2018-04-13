@@ -534,23 +534,21 @@
       text-indent: -999rem;
     }
   }
-  @media screen and (max-width: 767px) {
-    .menuHide {
-      background: #fff;
-    }
-    .menu-list .item {
-      color: #666;
-    }
-    .menu-list .item:hover {
-      color: #222;
-      background: #fff;
-    }
+  .MmenuHide {
+    background: #fff;
+  }
+  .MmenuHide .menu-list .item {
+    color: #666;
+  }
+  .MmenuHide .menu-list .item:hover {
+    color: #222;
+    background: #fff;
+  }
 
-    .item.is-active {
-      background: #fff;
-      color: #222;
-      font-weight: bold;
-      border-color: #fff
-    }
+  .MmenuHide .item.is-active {
+    background: #fff;
+    color: #222;
+    font-weight: bold;
+    border-color: #fff
   }
 </style>
