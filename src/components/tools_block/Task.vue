@@ -14,7 +14,43 @@
       <el-button @click="submit()">提交</el-button>
       <el-button @click="deleteBtn()">删除</el-button>
     </div>
-
+    <section class="task-detail">
+      <div class="task-detail-header">
+        <span class="task-detail-name">笔记本设计</span>
+        <div ref="selectParent" class="select-parent" tabindex="-1">
+          <span class="select-show">调研阶段部分</span>
+          <ul class="stage-list">
+            <li>阶段一</li>
+            <li>阶段二</li>
+            <li>阶段三</li>
+          </ul>
+        </div>
+      </div>
+      <p class="add-task-input">
+        <input placeholder="添加任务内容" type="text">
+      </p>
+      <div class="task-detail-body">
+        <div>
+          <p>分配给</p>
+        </div>
+        <ul class="task-info">
+          <li>
+            <span>截止时间:</span>
+            <el-date-picker
+              v-model="currentForm.over_time"
+              type="datetime"
+              placeholder="选择日期时间">
+            </el-date-picker>
+          </li>
+          <li>
+            <span>优先级:</span>
+          </li>
+          <li>
+            <span>标签:</span>
+          </li>
+        </ul>
+      </div>
+    </section>
   </div>
 
 </template>
@@ -38,6 +74,7 @@
           id: 0,
           index: 0,
           event: '',
+          complete: 0,
           sync: 0,
           test: ''
         }
@@ -52,11 +89,13 @@
           test: ''
         },
         currentForm: {   // 当前任务表单
+          over_time: null
         },
         currentStat: {   // 当前任务操作事件
           event: '',
           id: 0,
           index: 0,
+          complete: 0,
           sync: 0,
           test: ''
         },
@@ -101,6 +140,7 @@
           if (response.data.meta.status_code === 200) {
             console.log(response.data.data)
             self.currentForm = response.data.data
+            console.log(self.currentForm)
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -172,6 +212,41 @@
           self.$message.error(error.message)
           console.error(error.message)
         })
+      },
+      // 认领任务
+      claimTask(id, userId) {
+        const self = this
+        this.$http.post(api.tasksExecuteUser, {task_id: id, execute_user_id: userId}).then(function (response) {
+          if (response.data.meta.status_code === 200) {
+            self.$message.success('认领成功!')
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          self.$message.error(error.message)
+          console.error(error.message)
+        })
+      },
+      // 任务完成/取消完成
+      setStageTask() {
+        const self = this
+        let id = self.currentStat.id
+        let complate = self.currentStat.complete
+        if (!id) {
+          self.$message.error('ID不能为空!')
+          return false
+        }
+        this.$http.put(api.taskStage, {task_id: id, stage: complate}).then(function (response) {
+          if (response.data.meta.status_code === 200) {
+            self.currentStat.sync = 1
+            self.$message.success('操作成功!')
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          self.$message.error(error.message)
+          console.error(error.message)
+        })
       }
     },
     mounted: function () {
@@ -199,6 +274,8 @@
             this.view()
           } else if (this.currentStat.event === 'create') {
             this.currentForm = {}
+          } else if (this.currentStat.event === 'complete') {   // 点击完成/取消完成事件
+            this.setStageTask()
           }
           console.log(this.currentStat)
         },
@@ -230,6 +307,113 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .task-detail {
+    margin-left: 20px;
+    min-height: 100vh;
+    border: 1px solid #d2d2d2;
+    border-radius: 4px;
+    padding: 20px 30px;
+  }
+  .task-detail-header {
+    display: flex;
+    color: #666;
+    font-size: 14px;
+  }
+  .task-detail-name {
+    height: 34px;
+    line-height: 34px;
+    margin-right: 30px;
+    padding: 0 10px;
+    border: 1px solid #d2d2d2;
+    border-radius: 4px;
+  }
+  .select-parent {
+    position: relative;
+  }
+  .stage-list {
+    display: none;
+    background: #fff;
+    width: 220px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.10);
+    position: absolute;
+    left: 0;
+    top: 34px;
+    z-index: 1;
+  }
+  .stage-list li {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 20px;
+  }
+  .stage-list li:hover {
+    background: #f7f7f7;
+    cursor: pointer;
+  }
+  .select-show {
+    display: inline-block;
+    line-height: 34px;
+    position: relative;
+  }
 
-
+  .select-show::after {
+    transition: 0.2s all ease;
+    content: "";
+    position: absolute;
+    right: -16px;
+    top: 10px;
+    width: 10px;
+    height: 10px;
+    border: 2px solid #d2d2d2;
+    transform: rotate(45deg);
+    border-left: none;
+    border-top: none;
+  }
+  .select-parent:hover .stage-list,
+  .select-parent:focus .stage-list {
+    display: block
+  }
+  
+  .select-parent:hover .select-show::after,
+  .select-parent:focus .select-show::after {
+    transform: rotate(-135deg);
+  }
+  .add-task-input input {
+    width: 100%;
+    height: 50px;
+    border: 1px solid #d2d2d2;
+    border-radius: 4px;
+    font-size: 20px;
+    padding: 0 10px;
+  }
+  .add-task-input {
+    position: relative;
+    padding: 20px 0 12px 50px;
+    border-bottom: 1px solid #d2d2d2;
+  }
+  
+  .add-task-input::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 33px;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #d2d2d2;
+    border-radius: 4px;
+  }
+  .task-detail-body {
+    padding-top: 20px;
+    
+  }
+  .task-info li {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    margin-bottom: 20px;
+    font-size: 14px;
+  }
+  .task-info li span {
+    margin-right: 15px;
+    color: #999;
+  }
 </style>

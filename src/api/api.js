@@ -317,6 +317,14 @@ export default {
   toolsStage: '/stages', // GET 列表 | POST 创建
   toolsStageId: '/stages/{0}', // PUT 更新 | GET 详情 | DELETE 删除
 
+  // 沟通纪要
+  communeSummaries: '/communeSummaries',  // GET 列表 | POST 创建
+  communeSummariesId: '/communeSummaries/{0}',  // PUT 更新 | GET 详情 | DELETE 删除
+  // 项目列表
+  desiginProjectList: '/designProject/lists', // GET 项目列表
+  createDesignProject: '/designProject/create', // POST 创建
+  updateDesignProject: '/designProject/update', // PUT 创建
+  designProject: '/designProject', // GET 展示详情
   // test
   test: '/' // End
 }
