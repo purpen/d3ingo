@@ -1,5 +1,90 @@
 <template>
   <section>
+    <div class="AddCommunicate">
+      <el-row :gutter="20">
+        <el-col :span="18" :offset="3">
+          <div class="grid-content bg-purple">
+            <el-row>
+              <el-col class="fx-3">
+               标题
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="6">
+                <el-input  placeholder="请输入地点"></el-input>
+              </el-col>
+              <el-col :span="6">
+                  <div class="block">
+                    <span class="demonstration">时间</span>
+                    <el-date-picker
+                      type="datetime"
+                      placeholder="选择日期时间">
+                    </el-date-picker>
+                  </div>            
+              </el-col>
+              <el-col :span="12">
+             
+              </el-col>
+              
+            </el-row>
+            <hr>
+            <el-row>
+              <el-col class="fx">
+                请输入会议内容
+              </el-col>
+            </el-row>
+            <el-row >
+              <el-col :span="6">
+                 文件
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col  class="uploads">
+                <span>链接</span>
+                <div class="fr">
+                <span>5</span>个人将会收到通知
+                <button @click="addBtn()" type="danger" class="small-button full-red-button">新建</button> 
+                </div>       
+                     
+              </el-col>
+            </el-row>
+          </div>
+        </el-col>
+        <el-col :span="18" :offset="3"><div class="grid-content bg-purple">
+           <el-row>
+              <el-col>
+                <h3>标题</h3> 
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col>
+                时间
+                <hr >
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col class="fx">
+                会议内容
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col>
+                文件
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col class="uploads">
+                <span>链接</span>
+                <div class="fr">
+                <span>5</span>个人将会收到通知
+                <button @click="addBtn()" type="danger" class="small-button full-red-button">新建</button> 
+                </div>       
+                     
+              </el-col>
+            </el-row>
+          </div></el-col>
+      </el-row>
+    </div>
     <el-button @click="addBtn()">新建</el-button>
     <div>
       <p v-for="(d, index) in itemList" :key="index">
@@ -177,3 +262,27 @@
     }
   }
 </script>
+<style>
+  .AddCommunicate {
+    color: #999999;
+  }
+  .AddCommunicate  h3{
+      font-size: 18px;
+      font-weight: bold;
+  }   
+  .AddCommunicate>.el-row>.el-col{
+    background: #FFFFFF;
+    border: 1px solid #F7F7F7;
+    box-shadow: 0 0 4px 0 rgba(0,0,0,0.10);
+    border-radius: 4px;
+    margin-top:20px;
+    padding:10px 0px;
+  }
+  .AddCommunicate>.el-row>.el-col>div>.el-row{
+    margin-top:10px;
+  }
+  .uploads{
+    height:36px;
+    line-height: 36px;
+  }
+</style>
