@@ -4,22 +4,23 @@
     <el-col :offset="4" :span="20">
       <div class="vcenter-container blank40">
         <h2>项目管理</h2>
-        <ul class="project-list">
-          <li v-for="(ele, index) in projectList" :key="index">
+        <ul class="project-list" v-loading.body="isLoading">
+          <li v-for="(ele, index) in projectList" :key="index"
+            @click.self="routePush(ele.id)">
             <div class="clearfix">
-              <h3 class="fl">{{ele.name}}</h3>
+              <h3 class="fl" @click="routePush(ele.id)">{{ele.name}}</h3>
               <div class="fr">
-                <p class="fr operate">
+                <p class="fr operate" tabindex="-1" ref="operate">
                   <span class="more">
                   </span>
-                  <span class="delete">
+                  <span class="delete" @click="projectDelete(ele.id, index)">
                     删除
                   </span>
                 </p>
-                <span class="favorite-star fr"></span>
+                <span class="favorite-star fr" v-if="false"></span>
               </div>
             </div>
-            <div class="content">
+            <div class="content" @click="routePush(ele.id)">
               {{ele.description}}
             </div>
             <span class="importance level2" v-if="ele.level === 2">重要</span>
@@ -67,10 +68,11 @@
 import vMenu from '@/components/pages/v_center/Menu'
 import api from '@/api/api'
 export default {
-  name: 'projectManagementOverView',
+  name: 'projectManagementList',
   data() {
     return {
       projectList: [],
+      isLoading: false,
       show: {
         cover: false,
         createContent: false,
@@ -83,6 +85,22 @@ export default {
     }
   },
   methods: {
+    getProjectList() {
+      this.isLoading = true
+      this.$http.get(api.desiginProjectList, {params: {
+        status: 1
+      }}).then(res => {
+        this.isLoading = false
+        if (res.data.meta.status_code === 200) {
+          this.projectList = res.data.data
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        this.isLoading = false
+        console.error(err.message)
+      })
+    },
     createProject() {
       if (this.projectName) {
         this.$http.post(api.createDesignProject, {
@@ -92,6 +110,7 @@ export default {
         })
         .then(res => {
           if (res.data.meta.status_code === 200) {
+            res.data.data.level = Number(res.data.data.level)
             this.projectList.unshift(res.data.data)
             this.closeCover()
           } else {
@@ -113,20 +132,26 @@ export default {
       for (let i in this.show) {
         this.show[i] = false
       }
+    },
+    routePush(id) {
+      this.$router.push({name: 'projectManagementOverView', params: {id: id}})
+    },
+    projectDelete(id, index) {
+      this.$http.put(api.deleteDesignProject, {id: id}).then(res => {
+        this.$refs.operate[index].blur()
+        if (res.data.meta.status_code === 200) {
+          this.projectList.splice(index, 1)
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        console.error(err)
+        this.$message.error(err.message)
+      })
     }
   },
   created() {
-    this.$http.get(api.desiginProjectList, {params: {
-      status: 1
-    }}).then(res => {
-      if (res.data.meta.status_code === 200) {
-        this.projectList = res.data.data
-      } else {
-        this.$message.error(res.data.meta.message)
-      }
-    }).catch(err => {
-      console.error(err.message)
-    })
+    this.getProjectList()
   },
   components: {
     vMenu
@@ -155,6 +180,10 @@ export default {
     padding-bottom: 40px;
   }
 
+  .project-list li a {
+    display: block;
+    height: 100%;
+  }
   .project-list li.create,
   .project-list li.create p {
     display: flex;
@@ -208,13 +237,19 @@ export default {
   .operate {
     position: relative;
   }
+  .operate:focus .delete {
+    display: block;
+  }
   .delete {
     display: none;
     position: absolute;
+    z-index: 1;
     left: 0;
     top: 24px;
     width: 180px;
     height: 40px;
+    line-height: 40px;
+    text-align: center;
     background: #FFFFFF;
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
     border-radius: 4px;
@@ -225,6 +260,7 @@ export default {
   }
   .content {
     max-height: 63px;
+    height: 63px;
     margin: 10px 0;
     line-height: 1.5;
     font-size: 14px;
@@ -366,6 +402,9 @@ export default {
     cursor: pointer;
     color: #999;
     text-decoration: underline
+  }
+  @media screen and (max-width:) {
+    
   }
 </style>
 

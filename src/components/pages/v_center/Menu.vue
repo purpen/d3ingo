@@ -70,7 +70,7 @@
             </a>
             </el-tooltip>
             <el-tooltip class="item" :effect="DarkorLight" content="项目管理" placement="right">
-            <a @click="alick" :to="'/vcenter/project_management'"
+            <a @click="alick" :to="'/vcenter/project_management/list'"
               :class="['item', 'management', {'is-active': currentName === 'project_management'}]">
               项目管理
             </a>
@@ -207,7 +207,7 @@
               :class="['item', 'order', {'is-active': currentName === 'c_item'}]">
               项目订单
             </a>
-            <a @click="alick" :to="'/vcenter/project_management'"
+            <a @click="alick" :to="'/vcenter/project_management/list'"
               :class="['item', 'management', {'is-active': currentName === 'project_management'}]">
               项目管理
             </a>
@@ -431,7 +431,10 @@
     background: url(../../../assets/images/v_center_menu/Cloud.png) no-repeat center;
     background-size: contain
   }
-  .menu-list .item.case::before {
+  .menu-list .item.case::before, 
+  .menu-list .item.order::before, 
+  .menu-list .item.message::before,
+  .menu-list .item.match-case::before {
     background: url(../../../assets/images/v_center_menu/Case.png) no-repeat center;
     background-size: contain
   }

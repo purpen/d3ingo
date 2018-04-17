@@ -324,6 +324,7 @@ export default {
   desiginProjectList: '/designProject/lists', // GET 项目列表
   createDesignProject: '/designProject/create', // POST 创建
   updateDesignProject: '/designProject/update', // PUT 创建
+  deleteDesignProject: '/designProject/delete', // PUT 放入回收站
   designProject: '/designProject', // GET 展示详情
   // test
   test: '/' // End

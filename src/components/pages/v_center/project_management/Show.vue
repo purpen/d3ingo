@@ -30,6 +30,16 @@ export default {
       this.changeRoute(to.name)
     }
   },
+  computed: {
+    leftWidth() {
+      let leftWidth = this.$store.state.event.leftWidth
+      if (leftWidth === 2) {
+        return 0
+      } else if (leftWidth === 4) {
+        return leftWidth
+      }
+    }
+  },
   components: {
     menuSub: menuSub,
     vMenuLeft: vMenuLeft
@@ -45,6 +55,13 @@ export default {
   .project-management {
     position: absolute;
     width: calc(100% - 240px);
+    top: 60px;
+    left: 240px;
+    padding-left: 0
+  }
+  .project-management-min {
+    position: absolute;
+    width: calc(100% - 60px);
     top: 60px;
     left: 240px;
     padding-left: 0

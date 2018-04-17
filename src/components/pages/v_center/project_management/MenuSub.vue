@@ -7,15 +7,15 @@
     </div>
     <div class="pm-middle">
       <router-link :class="[{'active': currentRoute === 'projectManagementOverView'}]"
-        :to="{name: 'projectManagementOverView', params: {id: 1}}">项目概况</router-link>
+        :to="{name: 'projectManagementOverView', params: {id: routeId}}">项目概况</router-link>
       <router-link :class="[{'active': currentRoute === 'projectManagementTask'}]"
-        :to="{name: 'projectManagementTask', params: {id: 1}}">任务</router-link>
+        :to="{name: 'projectManagementTask', params: {id: routeId}}">任务</router-link>
       <router-link :class="[{'active': currentRoute === 'projectManagementCommunicate'}]"
-        :to="{name: 'projectManagementCommunicate', params: {id: 1}}">沟通纪要</router-link>
+        :to="{name: 'projectManagementCommunicate', params: {id: routeId}}">沟通纪要</router-link>
       <router-link :class="[{'active': currentRoute === 'projectManagementFile'}]"
-        :to="{name: 'projectManagementFile', params: {id: 1}}">文件</router-link>
+        :to="{name: 'projectManagementFile', params: {id: routeId}}">文件</router-link>
       <router-link :class="[{'active': currentRoute === 'projectManagementIncomeandExpenses'}]"
-        :to="{name: 'projectManagementIncomeandExpenses', params: {id: 1}}">收支</router-link>
+        :to="{name: 'projectManagementIncomeandExpenses', params: {id: routeId}}">收支</router-link>
     </div>
     <div class="pm-right">
       <router-link to="">项目需求</router-link>
@@ -32,6 +32,11 @@ export default {
     currentRoute: {
       type: String,
       default: 'overview'
+    }
+  },
+  computed: {
+    routeId() {
+      return this.$route.params.id
     }
   }
 }
