@@ -65,6 +65,8 @@
   </section>
 </template>
 <script>
+import api from '@/api/api'
+import '@/assets/js/format'
 import vMenu from '@/components/pages/v_center/Menu'
 import api from '@/api/api'
 export default {
@@ -166,6 +168,145 @@ export default {
   },
   components: {
     vMenu
+  },
+  data() {
+    return {
+      itemList: [],
+      isLoading: false,
+      itemDialog: false,
+      isItemLoadingBtn: false,
+      form: {
+        name: '',
+        level: 1,
+        description: '',
+        test: ''
+      },
+      itemRuleForm: {
+        name: [
+          {required: true, message: '请添写项目名称', trigger: 'blur'}
+        ],
+        description: [
+          {required: true, message: '请添写项目描述', trigger: 'blur'}
+        ]
+      },
+      query: {
+        page: 1,
+        pageSize: 50,
+        totalCount: 0,
+        status: 1,
+        sort: 0,
+        type: 0,
+        test: null
+      },
+      test: ''
+    }
+  },
+  methods: {
+    // 加载列表
+    loadList() {
+      this.query.page = parseInt(this.$route.query.page || 1)
+      this.query.status = parseInt(this.$route.query.status || 1)
+      this.query.sort = this.$route.query.sort || 0
+      this.query.type = this.$route.query.type || 0
+      this.isLoading = true
+      this.$http.get(api.designProjectList, {params: {status: this.query.status}}).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          this.itemList = response.data.data
+          console.log(response.data.data)
+        } else {
+          this.$message.error(response.data.meta.message)
+        }
+      }).catch((error) => {
+        this.$message.error(error.message)
+        console.error(error.message)
+      })
+    },
+    // 删除项目
+    del(id, index) {
+      this.$http.put(api.designProjectDelete, {id: id}).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          this.itemList.splice(index, 1)
+        } else {
+          this.$message.error(response.data.meta.message)
+        }
+      }).catch((error) => {
+        this.$message.error(error.message)
+        console.error(error.message)
+      })
+    },
+    // 创建项目
+    createBtn() {
+      this.itemDialog = true
+    },
+    // 提交项目
+    submit(formName) {
+      this.$refs[formName].validate((valid) => {
+        // 验证通过，提交
+        if (valid) {
+          this.isItemLoadingBtn = true
+          this.$http({method: 'post', url: api.designProjectCreate, data: this.form})
+            .then((response) => {
+              if (response.data.meta.status_code === 200) {
+                this.itemList.unshift(response.data.data)
+                this.$message.success('提交成功！')
+                this.isItemLoadingBtn = false
+                this.itemDialog = false
+              } else {
+                this.$message.error(response.data.meta.message)
+                this.isItemLoadingBtn = false
+              }
+            })
+            .catch((error) => {
+              this.$message.error(error.message)
+              this.isItemLoadingBtn = false
+            })
+        }
+      })
+    }
+  },
+  created() {
+    this.loadList()
+  },
+  computed: {
+    isMob() {
+      return this.$store.state.event.isMob
+    },
+    leftWidth() {
+      return this.$store.state.event.leftWidth
+    },
+    rightWidth() {
+      return 24 - this.$store.state.event.leftWidth
+    },
+    // 是否为系统管理员
+    isCompanySystemAdmin() {
+      let companyRoleId = this.$store.state.event.user.company_role
+      if (companyRoleId === 20) {
+        return true
+      }
+      return false
+    },
+    // 是否为管理员
+    isCompanyAdmin() {
+      let companyRoleId = this.$store.state.event.user.company_role
+      if (companyRoleId === 20 || companyRoleId === 10) {
+        return true
+      }
+      return false
+    },
+    // 是否是子账号
+    isChild() {
+      let child = this.$store.state.event.user.child_account
+      if (child === 1) {
+        return true
+      }
+      return false
+    }
+  },
+  watch: {
+    '$route'(to, from) {
+      // 对路由变化作出响应...
+      this.loadList()
+    }
   }
 }
 </script>
