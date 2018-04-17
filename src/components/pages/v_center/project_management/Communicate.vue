@@ -4,33 +4,40 @@
       <el-row :gutter="20">
         <el-col :span="18" :offset="3">
           <div class="grid-content bg-purple">
-            <el-row>
+            <el-row v-if="event === 'create'">
               <el-col class="fx-3">
-               标题
+               <el-input  v-model="form.title" ></el-input>
               </el-col>
             </el-row>
-            <el-row>
-              <el-col :span="6">
-                <el-input  placeholder="请输入地点"></el-input>
+            <el-row class="edit"  v-if="event === 'create'">
+               <el-col :span="1">
+               <img :src=" Locationimg " alt="">
               </el-col>
-              <el-col :span="6">
+              <el-col :span="5">
+                <el-input  placeholder="请输入地点" size="small" v-model="form.location"></el-input>
+              </el-col>
+               <el-col :span="1" >
+                  <img :src=" dateimg " alt="">
+              </el-col>
+              <el-col :span="5">
                   <div class="block">
-                    <span class="demonstration">时间</span>
                     <el-date-picker
-                      type="datetime"
-                      placeholder="选择日期时间">
+                      type="datetime" 
+                      v-model="dateadd"
+                      placeholder="选择日期时间" size="small">
                     </el-date-picker>
                   </div>            
               </el-col>
               <el-col :span="12">
-             
+                  <img :src=" userimg " alt="">
+                  <ul class="fl"><li><a href="javascirpt:void(0)"></a></li><li :style=" { background: `url(${adduser}) no-repeat center ` } "><a href="#"></a></li></ul>
               </el-col>
-              
             </el-row>
-            <hr>
-            <el-row>
+            <el-row class="MeetingCenter" >
               <el-col class="fx">
-                请输入会议内容
+                <div @click="addBtn()">
+               <el-input  placeholder="请输入会议内容"   v-model="form.content" :readonly=" event !== 'create' "></el-input>  
+               </div>
               </el-col>
             </el-row>
             <el-row >
@@ -40,49 +47,91 @@
             </el-row>
             <el-row>
               <el-col  class="uploads">
-                <span>链接</span>
+                <img :src=" uploadimg " alt="" ><span>添加附件</span>
                 <div class="fr">
                 <span>5</span>个人将会收到通知
-                <button @click="addBtn()" type="danger" class="small-button full-red-button">新建</button> 
+                <button @click="create()" type="danger" class="small-button full-red-button">发送</button> 
                 </div>       
-                     
               </el-col>
             </el-row>
           </div>
         </el-col>
-        <el-col :span="18" :offset="3"><div class="grid-content bg-purple">
+
+
+
+        <el-col :span="18" :offset="3" v-if=" itemList.length>0 " v-for="(d, index) in itemList" :key="index"><div class="grid-content bg-purple">
            <el-row>
-              <el-col>
-                <h3>标题</h3> 
+              <el-col class="titlec">
+                <span >{{ d.title }}</span>
+                  <el-dropdown trigger="click" class="fr">
+                    <span class="el-dropdown-link">
+                      <i class="el-icon-more"></i>
+                    </span>
+                    <el-dropdown-menu slot="dropdown">
+                      <el-dropdown-item class="clearfix text-center" @click="deleteBtn(d.id, index)">
+                          删除
+                      <el-badge class="mark" />
+                      </el-dropdown-item>
+                      <el-dropdown-item class="clearfix text-center"  @click="editBtn(d.id, index)">
+                          编辑
+                      <el-badge class="mark" />
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+              </el-col>  
+            </el-row>
+            <el-row class="edit">
+               <el-col :span="1">
+               <img :src=" Locationimg " alt="">
+              </el-col>
+              <el-col :span="5">
+                <el-input  placeholder="请输入地点" size="small"></el-input>
+              </el-col>
+               <el-col :span="1" >
+                  <img :src=" dateimg " alt="">
+              </el-col>
+              <el-col :span="5">
+                  <div class="block">
+                    <el-date-picker
+                      type="datetime"
+                      placeholder="选择日期时间" size="small">
+                    </el-date-picker>
+                  </div>            
+              </el-col>
+              <el-col :span="12">
+                  <img :src=" userimg " alt="">
+                  <ul class="fl"><li v-for=" (userhead,index) in userheads " :key="index" v-if="userheads.length > 0"><a href="javascirpt:void(0)">{{ userhead.head }}</a></li></ul>
               </el-col>
             </el-row>
-            <el-row>
-              <el-col>
-                时间
-                <hr >
-              </el-col>
-            </el-row>
-            <el-row>
+            <el-row class="MeetingCenter">
               <el-col class="fx">
-                会议内容
+                {{ d.content }}
+              </el-col>
+            </el-row>
+            <el-row >
+              <el-col :span="6">
+                 文件
               </el-col>
             </el-row>
             <el-row>
-              <el-col>
-                文件
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col class="uploads">
-                <span>链接</span>
+              <el-col  class="uploads">    
                 <div class="fr">
-                <span>5</span>个人将会收到通知
-                <button @click="addBtn()" type="danger" class="small-button full-red-button">新建</button> 
-                </div>       
-                     
+                  <img :src=" uploadimg " alt="" >
+                 <span>人员</span>
+                 <span>日期</span>
+                </div>            
               </el-col>
+              
             </el-row>
           </div></el-col>
+
+       <el-col :span="18" :offset="3" v-if=" itemList.length===0" >
+         <div class="grid-content bg-purple onthing">        
+                  <img :src=" onThingimg "/>
+                  <p>沟通纪要记录项目实施阶段与客户沟通后，达成共识以及客户意见反馈的历史记录。</p>
+         </div>
+         </el-col>
+      
       </el-row>
     </div>
     <el-button @click="addBtn()">新建</el-button>
@@ -113,7 +162,15 @@
         event: '',
         form: {   // 纪要表单
         },
-        msg: ''
+        msg: '',
+        userimg: require('@/assets/images/tools/project_management/Participants@2x.png'),
+        dateimg: require('@/assets/images/tools/project_management/Meeting_time@2x.png'),
+        Locationimg: require('@/assets/images/tools/project_management/Address@2x.png'),
+        adduser: require('@/assets/images/tools/project_management/Add@2x.png'),
+        uploadimg: require('@/assets/images/tools/project_management/Enclosure@2x.png'),
+        onThingimg: require('@/assets/images/tools/project_management/onThing@2x.png'),
+        userheads: [],
+        dateadd: ''
       }
     },
     methods: {
@@ -262,14 +319,21 @@
     }
   }
 </script>
-<style>
+<style scoped>
   .AddCommunicate {
     color: #999999;
   }
-  .AddCommunicate  h3{
-      font-size: 18px;
-      font-weight: bold;
-  }   
+  .titlec{
+    line-height: 34px;
+    border:none;
+  }
+  .titlec>span{
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .MeetingCenter{
+    
+  }
   .AddCommunicate>.el-row>.el-col{
     background: #FFFFFF;
     border: 1px solid #F7F7F7;
@@ -284,5 +348,50 @@
   .uploads{
     height:36px;
     line-height: 36px;
+    padding-top:10px;
+    border-top: 1px solid #D2D2D2;
+    margin-bottom:10px;
+
   }
+  .edit ul>li {
+    width:19px;
+    height:19px;
+    border:1px solid #CA7547;
+    border-radius: 50%;
+    margin:5px 10px 0px 0px;
+    float: left;
+  }
+  .edit {
+    height:46px;
+    line-height: 30px;
+    overflow: hidden;
+    border-bottom: 1px solid #D2D2D2;
+    padding-bottom:16px;
+  }
+ .edit img {
+    width:20px;
+    margin:5px 6px 0px 6px;
+    float:left;
+ }
+ .uploads img {
+    width:20px;
+    margin:5px 6px 0px 6px;
+    float:left;
+ }
+
+ .MeetingCenter {
+    padding-top:10px;
+    min-height: 100px;
+ }
+
+ .onthing img {
+   width:90px;
+   height:100px;
+ }
+  .onthing {
+     text-align: center;
+     padding-top:50px;
+     min-height: 240px;
+  } 
+
 </style>
