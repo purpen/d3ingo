@@ -10,7 +10,7 @@
       <el-input v-model="currentTagsForm.title" placeholder="标签名称"></el-input>
       <el-input v-model="currentTagsForm.type" placeholder="色值"></el-input>
       <div>
-        <span v-for="(d, index) in tagsColorToneOptions">{{ d.label }} </span>
+        <span v-for="(d, index) in tagsColorToneOptions" :key="index">{{ d.label }} </span>
       </div>
       <el-button @click="submitTags()">提交</el-button>
     </div>

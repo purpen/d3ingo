@@ -1,31 +1,89 @@
 <template>
   <section>
     <v-tags :propParam="propsTags" @changePropsTags="changePropsTags"></v-tags>
-    Task
-    <el-button @click="addTagBtn">显示标签</el-button>
-    <hr />
+    <el-button @click="addTagBtn" v-if="false">显示标签</el-button>
     <div>
-      <h1>阶段测试</h1>
-      <el-button @click="addStageBtn()">添加阶段</el-button>
-      <p v-for="(d, index) in stageList" :key="index">
-        {{ d.id }} | {{ d.title }} | <el-button @click="editStageBtn(d.id, index)">编辑</el-button> | <el-button @click="deleteStageBtn(d.id, index)">删除</el-button>
-      </p>
-      <div v-if="currentStageStat.event">
+      <div v-if="false">
+        <h1>阶段测试</h1>
+        <el-button @click="addStageBtn()">添加阶段</el-button>
+        <p v-for="(d, index) in stageList" :key="index">
+          {{ d.id }} | {{ d.title }} |
+          <el-button @click="editStageBtn(d.id, index)">编辑</el-button> |
+          <el-button @click="deleteStageBtn(d.id, index)">删除</el-button>
+        </p>
+      </div>
+      <div v-if="showElement.showStageEdit">
         <el-input v-model="currentStageForm.title" placeholder=""></el-input>
         <el-button @click="submitStage()">提交阶段</el-button>
+        <el-button @click="showElement.showStageEdit = false">取消</el-button>
       </div>
-      
     </div>
-    <hr />
-    <div>
-      <h2>任务列表</h2>
-      <el-button @click="addTaskBtn()">添加任务</el-button>
-      <p v-for="(d, index) in taskList" :key="index">
-        {{ d.id }} | {{ d.name }} | {{ d.stage }} | <el-button @click="showTaskBtn(d.id, index)">详情</el-button> | <el-button @click="completeTaskBtn(d.id, index, d.stage)">完成</el-button>
-      </p>
+    <!--  ============  -->
+    
+    <div class="container task-content">
+      <el-col :span="12" class="task-list">
+        <div class="add-btn">
+          <button class="add-task middle-button full-red-button" @click="addTaskBtn()">添加任务</button>
+          <button class="add-stage small-button white-button" @click="addStageBtn()">添加阶段</button>
+        </div>
+        <section>
+          <div :class="['task-item','clearfix', {'active': taskisDone.indexOf(ele.id) !== -1}]" v-for="(ele, index) in displayObj.outsideStageList" :key="index">
+            <p @click="completeTask(ele.id)" class="task-name fl">{{ele.name}}</p>
+            <p class="task-date fr">{{ele.created_at_format}}</p>
+          </div>
+        </section>
+        
+        <section class="stage-item" v-for="(ele, index) in displayObj['itemList']" :key="index">
+          <p class="stage-name">{{ele.title}} : <span @click="confirmDeleteStageBtn(ele.id, index)" class="close-icon-solid"></span></p>
+          <section>
+            <div :class="['task-item','clearfix', {'active': taskisDone.indexOf(e.id) !== -1}]"
+              v-for="(e, i) in ele['itemList']" :key="i">
+              <p @click="completeTask(e.id)" class="task-name fl">{{e.name}}</p>
+              <p class="task-date fr">{{e.created_at_format}}</p>
+            </div>
+          </section>
+        </section>
+        <p v-if="false" v-for="(d, index) in taskList" :key="index">
+          {{ d.id }} | {{ d.name }} | <el-button @click="showTaskBtn(d.id, index)">详情</el-button>
+        </p>
 
-    <v-task :propsParam="propsTask" :propsStat="propsTaskStat" :propsForm="propsTaskForm" @changePropsTask="changePropsTask" @changePropsStat="changePropsTaskStat" @changePropsForm="changePropsTaskForm"></v-task>
+        <v-task :propsParam="propsTask" :propsStat="propsTaskStat" :propsForm="propsTaskForm" @changePropsTask="changePropsTask" @changePropsStat="changePropsTaskStat" @changePropsForm="changePropsTaskForm"></v-task>
+      </el-col>
+      <el-col :span="12">
+        <section class="task-detail">
+          <div class="task-detail-header">
+            <span class="task-detail-name">笔记本设计</span>
+            <div ref="selectParent" class="select-parent" tabindex="-1">
+              <span class="select-show">调研阶段部分</span>
+              <ul class="stage-list">
+                <li @click="selectBlur">阶段一</li>
+                <li @click="selectBlur">阶段二</li>
+                <li @click="selectBlur">阶段三</li>
+              </ul>
+            </div>
+          </div>
+          <p class="add-task-input">
+            <input placeholder="添加任务内容" type="text">
+          </p>
+        </section>
+      </el-col>
     </div>
+    <section class="dialog-bg" v-if="showElement.showCover" @click.self="closeCover"></section>
+    <section class="dialog-body" v-if="showElement.showComfirmDeleteStage">
+      <h3 class="dialog-header clearfix">
+        确认删除
+        <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
+      </h3>
+      <div class="dialog-content">
+        <div class="dialog-article">
+          <p>确认要删除这个阶段吗?</p>
+        </div>
+        <div class="buttons">
+          <button class="white-button small-button" @click="closeCover">取消</button>
+          <button class="full-red-button small-button" @click="deleteStageBtn">确定</button>
+        </div>
+      </div>
+    </section>
   </section>
 </template>
 <script>
@@ -50,7 +108,12 @@
         sureDialogLoadingBtn: false,
         isLoading: false,
         itemId: 0,   // 项目ID
+        taskisDone: [], // 任务完成id
         itemList: [],
+        displayObj: {
+          itemList: [],
+          outsideStageList: []
+        },
         taskList: [],
         stageList: [],  // 项目阶段列表
         tagsList: [],   // 标签列表
@@ -87,10 +150,20 @@
         pagination: {},
         userId: this.$store.state.event.user.id,
         query: {
+        },
+        showElement: {
+          showCover: false,
+          showComfirmDeleteStage: false,
+          showStageEdit: false
         }
       }
     },
     methods: {
+      formatList(item) {
+        if (item['created_at']) {
+          item['created_at_format'] = item['created_at'].date_format().format('yyyy年MM月dd日')
+        }
+      },
       // 跳回项目列表页 evt: 0.不提示信息；1.错误提示；2.成功提示；message: 消息
       redirectItemList(evt, message) {
         if (evt && message) {
@@ -112,7 +185,7 @@
         this.$http.get(api.toolsStage, {params: {item_id: self.itemId}}).then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.stageList = response.data.data
-            console.log(response.data.data)
+            // console.log(response.data.data)
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -123,6 +196,7 @@
       },
       // 添加阶段点击事件
       addStageBtn() {
+        this.showElement.showStageEdit = true
         this.currentStageStat = {
           event: 'create',
           id: 0,
@@ -136,6 +210,7 @@
       },
       // 编辑阶段按钮点击事件
       editStageBtn(id, index) {
+        this.showElement.showStageEdit = true
         this.currentStageForm = this.stageList[index]
         this.currentStageStat = {
           event: 'update',
@@ -143,14 +218,19 @@
           index: index
         }
       },
-      // 删除阶段点击事件
-      deleteStageBtn(id, index) {
+      confirmDeleteStageBtn(id, index) {
+        this.showElement.showCover = true
+        this.showElement.showComfirmDeleteStage = true
         this.currentStageStat = {
           event: 'delete',
           id: id,
           index: index
         }
+      },
+      // 删除阶段点击事件
+      deleteStageBtn() {
         this.deleteStage()
+        this.closeCover()
       },
       // 提交阶段
       submitStage() {
@@ -162,6 +242,7 @@
         } else if (event === 'delete') {
           this.deleteStage()
         }
+        this.showElement.showStageEdit = false
       },
       // 创建阶段事件
       createStage() {
@@ -173,7 +254,7 @@
         self.currentStageForm.item_id = self.itemId
         this.$http.post(api.toolsStage, self.currentStageForm).then(function (response) {
           if (response.data.meta.status_code === 200) {
-            console.log(response.data.data)
+            // console.log(response.data.data)
             self.stageList.unshift(response.data.data)
           } else {
             self.$message.error(response.data.meta.message)
@@ -235,7 +316,6 @@
         self.$http.get(api.task, {params: {item_id: self.itemId}}).then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.taskList = response.data.data
-            console.log(response.data.data)
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -312,6 +392,29 @@
       // 更新任务表单数据
       changePropsTaskForm(obj) {
         this.propsTaskForm = obj
+      },
+      // 完成任务
+      completeTask(id) {
+        let index = this.taskisDone.indexOf(id)
+        let stage = 2
+        if (index === -1) {
+          this.taskisDone.push(id)
+          stage = 2
+        } else {
+          this.taskisDone.splice(index, 1)
+          stage = 0
+        }
+        this.setStageTask(id, stage)
+        console.log(this.taskisDone)
+      },
+      closeCover() {
+        for (let i in this.showElement) {
+          this.showElement[i] = false
+        }
+      },
+      selectBlur() {
+        this.$refs.selectParent.blur()
+        console.log(this.$refs.selectParent)
       }
     },
     computed: {
@@ -356,6 +459,33 @@
           }
         },
         deep: true
+      },
+      taskList(newVal) {
+        this.$set(this.displayObj, 'outsideStageList', [])
+        let outsideStageList = []
+        let itemList = this.stageList
+        newVal.forEach((item) => {
+          this.formatList(item)
+          console.log(item)
+          if (itemList.length) {
+            itemList.forEach((ele, i) => {
+              ele.showItem = false
+              if (item.stage_id === ele.id) {
+                ele['itemList'].push(item)
+                ele.showItem = false
+              } else {
+                if (!item['use']) {
+                  outsideStageList.push(item)
+                  item['use'] = true
+                }
+              }
+            })
+          } else {
+            outsideStageList = newVal
+          }
+        })
+        this.$set(this.displayObj, 'itemList', itemList)
+        this.$set(this.displayObj, 'outsideStageList', outsideStageList)
       }
     },
     created() {
@@ -379,3 +509,247 @@
     }
   }
 </script>
+
+<style scoped>
+  @keyframes slowShow {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  .task-content {
+    padding-top: 30px;
+  }
+  .add-stage {
+    display: none;
+    animation: slowShow 1s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+  }
+  .add-btn {
+    padding-bottom: 20px;
+  }
+  .add-btn:hover .add-stage {
+    display: inline-block;
+  }
+  /* .task-list {
+    padding-left: 30px;
+  } */
+  .task-item, .stage-name {
+    border: 1px solid #d2d2d2;
+    border-radius: 4px;
+    line-height: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+  }
+  .task-item:hover {
+    background: #fafafa
+  }
+  .stage-name {
+    position: relative;
+    padding-left: 26px;
+    margin-top: 20px;
+    font-size: 18px;
+    color: #222222;
+    font-weight: bold
+  }
+  .close-icon-solid {
+    display: none;
+    position: absolute;
+    right: 20px;
+    top: 17px;
+  }
+  .stage-name:hover .close-icon-solid {
+    display: block;
+    animation: slowShow 1s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+  }
+  .task-item {
+    border-left: 6px solid #FFD330;
+  }
+  .task-item.active {
+    background: #fafafa;
+    color: #999;
+  }
+  .task-item.active .task-name{
+    text-decoration: line-through;
+  }
+  .task-item.active .task-name::after{
+    border-color: #d2d2d2
+  }
+  .task-name {
+    padding-left: 54px;
+    max-width: 70%;
+    position: relative;
+    cursor: pointer;
+  }
+  .task-name::before {
+    content: "";
+    position: absolute;
+    left: 20px;
+    top: 13px;
+    height: 24px;
+    width: 24px;
+    border: 1px solid #d2d2d2;
+    /* background: #fff; */
+    border-radius: 4px;
+  }
+
+  .task-name::after {
+    content: "";
+    position: absolute;
+    left: 29px;
+    top: 16px;
+    transform: rotate(45deg);
+    height: 15px;
+    width: 8px;
+    border: 2px solid #fff;
+    border-left: none;
+    border-top: none;
+  }
+
+  .task-date {
+    padding-right: 10px;
+  }
+  .dialog-bg {
+    position: fixed;
+    z-index: 1999;
+    left: 50%;
+    top: 50%;
+    transform:  translate(-50%, -50%);
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.30)
+  }
+  .dialog-body {
+    position: fixed;
+    z-index: 1999;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 380px;
+    margin: auto;
+    background: #FFFFFF;
+    box-shadow: 0 0 4px 0 rgba(0,0,0,0.10);
+    border-radius: 4px;
+  }
+  .dialog-header {
+    font-size: 14px;
+    color: #222;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    background: #F7F7F7;
+    border-radius: 4px 4px 0 0;
+    position: relative;
+  }
+  .dialog-header i {
+    position: absolute;
+    right: 17px;
+    top: 18px;
+    color: #666;
+  }
+  .dialog-header i:hover {
+    color: #222;
+  }
+  .dialog-content {
+    text-align: center;
+    padding: 30px 0;
+  }
+  .buttons {
+    padding-top: 30px;
+  }
+  .task-detail {
+    margin-left: 20px;
+    min-height: 100vh;
+    border: 1px solid #d2d2d2;
+    border-radius: 4px;
+    padding: 20px 30px;
+  }
+  .task-detail-header {
+    display: flex;
+    color: #666;
+    font-size: 14px;
+  }
+  .task-detail-name {
+    height: 34px;
+    line-height: 34px;
+    margin-right: 30px;
+    padding: 0 10px;
+    border: 1px solid #d2d2d2;
+    border-radius: 4px;
+  }
+  .select-parent {
+    position: relative;
+  }
+  .stage-list {
+    display: none;
+    background: #fff;
+    width: 220px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.10);
+    position: absolute;
+    left: 0;
+    top: 34px;
+    z-index: 1;
+  }
+  .stage-list li {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 20px;
+  }
+  .stage-list li:hover {
+    background: #f7f7f7;
+    cursor: pointer;
+  }
+  .select-show {
+    display: inline-block;
+    line-height: 34px;
+    position: relative;
+  }
+
+  .select-show::after {
+    transition: 0.2s all ease;
+    content: "";
+    position: absolute;
+    right: -16px;
+    top: 10px;
+    width: 10px;
+    height: 10px;
+    border: 2px solid #d2d2d2;
+    transform: rotate(45deg);
+    border-left: none;
+    border-top: none;
+  }
+  .select-parent:hover .stage-list,
+  .select-parent:focus .stage-list {
+    display: block
+  }
+  
+  .select-parent:hover .select-show::after,
+  .select-parent:focus .select-show::after {
+    transform: rotate(-135deg);
+  }
+  .add-task-input input {
+    width: 100%;
+    height: 50px;
+    border: 1px solid #d2d2d2;
+    border-radius: 4px;
+    font-size: 20px;
+    padding: 0 10px;
+  }
+  .add-task-input {
+    position: relative;
+    padding: 20px 0 12px 50px;
+    border-bottom: 1px solid #d2d2d2;
+  }
+  
+  .add-task-input::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 33px;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #d2d2d2;
+    border-radius: 4px;
+  }
+</style>

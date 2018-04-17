@@ -41,31 +41,63 @@ module.exports = [
     name: 'projectManagement',
     meta: {
       title: '项目概况',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     children: [
       {
         name: 'projectManagementOverView',
+        meta: {
+          title: '项目概况',
+          requireAuth: true,
+          hideHeader: true,
+          hideFooter: true
+        },
         path: '/vcenter/project_management/overview/:id',
         component: require('@/components/pages/v_center/project_management/OverView')
       },
       {
         name: 'projectManagementTask',
+        meta: {
+          title: '任务',
+          requireAuth: true,
+          hideHeader: true,
+          hideFooter: true
+        },
         path: '/vcenter/project_management/task/:id',
         component: require('@/components/pages/v_center/project_management/Task')
       },
       {
         name: 'projectManagementCommunicate',
+        meta: {
+          title: '沟通纪要',
+          requireAuth: true,
+          hideHeader: true,
+          hideFooter: true
+        },
         path: '/vcenter/project_management/communicate/:id',
         component: require('@/components/pages/v_center/project_management/Communicate')
       },
       {
         name: 'projectManagementFile',
+        meta: {
+          title: '文件',
+          requireAuth: true,
+          hideHeader: true,
+          hideFooter: true
+        },
         path: '/vcenter/project_management/file/:id',
         component: require('@/components/pages/v_center/project_management/File')
       },
       {
         name: 'projectManagementIncomeandExpenses',
+        meta: {
+          title: '项目收支',
+          requireAuth: true,
+          hideHeader: true,
+          hideFooter: true
+        },
         path: '/vcenter/project_management/income_expenses/:id',
         component: require('@/components/pages/v_center/project_management/IncomeandExpenses')
       }
