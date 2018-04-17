@@ -18,8 +18,6 @@
         <el-button @click="currentStageStat.event = false">取消</el-button>
       </div>
     </div>
-    <!--  ============  -->
-    
     <div class="container task-content">
       <el-row :gutter="30">
         <el-col :span="12" class="task-list">
@@ -54,7 +52,7 @@
           </p>
         </el-col>
         <el-col :span="12">
-          <v-task :propsParam="propsTask" :propsStat="propsTaskStat" :propsForm="propsTaskForm" @changePropsTask="changePropsTask" @changePropsStat="changePropsTaskStat" @changePropsForm="changePropsTaskForm"></v-task>
+          <v-task :propsParam="propsTask" :propsStat="propsTaskStat" :propsForm="propsTaskForm" @changePropsTask="changePropsTask" @changePropsStat="changePropsTaskStat" @changePropsForm="changePropsTaskForm" :projectObject="projectObject"></v-task>
         </el-col>
       </el-row>
     </div>
@@ -90,6 +88,14 @@
     components: {
       vTags,
       vTask
+    },
+    props: {
+      projectObject: {
+        type: Object,
+        default: function () {
+          return {}
+        }
+      }
     },
     data () {
       return {
@@ -434,7 +440,6 @@
         let itemList = this.stageList
         newVal.forEach((item) => {
           this.formatList(item)
-          console.log(item)
           if (itemList.length) {
             itemList.forEach((ele, i) => {
               ele.showItem = false

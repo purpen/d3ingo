@@ -16,7 +16,7 @@
     </div>
     <section class="task-detail">
       <div class="task-detail-header">
-        <span class="task-detail-name">笔记本设计</span>
+        <span class="task-detail-name">{{projectObject.name}}</span>
         <div ref="selectParent" class="select-parent" tabindex="-1">
           <span class="select-show">调研阶段部分</span>
           <ul class="stage-list">
@@ -27,7 +27,7 @@
         </div>
       </div>
       <p class="add-task-input">
-        <input placeholder="添加任务内容" type="text">
+        <input v-model="currentForm.name" placeholder="添加任务内容" type="text">
       </p>
       <div class="task-detail-body">
         <div>
@@ -44,6 +44,22 @@
           </li>
           <li>
             <span>优先级:</span>
+            <el-select v-model="currentForm.level" placeholder="请选择">
+              <el-option
+                v-for="(item, index) in levels"
+                :key="index"
+                :label="item.label"
+                :value="item.value">
+                <span :style="{
+                  float: 'left',
+                  width: '10px',
+                  height: '10px',
+                  borderRadius: '50%',
+                  margin: '5px 10px 0 0',
+                  background: item.color}"></span>
+                <span style="float: left">{{ item.label }}</span>
+              </el-option>
+            </el-select>
           </li>
           <li>
             <span>标签:</span>
@@ -62,6 +78,12 @@
   export default {
     name: 'toolsBlockTask',
     props: {
+      projectObject: {
+        type: Object,
+        default: function () {
+          return {}
+        }
+      },
       propsParam: {
         default: {
           itemId: 0,
@@ -89,7 +111,8 @@
           test: ''
         },
         currentForm: {   // 当前任务表单
-          over_time: null
+          over_time: '',
+          level: 1
         },
         currentStat: {   // 当前任务操作事件
           event: '',
@@ -99,7 +122,22 @@
           sync: 0,
           test: ''
         },
-        msg: ''
+        msg: '',
+        levels: [{
+          value: 1,
+          label: '普通',
+          color: '#999'
+        },
+        {
+          value: 2,
+          label: '紧急',
+          color: '#ffd330'
+        },
+        {
+          value: 3,
+          label: '非常紧急',
+          color: '#ff5a5f'
+        }]
       }
     },
     methods: {
@@ -140,7 +178,6 @@
           if (response.data.meta.status_code === 200) {
             console.log(response.data.data)
             self.currentForm = response.data.data
-            console.log(self.currentForm)
           } else {
             self.$message.error(response.data.meta.message)
           }

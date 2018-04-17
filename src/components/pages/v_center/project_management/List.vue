@@ -1,7 +1,7 @@
 <template>
-  <section>
+  <section :class="{'project-lists': !leftWidth}">
     <v-menu currentName="project_management"></v-menu>
-    <el-col :offset="4" :span="20">
+    <el-col :offset="leftWidth" :span="leftWidth? 20 : 24">
       <div class="vcenter-container blank40">
         <h2>项目管理</h2>
         <ul class="project-list" v-loading.body="isLoading">
@@ -149,6 +149,17 @@ export default {
         this.$message.error(err.message)
       })
     }
+  },
+  computed: {
+    leftWidth() {
+      let leftWidth = this.$store.state.event.leftWidth
+      if (leftWidth === 2) {
+        return 0
+      } else if (leftWidth === 4) {
+        return leftWidth
+      }
+    }
+
   },
   created() {
     this.getProjectList()
@@ -403,8 +414,8 @@ export default {
     color: #999;
     text-decoration: underline
   }
-  @media screen and (max-width:) {
-    
+  .project-lists {
+    padding-left: 60px;
   }
 </style>
 

@@ -2,8 +2,8 @@
   <header>
     <div class="pm-left">
       <router-link :to="{name: 'projectManagementList'}">项目管理</router-link>
-      <router-link :to="{}">笔记本设计</router-link>
-      <span class="favorite-star active"></span>
+      <router-link :to="{}">{{projectObject.name}}</router-link>
+      <span v-if="false" class="favorite-star active"></span>
     </div>
     <div class="pm-middle">
       <router-link :class="[{'active': currentRoute === 'projectManagementOverView'}]"
@@ -32,6 +32,12 @@ export default {
     currentRoute: {
       type: String,
       default: 'overview'
+    },
+    projectObject: {
+      type: Object,
+      default: function () {
+        return {}
+      }
     }
   },
   computed: {
@@ -43,6 +49,7 @@ export default {
 </script>
 <style scoped>
 header {
+  transition: 0.2s all ease;
   display: flex;
   position: relative;
   background: #f7f7f7;
