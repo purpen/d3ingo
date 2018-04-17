@@ -362,6 +362,15 @@
         } else {
           return 'dark'
         }
+      },
+      eventUser() {
+        let user = this.$store.state.event.user
+        if (user.avatar) {
+          user.logo_url = user.avatar.logo
+        } else {
+          user.logo_url = null
+        }
+        return user
       }
     }
   }
