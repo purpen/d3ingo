@@ -321,6 +321,13 @@ export default {
   communeSummaries: '/communeSummaries',  // GET 列表 | POST 创建
   communeSummariesId: '/communeSummaries/{0}',  // PUT 更新 | GET 详情 | DELETE 删除
 
+  // 项目管理
+  designProjectList: '/designProject/lists',   // GET 项目列表
+  designProjectCreate: '/designProject/create',   // POST 创建项目
+  designProjectUpdate: '/designProject/update',   // PUT 更新
+  designProject: '/designProject',   // GET 详情
+  designProjectDelete: '/designProject/delete',   // PUT 删除项目
+
   // test
   test: '/' // End
 }
