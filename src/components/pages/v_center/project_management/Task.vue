@@ -1,7 +1,5 @@
 <template>
   <section>
-    <v-tags :propParam="propsTags" @changePropsTags="changePropsTags"></v-tags>
-    <el-button @click="addTagBtn">显示标签</el-button>
     <div>
       <div v-if="false">
         <h1>阶段测试</h1>
@@ -52,7 +50,7 @@
           </p>
         </el-col>
         <el-col :span="12">
-          <v-task :propsParam="propsTask" :propParam2="propsTags" :propsStat="propsTaskStat" :propsForm="propsTaskForm" @changePropsTask="changePropsTask"  @changePropsTags="changePropsTags" @changePropsStat="changePropsTaskStat" @changePropsForm="changePropsTaskForm" :projectObject="projectObject"></v-task>
+          <v-task :propsParam="propsTask" :propsStat="propsTaskStat" :propsForm="propsTaskForm" @changePropsTask="changePropsTask" @changePropsStat="changePropsTaskStat" @changePropsForm="changePropsTaskForm" :projectObject="projectObject"></v-task>
         </el-col>
       </el-row>
     </div>
@@ -78,15 +76,12 @@
   import api from '@/api/api'
   import '@/assets/js/format'
   // import typeData from '@/config'
-  // 标签
-  import vTags from '@/components/tools_block/Tags'
   // 任务
   import vTask from '@/components/tools_block/Task'
 
   export default {
     name: 'projectManagementTask',
     components: {
-      vTags,
       vTask
     },
     props: {
@@ -125,11 +120,6 @@
           event: '',
           id: 0,
           index: 0
-        },
-        propsTags: {
-          itemId: 0,
-          power: 0,
-          test: ''
         },
         propsTask: {
           itemId: 0,
@@ -348,10 +338,6 @@
           }
         }
       },
-      // 添加标签
-      addTagBtn() {
-        this.$set(this.propsTags, 'power', 1)
-      },
       // 添加任务
       addTaskBtn() {
         this.propsTask.power = 1
@@ -368,10 +354,6 @@
         this.propsTaskStat.id = id
         this.propsTaskStat.event = 'complete'
         this.propsTaskStat.complete = stage === 0 ? 2 : 0
-      },
-      // 更新标签组件传回数据
-      changePropsTags(obj) {
-        this.propsTags = obj
       },
       // 更新任务组件传回数据
       changePropsTask(obj) {
@@ -473,7 +455,6 @@
 
       // 向子组件注入项目ID
       self.$set(this.propsTask, 'itemId', itemId)
-      self.$set(this.propsTags, 'itemId', itemId)
 
       // 获取阶段列表
       self.fetchStage()

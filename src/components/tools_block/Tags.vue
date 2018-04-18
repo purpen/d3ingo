@@ -16,9 +16,10 @@
     </div>
     <div class="select-tag" :style="{left: tagPosition.left, top: tagPosition.top}">
       <input class="tag-name" type="text">
-      <ul>
+      <ul class="tag-list">
         <li v-for="(d, index) in tagsList" :key="index">
-          {{ d.title }}
+          <i class="color"></i>
+          <span>{{ d.title }}</span>
         </li>
       </ul>
     </div>
@@ -246,5 +247,29 @@
   .select-tag {
     position: absolute;
     background: #fff;
+    width: 280px;
+    padding: 10px 20px;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
+    border-radius: 4px;
+  }
+  .tag-name {
+    width: 100%;
+    height: 40px;
+    border-radius: 4px;
+    border: 1px solid #d2d2d2;
+    margin-bottom: 10px;
+  }
+  .tag-list {
+    border-top: 1px solid #f0f0f0
+  }
+  .tag-list li {
+    height: 40px;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .tag-list li:hover {
+    background: #f7f7f7
   }
 </style>

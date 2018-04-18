@@ -1,5 +1,7 @@
 <template>
   <div class="" v-if="attr.power">
+    <v-tags :tagPosition="tagPosition" :propParam="propsTags" @changePropsTags="changePropsTags"></v-tags>
+    <el-button @click="addTagBtn">显示标签</el-button>
     <h3>任务组件引入测试 <a href="javascript:void(0)" @click="closeBtn()">点击关闭</a></h3>
     <!--<el-button @click="addBtn()">添加任务</el-button>-->
     <div v-if="true">
@@ -82,9 +84,14 @@
 <script>
   import api from '@/api/api'
   import '@/assets/js/format'
+  // 标签
+  import vTags from '@/components/tools_block/Tags'
   // import typeData from '@/config'
   export default {
     name: 'toolsBlockTask',
+    components: {
+      vTags
+    },
     props: {
       projectObject: {
         type: Object,
@@ -118,7 +125,7 @@
           power: 0,
           test: ''
         },
-        attr2: {
+        propsTags: {
           itemId: 0,
           power: 0,
           test: ''
@@ -150,7 +157,11 @@
           value: 3,
           label: '非常紧急',
           color: '#ff5a5f'
-        }]
+        }],
+        tagPosition: {
+          top: 0,
+          left: 0
+        }
       }
     },
     methods: {
@@ -299,9 +310,14 @@
         })
       },
       addTagBtn() {
-        console.log(event.currentTarget.offsetTop) // tags top
-        console.log(event.currentTarget.offsetLeft) // tags left
-        this.$set(this.attr2, 'power', 1)
+        this.$set(this.tagPosition, 'top', event.currentTarget.offsetTop + 30 + 'px')
+        this.$set(this.tagPosition, 'left', event.currentTarget.offsetLeft + 'px')
+        console.log(this.tagPosition)
+        this.$set(this.propsTags, 'power', 1)
+      },
+      // 更新标签组件传回数据
+      changePropsTags(obj) {
+        this.propsTags = obj
       }
     },
     mounted: function () {
@@ -368,6 +384,12 @@
       }
     },
     created: function() {
+      let itemId = this.$route.params.id
+      if (!itemId) {
+        this.redirectItemList(1, '缺少请求参数！')
+        return
+      }
+      this.$set(this.propsTags, 'itemId', itemId)
     }
   }
 </script>
