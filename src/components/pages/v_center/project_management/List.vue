@@ -422,10 +422,25 @@ export default {
     border: 1px solid #666;
     border-radius: 4px;
   }
+  .offer.active:after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    width: 12px;
+    height: 8px;
+    border: 2px solid #666;
+    border-right: none;
+    border-top: none;
+    transform: rotate(-45deg)
+  }
   .summary {
     cursor: pointer;
     color: #999;
     text-decoration: underline
+  }
+  .summary:hover {
+    color: #666;
   }
   .project-lists {
     padding-left: 60px;

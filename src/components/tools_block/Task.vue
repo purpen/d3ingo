@@ -1,9 +1,10 @@
 <template>
   <div class="" v-if="attr.power">
+    <v-tags :tagPosition="tagPosition" :propParam="propsTags" @changePropsTags="changePropsTags"></v-tags>
+    <el-button @click="addTagBtn">显示标签</el-button>
     <h3>任务组件引入测试 <a href="javascript:void(0)" @click="closeBtn()">点击关闭</a></h3>
     <!--<el-button @click="addBtn()">添加任务</el-button>-->
-
-    <div>
+    <div v-if="true">
       <el-input v-model="currentForm.name" placeholder="任务名称"></el-input>
       <el-input v-model="currentForm.tier" placeholder="层级"></el-input>
       <el-input v-model="currentForm.pid" placeholder="父ID"></el-input>
@@ -25,6 +26,7 @@
             <li>阶段三</li>
           </ul>
         </div>
+        <i class="fx fx-icon-nothing-close-error" @click="closeBtn"></i>
       </div>
       <p class="add-task-input">
         <input v-model="currentForm.name" placeholder="添加任务内容" type="text">
@@ -35,7 +37,7 @@
         </div>
         <ul class="task-info">
           <li>
-            <span>截止时间:</span>
+            <p>截止时间:</p>
             <el-date-picker
               v-model="currentForm.over_time"
               type="datetime"
@@ -43,7 +45,7 @@
             </el-date-picker>
           </li>
           <li>
-            <span>优先级:</span>
+            <p>优先级:</p>
             <el-select v-model="currentForm.level" placeholder="请选择">
               <el-option
                 v-for="(item, index) in levels"
@@ -62,7 +64,15 @@
             </el-select>
           </li>
           <li>
-            <span>标签:</span>
+            <p>标签:</p>
+            <div class="tags">
+              <span>标签1</span>
+              <span>标签1</span>
+              <span>标签1</span>
+              <span>标签1</span>
+              <span>标签1</span>
+              <i class="add-tag" ref="addTag" @click="addTagBtn">添加标签</i>
+            </div>
           </li>
         </ul>
       </div>
@@ -74,9 +84,14 @@
 <script>
   import api from '@/api/api'
   import '@/assets/js/format'
+  // 标签
+  import vTags from '@/components/tools_block/Tags'
   // import typeData from '@/config'
   export default {
     name: 'toolsBlockTask',
+    components: {
+      vTags
+    },
     props: {
       projectObject: {
         type: Object,
@@ -110,6 +125,11 @@
           power: 0,
           test: ''
         },
+        propsTags: {
+          itemId: 0,
+          power: 0,
+          test: ''
+        },
         currentForm: {   // 当前任务表单
           over_time: '',
           level: 1
@@ -137,7 +157,11 @@
           value: 3,
           label: '非常紧急',
           color: '#ff5a5f'
-        }]
+        }],
+        tagPosition: {
+          top: 0,
+          left: 0
+        }
       }
     },
     methods: {
@@ -284,6 +308,15 @@
           self.$message.error(error.message)
           console.error(error.message)
         })
+      },
+      addTagBtn() {
+        this.$set(this.tagPosition, 'top', event.currentTarget.offsetTop + 30 + 'px')
+        this.$set(this.tagPosition, 'left', event.currentTarget.offsetLeft + 'px')
+        this.$set(this.propsTags, 'power', 1)
+      },
+      // 更新标签组件传回数据
+      changePropsTags(obj) {
+        this.propsTags = obj
       }
     },
     mounted: function () {
@@ -297,9 +330,21 @@
         },
         deep: true
       },
+      propParam2: {
+        handler(val, oldVal) {
+          this.attr2 = val
+        },
+        deep: true
+      },
       attr: {
         handler(val, oldVal) {
           this.$emit('changePropsTask', val)
+        },
+        deep: true
+      },
+      attr2: {
+        handler(val, oldVal) {
+          this.$emit('changePropsTags', val)
         },
         deep: true
       },
@@ -338,6 +383,12 @@
       }
     },
     created: function() {
+      let itemId = this.$route.params.id
+      if (!itemId) {
+        this.redirectItemList(1, '缺少请求参数！')
+        return
+      }
+      this.$set(this.propsTags, 'itemId', itemId)
     }
   }
 </script>
@@ -345,7 +396,6 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .task-detail {
-    margin-left: 20px;
     min-height: 100vh;
     border: 1px solid #d2d2d2;
     border-radius: 4px;
@@ -355,6 +405,12 @@
     display: flex;
     color: #666;
     font-size: 14px;
+    position: relative;
+  }
+  .task-detail-header .fx-icon-nothing-close-error {
+    position: absolute;
+    right: 0;
+    top: 10px;
   }
   .task-detail-name {
     height: 34px;
@@ -366,6 +422,7 @@
   }
   .select-parent {
     position: relative;
+    margin-right: 20px;
   }
   .stage-list {
     display: none;
@@ -445,12 +502,59 @@
   .task-info li {
     display: flex;
     align-items: center;
-    height: 40px;
+    min-height: 40px;
     margin-bottom: 20px;
     font-size: 14px;
   }
-  .task-info li span {
+  .task-info li p {
+    min-width: 72px;
+    padding-left: 34px;
     margin-right: 15px;
     color: #999;
+    position: relative;
+  }
+  .task-info li p:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .tags span {
+    padding-left: 0;
+    text-align: center;
+    line-height: 24px;
+    color: #fff;
+    width: 70px;
+    height: 24px;
+    border-radius: 12px;
+    background:#FC9259;
+    margin: 0 15px 15px 0
+  }
+  
+  .add-tag {
+    color: #999;
+    position: relative;
+    padding-left: 26px;
+    cursor: pointer;
+    margin: 0 15px 15px 0;
+    line-height: 24px;
+  }
+  .add-tag:hover {
+    color: #666;
+  }
+  .add-tag:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 4px;
+    width: 16px;
+    height: 16px;
+    background: url(../../assets/images/tools/project_management/Group.png) no-repeat;
+    background-size: contain;
+    border-radius: 50%;
   }
 </style>

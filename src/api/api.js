@@ -296,6 +296,7 @@ export default {
   // 邀请码
   inviteKey: '/urlKey', // 生成邀请字符串
   inviteValue: '/urlValue', // 解析邀请字符串
+  restoreMember: '/design/restoreMember', // 恢复成员
 
   /**
    * 任务接口

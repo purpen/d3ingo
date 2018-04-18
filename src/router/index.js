@@ -282,6 +282,14 @@ routes = [
     }
   },
   {
+    path: '/login/:code',
+    name: 'loginwithInvite',
+    meta: {
+      title: '登录'
+    },
+    component: require('@/components/pages/auth/Login')
+  },
+  {
     path: '/login',
     name: 'login',
     meta: {

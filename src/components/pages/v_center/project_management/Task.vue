@@ -1,7 +1,5 @@
 <template>
   <section>
-    <v-tags :propParam="propsTags" @changePropsTags="changePropsTags"></v-tags>
-    <el-button @click="addTagBtn" v-if="false">显示标签</el-button>
     <div>
       <div v-if="false">
         <h1>阶段测试</h1>
@@ -20,7 +18,7 @@
     </div>
     <div class="container task-content">
       <el-row :gutter="30">
-        <el-col :span="12" class="task-list">
+        <el-col :span="propsTask.power ? 12 : 24" class="task-list">
           <div class="add-btn">
             <button class="add-task middle-button full-red-button" @click="addTaskBtn()">添加任务</button>
             <button class="add-stage small-button white-button" @click="addStageBtn()">添加阶段</button>
@@ -78,15 +76,12 @@
   import api from '@/api/api'
   import '@/assets/js/format'
   // import typeData from '@/config'
-  // 标签
-  import vTags from '@/components/tools_block/Tags'
   // 任务
   import vTask from '@/components/tools_block/Task'
 
   export default {
     name: 'projectManagementTask',
     components: {
-      vTags,
       vTask
     },
     props: {
@@ -125,11 +120,6 @@
           event: '',
           id: 0,
           index: 0
-        },
-        propsTags: {
-          itemId: 0,
-          power: 0,
-          test: ''
         },
         propsTask: {
           itemId: 0,
@@ -348,10 +338,6 @@
           }
         }
       },
-      // 添加标签
-      addTagBtn() {
-        this.$set(this.propsTags, 'power', 1)
-      },
       // 添加任务
       addTaskBtn() {
         this.propsTask.power = 1
@@ -368,10 +354,6 @@
         this.propsTaskStat.id = id
         this.propsTaskStat.event = 'complete'
         this.propsTaskStat.complete = stage === 0 ? 2 : 0
-      },
-      // 更新标签组件传回数据
-      changePropsTags(obj) {
-        this.propsTags = obj
       },
       // 更新任务组件传回数据
       changePropsTask(obj) {
@@ -473,7 +455,6 @@
 
       // 向子组件注入项目ID
       self.$set(this.propsTask, 'itemId', itemId)
-      self.$set(this.propsTags, 'itemId', itemId)
 
       // 获取阶段列表
       self.fetchStage()
