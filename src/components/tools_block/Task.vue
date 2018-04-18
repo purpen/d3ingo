@@ -312,7 +312,6 @@
       addTagBtn() {
         this.$set(this.tagPosition, 'top', event.currentTarget.offsetTop + 30 + 'px')
         this.$set(this.tagPosition, 'left', event.currentTarget.offsetLeft + 'px')
-        console.log(this.tagPosition)
         this.$set(this.propsTags, 'power', 1)
       },
       // 更新标签组件传回数据

@@ -1,24 +1,29 @@
 <template>
   <div class="tags-component" v-if="attr.power">
-    <h3>标签组件引入测试 <a href="javascript:void(0)" @click="closeTagsBtn()">点击关闭</a></h3>
-    <el-button @click="addTagsBtn()">添加标签</el-button>
-    <p v-for="(d, index) in tagsList" :key="index">
-      {{ d.id }} | {{ d.title }} | <el-button @click="editTagsBtn(d.id, index)">编辑</el-button> | <el-button @click="deleteTagsBtn(d.id, index)">删除</el-button>
-    </p>
+    <div v-if="true">
+      <h3>标签组件引入测试 <a href="javascript:void(0)" @click="closeTagsBtn()">点击关闭</a></h3>
+      <el-button @click="addTagsBtn()">添加标签</el-button>
+      <p v-for="(d, index) in tagsList" :key="index">
+        {{ d.id }} | {{ d.title }} | <el-button @click="editTagsBtn(d.id, index)">编辑</el-button> | <el-button @click="deleteTagsBtn(d.id, index)">删除</el-button>
+      </p>
 
-    <div v-if="currentTagsStat.event">
-      <el-input v-model="currentTagsForm.title" placeholder="标签名称"></el-input>
-      <el-input v-model="currentTagsForm.type" placeholder="色值"></el-input>
-      <div>
-        <span v-for="(d, index) in tagsColorToneOptions" :key="index">{{ d.label }} </span>
+      <div v-if="currentTagsStat.event">
+        <el-input v-model="currentTagsForm.title" placeholder="标签名称"></el-input>
+        <el-input v-model="currentTagsForm.type" placeholder="色值"></el-input>
+        <div>
+          <span v-for="(d, index) in tagsColorToneOptions" :key="index">{{ d.label }} </span>
+        </div>
+        <el-button @click="submitTags()">提交</el-button>
       </div>
-      <el-button @click="submitTags()">提交</el-button>
     </div>
     <div class="select-tag" :style="{left: tagPosition.left, top: tagPosition.top}">
-      <input class="tag-name" type="text">
+      <div class="tag-header">
+        <input v-model.trim="tagName" class="tag-name" type="text">
+      </div>
       <ul class="tag-list">
         <li v-for="(d, index) in tagsList" :key="index">
-          <i class="color"></i>
+          <i class="color"
+          :style="{background: d.type_format}"></i>
           <span>{{ d.title }}</span>
         </li>
       </ul>
@@ -68,7 +73,8 @@
           id: 0,
           index: 0
         },
-        msg: ''
+        msg: '',
+        tagName: ''
       }
     },
     methods: {
@@ -81,7 +87,42 @@
         this.$http.get(api.itemTags, {params: {item_id: self.attr.itemId}}).then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.tagsList = response.data.data
-            console.log(response.data.data)
+            self.tagsList.forEach(item => {
+              switch (item.type) {
+                case 1:
+                  item.type_format = '#999999'
+                  break
+                case 2:
+                  item.type_format = '#FF5A5F'
+                  break
+                case 3:
+                  item.type_format = '#FC9259'
+                  break
+                case 4:
+                  item.type_format = '#FFD330'
+                  break
+                case 5:
+                  item.type_format = '#A4CF30'
+                  break
+                case 6:
+                  item.type_format = '#E362E3'
+                  break
+                case 7:
+                  item.type_format = '#AA62E3'
+                  break
+                case 8:
+                  item.type_format = '#3DA8F5'
+                  break
+                case 9:
+                  item.type_format = '#129C4F'
+                  break
+                case 10:
+                  item.type_format = '#37C5AB'
+                  break
+                default:
+                  item.type_format = '#FFFFFF'
+              }
+            })
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -248,28 +289,37 @@
     position: absolute;
     background: #fff;
     width: 280px;
-    padding: 10px 20px;
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
     border-radius: 4px;
   }
+  .tag-header {
+    padding: 10px 20px;
+    border-bottom: 1px solid #f0f0f0
+  }
+
   .tag-name {
     width: 100%;
     height: 40px;
     border-radius: 4px;
     border: 1px solid #d2d2d2;
-    margin-bottom: 10px;
+    padding: 0 8px;
   }
-  .tag-list {
-    border-top: 1px solid #f0f0f0
-  }
+
   .tag-list li {
     height: 40px;
     position: relative;
     display: flex;
     align-items: center;
+    padding: 0 20px;
   }
 
   .tag-list li:hover {
     background: #f7f7f7
+  }
+  .tag-list .color {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 10px;
   }
 </style>
