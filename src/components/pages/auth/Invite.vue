@@ -45,11 +45,11 @@
           </el-button>
         </el-form>
 
-        <!-- <div class="reg">
+        <div class="reg">
           <p>已有铟果账户，您可以
-            <router-link :to="{name: 'login'}">立即登录</router-link>
+            <router-link :to="{name: 'login', params: {code: strCode}}">立即登录</router-link>
           </p>
-        </div> -->
+        </div>
 
       </div>
     </div>
@@ -112,7 +112,7 @@
           password: '',
           checkPassword: ''
         },
-        item: '',
+        item: {},
         ruleForm: {
           account: [
             {validator: checkNumber, trigger: 'blur'}
@@ -320,6 +320,9 @@
       },
       isMob() {
         return this.$store.state.event.isMob
+      },
+      strCode() {
+        return this.$route.params.code
       }
     },
     mounted() {
@@ -425,7 +428,7 @@
     cursor: pointer;
   }
 
-/*  .reg {
+  .reg {
     margin: 32px 0;
   }
 
@@ -435,10 +438,10 @@
 
   .reg p a {
     color: #FF5A5F;
-  }*/
-/*.reg {
-      margin: 20px 0
-    }*/
+  }
+  .reg {
+    margin: 20px 0
+  }
   .imgCode {
     width: 102px;
     height: 34px;
