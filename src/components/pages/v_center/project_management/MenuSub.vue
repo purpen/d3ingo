@@ -23,9 +23,52 @@
       <router-link :to="{path: ''}">合同</router-link>
       <router-link :to="{path: ''}">菜单</router-link>
     </div>
-    <section class="cover">
-      <div class="header clear">项目设置
-        <span class="fr fx fx-icon-nothing-close-error"></span>
+    <section class="cover" v-if="show.cover">
+      <div class="cover-content">
+        <div class="cover-header clear">项目设置
+          <span class="fr fx fx-icon-nothing-close-error"></span>
+        </div>
+        <div class="cover-body">
+          <div class="cover-body-left">
+            <span>项目信息</span>
+            <span>客户信息</span>
+            <span>权限信息</span>
+          </div>
+          <div class="cover-body-right">
+            <section>
+              <h3>项目名称</h3>
+              <input type="text" v-model.trim="project.name">
+            </section>
+            <section class="flex-box">
+              <div>
+                <h3>商务经理</h3>
+                <input type="text" v-model.trim="project.manager">
+              </div>
+              <div>
+                <h3>项目负责人</h3>
+                <input type="text" v-model.trim="project.leader">
+              </div>
+            </section>
+            <section class="flex-box">
+              <div>
+                <h3>项目费用</h3>
+                <input type="text" v-model.trim="project.expense">
+              </div>
+              <div>
+                <h3>项目工作地点</h3>
+                <input type="text" v-model.trim="project.addr">
+              </div>
+            </section>
+            <section>
+              <h3>设计类别</h3>
+              <input type="text" v-model.trim="project.name">
+            </section>
+            <section>
+              <h3>产品所属领域</h3>
+              <input type="text" v-model.trim="project.name">
+            </section>
+          </div>
+        </div>
       </div>
     </section>
   </header>
@@ -33,6 +76,20 @@
 <script>
 export default {
   name: 'projectManagementMenuSub',
+  data() {
+    return {
+      show: {
+        cover: true
+      },
+      project: {
+        name: '',
+        manager: '',
+        leader: '',
+        expense: '',
+        addr: ''
+      }
+    }
+  },
   props: {
     currentRoute: {
       type: String,
@@ -143,8 +200,68 @@ header {
   height: 100vh;
   background: rgba(0, 0, 0, 0.3);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  display: none;
+}
+.cover-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  margin: 48px auto;
+  width: 800px;
+  min-height: 600px;
+}
+.cover-header {
+  flex: 0 1 60px;
+  height: 50px;
+  background: #f7f7f7;
+  text-align: center;
+  line-height: 50px;
+  color: #222;
+  font-size: 16px;
+  font-weight: bold;
+  position: relative;
+}
+
+.cover-header span {
+  position: absolute;
+  top: 18px;
+  right: 15px;
+}
+.cover-body {
+  flex: 0 1 auto;
+  display: flex;
+  height: 100%;
+}
+.cover-body-left {
+  flex: 0 1 200px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #d2d2d2
+}
+.cover-body-left span {
+  line-height: 50px;
+  cursor: pointer;
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  height: 50px;
+  border-bottom: 1px solid #d2d2d2
+}
+.cover-body-left span:hover {
+  color: #ff5a5f;
+}
+.cover-body-left span.active {
+  color: #ff5a5f;
+  border-left: 6px solid #ff5a5f
+}
+.cover-body-right {
+  flex: 1 1 auto;
+  padding: 30px;
+}
+.flex-box {
+  display: flex
 }
 </style>
