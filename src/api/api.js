@@ -296,6 +296,7 @@ export default {
   // 邀请码
   inviteKey: '/urlKey', // 生成邀请字符串
   inviteValue: '/urlValue', // 解析邀请字符串
+  restoreMember: '/design/restoreMember', // 恢复成员
 
   /**
    * 任务接口
@@ -303,7 +304,7 @@ export default {
   task: '/tasks', // POST 创建 | GET 列表
   taskId: 'tasks/{0}', // PUT 更新 | DELETE 删除 | GET 详情
   tasksExecuteUser: '/tasks/executeUser', // POST 领取任务
-  taskStage: '/tasks/is/stage', // PUT 任务是否完成操作
+  taskStage: '/isStage/tasks', // PUT 任务是否完成操作
 
   // 任务成员
   taskUsers: '/taskUsers',  // GET 列表 | POST 创建
@@ -320,7 +321,12 @@ export default {
   // 沟通纪要
   communeSummaries: '/communeSummaries',  // GET 列表 | POST 创建
   communeSummariesId: '/communeSummaries/{0}',  // PUT 更新 | GET 详情 | DELETE 删除
-
+  // 项目列表
+  desiginProjectList: '/designProject/lists', // GET 项目列表
+  createDesignProject: '/designProject/create', // POST 创建
+  updateDesignProject: '/designProject/update', // PUT 创建
+  deleteDesignProject: '/designProject/delete', // PUT 放入回收站
+  designProject: '/designProject', // GET 展示详情
   // test
   test: '/' // End
 }

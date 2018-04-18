@@ -18,7 +18,7 @@
           <p class="fl">
             {{firstGroupName}}
           </p>
-          <p v-if="type === 'member'" class="invite fr" @click="getVerifyStatus">邀请成员</p>
+          <p v-if="type === 'member' && company_role === 20" class="invite fr" @click="getVerifyStatus">邀请成员</p>
           <div :class="['fr', 'more-list','more-list-group', {'active': isShowGroup}]"
             v-if="company_role === 10 || company_role === 20"
             v-show="type === 'group' && memberList.length">
@@ -43,7 +43,7 @@
                       <span class="name">{{d.id}}</span>
                     </li>
                   </ul>
-                  <p @click="getVerifyStatus" class="welcome">通过链接邀请</p>
+                  <p v-if="company_role === 20" @click="getVerifyStatus" class="welcome">通过链接邀请</p>
               </div>
             </div>
           </div>
@@ -624,7 +624,7 @@ export default {
     position: absolute;
   }
   .member-list {
-    padding: 0 30px;
+    padding: 20px 30px 0;
     font-size: 16px;
   }
   .member-list-header {

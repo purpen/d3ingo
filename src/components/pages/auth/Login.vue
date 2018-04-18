@@ -28,13 +28,19 @@
         </el-form>
 
         <div class="reg">
-          <p v-if="!isMob">还没有铟果账户？
-            <router-link v-if="type" :to="{name: 'register',params:{type: type}}">立即注册</router-link>
-            <router-link v-else :to="{name: 'register'}">立即注册</router-link>
+          <p class="join-company" v-if="code">登陆并加入 <span>{{item.design_company_name}}</span></p>
+          <p v-if="code">没有铟果账户？
+            <router-link :to="{name: 'invite', params: {code: code}}">立即注册</router-link>
           </p>
-          <p v-else>还没有铟果账户？
-            <router-link :to="{name: 'identity'}">立即注册</router-link>
-          </p>
+          <div v-if="!code">
+            <p v-if="!isMob">还没有铟果账户？
+              <router-link v-if="type" :to="{name: 'register',params:{type: type}}">立即注册</router-link>
+              <router-link v-else :to="{name: 'register'}">立即注册</router-link>
+            </p>
+            <p v-else>还没有铟果账户？
+              <router-link :to="{name: 'identity'}">立即注册</router-link>
+            </p>
+          </div>
         </div>
 
       </div>
@@ -68,7 +74,8 @@ export default {
           { min: 6, max: 18, message: '密码长度在6-18字符之间！', trigger: 'blur' }
         ]
       },
-      type: 0
+      type: 0,
+      item: {}
     }
   },
   methods: {
@@ -101,6 +108,7 @@ export default {
                       })
                       that.$store.commit(MENU_STATUS, '')
                       auth.write_user(response.data.data)
+                      that.restoreMember()
                       let prevUrlName = that.$store.state.event.prevUrlName
                       if (prevUrlName) {
                         // 清空上一url
@@ -135,6 +143,31 @@ export default {
           return false
         }
       })
+    },
+    restoreMember() {
+      this.$http.put(api.restoreMember, {rand_string: this.code})
+      .then(res => {
+        if (res.data.meta.status_code === 200) {
+          console.log(res)
+        } else {
+          this.$message.error(res)
+        }
+      }).catch(err => {
+        this.$message.error(err.message)
+      })
+    },
+    getItem() {
+      this.$http.get(api.inviteValue, {params: {rand_string: this.code}})
+      .then(response => {
+        if (response.data.meta.status_code === 200) {
+          this.item = response.data.data
+        } else {
+          this.$message.error(response.data.meta.message)
+        }
+      })
+      .catch(error => {
+        this.$message.error(error.message)
+      })
     }
   },
   mounted: function() {
@@ -146,6 +179,7 @@ export default {
     })
   },
   created: function() {
+    this.getItem()
     let prevUrlName = this.$store.state.event.prevUrlName
     this.type = this.$route.params.type
     if (this.$route.params.url === 'yq') {
@@ -167,6 +201,9 @@ export default {
   computed: {
     isMob() {
       return this.$store.state.event.isMob
+    },
+    code() {
+      return this.$route.params.code
     }
   }
 }
@@ -208,13 +245,18 @@ form {
 }
 
 .reg {
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
 .reg p {
+  line-height: 24px;
   color: #666666;
 }
 
+.reg .join-company {
+  color: #999;
+  padding-bottom: 10px;
+}
 .reg p a {
   color: #ff5a5f;
 }

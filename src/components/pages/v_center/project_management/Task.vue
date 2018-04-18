@@ -1,7 +1,5 @@
 <template>
   <section>
-    <v-tags :propParam="propsTags" @changePropsTags="changePropsTags"></v-tags>
-    <el-button @click="addTagBtn" v-if="false">显示标签</el-button>
     <div>
       <div v-if="false">
         <h1>阶段测试</h1>
@@ -12,61 +10,49 @@
           <el-button @click="deleteStageBtn(d.id, index)">删除</el-button>
         </p>
       </div>
-      <div v-if="showElement.showStageEdit">
+      <div v-if="currentStageStat.event">
         <el-input v-model="currentStageForm.title" placeholder=""></el-input>
         <el-button @click="submitStage()">提交阶段</el-button>
-        <el-button @click="showElement.showStageEdit = false">取消</el-button>
+        <el-button @click="currentStageStat.event = false">取消</el-button>
       </div>
     </div>
-    <!--  ============  -->
-    
     <div class="container task-content">
-      <el-col :span="12" class="task-list">
-        <div class="add-btn">
-          <button class="add-task middle-button full-red-button" @click="addTaskBtn()">添加任务</button>
-          <button class="add-stage small-button white-button" @click="addStageBtn()">添加阶段</button>
-        </div>
-        <section>
-          <div :class="['task-item','clearfix', {'active': taskisDone.indexOf(ele.id) !== -1}]" v-for="(ele, index) in displayObj.outsideStageList" :key="index">
-            <p @click="completeTask(ele.id)" class="task-name fl">{{ele.name}}</p>
-            <p class="task-date fr">{{ele.created_at_format}}</p>
+      <el-row :gutter="30">
+        <el-col :span="propsTask.power ? 12 : 24" class="task-list">
+          <div class="add-btn">
+            <button class="add-task middle-button full-red-button" @click="addTaskBtn()">添加任务</button>
+            <button class="add-stage small-button white-button" @click="addStageBtn()">添加阶段</button>
           </div>
-        </section>
-        
-        <section class="stage-item" v-for="(ele, index) in displayObj['itemList']" :key="index">
-          <p class="stage-name">{{ele.title}} : <span @click="confirmDeleteStageBtn(ele.id, index)" class="close-icon-solid"></span></p>
           <section>
-            <div :class="['task-item','clearfix', {'active': taskisDone.indexOf(e.id) !== -1}]"
-              v-for="(e, i) in ele['itemList']" :key="i">
-              <p @click="completeTask(e.id)" class="task-name fl">{{e.name}}</p>
-              <p class="task-date fr">{{e.created_at_format}}</p>
+            <div :class="['task-item','clearfix', {'active': ele.stage === 2}]" v-for="(ele, index) in displayObj.outsideStageList" :key="index">
+              <p @click="completeTaskBtn(ele.id, index, ele.stage)" class="task-name fl">{{ele.name}}</p>
+              <p class="task-date fr">{{ele.created_at_format}}</p>
             </div>
           </section>
-        </section>
-        <p v-if="false" v-for="(d, index) in taskList" :key="index">
-          {{ d.id }} | {{ d.name }} | <el-button @click="showTaskBtn(d.id, index)">详情</el-button>
-        </p>
-
-        <v-task :propsParam="propsTask" :propsStat="propsTaskStat" :propsForm="propsTaskForm" @changePropsTask="changePropsTask" @changePropsStat="changePropsTaskStat" @changePropsForm="changePropsTaskForm"></v-task>
-      </el-col>
-      <el-col :span="12">
-        <section class="task-detail">
-          <div class="task-detail-header">
-            <span class="task-detail-name">笔记本设计</span>
-            <div ref="selectParent" class="select-parent" tabindex="-1">
-              <span class="select-show">调研阶段部分</span>
-              <ul class="stage-list">
-                <li @click="selectBlur">阶段一</li>
-                <li @click="selectBlur">阶段二</li>
-                <li @click="selectBlur">阶段三</li>
-              </ul>
-            </div>
-          </div>
-          <p class="add-task-input">
-            <input placeholder="添加任务内容" type="text">
+          
+          <section class="stage-item" v-for="(ele, index) in displayObj['itemList']" :key="index">
+            <p class="stage-name">{{ele.title}} : <span @click="confirmDeleteStageBtn(ele.id, index)" class="close-icon-solid"></span></p>
+            <section>
+              <div :class="['task-item','clearfix', {'active': taskisDone.indexOf(e.id) !== -1}]"
+                v-for="(e, i) in ele['itemList']" :key="i">
+                <p @click="completeTaskBtn(e.id, i, e.stage)" class="task-name fl">{{e.name}}</p>
+                <p class="task-date fr">{{e.created_at_format}}</p>
+              </div>
+            </section>
+          </section>
+          <p v-if="false" v-for="(d, index) in taskList" :key="index">
+            {{ d.id }} | {{ d.name }} | <el-button @click="showTaskBtn(d.id, index)">详情</el-button>
           </p>
-        </section>
-      </el-col>
+          <h2>任务列表</h2>
+          <el-button @click="addTaskBtn()">添加任务</el-button>
+          <p v-for="(d, index) in taskList" :key="index">
+            {{ d.id }} | {{ d.name }} | {{ d.stage }} | <el-button @click="showTaskBtn(d.id, index)">详情</el-button> | <el-button @click="completeTaskBtn(d.id, index, d.stage)">完成</el-button>
+          </p>
+        </el-col>
+        <el-col :span="12">
+          <v-task :propsParam="propsTask" :propsStat="propsTaskStat" :propsForm="propsTaskForm" @changePropsTask="changePropsTask" @changePropsStat="changePropsTaskStat" @changePropsForm="changePropsTaskForm" :projectObject="projectObject"></v-task>
+        </el-col>
+      </el-row>
     </div>
     <section class="dialog-bg" v-if="showElement.showCover" @click.self="closeCover"></section>
     <section class="dialog-body" v-if="showElement.showComfirmDeleteStage">
@@ -90,16 +76,21 @@
   import api from '@/api/api'
   import '@/assets/js/format'
   // import typeData from '@/config'
-  // 标签
-  import vTags from '@/components/tools_block/Tags'
   // 任务
   import vTask from '@/components/tools_block/Task'
 
   export default {
     name: 'projectManagementTask',
     components: {
-      vTags,
       vTask
+    },
+    props: {
+      projectObject: {
+        type: Object,
+        default: function () {
+          return {}
+        }
+      }
     },
     data () {
       return {
@@ -130,11 +121,6 @@
           id: 0,
           index: 0
         },
-        propsTags: {
-          itemId: 0,
-          power: 0,
-          test: ''
-        },
         propsTask: {
           itemId: 0,
           power: 0,
@@ -153,8 +139,7 @@
         },
         showElement: {
           showCover: false,
-          showComfirmDeleteStage: false,
-          showStageEdit: false
+          showComfirmDeleteStage: false
         }
       }
     },
@@ -196,7 +181,6 @@
       },
       // 添加阶段点击事件
       addStageBtn() {
-        this.showElement.showStageEdit = true
         this.currentStageStat = {
           event: 'create',
           id: 0,
@@ -210,7 +194,6 @@
       },
       // 编辑阶段按钮点击事件
       editStageBtn(id, index) {
-        this.showElement.showStageEdit = true
         this.currentStageForm = this.stageList[index]
         this.currentStageStat = {
           event: 'update',
@@ -242,7 +225,6 @@
         } else if (event === 'delete') {
           this.deleteStage()
         }
-        this.showElement.showStageEdit = false
       },
       // 创建阶段事件
       createStage() {
@@ -356,10 +338,6 @@
           }
         }
       },
-      // 添加标签
-      addTagBtn() {
-        this.$set(this.propsTags, 'power', 1)
-      },
       // 添加任务
       addTaskBtn() {
         this.propsTask.power = 1
@@ -377,10 +355,6 @@
         this.propsTaskStat.event = 'complete'
         this.propsTaskStat.complete = stage === 0 ? 2 : 0
       },
-      // 更新标签组件传回数据
-      changePropsTags(obj) {
-        this.propsTags = obj
-      },
       // 更新任务组件传回数据
       changePropsTask(obj) {
         this.propsTask = obj
@@ -393,28 +367,10 @@
       changePropsTaskForm(obj) {
         this.propsTaskForm = obj
       },
-      // 完成任务
-      completeTask(id) {
-        let index = this.taskisDone.indexOf(id)
-        let stage = 2
-        if (index === -1) {
-          this.taskisDone.push(id)
-          stage = 2
-        } else {
-          this.taskisDone.splice(index, 1)
-          stage = 0
-        }
-        this.setStageTask(id, stage)
-        console.log(this.taskisDone)
-      },
       closeCover() {
         for (let i in this.showElement) {
           this.showElement[i] = false
         }
-      },
-      selectBlur() {
-        this.$refs.selectParent.blur()
-        console.log(this.$refs.selectParent)
       }
     },
     computed: {
@@ -466,7 +422,6 @@
         let itemList = this.stageList
         newVal.forEach((item) => {
           this.formatList(item)
-          console.log(item)
           if (itemList.length) {
             itemList.forEach((ele, i) => {
               ele.showItem = false
@@ -500,7 +455,6 @@
 
       // 向子组件注入项目ID
       self.$set(this.propsTask, 'itemId', itemId)
-      self.$set(this.propsTags, 'itemId', itemId)
 
       // 获取阶段列表
       self.fetchStage()
@@ -657,99 +611,5 @@
   }
   .buttons {
     padding-top: 30px;
-  }
-  .task-detail {
-    margin-left: 20px;
-    min-height: 100vh;
-    border: 1px solid #d2d2d2;
-    border-radius: 4px;
-    padding: 20px 30px;
-  }
-  .task-detail-header {
-    display: flex;
-    color: #666;
-    font-size: 14px;
-  }
-  .task-detail-name {
-    height: 34px;
-    line-height: 34px;
-    margin-right: 30px;
-    padding: 0 10px;
-    border: 1px solid #d2d2d2;
-    border-radius: 4px;
-  }
-  .select-parent {
-    position: relative;
-  }
-  .stage-list {
-    display: none;
-    background: #fff;
-    width: 220px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.10);
-    position: absolute;
-    left: 0;
-    top: 34px;
-    z-index: 1;
-  }
-  .stage-list li {
-    height: 40px;
-    line-height: 40px;
-    padding: 0 20px;
-  }
-  .stage-list li:hover {
-    background: #f7f7f7;
-    cursor: pointer;
-  }
-  .select-show {
-    display: inline-block;
-    line-height: 34px;
-    position: relative;
-  }
-
-  .select-show::after {
-    transition: 0.2s all ease;
-    content: "";
-    position: absolute;
-    right: -16px;
-    top: 10px;
-    width: 10px;
-    height: 10px;
-    border: 2px solid #d2d2d2;
-    transform: rotate(45deg);
-    border-left: none;
-    border-top: none;
-  }
-  .select-parent:hover .stage-list,
-  .select-parent:focus .stage-list {
-    display: block
-  }
-  
-  .select-parent:hover .select-show::after,
-  .select-parent:focus .select-show::after {
-    transform: rotate(-135deg);
-  }
-  .add-task-input input {
-    width: 100%;
-    height: 50px;
-    border: 1px solid #d2d2d2;
-    border-radius: 4px;
-    font-size: 20px;
-    padding: 0 10px;
-  }
-  .add-task-input {
-    position: relative;
-    padding: 20px 0 12px 50px;
-    border-bottom: 1px solid #d2d2d2;
-  }
-  
-  .add-task-input::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 33px;
-    width: 30px;
-    height: 30px;
-    border: 1px solid #d2d2d2;
-    border-radius: 4px;
   }
 </style>

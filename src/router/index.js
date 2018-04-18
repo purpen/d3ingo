@@ -282,6 +282,14 @@ routes = [
     }
   },
   {
+    path: '/login/:code',
+    name: 'loginwithInvite',
+    meta: {
+      title: '登录'
+    },
+    component: require('@/components/pages/auth/Login')
+  },
+  {
     path: '/login',
     name: 'login',
     meta: {
@@ -501,7 +509,9 @@ routes = [
     name: 'vcenterChildControl',
     meta: {
       title: '控制面板',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/common/ChildControl')
   },

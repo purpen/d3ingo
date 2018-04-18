@@ -133,6 +133,13 @@ input {
   font-size: 1.6rem
 }
 
+.markdown-body a {
+  text-decoration: underline
+}
+.markdown-body a:hover {
+  color: #a01419;
+  text-decoration: underline
+}
 .markdown-body h1 {
   font-weight: bold;
   font-size: 22px
@@ -2381,7 +2388,16 @@ td.fc-day.fc-widget-content.fc-today::before {
 #enterprise .el-card__body {
   padding: 0;
 }
-
+.el-date-table td.current:not(.disabled), .el-date-table td.end-date, .el-date-table td.start-date {
+  background-color: #ff5a5f!important;
+    color: #fff;
+}
+.el-date-table td.today:before {
+  border-top-color: #ff5a5f
+}
+.el-date-table td.today, .el-picker-panel__link-btn {
+  color: #ff5a5f
+}
 /**
 .content .body p {
   font-size: 1.4rem;
