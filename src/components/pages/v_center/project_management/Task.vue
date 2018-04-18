@@ -1,7 +1,7 @@
 <template>
   <section>
     <v-tags :propParam="propsTags" @changePropsTags="changePropsTags"></v-tags>
-    <el-button @click="addTagBtn" v-if="false">显示标签</el-button>
+    <el-button @click="addTagBtn">显示标签</el-button>
     <div>
       <div v-if="false">
         <h1>阶段测试</h1>
@@ -20,7 +20,7 @@
     </div>
     <div class="container task-content">
       <el-row :gutter="30">
-        <el-col :span="12" class="task-list">
+        <el-col :span="propsTask.power ? 12 : 24" class="task-list">
           <div class="add-btn">
             <button class="add-task middle-button full-red-button" @click="addTaskBtn()">添加任务</button>
             <button class="add-stage small-button white-button" @click="addStageBtn()">添加阶段</button>
@@ -52,7 +52,7 @@
           </p>
         </el-col>
         <el-col :span="12">
-          <v-task :propsParam="propsTask" :propsStat="propsTaskStat" :propsForm="propsTaskForm" @changePropsTask="changePropsTask" @changePropsStat="changePropsTaskStat" @changePropsForm="changePropsTaskForm" :projectObject="projectObject"></v-task>
+          <v-task :propsParam="propsTask" :propParam2="propsTags" :propsStat="propsTaskStat" :propsForm="propsTaskForm" @changePropsTask="changePropsTask"  @changePropsTags="changePropsTags" @changePropsStat="changePropsTaskStat" @changePropsForm="changePropsTaskForm" :projectObject="projectObject"></v-task>
         </el-col>
       </el-row>
     </div>

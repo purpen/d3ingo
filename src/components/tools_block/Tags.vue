@@ -1,5 +1,5 @@
 <template>
-  <div class="" v-if="attr.power">
+  <div class="tags-component" v-if="attr.power">
     <h3>标签组件引入测试 <a href="javascript:void(0)" @click="closeTagsBtn()">点击关闭</a></h3>
     <el-button @click="addTagsBtn()">添加标签</el-button>
     <p v-for="(d, index) in tagsList" :key="index">
@@ -14,9 +14,15 @@
       </div>
       <el-button @click="submitTags()">提交</el-button>
     </div>
-
+    <div class="select-tag" :style="{left: tagPosition.left, top: tagPosition.top}">
+      <input class="tag-name" type="text">
+      <ul>
+        <li v-for="(d, index) in tagsList" :key="index">
+          {{ d.title }}
+        </li>
+      </ul>
+    </div>
   </div>
-
 </template>
 
 <script>
@@ -31,6 +37,14 @@
           itemId: 0,
           power: 0,
           test: ''
+        }
+      },
+      tagPosition: {
+        default: function () {
+          return {
+            top: 0,
+            left: 0
+          }
         }
       }
     },
@@ -211,7 +225,7 @@
       },
       attr: {
         handler(val, oldVal) {
-          this.$emit('changePropsTags', this.attr)
+          this.$emit('changePropsTags', val)
         },
         deep: true
       }
@@ -223,6 +237,14 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-
+  /* .tags-component {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #fff
+  } */
+  .select-tag {
+    position: absolute;
+    background: #fff;
+  }
 </style>
