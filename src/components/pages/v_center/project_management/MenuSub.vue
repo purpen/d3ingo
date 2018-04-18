@@ -23,6 +23,11 @@
       <router-link :to="{path: ''}">合同</router-link>
       <router-link :to="{path: ''}">菜单</router-link>
     </div>
+    <section class="cover">
+      <div class="header clear">项目设置
+        <span class="fr fx fx-icon-nothing-close-error"></span>
+      </div>
+    </section>
   </header>
 </template>
 <script>
@@ -128,5 +133,18 @@ header {
   flex: 1 0 380px;
   justify-content: flex-end;
   align-items: center;
+}
+.cover {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 9;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  display: none;
 }
 </style>
