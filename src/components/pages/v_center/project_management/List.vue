@@ -113,7 +113,13 @@ export default {
           if (res.data.meta.status_code === 200) {
             res.data.data.level = Number(res.data.data.level)
             this.projectList.unshift(res.data.data)
+            let isOffer = this.show.writeOffer
             this.closeCover()
+            // 创建成功跳转到报价提交页
+            if (isOffer) {
+              this.$router.push({name: 'projectQuoteSubmit', params: {id: res.data.data.id}})
+              return
+            }
           } else {
             this.$message.error(res.data.meta.message)
           }
