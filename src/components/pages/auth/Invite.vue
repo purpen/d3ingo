@@ -47,7 +47,7 @@
 
         <div class="reg">
           <p>已有铟果账户，您可以
-            <router-link :to="{name: 'login', params: {code: strCode}}">立即登录</router-link>
+            <router-link :to="{name: 'loginwithInvite', params: {code: strCode}}">立即登录</router-link>
           </p>
         </div>
 

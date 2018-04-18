@@ -282,7 +282,7 @@ routes = [
   },
   {
     path: '/login/:code',
-    name: 'login',
+    name: 'loginwithInvite',
     meta: {
       title: '登录'
     },
