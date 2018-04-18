@@ -23,20 +23,21 @@
                   <div class="block">
                     <el-date-picker
                       type="datetime" 
-                      v-model="dateadd"
+                      v-model="form.expire_time"
                       placeholder="选择日期时间" size="small">
                     </el-date-picker>
                   </div>            
               </el-col>
               <el-col :span="12">
                   <img :src=" userimg " alt="">
-                  <ul class="fl"><li><a href="javascirpt:void(0)"></a></li><li :style=" { background: `url(${adduser}) no-repeat center ` } "><a href="#"></a></li></ul>
+                  <ul class="fl"><li v-if="getimgs.length > 0"><a href="javascirpt:void(0)"></a></li><li><img class="adds" :src=" adduser " alt="" ></li></ul>
               </el-col>
             </el-row>
             <el-row class="MeetingCenter" >
               <el-col class="fx">
-                <div @click="addBtn()">
-               <el-input  placeholder="请输入会议内容"   v-model="form.content" :readonly=" event !== 'create' "></el-input>  
+                <div @click.once="addBtn()">
+               <el-input  placeholder="请输入会议内容"   v-model="form.content" v-if=" event !== 'create'?false : true " type="textarea" :rows="4"></el-input>
+               <p v-else>请输入会议内容</p> 
                </div>
               </el-col>
             </el-row>
@@ -49,7 +50,7 @@
               <el-col  class="uploads">
                 <img :src=" uploadimg " alt="" ><span>添加附件</span>
                 <div class="fr">
-                <span>5</span>个人将会收到通知
+                <span>{{ getimgs.length }}</span>个人将会收到通知
                 <button @click="create()" type="danger" class="small-button full-red-button">发送</button> 
                 </div>       
               </el-col>
@@ -61,51 +62,47 @@
 
         <el-col :span="18" :offset="3" v-if=" itemList.length>0 " v-for="(d, index) in itemList" :key="index"><div class="grid-content bg-purple">
            <el-row>
-              <el-col class="titlec">
-                <span >{{ d.title }}</span>
-                  <el-dropdown trigger="click" class="fr">
-                    <span class="el-dropdown-link">
-                      <i class="el-icon-more"></i>
-                    </span>
-                    <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item class="clearfix text-center" @click="deleteBtn(d.id, index)">
-                          删除
-                      <el-badge class="mark" />
-                      </el-dropdown-item>
-                      <el-dropdown-item class="clearfix text-center"  @click="editBtn(d.id, index)">
-                          编辑
-                      <el-badge class="mark" />
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </el-col>  
+              <el-col class="titlec" >
+                <el-input  v-model="d.title"  v-if ="d.isedit === 2 "></el-input>
+                <span v-else>{{ d.title }}</span>
+                <div class="fr" @click="operation === index?operation='': operation = index "  v-if ="d.isedit === 1 || !d.isedit">
+                   <i class="el-icon-more" ></i>
+                   <ul v-if=" operation  === index ">
+                     <li @click="deleteBtn(d.id, index)">删除</li>
+                      <li @click="editBtn(d.id, index,d.isedit)">编辑</li>
+                   </ul>
+                </div>
+              </el-col>
             </el-row>
             <el-row class="edit">
                <el-col :span="1">
                <img :src=" Locationimg " alt="">
               </el-col>
               <el-col :span="5">
-                <el-input  placeholder="请输入地点" size="small"></el-input>
+                <el-input  placeholder="请输入地点" size="small" v-if ="d.isedit === 2" v-model=" d.location " ></el-input>
+                <p v-else>{{ d.location }}</p>
               </el-col>
                <el-col :span="1" >
                   <img :src=" dateimg " alt="">
               </el-col>
               <el-col :span="5">
-                  <div class="block">
+                  <div class="block" v-if=" event === 'update' ">
                     <el-date-picker
                       type="datetime"
-                      placeholder="选择日期时间" size="small">
+                      placeholder="选择日期时间" size="small" v-if ="d.isedit === 2"  v-model=" d.expire_time ">
                     </el-date-picker>
-                  </div>            
+                  </div> 
+                  <p v-else> {{ d.expire_time }}</p>           
               </el-col>
               <el-col :span="12">
                   <img :src=" userimg " alt="">
-                  <ul class="fl"><li v-for=" (userhead,index) in userheads " :key="index" v-if="userheads.length > 0"><a href="javascirpt:void(0)">{{ userhead.head }}</a></li></ul>
+                  <ul class="fl"><li v-for=" (userhead,index) in userheads " :key="index" v-if="userheads.length > 0"><a href="javascirpt:void(0)">{{ userhead.head }}</a></li><li v-if ="d.isedit === 2"><img class="adds" :src=" adduser " alt="" ></li></ul>
               </el-col>
             </el-row>
             <el-row class="MeetingCenter">
               <el-col class="fx">
-                {{ d.content }}
+                 <el-input  size="small" v-if ="d.isedit === 2" v-model=" d.content " type="textarea" :rows="4"></el-input>
+                 <p v-else>{{ d.content }}</p>
               </el-col>
             </el-row>
             <el-row >
@@ -114,14 +111,20 @@
               </el-col>
             </el-row>
             <el-row>
-              <el-col  class="uploads">    
+              <el-col  class="uploads"  v-if ="d.isedit === 1 || !d.isedit">    
                 <div class="fr">
                   <img :src=" uploadimg " alt="" >
                  <span>人员</span>
-                 <span>日期</span>
+                 <span>{{ d.created_at }}</span>
                 </div>            
               </el-col>
-              
+               <el-col  class="uploads" v-else>
+                <img :src=" uploadimg " alt="" ><span>添加附件</span>
+                <div class="fr">
+                <span>5</span>个人将会收到通知
+                <button @click="inupdate(d.content, d.id, d.expire_time, d.title, d.location)" type="danger" class="small-button full-red-button">确定</button> 
+                </div>       
+              </el-col>
             </el-row>
           </div></el-col>
 
@@ -133,19 +136,6 @@
          </el-col>
       
       </el-row>
-    </div>
-    <el-button @click="addBtn()">新建</el-button>
-    <div>
-      <p v-for="(d, index) in itemList" :key="index">
-        {{ d.id }} | {{ d.title }} | <el-button @click="deleteBtn(d.id, index)">删除</el-button> | <el-button @click="editBtn(d.id, index)">编辑</el-button>
-      </p>
-    </div>
-    <div v-if="event === 'create' || event === 'update'">
-      <el-input v-model="form.title" placeholder="名称"></el-input>
-      <el-input v-model="form.location" placeholder="地点"></el-input>
-      <el-input v-model="form.content" placeholder="内容"></el-input>
-
-      <el-button @click="submit()">提交</el-button>
     </div>
   </section>
 </template>
@@ -170,7 +160,9 @@
         uploadimg: require('@/assets/images/tools/project_management/Enclosure@2x.png'),
         onThingimg: require('@/assets/images/tools/project_management/onThing@2x.png'),
         userheads: [],
-        dateadd: ''
+        operation: '',
+        editmy: '',
+        getimgs: []
       }
     },
     methods: {
@@ -192,8 +184,9 @@
         this.event = 'create'
       },
       // 编辑点击事件
-      editBtn(id, index) {
+      editBtn(id, index, isedit) {
         this.currentId = id
+        this.itemList[index].isedit = 2
         this.event = 'update'
         this.view()
       },
@@ -201,7 +194,18 @@
       deleteBtn(id, index) {
         this.event = 'delete'
         this.currentId = id
+        this.itemList[index].isedit = 2
         this.delete()
+      },
+      inupdate(content, id, time, title, location) {
+        this.currentId = id
+        this.form.content = content
+        this.form.id = id
+        this.form.time = time
+        this.form.title = title
+        this.form.location = location
+        this.operation = ''
+        this.update()
       },
       // 提交任务
       submit() {
@@ -234,6 +238,9 @@
           this.$message.error('名称不能为空!')
           return false
         }
+        var utc = Math.round(this.form.expire_time.getTime() / 1000)
+        var unixTimestampa = new Date(utc * 1000)
+        this.form.expire_time = unixTimestampa.toLocaleDateString()
         this.form.item_id = this.itemId
         this.$http.post(api.communeSummaries, this.form).then((response) => {
           if (response.data.meta.status_code === 200) {
@@ -308,6 +315,13 @@
       this.$http.get(api.communeSummaries, {params: {item_id: this.itemId}}).then((response) => {
         if (response.data.meta.status_code === 200) {
           this.itemList = response.data.data
+          if (this.itemList.length > 0) {
+            for (var i = 0; i < this.itemList.length; i++) {
+              this.itemList[i].isedit = 1
+              var unixTimestamp = new Date(this.itemList[i].created_at * 1000)
+              this.itemList[i].created_at = unixTimestamp.toLocaleDateString().split('/').join(':') + ' ' + unixTimestamp.toLocaleTimeString().slice(2)
+            }
+          }
           console.log(response.data.data)
         } else {
           this.$message.error(response.data.meta.message)
@@ -322,6 +336,7 @@
 <style scoped>
   .AddCommunicate {
     color: #999999;
+    margin-bottom: 20px;
   }
   .titlec{
     line-height: 34px;
@@ -331,8 +346,34 @@
     font-size: 18px;
     font-weight: bold;
   }
-  .MeetingCenter{
-    
+  .titlec>.fr{
+    position:relative;
+  }
+  .titlec>.fr ul{
+    text-align: center;
+    background: #FFFFFF;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
+    border-radius: 4px;
+    position:absolute;
+    width:180px;
+    right:-100px;
+    z-index: 1100;
+  }
+  .titlec>.fr ul>li{
+  line-height: 40px;
+  height: 40px;
+  font-size: 12px;
+  padding: 0 20px;
+  cursor:pointer;
+  }
+  .titlec>.fr ul>li:hover{
+  color: #222;
+  background: #f7f7f7
+  }
+  .edit ul>li>.adds{
+  width:20px;
+  height:21px;
+  margin:-2px;
   }
   .AddCommunicate>.el-row>.el-col{
     background: #FFFFFF;
@@ -356,7 +397,7 @@
   .edit ul>li {
     width:19px;
     height:19px;
-    border:1px solid #CA7547;
+    border:1px solid transparent;
     border-radius: 50%;
     margin:5px 10px 0px 0px;
     float: left;
@@ -368,30 +409,30 @@
     border-bottom: 1px solid #D2D2D2;
     padding-bottom:16px;
   }
- .edit img {
+  .edit img {
     width:20px;
     margin:5px 6px 0px 6px;
     float:left;
- }
- .uploads img {
+  }
+  .uploads img {
     width:20px;
     margin:5px 6px 0px 6px;
     float:left;
- }
+  }
 
- .MeetingCenter {
+  .MeetingCenter {
     padding-top:10px;
     min-height: 100px;
- }
+  }
 
- .onthing img {
-   width:90px;
-   height:100px;
- }
+  .onthing img {
+    width:90px;
+    height:100px;
+  }
   .onthing {
-     text-align: center;
-     padding-top:50px;
-     min-height: 240px;
+    text-align: center;
+    padding-top:50px;
+    min-height: 240px;
   } 
 
 </style>
