@@ -16,11 +16,6 @@
         <el-button @click="currentStageStat.event = false">取消</el-button>
       </div>
     </div>
-<<<<<<< HEAD
-=======
-    <!--  ============  -->
-    
->>>>>>> origin/zwj
     <div class="container task-content">
       <el-row :gutter="30">
         <el-col :span="propsTask.power ? 12 : 24" class="task-list">
@@ -34,7 +29,6 @@
               <p class="task-date fr">{{ele.created_at_format}}</p>
             </div>
           </section>
-<<<<<<< HEAD
           
           <section class="stage-item" v-for="(ele, index) in displayObj['itemList']" :key="index">
             <p class="stage-name">{{ele.title}} : <span @click="confirmDeleteStageBtn(ele.id, index)" class="close-icon-solid"></span></p>
@@ -46,37 +40,12 @@
               </div>
             </section>
           </section>
-          <p v-if="false" v-for="(d, index) in taskList" :key="index">
-            {{ d.id }} | {{ d.name }} | <el-button @click="showTaskBtn(d.id, index)">详情</el-button>
-          </p>
           <h2>任务列表</h2>
           <el-button @click="addTaskBtn()">添加任务</el-button>
           <p v-for="(d, index) in taskList" :key="index">
-            {{ d.id }} | {{ d.name }} | {{ d.stage }} | <el-button @click="showTaskBtn(d.id, index)">详情</el-button> | <el-button @click="completeTaskBtn(d.id, index, d.stage)">完成</el-button>
-=======
-        </section>
-        <p v-if="false" v-for="(d, index) in taskList" :key="index">
-          {{ d.id }} | {{ d.name }} | <el-button @click="showTaskBtn(d.id, index)">详情</el-button>
-        </p>
-
-        <v-task :propsParam="propsTask" :propsStat="propsTaskStat" :propsForm="propsTaskForm" @changePropsTask="changePropsTask" @changePropsStat="changePropsTaskStat" @changePropsForm="changePropsTaskForm"></v-task>
-      </el-col>
-      <el-col :span="12">
-        <section class="task-detail">
-          <div class="task-detail-header">
-            <span class="task-detail-name">笔记本设计</span>
-            <div ref="selectParent" class="select-parent" tabindex="-1">
-              <span class="select-show">调研阶段部分</span>
-              <ul class="stage-list">
-                <li @click="selectBlur">阶段一</li>
-                <li @click="selectBlur">阶段二</li>
-                <li @click="selectBlur">阶段三</li>
-              </ul>
-            </div>
-          </div>
-          <p class="add-task-input">
-            <input placeholder="添加任务内容" type="text">
->>>>>>> origin/zwj
+            {{ d.id }} | {{ d.name }} | {{ d.stage }} |
+            <el-button @click="showTaskBtn(d.id, index)">详情</el-button> |
+            <el-button @click="completeTaskBtn(d.id, index, d.stage)">完成</el-button>
           </p>
         </el-col>
         <el-col :span="12">
@@ -188,7 +157,7 @@
             this.$message.success(message)
           }
         }
-        this.$router.push({name: 'projectManagementList'})
+        this.$router.push({name: 'home'})
         return
       },
       // 项目阶段列表
@@ -643,3 +612,4 @@
     padding-top: 30px;
   }
 </style>
+

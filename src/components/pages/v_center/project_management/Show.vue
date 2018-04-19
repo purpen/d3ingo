@@ -47,7 +47,6 @@ export default {
     },
     projectObject: {
       handler(val, oldVal) {
-        console.log(val)
       },
       deep: true
     }
