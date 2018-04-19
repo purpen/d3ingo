@@ -1,12 +1,11 @@
 <template>
-  <div class="tags-component" v-if="attr.power">
-    <div v-if="true">
+  <div class="tags-component">
+    <div v-if="false">
       <h3>标签组件引入测试 <a href="javascript:void(0)" @click="closeTagsBtn()">点击关闭</a></h3>
       <el-button @click="addTagsBtn()">添加标签</el-button>
       <p v-for="(d, index) in tagsList" :key="index">
         {{ d.id }} | {{ d.title }} | <el-button @click="editTagsBtn(d.id, index)">编辑</el-button> | <el-button @click="deleteTagsBtn(d.id, index)">删除</el-button>
       </p>
-
       <div v-if="currentTagsStat.event">
         <el-input v-model="currentTagsForm.title" placeholder="标签名称"></el-input>
         <el-input v-model="currentTagsForm.type" placeholder="色值"></el-input>
@@ -15,6 +14,9 @@
         </div>
         <el-button @click="submitTags()">提交</el-button>
       </div>
+    </div>
+    <div class="tags" v-if="attr.power">
+      <span v-for="(d, index) in tagsList" :style="{background: d.type_format}" :key="index">{{ d.title }}</span>
     </div>
     <div class="select-tag" :style="{left: tagPosition.left, top: tagPosition.top}">
       <div class="tag-header">
@@ -84,7 +86,8 @@
           return this.tagsList
         }
         const self = this
-        this.$http.get(api.itemTags, {params: {item_id: self.attr.itemId}}).then(function (response) {
+        this.$http.get(api.itemTags, {params: {item_id: self.attr.itemId}})
+        .then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.tagsList = response.data.data
             self.tagsList.forEach(item => {
@@ -270,9 +273,14 @@
           this.$emit('changePropsTags', val)
         },
         deep: true
+      },
+      tagName(val) {
+        console.log(val)
       }
     },
     created: function() {
+      this.attr = this.propParam
+      this.fetchTags()
     }
   }
 </script>
@@ -321,5 +329,23 @@
     height: 8px;
     border-radius: 50%;
     margin-right: 10px;
+  }
+  
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .tags span {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 8px;
+    text-align: center;
+    line-height: 24px;
+    color: #fff;
+    height: 24px;
+    border-radius: 12px;
+    margin-right: 15px;
   }
 </style>

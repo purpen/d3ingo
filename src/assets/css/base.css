@@ -9,6 +9,36 @@ html {
   height: 100%;
 }
 
+html::-webkit-scrollbar,
+.scroll-bar::-webkit-scrollbar {
+  width: 8px
+}
+
+html::-webkit-scrollbar-track,
+.scroll-bar::-webkit-scrollbar-track {
+  background-color: #e5e5e5;
+  border-left: 2px solid transparent
+}
+
+html::-webkit-scrollbar-thumb,
+.scroll-bar::-webkit-scrollbar-thumb {
+  background-color: #a6a6a6;
+  border-left: 2px solid transparent;
+  border-radius: 4px;
+}
+html::-webkit-scrollbar-thumb:hover,
+.scroll-bar::-webkit-scrollbar-thumb:hover {
+  background-color: #999;
+}
+html::-webkit-scrollbar-corner,
+.scroll-bar::-webkit-scrollbar-corner {
+    background: #EEE
+}
+html::-webkit-scrollbar-thumb:window-inactive,
+.scroll-bar::-webkit-scrollbar-thumb:window-inactive {
+  background: rgba(0, 0, 0, .1)
+}
+
 *, *:before, *:after {
   box-sizing: inherit;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -533,8 +563,8 @@ button.is-custom.is-outlined.is-loading:after {
 .middle-button {
   cursor: pointer;
   width: 120px;
-  height: 40px;
-  line-height: 40px;
+  height: 34px;
+  line-height: 34px;
 }
 .small-button {
   cursor: pointer;

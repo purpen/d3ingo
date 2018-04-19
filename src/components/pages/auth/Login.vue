@@ -145,29 +145,37 @@ export default {
       })
     },
     restoreMember() {
-      this.$http.put(api.restoreMember, {rand_string: this.code})
-      .then(res => {
-        if (res.data.meta.status_code === 200) {
-          console.log(res)
-        } else {
-          this.$message.error(res)
-        }
-      }).catch(err => {
-        this.$message.error(err.message)
-      })
+      if (this.code) {
+        this.$http.put(api.restoreMember, {rand_string: this.code})
+        .then(res => {
+          if (res.data.meta.status_code === 200) {
+            console.log(res)
+          } else {
+            this.$message.error(res)
+          }
+        }).catch(err => {
+          this.$message.error(err.message)
+        })
+      } else {
+        return
+      }
     },
     getItem() {
-      this.$http.get(api.inviteValue, {params: {rand_string: this.code}})
-      .then(response => {
-        if (response.data.meta.status_code === 200) {
-          this.item = response.data.data
-        } else {
-          this.$message.error(response.data.meta.message)
-        }
-      })
-      .catch(error => {
-        this.$message.error(error.message)
-      })
+      if (this.code) {
+        this.$http.get(api.inviteValue, {params: {rand_string: this.code}})
+        .then(response => {
+          if (response.data.meta.status_code === 200) {
+            this.item = response.data.data
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        })
+        .catch(error => {
+          this.$message.error(error.message)
+        })
+      } else {
+        return
+      }
     }
   },
   mounted: function() {

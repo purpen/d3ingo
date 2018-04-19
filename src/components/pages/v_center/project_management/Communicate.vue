@@ -35,20 +35,35 @@
             </el-row>
             <el-row class="MeetingCenter" >
               <el-col class="fx">
-                <div @click.once="addBtn()">
+                <div @click="addBtn()">
                <el-input  placeholder="请输入会议内容"   v-model="form.content" v-if=" event !== 'create'?false : true " type="textarea" :rows="4"></el-input>
-               <p v-else>请输入会议内容</p> 
+               <p v-else>请输入会议内容</p>
                </div>
               </el-col>
             </el-row>
             <el-row >
-              <el-col :span="6">
-                 文件
+              <el-col :span="5" v-for="(files,index) in fileList" :key="index" class="upload-list">
+                <div>
+                  <img :src="pngimage"  class="fl">
+                  <div>{{files.name}} </div>
+                  <span class="fr" :style="{background:`url(${ closeimg }) no-repeat right`,backgroundSize:`14px 14px`}">{{ files.size }}</span>
+                </div>
               </el-col>
             </el-row>
+            <el-row> <el-upload
+                  class="upload-demo"
+                  :action="uploadUrl"
+                  :data="uploadParam"
+                  :show-file-list="false"
+                  :on-error="uploadError"
+                  :on-success="uploadSuccess"
+                  >
+                  <span>添加附件</span>
+                </el-upload></el-row>
             <el-row>
               <el-col  class="uploads">
-                <img :src=" uploadimg " alt="" ><span>添加附件</span>
+                  <!-- <img :src=" uploadimg " alt="" >
+                  <span>添加附件</span> -->
                 <div class="fr">
                 <span>{{ getimgs.length }}</span>个人将会收到通知
                 <button @click="create()" type="danger" class="small-button full-red-button">发送</button> 
@@ -57,9 +72,6 @@
             </el-row>
           </div>
         </el-col>
-
-
-
         <el-col :span="18" :offset="3" v-if=" itemList.length>0 " v-for="(d, index) in itemList" :key="index"><div class="grid-content bg-purple">
            <el-row>
               <el-col class="titlec" >
@@ -69,7 +81,7 @@
                    <i class="el-icon-more" ></i>
                    <ul v-if=" operation  === index ">
                      <li @click="deleteBtn(d.id, index)">删除</li>
-                      <li @click="editBtn(d.id, index,d.isedit)">编辑</li>
+                      <li @click="editBtn(d.id, index, d.isedit, d.expire_time)">编辑</li>
                    </ul>
                 </div>
               </el-col>
@@ -86,13 +98,13 @@
                   <img :src=" dateimg " alt="">
               </el-col>
               <el-col :span="5">
-                  <div class="block" v-if=" event === 'update' ">
+                  <div class="block"  v-if ="d.isedit === 2">
                     <el-date-picker
                       type="datetime"
-                      placeholder="选择日期时间" size="small" v-if ="d.isedit === 2"  v-model=" d.expire_time ">
+                      placeholder="选择日期时间" size="small"  v-model=" d.expire_time ">
                     </el-date-picker>
                   </div> 
-                  <p v-else> {{ d.expire_time }}</p>           
+                  <p v-else> {{ d.expire_time }}</p>
               </el-col>
               <el-col :span="12">
                   <img :src=" userimg " alt="">
@@ -134,7 +146,6 @@
                   <p>沟通纪要记录项目实施阶段与客户沟通后，达成共识以及客户意见反馈的历史记录。</p>
          </div>
          </el-col>
-      
       </el-row>
     </div>
   </section>
@@ -159,10 +170,24 @@
         adduser: require('@/assets/images/tools/project_management/Add@2x.png'),
         uploadimg: require('@/assets/images/tools/project_management/Enclosure@2x.png'),
         onThingimg: require('@/assets/images/tools/project_management/onThing@2x.png'),
+        pngimage: require('@/assets/images/tools/cloud_drive/type/image@2x.png'),
+        noimg: require('@/assets/images/tools/cloud_drive/type/other@2x.png'),
+        closeimg: require('@/assets/images/tools/project_management/close@2x.png'),
         userheads: [],
         operation: '',
         editmy: '',
-        getimgs: []
+        getimgs: [],
+        uploadUrl: '',
+        uploadParam: {
+          'token': '',
+          'x:random': '',
+          'x:user_id': this.$store.state.event.user.id,
+          'x:type': 29
+        },
+        fileList: [
+        ],
+        randoms: '',
+        tokens: ''
       }
     },
     methods: {
@@ -178,13 +203,33 @@
         this.$router.push({name: 'home'})
         return
       },
+      // 获取附件Token
+      upTokens() {
+        this.$http.get(api.upToken).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.randoms = response.data.data.random
+            this.tokens = response.data.data.upToken
+            this.uploadParam['token'] = response.data.data.upToken
+            this.uploadParam['x:random'] = response.data.data.random
+            this.uploadUrl = response.data.data.upload_url
+            console.log(response.data.data)
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          this.$message.error(error.message)
+          console.error(error.message)
+        })
+      },
       // 新建点击事件
       addBtn() {
-        this.form = {}
+        if (this.event !== 'create') {
+          this.form = {}
+        }
         this.event = 'create'
       },
       // 编辑点击事件
-      editBtn(id, index, isedit) {
+      editBtn(id, index, isedit, expireTime) {
         this.currentId = id
         this.itemList[index].isedit = 2
         this.event = 'update'
@@ -197,14 +242,23 @@
         this.itemList[index].isedit = 2
         this.delete()
       },
-      inupdate(content, id, time, title, location) {
+      // 编辑form参数
+      inupdate(content, id, expireTime, title, location) {
         this.currentId = id
         this.form.content = content
         this.form.id = id
-        this.form.time = time
+        this.form.expire_time = expireTime
         this.form.title = title
         this.form.location = location
+        this.form.random = this.randoms
+        this.form.token = this.tokens
         this.operation = ''
+        this.event = 'update'
+        if (this.form.expire_time instanceof Date) {
+          var utcup = Math.round(this.form.expire_time.getTime() / 1000)
+          var unixTimestampaup = new Date(utcup * 1000)
+          this.form.expire_time = unixTimestampaup.toLocaleDateString()
+        }
         this.update()
       },
       // 提交任务
@@ -238,12 +292,15 @@
           this.$message.error('名称不能为空!')
           return false
         }
+        this.form.random = this.randoms
+        this.form.token = this.tokens
         var utc = Math.round(this.form.expire_time.getTime() / 1000)
         var unixTimestampa = new Date(utc * 1000)
         this.form.expire_time = unixTimestampa.toLocaleDateString()
         this.form.item_id = this.itemId
         this.$http.post(api.communeSummaries, this.form).then((response) => {
           if (response.data.meta.status_code === 200) {
+            this.event = ''
             this.itemList.unshift(response.data.data)
             console.log(response.data.data)
           } else {
@@ -266,6 +323,9 @@
             for (var i = 0; i < this.itemList.length; i++) {
               let item = this.itemList[i]
               if (this.currentId === item.id) {
+                response.data.data.created_at = new Date(response.data.data.created_at * 1000)
+                response.data.data.isedit = 1
+                response.data.data.expire_time = response.data.data.expire_time.replace(/'&frasl;'/g, '-')
                 this.$set(this.itemList, i, response.data.data)
                 break
               }
@@ -302,9 +362,38 @@
           this.$message.error(error.message)
           console.error(error.message)
         })
+      },
+      // 附件
+      handleRemove() {
+      },
+      // 文件上传失败
+      uploadError(err, file, fileList) {
+        this.uploadMsg = '上传失败'
+        this.$message ({
+          showClose: true,
+          message: '文件上传失败!',
+          type: 'error'
+        })
+        console.log (err)
+      },
+      // 文件上传成功
+      uploadSuccess(response, file, fileList) {
+        let item = {
+          size: file.size,
+          name: response.name,
+          isdelete: false
+        }
+        if (item.size / (1024 * 1024) > 0.01) {
+          item.size = (item.size / (1024 * 1024)).toFixed(2) + 'MB'
+        } else {
+          item.size = (item.size / 1024).toFixed(2) + 'KB'
+        }
+        this.fileList.push (item)
+        console.log('res' + JSON.stringify(response))
       }
     },
     created() {
+      this.upTokens()
       let itemId = this.$route.params.id
       if (!itemId) {
         this.redirectItemList(1, '缺少请求参数！')
@@ -318,8 +407,10 @@
           if (this.itemList.length > 0) {
             for (var i = 0; i < this.itemList.length; i++) {
               this.itemList[i].isedit = 1
-              var unixTimestamp = new Date(this.itemList[i].created_at * 1000)
-              this.itemList[i].created_at = unixTimestamp.toLocaleDateString().split('/').join(':') + ' ' + unixTimestamp.toLocaleTimeString().slice(2)
+              this.itemList[i].created_at = new Date(this.itemList[i].created_at * 1000)
+              // this.itemList[i].expire_time = new Date(this.itemList[i].expire_time.replace(/-/g, '/'))
+              // this.itemList[i].created_at = unixTimestamp.toLocaleDateString()
+              // unixTimestamp.toLocaleDateString().split('/').join(':') + ' ' + unixTimestamp.toLocaleTimeString().slice(2)
             }
           }
           console.log(response.data.data)
@@ -337,6 +428,27 @@
   .AddCommunicate {
     color: #999999;
     margin-bottom: 20px;
+  }
+  .upload-list {
+    line-height:30px;
+    height:42px;
+    background: #F7F7F7;
+    border-radius: 4px;
+    margin:10px;
+    padding-top:5px;
+  }
+  .upload-list span{
+    padding-right:20px;
+    margin-right:4px;
+  }
+  .upload-list>div>div{
+    width:50px;
+    float: left;
+    overflow: hidden;
+  }
+  .upload-list img{
+    height:30px;
+    margin:0px 6px -11px 6px;
   }
   .titlec{
     line-height: 34px;
