@@ -19,7 +19,7 @@
     </div>
     <div class="pm-right">
       <router-link to="">项目需求</router-link>
-      <router-link :to="{path: ''}">项目报价</router-link>
+      <router-link :to="{name: 'projectQuote', params: {id: routeId}}" :class="[{'active': isQuote}]">项目报价</router-link>
       <router-link :to="{path: ''}">合同</router-link>
       <router-link :to="{path: ''}">菜单</router-link>
     </div>
@@ -48,6 +48,11 @@ export default {
   computed: {
     routeId() {
       return this.$route.params.id
+    },
+    isQuote() {
+      let q = this.$phenix.in_array(['projectQuote', 'projectQuoteSubmit'], this.currentRoute)
+      if (q === -1) return false
+      return true
     }
   }
 }

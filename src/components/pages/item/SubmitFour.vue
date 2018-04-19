@@ -8,15 +8,15 @@
         <div class="content" v-loading="isLoading">
           <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
             <div class="input">
-              <el-row :gutter="24">
-                <el-col :xs="24" :sm="10" :md="10" :lg="10">
+              <el-row :gutter="20">
+                <el-col :xs="20" :sm="10" :md="10" :lg="10">
                   <el-form-item label="公司名称" prop="company_name">
                     <el-input v-model="form.company_name" placeholder=""></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
 
-              <el-row :gutter="24">
+              <el-row :gutter="20">
                 <el-col :xs="24" :sm="6" :md="6" :lg="6">
                   <el-form-item label="公司规模" prop="company_size"
                                 class="fullwidth">
@@ -32,7 +32,7 @@
                 </el-col>
               </el-row>
 
-              <el-row :gutter="24">
+              <el-row :gutter="20">
                 <el-col :xs="24" :sm="8" :md="8" :lg="8">
                   <el-form-item label="公司网站" prop="company_web">
                     <el-input v-model="form.company_web" placeholder="">
@@ -49,7 +49,7 @@
                 <el-input v-model="form.address" placeholder="街道地址"></el-input>
               </el-form-item>
 
-              <el-row :gutter="24">
+              <el-row :gutter="20">
                 <el-col :xs="24" :sm="6" :md="6" :lg="6">
                   <el-form-item label="联系人" prop="contact_name">
                     <el-input v-model="form.contact_name" placeholder=""></el-input>

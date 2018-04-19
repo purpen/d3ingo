@@ -158,7 +158,7 @@
             this.$message.success(message)
           }
         }
-        this.$router.push({name: 'home'})
+        this.$router.push({name: 'projectManagementList'})
         return
       },
       // 项目阶段列表

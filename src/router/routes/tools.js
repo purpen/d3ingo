@@ -100,6 +100,28 @@ module.exports = [
         },
         path: '/vcenter/project_management/income_expenses/:id',
         component: require('@/components/pages/v_center/project_management/IncomeandExpenses')
+      },
+      {
+        name: 'projectQuote',
+        meta: {
+          title: '项目报价',
+          requireAuth: true,
+          hideHeader: true,
+          hideFooter: true
+        },
+        path: '/vcenter/project_management/quote/:id',
+        component: require('@/components/pages/v_center/project_management/Quote')
+      },
+      {
+        name: 'projectQuoteSubmit',
+        meta: {
+          title: '项目报价提交',
+          requireAuth: true,
+          hideHeader: true,
+          hideFooter: true
+        },
+        path: '/vcenter/project_management/quote_submit/:id',
+        component: require('@/components/pages/v_center/project_management/QuoteSubmit')
       }
     ],
     component: require('@/components/pages/v_center/project_management/Show')

@@ -1,33 +1,40 @@
 <template>
 
     <el-form-item :label="titleProp" prop="chinaCity" :style="propStyle">
-        <el-select v-model="province" event="province" placeholder="省份/自治区/直辖市">
-          <el-option
-            v-for="(item, index) in provinces"
-            :label="item[1]"
-            :key="item.index"
-            :value="item[0]">
-          </el-option>
-        </el-select>
+      <el-row :gutter="20">
+        <el-col :xs="24" :sm="8" :md="8" :lg="8">
+          <el-select v-model="province" event="province" placeholder="省份/自治区/直辖市">
+            <el-option
+              v-for="(item, index) in provinces"
+              :label="item[1]"
+              :key="item.index"
+              :value="item[0]">
+            </el-option>
+          </el-select>
+        </el-col>
 
-        <el-select v-model="city" event="city" placeholder="城市">
-          <el-option
-            v-for="(item, index) in cities"
-            :label="item[1]"
-            :key="item.index"
-            :value="item[0]">
-          </el-option>
-        </el-select>
+        <el-col :xs="24" :sm="8" :md="8" :lg="8">
+          <el-select v-model="city" event="city" placeholder="城市">
+            <el-option
+              v-for="(item, index) in cities"
+              :label="item[1]"
+              :key="item.index"
+              :value="item[0]">
+            </el-option>
+          </el-select>
+        </el-col>
 
-        <el-select v-model="district" event="district" v-if="!twoSelect" placeholder="区/县">
-          <el-option
-            v-for="(item, index) in districts"
-            :label="item[1]"
-            :key="item.index"
-            :value="item[0]">
-          </el-option>
-        </el-select>
-
+        <el-col :xs="24" :sm="8" :md="8" :lg="8">
+          <el-select v-model="district" event="district" v-if="!twoSelect" placeholder="区/县">
+            <el-option
+              v-for="(item, index) in districts"
+              :label="item[1]"
+              :key="item.index"
+              :value="item[0]">
+            </el-option>
+          </el-select>
+        </el-col>
+      </el-row>
     </el-form-item>
 
 
@@ -181,5 +188,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+  .el-select {
+    width: 100%;
+  }
 </style>
