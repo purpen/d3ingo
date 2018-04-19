@@ -1,8 +1,7 @@
 <template>
   <div class="" v-if="attr.power">
-    <v-tags :tagPosition="tagPosition" :propParam="propsTags" @changePropsTags="changePropsTags"></v-tags>
-    <el-button @click="addTagBtn">显示标签</el-button>
-    <h3>任务组件引入测试 <a href="javascript:void(0)" @click="closeBtn()">点击关闭</a></h3>
+    <!-- <el-button @click="addTagBtn">显示标签</el-button> -->
+    <!-- <h3>任务组件引入测试 <a href="javascript:void(0)" @click="closeBtn()">点击关闭</a></h3> -->
     <!--<el-button @click="addBtn()">添加任务</el-button>-->
     <div v-if="true">
       <el-input v-model="currentForm.name" placeholder="任务名称"></el-input>
@@ -65,14 +64,8 @@
           </li>
           <li>
             <p>标签:</p>
-            <div class="tags">
-              <span>标签1</span>
-              <span>标签1</span>
-              <span>标签1</span>
-              <span>标签1</span>
-              <span>标签1</span>
-              <i class="add-tag" ref="addTag" @click="addTagBtn">添加标签</i>
-            </div>
+            <v-tags :tagPosition="tagPosition" :propParam="propsTags" @changePropsTags="changePropsTags"></v-tags>
+            <i class="add-tag" ref="addTag" @click="addTagBtn">添加标签</i>
           </li>
         </ul>
       </div>
@@ -200,7 +193,6 @@
         const self = this
         this.$http.get(api.taskId.format(self.currentStat.id), {}).then(function (response) {
           if (response.data.meta.status_code === 200) {
-            console.log(response.data.data)
             self.currentForm = response.data.data
           } else {
             self.$message.error(response.data.meta.message)
@@ -330,21 +322,9 @@
         },
         deep: true
       },
-      propParam2: {
-        handler(val, oldVal) {
-          this.attr2 = val
-        },
-        deep: true
-      },
       attr: {
         handler(val, oldVal) {
           this.$emit('changePropsTask', val)
-        },
-        deep: true
-      },
-      attr2: {
-        handler(val, oldVal) {
-          this.$emit('changePropsTags', val)
         },
         deep: true
       },
@@ -359,7 +339,6 @@
           } else if (this.currentStat.event === 'complete') {   // 点击完成/取消完成事件
             this.setStageTask()
           }
-          console.log(this.currentStat)
         },
         deep: true
       },
@@ -382,13 +361,13 @@
         deep: true
       }
     },
-    created: function() {
+    created() {
       let itemId = this.$route.params.id
       if (!itemId) {
         this.redirectItemList(1, '缺少请求参数！')
         return
       }
-      this.$set(this.propsTags, 'itemId', itemId)
+      this.propsTags.itemId = itemId
     }
   }
 </script>
@@ -519,28 +498,12 @@
     left: 0;
     top: 0;
   }
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  .tags span {
-    padding-left: 0;
-    text-align: center;
-    line-height: 24px;
-    color: #fff;
-    width: 70px;
-    height: 24px;
-    border-radius: 12px;
-    background:#FC9259;
-    margin: 0 15px 15px 0
-  }
-  
   .add-tag {
     color: #999;
     position: relative;
     padding-left: 26px;
     cursor: pointer;
-    margin: 0 15px 15px 0;
+    margin-right: 15px;
     line-height: 24px;
   }
   .add-tag:hover {
