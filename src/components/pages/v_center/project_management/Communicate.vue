@@ -26,7 +26,7 @@
                       v-model="dateadd"
                       placeholder="选择日期时间" size="small">
                     </el-date-picker>
-                  </div>            
+                  </div>
               </el-col>
               <el-col :span="12">
                   <img :src=" userimg " alt="">

@@ -24,7 +24,9 @@
             <button class="add-stage small-button white-button" @click="addStageBtn()">添加阶段</button>
           </div>
           <section>
-            <div :class="['task-item','clearfix', {'active': ele.stage === 2}]" v-for="(ele, index) in displayObj.outsideStageList" :key="index">
+            <div  v-for="(ele, index) in displayObj.outsideStageList" :key="index"
+              @click.self="showTaskBtn(ele.id, index)"
+              :class="['task-item','clearfix', {'active': ele.stage === 2}]">
               <p @click="completeTaskBtn(ele.id, index, ele.stage)" class="task-name fl">{{ele.name}}</p>
               <p class="task-date fr">{{ele.created_at_format}}</p>
             </div>
@@ -40,13 +42,6 @@
               </div>
             </section>
           </section>
-          <h2>任务列表</h2>
-          <el-button @click="addTaskBtn()">添加任务</el-button>
-          <p v-for="(d, index) in taskList" :key="index">
-            {{ d.id }} | {{ d.name }} | {{ d.stage }} |
-            <el-button @click="showTaskBtn(d.id, index)">详情</el-button> |
-            <el-button @click="completeTaskBtn(d.id, index, d.stage)">完成</el-button>
-          </p>
         </el-col>
         <el-col :span="12">
           <v-task :propsParam="propsTask" :propsStat="propsTaskStat" :propsForm="propsTaskForm" @changePropsTask="changePropsTask" @changePropsStat="changePropsTaskStat" @changePropsForm="changePropsTaskForm" :projectObject="projectObject"></v-task>

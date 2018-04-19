@@ -3,7 +3,7 @@
     <!-- <el-button @click="addTagBtn">显示标签</el-button> -->
     <!-- <h3>任务组件引入测试 <a href="javascript:void(0)" @click="closeBtn()">点击关闭</a></h3> -->
     <!--<el-button @click="addBtn()">添加任务</el-button>-->
-    <div v-if="true">
+    <div v-if="false">
       <el-input v-model="currentForm.name" placeholder="任务名称"></el-input>
       <el-input v-model="currentForm.tier" placeholder="层级"></el-input>
       <el-input v-model="currentForm.pid" placeholder="父ID"></el-input>
@@ -64,8 +64,20 @@
           </li>
           <li>
             <p>标签:</p>
-            <v-tags :tagPosition="tagPosition" :propParam="propsTags" @changePropsTags="changePropsTags"></v-tags>
-            <i class="add-tag" ref="addTag" @click="addTagBtn">添加标签</i>
+            <div class="tags">
+              <span v-for="(d, index) in currentForm.tagsAll"
+                :style="{background: d.type_val}"
+                :key="index">{{ d.title }}
+                <i class="close-icon-solid" @click="operateTags(d.id)"></i>
+                </span>
+            </div>
+            <v-tags
+              :propParam = "propsTags"
+              :tagsId = "tagsId"
+              @changePropsTags = "changePropsTags"
+              @addTagBtn = "addTagBtn"
+              @changeTags="changeTags"
+              @updateTags="updateTags"></v-tags>
           </li>
         </ul>
       </div>
@@ -123,11 +135,12 @@
           power: 0,
           test: ''
         },
-        currentForm: {   // 当前任务表单
+        currentForm: { // 当前任务表单
           over_time: '',
           level: 1
         },
-        currentStat: {   // 当前任务操作事件
+        currentChange: {},
+        currentStat: { // 当前任务操作事件
           event: '',
           id: 0,
           index: 0,
@@ -151,16 +164,14 @@
           label: '非常紧急',
           color: '#ff5a5f'
         }],
-        tagPosition: {
-          top: 0,
-          left: 0
-        }
+        tagsId: []
       }
     },
     methods: {
       // 关闭任务
       closeBtn() {
         this.attr.power = 0
+        this.attr.event = ''
       },
       // 添加任务点击事件
       addBtn() {
@@ -232,7 +243,7 @@
           self.$message.error('ID不能为空!')
           return false
         }
-        self.$http.put(api.taskId.format(id), self.currentForm).then(function (response) {
+        self.$http.put(api.taskId.format(id), self.currentChange).then(function (response) {
           if (response.data.meta.status_code === 200) {
             // 更新整个对象到view层
             Object.assign(self.currentForm, response.data.data)
@@ -302,13 +313,45 @@
         })
       },
       addTagBtn() {
-        this.$set(this.tagPosition, 'top', event.currentTarget.offsetTop + 30 + 'px')
-        this.$set(this.tagPosition, 'left', event.currentTarget.offsetLeft + 'px')
         this.$set(this.propsTags, 'power', 1)
       },
       // 更新标签组件传回数据
       changePropsTags(obj) {
         this.propsTags = obj
+      },
+      operateTags(id) {
+        let index = this.tagsId.indexOf(id)
+        if (index === -1) {
+          this.tagsId.push(index)
+        } else {
+          this.tagsId.splice(index, 1)
+        }
+        this.changeTags(this.tagsId)
+      },
+      changeTags(val) {
+        if (!val.length) {
+          val = [0]
+        }
+        this.$set(this.currentStat, 'event', 'update')
+        this.currentChange = {
+          tags: val
+        }
+        this.update()
+      },
+      updateTags(obj) {
+        console.log(obj)
+        this.currentForm.tagsAll.forEach((item, index, array) => {
+          if (item.id === obj.id) {
+            if (obj.event === 'update') {
+              this.$nextTick(() => {
+                item.title = obj.title
+                item.type_val = obj.type_val
+              })
+            } else if (obj.event === 'delete') {
+              array.splice(index, 1)
+            }
+          }
+        })
       }
     },
     mounted: function () {
@@ -357,6 +400,13 @@
       currentForm: {
         handler(val, oldVal) {
           this.$emit('changePropsForm', val)
+          if (val.tagsAll) {
+            let list = []
+            val.tagsAll.forEach(item => {
+              list.push(item.id)
+            })
+            this.tagsId = list
+          }
         },
         deep: true
       }
@@ -498,26 +548,37 @@
     left: 0;
     top: 0;
   }
-  .add-tag {
-    color: #999;
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 15px;
+  }
+  .tags span {
     position: relative;
-    padding-left: 26px;
-    cursor: pointer;
-    margin-right: 15px;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 8px;
+    text-align: center;
     line-height: 24px;
+    color: #fff;
+    height: 24px;
+    border-radius: 12px;
+    margin-right: 15px;
+    margin-bottom: 15px;
   }
-  .add-tag:hover {
-    color: #666;
+  .tags span:hover .close-icon-solid {
+    opacity: 1;
   }
-  .add-tag:before {
-    content: "";
+  .close-icon-solid {
+    border-radius: 0;
+    opacity: 0;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
     position: absolute;
-    left: 0;
-    top: 4px;
-    width: 16px;
-    height: 16px;
-    background: url(../../assets/images/tools/project_management/Group.png) no-repeat;
-    background-size: contain;
-    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
   }
 </style>
