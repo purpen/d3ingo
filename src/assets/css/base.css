@@ -306,6 +306,10 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   user-select: none;
 }
 
+.el-select {
+  width: 100%;
+}
+
 .no-border {
   border-top: none !important;
   border-left: none !important;

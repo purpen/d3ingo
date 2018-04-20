@@ -65,7 +65,7 @@
       disabled: Boolean,
       isFirstProp: {
         type: Boolean,
-        default: false
+        default: true
       },
       isEmpty: {
         default: false
@@ -74,7 +74,14 @@
         default: '86'
       }
     },
-
+    data () {
+      return {
+        province: '',
+        city: '',
+        district: '',
+        isFirst: true
+      }
+    },
     methods: {
       _filter (pid) {
         const result = []
@@ -131,15 +138,8 @@
         return this._filter(this.city)
       }
     },
-    data () {
-      return {
-        province: '',
-        city: '',
-        district: '',
-        isFirst: false
-      }
+    created() {
     },
-
     watch: {
       provinceProp(d) {
         this.province = d
@@ -188,7 +188,5 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .el-select {
-    width: 100%;
-  }
+
 </style>

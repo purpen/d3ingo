@@ -327,6 +327,22 @@ export default {
   updateDesignProject: '/designProject/update', // PUT 创建
   deleteDesignProject: '/designProject/delete', // PUT 放入回收站
   designProject: '/designProject', // GET 展示详情
+
+  // 客户信息
+  designClientList: '/designClient/lists',   // GET 列表
+  designClientCreate: '/designClient/create', // POST 创建
+
+  // 项目管理报价单
+  designQuotationCreate: '/designQuotation/create',  // POST 创建
+  designQuotationUpdate: '/designQuotation/update', // PUT 更新
+  designQuotation: '/designQuotation',   // 详情
+
+  // 职位管理
+  designPositionList: '/designPosition/lists',    // GET 列表
+  designPositionCreate: '/designPosition/create',   // POST 创建
+  designPositionUpdate: '/designPosition/update',   // PUT 编辑
+  designPositionDelete: '/designPosition/delete',   // DELETE 删除
+
   // test
   test: '/' // End
 }
