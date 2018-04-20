@@ -44,7 +44,7 @@
               v-model="currentForm.over_time"
               type="datetime"
               placeholder="选择日期时间"
-              @blur="changeTime">
+              @change="changeTime">
             </el-date-picker>
           </li>
           <li>
@@ -368,6 +368,7 @@
         this.update()
       },
       changeTime(e) {
+        console.log(e)
         // this.$set(this.currentStat, 'event', 'update')
         this.currentChange = {over_time: e}
         this.update()
