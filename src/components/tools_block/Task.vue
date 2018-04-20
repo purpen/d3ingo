@@ -3,7 +3,7 @@
     <!-- <el-button @click="addTagBtn">显示标签</el-button> -->
     <!-- <h3>任务组件引入测试 <a href="javascript:void(0)" @click="closeBtn()">点击关闭</a></h3> -->
     <!--<el-button @click="addBtn()">添加任务</el-button>-->
-    <div v-if="false">
+    <div v-if="true">
       <el-input v-model="currentForm.name" placeholder="任务名称"></el-input>
       <el-input v-model="currentForm.tier" placeholder="层级"></el-input>
       <el-input v-model="currentForm.pid" placeholder="父ID"></el-input>
