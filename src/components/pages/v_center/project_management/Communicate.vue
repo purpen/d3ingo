@@ -24,7 +24,7 @@
                     <el-date-picker
                       type="datetime" 
                       v-model="form.expire_time"
-                      placeholder="选择日期时间" size="small">
+                      placeholder="选择日期时间" size="small" @change="addTime">
                     </el-date-picker>
                   </div>
               </el-col>
@@ -177,7 +177,7 @@
         onThingimg: require('@/assets/images/tools/project_management/onThing@2x.png'),
         pngimage: require('@/assets/images/tools/cloud_drive/type/image@2x.png'),
         noimg: require('@/assets/images/tools/cloud_drive/type/other@2x.png'),
-        closeimg: require('@/assets/images/tools/project_management/close@2x.png'),
+        closeimg: require('@/assets/images/tools/project_management/Close@2x.png'),
         userheads: [],
         operation: '',
         editmy: '',
@@ -299,9 +299,6 @@
         }
         this.form.random = this.randoms
         this.form.token = this.tokens
-        var utc = Math.round(this.form.expire_time.getTime() / 1000)
-        var unixTimestampa = new Date(utc * 1000)
-        this.form.expire_time = unixTimestampa.toLocaleDateString()
         this.form.item_id = this.itemId
         this.$http.post(api.communeSummaries, this.form).then((response) => {
           if (response.data.meta.status_code === 200) {
@@ -419,6 +416,9 @@
             self.$message.error(error.message)
             self.dialogLoadingBtn = false
           })
+      },
+      addTime(e) {
+        this.form.expire_time = e.slice(0, 10)
       }
     },
     created() {
