@@ -177,7 +177,7 @@
         onThingimg: require('@/assets/images/tools/project_management/onThing@2x.png'),
         pngimage: require('@/assets/images/tools/cloud_drive/type/image@2x.png'),
         noimg: require('@/assets/images/tools/cloud_drive/type/other@2x.png'),
-        closeimg: require('@/assets/images/tools/project_management/close@2x.png'),
+        closeimg: require('@/assets/images/tools/project_management/Close@2x.png'),
         userheads: [],
         operation: '',
         editmy: '',
