@@ -144,7 +144,7 @@ export default {
       this.$router.push({name: 'projectManagementOverView', params: {id: id}})
     },
     projectDelete(id, index) {
-      this.$http.put(api.deleteDesignProject, {id: id}).then(res => {
+      this.$http.delete(api.deleteDesignProject, {id: id}).then(res => {
         this.$refs.operate[index].blur()
         if (res.data.meta.status_code === 200) {
           this.projectList.splice(index, 1)
