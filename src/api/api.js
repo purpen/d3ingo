@@ -116,6 +116,7 @@ export default {
   // 设计公司
   designCompanyId: 'designCompany/otherIndex/{0}', // 根据标识查看公司详情
   designCompany: '/designCompany', // POST 保存 /PUT 更新 / GET 设计公司基本资料
+  designCompanyChild: '/designCompany/child',   // GET 查看设计公司信息
 
   surveyDemandCompanySurvey: '/survey/demandCompanySurvey', // GET 需求方控制面板
   surveyDesignCompanySurvey: '/survey/designCompanySurvey', // GET 设计公司控制面板
@@ -327,6 +328,22 @@ export default {
   updateDesignProject: '/designProject/update', // PUT 创建
   deleteDesignProject: '/designProject/delete', // DELETE 放入回收站
   designProject: '/designProject', // GET 展示详情
+
+  // 客户信息
+  designClientList: '/designClient/lists',   // GET 列表
+  designClientCreate: '/designClient/create', // POST 创建
+
+  // 项目管理报价单
+  designQuotationCreate: '/designQuotation/create',  // POST 创建
+  designQuotationUpdate: '/designQuotation/update', // PUT 更新
+  designQuotation: '/designQuotation',   // 详情
+
+  // 职位管理
+  designPositionList: '/designPosition/lists',    // GET 列表
+  designPositionCreate: '/designPosition/create',   // POST 创建
+  designPositionUpdate: '/designPosition/update',   // PUT 编辑
+  designPositionDelete: '/designPosition/delete',   // DELETE 删除
+
   // test
   test: '/' // End
 }
