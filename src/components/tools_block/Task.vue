@@ -43,13 +43,13 @@
               v-model="currentForm.over_time"
               type="datetime"
               placeholder="选择日期时间"
-              @change="changeTime">
+              @blur="changeTime">
             </el-date-picker>
           </li>
           <li>
             <p>优先级:</p>
             <el-select v-model="currentForm.level" placeholder="请选择"
-            @change="changeLevel">
+            @visible-change="changeLevel(currentForm.level)">
               <el-option
                 v-for="(item, index) in levels"
                 :key="index"
@@ -168,8 +168,7 @@
           label: '非常紧急',
           color: '#ff5a5f'
         }],
-        tagsId: [],
-        isView: true // 点开详情不更新数据
+        tagsId: []
       }
     },
     methods: {
@@ -210,7 +209,6 @@
         this.$http.get(api.taskId.format(self.currentStat.id), {}).then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.currentForm = response.data.data
-            self.isView = true
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -242,26 +240,24 @@
       },
       // 更新
       update() {
-        if (!this.isView) {
-          const self = this
-          let id = self.currentStat.id
-          if (!id) {
-            self.$message.error('ID不能为空!')
-            return false
-          }
-          self.$http.put(api.taskId.format(id), self.currentChange).then(function (response) {
-            if (response.data.meta.status_code === 200) {
-              // 更新整个对象到view层
-              Object.assign(self.currentForm, response.data.data)
-              self.currentStat.sync = 1
-            } else {
-              self.$message.error(response.data.meta.message)
-            }
-          }).catch((error) => {
-            self.$message.error(error.message)
-            console.error(error.message)
-          })
+        const self = this
+        let id = self.currentStat.id
+        if (!id) {
+          self.$message.error('ID不能为空!')
+          return false
         }
+        self.$http.put(api.taskId.format(id), self.currentChange).then(function (response) {
+          if (response.data.meta.status_code === 200) {
+            // 更新整个对象到view层
+            Object.assign(self.currentForm, response.data.data)
+            self.currentStat.sync = 1
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          self.$message.error(error.message)
+          console.error(error.message)
+        })
       },
       // 删除任务
       delete() {
@@ -361,16 +357,20 @@
         })
       },
       blurTagName(obj) {
+        console.log(1)
         this.$set(this.currentStat, 'event', 'update')
         this.currentChange = obj
         this.update()
+        console.log(this.currentStat)
       },
       changeTime(e) {
+        console.log(2)
         this.$set(this.currentStat, 'event', 'update')
         this.currentChange = {over_time: e}
         this.update()
       },
       changeLevel(e) {
+        console.log(3)
         this.$set(this.currentStat, 'event', 'update')
         this.currentChange = {level: e}
         this.update()
@@ -410,8 +410,6 @@
       currentStat: {
         handler(val, oldVal) {
           this.$emit('changePropsStat', val)
-          this.isView = false
-          console.log(val)
         },
         deep: true
       },
