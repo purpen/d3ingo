@@ -101,7 +101,7 @@
 
         <div class="line"></div>
 
-        <el-form-item label="项目目标" prop="product_features">
+        <el-form-item label="项目目标" prop="summary">
           <el-input type="textarea" :rows="5" v-model="form.summary"
                     placeholder="请详细描述项目的主要目标和主要重点"></el-input>
         </el-form-item>
@@ -114,54 +114,63 @@
                     <img :src="require('assets/images/tools/project_management/quote_row@2x.png')" class="plan-icon" />
                 </el-col>
                 <el-col :xs="24" :sm="7" :md="7" :lg="7">
-                    <el-input v-model="d.content" placeholder="请添写工作内容"></el-input>
+                    <el-input v-model="d.content" placeholder="请添写工作内容" size="small"></el-input>
                 </el-col>
-                <el-col :xs="24" :sm="6" :md="6" :lg="6">
+                <el-col :xs="24" :sm="7" :md="7" :lg="7">
                   <div v-for="(c, c_index) in d.arranged">
-                    <el-select
-                      v-model="c.name"
-                      filterable
-                      allow-create
-                      default-first-option
-                      @change="positionChange"
-                      placeholder="添加或选择职位">
-                      <el-option
-                        v-for="(p, p_index) in positionList"
-                        :key="p_index"
-                        :label="p.name"
-                        :value="p.name">
-                          <span style="float: left">{{ p.name }}</span>
-                          <span style="float: right; color: #8492a6; font-size: 13px" @click="delPosition(p.id, p_index)"><i class="fx fx-icon-close-error"></i></span>
-                      </el-option>
-                    </el-select>
-                    <el-select
-                      v-model="c.number"
-                      filterable
-                      allow-create
-                      default-first-option
-                      @change="positionChange"
-                      placeholder="数量">
-                      <el-option label="1名" :value="1"></el-option>
-                      <el-option label="2名" :value="2"></el-option>
-                      <el-option label="3名" :value="3"></el-option>
-                      <el-option label="4名" :value="4"></el-option>
-                      <el-option label="5名" :value="5"></el-option>
-                      <el-option label="6名" :value="6"></el-option>
-                    </el-select>
+
+                    <el-row :gutter="1">
+                      <el-col :xs="24" :sm="16" :md="16" :lg="16">
+                        <el-select
+                          v-model="c.name"
+                          filterable
+                          allow-create
+                          default-first-option
+                          size="small"
+                          @change="positionChange"
+                          placeholder="添加或选择职位">
+                          <el-option
+                            v-for="(p, p_index) in positionList"
+                            :key="p_index"
+                            :label="p.name"
+                            :value="p.name">
+                              <span style="float: left">{{ p.name }}</span>
+                              <span style="float: right; color: #8492a6; font-size: 13px" @click="delPosition(p.id, p_index)"><i class="fx fx-icon-close-error"></i></span>
+                          </el-option>
+                        </el-select>
+                      </el-col>
+                      <el-col :xs="24" :sm="8" :md="8" :lg="8">
+                        <el-select
+                          v-model="c.number"
+                          filterable
+                          allow-create
+                          size="small"
+                          default-first-option
+                          placeholder="数量">
+                          <el-option label="1名" :value="1"></el-option>
+                          <el-option label="2名" :value="2"></el-option>
+                          <el-option label="3名" :value="3"></el-option>
+                          <el-option label="4名" :value="4"></el-option>
+                          <el-option label="5名" :value="5"></el-option>
+                          <el-option label="6名" :value="6"></el-option>
+                        </el-select>
+                      </el-col>
+                  </el-row>
                   </div>
                 </el-col>
-                <el-col :xs="24" :sm="4" :md="4" :lg="4">
-                    <el-input v-model.number="d.duration" placeholder="时间">
+                <el-col :xs="24" :sm="3" :md="3" :lg="3">
+                    <el-input v-model.number="d.duration" placeholder="时间" size="small">
                       <template slot="append">工作日</template>
                     </el-input>
                 </el-col>
                 <el-col :xs="24" :sm="4" :md="4" :lg="4">
-                    <el-input v-model="d.price" placeholder="请添写费用">
+                    <el-input v-model="d.price" placeholder="请添写费用" size="small">
                       <template slot="append">元</template>
                     </el-input>
                 </el-col>
                 <el-col :xs="24" :sm="1" :md="1" :lg="1">
-                  <p class="plan-opt-icon icon-box"><i class="fx fx-icon-edit"></i></p>
+                  <p class="plan-opt-icon icon-box" v-if="d.summary" @click="planTxtBtn(d.summary, index, true)"><i class="fx fx-icon-see"></i></p>
+                  <p class="plan-opt-icon icon-box" v-else @click="planTxtBtn(d.summary, index, false)"><i class="fx fx-icon-edit"></i></p>
                 </el-col>
                 <el-col :xs="24" :sm="1" :md="1" :lg="1" style="padding:0;">
                   <p class="plan-opt-icon"><i class="fx fx-icon-close-sm" @click="delPlanBtn(d.content, index)"></i></p>
@@ -234,6 +243,34 @@
         </el-form>
       </el-dialog>
 
+    <el-dialog
+      title="工作内容备注"
+      :visible.sync="dialogPlanTxt"
+      width="30%">
+      <div v-if="currentPlanTxtView">
+        <p>{{ currentPlanTxt }}</p>
+        <p class="form-btn">
+          <el-button @click="PlanTxtEdit">编辑
+          </el-button>
+        </p>
+      </div>
+      <div v-else>
+        <el-form label-position="top" label-width="80px">
+          <el-form-item label="" prop="currentPlanTxt">
+            <el-input type="textarea" :rows="5" placeholder="请详细描工作内容备注" v-model="currentPlanTxt"></el-input>
+          </el-form-item>
+
+          <p class="form-btn">
+            <el-button @click="dialogPlanTxt = false">取消
+            </el-button>
+            <el-button type="primary" class="is-custom"
+                       @click="submitPlanTxt">保存
+            </el-button>
+          </p>
+          </el-form>
+        </div>
+      </el-dialog>
+
   </div>
 
 </template>
@@ -278,11 +315,12 @@ export default {
       clientList: [],
       client: '',
       dialogClient: false,
-      province: '',
-      city: '',
-      district: '',
       isFirst: false,
       positionList: [],
+      dialogPlanTxt: false,
+      currentPlanTxt: '',
+      currentPlanTxtView: true,
+      currentPlanTxtIndex: 0,
       test: ''
     }
   },
@@ -426,6 +464,22 @@ export default {
         console.error(error.message)
       })
       return
+    },
+    // 计划备注点击事件
+    planTxtBtn(summary, index, isView) {
+      this.currentPlanTxt = summary
+      this.currentPlanTxtView = isView
+      this.currentPlanTxtIndex = index
+      this.dialogPlanTxt = true
+    },
+    // 编辑计划备注
+    PlanTxtEdit() {
+      this.currentPlanTxtView = false
+    },
+    // 保存计划任务备注
+    submitPlanTxt() {
+      this.$set(this.planList[this.currentPlanTxtIndex], 'summary', this.currentPlanTxt)
+      this.dialogPlanTxt = false
     }
   },
   created() {
@@ -436,6 +490,27 @@ export default {
       this.$http.get(api.designQuotation, {params: {id: id}}).then((response) => {
         if (response.data.meta.status_code === 200) {
           this.form = response.data.data
+        } else {
+          this.$message.error(response.data.meta.message)
+        }
+      }).catch((error) => {
+        this.$message.error(error.message)
+        console.error(error.message)
+      })
+    } else {
+      // 获取设计公司详情
+      this.$http.get(api.designCompanyChild, {}).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          let item = response.data.data
+          this.$set(this.form, 'design_company_name', item.company_name)
+          this.$set(this.form, 'design_contact_name', item.contact_name)
+          this.$set(this.form, 'design_position', item.position)
+          this.$set(this.form, 'design_phone', item.phone)
+          this.$set(this.form, 'design_address', item.address)
+          this.$set(this.form, 'design_province', item.province)
+          this.$set(this.form, 'design_city', item.city)
+          this.$set(this.form, 'design_area', item.area)
+          console.log(item)
         } else {
           this.$message.error(response.data.meta.message)
         }
@@ -546,16 +621,16 @@ export default {
   }
   img.plan-icon {
     vertical-align: middle;
-    width: 12px;
+    width: 10px;
   }
   .plan-opt-icon {
-    padding-top: 10px;
+    padding-top: 8px;
     cursor: pointer;
     text-align: right;
   }
   .icon-box {
-    width: 60px;
-    padding: 10px 20px;
+    width: 45px;
+    padding: 8px 25px 8px 15px;
     border: 1px solid #D2D2D2;
     background: #fff;
     border-radius:5px;
