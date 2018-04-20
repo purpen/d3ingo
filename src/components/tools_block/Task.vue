@@ -28,7 +28,9 @@
         <i class="fx fx-icon-nothing-close-error" @click="closeBtn"></i>
       </div>
       <p class="add-task-input">
-        <input v-model="currentForm.name" placeholder="添加任务内容" type="text">
+        <el-tooltip class="item" effect="dark" content="点击即可编辑" placement="top">
+          <input @blur="blurTagName({name: currentForm.name})" v-model="currentForm.name" placeholder="添加任务内容" type="text">
+        </el-tooltip>
       </p>
       <div class="task-detail-body">
         <div>
@@ -40,12 +42,14 @@
             <el-date-picker
               v-model="currentForm.over_time"
               type="datetime"
-              placeholder="选择日期时间">
+              placeholder="选择日期时间"
+              @change="changeTime">
             </el-date-picker>
           </li>
           <li>
             <p>优先级:</p>
-            <el-select v-model="currentForm.level" placeholder="请选择">
+            <el-select v-model="currentForm.level" placeholder="请选择"
+            @change="changeLevel">
               <el-option
                 v-for="(item, index) in levels"
                 :key="index"
@@ -164,7 +168,8 @@
           label: '非常紧急',
           color: '#ff5a5f'
         }],
-        tagsId: []
+        tagsId: [],
+        isView: true // 点开详情不更新数据
       }
     },
     methods: {
@@ -205,6 +210,7 @@
         this.$http.get(api.taskId.format(self.currentStat.id), {}).then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.currentForm = response.data.data
+            self.isView = true
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -223,7 +229,6 @@
         self.currentForm.item_id = self.attr.itemId
         this.$http.post(api.task, self.currentForm).then(function (response) {
           if (response.data.meta.status_code === 200) {
-            console.log(response.data.data)
             // 更新整个对象到view层
             Object.assign(self.currentForm, response.data.data)
             self.currentStat.sync = 1
@@ -237,24 +242,26 @@
       },
       // 更新
       update() {
-        const self = this
-        let id = self.currentStat.id
-        if (!id) {
-          self.$message.error('ID不能为空!')
-          return false
-        }
-        self.$http.put(api.taskId.format(id), self.currentChange).then(function (response) {
-          if (response.data.meta.status_code === 200) {
-            // 更新整个对象到view层
-            Object.assign(self.currentForm, response.data.data)
-            self.currentStat.sync = 1
-          } else {
-            self.$message.error(response.data.meta.message)
+        if (!this.isView) {
+          const self = this
+          let id = self.currentStat.id
+          if (!id) {
+            self.$message.error('ID不能为空!')
+            return false
           }
-        }).catch((error) => {
-          self.$message.error(error.message)
-          console.error(error.message)
-        })
+          self.$http.put(api.taskId.format(id), self.currentChange).then(function (response) {
+            if (response.data.meta.status_code === 200) {
+              // 更新整个对象到view层
+              Object.assign(self.currentForm, response.data.data)
+              self.currentStat.sync = 1
+            } else {
+              self.$message.error(response.data.meta.message)
+            }
+          }).catch((error) => {
+            self.$message.error(error.message)
+            console.error(error.message)
+          })
+        }
       },
       // 删除任务
       delete() {
@@ -326,20 +333,19 @@
         } else {
           this.tagsId.splice(index, 1)
         }
-        this.changeTags(this.tagsId)
+        this.changeTags({tags: this.tagsId})
       },
-      changeTags(val) {
-        if (!val.length) {
-          val = [0]
+      changeTags(obj) {
+        if (obj.tags) {
+          if (!obj.tags.length) {
+            obj.tags = [0]
+          }
         }
         this.$set(this.currentStat, 'event', 'update')
-        this.currentChange = {
-          tags: val
-        }
+        Object.assign(this.currentChange, obj)
         this.update()
       },
       updateTags(obj) {
-        console.log(obj)
         this.currentForm.tagsAll.forEach((item, index, array) => {
           if (item.id === obj.id) {
             if (obj.event === 'update') {
@@ -353,6 +359,21 @@
             }
           }
         })
+      },
+      blurTagName(obj) {
+        this.$set(this.currentStat, 'event', 'update')
+        this.currentChange = obj
+        this.update()
+      },
+      changeTime(e) {
+        this.$set(this.currentStat, 'event', 'update')
+        this.currentChange = {over_time: e}
+        this.update()
+      },
+      changeLevel(e) {
+        this.$set(this.currentStat, 'event', 'update')
+        this.currentChange = {level: e}
+        this.update()
       }
     },
     mounted: function () {
@@ -389,6 +410,8 @@
       currentStat: {
         handler(val, oldVal) {
           this.$emit('changePropsStat', val)
+          this.isView = false
+          console.log(val)
         },
         deep: true
       },
@@ -419,6 +442,24 @@
         return
       }
       this.propsTags.itemId = itemId
+    },
+    directives: {
+      focus: {
+        inserted(el, binding) {
+          if (binding.value) {
+            el.focus()
+          } else {
+            el.blur()
+          }
+        },
+        componentUpdated(el, binding) {
+          if (binding.value) {
+            el.focus()
+          } else {
+            el.blur()
+          }
+        }
+      }
     }
   }
 </script>
@@ -504,10 +545,14 @@
   .add-task-input input {
     width: 100%;
     height: 50px;
-    border: 1px solid #d2d2d2;
+    border: 1px solid transparent;
     border-radius: 4px;
     font-size: 20px;
     padding: 0 10px;
+  }
+  .add-task-input input:hover,
+  .add-task-input input:focus {
+    background: #f7f7f7
   }
   .add-task-input {
     position: relative;

@@ -2,7 +2,7 @@
   <header>
     <div class="pm-left">
       <router-link :to="{name: 'projectManagementList'}">项目管理</router-link>
-      <router-link :to="{}">{{projectObject.name}}</router-link>
+      <router-link :to="{name: 'projectManagementOverView', params: {id: routeId}}">{{projectObject.name}}</router-link>
       <span v-if="false" class="favorite-star active"></span>
     </div>
     <div class="pm-middle">
@@ -263,6 +263,7 @@ header {
 
 .pm-left a:nth-child(2)::after {
   transform: rotate(45deg);
+  border-color: transparent
 }
 .pm-left a:hover, .pm-right a:hover {
   color: #222;

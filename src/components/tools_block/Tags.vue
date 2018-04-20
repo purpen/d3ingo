@@ -238,7 +238,7 @@
         } else {
           this.currentTagsId.splice(index, 1)
         }
-        this.$emit('changeTags', this.currentTagsId)
+        this.$emit('changeTags', {tags: this.currentTagsId})
       },
       changeColor(type, color) {
         this.currentTagsForm.type = type

@@ -1,7 +1,7 @@
 <template>
   <section>
     <div>
-      <div v-if="false">
+      <!-- <div v-if="true">
         <h1>阶段测试</h1>
         <el-button @click="addStageBtn()">添加阶段</el-button>
         <p v-for="(d, index) in stageList" :key="index">
@@ -9,7 +9,7 @@
           <el-button @click="editStageBtn(d.id, index)">编辑</el-button> |
           <el-button @click="deleteStageBtn(d.id, index)">删除</el-button>
         </p>
-      </div>
+      </div> -->
       <div v-if="currentStageStat.event">
         <el-input v-model="currentStageForm.title" placeholder=""></el-input>
         <el-button @click="submitStage()">提交阶段</el-button>
@@ -24,7 +24,7 @@
             <button class="add-stage small-button white-button" @click="addStageBtn()">添加阶段</button>
           </div>
           <section>
-            <div  v-for="(ele, index) in displayObj.outsideStageList" :key="index"
+            <div v-for="(ele, index) in displayObj.outsideStageList" :key="index"
               @click.self="showTaskBtn(ele.id, index)"
               :class="['task-item','clearfix', {'active': ele.stage === 2}]">
               <p @click="completeTaskBtn(ele.id, index, ele.stage)" class="task-name fl">{{ele.name}}</p>
@@ -410,31 +410,37 @@
         },
         deep: true
       },
-      taskList(newVal) {
-        this.$set(this.displayObj, 'outsideStageList', [])
-        let outsideStageList = []
-        let itemList = this.stageList
-        newVal.forEach((item) => {
-          this.formatList(item)
-          if (itemList.length) {
-            itemList.forEach((ele, i) => {
-              ele.showItem = false
-              if (item.stage_id === ele.id) {
-                ele['itemList'].push(item)
+      taskList: {
+        handler(newVal, oldVal) {
+          newVal.forEach((item) => {
+            if (item['use'] === true) {
+              item['use'] = false
+            }
+          })
+          let outsideStageList = []
+          let itemList = this.stageList
+          newVal.forEach((item) => {
+            this.formatList(item)
+            if (itemList.length) {
+              itemList.forEach(ele => {
                 ele.showItem = false
-              } else {
-                if (!item['use']) {
-                  outsideStageList.push(item)
-                  item['use'] = true
+                if (item.stage_id === ele.id) {
+                  ele['itemList'].push(item)
+                } else {
+                  if (!item['use']) {
+                    outsideStageList.push(item)
+                    item['use'] = true
+                  }
                 }
-              }
-            })
-          } else {
-            outsideStageList = newVal
-          }
-        })
-        this.$set(this.displayObj, 'itemList', itemList)
-        this.$set(this.displayObj, 'outsideStageList', outsideStageList)
+              })
+            } else {
+              outsideStageList = newVal
+            }
+          })
+          this.$set(this.displayObj, 'itemList', itemList)
+          this.$set(this.displayObj, 'outsideStageList', outsideStageList)
+        },
+        deep: true
       }
     },
     created() {
