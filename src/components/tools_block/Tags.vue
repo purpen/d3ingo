@@ -4,7 +4,7 @@
       <h3>标签组件引入测试 <a href="javascript:void(0)" @click="closeTagsBtn()">点击关闭</a></h3>
       <el-button @click="clickCreateBtn()">添加标签</el-button>
       <p v-for="(d, index) in tagsList" :key="index">
-        {{ d.id }} | {{ d.title }} | <el-button @click="editTagsBtn(d.id, index)">编辑</el-button> | <el-button @click="deleteTagsBtn(d.id, index)">删除</el-button>
+        {{ d.id }} | {{ d.title }} | <el-button @click="editTagsBtn(d.id, index)">编辑</el-button> | <el-button @click="deleteTagsBtn()">删除</el-button>
       </p>
       <div v-if="currentTagsStat.event">
         <el-input v-model="currentTagsForm.title" placeholder="标签名称"></el-input>
@@ -13,9 +13,6 @@
       </div>
     </div>
     <i v-if="!attr.power" class="add-tag" ref="addTag" @click="addTagBtn">添加标签</i>
-    <!-- <div class="tags" v-if="attr.power">
-      <span v-for="(d, index) in tagsList" :style="{background: d.type_format}" :key="index">{{ d.title }}</span>
-    </div> -->
     <div class="select-tag" v-if="attr.power">
       <div class="tag-title clearfix">
         <!-- <h3>选择颜色</h3> -->
@@ -30,14 +27,14 @@
           @click.self="changeTags(d.id)"
           :class="['clearfix', {'active':currentTagsId.indexOf(d.id) !== -1}]">
           <i class="color"
-          :style="{background: d.type_format}"></i>
+          :style="{background: d.type_val}"></i>
           <span>{{ d.title }}</span>
           <i class="fr edit-tag" @click="editTagsBtn(d.id, index)"></i>
         </li>
       </ul>
       <div class="color-option" v-if="isCreateTags || isChangeTags">
         <span v-for="(d, index) in tagsColorToneOptions" :key="index"
-          @click="currentTagsForm.type = d.value"
+          @click="changeColor(d.value, d.label)"
           :class="{'active': currentTagsForm.type === d.value}"
           :style="{background: d.label}">{{d}}</span>
           <div class="buttons" v-if="isChangeTags">
@@ -96,42 +93,6 @@
       }
     },
     methods: {
-      format_item(item) {
-        switch (item.type) {
-          case 1:
-            item.type_format = '#999999'
-            break
-          case 2:
-            item.type_format = '#FF5A5F'
-            break
-          case 3:
-            item.type_format = '#FC9259'
-            break
-          case 4:
-            item.type_format = '#FFD330'
-            break
-          case 5:
-            item.type_format = '#A4CF30'
-            break
-          case 6:
-            item.type_format = '#E362E3'
-            break
-          case 7:
-            item.type_format = '#AA62E3'
-            break
-          case 8:
-            item.type_format = '#3DA8F5'
-            break
-          case 9:
-            item.type_format = '#129C4F'
-            break
-          case 10:
-            item.type_format = '#37C5AB'
-            break
-          default:
-            item.type_format = '#FFFFFF'
-        }
-      },
       // 标签列表
       fetchTags() {
         if (this.tagsList.length > 0) {
@@ -155,6 +116,11 @@
         this.attr.power = 0
         this.attr.event = ''
         this.isChangeTags = false
+        this.currentTagsForm = {
+          title: '',
+          type: 1,
+          item_id: 0,
+          test: ''}
       },
       // 添加标签点击事件
       clickCreateBtn() {
@@ -171,13 +137,11 @@
           event: 'update',
           id: id
         }
+        console.log(id)
       },
       // 删除标签点击事件
-      deleteTagsBtn(id) {
-        this.currentTagsStat = {
-          event: 'delete',
-          id: id
-        }
+      deleteTagsBtn() {
+        this.$set(this.currentTagsStat, 'event', 'delete')
         this.deleteTags()
       },
       // 提交标签
@@ -258,6 +222,7 @@
                   id: id})
               }
             })
+            self.closeTagsBtn()
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -274,6 +239,10 @@
           this.currentTagsId.splice(index, 1)
         }
         this.$emit('changeTags', this.currentTagsId)
+      },
+      changeColor(type, color) {
+        this.currentTagsForm.type = type
+        this.currentTagsForm.type_val = color
       }
     },
     mounted: function () {
@@ -311,9 +280,6 @@
       tagsList: {
         handler(val) {
           this.matchTagsList = val
-          val.forEach(item => {
-            this.format_item(item)
-          })
         },
         deep: true
       },

@@ -343,6 +343,7 @@
         this.currentForm.tagsAll.forEach((item, index, array) => {
           if (item.id === obj.id) {
             if (obj.event === 'update') {
+              console.log(item)
               this.$nextTick(() => {
                 item.title = obj.title
                 item.type_val = obj.type_val
