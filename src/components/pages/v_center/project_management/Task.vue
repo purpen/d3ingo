@@ -43,13 +43,9 @@
           <h2>任务列表</h2>
           <el-button @click="addTaskBtn()">添加任务</el-button>
           <p v-for="(d, index) in taskList" :key="index">
-<<<<<<< HEAD
-            {{ d.id }} | {{ d.name }} | {{ d.stage }} | <el-button @click="showTaskBtn(d.id, index)">详情</el-button> | <el-button @click="completeTaskBtn(d.id, index, d.stage)">完成</el-button>
-=======
             {{ d.id }} | {{ d.name }} | {{ d.stage }} |
             <el-button @click="showTaskBtn(d.id, index)">详情</el-button> |
             <el-button @click="completeTaskBtn(d.id, index, d.stage)">完成</el-button>
->>>>>>> b9ac67d99272400121cdf19477ce8b03e5a4f7f7
           </p>
         </el-col>
         <el-col :span="12">

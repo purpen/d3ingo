@@ -330,7 +330,7 @@
               if (this.currentId === item.id) {
                 response.data.data.created_at = new Date(response.data.data.created_at * 1000)
                 response.data.data.isedit = 1
-                response.data.data.expire_time = response.data.data.expire_time.replace(/'&frasl;'/g, '-')
+                response.data.data.expire_time = response.data.data.expire_time.replace(/''/g, '-')
                 this.$set(this.itemList, i, response.data.data)
                 break
               }
