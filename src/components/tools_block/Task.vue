@@ -27,18 +27,19 @@
         </div>
         <i class="fx fx-icon-nothing-close-error" @click="closeBtn"></i>
       </div>
-      <p class="add-task-input">
+      <p :class="['add-task-input', {'active': currentForm.stage === 2}]">
+        <span :class="['add-task-select']" @click="completeTask"></span>
         <el-tooltip class="item" effect="dark" content="点击即可编辑" placement="top">
           <input @blur="blurTagName({name: currentForm.name})" v-model="currentForm.name" placeholder="添加任务内容" type="text">
         </el-tooltip>
       </p>
       <div class="task-detail-body">
-        <div>
+        <div v-if="false">
           <p>分配给</p>
         </div>
         <ul class="task-info">
           <li>
-            <p>截止时间:</p>
+            <p class="p-time">截止时间:</p>
             <el-date-picker
               v-model="currentForm.over_time"
               type="datetime"
@@ -47,7 +48,7 @@
             </el-date-picker>
           </li>
           <li>
-            <p>优先级:</p>
+            <p class="p-level">优先级:</p>
             <el-select v-model="currentForm.level" placeholder="请选择"
             @visible-change="changeLevel(currentForm.level)">
               <el-option
@@ -67,7 +68,7 @@
             </el-select>
           </li>
           <li>
-            <p>标签:</p>
+            <p class="p-label">标签:</p>
             <div class="tags">
               <span v-for="(d, index) in currentForm.tagsAll"
                 :style="{background: d.type_val}"
@@ -315,6 +316,11 @@
           console.error(error.message)
         })
       },
+      completeTask() {
+        this.currentForm.stage = this.currentForm.stage === 2 ? 0 : 2
+        this.currentStat.complete = this.currentForm.stage
+        this.setStageTask()
+      },
       addTagBtn() {
         this.$set(this.propsTags, 'power', 1)
       },
@@ -357,21 +363,17 @@
         })
       },
       blurTagName(obj) {
-        console.log(1)
-        this.$set(this.currentStat, 'event', 'update')
+        // this.$set(this.currentStat, 'event', 'update')
         this.currentChange = obj
         this.update()
-        console.log(this.currentStat)
       },
       changeTime(e) {
-        console.log(2)
-        this.$set(this.currentStat, 'event', 'update')
+        // this.$set(this.currentStat, 'event', 'update')
         this.currentChange = {over_time: e}
         this.update()
       },
       changeLevel(e) {
-        console.log(3)
-        this.$set(this.currentStat, 'event', 'update')
+        // this.$set(this.currentStat, 'event', 'update')
         this.currentChange = {level: e}
         this.update()
       }
@@ -548,6 +550,10 @@
     font-size: 20px;
     padding: 0 10px;
   }
+  .add-task-input.active input {
+    color: #999;
+    text-decoration: line-through
+  }
   .add-task-input input:hover,
   .add-task-input input:focus {
     background: #f7f7f7
@@ -558,15 +564,29 @@
     border-bottom: 1px solid #d2d2d2;
   }
   
-  .add-task-input::before {
-    content: "";
+  .add-task-input.active {
+    text-decoration: line-through
+  }
+  .add-task-input .add-task-select {
     position: absolute;
     left: 0;
     top: 33px;
     width: 30px;
-    height: 30px;
+    height: 30px; 
     border: 1px solid #d2d2d2;
     border-radius: 4px;
+  }
+  .add-task-input.active .add-task-select:before {
+    content: "";
+    position: absolute;
+    left: 10px;
+    top: 2px;
+    width: 10px;
+    height: 18px;
+    border: 2px solid #d2d2d2;
+    border-left: none;
+    border-top: none;
+    transform: rotate(45deg);
   }
   .task-detail-body {
     padding-top: 20px;
@@ -580,11 +600,29 @@
     font-size: 14px;
   }
   .task-info li p {
+    height: 24px;
+    line-height: 24px;
     min-width: 72px;
     padding-left: 34px;
     margin-right: 15px;
     color: #999;
     position: relative;
+  }
+  .task-info li p.p-time {
+    background: url(../../assets/images/tools/project_management/Time.png) no-repeat left;
+    background-size: 24px;
+  }
+  .task-info li p.p-level {
+    background: url(../../assets/images/tools/project_management/Level.png) no-repeat left;
+    background-size: 24px;
+  }
+  .task-info li p.p-label {
+    background: url(../../assets/images/tools/project_management/Label.png) no-repeat left;
+    background-size: 24px;
+  }
+  .task-info li p.p-time {
+    background: url(../../assets/images/tools/project_management/Time.png) no-repeat left;
+    background-size: 24px;
   }
   .task-info li p:before {
     content: "";
