@@ -10,16 +10,16 @@
               </el-col>
             </el-row>
             <el-row class="edit"  v-if="event === 'create'">
-               <el-col :span="1">
+               <el-col  :xs="2" :sm="2" :md="2" :lg="1">
                <img :src=" Locationimg " alt="">
               </el-col>
-              <el-col :span="5">
+              <el-col  :xs="22" :sm="10" :md="10" :lg="5" class="margin-bottom">
                 <el-input  placeholder="请输入地点" size="small" v-model="form.location"></el-input>
               </el-col>
-               <el-col :span="1" >
+               <el-col  :xs="2" :sm="2" :md="2" :lg="1">
                   <img :src=" dateimg " alt="">
               </el-col>
-              <el-col :span="5">
+              <el-col :xs="22" :sm="10" :md="10" :lg="5"  class="margin-bottom">
                   <div class="block">
                     <el-date-picker
                       type="datetime" 
@@ -28,7 +28,7 @@
                     </el-date-picker>
                   </div>            
               </el-col>
-              <el-col :span="12">
+              <el-col :xs="24" :sm="24" :md="24" :lg="12">
                   <img :src=" userimg " alt="">
                   <ul class="fl"><li v-if="getimgs.length > 0"><a href="javascirpt:void(0)"></a></li><li><img class="adds" :src=" adduser " alt="" ></li></ul>
               </el-col>
@@ -42,34 +42,39 @@
               </el-col>
             </el-row>
             <el-row >
-              <el-col :span="5" v-for="(files,index) in fileList" :key="index" class="upload-list">
-                <div>
-                  <img :src="pngimage"  class="fl">
-                  <div>{{files.name}} </div>
-                  <span class="fr" :style="{background:`url(${ closeimg }) no-repeat right`,backgroundSize:`14px 14px`}">{{ files.size }}</span>
+              <el-col :xs="23" :sm="10" :md="11" :lg="5" v-for="(files,index) in fileList" :key="index" class="upload-list">
+                <img :src="pngimage"  class="fl">
+                <div class="fl">
+                  <div class="fl">{{files.name}} </div>
+                  <span class="fr">{{ files.size }}</span>
+                  <el-progress class="fl" :percentage=" files.percentage " :show-text="false"
+                  v-if=" files.percentage !== 100 "
+                  ></el-progress>
                 </div>
+                <i class="fr" :style="{background:`url(${ closeimg }) no-repeat center`,backgroundSize:`13px 13px`}" @click="deleteup(files.asset_id, index)"></i>
               </el-col>
             </el-row>
-            <el-row> <el-upload
+            <el-row class="uploads"> 
+              <el-col :xs="24" :sm="12" :md="12" :lg="12">
+                <el-upload
                   class="upload-demo"
                   :action="uploadUrl"
                   :data="uploadParam"
                   :show-file-list="false"
                   :on-error="uploadError"
                   :on-success="uploadSuccess"
+                  :on-progress="uploadProgress"
                   >
-                  <span>添加附件</span>
-                </el-upload></el-row>
-            <el-row>
-              <el-col  class="uploads">
-                  <!-- <img :src=" uploadimg " alt="" >
-                  <span>添加附件</span> -->
-                <div class="fr">
-                <span>{{ getimgs.length }}</span>个人将会收到通知
-                <button @click="create()" type="danger" class="small-button full-red-button">发送</button> 
-                </div>       
-              </el-col>
-            </el-row>
+                  <img :src=" uploadimg " alt="" ><span>添加附件</span>
+                </el-upload>
+                </el-col>
+                <el-col :xs="24" :sm="12" :md="12" :lg="12">
+                    <div class="fr">
+                    <span>{{ getimgs.length }}</span>个人将会收到通知
+                    <button @click="create()" type="danger"   class="small-button full-red-button">发送</button> 
+                  </div>
+                </el-col>
+              </el-row>
           </div>
         </el-col>
         <el-col :span="18" :offset="3" v-if=" itemList.length>0 " v-for="(d, index) in itemList" :key="index"><div class="grid-content bg-purple">
@@ -87,17 +92,17 @@
               </el-col>
             </el-row>
             <el-row class="edit">
-               <el-col :span="1">
+               <el-col :xs="2" :sm="2" :md="2" :lg="1">
                <img :src=" Locationimg " alt="">
               </el-col>
-              <el-col :span="5">
+              <el-col :xs="22" :sm="10" :md="10" :lg="5">
                 <el-input  placeholder="请输入地点" size="small" v-if ="d.isedit === 2" v-model=" d.location " ></el-input>
                 <p v-else>{{ d.location }}</p>
               </el-col>
-               <el-col :span="1" >
+               <el-col :xs="2" :sm="2" :md="2" :lg="1" >
                   <img :src=" dateimg " alt="">
               </el-col>
-              <el-col :span="5">
+              <el-col :xs="22" :sm="10" :md="10" :lg="5">
                   <div class="block"  v-if ="d.isedit === 2">
                     <el-date-picker
                       type="datetime"
@@ -106,9 +111,9 @@
                   </div> 
                   <p v-else> {{ d.expire_time }}</p>
               </el-col>
-              <el-col :span="12">
-                  <img :src=" userimg " alt="">
-                  <ul class="fl"><li v-for=" (userhead,index) in userheads " :key="index" v-if="userheads.length > 0"><a href="javascirpt:void(0)">{{ userhead.head }}</a></li><li v-if ="d.isedit === 2"><img class="adds" :src=" adduser " alt="" ></li></ul>
+              <el-col  :xs="24" :sm="24" :md="24" :lg="12">
+                  <img :src=" userimg " alt="" >
+                  <ul class="fl"><li v-for=" (userhead,index) in userheads " :key="index" v-if="userheads.length > 0"><a href="javascirpt:void(0)">{{ userhead.head }}</a></li><li v-if ="d.isedit === 2"><img v-if ="d.isedit === 2" class="adds" :src=" adduser " alt="" ></li></ul>
               </el-col>
             </el-row>
             <el-row class="MeetingCenter">
@@ -363,9 +368,6 @@
           console.error(error.message)
         })
       },
-      // 附件
-      handleRemove() {
-      },
       // 文件上传失败
       uploadError(err, file, fileList) {
         this.uploadMsg = '上传失败'
@@ -379,17 +381,44 @@
       // 文件上传成功
       uploadSuccess(response, file, fileList) {
         let item = {
+          asset_id: response.asset_id,
+          name: file.name,
           size: file.size,
-          name: response.name,
-          isdelete: false
+          percentage: file.percentage
         }
         if (item.size / (1024 * 1024) > 0.01) {
-          item.size = (item.size / (1024 * 1024)).toFixed(2) + 'MB'
+          item.size = (item.size / (1024 * 1024)).toFixed(3) + 'MB'
         } else {
-          item.size = (item.size / 1024).toFixed(2) + 'KB'
+          item.size = (item.size / 1024).toFixed(3) + 'KB'
         }
-        this.fileList.push (item)
-        console.log('res' + JSON.stringify(response))
+        this.fileList.pop()
+        this.fileList.push(item)
+      },
+      // 文件上传时
+      uploadProgress(event, file, fileList) {
+        this.fileList = fileList
+      },
+      // 删除上传的文件
+      deleteup(assetid, index) {
+        var self = this
+        self.$http.delete(api.asset, {params: {asset_id: assetid}})
+          .then (function(response) {
+            if (response.data.meta.status_code === 200) {
+              for (var i = 0; i < self.fileList.length; i++) {
+                let item = self.fileList[i]
+                if (assetid === item.asset_id) {
+                  self.fileList.splice(i, 1)
+                  break
+                }
+              }
+            } else {
+              self.$message.error(response.data.meta.message)
+            }
+          })
+          .catch (function(error) {
+            self.$message.error(error.message)
+            self.dialogLoadingBtn = false
+          })
       }
     },
     created() {
@@ -408,9 +437,6 @@
             for (var i = 0; i < this.itemList.length; i++) {
               this.itemList[i].isedit = 1
               this.itemList[i].created_at = new Date(this.itemList[i].created_at * 1000)
-              // this.itemList[i].expire_time = new Date(this.itemList[i].expire_time.replace(/-/g, '/'))
-              // this.itemList[i].created_at = unixTimestamp.toLocaleDateString()
-              // unixTimestamp.toLocaleDateString().split('/').join(':') + ' ' + unixTimestamp.toLocaleTimeString().slice(2)
             }
           }
           console.log(response.data.data)
@@ -430,25 +456,36 @@
     margin-bottom: 20px;
   }
   .upload-list {
-    line-height:30px;
     height:42px;
     background: #F7F7F7;
     border-radius: 4px;
     margin:10px;
-    padding-top:5px;
   }
-  .upload-list span{
-    padding-right:20px;
-    margin-right:4px;
+  .upload-list i {
+    width:14px;
+    height:14px;
+    margin:13px 3px 0px 3px;
+  }
+   .upload-list>div{
+     margin-top:13px;
+     width:60%;
+   }
+  .upload-list .el-progress{
+    margin-top:3px;
+    width:100%;
   }
   .upload-list>div>div{
-    width:50px;
+    width:48%;
+    height:14px;
     float: left;
+    font-size: 12px;
+    color: #222222;
     overflow: hidden;
+    text-overflow: ellipsis;
   }
   .upload-list img{
     height:30px;
-    margin:0px 6px -11px 6px;
+    margin:6px;
   }
   .titlec{
     line-height: 34px;
@@ -460,6 +497,9 @@
   }
   .titlec>.fr{
     position:relative;
+  }
+  .margin-bottom {
+    margin-bottom:5px;
   }
   .titlec>.fr ul{
     text-align: center;
@@ -502,9 +542,8 @@
     height:36px;
     line-height: 36px;
     padding-top:10px;
-    border-top: 1px solid #D2D2D2;
     margin-bottom:10px;
-
+    border-top: 1px solid #D2D2D2;
   }
   .edit ul>li {
     width:19px;
@@ -515,9 +554,7 @@
     float: left;
   }
   .edit {
-    height:46px;
     line-height: 30px;
-    overflow: hidden;
     border-bottom: 1px solid #D2D2D2;
     padding-bottom:16px;
   }
@@ -531,7 +568,9 @@
     margin:5px 6px 0px 6px;
     float:left;
   }
-
+  .update-load{
+    
+  }
   .MeetingCenter {
     padding-top:10px;
     min-height: 100px;
