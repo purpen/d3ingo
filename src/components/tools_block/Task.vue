@@ -14,7 +14,7 @@
       <el-button @click="submit()">提交</el-button>
       <el-button @click="deleteBtn()">删除</el-button>
     </div>
-    <section class="task-detail">
+    <section class="task-detail" v-loading.body="isLoading">
       <div class="task-detail-header">
         <span class="task-detail-name">{{projectObject.name}}</span>
         <div ref="selectParent" class="select-parent" tabindex="-1">
@@ -30,7 +30,7 @@
       <p :class="['add-task-input', {'active': currentForm.stage === 2}]">
         <span :class="['add-task-select']" @click="completeTask"></span>
         <el-tooltip class="item" effect="dark" content="点击即可编辑" placement="top">
-          <input @blur="blurTagName({name: currentForm.name})" v-model="currentForm.name" placeholder="添加任务内容" type="text">
+          <input @blur="blurTagName({name: currentForm.name})" v-model="currentForm.name" placeholder="填写任务名称" type="text">
         </el-tooltip>
       </p>
       <div class="task-detail-body">
@@ -83,6 +83,12 @@
               @addTagBtn = "addTagBtn"
               @changeTags="changeTags"
               @updateTags="updateTags"></v-tags>
+          </li>
+          <li v-if="currentStat.event === 'create'">
+            <div class="buttons">
+              <button class="small-button white-button" @click="closeBtn">取消</button>
+              <button class="small-button full-red-button" @click="submit">确认</button>
+            </div>
           </li>
         </ul>
       </div>
@@ -169,7 +175,8 @@
           label: '非常紧急',
           color: '#ff5a5f'
         }],
-        tagsId: []
+        tagsId: [],
+        isLoading: false
       }
     },
     methods: {
@@ -177,6 +184,10 @@
       closeBtn() {
         this.attr.power = 0
         this.attr.event = ''
+      },
+      closeTags() { // 可能有问题
+        this.propsTags.power = 0
+        this.propsTags.event = ''
       },
       // 添加任务点击事件
       addBtn() {
@@ -207,15 +218,18 @@
       // 查详情
       view() {
         const self = this
+        self.isLoading = true
         this.$http.get(api.taskId.format(self.currentStat.id), {}).then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.currentForm = response.data.data
           } else {
             self.$message.error(response.data.meta.message)
           }
+          self.isLoading = false
         }).catch((error) => {
           self.$message.error(error.message)
           console.error(error.message)
+          self.isLoading = false
         })
       },
       // 创建
@@ -229,8 +243,9 @@
         this.$http.post(api.task, self.currentForm).then(function (response) {
           if (response.data.meta.status_code === 200) {
             // 更新整个对象到view层
-            Object.assign(self.currentForm, response.data.data)
             self.currentStat.sync = 1
+            self.currentStat.event = 'update'
+            Object.assign(self.currentForm, response.data.data)
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -250,8 +265,8 @@
         self.$http.put(api.taskId.format(id), self.currentChange).then(function (response) {
           if (response.data.meta.status_code === 200) {
             // 更新整个对象到view层
-            Object.assign(self.currentForm, response.data.data)
             self.currentStat.sync = 1
+            Object.assign(self.currentForm, response.data.data)
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -270,9 +285,9 @@
         }
         self.$http.delete(api.taskId.format(id), {}).then(function (response) {
           if (response.data.meta.status_code === 200) {
-            self.currentForm = {}
             self.currentStat.sync = 1
             self.attr.power = 0
+            self.currentForm = {}
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -317,9 +332,11 @@
         })
       },
       completeTask() {
-        this.currentForm.stage = this.currentForm.stage === 2 ? 0 : 2
-        this.currentStat.complete = this.currentForm.stage
-        this.setStageTask()
+        if (this.currentStat.event === 'update') {
+          this.currentForm.stage = this.currentForm.stage === 2 ? 0 : 2
+          this.currentStat.complete = this.currentForm.stage
+          this.setStageTask()
+        }
       },
       addTagBtn() {
         this.$set(this.propsTags, 'power', 1)
@@ -363,20 +380,22 @@
         })
       },
       blurTagName(obj) {
-        // this.$set(this.currentStat, 'event', 'update')
-        this.currentChange = obj
-        this.update()
+        if (this.currentStat.event === 'update') {
+          this.currentChange = obj
+          this.update()
+        }
       },
       changeTime(e) {
-        console.log(e)
-        // this.$set(this.currentStat, 'event', 'update')
-        this.currentChange = {over_time: e}
-        this.update()
+        if (this.currentStat.event === 'update') {
+          this.currentChange = {over_time: e}
+          this.update()
+        }
       },
       changeLevel(e) {
-        // this.$set(this.currentStat, 'event', 'update')
-        this.currentChange = {level: e}
-        this.update()
+        if (this.currentStat.event === 'update') {
+          this.currentChange = {level: e}
+          this.update()
+        }
       }
     },
     mounted: function () {
@@ -576,6 +595,7 @@
     height: 30px; 
     border: 1px solid #d2d2d2;
     border-radius: 4px;
+    cursor: pointer;
   }
   .add-task-input.active .add-task-select:before {
     content: "";
@@ -663,5 +683,16 @@
     height: 100%;
     position: absolute;
     background: rgba(0, 0, 0, 0.6);
+  }
+  .buttons {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end
+  }
+  .buttons button:first-child {
+    margin-right: 20px;
+  }
+  .el-select {
+    width: inherit
   }
 </style>

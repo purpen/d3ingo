@@ -16,7 +16,7 @@
         <el-button @click="currentStageStat.event = false">取消</el-button>
       </div>
     </div>
-    <div class="container task-content">
+    <div class="container task-content" v-loading.body="isLoading">
       <el-row :gutter="30">
         <el-col :span="propsTask.power ? 12 : 24" class="task-list">
           <div class="add-btn">
@@ -161,16 +161,20 @@
           return this.stageList
         }
         const self = this
-        this.$http.get(api.toolsStage, {params: {item_id: self.itemId}}).then(function (response) {
+        self.isLoading = true
+        self.$http.get(api.toolsStage, {params: {item_id: self.itemId}})
+        .then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.stageList = response.data.data
             // console.log(response.data.data)
           } else {
             self.$message.error(response.data.meta.message)
           }
+          self.isLoading = false
         }).catch((error) => {
           self.$message.error(error.message)
           console.error(error.message)
+          self.isLoading = false
         })
       },
       // 添加阶段点击事件
@@ -289,15 +293,18 @@
       // 主任务列表
       fetchTask() {
         const self = this
+        self.isLoading = true
         self.$http.get(api.task, {params: {item_id: self.itemId}}).then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.taskList = response.data.data
           } else {
             self.$message.error(response.data.meta.message)
           }
+          self.isLoading = false
         }).catch((error) => {
           self.$message.error(error.message)
           console.error(error.message)
+          self.isLoading = false
         })
       },
       // 同步任务列表
@@ -305,7 +312,7 @@
         let event = this.propsTaskStat.event
         if (event === 'create') {   // 添加同步
           this.taskList.unshift(this.propsTaskForm)
-          this.propsTask.power = 0
+          // this.propsTask.power = 0
         } else if (event === 'update') {  // 更新同步
           this.syncTaskListFor(event)
         } else if (event === 'delete') {
@@ -313,7 +320,7 @@
         } else if (event === 'complete') {
           this.syncTaskListFor(event)
         }
-        this.propsTaskStat.event = ''
+        // this.propsTaskStat.event = ''
         this.propsTaskStat.sync = 0
       },
       // 同步任务列表detail
@@ -490,6 +497,7 @@
     padding-left: 30px;
   } */
   .task-item, .stage-name {
+    cursor: pointer;
     border: 1px solid #d2d2d2;
     border-radius: 4px;
     line-height: 50px;
@@ -610,7 +618,12 @@
     padding: 30px 0;
   }
   .buttons {
+    display: flex;
+    justify-content: center;
     padding-top: 30px;
+  }
+  .buttons button:first-child {
+    margin-right: 20px;
   }
 </style>
 
