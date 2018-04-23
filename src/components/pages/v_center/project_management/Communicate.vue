@@ -1,8 +1,8 @@
 <template>
   <section>
-    <div class="AddCommunicate">
-      <el-row :gutter="20">
-        <el-col :span="18" :offset="3">
+    <div class="AddCommunicate" >
+      <el-row :gutter="20" @click.self.native="cancel()">
+        <el-col :span="18" :offset="3" >
           <div class="grid-content bg-purple">
             <el-row v-if="event === 'create'">
               <el-col class="fx-3">
@@ -22,27 +22,35 @@
               <el-col :xs="22" :sm="10" :md="10" :lg="5"  class="margin-bottom">
                   <div class="block">
                     <el-date-picker
-                      type="datetime" 
+                      type="datetime"
                       v-model="form.expire_time"
-                      placeholder="选择日期时间" size="small" @change="addTime">
+                      placeholder="选择开始时间" size="small" @change="addTime">
                     </el-date-picker>
                   </div>
               </el-col>
-              <el-col :xs="24" :sm="24" :md="24" :lg="12">
+              <el-col :xs="24" :sm="24" :md="24" :lg="12" class="updata-user">
                   <img :src=" userimg " alt="">
-                  <ul class="fl"><li v-if="getimgs.length > 0"><a href="javascirpt:void(0)"></a></li><li><img class="adds" :src=" adduser " alt="" ></li></ul>
+                  <ul class="fl"><li v-for="(getimg,index) in getimgs" :key="index" v-if="getimgs.length > 0">{{getimg.realnamehead}}</li>
+                  <li>
+                    <img class="adds" :src=" adduser " alt="" >             
+                    <ul class="select-user">
+                      <li><el-input placeholder="填写或选择参加会议的人员名称" @change="search" v-model="searcher"></el-input></li>
+                        <li v-for="(option,index) in options" :key="index" @click="creatMembers(index)">
+                          <div>{{option.realnamehead}}</div><span>{{option.realname}}</span><i class="el-icon-check text-center" v-if="option.isadd"></i></li>
+                    </ul>
+                  </li></ul>
               </el-col>
             </el-row>
-            <el-row class="MeetingCenter" >
+            <el-row class="MeetingCenter" @click.native="addBtn()">
               <el-col class="fx">
-                <div @click="addBtn()">
-               <el-input  placeholder="请输入会议内容"   v-model="form.content" v-if=" event !== 'create'?false : true " type="textarea" :rows="4"></el-input>
+                <div>
+               <el-input  placeholder="请输入会议内容"   v-model="form.content" v-if=" event !== 'create'?false : true " ></el-input>
                <p v-else>请输入会议内容</p>
                </div>
               </el-col>
             </el-row>
-            <el-row >
-              <el-col :xs="23" :sm="10" :md="11" :lg="5" v-for="(files,index) in fileList" :key="index" class="upload-list">
+            <el-row v-if="event === 'create'">
+              <el-col :xs="23" :sm="10" :md="11" :lg="6" v-for="(files,index) in fileList" :key="index" class="upload-list">
                 <img :src="pngimage"  class="fl">
                 <div class="fl">
                   <div class="fl">{{files.name}} </div>
@@ -55,7 +63,7 @@
               </el-col>
             </el-row>
             <el-row class="uploads"> 
-              <el-col :xs="24" :sm="12" :md="12" :lg="12">
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" >
                 <el-upload
                   class="upload-demo"
                   :action="uploadUrl"
@@ -64,17 +72,17 @@
                   :on-error="uploadError"
                   :on-success="uploadSuccess"
                   :on-progress="uploadProgress"
-                  >
-                  <img :src=" uploadimg " alt="" ><span>添加附件</span>
+                    >
+                  <img :src=" uploadimg " alt="" v-if="event === 'create'"><span v-if="event === 'create'">添加附件</span>
                 </el-upload>
-                </el-col>
-                <el-col :xs="24" :sm="12" :md="12" :lg="12">
-                    <div class="fr">
-                    <span>{{ getimgs.length }}</span>个人将会收到通知
-                    <button @click="create()" type="danger"   class="small-button full-red-button">发送</button> 
-                  </div>
-                </el-col>
-              </el-row>
+              </el-col>
+              <el-col :xs="24" :sm="12" :md="12" :lg="12">
+                <div class="fr">
+                  <span>{{ getimgs.length }}</span>个人将会收到通知
+                  <button @click="create()" type="danger"   class="small-button full-red-button">发送</button> 
+                </div>
+              </el-col>
+            </el-row>
           </div>
         </el-col>
         <el-col :span="18" :offset="3" v-if=" itemList.length>0 " v-for="(d, index) in itemList" :key="index"><div class="grid-content bg-purple">
@@ -86,7 +94,7 @@
                    <i class="el-icon-more" ></i>
                    <ul v-if=" operation  === index ">
                      <li @click="deleteBtn(d.id, index)">删除</li>
-                      <li @click="editBtn(d.id, index, d.isedit, d.expire_time)">编辑</li>
+                      <li @click="editBtn(d.id, index, d.isedit)">编辑</li>
                    </ul>
                 </div>
               </el-col>
@@ -106,7 +114,7 @@
                   <div class="block"  v-if ="d.isedit === 2">
                     <el-date-picker
                       type="datetime"
-                      placeholder="选择日期时间" size="small"  v-model=" d.expire_time ">
+                      placeholder="选择开始时间" size="small"  v-model=" d.expire_time " @change="addTime">
                     </el-date-picker>
                   </div> 
                   <p v-else> {{ d.expire_time }}</p>
@@ -139,7 +147,7 @@
                 <img :src=" uploadimg " alt="" ><span>添加附件</span>
                 <div class="fr">
                 <span>5</span>个人将会收到通知
-                <button @click="inupdate(d.content, d.id, d.expire_time, d.title, d.location)" type="danger" class="small-button full-red-button">确定</button> 
+                <button @click="inupdate(d.content, d.id, d.title, d.location, d.expire_time)" type="danger" class="small-button full-red-button">确定</button> 
                 </div>       
               </el-col>
             </el-row>
@@ -192,7 +200,9 @@
         fileList: [
         ],
         randoms: '',
-        tokens: ''
+        tokens: '',
+        options: [],
+        searcher: ''
       }
     },
     methods: {
@@ -207,6 +217,10 @@
         }
         this.$router.push({name: 'home'})
         return
+      },
+      // 取消编辑
+      cancel() {
+        this.event = ''
       },
       // 获取附件Token
       upTokens() {
@@ -234,11 +248,11 @@
         this.event = 'create'
       },
       // 编辑点击事件
-      editBtn(id, index, isedit, expireTime) {
+      editBtn(id, index, isedit) {
         this.currentId = id
         this.itemList[index].isedit = 2
         this.event = 'update'
-        this.view()
+        // this.view()
       },
       // 删除任务点击事件
       deleteBtn(id, index) {
@@ -248,22 +262,23 @@
         this.delete()
       },
       // 编辑form参数
-      inupdate(content, id, expireTime, title, location) {
+      inupdate(content, id, title, location, expireTime) {
+        this.form.commune_image = ''
         this.currentId = id
         this.form.content = content
         this.form.id = id
-        this.form.expire_time = expireTime
         this.form.title = title
         this.form.location = location
         this.form.random = this.randoms
         this.form.token = this.tokens
+        if (!this.form.expire_time) {
+          this.form.expire_time = expireTime
+        }
+        if (this.form.expire_time.length > 10) {
+          this.form.expire_time = this.form.expire_time.slice(0, 10)
+        }
         this.operation = ''
         this.event = 'update'
-        if (this.form.expire_time instanceof Date) {
-          var utcup = Math.round(this.form.expire_time.getTime() / 1000)
-          var unixTimestampaup = new Date(utcup * 1000)
-          this.form.expire_time = unixTimestampaup.toLocaleDateString()
-        }
         this.update()
       },
       // 提交任务
@@ -377,23 +392,19 @@
       },
       // 文件上传成功
       uploadSuccess(response, file, fileList) {
-        let item = {
-          asset_id: response.asset_id,
-          name: file.name,
-          size: file.size,
-          percentage: file.percentage
+        for (var i = 0; i < this.fileList.length; i++) {
+          this.fileList[i].asset_id = response.asset_id
         }
-        if (item.size / (1024 * 1024) > 0.01) {
-          item.size = (item.size / (1024 * 1024)).toFixed(3) + 'MB'
-        } else {
-          item.size = (item.size / 1024).toFixed(3) + 'KB'
-        }
-        this.fileList.pop()
-        this.fileList.push(item)
       },
       // 文件上传时
       uploadProgress(event, file, fileList) {
         this.fileList = fileList
+        var lastSize = this.fileList[this.fileList.length - 1].size
+        if (lastSize / (1024 * 1024) > 0.01) {
+          this.fileList[this.fileList.length - 1].size = (lastSize / (1024 * 1024)).toFixed(3) + 'MB'
+        } else if (lastSize / 1024 >= 1) {
+          this.fileList[this.fileList.length - 1].size = (lastSize / 1024).toFixed(3) + 'KB'
+        }
       },
       // 删除上传的文件
       deleteup(assetid, index) {
@@ -418,11 +429,73 @@
           })
       },
       addTime(e) {
-        this.form.expire_time = e.slice(0, 10)
+        if (e) {
+          this.form.expire_time = e.slice(0, 10)
+        }
+      },
+      // 公司成员列表显示操作
+      members() {
+        for (var i in this.options) {
+          this.options[i].isadd = false
+          if (this.options[i].realname.length > 2) {
+            this.options[i].realnamehead = this.options[i].realname.slice(this.options[i].realname.length - 2)
+          } else this.options[i].realnamehead = this.options[i].realname
+        }
+      },
+      // 获取公司成员
+      readMembers() {
+        this.$http.get(api.designMemberList).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.options = response.data.data
+            this.members()
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          this.$message.error(error.message)
+          console.error(error.message)
+        })
+      },
+      // 添加到列表
+      creatMembers(index) {
+        var ishave = true
+        if (this.getimgs.length === 0) {
+          this.getimgs.push(this.options[index])
+          this.options[index].isadd = true
+        } else {
+          for (var i = 0; i < this.getimgs.length; i++) {
+            if (this.getimgs[i].id === this.options[index].id) {
+              ishave = false
+              this.getimgs.splice(i, 1)
+              this.options[index].isadd = false
+              break
+            }
+          }
+          if (ishave) {
+            this.getimgs.push(this.options[index])
+            this.options[index].isadd = true
+          }
+        }
+      },
+      // 搜索
+      search(item) {
+        this.$http.get(api.designSearch, {params: {realname: item}}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.options = response.data.data
+            this.members()
+            console.log(response.data.data)
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          this.$message.error(error.message)
+          console.error(error.message)
+        })
       }
     },
     created() {
       this.upTokens()
+      this.readMembers()
       let itemId = this.$route.params.id
       if (!itemId) {
         this.redirectItemList(1, '缺少请求参数！')
@@ -436,7 +509,8 @@
           if (this.itemList.length > 0) {
             for (var i = 0; i < this.itemList.length; i++) {
               this.itemList[i].isedit = 1
-              this.itemList[i].created_at = new Date(this.itemList[i].created_at * 1000)
+              this.itemList[i].created_at = (new Date(this.itemList[i].created_at * 1000)).format('yyyy-MM-dd')
+              this.itemList[i].expire_time = this.itemList[i].expire_time.slice(0, 10)
             }
           }
           console.log(response.data.data)
@@ -455,11 +529,29 @@
     color: #999999;
     margin-bottom: 20px;
   }
+  .AddCommunicate>.el-row>.el-col{
+    background: #FFFFFF;
+    border: 1px solid #F7F7F7;
+    box-shadow: 0 0 4px 0 rgba(0,0,0,0.10);
+    border-radius: 4px;
+    margin-top:20px;
+    padding:10px 0px;
+  }
+  .AddCommunicate>.el-row>.el-col>div>.el-row{
+    margin-top:10px;
+  }
+  .uploads{
+    height:36px;
+    line-height: 36px;
+    padding-top:10px;
+    margin-bottom:10px;
+    border-top: 1px solid #D2D2D2;
+  }
   .upload-list {
     height:42px;
     background: #F7F7F7;
     border-radius: 4px;
-    margin:10px;
+    margin:10px 10px 0px 0px;
   }
   .upload-list i {
     width:14px;
@@ -476,7 +568,7 @@
   }
   .upload-list>div>div{
     width:48%;
-    height:14px;
+    height:12px;
     float: left;
     font-size: 12px;
     color: #222222;
@@ -509,7 +601,7 @@
     position:absolute;
     width:180px;
     right:-100px;
-    z-index: 1100;
+    z-index: 1;
   }
   .titlec>.fr ul>li{
   line-height: 40px;
@@ -522,36 +614,21 @@
   color: #222;
   background: #f7f7f7
   }
-  .edit ul>li>.adds{
+  .updata-user>ul>li>.adds{
   width:20px;
   height:21px;
   margin:-2px;
   }
-  .AddCommunicate>.el-row>.el-col{
-    background: #FFFFFF;
-    border: 1px solid #F7F7F7;
-    box-shadow: 0 0 4px 0 rgba(0,0,0,0.10);
-    border-radius: 4px;
-    margin-top:20px;
-    padding:10px 0px;
-  }
-  .AddCommunicate>.el-row>.el-col>div>.el-row{
-    margin-top:10px;
-  }
-  .uploads{
-    height:36px;
-    line-height: 36px;
-    padding-top:10px;
-    margin-bottom:10px;
-    border-top: 1px solid #D2D2D2;
-  }
-  .edit ul>li {
+  .updata-user>ul>li {
     width:19px;
     height:19px;
     border:1px solid transparent;
     border-radius: 50%;
     margin:5px 10px 0px 0px;
     float: left;
+  }
+  .updata-user>ul>li:not(:last-child){
+    background: #3DA8F5;
   }
   .edit {
     line-height: 30px;
@@ -568,9 +645,6 @@
     margin:5px 6px 0px 6px;
     float:left;
   }
-  .update-load{
-    
-  }
   .MeetingCenter {
     padding-top:10px;
     min-height: 100px;
@@ -584,6 +658,47 @@
     text-align: center;
     padding-top:50px;
     min-height: 240px;
-  } 
-
+  }
+  .select-user {
+    width:280px;
+    background: #FFFFFF;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
+    border-radius: 4px;
+    position: absolute;
+    overflow-y:auto;
+    height:250px;
+    right:50%;
+    top:50px;
+  }
+  .updata-user {
+    position: relative;
+    z-index:2;
+  }
+  .select-user>li{
+    height: 50px;
+    padding:0px 20px;
+    display: flex;
+    justify-content:space-around;
+    align-items:center;
+  }
+  .select-user>li>div{
+    width:36px;
+    height:36px;
+    border-radius: 50%;
+    background:#3DA8F5;
+    font-size: 14px;
+    color: #FFFFFF;
+    text-align: center;
+  }
+  .select-user>li>span{
+    padding-left:10px;
+    flex-grow:1;
+  }
+  .select-user>li>.el-input{
+    width:90%;
+  }
+  .select-user>li:first-child{
+    margin-top:15px;
+    padding:0px;
+  }
 </style>
