@@ -3,7 +3,7 @@
     <!-- <el-button @click="addTagBtn">显示标签</el-button> -->
     <!-- <h3>任务组件引入测试 <a href="javascript:void(0)" @click="closeBtn()">点击关闭</a></h3> -->
     <!--<el-button @click="addBtn()">添加任务</el-button>-->
-    <div v-if="true">
+    <div v-if="false">
       <el-input v-model="currentForm.name" placeholder="任务名称"></el-input>
       <el-input v-model="currentForm.tier" placeholder="层级"></el-input>
       <el-input v-model="currentForm.pid" placeholder="父ID"></el-input>
@@ -14,7 +14,7 @@
       <el-button @click="submit()">提交</el-button>
       <el-button @click="deleteBtn()">删除</el-button>
     </div>
-    <section class="task-detail" v-loading.body="isLoading">
+    <section class="task-detail">
       <div class="task-detail-header">
         <span class="task-detail-name">{{projectObject.name}}</span>
         <div ref="selectParent" class="select-parent" tabindex="-1">
@@ -23,6 +23,12 @@
             <li>阶段一</li>
             <li>阶段二</li>
             <li>阶段三</li>
+          </ul>
+        </div>
+        <div ref="selectParent" class="select-parent select-menu" tabindex="-1">
+          <span class="select-show"></span>
+          <ul class="stage-list">
+            <li @click="deleteBtn()">删除</li>
           </ul>
         </div>
         <i class="fx fx-icon-nothing-close-error" @click="closeBtn"></i>
@@ -91,6 +97,9 @@
             </div>
           </li>
         </ul>
+        <div class="task-summary">
+          <p class="p-summary">备注</p>
+        </div>
       </div>
     </section>
   </div>
@@ -176,7 +185,8 @@
           color: '#ff5a5f'
         }],
         tagsId: [],
-        isLoading: false
+        isLoading: false,
+        isCreate: false
       }
     },
     methods: {
@@ -207,6 +217,7 @@
       // 提交任务
       submit() {
         let event = this.currentStat.event
+        console.log(event)
         if (event === 'create') {
           this.create()
         } else if (event === 'update') {
@@ -239,13 +250,18 @@
           self.$message.error('名称不能为空!')
           return false
         }
+        let overTime = self.currentForm.over_time
+        if (self.currentForm.over_time instanceof Date) {
+          self.currentForm.over_time = overTime.format('yyyy-MM-dd hh:mm:ss')
+        }
         self.currentForm.item_id = self.attr.itemId
         this.$http.post(api.task, self.currentForm).then(function (response) {
           if (response.data.meta.status_code === 200) {
             // 更新整个对象到view层
-            self.currentStat.sync = 1
-            self.currentStat.event = 'update'
             Object.assign(self.currentForm, response.data.data)
+            self.currentStat.sync = 1
+            self.attr.power = 0
+            // self.currentStat.event = 'update'
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -265,8 +281,8 @@
         self.$http.put(api.taskId.format(id), self.currentChange).then(function (response) {
           if (response.data.meta.status_code === 200) {
             // 更新整个对象到view层
-            self.currentStat.sync = 1
             Object.assign(self.currentForm, response.data.data)
+            self.currentStat.sync = 1
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -403,6 +419,9 @@
     computed: {
     },
     watch: {
+      isCreate(val) {
+        console.log(val)
+      },
       propsParam: {
         handler(val, oldVal) {
           this.attr = val
@@ -515,6 +534,13 @@
     position: relative;
     margin-right: 20px;
   }
+  .select-menu {
+    position: absolute;
+    right: 34px;
+    top: 0;
+    width: 24px;
+    height: 24px;
+  }
   .stage-list {
     display: none;
     background: #fff;
@@ -535,9 +561,12 @@
     cursor: pointer;
   }
   .select-show {
-    display: inline-block;
+    display: block;
+    min-width: 34px;
+    height: 34px;
     line-height: 34px;
     position: relative;
+    cursor: pointer;
   }
 
   .select-show::after {
@@ -552,6 +581,13 @@
     transform: rotate(45deg);
     border-left: none;
     border-top: none;
+  }
+  .select-menu .select-show {
+    background: url(../../assets/images/tools/cloud_drive/permission/more@2x.png) no-repeat center / contain
+  }
+  .select-menu .select-show::after {
+    content: "";
+    border: none;
   }
   .select-parent:hover .stage-list,
   .select-parent:focus .stage-list {
@@ -592,7 +628,7 @@
     left: 0;
     top: 33px;
     width: 30px;
-    height: 30px; 
+    height: 30px;
     border: 1px solid #d2d2d2;
     border-radius: 4px;
     cursor: pointer;
@@ -610,8 +646,10 @@
     transform: rotate(45deg);
   }
   .task-detail-body {
+  }
+  .task-info {
     padding-top: 20px;
-    
+    border-bottom: 1px solid #d2d2d2;
   }
   .task-info li {
     display: flex;
@@ -620,7 +658,10 @@
     margin-bottom: 20px;
     font-size: 14px;
   }
-  .task-info li p {
+  .task-summary {
+    padding: 20px 0;
+  }
+  .task-info li p, .task-summary p {
     height: 24px;
     line-height: 24px;
     min-width: 72px;

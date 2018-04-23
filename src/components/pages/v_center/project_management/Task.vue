@@ -16,7 +16,7 @@
         <el-button @click="currentStageStat.event = false">取消</el-button>
       </div>
     </div>
-    <div class="container task-content" v-loading.body="isLoading">
+    <div class="container task-content" v-loading="isLoading">
       <el-row :gutter="30">
         <el-col :span="propsTask.power ? 12 : 24" class="task-list">
           <div class="add-btn">
@@ -26,7 +26,7 @@
           <section>
             <div v-for="(ele, index) in displayObj.outsideStageList" :key="index"
               @click.self="showTaskBtn(ele.id, index)"
-              :class="['task-item','clearfix', {'active': ele.stage === 2}]">
+              :class="['task-item','clearfix', {'active': ele.stage === 2, 'level1': ele.level === 1, 'level2': ele.level === 2, 'level3': ele.level === 3}]">
               <p @click="completeTaskBtn(ele.id, index, ele.stage)" class="task-name fl">{{ele.name}}</p>
               <p class="task-date fr">{{ele.created_at_format}}</p>
             </div>
@@ -526,7 +526,16 @@
     animation: slowShow 1s cubic-bezier(0.175, 0.885, 0.32, 1.275)
   }
   .task-item {
+    border-left: 6px solid #d2d2d2;
+  }
+  .level1 {
+    border-left: 6px solid #d2d2d2;
+  }
+  .level2 {
     border-left: 6px solid #FFD330;
+  }
+  .level3 {
+    border-left: 6px solid #ff5a5f;
   }
   .task-item.active {
     background: #fafafa;
