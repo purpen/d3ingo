@@ -144,13 +144,16 @@ body {
 
 p {
   font-size: 1.4rem;
-  word-break: break-all;
+  word-break: break-all
 }
 
 input {
-  vertical-align: top;
+  vertical-align: top
 }
-
+textarea {
+  resize: none;
+  font-family: inherit
+}
 .el-textarea__inner {
   resize: none
 }

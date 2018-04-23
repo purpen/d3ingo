@@ -36,12 +36,13 @@
       <p :class="['add-task-input', {'active': currentForm.stage === 2}]">
         <span :class="['add-task-select']" @click="completeTask"></span>
         <el-tooltip class="item" effect="dark" content="点击即可编辑" placement="top">
-          <input @blur="blurTagName({name: currentForm.name})" v-model="currentForm.name" placeholder="填写任务名称" type="text">
+          <input @blur="blurInput({name: currentForm.name})" v-model="currentForm.name" placeholder="填写任务名称" type="text">
         </el-tooltip>
       </p>
       <div class="task-detail-body">
-        <div v-if="false">
+        <div class="task-admin" v-if="true">
           <p>分配给</p>
+          <vMember></vMember>
         </div>
         <ul class="task-info">
           <li>
@@ -56,7 +57,7 @@
           <li>
             <p class="p-level">优先级:</p>
             <el-select v-model="currentForm.level" placeholder="请选择"
-            @visible-change="changeLevel(currentForm.level)">
+            @change="changeLevel">
               <el-option
                 v-for="(item, index) in levels"
                 :key="index"
@@ -90,32 +91,37 @@
               @changeTags="changeTags"
               @updateTags="updateTags"></v-tags>
           </li>
-          <li v-if="currentStat.event === 'create'">
-            <div class="buttons">
-              <button class="small-button white-button" @click="closeBtn">取消</button>
-              <button class="small-button full-red-button" @click="submit">确认</button>
-            </div>
-          </li>
         </ul>
         <div class="task-summary">
           <p class="p-summary">备注</p>
+          <el-tooltip class="item" effect="dark" content="点击即可编辑" placement="top">
+            <textarea placeholder="请填写备注内容" class="textarea-summary" 
+              @blur="blurInput({summary: currentForm.summary})"
+              v-model="currentForm.summary"></textarea>
+          </el-tooltip>
+        </div>
+        <div class="task-member">
+          <p class="p-member">参与者</p>
         </div>
       </div>
     </section>
   </div>
-
 </template>
 
 <script>
   import api from '@/api/api'
   import '@/assets/js/format'
+  // import store from '@/store/index'
+  // import * as types from '@/store/mutation-types'
   // 标签
   import vTags from '@/components/tools_block/Tags'
+  import vMember from '@/components/tools_block/Member'
   // import typeData from '@/config'
   export default {
     name: 'toolsBlockTask',
     components: {
-      vTags
+      vTags,
+      vMember
     },
     props: {
       projectObject: {
@@ -156,7 +162,7 @@
           test: ''
         },
         currentForm: { // 当前任务表单
-          over_time: '',
+          over_time: new Date().format('yyyy-MM-dd hh:mm:ss'),
           level: 1
         },
         currentChange: {},
@@ -186,7 +192,8 @@
         }],
         tagsId: [],
         isLoading: false,
-        isCreate: false
+        isCreate: false,
+        atFirst: true
       }
     },
     methods: {
@@ -194,19 +201,6 @@
       closeBtn() {
         this.attr.power = 0
         this.attr.event = ''
-      },
-      closeTags() { // 可能有问题
-        this.propsTags.power = 0
-        this.propsTags.event = ''
-      },
-      // 添加任务点击事件
-      addBtn() {
-        this.currentStat = {
-          event: 'create',
-          id: 0,
-          index: 0
-        }
-        this.currentForm = {}
       },
       // 删除任务点击事件
       deleteBtn() {
@@ -217,7 +211,6 @@
       // 提交任务
       submit() {
         let event = this.currentStat.event
-        console.log(event)
         if (event === 'create') {
           this.create()
         } else if (event === 'update') {
@@ -229,6 +222,7 @@
       // 查详情
       view() {
         const self = this
+        self.atFirst = true
         self.isLoading = true
         this.$http.get(api.taskId.format(self.currentStat.id), {}).then(function (response) {
           if (response.data.meta.status_code === 200) {
@@ -236,7 +230,10 @@
           } else {
             self.$message.error(response.data.meta.message)
           }
-          self.isLoading = false
+          self.$nextTick(() => {
+            self.isLoading = false
+            self.atFirst = false
+          })
         }).catch((error) => {
           self.$message.error(error.message)
           console.error(error.message)
@@ -246,13 +243,11 @@
       // 创建
       create() {
         const self = this
-        if (!self.currentForm.name) {
-          self.$message.error('名称不能为空!')
-          return false
-        }
-        let overTime = self.currentForm.over_time
-        if (self.currentForm.over_time instanceof Date) {
-          self.currentForm.over_time = overTime.format('yyyy-MM-dd hh:mm:ss')
+        if (JSON.stringify(self.currentForm) !== '{}') {
+          let overTime = self.currentForm.over_time
+          if (self.currentForm.over_time instanceof Date) {
+            self.currentForm.over_time = overTime.format('yyyy-MM-dd hh:mm:ss')
+          }
         }
         self.currentForm.item_id = self.attr.itemId
         this.$http.post(api.task, self.currentForm).then(function (response) {
@@ -260,8 +255,8 @@
             // 更新整个对象到view层
             Object.assign(self.currentForm, response.data.data)
             self.currentStat.sync = 1
-            self.attr.power = 0
-            // self.currentStat.event = 'update'
+            // self.attr.power = 0
+            self.currentStat.id = response.data.data.id
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -395,19 +390,25 @@
           }
         })
       },
-      blurTagName(obj) {
+      blurInput(obj) {
         if (this.currentStat.event === 'update') {
           this.currentChange = obj
           this.update()
         }
       },
       changeTime(e) {
+        if (this.atFirst) {
+          return
+        }
         if (this.currentStat.event === 'update') {
           this.currentChange = {over_time: e}
           this.update()
         }
       },
       changeLevel(e) {
+        if (this.atFirst) {
+          return
+        }
         if (this.currentStat.event === 'update') {
           this.currentChange = {level: e}
           this.update()
@@ -442,6 +443,7 @@
             this.view()
           } else if (this.currentStat.event === 'create') {
             this.currentForm = {}
+            this.create()
           } else if (this.currentStat.event === 'complete') {   // 点击完成/取消完成事件
             this.setStageTask()
           }
@@ -612,7 +614,8 @@
   }
   .add-task-input input:hover,
   .add-task-input input:focus {
-    background: #f7f7f7
+    /* background: #f7f7f7 */
+    border-color: #d2d2d2
   }
   .add-task-input {
     position: relative;
@@ -659,9 +662,25 @@
     font-size: 14px;
   }
   .task-summary {
-    padding: 20px 0;
+    padding: 20px 0
   }
-  .task-info li p, .task-summary p {
+  .textarea-summary {
+    margin-left: 26px;
+    margin-top: 20px;
+    font-size: 14px;
+    width: calc(100% - 34px);
+    min-height: 50px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    padding: 8px;
+  }
+  .textarea-summary:hover,
+  .textarea-summary:focus {
+    border-color: #d2d2d2
+  }
+  .task-info li p,
+  .task-summary p,
+  .task-member p {
     height: 24px;
     line-height: 24px;
     min-width: 72px;
@@ -684,6 +703,14 @@
   }
   .task-info li p.p-time {
     background: url(../../assets/images/tools/project_management/Time.png) no-repeat left;
+    background-size: 24px;
+  }
+  .p-summary {
+    background: url(../../assets/images/tools/project_management/Summary@2x.png) no-repeat left;
+    background-size: 24px;
+  }
+  .p-member {
+    background: url(../../assets/images/tools/project_management/Participant@2x.png) no-repeat left;
     background-size: 24px;
   }
   .task-info li p:before {
@@ -735,5 +762,9 @@
   }
   .el-select {
     width: inherit
+  }
+  .task-admin {
+    position: relative;
+    padding: 20px 0
   }
 </style>

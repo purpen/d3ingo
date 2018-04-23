@@ -312,6 +312,7 @@
         let event = this.propsTaskStat.event
         if (event === 'create') {   // 添加同步
           this.taskList.unshift(this.propsTaskForm)
+          this.propsTaskStat.event = 'update'
           // this.propsTask.power = 0
         } else if (event === 'update') {  // 更新同步
           this.syncTaskListFor(event)
@@ -358,6 +359,7 @@
       },
       // 更新任务组件传回数据
       changePropsTask(obj) {
+        console.log(obj)
         this.propsTask = obj
       },
       // 更新任务组件状态传回数据
