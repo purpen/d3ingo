@@ -10,11 +10,11 @@
           <el-button @click="deleteStageBtn(d.id, index)">删除</el-button>
         </p>
       </div> -->
-      <div v-if="currentStageStat.event">
+      <!-- <div v-if="currentStageStat.event">
         <el-input v-model="currentStageForm.title" placeholder=""></el-input>
         <el-button @click="submitStage()">提交阶段</el-button>
         <el-button @click="currentStageStat.event = false">取消</el-button>
-      </div>
+      </div> -->
     </div>
     <div class="container task-content" v-loading="isLoading">
       <el-row :gutter="30">
@@ -33,7 +33,10 @@
           </section>
           
           <section class="stage-item" v-for="(ele, index) in displayObj['itemList']" :key="index">
-            <p class="stage-name">{{ele.title}} : <span @click="confirmDeleteStageBtn(ele.id, index)" class="close-icon-solid"></span></p>
+            <p class="stage-name" @click.self="editStageBtn(ele.id, index)">{{ele.title}}:
+              <input v-if="currentStageForm.title && currentStageStat.id === ele.id" class="stage-title" type="text" v-model="currentStageForm.title"
+              @blur="submitStage()">
+              <span @click="confirmDeleteStageBtn(ele.id, index)" class="close-icon-solid"></span></p>
             <section>
               <div :class="['task-item','clearfix', {'active': taskisDone.indexOf(e.id) !== -1}]"
                 v-for="(e, i) in ele['itemList']" :key="i">
@@ -163,15 +166,17 @@
           id: 0,
           index: 0
         }
-        this.currentStageForm = {
-          title: '',
+        this.currentStageForm = {...{
+          title: '阶段',
           item_id: 0,
           test: ''
-        }
+        }}
+        this.createStage()
       },
       // 编辑阶段按钮点击事件
       editStageBtn(id, index) {
-        this.currentStageForm = this.stageList[index]
+        console.log('编辑', index)
+        this.currentStageForm = {...this.stageList[index]}
         this.currentStageStat = {
           event: 'update',
           id: id,
@@ -214,7 +219,8 @@
         this.$http.post(api.toolsStage, self.currentStageForm).then(function (response) {
           if (response.data.meta.status_code === 200) {
             // console.log(response.data.data)
-            self.stageList.unshift(response.data.data)
+            // self.stageList.unshift(response.data.data)
+            self.$store.commit('createStageListItem', self.currentStageForm)
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -227,14 +233,15 @@
       updateStage() {
         const self = this
         let id = self.currentStageStat.id
-        let index = self.currentStageStat.index
+        // let index = self.currentStageStat.index
         if (!id) {
           self.$message.error('ID不能为空!')
           return false
         }
         self.$http.put(api.toolsStageId.format(id), self.currentStageForm).then(function (response) {
           if (response.data.meta.status_code === 200) {
-            self.$set(self.stageList, index, self.currentStageForm)
+            console.log(JSON.stringify(self.currentStageForm))
+            self.$store.commit('updateStageListItem', self.currentStageForm)
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -247,14 +254,15 @@
       deleteStage() {
         const self = this
         let id = self.currentStageStat.id
-        let index = self.currentStageStat.index
+        // let index = self.currentStageStat.index
         if (!id) {
           self.$message.error('ID不能为空!')
           return false
         }
         self.$http.delete(api.toolsStageId.format(id), {}).then(function (response) {
           if (response.data.meta.status_code === 200) {
-            self.stageList.splice(index, 1)
+            // self.stageList.splice(index, 1)
+            self.$store.commit('deleteStageListItem', id)
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -369,7 +377,14 @@
         return this.$store.state.task.storeCurrentForm
       }
     },
-    watch: {},
+    watch: {
+      stageList: {
+        handler(val) {
+          this.$store.commit('setStageList', val)
+        },
+        deep: true
+      }
+    },
     created() {
       let itemId = this.$route.params.id
       if (!itemId) {
@@ -382,6 +397,24 @@
       this.fetchStage()
       // 获取主任务列表
       this.fetchTask()
+    },
+    directives: {
+      focus: {
+        inserted(el, binding) {
+          if (binding.value) {
+            el.focus()
+          } else {
+            el.blur()
+          }
+        },
+        componentUpdated(el, binding) {
+          if (binding.value) {
+            el.focus()
+          } else {
+            el.blur()
+          }
+        }
+      }
     }
   }
 </script>
@@ -429,6 +462,19 @@
     font-size: 18px;
     color: #222222;
     font-weight: bold
+  }
+  .stage-title {
+    position: absolute;
+    left: 0;
+    top: 2px;
+    line-height: 46px;
+    height: 46px;
+    width: 200px;
+    border: none;
+    font-size: 18px;
+    color: #222222;
+    font-weight: bold;
+    padding: 0 8px 0 26px;
   }
   .close-icon-solid {
     display: none;
