@@ -222,7 +222,7 @@
             self.fetchMessageCount()
             limitTimes += 1
           }
-        }, 20000)
+        }, 2000000)
       },
       // 查看消息
       viewMsg() {

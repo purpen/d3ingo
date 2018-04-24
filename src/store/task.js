@@ -6,15 +6,19 @@ let state = {
   taskState: {
     id: 0,
     power: 0,
-    event: 'create' // create | update | delete | complete
+    event: '' // create | update | delete | complete
   },
   currentForm: {
   },
   taskList: [],
+  stageList: [],
   storeCurrentForm: {}
 }
 let mutations = {
   setDisplayObj(state, array) {
+    if (!array) {
+      return
+    }
     array.forEach((item) => {
       if (item['use'] === true) {
         item['use'] = false
@@ -24,7 +28,7 @@ let mutations = {
       }
     })
     let outsideStageList = []
-    let itemList = []
+    let itemList = state.stageList
     array.forEach((item) => {
       if (itemList.length) {
         itemList.forEach(ele => {
@@ -60,8 +64,16 @@ let mutations = {
     state.stakList = arr
     this.commit('setDisplayObj', state.stakList)
   },
+  setStageList(state, arr) {
+    state.stageList = arr
+    this.commit('setDisplayObj', state.stakList)
+  },
   createTaskListItem(state, obj) {
     state.stakList.unshift(obj)
+    this.commit('setDisplayObj', state.stakList)
+  },
+  createStageListItem(state, obj) {
+    state.stageList.unshift(obj)
     this.commit('setDisplayObj', state.stakList)
   },
   updateTaskListItem(state, obj) {
@@ -72,9 +84,25 @@ let mutations = {
     })
     this.commit('setDisplayObj', state.stakList)
   },
+  updateStageListItem(state, obj) {
+    state.stageList.forEach(item => {
+      if (item.id === obj.id) {
+        Object.assign(item, obj)
+      }
+    })
+    this.commit('setDisplayObj', state.stakList)
+  },
   deleteTaskListItem(state, obj) {
     state.stakList.forEach((item, index, array) => {
       if (item.id === obj.id) {
+        array.splice(index, 1)
+      }
+    })
+    this.commit('setDisplayObj', state.stakList)
+  },
+  deleteStageListItem(state, id) {
+    state.stageList.forEach((item, index, array) => {
+      if (item.id === id) {
         array.splice(index, 1)
       }
     })
