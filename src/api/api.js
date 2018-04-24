@@ -322,6 +322,9 @@ export default {
   // 沟通纪要
   communeSummaries: '/communeSummaries',  // GET 列表 | POST 创建
   communeSummariesId: '/communeSummaries/{0}',  // PUT 更新 | GET 详情 | DELETE 删除
+
+  // 沟通纪要成员
+  communeSummaryUser: '/communeSummaryUser', // GET 列表
   // 项目列表
   desiginProjectList: '/designProject/lists', // GET 项目列表
   createDesignProject: '/designProject/create', // POST 创建
