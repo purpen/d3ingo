@@ -308,9 +308,9 @@ export default {
   taskStage: '/isStage/tasks', // PUT 任务是否完成操作
 
   // 任务成员
-  taskUsers: '/taskUsers',  // GET 列表 | POST 创建
+  taskUsers: '/taskUsers', // GET 列表 | POST 创建 | DELETE 删除 | {id} 成员详情
   taskUsersId: '',
-
+  createTaskUser: '/taskUsers/newStore', // POST 创建
   // 标签
   itemTags: '/tags',  // POST 创建 | GET 列表
   itemTagsId: '/tags/{0}',  // GET 详情 | PUT 更新 | DELETE 删除
@@ -328,6 +328,9 @@ export default {
   updateDesignProject: '/designProject/update', // PUT 创建
   deleteDesignProject: '/designProject/delete', // DELETE 放入回收站
   designProject: '/designProject', // GET 展示详情
+
+  // 项目成员列表
+  itemUsers: '/itemUsers', // POST 创建 | GET 详情 | DELETE 删除
 
   // 客户信息
   designClientList: '/designClient/lists',   // GET 列表
