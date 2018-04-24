@@ -1,5 +1,5 @@
 <template>
-  <div class="" v-if="attr.power">
+  <div class="" v-if="taskState.power" v-loading="isLoading">
     <!-- <el-button @click="addTagBtn">显示标签</el-button> -->
     <!-- <h3>任务组件引入测试 <a href="javascript:void(0)" @click="closeBtn()">点击关闭</a></h3> -->
     <!--<el-button @click="addBtn()">添加任务</el-button>-->
@@ -42,7 +42,7 @@
       <div class="task-detail-body">
         <div class="task-admin" v-if="true">
           <p>分配给</p>
-          <vMember></vMember>
+          <!-- <vMember></vMember> -->
         </div>
         <ul class="task-info">
           <li>
@@ -129,33 +129,10 @@
         default: function () {
           return {}
         }
-      },
-      propsParam: {
-        default: {
-          itemId: 0,
-          power: 0,
-          test: ''
-        }
-      },
-      propsStat: {
-        default: {
-          id: 0,
-          index: 0,
-          event: '',
-          complete: 0,
-          sync: 0,
-          test: ''
-        }
-      },
-      propsForm: {}
+      }
     },
     data () {
       return {
-        attr: {
-          itemId: 0,
-          power: 0,
-          test: ''
-        },
         propsTags: {
           itemId: 0,
           power: 0,
@@ -166,14 +143,6 @@
           level: 1
         },
         currentChange: {},
-        currentStat: { // 当前任务操作事件
-          event: '',
-          id: 0,
-          index: 0,
-          complete: 0,
-          sync: 0,
-          test: ''
-        },
         msg: '',
         levels: [{
           value: 1,
@@ -192,39 +161,37 @@
         }],
         tagsId: [],
         isLoading: false,
-        isCreate: false,
         atFirst: true
       }
     },
     methods: {
       // 关闭任务
       closeBtn() {
-        this.attr.power = 0
-        this.attr.event = ''
+        this.$store.commit('changeTaskStatePower', 0)
+        this.$store.commit('changeTaskStateEvent', '')
       },
       // 删除任务点击事件
       deleteBtn() {
-        // this.currentStat.event = 'delete'
-        this.$set(this.currentStat, 'event', 'delete')
+        this.$store.commit('changeTaskStateEvent', 'delete')
         this.delete()
       },
       // 提交任务
       submit() {
-        let event = this.currentStat.event
+        let event = this.taskState.event
         if (event === 'create') {
           this.create()
         } else if (event === 'update') {
           this.update()
         } else if (event === 'delete') {
-          this.delete()
+          this.delete(this.taskState.id)
         }
       },
       // 查详情
-      view() {
+      view(id) {
         const self = this
         self.atFirst = true
         self.isLoading = true
-        this.$http.get(api.taskId.format(self.currentStat.id), {}).then(function (response) {
+        this.$http.get(api.taskId.format(id), {}).then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.currentForm = response.data.data
           } else {
@@ -249,14 +216,11 @@
             self.currentForm.over_time = overTime.format('yyyy-MM-dd hh:mm:ss')
           }
         }
-        self.currentForm.item_id = self.attr.itemId
+        self.currentForm.item_id = self.projectObject.id
         this.$http.post(api.task, self.currentForm).then(function (response) {
           if (response.data.meta.status_code === 200) {
-            // 更新整个对象到view层
             Object.assign(self.currentForm, response.data.data)
-            self.currentStat.sync = 1
-            // self.attr.power = 0
-            self.currentStat.id = response.data.data.id
+            self.$store.commit('changeTaskStateEvent', 'update')
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -268,16 +232,15 @@
       // 更新
       update() {
         const self = this
-        let id = self.currentStat.id
+        let id = self.taskState.id
         if (!id) {
           self.$message.error('ID不能为空!')
           return false
         }
         self.$http.put(api.taskId.format(id), self.currentChange).then(function (response) {
           if (response.data.meta.status_code === 200) {
-            // 更新整个对象到view层
             Object.assign(self.currentForm, response.data.data)
-            self.currentStat.sync = 1
+            self.$store.commit('updateTaskListItem', self.currentForm)
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -288,17 +251,17 @@
       },
       // 删除任务
       delete() {
+        let id = this.taskState.id
         const self = this
-        let id = self.currentStat.id
         if (!id) {
           self.$message.error('ID不能为空!')
           return false
         }
         self.$http.delete(api.taskId.format(id), {}).then(function (response) {
           if (response.data.meta.status_code === 200) {
-            self.currentStat.sync = 1
-            self.attr.power = 0
+            self.$store.commit('deleteTaskListItem', self.currentForm)
             self.currentForm = {}
+            self.$store.commit('changeTaskStatePower', 0)
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -324,15 +287,16 @@
       // 任务完成/取消完成
       setStageTask() {
         const self = this
-        let id = self.currentStat.id
-        let complate = self.currentStat.complete
+        let id = self.taskState.id
+        let complate = self.currentForm.stage === 2 ? 0 : 2
         if (!id) {
           self.$message.error('ID不能为空!')
           return false
         }
         this.$http.put(api.taskStage, {task_id: id, stage: complate}).then(function (response) {
           if (response.data.meta.status_code === 200) {
-            self.currentStat.sync = 1
+            self.$set(self.currentForm, 'stage', complate)
+            self.$store.commit('updateTaskListItem', self.currentForm)
             self.$message.success('操作成功!')
           } else {
             self.$message.error(response.data.meta.message)
@@ -343,9 +307,7 @@
         })
       },
       completeTask() {
-        if (this.currentStat.event === 'update') {
-          this.currentForm.stage = this.currentForm.stage === 2 ? 0 : 2
-          this.currentStat.complete = this.currentForm.stage
+        if (this.taskState.event === 'update') {
           this.setStageTask()
         }
       },
@@ -371,7 +333,7 @@
             obj.tags = [0]
           }
         }
-        this.$set(this.currentStat, 'event', 'update')
+        this.$store.commit('changeTaskStateEvent', 'update')
         Object.assign(this.currentChange, obj)
         this.update()
       },
@@ -391,7 +353,7 @@
         })
       },
       blurInput(obj) {
-        if (this.currentStat.event === 'update') {
+        if (this.taskState.event === 'update') {
           this.currentChange = obj
           this.update()
         }
@@ -400,7 +362,7 @@
         if (this.atFirst) {
           return
         }
-        if (this.currentStat.event === 'update') {
+        if (this.taskState.event === 'update') {
           this.currentChange = {over_time: e}
           this.update()
         }
@@ -409,7 +371,7 @@
         if (this.atFirst) {
           return
         }
-        if (this.currentStat.event === 'update') {
+        if (this.taskState.event === 'update') {
           this.currentChange = {level: e}
           this.update()
         }
@@ -418,63 +380,15 @@
     mounted: function () {
     },
     computed: {
+      taskState() {
+        let stakState = this.$store.state.task.taskState
+        if (stakState.event === 'update') {
+          this.view(stakState.id)
+        }
+        return stakState
+      }
     },
     watch: {
-      isCreate(val) {
-        console.log(val)
-      },
-      propsParam: {
-        handler(val, oldVal) {
-          this.attr = val
-        },
-        deep: true
-      },
-      attr: {
-        handler(val, oldVal) {
-          this.$emit('changePropsTask', val)
-        },
-        deep: true
-      },
-      propsStat: {
-        handler(val, oldVal) {
-          this.currentStat = val
-          // 加载任务详情
-          if (this.currentStat.event === 'update') {
-            this.view()
-          } else if (this.currentStat.event === 'create') {
-            this.currentForm = {}
-            this.create()
-          } else if (this.currentStat.event === 'complete') {   // 点击完成/取消完成事件
-            this.setStageTask()
-          }
-        },
-        deep: true
-      },
-      currentStat: {
-        handler(val, oldVal) {
-          this.$emit('changePropsStat', val)
-        },
-        deep: true
-      },
-      propsForm: {
-        handler(val, oldVal) {
-          this.currentForm = val
-        },
-        deep: true
-      },
-      currentForm: {
-        handler(val, oldVal) {
-          this.$emit('changePropsForm', val)
-          if (val.tagsAll) {
-            let list = []
-            val.tagsAll.forEach(item => {
-              list.push(item.id)
-            })
-            this.tagsId = list
-          }
-        },
-        deep: true
-      }
     },
     created() {
       let itemId = this.$route.params.id
