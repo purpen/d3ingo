@@ -6,7 +6,7 @@ let state = {
   taskState: {
     id: 0,
     power: 0,
-    event: 'create' // create | update | delete | complete
+    event: '' // create | update | delete | complete
   },
   currentForm: {
   },

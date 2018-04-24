@@ -129,10 +129,17 @@
         default: function () {
           return {}
         }
+      },
+      changeStoreCurrentForm: {
+        type: Object,
+        default: function () {
+          return {}
+        }
       }
     },
     data () {
       return {
+        test: 'aaa',
         propsTags: {
           itemId: 0,
           power: 0,
@@ -161,7 +168,8 @@
         }],
         tagsId: [],
         isLoading: false,
-        atFirst: true
+        atFirst: true,
+        isCreate: true
       }
     },
     methods: {
@@ -194,6 +202,7 @@
         this.$http.get(api.taskId.format(id), {}).then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.currentForm = response.data.data
+            self.$store.commit('setStoreCurrentForm', self.currentForm)
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -210,6 +219,7 @@
       // 创建
       create() {
         const self = this
+        self.isCreate = false
         if (JSON.stringify(self.currentForm) !== '{}') {
           let overTime = self.currentForm.over_time
           if (self.currentForm.over_time instanceof Date) {
@@ -217,16 +227,20 @@
           }
         }
         self.currentForm.item_id = self.projectObject.id
-        this.$http.post(api.task, self.currentForm).then(function (response) {
+        self.$http.post(api.task, self.currentForm).then(function (response) {
+          self.isCreate = true
           if (response.data.meta.status_code === 200) {
             Object.assign(self.currentForm, response.data.data)
+            self.$store.commit('createTaskListItem', response.data.data)
             self.$store.commit('changeTaskStateEvent', 'update')
+            self.$store.commit('changeTaskStateId', response.data.data.id)
           } else {
             self.$message.error(response.data.meta.message)
           }
         }).catch((error) => {
           self.$message.error(error.message)
           console.error(error.message)
+          self.isCreate = true
         })
       },
       // 更新
@@ -384,11 +398,36 @@
         let stakState = this.$store.state.task.taskState
         if (stakState.event === 'update') {
           this.view(stakState.id)
+        } else if (stakState.event === 'create') {
+          if (this.isCreate) {
+            this.currentForm = {}
+            this.create()
+          }
         }
         return stakState
+      },
+      storeCurrentForm: {
+        get() {
+          return this.$store.state.task.storeCurrentForm
+        },
+        set(val) {
+          this.currentForm = this.$store.state.task.storeCurrentForm
+        }
       }
     },
     watch: {
+      currentForm: {
+        handler(val) {
+          this.$store.commit('setStoreCurrentForm', val)
+        },
+        deep: true
+      },
+      changeStoreCurrentForm: {
+        handler(val) {
+          this.storeCurrentForm = val
+        },
+        deep: true
+      }
     },
     created() {
       let itemId = this.$route.params.id
@@ -561,8 +600,6 @@
     border-left: none;
     border-top: none;
     transform: rotate(45deg);
-  }
-  .task-detail-body {
   }
   .task-info {
     padding-top: 20px;

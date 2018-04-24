@@ -27,7 +27,7 @@
             <div v-for="(ele, index) in displayObj.outsideStageList" :key="index"
               @click.self="showTaskBtn(ele.id, index)"
               :class="['task-item','clearfix', {'active': ele.stage === 2, 'level1': ele.level === 1, 'level2': ele.level === 2, 'level3': ele.level === 3}]">
-              <p @click="completeTaskBtn(ele.id, index, ele.stage)" class="task-name fl">{{ele.name}}</p>
+              <p @click="completeTaskBtn(ele, index)" class="task-name fl">{{ele.name}}</p>
               <p class="task-date fr">{{ele.created_at_format}}</p>
             </div>
           </section>
@@ -37,14 +37,14 @@
             <section>
               <div :class="['task-item','clearfix', {'active': taskisDone.indexOf(e.id) !== -1}]"
                 v-for="(e, i) in ele['itemList']" :key="i">
-                <p @click="completeTaskBtn(e.id, i, e.stage)" class="task-name fl">{{e.name}}</p>
+                <p @click="completeTaskBtn(e, i)" class="task-name fl">{{e.name}}</p>
                 <p class="task-date fr">{{e.created_at_format}}</p>
               </div>
             </section>
           </section>
         </el-col>
         <el-col :span="12">
-          <v-task :projectObject="projectObject"></v-task>
+          <v-task :changeStoreCurrentForm="changeStoreCurrentForm" :projectObject="projectObject"></v-task>
         </el-col>
       </el-row>
     </div>
@@ -117,7 +117,8 @@
         showElement: {
           showCover: false,
           showComfirmDeleteStage: false
-        }
+        },
+        changeStoreCurrentForm: {}
       }
     },
     methods: {
@@ -289,7 +290,6 @@
       addTaskBtn() {
         this.$store.commit('changeTaskStatePower', 1)
         this.$store.commit('changeTaskStateEvent', 'create')
-        this.currentForm = {}
       },
       // 展开任务详情
       showTaskBtn(id, index) {
@@ -298,10 +298,26 @@
         this.$store.commit('changeTaskStateId', id)
       },
       // 完成/取消任务
-      completeTaskBtn(id, index, stage) {
-        this.$store.commit('changeTaskStatePower', 1)
+      completeTaskBtn(ele, index) {
+        let item = {...ele}
+        this.$store.commit('changeTaskStatePower', 0)
         this.$store.commit('changeTaskStateEvent', 'update')
-        this.$store.commit('changeTaskStateId', id)
+        this.$store.commit('changeTaskStateId', ele.id)
+        let stage = ele.stage === 2 ? 0 : 2
+        this.$http.put(api.taskStage, {task_id: ele.id, stage: stage}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.$nextTick(() => {
+              item.stage = stage
+              this.$store.commit('updateTaskListItem', item)
+              this.$store.commit('setStoreCurrentForm', item)
+              Object.assign(this.changeStoreCurrentForm, this.storeCurrentForm)
+            })
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          console.error(error)
+        })
       },
       closeCover() {
         for (let i in this.showElement) {
@@ -348,6 +364,9 @@
       },
       taskList() {
         return this.$store.state.task.taskList
+      },
+      storeCurrentForm() {
+        return this.$store.state.task.storeCurrentForm
       }
     },
     watch: {},
