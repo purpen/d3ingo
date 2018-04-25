@@ -3,7 +3,7 @@
   <v-menu-left currentName="project_management"></v-menu-left>
   <div :class="['project-management',{'project-management-mini': !leftWidth}]">
     <menu-sub :projectObject="projectObject" :currentRoute="currentRoute"></menu-sub>
-    <router-view :projectObject="projectObject"></router-view>
+    <router-view v-if="isShow" :projectObject="projectObject"></router-view>
   </div>
 </section>
 </template>
@@ -15,6 +15,7 @@ export default {
   name: 'projectManagement',
   data() {
     return {
+      isShow: false,
       currentRoute: 'overview',
       projectObject: {}
     }
@@ -29,12 +30,25 @@ export default {
         if (res.data.meta.status_code === 200) {
           this.projectObject = res.data.data
         } else {
-          this.$message.error(res.data.meta.message)
+          this.redirectItemList(1, res.data.meta.message)
         }
+        this.isShow = true
       }).catch(err => {
         console.error(err)
-        this.$message.error(err.message)
+        this.redirectItemList(1, err.message)
       })
+    },
+    // 跳回项目列表页 evt: 0.不提示信息；1.错误提示；2.成功提示；message: 消息
+    redirectItemList(evt, message) {
+      if (evt && message) {
+        if (evt === 1) {
+          this.$message.error(message)
+        } else if (evt === 2) {
+          this.$message.success(message)
+        }
+      }
+      this.$router.push({name: 'home'})
+      return
     }
   },
   created() {
