@@ -41,7 +41,6 @@
       <div class="task-detail-body">
         <div class="task-admin" v-if="true">
           <p>分配给</p>
-          <v-Member :propsShow="true"></v-Member>
         </div>
         <ul class="task-info">
           <li>
@@ -101,6 +100,7 @@
         </div>
         <div class="task-member">
           <p class="p-member">参与者</p>
+          <v-Member :propsShow="true"></v-Member>
         </div>
       </div>
     </section>
@@ -685,6 +685,9 @@
     padding-left: 34px;
     margin-right: 15px;
     color: #999;
+    position: relative;
+  }
+  .task-member {
     position: relative;
   }
   .task-info li p.p-time {

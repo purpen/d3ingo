@@ -308,8 +308,8 @@ export default {
   taskStage: '/isStage/tasks', // PUT 任务是否完成操作
 
   // 任务成员
-  taskUsers: '/taskUsers', // GET 列表 | POST 创建 | DELETE 删除 | {id} 成员详情
-  taskUsersId: '',
+  taskUsers: '/taskUsers', // GET 列表 | POST 创建 | {id} 成员详情
+  deleteTaskUsers: '/taskUsers/delete', // DELETE 删除
   createTaskUser: '/taskUsers/newStore', // POST 创建
   // 标签
   itemTags: '/tags',  // POST 创建 | GET 列表

@@ -1,5 +1,5 @@
 <template>
-  <div class="cententList" v-if="false">
+  <div class="cententList" v-if="true">
     <p class="clearfix">添加成员
       <i class="fr fx-icon-nothing-close-error" @click.stop="showGroupPush = false"></i>
     </p>
@@ -8,17 +8,22 @@
         <input class="member-search" v-model="seachKey" type="text">
       </div>
       <ul class="scroll-bar">
-        <li :class="['info', {'active': taskMemberIdList.indexOf(d.id) !== -1}]"
-          v-for="(d, index) in matchMemberList" :key="index" @click="clickTaskMember(d.id)">
+        <li v-if="matchMemberList.length"
+          :class="['info', {'active': taskMemberIdList.indexOf(d.id) !== -1}]"
+          v-for="(d, index) in matchMemberList" :key="index"
+          @click="clickTaskMember(d.id)">
           <img v-if="d.logo_image" :src="d.logo_image.logo" alt="">
           <img v-else :src="require('assets/images/avatar_100.png')">
           <span class="name">{{d.realname}}</span>
         </li>
+        <li v-if="!matchMemberList.length" class="no-match">
+          <span>没有搜索到相关人员～</span>
+        </li>
       </ul>
-      <p v-if="company_role === 20" @click="getVerifyStatus" class="welcome">通过链接邀请</p>
+      <!-- <p v-if="company_role === 20" @click="getVerifyStatus" class="welcome">通过链接邀请</p> -->
+      <p class="welcome" @click="addMemberFromCompany">从公司中添加成员</p>
     </div>
     <section class="dialog-bg" v-if="showCover" @click.self="closeCover"></section>
-    <!-- <section class="dialog-bg" v-if="true" @click.self="closeCover"></section> -->
     <section class="dialog-body" v-if="isInvite">
       <h3 class="dialog-header clearfix">
         邀请成员
@@ -32,7 +37,7 @@
         </p>
       </div>
     </section>
-    <section class="dialog-body" v-if="false">
+    <section class="dialog-body" v-if="isCompanyAdd">
       <h3 class="dialog-header clearfix">
         从项目中添加成员
         <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
@@ -52,10 +57,6 @@ export default {
       type: Boolean,
       default: false
     },
-    taskId: {
-      type: Number,
-      default: -1
-    },
     itemId: {
       type: Number,
       default: 2
@@ -72,6 +73,7 @@ export default {
       inviteLink: '',
       showCover: false,
       isInvite: false,
+      isCompanyAdd: false,
       seachKey: ''
     }
   },
@@ -84,7 +86,7 @@ export default {
           this.taskMemberIdList = []
           let idList = []
           this.taskMemberList.forEach(item => {
-            idList.push(item.id)
+            idList.push(item.selected_user_id)
           })
           Object.assign(this.taskMemberIdList, idList)
         } else {
@@ -123,13 +125,13 @@ export default {
       }
     },
     addTaskMember(selectId) {
-      this.$http.get(api.createTaskUser, {
+      this.$http.post(api.createTaskUser, {
         task_id: this.taskId,
         selected_user_id: selectId})
       .then(res => {
         if (res.data.meta.status_code === 200) {
           this.taskMemberList.push(res.data.data)
-          this.taskMemberIdList.push(res.data.data.id)
+          this.taskMemberIdList.push(res.data.data.selected_user_id)
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -138,7 +140,10 @@ export default {
       })
     },
     removeTaskMember(selectId, index) {
-      this.$http.get(api.taskUsers, {id: selectId})
+      this.$http.delete(api.deleteTaskUsers, {params: {
+        task_id: this.taskId,
+        selected_user_id: selectId
+      }})
       .then(res => {
         if (res.data.meta.status_code === 200) {
           this.taskMemberList.splice(index, 1)
@@ -197,6 +202,11 @@ export default {
     closeCover() {
       this.showCover = false
       this.isInvite = false
+      this.isCompanyAdd = false
+    },
+    addMemberFromCompany() {
+      this.showCover = true
+      this.isCompanyAdd = true
     }
   },
   created() {
@@ -206,6 +216,9 @@ export default {
   computed: {
     company_role() {
       return this.$store.state.event.user.company_role
+    },
+    taskId() {
+      return this.$store.state.task.taskState.id
     }
   },
   watch: {
@@ -297,18 +310,48 @@ export default {
     border-radius: 4px;
   }
   .side ul {
-    height: 240px;
+    height: 180px;
     overflow-y: auto;
   }
   
   .side ul .info {
+    position: relative;
     padding: 0 20px;
     height: 60px;
     display: flex;
     align-items: center;
   }
-  .side ul .info:hover {
+  .side ul .no-match {
+    position: relative;
+    height: inherit;
+    padding: 20px;
+    background: url(../../assets/images/tools/report/NoMaterial.png) no-repeat center / 120px;
+  }
+  .no-match span {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: #999;
+    line-height: 20px;
+  }
+  .side ul .info:hover,
+  .side ul .active {
     background: #f7f7f7
+  }
+  
+  .side ul .active::after {
+    content: "";
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 8px;
+    height: 14px;
+    border: 2px solid #d2d2d2;
+    border-left: none;
+    border-top: none;
+    transform: rotate(45deg);
   }
   .side img {
     height: 36px;
@@ -327,6 +370,9 @@ export default {
     background: #fff;
     color: #ff5a5f;
     cursor: pointer;
+  }
+  .cententList .welcome:hover {
+    color: #d23c46
   }
   .dialog-bg {
     position: fixed;
