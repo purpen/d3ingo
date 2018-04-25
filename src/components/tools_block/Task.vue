@@ -41,7 +41,7 @@
       <div class="task-detail-body">
         <div class="task-admin" v-if="true">
           <p>分配给</p>
-          <!-- <vMember></vMember> -->
+          <v-Member :propsShow="true"></v-Member>
         </div>
         <ul class="task-info">
           <li>

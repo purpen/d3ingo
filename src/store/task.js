@@ -15,7 +15,7 @@ let state = {
   storeCurrentForm: {}
 }
 let mutations = {
-  setDisplayObj2(state, array) {
+  setDisplayObj2(state, array) { // 容易出异步问题
     let outsideStageList = []
     let itemList = state.stageList
     if (!array) {

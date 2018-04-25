@@ -216,7 +216,7 @@ export default {
   }
 
   .cententList p {
-    background: #F7F7F7;
+    background: #f0f0f0;
     font-size: 14px;
     text-align: center;
     line-height: 50px;
