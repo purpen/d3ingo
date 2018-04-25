@@ -39,22 +39,22 @@
                   <ul class="fl">
                     <li v-for="(getimg,index) in getimgs" :key="index" v-if="getimgs.length > 0" :style="{background:`url(${ getimg.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}">
                       <span v-if=" !getimg.logo_image.logo ">{{getimg.realnamehead}}</span>
-                      <i :style="{background:`url(${ closered }) no-repeat center`}" @click="deleteGetimg(index)"></i>
+                      <i :style="{background:`url(${ closered }) no-repeat center`}" @click="deleteGetimg(index,{type:'add'})"></i>
                     </li>
                     <li>
-                      <img class="adds" :src=" adduser " alt="" @click.self="uppop ? uppop = false : uppop = true">             
+                      <img class="adds" :src=" adduser " alt="" @click="uppop?uppop=false:uppop=true">
                       <ul class="select-user" v-if="uppop">
                         <li>
                           <el-input placeholder="填写或选择参加会议的人员名称" v-model="searcher"></el-input>
                         </li>
-                        <li v-for="(option,index) in options" :key="index" @click="creatMembers(index)" v-if="!isSearch">
+                        <li v-for="(option,index) in options" :key="index" @click="creatMembers(index,{type:'add'})" v-if="!isSearch">
                           <div  :style="{background:`url(${ option.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}" >
                             <span v-if ="!option.logo_image.logo">{{option.realnamehead}}</span>
                           </div>
                           <span>{{option.realname}}</span>
                           <i class="el-icon-check text-center" v-if="option.isadd"></i>
                         </li>
-                        <li v-for="(sear,index) in search" :key="index" @click="creatMembers(index)" v-if="isSearch">
+                        <li v-for="(sear,index) in search" :key="index" @click="creatMembers(index,{type:'add'})" v-if="isSearch">
                           <div  :style="{background:`url(${ sear.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}" >
                             <span v-if ="!sear.logo_image.logo">{{sear.realnamehead}}</span>
                           </div>
@@ -62,7 +62,7 @@
                           <i class="el-icon-check text-center" v-if="sear.isadd"></i>
                         </li>
                           <li v-if="isSearch && search.length === 0">没有搜索到该人员</li>
-                          <li v-if="isSearch && search.length === 0" >+ 点击添加“{{ searcher }}”</li>
+                          <!-- <li v-if="isSearch && search.length === 0" >+ 点击添加“{{ searcher }}”</li> -->
                     </ul>
                   </li>
                 </ul>
@@ -86,7 +86,7 @@
                   v-if=" files.percentage !== 100 "
                   ></el-progress>
                 </div>
-                <i class="fr" :style="{background:`url(${ closeimg }) no-repeat center`,backgroundSize:`13px 13px`}" @click="deleteup(files.asset_id, index)"></i>
+                <i class="fr" :style="{background:`url(${ closeimg }) no-repeat center`,backgroundSize:`13px 13px`}" @click="deleteup(files.asset_id)"></i>
               </el-col>
             </el-row>
             <el-row class="uploads"> 
@@ -153,9 +153,39 @@
                   </div> 
                   <p v-else> {{ d.expire_time }}</p>
               </el-col>
-              <el-col  :xs="24" :sm="24" :md="24" :lg="9">
-                  <img :src=" userimg " alt="" >
-                  <ul class="fl"><li v-for=" (userhead,index) in userheads " :key="index" v-if="userheads.length > 0"><a href="javascirpt:void(0)">{{ userhead.head }}</a></li><li v-if ="d.isedit === 2"><img v-if ="d.isedit === 2" class="adds" :src=" adduser " alt="" ></li></ul>
+              <el-col  :xs="24" :sm="24" :md="24" :lg="9" class="updata-user">
+                <img :src=" userimg " alt="" >
+                <ul class="fl">
+                  <li v-for="(user,index) in d.selected_user" :key="index" v-if="d.selected_user.length > 0" :style="{background:`url(${ user.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}">
+                    <span v-if=" !user.logo_image.logo ">{{user.realnamehead}}</span>
+                    <i :style="{background:`url(${ closered }) no-repeat center`}" @click="deleteGetimg(index)"  v-if="d.isedit === 2"></i>
+                  </li>
+                  <li v-if ="d.isedit === 2">
+                    <img v-if ="d.isedit === 2" class="adds" :src=" adduser " alt="" @click="edituser(index)"> 
+                    <ul class="select-user" v-if=" operation  === index ">
+                      <li>
+                        <el-input placeholder="填写或选择参加会议的人员名称" v-model="searcher"></el-input>
+                      </li>
+                      <li v-for="(option,index) in options" :key="index" @click="creatMembers(index,{type:'onadd'})" v-if="!isSearch">
+                        <div  :style="{background:`url(${ option.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}" >
+                          <span v-if ="!option.logo_image.logo">{{option.realnamehead}}</span>
+                        </div>
+                        <span>{{option.realname}}</span>
+                        <i class="el-icon-check text-center" v-if="option.noadd"></i>
+                      </li>
+
+                      <li v-for="(sear,index) in search" :key="index" @click="creatMembers(index,{type:'onadd'})" v-if="isSearch">
+                        <div  :style="{background:`url(${ sear.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}" >
+                          <span v-if ="!sear.logo_image.logo">{{sear.realnamehead}}</span>
+                        </div>
+                        <span>{{sear.realname}}</span>
+                        <i class="el-icon-check text-center" v-if="sear.noadd"></i>
+                      </li>
+                      <li v-if="isSearch && search.length === 0">没有搜索到该人员</li>
+                      <li v-if="isSearch && search.length === 0" >+ 点击添加“{{ searcher }}”</li>
+                    </ul>
+                  </li>
+                </ul>
               </el-col>
             </el-row>
             <el-row class="MeetingCenter">
@@ -169,20 +199,13 @@
                 <ul class="upload-flex">
                   <li><img :src="pngimage"></li>
                   <li>{{files.name}}</li>
-                  <li>下载</li>
-                  <li @click="deleteup(files.id, indexa,index)">删除</li>                  
+                  <li @click="downupload(files.file)">下载</li>
+                  <li @click="deleteup(files.id, d.id)">删除</li>                  
                 </ul>
               </el-col>
             </el-row>
-            <el-row>
-              <el-col  class="uploads"  v-if ="d.isedit === 1 || !d.isedit">    
-                <div class="fr">
-                  <img :src=" d.logo_image.logo " alt="" >
-                 <span> {{ d.realname }} </span>
-                 <span>{{ d.created_at }}</span>
-                </div>            
-              </el-col>
-               <el-col  class="uploads" v-else>
+            <el-row class="uploads"> 
+              <el-col v-if="d.isedit === 2" :xs="24" :sm="12" :md="12" :lg="12">
                  <el-upload
                   class="upload-demo"
                   :action="uploadUrl"
@@ -192,10 +215,19 @@
                   :on-success="uploadSuccess"
                   :on-progress="uploadProgress"
                     >
-                  <img :src=" uploadimg " alt="" v-if="event === 'create'"><span v-if="event === 'create'">添加附件</span>
+                  <img :src=" uploadimg " alt=""><span>添加附件</span>
                 </el-upload>
+              </el-col>
+              <el-col :offset="12" :xs="24" :sm="12" :md="12" :lg="12" v-if="d.isedit === 1 || !d.isedit">
                 <div class="fr">
-                <span>5</span>个人将会收到通知
+                  <img :src=" d.logo_image.logo " alt="" >
+                  <span> {{ d.realname }} </span>
+                  <span>{{ d.created_at }}</span>
+                </div>            
+              </el-col>
+              <el-col :xs="24" :sm="12" :md="12" :lg="12" v-if="d.isedit === 2">
+                <div class="fr">
+                <span>{{ d.selected_user.length }}</span>个人将会收到通知
                 <button @click="inupdate(d.content, d.id, d.title, d.location, d.expire_time)" type="danger" class="small-button full-red-button">确定</button> 
                 </div>       
               </el-col>
@@ -215,7 +247,7 @@
 <script>
   import api from '@/api/api'
   import '@/assets/js/format'
-  // import download from 'downloadjs'
+  import download from 'downloadjs'
   export default {
     name: 'projectManagementCommunicate',
     data () {
@@ -272,7 +304,6 @@
           }
         }
         this.search = arr
-        console.log(this.search)
       }
     },
     methods: {
@@ -320,7 +351,13 @@
       // 编辑点击事件
       editBtn(id, index, isedit) {
         this.currentId = id
-        this.itemList[index].isedit = 2
+        this.uploadParam['x:target_id'] = id
+        for (var i = 0; i < this.itemList.length; i++) {
+          this.itemList[i].isedit = 1
+          if (this.itemList[i].id === id) {
+            this.itemList[i].isedit = 2
+          }
+        }
         this.event = 'update'
         // this.view()
       },
@@ -487,14 +524,12 @@
         }
       },
       // 删除上传的文件
-      deleteup(assetid, indexa, index) {
-        console.log(assetid)
+      deleteup(assetid, comid) {
         var self = this
-        self.$http.delete(api.asset, {params: {asset_id: assetid}})
+        self.$http.delete(api.asset.format(assetid), {})
           .then (function(response) {
             if (response.data.meta.status_code === 200) {
-              if (!index) {
-                console.log(indexa)
+              if (!comid && comid !== 0) {
                 for (var i = 0; i < self.fileList.length; i++) {
                   let item = self.fileList[i]
                   if (assetid === item.asset_id) {
@@ -502,11 +537,18 @@
                     break
                   }
                 }
-              }
-              if (index) {
-                let ace = self.itemList[index].commune_image[indexa]
-                console.log(ace)
-                self.itemList[index].commune_image.splice(indexa, 1)
+              } else {
+                for (var j = 0; j < self.itemList.length; j++) {
+                  let item = self.itemList[j]
+                  if (comid === item.id) {
+                    for (var c = 0; c < self.itemList[j].commune_image.length; c++) {
+                      if (assetid === self.itemList[j].commune_image[c].id) {
+                        self.itemList[j].commune_image.splice(c, 1)
+                        break
+                      }
+                    }
+                  }
+                }
               }
             } else {
               self.$message.error(response.data.meta.message)
@@ -552,23 +594,25 @@
         })
       },
       // 添加人员到列表
-      creatMembers(index) {
-        var ishave = true
-        if (this.getimgs.length === 0) {
-          this.getimgs.push(this.options[index])
-          this.options[index].isadd = true
-        } else {
-          for (var i = 0; i < this.getimgs.length; i++) {
-            if (this.getimgs[i].id === this.options[index].id) {
-              ishave = false
-              this.getimgs.splice(i, 1)
-              this.options[index].isadd = false
-              break
-            }
-          }
-          if (ishave) {
+      creatMembers(index, tp) {
+        if (tp.type === 'add') {
+          var ishave = true
+          if (this.getimgs.length === 0) {
             this.getimgs.push(this.options[index])
             this.options[index].isadd = true
+          } else {
+            for (var i = 0; i < this.getimgs.length; i++) {
+              if (this.getimgs[i].id === this.options[index].id) {
+                ishave = false
+                this.getimgs.splice(i, 1)
+                this.options[index].isadd = false
+                break
+              }
+            }
+            if (ishave) {
+              this.getimgs.push(this.options[index])
+              this.options[index].isadd = true
+            }
           }
         }
       },
@@ -582,20 +626,17 @@
           }
         }
       },
-      // 获取沟通成员列表
-      getCommuneSummaryUser() {
-        this.$http.get(api.communeSummaryUser, {params: {commune_summary_id: this.communeSummaryIds}}).then((response) => {
-          if (response.data.meta.status_code === 200) {
-          } else {
-            this.$message.error(response.data.meta.message)
-          }
-        }).catch((error) => {
-          this.$message.error(error.message)
-          console.error(error.message)
-        })
+      // 编辑沟通成员
+      edituser(index) {
+        this.operation === index ? this.operation = '' : this.operation = index
+      },
+      // 下载文件
+      downupload(url) {
+        download(url)
       }
     },
     created() {
+      download
       let itemId = this.$route.params.id
       this.upTokens()
       this.readMembers()
@@ -616,7 +657,6 @@
               this.itemList[i].created_at = (new Date(this.itemList[i].created_at * 1000)).format('yyyy-MM-dd')
               this.itemList[i].expire_time = this.itemList[i].expire_time.slice(0, 10)
             }
-            this.getCommuneSummaryUser()
           }
           console.log(response.data.data)
         } else {
