@@ -115,6 +115,7 @@
             </div>
           </div>
           <div class="cover-body-right cover-customer scroll-bar" v-if="option === 'customer'">
+            <!--
             <section>
               <h3>项目等级</h3>
               <input type="text" placeholder="请输入客户名称或者选择已有客户">
@@ -140,6 +141,52 @@
               <button class="fr middle-button full-red-button">保存</button>
               <button class="fr middle-button white-button" @click="cover = false">取消</button>
             </div>
+            -->
+            <el-form label-position="top" :model="clientForm" :rules="ruleClientForm" ref="ruleClientForm" label-width="80px">
+
+                <el-row :gutter="20">
+                  <el-col :xs="24" :sm="24" :md="24" :lg="24">
+                    <el-form-item label="企业名称" prop="company_name">
+                      <el-input v-model="clientForm.company_name" placeholder="请添写企业名称"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+
+                <el-row :gutter="20">
+                  <el-col :xs="24" :sm="8" :md="8" :lg="8">
+                    <el-form-item label="联系人" prop="contact_name">
+                      <el-input v-model="clientForm.contact_name" placeholder="请添写联系人姓名"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="24" :sm="8" :md="8" :lg="8">
+                    <el-form-item label="联系电话" prop="phone">
+                      <el-input v-model="clientForm.phone" placeholder="请添写联系电话"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="24" :sm="8" :md="8" :lg="8">
+                    <el-form-item label="职位" prop="position">
+                      <el-input v-model="clientForm.position" placeholder="请添写联系人职位"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+
+                <region-picker :provinceProp="clientForm.province" :cityProp="clientForm.city" propStyle="margin:0;" :districtProp="clientForm.area"
+                               :isFirstProp="isFirst" titleProp="企业地址"
+                               @onchange="changeClient" class="fullwidth"></region-picker>
+
+                <el-form-item label="" prop="address">
+                  <el-input v-model="clientForm.address" placeholder="街道地址"></el-input>
+                </el-form-item>
+
+                <p class="form-btn">
+                  <el-button @click="cover = false">取消</el-button>
+                  <el-button type="primary" class="is-custom" :loading="isClientLoadingBtn"
+                             @click="submitClient('ruleClientForm')">提交
+                  </el-button>
+                </p>
+              </el-form>
+
+
           </div>
         </div>
       </div>
@@ -147,8 +194,15 @@
   </header>
 </template>
 <script>
+import api from '@/api/api'
+import '@/assets/js/format'
+// 城市联动
+import RegionPicker from '@/components/block/RegionPicker'
 export default {
   name: 'projectManagementMenuSub',
+  components: {
+    RegionPicker
+  },
   data() {
     return {
       cover: false,
@@ -175,6 +229,15 @@ export default {
         address: '',
         user_id: ''
       },
+      clientForm: {},
+      ruleClientForm: {
+        company_name: [{ required: true, message: '请添写企业名称', trigger: 'blur' }],
+        contact_name: [{ required: true, message: '请添联系人姓名', trigger: 'blur' }],
+        phone: [{ required: true, message: '请添写联系人电话', trigger: 'blur' }],
+        position: [{ required: true, message: '请添写联系人职位', trigger: 'blur' }],
+        address: [{ required: true, message: '请添写企业详细地址', trigger: 'blur' }]
+      },
+      isClientLoadingBtn: false,
       levels: [{
         value: 1,
         label: '普通',
@@ -217,6 +280,41 @@ export default {
   methods: {
     changeOption(e) {
       this.option = e
+    },
+    // 改变城市组件值- 客户信息(提交)
+    changeClient: function(obj) {
+      this.$set(this.clientForm, 'province', obj.province)
+      this.$set(this.clientForm, 'city', obj.city)
+      this.$set(this.clientForm, 'area', obj.district)
+    },
+    // 创建客户信息
+    submitClient(formName) {
+      this.$refs[formName].validate(valid => {
+        // 验证通过，提交
+        if (valid) {
+          this.isClientLoadingBtn = true
+          this.$http.post(api.designClientCreate, this.clientForm)
+          .then(res => {
+            this.isClientLoadingBtn = false
+            if (res.data.meta.status_code === 200) {
+              console.log(res.data.data)
+              if (res.data.data['area'] === 0) {
+                res.data.data['area'] = ''
+              }
+              this.clientList.unshift(res.data.data)
+              this.$message.success('设置成功！')
+              this.dialogClient = false
+            } else {
+              this.$message.error(res.data.meta.message)
+            }
+          }).catch(err => {
+            this.isClientLoadingBtn = false
+            console.error(err)
+          })
+        } else {
+          return false
+        }
+      })
     }
   }
 }

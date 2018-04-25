@@ -455,7 +455,15 @@ export default {
         this.$http({method: method, url: apiUrl, data: this.form})
           .then((response) => {
             if (response.data.meta.status_code === 200) {
-              this.$message.success('提交成功！')
+              console.log(response.data.data)
+              if (this.id) {
+                this.$message.success('更新成功！')
+              } else {
+                this.$message.success('创建成功！')
+                let project = this.$store.state.task.projectObject
+                this.$set(project, 'quotation_id', response.data.data.id)
+                this.$store.commit('setProjectObject', project)
+              }
               this.$router.push({name: 'projectQuote', params: {id: response.data.data.id}})
             } else {
               this.isLoadingBtn = false
@@ -713,6 +721,8 @@ export default {
     }
   },
   created() {
+    console.log('aaaa')
+    console.log(this.$store.state.task.projectObject)
     this.itemId = this.$route.params.id
     let id = this.$route.query.id
     if (id) {
@@ -806,10 +816,6 @@ export default {
     margin: 10px 0 20px 0;
   }
 
-  .form-btn {
-    clear: both;
-    float: right;
-  }
   .add-client {
     color: #ff5a5f;
     position: relative;

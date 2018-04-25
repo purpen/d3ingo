@@ -35,17 +35,19 @@
           <el-col :xs="24" :sm="6" :md="6" :lg="6">
             <p>{{ d.content }}</p>
           </el-col>
-          <el-col class="item-box" :xs="24" :sm="18" :md="18" :lg="18">
-            <div class="item-content">
-              <p>
-                <span v-for="(c, c_index) in d.arranged" :key="c_index">
-                  {{ c.number }}名 {{ c.name }} &nbsp;&nbsp;&nbsp;&nbsp;
-                </span>
-              </p>
-              <p>{{ d.duration }}个 工作日</p>
-              <p>{{ d.summary }}</p>
+          <el-col :xs="24" :sm="18" :md="18" :lg="18">
+            <div class="item-box">
+              <div class="item-content">
+                <p>
+                  <span v-for="(c, c_index) in d.arranged" :key="c_index">
+                    {{ c.number }}名 {{ c.name }} &nbsp;&nbsp;&nbsp;&nbsp;
+                  </span>
+                </p>
+                <p>{{ d.duration }}个 工作日</p>
+                <p>{{ d.summary }}</p>
+              </div>
+              <div class="item-money">¥ {{ formatPrice(d.price) }}</div>
             </div>
-            <div class="item-money">¥ {{ formatPrice(d.price) }}</div>
             <div class="line"></div>
           </el-col>
         </el-row>
@@ -81,16 +83,15 @@ import '@/assets/js/math_format'
 export default {
   name: 'projectQuote',
   props: {
-    projectObject: {
-      type: Object,
-      default: function () {
-        return {}
-      }
-    }
   },
   data() {
     return {
-      form: {},
+      form: {
+        price: 0,
+        total_price: 0,
+        tax_rate: 0,
+        test: ''
+      },
       isLoadingBtn: false,
       test: ''
     }
@@ -106,6 +107,10 @@ export default {
     }
   },
   computed: {
+    // 获取项目对象
+    projectObject() {
+      return this.$store.state.task.projectObject
+    },
     // 格式化价格
     taxTotalMoneyFormat() {
       return parseFloat(this.form.price).toLocaleString('en-US')
@@ -148,15 +153,10 @@ export default {
     font-size: 22px;
   }
   .line {
-    clear: both;
     border-bottom: solid #EBEBEB 1px;
     margin: 10px 0 20px 0;
   }
 
-  .form-btn {
-    clear: both;
-    float: right;
-  }
   .form-btn button {
     padding: 10px 40px;
     margin: 0px;
