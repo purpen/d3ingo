@@ -39,10 +39,19 @@
     </section>
     <section class="dialog-body" v-if="isCompanyAdd">
       <h3 class="dialog-header clearfix">
-        从项目中添加成员
+        从公司中添加成员
         <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
       </h3>
-      <div class="dialog-content">
+      <div class="dialog-content side cover-slide">
+        <ul class="scroll-bar">
+          <li :class="['info', {'active': projectMemberIdList.indexOf(d.id) !== -1}]"
+            v-for="(d, index) in companyMemberList" :key="index"
+            @click="clickProjectMember(d.id)">
+            <img v-if="d.logo_image" :src="d.logo_image.logo" alt="">
+            <img v-else :src="require('assets/images/avatar_100.png')">
+            <span class="name">{{d.realname}}</span>
+          </li>
+        </ul>
       </div>
     </section>
   </div>
@@ -67,6 +76,7 @@ export default {
       currentShow: false,
       companyMemberList: [],
       projectMemberList: [],
+      projectMemberIdList: [],
       taskMemberList: [],
       taskMemberIdList: [],
       matchMemberList: [],
@@ -83,7 +93,6 @@ export default {
       .then(res => {
         if (res.data.meta.status_code === 200) {
           this.taskMemberList = res.data.data
-          this.taskMemberIdList = []
           let idList = []
           this.taskMemberList.forEach(item => {
             idList.push(item.selected_user_id)
@@ -101,19 +110,28 @@ export default {
       .then(res => {
         if (res.data.meta.status_code === 200) {
           this.projectMemberList = res.data.data
+          let idList = []
+          this.projectMemberList.forEach(item => {
+            idList.push(item.selected_user_id)
+          })
+          Object.assign(this.projectMemberIdList, idList)
         } else {
           this.$message.error(res.data.meta.message)
         }
+      }).catch(err => {
+        this.$message.error(err.message)
       })
     },
     getCompanyMemberList() {
       this.$http.get(api.designMemberList)
       .then(res => {
         if (res.data.meta.status_code === 200) {
-          this.projectMemberList = res.data.data
+          this.companyMemberList = res.data.data
         } else {
           this.$message.error(res.data.meta.message)
         }
+      }).catch(err => {
+        this.$message.error(err.message)
       })
     },
     clickTaskMember(selectId) {
@@ -122,6 +140,14 @@ export default {
         this.addTaskMember(selectId)
       } else {
         this.removeTaskMember(selectId, index)
+      }
+    },
+    clickObjectMember(selectId) {
+      let index = this.ObjectMemberIdList.indexOf(selectId)
+      if (index === -1) {
+        this.addObjectMember(selectId)
+      } else {
+        this.removeObjectMember(selectId, index)
       }
     },
     addTaskMember(selectId) {
@@ -207,6 +233,7 @@ export default {
     addMemberFromCompany() {
       this.showCover = true
       this.isCompanyAdd = true
+      this.getCompanyMemberList()
     }
   },
   created() {
@@ -308,6 +335,9 @@ export default {
     width: 280px;
     background: #FFFFFF;
     border-radius: 4px;
+  }
+  .cover-slide {
+    width: inherit;
   }
   .side ul {
     height: 180px;
@@ -422,6 +452,16 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center
+  }
+  .dialog-content.cover-slide {
+    padding: 0;
+    flex-direction: row;
+  }
+  .dialog-content.cover-slide ul {
+    height: 240px;
+  }
+  .dialog-content.cover-slide .scroll-bar {
+    flex-grow: 1;
   }
   .dialog-content input{
     width: 100%;

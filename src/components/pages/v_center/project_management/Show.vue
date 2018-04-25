@@ -15,8 +15,7 @@ export default {
   name: 'projectManagement',
   data() {
     return {
-      currentRoute: 'overview',
-      projectObject: {}
+      currentRoute: 'overview'
     }
   },
   methods: {
@@ -27,7 +26,6 @@ export default {
       this.$http.get(api.designProject, {params: {id: id}})
       .then(res => {
         if (res.data.meta.status_code === 200) {
-          this.projectObject = res.data.data
           this.$store.commit('setProjectObject', res.data.data)
         } else {
           this.$message.error(res.data.meta.message)
@@ -45,11 +43,6 @@ export default {
   watch: {
     '$route' (to, from) {
       this.changeRoute(to.name)
-    },
-    projectObject: {
-      handler(val, oldVal) {
-      },
-      deep: true
     }
   },
   computed: {
@@ -60,6 +53,9 @@ export default {
       } else if (leftWidth === 4) {
         return leftWidth
       }
+    },
+    projectObject() {
+      return this.$store.state.task.projectObject
     }
   },
   components: {
