@@ -29,6 +29,7 @@ export default {
       .then(res => {
         if (res.data.meta.status_code === 200) {
           this.projectObject = res.data.data
+          this.$store.commit('setProjectObject', res.data.data)
         } else {
           this.redirectItemList(1, res.data.meta.message)
         }

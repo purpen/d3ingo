@@ -119,7 +119,7 @@ export default {
     left: 18px;
     width: 20px;
     height: 20px;
-    background: url(../.../../../../assets/images/tools/cloud_drive/search@2x.png) no-repeat center;
+    background: url(../../../assets/images/tools/cloud_drive/search@2x.png) no-repeat center;
     background-size: contain;
   }
   

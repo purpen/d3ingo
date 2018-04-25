@@ -6,7 +6,10 @@
         <p class="home-icon"><router-link :to="{name: 'home'}" class="logo-icon"></router-link></p>
       </div>
       <div class="menu-right">
-        <span class="avatar"></span>
+        <router-link :to="{name: 'vcenterControl'}">
+          <span v-if="eventUser.logo_url" class="avatar" :style="{background: `url(${eventUser.avatar.logo}) no-repeat center / contain`}"></span>
+          <span v-else class="avatar" :style="{background: `url(${defaultAvatar}) no-repeat center / contain`}"></span>
+        </router-link>
       </div>
     </header>
     <el-col v-if="leftWidth === 2" :span="isMob ? 24 : 2">
@@ -48,7 +51,7 @@
 
           <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist" v-else>
             <div class="computer-btn" v-if="isCompany && !isMob" @click="redirectCompany">
-              查看公司主页
+              <span :style="{background: `url(${eventUser.avatar.logo}) no-repeat center / 40px 40px #222`}"></span>
             </div>
             
             <el-tooltip class="item" :effect="DarkorLight" content="控制面板" placement="right">
@@ -193,6 +196,7 @@
 
           <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist" v-else>
             <div class="computer-btn" v-if="isCompany && !isMob" @click="redirectCompany">
+              <span :style="{background: `url(${eventUser.avatar.logo}) no-repeat center / 40px 40px #222`}" title="查看公司主页"></span>
               查看公司主页
             </div>
             <a @click="alick" :to="'/vcenter/control'"
@@ -288,7 +292,8 @@
     data () {
       return {
         msg: 'This is menu',
-        leftVal: 0
+        leftVal: 0,
+        defaultAvatar: require('assets/images/avatar_100.png')
       }
     },
     // 判断是客户还是设计公司
@@ -456,12 +461,22 @@
   }
   .computer-btn {
     display: flex;
+    justify-content: center;
     align-items: center;
     font-size: 14px;
-    height: 70px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     color: rgba(255, 255, 255, 0.5);
-    padding: 0 25px;
+    height: 70px;
+    cursor: pointer;
+    position: relative;
+  }
+  .computer-btn span {
+    position: absolute;
+    left: 13px;
+    top: 20px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
   }
 
   .computer-btn:hover, .computer-btn:focus {
@@ -514,8 +529,9 @@
     background-size: contain;
   }
   .avatar {
-    width: 30px;
-    height: 30px;
+    display: block;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     background: #f7f7f7;
   }

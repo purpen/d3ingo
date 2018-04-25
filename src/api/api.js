@@ -308,9 +308,9 @@ export default {
   taskStage: '/isStage/tasks', // PUT 任务是否完成操作
 
   // 任务成员
-  taskUsers: '/taskUsers',  // GET 列表 | POST 创建
-  taskUsersId: '',
-
+  taskUsers: '/taskUsers', // GET 列表 | POST 创建 | {id} 成员详情
+  deleteTaskUsers: '/taskUsers/delete', // DELETE 删除
+  createTaskUser: '/taskUsers/newStore', // POST 创建
   // 标签
   itemTags: '/tags',  // POST 创建 | GET 列表
   itemTagsId: '/tags/{0}',  // GET 详情 | PUT 更新 | DELETE 删除
@@ -322,12 +322,18 @@ export default {
   // 沟通纪要
   communeSummaries: '/communeSummaries',  // GET 列表 | POST 创建
   communeSummariesId: '/communeSummaries/{0}',  // PUT 更新 | GET 详情 | DELETE 删除
+
+  // 沟通纪要成员
+  communeSummaryUser: '/communeSummaryUser', // GET 列表
   // 项目列表
   desiginProjectList: '/designProject/lists', // GET 项目列表
   createDesignProject: '/designProject/create', // POST 创建
   updateDesignProject: '/designProject/update', // PUT 创建
   deleteDesignProject: '/designProject/delete', // DELETE 放入回收站
   designProject: '/designProject', // GET 展示详情
+
+  // 项目成员列表
+  itemUsers: '/itemUsers', // POST 创建 | GET 详情 | DELETE 删除
 
   // 客户信息
   designClientList: '/designClient/lists',   // GET 列表

@@ -1,10 +1,10 @@
 <template>
   <el-row :class="['cloud-content', {'slide-mini': !leftWidth}]">
     <v-menu-left currentName="cloud_drive"></v-menu-left>
-    <el-col :xs="24" :sm="4" :md="4" :lg="4" :offset="leftWidth">
+    <el-col :span="4" :offset="leftWidth">
       <v-menu :isActive='modules' @getTitle="headTitle"></v-menu>
     </el-col>
-    <el-col :xs="24" :sm="16" :md="16" :lg="16">
+    <el-col :span="leftWidth? 16 : 20">
       <div :class="['content', {'content-mini' : !leftWidth}]" v-loading.body="isLoading">
         <div class="content-head">
           <div class="clearfix" v-show="showList">
@@ -698,7 +698,7 @@ export default {
             }
             if (res.data.meta.pagination) {
               this.query.totalCount = res.data.meta.pagination.total
-              this.query.totalPges = res.data.meta.total_pages
+              this.query.totalPges = res.data.meta.pagination.total_pages
             } else {
               this.query.totalCount = 0
               this.query.totalPges = 0
@@ -2476,6 +2476,7 @@ export default {
   @media screen and (min-width: 768px) {
     .content {
       padding: 20px 30px 0;
+      position: relative
     }
   }
 
