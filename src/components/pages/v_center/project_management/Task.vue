@@ -38,8 +38,14 @@
               @blur="submitStage()">
               <span @click="confirmDeleteStageBtn(ele.id, index)" class="close-icon-solid"></span></p>
             <section>
-              <div :class="['task-item','clearfix', {'active': taskisDone.indexOf(e.id) !== -1}]"
-                v-for="(e, i) in ele['itemList']" :key="i">
+              <div :class="['task-item','clearfix', {
+                'active': e.stage === 2,
+                'level1': e.level === 1,
+                'level2': e.level === 2,
+                'level3': e.level === 3}]"
+                v-for="(e, i) in ele['task']" :key="i"
+                @click.self="showTaskBtn(e.id, i)"
+                >
                 <p @click="completeTaskBtn(e, i)" class="task-name fl">{{e.name}}</p>
                 <p class="task-date fr">{{e.created_at_format}}</p>
               </div>
@@ -98,7 +104,7 @@
         itemId: 0,   // 项目ID
         taskisDone: [], // 任务完成id
         itemList: [],
-        stageList: [],  // 项目阶段列表
+        // stageList: [],  // 项目阶段列表
         tagsList: [],   // 标签列表
         itemUserList: [],   // 项目成员列表
         currentStageForm: {   // 当前阶段表单
@@ -147,7 +153,7 @@
         self.$http.get(api.toolsStage, {params: {item_id: self.itemId}})
         .then(function (response) {
           if (response.data.meta.status_code === 200) {
-            self.stageList = response.data.data
+            self.$store.commit('setStageList', response.data.data)
             // console.log(response.data.data)
           } else {
             self.$message.error(response.data.meta.message)
@@ -155,7 +161,6 @@
           self.isLoading = false
         }).catch((error) => {
           self.$message.error(error.message)
-          console.error(error.message)
           self.isLoading = false
         })
       },
@@ -175,7 +180,6 @@
       },
       // 编辑阶段按钮点击事件
       editStageBtn(id, index) {
-        console.log('编辑', index)
         this.currentStageForm = {...this.stageList[index]}
         this.currentStageStat = {
           event: 'update',
@@ -231,6 +235,7 @@
       },
       // 更新阶段
       updateStage() {
+        console.log(this.currentStageForm.title)
         const self = this
         let id = self.currentStageStat.id
         // let index = self.currentStageStat.index
@@ -240,7 +245,6 @@
         }
         self.$http.put(api.toolsStageId.format(id), self.currentStageForm).then(function (response) {
           if (response.data.meta.status_code === 200) {
-            console.log(JSON.stringify(self.currentStageForm))
             self.$store.commit('updateStageListItem', self.currentStageForm)
           } else {
             self.$message.error(response.data.meta.message)
@@ -331,6 +335,28 @@
         for (let i in this.showElement) {
           this.showElement[i] = false
         }
+      },
+      getStageAndTaskList() {
+        this.isLoading = true
+        Promise.all([
+          this.$http.get(api.toolsStage, {params: {item_id: this.itemId}}),
+          this.$http.get(api.task, {params: {item_id: this.itemId}})
+        ]).then(([res1, res2]) => {
+          this.isLoading = false
+          if (res1.data.meta.status_code === 200) {
+            // this.stageList = res1.data.data
+            this.$store.commit('setStageList', res1.data.data)
+            // console.log(res1.data.data)
+          } else {
+            this.$message.error(res1.data.meta.message)
+          }
+          if (res2.data.meta.status_code === 200) {
+            this.$store.commit('setTaskList', res2.data.data)
+          } else {
+            this.$message.error(res2.data.meta.message)
+          }
+          this.isLoading = false
+        })
       }
     },
     computed: {
@@ -375,12 +401,15 @@
       },
       storeCurrentForm() {
         return this.$store.state.task.storeCurrentForm
+      },
+      stageList() {
+        return this.$store.state.task.stageList
       }
     },
     watch: {
       stageList: {
         handler(val) {
-          this.$store.commit('setStageList', val)
+          // this.$store.commit('setStageList', val)
         },
         deep: true
       }
@@ -397,6 +426,7 @@
       this.fetchStage()
       // 获取主任务列表
       this.fetchTask()
+      // this.getStageAndTaskList()
     },
     directives: {
       focus: {

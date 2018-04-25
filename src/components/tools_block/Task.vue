@@ -18,14 +18,13 @@
       <div class="task-detail-header">
         <span class="task-detail-name">{{projectObject.name}}</span>
         <div ref="selectParent" class="select-parent" tabindex="-1">
-          <span class="select-show">调研阶段部分</span>
+          <span class="select-show">请选择阶段</span>
           <ul class="stage-list">
-            <li>阶段一</li>
-            <li>阶段二</li>
-            <li>阶段三</li>
+            <li :class="{'active': d.id === currentForm.stage_id}" v-for="(d, index) in stageList" :key="index" @click="stageItemClick(d.id)">
+              {{d.title}}</li>
           </ul>
         </div>
-        <div ref="selectParent" class="select-parent select-menu" tabindex="-1">
+        <div ref="selectParent2" class="select-parent select-menu" tabindex="-1">
           <span class="select-show"></span>
           <ul class="stage-list">
             <li @click="deleteBtn()">删除</li>
@@ -255,6 +254,7 @@
           if (response.data.meta.status_code === 200) {
             Object.assign(self.currentForm, response.data.data)
             self.$store.commit('updateTaskListItem', self.currentForm)
+            self.fetchStage()
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -389,6 +389,30 @@
           this.currentChange = {level: e}
           this.update()
         }
+      },
+      stageItemClick(id) {
+        Object.assign(this.currentChange, {stage_id: id})
+        this.currentForm.stage_id = id
+        this.update()
+        this.$refs.selectParent.blur()
+      },
+      // 项目阶段列表
+      fetchStage() {
+        const self = this
+        self.isLoading = true
+        self.$http.get(api.toolsStage, {params: {item_id: self.$route.params.id}})
+        .then(function (response) {
+          if (response.data.meta.status_code === 200) {
+            self.$store.commit('setStageList', response.data.data)
+            console.log(response.data.data)
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+          self.isLoading = false
+        }).catch((error) => {
+          self.$message.error(error.message)
+          self.isLoading = false
+        })
       }
     },
     mounted: function () {
@@ -413,12 +437,22 @@
         set(val) {
           this.currentForm = this.$store.state.task.storeCurrentForm
         }
+      },
+      stageList() {
+        return this.$store.state.task.stageList
       }
     },
     watch: {
       currentForm: {
         handler(val) {
           this.$store.commit('setStoreCurrentForm', val)
+          if (val.tagsAll) {
+            let list = []
+            val.tagsAll.forEach(item => {
+              list.push(item.id)
+            })
+            this.tagsId = list
+          }
         },
         deep: true
       },
@@ -510,10 +544,23 @@
     height: 40px;
     line-height: 40px;
     padding: 0 20px;
+    position: relative;
   }
   .stage-list li:hover {
     background: #f7f7f7;
     cursor: pointer;
+  }
+  .stage-list li.active::after {
+    content: "";
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    width: 8px;
+    height: 14px;
+    border: 2px solid #d2d2d2;
+    border-left: none;
+    border-top: none;
+    transform: rotate(45deg);
   }
   .select-show {
     display: block;
