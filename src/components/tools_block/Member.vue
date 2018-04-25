@@ -1,21 +1,24 @@
 <template>
-  <div class="cententList" v-if="currentShow">
+  <div class="cententList" v-if="false">
     <p class="clearfix">添加成员
       <i class="fr fx-icon-nothing-close-error" @click.stop="showGroupPush = false"></i>
     </p>
     <div class="side clearfix">
+      <div class="search-parent">
+        <input class="member-search" v-model="seachKey" type="text">
+      </div>
       <ul class="scroll-bar">
         <li :class="['info', {'active': taskMemberIdList.indexOf(d.id) !== -1}]"
-          v-for="(d, index) in projectMemberList" :key="index" @click="clickTaskMember(d.id)">
+          v-for="(d, index) in matchMemberList" :key="index" @click="clickTaskMember(d.id)">
           <img v-if="d.logo_image" :src="d.logo_image.logo" alt="">
           <img v-else :src="require('assets/images/avatar_100.png')">
           <span class="name">{{d.realname}}</span>
-          <span class="name">{{d.id}}</span>
         </li>
       </ul>
       <p v-if="company_role === 20" @click="getVerifyStatus" class="welcome">通过链接邀请</p>
     </div>
     <section class="dialog-bg" v-if="showCover" @click.self="closeCover"></section>
+    <!-- <section class="dialog-bg" v-if="true" @click.self="closeCover"></section> -->
     <section class="dialog-body" v-if="isInvite">
       <h3 class="dialog-header clearfix">
         邀请成员
@@ -27,6 +30,14 @@
         <p class="buttons">
           <button class="large-button full-red-button" @click="setClipboardText">复制链接</button>
         </p>
+      </div>
+    </section>
+    <section class="dialog-body" v-if="false">
+      <h3 class="dialog-header clearfix">
+        从项目中添加成员
+        <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
+      </h3>
+      <div class="dialog-content">
       </div>
     </section>
   </div>
@@ -57,9 +68,11 @@ export default {
       projectMemberList: [],
       taskMemberList: [],
       taskMemberIdList: [],
+      matchMemberList: [],
       inviteLink: '',
       showCover: false,
-      isInvite: false
+      isInvite: false,
+      seachKey: ''
     }
   },
   methods: {
@@ -69,9 +82,11 @@ export default {
         if (res.data.meta.status_code === 200) {
           this.taskMemberList = res.data.data
           this.taskMemberIdList = []
+          let idList = []
           this.taskMemberList.forEach(item => {
-            this.taskMemberIdList.push(item.id)
+            idList.push(item.id)
           })
+          Object.assign(this.taskMemberIdList, idList)
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -199,6 +214,23 @@ export default {
     },
     currentShow(val) {
       this.$emit('', val)
+    },
+    seachKey(val) {
+      if (!val) {
+        this.matchMemberList = this.projectMemberList
+      }
+      let reg = new RegExp(val)
+      this.$nextTick(() => {
+        this.matchMemberList = this.projectMemberList.filter(item => {
+          return reg.test(item.realname)
+        })
+      })
+    },
+    projectMemberList: {
+      handler(val) {
+        this.matchMemberList = val
+      },
+      deep: true
     }
   }
 }
@@ -362,6 +394,16 @@ export default {
     line-height: 20px;
     color: #999;
     background: #fff;
+  }
+  .search-parent {
+    padding: 10px 20px;
+  }
+  .member-search {
+    width: 100%;
+    height: 40px;
+    border-radius: 4px;
+    border: 1px solid #d2d2d2;
+    padding: 0 8px;
   }
 </style>
 

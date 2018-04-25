@@ -63,13 +63,15 @@ let mutations = {
     let outsideStageList = array
     let list = []
     state.stageList.forEach(ele => {
-      ele.task.forEach(e => {
-        outsideStageList.forEach(item => {
-          if (item.id === e.id) {
-            list.push(e.id)
-          }
+      if (ele.task) {
+        ele.task.forEach(e => {
+          outsideStageList.forEach(item => {
+            if (item.id === e.id) {
+              list.push(e.id)
+            }
+          })
         })
-      })
+      }
     })
     outsideStageList = outsideStageList.filter(item => {
       return list.indexOf(item.id) === -1
@@ -102,6 +104,7 @@ let mutations = {
   },
   createStageListItem(state, obj) {
     state.stageList.unshift(obj)
+    console.log(JSON.stringify(obj))
     this.commit('setDisplayObj', state.stakList)
   },
   updateTaskListItem(state, obj) {

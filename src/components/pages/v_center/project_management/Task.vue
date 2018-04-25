@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section @click.self="currentStageStat.id = -1">
     <div>
       <!-- <div v-if="true">
         <h1>阶段测试</h1>
@@ -145,9 +145,6 @@
       },
       // 项目阶段列表
       fetchStage() {
-        if (this.stageList.length > 0) {
-          return this.stageList
-        }
         const self = this
         self.isLoading = true
         self.$http.get(api.toolsStage, {params: {item_id: self.itemId}})
@@ -224,6 +221,7 @@
           if (response.data.meta.status_code === 200) {
             // console.log(response.data.data)
             // self.stageList.unshift(response.data.data)
+            self.currentStageForm.id = response.data.data.id
             self.$store.commit('createStageListItem', self.currentStageForm)
           } else {
             self.$message.error(response.data.meta.message)
@@ -235,16 +233,15 @@
       },
       // 更新阶段
       updateStage() {
-        console.log(this.currentStageForm.title)
         const self = this
         let id = self.currentStageStat.id
-        // let index = self.currentStageStat.index
         if (!id) {
           self.$message.error('ID不能为空!')
           return false
         }
         self.$http.put(api.toolsStageId.format(id), self.currentStageForm).then(function (response) {
           if (response.data.meta.status_code === 200) {
+            self.currentStageStat.id = -1
             self.$store.commit('updateStageListItem', self.currentStageForm)
           } else {
             self.$message.error(response.data.meta.message)
@@ -258,7 +255,6 @@
       deleteStage() {
         const self = this
         let id = self.currentStageStat.id
-        // let index = self.currentStageStat.index
         if (!id) {
           self.$message.error('ID不能为空!')
           return false

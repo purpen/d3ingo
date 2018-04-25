@@ -148,7 +148,8 @@ p {
 }
 
 input {
-  vertical-align: top
+  vertical-align: top;
+  font-size: 14px;
 }
 textarea {
   resize: none;
