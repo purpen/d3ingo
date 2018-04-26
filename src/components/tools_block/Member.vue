@@ -1,7 +1,7 @@
 <template>
-  <div class="cententList">
+  <div class="cententList" v-if="propsShow">{{propsShow}}
     <p class="clearfix">添加成员
-      <i class="fr fx-icon-nothing-close-error" @click.stop="showGroupPush = false"></i>
+      <i class="fr fx-icon-nothing-close-error" @click="closeMember"></i>
     </p>
     <div class="side clearfix">
       <div class="search-parent">
@@ -68,6 +68,10 @@ export default {
     },
     itemId: {
       default: -1
+    },
+    taskId: {
+      type: Number,
+      default: -1
     }
   },
   data() {
@@ -75,7 +79,6 @@ export default {
       currentShow: false,
       companyMemberList: [],
       companyMemberIdList: [],
-      projectMemberList: [],
       projectMemberIdList: [],
       taskMemberList: [],
       taskMemberIdList: [],
@@ -104,7 +107,8 @@ export default {
           this.taskMemberList.forEach(item => {
             idList.push(item.selected_user_id)
           })
-          Object.assign(this.taskMemberIdList, idList)
+          // Object.assign(this.taskMemberIdList, idList)
+          this.taskMemberIdList = idList
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -116,7 +120,8 @@ export default {
       this.$http.get(api.itemUsers, {params: {item_id: this.itemId}})
       .then(res => {
         if (res.data.meta.status_code === 200) {
-          this.projectMemberList = res.data.data
+          // this.projectMemberList = res.data.data
+          this.$store.commit('setProjectMemberList', res.data.data)
           let idList = []
           this.projectMemberList.forEach(item => {
             idList.push(item.id)
@@ -179,6 +184,7 @@ export default {
       .then(res => {
         if (res.data.meta.status_code === 200) {
           // this.projectMemberList.push(res.data.data)
+          this.$store.commit('addProjectMemberList', res.data.data)
           this.projectMemberIdList.push(res.data.data.id)
           this.addTaskMember(res.data.data.id)
         } else {
@@ -283,8 +289,12 @@ export default {
     company_role() {
       return this.$store.state.event.user.company_role
     },
-    taskId() {
-      return this.$store.state.task.taskState.id
+    projectMemberList() {
+      let list = this.$store.state.task.projectMemberList
+      if (list.length) {
+        this.matchMemberList = list
+      }
+      return list
     }
   },
   watch: {
@@ -294,8 +304,9 @@ export default {
     currentShow(val) {
       if (val === true) {
         this.showMember()
+      } else {
+        this.$emit('closeMember', val)
       }
-      this.$emit('', val)
     },
     seachKey(val) {
       if (!val) {
@@ -308,11 +319,9 @@ export default {
         })
       })
     },
-    projectMemberList: {
-      handler(val) {
-        this.matchMemberList = val
-      },
-      deep: true
+    taskId(val) {
+      this.getTaskMemberList()
+      this.getProjectMemberList()
     }
   }
 }

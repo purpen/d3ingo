@@ -149,6 +149,9 @@ let mutations = {
   },
   setProjectMemberList(state, obj) {
     state.projectMemberList = obj
+  },
+  addProjectMemberList(state, obj) {
+    state.projectMemberList.unshift(obj)
   }
 }
 export default {

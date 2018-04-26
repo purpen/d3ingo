@@ -103,9 +103,10 @@
           <ul class="task-member-list">
             <li></li>
           </ul>
-          <p class="show-member" v-if="true">
+          <p class="show-member" v-if="true" @click="showMember2 = true">
+            {{showMember2}}
           </p>
-          <v-Member :propsShow="showMember2" :itemId="propsTags.itemId"></v-Member>
+          <v-Member :propsShow="showMember2" :itemId="propsTags.itemId" :taskId="taskState.id" @closeMember="closeMember"></v-Member>
         </div>
       </div>
     </section>
@@ -179,6 +180,10 @@
       closeBtn() {
         this.$store.commit('changeTaskStatePower', 0)
         this.$store.commit('changeTaskStateEvent', '')
+      },
+      // 关闭成员
+      closeMember(val) {
+        this.showMember2 = val
       },
       // 删除任务点击事件
       deleteBtn() {
