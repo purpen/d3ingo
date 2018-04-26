@@ -12,10 +12,14 @@ let state = {
   },
   taskList: [],
   stageList: [],
-  storeCurrentForm: {}
+  storeCurrentForm: {},
+  projectObject: {},
+  projectMemberList: []
 }
 let mutations = {
-  setDisplayObj(state, array) {
+  setDisplayObj2(state, array) { // 容易出异步问题
+    let outsideStageList = []
+    let itemList = state.stageList
     if (!array) {
       return
     }
@@ -27,8 +31,9 @@ let mutations = {
         item['created_at_format'] = item['created_at'].date_format().format('yyyy年MM月dd日')
       }
     })
-    let outsideStageList = []
-    let itemList = state.stageList
+    state.stageList.forEach(ele => {
+      ele['itemList'] = []
+    })
     array.forEach((item) => {
       if (itemList.length) {
         itemList.forEach(ele => {
@@ -43,11 +48,38 @@ let mutations = {
           }
         })
       } else {
+        console.log('else')
         outsideStageList = array
       }
     })
+    console.log(outsideStageList)
     Object.assign(state.displayObj, {
       itemList: itemList,
+      outsideStageList: outsideStageList
+    })
+  },
+  setDisplayObj(state, array) {
+    if (!array) {
+      return
+    }
+    let outsideStageList = array
+    let list = []
+    state.stageList.forEach(ele => {
+      if (ele.task) {
+        ele.task.forEach(e => {
+          outsideStageList.forEach(item => {
+            if (item.id === e.id) {
+              list.push(e.id)
+            }
+          })
+        })
+      }
+    })
+    outsideStageList = outsideStageList.filter(item => {
+      return list.indexOf(item.id) === -1
+    })
+    Object.assign(state.displayObj, {
+      itemList: state.stageList,
       outsideStageList: outsideStageList
     })
   },
@@ -74,6 +106,7 @@ let mutations = {
   },
   createStageListItem(state, obj) {
     state.stageList.unshift(obj)
+    console.log(JSON.stringify(obj))
     this.commit('setDisplayObj', state.stakList)
   },
   updateTaskListItem(state, obj) {
@@ -110,6 +143,12 @@ let mutations = {
   },
   setStoreCurrentForm(state, obj) {
     Object.assign(state.storeCurrentForm, obj)
+  },
+  setProjectObject(state, obj) {
+    Object.assign(state.projectObject, obj)
+  },
+  setProjectMemberList(state, obj) {
+    state.projectMemberList = obj
   }
 }
 export default {

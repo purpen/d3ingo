@@ -62,6 +62,8 @@
           </p>
         </div>
       </div>
+      <el-pagination v-if="query.totalCount / query.pageSize > 1" class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize" :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange">
+      </el-pagination>
   </section>
 </template>
 <script>
@@ -82,20 +84,43 @@ export default {
       },
       projectName: '',
       projectSummary: '',
-      importance: 1
+      importance: 1,
+      query: {
+        page: 1,
+        pageSize: 12,
+        totalPges: 0,
+        totalCount: 0
+      }
     }
   },
   methods: {
     getProjectList() {
       this.isLoading = true
       this.$http.get(api.desiginProjectList, {params: {
-        status: 1
+        status: 1,
+        page: this.query.page,
+        per_page: this.query.pageSize
       }}).then(res => {
         this.isLoading = false
         if (res.data.meta.status_code === 200) {
           this.projectList = res.data.data
         } else {
           this.$message.error(res.data.meta.message)
+        }
+        if (res.data.meta.pagination) {
+          this.query.totalCount = res.data.meta.pagination.total
+          this.query.totalPges = res.data.meta.pagination.total_pages
+        } else {
+          this.query.totalCount = 0
+          this.query.totalPges = 0
+        }
+        let pages2 = this.query.totalCount % this.query.pageSize
+        let pages = Math.floor(this.query.totalCount / this.query.pageSize)
+        pages = pages2 ? pages + 1 : pages
+        console.log(pages)
+        if (this.query.page > pages) {
+          this.query.page = pages
+          this.$router.push({name: this.$route.name, query: {page: pages}})
         }
       }).catch(err => {
         this.isLoading = false
@@ -155,6 +180,11 @@ export default {
         console.error(err)
         this.$message.error(err.message)
       })
+    },
+    handleCurrentChange(page) {
+      this.query.page = page
+      this.$router.push({name: this.$route.name, query: {page: this.query.page}})
+      this.getProjectList()
     }
   },
   computed: {
@@ -165,10 +195,13 @@ export default {
       } else if (leftWidth === 4) {
         return leftWidth
       }
+    },
+    isMob() {
+      return this.$store.state.event.isMob
     }
-
   },
   created() {
+    this.query.page = Number(this.$route.query.page) || 1
     this.getProjectList()
   },
   components: {
@@ -177,7 +210,7 @@ export default {
   watch: {
     '$route'(to, from) {
       // 对路由变化作出响应...
-      this.loadList()
+      this.getProjectList()
     }
   }
 }
@@ -444,6 +477,10 @@ export default {
   }
   .project-lists {
     padding-left: 60px;
+  }
+  .pagination {
+    text-align: center;
+    white-space: inherit
   }
 </style>
 

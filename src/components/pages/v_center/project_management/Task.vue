@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section @click.self="currentStageStat.id = -1">
     <div>
       <!-- <div v-if="true">
         <h1>阶段测试</h1>
@@ -11,7 +11,7 @@
         </p>
       </div> -->
       <!-- <div v-if="currentStageStat.event">
-        <el-input v-model="currentStageForm.title" placeholder=""></el-input>
+        <el-input v-model="currentStageForm.title" placeholder=""></el-inptask-itemut>
         <el-button @click="submitStage()">提交阶段</el-button>
         <el-button @click="currentStageStat.event = false">取消</el-button>
       </div> -->
@@ -26,8 +26,13 @@
           <section>
             <div v-for="(ele, index) in displayObj.outsideStageList" :key="index"
               @click.self="showTaskBtn(ele.id, index)"
-              :class="['task-item','clearfix', {'active': ele.stage === 2, 'level1': ele.level === 1, 'level2': ele.level === 2, 'level3': ele.level === 3}]">
-              <p @click="completeTaskBtn(ele, index)" class="task-name fl">{{ele.name}}</p>
+              :class="['task-item','clearfix', {
+                'active': ele.stage === 2,
+                'level1': ele.level === 1,
+                'level2': ele.level === 2,
+                'level3': ele.level === 3}]">
+              <p @click="completeTaskBtn(ele, index)" class="task-name fl">
+              {{ele.name}}</p>
               <p class="task-date fr">{{ele.created_at_format}}</p>
             </div>
           </section>
@@ -38,8 +43,14 @@
               @blur="submitStage()">
               <span @click="confirmDeleteStageBtn(ele.id, index)" class="close-icon-solid"></span></p>
             <section>
-              <div :class="['task-item','clearfix', {'active': taskisDone.indexOf(e.id) !== -1}]"
-                v-for="(e, i) in ele['itemList']" :key="i">
+              <div :class="['task-item','clearfix', {
+                'active': e.stage === 2,
+                'level1': e.level === 1,
+                'level2': e.level === 2,
+                'level3': e.level === 3}]"
+                v-for="(e, i) in ele['task']" :key="i"
+                @click.self="showTaskBtn(e.id, i, e.stage)"
+                >
                 <p @click="completeTaskBtn(e, i)" class="task-name fl">{{e.name}}</p>
                 <p class="task-date fr">{{e.created_at_format}}</p>
               </div>
@@ -47,7 +58,7 @@
           </section>
         </el-col>
         <el-col :span="12">
-          <v-task :changeStoreCurrentForm="changeStoreCurrentForm" :projectObject="projectObject"></v-task>
+          <v-task :projectObject="projectObject" :completeState="completeState"></v-task>
         </el-col>
       </el-row>
     </div>
@@ -98,7 +109,7 @@
         itemId: 0,   // 项目ID
         taskisDone: [], // 任务完成id
         itemList: [],
-        stageList: [],  // 项目阶段列表
+        // stageList: [],  // 项目阶段列表
         tagsList: [],   // 标签列表
         itemUserList: [],   // 项目成员列表
         currentStageForm: {   // 当前阶段表单
@@ -121,7 +132,7 @@
           showCover: false,
           showComfirmDeleteStage: false
         },
-        changeStoreCurrentForm: {}
+        completeState: -1
       }
     },
     methods: {
@@ -139,15 +150,12 @@
       },
       // 项目阶段列表
       fetchStage() {
-        if (this.stageList.length > 0) {
-          return this.stageList
-        }
         const self = this
         self.isLoading = true
         self.$http.get(api.toolsStage, {params: {item_id: self.itemId}})
         .then(function (response) {
           if (response.data.meta.status_code === 200) {
-            self.stageList = response.data.data
+            self.$store.commit('setStageList', response.data.data)
             // console.log(response.data.data)
           } else {
             self.$message.error(response.data.meta.message)
@@ -155,7 +163,6 @@
           self.isLoading = false
         }).catch((error) => {
           self.$message.error(error.message)
-          console.error(error.message)
           self.isLoading = false
         })
       },
@@ -175,7 +182,6 @@
       },
       // 编辑阶段按钮点击事件
       editStageBtn(id, index) {
-        console.log('编辑', index)
         this.currentStageForm = {...this.stageList[index]}
         this.currentStageStat = {
           event: 'update',
@@ -220,6 +226,7 @@
           if (response.data.meta.status_code === 200) {
             // console.log(response.data.data)
             // self.stageList.unshift(response.data.data)
+            self.currentStageForm.id = response.data.data.id
             self.$store.commit('createStageListItem', self.currentStageForm)
           } else {
             self.$message.error(response.data.meta.message)
@@ -233,14 +240,13 @@
       updateStage() {
         const self = this
         let id = self.currentStageStat.id
-        // let index = self.currentStageStat.index
         if (!id) {
           self.$message.error('ID不能为空!')
           return false
         }
         self.$http.put(api.toolsStageId.format(id), self.currentStageForm).then(function (response) {
           if (response.data.meta.status_code === 200) {
-            console.log(JSON.stringify(self.currentStageForm))
+            self.currentStageStat.id = -1
             self.$store.commit('updateStageListItem', self.currentStageForm)
           } else {
             self.$message.error(response.data.meta.message)
@@ -254,7 +260,6 @@
       deleteStage() {
         const self = this
         let id = self.currentStageStat.id
-        // let index = self.currentStageStat.index
         if (!id) {
           self.$message.error('ID不能为空!')
           return false
@@ -300,7 +305,8 @@
         this.$store.commit('changeTaskStateEvent', 'create')
       },
       // 展开任务详情
-      showTaskBtn(id, index) {
+      showTaskBtn(id, index, stage) {
+        this.completeState = stage
         this.$store.commit('changeTaskStatePower', 1)
         this.$store.commit('changeTaskStateEvent', 'update')
         this.$store.commit('changeTaskStateId', id)
@@ -308,7 +314,6 @@
       // 完成/取消任务
       completeTaskBtn(ele, index) {
         let item = {...ele}
-        this.$store.commit('changeTaskStatePower', 0)
         this.$store.commit('changeTaskStateEvent', 'update')
         this.$store.commit('changeTaskStateId', ele.id)
         let stage = ele.stage === 2 ? 0 : 2
@@ -316,9 +321,10 @@
           if (response.data.meta.status_code === 200) {
             this.$nextTick(() => {
               item.stage = stage
+              this.completeState = stage
               this.$store.commit('updateTaskListItem', item)
               this.$store.commit('setStoreCurrentForm', item)
-              Object.assign(this.changeStoreCurrentForm, this.storeCurrentForm)
+              this.fetchStage()
             })
           } else {
             this.$message.error(response.data.meta.message)
@@ -331,6 +337,28 @@
         for (let i in this.showElement) {
           this.showElement[i] = false
         }
+      },
+      getStageAndTaskList() {
+        this.isLoading = true
+        Promise.all([
+          this.$http.get(api.toolsStage, {params: {item_id: this.itemId}}),
+          this.$http.get(api.task, {params: {item_id: this.itemId}})
+        ]).then(([res1, res2]) => {
+          this.isLoading = false
+          if (res1.data.meta.status_code === 200) {
+            // this.stageList = res1.data.data
+            this.$store.commit('setStageList', res1.data.data)
+            // console.log(res1.data.data)
+          } else {
+            this.$message.error(res1.data.meta.message)
+          }
+          if (res2.data.meta.status_code === 200) {
+            this.$store.commit('setTaskList', res2.data.data)
+          } else {
+            this.$message.error(res2.data.meta.message)
+          }
+          this.isLoading = false
+        })
       }
     },
     computed: {
@@ -375,12 +403,15 @@
       },
       storeCurrentForm() {
         return this.$store.state.task.storeCurrentForm
+      },
+      stageList() {
+        return this.$store.state.task.stageList
       }
     },
     watch: {
       stageList: {
         handler(val) {
-          this.$store.commit('setStageList', val)
+          // this.$store.commit('setStageList', val)
         },
         deep: true
       }
@@ -397,6 +428,7 @@
       this.fetchStage()
       // 获取主任务列表
       this.fetchTask()
+      // this.getStageAndTaskList()
     },
     directives: {
       focus: {
