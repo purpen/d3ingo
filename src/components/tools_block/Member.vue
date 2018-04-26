@@ -1,5 +1,5 @@
 <template>
-  <div class="cententList" v-if="true">
+  <div class="cententList">
     <p class="clearfix">添加成员
       <i class="fr fx-icon-nothing-close-error" @click.stop="showGroupPush = false"></i>
     </p>
@@ -20,8 +20,7 @@
           <span>没有搜索到相关人员～</span>
         </li>
       </ul>
-      <!-- <p v-if="company_role === 20" @click="getVerifyStatus" class="welcome">通过链接邀请</p> -->
-      <p class="welcome" @click="addMemberFromCompany">从公司中添加成员</p>
+      <!-- <p class="welcome" @click="addMemberFromCompany">从公司中添加成员</p> -->
     </div>
     <section class="dialog-bg" v-if="showCover" @click.self="closeCover"></section>
     <section class="dialog-body" v-if="isInvite">
@@ -43,8 +42,8 @@
         <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
       </h3>
       <div class="dialog-content side cover-slide">
-        <ul class="scroll-bar">
-          <li :class="['info', {'active': projectMemberIdList.indexOf(d.id) !== -1}]"
+        <ul class="scroll-bar">{{taskMemberIdList}}
+          <li :class="['info', {'active': taskMemberIdList.indexOf(d.id) !== -1}]"
             v-for="(d, index) in companyMemberList" :key="index"
             @click="clickProjectMember(d.id)">
             <img v-if="d.logo_image" :src="d.logo_image.logo" alt="">
@@ -52,6 +51,7 @@
             <span class="name">{{d.realname}}</span>
           </li>
         </ul>
+      <!-- <p v-if="company_role === 20" @click="getVerifyStatus" class="welcome">通过链接邀请</p> -->
       </div>
     </section>
   </div>
@@ -67,14 +67,14 @@ export default {
       default: false
     },
     itemId: {
-      type: Number,
-      default: 2
+      default: -1
     }
   },
   data() {
     return {
       currentShow: false,
       companyMemberList: [],
+      companyMemberIdList: [],
       projectMemberList: [],
       projectMemberIdList: [],
       taskMemberList: [],
@@ -88,6 +88,13 @@ export default {
     }
   },
   methods: {
+    showMember() {
+      this.getTaskMemberList()
+      this.getProjectMemberList()
+    },
+    closeMember() {
+      this.currentShow = false
+    },
     getTaskMemberList() {
       this.$http.get(api.taskUsers, {params: {task_id: this.taskId}})
       .then(res => {
@@ -112,7 +119,7 @@ export default {
           this.projectMemberList = res.data.data
           let idList = []
           this.projectMemberList.forEach(item => {
-            idList.push(item.selected_user_id)
+            idList.push(item.id)
           })
           Object.assign(this.projectMemberIdList, idList)
         } else {
@@ -142,12 +149,12 @@ export default {
         this.removeTaskMember(selectId, index)
       }
     },
-    clickObjectMember(selectId) {
-      let index = this.ObjectMemberIdList.indexOf(selectId)
+    clickProjectMember(selectId) {
+      let index = this.projectMemberIdList.indexOf(selectId)
       if (index === -1) {
-        this.addObjectMember(selectId)
+        this.addProjectMember(selectId)
       } else {
-        this.removeObjectMember(selectId, index)
+        this.removeProjectMember(selectId, index)
       }
     },
     addTaskMember(selectId) {
@@ -165,9 +172,41 @@ export default {
         this.$message.error(err.message)
       })
     },
+    addProjectMember(userId) {
+      this.$http.post(api.itemUsers, {
+        item_id: this.itemId,
+        user_id: userId})
+      .then(res => {
+        if (res.data.meta.status_code === 200) {
+          // this.projectMemberList.push(res.data.data)
+          this.projectMemberIdList.push(res.data.data.id)
+          this.addTaskMember(res.data.data.id)
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        this.$message.error(err.message)
+      })
+    },
     removeTaskMember(selectId, index) {
       this.$http.delete(api.deleteTaskUsers, {params: {
         task_id: this.taskId,
+        selected_user_id: selectId
+      }})
+      .then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.taskMemberList.splice(index, 1)
+          this.taskMemberIdList.splice(index, 1)
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        this.$message.error(err.message)
+      })
+    },
+    removeProjectMember(selectId, index) {
+      this.$http.delete(api.deleteItemUsers, {params: {
+        item_id: this.itemId,
         selected_user_id: selectId
       }})
       .then(res => {
@@ -253,6 +292,9 @@ export default {
       this.currentShow = val
     },
     currentShow(val) {
+      if (val === true) {
+        this.showMember()
+      }
       this.$emit('', val)
     },
     seachKey(val) {
@@ -283,7 +325,7 @@ export default {
     top: 100px;
     position: absolute;
     left: 0;
-    top: 45px;
+    top: 85px;
     z-index: 1999;
   }
 

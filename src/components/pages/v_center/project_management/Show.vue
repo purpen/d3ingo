@@ -16,8 +16,7 @@ export default {
   data() {
     return {
       isShow: false,
-      currentRoute: 'overview',
-      projectObject: {}
+      currentRoute: 'overview'
     }
   },
   methods: {
@@ -49,11 +48,25 @@ export default {
       }
       this.$router.push({name: 'home'})
       return
+    },
+    getProjectMemberList(id) {
+      this.$http.get(api.itemUsers, {params: {item_id: id}})
+      .then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.$store.commit('setProjectMemberList', res.data.data)
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        this.$message.error(err.message)
+      })
     }
   },
   created() {
+    let id = this.$route.params.id
     this.changeRoute(this.$route.name)
-    this.getProjectObject(this.$route.params.id)
+    this.getProjectObject(id)
+    this.getProjectMemberList(id)
   },
   watch: {
     '$route' (to, from) {

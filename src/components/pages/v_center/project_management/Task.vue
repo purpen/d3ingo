@@ -11,7 +11,7 @@
         </p>
       </div> -->
       <!-- <div v-if="currentStageStat.event">
-        <el-input v-model="currentStageForm.title" placeholder=""></el-input>
+        <el-input v-model="currentStageForm.title" placeholder=""></el-inptask-itemut>
         <el-button @click="submitStage()">提交阶段</el-button>
         <el-button @click="currentStageStat.event = false">取消</el-button>
       </div> -->
@@ -26,8 +26,13 @@
           <section>
             <div v-for="(ele, index) in displayObj.outsideStageList" :key="index"
               @click.self="showTaskBtn(ele.id, index)"
-              :class="['task-item','clearfix', {'active': ele.stage === 2, 'level1': ele.level === 1, 'level2': ele.level === 2, 'level3': ele.level === 3}]">
-              <p @click="completeTaskBtn(ele, index)" class="task-name fl">{{ele.name}}</p>
+              :class="['task-item','clearfix', {
+                'active': ele.stage === 2,
+                'level1': ele.level === 1,
+                'level2': ele.level === 2,
+                'level3': ele.level === 3}]">
+              <p @click="completeTaskBtn(ele, index)" class="task-name fl">
+              {{ele.name}}</p>
               <p class="task-date fr">{{ele.created_at_format}}</p>
             </div>
           </section>
@@ -44,7 +49,7 @@
                 'level2': e.level === 2,
                 'level3': e.level === 3}]"
                 v-for="(e, i) in ele['task']" :key="i"
-                @click.self="showTaskBtn(e.id, i)"
+                @click.self="showTaskBtn(e.id, i, e.stage)"
                 >
                 <p @click="completeTaskBtn(e, i)" class="task-name fl">{{e.name}}</p>
                 <p class="task-date fr">{{e.created_at_format}}</p>
@@ -53,7 +58,7 @@
           </section>
         </el-col>
         <el-col :span="12">
-          <v-task :changeStoreCurrentForm="changeStoreCurrentForm" :projectObject="projectObject"></v-task>
+          <v-task :projectObject="projectObject" :completeState="completeState"></v-task>
         </el-col>
       </el-row>
     </div>
@@ -127,7 +132,7 @@
           showCover: false,
           showComfirmDeleteStage: false
         },
-        changeStoreCurrentForm: {}
+        completeState: -1
       }
     },
     methods: {
@@ -300,7 +305,8 @@
         this.$store.commit('changeTaskStateEvent', 'create')
       },
       // 展开任务详情
-      showTaskBtn(id, index) {
+      showTaskBtn(id, index, stage) {
+        this.completeState = stage
         this.$store.commit('changeTaskStatePower', 1)
         this.$store.commit('changeTaskStateEvent', 'update')
         this.$store.commit('changeTaskStateId', id)
@@ -308,7 +314,6 @@
       // 完成/取消任务
       completeTaskBtn(ele, index) {
         let item = {...ele}
-        this.$store.commit('changeTaskStatePower', 0)
         this.$store.commit('changeTaskStateEvent', 'update')
         this.$store.commit('changeTaskStateId', ele.id)
         let stage = ele.stage === 2 ? 0 : 2
@@ -316,9 +321,10 @@
           if (response.data.meta.status_code === 200) {
             this.$nextTick(() => {
               item.stage = stage
+              this.completeState = stage
               this.$store.commit('updateTaskListItem', item)
               this.$store.commit('setStoreCurrentForm', item)
-              Object.assign(this.changeStoreCurrentForm, this.storeCurrentForm)
+              this.fetchStage()
             })
           } else {
             this.$message.error(response.data.meta.message)

@@ -13,7 +13,8 @@ let state = {
   taskList: [],
   stageList: [],
   storeCurrentForm: {},
-  projectObject: {}
+  projectObject: {},
+  projectMemberList: []
 }
 let mutations = {
   setDisplayObj2(state, array) { // 容易出异步问题
@@ -145,6 +146,9 @@ let mutations = {
   },
   setProjectObject(state, obj) {
     Object.assign(state.projectObject, obj)
+  },
+  setProjectMemberList(state, obj) {
+    state.projectMemberList = obj
   }
 }
 export default {

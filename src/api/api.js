@@ -333,7 +333,8 @@ export default {
   designProject: '/designProject', // GET 展示详情
 
   // 项目成员列表
-  itemUsers: '/itemUsers', // POST 创建 | GET 详情 | DELETE 删除
+  itemUsers: '/itemUsers', // POST 创建 | GET 详情
+  deleteItemUsers: '/itemUsers/delete', // DELETE 删除
 
   // 客户信息
   designClientList: '/designClient/lists',   // GET 列表

@@ -143,50 +143,47 @@
             </div>
             -->
             <el-form label-position="top" :model="clientForm" :rules="ruleClientForm" ref="ruleClientForm" label-width="80px">
+              <el-row :gutter="20">
+                <el-col :xs="24" :sm="24" :md="24" :lg="24">
+                  <el-form-item label="企业名称" prop="company_name">
+                    <el-input v-model="clientForm.company_name" placeholder="请添写企业名称"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
 
-                <el-row :gutter="20">
-                  <el-col :xs="24" :sm="24" :md="24" :lg="24">
-                    <el-form-item label="企业名称" prop="company_name">
-                      <el-input v-model="clientForm.company_name" placeholder="请添写企业名称"></el-input>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
+              <el-row :gutter="20">
+                <el-col :xs="24" :sm="8" :md="8" :lg="8">
+                  <el-form-item label="联系人" prop="contact_name">
+                    <el-input v-model="clientForm.contact_name" placeholder="请添写联系人姓名"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :xs="24" :sm="8" :md="8" :lg="8">
+                  <el-form-item label="联系电话" prop="phone">
+                    <el-input v-model="clientForm.phone" placeholder="请添写联系电话"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :xs="24" :sm="8" :md="8" :lg="8">
+                  <el-form-item label="职位" prop="position">
+                    <el-input v-model="clientForm.position" placeholder="请添写联系人职位"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
 
-                <el-row :gutter="20">
-                  <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                    <el-form-item label="联系人" prop="contact_name">
-                      <el-input v-model="clientForm.contact_name" placeholder="请添写联系人姓名"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                    <el-form-item label="联系电话" prop="phone">
-                      <el-input v-model="clientForm.phone" placeholder="请添写联系电话"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                    <el-form-item label="职位" prop="position">
-                      <el-input v-model="clientForm.position" placeholder="请添写联系人职位"></el-input>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
+              <region-picker :provinceProp="clientForm.province" :cityProp="clientForm.city" propStyle="margin:0;" :districtProp="clientForm.area"
+                              :isFirstProp="isFirst" titleProp="企业地址"
+                              @onchange="changeClient" class="fullwidth"></region-picker>
 
-                <region-picker :provinceProp="clientForm.province" :cityProp="clientForm.city" propStyle="margin:0;" :districtProp="clientForm.area"
-                               :isFirstProp="isFirst" titleProp="企业地址"
-                               @onchange="changeClient" class="fullwidth"></region-picker>
+              <el-form-item label="" prop="address">
+                <el-input v-model="clientForm.address" placeholder="街道地址"></el-input>
+              </el-form-item>
 
-                <el-form-item label="" prop="address">
-                  <el-input v-model="clientForm.address" placeholder="街道地址"></el-input>
-                </el-form-item>
-
-                <p class="form-btn">
-                  <el-button @click="cover = false">取消</el-button>
-                  <el-button type="primary" class="is-custom" :loading="isClientLoadingBtn"
-                             @click="submitClient('ruleClientForm')">提交
-                  </el-button>
-                </p>
-              </el-form>
-
-
+              <p class="form-btn">
+                <el-button @click="cover = false">取消</el-button>
+                <el-button type="primary" class="is-custom" :loading="isClientLoadingBtn"
+                            @click="submitClient('ruleClientForm')">提交
+                </el-button>
+              </p>
+            </el-form>
           </div>
         </div>
       </div>
@@ -448,7 +445,7 @@ header {
   height: 100%;
 }
 .cover-body-left {
-  flex: 0 1 200px;
+  flex: 0 0 200px;
   display: flex;
   flex-direction: column;
   border-right: 1px solid #d2d2d2
