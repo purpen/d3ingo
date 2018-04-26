@@ -325,6 +325,8 @@ export default {
 
   // 沟通纪要成员
   communeSummaryUser: '/communeSummaryUser', // GET 列表
+  deleteCommuneSummaryUser: '/communeSummaryUser/delete', // DELETE 删除
+
   // 项目列表
   desiginProjectList: '/designProject/lists', // GET 项目列表
   createDesignProject: '/designProject/create', // POST 创建
