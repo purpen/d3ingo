@@ -25,7 +25,7 @@
                <el-col  :xs="2" :sm="2" :md="2" :lg="1">
                   <img :src=" dateimg " alt="">
               </el-col>
-              <el-col :xs="22" :sm="10" :md="10" :lg="4"  class="margin-bottom">
+              <el-col :xs="22" :sm="10" :md="10" :lg="5"  class="margin-bottom">
                   <div class="block">
                     <el-date-picker
                       type="datetime"
@@ -34,7 +34,7 @@
                     </el-date-picker>
                   </div>
               </el-col>
-              <el-col :xs="24" :sm="24" :md="24" :lg="9" class="updata-user">
+              <el-col :xs="24" :sm="24" :md="24" :lg="8" class="updata-user">
                   <img :src=" userimg " alt="">
                   <ul class="fl">
                     <li v-for="(getimg,index) in getimgs" :key="index" v-if="getimgs.length > 0" :style="{background:`url(${ getimg.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}">
@@ -92,14 +92,15 @@
                   <li>
                     <div>
                       <div>{{files.name}}</div>
-                      <span>{{files.prog}}/{{ files.size }}</span>
+                      <span v-if="files.percentage !== 100">{{files.prog}}/{{ files.size }}</span>
+                      <span v-if="files.percentage === 100">{{ files.size }}</span>
                     </div>
                     <el-progress class="fl" :percentage=" files.percentage " :show-text="false"
                   v-if=" files.percentage !== 100 "
                   ></el-progress>
                   </li>
                   <li> 
-                    <i class="fr" :style="{background:`url(${ closeimg }) no-repeat center`,backgroundSize:`13px 13px`}" @click="deleteup(files.asset_id)" v-if="files.percentage === 100"></i>
+                    <i class="fr" :style="{background:`url(${ closeimg }) no-repeat center`,backgroundSize:`13px 13px`}" @click="deleteup(files.asset_id)" ></i>
                   </li>
                 </ul>
               </el-col>
@@ -150,17 +151,17 @@
                 <el-input  placeholder="请填写参与客户" size="small" v-model=" d.other_realname" v-if="d.isedit === 2"></el-input>
                 <p v-else>{{ d.other_realname}}</p>
               </el-col>
-               <el-col :xs="2" :sm="2" :md="2" :lg="1" v-if ="d.location || d.isedit === 2">
+               <el-col :xs="2" :sm="2" :md="2" :lg="1" class="margin-bottom" v-if ="d.location || d.isedit === 2">
                <img :src=" Locationimg " alt="">
               </el-col>
-              <el-col :xs="22" :sm="10" :md="10" :lg="4" v-if ="d.location || d.isedit === 2">
+              <el-col :xs="22" :sm="10" :md="10" :lg="4" class="margin-bottom" v-if ="d.location || d.isedit === 2">
                 <el-input  placeholder="请输入地点" size="small" v-if="d.isedit === 2"></el-input>
                 <p v-else>{{ d.location }}</p>
               </el-col>
-               <el-col :xs="2" :sm="2" :md="2" :lg="1" v-if ="d.expire_time || d.isedit === 2">
+               <el-col :xs="2" :sm="2" :md="2" :lg="1" class="margin-bottom" v-if ="d.expire_time || d.isedit === 2">
                   <img :src=" dateimg " alt="">
               </el-col>
-              <el-col :xs="22" :sm="10" :md="10" :lg="4" v-if ="d.expire_time || d.isedit === 2">
+              <el-col :xs="22" :sm="10" :md="10" :lg="5" class="margin-bottom" v-if ="d.expire_time || d.isedit === 2">
                   <div class="block" v-if="d.isedit === 2">
                     <el-date-picker
                       type="datetime"
@@ -169,7 +170,7 @@
                   </div> 
                   <p v-else> {{ d.expire_time }}</p>
               </el-col>
-              <el-col  :xs="24" :sm="24" :md="24" :lg="9" class="updata-user" v-if="d.selected_user.length > 0 || d.isedit === 2">
+              <el-col  :xs="24" :sm="24" :md="24" :lg="8" class="updata-user" v-if="d.selected_user.length > 0 || d.isedit === 2">
                 <img :src=" userimg " alt="">
                 <ul class="fl">
                   <li v-for="(user,indexus) in d.selected_user" :key="indexus" v-if="d.selected_user.length > 0" :style="{background:`url(${ user.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}">
@@ -612,7 +613,7 @@
         for (var i = 0; i < fileList.length; i++) {
           fileList[i].prog = (parseFloat(fileList[i].size) * fileList[i].percentage / 100).toFixed(2)
           if (fileList[i].percentage === 100) {
-            fileList[i].prog = fileList[i].size
+            fileList[i].prog = ''
           }
         }
         var lastSize = this.fileList[this.fileList.length - 1].size
@@ -1068,13 +1069,19 @@
     width:30px;
     height:30px;
   }
-  .upload-flex>li{
-    flex:2
+  .upload-flex>li:not(:first-child){
+    /* flex:2; */
+    display: block;
+    width:24px;
+    height:17px;
+    margin-right:10px;
   }
   .upload-flex>li:nth-child(2){
+    width:0;
     flex:4;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
     line-height: 42px;
     height:42px;
   }
