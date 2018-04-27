@@ -16,8 +16,7 @@ export default {
   data() {
     return {
       isShow: false,
-      currentRoute: 'overview',
-      projectObject: {}
+      currentRoute: 'overview'
     }
   },
   methods: {
