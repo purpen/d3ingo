@@ -80,7 +80,6 @@ export default {
       companyMemberList: [],
       companyMemberIdList: [],
       projectMemberIdList: [],
-      taskMemberList: [],
       taskMemberIdList: [],
       matchMemberList: [],
       inviteLink: '',
@@ -102,13 +101,9 @@ export default {
       this.$http.get(api.taskUsers, {params: {task_id: this.taskId}})
       .then(res => {
         if (res.data.meta.status_code === 200) {
-          this.taskMemberList = res.data.data
-          let idList = []
-          this.taskMemberList.forEach(item => {
-            idList.push(item.selected_user_id)
-          })
-          // Object.assign(this.taskMemberIdList, idList)
-          this.taskMemberIdList = idList
+          // this.taskMemberList = res.data.data
+          console.log(res.data.data)
+          this.$store.commit('setTaskMemberList', res.data.data)
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -151,7 +146,7 @@ export default {
       if (index === -1) {
         this.addTaskMember(selectId)
       } else {
-        this.removeTaskMember(selectId, index)
+        this.removeTaskMember(selectId)
       }
     },
     clickProjectMember(selectId) {
@@ -168,8 +163,9 @@ export default {
         selected_user_id: selectId})
       .then(res => {
         if (res.data.meta.status_code === 200) {
-          this.taskMemberList.push(res.data.data)
-          this.taskMemberIdList.push(res.data.data.selected_user_id)
+          // this.taskMemberList.push(res.data.data)
+          // this.taskMemberIdList.push(res.data.data.selected_user_id) // watch 监听
+          this.$store.commit('addTaskMemberList', res.data.data)
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -194,15 +190,17 @@ export default {
         this.$message.error(err.message)
       })
     },
-    removeTaskMember(selectId, index) {
+    removeTaskMember(selectId) {
       this.$http.delete(api.deleteTaskUsers, {params: {
         task_id: this.taskId,
         selected_user_id: selectId
       }})
       .then(res => {
         if (res.data.meta.status_code === 200) {
-          this.taskMemberList.splice(index, 1)
-          this.taskMemberIdList.splice(index, 1)
+          // this.taskMemberList.splice(index, 1)
+          this.$store.commit('deleteTaskMemberList', selectId)
+          // let index = this.taskMemberIdList.indexOf(selectId)
+          // this.taskMemberIdList.splice(index, 1)
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -291,13 +289,29 @@ export default {
     },
     projectMemberList() {
       return this.$store.state.task.projectMemberList
+    },
+    taskMemberList() {
+      return this.$store.state.task.taskMemberList
     }
   },
   watch: {
-    projectMemberList(val) {
-      if (val.length) {
-        this.matchMemberList = val
-      }
+    projectMemberList: {
+      handler(val) {
+        if (val.length) {
+          this.matchMemberList = val
+        }
+      },
+      deep: true
+    },
+    taskMemberList: {
+      handler(val) {
+        let idList = []
+        val.forEach(item => {
+          idList.push(item.selected_user_id)
+        })
+        this.taskMemberIdList = idList
+      },
+      deep: true
     },
     propsShow(val) {
       this.currentShow = val
