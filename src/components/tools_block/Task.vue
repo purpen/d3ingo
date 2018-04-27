@@ -1,6 +1,6 @@
 <template>
   <div class="" v-if="taskState.power" v-loading="isLoading">
-    {{taskState}}
+    {{currentForm.execute_user_id}}
     <!-- <el-button @click="addTagBtn">显示标签</el-button> -->
     <!-- <h3>任务组件引入测试 <a href="javascript:void(0)" @click="closeBtn()">点击关闭</a></h3> -->
     <!--<el-button @click="addBtn()">添加任务</el-button>-->
@@ -42,6 +42,21 @@
       <div class="task-detail-body">
         <div class="task-admin" v-if="true">
           <p>分配给</p>
+          <ul class="task-member-list">
+            <li v-if="currentForm.execute_user">
+              <a class="remove-member" @click="removeExecute"></a>
+              <img v-if="currentForm.execute_user.logo_image" v-lazy="currentForm.execute_user.logo_image.logo" alt="">
+              <img v-else v-lazy="require('assets/images/avatar_100.png')">
+            </li>
+          </ul>
+          <p class="show-member" v-if="true" @click="showMember = true"></p>
+          <v-Member
+            :propsShow="showMember"
+            :itemId="propsTags.itemId"
+            :taskId="taskState.id"
+            :executeId="currentForm.execute_user_id"
+            @closeMember="closeMember"
+            @changeExecute="changeExecute"></v-Member>
         </div>
         <ul class="task-info">
           <li>
@@ -110,7 +125,7 @@
           </ul>
           <p class="show-member" v-if="true" @click="showMember2 = true">
           </p>
-          <v-Member :propsShow="showMember2" :itemId="propsTags.itemId" :taskId="taskState.id" @closeMember="closeMember"></v-Member>
+          <v-Member :propsShow="showMember2" :itemId="propsTags.itemId" :taskId="taskState.id" @closeMember="closeMember2"></v-Member>
         </div>
       </div>
     </section>
@@ -176,6 +191,7 @@
         isLoading: false,
         atFirst: true,
         isCreate: true,
+        showMember: false,
         showMember2: false
       }
     },
@@ -187,6 +203,10 @@
       },
       // 关闭成员
       closeMember(val) {
+        this.showMember = val
+      },
+      // 关闭成员
+      closeMember2(val) {
         this.showMember2 = val
       },
       // 删除任务点击事件
@@ -287,20 +307,6 @@
             self.$store.commit('deleteTaskListItem', self.currentForm)
             self.currentForm = {}
             self.$store.commit('changeTaskStatePower', 0)
-          } else {
-            self.$message.error(response.data.meta.message)
-          }
-        }).catch((error) => {
-          self.$message.error(error.message)
-          console.error(error.message)
-        })
-      },
-      // 认领任务
-      claimTask(id, userId) {
-        const self = this
-        this.$http.post(api.tasksExecuteUser, {task_id: id, execute_user_id: userId}).then(function (response) {
-          if (response.data.meta.status_code === 200) {
-            self.$message.success('认领成功!')
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -438,6 +444,25 @@
         }).catch(err => {
           this.$message.error(err.message)
         })
+      },
+      changeExecute(id) {
+        this.currentForm.execute_user_id = id
+      },
+      removeExecute() {
+        this.$http.post(api.tasksExecuteUser, {
+          item_id: this.$route.params.id,
+          task_id: this.taskState.id,
+          execute_user_id: 0})
+        .then((res) => {
+          if (res.data.meta.status_code === 200) {
+            this.currentForm.execute_user_id = 0
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch((error) => {
+          this.$message.error(error.message)
+          console.error(error.message)
+        })
       }
     },
     mounted: function () {
@@ -457,17 +482,6 @@
       }
     },
     watch: {
-      taskMemberList: {
-        handler(val) {
-        },
-        deep: true
-      },
-      storeCurrentForm: {
-        handler(val) {
-          this.currentForm = val
-        },
-        deep: true
-      },
       taskState: {
         handler(val) {
           this.showMember2 = false
@@ -484,6 +498,17 @@
         },
         deep: true
       },
+      taskMemberList: {
+        handler(val) {
+        },
+        deep: true
+      },
+      storeCurrentForm: {
+        handler(val) {
+          this.currentForm = val
+        },
+        deep: true
+      },
       currentForm: {
         handler(val) {
           this.$store.commit('setStoreCurrentForm', val)
@@ -493,6 +518,17 @@
               list.push(item.id)
             })
             this.tagsId = list
+          }
+          if (val.execute_user_id) {
+            this.$http.get(api.userInfo, {params: {
+              user_id: val.execute_user_id
+            }}).then(res => {
+              if (res.data.meta.status_code === 200) {
+                this.$set(val, 'execute_user', res.data.data)
+              } else {
+                this.$message.error(res.data.meta.message)
+              }
+            })
           }
         },
         deep: true
@@ -865,7 +901,7 @@
   .task-member-list li a:hover+img {
     border-color: #ff5a5f;
   }
-  .task-member .show-member {
+  .task-detail-body .show-member {
     margin-top: 20px;
     display: inline-block;
     width: 30px;
