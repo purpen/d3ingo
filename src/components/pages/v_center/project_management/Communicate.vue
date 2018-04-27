@@ -391,9 +391,10 @@
         if (this.itemList.length > 0) {
           for (var i = 0; i < this.itemList.length; i++) {
             this.itemList[i].isedit = 1
+            if (this.itemList[i].id && this.itemList[i].id === this.cancelitem.id) {
+              this.$set(this.itemList, i, this.cancelitem)
+            }
           }
-          this.initemList = this.cancelitem
-          console.log(this.cancelitem)
         }
       },
       // 获取附件Token
