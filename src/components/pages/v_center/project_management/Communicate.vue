@@ -355,7 +355,8 @@
         isSearch: false, // 是否是搜索
         selectedUser: [], // 当前选择的人员列表
         initemList: [], // 当前的沟通纪要
-        uploadMsg: ''
+        uploadMsg: '',
+        cancelitem: {}
       }
     },
     watch: {
@@ -391,6 +392,8 @@
           for (var i = 0; i < this.itemList.length; i++) {
             this.itemList[i].isedit = 1
           }
+          this.initemList = this.cancelitem
+          console.log(this.cancelitem)
         }
       },
       // 获取附件Token
@@ -422,6 +425,7 @@
       },
       // 编辑的编辑点击事件
       editBtn(id, index, isedit) {
+        this.cancelitem = {...this.itemList[index]}
         this.initemList = this.itemList[index]
         this.selectedUser = this.itemList[index].selected_user
         this.currentId = id
