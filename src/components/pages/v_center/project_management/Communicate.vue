@@ -1,8 +1,8 @@
 <template>
   <section>
     <div class="AddCommunicate" >
-      <el-row :gutter="20" @click.self.native="cancel()">
-        <el-col :span="18" :offset="3" >
+      <el-row :gutter="0" @click.self.native="cancel()">
+        <el-col :span="18" :offset="3" class="box">
           <div class="grid-content bg-purple">
             <el-row v-if="event === 'create'">
               <el-col class="fx-3">
@@ -25,16 +25,17 @@
                <el-col  :xs="2" :sm="2" :md="2" :lg="1">
                   <img :src=" dateimg " alt="">
               </el-col>
-              <el-col :xs="22" :sm="10" :md="10" :lg="4"  class="margin-bottom">
+              <el-col :xs="22" :sm="10" :md="10" :lg="5"  class="margin-bottom">
                   <div class="block">
                     <el-date-picker
                       type="datetime"
                       v-model="form.expire_time"
-                      placeholder="选择开始时间" size="small" @change="addTime">
+                      :editable="false"
+                      placeholder="选择开始时间" size="small" @change="addTime" >
                     </el-date-picker>
                   </div>
               </el-col>
-              <el-col :xs="24" :sm="24" :md="24" :lg="9" class="updata-user">
+              <el-col :xs="24" :sm="24" :md="24" :lg="8" class="updata-user">
                   <img :src=" userimg " alt="">
                   <ul class="fl">
                     <li v-for="(getimg,index) in getimgs" :key="index" v-if="getimgs.length > 0" :style="{background:`url(${ getimg.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}">
@@ -43,7 +44,7 @@
                     </li>
                     <li>
                       <img class="adds" :src=" adduser " alt="" @click="uppop?uppop=false:uppop=true">
-                      <ul class="select-user" v-if="uppop">
+                      <ul class="select-user scroll-bar" v-if="uppop" >
                         <li>
                           <el-input placeholder="填写或选择参加会议的人员名称" v-model="searcher"></el-input>
                         </li>
@@ -62,7 +63,6 @@
                           <i class="el-icon-check text-center" v-if="sear.isadd"></i>
                         </li>
                           <li v-if="isSearch && search.length === 0">没有搜索到该人员</li>
-                          <!-- <li v-if="isSearch && search.length === 0" >+ 点击添加“{{ searcher }}”</li> -->
                     </ul>
                   </li>
                 </ul>
@@ -71,22 +71,39 @@
           <el-row class="MeetingCenter" @click.native="addBtn()">
               <el-col class="fx">
                 <div>
-               <el-input  placeholder="请输入会议内容" type="textarea" :autosize="{ minRows: 4, maxRows: 10}"  v-model="form.content" v-if=" event !== 'create'?false : true " ></el-input>
+               <el-input  placeholder="请输入会议内容" type="textarea" :autosize="{ minRows: 4, maxRows: 10}"  v-model="form.content" v-if=" event !== 'create'?false : true " :maxlength="800"></el-input>
                <p v-else>请输入会议内容</p>
                </div>
               </el-col>
             </el-row>
             <el-row v-if="event === 'create'">
               <el-col :xs="23" :sm="10" :md="11" :lg="6" v-for="(files,index) in fileList" :key="index" class="upload-list">
-                <img :src="pngimage"  class="fl">
-                <div class="fl">
-                  <div class="fl">{{files.name}} </div>
-                  <span class="fr">{{ files.size }}</span>
-                  <el-progress class="fl" :percentage=" files.percentage " :show-text="false"
+                <ul class="upload-read">
+                  <li><i :class="['compress',{
+                'folder': /.folder/.test(files.name),
+                'artboard': /.pdf/.test(files.name),
+                'audio': /.audio/.test(files.name),
+                'compress': /(?:.zip|.rar|.7z)/.test(files.name),
+                'document': /(?:.text|.msword|.txt)/.test(files.name),
+                'image': /(?:.jpg|.jpeg|.png|.gif)/.test(files.name),
+                'powerpoint': /.powerpoint/.test(files.name),
+                'spreadsheet': /.excel/.test(files.name),
+                'video': /.video/.test(files.name),
+              }]" ></i></li>
+                  <li>
+                    <div>
+                      <div>{{files.name}}</div>
+                      <span v-if="files.percentage !== 100">{{files.prog}}/{{ files.size }}</span>
+                      <span v-if="files.percentage === 100">{{ files.size }}</span>
+                    </div>
+                    <el-progress class="fl" :percentage=" files.percentage " :show-text="false"
                   v-if=" files.percentage !== 100 "
                   ></el-progress>
-                </div>
-                <i class="fr" :style="{background:`url(${ closeimg }) no-repeat center`,backgroundSize:`13px 13px`}" @click="deleteup(files.asset_id)"></i>
+                  </li>
+                  <li> 
+                    <i class="fr" :style="{background:`url(${ closeimg }) no-repeat center`,backgroundSize:`13px 13px`}" @click="deleteup(files.asset_id)" v-if="files.percentage === 100"></i>
+                  </li>
+                </ul>
               </el-col>
             </el-row>
             <el-row class="uploads"> 
@@ -94,8 +111,9 @@
                 <el-upload
                   class="upload-demo"
                   :action="uploadUrl"
-                  :data="uploadParam"
+                  :data="uploadParamadd"
                   :show-file-list="false"
+                  multiple
                   :on-error="uploadError"
                   :on-success="uploadSuccess"
                   :on-progress="uploadProgress"
@@ -105,14 +123,14 @@
               </el-col>
               <el-col :xs="24" :sm="12" :md="12" :lg="12">
                 <div class="fr">
-                  <span>{{ getimgs.length }}</span>个人将会收到通知
+                  <span>{{ getimgs.length }}</span><span class="notice">个人将会收到通知</span>
                   <button @click="create()" type="danger"   class="small-button full-red-button">发送</button> 
                 </div>
               </el-col>
             </el-row>
           </div>
         </el-col>
-        <el-col :span="18" :offset="3" v-if=" itemList.length>0 " v-for="(d, index) in itemList" :key="index"><div class="grid-content bg-purple">
+        <el-col :span="18" :offset="3" v-if=" itemList.length>0 " v-for="(d, index) in itemList" :key="index" class="box"><div class="grid-content bg-purple">
            <el-row>
               <el-col class="titlec" >
                 <el-input  v-model="d.title"  v-if ="d.isedit === 2 "></el-input>
@@ -127,46 +145,47 @@
               </el-col>
             </el-row>
             <el-row class="edit">
-              <el-col  :xs="2" :sm="2" :md="2" :lg="1">
+              <el-col  :xs="2" :sm="2" :md="2" :lg="1" v-if ="d.other_realname || d.isedit === 2">
                <img :src=" Customer " alt="">
               </el-col>
-              <el-col  :xs="22" :sm="10" :md="10" :lg="4" class="margin-bottom">
-                <el-input  placeholder="请填写参与客户" size="small" v-model=" d.other_realname" v-if ="d.isedit === 2" ></el-input>
-              <p v-else>{{ d.other_realname}}</p>
+              <el-col  :xs="22" :sm="10" :md="10" :lg="4" class="margin-bottom" v-if ="d.other_realname || d.isedit === 2">
+                <el-input  placeholder="请填写参与客户" size="small" v-model=" d.other_realname" v-if="d.isedit === 2"></el-input>
+                <p v-else>{{ d.other_realname}}</p>
               </el-col>
-               <el-col :xs="2" :sm="2" :md="2" :lg="1">
+               <el-col :xs="2" :sm="2" :md="2" :lg="1" class="margin-bottom" v-if ="d.location || d.isedit === 2">
                <img :src=" Locationimg " alt="">
               </el-col>
-              <el-col :xs="22" :sm="10" :md="10" :lg="4">
-                <el-input  placeholder="请输入地点" size="small" v-if ="d.isedit === 2" v-model=" d.location " ></el-input>
+              <el-col :xs="22" :sm="10" :md="10" :lg="4" class="margin-bottom" v-if ="d.location || d.isedit === 2">
+                <el-input  placeholder="请输入地点" size="small" v-if="d.isedit === 2" v-model="d.location"></el-input>
                 <p v-else>{{ d.location }}</p>
               </el-col>
-               <el-col :xs="2" :sm="2" :md="2" :lg="1" >
+               <el-col :xs="2" :sm="2" :md="2" :lg="1" class="margin-bottom" v-if ="d.expire_time || d.isedit === 2">
                   <img :src=" dateimg " alt="">
               </el-col>
-              <el-col :xs="22" :sm="10" :md="10" :lg="4">
-                  <div class="block"  v-if ="d.isedit === 2">
+              <el-col :xs="22" :sm="10" :md="10" :lg="5" class="margin-bottom" v-if ="d.expire_time || d.isedit === 2">
+                  <div class="block" v-if="d.isedit === 2">
                     <el-date-picker
                       type="datetime"
-                      placeholder="选择开始时间" size="small"  v-model=" d.expire_time " @change="addTime">
+                      :editable="false"
+                      placeholder="选择开始时间" size="small"  v-model=" d.expire_time ">
                     </el-date-picker>
                   </div> 
                   <p v-else> {{ d.expire_time }}</p>
               </el-col>
-              <el-col  :xs="24" :sm="24" :md="24" :lg="9" class="updata-user">
-                <img :src=" userimg " alt="" >
+              <el-col  :xs="24" :sm="24" :md="24" :lg="8" class="updata-user" v-if="d.selected_user.length > 0 || d.isedit === 2">
+                <img :src=" userimg " alt="">
                 <ul class="fl">
-                  <li v-for="(user,index) in d.selected_user" :key="index" v-if="d.selected_user.length > 0" :style="{background:`url(${ user.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}">
+                  <li v-for="(user,indexus) in d.selected_user" :key="indexus" v-if="d.selected_user.length > 0" :style="{background:`url(${ user.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}">
                     <span v-if=" !user.logo_image.logo ">{{user.realnamehead}}</span>
-                    <i :style="{background:`url(${ closered }) no-repeat center`}" @click="deleteGetimg(index)"  v-if="d.isedit === 2"></i>
+                    <i :style="{background:`url(${ closered }) no-repeat center`}" @click="deleteGetimg(indexus,{type:'noadd'})"  v-if="d.isedit === 2"></i>
                   </li>
                   <li v-if ="d.isedit === 2">
                     <img v-if ="d.isedit === 2" class="adds" :src=" adduser " alt="" @click="edituser(index)"> 
-                    <ul class="select-user" v-if=" operation  === index ">
+                    <ul class="select-user scroll-bar" v-if=" operation  === index ">
                       <li>
                         <el-input placeholder="填写或选择参加会议的人员名称" v-model="searcher"></el-input>
                       </li>
-                      <li v-for="(option,index) in options" :key="index" @click="creatMembers(index,{type:'onadd'})" v-if="!isSearch">
+                      <li v-for="(option,indexop) in options" :key="indexop" @click="creatMembers(indexop,{type:'noadd'})" v-if="!isSearch">
                         <div  :style="{background:`url(${ option.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}" >
                           <span v-if ="!option.logo_image.logo">{{option.realnamehead}}</span>
                         </div>
@@ -174,7 +193,7 @@
                         <i class="el-icon-check text-center" v-if="option.noadd"></i>
                       </li>
 
-                      <li v-for="(sear,index) in search" :key="index" @click="creatMembers(index,{type:'onadd'})" v-if="isSearch">
+                      <li v-for="(sear,index) in search" :key="index" @click="creatMembers(index,{type:'noadd'})" v-if="isSearch">
                         <div  :style="{background:`url(${ sear.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}" >
                           <span v-if ="!sear.logo_image.logo">{{sear.realnamehead}}</span>
                         </div>
@@ -182,7 +201,6 @@
                         <i class="el-icon-check text-center" v-if="sear.noadd"></i>
                       </li>
                       <li v-if="isSearch && search.length === 0">没有搜索到该人员</li>
-                      <li v-if="isSearch && search.length === 0" >+ 点击添加“{{ searcher }}”</li>
                     </ul>
                   </li>
                 </ul>
@@ -190,20 +208,57 @@
             </el-row>
             <el-row class="MeetingCenter">
               <el-col class="fx">
-                 <el-input  size="small" v-if ="d.isedit === 2" v-model=" d.content " type="textarea" :rows="4"></el-input>
+                 <el-input  size="small" v-if ="d.isedit === 2" v-model=" d.content " type="textarea" :autosize="{ minRows: 4, maxRows: 10}" :maxlength="800"></el-input>
                  <p v-else>{{ d.content }}</p>
               </el-col>
             </el-row>
             <el-row>
-              <el-col :xs="23" :sm="10" :md="11" :lg="6" v-for="(files,indexa) in d.commune_image" :key="indexa" class="upload-list">
+              <el-col :xs="23" :sm="11" :md="11" :lg="6" v-for="(files,indexa) in d.commune_image" :key="indexa" class="upload-list">
                 <ul class="upload-flex">
-                  <li><img :src="pngimage"></li>
+                  <li><i :class="['compress',{
+                'folder': /.folder/.test(files.name),
+                'artboard': /.pdf/.test(files.name),
+                'audio': /.audio/.test(files.name),
+                'compress': /(?:.zip|.rar|.7z)/.test(files.name),
+                'document': /(?:.text|.msword|.txt)/.test(files.name),
+                'image': /(?:.jpg|.jpeg|.png|.gif)/.test(files.name),
+                'powerpoint': /.powerpoint/.test(files.name),
+                'spreadsheet': /.excel/.test(files.name),
+                'video': /.video/.test(files.name)
+              }]"></i></li>
                   <li>{{files.name}}</li>
                   <li @click="downupload(files.file)">下载</li>
-                  <li @click="deleteup(files.id, d.id)">删除</li>                  
+                  <li @click="deleteup(files.id, d.id)">删除</li>
+                </ul>
+              </el-col>
+               <el-col :xs="23" :sm="11" :md="11" :lg="6" class="upload-list" v-for="(uploadinga,indexc) in d.uploading" v-if="uploadinga.percentage!==100">
+                <ul class="upload-read">
+                  <li><i :class="['compress',{
+                'folder': /.folder/.test(uploadinga.name),
+                'artboard': /.pdf/.test(uploadinga.name),
+                'audio': /.audio/.test(uploadinga.name),
+                'compress': /(?:.zip|.rar|.7z)/.test(uploadinga.name),
+                'document': /(?:.text|.msword|.txt)/.test(uploadinga.name),
+                'image': /(?:.jpg|.jpeg|.png|.gif)/.test(uploadinga.name),
+                'powerpoint': /.powerpoint/.test(uploadinga.name),
+                'spreadsheet': /.excel/.test(uploadinga.name),
+                'video': /.video/.test(uploadinga.name)
+              }]"></i></li>
+                  <li>
+                    <div>
+                      <div>{{uploadinga.name}}</div>
+                      <span>{{uploadinga.prog}}/{{uploadinga.size }}</span>
+                    </div>
+                    <el-progress class="fl" :percentage=" uploadinga.percentage " :show-text="false">
+                    </el-progress>
+                  </li>
+                  <!-- <li> 
+                    <i class="fr" :style="{background:`url(${ closeimg }) no-repeat center`,backgroundSize:`13px 13px`}" @click="deleteup(files.asset_id)"></i>
+                  </li> -->
                 </ul>
               </el-col>
             </el-row>
+           
             <el-row class="uploads"> 
               <el-col v-if="d.isedit === 2" :xs="24" :sm="12" :md="12" :lg="12">
                  <el-upload
@@ -211,31 +266,34 @@
                   :action="uploadUrl"
                   :data="uploadParam"
                   :show-file-list="false"
+                  :before-upload="uploadBeforeEdit"
                   :on-error="uploadError"
-                  :on-success="uploadSuccess"
-                  :on-progress="uploadProgress"
+                  multiple
+                  :on-success="uploadSuccessEdit"
+                  :on-progress="uploadProgressEdit"
                     >
                   <img :src=" uploadimg " alt=""><span>添加附件</span>
                 </el-upload>
               </el-col>
               <el-col :offset="12" :xs="24" :sm="12" :md="12" :lg="12" v-if="d.isedit === 1 || !d.isedit">
                 <div class="fr">
-                  <img :src=" d.logo_image.logo " alt="" >
-                  <span> {{ d.realname }} </span>
+                  <img class="circle-head" :src=" d.logo_image.logo " alt="" >
+                  <span class="notice"> {{ d.realname }} </span>
                   <span>{{ d.created_at }}</span>
-                </div>            
+                </div>
               </el-col>
               <el-col :xs="24" :sm="12" :md="12" :lg="12" v-if="d.isedit === 2">
                 <div class="fr">
-                <span>{{ d.selected_user.length }}</span>个人将会收到通知
-                <button @click="inupdate(d.content, d.id, d.title, d.location, d.expire_time)" type="danger" class="small-button full-red-button">确定</button> 
-                </div>       
+                <span>{{ d.selected_user.length }}</span>
+                <span class="notice">个人将会收到通知</span>
+                <button @click="inupdate(d.content,d.id,d.title, d.location,d.expire_time,d.other_realname)" type="danger" class="small-button full-red-button">确定</button> 
+                </div>
               </el-col>
             </el-row>
           </div></el-col>
 
        <el-col :span="18" :offset="3" v-if=" itemList.length===0" >
-         <div class="grid-content bg-purple onthing">        
+         <div class="grid-content bg-purple onthing">
                   <img :src=" onThingimg "/>
                   <p>沟通纪要记录项目实施阶段与客户沟通后，达成共识以及客户意见反馈的历史记录。</p>
          </div>
@@ -265,7 +323,6 @@
         adduser: require('@/assets/images/tools/project_management/Add@2x.png'),
         uploadimg: require('@/assets/images/tools/project_management/Enclosure@2x.png'),
         onThingimg: require('@/assets/images/tools/project_management/onThing@2x.png'),
-        pngimage: require('@/assets/images/tools/cloud_drive/type/image@2x.png'),
         noimg: require('@/assets/images/tools/cloud_drive/type/other@2x.png'),
         closeimg: require('@/assets/images/tools/project_management/Close@2x.png'),
         closered: require('@/assets/images/tools/project_management/CloseRed@2x.png'),
@@ -281,16 +338,25 @@
           'x:user_id': this.$store.state.event.user.id,
           'x:type': 29
         },
+        uploadParamadd: {
+          'token': '',
+          'x:random': '',
+          'x:user_id': this.$store.state.event.user.id,
+          'x:type': 29
+        },
         fileList: [
         ],
-        randoms: '',
-        tokens: '',
-        options: [],
-        searcher: '',
-        uppop: false,
-        search: [],
-        isSearch: false,
-        communeSummariesId: []
+        randoms: '', // randoms
+        tokens: '', // token
+        options: [], // 项目成员列表
+        searcher: '', // 搜索人员v-model
+        uppop: false, // 控制新建弹出项目人员框
+        search: [], // 搜索到的列表
+        isSearch: false, // 是否是搜索
+        selectedUser: [], // 当前选择的人员列表
+        initemList: [], // 当前的沟通纪要
+        uploadMsg: '',
+        cancelitem: {}
       }
     },
     watch: {
@@ -319,9 +385,17 @@
         this.$router.push({name: 'home'})
         return
       },
-      // 取消编辑
+      // 取消新建/编辑的编辑
       cancel() {
         this.event = ''
+        if (this.itemList.length > 0) {
+          for (var i = 0; i < this.itemList.length; i++) {
+            this.itemList[i].isedit = 1
+            if (this.itemList[i].id && this.itemList[i].id === this.cancelitem.id) {
+              this.$set(this.itemList, i, this.cancelitem)
+            }
+          }
+        }
       },
       // 获取附件Token
       upTokens() {
@@ -329,6 +403,8 @@
           if (response.data.meta.status_code === 200) {
             this.randoms = response.data.data.random
             this.tokens = response.data.data.upToken
+            this.uploadParamadd['token'] = response.data.data.upToken
+            this.uploadParamadd['x:random'] = response.data.data.random
             this.uploadParam['token'] = response.data.data.upToken
             this.uploadParam['x:random'] = response.data.data.random
             this.uploadUrl = response.data.data.upload_url
@@ -348,8 +424,11 @@
         }
         this.event = 'create'
       },
-      // 编辑点击事件
+      // 编辑的编辑点击事件
       editBtn(id, index, isedit) {
+        this.cancelitem = {...this.itemList[index]}
+        this.initemList = this.itemList[index]
+        this.selectedUser = this.itemList[index].selected_user
         this.currentId = id
         this.uploadParam['x:target_id'] = id
         for (var i = 0; i < this.itemList.length; i++) {
@@ -359,7 +438,6 @@
           }
         }
         this.event = 'update'
-        // this.view()
       },
       // 删除任务点击事件
       deleteBtn(id, index) {
@@ -369,20 +447,17 @@
         this.delete()
       },
       // 编辑form参数
-      inupdate(content, id, title, location, expireTime) {
-        this.form.commune_image = ''
+      inupdate(content, id, title, location, expiretime, otherRealname) {
+        this.form = {}
         this.currentId = id
         this.form.content = content
         this.form.id = id
         this.form.title = title
         this.form.location = location
-        this.form.random = this.randoms
         this.form.token = this.tokens
-        if (!this.form.expire_time) {
-          this.form.expire_time = expireTime
-        }
-        if (this.form.expire_time.length > 10) {
-          this.form.expire_time = this.form.expire_time.slice(0, 10)
+        this.form.other_realname = otherRealname
+        if (typeof expiretime !== 'undefined') {
+          this.form.expire_time = (expiretime).format('yyyy-MM-dd')
         }
         this.operation = ''
         this.event = 'update'
@@ -426,7 +501,6 @@
         this.form.random = this.randoms
         this.form.token = this.tokens
         this.form.item_id = this.itemId
-        console.log(this.form)
         this.$http.post(api.communeSummaries, this.form).then((response) => {
           if (response.data.meta.status_code === 200) {
             this.form = {}
@@ -457,9 +531,11 @@
               let item = this.itemList[i]
               if (this.currentId === item.id) {
                 response.data.data.created_at = new Date(response.data.data.created_at * 1000)
-                response.data.data.created_at.farmat()
+                response.data.data.created_at = response.data.data.created_at.format('yyyy-MM-dd')
                 response.data.data.isedit = 1
-                response.data.data.expire_time = response.data.data.expire_time.replace(/''/g, '-')
+                if (response.data.data.expire_time) {
+                  response.data.data.expire_time = response.data.data.expire_time.slice(0, 10)
+                }
                 this.$set(this.itemList, i, response.data.data)
                 break
               }
@@ -507,21 +583,50 @@
         })
         console.log (err)
       },
+       // 新建文件上传时
+      uploadProgress(event, file, fileList) {
+        this.fileList = fileList
+        for (var i = 0; i < fileList.length; i++) {
+          fileList[i].prog = (parseFloat(fileList[i].size) * fileList[i].percentage / 100).toFixed(2)
+          if (fileList[i].percentage === 100) {
+            fileList[i].prog = ''
+          }
+        }
+        var lastSize = this.fileList[this.fileList.length - 1].size
+        if (lastSize / (1024 * 1024) > 0.01) {
+          this.fileList[this.fileList.length - 1].size = (lastSize / (1024 * 1024)).toFixed(2) + 'MB'
+        } else if (lastSize / 1024 >= 0) {
+          this.fileList[this.fileList.length - 1].size = (lastSize / 1024).toFixed(2) + 'KB'
+        }
+      },
       // 文件上传成功
       uploadSuccess(response, file, fileList) {
         for (var i = 0; i < this.fileList.length; i++) {
           this.fileList[i].asset_id = response.asset_id
         }
       },
-      // 文件上传时
-      uploadProgress(event, file, fileList) {
-        this.fileList = fileList
-        var lastSize = this.fileList[this.fileList.length - 1].size
-        if (lastSize / (1024 * 1024) > 0.01) {
-          this.fileList[this.fileList.length - 1].size = (lastSize / (1024 * 1024)).toFixed(3) + 'MB'
-        } else if (lastSize / 1024 >= 0) {
-          this.fileList[this.fileList.length - 1].size = (lastSize / 1024).toFixed(3) + 'KB'
+      // 编辑文件上传成功
+      uploadSuccessEdit(response, file, fileList) {
+        file.id = file.response.asset_id
+        this.initemList.commune_image.unshift(file)
+      },
+      // 编辑文件上传时
+      uploadProgressEdit(event, file, fileList) {
+        this.$set(this.initemList, 'uploading', fileList)
+        for (var i = 0; i < this.initemList.uploading.length; i++) {
+          this.initemList.uploading[i].prog = (parseFloat(this.initemList.uploading[i].size) * this.initemList.uploading[i].percentage / 100).toFixed(2)
+          if (this.initemList.uploading[i].percentage === 100) {
+            this.initemList.uploading[i].prog = this.initemList.uploading[i].size
+          }
+          if (this.initemList.uploading[i].size / (1024 * 1024) > 0.01) {
+            this.initemList.uploading[i].size = (this.initemList.uploading[i].size / (1024 * 1024)).toFixed(2) + 'MB'
+          } else if (this.initemList.uploading[i].size / 1024 >= 0) {
+            this.initemList.uploading[i].size = (this.initemList.uploading[i].size / 1024).toFixed(2) + 'KB'
+          }
         }
+      },
+      // 上传文件之前
+      uploadBeforeEdit(file) {
       },
       // 删除上传的文件
       deleteup(assetid, comid) {
@@ -593,8 +698,9 @@
           console.error(error.message)
         })
       },
-      // 添加人员到列表
+      // 添加/删除人员到列表
       creatMembers(index, tp) {
+        // 新建时操作
         if (tp.type === 'add') {
           var ishave = true
           if (this.getimgs.length === 0) {
@@ -615,19 +721,100 @@
             }
           }
         }
-      },
-      // 从上方列表删除成员
-      deleteGetimg(index) {
-        for (var i = 0; i < this.options.length; i++) {
-          if (this.options[i].id === this.getimgs[index].id) {
-            this.getimgs.splice(index, 1)
-            this.options[i].isadd = false
-            break
+        // 编辑时操作
+        if (tp.type === 'noadd') {
+          let userId = this.options[index].id
+          var ishavea = true
+          if (this.selectedUser.length === 0) {
+            this.creatCommuneSummaryUse(userId)
+            this.selectedUser.push(this.options[index])
+            this.options[index].noadd = true
+          } else {
+            for (var j = 0; j < this.selectedUser.length; j++) {
+              if (this.selectedUser[j].id === this.options[index].id) {
+                this.deleteCommuneSummaryUser(userId, index)
+                ishavea = false
+                this.selectedUser.splice(j, 1)
+                this.options[index].noadd = false
+                break
+              }
+            }
+            if (ishavea) {
+              this.creatCommuneSummaryUse(userId)
+              this.selectedUser.push(this.options[index])
+              this.options[index].noadd = true
+            }
           }
         }
       },
-      // 编辑沟通成员
+      // 从上方列表删除成员
+      deleteGetimg(index, type) {
+        if (type.type === 'add') {
+          for (var i = 0; i < this.options.length; i++) {
+            if (this.options[i].id === this.getimgs[index].id) {
+              this.getimgs.splice(index, 1)
+              this.options[i].isadd = false
+              break
+            }
+          }
+        }
+        if (type.type === 'noadd') {
+          let id = this.selectedUser[index].id
+          this.deleteCommuneSummaryUser(id, index)
+          for (var j = 0; j < this.options.length; j++) {
+            if (this.options[j].id === this.selectedUser[index].id) {
+              this.selectedUser.splice(index, 1)
+              this.options[j].noadd = false
+              break
+            }
+          }
+        }
+      },
+      // 删除沟通纪要成员
+      deleteCommuneSummaryUser(id, index) {
+        var self = this
+        self.$http.delete(api.deleteCommuneSummaryUser, {params: {selected_user_id: id, commune_summary_id: self.initemList.id}})
+          .then (function(response) {
+            if (response.data.meta.status_code === 200) {
+            } else {
+              self.$message.error(response.data.meta.message)
+            }
+          })
+          .catch (function(error) {
+            self.$message.error(error.message)
+            self.dialogLoadingBtn = false
+          })
+      },
+      // 新建沟通纪要成员
+      creatCommuneSummaryUse(id) {
+        let getuser = {
+          commune_summary_id: this.initemList.id,
+          selected_user_id: id
+        }
+        this.$http.post(api.communeSummaryUser, getuser)
+          .then((response) => {
+            if (response.data.meta.status_code === 200) {
+              console.log(response.data.data)
+            } else {
+              this.$message.error(response.data.meta.message)
+            }
+          })
+          .catch((error) => {
+            this.$message.error(error.message)
+            console.error(error.message)
+          })
+      },
+      // 编辑沟通纪要成员
       edituser(index) {
+        let ethis = this
+        for (let i = 0; i < ethis.itemList[index].selected_user.length; i++) {
+          for (let j = 0; j < ethis.options.length; j++) {
+            if (ethis.itemList[index].selected_user[i].id === ethis.options[j].id) {
+              ethis.options[j].noadd = true
+              break
+            } else ethis.options[j].noadd = false
+          }
+        }
         this.operation === index ? this.operation = '' : this.operation = index
       },
       // 下载文件
@@ -649,13 +836,13 @@
       this.$http.get(api.communeSummaries, {params: {item_id: this.itemId}}).then((response) => {
         if (response.data.meta.status_code === 200) {
           this.itemList = response.data.data
-          this.communeSummaryIds = []
           if (this.itemList.length > 0) {
             for (var i = 0; i < this.itemList.length; i++) {
-              this.communeSummaryIds.push(this.itemList[i].id)
               this.itemList[i].isedit = 1
               this.itemList[i].created_at = (new Date(this.itemList[i].created_at * 1000)).format('yyyy-MM-dd')
-              this.itemList[i].expire_time = this.itemList[i].expire_time.slice(0, 10)
+              if (this.itemList[i].expire_time) {
+                this.itemList[i].expire_time = this.itemList[i].expire_time.slice(0, 10)
+              }
             }
           }
           console.log(response.data.data)
@@ -676,11 +863,16 @@
   }
   .AddCommunicate>.el-row>.el-col{
     background: #FFFFFF;
-    border: 1px solid #F7F7F7;
-    box-shadow: 0 0 4px 0 rgba(0,0,0,0.10);
+    border: 1px solid #D2D2D2;
     border-radius: 4px;
     margin-top:20px;
-    padding:10px 0px;
+  }
+  .box{
+    padding:0px 20px 15px 20px;
+  }
+  .circle-head{
+    border:1px solid transparent;
+    border-radius: 50%;
   }
   .AddCommunicate>.el-row>.el-col>div>.el-row{
     margin-top:10px;
@@ -698,10 +890,15 @@
     border-radius: 4px;
     margin:10px 10px 0px 0px;
   }
+  @media (min-width: 1200px){
+    .upload-list{
+      width:23%;
+    }
+  }
   .upload-list i {
     width:14px;
     height:14px;
-    margin:13px 3px 0px 3px;
+    margin:0px 3px;
   }
    .upload-list>div{
      margin-top:13px;
@@ -710,6 +907,9 @@
   .upload-list .el-progress{
     margin-top:3px;
     width:100%;
+  }
+  .notice{
+    margin-right:10px;
   }
   .upload-list>div>div{
     width:48%;
@@ -772,7 +972,7 @@
   .updata-user>ul>li>.adds{
     width:24px;
     height:24px;
-    margin:-2px;
+    margin:0px;
   }
   .updata-user>ul>li {
     width:26px;
@@ -780,10 +980,11 @@
     line-height:26px; 
     border:1px solid transparent;
     border-radius: 50%;
-    margin:5px 10px 0px 0px;
     float: left;
     position: relative;
     text-align: center;
+    margin-top:2px;
+    margin-right:7px;
   }
   .updata-user>ul>li:not(:last-child){
     background: #3DA8F5;
@@ -809,12 +1010,13 @@
   }
   .uploads img {
     width:20px;
-    margin:5px 6px 0px 6px;
+    margin:8px 10px 0px 6px;
     float:left;
   }
   .MeetingCenter {
     padding-top:10px;
     min-height: 100px;
+    margin-bottom:20px;
   }
 
   .onthing img {
@@ -871,14 +1073,92 @@
     align-items:center;
     height:42px;
   }
-  .upload-flex>li{
-    flex:1
+  .upload-flex>li>i{
+    display:block;
+    width:30px;
+    height:30px;
+  }
+  .upload-flex>li:not(:first-child){
+    /* flex:2; */
+    display: block;
+    width:24px;
+    height:17px;
+    margin-right:10px;
   }
   .upload-flex>li:nth-child(2){
-    flex:3;
+    width:0;
+    flex:4;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
     line-height: 42px;
     height:42px;
   }
+  .upload-read{
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    height:42px;
+  }
+  .upload-read>li>i{
+    display:block;
+    width:30px;
+    height:30px;
+  }
+  .upload-read>li:nth-child(2){
+    flex-grow:1;
+    width:0;
+  }
+  .upload-read>li:nth-child(2)>div{
+    display: flex;
+    justify-content:space-around;
+    align-items:center;
+  }
+  .upload-read>li:nth-child(2)>div>div{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right:5px;
+  }
+  .document{
+    background: url('../../../../assets/images/tools/cloud_drive/type/document@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .other {
+    background: url('../../../../assets/images/tools/cloud_drive/type/other@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .artboard {
+    background: url('../../../../assets/images/tools/cloud_drive/type/artboard@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .audio {
+    background: url('../../../../assets/images/tools/cloud_drive/type/audio@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .compress {
+    background: url('../../../../assets/images/tools/cloud_drive/type/compress@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .folder {
+    background: url('../../../../assets/images/tools/cloud_drive/type/folder@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .image {
+    background: url('../../../../assets/images/tools/cloud_drive/type/image@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .powerpoint {
+    background: url('../../../../assets/images/tools/cloud_drive/type/powerpoint@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .spreadsheet {
+    background: url('../../../../assets/images/tools/cloud_drive/type/spreadsheet@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .video {
+    background: url('../../../../assets/images/tools/cloud_drive/type/video@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+
 </style>

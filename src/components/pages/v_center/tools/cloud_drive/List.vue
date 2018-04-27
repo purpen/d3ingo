@@ -149,7 +149,7 @@
             <!--ready success uploading fail-->
           </el-col>
           <el-col :span="10">
-          </el-col>
+          </el-col> 
         </el-row>
       </div>
     </div>
