@@ -104,7 +104,6 @@
             <li></li>
           </ul>
           <p class="show-member" v-if="true" @click="showMember2 = true">
-            {{showMember2}}
           </p>
           <v-Member :propsShow="showMember2" :itemId="propsTags.itemId" :taskId="taskState.id" @closeMember="closeMember"></v-Member>
         </div>
@@ -209,7 +208,6 @@
         this.$http.get(api.taskId.format(id), {}).then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.currentForm = response.data.data
-            self.$store.commit('setStoreCurrentForm', self.currentForm)
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -426,16 +424,7 @@
     },
     computed: {
       taskState() {
-        let stakState = this.$store.state.task.taskState
-        if (stakState.event === 'update') {
-          this.view(stakState.id)
-        } else if (stakState.event === 'create') {
-          if (this.isCreate) {
-            this.currentForm = {}
-            this.create()
-          }
-        }
-        return stakState
+        return this.$store.state.task.taskState
       },
       storeCurrentForm() {
         return this.$store.state.task.storeCurrentForm
@@ -445,6 +434,27 @@
       }
     },
     watch: {
+      storeCurrentForm: {
+        handler(val) {
+          this.currentForm = val
+        },
+        deep: true
+      },
+      taskState: {
+        handler(val) {
+          if (val) {
+            if (val.event === 'update') {
+              this.view(val.id)
+            } else if (val.event === 'create') {
+              if (this.isCreate) {
+                this.currentForm = {}
+                this.create()
+              }
+            }
+          }
+        },
+        deep: true
+      },
       currentForm: {
         handler(val) {
           this.$store.commit('setStoreCurrentForm', val)

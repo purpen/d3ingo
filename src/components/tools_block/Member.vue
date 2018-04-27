@@ -1,5 +1,5 @@
 <template>
-  <div class="cententList" v-if="propsShow">{{propsShow}}
+  <div class="cententList" v-show="propsShow">
     <p class="clearfix">添加成员
       <i class="fr fx-icon-nothing-close-error" @click="closeMember"></i>
     </p>
@@ -290,14 +290,15 @@ export default {
       return this.$store.state.event.user.company_role
     },
     projectMemberList() {
-      let list = this.$store.state.task.projectMemberList
-      if (list.length) {
-        this.matchMemberList = list
-      }
-      return list
+      return this.$store.state.task.projectMemberList
     }
   },
   watch: {
+    projectMemberList(val) {
+      if (val.length) {
+        this.matchMemberList = val
+      }
+    },
     propsShow(val) {
       this.currentShow = val
     },

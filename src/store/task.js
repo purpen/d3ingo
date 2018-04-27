@@ -6,7 +6,8 @@ let state = {
   taskState: {
     id: 0,
     power: 0,
-    event: '' // create | update | delete | complete
+    event: '', // create | update | delete | complete
+    str: '' // 随机数
   },
   currentForm: {
   },
@@ -14,6 +15,7 @@ let state = {
   stageList: [],
   storeCurrentForm: {},
   projectObject: {},
+  taskMemberList: [],
   projectMemberList: []
 }
 let mutations = {
