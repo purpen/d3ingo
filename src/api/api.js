@@ -343,6 +343,7 @@ export default {
   designQuotationCreate: '/designQuotation/create',  // POST 创建
   designQuotationUpdate: '/designQuotation/update', // PUT 更新
   designQuotation: '/designQuotation',   // 详情
+  designQuotationDown: '/designQuotationDown', // 下载
 
   // 职位管理
   designPositionList: '/designPosition/lists',    // GET 列表
