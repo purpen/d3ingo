@@ -3,7 +3,7 @@
     <div class="pm-left">
       <router-link :to="{name: 'projectManagementList'}">项目管理</router-link>
       <router-link :to="{name: 'projectManagementOverView', params: {id: routeId}}">{{projectObject.name}}</router-link>
-      <span v-if="false" class="favorite-star active"></span>
+      <!-- <span class="favorite-star"></span> -->
     </div>
     <div class="pm-middle">
       <router-link :class="[{'active': currentRoute === 'projectManagementOverView'}]"
