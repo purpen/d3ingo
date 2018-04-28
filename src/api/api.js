@@ -25,6 +25,7 @@ export default {
   fetch_msm_code: '/auth/sms', // 获取手机验证码
   fetch_img_captcha: '/captcha/getCaptcha', // 获取图片验证码
   user: '/auth/user', // 获取用户信息
+  userInfo: '/auth/userId', // 根据用户id获取用户信息
   updateUser: '/auth/updateUser', // POST 修改用户信息
   authFundInfo: '/auth/fundInfo', // GET 用户钱包信息
   fundLogList: '/fundLogList', // GET 交易记录
@@ -325,6 +326,8 @@ export default {
 
   // 沟通纪要成员
   communeSummaryUser: '/communeSummaryUser', // GET 列表
+  deleteCommuneSummaryUser: '/communeSummaryUser/delete', // DELETE 删除
+
   // 项目列表
   desiginProjectList: '/designProject/lists', // GET 项目列表
   createDesignProject: '/designProject/create', // POST 创建
@@ -333,7 +336,8 @@ export default {
   designProject: '/designProject', // GET 展示详情
 
   // 项目成员列表
-  itemUsers: '/itemUsers', // POST 创建 | GET 详情 | DELETE 删除
+  itemUsers: '/itemUsers', // POST 创建 | GET 详情
+  deleteItemUsers: '/itemUsers/delete', // DELETE 删除
 
   // 客户信息
   designClientList: '/designClient/lists',   // GET 列表

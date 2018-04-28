@@ -41,6 +41,21 @@
       <div class="task-detail-body">
         <div class="task-admin" v-if="true">
           <p>分配给</p>
+          <ul class="task-member-list">
+            <li v-if="currentForm.execute_user">
+              <a class="remove-member" @click="removeExecute"></a>
+              <img v-if="currentForm.execute_user.logo_image" v-lazy="currentForm.execute_user.logo_image.logo" alt="">
+              <img v-else v-lazy="require('assets/images/avatar_100.png')">
+            </li>
+          </ul>
+          <p class="show-member" v-if="true" @click="showMember = true"></p>
+          <v-Member
+            :propsShow="showMember"
+            :itemId="propsTags.itemId"
+            :taskId="taskState.id"
+            :executeId="currentForm.execute_user_id"
+            @closeMember="closeMember"
+            @changeExecute="changeExecute"></v-Member>
         </div>
         <ul class="task-info">
           <li>
@@ -100,7 +115,16 @@
         </div>
         <div class="task-member">
           <p class="p-member">参与者</p>
-          <v-Member :propsShow="true"></v-Member>
+          <ul class="task-member-list">
+            <li v-for="(ele, index) in taskMemberList" :key="index">
+              <a class="remove-member" @click="removeMember(ele.user.id)"></a>
+              <img v-if="ele.user.logo_image" v-lazy="ele.user.logo_image.logo" alt="">
+              <img v-else v-lazy="require('assets/images/avatar_100.png')">
+            </li>
+          </ul>
+          <p class="show-member" v-if="true" @click="showMember2 = true">
+          </p>
+          <v-Member :propsShow="showMember2" :itemId="propsTags.itemId" :taskId="taskState.id" @closeMember="closeMember2"></v-Member>
         </div>
       </div>
     </section>
@@ -129,16 +153,13 @@
           return {}
         }
       },
-      changeStoreCurrentForm: {
-        type: Object,
-        default: function () {
-          return {}
-        }
+      completeState: {
+        type: Number,
+        default: -1
       }
     },
     data () {
       return {
-        test: 'aaa',
         propsTags: {
           itemId: 0,
           power: 0,
@@ -168,7 +189,9 @@
         tagsId: [],
         isLoading: false,
         atFirst: true,
-        isCreate: true
+        isCreate: true,
+        showMember: false,
+        showMember2: false
       }
     },
     methods: {
@@ -176,6 +199,14 @@
       closeBtn() {
         this.$store.commit('changeTaskStatePower', 0)
         this.$store.commit('changeTaskStateEvent', '')
+      },
+      // 关闭成员
+      closeMember(val) {
+        this.showMember = val
+      },
+      // 关闭成员
+      closeMember2(val) {
+        this.showMember2 = val
       },
       // 删除任务点击事件
       deleteBtn() {
@@ -201,7 +232,6 @@
         this.$http.get(api.taskId.format(id), {}).then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.currentForm = response.data.data
-            self.$store.commit('setStoreCurrentForm', self.currentForm)
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -284,20 +314,6 @@
           console.error(error.message)
         })
       },
-      // 认领任务
-      claimTask(id, userId) {
-        const self = this
-        this.$http.post(api.tasksExecuteUser, {task_id: id, execute_user_id: userId}).then(function (response) {
-          if (response.data.meta.status_code === 200) {
-            self.$message.success('认领成功!')
-          } else {
-            self.$message.error(response.data.meta.message)
-          }
-        }).catch((error) => {
-          self.$message.error(error.message)
-          console.error(error.message)
-        })
-      },
       // 任务完成/取消完成
       setStageTask() {
         const self = this
@@ -311,7 +327,7 @@
           if (response.data.meta.status_code === 200) {
             self.$set(self.currentForm, 'stage', complate)
             self.$store.commit('updateTaskListItem', self.currentForm)
-            self.$message.success('操作成功!')
+            self.fetchStage()
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -404,7 +420,6 @@
         .then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.$store.commit('setStageList', response.data.data)
-            console.log(response.data.data)
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -413,36 +428,86 @@
           self.$message.error(error.message)
           self.isLoading = false
         })
+      },
+      removeMember(id) {
+        this.$http.delete(api.deleteTaskUsers, {params: {
+          task_id: this.taskState.id,
+          selected_user_id: id
+        }})
+        .then(res => {
+          if (res.data.meta.status_code === 200) {
+            this.$store.commit('deleteTaskMemberList', id)
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(err => {
+          this.$message.error(err.message)
+        })
+      },
+      changeExecute(id) {
+        this.currentForm.execute_user_id = id
+      },
+      removeExecute() {
+        this.$http.post(api.tasksExecuteUser, {
+          item_id: this.$route.params.id,
+          task_id: this.taskState.id,
+          execute_user_id: 0})
+        .then((res) => {
+          if (res.data.meta.status_code === 200) {
+            this.currentForm.execute_user_id = 0
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch((error) => {
+          this.$message.error(error.message)
+          console.error(error.message)
+        })
       }
     },
     mounted: function () {
     },
     computed: {
       taskState() {
-        let stakState = this.$store.state.task.taskState
-        if (stakState.event === 'update') {
-          this.view(stakState.id)
-        } else if (stakState.event === 'create') {
-          if (this.isCreate) {
-            this.currentForm = {}
-            this.create()
-          }
-        }
-        return stakState
+        return this.$store.state.task.taskState
       },
-      storeCurrentForm: {
-        get() {
-          return this.$store.state.task.storeCurrentForm
-        },
-        set(val) {
-          this.currentForm = this.$store.state.task.storeCurrentForm
-        }
+      storeCurrentForm() {
+        return this.$store.state.task.storeCurrentForm
       },
       stageList() {
         return this.$store.state.task.stageList
+      },
+      taskMemberList() {
+        return this.$store.state.task.taskMemberList
       }
     },
     watch: {
+      taskState: {
+        handler(val) {
+          this.showMember2 = false
+          if (val) {
+            if (val.event === 'update') {
+              this.view(val.id)
+            } else if (val.event === 'create') {
+              if (this.isCreate) {
+                this.currentForm = {}
+                this.create()
+              }
+            }
+          }
+        },
+        deep: true
+      },
+      taskMemberList: {
+        handler(val) {
+        },
+        deep: true
+      },
+      storeCurrentForm: {
+        handler(val) {
+          this.currentForm = val
+        },
+        deep: true
+      },
       currentForm: {
         handler(val) {
           this.$store.commit('setStoreCurrentForm', val)
@@ -453,14 +518,22 @@
             })
             this.tagsId = list
           }
+          if (val.execute_user_id) {
+            this.$http.get(api.userInfo, {params: {
+              user_id: val.execute_user_id
+            }}).then(res => {
+              if (res.data.meta.status_code === 200) {
+                this.$set(val, 'execute_user', res.data.data)
+              } else {
+                this.$message.error(res.data.meta.message)
+              }
+            })
+          }
         },
         deep: true
       },
-      changeStoreCurrentForm: {
-        handler(val) {
-          this.storeCurrentForm = val
-        },
-        deep: true
+      completeState(val) {
+        this.$set(this.currentForm, 'stage', val)
       }
     },
     created() {
@@ -469,7 +542,7 @@
         this.redirectItemList(1, '缺少请求参数！')
         return
       }
-      this.propsTags.itemId = itemId
+      this.$set(this.propsTags, 'itemId', itemId)
     },
     directives: {
       focus: {
@@ -767,5 +840,97 @@
   .task-admin {
     position: relative;
     padding: 20px 0
+  }
+  .task-member-list {
+    display: inline-flex;
+    flex-wrap: wrap;
+    padding-left: 26px;
+  }
+  .task-member-list li {
+    position: relative;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  .task-member-list li a {
+    opacity: 0;
+    position: absolute;
+    right: -4px;
+    top: -6px;
+    background: #d2d2d2;
+    border-radius: 50%;
+    width: 14px;
+    height: 14px;
+    transform: rotate(45deg)
+  }
+  .task-member-list li a::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 8px;
+    height: 2px;
+    background: #fff;
+    transform: translate(-50%, -50%);
+  }
+  .task-member-list li a::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 2px;
+    height: 8px;
+    background: #fff;
+    transform: translate(-50%, -50%);
+  }
+  .task-member-list li img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid transparent
+  }
+  .task-member-list li:hover img {
+    border-color: #d2d2d2
+  }
+  .task-member-list li:hover a {
+    opacity: 1;
+  }
+  .task-member-list li a:hover {
+    background-color: #ff5a5f
+  }
+  .task-member-list li a:hover+img {
+    border-color: #ff5a5f;
+  }
+  .task-detail-body .show-member {
+    margin-top: 20px;
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    min-width: 0;
+    padding: 0;
+    background: #fff;
+    border: 1px solid #d2d2d2;
+    border-radius: 50%;
+    position: relative;
+    cursor: pointer;
+  }
+  .show-member:before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 16px;
+    height: 2px;
+    background: #ccc;
+    transform: translate(-50%, -50%)
+  }
+  .show-member:after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 2px;
+    height: 16px;
+    background: #ccc;
+    transform: translate(-50%, -50%)
   }
 </style>

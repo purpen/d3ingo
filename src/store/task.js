@@ -6,14 +6,17 @@ let state = {
   taskState: {
     id: 0,
     power: 0,
-    event: '' // create | update | delete | complete
+    event: '', // create | update | delete | complete
+    str: '' // 随机数
   },
   currentForm: {
   },
   taskList: [],
   stageList: [],
   storeCurrentForm: {},
-  projectObject: {}
+  projectObject: {},
+  taskMemberList: [],
+  projectMemberList: []
 }
 let mutations = {
   setDisplayObj2(state, array) { // 容易出异步问题
@@ -145,6 +148,25 @@ let mutations = {
   },
   setProjectObject(state, obj) {
     Object.assign(state.projectObject, obj)
+  },
+  setProjectMemberList(state, obj) {
+    state.projectMemberList = obj
+  },
+  addProjectMemberList(state, obj) {
+    state.projectMemberList.unshift(obj)
+  },
+  setTaskMemberList(state, obj) {
+    state.taskMemberList = obj
+  },
+  addTaskMemberList(state, obj) {
+    state.taskMemberList.push(obj)
+  },
+  deleteTaskMemberList(state, id) {
+    state.taskMemberList.forEach((item, index, array) => {
+      if (item.user.id === id) {
+        array.splice(index, 1)
+      }
+    })
   }
 }
 export default {

@@ -1,7 +1,10 @@
 <template>
-  <div class="cententList" v-if="true">
-    <p class="clearfix">添加成员
-      <i class="fr fx-icon-nothing-close-error" @click.stop="showGroupPush = false"></i>
+  <div class="cententList" v-show="propsShow">{{executeId}}
+    <p v-if="!executeId" class="clearfix">添加成员
+      <i class="fr fx-icon-nothing-close-error" @click="closeMember"></i>
+    </p>
+    <p v-else class="clearfix">选择成员
+      <i class="fr fx-icon-nothing-close-error" @click="closeMember"></i>
     </p>
     <div class="side clearfix">
       <div class="search-parent">
@@ -20,8 +23,7 @@
           <span>没有搜索到相关人员～</span>
         </li>
       </ul>
-      <!-- <p v-if="company_role === 20" @click="getVerifyStatus" class="welcome">通过链接邀请</p> -->
-      <p class="welcome" @click="addMemberFromCompany">从公司中添加成员</p>
+      <!-- <p class="welcome" @click="addMemberFromCompany">从公司中添加成员</p> -->
     </div>
     <section class="dialog-bg" v-if="showCover" @click.self="closeCover"></section>
     <section class="dialog-body" v-if="isInvite">
@@ -43,8 +45,8 @@
         <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
       </h3>
       <div class="dialog-content side cover-slide">
-        <ul class="scroll-bar">
-          <li :class="['info', {'active': projectMemberIdList.indexOf(d.id) !== -1}]"
+        <ul class="scroll-bar">{{taskMemberIdList}}
+          <li :class="['info', {'active': taskMemberIdList.indexOf(d.id) !== -1}]"
             v-for="(d, index) in companyMemberList" :key="index"
             @click="clickProjectMember(d.id)">
             <img v-if="d.logo_image" :src="d.logo_image.logo" alt="">
@@ -52,6 +54,7 @@
             <span class="name">{{d.realname}}</span>
           </li>
         </ul>
+      <!-- <p v-if="company_role === 20" @click="getVerifyStatus" class="welcome">通过链接邀请</p> -->
       </div>
     </section>
   </div>
@@ -67,17 +70,23 @@ export default {
       default: false
     },
     itemId: {
+      default: -1
+    },
+    taskId: {
       type: Number,
-      default: 2
+      default: -1
+    },
+    executeId: {
+      type: Number,
+      default: -1
     }
   },
   data() {
     return {
       currentShow: false,
       companyMemberList: [],
-      projectMemberList: [],
+      companyMemberIdList: [],
       projectMemberIdList: [],
-      taskMemberList: [],
       taskMemberIdList: [],
       matchMemberList: [],
       inviteLink: '',
@@ -88,16 +97,20 @@ export default {
     }
   },
   methods: {
+    showMember() {
+      this.getTaskMemberList()
+      this.getProjectMemberList()
+    },
+    closeMember() {
+      this.currentShow = false
+    },
     getTaskMemberList() {
       this.$http.get(api.taskUsers, {params: {task_id: this.taskId}})
       .then(res => {
         if (res.data.meta.status_code === 200) {
-          this.taskMemberList = res.data.data
-          let idList = []
-          this.taskMemberList.forEach(item => {
-            idList.push(item.selected_user_id)
-          })
-          Object.assign(this.taskMemberIdList, idList)
+          // this.taskMemberList = res.data.data
+          console.log(res.data.data)
+          this.$store.commit('setTaskMemberList', res.data.data)
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -109,10 +122,11 @@ export default {
       this.$http.get(api.itemUsers, {params: {item_id: this.itemId}})
       .then(res => {
         if (res.data.meta.status_code === 200) {
-          this.projectMemberList = res.data.data
+          // this.projectMemberList = res.data.data
+          this.$store.commit('setProjectMemberList', res.data.data)
           let idList = []
           this.projectMemberList.forEach(item => {
-            idList.push(item.selected_user_id)
+            idList.push(item.id)
           })
           Object.assign(this.projectMemberIdList, idList)
         } else {
@@ -135,19 +149,20 @@ export default {
       })
     },
     clickTaskMember(selectId) {
+      if (this.taskMemberIdList)
       let index = this.taskMemberIdList.indexOf(selectId)
       if (index === -1) {
         this.addTaskMember(selectId)
       } else {
-        this.removeTaskMember(selectId, index)
+        this.removeTaskMember(selectId)
       }
     },
-    clickObjectMember(selectId) {
-      let index = this.ObjectMemberIdList.indexOf(selectId)
+    clickProjectMember(selectId) {
+      let index = this.projectMemberIdList.indexOf(selectId)
       if (index === -1) {
-        this.addObjectMember(selectId)
+        this.addProjectMember(selectId)
       } else {
-        this.removeObjectMember(selectId, index)
+        this.removeProjectMember(selectId, index)
       }
     },
     addTaskMember(selectId) {
@@ -156,8 +171,9 @@ export default {
         selected_user_id: selectId})
       .then(res => {
         if (res.data.meta.status_code === 200) {
-          this.taskMemberList.push(res.data.data)
-          this.taskMemberIdList.push(res.data.data.selected_user_id)
+          // this.taskMemberList.push(res.data.data)
+          // this.taskMemberIdList.push(res.data.data.selected_user_id) // watch 监听
+          this.$store.commit('addTaskMemberList', res.data.data)
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -165,9 +181,44 @@ export default {
         this.$message.error(err.message)
       })
     },
-    removeTaskMember(selectId, index) {
+    addProjectMember(userId) {
+      this.$http.post(api.itemUsers, {
+        item_id: this.itemId,
+        user_id: userId})
+      .then(res => {
+        if (res.data.meta.status_code === 200) {
+          // this.projectMemberList.push(res.data.data)
+          this.$store.commit('addProjectMemberList', res.data.data)
+          this.projectMemberIdList.push(res.data.data.id)
+          this.addTaskMember(res.data.data.id)
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        this.$message.error(err.message)
+      })
+    },
+    removeTaskMember(selectId) {
       this.$http.delete(api.deleteTaskUsers, {params: {
         task_id: this.taskId,
+        selected_user_id: selectId
+      }})
+      .then(res => {
+        if (res.data.meta.status_code === 200) {
+          // this.taskMemberList.splice(index, 1)
+          this.$store.commit('deleteTaskMemberList', selectId)
+          // let index = this.taskMemberIdList.indexOf(selectId)
+          // this.taskMemberIdList.splice(index, 1)
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        this.$message.error(err.message)
+      })
+    },
+    removeProjectMember(selectId, index) {
+      this.$http.delete(api.deleteItemUsers, {params: {
+        item_id: this.itemId,
         selected_user_id: selectId
       }})
       .then(res => {
@@ -179,6 +230,24 @@ export default {
         }
       }).catch(err => {
         this.$message.error(err.message)
+      })
+    },
+    // 认领任务
+    claimTask(id, userId) {
+      this.$http.post(api.tasksExecuteUser, {
+        item_id: this.itemId,
+        task_id: id,
+        execute_user_id: userId})
+      .then((res) => {
+        if (res.data.meta.status_code === 200) {
+          this.$emit('changeExecute', userId)
+          this.$message.success('认领成功!')
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch((error) => {
+        this.$message.error(error.message)
+        console.error(error.message)
       })
     },
     getVerifyStatus() {
@@ -237,23 +306,48 @@ export default {
     }
   },
   created() {
-    this.getTaskMemberList()
-    this.getProjectMemberList()
+    // this.getTaskMemberList()
+    // this.getProjectMemberList()
   },
   computed: {
     company_role() {
       return this.$store.state.event.user.company_role
     },
-    taskId() {
-      return this.$store.state.task.taskState.id
+    projectMemberList() {
+      return this.$store.state.task.projectMemberList
+    },
+    taskMemberList() {
+      return this.$store.state.task.taskMemberList
     }
   },
   watch: {
+    projectMemberList: {
+      handler(val) {
+        if (val.length) {
+          this.matchMemberList = val
+        }
+      },
+      deep: true
+    },
+    taskMemberList: {
+      handler(val) {
+        let idList = []
+        val.forEach(item => {
+          idList.push(item.selected_user_id)
+        })
+        this.taskMemberIdList = idList
+      },
+      deep: true
+    },
     propsShow(val) {
       this.currentShow = val
     },
     currentShow(val) {
-      this.$emit('', val)
+      if (val === true) {
+        this.showMember()
+      } else {
+        this.$emit('closeMember', val)
+      }
     },
     seachKey(val) {
       if (!val) {
@@ -266,11 +360,9 @@ export default {
         })
       })
     },
-    projectMemberList: {
-      handler(val) {
-        this.matchMemberList = val
-      },
-      deep: true
+    taskId(val) {
+      this.getTaskMemberList()
+      this.getProjectMemberList()
     }
   }
 }
@@ -283,7 +375,7 @@ export default {
     top: 100px;
     position: absolute;
     left: 0;
-    top: 45px;
+    top: 85px;
     z-index: 1999;
   }
 

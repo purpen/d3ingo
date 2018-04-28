@@ -312,6 +312,13 @@
             </div>
             -->
             <el-form label-position="top" :model="clientForm" :rules="ruleClientForm" ref="ruleClientForm" label-width="80px">
+              <el-row :gutter="20">
+                <el-col :xs="24" :sm="24" :md="24" :lg="24">
+                  <el-form-item label="企业名称" prop="company_name">
+                    <el-input v-model="clientForm.company_name" placeholder="请添写企业名称"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
 
                 <el-row :gutter="10">
                   <el-col :xs="24" :sm="24" :md="24" :lg="24">
@@ -859,7 +866,7 @@ header {
   height: 100%;
 }
 .cover-body-left {
-  flex: 0 1 200px;
+  flex: 0 0 200px;
   display: flex;
   flex-direction: column;
   border-right: 1px solid #d2d2d2
