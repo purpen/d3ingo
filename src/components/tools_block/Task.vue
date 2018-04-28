@@ -1,6 +1,5 @@
 <template>
   <div class="" v-if="taskState.power" v-loading="isLoading">
-    {{currentForm.execute_user_id}}
     <!-- <el-button @click="addTagBtn">显示标签</el-button> -->
     <!-- <h3>任务组件引入测试 <a href="javascript:void(0)" @click="closeBtn()">点击关闭</a></h3> -->
     <!--<el-button @click="addBtn()">添加任务</el-button>-->

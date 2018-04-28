@@ -28,7 +28,7 @@
           :class="['clearfix', {'active':currentTagsId.indexOf(d.id) !== -1}]">
           <i class="color"
           :style="{background: d.type_val}"></i>
-          <span>{{ d.title }}</span>
+          <span>{{ d.title }}{{true}}</span>
           <i class="fr edit-tag" @click="editTagsBtn(d.id, index)"></i>
         </li>
       </ul>

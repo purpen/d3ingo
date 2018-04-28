@@ -1,5 +1,5 @@
 <template>
-  <div class="cententList" v-show="propsShow">
+  <div class="cententList" v-show="propsShow">{{executeId}}
     <p v-if="!executeId" class="clearfix">添加成员
       <i class="fr fx-icon-nothing-close-error" @click="closeMember"></i>
     </p>
@@ -78,7 +78,7 @@ export default {
     },
     executeId: {
       type: Number,
-      default: 0
+      default: -1
     }
   },
   data() {
@@ -149,15 +149,12 @@ export default {
       })
     },
     clickTaskMember(selectId) {
-      if (!this.executeId) {
-        let index = this.taskMemberIdList.indexOf(selectId)
-        if (index === -1) {
-          this.addTaskMember(selectId)
-        } else {
-          this.removeTaskMember(selectId)
-        }
+      if (this.taskMemberIdList)
+      let index = this.taskMemberIdList.indexOf(selectId)
+      if (index === -1) {
+        this.addTaskMember(selectId)
       } else {
-        this.claimTask(this.taskId, selectId)
+        this.removeTaskMember(selectId)
       }
     },
     clickProjectMember(selectId) {
@@ -324,9 +321,6 @@ export default {
     }
   },
   watch: {
-    executeId(val) {
-      this.taskMemberIdList = [val]
-    },
     projectMemberList: {
       handler(val) {
         if (val.length) {
@@ -337,15 +331,11 @@ export default {
     },
     taskMemberList: {
       handler(val) {
-        if (!this.executeId) {
-          let idList = []
-          val.forEach(item => {
-            idList.push(item.selected_user_id)
-          })
-          this.taskMemberIdList = idList
-        } else {
-          this.taskMemberIdList = [this.executeId]
-        }
+        let idList = []
+        val.forEach(item => {
+          idList.push(item.selected_user_id)
+        })
+        this.taskMemberIdList = idList
       },
       deep: true
     },
