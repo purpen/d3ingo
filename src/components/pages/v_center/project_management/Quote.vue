@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="vcenter-container">
     <div class="title">
       <h1>{{ projectObject.name }} 项目报价</h1>
     </div>
@@ -48,7 +48,7 @@
               </div>
               <div class="item-money">¥ {{ formatPrice(d.price) }}</div>
             </div>
-            <div class="line"></div>
+            <div class="line" v-if="index !== form.plan.length - 1"></div>
           </el-col>
         </el-row>
       

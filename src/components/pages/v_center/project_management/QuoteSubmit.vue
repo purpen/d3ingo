@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="vcenter-container">
     <div class="title">
       <h1>{{ projectObject.name }} 项目报价</h1>
     </div>

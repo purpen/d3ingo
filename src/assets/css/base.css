@@ -562,6 +562,13 @@ button.is-custom.is-outlined:hover, .button.is-custom.is-outlined:focus {
 button.is-custom.is-outlined.is-loading:after {
   border-color: transparent transparent #FF5A5F #FF5A5F !important;
 }
+.large-button,
+.middle-button,
+.small-button {
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+}
 .large-button {
   cursor: pointer;
   width: 100%;

@@ -3,7 +3,7 @@
     <div class="pm-left">
       <router-link :to="{name: 'projectManagementList'}">项目管理</router-link>
       <router-link :to="{name: 'projectManagementOverView', params: {id: routeId}}">{{projectObject.name}}</router-link>
-      <span v-if="false" class="favorite-star active"></span>
+      <!-- <span class="favorite-star"></span> -->
     </div>
     <div class="pm-middle">
       <router-link :class="[{'active': currentRoute === 'projectManagementOverView'}]"
@@ -23,7 +23,7 @@
       <router-link :to="{path: ''}">合同</router-link>
       <a @click="cover = true">菜单</a>
     </div>
-    <section class="cover" @click.self="cover = false" v-if="cover">
+    <section class="cover" @click.self="cover = false" v-show="cover">
       <div class="cover-content">
         <div class="cover-header clear">项目设置
           <span class="fr fx fx-icon-nothing-close-error" @click="cover = false"></span>
@@ -32,9 +32,11 @@
           <div class="cover-body-left">
             <span @click="changeOption('project')" :class="{'active': option === 'project'}">项目信息</span>
             <span @click="changeOption('customer')" :class="{'active': option === 'customer'}">客户信息</span>
-            <span @click="changeOption('permission')" :class="{'active': option === 'permission'}" v-if="false">权限信息</span>
+            <span @click="changeOption('server')" :class="{'active': option === 'server'}">设计公司信息</span>
+            <span @click="changeOption('permission')" :class="{'active': option === 'permission'}" v-show="false">权限信息</span>
           </div>
-          <div class="cover-body-right scroll-bar" v-if="option === 'project'">
+          <div class="cover-body-right scroll-bar" v-show="option === 'project'">
+            <!--
             <section>
               <h3>项目名称</h3>
               <input placeholder="请填写项目名称"
@@ -113,8 +115,175 @@
               <button class="fr middle-button full-red-button">保存</button>
               <button class="fr middle-button white-button" @click="cover = false">取消</button>
             </div>
+            -->
+            <el-form label-position="top" :model="baseForm" :rules="ruleBaseForm" ref="ruleBaseForm" label-width="80px">
+
+                <el-row :gutter="10">
+                  <el-col :xs="24" :sm="24" :md="24" :lg="24">
+                    <el-form-item label="项目名称" prop="name">
+                      <el-input v-model="baseForm.name" placeholder="请填写项目名称"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="10">
+                  <el-col :xs="24" :sm="24" :md="24" :lg="24">
+                    <el-form-item label="项目描述" prop="description">
+                      <el-input type="textarea" :rows="5" v-model="baseForm.description" placeholder="请填写项目描述"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="10">
+                  <el-col :xs="24" :sm="12" :md="12" :lg="12">
+                    <el-form-item label="商务经理" prop="business_manager">
+                      <el-select v-model.number="baseForm.business_manager" placeholder="请选择">
+                        <el-option
+                          v-for="(d, index) in memberList"
+                          :key="index"
+                          :label="d.realname"
+                          :value="d.id">
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="24" :sm="12" :md="12" :lg="12">
+                    <el-form-item label="项目负责人" prop="leader">
+                      <el-select v-model.number="baseForm.leader" placeholder="请选择">
+                        <el-option
+                          v-for="(d, index) in memberList"
+                          :key="index"
+                          :label="d.realname"
+                          :value="d.id">
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="10">
+                  <el-col :xs="24" :sm="12" :md="12" :lg="12">
+                    <el-form-item label="项目费用" prop="cost">
+                      <el-input v-model="baseForm.cost" placeholder="请添写项目费用"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="24" :sm="12" :md="12" :lg="12">
+                    <el-form-item label="项目工作地点" prop="workplace">
+                      <el-input v-model="baseForm.workplace" placeholder="请添写工作地点"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+
+                <el-row :gutter="10">
+                  <el-col :xs="24" :sm="24" :md="24" :lg="24">
+                    <el-form-item label="设计类别" prop="type">
+                      <el-select v-model.number="baseForm.type" @change="selectTypeChange" placeholder="请选择">
+                        <el-option
+                          v-for="(d, index) in typeOptions"
+                          :key="index"
+                          :label="d.name"
+                          :value="d.id">
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+
+                <el-row :gutter="10" v-show="baseForm.type">
+                  <el-col :xs="24" :sm="24" :md="24" :lg="24">
+                    <el-form-item label="详细类别" prop="design_types">
+                      <el-select v-model="baseForm.design_types" multiple placeholder="请选择">
+                        <el-option
+                          v-for="d in typeDesignOptions"
+                          :key="d.id"
+                          :label="d.name"
+                          :value="d.id">
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+
+                <el-row :gutter="10" v-show="baseForm.type === 1">
+                  <el-col :xs="24" :sm="24" :md="24" :lg="24">
+                    <el-form-item label="所属领域" prop="field">
+                      <el-select v-model.number="baseForm.field" placeholder="请选择">
+                        <el-option
+                          v-for="(d, index) in fieldOptions"
+                          :key="index"
+                          :label="d.name"
+                          :value="d.id">
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+
+                <el-row :gutter="10">
+                  <el-col :xs="24" :sm="24" :md="24" :lg="24">
+                    <el-form-item label="所属行业" prop="industry">
+                      <el-select v-model.number="baseForm.industry" placeholder="请选择">
+                        <el-option
+                          v-for="(d, index) in industryOptions"
+                          :key="index"
+                          :label="d.name"
+                          :value="d.id">
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+
+                <el-row :gutter="10">
+                  <el-col :xs="24" :sm="12" :md="12" :lg="12">
+                    <el-form-item label="投入时间" prop="project_duration">
+                      <el-input placeholder="请填写所需天数" v-model.number="baseForm.project_duration">
+                        <template slot="append">工作日</template>
+                      </el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="24" :sm="12" :md="12" :lg="12">
+                    <el-form-item label="项目开始时间" prop="start_time">
+                      <el-date-picker
+                        v-model="baseForm.start_time"
+                        type="date"
+                        placeholder="请填写项目开始时间">
+                      </el-date-picker>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+
+                <el-row :gutter="10">
+                  <el-col :xs="24" :sm="24" :md="24" :lg="24">
+                    <el-form-item label="项目等级" prop="industry">
+                      <el-select v-model.number="baseForm.level" placeholder="请选择">
+                        <el-option
+                          v-for="(item, index) in levels"
+                          :key="index"
+                          :label="item.label"
+                          :value="item.value">
+                          <span :style="{
+                            float: 'left',
+                            width: '10px',
+                            height: '10px',
+                            borderRadius: '50%',
+                            margin: '5px 10px 0 0',
+                            background: item.color}"></span>
+                          <span style="float: left">{{ item.label }}</span>
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+
+                <p class="form-btn">
+                  <el-button @click="cover = false">取消</el-button>
+                  <el-button type="primary" class="is-custom" :loading="isBaseLoadingBtn"
+                             @click="submitBase('ruleBaseForm')">提交
+                  </el-button>
+                </p>
+              </el-form>
+
+
           </div>
-          <div class="cover-body-right cover-customer scroll-bar" v-if="option === 'customer'">
+          <div class="cover-body-right cover-customer scroll-bar" v-show="option === 'customer'">
             <!--
             <section>
               <h3>项目等级</h3>
@@ -151,40 +320,94 @@
                 </el-col>
               </el-row>
 
-              <el-row :gutter="20">
-                <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                  <el-form-item label="联系人" prop="contact_name">
-                    <el-input v-model="clientForm.contact_name" placeholder="请添写联系人姓名"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                  <el-form-item label="联系电话" prop="phone">
-                    <el-input v-model="clientForm.phone" placeholder="请添写联系电话"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                  <el-form-item label="职位" prop="position">
-                    <el-input v-model="clientForm.position" placeholder="请添写联系人职位"></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
+                <el-row :gutter="10">
+                  <el-col :xs="24" :sm="24" :md="24" :lg="24">
+                    <el-form-item label="企业名称" prop="company_name">
+                      <el-input v-model="clientForm.company_name" placeholder="请添写企业名称"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
 
-              <region-picker :provinceProp="clientForm.province" :cityProp="clientForm.city" propStyle="margin:0;" :districtProp="clientForm.area"
-                              :isFirstProp="isFirst" titleProp="企业地址"
-                              @onchange="changeClient" class="fullwidth"></region-picker>
+                <el-row :gutter="10">
+                  <el-col :xs="24" :sm="8" :md="8" :lg="8">
+                    <el-form-item label="联系人" prop="contact_name">
+                      <el-input v-model="clientForm.contact_name" placeholder="请添写联系人姓名"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="24" :sm="8" :md="8" :lg="8">
+                    <el-form-item label="联系电话" prop="phone">
+                      <el-input v-model="clientForm.phone" placeholder="请添写联系电话"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="24" :sm="8" :md="8" :lg="8">
+                    <el-form-item label="职位" prop="position">
+                      <el-input v-model="clientForm.position" placeholder="请添写联系人职位"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
 
-              <el-form-item label="" prop="address">
-                <el-input v-model="clientForm.address" placeholder="街道地址"></el-input>
-              </el-form-item>
+                <region-picker :provinceProp="clientForm.province" :cityProp="clientForm.city" propStyle="margin:0;" :districtProp="clientForm.area" :gutter="10"
+                               :isFirstProp="isFirstRegion" titleProp="企业地址"
+                               @onchange="changeClient" class="fullwidth"></region-picker>
 
-              <p class="form-btn">
-                <el-button @click="cover = false">取消</el-button>
-                <el-button type="primary" class="is-custom" :loading="isClientLoadingBtn"
-                            @click="submitClient('ruleClientForm')">提交
-                </el-button>
-              </p>
-            </el-form>
+                <el-form-item label="" prop="address">
+                  <el-input v-model="clientForm.address" placeholder="街道地址"></el-input>
+                </el-form-item>
+
+                <p class="form-btn">
+                  <el-button @click="cover = false">取消</el-button>
+                  <el-button type="primary" class="is-custom" :loading="isClientLoadingBtn"
+                             @click="submitClient('ruleClientForm')">提交
+                  </el-button>
+                </p>
+              </el-form>
           </div>
+          <div class="cover-body-right cover-customer scroll-bar" v-show="option === 'server'">
+            <el-form label-position="top" :model="serverForm" :rules="ruleServerForm" ref="ruleServerForm" label-width="80px">
+
+                <el-row :gutter="10">
+                  <el-col :xs="24" :sm="24" :md="24" :lg="24">
+                    <el-form-item label="企业名称" prop="design_company_name">
+                      <el-input v-model="serverForm.design_company_name" placeholder="请添写企业名称"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+
+                <el-row :gutter="10">
+                  <el-col :xs="24" :sm="8" :md="8" :lg="8">
+                    <el-form-item label="联系人" prop="design_contact_name">
+                      <el-input v-model="serverForm.design_contact_name" placeholder="请添写联系人姓名"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="24" :sm="8" :md="8" :lg="8">
+                    <el-form-item label="联系电话" prop="design_phone">
+                      <el-input v-model="serverForm.design_phone" placeholder="请添写联系电话"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="24" :sm="8" :md="8" :lg="8">
+                    <el-form-item label="职位" prop="design_position">
+                      <el-input v-model="serverForm.design_position" placeholder="请添写联系人职位"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+
+                <region-picker :provinceProp="serverForm.design_province" :cityProp="serverForm.design_city" propStyle="margin:0;" :districtProp="serverForm.design_area" :gutter="10"
+                               :isFirstProp="isFirstRegion" titleProp="企业地址"
+                               @onchange="changeServer" class="fullwidth"></region-picker>
+
+                <el-form-item label="" prop="design_address">
+                  <el-input v-model="serverForm.design_address" placeholder="街道地址"></el-input>
+                </el-form-item>
+
+                <p class="form-btn">
+                  <el-button @click="cover = false">取消</el-button>
+                  <el-button type="primary" class="is-custom" :loading="isServerLoadingBtn"
+                             @click="submitServer('ruleServerForm')">提交
+                  </el-button>
+                </p>
+              </el-form>
+          </div>
+
         </div>
       </div>
     </section>
@@ -193,12 +416,19 @@
 <script>
 import api from '@/api/api'
 import '@/assets/js/format'
+import typeData from '@/config'
 // 城市联动
 import RegionPicker from '@/components/block/RegionPicker'
 export default {
   name: 'projectManagementMenuSub',
   components: {
     RegionPicker
+  },
+  props: {
+    currentRoute: {
+      type: String,
+      default: 'overview'
+    }
   },
   data() {
     return {
@@ -216,17 +446,12 @@ export default {
         startTime: '',
         level: 1
       },
-      customer: {
-        company_name: '',
-        contact_name: '',
-        position: '',
-        phone: '',
-        province: '',
-        city: '',
-        address: '',
-        user_id: ''
-      },
+      baseForm: {},
       clientForm: {},
+      serverForm: {},
+      ruleBaseForm: {
+        name: [{ required: true, message: '请添写项目名称', trigger: 'blur' }]
+      },
       ruleClientForm: {
         company_name: [{ required: true, message: '请添写企业名称', trigger: 'blur' }],
         contact_name: [{ required: true, message: '请添联系人姓名', trigger: 'blur' }],
@@ -234,7 +459,17 @@ export default {
         position: [{ required: true, message: '请添写联系人职位', trigger: 'blur' }],
         address: [{ required: true, message: '请添写企业详细地址', trigger: 'blur' }]
       },
+      ruleServerForm: {
+        design_company_name: [{ required: true, message: '请添写企业名称', trigger: 'blur' }],
+        design_contact_name: [{ required: true, message: '请添联系人姓名', trigger: 'blur' }],
+        design_phone: [{ required: true, message: '请添写联系人电话', trigger: 'blur' }],
+        design_position: [{ required: true, message: '请添写联系人职位', trigger: 'blur' }],
+        design_address: [{ required: true, message: '请添写企业详细地址', trigger: 'blur' }]
+      },
+      isBaseLoadingBtn: false,
       isClientLoadingBtn: false,
+      isServerLoadingBtn: false,
+      isFirstRegion: false,
       levels: [{
         value: 1,
         label: '普通',
@@ -252,18 +487,6 @@ export default {
       }]
     }
   },
-  props: {
-    currentRoute: {
-      type: String,
-      default: 'overview'
-    },
-    projectObject: {
-      type: Object,
-      default: function () {
-        return {}
-      }
-    }
-  },
   computed: {
     routeId() {
       return this.$route.params.id
@@ -272,47 +495,252 @@ export default {
       let q = this.$phenix.in_array(['projectQuote', 'projectQuoteSubmit'], this.currentRoute)
       if (q === -1) return false
       return true
+    },
+    // 获取项目对象
+    projectObject() {
+      return this.$store.state.task.projectObject
+    },
+    // 成员列表
+    memberList() {
+      let memberList = [
+        {id: 1, realname: '田帅'},
+        {id: 2, realname: '顾三'},
+        {id: 3, realname: '王五'}
+      ]
+      return memberList
+    },
+    typeOptions() {
+      return typeData.COMPANY_TYPE
+    },
+    typeDesignOptions: {
+      get() {
+        var index = 0
+        if (this.baseForm.type === 1) {
+          index = 0
+        } else if (this.baseForm.type === 2) {
+          index = 1
+        } else {
+          return []
+        }
+        return typeData.COMPANY_TYPE[index].designType
+      },
+      set() {
+      }
+    },
+    fieldOptions() {
+      var index
+      if (this.baseForm.type === 1) {
+        index = 0
+      } else if (this.baseForm.type === 2) {
+        index = 1
+      } else {
+        return []
+      }
+
+      return typeData.COMPANY_TYPE[index].field
+    },
+    // 所属行业下拉选项
+    industryOptions() {
+      return typeData.INDUSTRY
     }
   },
   methods: {
     changeOption(e) {
       this.option = e
     },
-    // 改变城市组件值- 客户信息(提交)
+    // 改变城市组件值- 客户信息()
     changeClient: function(obj) {
       this.$set(this.clientForm, 'province', obj.province)
       this.$set(this.clientForm, 'city', obj.city)
       this.$set(this.clientForm, 'area', obj.district)
     },
-    // 创建客户信息
-    submitClient(formName) {
+    // 改变城市组件值- 服务信息()
+    changeServer: function(obj) {
+      this.$set(this.serverForm, 'design_province', obj.province)
+      this.$set(this.serverForm, 'design_city', obj.city)
+      this.$set(this.serverForm, 'design_area', obj.district)
+    },
+    // 更新项目基本信息
+    submitBase(formName) {
       this.$refs[formName].validate(valid => {
         // 验证通过，提交
         if (valid) {
-          this.isClientLoadingBtn = true
-          this.$http.post(api.designClientCreate, this.clientForm)
+          let row = {}
+          Object.assign(row, this.baseForm)
+          if (!row.business_manager) this.$set(row, 'business_manager', 0)
+          if (!row.leader) this.$set(row, 'leader', 0)
+          if (!row.cost) this.$set(row, 'cost', 0)
+          if (!row.type) this.$set(row, 'type', 0)
+          if (!row.field) this.$set(row, 'field', 0)
+          if (!row.industry) this.$set(row, 'industry', 0)
+          if (!row.project_duration) this.$set(row, 'project_duration', 0)
+          row.design_types = JSON.stringify(row.design_types)
+          if (!row.start_time) {
+            row.start_time = 0
+          } else {
+            row.start_time = Date.parse(row.start_time) / 1000
+          }
+          console.log(row)
+
+          this.isBaseLoadingBtn = true
+          this.$http.put(api.updateDesignProject, row)
           .then(res => {
-            this.isClientLoadingBtn = false
+            this.isBaseLoadingBtn = false
             if (res.data.meta.status_code === 200) {
-              console.log(res.data.data)
-              if (res.data.data['area'] === 0) {
-                res.data.data['area'] = ''
-              }
-              this.clientList.unshift(res.data.data)
-              this.$message.success('设置成功！')
-              this.dialogClient = false
+              Object.assign(this.projectObject, this.baseForm)
+              this.$store.commit('setProjectObject', this.projectObject)
+              this.$message.success('更新成功！')
             } else {
               this.$message.error(res.data.meta.message)
             }
           }).catch(err => {
-            this.isClientLoadingBtn = false
+            this.isBaseLoadingBtn = false
+            this.$message.error(err.message)
             console.error(err)
           })
         } else {
           return false
         }
       })
+    },
+    // 更新客户信息
+    submitClient(formName) {
+      this.$refs[formName].validate(valid => {
+        // 验证通过，提交
+        if (valid) {
+          let row = {}
+          if (!this.clientForm.province) {
+            this.$message.error('请选择省份/自治区/直辖市')
+            return
+          }
+          if (!this.clientForm.city) {
+            this.$message.error('请选择城市')
+            return
+          }
+          Object.assign(row, this.clientForm)
+          if (!row.area) this.$set(row, 'area', 0)
+
+          this.isClientLoadingBtn = true
+          this.$http.put(api.updateDesignProject, row)
+          .then(res => {
+            this.isClientLoadingBtn = false
+            if (res.data.meta.status_code === 200) {
+              Object.assign(this.projectObject, this.clientForm)
+              this.$store.commit('setProjectObject', this.projectObject)
+              this.$message.success('更新成功！')
+            } else {
+              this.$message.error(res.data.meta.message)
+            }
+          }).catch(err => {
+            this.isClientLoadingBtn = false
+            this.$message.error(err.message)
+            console.error(err)
+          })
+        } else {
+          return false
+        }
+      })
+    },
+    // 更服务方信息
+    submitServer(formName) {
+      this.$refs[formName].validate(valid => {
+        // 验证通过，提交
+        if (valid) {
+          let row = {}
+          if (!this.serverForm.design_province) {
+            this.$message.error('请选择省份/自治区/直辖市')
+            return
+          }
+          if (!this.serverForm.design_city) {
+            this.$message.error('请选择城市')
+            return
+          }
+          Object.assign(row, this.serverForm)
+          if (!row.design_area) this.$set(row, 'design_area', 0)
+
+          this.isServerLoadingBtn = true
+          this.$http.put(api.updateDesignProject, row)
+          .then(res => {
+            this.isServerLoadingBtn = false
+            if (res.data.meta.status_code === 200) {
+              Object.assign(this.projectObject, this.serverForm)
+              this.$store.commit('setProjectObject', this.projectObject)
+              this.$message.success('更新成功！')
+            } else {
+              this.$message.error(res.data.meta.message)
+            }
+          }).catch(err => {
+            this.isServerLoadingBtn = false
+            this.$message.error(err.message)
+            console.error(err)
+          })
+        } else {
+          return false
+        }
+      })
+    },
+    // 选择分类事件
+    selectTypeChange(val) {
+      this.baseForm.design_types = []
     }
+  },
+  watch: {
+    cover(d) {
+      if (d) {
+        this.baseForm = {
+          id: this.projectObject.id,
+          name: this.projectObject.name,
+          description: this.projectObject.description,
+          business_manager: this.projectObject.business_manager === 0 ? '' : this.projectObject.business_manager,
+          leader: this.projectObject.leader === 0 ? '' : this.projectObject.leader,
+          cost: this.projectObject.cost,
+          workplace: this.projectObject.workplace,
+          // design_types: Object.prototype.toString.call(this.projectObject.design_types) === '[object Array]' ? [] : this.projectObject.design_types,
+          type: this.projectObject.type === 0 ? '' : this.projectObject.type,
+          field: this.projectObject.field === 0 ? '' : this.projectObject.field,
+          industry: this.projectObject.industry === 0 ? '' : this.projectObject.industry,
+          project_duration: this.projectObject.project_duration === 0 ? '' : this.projectObject.project_duration,
+          start_time: !this.projectObject.start_time ? '' : this.projectObject.start_time.date_format(),
+          level: this.projectObject.level === 0 ? '' : this.projectObject.level
+        }
+        this.$set(this.baseForm, 'design_types', this.projectObject.design_types)
+        /**
+        var designTypes = []
+        if (Object.prototype.toString.call(this.projectObject.design_types) === '[object Array]') {
+          for (let i = 0; i < this.projectObject.design_types.length; i++) {
+            designTypes.push(this.projectObject.design_types[i])
+          }
+        }
+        this.$set(this.baseForm, 'design_types', designTypes)
+        **/
+        console.log(this.baseForm)
+        this.clientForm = {
+          id: this.projectObject.id,
+          company_name: this.projectObject.company_name,
+          contact_name: this.projectObject.contact_name,
+          position: this.projectObject.position,
+          phone: this.projectObject.phone,
+          province: this.projectObject.province,
+          city: this.projectObject.city,
+          area: this.projectObject.area === 0 ? '' : this.projectObject.area,
+          address: this.projectObject.address
+        }
+        this.serverForm = {
+          id: this.projectObject.id,
+          design_company_name: this.projectObject.design_company_name,
+          design_contact_name: this.projectObject.design_contact_name,
+          design_position: this.projectObject.design_position,
+          design_phone: this.projectObject.design_phone,
+          design_province: this.projectObject.design_province,
+          design_city: this.projectObject.design_city,
+          design_area: this.projectObject.design_area === 0 ? '' : this.projectObject.design_area,
+          design_address: this.projectObject.design_address
+        }
+      }
+    }
+  },
+  created() {
+    console.log(this.projectObject)
   }
 }
 </script>
@@ -511,5 +939,8 @@ header {
   bottom: 30px;
   width: 100%;
   padding: 0 30px;
+}
+.el-date-editor.el-input {
+  width: 100%;
 }
 </style>

@@ -1,6 +1,5 @@
 <template>
   <div class="" v-if="taskState.power" v-loading="isLoading">
-    {{currentForm.execute_user_id}}
     <!-- <el-button @click="addTagBtn">显示标签</el-button> -->
     <!-- <h3>任务组件引入测试 <a href="javascript:void(0)" @click="closeBtn()">点击关闭</a></h3> -->
     <!--<el-button @click="addBtn()">添加任务</el-button>-->
@@ -42,21 +41,23 @@
       <div class="task-detail-body">
         <div class="task-admin" v-if="true">
           <p>分配给</p>
-          <ul class="task-member-list">
-            <li v-if="currentForm.execute_user">
+          <ul class="task-member-list task-member-execute">
+            <li @click="showMember = true" v-if="currentForm.execute_user">
               <a class="remove-member" @click="removeExecute"></a>
               <img v-if="currentForm.execute_user.logo_image" v-lazy="currentForm.execute_user.logo_image.logo" alt="">
               <img v-else v-lazy="require('assets/images/avatar_100.png')">
             </li>
+            <li @click="showMember = true" v-else>待认领</li>
           </ul>
-          <p class="show-member" v-if="true" @click="showMember = true"></p>
           <v-Member
             :propsShow="showMember"
             :itemId="propsTags.itemId"
             :taskId="taskState.id"
             :executeId="currentForm.execute_user_id"
             @closeMember="closeMember"
-            @changeExecute="changeExecute"></v-Member>
+            @changeExecute="changeExecute"
+            @removeExecute="removeExecute"
+            @changeCreate2="changeCreate2"></v-Member>
         </div>
         <ul class="task-info">
           <li>
@@ -125,7 +126,11 @@
           </ul>
           <p class="show-member" v-if="true" @click="showMember2 = true">
           </p>
-          <v-Member :propsShow="showMember2" :itemId="propsTags.itemId" :taskId="taskState.id" @closeMember="closeMember2"></v-Member>
+          <v-Member
+            :propsShow="showMember2" 
+            :itemId="propsTags.itemId" 
+            :taskId="taskState.id"
+            @closeMember="closeMember2"></v-Member>
         </div>
       </div>
     </section>
@@ -191,6 +196,7 @@
         isLoading: false,
         atFirst: true,
         isCreate: true,
+        isCreate2: true,
         showMember: false,
         showMember2: false
       }
@@ -447,6 +453,7 @@
       },
       changeExecute(id) {
         this.currentForm.execute_user_id = id
+        this.showMember = false
       },
       removeExecute() {
         this.$http.post(api.tasksExecuteUser, {
@@ -463,6 +470,9 @@
           this.$message.error(error.message)
           console.error(error.message)
         })
+      },
+      changeCreate2() {
+        this.isCreate2 = true
       }
     },
     mounted: function () {
@@ -484,10 +494,12 @@
     watch: {
       taskState: {
         handler(val) {
+          this.showMember = false
           this.showMember2 = false
           if (val) {
             if (val.event === 'update') {
               this.view(val.id)
+              this.isCreate2 = true
             } else if (val.event === 'create') {
               if (this.isCreate) {
                 this.currentForm = {}
@@ -519,7 +531,8 @@
             })
             this.tagsId = list
           }
-          if (val.execute_user_id) {
+          if (val.execute_user_id && this.isCreate2) {
+            this.isCreate2 = false
             this.$http.get(api.userInfo, {params: {
               user_id: val.execute_user_id
             }}).then(res => {
@@ -840,7 +853,8 @@
   }
   .task-admin {
     position: relative;
-    padding: 20px 0
+    padding: 0;
+    margin-top: 20px
   }
   .task-member-list {
     display: inline-flex;
@@ -901,6 +915,17 @@
   .task-member-list li a:hover+img {
     border-color: #ff5a5f;
   }
+  .task-member-execute {
+    padding-left: 0;
+    padding-top: 20px;
+  }
+  .task-member-execute li {
+    color: #999;
+    font-size: 14px;
+  }
+  .task-member-execute li:hover {
+    color: #222;
+  }
   .task-detail-body .show-member {
     margin-top: 20px;
     display: inline-block;
@@ -913,6 +938,9 @@
     border-radius: 50%;
     position: relative;
     cursor: pointer;
+  }
+  .task-member-execute .show-member {
+    margin-top: 0;
   }
   .show-member:before {
     content: "";

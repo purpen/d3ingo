@@ -87,7 +87,7 @@ export default {
       importance: 1,
       query: {
         page: 1,
-        pageSize: 12,
+        pageSize: 11,
         totalPges: 0,
         totalCount: 0
       }

@@ -45,7 +45,7 @@
         <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
       </h3>
       <div class="dialog-content side cover-slide">
-        <ul class="scroll-bar">{{taskMemberIdList}}
+        <ul class="scroll-bar">
           <li :class="['info', {'active': taskMemberIdList.indexOf(d.id) !== -1}]"
             v-for="(d, index) in companyMemberList" :key="index"
             @click="clickProjectMember(d.id)">
@@ -78,7 +78,7 @@ export default {
     },
     executeId: {
       type: Number,
-      default: 0
+      default: -1
     }
   },
   data() {
@@ -109,7 +109,6 @@ export default {
       .then(res => {
         if (res.data.meta.status_code === 200) {
           // this.taskMemberList = res.data.data
-          console.log(res.data.data)
           this.$store.commit('setTaskMemberList', res.data.data)
         } else {
           this.$message.error(res.data.meta.message)
@@ -149,7 +148,7 @@ export default {
       })
     },
     clickTaskMember(selectId) {
-      if (!this.executeId) {
+      if (this.executeId === -1) {
         let index = this.taskMemberIdList.indexOf(selectId)
         if (index === -1) {
           this.addTaskMember(selectId)
@@ -157,7 +156,7 @@ export default {
           this.removeTaskMember(selectId)
         }
       } else {
-        this.claimTask(this.taskId, selectId)
+        this.claimTask(selectId)
       }
     },
     clickProjectMember(selectId) {
@@ -210,6 +209,7 @@ export default {
         if (res.data.meta.status_code === 200) {
           // this.taskMemberList.splice(index, 1)
           this.$store.commit('deleteTaskMemberList', selectId)
+          this.currentShow = false
           // let index = this.taskMemberIdList.indexOf(selectId)
           // this.taskMemberIdList.splice(index, 1)
         } else {
@@ -236,14 +236,15 @@ export default {
       })
     },
     // 认领任务
-    claimTask(id, userId) {
+    claimTask(userId) {
       this.$http.post(api.tasksExecuteUser, {
         item_id: this.itemId,
-        task_id: id,
+        task_id: this.taskId,
         execute_user_id: userId})
       .then((res) => {
         if (res.data.meta.status_code === 200) {
           this.$emit('changeExecute', userId)
+          this.$emit('changeCreate2')
           this.$message.success('认领成功!')
         } else {
           this.$message.error(res.data.meta.message)
@@ -337,7 +338,7 @@ export default {
     },
     taskMemberList: {
       handler(val) {
-        if (!this.executeId) {
+        if (this.executeId === -1) {
           let idList = []
           val.forEach(item => {
             idList.push(item.selected_user_id)
@@ -345,6 +346,9 @@ export default {
           this.taskMemberIdList = idList
         } else {
           this.taskMemberIdList = [this.executeId]
+          if (!this.executeId) {
+            this.$emit('removeExecute')
+          }
         }
       },
       deep: true
@@ -457,11 +461,11 @@ export default {
     position: relative;
     height: inherit;
     padding: 20px;
-    background: url(../../assets/images/tools/report/NoMaterial.png) no-repeat center / 120px;
+    background: url(../../assets/images/tools/report/NoMaterial.png) no-repeat center 8px / 120px;
   }
   .no-match span {
     position: absolute;
-    bottom: 0;
+    bottom: 20px;
     left: 0;
     width: 100%;
     text-align: center;

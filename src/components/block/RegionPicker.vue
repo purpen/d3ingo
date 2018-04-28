@@ -1,7 +1,7 @@
 <template>
 
     <el-form-item :label="titleProp" prop="chinaCity" :style="propStyle">
-      <el-row :gutter="20">
+      <el-row :gutter="gutter">
         <el-col :xs="24" :sm="8" :md="8" :lg="8">
           <el-select v-model="province" event="province" placeholder="省份/自治区/直辖市">
             <el-option
@@ -54,6 +54,9 @@
       districtProp: {},
       titleProp: {
         default: '选择城市'
+      },
+      gutter: {
+        default: 20
       },
       propStyle: {
         default: ''
