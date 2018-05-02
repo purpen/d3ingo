@@ -2432,7 +2432,14 @@ td.fc-day.fc-widget-content.fc-today::before {
   clear: both;
   float: right;
 }
+/* 去除输入框边框 */
 
+.noborder>.el-input__inner{
+  border:none;
+}
+.noborder>.el-textarea__inner{
+  border:none;
+}
 /*enterprise*/
 
 #enterprise .el-card__body {

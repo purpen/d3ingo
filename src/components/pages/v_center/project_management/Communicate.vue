@@ -6,7 +6,7 @@
           <div class="grid-content bg-purple">
             <el-row v-if="event === 'create'">
               <el-col class="fx-3">
-               <el-input  v-model="form.title" class="noborder" placeholder="请填写标题" :maxlength="50"></el-input>
+               <el-input  v-model="form.title" class="noborder fx-3"  placeholder="请填写标题" :maxlength="50"></el-input>
               </el-col>
             </el-row>
             <ul class="edit">
@@ -25,7 +25,7 @@
                       type="datetime"
                       :editable="false"
                       v-model="form.expire_time"
-                      placeholder="选择开始时间" size="small">
+                      placeholder="选择开始时间" size="small" @change="addTime">
                     </el-date-picker>
                 </div>
               </li>
@@ -63,7 +63,7 @@
           <el-row class="MeetingCenter" @click.native="addBtn()" :style="{borderTop:event!=='create'?'none':'1px solid #D2D2D2',paddingTop:event!=='create'?'10px':'20px'}">
               <el-col class="fx">
                 <div>
-               <el-input  placeholder="请输入会议内容" type="textarea" :autosize="{ minRows: 4, maxRows: 10}"  v-model="form.content" v-if=" event !== 'create'?false : true " :maxlength="800"></el-input>
+               <el-input  placeholder="请输入会议内容" type="textarea" :autosize="{ minRows: 4, maxRows: 10}"  v-model="form.content" v-if=" event !== 'create'?false : true " :maxlength="800" class="noborder"></el-input>
                <p v-else>请输入会议内容</p>
                </div>
               </el-col>
@@ -125,7 +125,7 @@
         <el-col :span="18" :offset="3" v-if=" itemList.length>0 " v-for="(d, index) in itemList" :key="index"><div class="grid-content bg-purple">
            <el-row>
               <el-col class="titlec" >
-                <el-input  v-model="d.title"  v-if ="d.isedit === 2" placeholder="请填写标题"></el-input>
+                <el-input  v-model="d.title"  v-if ="d.isedit === 2" placeholder="请填写标题" class="noborder fx-3"></el-input>
                 <span v-else>{{ d.title }}</span>
                 <div class="fr" @click="operation === index?operation='': operation = index "  v-if ="d.isedit === 1 || !d.isedit">
                    <i class="el-icon-more" ></i>
@@ -137,17 +137,17 @@
               </el-col>
             </el-row>
             <ul class="edit">
-              <li v-if="d.other_realname">
+              <li v-if="d.other_realname||d.isedit===2">
                 <img :src=" Customer " alt="">
                 <el-input  placeholder="请填写参与客户" size="small" v-model=" d.other_realname" v-if="d.isedit === 2"></el-input>
                 <p v-else>{{ d.other_realname}}</p>
               </li>
-              <li v-if="d.location">
+              <li v-if="d.location||d.isedit===2">
                 <img :src=" Locationimg " alt="">
                 <el-input  placeholder="请输入地点" size="small" v-if="d.isedit === 2" v-model="d.location"></el-input>
                 <p v-else>{{ d.location }}</p>
               </li>
-              <li v-if="d.expire_time">
+              <li v-if="d.expire_time||d.isedit===2">
                 <img :src=" dateimg " alt="">
                 <div class="block" v-if="d.isedit === 2">
                     <el-date-picker
@@ -158,34 +158,55 @@
                 </div>
                 <p v-else>{{ d.expire_time }}</p>
               </li>
-              <li v-if="d.isedit === 1&&d.selected_user.length>0"><img :src=" userimg " alt=""></li>
-              <li v-if="d.isedit === 1&&d.selected_user.length>0" class="updata-user">
-                <ul>
+              <li v-if="d.isedit === 1&&d.selected_user.length>0">
+                <img :src=" userimg " alt="">
+                <ul class="updata-user">
                   <li v-for="(user,indexus) in d.selected_user" :key="indexus" v-if="d.selected_user.length > 0" :style="{background:`url(${ user.logo_image.logo }) no-repeat center`,backgroundSize:`24px 24px`}">
                     <span v-if=" !user.logo_image.logo ">{{user.realnamehead}}</span>
                     <i :style="{background:`url(${ closered }) no-repeat center`}" @click="deleteGetimg(indexus,{type:'noadd'})"  v-if="d.isedit === 2"></i>
                   </li>
+                   <li v-if="d.isedit === 1">+0</li>
                 </ul>
               </li>
              </ul>
              <ul class="useredit" v-if="d.isedit === 2">
                <li><img :src=" userimg " alt=""></li>
-              <li class="updata-user">
-                <ul>
+              <li >
+                <ul class="updata-user">
                   <li v-for="(user,indexus) in d.selected_user" :key="indexus" v-if="d.selected_user.length > 0" :style="{background:`url(${ user.logo_image.logo }) no-repeat center`,backgroundSize:`24px 24px`}">
                     <span v-if=" !user.logo_image.logo ">{{user.realnamehead}}</span>
                     <i :style="{background:`url(${ closered }) no-repeat center`}" @click="deleteGetimg(indexus,{type:'noadd'})"  v-if="d.isedit === 2"></i>
                   </li>
-                  <li>
-                    <span>123</span>
-                    <i>123</i>
-                  </li>
+                 
+                   <li>
+                      <img class="adds" :src=" adduser " alt="" @click="edituser(index)">
+                      <ul class="select-user scroll-bar" v-if=" operation  === index " >
+                        <li>
+                          <el-input placeholder="填写或选择参加会议的人员名称" v-model="searcher"></el-input>
+                        </li>
+                        <li v-for="(option,index) in options" :key="index" @click="creatMembers(index,{type:'noadd'})" v-if="!isSearch">
+                          <div  :style="{background:`url(${ option.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}" >
+                            <span v-if ="!option.logo_image.logo">{{option.realnamehead}}</span>
+                          </div>
+                          <span class="font-color">{{option.realname}}</span>
+                          <i class="el-icon-check text-center" v-if="option.noadd"></i>
+                        </li>
+                        <li v-for="(sear,index) in search" :key="index" @click="creatMembers(index,{type:'noadd'})" v-if="isSearch">
+                          <div  :style="{background:`url(${ sear.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}" >
+                            <span v-if ="!sear.logo_image.logo">{{sear.realnamehead}}</span>
+                          </div>
+                          <span class="font-color">{{sear.realname}}</span>
+                          <i class="el-icon-check text-center" v-if="sear.noadd"></i>
+                        </li>
+                        <li v-if="isSearch && search.length === 0">没有搜索到该人员   </li>
+                  </ul>
+                </li>
                 </ul>
               </li>
              </ul>
-            <el-row class="MeetingCenter">
+            <el-row class="MeetingCenter" :style="{borderTop:!d.content&&d.isedit!==2?'none':'1px solid #D2D2D2'}">
               <el-col class="fx">
-                 <el-input  size="small" v-if ="d.isedit === 2" v-model=" d.content " type="textarea" :autosize="{ minRows: 4, maxRows: 10}" :maxlength="800"></el-input>
+                 <el-input  size="small" v-if ="d.isedit === 2" v-model=" d.content " type="textarea" :autosize="{ minRows: 4, maxRows: 10}" :maxlength="800" class="noborder"></el-input>
                  <p v-else>{{ d.content }}</p>
               </el-col>
             </el-row>
@@ -488,6 +509,7 @@
         this.form.random = this.randoms
         this.form.token = this.tokens
         this.form.item_id = this.itemId
+        console.log()
         this.$http.post(api.communeSummaries, this.form).then((response) => {
           if (response.data.meta.status_code === 200) {
             this.form = {}
@@ -652,6 +674,7 @@
           })
       },
       addTime(e) {
+        console.log(e)
         if (e) {
           this.form.expire_time = e.slice(0, 10)
         }
@@ -781,7 +804,6 @@
         this.$http.post(api.communeSummaryUser, getuser)
           .then((response) => {
             if (response.data.meta.status_code === 200) {
-              console.log(response.data.data)
             } else {
               this.$message.error(response.data.meta.message)
             }
@@ -941,7 +963,7 @@
     position:absolute;
     width:180px;
     right:-100px;
-    /* z-index: 1; */
+    z-index: 1;
   }
   .titlec>.fr ul>li{
     line-height: 40px;
@@ -964,6 +986,9 @@
     justify-content:center;
     align-content:space-around;
   } */
+    .updata-user>li:not(:last-child):hover{
+    border:1px solid #FF5A5F;
+  }
   .updata-user>li>.adds{
     width:24px;
     height:24px;
@@ -1031,8 +1056,8 @@
   .MeetingCenter {
     padding-top:20px;
     padding-bottom: 10px;
-    min-height: 70px;
     margin-bottom:20px;
+    min-height: 70px;
     border-top: 1px solid #D2D2D2;
   }
 
@@ -1102,9 +1127,6 @@
     line-height:17px;
     margin:auto 6px;
     margin-left:0px;
-  }
-  .noborder{
-    border:none;
   }
   .upload-flex>li:nth-child(2){
     width:0;
