@@ -165,7 +165,7 @@
                     <span v-if=" !user.logo_image.logo ">{{user.realnamehead}}</span>
                     <i :style="{background:`url(${ closered }) no-repeat center`}" @click="deleteGetimg(indexus,{type:'noadd'})"  v-if="d.isedit === 2"></i>
                   </li>
-                   <li v-if="d.isedit === 1">+0</li>
+                   <li v-if="d.isedit === 1" class="slice-user">+0</li>
                 </ul>
               </li>
              </ul>
@@ -832,7 +832,6 @@
       }
     },
     created() {
-      download
       let itemId = this.$route.params.id
       this.upTokens()
       this.readMembers()
@@ -997,12 +996,13 @@
   .updata-user>li {
     width:24px;
     height:24px;
-    line-height:24px; 
+    line-height:20px; 
     border:1px solid transparent;
     border-radius: 50%;
     float: left;
     position: relative;
     text-align: center;
+    margin-left:5px;
   }
   .updata-user>li:not(:last-child){
     background: #3DA8F5;
@@ -1019,6 +1019,9 @@
     display:inline-block;
     right:-5px;
     top:-5px;
+  }
+  .updata-user>.slice-user{
+    border:1px solid #CCCCCC;
   }
   .edit {
     display:flex;
