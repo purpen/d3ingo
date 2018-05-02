@@ -308,6 +308,7 @@
           self.$message.error('ID不能为空!')
           return false
         }
+
         self.$http.delete(api.taskId.format(id), {}).then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.$store.commit('deleteTaskListItem', self.currentForm)
@@ -582,7 +583,6 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .task-detail {
-    min-height: 100vh;
     border: 1px solid #d2d2d2;
     border-radius: 4px;
     padding: 20px 30px;

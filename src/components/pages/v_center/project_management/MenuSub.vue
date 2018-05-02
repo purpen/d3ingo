@@ -740,7 +740,7 @@ export default {
     }
   },
   created() {
-    console.log(this.projectObject)
+    // console.log(this.projectObject)
   }
 }
 </script>

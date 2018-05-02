@@ -231,7 +231,7 @@
                   <li @click="deleteup(files.id, d.id)">删除</li>
                 </ul>
               </el-col>
-               <el-col :xs="23" :sm="11" :md="11" :lg="6" class="upload-list" v-for="(uploadinga,indexc) in d.uploading" v-if="uploadinga.percentage!==100">
+               <el-col :xs="23" :sm="11" :md="11" :lg="6" class="upload-list" v-for="(uploadinga,indexc) in d.uploading" :key="indexc" v-if="uploadinga.percentage!==100">
                 <ul class="upload-read">
                   <li><i :class="['compress',{
                 'folder': /.folder/.test(uploadinga.name),
