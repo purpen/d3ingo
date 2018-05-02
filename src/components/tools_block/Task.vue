@@ -634,7 +634,7 @@
     position: relative;
   }
   .stage-list li:hover {
-    background: #f7f7f7;
+    background: #fafafa;
     cursor: pointer;
   }
   .stage-list li.active::after {
@@ -776,6 +776,7 @@
   }
   .task-member {
     position: relative;
+    display: inline-block
   }
   .task-info li p.p-time {
     background: url(../../assets/images/tools/project_management/Time.png) no-repeat left;
@@ -854,7 +855,8 @@
   .task-admin {
     position: relative;
     padding: 0;
-    margin-top: 20px
+    margin-top: 20px;
+    display: inline-block
   }
   .task-member-list {
     display: inline-flex;

@@ -161,11 +161,19 @@ let mutations = {
   addProjectMemberList(state, obj) {
     state.projectMemberList.unshift(obj)
   },
+  deleteProjectMemberList(state, id) {
+    state.projectMemberList.forEach((item, index, array) => {
+      if (item.id === id) {
+        array.splice(index, 1)
+      }
+    })
+    this.commit('deleteTaskMemberList', id)
+  },
   setTaskMemberList(state, obj) {
     state.taskMemberList = obj
   },
   addTaskMemberList(state, obj) {
-    state.taskMemberList.push(obj)
+    state.taskMemberList.unshift(obj)
   },
   deleteTaskMemberList(state, id) {
     state.taskMemberList.forEach((item, index, array) => {

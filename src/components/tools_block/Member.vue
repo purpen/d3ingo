@@ -3,16 +3,16 @@
     <p v-if="!executeId" class="clearfix">添加成员
       <i class="fr fx-icon-nothing-close-error" @click="closeMember"></i>
     </p>
-    <p v-else class="clearfix">选择成员
+    <p v-else class="clearfix">查看成员
       <i class="fr fx-icon-nothing-close-error" @click="closeMember"></i>
     </p>
     <div class="side clearfix">
       <div class="search-parent">
-        <input class="member-search" v-model="seachKey" type="text">
+        <input placeholder="请选择成员" class="member-search" v-model="seachKey" type="text">
       </div>
       <ul class="scroll-bar">
         <li v-if="matchMemberList.length"
-          :class="['info', {'active': taskMemberIdList.indexOf(d.id) !== -1}]"
+          :class="['info', {'active': taskMemberIdList.indexOf(d.id) !== -1 && event === ''}]"
           v-for="(d, index) in matchMemberList" :key="index"
           @click="clickTaskMember(d.id)">
           <img v-if="d.logo_image" :src="d.logo_image.logo" alt="">
@@ -23,7 +23,7 @@
           <span>没有搜索到相关人员～</span>
         </li>
       </ul>
-      <!-- <p class="welcome" @click="addMemberFromCompany">从公司中添加成员</p> -->
+      <p v-if="event === 'menu' && (company_role === 20 || company_role === 10)" class="welcome" @click="addMemberFromCompany">从公司中添加成员</p>
     </div>
     <section class="dialog-bg" v-if="showCover" @click.self="closeCover"></section>
     <section class="dialog-body" v-if="isInvite">
@@ -46,15 +46,15 @@
       </h3>
       <div class="dialog-content side cover-slide">
         <ul class="scroll-bar">
-          <li :class="['info', {'active': taskMemberIdList.indexOf(d.id) !== -1}]"
+          <li :class="['info', {'active': projectMemberIdList.indexOf(d.id) !== -1}]"
             v-for="(d, index) in companyMemberList" :key="index"
-            @click="clickProjectMember(d.id)">
+            @click="clickProjectMember(d)">
             <img v-if="d.logo_image" :src="d.logo_image.logo" alt="">
             <img v-else :src="require('assets/images/avatar_100.png')">
             <span class="name">{{d.realname}}</span>
           </li>
+          <p v-if="company_role === 20" @click="getVerifyStatus" class="welcome">通过链接邀请</p>
         </ul>
-      <!-- <p v-if="company_role === 20" @click="getVerifyStatus" class="welcome">通过链接邀请</p> -->
       </div>
     </section>
   </div>
@@ -79,6 +79,10 @@ export default {
     executeId: {
       type: Number,
       default: -1
+    },
+    event: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -148,23 +152,26 @@ export default {
       })
     },
     clickTaskMember(selectId) {
-      if (this.executeId === -1) {
-        let index = this.taskMemberIdList.indexOf(selectId)
-        if (index === -1) {
-          this.addTaskMember(selectId)
+      if (!this.event) {
+        if (this.executeId === -1) {
+          let index = this.taskMemberIdList.indexOf(selectId)
+          if (index === -1) {
+            this.addTaskMember(selectId)
+          } else {
+            this.removeTaskMember(selectId)
+          }
         } else {
-          this.removeTaskMember(selectId)
+          this.claimTask(selectId)
         }
-      } else {
-        this.claimTask(selectId)
       }
     },
-    clickProjectMember(selectId) {
+    clickProjectMember(d) {
+      let selectId = d.id
       let index = this.projectMemberIdList.indexOf(selectId)
       if (index === -1) {
-        this.addProjectMember(selectId)
+        this.addProjectMember(selectId, d)
       } else {
-        this.removeProjectMember(selectId, index)
+        this.removeProjectMember(selectId)
       }
     },
     addTaskMember(selectId) {
@@ -173,8 +180,6 @@ export default {
         selected_user_id: selectId})
       .then(res => {
         if (res.data.meta.status_code === 200) {
-          // this.taskMemberList.push(res.data.data)
-          // this.taskMemberIdList.push(res.data.data.selected_user_id) // watch 监听
           this.$store.commit('addTaskMemberList', res.data.data)
         } else {
           this.$message.error(res.data.meta.message)
@@ -183,16 +188,14 @@ export default {
         this.$message.error(err.message)
       })
     },
-    addProjectMember(userId) {
+    addProjectMember(userId, d) {
       this.$http.post(api.itemUsers, {
         item_id: this.itemId,
         user_id: userId})
       .then(res => {
         if (res.data.meta.status_code === 200) {
-          // this.projectMemberList.push(res.data.data)
-          this.$store.commit('addProjectMemberList', res.data.data)
-          this.projectMemberIdList.push(res.data.data.id)
-          this.addTaskMember(res.data.data.id)
+          this.$store.commit('addProjectMemberList', d)
+          this.projectMemberIdList.push(userId)
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -207,11 +210,8 @@ export default {
       }})
       .then(res => {
         if (res.data.meta.status_code === 200) {
-          // this.taskMemberList.splice(index, 1)
           this.$store.commit('deleteTaskMemberList', selectId)
           this.currentShow = false
-          // let index = this.taskMemberIdList.indexOf(selectId)
-          // this.taskMemberIdList.splice(index, 1)
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -219,15 +219,16 @@ export default {
         this.$message.error(err.message)
       })
     },
-    removeProjectMember(selectId, index) {
+    removeProjectMember(selectId) {
+      this.$store.commit('deleteTaskMemberList', selectId)
       this.$http.delete(api.deleteItemUsers, {params: {
         item_id: this.itemId,
         selected_user_id: selectId
       }})
       .then(res => {
         if (res.data.meta.status_code === 200) {
-          this.taskMemberList.splice(index, 1)
-          this.taskMemberIdList.splice(index, 1)
+          this.$store.commit('deleteProjectMemberList', selectId)
+          this.projectMemberIdList.splice(this.projectMemberIdList.indexOf(selectId), 1)
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -386,9 +387,8 @@ export default {
     background: #FFFFFF;
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
     border-radius: 4px;
-    top: 100px;
     position: absolute;
-    left: 0;
+    right: 0;
     top: 85px;
     z-index: 1999;
   }
@@ -449,7 +449,15 @@ export default {
     height: 180px;
     overflow-y: auto;
   }
-  
+  .cover-slide ul {
+    margin-bottom: 50px
+  }
+  .side ul .welcome {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
   .side ul .info {
     position: relative;
     padding: 0 20px;
@@ -474,7 +482,7 @@ export default {
   }
   .side ul .info:hover,
   .side ul .active {
-    background: #f7f7f7
+    background: #fafafa
   }
   
   .side ul .active::after {

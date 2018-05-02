@@ -383,7 +383,7 @@
   }
 
   .tag-list li:hover {
-    background: #f7f7f7
+    background: #fafafa
   }
   .tag-list li:hover .edit-tag {
     display: block;

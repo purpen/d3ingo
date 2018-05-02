@@ -18,10 +18,25 @@
         :to="{name: 'projectManagementIncomeandExpenses', params: {id: routeId}}">收支</router-link>
     </div>
     <div class="pm-right">
-      <router-link to="">项目需求</router-link>
-      <router-link :to="{name: 'projectQuote', params: {id: routeId}}" :class="[{'active': isQuote}]">项目报价</router-link>
-      <router-link :to="{path: ''}">合同</router-link>
-      <a @click="cover = true">菜单</a>
+      <router-link class="need" to="">项目需求</router-link>
+      <router-link :to="{name: 'projectQuote', params: {id: routeId}}" :class="['quotation', {'active': isQuote}]">项目报价</router-link>
+      <router-link class="contract border-right" :to="{path: ''}">合同</router-link>
+      <router-link @click.native.self="controlMemberShow" class="member border-right" :to="{path: ''}">
+        {{projectMemberList.length}}
+        <div :style="{
+          position: 'relative',
+          top: '-60px',
+          right: '0'
+        }">
+          <v-Member
+          :propsShow="showMember"
+          :itemId="itemId"
+          :taskId="taskState.id"
+          event="menu"
+          @closeMember="controlMemberShow"
+          ></v-Member></div>
+      </router-link>
+      <a class="menu" @click="cover = true">菜单</a>
     </div>
     <section class="cover" @click.self="cover = false" v-show="cover">
       <div class="cover-content">
@@ -37,84 +52,84 @@
           </div>
           <div class="cover-body-right scroll-bar" v-show="option === 'project'">
             <!--
-            <section>
-              <h3>项目名称</h3>
-              <input placeholder="请填写项目名称"
-                type="text" v-model.trim="project.name">
-            </section>
-            <section class="flex-box">
-              <div class="flex1">
-                <h3>商务经理</h3>
-                <input placeholder="请填写项目经理"
-                  type="text" v-model.trim="project.manager">
+              <section>
+                <h3>项目名称</h3>
+                <input placeholder="请填写项目名称"
+                  type="text" v-model.trim="project.name">
+              </section>
+              <section class="flex-box">
+                <div class="flex1">
+                  <h3>商务经理</h3>
+                  <input placeholder="请填写项目经理"
+                    type="text" v-model.trim="project.manager">
+                </div>
+                <div class="flex1">
+                  <h3>项目负责人</h3>
+                  <input placeholder="请填写项目负责人"
+                    type="text" v-model.trim="project.leader">
+                </div>
+              </section>
+              <section class="flex-box">
+                <div class="flex1">
+                  <h3>项目费用</h3>
+                  <input placeholder="请填写项目费用"
+                    type="text" v-model.trim="project.expense">
+                </div>
+                <div class="flex1">
+                  <h3>项目工作地点</h3>
+                  <input placeholder="请填写项目工作地点"
+                    type="text" v-model.trim="project.addr">
+                </div>
+              </section>
+              <section>
+                <h3>设计类别</h3>
+                <input placeholder="请填写设计类别"
+                  type="text" v-model.trim="project.category">
+              </section>
+              <section>
+                <h3>产品所属领域</h3>
+                <input placeholder="请填写产品所属领域"
+                  type="text" v-model.trim="project.field">
+              </section>
+              <section class="flex-box">
+                <div class="flex1">
+                  <h3>投入时间</h3>
+                  <el-input placeholder="请填写所需天数" v-model="project.time">
+                    <template slot="append">工作日</template>
+                  </el-input>
+                </div>
+                <div class="flex1">
+                  <h3>项目开始时间</h3>
+                  <el-date-picker
+                    v-model="project.startTime"
+                    type="date"
+                    placeholder="请填写项目开始时间">
+                  </el-date-picker>
+                </div>
+              </section>
+              <section>
+                <h3>项目等级</h3>
+                <el-select v-model="project.level" placeholder="请选择">
+                  <el-option
+                    v-for="(item, index) in levels"
+                    :key="index"
+                    :label="item.label"
+                    :value="item.value">
+                    <span :style="{
+                      float: 'left',
+                      width: '10px',
+                      height: '10px',
+                      borderRadius: '50%',
+                      margin: '5px 10px 0 0',
+                      background: item.color}"></span>
+                    <span style="float: left">{{ item.label }}</span>
+                  </el-option>
+                </el-select>
+              </section>
+              <div class="buttons clearfix">
+                <button class="fr middle-button full-red-button">保存</button>
+                <button class="fr middle-button white-button" @click="cover = false">取消</button>
               </div>
-              <div class="flex1">
-                <h3>项目负责人</h3>
-                <input placeholder="请填写项目负责人"
-                  type="text" v-model.trim="project.leader">
-              </div>
-            </section>
-            <section class="flex-box">
-              <div class="flex1">
-                <h3>项目费用</h3>
-                <input placeholder="请填写项目费用"
-                  type="text" v-model.trim="project.expense">
-              </div>
-              <div class="flex1">
-                <h3>项目工作地点</h3>
-                <input placeholder="请填写项目工作地点"
-                  type="text" v-model.trim="project.addr">
-              </div>
-            </section>
-            <section>
-              <h3>设计类别</h3>
-              <input placeholder="请填写设计类别"
-                type="text" v-model.trim="project.category">
-            </section>
-            <section>
-              <h3>产品所属领域</h3>
-              <input placeholder="请填写产品所属领域"
-                type="text" v-model.trim="project.field">
-            </section>
-            <section class="flex-box">
-              <div class="flex1">
-                <h3>投入时间</h3>
-                <el-input placeholder="请填写所需天数" v-model="project.time">
-                  <template slot="append">工作日</template>
-                </el-input>
-              </div>
-              <div class="flex1">
-                <h3>项目开始时间</h3>
-                <el-date-picker
-                  v-model="project.startTime"
-                  type="date"
-                  placeholder="请填写项目开始时间">
-                </el-date-picker>
-              </div>
-            </section>
-            <section>
-              <h3>项目等级</h3>
-              <el-select v-model="project.level" placeholder="请选择">
-                <el-option
-                  v-for="(item, index) in levels"
-                  :key="index"
-                  :label="item.label"
-                  :value="item.value">
-                  <span :style="{
-                    float: 'left',
-                    width: '10px',
-                    height: '10px',
-                    borderRadius: '50%',
-                    margin: '5px 10px 0 0',
-                    background: item.color}"></span>
-                  <span style="float: left">{{ item.label }}</span>
-                </el-option>
-              </el-select>
-            </section>
-            <div class="buttons clearfix">
-              <button class="fr middle-button full-red-button">保存</button>
-              <button class="fr middle-button white-button" @click="cover = false">取消</button>
-            </div>
             -->
             <el-form label-position="top" :model="baseForm" :rules="ruleBaseForm" ref="ruleBaseForm" label-width="80px">
 
@@ -285,31 +300,31 @@
           </div>
           <div class="cover-body-right cover-customer scroll-bar" v-show="option === 'customer'">
             <!--
-            <section>
-              <h3>项目等级</h3>
-              <input type="text" placeholder="请输入客户名称或者选择已有客户">
-            </section>
-            <section class="flex-box">
-              <div class="flex1">
-                <h3>联系人</h3>
-                <input placeholder="请填写项目费用"
-                  type="text" v-model.trim="project.expense">
+              <section>
+                <h3>项目等级</h3>
+                <input type="text" placeholder="请输入客户名称或者选择已有客户">
+              </section>
+              <section class="flex-box">
+                <div class="flex1">
+                  <h3>联系人</h3>
+                  <input placeholder="请填写项目费用"
+                    type="text" v-model.trim="project.expense">
+                </div>
+                <div class="flex1">
+                  <h3>职位电话</h3>
+                  <input placeholder="请填写项目费用"
+                    type="text" v-model.trim="project.expense">
+                </div>
+                <div class="flex1">
+                  <h3>电话</h3>
+                  <input placeholder="请填写项目工作地点"
+                    type="text" v-model.trim="project.addr">
+                </div>
+              </section>
+              <div class="buttons clearfix">
+                <button class="fr middle-button full-red-button">保存</button>
+                <button class="fr middle-button white-button" @click="cover = false">取消</button>
               </div>
-              <div class="flex1">
-                <h3>职位电话</h3>
-                <input placeholder="请填写项目费用"
-                  type="text" v-model.trim="project.expense">
-              </div>
-              <div class="flex1">
-                <h3>电话</h3>
-                <input placeholder="请填写项目工作地点"
-                  type="text" v-model.trim="project.addr">
-              </div>
-            </section>
-            <div class="buttons clearfix">
-              <button class="fr middle-button full-red-button">保存</button>
-              <button class="fr middle-button white-button" @click="cover = false">取消</button>
-            </div>
             -->
             <el-form label-position="top" :model="clientForm" :rules="ruleClientForm" ref="ruleClientForm" label-width="80px">
               <el-row :gutter="20">
@@ -419,10 +434,12 @@ import '@/assets/js/format'
 import typeData from '@/config'
 // 城市联动
 import RegionPicker from '@/components/block/RegionPicker'
+import vMember from '@/components/tools_block/Member'
 export default {
   name: 'projectManagementMenuSub',
   components: {
-    RegionPicker
+    RegionPicker,
+    vMember
   },
   props: {
     currentRoute: {
@@ -484,7 +501,9 @@ export default {
         value: 3,
         label: '非常紧急',
         color: '#ff5a5f'
-      }]
+      }],
+      itemId: -1,
+      showMember: false
     }
   },
   computed: {
@@ -542,9 +561,18 @@ export default {
     // 所属行业下拉选项
     industryOptions() {
       return typeData.INDUSTRY
+    },
+    taskState() {
+      return this.$store.state.task.taskState
+    },
+    projectMemberList() {
+      return this.$store.state.task.projectMemberList
     }
   },
   methods: {
+    controlMemberShow() {
+      this.showMember = !this.showMember
+    },
     changeOption(e) {
       this.option = e
     },
@@ -740,6 +768,7 @@ export default {
     }
   },
   created() {
+    this.itemId = this.$route.params.id
     // console.log(this.projectObject)
   }
 }
@@ -771,6 +800,43 @@ header {
   margin-right: 20px;
 }
 
+.pm-right a {
+  padding-left: 30px;
+  margin-right: 14px;
+  height: 24px;
+  line-height: 24px;
+  background: url(../../../../assets/images/tools/project_management/Member@2x.png) no-repeat 0 / contain;
+}
+
+.pm-right .need {
+  background: url(../../../../assets/images/tools/project_management/Need.png) no-repeat 0 / contain;
+}
+.pm-right .quotation {
+  background: url(../../../../assets/images/tools/project_management/Quotation.png) no-repeat 0 / contain;
+}
+.pm-right .contract {
+  background: url(../../../../assets/images/tools/project_management/Contract.png) no-repeat 0 / contain;
+}
+.pm-right .menu {
+  background: url(../../../../assets/images/tools/project_management/Menu.png) no-repeat 0 / contain;
+}
+.pm-right .border-right {
+  position: relative;
+}
+.pm-right .border-right:after {
+  content: "";
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 15px;
+  background: #d2d2d2
+}
+.pm-right .member {
+  display: inline-block;
+  background: url(../../../../assets/images/tools/project_management/Member@2x.png) no-repeat 0 / contain
+}
 .pm-left a::after {
   content: "";
   display: inline-block;
@@ -824,7 +890,7 @@ header {
 }
 .pm-right {
   display: flex;
-  flex: 1 0 380px;
+  flex: 1 0 440px;
   justify-content: flex-end;
   align-items: center;
 }

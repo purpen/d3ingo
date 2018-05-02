@@ -550,7 +550,7 @@ export default {
     cursor: pointer;
   }
   section .item:hover, section .item.active {
-    background: #f7f7f7
+    background: #fafafa
   }
 
   section .item2:hover, section .item2.active {
@@ -907,7 +907,7 @@ export default {
   }
   .more ul li:hover, .more-list ul li:hover {
     color: #222;
-    background: #f7f7f7
+    background: #fafafa
   }
 
   .file-profile {
