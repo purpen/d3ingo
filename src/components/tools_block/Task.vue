@@ -35,17 +35,17 @@
       <p :class="['add-task-input', {'active': currentForm.stage === 2}]">
         <span :class="['add-task-select']" @click="completeTask"></span>
         <el-tooltip class="item" effect="dark" content="点击即可编辑" placement="top">
-          <input @blur="blurInput({name: currentForm.name})" v-model="currentForm.name" placeholder="填写任务名称" type="text">
+          <input @focus="saveOldVal(currentForm.name)" @blur="blurInput({name: currentForm.name})" v-model="currentForm.name" placeholder="填写任务名称" type="text">
         </el-tooltip>
       </p>
       <div class="task-detail-body">
         <div class="task-admin" v-if="true">
           <p>分配给</p>
           <ul class="task-member-list task-member-execute">
-            <li @click="showMember = true" v-if="currentForm.execute_user">
-              <a class="remove-member" @click="removeExecute"></a>
-              <img v-if="currentForm.execute_user.logo_image" v-lazy="currentForm.execute_user.logo_image.logo" alt="">
-              <img v-else v-lazy="require('assets/images/avatar_100.png')">
+            <li v-if="JSON.stringify(executeUser) !== '{}'">
+              <a class="remove-member" @click.self="removeExecute()"></a>
+              <img @click="showMember = true" v-if="executeUser.logo_image" v-lazy="executeUser.logo_image.logo" alt="">
+              <img @click="showMember = true" v-else v-lazy="require('assets/images/avatar_100.png')">
             </li>
             <li @click="showMember = true" v-else>待认领</li>
           </ul>
@@ -55,9 +55,7 @@
             :taskId="taskState.id"
             :executeId="currentForm.execute_user_id"
             @closeMember="closeMember"
-            @changeExecute="changeExecute"
-            @removeExecute="removeExecute"
-            @changeCreate2="changeCreate2"></v-Member>
+            @changeExecute="changeExecute"></v-Member>
         </div>
         <ul class="task-info">
           <li>
@@ -110,7 +108,8 @@
         <div class="task-summary">
           <p class="p-summary">备注</p>
           <el-tooltip class="item" effect="dark" content="点击即可编辑" placement="top">
-            <textarea placeholder="请填写备注内容" class="textarea-summary" 
+            <textarea placeholder="请填写备注内容" class="textarea-summary"
+              @focus="saveOldVal(currentForm.summary)" 
               @blur="blurInput({summary: currentForm.summary})"
               v-model="currentForm.summary"></textarea>
           </el-tooltip>
@@ -131,6 +130,16 @@
             :itemId="propsTags.itemId" 
             :taskId="taskState.id"
             @closeMember="closeMember2"></v-Member>
+        </div>
+        <div class="task-moments">
+          <p class="p-moments">显示所有动态</p>
+          <ul>
+            <li v-if="currentForm['log'].length" class="clearfix"
+              v-for="(ele, index) in currentForm['log']" :key="index">
+              <p class="fl">{{ele.moments}}</p>
+              <p class="date fr">{{ele.date}}</p>
+            </li>
+          </ul>
         </div>
       </div>
     </section>
@@ -183,12 +192,12 @@
           color: '#999'
         },
         {
-          value: 2,
+          value: 5,
           label: '紧急',
           color: '#ffd330'
         },
         {
-          value: 3,
+          value: 8,
           label: '非常紧急',
           color: '#ff5a5f'
         }],
@@ -196,9 +205,9 @@
         isLoading: false,
         atFirst: true,
         isCreate: true,
-        isCreate2: true,
         showMember: false,
-        showMember2: false
+        showMember2: false,
+        oldVal: ''
       }
     },
     methods: {
@@ -259,7 +268,8 @@
         if (JSON.stringify(self.currentForm) !== '{}') {
           let overTime = self.currentForm.over_time
           if (self.currentForm.over_time instanceof Date) {
-            self.currentForm.over_time = overTime.format('yyyy-MM-dd hh:mm:ss')
+            // self.currentForm.over_time = overTime.format('yyyy-MM-dd hh:mm:ss')
+            self.currentForm.over_time = overTime.format('yyyy-MM-dd hh:mm')
           }
         }
         self.currentForm.item_id = self.projectObject.id
@@ -289,7 +299,8 @@
         }
         self.$http.put(api.taskId.format(id), self.currentChange).then(function (response) {
           if (response.data.meta.status_code === 200) {
-            Object.assign(self.currentForm, response.data.data)
+            // Object.assign(self.currentForm, response.data.data)
+            self.view(id)
             self.$store.commit('updateTaskListItem', self.currentForm)
             self.fetchStage()
           } else {
@@ -333,9 +344,10 @@
         }
         this.$http.put(api.taskStage, {task_id: id, stage: complate}).then(function (response) {
           if (response.data.meta.status_code === 200) {
-            self.$set(self.currentForm, 'stage', complate)
+            // self.$set(self.currentForm, 'stage', complate)
             self.$store.commit('updateTaskListItem', self.currentForm)
             self.fetchStage()
+            self.view(id)
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -391,6 +403,16 @@
         })
       },
       blurInput(obj) {
+        if (obj.name) {
+          if (this.oldVal === obj.name) {
+            return
+          }
+        }
+        if (obj.summary) {
+          if (this.oldVal === obj.summary) {
+            return
+          }
+        }
         if (this.taskState.event === 'update') {
           this.currentChange = obj
           this.update()
@@ -472,8 +494,8 @@
           console.error(error.message)
         })
       },
-      changeCreate2() {
-        this.isCreate2 = true
+      saveOldVal(name) {
+        this.oldVal = name
       }
     },
     mounted: function () {
@@ -490,6 +512,12 @@
       },
       taskMemberList() {
         return this.$store.state.task.taskMemberList
+      },
+      projectMemberList() {
+        return this.$store.state.task.taskMemberList
+      },
+      executeUser() {
+        return this.$store.state.task.executeUser
       }
     },
     watch: {
@@ -500,7 +528,6 @@
           if (val) {
             if (val.event === 'update') {
               this.view(val.id)
-              this.isCreate2 = true
             } else if (val.event === 'create') {
               if (this.isCreate) {
                 this.currentForm = {}
@@ -532,17 +559,61 @@
             })
             this.tagsId = list
           }
-          if (val.execute_user_id && this.isCreate2) {
-            this.isCreate2 = false
-            this.$http.get(api.userInfo, {params: {
-              user_id: val.execute_user_id
-            }}).then(res => {
-              if (res.data.meta.status_code === 200) {
-                this.$set(val, 'execute_user', res.data.data)
-              } else {
-                this.$message.error(res.data.meta.message)
-              }
-            })
+          if (val['log']) {
+            if (val['log'].length) {
+              val['log'].forEach(item => {
+                item['date'] = item.created_at.date_format().format('yyyy年MM月dd日 hh:mm:ss')
+                switch (item.action_type) {
+                  case 1:
+                    item['action'] = '创建主任务：'
+                    break
+                  case 2:
+                    item['action'] = '创建子任务：'
+                    break
+                  case 3:
+                    item['action'] = '更改了任务名称为：'
+                    break
+                  case 4:
+                    item['action'] = '更改了备注为：'
+                    break
+                  case 5:
+                    item['action'] = '更新任务优先级为：'
+                    switch (Number(item['content'])) {
+                      case 1:
+                        item['content'] = '普通'
+                        break
+                      case 5:
+                        item['content'] = '紧急'
+                        break
+                      case 8:
+                        item['content'] = '非常重要'
+                        break
+                    }
+                    break
+                  case 6:
+                    item['action'] = '重做了父任务'
+                    break
+                  case 7:
+                    item['action'] = '完成了父任务'
+                    break
+                  case 8:
+                    item['action'] = '重做了子任务'
+                    break
+                  case 9:
+                    item['action'] = '完成了子任务'
+                    break
+                  case 10:
+                    item['action'] = '更新了截至时间：'
+                    break
+                }
+                let list = [6, 7, 8, 9]
+                if (list.indexOf(item.action_type) !== -1) {
+                  item['moments'] = item.user_name + item.action
+                } else {
+                  item['moments'] = item.user_name + item.action + item.content
+                }
+              })
+            }
           }
         },
         deep: true
@@ -963,5 +1034,20 @@
     height: 16px;
     background: #ccc;
     transform: translate(-50%, -50%)
+  }
+  .task-moments {
+    margin-top: 20px;
+    border-top: 1px solid #d2d2d2;
+    color: #666;
+    font-size: 12px;
+  }
+  .task-moments ul {
+    padding: 10px 0
+  }
+  .task-moments li {
+    padding: 10px 0;
+  }
+  .task-moments .date {
+    color: #999
   }
 </style>

@@ -245,7 +245,7 @@ export default {
       .then((res) => {
         if (res.data.meta.status_code === 200) {
           this.$emit('changeExecute', userId)
-          this.$emit('changeCreate2')
+          this.$store.commit('setExecuteUser', userId)
           this.$message.success('认领成功!')
         } else {
           this.$message.error(res.data.meta.message)
@@ -328,6 +328,7 @@ export default {
   watch: {
     executeId(val) {
       this.taskMemberIdList = [val]
+      this.$store.commit('setExecuteUser', this.executeId)
     },
     projectMemberList: {
       handler(val) {
@@ -347,9 +348,6 @@ export default {
           this.taskMemberIdList = idList
         } else {
           this.taskMemberIdList = [this.executeId]
-          if (!this.executeId) {
-            this.$emit('removeExecute')
-          }
         }
       },
       deep: true

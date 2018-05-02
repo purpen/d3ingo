@@ -29,8 +29,8 @@
               :class="['task-item','clearfix', {
                 'active': ele.stage === 2,
                 'level1': ele.level === 1,
-                'level2': ele.level === 2,
-                'level3': ele.level === 3}]">
+                'level2': ele.level === 5,
+                'level3': ele.level === 8}]">
               <p @click="completeTaskBtn(ele, index)" class="task-name fl">
               {{ele.name}}</p>
               <p class="task-date fr">{{ele.created_at_format}}</p>
@@ -46,8 +46,8 @@
               <div :class="['task-item','clearfix', {
                 'active': e.stage === 2,
                 'level1': e.level === 1,
-                'level2': e.level === 2,
-                'level3': e.level === 3}]"
+                'level2': e.level === 5,
+                'level3': e.level === 8}]"
                 v-for="(e, i) in ele['task']" :key="i"
                 @click.self="showTaskBtn(e.id, i, e.stage)"
                 >

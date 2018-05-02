@@ -16,7 +16,8 @@ let state = {
   storeCurrentForm: {},
   projectObject: {},
   taskMemberList: [],
-  projectMemberList: []
+  projectMemberList: [],
+  executeUser: {}
 }
 let mutations = {
   setDisplayObj2(state, array) { // 容易出异步问题
@@ -179,6 +180,13 @@ let mutations = {
     state.taskMemberList.forEach((item, index, array) => {
       if (item.user.id === id) {
         array.splice(index, 1)
+      }
+    })
+  },
+  setExecuteUser(state, userId) {
+    state.projectMemberList.forEach((item) => {
+      if (item.id === userId) {
+        state.executeUser = item
       }
     })
   }
