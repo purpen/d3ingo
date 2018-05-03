@@ -131,7 +131,7 @@
             :taskId="taskState.id"
             @closeMember="closeMember2"></v-Member>
         </div>
-        <div class="task-moments">
+        <div class="task-moments" v-if="currentForm['moments']">
           <p class="p-moments" v-if="showAllMoments" @click="showAllMoments = false">隐藏较早的动态</p>
           <p class="p-moments" v-if="!showAllMoments && currentForm['moments'].length - 5 > 0" @click="showAllMoments = true">显示较早的{{currentForm['moments'].length - 5}}条动态</p>
           <ul v-if="showAllMoments">
