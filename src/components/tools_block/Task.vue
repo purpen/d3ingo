@@ -132,11 +132,19 @@
             @closeMember="closeMember2"></v-Member>
         </div>
         <div class="task-moments">
-          <p class="p-moments">显示所有动态</p>
-          <ul>
+          <p class="p-moments" v-if="showAllMoments" @click="showAllMoments = false">隐藏较早的动态</p>
+          <p class="p-moments" v-if="!showAllMoments && currentForm['moments'].length - 5 > 0" @click="showAllMoments = true">显示较早的{{currentForm['moments'].length - 5}}条动态</p>
+          <ul v-if="showAllMoments">
             <li v-if="currentForm['log'].length" class="clearfix"
-              v-for="(ele, index) in currentForm['log']" :key="index">
-              <p class="fl">{{ele.moments}}</p>
+              v-for="(ele, index) in currentForm['moments']" :key="index">
+              <p class="fl">{{ele.info}}</p>
+              <p class="date fr">{{ele.date}}</p>
+            </li>
+          </ul>
+          <ul v-else>
+            <li v-if="currentForm['log'].length" class="clearfix"
+              v-for="(ele, index) in currentForm['limitMoments']" :key="index">
+              <p class="fl">{{ele.info}}</p>
               <p class="date fr">{{ele.date}}</p>
             </li>
           </ul>
@@ -207,7 +215,8 @@
         isCreate: true,
         showMember: false,
         showMember2: false,
-        oldVal: ''
+        oldVal: '',
+        showAllMoments: false
       }
     },
     methods: {
@@ -496,6 +505,52 @@
       },
       saveOldVal(name) {
         this.oldVal = name
+      },
+      itemFormat(item) {
+        item['date'] = item.created_at.date_format().format('yyyy年MM月dd日 hh:mm:ss')
+        switch (item.action_type) {
+          case 1:
+            item['action'] = '创建主任务'
+            break
+          case 2:
+            item['action'] = '创建子任务'
+            break
+          case 3:
+            item['action'] = '更改了任务名称为：'
+            break
+          case 4:
+            item['action'] = '更改了备注为：'
+            break
+          case 5:
+            item['action'] = '更新任务优先级为：'
+            switch (Number(item['content'])) {
+              case 1:
+                item['content'] = '普通'
+                break
+              case 5:
+                item['content'] = '紧急'
+                break
+              case 8:
+                item['content'] = '非常重要'
+                break
+            }
+            break
+          case 6:
+            item['action'] = '重做了父任务'
+            break
+          case 7:
+            item['action'] = '完成了父任务'
+            break
+          case 8:
+            item['action'] = '重做了子任务'
+            break
+          case 9:
+            item['action'] = '完成了子任务'
+            break
+          case 10:
+            item['action'] = '更新了截至时间：'
+            break
+        }
       }
     },
     mounted: function () {
@@ -523,6 +578,7 @@
     watch: {
       taskState: {
         handler(val) {
+          this.showAllMoments = false
           this.showMember = false
           this.showMember2 = false
           if (val) {
@@ -561,58 +617,42 @@
           }
           if (val['log']) {
             if (val['log'].length) {
+              let arr = []
               val['log'].forEach(item => {
-                item['date'] = item.created_at.date_format().format('yyyy年MM月dd日 hh:mm:ss')
-                switch (item.action_type) {
-                  case 1:
-                    item['action'] = '创建主任务：'
-                    break
-                  case 2:
-                    item['action'] = '创建子任务：'
-                    break
-                  case 3:
-                    item['action'] = '更改了任务名称为：'
-                    break
-                  case 4:
-                    item['action'] = '更改了备注为：'
-                    break
-                  case 5:
-                    item['action'] = '更新任务优先级为：'
-                    switch (Number(item['content'])) {
-                      case 1:
-                        item['content'] = '普通'
-                        break
-                      case 5:
-                        item['content'] = '紧急'
-                        break
-                      case 8:
-                        item['content'] = '非常重要'
-                        break
-                    }
-                    break
-                  case 6:
-                    item['action'] = '重做了父任务'
-                    break
-                  case 7:
-                    item['action'] = '完成了父任务'
-                    break
-                  case 8:
-                    item['action'] = '重做了子任务'
-                    break
-                  case 9:
-                    item['action'] = '完成了子任务'
-                    break
-                  case 10:
-                    item['action'] = '更新了截至时间：'
-                    break
+                console.log(item)
+                this.itemFormat(item)
+                let list = [6, 7, 8, 9]
+                if (list.indexOf(item.action_type) !== -1) {
+                  arr.push({
+                    info: item.user_name + item.action,
+                    date: item.date})
+                } else {
+                  arr.push({
+                    info: item.user_name + item.action + item.content,
+                    date: item.date
+                  })
+                }
+              })
+              arr.reverse()
+              val['moments'] = arr
+              let arr2 = []
+              val['log'].forEach((item, index) => {
+                if (index > 4) {
+                  return
                 }
                 let list = [6, 7, 8, 9]
                 if (list.indexOf(item.action_type) !== -1) {
-                  item['moments'] = item.user_name + item.action
+                  arr2.push({
+                    info: item.user_name + item.action,
+                    date: item.date})
                 } else {
-                  item['moments'] = item.user_name + item.action + item.content
+                  arr2.push({
+                    info: item.user_name + item.action + item.content,
+                    date: item.date})
                 }
               })
+              arr2.reverse()
+              val['limitMoments'] = arr2
             }
           }
         },
@@ -1049,5 +1089,13 @@
   }
   .task-moments .date {
     color: #999
+  }
+  .p-moments {
+    cursor: pointer;
+    padding-top: 20px;
+    color: #999;
+  }
+  .p-moments:hover {
+    color: #666
   }
 </style>
