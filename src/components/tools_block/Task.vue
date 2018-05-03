@@ -1,19 +1,5 @@
 <template>
   <div class="" v-if="taskState.power" v-loading="isLoading">
-    <!-- <el-button @click="addTagBtn">显示标签</el-button> -->
-    <!-- <h3>任务组件引入测试 <a href="javascript:void(0)" @click="closeBtn()">点击关闭</a></h3> -->
-    <!--<el-button @click="addBtn()">添加任务</el-button>-->
-    <div v-if="false">
-      <el-input v-model="currentForm.name" placeholder="任务名称"></el-input>
-      <el-input v-model="currentForm.tier" placeholder="层级"></el-input>
-      <el-input v-model="currentForm.pid" placeholder="父ID"></el-input>
-      <el-input v-model="currentForm.execute_user_id" placeholder="执行人ID"></el-input>
-      <el-input v-model="currentForm.stage_id" placeholder="阶段ID"></el-input>
-      <el-input v-model="currentForm.level" placeholder="级别1,5,8"></el-input>
-
-      <el-button @click="submit()">提交</el-button>
-      <el-button @click="deleteBtn()">删除</el-button>
-    </div>
     <section class="task-detail">
       <div class="task-detail-header">
         <span class="task-detail-name">{{projectObject.name}}</span>
@@ -35,7 +21,7 @@
       <p :class="['add-task-input', {'active': currentForm.stage === 2}]">
         <span :class="['add-task-select']" @click="completeTask"></span>
         <el-tooltip class="item" effect="dark" content="点击即可编辑" placement="top">
-          <input @focus="saveOldVal(currentForm.name)" @blur="blurInput({name: currentForm.name})" v-model="currentForm.name" placeholder="填写任务名称" type="text">
+          <el-input :autosize="{ minRows: 1}" type="textarea" @focus="saveOldVal(currentForm.name)" @blur="blurInput({name: currentForm.name})" v-model="currentForm.name" placeholder="填写任务名称"></el-input>
         </el-tooltip>
       </p>
       <div class="task-detail-body">
@@ -63,7 +49,7 @@
             <el-date-picker
               v-model="currentForm.over_time"
               type="datetime"
-              placeholder="选择日期时间"
+              placeholder="选择截止时间"
               @change="changeTime">
             </el-date-picker>
           </li>
@@ -105,6 +91,56 @@
               @updateTags="updateTags"></v-tags>
           </li>
         </ul>
+        <div class="task-child" v-if="currentForm.tier === 0">
+          <p class="p-task-child">子任务:</p>
+          <ul class="add-child-ul" v-if="currentForm.childTask">
+            <li v-for="(ele, index) in currentForm.childTask" :key="index">
+              <div :class="['add-task-input', 'add-child-input']">
+                <span :class="['add-task-select', 'add-child-select']"></span>
+                <el-tooltip class="item" effect="dark" content="点击即可编辑" placement="top">
+                  <el-input :autosize="{ minRows: 1}" type="textarea" v-model="ele.name" placeholder="填写任务名称"></el-input>
+                </el-tooltip>
+                <el-date-picker
+                  v-model="ele.over_time"
+                  type="datetime"
+                  placeholder="选择截止时间">
+                </el-date-picker>
+                <v-Member
+                  :propsShow="showMember3"
+                  :itemId="propsTags.itemId"
+                  :taskId="taskState.id"
+                  :executeId="currentForm.execute_user_id"
+                  @closeMember="closeMember3"
+                  @changeExecute="changeExecute"></v-Member>
+              </div>
+            </li>
+            <li class="template" v-if="isAddChild">
+              <div :class="['add-task-input', 'add-child-input']">
+                <span :class="['add-task-select', 'add-child-select', 'add-child-template']"></span>
+                <el-tooltip class="item" effect="dark" content="点击即可编辑" placement="top">
+                  <el-input :autosize="{ minRows: 1}" type="textarea"  v-model="addChildForm.name" placeholder="填写任务名称"></el-input>
+                </el-tooltip>
+                <el-date-picker
+                  v-model="addChildForm.over_time"
+                  type="datetime"
+                  placeholder="选择截止时间">
+                </el-date-picker>
+                <v-Member
+                  :propsShow="showMember3"
+                  :itemId="propsTags.itemId"
+                  :taskId="taskState.id"
+                  :executeId="currentForm.execute_user_id"
+                  @closeMember="closeMember3"
+                  @changeExecute="changeExecute"></v-Member>
+              </div>
+              <p class="buttons">
+                <button @click="cancelAddChild" class="white-button middle-button">取消</button>
+                <button @click="createChild" class="full-red-button middle-button">确认</button>
+              </p>
+            </li>
+          </ul>
+          <p @click="confirmAddChild" class="add-child-button"><i></i>添加子任务</p>
+        </div>
         <div class="task-summary">
           <p class="p-summary">备注</p>
           <el-tooltip class="item" effect="dark" content="点击即可编辑" placement="top">
@@ -135,14 +171,14 @@
           <p class="p-moments" v-if="showAllMoments" @click="showAllMoments = false">隐藏较早的动态</p>
           <p class="p-moments" v-if="!showAllMoments && currentForm['moments'].length - 5 > 0" @click="showAllMoments = true">显示较早的{{currentForm['moments'].length - 5}}条动态</p>
           <ul v-if="showAllMoments">
-            <li v-if="currentForm['log'].length" class="clearfix"
+            <li class="clearfix"
               v-for="(ele, index) in currentForm['moments']" :key="index">
               <p class="fl">{{ele.info}}</p>
               <p class="date fr">{{ele.date}}</p>
             </li>
           </ul>
           <ul v-else>
-            <li v-if="currentForm['log'].length" class="clearfix"
+            <li class="clearfix"
               v-for="(ele, index) in currentForm['limitMoments']" :key="index">
               <p class="fl">{{ele.info}}</p>
               <p class="date fr">{{ele.date}}</p>
@@ -215,8 +251,15 @@
         isCreate: true,
         showMember: false,
         showMember2: false,
+        showMember3: false,
         oldVal: '',
-        showAllMoments: false
+        showAllMoments: false,
+        isAddChild: false,
+        addChildForm: {
+          name: '',
+          over_time: '',
+          execute_user_id: 0
+        }
       }
     },
     methods: {
@@ -232,6 +275,10 @@
       // 关闭成员
       closeMember2(val) {
         this.showMember2 = val
+      },
+      // 关闭成员
+      closeMember3(val) {
+        this.showMember3 = val
       },
       // 删除任务点击事件
       deleteBtn() {
@@ -289,6 +336,26 @@
             self.$store.commit('createTaskListItem', response.data.data)
             self.$store.commit('changeTaskStateEvent', 'update')
             self.$store.commit('changeTaskStateId', response.data.data.id)
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          self.$message.error(error.message)
+          console.error(error.message)
+          self.isCreate = true
+        })
+      },
+      createChild() {
+        const self = this
+        self.addChildForm.tier = 1
+        self.addChildForm.pid = self.taskState.id
+        self.addChildForm.item_id = self.projectObject.id
+        self.$http.post(api.task, self.addChildForm).then(function (response) {
+          self.isCreate = true
+          if (response.data.meta.status_code === 200) {
+            self.currentForm.childTask.push(response.data.data)
+            self.$store.commit('changeTaskStateEvent', 'update')
+            self.isAddChild = false
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -551,6 +618,15 @@
             item['action'] = '更新了截至时间：'
             break
         }
+      },
+      cancelAddChild() {
+        this.isAddChild = false
+      },
+      confirmAddChild() {
+        this.isAddChild = true
+        for (let i in this.addChildForm) {
+          this.addChildForm[i] = ''
+        }
       }
     },
     mounted: function () {
@@ -581,6 +657,8 @@
           this.showAllMoments = false
           this.showMember = false
           this.showMember2 = false
+          this.showMember3 = false
+          this.isAddChild = false
           if (val) {
             if (val.event === 'update') {
               this.view(val.id)
@@ -619,7 +697,6 @@
             if (val['log'].length) {
               let arr = []
               val['log'].forEach(item => {
-                console.log(item)
                 this.itemFormat(item)
                 let list = [6, 7, 8, 9]
                 if (list.indexOf(item.action_type) !== -1) {
@@ -798,38 +875,25 @@
   .select-parent:focus .select-show::after {
     transform: rotate(-135deg);
   }
-  .add-task-input input {
-    width: 100%;
-    height: 50px;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    font-size: 20px;
-    padding: 0 10px;
-  }
-  .add-task-input.active input {
-    color: #999;
-    text-decoration: line-through
-  }
-  .add-task-input input:hover,
-  .add-task-input input:focus {
-    /* background: #f7f7f7 */
-    border-color: #d2d2d2
-  }
+  
   .add-task-input {
     position: relative;
-    padding: 20px 0 12px 50px;
+    padding: 20px 0 12px 40px;
     border-bottom: 1px solid #d2d2d2;
   }
-  
+  .add-child-input {
+    padding: 20px 30px 20px 40px;
+    border-bottom: none
+  }
   .add-task-input.active {
     text-decoration: line-through
   }
   .add-task-input .add-task-select {
     position: absolute;
     left: 0;
-    top: 33px;
-    width: 30px;
-    height: 30px;
+    top: 23px;
+    width: 24px;
+    height: 24px;
     border: 1px solid #d2d2d2;
     border-radius: 4px;
     cursor: pointer;
@@ -845,6 +909,33 @@
     border-left: none;
     border-top: none;
     transform: rotate(45deg);
+  }
+
+  .add-task-input .add-child-select {
+    width: 24px;
+    height: 24px;
+    top: 26px;
+  }
+  .add-task-input .add-child-template {
+    border: none;
+    background: url(../../assets/images/member/add03@2x.png) no-repeat left / contain
+  }
+  .task-detail-body .add-child-button {
+    height: 24px;
+    line-height: 24px;
+    padding-left: 34px;
+    position: relative;
+    color: #ff5a5f;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  .add-child-button i {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 24px;
+    height: 24px;
+    background: url(../../assets/images/member/add02@2x.png) no-repeat left / contain
   }
   .task-info {
     padding-top: 20px;
@@ -1039,6 +1130,9 @@
   .task-member-execute li:hover {
     color: #222;
   }
+  .task-detail-body p {
+    color: #999
+  }
   .task-detail-body .show-member {
     margin-top: 20px;
     display: inline-block;
@@ -1086,16 +1180,25 @@
   }
   .task-moments li {
     padding: 10px 0;
+    line-height: 1.5;
+    color: #666
   }
   .task-moments .date {
     color: #999
   }
-  .p-moments {
+  .task-detail-body .p-moments {
     cursor: pointer;
     padding-top: 20px;
-    color: #999;
+    color: #666;
   }
-  .p-moments:hover {
-    color: #666
+  .task-detail-body .p-moments:hover {
+    color: #222
+  }
+  .task-child {
+    padding: 20px 0;
+    border-bottom: 1px solid #d2d2d2
+  }
+  .add-child-ul .template input {
+    border-color: #d2d2d2;
   }
 </style>

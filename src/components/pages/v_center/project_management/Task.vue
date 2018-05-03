@@ -1,21 +1,5 @@
 <template>
   <section @click.self="currentStageStat.id = -1">
-    <div>
-      <!-- <div v-if="true">
-        <h1>阶段测试</h1>
-        <el-button @click="addStageBtn()">添加阶段</el-button>
-        <p v-for="(d, index) in stageList" :key="index">
-          {{ d.id }} | {{ d.title }} |
-          <el-button @click="editStageBtn(d.id, index)">编辑</el-button> |
-          <el-button @click="deleteStageBtn(d.id, index)">删除</el-button>
-        </p>
-      </div> -->
-      <!-- <div v-if="currentStageStat.event">
-        <el-input v-model="currentStageForm.title" placeholder=""></el-inptask-itemut>
-        <el-button @click="submitStage()">提交阶段</el-button>
-        <el-button @click="currentStageStat.event = false">取消</el-button>
-      </div> -->
-    </div>
     <div class="container task-content" v-loading="isLoading">
       <el-row :gutter="30">
         <el-col :span="taskState.power ? 12 : 24" class="task-list">
@@ -31,7 +15,8 @@
                 'level1': ele.level === 1,
                 'level2': ele.level === 5,
                 'level3': ele.level === 8}]">
-              <p @click="completeTaskBtn(ele, index)" class="task-name fl">
+              <p @click.self="showTaskBtn(ele.id, index)" class="task-name fl">
+              <span @click="completeTaskBtn(ele, index)" class="task-name-span"></span>
               {{ele.name}}</p>
               <p class="task-date fr">{{ele.created_at_format}}</p>
             </div>
@@ -49,9 +34,9 @@
                 'level2': e.level === 5,
                 'level3': e.level === 8}]"
                 v-for="(e, i) in ele['task']" :key="i"
-                @click.self="showTaskBtn(e.id, i, e.stage)"
-                >
-                <p @click="completeTaskBtn(e, i)" class="task-name fl">{{e.name}}</p>
+                @click.self="showTaskBtn(e.id, i, e.stage)">
+                <p @click.self="showTaskBtn(e.id, i, e.stage)" class="task-name fl">
+                  <span @click="completeTaskBtn(e, i)" class="task-name-span"></span>{{e.name}}</p>
                 <p class="task-date fr">{{e.created_at_format}}</p>
               </div>
             </section>
@@ -537,7 +522,7 @@
   .task-item.active .task-name{
     text-decoration: line-through;
   }
-  .task-item.active .task-name::after{
+  .task-item.active .task-name-span::after{
     border-color: #d2d2d2
   }
   .task-name {
@@ -545,9 +530,11 @@
     max-width: 70%;
     position: relative;
     cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
-  .task-name::before {
-    content: "";
+  .task-name-span {
     position: absolute;
     left: 20px;
     top: 13px;
@@ -558,11 +545,11 @@
     border-radius: 4px;
   }
 
-  .task-name::after {
+  .task-name-span::after {
     content: "";
     position: absolute;
-    left: 29px;
-    top: 16px;
+    left: 8px;
+    top: 2px;
     transform: rotate(45deg);
     height: 15px;
     width: 8px;

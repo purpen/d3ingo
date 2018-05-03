@@ -94,7 +94,10 @@ let mutations = {
     this._vm.$set(state.taskState, 'id', val)
   },
   setTaskList(state, arr) {
-    state.taskList = arr
+    state.taskList = arr.filter(item => {
+      return item.tier === 0
+    })
+    // state.taskList = arr
     this.commit('setDisplayObj', state.taskList)
   },
   setStageList(state, arr) {
