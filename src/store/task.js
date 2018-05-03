@@ -192,6 +192,9 @@ let mutations = {
         state.executeUser = item
       }
     })
+  },
+  removeExcuteUser(state) {
+    state.executeUser = null
   }
 }
 export default {
