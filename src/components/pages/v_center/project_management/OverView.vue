@@ -1,6 +1,84 @@
 <template>
-<div>
-  <section>
+<div class="item-total">
+  <section class="top-progress">
+    <div class="h3">笔记本设计</div>
+    <el-progress 
+    :percentage="0"
+    :show-text="false"
+    :stroke-width="3"
+    ></el-progress>
+    <ul class="item-header">
+      <li>
+        <div>0</div>
+        <p>所有任务</p>
+      </li>
+       <li>
+        <div>0</div>
+        <p>项目阶段</p>
+      </li>
+       <li>
+        <div>0</div>
+        <p>投入时间</p>
+      </li>
+       <li>
+        <div>0%</div>
+        <p>项目进度</p>
+      </li>
+    </ul>
+  </section>
+  <section class="item-task">
+    <div class="h3">
+      任务统计
+    </div>
+    <ul>
+      <li>
+        <el-progress
+          type="circle" 
+          :percentage="0"
+          :width="60"
+        ></el-progress>
+        <div >
+          <p>未认领</p>
+          <p class="fx-6">50%</p>
+        </div>
+      </li>
+      <li>
+        <el-progress 
+          type="circle" 
+          :percentage="0"
+          :width="60"></el-progress>
+        <div >
+          <p>未认领</p>
+          <p class="fx-6">50%</p>
+        </div>
+      </li>
+      <li>
+        <el-progress
+          type="circle" 
+          :percentage="0"
+          :width="60"
+        ></el-progress>
+        <div>
+          <p>未认领</p>
+          <p class="fx-6">50%</p>
+        </div>
+      </li>
+      <li>
+        <el-progress
+          type="circle" 
+          :percentage="0"
+          :width="60"
+        ></el-progress>
+        <div>
+          <p>未认领</p>
+          <p class="fx-6">50%</p>
+        </div>
+      </li>
+    </ul>
+  </section>
+  <section class="item-content">
+    <div class="item-list">
+    </div>
     <div  class="add-item">
       <div>+</div>
       <p>添加项目阶段</p>
@@ -11,7 +89,7 @@
         <li>
           项目投入时间
           <div>
-            <el-input placeholder="请输入内容" v-model="form.duration">
+            <el-input placeholder="请输入内容"                        v-model="form.duration">
               <template slot="append">工作日</template>
             </el-input>
           </div>
@@ -70,6 +148,52 @@
             >
           </el-input>
       </div>
+      <div v-for="(sub,indexsub) in designStage.design_substage" :key="indexsub">
+        <p>{{sub.name}}</p>
+        <el-input placeholder="任务名称" v-model="sub.name"></el-input>
+        <p>{{sub.summary}}</p>
+        <el-input
+            type="textarea"
+            :autosize="{ minRows: 2, maxRows: 4}"
+            placeholder="请输入内容"
+            v-model="sub.summary"
+            >
+        </el-input>
+        <p>{{sub.duration}}</p>
+        <el-input placeholder="任务投入时间" v-model="sub.duration"></el-input>
+        
+        <p>{{sub.start_time}}</p>
+        <el-date-picker
+        v-model="sub.start_time"
+        type="datetime"
+        placeholder="选择日期时间">
+        </el-date-picker>
+        <el-input placeholder="节点名称" v-model="formNode.name"></el-input>
+        <el-date-picker
+          v-model="formNode.time"
+          type="datetime"
+          placeholder="选择截止时间">
+          </el-date-picker>
+          <el-checkbox v-model="formNode.is_owner">甲方参与</el-checkbox>
+        <el-button  @click="createNode(sub.id,indexsub)">确定添加节点</el-button>
+        <el-button  @click="addNode()">添加节点</el-button>
+        <div v-if="sub.design_stage_node">
+          <p>节点名称: {{sub.design_stage_node.name}}</p>
+          <el-input v-model="sub.design_stage_node.name"></el-input>
+          <p>节点时间: {{sub.design_stage_node.time}}</p>
+          <el-date-picker
+          v-model="sub.design_stage_node.time"
+          type="datetime"
+          placeholder="选择截止时间">
+          </el-date-picker>
+          <el-button  @click="editNode(sub.design_stage_node,indexsub)">编辑节点</el-button>
+          <el-button  @click="updataNode(sub.design_stage_node,indexsub)">确定编辑节点</el-button>
+          <el-button  @click="deleteNode(sub.design_stage_node.id,indexsub)">删除节点</el-button>
+        </div>
+        <el-button  @click="updataTack(sub,indexsub)">确认编辑任务</el-button>
+        <el-button style="margin-bottom:30px" @click="editTack(sub,indexsub)">编辑任务</el-button>
+        <el-button style="margin-bottom:30px" @click="deleteTack(sub.id,indexsub)">删除任务</el-button>
+      </div>
       <el-button @click="edit(designStage.id,index)">编辑</el-button>
       <el-button @click="updata(designStage,index)">确定</el-button>
       <el-button @click="deleteDes(designStage,index)">删除</el-button>
@@ -103,18 +227,20 @@ export default {
   data () {
     return {
       itemId: 0,
-      form: {
+      form: { // 新建项目
         name: '',
         duration: '',
         start_time: '',
         design_project_id: this.$route.params.id,
         content: ''
       },
-      formup: {
-      },
+      formup: {}, // 编辑项目
+      formTack: {}, // 新建任务
+      formTackUp: {}, // 编辑任务
+      formNode: {}, // 新建节点
+      formNodeUp: {}, // 编辑节点
       designStageLists: [],
       indesignStage: '',
-      formTack: {},
       itemdesId: ''
     }
   },
@@ -215,11 +341,107 @@ export default {
     addtack(id) {
       this.itemdesId = id
     },
+    // 创建任务
     createTack() {
       this.formTack.execute_user_id = 33
       this.formTack.design_stage_id = this.itemdesId
       this.formTack.start_time = Math.round(new Date(this.formTack.start_time).getTime() / 1000)
       this.$http.post(api.designSubstageCreate, this.formTack).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          console.log(response.data.data)
+        } else {
+          this.$message.error(response.data.meta.message)
+        }
+      }).catch((error) => {
+        this.$message.error(error.message)
+        console.error(error.message)
+      })
+    },
+    // 编辑子阶段按钮
+    editTack(sub, index) {
+      console.log(sub)
+    },
+    // 编辑子阶段
+    updataTack(sub, index) {
+      this.formTackUp.id = sub.id
+      this.formTackUp.summary = sub.summary
+      this.formTackUp.duration = sub.duration
+      if (sub.start_time instanceof Date) {
+        this.formTackUp.start_time = Math.round(sub.start_time.getTime() / 1000)
+      } else this.formTackUp.start_time = Math.round(new Date(sub.start_time).getTime() / 1000)
+      this.formTackUp.name = sub.name
+      this.formTackUp.execute_user_id = 33
+      this.$http.put(api.designSubstageUpdate.format(sub.id), this.formTackUp).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          console.log(response.data.data)
+        } else {
+          this.$message.error(response.data.meta.message)
+        }
+      }).catch((error) => {
+        this.$message.error(error.message)
+        console.error(error.message)
+      })
+    },
+    // 删除子阶段
+    deleteTack(id, index) {
+      this.$http.delete(api.designSubstageDelete, {params: {design_substage_id: id}})
+      .then (function(response) {
+        if (response.data.meta.status_code === 200) {
+          console.log(response.data.data)
+        } else {
+          this.$message.error(response.data.meta.message)
+        }
+      }).catch((error) => {
+        this.$message.error(error.message)
+        console.error(error.message)
+      })
+    },
+    // 创建阶段节点按钮
+    addNode () {
+    },
+    // 创建阶段节点
+    createNode(id, index) {
+      this.formNode.design_substage_id = id
+      if (this.formNode.is_owner) {
+        this.formNode.is_owner = 1
+      } else this.formNode.is_owner = 0
+      this.formNode.time = Math.round(new Date(this.formNode.time).getTime() / 1000)
+      this.$http.post(api.dsignStageNodeCreate, this.formNode).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          console.log(response.data.data)
+        } else {
+          this.$message.error(response.data.meta.message)
+        }
+      })
+    },
+    // 编辑阶段节点按钮
+    editNode() {
+    },
+    // 编辑阶段节点
+    updataNode(sub, index) {
+      console.log(sub)
+      this.formNodeUp.name = sub.name
+      if (sub.time) {
+        if (sub.time instanceof Date) {
+          this.formNodeUp.time = Math.round(sub.time.getTime() / 1000)
+        } else this.formNodeUp.time = Math.round(new Date(sub.time).getTime() / 1000)
+      }
+      this.formNodeUp.is_owner = sub.is_owner
+      this.formNodeUp.stage_node_id = sub.id
+      this.$http.put(api.designStageNodeUpdate.format(sub.id), this.formNodeUp).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          console.log(response.data.data)
+        } else {
+          this.$message.error(response.data.meta.message)
+        }
+      }).catch((error) => {
+        this.$message.error(error.message)
+        console.error(error.message)
+      })
+    },
+    // 删除阶段节点
+    deleteNode(id, index) {
+      this.$http.delete(api.designStageNodeDelete, {params: {stage_node_id: id}}).then (function(response) {
         if (response.data.meta.status_code === 200) {
           console.log(response.data.data)
         } else {
@@ -247,6 +469,14 @@ export default {
           if (this.designStageLists[i].start_time) {
             this.designStageLists[i].start_time = (new Date(this.designStageLists[i].start_time * 1000)).format('yyyy-MM-dd')
           }
+          if (this.designStageLists[i].design_substage) {
+            for (var j = 0; j < this.designStageLists[i].design_substage.length; j++) {
+              this.designStageLists[i].design_substage[j].start_time = (new Date(this.designStageLists[i].design_substage[j].start_time * 1000)).format('yyyy-MM-dd')
+              // if (this.designStageLists[i].design_substage[j].design_stage_node.time) {
+              //   this.designStageLists[i].design_substage[j].design_stage_node.time = (new Date(this.designStageLists[i].design_substage[j].design_stage_node.time * 1000)).format('yyyy-MM-dd')
+              // }
+            }
+          }
         }
         console.log(response.data.data)
       } else {
@@ -261,24 +491,85 @@ export default {
 </script>
 <style scoped>
 .add-item{
-  border:1px solid #d2d2d2;
-  border-radius: 4px;
   height:100px;
-  margin:50px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  color:#FF5A5F;
+  cursor: pointer;
+}
+.add-item>div{
+  width:30px;
+  height:30px;
+  background:#FF5A5F;
+  border-radius: 50%;
+  font-size:28px;
+  text-align: center;
+  color:#fff;
+  margin-bottom:20px;
+}
+.item-total{
+  margin:30px 50px;
+}
+.h3{
+  font-size: 18px;
+  font-weight: bold;
+  color:#222222;
+  margin-bottom:30px;
+}
+.item-header{
+  display:flex;
+  border-bottom:1px solid #d2d2d2;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:40px;
+}
+.item-header>li{
+  flex:1;
+  margin:20px 0px;
+  height:80px;
   display:flex;
   flex-direction:column;
   justify-content:center;
   align-items:center;
 }
-.add-item>div{
-  width:30px;
-  height:30px;
-  background:brown;
-  border-radius: 50%;
-  font-size:28px;
-  text-align: center;
-  color:#d2d2d2;
-  margin-bottom:20px;
+.item-header>li>div{
+  font-size: 20px;
+  color: #222222;
+  margin-bottom:10px;
+}
+.item-header>li:not(:first-child){
+  border-left: 1px solid #d2d2d2;
+}
+.item-task>ul{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:40px;
+}
+.item-task>ul>li{
+  flex:1;
+  display:flex;
+  /* justify-content:center; */
+  align-items:center;
+  margin-right:10px;
+  border:1px solid #d2d2d2;
+  border-radius:4px;
+  padding:20px 0;
+}
+.item-task>ul>li:not(:first-child){
+  margin-left: 10px;
+}
+.item-task>ul>li>div{
+  margin-left:20px;
+}
+.item-task>ul>li>div>.fx-6{
+  margin-top:10px;
+}
+.item-content{
+  border:1px solid #d2d2d2;
+  border-radius: 4px;
 }
 </style>
 

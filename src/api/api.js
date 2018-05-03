@@ -368,5 +368,11 @@ export default {
   designSubstageCreate: '/designSubstage/create', // POST 创建
   designSubstageDelete: '/designSubstage/delete', // DELETE 删除
   designSubstage: '/designSubstage', // GET 子阶段详情
-  designSubstageUpdate: '/designSubstage/update' // PUT 子任务更新
+  designSubstageUpdate: '/designSubstage/update', // PUT 子任务更新
+
+  // 阶段节点
+  dsignStageNodeCreate: '/designStageNode/create', // POST 创建
+  designStageNodeDelete: '/designStageNode/delete', // DELETE 删除
+  designStageNodeUpdate: '/designStageNode/update', // PUT 编辑
+  designStageNode: '/designStageNode' // GET 详情
 }
