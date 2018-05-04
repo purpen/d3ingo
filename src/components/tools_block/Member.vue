@@ -314,7 +314,8 @@ export default {
     executeId(val) {
       this.taskMemberIdList = [val]
       if (val) {
-        this.$store.commit('setExecuteUser', val)
+        this.$store.dispatch('setExecuteUser', val)
+        // this.$store.commit('setExecuteUser', val)
       } else {
         this.$store.commit('removeExcuteUser')
       }

@@ -2,8 +2,8 @@
   <div class="" v-if="taskState.power" v-loading="isLoading">
     <section class="task-detail">
       <div class="task-detail-header">
-        <span class="task-detail-name">{{projectObject.name}}</span>
-        <div ref="selectParent" class="select-parent" tabindex="-1">
+        <span v-if="currentForm.tier === 0" class="task-detail-name">{{projectObject.name}}</span>
+        <div v-if="currentForm.tier === 0" ref="selectParent" class="select-parent" tabindex="-1">
           <span class="select-show">请选择阶段</span>
           <ul class="stage-list">
             <li :class="{'active': d.id === currentForm.stage_id}" v-for="(d, index) in stageList" :key="index" @click="stageItemClick(d.id)">
@@ -13,7 +13,8 @@
         <div ref="selectParent2" class="select-parent select-menu" tabindex="-1">
           <span class="select-show"></span>
           <ul class="stage-list">
-            <li @click="deleteBtn()">删除</li>
+            <li v-if="currentForm.tier === 0" @click="deleteBtn()">删除</li>
+            <li v-if="currentForm.tier === 1" @click="deleteBtn()">删除子任务</li>
           </ul>
         </div>
         <i class="fx fx-icon-nothing-close-error" @click="closeBtn"></i>
@@ -98,8 +99,9 @@
           <p class="p-task-child">子任务:</p>
           <ul class="add-child-ul" v-if="currentForm.childTask">
             <li v-for="(ele, index) in currentForm.childTask" :key="index">
-              <div :class="['add-task-input', 'add-child-input']">
-                <span :class="['add-task-select', 'add-child-select']"></span>
+              <div class="add-task-input add-child-input">
+                <span class="add-task-select add-child-select"></span>
+                <span @click="showChild(ele.id)" class="child-more"></span>
                 <el-tooltip class="item" effect="dark" content="点击即可编辑" placement="top">
                   <el-input :autosize="{ minRows: 1}" type="textarea" v-model="ele.name" placeholder="填写任务名称"></el-input>
                 </el-tooltip>
@@ -142,7 +144,7 @@
               </p>
             </li>
           </ul>
-          <p @click="confirmAddChild" class="add-child-button"><i></i>添加子任务</p>
+          <p v-if="!isAddChild" @click="confirmAddChild" class="add-child-button"><i></i>添加子任务</p>
         </div>
         <div class="task-summary">
           <p class="p-summary">备注</p>
@@ -644,6 +646,9 @@
         }).catch(err => {
           this.$message.error(err.message)
         })
+      },
+      showChild(id) {
+        this.$store.commit('changeTaskStateId', id)
       }
     },
     mounted: function () {
@@ -651,9 +656,6 @@
     computed: {
       taskState() {
         return this.$store.state.task.taskState
-      },
-      storeCurrentForm() {
-        return this.$store.state.task.storeCurrentForm
       },
       stageList() {
         return this.$store.state.task.stageList
@@ -687,15 +689,8 @@
         },
         deep: true
       },
-      storeCurrentForm: {
-        handler(val) {
-          this.currentForm = val
-        },
-        deep: true
-      },
       currentForm: {
         handler(val) {
-          this.$store.commit('setStoreCurrentForm', val)
           if (val.tagsAll) {
             let list = []
             val.tagsAll.forEach(item => {
@@ -894,6 +889,18 @@
   .add-child-input {
     padding: 20px 30px 20px 40px;
     border-bottom: none
+  }
+  .add-child-input .child-more {
+    position: absolute;
+    right: 0;
+    top: 31px;
+    width: 14px;
+    height: 14px;
+    border: 2px solid #d2d2d2;
+    border-left: none;
+    border-bottom: none;
+    transform: rotate(45deg);
+    cursor: pointer;
   }
   .add-task-input.active {
     text-decoration: line-through

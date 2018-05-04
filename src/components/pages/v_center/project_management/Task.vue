@@ -1,6 +1,6 @@
 <template>
   <section @click.self="currentStageStat.id = -1">
-    <div class="container task-content" v-loading="isLoading">
+    <div class="vcenter-container task-content" v-loading="isLoading">
       <el-row :gutter="30">
         <el-col :span="taskState.power ? 12 : 24" class="task-list">
           <div class="add-btn">

@@ -197,7 +197,13 @@ let mutations = {
     state.executeUser = null
   }
 }
+let actions = {
+  setExecuteUser(state, userId) {
+    state.commit('setExecuteUser', userId)
+  }
+}
 export default {
   state,
-  mutations
+  mutations,
+  actions
 }
