@@ -115,8 +115,9 @@
   .menu {
     transition: 0.2s all ease;
     max-width: 240px;
-    background: #333;
+    /* background: #333; */
     height: calc(100vh - 60px);
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
   }
   h3 {
     color: #666;
@@ -129,13 +130,14 @@
     margin-right: 10px;
   }
   .cloud-classify {
-    background: #333;
+    /* background: #333; */
   }
   .cloud-classify li {
     font-size: 0;
   }
   .cloud-classify li a {
-    color: rgba(255, 255, 255, 0.5);
+    /* color: rgba(255, 255, 255, 0.5); */
+    color: #999;
     display: block;
     position: relative;
     padding-left: 44px;
@@ -213,8 +215,9 @@
     line-height: 40px;
   }
   .cloud-classify li:hover a, .cloud-classify li a.active {
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff
+    /* background: rgba(255, 255, 255, 0.1); */
+    background: #f7f7f7;
+    color: #ff5a5f
   }
   .active {
     color: #ff5a5f

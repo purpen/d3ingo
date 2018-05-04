@@ -10,6 +10,7 @@
               {{d.title}}</li>
           </ul>
         </div>
+        <div v-if="currentForm.tier === 1" class="task-detail-name" @click="showChild(parentTask.id)">属于任务：{{parentTask.name}}</div>
         <div ref="selectParent2" class="select-parent select-menu" tabindex="-1">
           <span class="select-show"></span>
           <ul class="stage-list">
@@ -485,6 +486,9 @@
         })
       },
       blurInput(obj) {
+        if (!obj.name && !obj.summary) {
+          this.$message.error('请填写内容')
+        }
         if (obj.name) {
           if (this.oldVal === obj.name) {
             return
@@ -665,6 +669,9 @@
       },
       executeUser() {
         return this.$store.state.task.executeUser
+      },
+      parentTask() {
+        return this.$store.state.task.parentTask
       }
     },
     watch: {
@@ -785,6 +792,7 @@
     color: #666;
     font-size: 14px;
     position: relative;
+    height: 34px;
   }
   .task-detail-header .fx-icon-nothing-close-error {
     position: absolute;
@@ -798,6 +806,7 @@
     padding: 0 10px;
     border: 1px solid #d2d2d2;
     border-radius: 4px;
+    cursor: pointer;
   }
   .select-parent {
     position: relative;

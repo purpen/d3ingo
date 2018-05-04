@@ -9,13 +9,13 @@
           </div>
           <section>
             <div v-for="(ele, index) in displayObj.outsideStageList" :key="index"
-              @click.self="showTaskBtn(ele.id, index)"
+              @click.self="showTaskBtn(ele, index)"
               :class="['task-item','clearfix', {
                 'active': ele.stage === 2,
                 'level1': ele.level === 1,
                 'level2': ele.level === 5,
                 'level3': ele.level === 8}]">
-              <p @click.self="showTaskBtn(ele.id, index)" class="task-name fl">
+              <p @click.self="showTaskBtn(ele, index)" class="task-name fl">
               <span @click="completeTaskBtn(ele, index)" class="task-name-span"></span>
               {{ele.name}}</p>
               <p class="task-date fr">{{ele.created_at_format}}</p>
@@ -34,8 +34,8 @@
                 'level2': e.level === 5,
                 'level3': e.level === 8}]"
                 v-for="(e, i) in ele['task']" :key="i"
-                @click.self="showTaskBtn(e.id, i, e.stage)">
-                <p @click.self="showTaskBtn(e.id, i, e.stage)" class="task-name fl">
+                @click.self="showTaskBtn(e, i)">
+                <p @click.self="showTaskBtn(e, i)" class="task-name fl">
                   <span @click="completeTaskBtn(e, i)" class="task-name-span"></span>{{e.name}}</p>
                 <p class="task-date fr">{{e.created_at_format}}</p>
               </div>
@@ -290,11 +290,13 @@
         this.$store.commit('changeTaskStateEvent', 'create')
       },
       // 展开任务详情
-      showTaskBtn(id, index, stage) {
-        this.completeState = stage
+      showTaskBtn(ele, index) {
+        this.$store.commit('setParentTask', ele)
+        this.completeState = ele.stage
         this.$store.commit('changeTaskStatePower', 1)
         this.$store.commit('changeTaskStateEvent', 'update')
-        this.$store.commit('changeTaskStateId', id)
+        this.$store.commit('changeTaskStateId', ele.id)
+        this.$store.commit('changeTaskStateId', ele.id)
       },
       // 完成/取消任务
       completeTaskBtn(ele, index) {
