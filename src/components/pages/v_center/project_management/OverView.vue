@@ -18,6 +18,8 @@
               placeholder="项目阶段名称">
               </el-input>
             </el-form-item>
+            <el-row :gutter="20">
+              <el-col :span="12">
             <el-form-item label="投入时间" prop="duration">
               <el-input placeholder="请输入所需天数" v-model.number="form.duration"
                 prop="duration"
@@ -25,6 +27,8 @@
               <template slot="append">工作日</template>
             </el-input>
           </el-form-item>
+              </el-col>
+              <el-col :span="12">
           <el-form-item label="开始时间" prop="start_time">
             <div class="block">
               <el-date-picker
@@ -34,6 +38,8 @@
               </el-date-picker>
             </div>
           </el-form-item>
+              </el-col>
+          </el-row>
           <el-form-item label="交付内容" prop="content">
             <el-input
               type="textarea"

@@ -161,7 +161,10 @@
               <li v-if="d.isedit === 1&&d.selected_user.length>0">
                 <img :src=" userimg " alt="">
                 <ul class="updata-user">
-                  <li v-for="(user,indexus) in d.selected_user" :key="indexus" v-if="d.selected_user.length > 0" :style="{background:`url(${ user.logo_image.logo }) no-repeat center`,backgroundSize:`24px 24px`}">
+                  <li v-for="(user,indexus) in d.selected_user" 
+                  :key="indexus" v-if="d.selected_user.length > 0" 
+                  :style="{background:`url(${ user.logo_image.logo }) no-repeat center`,backgroundSize:`24px 24px`}"
+                  >
                     <span v-if=" !user.logo_image.logo ">{{user.realnamehead}}</span>
                     <i :style="{background:`url(${ closered }) no-repeat center`}" @click="deleteGetimg(indexus,{type:'noadd'})"  v-if="d.isedit === 2"></i>
                   </li>
@@ -517,6 +520,7 @@
             this.fileList = []
             this.event = ''
             response.data.data.created_at = (new Date(response.data.data.created_at * 1000)).format('yyyy-MM-dd')
+            response.data.data.isedit = 1
             this.itemList.unshift(response.data.data)
             console.log(response.data.data)
           } else {
@@ -1142,9 +1146,11 @@
   }
   .upload-down:hover{
     color:#FF5A5F;
+    cursor: pointer;
   }
   .upload-delete:hover{
     color:#FF5A5F;
+    cursor: pointer;
   }
   .upload-read{
     display:flex;

@@ -14,7 +14,7 @@ let state = {
   taskList: [],
   stageList: [],
   storeCurrentForm: {},
-  projectObject: {},
+  projectObject: {}, // 项目详情
   taskMemberList: [],
   projectMemberList: [],
   executeUser: {},
