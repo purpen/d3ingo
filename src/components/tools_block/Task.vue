@@ -123,11 +123,9 @@
               </div>
             </li>
             <li class="template" v-if="isAddChild">
-              <div :class="['add-task-input', 'add-child-input']">
+              <div :class="['add-task-input', 'add-child-input', 'child-input']">
                 <span :class="['add-task-select', 'add-child-select', 'add-child-template']"></span>
-                <el-tooltip class="item" effect="dark" content="点击即可编辑" placement="top">
-                  <el-input :autosize="{ minRows: 1}" type="textarea"  v-model="addChildForm.name" placeholder="填写任务名称"></el-input>
-                </el-tooltip>
+                <el-input :autosize="{ minRows: 1}" type="textarea" v-model="addChildForm.name" placeholder="填写任务名称"></el-input>
                 <el-date-picker
                   v-model="addChildForm.over_time"
                   type="datetime"

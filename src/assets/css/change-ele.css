@@ -15,6 +15,7 @@
     text-decoration: line-through
   }
   .add-task-input .el-textarea__inner:hover,
-  .add-task-input .el-textarea__inner:focus {
+  .add-task-input .el-textarea__inner:focus,
+  .child-input .el-textarea__inner {
     border-color: #d2d2d2
   }

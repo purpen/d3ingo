@@ -13,7 +13,6 @@ let state = {
   },
   taskList: [],
   stageList: [],
-  storeCurrentForm: {},
   projectObject: {},
   taskMemberList: [],
   projectMemberList: [],
@@ -154,9 +153,6 @@ let mutations = {
     })
     this.commit('setDisplayObj', state.taskList)
   },
-  setStoreCurrentForm(state, obj) {
-    Object.assign(state.storeCurrentForm, obj)
-  },
   setProjectObject(state, obj) {
     Object.assign(state.projectObject, obj)
   },
@@ -201,13 +197,7 @@ let mutations = {
     state.parentTask = obj
   }
 }
-let actions = {
-  setExecuteUser(state, userId) {
-    state.commit('setExecuteUser', userId)
-  }
-}
 export default {
   state,
-  mutations,
-  actions
+  mutations
 }
