@@ -6,6 +6,7 @@
         <div v-if="currentForm.tier === 0" ref="selectParent" class="select-parent" tabindex="-1">
           <span class="select-show">请选择阶段</span>
           <ul class="stage-list">
+            <li :class="{'active': !currentForm.stage_id}" @click="stageItemClick(0)">无阶段</li>
             <li :class="{'active': d.id === currentForm.stage_id}" v-for="(d, index) in stageList" :key="index" @click="stageItemClick(d.id)">
               {{d.title}}</li>
           </ul>
@@ -100,16 +101,17 @@
           <p class="p-task-child">子任务:</p>
           <ul class="add-child-ul" v-if="currentForm.childTask">
             <li v-for="(ele, index) in currentForm.childTask" :key="index">
-              <div class="add-task-input add-child-input">
-                <span class="add-task-select add-child-select"></span>
+              <div :class="['add-task-input', 'add-child-input', {'active': ele.stage === 2}]">
+                <span @click="completeTask2(ele.id, ele.stage)" class="add-task-select add-child-select"></span>
                 <span @click="showChild(ele.id)" class="child-more"></span>
                 <el-tooltip class="item" effect="dark" content="点击即可编辑" placement="top">
-                  <el-input :autosize="{ minRows: 1}" type="textarea" v-model="ele.name" placeholder="填写任务名称"></el-input>
+                  <el-input :autosize="{ minRows: 1}" type="textarea" v-model="ele.name" placeholder="填写任务名称" @blur="updateChild(ele.id, {name: ele.name})"></el-input>
                 </el-tooltip>
                 <el-date-picker
                   v-model="ele.over_time"
                   type="datetime"
-                  placeholder="选择截止时间">
+                  placeholder="选择截止时间"
+                  @change="changeTime2($event, ele.id)">
                 </el-date-picker>
                 <!-- <v-Member
                   :propsShow="showMember3"
@@ -129,7 +131,8 @@
                 <el-date-picker
                   v-model="addChildForm.over_time"
                   type="datetime"
-                  placeholder="选择截止时间">
+                  placeholder="选择截止时间"
+                  @change="changeChildTime">
                 </el-date-picker>
                 <!-- <v-Member
                   :propsShow="showMember3"
@@ -444,6 +447,21 @@
           this.setStageTask()
         }
       },
+      completeTask2(id, stage) {
+        const self = this
+        stage = stage === 2 ? 0 : 2
+        this.$http.put(api.taskStage, {task_id: id, stage: stage}).then(function (response) {
+          if (response.data.meta.status_code === 200) {
+            self.fetchStage()
+            self.view(self.taskState.id)
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          self.$message.error(error.message)
+          console.error(error.message)
+        })
+      },
       addTagBtn() {
         this.$set(this.propsTags, 'power', 1)
       },
@@ -474,7 +492,6 @@
         this.currentForm.tagsAll.forEach((item, index, array) => {
           if (item.id === obj.id) {
             if (obj.event === 'update') {
-              console.log(item)
               this.$nextTick(() => {
                 item.title = obj.title
                 item.type_val = obj.type_val
@@ -486,23 +503,34 @@
         })
       },
       blurInput(obj) {
-        if (!obj.name && !obj.summary) {
-          this.$message.error('请填写内容')
-        }
-        if (obj.name) {
-          if (this.oldVal === obj.name) {
+        let bool = true
+        for (let i in obj) {
+          if (!obj[i] === false) {
+            bool = false
+          }
+          if (obj[i] === this.oldVal) {
             return
           }
         }
-        if (obj.summary) {
-          if (this.oldVal === obj.summary) {
-            return
-          }
+        if (bool) {
+          return
         }
         if (this.taskState.event === 'update') {
           this.currentChange = obj
           this.update()
         }
+      },
+      updateChild(id, obj) {
+        this.$http.put(api.taskId.format(id), obj).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.fetchStage()
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          this.$message.error(error.message)
+          console.error(error.message)
+        })
       },
       changeTime(e) {
         if (this.atFirst) {
@@ -512,6 +540,12 @@
           this.currentChange = {over_time: e}
           this.update()
         }
+      },
+      changeTime2(overTime, id) {
+        this.updateChild(id, {over_time: overTime})
+      },
+      changeChildTime(e) {
+        this.addChildForm.over_time = e
       },
       changeLevel(e) {
         if (this.atFirst) {

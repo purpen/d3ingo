@@ -409,6 +409,7 @@
         this.redirectItemList(1, '没有此项目')
         return
       }
+      this.$store.commit('changeTaskStatePower', 0)
       // 请求项目详情，判断项目是否存在或有效
       this.itemId = itemId
       // 获取阶段列表
