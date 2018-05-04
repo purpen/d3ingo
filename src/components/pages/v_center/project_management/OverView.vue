@@ -1,5 +1,111 @@
 <template>
 <div class="item-total">
+  <section class="add-itemStage-bg" v-if="isItemStage">
+    <div class="add-itemStage">
+      <div class="itemStage-title">新建项目阶段
+        <i class="fx-icon-close-sm" @click="cancel()"></i>
+      </div>
+      <div class="itemStage-content">
+        <el-form 
+          @submit.native.prevent 
+          :model="form"
+          ref="form" 
+          :rules="rules"
+          label-position="top"
+          >
+            <el-form-item label="项目阶段名称" prop="name">
+              <el-input v-model="form.name"
+              placeholder="项目阶段名称">
+              </el-input>
+            </el-form-item>
+            <el-form-item label="投入时间" prop="duration">
+              <el-input placeholder="请输入所需天数" v-model.number="form.duration"
+                prop="duration"
+                >
+              <template slot="append">工作日</template>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="开始时间" prop="start_time">
+            <div class="block">
+              <el-date-picker
+                type="date"
+                v-model="form.start_time"
+                placeholder="选择日期时间">
+              </el-date-picker>
+            </div>
+          </el-form-item>
+          <el-form-item label="交付内容" prop="content">
+            <el-input
+              type="textarea"
+              :autosize="{ minRows: 4, maxRows: 8}"
+              placeholder="请输入交付内容"
+              v-model="form.content"
+              > 
+            </el-input>
+          </el-form-item>
+          <el-form-item>
+            <button class="small-button full-red-button fr" @click="create('form')">保存</button>
+            <button class="small-button white-button fr" @click="cancel()">取消</button>
+          </el-form-item>
+        </el-form>
+    </div>
+  </div>
+  </section>
+  <aside class="aside">
+    <div class="aside-title fx">
+      <i class="fx fx-icon-delete2"></i>
+      项目阶段设置
+      <span class="fx fx-icon-close-sm"></span>
+    </div>
+    <el-progress 
+    :percentage="50"
+    :show-text="false"
+    :stroke-width="8"
+    ></el-progress>
+    <ul class="aside-content">
+      <li> <el-checkbox v-model="checked"></el-checkbox>
+        <el-input v-model="form.name"  placeholder="项目阶段名称"></el-input>
+      </li>
+      <li>
+        <div class="block">
+            <el-date-picker
+            type="date"
+            v-model="form.start_time"
+            placeholder="选择日期时间">
+            </el-date-picker>
+          </div>
+      </li>
+      <li>
+        <div>
+          <el-input placeholder="请输入所需天数"                        v-model="form.duration">
+            <template slot="append">工作日</template>
+          </el-input>
+        </div>
+      </li>
+      <li>
+        <el-input
+            type="textarea"
+            :autosize="{ minRows: 4, maxRows: 8}"
+            placeholder="请输入内容"
+            v-model="form.content"
+            >
+            </el-input>
+      </li>
+    </ul>
+    <div class="add-tack">
+      <i>+</i>
+      <span class="fx-6">添加任务</span>
+    </div>
+    <ul class="tack-list">
+      <li>
+        <el-checkbox v-model="checked"> 前期调研</el-checkbox>
+      </li>
+      <li>
+        <el-checkbox v-model="checked"> 草图设计</el-checkbox>
+      </li>
+    </ul>
+  </aside>
+
   <section class="top-progress">
     <div class="h3">笔记本设计</div>
     <el-progress 
@@ -79,17 +185,17 @@
   <section class="item-content">
     <div class="item-list">
     </div>
-    <div  class="add-item">
+    <div  class="add-item" @click="isItemStage=true">
       <div>+</div>
       <p>添加项目阶段</p>
     </div>
-    <div>
+    <!-- <div>
       <ul>
         <li>项目阶段名称<el-input v-model="form.name"></el-input></li>
         <li>
           项目投入时间
           <div>
-            <el-input placeholder="请输入内容"                        v-model="form.duration">
+            <el-input placeholder="请输入所需天数"                        v-model="form.duration">
               <template slot="append">工作日</template>
             </el-input>
           </div>
@@ -118,7 +224,7 @@
           <el-button @click="create()">新建</el-button>
         </li>
       </ul>
-    </div>
+    </div> -->
     <div v-for="(designStage,index) in designStageLists" :key="index">
       
       <div>
@@ -215,8 +321,6 @@
             >
     </el-input>
     <el-button @click="createTack()">新建任务</el-button>
-  <section>
-  </section>
   </div>
 </template>
 <script>
@@ -241,7 +345,21 @@ export default {
       formNodeUp: {}, // 编辑节点
       designStageLists: [],
       indesignStage: '',
-      itemdesId: ''
+      itemdesId: '',
+      checked: false,
+      isItemStage: false,
+      rules: {
+        duration: [
+          {
+            required: true, type: 'number', message: '请添写阶段所需时间,必须为大于0的数', trigger: 'blur'
+          }
+        ],
+        name: [
+          {
+            required: true, message: '请添写项目阶段名称', trigger: 'blur'
+          }
+        ]
+      }
     }
   },
   // computed:{
@@ -259,31 +377,29 @@ export default {
       // this.$router.push({name: 'home'})
       // return
     },
+    // 取消创建
+    cancel() {
+      this.isItemStage = false
+    },
     // 创建项目
-    create() {
+    create(formName) {
       let that = this
-      if (!that.form.name) {
-        this.redirectItemList(1, '缺少请求参数！')
-        return
-      }
-      if (!that.form.duration) {
-        this.redirectItemList(1, '缺少请求参数！')
-        return
-      }
-      if (!that.form.start_time) {
-        this.redirectItemList(1, '缺少请求参数！')
-        return
-      }
-      that.form.start_time = Math.round(new Date(that.form.start_time).getTime() / 1000)
-      that.$http.post(api.designStageCreate, that.form).then((response) => {
-        if (response.data.meta.status_code === 200) {
-          this.designStageLists.unshift(response.data.data)
-        } else {
-          that.$message.error(response.data.meta.message)
+      that.$refs[formName].validate(valid => {
+        if (valid) {
+          that.form.start_time = Math.round(new Date(that.form.start_time).getTime() / 1000)
+          that.$http.post(api.designStageCreate, that.form).then((response) => {
+            if (response.data.meta.status_code === 200) {
+              that.designStageLists.unshift(response.data.data)
+              that.form = {}
+              that.isItemStage = false
+            } else {
+              that.$message.error(response.data.meta.message)
+            }
+          }).catch((error) => {
+            that.$message.error(error.message)
+            console.log(error.message)
+          })
         }
-      }).catch((error) => {
-        that.$message.error(error.message)
-        console.log(error.message)
       })
     },
     // 编辑项目按钮
@@ -472,9 +588,9 @@ export default {
           if (this.designStageLists[i].design_substage) {
             for (var j = 0; j < this.designStageLists[i].design_substage.length; j++) {
               this.designStageLists[i].design_substage[j].start_time = (new Date(this.designStageLists[i].design_substage[j].start_time * 1000)).format('yyyy-MM-dd')
-              // if (this.designStageLists[i].design_substage[j].design_stage_node.time) {
-              //   this.designStageLists[i].design_substage[j].design_stage_node.time = (new Date(this.designStageLists[i].design_substage[j].design_stage_node.time * 1000)).format('yyyy-MM-dd')
-              // }
+              if (this.designStageLists[i].design_substage[j].design_stage_node && this.designStageLists[i].design_substage[j].design_stage_node.time) {
+                this.designStageLists[i].design_substage[j].design_stage_node.time = (new Date(this.designStageLists[i].design_substage[j].design_stage_node.time * 1000)).format('yyyy-MM-dd')
+              }
             }
           }
         }
@@ -490,6 +606,50 @@ export default {
 }
 </script>
 <style scoped>
+.add-itemStage-bg{
+    position: fixed;
+    z-index: 1999;
+    left: 50%;
+    top: 50%;
+    transform:  translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.30)
+}
+.add-itemStage{
+    position: fixed;
+    z-index: 1999;
+    left: 50%;
+    top: 50%;
+    transform:  translate(-50%, -50%);
+    width: 500px;
+    min-height:100px;
+    margin: auto;
+    background: #FFFFFF;
+    box-shadow: 0 0 4px 0 rgba(0,0,0,0.10);
+    border:1px solid #fff;
+    border-radius: 4px;
+}
+.itemStage-title{
+  background:#f7f7f7;
+  padding:15px;
+  font-size:15px;
+  font-weight: 600;
+  text-align: center;
+  position: relative;
+}
+.itemStage-title>i{
+  position: absolute;
+  width:20px;
+  height:20px;
+  right:5px;
+}
+.itemStage-content{
+  padding:15px 15px 0px 15px;
+}
+.itemStage-content>.el-row{
+  margin:15px 0px;
+}
 .add-item{
   height:100px;
   display:flex;
@@ -511,12 +671,82 @@ export default {
 }
 .item-total{
   margin:30px 50px;
+  position: relative;
+}
+.cs{
+  position: absolute;
+  width:300px;
+  height:300px;
+  z-index:999;
+}
+.aside{
+  display:none;
+  position: absolute;
+  z-index:99;
+  width:300px;
+  height:100%;
+  border:1px solid #d2d2d2;
+  right:-50px;
+  top:-30px;
+  background:#fff;
+}
+.aside-title{
+  position: relative;
+  padding:15px;
+  text-align: center;
+}
+.aside-title>i{
+  width:20px;
+  height:20px;
+  position: absolute;
+  left:15px;
+  top:15px;
+}
+.aside-title>span{
+  width:20px;
+  height:20px;
+  position: absolute;
+  right:15px;
+  top:15px;
+}
+.aside-content{
+  margin:20px 20px 10px 20px;
+}
+.aside-content>li{
+  margin-bottom:10px;
+}
+.add-tack{
+  position: relative;
+  border-top:1px solid #d2d2d2;
+  border-bottom:1px solid #d2d2d2;
+  padding:10px 0px 10px 20px;
+}
+.add-tack>i{
+  width:25px;
+  height:25px;
+  background:#FF5A5F;
+  border-radius: 50%;
+  font-size:23px;
+  text-align: center;
+  color:#fff;
+  display:inline-block;
+}
+.tack-list{
+  margin-top:10px;
+  padding-left:20px;
+  border-bottom:1px solid #d2d2d2;
+}
+.tack-list>li{
+  margin-bottom:10px;
 }
 .h3{
   font-size: 18px;
   font-weight: bold;
   color:#222222;
   margin-bottom:30px;
+}
+.full-red-button{
+  margin-left:20px;
 }
 .item-header{
   display:flex;
@@ -572,4 +802,5 @@ export default {
   border-radius: 4px;
 }
 </style>
+
 

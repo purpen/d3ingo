@@ -2477,6 +2477,16 @@ td.fc-day.fc-widget-content.fc-today::before {
 .el-date-table td.today, .el-picker-panel__link-btn {
   color: #ff5a5f
 }
+.aside-content .el-input-group--append{
+  padding:0px;
+}
+.itemStage-content .el-form-item{
+  margin-bottom:10px;
+}
+.itemStage-content .el-form-item__label{
+  font-weight: 600;
+  font-size:1.3rem;
+}
 /**
 .content .body p {
   font-size: 1.4rem;
