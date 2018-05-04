@@ -92,11 +92,13 @@ export default {
 <style scoped>
   .member-menu {
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.5);
-    background: #333;
+    /* color: rgba(255, 255, 255, 0.5); */
+    /* background: #333; */
+    color: #999;
     max-width: 240px;
     height: calc(100vh - 60px);
     transition: 0.2s all ease;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.10)
   }
   .seach-block {
     position: relative;
@@ -105,12 +107,13 @@ export default {
   .search {
     width: 100%;
     height: 40px;
-    border: none;
+    border: 1px solid #d2d2d2;
     border-radius: 4px;
     padding: 0 8px 0 34px;
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.5);
-    background: rgba(255, 255, 255, 0.1);
+    /* color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.1); */
+    color: #999;
   }
   
   .search-icon {
@@ -140,7 +143,8 @@ export default {
     cursor: pointer
   }
   .menu-header span:hover {
-    color: #fff
+    /* color: #fff */
+    color: #ff5a5f
   }
   .menu-list {
     line-height: 40px;
@@ -151,22 +155,27 @@ export default {
   }
   
   .menu-list li:hover {
-    color: rgba(255, 255, 255, 0.5);
-    background: rgba(255, 255, 255, 0.1);
+    /* color: rgba(255, 255, 255, 0.5); */
+    color: #ff5a5f;
+    background: #f7f7f7;
   }
   .active {
-    color: #fff
+    /* color: #fff */
+    color: #ff5a5f
   }
   .menu-header span.active:hover {
-    color: #fff
+    /* color: #fff */
+    color: #ff5a5f
   }
   .li-active {
-    color: #fff;
+    /* color: #fff; */
+    color: #ff5a5f;
     background: rgba(255, 255, 255, 0.1);
   }
   
   .menu-list .li-active:hover {
-    color: #fff;
+    /* color: #fff; */
+    color: #ff5a5f;
   }
   .new-group {
     padding-left: 40px;

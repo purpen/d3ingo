@@ -12,7 +12,7 @@
       </div>
       <ul class="scroll-bar">
         <li v-if="matchMemberList.length"
-          :class="['info', {'active': taskMemberIdList.indexOf(d.id) !== -1 && event === ''}]"
+          :class="['info', {'active': taskMemberIdList.indexOf(d.id) !== -1 && event !== 'menu'}]"
           v-for="(d, index) in matchMemberList" :key="index"
           @click="clickTaskMember(d.id)">
           <img v-if="d.logo_image" :src="d.logo_image.logo" alt="">
@@ -101,37 +101,17 @@ export default {
     }
   },
   methods: {
-    showMember() {
-      this.getTaskMemberList()
-      this.getProjectMemberList()
-    },
     closeMember() {
       this.currentShow = false
     },
-    getTaskMemberList() {
-      this.$http.get(api.taskUsers, {params: {task_id: this.taskId}})
-      .then(res => {
-        if (res.data.meta.status_code === 200) {
-          // this.taskMemberList = res.data.data
-          this.$store.commit('setTaskMemberList', res.data.data)
-        } else {
-          this.$message.error(res.data.meta.message)
-        }
-      }).catch(err => {
-        this.$message.error(err.message)
-      })
-    },
     getProjectMemberList() {
+      if (this.projectMemberList.length) {
+        return
+      }
       this.$http.get(api.itemUsers, {params: {item_id: this.itemId}})
       .then(res => {
         if (res.data.meta.status_code === 200) {
-          // this.projectMemberList = res.data.data
           this.$store.commit('setProjectMemberList', res.data.data)
-          let idList = []
-          this.projectMemberList.forEach(item => {
-            idList.push(item.id)
-          })
-          Object.assign(this.projectMemberIdList, idList)
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -152,17 +132,15 @@ export default {
       })
     },
     clickTaskMember(selectId) {
-      if (!this.event) {
-        if (this.executeId === -1) {
-          let index = this.taskMemberIdList.indexOf(selectId)
-          if (index === -1) {
-            this.addTaskMember(selectId)
-          } else {
-            this.removeTaskMember(selectId)
-          }
+      if (this.executeId === -1) {
+        let index = this.taskMemberIdList.indexOf(selectId)
+        if (index === -1) {
+          this.addTaskMember(selectId)
         } else {
-          this.claimTask(selectId)
+          this.removeTaskMember(selectId)
         }
+      } else {
+        this.claimTask(selectId)
       }
     },
     clickProjectMember(d) {
@@ -202,6 +180,13 @@ export default {
       }).catch(err => {
         this.$message.error(err.message)
       })
+    },
+    getProjectMemberIdList() {
+      let idList = []
+      this.projectMemberList.forEach(item => {
+        idList.push(item.id)
+      })
+      this.projectMemberIdList = idList
     },
     removeTaskMember(selectId) {
       this.$http.delete(api.deleteTaskUsers, {params: {
@@ -308,11 +293,11 @@ export default {
       this.showCover = true
       this.isCompanyAdd = true
       this.getCompanyMemberList()
+      this.getProjectMemberIdList()
     }
   },
   created() {
-    // this.getTaskMemberList()
-    // this.getProjectMemberList()
+    this.matchMemberList = this.projectMemberList
   },
   computed: {
     company_role() {
@@ -328,7 +313,12 @@ export default {
   watch: {
     executeId(val) {
       this.taskMemberIdList = [val]
-      this.$store.commit('setExecuteUser', this.executeId)
+      if (val) {
+        this.$store.dispatch('setExecuteUser', val)
+        // this.$store.commit('setExecuteUser', val)
+      } else {
+        this.$store.commit('removeExcuteUser')
+      }
     },
     projectMemberList: {
       handler(val) {
@@ -342,7 +332,7 @@ export default {
       handler(val) {
         if (this.executeId === -1) {
           let idList = []
-          val.forEach(item => {
+          this.taskMemberList.forEach(item => {
             idList.push(item.selected_user_id)
           })
           this.taskMemberIdList = idList
@@ -357,7 +347,16 @@ export default {
     },
     currentShow(val) {
       if (val === true) {
-        this.showMember()
+        this.getProjectMemberList()
+        if (this.executeId === -1) {
+          let idList = []
+          this.taskMemberList.forEach(item => {
+            idList.push(item.selected_user_id)
+          })
+          this.taskMemberIdList = idList
+        } else {
+          this.taskMemberIdList = [this.executeId]
+        }
       } else {
         this.$emit('closeMember', val)
       }
@@ -374,7 +373,6 @@ export default {
       })
     },
     taskId(val) {
-      this.getTaskMemberList()
       this.getProjectMemberList()
     }
   }

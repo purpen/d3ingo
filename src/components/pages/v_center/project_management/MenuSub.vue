@@ -32,6 +32,7 @@
           :propsShow="showMember"
           :itemId="itemId"
           :taskId="taskState.id"
+          :executeId="-1"
           event="menu"
           @closeMember="controlMemberShow"
           ></v-Member></div>

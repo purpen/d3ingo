@@ -2,18 +2,20 @@
   <div class="" v-if="taskState.power" v-loading="isLoading">
     <section class="task-detail">
       <div class="task-detail-header">
-        <span class="task-detail-name">{{projectObject.name}}</span>
-        <div ref="selectParent" class="select-parent" tabindex="-1">
+        <span v-if="currentForm.tier === 0" class="task-detail-name">{{projectObject.name}}</span>
+        <div v-if="currentForm.tier === 0" ref="selectParent" class="select-parent" tabindex="-1">
           <span class="select-show">请选择阶段</span>
           <ul class="stage-list">
             <li :class="{'active': d.id === currentForm.stage_id}" v-for="(d, index) in stageList" :key="index" @click="stageItemClick(d.id)">
               {{d.title}}</li>
           </ul>
         </div>
+        <div v-if="currentForm.tier === 1" class="task-detail-name" @click="showChild(parentTask.id)">属于任务：{{parentTask.name}}</div>
         <div ref="selectParent2" class="select-parent select-menu" tabindex="-1">
           <span class="select-show"></span>
           <ul class="stage-list">
-            <li @click="deleteBtn()">删除</li>
+            <li v-if="currentForm.tier === 0" @click="deleteBtn()">删除</li>
+            <li v-if="currentForm.tier === 1" @click="deleteBtn()">删除子任务</li>
           </ul>
         </div>
         <i class="fx fx-icon-nothing-close-error" @click="closeBtn"></i>
@@ -27,15 +29,18 @@
       <div class="task-detail-body">
         <div class="task-admin" v-if="true">
           <p>分配给</p>
-          <ul class="task-member-list task-member-execute">
+          <ul class="task-member-list task-member-execute" v-if="executeUser">
             <li v-if="JSON.stringify(executeUser) !== '{}'">
               <a class="remove-member" @click.self="removeExecute()"></a>
               <img @click="showMember = true" v-if="executeUser.logo_image" v-lazy="executeUser.logo_image.logo" alt="">
               <img @click="showMember = true" v-else v-lazy="require('assets/images/avatar_100.png')">
             </li>
-            <li @click="showMember = true" v-else>待认领</li>
+          </ul>
+          <ul class="task-member-list task-member-execute" v-else>
+            <li @click="showMember = true" >待认领</li>
           </ul>
           <v-Member
+            event="execute"
             :propsShow="showMember"
             :itemId="propsTags.itemId"
             :taskId="taskState.id"
@@ -95,8 +100,9 @@
           <p class="p-task-child">子任务:</p>
           <ul class="add-child-ul" v-if="currentForm.childTask">
             <li v-for="(ele, index) in currentForm.childTask" :key="index">
-              <div :class="['add-task-input', 'add-child-input']">
-                <span :class="['add-task-select', 'add-child-select']"></span>
+              <div class="add-task-input add-child-input">
+                <span class="add-task-select add-child-select"></span>
+                <span @click="showChild(ele.id)" class="child-more"></span>
                 <el-tooltip class="item" effect="dark" content="点击即可编辑" placement="top">
                   <el-input :autosize="{ minRows: 1}" type="textarea" v-model="ele.name" placeholder="填写任务名称"></el-input>
                 </el-tooltip>
@@ -105,13 +111,13 @@
                   type="datetime"
                   placeholder="选择截止时间">
                 </el-date-picker>
-                <v-Member
+                <!-- <v-Member
                   :propsShow="showMember3"
                   :itemId="propsTags.itemId"
                   :taskId="taskState.id"
                   :executeId="currentForm.execute_user_id"
                   @closeMember="closeMember3"
-                  @changeExecute="changeExecute"></v-Member>
+                  @changeExecute="changeExecute"></v-Member> -->
               </div>
             </li>
             <li class="template" v-if="isAddChild">
@@ -125,13 +131,13 @@
                   type="datetime"
                   placeholder="选择截止时间">
                 </el-date-picker>
-                <v-Member
+                <!-- <v-Member
                   :propsShow="showMember3"
                   :itemId="propsTags.itemId"
                   :taskId="taskState.id"
                   :executeId="currentForm.execute_user_id"
                   @closeMember="closeMember3"
-                  @changeExecute="changeExecute"></v-Member>
+                  @changeExecute="changeExecute"></v-Member> -->
               </div>
               <p class="buttons">
                 <button @click="cancelAddChild" class="white-button middle-button">取消</button>
@@ -139,7 +145,7 @@
               </p>
             </li>
           </ul>
-          <p @click="confirmAddChild" class="add-child-button"><i></i>添加子任务</p>
+          <p v-if="!isAddChild" @click="confirmAddChild" class="add-child-button"><i></i>添加子任务</p>
         </div>
         <div class="task-summary">
           <p class="p-summary">备注</p>
@@ -155,8 +161,8 @@
           <ul class="task-member-list">
             <li v-for="(ele, index) in taskMemberList" :key="index">
               <a class="remove-member" @click="removeMember(ele.user.id)"></a>
-              <img v-if="ele.user.logo_image" v-lazy="ele.user.logo_image.logo" alt="">
-              <img v-else v-lazy="require('assets/images/avatar_100.png')">
+              <img @click="showMember2 = true" v-if="ele.user.logo_image" v-lazy="ele.user.logo_image.logo" alt="">
+              <img @click="showMember2 = true" v-else v-lazy="require('assets/images/avatar_100.png')">
             </li>
           </ul>
           <p class="show-member" v-if="true" @click="showMember2 = true">
@@ -165,6 +171,7 @@
             :propsShow="showMember2" 
             :itemId="propsTags.itemId" 
             :taskId="taskState.id"
+            event="participant"
             @closeMember="closeMember2"></v-Member>
         </div>
         <div class="task-moments" v-if="currentForm['moments']">
@@ -479,6 +486,9 @@
         })
       },
       blurInput(obj) {
+        if (!obj.name && !obj.summary) {
+          this.$message.error('请填写内容')
+        }
         if (obj.name) {
           if (this.oldVal === obj.name) {
             return
@@ -627,6 +637,22 @@
         for (let i in this.addChildForm) {
           this.addChildForm[i] = ''
         }
+      },
+      getTaskMemberList() {
+        this.$http.get(api.taskUsers, {params: {task_id: this.taskState.id}})
+        .then(res => {
+          if (res.data.meta.status_code === 200) {
+            // this.taskMemberList = res.data.data
+            this.$store.commit('setTaskMemberList', res.data.data)
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(err => {
+          this.$message.error(err.message)
+        })
+      },
+      showChild(id) {
+        this.$store.commit('changeTaskStateId', id)
       }
     },
     mounted: function () {
@@ -635,20 +661,17 @@
       taskState() {
         return this.$store.state.task.taskState
       },
-      storeCurrentForm() {
-        return this.$store.state.task.storeCurrentForm
-      },
       stageList() {
         return this.$store.state.task.stageList
       },
       taskMemberList() {
         return this.$store.state.task.taskMemberList
       },
-      projectMemberList() {
-        return this.$store.state.task.taskMemberList
-      },
       executeUser() {
         return this.$store.state.task.executeUser
+      },
+      parentTask() {
+        return this.$store.state.task.parentTask
       }
     },
     watch: {
@@ -668,24 +691,13 @@
                 this.create()
               }
             }
+            this.getTaskMemberList()
           }
-        },
-        deep: true
-      },
-      taskMemberList: {
-        handler(val) {
-        },
-        deep: true
-      },
-      storeCurrentForm: {
-        handler(val) {
-          this.currentForm = val
         },
         deep: true
       },
       currentForm: {
         handler(val) {
-          this.$store.commit('setStoreCurrentForm', val)
           if (val.tagsAll) {
             let list = []
             val.tagsAll.forEach(item => {
@@ -780,6 +792,7 @@
     color: #666;
     font-size: 14px;
     position: relative;
+    height: 34px;
   }
   .task-detail-header .fx-icon-nothing-close-error {
     position: absolute;
@@ -793,6 +806,7 @@
     padding: 0 10px;
     border: 1px solid #d2d2d2;
     border-radius: 4px;
+    cursor: pointer;
   }
   .select-parent {
     position: relative;
@@ -885,13 +899,25 @@
     padding: 20px 30px 20px 40px;
     border-bottom: none
   }
+  .add-child-input .child-more {
+    position: absolute;
+    right: 0;
+    top: 31px;
+    width: 14px;
+    height: 14px;
+    border: 2px solid #d2d2d2;
+    border-left: none;
+    border-bottom: none;
+    transform: rotate(45deg);
+    cursor: pointer;
+  }
   .add-task-input.active {
     text-decoration: line-through
   }
   .add-task-input .add-task-select {
     position: absolute;
     left: 0;
-    top: 23px;
+    top: 29px;
     width: 24px;
     height: 24px;
     border: 1px solid #d2d2d2;
@@ -901,10 +927,10 @@
   .add-task-input.active .add-task-select:before {
     content: "";
     position: absolute;
-    left: 10px;
-    top: 2px;
-    width: 10px;
-    height: 18px;
+    left: 8px;
+    top: 3px;
+    width: 8px;
+    height: 14px;
     border: 2px solid #d2d2d2;
     border-left: none;
     border-top: none;
@@ -1124,11 +1150,8 @@
     padding-top: 20px;
   }
   .task-member-execute li {
-    color: #999;
-    font-size: 14px;
-  }
-  .task-member-execute li:hover {
     color: #222;
+    font-size: 14px;
   }
   .task-detail-body p {
     color: #999

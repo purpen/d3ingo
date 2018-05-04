@@ -17,7 +17,8 @@ let state = {
   projectObject: {},
   taskMemberList: [],
   projectMemberList: [],
-  executeUser: {}
+  executeUser: {},
+  parentTask: {}
 }
 let mutations = {
   setDisplayObj2(state, array) { // 容易出异步问题
@@ -192,9 +193,21 @@ let mutations = {
         state.executeUser = item
       }
     })
+  },
+  removeExcuteUser(state) {
+    state.executeUser = null
+  },
+  setParentTask(state, obj) {
+    state.parentTask = obj
+  }
+}
+let actions = {
+  setExecuteUser(state, userId) {
+    state.commit('setExecuteUser', userId)
   }
 }
 export default {
   state,
-  mutations
+  mutations,
+  actions
 }

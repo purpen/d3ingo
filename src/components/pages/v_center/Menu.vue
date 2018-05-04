@@ -362,11 +362,12 @@
         return this.$store.state.event.leftWidth
       },
       DarkorLight() {
-        if (this.$route.name === 'vcenterCloudDriveList' && this.leftWidth === 2) {
-          return 'light'
-        } else {
-          return 'dark'
-        }
+        // if (this.$route.name === 'vcenterCloudDriveList' && this.leftWidth === 2) {
+        //   return 'light'
+        // } else {
+        //   return 'dark'
+        // }
+        return 'dark'
       },
       eventUser() {
         let user = this.$store.state.event.user
