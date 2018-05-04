@@ -165,7 +165,7 @@
                     <span v-if=" !user.logo_image.logo ">{{user.realnamehead}}</span>
                     <i :style="{background:`url(${ closered }) no-repeat center`}" @click="deleteGetimg(indexus,{type:'noadd'})"  v-if="d.isedit === 2"></i>
                   </li>
-                   <li v-if="d.isedit === 1" class="slice-user">+0</li>
+                   <li v-if="d.isedit === 1&&d.selected_user.length>10" class="slice-user">+0</li>
                 </ul>
               </li>
              </ul>
@@ -225,8 +225,8 @@
                 'video': /.video/.test(files.name)
               }]"></i></li>
                   <li class="font-color">{{files.name}}</li>
-                  <li @click="downupload(files.file)">下载</li>
-                  <li @click="deleteup(files.id, d.id)">删除</li>
+                  <li class="upload-down" @click="downupload(files.file)">下载</li>
+                  <li class="upload-delete" @click="deleteup(files.id, d.id)">删除</li>
                 </ul>
               </el-col>
                <el-col :xs="23" :sm="11" :md="11" :lg="6" class="upload-list" v-for="(uploadinga,indexc) in d.uploading" :key="indexc" v-if="uploadinga.percentage!==100">
@@ -895,8 +895,8 @@
     margin-top:10px;
   }
    .uploads img {
-    width:16px;
-    margin:17px 10px 0px 0px;
+    width:24px;
+    margin:16px 10px 0px 0px;
     float:left;
   }
   .upload-list {
@@ -1139,6 +1139,12 @@
     white-space: nowrap;
     line-height: 42px;
     height:42px;
+  }
+  .upload-down:hover{
+    color:#FF5A5F;
+  }
+  .upload-delete:hover{
+    color:#FF5A5F;
   }
   .upload-read{
     display:flex;

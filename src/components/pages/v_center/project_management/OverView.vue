@@ -11,7 +11,7 @@
           :model="form"
           ref="form" 
           :rules="rules"
-          label-position="top"
+          label-position=""
           >
             <el-form-item label="项目阶段名称" prop="name">
               <el-input v-model="form.name"
@@ -802,5 +802,4 @@ export default {
   border-radius: 4px;
 }
 </style>
-
 
