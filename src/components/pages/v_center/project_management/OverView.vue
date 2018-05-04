@@ -11,7 +11,9 @@
         </el-row>
         <el-row>
           <el-col>
-            <el-input v-model="form.name"  placeholder="项目阶段名称"></el-input>
+              <el-input v-model="form.name"
+              placeholder="项目阶段名称">
+              </el-input>
           </el-col>
         </el-row>
         <el-row :gutter="20">
@@ -21,7 +23,9 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <div>
-              <el-input placeholder="请输入内容"                            v-model="form.duration">
+              <el-input placeholder="请输入所需天数" v-model.number="form.duration"
+              prop="duration"
+              >
                 <template slot="append">工作日</template>
               </el-input>
             </div>
@@ -44,7 +48,7 @@
               <el-input
               type="textarea"
               :autosize="{ minRows: 4, maxRows: 8}"
-              placeholder="请输入内容"
+              placeholder="请输入交付内容"
               v-model="form.content"
               >
               </el-input>
@@ -56,8 +60,8 @@
                 <button class="small-button white-button fr" @click="cancel()">取消</button> 
           </el-col>
         </el-row>
-      </div>
     </div>
+  </div>
   </section>
   <aside class="aside">
     <div class="aside-title fx">
@@ -85,7 +89,7 @@
       </li>
       <li>
         <div>
-          <el-input placeholder="请输入内容"                        v-model="form.duration">
+          <el-input placeholder="请输入所需天数"                        v-model="form.duration">
             <template slot="append">工作日</template>
           </el-input>
         </div>
@@ -197,7 +201,7 @@
       <div>+</div>
       <p>添加项目阶段</p>
     </div>
-    <div>
+    <!-- <div>
       <ul>
         <li>项目阶段名称<el-input v-model="form.name"></el-input></li>
         <li>
@@ -232,7 +236,7 @@
           <el-button @click="create()">新建</el-button>
         </li>
       </ul>
-    </div>
+    </div> -->
     <div v-for="(designStage,index) in designStageLists" :key="index">
       
       <div>
@@ -356,7 +360,6 @@ export default {
       itemdesId: '',
       checked: false,
       isItemStage: false
-
     }
   },
   // computed:{
@@ -382,18 +385,6 @@ export default {
     create() {
       this.isItemStage = false
       let that = this
-      if (!that.form.name) {
-        this.redirectItemList(1, '缺少请求参数！')
-        return
-      }
-      if (!that.form.duration) {
-        this.redirectItemList(1, '缺少请求参数！')
-        return
-      }
-      if (!that.form.start_time) {
-        this.redirectItemList(1, '缺少请求参数！')
-        return
-      }
       that.form.start_time = Math.round(new Date(that.form.start_time).getTime() / 1000)
       that.$http.post(api.designStageCreate, that.form).then((response) => {
         if (response.data.meta.status_code === 200) {
