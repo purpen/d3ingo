@@ -6,60 +6,48 @@
         <i class="fx-icon-close-sm" @click="cancel()"></i>
       </div>
       <div class="itemStage-content">
-        <el-row>
-          <el-col>项目阶段名称</el-col>
-        </el-row>
-        <el-row>
-          <el-col>
+        <el-form 
+          @submit.native.prevent 
+          :model="form"
+          ref="form" 
+          :rules="rules"
+          label-position="top"
+          >
+            <el-form-item label="项目阶段名称" prop="name">
               <el-input v-model="form.name"
               placeholder="项目阶段名称">
               </el-input>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="12">投入时间</el-col>
-          <el-col :span="12">开始时间</el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <div>
+            </el-form-item>
+            <el-form-item label="投入时间" prop="duration">
               <el-input placeholder="请输入所需天数" v-model.number="form.duration"
-              prop="duration"
-              >
-                <template slot="append">工作日</template>
-              </el-input>
-            </div>
-          </el-col>
-          <el-col :span="12">
+                prop="duration"
+                >
+              <template slot="append">工作日</template>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="开始时间" prop="start_time">
             <div class="block">
               <el-date-picker
-              type="date"
-              v-model="form.start_time"
-              placeholder="选择日期时间">
+                type="date"
+                v-model="form.start_time"
+                placeholder="选择日期时间">
               </el-date-picker>
             </div>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col>交付内容</el-col>
-        </el-row>
-        <el-row>
-          <el-col>
-              <el-input
+          </el-form-item>
+          <el-form-item label="交付内容" prop="content">
+            <el-input
               type="textarea"
               :autosize="{ minRows: 4, maxRows: 8}"
               placeholder="请输入交付内容"
               v-model="form.content"
-              >
-              </el-input>
-            </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12"  :offset="12">
-                <button class="small-button full-red-button fr" @click="create()">保存</button>
-                <button class="small-button white-button fr" @click="cancel()">取消</button> 
-          </el-col>
-        </el-row>
+              > 
+            </el-input>
+          </el-form-item>
+          <el-form-item>
+            <button class="small-button full-red-button fr" @click="create('form')">保存</button>
+            <button class="small-button white-button fr" @click="cancel()">取消</button>
+          </el-form-item>
+        </el-form>
     </div>
   </div>
   </section>
@@ -359,7 +347,19 @@ export default {
       indesignStage: '',
       itemdesId: '',
       checked: false,
-      isItemStage: false
+      isItemStage: false,
+      rules: {
+        duration: [
+          {
+            required: true, type: 'number', message: '请添写阶段所需时间,必须为大于0的数', trigger: 'blur'
+          }
+        ],
+        name: [
+          {
+            required: true, message: '请添写项目阶段名称', trigger: 'blur'
+          }
+        ]
+      }
     }
   },
   // computed:{
@@ -382,20 +382,24 @@ export default {
       this.isItemStage = false
     },
     // 创建项目
-    create() {
-      this.isItemStage = false
+    create(formName) {
       let that = this
-      that.form.start_time = Math.round(new Date(that.form.start_time).getTime() / 1000)
-      that.$http.post(api.designStageCreate, that.form).then((response) => {
-        if (response.data.meta.status_code === 200) {
-          this.designStageLists.unshift(response.data.data)
-          that.form = {}
-        } else {
-          that.$message.error(response.data.meta.message)
+      that.$refs[formName].validate(valid => {
+        if (valid) {
+          that.form.start_time = Math.round(new Date(that.form.start_time).getTime() / 1000)
+          that.$http.post(api.designStageCreate, that.form).then((response) => {
+            if (response.data.meta.status_code === 200) {
+              that.designStageLists.unshift(response.data.data)
+              that.form = {}
+              that.isItemStage = false
+            } else {
+              that.$message.error(response.data.meta.message)
+            }
+          }).catch((error) => {
+            that.$message.error(error.message)
+            console.log(error.message)
+          })
         }
-      }).catch((error) => {
-        that.$message.error(error.message)
-        console.log(error.message)
       })
     },
     // 编辑项目按钮
