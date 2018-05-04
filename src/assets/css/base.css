@@ -129,6 +129,13 @@ input {
   font-size: 1.6rem
 }
 
+.markdown-body a {
+  text-decoration: underline
+}
+.markdown-body a:hover {
+  color: #a01419;
+  text-decoration: underline
+}
 .markdown-body h1 {
   font-weight: bold;
   font-size: 22px
@@ -854,7 +861,7 @@ button.is-custom.is-outlined.is-loading:after {
   position: absolute;
   top: 60px;
   left: 0;
-  width: 140;
+  width: 140px;
   background: #fff;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .12),
   0 0 6px 0 rgba(0, 0, 0, .04);

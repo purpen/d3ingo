@@ -6,7 +6,8 @@
     <span class="close-icon-solid" @click="cancelSearch"></span>
   </div>
   <div class="menu-header">
-    <span :class="{'active': isActive === 'member'}" @click="changeActive('member')">成员</span>
+    <span v-if="company_role === 20 || company_role === 10"
+      :class="{'active': isActive === 'member'}" @click="changeActive('member')">成员</span>
     <span :class="{'active': isActive === 2}" @click="changeActive(2)" v-if="false">部门</span>
     <span :class="{'active': isActive === 'group'}" @click="changeActive('group')">群组</span>
   </div>
@@ -74,6 +75,11 @@ export default {
     '$route' (to, from) {
       this.isActive = this.$route.query.type
       this.firstGroupId = 0
+    }
+  },
+  computed: {
+    company_role() {
+      return this.$store.state.event.user.company_role
     }
   }
 }
