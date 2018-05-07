@@ -335,6 +335,8 @@ export default {
   deleteDesignProject: '/designProject/delete', // DELETE 放入回收站
   designProject: '/designProject', // GET 展示详情
 
+  // 项目中的合同列表
+  designProjectContracts: '/designProject/contracts', // GET 项目中的合同列表
   // 项目成员列表
   itemUsers: '/itemUsers', // POST 创建 | GET 详情
   deleteItemUsers: '/itemUsers/delete', // DELETE 删除

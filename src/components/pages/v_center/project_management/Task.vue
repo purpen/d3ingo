@@ -310,7 +310,6 @@
               item.stage = stage
               this.completeState = stage
               this.$store.commit('updateTaskListItem', item)
-              this.$store.commit('setStoreCurrentForm', item)
               this.fetchStage()
             })
           } else {
@@ -387,9 +386,6 @@
       },
       taskList() {
         return this.$store.state.task.taskList
-      },
-      storeCurrentForm() {
-        return this.$store.state.task.storeCurrentForm
       },
       stageList() {
         return this.$store.state.task.stageList

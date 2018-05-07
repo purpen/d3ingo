@@ -261,6 +261,7 @@ export default {
 
 .submit {
   text-align: center;
+  cursor: pointer;
 }
 
 .submit a {

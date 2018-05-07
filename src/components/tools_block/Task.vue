@@ -11,7 +11,7 @@
               {{d.title}}</li>
           </ul>
         </div>
-        <div v-if="currentForm.tier === 1" class="task-detail-name" @click="showChild(parentTask.id)">属于任务：{{parentTask.name}}</div>
+        <div v-if="currentForm.tier === 1" class="task-detail-name" @click="showChild(parentTask.id)">属于任务：<span class="parent-task-name">{{parentTask.name}}</span></div>
         <div ref="selectParent2" class="select-parent select-menu" tabindex="-1">
           <span class="select-show"></span>
           <ul class="stage-list">
@@ -103,7 +103,10 @@
             <li v-for="(ele, index) in currentForm.childTask" :key="index">
               <div :class="['add-task-input', 'add-child-input', {'active': ele.stage === 2}]">
                 <span @click="completeTask2(ele.id, ele.stage)" class="add-task-select add-child-select"></span>
-                <span @click="showChild(ele.id)" class="child-more"></span>
+
+                <el-tooltip class="item" effect="dark" content="查看子任务详情" placement="top">
+                  <span @click="showChild(ele.id)" class="child-more"></span>
+                </el-tooltip>
                 <el-tooltip class="item" effect="dark" content="点击即可编辑" placement="top">
                   <el-input :autosize="{ minRows: 1}" type="textarea" v-model="ele.name" placeholder="填写任务名称" @blur="updateChild(ele.id, {name: ele.name})"></el-input>
                 </el-tooltip>
@@ -123,11 +126,9 @@
               </div>
             </li>
             <li class="template" v-if="isAddChild">
-              <div :class="['add-task-input', 'add-child-input']">
+              <div :class="['add-task-input', 'add-child-input', 'child-input']">
                 <span :class="['add-task-select', 'add-child-select', 'add-child-template']"></span>
-                <el-tooltip class="item" effect="dark" content="点击即可编辑" placement="top">
-                  <el-input :autosize="{ minRows: 1}" type="textarea"  v-model="addChildForm.name" placeholder="填写任务名称"></el-input>
-                </el-tooltip>
+                <el-input :autosize="{ minRows: 1}" type="textarea" v-model="addChildForm.name" placeholder="填写任务名称"></el-input>
                 <el-date-picker
                   v-model="addChildForm.over_time"
                   type="datetime"
@@ -842,6 +843,9 @@
     border-radius: 4px;
     cursor: pointer;
   }
+  .parent-task-name:hover {
+    color: #ff5a5f
+  }
   .select-parent {
     position: relative;
     margin-right: 20px;
@@ -944,6 +948,9 @@
     border-bottom: none;
     transform: rotate(45deg);
     cursor: pointer;
+  }
+  .add-child-input .child-more:hover {
+    border-color: #ff5a5f
   }
   .add-task-input.active {
     text-decoration: line-through
