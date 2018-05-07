@@ -30,7 +30,7 @@
                 </div>
               </li>
              </ul >
-              <ul class="useredit updata-user" v-if="event === 'create'">
+              <ul class="useredit updata-user hoverme" v-if="event === 'create'">
               <li ><img :src=" userimg " alt=""></li>
               <li v-for="(getimg,index) in getimgs" :key="index" v-if="getimgs.length > 0" :style="{background:`url(${ getimg.logo_image.logo }) no-repeat center`,backgroundSize:`24px 24px`}">
                   <span v-if=" !getimg.logo_image.logo ">{{getimg.realnamehead}}</span>
@@ -99,7 +99,7 @@
               </el-col>
             </el-row>
             <el-row class="uploads"> 
-              <el-col :xs="24" :sm="12" :md="12" :lg="12" >
+              <el-col :xs="24" :sm="12" :md="12" :lg="12">
                 <el-upload
                   class="upload-demo"
                   :action="uploadUrl"
@@ -175,7 +175,7 @@
              <ul class="useredit" v-if="d.isedit === 2">
                <li><img :src=" userimg " alt=""></li>
               <li >
-                <ul class="updata-user">
+                <ul class="updata-user hoverme">
                   <li v-for="(user,indexus) in d.selected_user" :key="indexus" v-if="d.selected_user.length > 0" :style="{background:`url(${ user.logo_image.logo }) no-repeat center`,backgroundSize:`24px 24px`}">
                     <span v-if=" !user.logo_image.logo ">{{user.realnamehead}}</span>
                     <i :style="{background:`url(${ closered }) no-repeat center`}" @click="deleteGetimg(indexus,{type:'noadd'})"  v-if="d.isedit === 2"></i>
@@ -432,6 +432,11 @@
       addBtn() {
         if (this.event !== 'create') {
           this.form = {}
+          if (this.itemList.length > 0) {
+            for (var i = 0; i < this.itemList.length; i++) {
+              this.itemList[i].isedit = 1
+            }
+          }
         }
         this.event = 'create'
       },
@@ -954,6 +959,7 @@
   }
   .titlec>.fr{
     position:relative;
+    cursor:pointer;
   }
   .margin-bottom {
     margin-bottom:5px;
@@ -981,15 +987,8 @@
   }
   .updata-user {
     position: relative;
-    /* z-index:2; */
   }
-  /* .updata-user{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    align-content:space-around;
-  } */
-    .updata-user>li:not(:last-child):hover{
+    .updata-user .userimg:not(:last-child):hover{
     border:1px solid #FF5A5F;
   }
   .updata-user>li>.adds{
@@ -1000,17 +999,26 @@
   .updata-user>li {
     width:24px;
     height:24px;
-    line-height:20px; 
-    border:1px solid transparent;
+    line-height:20px;
     border-radius: 50%;
     float: left;
     position: relative;
     text-align: center;
     margin-left:5px;
   }
-  .updata-user>li:not(:last-child){
+  .hoverme>li:hover i{
+    opacity:1;
+  }
+  .hoverme>li:not(:last-child):hover {
+    border:2px solid #ff5a5f
+  }
+  .useredit>li:not(:last-child):not(:first-child):hover {
+    border:2px solid #ff5a5f
+  }
+  .hoverme>li:not(:last-child){
     background: #3DA8F5;
     color:#FFFFFF;
+    border:2px solid transparent;
   }
    .updata-user>li:first-child{
     background: none;
@@ -1023,13 +1031,13 @@
     display:inline-block;
     right:-5px;
     top:-5px;
+    opacity:0;
   }
   .updata-user>.slice-user{
     border:1px solid #CCCCCC;
   }
   .edit {
     display:flex;
-    /* justify-content:flex-start; */
     align-items:center;
     flex-wrap:wrap;
     z-index:100;
