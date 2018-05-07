@@ -291,6 +291,7 @@
                   message: response.data.meta.message,
                   type: 'error'
                 })
+                that.fetchImgCaptcha()
                 return false
               }
             })
