@@ -409,7 +409,7 @@
     content: "";
     position: absolute;
     left: 0;
-    top: 1px;
+    top: 2px;
     width: 16px;
     height: 16px;
     background: url(../../assets/images/tools/project_management/Group.png) no-repeat;

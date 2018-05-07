@@ -842,7 +842,7 @@
   .task-detail-name {
     height: 34px;
     line-height: 34px;
-    margin-right: 30px;
+    margin-right: 20px;
     padding: 0 10px;
     border: 1px solid #d2d2d2;
     border-radius: 4px;
@@ -1042,9 +1042,9 @@
   .task-member p {
     height: 24px;
     line-height: 24px;
-    min-width: 72px;
+    min-width: 94px;
     padding-left: 34px;
-    margin-right: 15px;
+    margin-right: 20px;
     color: #999;
     position: relative;
   }
@@ -1062,10 +1062,6 @@
   }
   .task-info li p.p-label {
     background: url(../../assets/images/tools/project_management/Label.png) no-repeat left;
-    background-size: 24px;
-  }
-  .task-info li p.p-time {
-    background: url(../../assets/images/tools/project_management/Time.png) no-repeat left;
     background-size: 24px;
   }
   .p-summary {
