@@ -20,7 +20,7 @@
                   <span class="more">
                   </span>
                   <span class="delete" @click="projectDelete(ele.id, index)">
-                    删除
+                    删除{{ele.id}}
                   </span>
                 </p>
                 <span class="favorite-star fr" v-if="false"></span>
@@ -169,7 +169,7 @@ export default {
       this.$router.push({name: 'projectManagementOverView', params: {id: id}})
     },
     projectDelete(id, index) {
-      this.$http.delete(api.deleteDesignProject, {id: id}).then(res => {
+      this.$http.delete(api.deleteDesignProject, {params: {id: id}}).then(res => {
         this.$refs.operate[index].blur()
         if (res.data.meta.status_code === 200) {
           this.projectList.splice(index, 1)
@@ -235,8 +235,13 @@ export default {
     background: #f7f7f7;
     padding: 20px;
     padding-bottom: 40px;
+  transition: transform .218s ease;
   }
 
+  .project-list li:hover {
+    /* transform: translateY(-5px); */
+    box-shadow: 0 9pt 24px rgba(10,10,10,.15);
+  }
   .project-list li a {
     display: block;
     height: 100%;
@@ -481,6 +486,11 @@ export default {
   .pagination {
     text-align: center;
     white-space: inherit
+  }
+  @media screen and (max-width: 767px) {
+    .project-list li {
+      width: 100%
+    }
   }
 </style>
 

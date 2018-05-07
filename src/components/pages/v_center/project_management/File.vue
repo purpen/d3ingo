@@ -1,6 +1,6 @@
 <template>
   <section>
-    <v-file></v-file>
+    <v-file :withoutSide="false"></v-file>
   </section>
 </template>
 <script>
@@ -11,6 +11,11 @@ export default {
   },
   components: {
     vFile
+  },
+  computed: {
+    projectObject() {
+      return this.$store.state.task.projectObject
+    }
   }
 }
 </script>

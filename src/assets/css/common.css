@@ -160,3 +160,9 @@
 }
 
 /* 基本按钮 button  <<<<<<<*/
+
+@media screen and (max-width: 768px) and (min-width: 1440px) {
+  .col-offset-4 {
+    margin-left: 16.667%;
+  }
+}

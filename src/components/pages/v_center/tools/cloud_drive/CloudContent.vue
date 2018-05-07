@@ -45,7 +45,7 @@
                 <ul>
                   <li v-if="folderId === 0 && ele.user_id === user.id" @click="changePermission(ele.id, ele.user_id)">更改权限</li>
                   <li @click="shareFile(ele.id)">分享</li>
-                  <li v-if="ele.mime_type" @click="downFile(ele.id, ele.url_file)">下载</li>
+                  <li v-if="ele.mime_type" @click="downFile(ele.id, ele.url_download)">下载</li>
                   <li @click="copyFile(ele.id)">复制</li>
                   <li v-if="ele.user_id === user.id" @click="moveFile(ele.id)">移动</li>
                   <li @click="rename(ele.id, index)">重命名</li>
@@ -438,7 +438,6 @@ export default {
     },
     downFile(id, url) {
       this.directOperate(id)
-      this.$message.info('正在请求中,请稍等..')
       this.$emit('downloadFile', url)
     }
   },
