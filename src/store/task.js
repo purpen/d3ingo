@@ -195,6 +195,9 @@ let mutations = {
   },
   setParentTask(state, obj) {
     state.parentTask = obj
+  },
+  removeParentTask(state) {
+    state.parentTask = {id: -1}
   }
 }
 export default {

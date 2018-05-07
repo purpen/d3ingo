@@ -184,14 +184,14 @@
           <ul v-if="showAllMoments">
             <li class="clearfix"
               v-for="(ele, index) in currentForm['moments']" :key="index">
-              <p class="fl">{{ele.info}}</p>
+              <p class="fl"><span class="tc-2">{{ele.name}}</span> {{ele.info}}</p>
               <p class="date fr">{{ele.date}}</p>
             </li>
           </ul>
           <ul v-else>
             <li class="clearfix"
               v-for="(ele, index) in currentForm['limitMoments']" :key="index">
-              <p class="fl">{{ele.info}}</p>
+              <p class="fl"><span class="tc-2">{{ele.name}}</span> {{ele.info}}</p>
               <p class="date fr">{{ele.date}}</p>
             </li>
           </ul>
@@ -276,6 +276,7 @@
     methods: {
       // 关闭任务
       closeBtn() {
+        this.$store.commit('removeParentTask')
         this.$store.commit('changeTaskStatePower', 0)
         this.$store.commit('changeTaskStateEvent', '')
       },
@@ -748,11 +749,13 @@
                 let list = [6, 7, 8, 9]
                 if (list.indexOf(item.action_type) !== -1) {
                   arr.push({
-                    info: item.user_name + item.action,
+                    name: item.user_name,
+                    info: item.action,
                     date: item.date})
                 } else {
                   arr.push({
-                    info: item.user_name + item.action + item.content,
+                    name: item.user_name,
+                    info: item.action + item.content,
                     date: item.date
                   })
                 }
@@ -767,11 +770,13 @@
                 let list = [6, 7, 8, 9]
                 if (list.indexOf(item.action_type) !== -1) {
                   arr2.push({
-                    info: item.user_name + item.action,
+                    name: item.user_name,
+                    info: item.action,
                     date: item.date})
                 } else {
                   arr2.push({
-                    info: item.user_name + item.action + item.content,
+                    name: item.user_name,
+                    info: item.action + item.content,
                     date: item.date})
                 }
               })
@@ -1246,6 +1251,9 @@
     padding: 10px 0;
     line-height: 1.5;
     color: #666
+  }
+  .task-moments li p {
+    font-size: 12px;
   }
   .task-moments .date {
     color: #999
