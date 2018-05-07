@@ -151,7 +151,7 @@ export default {
   }
   .menu-list li {
     cursor: pointer;
-    padding: 0 10px;
+    padding: 0 15px;
   }
   
   .menu-list li:hover {
@@ -178,7 +178,7 @@ export default {
     color: #ff5a5f;
   }
   .new-group {
-    padding-left: 40px;
+    padding-left: 45px;
     position: relative;
     opacity: 0.7;
     cursor: pointer;
@@ -186,7 +186,7 @@ export default {
   .new-group::before {
     content: "";
     position: absolute;
-    left: 10px;
+    left: 15px;
     top: 10px;
     width: 20px;
     height: 20px;

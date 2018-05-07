@@ -432,7 +432,7 @@
       <div class="dialog-content" v-else>
         <p class="link"><span>链接:</span><input v-model.trim="shareInfo.link" type="text"></p>
         <p v-if="isEncryption" class="share-password"><span>密码:</span><input v-model.trim="shareInfo.pwd" type="text"></p>
-        <p class="share-password">有效期:{{validityVal}}</p>
+        <p class="share-password"><span>有效期:</span>{{validityVal}}</p>
         <div class="buttons">
           <button class="cancel-btn" @click="closeCover">取消</button>
           <button class="confirm-btn" @click="setClipboardText">复制链接</button>
@@ -2093,7 +2093,9 @@ export default {
     margin-bottom: 20px;
   }
   .link span, .share-password span {
-    margin-right: 20px;
+    /* margin-right: 20px; */
+    display: inline-block;
+    min-width: 60px;
   }
   .link input, .share-password input {
     width: 260px;

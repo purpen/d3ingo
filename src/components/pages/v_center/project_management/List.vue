@@ -5,6 +5,12 @@
       <div class="vcenter-container blank40">
         <h2>项目管理</h2>
         <ul class="project-list" v-loading.body="isLoading">
+          <li class="create">
+            <p @click="showCover">
+              <i></i>
+              <span>创建新项目</span>
+            </p>
+          </li>
           <li v-for="(ele, index) in projectList" :key="index"
             @click.self="routePush(ele.id)">
             <div class="clearfix">
@@ -25,12 +31,6 @@
             </div>
             <span class="importance level2" v-if="ele.level === 2">重要</span>
             <span class="importance level3" v-if="ele.level === 3">非常重要</span>
-          </li>
-          <li class="create">
-            <p @click="showCover">
-              <i></i>
-              <span>创建新项目</span>
-            </p>
           </li>
         </ul>
       </div>
