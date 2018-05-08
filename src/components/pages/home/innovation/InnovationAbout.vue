@@ -439,7 +439,9 @@ export default {
       width: 10px;
       height: 10px;
     }
-
+    .giftbody {
+      padding-bottom: 30px;
+    }
     .giftbody .first-icon-dot {
       padding: 0;
       margin-bottom: 20px;
@@ -451,7 +453,8 @@ export default {
       padding-right: 0
     }
     .dimension-resolve {
-      width: 100%
+      width: 100%;
+      padding: 0 0 30px;
     }
   }
 </style>

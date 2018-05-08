@@ -242,6 +242,11 @@ routes = [
     ],
     component: require('@/components/pages/home/innovation/InnovationIndex')
   },
+  {
+    name: 'innovationCompany',
+    path: '/innovation_index/company/:id',
+    component: require('@/components/pages/home/innovation/InnovationCompany')
+  },
   // 企业招募
   {
     path: '/subject/EnterpriseRecruit',
@@ -581,8 +586,12 @@ const router = new VueRouter({
     } else {
       const position = {}
       if (to.hash) {
-        position.selector = to.hash
-        return position
+        if (to.hash === '#innovation') {
+          return { x: 100, y: 0 }
+        } else {
+          position.selector = to.hash
+          return position
+        }
       }
     }
   }

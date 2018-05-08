@@ -4,7 +4,7 @@
     <div class="inno-content">
       <div ref="innovation" id="innovation" class="leaderboard">
         <div class="inno-header clearfix">
-          <el-col class="text-center" :span="2">排名</el-col>
+          <el-col :span="2">排名</el-col>
           <el-col :span="4">企业名称</el-col>
           <el-col class="text-center" :span="2">基础运作力</el-col>
           <el-col class="text-center" :span="2">创新交付力</el-col>
@@ -24,10 +24,10 @@
                 {'bronze': ele === 3},]">{{ele}}</span>
             </el-col>
             <el-col :span="4">
-              <div class="name">
+              <router-link target="_blank" :to="{name: 'innovationCompany', params: {id: 1}}" class="name">
                 <img :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
                 <p>飞鱼设计</p>
-              </div>
+              </router-link>
             </el-col>
             <el-col :span="2">122</el-col>
             <el-col :span="2">123</el-col>
@@ -47,9 +47,9 @@
           <img class="board-header" :src="require('assets/images/subject/innovation/01@2x.png')" alt="">
           <div class="board">
             <div class="inno-header clearfix">
-              <el-col :span="4">排名</el-col>
-              <el-col :span="16">企业名称</el-col>
-              <el-col class="text-right" :span="4">分数</el-col>
+              <el-col :span="2">排名</el-col>
+              <el-col :span="20">企业名称</el-col>
+              <el-col class="text-center" :span="2">分数</el-col>
             </div>
             <ul class="inno-table board-table">
               <li class="clearfix" v-for="(ele, index) in 10" :key="index">
@@ -59,13 +59,13 @@
                     {'silver': ele === 2},
                     {'bronze': ele === 3},]">{{ele}}</span>
                 </el-col>
-                <el-col :span="16">
-                  <div class="name">
+                <el-col :span="20">
+                  <router-link target="_blank" :to="{name: 'innovationCompany', params: {id: 1}}" class="name">
                     <img :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
                     <p>飞鱼设计</p>
-                  </div>
+                  </router-link>
                 </el-col>
-                <el-col class="text-right" :span="4">100</el-col>
+                <el-col class="text-center" :span="2">100</el-col>
               </li>
             </ul>
           </div>
@@ -74,9 +74,9 @@
           <img class="board-header" :src="require('assets/images/subject/innovation/02@2x.png')" alt="">
           <div class="board">
             <div class="inno-header clearfix">
-              <el-col :span="4">排名</el-col>
-              <el-col :span="16">企业名称</el-col>
-              <el-col class="text-right" :span="4">分数</el-col>
+              <el-col :span="2">排名</el-col>
+              <el-col :span="20">企业名称</el-col>
+              <el-col class="text-center" :span="2">分数</el-col>
             </div>
             <ul class="inno-table board-table">
               <li class="clearfix" v-for="(ele, index) in 10" :key="index">
@@ -86,13 +86,13 @@
                     {'silver': ele === 2},
                     {'bronze': ele === 3},]">{{ele}}</span>
                 </el-col>
-                <el-col :span="16">
-                  <div class="name">
+                <el-col :span="20">
+                  <router-link target="_blank" :to="{name: 'innovationCompany', params: {id: 1}}" class="name">
                     <img :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
                     <p>飞鱼设计</p>
-                  </div>
+                  </router-link>
                 </el-col>
-                <el-col class="text-right" :span="4">100</el-col>
+                <el-col class="text-center" :span="2">100</el-col>
               </li>
             </ul>
           </div>
@@ -103,9 +103,9 @@
           <img class="board-header" :src="require('assets/images/subject/innovation/03@2x.png')" alt="">
           <div class="board">
             <div class="inno-header clearfix">
-              <el-col :span="4">排名</el-col>
-              <el-col :span="16">企业名称</el-col>
-              <el-col class="text-right" :span="4">分数</el-col>
+              <el-col :span="2">排名</el-col>
+              <el-col :span="20">企业名称</el-col>
+              <el-col class="text-center" :span="2">分数</el-col>
             </div>
             <ul class="inno-table board-table">
               <li class="clearfix" v-for="(ele, index) in 10" :key="index">
@@ -115,13 +115,13 @@
                     {'silver': ele === 2},
                     {'bronze': ele === 3},]">{{ele}}</span>
                 </el-col>
-                <el-col :span="16">
-                  <div class="name">
+                <el-col :span="20">
+                  <router-link target="_blank" :to="{name: 'innovationCompany', params: {id: 1}}" class="name">
                     <img :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
                     <p>飞鱼设计</p>
-                  </div>
+                  </router-link>
                 </el-col>
-                <el-col class="text-right" :span="4">100</el-col>
+                <el-col class="text-center" :span="2">100</el-col>
               </li>
             </ul>
           </div>
@@ -130,9 +130,9 @@
           <img class="board-header" :src="require('assets/images/subject/innovation/04@2x.png')" alt="">
           <div class="board">
             <div class="inno-header clearfix">
-              <el-col :span="4">排名</el-col>
-              <el-col :span="16">企业名称</el-col>
-              <el-col class="text-right" :span="4">分数</el-col>
+              <el-col :span="2">排名</el-col>
+              <el-col :span="20">企业名称</el-col>
+              <el-col class="text-center" :span="2">分数</el-col>
             </div>
             <ul class="inno-table board-table">
               <li class="clearfix" v-for="(ele, index) in 10" :key="index">
@@ -142,13 +142,13 @@
                     {'silver': ele === 2},
                     {'bronze': ele === 3},]">{{ele}}</span>
                 </el-col>
-                <el-col :span="16">
-                  <div class="name">
+                <el-col :span="20">
+                  <router-link target="_blank" :to="{name: 'innovationCompany', params: {id: 1}}" class="name">
                     <img :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
                     <p>飞鱼设计</p>
-                  </div>
+                  </router-link>
                 </el-col>
-                <el-col class="text-right" :span="4">100</el-col>
+                <el-col class="text-center" :span="2">100</el-col>
               </li>
             </ul>
           </div>
@@ -159,9 +159,9 @@
           <img class="board-header" :src="require('assets/images/subject/innovation/05@2x.png')" alt="">
           <div class="board">
             <div class="inno-header clearfix">
-              <el-col :span="4">排名</el-col>
-              <el-col :span="16">企业名称</el-col>
-              <el-col class="text-right" :span="4">分数</el-col>
+              <el-col :span="2">排名</el-col>
+              <el-col :span="20">企业名称</el-col>
+              <el-col class="text-center" :span="2">分数</el-col>
             </div>
             <ul class="inno-table board-table">
               <li class="clearfix" v-for="(ele, index) in 10" :key="index">
@@ -171,13 +171,13 @@
                     {'silver': ele === 2},
                     {'bronze': ele === 3},]">{{ele}}</span>
                 </el-col>
-                <el-col :span="16">
-                  <div class="name">
+                <el-col :span="20">
+                  <router-link target="_blank" :to="{name: 'innovationCompany', params: {id: 1}}" class="name">
                     <img :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
                     <p>飞鱼设计</p>
-                  </div>
+                  </router-link>
                 </el-col>
-                <el-col class="text-right" :span="4">100</el-col>
+                <el-col class="text-center" :span="2">100</el-col>
               </li>
             </ul>
           </div>
@@ -186,9 +186,9 @@
           <img class="board-header" :src="require('assets/images/subject/innovation/06@2x.png')" alt="">
           <div class="board">
             <div class="inno-header clearfix">
-              <el-col :span="4">排名</el-col>
-              <el-col :span="16">企业名称</el-col>
-              <el-col class="text-right" :span="4">分数</el-col>
+              <el-col :span="2">排名</el-col>
+              <el-col :span="20">企业名称</el-col>
+              <el-col class="text-center" :span="2">分数</el-col>
             </div>
             <ul class="inno-table board-table">
               <li class="clearfix" v-for="(ele, index) in 10" :key="index">
@@ -198,13 +198,13 @@
                     {'silver': ele === 2},
                     {'bronze': ele === 3},]">{{ele}}</span>
                 </el-col>
-                <el-col :span="16">
-                  <div class="name">
+                <el-col :span="20">
+                  <router-link target="_blank" :to="{name: 'innovationCompany', params: {id: 1}}" class="name">
                     <img :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
                     <p>飞鱼设计</p>
-                  </div>
+                  </router-link>
                 </el-col>
-                <el-col class="text-right" :span="4">100</el-col>
+                <el-col class="text-center" :span="2">100</el-col>
               </li>
             </ul>
           </div>
@@ -223,8 +223,7 @@ export default {
     font-size: 20px;
     line-height: 1;
     color: #222;
-    margin-top: 10px;
-    padding: 30px 0;
+    padding: 40px 0 30px;
     text-align: center
   }
   .icon {
@@ -270,6 +269,10 @@ export default {
   }
   .inno-header {
     line-height: 30px;
+    font-size: 14px;
+  }
+  .board .inno-header {
+    font-size: 12px;
   }
   .inno-table {
     border-top: 1px solid #d2d2d2;
@@ -306,8 +309,11 @@ export default {
     display: block;
     width: 26px;
     height: 30px;
-    margin: 15px auto;
+    margin: 15px 0;
     line-height: 30px;
+  }
+  .board-table .ranking {
+    margin: 15px 0;
   }
   .board .ranking {
     padding-left: 8px;
@@ -330,7 +336,7 @@ export default {
     padding-bottom: 40px;
   }
   .other-board-box {
-    padding-top: 40px;
+    padding-top: 20px;
     display: flex;
     justify-content: center;
     /* align-items: center */
@@ -360,5 +366,16 @@ export default {
     border-top: none;
     border-radius: 0 0 4px 4px;
     padding: 0 20px
+  }
+  @media screen and (max-width: 767px) {
+    .other-board-box {
+      display: block;
+      padding-top: 0
+    }
+    .power-board,
+    .power-board:first-child,
+    .power-board:last-child {
+      padding: 30px 15px 0;
+    }
   }
 </style>
