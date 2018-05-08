@@ -379,6 +379,9 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 .text-center {
   text-align: center
 }
+.text-right {
+  text-align: right
+}
 
 .font-weight4 {
   font-weight: 400;

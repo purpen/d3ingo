@@ -218,12 +218,29 @@ routes = [
   // 创新力指数
   {
     path: '/innovation_index',
-    name: 'InnovationIndex',
     meta: {
+      name: 'InnovationIndex',
       requireAuth: false,
       title: '中国设计企业创新力指数'
     },
-    component: require('@/components/pages/home/InnovationIndex')
+    children: [
+      {
+        name: 'InnovationHome',
+        path: '/innovation_index/home',
+        component: require('@/components/pages/home/innovation/InnovationHome')
+      },
+      {
+        name: 'InnovateList',
+        path: '/innovation_index/list',
+        component: require('@/components/pages/home/innovation/InnovationList')
+      },
+      {
+        name: 'InnovateAbout',
+        path: '/innovation_index/about',
+        component: require('@/components/pages/home/innovation/InnovationAbout')
+      }
+    ],
+    component: require('@/components/pages/home/innovation/InnovationIndex')
   },
   // 企业招募
   {
@@ -557,7 +574,8 @@ routes = routes.concat(toolsRoute)
 const router = new VueRouter({
   mode: 'history',
   linkActiveClass: 'is-active', // 这是链接激活时的class
-  routes
+  routes,
+  scrollBehavior
 })
 
 router.beforeEach((to, from, next) => {
@@ -595,6 +613,19 @@ router.beforeEach((to, from, next) => {
     store.commit(types.HIDE_FOOTER, false)
   }
 })
+
+const scrollBehavior = (to, from, savedPosition) => {
+  console.log(111)
+  if (savedPosition) {
+    return savedPosition
+  } else {
+    const position = {}
+    if (to.hash) {
+      position.selector = to.hash
+      return position
+    }
+  }
+}
 
 router.afterEach((to, from) => {
   calcImgSize()
