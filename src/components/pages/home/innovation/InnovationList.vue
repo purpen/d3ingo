@@ -2,7 +2,7 @@
   <div class="innovation-list">
     <h2><span class="icon">中国设计企业创新力指数排行榜</span></h2>
     <div class="inno-content">
-      <div id="innovation" class="leaderboard">
+      <div ref="innovation" id="innovation" class="leaderboard">
         <div class="inno-header clearfix">
           <el-col class="text-center" :span="2">排名</el-col>
           <el-col :span="4">企业名称</el-col>

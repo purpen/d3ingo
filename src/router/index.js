@@ -575,7 +575,17 @@ const router = new VueRouter({
   mode: 'history',
   linkActiveClass: 'is-active', // 这是链接激活时的class
   routes,
-  scrollBehavior
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      const position = {}
+      if (to.hash) {
+        position.selector = to.hash
+        return position
+      }
+    }
+  }
 })
 
 router.beforeEach((to, from, next) => {
@@ -613,19 +623,6 @@ router.beforeEach((to, from, next) => {
     store.commit(types.HIDE_FOOTER, false)
   }
 })
-
-const scrollBehavior = (to, from, savedPosition) => {
-  console.log(111)
-  if (savedPosition) {
-    return savedPosition
-  } else {
-    const position = {}
-    if (to.hash) {
-      position.selector = to.hash
-      return position
-    }
-  }
-}
 
 router.afterEach((to, from) => {
   calcImgSize()

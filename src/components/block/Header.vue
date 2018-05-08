@@ -152,7 +152,7 @@
           article: {path: '/article/list'},
           design_case: {path: '/design_case/general_list'},
           commonly_sites: {path: '/vcenter/commonly_sites'},
-          innovation_index: {path: '/innovation_index'},
+          innovation_index: {path: '/innovation_index/home'},
           apply: {path: '/apply'},
           login: {path: '/login'},
           register: {path: '/register'},

@@ -33,7 +33,7 @@
             </div>
             <div class="dimension-title">
               <p>创新交付力指数</p>
-              <p>INNOVATION</p>
+              <p>DELIVERY</p>
               <p class="tc-red">TOP 10</p>
             </div>
           </router-link>
@@ -162,6 +162,11 @@
     background: #fafafa;
     padding: 20px 30px;
     margin: 10px 0;
+    transition: transform .218s ease;
+  }
+  .dimension-resolve:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 9pt 24px rgba(10,10,10,.15);
   }
   .dimension-resolve .img-box {
     display: flex;
