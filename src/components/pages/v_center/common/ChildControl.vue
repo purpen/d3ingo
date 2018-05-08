@@ -1,7 +1,7 @@
 <template>
-  <el-row class="control blank20 min-height350">
+  <el-row class="control blank20 min-height350 control-list">
     <v-menu currentName="control"></v-menu>
-    <el-col :span="!isMob? rightWidth : 24" :offset="!isMob ? leftWidth : 0" v-loading.body="isLoading">
+    <!-- <el-col :span="!isMob? rightWidth : 24" :offset="!isMob ? leftWidth : 0" v-loading.body="isLoading">
 
       <div class="right-content message">
         <div class="content-box clearfix">
@@ -24,6 +24,114 @@
         </div>
       </div>
 
+    </el-col> -->
+        <el-col :span="10" :offset="!isMob? leftWidth : 0">
+      <section>
+        <div class="control-childHeader">
+          <span>待处理信息</span>
+        </div>
+        </section>
+    </el-col>
+    <el-col :span="10">
+      <section>
+        <div class="control-childHeader">
+          <span>提示信息</span>
+        </div>
+        </section>
+    </el-col>
+    <el-col :span="10" :offset="!isMob? leftWidth : 0">
+      <section>
+        <div class="control-childHeader">
+          <span>进行中的项目</span>
+        </div>
+        <el-row class="item-content scroll-bar">
+          <el-col :span="12">
+              <ul class="control-iteming">
+                <li class="titleSize">笔记本设计</li>
+                <li>项目进度: <span>30%</span></li>
+                <li>
+                  <el-progress 
+                  :percentage="0"
+                  :show-text="false"
+                  :stroke-width=10
+                  ></el-progress>
+                </li>
+                <li>
+                  <div class="iteming-grade">非常重要</div>
+                  <div class="iteming-time">
+                    2018-1-1 启动
+                  </div>
+                </li>
+              </ul>
+          </el-col>
+        </el-row>
+      </section>
+    </el-col>
+    <el-col :span="10">
+      <section class="control-tasks">
+        <div class="control-childHeader">
+          <span>我的任务</span>
+          <div>任务总数: <span>20</span>个</div>
+        </div>
+        <el-row>
+          <el-col :span="12">
+            <div class="control-taskProgress">
+              <el-progress
+                type="circle" 
+                :percentage="0"
+                :width="60"
+                :show-text="false"
+                ></el-progress>
+              <div>
+                <p class="marginl">未认领<span>1</span></p>
+                <p class="fx-6">50%</p>
+              </div>
+            </div>
+          </el-col>
+          <el-col :span="12">
+            <div class="control-taskProgress">
+              <el-progress
+                type="circle" 
+                :percentage="0"
+                :width="60"
+                :show-text="false"
+                ></el-progress>
+              <div >
+                <p class="marginl">未完成<span>1</span></p>
+                <p class="fx-6">50%</p>
+              </div>
+            </div>
+          </el-col>
+          <el-col :span="12">
+            <div class="control-taskProgress">
+              <el-progress
+                type="circle" 
+                :percentage="20"
+                :width="60"
+                :show-text="false"
+                ></el-progress>
+              <div>
+                <p class="marginl">已完成<span>1</span></p>
+                <p class="fx-6">50%</p>
+              </div>
+            </div>
+          </el-col>
+          <el-col :span="12">
+            <div class="control-taskProgress">
+              <el-progress
+                type="circle" 
+                :percentage="0"
+                :width="60"
+                :show-text="false"
+                ></el-progress>
+              <div >
+                <p class="marginl">已逾期<span>1</span></p>
+                <p class="fx-6">50%</p>
+              </div>
+            </div>
+          </el-col>
+        </el-row>
+      </section>
     </el-col>
   </el-row>
 </template>
@@ -226,6 +334,79 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .control-list>.el-col>section{
+    border:1px solid #d2d2d2;
+    border-radius: 4px;
+    height:360px;
+    margin:30px;
+    font-size:1.4rem;
+  }
+  .control-childHeader{
+    display:flex;
+    justify-content:space-between;
+    height:60px;
+    line-height: 60px;
+    padding:0 20px;
+    border-bottom:1px solid #d2d2d2;
+    font-size:14px;
+  }
+  .control-childHeader>span{
+    font-weight: 600;
+  }
+  .control-childHeader>div{
+    color:#999999;
+  }
+  .control-taskProgress{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    height:150px;
+  }
+  .control-taskProgress>.el-progress{
+    margin-right:20px;
+  }
+  .control-taskProgress>div{
+    display:flex;
+    flex-direction:column;
+    justify-content:space-around;
+    height:60px;
+  }
+  .control-iteming{
+    height:150px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-around;
+    padding:20px;
+  }
+  .marginl>span{
+    display:inline-block;
+    margin-left:10px;
+  }
+  .control-taskProgress .fx-6{
+    font-weight: 800;
+  }
+  .item-content{
+    height:300px;
+    overflow-y:auto;
+  }
+  .iteming-grade{
+    float: left;
+    padding:5px 10px;
+    border-radius: 4px;
+    color:#fff;
+    background:#FF5A5F;
+  }
+  .titleSize{
+    font-size:1.5rem;
+    font-weight: 600;
+    margin-bottom:15px;
+  }
+  .iteming-time{
+    height:24px;
+    line-height: 24px;
+    float: right;
+  }
+  /* 之前的样式 */
   .right-content .content-box {
     min-height: 200px;
     padding-bottom: 0;

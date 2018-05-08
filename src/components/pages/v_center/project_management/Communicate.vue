@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="AddCommunicate" >
+    <div class="AddCommunicate">
       <el-row :gutter="0" @click.self.native="cancel()">
         <el-col :span="18" :offset="3">
           <div class="grid-content bg-purple">
@@ -30,7 +30,7 @@
                 </div>
               </li>
              </ul >
-              <ul class="useredit updata-user hoverme" v-if="event === 'create'">
+              <ul class="useredit updata-user addhover" v-if="event === 'create'">
               <li ><img :src=" userimg " alt=""></li>
               <li v-for="(getimg,index) in getimgs" :key="index" v-if="getimgs.length > 0" :style="{background:`url(${ getimg.logo_image.logo }) no-repeat center`,backgroundSize:`24px 24px`}">
                   <span v-if=" !getimg.logo_image.logo ">{{getimg.realnamehead}}</span>
@@ -116,7 +116,7 @@
               <el-col :xs="24" :sm="12" :md="12" :lg="12">
                 <div class="fr">
                   <span>{{ getimgs.length }}</span><span class="notice">个人将会收到通知</span>
-                  <button @click="create()" type="danger"   class="small-button full-red-button">发送</button> 
+                  <button @click="create()" type="danger"   class="small-button full-red-button" :disabled="event !== 'create'">发送</button> 
                 </div>
               </el-col>
             </el-row>
@@ -253,9 +253,6 @@
                     <el-progress class="fl" :percentage=" uploadinga.percentage " :show-text="false">
                     </el-progress>
                   </li>
-                  <!-- <li> 
-                    <i class="fr" :style="{background:`url(${ closeimg }) no-repeat center`,backgroundSize:`13px 13px`}" @click="deleteup(files.asset_id)"></i>
-                  </li> -->
                 </ul>
               </el-col>
             </el-row>
@@ -288,7 +285,7 @@
                 <span>{{ d.selected_user.length }}</span>
                 <span class="notice">个人将会收到通知</span>
                 <button @click="cancelEdit()"  class="small-button white-button">取消</button> 
-                <button @click="inupdate(d.content,d.id,d.title, d.location,d.expire_time,d.other_realname)"  class="small-button full-red-button">确定</button> 
+                <button @click="inupdate(d.content,d.id,d.title, d.location,d.expire_time,d.other_realname)"  class="small-button full-red-button margin-left">确定</button> 
                 </div>
               </el-col>
             </el-row>
@@ -604,17 +601,17 @@
        // 新建文件上传时
       uploadProgress(event, file, fileList) {
         this.fileList = fileList
-        for (var i = 0; i < fileList.length; i++) {
-          fileList[i].prog = (parseFloat(fileList[i].size) * fileList[i].percentage / 100).toFixed(2)
-          if (fileList[i].percentage === 100) {
-            fileList[i].prog = ''
+        for (var i = 0; i < this.fileList.length; i++) {
+          this.fileList[i].prog = (parseFloat(this.fileList[i].size) * this.fileList[i].percentage / 100).toFixed(2)
+          if (this.fileList[i].percentage === 100) {
+            this.fileList[i].prog = ''
           }
-        }
-        var lastSize = this.fileList[this.fileList.length - 1].size
-        if (lastSize / (1024 * 1024) > 0.01) {
-          this.fileList[this.fileList.length - 1].size = (lastSize / (1024 * 1024)).toFixed(2) + 'MB'
-        } else if (lastSize / 1024 >= 0) {
-          this.fileList[this.fileList.length - 1].size = (lastSize / 1024).toFixed(2) + 'KB'
+          var lastSize = this.fileList[i].size
+          if (lastSize / (1024 * 1024) > 0.01) {
+            this.fileList[i].size = (lastSize / (1024 * 1024)).toFixed(2) + 'MB'
+          } else if (lastSize / 1024 >= 0) {
+            this.fileList[i].size = (lastSize / 1024).toFixed(2) + 'KB'
+          }
         }
       },
       // 文件上传成功
@@ -904,9 +901,12 @@
     margin-top:10px;
   }
    .uploads img {
-    width:24px;
+    width:20px;
     margin:16px 10px 0px 0px;
     float:left;
+  }
+  .uploads .circle-head{
+      width:24px;
   }
   .upload-list {
     height:42px;
@@ -934,6 +934,10 @@
   }
   .notice{
     margin-right:10px;
+  }
+  .full-red-button:disabled{
+    background:#D2D2D2;
+    border:1px solid #D2D2D2;
   }
   .upload-list>div>div{
     width:48%;
@@ -963,6 +967,9 @@
   }
   .margin-bottom {
     margin-bottom:5px;
+  }
+  .margin-left{
+    margin-left:10px;
   }
   .titlec>.fr ul{
     text-align: center;
@@ -1007,6 +1014,9 @@
     margin-left:5px;
   }
   .hoverme>li:hover i{
+    opacity:1;
+  }
+  .addhover>li:hover i{
     opacity:1;
   }
   .hoverme>li:not(:last-child):hover {
@@ -1079,6 +1089,7 @@
   .onthing img {
     width:90px;
     height:100px;
+    margin-bottom:20px;
   }
   .onthing {
     text-align: center;

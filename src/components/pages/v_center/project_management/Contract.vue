@@ -7,19 +7,35 @@
       :data="uploadParam"
       :show-file-list="false"
       :on-success="uploadSuccess"
+      :on-progress="uploadProgress"
       :before-upload="uploadBefore"
       >
     <button class="middle-button white-button">导入合同</button>
 </el-upload>
     </el-row>
+    <section class="contract-list" v-for="fi in fileing" v-if="fi.percentage!==100&&fileing.length>0">
+      <img :src="Groupimg" alt="">
+      <div class="contracct-Part">
+        <div class="contracct-progress">
+          <p>{{ fi.name }}</p>
+          <span>{{fi.prog}}/{{fi.size}}</span>
+        </div>
+        <el-progress 
+        :percentage="fi.percentage"
+        :stroke-width=3
+        :show-text="false"
+        >
+        </el-progress>
+      </div>
+    </section>
     <section class="contract-list" v-for="(f,indexf) in fileList" :key="indexf">
       <img :src="Groupimg" alt="">
       <div class="contracct-Part">
         <p>{{ f.name }}</p>
         <span class="contract-time">{{ f.created_at }}</span>
-        <span class="contract-size">15KB</span>
+        <span class="contract-size">{{f.size}}</span>
       </div>
-      <div class="fr marginlf" @click="deleteFile(f.id,indexf)">删除</div>
+      <div class="fr marginlf" @click="isdelete(f.id)">删除</div>
       <div class="fr">预览</div>
     </section>
     <!-- <p>全部动态</p>
@@ -31,6 +47,17 @@
       <li class="fr">今天</li>
       <li class="file"><i></i><span>文档说明.png</span></li>
     </ul> -->
+    <el-dialog
+  title="确认删除"
+  :visible.sync="dialogVisible"
+  size="tiny"
+  >
+  <p class="text-center">确认删除此合同</p>
+  <span slot="footer" class="dialog-footer">
+    <button class="small-button white-button" @click="dialogVisible = false">取 消</button>
+    <button class="small-button full-red-button" type="primary" @click="deleteFile()">确 定</button>
+  </span>
+</el-dialog>
   </section>
 </template>
 <script>
@@ -40,17 +67,19 @@
     name: 'projectContract',
     data() {
       return {
-        fileList: [],
-        uploadUrl: '',
-        itemId: '',
-        uploadParam: {
+        dialogVisible: false,
+        fileList: [], // 合同列表
+        fileing: [], // 正在上传列表
+        uploadUrl: '', // 上传url
+        itemId: '', // 项目id
+        uploadParam: { // 上传
           'token': '',
           'x:random': '',
           'x:target_id': this.$route.params.id,
           'x:user_id': this.$store.state.event.user.id,
           'x:type': 32
         },
-        Groupimg: require('@/assets/images/tools/project_management/Group@2x.jpg')
+        Groupimg: require('@/assets/images/tools/project_management/Group@2x.jpg') // 文件图片
       }
     },
     methods: {
@@ -73,7 +102,6 @@
             this.uploadUrl = response.data.data.upload_url
             this.uploadParam['token'] = response.data.data.upToken
             this.uploadParam['x:random'] = response.data.data.random
-            console.log(response.data.data)
           } else {
             this.$message.error(response.data.meta.message)
           }
@@ -84,36 +112,56 @@
       },
       // 上传之前判断格式
       uploadBefore(file) {
-        console.log(file)
         if (!(/pdf/.test(file.type) || /image/.test(file.type))) {
           this.$message.error('只能上传pdf或图片格式的文件!')
           return false
         }
+      },
+      // 上传中
+      uploadProgress(event, file, fileList) {
+        this.fileing = fileList
+        for (var i = 0; i < this.fileing.length; i++) {
+          this.fileing[i].prog = (parseFloat(this.fileing[i].size) * this.fileing[i].percentage / 100).toFixed(2)
+          if (this.fileing[i].percentage === 100) {
+            this.fileing[i].prog = ''
+          }
+        }
+        var lastSize = this.fileing[this.fileing.length - 1].size
+        if (lastSize / (1024 * 1024) > 0.01) {
+          this.fileing[this.fileing.length - 1].size = (lastSize / (1024 * 1024)).toFixed(2) + 'MB'
+        } else if (lastSize / 1024 >= 0) {
+          this.fileing[this.fileing.length - 1].size = (lastSize / 1024).toFixed(2) + 'KB'
+        }
+        console.log(this.fileing)
       },
       // 上传成功
       uploadSuccess(res, file, fileList) {
         file.id = res.asset_id
         file.created_at = (new Date(res.created_at * 1000)).format('yyyy-MM-dd hh:mm')
         this.fileList.unshift(file)
-        console.log(file)
+      },
+      // 删除按钮
+      isdelete(id) {
+        this.fileId = id
+        this.dialogVisible = true
       },
       // 删除文件
-      deleteFile(id, index) {
-        if (!id) {
+      deleteFile() {
+        if (!this.fileId) {
           this.$message.error('ID不能为空!')
           return false
         }
         let that = this
-        that.$http.delete(api.asset.format(id), {}).then((response) => {
+        that.$http.delete(api.asset.format(that.fileId), {}).then((response) => {
           if (response.data.meta.status_code === 200) {
             for (var i = 0; i < that.fileList.length; i++) {
               let item = that.fileList[i]
-              if (id === item.id) {
+              if (that.fileId === item.id) {
                 that.fileList.splice(i, 1)
                 break
               }
             }
-            console.log(response.data.data)
+            this.dialogVisible = false
           } else {
             that.$message.error(response.data.meta.message)
           }
@@ -139,9 +187,12 @@
           if (this.fileList.length > 0) {
             for (var i = 0; i < this.fileList.length; i++) {
               this.fileList[i].created_at = (new Date(this.fileList[i].created_at * 1000)).format('yyyy-MM-dd hh:mm')
+              var size = this.fileList[i].size / 1024
+              if (size / 1024 >= 0.1) {
+                this.fileList[i].size = (size / 1024).toFixed(2) + 'MB'
+              } else this.fileList[i].size = size.toFixed(2) + 'KB'
             }
           }
-          console.log(response.data.data)
         } else {
           this.$message.error(response.data.meta.message)
         }
@@ -183,10 +234,22 @@
 .contracct-Part{
   float:left;
   margin-left:20px;
+  width:250px;
+}
+.contracct-progress{
+  margin-bottom:12px;
+  display:flex;
+  justify-content:space-between;
+}
+.contracct-progress>p{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-right:10px;
+   font-weight: 600;
 }
 .contracct-Part>p{
-  margin-bottom:12px;
-  font-weight: 600;
+  margin-bottom: 15px;
 }
 .contracct-Part>span{
   display:inline-block;
@@ -205,6 +268,9 @@
 .contract-list>.fr{
   margin-top:14px;
   cursor:pointer;
+}
+.dialog-footer>button{
+  margin-right:50px;
 }
 .marginlf{
   margin-left:15px;

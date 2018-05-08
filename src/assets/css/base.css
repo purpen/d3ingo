@@ -2458,6 +2458,7 @@ td.fc-day.fc-widget-content.fc-today::before {
 
 .noborder>.el-input__inner{
   border:none;
+  padding:0px;
 }
 .noborder>.el-textarea__inner{
   border:none;

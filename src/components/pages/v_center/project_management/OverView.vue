@@ -755,7 +755,6 @@ export default {
 .item-task>ul>li{
   flex:1;
   display:flex;
-  /* justify-content:center; */
   align-items:center;
   margin-right:10px;
   border:1px solid #d2d2d2;
