@@ -1,43 +1,45 @@
 <template>
   <el-row class="blank20 min-height350 control-list">
     <v-menu currentName="control"></v-menu>
-    <!-- <el-col :span="!isMob? rightWidth : 24" :offset="!isMob? leftWidth : 0" v-loading.body="isLoading">
-      <div class="vcenter-container">
-        <div :class="['content-item-box', isMob ? 'content-item-box-m' : '']">
-          <div class="item ing" v-for="(d, index) in itemIngList" :key="index">
-            <div class="banner">
-              <p>
-                <span>进行中</span>
-              </p>
+    <el-col :span="10" :offset="!isMob? leftWidth : 0" v-if="uChild===0">
+      <section>
+        <div class="control-childHeader">
+          <span>待处理信息</span>
+        </div>
+        <div class="content-box clearfix message-content">
+            <p class="message-title clearfix" v-if="messageCount.quantity">{{ messageCount.quantity }} 条消息</p>
+            <div class="message-btn" v-if="!messageCount.quantity">
+              <img src="../../../../assets/images/icon/control_icon.png"/>
+              <p>当前无待处理事项</p>
             </div>
-            <div class="content">
-              <div class="pre">
-                <p class="c-title-pro">{{ d.item.name }}</p>
-                <p class="progress-line">
-                  <el-progress :text-inside="true" :show-text="false" :stroke-width="18" :percentage="d.item.progress"
-                  status="exception"></el-progress>
-                </p>
-                <p class="prefect">您的项目需求填写已经完成了{{ d.item.progress }}%。</p>
-                <p>
-                  <el-button class="is-custom" :progress="d.item.stage_status" :item_id="d.item.id"
-                              :item_type="d.item.type" @click="editItem" size="" type="primary">
-                    <i class="el-icon-edit"></i>
-                    完善项目
-                  </el-button>
-                </p>
-              </div>
+            <div class="message-btn clearfix" v-else>
+              <router-link :to="{name: 'home'}">
+                <el-button class="is-custom">返回首页</el-button>
+              </router-link> &nbsp;&nbsp;
+              <router-link :to="{name: 'vcenterMessageList'}">
+                <el-button type="primary" class="is-custom">查看消息</el-button>
+              </router-link>
             </div>
           </div>
-        </div>
-
-        <div class="right-content" v-if="showBase">
-          <div class="content-box" v-if="isCompany()">
-
-            <div class="form-title">
-              <span>提示信息</span>
+        <!-- <div class="control-massagelist scroll-bar">
+          <div v-for="(m,indexm) in messageList" :key="indexm">
+            <p >{{m.created_at}}</p>
+            <div class="control-massage">
+              <p>{{m.content}}</p>
+              <span>{{m.created_at}}</span>
             </div>
+          </div>
+        </div> -->
+        </section>
+    </el-col>
+    <el-col :span="10" v-if="uChild===0">
+      <section>
+        <div class="control-childHeader">
+          <span>提示信息</span>
+        </div>
+        <div class="right-content scroll-bar" v-if="showBase">
+          <div class="content-box" v-if="isCompany()">
             <p class="alert-title"><span>*</span> 在铟果平台接单前，请先完善以下信息并完成公司认证，便于系统精准推送项目需求。</p>
-
             <div class="item clearfix" v-if="item.design_info_status === 0">
               <h3>完善公司信息</h3>
               <p class="item-title">填写公司基本信息、公司简介、荣誉奖励</p>
@@ -98,41 +100,6 @@
           </div>
 
         </div>
-
-        <div class="right-content message">
-          <div class="content-box clearfix">
-            <div class="form-title">
-              <span>待处理事项</span>
-            </div>
-            <p class="alert-title clearfix" v-if="messageCount.quantity">{{ messageCount.quantity }} 条消息</p>
-            <div class="message-btn" v-if="!messageCount.quantity">
-              <img src="../../../../assets/images/icon/control_icon.png"/>
-              <p>当前无待处理事项</p>
-            </div>
-            <div class="message-btn clearfix" v-else>
-              <router-link :to="{name: 'home'}">
-                <el-button class="is-custom">返回首页</el-button>
-              </router-link> &nbsp;&nbsp;
-              <router-link :to="{name: 'vcenterMessageList'}">
-                <el-button type="primary" class="is-custom">查看消息</el-button>
-              </router-link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </el-col> -->
-            <el-col :span="10" :offset="!isMob? leftWidth : 0">
-      <section>
-        <div class="control-childHeader">
-          <span>待处理信息</span>
-        </div>
-        </section>
-    </el-col>
-    <el-col :span="10">
-      <section>
-        <div class="control-childHeader">
-          <span>提示信息</span>
-        </div>
         </section>
     </el-col>
     <el-col :span="10" :offset="!isMob? leftWidth : 0">
@@ -141,21 +108,23 @@
           <span>进行中的项目</span>
         </div>
         <el-row class="item-content scroll-bar">
-          <el-col :span="12">
+          <el-col :span="12" v-for="(i,indexi) in userItem" :key="indexi">
               <ul class="control-iteming">
-                <li class="titleSize">笔记本设计</li>
-                <li>项目进度: <span>30%</span></li>
+                <li class="titleSize">{{i.name}}</li>
+                <li>项目进度: 
+                  <span>{{i.ok_stage_percentage}} %</span>
+                </li>
                 <li>
                   <el-progress 
-                  :percentage="0"
+                  :percentage="i.ok_stage_percentage"
                   :show-text="false"
                   :stroke-width=10
                   ></el-progress>
                 </li>
                 <li>
-                  <div class="iteming-grade">非常重要</div>
-                  <div class="iteming-time">
-                    2018-1-1 启动
+                  <div class="iteming-grade" v-if="i.level !== 1">{{i.level_value}}</div>
+                  <div class="iteming-time" v-if="i.start_time">
+                    {{ i.start_time }} 启动
                   </div>
                 </li>
               </ul>
@@ -167,20 +136,22 @@
       <section class="control-tasks">
         <div class="control-childHeader">
           <span>我的任务</span>
-          <div>任务总数: <span>20</span>个</div>
+          <div>任务总数: <span>{{ userTask.total_count }}</span>个</div>
         </div>
         <el-row>
           <el-col :span="12">
             <div class="control-taskProgress">
               <el-progress
                 type="circle" 
-                :percentage="0"
+                :percentage="userTask.no_get_percentage"
                 :width="60"
                 :show-text="false"
                 ></el-progress>
               <div>
-                <p class="marginl">未认领<span>1</span></p>
-                <p class="fx-6">50%</p>
+                <p class="marginl">未认领
+                  <span>{{ userTask.no_get }}</span>
+                </p>
+                <p class="fx-6">{{userTask.no_get_percentage}} %</p>
               </div>
             </div>
           </el-col>
@@ -188,13 +159,15 @@
             <div class="control-taskProgress">
               <el-progress
                 type="circle" 
-                :percentage="0"
+                :percentage="userTask.no_stage_percentage"
                 :width="60"
                 :show-text="false"
                 ></el-progress>
               <div >
-                <p class="marginl">未完成<span>1</span></p>
-                <p class="fx-6">50%</p>
+                <p class="marginl">未完成
+                  <span>{{userTask.no_stage}}</span>
+                </p>
+                <p class="fx-6">{{ userTask.no_stage_percentage }} %</p>
               </div>
             </div>
           </el-col>
@@ -202,13 +175,15 @@
             <div class="control-taskProgress">
               <el-progress
                 type="circle" 
-                :percentage="20"
+                :percentage="userTask.ok_stage_percentage"
                 :width="60"
                 :show-text="false"
                 ></el-progress>
               <div>
-                <p class="marginl">已完成<span>1</span></p>
-                <p class="fx-6">50%</p>
+                <p class="marginl">已完成
+                  <span>{{ userTask.ok_stage }}</span>
+                </p>
+                <p class="fx-6">{{userTask.ok_stage_percentage}} %</p>
               </div>
             </div>
           </el-col>
@@ -216,13 +191,15 @@
             <div class="control-taskProgress">
               <el-progress
                 type="circle" 
-                :percentage="0"
+                :percentage="userTask.overdue_percentage"
                 :width="60"
                 :show-text="false"
                 ></el-progress>
               <div >
-                <p class="marginl">已逾期<span>1</span></p>
-                <p class="fx-6">50%</p>
+                <p class="marginl">已逾期
+                  <span>{{ userTask.overdue }}</span>
+                </p>
+                <p class="fx-6">{{userTask.overdue_percentage}} %</p>
               </div>
             </div>
           </el-col>
@@ -237,7 +214,7 @@
   import api from '@/api/api'
 
   export default {
-    name: 'vcenter_child_control',
+    name: 'vcenter_control',
     components: {
       vMenu
     },
@@ -251,7 +228,11 @@
         showBase: false,
         isLoading: false,
         companyId: '',
-        statusLabel: ''
+        statusLabel: '',
+        userTask: {}, // 个人任务进度
+        userItem: {},
+        messageList: [],
+        uChild: this.$store.state.event.user.child_account
       }
     },
     methods: {
@@ -288,6 +269,45 @@
         }
         this.$router.push({name: name, params: {id: itemId}})
       },
+      // 获取个人项目列表
+      getUserItem() {
+        const self = this
+        self.$http.get(api.userStatistical, {}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.userItem = response.data.data
+            if (this.userItem.length > 0) {
+              for (var i = 0; i < this.userItem.length; i++) {
+                if (this.userItem[i].start_time) {
+                  this.userItem[i].start_time = (new Date(this.userItem[i].start_time * 1000)).format('yyyy-MM-dd')
+                }
+                if (this.userItem[i].level === 2) {
+                  this.userItem[i].level_value = '重要'
+                }
+                if (this.userItem[i].level === 3) {
+                  this.userItem[i].level_value = '非常重要'
+                }
+              }
+            }
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          console.error(error)
+        })
+      },
+      // 获取个人任务列表
+      getUserTasks() {
+        const self = this
+        self.$http.get(api.userTasks, {}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.userTask = response.data.data
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          console.error(error)
+        })
+      },
       // 请求消息数量
       fetchMessageCount() {
         const self = this
@@ -317,6 +337,17 @@
         }).catch((error) => {
           console.error(error)
         })
+      },
+      // 获取消息列表
+      getMessageList() {
+        const self = this
+        self.$http.get(api.messageGetMessageList, {}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.messageList = response.data.data
+          }
+        }).catch((error) => {
+          console.error(error)
+        })
       }
     },
     computed: {
@@ -334,12 +365,16 @@
       }
     },
     created: function () {
-      let uChild = this.$store.state.event.user.child_account
-      // 如果是子账号，跳转到个人资料页
-      if (uChild === 1) {
+      let uType = this.$store.state.event.user.type
+      // 如果是需求方账号，跳转到个人资料页
+      console.log(this.$store.state.event.user.type)
+      if (uType === 1) {
         this.$router.replace({name: 'vcenterChildControl'})
         return
       }
+      this.getMessageList()
+      this.getUserTasks()
+      this.getUserItem()
       this.fetchMessageCount()
       const that = this
       let isCompany = that.isCompany()
@@ -385,7 +420,6 @@
         .catch(function (error) {
           that.$message.error(error.message)
         })
-
       // 加载进行中的项目
       if (!isCompany) {
         that.isLoading = true
@@ -415,6 +449,7 @@
                 }
               } // endfor
               that.itemIngList = data
+              console.log(that.itemIngList)
             }
           })
           .catch(function (error) {
@@ -429,11 +464,14 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .control-list{
+    margin-bottom:30px;
+  }
   .control-list>.el-col>section{
     border:1px solid #d2d2d2;
     border-radius: 4px;
     height:360px;
-    margin:30px;
+    margin:10px;
     font-size:1.4rem;
   }
   .control-childHeader{
@@ -444,6 +482,7 @@
     padding:0 20px;
     border-bottom:1px solid #d2d2d2;
     font-size:14px;
+    background:#f7f7f7;
   }
   .control-childHeader>span{
     font-weight: 600;
@@ -501,18 +540,46 @@
     line-height: 24px;
     float: right;
   }
+  .control-massagelist{
+    height:300px;
+    overflow-y:auto; 
+  }
+  .control-massagelist>div>p{
+    padding:10px 20px;
+    background:#f7f7f7;
+  }
+  .control-massage{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 20px;
+  }
+  .control-massage>p{
+    font-size:1.6rem;
+  }
+  .message-title{
+    margin:30px 20px;
+  }
   /* 之前的样式 */
+  .right-content{
+    height:300px;
+    overflow-y:auto; 
+  }
   .right-content .content-box {
+    border:none;
     min-height: 200px;
     padding-bottom: 0;
   }
 
   p.alert-title {
-    font-size: 1.6rem;
+    margin:0 -20px;
     color: #666;
     margin-bottom: 20px;
+    background:#f7f7f7;
   }
+  p.alert-title.clearfix{
 
+  }
   .alert-title span {
     color: red;
   }
@@ -573,6 +640,7 @@
   .message-btn {
     text-align: center;
     margin-bottom: 20px;
+    margin-top:60px;
   }
 
   .pub {
