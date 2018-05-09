@@ -57,15 +57,33 @@ export default {
     return {
       designCaseList: [],
       option: {
-        // title: {
-        //   text: '创新力雷达图\n',
-        //   x: 'center'
-        // },
         tooltip: {},
         radar: {
           indicator: scores.map(({name, max}) => {
             return {name, max}
-          })
+          }),
+          name: {
+            fontSize: 10
+          },
+          nameGap: 10,
+          shape: 'circle',
+          axisLine: {
+            lineStyle: {
+              // color: '#FF5A5F'
+            }
+          },
+          splitNumber: 4,
+          splitLine: {
+            lineStyle: {
+              color: '#FF5A5F',
+              type: 'dotted'
+            }
+          },
+          splitArea: {
+            areaStyle: {
+              color: '#fff'
+            }
+          }
         },
         series: [{
           name: '能力值',

@@ -189,19 +189,31 @@ export default {
     ]
     return {
       option: {
-        // title: {
-        //   text: '创新力雷达图\n',
-        //   x: 'center'
-        // },
         tooltip: {},
         radar: {
           indicator: scores.map(({name, max}) => {
             return {name, max}
           }),
+          name: {
+            fontSize: 10
+          },
+          nameGap: 10,
+          shape: 'circle',
+          axisLine: {
+            lineStyle: {
+              // color: '#FF5A5F'
+            }
+          },
+          splitNumber: 4,
           splitLine: {
             lineStyle: {
-              // 使用深浅的间隔色
-              color: '#FF5A5F'
+              color: '#FF5A5F',
+              type: 'dotted'
+            }
+          },
+          splitArea: {
+            areaStyle: {
+              color: '#fff'
             }
           }
         },
@@ -230,6 +242,7 @@ h3 {
   border: 1px solid #d2d2d2;
   border-radius: 4px;
   margin-right: 20px;
+  margin-bottom: 20px;
 }
 .company-head {
   display: flex;

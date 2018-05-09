@@ -309,6 +309,7 @@
       }
     },
     created: function () {
+      console.log(typeof (this.$store.state.event.user))
       const self = this
       if (self.isLogin) {
         self.fetchMessageCount()

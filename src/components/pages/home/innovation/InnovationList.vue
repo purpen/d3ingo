@@ -1,10 +1,22 @@
 <template>
   <div class="innovation-list">
     <h2><span class="icon">中国设计企业创新力指数排行榜</span></h2>
+    <div class="operation inno-content clearfix">
+      <div class="buttons fl">
+        <button class="full-red-button middle-button">季榜</button>
+        <button class="disabled-button middle-button">年榜</button>
+      </div>
+      <div class="compare fr">
+        <span class="tips" v-show="showTips">最多选择4个设计企业进行比较</span>
+        <button @click="pushCompare"
+          :class="[changeRed ? 'full-red-button': 'white-button',
+          'middle-button', 'circle-button']">对比设计企业</button>
+      </div>
+    </div>
     <div class="inno-content">
       <div ref="innovation" id="innovation" class="leaderboard">
         <div class="inno-header clearfix">
-          <el-col :span="2">排名</el-col>
+          <el-col :span="1">排名</el-col>
           <el-col :span="4">企业名称</el-col>
           <el-col class="text-center" :span="2">基础运作力</el-col>
           <el-col class="text-center" :span="2">创新交付力</el-col>
@@ -13,11 +25,10 @@
           <el-col class="text-center" :span="2">客观公信力</el-col>
           <el-col class="text-center" :span="2">风险应激力</el-col>
           <el-col class="text-center" :span="3">创新力指数（DCI）</el-col>
-          <el-col class="text-center" :span="2">对比</el-col>
         </div>
         <ul class="inno-table">
           <li class="clearfix" v-for="(ele, index) in 10" :key="index">
-            <el-col :span="2">
+            <el-col :span="1">
               <span :class="['ranking',
                 {'gold': ele === 1},
                 {'silver': ele === 2},
@@ -36,7 +47,9 @@
             <el-col :span="2">123</el-col>
             <el-col :span="2">123</el-col>
             <el-col :span="3">123</el-col>
-            <el-col :span="2">对比</el-col>
+            <el-col :span="4" class="text-center">
+              <p :class="['quite', 'fr', {'is-active': compareList.indexOf(index) !== -1}]" @click="addCompare(index)">对比</p>
+            </el-col>
           </li>
         </ul>
       </div>
@@ -215,7 +228,48 @@
 </template>
 <script>
 export default {
-  name: 'InovationList'
+  name: 'InovationList',
+  data() {
+    return {
+      compareList: [],
+      showTips: false,
+      changeRed: false
+    }
+  },
+  methods: {
+    addCompare(id) {
+      let index = this.compareList.indexOf(id)
+      if (index === -1) {
+        this.compareList.push(id)
+      } else {
+        this.compareList.splice(index, 1)
+      }
+    },
+    pushCompare() {
+      if (this.compareList.length > 1) {
+      } else {
+        return
+      }
+    }
+  },
+  watch: {
+    compareList: {
+      handler(val) {
+        if (val.length) {
+          if (val.length > 1) {
+            this.changeRed = true
+          } else {
+            this.changeRed = false
+          }
+          this.showTips = true
+        } else {
+          this.showTips = false
+          this.changeRed = false
+        }
+      },
+      deep: true
+    }
+  }
 }
 </script>
 <style scoped>
@@ -366,6 +420,61 @@ export default {
     border-top: none;
     border-radius: 0 0 4px 4px;
     padding: 0 20px
+  }
+  .operation {
+    padding: 30px 0;
+    font-size: 0
+  }
+  .buttons button {
+    margin-right: 10px;
+  }
+  .compare {
+    font-size: 0;
+  }
+  .tips {
+    font-size: 12px;
+    color: #666;
+    font-size: 12px;
+    padding-right: 10px;
+  }
+  .quite {
+    padding-left: 20px;
+    width: 70px;
+    font-size: 14px;
+    color: #666;
+    position: relative;
+  }
+  .quite:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 20px;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #666;
+    border-radius: 50%;
+    cursor: pointer;
+    background: #fff
+  }
+  .quite::after {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 23px;
+    width: 7px;
+    height: 12px;
+    border: 2px solid transparent;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg);
+    cursor: pointer;
+  }
+  .is-active::before {
+    background: #ff5a5f;
+    border-color: #ff5a5f
+  }
+  .is-active::after {
+    border-color: #fff
   }
   @media screen and (max-width: 767px) {
     .other-board-box {
