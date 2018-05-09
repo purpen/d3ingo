@@ -4,6 +4,9 @@
       <img class="company-logo" :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
       <h2 class="company-name">飞鱼设计</h2>
       <p class="ranking">设计创新力指数：<span>100</span>排名：<span>1</span><i></i></p>
+      <div class="chart">
+        <ECharts :options="option" ref="chart"></ECharts>
+      </div>
     </div>
     <div class="company-profile">
       <h3 class="text-center">公司简介</h3>
@@ -36,11 +39,50 @@
 </template>
 <script>
 import api from '@/api/api'
+import ECharts from 'vue-echarts/components/ECharts.vue'
+import 'echarts/lib/chart/bar'
+import 'echarts/lib/chart/line'
+import 'echarts/lib/chart/pie'
+import 'echarts/lib/chart/map'
+import 'echarts/lib/chart/radar'
+import 'echarts/lib/chart/scatter'
+import 'echarts/lib/chart/effectScatter'
+import 'echarts/lib/component/tooltip'
+import 'echarts/lib/component/polar'
+import 'echarts/lib/component/geo'
+import 'echarts/lib/component/legend'
+import 'echarts/lib/component/title'
+import 'echarts/lib/component/visualMap'
+import 'echarts/lib/component/dataset'
 export default {
   name: 'innavationCompany',
   data() {
+    let scores = [
+      {name: '基础运作力', max: 20, value: 19},
+      {name: '风险应激力', max: 20, value: 9},
+      {name: '创新交付力', max: 20, value: 18},
+      {name: '商业决策力', max: 20, value: 16},
+      {name: '客观公信力', max: 20, value: 16},
+      {name: '品牌溢价力', max: 20, value: 20}
+    ]
     return {
-      designCaseList: []
+      designCaseList: [],
+      option: {
+        title: {
+          text: '创新力雷达图'
+        },
+        tooltip: {},
+        radar: {
+          indicator: scores.map(({name, max}) => {
+            return {name, max}
+          })
+        },
+        series: [{
+          name: '能力值',
+          type: 'radar',
+          data: [{value: scores.map(({value}) => value)}]
+        }]
+      }
     }
   },
   methods: {
@@ -67,6 +109,9 @@ export default {
     isMob() {
       return this.$store.state.event.isMob
     }
+  },
+  components: {
+    ECharts
   },
   created() {
     let id = this.$route.params.id

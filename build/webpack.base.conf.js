@@ -79,7 +79,9 @@ module.exports = {
         enforce: "pre",
         include: [
           resolve('src'),
-          resolve('test')]
+          resolve('test'),
+          resolve('node_modules/vue-echarts'),
+          resolve('node_modules/resize-detector')]
       },
       {
         test: /\.vue$/,

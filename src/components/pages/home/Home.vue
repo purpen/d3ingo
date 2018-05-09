@@ -596,8 +596,8 @@
   }
 
   .el-card:hover {
-    transform: translate3d(0, -2px, 0);
-    box-shadow: 0 9pt 24px rgba(10,10,10,.15);
+  transform: translateY(-3px);
+  box-shadow: 6px 6px 10px rgba(10,10,10,.15)
   }
 
   .anli {
