@@ -252,15 +252,9 @@
       }
     },
     created: function () {
-      // let uChild = this.$store.state.event.user.child_account
       let uType = this.$store.state.event.user.type
-      // 如果是子账号，跳转到个人资料页
-      // if (uChild === 0) {
-      //   this.$router.replace({name: 'vcenterControl'})
-      //   return
-      // }
-      if (uType === 1) {
-        this.$router.replace({name: 'vcenterChildControl'})
+      if (uType === 2) {
+        this.$router.replace({name: 'vcenterControl'})
         return
       }
       this.fetchMessageCount()

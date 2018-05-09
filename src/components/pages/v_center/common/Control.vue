@@ -1,114 +1,116 @@
 <template>
-  <el-row class="blank20 min-height350 control-list">
+  <el-row class="blank20 min-height350 ">
     <v-menu currentName="control"></v-menu>
-    <el-col :span="10" :offset="!isMob? leftWidth : 0" v-if="uChild===0">
-      <section>
-        <div class="control-childHeader">
-          <span>待处理信息</span>
-        </div>
-        <div class="content-box clearfix message-content">
-            <p class="message-title clearfix" v-if="messageCount.quantity">{{ messageCount.quantity }} 条消息</p>
-            <div class="message-btn" v-if="!messageCount.quantity">
-              <img src="../../../../assets/images/icon/control_icon.png"/>
-              <p>当前无待处理事项</p>
+    <el-col :span="22" :offset="!isMob? leftWidth : 0">
+      <el-row>
+        <el-col :span="12"  v-if="uChild===0">
+          <section>
+            <div class="control-childHeader">
+            <span>待处理信息</span>
             </div>
-            <div class="message-btn clearfix" v-else>
-              <router-link :to="{name: 'home'}">
-                <el-button class="is-custom">返回首页</el-button>
-              </router-link> &nbsp;&nbsp;
-              <router-link :to="{name: 'vcenterMessageList'}">
-                <el-button type="primary" class="is-custom">查看消息</el-button>
-              </router-link>
+              <div class="content-box clearfix message-content">
+                <p class="message-title clearfix" v-if="messageCount.quantity">{{ messageCount.quantity }} 条消息</p>
+                <div class="message-btn" v-if="!messageCount.quantity">
+                  <img src="../../../../assets/images/icon/control_icon.png"/>
+                  <p>当前无待处理事项</p>
+                </div>
+                <div class="message-btn clearfix" v-else>
+                <router-link :to="{name: 'home'}">
+                  <el-button class="is-custom">返回首页</el-button>
+                </router-link> &nbsp;&nbsp;
+                <router-link :to="{name: 'vcenterMessageList'}">
+                  <el-button type="primary" class="is-custom">查看消息</el-button>
+                </router-link>
+              </div>
             </div>
-          </div>
-        <!-- <div class="control-massagelist scroll-bar">
-          <div v-for="(m,indexm) in messageList" :key="indexm">
-            <p >{{m.created_at}}</p>
-            <div class="control-massage">
-              <p>{{m.content}}</p>
-              <span>{{m.created_at}}</span>
-            </div>
-          </div>
-        </div> -->
-        </section>
-    </el-col>
-    <el-col :span="10" v-if="uChild===0">
-      <section>
-        <div class="control-childHeader">
-          <span>提示信息</span>
-        </div>
-        <div class="right-content scroll-bar" v-if="showBase">
-          <div class="content-box" v-if="isCompany()">
-            <p class="alert-title"><span>*</span> 在铟果平台接单前，请先完善以下信息并完成公司认证，便于系统精准推送项目需求。</p>
-            <div class="item clearfix" v-if="item.design_info_status === 0">
-              <h3>完善公司信息</h3>
-              <p class="item-title">填写公司基本信息、公司简介、荣誉奖励</p>
-              <p class="item-btn">
-                <router-link :to="{name: 'vcenterComputerBase'}">编辑</router-link>
-              </p>
-            </div>
-
-            <div class="item clearfix" v-if="item.design_verify_status !== 1">
-              <h3>公司认证</h3>
-              <p class="item-title">提交公司认证信息</p>
-              <p class="item-btn">
-                <router-link :to="{name: 'vcenterComputerAccreditation'}">{{ item.verify_label }}</router-link>
-              </p>
-            </div>
-
-            <div class="item clearfix" v-if="item.design_item_status === 0">
-              <h3>公司接单设置</h3>
-              <p class="item-title">设计项目接单价格</p>
-              <p class="item-btn">
-                <router-link :to="{name: 'vcenterComputerTaking'}">设置接单价格</router-link>
-              </p>
-            </div>
-
-            <div class="item no-line clearfix" v-if="item.design_case_status === 0">
-              <h3>上传案例作品</h3>
-              <p class="item-title">向客户更好的展示和推荐项目案例</p>
-              <p class="item-btn">
-                <router-link :to="{name: 'vcenterDesignCaseList'}">上传</router-link>
-              </p>
-            </div>
-
-          </div>
-
-          <div class="content-box" v-else>
-
-            <div class="form-title">
+              <!-- <div class="control-massagelist scroll-bar">
+                <div v-for="(m,indexm) in messageList" :key="indexm">
+                  <p >{{m.created_at}}</p>
+                  <div class="control-massage">
+                    <p>{{m.content}}</p>
+                  <span>{{m.created_at}}</span>
+                </div>
+                </div>
+              </div> -->
+          </section>
+        </el-col>
+        <el-col :span="12" v-if="uChild===0">
+          <section>
+            <div class="control-childHeader">
               <span>提示信息</span>
             </div>
-            <p class="alert-title"><span>*</span> 在铟果平台发布需求前，请先完善以下信息并完成公司认证，便于系统精准匹配设计服务供应商。</p>
+            <div class="right-content scroll-bar" v-if="showBase">
+              <div class="content-box" v-if="isCompany()">
+                <p class="alert-title"><span>*</span> 在铟果平台接单前，请先完善以下信息并完成公司认证，便于系统精准推送项目需求。</p>
+                <div class="item clearfix" v-if="item.design_info_status === 0">
+                  <h3>完善公司信息</h3>
+                  <p class="item-title">填写公司基本信息、公司简介、荣誉奖励</p>
+                  <p class="item-btn">
+                    <router-link :to="{name: 'vcenterComputerBase'}">编辑</router-link>
+                  </p>
+                </div>
 
-            <div class="item clearfix" v-show="item.demand_info_status === 0">
-              <h3>完善公司信息</h3>
-              <p class="item-title">填写公司基本信息</p>
-              <p class="item-btn">
-                <router-link :to="{name: 'vcenterComputerBase'}">编辑</router-link>
-              </p>
+                <div class="item clearfix" v-if="item.design_verify_status !== 1">
+                  <h3>公司认证</h3>
+                  <p class="item-title">提交公司认证信息</p>
+                  <p class="item-btn">
+                    <router-link :to="{name: 'vcenterComputerAccreditation'}">{{ item.verify_label }}</router-link>
+                  </p>
+                </div>
+
+                <div class="item clearfix" v-if="item.design_item_status === 0">
+                  <h3>公司接单设置</h3>
+                  <p class="item-title">设计项目接单价格</p>
+                  <p class="item-btn">
+                    <router-link :to="{name: 'vcenterComputerTaking'}">设置接单价格</router-link>
+                  </p>
+                </div>
+
+                <div class="item no-line clearfix" v-if="item.design_case_status === 0">
+                  <h3>上传案例作品</h3>
+                  <p class="item-title">向客户更好的展示和推荐项目案例</p>
+                  <p class="item-btn">
+                    <router-link :to="{name: 'vcenterDesignCaseList'}">上传</router-link>
+                  </p>
+                </div>
+
+              </div>
+
+              <div class="content-box" v-else>
+
+                <div class="form-title">
+                  <span>提示信息</span>
+                </div>
+                <p class="alert-title"><span>*</span> 在铟果平台发布需求前，请先完善以下信息并完成公司认证，便于系统精准匹配设计服务供应商。</p>
+
+                <div class="item clearfix" v-show="item.demand_info_status === 0">
+                  <h3>完善公司信息</h3>
+                  <p class="item-title">填写公司基本信息</p>
+                  <p class="item-btn">
+                    <router-link :to="{name: 'vcenterComputerBase'}">编辑</router-link>
+                  </p>
+                </div>
+
+                <div class="item clearfix no-line" v-show="item.demand_verify_status !== 1">
+                  <h3>公司认证</h3>
+                  <p class="item-title">提交公司认证信息</p>
+                  <p class="item-btn">
+                    <router-link :to="{name: 'vcenterComputerAccreditation'}">未认证</router-link>
+                  </p>
+                </div>
+
+              </div>
+
             </div>
-
-            <div class="item clearfix no-line" v-show="item.demand_verify_status !== 1">
-              <h3>公司认证</h3>
-              <p class="item-title">提交公司认证信息</p>
-              <p class="item-btn">
-                <router-link :to="{name: 'vcenterComputerAccreditation'}">未认证</router-link>
-              </p>
-            </div>
-
+          </section>
+        </el-col>
+        <el-col :span="12">
+          <section>
+          <div class="control-childHeader">
+            <span>进行中的项目</span>
           </div>
-
-        </div>
-        </section>
-    </el-col>
-    <el-col :span="10" :offset="!isMob? leftWidth : 0">
-      <section>
-        <div class="control-childHeader">
-          <span>进行中的项目</span>
-        </div>
-        <el-row class="item-content scroll-bar">
-          <el-col :span="12" v-for="(i,indexi) in userItem" :key="indexi">
+          <el-row class="item-content scroll-bar">
+          <el-col :span="12" v-for="(i,indexi) in userItem" :key="indexi" v-if="userItem.length>0">
               <ul class="control-iteming">
                 <li class="titleSize">{{i.name}}</li>
                 <li>项目进度: 
@@ -127,85 +129,102 @@
                     {{ i.start_time }} 启动
                   </div>
                 </li>
-              </ul>
+            </ul>
           </el-col>
-        </el-row>
-      </section>
-    </el-col>
-    <el-col :span="10">
-      <section class="control-tasks">
-        <div class="control-childHeader">
-          <span>我的任务</span>
-          <div>任务总数: <span>{{ userTask.total_count }}</span>个</div>
-        </div>
-        <el-row>
-          <el-col :span="12">
-            <div class="control-taskProgress">
-              <el-progress
-                type="circle" 
-                :percentage="userTask.no_get_percentage"
-                :width="60"
-                :show-text="false"
-                ></el-progress>
-              <div>
-                <p class="marginl">未认领
-                  <span>{{ userTask.no_get }}</span>
-                </p>
-                <p class="fx-6">{{userTask.no_get_percentage}} %</p>
+              <div class="message-btn" v-else>
+                <img src="../../../../assets/images/icon/Project default state@2x.png"/>
+                <p>你还没有参加任何项目</p>
+                <el-button class="is-custom" v-if="uChild===0">创建项目</el-button>
+              </div>
+            </el-row>
+          </section>
+        </el-col>
+        <el-col :span="12">
+          <section class="control-tasks">
+            <div class="control-childHeader">
+              <span>我的任务</span>
+              <div>任务总数: 
+                <span>{{ userTask.total_count }}</span>个
               </div>
             </div>
-          </el-col>
-          <el-col :span="12">
-            <div class="control-taskProgress">
-              <el-progress
-                type="circle" 
-                :percentage="userTask.no_stage_percentage"
-                :width="60"
-                :show-text="false"
-                ></el-progress>
-              <div >
-                <p class="marginl">未完成
-                  <span>{{userTask.no_stage}}</span>
-                </p>
-                <p class="fx-6">{{ userTask.no_stage_percentage }} %</p>
-              </div>
-            </div>
-          </el-col>
-          <el-col :span="12">
-            <div class="control-taskProgress">
-              <el-progress
-                type="circle" 
-                :percentage="userTask.ok_stage_percentage"
-                :width="60"
-                :show-text="false"
-                ></el-progress>
-              <div>
-                <p class="marginl">已完成
-                  <span>{{ userTask.ok_stage }}</span>
-                </p>
+            <el-row v-if="userTask.total_count>0">
+              <el-col :span="12">
+
+                <div class="control-taskProgress">
+                  <el-progress
+                    type="circle" 
+                    :percentage="userTask.no_get_percentage"
+                    :width="60"
+                    :show-text="false"
+                  ></el-progress>
+
+                  <div>
+                    <p class="marginl">未认领
+                      <span>{{ userTask.no_get }}</span>
+                    </p>
+                    <p class="fx-6">{{userTask.no_get_percentage}} %</p>
+                  </div>
+
+                </div>
+              </el-col>
+              <el-col :span="12">
+                <div class="control-taskProgress">
+                  <el-progress
+                    type="circle" 
+                    :percentage="userTask.no_stage_percentage"
+                    :width="60"
+                    :show-text="false"
+                    ></el-progress>
+                  <div >
+                    <p class="marginl">未完成
+                      <span>{{userTask.no_stage}}</span>
+                    </p>
+                    <p class="fx-6">{{ userTask.no_stage_percentage }} %</p>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12">
+                <div class="control-taskProgress">
+                  <el-progress
+                    type="circle" 
+                    :percentage="userTask.ok_stage_percentage"
+                    :width="60"
+                    :show-text="false"
+                    ></el-progress>
+                  <div>
+                    <p class="marginl">已完成
+                      <span>{{ userTask.ok_stage }}</span>
+                    </p>
                 <p class="fx-6">{{userTask.ok_stage_percentage}} %</p>
-              </div>
+                  </div>
+                </div>
+              </el-col>
+              <el-col :span="12">
+                <div class="control-taskProgress">
+                  <el-progress
+                    type="circle" 
+                    :percentage="userTask.overdue_percentage"
+                    :width="60"
+                    :show-text="false"
+                    ></el-progress>
+                  <div >
+                    <p class="marginl">已逾期
+                      <span>{{ userTask.overdue }}</span>
+                    </p>
+                    <p class="fx-6">{{userTask.overdue_percentage}} %</p>
+                  </div>
+                </div>
+              </el-col>
+              </el-row>
+              <div class="message-btn" v-else>
+              <img src="../../../../assets/images/icon/Task default state@2x.png"/>
+                <p>您还没有任务</p>
             </div>
-          </el-col>
-          <el-col :span="12">
-            <div class="control-taskProgress">
-              <el-progress
-                type="circle" 
-                :percentage="userTask.overdue_percentage"
-                :width="60"
-                :show-text="false"
-                ></el-progress>
-              <div >
-                <p class="marginl">已逾期
-                  <span>{{ userTask.overdue }}</span>
-                </p>
-                <p class="fx-6">{{userTask.overdue_percentage}} %</p>
-              </div>
-            </div>
-          </el-col>
-        </el-row>
-      </section>
+          </section>
+        </el-col>
+      </el-row>
     </el-col>
+    
   </el-row>
 </template>
 <script>
@@ -464,10 +483,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .control-list{
-    margin-bottom:30px;
-  }
-  .control-list>.el-col>section{
+  .el-row>.el-col>section{
     border:1px solid #d2d2d2;
     border-radius: 4px;
     height:360px;
@@ -559,6 +575,12 @@
   }
   .message-title{
     margin:30px 20px;
+  }
+  .message-btn>img{
+    width:125px;
+  }
+  .message-btn>p{
+    margin:10px 0px;
   }
   /* 之前的样式 */
   .right-content{
