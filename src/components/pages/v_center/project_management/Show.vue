@@ -2,7 +2,7 @@
 <section class="">
   <v-menu-left currentName="project_management"></v-menu-left>
   <div :class="['project-management',{'project-management-mini': !leftWidth}]">
-    <menu-sub :projectObject="projectObject" :currentRoute="currentRoute"></menu-sub>
+    <menu-sub :currentRoute="currentRoute"></menu-sub>
     <router-view v-if="isShow" :projectObject="projectObject"></router-view>
   </div>
 </section>

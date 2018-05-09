@@ -13,7 +13,9 @@
       <router-link :class="[{'active': currentRoute === 'projectManagementCommunicate'}]"
         :to="{name: 'projectManagementCommunicate', params: {id: routeId}}">沟通纪要</router-link>
       <router-link :class="[{'active': currentRoute === 'projectManagementFile'}]"
-        :to="{name: 'projectManagementFile', params: {id: routeId}}">文件</router-link>
+        :to="{name: 'projectManagementFile',
+        params: {id: routeId},
+        query: {id: projectObject.pan_director_id}}">文件</router-link>
       <router-link :class="[{'active': currentRoute === 'projectManagementIncomeandExpenses'}]"
         :to="{name: 'projectManagementIncomeandExpenses', params: {id: routeId}}">收支</router-link>
     </div>

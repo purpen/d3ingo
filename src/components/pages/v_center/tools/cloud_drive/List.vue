@@ -1,11 +1,12 @@
 <template>
   <el-row :class="['cloud-content', {'slide-mini': !leftWidth}]">
-    <v-menu-left currentName="cloud_drive"></v-menu-left>
-    <el-col :span="4" :offset="leftWidth">
+    <v-menu-left :currentName="withoutSide? 'cloud_drive' : 'project_management'"></v-menu-left>
+    <el-col v-if="withoutSide" :span="4" :offset="leftWidth">
       <v-menu :isActive='modules' @getTitle="headTitle"></v-menu>
     </el-col>
-    <el-col :span="leftWidth? 16 : 20">
-      <div :class="['content', {'content-mini' : !leftWidth}]" v-loading.body="isLoading">
+    <el-col :span="leftWidth? (withoutSide?16 :24) : (withoutSide?20 :24)">
+      <div :class="['content', {'content-mini' : !leftWidth}, {'content-pm' : !withoutSide}]"
+        v-loading.body="isLoading">
         <div class="content-head">
           <div class="clearfix" v-show="showList">
             <p class="title fl" v-if="!isChoose && folderId === 0" v-html="title"></p>
@@ -66,7 +67,7 @@
               </el-col>
               <el-col :offset="5" :span="12">
                 <span v-if="modules !== 'recycle'" @click="confirmShare">分享</span>
-                <span v-if="false" @click="downloadFile('')">下载</span>
+                <span v-if="false" @click="downloadFile()">下载</span>
                 <span v-if="modules !== 'recycle'" @click="confirmCopy">复制</span>
                 <span v-if="modules !== 'recycle'" @click="confirmMove">移动</span>
                 <span v-if="modules !== 'recycle'" @click="rename" :class="{'disable': alreadyChoose > 1 || !alreadyChoose}">重命名</span>
@@ -432,7 +433,7 @@
       <div class="dialog-content" v-else>
         <p class="link"><span>链接:</span><input v-model.trim="shareInfo.link" type="text"></p>
         <p v-if="isEncryption" class="share-password"><span>密码:</span><input v-model.trim="shareInfo.pwd" type="text"></p>
-        <p class="share-password">有效期:{{validityVal}}</p>
+        <p class="share-password"><span>有效期:</span>{{validityVal}}</p>
         <div class="buttons">
           <button class="cancel-btn" @click="closeCover">取消</button>
           <button class="confirm-btn" @click="setClipboardText">复制链接</button>
@@ -550,6 +551,12 @@ export default {
       }
     }
   },
+  props: {
+    withoutSide: {
+      type: Boolean,
+      default: true
+    }
+  },
   components: {
     vMenu,
     vContent,
@@ -570,7 +577,15 @@ export default {
             this.$message.info('只支持下载单个文件')
             return
           } else {
-            download(url)
+            console.log(`url`)
+            window.location.assign(url)
+            download
+            // download(`${url}&attname=a.dmg`)
+            // this.$http.get(`${url}&attname=a.dmg`).then(res => {
+            //   console.log(res)
+            // }).error(err => {
+            //   console.error(err)
+            // })
           }
         } else {
           this.$message.info('暂不支持下载文件夹')
@@ -1382,9 +1397,16 @@ export default {
           params: this.$route.params,
           query: {id: this.historyId[this.historyId.length - 1]}})
       } else {
-        this.$router.push({
-          name: this.$route.name,
-          params: this.$route.params})
+        if (this.withoutSide) {
+          this.$router.push({
+            name: this.$route.name,
+            params: this.$route.params})
+        } else {
+          this.$router.push({
+            name: this.$route.name,
+            params: this.$route.params,
+            query: {id: this.projectObject.pan_director_id}})
+        }
       }
     },
     changeSortGist(type) {
@@ -1545,6 +1567,9 @@ export default {
       } else if (leftWidth === 4) {
         return leftWidth
       }
+    },
+    projectObject() {
+      return this.$store.state.task.projectObject
     }
   },
   watch: {
@@ -1589,8 +1614,8 @@ export default {
       },
       deep: true
     },
-    modules() {
-      switch (this.modules) {
+    modules(val) {
+      switch (val) {
         case 'all':
           this.title = '全部文件'
           break
@@ -1690,6 +1715,9 @@ export default {
   }
   .content-mini {
     position: absolute;
+  }
+  .content-pm {
+    position: static
   }
   .content-head {
     color: #999;
@@ -2093,7 +2121,9 @@ export default {
     margin-bottom: 20px;
   }
   .link span, .share-password span {
-    margin-right: 20px;
+    /* margin-right: 20px; */
+    display: inline-block;
+    min-width: 60px;
   }
   .link input, .share-password input {
     width: 260px;
@@ -2493,6 +2523,12 @@ export default {
       top: 0;
       left: 300px;
       transition: 0.2s all ease;
+    }
+    .content-pm {
+      position: static;
+      width: 100%;
+      top: 0;
+      left: 0;
     }
   }
 </style>

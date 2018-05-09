@@ -12,6 +12,7 @@
               @click.self="showTaskBtn(ele, index)"
               :class="['task-item','clearfix', {
                 'active': ele.stage === 2,
+                'click': ele.id === parentTask.id,
                 'level1': ele.level === 1,
                 'level2': ele.level === 5,
                 'level3': ele.level === 8}]">
@@ -30,6 +31,7 @@
             <section>
               <div :class="['task-item','clearfix', {
                 'active': e.stage === 2,
+                'click': e.id === parentTask.id,
                 'level1': e.level === 1,
                 'level2': e.level === 5,
                 'level3': e.level === 8}]"
@@ -389,6 +391,9 @@
       },
       stageList() {
         return this.$store.state.task.stageList
+      },
+      parentTask() {
+        return this.$store.state.task.parentTask
       }
     },
     watch: {
@@ -506,23 +511,29 @@
     border-left: 6px solid #d2d2d2;
   }
   .level1 {
-    border-left: 6px solid #d2d2d2;
+    border-left: 1px solid #d2d2d2;
   }
-  .level2 {
+  .task-item.click {
+    border: 1px solid rgba(255, 90, 95, 0.5);
+  }
+  .task-item.level2 {
     border-left: 6px solid #FFD330;
   }
-  .level3 {
+  .task-item.level3 {
     border-left: 6px solid #ff5a5f;
   }
   .task-item.active {
     background: #fafafa;
     color: #999;
   }
-  .task-item.active .task-name{
+  .task-item.active .task-name {
     text-decoration: line-through;
   }
   .task-item.active .task-name-span::after{
     border-color: #d2d2d2
+  }
+  .task-item.active .task-name {
+    border-color: #fff
   }
   .task-name {
     padding-left: 54px;
@@ -552,7 +563,7 @@
     transform: rotate(45deg);
     height: 15px;
     width: 8px;
-    border: 2px solid #fff;
+    border: 2px solid transparent;
     border-left: none;
     border-top: none;
   }
