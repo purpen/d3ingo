@@ -63,13 +63,16 @@ export default {
             return {name, max}
           }),
           name: {
-            fontSize: 10
+            fontSize: 10,
+            textStyle: {
+              color: '#666'
+            }
           },
           nameGap: 10,
           shape: 'circle',
           axisLine: {
             lineStyle: {
-              // color: '#FF5A5F'
+              color: '#FF5A5F'
             }
           },
           splitNumber: 4,
@@ -88,7 +91,19 @@ export default {
         series: [{
           name: '能力值',
           type: 'radar',
-          data: [{value: scores.map(({value}) => value)}]
+          data: [{value: scores.map(({value}) => value)}],
+          symbol: 'circle',
+          symbolSize: 4,
+          itemStyle: {
+            normal: {
+              areaStyle: {
+                color: 'rgba(255,90,95, 0.3)'
+              },
+              lineStyle: {
+                color: 'rgba(255,90,95, 0.5)'
+              }
+            }
+          }
         }]
       }
     }
