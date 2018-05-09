@@ -449,6 +449,32 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   margin: 0 0 10px 0;
 }
 
+.bread-crumb {
+  padding-top: 20px;
+  color: #666;
+  font-size: 0;
+}
+.bread-crumb a {
+  font-size: 14px;
+  margin-right: 36px;
+  position: relative;
+}
+.bread-crumb a:after {
+  content: "";
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  border: 1px solid #d2d2d2;
+  border-left: none;
+  border-bottom: none;
+}
+.bread-crumb a:last-child:after {
+  content: "";
+  border: none;
+}
 /**
  *  新添按钮颜色值
  */
@@ -743,7 +769,7 @@ button.is-custom.is-outlined.is-loading:after {
   align-items: stretch;
   display: flex;
   background: #FFFFFF;
-  padding-left: 5px;
+  /* padding-left: 5px; */
 }
 
 .m-nav-header {

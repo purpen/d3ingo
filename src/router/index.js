@@ -225,7 +225,7 @@ routes = [
     },
     children: [
       {
-        name: 'InnovationHome',
+        name: 'innovationHome',
         path: '/innovation_index/home',
         component: require('@/components/pages/home/innovation/InnovationHome')
       },
@@ -246,6 +246,11 @@ routes = [
     name: 'innovationCompany',
     path: '/innovation_index/company/:id',
     component: require('@/components/pages/home/innovation/InnovationCompany')
+  },
+  {
+    name: 'innovationCompare',
+    path: '/innovation_index/compare',
+    component: require('@/components/pages/home/innovation/InnovationCompare')
   },
   // 企业招募
   {

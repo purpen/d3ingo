@@ -3,7 +3,7 @@
     <div :class="[isMob ? 'banner-mob': 'banner']" :style="{height : calcHeight, maxHeight:' 500px'}">
     </div>
     <div class="menu">
-      <router-link :to="{name: 'InnovationHome'}">首页</router-link>
+      <router-link :to="{name: 'innovationHome'}">首页</router-link>
       <router-link class="middle-menu" :to="{name: 'InnovateList'}">榜单</router-link>
       <router-link :to="{name: 'InnovateAbout'}">关于指数</router-link>
     </div>

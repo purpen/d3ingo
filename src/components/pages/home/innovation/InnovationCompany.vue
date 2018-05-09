@@ -4,8 +4,11 @@
       <img class="company-logo" :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
       <h2 class="company-name">飞鱼设计</h2>
       <p class="ranking">设计创新力指数：<span>100</span>排名：<span>1</span><i></i></p>
-      <div class="chart">
-        <ECharts :options="option" ref="chart"></ECharts>
+      <div class="chart" ref="chart">
+        <ECharts
+          :options="option"
+          auto-resize
+          ref="radar"></ECharts>
       </div>
     </div>
     <div class="company-profile">
@@ -54,9 +57,10 @@ export default {
     return {
       designCaseList: [],
       option: {
-        title: {
-          // text: '创新力雷达图'
-        },
+        // title: {
+        //   text: '创新力雷达图\n',
+        //   x: 'center'
+        // },
         tooltip: {},
         radar: {
           indicator: scores.map(({name, max}) => {
@@ -105,6 +109,11 @@ export default {
       this.$router.push({name: 'home'})
     }
     this.getDesignCaseList(id)
+  },
+  mounted() {
+    // let chart = this.$refs.chart
+    let radar = this.$refs.radar
+    console.log(radar)
   }
 }
 </script>
@@ -116,6 +125,7 @@ export default {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    margin-top: 70px;
     margin-top: 70px;
     padding-bottom: 40px;
   }
@@ -183,6 +193,14 @@ export default {
   }
   .item {
     margin: 10px 0
+  }
+  .chart {
+    width: 50%;
+    height: 300px;
+  }
+  .echarts {
+    width: 100%;
+    height: 100%;
   }
 @media screen and (max-width: 767px) {
   .image-box {
