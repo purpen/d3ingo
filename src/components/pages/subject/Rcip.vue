@@ -306,11 +306,16 @@
       }
     },
     mounted() {
-      var that = this
-      window.addEventListener('resize', () => {
-        that.calcHeight = calcImgSize(1520, 2880)
-      })
-      this.calcHeight = calcImgSize(1520, 2880)
+      window.addEventListener('resize', this.countSize)
+      this.countSize()
+    },
+    methods: {
+      countSize() {
+        this.calcHeight = calcImgSize(1520, 2880)
+      }
+    },
+    destroyed() {
+      window.removeEventListener('resize', this.countSize)
     }
   }
 

@@ -174,6 +174,9 @@
       }
     },
     methods: {
+      initPage() {
+        this.$store.commit('INIT_PAGE')
+      },
       navdefact() {
         // 设置router函数跳转
         this.menuactive = this.$route.path.split('/')[1]
@@ -318,13 +321,11 @@
       this.$store.commit('INIT_PAGE')
     },
     mounted() {
-      let that = this
-      window.addEventListener('resize', () => {
-        that.$store.commit('INIT_PAGE')
-      })
+      window.addEventListener('resize', this.initPage)
     },
     destroyed() {
       clearInterval(this.requestMessageTask)
+      window.addEventListener('resize', this.initPage)
     }
   }
 </script>

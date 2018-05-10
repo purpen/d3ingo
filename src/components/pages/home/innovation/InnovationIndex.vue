@@ -26,19 +26,8 @@ export default {
     }
   },
   mounted() {
-    let that = this
-    window.addEventListener('resize', () => {
-      if (that.isMob) {
-        that.calcHeight = calcImgSize(180, 320, false)
-      } else {
-        that.calcHeight = calcImgSize(1000, 2880)
-      }
-    })
-    if (this.isMob) {
-      this.calcHeight = calcImgSize(180, 320, false)
-    } else {
-      this.calcHeight = calcImgSize(1000, 2880)
-    }
+    window.addEventListener('resize', this.countSize)
+    this.countSize()
   },
   computed: {
     isMob() {
@@ -48,6 +37,18 @@ export default {
   watch: {
     '$route'(to) {
     }
+  },
+  methods: {
+    countSize() {
+      if (this.isMob) {
+        this.calcHeight = calcImgSize(180, 320, false)
+      } else {
+        this.calcHeight = calcImgSize(1000, 2880)
+      }
+    }
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.countSize)
   }
 }
 </script>

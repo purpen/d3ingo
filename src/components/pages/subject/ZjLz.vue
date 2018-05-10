@@ -236,19 +236,14 @@
       playBtn() {
         // http://oni525j96.bkt.clouddn.com/video/zjgz.mp4
         this.dialogVisible = true
+      },
+      countSize() {
+        this.calcHeight = calcImgSize(650, 1440)
       }
     },
     mounted() {
-      var that = this
-      window.addEventListener('resize', () => {
-        that.calcHeight = calcImgSize(650, 1440)
-      })
-      this.calcHeight = calcImgSize(650, 1440)
-    },
-    computed: {
-      BMob() {
-        return this.$store.state.event.isMob
-      }
+      window.addEventListener('resize', this.countSize)
+      this.countSize()
     }
   }
 

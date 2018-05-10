@@ -298,6 +298,8 @@ export default {
   inviteValue: '/urlValue', // 解析邀请字符串
   restoreMember: '/design/restoreMember', // 恢复成员
 
+  // 创新力榜单
+  companyRecord: '/opalus/company_record/list',
   // test
   test: '/' // End
 }
