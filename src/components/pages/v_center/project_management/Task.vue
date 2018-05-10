@@ -1,22 +1,6 @@
 <template>
   <section @click.self="currentStageStat.id = -1">
-    <div>
-      <!-- <div v-if="true">
-        <h1>阶段测试</h1>
-        <el-button @click="addStageBtn()">添加阶段</el-button>
-        <p v-for="(d, index) in stageList" :key="index">
-          {{ d.id }} | {{ d.title }} |
-          <el-button @click="editStageBtn(d.id, index)">编辑</el-button> |
-          <el-button @click="deleteStageBtn(d.id, index)">删除</el-button>
-        </p>
-      </div> -->
-      <!-- <div v-if="currentStageStat.event">
-        <el-input v-model="currentStageForm.title" placeholder=""></el-inptask-itemut>
-        <el-button @click="submitStage()">提交阶段</el-button>
-        <el-button @click="currentStageStat.event = false">取消</el-button>
-      </div> -->
-    </div>
-    <div class="container task-content" v-loading="isLoading">
+    <div class="vcenter-container task-content" v-loading="isLoading">
       <el-row :gutter="30">
         <el-col :span="taskState.power ? 12 : 24" class="task-list">
           <div class="add-btn">
@@ -25,13 +9,15 @@
           </div>
           <section>
             <div v-for="(ele, index) in displayObj.outsideStageList" :key="index"
-              @click.self="showTaskBtn(ele.id, index)"
+              @click.self="showTaskBtn(ele, index)"
               :class="['task-item','clearfix', {
                 'active': ele.stage === 2,
+                'click': ele.id === parentTask.id,
                 'level1': ele.level === 1,
-                'level2': ele.level === 2,
-                'level3': ele.level === 3}]">
-              <p @click="completeTaskBtn(ele, index)" class="task-name fl">
+                'level2': ele.level === 5,
+                'level3': ele.level === 8}]">
+              <p @click.self="showTaskBtn(ele, index)" class="task-name fl">
+              <span @click="completeTaskBtn(ele, index)" class="task-name-span"></span>
               {{ele.name}}</p>
               <p class="task-date fr">{{ele.created_at_format}}</p>
             </div>
@@ -45,13 +31,14 @@
             <section>
               <div :class="['task-item','clearfix', {
                 'active': e.stage === 2,
+                'click': e.id === parentTask.id,
                 'level1': e.level === 1,
-                'level2': e.level === 2,
-                'level3': e.level === 3}]"
+                'level2': e.level === 5,
+                'level3': e.level === 8}]"
                 v-for="(e, i) in ele['task']" :key="i"
-                @click.self="showTaskBtn(e.id, i, e.stage)"
-                >
-                <p @click="completeTaskBtn(e, i)" class="task-name fl">{{e.name}}</p>
+                @click.self="showTaskBtn(e, i)">
+                <p @click.self="showTaskBtn(e, i)" class="task-name fl">
+                  <span @click="completeTaskBtn(e, i)" class="task-name-span"></span>{{e.name}}</p>
                 <p class="task-date fr">{{e.created_at_format}}</p>
               </div>
             </section>
@@ -305,11 +292,13 @@
         this.$store.commit('changeTaskStateEvent', 'create')
       },
       // 展开任务详情
-      showTaskBtn(id, index, stage) {
-        this.completeState = stage
+      showTaskBtn(ele, index) {
+        this.$store.commit('setParentTask', ele)
+        this.completeState = ele.stage
         this.$store.commit('changeTaskStatePower', 1)
         this.$store.commit('changeTaskStateEvent', 'update')
-        this.$store.commit('changeTaskStateId', id)
+        this.$store.commit('changeTaskStateId', ele.id)
+        this.$store.commit('changeTaskStateId', ele.id)
       },
       // 完成/取消任务
       completeTaskBtn(ele, index) {
@@ -323,7 +312,6 @@
               item.stage = stage
               this.completeState = stage
               this.$store.commit('updateTaskListItem', item)
-              this.$store.commit('setStoreCurrentForm', item)
               this.fetchStage()
             })
           } else {
@@ -401,11 +389,11 @@
       taskList() {
         return this.$store.state.task.taskList
       },
-      storeCurrentForm() {
-        return this.$store.state.task.storeCurrentForm
-      },
       stageList() {
         return this.$store.state.task.stageList
+      },
+      parentTask() {
+        return this.$store.state.task.parentTask
       }
     },
     watch: {
@@ -422,6 +410,7 @@
         this.redirectItemList(1, '没有此项目')
         return
       }
+      this.$store.commit('changeTaskStatePower', 0)
       // 请求项目详情，判断项目是否存在或有效
       this.itemId = itemId
       // 获取阶段列表
@@ -522,32 +511,40 @@
     border-left: 6px solid #d2d2d2;
   }
   .level1 {
-    border-left: 6px solid #d2d2d2;
+    border-left: 1px solid #d2d2d2;
   }
-  .level2 {
+  .task-item.click {
+    border: 1px solid rgba(255, 90, 95, 0.5);
+  }
+  .task-item.level2 {
     border-left: 6px solid #FFD330;
   }
-  .level3 {
+  .task-item.level3 {
     border-left: 6px solid #ff5a5f;
   }
   .task-item.active {
     background: #fafafa;
     color: #999;
   }
-  .task-item.active .task-name{
+  .task-item.active .task-name {
     text-decoration: line-through;
   }
-  .task-item.active .task-name::after{
+  .task-item.active .task-name-span::after{
     border-color: #d2d2d2
+  }
+  .task-item.active .task-name {
+    border-color: #fff
   }
   .task-name {
     padding-left: 54px;
     max-width: 70%;
     position: relative;
     cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
-  .task-name::before {
-    content: "";
+  .task-name-span {
     position: absolute;
     left: 20px;
     top: 13px;
@@ -558,15 +555,15 @@
     border-radius: 4px;
   }
 
-  .task-name::after {
+  .task-name-span::after {
     content: "";
     position: absolute;
-    left: 29px;
-    top: 16px;
+    left: 8px;
+    top: 2px;
     transform: rotate(45deg);
     height: 15px;
     width: 8px;
-    border: 2px solid #fff;
+    border: 2px solid transparent;
     border-left: none;
     border-top: none;
   }

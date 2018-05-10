@@ -1,18 +1,18 @@
 <template>
-  <div class="cententList" v-show="propsShow">{{executeId}}
+  <div class="cententList" v-show="propsShow">
     <p v-if="!executeId" class="clearfix">添加成员
       <i class="fr fx-icon-nothing-close-error" @click="closeMember"></i>
     </p>
-    <p v-else class="clearfix">选择成员
+    <p v-else class="clearfix">查看成员
       <i class="fr fx-icon-nothing-close-error" @click="closeMember"></i>
     </p>
     <div class="side clearfix">
       <div class="search-parent">
-        <input class="member-search" v-model="seachKey" type="text">
+        <input placeholder="请选择成员" class="member-search" v-model="seachKey" type="text">
       </div>
       <ul class="scroll-bar">
         <li v-if="matchMemberList.length"
-          :class="['info', {'active': taskMemberIdList.indexOf(d.id) !== -1}]"
+          :class="['info', {'active': taskMemberIdList.indexOf(d.id) !== -1 && event !== 'menu'}]"
           v-for="(d, index) in matchMemberList" :key="index"
           @click="clickTaskMember(d.id)">
           <img v-if="d.logo_image" :src="d.logo_image.logo" alt="">
@@ -23,7 +23,7 @@
           <span>没有搜索到相关人员～</span>
         </li>
       </ul>
-      <!-- <p class="welcome" @click="addMemberFromCompany">从公司中添加成员</p> -->
+      <p v-if="event === 'menu' && (company_role === 20 || company_role === 10)" class="welcome" @click="addMemberFromCompany">从公司中添加成员</p>
     </div>
     <section class="dialog-bg" v-if="showCover" @click.self="closeCover"></section>
     <section class="dialog-body" v-if="isInvite">
@@ -45,16 +45,16 @@
         <i class="fr fx fx-icon-nothing-close-error" @click="closeCover"></i>
       </h3>
       <div class="dialog-content side cover-slide">
-        <ul class="scroll-bar">{{taskMemberIdList}}
-          <li :class="['info', {'active': taskMemberIdList.indexOf(d.id) !== -1}]"
+        <ul class="scroll-bar">
+          <li :class="['info', {'active': projectMemberIdList.indexOf(d.id) !== -1}]"
             v-for="(d, index) in companyMemberList" :key="index"
-            @click="clickProjectMember(d.id)">
+            @click="clickProjectMember(d)">
             <img v-if="d.logo_image" :src="d.logo_image.logo" alt="">
             <img v-else :src="require('assets/images/avatar_100.png')">
             <span class="name">{{d.realname}}</span>
           </li>
+          <p v-if="company_role === 20" @click="getVerifyStatus" class="welcome">通过链接邀请</p>
         </ul>
-      <!-- <p v-if="company_role === 20" @click="getVerifyStatus" class="welcome">通过链接邀请</p> -->
       </div>
     </section>
   </div>
@@ -79,6 +79,10 @@ export default {
     executeId: {
       type: Number,
       default: -1
+    },
+    event: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -97,38 +101,17 @@ export default {
     }
   },
   methods: {
-    showMember() {
-      this.getTaskMemberList()
-      this.getProjectMemberList()
-    },
     closeMember() {
       this.currentShow = false
     },
-    getTaskMemberList() {
-      this.$http.get(api.taskUsers, {params: {task_id: this.taskId}})
-      .then(res => {
-        if (res.data.meta.status_code === 200) {
-          // this.taskMemberList = res.data.data
-          console.log(res.data.data)
-          this.$store.commit('setTaskMemberList', res.data.data)
-        } else {
-          this.$message.error(res.data.meta.message)
-        }
-      }).catch(err => {
-        this.$message.error(err.message)
-      })
-    },
     getProjectMemberList() {
+      if (this.projectMemberList.length) {
+        return
+      }
       this.$http.get(api.itemUsers, {params: {item_id: this.itemId}})
       .then(res => {
         if (res.data.meta.status_code === 200) {
-          // this.projectMemberList = res.data.data
           this.$store.commit('setProjectMemberList', res.data.data)
-          let idList = []
-          this.projectMemberList.forEach(item => {
-            idList.push(item.id)
-          })
-          Object.assign(this.projectMemberIdList, idList)
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -149,20 +132,24 @@ export default {
       })
     },
     clickTaskMember(selectId) {
-      if (this.taskMemberIdList)
-      let index = this.taskMemberIdList.indexOf(selectId)
-      if (index === -1) {
-        this.addTaskMember(selectId)
+      if (this.executeId === -1) {
+        let index = this.taskMemberIdList.indexOf(selectId)
+        if (index === -1) {
+          this.addTaskMember(selectId)
+        } else {
+          this.removeTaskMember(selectId)
+        }
       } else {
-        this.removeTaskMember(selectId)
+        this.claimTask(selectId)
       }
     },
-    clickProjectMember(selectId) {
+    clickProjectMember(d) {
+      let selectId = d.id
       let index = this.projectMemberIdList.indexOf(selectId)
       if (index === -1) {
-        this.addProjectMember(selectId)
+        this.addProjectMember(selectId, d)
       } else {
-        this.removeProjectMember(selectId, index)
+        this.removeProjectMember(selectId)
       }
     },
     addTaskMember(selectId) {
@@ -171,8 +158,6 @@ export default {
         selected_user_id: selectId})
       .then(res => {
         if (res.data.meta.status_code === 200) {
-          // this.taskMemberList.push(res.data.data)
-          // this.taskMemberIdList.push(res.data.data.selected_user_id) // watch 监听
           this.$store.commit('addTaskMemberList', res.data.data)
         } else {
           this.$message.error(res.data.meta.message)
@@ -181,22 +166,27 @@ export default {
         this.$message.error(err.message)
       })
     },
-    addProjectMember(userId) {
+    addProjectMember(userId, d) {
       this.$http.post(api.itemUsers, {
         item_id: this.itemId,
         user_id: userId})
       .then(res => {
         if (res.data.meta.status_code === 200) {
-          // this.projectMemberList.push(res.data.data)
-          this.$store.commit('addProjectMemberList', res.data.data)
-          this.projectMemberIdList.push(res.data.data.id)
-          this.addTaskMember(res.data.data.id)
+          this.$store.commit('addProjectMemberList', d)
+          this.projectMemberIdList.push(userId)
         } else {
           this.$message.error(res.data.meta.message)
         }
       }).catch(err => {
         this.$message.error(err.message)
       })
+    },
+    getProjectMemberIdList() {
+      let idList = []
+      this.projectMemberList.forEach(item => {
+        idList.push(item.id)
+      })
+      this.projectMemberIdList = idList
     },
     removeTaskMember(selectId) {
       this.$http.delete(api.deleteTaskUsers, {params: {
@@ -205,10 +195,8 @@ export default {
       }})
       .then(res => {
         if (res.data.meta.status_code === 200) {
-          // this.taskMemberList.splice(index, 1)
           this.$store.commit('deleteTaskMemberList', selectId)
-          // let index = this.taskMemberIdList.indexOf(selectId)
-          // this.taskMemberIdList.splice(index, 1)
+          this.currentShow = false
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -216,15 +204,16 @@ export default {
         this.$message.error(err.message)
       })
     },
-    removeProjectMember(selectId, index) {
+    removeProjectMember(selectId) {
+      this.$store.commit('deleteTaskMemberList', selectId)
       this.$http.delete(api.deleteItemUsers, {params: {
         item_id: this.itemId,
         selected_user_id: selectId
       }})
       .then(res => {
         if (res.data.meta.status_code === 200) {
-          this.taskMemberList.splice(index, 1)
-          this.taskMemberIdList.splice(index, 1)
+          this.$store.commit('deleteProjectMemberList', selectId)
+          this.projectMemberIdList.splice(this.projectMemberIdList.indexOf(selectId), 1)
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -233,14 +222,15 @@ export default {
       })
     },
     // 认领任务
-    claimTask(id, userId) {
+    claimTask(userId) {
       this.$http.post(api.tasksExecuteUser, {
         item_id: this.itemId,
-        task_id: id,
+        task_id: this.taskId,
         execute_user_id: userId})
       .then((res) => {
         if (res.data.meta.status_code === 200) {
           this.$emit('changeExecute', userId)
+          this.$store.commit('setExecuteUser', userId)
           this.$message.success('认领成功!')
         } else {
           this.$message.error(res.data.meta.message)
@@ -303,11 +293,11 @@ export default {
       this.showCover = true
       this.isCompanyAdd = true
       this.getCompanyMemberList()
+      this.getProjectMemberIdList()
     }
   },
   created() {
-    // this.getTaskMemberList()
-    // this.getProjectMemberList()
+    this.matchMemberList = this.projectMemberList
   },
   computed: {
     company_role() {
@@ -321,6 +311,14 @@ export default {
     }
   },
   watch: {
+    executeId(val) {
+      this.taskMemberIdList = [val]
+      if (val) {
+        this.$store.commit('setExecuteUser', val)
+      } else {
+        this.$store.commit('removeExcuteUser')
+      }
+    },
     projectMemberList: {
       handler(val) {
         if (val.length) {
@@ -331,11 +329,15 @@ export default {
     },
     taskMemberList: {
       handler(val) {
-        let idList = []
-        val.forEach(item => {
-          idList.push(item.selected_user_id)
-        })
-        this.taskMemberIdList = idList
+        if (this.executeId === -1) {
+          let idList = []
+          this.taskMemberList.forEach(item => {
+            idList.push(item.selected_user_id)
+          })
+          this.taskMemberIdList = idList
+        } else {
+          this.taskMemberIdList = [this.executeId]
+        }
       },
       deep: true
     },
@@ -344,7 +346,16 @@ export default {
     },
     currentShow(val) {
       if (val === true) {
-        this.showMember()
+        this.getProjectMemberList()
+        if (this.executeId === -1) {
+          let idList = []
+          this.taskMemberList.forEach(item => {
+            idList.push(item.selected_user_id)
+          })
+          this.taskMemberIdList = idList
+        } else {
+          this.taskMemberIdList = [this.executeId]
+        }
       } else {
         this.$emit('closeMember', val)
       }
@@ -361,7 +372,6 @@ export default {
       })
     },
     taskId(val) {
-      this.getTaskMemberList()
       this.getProjectMemberList()
     }
   }
@@ -372,9 +382,8 @@ export default {
     background: #FFFFFF;
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
     border-radius: 4px;
-    top: 100px;
     position: absolute;
-    left: 0;
+    right: 0;
     top: 85px;
     z-index: 1999;
   }
@@ -435,7 +444,15 @@ export default {
     height: 180px;
     overflow-y: auto;
   }
-  
+  .cover-slide ul {
+    margin-bottom: 50px
+  }
+  .side ul .welcome {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
   .side ul .info {
     position: relative;
     padding: 0 20px;
@@ -447,11 +464,11 @@ export default {
     position: relative;
     height: inherit;
     padding: 20px;
-    background: url(../../assets/images/tools/report/NoMaterial.png) no-repeat center / 120px;
+    background: url(../../assets/images/tools/report/NoMaterial.png) no-repeat center 8px / 120px;
   }
   .no-match span {
     position: absolute;
-    bottom: 0;
+    bottom: 20px;
     left: 0;
     width: 100%;
     text-align: center;
@@ -460,7 +477,7 @@ export default {
   }
   .side ul .info:hover,
   .side ul .active {
-    background: #f7f7f7
+    background: #fafafa
   }
   
   .side ul .active::after {

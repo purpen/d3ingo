@@ -581,7 +581,7 @@ router.beforeEach((to, from, next) => {
     if (store.state.event.token) {
       next()
     } else {
-      store.commit(types.PREV_URL_NAME, to.path)
+      store.commit(types.PREV_URL_NAME, to.fullPath)
       next({
         name: 'login'
       })

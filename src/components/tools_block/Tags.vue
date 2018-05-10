@@ -28,7 +28,7 @@
           :class="['clearfix', {'active':currentTagsId.indexOf(d.id) !== -1}]">
           <i class="color"
           :style="{background: d.type_val}"></i>
-          <span>{{ d.title }}{{true}}</span>
+          <span>{{ d.title }}</span>
           <i class="fr edit-tag" @click="editTagsBtn(d.id, index)"></i>
         </li>
       </ul>
@@ -383,7 +383,7 @@
   }
 
   .tag-list li:hover {
-    background: #f7f7f7
+    background: #fafafa
   }
   .tag-list li:hover .edit-tag {
     display: block;
@@ -409,7 +409,7 @@
     content: "";
     position: absolute;
     left: 0;
-    top: 1px;
+    top: 2px;
     width: 16px;
     height: 16px;
     background: url(../../assets/images/tools/project_management/Group.png) no-repeat;

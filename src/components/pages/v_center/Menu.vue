@@ -50,7 +50,7 @@
           </div>
 
           <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist" v-else>
-            <div class="computer-btn" v-if="isCompany && !isMob" @click="redirectCompany">
+            <div class="computer-btn" v-if="isCompany && !isMob && eventUser.avatar" @click="redirectCompany">
               <span :style="{background: `url(${eventUser.avatar.logo}) no-repeat center / 40px 40px #222`}"></span>
             </div>
             
@@ -195,7 +195,7 @@
           </div>
 
           <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist" v-else>
-            <div class="computer-btn" v-if="isCompany && !isMob" @click="redirectCompany">
+            <div class="computer-btn" v-if="isCompany && !isMob && eventUser.avatar" @click="redirectCompany">
               <span :style="{background: `url(${eventUser.avatar.logo}) no-repeat center / 40px 40px #222`}" title="查看公司主页"></span>
               查看公司主页
             </div>
@@ -362,11 +362,12 @@
         return this.$store.state.event.leftWidth
       },
       DarkorLight() {
-        if (this.$route.name === 'vcenterCloudDriveList' && this.leftWidth === 2) {
-          return 'light'
-        } else {
-          return 'dark'
-        }
+        // if (this.$route.name === 'vcenterCloudDriveList' && this.leftWidth === 2) {
+        //   return 'light'
+        // } else {
+        //   return 'dark'
+        // }
+        return 'dark'
       },
       eventUser() {
         let user = this.$store.state.event.user

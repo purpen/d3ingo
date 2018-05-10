@@ -2,76 +2,68 @@
   <section>
     <div class="AddCommunicate" >
       <el-row :gutter="0" @click.self.native="cancel()">
-        <el-col :span="18" :offset="3" class="box">
+        <el-col :span="18" :offset="3">
           <div class="grid-content bg-purple">
             <el-row v-if="event === 'create'">
               <el-col class="fx-3">
-               <el-input  v-model="form.title" ></el-input>
+               <el-input  v-model="form.title" class="noborder fx-3"  placeholder="请填写标题" :maxlength="50"></el-input>
               </el-col>
             </el-row>
-            <el-row class="edit"  v-if="event === 'create'">
-              <el-col  :xs="2" :sm="2" :md="2" :lg="1">
-               <img :src=" Customer " alt="">
-              </el-col>
-              <el-col  :xs="22" :sm="10" :md="10" :lg="4" class="margin-bottom">
+            <ul class="edit">
+              <li v-if="event === 'create'">
+                <img :src=" Customer " alt="">
                 <el-input  placeholder="请填写参与客户" size="small" v-model="form.other_realname"></el-input>
-              </el-col>
-               <el-col  :xs="2" :sm="2" :md="2" :lg="1">
-               <img :src=" Locationimg " alt="">
-              </el-col>
-              <el-col  :xs="22" :sm="10" :md="10" :lg="4" class="margin-bottom">
+              </li>
+              <li v-if="event === 'create'">
+                <img :src=" Locationimg " alt="">
                 <el-input  placeholder="请输入地点" size="small" v-model="form.location"></el-input>
-              </el-col>
-               <el-col  :xs="2" :sm="2" :md="2" :lg="1">
-                  <img :src=" dateimg " alt="">
-              </el-col>
-              <el-col :xs="22" :sm="10" :md="10" :lg="5"  class="margin-bottom">
-                  <div class="block">
+              </li>
+              <li v-if="event === 'create'">
+                <img :src=" dateimg " alt="">
+                <div class="block">
                     <el-date-picker
                       type="datetime"
-                      v-model="form.expire_time"
                       :editable="false"
-                      placeholder="选择开始时间" size="small" @change="addTime" >
+                      v-model="form.expire_time"
+                      placeholder="选择开始时间" size="small" @change="addTime">
                     </el-date-picker>
-                  </div>
-              </el-col>
-              <el-col :xs="24" :sm="24" :md="24" :lg="8" class="updata-user">
-                  <img :src=" userimg " alt="">
-                  <ul class="fl">
-                    <li v-for="(getimg,index) in getimgs" :key="index" v-if="getimgs.length > 0" :style="{background:`url(${ getimg.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}">
-                      <span v-if=" !getimg.logo_image.logo ">{{getimg.realnamehead}}</span>
-                      <i :style="{background:`url(${ closered }) no-repeat center`}" @click="deleteGetimg(index,{type:'add'})"></i>
-                    </li>
-                    <li>
-                      <img class="adds" :src=" adduser " alt="" @click="uppop?uppop=false:uppop=true">
-                      <ul class="select-user scroll-bar" v-if="uppop" >
-                        <li>
-                          <el-input placeholder="填写或选择参加会议的人员名称" v-model="searcher"></el-input>
-                        </li>
-                        <li v-for="(option,index) in options" :key="index" @click="creatMembers(index,{type:'add'})" v-if="!isSearch">
-                          <div  :style="{background:`url(${ option.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}" >
-                            <span v-if ="!option.logo_image.logo">{{option.realnamehead}}</span>
-                          </div>
-                          <span>{{option.realname}}</span>
-                          <i class="el-icon-check text-center" v-if="option.isadd"></i>
-                        </li>
-                        <li v-for="(sear,index) in search" :key="index" @click="creatMembers(index,{type:'add'})" v-if="isSearch">
-                          <div  :style="{background:`url(${ sear.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}" >
-                            <span v-if ="!sear.logo_image.logo">{{sear.realnamehead}}</span>
-                          </div>
-                          <span>{{sear.realname}}</span>
-                          <i class="el-icon-check text-center" v-if="sear.isadd"></i>
-                        </li>
-                          <li v-if="isSearch && search.length === 0">没有搜索到该人员</li>
-                    </ul>
+                </div>
+              </li>
+             </ul >
+              <ul class="useredit updata-user" v-if="event === 'create'">
+              <li ><img :src=" userimg " alt=""></li>
+              <li v-for="(getimg,index) in getimgs" :key="index" v-if="getimgs.length > 0" :style="{background:`url(${ getimg.logo_image.logo }) no-repeat center`,backgroundSize:`24px 24px`}">
+                  <span v-if=" !getimg.logo_image.logo ">{{getimg.realnamehead}}</span>
+                  <i :style="{background:`url(${ closered }) no-repeat center`}" @click="deleteGetimg(index,{type:'add'})"></i>
+              </li>
+              <li>
+                <img class="adds" :src=" adduser " alt="" @click="uppop?uppop=false:uppop=true">
+                <ul class="select-user scroll-bar" v-if="uppop" >
+                  <li>
+                    <el-input placeholder="填写或选择参加会议的人员名称" v-model="searcher"></el-input>
                   </li>
+                  <li v-for="(option,index) in options" :key="index" @click="creatMembers(index,{type:'add'})" v-if="!isSearch">
+                    <div  :style="{background:`url(${ option.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}" >
+                      <span v-if ="!option.logo_image.logo">{{option.realnamehead}}</span>
+                    </div>
+                    <span>{{option.realname}}</span>
+                      <i class="el-icon-check text-center" v-if="option.isadd"></i>
+                  </li>
+                  <li v-for="(sear,index) in search" :key="index" @click="creatMembers(index,{type:'add'})" v-if="isSearch">
+                    <div  :style="{background:`url(${ sear.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}" >
+                      <span v-if ="!sear.logo_image.logo">{{sear.realnamehead}}</span>
+                    </div>
+                      <span>{{sear.realname}}</span>
+                      <i class="el-icon-check text-center" v-if="sear.isadd"></i>
+                  </li>
+                  <li v-if="isSearch && search.length === 0">没有搜索到该人员</li>
                 </ul>
-              </el-col>
-            </el-row>
-          <el-row class="MeetingCenter" @click.native="addBtn()">
+              </li>
+            </ul>
+          <el-row class="MeetingCenter" @click.native="addBtn()" :style="{borderTop:event!=='create'?'none':'1px solid #D2D2D2',paddingTop:event!=='create'?'10px':'20px'}">
               <el-col class="fx">
                 <div>
-               <el-input  placeholder="请输入会议内容" type="textarea" :autosize="{ minRows: 4, maxRows: 10}"  v-model="form.content" v-if=" event !== 'create'?false : true " :maxlength="800"></el-input>
+               <el-input  placeholder="请输入会议内容" type="textarea" :autosize="{ minRows: 4, maxRows: 10}"  v-model="form.content" v-if=" event !== 'create'?false : true " :maxlength="800" class="noborder"></el-input>
                <p v-else>请输入会议内容</p>
                </div>
               </el-col>
@@ -130,10 +122,10 @@
             </el-row>
           </div>
         </el-col>
-        <el-col :span="18" :offset="3" v-if=" itemList.length>0 " v-for="(d, index) in itemList" :key="index" class="box"><div class="grid-content bg-purple">
+        <el-col :span="18" :offset="3" v-if=" itemList.length>0 " v-for="(d, index) in itemList" :key="index"><div class="grid-content bg-purple">
            <el-row>
               <el-col class="titlec" >
-                <el-input  v-model="d.title"  v-if ="d.isedit === 2 "></el-input>
+                <el-input  v-model="d.title"  v-if ="d.isedit === 2" placeholder="请填写标题" class="noborder fx-3"></el-input>
                 <span v-else>{{ d.title }}</span>
                 <div class="fr" @click="operation === index?operation='': operation = index "  v-if ="d.isedit === 1 || !d.isedit">
                    <i class="el-icon-more" ></i>
@@ -144,71 +136,77 @@
                 </div>
               </el-col>
             </el-row>
-            <el-row class="edit">
-              <el-col  :xs="2" :sm="2" :md="2" :lg="1" v-if ="d.other_realname || d.isedit === 2">
-               <img :src=" Customer " alt="">
-              </el-col>
-              <el-col  :xs="22" :sm="10" :md="10" :lg="4" class="margin-bottom" v-if ="d.other_realname || d.isedit === 2">
+            <ul class="edit">
+              <li v-if="d.other_realname||d.isedit===2">
+                <img :src=" Customer " alt="">
                 <el-input  placeholder="请填写参与客户" size="small" v-model=" d.other_realname" v-if="d.isedit === 2"></el-input>
                 <p v-else>{{ d.other_realname}}</p>
-              </el-col>
-               <el-col :xs="2" :sm="2" :md="2" :lg="1" class="margin-bottom" v-if ="d.location || d.isedit === 2">
-               <img :src=" Locationimg " alt="">
-              </el-col>
-              <el-col :xs="22" :sm="10" :md="10" :lg="4" class="margin-bottom" v-if ="d.location || d.isedit === 2">
+              </li>
+              <li v-if="d.location||d.isedit===2">
+                <img :src=" Locationimg " alt="">
                 <el-input  placeholder="请输入地点" size="small" v-if="d.isedit === 2" v-model="d.location"></el-input>
                 <p v-else>{{ d.location }}</p>
-              </el-col>
-               <el-col :xs="2" :sm="2" :md="2" :lg="1" class="margin-bottom" v-if ="d.expire_time || d.isedit === 2">
-                  <img :src=" dateimg " alt="">
-              </el-col>
-              <el-col :xs="22" :sm="10" :md="10" :lg="5" class="margin-bottom" v-if ="d.expire_time || d.isedit === 2">
-                  <div class="block" v-if="d.isedit === 2">
+              </li>
+              <li v-if="d.expire_time||d.isedit===2">
+                <img :src=" dateimg " alt="">
+                <div class="block" v-if="d.isedit === 2">
                     <el-date-picker
                       type="datetime"
                       :editable="false"
                       placeholder="选择开始时间" size="small"  v-model=" d.expire_time ">
                     </el-date-picker>
-                  </div> 
-                  <p v-else> {{ d.expire_time }}</p>
-              </el-col>
-              <el-col  :xs="24" :sm="24" :md="24" :lg="8" class="updata-user" v-if="d.selected_user.length > 0 || d.isedit === 2">
+                </div>
+                <p v-else>{{ d.expire_time }}</p>
+              </li>
+              <li v-if="d.isedit === 1&&d.selected_user.length>0">
                 <img :src=" userimg " alt="">
-                <ul class="fl">
-                  <li v-for="(user,indexus) in d.selected_user" :key="indexus" v-if="d.selected_user.length > 0" :style="{background:`url(${ user.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}">
+                <ul class="updata-user">
+                  <li v-for="(user,indexus) in d.selected_user" :key="indexus" v-if="d.selected_user.length > 0" :style="{background:`url(${ user.logo_image.logo }) no-repeat center`,backgroundSize:`24px 24px`}">
                     <span v-if=" !user.logo_image.logo ">{{user.realnamehead}}</span>
                     <i :style="{background:`url(${ closered }) no-repeat center`}" @click="deleteGetimg(indexus,{type:'noadd'})"  v-if="d.isedit === 2"></i>
                   </li>
-                  <li v-if ="d.isedit === 2">
-                    <img v-if ="d.isedit === 2" class="adds" :src=" adduser " alt="" @click="edituser(index)"> 
-                    <ul class="select-user scroll-bar" v-if=" operation  === index ">
-                      <li>
-                        <el-input placeholder="填写或选择参加会议的人员名称" v-model="searcher"></el-input>
-                      </li>
-                      <li v-for="(option,indexop) in options" :key="indexop" @click="creatMembers(indexop,{type:'noadd'})" v-if="!isSearch">
-                        <div  :style="{background:`url(${ option.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}" >
-                          <span v-if ="!option.logo_image.logo">{{option.realnamehead}}</span>
-                        </div>
-                        <span>{{option.realname}}</span>
-                        <i class="el-icon-check text-center" v-if="option.noadd"></i>
-                      </li>
-
-                      <li v-for="(sear,index) in search" :key="index" @click="creatMembers(index,{type:'noadd'})" v-if="isSearch">
-                        <div  :style="{background:`url(${ sear.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}" >
-                          <span v-if ="!sear.logo_image.logo">{{sear.realnamehead}}</span>
-                        </div>
-                        <span>{{sear.realname}}</span>
-                        <i class="el-icon-check text-center" v-if="sear.noadd"></i>
-                      </li>
-                      <li v-if="isSearch && search.length === 0">没有搜索到该人员</li>
-                    </ul>
-                  </li>
+                   <li v-if="d.isedit === 1" class="slice-user">+0</li>
                 </ul>
-              </el-col>
-            </el-row>
-            <el-row class="MeetingCenter">
+              </li>
+             </ul>
+             <ul class="useredit" v-if="d.isedit === 2">
+               <li><img :src=" userimg " alt=""></li>
+              <li >
+                <ul class="updata-user">
+                  <li v-for="(user,indexus) in d.selected_user" :key="indexus" v-if="d.selected_user.length > 0" :style="{background:`url(${ user.logo_image.logo }) no-repeat center`,backgroundSize:`24px 24px`}">
+                    <span v-if=" !user.logo_image.logo ">{{user.realnamehead}}</span>
+                    <i :style="{background:`url(${ closered }) no-repeat center`}" @click="deleteGetimg(indexus,{type:'noadd'})"  v-if="d.isedit === 2"></i>
+                  </li>
+                 
+                   <li>
+                      <img class="adds" :src=" adduser " alt="" @click="edituser(index)">
+                      <ul class="select-user scroll-bar" v-if=" operation  === index " >
+                        <li>
+                          <el-input placeholder="填写或选择参加会议的人员名称" v-model="searcher"></el-input>
+                        </li>
+                        <li v-for="(option,index) in options" :key="index" @click="creatMembers(index,{type:'noadd'})" v-if="!isSearch">
+                          <div  :style="{background:`url(${ option.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}" >
+                            <span v-if ="!option.logo_image.logo">{{option.realnamehead}}</span>
+                          </div>
+                          <span class="font-color">{{option.realname}}</span>
+                          <i class="el-icon-check text-center" v-if="option.noadd"></i>
+                        </li>
+                        <li v-for="(sear,index) in search" :key="index" @click="creatMembers(index,{type:'noadd'})" v-if="isSearch">
+                          <div  :style="{background:`url(${ sear.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}" >
+                            <span v-if ="!sear.logo_image.logo">{{sear.realnamehead}}</span>
+                          </div>
+                          <span class="font-color">{{sear.realname}}</span>
+                          <i class="el-icon-check text-center" v-if="sear.noadd"></i>
+                        </li>
+                        <li v-if="isSearch && search.length === 0">没有搜索到该人员   </li>
+                  </ul>
+                </li>
+                </ul>
+              </li>
+             </ul>
+            <el-row class="MeetingCenter" :style="{borderTop:!d.content&&d.isedit!==2?'none':'1px solid #D2D2D2'}">
               <el-col class="fx">
-                 <el-input  size="small" v-if ="d.isedit === 2" v-model=" d.content " type="textarea" :autosize="{ minRows: 4, maxRows: 10}" :maxlength="800"></el-input>
+                 <el-input  size="small" v-if ="d.isedit === 2" v-model=" d.content " type="textarea" :autosize="{ minRows: 4, maxRows: 10}" :maxlength="800" class="noborder"></el-input>
                  <p v-else>{{ d.content }}</p>
               </el-col>
             </el-row>
@@ -226,12 +224,12 @@
                 'spreadsheet': /.excel/.test(files.name),
                 'video': /.video/.test(files.name)
               }]"></i></li>
-                  <li>{{files.name}}</li>
+                  <li class="font-color">{{files.name}}</li>
                   <li @click="downupload(files.file)">下载</li>
                   <li @click="deleteup(files.id, d.id)">删除</li>
                 </ul>
               </el-col>
-               <el-col :xs="23" :sm="11" :md="11" :lg="6" class="upload-list" v-for="(uploadinga,indexc) in d.uploading" v-if="uploadinga.percentage!==100">
+               <el-col :xs="23" :sm="11" :md="11" :lg="6" class="upload-list" v-for="(uploadinga,indexc) in d.uploading" :key="indexc" v-if="uploadinga.percentage!==100">
                 <ul class="upload-read">
                   <li><i :class="['compress',{
                 'folder': /.folder/.test(uploadinga.name),
@@ -246,7 +244,7 @@
               }]"></i></li>
                   <li>
                     <div>
-                      <div>{{uploadinga.name}}</div>
+                      <div class="font-color">{{uploadinga.name}}</div>
                       <span>{{uploadinga.prog}}/{{uploadinga.size }}</span>
                     </div>
                     <el-progress class="fl" :percentage=" uploadinga.percentage " :show-text="false">
@@ -260,7 +258,7 @@
             </el-row>
            
             <el-row class="uploads"> 
-              <el-col v-if="d.isedit === 2" :xs="24" :sm="12" :md="12" :lg="12">
+              <el-col v-if="d.isedit === 2" :xs="12" :sm="12" :md="12" :lg="12">
                  <el-upload
                   class="upload-demo"
                   :action="uploadUrl"
@@ -275,18 +273,19 @@
                   <img :src=" uploadimg " alt=""><span>添加附件</span>
                 </el-upload>
               </el-col>
-              <el-col :offset="12" :xs="24" :sm="12" :md="12" :lg="12" v-if="d.isedit === 1 || !d.isedit">
+              <el-col :offset="12" :xs="12" :sm="12" :md="12" :lg="12" v-if="d.isedit === 1 || !d.isedit">
                 <div class="fr">
                   <img class="circle-head" :src=" d.logo_image.logo " alt="" >
-                  <span class="notice"> {{ d.realname }} </span>
+                  <span class="notice font-color"> {{ d.realname }} </span>
                   <span>{{ d.created_at }}</span>
                 </div>
               </el-col>
-              <el-col :xs="24" :sm="12" :md="12" :lg="12" v-if="d.isedit === 2">
+              <el-col :xs="12" :sm="12" :md="12" :lg="12" v-if="d.isedit === 2">
                 <div class="fr">
                 <span>{{ d.selected_user.length }}</span>
                 <span class="notice">个人将会收到通知</span>
-                <button @click="inupdate(d.content,d.id,d.title, d.location,d.expire_time,d.other_realname)" type="danger" class="small-button full-red-button">确定</button> 
+                <button @click="cancelEdit()"  class="small-button white-button">取消</button> 
+                <button @click="inupdate(d.content,d.id,d.title, d.location,d.expire_time,d.other_realname)"  class="small-button full-red-button">确定</button> 
                 </div>
               </el-col>
             </el-row>
@@ -387,13 +386,22 @@
       },
       // 取消新建/编辑的编辑
       cancel() {
-        this.event = ''
-        if (this.itemList.length > 0) {
-          for (var i = 0; i < this.itemList.length; i++) {
-            this.itemList[i].isedit = 1
-            if (this.itemList[i].id && this.itemList[i].id === this.cancelitem.id) {
-              this.$set(this.itemList, i, this.cancelitem)
-            }
+        let isnull = true
+        for (var k in this.form) {
+          if (this.form[k] && this.form[k] !== '') {
+            isnull = false
+          }
+        }
+        if (isnull) {
+          this.event = ''
+        }
+      },
+      // 取消编辑按钮
+      cancelEdit() {
+        for (var i = 0; i < this.itemList.length; i++) {
+          this.itemList[i].isedit = 1
+          if (this.itemList[i].id && this.itemList[i].id === this.cancelitem.id) {
+            this.$set(this.itemList, i, this.cancelitem)
           }
         }
       },
@@ -501,6 +509,7 @@
         this.form.random = this.randoms
         this.form.token = this.tokens
         this.form.item_id = this.itemId
+        console.log()
         this.$http.post(api.communeSummaries, this.form).then((response) => {
           if (response.data.meta.status_code === 200) {
             this.form = {}
@@ -665,6 +674,7 @@
           })
       },
       addTime(e) {
+        console.log(e)
         if (e) {
           this.form.expire_time = e.slice(0, 10)
         }
@@ -794,7 +804,6 @@
         this.$http.post(api.communeSummaryUser, getuser)
           .then((response) => {
             if (response.data.meta.status_code === 200) {
-              console.log(response.data.data)
             } else {
               this.$message.error(response.data.meta.message)
             }
@@ -823,7 +832,6 @@
       }
     },
     created() {
-      download
       let itemId = this.$route.params.id
       this.upTokens()
       this.readMembers()
@@ -858,7 +866,7 @@
 </script>
 <style scoped>
   .AddCommunicate {
-    color: #999999;
+    color: #666;
     margin-bottom: 20px;
   }
   .AddCommunicate>.el-row>.el-col{
@@ -867,22 +875,29 @@
     border-radius: 4px;
     margin-top:20px;
   }
-  .box{
-    padding:0px 20px 15px 20px;
+  .grid-content>.el-row:not(:last-child){
+    margin:10px 20px;
   }
   .circle-head{
     border:1px solid transparent;
     border-radius: 50%;
   }
-  .AddCommunicate>.el-row>.el-col>div>.el-row{
-    margin-top:10px;
+  .font-color{
+    color:#222222;
   }
   .uploads{
-    height:36px;
-    line-height: 36px;
-    padding-top:10px;
-    margin-bottom:10px;
     border-top: 1px solid #D2D2D2;
+    background:#F7F7F7;
+    opacity: 0.8;
+    height:54px;
+    line-height:54px;
+    padding:0px 20px;
+    margin-top:10px;
+  }
+   .uploads img {
+    width:16px;
+    margin:17px 10px 0px 0px;
+    float:left;
   }
   .upload-list {
     height:42px;
@@ -931,6 +946,7 @@
   .titlec>span{
     font-size: 18px;
     font-weight: bold;
+    color:#222222;
   }
   .titlec>.fr{
     position:relative;
@@ -961,36 +977,42 @@
   }
   .updata-user {
     position: relative;
-    z-index:2;
+    /* z-index:2; */
   }
-  .updata-user>ul{
+  /* .updata-user{
     display:flex;
     flex-wrap:wrap;
     justify-content:center;
     align-content:space-around;
+  } */
+    .updata-user>li:not(:last-child):hover{
+    border:1px solid #FF5A5F;
   }
-  .updata-user>ul>li>.adds{
+  .updata-user>li>.adds{
     width:24px;
     height:24px;
     margin:0px;
   }
-  .updata-user>ul>li {
-    width:26px;
-    height:26px;
-    line-height:26px; 
+  .updata-user>li {
+    width:24px;
+    height:24px;
+    line-height:20px; 
     border:1px solid transparent;
     border-radius: 50%;
     float: left;
     position: relative;
     text-align: center;
-    margin-top:2px;
-    margin-right:7px;
+    margin-left:5px;
   }
-  .updata-user>ul>li:not(:last-child){
+  .updata-user>li:not(:last-child){
     background: #3DA8F5;
     color:#FFFFFF;
   }
-  .updata-user>ul>li>i {
+   .updata-user>li:first-child{
+    background: none;
+    color:#FFFFFF;
+  }
+  .updata-user>li>i {
     width:14px;
     height:14px;
     position: absolute;
@@ -998,25 +1020,48 @@
     right:-5px;
     top:-5px;
   }
+  .updata-user>.slice-user{
+    border:1px solid #CCCCCC;
+  }
   .edit {
-    line-height: 30px;
-    border-bottom: 1px solid #D2D2D2;
-    padding-bottom:16px;
+    display:flex;
+    /* justify-content:flex-start; */
+    align-items:center;
+    flex-wrap:wrap;
+    z-index:100;
   }
-  .edit img {
-    width:20px;
-    margin:5px 6px 0px 6px;
-    float:left;
+  .edit>li{
+  display:flex;
+  align-items:center;
+  margin-left:16px;
+  margin-bottom: 10px;
   }
-  .uploads img {
+  .edit img{
     width:20px;
-    margin:8px 10px 0px 6px;
-    float:left;
+    display:inline-block;
+    margin-right:5px;
+  }
+  .useredit{
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  .useredit>li:first-child{
+    margin-left:16px;
+  }
+  .useredit>li:last-child{
+    margin-left:8px;
+  }
+  .useredit img{
+     width:20px;
+    display:inline-block;
   }
   .MeetingCenter {
-    padding-top:10px;
-    min-height: 100px;
+    padding-top:20px;
+    padding-bottom: 10px;
     margin-bottom:20px;
+    min-height: 70px;
+    border-top: 1px solid #D2D2D2;
   }
 
   .onthing img {
@@ -1037,7 +1082,7 @@
     overflow-y:auto;
     min-height:100px;
     max-height:250px;
-    top:50px;
+    z-index:100
   }
   .select-user>li{
     height: 50px;
@@ -1079,11 +1124,12 @@
     height:30px;
   }
   .upload-flex>li:not(:first-child){
-    /* flex:2; */
     display: block;
     width:24px;
     height:17px;
-    margin-right:10px;
+    line-height:17px;
+    margin:auto 6px;
+    margin-left:0px;
   }
   .upload-flex>li:nth-child(2){
     width:0;
@@ -1099,11 +1145,18 @@
     justify-content:space-around;
     align-items:center;
     height:42px;
+    padding-right:6px;
   }
-  .upload-read>li>i{
+  .upload-read>li:first-child>i{
     display:block;
     width:30px;
     height:30px;
+  }
+   .upload-read>li:last-child>i{
+    display:block;
+    width:14px;
+    margin-left:3px;
+    margin-right:0px;
   }
   .upload-read>li:nth-child(2){
     flex-grow:1;

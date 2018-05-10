@@ -356,5 +356,24 @@ export default {
   designPositionDelete: '/designPosition/delete',   // DELETE 删除
 
   // test
-  test: '/' // End
+  test: '/', // End
+
+  // 设计项目阶段
+  designStageLists: '/designStage/lists', // GET 列表
+  designStageCreate: '/designStage/create', // POST 创建
+  designStageUpdate: '/designStage/update', // PUT 编辑
+  designStageDelete: '/designStage/delete', // DELETE 删除
+  designStage: '/designStage', // GET 详情
+
+  // 子项目
+  designSubstageCreate: '/designSubstage/create', // POST 创建
+  designSubstageDelete: '/designSubstage/delete', // DELETE 删除
+  designSubstage: '/designSubstage', // GET 子阶段详情
+  designSubstageUpdate: '/designSubstage/update', // PUT 子任务更新
+
+  // 阶段节点
+  dsignStageNodeCreate: '/designStageNode/create', // POST 创建
+  designStageNodeDelete: '/designStageNode/delete', // DELETE 删除
+  designStageNodeUpdate: '/designStageNode/update', // PUT 编辑
+  designStageNode: '/designStageNode' // GET 详情
 }

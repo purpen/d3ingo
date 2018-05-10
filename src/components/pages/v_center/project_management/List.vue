@@ -5,6 +5,12 @@
       <div class="vcenter-container blank40">
         <h2>项目管理</h2>
         <ul class="project-list" v-loading.body="isLoading">
+          <li class="create">
+            <p @click="showCover">
+              <i></i>
+              <span>创建新项目</span>
+            </p>
+          </li>
           <li v-for="(ele, index) in projectList" :key="index"
             @click.self="routePush(ele.id)">
             <div class="clearfix">
@@ -14,7 +20,7 @@
                   <span class="more">
                   </span>
                   <span class="delete" @click="projectDelete(ele.id, index)">
-                    删除
+                    删除{{ele.id}}
                   </span>
                 </p>
                 <span class="favorite-star fr" v-if="false"></span>
@@ -25,12 +31,6 @@
             </div>
             <span class="importance level2" v-if="ele.level === 2">重要</span>
             <span class="importance level3" v-if="ele.level === 3">非常重要</span>
-          </li>
-          <li class="create">
-            <p @click="showCover">
-              <i></i>
-              <span>创建新项目</span>
-            </p>
           </li>
         </ul>
       </div>
@@ -87,7 +87,7 @@ export default {
       importance: 1,
       query: {
         page: 1,
-        pageSize: 12,
+        pageSize: 11,
         totalPges: 0,
         totalCount: 0
       }
@@ -169,7 +169,7 @@ export default {
       this.$router.push({name: 'projectManagementOverView', params: {id: id}})
     },
     projectDelete(id, index) {
-      this.$http.delete(api.deleteDesignProject, {id: id}).then(res => {
+      this.$http.delete(api.deleteDesignProject, {params: {id: id}}).then(res => {
         this.$refs.operate[index].blur()
         if (res.data.meta.status_code === 200) {
           this.projectList.splice(index, 1)
@@ -235,8 +235,13 @@ export default {
     background: #f7f7f7;
     padding: 20px;
     padding-bottom: 40px;
+  transition: transform .218s ease;
   }
 
+  .project-list li:hover {
+    /* transform: translateY(-5px); */
+    box-shadow: 0 9pt 24px rgba(10,10,10,.15);
+  }
   .project-list li a {
     display: block;
     height: 100%;
@@ -481,6 +486,11 @@ export default {
   .pagination {
     text-align: center;
     white-space: inherit
+  }
+  @media screen and (max-width: 767px) {
+    .project-list li {
+      width: 100%
+    }
   }
 </style>
 
