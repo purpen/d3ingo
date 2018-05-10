@@ -380,5 +380,10 @@ export default {
   designStageNode: '/designStageNode', // GET 详情
 
   // 个人项目统计
-  userStatistical: '/designProject/userStatistical'// GET 列表
+  userStatistical: '/designProject/userStatistical', // GET 列表
+
+  // 消息通知列表
+  designNoticeLists: '/designNotice/lists', // GET 列表
+  designNoticeTrueRead: '/designNotice/trueRead', // PUT 确认阅读
+  designNoticeDelete: '/designNotice/delete' // DELETE 删除
 }

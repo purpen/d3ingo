@@ -36,16 +36,21 @@
         <span class="contract-size">{{f.size}}</span>
       </div>
       <div class="fr marginlf" @click="isdelete(f.id)">删除</div>
-      <div class="fr">预览</div>
+      <!-- <div class="fr">预览</div> -->
     </section>
-    <section class="contract-list">
+    <section class="contract-list" v-if="infoList">
       <img :src="Groupimg" alt="">
       <div class="contracct-Part">
         <p>{{ infoList.title }}</p>
         <span class="contract-time">时间</span>
         <!-- <span class="contract-size">{{f.size}}</span> -->
       </div>
-      <div class="fr marginlf" @click="isdelete(infoList.id)">删除</div>
+      <div class="fr marginlf">
+        <router-link
+          :to="{name: 'vcenterContractDown', params: {unique_id: infoList.unique_id}}"
+          target="_blank"> 下载
+        </router-link>
+      </div>
       <div class="fr">
         <router-link 
           :to="{name: 'vcenterContractView', params: {unique_id: infoList.unique_id}}"

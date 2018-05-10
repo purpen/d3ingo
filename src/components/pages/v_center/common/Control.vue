@@ -1,10 +1,10 @@
 <template>
   <el-row class="blank20 min-height350 ">
     <v-menu currentName="control"></v-menu>
-    <el-col :class="isoff?'':'inline'" :span="isoff?20:24" :offset="isoff? 4 : 0">
+    <el-col :class="isoff?'':'inline'" :span="isoff?18:24" :offset="isoff? 5 : 0">
       <!-- :span="22" :offset="!isMob? leftWidth : 0" -->
       <el-row>
-        <el-col :xs="24" :sm="24" :md="12" :lg="12"  v-if="uChild===0&&!messageCount.quantity">
+        <el-col :xs="24" :sm="24" :md="12" :lg="12"  v-if="uChild===0&&messageCount.quantity">
           <section>
             <div class="control-childHeader">
             <span>待处理信息</span>
@@ -591,8 +591,8 @@
     margin:10px 0px;
   }
   .inline{
-    margin-left:60px;
-    padding-right: 60px;
+    margin-left:120px;
+    padding-right: 180px;
   }
   @media (max-width: 768px) {
     .inline{
@@ -616,6 +616,7 @@
     color: #666;
     margin-bottom: 20px;
     background:#f7f7f7;
+    padding:0 20px;
   }
   p.alert-title.clearfix{
 

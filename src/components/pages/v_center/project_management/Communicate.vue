@@ -214,14 +214,14 @@
               </el-col>
             </el-row>
             <el-row>
-              <el-col :xs="23" :sm="11" :md="11" :lg="6" v-for="(files,indexa) in d.commune_image" :key="indexa" class="upload-list">
-                <ul class="upload-flex">
+              <el-col :xs="23" :sm="11" :md="11" :lg="6" v-for="(files,indexa) in d.commune_image" :key="indexa">
+                <ul class="upload-flex upload-list" >
                   <li><i :class="['compress',{
                 'folder': /.folder/.test(files.name),
                 'artboard': /.pdf/.test(files.name),
                 'audio': /.audio/.test(files.name),
                 'compress': /(?:.zip|.rar|.7z)/.test(files.name),
-                'document': /(?:.text|.msword|.txt)/.test(files.name),
+                'document': /(?:.text|.msword|.tx说t)/.test(files.name),
                 'image': /(?:.jpg|.jpeg|.png|.gif)/.test(files.name),
                 'powerpoint': /.powerpoint/.test(files.name),
                 'spreadsheet': /.excel/.test(files.name),
@@ -913,11 +913,6 @@
     background: #F7F7F7;
     border-radius: 4px;
     margin:10px 10px 0px 0px;
-  }
-  @media (min-width: 1200px){
-    .upload-list{
-      width:23%;
-    }
   }
   .upload-list i {
     width:14px;

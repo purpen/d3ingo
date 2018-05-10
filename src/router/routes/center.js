@@ -401,6 +401,18 @@ module.exports = [
     },
     component: require('@/components/pages/v_center/message/List')
   },
+  // 任务消息列表
+  {
+    path: '/vcenter/taskmessage',
+    name: 'taskMessageList',
+    meta: {
+      title: '任务消息列表',
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/v_center/message/taskMessageList')
+  },
   // 系统通知
   {
     path: '/vcenter/notice',
