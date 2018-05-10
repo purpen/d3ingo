@@ -4,6 +4,12 @@
       <div class="banner-contant">
         <h3 :class="{'m-h3' : BMob}">把需求交给铟果来解决</h3>
         <p :class="{'m-p' : BMob}">铟果聚集100+专业设计服务供应商，依托海量消费大数据，帮助客户洞察先机。 </p>
+          <div class="pub" v-if="!isCompany">
+            <router-link :to="{name: 'itemSubmitOne'}">
+              <el-button class="pub-btn is-custom" type="primary" size="large"> 发布项目需求
+              </el-button>
+            </router-link>
+          </div>
       </div>
     </div>
 
@@ -129,6 +135,9 @@
     computed: {
       BMob() {
         return this.$store.state.event.isMob
+      },
+      isCompany() {
+        return this.$store.state.event.user.type === 2
       }
     }
   }
@@ -170,7 +179,20 @@
   .banner p {
     font-size: 3rem;
     color: #fff;
+    line-height: 0.5;
     font-weight: 300;
+  }
+
+  .pub {
+    margin: 60px 0 0 0;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .pub .pub-btn {
+    padding: 15px 40px 15px 40px;
   }
 
   .item_1_title {
@@ -261,4 +283,5 @@
       font-size: 2rem;
     }
   }
+
 </style>
