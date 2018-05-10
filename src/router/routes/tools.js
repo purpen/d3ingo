@@ -122,6 +122,17 @@ module.exports = [
         },
         path: '/vcenter/project_management/quote_submit/:id',
         component: require('@/components/pages/v_center/project_management/QuoteSubmit')
+      },
+      {
+        name: 'projectContract',
+        meta: {
+          title: '合同',
+          requireAuth: true,
+          hideHeader: true,
+          hideFooter: true
+        },
+        path: '/vcenter/project_management/Contract/:id',
+        component: require('@/components/pages/v_center/project_management/Contract')
       }
     ],
     component: require('@/components/pages/v_center/project_management/Show')

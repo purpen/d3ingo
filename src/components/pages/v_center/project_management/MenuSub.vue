@@ -22,7 +22,7 @@
     <div class="pm-right">
       <router-link class="need" to="">项目需求</router-link>
       <router-link :to="{name: 'projectQuote', params: {id: routeId}}" :class="['quotation', {'active': isQuote}]">项目报价</router-link>
-      <router-link class="contract border-right" :to="{path: ''}">合同</router-link>
+      <router-link class="contract border-right" :to="{name: 'projectContract', params: {id: routeId}}">合同</router-link>
       <router-link @click.native.self="controlMemberShow" class="member border-right" :to="{path: ''}">
         {{projectMemberList.length}}
         <div :style="{

@@ -1357,7 +1357,7 @@ button.is-custom.is-outlined.is-loading:after {
 
 .right-content .content-box {
   margin-bottom: 20px;
-  border: 1px solid #d2d2d2;
+  border:1px solid #d2d2d2;
   padding: 0 20px 20px;
 }
 
@@ -2306,6 +2306,7 @@ td.fc-day.fc-widget-content.fc-today::before {
 
 .noborder>.el-input__inner{
   border:none;
+  padding:0px;
 }
 .noborder>.el-textarea__inner{
   border:none;

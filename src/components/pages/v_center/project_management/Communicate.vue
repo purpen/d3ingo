@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="AddCommunicate" >
+    <div class="AddCommunicate">
       <el-row :gutter="0" @click.self.native="cancel()">
         <el-col :span="18" :offset="3">
           <div class="grid-content bg-purple">
@@ -30,7 +30,7 @@
                 </div>
               </li>
              </ul >
-              <ul class="useredit updata-user" v-if="event === 'create'">
+              <ul class="useredit updata-user addhover" v-if="event === 'create'">
               <li ><img :src=" userimg " alt=""></li>
               <li v-for="(getimg,index) in getimgs" :key="index" v-if="getimgs.length > 0" :style="{background:`url(${ getimg.logo_image.logo }) no-repeat center`,backgroundSize:`24px 24px`}">
                   <span v-if=" !getimg.logo_image.logo ">{{getimg.realnamehead}}</span>
@@ -99,7 +99,7 @@
               </el-col>
             </el-row>
             <el-row class="uploads"> 
-              <el-col :xs="24" :sm="12" :md="12" :lg="12" >
+              <el-col :xs="24" :sm="12" :md="12" :lg="12">
                 <el-upload
                   class="upload-demo"
                   :action="uploadUrl"
@@ -116,7 +116,7 @@
               <el-col :xs="24" :sm="12" :md="12" :lg="12">
                 <div class="fr">
                   <span>{{ getimgs.length }}</span><span class="notice">个人将会收到通知</span>
-                  <button @click="create()" type="danger"   class="small-button full-red-button">发送</button> 
+                  <button @click="create()" type="danger"   class="small-button full-red-button" :disabled="event !== 'create'">发送</button> 
                 </div>
               </el-col>
             </el-row>
@@ -161,18 +161,21 @@
               <li v-if="d.isedit === 1&&d.selected_user.length>0">
                 <img :src=" userimg " alt="">
                 <ul class="updata-user">
-                  <li v-for="(user,indexus) in d.selected_user" :key="indexus" v-if="d.selected_user.length > 0" :style="{background:`url(${ user.logo_image.logo }) no-repeat center`,backgroundSize:`24px 24px`}">
+                  <li v-for="(user,indexus) in d.selected_user" 
+                  :key="indexus" v-if="d.selected_user.length > 0" 
+                  :style="{background:`url(${ user.logo_image.logo }) no-repeat center`,backgroundSize:`24px 24px`}"
+                  >
                     <span v-if=" !user.logo_image.logo ">{{user.realnamehead}}</span>
                     <i :style="{background:`url(${ closered }) no-repeat center`}" @click="deleteGetimg(indexus,{type:'noadd'})"  v-if="d.isedit === 2"></i>
                   </li>
-                   <li v-if="d.isedit === 1" class="slice-user">+0</li>
+                   <li v-if="d.isedit === 1&&d.selected_user.length>10" class="slice-user">+0</li>
                 </ul>
               </li>
              </ul>
              <ul class="useredit" v-if="d.isedit === 2">
                <li><img :src=" userimg " alt=""></li>
               <li >
-                <ul class="updata-user">
+                <ul class="updata-user hoverme">
                   <li v-for="(user,indexus) in d.selected_user" :key="indexus" v-if="d.selected_user.length > 0" :style="{background:`url(${ user.logo_image.logo }) no-repeat center`,backgroundSize:`24px 24px`}">
                     <span v-if=" !user.logo_image.logo ">{{user.realnamehead}}</span>
                     <i :style="{background:`url(${ closered }) no-repeat center`}" @click="deleteGetimg(indexus,{type:'noadd'})"  v-if="d.isedit === 2"></i>
@@ -225,8 +228,8 @@
                 'video': /.video/.test(files.name)
               }]"></i></li>
                   <li class="font-color">{{files.name}}</li>
-                  <li @click="downupload(files.file)">下载</li>
-                  <li @click="deleteup(files.id, d.id)">删除</li>
+                  <li class="upload-down" @click="downupload(files.file)">下载</li>
+                  <li class="upload-delete" @click="deleteup(files.id, d.id)">删除</li>
                 </ul>
               </el-col>
                <el-col :xs="23" :sm="11" :md="11" :lg="6" class="upload-list" v-for="(uploadinga,indexc) in d.uploading" :key="indexc" v-if="uploadinga.percentage!==100">
@@ -250,9 +253,6 @@
                     <el-progress class="fl" :percentage=" uploadinga.percentage " :show-text="false">
                     </el-progress>
                   </li>
-                  <!-- <li> 
-                    <i class="fr" :style="{background:`url(${ closeimg }) no-repeat center`,backgroundSize:`13px 13px`}" @click="deleteup(files.asset_id)"></i>
-                  </li> -->
                 </ul>
               </el-col>
             </el-row>
@@ -285,7 +285,7 @@
                 <span>{{ d.selected_user.length }}</span>
                 <span class="notice">个人将会收到通知</span>
                 <button @click="cancelEdit()"  class="small-button white-button">取消</button> 
-                <button @click="inupdate(d.content,d.id,d.title, d.location,d.expire_time,d.other_realname)"  class="small-button full-red-button">确定</button> 
+                <button @click="inupdate(d.content,d.id,d.title, d.location,d.expire_time,d.other_realname)"  class="small-button full-red-button margin-left">确定</button> 
                 </div>
               </el-col>
             </el-row>
@@ -429,6 +429,11 @@
       addBtn() {
         if (this.event !== 'create') {
           this.form = {}
+          if (this.itemList.length > 0) {
+            for (var i = 0; i < this.itemList.length; i++) {
+              this.itemList[i].isedit = 1
+            }
+          }
         }
         this.event = 'create'
       },
@@ -517,6 +522,7 @@
             this.fileList = []
             this.event = ''
             response.data.data.created_at = (new Date(response.data.data.created_at * 1000)).format('yyyy-MM-dd')
+            response.data.data.isedit = 1
             this.itemList.unshift(response.data.data)
             console.log(response.data.data)
           } else {
@@ -595,17 +601,17 @@
        // 新建文件上传时
       uploadProgress(event, file, fileList) {
         this.fileList = fileList
-        for (var i = 0; i < fileList.length; i++) {
-          fileList[i].prog = (parseFloat(fileList[i].size) * fileList[i].percentage / 100).toFixed(2)
-          if (fileList[i].percentage === 100) {
-            fileList[i].prog = ''
+        for (var i = 0; i < this.fileList.length; i++) {
+          this.fileList[i].prog = (parseFloat(this.fileList[i].size) * this.fileList[i].percentage / 100).toFixed(2)
+          if (this.fileList[i].percentage === 100) {
+            this.fileList[i].prog = ''
           }
-        }
-        var lastSize = this.fileList[this.fileList.length - 1].size
-        if (lastSize / (1024 * 1024) > 0.01) {
-          this.fileList[this.fileList.length - 1].size = (lastSize / (1024 * 1024)).toFixed(2) + 'MB'
-        } else if (lastSize / 1024 >= 0) {
-          this.fileList[this.fileList.length - 1].size = (lastSize / 1024).toFixed(2) + 'KB'
+          var lastSize = this.fileList[i].size
+          if (lastSize / (1024 * 1024) > 0.01) {
+            this.fileList[i].size = (lastSize / (1024 * 1024)).toFixed(2) + 'MB'
+          } else if (lastSize / 1024 >= 0) {
+            this.fileList[i].size = (lastSize / 1024).toFixed(2) + 'KB'
+          }
         }
       },
       // 文件上传成功
@@ -895,9 +901,12 @@
     margin-top:10px;
   }
    .uploads img {
-    width:16px;
-    margin:17px 10px 0px 0px;
+    width:20px;
+    margin:16px 10px 0px 0px;
     float:left;
+  }
+  .uploads .circle-head{
+      width:24px;
   }
   .upload-list {
     height:42px;
@@ -926,6 +935,10 @@
   .notice{
     margin-right:10px;
   }
+  .full-red-button:disabled{
+    background:#D2D2D2;
+    border:1px solid #D2D2D2;
+  }
   .upload-list>div>div{
     width:48%;
     height:12px;
@@ -950,9 +963,13 @@
   }
   .titlec>.fr{
     position:relative;
+    cursor:pointer;
   }
   .margin-bottom {
     margin-bottom:5px;
+  }
+  .margin-left{
+    margin-left:10px;
   }
   .titlec>.fr ul{
     text-align: center;
@@ -977,15 +994,8 @@
   }
   .updata-user {
     position: relative;
-    /* z-index:2; */
   }
-  /* .updata-user{
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    align-content:space-around;
-  } */
-    .updata-user>li:not(:last-child):hover{
+    .updata-user .userimg:not(:last-child):hover{
     border:1px solid #FF5A5F;
   }
   .updata-user>li>.adds{
@@ -996,17 +1006,29 @@
   .updata-user>li {
     width:24px;
     height:24px;
-    line-height:20px; 
-    border:1px solid transparent;
+    line-height:20px;
     border-radius: 50%;
     float: left;
     position: relative;
     text-align: center;
     margin-left:5px;
   }
-  .updata-user>li:not(:last-child){
+  .hoverme>li:hover i{
+    opacity:1;
+  }
+  .addhover>li:hover i{
+    opacity:1;
+  }
+  .hoverme>li:not(:last-child):hover {
+    border:2px solid #ff5a5f
+  }
+  .useredit>li:not(:last-child):not(:first-child):hover {
+    border:2px solid #ff5a5f
+  }
+  .hoverme>li:not(:last-child){
     background: #3DA8F5;
     color:#FFFFFF;
+    border:2px solid transparent;
   }
    .updata-user>li:first-child{
     background: none;
@@ -1019,13 +1041,13 @@
     display:inline-block;
     right:-5px;
     top:-5px;
+    opacity:0;
   }
   .updata-user>.slice-user{
     border:1px solid #CCCCCC;
   }
   .edit {
     display:flex;
-    /* justify-content:flex-start; */
     align-items:center;
     flex-wrap:wrap;
     z-index:100;
@@ -1067,6 +1089,7 @@
   .onthing img {
     width:90px;
     height:100px;
+    margin-bottom:20px;
   }
   .onthing {
     text-align: center;
@@ -1139,6 +1162,14 @@
     white-space: nowrap;
     line-height: 42px;
     height:42px;
+  }
+  .upload-down:hover{
+    color:#FF5A5F;
+    cursor: pointer;
+  }
+  .upload-delete:hover{
+    color:#FF5A5F;
+    cursor: pointer;
   }
   .upload-read{
     display:flex;

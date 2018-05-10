@@ -11,13 +11,15 @@
           :model="form"
           ref="form" 
           :rules="rules"
-          label-position="top"
+          label-position=""
           >
             <el-form-item label="项目阶段名称" prop="name">
               <el-input v-model="form.name"
               placeholder="项目阶段名称">
               </el-input>
             </el-form-item>
+            <el-row :gutter="20">
+              <el-col :span="12">
             <el-form-item label="投入时间" prop="duration">
               <el-input placeholder="请输入所需天数" v-model.number="form.duration"
                 prop="duration"
@@ -25,6 +27,8 @@
               <template slot="append">工作日</template>
             </el-input>
           </el-form-item>
+              </el-col>
+              <el-col :span="12">
           <el-form-item label="开始时间" prop="start_time">
             <div class="block">
               <el-date-picker
@@ -34,6 +38,8 @@
               </el-date-picker>
             </div>
           </el-form-item>
+              </el-col>
+          </el-row>
           <el-form-item label="交付内容" prop="content">
             <el-input
               type="textarea"
@@ -142,6 +148,7 @@
           type="circle" 
           :percentage="0"
           :width="60"
+          :show-text="false"
         ></el-progress>
         <div >
           <p>未认领</p>
@@ -152,9 +159,10 @@
         <el-progress 
           type="circle" 
           :percentage="0"
+          :show-text="false"
           :width="60"></el-progress>
         <div >
-          <p>未认领</p>
+          <p>未完成</p>
           <p class="fx-6">50%</p>
         </div>
       </li>
@@ -163,9 +171,10 @@
           type="circle" 
           :percentage="0"
           :width="60"
+          :show-text="false"
         ></el-progress>
         <div>
-          <p>未认领</p>
+          <p>已完成</p>
           <p class="fx-6">50%</p>
         </div>
       </li>
@@ -174,9 +183,10 @@
           type="circle" 
           :percentage="0"
           :width="60"
+          :show-text="false"
         ></el-progress>
         <div>
-          <p>未认领</p>
+          <p>已逾期</p>
           <p class="fx-6">50%</p>
         </div>
       </li>
@@ -189,43 +199,7 @@
       <div>+</div>
       <p>添加项目阶段</p>
     </div>
-    <!-- <div>
-      <ul>
-        <li>项目阶段名称<el-input v-model="form.name"></el-input></li>
-        <li>
-          项目投入时间
-          <div>
-            <el-input placeholder="请输入所需天数"                        v-model="form.duration">
-              <template slot="append">工作日</template>
-            </el-input>
-          </div>
-        </li>
-        <li>项目开始时间
-          <div class="block">
-            <span class="demonstration">默认</span>
-            <el-date-picker
-            type="datetime"
-            v-model="form.start_time"
-            placeholder="选择日期时间">
-            </el-date-picker>
-          </div>
-        </li>
-        <li>
-          <div style="margin: 20px 0;"></div>
-            <el-input
-            type="textarea"
-            :autosize="{ minRows: 2, maxRows: 4}"
-            placeholder="请输入内容"
-            v-model="form.content"
-            >
-            </el-input>
-        </li>
-        <li>
-          <el-button @click="create()">新建</el-button>
-        </li>
-      </ul>
-    </div> -->
-    <div v-for="(designStage,index) in designStageLists" :key="index">
+    <!-- <div v-for="(designStage,index) in designStageLists" :key="index">
       
       <div>
         名称: <p v-if="!designStage.isedit">{{designStage.name}}</p>
@@ -304,9 +278,9 @@
       <el-button @click="updata(designStage,index)">确定</el-button>
       <el-button @click="deleteDes(designStage,index)">删除</el-button>
       <el-button @click="addtack(designStage.id)">添加任务</el-button>
-    </div>
+    </div> -->
   </section>
-    <el-input placeholder="任务名称" v-model="formTack.name"></el-input>
+    <!-- <el-input placeholder="任务名称" v-model="formTack.name"></el-input>
     <el-input placeholder="任务投入时间" v-model="formTack.duration"></el-input>
     <el-date-picker
       v-model="formTack.start_time"
@@ -320,7 +294,7 @@
             v-model="formTack.summary"
             >
     </el-input>
-    <el-button @click="createTack()">新建任务</el-button>
+    <el-button @click="createTack()">新建任务</el-button> -->
   </div>
 </template>
 <script>
@@ -781,7 +755,6 @@ export default {
 .item-task>ul>li{
   flex:1;
   display:flex;
-  /* justify-content:center; */
   align-items:center;
   margin-right:10px;
   border:1px solid #d2d2d2;
@@ -802,3 +775,4 @@ export default {
   border-radius: 4px;
 }
 </style>
+
