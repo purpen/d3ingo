@@ -38,6 +38,22 @@
       <div class="fr marginlf" @click="isdelete(f.id)">删除</div>
       <div class="fr">预览</div>
     </section>
+    <section class="contract-list">
+      <img :src="Groupimg" alt="">
+      <div class="contracct-Part">
+        <p>{{ infoList.title }}</p>
+        <span class="contract-time">时间</span>
+        <!-- <span class="contract-size">{{f.size}}</span> -->
+      </div>
+      <div class="fr marginlf" @click="isdelete(infoList.id)">删除</div>
+      <div class="fr">
+        <router-link 
+          :to="{name: 'vcenterContractView', params: {unique_id: infoList.unique_id}}"
+           target="_blank">
+           预览
+        </router-link>
+      </div>
+    </section>
     <!-- <p>全部动态</p>
     <ul class="dynamic-list">
       <li>我</li>
@@ -70,6 +86,7 @@
         dialogVisible: false,
         fileList: [], // 合同列表
         fileing: [], // 正在上传列表
+        infoList: [], // 线上合同列表
         uploadUrl: '', // 上传url
         itemId: '', // 项目id
         uploadParam: { // 上传
@@ -180,10 +197,12 @@
       this.itemId = itemId
       // 获取上传token
       this.Token()
-      // 获取线下合同
+      // 获取合同列表
       this.$http.get(api.designProjectContracts, {params: {item_id: this.itemId}}).then((response) => {
         if (response.data.meta.status_code === 200) {
-          this.fileList = response.data.data
+          this.fileList = response.data.data.assets
+          this.infoList = response.data.data.info
+          console.log(this.infoList)
           if (this.fileList.length > 0) {
             for (var i = 0; i < this.fileList.length; i++) {
               this.fileList[i].created_at = (new Date(this.fileList[i].created_at * 1000)).format('yyyy-MM-dd hh:mm')

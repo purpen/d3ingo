@@ -1,9 +1,10 @@
 <template>
   <el-row class="blank20 min-height350 ">
     <v-menu currentName="control"></v-menu>
-    <el-col :span="22" :offset="!isMob? leftWidth : 0">
+    <el-col :class="isoff?'':'inline'" :span="isoff?20:24" :offset="isoff? 4 : 0">
+      <!-- :span="22" :offset="!isMob? leftWidth : 0" -->
       <el-row>
-        <el-col :span="12"  v-if="uChild===0">
+        <el-col :xs="24" :sm="24" :md="12" :lg="12"  v-if="uChild===0&&!messageCount.quantity">
           <section>
             <div class="control-childHeader">
             <span>待处理信息</span>
@@ -34,7 +35,7 @@
               </div> -->
           </section>
         </el-col>
-        <el-col :span="12" v-if="uChild===0">
+        <el-col :xs="24" :sm="24" :md="12" :lg="12" v-if="uChild===0&&showBase">
           <section>
             <div class="control-childHeader">
               <span>提示信息</span>
@@ -104,13 +105,13 @@
             </div>
           </section>
         </el-col>
-        <el-col :span="12">
+        <el-col :xs="24" :sm="24" :md="12" :lg="12">
           <section>
           <div class="control-childHeader">
             <span>进行中的项目</span>
           </div>
           <el-row class="item-content scroll-bar">
-          <el-col :span="12" v-for="(i,indexi) in userItem" :key="indexi" v-if="userItem.length>0">
+          <el-col v-for="(i,indexi) in userItem" :key="indexi" v-if="userItem.length>0">
               <ul class="control-iteming">
                 <li class="titleSize">{{i.name}}</li>
                 <li>项目进度: 
@@ -139,7 +140,7 @@
             </el-row>
           </section>
         </el-col>
-        <el-col :span="12">
+        <el-col :xs="24" :sm="24" :md="12" :lg="12">
           <section class="control-tasks">
             <div class="control-childHeader">
               <span>我的任务</span>
@@ -190,6 +191,7 @@
                     :percentage="userTask.ok_stage_percentage"
                     :width="60"
                     :show-text="false"
+                    status="success"
                     ></el-progress>
                   <div>
                     <p class="marginl">已完成
@@ -206,6 +208,7 @@
                     :percentage="userTask.overdue_percentage"
                     :width="60"
                     :show-text="false"
+                    status="exception"
                     ></el-progress>
                   <div >
                     <p class="marginl">已逾期
@@ -381,12 +384,18 @@
       },
       rightWidth() {
         return 24 - this.$store.state.event.leftWidth
+      },
+      isoff() {
+        if (this.$store.state.event.leftWidth === 4) {
+          return true
+        } else if (this.$store.state.event.leftWidth === 2) {
+          return false
+        }
       }
     },
     created: function () {
       let uType = this.$store.state.event.user.type
       // 如果是需求方账号，跳转到个人资料页
-      console.log(this.$store.state.event.user.type)
       if (uType === 1) {
         this.$router.replace({name: 'vcenterChildControl'})
         return
@@ -468,7 +477,6 @@
                 }
               } // endfor
               that.itemIngList = data
-              console.log(that.itemIngList)
             }
           })
           .catch(function (error) {
@@ -536,7 +544,7 @@
     font-weight: 800;
   }
   .item-content{
-    height:300px;
+    height:299px;
     overflow-y:auto;
   }
   .iteming-grade{
@@ -557,7 +565,7 @@
     float: right;
   }
   .control-massagelist{
-    height:300px;
+    height:299px;
     overflow-y:auto; 
   }
   .control-massagelist>div>p{
@@ -581,6 +589,16 @@
   }
   .message-btn>p{
     margin:10px 0px;
+  }
+  .inline{
+    margin-left:60px;
+    padding-right: 60px;
+  }
+  @media (max-width: 768px) {
+    .inline{
+      margin-left:0px;
+      padding:0 20px;
+    }
   }
   /* 之前的样式 */
   .right-content{
