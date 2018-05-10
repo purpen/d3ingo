@@ -111,7 +111,7 @@
             <span>进行中的项目</span>
           </div>
           <el-row class="item-content scroll-bar">
-          <el-col v-for="(i,indexi) in userItem" :key="indexi" v-if="userItem.length>0">
+          <el-col :span="12" v-for="(i,indexi) in userItem" :key="indexi" v-if="userItem.length>0">
               <ul class="control-iteming">
                 <li class="titleSize">{{i.name}}</li>
                 <li>项目进度: 
