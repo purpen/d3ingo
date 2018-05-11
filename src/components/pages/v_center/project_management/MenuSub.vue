@@ -22,7 +22,7 @@
     <div class="pm-right">
       <router-link class="need" to="">项目需求</router-link>
       <router-link :to="{name: 'projectQuote', params: {id: routeId}}" :class="['quotation', {'active': isQuote}]">项目报价</router-link>
-      <router-link class="contract border-right" :to="{path: ''}">合同</router-link>
+      <router-link class="contract border-right" :to="{name: 'projectContract', params: {id: routeId}}">合同</router-link>
       <router-link @click.native.self="controlMemberShow" class="member border-right" :to="{path: ''}">
         {{projectMemberList.length}}
         <div :style="{
@@ -611,16 +611,15 @@ export default {
           } else {
             row.start_time = Date.parse(row.start_time) / 1000
           }
-          console.log(row)
 
           this.isBaseLoadingBtn = true
           this.$http.put(api.updateDesignProject, row)
           .then(res => {
             this.isBaseLoadingBtn = false
             if (res.data.meta.status_code === 200) {
-              Object.assign(this.projectObject, this.baseForm)
-              this.$store.commit('setProjectObject', this.projectObject)
+              this.$store.commit('setProjectObject', res.data.data)
               this.$message.success('更新成功！')
+              console.log(res.data.data)
             } else {
               this.$message.error(res.data.meta.message)
             }
@@ -718,6 +717,7 @@ export default {
   watch: {
     cover(d) {
       if (d) {
+        console.log(this.projectObject)
         this.baseForm = {
           id: this.projectObject.id,
           name: this.projectObject.name,
@@ -731,20 +731,13 @@ export default {
           field: this.projectObject.field === 0 ? '' : this.projectObject.field,
           industry: this.projectObject.industry === 0 ? '' : this.projectObject.industry,
           project_duration: this.projectObject.project_duration === 0 ? '' : this.projectObject.project_duration,
-          start_time: !this.projectObject.start_time ? '' : this.projectObject.start_time.date_format(),
+          // start_time: !this.projectObject.start_time ? '' : this.projectObject.start_time.date_format(),
           level: this.projectObject.level === 0 ? '' : this.projectObject.level
         }
         this.$set(this.baseForm, 'design_types', this.projectObject.design_types)
-        /**
-        var designTypes = []
-        if (Object.prototype.toString.call(this.projectObject.design_types) === '[object Array]') {
-          for (let i = 0; i < this.projectObject.design_types.length; i++) {
-            designTypes.push(this.projectObject.design_types[i])
-          }
-        }
-        this.$set(this.baseForm, 'design_types', designTypes)
-        **/
+        this.$set(this.baseForm, 'start_time', !this.projectObject.start_time ? '' : this.projectObject.start_time.date_format())
         console.log(this.baseForm)
+
         this.clientForm = {
           id: this.projectObject.id,
           company_name: this.projectObject.company_name,

@@ -98,6 +98,15 @@ export default {
   },
   methods: {
     download() {
+      this.isLoadingBtn = true
+      this.$http.get(api.designQuotationDown, {params: {id: this.projectObject.quotation_id}}).then((response) => {
+        this.isLoadingBtn = false
+        console.log(response.data)
+      }).catch((error) => {
+        this.isLoadingBtn = false
+        this.$message.error(error.message)
+        console.error(error.message)
+      })
     },
     edit() {
       this.$router.push({name: 'projectQuoteSubmit', query: {id: this.form.id}})
