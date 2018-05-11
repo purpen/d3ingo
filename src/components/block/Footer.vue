@@ -237,7 +237,7 @@
 
   .footer .fllow .title {
     white-space: nowrap;
-    margin: 40px 20px 10px 0;
+    margin: 20px 20px 10px 0;
   }
 
   .call {
