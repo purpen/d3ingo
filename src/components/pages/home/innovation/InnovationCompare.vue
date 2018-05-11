@@ -175,17 +175,18 @@
   </div>
 </template>
 <script>
+import api from '@/api/api'
 import ECharts from 'vue-echarts'
 export default {
   name: 'InnovationCompare',
   data() {
     let scores = [
-      {name: '基础运作力', max: 20, value: 19},
-      {name: '风险应激力', max: 20, value: 9},
-      {name: '创新交付力', max: 20, value: 18},
-      {name: '商业决策力', max: 20, value: 16},
-      {name: '客观公信力', max: 20, value: 16},
-      {name: '品牌溢价力', max: 20, value: 20}
+      {name: '基础运作力', max: 20, value: 0},
+      {name: '风险应激力', max: 20, value: 0},
+      {name: '创新交付力', max: 20, value: 0},
+      {name: '商业决策力', max: 20, value: 0},
+      {name: '客观公信力', max: 20, value: 0},
+      {name: '品牌溢价力', max: 20, value: 0}
     ]
     return {
       option: {
@@ -195,13 +196,16 @@ export default {
             return {name, max}
           }),
           name: {
-            fontSize: 10
+            fontSize: 10,
+            textStyle: {
+              color: '#666'
+            }
           },
           nameGap: 10,
           shape: 'circle',
           axisLine: {
             lineStyle: {
-              // color: '#FF5A5F'
+              color: 'rgba(255,90,95, 0.5)'
             }
           },
           splitNumber: 4,
@@ -220,9 +224,62 @@ export default {
         series: [{
           name: '能力值',
           type: 'radar',
-          data: [{value: scores.map(({value}) => value)}]
+          data: [{value: scores.map(({value}) => value)}],
+          symbol: 'circle',
+          symbolSize: 4,
+          itemStyle: {
+            normal: {
+              areaStyle: {
+                color: 'rgba(255,90,95, 0.3)'
+              },
+              lineStyle: {
+                color: 'rgba(255,90,95, 0.5)'
+              }
+            }
+          }
         }]
-      }
+      },
+      compareStr: ''
+    }
+  },
+  created() {
+    this.compareStr = this.$route.query.compareList.join(',')
+  },
+  mounted() {
+    this.getDetails(this.compareStr)
+  },
+  methods: {
+    getDetails(id) {
+      let radar = this.$refs.radar
+      radar.showLoading()
+      this.$http.get(api.companyRecord, {params: {
+        ids: id
+      }}).then(res => {
+        console.log(res)
+        if (res.data.meta.status_code === 200) {
+          if (res.data.data.length > 4) {
+            this.companyDetails = res.data.data.slice(0, 4)
+          } else {
+            this.companyDetails = res.data.data
+          }
+          this.companyDetails = res.data.data[0]
+          radar.hideLoading()
+          // this.$refs.radar.mergeOptions({
+          //   radar: {
+          //     indicator: this.radarList.map(({name, max}) => {
+          //       return {name, max}
+          //     })
+          //   },
+          //   series: [{
+          //     data: [{value: this.radarList.map(({value}) => value)}]
+          //   }]
+          // })
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        console.error(err)
+      })
     }
   },
   components: {

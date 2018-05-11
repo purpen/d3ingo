@@ -2,10 +2,11 @@
   <div class="innavation-company">
     <div class="company-base">
       <img class="company-logo" :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
-      <h2 class="company-name">飞鱼设计</h2>
-      <p class="ranking">设计创新力指数：<span>100</span>排名：<span>1</span><i></i></p>
+      <h2 class="company-name" v-if="companyDetails.design_company">{{companyDetails.design_company.name}}</h2>
+      <p class="ranking" v-if="companyDetails.design_company">设计创新力指数：<span>{{companyDetails.design_company.ave_score}}</span>排名：<span>1</span><i></i></p>
       <div class="chart" ref="chart">
         <ECharts
+          :init-options="initOptions"
           :options="option"
           auto-resize
           ref="radar"></ECharts>
@@ -13,9 +14,9 @@
     </div>
     <div class="company-profile">
       <h3 class="text-center">公司简介</h3>
-      <p class="text-center">飞鱼设计是一家整合设计机构。15年设计经验，全国5家分公司，3000多件产品成功上市，主要从事工业整合设计、品牌策略、设计孵化等项目，致力于打造领先产品创新的产品系统化设计公司。15年来，飞鱼累积服务400多家知名品牌，创作、设计3000多件产品，为200个品牌提供策略服务。包括：国际品牌30家、国内大型企业50家等众多各行业领军企业。 中国品牌百强企业，飞鱼服务过其中26家。我们愿意与国际企业、国内大企业相互交流、学习、发展，携手成长。同样，我们非常重视并永远重视中小企业，愿意和许多中小企业、创业型企业一起共同发展壮大，这是我们非常重要的价值观。</p>
+      <p class="text-center" v-if="companyDetails.design_company">{{companyDetails.design_company.description}}</p>
     </div>
-    <div class="company-designcase">
+    <div class="company-designcase" v-if="id && designCaseList.length">
       <h3 class="text-center">作品案例</h3>
         <div class="design-case-list" v-loading.body="isLoading">
           <el-row :gutter="20">
@@ -47,14 +48,17 @@ export default {
   name: 'innavationCompany',
   data() {
     let scores = [
-      {name: '基础运作力', max: 20, value: 19},
-      {name: '风险应激力', max: 20, value: 9},
-      {name: '创新交付力', max: 20, value: 18},
-      {name: '商业决策力', max: 20, value: 16},
-      {name: '客观公信力', max: 20, value: 16},
-      {name: '品牌溢价力', max: 20, value: 20}
+      {name: '基础运作力', max: 20, value: 0},
+      {name: '风险应激力', max: 20, value: 0},
+      {name: '创新交付力', max: 20, value: 0},
+      {name: '商业决策力', max: 20, value: 0},
+      {name: '客观公信力', max: 20, value: 0},
+      {name: '品牌溢价力', max: 20, value: 0}
     ]
     return {
+      id: -1,
+      _id: '',
+      isLoading: false,
       designCaseList: [],
       option: {
         tooltip: {},
@@ -72,7 +76,7 @@ export default {
           shape: 'circle',
           axisLine: {
             lineStyle: {
-              color: '#FF5A5F'
+              color: 'rgba(255,90,95, 0.5)'
             }
           },
           splitNumber: 4,
@@ -105,26 +109,88 @@ export default {
             }
           }
         }]
-      }
+      },
+      initOptions: {
+        renderer: 'canvas'
+      },
+      companyDetails: [],
+      radarList: []
     }
   },
   methods: {
     getDesignCaseList(id) {
-      const self = this
-      self.isLoading = true
-      self.$http
+      this.isLoading = true
+      this.$http
       .get(api.designCaseCompanyId.format(id), {})
-      .then(function(response) {
-        self.isLoading = false
+      .then(response => {
+        this.isLoading = false
         if (response.data.meta.status_code === 200) {
-          self.designCaseList = response.data.data
+          this.designCaseList = response.data.data
         } else {
-          self.$message.error(response.data.meta.message)
+          this.$message.error(response.data.meta.message)
         }
       })
-      .catch(function(error) {
-        self.isLoading = false
-        self.$message.error(error.message)
+      .catch(error => {
+        this.isLoading = false
+        this.$message.error(error.message)
+      })
+    },
+    getDetails(id) {
+      let radar = this.$refs.radar
+      radar.showLoading()
+      this.$http.get(api.companyRecord, {params: {
+        ids: id
+      }}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.companyDetails = res.data.data[0]
+          this.radarList = [
+            {
+              name: '基础运作力',
+              max: 100,
+              value: this.companyDetails.base_average
+            },
+            {
+              name: '风险应激力',
+              max: 100,
+              value: this.companyDetails.credit_average
+            },
+            {
+              name: '创新交付力',
+              max: 100,
+              value: this.companyDetails.innovate_average
+            },
+            {
+              name: '商业决策力',
+              max: 100,
+              value: this.companyDetails.business_average
+            },
+            {
+              name: '客观公信力',
+              max: 100,
+              value: this.companyDetails.effect_average
+            },
+            {
+              name: '品牌溢价力',
+              max: 100,
+              value: this.companyDetails.design_average
+            }
+          ]
+          radar.hideLoading()
+          this.$refs.radar.mergeOptions({
+            radar: {
+              indicator: this.radarList.map(({name, max}) => {
+                return {name, max}
+              })
+            },
+            series: [{
+              data: [{value: this.radarList.map(({value}) => value)}]
+            }]
+          })
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        console.log(err)
       })
     }
   },
@@ -137,16 +203,16 @@ export default {
     ECharts
   },
   created() {
-    let id = this.$route.params.id
-    if (!id) {
-      this.$router.push({name: 'home'})
-    }
-    this.getDesignCaseList(id)
   },
   mounted() {
-    // let chart = this.$refs.chart
-    let radar = this.$refs.radar
-    console.log(radar)
+    this.id = Number(this.$route.params.id)
+    this._id = this.$route.query.id
+    if (this.id) {
+      this.getDesignCaseList(this.id)
+    }
+    if (this._id) {
+      this.getDetails(this._id)
+    }
   }
 }
 </script>

@@ -26,8 +26,8 @@
           <el-col class="text-center" :span="2">风险应激力</el-col>
           <el-col class="text-center" :span="3">创新力指数（DCI）</el-col>
         </div>
-        <ul class="inno-table">
-          <li class="clearfix" v-for="(ele, index) in boardList" :key="index">
+        <ul class="inno-table" v-loading="loading0">
+          <li class="clearfix" v-for="(ele, index) in boardList0" :key="index">
             <el-col :span="1">
               <span :class="['ranking',
                 {'gold': index === 0},
@@ -36,8 +36,12 @@
             </el-col>
             <el-col :span="5" v-if="ele.design_company">
               <el-tooltip class="item" effect="dark" :content="ele.design_company.name" placement="top">
-                <router-link target="_blank" :to="{name: 'innovationCompany', params: {id: 1}}" class="name">
-                  <img :src="ele.design_company.logo_url" :alt="ele.design_company.name">
+                <router-link target="_blank" :to="{name: 'innovationCompany', params: {id: ele.design_company. d3ing_id}, query: {id: ele._id}}" class="name">
+                  <img v-if="ele.design_company.logo_url"
+                    :src="ele.design_company.logo_url"
+                    alt="">
+                  <img class="avatar" v-else
+                    :src="require('assets/images/avatar_100.png')"/>
                   <p>{{ele.design_company.name}}</p>
                 </router-link>
               </el-tooltip>
@@ -50,10 +54,13 @@
             <el-col :span="2">{{ele.innovate_average}}</el-col>
             <el-col :span="3">{{ele.ave_score}}</el-col>
             <el-col :span="3" class="text-center">
-              <p :class="['quite', 'fr', {'is-active': compareList.indexOf(index) !== -1}]" @click="addCompare(index)">对比</p>
+              <p :class="['quite', 'fr', {'is-active': compareList.indexOf(ele._id) !== -1}]" @click="addCompare(ele._id)">对比</p>
             </el-col>
           </li>
         </ul>
+      </div>
+      <div class="button-more" v-if="!showMore">
+        <button class="white-button middle-button" @click="getMoreBoard">点击加载更多</button>
       </div>
     </div>
     <section class="other-board">
@@ -66,21 +73,27 @@
               <el-col :xs="16" :sm="20" :md="20" :lg="20">企业名称</el-col>
               <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">分数</el-col>
             </div>
-            <ul class="inno-table board-table">
-              <li class="clearfix" v-for="(ele, index) in 10" :key="index">
+            <ul class="inno-table board-table" v-loading="loading1">
+              <li class="clearfix" v-for="(ele, index) in boardList1" :key="index">
                 <el-col :xs="4" :sm="2" :md="2" :lg="2">
                   <span :class="['ranking',
-                    {'gold': ele === 1},
-                    {'silver': ele === 2},
-                    {'bronze': ele === 3},]">{{ele}}</span>
+                    {'gold': index + 1 === 1},
+                    {'silver': index + 1 === 2},
+                    {'bronze': index + 1 === 3},]">{{index + 1}}</span>
                 </el-col>
                 <el-col :xs="16" :sm="20" :md="20" :lg="20">
-                  <router-link target="_blank" :to="{name: 'innovationCompany', params: {id: 1}}" class="name">
-                    <img :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
-                    <p>飞鱼设计</p>
+                  <router-link target="_blank" :to="{name: 'innovationCompany', params: {id: ele.design_company. d3ing_id}, query: {id: ele._id}}" class="name">
+                    <img v-if="ele.design_company.logo_url"
+                      :src="ele.design_company.logo_url"
+                      alt="">
+                    <img class="avatar" v-else
+                      :src="require('assets/images/avatar_100.png')"/>
+                    <p>{{ele.design_company.name}}</p>
                   </router-link>
                 </el-col>
-                <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">100</el-col>
+                <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">
+                  {{ele.ave_score}}
+                </el-col>
               </li>
             </ul>
           </div>
@@ -93,21 +106,27 @@
               <el-col :xs="16" :sm="20" :md="20" :lg="20">企业名称</el-col>
               <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">分数</el-col>
             </div>
-            <ul class="inno-table board-table">
-              <li class="clearfix" v-for="(ele, index) in 10" :key="index">
+            <ul class="inno-table board-table" v-loading="loading2">
+              <li class="clearfix" v-for="(ele, index) in boardList2" :key="index">
                 <el-col :xs="4" :sm="2" :md="2" :lg="2">
                   <span :class="['ranking',
-                    {'gold': ele === 1},
-                    {'silver': ele === 2},
-                    {'bronze': ele === 3},]">{{ele}}</span>
+                    {'gold': index + 1 === 1},
+                    {'silver': index + 1 === 2},
+                    {'bronze': index + 1 === 3},]">{{index + 1}}</span>
                 </el-col>
                 <el-col :xs="16" :sm="20" :md="20" :lg="20">
-                  <router-link target="_blank" :to="{name: 'innovationCompany', params: {id: 1}}" class="name">
-                    <img :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
-                    <p>飞鱼设计</p>
+                  <router-link target="_blank" :to="{name: 'innovationCompany', params: {id: ele.design_company. d3ing_id}, query: {id: ele._id}}" class="name">
+                    <img v-if="ele.design_company.logo_url"
+                      :src="ele.design_company.logo_url"
+                      alt="">
+                    <img class="avatar" v-else
+                      :src="require('assets/images/avatar_100.png')"/>
+                    <p>{{ele.design_company.name}}</p>
                   </router-link>
                 </el-col>
-                <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">100</el-col>
+                <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">
+                  {{ele.ave_score}}
+                </el-col>
               </li>
             </ul>
           </div>
@@ -122,21 +141,27 @@
               <el-col :xs="16" :sm="20" :md="20" :lg="20">企业名称</el-col>
               <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">分数</el-col>
             </div>
-            <ul class="inno-table board-table">
-              <li class="clearfix" v-for="(ele, index) in 10" :key="index">
+            <ul class="inno-table board-table" v-loading="loading3">
+              <li class="clearfix" v-for="(ele, index) in boardList3" :key="index">
                 <el-col :xs="4" :sm="2" :md="2" :lg="2">
                   <span :class="['ranking',
-                    {'gold': ele === 1},
-                    {'silver': ele === 2},
-                    {'bronze': ele === 3},]">{{ele}}</span>
+                    {'gold': index + 1 === 1},
+                    {'silver': index + 1 === 2},
+                    {'bronze': index + 1 === 3},]">{{index + 1}}</span>
                 </el-col>
                 <el-col :xs="16" :sm="20" :md="20" :lg="20">
-                  <router-link target="_blank" :to="{name: 'innovationCompany', params: {id: 1}}" class="name">
-                    <img :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
-                    <p>飞鱼设计</p>
+                  <router-link target="_blank" :to="{name: 'innovationCompany', params: {id: ele.design_company. d3ing_id}, query: {id: ele._id}}" class="name">
+                    <img v-if="ele.design_company.logo_url"
+                      :src="ele.design_company.logo_url"
+                      alt="">
+                    <img class="avatar" v-else
+                      :src="require('assets/images/avatar_100.png')"/>
+                    <p>{{ele.design_company.name}}</p>
                   </router-link>
                 </el-col>
-                <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">100</el-col>
+                <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">
+                  {{ele.ave_score}}
+                </el-col>
               </li>
             </ul>
           </div>
@@ -149,21 +174,27 @@
               <el-col :xs="16" :sm="20" :md="20" :lg="20">企业名称</el-col>
               <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">分数</el-col>
             </div>
-            <ul class="inno-table board-table">
-              <li class="clearfix" v-for="(ele, index) in 10" :key="index">
+            <ul class="inno-table board-table" v-loading="loading4">
+              <li class="clearfix" v-for="(ele, index) in boardList4" :key="index">
                 <el-col :xs="4" :sm="2" :md="2" :lg="2">
                   <span :class="['ranking',
-                    {'gold': ele === 1},
-                    {'silver': ele === 2},
-                    {'bronze': ele === 3},]">{{ele}}</span>
+                    {'gold': index + 1 === 1},
+                    {'silver': index + 1 === 2},
+                    {'bronze': index + 1 === 3},]">{{index + 1}}</span>
                 </el-col>
                 <el-col :xs="16" :sm="20" :md="20" :lg="20">
-                  <router-link target="_blank" :to="{name: 'innovationCompany', params: {id: 1}}" class="name">
-                    <img :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
-                    <p>飞鱼设计</p>
+                  <router-link target="_blank" :to="{name: 'innovationCompany', params: {id: ele.design_company. d3ing_id}, query: {id: ele._id}}" class="name">
+                    <img v-if="ele.design_company.logo_url"
+                      :src="ele.design_company.logo_url"
+                      alt="">
+                    <img class="avatar" v-else
+                      :src="require('assets/images/avatar_100.png')"/>
+                    <p>{{ele.design_company.name}}</p>
                   </router-link>
                 </el-col>
-                <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">100</el-col>
+                <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">
+                  {{ele.ave_score}}
+                </el-col>
               </li>
             </ul>
           </div>
@@ -178,26 +209,32 @@
               <el-col :xs="16" :sm="20" :md="20" :lg="20">企业名称</el-col>
               <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">分数</el-col>
             </div>
-            <ul class="inno-table board-table">
-              <li class="clearfix" v-for="(ele, index) in 10" :key="index">
+            <ul class="inno-table board-table" v-loading="loading5">
+              <li class="clearfix" v-for="(ele, index) in boardList5" :key="index">
                 <el-col :xs="4" :sm="2" :md="2" :lg="2">
                   <span :class="['ranking',
-                    {'gold': ele === 1},
-                    {'silver': ele === 2},
-                    {'bronze': ele === 3},]">{{ele}}</span>
+                    {'gold': index + 1 === 1},
+                    {'silver': index + 1 === 2},
+                    {'bronze': index + 1 === 3},]">{{index + 1}}</span>
                 </el-col>
                 <el-col :xs="16" :sm="20" :md="20" :lg="20">
-                  <router-link target="_blank" :to="{name: 'innovationCompany', params: {id: 1}}" class="name">
-                    <img :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
-                    <p>飞鱼设计</p>
+                  <router-link target="_blank" :to="{name: 'innovationCompany', params: {id: ele.design_company. d3ing_id}, query: {id: ele._id}}" class="name">
+                    <img v-if="ele.design_company.logo_url"
+                      :src="ele.design_company.logo_url"
+                      alt="">
+                    <img class="avatar" v-else
+                      :src="require('assets/images/avatar_100.png')"/>
+                    <p>{{ele.design_company.name}}</p>
                   </router-link>
                 </el-col>
-                <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">100</el-col>
+                <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">
+                  {{ele.ave_score}}
+                </el-col>
               </li>
             </ul>
           </div>
         </div>
-        <div id="risk" class="power-board">
+        <div ref="risk" id="risk" class="power-board">
           <img class="board-header" :src="require('assets/images/subject/innovation/06@2x.png')" alt="">
           <div class="board">
             <div class="inno-header clearfix">
@@ -205,21 +242,27 @@
               <el-col :xs="16" :sm="20" :md="20" :lg="20">企业名称</el-col>
               <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">分数</el-col>
             </div>
-            <ul class="inno-table board-table">
-              <li class="clearfix" v-for="(ele, index) in 10" :key="index">
+            <ul class="inno-table board-table" v-loading="loading6">
+              <li class="clearfix" v-for="(ele, index) in boardList6" :key="index">
                 <el-col :xs="4" :sm="2" :md="2" :lg="2">
                   <span :class="['ranking',
-                    {'gold': ele === 1},
-                    {'silver': ele === 2},
-                    {'bronze': ele === 3},]">{{ele}}</span>
+                    {'gold': index + 1 === 1},
+                    {'silver': index + 1 === 2},
+                    {'bronze': index + 1 === 3},]">{{index + 1}}</span>
                 </el-col>
                 <el-col :xs="16" :sm="20" :md="20" :lg="20">
-                  <router-link target="_blank" :to="{name: 'innovationCompany', params: {id: 1}}" class="name">
-                    <img :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
-                    <p>飞鱼设计</p>
+                  <router-link target="_blank" :to="{name: 'innovationCompany', params: {id: ele.design_company. d3ing_id}, query: {id: ele._id}}" class="name">
+                    <img v-if="ele.design_company.logo_url"
+                      :src="ele.design_company.logo_url"
+                      alt="">
+                    <img class="avatar" v-else
+                      :src="require('assets/images/avatar_100.png')"/>
+                    <p>{{ele.design_company.name}}</p>
                   </router-link>
                 </el-col>
-                <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">100</el-col>
+                <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">
+                  {{ele.ave_score}}
+                </el-col>
               </li>
             </ul>
           </div>
@@ -234,8 +277,29 @@ export default {
   name: 'InovationList',
   data() {
     return {
+      showMore: false,
       compareList: [],
-      boardList: [],
+      loading0: false,
+      isStop0: false,
+      boardList0: [],
+      loading1: false,
+      isStop1: false,
+      boardList1: [],
+      loading2: false,
+      isStop2: false,
+      boardList2: [],
+      loading3: false,
+      isStop3: false,
+      boardList3: [],
+      loading4: false,
+      isStop4: false,
+      boardList4: [],
+      loading5: false,
+      isStop5: false,
+      boardList5: [],
+      loading6: false,
+      isStop6: false,
+      boardList6: [],
       showTips: false,
       changeRed: false
     }
@@ -245,6 +309,7 @@ export default {
   },
   mounted() {
     window.addEventListener('scroll', this.handleScroll)
+    this.handleScroll()
   },
   methods: {
     addCompare(id) {
@@ -259,25 +324,83 @@ export default {
     },
     pushCompare() {
       if (this.compareList.length > 1) {
+        this.$router.push({
+          name: 'innovationCompare',
+          query: {compareList: this.compareList}
+        })
       } else {
         return
       }
     },
     handleScroll() {
       var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-      scrollTop
+      let clentHeight = document.body.clientHeight + scrollTop
+      if (((scrollTop <= this.$refs.power.offsetTop) &&
+        (this.$refs.power.offsetTop <= clentHeight)) ||
+        ((scrollTop <= this.$refs.power.offsetTop + this.$refs.power.offsetHeight) &&
+        (this.$refs.power.offsetTop + this.$refs.power.offsetHeight <= clentHeight))) {
+        this.getBoard(1)
+        this.isStop1 = true
+      }
+      if ((scrollTop <= this.$refs.innovation2.offsetTop) &&
+        (this.$refs.innovation2.offsetTop <= clentHeight) ||
+        ((scrollTop <= this.$refs.innovation2.offsetTop + this.$refs.innovation2.offsetHeight) &&
+        (this.$refs.innovation2.offsetTop + this.$refs.innovation2.offsetHeight <= clentHeight))) {
+        this.getBoard(2)
+        this.isStop2 = true
+      }
+      if ((scrollTop <= this.$refs.business.offsetTop) &&
+        (this.$refs.business.offsetTop <= clentHeight) ||
+        ((scrollTop <= this.$refs.business.offsetTop + this.$refs.business.offsetHeight) &&
+        (this.$refs.business.offsetTop + this.$refs.business.offsetHeight <= clentHeight))) {
+        this.getBoard(3)
+        this.isStop3 = true
+      }
+      if ((scrollTop <= this.$refs.brand.offsetTop) &&
+        (this.$refs.brand.offsetTop <= clentHeight) ||
+        ((scrollTop <= this.$refs.brand.offsetTop + this.$refs.brand.offsetHeight) &&
+        (this.$refs.brand.offsetTop + this.$refs.brand.offsetHeight <= clentHeight))) {
+        this.getBoard(4)
+        this.isStop4 = true
+      }
+      if ((scrollTop <= this.$refs.credibility.offsetTop) &&
+        (this.$refs.credibility.offsetTop <= clentHeight) ||
+        ((scrollTop <= this.$refs.credibility.offsetTop + this.$refs.credibility.offsetHeight) &&
+        (this.$refs.credibility.offsetTop + this.$refs.credibility.offsetHeight <= clentHeight))) {
+        this.getBoard(5)
+        this.isStop5 = true
+      }
+      if ((scrollTop <= this.$refs.risk.offsetTop) &&
+        (this.$refs.risk.offsetTop <= clentHeight) ||
+        ((scrollTop <= this.$refs.risk.offsetTop + this.$refs.risk.offsetHeight) &&
+        (this.$refs.risk.offsetTop + this.$refs.risk.offsetHeight <= clentHeight))) {
+        this.getBoard(6)
+        this.isStop6 = true
+      }
     },
-    getBoard(index = 0) {
+    getBoard(index = 0, size = 10) {
+      if (this['isStop' + index]) {
+        return
+      }
+      this['loading' + index] = true
       this.$http.get(api.companyRecord, {params: {
         sort: index,
-        size: 10
+        size: size
       }})
       .then(res => {
+        this['loading' + index] = false
         if (res.data.meta.status_code === 200) {
-          this.boardList = res.data.data
+          this['boardList' + index] = res.data.data
+        } else {
+          this.$message.error(res.data.meta.message)
         }
-        console.log(res)
+      }).catch(err => {
+        console.error(err.message)
       })
+    },
+    getMoreBoard() {
+      this.showMore = true
+      this.getBoard(0, 100)
     }
   },
   watch: {
@@ -348,6 +471,7 @@ export default {
     overflow-x: auto;
     overflow-y: hidden;
     margin: 0 auto;
+    padding: 0 20px;
   }
   .leaderboard {
     min-width: 1000px;
@@ -360,6 +484,7 @@ export default {
     font-size: 12px;
   }
   .inno-table {
+    min-height: 601px;
     border-top: 1px solid #d2d2d2;
   }
   .inno-table li {
@@ -367,9 +492,10 @@ export default {
     height: 60px;
     line-height: 60px;
     text-align: center;
+    transition: background 268ms ease;
   }
   .inno-table li:hover {
-    background: #fafafa
+    background: #f7f7f7
   }
   .name {
     display: flex;
@@ -419,6 +545,7 @@ export default {
     max-width: 1180px;
     margin: 0 auto;
     padding-bottom: 40px;
+    padding: 0 20px 40px;
   }
   .other-board-box {
     padding-top: 20px;
@@ -453,8 +580,14 @@ export default {
     padding: 0 20px
   }
   .operation {
-    padding: 30px 0;
+    padding: 30px 20px;
     font-size: 0
+  }
+  .button-more {
+    padding: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center
   }
   .buttons button {
     margin-right: 10px;
