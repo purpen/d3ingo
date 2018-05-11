@@ -110,11 +110,30 @@ export default {
       } else {
         return true
       }
+    },
+    getDesignCaseList(id) {
+      const self = this
+      self.isLoading = true
+      self.$http
+      .get(api.designCaseCompanyId.format(id), {})
+      .then(function(response) {
+        self.isLoading = false
+        if (response.data.meta.status_code === 200) {
+          self.designCases = response.data.data
+        } else {
+          self.$message.error(response.data.meta.message)
+        }
+      })
+      .catch(function(error) {
+        self.isLoading = false
+        self.$message.error(error.message)
+      })
     }
   },
   created: function() {
     let id = this.$route.params.id
     const self = this
+    this.getDesignCaseList(id)
     self.isFullLoading = true
     self.$http
       .get(api.designCompanyId.format(id), {})
@@ -128,22 +147,6 @@ export default {
           } else {
             self.item.logo_url = false
           }
-
-          self.isLoading = true
-          self.$http
-            .get(api.designCaseCompanyId.format(id), {})
-            .then(function(response) {
-              self.isLoading = false
-              if (response.data.meta.status_code === 200) {
-                self.designCases = response.data.data
-              } else {
-                self.$message.error(response.data.meta.message)
-              }
-            })
-            .catch(function(error) {
-              self.isLoading = false
-              self.$message.error(error.message)
-            })
         } else {
           self.$message.error(response.data.meta.message)
         }

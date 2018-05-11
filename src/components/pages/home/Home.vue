@@ -138,15 +138,19 @@
     </div>
 
     <div class="anli">
-      <h3 class="title-center">铟果案例</h3>
+      <div class="container">
+        <h3 class="title">铟果案例</h3>
+      </div>
       <swiper :options="swiperOption" class="clearfix">
         <swiper-slide v-for="(ele, index) in caseSlideList" :key="index" class="clearfix">
           <div class="slide-content container">
             <div class="slide-left">
-              <p :class="['slide-company', 'slide' + index]"><img v-lazy="ele.companyLogo" :alt="ele.title" width="40px">{{ele.company}}</p>
-              <h4 class="slide-title">{{ele.title}}</h4>
-              <p class="slide-sales">{{ele.sales}}</p>
-              <p class="slide-intro">{{ele.intro}}</p>
+              <div class="slide-left_c">
+                <p :class="['slide-company', 'slide' + index]"><img v-lazy="ele.companyLogo" :alt="ele.title" width="40px">{{ele.company}}</p>
+                <h4 class="slide-title">{{ele.title}}</h4>
+                <p class="slide-sales">{{ele.sales}}</p>
+                <p class="slide-intro">{{ele.intro}}</p>
+              </div>
             </div>
             <a class="slide-right" :href="ele.clickUrl">
               <img v-lazy="ele.image" :alt="ele.title">
@@ -163,9 +167,8 @@
       </swiper>
     </div>
 
-    <div class="item_4">
-      <h3 class="title-center title-center2">合作伙伴</h3>
-
+    <div class="container">
+      <h3 class="title">合作伙伴</h3>
       <div class="logo-list clearfix">
         <span class="inline-flex">
           <img v-lazy="require('assets/images/home/logo_md.jpg')" />
@@ -182,6 +185,7 @@
         </span>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -582,8 +586,8 @@
   }
 
   .logo-list {
+    text-align: center;
     margin: 0 auto;
-    max-width: 815px;
     justify-content: flex-start
   }
 
@@ -596,8 +600,8 @@
   }
 
   .el-card:hover {
-    transform: translate3d(0, -2px, 0);
-    box-shadow: 0 9pt 24px rgba(10,10,10,.15);
+  transform: translateY(-3px);
+  box-shadow: 6px 6px 10px rgba(10,10,10,.15)
   }
 
   .anli {
@@ -707,6 +711,14 @@
   .slide-left, .slide-right {
     flex: 1;
     padding: 10px 20px;
+  }
+
+  .slide-left {
+    display: flex;
+    align-items: center;
+  }
+  .slide-left_c {
+    padding-bottom: 60px;
   }
 
   .slide-right img {

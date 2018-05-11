@@ -6,7 +6,7 @@
     <div ref="content_box">
       <el-row :gutter="18">
 
-        <el-col :span="isMob ? 24 : 19">
+        <el-col :span="isMob ? 24 : 18">
           <div class="content">
             <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
 
@@ -35,7 +35,7 @@
               </el-form-item>
 
               <el-form-item label="项目周期" prop="cycle" class="fullwidth">
-                <el-select v-model.number="form.cycle" placeholder="请选择项目周期" @change="matchCompany">
+                <el-select v-model.number="form.cycle" placeholder="请选择项目周期">
                   <el-option
                     v-for="(item, index) in cycleOptions"
                     :label="item.label"
@@ -57,7 +57,7 @@
               </el-form-item>
 
               <el-form-item label="所属行业" prop="industry" class="fullwidth">
-                <el-select v-model.number="form.industry" placeholder="请选择行业" @change="matchCompany">
+                <el-select v-model.number="form.industry" placeholder="请选择行业">
                   <el-option
                     v-for="(item, index) in industryOptions"
                     :label="item.label"
@@ -108,7 +108,7 @@
 
           </div>
         </el-col>
-        <el-col :span="isMob ? 24 : 5">
+        <el-col :span="isMob ? 24 : 6">
           <div id="right_box" :class="{'fixed': isFixed}">
             <div class="slider" v-loading.body="matchLoading">
 
@@ -133,7 +133,7 @@
             </div>
 
             <div class="slider info">
-              <p>提示</p>
+              <!--<p>提示</p>-->
               <p>项目需求填写</p>
               <p class="slide-des">为了充分了解企业需求，保证反馈的准确性并最终达成合作，以下信息请务必由企业高层管理人员亲自填写，保证信息的真实准确与完整。</p>
               <div class="blank20"></div>
@@ -335,7 +335,7 @@
         this.city = obj.city
         this.district = obj.district
 
-        this.matchRequest()
+        // this.matchRequest()
       },
       uploadError(err, file, fileList) {
         this.$message({

@@ -15,8 +15,8 @@
 
     <div class="banner" :style="{height : calcHeight}">
       <div class="banner-contant">
-        <h3 :class="{'m-h3' : BMob}">成为铟果设计服务商</h3>
-        <p :class="{'m-p' : BMob}">洞察市场需求，运用专业设计与技术，提供更好的产品和服务，助力客户成长，帮助企业赢得挑战。</p>
+        <h3 :class="{'m-h3' : isMob}">成为铟果设计服务商</h3>
+        <p :class="{'m-p' : isMob}">洞察市场需求，运用专业设计与技术，提供更好的产品和服务，助力客户成长，帮助企业赢得挑战。</p>
       </div>
     </div>
 
@@ -68,7 +68,7 @@
       </div>
 
       <div class="pub-title clear">公司入驻流程</div>
-      <div class="process" v-if="!BMob">
+      <div class="process" v-if="!isMob">
         <div class="item-process">
           <img src="../../../assets/images/item/d_item_join.png"/>
           <p>1.加入铟果</p>
@@ -100,7 +100,7 @@
         </div>
       </div>
 
-      <el-row class="m-process" v-if="BMob">
+      <el-row class="m-process" v-if="isMob">
         <div class="item-process">
           <img src="../../../assets/images/item/d_item_join.png"/>
           <p>1.加入铟果</p>
@@ -146,24 +146,25 @@
       document.documentElement.scrollTop = 0
     },
     mounted() {
-      let that = this
-      window.addEventListener('resize', () => {
-        if (that.BMob) {
-          that.calcHeight = calcImgSize(180, 320)
-        } else {
-          that.calcHeight = calcImgSize(650, 1440)
-        }
-      })
-      if (that.BMob) {
-        that.calcHeight = calcImgSize(180, 320)
-      } else {
-        this.calcHeight = calcImgSize(650, 1440)
-      }
+      window.addEventListener('resize', this.countSize)
+      this.countSize()
     },
     computed: {
-      BMob() {
+      isMob() {
         return this.$store.state.event.isMob
       }
+    },
+    methods: {
+      countSize() {
+        if (this.isMob) {
+          this.calcHeight = calcImgSize(180, 320)
+        } else {
+          this.calcHeight = calcImgSize(650, 1440)
+        }
+      }
+    },
+    destroyed() {
+      window.removeEventListener('resize', this.countSize)
     }
   }
 
