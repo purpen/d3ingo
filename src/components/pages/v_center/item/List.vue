@@ -22,7 +22,10 @@
               </div>
               <div class="content">
                 <div class="pre">
-                  <p class="c-title-pro">{{ d.item.name }}</p>
+                  <p class="c-title-pro">
+                    <span v-if="d.item.name">{{ d.item.name }}</span>
+                    <span v-else>未命名项目</span>
+                  </p>
                   <p class="progress-line">
                     <el-progress :text-inside="true" :show-text="false" :stroke-width="18"
                                   :percentage="d.item.progress"
@@ -575,7 +578,8 @@
   p.c-title-pro {
     font-size: 1.5rem;
     color: #333;
-    padding: 15px 10px 5px 10px;
+    margin-top: 20px;
+    line-height: 0;
   }
 
   .opt {
