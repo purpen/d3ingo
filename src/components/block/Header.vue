@@ -15,9 +15,6 @@
           </el-menu>
         </hgroup>
         <div class="nav-right nav-menu" v-if="isLogin">
-          <div class="server-in-btn">
-            <el-button size="small" class="is-custom" @click="toServer">设计服务商入驻</el-button>
-          </div>
           <a class="nav-item is-hidden-mobile" @click="viewMsg" ref="msgList">
               <span class="icon active">
                 <i class="fx-4 fx-icon-notice">
@@ -59,8 +56,8 @@
             <el-button size="small" class="is-custom" @click="toServer">设计服务商入驻</el-button>
           </div>
           <el-menu class="el-menu-header" :default-active="menuactive" mode="horizontal" router>
+            <el-menu-item index="register" :route="menu.register" style="color: #FF5A5F;">注册</el-menu-item>
             <el-menu-item index="login" :route="menu.login">登录</el-menu-item>
-            <el-menu-item index="register" :route="menu.register">注册</el-menu-item>
           </el-menu>
         </div>
 
@@ -94,7 +91,7 @@
           <li @click="closeMenu">
             <router-link :to="menu.innovation_index">创新指数</router-link>
           </li>
-          <li @click="closeMenu">
+          <li @click="closeMenu" v-show="!isLogin">
             <router-link :to="menu.design">设计服务商入驻</router-link>
           </li>
           <li @click="closeMenu" class="m-Sign">
@@ -150,7 +147,7 @@
           article: {path: '/article/list'},
           design_case: {path: '/design_case/general_list'},
           commonly_sites: {path: '/vcenter/commonly_sites'},
-          innovation_index: {path: '/innovation_index'},
+          innovation_index: {path: '/innovation_index/home'},
           apply: {path: '/apply'},
           login: {path: '/login'},
           register: {path: '/register'},
@@ -172,6 +169,9 @@
       }
     },
     methods: {
+      initPage() {
+        this.$store.commit('INIT_PAGE')
+      },
       navdefact() {
         // 设置router函数跳转
         this.menuactive = this.$route.path.split('/')[1]
@@ -315,13 +315,11 @@
       this.$store.commit('INIT_PAGE')
     },
     mounted() {
-      let that = this
-      window.addEventListener('resize', () => {
-        that.$store.commit('INIT_PAGE')
-      })
+      window.addEventListener('resize', this.initPage)
     },
     destroyed() {
       clearInterval(this.requestMessageTask)
+      window.addEventListener('resize', this.initPage)
     }
   }
 </script>

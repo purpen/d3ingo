@@ -150,11 +150,17 @@
           this.city = ''
           this.district = ''
         }
+        if (this.isEmpty) {
+          this.city = -1
+        }
       },
       cityProp(d) {
         this.city = d
         if (this.isFirst) {
           this.district = ''
+        }
+        if (this.isEmpty) {
+          this.district = -1
         }
       },
       districtProp(d) {

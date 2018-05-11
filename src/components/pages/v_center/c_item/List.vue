@@ -280,7 +280,7 @@
         .then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.isLoading = false
-            if (!response.data.data) {
+            if (!response.data.data.lenght) {
               self.isEmpty = true
             } else {
               self.isEmpty = false
@@ -314,8 +314,9 @@
       self.$http.get(api.designCooperationLists, {})
         .then(function (response) {
           self.isLoading = false
+          console.log(response)
           if (response.data.meta.status_code === 200) {
-            if (!response.data.data) {
+            if (!response.data.data.length) {
               return false
             }
             self.ingCount = response.data.meta.pagination.total
@@ -325,6 +326,7 @@
         })
         .catch(function (error) {
           self.$message.error(error.message)
+          self.isLoading = false
         })
     }
   }

@@ -358,6 +358,8 @@ export default {
   designPositionUpdate: '/designPosition/update',   // PUT 编辑
   designPositionDelete: '/designPosition/delete',   // DELETE 删除
 
+  // 创新力榜单
+  companyRecord: '/opalus/company_record/list',
   // test
   test: '/', // End
 

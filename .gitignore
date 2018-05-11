@@ -26,3 +26,4 @@ deploy.sh
 *.jsbeautifyrc
 composer.lock
 /.vscode
+npm-debug.log
