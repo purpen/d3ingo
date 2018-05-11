@@ -41,9 +41,11 @@
           <p class="share" @click="clickwx">
             <i class="wechat"></i>
           </p>
+          <!--
           <p class="share">
             <i class="weibo"></i>
           </p>
+          -->
           <!--<p class="share">-->
           <!--<router-link :to="{name: 'test'}" class="">-->
           <!--<i class="fa fa-qq fa-2x" aria-hidden="true"></i>-->

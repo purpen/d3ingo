@@ -22,7 +22,10 @@
               </div>
               <div class="content">
                 <div class="pre">
-                  <p class="c-title-pro">{{ d.item.name }}</p>
+                  <p class="c-title-pro">
+                    <span v-if="d.item.name">{{ d.item.name }}</span>
+                    <span v-else>未命名项目</span>
+                  </p>
                   <p class="progress-line">
                     <el-progress :text-inside="true" :show-text="false" :stroke-width="18"
                                   :percentage="d.item.progress"
@@ -113,13 +116,6 @@
                                   type="primary">重新编辑
                       </el-button>
                     </p>
-                    <p>
-                      <el-tooltip class="item" effect="dark" content="关闭项目后，预付款自动转入我的钱包" placement="right-end">
-                        <el-button class="" @click="closeItemBtn" :item_id="d.item.id" :index="index" size="small"
-                                    type="gray">关闭项目
-                        </el-button>
-                      </el-tooltip>
-                    </p>
                   </div>
                   <p class="btn" v-if="false" v-show="d.item.status === -1">
                     <el-button class="is-custom" @click="delItemBtn" :item_id="d.item.id" size="small" type="primary">
@@ -132,13 +128,6 @@
                       <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary">
                         选择设计服务供应商
                       </el-button>
-                    </p>
-                    <p>
-                      <el-tooltip class="item" effect="dark" content="关闭项目后，预付款自动转入我的钱包" placement="right-end">
-                        <el-button class="" @click="closeItemBtn" :item_id="d.item.id" :index="index" size="small" type="gray">
-                          关闭项目
-                        </el-button>
-                      </el-tooltip>
                     </p>
                   </div>
                   <p class="btn" v-show="d.item.status === 4">
@@ -180,6 +169,15 @@
                       查看详情
                     </el-button>
                   </p>
+                  <div class="btn" v-show="d.item.is_close">
+                    <p>
+                      <el-tooltip class="item" effect="dark" content="关闭项目后，预付款自动转入我的钱包" placement="right-end">
+                        <el-button class="" @click="closeItemBtn" :item_id="d.item.id" :index="index" size="small" type="gray">
+                          关闭项目
+                        </el-button>
+                      </el-tooltip>
+                    </p>
+                  </div>
                 </el-col>
               </el-row>
             </div>
@@ -218,13 +216,6 @@
                                     type="primary">重新编辑
                         </el-button>
                       </p>
-                      <p>
-                        <el-tooltip class="item" effect="dark" content="关闭项目后，预付款自动转入我的钱包" placement="right-end">
-                          <el-button class="" @click="closeItemBtn" :item_id="d.item.id" :index="index" size="small" type="gray">
-                            关闭项目
-                          </el-button>
-                        </el-tooltip>
-                      </p>
                     </div>
                     <p class="btn" v-if="false" v-show="d.item.status === -1">
                       <el-button class="is-custom" @click="delItemBtn" :item_id="d.item.id" size="small"
@@ -238,13 +229,6 @@
                         <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary">
                           选择设计服务供应商
                         </el-button>
-                      </p>
-                      <p>
-                        <el-tooltip class="item" effect="dark" content="关闭项目后，预付款自动转入我的钱包" placement="right-end">
-                          <el-button class="" @click="closeItemBtn" :item_id="d.item.id" :index="index" size="small" type="gray">
-                            关闭项目
-                          </el-button>
-                        </el-tooltip>
                       </p>
                     </div>
                     <p class="btn" v-show="d.item.status === 4">
@@ -287,6 +271,13 @@
                       <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary">
                         查看详情
                       </el-button>
+                    </p>
+                    <p class="btn" v-show="d.item.is_close">
+                      <el-tooltip class="item" effect="dark" content="关闭项目后，预付款自动转入我的钱包" placement="right-end">
+                        <el-button class="" @click="closeItemBtn" :item_id="d.item.id" :index="index" size="small" type="gray">
+                          关闭项目
+                        </el-button>
+                      </el-tooltip>
                     </p>
                   </section>
                 </div>
@@ -388,7 +379,12 @@
                   if (status === 2 || status === 5 || status === 9 || status === 11 || status === 20 || status === 22) {
                     showView = true
                   }
+                  let isClose = false
+                  if (status === -2 || status === 2 || status === 3) {
+                    isClose = true
+                  }
                   data[i]['item']['is_view_show'] = showView
+                  data[i]['item']['is_close'] = isClose
                   data[i]['item']['show_offer'] = showOffer
                   data[i]['item']['created_at'] = d.item.created_at.date_format().format('yyyy-MM-dd')
                 } // endfor
@@ -433,6 +429,8 @@
                 if (self.itemList[index] && self.itemList[index].item.id === itemId) {
                   self.itemList[index].item.status = -1
                   self.itemList[index].item.status_value = '项目关闭'
+                  self.itemList[index].item.is_close = false
+                  self.itemList[index].item.is_view_show = false
                 } else if (self.itemIngList[index] && self.itemIngList[index].item.id === itemId) {
                   self.itemIngList[index].item.status = -1
                 }
@@ -580,7 +578,8 @@
   p.c-title-pro {
     font-size: 1.5rem;
     color: #333;
-    padding: 15px 10px 5px 10px;
+    margin-top: 20px;
+    line-height: 0;
   }
 
   .opt {
