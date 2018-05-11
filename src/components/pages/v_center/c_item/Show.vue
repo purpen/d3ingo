@@ -173,7 +173,7 @@
                   <p>项目资金</p>
                   <p class="capital-money">¥ {{ item.price }}</p>
                   <p class="pay-btn">
-                    <span>项目资金已拖管 </span>
+                    <span>项目资金已托管 </span>
                   </p>
                 </div>
                 <div class="capital-item" v-else>
@@ -696,14 +696,14 @@
       // Before上传阶段附件
       beforeStageUpload(file) {
         const arr = ['image/jpeg', 'image/gif', 'image/png', 'application/pdf']
-        const isLt10M = file.size / 1024 / 1024 < 10
+        const isLt50M = file.size / 1024 / 1024 < 50
 
         if (arr.indexOf(file.type) === -1) {
           this.$message.error('上传文件格式不正确!')
           return false
         }
-        if (!isLt10M) {
-          this.$message.error('上传文件大小不能超过 10MB!')
+        if (!isLt50M) {
+          this.$message.error('上传文件大小不能超过 50MB!')
           return false
         }
       },
@@ -862,7 +862,7 @@
                 self.statusLabel.contract = true
                 self.statusLabel.amount = true
                 break
-              case 9: // 项目资金已拖管
+              case 9: // 项目资金已托管
                 self.progressButt = 2
                 self.progressContract = 3
                 self.progressItem = -1

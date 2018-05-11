@@ -35,7 +35,7 @@
               </el-form-item>
 
               <el-form-item label="项目周期" prop="cycle" class="fullwidth">
-                <el-select v-model.number="form.cycle" placeholder="请选择项目周期" @change="matchCompany">
+                <el-select v-model.number="form.cycle" placeholder="请选择项目周期">
                   <el-option
                     v-for="(item, index) in cycleOptions"
                     :label="item.label"
@@ -57,7 +57,7 @@
               </el-form-item>
 
               <el-form-item label="所属行业" prop="industry" class="fullwidth">
-                <el-select v-model.number="form.industry" placeholder="请选择行业" @change="matchCompany">
+                <el-select v-model.number="form.industry" placeholder="请选择行业">
                   <el-option
                     v-for="(item, index) in industryOptions"
                     :label="item.label"
@@ -335,7 +335,7 @@
         this.city = obj.city
         this.district = obj.district
 
-        this.matchRequest()
+        // this.matchRequest()
       },
       uploadError(err, file, fileList) {
         this.$message({

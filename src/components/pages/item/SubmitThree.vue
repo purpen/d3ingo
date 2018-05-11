@@ -20,8 +20,7 @@
               </el-form-item>
 
               <el-form-item label="项目周期" prop="cycle" class="fullwidth">
-                <el-select v-model.number="form.cycle" placeholder="请选择项目周期" @change="matchCompany"
-                >
+                <el-select v-model.number="form.cycle" placeholder="请选择项目周期">
                   <el-option
                     v-for="item in cycleOptions"
                     :label="item.label"
@@ -43,7 +42,7 @@
               </el-form-item>
 
               <el-form-item label="所属行业" prop="industry" class="fullwidth">
-                <el-select v-model.number="form.industry" placeholder="请选择行业" @change="matchCompany">
+                <el-select v-model.number="form.industry" placeholder="请选择行业">
                   <el-option
                     v-for="item in industryOptions"
                     :label="item.label"
@@ -313,10 +312,11 @@ export default {
         item_id: this.itemId,
         type: this.form.type,
         design_types: JSON.stringify(this.form.design_types),
-        cycle: this.form.cycle,
         design_cost: this.form.design_cost,
-        province: this.province,
-        city: this.city
+        // cycle: this.form.cycle,
+        // province: this.province,
+        // city: this.city,
+        test: ''
       }
       const that = this
       that.matchCount = ''
@@ -338,7 +338,7 @@ export default {
       this.city = obj.city
       this.district = obj.district
 
-      this.matchRequest()
+      // this.matchRequest()
     },
     uploadError(err, file, fileList) {
       this.$message({
