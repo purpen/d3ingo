@@ -7,25 +7,7 @@
     <h3>对比设计企业</h3>
     <div class="compare-comtent clearfix">
       <el-row>
-        <el-col :span="6">
-        <router-link :to="{name: 'innovationCompany', params: {id: 1}}" class="company-head">
-          <img class="company-logo" :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
-          <p class="company-name">飞鱼设计</p>
-        </router-link>
-        </el-col>
-        <el-col :span="6">
-        <router-link :to="{name: 'innovationCompany', params: {id: 1}}" class="company-head">
-          <img class="company-logo" :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
-          <p class="company-name">飞鱼设计</p>
-        </router-link>
-        </el-col>
-        <el-col :span="6">
-        <router-link :to="{name: 'innovationCompany', params: {id: 1}}" class="company-head">
-          <img class="company-logo" :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
-          <p class="company-name">飞鱼设计</p>
-        </router-link>
-        </el-col>
-        <el-col :span="6">
+        <el-col v-for="(ele, index) in companyDetails" :key="index" :span="6">
         <router-link :to="{name: 'innovationCompany', params: {id: 1}}" class="company-head">
           <img class="company-logo" :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
           <p class="company-name">飞鱼设计</p>
@@ -34,7 +16,7 @@
       </el-row>
       <h3>创新力指数</h3>
       <el-row>
-        <el-col :span="6">
+        <el-col v-for="(ele, index) in companyDetails" :key="index" :span="6">
           <ul class="company-body">
             <li class="chart">
               <ECharts
@@ -44,129 +26,27 @@
             </li>
             <li class="profile">
               <p class="profile-title">创新力指数（DCI）</p>
-              <p class="profile-value">200</p>
+              <p class="profile-value">{{ele.ave_score}}</p>
             </li>
             <li class="profile">
               <p class="profile-title">基础运作力</p>
-              <p class="profile-value">200</p>
+              <p class="profile-value">{{ele.base_average}}</p>
             </li>
             <li class="profile">
               <p class="profile-title">创新交付力 </p>
-              <p class="profile-value">200</p>
+              <p class="profile-value">{{ele.innovate_average}}</p>
             </li>
             <li class="profile">
               <p class="profile-title">商业决策力</p>
-              <p class="profile-value">200</p>
+              <p class="profile-value">{{ele.business_average}}</p>
             </li>
             <li class="profile">
               <p class="profile-title">客观公信力</p>
-              <p class="profile-value">200</p>
+              <p class="profile-value">{{ele.effect_average}}</p>
             </li>
             <li class="profile">
               <p class="profile-title">品牌溢价力</p>
-              <p class="profile-value">200</p>
-            </li>
-          </ul>
-        </el-col>
-        <el-col :span="6">
-          <ul class="company-body">
-            <li class="chart">
-              <ECharts
-                :options="option"
-                auto-resize
-                ref="radar"></ECharts>
-            </li>
-            <li class="profile">
-              <p class="profile-title">创新力指数（DCI）</p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">基础运作力</p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">创新交付力 </p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">商业决策力</p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">客观公信力</p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">品牌溢价力</p>
-              <p class="profile-value">200</p>
-            </li>
-          </ul>
-        </el-col>
-        <el-col :span="6">
-          <ul class="company-body">
-            <li class="chart">
-              <ECharts
-                :options="option"
-                auto-resize
-                ref="radar"></ECharts>
-            </li>
-            <li class="profile">
-              <p class="profile-title">创新力指数（DCI）</p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">基础运作力</p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">创新交付力 </p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">商业决策力</p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">客观公信力</p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">品牌溢价力</p>
-              <p class="profile-value">200</p>
-            </li>
-          </ul>
-        </el-col>
-        <el-col :span="6">
-          <ul class="company-body">
-            <li class="chart">
-              <ECharts
-                :options="option"
-                auto-resize
-                ref="radar"></ECharts>
-            </li>
-            <li class="profile">
-              <p class="profile-title">创新力指数（DCI）</p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">基础运作力</p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">创新交付力 </p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">商业决策力</p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">客观公信力</p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">品牌溢价力</p>
-              <p class="profile-value">200</p>
+              <p class="profile-value">{{ele.design_average}}</p>
             </li>
           </ul>
         </el-col>
@@ -257,12 +137,7 @@ export default {
       }}).then(res => {
         console.log(res)
         if (res.data.meta.status_code === 200) {
-          if (res.data.data.length > 4) {
-            this.companyDetails = res.data.data.slice(0, 4)
-          } else {
-            this.companyDetails = res.data.data
-          }
-          this.companyDetails = res.data.data[0]
+          this.companyDetails = res.data.data
           radar.hideLoading()
           // this.$refs.radar.mergeOptions({
           //   radar: {
