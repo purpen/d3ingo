@@ -86,7 +86,7 @@
               <el-col :span="contentSpan" class="content">
                 <el-form label-position="top" label-width="50px" style="width: 90%;" v-show="element.address">
                   <region-picker :provinceProp="province" :cityProp="city" :districtProp="district"
-                                 :isFirstProp="isFirst" titleProp="详细地址" propStyle="margin: 0;"
+                                 :isFirstProp="isFirst" titleProp="" propStyle="margin: 0;"
                                  @onchange="change"></region-picker>
                   <el-form-item label="" prop="address" style="margin: 0">
                     <el-input v-model="form.address" name="address" ref="address" placeholder="街道地址"></el-input>
@@ -492,8 +492,12 @@
     padding: 0;
   }
 
+  .item .content {
+    min-height: 60px;
+  }
+
   .item .edit {
-    padding-left: 10px;
+    text-align: right;
   }
 
   .item-m .edit {
