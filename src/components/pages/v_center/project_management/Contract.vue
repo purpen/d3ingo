@@ -299,6 +299,9 @@
 .marginlf{
   margin-left:15px;
 }
+.marginlf:hover{
+  color:#ff5a5f;
+}
 .dynamic-list{
   border-bottom:1px solid #d2d2d2;
   padding-bottom:15px;

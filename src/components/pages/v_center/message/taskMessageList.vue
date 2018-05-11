@@ -19,7 +19,7 @@
                 </p>
               </div>
               <p v-show="d.is_show" class="content">{{ d.operation_log.title }}</p>
-              <a v-show="d.is_show" class="detail" href="javascript:void(0);" v-if="d.is_url === 1" @click.stop="redirect(d)">查看详情>></a>
+              <a v-show="d.is_show" class="detail" href="javascript:void(0);"  @click.stop="redirect(d)">查看详情>></a>
             </div>
           </div>
 
@@ -60,11 +60,12 @@
         itemList: [],
         query: {
           page: 1,
-          pageSize: 50,
+          pageSize: 10,
           totalCount: 0,
           sort: 1,
           type: 0,
-          test: null
+          test: null,
+          total_pages: 1
         },
         userId: this.$store.state.event.user.id,
         isEmpty: ''
@@ -92,6 +93,7 @@
             if (response.data.meta.status_code === 200) {
               let data = response.data.data
               self.query.totalCount = response.data.meta.pagination.total
+              self.query.total_pages = response.data.meta.pagination.total_pages
               for (let i = 0; i < data.length; i++) {
                 let item = data[i].operation_log
                 data[i]['created_at'] = item.created_at.date_format().format('yy-MM-dd hh:mm')

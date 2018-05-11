@@ -112,10 +112,13 @@
           </div>
           <el-row class="item-content scroll-bar">
           <el-col :span="12" v-for="(i,indexi) in userItem" :key="indexi" v-if="userItem.length>0">
+
               <ul class="control-iteming">
                 <li class="titleSize">{{i.name}}</li>
                 <li>项目进度: 
-                  <span>{{i.ok_stage_percentage}} %</span>
+                  <span class="itemProgress">
+                    {{i.ok_stage_percentage}}%
+                  </span>
                 </li>
                 <li>
                   <el-progress 
@@ -131,6 +134,7 @@
                   </div>
                 </li>
             </ul>
+
           </el-col>
               <div class="message-btn" v-else>
                 <img src="../../../../assets/images/icon/Project default state@2x.png"/>
@@ -535,6 +539,9 @@
     flex-direction:column;
     justify-content:space-around;
     padding:20px;
+  }
+  .itemProgress{
+    color:#20a0ff;
   }
   .marginl>span{
     display:inline-block;

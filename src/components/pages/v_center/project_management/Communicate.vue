@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="AddCommunicate">
-      <el-row :gutter="0" @click.self.native="cancel()">
+      <el-row :gutter="0" @click.self.native="cancel($event)">
         <el-col :span="18" :offset="3">
           <div class="grid-content bg-purple">
             <el-row v-if="event === 'create'">
@@ -36,8 +36,8 @@
                   <span v-if=" !getimg.logo_image.logo ">{{getimg.realnamehead}}</span>
                   <i :style="{background:`url(${ closered }) no-repeat center`}" @click="deleteGetimg(index,{type:'add'})"></i>
               </li>
-              <li>
-                <img class="adds" :src=" adduser " alt="" @click="uppop?uppop=false:uppop=true">
+              <li class="showme" tabindex="-1">
+                <img class="adds" :src=" adduser " alt="">
                 <ul class="select-user scroll-bar" v-if="uppop" >
                   <li>
                     <el-input placeholder="填写或选择参加会议的人员名称" v-model="searcher"></el-input>
@@ -60,7 +60,8 @@
                 </ul>
               </li>
             </ul>
-          <el-row class="MeetingCenter" @click.native="addBtn()" :style="{borderTop:event!=='create'?'none':'1px solid #D2D2D2',paddingTop:event!=='create'?'10px':'20px'}">
+          <el-row class="MeetingCenter" @click.native="addBtn()" :style="{borderTop:event!=='create'?'none':'1px solid #D2D2D2',
+          paddingTop:event!=='create'?'10px':'0px'}">
               <el-col class="fx">
                 <div>
                <el-input  placeholder="请输入会议内容" type="textarea" :autosize="{ minRows: 4, maxRows: 10}"  v-model="form.content" v-if=" event !== 'create'?false : true " :maxlength="800" class="noborder"></el-input>
@@ -127,9 +128,13 @@
               <el-col class="titlec" >
                 <el-input  v-model="d.title"  v-if ="d.isedit === 2" placeholder="请填写标题" class="noborder fx-3"></el-input>
                 <span v-else>{{ d.title }}</span>
-                <div class="fr" @click="operation === index?operation='': operation = index "  v-if ="d.isedit === 1 || !d.isedit">
+                <div class="fr" 
+                  @click="operation === index?operation='': operation = index "  
+                  v-if ="d.isedit === 1 || !d.isedit"
+                  tabindex="-1"
+                >
                    <i class="el-icon-more" ></i>
-                   <ul v-if=" operation  === index ">
+                   <ul>
                      <li @click="deleteBtn(d.id, index)">删除</li>
                       <li @click="editBtn(d.id, index, d.isedit)">编辑</li>
                    </ul>
@@ -181,9 +186,9 @@
                     <i :style="{background:`url(${ closered }) no-repeat center`}" @click="deleteGetimg(indexus,{type:'noadd'})"  v-if="d.isedit === 2"></i>
                   </li>
                  
-                   <li>
+                   <li class="showme" tabindex="-1">
                       <img class="adds" :src=" adduser " alt="" @click="edituser(index)">
-                      <ul class="select-user scroll-bar" v-if=" operation  === index " >
+                      <ul class="select-user scroll-bar" >
                         <li>
                           <el-input placeholder="填写或选择参加会议的人员名称" v-model="searcher"></el-input>
                         </li>
@@ -385,7 +390,8 @@
         return
       },
       // 取消新建/编辑的编辑
-      cancel() {
+      cancel(event) {
+        console.log(event)
         let isnull = true
         for (var k in this.form) {
           if (this.form[k] && this.form[k] !== '') {
@@ -960,6 +966,9 @@
     position:relative;
     cursor:pointer;
   }
+  .titlec>.fr:focus ul{
+    display:block;
+  }
   .margin-bottom {
     margin-bottom:5px;
   }
@@ -967,6 +976,7 @@
     margin-left:10px;
   }
   .titlec>.fr ul{
+    display:none;
     text-align: center;
     background: #FFFFFF;
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
@@ -997,6 +1007,9 @@
     width:24px;
     height:24px;
     margin:0px;
+  }
+  .showme:focus ul{
+    display:block;
   }
   .updata-user>li {
     width:24px;
@@ -1074,13 +1087,15 @@
     display:inline-block;
   }
   .MeetingCenter {
-    padding-top:20px;
+    /* padding-top:20px; */
     padding-bottom: 10px;
     margin-bottom:20px;
     min-height: 70px;
     border-top: 1px solid #D2D2D2;
   }
-
+  .MeetingCenter>.fx>p{
+    margin-top:10px;
+  }
   .onthing img {
     width:90px;
     height:100px;
@@ -1092,6 +1107,7 @@
     min-height: 240px;
   }
   .select-user {
+    display:none;
     width:280px;
     background: #FFFFFF;
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
