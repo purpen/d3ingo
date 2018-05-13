@@ -20,6 +20,7 @@
           <ul class="company-body">
             <li class="chart">
               <ECharts
+                :id="`chart${index}`"
                 :options="option"
                 auto-resize
                 ref="radar"></ECharts>
@@ -69,6 +70,7 @@ export default {
       {name: '品牌溢价力', max: 20, value: 0}
     ]
     return {
+      options: [],
       option: {
         tooltip: {},
         radar: {
@@ -119,26 +121,29 @@ export default {
           }
         }]
       },
-      compareStr: ''
+      compareStr: '',
+      companyDetails: []
     }
   },
   created() {
-    this.compareStr = this.$route.query.compareList.join(',')
+    console.log(ECharts)
+    let compareList = this.$route.query.compareList
+    this.compareStr = compareList.join(',')
   },
   mounted() {
+    let compareList = this.$route.query.compareList
     this.getDetails(this.compareStr)
   },
   methods: {
     getDetails(id) {
-      let radar = this.$refs.radar
-      radar.showLoading()
+      // let radar = this.$refs.radar
+      // radar.showLoading()
       this.$http.get(api.companyRecord, {params: {
         ids: id
       }}).then(res => {
-        console.log(res)
         if (res.data.meta.status_code === 200) {
           this.companyDetails = res.data.data
-          radar.hideLoading()
+          console.log(this.$refs.radar)
           // this.$refs.radar.mergeOptions({
           //   radar: {
           //     indicator: this.radarList.map(({name, max}) => {
