@@ -8,9 +8,11 @@
     <div class="compare-comtent clearfix">
       <el-row>
         <el-col v-for="(ele, index) in companyDetails" :key="index" :span="6">
-        <router-link :to="{name: 'innovationCompany', params: {id: 1}}" class="company-head">
-          <img class="company-logo" :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
-          <p class="company-name">飞鱼设计</p>
+          <router-link :to="{name: 'innovationCompany', params: {id: ele.design_company. d3ing_id}, query: {id: ele._id}}"
+            :target="isMob ? '_self' : '_blank'" class="company-head">
+          <img class="company-logo" v-if="ele.design_company.logo_url" :src="ele.design_company.logo_url" alt="">
+          <img class="company-logo" v-else :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
+          <p class="company-name">{{ele.design_company.name}}</p>
         </router-link>
         </el-col>
       </el-row>
@@ -20,10 +22,9 @@
           <ul class="company-body">
             <li class="chart">
               <ECharts
-                :id="`chart${index}`"
                 :options="option"
                 auto-resize
-                ref="radar"></ECharts>
+                :ref="`radar${index}`"></ECharts>
             </li>
             <li class="profile">
               <p class="profile-title">创新力指数（DCI）</p>
@@ -126,12 +127,11 @@ export default {
     }
   },
   created() {
-    console.log(ECharts)
     let compareList = this.$route.query.compareList
     this.compareStr = compareList.join(',')
   },
   mounted() {
-    let compareList = this.$route.query.compareList
+    // let compareList = this.$route.query.compareList
     this.getDetails(this.compareStr)
   },
   methods: {
@@ -143,17 +143,53 @@ export default {
       }}).then(res => {
         if (res.data.meta.status_code === 200) {
           this.companyDetails = res.data.data
-          console.log(this.$refs.radar)
-          // this.$refs.radar.mergeOptions({
-          //   radar: {
-          //     indicator: this.radarList.map(({name, max}) => {
-          //       return {name, max}
-          //     })
-          //   },
-          //   series: [{
-          //     data: [{value: this.radarList.map(({value}) => value)}]
-          //   }]
-          // })
+          this.$nextTick(_ => {
+            for (let i in this.companyDetails) {
+              let radar = this.$refs[`radar${i}`]
+              this.radarList = [
+                {
+                  name: '基础运作力',
+                  max: 100,
+                  value: this.companyDetails[i].base_average
+                },
+                {
+                  name: '风险应激力',
+                  max: 100,
+                  value: this.companyDetails[i].credit_average
+                },
+                {
+                  name: '创新交付力',
+                  max: 100,
+                  value: this.companyDetails[i].innovate_average
+                },
+                {
+                  name: '商业决策力',
+                  max: 100,
+                  value: this.companyDetails[i].business_average
+                },
+                {
+                  name: '客观公信力',
+                  max: 100,
+                  value: this.companyDetails[i].effect_average
+                },
+                {
+                  name: '品牌溢价力',
+                  max: 100,
+                  value: this.companyDetails[i].design_average
+                }
+              ]
+              radar[0].mergeOptions({
+                radar: {
+                  indicator: this.radarList.map(({name, max}) => {
+                    return {name, max}
+                  })
+                },
+                series: [{
+                  data: [{value: this.radarList.map(({value}) => value)}]
+                }]
+              })
+            }
+          })
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -164,6 +200,11 @@ export default {
   },
   components: {
     ECharts
+  },
+  computed: {
+    isMob() {
+      return this.$store.state.event.isMob
+    }
   }
 }
 </script>
