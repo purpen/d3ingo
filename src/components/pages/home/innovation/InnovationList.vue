@@ -642,11 +642,13 @@ export default {
     cursor: pointer;
   }
   .more-than5::after {
+    cursor: no-drop;
     border-color: transparent
   }
   .more-than5::before {
     background: #f7f7f7;
-    border-color: #d2d2d2
+    border-color: #d2d2d2;
+    cursor: no-drop;
   }
   .more-than5:hover:before {
     background: #f7f7f7;
