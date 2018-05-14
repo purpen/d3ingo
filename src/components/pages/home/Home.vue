@@ -199,7 +199,7 @@
         bannerListMob: [
           {
             img: require ('assets/images/subject/innovation/home_banner.jpg'),
-            url: this.innoUrl
+            url: this.$store.state.event.user.role_id > 0 ? 'innovation_index' : 'home'
           },
           {
             img: require ('assets/images/home/banner/homebanner_xiaomi_mob.jpg'),
@@ -209,7 +209,7 @@
         bannerList: [
           {
             img: require ('assets/images/subject/innovation/innovationIndex.jpg'),
-            url: this.innoUrl
+            url: this.$store.state.event.user.role_id > 0 ? 'innovation_index' : 'home'
           },
           {
             img: require ('assets/images/home/banner/home_xiaomi.jpg'),
@@ -398,13 +398,6 @@
       user() {
         let user = this.$store.state.event.user // role_id
         return user
-      },
-      innoUrl() {
-        if (this.user.role_id > 0) {
-          return 'innovation_index'
-        } else {
-          return 'home'
-        }
       }
     },
     components: {
