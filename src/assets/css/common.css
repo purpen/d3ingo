@@ -16,7 +16,21 @@
   display: block;
   clear: both;
 }
-
+.fz-12 {
+  font-size: 12px;
+}
+.fz-14 {
+  font-size: 14px;
+}
+.fz-16 {
+  font-size: 16px;
+}
+.fz-18 {
+  font-size: 18px;
+}
+.fz-20 {
+  font-size: 20px;
+}
 .tc-2 {
   color: #222
 }
@@ -25,6 +39,9 @@
 }
 .tc-9 {
   color: #999
+}
+.b-d2 {
+  border: 1px solid #d2d2d2
 }
 .bt-d2 {
   border-top: 1px solid #d2d2d2
@@ -38,7 +55,9 @@
 .bg-f7 {
   background: #f7f7f7
 }
-
+.br50 {
+  border-radius: 50%
+}
 .no-select {
   -moz-user-select: none;
   -webkit-user-select: none;
