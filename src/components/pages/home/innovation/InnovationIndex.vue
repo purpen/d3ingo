@@ -67,7 +67,7 @@ export default {
 
 .innovation-foot img {
   width: 100%;
-  margin-bottom: -54px;
+  margin-bottom: -74px;
 }
 .menu {
   text-align: center;
