@@ -1649,24 +1649,14 @@ img.avatar2 {
 }
 
 .el-card {
-<<<<<<< HEAD
-  /* transition: all ease .1s; */
-=======
->>>>>>> lzh
   transition: transform .218s ease;
   border-radius: 0;
   box-shadow: 0 5px 10px 0 #eee
 }
 
 .el-card:hover {
-<<<<<<< HEAD
-  /* transform: translate3d(0, -2px, 0); */
-  transform: translateY(-5px);
-  box-shadow: 0 9pt 24px rgba(10,10,10,.15);
-=======
   transform: translateY(-3px);
   box-shadow: 6px 6px 10px rgba(10,10,10,.15)
->>>>>>> lzh
 }
 
 .pcCarousel .el-carousel__indicators {
