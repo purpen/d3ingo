@@ -91,8 +91,8 @@
           <li @click="closeMenu">
             <router-link :to="menu.commonly_sites">设计工具</router-link>
           </li>
-          <li @click="closeMenu">
-            <router-link :to="menu.innovation_index" v-if="isAdmin > 0">创新指数</router-link>
+          <li @click="closeMenu" v-if="isAdmin > 0">
+            <router-link :to="menu.innovation_index">创新指数</router-link>
           </li>
           <li @click="closeMenu" v-show="!isLogin">
             <router-link :to="menu.design">设计服务商入驻</router-link>
