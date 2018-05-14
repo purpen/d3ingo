@@ -91,4 +91,11 @@ export default {
   color: #ff5a5f;
   border-color: #ff5a5f
 }
+
+@media screen and (max-width: 767px) {
+
+  .innovation-foot img {
+    margin-bottom: -56px;
+  }
+}
 </style>
