@@ -688,6 +688,13 @@ export default {
       justify-content: center;
       padding-bottom: 20px;
     }
+    .operation .compare {
+      flex-direction: column-reverse;
+      align-items: center;
+    }
+    .tips {
+      padding-top: 20px;
+    }
     .buttons button {
       margin-right: 0;
     }
