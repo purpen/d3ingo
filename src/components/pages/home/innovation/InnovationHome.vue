@@ -14,7 +14,7 @@
             </div>
           </router-link>
         </el-col>
-        <el-col :span="8">
+        <el-col :xs="24" :sm="8" :md="8" :lg="8">
           <router-link :to="{name: 'InnovateList', hash: '#power'}" class="dimension-resolve">
             <div class="img-box">
               <img :src="require('assets/images/subject/innovation/innovate@2x.png')" alt="">
@@ -26,7 +26,7 @@
             </div>
           </router-link>
         </el-col>
-        <el-col :span="8">
+        <el-col :xs="24" :sm="8" :md="8" :lg="8">
           <router-link :to="{name: 'InnovateList', hash: '#innovation2'}" class="dimension-resolve">
             <div class="img-box">
               <img :src="require('assets/images/subject/innovation/business_making_power@2x.png')" alt="">
@@ -38,7 +38,7 @@
             </div>
           </router-link>
         </el-col>
-        <el-col :span="8">
+        <el-col :xs="24" :sm="8" :md="8" :lg="8">
           <router-link :to="{name: 'InnovateList', hash: '#business'}" class="dimension-resolve">
             <div class="img-box">
               <img :src="require('assets/images/subject/innovation/business@2x.png')" alt="">
@@ -50,7 +50,7 @@
             </div>
           </router-link>
         </el-col>
-        <el-col :span="8">
+        <el-col :xs="24" :sm="8" :md="8" :lg="8">
           <router-link :to="{name: 'InnovateList', hash: '#brand'}" class="dimension-resolve">
             <div class="img-box">
               <img :src="require('assets/images/subject/innovation/objective_credibility@2x.png')" alt="">
@@ -62,7 +62,7 @@
             </div>
           </router-link>
         </el-col>
-        <el-col :span="8">
+        <el-col :xs="24" :sm="8" :md="8" :lg="8">
           <router-link :to="{name: 'InnovateList', hash: '#credibility'}" class="dimension-resolve">
             <div class="img-box">
               <img :src="require('assets/images/subject/innovation/risk_response_ability@2x.png')" alt="">
@@ -74,7 +74,7 @@
             </div>
           </router-link>
         </el-col>
-        <el-col :span="8">
+        <el-col :xs="24" :sm="8" :md="8" :lg="8">
           <router-link :to="{name: 'InnovateList', hash: '#risk'}" class="dimension-resolve">
             <div class="img-box">
               <img :src="require('assets/images/subject/innovation/risk_response_ability@2x.png')" alt="">
@@ -101,7 +101,8 @@
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center
+    justify-content: center;
+    padding: 0 0 20px;
   }
 
   .img-list img {
@@ -163,6 +164,9 @@
     padding: 20px 30px;
     margin: 10px 0;
     transition: transform .218s ease;
+  }
+  .dimension-resolve:first-child {
+    margin: 20px 0 0
   }
   .dimension-resolve:hover {
     transform: translateY(-3px);

@@ -54,7 +54,8 @@
             <el-col :span="2">{{ele.innovate_average}}</el-col>
             <el-col :span="3">{{ele.ave_score}}</el-col>
             <el-col :span="3" class="text-center">
-              <p :class="['quite', 'fr', {'is-active': compareList.indexOf(ele._id) !== -1}]" @click="addCompare(ele._id)">对比</p>
+              <p :class="['quite', 'fr', {'is-active': compareList.indexOf(ele._id) !== -1,
+              'more-than5': compareList.length === 4}]" @click="addCompare(ele._id)">对比</p>
             </el-col>
           </li>
         </ul>
@@ -482,6 +483,7 @@ export default {
   }
   .board .inno-header {
     font-size: 12px;
+    padding-top: 10px;
   }
   .inno-table {
     min-height: 601px;
@@ -639,6 +641,17 @@ export default {
     transform: rotate(45deg);
     cursor: pointer;
   }
+  .more-than5::after {
+    border-color: transparent
+  }
+  .more-than5::before {
+    background: #f7f7f7;
+    border-color: #d2d2d2
+  }
+  .more-than5:hover:before {
+    background: #f7f7f7;
+    border-color: #d2d2d2
+  }
   .is-active::before {
     background: #ff5a5f;
     border-color: #ff5a5f
@@ -658,7 +671,7 @@ export default {
     .power-board,
     .power-board:first-child,
     .power-board:last-child {
-      padding: 30px 15px 0;
+      padding: 30px 0 0;
     }
     .inno-content {
       padding: 0 15px;
