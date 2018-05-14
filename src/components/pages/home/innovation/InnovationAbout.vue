@@ -393,7 +393,7 @@ export default {
     .giftbody h2 {
       font-size: 17px;
       line-height: 1;
-      padding: 20px 0;
+      padding: 15px 0;
       margin-top: 20px;
     }
 

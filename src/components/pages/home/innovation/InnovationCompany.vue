@@ -228,9 +228,9 @@ export default {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    margin-top: 70px;
-    margin-top: 70px;
     padding-bottom: 40px;
+    max-width: 1180px;
+    margin: 70px auto 0
   }
   .company-logo {
     margin-top: -35px;
@@ -316,6 +316,12 @@ export default {
   }
   .image-box img {
     width: 100%;
+  }
+  .chart {
+    width: 100%;
+  }
+  .company-base {
+    padding: 0 0 20px;
   }
 }
 </style>
