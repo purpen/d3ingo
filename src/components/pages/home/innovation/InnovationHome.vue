@@ -165,9 +165,6 @@
     margin: 10px 0;
     transition: transform .218s ease;
   }
-  .dimension-resolve:first-child {
-    margin: 20px 0 0
-  }
   .dimension-resolve:hover {
     transform: translateY(-3px);
     box-shadow: 6px 6px 10px rgba(10,10,10,.15);
@@ -201,8 +198,12 @@
     .img-list {
       padding-top: 6px
     }
+    .dimension {
+      padding: 5px 15px;
+    }
     .dimension-resolve {
-      width: 100%
+      width: 100%;
+      margin: 10px 0 0
     }
   }
   /* 统一合作伙伴样式 */

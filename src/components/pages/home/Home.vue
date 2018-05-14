@@ -185,7 +185,6 @@
         </span>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -200,7 +199,7 @@
         bannerListMob: [
           {
             img: require ('assets/images/subject/innovation/home_banner.jpg'),
-            url: '/innovation_index'
+            url: this.$store.state.event.user.role_id > 0 ? 'innovation_index' : 'home'
           },
           {
             img: require ('assets/images/home/banner/homebanner_xiaomi_mob.jpg'),
@@ -210,7 +209,7 @@
         bannerList: [
           {
             img: require ('assets/images/subject/innovation/innovationIndex.jpg'),
-            url: '/innovation_index'
+            url: this.$store.state.event.user.role_id > 0 ? 'innovation_index' : 'home'
           },
           {
             img: require ('assets/images/home/banner/home_xiaomi.jpg'),
@@ -395,6 +394,10 @@
     computed: {
       isMob() {
         return this.$store.state.event.isMob
+      },
+      user() {
+        let user = this.$store.state.event.user // role_id
+        return user
       }
     },
     components: {
@@ -710,7 +713,7 @@
 
   .slide-left, .slide-right {
     flex: 1;
-    padding: 10px 20px;
+    padding: 10px 15px;
   }
 
   .slide-left {

@@ -352,6 +352,7 @@
   }
 
   #header-layout {
+    background:#fff;
     position: relative;
     z-index: 999;
     animation: slow 0.4s;

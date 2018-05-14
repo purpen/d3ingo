@@ -547,7 +547,7 @@ export default {
     max-width: 1180px;
     margin: 0 auto;
     padding-bottom: 40px;
-    padding: 0 20px 40px;
+    padding: 0 15px 40px;
   }
   .other-board-box {
     padding-top: 20px;
@@ -679,7 +679,7 @@ export default {
     .power-board,
     .power-board:first-child,
     .power-board:last-child {
-      padding: 30px 0 0;
+      padding: 15px 0 0;
     }
     .inno-content {
       padding: 0 15px;
@@ -709,6 +709,9 @@ export default {
     }
     .buttons button:last-child {
       border-radius: 0 4px 4px 0
+    }
+    .button-more {
+      padding: 15px 0 0
     }
   }
 </style>
