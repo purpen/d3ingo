@@ -299,7 +299,7 @@
                 </div>
                 <div class="manage-item add-stage clearfix" v-else>
                   <div class="manage-item" v-if="stages.length === 0">
-                    <p class="wait-begin">等待设计公司提交资料</p>
+                    <p class="wait-begin">项目进行中，等待设计方提交阶段文件</p>
                   </div>
                   <div class="clearfix" v-else>
                      <div class="stage-item clearfix" v-for="(d, index) in stages" :key="index">

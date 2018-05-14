@@ -1356,7 +1356,9 @@ export default {
           if (res.data.meta.status_code === 200) {
             this.folderObj[index]['folderList'].unshift(res.data.data)
             this.formatList(res.data.data)
-            this.list.unshift(res.data.data)
+            if (this.folderObj[this.folderObj.length - 1].folderId === this.folderId) {
+              this.list.unshift(res.data.data)
+            }
             this.copyORmoveFolderName = '新建文件夹'
           } else {
             this.$message.error(res.data.meta.message)

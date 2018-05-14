@@ -43,7 +43,7 @@
 
     <div class=" container">
       <div class="pub-title">发布项目流程</div>
-      <div class="process" v-if="!BMob">
+      <div class="process" v-if="!isMob">
         <div class="item-process">
           <img src="../../../assets/images/item/item_dj.png"/>
           <p>1.支付预付金</p>
@@ -75,7 +75,7 @@
         </div>
       </div>
 
-      <el-row class="m-process" v-if="BMob">
+      <el-row class="m-process" v-if="isMob">
         <div class="item-process">
           <img src="../../../assets/images/item/item_dj.png"/>
           <p>1.支付预付金</p>
@@ -117,28 +117,28 @@
     created() {
     },
     mounted() {
-      let that = this
-      window.addEventListener('resize', () => {
-        if (that.BMob) {
-          that.calcHeight = calcImgSize(180, 320)
-        } else {
-          that.calcHeight = calcImgSize(650, 1440)
-        }
-      })
-
-      if (that.BMob) {
-        that.calcHeight = calcImgSize(180, 320)
-      } else {
-        this.calcHeight = calcImgSize(650, 1440)
-      }
+      window.addEventListener('resize', this.countSize)
+      this.countSize()
     },
     computed: {
-      BMob() {
+      isMob() {
         return this.$store.state.event.isMob
       },
       isCompany() {
         return this.$store.state.event.user.type === 2
       }
+    },
+    methods: {
+      countSize() {
+        if (this.isMob) {
+          this.calcHeight = calcImgSize(180, 320)
+        } else {
+          this.calcHeight = calcImgSize(650, 1440)
+        }
+      }
+    },
+    destroyed() {
+      window.removeEventListener('resize', this.countSize)
     }
   }
 </script>

@@ -13,7 +13,8 @@
             <el-menu-item index="article" :route="menu.article">铟果说</el-menu-item>
             <el-menu-item index="design_case" :route="menu.design_case">灵感</el-menu-item>
             <el-menu-item index="commonly_sites" :route="menu.commonly_sites">设计工具</el-menu-item>
-            <el-menu-item index="innovation_index" :route="menu.innovation_index">创新指数</el-menu-item>
+            <el-menu-item index="innovation_index" :route="menu.innovation_index"
+              v-if="isAdmin > 0">创新指数</el-menu-item>
           </el-menu>
         </hgroup>
         <div class="nav-right nav-menu" v-if="isLogin">
@@ -90,7 +91,7 @@
           <li @click="closeMenu">
             <router-link :to="menu.commonly_sites">设计工具</router-link>
           </li>
-          <li @click="closeMenu">
+          <li @click="closeMenu" v-if="isAdmin > 0">
             <router-link :to="menu.innovation_index">创新指数</router-link>
           </li>
           <li @click="closeMenu" v-show="!isLogin">
@@ -149,7 +150,7 @@
           article: {path: '/article/list'},
           design_case: {path: '/design_case/general_list'},
           commonly_sites: {path: '/vcenter/commonly_sites'},
-          innovation_index: {path: '/innovation_index'},
+          innovation_index: {path: '/innovation_index/home'},
           apply: {path: '/apply'},
           login: {path: '/login'},
           register: {path: '/register'},
@@ -171,6 +172,9 @@
       }
     },
     methods: {
+      initPage() {
+        this.$store.commit('INIT_PAGE')
+      },
       navdefact() {
         // 设置router函数跳转
         this.menuactive = this.$route.path.split('/')[1]
@@ -314,13 +318,11 @@
       this.$store.commit('INIT_PAGE')
     },
     mounted() {
-      let that = this
-      window.addEventListener('resize', () => {
-        that.$store.commit('INIT_PAGE')
-      })
+      window.addEventListener('resize', this.initPage)
     },
     destroyed() {
       clearInterval(this.requestMessageTask)
+      window.addEventListener('resize', this.initPage)
     }
   }
 </script>

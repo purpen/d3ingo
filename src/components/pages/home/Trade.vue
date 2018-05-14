@@ -50,30 +50,30 @@
         calcHeight: ''
       }
     },
-    methods: {},
     created: function () {
       document.body.scrollTop = 0
       document.documentElement.scrollTop = 0
     },
     mounted() {
-      let that = this
-      window.addEventListener('resize', () => {
-        if (that.BMob) {
-          that.calcHeight = calcImgSize(180, 320)
-        } else {
-          that.calcHeight = calcImgSize(400, 1440)
-        }
-      })
-      if (that.BMob) {
-        that.calcHeight = calcImgSize(180, 320)
-      } else {
-        this.calcHeight = calcImgSize(400, 1440)
-      }
+      window.addEventListener('resize', this.countSize)
+      this.countSize()
     },
     computed: {
-      BMob() {
+      isMob() {
         return this.$store.state.event.isMob
       }
+    },
+    methods: {
+      countSize() {
+        if (this.isMob) {
+          this.calcHeight = calcImgSize(180, 320)
+        } else {
+          this.calcHeight = calcImgSize(400, 1440)
+        }
+      }
+    },
+    destroyed() {
+      window.removeEventListener('resize', this.countSize)
     }
   }
 

@@ -99,29 +99,8 @@ export default {
     }
   },
   mounted() {
-    let that = this
-    window.addEventListener('resize', () => {
-      if (that.isMob) {
-        that.calcHeight = calcImgSize(460, 750, false)
-      } else {
-        that.calcHeight = calcImgSize(500, 1440)
-      }
-      if (that.isMob) {
-        that.calcHeight3 = calcImgSize(460, 750, false)
-      } else {
-        that.calcHeight3 = calcImgSize(420, 1440)
-      }
-      if (that.isMob) {
-        that.calcHeight2 = calcImgSize(415, 690, false)
-      }
-    })
-    if (this.isMob) {
-      this.calcHeight = calcImgSize(460, 750, false)
-      this.calcHeight2 = calcImgSize(415, 690, false)
-    } else {
-      this.calcHeight = calcImgSize(500, 1440)
-      this.calcHeight3 = calcImgSize(420, 1440)
-    }
+    window.addEventListener('resize', this.countSize)
+    this.countSize()
   },
   computed: {
     isMob() {
@@ -136,6 +115,21 @@ export default {
     isCompany() {
       return this.$store.state.event.user.type === 2
     }
+  },
+  methods: {
+    countSize() {
+      if (this.isMob) {
+        this.calcHeight = calcImgSize(460, 750, false)
+        this.calcHeight2 = calcImgSize(415, 690, false)
+        this.calcHeight3 = calcImgSize(460, 750, false)
+      } else {
+        this.calcHeight = calcImgSize(500, 1440)
+        this.calcHeight3 = calcImgSize(420, 1440)
+      }
+    }
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.countSize)
   }
 }
 </script>

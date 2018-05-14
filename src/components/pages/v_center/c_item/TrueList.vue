@@ -226,8 +226,9 @@
       let self = this
       self.$http.get(api.designCooperationLists, {})
         .then(function (response) {
+          self.isLoading = false
           if (response.data.meta.status_code === 200) {
-            if (!response.data.data) {
+            if (!response.data.data.length) {
               self.isEmpty = true
             } else {
               self.ingCount = response.data.meta.pagination.total
@@ -253,33 +254,34 @@
                 designItems[i]['item']['created_at'] = item.item.created_at.date_format().format('yyyy-MM-dd')
               } // endfor
               self.designItems = designItems
-              self.isLoading = false
             }
           } else {
             self.$message.error(response.data.meta.message)
+            self.isLoading = false
           }
         })
         .catch(function (error) {
           self.$message.error(error.message)
+          self.isLoading = false
           return false
         })
 
       // 获取待合同项目数
       self.$http.get(api.designItemList, {})
-        .then(function (response) {
-          self.isLoading = false
-          if (response.data.meta.status_code === 200) {
-            if (!response.data.data) {
-              return false
-            }
-            self.waitCount = response.data.meta.pagination.total
-          } else {
-            self.$message.error(response.data.meta.message)
+      .then(function (response) {
+        self.isLoading = false
+        if (response.data.meta.status_code === 200) {
+          if (!response.data.data.length) {
+            return false
           }
-        })
-        .catch(function (error) {
-          self.$message.error(error.message)
-        })
+          self.waitCount = response.data.meta.pagination.total
+        } else {
+          self.$message.error(response.data.meta.message)
+        }
+      })
+      .catch(function (error) {
+        self.$message.error(error.message)
+      })
     }
   }
 

@@ -379,6 +379,9 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 .text-center {
   text-align: center
 }
+.text-right {
+  text-align: right
+}
 
 .font-weight4 {
   font-weight: 400;
@@ -438,6 +441,97 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 .not-allow {
   cursor: not-allowed!important;
 }
+.large-button {
+  font-size: 14px;
+  cursor: pointer;
+  width: 100%;
+  height: 34px;
+  line-height: 34px;
+  padding: 0;
+  margin: 0;
+}
+.middle-button {
+  font-size: 14px;
+  cursor: pointer;
+  min-width: 120px;
+  height: 34px;
+  line-height: 34px;
+  padding: 0;
+  margin: 0;
+}
+.small-button {
+  font-size: 14px;
+  cursor: pointer;
+  min-width: 100px;
+  height: 34px;
+  line-height: 34px;
+  padding: 0;
+  margin: 0;
+}
+.circle-button {
+  border-radius: 17px!important;
+}
+.red-button {
+  font-size: 14px;
+  background: #fff;
+  border: 1px solid #ff5a5f;
+  border-radius: 4px;
+  color: #ff5a5f;
+  padding: 0;
+  margin: 0;
+}
+.red-button:hover {
+  background-color: #ffacaf;
+  color: #fff;
+}
+.red-button:active {
+  background-color: #ff5a5f;
+  color: #fff;
+}
+.full-red-button {
+  font-size: 14px;
+  background: #FF5A5F;
+  border: 1px solid #ff5a5f;
+  border-radius: 4px;
+  color: #fff;
+  padding: 0;
+  margin: 0;
+}
+.full-red-button:hover {
+  border-color: #d23c46;
+  background-color: #d23c46;
+}
+.full-red-button:active {
+  border-color: #a02832;
+  background-color: #a02832;
+}
+.white-button {
+  background: #fff;
+  border: 1px solid #d2d2d2;
+  border-radius: 4px;
+  color: #666;
+  font-size: 14px;
+  padding: 0;
+  margin: 0;
+}
+.white-button:hover {
+  background: #f5f5f5;
+  color: #222;
+}
+.white-button:active {
+  background: #ccc;
+  color: #fff;
+}
+.disabled-button,
+.disabled-button:hover,
+.disabled-button:active {
+  font-size: 14px;
+  cursor: not-allowed;
+  background: #ccc;
+  color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
 /**
  * 面包屑
  */
@@ -446,6 +540,32 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   margin: 0 0 10px 0;
 }
 
+.bread-crumb {
+  padding-top: 20px;
+  color: #666;
+  font-size: 0;
+}
+.bread-crumb a {
+  font-size: 14px;
+  margin-right: 36px;
+  position: relative;
+}
+.bread-crumb a:after {
+  content: "";
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  border: 1px solid #d2d2d2;
+  border-left: none;
+  border-bottom: none;
+}
+.bread-crumb a:last-child:after {
+  content: "";
+  border: none;
+}
 /**
  *  新添按钮颜色值
  */
@@ -740,7 +860,7 @@ button.is-custom.is-outlined.is-loading:after {
   align-items: stretch;
   display: flex;
   background: #FFFFFF;
-  padding-left: 5px;
+  /* padding-left: 5px; */
 }
 
 .m-nav-header {
@@ -926,15 +1046,15 @@ button.is-custom.is-outlined.is-loading:after {
 }
 
 .nav-header .icon.active span {
-  width: 18px;
+  min-width: 18px;
   height: 18px;
   border: 1px solid #FF5A5F;
-  border-radius: 50%;
+  border-radius: 9px;
   overflow: hidden;
   background-color: #FF5A5F;
   position: absolute;
   z-index: 1000;
-  right: 0;
+  left: 12px;
   top: 0;
   margin-right: -10px;
   margin-top: -10px;
@@ -1456,14 +1576,14 @@ img.avatar2 {
 }
 
 .el-card {
-  transition: all ease .1s;
+  transition: transform .218s ease;
   border-radius: 0;
   box-shadow: 0 5px 10px 0 #eee
 }
 
 .el-card:hover {
-  transform: translate3d(0, -2px, 0);
-  box-shadow: 0 9pt 24px rgba(10,10,10,.15);
+  transform: translateY(-3px);
+  box-shadow: 6px 6px 10px rgba(10,10,10,.15)
 }
 
 .pcCarousel .el-carousel__indicators {
