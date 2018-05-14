@@ -9,7 +9,7 @@
       <div class="compare fr">
         <span class="tips" v-show="showTips">最多选择4个设计企业进行比较</span>
         <button @click="pushCompare"
-          :class="[changeRed ? 'full-red-button': 'white-button',
+          :class="[changeRed ? 'full-red-button': 'disabled-button',
           'middle-button', 'circle-button']">对比设计企业</button>
       </div>
     </div>
@@ -93,7 +93,7 @@
                   </router-link>
                 </el-col>
                 <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">
-                  {{ele.ave_score}}
+                  {{ele.base_average}}
                 </el-col>
               </li>
             </ul>
@@ -101,41 +101,6 @@
         </div>
         <div ref="innovation2" id="innovation2" class="power-board">
           <img class="board-header" :src="require('assets/images/subject/innovation/02@2x.png')" alt="">
-          <div class="board">
-            <div class="inno-header clearfix">
-              <el-col :xs="4" :sm="2" :md="2" :lg="2">排名</el-col>
-              <el-col :xs="16" :sm="20" :md="20" :lg="20">企业名称</el-col>
-              <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">分数</el-col>
-            </div>
-            <ul class="inno-table board-table" v-loading="loading2">
-              <li class="clearfix" v-for="(ele, index) in boardList2" :key="index">
-                <el-col :xs="4" :sm="2" :md="2" :lg="2">
-                  <span :class="['ranking',
-                    {'gold': index + 1 === 1},
-                    {'silver': index + 1 === 2},
-                    {'bronze': index + 1 === 3},]">{{index + 1}}</span>
-                </el-col>
-                <el-col :xs="16" :sm="20" :md="20" :lg="20">
-                  <router-link target="_blank" :to="{name: 'innovationCompany', params: {id: ele.design_company. d3ing_id}, query: {id: ele._id}}" class="name">
-                    <img v-if="ele.design_company.logo_url"
-                      :src="ele.design_company.logo_url"
-                      alt="">
-                    <img class="avatar" v-else
-                      :src="require('assets/images/avatar_100.png')"/>
-                    <p>{{ele.design_company.name}}</p>
-                  </router-link>
-                </el-col>
-                <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">
-                  {{ele.ave_score}}
-                </el-col>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="other-board-box">
-        <div ref="business" id="business" class="power-board">
-          <img class="board-header" :src="require('assets/images/subject/innovation/03@2x.png')" alt="">
           <div class="board">
             <div class="inno-header clearfix">
               <el-col :xs="4" :sm="2" :md="2" :lg="2">排名</el-col>
@@ -161,7 +126,42 @@
                   </router-link>
                 </el-col>
                 <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">
-                  {{ele.ave_score}}
+                  {{ele.innovate_average}}
+                </el-col>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="other-board-box">
+        <div ref="business" id="business" class="power-board">
+          <img class="board-header" :src="require('assets/images/subject/innovation/03@2x.png')" alt="">
+          <div class="board">
+            <div class="inno-header clearfix">
+              <el-col :xs="4" :sm="2" :md="2" :lg="2">排名</el-col>
+              <el-col :xs="16" :sm="20" :md="20" :lg="20">企业名称</el-col>
+              <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">分数</el-col>
+            </div>
+            <ul class="inno-table board-table" v-loading="loading2">
+              <li class="clearfix" v-for="(ele, index) in boardList2" :key="index">
+                <el-col :xs="4" :sm="2" :md="2" :lg="2">
+                  <span :class="['ranking',
+                    {'gold': index + 1 === 1},
+                    {'silver': index + 1 === 2},
+                    {'bronze': index + 1 === 3},]">{{index + 1}}</span>
+                </el-col>
+                <el-col :xs="16" :sm="20" :md="20" :lg="20">
+                  <router-link target="_blank" :to="{name: 'innovationCompany', params: {id: ele.design_company. d3ing_id}, query: {id: ele._id}}" class="name">
+                    <img v-if="ele.design_company.logo_url"
+                      :src="ele.design_company.logo_url"
+                      alt="">
+                    <img class="avatar" v-else
+                      :src="require('assets/images/avatar_100.png')"/>
+                    <p>{{ele.design_company.name}}</p>
+                  </router-link>
+                </el-col>
+                <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">
+                  {{ele.business_average}}
                 </el-col>
               </li>
             </ul>
@@ -194,7 +194,7 @@
                   </router-link>
                 </el-col>
                 <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">
-                  {{ele.ave_score}}
+                  {{ele.design_average}}
                 </el-col>
               </li>
             </ul>
@@ -229,7 +229,7 @@
                   </router-link>
                 </el-col>
                 <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">
-                  {{ele.ave_score}}
+                  {{ele.effect_average}}
                 </el-col>
               </li>
             </ul>
@@ -262,7 +262,7 @@
                   </router-link>
                 </el-col>
                 <el-col class="text-center" :xs="4" :sm="2" :md="2" :lg="2">
-                  {{ele.ave_score}}
+                  {{ele.credit_average}}
                 </el-col>
               </li>
             </ul>
@@ -347,15 +347,15 @@ export default {
         (this.$refs.innovation2.offsetTop <= clentHeight) ||
         ((scrollTop <= this.$refs.innovation2.offsetTop + this.$refs.innovation2.offsetHeight) &&
         (this.$refs.innovation2.offsetTop + this.$refs.innovation2.offsetHeight <= clentHeight))) {
-        this.getBoard(2)
-        this.isStop2 = true
+        this.getBoard(3)
+        this.isStop3 = true
       }
       if ((scrollTop <= this.$refs.business.offsetTop) &&
         (this.$refs.business.offsetTop <= clentHeight) ||
         ((scrollTop <= this.$refs.business.offsetTop + this.$refs.business.offsetHeight) &&
         (this.$refs.business.offsetTop + this.$refs.business.offsetHeight <= clentHeight))) {
-        this.getBoard(3)
-        this.isStop3 = true
+        this.getBoard(2)
+        this.isStop2 = true
       }
       if ((scrollTop <= this.$refs.brand.offsetTop) &&
         (this.$refs.brand.offsetTop <= clentHeight) ||
@@ -617,7 +617,7 @@ export default {
     top: 20px;
     width: 20px;
     height: 20px;
-    border: 1px solid rgba(210, 210, 210, 0.3);
+    border: 1px solid #d2d2d2;
     border-radius: 50%;
     cursor: pointer;
     background: transparent
@@ -641,6 +641,9 @@ export default {
     transform: rotate(45deg);
     cursor: pointer;
   }
+  .quite.more-than5 {
+    color: #c8c8c8
+  }
   .more-than5::after {
     cursor: no-drop;
     border-color: transparent
@@ -653,6 +656,9 @@ export default {
   .more-than5:hover:before {
     background: #f7f7f7;
     border-color: #d2d2d2
+  }
+  .quite.is-active {
+    color: #666
   }
   .is-active::before {
     background: #ff5a5f;
