@@ -1,5 +1,5 @@
 <template>
-<section class="">
+<section class="project-show">
   <v-menu-left currentName="project_management"></v-menu-left>
   <div :class="['project-management',{'project-management-mini': !leftWidth}]">
     <menu-sub :currentRoute="currentRoute"></menu-sub>
@@ -113,6 +113,15 @@ export default {
     top: 60px;
     left: 60px;
     padding-left: 0
+  }
+}
+@media screen and (max-width: 767px) {
+  .project-management,
+  .project-management-mini {
+    padding-left: 0;
+  }
+  .project-show {
+    padding: 20px 0 0
   }
 }
 </style>

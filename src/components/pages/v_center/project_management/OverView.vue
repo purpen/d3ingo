@@ -774,5 +774,10 @@ export default {
   border:1px solid #d2d2d2;
   border-radius: 4px;
 }
+@media screen and (max-width: 767px) {
+  .item-total {
+    margin: 0 15px;
+  }
+}
 </style>
 
