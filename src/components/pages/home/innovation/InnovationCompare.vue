@@ -145,7 +145,7 @@ export default {
           this.companyDetails = res.data.data
           this.$nextTick(_ => {
             for (let i in this.companyDetails) {
-              let radar = this.$refs[`radar${i}`]
+              let radar = this.$refs[`radar${i}`][0]
               this.radarList = [
                 {
                   name: '基础运作力',
@@ -178,7 +178,7 @@ export default {
                   value: this.companyDetails[i].design_average
                 }
               ]
-              radar[0].mergeOptions({
+              radar.mergeOptions({
                 radar: {
                   indicator: this.radarList.map(({name, max}) => {
                     return {name, max}

@@ -11,7 +11,8 @@
             <el-menu-item index="article" :route="menu.article">铟果说</el-menu-item>
             <el-menu-item index="design_case" :route="menu.design_case">灵感</el-menu-item>
             <el-menu-item index="commonly_sites" :route="menu.commonly_sites">设计工具</el-menu-item>
-            <el-menu-item v-if="isAdmin > 0" index="innovation_index" :route="menu.innovation_index">创新指数</el-menu-item>
+            <el-menu-item index="innovation_index" :route="menu.innovation_index"
+              v-if="isAdmin > 0">创新指数</el-menu-item>
           </el-menu>
         </hgroup>
         <div class="nav-right nav-menu" v-if="isLogin">
