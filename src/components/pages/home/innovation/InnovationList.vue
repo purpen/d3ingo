@@ -679,5 +679,21 @@ export default {
     h2 {
       font-size: 16px;
     }
+    .operation .buttons,
+    .operation .compare {
+      float: initial;
+      display: flex;
+      justify-content: center;
+      padding-bottom: 20px;
+    }
+    .buttons button {
+      margin-right: 0;
+    }
+    .buttons button:first-child {
+      border-radius: 4px 0 0 4px
+    }
+    .buttons button:last-child {
+      border-radius: 0 4px 4px 0
+    }
   }
 </style>
