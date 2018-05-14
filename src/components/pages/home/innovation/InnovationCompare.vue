@@ -5,9 +5,9 @@
       <router-link to="">设计企业对比</router-link>
     </p>
     <h3>对比设计企业</h3>
-    <div class="compare-comtent clearfix">
+    <div v-if="!isMob" class="compare-comtent clearfix">
       <el-row>
-        <el-col v-for="(ele, index) in companyDetails" :key="index" :span="6">
+        <el-col v-for="(ele, index) in companyDetails" :key="index" :xs="24" :sm="6" :md="6" :lg="6">
           <router-link :to="{name: 'innovationCompany', params: {id: ele.design_company. d3ing_id}, query: {id: ele._id}}"
             :target="isMob ? '_self' : '_blank'" class="company-head">
           <img class="company-logo" v-if="ele.design_company.logo_url" :src="ele.design_company.logo_url" alt="">
@@ -18,7 +18,52 @@
       </el-row>
       <h3>创新力指数</h3>
       <el-row>
-        <el-col v-for="(ele, index) in companyDetails" :key="index" :span="6">
+        <el-col v-for="(ele, index) in companyDetails" :key="index" :xs="24" :sm="6" :md="6" :lg="6">
+          <ul class="company-body">
+            <li class="chart">
+              <ECharts
+                :options="option"
+                auto-resize
+                :ref="`radar${index}`"></ECharts>
+            </li>
+            <li class="profile">
+              <p class="profile-title">创新力指数（DCI）</p>
+              <p class="profile-value">{{ele.ave_score}}</p>
+            </li>
+            <li class="profile">
+              <p class="profile-title">基础运作力</p>
+              <p class="profile-value">{{ele.base_average}}</p>
+            </li>
+            <li class="profile">
+              <p class="profile-title">创新交付力 </p>
+              <p class="profile-value">{{ele.innovate_average}}</p>
+            </li>
+            <li class="profile">
+              <p class="profile-title">商业决策力</p>
+              <p class="profile-value">{{ele.business_average}}</p>
+            </li>
+            <li class="profile">
+              <p class="profile-title">客观公信力</p>
+              <p class="profile-value">{{ele.effect_average}}</p>
+            </li>
+            <li class="profile">
+              <p class="profile-title">品牌溢价力</p>
+              <p class="profile-value">{{ele.design_average}}</p>
+            </li>
+          </ul>
+        </el-col>
+      </el-row>
+    </div>
+    <div v-if="isMob" class="compare-comtent clearfix">
+      <h3>创新力指数</h3>
+      <el-row>
+        <el-col v-for="(ele, index) in companyDetails" :key="index" :xs="24" :sm="6" :md="6" :lg="6">
+            <router-link :to="{name: 'innovationCompany', params: {id: ele.design_company. d3ing_id}, query: {id: ele._id}}"
+              :target="isMob ? '_self' : '_blank'" class="company-head">
+            <img class="company-logo" v-if="ele.design_company.logo_url" :src="ele.design_company.logo_url" alt="">
+            <img class="company-logo" v-else :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
+            <p class="company-name">{{ele.design_company.name}}</p>
+          </router-link>
           <ul class="company-body">
             <li class="chart">
               <ECharts
@@ -259,5 +304,16 @@ h3 {
 .echarts {
   width: 100%;
   height: 100%;
+}
+@media screen and (max-width: 767px) {
+  .company-head,
+  .company-body {
+    border: 1px solid #d2d2d2;
+    border-radius: 4px;
+    margin: 15px 20px;
+  }
+  .bread-crumb, h3 {
+    padding: 20px 20px 0
+  }
 }
 </style>

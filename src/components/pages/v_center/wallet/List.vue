@@ -168,7 +168,7 @@
 
       <div class="withdraw-input">
         <p class="withdraw-title">提现金额</p>
-        <el-input placeholder="提现额度" v-model.number="withdrawPrice">
+        <el-input placeholder="请输入提现额度" v-model.number="withdrawPrice">
           <template slot="prepend">¥</template>
         </el-input>
         <p class="withdraw-des">可提现金额: ¥ {{ wallet.price }} <a href="javascript:void(0)" @click="allPrice">全部提现</a></p>

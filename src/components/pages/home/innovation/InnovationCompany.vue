@@ -4,7 +4,7 @@
       <img class="company-logo" v-if="companyDetails.design_company" :src="companyDetails.design_company.logo_url" alt="">
       <img class="company-logo" v-else :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
       <h2 class="company-name" v-if="companyDetails.design_company">{{companyDetails.design_company.name}}</h2>
-      <p class="ranking" v-if="companyDetails.design_company">设计创新力指数：<span>{{companyDetails.design_company.ave_score}}</span>排名：<span>1</span><i></i></p>
+      <p class="ranking" v-if="companyDetails.design_company">设计创新力指数：<span>{{companyDetails.ave_score}}</span>排名：<span>{{companyDetails.rank}}</span><i></i></p>
       <div class="chart" ref="chart">
         <ECharts
           :init-options="initOptions"
@@ -219,6 +219,9 @@ export default {
 </script>
 
 <style scoped>
+  .innavation-company {
+    margin-bottom: -26px;
+  }
   .company-base {
     background: #fafafa;
     display: flex;
@@ -269,8 +272,12 @@ export default {
     height: 200px;
     overflow: hidden;
   }
+  .image-box img {
+    width: 100%
+  }
   .item-content {
     padding: 10px 20px;
+    min-height: 78px;
   }
 
   .title {
@@ -301,6 +308,7 @@ export default {
   .echarts {
     width: 100%;
     height: 100%;
+    margin-top: 20px;
   }
 @media screen and (max-width: 767px) {
   .image-box {
