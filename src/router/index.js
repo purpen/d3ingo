@@ -218,6 +218,7 @@ routes = [
   // 创新力指数
   {
     path: '/innovation_index',
+    redirect: '/innovation_index/home',
     meta: {
       name: 'InnovationIndex',
       requireAuth: false,
