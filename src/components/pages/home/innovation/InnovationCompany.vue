@@ -1,7 +1,8 @@
 <template>
   <div class="innavation-company">
     <div class="company-base">
-      <img class="company-logo" :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
+      <img class="company-logo" v-if="companyDetails.design_company" :src="companyDetails.design_company.logo_url" alt="">
+      <img class="company-logo" v-else :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
       <h2 class="company-name" v-if="companyDetails.design_company">{{companyDetails.design_company.name}}</h2>
       <p class="ranking" v-if="companyDetails.design_company">设计创新力指数：<span>{{companyDetails.design_company.ave_score}}</span>排名：<span>1</span><i></i></p>
       <div class="chart" ref="chart">

@@ -615,10 +615,16 @@ export default {
     top: 20px;
     width: 20px;
     height: 20px;
-    border: 1px solid #666;
+    border: 1px solid rgba(210, 210, 210, 0.3);
     border-radius: 50%;
     cursor: pointer;
-    background: #fff
+    background: transparent
+  }
+  .quite:hover {
+    transition: all 268ms ease;
+  }
+  .quite:hover:before {
+    border: 1px solid #999;
   }
   .quite::after {
     content: '';
@@ -634,6 +640,10 @@ export default {
     cursor: pointer;
   }
   .is-active::before {
+    background: #ff5a5f;
+    border-color: #ff5a5f
+  }
+  .is-active:hover:before {
     background: #ff5a5f;
     border-color: #ff5a5f
   }

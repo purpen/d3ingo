@@ -7,166 +7,48 @@
     <h3>对比设计企业</h3>
     <div class="compare-comtent clearfix">
       <el-row>
-        <el-col :span="6">
-        <router-link :to="{name: 'innovationCompany', params: {id: 1}}" class="company-head">
-          <img class="company-logo" :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
-          <p class="company-name">飞鱼设计</p>
-        </router-link>
-        </el-col>
-        <el-col :span="6">
-        <router-link :to="{name: 'innovationCompany', params: {id: 1}}" class="company-head">
-          <img class="company-logo" :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
-          <p class="company-name">飞鱼设计</p>
-        </router-link>
-        </el-col>
-        <el-col :span="6">
-        <router-link :to="{name: 'innovationCompany', params: {id: 1}}" class="company-head">
-          <img class="company-logo" :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
-          <p class="company-name">飞鱼设计</p>
-        </router-link>
-        </el-col>
-        <el-col :span="6">
-        <router-link :to="{name: 'innovationCompany', params: {id: 1}}" class="company-head">
-          <img class="company-logo" :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
-          <p class="company-name">飞鱼设计</p>
+        <el-col v-for="(ele, index) in companyDetails" :key="index" :span="6">
+          <router-link :to="{name: 'innovationCompany', params: {id: ele.design_company. d3ing_id}, query: {id: ele._id}}"
+            :target="isMob ? '_self' : '_blank'" class="company-head">
+          <img class="company-logo" v-if="ele.design_company.logo_url" :src="ele.design_company.logo_url" alt="">
+          <img class="company-logo" v-else :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
+          <p class="company-name">{{ele.design_company.name}}</p>
         </router-link>
         </el-col>
       </el-row>
       <h3>创新力指数</h3>
       <el-row>
-        <el-col :span="6">
+        <el-col v-for="(ele, index) in companyDetails" :key="index" :span="6">
           <ul class="company-body">
             <li class="chart">
               <ECharts
                 :options="option"
                 auto-resize
-                ref="radar"></ECharts>
+                :ref="`radar${index}`"></ECharts>
             </li>
             <li class="profile">
               <p class="profile-title">创新力指数（DCI）</p>
-              <p class="profile-value">200</p>
+              <p class="profile-value">{{ele.ave_score}}</p>
             </li>
             <li class="profile">
               <p class="profile-title">基础运作力</p>
-              <p class="profile-value">200</p>
+              <p class="profile-value">{{ele.base_average}}</p>
             </li>
             <li class="profile">
               <p class="profile-title">创新交付力 </p>
-              <p class="profile-value">200</p>
+              <p class="profile-value">{{ele.innovate_average}}</p>
             </li>
             <li class="profile">
               <p class="profile-title">商业决策力</p>
-              <p class="profile-value">200</p>
+              <p class="profile-value">{{ele.business_average}}</p>
             </li>
             <li class="profile">
               <p class="profile-title">客观公信力</p>
-              <p class="profile-value">200</p>
+              <p class="profile-value">{{ele.effect_average}}</p>
             </li>
             <li class="profile">
               <p class="profile-title">品牌溢价力</p>
-              <p class="profile-value">200</p>
-            </li>
-          </ul>
-        </el-col>
-        <el-col :span="6">
-          <ul class="company-body">
-            <li class="chart">
-              <ECharts
-                :options="option"
-                auto-resize
-                ref="radar"></ECharts>
-            </li>
-            <li class="profile">
-              <p class="profile-title">创新力指数（DCI）</p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">基础运作力</p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">创新交付力 </p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">商业决策力</p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">客观公信力</p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">品牌溢价力</p>
-              <p class="profile-value">200</p>
-            </li>
-          </ul>
-        </el-col>
-        <el-col :span="6">
-          <ul class="company-body">
-            <li class="chart">
-              <ECharts
-                :options="option"
-                auto-resize
-                ref="radar"></ECharts>
-            </li>
-            <li class="profile">
-              <p class="profile-title">创新力指数（DCI）</p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">基础运作力</p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">创新交付力 </p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">商业决策力</p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">客观公信力</p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">品牌溢价力</p>
-              <p class="profile-value">200</p>
-            </li>
-          </ul>
-        </el-col>
-        <el-col :span="6">
-          <ul class="company-body">
-            <li class="chart">
-              <ECharts
-                :options="option"
-                auto-resize
-                ref="radar"></ECharts>
-            </li>
-            <li class="profile">
-              <p class="profile-title">创新力指数（DCI）</p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">基础运作力</p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">创新交付力 </p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">商业决策力</p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">客观公信力</p>
-              <p class="profile-value">200</p>
-            </li>
-            <li class="profile">
-              <p class="profile-title">品牌溢价力</p>
-              <p class="profile-value">200</p>
+              <p class="profile-value">{{ele.design_average}}</p>
             </li>
           </ul>
         </el-col>
@@ -189,6 +71,7 @@ export default {
       {name: '品牌溢价力', max: 20, value: 0}
     ]
     return {
+      options: [],
       option: {
         tooltip: {},
         radar: {
@@ -239,41 +122,74 @@ export default {
           }
         }]
       },
-      compareStr: ''
+      compareStr: '',
+      companyDetails: []
     }
   },
   created() {
-    this.compareStr = this.$route.query.compareList.join(',')
+    let compareList = this.$route.query.compareList
+    this.compareStr = compareList.join(',')
   },
   mounted() {
+    // let compareList = this.$route.query.compareList
     this.getDetails(this.compareStr)
   },
   methods: {
     getDetails(id) {
-      let radar = this.$refs.radar
-      radar.showLoading()
+      // let radar = this.$refs.radar
+      // radar.showLoading()
       this.$http.get(api.companyRecord, {params: {
         ids: id
       }}).then(res => {
-        console.log(res)
         if (res.data.meta.status_code === 200) {
-          if (res.data.data.length > 4) {
-            this.companyDetails = res.data.data.slice(0, 4)
-          } else {
-            this.companyDetails = res.data.data
-          }
-          this.companyDetails = res.data.data[0]
-          radar.hideLoading()
-          // this.$refs.radar.mergeOptions({
-          //   radar: {
-          //     indicator: this.radarList.map(({name, max}) => {
-          //       return {name, max}
-          //     })
-          //   },
-          //   series: [{
-          //     data: [{value: this.radarList.map(({value}) => value)}]
-          //   }]
-          // })
+          this.companyDetails = res.data.data
+          this.$nextTick(_ => {
+            for (let i in this.companyDetails) {
+              let radar = this.$refs[`radar${i}`][0]
+              this.radarList = [
+                {
+                  name: '基础运作力',
+                  max: 100,
+                  value: this.companyDetails[i].base_average
+                },
+                {
+                  name: '风险应激力',
+                  max: 100,
+                  value: this.companyDetails[i].credit_average
+                },
+                {
+                  name: '创新交付力',
+                  max: 100,
+                  value: this.companyDetails[i].innovate_average
+                },
+                {
+                  name: '商业决策力',
+                  max: 100,
+                  value: this.companyDetails[i].business_average
+                },
+                {
+                  name: '客观公信力',
+                  max: 100,
+                  value: this.companyDetails[i].effect_average
+                },
+                {
+                  name: '品牌溢价力',
+                  max: 100,
+                  value: this.companyDetails[i].design_average
+                }
+              ]
+              radar.mergeOptions({
+                radar: {
+                  indicator: this.radarList.map(({name, max}) => {
+                    return {name, max}
+                  })
+                },
+                series: [{
+                  data: [{value: this.radarList.map(({value}) => value)}]
+                }]
+              })
+            }
+          })
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -284,6 +200,11 @@ export default {
   },
   components: {
     ECharts
+  },
+  computed: {
+    isMob() {
+      return this.$store.state.event.isMob
+    }
   }
 }
 </script>
