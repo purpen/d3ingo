@@ -193,12 +193,104 @@
     </ul>
   </section>
   <section class="item-content">
-    <div class="item-list">
-    </div>
-    <div  class="add-item" @click="isItemStage=true">
-      <div>+</div>
-      <p>添加项目阶段</p>
-    </div>
+
+    <p class="h3">项目执行进度规划<p>
+
+      <div class="item-lists">
+
+        <el-row>
+
+          <el-col :span="6">
+            <div class="item-list-text">
+
+              <div class="item-text-Header">
+                <el-row>
+
+                  <el-col>
+                    <div class="fr">
+                      <i class="fx-icon-search" 
+                        @click="isSearch=true"
+                      >
+                      </i>
+                    </div>
+                  </el-col>
+
+                  <el-col>
+                    <div class="item-text-content">
+                      <span>下面</span>
+                      <ul>
+                        <li>阶段</li>
+                        <li>投入时间</li>
+                        <li>完成度</li>               
+                      </ul>
+                    </div>
+                  </el-col>
+
+                </el-row>
+              </div>
+
+              <div class="item-text-list">
+                <el-row>
+                  <el-col>
+                    <div class="item-text-content">
+                      <span>下面</span>
+                      <ul>
+                        <li>阶段</li>
+                        <li>投入时间</li>
+                        <li>完成度</li>               
+                      </ul>
+                    </div>
+                  </el-col>
+
+                  <el-col>
+                     <ul class="paycontent">
+                      <li>
+                        交付物:
+                      </li>
+                      <li>
+                        第一项
+                      </li>
+                      <li>
+                        dierxian
+                      </li>
+                    </ul>
+                  </el-col>
+                   
+                </el-row>
+              </div>
+            </div>
+          </el-col>
+
+          <el-col :span="18">
+
+            <div class="item-chart">
+
+              <div class="item-chart-list">
+
+                <div class="item-chartHeader">
+                  <div>2018年5月</div>
+                  <ul>
+                    <li v-for="(d,indexd) in dateList" :key="indexd" class="span1">
+                      {{d}}
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="item-chartContent">
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </el-col>
+        </el-row>
+
+        <div  class="add-item" @click="isItemStage=true">
+          <div>+</div>
+          <p>添加项目阶段</p>
+        </div>
     <!-- <div v-for="(designStage,index) in designStageLists" :key="index">
       
       <div>
@@ -279,6 +371,7 @@
       <el-button @click="deleteDes(designStage,index)">删除</el-button>
       <el-button @click="addtack(designStage.id)">添加任务</el-button>
     </div> -->
+    </div>
   </section>
     <!-- <el-input placeholder="任务名称" v-model="formTack.name"></el-input>
     <el-input placeholder="任务投入时间" v-model="formTack.duration"></el-input>
@@ -317,11 +410,16 @@ export default {
       formTackUp: {}, // 编辑任务
       formNode: {}, // 新建节点
       formNodeUp: {}, // 编辑节点
-      designStageLists: [],
-      indesignStage: '',
-      itemdesId: '',
+      designStageLists: [], // 阶段列表
+      indesignStage: '', // 当前阶段
+      itemdesId: '', // 项目阶段id
       checked: false,
       isItemStage: false,
+      isSearch: false, // 是否搜索
+      dateList: [
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+        13, 14, 15, 16, 17, 18, 19, 20
+      ],
       rules: {
         duration: [
           {
@@ -717,7 +815,7 @@ export default {
   font-size: 18px;
   font-weight: bold;
   color:#222222;
-  margin-bottom:30px;
+  margin-bottom:20px;
 }
 .full-red-button{
   margin-left:20px;
@@ -771,8 +869,70 @@ export default {
   margin-top:10px;
 }
 .item-content{
+  min-height:300px;
+  margin-bottom:50px;
+}
+.item-lists{
   border:1px solid #d2d2d2;
   border-radius: 4px;
+}
+.item-text-content{
+  display:flex;
+  justify-content:space-between;
+}
+.item-text-content ul{
+  display:flex;
+  justify-content: space-between;
+}
+.item-text-content ul>li{
+  padding-left:5px;
+}
+.item-text-Header{
+  border-bottom:1px solid #d2d2d2;
+  border-right: 1px solid #d2d2d2;
+  padding:10px 10px 0px 20px;
+}
+.item-text-Header>.el-row>.el-col{
+  padding-bottom:10px;
+}
+.item-text-list{
+  height: 180px;
+  padding:20px 10px 10px 20px;
+  background:#f7f7f7;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  border-bottom:1px solid #d2d2d2;
+  border-right: 1px solid #d2d2d2;
+}
+.paycontent>li{
+  padding:10px 0px 0px 20px;
+}
+.item-chart{
+  position: relative;
+  overflow: hidden;
+  height:100%;
+  /* height:200px; */
+}
+.item-chart-list{
+  position:absolute;
+  width:100%;
+  /* overflow:auto; */
+}
+.item-chartHeader{
+  white-space: nowrap;
+  padding-bottom:10px;
+  border-bottom:1px solid #d2d2d2;
+}
+.item-chartHeader>div{
+  margin:10px 0px;
+}
+.item-chartHeader>ul>li{
+  display: inline-block;
+  text-align:center;
+}
+.span1{
+  width:10%;
 }
 </style>
 
