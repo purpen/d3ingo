@@ -115,24 +115,25 @@
       document.documentElement.scrollTop = 0
     },
     mounted() {
-      let that = this
-      window.addEventListener('resize', () => {
-        if (that.isMob) {
-          that.calcHeight = calcImgSize(180, 320)
-        } else {
-          that.calcHeight = calcImgSize(400, 1180)
-        }
-      })
-      if (that.isMob) {
-        that.calcHeight = calcImgSize(200, 320)
-      } else {
-        that.calcHeight = calcImgSize(400, 1180)
-      }
+      window.addEventListener('resize', this.countSize)
+      this.countSize()
     },
     computed: {
       isMob() {
         return this.$store.state.event.isMob
       }
+    },
+    methods: {
+      countSize() {
+        if (this.isMob) {
+          this.calcHeight = calcImgSize(200, 320)
+        } else {
+          this.calcHeight = calcImgSize(400, 1180)
+        }
+      }
+    },
+    destroyed() {
+      window.removeEventListener('resize', this.countSize)
     }
   }
 </script>

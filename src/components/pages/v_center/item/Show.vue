@@ -274,7 +274,7 @@
                   <p>项目资金</p>
                   <p class="capital-money">¥ {{ item.price }}</p>
                   <p class="pay-btn">
-                    <span>项目资金已拖管</span>
+                    <span>项目资金已托管</span>
                   </p>
                 </div>
                 <div class="capital-item clearfix" v-else>
@@ -299,7 +299,7 @@
                 </div>
                 <div class="manage-item add-stage clearfix" v-else>
                   <div class="manage-item" v-if="stages.length === 0">
-                    <p class="wait-begin">等待设计公司提交资料</p>
+                    <p class="wait-begin">项目进行中，等待设计方提交阶段文件</p>
                   </div>
                   <div class="clearfix" v-else>
                      <div class="stage-item clearfix" v-for="(d, index) in stages" :key="index">
@@ -324,7 +324,7 @@
                           </div>
                         </div>
                         <div class="contract-right">
-                          <p><a :href="asset.file" target="_blank"><i class="fa fa-download" aria-hidden="true"></i> 下载</a>
+                          <p><a :href="asset.file + '?attname=' + asset.name"><i class="fa fa-download" aria-hidden="true"></i> 下载</a>
                           </p>
                         </div>
                         <div class="clear"></div>
@@ -416,7 +416,7 @@
       title="提示"
       v-model="comfirmDialog"
       size="tiny">
-      <span>{{ comfirmMessage }}</span>
+      <p>{{ comfirmMessage }}</p>
       <span slot="footer" class="dialog-footer">
         <input type="hidden" ref="companyId"/>
         <input type="hidden" ref="confirmTargetId"/>
@@ -910,7 +910,7 @@ export default {
               self.statusLabel.contract = true
               self.statusLabel.amount = true
               break
-            case 9: // 项目资金已拖管
+            case 9: // 项目资金已托管
               self.progressButt = 2
               self.progressContract = 3
               self.progressItem = -1

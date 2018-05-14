@@ -19,3 +19,10 @@
   .child-input .el-textarea__inner {
     border-color: #d2d2d2
   }
+  .textarea-summary .el-textarea__inner {
+    border-color: transparent
+  }
+  .textarea-summary .el-textarea__inner:hover,
+  .textarea-summary .el-textarea__inner:focus {
+    border-color: #d2d2d2
+  }

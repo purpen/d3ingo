@@ -112,14 +112,14 @@
 
     <el-dialog title="确认线下已打款" v-model="sureTransferDialog">
       <el-form label-position="top">
-        <el-form-item label="银行类型" label-width="200px">
+        <el-form-item label="户名" label-width="200px">
+          <el-input v-model="withDrawForm.bankUser" auto-complete="off" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="银行" label-width="200px">
           <el-input v-model="withDrawForm.bankName" disabled></el-input>
         </el-form-item>
-        <el-form-item label="卡号" label-width="200px">
+        <el-form-item label="账号" label-width="200px">
           <el-input v-model="withDrawForm.bankNumber" auto-complete="off" disabled></el-input>
-        </el-form-item>
-        <el-form-item label="开卡人姓名" label-width="200px">
-          <el-input v-model="withDrawForm.bankUser" auto-complete="off" disabled></el-input>
         </el-form-item>
 
         <el-form-item label="备注" label-width="80px">

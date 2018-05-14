@@ -45,19 +45,8 @@ export default {
     }
   },
   mounted() {
-    let that = this
-    window.addEventListener('resize', () => {
-      if (that.isMob) {
-        that.calcHeight = calcImgSize(840, 750, false)
-      } else {
-        that.calcHeight = calcImgSize(1040, 2880)
-      }
-    })
-    if (this.isMob) {
-      this.calcHeight = calcImgSize(840, 750, false)
-    } else {
-      this.calcHeight = calcImgSize(1040, 2880)
-    }
+    window.addEventListener('resize', this.countSize)
+    this.countSize()
   },
   methods: {
     upload() {
@@ -75,6 +64,13 @@ export default {
         store.commit(types.PREV_URL_NAME, 'YuQuanGifts')
         this.$router.push({name: 'login', params: { url: 'yq', type: 2 }})
       }
+    },
+    countSize() {
+      if (this.isMob) {
+        this.calcHeight = calcImgSize(840, 750, false)
+      } else {
+        this.calcHeight = calcImgSize(1040, 2880)
+      }
     }
   },
   computed: {
@@ -90,6 +86,9 @@ export default {
     isCompany() {
       return this.$store.state.event.user.type === 2
     }
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.countSize)
   }
 }
 </script>

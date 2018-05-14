@@ -350,6 +350,7 @@ export default {
   designQuotationCreate: '/designQuotation/create',  // POST 创建
   designQuotationUpdate: '/designQuotation/update', // PUT 更新
   designQuotation: '/designQuotation',   // 详情
+  designQuotationDown: '/designQuotationDown', // 下载
 
   // 职位管理
   designPositionList: '/designPosition/lists',    // GET 列表
@@ -357,6 +358,8 @@ export default {
   designPositionUpdate: '/designPosition/update',   // PUT 编辑
   designPositionDelete: '/designPosition/delete',   // DELETE 删除
 
+  // 创新力榜单
+  companyRecord: '/opalus/company_record/list',
   // test
   test: '/', // End
 

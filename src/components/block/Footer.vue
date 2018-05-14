@@ -41,9 +41,11 @@
           <p class="share" @click="clickwx">
             <i class="wechat"></i>
           </p>
+          <!--
           <p class="share">
             <i class="weibo"></i>
           </p>
+          -->
           <!--<p class="share">-->
           <!--<router-link :to="{name: 'test'}" class="">-->
           <!--<i class="fa fa-qq fa-2x" aria-hidden="true"></i>-->
@@ -235,7 +237,7 @@
 
   .footer .fllow .title {
     white-space: nowrap;
-    margin: 40px 20px 10px 0;
+    margin: 20px 20px 10px 0;
   }
 
   .call {

@@ -49,17 +49,21 @@
         calcHeight: ''
       }
     },
-    methods: {},
     created: function () {
       document.body.scrollTop = 0
       document.documentElement.scrollTop = 0
     },
     mounted() {
-      let that = this
-      window.addEventListener('resize', () => {
-        that.calcHeight = calcImgSize(400, 1440)
-      })
-      this.calcHeight = calcImgSize(400, 1440)
+      window.addEventListener('resize', this.countSize)
+      this.countSize()
+    },
+    methods: {
+      countSize() {
+        this.calcHeight = calcImgSize(800, 2880)
+      }
+    },
+    destroyed() {
+      window.removeEventListener('resize', this.countSize)
     }
   }
 

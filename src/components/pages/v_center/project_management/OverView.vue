@@ -933,6 +933,11 @@ export default {
 }
 .span1{
   width:10%;
+  }
+@media screen and (max-width: 767px) {
+  .item-total {
+    margin: 0 15px;
+  }
 }
 </style>
 

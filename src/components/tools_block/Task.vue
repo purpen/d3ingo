@@ -24,7 +24,7 @@
       <p :class="['add-task-input', {'active': currentForm.stage === 2}]">
         <span :class="['add-task-select']" @click="completeTask"></span>
         <el-tooltip class="item" effect="dark" content="点击即可编辑" placement="top">
-          <el-input :autosize="{ minRows: 1}" type="textarea" @focus="saveOldVal(currentForm.name)" @blur="blurInput({name: currentForm.name})" v-model="currentForm.name" placeholder="填写任务名称"></el-input>
+          <el-input :autosize="{ minRows: 1}" type="textarea" @focus="saveOldVal(currentForm.name)" @blur="blurInput({name: currentForm.name})" v-model="currentForm.name" placeholder="请填写任务名称"></el-input>
         </el-tooltip>
       </p>
       <div class="task-detail-body">
@@ -38,7 +38,7 @@
             </li>
           </ul>
           <ul class="task-member-list task-member-execute" v-else>
-            <li @click="showMember = true" >待认领</li>
+            <li @click="showMember = true">选择执行者</li>
           </ul>
           <v-Member
             event="execute"
@@ -108,7 +108,7 @@
                   <span @click="showChild(ele.id)" class="child-more"></span>
                 </el-tooltip>
                 <el-tooltip class="item" effect="dark" content="点击即可编辑" placement="top">
-                  <el-input :autosize="{ minRows: 1}" type="textarea" v-model="ele.name" placeholder="填写任务名称" @blur="updateChild(ele.id, {name: ele.name})"></el-input>
+                  <el-input :autosize="{ minRows: 1}" type="textarea" v-model="ele.name" placeholder="请填写任务名称" @blur="updateChild(ele.id, {name: ele.name})"></el-input>
                 </el-tooltip>
                 <el-date-picker
                   v-model="ele.over_time"
@@ -128,7 +128,7 @@
             <li class="template" v-if="isAddChild">
               <div :class="['add-task-input', 'add-child-input', 'child-input']">
                 <span :class="['add-task-select', 'add-child-select', 'add-child-template']"></span>
-                <el-input :autosize="{ minRows: 1}" type="textarea" v-model="addChildForm.name" placeholder="填写任务名称"></el-input>
+                <el-input :autosize="{ minRows: 1}" type="textarea" v-model="addChildForm.name" placeholder="请填写任务名称"></el-input>
                 <el-date-picker
                   v-model="addChildForm.over_time"
                   type="datetime"
@@ -154,10 +154,12 @@
         <div class="task-summary">
           <p class="p-summary">备注</p>
           <el-tooltip class="item" effect="dark" content="点击即可编辑" placement="top">
-            <textarea placeholder="请填写备注内容" class="textarea-summary"
+            <el-input :autosize="{ minRows: 1}"
+              type="textarea" placeholder="请填写备注内容"
+              class="textarea-summary"
               @focus="saveOldVal(currentForm.summary)" 
               @blur="blurInput({summary: currentForm.summary})"
-              v-model="currentForm.summary"></textarea>
+              v-model="currentForm.summary"></el-input>
           </el-tooltip>
         </div>
         <div class="task-member">
@@ -413,6 +415,7 @@
             self.$store.commit('deleteTaskListItem', self.currentForm)
             self.currentForm = {}
             self.$store.commit('changeTaskStatePower', 0)
+            self.$store.commit('removeParentTask')
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -1021,21 +1024,17 @@
     font-size: 14px;
   }
   .task-summary {
-    padding: 20px 0
+    padding: 20px 0 0
   }
   .textarea-summary {
     margin-left: 26px;
-    margin-top: 20px;
+    margin-top: 0;
     font-size: 14px;
     width: calc(100% - 34px);
     min-height: 50px;
     border: 1px solid transparent;
     border-radius: 4px;
     padding: 8px;
-  }
-  .textarea-summary:hover,
-  .textarea-summary:focus {
-    border-color: #d2d2d2
   }
   .task-info li p,
   .task-summary p,
@@ -1241,10 +1240,10 @@
     font-size: 12px;
   }
   .task-moments ul {
-    padding: 10px 0
+    padding: 20px 0 0
   }
   .task-moments li {
-    padding: 10px 0;
+    padding: 0 0 10px;
     line-height: 1.5;
     color: #666
   }

@@ -6,7 +6,7 @@
     <div ref="content_box">
       <el-row :gutter="18">
 
-        <el-col :span="isMob ? 24 : 19">
+        <el-col :span="isMob ? 24 : 18">
           <div class="content">
             <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
 
@@ -20,8 +20,7 @@
               </el-form-item>
 
               <el-form-item label="项目周期" prop="cycle" class="fullwidth">
-                <el-select v-model.number="form.cycle" placeholder="请选择项目周期" @change="matchCompany"
-                >
+                <el-select v-model.number="form.cycle" placeholder="请选择项目周期">
                   <el-option
                     v-for="item in cycleOptions"
                     :label="item.label"
@@ -43,7 +42,7 @@
               </el-form-item>
 
               <el-form-item label="所属行业" prop="industry" class="fullwidth">
-                <el-select v-model.number="form.industry" placeholder="请选择行业" @change="matchCompany">
+                <el-select v-model.number="form.industry" placeholder="请选择行业">
                   <el-option
                     v-for="item in industryOptions"
                     :label="item.label"
@@ -57,7 +56,7 @@
                              :districtProp="district" :twoSelect="true" :isFirstProp="isFirst"
                              @onchange="change" class="fullwidth"></region-picker>
 
-              <el-row :gutter="24">
+              <el-row :gutter="10">
                 <el-col :xs="24" :sm="12" :md="12" :lg="12">
                   <el-form-item label="上传附件及相关参考资料" prop="">
                     <el-upload
@@ -94,7 +93,7 @@
 
           </div>
         </el-col>
-        <el-col :span="isMob ? 24 : 5">
+        <el-col :span="isMob ? 24 : 6">
           <div id="right_box" :class="{'fixed': isFixed && !isMob}">
             <div class="slider" v-loading.body="matchLoading">
               <div v-if="matchCount === 0">
@@ -118,7 +117,7 @@
             </div>
 
             <div class="slider info">
-              <p v-if="!isMob">提示</p>
+              <!--<p v-if="!isMob">提示</p>-->
               <p v-if="isMob" class="warning">提示</p>
               <p>项目需求填写</p>
               <p class="slide-des">为了充分了解企业需求，保证反馈的准确性并最终达成合作，以下信息请务必由企业高层管理人员亲自填写，保证信息的真实准确与完整。</p>
@@ -313,10 +312,11 @@ export default {
         item_id: this.itemId,
         type: this.form.type,
         design_types: JSON.stringify(this.form.design_types),
-        cycle: this.form.cycle,
         design_cost: this.form.design_cost,
-        province: this.province,
-        city: this.city
+        // cycle: this.form.cycle,
+        // province: this.province,
+        // city: this.city,
+        test: ''
       }
       const that = this
       that.matchCount = ''
@@ -338,7 +338,7 @@ export default {
       this.city = obj.city
       this.district = obj.district
 
-      this.matchRequest()
+      // this.matchRequest()
     },
     uploadError(err, file, fileList) {
       this.$message({

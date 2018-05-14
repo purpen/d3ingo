@@ -219,12 +219,40 @@ routes = [
   // 创新力指数
   {
     path: '/innovation_index',
-    name: 'InnovationIndex',
+    redirect: '/innovation_index/home',
     meta: {
+      name: 'InnovationIndex',
       requireAuth: false,
       title: '中国设计企业创新力指数'
     },
-    component: require('@/components/pages/home/InnovationIndex')
+    children: [
+      {
+        name: 'innovationHome',
+        path: '/innovation_index/home',
+        component: require('@/components/pages/home/innovation/InnovationHome')
+      },
+      {
+        name: 'InnovateList',
+        path: '/innovation_index/list',
+        component: require('@/components/pages/home/innovation/InnovationList')
+      },
+      {
+        name: 'InnovateAbout',
+        path: '/innovation_index/about',
+        component: require('@/components/pages/home/innovation/InnovationAbout')
+      }
+    ],
+    component: require('@/components/pages/home/innovation/InnovationIndex')
+  },
+  {
+    name: 'innovationCompany',
+    path: '/innovation_index/company/:id',
+    component: require('@/components/pages/home/innovation/InnovationCompany')
+  },
+  {
+    name: 'innovationCompare',
+    path: '/innovation_index/compare',
+    component: require('@/components/pages/home/innovation/InnovationCompare')
   },
   // 企业招募
   {
@@ -564,7 +592,22 @@ routes = routes.concat(toolsRoute)
 const router = new VueRouter({
   mode: 'history',
   linkActiveClass: 'is-active', // 这是链接激活时的class
-  routes
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      const position = {}
+      if (to.hash) {
+        if (to.hash === '#innovation') {
+          return { x: 100, y: 0 }
+        } else {
+          position.selector = to.hash
+          return position
+        }
+      }
+    }
+  }
 })
 
 router.beforeEach((to, from, next) => {

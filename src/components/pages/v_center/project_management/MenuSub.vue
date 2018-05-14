@@ -23,7 +23,7 @@
       <router-link class="need" to="">项目需求</router-link>
       <router-link :to="{name: 'projectQuote', params: {id: routeId}}" :class="['quotation', {'active': isQuote}]">项目报价</router-link>
       <router-link class="contract border-right" :to="{name: 'projectContract', params: {id: routeId}}">合同</router-link>
-      <router-link @click.native.self="controlMemberShow" class="member border-right" :to="{path: ''}">
+      <a @click.self="controlMemberShow" class="member border-right">
         {{projectMemberList.length}}
         <div :style="{
           position: 'relative',
@@ -37,9 +37,32 @@
           :executeId="-1"
           event="menu"
           @closeMember="controlMemberShow"
-          ></v-Member></div>
-      </router-link>
-      <a class="menu" @click="cover = true">菜单</a>
+          ></v-Member>
+        </div>
+      </a>
+      <a tabindex="-1" class="menu" ref="menu">
+        <div class="word">菜单</div>
+        <div class="menu-con">
+          <div class="menu-header"><span>项目菜单</span>
+            <span class="fx-0 fx-icon-nothing-close-error" @click="closeMenu"></span></div>
+          <div class="menu-content">
+            <p @click="showCover"><span>项目设置</span></p>
+            <p v-if="false" class="menu-label"><span>标签</span></p>
+            <hr>
+            <p class="menu-moment"><span>项目动态</span></p>
+            <ul class="item-moments">
+              <li>
+                <img class="br50 b-d2" src="" alt="">
+                <div class="item-con">
+                  <p class="tc-2"><span>王二</span>创建主任务</p>
+                  <p class="fz-12 tc-6">2018年05月08日 14:13:36</p>
+                </div>
+              </li>
+            </ul>
+            <p>查看所有项目动态</p>
+          </div>
+        </div>
+      </a>
     </div>
     <section class="cover" @click.self="cover = false" v-show="cover">
       <div class="cover-content">
@@ -611,16 +634,15 @@ export default {
           } else {
             row.start_time = Date.parse(row.start_time) / 1000
           }
-          console.log(row)
 
           this.isBaseLoadingBtn = true
           this.$http.put(api.updateDesignProject, row)
           .then(res => {
             this.isBaseLoadingBtn = false
             if (res.data.meta.status_code === 200) {
-              Object.assign(this.projectObject, this.baseForm)
-              this.$store.commit('setProjectObject', this.projectObject)
+              this.$store.commit('setProjectObject', res.data.data)
               this.$message.success('更新成功！')
+              console.log(res.data.data)
             } else {
               this.$message.error(res.data.meta.message)
             }
@@ -713,11 +735,19 @@ export default {
     // 选择分类事件
     selectTypeChange(val) {
       this.baseForm.design_types = []
+    },
+    closeMenu() {
+      this.$refs.menu.blur()
+    },
+    showCover() {
+      this.cover = true
+      this.closeMenu()
     }
   },
   watch: {
     cover(d) {
       if (d) {
+        console.log(this.projectObject)
         this.baseForm = {
           id: this.projectObject.id,
           name: this.projectObject.name,
@@ -731,20 +761,13 @@ export default {
           field: this.projectObject.field === 0 ? '' : this.projectObject.field,
           industry: this.projectObject.industry === 0 ? '' : this.projectObject.industry,
           project_duration: this.projectObject.project_duration === 0 ? '' : this.projectObject.project_duration,
-          start_time: !this.projectObject.start_time ? '' : this.projectObject.start_time.date_format(),
+          // start_time: !this.projectObject.start_time ? '' : this.projectObject.start_time.date_format(),
           level: this.projectObject.level === 0 ? '' : this.projectObject.level
         }
         this.$set(this.baseForm, 'design_types', this.projectObject.design_types)
-        /**
-        var designTypes = []
-        if (Object.prototype.toString.call(this.projectObject.design_types) === '[object Array]') {
-          for (let i = 0; i < this.projectObject.design_types.length; i++) {
-            designTypes.push(this.projectObject.design_types[i])
-          }
-        }
-        this.$set(this.baseForm, 'design_types', designTypes)
-        **/
+        this.$set(this.baseForm, 'start_time', !this.projectObject.start_time ? '' : this.projectObject.start_time.date_format())
         console.log(this.baseForm)
+
         this.clientForm = {
           id: this.projectObject.id,
           company_name: this.projectObject.company_name,
@@ -1011,5 +1034,94 @@ header {
 }
 .el-date-editor.el-input {
   width: 100%;
+}
+.menu:focus .menu-con {
+  display: block;
+}
+.menu-con {
+  display: none;
+  position: absolute;
+  right: 10px;
+  top: 48px;
+  background: #fff;
+  z-index: 1;
+  width: 380px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1)
+}
+.menu-header {
+  height: 50px;
+  background: #F7F7F7;
+  color: #222;
+  line-height: 50px;
+  font-size: 16px;
+  text-align: center
+}
+.fx-icon-nothing-close-error {
+  position: absolute;
+  right: 20px;
+  top: 19px;
+}
+.menu-content {
+  padding: 0 24px 20px;
+}
+.menu-content p {
+  position: relative;
+  height: 40px;
+  line-height: 40px;
+  padding: 0 30px;
+  color: #666
+}
+.menu-content p:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  transform: translate(0, -50%);
+  background: url(../../../../assets/images/tools/project_management/Option.png)
+    no-repeat center / contain
+}
+.menu-content .menu-label:before {
+  background: url(../../../../assets/images/tools/project_management/Label2@2x.png)
+    no-repeat center / contain
+}
+.menu-content .menu-moment:before {
+  background: url(../../../../assets/images/tools/project_management/Moment.png)
+    no-repeat center / contain
+}
+.menu-content hr {
+  border: none;
+  border-top: 1px solid #d2d2d2;
+}
+.menu-con span {
+  cursor: pointer;
+}
+.item-moments li {
+  padding: 10px 0;
+  height: 70px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.item-moments li img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+}
+.item-con {
+  padding-left: 10px;
+}
+.item-con p {
+  line-height: 20px;
+  height: 20px;
+  padding: 0;
+  color: #222;
+}
+.item-con p:before {
+  background: none;
+}
+.item-con p span {
+  margin-right: 10px;
 }
 </style>

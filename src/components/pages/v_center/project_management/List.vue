@@ -1,7 +1,11 @@
 <template>
   <section :class="{'project-lists': !leftWidth}">
     <v-menu currentName="project_management"></v-menu>
-    <el-col :offset="leftWidth" :span="leftWidth? 20 : 24">
+    <el-col :offset="leftWidth"
+      :xs="24"
+      :sm="leftWidth? 20 : 24"
+      :md="leftWidth? 20 : 24"
+      :lg="leftWidth? 20 : 24">
       <div class="vcenter-container blank40">
         <h2>项目管理</h2>
         <ul class="project-list" v-loading.body="isLoading">
@@ -190,10 +194,14 @@ export default {
   computed: {
     leftWidth() {
       let leftWidth = this.$store.state.event.leftWidth
-      if (leftWidth === 2) {
+      if (this.isMob) {
         return 0
-      } else if (leftWidth === 4) {
-        return leftWidth
+      } else {
+        if (leftWidth === 2) {
+          return 0
+        } else if (leftWidth === 4) {
+          return leftWidth
+        }
       }
     },
     isMob() {
@@ -489,7 +497,15 @@ export default {
   }
   @media screen and (max-width: 767px) {
     .project-list li {
-      width: 100%
+      width: 100%;
+      margin-right: 0
+    }
+    .project-lists {
+      padding-left: 0;
+      padding-top: 20px;
+    }
+    .vcenter-container {
+      margin-top: 0;
     }
   }
 </style>

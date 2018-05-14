@@ -14,7 +14,7 @@
               </router-link>
             </section>
 
-            <section class="verify" v-if="item.verify_status === 3">
+            <section class="verify verify-success" v-if="item.verify_status === 3">
               <img :src="require('assets/images/item/to-examine@2x.png')" alt="认证中">
               <h3>您的实名认证正在审核中</h3>
               <p>请耐心等待...</p>
@@ -24,66 +24,9 @@
                 <img :src="require('assets/images/item/authentication-success@2x.png')" alt="认证通过">
                 <h3>恭喜！认证成功！</h3>
               </div>
-              <div :class="['content-box', isMob ? 'content-box-m' : '']">
-                <section class="certified">
-                  <div class="form-title">
-                    <span>企业实名认证</span>
-                  </div>
-                  <div class="company-show">
-                    <div class="item">
-                      <p class="p-key">企业名称</p>
-                      <p class="p-val">{{ item.company_name }}</p>
-                    </div>
 
-                    <div class="item">
-                      <p class="p-key">企业证件类型</p>
-                      <p class="p-val">{{ item.company_type_val }}</p>
-                    </div>
-
-                    <div class="item">
-                      <p class="p-key">统一社会信用代码</p>
-                      <p class="p-val">{{ item.registration_number }}</p>
-                    </div>
-
-                    <div class="item">
-                      <p class="p-key">法人姓名</p>
-                      <p class="p-val">{{ item.legal_person }}</p>
-                    </div>
-
-                    <div class="item">
-                      <p class="p-key">法人证件类型</p>
-                      <p class="p-val">{{ item.document_type_val }}</p>
-                    </div>
-
-                    <div class="item">
-                      <p class="p-key">证件号码</p>
-                      <p class="p-val">{{ item.document_number }}</p>
-                    </div>
-
-                    <!-- <div class="item">
-                      <p class="p-key">联系人</p>
-                      <p class="p-val">{{ item.contact_name }}</p>
-                    </div>
-
-                    <div class="item">
-                      <p class="p-key">职位</p>
-                      <p class="p-val">{{ item.position }}</p>
-                    </div>
-
-                    <div class="item">
-                      <p class="p-key">手机</p>
-                      <p class="p-val">{{ item.phone }}</p>
-                    </div>
-
-                    <div class="item">
-                      <p class="p-key">邮箱</p>
-                      <p class="p-val">{{ item.email }}</p>
-                    </div> -->
-                  </div>
-                </section>
-              </div>
             </section>
-            <section class="verify" v-if="item.verify_status === 2">
+            <section class="verify verify-success" v-if="item.verify_status === 2">
               <img :src="require('assets/images/item/authentication-error@2x.png')" alt="认证失败">
               <h3>对不起，您的实名认证失败了...</h3>
               <p>{{item.verify_summary}}</p>
@@ -92,6 +35,82 @@
               </router-link>
             </section>
           </section>
+
+          <div :class="['content-box', isMob ? 'content-box-m' : '']" v-if="item.verify_status !== 0">
+            <section class="certified">
+              <div class="form-title">
+                <span>企业实名认证</span>
+              </div>
+              <div class="company-show">
+                <div class="item">
+                  <p class="p-key">企业名称</p>
+                  <p class="p-val">{{ item.company_name }}</p>
+                </div>
+
+                <div class="item">
+                  <p class="p-key">企业证件类型</p>
+                  <p class="p-val">{{ item.company_type_val }}</p>
+                </div>
+
+                <div class="item">
+                  <p class="p-key">统一社会信用代码</p>
+                  <p class="p-val">{{ item.registration_number }}</p>
+                </div>
+                <div class="item">
+                  <p class="p-key">公司法人营业执照</p>
+                  <p class="p-val">
+                    <span v-for="(d, index) in item.license_image" :key="index">
+                      <a :href="d.file" target="_blank">{{ d.name }}</a>
+                    </span>
+                  </p>
+                </div>
+
+                <div class="item">
+                  <p class="p-key">法人姓名</p>
+                  <p class="p-val">{{ item.legal_person }}</p>
+                </div>
+
+                <div class="item">
+                  <p class="p-key">法人证件类型</p>
+                  <p class="p-val">{{ item.document_type_val }}</p>
+                </div>
+
+                <div class="item">
+                  <p class="p-key">证件号码</p>
+                  <p class="p-val">{{ item.document_number }}</p>
+                </div>
+
+                <div class="item">
+                  <p class="p-key">法人证件</p>
+                  <p class="p-val">
+                    <span v-for="(d, index) in item.document_image" :key="index">
+                      <a :href="d.file" target="_blank">{{ d.name }}</a> &nbsp;&nbsp;
+                    </span>                 
+                  </p>
+                </div>
+
+                <!-- <div class="item">
+                  <p class="p-key">联系人</p>
+                  <p class="p-val">{{ item.contact_name }}</p>
+                </div>
+
+                <div class="item">
+                  <p class="p-key">职位</p>
+                  <p class="p-val">{{ item.position }}</p>
+                </div>
+
+                <div class="item">
+                  <p class="p-key">手机</p>
+                  <p class="p-val">{{ item.phone }}</p>
+                </div>
+
+                <div class="item">
+                  <p class="p-key">邮箱</p>
+                  <p class="p-val">{{ item.email }}</p>
+                </div> -->
+              </div>
+            </section>
+          </div>
         </div>
 
       </el-col>
@@ -225,6 +244,7 @@
 
   .verify-success {
     margin-bottom: 20px;
+    padding-bottom: 20px;
     height: auto;
     border: 1px solid #d2d2d2;
   }

@@ -7,11 +7,11 @@
         <div id="right_box">
           <div class="slider info">
             <p class="slide-des slide-info" style="">关于设计类型</p>
-            <p class="slide-des">根据您的项目需求，选择相应的设计服务类别，这里只能单选。</p>
+            <p class="slide-des">根据您的项目需求，选择相应的设计服务类别。</p>
           </div>
         </div>
       </el-col>
-      <el-col :span="isMob ? 24 : 19">
+      <el-col :span="isMob ? 24 : 18">
         <div class="content">
 
           <div class="item">
@@ -51,7 +51,7 @@
               </div>
             </transition>
           </div>
-
+          <!--
           <div class="item" style="clear:both;">
             <div class="item_banner" @click="openTypeBtn(2)">
               <p class="fl"><img src="../../../assets/images/icon/ui.png"/></p>
@@ -76,6 +76,7 @@
 
             </transition>
           </div>
+          -->
 
           <div class="clear"></div>
           <div class="submit-btn">
@@ -85,12 +86,11 @@
 
         </div>
       </el-col>
-      <el-col :span="5" v-if="!isMob">
+      <el-col :span="6" v-if="!isMob">
         <div id="right_box">
           <div class="slider info">
-            <p>提示</p>
-            <p class="slide-des slide-info" style="">关于设计类型：</p>
-            <p class="slide-des">根据您的项目需求，选择相应的设计服务类别，这里只能单选。</p>
+            <p class="slide-title">关于设计类型</p>
+            <p class="slide-des">根据您的项目需求，选择相应的设计服务类别。</p>
           </div>
         </div>
       </el-col>
@@ -338,12 +338,13 @@
     height: 60px;
     background-color: #FAFAFA;
     padding: 12px;
+    padding-left: 20px;
     border-bottom: 1px solid #D2D2D2;
     cursor: pointer;
   }
 
   .banner-title {
-    margin: 0 0 0 20px;
+    margin: 0 0 0 10px;
     padding-top: 0;
     line-height: 20px;
   }
@@ -410,7 +411,10 @@
   }
 
   .slider.info p {
-    margin: 10px 20px;
+    margin: 5px 20px;
+  }
+  .slide-title {
+    line-height: 2.5;
   }
 
   .submit-btn {
@@ -435,7 +439,8 @@
   .slide-str img {
     vertical-align: middle;
   }
-
+  .slide-info {
+  }
   .slider.info p.slide-des {
     color: #666;
     line-height: 1.5;
