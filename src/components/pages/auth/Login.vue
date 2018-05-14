@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <section class="cover-bgf7"></section>
     <div class="login-box">
       <div class="login-title">
         <h2>登录铟果</h2>
@@ -23,7 +24,7 @@
             </p>
           </div>
           <el-button type="primary" :loading="isLoadingBtn" @keyup="submit('ruleForm')" @click="submit('ruleForm')"
-                     class="login-btn is-custom">登录
+                    class="login-btn is-custom">登录
           </el-button>
         </el-form>
 
@@ -220,21 +221,25 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .login-box {
-  border: 1px solid #cccccc;
-  width: 800px;
-  height: 400px;
+  background: #fff;
+  width: 580px;
   text-align: center;
-  margin: 30px auto 30px auto;
+  margin: 30px auto;
+  background: #FFFFFF;
+  border: 1px solid #E6E6E6;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.10);
+  border-radius: 4px;
+  padding-bottom: 60px;
 }
 
 .login-title {
-  width: 800px;
-  height: 60px;
-  font-size: 2rem;
-  display: table-cell;
-  vertical-align: middle;
+  height: 70px;
+  line-height: 70px;
   text-align: center;
-  border-bottom: 1px solid #aaaaaa;
+  font-size: 2rem;
+  border-bottom: 1px solid #e6e6e6;
+  color: #666;
+  font-size: 20px;
 }
 
 p.des {
@@ -271,15 +276,21 @@ form {
 
 .opt {
   margin-top: -25px;
-  line-height: 45px;
+  height: 46px;
   overflow: hidden;
+  padding: 12px 0;
 }
 
 .forget {
   float: right;
+  height: 22px;
+  display: flex;
+  align-items: center;
 }
 
 .rember {
+  display: flex;
+  align-items: center;
   float: left;
   font-size: 1.3rem;
 }
