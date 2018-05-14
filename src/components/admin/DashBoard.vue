@@ -12,8 +12,7 @@
               <div class="count-item red">
                 <p class="count">{{ item.user_count }}</p>
                 <p class="title">注册用户</p>
-                <p class="des">供应商: <span class="red">{{ item.design_user }}</span> | 需求方: <span
-                  class="red">{{ item.demand_user }}</span></p>
+                <p class="des">需求方: <span class="red">{{ item.demand_user }}</span> | 设计方: <span class="red">{{ item.design_user }}</span></p>
               </div>
             </el-col>
 
