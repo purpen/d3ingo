@@ -352,10 +352,12 @@
   }
 
   #header-layout {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
     background:#fff;
-    position: relative;
     z-index: 999;
-    animation: slow 0.4s;
   }
 
   .Flogin {
