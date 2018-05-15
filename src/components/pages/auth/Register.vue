@@ -398,6 +398,7 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .register-box {
+    border-radius: 6px;
     width: 540px;
     text-align: center;
     margin: 30px auto;
@@ -432,7 +433,7 @@
     width: 230px;
     height: 120px;
     cursor: pointer;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
     border-radius: 10px;
     transition: 268ms all ease
   }
@@ -440,9 +441,9 @@
   .register-tab-user:first-child {
     margin-right: 10px;
   }
-  /* .register-tab-user:hover {
-    transform: translateY(-5px)
-  } */
+  .register-tab-user:hover {
+    box-shadow: 0 0 5px 0 rgba(0,0,0,0.10);
+  }
   .register-tab-user.active {
     border: 1px solid #FF5A5F;
     background-color: #fff;
