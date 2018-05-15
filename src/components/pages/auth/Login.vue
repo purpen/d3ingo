@@ -18,7 +18,7 @@
                       placeholder="密码"></el-input>
           </el-form-item>
           <div class="opt">
-            <p class="rember"><input type="checkbox" id="passwd" /><label for="passwd">记住密码</label></p>
+            <p class="rember"><input type="checkbox" id="passwd" /><label for="passwd">记住我</label></p>
             <p class="forget">
               <router-link :to="{name: 'forget'}">忘记密码?</router-link>
             </p>
