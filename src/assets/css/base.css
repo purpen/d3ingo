@@ -98,7 +98,10 @@ body {
 .register-content .el-input-group--append, .stages-day .el-input-group--append {
   padding-left: 0;
 }
-
+.main .el-input-group__append {
+  color: #666;
+  background: #ebebeb
+}
 .subsidiary .el-input-group--append {
   min-width: auto;
 }
@@ -336,7 +339,8 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   color: #999;
 }
 .login-box .el-form-item,
-.register-box .el-form-item {
+.register-box .el-form-item,
+.forget-box .el-form-item, {
   margin-bottom: 10px;
 }
 .el-form-item__label {
@@ -872,12 +876,12 @@ button.is-custom.is-outlined.is-loading:after {
  * header
  */
 
-/*login*/
-.login-box .el-input__inner {
+/* input */
+.el-input__inner {
   border: 1px solid #e6e6e6
 }
-.login-box .el-input__inner:hover,
-.login-box .el-input__inner:focus {
+.el-input__inner:hover,
+.el-input__inner:focus {
   border: 1px solid #d2d2d2
 }
 /*解决safari 移动端布局中*/
@@ -2123,6 +2127,11 @@ td.fc-day.fc-widget-content.fc-today::before {
     height: 42px;
   }
 
+  .login-box .input input,
+  .register-box .input input,
+  .forget-box .input input {
+      height: 36px;
+  }
   .input {
     margin-bottom: 0;
   }
@@ -2130,7 +2139,9 @@ td.fc-day.fc-widget-content.fc-today::before {
   .input .el-form-item {
     margin-bottom: 0;
   }
-  .login-box .el-form-item, .register-box .el-form-item {
+  .login-box .el-form-item,
+  .register-box .el-form-item,
+  .forget-box .el-form-item {
       margin-bottom: 10px;
   }
   .el-form-item__error {

@@ -239,15 +239,15 @@ export default {
   color: #666;
   font-size: 20px;
 }
-
+.login-content {
+  padding: 0 30px;
+}
 p.des {
   font-size: 0.8em;
 }
 
 form {
-  width: 50%;
   text-align: left;
-  margin: 0 auto;
   margin-top: 30px;
 }
 
@@ -323,11 +323,6 @@ form {
     text-align: left;
     padding: 0 15px;
     margin-top: 0;
-  }
-
-  .opt {
-    margin-top: -10px;
-    overflow: hidden;
   }
 
   .reg {
