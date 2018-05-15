@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <section class="cover-bgf7"></section>
     <div class="login-box">
       <div class="login-title">
         <h2>登录铟果</h2>
@@ -17,32 +18,30 @@
                       placeholder="密码"></el-input>
           </el-form-item>
           <div class="opt">
-            <p class="rember"><input type="checkbox" id="passwd" /><label for="passwd">记住密码</label></p>
+            <p class="rember"><input type="checkbox" id="passwd" /><label for="passwd">记住我</label></p>
             <p class="forget">
               <router-link :to="{name: 'forget'}">忘记密码?</router-link>
             </p>
           </div>
           <el-button type="primary" :loading="isLoadingBtn" @keyup="submit('ruleForm')" @click="submit('ruleForm')"
-                     class="login-btn is-custom">登录
+                    class="login-btn is-custom">登录
           </el-button>
         </el-form>
-
-        <div class="reg">
-          <p class="join-company" v-if="code">登陆并加入 <span>{{item.design_company_name}}</span></p>
-          <p v-if="code">没有铟果账户？
-            <router-link :to="{name: 'invite', params: {code: code}}">立即注册</router-link>
-          </p>
-          <div v-if="!code">
-            <p v-if="!isMob">还没有铟果账户？
-              <router-link v-if="type" :to="{name: 'register',params:{type: type}}">立即注册</router-link>
-              <router-link v-else :to="{name: 'register'}">立即注册</router-link>
-            </p>
-            <p v-else>还没有铟果账户？
-              <router-link :to="{name: 'identity'}">立即注册</router-link>
-            </p>
-          </div>
-        </div>
-
+      </div>
+    </div>
+    <div class="reg">
+      <p class="join-company" v-if="code">登陆并加入 <span>{{item.design_company_name}}</span></p>
+      <p v-if="code">没有铟果账户？
+        <router-link :to="{name: 'invite', params: {code: code}}">立即注册</router-link>
+      </p>
+      <div v-if="!code">
+        <p v-if="!isMob">还没有铟果账户？
+          <router-link v-if="type" :to="{name: 'register',params:{type: type}}">立即注册</router-link>
+          <router-link v-else :to="{name: 'register'}">立即注册</router-link>
+        </p>
+        <p v-else>还没有铟果账户？
+          <router-link :to="{name: 'identity'}">立即注册</router-link>
+        </p>
       </div>
     </div>
   </div>
@@ -220,31 +219,35 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .login-box {
-  border: 1px solid #cccccc;
-  width: 800px;
-  height: 400px;
+  background: #fff;
+  width: 580px;
   text-align: center;
-  margin: 30px auto 30px auto;
+  margin: 30px auto 0;
+  background: #FFFFFF;
+  border: 1px solid #E6E6E6;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.10);
+  border-radius: 4px;
+  padding-bottom: 30px;
 }
 
 .login-title {
-  width: 800px;
-  height: 60px;
-  font-size: 2rem;
-  display: table-cell;
-  vertical-align: middle;
+  height: 70px;
+  line-height: 70px;
   text-align: center;
-  border-bottom: 1px solid #aaaaaa;
+  font-size: 2rem;
+  border-bottom: 1px solid #e6e6e6;
+  color: #666;
+  font-size: 20px;
 }
-
+.login-content {
+  padding: 0 30px;
+}
 p.des {
   font-size: 0.8em;
 }
 
 form {
-  width: 50%;
   text-align: left;
-  margin: 0 auto;
   margin-top: 30px;
 }
 
@@ -253,6 +256,7 @@ form {
 }
 
 .reg {
+  text-align: center;
   margin-top: 20px;
 }
 
@@ -270,16 +274,20 @@ form {
 }
 
 .opt {
-  margin-top: -25px;
-  line-height: 45px;
   overflow: hidden;
+  padding: 0 0 20px;
 }
 
 .forget {
   float: right;
+  height: 22px;
+  display: flex;
+  align-items: center;
 }
 
 .rember {
+  display: flex;
+  align-items: center;
   float: left;
   font-size: 1.3rem;
 }
@@ -301,10 +309,12 @@ form {
     max-width: 450px;
     border: none;
     margin: 0 auto;
+    padding-bottom: 20px;
   }
 
   .login-title {
-    line-height: 52px;
+    height: 60px;
+    line-height: 60px;
     border: none;
   }
 
@@ -315,13 +325,9 @@ form {
     margin-top: 0;
   }
 
-  .opt {
-    margin-top: -10px;
-    overflow: hidden;
-  }
-
   .reg {
     margin-top: 20px;
+    margin-bottom: -20px;
   }
 }
 </style>

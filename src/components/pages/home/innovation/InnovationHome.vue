@@ -1,5 +1,5 @@
 <template>
-  <div class="InovationHome">
+  <div class="innovation-home">
     <div class="dimension">
       <el-row :gutter="20">
         <el-col :span="24">
