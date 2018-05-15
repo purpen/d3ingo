@@ -282,6 +282,12 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   border-right: none !important;
   border-bottom: none !important;
 }
+.el-input-group__append, .el-input-group__prepend {
+  border-color: #e6e6e6
+}
+.el-input-group__append:hover, .el-input-group__prepend:hover {
+  border-color: #d2d2d2;
+}
 .el-input__inner {
   color: #222;
 }

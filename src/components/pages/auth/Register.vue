@@ -399,7 +399,7 @@
 <style scoped>
   .register-box {
     border-radius: 6px;
-    width: 540px;
+    width: 530px;
     text-align: center;
     margin: 30px auto;
     background: #fff;
@@ -439,7 +439,7 @@
   }
 
   .register-tab-user:first-child {
-    margin-right: 18px;
+    margin-right: 8px;
   }
   .register-tab-user:hover {
     box-shadow: 0 0 5px 0 rgba(0,0,0,0.10);
