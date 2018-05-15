@@ -266,22 +266,31 @@
               <div class="item-chart-list scroll-bar" :style="{height:Rheight + 'px'}">
 
                 <div class="item-chartHeader">
-                  <div>2018年5月</div>
-                  <ul>
-                    <li v-for="(d,indexd) in dateList" :key="indexd" class="span1">
-                      {{d}}
-                    </li>
-                  </ul>
+
+                  <div  v-for="(m,indexm) in totaldays" :key="indexm" class="width-100">
+                    <div >{{m.year}}年{{m.month}}月</div>
+                    <ul>
+                      <li v-for="(d,indexd) in m.dayings" :key="indexd">
+                      {{d.i}}
+                      </li>
+                    </ul>
+                  </div>
+
                 </div>
 
                 <div class="item-chartContent" v-for="(c,indexc) in designStageLists" :key="indexc">
-                  <ul>
-                    <li v-for="(d,indexd) in dateList" :key="indexd" class="span1">
 
+                  <div class="item-tacklist" 
+                    v-for="(tack, indextack) in c.design_substage">
+                    
+                  </div>
+
+                  <ul  v-for="(tt,indextt) in totaldays" :key="indextt" class="width-100">
+                    <li v-for="(day,indexday) in tt.dayings" :key="indexday" :class="day.new?'bgc':''">
                     </li>
                   </ul>
-                </div>
 
+                </div>
               </div>
 
             </div>
@@ -422,6 +431,7 @@ export default {
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
         13, 14, 15, 16, 17, 18, 19, 20
       ],
+      totaldays: [],
       rules: {
         duration: [
           {
@@ -462,40 +472,84 @@ export default {
     monthday(n) {
       var daying = []
       for (var i = 1; i <= n; i++) {
-        daying.push(i)
+        daying.push({'i': i})
       }
       return daying
     },
+    // 某年剩余天数 如果是从后往前排输入end参数等于1
+    yearDay(m, y, end) {
+      let times = []
+      let ms = 12
+      if (end === 1) {
+        ms = m
+        m = 1
+      } else if (end) {
+        ms = end
+      }
+      for (var d = m; d <= ms; d++) {
+        if ((d % 2 !== 0 && d < 8) || (d >= 8 && d % 2 === 0)) {
+          times.push({
+            day: 31,
+            month: d,
+            dayings: this.monthday(31),
+            year: y.getFullYear()
+          })
+        } else if (d !== 2) {
+          times.push({
+            day: 30,
+            month: d,
+            dayings: this.monthday(30),
+            year: y.getFullYear()
+          })
+        } else if (y.isLeapYear()) {
+          times.push({
+            day: 29,
+            month: d,
+            dayings: this.monthday(29),
+            year: y.getFullYear()
+          })
+        } else {
+          times.push({
+            day: 28,
+            month: d,
+            dayings: this.monthday(28),
+            year: y.getFullYear()
+          })
+        }
+      }
+      return times
+    },
     // 获取某个阶段日期的所有天数
     dateDay(s, e) {
-      s = new Date(1463328000 * 1000)
-      e = new Date(1527609600 * 1000)
+      s = new Date(1463324433 * 1000)
+      e = new Date(e * 1000)
       let syear = s.getFullYear()
       let smonth = s.getMonth() + 1
       let eyear = e.getFullYear()
       let emonth = e.getMonth() + 1
-      console.log(syear)
-      console.log(eyear)
-      console.log(smonth)
-      console.log(emonth)
-      let times = []
-      for (var d = 1; d <= 12; d++) {
-        times[d] = {}
-        times[d].day = ''
-        if ((d % 2 !== 0 && d < 8) || (d >= 8 && d % 2 === 0)) {
-          times[d].day = 31
-        } else if (d !== 2) {
-          times[d].day = 30
-        } else if (s.isLeapYear()) {
-          times[2].day = 29
-        } else {
-          times[2].day = 28
+      let total = []
+      if (eyear - syear > 0) {
+        var startDay = this.yearDay(smonth, s)
+        var endDay = this.yearDay(emonth, e, 1)
+        total = startDay
+        let difference = eyear - syear - 1
+        for (var t = 1; t <= difference; t++) {
+          total = total.concat(this.yearDay(1, (new Date((syear + t) + ''))))
         }
-        times[d].mouth = d
-        times[d].dayings = this.monthday(times[d].day)
+        total = total.concat(endDay)
+      } else {
+        total = this.yearDay(smonth + 1, e, emonth)
       }
-      times.splice(0, 1)
-      console.log(times)
+      return total
+    },
+    // 当天背景色
+    newDay() {
+      let newDate = new Date()
+      for (var n = 0; n < this.totaldays.length; n++) {
+        if (this.totaldays[n].year === newDate.getFullYear() && this.totaldays[n].month === newDate.getMonth() + 1) {
+          this.totaldays[n].dayings[newDate.getDate() - 1].new = 'active'
+        }
+      }
     },
     // 创建项目
     create(formName) {
@@ -707,15 +761,8 @@ export default {
           if (this.designStageLists[i].start_time) {
             this.designStageLists[i].start_time = (new Date(this.designStageLists[i].start_time * 1000)).format('yyyy-MM-dd')
           }
-          if (this.designStageLists[i].design_substage) {
-            for (var j = 0; j < this.designStageLists[i].design_substage.length; j++) {
-              this.designStageLists[i].design_substage[j].start_time = (new Date(this.designStageLists[i].design_substage[j].start_time * 1000)).format('yyyy-MM-dd')
-              if (this.designStageLists[i].design_substage[j].design_stage_node && this.designStageLists[i].design_substage[j].design_stage_node.time) {
-                this.designStageLists[i].design_substage[j].design_stage_node.time = (new Date(this.designStageLists[i].design_substage[j].design_stage_node.time * 1000)).format('yyyy-MM-dd')
-              }
-            }
-          }
         }
+        endTimes.push(Date.parse(new Date()) / 1000)
         for (var r = 1; r < endTimes.length; r++) {
           var key = endTimes[r]
           var c = r - 1
@@ -725,8 +772,23 @@ export default {
           }
           endTimes[c + 1] = key
         }
-        console.log(endTimes)
-        this.dateDay(1, 2)
+        this.totaldays = this.dateDay(endTimes[0], endTimes[endTimes.length - 1])
+        for (var k = 0; k < this.designStageLists.length; k++) {
+          if (this.designStageLists[k].design_substage) {
+            for (var j = 0; j < this.designStageLists[k].design_substage.length; j++) {
+              var st = this.designStageLists[k].design_substage[j].start_time
+              var dur = this.designStageLists[k].design_substage[j].duration
+              this.designStageLists[k].design_substage[j].end_time = st + dur * 86400
+              var endsub = new Date(this.designStageLists[k].design_substage[j].end_time * 1000)
+              this.designStageLists[k].design_substage[j].totalday = this.yearDay(endsub.getMonth() + 1, endsub, 1)
+              this.designStageLists[k].design_substage[j].start_time = (new Date(this.designStageLists[k].design_substage[j].start_time * 1000)).format('yyyy-MM-dd')
+              if (this.designStageLists[k].design_substage[j].design_stage_node && this.designStageLists[k].design_substage[j].design_stage_node.time) {
+                this.designStageLists[k].design_substage[j].design_stage_node.time = (new Date(this.designStageLists[k].design_substage[j].design_stage_node.time * 1000)).format('yyyy-MM-dd')
+              }
+            }
+          }
+        }
+        console.log(this.designStageLists)
       } else {
         this.$message.error(response.data.meta.message)
       }
@@ -986,31 +1048,60 @@ export default {
 }
 .item-chartHeader{
   white-space: nowrap;
-  padding-bottom:10px;
-  height:54px;
+  height:55px;
+}
+.width-100{
+  width:100%;
+}
+.width-25{
+  width:25%;
 }
 .item-chartHeader>div{
-  padding: 10px 0;
+  display:inline-block;
+  border-bottom:1px solid #d2d2d2;
+  border-right:1px solid #d2d2d2;
+  padding-bottom:10px;
 }
-.item-chartHeader>ul>li{
-  display: inline-block;
-  text-align:center;
+.item-chartHeader>div>div{
+  margin:10px 0px;
+  text-align: center;
+}
+.item-chartHeader ul{
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.item-chartHeader ul>li{
+  text-align: center;
+  flex:1;
 }
 .item-chartContent{
   white-space: nowrap;
+  position: relative;
+}
+.item-tacklist{
+  position:absolute;
+  top:75px;
+  height:30px;
+  width:350%;
+  border:1px solid #333;
+  border-radius: 4px;
+  background:#f7f7f7;
+}
+.item-chartContent>ul{
+  display:inline-flex;
+  justify-content: space-between;
+  height:180px;
 }
 .item-chartContent>ul>li{
-  display: inline-block;
-  text-align:center;
   border:1px solid #d2d2d2;
   border-left:none;
-  border-bottom:none;
-  height:179px;
+  border-top:none;
+  flex:1;
 }
-.span1{
-  width:7%;
-  }
-
+.bgc{
+  background:#FF5A5F;
+}
 @media screen and (max-width: 767px) {
   .item-total {
     margin: 0 15px;
