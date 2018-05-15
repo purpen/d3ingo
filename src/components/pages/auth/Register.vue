@@ -398,7 +398,7 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .register-box {
-    width: 580px;
+    width: 540px;
     text-align: center;
     margin: 30px auto;
     background: #fff;
@@ -429,7 +429,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 250px;
+    width: 230px;
     height: 120px;
     cursor: pointer;
     border: 1px solid #d2d2d2;
@@ -438,7 +438,7 @@
   }
 
   .register-tab-user:first-child {
-    margin-right: 20px;
+    margin-right: 10px;
   }
   /* .register-tab-user:hover {
     transform: translateY(-5px)
@@ -495,7 +495,7 @@
     text-align: left;
   }
   .register-content {
-    padding: 30px ;
+    padding: 30px;
   }
 
   .register-tab h3 {
