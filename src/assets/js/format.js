@@ -55,4 +55,11 @@ String.prototype.date_format = function()
    return new Date(this);
 }
 
+// 判断闰年  
+//---------------------------------------------------  
+Date.prototype.isLeapYear = function()
+{
+  console.log(this)
+  return (0 === this.getYear()%4);
+}
 /* eslint-enable */

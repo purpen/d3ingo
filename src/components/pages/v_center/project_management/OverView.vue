@@ -462,6 +462,36 @@ export default {
     cancel() {
       this.isItemStage = false
     },
+    // 获取某个阶段日期的所有天数
+    dateDay(s, e) {
+      s = new Date(1463328000 * 1000)
+      e = new Date(1527609600 * 1000)
+      let times = []
+      for (var d = 1; d <= 12; d++) {
+        if ((d % 2 !== 0 && d < 8) || (d >= 8 && d % 2 === 0)) {
+          times[d] = {}
+          for (var odd = 0; odd <= 31; odd++) {
+            times[d][odd].day = odd
+          }
+        } else if (d !== 2) {
+          times[d] = {}
+          for (var even = 0; even <= 30; even++) {
+            times[d][even].day = even
+          }
+        } else if (s.isLeapYear()) {
+          times[2] = {}
+          for (var twoa = 0; twoa <= 29; twoa++) {
+            times[d][twoa].day = twoa
+          }
+        } else {
+          times[2] = {}
+          for (var two = 0; two <= 28; two++) {
+            times[d][two].day = two
+          }
+        }
+        console.log(times)
+      }
+    },
     // 创建项目
     create(formName) {
       let that = this
@@ -666,6 +696,7 @@ export default {
           if (this.designStageLists.length > 0) {
             var end = parseInt(this.designStageLists[i].duration) * 86400 + this.designStageLists[i].start_time
             endTimes.push(end)
+            endTimes.push(this.designStageLists[i].start_time)
           }
           this.designStageLists[i].isedit = false
           if (this.designStageLists[i].start_time) {
@@ -690,6 +721,7 @@ export default {
           endTimes[c + 1] = key
         }
         console.log(endTimes)
+        this.dateDay(1, 2)
       } else {
         this.$message.error(response.data.meta.message)
       }
@@ -701,6 +733,9 @@ export default {
 }
 </script>
 <style scoped>
+*, *:before, *:after{
+  box-sizing:border-box;
+}
   .add-itemStage-bg{
     position: fixed;
     z-index: 1999;
@@ -917,13 +952,13 @@ export default {
   height:55px;
   overflow: hidden;
 }
+.item-text-Header>.el-row>.el-col{
+  margin-bottom: 10px;
+}
 .item-text-list{
   height: 180px;
   padding:20px 10px 10px 20px;
   background:#f7f7f7;
-  /* overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis; */
   border-bottom:1px solid #d2d2d2;
   border-right: 1px solid #d2d2d2;
 }
@@ -934,7 +969,7 @@ export default {
   height:440px;
   position: relative;
   overflow: hidden;
-  z-index:999;
+  z-index:3;
 }
 .item-chart-list{
   position:absolute;
@@ -942,14 +977,15 @@ export default {
   width:100%;
   overflow-y:hidden;
   overflow-x:auto;
-  z-index:1002;
+  z-index:4;
 }
 .item-chartHeader{
   white-space: nowrap;
   padding-bottom:10px;
+  height:54px;
 }
 .item-chartHeader>div{
-  margin:10px 0px;
+  padding: 10px 0;
 }
 .item-chartHeader>ul>li{
   display: inline-block;
