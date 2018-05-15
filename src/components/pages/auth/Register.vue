@@ -425,6 +425,7 @@
   }
 
   .register-tab-user {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -433,19 +434,49 @@
     cursor: pointer;
     border: 1px solid #d2d2d2;
     border-radius: 10px;
-    margin: 0 15px;
     transition: 268ms all ease
   }
 
-  .register-tab-user:hover {
-    transform: translateY(-5px)
+  .register-tab-user:first-child {
+    margin-right: 20px;
   }
+  /* .register-tab-user:hover {
+    transform: translateY(-5px)
+  } */
   .register-tab-user.active {
     border: 1px solid #FF5A5F;
     background-color: #fff;
     box-shadow: 0 0 5px 0 rgba(0,0,0,0.10);
   }
 
+  .register-tab-user::before {
+    content: "";
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1px solid #d2d2d2;
+    transition: 268ms all ease;
+  }
+  .register-tab-user.active::before {
+    background: #ff5a5f;
+    border: 1px solid #ff5a5f;
+  }
+  .register-tab-user.active::after {
+    content: "";
+    position: absolute;
+    right: 16px;
+    bottom: 14px;
+    width: 6px;
+    height: 11px;
+    border: 1.5px solid #fff;
+    border-left: none;
+    border-top: none;
+    transform: rotate(45deg);
+    border-radius: 0 0 1px 0
+  }
   .register-tab-user.active h3 {
     color: #FF5A5F;
   }
@@ -464,7 +495,7 @@
     text-align: left;
   }
   .register-content {
-    padding: 30px 0;
+    padding: 30px ;
   }
 
   .register-tab h3 {
@@ -480,7 +511,6 @@
   }
 
   form {
-    width: 50%;
     text-align: left;
     margin: 0 auto;
   }
