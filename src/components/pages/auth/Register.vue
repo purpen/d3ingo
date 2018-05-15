@@ -464,7 +464,7 @@
     text-align: left;
   }
   .register-content {
-    padding-top: 30px;
+    padding: 30px 0;
   }
 
   .register-tab h3 {
