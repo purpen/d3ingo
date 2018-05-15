@@ -217,11 +217,11 @@
 
                   <el-col>
                     <div class="item-text-content">
-                      <span>下面</span>
+                      <span>项目阶段</span>
                       <ul>
                         <li>阶段</li>
                         <li>投入时间</li>
-                        <li>完成度</li>               
+                        <li>完成度</li>    
                       </ul>
                     </div>
                   </el-col>
@@ -229,29 +229,27 @@
                 </el-row>
               </div>
 
-              <div class="item-text-list">
-                <el-row>
+              <div class="item-text-list" v-for="(des,indexdes) in designStageLists" :key="indexdes">
+                <el-row >
                   <el-col>
                     <div class="item-text-content">
-                      <span>下面</span>
+                      <span>{{des.name}}</span>
                       <ul>
-                        <li>阶段</li>
-                        <li>投入时间</li>
-                        <li>完成度</li>               
+                        <li>{{des.name}}</li>
+                        <li>{{des.duration}}</li>
+                        <li>0%</li>               
                       </ul>
                     </div>
                   </el-col>
 
                   <el-col>
                      <ul class="paycontent">
+                       
                       <li>
-                        交付物:
+                        交付内容:
                       </li>
                       <li>
-                        第一项
-                      </li>
-                      <li>
-                        dierxian
+                        {{des.content}}
                       </li>
                     </ul>
                   </el-col>
@@ -264,8 +262,8 @@
           <el-col :span="18">
 
             <div class="item-chart">
-
-              <div class="item-chart-list">
+              
+              <div class="item-chart-list scroll-bar">
 
                 <div class="item-chartHeader">
                   <div>2018年5月</div>
@@ -277,9 +275,20 @@
                 </div>
 
                 <div class="item-chartContent">
+                  <ul>
+                    <li v-for="(d,indexd) in dateList" :key="indexd" class="span1">
 
+                    </li>
+                  </ul>
                 </div>
 
+                <div class="item-chartContent">
+                  <ul>
+                    <li v-for="(d,indexd) in dateList" :key="indexd" class="span1">
+
+                    </li>
+                  </ul>
+                </div>
               </div>
 
             </div>
@@ -652,7 +661,12 @@ export default {
     this.$http.get(api.designStageLists, {params: {design_project_id: this.itemId}}).then((response) => {
       if (response.data.meta.status_code === 200) {
         this.designStageLists = response.data.data
+        let endTimes = []
         for (var i = 0; i < this.designStageLists.length; i++) {
+          if (this.designStageLists.length > 0) {
+            var end = parseInt(this.designStageLists[i].duration) * 86400 + this.designStageLists[i].start_time
+            endTimes.push(end)
+          }
           this.designStageLists[i].isedit = false
           if (this.designStageLists[i].start_time) {
             this.designStageLists[i].start_time = (new Date(this.designStageLists[i].start_time * 1000)).format('yyyy-MM-dd')
@@ -666,7 +680,16 @@ export default {
             }
           }
         }
-        console.log(response.data.data)
+        for (var r = 1; r < endTimes.length; r++) {
+          var key = endTimes[r]
+          var c = r - 1
+          while (c >= 0 && endTimes[c] > key) {
+            endTimes[c + 1] = endTimes[c]
+            c--
+          }
+          endTimes[c + 1] = key
+        }
+        console.log(endTimes)
       } else {
         this.$message.error(response.data.meta.message)
       }
@@ -678,7 +701,7 @@ export default {
 }
 </script>
 <style scoped>
-.add-itemStage-bg{
+  .add-itemStage-bg{
     position: fixed;
     z-index: 1999;
     left: 50%;
@@ -687,10 +710,10 @@ export default {
     width: 100%;
     height: 100%;
     background: rgba(0,0,0,0.30)
-}
-.add-itemStage{
+  }
+  .add-itemStage{
     position: fixed;
-    z-index: 1999;
+    z-index: 1000;
     left: 50%;
     top: 50%;
     transform:  translate(-50%, -50%);
@@ -701,15 +724,15 @@ export default {
     box-shadow: 0 0 4px 0 rgba(0,0,0,0.10);
     border:1px solid #fff;
     border-radius: 4px;
-}
-.itemStage-title{
-  background:#f7f7f7;
-  padding:15px;
-  font-size:15px;
-  font-weight: 600;
-  text-align: center;
-  position: relative;
-}
+  }
+  .itemStage-title{
+    background:#f7f7f7;
+    padding:15px;
+    font-size:15px;
+    font-weight: 600;
+    text-align: center;
+    position: relative;
+  }
 .itemStage-title>i{
   position: absolute;
   width:20px;
@@ -891,17 +914,16 @@ export default {
   border-bottom:1px solid #d2d2d2;
   border-right: 1px solid #d2d2d2;
   padding:10px 10px 0px 20px;
-}
-.item-text-Header>.el-row>.el-col{
-  padding-bottom:10px;
+  height:55px;
+  overflow: hidden;
 }
 .item-text-list{
   height: 180px;
   padding:20px 10px 10px 20px;
   background:#f7f7f7;
-  overflow: hidden;
+  /* overflow: hidden;
   white-space: nowrap;
-  text-overflow: ellipsis;
+  text-overflow: ellipsis; */
   border-bottom:1px solid #d2d2d2;
   border-right: 1px solid #d2d2d2;
 }
@@ -909,20 +931,22 @@ export default {
   padding:10px 0px 0px 20px;
 }
 .item-chart{
+  height:440px;
   position: relative;
   overflow: hidden;
-  height:100%;
-  /* height:200px; */
+  z-index:999;
 }
 .item-chart-list{
   position:absolute;
+  left:0;
   width:100%;
-  /* overflow:auto; */
+  overflow-y:hidden;
+  overflow-x:auto;
+  z-index:1002;
 }
 .item-chartHeader{
   white-space: nowrap;
   padding-bottom:10px;
-  border-bottom:1px solid #d2d2d2;
 }
 .item-chartHeader>div{
   margin:10px 0px;
@@ -931,9 +955,21 @@ export default {
   display: inline-block;
   text-align:center;
 }
+.item-chartContent{
+  white-space: nowrap;
+}
+.item-chartContent>ul>li{
+  display: inline-block;
+  text-align:center;
+  border:1px solid #d2d2d2;
+  border-left:none;
+  border-bottom:none;
+  height:179px;
+}
 .span1{
-  width:10%;
+  width:7%;
   }
+
 @media screen and (max-width: 767px) {
   .item-total {
     margin: 0 15px;
