@@ -25,10 +25,10 @@
         </div>
       </label>
       <router-link :to="{name: 'register', params: {type: 1}}" class="cus">
-        <el-button class="pub-btn is-custom" type="primary" size="large">下一步</el-button>
+        <el-button class="pub-btn full-red-button large-button" type="primary" size="large">下一步</el-button>
       </router-link>
       <router-link :to="{name: 'register', params: {type: 2}}" class="bus">
-        <el-button class="pub-btn is-custom" type="primary" size="large">下一步</el-button>
+        <el-button class="pub-btn full-red-button large-button" type="primary" size="large">下一步</el-button>
       </router-link>
     </div>
   </div>
@@ -62,6 +62,10 @@
   }
 </script>
 <style scoped>
+  .cover1, .cover2 {
+    display: block;
+    padding: 0 15px 20px;
+  }
   input[id = customer]:checked ~ .cover1 > .type > article > h3 {
     color: #FF5A5F;
   }
@@ -93,18 +97,16 @@
   }
 
   .main h2 {
-    font-size: 20px;
+    font-size: 2rem;
     color: #333;
-    margin: 30px 0;
+    padding: 20px 0;
     text-align: center;
   }
 
   .type {
-    width: 80%;
     max-width: 300px;
     min-width: 288px;
     height: 120px;
-    margin: 10px auto 20px;
     background: #FFFFFF;
     box-shadow: 0 0 5px rgba(10, 10, 10, 0.1);
     border-radius: 10px;
@@ -152,9 +154,10 @@
 
   .cus, .bus {
     display: none;
+    padding: 0 15px;
   }
 
-  .pub-btn {
+  /* .pub-btn {
     position: absolute;
     left: 0;
     right: 0;
@@ -162,6 +165,11 @@
     width: 80%;
     height: 35px;
     max-width: 300px;
-  }
+  } */
 
+@media screen and (max-width: 767px) {
+  .main {
+    margin: 0
+  }
+}
 </style>

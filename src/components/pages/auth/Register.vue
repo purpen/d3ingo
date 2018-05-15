@@ -1,18 +1,27 @@
 <template>
   <div class="container">
+    <section class="cover-bgf7"></section>
     <div class="register-box">
       <div class="regisiter-title">
         <h2>注册铟果{{identity}}</h2>
       </div>
 
-      <div class="register-tab" v-if="!isMob">
+      <div class="register-tab clearfix" v-if="!isMob">
         <div :class="{'register-tab-user': true, active: uActive}" @click="selectUser">
-          <h3>我是客户</h3>
-          <p class="des">发布项目需求</p>
+          <div class="tab-left customer"></div>
+          <div class="tab-right">
+            <h3>我是客户</h3>
+            <p class="des">发布项目需求</p>
+            <p class="des">找到设计服务商</p>
+          </div>
         </div>
-        <div :class="{'register-tab-computer': true, active: cActive}" @click="selectComputer">
-          <h3>我是设计公司</h3>
-          <p class="des">入驻平台，大量设计需求等您解决。</p>
+        <div :class="{'register-tab-user': true, active: cActive}" @click="selectComputer">
+          <div class="tab-left"></div>
+          <div class="tab-right">
+            <h3>我是设计公司</h3>
+            <p class="des">为客户提供</p>
+            <p class="des">专业设计服务</p>
+          </div>
         </div>
       </div>
 
@@ -20,9 +29,9 @@
         <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px"
                  class="input">
           <el-form-item label="" prop="account">
-            <el-input v-model="form.account" name="username" ref="account" placeholder="手机号"></el-input>
+            <el-input v-model="form.account" name="username" ref="account" placeholder="手机号" :maxlength="11"></el-input>
           </el-form-item>
-          <el-form-item label="" prop="imgCode">
+          <el-form-item v-if="showImgCode" label="" prop="imgCode">
             <el-input class="imgCodeInput" v-model="form.imgCode" name="imgCode" ref="imgCode" placeholder="图形验证码">
               <template slot="append">
                 <div @click="fetchImgCaptcha" class="imgCode" :style="{'background': `url(${imgCaptchaUrl}) no-repeat`}"></div>
@@ -49,16 +58,13 @@
             注册
           </el-button>
         </el-form>
-
-        <div class="reg">
-          <p>已有铟果账户，您可以
-            <router-link :to="{name: 'login'}">立即登录</router-link>
-          </p>
-        </div>
-
       </div>
     </div>
-
+    <div class="reg">
+      <p>已有铟果账户，您可以
+        <router-link :to="{name: 'login'}">立即登录</router-link>
+      </p>
+    </div>
   </div>
 </template>
 
@@ -140,7 +146,8 @@
         identity: '',
         imgCaptchaUrl: '',
         imgCaptchaStr: '',
-        timeInterval: null // 定时器
+        timeInterval: null, // 定时器
+        showImgCode: false
       }
     },
     methods: {
@@ -292,6 +299,7 @@
                   type: 'error'
                 })
                 that.fetchImgCaptcha()
+                that.form.imgCode = ''
                 return false
               }
             })
@@ -373,6 +381,16 @@
           this.$router.replace({name: 'identity'})
         }
       }
+    },
+    watch: {
+      form: {
+        handler(val) {
+          if (val.account.length === 11) {
+            this.showImgCode = true
+          }
+        },
+        deep: true
+      }
     }
   }
 </script>
@@ -380,84 +398,84 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .register-box {
-    width: 800px;
-    height: 600px;
+    width: 580px;
     text-align: center;
-    margin: 30px auto 30px auto;
+    margin: 30px auto;
+    background: #fff;
+    border: 1px solid #E6E6E6;
+    box-shadow: 0 0 5px 0 rgba(0,0,0,0.10);
   }
 
   .regisiter-title {
-    width: 800px;
-    height: 60px;
+    height: 70px;
+    line-height: 70px;
     font-size: 2rem;
-    display: table-cell;
-    vertical-align: middle;
     text-align: center;
-    color: #222;
+    color: #666;
+    border-bottom: 1px solid #e6e6e6;
   }
 
   .register-tab {
+    padding-top: 30px;
     font-size: 1.8rem;
     width: 100%;
-    height: 80px;
-    border: 1px solid #d2d2d2;
-    border-bottom: none;
-    position: relative;
-    background-color: #f7f7f7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .register-tab-user {
-    padding-top: 20px;
-    width: 50%;
-    height: 80px;
-    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 250px;
+    height: 120px;
     cursor: pointer;
-    border-right: 1px solid #d2d2d2;
-    border-bottom: 1px solid #d2d2d2;
+    border: 1px solid #d2d2d2;
+    border-radius: 10px;
+    margin: 0 15px;
+    transition: 268ms all ease
   }
 
+  .register-tab-user:hover {
+    transform: translateY(-5px)
+  }
   .register-tab-user.active {
-    border-bottom: 2px solid #FF5A5F;
+    border: 1px solid #FF5A5F;
     background-color: #fff;
+    box-shadow: 0 0 5px 0 rgba(0,0,0,0.10);
   }
 
   .register-tab-user.active h3 {
     color: #FF5A5F;
   }
-
-  .register-tab-computer {
-    padding-top: 20px;
-    width: 50%;
-    height: 80px;
-    position: absolute;
-    left: 50%;
-    cursor: pointer;
-    border-bottom: 1px solid #d2d2d2;
+  .register-tab-user .tab-left {
+    height: 100%;
+    flex: 1;
+    background: url("../../../assets/images/home/ServiceProvider@2x.png") no-repeat center / contain;
   }
-
-  .register-tab-computer.active {
-    border-bottom: 2px solid #FF5A5F;
-    background-color: #fff;
+  .register-tab-user .customer {
+    height: 100%;
+    flex: 1;
+    background: url("../../../assets/images/home/Customer@2x.png") no-repeat center / contain;
   }
-
-  .register-tab-computer.active h3 {
-    color: #FF5A5F;
+  .register-tab-user .tab-right {
+    flex: 1;
+    text-align: left;
   }
-
   .register-content {
-    border: 1px solid #d2d2d2;
-    border-top: none;
     padding-top: 30px;
   }
 
   .register-tab h3 {
+    font-size: 14px;
     padding: 3px 0 6px 0;
     color: #666;
   }
 
   p.des {
     padding: 3px;
-    font-size: 0.7em;
+    font-size: 12px;
     color: #999;
   }
 
@@ -476,10 +494,12 @@
   }
 
   .reg {
-    margin: 32px 0;
+    text-align: center;
+    margin: 30px 0;
   }
 
   .reg p {
+    line-height: 24px;
     color: #666;
   }
 
@@ -496,12 +516,17 @@
   }
 
   @media screen and (max-width: 767px) {
+    .regisiter-title {
+      border-bottom: none;
+      height: 60px;
+      line-height: 60px;
+    }
     .register-box {
       border: none;
       width: auto;
       max-width: 450px;
       height: auto;
-      margin-top: 0;
+      margin: 0;
     }
 
     form {
@@ -517,9 +542,10 @@
     .register-content {
       border: none;
       padding-top: 0;
+      padding-bottom: 20px;
     }
     .reg {
-      margin: 20px 0
+      margin: 20px 0 -20px
     }
   }
 </style>
