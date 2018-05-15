@@ -229,7 +229,7 @@ export default {
   border: 1px solid #E6E6E6;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.10);
   border-radius: 4px;
-  padding-bottom: 60px;
+  padding-bottom: 30px;
 }
 
 .login-title {

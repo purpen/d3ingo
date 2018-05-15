@@ -1,5 +1,5 @@
 <template>
-  <div class="InovationHome">
+  <div class="innovation-home">
     <div class="dimension">
       <el-row :gutter="20">
         <el-col :span="24">
@@ -95,6 +95,22 @@
     </section>
   </div>
 </template>
+<script>
+export default {
+  name: 'InnoHome',
+  computed: {
+    user() {
+      return this.$store.state.event.user
+    }
+  },
+  created() {
+    if (this.user.role_id === 0) {
+      this.$message.warning('排行页面仅限管理员可见')
+    }
+  }
+}
+</script>
+
 <style scoped>
   .img-list {
     max-width: 1240px;

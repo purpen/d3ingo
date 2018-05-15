@@ -499,7 +499,7 @@
   }
 
   .reg {
-    margin: 32px 0;
+    margin: 30px 0;
   }
 
   .reg p {
