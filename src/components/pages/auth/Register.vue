@@ -439,7 +439,7 @@
   }
 
   .register-tab-user:first-child {
-    margin-right: 10px;
+    margin-right: 18px;
   }
   .register-tab-user:hover {
     box-shadow: 0 0 5px 0 rgba(0,0,0,0.10);
