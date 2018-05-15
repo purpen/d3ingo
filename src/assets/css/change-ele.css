@@ -26,3 +26,11 @@
   .textarea-summary .el-textarea__inner:focus {
     border-color: #d2d2d2
   }
+  .el-menu-info.el-menu--horizontal > .el-submenu .el-submenu__title {
+    padding-right: 0
+  }
+  /* control header */
+  .el-menu-info .el-submenu > .el-menu {
+    left: auto;
+    right: 0;
+  }

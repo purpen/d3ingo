@@ -1,5 +1,5 @@
 <template>
-  <el-row :class="['cloud-content', {'slide-mini': !leftWidth}]">
+  <el-row :class="['cloud-content', {'slide-mini': !leftWidth && withoutSide}]">
     <v-menu-left :currentName="withoutSide? 'cloud_drive' : 'project_management'"></v-menu-left>
     <el-col v-if="withoutSide" :span="4" :offset="leftWidth">
       <v-menu :isActive='modules' @getTitle="headTitle"></v-menu>

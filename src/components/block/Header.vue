@@ -47,7 +47,7 @@
               <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>个人中心</el-menu-item>
               <el-menu-item index="/admin" v-if="isAdmin > 0 ? true : false"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>后台管理</el-menu-item>
               <el-menu-item index="" @click="logout">
-<i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
+                <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
             </el-submenu>
           </el-menu>
         </div>
@@ -179,7 +179,6 @@
       },
       logout() {
         auth.logout()
-        this.isLogin = false
         this.$message({
           message: '已退出',
           type: 'success',
