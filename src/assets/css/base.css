@@ -60,7 +60,8 @@ body {
   width: 100%;
   min-height: 100%;
   position: relative;
-  padding: 60px 0 340px;
+  padding-top: 60px;
+  padding-bottom: 340px;
   overflow-x: hidden
 }
 #app2 {
