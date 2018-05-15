@@ -221,7 +221,7 @@
                       <ul>
                         <li>阶段</li>
                         <li>投入时间</li>
-                        <li>完成度</li>    
+                        <li>完成度</li>
                       </ul>
                     </div>
                   </el-col>
@@ -237,7 +237,7 @@
                       <ul>
                         <li>{{des.name}}</li>
                         <li>{{des.duration}}</li>
-                        <li>0%</li>               
+                        <li>0%</li>
                       </ul>
                     </div>
                   </el-col>
@@ -259,11 +259,11 @@
             </div>
           </el-col>
 
-          <el-col :span="18">
+          <el-col :span="18" :style="{height:Rheight +'px'}">
 
             <div class="item-chart">
               
-              <div class="item-chart-list scroll-bar">
+              <div class="item-chart-list scroll-bar" :style="{height:Rheight + 'px'}">
 
                 <div class="item-chartHeader">
                   <div>2018年5月</div>
@@ -274,7 +274,7 @@
                   </ul>
                 </div>
 
-                <div class="item-chartContent">
+                <div class="item-chartContent" v-for="(c,indexc) in designStageLists" :key="indexc">
                   <ul>
                     <li v-for="(d,indexd) in dateList" :key="indexd" class="span1">
 
@@ -282,13 +282,6 @@
                   </ul>
                 </div>
 
-                <div class="item-chartContent">
-                  <ul>
-                    <li v-for="(d,indexd) in dateList" :key="indexd" class="span1">
-
-                    </li>
-                  </ul>
-                </div>
               </div>
 
             </div>
@@ -443,8 +436,11 @@ export default {
       }
     }
   },
-  // computed:{
-  // },
+  computed: {
+    Rheight: function () {
+      return (this.designStageLists.length) * 180 + 63
+    }
+  },
   methods: {
     // 跳回项目列表页 evt: 0.不提示信息；1.错误提示；2.成功提示；message: 消息
     redirectItemList(evt, message) {
@@ -462,35 +458,44 @@ export default {
     cancel() {
       this.isItemStage = false
     },
+    // 每个月天数
+    monthday(n) {
+      var daying = []
+      for (var i = 1; i <= n; i++) {
+        daying.push(i)
+      }
+      return daying
+    },
     // 获取某个阶段日期的所有天数
     dateDay(s, e) {
       s = new Date(1463328000 * 1000)
       e = new Date(1527609600 * 1000)
+      let syear = s.getFullYear()
+      let smonth = s.getMonth() + 1
+      let eyear = e.getFullYear()
+      let emonth = e.getMonth() + 1
+      console.log(syear)
+      console.log(eyear)
+      console.log(smonth)
+      console.log(emonth)
       let times = []
       for (var d = 1; d <= 12; d++) {
+        times[d] = {}
+        times[d].day = ''
         if ((d % 2 !== 0 && d < 8) || (d >= 8 && d % 2 === 0)) {
-          times[d] = {}
-          for (var odd = 0; odd <= 31; odd++) {
-            times[d][odd].day = odd
-          }
+          times[d].day = 31
         } else if (d !== 2) {
-          times[d] = {}
-          for (var even = 0; even <= 30; even++) {
-            times[d][even].day = even
-          }
+          times[d].day = 30
         } else if (s.isLeapYear()) {
-          times[2] = {}
-          for (var twoa = 0; twoa <= 29; twoa++) {
-            times[d][twoa].day = twoa
-          }
+          times[2].day = 29
         } else {
-          times[2] = {}
-          for (var two = 0; two <= 28; two++) {
-            times[d][two].day = two
-          }
+          times[2].day = 28
         }
-        console.log(times)
+        times[d].mouth = d
+        times[d].dayings = this.monthday(times[d].day)
       }
+      times.splice(0, 1)
+      console.log(times)
     },
     // 创建项目
     create(formName) {
@@ -966,7 +971,7 @@ export default {
   padding:10px 0px 0px 20px;
 }
 .item-chart{
-  height:440px;
+  height:100%;
   position: relative;
   overflow: hidden;
   z-index:3;

@@ -59,7 +59,6 @@ String.prototype.date_format = function()
 //---------------------------------------------------  
 Date.prototype.isLeapYear = function()
 {
-  console.log(this)
-  return (0 === this.getYear()%4);
+  return (0==this.getYear()%4&&((this.getYear()%100!=0)||(this.getYear()%400==0)));
 }
 /* eslint-enable */
