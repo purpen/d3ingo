@@ -58,16 +58,13 @@
             注册
           </el-button>
         </el-form>
-
-        <div class="reg">
-          <p>已有铟果账户，您可以
-            <router-link :to="{name: 'login'}">立即登录</router-link>
-          </p>
-        </div>
-
       </div>
     </div>
-
+    <div class="reg">
+      <p>已有铟果账户，您可以
+        <router-link :to="{name: 'login'}">立即登录</router-link>
+      </p>
+    </div>
   </div>
 </template>
 
@@ -466,8 +463,6 @@
     flex: 1;
     text-align: left;
   }
-  .register-tab-user .tab-right p {
-  }
   .register-content {
     padding-top: 30px;
   }
@@ -499,10 +494,12 @@
   }
 
   .reg {
+    text-align: center;
     margin: 30px 0;
   }
 
   .reg p {
+    line-height: 24px;
     color: #666;
   }
 
@@ -519,12 +516,17 @@
   }
 
   @media screen and (max-width: 767px) {
+    .regisiter-title {
+      border-bottom: none;
+      height: 60px;
+      line-height: 60px;
+    }
     .register-box {
       border: none;
       width: auto;
       max-width: 450px;
       height: auto;
-      margin-top: 0;
+      margin: 0;
     }
 
     form {
@@ -540,9 +542,10 @@
     .register-content {
       border: none;
       padding-top: 0;
+      padding-bottom: 20px;
     }
     .reg {
-      margin: 20px 0
+      margin: 20px 0 -20px
     }
   }
 </style>

@@ -27,23 +27,21 @@
                     class="login-btn is-custom">登录
           </el-button>
         </el-form>
-
-        <div class="reg">
-          <p class="join-company" v-if="code">登陆并加入 <span>{{item.design_company_name}}</span></p>
-          <p v-if="code">没有铟果账户？
-            <router-link :to="{name: 'invite', params: {code: code}}">立即注册</router-link>
-          </p>
-          <div v-if="!code">
-            <p v-if="!isMob">还没有铟果账户？
-              <router-link v-if="type" :to="{name: 'register',params:{type: type}}">立即注册</router-link>
-              <router-link v-else :to="{name: 'register'}">立即注册</router-link>
-            </p>
-            <p v-else>还没有铟果账户？
-              <router-link :to="{name: 'identity'}">立即注册</router-link>
-            </p>
-          </div>
-        </div>
-
+      </div>
+    </div>
+    <div class="reg">
+      <p class="join-company" v-if="code">登陆并加入 <span>{{item.design_company_name}}</span></p>
+      <p v-if="code">没有铟果账户？
+        <router-link :to="{name: 'invite', params: {code: code}}">立即注册</router-link>
+      </p>
+      <div v-if="!code">
+        <p v-if="!isMob">还没有铟果账户？
+          <router-link v-if="type" :to="{name: 'register',params:{type: type}}">立即注册</router-link>
+          <router-link v-else :to="{name: 'register'}">立即注册</router-link>
+        </p>
+        <p v-else>还没有铟果账户？
+          <router-link :to="{name: 'identity'}">立即注册</router-link>
+        </p>
       </div>
     </div>
   </div>
@@ -224,7 +222,7 @@ export default {
   background: #fff;
   width: 580px;
   text-align: center;
-  margin: 30px auto;
+  margin: 30px auto 0;
   background: #FFFFFF;
   border: 1px solid #E6E6E6;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.10);
@@ -258,6 +256,7 @@ form {
 }
 
 .reg {
+  text-align: center;
   margin-top: 20px;
 }
 
@@ -275,10 +274,8 @@ form {
 }
 
 .opt {
-  margin-top: -25px;
-  height: 46px;
   overflow: hidden;
-  padding: 12px 0;
+  padding: 0 0 20px;
 }
 
 .forget {
@@ -312,10 +309,12 @@ form {
     max-width: 450px;
     border: none;
     margin: 0 auto;
+    padding-bottom: 20px;
   }
 
   .login-title {
-    line-height: 52px;
+    height: 60px;
+    line-height: 60px;
     border: none;
   }
 
@@ -333,6 +332,7 @@ form {
 
   .reg {
     margin-top: 20px;
+    margin-bottom: -20px;
   }
 }
 </style>

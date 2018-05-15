@@ -106,10 +106,6 @@ export default {
   margin: 10px 0;
 }
 
-.content-box p {
-  line-height: 1.7;
-}
-
 .content-box p img {
   vertical-align: middle;
 }
