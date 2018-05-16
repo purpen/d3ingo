@@ -979,7 +979,7 @@ export default {
     position: absolute;
     right: 0;
     top: 29px;
-    z-index: 1999;
+    z-index: 99;
   }
 
   .cententList p {

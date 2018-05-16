@@ -336,7 +336,7 @@
       <div v-else class="cover-content">
         <system-message></system-message>
       </div>
-  </section>
+    </section>
   </section>
 </template>
 
@@ -517,7 +517,7 @@
   }
   .menu-list .item {
     overflow: hidden;
-    padding: 0 0 0 50px;
+    padding: 0 0 0 53px;
     height: 50px;
     line-height: 50px;
     color: rgba(255, 255, 255, 0.5);
@@ -612,7 +612,7 @@
   .menu-header {
     background: #fff;
     position: fixed;
-    z-index: 9;
+    z-index: 999;
     display: flex;
     top: 0;
     left: 0;
@@ -661,34 +661,14 @@
     border-radius: 50%;
     background: #f7f7f7;
   }
-  @media screen and (max-width: 1439px) {
-    .menuHide {
-      transition: 0.1s all ease
-    }
-
+  .menuHide-mini {
+    width: 60px;
   }
-  @media screen and (min-width: 768px) {
-    .menuHide {
-      position: fixed;
-      left: 0;
-      top: 60px;
-      width: inherit;
-      max-width: 240px;
-      height: calc(100% - 60px);
-    }
-
-    .menu-list {
-      width: inherit;
-    }
-
-    .menuHide-mini {
-      max-width: 60px;
-    }    
-    .menuHide-mini .menu-list .item {
-      text-indent: -999rem;
-    }
+  .menuHide-mini .menu-list .item {
+    text-indent: -999rem;
   }
   .MmenuHide {
+    width: 100%;
     background: #fff;
   }
   .MmenuHide .menu-list .item {
@@ -799,10 +779,33 @@
     height: 100%;
     padding-bottom: 50px;
   }
-  @media screen and (min-width: 1440px) {
+  @media screen and (min-width: 768px) {
+    .menuHide {
+      position: fixed;
+      left: 0;
+      top: 60px;
+      width: inherit;
+      max-width: 200px;
+      height: calc(100% - 60px);
+    }
+    .menu-list {
+      width: inherit;
+    }
+  }
+  @media screen and (max-width: 1199px) {
+    .menuHide {
+      transition: 0.1s all ease
+    }
+
+  }
+  @media screen and (min-width: 1200px) {
     .cover {
-      left: 240px;
-      width: calc(100% - 240px);
+      left: 200px;
+      width: calc(100% - 200px);
+    }
+    .cover-mini {
+      left: 60px;
+      width: calc(100% - 60px);
     }
   }
 </style>

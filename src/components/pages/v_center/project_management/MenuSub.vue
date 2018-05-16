@@ -16,11 +16,11 @@
         :to="{name: 'projectManagementFile',
         params: {id: routeId},
         query: {id: projectObject.pan_director_id}}">文件</router-link>
-      <router-link :class="[{'active': currentRoute === 'projectManagementIncomeandExpenses'}]"
-        :to="{name: 'projectManagementIncomeandExpenses', params: {id: routeId}}">收支</router-link>
+      <!-- <router-link :class="[{'active': currentRoute === 'projectManagementIncomeandExpenses'}]"
+        :to="{name: 'projectManagementIncomeandExpenses', params: {id: routeId}}">收支</router-link> -->
     </div>
     <div class="pm-right">
-      <router-link class="need" to="">项目需求</router-link>
+      <!-- <router-link class="need" to="">项目需求</router-link> -->
       <router-link :to="{name: 'projectQuote', params: {id: routeId}}" :class="['quotation', {'active': isQuote}]">项目报价</router-link>
       <router-link class="contract border-right" :to="{name: 'projectContract', params: {id: routeId}}">合同</router-link>
       <a @click.self="controlMemberShow" class="member border-right">
@@ -1044,7 +1044,7 @@ header {
   right: 10px;
   top: 48px;
   background: #fff;
-  z-index: 1;
+  z-index: 99;
   width: 380px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1)
 }

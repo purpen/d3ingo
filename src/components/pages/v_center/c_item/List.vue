@@ -1,7 +1,7 @@
 <template>
   <div class="blank20 clearfix">
     <v-menu currentName="c_item"></v-menu>
-      <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
+    <el-col :span="isMob ? 24 : rightWidth">
       <div class="right-content vcenter-container">
         <v-menu-sub :waitCountProp="waitCount" :ingCountProp="ingCount"></v-menu-sub>
         <div :class="['content-item-box', isMob ? 'content-item-box-m' : '' ]" v-loading="isLoading">
@@ -65,19 +65,19 @@
                 <div class="btn" v-if="d.design_company_status === 0">
                   <p>
                     <el-button class="is-custom" @click="takingBtn" size="small" :item_id="d.item.id" :index="index"
-                               :cost="d.item.design_cost_value" type="primary">提交报价单
+                              :cost="d.item.design_cost_value" type="primary">提交报价单
                     </el-button>
                   </p>
                   <p>
                     <el-button class="is-custom" @click="companyRefuseBtn" size="small" :index="index"
-                               :item_id="d.item.id">暂无兴趣
+                              :item_id="d.item.id">暂无兴趣
                     </el-button>
                   </p>
 
                 </div>
                 <p>
                   <el-button class="is-custom" v-if="d.design_company_status === 2" @click="showView" size="small"
-                             :index="index" :item_id="d.item.id">查看报价
+                            :index="index" :item_id="d.item.id">查看报价
                   </el-button>
                 </p>
               </el-col>

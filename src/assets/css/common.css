@@ -178,10 +178,31 @@
   color: #fff;
 }
 
+.disabled-button,
+.disabled-button:hover,
+.disabled-button:active {
+  font-size: 14px;
+  cursor: not-allowed;
+  background: #ccc;
+  color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.disabled-button-light,
+.disabled-button-light:hover,
+.disabled-button-light:active {
+  font-size: 14px;
+  cursor: not-allowed;
+  background: #FAFAFA;
+  color: #C8C8C8;
+  border: 1px solid #E6E6E6;
+  border-radius: 4px;
+}
 /* 基本按钮 button  <<<<<<<*/
 
-@media screen and (max-width: 768px) and (min-width: 1440px) {
-  .col-offset-4 {
-    margin-left: 16.667%;
-  }
+/* vcenter */
+.vcenter-right-plus {
+  padding-left: 200px
 }
+@media screen and (min-width: 768px) {}
