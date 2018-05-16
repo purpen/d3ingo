@@ -3,7 +3,8 @@
     <el-row>
       <v-menu :class="[isMob ? 'v-menu' : '']" currentName="design_case"></v-menu>
 
-      <el-col :span="isMob ? 24 : 20" :offset="!isMob? leftWidth : 0">
+      <div :class="{'vcenter-right-plus': leftWidth === 4,
+        'vcenter-right': leftWidth === 2}">
         <div class="right-content vcenter-container">
           <v-menu-sub v-if="false"></v-menu-sub>
           <div :class="['content-box', isMob ? 'content-box-m' : '']">
@@ -45,7 +46,7 @@
             </div>
           </div>
         </div>
-      </el-col>
+      </div>
     </el-row>
   </div>
 </template>

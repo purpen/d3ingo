@@ -1,11 +1,11 @@
 <template>
-  <el-row :class="['cloud-content', {'slide-mini': !leftWidth && withoutSide}]">
+  <el-row :class="['cloud-content', {'slide-mini': leftWidth === 2 && withoutSide}]">
     <v-menu-left :currentName="withoutSide? 'cloud_drive' : 'project_management'"></v-menu-left>
     <el-col v-if="withoutSide" :span="4" :offset="leftWidth">
       <v-menu :isActive='modules' @getTitle="headTitle"></v-menu>
     </el-col>
     <el-col :span="leftWidth? (withoutSide?16 :24) : (withoutSide?20 :24)">
-      <div :class="['content', {'content-mini' : !leftWidth}, {'content-pm' : !withoutSide}]"
+      <div :class="['content', {'content-mini' : leftWidth === 2}, {'content-pm' : !withoutSide}]"
         v-loading.body="isLoading">
         <div class="content-head">
           <div class="clearfix" v-show="showList">
@@ -1563,12 +1563,7 @@ export default {
       }
     },
     leftWidth() {
-      let leftWidth = this.$store.state.event.leftWidth
-      if (leftWidth === 2) {
-        return 0
-      } else if (leftWidth === 4) {
-        return leftWidth
-      }
+      return this.$store.state.event.leftWidth
     },
     projectObject() {
       return this.$store.state.task.projectObject

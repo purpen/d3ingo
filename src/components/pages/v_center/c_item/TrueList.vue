@@ -1,8 +1,8 @@
 <template>
   <div class="blank20 clearfix">
     <v-menu currentName="c_item" class="c_item"></v-menu>
-
-    <el-col class="vcenter-right-plus" :span="24">
+    <div :class="{'vcenter-right-plus': leftWidth === 4,
+      'vcenter-right': leftWidth === 2}">
       <div class="right-content vcenter-container">
         <v-menu-sub :waitCountProp="waitCount" :ingCountProp="ingCount"></v-menu-sub>
         <div :class="['content-item-box', isMob ? 'content-item-box-m' : '' ]" v-loading="isLoading">
@@ -107,7 +107,7 @@
 
       <div class="empty" v-if="isEmpty === true"></div>
       <p v-if="isEmpty === true" class="noMsg">暂无已合作项目</p>
-    </el-col>
+    </div>
 
     <el-dialog
       title="提示"

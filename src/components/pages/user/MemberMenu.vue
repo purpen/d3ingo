@@ -95,7 +95,7 @@ export default {
     /* color: rgba(255, 255, 255, 0.5); */
     /* background: #333; */
     color: #999;
-    max-width: 240px;
+    max-width: 200px;
     height: calc(100vh - 60px);
     transition: 0.2s all ease;
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.10)
@@ -198,10 +198,10 @@ export default {
     opacity: 1;
   }
   
-  @media screen and (min-width: 1440px) {
+  @media screen and (min-width: 1200px) {
     .member-menu {
       position: absolute;
-      left: 240px;
+      left: 200px;
     }
 
     .member-menu-mini {

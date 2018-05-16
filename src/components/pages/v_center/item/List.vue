@@ -3,7 +3,8 @@
     <el-row>
       <v-menu currentName="item"></v-menu>
 
-      <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
+      <div :class="{'vcenter-right-plus': leftWidth === 4,
+        'vcenter-right': leftWidth === 2}">
         <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
           <div class="content-item-box" v-loading.body="isLoading">
@@ -287,7 +288,7 @@
 
         </div>
 
-      </el-col>
+      </div>
     </el-row>
 
     <el-dialog

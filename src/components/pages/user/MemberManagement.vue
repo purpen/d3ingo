@@ -1058,18 +1058,18 @@ export default {
     color: #ff5a5f
   }
   
-  @media screen and (min-width: 1440px) {
+  @media screen and (min-width: 1200px) {
     .member-list {
       position: absolute;
-      width: calc(100% - 480px);
+      width: calc(100% - 400px);
       top: 0;
-      left: 480px;
+      left: 400px;
     }
     .member-list-mini {
       position: absolute;
-      width: calc(100% - 300px);
+      width: calc(100% - 260px);
       top: 0;
-      left: 300px;
+      left: 260px;
       transition: 0.2s all ease;
     }
   }

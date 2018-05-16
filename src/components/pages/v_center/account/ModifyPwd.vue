@@ -2,7 +2,8 @@
   <div class="blank20">
     <el-row>
       <v-menu currentName="profile" :class="[isMob ? 'v-menu' : '']"></v-menu>
-      <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
+      <div :class="{'vcenter-right-plus': leftWidth === 4,
+      'vcenter-right': leftWidth === 2}">
         <div class="right-content modify-content vcenter-container">
           <v-menu-sub></v-menu-sub>
           <v-menu-sub v-if="false" currentSubName="identification"></v-menu-sub>
@@ -48,7 +49,7 @@
           </div>
         </div>
 
-      </el-col>
+      </div>
     </el-row>
   </div>
 </template>

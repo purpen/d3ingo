@@ -2,7 +2,8 @@
   <div class="blank20">
     <el-row>
       <v-menu currentName="company" :class="[isMob ? 'v-menu' : '']"></v-menu>
-      <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
+      <div :class="{'vcenter-right-plus': leftWidth === 4,
+      'vcenter-right': leftWidth === 2}">
           <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
 
@@ -174,7 +175,7 @@
           </div>
 
         </div>
-      </el-col>
+      </div>
     </el-row>
 
   </div>

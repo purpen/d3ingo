@@ -202,6 +202,10 @@
 /* 基本按钮 button  <<<<<<<*/
 
 /* vcenter */
+
+.vcenter-right {
+  padding-left: 60px
+}
 @media screen and (max-width: 1199px) {
   .vcenter-right-plus {
     padding-left: 16.667%

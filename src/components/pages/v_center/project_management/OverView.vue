@@ -1,389 +1,389 @@
 <template>
-<div class="item-total">
-  <section class="add-itemStage-bg" v-if="isItemStage">
-    <div class="add-itemStage">
-      <div class="itemStage-title">新建项目阶段
-        <i class="fx-icon-close-sm" @click="cancel()"></i>
-      </div>
-      <div class="itemStage-content">
-        <el-form 
-          @submit.native.prevent 
-          :model="form"
-          ref="form" 
-          :rules="rules"
-          label-position=""
-          >
-            <el-form-item label="项目阶段名称" prop="name">
-              <el-input v-model="form.name"
-              placeholder="项目阶段名称">
+  <div class="item-total">
+    <section class="add-itemStage-bg" v-if="isItemStage">
+      <div class="add-itemStage">
+        <div class="itemStage-title">新建项目阶段
+          <i class="fx-icon-close-sm" @click="cancel()"></i>
+        </div>
+        <div class="itemStage-content">
+          <el-form 
+            @submit.native.prevent 
+            :model="form"
+            ref="form" 
+            :rules="rules"
+            label-position=""
+            >
+              <el-form-item label="项目阶段名称" prop="name">
+                <el-input v-model="form.name"
+                placeholder="项目阶段名称">
+                </el-input>
+              </el-form-item>
+              <el-row :gutter="20">
+                <el-col :span="12">
+              <el-form-item label="投入时间" prop="duration">
+                <el-input placeholder="请输入所需天数" v-model.number="form.duration"
+                  prop="duration"
+                  >
+                <template slot="append">工作日</template>
               </el-input>
             </el-form-item>
-            <el-row :gutter="20">
-              <el-col :span="12">
-            <el-form-item label="投入时间" prop="duration">
-              <el-input placeholder="请输入所需天数" v-model.number="form.duration"
-                prop="duration"
-                >
-              <template slot="append">工作日</template>
-            </el-input>
-          </el-form-item>
-              </el-col>
-              <el-col :span="12">
-          <el-form-item label="开始时间" prop="start_time">
-            <div class="block">
+                </el-col>
+                <el-col :span="12">
+            <el-form-item label="开始时间" prop="start_time">
+              <div class="block">
+                <el-date-picker
+                  type="date"
+                  v-model="form.start_time"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </div>
+            </el-form-item>
+                </el-col>
+            </el-row>
+            <el-form-item label="交付内容" prop="content">
+              <el-input
+                type="textarea"
+                :autosize="{ minRows: 4, maxRows: 8}"
+                placeholder="请输入交付内容"
+                v-model="form.content"
+                > 
+              </el-input>
+            </el-form-item>
+            <el-form-item>
+              <button class="small-button full-red-button fr" @click="create('form')">保存</button>
+              <button class="small-button white-button fr" @click="cancel()">取消</button>
+            </el-form-item>
+          </el-form>
+      </div>
+    </div>
+    </section>
+    <aside class="aside">
+      <div class="aside-title fx">
+        <i class="fx fx-icon-delete2"></i>
+        项目阶段设置
+        <span class="fx fx-icon-close-sm"></span>
+      </div>
+      <el-progress 
+      :percentage="50"
+      :show-text="false"
+      :stroke-width="8"
+      ></el-progress>
+      <ul class="aside-content">
+        <li> <el-checkbox v-model="checked"></el-checkbox>
+          <el-input v-model="form.name"  placeholder="项目阶段名称"></el-input>
+        </li>
+        <li>
+          <div class="block">
               <el-date-picker
-                type="date"
-                v-model="form.start_time"
-                placeholder="选择日期时间">
+              type="date"
+              v-model="form.start_time"
+              placeholder="选择日期时间">
               </el-date-picker>
             </div>
-          </el-form-item>
-              </el-col>
-          </el-row>
-          <el-form-item label="交付内容" prop="content">
-            <el-input
+        </li>
+        <li>
+          <div>
+            <el-input placeholder="请输入所需天数"                        v-model="form.duration">
+              <template slot="append">工作日</template>
+            </el-input>
+          </div>
+        </li>
+        <li>
+          <el-input
               type="textarea"
               :autosize="{ minRows: 4, maxRows: 8}"
-              placeholder="请输入交付内容"
+              placeholder="请输入内容"
               v-model="form.content"
-              > 
-            </el-input>
-          </el-form-item>
-          <el-form-item>
-            <button class="small-button full-red-button fr" @click="create('form')">保存</button>
-            <button class="small-button white-button fr" @click="cancel()">取消</button>
-          </el-form-item>
-        </el-form>
-    </div>
-  </div>
-  </section>
-  <aside class="aside">
-    <div class="aside-title fx">
-      <i class="fx fx-icon-delete2"></i>
-      项目阶段设置
-      <span class="fx fx-icon-close-sm"></span>
-    </div>
-    <el-progress 
-    :percentage="50"
-    :show-text="false"
-    :stroke-width="8"
-    ></el-progress>
-    <ul class="aside-content">
-      <li> <el-checkbox v-model="checked"></el-checkbox>
-        <el-input v-model="form.name"  placeholder="项目阶段名称"></el-input>
-      </li>
-      <li>
-        <div class="block">
-            <el-date-picker
-            type="date"
-            v-model="form.start_time"
-            placeholder="选择日期时间">
-            </el-date-picker>
+              >
+              </el-input>
+        </li>
+      </ul>
+      <div class="add-tack">
+        <i>+</i>
+        <span class="fx-6">添加任务</span>
+      </div>
+      <ul class="tack-list">
+        <li>
+          <el-checkbox v-model="checked"> 前期调研</el-checkbox>
+        </li>
+        <li>
+          <el-checkbox v-model="checked"> 草图设计</el-checkbox>
+        </li>
+      </ul>
+    </aside>
+
+    <section class="top-progress">
+      <div class="h3">笔记本设计</div>
+      <el-progress 
+      :percentage="0"
+      :show-text="false"
+      :stroke-width="3"
+      ></el-progress>
+      <ul class="item-header">
+        <li>
+          <div>0</div>
+          <p>所有任务</p>
+        </li>
+        <li>
+          <div>0</div>
+          <p>项目阶段</p>
+        </li>
+        <li>
+          <div>0</div>
+          <p>投入时间</p>
+        </li>
+        <li>
+          <div>0%</div>
+          <p>项目进度</p>
+        </li>
+      </ul>
+    </section>
+    <section class="item-task">
+      <div class="h3">
+        任务统计
+      </div>
+      <ul>
+        <li>
+          <el-progress
+            type="circle" 
+            :percentage="0"
+            :width="60"
+            :show-text="false"
+          ></el-progress>
+          <div >
+            <p>未认领</p>
+            <p class="fx-6">50%</p>
           </div>
-      </li>
-      <li>
-        <div>
-          <el-input placeholder="请输入所需天数"                        v-model="form.duration">
-            <template slot="append">工作日</template>
-          </el-input>
-        </div>
-      </li>
-      <li>
-        <el-input
-            type="textarea"
-            :autosize="{ minRows: 4, maxRows: 8}"
-            placeholder="请输入内容"
-            v-model="form.content"
-            >
-            </el-input>
-      </li>
-    </ul>
-    <div class="add-tack">
-      <i>+</i>
-      <span class="fx-6">添加任务</span>
-    </div>
-    <ul class="tack-list">
-      <li>
-        <el-checkbox v-model="checked"> 前期调研</el-checkbox>
-      </li>
-      <li>
-        <el-checkbox v-model="checked"> 草图设计</el-checkbox>
-      </li>
-    </ul>
-  </aside>
+        </li>
+        <li>
+          <el-progress 
+            type="circle" 
+            :percentage="0"
+            :show-text="false"
+            :width="60"></el-progress>
+          <div >
+            <p>未完成</p>
+            <p class="fx-6">50%</p>
+          </div>
+        </li>
+        <li>
+          <el-progress
+            type="circle" 
+            :percentage="0"
+            :width="60"
+            :show-text="false"
+          ></el-progress>
+          <div>
+            <p>已完成</p>
+            <p class="fx-6">50%</p>
+          </div>
+        </li>
+        <li>
+          <el-progress
+            type="circle" 
+            :percentage="0"
+            :width="60"
+            :show-text="false"
+          ></el-progress>
+          <div>
+            <p>已逾期</p>
+            <p class="fx-6">50%</p>
+          </div>
+        </li>
+      </ul>
+    </section>
+    <section class="item-content">
 
-  <section class="top-progress">
-    <div class="h3">笔记本设计</div>
-    <el-progress 
-    :percentage="0"
-    :show-text="false"
-    :stroke-width="3"
-    ></el-progress>
-    <ul class="item-header">
-      <li>
-        <div>0</div>
-        <p>所有任务</p>
-      </li>
-       <li>
-        <div>0</div>
-        <p>项目阶段</p>
-      </li>
-       <li>
-        <div>0</div>
-        <p>投入时间</p>
-      </li>
-       <li>
-        <div>0%</div>
-        <p>项目进度</p>
-      </li>
-    </ul>
-  </section>
-  <section class="item-task">
-    <div class="h3">
-      任务统计
-    </div>
-    <ul>
-      <li>
-        <el-progress
-          type="circle" 
-          :percentage="0"
-          :width="60"
-          :show-text="false"
-        ></el-progress>
-        <div >
-          <p>未认领</p>
-          <p class="fx-6">50%</p>
-        </div>
-      </li>
-      <li>
-        <el-progress 
-          type="circle" 
-          :percentage="0"
-          :show-text="false"
-          :width="60"></el-progress>
-        <div >
-          <p>未完成</p>
-          <p class="fx-6">50%</p>
-        </div>
-      </li>
-      <li>
-        <el-progress
-          type="circle" 
-          :percentage="0"
-          :width="60"
-          :show-text="false"
-        ></el-progress>
-        <div>
-          <p>已完成</p>
-          <p class="fx-6">50%</p>
-        </div>
-      </li>
-      <li>
-        <el-progress
-          type="circle" 
-          :percentage="0"
-          :width="60"
-          :show-text="false"
-        ></el-progress>
-        <div>
-          <p>已逾期</p>
-          <p class="fx-6">50%</p>
-        </div>
-      </li>
-    </ul>
-  </section>
-  <section class="item-content">
+      <p class="h3">项目执行进度规划<p>
 
-    <p class="h3">项目执行进度规划<p>
+        <div class="item-lists">
 
-      <div class="item-lists">
+          <el-row>
 
-        <el-row>
+            <el-col :span="6">
+              <div class="item-list-text">
 
-          <el-col :span="6">
-            <div class="item-list-text">
+                <div class="item-text-Header">
+                  <el-row>
 
-              <div class="item-text-Header">
-                <el-row>
+                    <el-col>
+                      <div class="fr">
+                        <i class="fx-icon-search" 
+                          @click="isSearch=true"
+                        >
+                        </i>
+                      </div>
+                    </el-col>
 
-                  <el-col>
-                    <div class="fr">
-                      <i class="fx-icon-search" 
-                        @click="isSearch=true"
-                      >
-                      </i>
-                    </div>
-                  </el-col>
+                    <el-col>
+                      <div class="item-text-content">
+                        <span>项目阶段</span>
+                        <ul>
+                          <li>阶段</li>
+                          <li>投入时间</li>
+                          <li>完成度</li>
+                        </ul>
+                      </div>
+                    </el-col>
 
-                  <el-col>
-                    <div class="item-text-content">
-                      <span>项目阶段</span>
-                      <ul>
-                        <li>阶段</li>
-                        <li>投入时间</li>
-                        <li>完成度</li>
-                      </ul>
-                    </div>
-                  </el-col>
-
-                </el-row>
-              </div>
-
-              <div class="item-text-list" v-for="(des,indexdes) in designStageLists" :key="indexdes">
-                <el-row >
-                  <el-col>
-                    <div class="item-text-content">
-                      <span>{{des.name}}</span>
-                      <ul>
-                        <li>{{des.name}}</li>
-                        <li>{{des.duration}}</li>
-                        <li>0%</li>
-                      </ul>
-                    </div>
-                  </el-col>
-
-                  <el-col>
-                     <ul class="paycontent">
-                       
-                      <li>
-                        交付内容:
-                      </li>
-                      <li>
-                        {{des.content}}
-                      </li>
-                    </ul>
-                  </el-col>
-                   
-                </el-row>
-              </div>
-            </div>
-          </el-col>
-
-          <el-col :span="18" :style="{height:Rheight +'px'}">
-
-            <div class="item-chart">
-              
-              <div class="item-chart-list scroll-bar" :style="{height:Rheight + 'px'}">
-
-                <div class="item-chartHeader">
-
-                  <div  v-for="(m,indexm) in totaldays" :key="indexm">
-                    <div >{{m.year}}年{{m.month}}月</div>
-                    <ul>
-                      <li v-for="(d,indexd) in m.dayings" :key="indexd">
-                      {{d.i}}
-                      </li>
-                    </ul>
-                  </div>
-
+                  </el-row>
                 </div>
 
-                <div class="item-chartContent" v-for="(c,indexc) in designStageLists" :key="indexc">
+                <div class="item-text-list" v-for="(des,indexdes) in designStageLists" :key="indexdes">
+                  <el-row >
+                    <el-col>
+                      <div class="item-text-content">
+                        <span>{{des.name}}</span>
+                        <ul>
+                          <li>{{des.name}}</li>
+                          <li>{{des.duration}}</li>
+                          <li>0%</li>
+                        </ul>
+                      </div>
+                    </el-col>
 
-                  <div class="item-tacklist" 
-                    v-for="(tack, indextack) in c.design_substage">
+                    <el-col>
+                      <ul class="paycontent">
+                        
+                        <li>
+                          交付内容:
+                        </li>
+                        <li>
+                          {{des.content}}
+                        </li>
+                      </ul>
+                    </el-col>
                     
-                  </div>
-
-                  <ul  v-for="(tt,indextt) in totaldays" :key="indextt">
-                    <li v-for="(day,indexday) in tt.dayings" :key="indexday" :class="day.new?'bgc':''">
-                    </li>
-                  </ul>
-
+                  </el-row>
                 </div>
               </div>
+            </el-col>
 
-            </div>
+            <el-col :span="18" :style="{height:Rheight +'px'}">
 
-          </el-col>
-        </el-row>
+              <div class="item-chart">
+                
+                <div class="item-chart-list scroll-bar" :style="{height:Rheight + 'px'}">
 
-        <div  class="add-item" @click="isItemStage=true">
-          <div>+</div>
-          <p>添加项目阶段</p>
-        </div>
-    <!-- <div v-for="(designStage,index) in designStageLists" :key="index">
-      
-      <div>
-        名称: <p v-if="!designStage.isedit">{{designStage.name}}</p>
-        <el-input v-model="designStage.name" v-else></el-input>
-      </div>
-      <div>
-          投入时间: <p v-if="!designStage.isedit">{{designStage.duration}}</p>
-           <el-input placeholder="请输入内容" v-model="designStage.duration" v-else></el-input>
-      </div>
-      <div>
-        开始时间: <p v-if="!designStage.isedit">{{designStage.start_time}}</p>
-        <el-date-picker
-            v-model="designStage.start_time"
-            type="datetime"
-            placeholder="选择日期时间" v-else>
-        </el-date-picker>
-      </div>
-      <div>
-        内容: <p v-if="!designStage.isedit">{{designStage.content}}</p>
-        <el-input
-            type="textarea"
-            :autosize="{ minRows: 2, maxRows: 4}"
-            placeholder="请输入内容"
-            v-model="designStage.content"
-            v-else
-            >
-          </el-input>
-      </div>
-      <div v-for="(sub,indexsub) in designStage.design_substage" :key="indexsub">
-        <p>{{sub.name}}</p>
-        <el-input placeholder="任务名称" v-model="sub.name"></el-input>
-        <p>{{sub.summary}}</p>
-        <el-input
-            type="textarea"
-            :autosize="{ minRows: 2, maxRows: 4}"
-            placeholder="请输入内容"
-            v-model="sub.summary"
-            >
-        </el-input>
-        <p>{{sub.duration}}</p>
-        <el-input placeholder="任务投入时间" v-model="sub.duration"></el-input>
+                  <div class="item-chartHeader">
+
+                    <div  v-for="(m,indexm) in totaldays" :key="indexm">
+                      <div >{{m.year}}年{{m.month}}月</div>
+                      <ul>
+                        <li v-for="(d,indexd) in m.dayings" :key="indexd">
+                        {{d.i}}
+                        </li>
+                      </ul>
+                    </div>
+
+                  </div>
+
+                  <div class="item-chartContent" v-for="(c,indexc) in designStageLists" :key="indexc">
+
+                    <div class="item-tacklist" 
+                      v-for="(tack, indextack) in c.design_substage">
+                      
+                    </div>
+
+                    <ul  v-for="(tt,indextt) in totaldays" :key="indextt">
+                      <li v-for="(day,indexday) in tt.dayings" :key="indexday" :class="day.new?'bgc':''">
+                      </li>
+                    </ul>
+
+                  </div>
+                </div>
+
+              </div>
+
+            </el-col>
+          </el-row>
+
+          <div  class="add-item" @click="isItemStage=true">
+            <div>+</div>
+            <p>添加项目阶段</p>
+          </div>
+      <!-- <div v-for="(designStage,index) in designStageLists" :key="index">
         
-        <p>{{sub.start_time}}</p>
-        <el-date-picker
-        v-model="sub.start_time"
-        type="datetime"
-        placeholder="选择日期时间">
-        </el-date-picker>
-        <el-input placeholder="节点名称" v-model="formNode.name"></el-input>
-        <el-date-picker
-          v-model="formNode.time"
-          type="datetime"
-          placeholder="选择截止时间">
-          </el-date-picker>
-          <el-checkbox v-model="formNode.is_owner">甲方参与</el-checkbox>
-        <el-button  @click="createNode(sub.id,indexsub)">确定添加节点</el-button>
-        <el-button  @click="addNode()">添加节点</el-button>
-        <div v-if="sub.design_stage_node">
-          <p>节点名称: {{sub.design_stage_node.name}}</p>
-          <el-input v-model="sub.design_stage_node.name"></el-input>
-          <p>节点时间: {{sub.design_stage_node.time}}</p>
-          <el-date-picker
-          v-model="sub.design_stage_node.time"
-          type="datetime"
-          placeholder="选择截止时间">
-          </el-date-picker>
-          <el-button  @click="editNode(sub.design_stage_node,indexsub)">编辑节点</el-button>
-          <el-button  @click="updataNode(sub.design_stage_node,indexsub)">确定编辑节点</el-button>
-          <el-button  @click="deleteNode(sub.design_stage_node.id,indexsub)">删除节点</el-button>
+        <div>
+          名称: <p v-if="!designStage.isedit">{{designStage.name}}</p>
+          <el-input v-model="designStage.name" v-else></el-input>
         </div>
-        <el-button  @click="updataTack(sub,indexsub)">确认编辑任务</el-button>
-        <el-button style="margin-bottom:30px" @click="editTack(sub,indexsub)">编辑任务</el-button>
-        <el-button style="margin-bottom:30px" @click="deleteTack(sub.id,indexsub)">删除任务</el-button>
+        <div>
+            投入时间: <p v-if="!designStage.isedit">{{designStage.duration}}</p>
+            <el-input placeholder="请输入内容" v-model="designStage.duration" v-else></el-input>
+        </div>
+        <div>
+          开始时间: <p v-if="!designStage.isedit">{{designStage.start_time}}</p>
+          <el-date-picker
+              v-model="designStage.start_time"
+              type="datetime"
+              placeholder="选择日期时间" v-else>
+          </el-date-picker>
+        </div>
+        <div>
+          内容: <p v-if="!designStage.isedit">{{designStage.content}}</p>
+          <el-input
+              type="textarea"
+              :autosize="{ minRows: 2, maxRows: 4}"
+              placeholder="请输入内容"
+              v-model="designStage.content"
+              v-else
+              >
+            </el-input>
+        </div>
+        <div v-for="(sub,indexsub) in designStage.design_substage" :key="indexsub">
+          <p>{{sub.name}}</p>
+          <el-input placeholder="任务名称" v-model="sub.name"></el-input>
+          <p>{{sub.summary}}</p>
+          <el-input
+              type="textarea"
+              :autosize="{ minRows: 2, maxRows: 4}"
+              placeholder="请输入内容"
+              v-model="sub.summary"
+              >
+          </el-input>
+          <p>{{sub.duration}}</p>
+          <el-input placeholder="任务投入时间" v-model="sub.duration"></el-input>
+          
+          <p>{{sub.start_time}}</p>
+          <el-date-picker
+          v-model="sub.start_time"
+          type="datetime"
+          placeholder="选择日期时间">
+          </el-date-picker>
+          <el-input placeholder="节点名称" v-model="formNode.name"></el-input>
+          <el-date-picker
+            v-model="formNode.time"
+            type="datetime"
+            placeholder="选择截止时间">
+            </el-date-picker>
+            <el-checkbox v-model="formNode.is_owner">甲方参与</el-checkbox>
+          <el-button  @click="createNode(sub.id,indexsub)">确定添加节点</el-button>
+          <el-button  @click="addNode()">添加节点</el-button>
+          <div v-if="sub.design_stage_node">
+            <p>节点名称: {{sub.design_stage_node.name}}</p>
+            <el-input v-model="sub.design_stage_node.name"></el-input>
+            <p>节点时间: {{sub.design_stage_node.time}}</p>
+            <el-date-picker
+            v-model="sub.design_stage_node.time"
+            type="datetime"
+            placeholder="选择截止时间">
+            </el-date-picker>
+            <el-button  @click="editNode(sub.design_stage_node,indexsub)">编辑节点</el-button>
+            <el-button  @click="updataNode(sub.design_stage_node,indexsub)">确定编辑节点</el-button>
+            <el-button  @click="deleteNode(sub.design_stage_node.id,indexsub)">删除节点</el-button>
+          </div>
+          <el-button  @click="updataTack(sub,indexsub)">确认编辑任务</el-button>
+          <el-button style="margin-bottom:30px" @click="editTack(sub,indexsub)">编辑任务</el-button>
+          <el-button style="margin-bottom:30px" @click="deleteTack(sub.id,indexsub)">删除任务</el-button>
+        </div>
+        <el-button @click="edit(designStage.id,index)">编辑</el-button>
+        <el-button @click="updata(designStage,index)">确定</el-button>
+        <el-button @click="deleteDes(designStage,index)">删除</el-button>
+        <el-button @click="addtack(designStage.id)">添加任务</el-button>
+      </div> -->
       </div>
-      <el-button @click="edit(designStage.id,index)">编辑</el-button>
-      <el-button @click="updata(designStage,index)">确定</el-button>
-      <el-button @click="deleteDes(designStage,index)">删除</el-button>
-      <el-button @click="addtack(designStage.id)">添加任务</el-button>
-    </div> -->
-    </div>
-  </section>
+    </section>
     <!-- <el-input placeholder="任务名称" v-model="formTack.name"></el-input>
     <el-input placeholder="任务投入时间" v-model="formTack.duration"></el-input>
     <el-date-picker
