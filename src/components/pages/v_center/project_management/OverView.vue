@@ -267,7 +267,7 @@
 
                 <div class="item-chartHeader">
 
-                  <div  v-for="(m,indexm) in totaldays" :key="indexm" class="width-100">
+                  <div  v-for="(m,indexm) in totaldays" :key="indexm">
                     <div >{{m.year}}年{{m.month}}月</div>
                     <ul>
                       <li v-for="(d,indexd) in m.dayings" :key="indexd">
@@ -285,7 +285,7 @@
                     
                   </div>
 
-                  <ul  v-for="(tt,indextt) in totaldays" :key="indextt" class="width-100">
+                  <ul  v-for="(tt,indextt) in totaldays" :key="indextt">
                     <li v-for="(day,indexday) in tt.dayings" :key="indexday" :class="day.new?'bgc':''">
                     </li>
                   </ul>
@@ -469,10 +469,14 @@ export default {
       this.isItemStage = false
     },
     // 每个月天数
-    monthday(n) {
+    monthday(y, d, n) {
       var daying = []
       for (var i = 1; i <= n; i++) {
-        daying.push({'i': i})
+        let week = new Date(y.getFullYear() + '-' + d + '-' + i).getDay()
+        daying.push({
+          'i': i,
+          'week': week
+        })
       }
       return daying
     },
@@ -491,37 +495,37 @@ export default {
           times.push({
             day: 31,
             month: d,
-            dayings: this.monthday(31),
-            year: y.getFullYear()
+            year: y.getFullYear(),
+            dayings: this.monthday(y, d, 31)
           })
         } else if (d !== 2) {
           times.push({
             day: 30,
             month: d,
-            dayings: this.monthday(30),
+            dayings: this.monthday(y, d, 30),
             year: y.getFullYear()
           })
         } else if (y.isLeapYear()) {
           times.push({
             day: 29,
             month: d,
-            dayings: this.monthday(29),
+            dayings: this.monthday(y, d, 29),
             year: y.getFullYear()
           })
         } else {
           times.push({
             day: 28,
             month: d,
-            dayings: this.monthday(28),
+            dayings: this.monthday(y, d, 28),
             year: y.getFullYear()
           })
         }
       }
       return times
     },
-    // 获取某个阶段日期的所有天数
+    // 获取某个阶段日期的所有天数和所有参数的对象
     dateDay(s, e) {
-      s = new Date(1463324433 * 1000)
+      s = new Date(1491271810 * 1000)
       e = new Date(e * 1000)
       let syear = s.getFullYear()
       let smonth = s.getMonth() + 1
@@ -752,16 +756,19 @@ export default {
         this.designStageLists = response.data.data
         let endTimes = []
         for (var i = 0; i < this.designStageLists.length; i++) {
+          // 时间合集
           if (this.designStageLists.length > 0) {
             var end = parseInt(this.designStageLists[i].duration) * 86400 + this.designStageLists[i].start_time
             endTimes.push(end)
             endTimes.push(this.designStageLists[i].start_time)
           }
+          // 时间格式转换
           this.designStageLists[i].isedit = false
           if (this.designStageLists[i].start_time) {
             this.designStageLists[i].start_time = (new Date(this.designStageLists[i].start_time * 1000)).format('yyyy-MM-dd')
           }
         }
+        // 起始时间和终止时间
         endTimes.push(Date.parse(new Date()) / 1000)
         for (var r = 1; r < endTimes.length; r++) {
           var key = endTimes[r]
@@ -773,14 +780,15 @@ export default {
           endTimes[c + 1] = key
         }
         this.totaldays = this.dateDay(endTimes[0], endTimes[endTimes.length - 1])
+        // 任务
         for (var k = 0; k < this.designStageLists.length; k++) {
           if (this.designStageLists[k].design_substage) {
             for (var j = 0; j < this.designStageLists[k].design_substage.length; j++) {
+              // 任务起始时间和终止时间
               var st = this.designStageLists[k].design_substage[j].start_time
               var dur = this.designStageLists[k].design_substage[j].duration
               this.designStageLists[k].design_substage[j].end_time = st + dur * 86400
-              var endsub = new Date(this.designStageLists[k].design_substage[j].end_time * 1000)
-              this.designStageLists[k].design_substage[j].totalday = this.yearDay(endsub.getMonth() + 1, endsub, 1)
+              // 任务时间格式转换
               this.designStageLists[k].design_substage[j].start_time = (new Date(this.designStageLists[k].design_substage[j].start_time * 1000)).format('yyyy-MM-dd')
               if (this.designStageLists[k].design_substage[j].design_stage_node && this.designStageLists[k].design_substage[j].design_stage_node.time) {
                 this.designStageLists[k].design_substage[j].design_stage_node.time = (new Date(this.designStageLists[k].design_substage[j].design_stage_node.time * 1000)).format('yyyy-MM-dd')
@@ -789,6 +797,7 @@ export default {
           }
         }
         console.log(this.designStageLists)
+        console.log(this.totaldays)
       } else {
         this.$message.error(response.data.meta.message)
       }
@@ -1059,21 +1068,21 @@ export default {
 .item-chartHeader>div{
   display:inline-block;
   border-bottom:1px solid #d2d2d2;
-  border-right:1px solid #d2d2d2;
-  padding-bottom:10px;
 }
 .item-chartHeader>div>div{
-  margin:10px 0px;
+  padding:10px 0px;
   text-align: center;
 }
 .item-chartHeader ul{
-  display:flex;
-  justify-content: space-between;
-  align-items: center;
+  display:inline-block;
 }
 .item-chartHeader ul>li{
+  display:inline-block;
   text-align: center;
-  flex:1;
+  width:30px;
+  border-right:1px solid #d2d2d2;
+  border-top:1px solid #d2d2d2;
+  padding:5px 0;
 }
 .item-chartContent{
   white-space: nowrap;
@@ -1089,15 +1098,15 @@ export default {
   background:#f7f7f7;
 }
 .item-chartContent>ul{
-  display:inline-flex;
-  justify-content: space-between;
+  display:inline-block;
   height:180px;
 }
 .item-chartContent>ul>li{
-  border:1px solid #d2d2d2;
-  border-left:none;
-  border-top:none;
-  flex:1;
+  display:inline-block;
+  border-right:1px dashed #d2d2d2;
+  border-bottom:1px solid #d2d2d2;
+  width:30px;
+  height:100%;
 }
 .bgc{
   background:#FF5A5F;
