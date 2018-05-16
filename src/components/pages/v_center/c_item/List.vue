@@ -1,7 +1,9 @@
 <template>
   <div class="blank20 clearfix">
     <v-menu currentName="c_item"></v-menu>
-    <el-col :span="isMob ? 24 : rightWidth">
+    <!-- <el-col :span="isMob ? 24 : rightWidth"> -->
+    <!-- <el-col class="vcenter-right-plus" :xs="24" :sm="24" :md="24" :lg="24"> -->
+    <el-col class="vcenter-right-plus" :span="24">
       <div class="right-content vcenter-container">
         <v-menu-sub :waitCountProp="waitCount" :ingCountProp="ingCount"></v-menu-sub>
         <div :class="['content-item-box', isMob ? 'content-item-box-m' : '' ]" v-loading="isLoading">

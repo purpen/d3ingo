@@ -370,6 +370,7 @@
     overflow-y: auto
   }
   .tag-list li {
+    cursor: pointer;
     height: 40px;
     position: relative;
     display: flex;

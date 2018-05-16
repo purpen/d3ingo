@@ -514,6 +514,12 @@
     /* min-width: 160px; */
     background: #222;
     transition: 0.2s all ease;
+    position: fixed;
+    left: 0;
+    top: 60px;
+    width: inherit;
+    max-width: 200px;
+    height: calc(100% - 60px);
   }
   .menu-list .item {
     overflow: hidden;
@@ -779,15 +785,21 @@
     height: 100%;
     padding-bottom: 50px;
   }
+  @media screen and (max-width: 768px) {
+    .menu-list .item {
+      padding-left: 0;
+      text-align: center
+    }
+  }
   @media screen and (min-width: 768px) {
-    .menuHide {
+    /* .menuHide {
       position: fixed;
       left: 0;
       top: 60px;
       width: inherit;
       max-width: 200px;
       height: calc(100% - 60px);
-    }
+    } */
     .menu-list {
       width: inherit;
     }

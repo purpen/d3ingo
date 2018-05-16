@@ -1,11 +1,7 @@
 <template>
   <section :class="{'project-lists': !leftWidth}">
     <v-menu currentName="project_management"></v-menu>
-    <el-col :offset="leftWidth"
-      :xs="24"
-      :sm="leftWidth? 20 : 24"
-      :md="leftWidth? 20 : 24"
-      :lg="leftWidth? 20 : 24">
+    <el-col class="vcenter-right-plus" :span="24">
       <div class="vcenter-container blank40">
         <h2>项目管理</h2>
         <ul class="project-list" v-loading.body="isLoading">
@@ -229,6 +225,7 @@ export default {
   }
   .project-list {
     display: flex;
+    justify-content: space-between;
     flex-wrap: wrap;
     padding: 15px 0
   }
@@ -237,15 +234,13 @@ export default {
     cursor: pointer;
     min-height: 168px;
     position: relative;
-    width: 30%;
-    margin-right: 20px;
+    width: 32%;
     margin-bottom: 20px;
     background: #f7f7f7;
     padding: 20px;
     padding-bottom: 40px;
-  transition: transform .218s ease;
+    transition: transform .218s ease;
   }
-
   .project-list li:hover {
     /* transform: translateY(-5px); */
     box-shadow: 0 9pt 24px rgba(10,10,10,.15);
