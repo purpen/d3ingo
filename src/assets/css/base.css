@@ -1699,12 +1699,14 @@ img.avatar2 {
 .el-card {
   transition: transform .218s ease;
   border-radius: 0;
+  border: 1px solid #e6e6e6;
+  box-shadow: none;
   box-shadow: 0 5px 10px 0 #eee
 }
 
 .el-card:hover {
   transform: translateY(-3px);
-  box-shadow: 6px 6px 10px rgba(10,10,10,.15)
+  box-shadow: 6px 6px 10px rgba(10, 10, 10, 0.15)
 }
 
 .pcCarousel .el-carousel__indicators {

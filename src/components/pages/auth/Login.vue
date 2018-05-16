@@ -299,6 +299,9 @@ form {
 .forget a {
   color: #666666;
 }
+.forget a:hover {
+  color: #ff5a5f;
+}
 
 #passwd {
   display: none;
@@ -328,7 +331,7 @@ form {
   content: "";
   position: absolute;
   left: 0;
-  top: -1px;
+  top: 0;
   width: 14px;
   height: 14px;
   border: 1px solid #d2d2d2;
