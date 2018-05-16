@@ -38,11 +38,11 @@
           :class="{'active': currentTagsForm.type === d.value}"
           :style="{background: d.label}">{{d}}</span>
           <div class="buttons" v-if="isChangeTags">
-            <button class="middle-button white-button" @click="submitTags()">修改</button>
-            <button class="middle-button full-red-button" @click="deleteTagsBtn()">删除</button>
+            <button class="large-button white-button" @click="submitTags()">修改</button>
+            <button class="large-button full-red-button" @click="deleteTagsBtn()">删除</button>
           </div>
           <div class="buttons" v-else>
-            <button class="middle-button full-red-button" @click="submitTags()">添加</button>
+            <button class="large-button full-red-button" @click="submitTags()">添加</button>
           </div>
       </div>
     </div>
@@ -327,7 +327,10 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .tags-component {
-    position: relative;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1
   }
   .select-tag {
     /* position: absolute;
@@ -337,6 +340,7 @@
     width: 280px;
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
     border-radius: 4px;
+    margin-top: 12px;
   }
   .tag-header {
     padding: 10px 20px;
@@ -346,7 +350,8 @@
     height: 50px;
     border: 1px solid #f0f0f0;
     line-height: 50px;
-    text-align: center
+    text-align: center;
+    position: relative;
   }
   .tag-title i {
     position: absolute;
@@ -360,7 +365,10 @@
     border: 1px solid #d2d2d2;
     padding: 0 8px;
   }
-
+  .tag-list {
+    max-height: 200px;
+    overflow-y: auto
+  }
   .tag-list li {
     height: 40px;
     position: relative;
@@ -400,7 +408,8 @@
     padding-left: 26px;
     cursor: pointer;
     margin-right: 15px;
-    white-space: nowrap
+    white-space: nowrap;
+    line-height: 32px;
   }
   .add-tag:hover {
     color: #666;
@@ -468,7 +477,7 @@
   .buttons button {
     flex: 1;
   }
-  .buttons button:first-child {
-    margin-right: 20px;
+  .buttons button:nth-child(2) {
+    margin-left: 20px;
   }
 </style>

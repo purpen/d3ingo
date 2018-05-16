@@ -87,14 +87,16 @@
                 :key="index">{{ d.title }}
                 <i class="close-icon-solid" @click="operateTags(d.id)"></i>
                 </span>
+                <div class="tags-parent">
+                  <v-tags
+                    :propParam = "propsTags"
+                    :tagsId = "tagsId"
+                    @changePropsTags = "changePropsTags"
+                    @addTagBtn = "addTagBtn"
+                    @changeTags="changeTags"
+                    @updateTags="updateTags"></v-tags>
+                </div>
             </div>
-            <v-tags
-              :propParam = "propsTags"
-              :tagsId = "tagsId"
-              @changePropsTags = "changePropsTags"
-              @addTagBtn = "addTagBtn"
-              @changeTags="changeTags"
-              @updateTags="updateTags"></v-tags>
           </li>
         </ul>
         <div class="task-child" v-if="currentForm.tier === 0">
@@ -1020,8 +1022,11 @@
     display: flex;
     align-items: center;
     min-height: 40px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     font-size: 14px;
+  }
+  .task-info li:nth-child(3) {
+    align-items: flex-start
   }
   .task-summary {
     padding: 20px 0 0
@@ -1080,7 +1085,7 @@
   .tags {
     display: flex;
     flex-wrap: wrap;
-    padding-top: 15px;
+    max-width: 200px;
   }
   .tags span {
     position: relative;
@@ -1094,8 +1099,7 @@
     color: #fff;
     height: 24px;
     border-radius: 12px;
-    margin-right: 15px;
-    margin-bottom: 15px;
+    margin: 4px 8px 0 0;
   }
   .tags span:hover .close-icon-solid {
     opacity: 1;
@@ -1267,5 +1271,10 @@
   }
   .add-child-ul .template input {
     border-color: #d2d2d2;
+  }
+  .tags-parent {
+    position: relative;
+    height: 32px;
+    width: 100px;
   }
 </style>
