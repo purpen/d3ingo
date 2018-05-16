@@ -380,7 +380,11 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   min-width: initial;
 }
 .el-submenu .el-menu-item:hover, .el-submenu__title:hover {
-  background: #f7f7f7
+  background: #fafafa;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 /*  */
 .cover-bgf7 {
@@ -1141,10 +1145,15 @@ input[type=text]:focus, input[type=password]:focus{
   top: 10px;
 }
 
+.nav-item .view-msg a {
+  transition: all 86ms ease-out;
+}
 .nav-item .view-msg a i[class*="hover"] {
   opacity: 0;
 }
-
+.nav-item .view-msg a:hover {
+  background: #fafafa
+}
 .nav-item .view-msg a:hover i {
   color: #FF5A5F
 }
@@ -1544,7 +1553,7 @@ input[type=text]:focus, input[type=password]:focus{
 
 .MmenuHide {
   width: 100vw;
-  height: 50px;
+  height: 50px!important;
   overflow-y: hidden;
 }
 
@@ -2416,7 +2425,7 @@ td.fc-day.fc-widget-content.fc-today::before {
     width: 100%;
   }
   .MmenuHide {
-    margin-top: -20px;
+    /* margin-top: -20px; */
   }
   .menu-list .item::before {
     background: transparent!important;

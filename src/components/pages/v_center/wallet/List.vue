@@ -1,5 +1,5 @@
 <template>
-  <div class="blank20">
+  <div class="blank30">
     <el-row>
       <v-menu currentName="wallet"></v-menu>
       <div :class="{'vcenter-right-plus': leftWidth === 4,

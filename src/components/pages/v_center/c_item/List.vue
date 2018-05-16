@@ -1,5 +1,5 @@
 <template>
-  <div class="blank20 clearfix">
+  <div class="blank30 clearfix">
     <v-menu currentName="c_item"></v-menu>
     <!-- <el-col :span="isMob ? 24 : rightWidth"> -->
     <!-- <el-col class="vcenter-right-plus" :xs="24" :sm="24" :md="24" :lg="24"> -->

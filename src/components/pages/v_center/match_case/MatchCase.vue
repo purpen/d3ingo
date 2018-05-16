@@ -1,5 +1,5 @@
 <template>
-  <div class="blank20">
+  <div class="blank10">
     <el-row>
       <v-menu :class="[isMob ? 'v-menu' : '']" currentName="match_case"></v-menu>
       <div :class="{'vcenter-right-plus': leftWidth === 4,

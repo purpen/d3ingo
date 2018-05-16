@@ -206,6 +206,14 @@
 .vcenter-right {
   padding-left: 60px
 }
+@media screen and (min-width: 1200px) {
+  .vcenter-right-plus {
+    padding-left: 200px
+  }
+  /* .vcenter-rightMenu-plus {
+    margin-left: 200px;
+  } */
+}
 @media screen and (max-width: 1199px) {
   .vcenter-right-plus {
     padding-left: 16.667%
@@ -214,11 +222,8 @@
     margin-left: 16.667%;
   } */
 }
-@media screen and (min-width: 1200px) {
+@media screen and (max-width: 767px) {
   .vcenter-right-plus {
-    padding-left: 200px
+    padding-left: 0
   }
-  /* .vcenter-rightMenu-plus {
-    margin-left: 200px;
-  } */
 }

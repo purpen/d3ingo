@@ -1,10 +1,10 @@
 <template>
-  <el-row class="blank20 min-height350 ">
+  <el-row class="blank30 min-height350 ">
     <v-menu currentName="control"></v-menu>
-    <el-col :class="isoff?'':'inline'" :span="isoff?18:24" :offset="isoff? 5 : 0">
-      <!-- :span="22" :offset="!isMob? leftWidth : 0" -->
-      <el-row>
-        <el-col :xs="24" :sm="24" :md="12" :lg="12"  v-if="uChild===0&&messageCount.quantity">
+    <div :class="{'vcenter-right-plus': leftWidth === 4,
+        'vcenter-right': leftWidth === 2}">
+      <el-row class="vcenter-container">
+        <el-col :xs="24" :sm="24" :md="12" :lg="12" v-if="uChild===0&&messageCount.quantity">
           <section>
             <div class="control-childHeader">
             <span>待处理信息</span>
@@ -230,7 +230,7 @@
           </section>
         </el-col>
       </el-row>
-    </el-col>
+    </div>
     
   </el-row>
 </template>
@@ -499,7 +499,7 @@
     border:1px solid #d2d2d2;
     border-radius: 4px;
     height:360px;
-    margin:10px;
+    margin:0 20px 20px 0;
     font-size:1.4rem;
   }
   .control-childHeader{

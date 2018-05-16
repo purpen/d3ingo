@@ -24,12 +24,12 @@
               </span>
               <div :class="['view-msg',{'view-msg-plus': msg.message || msg.notice}]">
               <!-- <div :class="['view-msg']"> -->
-                <router-link :to="{name: 'vcenterMessageList'}" class="news">
+                <router-link :to="{name: 'vcenterMessageList'}" class="no-select news">
                   <i class="fx-4 fx-icon-notice"></i><i class="fx-4 fx-icon-news-hover"></i>
                   <span v-if="messageCount.message"><b>{{messageCount.message}}</b>条[项目提醒]未查看</span>
                   <span v-else>[项目提醒]</span>
                 </router-link>
-                <router-link :to="{name: 'systemMessageList'}" class="notice">
+                <router-link :to="{name: 'systemMessageList'}" class="no-select notice">
                   <i class="fx-4 fx-icon-sound-loudly"></i><i class="fx-4 fx-icon-notice-hover"></i>
                   <span v-if="messageCount.notice"><b>{{messageCount.notice}}</b>条[系统通知]未查看</span>
                   <span v-else>[系统通知]</span>

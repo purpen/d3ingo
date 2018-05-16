@@ -1093,7 +1093,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    padding: 0 8px;
+    padding: 0 10px;
     text-align: center;
     line-height: 24px;
     color: #fff;

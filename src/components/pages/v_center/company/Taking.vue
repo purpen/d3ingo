@@ -1,5 +1,5 @@
 <template>
-  <div class="taking-dialog blank20">
+  <div class="taking-dialog blank30">
     <el-row :gutter="24">
       <v-menu currentName="company" :class="[isMob ? 'v-menu' : '']"></v-menu>
       <div :class="{'vcenter-right-plus': leftWidth === 4,

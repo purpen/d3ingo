@@ -3,7 +3,7 @@
     <v-menu currentName="project_management"></v-menu>
     <div :class="{'vcenter-right-plus': leftWidth === 4,
       'vcenter-right': leftWidth === 2}">
-      <div class="vcenter-container blank40">
+      <div class="vcenter-container blank30">
         <h2>项目管理</h2>
         <ul class="project-list" v-loading.body="isLoading">
           <li class="create">

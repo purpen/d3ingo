@@ -674,6 +674,7 @@
     text-indent: -999rem;
   }
   .MmenuHide {
+    max-width: 100%;
     width: 100%;
     background: #fff;
   }

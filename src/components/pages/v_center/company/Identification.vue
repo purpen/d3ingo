@@ -1,6 +1,6 @@
 <template>
   <div class="identification">
-    <div class="blank20"></div>
+    <div class="blank30"></div>
     <el-row>
       <v-menu currentName="company"></v-menu>
 
