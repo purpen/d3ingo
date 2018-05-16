@@ -207,10 +207,15 @@
                 <el-row>
 
                   <el-col>
-                    <div class="fr">
+                    <div class="fr popover" tabindex="-1">
                       <i class="fx-icon-search" 
                         @click="isSearch=true"
                       >
+                      <ul class="search-popover">
+                        <li @click="sort='isday'">按天查询</li>
+                        <li @click="sort='isweek'">按周查询</li>
+                        <li @click="sort='ismonth'">按月查询</li>
+                      </ul>
                       </i>
                     </div>
                   </el-col>
@@ -267,26 +272,37 @@
 
                 <div class="item-chartHeader">
 
-                  <div  v-for="(m,indexm) in totaldays" :key="indexm">
-                    <div >{{m.year}}年{{m.month}}月</div>
+                  <div  v-for="(m,indexm) in totaldays" :key="indexm+'m'">
+                    <div v-if="sort === 'isweek'||sort === 'isday'">{{m.year}}年{{m.month}}月</div>
+                    <div v-if="sort === 'ismonth'&&m.activeyear==='activeyear'">{{m.year}}</div>
                     <ul>
-                      <li v-for="(d,indexd) in m.dayings" :key="indexd">
+                      <li v-for="(d,indexd) in m.dayings" :key="indexd" v-if="sort === 'isday'" class="dateday">
                       {{d.i}}
+                      </li>
+                      <li v-for="(d,indexd) in m.dayings" :key="indexd" v-if="sort === 'isweek'&& d.week===0" class="dateweek">
+                      {{m.month}}.{{d.i}}~{{m.month}}.{{m.dayings.length-d.i>=7?d.i+6:d.i+6-m.dayings.length}}
+                      </li>
+                      <li v-if="sort === 'ismonth'" class="dateweek">
+                        {{m.month}}月
                       </li>
                     </ul>
                   </div>
 
                 </div>
 
-                <div class="item-chartContent" v-for="(c,indexc) in designStageLists" :key="indexc">
+                <div v-if="designStageLists" class="item-chartContent" v-for="(c,indexc) in designStageLists" :key="indexc">
 
-                  <div class="item-tacklist" 
-                    v-for="(tack, indextack) in c.design_substage">
-                    
+                  <div v-if="c.design_substage" class="item-tacklist" 
+                    v-for="(tack, indextack) in c.design_substage" :key="indextack+ 'y'">
+                    {{indextack}}
                   </div>
 
-                  <ul  v-for="(tt,indextt) in totaldays" :key="indextt">
-                    <li v-for="(day,indexday) in tt.dayings" :key="indexday" :class="day.new?'bgc':''">
+                  <ul v-if="totaldays" v-for="(tt,indextt) in totaldays" :key="indextt">
+                    <li v-for="(day,indexday) in tt.dayings" :key="indexday" :class="day.new?'bgc':''" v-if="sort === 'isday'" class="dateday">
+                    </li>
+                    <li v-for="(day,indexday) in tt.dayings" :key="indexday" :class="day.new?'bgc':''" v-if="sort === 'isweek'" class="dateday">
+                    </li>
+                    <li v-if="sort === 'ismonth'" class="dateweek">
                     </li>
                   </ul>
 
@@ -426,12 +442,8 @@ export default {
       itemdesId: '', // 项目阶段id
       checked: false,
       isItemStage: false,
-      isSearch: false, // 是否搜索
-      dateList: [
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
-        13, 14, 15, 16, 17, 18, 19, 20
-      ],
       totaldays: [],
+      sort: 'isday',
       rules: {
         duration: [
           {
@@ -521,6 +533,12 @@ export default {
           })
         }
       }
+      if (times.length > 0) {
+        let a = times[Math.floor(times.length / 2)]
+        if (a) {
+          a.activeyear = 'activeyear'
+        }
+      }
       return times
     },
     // 获取某个阶段日期的所有天数和所有参数的对象
@@ -551,6 +569,7 @@ export default {
       let newDate = new Date()
       for (var n = 0; n < this.totaldays.length; n++) {
         if (this.totaldays[n].year === newDate.getFullYear() && this.totaldays[n].month === newDate.getMonth() + 1) {
+          console.log(this.totaldays[n].dayings[newDate.getDate() - 1])
           this.totaldays[n].dayings[newDate.getDate() - 1].new = 'active'
         }
       }
@@ -796,7 +815,7 @@ export default {
             }
           }
         }
-        console.log(this.designStageLists)
+        // console.log(this.designStageLists)
         console.log(this.totaldays)
       } else {
         this.$message.error(response.data.meta.message)
@@ -809,9 +828,6 @@ export default {
 }
 </script>
 <style scoped>
-*, *:before, *:after{
-  box-sizing:border-box;
-}
   .add-itemStage-bg{
     position: fixed;
     z-index: 1999;
@@ -1026,11 +1042,34 @@ export default {
   border-right: 1px solid #d2d2d2;
   padding:10px 10px 0px 20px;
   height:55px;
-  overflow: hidden;
 }
 .item-text-Header>.el-row>.el-col{
   margin-bottom: 10px;
 }
+.popover{
+  position: relative;
+}
+.popover:focus ul{
+  display:block;
+}
+.search-popover{
+  display:none;
+  position: absolute;
+  width:180px;
+  z-index:5;
+  background:#fff;
+  border-radius: 4px;
+  box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
+  top:20px;
+}
+.search-popover>li{
+  padding:10px;
+  font-size:1.4rem;
+}
+.search-popover>li:hover{
+  background:#f7f7f7;
+}
+
 .item-text-list{
   height: 180px;
   padding:20px 10px 10px 20px;
@@ -1070,23 +1109,31 @@ export default {
   border-bottom:1px solid #d2d2d2;
 }
 .item-chartHeader>div>div{
-  padding:10px 0px;
+  height:32px;
+  line-height: 32px;
   text-align: center;
 }
 .item-chartHeader ul{
   display:inline-block;
+  height:22px;
+  line-height:22px;
 }
 .item-chartHeader ul>li{
-  display:inline-block;
-  text-align: center;
-  width:30px;
   border-right:1px solid #d2d2d2;
   border-top:1px solid #d2d2d2;
-  padding:5px 0;
+  display:inline-block;
+  text-align: center;
+}
+.dateweek{
+  width:210px;
+}
+.dateday{
+  width:30px;
 }
 .item-chartContent{
   white-space: nowrap;
   position: relative;
+  height:180px;
 }
 .item-tacklist{
   position:absolute;
@@ -1105,7 +1152,7 @@ export default {
   display:inline-block;
   border-right:1px dashed #d2d2d2;
   border-bottom:1px solid #d2d2d2;
-  width:30px;
+  /* width:30px; */
   height:100%;
 }
 .bgc{
