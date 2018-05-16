@@ -5,7 +5,46 @@
         <span class="menu-icon" @click="changeWidth"></span>
         <p class="home-icon"><router-link :to="{name: 'home'}" class="logo-icon"></router-link></p>
       </div>
-      <div class="menu-right">
+      <div v-if="!isMob" class="menu-right">
+        <a class="nav-item is-hidden-mobile" ref="msgList">
+            <span class="icon active">
+              <i class="fx-4 fx-icon-notice">
+                <span v-if="msgCount.quantity">{{ msgCount.quantity }}</span>
+              </i>
+            </span>
+            <div :class="['view-msg',{'view-msg-plus': msgCount.message || msgCount.notice}]">
+              <router-link :to="{name: 'vcenterMessageList'}" class="news">
+                <i class="fx-4 fx-icon-notice"></i><i class="fx-4 fx-icon-news-hover"></i>
+                <span v-if="msgCount.message"><b>{{msgCount.message}}</b>条[项目提醒]未查看</span>
+                <span v-else>[项目提醒]</span>
+              </router-link>
+              <router-link :to="{name: 'systemMessageList'}" class="notice">
+                <i class="fx-4 fx-icon-sound-loudly"></i><i class="fx-4 fx-icon-notice-hover"></i>
+                <span v-if="msgCount.notice"><b>{{msgCount.notice}}</b>条[系统通知]未查看</span>
+                <span v-else>[系统通知]</span>
+              </router-link>
+            </div>
+        </a>
+        <div class="mine no-select">
+          <span @click="showCover = !showCover">我的</span>
+        </div>
+        <el-menu class="el-menu-info" mode="horizontal" router>
+          <el-submenu index="2">
+            <template slot="title">
+              <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
+              <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
+              <span v-if="eventUser.realname" class="b-nickname">{{ eventUser.realname }}</span>
+              <span v-else class="b-nickname">{{ eventUser.account }}</span>
+            </template>
+            <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>个人中心</el-menu-item>
+            <el-menu-item index="/admin" v-if="isCompanyAdmin"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>后台管理</el-menu-item>
+            <el-menu-item index="" @click="logout">
+              <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
+          </el-submenu>
+        </el-menu>
+      </div>
+
+      <div v-if="isMob" class="menu-right">
         <router-link :to="{name: 'vcenterControl'}">
           <span v-if="eventUser.logo_url" class="avatar" :style="{background: `url(${eventUser.avatar.logo}) no-repeat center / contain`}"></span>
           <span v-else class="avatar" :style="{background: `url(${defaultAvatar}) no-repeat center / contain`}"></span>
@@ -60,12 +99,12 @@
               控制面板
             </a>
             </el-tooltip>
-            <el-tooltip class="item" :effect="DarkorLight" content="消息" placement="right">
+            <!-- <el-tooltip class="item" :effect="DarkorLight" content="消息" placement="right">
             <a @click="alick" :to="'/vcenter/message'"
               :class="['item', 'message', {'is-active': currentName === 'message'}]">
               消息
             </a>
-            </el-tooltip>
+            </el-tooltip> -->
             <el-tooltip class="item" :effect="DarkorLight" content="项目订单" placement="right">
             <a @click="alick" :to="'/vcenter/citem/list'"
               :class="['item', 'order', {'is-active': currentName === 'c_item'}]">
@@ -133,21 +172,21 @@
               控制面板
             </a>
             </el-tooltip>
-            <el-tooltip class="item" :effect="DarkorLight" content="消息" placement="right">
+            <!-- <el-tooltip class="item" :effect="DarkorLight" content="消息" placement="right">
             <a @click="alick" :to="'/vcenter/message'"
               :class="['item', 'message', {'is-active': currentName === 'message'}]">
-              消息
+              消息12
             </a>
-            </el-tooltip>
+            </el-tooltip> -->
             <el-tooltip class="item" :effect="DarkorLight" content="我的项目" placement="right">
             <a @click="alick" :to="'/vcenter/item/list'"
-              :class="['item', 'wallet', {'is-active': currentName === 'item'}]">
+              :class="['item', 'order', {'is-active': currentName === 'item'}]">
               我的项目
             </a>
             </el-tooltip>
             <el-tooltip class="item" :effect="DarkorLight" content="我的钱包" placement="right">
             <a @click="alick" :to="'/vcenter/wallet/list'"
-              :class="['item', {'is-active': currentName === 'wallet'}]">
+              :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
               我的钱包
             </a>
             </el-tooltip>
@@ -194,6 +233,7 @@
             </a>
           </div>
 
+          <!-- 设计公司4 -->
           <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist" v-else>
             <div class="computer-btn" v-if="isCompany && !isMob && eventUser.avatar" @click="redirectCompany">
               <span :style="{background: `url(${eventUser.avatar.logo}) no-repeat center / 40px 40px #222`}" title="查看公司主页"></span>
@@ -203,10 +243,10 @@
               :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
               控制面板
             </a>
-            <a @click="alick" :to="'/vcenter/message'"
+            <!-- <a @click="alick" :to="'/vcenter/message'"
               :class="['item', 'message', {'is-active': currentName === 'message'}]">
               消息
-            </a>
+            </a> -->
             <a @click="alick" :to="'/vcenter/citem/list'"
               :class="['item', 'order', {'is-active': currentName === 'c_item'}]">
               项目订单
@@ -250,21 +290,22 @@
           </div>
         </div>
         <div v-else>
+          <!-- 需求公司4 -->
           <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist">
             
             <a @click="alick" :to="'/vcenter/control'" :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
               控制面板
             </a>
-            <a @click="alick" :to="'/vcenter/message'"
+            <!-- <a @click="alick" :to="'/vcenter/message'"
               :class="['item', 'message', {'is-active': currentName === 'message'}]">
               消息
-            </a>
+            </a> -->
             <a @click="alick" :to="'/vcenter/item/list'"
-              :class="['item', 'wallet', {'is-active': currentName === 'item'}]">
+              :class="['item', 'order', {'is-active': currentName === 'item'}]">
               我的项目
             </a>
             <a @click="alick" :to="'/vcenter/wallet/list'"
-              :class="['item', {'is-active': currentName === 'wallet'}]">
+              :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
               我的钱包
             </a>
             <a @click="alick" :to="'/vcenter/d_company/base'"
@@ -279,11 +320,33 @@
         </div>
       </section>
     </el-col>
+    <section :class="['cover', {'cover-mini': leftWidth === 2, 'show-cover': showCover}]">
+      <div class="cover-header">
+        <span :class="{'is-active': myView === 'order'}" @click="myView = 'order'">订单提醒</span>
+        <span :class="{'is-active': myView === 'task'}" @click="myView = 'task'">项目通知</span>
+        <span :class="{'is-active': myView === 'system'}" @click="myView = 'system'">系统通知</span>
+        <i class="fx fx-icon-nothing-close-error" @click="showCover = false"></i>
+      </div>
+      <div v-if="myView === 'order'" class="cover-content">
+        <order-message></order-message>
+      </div>
+      <div v-else-if="myView === 'task'" class="cover-content">
+        <task-message></task-message>
+      </div>
+      <div v-else class="cover-content">
+        <system-message></system-message>
+      </div>
+  </section>
   </section>
 </template>
 
 <script>
+  import api from '@/api/api'
   import { LEFT_WIDTH } from '@/store/mutation-types'
+  import auth from '@/helper/auth'
+  import orderMessage from '@/components/tools_block/OrderMessage'
+  import systemMessage from '@/components/tools_block/SystemMessage'
+  import taskMessage from '@/components/tools_block/TaskMessage'
   export default {
     name: 'vcenter_menu',
     props: {
@@ -291,9 +354,10 @@
     },
     data () {
       return {
-        msg: 'This is menu',
-        leftVal: 0,
-        defaultAvatar: require('assets/images/avatar_100.png')
+        showCover: false,
+        isEmpty: false,
+        designItems: [], // 订单提醒
+        myView: 'order'
       }
     },
     // 判断是客户还是设计公司
@@ -310,12 +374,61 @@
         sessionStorage.setItem('MENU_BAR', e.target.offsetLeft)
         this.$router.push(e.target.getAttribute('to'))
       },
+      logout() {
+        auth.logout()
+        this.$message({
+          message: '已退出',
+          type: 'success',
+          duration: 800
+        })
+        this.$router.replace('/home')
+      },
       changeWidth() {
         if (this.leftWidth === 2) {
           this.$store.commit(LEFT_WIDTH, 4)
         } else {
           this.$store.commit(LEFT_WIDTH, 2)
         }
+      },
+      showMyView() {
+        this.showCover = !this.showCover
+        if (this.showCover) {
+        }
+      },
+      getOrder() {
+        this.$http.get(api.designItemList)
+        .then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.isLoading = false
+            if (!response.data.data.length) {
+              this.isEmpty = true
+            } else {
+              this.isEmpty = false
+              this.waitCount = response.data.meta.pagination.total
+              let designItems = response.data.data
+              for (let i = 0; i < designItems.length; i++) {
+                let item = designItems[i]
+                let typeLabel = ''
+                if (item.item.type === 1) {
+                  typeLabel = item.item.type_value + '/' + item.item.design_type_value + '/' + item.item.field_value + '/' + item.item.industry_value
+                } else if (item.item.type === 2) {
+                  typeLabel = item.item.type_value + '/' + item.item.design_type_value
+                }
+                designItems[i].item.type_label = typeLabel
+                designItems[i]['item']['created_at'] = item.item.created_at.date_format().format('yyyy-MM-dd')
+              } // endfor
+              this.designItems = designItems
+            }
+          } else {
+            this.$message.error(response.data.meta.message)
+            this.isLoading = false
+          }
+        })
+        .catch((error) => {
+          this.isLoading = false
+          this.$message.error(error.message)
+          return false
+        })
       }
     },
     created() {
@@ -377,7 +490,20 @@
           user.logo_url = null
         }
         return user
+      },
+      msgCount() {
+        return this.$store.state.event.msgCount
       }
+    },
+    watch: {
+      msgCount(val) {
+        console.log(val)
+      }
+    },
+    components: {
+      orderMessage: orderMessage,
+      systemMessage: systemMessage,
+      taskMessage: taskMessage
     }
   }
 </script>
@@ -391,12 +517,11 @@
   }
   .menu-list .item {
     overflow: hidden;
-    padding: 0;
+    padding: 0 0 0 50px;
     height: 50px;
     line-height: 50px;
     color: rgba(255, 255, 255, 0.5);
     border-left: 3px solid transparent;
-    text-align: center;
     position: relative;
   }
   .menu-list .item:first-child {
@@ -579,5 +704,105 @@
     color: #222;
     font-weight: bold;
     border-color: #fff
+  }
+  .nav-item {
+    width: 80px;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    position: relative;
+    padding: 0 15px 0 0;
+  }
+  .nav-item:hover .view-msg {
+    display: block
+  }
+  .menu-header .icon.active span {
+    top: 20px;
+    right: 20px;
+  }
+  .mine {
+    font-size: 16px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    margin: 0 15px;
+    padding-right: 15px;
+  }
+  .mine span {
+    position: relative;
+    color: #666;
+    cursor: pointer;
+  }
+  .mine span:before,
+  .mine span:after {
+    color: #d2d2d2;
+    content: "|";
+    position: absolute;
+    left: -15px;
+    top: 0;
+  }
+  .mine span:after {
+    left: auto;
+    right: -15px;
+  }
+  .cover {
+    position: fixed;
+    z-index: 1;
+    left: 16.66667%;
+    top: 60px;
+    width: 83.333%;
+    height: calc(100% - 60px);
+    background: #fff;
+    transition: 0.45s all ease-in;
+    transform: translateY(-150%);
+  }
+  .show-cover {
+    transition: 0.45s all cubic-bezier(0, 1, 0.5, 1);
+    transform: translateY(0);
+  }
+  .cover-mini {
+    left: 60px;
+    top: 60px;
+    width: calc(100% - 60px);
+    height: calc(100% - 60px);
+  }
+  .cover-header {
+    position: relative;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #d7d7d7
+  }
+  .cover-header span {
+    cursor: pointer;
+    height: 50px;
+    line-height: 50px;
+    font-size: 14px;
+    color: #666;
+    border-bottom: 3px solid transparent
+  }
+  .cover-header .is-active {
+    border-color: #ff5a5f
+  }
+  .cover-header span:nth-child(2) {
+    margin: 0 60px
+  }
+  .cover-header i {
+    position: absolute;
+    right: 30px;
+    top: 17px;
+  }
+  .cover-content {
+    overflow: auto;
+    height: 100%;
+    padding-bottom: 50px;
+  }
+  @media screen and (min-width: 1440px) {
+    .cover {
+      left: 240px;
+      width: calc(100% - 240px);
+    }
   }
 </style>

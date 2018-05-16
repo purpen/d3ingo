@@ -301,6 +301,12 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   border-right: none !important;
   border-bottom: none !important;
 }
+.el-input-group__append, .el-input-group__prepend {
+  border-color: #e6e6e6
+}
+.el-input-group__append:hover, .el-input-group__prepend:hover {
+  border-color: #d2d2d2;
+}
 .el-input__inner {
   color: #222;
 }
@@ -570,9 +576,17 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-/**
- * 面包屑
- */
+
+.disabled-button-light,
+.disabled-button-light:hover,
+.disabled-button-light:active {
+  font-size: 14px;
+  cursor: not-allowed;
+  background: #FAFAFA;
+  color: #C8C8C8;
+  border: 1px solid #E6E6E6;
+  border-radius: 4px;
+}
 
 .bread {
   margin: 0 0 10px 0;
@@ -1071,22 +1085,25 @@ input[type=text]:focus, input[type=password]:focus{
 }
 
 .nav-header .nav-item {
+  width: 80px;
   position: relative;
   align-items: center;
   display: flex;
   flex-grow: 0;
   flex-shrink: 0;
   font-size: 1rem;
-  justify-content: center;
+  justify-content: flex-end;
   line-height: 1.5;
-  padding: 6px 20px 6px 9px;
+  padding: 12px 20px 0 9px;
 }
 
-.nav-header .nav-item:hover span.icon i {
+.nav-header .nav-item:hover span.icon i,
+.menu-header .nav-item:hover span.icon i {
   color: #FF5A5F
 }
 
-.nav-header .nav-item:hover .view-msg {
+.nav-header .nav-item:hover .view-msg,
+.menu-header .nav-item:hover .view-msg {
     display: block
 }
 
@@ -1094,8 +1111,8 @@ input[type=text]:focus, input[type=password]:focus{
   display: none;
   position: absolute;
   top: 60px;
-  left: 0;
-  width: 140px;
+  right: 0;
+  width: 124px;
   background: #fff;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .12),
   0 0 6px 0 rgba(0, 0, 0, .04);
@@ -1159,7 +1176,8 @@ input[type=text]:focus, input[type=password]:focus{
   font-size: 21px;
 }
 
-.nav-header .icon.active span {
+.nav-header .icon.active span,
+.menu-header .icon.active span {
   min-width: 18px;
   height: 18px;
   border: 1px solid #FF5A5F;
@@ -1168,7 +1186,7 @@ input[type=text]:focus, input[type=password]:focus{
   background-color: #FF5A5F;
   position: absolute;
   z-index: 1000;
-  left: 12px;
+  right: 2px;
   top: 0;
   margin-right: -10px;
   margin-top: -10px;
@@ -1177,7 +1195,6 @@ input[type=text]:focus, input[type=password]:focus{
   line-height: 16px;
   text-align: center
 }
-
 .nav-header .fa {
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;
@@ -1192,8 +1209,8 @@ input[type=text]:focus, input[type=password]:focus{
 .nav-header .nav-right a {
   cursor: pointer;
   text-decoration: none;
-  -webkit-transition: none 86ms ease-out;
-  transition: none 86ms ease-out;
+  -webkit-transition: none 258ms ease-out;
+  transition: none 258ms ease-out;
   margin: 0;
   border: 0;
   font: inherit;
@@ -1353,7 +1370,7 @@ input[type=text]:focus, input[type=password]:focus{
   font-weight: 400;
   box-shadow: none;
   margin: 0;
-  padding: 0 1.5rem;
+  padding: 0 0 0 1.5rem;
   text-align: center;
   -webkit-transition: all 86ms ease-out;
   transition: all 86ms ease-out;

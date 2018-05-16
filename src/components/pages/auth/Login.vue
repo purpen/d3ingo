@@ -18,7 +18,10 @@
                       placeholder="密码"></el-input>
           </el-form-item>
           <div class="opt">
-            <p class="rember"><input type="checkbox" id="passwd" /><label for="passwd">记住我</label></p>
+            <p class="rember">
+              <input type="checkbox" id="passwd" />
+              <label for="passwd" class="password-show no-select">记住我</label>
+            </p>
             <p class="forget">
               <router-link :to="{name: 'forget'}">忘记密码?</router-link>
             </p>
@@ -226,7 +229,7 @@ export default {
   background: #FFFFFF;
   border: 1px solid #E6E6E6;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.10);
-  border-radius: 4px;
+  border-radius: 6px;
   padding-bottom: 30px;
 }
 
@@ -276,6 +279,8 @@ form {
 .opt {
   overflow: hidden;
   padding: 0 0 20px;
+  font-size: 1.4rem;
+  color: #666666;
 }
 
 .forget {
@@ -286,23 +291,51 @@ form {
 }
 
 .rember {
+  height: 22px;
   display: flex;
   align-items: center;
   float: left;
-  font-size: 1.3rem;
 }
-
 .forget a {
-  font-size: 1.3rem;
   color: #666666;
 }
 
 #passwd {
-  width: 16px;
-  height: 16px;
-  vertical-align: sub;
+  display: none;
 }
-
+#passwd:checked ~.password-show::before {
+  background: rgba(255,41,41,0.50);
+  border: 1px solid #FF2929;
+}
+#passwd:checked ~.password-show::after {
+  content: "";
+  width: 4px;
+  height: 9px;
+  position: absolute;
+  left: 5px;
+  top: 1px;
+  border: 1px solid #fff;
+  border-left: none;
+  border-top: none;
+  transform: rotate(45deg);
+}
+.password-show {
+  padding-left: 20px;
+  position: relative;
+  
+}
+.password-show::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -1px;
+  width: 14px;
+  height: 14px;
+  border: 1px solid #d2d2d2;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: 268ms all ease
+}
 @media screen and (max-width: 767px) {
   .login-box {
     width: auto;

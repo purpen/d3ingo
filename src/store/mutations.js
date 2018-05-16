@@ -67,7 +67,6 @@ let hashideFooter = function () {
 let getLeftWidth = function () {
   if (localStorage.getItem('leftWidth')) {
     let leftWidth = localStorage.getItem('leftWidth')
-    console.log(leftWidth)
     return Number(leftWidth)
   } else {
     return 2

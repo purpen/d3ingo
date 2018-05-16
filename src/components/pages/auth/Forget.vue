@@ -236,7 +236,7 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .forget-box {
-    border-radius: 4px;
+    border-radius: 6px;
     background: #fff;
     width: 580px;
     text-align: center;
