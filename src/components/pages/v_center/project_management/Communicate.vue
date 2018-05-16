@@ -36,9 +36,9 @@
                   <span v-if=" !getimg.logo_image.logo ">{{getimg.realnamehead}}</span>
                   <i :style="{background:`url(${ closered }) no-repeat center`}" @click="deleteGetimg(index,{type:'add'})"></i>
               </li>
-              <li class="showme" tabindex="-1">
+              <li tabindex="-1" class="showme">
                 <img class="adds" :src=" adduser " alt="">
-                <ul class="select-user scroll-bar" v-if="uppop" >
+                <ul class="select-user scroll-bar">
                   <li>
                     <el-input placeholder="填写或选择参加会议的人员名称" v-model="searcher"></el-input>
                   </li>
