@@ -523,7 +523,7 @@
   }
   .menu-list .item {
     overflow: hidden;
-    padding: 0 0 0 53px;
+    padding: 0 0 0 50px;
     height: 50px;
     line-height: 50px;
     color: rgba(255, 255, 255, 0.5);

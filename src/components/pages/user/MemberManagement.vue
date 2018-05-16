@@ -1,108 +1,110 @@
 <template>
   <el-row :class="['member-management',{'member-management-mini' : !leftWidth}]">
     <v-menu-left currentName="member"></v-menu-left>
-    <el-col :xs="24" :sm="4" :md="4" :lg="4" :offset="leftWidth">
-      <member-menu
-        :memberLeft="memberLeft"
-        :liActive="liActive"
-        @changeType="changeType"
-        @getGroupMember="getGroupMember"
-        @searchMember="searchMember"
-        @cancelSearch="creatGetList"
-        @createGroup="confirmCreateGroup"></member-menu>
-    </el-col>
-    <el-col :xs="24" :sm="16" :md="16" :lg="16">
-      <section :class="['member-list', {'member-list-mini' : !leftWidth}]"
-        v-loading.body="loading">
-        <div class="member-list-header">
-          <p class="fl">
-            {{firstGroupName}}
-          </p>
-          <p v-if="type === 'member' && company_role === 20" class="invite fr" @click="getVerifyStatus">邀请成员</p>
-          <div :class="['fr', 'more-list','more-list-group', {'active': isShowGroup}]"
-            v-if="company_role === 10 || company_role === 20"
-            v-show="type === 'group' && memberList.length">
-            <i class="header-icon" @click.stop="isShowGroup = !isShowGroup"></i>
-            <ul>
-              <li @click.stop="confirmRenameGroup">重命名</li>
-              <li @click.stop="confirmRemoveGroup">删除群组</li>
-            </ul>
-          </div>
-          <div v-if="type === 'group'" class="invite fr" @click="groupConfirmPush">
-            <span>添加成员</span>
-            <div class="cententList" v-if="showGroupPush">
-              <p class="clearfix">添加成员
-                <i class="fr fx-icon-nothing-close-error" @click.stop="showGroupPush = false"></i>
-              </p>
-              <div class="side clearfix">
-                <ul>
-                    <li :class="['info', {'active': addMemberIdList.indexOf(d.id) !== -1}]" v-for="(d, index) in itemList" :key="index" @click="addOrremoveMember(d.id)">
-                      <img v-if="d.logo_image" :src="d.logo_image.logo" alt="">
-                      <img v-else :src="require('assets/images/avatar_100.png')">
-                      <span class="name">{{d.realname}}</span>
-                      <span class="name">{{d.id}}</span>
-                    </li>
-                  </ul>
-                  <p v-if="company_role === 20" @click="getVerifyStatus" class="welcome">通过链接邀请</p>
+    <section class="parent-box">
+      <el-col :span="4">
+        <member-menu
+          :memberLeft="memberLeft"
+          :liActive="liActive"
+          @changeType="changeType"
+          @getGroupMember="getGroupMember"
+          @searchMember="searchMember"
+          @cancelSearch="creatGetList"
+          @createGroup="confirmCreateGroup"></member-menu>
+      </el-col>
+      <el-col :span="20">
+        <section :class="['member-list', {'member-list-mini' : !leftWidth}]"
+          v-loading.body="loading">
+          <div class="member-list-header">
+            <p class="fl">
+              {{firstGroupName}}
+            </p>
+            <p v-if="type === 'member' && company_role === 20" class="invite fr" @click="getVerifyStatus">邀请成员</p>
+            <div :class="['fr', 'more-list','more-list-group', {'active': isShowGroup}]"
+              v-if="company_role === 10 || company_role === 20"
+              v-show="type === 'group' && memberList.length">
+              <i class="header-icon" @click.stop="isShowGroup = !isShowGroup"></i>
+              <ul>
+                <li @click.stop="confirmRenameGroup">重命名</li>
+                <li @click.stop="confirmRemoveGroup">删除群组</li>
+              </ul>
+            </div>
+            <div v-if="type === 'group'" class="invite fr" @click="groupConfirmPush">
+              <span>添加成员</span>
+              <div class="cententList" v-if="showGroupPush">
+                <p class="clearfix">添加成员
+                  <i class="fr fx-icon-nothing-close-error" @click.stop="showGroupPush = false"></i>
+                </p>
+                <div class="side clearfix">
+                  <ul>
+                      <li :class="['info', {'active': addMemberIdList.indexOf(d.id) !== -1}]" v-for="(d, index) in itemList" :key="index" @click="addOrremoveMember(d.id)">
+                        <img v-if="d.logo_image" :src="d.logo_image.logo" alt="">
+                        <img v-else :src="require('assets/images/avatar_100.png')">
+                        <span class="name">{{d.realname}}</span>
+                        <span class="name">{{d.id}}</span>
+                      </li>
+                    </ul>
+                    <p v-if="company_role === 20" @click="getVerifyStatus" class="welcome">通过链接邀请</p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="member-title">
-          <el-col :span="8"><p>成员名称</p></el-col>
-          <el-col :span="type === 'group' ? 8 : 12"><p>职位</p></el-col>
-          <el-col v-if="type === 'group'" :span="6"><p>成员属性</p></el-col>
-          <el-col :class="[{'align-right': type === 'group'}]" :span="type === 'group' ? 2 : 4"><p>操作</p></el-col>
-        </div>
-        <ul class="member-item">
-          <li v-for="(ele, index) in memberList" :key="index" @click="closeCover">
-            <el-col :span="8">
-              <div class="info" @click.stop="viewMember(ele)">
-                <img v-if="ele.logo_image" :src="ele.logo_image.logo" alt="">
-                <img v-else :src="require('assets/images/avatar_100.png')">
-                <span v-if="ele.realname">{{ele.realname}}</span>
-                <span v-else>{{ele.username}}</span>
-              </div>
-            </el-col>
-            <el-col :span="type === 'group' ? 8 : 12">
-              <span :style="{display: 'block', height: '60px'}">{{ele.position}}</span>
-            </el-col>
-            <el-col v-if="type === 'group'" :span="6">
-              <span>{{ele.company_role_label}}</span>
-            </el-col>
-            <el-col v-if="type === 'group'" :span="2">
-              <div class="role role-group">
-                <div :class="['more-list','more-list-group', {'active': isShow === index}]"
-                  v-if="company_role === 10 || company_role === 20"
-                  v-show="type === 'group'">
-                  <i @click.stop="changeActive(index)"></i>
-                  <ul>
-                    <li @click.stop="removeMemberFromGroup(ele.id)">从群组移除成员</li>
-                    <li @click.stop="removeMember(ele.id)">从企业移除成员</li>
-                  </ul>
+          <div class="member-title">
+            <el-col :span="8"><p>成员名称</p></el-col>
+            <el-col :span="type === 'group' ? 8 : 12"><p>职位</p></el-col>
+            <el-col v-if="type === 'group'" :span="6"><p>成员属性</p></el-col>
+            <el-col :class="[{'align-right': type === 'group'}]" :span="type === 'group' ? 2 : 4"><p>操作</p></el-col>
+          </div>
+          <ul class="member-item">
+            <li v-for="(ele, index) in memberList" :key="index" @click="closeCover">
+              <el-col :span="8">
+                <div class="info" @click.stop="viewMember(ele)">
+                  <img v-if="ele.logo_image" :src="ele.logo_image.logo" alt="">
+                  <img v-else :src="require('assets/images/avatar_100.png')">
+                  <span v-if="ele.realname">{{ele.realname}}</span>
+                  <span v-else>{{ele.username}}</span>
                 </div>
-              </div>
-            </el-col>
-            <el-col v-if="type === 'member'" :span="4">
-              <div class="role">
+              </el-col>
+              <el-col :span="type === 'group' ? 8 : 12">
+                <span :style="{display: 'block', height: '60px'}">{{ele.position}}</span>
+              </el-col>
+              <el-col v-if="type === 'group'" :span="6">
                 <span>{{ele.company_role_label}}</span>
-                <div :class="['more-list', {'active': isShow === index}]"
-                  v-if="company_role === 10 || company_role === 20"
-                  v-show="type === 'member' && currentId !== ele.id">
-                  <i @click.stop="changeActive(index)"></i>
-                  <ul>
-                    <li v-if="company_role === 20" @click.stop="setRole(ele.id, 10)">管理员</li>
-                    <li v-if="company_role === 20" @click.stop="setRole(ele.id, 0)">成员</li>
-                    <li v-if="false">停用账号</li>
-                    <li @click.stop="removeMember(ele.id)">从企业移除成员</li>
-                  </ul>
+              </el-col>
+              <el-col v-if="type === 'group'" :span="2">
+                <div class="role role-group">
+                  <div :class="['more-list','more-list-group', {'active': isShow === index}]"
+                    v-if="company_role === 10 || company_role === 20"
+                    v-show="type === 'group'">
+                    <i @click.stop="changeActive(index)"></i>
+                    <ul>
+                      <li @click.stop="removeMemberFromGroup(ele.id)">从群组移除成员</li>
+                      <li @click.stop="removeMember(ele.id)">从企业移除成员</li>
+                    </ul>
+                  </div>
                 </div>
-              </div>
-            </el-col>
-          </li>
-        </ul>
-      </section>
-    </el-col>
+              </el-col>
+              <el-col v-if="type === 'member'" :span="4">
+                <div class="role">
+                  <span>{{ele.company_role_label}}</span>
+                  <div :class="['more-list', {'active': isShow === index}]"
+                    v-if="company_role === 10 || company_role === 20"
+                    v-show="type === 'member' && currentId !== ele.id">
+                    <i @click.stop="changeActive(index)"></i>
+                    <ul>
+                      <li v-if="company_role === 20" @click.stop="setRole(ele.id, 10)">管理员</li>
+                      <li v-if="company_role === 20" @click.stop="setRole(ele.id, 0)">成员</li>
+                      <li v-if="false">停用账号</li>
+                      <li @click.stop="removeMember(ele.id)">从企业移除成员</li>
+                    </ul>
+                  </div>
+                </div>
+              </el-col>
+            </li>
+          </ul>
+        </section>
+      </el-col>
+    </section>
     <section class="dialog-bg" v-if="showCover" @click.self="closeCover"></section>
     <section class="dialog-body" v-if="isInvite">
       <h3 class="dialog-header clearfix">
@@ -1058,6 +1060,10 @@ export default {
     color: #ff5a5f
   }
   
+  .parent-box {
+    position: relative;
+    padding-left: 16.66667%;
+  }
   @media screen and (min-width: 1200px) {
     .member-list {
       position: absolute;
@@ -1071,6 +1077,9 @@ export default {
       top: 0;
       left: 260px;
       transition: 0.2s all ease;
+    }
+    .parent-box {
+      padding-left: 200px;
     }
   }
 </style>

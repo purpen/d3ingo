@@ -114,10 +114,10 @@
 <style scoped>
   .menu {
     transition: 0.2s all ease;
-    max-width: 240px;
-    /* background: #333; */
+    max-width: 200px;
     height: calc(100vh - 60px);
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
+    /* background: #333; */
   }
   h3 {
     color: #666;
@@ -140,7 +140,7 @@
     color: #999;
     display: block;
     position: relative;
-    padding-left: 44px;
+    padding-left: 68px;
     cursor: pointer;
   }
   .cloud-classify li a:before {
@@ -148,7 +148,7 @@
     position: absolute;
     width: 24px;
     height: 24px;
-    left: 10px;
+    left: 34px;
     top: 8px;
     background: url('../../../../../assets/images/tools/cloud_drive/file@2x.png') center no-repeat;
     background-size: contain
@@ -223,12 +223,12 @@
     color: #ff5a5f
   }
   
-  @media screen and (min-width: 1440px) {
+  @media screen and (min-width: 1200px) {
     .menu {
       position: absolute;
       width: 100%;
       top: 0;
-      left: 240px;
+      left: 200px;
     }
     .menu-mini {
       left: 60px;

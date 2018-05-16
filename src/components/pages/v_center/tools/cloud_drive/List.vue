@@ -1,118 +1,122 @@
 <template>
-  <el-row :class="['cloud-content', {'slide-mini': leftWidth === 2 && withoutSide}]">
+  <el-row :class="['vcenter-rightMenu-plus',
+    'cloud-content',
+    {'slide-mini': leftWidth === 2 && withoutSide}]">
     <v-menu-left :currentName="withoutSide? 'cloud_drive' : 'project_management'"></v-menu-left>
-    <el-col v-if="withoutSide" :span="4" :offset="leftWidth">
-      <v-menu :isActive='modules' @getTitle="headTitle"></v-menu>
-    </el-col>
-    <el-col :span="leftWidth? (withoutSide?16 :24) : (withoutSide?20 :24)">
-      <div :class="['content', {'content-mini' : leftWidth === 2}, {'content-pm' : !withoutSide}]"
-        v-loading.body="isLoading">
-        <div class="content-head">
-          <div class="clearfix" v-show="showList">
-            <p class="title fl" v-if="!isChoose && folderId === 0" v-html="title"></p>
-            <p class="title fl" v-if="!isChoose && folderId !== 0">
-              <i class="fx fx-icon-nothing-left" @click="backFolder"></i>
-              {{parentFolder.name}}
-            </p>
-            <div class="fr operate" v-if="!isChoose">
-              <p class="add" v-if="modules !== 'recycle'">
-                <span class="add-option">
-                  <a class="new-folder">
-                    <span @click="newFolder">新建文件夹</span>
-                  </a>
-                  <a class="upload-files">
-                    <el-upload
-                      ref="upload"
-                      class="upload-button"
-                      :action="uploadUrl"
-                      :multiple="true"
-                      list-type="picture"
-                      :data="uploadParams"
-                      :on-success="uploadSuccess"
-                      :on-progress="uploadProgress"
-                      :on-error="uploadError"
-                      :on-remove="uploadRemove"
-                      :before-upload="beforeUpload"
-                      :on-change="uploadChange"
-                      :show-file-list="false">
-                      <span>上传文件</span>
-                    </el-upload>
-                  </a>
-                </span>
+    <section :class="{'parent-box': withoutSide, 'parent-box2': !withoutSide}">
+      <el-col v-if="withoutSide" :span="4">
+        <v-menu :isActive='modules' @getTitle="headTitle"></v-menu>
+      </el-col>
+      <el-col :span="withoutSide?20 :24">
+        <div :class="['content', {'content-mini' : leftWidth === 2}, {'content-pm' : !withoutSide}]"
+          v-loading.body="isLoading">
+          <div class="content-head">
+            <div class="clearfix" v-show="showList">
+              <p class="title fl" v-if="!isChoose && folderId === 0" v-html="title"></p>
+              <p class="title fl" v-if="!isChoose && folderId !== 0">
+                <i class="fx fx-icon-nothing-left" @click="backFolder"></i>
+                {{parentFolder.name}}
               </p>
-              <p class="search" title="搜索" @click="searchClick" v-if="modules !== 'recycle'"></p>
-              <p :class="[{'chunk': curView === 'list','list': curView === 'chunk'}]" 
-                :title="chunkTitle"
-                @click="changeFileView" v-if="modules !== 'recycle'"></p>
-              <p class="sequence">
-                <i :class="['icon', {'reverse': sortGist.ascend === -1}]" @click="changeSortAscend()"></i>
-                <span class="add-option">
-                  <a :class="{'checked': sortGist.order_by === 1}"
-                    @click="changeSortGist(1)">时间</a>
-                  <a :class="{'checked': sortGist.order_by === 2}"
-                    @click="changeSortGist(2)">大小</a>
-                  <a :class="{'checked': sortGist.order_by === 3}"
-                    @click="changeSortGist(3)">名称</a>
-                </span>
+              <div class="fr operate" v-if="!isChoose">
+                <p class="add" v-if="modules !== 'recycle'">
+                  <span class="add-option">
+                    <a class="new-folder">
+                      <span @click="newFolder">新建文件夹</span>
+                    </a>
+                    <a class="upload-files">
+                      <el-upload
+                        ref="upload"
+                        class="upload-button"
+                        :action="uploadUrl"
+                        :multiple="true"
+                        list-type="picture"
+                        :data="uploadParams"
+                        :on-success="uploadSuccess"
+                        :on-progress="uploadProgress"
+                        :on-error="uploadError"
+                        :on-remove="uploadRemove"
+                        :before-upload="beforeUpload"
+                        :on-change="uploadChange"
+                        :show-file-list="false">
+                        <span>上传文件</span>
+                      </el-upload>
+                    </a>
+                  </span>
+                </p>
+                <p class="search" title="搜索" @click="searchClick" v-if="modules !== 'recycle'"></p>
+                <p :class="[{'chunk': curView === 'list','list': curView === 'chunk'}]" 
+                  :title="chunkTitle"
+                  @click="changeFileView" v-if="modules !== 'recycle'"></p>
+                <p class="sequence">
+                  <i :class="['icon', {'reverse': sortGist.ascend === -1}]" @click="changeSortAscend()"></i>
+                  <span class="add-option">
+                    <a :class="{'checked': sortGist.order_by === 1}"
+                      @click="changeSortGist(1)">时间</a>
+                    <a :class="{'checked': sortGist.order_by === 2}"
+                      @click="changeSortGist(2)">大小</a>
+                    <a :class="{'checked': sortGist.order_by === 3}"
+                      @click="changeSortGist(3)">名称</a>
+                  </span>
+                </p>
+                <p class="edit" title="编辑模式" @click="changeChooseStatus"></p>
+              </div>
+              <p class="edit-menu" v-if="isChoose">
+                <el-col :span="1">
+                  <i :class="['file-radio', {'active': isChooseAll === 'all'}, {'chunk-view': curView === 'chunk'}]" @click="changeChooseAll">file-icon</i>
+                </el-col>
+                <el-col :span="6" class="choose-info">
+                  <span class="already-choose" @click="changeChooseAll">已选择{{alreadyChoose}}项</span>
+                  <span class="cancel-choose" @click="cancelChoose">取消选择</span>
+                </el-col>
+                <el-col :offset="5" :span="12">
+                  <span v-if="modules !== 'recycle'" @click="confirmShare">分享</span>
+                  <span v-if="false" @click="downloadFile()">下载</span>
+                  <span v-if="modules !== 'recycle'" @click="confirmCopy">复制</span>
+                  <span v-if="modules !== 'recycle'" @click="confirmMove">移动</span>
+                  <span v-if="modules !== 'recycle'" @click="rename" :class="{'disable': alreadyChoose > 1 || !alreadyChoose}">重命名</span>
+                  <span v-if="modules !== 'recycle'" @click="deleteFile">删除</span>
+                  <span v-if="modules === 'recycle'" @click="shiftDelete">删除</span>
+                  <span v-if="modules === 'recycle'" @click="recoverFile">还原</span>
+                </el-col>
               </p>
-              <p class="edit" title="编辑模式" @click="changeChooseStatus"></p>
             </div>
-            <p class="edit-menu" v-if="isChoose">
-              <el-col :span="1">
-                <i :class="['file-radio', {'active': isChooseAll === 'all'}, {'chunk-view': curView === 'chunk'}]" @click="changeChooseAll">file-icon</i>
-              </el-col>
-              <el-col :span="6" class="choose-info">
-                <span class="already-choose" @click="changeChooseAll">已选择{{alreadyChoose}}项</span>
-                <span class="cancel-choose" @click="cancelChoose">取消选择</span>
-              </el-col>
-              <el-col :offset="5" :span="12">
-                <span v-if="modules !== 'recycle'" @click="confirmShare">分享</span>
-                <span v-if="false" @click="downloadFile()">下载</span>
-                <span v-if="modules !== 'recycle'" @click="confirmCopy">复制</span>
-                <span v-if="modules !== 'recycle'" @click="confirmMove">移动</span>
-                <span v-if="modules !== 'recycle'" @click="rename" :class="{'disable': alreadyChoose > 1 || !alreadyChoose}">重命名</span>
-                <span v-if="modules !== 'recycle'" @click="deleteFile">删除</span>
-                <span v-if="modules === 'recycle'" @click="shiftDelete">删除</span>
-                <span v-if="modules === 'recycle'" @click="recoverFile">还原</span>
-              </el-col>
-            </p>
+            <div class="search-head" v-show="!showList">
+              <input v-model.trim="searchWord" class="search-input" placeholder="搜索...">
+              <i class="fr fx-0 fx-icon-nothing-close-error" @click="clearShowList"></i>
+            </div>
           </div>
-          <div class="search-head" v-show="!showList">
-            <input v-model.trim="searchWord" class="search-input" placeholder="搜索...">
-            <i class="fr fx-0 fx-icon-nothing-close-error" @click="clearShowList"></i>
-          </div>
+          <!-- 文件列表 -->
+          <transition name="uploadList">
+            <vContent
+              :list="list"
+              :chooseStatus="isChoose"
+              :isChooseAll="isChooseAll"
+              :curView="curView"
+              :hasRename="hasRename"
+              :imgList="imgList"
+              :showList="showList"
+              :modules="modules"
+              :folderId="folderId"
+              @enterFolder="enterFolder"
+              @choose="chooseList"
+              @renameCancel="renameCancel"
+              @changeName="changeName"
+              @directRename="directRename"
+              @headDirectRename="headDirectRename"
+              @deleteFile="deleteFile"
+              @shiftDelete="shiftDelete"
+              @recoverFile="recoverFile"
+              @changePermission="changePermission"
+              @confirmCopy="confirmCopy"
+              @confirmMove="confirmMove"
+              @changeImgList="changeImgList"
+              @confirmShare="confirmShare"
+              @downloadFile="downloadFile">
+            </vContent>
+          </transition>
         </div>
-        <!-- 文件列表 -->
-        <transition name="uploadList">
-          <vContent
-            :list="list"
-            :chooseStatus="isChoose"
-            :isChooseAll="isChooseAll"
-            :curView="curView"
-            :hasRename="hasRename"
-            :imgList="imgList"
-            :showList="showList"
-            :modules="modules"
-            :folderId="folderId"
-            @enterFolder="enterFolder"
-            @choose="chooseList"
-            @renameCancel="renameCancel"
-            @changeName="changeName"
-            @directRename="directRename"
-            @headDirectRename="headDirectRename"
-            @deleteFile="deleteFile"
-            @shiftDelete="shiftDelete"
-            @recoverFile="recoverFile"
-            @changePermission="changePermission"
-            @confirmCopy="confirmCopy"
-            @confirmMove="confirmMove"
-            @changeImgList="changeImgList"
-            @confirmShare="confirmShare"
-            @downloadFile="downloadFile">
-          </vContent>
-        </transition>
-      </div>
-    </el-col>
+      </el-col>
+    </section>
     <footer class="drive-footer clearfix" v-if="webUploader" @click="isShowProgress = true">
       <span class="fl">正在上传文件{{uploadingNumber}}/{{totalNumber}}</span>
       <span class="fr"><i class="fx-0 fx-icon-nothing-close-error" @click="confirmClearUpload"></i></span>
@@ -2499,7 +2503,13 @@ export default {
   .exclude-file span.checked::before {
     background: #666;
   }
-
+  .parent-box {
+    position: relative;
+    padding-left: 16.66667%;
+  }
+  .parent-box2 {
+    position: relative;
+  }
   @media screen and (min-width: 768px) {
     .content {
       padding: 20px 30px 0;
@@ -2507,18 +2517,18 @@ export default {
     }
   }
 
-  @media screen and (min-width: 1440px) {
+  @media screen and (min-width: 1200px) {
     .content {
       position: absolute;
-      width: calc(100% - 480px);
+      width: calc(100% - 400px);
       top: 0;
-      left: 480px;
+      left: 400px;
     }
     .content-mini {
       position: absolute;
-      width: calc(100% - 300px);
+      width: calc(100% - 260px);
       top: 0;
-      left: 300px;
+      left: 260px;
       transition: 0.2s all ease;
     }
     .content-pm {
@@ -2526,6 +2536,9 @@ export default {
       width: 100%;
       top: 0;
       left: 0;
+    }
+    .parent-box {
+      padding-left: 200px;
     }
   }
 </style>

@@ -210,9 +210,15 @@
   .vcenter-right-plus {
     padding-left: 16.667%
   }
+  /* .vcenter-rightMenu-plus {
+    margin-left: 16.667%;
+  } */
 }
 @media screen and (min-width: 1200px) {
   .vcenter-right-plus {
     padding-left: 200px
   }
+  /* .vcenter-rightMenu-plus {
+    margin-left: 200px;
+  } */
 }
