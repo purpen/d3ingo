@@ -1,8 +1,9 @@
 <template>
-  <el-row class="blank30 min-height350 ">
+  <el-row class="blank30 vcenter">
     <v-menu currentName="control"></v-menu>
     <div :class="{'vcenter-right-plus': leftWidth === 4,
-        'vcenter-right': leftWidth === 2}">
+        'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}">
       <el-row class="vcenter-container">
         <el-col :xs="24" :sm="24" :md="12" :lg="12" v-if="uChild===0&&messageCount.quantity">
           <section>
@@ -17,10 +18,12 @@
                 </div>
                 <div class="message-btn clearfix" v-else>
                 <router-link :to="{name: 'home'}">
-                  <el-button class="is-custom">返回首页</el-button>
+                  <button class="middle-button red-button">返回首页</button>
+                  <!-- <el-button class="is-custom">返回首页</el-button> -->
                 </router-link> &nbsp;&nbsp;
                 <router-link :to="{name: 'vcenterMessageList'}">
-                  <el-button type="primary" class="is-custom">查看消息</el-button>
+                  <button class="middle-button full-red-button">查看消息</button>
+                  <!-- <el-button type="primary" class="is-custom">查看消息</el-button> -->
                 </router-link>
               </div>
             </div>
@@ -55,7 +58,9 @@
                   <h3>公司认证</h3>
                   <p class="item-title">提交公司认证信息</p>
                   <p class="item-btn">
-                    <router-link :to="{name: 'vcenterComputerAccreditation'}">{{ item.verify_label }}</router-link>
+                    <router-link :to="{name: 'vcenterComputerAccreditation'}">
+                      <button class="small-button red-button">{{ item.verify_label }}</button>
+                    </router-link>
                   </p>
                 </div>
 
@@ -139,7 +144,8 @@
               <div class="message-btn" v-else>
                 <img src="../../../../assets/images/icon/Project default state@2x.png"/>
                 <p>你还没有参加任何项目</p>
-                <el-button class="is-custom" v-if="uChild===0">创建项目</el-button>
+                <button class="middle-button red-buttom" v-if="uChild===0">创建项目</button>
+                <!-- <el-button class="is-custom" v-if="uChild===0">创建项目</el-button> -->
               </div>
             </el-row>
           </section>
@@ -619,9 +625,10 @@
   }
 
   p.alert-title {
-    margin:0 -20px;
+    line-height: 30px;
+    font-size: 12px;
+    margin:0 -20px 20px;
     color: #666;
-    margin-bottom: 20px;
     background:#f7f7f7;
     padding:0 20px;
   }
@@ -670,10 +677,10 @@
   }
 
   .content-box .item .item-btn a {
-    color: #FE3824;
+    /* color: #FE3824;
     border: 1px solid #fe3824;
     border-radius: 5px;
-    padding: 4px 10px;
+    padding: 4px 10px; */
   }
 
   .no-line {
@@ -806,6 +813,10 @@
   @media screen and (max-width: 768px) {
     .prefect {
       font-size: 1.4rem;
+    }
+
+    .el-row>.el-col>section{
+      margin: 0 0 20px
     }
   }
 

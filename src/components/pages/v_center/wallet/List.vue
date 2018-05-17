@@ -1,9 +1,10 @@
 <template>
-  <div class="blank30">
+  <div class="blank30 vcenter">
     <el-row>
       <v-menu currentName="wallet"></v-menu>
       <div :class="{'vcenter-right-plus': leftWidth === 4,
-        'vcenter-right': leftWidth === 2}">
+        'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}">
         <div class="right-content vcenter-container">
           <div :class="['my-wallet', isMob ? 'my-wallet-m' : '' ]">
             <div class="wallet-box">
@@ -454,7 +455,6 @@
   .my-wallet-m {
     border: 1px solid #e6e6e6;
     height: auto;
-    margin-top: 20px;
   }
 
   .wallet-box {

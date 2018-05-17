@@ -223,7 +223,7 @@ export default {
 <style scoped>
 .login-box {
   background: #fff;
-  width: 580px;
+  width: 530px;
   text-align: center;
   margin: 30px auto 0;
   background: #FFFFFF;

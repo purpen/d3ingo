@@ -1,8 +1,9 @@
 <template>
-  <section :class="{'project-lists': !leftWidth}">
+  <section :class="{'project-lists': leftWidth === 2}">
     <v-menu currentName="project_management"></v-menu>
     <div :class="{'vcenter-right-plus': leftWidth === 4,
-      'vcenter-right': leftWidth === 2}">
+      'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}">
       <div class="vcenter-container blank30">
         <h2>项目管理</h2>
         <ul class="project-list" v-loading.body="isLoading">
@@ -190,16 +191,7 @@ export default {
   },
   computed: {
     leftWidth() {
-      let leftWidth = this.$store.state.event.leftWidth
-      if (this.isMob) {
-        return 0
-      } else {
-        if (leftWidth === 2) {
-          return 0
-        } else if (leftWidth === 4) {
-          return leftWidth
-        }
-      }
+      return this.$store.state.event.leftWidth
     },
     isMob() {
       return this.$store.state.event.isMob

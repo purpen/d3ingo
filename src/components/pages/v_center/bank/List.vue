@@ -1,6 +1,6 @@
 <template>
-  <div class="container min-height350">
-    <div class="blank30"></div>
+  <div class="container">
+    <div class="blank30 vcenter"></div>
     <el-row :gutter="24" class="anli-elrow">
       <v-menu currentName="wallet"></v-menu>
 

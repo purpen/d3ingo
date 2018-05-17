@@ -1,5 +1,6 @@
 <template>
-<section :class="['member-menu', {'member-menu-mini': !leftWidth}]">
+<section :class="['member-menu',
+  {'member-menu-mini': !leftWidth, 'member-menu-mob': 'isMob'}]">
   <div class="seach-block">
     <span class="search-icon"></span>
     <input type="text" class="search" v-model.trim="searchKey">
@@ -77,6 +78,9 @@ export default {
     }
   },
   computed: {
+    isMob() {
+      return this.$store.state.event.isMob
+    },
     leftWidth() {
       let leftWidth = this.$store.state.event.leftWidth
       if (leftWidth === 2) {
@@ -204,7 +208,11 @@ export default {
   .new-group:hover {
     opacity: 1;
   }
-  
+  .member-menu-mob {
+    max-width: 100%;
+    height: auto;
+    padding: 0 15px;
+  }
   @media screen and (min-width: 1200px) {
     .member-menu {
       position: absolute;

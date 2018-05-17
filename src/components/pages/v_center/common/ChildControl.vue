@@ -1,5 +1,5 @@
 <template>
-  <el-row class="control blank20 min-height350">
+  <el-row class="control blank20 ">
     <v-menu currentName="control"></v-menu>
     <!-- <el-col :span="!isMob? rightWidth : 24" :offset="!isMob ? leftWidth : 0" v-loading.body="isLoading">
 
@@ -26,7 +26,8 @@
 
     </el-col> -->
     <div :class="{'vcenter-right-plus': leftWidth === 4,
-      'vcenter-right': leftWidth === 2}" v-loading.body="isLoading">
+      'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}" v-loading.body="isLoading">
       <div class="vcenter-container">
         <div :class="['content-item-box', isMob ? 'content-item-box-m' : '']">
           <div class="item ing" v-for="(d, index) in itemIngList" :key="index">

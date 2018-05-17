@@ -1,8 +1,9 @@
 <template>
   <el-row :class="['member-management',{'member-management-mini' : !leftWidth}]">
     <v-menu-left currentName="member"></v-menu-left>
-    <section class="parent-box">
-      <el-col :span="4">
+    <section :class="['parent-box',
+    {'parent-box-mob': isMob}]">
+      <el-col :span="isMob? 24: 4">
         <member-menu
           :memberLeft="memberLeft"
           :liActive="liActive"
@@ -12,7 +13,7 @@
           @cancelSearch="creatGetList"
           @createGroup="confirmCreateGroup"></member-menu>
       </el-col>
-      <el-col :span="20">
+      <el-col :span="isMob? 24: 20">
         <section :class="['member-list', {'member-list-mini' : !leftWidth}]"
           v-loading.body="loading">
           <div class="member-list-header">
@@ -51,7 +52,7 @@
           </div>
           <div class="member-title">
             <el-col :span="8"><p>成员名称</p></el-col>
-            <el-col :span="type === 'group' ? 8 : 12"><p>职位</p></el-col>
+            <el-col :span="type === 'group' ? 8 : isMob? 8 : 12"><p>职位</p></el-col>
             <el-col v-if="type === 'group'" :span="6"><p>成员属性</p></el-col>
             <el-col :class="[{'align-right': type === 'group'}]" :span="type === 'group' ? 2 : 4"><p>操作</p></el-col>
           </div>
@@ -65,7 +66,7 @@
                   <span v-else>{{ele.username}}</span>
                 </div>
               </el-col>
-              <el-col :span="type === 'group' ? 8 : 12">
+              <el-col :span="type === 'group' ? 8 : isMob? 8 : 12">
                 <span :style="{display: 'block', height: '60px'}">{{ele.position}}</span>
               </el-col>
               <el-col v-if="type === 'group'" :span="6">
@@ -84,7 +85,7 @@
                   </div>
                 </div>
               </el-col>
-              <el-col v-if="type === 'member'" :span="4">
+              <el-col v-if="type === 'member'" :span="isMob? 8 : 4">
                 <div class="role">
                   <span>{{ele.company_role_label}}</span>
                   <div :class="['more-list', {'active': isShow === index}]"
@@ -599,6 +600,9 @@ export default {
     company_role() {
       return this.$store.state.event.user.company_role
     },
+    isMob() {
+      return this.$store.state.event.isMob
+    },
     currentId() {
       return this.$store.state.event.user.id
     },
@@ -1064,6 +1068,9 @@ export default {
     position: relative;
     padding-left: 16.66667%;
   }
+  .parent-box-mob {
+    padding-left: 0;
+  }
   @media screen and (min-width: 1200px) {
     .member-list {
       position: absolute;
@@ -1080,6 +1087,11 @@ export default {
     }
     .parent-box {
       padding-left: 200px;
+    }
+  }
+  @media screen and (max-width: 767px) {
+    .member-list {
+      padding: 10px 15px;
     }
   }
 </style>

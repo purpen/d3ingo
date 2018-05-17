@@ -1,10 +1,11 @@
 <template>
-  <div class="blank10">
+  <div class="blank10 vcenter">
     <el-row>
       <v-menu :class="[isMob ? 'v-menu' : '']" currentName="design_case"></v-menu>
 
       <div :class="{'vcenter-right-plus': leftWidth === 4,
-        'vcenter-right': leftWidth === 2}">
+        'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}">
         <div class="right-content vcenter-container">
           <v-menu-sub v-if="false"></v-menu-sub>
           <div :class="['content-box', isMob ? 'content-box-m' : '']">

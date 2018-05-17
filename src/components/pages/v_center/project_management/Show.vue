@@ -2,7 +2,8 @@
 <section class="project-show">
   <v-menu-left currentName="project_management"></v-menu-left>
   <div :class="{'vcenter-right-plus': leftWidth === 4,
-  'vcenter-right': leftWidth === 2}">
+  'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}">
     <menu-sub :currentRoute="currentRoute"></menu-sub>
     <router-view v-if="isShow" :projectObject="projectObject"></router-view>
   </div>

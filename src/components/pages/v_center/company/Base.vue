@@ -1,9 +1,10 @@
 <template>
-  <div class="blank30">
+  <div class="blank30 vcenter">
     <el-row>
       <v-menu currentName="company" :class="[isMob ? 'v-menu' : '']"></v-menu>
       <div :class="{'vcenter-right-plus': leftWidth === 4,
-      'vcenter-right': leftWidth === 2}">
+      'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}">
         <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
 

@@ -206,24 +206,27 @@
 .vcenter-right {
   padding-left: 60px
 }
+.vcenter-right-mob {
+  padding-left: 0
+}
 @media screen and (min-width: 1200px) {
   .vcenter-right-plus {
     padding-left: 200px
   }
-  /* .vcenter-rightMenu-plus {
-    margin-left: 200px;
-  } */
+  .vcenter-right-mob {
+    padding-left: 0
+  }
 }
 @media screen and (max-width: 1199px) {
   .vcenter-right-plus {
     padding-left: 16.667%
   }
-  /* .vcenter-rightMenu-plus {
-    margin-left: 16.667%;
-  } */
+  .vcenter-right-mob {
+    padding-left: 0
+  }
 }
 @media screen and (max-width: 767px) {
-  .vcenter-right-plus {
-    padding-left: 0
+  .vcenter {
+    margin: 0
   }
 }
