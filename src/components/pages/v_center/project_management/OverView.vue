@@ -2,7 +2,7 @@
 <div class="item-total">
   <section class="add-itemStage-bg" v-if="isItemStage">
     <div class="add-itemStage">
-      <div class="itemStage-title">ÐÂ½¨ÏîÄ¿½×¶Î
+      <div class="itemStage-title">新建项目阶段
         <i class="fx-icon-close-sm" @click="cancel()"></i>
       </div>
       <div class="itemStage-content">
@@ -13,45 +13,45 @@
           :rules="rules"
           label-position=""
           >
-            <el-form-item label="ÏîÄ¿½×¶ÎÃû³Æ" prop="name">
+            <el-form-item label="项目阶段名称" prop="name">
               <el-input v-model="form.name"
-              placeholder="ÏîÄ¿½×¶ÎÃû³Æ">
+              placeholder="项目阶段名称">
               </el-input>
             </el-form-item>
             <el-row :gutter="20">
               <el-col :span="12">
-            <el-form-item label="Í¶ÈëÊ±¼ä" prop="duration">
-              <el-input placeholder="ÇëÊäÈëËùÐèÌìÊý" v-model.number="form.duration"
+            <el-form-item label="投入时间" prop="duration">
+              <el-input placeholder="请输入所需天数" v-model.number="form.duration"
                 prop="duration"
                 >
-              <template slot="append">¹¤×÷ÈÕ</template>
+              <template slot="append">工作日</template>
             </el-input>
           </el-form-item>
               </el-col>
               <el-col :span="12">
-          <el-form-item label="¿ªÊ¼Ê±¼ä" prop="start_time">
+          <el-form-item label="开始时间" prop="start_time">
             <div class="block">
               <el-date-picker
                 type="date"
                 v-model="form.start_time"
-                placeholder="Ñ¡ÔñÈÕÆÚÊ±¼ä">
+                placeholder="选择日期时间">
               </el-date-picker>
             </div>
           </el-form-item>
               </el-col>
           </el-row>
-          <el-form-item label="½»¸¶ÄÚÈÝ" prop="content">
+          <el-form-item label="交付内容" prop="content">
             <el-input
               type="textarea"
               :autosize="{ minRows: 4, maxRows: 8}"
-              placeholder="ÇëÊäÈë½»¸¶ÄÚÈÝ"
+              placeholder="请输入交付内容"
               v-model="form.content"
               > 
             </el-input>
           </el-form-item>
           <el-form-item>
-            <button class="small-button full-red-button fr" @click="create('form')">±£´æ</button>
-            <button class="small-button white-button fr" @click="cancel()">È¡Ïû</button>
+            <button class="small-button full-red-button fr" @click="create('form')">保存</button>
+            <button class="small-button white-button fr" @click="cancel()">取消</button>
           </el-form-item>
         </el-form>
     </div>
@@ -60,7 +60,7 @@
   <aside class="aside">
     <div class="aside-title fx">
       <i class="fx fx-icon-delete2"></i>
-      ÏîÄ¿½×¶ÎÉèÖÃ
+      项目阶段设置
       <span class="fx fx-icon-close-sm"></span>
     </div>
     <el-progress 
@@ -70,21 +70,21 @@
     ></el-progress>
     <ul class="aside-content">
       <li> <el-checkbox v-model="checked"></el-checkbox>
-        <el-input v-model="form.name"  placeholder="ÏîÄ¿½×¶ÎÃû³Æ"></el-input>
+        <el-input v-model="form.name"  placeholder="项目阶段名称"></el-input>
       </li>
       <li>
         <div class="block">
             <el-date-picker
             type="date"
             v-model="form.start_time"
-            placeholder="Ñ¡ÔñÈÕÆÚÊ±¼ä">
+            placeholder="选择日期时间">
             </el-date-picker>
           </div>
       </li>
       <li>
         <div>
-          <el-input placeholder="ÇëÊäÈëËùÐèÌìÊý"                        v-model="form.duration">
-            <template slot="append">¹¤×÷ÈÕ</template>
+          <el-input placeholder="请输入所需天数"                        v-model="form.duration">
+            <template slot="append">工作日</template>
           </el-input>
         </div>
       </li>
@@ -92,7 +92,7 @@
         <el-input
             type="textarea"
             :autosize="{ minRows: 4, maxRows: 8}"
-            placeholder="ÇëÊäÈëÄÚÈÝ"
+            placeholder="请输入内容"
             v-model="form.content"
             >
             </el-input>
@@ -100,20 +100,20 @@
     </ul>
     <div class="add-tack">
       <i>+</i>
-      <span class="fx-6">Ìí¼ÓÈÎÎñ</span>
+      <span class="fx-6">添加任务</span>
     </div>
     <ul class="tack-list">
       <li>
-        <el-checkbox v-model="checked"> Ç°ÆÚµ÷ÑÐ</el-checkbox>
+        <el-checkbox v-model="checked"> 前期调研</el-checkbox>
       </li>
       <li>
-        <el-checkbox v-model="checked"> ²ÝÍ¼Éè¼Æ</el-checkbox>
+        <el-checkbox v-model="checked"> 草图设计</el-checkbox>
       </li>
     </ul>
   </aside>
 
   <section class="top-progress">
-    <div class="h3">±Ê¼Ç±¾Éè¼Æ</div>
+    <div class="h3">笔记本设计</div>
     <el-progress 
     :percentage="0"
     :show-text="false"
@@ -122,25 +122,25 @@
     <ul class="item-header">
       <li>
         <div>0</div>
-        <p>ËùÓÐÈÎÎñ</p>
+        <p>所有任务</p>
       </li>
        <li>
         <div>0</div>
-        <p>ÏîÄ¿½×¶Î</p>
+        <p>项目阶段</p>
       </li>
        <li>
         <div>0</div>
-        <p>Í¶ÈëÊ±¼ä</p>
+        <p>投入时间</p>
       </li>
        <li>
         <div>0%</div>
-        <p>ÏîÄ¿½ø¶È</p>
+        <p>项目进度</p>
       </li>
     </ul>
   </section>
   <section class="item-task">
     <div class="h3">
-      ÈÎÎñÍ³¼Æ
+      任务统计
     </div>
     <ul>
       <li>
@@ -151,7 +151,7 @@
           :show-text="false"
         ></el-progress>
         <div >
-          <p>Î´ÈÏÁì</p>
+          <p>未认领</p>
           <p class="fx-6">50%</p>
         </div>
       </li>
@@ -162,7 +162,7 @@
           :show-text="false"
           :width="60"></el-progress>
         <div >
-          <p>Î´Íê³É</p>
+          <p>未完成</p>
           <p class="fx-6">50%</p>
         </div>
       </li>
@@ -174,7 +174,7 @@
           :show-text="false"
         ></el-progress>
         <div>
-          <p>ÒÑÍê³É</p>
+          <p>已完成</p>
           <p class="fx-6">50%</p>
         </div>
       </li>
@@ -186,7 +186,7 @@
           :show-text="false"
         ></el-progress>
         <div>
-          <p>ÒÑÓâÆÚ</p>
+          <p>已逾期</p>
           <p class="fx-6">50%</p>
         </div>
       </li>
@@ -194,7 +194,7 @@
   </section>
   <section class="item-content">
 
-    <p class="h3">ÏîÄ¿Ö´ÐÐ½ø¶È¹æ»®<p>
+    <p class="h3">项目执行进度规划<p>
 
       <div class="item-lists">
 
@@ -212,9 +212,9 @@
                         @click="isSearch=true"
                       >
                       <ul class="search-popover">
-                        <li @click="sort='isday'">°´Ìì²éÑ¯</li>
-                        <li @click="sort='isweek'">°´ÖÜ²éÑ¯</li>
-                        <li @click="sort='ismonth'">°´ÔÂ²éÑ¯</li>
+                        <li @click="sort='isday'">按天查询</li>
+                        <li @click="sort='isweek'">按周查询</li>
+                        <li @click="sort='ismonth'">按月查询</li>
                       </ul>
                       </i>
                     </div>
@@ -222,11 +222,11 @@
 
                   <el-col>
                     <div class="item-text-content">
-                      <span>ÏîÄ¿½×¶Î</span>
+                      <span>项目阶段</span>
                       <ul>
-                        <li>½×¶Î</li>
-                        <li>Í¶ÈëÊ±¼ä</li>
-                        <li>Íê³É¶È</li>
+                        <li>阶段</li>
+                        <li>投入时间</li>
+                        <li>完成度</li>
                       </ul>
                     </div>
                   </el-col>
@@ -251,7 +251,7 @@
                      <ul class="paycontent">
                        
                       <li>
-                        ½»¸¶ÄÚÈÝ:
+                        交付内容:
                       </li>
                       <li>
                         {{des.content}}
@@ -273,7 +273,7 @@
                 <div class="item-chartHeader">
 
                   <div  v-for="(m,indexm) in totaldays" :key="indexm+'m'">
-                    <div v-if="sort === 'isweek'||sort === 'isday'">{{m.year}}Äê{{m.month}}ÔÂ</div>
+                    <div v-if="sort === 'isweek'||sort === 'isday'">{{m.year}}年{{m.month}}月</div>
                     <div v-if="sort === 'ismonth'&&m.activeyear==='activeyear'">{{m.year}}</div>
                     <ul>
                       <li v-for="(d,indexd) in m.dayings" :key="indexd" v-if="sort === 'isday'" class="dateday">
@@ -283,7 +283,7 @@
                       {{m.month}}.{{d.i}}~{{m.dayings.length-d.i>=7?m.month+'.'+(d.i+6):(m.month+1)+'.'+(d.i+6-m.dayings.length)}}
                       </li>
                       <li v-if="sort === 'ismonth'" class="dateweek">
-                        {{m.month}}ÔÂ
+                        {{m.month}}月
                       </li>
                     </ul>
                   </div>
@@ -324,32 +324,32 @@
 
         <div  class="add-item" @click="isItemStage=true">
           <div>+</div>
-          <p>Ìí¼ÓÏîÄ¿½×¶Î</p>
+          <p>添加项目阶段</p>
         </div>
     <div v-if="false" v-for="(designStage,index) in designStageLists" :key="index">
       
       <div>
-        Ãû³Æ: <p v-if="!designStage.isedit">{{designStage.name}}</p>
+        名称: <p v-if="!designStage.isedit">{{designStage.name}}</p>
         <el-input v-model="designStage.name" v-else></el-input>
       </div>
       <div>
-          Í¶ÈëÊ±¼ä: <p v-if="!designStage.isedit">{{designStage.duration}}</p>
-           <el-input placeholder="ÇëÊäÈëÄÚÈÝ" v-model="designStage.duration" v-else></el-input>
+          投入时间: <p v-if="!designStage.isedit">{{designStage.duration}}</p>
+           <el-input placeholder="请输入内容" v-model="designStage.duration" v-else></el-input>
       </div>
       <div>
-        ¿ªÊ¼Ê±¼ä: <p v-if="!designStage.isedit">{{designStage.start_time}}</p>
+        开始时间: <p v-if="!designStage.isedit">{{designStage.start_time}}</p>
         <el-date-picker
             v-model="designStage.start_time"
             type="datetime"
-            placeholder="Ñ¡ÔñÈÕÆÚÊ±¼ä" v-else>
+            placeholder="选择日期时间" v-else>
         </el-date-picker>
       </div>
       <div>
-        ÄÚÈÝ: <p v-if="!designStage.isedit">{{designStage.content}}</p>
+        内容: <p v-if="!designStage.isedit">{{designStage.content}}</p>
         <el-input
             type="textarea"
             :autosize="{ minRows: 2, maxRows: 4}"
-            placeholder="ÇëÊäÈëÄÚÈÝ"
+            placeholder="请输入内容"
             v-model="designStage.content"
             v-else
             >
@@ -357,73 +357,73 @@
       </div>
       <div v-for="(sub,indexsub) in designStage.design_substage" :key="indexsub">
         <p>{{sub.name}}</p>
-        <el-input placeholder="ÈÎÎñÃû³Æ" v-model="sub.name"></el-input>
+        <el-input placeholder="任务名称" v-model="sub.name"></el-input>
         <p>{{sub.summary}}</p>
         <el-input
             type="textarea"
             :autosize="{ minRows: 2, maxRows: 4}"
-            placeholder="ÇëÊäÈëÄÚÈÝ"
+            placeholder="请输入内容"
             v-model="sub.summary"
             >
         </el-input>
         <p>{{sub.duration}}</p>
-        <el-input placeholder="ÈÎÎñÍ¶ÈëÊ±¼ä" v-model="sub.duration"></el-input>
+        <el-input placeholder="任务投入时间" v-model="sub.duration"></el-input>
         
         <p>{{sub.start_time}}</p>
         <el-date-picker
         v-model="sub.start_time"
         type="datetime"
-        placeholder="Ñ¡ÔñÈÕÆÚÊ±¼ä">
+        placeholder="选择日期时间">
         </el-date-picker>
-        <el-input placeholder="½ÚµãÃû³Æ" v-model="formNode.name"></el-input>
+        <el-input placeholder="节点名称" v-model="formNode.name"></el-input>
         <el-date-picker
           v-model="formNode.time"
           type="datetime"
-          placeholder="Ñ¡Ôñ½ØÖ¹Ê±¼ä">
+          placeholder="选择截止时间">
           </el-date-picker>
-          <el-checkbox v-model="formNode.is_owner">¼×·½²ÎÓë</el-checkbox>
-        <el-button  @click="createNode(sub.id,indexsub)">È·¶¨Ìí¼Ó½Úµã</el-button>
-        <el-button  @click="addNode()">Ìí¼Ó½Úµã</el-button>
+          <el-checkbox v-model="formNode.is_owner">甲方参与</el-checkbox>
+        <el-button  @click="createNode(sub.id,indexsub)">确定添加节点</el-button>
+        <el-button  @click="addNode()">添加节点</el-button>
         <div v-if="sub.design_stage_node">
-          <p>½ÚµãÃû³Æ: {{sub.design_stage_node.name}}</p>
+          <p>节点名称: {{sub.design_stage_node.name}}</p>
           <el-input v-model="sub.design_stage_node.name"></el-input>
-          <p>½ÚµãÊ±¼ä: {{sub.design_stage_node.time}}</p>
+          <p>节点时间: {{sub.design_stage_node.time}}</p>
           <el-date-picker
           v-model="sub.design_stage_node.time"
           type="datetime"
-          placeholder="Ñ¡Ôñ½ØÖ¹Ê±¼ä">
+          placeholder="选择截止时间">
           </el-date-picker>
-          <el-button  @click="editNode(sub.design_stage_node,indexsub)">±à¼­½Úµã</el-button>
-          <el-button  @click="updataNode(sub.design_stage_node,indexsub)">È·¶¨±à¼­½Úµã</el-button>
-          <el-button  @click="deleteNode(sub.design_stage_node.id,indexsub)">É¾³ý½Úµã</el-button>
+          <el-button  @click="editNode(sub.design_stage_node,indexsub)">编辑节点</el-button>
+          <el-button  @click="updataNode(sub.design_stage_node,indexsub)">确定编辑节点</el-button>
+          <el-button  @click="deleteNode(sub.design_stage_node.id,indexsub)">删除节点</el-button>
         </div>
-        <el-button  @click="updataTack(sub,indexsub)">È·ÈÏ±à¼­ÈÎÎñ</el-button>
-        <el-button style="margin-bottom:30px" @click="editTack(sub,indexsub)">±à¼­ÈÎÎñ</el-button>
-        <el-button style="margin-bottom:30px" @click="deleteTack(sub.id,indexsub)">É¾³ýÈÎÎñ</el-button>
+        <el-button  @click="updataTack(sub,indexsub)">确认编辑任务</el-button>
+        <el-button style="margin-bottom:30px" @click="editTack(sub,indexsub)">编辑任务</el-button>
+        <el-button style="margin-bottom:30px" @click="deleteTack(sub.id,indexsub)">删除任务</el-button>
       </div>
-      <el-button @click="edit(designStage.id,index)">±à¼­</el-button>
-      <el-button @click="updata(designStage,index)">È·¶¨</el-button>
-      <el-button @click="deleteDes(designStage,index)">É¾³ý</el-button>
-      <el-button @click="addtack(designStage.id)">Ìí¼ÓÈÎÎñ</el-button>
+      <el-button @click="edit(designStage.id,index)">编辑</el-button>
+      <el-button @click="updata(designStage,index)">确定</el-button>
+      <el-button @click="deleteDes(designStage,index)">删除</el-button>
+      <el-button @click="addtack(designStage.id)">添加任务</el-button>
     </div>
     </div>
   </section>
     <div v-if="false">
-      <el-input placeholder="ÈÎÎñÃû³Æ" v-model="formTack.name"></el-input>
-      <el-input placeholder="ÈÎÎñÍ¶ÈëÊ±¼ä" v-model="formTack.duration"></el-input>
+      <el-input placeholder="任务名称" v-model="formTack.name"></el-input>
+      <el-input placeholder="任务投入时间" v-model="formTack.duration"></el-input>
       <el-date-picker
         v-model="formTack.start_time"
         type="datetime"
-        placeholder="Ñ¡ÔñÈÕÆÚÊ±¼ä">
+        placeholder="选择日期时间">
       </el-date-picker>
       <el-input
             type="textarea"
             :autosize="{ minRows: 2, maxRows: 4}"
-            placeholder="ÇëÊäÈëÄÚÈÝ"
+            placeholder="请输入内容"
             v-model="formTack.summary"
             >
       </el-input>
-      <el-button @click="createTack()">ÐÂ½¨ÈÎÎñ</el-button>
+      <el-button @click="createTack()">新建任务</el-button>
     </div>
   </div>
 </template>
@@ -435,35 +435,35 @@ export default {
   data () {
     return {
       itemId: 0,
-      form: { // ÐÂ½¨ÏîÄ¿
+      form: { // 新建项目
         name: '',
         duration: '',
         start_time: '',
         design_project_id: this.$route.params.id,
         content: ''
       },
-      formup: {}, // ±à¼­ÏîÄ¿
-      formTack: {}, // ÐÂ½¨ÈÎÎñ
-      formTackUp: {}, // ±à¼­ÈÎÎñ
-      formNode: {}, // ÐÂ½¨½Úµã
-      formNodeUp: {}, // ±à¼­½Úµã
-      designStageLists: [], // ½×¶ÎÁÐ±í
-      indesignStage: '', // µ±Ç°½×¶Î
-      itemdesId: '', // ÏîÄ¿½×¶Îid
+      formup: {}, // 编辑项目
+      formTack: {}, // 新建任务
+      formTackUp: {}, // 编辑任务
+      formNode: {}, // 新建节点
+      formNodeUp: {}, // 编辑节点
+      designStageLists: [], // 阶段列表
+      indesignStage: '', // 当前阶段
+      itemdesId: '', // 项目阶段id
       checked: false,
       isItemStage: false,
       totaldays: [],
       sort: 'isday',
-      endTimes: [], // ËùÓÐÊ±¼äºÏ¼¯
+      endTimes: [], // 所有时间合集
       rules: {
         duration: [
           {
-            required: true, type: 'number', message: 'ÇëÌíÐ´½×¶ÎËùÐèÊ±¼ä,±ØÐëÎª´óÓÚ0µÄÊý', trigger: 'blur'
+            required: true, type: 'number', message: '请添写阶段所需时间,必须为大于0的数', trigger: 'blur'
           }
         ],
         name: [
           {
-            required: true, message: 'ÇëÌíÐ´ÏîÄ¿½×¶ÎÃû³Æ', trigger: 'blur'
+            required: true, message: '请添写项目阶段名称', trigger: 'blur'
           }
         ]
       }
@@ -475,7 +475,7 @@ export default {
     }
   },
   methods: {
-    // Ìø»ØÏîÄ¿ÁÐ±íÒ³ evt: 0.²»ÌáÊ¾ÐÅÏ¢£»1.´íÎóÌáÊ¾£»2.³É¹¦ÌáÊ¾£»message: ÏûÏ¢
+    // 跳回项目列表页 evt: 0.不提示信息；1.错误提示；2.成功提示；message: 消息
     redirectItemList(evt, message) {
       if (evt && message) {
         if (evt === 1) {
@@ -487,11 +487,11 @@ export default {
       // this.$router.push({name: 'home'})
       // return
     },
-    // È¡Ïû´´½¨
+    // 取消创建
     cancel() {
       this.isItemStage = false
     },
-    // Ã¿¸öÔÂÌìÊý
+    // 每个月天数
     monthday(y, d, n) {
       var daying = []
       for (var i = 1; i <= n; i++) {
@@ -503,7 +503,7 @@ export default {
       }
       return daying
     },
-    // Ä³ÄêÊ£ÓàÌìÊý Èç¹ûÊÇ´ÓºóÍùÇ°ÅÅÊäÈëend²ÎÊýµÈÓÚ1
+    // 某年剩余天数 如果是从后往前排输入end参数等于1
     yearDay(m, y, end) {
       let times = []
       let ms = 12
@@ -552,7 +552,7 @@ export default {
       }
       return times
     },
-    // »ñÈ¡Ä³¸ö½×¶ÎÈÕÆÚµÄËùÓÐÌìÊýºÍËùÓÐ²ÎÊýµÄ¶ÔÏó
+    // 获取某个阶段日期的所有天数和所有参数的对象
     dateDay(s, e) {
       s = new Date(s * 1000)
       e = new Date(e * 1000)
@@ -575,7 +575,7 @@ export default {
       }
       return total
     },
-    // µ±Ìì±³¾°É«
+    // 当天背景色
     newDay() {
       let newDate = new Date()
       for (var n = 0; n < this.totaldays.length; n++) {
@@ -595,7 +595,7 @@ export default {
         }
       }
     },
-    // ´´½¨ÏîÄ¿
+    // 创建项目
     create(formName) {
       let that = this
       that.$refs[formName].validate(valid => {
@@ -617,7 +617,7 @@ export default {
         }
       })
     },
-    // ±à¼­ÏîÄ¿°´Å¥
+    // 编辑项目按钮
     edit(id, index) {
       for (var i = 0; i < this.designStageLists.length; i++) {
         if (this.designStageLists[i].id === id) {
@@ -630,7 +630,7 @@ export default {
         }
       }
     },
-  // ±à¼­ÏîÄ¿
+  // 编辑项目
     updata(designStage, index) {
       this.formup.content = designStage.content
       this.formup.duration = designStage.duration
@@ -652,7 +652,7 @@ export default {
         console.error(error.message)
       })
     },
-    // É¾³ýÏîÄ¿
+    // 删除项目
     deleteDes(d, index) {
       let dthis = this
       dthis.$http.delete(api.designStageDelete, {params: {id: d.id}})
@@ -668,11 +668,11 @@ export default {
         console.error(error.message)
       })
     },
-    // ´´½¨ÈÎÎñ°´Å¥
+    // 创建任务按钮
     addtack(id) {
       this.itemdesId = id
     },
-    // ´´½¨ÈÎÎñ
+    // 创建任务
     createTack() {
       this.formTack.execute_user_id = 33
       this.formTack.design_stage_id = this.itemdesId
@@ -688,11 +688,11 @@ export default {
         console.error(error.message)
       })
     },
-    // ±à¼­×Ó½×¶Î°´Å¥
+    // 编辑子阶段按钮
     editTack(sub, index) {
       console.log(sub)
     },
-    // ±à¼­×Ó½×¶Î
+    // 编辑子阶段
     updataTack(sub, index) {
       this.formTackUp.id = sub.id
       this.formTackUp.summary = sub.summary
@@ -713,7 +713,7 @@ export default {
         console.error(error.message)
       })
     },
-    // É¾³ý×Ó½×¶Î
+    // 删除子阶段
     deleteTack(id, index) {
       this.$http.delete(api.designSubstageDelete, {params: {design_substage_id: id}})
       .then (function(response) {
@@ -727,10 +727,10 @@ export default {
         console.error(error.message)
       })
     },
-    // ´´½¨½×¶Î½Úµã°´Å¥
+    // 创建阶段节点按钮
     addNode () {
     },
-    // ´´½¨½×¶Î½Úµã
+    // 创建阶段节点
     createNode(id, index) {
       this.formNode.design_substage_id = id
       if (this.formNode.is_owner) {
@@ -745,10 +745,10 @@ export default {
         }
       })
     },
-    // ±à¼­½×¶Î½Úµã°´Å¥
+    // 编辑阶段节点按钮
     editNode() {
     },
-    // ±à¼­½×¶Î½Úµã
+    // 编辑阶段节点
     updataNode(sub, index) {
       console.log(sub)
       this.formNodeUp.name = sub.name
@@ -770,7 +770,7 @@ export default {
         console.error(error.message)
       })
     },
-    // É¾³ý½×¶Î½Úµã
+    // 删除阶段节点
     deleteNode(id, index) {
       this.$http.delete(api.designStageNodeDelete, {params: {stage_node_id: id}}).then (function(response) {
         if (response.data.meta.status_code === 200) {
@@ -787,28 +787,28 @@ export default {
   created() {
     let itemId = this.$route.params.id
     if (!itemId) {
-      this.redirectItemList(1, 'È±ÉÙÇëÇó²ÎÊý£¡')
+      this.redirectItemList(1, '缺少请求参数！')
       return
     }
     this.itemId = itemId
-    // ¶ÁÈ¡ÏîÄ¿½×¶ÎÁÐ±í
+    // 读取项目阶段列表
     this.$http.get(api.designStageLists, {params: {design_project_id: this.itemId}}).then((response) => {
       if (response.data.meta.status_code === 200) {
         this.designStageLists = response.data.data
         for (var i = 0; i < this.designStageLists.length; i++) {
-          // Ê±¼äºÏ¼¯
+          // 时间合集
           if (this.designStageLists.length > 0) {
             var end = parseInt(this.designStageLists[i].duration) * 86400 + this.designStageLists[i].start_time
             this.endTimes.push(end)
             this.endTimes.push(this.designStageLists[i].start_time)
           }
-          // Ê±¼ä¸ñÊ½×ª»»
+          // 时间格式转换
           this.designStageLists[i].isedit = false
           if (this.designStageLists[i].start_time) {
             this.designStageLists[i].start_time = (new Date(this.designStageLists[i].start_time * 1000)).format('yyyy-MM-dd')
           }
         }
-        // ÆðÊ¼Ê±¼äºÍÖÕÖ¹Ê±¼ä
+        // 起始时间和终止时间
         this.endTimes.push(Date.parse(new Date()) / 1000)
         for (var r = 1; r < this.endTimes.length; r++) {
           var key = this.endTimes[r]
@@ -822,16 +822,16 @@ export default {
         console.log(this.endTimes)
         this.totaldays = this.dateDay(this.endTimes[0], this.endTimes[this.endTimes.length - 1])
         this.newDay()
-        // ÈÎÎñ
+        // 任务
         for (var k = 0; k < this.designStageLists.length; k++) {
           if (this.designStageLists[k].design_substage) {
             for (var j = 0; j < this.designStageLists[k].design_substage.length; j++) {
-              // ÈÎÎñÆðÊ¼Ê±¼äºÍÖÕÖ¹Ê±¼ä
+              // 任务起始时间和终止时间
               var st = this.designStageLists[k].design_substage[j].start_time
               var dur = this.designStageLists[k].design_substage[j].duration
               this.designStageLists[k].design_substage[j].end_time = st + dur * 86400
               this.designStageLists[k].design_substage[j].left = Math.floor((st - this.endTimes[0]) / 86400)
-              // ÈÎÎñÊ±¼ä¸ñÊ½×ª»»
+              // 任务时间格式转换
               this.designStageLists[k].design_substage[j].start_time = (new Date(this.designStageLists[k].design_substage[j].start_time * 1000)).format('yyyy-MM-dd')
               if (this.designStageLists[k].design_substage[j].design_stage_node && this.designStageLists[k].design_substage[j].design_stage_node.time) {
                 this.designStageLists[k].design_substage[j].design_stage_node.time = (new Date(this.designStageLists[k].design_substage[j].design_stage_node.time * 1000)).format('yyyy-MM-dd')
