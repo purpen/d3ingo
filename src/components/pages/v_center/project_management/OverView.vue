@@ -198,7 +198,7 @@
 
       <div class="item-lists">
 
-        <el-row>
+        <el-row v-if="designStageLists.length>0">
 
           <el-col :span="6">
             <div class="item-list-text">
@@ -293,7 +293,7 @@
                 <div v-if="designStageLists" class="item-chartContent" v-for="(c,indexc) in designStageLists" :key="indexc">
 
                   <div 
-                    v-if="c.design_substage&&(sort==='isday'||sort==='isweek')" 
+                    v-if="(c.design_substage&&sort==='isday'||sort==='isweek')" 
                     v-for="(tack, indextack) in c.design_substage" :key="indextack+ 'y'" :style="{left:tack.left*30+'px',width:tack.duration*30+'px'}"
                     class="item-tacklist" 
                     >
@@ -305,6 +305,13 @@
                     {{indextack}}
                   </div>
 
+                  <div v-if="!c.design_substage&&sort==='isday'||sort==='isweek'" class="item-tacklist no-tack" 
+                    :style="{left:newleft*30+'px'}">
+                  </div>
+                  <div v-if="!c.design_substage&&sort==='ismonth'" class="item-tacklist no-tack" 
+                    :style="{left:newleft*30/4+'px'}">
+                  </div>
+                  
                   <ul v-if="totaldays" v-for="(tt,indextt) in totaldays" :key="indextt">
                     <li v-for="(day,indexday) in tt.dayings" :key="indexday" :class="day.new?'bgc':''" v-if="sort === 'isday'" class="dateday">
                     </li>
@@ -322,11 +329,11 @@
           </el-col>
         </el-row>
 
-        <div  class="add-item" @click="isItemStage=true">
-          <div>+</div>
-          <p>添加项目阶段</p>
+        <div  class="add-item" >
+          <div @click="isItemStage=true">+</div>
+          <p @click="isItemStage=true">添加项目阶段</p>
         </div>
-    <div v-if="false" v-for="(designStage,index) in designStageLists" :key="index">
+    <div v-if="true" v-for="(designStage,index) in designStageLists" :key="index">
       
       <div>
         名称: <p v-if="!designStage.isedit">{{designStage.name}}</p>
@@ -408,7 +415,7 @@
     </div>
     </div>
   </section>
-    <div v-if="false">
+    <div v-if="true">
       <el-input placeholder="任务名称" v-model="formTack.name"></el-input>
       <el-input placeholder="任务投入时间" v-model="formTack.duration"></el-input>
       <el-date-picker
@@ -453,6 +460,7 @@ export default {
       checked: false,
       isItemStage: false,
       totaldays: [],
+      newleft: '',
       sort: 'isday',
       endTimes: [], // 所有时间合集
       rules: {
@@ -470,7 +478,7 @@ export default {
     }
   },
   computed: {
-    Rheight: function () {
+    Rheight() {
       return (this.designStageLists.length) * 180 + 63
     }
   },
@@ -595,6 +603,27 @@ export default {
         }
       }
     },
+    // 今天到最早的一天的距离
+    newtostart() {
+      let date = Date.parse(new Date()) / 1000
+      let et = new Date(this.endTimes[0] * 1000)
+      let xin = Date.parse(new Date(et.getFullYear() + '-' + (et.getMonth() + 1) + '-' + 1)) / 1000
+      console.log(this.endTimes)
+      this.newleft = Math.floor((date - xin) / 86400)
+    },
+    // 时间排序
+    sortdate() {
+      for (var r = 1; r < this.endTimes.length; r++) {
+        var key = this.endTimes[r]
+        var c = r - 1
+        while (c >= 0 && this.endTimes[c] > key) {
+          this.endTimes[c + 1] = this.endTimes[c]
+          c--
+        }
+        this.endTimes[c + 1] = key
+      }
+      return this.endTimes
+    },
     // 创建项目
     create(formName) {
       let that = this
@@ -606,7 +635,12 @@ export default {
               that.designStageLists.unshift(response.data.data)
               that.form = {}
               that.isItemStage = false
-              console.log(response.data.data)
+              that.endTimes.push(parseInt(that.designStageLists[0].start_time))
+              that.endTimes.push(parseInt(that.designStageLists[0].start_time) + parseInt(that.designStageLists[0].duration) * 86400)
+              that.sortdate()
+              that.totaldays = this.dateDay(this.endTimes[0], this.endTimes[this.endTimes.length - 1])
+              that.newDay()
+              that.newtostart()
             } else {
               that.$message.error(response.data.meta.message)
             }
@@ -750,7 +784,6 @@ export default {
     },
     // 编辑阶段节点
     updataNode(sub, index) {
-      console.log(sub)
       this.formNodeUp.name = sub.name
       if (sub.time) {
         if (sub.time instanceof Date) {
@@ -795,12 +828,19 @@ export default {
     this.$http.get(api.designStageLists, {params: {design_project_id: this.itemId}}).then((response) => {
       if (response.data.meta.status_code === 200) {
         this.designStageLists = response.data.data
-        for (var i = 0; i < this.designStageLists.length; i++) {
+        for (let i = 0; i < this.designStageLists.length; i++) {
           // 时间合集
           if (this.designStageLists.length > 0) {
             var end = parseInt(this.designStageLists[i].duration) * 86400 + this.designStageLists[i].start_time
             this.endTimes.push(end)
             this.endTimes.push(this.designStageLists[i].start_time)
+          }
+          if (this.designStageLists[i].design_substage) {
+            for (let t = 0; t < this.designStageLists[i].design_substage.length; t++) {
+              var subt = this.designStageLists[i].design_substage[t]
+              this.endTimes.push(subt.start_time)
+              this.endTimes.push(parseInt(subt.duration) * 86400 + subt.start_time)
+            }
           }
           // 时间格式转换
           this.designStageLists[i].isedit = false
@@ -810,20 +850,12 @@ export default {
         }
         // 起始时间和终止时间
         this.endTimes.push(Date.parse(new Date()) / 1000)
-        for (var r = 1; r < this.endTimes.length; r++) {
-          var key = this.endTimes[r]
-          var c = r - 1
-          while (c >= 0 && this.endTimes[c] > key) {
-            this.endTimes[c + 1] = this.endTimes[c]
-            c--
-          }
-          this.endTimes[c + 1] = key
-        }
-        console.log(this.endTimes)
+        this.sortdate()
         this.totaldays = this.dateDay(this.endTimes[0], this.endTimes[this.endTimes.length - 1])
         this.newDay()
+        this.newtostart()
         // 任务
-        for (var k = 0; k < this.designStageLists.length; k++) {
+        for (let k = 0; k < this.designStageLists.length; k++) {
           if (this.designStageLists[k].design_substage) {
             for (var j = 0; j < this.designStageLists[k].design_substage.length; j++) {
               // 任务起始时间和终止时间
@@ -839,7 +871,6 @@ export default {
             }
           }
         }
-        console.log(this.designStageLists)
       } else {
         this.$message.error(response.data.meta.message)
       }
@@ -902,9 +933,9 @@ export default {
   justify-content:center;
   align-items:center;
   color:#FF5A5F;
-  cursor: pointer;
 }
 .add-item>div{
+  cursor: pointer;
   width:30px;
   height:30px;
   background:#FF5A5F;
@@ -913,6 +944,9 @@ export default {
   text-align: center;
   color:#fff;
   margin-bottom:20px;
+}
+.add-item>p{
+  cursor: pointer;
 }
 .item-total{
   margin:30px 50px;
@@ -1095,10 +1129,16 @@ export default {
 
 .item-text-list{
   height: 180px;
-  padding:20px 10px 10px 20px;
+  padding:20px 10px 10px 14px;
   background:#f7f7f7;
   border-bottom:1px solid #d2d2d2;
   border-right: 1px solid #d2d2d2;
+  border-left:5px solid transparent;
+}
+.item-text-list:hover{
+  border-left:5px solid #FF5A5F;
+  cursor:pointer;
+  
 }
 .paycontent>li{
   padding:10px 0px 0px 20px;
@@ -1163,9 +1203,13 @@ export default {
   top:80px;
   height:20px;
   width:350%;
-  border:1px solid #00AC84;
+  border:1px solid #65A6FF;
   border-radius: 4px;
-  background:#00AC84;
+  background:#65A6FF;
+}
+.no-tack{
+  width:30px;
+  height:20px;
 }
 .item-chartContent>ul{
   display:inline-block;
@@ -1173,9 +1217,8 @@ export default {
 }
 .item-chartContent>ul>li{
   display:inline-block;
-  border-right:1px dashed #d2d2d2;
+  border-right:1px dashed #bce6f0;
   border-bottom:1px solid #d2d2d2;
-  /* width:30px; */
   height:100%;
 }
 .bgc{
