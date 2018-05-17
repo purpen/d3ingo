@@ -738,7 +738,7 @@
   }
   .cover {
     position: fixed;
-    z-index: 1;
+    z-index: 99;
     left: 16.66667%;
     top: 60px;
     width: 83.333%;
