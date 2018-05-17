@@ -326,7 +326,7 @@
           <div>+</div>
           <p>添加项目阶段</p>
         </div>
-    <div v-for="(designStage,index) in designStageLists" :key="index">
+    <div v-if="false" v-for="(designStage,index) in designStageLists" :key="index">
       
       <div>
         名称: <p v-if="!designStage.isedit">{{designStage.name}}</p>
@@ -408,21 +408,23 @@
     </div>
     </div>
   </section>
-    <el-input placeholder="任务名称" v-model="formTack.name"></el-input>
-    <el-input placeholder="任务投入时间" v-model="formTack.duration"></el-input>
-    <el-date-picker
-      v-model="formTack.start_time"
-      type="datetime"
-      placeholder="选择日期时间">
-    </el-date-picker>
-    <el-input
+    <div v-if="false">
+      <el-input placeholder="任务名称" v-model="formTack.name"></el-input>
+      <el-input placeholder="任务投入时间" v-model="formTack.duration"></el-input>
+      <el-date-picker
+        v-model="formTack.start_time"
+        type="datetime"
+        placeholder="选择日期时间">
+      </el-date-picker>
+      <el-input
             type="textarea"
             :autosize="{ minRows: 2, maxRows: 4}"
             placeholder="请输入内容"
             v-model="formTack.summary"
             >
-    </el-input>
-    <el-button @click="createTack()">新建任务</el-button>
+      </el-input>
+      <el-button @click="createTack()">新建任务</el-button>
+    </div>
   </div>
 </template>
 <script>
