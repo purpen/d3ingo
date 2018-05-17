@@ -2424,7 +2424,7 @@ td.fc-day.fc-widget-content.fc-today::before {
   .MmenuHide {
     /* margin-top: -20px; */
   }
-  .menu-list .item::before {
+  .MmenuHide .menu-list .item::before {
     background: transparent!important;
   }
   .vcenter-container {

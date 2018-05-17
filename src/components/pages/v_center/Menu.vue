@@ -497,7 +497,7 @@
     },
     watch: {
       msgCount(val) {
-        console.log(val)
+        // console.log(val)
       }
     },
     components: {
@@ -677,6 +677,9 @@
     max-width: 100%;
     width: 100%;
     background: #fff;
+    position: relative;
+    top: 0;
+    z-index: 1
   }
   .MmenuHide .menu-list .item {
     color: #666;
@@ -813,9 +816,17 @@
       text-align: center
     }
     .menuHide {
-      position: relative;
-      top: 0;
-      z-index: 1;
+      /* position: relative;
+      top: 0; */
+      /* z-index: 1; */
+      /* width: 100% */
+    }
+
+    .menu-list .item::before {
+      left: 0;
+    }
+    .menuHide-mini .menu-list .item::before {
+      left: 13px;
     }
   }
 </style>

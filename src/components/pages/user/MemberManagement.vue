@@ -1,5 +1,5 @@
 <template>
-  <el-row :class="['member-management',{'member-management-mini' : !leftWidth}]">
+  <el-row :class="['member-management',{'member-management-mini' : !leftWidth, 'member-management-mob': isMob}]">
     <v-menu-left currentName="member"></v-menu-left>
     <section :class="['parent-box',
     {'parent-box-mob': isMob}]">
@@ -14,7 +14,8 @@
           @createGroup="confirmCreateGroup"></member-menu>
       </el-col>
       <el-col :span="isMob? 24: 20">
-        <section :class="['member-list', {'member-list-mini' : !leftWidth}]"
+        <section :class="['member-list', {'member-list-mini' : !leftWidth,
+        'member-list-mob': isMob}]"
           v-loading.body="loading">
           <div class="member-list-header">
             <p class="fl">
@@ -625,9 +626,10 @@ export default {
   .member-management-mini {
     padding-left: 60px;
   }
-  .member-list-mini {
-    width: 100%;
-    position: absolute;
+  .member-management-mob {
+    padding-left: 0;
+  }
+  .member-list-mob {
   }
   .member-list {
     padding: 20px 30px 0;
@@ -1065,8 +1067,11 @@ export default {
   }
   
   .parent-box {
-    position: relative;
+    /* position: relative; */
     padding-left: 16.66667%;
+  }
+  .member-management-mini .parent-box {
+    padding-left: 0
   }
   .parent-box-mob {
     padding-left: 0;

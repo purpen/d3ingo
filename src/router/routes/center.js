@@ -87,7 +87,9 @@ module.exports = [
     name: 'vcenterBankList',
     meta: {
       title: '我的银行卡',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/bank/List')
   },

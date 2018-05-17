@@ -119,7 +119,6 @@ export default {
         let pages2 = this.query.totalCount % this.query.pageSize
         let pages = Math.floor(this.query.totalCount / this.query.pageSize)
         pages = pages2 ? pages + 1 : pages
-        console.log(pages)
         if (this.query.page > pages) {
           this.query.page = pages
           this.$router.push({name: this.$route.name, query: {page: pages}})
@@ -214,11 +213,11 @@ export default {
 </script>
 <style scoped>
   h2 {
-    font-size: 16px;
+    font-size: 18px;
   }
   .project-list {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     flex-wrap: wrap;
     padding: 15px 0
   }
@@ -233,6 +232,10 @@ export default {
     padding: 20px;
     padding-bottom: 40px;
     transition: transform .218s ease;
+  }
+
+  .project-list li:nth-child(3n-1) {
+    margin: 0 2% 20px
   }
   .project-list li:hover {
     /* transform: translateY(-5px); */
@@ -318,7 +321,7 @@ export default {
   }
   .content {
     max-height: 63px;
-    height: 63px;
+    /* height: 63px; */
     margin: 10px 0;
     line-height: 1.5;
     font-size: 14px;
@@ -476,9 +479,6 @@ export default {
   .summary:hover {
     color: #666;
   }
-  .project-lists {
-    padding-left: 60px;
-  }
   .pagination {
     text-align: center;
     white-space: inherit
@@ -486,14 +486,19 @@ export default {
   @media screen and (max-width: 767px) {
     .project-list li {
       width: 100%;
-      margin-right: 0
+      margin-right: 0;
+    }
+    .project-list li:nth-child(3n-1) {
+      margin: 0 0 20px 0
     }
     .project-lists {
       padding-left: 0;
-      padding-top: 20px;
     }
     .vcenter-container {
       margin-top: 0;
+    }
+    .project-list {
+      display: block
     }
   }
 </style>

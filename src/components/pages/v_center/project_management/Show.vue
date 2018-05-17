@@ -79,6 +79,9 @@ export default {
     leftWidth() {
       return this.$store.state.event.leftWidth
     },
+    isMob() {
+      return this.$store.state.event.isMob
+    },
     projectObject() {
       return this.$store.state.task.projectObject
     }
@@ -90,6 +93,9 @@ export default {
 }
 </script>
 <style scoped>
+.project-show {
+  /* overflow-x: auto */
+}
 .project-management {
   padding-left: 16.66667%;
 }
@@ -118,7 +124,7 @@ export default {
     padding-left: 0;
   }
   .project-show {
-    padding: 20px 0 0
+    /* padding: 20px 0 0 */
   }
 }
 </style>

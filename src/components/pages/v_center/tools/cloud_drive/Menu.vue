@@ -231,8 +231,16 @@
       left: 200px;
     }
     .menu-mini {
-      left: 60px;
+      left: 0;
       transition: 0.2s all ease;
+    }
+  }
+  @media screen and (max-width: 767px) {
+    .cloud-classify li a {
+      padding: 0 0 0 30px;
+    }
+    .cloud-classify li a:before {
+      left: 0
     }
   }
 </style>

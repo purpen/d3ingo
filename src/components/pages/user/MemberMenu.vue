@@ -1,6 +1,6 @@
 <template>
 <section :class="['member-menu',
-  {'member-menu-mini': !leftWidth, 'member-menu-mob': 'isMob'}]">
+  {'member-menu-mini': !leftWidth, 'member-menu-mob': isMob}]">
   <div class="seach-block">
     <span class="search-icon"></span>
     <input type="text" class="search" v-model.trim="searchKey">
@@ -209,6 +209,7 @@ export default {
     opacity: 1;
   }
   .member-menu-mob {
+    /* margin-top: 50px; */
     max-width: 100%;
     height: auto;
     padding: 0 15px;

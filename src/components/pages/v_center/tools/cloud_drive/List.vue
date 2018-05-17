@@ -2,8 +2,10 @@
   <el-row :class="['vcenter-rightMenu-plus',
     'cloud-content',
     {'slide-mini': leftWidth === 2 && withoutSide}]">
-    <v-menu-left :currentName="withoutSide? 'cloud_drive' : 'project_management'"></v-menu-left>
-    <section :class="{'parent-box': withoutSide, 'parent-box2': !withoutSide}">
+    <v-menu-left v-if="withoutSide" :currentName="withoutSide? 'cloud_drive' : 'project_management'"></v-menu-left>
+    <section :class="{'parent-box': withoutSide,
+      'parent-box2': !withoutSide,
+      'parent-box-mob': isMob}">
       <el-col v-if="withoutSide" :span="4">
         <v-menu :isActive='modules' @getTitle="headTitle"></v-menu>
       </el-col>
@@ -2504,11 +2506,17 @@ export default {
     background: #666;
   }
   .parent-box {
-    position: relative;
     padding-left: 16.66667%;
+    position: relative;
+  }
+  .slide-mini .parent-box {
+    padding-left: 0;
   }
   .parent-box2 {
     position: relative;
+  }
+  .parent-box-mob {
+    padding-left: 0;
   }
   @media screen and (min-width: 768px) {
     .content {
@@ -2528,7 +2536,7 @@ export default {
       position: absolute;
       width: calc(100% - 260px);
       top: 0;
-      left: 260px;
+      left: 200px;
       transition: 0.2s all ease;
     }
     .content-pm {
