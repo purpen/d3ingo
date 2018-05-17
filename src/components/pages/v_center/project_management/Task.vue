@@ -478,11 +478,14 @@
   }
   .stage-name {
     position: relative;
-    padding-left: 26px;
+    padding: 0 40px 0 20px;
     margin-top: 20px;
     font-size: 18px;
     color: #222222;
-    font-weight: bold
+    font-weight: bold;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
   .stage-title {
     position: absolute;
@@ -490,18 +493,21 @@
     top: 2px;
     line-height: 46px;
     height: 46px;
-    width: 200px;
+    width: 100%;
     border: none;
     font-size: 18px;
     color: #222222;
-    font-weight: bold;
-    padding: 0 8px 0 26px;
+    padding: 0 40px 0 20px;
   }
   .close-icon-solid {
     display: none;
     position: absolute;
     right: 20px;
     top: 17px;
+    background: rgba(0,0,0,0.30)
+  }
+  .close-icon-solid:hover {
+    background: rgba(0,0,0,0.40)
   }
   .stage-name:hover .close-icon-solid {
     display: block;
@@ -537,6 +543,7 @@
   }
   .task-name {
     padding-left: 54px;
+    height: 50px;
     max-width: 70%;
     position: relative;
     cursor: pointer;

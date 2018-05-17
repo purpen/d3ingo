@@ -11,7 +11,10 @@
               {{d.title}}</li>
           </ul>
         </div>
-        <div v-if="currentForm.tier === 1" class="task-detail-name" @click="showChild(parentTask.id)">属于任务：<span class="parent-task-name">{{parentTask.name}}</span></div>
+        <div v-if="currentForm.tier === 1"
+          class="task-detail-name task-detail-name1"
+          @click="showChild(parentTask.id)"
+          ><span class="parent-task-name">{{parentTask.name}}</span></div>
         <div ref="selectParent2" class="select-parent select-menu" tabindex="-1">
           <span class="select-show"></span>
           <ul class="stage-list">
@@ -853,8 +856,25 @@
     border-radius: 4px;
     cursor: pointer;
   }
+  .task-detail-name1 {
+    border: none;
+    position: relative;
+    padding: 0
+  }
+
+  .task-detail-name1::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background: #666;
+    top: 24px;
+  }
   .parent-task-name:hover {
     color: #ff5a5f
+  }
+  .task-detail-name:hover::after {
+    background: #ff5a5f
   }
   .select-parent {
     position: relative;
@@ -940,7 +960,7 @@
   
   .add-task-input {
     position: relative;
-    padding: 20px 0 12px 40px;
+    padding: 20px 0 10px 40px;
     border-bottom: 1px solid #d2d2d2;
   }
   .add-child-input {

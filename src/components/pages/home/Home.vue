@@ -542,8 +542,8 @@
 
   .title {
     color: #222;
-    font-size: 20px;
-    padding: 30px 10px 10px;
+    font-size: 24px;
+    padding: 40px 10px 0;
   }
 
   .title-center {
@@ -844,7 +844,8 @@
     }
 
     .title {
-      font-size: 20px;
+      font-weight: 100;
+      font-size: 24px;
       padding: 30px 15px 10px;
     }
 

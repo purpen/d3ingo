@@ -542,7 +542,7 @@
   .item.is-active {
     background: #333;
     color: #fff;
-    font-weight: bold;
+    /* font-weight: bold; */
     border-color: #ff5a5f
   }
   
