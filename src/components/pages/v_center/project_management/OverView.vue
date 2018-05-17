@@ -280,7 +280,7 @@
                       {{d.i}}
                       </li>
                       <li v-for="(d,indexd) in m.dayings" :key="indexd" v-if="sort === 'isweek'&& d.week===0" class="dateweek">
-                      {{m.month}}.{{d.i}}~{{m.month}}.{{m.dayings.length-d.i>=7?d.i+6:d.i+6-m.dayings.length}}
+                      {{m.month}}.{{d.i}}~{{m.dayings.length-d.i>=7?m.month+'.'+(d.i+6):(m.month+1)+'.'+(d.i+6-m.dayings.length)}}
                       </li>
                       <li v-if="sort === 'ismonth'" class="dateweek">
                         {{m.month}}月
@@ -292,8 +292,16 @@
 
                 <div v-if="designStageLists" class="item-chartContent" v-for="(c,indexc) in designStageLists" :key="indexc">
 
-                  <div v-if="c.design_substage" class="item-tacklist" 
-                    v-for="(tack, indextack) in c.design_substage" :key="indextack+ 'y'">
+                  <div 
+                    v-if="c.design_substage&&(sort==='isday'||sort==='isweek')" 
+                    v-for="(tack, indextack) in c.design_substage" :key="indextack+ 'y'" :style="{left:tack.left*30+'px',width:tack.duration*30+'px'}"
+                    class="item-tacklist" 
+                    >
+                    {{indextack}}
+                  </div>
+
+                  <div v-if="c.design_substage&&sort==='ismonth'" class="item-tacklist" 
+                    v-for="(tack, indextack) in c.design_substage" :key="indextack+ 'y'" :style="{left:tack.left*30/4+'px',width:tack.duration*30/4+'px'}">
                     {{indextack}}
                   </div>
 
@@ -318,7 +326,7 @@
           <div>+</div>
           <p>添加项目阶段</p>
         </div>
-    <!-- <div v-for="(designStage,index) in designStageLists" :key="index">
+    <div v-for="(designStage,index) in designStageLists" :key="index">
       
       <div>
         名称: <p v-if="!designStage.isedit">{{designStage.name}}</p>
@@ -397,10 +405,10 @@
       <el-button @click="updata(designStage,index)">确定</el-button>
       <el-button @click="deleteDes(designStage,index)">删除</el-button>
       <el-button @click="addtack(designStage.id)">添加任务</el-button>
-    </div> -->
+    </div>
     </div>
   </section>
-    <!-- <el-input placeholder="任务名称" v-model="formTack.name"></el-input>
+    <el-input placeholder="任务名称" v-model="formTack.name"></el-input>
     <el-input placeholder="任务投入时间" v-model="formTack.duration"></el-input>
     <el-date-picker
       v-model="formTack.start_time"
@@ -414,7 +422,7 @@
             v-model="formTack.summary"
             >
     </el-input>
-    <el-button @click="createTack()">新建任务</el-button> -->
+    <el-button @click="createTack()">新建任务</el-button>
   </div>
 </template>
 <script>
@@ -444,6 +452,7 @@ export default {
       isItemStage: false,
       totaldays: [],
       sort: 'isday',
+      endTimes: [], // 所有时间合集
       rules: {
         duration: [
           {
@@ -543,7 +552,7 @@ export default {
     },
     // 获取某个阶段日期的所有天数和所有参数的对象
     dateDay(s, e) {
-      s = new Date(1491271810 * 1000)
+      s = new Date(s * 1000)
       e = new Date(e * 1000)
       let syear = s.getFullYear()
       let smonth = s.getMonth() + 1
@@ -560,7 +569,7 @@ export default {
         }
         total = total.concat(endDay)
       } else {
-        total = this.yearDay(smonth + 1, e, emonth)
+        total = this.yearDay(smonth, e, emonth)
       }
       return total
     },
@@ -568,9 +577,19 @@ export default {
     newDay() {
       let newDate = new Date()
       for (var n = 0; n < this.totaldays.length; n++) {
-        if (this.totaldays[n].year === newDate.getFullYear() && this.totaldays[n].month === newDate.getMonth() + 1) {
-          console.log(this.totaldays[n].dayings[newDate.getDate() - 1])
+        if (this.totaldays[n].year < newDate.getFullYear() && this.totaldays[n].month < newDate.getMonth() + 1) {
+          for (var ed = 0; ed < this.totaldays[n].dayings.length; ed++) {
+            this.totaldays[n].dayings[ed].bg = 'bged'
+          }
+        } else if (this.totaldays[n].year === newDate.getFullYear() && this.totaldays[n].month === newDate.getMonth() + 1) {
+          for (var bed = 0; bed < newDate.getDate() - 1; bed++) {
+            this.totaldays[n].dayings[bed].bg = 'bged'
+          }
           this.totaldays[n].dayings[newDate.getDate() - 1].new = 'active'
+        } else {
+          for (var ing = 0; ing < this.totaldays[n].dayings.length; ing++) {
+            this.totaldays[n].dayings[ing].bg = 'bged'
+          }
         }
       }
     },
@@ -585,11 +604,12 @@ export default {
               that.designStageLists.unshift(response.data.data)
               that.form = {}
               that.isItemStage = false
+              console.log(response.data.data)
             } else {
               that.$message.error(response.data.meta.message)
             }
           }).catch((error) => {
-            that.$message.error(error.message)
+            that.$message.error(error.messsage)
             console.log(error.message)
           })
         }
@@ -773,13 +793,12 @@ export default {
     this.$http.get(api.designStageLists, {params: {design_project_id: this.itemId}}).then((response) => {
       if (response.data.meta.status_code === 200) {
         this.designStageLists = response.data.data
-        let endTimes = []
         for (var i = 0; i < this.designStageLists.length; i++) {
           // 时间合集
           if (this.designStageLists.length > 0) {
             var end = parseInt(this.designStageLists[i].duration) * 86400 + this.designStageLists[i].start_time
-            endTimes.push(end)
-            endTimes.push(this.designStageLists[i].start_time)
+            this.endTimes.push(end)
+            this.endTimes.push(this.designStageLists[i].start_time)
           }
           // 时间格式转换
           this.designStageLists[i].isedit = false
@@ -788,17 +807,19 @@ export default {
           }
         }
         // 起始时间和终止时间
-        endTimes.push(Date.parse(new Date()) / 1000)
-        for (var r = 1; r < endTimes.length; r++) {
-          var key = endTimes[r]
+        this.endTimes.push(Date.parse(new Date()) / 1000)
+        for (var r = 1; r < this.endTimes.length; r++) {
+          var key = this.endTimes[r]
           var c = r - 1
-          while (c >= 0 && endTimes[c] > key) {
-            endTimes[c + 1] = endTimes[c]
+          while (c >= 0 && this.endTimes[c] > key) {
+            this.endTimes[c + 1] = this.endTimes[c]
             c--
           }
-          endTimes[c + 1] = key
+          this.endTimes[c + 1] = key
         }
-        this.totaldays = this.dateDay(endTimes[0], endTimes[endTimes.length - 1])
+        console.log(this.endTimes)
+        this.totaldays = this.dateDay(this.endTimes[0], this.endTimes[this.endTimes.length - 1])
+        this.newDay()
         // 任务
         for (var k = 0; k < this.designStageLists.length; k++) {
           if (this.designStageLists[k].design_substage) {
@@ -807,6 +828,7 @@ export default {
               var st = this.designStageLists[k].design_substage[j].start_time
               var dur = this.designStageLists[k].design_substage[j].duration
               this.designStageLists[k].design_substage[j].end_time = st + dur * 86400
+              this.designStageLists[k].design_substage[j].left = Math.floor((st - this.endTimes[0]) / 86400)
               // 任务时间格式转换
               this.designStageLists[k].design_substage[j].start_time = (new Date(this.designStageLists[k].design_substage[j].start_time * 1000)).format('yyyy-MM-dd')
               if (this.designStageLists[k].design_substage[j].design_stage_node && this.designStageLists[k].design_substage[j].design_stage_node.time) {
@@ -815,8 +837,7 @@ export default {
             }
           }
         }
-        // console.log(this.designStageLists)
-        console.log(this.totaldays)
+        console.log(this.designStageLists)
       } else {
         this.$message.error(response.data.meta.message)
       }
@@ -1137,12 +1158,12 @@ export default {
 }
 .item-tacklist{
   position:absolute;
-  top:75px;
-  height:30px;
+  top:80px;
+  height:20px;
   width:350%;
-  border:1px solid #333;
+  border:1px solid #00AC84;
   border-radius: 4px;
-  background:#f7f7f7;
+  background:#00AC84;
 }
 .item-chartContent>ul{
   display:inline-block;
@@ -1156,7 +1177,23 @@ export default {
   height:100%;
 }
 .bgc{
-  background:#FF5A5F;
+  background:#bce6f0;
+}
+.bgwill{
+  background:#65A6FF;
+  border:1px solid #65A6FF;
+}
+.bging{
+  border:1px solid #11bce2;
+  background:#07b7e4;
+}
+.bgno{
+  border:1px solid #FF8B8F;
+  background:#FF8B8F;
+}
+.bged{
+  border:1px solid #00AC84;
+  background:#00AC84;
 }
 @media screen and (max-width: 767px) {
   .item-total {
