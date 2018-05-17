@@ -5,7 +5,7 @@
         <el-col :span="taskState.power ? 12 : 24" class="task-list">
           <div class="add-btn">
             <button class="add-task middle-button full-red-button" @click="addTaskBtn()">添加任务</button>
-            <button class="add-stage small-button white-button" @click="addStageBtn()">添加阶段</button>
+            <button class="add-stage middle-button white-button" @click="addStageBtn()">添加阶段</button>
           </div>
           <section>
             <div v-for="(ele, index) in displayObj.outsideStageList" :key="index"
@@ -453,6 +453,7 @@
     padding-top: 30px;
   }
   .add-stage {
+    margin-left: 20px;
     display: none;
     animation: slowShow 1s cubic-bezier(0.175, 0.885, 0.32, 1.275)
   }
@@ -478,11 +479,14 @@
   }
   .stage-name {
     position: relative;
-    padding-left: 26px;
+    padding: 0 40px 0 20px;
     margin-top: 20px;
     font-size: 18px;
     color: #222222;
-    font-weight: bold
+    font-weight: bold;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
   .stage-title {
     position: absolute;
@@ -490,18 +494,21 @@
     top: 2px;
     line-height: 46px;
     height: 46px;
-    width: 200px;
+    width: 100%;
     border: none;
     font-size: 18px;
     color: #222222;
-    font-weight: bold;
-    padding: 0 8px 0 26px;
+    padding: 0 40px 0 20px;
   }
   .close-icon-solid {
     display: none;
     position: absolute;
     right: 20px;
     top: 17px;
+    background: rgba(0,0,0,0.30)
+  }
+  .close-icon-solid:hover {
+    background: rgba(0,0,0,0.40)
   }
   .stage-name:hover .close-icon-solid {
     display: block;
@@ -537,6 +544,7 @@
   }
   .task-name {
     padding-left: 54px;
+    height: 50px;
     max-width: 70%;
     position: relative;
     cursor: pointer;

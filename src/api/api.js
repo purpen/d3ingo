@@ -335,7 +335,7 @@ export default {
   updateDesignProject: '/designProject/update', // PUT 创建
   deleteDesignProject: '/designProject/delete', // DELETE 放入回收站
   designProject: '/designProject', // GET 展示详情
-
+  designProjectDynamic: '/designProject/dynamic', // GET 项目动态
   // 项目中的合同列表
   designProjectContracts: '/designProject/contracts', // GET 项目中的合同列表
   // 项目成员列表

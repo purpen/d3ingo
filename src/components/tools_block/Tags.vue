@@ -12,7 +12,7 @@
         <el-button @click="submitTags()">提交</el-button>
       </div>
     </div>
-    <i v-if="!attr.power" class="add-tag" ref="addTag" @click="addTagBtn">添加标签</i>
+    <i class="add-tag" ref="addTag" @click="addTagBtn">添加标签</i>
     <div class="select-tag" v-if="attr.power">
       <div class="tag-title clearfix">
         <!-- <h3>选择颜色</h3> -->
@@ -340,7 +340,7 @@
     width: 280px;
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
     border-radius: 4px;
-    margin-top: 12px;
+    margin-left: 6px;
   }
   .tag-header {
     padding: 10px 20px;
@@ -418,7 +418,7 @@
   .add-tag:before {
     content: "";
     position: absolute;
-    left: 0;
+    left: 6px;
     top: 2px;
     width: 16px;
     height: 16px;

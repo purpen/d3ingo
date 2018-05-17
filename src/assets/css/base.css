@@ -49,7 +49,7 @@ html::-webkit-scrollbar-thumb:window-inactive,
 }
 
 body {
-  font-family: "Microsoft Yahei", PingFangSC-Regular, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: PingFangSC-Light, "Microsoft Yahei", "Helvetica Neue", Helvetica, Arial, sans-serif;
   height: 100%;
 }
 
@@ -1545,7 +1545,7 @@ input[type=text]:focus, input[type=password]:focus{
 .item.is-active {
   background-color: #FFFFFF;
   color: #222222;
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 
 .MmenuHide {
@@ -2557,7 +2557,7 @@ td.fc-day.fc-widget-content.fc-today::before {
   margin-bottom:10px;
 }
 .itemStage-content .el-form-item__label{
-  font-weight: 600;
+  /* font-weight: 600; */
   font-size:1.3rem;
 }
 /**

@@ -386,6 +386,7 @@ export default {
     right: 0;
     top: 85px;
     z-index: 99;
+    margin-bottom: 50px;
   }
 
   .cententList p {
