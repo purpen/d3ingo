@@ -834,6 +834,7 @@
     border: 1px solid #d2d2d2;
     border-radius: 4px;
     padding: 20px 30px;
+    margin-bottom: 50px;
   }
   .task-detail-header {
     display: flex;

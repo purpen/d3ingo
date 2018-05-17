@@ -5,7 +5,7 @@
         <el-col :span="taskState.power ? 12 : 24" class="task-list">
           <div class="add-btn">
             <button class="add-task middle-button full-red-button" @click="addTaskBtn()">添加任务</button>
-            <button class="add-stage small-button white-button" @click="addStageBtn()">添加阶段</button>
+            <button class="add-stage middle-button white-button" @click="addStageBtn()">添加阶段</button>
           </div>
           <section>
             <div v-for="(ele, index) in displayObj.outsideStageList" :key="index"
@@ -453,6 +453,7 @@
     padding-top: 30px;
   }
   .add-stage {
+    margin-left: 20px;
     display: none;
     animation: slowShow 1s cubic-bezier(0.175, 0.885, 0.32, 1.275)
   }

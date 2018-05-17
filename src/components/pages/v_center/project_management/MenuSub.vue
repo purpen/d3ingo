@@ -39,7 +39,7 @@
           ></v-Member>
         </div>
       </a>
-      <a tabindex="-1" class="menu" ref="menu">
+      <a tabindex="-1" @focus="showMenu = true" @blur="showMenu = false" class="menu" ref="menu">
         <div class="word">菜单</div>
         <div class="menu-con">
           <div class="menu-header"><span>项目菜单</span>
@@ -49,12 +49,12 @@
             <p v-if="false" class="menu-label"><span>标签</span></p>
             <hr>
             <p class="menu-moment"><span>项目动态</span></p>
-            <ul class="item-moments">
-              <li>
+            <ul class="item-moments" v-if="shortProjectMoments.length">
+              <li v-for="(ele, index) in shortProjectMoments" :key="index">
                 <img class="br50 b-d2" src="" alt="">
                 <div class="item-con">
-                  <p class="tc-2"><span>王二</span>创建主任务</p>
-                  <p class="fz-12 tc-6">2018年05月08日 14:13:36</p>
+                  <p class="tc-2"><span>{{ele.user_name}}</span>{{ele.action}}</p>
+                  <p class="fz-12 tc-6">{{ele.date}}</p>
                 </div>
               </li>
             </ul>
@@ -528,7 +528,10 @@ export default {
         color: '#ff5a5f'
       }],
       itemId: -1,
-      showMember: false
+      showMember: false,
+      showMenu: false,
+      projectMoments: [],
+      shortProjectMoments: []
     }
   },
   computed: {
@@ -741,6 +744,74 @@ export default {
     showCover() {
       this.cover = true
       this.closeMenu()
+    },
+    itemFormat(item) {
+      item['date'] = item.created_at.date_format().format('yyyy年MM月dd日 hh:mm:ss')
+      switch (item.action_type) {
+        case 1:
+          item['action'] = '创建主任务'
+          break
+        case 2:
+          item['action'] = '创建子任务'
+          break
+        case 3:
+          item['action'] = '更改了任务名称为：'
+          break
+        case 4:
+          item['action'] = '更改了备注为：'
+          break
+        case 5:
+          item['action'] = '更新任务优先级为：'
+          switch (Number(item['content'])) {
+            case 1:
+              item['content'] = '普通'
+              break
+            case 5:
+              item['content'] = '紧急'
+              break
+            case 8:
+              item['content'] = '非常重要'
+              break
+          }
+          break
+        case 6:
+          item['action'] = '重做了父任务'
+          break
+        case 7:
+          item['action'] = '完成了父任务'
+          break
+        case 8:
+          item['action'] = '重做了子任务'
+          break
+        case 9:
+          item['action'] = '完成了子任务'
+          break
+        case 10:
+          item['action'] = '更新了截至时间：'
+          break
+      }
+    },
+    getMoments() {
+      this.$http.get(api.designProjectDynamic, {params: {
+        item_id: this.projectObject.id
+      }}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.projectMoments = res.data.data
+          for (let i of this.projectMoments) {
+            this.itemFormat(i)
+          }
+          // shortProjectMoments
+          if (this.projectMoments.length > 5) {
+            this.shortProjectMoments = this.projectMoments.slice(0, 5)
+          } else {
+            this.shortProjectMoments = this.projectMoments
+          }
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        console.error(err)
+      })
     }
   },
   watch: {
@@ -789,6 +860,11 @@ export default {
           design_area: this.projectObject.design_area === 0 ? '' : this.projectObject.design_area,
           design_address: this.projectObject.design_address
         }
+      }
+    },
+    showMenu(val) {
+      if (val) {
+        this.getMoments()
       }
     }
   },
