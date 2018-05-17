@@ -301,8 +301,11 @@
                   </div>
 
                   <div v-if="c.design_substage&&sort==='ismonth'" class="item-tacklist" 
-                    v-for="(tack, indextack) in c.design_substage" :key="indextack+ 'y'" :style="{left:tack.left*30/4+'px',width:tack.duration*30/4+'px'}">
+                    v-for="(tack, indextack) in c.design_substage" :key="indextack+ 'y'" :style="{left:tack.left*6.77+'px',width:tack.duration*6.77+'px'}">
                     {{indextack}}
+                  </div>
+                  <div class="item-tacklist-last">
+                    <div>+</div><span>添加任务</span>
                   </div>
 
                   <div v-if="!c.design_substage&&sort==='isday'||sort==='isweek'" class="item-tacklist no-tack" 
@@ -862,7 +865,10 @@ export default {
               var st = this.designStageLists[k].design_substage[j].start_time
               var dur = this.designStageLists[k].design_substage[j].duration
               this.designStageLists[k].design_substage[j].end_time = st + dur * 86400
-              this.designStageLists[k].design_substage[j].left = Math.floor((st - this.endTimes[0]) / 86400)
+              // this.designStageLists[k].design_substage[j].left = Math.floor((st - this.endTimes[0]) / 86400)
+              let et = new Date(this.endTimes[0] * 1000)
+              let xin = Date.parse(new Date(et.getFullYear() + '-' + (et.getMonth() + 1) + '-' + 1)) / 1000
+              this.designStageLists[k].design_substage[j].left = Math.floor((st - xin) / 86400)
               // 任务时间格式转换
               this.designStageLists[k].design_substage[j].start_time = (new Date(this.designStageLists[k].design_substage[j].start_time * 1000)).format('yyyy-MM-dd')
               if (this.designStageLists[k].design_substage[j].design_stage_node && this.designStageLists[k].design_substage[j].design_stage_node.time) {
@@ -1206,6 +1212,32 @@ export default {
   border:1px solid #65A6FF;
   border-radius: 4px;
   background:#65A6FF;
+}
+.item-tacklist-last{
+  position:absolute;
+  display:flex;
+  justify-content: space-around;
+  align-items: center;
+  top:80px;
+  height:25px;
+  color:#FF5A5F;
+}
+.item-tacklist-last>div{
+  display:inline-block;
+  background:#FF5A5F;
+  color:#fff;
+  border-radius: 50%;
+  width:25px;
+  height:25px;
+  text-align: center;
+  line-height:24px;
+  font-size:25px;
+  margin:auto 10px;
+  cursor: pointer;
+}
+.item-tacklist-last>span{
+  cursor: pointer;
+  font-size:1.4rem;
 }
 .no-tack{
   width:30px;
