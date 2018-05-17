@@ -501,12 +501,15 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .el-row>.el-col>section{
+  .el-row>.el-col>section {
     border:1px solid #d2d2d2;
     border-radius: 4px;
     height:360px;
-    margin:0 20px 20px 0;
+    margin:0 0 20px 0;
     font-size:1.4rem;
+  }
+  .el-row>.el-col:nth-child(2n-1)>section {
+    margin:0 20px 20px 0;
   }
   .control-childHeader{
     display:flex;
