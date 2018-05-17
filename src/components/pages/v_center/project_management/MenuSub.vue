@@ -58,7 +58,7 @@
                 </div>
               </li>
             </ul>
-            <p>查看所有项目动态</p>
+            <p v-if="projectMoments.length > 5" @click="showDynamic">查看所有项目动态</p>
           </div>
         </div>
       </a>
@@ -451,6 +451,24 @@
         </div>
       </div>
     </section>
+    <section :class="['cover2',{'show-dynamic': cover2}]">
+      <div class="cover-header2">
+        <span>全部项目动态</span>
+        <i class="fx fx-icon-nothing-close-error" @click="cover2 = false"></i>
+      </div>
+      <div class="cover2-content">
+        <h3>全部动态</h3>
+        <ul class="cover2-list">
+          <li v-for="(ele, index) in projectMoments" :key="index">
+            <img class="br50 b-d2" src="" alt="">
+            <div class="list-con clearfix">
+              <p class="tc-2 fl"><span>{{ele.user_name}}</span>{{ele.action}}</p>
+              <p class="fz-12 tc-6 fr">{{ele.date}}</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
   </header>
 </template>
 <script>
@@ -475,6 +493,7 @@ export default {
   data() {
     return {
       cover: false,
+      cover2: false,
       option: 'project', // project customer permission
       project: {
         name: '',
@@ -512,21 +531,22 @@ export default {
       isClientLoadingBtn: false,
       isServerLoadingBtn: false,
       isFirstRegion: false,
-      levels: [{
-        value: 1,
-        label: '普通',
-        color: '#999'
-      },
-      {
-        value: 2,
-        label: '紧急',
-        color: '#ffd330'
-      },
-      {
-        value: 3,
-        label: '非常紧急',
-        color: '#ff5a5f'
-      }],
+      levels: [
+        {
+          value: 1,
+          label: '普通',
+          color: '#999'
+        },
+        {
+          value: 2,
+          label: '紧急',
+          color: '#ffd330'
+        },
+        {
+          value: 3,
+          label: '非常紧急',
+          color: '#ff5a5f'
+        }],
       itemId: -1,
       showMember: false,
       showMenu: false,
@@ -744,6 +764,9 @@ export default {
     showCover() {
       this.cover = true
       this.closeMenu()
+    },
+    showDynamic() {
+      this.cover2 = true
     },
     itemFormat(item) {
       item['date'] = item.created_at.date_format().format('yyyy年MM月dd日 hh:mm:ss')
@@ -1026,6 +1049,47 @@ header {
   justify-content: center;
   align-items: center;
 }
+.cover2 {
+  position: fixed;
+  z-index: 99;
+  left: 0;
+  top: 60px;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  background: #fff;
+  transition: 0.45s all ease-in;
+  transform: translateY(-150%);
+}
+.cover2-content {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.cover2-content h3 {
+  padding: 20px 0 10px;
+  font-size: 16px;
+  color: #222
+}
+.cover2-list li {
+  min-height: 60px;
+  border-bottom: 1px solid #e6e6e6;
+  display: flex;
+  align-items: center;
+}
+.cover2-list li img{
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+.cover2-list .list-con {
+  flex: 1 1 auto;
+  line-height: 60px;
+  min-height: 60px;
+}
+.show-dynamic {
+  transition: 0.45s all cubic-bezier(0, 1, 0.5, 1);
+  transform: translateY(0);
+}
 .cover-content {
   flex: 1;
   display: flex;
@@ -1051,6 +1115,28 @@ header {
   position: absolute;
   top: 18px;
   right: 15px;
+}
+
+.cover-header2 {
+  position: relative;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid #d7d7d7
+}
+.cover-header2 span {
+  cursor: pointer;
+  height: 50px;
+  line-height: 50px;
+  font-size: 14px;
+  color: #666;
+  border-bottom: 3px solid transparent
+}
+.cover-header2 i {
+  position: absolute;
+  right: 30px;
+  top: 17px;
 }
 .cover-body {
   flex: 0 1 auto;
