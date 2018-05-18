@@ -338,9 +338,10 @@
     left: 0; */
     background: #fff;
     width: 280px;
-    box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
+    box-shadow: 0 0 6px 2px rgba(0,0,0,0.10);
     border-radius: 4px;
-    margin-left: 6px;
+    /* margin-left: 6px; */
+    margin-left: -200px;
   }
   .tag-header {
     padding: 10px 20px;

@@ -30,6 +30,7 @@
               <span @click="completeTaskBtn(ele, index)" class="task-name-span"></span>
               {{ele.name}}</p>
               <p class="task-date fr">{{ele.created_at_format}}</p>
+              <img v-if="ele.logo_image" class="fr" :src="ele.logo_image.logo" alt="">
             </div>
           </section>
           
@@ -50,6 +51,7 @@
                 <p @click.self="showTaskBtn(e, i)" class="task-name fl">
                   <span @click="completeTaskBtn(e, i)" class="task-name-span"></span>{{e.name}}</p>
                 <p class="task-date fr">{{e.created_at_format}}</p>
+                <img v-if="e.logo_image" class="fr" :src="e.logo_image.logo" alt="">
               </div>
             </section>
           </section>
@@ -510,7 +512,7 @@
     width: 24px;
     height: 24px;
     /* background: #ff0 */
-    background: url('../../../../assets/images/tools/project_management/Filter@2x.png') no-repeat center / contain #aaa;
+    background: url('../../../../assets/images/tools/project_management/Filter@2x.png') no-repeat center / contain;
   }
   .filter ul {
     display: none;
@@ -521,7 +523,7 @@
     width: 200px;
     background: #fff;
     border-radius: 4px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.10)
+    box-shadow: 0 0 6px 2px rgba(0,0,0,0.10);
   }
   .filter:hover ul,
   .filter:focus ul {
@@ -568,6 +570,12 @@
   }
   .task-item:hover {
     background: #fafafa
+  }
+  .task-item img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin: 10px 10px 0 0;
   }
   .stage-name {
     position: relative;

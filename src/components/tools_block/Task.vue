@@ -759,12 +759,14 @@
                   arr.push({
                     name: item.user_name,
                     info: item.action,
-                    date: item.date})
+                    date: item.date,
+                    logo: item.logo_image})
                 } else {
                   arr.push({
                     name: item.user_name,
                     info: item.action + item.content,
-                    date: item.date
+                    date: item.date,
+                    logo: item.logo_image
                   })
                 }
               })
@@ -780,12 +782,14 @@
                   arr2.push({
                     name: item.user_name,
                     info: item.action,
-                    date: item.date})
+                    date: item.date,
+                    logo: item.logo_image})
                 } else {
                   arr2.push({
                     name: item.user_name,
                     info: item.action + item.content,
-                    date: item.date})
+                    date: item.date,
+                    logo: item.logo_image})
                 }
               })
               arr2.reverse()
@@ -896,7 +900,7 @@
     display: none;
     background: #fff;
     width: 200px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.10);
+    box-shadow: 0 0 6px 2px rgba(0,0,0,0.10);
     position: absolute;
     left: 0;
     top: 34px;
@@ -1110,7 +1114,7 @@
   .tags {
     display: flex;
     flex-wrap: wrap;
-    max-width: 200px;
+    /* max-width: 200px; */
   }
   .tags span {
     position: relative;
@@ -1278,6 +1282,11 @@
   }
   .task-moments li p {
     font-size: 12px;
+  }
+  .moment-avator {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
   }
   .task-moments .date {
     color: #999

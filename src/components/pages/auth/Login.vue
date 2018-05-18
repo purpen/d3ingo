@@ -228,7 +228,7 @@ export default {
   margin: 30px auto 0;
   background: #FFFFFF;
   border: 1px solid #E6E6E6;
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.10);
+  box-shadow: 0 0 6px 2px rgba(0,0,0,0.10);
   border-radius: 6px;
   padding-bottom: 30px;
 }
