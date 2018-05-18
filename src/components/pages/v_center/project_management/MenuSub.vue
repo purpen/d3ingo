@@ -1,7 +1,9 @@
 <template>
   <header>
     <div class="pm-left">
-      <router-link :to="{name: 'projectManagementList'}">项目管理</router-link>
+      <el-tooltip class="item" effect="dark" content="项目管理" placement="top-start">
+        <router-link :to="{name: 'projectManagementList'}">项目管理</router-link>
+      </el-tooltip>
       <router-link :to="{name: 'projectManagementOverView', params: {id: routeId}}">{{projectObject.name}}</router-link>
       <!-- <span class="favorite-star"></span> -->
     </div>
@@ -923,7 +925,7 @@ header {
   background: #f7f7f7;
 }
 .pm-left {
-  min-width: 380px;
+  /* min-width: 380px; */
   font-size: 0;
   padding-left: 20px;
   flex: 1 0 auto;
@@ -1013,7 +1015,7 @@ header {
   background-size: contain
 }
 .pm-middle {
-  flex: 0 1 600px;
+  flex: 1 1 auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1026,15 +1028,19 @@ header {
   border-bottom: 3px solid transparent;
   transition: border-color .3s,background-color .3s,color .3s;
 }
+.pm-middle a:last-child {
+  margin-right: 0
+}
 .pm-middle a:hover, .pm-middle a.active {
   color: #ff5a5f;
   border-bottom: 3px solid #ff5a5f
 }
 .pm-right {
   display: flex;
-  flex: 1 0 440px;
+  flex: 1 1 auto;
   justify-content: flex-end;
   align-items: center;
+  min-width: 320px;
 }
 .cover {
   position: fixed;
