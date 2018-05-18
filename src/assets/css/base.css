@@ -341,11 +341,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 .avatarhead  .el-upload__tip {
   color: #999;
 }
-.login-box .el-form-item,
-.register-box .el-form-item,
-.forget-box .el-form-item, {
-  margin-bottom: 10px;
-}
+
 .el-form-item__label {
   font-size: 1.6rem;
   color: #666666;
@@ -2164,11 +2160,7 @@ td.fc-day.fc-widget-content.fc-today::before {
   .input .el-form-item {
     margin-bottom: 0;
   }
-  .login-box .el-form-item,
-  .register-box .el-form-item,
-  .forget-box .el-form-item {
-      margin-bottom: 10px;
-  }
+
   .el-form-item__error {
     position: static;
   }
