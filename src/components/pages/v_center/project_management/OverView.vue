@@ -57,11 +57,13 @@
     </div>
   </div>
   </section>
-  <aside class="aside">
-    <div class="aside-title fx">
+  <transition name="el-fade-in-linear">
+  <aside class="aside" v-if="isitemedit">
+    
+    <div class="aside-title fx" >
       <i class="fx fx-icon-delete2"></i>
       项目阶段设置
-      <span class="fx fx-icon-close-sm"></span>
+      <span class="fx fx-icon-close-sm" @click="isitemedit=false"></span>
     </div>
     <el-progress 
     :percentage="50"
@@ -110,8 +112,9 @@
         <el-checkbox v-model="checked"> 草图设计</el-checkbox>
       </li>
     </ul>
+    
   </aside>
-
+</transition>
   <section class="top-progress">
     <div class="h3">笔记本设计</div>
     <el-progress 
@@ -234,7 +237,7 @@
                 </el-row>
               </div>
 
-              <div class="item-text-list" v-for="(des,indexdes) in designStageLists" :key="indexdes">
+              <div class="item-text-list" v-for="(des,indexdes) in designStageLists" :key="indexdes" @click="isitemedit=!isitemedit">
                 <el-row >
                   <el-col>
                     <div class="item-text-content">
@@ -268,7 +271,11 @@
 
             <div class="item-chart">
               
-              <div class="item-chart-list scroll-bar" :style="{height:Rheight + 'px'}">
+              <div 
+                class="item-chart-list scroll-bar" 
+                :style="{height:Rheight + 'px'}"
+                ref="chartlist"
+              >
 
                 <div class="item-chartHeader">
 
@@ -304,15 +311,15 @@
                     v-for="(tack, indextack) in c.design_substage" :key="indextack+ 'y'" :style="{left:tack.left*6.77+'px',width:tack.duration*6.77+'px'}">
                     {{indextack}}
                   </div>
-                  <div class="item-tacklist-last">
+                  <div class="item-tacklist-last" :style="{left:(c.left+1)*30 + 'px'}">
                     <div>+</div><span>添加任务</span>
                   </div>
 
                   <div v-if="!c.design_substage&&sort==='isday'||sort==='isweek'" class="item-tacklist no-tack" 
-                    :style="{left:newleft*30+'px'}">
+                    :style="{left:c.left*30+'px'}">
                   </div>
                   <div v-if="!c.design_substage&&sort==='ismonth'" class="item-tacklist no-tack" 
-                    :style="{left:newleft*30/4+'px'}">
+                    :style="{left:c.left*6.77+'px'}">
                   </div>
                   
                   <ul v-if="totaldays" v-for="(tt,indextt) in totaldays" :key="indextt">
@@ -465,6 +472,7 @@ export default {
       totaldays: [],
       newleft: '',
       sort: 'isday',
+      isitemedit: false,
       endTimes: [], // 所有时间合集
       rules: {
         duration: [
@@ -609,23 +617,35 @@ export default {
     // 今天到最早的一天的距离
     newtostart() {
       let date = Date.parse(new Date()) / 1000
+      this.newleft = this.itemtostart(date)
+    },
+    // 最早到项目的距离
+    itemtostart(item) {
       let et = new Date(this.endTimes[0] * 1000)
       let xin = Date.parse(new Date(et.getFullYear() + '-' + (et.getMonth() + 1) + '-' + 1)) / 1000
-      console.log(this.endTimes)
-      this.newleft = Math.floor((date - xin) / 86400)
+      return Math.floor((item - xin) / 86400)
     },
     // 时间排序
-    sortdate() {
-      for (var r = 1; r < this.endTimes.length; r++) {
-        var key = this.endTimes[r]
+    sortdate(arr) {
+      for (var r = 1; r < arr.length; r++) {
+        var key = arr[r]
         var c = r - 1
-        while (c >= 0 && this.endTimes[c] > key) {
-          this.endTimes[c + 1] = this.endTimes[c]
+        while (c >= 0 && arr[c] > key) {
+          arr[c + 1] = arr[c]
           c--
         }
-        this.endTimes[c + 1] = key
+        arr[c + 1] = key
       }
-      return this.endTimes
+      return arr
+    },
+    // 滚动到当前位置
+    scrollLeft() {
+      if (this.designStageLists.length > 0) {
+        if (this.endTimes[0] !== (Date.parse(new Date()) / 1000)) {
+          this.$refs.chartlist.scrollLeft = this.newleft * 30 - 15 * 30
+        }
+        // } else
+      }
     },
     // 创建项目
     create(formName) {
@@ -635,15 +655,20 @@ export default {
           that.form.start_time = Math.round(new Date(that.form.start_time).getTime() / 1000)
           that.$http.post(api.designStageCreate, that.form).then((response) => {
             if (response.data.meta.status_code === 200) {
-              that.designStageLists.unshift(response.data.data)
+              var res = response.data.data
               that.form = {}
               that.isItemStage = false
-              that.endTimes.push(parseInt(that.designStageLists[0].start_time))
-              that.endTimes.push(parseInt(that.designStageLists[0].start_time) + parseInt(that.designStageLists[0].duration) * 86400)
-              that.sortdate()
+              that.endTimes.push(parseInt(res.start_time))
+              that.endTimes.push(parseInt(res.start_time) + parseInt(res.duration) * 86400)
+              that.sortdate(this.endTimes)
               that.totaldays = this.dateDay(this.endTimes[0], this.endTimes[this.endTimes.length - 1])
               that.newDay()
               that.newtostart()
+              let reset = new Date(this.endTimes[0] * 1000)
+              let resxin = Date.parse(new Date(reset.getFullYear() + '-' + (reset.getMonth() + 1) + '-' + 1)) / 1000
+              res.left = Math.floor(((res.start_time - resxin) / 86400))
+              that.designStageLists.unshift(res)
+              // console.log(that.designStageLists[0])
             } else {
               that.$message.error(response.data.meta.message)
             }
@@ -853,21 +878,29 @@ export default {
         }
         // 起始时间和终止时间
         this.endTimes.push(Date.parse(new Date()) / 1000)
-        this.sortdate()
+        this.sortdate(this.endTimes)
         this.totaldays = this.dateDay(this.endTimes[0], this.endTimes[this.endTimes.length - 1])
         this.newDay()
         this.newtostart()
         // 任务
+        let et = new Date(this.endTimes[0] * 1000)
+        let xin = Date.parse(new Date(et.getFullYear() + '-' + (et.getMonth() + 1) + '-' + 1)) / 1000
         for (let k = 0; k < this.designStageLists.length; k++) {
+          // 没有任务时默认显示
+          if (!this.designStageLists[k].design_substage) {
+            let itemd = Date.parse(new Date(this.designStageLists[k].start_time)) / 1000
+            this.designStageLists[k].left = Math.floor((itemd - xin) / 86400)
+          }
+          // 有任务时显示
           if (this.designStageLists[k].design_substage) {
+            let sortTask = []
             for (var j = 0; j < this.designStageLists[k].design_substage.length; j++) {
               // 任务起始时间和终止时间
               var st = this.designStageLists[k].design_substage[j].start_time
               var dur = this.designStageLists[k].design_substage[j].duration
               this.designStageLists[k].design_substage[j].end_time = st + dur * 86400
-              // this.designStageLists[k].design_substage[j].left = Math.floor((st - this.endTimes[0]) / 86400)
-              let et = new Date(this.endTimes[0] * 1000)
-              let xin = Date.parse(new Date(et.getFullYear() + '-' + (et.getMonth() + 1) + '-' + 1)) / 1000
+              sortTask.push(st)
+              sortTask.push(st + dur * 86400)
               this.designStageLists[k].design_substage[j].left = Math.floor((st - xin) / 86400)
               // 任务时间格式转换
               this.designStageLists[k].design_substage[j].start_time = (new Date(this.designStageLists[k].design_substage[j].start_time * 1000)).format('yyyy-MM-dd')
@@ -875,8 +908,14 @@ export default {
                 this.designStageLists[k].design_substage[j].design_stage_node.time = (new Date(this.designStageLists[k].design_substage[j].design_stage_node.time * 1000)).format('yyyy-MM-dd')
               }
             }
+            this.sortdate(sortTask)
+            this.designStageLists[k].left = Math.floor((sortTask[sortTask.length - 1] - xin) / 86400)
           }
         }
+        this.$nextTick(_ => {
+          this.scrollLeft()
+        })
+        // console.log(this.designStageLists)
       } else {
         this.$message.error(response.data.meta.message)
       }
@@ -965,14 +1004,13 @@ export default {
   z-index:999;
 }
 .aside{
-  display:none;
-  position: absolute;
+  position: fixed;
   z-index:99;
   width:300px;
   height:100%;
   border:1px solid #d2d2d2;
-  right:-50px;
-  top:-30px;
+  right:0px;
+  top:60px;
   background:#fff;
 }
 .aside-title{
@@ -1218,7 +1256,7 @@ export default {
   display:flex;
   justify-content: space-around;
   align-items: center;
-  top:80px;
+  top:77px;
   height:25px;
   color:#FF5A5F;
 }
