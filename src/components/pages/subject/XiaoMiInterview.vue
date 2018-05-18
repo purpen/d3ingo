@@ -310,7 +310,7 @@ export default {
     height: 478px;
     padding-bottom: 65px;
     background: #ca1317;
-    margin-bottom: -52px;
+    margin-bottom: -72px;
   }
   .entrepreneur {
     max-width: 1180px;
@@ -390,12 +390,15 @@ export default {
     line-height: 1.5;
     text-indent: 2em;
   }
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 767px) {
     .container {
       padding: 20px 15px;
     }
     .footer-pic-cover p {
       padding: 0 15px
+    }
+    .interview-footer {
+      margin-bottom: -96px;
     }
   }
 </style>

@@ -104,7 +104,7 @@ export default {
 @media screen and (max-width: 767px) {
 
   .innovation-foot img {
-    margin-bottom: -56px;
+    margin-bottom: -98px;
   }
 }
 </style>
