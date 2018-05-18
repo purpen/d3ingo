@@ -440,7 +440,7 @@
         }
         this.$http.put(api.taskStage, {task_id: id, stage: complate}).then(function (response) {
           if (response.data.meta.status_code === 200) {
-            // self.$set(self.currentForm, 'stage', complate)
+            self.$set(self.currentForm, 'stage', complate)
             self.$store.commit('updateTaskListItem', self.currentForm)
             self.fetchStage()
             self.view(id)
@@ -870,11 +870,15 @@
     height: 1px;
     background: #666;
     top: 24px;
+    left: 2px;
   }
   .parent-task-name:hover {
     color: #ff5a5f
   }
-  .task-detail-name:hover::after {
+  .task-detail-name1:hover {
+    color: #ff5a5f
+  }
+  .task-detail-name1:hover::after {
     background: #ff5a5f
   }
   .select-parent {
