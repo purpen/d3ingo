@@ -113,7 +113,9 @@
   </aside>
 
   <section class="top-progress">
-    <div class="h3">笔记本设计</div>
+    <el-tooltip class="item" effect="dark" content="笔记本设计" placement="top">
+      <div class="h3">笔记本设计</div>
+    </el-tooltip>
     <el-progress 
     :percentage="0"
     :show-text="false"

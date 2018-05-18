@@ -1,9 +1,7 @@
 <template>
   <header>
     <div class="pm-left">
-      <el-tooltip class="item" effect="dark" content="项目管理" placement="top-start">
-        <router-link :to="{name: 'projectManagementList'}">项目管理</router-link>
-      </el-tooltip>
+      <router-link :to="{name: 'projectManagementList'}">项目管理</router-link>
       <router-link :to="{name: 'projectManagementOverView', params: {id: routeId}}">{{projectObject.name}}</router-link>
       <!-- <span class="favorite-star"></span> -->
     </div>
