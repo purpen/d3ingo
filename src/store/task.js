@@ -30,8 +30,10 @@ let mutations = {
       if (item['use'] === true) {
         item['use'] = false
       }
+      console.log(item)
       if (item['created_at']) {
         item['created_at_format'] = item['created_at'].date_format().format('yyyy年MM月dd日')
+        console.log(item['created_at_format'])
       }
     })
     state.stageList.forEach(ele => {
@@ -68,9 +70,15 @@ let mutations = {
     state.stageList.forEach(ele => {
       if (ele.task) {
         ele.task.forEach(e => {
+          if (e['created_at']) {
+            e['created_at_format'] = e['created_at'].date_format().format('yyyy年MM月dd日')
+          }
           outsideStageList.forEach(item => {
             if (item.id === e.id) {
               list.push(e.id)
+            }
+            if (item['created_at']) {
+              item['created_at_format'] = item['created_at'].date_format().format('yyyy年MM月dd日')
             }
           })
         })

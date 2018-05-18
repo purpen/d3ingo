@@ -113,7 +113,7 @@
 </script>
 <style scoped>
   .menu {
-    transition: 0.2s all ease;
+    /* transition: 0.2s all ease; */
     max-width: 200px;
     height: calc(100vh - 60px);
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);

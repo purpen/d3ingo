@@ -116,9 +116,7 @@
   </aside>
 </transition>
   <section class="top-progress">
-    <el-tooltip class="item" effect="dark" content="笔记本设计" placement="top">
-      <div class="h3">笔记本设计</div>
-    </el-tooltip>
+    <div class="h3">笔记本设计</div>
     <el-progress 
     :percentage="0"
     :show-text="false"
