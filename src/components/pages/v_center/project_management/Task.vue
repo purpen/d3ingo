@@ -20,6 +20,7 @@
               <span @click="completeTaskBtn(ele, index)" class="task-name-span"></span>
               {{ele.name}}</p>
               <p class="task-date fr">{{ele.created_at_format}}</p>
+              <p class="task-date fr">{{ele.created_at_format}}</p>
             </div>
           </section>
           

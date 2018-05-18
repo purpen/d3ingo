@@ -1717,7 +1717,7 @@ export default {
     transition: 0.2s all ease;
   }
   .content-mini {
-    position: absolute;
+    /* position: absolute; */
   }
   .content-pm {
     position: static
@@ -2534,7 +2534,7 @@ export default {
     }
     .content-mini {
       position: absolute;
-      width: calc(100% - 260px);
+      width: calc(100% - 200px);
       top: 0;
       left: 200px;
       transition: 0.2s all ease;
