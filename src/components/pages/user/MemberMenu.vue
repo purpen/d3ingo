@@ -98,10 +98,10 @@ export default {
     font-size: 14px;
     /* color: rgba(255, 255, 255, 0.5); */
     /* background: #333; */
+    /* transition: 0.2s all ease; */
     color: #999;
     max-width: 200px;
     height: calc(100vh - 60px);
-    transition: 0.2s all ease;
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.10)
   }
   .seach-block {

@@ -3,9 +3,19 @@
     <div class="vcenter-container task-content" v-loading="isLoading">
       <el-row :gutter="30">
         <el-col :span="taskState.power ? 12 : 24" class="task-list">
-          <div class="add-btn">
-            <button class="add-task middle-button full-red-button" @click="addTaskBtn()">添加任务</button>
-            <button class="add-stage middle-button white-button" @click="addStageBtn()">添加阶段</button>
+          <div class="operate">
+            <div class="add-btn">
+              <button class="add-task middle-button full-red-button" @click="addTaskBtn()">添加任务</button>
+              <button class="add-stage middle-button white-button" @click="addStageBtn()">添加阶段</button>
+            </div>
+            <div tabindex="-1" class="filter" ref="filter">
+              <p>筛选</p>
+              <ul>
+                <li @click="changeTaskStatus(0)" :class="{'active': taskStatus === 0}">全部任务</li>
+                <li @click="changeTaskStatus(2)" :class="{'active': taskStatus === 2}">已完成</li>
+                <li @click="changeTaskStatus(-1)" :class="{'active': taskStatus === -1}">未完成</li>
+              </ul>
+            </div>
           </div>
           <section>
             <div v-for="(ele, index) in displayObj.outsideStageList" :key="index"
@@ -19,7 +29,6 @@
               <p @click.self="showTaskBtn(ele, index)" class="task-name fl">
               <span @click="completeTaskBtn(ele, index)" class="task-name-span"></span>
               {{ele.name}}</p>
-              <p class="task-date fr">{{ele.created_at_format}}</p>
               <p class="task-date fr">{{ele.created_at_format}}</p>
             </div>
           </section>
@@ -120,7 +129,8 @@
           showCover: false,
           showComfirmDeleteStage: false
         },
-        completeState: -1
+        completeState: -1,
+        taskStatus: 0 // 0: 全部， 2: 已完成， -1: 未完成
       }
     },
     methods: {
@@ -271,10 +281,13 @@
         }
       },
       // 主任务列表
-      fetchTask() {
+      fetchTask(stage = 0) {
         const self = this
         self.isLoading = true
-        self.$http.get(api.task, {params: {item_id: self.itemId}}).then(function (response) {
+        self.$http.get(api.task, {params: {
+          item_id: self.itemId,
+          stage: stage
+        }}).then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.$store.commit('setTaskList', response.data.data)
           } else {
@@ -348,6 +361,10 @@
           }
           this.isLoading = false
         })
+      },
+      changeTaskStatus(e) {
+        this.taskStatus = e
+        this.$refs.filter.blur()
       }
     },
     computed: {
@@ -403,6 +420,9 @@
           // this.$store.commit('setStageList', val)
         },
         deep: true
+      },
+      taskStatus(val) {
+        this.fetchTask(val)
       }
     },
     created() {
@@ -458,11 +478,82 @@
     display: none;
     animation: slowShow 1s cubic-bezier(0.175, 0.885, 0.32, 1.275)
   }
+  .operate {
+    display: flex
+  }
   .add-btn {
+    flex: 1 1 auto;
     padding-bottom: 20px;
   }
   .add-btn:hover .add-stage {
     display: inline-block;
+  }
+  .filter {
+    flex: 0 1 auto;
+    width: 70px;
+    height: 34px;
+    border: 1px solid #d2d2d2;
+    border-radius: 4px;
+    text-align: center;
+    position: relative;
+  }
+  .filter p {
+    line-height: 34px;
+    position: relative;
+    padding-left: 24px;
+  }
+  .filter p:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 4px;
+    width: 24px;
+    height: 24px;
+    /* background: #ff0 */
+    background: url('../../../../assets/images/tools/project_management/Filter@2x.png') no-repeat center / contain #aaa;
+  }
+  .filter ul {
+    display: none;
+    position: absolute;
+    z-index: 9;
+    right: 0;
+    top: 34px;
+    width: 200px;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.10)
+  }
+  .filter:hover ul,
+  .filter:focus ul {
+    display: block
+  }
+  .filter ul li {
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    position: relative;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .filter ul li:hover,
+  .filter ul li.active {
+    background: #f7f7f7
+  }
+  .filter ul li:after {
+    content: "";
+    position: absolute;
+    right: 10px;
+    top: 8px;
+    width: 10px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-left: none;
+    border-top: none;
+    border-radius: 1px;
+    transform: rotate(45deg)
+  }
+  .filter ul li.active:after {
+    border-color: #d2d2d2
   }
   /* .task-list {
     padding-left: 30px;

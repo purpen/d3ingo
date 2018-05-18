@@ -895,7 +895,7 @@
   .stage-list {
     display: none;
     background: #fff;
-    width: 220px;
+    width: 200px;
     box-shadow: 0 0 5px rgba(0,0,0,0.10);
     position: absolute;
     left: 0;
@@ -1163,7 +1163,7 @@
   }
   .task-member-list li {
     position: relative;
-    margin-right: 10px;
+    margin: 0 10px;
     cursor: pointer;
   }
   .task-member-list li a {

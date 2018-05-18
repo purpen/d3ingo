@@ -1714,7 +1714,7 @@ export default {
     padding-left: 60px;
   }
   .content {
-    transition: 0.2s all ease;
+    /* transition: 0.2s all ease; */
   }
   .content-mini {
     /* position: absolute; */
