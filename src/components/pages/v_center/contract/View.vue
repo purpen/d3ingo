@@ -129,8 +129,7 @@
               </router-link>
             </div>
             <div class="form-btn" v-else>
-              <router-link :to="{name: 'vcenterContractDown', params: {unique_id: uniqueId}}" target="_blank"><i
-                class="fa fa-download" aria-hidden="true"></i> 下载合同
+              <router-link :to="{name: 'vcenterContractDown', params: {unique_id: uniqueId}}" target="_blank"><i class="fa fa-download" aria-hidden="true"></i> 下载合同
               </router-link>
             </div>
             <div class="clear"></div>

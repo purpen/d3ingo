@@ -196,7 +196,7 @@
             {text: '', style: 'p'}
           ],
           defaultStyle: {
-            font: '微软雅黑'
+            font: 'simhei'
           },
 
           styles: {
@@ -232,11 +232,11 @@
             italics: 'Roboto-Italic.ttf',
             bolditalics: 'Roboto-Italic.ttf'
           },
-          微软雅黑: {
-            normal: '微软雅黑.ttf',
-            bold: '微软雅黑.ttf',
-            italics: '微软雅黑.ttf',
-            bolditalics: '微软雅黑.ttf'
+          simhei: {
+            normal: 'simhei.ttf',
+            bold: 'simhei.ttf',
+            italics: 'simhei.ttf',
+            bolditalics: 'simhei.ttf'
           }
         }
 
@@ -284,7 +284,7 @@
                   // 生成pdf插件太大，实现懒加载
                   require.ensure([], function (require) {
                     require('../../../../../lib/js/pdfmake.js')
-                    require('../../../../../lib/js/vfs_fonts.js')
+                    require('../../../../../lib/js/vfs_h_fonts.js')
                     that.downBtn()
                   })
                 })

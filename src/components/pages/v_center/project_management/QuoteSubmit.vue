@@ -721,7 +721,6 @@ export default {
     }
   },
   created() {
-    console.log('aaaa')
     console.log(this.$store.state.task.projectObject)
     this.itemId = this.$route.params.id
     let id = this.$route.query.id
@@ -735,7 +734,7 @@ export default {
           this.$set(this.taxRate, 'isTax', form.is_tax)
           this.$set(this.taxRate, 'isInvoice', form.is_invoice)
           this.rate = form.tax_rate
-          this.totalMoney = form.total_price
+          this.totalMoney = parseFloat(form.total_price)
           if (form.area === 0) form.area = ''
           if (form.design_area === 0) form.design_area = ''
 
