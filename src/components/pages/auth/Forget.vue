@@ -1,10 +1,11 @@
 <template>
   <div class="container">
-    <div class="register-box">
-      <div class="regisiter-title">
+    <section class="cover-bgf7"></section>
+    <div class="forget-box">
+      <div class="forget-title">
         <h2>找回密码</h2>
       </div>
-      <div class="register-content">
+      <div class="forget-content">
 
         <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px" class="input">
           <el-form-item label="" prop="account">
@@ -34,7 +35,7 @@
             <el-input v-model="form.checkPassword" type="password" name="checkPassword" ref="checkPassword"
                       auto-complete="off" placeholder="确认密码"></el-input>
           </el-form-item>
-          <el-button type="primary" :loading="isLoadingBtn" @click="submit('ruleForm')" class="register-btn is-custom">
+          <el-button type="primary" :loading="isLoadingBtn" @click="submit('ruleForm')" class="forget-btn is-custom">
             重置
           </el-button>
         </el-form>
@@ -234,21 +235,25 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .register-box {
-    border: 1px solid #aaa;
-    width: 800px;
+  .forget-box {
+    border-radius: 6px;
+    background: #fff;
+    width: 580px;
     text-align: center;
     margin: 30px auto 30px auto;
   }
 
-  .regisiter-title {
-    width: 800px;
-    height: 60px;
-    font-size: 1.8rem;
-    display: table-cell;
-    vertical-align: middle;
+  .forget-title {
+    height: 70px;
+    line-height: 70px;
+    font-size: 2rem;
     text-align: center;
-    border-bottom: 1px solid #aaa;
+    color: #666;
+    border-bottom: 1px solid #e6e6e6;
+  }
+
+  .forget-content {
+    padding: 30px;
   }
 
   p.des {
@@ -256,15 +261,12 @@
   }
 
   form {
-    width: 50%;
     text-align: left;
     margin: 0 auto;
-    margin-top: 30px;
   }
 
-  .register-btn {
+  .forget-btn {
     width: 100%;
-    margin-bottom: 30px;
   }
 
   .code-btn {
@@ -280,24 +282,32 @@
   }
 
   @media screen and (max-width: 767px) {
-    .register-box {
+    .forget-title {
+      border-bottom: none;
+      height: 60px;
+      line-height: 60px;
+    }
+    .forget-box {
+      border: none;
       width: auto;
       max-width: 450px;
       height: auto;
-      border: none;
-      margin: 0 auto;
-    }
-
-    .regisiter-title {
-      line-height: 52px;
-      border: none;
+      margin: 0;
     }
 
     form {
-      width: 100%;
       text-align: left;
-      padding: 0 15px;
+      width: 100%;
       margin-top: 0;
+    }
+
+    .forget-tab {
+      margin-bottom: 30px;
+    }
+    .forget-content {
+      border: none;
+      padding-top: 0;
+      padding-bottom: 20px;
     }
   }
 

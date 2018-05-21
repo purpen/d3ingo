@@ -26,7 +26,40 @@
           <el-col class="text-center" :span="2">风险应激力</el-col>
           <el-col class="text-center" :span="3">创新力指数（DCI）</el-col>
         </div>
-        <ul class="inno-table" v-loading="loading0">
+        <ul v-if="!showMore" class="inno-table" v-loading="loading0">
+          <li class="clearfix" v-for="(ele, index) in miniBoardList" :key="index">
+            <el-col :span="1">
+              <span :class="['ranking',
+                {'gold': index === 0},
+                {'silver': index === 1},
+                {'bronze': index === 2},]">{{index + 1}}</span>
+            </el-col>
+            <el-col :span="5" v-if="ele.design_company">
+              <el-tooltip class="item" effect="dark" :content="ele.design_company.name" placement="top">
+                <router-link target="_blank" :to="{name: 'innovationCompany', params: {id: ele.design_company. d3ing_id}, query: {id: ele._id}}" class="name">
+                  <img v-if="ele.design_company.logo_url"
+                    :src="ele.design_company.logo_url"
+                    alt="">
+                  <img class="avatar" v-else
+                    :src="require('assets/images/avatar_100.png')"/>
+                  <p>{{ele.design_company.name}}</p>
+                </router-link>
+              </el-tooltip>
+            </el-col>
+            <el-col :span="2">{{ele.base_average}}</el-col>
+            <el-col :span="2">{{ele.business_average}}</el-col>
+            <el-col :span="2">{{ele.credit_average}}</el-col>
+            <el-col :span="2">{{ele.design_average}}</el-col>
+            <el-col :span="2">{{ele.effect_average}}</el-col>
+            <el-col :span="2">{{ele.innovate_average}}</el-col>
+            <el-col :span="3">{{ele.ave_score}}</el-col>
+            <el-col :span="3" class="text-center">
+              <p :class="['quite', 'fr', {'is-active': compareList.indexOf(ele._id) !== -1,
+              'more-than5': compareList.length === 4}]" @click="addCompare(ele._id)">对比</p>
+            </el-col>
+          </li>
+        </ul>
+        <ul v-if="showMore" class="inno-table" v-loading="loading0">
           <li class="clearfix" v-for="(ele, index) in boardList0" :key="index">
             <el-col :span="1">
               <span :class="['ranking',
@@ -283,6 +316,7 @@ export default {
       loading0: false,
       isStop0: false,
       boardList0: [],
+      miniBoardList: [],
       loading1: false,
       isStop1: false,
       boardList1: [],
@@ -379,7 +413,8 @@ export default {
         this.isStop6 = true
       }
     },
-    getBoard(index = 0, size = 10) {
+    getBoard(index = 0) {
+      let size = index === 0 ? 100 : 10
       if (this['isStop' + index]) {
         return
       }
@@ -391,7 +426,12 @@ export default {
       .then(res => {
         this['loading' + index] = false
         if (res.data.meta.status_code === 200) {
-          this['boardList' + index] = res.data.data
+          if (!index) {
+            this.miniBoardList = res.data.data.slice(0, 10)
+            this['boardList' + index] = res.data.data
+          } else {
+            this['boardList' + index] = res.data.data
+          }
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -401,7 +441,6 @@ export default {
     },
     getMoreBoard() {
       this.showMore = true
-      this.getBoard(0, 100)
     }
   },
   watch: {

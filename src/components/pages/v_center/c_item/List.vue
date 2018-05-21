@@ -270,58 +270,56 @@
         this.$router.replace({name: 'vcenterItemList'})
         return
       }
-      self.$http.get(api.designItemList, {})
-        .then(function (response) {
-          if (response.data.meta.status_code === 200) {
-            self.isLoading = false
-            if (!response.data.data.lenght) {
-              self.isEmpty = true
-            } else {
-              self.isEmpty = false
-              self.waitCount = response.data.meta.pagination.total
-              let designItems = response.data.data
-              for (let i = 0; i < designItems.length; i++) {
-                let item = designItems[i]
-                let typeLabel = ''
-                if (item.item.type === 1) {
-                  typeLabel = item.item.type_value + '/' + item.item.design_type_value + '/' + item.item.field_value + '/' + item.item.industry_value
-                } else if (item.item.type === 2) {
-                  typeLabel = item.item.type_value + '/' + item.item.design_type_value
-                }
-                designItems[i].item.type_label = typeLabel
-                designItems[i]['item']['created_at'] = item.item.created_at.date_format().format('yyyy-MM-dd')
-              } // endfor
-              self.designItems = designItems
-            }
-          } else {
-            self.$message.error(response.data.meta.message)
-            self.isLoading = false
-          }
-        })
-        .catch(function (error) {
+      self.$http.get(api.designItemList)
+      .then(function (response) {
+        if (response.data.meta.status_code === 200) {
           self.isLoading = false
-          self.$message.error(error.message)
-          return false
-        })
+          if (!response.data.data.length) {
+            self.isEmpty = true
+          } else {
+            self.isEmpty = false
+            self.waitCount = response.data.meta.pagination.total
+            let designItems = response.data.data
+            for (let i = 0; i < designItems.length; i++) {
+              let item = designItems[i]
+              let typeLabel = ''
+              if (item.item.type === 1) {
+                typeLabel = item.item.type_value + '/' + item.item.design_type_value + '/' + item.item.field_value + '/' + item.item.industry_value
+              } else if (item.item.type === 2) {
+                typeLabel = item.item.type_value + '/' + item.item.design_type_value
+              }
+              designItems[i].item.type_label = typeLabel
+              designItems[i]['item']['created_at'] = item.item.created_at.date_format().format('yyyy-MM-dd')
+            } // endfor
+            self.designItems = designItems
+          }
+        } else {
+          self.$message.error(response.data.meta.message)
+          self.isLoading = false
+        }
+      })
+      .catch(function (error) {
+        self.isLoading = false
+        self.$message.error(error.message)
+        return false
+      })
 
       // 获取已确认合作的项目数
-      self.$http.get(api.designCooperationLists, {})
-        .then(function (response) {
-          self.isLoading = false
-          console.log(response)
-          if (response.data.meta.status_code === 200) {
-            if (!response.data.data.length) {
-              return false
-            }
+      self.$http.get(api.designCooperationLists)
+      .then(function (response) {
+        self.isLoading = false
+        if (response.data.meta.status_code === 200) {
+          if (response.data.data.length) {
             self.ingCount = response.data.meta.pagination.total
-          } else {
-            self.$message.error(response.data.meta.message)
           }
-        })
-        .catch(function (error) {
-          self.$message.error(error.message)
-          self.isLoading = false
-        })
+        } else {
+          self.$message.error(response.data.meta.message)
+        }
+      })
+      .catch(function (error) {
+        self.$message.error(error.message)
+        self.isLoading = false
+      })
     }
   }
 

@@ -824,7 +824,7 @@
     .slide .head-cover p {
       font-size: 1.2rem;
       padding-right: 0;
-      margin-right: 12px;
+      margin: 0 15px;
     }
 
     .slide .head-cover p.need {

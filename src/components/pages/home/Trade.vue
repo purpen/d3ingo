@@ -120,7 +120,6 @@
   }
 
   .content-box p {
-    line-height: 2;
   }
 
   .content-box p img {
@@ -151,7 +150,6 @@
     margin: 0 auto;
     color: #666;
     font-size: 1.8rem;
-    line-height: 2;
   }
 
   .in-foot {
@@ -176,6 +174,21 @@
   @media screen and (max-width: 767px) {
     .banner h3 {
       font-size: 2rem;
+    }
+    .trade-text.gray {
+      padding: 15px 0
+    }
+    .content-box h3 {
+      font-size: 1.8rem
+    }
+    .trade-text {
+      padding: 15px 0
+    }
+    .trade-text h3 {
+      margin-bottom: 0;
+    }
+    .trade-text p {
+      font-size: 1.5rem
     }
   }
 </style>
