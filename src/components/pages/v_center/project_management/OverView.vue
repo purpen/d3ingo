@@ -1,444 +1,459 @@
 <template>
-<div class="item-total">
-  <section class="add-itemStage-bg" v-if="isItemStage">
-    <div class="add-itemStage">
-      <div class="itemStage-title">新建项目阶段
-        <i class="fx-icon-close-sm" @click="cancel()"></i>
-      </div>
-      <div class="itemStage-content">
-        <el-form 
-          @submit.native.prevent 
-          :model="form"
-          ref="form" 
-          :rules="rules"
-          label-position=""
-          >
-            <el-form-item label="项目阶段名称" prop="name">
-              <el-input v-model="form.name"
-              placeholder="项目阶段名称">
+  <div class="item-total">
+    <section class="add-itemStage-bg" v-if="isItemStage">
+      <div class="add-itemStage">
+        <div class="itemStage-title">新建项目阶段
+          <i class="fx-icon-close-sm" @click="cancel()"></i>
+        </div>
+        <div class="itemStage-content">
+          <el-form 
+            @submit.native.prevent 
+            :model="form"
+            ref="form" 
+            :rules="rules"
+            label-position=""
+            >
+              <el-form-item label="项目阶段名称" prop="name">
+                <el-input v-model="form.name"
+                placeholder="项目阶段名称">
+                </el-input>
+              </el-form-item>
+              <el-row :gutter="20">
+                <el-col :span="12">
+              <el-form-item label="投入时间" prop="duration">
+                <el-input placeholder="请输入所需天数" v-model.number="form.duration"
+                  prop="duration"
+                  >
+                <template slot="append">工作日</template>
               </el-input>
             </el-form-item>
-            <el-row :gutter="20">
-              <el-col :span="12">
-            <el-form-item label="投入时间" prop="duration">
-              <el-input placeholder="请输入所需天数" v-model.number="form.duration"
-                prop="duration"
-                >
-              <template slot="append">工作日</template>
-            </el-input>
-          </el-form-item>
-              </el-col>
-              <el-col :span="12">
-          <el-form-item label="开始时间" prop="start_time">
-            <div class="block">
-              <el-date-picker
-                type="date"
-                v-model="form.start_time"
-                placeholder="选择日期时间">
-              </el-date-picker>
-            </div>
-          </el-form-item>
-              </el-col>
-          </el-row>
-          <el-form-item label="交付内容" prop="content">
-            <el-input
-              type="textarea"
-              :autosize="{ minRows: 4, maxRows: 8}"
-              placeholder="请输入交付内容"
-              v-model="form.content"
-              > 
-            </el-input>
-          </el-form-item>
-          <el-form-item>
-            <button class="small-button full-red-button fr" @click="create('form')">保存</button>
-            <button class="small-button white-button fr" @click="cancel()">取消</button>
-          </el-form-item>
-        </el-form>
-    </div>
-  </div>
-  </section>
-  <transition name="el-fade-in-linear">
-  <aside class="aside" v-if="isitemedit">
-    
-    <div class="aside-title fx" >
-      <i class="fx fx-icon-delete2"></i>
-      项目阶段设置
-      <span class="fx fx-icon-close-sm" @click="isitemedit=false"></span>
-    </div>
-    <el-progress 
-    :percentage="50"
-    :show-text="false"
-    :stroke-width="8"
-    ></el-progress>
-    <ul class="aside-content">
-      <li> <el-checkbox v-model="checked"></el-checkbox>
-        <el-input v-model="form.name"  placeholder="项目阶段名称"></el-input>
-      </li>
-      <li>
-        <div class="block">
-            <el-date-picker
-            type="date"
-            v-model="form.start_time"
-            placeholder="选择日期时间">
-            </el-date-picker>
-          </div>
-      </li>
-      <li>
-        <div>
-          <el-input placeholder="请输入所需天数"                        v-model="form.duration">
-            <template slot="append">工作日</template>
-          </el-input>
+                </el-col>
+                <el-col :span="12">
+            <el-form-item label="开始时间" prop="start_time">
+              <div class="block">
+                <el-date-picker
+                  type="date"
+                  v-model="form.start_time"
+                  placeholder="选择日期时间">
+                </el-date-picker>
+              </div>
+            </el-form-item>
+                </el-col>
+            </el-row>
+            <el-form-item label="交付内容" prop="content">
+              <el-input
+                type="textarea"
+                :autosize="{ minRows: 4, maxRows: 8}"
+                placeholder="请输入交付内容"
+                v-model="form.content"
+                > 
+              </el-input>
+            </el-form-item>
+            <el-form-item>
+              <button class="small-button full-red-button fr" @click="create('form')">保存</button>
+              <button class="small-button white-button fr" @click="cancel()">取消</button>
+            </el-form-item>
+          </el-form>
         </div>
-      </li>
-      <li>
-        <el-input
-            type="textarea"
-            :autosize="{ minRows: 4, maxRows: 8}"
-            placeholder="请输入内容"
-            v-model="form.content"
+      </div>
+    </section>
+    <transition name="el-fade-in-linear">
+      <aside class="aside" v-if="isitemedit">
+        
+        <div class="aside-title fx" >
+          <i class="fx fx-icon-delete2"></i>
+          项目阶段设置
+          <span class="fx fx-icon-close-sm" @click="isitemedit=false"></span>
+        </div>
+        <el-progress 
+        :percentage="50"
+        :show-text="false"
+        :stroke-width="8"
+        ></el-progress>
+        <ul class="aside-content">
+          <li> <el-checkbox v-model="checked"></el-checkbox>
+            <el-input 
+              v-model="formup.name" 
+              placeholder="项目阶段名称"
+              @blur="updata()"
             >
             </el-input>
-      </li>
-    </ul>
-    <div class="add-tack">
-      <i>+</i>
-      <span class="fx-6">添加任务</span>
-    </div>
-    <ul class="tack-list">
-      <li>
-        <el-checkbox v-model="checked"> 前期调研</el-checkbox>
-      </li>
-      <li>
-        <el-checkbox v-model="checked"> 草图设计</el-checkbox>
-      </li>
-    </ul>
-    
-  </aside>
-</transition>
-  <section class="top-progress">
-    <div class="h3">笔记本设计</div>
-    <el-progress 
-    :percentage="0"
-    :show-text="false"
-    :stroke-width="3"
-    ></el-progress>
-    <ul class="item-header">
-      <li>
-        <div>0</div>
-        <p>所有任务</p>
-      </li>
-       <li>
-        <div>0</div>
-        <p>项目阶段</p>
-      </li>
-       <li>
-        <div>0</div>
-        <p>投入时间</p>
-      </li>
-       <li>
-        <div>0%</div>
-        <p>项目进度</p>
-      </li>
-    </ul>
-  </section>
-  <section class="item-task">
-    <div class="h3">
-      任务统计
-    </div>
-    <ul>
-      <li>
-        <el-progress
-          type="circle" 
-          :percentage="0"
-          :width="60"
-          :show-text="false"
-        ></el-progress>
-        <div >
-          <p>未认领</p>
-          <p class="fx-6">50%</p>
-        </div>
-      </li>
-      <li>
-        <el-progress 
-          type="circle" 
-          :percentage="0"
-          :show-text="false"
-          :width="60"></el-progress>
-        <div >
-          <p>未完成</p>
-          <p class="fx-6">50%</p>
-        </div>
-      </li>
-      <li>
-        <el-progress
-          type="circle" 
-          :percentage="0"
-          :width="60"
-          :show-text="false"
-        ></el-progress>
-        <div>
-          <p>已完成</p>
-          <p class="fx-6">50%</p>
-        </div>
-      </li>
-      <li>
-        <el-progress
-          type="circle" 
-          :percentage="0"
-          :width="60"
-          :show-text="false"
-        ></el-progress>
-        <div>
-          <p>已逾期</p>
-          <p class="fx-6">50%</p>
-        </div>
-      </li>
-    </ul>
-  </section>
-  <section class="item-content">
-
-    <p class="h3">项目执行进度规划<p>
-
-      <div class="item-lists">
-
-        <el-row v-if="designStageLists.length>0">
-
-          <el-col :span="6">
-            <div class="item-list-text">
-
-              <div class="item-text-Header">
-                <el-row>
-
-                  <el-col>
-                    <div class="fr popover" tabindex="-1">
-                      <i class="fx-icon-search" 
-                        @click="isSearch=true"
-                      >
-                      <ul class="search-popover">
-                        <li @click="sort='isday'">按天查询</li>
-                        <li @click="sort='isweek'">按周查询</li>
-                        <li @click="sort='ismonth'">按月查询</li>
-                      </ul>
-                      </i>
-                    </div>
-                  </el-col>
-
-                  <el-col>
-                    <div class="item-text-content">
-                      <span>项目阶段</span>
-                      <ul>
-                        <li>阶段</li>
-                        <li>投入时间</li>
-                        <li>完成度</li>
-                      </ul>
-                    </div>
-                  </el-col>
-
-                </el-row>
+          </li>
+          <li class="formup-time">
+            <div class="block">
+                <el-date-picker
+                type="date"
+                v-model="formupStart"
+                placeholder="选择日期时间"
+                @change="updata"
+               >
+                </el-date-picker>
               </div>
-
-              <div class="item-text-list" v-for="(des,indexdes) in designStageLists" :key="indexdes" @click="isitemedit=!isitemedit">
-                <el-row >
-                  <el-col>
-                    <div class="item-text-content">
-                      <span>{{des.name}}</span>
-                      <ul>
-                        <li>{{des.name}}</li>
-                        <li>{{des.duration}}</li>
-                        <li>0%</li>
-                      </ul>
-                    </div>
-                  </el-col>
-
-                  <el-col>
-                     <ul class="paycontent">
-                       
-                      <li>
-                        交付内容:
-                      </li>
-                      <li>
-                        {{des.content}}
-                      </li>
-                    </ul>
-                  </el-col>
-                   
-                </el-row>
-              </div>
-            </div>
-          </el-col>
-
-          <el-col :span="18" :style="{height:Rheight +'px'}">
-
-            <div class="item-chart">
-              
-              <div 
-                class="item-chart-list scroll-bar" 
-                :style="{height:Rheight + 'px'}"
-                ref="chartlist"
+          </li>
+          <li>
+            <div>
+              <el-input 
+                placeholder="请输入所需天数" 
+                v-model="formup.duration"
+                :maxlength="4"
+                @blur="updata()"
               >
+                <template slot="append">工作日</template>
+              </el-input>
+            </div>
+          </li>
+          <li>
+            <el-input
+                type="textarea"
+                :autosize="{ minRows: 4, maxRows: 8}"
+                placeholder="请输入内容"
+                v-model="formup.content"
+                >
+                </el-input>
+          </li>
+        </ul>
+        <div class="add-tack">
+          <i>+</i>
+          <span class="fx-6">添加任务</span>
+        </div>
+        <ul class="tack-list" v-if="formup.design_substage
+        ">
+          <li v-for="(itemup,indexip) in formup.design_substage" :key="indexip">
+            <el-checkbox v-model="checked">
+              {{itemup.name}}
+            </el-checkbox>
+          </li>
+        </ul>
+        
+      </aside>
+    </transition>
+    <section class="top-progress">
+      <div class="h3">笔记本设计</div>
+      <el-progress 
+      :percentage="0"
+      :show-text="false"
+      :stroke-width="3"
+      ></el-progress>
+      <ul class="item-header">
+        <li>
+          <div>0</div>
+          <p>所有任务</p>
+        </li>
+        <li>
+          <div>0</div>
+          <p>项目阶段</p>
+        </li>
+        <li>
+          <div>0</div>
+          <p>投入时间</p>
+        </li>
+        <li>
+          <div>0%</div>
+          <p>项目进度</p>
+        </li>
+      </ul>
+    </section>
+    <section class="item-task">
+      <div class="h3">
+        任务统计
+      </div>
+      <ul>
+        <li>
+          <el-progress
+            type="circle" 
+            :percentage="0"
+            :width="60"
+            :show-text="false"
+          ></el-progress>
+          <div >
+            <p>未认领</p>
+            <p class="fx-6">50%</p>
+          </div>
+        </li>
+        <li>
+          <el-progress 
+            type="circle" 
+            :percentage="0"
+            :show-text="false"
+            :width="60"></el-progress>
+          <div >
+            <p>未完成</p>
+            <p class="fx-6">50%</p>
+          </div>
+        </li>
+        <li>
+          <el-progress
+            type="circle" 
+            :percentage="0"
+            :width="60"
+            :show-text="false"
+          ></el-progress>
+          <div>
+            <p>已完成</p>
+            <p class="fx-6">50%</p>
+          </div>
+        </li>
+        <li>
+          <el-progress
+            type="circle" 
+            :percentage="0"
+            :width="60"
+            :show-text="false"
+          ></el-progress>
+          <div>
+            <p>已逾期</p>
+            <p class="fx-6">50%</p>
+          </div>
+        </li>
+      </ul>
+    </section>
+    <section class="item-content">
 
-                <div class="item-chartHeader">
+      <p class="h3">项目执行进度规划</p>
 
-                  <div  v-for="(m,indexm) in totaldays" :key="indexm+'m'">
-                    <div v-if="sort === 'isweek'||sort === 'isday'">{{m.year}}年{{m.month}}月</div>
-                    <div v-if="sort === 'ismonth'&&m.activeyear==='activeyear'">{{m.year}}</div>
-                    <ul>
-                      <li v-for="(d,indexd) in m.dayings" :key="indexd" v-if="sort === 'isday'" class="dateday">
-                      {{d.i}}
+        <div class="item-lists">
+
+          <el-row v-if="designStageLists.length>0">
+
+            <el-col :span="6">
+              <div class="item-list-text">
+
+                <div class="item-text-Header">
+                  <el-row>
+
+                    <el-col>
+                      <div class="fr popover" tabindex="-1">
+                        <i class="fx-icon-search" 
+                          @click.stop="isSearch=true"
+                        >
+                        <ul class="search-popover">
+                          <li @click.stop="sort='isday'">按天查询</li>
+                          <li @click.stop="sort='isweek'">按周查询</li>
+                          <li @click.stop="sort='ismonth'">按月查询</li>
+                        </ul>
+                        </i>
+                      </div>
+                    </el-col>
+
+                    <el-col>
+                      <div class="item-text-content">
+                        <span>项目阶段</span>
+                        <ul>
+                          <li>阶段</li>
+                          <li>投入时间</li>
+                          <li>完成度</li>
+                        </ul>
+                      </div>
+                    </el-col>
+
+                  </el-row>
+                </div>
+
+                <div class="item-text-list" v-for="(des,indexdes) in designStageLists" :key="indexdes" @click="edit(des)">
+                  <el-row >
+                    <el-col>
+                      <div class="item-text-content">
+                        <span>{{des.name}}</span>
+                        <ul>
+                          <li>{{des.name}}</li>
+                          <li>{{des.duration}}</li>
+                          <li>0%</li>
+                        </ul>
+                      </div>
+                    </el-col>
+
+                    <el-col>
+                      <ul class="paycontent">
+                        
+                        <li>
+                          交付内容:
+                        </li>
+                        <li>
+                          {{des.content}}
+                        </li>
+                      </ul>
+                    </el-col>
+                    
+                  </el-row>
+                </div>
+              </div>
+            </el-col>
+
+            <el-col :span="18" :style="{height:Rheight +'px'}">
+
+              <div class="item-chart">
+                
+                <div 
+                  class="item-chart-list scroll-bar" 
+                  :style="{height:Rheight + 'px'}"
+                  ref="chartlist"
+                >
+
+                  <div class="item-chartHeader">
+
+                    <div  v-for="(m,indexm) in totaldays" :key="indexm+'m'">
+                      <div v-if="sort === 'isweek'||sort === 'isday'">{{m.year}}年{{m.month}}月</div>
+                      <div v-if="sort === 'ismonth'&&m.activeyear==='activeyear'">{{m.year}}</div>
+                      <ul>
+                        <li v-for="(d,indexd) in m.dayings" :key="indexd" v-if="sort === 'isday'" class="dateday">
+                        {{d.i}}
+                        </li>
+                        <li v-for="(d,indexd) in m.dayings" :key="indexd" v-if="sort === 'isweek'&& d.week===0" class="dateweek">
+                        {{m.month}}.{{d.i}}~{{m.dayings.length-d.i>=7?m.month+'.'+(d.i+6):(m.month+1)+'.'+(d.i+6-m.dayings.length)}}
+                        </li>
+                        <li v-if="sort === 'ismonth'" class="dateweek">
+                          {{m.month}}月
+                        </li>
+                      </ul>
+                    </div>
+
+                  </div>
+
+                  <div v-if="designStageLists" class="item-chartContent" v-for="(c,indexc) in designStageLists" :key="indexc">
+
+                    <div 
+                      v-if="(c.design_substage&&(sort==='isday'||sort==='isweek'))" 
+                      v-for="(tack, indextack) in c.design_substage" :key="indextack+ 'y'" :style="{left:tack.left*30+'px',width:tack.duration*30+'px'}"
+                      class="item-tacklist" 
+                      >
+                      {{indextack}}
+                    </div>
+
+                    <div v-if="c.design_substage&&sort==='ismonth'" class="item-tacklist" 
+                      v-for="(tack, indextack) in c.design_substage" :key="indextack+ 'y'" :style="{left:tack.left*6.77+'px',width:tack.duration*6.77+'px'}">
+                      {{indextack}}
+                    </div>
+                    <div  v-if="(sort==='isday'||sort==='isweek')" class="item-tacklist-last" :style="{left:(c.left+1)*30 + 'px'}">
+                      <div>+</div>
+                      <span>添加任务</span>
+                    </div>
+                    <div  v-if="sort==='ismonth'" class="item-tacklist-last" :style="{left:(c.left+1)*6.77 + 'px'}">
+                      <div>+</div>
+                      <span>添加任务</span>
+                    </div>
+                    <div v-if="!c.design_substage&&sort==='isday'||sort==='isweek'" class="item-tacklist no-tack" 
+                      :style="{left:c.left*30+'px'}">
+                    </div>
+                    <div v-if="!c.design_substage&&sort==='ismonth'" class="item-tacklist no-tack" 
+                      :style="{left:c.left*6.77+'px'}">
+                    </div>
+                    <ul v-if="totaldays" v-for="(tt,indextt) in totaldays" :key="indextt">
+                      <li v-for="(day,indexday) in tt.dayings" :key="indexday" :class="day.new?'bgc':''" v-if="sort === 'isday'" class="dateday">
                       </li>
-                      <li v-for="(d,indexd) in m.dayings" :key="indexd" v-if="sort === 'isweek'&& d.week===0" class="dateweek">
-                      {{m.month}}.{{d.i}}~{{m.dayings.length-d.i>=7?m.month+'.'+(d.i+6):(m.month+1)+'.'+(d.i+6-m.dayings.length)}}
+                      <li v-for="(day,indexday) in tt.dayings" :key="indexday" :class="day.new?'bgc':''" v-if="sort === 'isweek'" class="dateday">
                       </li>
                       <li v-if="sort === 'ismonth'" class="dateweek">
-                        {{m.month}}月
                       </li>
                     </ul>
-                  </div>
 
+                  </div>
                 </div>
 
-                <div v-if="designStageLists" class="item-chartContent" v-for="(c,indexc) in designStageLists" :key="indexc">
-
-                  <div 
-                    v-if="(c.design_substage&&sort==='isday'||sort==='isweek')" 
-                    v-for="(tack, indextack) in c.design_substage" :key="indextack+ 'y'" :style="{left:tack.left*30+'px',width:tack.duration*30+'px'}"
-                    class="item-tacklist" 
-                    >
-                    {{indextack}}
-                  </div>
-
-                  <div v-if="c.design_substage&&sort==='ismonth'" class="item-tacklist" 
-                    v-for="(tack, indextack) in c.design_substage" :key="indextack+ 'y'" :style="{left:tack.left*6.77+'px',width:tack.duration*6.77+'px'}">
-                    {{indextack}}
-                  </div>
-                  <div class="item-tacklist-last" :style="{left:(c.left+1)*30 + 'px'}">
-                    <div>+</div><span>添加任务</span>
-                  </div>
-
-                  <div v-if="!c.design_substage&&sort==='isday'||sort==='isweek'" class="item-tacklist no-tack" 
-                    :style="{left:c.left*30+'px'}">
-                  </div>
-                  <div v-if="!c.design_substage&&sort==='ismonth'" class="item-tacklist no-tack" 
-                    :style="{left:c.left*6.77+'px'}">
-                  </div>
-                  
-                  <ul v-if="totaldays" v-for="(tt,indextt) in totaldays" :key="indextt">
-                    <li v-for="(day,indexday) in tt.dayings" :key="indexday" :class="day.new?'bgc':''" v-if="sort === 'isday'" class="dateday">
-                    </li>
-                    <li v-for="(day,indexday) in tt.dayings" :key="indexday" :class="day.new?'bgc':''" v-if="sort === 'isweek'" class="dateday">
-                    </li>
-                    <li v-if="sort === 'ismonth'" class="dateweek">
-                    </li>
-                  </ul>
-
-                </div>
               </div>
 
-            </div>
+            </el-col>
+          </el-row>
 
-          </el-col>
-        </el-row>
-
-        <div  class="add-item" >
-          <div @click="isItemStage=true">+</div>
-          <p @click="isItemStage=true">添加项目阶段</p>
-        </div>
-    <div v-if="true" v-for="(designStage,index) in designStageLists" :key="index">
-      
-      <div>
-        名称: <p v-if="!designStage.isedit">{{designStage.name}}</p>
-        <el-input v-model="designStage.name" v-else></el-input>
-      </div>
-      <div>
-          投入时间: <p v-if="!designStage.isedit">{{designStage.duration}}</p>
-           <el-input placeholder="请输入内容" v-model="designStage.duration" v-else></el-input>
-      </div>
-      <div>
-        开始时间: <p v-if="!designStage.isedit">{{designStage.start_time}}</p>
-        <el-date-picker
-            v-model="designStage.start_time"
-            type="datetime"
-            placeholder="选择日期时间" v-else>
-        </el-date-picker>
-      </div>
-      <div>
-        内容: <p v-if="!designStage.isedit">{{designStage.content}}</p>
-        <el-input
-            type="textarea"
-            :autosize="{ minRows: 2, maxRows: 4}"
-            placeholder="请输入内容"
-            v-model="designStage.content"
-            v-else
-            >
-          </el-input>
-      </div>
-      <div v-for="(sub,indexsub) in designStage.design_substage" :key="indexsub">
-        <p>{{sub.name}}</p>
-        <el-input placeholder="任务名称" v-model="sub.name"></el-input>
-        <p>{{sub.summary}}</p>
-        <el-input
-            type="textarea"
-            :autosize="{ minRows: 2, maxRows: 4}"
-            placeholder="请输入内容"
-            v-model="sub.summary"
-            >
-        </el-input>
-        <p>{{sub.duration}}</p>
-        <el-input placeholder="任务投入时间" v-model="sub.duration"></el-input>
+          <div  class="add-item" >
+            <div @click="isItemStage=true">+</div>
+            <p @click="isItemStage=true">添加项目阶段</p>
+          </div>
+      <div v-if="true" v-for="(designStage,index) in designStageLists" :key="index">
         
-        <p>{{sub.start_time}}</p>
-        <el-date-picker
-        v-model="sub.start_time"
-        type="datetime"
-        placeholder="选择日期时间">
-        </el-date-picker>
-        <el-input placeholder="节点名称" v-model="formNode.name"></el-input>
-        <el-date-picker
-          v-model="formNode.time"
-          type="datetime"
-          placeholder="选择截止时间">
-          </el-date-picker>
-          <el-checkbox v-model="formNode.is_owner">甲方参与</el-checkbox>
-        <el-button  @click="createNode(sub.id,indexsub)">确定添加节点</el-button>
-        <el-button  @click="addNode()">添加节点</el-button>
-        <div v-if="sub.design_stage_node">
-          <p>节点名称: {{sub.design_stage_node.name}}</p>
-          <el-input v-model="sub.design_stage_node.name"></el-input>
-          <p>节点时间: {{sub.design_stage_node.time}}</p>
-          <el-date-picker
-          v-model="sub.design_stage_node.time"
-          type="datetime"
-          placeholder="选择截止时间">
-          </el-date-picker>
-          <el-button  @click="editNode(sub.design_stage_node,indexsub)">编辑节点</el-button>
-          <el-button  @click="updataNode(sub.design_stage_node,indexsub)">确定编辑节点</el-button>
-          <el-button  @click="deleteNode(sub.design_stage_node.id,indexsub)">删除节点</el-button>
+        <div>
+          名称: <p v-if="!designStage.isedit">{{designStage.name}}</p>
+          <el-input v-model="designStage.name" v-else></el-input>
         </div>
-        <el-button  @click="updataTack(sub,indexsub)">确认编辑任务</el-button>
-        <el-button style="margin-bottom:30px" @click="editTack(sub,indexsub)">编辑任务</el-button>
-        <el-button style="margin-bottom:30px" @click="deleteTack(sub.id,indexsub)">删除任务</el-button>
+        <div>
+            投入时间: <p v-if="!designStage.isedit">{{designStage.duration}}</p>
+            <el-input placeholder="请输入内容" v-model="designStage.duration" v-else></el-input>
+        </div>
+        <div>
+          开始时间: <p v-if="!designStage.isedit">{{designStage.start_time}}</p>
+          <el-date-picker
+              v-model="designStage.start_time"
+              type="datetime"
+              placeholder="选择日期时间" v-else>
+          </el-date-picker>
+        </div>
+        <div>
+          内容: <p v-if="!designStage.isedit">{{designStage.content}}</p>
+          <el-input
+              type="textarea"
+              :autosize="{ minRows: 2, maxRows: 4}"
+              placeholder="请输入内容"
+              v-model="designStage.content"
+              v-else
+              >
+            </el-input>
+        </div>
+        <div v-for="(sub,indexsub) in designStage.design_substage" :key="indexsub">
+          <p>{{sub.name}}</p>
+          <el-input placeholder="任务名称" v-model="sub.name"></el-input>
+          <p>{{sub.summary}}</p>
+          <el-input
+              type="textarea"
+              :autosize="{ minRows: 2, maxRows: 4}"
+              placeholder="请输入内容"
+              v-model="sub.summary"
+              >
+          </el-input>
+          <p>{{sub.duration}}</p>
+          <el-input placeholder="任务投入时间" v-model="sub.duration"></el-input>
+          
+          <p>{{sub.start_time}}</p>
+          <el-date-picker
+          v-model="sub.start_time"
+          type="datetime"
+          placeholder="选择日期时间">
+          </el-date-picker>
+          <el-input placeholder="节点名称" v-model="formNode.name"></el-input>
+          <el-date-picker
+            v-model="formNode.time"
+            type="datetime"
+            placeholder="选择截止时间">
+            </el-date-picker>
+            <el-checkbox v-model="formNode.is_owner">甲方参与</el-checkbox>
+          <el-button  @click="createNode(sub.id,indexsub)">确定添加节点</el-button>
+          <el-button  @click="addNode()">添加节点</el-button>
+          <div v-if="sub.design_stage_node">
+            <p>节点名称: {{sub.design_stage_node.name}}</p>
+            <el-input v-model="sub.design_stage_node.name"></el-input>
+            <p>节点时间: {{sub.design_stage_node.time}}</p>
+            <el-date-picker
+            v-model="sub.design_stage_node.time"
+            type="datetime"
+            placeholder="选择截止时间">
+            </el-date-picker>
+            <el-button  @click="editNode(sub.design_stage_node,indexsub)">编辑节点</el-button>
+            <el-button  @click="updataNode(sub.design_stage_node,indexsub)">确定编辑节点</el-button>
+            <el-button  @click="deleteNode(sub.design_stage_node.id,indexsub)">删除节点</el-button>
+          </div>
+          <el-button  @click="updataTack(sub,indexsub)">确认编辑任务</el-button>
+          <el-button style="margin-bottom:30px" @click="editTack(sub,indexsub)">编辑任务</el-button>
+          <el-button style="margin-bottom:30px" @click="deleteTack(sub.id,indexsub)">删除任务</el-button>
+        </div>
+        <el-button @click="edit(designStage.id,index)">编辑</el-button>
+        <el-button @click="updata(designStage,index)">确定</el-button>
+        <el-button @click="deleteDes(designStage,index)">删除</el-button>
+        <el-button @click="addtack(designStage.id)">添加任务</el-button>
       </div>
-      <el-button @click="edit(designStage.id,index)">编辑</el-button>
-      <el-button @click="updata(designStage,index)">确定</el-button>
-      <el-button @click="deleteDes(designStage,index)">删除</el-button>
-      <el-button @click="addtack(designStage.id)">添加任务</el-button>
-    </div>
-    </div>
-  </section>
+      </div>
+    </section>
     <div v-if="true">
       <el-input placeholder="任务名称" v-model="formTack.name"></el-input>
       <el-input placeholder="任务投入时间" v-model="formTack.duration"></el-input>
       <el-date-picker
-        v-model="formTack.start_time"
-        type="datetime"
-        placeholder="选择日期时间">
+          v-model="formTack.start_time"
+          type="datetime"
+          placeholder="选择日期时间">
       </el-date-picker>
       <el-input
-            type="textarea"
-            :autosize="{ minRows: 2, maxRows: 4}"
-            placeholder="请输入内容"
-            v-model="formTack.summary"
-            >
+              type="textarea"
+              :autosize="{ minRows: 2, maxRows: 4}"
+              placeholder="请输入内容"
+              v-model="formTack.summary"
+              >
       </el-input>
       <el-button @click="createTack()">新建任务</el-button>
     </div>
@@ -460,6 +475,7 @@ export default {
         content: ''
       },
       formup: {}, // 编辑项目
+      formupStart: '', // 开始时间
       formTack: {}, // 新建任务
       formTackUp: {}, // 编辑任务
       formNode: {}, // 新建节点
@@ -619,7 +635,7 @@ export default {
       let date = Date.parse(new Date()) / 1000
       this.newleft = this.itemtostart(date)
     },
-    // 最早到项目的距离
+    // 项目到最早的距离
     itemtostart(item) {
       let et = new Date(this.endTimes[0] * 1000)
       let xin = Date.parse(new Date(et.getFullYear() + '-' + (et.getMonth() + 1) + '-' + 1)) / 1000
@@ -680,39 +696,46 @@ export default {
       })
     },
     // 编辑项目按钮
-    edit(id, index) {
-      for (var i = 0; i < this.designStageLists.length; i++) {
-        if (this.designStageLists[i].id === id) {
-          this.designStageLists[i].isedit = true
-          this.$set(this.designStageLists, i, this.designStageLists[i])
-          this.indesignStage = this.designStageLists[i]
-        } else {
-          this.designStageLists[i].isedit = false
-          this.$set(this.designStageLists, i, this.designStageLists[i])
-        }
-      }
+    edit(des) {
+      this.formup = des
+      this.formupStart = des.start_time
+      this.isitemedit = true
     },
   // 编辑项目
-    updata(designStage, index) {
-      this.formup.content = designStage.content
-      this.formup.duration = designStage.duration
-      this.formup.name = designStage.name
-      if (designStage.start_time instanceof Date) {
-        this.formup.start_time = Math.round(designStage.start_time.getTime() / 1000)
-      } else this.formup.start_time = Math.round(new Date(designStage.start_time).getTime() / 1000)
-      this.formup.id = designStage.id
-      this.$http.put(api.designStageUpdate.format(designStage.id), this.formup).then((response) => {
-        if (response.data.meta.status_code === 200) {
-          designStage.isedit = false
-          this.$set(this.designStageLists, index, designStage)
-          console.log(response.data.data)
-        } else {
-          this.$message.error(response.data.meta.message)
+    updata(date) {
+      if (this.formupStart !== this.formup.start_time || !date) {
+        if (date) {
+          this.formup.start_time = Math.round(new Date(date).getTime() / 1000)
         }
-      }).catch((error) => {
-        this.$message.error(error.message)
-        console.error(error.message)
-      })
+        if (typeof this.formup.start_time !== 'number') {
+          this.formup.start_time = Math.round(new Date(this.formup.start_time).getTime() / 1000)
+        }
+        console.log(this.formup.start_time)
+        this.$http.put(api.designStageUpdate.format(this.formup.id), this.formup).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            var res = response.data.data
+            this.endTimes.push(parseInt(res.start_time))
+            this.endTimes.push(parseInt(res.start_time) + parseInt(res.duration) * 86400)
+            this.sortdate(this.endTimes)
+            this.totaldays = this.dateDay(this.endTimes[0], this.endTimes[this.endTimes.length - 1])
+            this.newDay()
+            this.newtostart()
+            res.left = this.itemtostart(res.start_time)
+            res.start_time = new Date(res.start_time * 1000).format('yyyy-MM-dd')
+            for (var i = 0; i < this.designStageLists.length; i++) {
+              if (this.designStageLists[i].id === this.formup.id) {
+                this.$set(this.designStageLists, i, res)
+              }
+            }
+            console.log(response.data.data)
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          this.$message.error(error.message)
+          console.error(error.message)
+        })
+      }
     },
     // 删除项目
     deleteDes(d, index) {
@@ -889,6 +912,7 @@ export default {
           // 没有任务时默认显示
           if (!this.designStageLists[k].design_substage) {
             let itemd = Date.parse(new Date(this.designStageLists[k].start_time)) / 1000
+            console.log(itemd)
             this.designStageLists[k].left = Math.floor((itemd - xin) / 86400)
           }
           // 有任务时显示
@@ -909,13 +933,13 @@ export default {
               }
             }
             this.sortdate(sortTask)
-            this.designStageLists[k].left = Math.floor((sortTask[sortTask.length - 1] - xin) / 86400)
+            this.designStageLists[k].left = Math.floor((sortTask[sortTask.length - 1] - xin) / 86400) - 1
           }
         }
         this.$nextTick(_ => {
           this.scrollLeft()
         })
-        // console.log(this.designStageLists)
+        console.log(this.designStageLists)
       } else {
         this.$message.error(response.data.meta.message)
       }
@@ -1037,6 +1061,7 @@ export default {
 }
 .aside-content>li{
   margin-bottom:10px;
+  padding-left:20px;
 }
 .add-tack{
   position: relative;
