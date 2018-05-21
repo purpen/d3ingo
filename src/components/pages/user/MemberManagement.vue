@@ -753,7 +753,7 @@ export default {
     border-radius: 4px;
     position: absolute;
     z-index: 999;
-    top: 44px;
+    top: 36px;
     left: -110px;
     width: 140px;
     background: #fff;
@@ -1078,16 +1078,16 @@ export default {
   }
   @media screen and (min-width: 1200px) {
     .member-list {
-      position: absolute;
+      /* position: absolute;
       width: calc(100% - 400px);
       top: 0;
-      left: 400px;
+      left: 400px; */
     }
     .member-list-mini {
-      position: absolute;
+      /* position: absolute;
       width: calc(100% - 260px);
       top: 0;
-      left: 260px;
+      left: 260px; */
       transition: 0.2s all ease;
     }
     .parent-box {

@@ -36,6 +36,8 @@
           </li>
         </ul>
       </div>
+      <el-pagination v-show="query.totalCount > query.pageSize" class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize" :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange">
+      </el-pagination>
     </div>
     <div class="dialog-bg" v-if="show.cover"></div>
       <div class="dialog-content" v-if="show.createContent">
@@ -64,8 +66,6 @@
           </p>
         </div>
       </div>
-      <el-pagination v-if="query.totalCount / query.pageSize > 1" class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize" :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange">
-      </el-pagination>
   </section>
 </template>
 <script>
@@ -239,7 +239,7 @@ export default {
   }
   .project-list li:hover {
     /* transform: translateY(-5px); */
-    box-shadow: 0 9pt 24px rgba(10,10,10,.15);
+    box-shadow: 6px 6px 10px rgba(10, 10, 10, 0.15);
   }
   .project-list li a {
     display: block;

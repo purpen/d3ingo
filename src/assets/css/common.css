@@ -58,6 +58,18 @@
 .br50 {
   border-radius: 50%
 }
+.is-default {
+  color: #65A6FF
+}
+.is-unclaimed {
+  color: #D2D2D2
+}
+.is-success {
+  color: #00AC84
+}
+.is-exception {
+  color: #FF5A5F
+}
 .no-select {
   -moz-user-select: none;
   -webkit-user-select: none;
@@ -123,6 +135,12 @@
   height: 34px;
   line-height: 34px;
 }
+.big-button {
+  cursor: pointer;
+  width: 120px;
+  height: 40px;
+  line-height: 40px;
+}
 .middle-button {
   cursor: pointer;
   width: 120px;
@@ -132,8 +150,15 @@
 .small-button {
   cursor: pointer;
   width: 100px;
-  height: 34px;
-  line-height: 34px;
+  height: 30px;
+  line-height: 30px;
+}
+
+.mini-button {
+  cursor: pointer;
+  width: 80px;
+  height: 30px;
+  line-height: 30px;
 }
 .red-button {
   background: #fff;

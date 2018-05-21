@@ -212,8 +212,8 @@
   .item {
     height: 100px;
     padding: 20px;
-    border: 1px solid #DCDCDC;
-    box-shadow: 0 5px 10px 0 #eee;
+    border: 1px solid #e6e6e6;
+    /* box-shadow: 0 5px 10px 0 #eee; */
     border-radius: 10px;
     margin-bottom: 20px;
     cursor: pointer;
@@ -225,7 +225,7 @@
 
   .item:hover {
     transform: translate3d(0, -2px, 0);
-    box-shadow: 0 9pt 24px rgba(10,10,10,.15);
+    box-shadow: 6px 6px 10px rgba(10, 10, 10, 0.15)
   }
 
   .item a {

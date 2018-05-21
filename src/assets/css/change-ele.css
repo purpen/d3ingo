@@ -59,3 +59,24 @@
   .el-breadcrumb__item__inner a:hover, .el-breadcrumb__item__inner:hover {
     color: #222
   }
+  .el-progress-bar__outer {
+    background: #f7f7f7
+  }
+  .el-progress-bar__inner {
+    background-color: #65A6FF
+  }
+  .el-progress-circle__track {
+    stroke: #f7f7f7
+  }
+  .el-progress--circle .el-progress-circle__path {
+    stroke: #65A6FF
+  }
+  .is-unclaimed .el-progress-circle__path {
+    stroke: #D2D2D2
+  }
+  .is-success .el-progress-circle__path {
+    stroke: #00AC84
+  }
+  .is-exception .el-progress-circle__path {
+    stroke: #FF5A5F
+  }

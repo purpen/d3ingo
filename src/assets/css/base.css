@@ -1090,8 +1090,7 @@ input[type=text]:focus, input[type=password]:focus{
   flex-shrink: 0;
   font-size: 1rem;
   justify-content: flex-end;
-  line-height: 1.5;
-  padding: 12px 20px 0 9px;
+  padding: 0 20px 0 9px;
 }
 
 .nav-header .nav-item:hover span.icon i,
@@ -1107,9 +1106,9 @@ input[type=text]:focus, input[type=password]:focus{
 .nav-item .view-msg {
   display: none;
   position: absolute;
-  top: 60px;
+  top: 56px;
   right: 0;
-  width: 140px;
+  width: 200px;
   background: #fff;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .12),
   0 0 6px 0 rgba(0, 0, 0, .04);
@@ -1127,7 +1126,7 @@ input[type=text]:focus, input[type=password]:focus{
   display: block;
   line-height: 20px;
   color: #999999;
-  padding: 10px 15px 10px 40px;
+  padding: 15px 15px 15px 40px;
   transition: all 86ms ease;
   position: relative;
 }
@@ -1135,7 +1134,7 @@ input[type=text]:focus, input[type=password]:focus{
 .view-msg i {
   position: absolute;
   left: 10px;
-  top: 10px;
+  top: 15px;
 }
 
 .nav-item .view-msg a {
@@ -1351,10 +1350,10 @@ input[type=text]:focus, input[type=password]:focus{
 
 .el-menu-info .el-submenu > .el-menu {
   z-index: 999;
-  top: 60px;
+  top: 56px;
   left: 10px;
-  border: 1px solid #CCCCCC;
-  min-width: 170px;
+  border: 1px solid #d2d2d2;
+  width: 200px;
   padding: 0;
   border-radius: 4px;
 }
@@ -1365,15 +1364,14 @@ input[type=text]:focus, input[type=password]:focus{
   display: block;
   cursor: pointer;
   border: none;
-  height: 40px;
-  line-height: 40px;
+  height: 50px;
+  line-height: 50px;
   color: #999;
   text-transform: none;
   font-weight: 400;
   box-shadow: none;
   margin: 0;
-  padding: 0 0 0 1.5rem;
-  text-align: center;
+  padding: 0 0 0 40px;
   -webkit-transition: all 86ms ease-out;
   transition: all 86ms ease-out;
 }
@@ -1381,14 +1379,10 @@ input[type=text]:focus, input[type=password]:focus{
 
 .el-menu-info .el-menu .el-menu-item i {
   position: absolute;
-  left: 25px;
-  top: 10px;
+  left: 10px;
+  top: 15px;
   -webkit-transition: all 86ms ease-out;
   transition: all 86ms ease-out;
-}
-.el-menu-info .el-menu .el-menu-item i.fx-icon-logout,
-.el-menu-info .el-menu .el-menu-item i.fx-icon-logout-hover {
-  left: 28px
 }
 
 .el-menu-info .el-menu .el-menu-item:first-child {
@@ -1703,11 +1697,11 @@ img.avatar2 {
   border-radius: 0;
   border: 1px solid #e6e6e6;
   box-shadow: none;
-  box-shadow: 0 5px 10px 0 #eee
+  /* box-shadow: 0 5px 10px 0 #eee */
 }
 
 .el-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-5px);
   box-shadow: 6px 6px 10px rgba(10, 10, 10, 0.15)
 }
 

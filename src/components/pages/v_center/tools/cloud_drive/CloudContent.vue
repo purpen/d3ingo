@@ -884,7 +884,8 @@ export default {
     position: absolute;
     z-index: 999;
     top: 50px;
-    left: 0;
+    /* left: 0; */
+    right: -10px;
     width: 140px;
     background: #fff;
     color: #666;
