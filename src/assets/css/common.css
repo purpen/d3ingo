@@ -40,6 +40,9 @@
 .tc-9 {
   color: #999
 }
+.tc-red {
+  color: #FF5A5F
+}
 .b-d2 {
   border: 1px solid #d2d2d2
 }
@@ -76,7 +79,9 @@
   -ms-user-select: none;
   user-select: none;
 }
-
+.protrude {
+  font-family: PingFangSC-Medium
+}
 .blank10 {
   margin-top: 10px;
 }

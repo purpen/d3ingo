@@ -1,5 +1,5 @@
 <template>
-  <div class="blank30">
+  <div class="blank30 vcenter">
     <el-row>
       <v-menu currentName="item"></v-menu>
 

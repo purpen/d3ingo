@@ -504,8 +504,8 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   font-size: 14px;
   cursor: pointer;
   min-width: 100px;
-  height: 34px;
-  line-height: 34px;
+  height: 30px;
+  line-height: 30px;
   padding: 0;
   margin: 0;
 }
@@ -1024,8 +1024,8 @@ input[type=text]:focus, input[type=password]:focus{
   height: 60px;
   line-height: 60px;
   border-bottom: 3px solid transparent;
-  color: #7A7A7A;
-  font-size: 1.5rem;
+  color: #999;
+  font-size: 1.6rem;
   padding: 0 3px;
   margin: 0 22px;
 }
@@ -1424,7 +1424,7 @@ input[type=text]:focus, input[type=password]:focus{
 .el-menu-info .el-submenu .el-submenu__title .b-nickname {
   padding-left: 8px;
   padding-right: 3px;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
 }
 
 .el-menu-info:hover > .el-submenu .el-submenu__title, .el-menu-info:hover .el-submenu .el-submenu__icon-arrow {
@@ -1596,7 +1596,7 @@ input[type=text]:focus, input[type=password]:focus{
 
 .content-box p {
   color: #666666;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   line-height: 1.5;
 }
 
@@ -2361,6 +2361,9 @@ td.fc-day.fc-widget-content.fc-today::before {
     border-color: transparent
   }
 
+  .vcenter-menu-sub {
+    padding-bottom: 0;
+  }
   .vcenter-menu-sub-list .item {
     padding-bottom: 0;
     line-height: 42px;
@@ -2372,7 +2375,8 @@ td.fc-day.fc-widget-content.fc-today::before {
     display: flex;
     justify-content: center;
     position: relative;
-    margin: 0 -35px;
+    /* margin: 0 -35px; */
+    width: 100%
   }
 
   .vcenter-menu-sub-list-m:before {

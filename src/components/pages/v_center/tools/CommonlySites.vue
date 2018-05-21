@@ -255,7 +255,7 @@
   }
 
   .right .summary {
-    font-size: 14px;
+    font-size: 12px;
     color: #666;
     line-height: 18px;
     max-height: 36px;

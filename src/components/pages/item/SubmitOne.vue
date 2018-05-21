@@ -215,7 +215,7 @@
   }
 
   .pub-btn p {
-    margin: 20px;
+    margin: 0 0 20px;
     color: #666;
   }
 
@@ -245,7 +245,6 @@
   p.des-title {
     font-size: 15px;
     color: #222;
-    margin-bottom: -10px;
     font-weight: 400;
   }
 

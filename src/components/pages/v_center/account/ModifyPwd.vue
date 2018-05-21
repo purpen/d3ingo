@@ -1,5 +1,5 @@
 <template>
-  <div class="blank30">
+  <div class="vcenter blank30">
     <el-row>
       <v-menu currentName="profile" :class="[isMob ? 'v-menu' : '']"></v-menu>
       <div :class="{'vcenter-right-plus': leftWidth === 4,

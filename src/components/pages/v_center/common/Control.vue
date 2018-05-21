@@ -821,6 +821,10 @@
     .el-row>.el-col>section{
       margin: 0 0 20px
     }
+
+    .el-row>.el-col:nth-child(2n-1)>section {
+      margin: 0 0 20px
+    }
   }
 
 </style>

@@ -204,7 +204,7 @@
 
   .item_1_desc {
     color: #666;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     line-height: 1.5;
     padding: 0 20px;
   }
