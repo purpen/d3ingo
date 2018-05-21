@@ -14,6 +14,7 @@ Vue.use(VueRouter)
 
 // 页面刷新时，重新赋值token
 if (window.localStorage.getItem('token')) {
+  // console.log(window.localStorage.getItem('token'))
   store.commit(types.USER_SIGNIN, JSON.parse(window.localStorage.getItem('token')))
 }
 
@@ -512,7 +513,9 @@ routes = [
     name: 'userManagement',
     meta: {
       title: '',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/user/MemberManagement')
   },
@@ -522,7 +525,9 @@ routes = [
     name: 'vcenterControl',
     meta: {
       title: '控制面板',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/common/Control')
   },
@@ -532,7 +537,9 @@ routes = [
     name: 'vcenterChildControl',
     meta: {
       title: '控制面板',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/common/ChildControl')
   },
@@ -617,7 +624,7 @@ router.beforeEach((to, from, next) => {
     if (store.state.event.token) {
       next()
     } else {
-      store.commit(types.PREV_URL_NAME, to.path)
+      store.commit(types.PREV_URL_NAME, to.fullPath)
       next({
         name: 'login'
       })
@@ -625,15 +632,14 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
-
   if (to.meta['hideHeader']) {
-    store.commit(types.HIDE_HEADER, to.meta.hideHeader)
+    store.commit(types.HIDE_HEADER, to.meta['hideHeader'])
   } else {
     store.commit(types.HIDE_HEADER, false)
   }
 
   if (to.meta['hideFooter']) {
-    store.commit(types.HIDE_FOOTER, to.meta.hideFooter)
+    store.commit(types.HIDE_FOOTER, to.meta['hideFooter'])
   } else {
     store.commit(types.HIDE_FOOTER, false)
   }

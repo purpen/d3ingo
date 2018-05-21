@@ -1,12 +1,11 @@
 <template>
-  <div class="container blank40 min-height350">
-    <el-row :gutter="20" class="anli-elrow">
+  <div class="blank20 min-height350">
+    <el-row>
       <v-menu currentName="message"></v-menu>
-
-      <el-col :span="isMob ? 24 : 20" v-loading="isLoading">
-        <div class="right-content">
+      <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
+        <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
-          <div class="content-box">
+          <div class="content-box" v-loading="isLoading">
             <div class="item clearfix" v-for="(d, index) in itemList" :key="index" @click="removeRedDot(index)">
               <div class="left">
                 <p class="logo"></p>
@@ -133,6 +132,12 @@
     computed: {
       isMob() {
         return this.$store.state.event.isMob
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
+      },
+      rightWidth() {
+        return 24 - this.$store.state.event.leftWidth
       }
     },
     created: function () {
@@ -160,7 +165,7 @@
 </script>
 
 <style scoped>
-  .container {
+  .vcenter-container {
     overflow: hidden;
   }
 

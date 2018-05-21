@@ -5,9 +5,7 @@
         <hgroup>
           <el-menu class="el-menu-header nav-left" :default-active="menuactive" mode="horizontal" router>
             <!--<img src="../../assets/images/logo.png" width="120" alt="太火鸟">-->
-            <div class="el-menu-item logo">
-              <span class="logo">太火鸟 SaaS</span>
-            </div>
+            <router-link :to="{name: 'home'}" class="el-menu-item logo">太火鸟 SaaS</router-link>
             <el-menu-item index="home" :route="menu.home">首页</el-menu-item>
             <el-menu-item index="server" :route="menu.server">服务</el-menu-item>
             <el-menu-item index="article" :route="menu.article">铟果说</el-menu-item>
@@ -49,7 +47,7 @@
               <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>个人中心</el-menu-item>
               <el-menu-item index="/admin" v-if="isAdmin > 0 ? true : false"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>后台管理</el-menu-item>
               <el-menu-item index="" @click="logout">
-<i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
+                <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
             </el-submenu>
           </el-menu>
         </div>
@@ -181,7 +179,6 @@
       },
       logout() {
         auth.logout()
-        this.isLogin = false
         this.$message({
           message: '已退出',
           type: 'success',
@@ -225,7 +222,7 @@
             self.fetchMessageCount()
             limitTimes += 1
           }
-        }, 20000)
+        }, 30000)
       },
       // 查看消息
       viewMsg() {
@@ -329,24 +326,6 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  @keyframes slow {
-    0% {
-      transform: translateY(-60px);
-    }
-    100% {
-      transform: translateY(0px);
-    }
-  }
-
-  @keyframes slowShow {
-    0% {
-      height: 0;
-    }
-    100% {
-      height: 81.5px;
-    }
-  }
-
   .nav-right .el-menu-header {
     min-width: 120px;
   }
@@ -454,10 +433,6 @@
     height: 100vh;
     background: #0006
   } */
-
-  .view-msg {
-    animation: slowShow 0.3s;
-  }
 
   .container {
     overflow:visible

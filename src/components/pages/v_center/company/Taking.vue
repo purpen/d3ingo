@@ -1,10 +1,9 @@
 <template>
-  <div class="container taking-dialog blank40">
+  <div class="taking-dialog blank20">
     <el-row :gutter="24">
       <v-menu currentName="company" :class="[isMob ? 'v-menu' : '']"></v-menu>
-
-      <el-col :span="isMob ? 24 : 20">
-        <div class="right-content">
+      <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
+        <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
           <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
 
@@ -17,7 +16,7 @@
               <p>设置设计类别的接单价格区间</p>
             </div>
 
-            <div class="taking-box" v-for="d in typeData">
+            <div class="taking-box" v-for="(d, index) in typeData" :key="index">
               <div class="taking-item clear">
                 <div class="rz-title">
                   <span>{{ d.name }}</span>
@@ -27,7 +26,7 @@
                 <div class="clear"></div>
 
                 <div class="item-list">
-                  <div class="item-name" v-for="s in d.designType">
+                  <div class="item-name" v-for="(s, i) in d.designType" :key="i">
                     <div class="item-title">
                       <span class="sub-type">{{ s.name }}</span>
                     </div>
@@ -164,6 +163,12 @@
       },
       isMob() {
         return this.$store.state.event.isMob
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
+      },
+      rightWidth() {
+        return 24 - this.$store.state.event.leftWidth
       }
     },
     methods: {
@@ -336,9 +341,9 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-  .content-box-m {
+  .right-content .content-box-m {
     margin: 0;
-    padding: 0 15px;
+    padding: 0;
   }
 
   .taking-info {

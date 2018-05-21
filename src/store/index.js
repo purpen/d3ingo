@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import event from './mutations'
 import actions from './action'
+import task from './task'
 
 Vue.use(Vuex)
 
@@ -12,7 +13,8 @@ Vue.config.warnExpressionErrors = false
 export default new Vuex.Store({
   modules: {
     actions,
-    event
+    event,
+    task
   },
   strict: debug
 })

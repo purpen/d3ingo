@@ -1,6 +1,6 @@
 <template>
-  <div class="menu">
-    <h3><router-link class="clearfix" to="/vcenter/control"><i class="fx fx-icon-nothing-left"></i>设计云盘</router-link></h3>
+  <div :class="['menu', {'menu-mini' : !leftWidth}]">
+    <!-- <h3><router-link class="clearfix" to="/vcenter/control"><i class="fx fx-icon-nothing-left"></i>设计云盘</router-link></h3> -->
     <el-collapse v-model="activeNames" class="cloud-menu">
       <el-collapse-item title="设计云盘" name="1">
         <ul class="cloud-classify">
@@ -98,10 +98,27 @@
         }
         this.$router.push({name: this.$route.name, params: {modules: name}})
       }
+    },
+    computed: {
+      leftWidth() {
+        let leftWidth = this.$store.state.event.leftWidth
+        if (leftWidth === 2) {
+          return 0
+        } else if (leftWidth === 4) {
+          return leftWidth
+        }
+      }
     }
   }
 </script>
 <style scoped>
+  .menu {
+    transition: 0.2s all ease;
+    max-width: 240px;
+    /* background: #333; */
+    height: calc(100vh - 60px);
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
+  }
   h3 {
     color: #666;
     font-size: 14px;
@@ -112,11 +129,15 @@
   h3 i {
     margin-right: 10px;
   }
+  .cloud-classify {
+    /* background: #333; */
+  }
   .cloud-classify li {
     font-size: 0;
-    color: #222;
   }
   .cloud-classify li a {
+    /* color: rgba(255, 255, 255, 0.5); */
+    color: #999;
     display: block;
     position: relative;
     padding-left: 44px;
@@ -193,10 +214,25 @@
     font-size: 14px;
     line-height: 40px;
   }
-  .cloud-classify li:hover a, .active {
+  .cloud-classify li:hover a, .cloud-classify li a.active {
+    /* background: rgba(255, 255, 255, 0.1); */
     background: #f7f7f7;
+    color: #ff5a5f
   }
   .active {
     color: #ff5a5f
+  }
+  
+  @media screen and (min-width: 1440px) {
+    .menu {
+      position: absolute;
+      width: 100%;
+      top: 0;
+      left: 240px;
+    }
+    .menu-mini {
+      left: 60px;
+      transition: 0.2s all ease;
+    }
   }
 </style>

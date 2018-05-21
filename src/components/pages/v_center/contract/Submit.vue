@@ -140,7 +140,7 @@
                       :prop="'stages.' + index + '.percentage'"
                       :rules="{
                       type: 'number', required: true, message: '请添写阶段支付百分比', trigger: 'blur',
-                      min: 10, max: 100, message: '比例在10-50之间', trigger: 'blur'
+                      min: 10, max: 50, message: '比例在10-50之间', trigger: 'blur'
                     }"
                     >
                       <el-input v-model.number="form.stages[index].percentage" placeholder="阶段百分比"

@@ -1,11 +1,11 @@
 <template>
-  <div class="container">
+  <div class="identification">
     <div class="blank20"></div>
-    <el-row :gutter="20">
+    <el-row>
       <v-menu currentName="company"></v-menu>
 
-      <el-col :span="isMob ? 24 : 20">
-        <div class="right-content">
+      <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
+        <div class="right-content vcenter-container">
           <v-menu-sub currentSubName="identification"></v-menu-sub>
           <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
 
@@ -504,6 +504,12 @@
       },
       isMob() {
         return this.$store.state.event.isMob
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
+      },
+      rightWidth() {
+        return 24 - this.$store.state.event.leftWidth
       }
     },
     watch: {},
@@ -598,6 +604,10 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .right-content .content-box-m {
+    margin: 0;
+    padding: 0;
+  }
 
   .form-btn {
     float: right;

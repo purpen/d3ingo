@@ -1,13 +1,12 @@
 <template>
-<section class="member-menu">
+<section :class="['member-menu', {'member-menu-mini': !leftWidth}]">
   <div class="seach-block">
     <span class="search-icon"></span>
     <input type="text" class="search" v-model.trim="searchKey">
     <span class="close-icon-solid" @click="cancelSearch"></span>
   </div>
   <div class="menu-header">
-    <span v-if="company_role === 20 || company_role === 10"
-      :class="{'active': isActive === 'member'}" @click="changeActive('member')">成员</span>
+    <span :class="{'active': isActive === 'member'}" @click="changeActive('member')">成员</span>
     <span :class="{'active': isActive === 2}" @click="changeActive(2)" v-if="false">部门</span>
     <span :class="{'active': isActive === 'group'}" @click="changeActive('group')">群组</span>
   </div>
@@ -78,8 +77,13 @@ export default {
     }
   },
   computed: {
-    company_role() {
-      return this.$store.state.event.user.company_role
+    leftWidth() {
+      let leftWidth = this.$store.state.event.leftWidth
+      if (leftWidth === 2) {
+        return 0
+      } else if (leftWidth === 4) {
+        return leftWidth
+      }
     }
   }
 }
@@ -88,10 +92,17 @@ export default {
 <style scoped>
   .member-menu {
     font-size: 14px;
-    color: #222;
+    /* color: rgba(255, 255, 255, 0.5); */
+    /* background: #333; */
+    color: #999;
+    max-width: 240px;
+    height: calc(100vh - 60px);
+    transition: 0.2s all ease;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.10)
   }
   .seach-block {
     position: relative;
+    padding: 10px;
   }
   .search {
     width: 100%;
@@ -100,23 +111,25 @@ export default {
     border-radius: 4px;
     padding: 0 8px 0 34px;
     font-size: 14px;
-    color: #222;
+    /* color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.1); */
+    color: #999;
   }
   
   .search-icon {
     position: absolute;
-    top: 10px;
-    left: 8px;
+    top: 20px;
+    left: 18px;
     width: 20px;
     height: 20px;
-    background: url(../.../../../../assets/images/tools/cloud_drive/search@2x.png) no-repeat center;
+    background: url(../../../assets/images/tools/cloud_drive/search@2x.png) no-repeat center;
     background-size: contain;
   }
   
   .close-icon-solid {
     position: absolute;
-    top: 12px;
-    right: 8px;
+    top: 22px;
+    right: 18px;
   }
   .menu-header {
     height: 48px;
@@ -125,37 +138,47 @@ export default {
     align-items: center;
     padding: 0 50px;
     color: #666;
-    border-bottom: 1px solid #d2d2d2;
   }
   .menu-header span {
     cursor: pointer
   }
   .menu-header span:hover {
-    color: #222
+    /* color: #fff */
+    color: #ff5a5f
   }
   .menu-list {
     line-height: 40px;
   }
   .menu-list li {
     cursor: pointer;
-    padding: 0 10px;
+    padding: 0 15px;
   }
   
   .menu-list li:hover {
-    background: #f7f7f7
+    /* color: rgba(255, 255, 255, 0.5); */
+    color: #ff5a5f;
+    background: #f7f7f7;
   }
   .active {
+    /* color: #fff */
     color: #ff5a5f
   }
   .menu-header span.active:hover {
+    /* color: #fff */
     color: #ff5a5f
   }
   .li-active {
+    /* color: #fff; */
     color: #ff5a5f;
-    background: #f7f7f7
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  .menu-list .li-active:hover {
+    /* color: #fff; */
+    color: #ff5a5f;
   }
   .new-group {
-    padding-left: 40px;
+    padding-left: 45px;
     position: relative;
     opacity: 0.7;
     cursor: pointer;
@@ -163,7 +186,7 @@ export default {
   .new-group::before {
     content: "";
     position: absolute;
-    left: 10px;
+    left: 15px;
     top: 10px;
     width: 20px;
     height: 20px;
@@ -173,5 +196,22 @@ export default {
   
   .new-group:hover {
     opacity: 1;
+  }
+  
+  @media screen and (min-width: 1440px) {
+    .member-menu {
+      position: absolute;
+      left: 240px;
+    }
+
+    .member-menu-mini {
+      left: 60px;
+      transition: 0.2s all ease;
+    }
+  }
+  @media screen and (max-width: 1180px) {
+    .member-menu .menu-header {
+      padding: 0 10px;
+    }
   }
 </style>

@@ -1,9 +1,9 @@
 <template>
-  <div class="container blank40">
-    <el-row :gutter="24">
+  <div class="blank20">
+    <el-row>
       <v-menu currentName="company" :class="[isMob ? 'v-menu' : '']"></v-menu>
-      <el-col :xs="24" :sm="20" :md="20" :lg="20">
-        <div class="right-content">
+      <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
+          <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
 
           <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
@@ -675,6 +675,12 @@
       },
       isMob() {
         return this.$store.state.event.isMob
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
+      },
+      rightWidth() {
+        return 24 - this.$store.state.event.leftWidth
       }
     },
     methods: {
@@ -1069,10 +1075,6 @@
   .right-content .content-box-m {
     margin: 0;
     padding: 0 15px;
-  }
-
-  .right-content .content-box {
-    padding: 0 20px;
   }
 
   .item {

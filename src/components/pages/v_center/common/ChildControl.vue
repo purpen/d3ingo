@@ -1,8 +1,127 @@
 <template>
-  <div class="container blank40 control min-height350">
-    <el-row :gutter="20" class="anli-elrow">
-      <v-menu currentName="control"></v-menu>
-      <el-col :span="isMob ? 24 : 20" v-loading.body="isLoading">
+  <el-row class="control blank20 min-height350">
+    <v-menu currentName="control"></v-menu>
+    <!-- <el-col :span="!isMob? rightWidth : 24" :offset="!isMob ? leftWidth : 0" v-loading.body="isLoading">
+
+      <div class="right-content message">
+        <div class="content-box clearfix">
+          <div class="form-title">
+            <span>待处理事项</span>
+          </div>
+          <p class="alert-title clearfix" v-if="messageCount.quantity">{{ messageCount.quantity }} 条消息</p>
+          <div class="message-btn" v-if="!messageCount.quantity">
+            <img src="../../../../assets/images/icon/control_icon.png"/>
+            <p>当前无待处理事项</p>
+          </div>
+          <div class="message-btn clearfix" v-else>
+            <router-link :to="{name: 'home'}">
+              <el-button class="is-custom">返回首页</el-button>
+            </router-link> &nbsp;&nbsp;
+            <router-link :to="{name: 'vcenterMessageList'}">
+              <el-button type="primary" class="is-custom">查看消息</el-button>
+            </router-link>
+          </div>
+        </div>
+      </div>
+
+    </el-col> -->
+    <el-col :span="!isMob? rightWidth : 24" :offset="!isMob? leftWidth : 0" v-loading.body="isLoading">
+      <div class="vcenter-container">
+        <div :class="['content-item-box', isMob ? 'content-item-box-m' : '']">
+          <div class="item ing" v-for="(d, index) in itemIngList" :key="index">
+            <div class="banner">
+              <p>
+                <span>进行中</span>
+              </p>
+            </div>
+            <div class="content">
+              <div class="pre">
+                <p class="c-title-pro">{{ d.item.name }}</p>
+                <p class="progress-line">
+                  <el-progress :text-inside="true" :show-text="false" :stroke-width="18" :percentage="d.item.progress"
+                  status="exception"></el-progress>
+                </p>
+                <p class="prefect">您的项目需求填写已经完成了{{ d.item.progress }}%。</p>
+                <p>
+                  <el-button class="is-custom" :progress="d.item.stage_status" :item_id="d.item.id"
+                              :item_type="d.item.type" @click="editItem" size="" type="primary">
+                    <i class="el-icon-edit"></i>
+                    完善项目
+                  </el-button>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="right-content" v-if="showBase">
+          <div class="content-box" v-if="isCompany()">
+
+            <div class="form-title">
+              <span>提示信息</span>
+            </div>
+            <p class="alert-title"><span>*</span> 在铟果平台接单前，请先完善以下信息并完成公司认证，便于系统精准推送项目需求。</p>
+
+            <div class="item clearfix" v-if="item.design_info_status === 0">
+              <h3>完善公司信息</h3>
+              <p class="item-title">填写公司基本信息、公司简介、荣誉奖励</p>
+              <p class="item-btn">
+                <router-link :to="{name: 'vcenterComputerBase'}">编辑</router-link>
+              </p>
+            </div>
+
+            <div class="item clearfix" v-if="item.design_verify_status !== 1">
+              <h3>公司认证</h3>
+              <p class="item-title">提交公司认证信息</p>
+              <p class="item-btn">
+                <router-link :to="{name: 'vcenterComputerAccreditation'}">{{ item.verify_label }}</router-link>
+              </p>
+            </div>
+
+            <div class="item clearfix" v-if="item.design_item_status === 0">
+              <h3>公司接单设置</h3>
+              <p class="item-title">设计项目接单价格</p>
+              <p class="item-btn">
+                <router-link :to="{name: 'vcenterComputerTaking'}">设置接单价格</router-link>
+              </p>
+            </div>
+
+            <div class="item no-line clearfix" v-if="item.design_case_status === 0">
+              <h3>上传案例作品</h3>
+              <p class="item-title">向客户更好的展示和推荐项目案例</p>
+              <p class="item-btn">
+                <router-link :to="{name: 'vcenterDesignCaseList'}">上传</router-link>
+              </p>
+            </div>
+
+          </div>
+
+          <div class="content-box" v-else>
+
+            <div class="form-title">
+              <span>提示信息</span>
+            </div>
+            <p class="alert-title"><span>*</span> 在铟果平台发布需求前，请先完善以下信息并完成公司认证，便于系统精准匹配设计服务供应商。</p>
+
+            <div class="item clearfix" v-show="item.demand_info_status === 0">
+              <h3>完善公司信息</h3>
+              <p class="item-title">填写公司基本信息</p>
+              <p class="item-btn">
+                <router-link :to="{name: 'vcenterComputerBase'}">编辑</router-link>
+              </p>
+            </div>
+
+            <div class="item clearfix no-line" v-show="item.demand_verify_status !== 1">
+              <h3>公司认证</h3>
+              <p class="item-title">提交公司认证信息</p>
+              <p class="item-btn">
+                <router-link :to="{name: 'vcenterComputerAccreditation'}">未认证</router-link>
+              </p>
+            </div>
+
+          </div>
+
+        </div>
 
         <div class="right-content message">
           <div class="content-box clearfix">
@@ -24,10 +143,9 @@
             </div>
           </div>
         </div>
-
-      </el-col>
-    </el-row>
-  </div>
+      </div>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
@@ -36,7 +154,7 @@
   import api from '@/api/api'
 
   export default {
-    name: 'vcenter_control',
+    name: 'vcenter_child_control',
     components: {
       vMenu
     },
@@ -50,7 +168,8 @@
         showBase: false,
         isLoading: false,
         companyId: '',
-        statusLabel: ''
+        statusLabel: '',
+        uChild: ''
       }
     },
     methods: {
@@ -124,12 +243,17 @@
       },
       isMob() {
         return this.$store.state.event.isMob
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
+      },
+      rightWidth() {
+        return 24 - this.$store.state.event.leftWidth
       }
     },
     created: function () {
-      let uChild = this.$store.state.event.user.child_account
-      // 如果是子账号，跳转到个人资料页
-      if (uChild === 0) {
+      let uType = this.$store.state.event.user.type
+      if (uType === 2) {
         this.$router.replace({name: 'vcenterControl'})
         return
       }
@@ -222,6 +346,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  /* 之前的样式 */
   .right-content .content-box {
     min-height: 200px;
     padding-bottom: 0;

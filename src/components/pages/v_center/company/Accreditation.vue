@@ -1,10 +1,9 @@
 <template>
-  <div class="container blank40">
+  <div class="blank20">
     <el-row :gutter="24">
       <v-menu currentName="company" :class="[isMob ? 'v-menu' : '']"></v-menu>
-
-      <el-col :span="isMob ? 24 : 20">
-        <div class="right-content">
+      <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
+        <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
           <section v-loading.body="isLoading">
             <section class="verify" v-if="item.verify_status === 0">
@@ -176,6 +175,12 @@
     computed: {
       isMob() {
         return this.$store.state.event.isMob
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
+      },
+      rightWidth() {
+        return 24 - this.$store.state.event.leftWidth
       }
     }
   }

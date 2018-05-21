@@ -912,6 +912,60 @@ const BLOCK_TYPE = [
   }
 ]
 
+// 标签颜色色值
+const TAGS_COLOR_TONE = [
+  {
+    id: 1,
+    name: '灰色',
+    value: '#999999'
+  },
+  {
+    id: 2,
+    name: '红色',
+    value: '#FF5A5F'
+  },
+  {
+    id: 3,
+    name: '橙色',
+    value: '#FC9259'
+  },
+  {
+    id: 4,
+    name: '黄色',
+    value: '#FFD330'
+  },
+  {
+    id: 5,
+    name: '浅绿',
+    value: '#A4CF30'
+  },
+  {
+    id: 6,
+    name: '品红',
+    value: '#E362E3'
+  },
+  {
+    id: 7,
+    name: '紫色',
+    value: '#AA62E3'
+  },
+  {
+    id: 8,
+    name: '蓝色',
+    value: '#3DA8F5'
+  },
+  {
+    id: 9,
+    name: '深色',
+    value: '#129C4F'
+  },
+  {
+    id: 10,
+    name: '蓝绿',
+    value: '#37C5AB'
+  }
+]
+
 // test
 const TEST = {}
 
@@ -943,5 +997,6 @@ module.exports = {
   HIGH_TECH_ENTERPRISE,
   INDUSTRIAL_DESIGN_GRADE,
   PATENT_FOR_INVENTION,
+  TAGS_COLOR_TONE,
   TEST
 }

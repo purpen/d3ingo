@@ -9,6 +9,37 @@ html {
   height: 100%;
 }
 
+html::-webkit-scrollbar,
+.scroll-bar::-webkit-scrollbar {
+  width: 8px;
+  height:8px;
+}
+
+html::-webkit-scrollbar-track,
+.scroll-bar::-webkit-scrollbar-track {
+  background-color: #e5e5e5;
+  border-left: 2px solid transparent
+}
+
+html::-webkit-scrollbar-thumb,
+.scroll-bar::-webkit-scrollbar-thumb {
+  background-color: #c1c1c1;
+  border-left: 2px solid transparent;
+  border-radius: 4px;
+}
+html::-webkit-scrollbar-thumb:hover,
+.scroll-bar::-webkit-scrollbar-thumb:hover {
+  background-color: #7d7d7d;
+}
+html::-webkit-scrollbar-corner,
+.scroll-bar::-webkit-scrollbar-corner {
+    background: #EEE
+}
+html::-webkit-scrollbar-thumb:window-inactive,
+.scroll-bar::-webkit-scrollbar-thumb:window-inactive {
+  background: rgba(0, 0, 0, .1)
+}
+
 *, *:before, *:after {
   box-sizing: inherit;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -38,7 +69,8 @@ body {
   width: 100%;
   min-height: 100%;
   position: relative;
-  overflow-x: hidden
+  overflow-x: hidden;
+  padding: 60px 0 0;
 }
 .cancel-icon {
   position: relative;
@@ -74,10 +106,13 @@ body {
   min-width: auto;
 }
 .container {
-  /* overflow: hidden; */
   margin: 0 auto;
 }
-
+.vcenter-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 30px;
+}
 .min-height350 {
   min-height: 350px;
 }
@@ -114,15 +149,20 @@ body {
 
 p {
   font-size: 1.4rem;
-  word-break: break-all;
+  word-break: break-all
 }
 
 input {
   vertical-align: top;
+  font-size: 14px;
 }
-
+textarea {
+  resize: none;
+  font-family: inherit
+}
 .el-textarea__inner {
-  resize: none
+  resize: none;
+  color: #222
 }
 
 .color222 .el-form-item__label {
@@ -251,29 +291,8 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   font-size: 0.875rem;
 }
 
-.fl {
-  float: left;
-}
-
-.fr {
-  float: right;
-}
-
-.clear {
-  clear: both;
-}
-
-.clearfix::after {
-  content: '';
-  display: block;
-  clear: both;
-}
-
-.no-select {
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+.el-select {
+  width: 100%;
 }
 
 .no-border {
@@ -557,9 +576,17 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-/**
- * 面包屑
- */
+
+.disabled-button-light,
+.disabled-button-light:hover,
+.disabled-button-light:active {
+  font-size: 14px;
+  cursor: not-allowed;
+  background: #FAFAFA;
+  color: #C8C8C8;
+  border: 1px solid #E6E6E6;
+  border-radius: 4px;
+}
 
 .bread {
   margin: 0 0 10px 0;
@@ -595,7 +622,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
  *  新添按钮颜色值
  */
 
-button.is-custom.el-button.el-button--primary {
+button.is-custom.el-button--primary {
   background-color: #FF5A5F;
   border-color: transparent;
   color: #FFFFFF;
@@ -638,7 +665,7 @@ button.is-custom.is-inverted {
 }
 
 button.el-button.is-custom.is-disabled {
-  background-color: #EEF1F6;
+  background-color: #EDF1F2;
   color: #666666;
 }
 
@@ -692,7 +719,67 @@ button.is-custom.is-outlined.is-loading:after {
 .banner .m-p {
   font-size: 1.2rem !important;
 }
-
+/* 
+.large-button {
+  cursor: pointer;
+  width: 100%;
+  height: 34px;
+  line-height: 34px;
+}
+.middle-button {
+  cursor: pointer;
+  width: 120px;
+  height: 40px;
+  line-height: 40px;
+}
+.small-button {
+  cursor: pointer;
+  width: 100px;
+  height: 34px;
+  line-height: 34px;
+}
+.red-button {
+  background: #fff;
+  border: 1px solid #ff5a5f;
+  border-radius: 4px;
+  color: #ff5a5f;
+}
+.red-button:hover {
+  background-color: #ffacaf;
+  color: #fff;
+}
+.red-button:active {
+  background-color: #ff5a5f;
+  color: #fff;
+}
+.full-red-button {
+  background: #FF5A5F;
+  border: 1px solid #ff5a5f;
+  border-radius: 4px;
+  color: #fff;
+}
+.full-red-button:hover {
+  border-color: #d23c46;
+  background-color: #d23c46;
+}
+.full-red-button:active {
+  border-color: #a02832;
+  background-color: #a02832;
+}
+.white-button {
+  background: #fff;
+  border: 1px solid #d2d2d2;
+  border-radius: 4px;
+  color: #666;
+}
+.white-button:hover {
+  background: #f5f5f5;
+  color: #222;
+}
+.white-button:active {
+  background: #ccc;
+  color: #fff;
+} */
 /* .m-process {
   margin-top: -20px;
 } */
@@ -913,16 +1000,21 @@ input[type=text]:focus, input[type=password]:focus{
 }
 
 .nav-header .el-menu--horizontal > .el-menu-item.logo {
+  display: block;
   width: 40px;
   height: 60px;
   transition: none;
   padding: 0 16px;
   margin-right: 30px;
-  background: url(../../assets/images/logo.png) no-repeat 0 5px !important;
-  background-size: 30px 50px !important;
+  background: url(../../assets/images/logo.png) no-repeat 0 5px;
+  background-size: 30px 50px;
   text-indent: -9999px;
 }
 
+.nav-header .el-menu--horizontal > .el-menu-item.logo:hover {
+  background: url(../../assets/images/logo.png) no-repeat 0 5px;
+  background-size: 30px 50px;
+}
 .nav-header .el-menu--horizontal > .el-menu-item.logo:hover, .el-menu--horizontal > .el-menu-item.logo.is-active {
   border: none
 }
@@ -993,22 +1085,25 @@ input[type=text]:focus, input[type=password]:focus{
 }
 
 .nav-header .nav-item {
+  width: 80px;
   position: relative;
   align-items: center;
   display: flex;
   flex-grow: 0;
   flex-shrink: 0;
   font-size: 1rem;
-  justify-content: center;
+  justify-content: flex-end;
   line-height: 1.5;
-  padding: 6px 20px 6px 9px;
+  padding: 12px 20px 0 9px;
 }
 
-.nav-header .nav-item:hover span.icon i {
+.nav-header .nav-item:hover span.icon i,
+.menu-header .nav-item:hover span.icon i {
   color: #FF5A5F
 }
 
-.nav-header .nav-item:hover .view-msg {
+.nav-header .nav-item:hover .view-msg,
+.menu-header .nav-item:hover .view-msg {
     display: block
 }
 
@@ -1016,8 +1111,8 @@ input[type=text]:focus, input[type=password]:focus{
   display: none;
   position: absolute;
   top: 60px;
-  left: 0;
-  width: 140px;
+  right: 0;
+  width: 124px;
   background: #fff;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .12),
   0 0 6px 0 rgba(0, 0, 0, .04);
@@ -1081,7 +1176,8 @@ input[type=text]:focus, input[type=password]:focus{
   font-size: 21px;
 }
 
-.nav-header .icon.active span {
+.nav-header .icon.active span,
+.menu-header .icon.active span {
   min-width: 18px;
   height: 18px;
   border: 1px solid #FF5A5F;
@@ -1090,7 +1186,7 @@ input[type=text]:focus, input[type=password]:focus{
   background-color: #FF5A5F;
   position: absolute;
   z-index: 1000;
-  left: 12px;
+  right: 2px;
   top: 0;
   margin-right: -10px;
   margin-top: -10px;
@@ -1099,7 +1195,6 @@ input[type=text]:focus, input[type=password]:focus{
   line-height: 16px;
   text-align: center
 }
-
 .nav-header .fa {
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;
@@ -1114,8 +1209,8 @@ input[type=text]:focus, input[type=password]:focus{
 .nav-header .nav-right a {
   cursor: pointer;
   text-decoration: none;
-  -webkit-transition: none 86ms ease-out;
-  transition: none 86ms ease-out;
+  -webkit-transition: none 258ms ease-out;
+  transition: none 258ms ease-out;
   margin: 0;
   border: 0;
   font: inherit;
@@ -1275,7 +1370,7 @@ input[type=text]:focus, input[type=password]:focus{
   font-weight: 400;
   box-shadow: none;
   margin: 0;
-  padding: 0 1.5rem;
+  padding: 0 0 0 1.5rem;
   text-align: center;
   -webkit-transition: all 86ms ease-out;
   transition: all 86ms ease-out;
@@ -1424,7 +1519,7 @@ input[type=text]:focus, input[type=password]:focus{
   border: none;
   height: auto;
   text-align: left;
-  font-size: 1.5rem;
+  font-size: 14px;
   line-height: 1;
   color: #666;
   text-transform: none;
@@ -1447,24 +1542,14 @@ input[type=text]:focus, input[type=password]:focus{
   font-weight: bold;
 }
 
-.computer-btn {
-  margin: 15px 0 20px;
-  text-align: left;
-}
-
-.computer-btn a {
-  font-size: 1.2rem;
-}
-
 .MmenuHide {
   width: 100vw;
-  height: 20px;
+  height: 50px;
   overflow-y: hidden;
-  margin: 15px 0 15px -15px;
 }
 
 .Mmenulist {
-  overflow: scroll;
+  overflow: auto;
   padding-bottom: 30px;
 }
 
@@ -1873,7 +1958,7 @@ td.fc-day.fc-widget-content.fc-today::before {
 /*日历 end*/
 
 .cloud-menu.el-collapse {
-  border: none
+  border: none;
 }
 .cloud-menu .el-collapse-item__content {
   padding: 0;
@@ -1882,8 +1967,10 @@ td.fc-day.fc-widget-content.fc-today::before {
   border-bottom: none;
   color: #999;
   font-size: 12px;
+  height: 40px;
   line-height: 40px;
-  padding-left: 0;
+  padding-left: 20px;
+  /* background: #333; */
 }
 .cloud-menu .el-collapse-item__wrap {
   background-color: #FFFFFF;
@@ -1930,13 +2017,6 @@ td.fc-day.fc-widget-content.fc-today::before {
 
 .el-row::after, .el-row::before {
   display: block;
-}
-
-/*查看公司主页按钮*/
-.computer-btn .companyBtn:hover, .computer-btn .companyBtn:focus {
-  background-color: #FFFFFF;
-  border-color: #FF5A5F;
-  color: #FF5A5F;
 }
 
 /*上传图片*/
@@ -2277,7 +2357,8 @@ td.fc-day.fc-widget-content.fc-today::before {
 
   .el-card:hover {
     transform: none;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04);
+    /* box-shadow: 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04); */
+    box-shadow: none;
   }
 
   .blank40 {
@@ -2299,7 +2380,7 @@ td.fc-day.fc-widget-content.fc-today::before {
     display: flex;
     justify-content: center;
     position: relative;
-    margin: 0 -15px;
+    margin: 0 -35px;
   }
 
   .vcenter-menu-sub-list-m:before {
@@ -2334,7 +2415,15 @@ td.fc-day.fc-widget-content.fc-today::before {
   .markdown-body img {
     width: 100%;
   }
-
+  .MmenuHide {
+    margin-top: -20px;
+  }
+  .menu-list .item::before {
+    background: transparent!important;
+  }
+  .vcenter-container {
+    padding: 0 15px;
+  }
   /*767 end*/
 }
 
@@ -2428,12 +2517,43 @@ td.fc-day.fc-widget-content.fc-today::before {
   clear: both;
 }
 
+.form-btn {
+  clear: both;
+  float: right;
+}
+/* 去除输入框边框 */
+
+.noborder>.el-input__inner{
+  border:none;
+}
+.noborder>.el-textarea__inner{
+  border:none;
+}
 /*enterprise*/
 
 #enterprise .el-card__body {
   padding: 0;
 }
-
+.el-date-table td.current:not(.disabled), .el-date-table td.end-date, .el-date-table td.start-date {
+  background-color: #ff5a5f!important;
+    color: #fff;
+}
+.el-date-table td.today:before {
+  border-top-color: #ff5a5f
+}
+.el-date-table td.today, .el-picker-panel__link-btn {
+  color: #ff5a5f
+}
+.aside-content .el-input-group--append{
+  padding:0px;
+}
+.itemStage-content .el-form-item{
+  margin-bottom:10px;
+}
+.itemStage-content .el-form-item__label{
+  font-weight: 600;
+  font-size:1.3rem;
+}
 /**
 .content .body p {
   font-size: 1.4rem;

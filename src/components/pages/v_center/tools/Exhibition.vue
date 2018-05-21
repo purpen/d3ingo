@@ -14,7 +14,7 @@
 </template>
 <script>
   import api from '@/api/api'
-  import ToolsMenu from '@/components/pages/v_center/ToolsMenu'
+  import ToolsMenu from '@/components/pages/v_center/tools/ToolsMenu'
   export default {
     name: 'exhibition',
     components: {

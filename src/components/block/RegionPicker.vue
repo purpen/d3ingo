@@ -1,33 +1,40 @@
 <template>
 
     <el-form-item :label="titleProp" prop="chinaCity" :style="propStyle">
-        <el-select v-model="province" event="province" placeholder="省份/自治区/直辖市">
-          <el-option
-            v-for="(item, index) in provinces"
-            :label="item[1]"
-            :key="item.index"
-            :value="item[0]">
-          </el-option>
-        </el-select>
+      <el-row :gutter="gutter">
+        <el-col :xs="24" :sm="8" :md="8" :lg="8">
+          <el-select v-model="province" event="province" placeholder="省份/自治区/直辖市">
+            <el-option
+              v-for="(item, index) in provinces"
+              :label="item[1]"
+              :key="item.index"
+              :value="item[0]">
+            </el-option>
+          </el-select>
+        </el-col>
 
-        <el-select v-model="city" event="city" placeholder="城市">
-          <el-option
-            v-for="(item, index) in cities"
-            :label="item[1]"
-            :key="item.index"
-            :value="item[0]">
-          </el-option>
-        </el-select>
+        <el-col :xs="24" :sm="8" :md="8" :lg="8">
+          <el-select v-model="city" event="city" placeholder="城市">
+            <el-option
+              v-for="(item, index) in cities"
+              :label="item[1]"
+              :key="item.index"
+              :value="item[0]">
+            </el-option>
+          </el-select>
+        </el-col>
 
-        <el-select v-model="district" event="district" v-if="!twoSelect" placeholder="区/县">
-          <el-option
-            v-for="(item, index) in districts"
-            :label="item[1]"
-            :key="item.index"
-            :value="item[0]">
-          </el-option>
-        </el-select>
-
+        <el-col :xs="24" :sm="8" :md="8" :lg="8">
+          <el-select v-model="district" event="district" v-if="!twoSelect" placeholder="区/县">
+            <el-option
+              v-for="(item, index) in districts"
+              :label="item[1]"
+              :key="item.index"
+              :value="item[0]">
+            </el-option>
+          </el-select>
+        </el-col>
+      </el-row>
     </el-form-item>
 
 
@@ -48,6 +55,9 @@
       titleProp: {
         default: '选择城市'
       },
+      gutter: {
+        default: 20
+      },
       propStyle: {
         default: ''
       },
@@ -58,7 +68,7 @@
       disabled: Boolean,
       isFirstProp: {
         type: Boolean,
-        default: false
+        default: true
       },
       isEmpty: {
         default: false
@@ -67,7 +77,14 @@
         default: '86'
       }
     },
-
+    data () {
+      return {
+        province: '',
+        city: '',
+        district: '',
+        isFirst: true
+      }
+    },
     methods: {
       _filter (pid) {
         const result = []
@@ -124,15 +141,8 @@
         return this._filter(this.city)
       }
     },
-    data () {
-      return {
-        province: '',
-        city: '',
-        district: '',
-        isFirst: false
-      }
+    created() {
     },
-
     watch: {
       provinceProp(d) {
         this.province = d

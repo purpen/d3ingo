@@ -1,118 +1,118 @@
 <template>
-  <div class="container blank30 min-height350">
-    <el-row :gutter="20">
-      <el-col :xs="24" :sm="6" :md="6" :lg="6">
-        <v-menu :isActive='modules' @getTitle="headTitle"></v-menu>
-      </el-col>
-      <el-col :xs="24" :sm="18" :md="18" :lg="18">
-        <div class="content" v-loading.body="isLoading">
-          <div class="content-head">
-            <div class="clearfix" v-show="showList">
-              <p class="title fl" v-if="!isChoose && folderId === 0" v-html="title"></p>
-              <p class="title fl" v-if="!isChoose && folderId !== 0">
-                <i class="fx fx-icon-nothing-left" @click="backFolder"></i>
-                {{parentFolder.name}}
+  <el-row :class="['cloud-content', {'slide-mini': !leftWidth && withoutSide}]">
+    <v-menu-left :currentName="withoutSide? 'cloud_drive' : 'project_management'"></v-menu-left>
+    <el-col v-if="withoutSide" :span="4" :offset="leftWidth">
+      <v-menu :isActive='modules' @getTitle="headTitle"></v-menu>
+    </el-col>
+    <el-col :span="leftWidth? (withoutSide?16 :24) : (withoutSide?20 :24)">
+      <div :class="['content', {'content-mini' : !leftWidth}, {'content-pm' : !withoutSide}]"
+        v-loading.body="isLoading">
+        <div class="content-head">
+          <div class="clearfix" v-show="showList">
+            <p class="title fl" v-if="!isChoose && folderId === 0" v-html="title"></p>
+            <p class="title fl" v-if="!isChoose && folderId !== 0">
+              <i class="fx fx-icon-nothing-left" @click="backFolder"></i>
+              {{parentFolder.name}}
+            </p>
+            <div class="fr operate" v-if="!isChoose">
+              <p class="add" v-if="modules !== 'recycle'">
+                <span class="add-option">
+                  <a class="new-folder">
+                    <span @click="newFolder">新建文件夹</span>
+                  </a>
+                  <a class="upload-files">
+                    <el-upload
+                      ref="upload"
+                      class="upload-button"
+                      :action="uploadUrl"
+                      :multiple="true"
+                      list-type="picture"
+                      :data="uploadParams"
+                      :on-success="uploadSuccess"
+                      :on-progress="uploadProgress"
+                      :on-error="uploadError"
+                      :on-remove="uploadRemove"
+                      :before-upload="beforeUpload"
+                      :on-change="uploadChange"
+                      :show-file-list="false">
+                      <span>上传文件</span>
+                    </el-upload>
+                  </a>
+                </span>
               </p>
-              <div class="fr operate" v-if="!isChoose">
-                <p class="add" v-if="modules !== 'recycle'">
-                  <span class="add-option">
-                    <a class="new-folder">
-                      <span @click="newFolder">新建文件夹</span>
-                    </a>
-                    <a class="upload-files">
-                      <el-upload
-                        ref="upload"
-                        class="upload-button"
-                        :action="uploadUrl"
-                        :multiple="true"
-                        list-type="picture"
-                        :data="uploadParams"
-                        :on-success="uploadSuccess"
-                        :on-progress="uploadProgress"
-                        :on-error="uploadError"
-                        :on-remove="uploadRemove"
-                        :before-upload="beforeUpload"
-                        :on-change="uploadChange"
-                        :show-file-list="false">
-                        <span>上传文件</span>
-                      </el-upload>
-                    </a>
-                  </span>
-                </p>
-                <p class="search" title="搜索" @click="searchClick" v-if="modules !== 'recycle'"></p>
-                <p :class="[{'chunk': curView === 'list','list': curView === 'chunk'}]" 
-                  :title="chunkTitle"
-                  @click="changeFileView" v-if="modules !== 'recycle'"></p>
-                <p class="sequence">
-                  <i :class="['icon', {'reverse': sortGist.ascend === -1}]" @click="changeSortAscend()"></i>
-                  <span class="add-option">
-                    <a :class="{'checked': sortGist.order_by === 1}"
-                      @click="changeSortGist(1)">时间</a>
-                    <a :class="{'checked': sortGist.order_by === 2}"
-                      @click="changeSortGist(2)">大小</a>
-                    <a :class="{'checked': sortGist.order_by === 3}"
-                      @click="changeSortGist(3)">名称</a>
-                  </span>
-                </p>
-                <p class="edit" title="编辑模式" @click="changeChooseStatus"></p>
-              </div>
-              <p class="edit-menu" v-if="isChoose">
-                <el-col :span="1">
-                  <i :class="['file-radio', {'active': isChooseAll === 'all'}, {'chunk-view': curView === 'chunk'}]" @click="changeChooseAll">file-icon</i>
-                </el-col>
-                <el-col :span="6" class="choose-info">
-                  <span class="already-choose" @click="changeChooseAll">已选择{{alreadyChoose}}项</span>
-                  <span class="cancel-choose" @click="cancelChoose">取消选择</span>
-                </el-col>
-                <el-col :offset="5" :span="12">
-                  <span v-if="modules !== 'recycle'" @click="confirmShare">分享</span>
-                  <span v-if="false" @click="downloadFile('')">下载</span>
-                  <span v-if="modules !== 'recycle'" @click="confirmCopy">复制</span>
-                  <span v-if="modules !== 'recycle'" @click="confirmMove">移动</span>
-                  <span v-if="modules !== 'recycle'" @click="rename" :class="{'disable': alreadyChoose > 1 || !alreadyChoose}">重命名</span>
-                  <span v-if="modules !== 'recycle'" @click="deleteFile">删除</span>
-                  <span v-if="modules === 'recycle'" @click="shiftDelete">删除</span>
-                  <span v-if="modules === 'recycle'" @click="recoverFile">还原</span>
-                </el-col>
+              <p class="search" title="搜索" @click="searchClick" v-if="modules !== 'recycle'"></p>
+              <p :class="[{'chunk': curView === 'list','list': curView === 'chunk'}]" 
+                :title="chunkTitle"
+                @click="changeFileView" v-if="modules !== 'recycle'"></p>
+              <p class="sequence">
+                <i :class="['icon', {'reverse': sortGist.ascend === -1}]" @click="changeSortAscend()"></i>
+                <span class="add-option">
+                  <a :class="{'checked': sortGist.order_by === 1}"
+                    @click="changeSortGist(1)">时间</a>
+                  <a :class="{'checked': sortGist.order_by === 2}"
+                    @click="changeSortGist(2)">大小</a>
+                  <a :class="{'checked': sortGist.order_by === 3}"
+                    @click="changeSortGist(3)">名称</a>
+                </span>
               </p>
+              <p class="edit" title="编辑模式" @click="changeChooseStatus"></p>
             </div>
-            <div class="search-head" v-show="!showList">
-              <input v-model.trim="searchWord" class="search-input" placeholder="搜索...">
-              <i class="fr fx-0 fx-icon-nothing-close-error" @click="clearShowList"></i>
-            </div>
+            <p class="edit-menu" v-if="isChoose">
+              <el-col :span="1">
+                <i :class="['file-radio', {'active': isChooseAll === 'all'}, {'chunk-view': curView === 'chunk'}]" @click="changeChooseAll">file-icon</i>
+              </el-col>
+              <el-col :span="6" class="choose-info">
+                <span class="already-choose" @click="changeChooseAll">已选择{{alreadyChoose}}项</span>
+                <span class="cancel-choose" @click="cancelChoose">取消选择</span>
+              </el-col>
+              <el-col :offset="5" :span="12">
+                <span v-if="modules !== 'recycle'" @click="confirmShare">分享</span>
+                <span v-if="false" @click="downloadFile()">下载</span>
+                <span v-if="modules !== 'recycle'" @click="confirmCopy">复制</span>
+                <span v-if="modules !== 'recycle'" @click="confirmMove">移动</span>
+                <span v-if="modules !== 'recycle'" @click="rename" :class="{'disable': alreadyChoose > 1 || !alreadyChoose}">重命名</span>
+                <span v-if="modules !== 'recycle'" @click="deleteFile">删除</span>
+                <span v-if="modules === 'recycle'" @click="shiftDelete">删除</span>
+                <span v-if="modules === 'recycle'" @click="recoverFile">还原</span>
+              </el-col>
+            </p>
           </div>
-          <!-- 文件列表 -->
-          <transition name="uploadList">
-            <vContent
-              :list="list"
-              :chooseStatus="isChoose"
-              :isChooseAll="isChooseAll"
-              :curView="curView"
-              :hasRename="hasRename"
-              :imgList="imgList"
-              :showList="showList"
-              :modules="modules"
-              :folderId="folderId"
-              @enterFolder="enterFolder"
-              @choose="chooseList"
-              @renameCancel="renameCancel"
-              @changeName="changeName"
-              @directRename="directRename"
-              @headDirectRename="headDirectRename"
-              @deleteFile="deleteFile"
-              @shiftDelete="shiftDelete"
-              @recoverFile="recoverFile"
-              @changePermission="changePermission"
-              @confirmCopy="confirmCopy"
-              @confirmMove="confirmMove"
-              @changeImgList="changeImgList"
-              @confirmShare="confirmShare"
-              @downloadFile="downloadFile">
-            </vContent>
-          </transition>
+          <div class="search-head" v-show="!showList">
+            <input v-model.trim="searchWord" class="search-input" placeholder="搜索...">
+            <i class="fr fx-0 fx-icon-nothing-close-error" @click="clearShowList"></i>
+          </div>
         </div>
-      </el-col>
-    </el-row>
+        <!-- 文件列表 -->
+        <transition name="uploadList">
+          <vContent
+            :list="list"
+            :chooseStatus="isChoose"
+            :isChooseAll="isChooseAll"
+            :curView="curView"
+            :hasRename="hasRename"
+            :imgList="imgList"
+            :showList="showList"
+            :modules="modules"
+            :folderId="folderId"
+            @enterFolder="enterFolder"
+            @choose="chooseList"
+            @renameCancel="renameCancel"
+            @changeName="changeName"
+            @directRename="directRename"
+            @headDirectRename="headDirectRename"
+            @deleteFile="deleteFile"
+            @shiftDelete="shiftDelete"
+            @recoverFile="recoverFile"
+            @changePermission="changePermission"
+            @confirmCopy="confirmCopy"
+            @confirmMove="confirmMove"
+            @changeImgList="changeImgList"
+            @confirmShare="confirmShare"
+            @downloadFile="downloadFile">
+          </vContent>
+        </transition>
+      </div>
+    </el-col>
     <footer class="drive-footer clearfix" v-if="webUploader" @click="isShowProgress = true">
       <span class="fl">正在上传文件{{uploadingNumber}}/{{totalNumber}}</span>
       <span class="fr"><i class="fx-0 fx-icon-nothing-close-error" @click="confirmClearUpload"></i></span>
@@ -150,7 +150,7 @@
             <!--ready success uploading fail-->
           </el-col>
           <el-col :span="10">
-          </el-col>
+          </el-col> 
         </el-row>
       </div>
     </div>
@@ -329,7 +329,6 @@
         <button class="create-btn" @click="CreateDir">创建</button>
       </div>
     </section>
-
     <section class="dialog-body dialog-body-plus" v-if="showConfirmCopy">
       <h3 class="dialog-header clearfix">
         复制到
@@ -368,7 +367,6 @@
         </div>
       </div>
     </section>
-
     <section class="dialog-body dialog-body-plus" v-if="showConfirmMove">
       <h3 class="dialog-header clearfix">
         移动到
@@ -435,18 +433,18 @@
       <div class="dialog-content" v-else>
         <p class="link"><span>链接:</span><input v-model.trim="shareInfo.link" type="text"></p>
         <p v-if="isEncryption" class="share-password"><span>密码:</span><input v-model.trim="shareInfo.pwd" type="text"></p>
-        <p class="share-password">有效期:{{validityVal}}</p>
+        <p class="share-password"><span>有效期:</span>{{validityVal}}</p>
         <div class="buttons">
           <button class="cancel-btn" @click="closeCover">取消</button>
           <button class="confirm-btn" @click="setClipboardText">复制链接</button>
         </div>
       </div>
     </section>
-    <el-col :span="18" :offset="6">
+    <el-col :span="16" :offset="8">
       <el-pagination v-if="query.totalCount / query.pageSize > 1" class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize" :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange">
       </el-pagination>
     </el-col>
-  </div>
+  </el-row>
 </template>
 <script>
 import api from '@/api/api'
@@ -454,6 +452,7 @@ import vMenu from '@/components/pages/v_center/tools/cloud_drive/Menu'
 import vContent from '@/components/pages/v_center/tools/cloud_drive/CloudContent'
 import Clipboard from 'clipboard'
 import download from 'downloadjs'
+import vMenuLeft from '@/components/pages/v_center/Menu'
 export default {
   name: 'cloud_drive',
   data() {
@@ -552,9 +551,16 @@ export default {
       }
     }
   },
+  props: {
+    withoutSide: {
+      type: Boolean,
+      default: true
+    }
+  },
   components: {
     vMenu,
-    vContent
+    vContent,
+    vMenuLeft
   },
   mounted() {
     window.addEventListener('keydown', e => {
@@ -571,7 +577,15 @@ export default {
             this.$message.info('只支持下载单个文件')
             return
           } else {
-            download(url)
+            console.log(`url`)
+            window.location.assign(url)
+            download
+            // download(`${url}&attname=a.dmg`)
+            // this.$http.get(`${url}&attname=a.dmg`).then(res => {
+            //   console.log(res)
+            // }).error(err => {
+            //   console.error(err)
+            // })
           }
         } else {
           this.$message.info('暂不支持下载文件夹')
@@ -699,7 +713,7 @@ export default {
             }
             if (res.data.meta.pagination) {
               this.query.totalCount = res.data.meta.pagination.total
-              this.query.totalPges = res.data.meta.total_pages
+              this.query.totalPges = res.data.meta.pagination.total_pages
             } else {
               this.query.totalCount = 0
               this.query.totalPges = 0
@@ -1385,9 +1399,16 @@ export default {
           params: this.$route.params,
           query: {id: this.historyId[this.historyId.length - 1]}})
       } else {
-        this.$router.push({
-          name: this.$route.name,
-          params: this.$route.params})
+        if (this.withoutSide) {
+          this.$router.push({
+            name: this.$route.name,
+            params: this.$route.params})
+        } else {
+          this.$router.push({
+            name: this.$route.name,
+            params: this.$route.params,
+            query: {id: this.projectObject.pan_director_id}})
+        }
       }
     },
     changeSortGist(type) {
@@ -1540,6 +1561,17 @@ export default {
       } else {
         return -1 // 不是ie浏览器
       }
+    },
+    leftWidth() {
+      let leftWidth = this.$store.state.event.leftWidth
+      if (leftWidth === 2) {
+        return 0
+      } else if (leftWidth === 4) {
+        return leftWidth
+      }
+    },
+    projectObject() {
+      return this.$store.state.task.projectObject
     }
   },
   watch: {
@@ -1584,8 +1616,8 @@ export default {
       },
       deep: true
     },
-    modules() {
-      switch (this.modules) {
+    modules(val) {
+      switch (val) {
         case 'all':
           this.title = '全部文件'
           break
@@ -1677,7 +1709,18 @@ export default {
       opacity: 1;
     }
   }
-
+  .slide-mini {
+    padding-left: 60px;
+  }
+  .content {
+    transition: 0.2s all ease;
+  }
+  .content-mini {
+    position: absolute;
+  }
+  .content-pm {
+    position: static
+  }
   .content-head {
     color: #999;
     font-size: 0;
@@ -1688,6 +1731,7 @@ export default {
     z-index: 10;
   }
   .content-head .title {
+    padding-left: 20px;
     font-size: 18px;
   }
   .operate {
@@ -1721,7 +1765,7 @@ export default {
     padding: 0 20px;
   }
   .operate p.sequence .add-option a.checked {
-    background: #f7f7f7
+    background: #fafafa
   }
   .operate p.sequence .add-option a.checked:after {
     content: "";
@@ -1788,7 +1832,7 @@ export default {
   
   .add-option a:hover {
     color: #222;
-    background: #f7f7f7
+    background: #fafafa
   }
   
   .add-option a span {
@@ -2079,7 +2123,9 @@ export default {
     margin-bottom: 20px;
   }
   .link span, .share-password span {
-    margin-right: 20px;
+    /* margin-right: 20px; */
+    display: inline-block;
+    min-width: 60px;
   }
   .link input, .share-password input {
     width: 260px;
@@ -2262,7 +2308,7 @@ export default {
   .selectFolderPermission li:hover,
   .selectFolderPermission li.lihover {
     color:#666;
-    background: #f7f7f7;
+    background: #fafafa;
   }
   .selectFolderPermission i {
     position: absolute;
@@ -2457,5 +2503,34 @@ export default {
   }
   .exclude-file span.checked::before {
     background: #666;
+  }
+
+  @media screen and (min-width: 768px) {
+    .content {
+      padding: 20px 30px 0;
+      position: relative
+    }
+  }
+
+  @media screen and (min-width: 1440px) {
+    .content {
+      position: absolute;
+      width: calc(100% - 480px);
+      top: 0;
+      left: 480px;
+    }
+    .content-mini {
+      position: absolute;
+      width: calc(100% - 300px);
+      top: 0;
+      left: 300px;
+      transition: 0.2s all ease;
+    }
+    .content-pm {
+      position: static;
+      width: 100%;
+      top: 0;
+      left: 0;
+    }
   }
 </style>
