@@ -62,6 +62,8 @@
                   v-if="isMob">状态：</i><span>{{ d.status_value }}</span></p>
               </el-col>
               <el-col :span="isMob ? 24 : 4" :class="[isMob ? 'btnGroup' : '']">
+
+                <!--
                 <div class="btn" v-if="d.design_company_status === 0">
                   <p>
                     <el-button class="is-custom" @click="takingBtn" size="small" :item_id="d.item.id" :index="index"
@@ -75,6 +77,12 @@
                   </p>
 
                 </div>
+                -->
+                <p>
+                  <el-button class="is-custom" v-if="d.design_company_status === 0" @click="showView" size="small"
+                             :index="index" :item_id="d.item.id">提交报价单
+                  </el-button>
+                </p>
                 <p>
                   <el-button class="is-custom" v-if="d.design_company_status === 2" @click="showView" size="small"
                              :index="index" :item_id="d.item.id">查看报价

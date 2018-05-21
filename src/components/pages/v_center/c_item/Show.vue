@@ -304,7 +304,7 @@
     <el-dialog title="提交项目报价" v-model="takingPriceDialog">
       <el-form label-position="top" :model="takingPriceForm" :rules="takingPriceRuleForm" ref="takingPriceRuleForm">
         <el-form-item label="项目报价" prop="price" label-width="200px">
-          <el-input type="text" v-model="takingPriceForm.price" :placeholder="item.design_cost_value" @blur="changePriceStyle(2)" @focus="changePriceStyle(1)" auto-complete="off">
+          <el-input type="text" v-model="takingPriceForm.price" placeholder="" @blur="changePriceStyle(2)" @focus="changePriceStyle(1)" auto-complete="off">
             <template slot="prepend">¥</template>
           </el-input>
           <div class="description red">* 实际报价单位为‘元’,如1万,请添写10000</div>
