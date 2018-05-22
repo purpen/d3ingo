@@ -32,7 +32,7 @@
       </p>
       <div class="task-detail-body">
         <div class="task-admin" v-if="true">
-          <p>分配给</p>
+          <p class="tc-9">分配给</p>
           <ul class="task-member-list task-member-execute" v-if="executeUser">
             <li v-if="JSON.stringify(executeUser) !== '{}'">
               <a class="remove-member" @click.self="removeExecute()"></a>
@@ -103,7 +103,7 @@
           </li>
         </ul>
         <div class="task-child" v-if="currentForm.tier === 0">
-          <p class="p-task-child">子任务:</p>
+          <p class="p-task-child tc-9">子任务:</p>
           <ul class="add-child-ul" v-if="currentForm.childTask">
             <li v-for="(ele, index) in currentForm.childTask" :key="index">
               <div :class="['add-task-input', 'add-child-input', {'active': ele.stage === 2}]">
@@ -113,7 +113,7 @@
                   <span @click="showChild(ele.id)" class="child-more"></span>
                 </el-tooltip>
                 <el-tooltip class="item" effect="dark" content="点击即可编辑" placement="top">
-                  <el-input :autosize="{ minRows: 1}" type="textarea" v-model="ele.name" placeholder="请填写任务名称" @blur="updateChild(ele.id, {name: ele.name})"></el-input>
+                  <el-input :autosize="{ minRows: 1}" type="textarea" v-model="ele.name" placeholder="请填写任务名称" @focus="saveOldVal(ele.name)" @blur="updateChild(ele.id, {name: ele.name})"></el-input>
                 </el-tooltip>
                 <el-date-picker
                   v-model="ele.over_time"
@@ -191,14 +191,26 @@
           <ul v-if="showAllMoments">
             <li class="clearfix"
               v-for="(ele, index) in currentForm['moments']" :key="index">
-              <p class="fl"><span class="tc-2">{{ele.name}}</span> {{ele.info}}</p>
+              <p :class="['fl',
+                {'complete-parent': ele.type === 7,
+                'complete-child': ele.type === 9,
+                'protrude': ele.type === 7 || ele.type === 9,
+                'tc-red': ele.type === 7,
+                'tc-2': ele.type === 9}]">
+                <span>{{ele.name}}</span> {{ele.info}}</p>
               <p class="date fr">{{ele.date}}</p>
             </li>
           </ul>
           <ul v-else>
             <li class="clearfix"
               v-for="(ele, index) in currentForm['limitMoments']" :key="index">
-              <p class="fl"><span class="tc-2">{{ele.name}}</span> {{ele.info}}</p>
+              <p :class="['fl',
+                {'complete-parent': ele.type === 7,
+                'complete-child': ele.type === 9,
+                'protrude': ele.type === 7 || ele.type === 9,
+                'tc-red': ele.type === 7,
+                'tc-2': ele.type === 9}]">
+                <span>{{ele.name}}</span> {{ele.info}}</p>
               <p class="date fr">{{ele.date}}</p>
             </li>
           </ul>
@@ -438,7 +450,8 @@
           self.$message.error('ID不能为空!')
           return false
         }
-        this.$http.put(api.taskStage, {task_id: id, stage: complate}).then(function (response) {
+        console.log(self.currentForm)
+        this.$http.put(api.taskStage, {task_id: id, stage: complate, tier: self.currentForm.tier}).then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.$set(self.currentForm, 'stage', complate)
             self.$store.commit('updateTaskListItem', self.currentForm)
@@ -460,7 +473,7 @@
       completeTask2(id, stage) {
         const self = this
         stage = stage === 2 ? 0 : 2
-        this.$http.put(api.taskStage, {task_id: id, stage: stage}).then(function (response) {
+        this.$http.put(api.taskStage, {task_id: id, stage: stage, tier: 1}).then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.fetchStage()
             self.view(self.taskState.id)
@@ -531,6 +544,9 @@
         }
       },
       updateChild(id, obj) {
+        if (this.oldVal === obj.name) {
+          return
+        }
         this.$http.put(api.taskId.format(id), obj).then((response) => {
           if (response.data.meta.status_code === 200) {
             this.fetchStage()
@@ -757,12 +773,14 @@
                 let list = [6, 7, 8, 9]
                 if (list.indexOf(item.action_type) !== -1) {
                   arr.push({
+                    type: item.action_type,
                     name: item.user_name,
                     info: item.action,
                     date: item.date,
                     logo: item.logo_image})
                 } else {
                   arr.push({
+                    type: item.action_type,
                     name: item.user_name,
                     info: item.action + item.content,
                     date: item.date,
@@ -780,12 +798,14 @@
                 let list = [6, 7, 8, 9]
                 if (list.indexOf(item.action_type) !== -1) {
                   arr2.push({
+                    type: item.action_type,
                     name: item.user_name,
                     info: item.action,
                     date: item.date,
                     logo: item.logo_image})
                 } else {
                   arr2.push({
+                    type: item.action_type,
                     name: item.user_name,
                     info: item.action + item.content,
                     date: item.date,
@@ -973,7 +993,7 @@
     border-bottom: 1px solid #d2d2d2;
   }
   .add-child-input {
-    padding: 20px 30px 20px 40px;
+    padding: 20px 20px 20px 40px;
     border-bottom: none
   }
   .add-child-input .child-more {
@@ -1228,7 +1248,7 @@
     font-size: 14px;
   }
   .task-detail-body p {
-    color: #999
+    /* color: #999 */
   }
   .task-detail-body .show-member {
     margin-top: 20px;
@@ -1273,7 +1293,7 @@
     font-size: 12px;
   }
   .task-moments ul {
-    padding: 20px 0 0
+    padding: 20px 0 0 30px
   }
   .task-moments li {
     padding: 0 0 10px;
@@ -1295,6 +1315,39 @@
     cursor: pointer;
     padding-top: 20px;
     color: #666;
+  }
+  .task-moments ul li p.fl {
+    position: relative;
+  }
+  .complete-parent::before,
+  .complete-child::before {
+    content: "";
+    position: absolute;
+    left: -21px;
+    top: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 1px solid #ff5a5f;
+    background: #ff5a5f;
+  }
+  .complete-child::before {
+    border-color: #D2D2D2;
+    background: #D2D2D2;
+  }
+  .complete-parent::after,
+  .complete-child::after {
+    content: "";
+    position: absolute;
+    left: -16px;
+    top: 2px;
+    height: 10px;
+    width: 6px;
+    border: 2px solid #fff;
+    border-left: none;
+    border-top: none;
+    border-radius: 1px;
+    transform: rotate(45deg);
   }
   .task-detail-body .p-moments:hover {
     color: #222

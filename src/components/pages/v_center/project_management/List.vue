@@ -7,7 +7,7 @@
       <div class="vcenter-container blank30">
         <h2>项目管理</h2>
         <ul class="project-list" v-loading.body="isLoading">
-          <li class="create">
+          <li class="create" v-if="isCompanyAdmin">
             <p @click="showCover">
               <i></i>
               <span>创建新项目</span>
@@ -36,6 +36,8 @@
           </li>
         </ul>
       </div>
+      <el-pagination v-show="query.totalCount > query.pageSize" class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize" :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange">
+      </el-pagination>
     </div>
     <div class="dialog-bg" v-if="show.cover"></div>
       <div class="dialog-content" v-if="show.createContent">
@@ -64,8 +66,6 @@
           </p>
         </div>
       </div>
-      <el-pagination v-if="query.totalCount / query.pageSize > 1" class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize" :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange">
-      </el-pagination>
   </section>
 </template>
 <script>
@@ -192,6 +192,14 @@ export default {
     leftWidth() {
       return this.$store.state.event.leftWidth
     },
+    // 是否为管理员
+    isCompanyAdmin() {
+      let companyRoleId = this.$store.state.event.user.company_role
+      if (companyRoleId === 20 || companyRoleId === 10) {
+        return true
+      }
+      return false
+    },
     isMob() {
       return this.$store.state.event.isMob
     }
@@ -239,7 +247,7 @@ export default {
   }
   .project-list li:hover {
     /* transform: translateY(-5px); */
-    box-shadow: 0 9pt 24px rgba(10,10,10,.15);
+    box-shadow: 6px 6px 10px rgba(10, 10, 10, 0.15);
   }
   .project-list li a {
     display: block;
@@ -350,6 +358,8 @@ export default {
   }
   .dialog-bg {
     position: fixed;
+    top: 60px;
+    left: 0;
     z-index: 1999;
     width: 100vw;
     height: 100vh;

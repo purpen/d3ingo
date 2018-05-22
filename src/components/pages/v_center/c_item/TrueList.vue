@@ -1,5 +1,5 @@
 <template>
-  <div class="blank30 clearfix">
+  <div class="blank30 vcenter clearfix">
     <v-menu currentName="c_item" class="c_item"></v-menu>
     <div :class="{'vcenter-right-plus': leftWidth === 4,
       'vcenter-right': leftWidth === 2,

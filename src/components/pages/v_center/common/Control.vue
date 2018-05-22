@@ -119,21 +119,20 @@
           <el-col :span="12" v-for="(i,indexi) in userItem" :key="indexi" v-if="userItem.length>0">
 
               <ul class="control-iteming">
-                <li class="titleSize">{{i.name}}</li>
-                <li>项目进度: 
-                  <span class="itemProgress">
+                <li class="title-size">{{i.name}}</li>
+                <li class="fz-12"><span class="tc-6">项目进度:</span> <span class="itemProgress">
                     {{i.ok_stage_percentage}}%
                   </span>
                 </li>
-                <li>
+                <li class="progress-bar">
                   <el-progress 
                   :percentage="i.ok_stage_percentage"
                   :show-text="false"
                   :stroke-width=10
                   ></el-progress>
                 </li>
-                <li>
-                  <div class="iteming-grade" v-if="i.level !== 1">{{i.level_value}}</div>
+                <li class="fz-12 clearfix">
+                  <div :class="['iteming-grade', {'iteming-grade-very': i.level === 3}]" v-if="i.level !== 1">{{i.level_value}}</div>
                   <div class="iteming-time" v-if="i.start_time">
                     {{ i.start_time }} 启动
                   </div>
@@ -163,17 +162,17 @@
 
                 <div class="control-taskProgress">
                   <el-progress
-                    type="circle" 
+                    class="is-unclaimed"
+                    type="circle"
                     :percentage="userTask.no_get_percentage"
                     :width="60"
                     :show-text="false"
                   ></el-progress>
-
                   <div>
                     <p class="marginl">未认领
                       <span>{{ userTask.no_get }}</span>
                     </p>
-                    <p class="fx-6">{{userTask.no_get_percentage}} %</p>
+                    <p class="fx-6 is-unclaimed">{{userTask.no_get_percentage}} %</p>
                   </div>
 
                 </div>
@@ -190,7 +189,7 @@
                     <p class="marginl">未完成
                       <span>{{userTask.no_stage}}</span>
                     </p>
-                    <p class="fx-6">{{ userTask.no_stage_percentage }} %</p>
+                    <p class="fx-6 is-default">{{ userTask.no_stage_percentage }} %</p>
                   </div>
                 </div>
               </el-col>
@@ -207,7 +206,7 @@
                     <p class="marginl">已完成
                       <span>{{ userTask.ok_stage }}</span>
                     </p>
-                <p class="fx-6">{{userTask.ok_stage_percentage}} %</p>
+                <p class="fx-6 is-success">{{userTask.ok_stage_percentage}} %</p>
                   </div>
                 </div>
               </el-col>
@@ -224,7 +223,7 @@
                     <p class="marginl">已逾期
                       <span>{{ userTask.overdue }}</span>
                     </p>
-                    <p class="fx-6">{{userTask.overdue_percentage}} %</p>
+                    <p class="fx-6 is-exception">{{userTask.overdue_percentage}} %</p>
                   </div>
                 </div>
               </el-col>
@@ -502,7 +501,7 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .el-row>.el-col>section {
-    border:1px solid #d2d2d2;
+    border:1px solid #e6e6e6;
     border-radius: 4px;
     height:360px;
     margin:0 0 20px 0;
@@ -517,12 +516,9 @@
     height:60px;
     line-height: 60px;
     padding:0 20px;
-    border-bottom:1px solid #d2d2d2;
+    border-bottom: 1px solid #e6e6e6;
     font-size:14px;
-    background:#f7f7f7;
-  }
-  .control-childHeader>span{
-    font-weight: 600;
+    border-radius: 4px 4px 0 0
   }
   .control-childHeader>div{
     color:#999999;
@@ -543,41 +539,49 @@
     height:60px;
   }
   .control-iteming{
-    height:150px;
+    /* height: 150px;
     display:flex;
     flex-direction:column;
-    justify-content:space-around;
-    padding:20px;
+    justify-content:space-around; */
+    padding: 20px 30px;
   }
   .itemProgress{
-    color:#20a0ff;
+    color:#65A6FF;
   }
   .marginl>span{
     display:inline-block;
     margin-left:10px;
   }
-  .control-taskProgress .fx-6{
-    font-weight: 800;
+  .control-taskProgress .fx-6 {
   }
   .item-content{
     height:299px;
     overflow-y:auto;
   }
-  .iteming-grade{
+  .iteming-grade {
+    cursor: pointer;
     float: left;
-    padding:5px 10px;
+    padding: 0 23px;
     border-radius: 4px;
     color:#fff;
+    background:#F5C828;
+    height: 20px;
+    line-height: 20px;
+  }
+  .iteming-grade-very {
     background:#FF5A5F;
   }
-  .titleSize {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom:15px;
+  .title-size {
+    color: #222;
+    font-size: 1.4rem;
+    margin: 0 0 12px 0
+  }
+  .progress-bar {
+    margin: 6px 0 10px 0
   }
   .iteming-time{
-    height:24px;
-    line-height: 24px;
+    height: 20px;
+    line-height: 20px;
     float: right;
   }
   .control-massagelist{
@@ -809,16 +813,16 @@
     line-height: 1;
   }
 
-  .item-content {
-    padding: 10px 0 10px 0;
-  }
-
   @media screen and (max-width: 768px) {
     .prefect {
       font-size: 1.4rem;
     }
 
     .el-row>.el-col>section{
+      margin: 0 0 20px
+    }
+
+    .el-row>.el-col:nth-child(2n-1)>section {
       margin: 0 0 20px
     }
   }

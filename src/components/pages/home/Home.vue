@@ -537,7 +537,7 @@
   }
 
   .categorie .list p{
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .title {
@@ -680,7 +680,7 @@
   .image-box:not(.not-limit) {
     height: 220px;
     overflow: hidden;
-    border-bottom: 1px solid #D2D2D2;
+    border-bottom: 1px solid #e6e6e6;
     /* border-radius: 4px 4px 0 0; */
   }
 

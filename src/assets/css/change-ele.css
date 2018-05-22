@@ -84,3 +84,37 @@
   .formup-time .el-date-editor.el-input {
     width:100%
   }
+  .el-progress-bar__outer {
+    background: #f7f7f7
+  }
+  .el-progress-bar__inner {
+    background-color: #65A6FF
+  }
+  .el-progress-circle__track {
+    stroke: #f7f7f7
+  }
+  .el-progress--circle .el-progress-circle__path {
+    stroke: #65A6FF
+  }
+  .is-unclaimed .el-progress-circle__path {
+    stroke: #D2D2D2
+  }
+  .is-success .el-progress-circle__path {
+    stroke: #00AC84
+  }
+  .is-exception .el-progress-circle__path {
+    stroke: #FF5A5F
+  }
+  .el-autocomplete-suggestion__wrap,
+  .el-pager li,
+  .el-pagination .btn-next,
+  .el-pagination .btn-prev {
+    border-color: #e6e6e6
+  }
+  .el-pager li:hover,
+  .el-pagination button:hover {
+    color: #FF5A5F
+  }
+  ul.el-pager li.number.active:hover {
+    color: #fff
+  }

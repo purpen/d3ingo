@@ -341,11 +341,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 .avatarhead  .el-upload__tip {
   color: #999;
 }
-.login-box .el-form-item,
-.register-box .el-form-item,
-.forget-box .el-form-item, {
-  margin-bottom: 10px;
-}
+
 .el-form-item__label {
   font-size: 1.6rem;
   color: #666666;
@@ -508,8 +504,8 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   font-size: 14px;
   cursor: pointer;
   min-width: 100px;
-  height: 34px;
-  line-height: 34px;
+  height: 30px;
+  line-height: 30px;
   padding: 0;
   margin: 0;
 }
@@ -1028,8 +1024,8 @@ input[type=text]:focus, input[type=password]:focus{
   height: 60px;
   line-height: 60px;
   border-bottom: 3px solid transparent;
-  color: #7A7A7A;
-  font-size: 1.5rem;
+  color: #999;
+  font-size: 1.6rem;
   padding: 0 3px;
   margin: 0 22px;
 }
@@ -1094,8 +1090,7 @@ input[type=text]:focus, input[type=password]:focus{
   flex-shrink: 0;
   font-size: 1rem;
   justify-content: flex-end;
-  line-height: 1.5;
-  padding: 12px 20px 0 9px;
+  padding: 0 20px 0 9px;
 }
 
 .nav-header .nav-item:hover span.icon i,
@@ -1111,9 +1106,10 @@ input[type=text]:focus, input[type=password]:focus{
 .nav-item .view-msg {
   display: none;
   position: absolute;
-  top: 60px;
+  z-index: 10;
+  top: 56px;
   right: 0;
-  width: 140px;
+  width: 200px;
   background: #fff;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .12),
   0 0 6px 0 rgba(0, 0, 0, .04);
@@ -1131,7 +1127,7 @@ input[type=text]:focus, input[type=password]:focus{
   display: block;
   line-height: 20px;
   color: #999999;
-  padding: 10px 15px 10px 40px;
+  padding: 15px 15px 15px 40px;
   transition: all 86ms ease;
   position: relative;
 }
@@ -1139,7 +1135,7 @@ input[type=text]:focus, input[type=password]:focus{
 .view-msg i {
   position: absolute;
   left: 10px;
-  top: 10px;
+  top: 15px;
 }
 
 .nav-item .view-msg a {
@@ -1355,10 +1351,10 @@ input[type=text]:focus, input[type=password]:focus{
 
 .el-menu-info .el-submenu > .el-menu {
   z-index: 999;
-  top: 60px;
+  top: 56px;
   left: 10px;
-  border: 1px solid #CCCCCC;
-  min-width: 170px;
+  border: 1px solid #d2d2d2;
+  width: 200px;
   padding: 0;
   border-radius: 4px;
 }
@@ -1369,15 +1365,14 @@ input[type=text]:focus, input[type=password]:focus{
   display: block;
   cursor: pointer;
   border: none;
-  height: 40px;
-  line-height: 40px;
+  height: 50px;
+  line-height: 50px;
   color: #999;
   text-transform: none;
   font-weight: 400;
   box-shadow: none;
   margin: 0;
-  padding: 0 0 0 1.5rem;
-  text-align: center;
+  padding: 0 0 0 40px;
   -webkit-transition: all 86ms ease-out;
   transition: all 86ms ease-out;
 }
@@ -1385,14 +1380,10 @@ input[type=text]:focus, input[type=password]:focus{
 
 .el-menu-info .el-menu .el-menu-item i {
   position: absolute;
-  left: 25px;
-  top: 10px;
+  left: 10px;
+  top: 15px;
   -webkit-transition: all 86ms ease-out;
   transition: all 86ms ease-out;
-}
-.el-menu-info .el-menu .el-menu-item i.fx-icon-logout,
-.el-menu-info .el-menu .el-menu-item i.fx-icon-logout-hover {
-  left: 28px
 }
 
 .el-menu-info .el-menu .el-menu-item:first-child {
@@ -1425,16 +1416,19 @@ input[type=text]:focus, input[type=password]:focus{
 }
 
 .el-menu-info .el-submenu .el-submenu__title img {
-  max-height: 3rem;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   overflow: hidden;
   vertical-align: middle;
 }
+.el-menu-info .el-submenu .el-submenu__title {
 
+}
 .el-menu-info .el-submenu .el-submenu__title .b-nickname {
   padding-left: 8px;
   padding-right: 3px;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
 }
 
 .el-menu-info:hover > .el-submenu .el-submenu__title, .el-menu-info:hover .el-submenu .el-submenu__icon-arrow {
@@ -1606,7 +1600,7 @@ input[type=text]:focus, input[type=password]:focus{
 
 .content-box p {
   color: #666666;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   line-height: 1.5;
 }
 
@@ -1707,11 +1701,11 @@ img.avatar2 {
   border-radius: 0;
   border: 1px solid #e6e6e6;
   box-shadow: none;
-  box-shadow: 0 5px 10px 0 #eee
+  /* box-shadow: 0 5px 10px 0 #eee */
 }
 
 .el-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-5px);
   box-shadow: 6px 6px 10px rgba(10, 10, 10, 0.15)
 }
 
@@ -2164,11 +2158,7 @@ td.fc-day.fc-widget-content.fc-today::before {
   .input .el-form-item {
     margin-bottom: 0;
   }
-  .login-box .el-form-item,
-  .register-box .el-form-item,
-  .forget-box .el-form-item {
-      margin-bottom: 10px;
-  }
+
   .el-form-item__error {
     position: static;
   }
@@ -2375,6 +2365,9 @@ td.fc-day.fc-widget-content.fc-today::before {
     border-color: transparent
   }
 
+  .vcenter-menu-sub {
+    padding-bottom: 0;
+  }
   .vcenter-menu-sub-list .item {
     padding-bottom: 0;
     line-height: 42px;
@@ -2386,7 +2379,8 @@ td.fc-day.fc-widget-content.fc-today::before {
     display: flex;
     justify-content: center;
     position: relative;
-    margin: 0 -35px;
+    /* margin: 0 -35px; */
+    width: 100%
   }
 
   .vcenter-menu-sub-list-m:before {

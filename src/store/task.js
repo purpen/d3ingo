@@ -17,7 +17,9 @@ let state = {
   taskMemberList: [],
   projectMemberList: [],
   executeUser: {},
-  parentTask: {}
+  parentTask: {},
+  showMessage: false,
+  myView: 'order'
 }
 let mutations = {
   setDisplayObj2(state, array) { // 容易出异步问题
@@ -71,14 +73,14 @@ let mutations = {
       if (ele.task) {
         ele.task.forEach(e => {
           if (e['created_at']) {
-            e['created_at_format'] = e['created_at'].date_format().format('yyyy年MM月dd日')
+            e['created_at_format'] = e['created_at'].date_format().format('MM月dd日')
           }
           outsideStageList.forEach(item => {
             if (item.id === e.id) {
               list.push(e.id)
             }
             if (item['created_at']) {
-              item['created_at_format'] = item['created_at'].date_format().format('yyyy年MM月dd日')
+              item['created_at_format'] = item['created_at'].date_format().format('MM月dd日')
             }
           })
         })
@@ -206,6 +208,12 @@ let mutations = {
   },
   removeParentTask(state) {
     state.parentTask = {id: -1}
+  },
+  changeShowMsg(state, bool) {
+    state.showMessage = bool
+  },
+  changeMyView(state, str) {
+    state.myView = str
   }
 }
 export default {

@@ -29,7 +29,7 @@
     </div>
     <div class="blank20"></div>
     <div class="pager" v-if="query.totalCount">
-      <el-pagination v-if="itemList.length" class="pagination" :small="BMob" :current-page="query.page" :page-size="query.pageSize"
+      <el-pagination v-if="itemList.length && query.totalCount > query.pageSize" class="pagination" :small="BMob" :current-page="query.page" :page-size="query.pageSize"
                      :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper"
                      @current-change="handleCurrentChange">
       </el-pagination>
@@ -50,7 +50,7 @@ export default {
       query: {
         page: 1,
         pageSize: 9,
-        sort: 5,
+        sort: 2,
         totalPges: 0,
         totalCount: 0
       },
@@ -69,7 +69,7 @@ export default {
     loadList() {
       const self = this
       self.isLoading = true
-      self.query.sort = this.$route.query.sort || 5
+      self.query.sort = this.$route.query.sort || 2
       self.$http
         .get(api.awardCaseList, {
           params: { page: self.query.page, per_page: self.query.pageSize, sort: self.query.sort }

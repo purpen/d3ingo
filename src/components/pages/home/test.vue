@@ -1,57 +1,96 @@
-<!--
 <template>
   <div class="test">
-    <figure>
-      <chart
-        class="chart"
-        :options="scoreRadar"
-        :init-options="initOptions"
-        auto-resize
-      />
-    </figure>
+    <div class="box">
+      <div class="top">
+        <el-tooltip class="item" effect="dark" content="Top Left 提示文字" placement="top-start">
+          <el-button>上左</el-button>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="Top Center 提示文字" placement="top">
+          <el-button>上边</el-button>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="Top Right 提示文字" placement="top-end">
+          <el-button>上右</el-button>
+        </el-tooltip>
+      </div>
+      <div class="left">
+        <el-tooltip class="item" effect="dark" content="Left Top 提示文字" placement="left-start">
+          <el-button>左上</el-button>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="Left Center 提示文字" placement="left">
+          <el-button>左边</el-button>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="Left Bottom 提示文字" placement="left-end">
+          <el-button>左下</el-button>
+        </el-tooltip>
+      </div>
+
+      <div class="right">
+        <el-tooltip class="item" effect="dark" content="Right Top 提示文字" placement="right-start">
+          <el-button>右上</el-button>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="Right Center 提示文字" placement="right">
+          <el-button>右边</el-button>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="Right Bottom 提示文字" placement="right-end">
+          <el-button>右下</el-button>
+        </el-tooltip>
+      </div>
+      <div class="bottom">
+        <el-tooltip class="item" effect="dark" content="Bottom Left 提示文字" placement="bottom-start">
+          <el-button>下左</el-button>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="Bottom Center 提示文字" placement="bottom">
+          <el-button>下边</el-button>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="Bottom Right 提示文字" placement="bottom-end">
+          <el-button>下右</el-button>
+        </el-tooltip>
+      </div>
+    </div>
   </div>
 </template>
-<script> 
--->
-// export default {
-//   name: 'test',
-//   data() {
-//     let scores = [
-//       {name: '进攻', max: 20, value: 19},
-//       {name: '防守', max: 20, value: 9},
-//       {name: '速度', max: 20, value: 18},
-//       {name: '力量', max: 20, value: 16},
-//       {name: '耐力', max: 20, value: 16},
-//       {name: '敏捷', max: 20, value: 20}
-//     ]
-//     return {
-//       scoreRadar: {
-//         tooltip: {},
-//         radar: {
-//           indicator: scores.map(({name, max}) => {
-//             return {name, max}
-//           })
-//         },
-//         series: [{
-//           name: '能力值',
-//           type: 'radar',
-//           data: [{value: scores.map(({value}) => value)}]
-//         }]
-//       },
-//       initOptions: {
-//         opts: {
-//           width: 100,
-//           height: 100,
-//           renderer: 'canvas'
-//         }
-//       }
-//     }
-//   }
-// }
-// </script>
+<script>
+  export default {
+    name: 'test',
+    data() {
+      return {
+      }
+    }
+  }
+</script>
 <style scoped>
-/*  .test .chart {
-    width: 200px;
-    height: 100px;
-  } */
+.test {
+  display: flex;
+  justify-content: center
+}
+.box {
+  width: 400px;
+}
+.top {
+  text-align: center;
+}
+
+.left {
+  float: left;
+  width: 60px;
+}
+
+.right {
+  float: right;
+  width: 60px;
+}
+
+.bottom {
+  clear: both;
+  text-align: center;
+}
+
+.item {
+  margin: 4px;
+}
+
+.left .el-tooltip__popper,
+.right .el-tooltip__popper {
+  padding: 8px 10px;
+}
 </style>

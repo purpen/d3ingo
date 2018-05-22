@@ -40,18 +40,12 @@
 </template>
 
 <script>
-  import vMenu from '@/components/pages/v_center/Menu'
-  import vMenuSub from '@/components/pages/v_center/message/MenuSub'
   import api from '@/api/api'
   import '@/assets/js/format'
   import '@/assets/js/date_format'
 
   export default {
     name: 'SystemMessageList',
-    components: {
-      vMenu,
-      vMenuSub
-    },
     data () {
       return {
         isLoading: false,
@@ -124,12 +118,7 @@
         window.open(link)
       }
     },
-    computed: {
-      isMob() {
-        return this.$store.state.event.isMob
-      }
-    },
-    created: function () {
+    created() {
       let page = this.$route.query.page
       if (page) {
         this.query.page = parseInt(page)
