@@ -61,37 +61,37 @@
       <section :class="['menuHide', {'MmenuHide': isMob, 'menuHide-mini': leftWidth === 2}]">
         <div v-if="isCompany">
           <div :class="['menu-list', 'clearfix', {'Mmenulist': isMob, }]" ref="Mmenulist" v-if="isChild">
-            <el-tooltip class="item" :effect="DarkorLight" content="控制面板" placement="right">
+            <Tooltip class="item" :effect="DarkorLight" content="控制面板" placement="right">
               <a @click="alick" :to="'/vcenter/child_control'"
                 :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
                 控制面板
               </a>
-            </el-tooltip>
-            <el-tooltip class="item" :effect="DarkorLight" content="项目云盘" placement="right">
+            </Tooltip>
+            <Tooltip class="item" :effect="DarkorLight" content="项目云盘" placement="right">
             <a @click="alick" :to="'/vcenter/cloud_drive/list/all'"
               :class="['item', 'cloud', {'is-active': currentName === 'cloud_drive'}]">
               项目云盘
             </a>
-            </el-tooltip>
-            <el-tooltip class="item" :effect="DarkorLight" content="成员管理" placement="right">
+            </Tooltip>
+            <Tooltip class="item" :effect="DarkorLight" content="成员管理" placement="right">
             <a @click="alick" :to="'/user/user_management'"
               
               :class="['item', 'user-management', {'is-active': currentName === 'member'}]" v-if="isCompanyAdmin">
               成员管理
             </a>
-            </el-tooltip>
-            <el-tooltip class="item" :effect="DarkorLight" content="账号设置" placement="right">
+            </Tooltip>
+            <Tooltip class="item" :effect="DarkorLight" content="账号设置" placement="right">
             <a @click="alick" :to="'/vcenter/account/base'"
               :class="['item', 'account-management', {'is-active': currentName === 'profile'}]">
               账号设置
             </a>
-            </el-tooltip>
-            <el-tooltip class="item" :effect="DarkorLight" content="查看公司主页" placement="right">
+            </Tooltip>
+            <Tooltip class="item" :effect="DarkorLight" content="查看公司主页" placement="right">
             <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" 
                v-if="isMob">
               查看公司主页
             </a>
-            </el-tooltip>
+            </Tooltip>
           </div>
 
           <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist" v-else>
@@ -99,72 +99,72 @@
               <span :style="{background: `url(${eventUser.avatar.logo}) no-repeat center / 40px 40px #222`}"></span>
             </div>
             
-            <el-tooltip class="item" :effect="DarkorLight" content="控制面板" placement="right">
+            <Tooltip class="item" :effect="DarkorLight" content="控制面板" placement="right">
             <a @click="alick" :to="'/vcenter/control'"
               :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
               控制面板
             </a>
-            </el-tooltip>
-            <!-- <el-tooltip class="item" :effect="DarkorLight" content="消息" placement="right">
+            </Tooltip>
+            <!-- <Tooltip class="item" :effect="DarkorLight" content="消息" placement="right">
             <a @click="alick" :to="'/vcenter/message'"
               :class="['item', 'message', {'is-active': currentName === 'message'}]">
               消息
             </a>
-            </el-tooltip> -->
-            <el-tooltip class="item" :effect="DarkorLight" content="项目订单" placement="right">
+            </Tooltip> -->
+            <Tooltip class="item" :effect="DarkorLight" content="项目订单" placement="right">
             <a @click="alick" :to="'/vcenter/citem/list'"
               :class="['item', 'order', {'is-active': currentName === 'c_item'}]">
               项目订单
             </a>
-            </el-tooltip>
-            <el-tooltip class="item" :effect="DarkorLight" content="项目管理" placement="right">
+            </Tooltip>
+            <Tooltip class="item" :effect="DarkorLight" content="项目管理" placement="right">
             <a @click="alick" :to="'/vcenter/project_management/list'"
               :class="['item', 'management', {'is-active': currentName === 'project_management'}]">
               项目管理
             </a>
-            </el-tooltip>
-            <el-tooltip class="item" :effect="DarkorLight" content="项目云盘" placement="right">
+            </Tooltip>
+            <Tooltip class="item" :effect="DarkorLight" content="项目云盘" placement="right">
             <a @click="alick" :to="'/vcenter/cloud_drive/list/all'"
               :class="['item', 'cloud', {'is-active': currentName === 'cloud_drive'}]">
               项目云盘
             </a>
-            </el-tooltip>
-            <el-tooltip class="item" :effect="DarkorLight" content="作品案例" placement="right">
+            </Tooltip>
+            <Tooltip class="item" :effect="DarkorLight" content="作品案例" placement="right">
             <a @click="alick" :to="'/vcenter/design_case'" 
               :class="['item', 'case', {'is-active': currentName === 'design_case'}]">
               作品案例
             </a>
-            </el-tooltip>
-            <el-tooltip class="item" :effect="DarkorLight" content="提交作品" placement="right">
+            </Tooltip>
+            <Tooltip class="item" :effect="DarkorLight" content="提交作品" placement="right">
             <a @click="alick" :to="'/vcenter/match_case'"
               :class="['item', 'match-case', {'is-active': currentName === 'match_case'}]">
               提交作品
             </a>
-            </el-tooltip>
-            <el-tooltip class="item" :effect="DarkorLight" content="我的钱包" placement="right">
+            </Tooltip>
+            <Tooltip class="item" :effect="DarkorLight" content="我的钱包" placement="right">
             <a @click="alick" :to="'/vcenter/wallet/list'" 
               :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
               我的钱包
             </a>
-            </el-tooltip>
-            <el-tooltip class="item" :effect="DarkorLight" content="公司设置" placement="right">
+            </Tooltip>
+            <Tooltip class="item" :effect="DarkorLight" content="公司设置" placement="right">
             <a @click="alick" :to="'/vcenter/company/base'"
               :class="['item', 'company', {'is-active': currentName === 'company'}]">
               公司设置
             </a>
-            </el-tooltip>
-            <el-tooltip class="item" :effect="DarkorLight" content="账号设置" placement="right">
+            </Tooltip>
+            <Tooltip class="item" :effect="DarkorLight" content="账号设置" placement="right">
             <a @click="alick" :to="'/vcenter/account/base'"
               :class="['item', 'account-management', {'is-active': currentName === 'profile'}]">
               账号设置
             </a>
-            </el-tooltip>
-            <el-tooltip class="item" :effect="DarkorLight" content="成员管理" placement="right">
+            </Tooltip>
+            <Tooltip class="item" :effect="DarkorLight" content="成员管理" placement="right">
             <a @click="alick" :to="'/user/user_management'"
               :class="['item','user-management', {'is-active': currentName === 'member'}]">
               成员管理
             </a>
-            </el-tooltip>
+            </Tooltip>
             <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" 
                v-if="isMob">
               查看公司主页
@@ -173,41 +173,41 @@
         </div>
         <div v-else>
           <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist">
-            <el-tooltip class="item" :effect="DarkorLight" content="控制面板" placement="right">
+            <Tooltip class="item" :effect="DarkorLight" content="控制面板" placement="right">
             <a @click="alick" :to="'/vcenter/control'" :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
               控制面板
             </a>
-            </el-tooltip>
-            <!-- <el-tooltip class="item" :effect="DarkorLight" content="消息" placement="right">
+            </Tooltip>
+            <!-- <Tooltip class="item" :effect="DarkorLight" content="消息" placement="right">
             <a @click="alick" :to="'/vcenter/message'"
               :class="['item', 'message', {'is-active': currentName === 'message'}]">
               消息12
             </a>
-            </el-tooltip> -->
-            <el-tooltip class="item" :effect="DarkorLight" content="我的项目" placement="right">
+            </Tooltip> -->
+            <Tooltip class="item" :effect="DarkorLight" content="我的项目" placement="right">
             <a @click="alick" :to="'/vcenter/item/list'"
               :class="['item', 'order', {'is-active': currentName === 'item'}]">
               我的项目
             </a>
-            </el-tooltip>
-            <el-tooltip class="item" :effect="DarkorLight" content="我的钱包" placement="right">
+            </Tooltip>
+            <Tooltip class="item" :effect="DarkorLight" content="我的钱包" placement="right">
             <a @click="alick" :to="'/vcenter/wallet/list'"
               :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
               我的钱包
             </a>
-            </el-tooltip>
-            <el-tooltip class="item" :effect="DarkorLight" content="公司设置" placement="right">
+            </Tooltip>
+            <Tooltip class="item" :effect="DarkorLight" content="公司设置" placement="right">
             <a @click="alick" :to="'/vcenter/d_company/base'"
               :class="['item', 'company', {'is-active': currentName === 'company'}]">
               公司设置
             </a>
-            </el-tooltip>
-            <el-tooltip class="item" :effect="DarkorLight" content="账号设置" placement="right">
+            </Tooltip>
+            <Tooltip class="item" :effect="DarkorLight" content="账号设置" placement="right">
             <a @click="alick" :to="'/vcenter/account/modify_pwd'"
               :class="['item', 'account-management', {'is-active': currentName === 'profile'}]">
               账号设置
             </a>
-            </el-tooltip>
+            </Tooltip>
           </div>
         </div>
       </section>
@@ -333,6 +333,7 @@
 </template>
 
 <script>
+  import { Tooltip } from 'element-ui'
   import api from '@/api/api'
   import { LEFT_WIDTH } from '@/store/mutation-types'
   import auth from '@/helper/auth'
@@ -505,7 +506,8 @@
       }
     },
     components: {
-      messageComponents: messageComponents
+      messageComponents: messageComponents,
+      Tooltip: Tooltip
     }
   }
 </script>
