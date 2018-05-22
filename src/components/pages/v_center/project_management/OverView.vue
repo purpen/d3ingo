@@ -1,5 +1,16 @@
 <template>
   <div class="item-total">
+    <el-dialog
+      title="确认删除"
+      :visible.sync="dialogVisible"
+      size="tiny"
+      >
+      <p class="text-center">确认删除此项目阶段</p>
+      <span slot="footer" class="dialog-footer">
+        <button class="small-button white-button" @click="dialogVisible = false">取 消</button>
+        <button class="small-button full-red-button" type="primary" @click="deleteDes(formup.id)">确 定</button>
+      </span>
+    </el-dialog>
     <section class="add-itemStage-bg" v-if="isItemStage">
       <div class="add-itemStage">
         <div class="itemStage-title">新建项目阶段
@@ -59,19 +70,22 @@
     </section>
     <transition name="el-fade-in-linear">
       <aside class="aside" v-if="isitemedit">
-        
-        <div class="aside-title fx" >
-          <i class="fx fx-icon-delete2"></i>
-          项目阶段设置
-          <span class="fx fx-icon-close-sm" @click="isitemedit=false"></span>
+        <div class="aside-title fx">
+          <i class="fx fx-icon-delete2" @click="dialogVisible=true"></i>
+          <span class="tc-2">项目阶段设置</span>
+          <p class="fx fx-icon-close-sm" @click="isitemedit=false"></p>
         </div>
         <el-progress 
         :percentage="50"
         :show-text="false"
-        :stroke-width="8"
+        :stroke-width="20"
+        status="success"
         ></el-progress>
         <ul class="aside-content">
-          <li> <el-checkbox v-model="checked"></el-checkbox>
+          <li class="designStage-name">
+            <span>
+              <el-checkbox v-model="checked"></el-checkbox>
+            </span>
             <el-input 
               v-model="formup.name" 
               placeholder="项目阶段名称"
@@ -79,18 +93,8 @@
             >
             </el-input>
           </li>
-          <li class="formup-time">
-            <div class="block">
-                <el-date-picker
-                type="date"
-                v-model="formupStart"
-                placeholder="选择日期时间"
-                @change="updata"
-               >
-                </el-date-picker>
-              </div>
-          </li>
-          <li>
+          <li class="design-duration">
+            <i></i>
             <div>
               <el-input 
                 placeholder="请输入所需天数" 
@@ -102,10 +106,24 @@
               </el-input>
             </div>
           </li>
-          <li>
+          <li class="formup-time">
+            <i></i>
+            <div class="block">
+                <el-date-picker
+                type="date"
+                v-model="formupStart"
+                placeholder="选择日期时间"
+                @change="updata"
+               >
+                </el-date-picker>
+              </div>
+          </li>
+          <li class="design-content">
+            <i></i>
             <el-input
                 type="textarea"
-                :autosize="{ minRows: 4, maxRows: 8}"
+                :autosize="{ minRows: 4, maxRows: 10}"
+                :maxlength=200
                 placeholder="请输入内容"
                 v-model="formup.content"
                 >
@@ -114,7 +132,7 @@
         </ul>
         <div class="add-tack">
           <i>+</i>
-          <span class="fx-6">添加任务</span>
+          <span>添加任务</span>
         </div>
         <ul class="tack-list" v-if="formup.design_substage
         ">
@@ -282,7 +300,7 @@
             <el-col :span="18" :style="{height:Rheight +'px'}">
 
               <div class="item-chart">
-                
+
                 <div 
                   class="item-chart-list scroll-bar" 
                   :style="{height:Rheight + 'px'}"
@@ -488,6 +506,7 @@ export default {
       totaldays: [],
       newleft: '',
       sort: 'isday',
+      dialogVisible: false,
       isitemedit: false,
       endTimes: [], // 所有时间合集
       rules: {
@@ -499,6 +518,16 @@ export default {
         name: [
           {
             required: true, message: '请添写项目阶段名称', trigger: 'blur'
+          }
+        ],
+        content: [
+          {
+            required: true, message: '请添写交付内容', trigger: 'blur'
+          }
+        ],
+        start_time: [
+          {
+            required: true, message: '请添写项目开始时间', trigger: 'blur'
           }
         ]
       }
@@ -663,28 +692,66 @@ export default {
         // } else
       }
     },
+    // 更新信息位置
+    updateallleft(res) {
+      this.endTimes.push(parseInt(res.start_time))
+      this.endTimes.push(parseInt(res.start_time) + parseInt(res.duration) * 86400)
+      this.sortdate(this.endTimes)
+      this.totaldays = this.dateDay(this.endTimes[0], this.endTimes[this.endTimes.length - 1])
+      this.newDay()
+      this.newtostart()
+      let reset = new Date(this.endTimes[0] * 1000)
+      let resxin = Date.parse(new Date(reset.getFullYear() + '-' + (reset.getMonth() + 1) + '-' + 1)) / 1000
+      res.left = Math.floor(((res.start_time - resxin) / 86400))
+      res.start_time = new Date(res.start_time * 1000).format('yyyy-MM-dd')
+      return res
+    },
+    // 任务显示
+    tackleft(des) {
+      let et = new Date(this.endTimes[0] * 1000)
+      let xin = Date.parse(new Date(et.getFullYear() + '-' + (et.getMonth() + 1) + '-' + 1)) / 1000
+      for (var tl = 0; tl < des.length; tl++) {
+        if (!des[tl].design_substage) {
+          let itemd = Date.parse(new Date(des[tl].start_time)) / 1000
+          itemd
+          des[tl].left = Math.floor((itemd - xin) / 86400)
+        }
+        if (des[tl].design_substage) {
+          let sortTask = []
+          for (var j = 0; j < des[tl].design_substage.length; j++) {
+            // 任务起始时间和终止时间
+            var st = des[tl].design_substage[j].start_time
+            var dur = des[tl].design_substage[j].duration
+            des[tl].design_substage[j].end_time = st + dur * 86400
+            sortTask.push(st)
+            sortTask.push(st + dur * 86400)
+            des[tl].design_substage[j].left = Math.floor((st - xin) / 86400)
+            // 任务时间格式转换
+            des[tl].design_substage[j].start_time = (new Date(des[tl].design_substage[j].start_time * 1000)).format('yyyy-MM-dd')
+            if (des[tl].design_substage[j].design_stage_node && des[tl].design_substage[j].design_stage_node.time) {
+              des[tl].design_substage[j].design_stage_node.time = (new Date(des[tl].design_substage[j].design_stage_node.time * 1000)).format('yyyy-MM-dd')
+            }
+          }
+          this.sortdate(sortTask)
+          des[tl].left = Math.floor((sortTask[sortTask.length - 1] - xin) / 86400) - 1
+        }
+      }
+    },
     // 创建项目
     create(formName) {
       let that = this
       that.$refs[formName].validate(valid => {
         if (valid) {
           that.form.start_time = Math.round(new Date(that.form.start_time).getTime() / 1000)
+          if (!that.form.design_project_id) {
+            that.form.design_project_id = this.$route.params.id
+          }
+          that.isItemStage = false
           that.$http.post(api.designStageCreate, that.form).then((response) => {
             if (response.data.meta.status_code === 200) {
-              var res = response.data.data
               that.form = {}
-              that.isItemStage = false
-              that.endTimes.push(parseInt(res.start_time))
-              that.endTimes.push(parseInt(res.start_time) + parseInt(res.duration) * 86400)
-              that.sortdate(this.endTimes)
-              that.totaldays = this.dateDay(this.endTimes[0], this.endTimes[this.endTimes.length - 1])
-              that.newDay()
-              that.newtostart()
-              let reset = new Date(this.endTimes[0] * 1000)
-              let resxin = Date.parse(new Date(reset.getFullYear() + '-' + (reset.getMonth() + 1) + '-' + 1)) / 1000
-              res.left = Math.floor(((res.start_time - resxin) / 86400))
+              var res = this.updateallleft(response.data.data)
               that.designStageLists.unshift(res)
-              // console.log(that.designStageLists[0])
             } else {
               that.$message.error(response.data.meta.message)
             }
@@ -710,24 +777,15 @@ export default {
         if (typeof this.formup.start_time !== 'number') {
           this.formup.start_time = Math.round(new Date(this.formup.start_time).getTime() / 1000)
         }
-        console.log(this.formup.start_time)
         this.$http.put(api.designStageUpdate.format(this.formup.id), this.formup).then((response) => {
           if (response.data.meta.status_code === 200) {
-            var res = response.data.data
-            this.endTimes.push(parseInt(res.start_time))
-            this.endTimes.push(parseInt(res.start_time) + parseInt(res.duration) * 86400)
-            this.sortdate(this.endTimes)
-            this.totaldays = this.dateDay(this.endTimes[0], this.endTimes[this.endTimes.length - 1])
-            this.newDay()
-            this.newtostart()
-            res.left = this.itemtostart(res.start_time)
-            res.start_time = new Date(res.start_time * 1000).format('yyyy-MM-dd')
+            var res = this.updateallleft(response.data.data)
             for (var i = 0; i < this.designStageLists.length; i++) {
               if (this.designStageLists[i].id === this.formup.id) {
                 this.$set(this.designStageLists, i, res)
               }
             }
-            console.log(response.data.data)
+            this.tackleft(this.designStageLists)
           } else {
             this.$message.error(response.data.meta.message)
           }
@@ -738,13 +796,18 @@ export default {
       }
     },
     // 删除项目
-    deleteDes(d, index) {
+    deleteDes(d) {
       let dthis = this
-      dthis.$http.delete(api.designStageDelete, {params: {id: d.id}})
+      dthis.$http.delete(api.designStageDelete, {params: {id: d}})
       .then (function(response) {
         if (response.data.meta.status_code === 200) {
-          dthis.designStageLists.splice(index, 1)
-          console.log(response.data.data)
+          dthis.dialogVisible = false
+          for (var i = 0; i < dthis.designStageLists.length; i++) {
+            if (dthis.designStageLists[i].id === d) {
+              dthis.designStageLists.splice(i, 1)
+              dthis.isItemStage = false
+            }
+          }
         } else {
           dthis.$message.error(response.data.meta.message)
         }
@@ -906,40 +969,10 @@ export default {
         this.newDay()
         this.newtostart()
         // 任务
-        let et = new Date(this.endTimes[0] * 1000)
-        let xin = Date.parse(new Date(et.getFullYear() + '-' + (et.getMonth() + 1) + '-' + 1)) / 1000
-        for (let k = 0; k < this.designStageLists.length; k++) {
-          // 没有任务时默认显示
-          if (!this.designStageLists[k].design_substage) {
-            let itemd = Date.parse(new Date(this.designStageLists[k].start_time)) / 1000
-            console.log(itemd)
-            this.designStageLists[k].left = Math.floor((itemd - xin) / 86400)
-          }
-          // 有任务时显示
-          if (this.designStageLists[k].design_substage) {
-            let sortTask = []
-            for (var j = 0; j < this.designStageLists[k].design_substage.length; j++) {
-              // 任务起始时间和终止时间
-              var st = this.designStageLists[k].design_substage[j].start_time
-              var dur = this.designStageLists[k].design_substage[j].duration
-              this.designStageLists[k].design_substage[j].end_time = st + dur * 86400
-              sortTask.push(st)
-              sortTask.push(st + dur * 86400)
-              this.designStageLists[k].design_substage[j].left = Math.floor((st - xin) / 86400)
-              // 任务时间格式转换
-              this.designStageLists[k].design_substage[j].start_time = (new Date(this.designStageLists[k].design_substage[j].start_time * 1000)).format('yyyy-MM-dd')
-              if (this.designStageLists[k].design_substage[j].design_stage_node && this.designStageLists[k].design_substage[j].design_stage_node.time) {
-                this.designStageLists[k].design_substage[j].design_stage_node.time = (new Date(this.designStageLists[k].design_substage[j].design_stage_node.time * 1000)).format('yyyy-MM-dd')
-              }
-            }
-            this.sortdate(sortTask)
-            this.designStageLists[k].left = Math.floor((sortTask[sortTask.length - 1] - xin) / 86400) - 1
-          }
-        }
+        this.tackleft(this.designStageLists)
         this.$nextTick(_ => {
           this.scrollLeft()
         })
-        console.log(this.designStageLists)
       } else {
         this.$message.error(response.data.meta.message)
       }
@@ -951,7 +984,7 @@ export default {
 }
 </script>
 <style scoped>
-  .add-itemStage-bg{
+  .add-itemStage-bg {
     position: fixed;
     z-index: 1999;
     left: 50%;
@@ -961,7 +994,7 @@ export default {
     height: 100%;
     background: rgba(0,0,0,0.30)
   }
-  .add-itemStage{
+  .add-itemStage {
     position: fixed;
     z-index: 1000;
     left: 50%;
@@ -975,7 +1008,7 @@ export default {
     border:1px solid #fff;
     border-radius: 4px;
   }
-  .itemStage-title{
+  .itemStage-title {
     background:#f7f7f7;
     padding:15px;
     font-size:15px;
@@ -983,362 +1016,405 @@ export default {
     text-align: center;
     position: relative;
   }
-.itemStage-title>i{
-  position: absolute;
-  width:20px;
-  height:20px;
-  right:5px;
-}
-.itemStage-content{
-  padding:15px 15px 0px 15px;
-}
-.itemStage-content>.el-row{
-  margin:15px 0px;
-}
-.add-item{
-  height:100px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  color:#FF5A5F;
-}
-.add-item>div{
-  cursor: pointer;
-  width:30px;
-  height:30px;
-  background:#FF5A5F;
-  border-radius: 50%;
-  font-size:28px;
-  text-align: center;
-  color:#fff;
-  margin-bottom:20px;
-}
-.add-item>p{
-  cursor: pointer;
-}
-.item-total{
-  margin:30px 50px;
-  position: relative;
-}
-.cs{
-  position: absolute;
-  width:300px;
-  height:300px;
-  z-index:999;
-}
-.aside{
-  position: fixed;
-  z-index:99;
-  width:300px;
-  height:100%;
-  border:1px solid #d2d2d2;
-  right:0px;
-  top:60px;
-  background:#fff;
-}
-.aside-title{
-  position: relative;
-  padding:15px;
-  text-align: center;
-}
-.aside-title>i{
-  width:20px;
-  height:20px;
-  position: absolute;
-  left:15px;
-  top:15px;
-}
-.aside-title>span{
-  width:20px;
-  height:20px;
-  position: absolute;
-  right:15px;
-  top:15px;
-}
-.aside-content{
-  margin:20px 20px 10px 20px;
-}
-.aside-content>li{
-  margin-bottom:10px;
-  padding-left:20px;
-}
-.add-tack{
-  position: relative;
-  border-top:1px solid #d2d2d2;
-  border-bottom:1px solid #d2d2d2;
-  padding:10px 0px 10px 20px;
-}
-.add-tack>i{
-  width:25px;
-  height:25px;
-  background:#FF5A5F;
-  border-radius: 50%;
-  font-size:23px;
-  text-align: center;
-  color:#fff;
-  display:inline-block;
-}
-.tack-list{
-  margin-top:10px;
-  padding-left:20px;
-  border-bottom:1px solid #d2d2d2;
-}
-.tack-list>li{
-  margin-bottom:10px;
-}
-.h3{
-  font-size: 18px;
-  font-weight: bold;
-  color:#222222;
-  margin-bottom:20px;
-}
-.full-red-button{
-  margin-left:20px;
-}
-.item-header{
-  display:flex;
-  border-bottom:1px solid #d2d2d2;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:40px;
-}
-.item-header>li{
-  flex:1;
-  margin:20px 0px;
-  height:80px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-}
-.item-header>li>div{
-  font-size: 20px;
-  color: #222222;
-  margin-bottom:10px;
-}
-.item-header>li:not(:first-child){
-  border-left: 1px solid #d2d2d2;
-}
-.item-task>ul{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:40px;
-}
-.item-task>ul>li{
-  flex:1;
-  display:flex;
-  align-items:center;
-  margin-right:10px;
-  border:1px solid #d2d2d2;
-  border-radius:4px;
-  padding:20px 0;
-}
-.item-task>ul>li:not(:first-child){
-  margin-left: 10px;
-}
-.item-task>ul>li>div{
-  margin-left:20px;
-}
-.item-task>ul>li>div>.fx-6{
-  margin-top:10px;
-}
-.item-content{
-  min-height:300px;
-  margin-bottom:50px;
-}
-.item-lists{
-  border:1px solid #d2d2d2;
-  border-radius: 4px;
-}
-.item-text-content{
-  display:flex;
-  justify-content:space-between;
-}
-.item-text-content ul{
-  display:flex;
-  justify-content: space-between;
-}
-.item-text-content ul>li{
-  padding-left:5px;
-}
-.item-text-Header{
-  border-bottom:1px solid #d2d2d2;
-  border-right: 1px solid #d2d2d2;
-  padding:10px 10px 0px 20px;
-  height:55px;
-}
-.item-text-Header>.el-row>.el-col{
-  margin-bottom: 10px;
-}
-.popover{
-  position: relative;
-}
-.popover:focus ul{
-  display:block;
-}
-.search-popover{
-  display:none;
-  position: absolute;
-  width:180px;
-  z-index:5;
-  background:#fff;
-  border-radius: 4px;
-  box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
-  top:20px;
-}
-.search-popover>li{
-  padding:10px;
-  font-size:1.4rem;
-}
-.search-popover>li:hover{
-  background:#f7f7f7;
-}
-
-.item-text-list{
-  height: 180px;
-  padding:20px 10px 10px 14px;
-  background:#f7f7f7;
-  border-bottom:1px solid #d2d2d2;
-  border-right: 1px solid #d2d2d2;
-  border-left:5px solid transparent;
-}
-.item-text-list:hover{
-  border-left:5px solid #FF5A5F;
-  cursor:pointer;
-  
-}
-.paycontent>li{
-  padding:10px 0px 0px 20px;
-}
-.item-chart{
-  height:100%;
-  position: relative;
-  overflow: hidden;
-  z-index:3;
-}
-.item-chart-list{
-  position:absolute;
-  left:0;
-  width:100%;
-  overflow-y:hidden;
-  overflow-x:auto;
-  z-index:4;
-}
-.item-chartHeader{
-  white-space: nowrap;
-  height:55px;
-}
-.width-100{
-  width:100%;
-}
-.width-25{
-  width:25%;
-}
-.item-chartHeader>div{
-  display:inline-block;
-  border-bottom:1px solid #d2d2d2;
-}
-.item-chartHeader>div>div{
-  height:32px;
-  line-height: 32px;
-  text-align: center;
-}
-.item-chartHeader ul{
-  display:inline-block;
-  height:22px;
-  line-height:22px;
-}
-.item-chartHeader ul>li{
-  border-right:1px solid #d2d2d2;
-  border-top:1px solid #d2d2d2;
-  display:inline-block;
-  text-align: center;
-}
-.dateweek{
-  width:210px;
-}
-.dateday{
-  width:30px;
-}
-.item-chartContent{
-  white-space: nowrap;
-  position: relative;
-  height:180px;
-}
-.item-tacklist{
-  position:absolute;
-  top:80px;
-  height:20px;
-  width:350%;
-  border:1px solid #65A6FF;
-  border-radius: 4px;
-  background:#65A6FF;
-}
-.item-tacklist-last{
-  position:absolute;
-  display:flex;
-  justify-content: space-around;
-  align-items: center;
-  top:77px;
-  height:25px;
-  color:#FF5A5F;
-}
-.item-tacklist-last>div{
-  display:inline-block;
-  background:#FF5A5F;
-  color:#fff;
-  border-radius: 50%;
-  width:25px;
-  height:25px;
-  text-align: center;
-  line-height:24px;
-  font-size:25px;
-  margin:auto 10px;
-  cursor: pointer;
-}
-.item-tacklist-last>span{
-  cursor: pointer;
-  font-size:1.4rem;
-}
-.no-tack{
-  width:30px;
-  height:20px;
-}
-.item-chartContent>ul{
-  display:inline-block;
-  height:180px;
-}
-.item-chartContent>ul>li{
-  display:inline-block;
-  border-right:1px dashed #bce6f0;
-  border-bottom:1px solid #d2d2d2;
-  height:100%;
-}
-.bgc{
-  background:#bce6f0;
-}
-.bgwill{
-  background:#65A6FF;
-  border:1px solid #65A6FF;
-}
-.bging{
-  border:1px solid #11bce2;
-  background:#07b7e4;
-}
-.bgno{
-  border:1px solid #FF8B8F;
-  background:#FF8B8F;
-}
-.bged{
-  border:1px solid #00AC84;
-  background:#00AC84;
-}
-@media screen and (max-width: 767px) {
-  .item-total {
-    margin: 0 15px;
+  .itemStage-title>i {
+    position: absolute;
+    width:20px;
+    height:20px;
+    right:5px;
   }
-}
+  .itemStage-content {
+    padding:15px 15px 0px 15px;
+  }
+  .itemStage-content>.el-row {
+    margin:15px 0px;
+  }
+  .add-item {
+    height:100px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    color:#FF5A5F;
+  }
+  .add-item>div {
+    cursor: pointer;
+    width:30px;
+    height:30px;
+    background:#FF5A5F;
+    border-radius: 50%;
+    font-size:28px;
+    text-align: center;
+    color:#fff;
+    margin-bottom:20px;
+  }
+  .add-item>p {
+    cursor: pointer;
+  }
+  .item-total {
+    margin:30px 50px;
+    position: relative;
+  }
+  .cs {
+    position: absolute;
+    width:300px;
+    height:300px;
+    z-index:999;
+  }
+  .aside {
+    position: fixed;
+    z-index:99;
+    width:380px;
+    height:100%;
+    border:1px solid #d2d2d2;
+    right:0px;
+    top:60px;
+    background:#fff;
+  }
+  .aside-title {
+    position: relative;
+    padding:15px 20px;
+    text-align: center;
+  }
+  .aside-title>i {
+    width:20px;
+    height:20px;
+    position: absolute;
+    left:18px;
+    top:15px;
+  }
+  .aside-title>p {
+    width:20px;
+    height:20px;
+    position: absolute;
+    right:15px;
+    top:15px;
+  }
+  .aside-content {
+    padding:20px 20px 10px 52px;
+  }
+  .aside-content>li {
+    margin-bottom:10px;
+    position: relative;
+  }
+  .aside-content>li>i{
+    position:absolute;
+    width:24px;
+    height:24px;
+    left:-34px;
+    top:6px;
+  }
+  .designStage-name {
+    position: relative;
+    height:40px;
+  }
+  .designStage-name>span {
+    position:absolute;
+    left:-34px;
+    top:6px;
+  }
+  .design-duration i{
+    background: url('../../../../assets/images/tools/project_management/Repeat.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .formup-time i{
+    background:url('../../../../assets/images/tools/project_management/Time.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .design-content i{
+    background:url('../../../../assets/images/tools/project_management/Deliver@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .add-tack {
+    position: relative;
+    display:flex;
+    justify-content: flex-start;
+    align-items: center;
+    border-top:1px solid #d2d2d2;
+    border-bottom:1px solid #d2d2d2;
+    padding:10px 19px;
+  }
+  .add-tack>span{
+    display: inline-block;
+    padding-left: 15px;
+    font-size: 1.4rem
+  }
+  .add-tack>i {
+    width:25px;
+    height:25px;
+    background:#FF5A5F;
+    border-radius: 50%;
+    font-size:23px;
+    text-align: center;
+    color:#fff;
+    display:inline-block;
+  }
+  .tack-list {
+    margin-top:10px;
+    padding-left:20px;
+    border-bottom:1px solid #d2d2d2;
+  }
+  .tack-list>li {
+    margin-bottom:10px;
+  }
+  .h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color:#222222;
+    margin-bottom:20px;
+  }
+  .full-red-button {
+    margin-left:20px;
+  }
+  .item-header {
+    display:flex;
+    border-bottom:1px solid #d2d2d2;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:40px;
+  }
+  .item-header>li {
+    flex:1;
+    margin:20px 0px;
+    height:80px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+  }
+  .item-header>li>div {
+    font-size: 20px;
+    color: #222222;
+    margin-bottom:10px;
+  }
+  .item-header>li:not(:first-child) {
+    border-left: 1px solid #d2d2d2;
+  }
+  .item-task>ul {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:40px;
+  }
+  .item-task>ul>li {
+    flex:1;
+    display:flex;
+    align-items:center;
+    margin-right:10px;
+    border:1px solid #d2d2d2;
+    border-radius:4px;
+    padding:20px 0;
+  }
+  .item-task>ul>li:not(:first-child) {
+    margin-left: 10px;
+  }
+  .item-task>ul>li>div {
+    margin-left:20px;
+  }
+  .item-task>ul>li>div>.fx-6 {
+    margin-top:10px;
+  }
+  .item-content {
+    min-height:300px;
+    margin-bottom:50px;
+  }
+  .item-lists {
+    border:1px solid #d2d2d2;
+    border-radius: 4px;
+  }
+  .item-text-content {
+    display:flex;
+    justify-content:space-between;
+  }
+  .item-text-content ul {
+    display:flex;
+    justify-content: space-between;
+  }
+  .item-text-content ul>li {
+    padding-left:5px;
+  }
+  .item-text-Header {
+    border-bottom:1px solid #d2d2d2;
+    border-right: 1px solid #d2d2d2;
+    padding:10px 10px 0px 20px;
+    height:55px;
+  }
+  .item-text-Header>.el-row>.el-col {
+    margin-bottom: 10px;
+  }
+  .popover {
+    position: relative;
+  }
+  .popover:focus ul {
+    display:block;
+  }
+  .search-popover {
+    display:none;
+    position: absolute;
+    width:180px;
+    z-index:5;
+    background:#fff;
+    border-radius: 4px;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
+    top:20px;
+  }
+  .search-popover>li {
+    padding:10px;
+    font-size:1.4rem;
+  }
+  .search-popover>li:hover {
+    background:#f7f7f7;
+  }
+
+  .item-text-list {
+    height: 180px;
+    padding:20px 10px 10px 14px;
+    background:#f7f7f7;
+    border-bottom:1px solid #d2d2d2;
+    border-right: 1px solid #d2d2d2;
+    border-left:5px solid transparent;
+    overflow: hidden;
+  }
+  .item-text-list:hover {
+    border-left:5px solid #FF5A5F;
+    cursor:pointer;
+    
+  }
+  .paycontent>li {
+    padding:10px 0px 0px 20px;
+    word-wrap:break-word;
+  }
+  .paycontent>li:nth-child(2) {
+    height: 110px;
+    overflow: hidden;
+    line-height: 20px;
+  }
+  .item-chart {
+    height:100%;
+    position: relative;
+    overflow: hidden;
+    z-index:3;
+  }
+  .item-chart-list {
+    position:absolute;
+    left:0;
+    width:100%;
+    overflow-y:hidden;
+    overflow-x:auto;
+    z-index:4;
+  }
+  .item-chartHeader {
+    white-space: nowrap;
+    height:55px;
+  }
+  .width-100 {
+    width:100%;
+  }
+  .width-25 {
+    width:25%;
+  }
+  .item-chartHeader>div {
+    display:inline-block;
+    border-bottom:1px solid #d2d2d2;
+  }
+  .item-chartHeader>div>div {
+    height:32px;
+    line-height: 32px;
+    text-align: center;
+  }
+  .item-chartHeader ul {
+    display:inline-block;
+    height:22px;
+    line-height:22px;
+  }
+  .item-chartHeader ul>li {
+    border-right:1px solid #d2d2d2;
+    border-top:1px solid #d2d2d2;
+    display:inline-block;
+    text-align: center;
+  }
+  .dateweek {
+    width:210px;
+  }
+  .dateday {
+    width:30px;
+  }
+  .item-chartContent {
+    white-space: nowrap;
+    position: relative;
+    height:180px;
+  }
+  .item-tacklist {
+    position:absolute;
+    top:80px;
+    height:20px;
+    width:350%;
+    border:1px solid #65A6FF;
+    border-radius: 4px;
+    background:#65A6FF;
+  }
+  .item-tacklist-last {
+    position:absolute;
+    display:flex;
+    justify-content: space-around;
+    align-items: center;
+    top:77px;
+    height:25px;
+    color:#FF5A5F;
+  }
+  .item-tacklist-last>div {
+    display:inline-block;
+    background:#FF5A5F;
+    color:#fff;
+    border-radius: 50%;
+    width:25px;
+    height:25px;
+    text-align: center;
+    line-height:24px;
+    font-size:25px;
+    margin:auto 10px;
+    cursor: pointer;
+  }
+  .item-tacklist-last>span {
+    cursor: pointer;
+    font-size:1.4rem;
+  }
+  .no-tack{
+    width:30px;
+    height:20px;
+  }
+  .item-chartContent>ul {
+    display:inline-block;
+    height:180px;
+  }
+  .item-chartContent>ul>li {
+    display:inline-block;
+    border-right:1px dashed #bce6f0;
+    border-bottom:1px solid #d2d2d2;
+    height:100%;
+  }
+  .bgc {
+    background:#bce6f0;
+  }
+  .bgwill {
+    background:#65A6FF;
+    border:1px solid #65A6FF;
+  }
+  .bging {
+    border:1px solid #11bce2;
+    background:#07b7e4;
+  }
+  .bgno {
+    border:1px solid #FF8B8F;
+    background:#FF8B8F;
+  }
+  .bged {
+    border:1px solid #00AC84;
+    background:#00AC84;
+  }
+  @media screen and (max-width: 767px) {
+    .item-total {
+      margin: 0 15px;
+    }
+  }
 </style>
 

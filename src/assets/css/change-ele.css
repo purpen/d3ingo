@@ -59,6 +59,31 @@
   .el-breadcrumb__item__inner a:hover, .el-breadcrumb__item__inner:hover {
     color: #222
   }
+  .item-total .el-dialog__footer {
+    text-align: center
+  }
+  .aside>.el-progress .el-progress-bar__outer, .aside>.el-progress .el-progress-bar__outer>.el-progress-bar__inner {
+    border-radius: 0px
+  }
+  .designStage-name .el-checkbox__inner{
+    width:24px;
+    height:24px;
+  }
+  .designStage-name .el-checkbox__input.is-checked .el-checkbox__inner{
+    border-color:#D2D2D2;
+    background-color:#FFF;
+  }
+  .designStage-name .el-checkbox__inner::after{
+    height:11px;
+    width:5px;
+    left:7px;
+    top:3px;
+    border-bottom:2px solid #d2d2d2;
+    border-right:2px solid #d2d2d2
+  }
+  .formup-time .el-date-editor.el-input {
+    width:100%
+  }
   .el-progress-bar__outer {
     background: #f7f7f7
   }
