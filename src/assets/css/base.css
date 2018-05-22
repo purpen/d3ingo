@@ -1416,12 +1416,15 @@ input[type=text]:focus, input[type=password]:focus{
 }
 
 .el-menu-info .el-submenu .el-submenu__title img {
-  max-height: 3rem;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   overflow: hidden;
   vertical-align: middle;
 }
+.el-menu-info .el-submenu .el-submenu__title {
 
+}
 .el-menu-info .el-submenu .el-submenu__title .b-nickname {
   padding-left: 8px;
   padding-right: 3px;

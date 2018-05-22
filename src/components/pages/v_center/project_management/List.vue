@@ -7,7 +7,7 @@
       <div class="vcenter-container blank30">
         <h2>项目管理</h2>
         <ul class="project-list" v-loading.body="isLoading">
-          <li class="create">
+          <li class="create" v-if="isCompanyAdmin">
             <p @click="showCover">
               <i></i>
               <span>创建新项目</span>
@@ -192,6 +192,14 @@ export default {
     leftWidth() {
       return this.$store.state.event.leftWidth
     },
+    // 是否为管理员
+    isCompanyAdmin() {
+      let companyRoleId = this.$store.state.event.user.company_role
+      if (companyRoleId === 20 || companyRoleId === 10) {
+        return true
+      }
+      return false
+    },
     isMob() {
       return this.$store.state.event.isMob
     }
@@ -350,6 +358,8 @@ export default {
   }
   .dialog-bg {
     position: fixed;
+    top: 60px;
+    left: 0;
     z-index: 1999;
     width: 100vw;
     height: 100vh;

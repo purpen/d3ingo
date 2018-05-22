@@ -16,8 +16,8 @@
           <div class="view-msg">
             <a @click="showCover = true, myView = 'order'" class="news">
               <i class="fx-4 fx-icon-notice"></i><i class="fx-4 fx-icon-news-hover"></i>
-              <span v-if="msgCount.message"><b>{{msgCount.message}}</b>条[订单提醒]未查看</span>
-              <span v-else>[订单提醒]</span>
+              <span v-if="msgCount.message"><b>{{msgCount.message}}</b>条[消息提醒]未查看</span>
+              <span v-else>[消息提醒]</span>
             </a>
             <a @click="showCover = true, myView = 'task'" class="news">
               <i class="fx-4 fx-icon-notice"></i><i class="fx-4 fx-icon-news-hover"></i>
@@ -232,6 +232,10 @@
             <a @click="alick" :to="'/vcenter/account/base'"
               :class="['item', 'account-management', {'is-active': currentName === 'profile'}]">
               账号设置
+            </a>
+            <a @click="alick" :to="'/vcenter/project_management/list'"
+              :class="['item', 'management', {'is-active': currentName === 'project_management'}]">
+              项目管理
             </a>
             <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" 
                v-if="isMob">
@@ -666,7 +670,7 @@
     background-size: contain;
   }
   .avatar {
-    display: block;
+    /* display: block; */
     width: 36px;
     height: 36px;
     border-radius: 50%;

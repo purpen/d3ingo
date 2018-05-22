@@ -166,6 +166,7 @@
         msg: {
           message: 0,
           notice: 0,
+          design_notice: 0,
           quantity: 0
         }
       }
@@ -202,11 +203,8 @@
         const self = this
         this.$http.get(api.messageGetMessageQuantity, {}).then(function (response) {
           if (response.data.meta.status_code === 200) {
-            self.msg.message = parseInt(response.data.data.message)
-            self.msg.notice = parseInt(response.data.data.notice)
-            sessionStorage.setItem('noticeCount', self.msg.notice)
-            let quantity = parseInt(response.data.data.quantity)
-            let msgCount = {message: self.msg.message, notice: self.msg.notice, quantity: quantity}
+            sessionStorage.setItem('noticeCount', response.data.data.notice)
+            let msgCount = response.data.data
             // 写入localStorage
             self.$store.commit(MSG_COUNT, msgCount)
           } else {
