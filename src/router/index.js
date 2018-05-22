@@ -571,7 +571,7 @@ routes = [
       title: '参赛作品详情',
       requireAuth: true
     },
-    component: require('@/components/pages/v_center/match_case/Show')
+    component: require('@/components/pages/v_center/design_case/Show')
   },
   {
     path: '/remind',
