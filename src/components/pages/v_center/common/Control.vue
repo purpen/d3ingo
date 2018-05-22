@@ -570,8 +570,8 @@
     color:#fff;
     background:#FF5A5F;
   }
-  .titleSize{
-    font-size:1.5rem;
+  .titleSize {
+    font-size: 1.5rem;
     font-weight: 600;
     margin-bottom:15px;
   }
