@@ -12,7 +12,7 @@
     <div v-else-if="myView === 'task'" class="cover-content">
       <task-message></task-message>
     </div>
-    <div v-else class="cover-content">
+    <div v-if="myView === 'system'" class="cover-content">
       <system-message></system-message>
     </div>
   </div>
@@ -28,12 +28,6 @@
       return {
         designItems: [] // 订单提醒
       }
-    },
-    created() {
-      console.log('created')
-    },
-    mounted() {
-      console.log('mounted')
     },
     methods: {
       getOrder() {
@@ -100,6 +94,7 @@
     }
   }
 </script>
+
 <style scoped>
  .cover {
     position: fixed;
