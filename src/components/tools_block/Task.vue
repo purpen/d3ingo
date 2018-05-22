@@ -5,7 +5,7 @@
         <span v-if="currentForm.tier === 0" class="task-detail-name">{{projectObject.name}}</span>
         <div v-if="currentForm.tier === 0" ref="selectParent" class="select-parent" tabindex="-1">
           <span class="select-show">请选择阶段</span>
-          <ul class="stage-list">
+          <ul class="stage-list stage-list0">
             <li :class="{'active': !currentForm.stage_id}" @click="stageItemClick(0)">无阶段</li>
             <li :class="{'active': d.id === currentForm.stage_id}" v-for="(d, index) in stageList" :key="index" @click="stageItemClick(d.id)">
               {{d.title}}</li>
@@ -922,9 +922,13 @@
     width: 200px;
     box-shadow: 0 0 6px 2px rgba(0,0,0,0.10);
     position: absolute;
-    left: 0;
+    right: -10px;
     top: 34px;
     z-index: 1;
+  }
+
+  .stage-list0 {
+    left: 0;
   }
   .stage-list li {
     height: 40px;

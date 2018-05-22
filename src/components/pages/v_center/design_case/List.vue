@@ -228,7 +228,7 @@
     display: none;
     position: absolute;
     z-index: 1;
-    left: 0;
+    right: 10px;
     top: 30px;
     border: 1px solid #fff;
     background: #fff;
