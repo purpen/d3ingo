@@ -7,26 +7,32 @@
       </div>
       <div v-if="!isMob" class="menu-right">
         <a class="nav-item is-hidden-mobile" ref="msgList">
-            <span class="icon active">
-              <i class="fx-4 fx-icon-notice">
-                <span v-if="msgCount.quantity">{{ msgCount.quantity }}</span>
-              </i>
-            </span>
-            <div :class="['view-msg',{'view-msg-plus': msgCount.message || msgCount.notice}]">
-              <router-link :to="{name: 'vcenterMessageList'}" class="news">
-                <i class="fx-4 fx-icon-notice"></i><i class="fx-4 fx-icon-news-hover"></i>
-                <span v-if="msgCount.message"><b>{{msgCount.message}}</b>条[项目提醒]未查看</span>
-                <span v-else>[项目提醒]</span>
-              </router-link>
-              <router-link :to="{name: 'systemMessageList'}" class="notice">
-                <i class="fx-4 fx-icon-sound-loudly"></i><i class="fx-4 fx-icon-notice-hover"></i>
-                <span v-if="msgCount.notice"><b>{{msgCount.notice}}</b>条[系统通知]未查看</span>
-                <span v-else>[系统通知]</span>
-              </router-link>
-            </div>
+          <span class="icon active">
+            <i class="fx-4 fx-icon-notice">
+              <span v-if="msgCount.quantity">{{ msgCount.quantity }}</span>
+            </i>
+          </span>
+          <!-- <div :class="['view-msg',{'view-msg-plus': msgCount.quantity}]"> -->
+          <div class="view-msg">
+            <a @click="showCover = true, myView = 'order'" class="news">
+              <i class="fx-4 fx-icon-notice"></i><i class="fx-4 fx-icon-news-hover"></i>
+              <span v-if="msgCount.message"><b>{{msgCount.message}}</b>条[订单提醒]未查看</span>
+              <span v-else>[订单提醒]</span>
+            </a>
+            <a @click="showCover = true, myView = 'task'" class="news">
+              <i class="fx-4 fx-icon-notice"></i><i class="fx-4 fx-icon-news-hover"></i>
+              <span v-if="msgCount.design_notice"><b>{{msgCount.design_notice}}</b>条[项目通知]未查看</span>
+              <span v-else>[项目通知]</span>
+            </a>
+            <a @click="showCover = true, myView = 'system'" class="notice">
+              <i class="fx-4 fx-icon-sound-loudly"></i><i class="fx-4 fx-icon-notice-hover"></i>
+              <span v-if="msgCount.notice"><b>{{msgCount.notice}}</b>条[系统通知]未查看</span>
+              <span v-else>[系统通知]</span>
+            </a>
+          </div>
         </a>
         <div class="mine no-select">
-          <span @click="showCover = !showCover">我的</span>
+          <span>我的</span>
         </div>
         <el-menu class="el-menu-info" mode="horizontal" router>
           <el-submenu index="2">
@@ -320,23 +326,9 @@
         </div>
       </section>
     </el-col>
-    <section :class="['cover', {'cover-mini': leftWidth === 2, 'show-cover': showCover}]">
-      <div class="cover-header">
-        <span :class="{'is-active': myView === 'order'}" @click="myView = 'order'">订单提醒</span>
-        <span :class="{'is-active': myView === 'task'}" @click="myView = 'task'">项目通知</span>
-        <span :class="{'is-active': myView === 'system'}" @click="myView = 'system'">系统通知</span>
-        <i class="fx fx-icon-nothing-close-error" @click="showCover = false"></i>
-      </div>
-      <div v-if="myView === 'order'" class="cover-content">
-        <order-message></order-message>
-      </div>
-      <div v-else-if="myView === 'task'" class="cover-content">
-        <task-message></task-message>
-      </div>
-      <div v-else class="cover-content">
-        <system-message></system-message>
-      </div>
-    </section>
+    <div>
+      <message-components></message-components>
+    </div>
   </section>
 </template>
 
@@ -344,9 +336,7 @@
   import api from '@/api/api'
   import { LEFT_WIDTH } from '@/store/mutation-types'
   import auth from '@/helper/auth'
-  import orderMessage from '@/components/tools_block/OrderMessage'
-  import systemMessage from '@/components/tools_block/SystemMessage'
-  import taskMessage from '@/components/tools_block/TaskMessage'
+  import messageComponents from 'components/tools_block/Message'
   export default {
     name: 'vcenter_menu',
     props: {
@@ -354,10 +344,8 @@
     },
     data () {
       return {
-        showCover: false,
         isEmpty: false,
-        designItems: [], // 订单提醒
-        myView: 'order'
+        designItems: [] // 订单提醒
       }
     },
     // 判断是客户还是设计公司
@@ -493,6 +481,22 @@
       },
       msgCount() {
         return this.$store.state.event.msgCount
+      },
+      myView: {
+        get() {
+          return this.$store.state.task.myView
+        },
+        set(e) {
+          this.$store.commit('changeMyView', e)
+        }
+      },
+      showCover: {
+        get() {
+          return this.$store.state.task.showMessage
+        },
+        set(e) {
+          this.$store.commit('changeShowMsg', e)
+        }
       }
     },
     watch: {
@@ -501,9 +505,7 @@
       }
     },
     components: {
-      orderMessage: orderMessage,
-      systemMessage: systemMessage,
-      taskMessage: taskMessage
+      messageComponents: messageComponents
     }
   }
 </script>
@@ -716,7 +718,7 @@
     height: 60px;
     display: flex;
     align-items: center;
-    margin: 0 15px;
+    /* margin: 0 15px; */
     padding-right: 15px;
   }
   .mine span {
@@ -724,7 +726,7 @@
     color: #666;
     cursor: pointer;
   }
-  .mine span:before,
+  /* .mine span:before,
   .mine span:after {
     color: #d2d2d2;
     content: "|";
@@ -735,70 +737,8 @@
   .mine span:after {
     left: auto;
     right: -15px;
-  }
-  .cover {
-    position: fixed;
-    z-index: 99;
-    left: 16.66667%;
-    top: 60px;
-    width: 83.333%;
-    height: calc(100% - 60px);
-    background: #fff;
-    transition: 0.45s all ease-in;
-    transform: translateY(-150%);
-  }
-  .show-cover {
-    transition: 0.45s all cubic-bezier(0, 1, 0.5, 1);
-    transform: translateY(0);
-  }
-  .cover-mini {
-    left: 60px;
-    top: 60px;
-    width: calc(100% - 60px);
-    height: calc(100% - 60px);
-  }
-  .cover-header {
-    position: relative;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-bottom: 1px solid #d7d7d7
-  }
-  .cover-header span {
-    cursor: pointer;
-    height: 50px;
-    line-height: 50px;
-    font-size: 14px;
-    color: #666;
-    border-bottom: 3px solid transparent
-  }
-  .cover-header .is-active {
-    border-color: #ff5a5f
-  }
-  .cover-header span:nth-child(2) {
-    margin: 0 60px
-  }
-  .cover-header i {
-    position: absolute;
-    right: 30px;
-    top: 17px;
-  }
-  .cover-content {
-    overflow: auto;
-    height: 100%;
-    padding-bottom: 50px;
-  }
-  @media screen and (min-width: 1200px) {
-    .cover {
-      left: 200px;
-      width: calc(100% - 200px);
-    }
-    .cover-mini {
-      left: 60px;
-      width: calc(100% - 60px);
-    }
-  }
+  } */
+  
   @media screen and (min-width: 768px) {
     .menu-list {
       width: inherit;

@@ -1106,6 +1106,7 @@ input[type=text]:focus, input[type=password]:focus{
 .nav-item .view-msg {
   display: none;
   position: absolute;
+  z-index: 10;
   top: 56px;
   right: 0;
   width: 200px;

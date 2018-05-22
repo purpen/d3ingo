@@ -80,3 +80,16 @@
   .is-exception .el-progress-circle__path {
     stroke: #FF5A5F
   }
+  .el-autocomplete-suggestion__wrap,
+  .el-pager li,
+  .el-pagination .btn-next,
+  .el-pagination .btn-prev {
+    border-color: #e6e6e6
+  }
+  .el-pager li:hover,
+  .el-pagination button:hover {
+    color: #FF5A5F
+  }
+  ul.el-pager li.number.active:hover {
+    color: #fff
+  }
