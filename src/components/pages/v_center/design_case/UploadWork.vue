@@ -1,10 +1,12 @@
 <template>
-  <div class="design-case-edit blank20">
+  <div class="design-case-edit blank30">
     <div v-if="!isMob"></div>
     <el-row>
       <v-menu currentName="match_case"></v-menu>
 
-      <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
+      <div :class="{'vcenter-right-plus': leftWidth === 4,
+        'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}">
         <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
           <div class="uploads">
@@ -95,7 +97,7 @@
             </div>
           </div>
         </div>
-      </el-col>
+      </div>
     </el-row>
   </div>
 </template>
@@ -104,7 +106,7 @@
   import '@/assets/js/format'
   import '@/assets/js/date_format'
   import vMenu from '@/components/pages/v_center/Menu'
-  import vMenuSub from '@/components/pages/v_center/match_case/MenuSub'
+  import vMenuSub from '@/components/pages/v_center/design_case/MenuSub'
 
   export default {
     name: 'uploadWork',
@@ -397,17 +399,19 @@
       }
     },
     watch: {
-      match_id() {
-        switch (this.match_id) {
+      match_id(val) {
+        switch (val) {
           case 1:
             this.match = '羽泉的礼物'
+            console.log('id')
             break
         }
       },
-      match() {
-        switch (this.match) {
+      match(val) {
+        switch (val) {
           case '羽泉的礼物':
             this.match_id = 1
+            console.log(val)
             break
         }
       }
@@ -419,6 +423,9 @@
   }
 </script>
 <style scoped>
+  .uploads {
+    margin-bottom: 50px;
+  }
   .upload {
     background: #FFFFFF;
     border: 1px solid #D2D2D2;

@@ -93,3 +93,20 @@
   ul.el-pager li.number.active:hover {
     color: #fff
   }
+  .el-radio-button__orig-radio:checked+.el-radio-button__inner {
+    background-color: #FF5A5F;
+    border-color: #FF5A5F;
+    box-shadow: -1px 0 0 0 #FF5A5F;
+  }
+  .el-radio-button__inner:hover {
+    color: #222;
+    border-color: #d2d2d2
+  }
+  .el-radio-button__inner {
+    color: #666;
+    border-color: #e6e6e6;
+  }
+  .el-radio__input.is-checked .el-radio__inner {
+    border-color: #FF5A5F;
+    background-color: #FF5A5F;
+  }

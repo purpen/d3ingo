@@ -22,7 +22,7 @@
                   <span class="more">
                   </span>
                   <span class="delete" @click="projectDelete(ele.id, index)">
-                    删除{{ele.id}}
+                    删除
                   </span>
                 </p>
                 <span class="favorite-star fr" v-if="false"></span>
@@ -247,6 +247,7 @@ export default {
   }
   .project-list li:hover {
     /* transform: translateY(-5px); */
+    z-index: 1;
     box-shadow: 6px 6px 10px rgba(10, 10, 10, 0.15);
   }
   .project-list li a {
@@ -274,7 +275,7 @@ export default {
   }
   .project-list li.create p i:hover {
     background: url(../../../../assets/images/member/add-hover@2x.png) no-repeat center;
-    background-size: contain  
+    background-size: contain
   }
   .project-list li h3 {
     line-height: 24px;
@@ -304,16 +305,21 @@ export default {
     background-size: contain
   }
   .operate {
-    position: relative;
+    position: absolute;
+    right: 0;
+    top: 20px;
+    width: 34px;
+    height: 24px;
   }
-  .operate:focus .delete {
+  .operate:focus .delete,
+  .operate:hover .delete {
     display: block;
   }
   .delete {
     display: none;
     position: absolute;
     z-index: 1;
-    left: 0;
+    left: 4px;
     top: 24px;
     width: 180px;
     height: 40px;

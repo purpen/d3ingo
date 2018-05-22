@@ -1,5 +1,5 @@
 <template>
-  <div class="blank10 vcenter">
+  <div class="blank30 vcenter">
     <el-row>
       <v-menu :class="[isMob ? 'v-menu' : '']" currentName="design_case"></v-menu>
 
@@ -7,7 +7,7 @@
         'vcenter-right': leftWidth === 2,
         'vcenter-right-mob': isMob}">
         <div class="right-content vcenter-container">
-          <v-menu-sub v-if="false"></v-menu-sub>
+          <v-menu-sub></v-menu-sub>
           <div :class="['content-box', isMob ? 'content-box-m' : '']">
             <div class="form-title">
               <span>作品案例</span>
@@ -15,36 +15,44 @@
 
             <div class="design-case-list" v-loading.body="isLoading">
               <el-row :gutter="20">
+                <el-col :xs="24" :sm="8" :md="8" :lg="8">
+                  <router-link :to="{name: 'vcenterDesignCaseAdd'}" class="item item-add el-card">
+                    <i class="add-icon"></i>
+                    <p class="tc-red fz-16">添加作品案例</p>
+                  </router-link>
+                </el-col>
                 <el-col :xs="24" :sm="8" :md="8" :lg="8" v-for="(d, index) in designCases" :key="index">
                   <el-card :body-style="{ padding: '0px' }" class="item">
+                    <div tabindex="-1" class="item-more" ref="itemMore">
+                      <i></i>
+                      <ul>
+                        <li @click="blurItemMore(index)" class="edit"><router-link :to="{name: 'vcenterDesignCaseEdit',
+                          params: {id: d.id}}">编辑</router-link></li>
+                        <li class="del" @click="delItem(d.id, index)">删除</li>
+                      </ul>
+                    </div>
                     <div class="image-box">
                       <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
-                                   :target="isMob ? '_self' : '_blank'">
+                        :target="isMob ? '_self' : '_blank'">
                         <img v-if="d.cover" :src="d.cover.middle">
                       </router-link>
                     </div>
                     <div class="content">
                       <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
-                                   :target="isMob ? '_self' : '_blank'">{{ d.title
-                        }}
+                        :target="isMob ? '_self' : '_blank'"
+                        class="tc-2 protrude">{{ d.title }}
                       </router-link>
-                      <div class="opt">
-                        <a href="javascript:void(0);" :item_id="d.id" :index="index"
-                           @click="delItem">删除</a>
-                        <router-link :to="{name: 'vcenterDesignCaseEdit', params: {id: d.id}}">
-                          编辑
-                        </router-link>
-                      </div>
+                      <span class="fz-12 tc-9">{{ d.date }}</span>
                     </div>
                   </el-card>
                 </el-col>
               </el-row>
             </div>
-            <div class="add blank20">
+            <!-- <div class="add blank20">
               <el-button class="is-custom" @click="add" type="primary">
                 <i class="el-icon-plus"></i> 添加作品案例
               </el-button>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -79,8 +87,8 @@
           return false
         }
       },
-      delItem(event) {
-        let id = event.currentTarget.getAttribute ('item_id')
+      delItem(id, index) {
+        this.$refs.itemMore[index].blur()
         this.$confirm ('是否执行此操作?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -103,23 +111,31 @@
         })
       },
       // 添加作品案例
-      add() {
-        this.$router.push ({name: 'vcenterDesignCaseAdd'})
-      },
+      // add() {
+      //   this.$router.push ({name: 'vcenterDesignCaseAdd'})
+      // },
       getDesignCase () {
         const that = this
         that.isLoading = true
         that.$http.get (api.designCase, {})
-          .then (function (response) {
-            that.isLoading = false
-            if (response.data.meta.status_code === 200) {
-              that.designCases = response.data.data
+        .then (function (response) {
+          that.isLoading = false
+          if (response.data.meta.status_code === 200) {
+            that.designCases = response.data.data
+            for (let i of that.designCases) {
+              if (i.cover.created_at) {
+                i.date = i.cover.created_at.date_format().format('yy-MM-dd')
+              }
             }
-          })
-          .catch (function (error) {
-            that.$message.error (error.message)
-            that.isLoading = false
-          })
+          }
+        })
+        .catch (function (error) {
+          that.$message.error (error.message)
+          that.isLoading = false
+        })
+      },
+      blurItemMore(i) {
+        this.$refs.itemMore[i].blur()
       }
     },
     computed: {
@@ -155,30 +171,105 @@
     }
     
   .design-case-list .item {
-    height: 240px;
+    min-height: 240px;
     }
 
   .item {
+    position: relative;
+    border-radius: 4px;
     margin: 10px 0;
     }
-
+  .item-add {
+    border: 1px solid #d2d2d2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .item-add p {
+    font-size: 16px;
+    color: #ff5a5f
+  }
+  .add-icon {
+    width: 40px;
+    height: 40px;
+    background: url(../../../../assets/images/member/add02@2x.png) no-repeat center / contain;
+    border-radius: 50%;
+    margin-bottom: 20px;
+  }
+  .add-icon:hover {
+    background: url(../../../../assets/images/member/add-hover@2x.png) no-repeat center / contain;
+  }
+  .item-more {
+    position: absolute;
+    right: 0;
+    top: 10px;
+    width: 34px;
+    height: 30px;
+  }
+  .item-more i {
+    display: block;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    opacity: 0.5;
+    background: url(../../../../assets/images/icon/more@2x.png) no-repeat center / contain;
+  }
+  .item-more i:hover,
+  .item-more:focus i {
+    opacity: 1;
+    background: url(../../../../assets/images/icon/moreHover@2x.png) no-repeat center / contain;
+  }
+  .item-more:focus ul,
+  .item-more:hover ul {
+    display: block;
+  }
+  .item-more ul {
+    display: none;
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 30px;
+    border: 1px solid #fff;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(10, 10, 10, .3);
+  }
+  .item-more ul li {
+    height: 40px;
+    line-height: 40px;
+    padding-left: 20px;
+    color: #999;
+    width: 180px;
+  }
+  li.edit a {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .item-more ul li:hover {
+    background: #f7f7f7;
+    color: #666;
+  }
   .item img {
     width: 100%;
     }
 
   .image-box {
+    border-radius: 4px 4px 0 0;
     height: 180px;
     overflow: hidden;
     }
 
   .content {
-    padding: 10px;
+    padding: 10px 20px;
     }
 
   .content a {
-    font-size: 1.5rem;
+    display: block;
+    font-size: 1.4rem;
+    margin-bottom: 10px;
     }
-
   .opt {
     margin: 10px 0 0 0;
     text-align: right;

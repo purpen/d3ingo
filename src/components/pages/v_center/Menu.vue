@@ -135,12 +135,6 @@
               作品案例
             </a>
             </el-tooltip>
-            <el-tooltip class="item" :effect="DarkorLight" content="提交作品" placement="right">
-            <a @click="alick" :to="'/vcenter/match_case'"
-              :class="['item', 'match-case', {'is-active': currentName === 'match_case'}]">
-              提交作品
-            </a>
-            </el-tooltip>
             <el-tooltip class="item" :effect="DarkorLight" content="我的钱包" placement="right">
             <a @click="alick" :to="'/vcenter/wallet/list'" 
               :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
@@ -272,10 +266,6 @@
             <a @click="alick" :to="'/vcenter/design_case'" 
               :class="['item', 'case', {'is-active': currentName === 'design_case'}]">
               作品案例
-            </a>
-            <a @click="alick" :to="'/vcenter/match_case'"
-              :class="['item', 'match-case', {'is-active': currentName === 'match_case'}]">
-              提交作品
             </a>
             <a @click="alick" :to="'/vcenter/wallet/list'" 
               :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">

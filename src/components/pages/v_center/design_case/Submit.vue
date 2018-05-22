@@ -1,10 +1,12 @@
 <template>
-  <div class="design-case-edit blank20">
+  <div class="blank30 vcenter">
     <div v-if="!isMob"></div>
     <el-row>
       <v-menu currentName="design_case"></v-menu>
 
-      <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
+      <div :class="{'vcenter-right-plus': leftWidth === 4,
+        'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}">
         <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
           <div class="content-box">
@@ -185,7 +187,7 @@
                       :before-upload="beforeUpload"
                       :show-file-list="false"
                       list-type="picture">
-                      <el-button size="small" type="primary">点击上传</el-button>
+                      <el-button size="small" type="danger">点击上传</el-button>
                       <div slot="tip" class="el-upload__tip">{{ uploadMsg }}</div>
                     </el-upload>
 
@@ -247,13 +249,13 @@
 
               <div class="form-btn">
                 <el-button @click="returnList">取消</el-button>
-                <el-button type="success" :loading="isLoadingBtn" @click="submit('ruleForm')">提交</el-button>
+                <el-button type="danger" :loading="isLoadingBtn" @click="submit('ruleForm')">提交</el-button>
               </div>
               <div class="clear"></div>
             </el-form>
           </div>
         </div>
-      </el-col>
+      </div>
     </el-row>
   </div>
 </template>

@@ -1702,10 +1702,13 @@ img.avatar2 {
   border: 1px solid #e6e6e6;
   box-shadow: none;
   /* box-shadow: 0 5px 10px 0 #eee */
+  overflow: initial
 }
 
 .el-card:hover {
-  transform: translateY(-5px);
+  position: relative;
+  z-index: 1;
+  transform: translate3D(0, -5px, 0);
   box-shadow: 6px 6px 10px rgba(10, 10, 10, 0.15)
 }
 
@@ -2528,6 +2531,26 @@ td.fc-day.fc-widget-content.fc-today::before {
 }
 .noborder>.el-textarea__inner{
   border:none;
+}
+.el-textarea__inner {
+  border-color: #e6e6e6
+}
+.el-textarea__inner:hover,
+.el-textarea__inner:focus {
+  border-color: #d2d2d2
+}
+.el-upload--picture-card {
+  border-color: #d2d2d2
+}
+.el-upload--picture-card:hover {
+  border-color: #999;
+  color: #666
+}
+.el-upload__tip {
+  color: #999
+}
+.el-upload--picture-card:hover+.el-upload__tip {
+  color: #666
 }
 /*enterprise*/
 

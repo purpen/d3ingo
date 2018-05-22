@@ -129,10 +129,19 @@
 
 .large-button,
 .middle-button,
-.small-button {
+.small-button,
+.el-button--mini,
+.el-button--small,
+.el-button--primary,
+.el-button--large {
   padding: 0;
   margin: 0;
   font-size: 14px;
+}
+
+.el-button--mini,
+.el-button--small {
+  font-size: 12px;
 }
 .large-button {
   cursor: pointer;
@@ -140,26 +149,32 @@
   height: 34px;
   line-height: 34px;
 }
-.big-button {
+.big-button,
+.el-button--large {
   cursor: pointer;
   width: 120px;
   height: 40px;
   line-height: 40px;
 }
-.middle-button {
+.middle-button,
+.el-button--primary {
   cursor: pointer;
   width: 120px;
   height: 34px;
   line-height: 34px;
 }
-.small-button {
+.small-button,
+.el-button--small {
   cursor: pointer;
   width: 100px;
   height: 30px;
   line-height: 30px;
+  font-size: 12px;
 }
 
-.mini-button {
+.mini-button,
+.el-button--mini {
+  font-size: 12px;
   cursor: pointer;
   width: 80px;
   height: 30px;
@@ -179,32 +194,41 @@
   background-color: #ff5a5f;
   color: #fff;
 }
-.full-red-button {
+.full-red-button,
+.el-button--danger {
   background: #FF5A5F;
   border: 1px solid #ff5a5f;
   border-radius: 4px;
   color: #fff;
 }
-.full-red-button:hover {
+.full-red-button:hover,
+.el-button--danger:hover {
   border-color: #d23c46;
   background-color: #d23c46;
 }
-.full-red-button:active {
+.full-red-button:active,
+.el-button--danger:active {
   border-color: #a02832;
   background-color: #a02832;
 }
-.white-button {
+.white-button,
+.el-button--default {
   background: #fff;
   border: 1px solid #d2d2d2;
   border-radius: 4px;
   color: #666;
 }
-.white-button:hover {
+.white-button:hover,
+.el-button--default:hover,
+.el-button:focus {
   background: #f5f5f5;
+  border: 1px solid #d2d2d2;
   color: #222;
 }
-.white-button:active {
+.white-button:active,
+.el-button--default:active {
   background: #ccc;
+  border: 1px solid #ccc;
   color: #fff;
 }
 
