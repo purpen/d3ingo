@@ -273,7 +273,7 @@
     .verify-success {
       border: none;
       padding: 0;
-      margin: 0;
+      margin: 40px 0 0;
     }
 
     .verify img {

@@ -626,8 +626,8 @@ button.is-custom.el-button--primary {
 }
 
 button.is-custom.el-button--primary:hover {
-  background-color: rgba(255, 90, 95, 0.7);
-  border-color: transparent;
+  border-color: #d23c46;
+  background-color: #d23c46;
   color: #FFFFFF;
 }
 
@@ -638,9 +638,8 @@ button.is-custom.el-button.el-button--default {
 }
 
 button.is-custom.el-button.el-button--default:hover {
-  background-color: #FFFFFF;
-  border-color: #FF5A5F;
-  color: #FF5A5F;
+  background-color: #ffacaf;
+  color: #fff;
 }
 
 button.is-custom:focus, .button.is-custom.is-focused {
@@ -1627,7 +1626,7 @@ img.avatar2 {
 }
 
 .file-list .item {
-  margin: 5px 0;
+  margin: 10px 0;
 }
 
 .file-list .item img {
@@ -1635,7 +1634,7 @@ img.avatar2 {
 }
 
 .file-list .image-box {
-  /* height: 180px; */
+  height: 180px;
   overflow: hidden;
 }
 
@@ -2029,6 +2028,9 @@ td.fc-day.fc-widget-content.fc-today::before {
   line-height: 60px;
   background: #FFFFFF;
 }
+.upload-design .el-upload--picture-card {
+  height: 110px;
+}
 
 .upload .el-icon-plus {
   border-radius: 50%;
@@ -2378,11 +2380,9 @@ td.fc-day.fc-widget-content.fc-today::before {
 
   .vcenter-menu-sub-list-m {
     float: none;
-    margin-bottom: -1px;
     display: flex;
     justify-content: center;
     position: relative;
-    /* margin: 0 -35px; */
     width: 100%
   }
 

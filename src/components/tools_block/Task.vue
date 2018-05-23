@@ -359,7 +359,7 @@
             self.currentForm.over_time = overTime.format('yyyy-MM-dd hh:mm')
           }
         }
-        self.currentForm.item_id = self.projectObject.id
+        self.currentForm.item_id = self.$route.params.id
         self.$http.post(api.task, self.currentForm).then(function (response) {
           self.isCreate = true
           if (response.data.meta.status_code === 200) {
@@ -380,7 +380,7 @@
         const self = this
         self.addChildForm.tier = 1
         self.addChildForm.pid = self.taskState.id
-        self.addChildForm.item_id = self.projectObject.id
+        self.addChildForm.item_id = self.$route.params.id
         self.$http.post(api.task, self.addChildForm).then(function (response) {
           self.isCreate = true
           if (response.data.meta.status_code === 200) {
@@ -450,7 +450,6 @@
           self.$message.error('ID不能为空!')
           return false
         }
-        console.log(self.currentForm)
         this.$http.put(api.taskStage, {task_id: id, stage: complate, tier: self.currentForm.tier}).then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.$set(self.currentForm, 'stage', complate)
@@ -622,6 +621,9 @@
       },
       changeExecute(id) {
         this.currentForm.execute_user_id = id
+        this.currentForm.logo_image = this.executeUser.logo_image
+        this.$store.commit('updateTaskListItem', this.currentForm)
+        this.fetchStage()
         this.showMember = false
       },
       removeExecute() {
@@ -632,6 +634,8 @@
         .then((res) => {
           if (res.data.meta.status_code === 200) {
             this.currentForm.execute_user_id = 0
+            this.currentForm.logo_image = null
+            this.$store.commit('updateTaskListItem', this.currentForm)
           } else {
             this.$message.error(res.data.meta.message)
           }

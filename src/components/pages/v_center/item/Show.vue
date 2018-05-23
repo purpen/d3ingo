@@ -145,7 +145,7 @@
                         <p class="contact">职位: {{ d.design_company.position }}</p>
                         <p class="contact">电话: {{ d.design_company.phone }}</p>
                         <p class="contact">邮箱: {{ d.design_company.email }}</p>
-                        <p slot="reference" class="name-wrapper contact-user">
+                        <p slot="reference" class="fl name-wrapper contact-user">
                           <i class="fa fa-phone" aria-hidden="true"></i>
                           联系我们</p>
                       </el-popover>
@@ -157,7 +157,7 @@
                         <p class="contact">职位: {{ d.design_company.position }}</p>
                         <p class="contact">电话: {{ d.design_company.phone }}</p>
                         <p class="contact">邮箱: {{ d.design_company.email }}</p>
-                        <p slot="reference" class="name-wrapper2 contact-user">
+                        <p slot="reference" class="fl name-wrapper2 contact-user">
                           和我联系</p>
                       </el-popover>
                     </div>
@@ -207,7 +207,7 @@
                         <p class="contact">职位: {{ cooperateCompany.design_company.position }}</p>
                         <p class="contact">电话: {{ cooperateCompany.design_company.phone }}</p>
                         <p class="contact">邮箱: {{ cooperateCompany.design_company.email }}</p>
-                        <p slot="reference" class="name-wrapper contact-user">
+                        <p slot="reference" class="fl name-wrapper contact-user">
                           <i class="fa fa-phone" aria-hidden="true"></i>
                           联系我们
                         </p>
@@ -218,7 +218,7 @@
                         <p class="contact">职位: {{ cooperateCompany.design_company.position }}</p>
                         <p class="contact">电话: {{ cooperateCompany.design_company.phone }}</p>
                         <p class="contact">邮箱: {{ cooperateCompany.design_company.email }}</p>
-                        <p slot="reference" class="name-wrapper2 contact-user">
+                        <p slot="reference" class="fl name-wrapper2 contact-user">
                           和我联系
                         </p>
                       </el-popover>

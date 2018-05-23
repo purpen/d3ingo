@@ -135,3 +135,44 @@
     border-color: #FF5A5F;
     background-color: #FF5A5F;
   }
+  .el-switch.is-checked .el-switch__core {
+    border-color: #FF5A5F;
+    background-color: #FF5A5F;
+  }
+  .el-select-dropdown__item.selected.hover {
+    background-color: #d23c46;
+  }
+  .el-select-dropdown__item.selected {
+    background-color: #FF5A5F;
+  }
+  .el-select-dropdown.is-multiple .el-select-dropdown__item.selected.hover, .el-select-dropdown__item.hover, .el-select-dropdown__item:hover {
+    background-color: #f7f7f7
+  }
+  .el-select .el-input__inner:focus {
+    border-color: #d2d2d2;
+  }
+  .el-select:hover .el-input__inner {
+    border-color: #d2d2d2;
+  }
+  .el-dialog__headerbtn .el-dialog__close {
+    color: #999
+  }
+  .el-dialog__headerbtn .el-dialog__close:hover {
+    color: #666
+  }
+  .el-month-table td.current:not(.disabled) .cell {
+    background-color: #FF5A5F!important;
+    color: #fff;
+  }
+  .el-picker-panel__icon-btn {
+    color: #999
+  }
+  .el-date-picker__header-label.active, .el-date-picker__header-label:hover, .el-picker-panel__icon-btn:hover {
+    color: #666
+  }
+  .el-month-table td .cell {
+    color: #666;
+  }
+  .el-month-table td .cell:hover {
+    background-color: #f7f7f7
+  }

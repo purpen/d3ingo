@@ -543,7 +543,7 @@
     display:flex;
     flex-direction:column;
     justify-content:space-around; */
-    padding: 20px 30px;
+    padding: 16px 30px 18px;
   }
   .itemProgress{
     color:#65A6FF;

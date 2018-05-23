@@ -229,8 +229,8 @@ export default {
         execute_user_id: userId})
       .then((res) => {
         if (res.data.meta.status_code === 200) {
-          this.$emit('changeExecute', userId)
           this.$store.commit('setExecuteUser', userId)
+          this.$emit('changeExecute', userId)
           this.$message.success('认领成功!')
         } else {
           this.$message.error(res.data.meta.message)
@@ -383,7 +383,7 @@ export default {
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
     border-radius: 4px;
     position: absolute;
-    right: 0;
+    left: 0;
     top: 85px;
     z-index: 99;
     margin-bottom: 50px;
