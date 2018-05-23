@@ -2,9 +2,9 @@
   <div class="container">
 
     <v-progress :checkStep="true" :itemId="form.id" :step="form.stage_status"></v-progress>
-    <el-row :gutter="24" type="flex" justify="center">
+    <el-row>
 
-      <el-col :span="24">
+      <el-col>
         <div class="content">
 
           <el-table
@@ -24,6 +24,7 @@
               width="180">
             </el-table-column>
             <el-table-column
+              prop="info"
               label="客户添写信息">
               <template slot-scope="scope">
                 <div v-if="scope.row.key === '相关附件'">
@@ -378,7 +379,7 @@
   }
 
   .form-btn button {
-    padding: 10px 30px;
+    /* padding: 10px 30px; */
   }
 
   .slide-img {

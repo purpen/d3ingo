@@ -227,7 +227,8 @@ export default {
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
-    padding: 15px 0
+    padding: 15px 0;
+    /* transform-style: preserve-3d; */
   }
 
   .project-list li {
@@ -240,12 +241,14 @@ export default {
     padding: 20px;
     padding-bottom: 40px;
     transition: transform .218s ease;
+    /* transform: translate3d(0, 0, 0) */
   }
 
   .project-list li:nth-child(3n-1) {
     margin: 0 2% 20px
   }
   .project-list li:hover {
+    /* transform: translate3d(0, -5px, 2px); */
     /* transform: translateY(-5px); */
     z-index: 1;
     box-shadow: 6px 6px 10px rgba(10, 10, 10, 0.15);
@@ -319,7 +322,7 @@ export default {
     display: none;
     position: absolute;
     z-index: 1;
-    left: 4px;
+    right: 10px;
     top: 24px;
     width: 180px;
     height: 40px;

@@ -83,7 +83,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="itemModel = false">取 消</el-button>
-        <el-button type="primary" :loading="isLoadingBtn" @click="submit('ruleForm')">确 定</el-button>
+        <el-button type="danger" :loading="isLoadingBtn" @click="submit('ruleForm')">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -94,7 +94,7 @@
       <span>{{ sureDialogMessage }}</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="sureDialog = false">取 消</el-button>
-        <el-button type="primary" :loading="sureDialogLoadingBtn" @click="sureDialogSubmit">确 定</el-button>
+        <el-button type="danger" :loading="sureDialogLoadingBtn" @click="sureDialogSubmit">确 定</el-button>
       </span>
     </el-dialog>
 

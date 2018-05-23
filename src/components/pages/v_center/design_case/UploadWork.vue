@@ -2,7 +2,7 @@
   <div class="design-case-edit blank30">
     <div v-if="!isMob"></div>
     <el-row>
-      <v-menu currentName="match_case"></v-menu>
+      <v-menu currentName="design_case"></v-menu>
 
       <div :class="{'vcenter-right-plus': leftWidth === 4,
         'vcenter-right': leftWidth === 2,
@@ -11,7 +11,7 @@
           <v-menu-sub></v-menu-sub>
           <div class="uploads">
             <div class="upload">
-              <h2>上传作品</h2>
+              <!-- <h2>上传作品</h2> -->
               <p class="match-type">类型</p>
               <el-radio-group class="match" v-model="match" fill="#FF5A5F">
                 <el-radio-button label="羽泉的礼物"></el-radio-button>
@@ -50,7 +50,7 @@
 
                 <div class="file-list">
                   <el-row :gutter="10">
-                    <el-col :span="isMob ? 24 : 8" v-for="(d, index) in fileList" :key="index">
+                    <el-col :span="isMob ? 24 : 6" v-for="(d, index) in fileList" :key="index">
                       <el-card :body-style="{ padding: '0px' }" class="item">
                         <div class="image-box">
                           <img v-lazy="d.url">
@@ -427,9 +427,9 @@
     margin-bottom: 50px;
   }
   .upload {
-    background: #FFFFFF;
+    /* background: #FFFFFF;
     border: 1px solid #D2D2D2;
-    padding: 0 30px;
+    padding: 0 30px; */
   }
 
   h2 {
@@ -467,8 +467,8 @@
     max-width: 1180px;
     margin: 0 auto;
     padding: 10px 30px;
-    border: 1px solid #D2D2D2;
-    border-top: none;
+    /* border: 1px solid #D2D2D2; */
+    /* border-top: none; */
   }
 
   .cancel, .submit {

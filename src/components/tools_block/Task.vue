@@ -5,7 +5,7 @@
         <span v-if="currentForm.tier === 0" class="task-detail-name">{{projectObject.name}}</span>
         <div v-if="currentForm.tier === 0" ref="selectParent" class="select-parent" tabindex="-1">
           <span class="select-show">请选择阶段</span>
-          <ul class="stage-list">
+          <ul class="stage-list stage-list0">
             <li :class="{'active': !currentForm.stage_id}" @click="stageItemClick(0)">无阶段</li>
             <li :class="{'active': d.id === currentForm.stage_id}" v-for="(d, index) in stageList" :key="index" @click="stageItemClick(d.id)">
               {{d.title}}</li>
@@ -359,7 +359,7 @@
             self.currentForm.over_time = overTime.format('yyyy-MM-dd hh:mm')
           }
         }
-        self.currentForm.item_id = self.projectObject.id
+        self.currentForm.item_id = self.$route.params.id
         self.$http.post(api.task, self.currentForm).then(function (response) {
           self.isCreate = true
           if (response.data.meta.status_code === 200) {
@@ -380,7 +380,7 @@
         const self = this
         self.addChildForm.tier = 1
         self.addChildForm.pid = self.taskState.id
-        self.addChildForm.item_id = self.projectObject.id
+        self.addChildForm.item_id = self.$route.params.id
         self.$http.post(api.task, self.addChildForm).then(function (response) {
           self.isCreate = true
           if (response.data.meta.status_code === 200) {
@@ -450,7 +450,6 @@
           self.$message.error('ID不能为空!')
           return false
         }
-        console.log(self.currentForm)
         this.$http.put(api.taskStage, {task_id: id, stage: complate, tier: self.currentForm.tier}).then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.$set(self.currentForm, 'stage', complate)
@@ -622,6 +621,9 @@
       },
       changeExecute(id) {
         this.currentForm.execute_user_id = id
+        this.currentForm.logo_image = this.executeUser.logo_image
+        this.$store.commit('updateTaskListItem', this.currentForm)
+        this.fetchStage()
         this.showMember = false
       },
       removeExecute() {
@@ -632,6 +634,8 @@
         .then((res) => {
           if (res.data.meta.status_code === 200) {
             this.currentForm.execute_user_id = 0
+            this.currentForm.logo_image = null
+            this.$store.commit('updateTaskListItem', this.currentForm)
           } else {
             this.$message.error(res.data.meta.message)
           }
@@ -922,9 +926,13 @@
     width: 200px;
     box-shadow: 0 0 6px 2px rgba(0,0,0,0.10);
     position: absolute;
-    left: 0;
+    right: -10px;
     top: 34px;
     z-index: 1;
+  }
+
+  .stage-list0 {
+    left: 0;
   }
   .stage-list li {
     height: 40px;

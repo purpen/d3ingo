@@ -34,7 +34,7 @@
                   <p class="contact">职位: {{ d.item.position }}</p>
                   <p class="contact">电话: {{ d.item.phone }}</p>
                   <p class="contact">邮箱: {{ d.item.email }}</p>
-                  <p slot="reference" class="name-wrapper contact-user"><i class="fa fa-phone" aria-hidden="true"></i>
+                  <p slot="reference" class="fl name-wrapper contact-user"><i class="fa fa-phone" aria-hidden="true"></i>
                     {{ d.item.company_name }}</p>
                 </el-popover>
               </el-col>

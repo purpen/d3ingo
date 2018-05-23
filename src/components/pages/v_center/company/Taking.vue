@@ -77,8 +77,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="cancelFormVisible">取 消</el-button>
-        <el-button type="primary" @click="submit('ruleForm')">确 定</el-button>
+        <el-button @click="cancelFormVisible">取消</el-button>
+        <el-button type="danger" @click="submit('ruleForm')">确定</el-button>
       </div>
     </el-dialog>
 
@@ -345,7 +345,7 @@
 
   .right-content .content-box-m {
     margin: 0;
-    padding: 0;
+    padding: 0 15px;
   }
 
   .taking-info {

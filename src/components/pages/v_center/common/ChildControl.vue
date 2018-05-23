@@ -431,7 +431,7 @@
 
   .pub .pub-btn {
     position: absolute;
-    padding: 10px 40px 10px 40px;
+    /* padding: 10px 40px 10px 40px; */
     top: 40%;
     left: 40%;
   }

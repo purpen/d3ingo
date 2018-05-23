@@ -126,13 +126,20 @@
 }
 
 /* 基本按钮 button >>>>>>>*/
-
+.el-button,
+.el-button--primary,
+.el-button--default {
+  margin: 0;
+  padding: 0;
+  height: 34px;
+}
 .large-button,
 .middle-button,
 .small-button,
 .el-button--mini,
 .el-button--small,
 .el-button--primary,
+.el-button--default
 .el-button--large {
   padding: 0;
   margin: 0;
@@ -152,21 +159,22 @@
 .big-button,
 .el-button--large {
   cursor: pointer;
-  width: 120px;
+  min-width: 120px;
   height: 40px;
   line-height: 40px;
 }
 .middle-button,
-.el-button--primary {
+.el-button--primary,
+.el-button--default {
   cursor: pointer;
-  width: 120px;
+  min-width: 120px;
   height: 34px;
   line-height: 34px;
 }
 .small-button,
 .el-button--small {
   cursor: pointer;
-  width: 100px;
+  min-width: 100px;
   height: 30px;
   line-height: 30px;
   font-size: 12px;
@@ -176,7 +184,7 @@
 .el-button--mini {
   font-size: 12px;
   cursor: pointer;
-  width: 80px;
+  min-width: 80px;
   height: 30px;
   line-height: 30px;
 }
@@ -231,7 +239,6 @@
   border: 1px solid #ccc;
   color: #fff;
 }
-
 .disabled-button,
 .disabled-button:hover,
 .disabled-button:active {
@@ -243,6 +250,7 @@
   border-radius: 4px;
 }
 
+button.el-button.is-custom.is-disabled,
 .disabled-button-light,
 .disabled-button-light:hover,
 .disabled-button-light:active {

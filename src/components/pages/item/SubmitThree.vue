@@ -1,13 +1,13 @@
 <template>
-  <div class="container">
+  <div class="container" ref="container">
 
     <v-progress :baseStep="true" :itemId="form.id" :step="form.stage_status"></v-progress>
 
     <div ref="content_box">
-      <el-row :gutter="18">
+      <el-row :gutter="20">
 
         <el-col :span="isMob ? 24 : 18">
-          <div class="content">
+          <div class="content" ref="content">
             <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
 
               <el-form-item label="项目名称" prop="name">
@@ -70,7 +70,7 @@
                       :on-success="uploadSuccess"
                       :before-upload="beforeUpload"
                       list-type="picture">
-                      <el-button size="small" type="primary">点击上传</el-button>
+                      <el-button size="small">点击上传</el-button>
                       <div slot="tip" class="el-upload__tip">只能上传jpg/png/gif文件，且不超过5M</div>
                     </el-upload>
                   </el-form-item>
@@ -94,7 +94,7 @@
           </div>
         </el-col>
         <el-col :span="isMob ? 24 : 6">
-          <div id="right_box" :class="{'fixed': isFixed && !isMob}">
+          <div ref="rightBox" id="right_box" :class="{'fixed': isFixed && !isMob}">
             <div class="slider" v-loading.body="matchLoading">
               <div v-if="matchCount === 0">
                 <p class="slide-str error"><img src="../../../assets/images/icon/item_stick_fail.png" width="25"/> 匹配失败
@@ -218,11 +218,14 @@ export default {
         window.pageYOffset ||
         document.body.scrollTop
       if (currentScroll > this.scroll) {
-        var rObj = document.querySelector('#right_box')
-        var l1 = document.querySelector('.container').offsetLeft
-        var l2 = document.querySelector('.content').offsetWidth
+        // var rObj = document.querySelector('#right_box')
+        var rObj = this.$refs.rightBox
+        // var l1 = document.querySelector('.container').offsetLeft
+        var l1 = this.$refs.container.offsetLeft
+        var l2 = this.$refs.content.offsetWidth
+        console.log(l1, l2)
         var w = rObj.offsetWidth
-        rObj.style.left = l1 + l2 + 18 + 'px'
+        rObj.style.left = l1 + l2 + 20 + 'px'
         rObj.style.width = w + 'px'
         this.isFixed = true
       } else {
@@ -544,7 +547,7 @@ export default {
 }
 
 #right_box {
-  z-index: 9999;
+  z-index: 9;
 }
 
 .slider {
@@ -556,9 +559,9 @@ export default {
 
 .fixed {
   position: fixed;
-  top: 0;
+  top: 20px;
   width: 255px;
-  left: 75%;
+  /* left: 75%; */
 }
 
 .slider.info {
@@ -597,7 +600,7 @@ export default {
 .slide-des {
   color: #666;
   line-height: 1.5;
-  font-size: 1rem;
+  font-size: 1.2rem;
   text-align: left;
 }
 

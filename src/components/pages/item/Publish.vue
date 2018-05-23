@@ -89,12 +89,12 @@
   }
 
   a.item button {
-    padding: 10px 20px 10px 20px;
+    /* padding: 10px 20px 10px 20px; */
     margin: 5px;
   }
 
   a.renzheng button {
-    padding: 10px 20px;
+    /* padding: 10px 20px; */
   }
 
   @media screen and (max-width: 767px) {

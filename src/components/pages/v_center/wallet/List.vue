@@ -139,7 +139,7 @@
 
             <el-pagination
               class="pagination"
-              v-if="query.totalCount > 1"
+              v-if="query.totalCount / query.pageSize > 1"
               @current-change="handleCurrentChange"
               :current-page="query.page"
               :page-size="query.pageSize"
@@ -523,9 +523,9 @@
     text-align: center;
   }
 
-  .amount-btn button {
+  /* .amount-btn button {
     padding: 8px 25px;
-  }
+  } */
 
   .amount-btn-m button {
     margin-top: 20px;

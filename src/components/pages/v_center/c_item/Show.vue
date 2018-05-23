@@ -84,7 +84,7 @@
                         <p class="contact">职位: {{ item.position }}</p>
                         <p class="contact">电话: {{ item.phone }}</p>
                         <p class="contact">邮箱: {{ item.email }}</p>
-                        <p slot="reference" class="name-wrapper contact-user">
+                        <p slot="reference" class="fl name-wrapper contact-user">
                           <i class="fa fa-phone" aria-hidden="true"></i>
                           联系我们
                         </p>
@@ -95,7 +95,7 @@
                         <p class="contact">职位: {{ item.position }}</p>
                         <p class="contact">电话: {{ item.phone }}</p>
                         <p class="contact">邮箱: {{ item.email }}</p>
-                        <p slot="reference" class="name-wrapper2 contact-user">和我联系
+                        <p slot="reference" class="fl name-wrapper2 contact-user">和我联系
                         </p>
                       </el-popover>
                     </div>
@@ -1127,7 +1127,8 @@
   .select-company-item {
     height: 200px;
     margin-bottom: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #e6e6e6;
+    background: #fff
   }
 
   .select-company-item .check-box {
@@ -1369,7 +1370,7 @@
   }
 
   .finish-item-btn button {
-    padding: 10px 60px 10px 60px;
+    /* padding: 10px 60px 10px 60px; */
   }
 
   .finish-item-stat {

@@ -9,9 +9,9 @@
         <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
           <div :class="['content-box', isMob ? 'content-box-m' : '']">
-            <div class="form-title">
+            <!-- <div class="form-title">
               <span>作品案例</span>
-            </div>
+            </div> -->
 
             <div class="design-case-list" v-loading.body="isLoading">
               <el-row :gutter="20">
@@ -159,7 +159,10 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+  .right-content .content-box {
+    border: none;
+    padding: 0
+  }
   .right-content .content-box-m {
     border-top: 1px solid #E6E6E6;
     margin: 0;
@@ -228,7 +231,7 @@
     display: none;
     position: absolute;
     z-index: 1;
-    left: 0;
+    right: 10px;
     top: 30px;
     border: 1px solid #fff;
     background: #fff;

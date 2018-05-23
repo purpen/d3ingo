@@ -10,11 +10,77 @@
         <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
           <div class="content-box">
-            <div class="form-title">
+            <!-- <div class="form-title">
               <span>添加作品案例</span>
-            </div>
+            </div> -->
             <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
+              
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item label="上传图片" prop="">
+                    <el-upload
+                      class="upload-demo upload-design upload"
+                      :action="uploadUrl"
+                      :on-preview="handlePreview"
+                      :on-remove="handleRemove"
+                      :file-list="fileList"
+                      :data="uploadParam"
+                      :on-progress="uploadProgress"
+                      :on-error="uploadError"
+                      :on-success="uploadSuccess"
+                      :before-upload="beforeUpload"
+                      :show-file-list="false"
+                      list-type="picture-card">
+                      <i class="el-icon-plus"></i>
+                      <div slot="tip" class="el-upload__tip" v-html="uploadMsg"></div>
+                      <!-- <el-button size="small" type="danger">点击上传</el-button>
+                      <div slot="tip" class="el-upload__tip">{{ uploadMsg }}</div> -->
+                    </el-upload>
 
+                    <div class="file-list">
+                      <el-row :gutter="20">
+                        <el-col :span="isMob ? 24 : 6" v-for="(d, index) in fileList" :key="index">
+                          <el-card :body-style="{ padding: '0px' }" class="item">
+                            <div class="image-box">
+                              <img :src="d.url">
+                            </div>
+                            <div class="content">
+                              <p>{{ d.name }}</p>
+                              <div class="summary-edit" v-if="d.edit">
+                                <textarea v-model="d.summary"></textarea>
+                              </div>
+                              <div class="summary" v-else>
+                                <p v-if="d.summary">{{ d.summary }}</p>
+                                <p class="image-no-summary" v-else>暂无描述信息</p>
+                              </div>
+                              <div class="opt" v-if="d.edit">
+                                <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"
+                                   @click="saveAssetSummary">保存</a>
+                              </div>
+                              <div class="opt" v-else>
+                                <el-tooltip class="item" effect="dark" content="删除图片" placement="top">
+                                  <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"
+                                     @click="delAsset"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                </el-tooltip>
+                                <el-tooltip class="item" effect="dark" content="编辑文字" placement="top">
+                                  <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"
+                                     @click="editAssetBtn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                </el-tooltip>
+                                <el-tooltip class="item" effect="dark" content="设为封面" placement="top">
+                                  <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"
+                                     @click="setCoverBtn"><i
+                                    :class="{'fa': true, 'fa-flag': true, 'is-active': parseInt(coverId) === d.response.asset_id ? true : false }"
+                                    aria-hidden="true"></i></a>
+                                </el-tooltip>
+                              </div>
+                            </div>
+                          </el-card>
+                        </el-col>
+                      </el-row>
+                    </div>
+                  </el-form-item>
+                </el-col>
+              </el-row>
 
               <el-form-item label="设计类型" prop="type">
                 <el-radio-group v-model.number="form.type" @change="typeChange" size="small">
@@ -79,7 +145,7 @@
               </el-row>
 
               <el-row :gutter="24">
-                <el-col :span="isMob ? 24 : 4">
+                <el-col :span="isMob ? 24 : 12">
                   <el-form-item label="服务客户" prop="customer">
                     <el-input v-model="form.customer" placeholder=""></el-input>
                   </el-form-item>
@@ -87,8 +153,8 @@
               </el-row>
 
               <el-form-item label="是否获得奖项" class="fullwidth">
-                <el-row>
-                  <el-col :xs="24" :sm="3" :md="3" :lg="3">
+                <el-row class="flex">
+                  <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3">
                     <el-radio-group v-model="is_prize" @change="isPrize">
                       <el-radio :label="false">否</el-radio>
                       <el-radio :label="true">是</el-radio>
@@ -120,25 +186,9 @@
                 </el-row>
               </el-form-item>
 
-              <el-form-item label="产品量产">
-                <el-radio-group v-model.number="form.mass_production" @change="isProduction">
-                  <el-radio class="radio" :label="0">否</el-radio>
-                  <el-radio class="radio" :label="1">是</el-radio>
-                </el-radio-group>
-                <span>&nbsp;&nbsp;&nbsp;</span>
-                <el-select v-model.number="form.sales_volume" v-if="!isDisabledProduct" placeholder="销售额">
-                  <el-option
-                    v-for="item in saleOptions"
-                    :label="item.label"
-                    :key="item.index"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              
               <el-form-item label="是否申请专利" class="fullwidth">
-                <el-row>
-                  <el-col :xs="24" :sm="3" :md="3" :lg="3">
+                <el-row class="flex">
+                  <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3">
                     <el-radio-group v-model="is_apply" @change="isApplication">
                       <el-radio :label="false">否</el-radio>
                       <el-radio :label="true">是</el-radio>
@@ -171,72 +221,26 @@
                 </el-row>
               </el-form-item>
 
-              <el-row :gutter="0">
-                <el-col :span="24">
-                  <el-form-item label="上传图片" prop="">
-                    <el-upload
-                      class="upload-demo"
-                      :action="uploadUrl"
-                      :on-preview="handlePreview"
-                      :on-remove="handleRemove"
-                      :file-list="fileList"
-                      :data="uploadParam"
-                      :on-progress="uploadProgress"
-                      :on-error="uploadError"
-                      :on-success="uploadSuccess"
-                      :before-upload="beforeUpload"
-                      :show-file-list="false"
-                      list-type="picture">
-                      <el-button size="small" type="danger">点击上传</el-button>
-                      <div slot="tip" class="el-upload__tip">{{ uploadMsg }}</div>
-                    </el-upload>
-
-                    <div class="file-list">
-                      <el-row :gutter="10">
-                        <el-col :span="isMob ? 24 : 8" v-for="(d, index) in fileList" :key="index">
-                          <el-card :body-style="{ padding: '0px' }" class="item">
-                            <div class="image-box">
-                              <img :src="d.url">
-                            </div>
-                            <div class="content">
-                              <p>{{ d.name }}</p>
-                              <div class="summary-edit" v-if="d.edit">
-                                <textarea v-model="d.summary"></textarea>
-                              </div>
-                              <div class="summary" v-else>
-                                <p v-if="d.summary">{{ d.summary }}</p>
-                                <p class="image-no-summary" v-else>暂无描述信息</p>
-                              </div>
-                              <div class="opt" v-if="d.edit">
-                                <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"
-                                   @click="saveAssetSummary">保存</a>
-                              </div>
-                              <div class="opt" v-else>
-                                <el-tooltip class="item" effect="dark" content="删除图片" placement="top">
-                                  <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"
-                                     @click="delAsset"><i class="fa fa-times" aria-hidden="true"></i></a>
-                                </el-tooltip>
-                                <el-tooltip class="item" effect="dark" content="编辑文字" placement="top">
-                                  <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"
-                                     @click="editAssetBtn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                </el-tooltip>
-                                <el-tooltip class="item" effect="dark" content="设为封面" placement="top">
-                                  <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"
-                                     @click="setCoverBtn"><i
-                                    :class="{'fa': true, 'fa-flag': true, 'is-active': parseInt(coverId) === d.response.asset_id ? true : false }"
-                                    aria-hidden="true"></i></a>
-                                </el-tooltip>
-                              </div>
-                            </div>
-                          </el-card>
-                        </el-col>
-                      </el-row>
-                    </div>
-
-                  </el-form-item>
-
-                </el-col>
-              </el-row>
+              <el-form-item label="产品量产">
+                <el-row class="flex">
+                  <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3" v-if="is_prize">
+                    <el-radio-group v-model.number="form.mass_production" @change="isProduction">
+                      <el-radio class="radio" :label="0">否</el-radio>
+                      <el-radio class="radio" :label="1">是</el-radio>
+                    </el-radio-group>
+                  </el-col>
+                  <el-col :xs="24" :sm="6" :md="6" :lg="6" v-if="is_prize">
+                    <el-select v-model.number="form.sales_volume" v-if="!isDisabledProduct" placeholder="销售额">
+                      <el-option
+                        v-for="item in saleOptions"
+                        :label="item.label"
+                        :key="item.index"
+                        :value="item.value">
+                      </el-option>
+                    </el-select>
+                  </el-col>
+                </el-row>
+              </el-form-item>
 
               <el-form-item label="描述" prop="profile">
                 <el-input
@@ -248,7 +252,7 @@
               </el-form-item>
 
               <div class="form-btn">
-                <el-button @click="returnList">取消</el-button>
+                <button class="middle-button white-button" @click="returnList">取消</button>
                 <el-button type="danger" :loading="isLoadingBtn" @click="submit('ruleForm')">提交</el-button>
               </div>
               <div class="clear"></div>
@@ -772,14 +776,23 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+  .right-content .content-box {
+    border: none;
+    padding: 0
+  }
   .form-btn {
     float: right;
-    }
+    display: flex;
+    align-items: center;
+  }
 
   .form-btn button {
     width: 120px;
-    }
+  }
+
+  .form-btn button:first-child {
+    margin-right: 10px;
+  }
 
   .avatar-uploader .el-upload {
     border: 1px dashed #D9D9D9;
@@ -808,6 +821,27 @@
     display: block;
     }
 
+  .upload-demo {
+    position: relative;
+    width: 160px;
+  }
+  .flex {
+    display: flex;
+    align-items: center
+  }
+  .el-upload__tip {
+    text-align: center;
+    width: 100px;
+    top: 50px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    position: absolute;
+    line-height: 1.5;
+  }
+  .margin-b-10 {
+    margin-bottom: 10px
+  }
   @media screen and (max-width: 767px) {
     .right-content .content-box {
       border: none;

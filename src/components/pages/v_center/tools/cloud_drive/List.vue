@@ -1,7 +1,8 @@
 <template>
   <el-row :class="['vcenter-rightMenu-plus',
     'cloud-content',
-    {'slide-mini': leftWidth === 2 && withoutSide}]">
+    {'slide-mini': leftWidth === 2 && withoutSide,
+    'slide-mini-none': isMob}]">
     <v-menu-left v-if="withoutSide" :currentName="withoutSide? 'cloud_drive' : 'project_management'"></v-menu-left>
     <section :class="{'parent-box': withoutSide,
       'parent-box2': !withoutSide,
@@ -1712,6 +1713,9 @@ export default {
   }
   .slide-mini {
     padding-left: 60px;
+  }
+  .slide-mini-none {
+    padding-left: 0;
   }
   .content {
     /* transition: 0.2s all ease; */

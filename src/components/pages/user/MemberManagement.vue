@@ -701,11 +701,20 @@ export default {
   }
   .info.active {
     background: #f7f7f7;
+    position: relative;
   }
   .info.active::after {
-    content: "已添加,点击移除";
-    font-size: 12px;
-    margin-left: 20px;
+    content: "";
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 10px;
+    height: 16px;
+    border: 2px solid #d2d2d2;
+    transform: rotate(45deg);
+    border-radius: 1px;
+    border-left: none;
+    border-top: none;
   }
   .align-right {
     text-align: right

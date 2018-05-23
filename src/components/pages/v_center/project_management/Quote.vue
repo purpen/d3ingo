@@ -167,7 +167,7 @@ export default {
   }
 
   .form-btn button {
-    padding: 10px 40px;
+    /* padding: 10px 40px; */
     margin: 0px;
     margin-left: 20px;
   }

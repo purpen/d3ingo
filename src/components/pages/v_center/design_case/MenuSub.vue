@@ -1,8 +1,9 @@
 <template>
   <div class="vcenter-menu-sub" v-if="!isMob">
     <div class="vcenter-menu-sub-list">
-      <router-link v-if="index !== 1" :to="{name: 'vcenterDesignCaseList'}" class="item">作品案例</router-link>
-      <router-link v-if="index !== 2" :to="{name: 'vcenterMatchCaseList'}" class="item">提交产品</router-link>
+      <router-link v-if="index !== 2" :to="{name: 'vcenterDesignCaseList'}" class="item">作品案例</router-link>
+      <router-link v-if="index !== 1" :to="{name: 'vcenterMatchCaseList'}" :class="['item', 
+      {'is-active': $route.name === 'vcenterMatchCaseCreated'}]">提交产品</router-link>
       <router-link v-if="index === 1 || index === 2" to="" class="item2">编辑作品</router-link>
     </div>
   </div>

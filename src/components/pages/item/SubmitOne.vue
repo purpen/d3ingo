@@ -234,7 +234,7 @@
   }
 
   .pub-btn p button {
-    padding: 10px 40px 10px 40px;
+    /* padding: 10px 40px 10px 40px; */
   }
 
   .pub-btn .des {

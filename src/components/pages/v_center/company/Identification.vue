@@ -626,7 +626,7 @@
   }
 
   .diage-footer button {
-    padding: 10px 30px;
+    /* padding: 10px 30px; */
   }
 
   .agree-content {
