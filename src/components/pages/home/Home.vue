@@ -575,7 +575,7 @@
   }
 
   .pub .pub-btn {
-    padding: 20px 80px 20px 80px;
+    /* padding: 20px 80px 20px 80px; */
   }
 
   .company-des {

@@ -154,7 +154,7 @@
 
               <el-form-item label="是否获得奖项" class="fullwidth">
                 <el-row class="flex">
-                  <el-col :xs="24" :sm="3" :md="3" :lg="3">
+                  <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3">
                     <el-radio-group v-model="is_prize" @change="isPrize">
                       <el-radio :label="false">否</el-radio>
                       <el-radio :label="true">是</el-radio>
@@ -188,7 +188,7 @@
 
               <el-form-item label="是否申请专利" class="fullwidth">
                 <el-row class="flex">
-                  <el-col :xs="24" :sm="3" :md="3" :lg="3">
+                  <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3">
                     <el-radio-group v-model="is_apply" @change="isApplication">
                       <el-radio :label="false">否</el-radio>
                       <el-radio :label="true">是</el-radio>
@@ -223,7 +223,7 @@
 
               <el-form-item label="产品量产">
                 <el-row class="flex">
-                  <el-col :xs="24" :sm="3" :md="3" :lg="3" v-if="is_prize">
+                  <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3" v-if="is_prize">
                     <el-radio-group v-model.number="form.mass_production" @change="isProduction">
                       <el-radio class="radio" :label="0">否</el-radio>
                       <el-radio class="radio" :label="1">是</el-radio>
@@ -839,7 +839,9 @@
     position: absolute;
     line-height: 1.5;
   }
-
+  .margin-b-10 {
+    margin-bottom: 10px
+  }
   @media screen and (max-width: 767px) {
     .right-content .content-box {
       border: none;

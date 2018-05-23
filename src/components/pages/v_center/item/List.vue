@@ -560,7 +560,7 @@
   }
 
   .pub .pub-btn {
-    padding: 10px 40px 10px 40px;
+    /* padding: 10px 40px 10px 40px; */
   }
 
   .content-item-box .item {

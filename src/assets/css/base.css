@@ -987,32 +987,29 @@ input[type=text]:focus, input[type=password]:focus{
 }
 
 .m-nav-header .logo {
-  width: 40px;
-  height: 60px;
-  background: url(../../assets/images/logo.png) no-repeat 0 5px;
-  background-size: 30px 50px;
-  margin: 0 auto;
-  text-indent: -9999em;
+    width: 30px;
+    height: 60px;
+    background: url(/static/img/logo.709e3.png) no-repeat center / contain;
+    margin: 0 auto;
+    text-indent: -9999em;
 }
 
 .nav-header .el-menu--horizontal > .el-menu-item.logo {
-  display: block;
-  width: 40px;
-  height: 60px;
-  transition: none;
-  padding: 0 16px;
-  margin-right: 30px;
-  background: url(../../assets/images/logo.png) no-repeat 0 5px;
-  background-size: 30px 50px;
-  text-indent: -9999px;
+    display: block;
+    width: 30px;
+    height: 60px;
+    transition: none;
+    padding: 0 16px;
+    margin-right: 30px;
+    background: url(/static/img/logo.709e3.png) no-repeat center / contain;
+    text-indent: -9999px;
 }
 
 .nav-header .el-menu--horizontal > .el-menu-item.logo:hover {
-  background: url(../../assets/images/logo.png) no-repeat 0 5px;
-  background-size: 30px 50px;
+  background: url(/static/img/logo.709e3.png) no-repeat center / contain;
 }
 .nav-header .el-menu--horizontal > .el-menu-item.logo:hover, .el-menu--horizontal > .el-menu-item.logo.is-active {
-  border: none
+  border-color: transparent
 }
 
 .nav-header .el-menu-header {
@@ -1023,7 +1020,7 @@ input[type=text]:focus, input[type=password]:focus{
   height: 60px;
   line-height: 60px;
   border-bottom: 3px solid transparent;
-  color: #999;
+  color: #666;
   font-size: 1.6rem;
   padding: 0 3px;
   margin: 0 22px;
@@ -1121,7 +1118,9 @@ input[type=text]:focus, input[type=password]:focus{
   width: 200px;
 }
 
-.nav-item .view-msg .news, .nav-item .view-msg .notice {
+.nav-item .view-msg .news,
+.nav-item .view-msg .notice {
+  cursor: pointer;
   font-size: 14px;
   display: block;
   line-height: 20px;
@@ -1181,8 +1180,8 @@ input[type=text]:focus, input[type=password]:focus{
 .menu-header .icon.active span {
   min-width: 18px;
   height: 18px;
-  border: 1px solid #FF5A5F;
-  border-radius: 9px;
+  /* border: 1px solid #FF5A5F; */
+  border-radius: 50%;
   overflow: hidden;
   background-color: #FF5A5F;
   position: absolute;
@@ -1192,9 +1191,10 @@ input[type=text]:focus, input[type=password]:focus{
   margin-right: -10px;
   margin-top: -10px;
   color: #FFFFFF;
-  font-size: 12px;
+  font-size: 10px;
   line-height: 16px;
-  text-align: center
+  letter-spacing: 0px;
+  text-align: center;
 }
 .nav-header .fa {
   display: inline-block;
@@ -1538,7 +1538,7 @@ input[type=text]:focus, input[type=password]:focus{
 .item.is-active {
   background-color: #FFFFFF;
   color: #222222;
-  /* font-weight: bold; */
+  font-family: PingFangSC-Medium;
 }
 
 .MmenuHide {

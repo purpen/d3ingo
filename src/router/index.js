@@ -118,8 +118,8 @@ routes = [
   },
   // 服务条款
   {
-    path: '/item',
-    name: 'item',
+    path: '/terms',
+    name: 'terms',
     meta: {
       title: '服务条款',
       requireAuth: false

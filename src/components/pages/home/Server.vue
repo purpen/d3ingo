@@ -191,7 +191,7 @@
   }
 
   .pub .pub-btn {
-    padding: 15px 40px 15px 40px;
+    /* padding: 15px 40px 15px 40px; */
   }
 
   .item_1_title {
@@ -286,7 +286,7 @@
     }
 
     .pub .pub-btn {
-      padding: 10px 15px;
+      /* padding: 10px 15px; */
     }
   }
 
