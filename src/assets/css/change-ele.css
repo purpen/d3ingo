@@ -176,3 +176,18 @@
   .el-month-table td .cell:hover {
     background-color: #f7f7f7
   }
+  .el-table td.gutter, .el-table th.gutter {
+    /* display: none */
+  }
+  .el-table th .cell {
+    font-size: 12px;
+  }
+.el-table .cell, .el-table th>div {
+    font-size: 12px;
+}
+.el-pagination__sizes .el-input .el-input__inner:hover {
+  border-color: #ff5a5f
+}
+.el-select-dropdown__list {
+  padding: 0
+}

@@ -837,7 +837,7 @@ export default {
     margin: 0 0 20px 0;
   }
   .form-btn button {
-    padding: 10px 40px 10px 40px;
+    /* padding: 10px 40px 10px 40px; */
   }
   .add-plan {
     background-color: #F7F7F7;

@@ -1369,7 +1369,7 @@
   }
 
   .finish-item-btn button {
-    padding: 10px 60px 10px 60px;
+    /* padding: 10px 60px 10px 60px; */
   }
 
   .finish-item-stat {

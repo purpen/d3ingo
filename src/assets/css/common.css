@@ -159,7 +159,7 @@
 .big-button,
 .el-button--large {
   cursor: pointer;
-  width: 120px;
+  min-width: 120px;
   height: 40px;
   line-height: 40px;
 }
@@ -167,14 +167,14 @@
 .el-button--primary,
 .el-button--default {
   cursor: pointer;
-  width: 120px;
+  min-width: 120px;
   height: 34px;
   line-height: 34px;
 }
 .small-button,
 .el-button--small {
   cursor: pointer;
-  width: 100px;
+  min-width: 100px;
   height: 30px;
   line-height: 30px;
   font-size: 12px;
@@ -184,7 +184,7 @@
 .el-button--mini {
   font-size: 12px;
   cursor: pointer;
-  width: 80px;
+  min-width: 80px;
   height: 30px;
   line-height: 30px;
 }

@@ -1416,7 +1416,7 @@ export default {
 }
 
 .finish-item-btn button {
-  padding: 10px 60px 10px 60px;
+  /* padding: 10px 60px 10px 60px; */
 }
 
 .finish-item {
@@ -1500,7 +1500,7 @@ p.ev-c-content {
 }
 
 p.ev-c-btn button {
-  padding: 10px 50px;
+  /* padding: 10px 50px; */
 }
 
 .evaluate-report .ev-c-name {
