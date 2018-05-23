@@ -32,7 +32,9 @@
               <el-row :gutter="20">
                 <el-col :span="12">
               <el-form-item label="投入时间" prop="duration">
-                <el-input placeholder="请输入所需天数" v-model.number="form.duration"
+                <el-input placeholder="请输入所需天数"
+                  v-model.number="form.duration"
+                  :maxlength=2
                   prop="duration"
                   >
                 <template slot="append">工作日</template>
@@ -99,7 +101,7 @@
               <el-input 
                 placeholder="请输入所需天数" 
                 v-model="formup.duration"
-                :maxlength="4"
+                :maxlength="3"
                 @blur="updata()"
               >
                 <template slot="append">工作日</template>
@@ -143,6 +145,105 @@
           </li>
         </ul>
         
+      </aside>
+      <aside class="aside" v-if="istaskedit">
+        <div class="aside-title fx">
+          <i class="fx fx-icon-delete2" @click="dialogVisible=true"></i>
+          <span class="tc-2">任务设置</span>
+          <p class="fx fx-icon-close-sm" @click="istaskedit=false"></p>
+        </div>
+        <el-progress 
+        :percentage="50"
+        :show-text="false"
+        :stroke-width="20"
+        status="success"
+        ></el-progress>
+        <ul class="aside-content">
+          <li class="designStage-name">
+            <span>
+              <el-checkbox v-model="checked"></el-checkbox>
+            </span>
+            <el-input 
+              v-model="formTack.name"
+              placeholder="任务名称"
+              class="noborder"
+              @blur="upTack()"
+            >
+            </el-input>
+          </li>
+          <li class="task-userimg">
+            <span @click="isuserimg=true">分配给</span>
+            <i class="userimg" @click="isuserimg=true"></i>
+            <div class="userlist" v-if="isuserimg">
+              <p>
+                查看成员
+                <i class="fr fx-icon-nothing-close-error" @click="isuserimg=false"></i>
+              </p>
+              <div>
+                <el-input
+                   placeholder="请选择成员"
+                >
+                </el-input>
+              </div>
+              <ul class="options scroll-bar">
+                <li v-for="(op,indexop) in options" :key="indexop" :class="indexop ===2?'active':''">
+                  <img :src='op.logo_image.logo' alt="">
+                  {{op.realname}}
+                </li>
+              </ul>
+              
+            </div>
+          </li>
+          <li class="task-itemdesname">
+            <i></i>
+            上级项目阶段: {{itemdesname}}
+          </li>
+          <li class="design-duration">
+            <i></i>
+            <div>
+              <el-input 
+                placeholder="投入时间设置" 
+                v-model="formTack.duration"
+                :maxlength="3"
+                class="noborder"
+              >
+                <template slot="append">工作日</template>
+              </el-input>
+            </div>
+          </li>
+          <li class="formup-time">
+            <i></i>
+            <div class="block">
+                <el-date-picker
+                type="date"
+                v-model="formTacktime"
+                placeholder="开始日期设置"
+                class="noborder"
+               >
+                </el-date-picker>
+              </div>
+          </li>
+          <li class="design-nodeName">
+            <i></i>
+            <el-input
+                placeholder="添加节点"
+                v-model="formTack.content"
+                class="noborder"
+                >
+            </el-input>
+          </li>
+          <li class="design-content">
+            <i></i>
+            <el-input
+                type="textarea"
+                :autosize='{ minRows: 4, maxRows: 6 }'
+                placeholder="任务描述"
+                v-model="formTack.content"
+                class="noborder"
+                >
+            </el-input>
+          </li>
+        </ul>
       </aside>
     </transition>
     <section class="top-progress">
@@ -342,8 +443,8 @@
                       {{indextack}}
                     </div>
                     <div  v-if="(sort==='isday'||sort==='isweek')" class="item-tacklist-last" :style="{left:(c.left+1)*30 + 'px'}">
-                      <div>+</div>
-                      <span>添加任务</span>
+                      <div  @click="addtack(c)">+</div>
+                      <span  @click="addtack(c)">添加任务</span>
                     </div>
                     <div  v-if="sort==='ismonth'" class="item-tacklist-last" :style="{left:(c.left+1)*6.77 + 'px'}">
                       <div>+</div>
@@ -501,13 +602,18 @@ export default {
       designStageLists: [], // 阶段列表
       indesignStage: '', // 当前阶段
       itemdesId: '', // 项目阶段id
+      itemdesname: '', // 项目阶段名称
       checked: false,
       isItemStage: false,
       totaldays: [],
+      options: [], // 公司成员
       newleft: '',
+      isuserimg: false,
+      formTacktime: '', // 任务时间
       sort: 'isday',
       dialogVisible: false,
-      isitemedit: false,
+      isitemedit: false, // 项目阶段编辑
+      istaskedit: false, // 项目子任务编辑新建
       endTimes: [], // 所有时间合集
       rules: {
         duration: [
@@ -703,7 +809,7 @@ export default {
       let reset = new Date(this.endTimes[0] * 1000)
       let resxin = Date.parse(new Date(reset.getFullYear() + '-' + (reset.getMonth() + 1) + '-' + 1)) / 1000
       res.left = Math.floor(((res.start_time - resxin) / 86400))
-      res.start_time = new Date(res.start_time * 1000).format('yyyy-MM-dd')
+      // res.start_time = new Date(res.start_time * 1000).format('yyyy-MM-dd')
       return res
     },
     // 任务显示
@@ -713,24 +819,25 @@ export default {
       for (var tl = 0; tl < des.length; tl++) {
         if (!des[tl].design_substage) {
           let itemd = Date.parse(new Date(des[tl].start_time)) / 1000
-          itemd
           des[tl].left = Math.floor((itemd - xin) / 86400)
         }
         if (des[tl].design_substage) {
           let sortTask = []
           for (var j = 0; j < des[tl].design_substage.length; j++) {
             // 任务起始时间和终止时间
-            var st = des[tl].design_substage[j].start_time
-            var dur = des[tl].design_substage[j].duration
-            des[tl].design_substage[j].end_time = st + dur * 86400
+            var st = parseInt(des[tl].design_substage[j].start_time)
+            var dur = parseInt(des[tl].design_substage[j].duration)
+            des[tl].design_substage[j].end_time = st + (dur * 86400)
             sortTask.push(st)
-            sortTask.push(st + dur * 86400)
+            sortTask.push(st + (dur * 86400))
             des[tl].design_substage[j].left = Math.floor((st - xin) / 86400)
             // 任务时间格式转换
-            des[tl].design_substage[j].start_time = (new Date(des[tl].design_substage[j].start_time * 1000)).format('yyyy-MM-dd')
-            if (des[tl].design_substage[j].design_stage_node && des[tl].design_substage[j].design_stage_node.time) {
-              des[tl].design_substage[j].design_stage_node.time = (new Date(des[tl].design_substage[j].design_stage_node.time * 1000)).format('yyyy-MM-dd')
-            }
+            // if (!isNaN(des[tl].design_substage[j].start_time)) {
+            //   des[tl].design_substage[j].start_time = (new Date(des[tl].design_substage[j].start_time * 1000)).format('yyyy-MM-dd')
+            //   if (des[tl].design_substage[j].design_stage_node && des[tl].design_substage[j].design_stage_node.time) {
+            //     des[tl].design_substage[j].design_stage_node.time = (new Date(des[tl].design_substage[j].design_stage_node.time * 1000)).format('yyyy-MM-dd')
+            //   }
+            // }
           }
           this.sortdate(sortTask)
           des[tl].left = Math.floor((sortTask[sortTask.length - 1] - xin) / 86400) - 1
@@ -771,6 +878,10 @@ export default {
   // 编辑项目
     updata(date) {
       if (this.formupStart !== this.formup.start_time || !date) {
+        if (isNaN(this.formup.duration)) {
+          this.$message.error('输入正确的投入天数')
+          return
+        }
         if (date) {
           this.formup.start_time = Math.round(new Date(date).getTime() / 1000)
         }
@@ -817,8 +928,43 @@ export default {
       })
     },
     // 创建任务按钮
-    addtack(id) {
-      this.itemdesId = id
+    addtack(des) {
+      this.itemdesId = des.id
+      this.itemdesname = des.name
+      this.istaskedit = true
+      this.indesignStage = des
+      var time = []
+      if (des.design_substage) {
+        for (var i = 0; i < des.design_substage.length; i++) {
+          let intask = des.design_substage[i]
+          time.push(intask.end_time)
+        }
+        this.sortdate(time)
+        this.formTack.start_time = time[time.length - 1]
+      }
+      if (!des.design_substage) {
+        this.formTack.start_time = Date.parse(new Date(des.start_time)) / 1000
+      }
+      this.formTack.duration = 1
+      this.formTack.design_stage_id = this.itemdesId
+      this.formTack.name = '1'
+      this.$http.post(api.designSubstageCreate, this.formTack).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          var res = this.updateallleft(response.data.data)
+          this.formTack = res
+          if (!des.design_substage) {
+            des.design_substage = []
+          }
+          des.design_substage.push(res)
+          this.formTacktime = this.formTack.start_time
+          this.tackleft(this.designStageLists)
+        } else {
+          this.$message.error(response.data.meta.message)
+        }
+      }).catch((error) => {
+        this.$message.error(error.message)
+        console.error(error.message)
+      })
     },
     // 创建任务
     createTack() {
@@ -929,6 +1075,35 @@ export default {
         this.$message.error(error.message)
         console.error(error.message)
       })
+    },
+    // 公司成员列表显示操作
+    // members() {
+    //   for (var i in this.options) {
+    //     for (var j = 0; j < this.getimgs.length; j++) {
+    //       if (this.getimgs[j].id === this.options[i].id) {
+    //         this.options[i].isadd = true
+    //         break
+    //       } else this.options[i].isadd = false
+    //     }
+    //     if (this.options[i].realname.length > 2) {
+    //       this.options[i].realnamehead = this.options[i].realname.slice(this.options[i].realname.length - 2)
+    //     } else this.options[i].realnamehead = this.options[i].realname
+    //   }
+    // },
+    // 获取公司成员
+    readMembers() {
+      let itemIds = this.$route.params.id
+      this.$http.get(api.itemUsers, {params: {item_id: itemIds}}).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          this.options = response.data.data
+          // this.members()
+        } else {
+          this.$message.error(response.data.meta.message)
+        }
+      }).catch((error) => {
+        this.$message.error(error.message)
+        console.error(error.message)
+      })
     }
   },
   created() {
@@ -938,6 +1113,8 @@ export default {
       return
     }
     this.itemId = itemId
+    // 读取公司成员
+    this.readMembers()
     // 读取项目阶段列表
     this.$http.get(api.designStageLists, {params: {design_project_id: this.itemId}}).then((response) => {
       if (response.data.meta.status_code === 200) {
@@ -1069,6 +1246,7 @@ export default {
     right:0px;
     top:60px;
     background:#fff;
+    font-size:1.4rem
   }
   .aside-title {
     position: relative;
@@ -1102,6 +1280,87 @@ export default {
     height:24px;
     left:-34px;
     top:6px;
+  }
+  .aside-content>.task-userimg {
+    height:36px;
+    line-height: 36px;
+    margin-bottom:0px;
+    position:relative
+  }
+  .task-userimg>span {
+    cursor:pointer;
+  }
+  .task-userimg>.userlist {
+    width:280px;
+    position: absolute;
+    z-index:1;
+    background:#fff;
+    box-shadow:0 0 10px 0 rgba(0,0,0,0.10);
+    border-radius:4px;
+  }
+  .userlist>p {
+    line-height:50px;
+    text-align: center;
+    position:relative;
+    background:#f0f0f0
+  }
+  .userlist>div {
+    padding:10px 20px;
+  }
+  .options{
+    height:180px;
+    overflow-y: auto;
+  }
+  .options>li{
+    height:60px;
+    line-height:60px;
+    padding:0 20px;
+    position:relative;
+  }
+  .options>li>img{
+    display:inline-block;
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    margin-right:10px;
+    vertical-align:middle;
+  }
+  .options>li:hover{
+    background:#fafafa;
+  }
+  .options .active::after {
+    content: "";
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 8px;
+    height: 14px;
+    border: 2px solid #d2d2d2;
+    border-left: none;
+    border-top: none;
+    transform: rotate(45deg);
+  }
+  .userlist .fx-icon-nothing-close-error {
+    position:absolute;
+    top: 19px;
+    right: 20px;
+  }
+  .task-itemdesname i {
+    background:url('../../../../assets/images/tools/project_management/Superior@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .userimg {
+    background:url('../../../../assets/images/tools/project_management/Occupyinghead@2x.png') 0 0 no-repeat;
+    background-size: contain;
+    cursor:pointer;
+  }
+  .task-itemdesname {
+    height:36px;
+    line-height: 36px;
+  }
+  .design-nodeName i{
+     background:url('../../../../assets/images/tools/project_management/Address@2x.png') 0 0 no-repeat;
+    background-size: contain;
   }
   .designStage-name {
     position: relative;

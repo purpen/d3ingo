@@ -2526,11 +2526,29 @@ td.fc-day.fc-widget-content.fc-today::before {
 }
 /* 去除输入框边框 */
 
-.noborder>.el-input__inner{
-  border:none;
+.noborder .el-input__inner {
+  border:1px solid transparent;
 }
-.noborder>.el-textarea__inner{
-  border:none;
+.noborder:hover .el-input__inner{
+  border:1px solid #e6e6e6;
+}
+.noborder .el-textarea__inner {
+  border:1px solid transparent;
+}
+.noborder:hover .el-textarea__inner {
+  border:1px solid #e6e6e6;
+}
+.noborder .el-input-group__append {
+  display:none
+}
+.noborder:hover .el-input-group__append {
+  display:table-cell
+}
+.noborder .el-input__icon {
+  display:none
+}
+.noborder:hover .el-input__icon {
+  display:inline-block
 }
 .el-textarea__inner {
   border-color: #e6e6e6
