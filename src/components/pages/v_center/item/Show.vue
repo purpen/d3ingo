@@ -1161,7 +1161,7 @@ export default {
   height: 200px;
   text-align: center;
   margin-bottom: 20px;
-  border: 1px solid #ccc;
+  border: 1px solid #e6e6e6;
   display: block;
 }
 
@@ -1192,9 +1192,10 @@ export default {
 .select-company-item {
   min-height: 150px;
   margin-bottom: 10px;
-  border: 1px solid #ccc;
   display: flex;
-  align-items: center
+  align-items: center;
+  border: 1px solid #e6e6e6;
+  background: #fff
 }
 
 .select-company-item .check-box {

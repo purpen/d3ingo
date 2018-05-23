@@ -1127,7 +1127,8 @@
   .select-company-item {
     height: 200px;
     margin-bottom: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #e6e6e6;
+    background: #fff
   }
 
   .select-company-item .check-box {

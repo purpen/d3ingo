@@ -239,7 +239,6 @@
   border: 1px solid #ccc;
   color: #fff;
 }
-
 .disabled-button,
 .disabled-button:hover,
 .disabled-button:active {
@@ -251,6 +250,7 @@
   border-radius: 4px;
 }
 
+button.el-button.is-custom.is-disabled,
 .disabled-button-light,
 .disabled-button-light:hover,
 .disabled-button-light:active {
