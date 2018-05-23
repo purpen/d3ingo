@@ -81,6 +81,9 @@ module.exports = {
           resolve('src'),
           resolve('test'),
           resolve('node_modules/vue-echarts'),
+          resolve('node_modules/vue-echarts'),
+          resolve('node_modules/vue-echarts/node_modules/echarts'),
+          resolve('node_modules/echarts'),
           resolve('node_modules/resize-detector')]
       },
       {
