@@ -116,12 +116,14 @@ export default {
           this.query.totalCount = 0
           this.query.totalPges = 0
         }
-        let pages2 = this.query.totalCount % this.query.pageSize
-        let pages = Math.floor(this.query.totalCount / this.query.pageSize)
-        pages = pages2 ? pages + 1 : pages
-        if (this.query.page > pages) {
-          this.query.page = pages
-          this.$router.push({name: this.$route.name, query: {page: pages}})
+        if (res.data.meta.pagination.count) {
+          let pages2 = this.query.totalCount % this.query.pageSize
+          let pages = Math.floor(this.query.totalCount / this.query.pageSize)
+          pages = pages2 ? pages + 1 : pages
+          if (this.query.page > pages) {
+            this.query.page = pages
+            this.$router.push({name: this.$route.name, query: {page: pages}})
+          }
         }
       }).catch(err => {
         this.isLoading = false
@@ -214,7 +216,7 @@ export default {
   watch: {
     '$route'(to, from) {
       // 对路由变化作出响应...
-      this.getProjectList()
+      // this.getProjectList()
     }
   }
 }

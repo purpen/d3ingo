@@ -199,7 +199,7 @@ export default {
 
 .title-item p {
   color: #666;
-  font-size: 1rem;
+  font-size: 1.2rem;
   margin: 20px 0 20px 0;
 }
 
