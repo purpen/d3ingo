@@ -132,7 +132,7 @@
                 </el-input>
           </li>
         </ul>
-        <div class="add-tack">
+        <div class="add-tack" @click="addtack(formup)">
           <i>+</i>
           <span>添加任务</span>
         </div>
@@ -146,11 +146,13 @@
         </ul>
         
       </aside>
+    </transition>
+    <transition>
       <aside class="aside" v-if="istaskedit">
         <div class="aside-title fx">
           <i class="fx fx-icon-delete2" @click="dialogVisible=true"></i>
           <span class="tc-2">任务设置</span>
-          <p class="fx fx-icon-close-sm" @click="istaskedit=false"></p>
+          <p class="fx fx-icon-close-sm" @click="cancelTack()"></p>
         </div>
         <el-progress 
         :percentage="50"
@@ -167,13 +169,14 @@
               v-model="formTack.name"
               placeholder="任务名称"
               class="noborder"
-              @blur="upTack()"
+              @blur="updataTack()"
             >
             </el-input>
           </li>
           <li class="task-userimg">
-            <span @click="isuserimg=true">分配给</span>
-            <i class="userimg" @click="isuserimg=true"></i>
+            <span @click="selectUser()">分配给</span>
+            <i class="userimg" @click="selectUser()" v-if="!formTack.log"></i>
+            <img class="user" :src="formTack.log" alt="" v-if="formTack.log" @click="selectUser()">
             <div class="userlist" v-if="isuserimg">
               <p>
                 查看成员
@@ -182,16 +185,29 @@
               <div>
                 <el-input
                    placeholder="请选择成员"
+                   v-model="searcher"
                 >
                 </el-input>
               </div>
               <ul class="options scroll-bar">
-                <li v-for="(op,indexop) in options" :key="indexop" :class="indexop ===2?'active':''">
+                <li v-for="(op,indexop) in options" :key="indexop" 
+                  @click="checkeds(op)" :class="op.isckeck?'active':''"
+                  v-if="!isSearch"
+                >
                   <img :src='op.logo_image.logo' alt="">
                   {{op.realname}}
                 </li>
+                <li v-for="(s,indexs) in search" :key="indexs" 
+                  @click="checkeds(s)" :class="s.isckeck?'active':''"
+                  v-if="isSearch"
+                >
+                  <img :src='s.logo_image.logo' alt="">
+                  {{s.realname}}
+                </li>
+                <li v-if="!search.length&&isSearch" class="no-match">
+                  <span>没有搜索到相关人员～</span>
+                </li>
               </ul>
-              
             </div>
           </li>
           <li class="task-itemdesname">
@@ -206,6 +222,7 @@
                 v-model="formTack.duration"
                 :maxlength="3"
                 class="noborder"
+                @blur="updataTack()"
               >
                 <template slot="append">工作日</template>
               </el-input>
@@ -238,8 +255,9 @@
                 type="textarea"
                 :autosize='{ minRows: 4, maxRows: 6 }'
                 placeholder="任务描述"
-                v-model="formTack.content"
+                v-model="formTack.summary"
                 class="noborder"
+                @blur="updataTack()"
                 >
             </el-input>
           </li>
@@ -433,9 +451,9 @@
                     <div 
                       v-if="(c.design_substage&&(sort==='isday'||sort==='isweek'))" 
                       v-for="(tack, indextack) in c.design_substage" :key="indextack+ 'y'" :style="{left:tack.left*30+'px',width:tack.duration*30+'px'}"
-                      class="item-tacklist" 
+                      class="item-tacklist" @click.stop="editTack(tack, indextack, c)"
                       >
-                      {{indextack}}
+                      {{tack.name}}
                     </div>
 
                     <div v-if="c.design_substage&&sort==='ismonth'" class="item-tacklist" 
@@ -595,7 +613,15 @@ export default {
       },
       formup: {}, // 编辑项目
       formupStart: '', // 开始时间
-      formTack: {}, // 新建任务
+      formTack: {
+        'design_stage_id': '',
+        'execute_user_id': '',
+        'id': '',
+        'name': '',
+        'duration': 1,
+        'start_time': '',
+        'summary': ''
+      }, // 新建任务
       formTackUp: {}, // 编辑任务
       formNode: {}, // 新建节点
       formNodeUp: {}, // 编辑节点
@@ -608,6 +634,9 @@ export default {
       totaldays: [],
       options: [], // 公司成员
       newleft: '',
+      isSearch: false,
+      searcher: '',
+      search: [],
       isuserimg: false,
       formTacktime: '', // 任务时间
       sort: 'isday',
@@ -642,6 +671,19 @@ export default {
   computed: {
     Rheight() {
       return (this.designStageLists.length) * 180 + 63
+    }
+  },
+  watch: {
+    searcher(e) {
+      if (!e) {
+        this.isSearch = false
+      } else this.isSearch = true
+      for (var i = 0, arr = []; i < this.options.length; i++) {
+        if (this.options[i].realname.indexOf(e) !== -1) {
+          arr.push(this.options[i])
+        }
+      }
+      this.search = arr
     }
   },
   methods: {
@@ -722,6 +764,26 @@ export default {
       }
       return times
     },
+    // 当天背景色
+    newDay() {
+      let newDate = new Date()
+      for (var n = 0; n < this.totaldays.length; n++) {
+        if (this.totaldays[n].year < newDate.getFullYear() && this.totaldays[n].month < newDate.getMonth() + 1) {
+          for (var ed = 0; ed < this.totaldays[n].dayings.length; ed++) {
+            this.totaldays[n].dayings[ed].bg = 'bged'
+          }
+        } else if (this.totaldays[n].year === newDate.getFullYear() && this.totaldays[n].month === newDate.getMonth() + 1) {
+          for (var bed = 0; bed < newDate.getDate() - 1; bed++) {
+            this.totaldays[n].dayings[bed].bg = 'bged'
+          }
+          this.totaldays[n].dayings[newDate.getDate() - 1].new = 'active'
+        } else {
+          for (var ing = 0; ing < this.totaldays[n].dayings.length; ing++) {
+            this.totaldays[n].dayings[ing].bg = 'bged'
+          }
+        }
+      }
+    },
     // 获取某个阶段日期的所有天数和所有参数的对象
     dateDay(s, e) {
       s = new Date(s * 1000)
@@ -744,26 +806,6 @@ export default {
         total = this.yearDay(smonth, e, emonth)
       }
       return total
-    },
-    // 当天背景色
-    newDay() {
-      let newDate = new Date()
-      for (var n = 0; n < this.totaldays.length; n++) {
-        if (this.totaldays[n].year < newDate.getFullYear() && this.totaldays[n].month < newDate.getMonth() + 1) {
-          for (var ed = 0; ed < this.totaldays[n].dayings.length; ed++) {
-            this.totaldays[n].dayings[ed].bg = 'bged'
-          }
-        } else if (this.totaldays[n].year === newDate.getFullYear() && this.totaldays[n].month === newDate.getMonth() + 1) {
-          for (var bed = 0; bed < newDate.getDate() - 1; bed++) {
-            this.totaldays[n].dayings[bed].bg = 'bged'
-          }
-          this.totaldays[n].dayings[newDate.getDate() - 1].new = 'active'
-        } else {
-          for (var ing = 0; ing < this.totaldays[n].dayings.length; ing++) {
-            this.totaldays[n].dayings[ing].bg = 'bged'
-          }
-        }
-      }
     },
     // 今天到最早的一天的距离
     newtostart() {
@@ -831,13 +873,6 @@ export default {
             sortTask.push(st)
             sortTask.push(st + (dur * 86400))
             des[tl].design_substage[j].left = Math.floor((st - xin) / 86400)
-            // 任务时间格式转换
-            // if (!isNaN(des[tl].design_substage[j].start_time)) {
-            //   des[tl].design_substage[j].start_time = (new Date(des[tl].design_substage[j].start_time * 1000)).format('yyyy-MM-dd')
-            //   if (des[tl].design_substage[j].design_stage_node && des[tl].design_substage[j].design_stage_node.time) {
-            //     des[tl].design_substage[j].design_stage_node.time = (new Date(des[tl].design_substage[j].design_stage_node.time * 1000)).format('yyyy-MM-dd')
-            //   }
-            // }
           }
           this.sortdate(sortTask)
           des[tl].left = Math.floor((sortTask[sortTask.length - 1] - xin) / 86400) - 1
@@ -931,6 +966,7 @@ export default {
     addtack(des) {
       this.itemdesId = des.id
       this.itemdesname = des.name
+      this.isitemedit = false
       this.istaskedit = true
       this.indesignStage = des
       var time = []
@@ -945,9 +981,13 @@ export default {
       if (!des.design_substage) {
         this.formTack.start_time = Date.parse(new Date(des.start_time)) / 1000
       }
+      this.formTacktime = (new Date(this.formTack.start_time * 1000)).format('yyyy-MM-dd')
       this.formTack.duration = 1
       this.formTack.design_stage_id = this.itemdesId
-      this.formTack.name = '1'
+      this.formTack.name = '新任务'
+      if (this.formTack.execute_user_id === '') {
+        delete this.formTack.execute_user_id
+      }
       this.$http.post(api.designSubstageCreate, this.formTack).then((response) => {
         if (response.data.meta.status_code === 200) {
           var res = this.updateallleft(response.data.data)
@@ -956,7 +996,6 @@ export default {
             des.design_substage = []
           }
           des.design_substage.push(res)
-          this.formTacktime = this.formTack.start_time
           this.tackleft(this.designStageLists)
         } else {
           this.$message.error(response.data.meta.message)
@@ -983,29 +1022,75 @@ export default {
       })
     },
     // 编辑子阶段按钮
-    editTack(sub, index) {
-      console.log(sub)
+    editTack(des, index, c) {
+      this.indesignStage = c
+      this.formTack = des
+      this.formTack.index = index
+      if (this.formTack.execute_user) {
+        this.formTack.log = des.execute_user.logo_image.logo
+        delete this.formTack.execute_user
+      }
+      this.isitemedit = false
+      this.istaskedit = true
+      this.formTacktime = (new Date(this.formTack.start_time * 1000)).format('yyyy-MM-dd')
+    },
+    // 取消编辑子阶段
+    cancelTack() {
+      this.istaskedit = false
+      this.formTack = {}
+    },
+    // 编辑执行人
+    selectUser() {
+      this.isuserimg = true
+    },
+    // 选择成员
+    checkeds(op) {
+      for (var i = 0; i < this.options.length; i++) {
+        if (this.options[i].id === op.id) {
+          this.options[i].isckeck = true
+          this.formTack.execute_user_id = op.id
+          this.formTack.log = op.logo_image.logo
+          this.$set(this.options, i, this.options[i])
+        } else this.options[i].isckeck = false
+      }
+      this.isuserimg = false
+      this.updataTack()
     },
     // 编辑子阶段
-    updataTack(sub, index) {
-      this.formTackUp.id = sub.id
-      this.formTackUp.summary = sub.summary
-      this.formTackUp.duration = sub.duration
-      if (sub.start_time instanceof Date) {
-        this.formTackUp.start_time = Math.round(sub.start_time.getTime() / 1000)
-      } else this.formTackUp.start_time = Math.round(new Date(sub.start_time).getTime() / 1000)
-      this.formTackUp.name = sub.name
-      this.formTackUp.execute_user_id = 33
-      this.$http.put(api.designSubstageUpdate.format(sub.id), this.formTackUp).then((response) => {
-        if (response.data.meta.status_code === 200) {
-          console.log(response.data.data)
-        } else {
-          this.$message.error(response.data.meta.message)
+    updataTack(date) {
+      if (this.formTackStart !== this.formup.start_time || !date) {
+        if (isNaN(this.formTack.duration)) {
+          this.$message.error('输入正确的投入天数')
+          return
         }
-      }).catch((error) => {
-        this.$message.error(error.message)
-        console.error(error.message)
-      })
+        if (this.formTack.index) {
+          this.sortTasks(this.formTack.index)
+        }
+        if (date) {
+          this.formTack.start_time = Math.round(new Date(date).getTime() / 1000)
+        }
+        if (typeof this.formTack.start_time !== 'number') {
+          this.formTack.start_time = Math.round(new Date(this.formTack.start_time).getTime() / 1000)
+        }
+        this.$http.put(api.designSubstageUpdate.format(this.formTack.id), this.formTack).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            console.log(response.data.data)
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          this.$message.error(error.message)
+          console.error(error.message)
+        })
+      }
+    },
+    sortTasks(index) {
+      let dur = parseInt(this.formTack.duration) * 86400
+      for (var i = index; i < this.indesignStage.design_substage.length; i++) {
+        this.indesignStage.design_substage[i].start_time += dur
+        this.indesignStage.design_substage[i].end_time += dur
+      }
+      console.log(this.indesignStage)
     },
     // 删除子阶段
     deleteTack(id, index) {
@@ -1076,20 +1161,6 @@ export default {
         console.error(error.message)
       })
     },
-    // 公司成员列表显示操作
-    // members() {
-    //   for (var i in this.options) {
-    //     for (var j = 0; j < this.getimgs.length; j++) {
-    //       if (this.getimgs[j].id === this.options[i].id) {
-    //         this.options[i].isadd = true
-    //         break
-    //       } else this.options[i].isadd = false
-    //     }
-    //     if (this.options[i].realname.length > 2) {
-    //       this.options[i].realnamehead = this.options[i].realname.slice(this.options[i].realname.length - 2)
-    //     } else this.options[i].realnamehead = this.options[i].realname
-    //   }
-    // },
     // 获取公司成员
     readMembers() {
       let itemIds = this.$route.params.id
@@ -1311,7 +1382,7 @@ export default {
     height:180px;
     overflow-y: auto;
   }
-  .options>li{
+  .options li{
     height:60px;
     line-height:60px;
     padding:0 20px;
@@ -1325,7 +1396,7 @@ export default {
     margin-right:10px;
     vertical-align:middle;
   }
-  .options>li:hover{
+  .options li:hover{
     background:#fafafa;
   }
   .options .active::after {
@@ -1340,6 +1411,24 @@ export default {
     border-top: none;
     transform: rotate(45deg);
   }
+  .options .no-match {
+    position: relative;
+    height: inherit;
+    padding: 20px;
+    background: url(../../../../assets/images/tools/report/NoMaterial.png) no-repeat center 8px / 120px;
+  }
+  .options .no-match:hover {
+    background: url(../../../../assets/images/tools/report/NoMaterial.png) no-repeat center 8px / 120px;
+  }
+  .no-match span {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: #999;
+    line-height: 20px;
+  }
   .userlist .fx-icon-nothing-close-error {
     position:absolute;
     top: 19px;
@@ -1353,6 +1442,15 @@ export default {
     background:url('../../../../assets/images/tools/project_management/Occupyinghead@2x.png') 0 0 no-repeat;
     background-size: contain;
     cursor:pointer;
+  }
+  .task-userimg>img{
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    left: -34px;
+    top: 6px;
+    border-radius: 50%;
+    cursor: pointer;
   }
   .task-itemdesname {
     height:36px;
@@ -1606,10 +1704,13 @@ export default {
     position:absolute;
     top:80px;
     height:20px;
+    line-height:20px;
     width:350%;
-    border:1px solid #65A6FF;
     border-radius: 4px;
     background:#65A6FF;
+    overflow: hidden;
+    text-align: center;
+    cursor: pointer
   }
   .item-tacklist-last {
     position:absolute;

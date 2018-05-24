@@ -119,6 +119,7 @@
           <el-col :span="12" v-for="(i,indexi) in userItem" :key="indexi" v-if="userItem.length>0">
 
               <ul class="control-iteming">
+                <router-link :to="{name: 'projectManagementOverView', params: {id: i.id}}">
                 <li class="title-size">{{i.name}}</li>
                 <li class="fz-12"><span class="tc-6">项目进度:</span> <span class="itemProgress">
                     {{i.ok_stage_percentage}}%
@@ -137,14 +138,16 @@
                     {{ i.start_time }} 启动
                   </div>
                 </li>
+                </router-link>
             </ul>
 
           </el-col>
-              <div class="message-btn" v-else>
+              <div class="message-btn" v-if="userItem.length===0">
                 <img src="../../../../assets/images/icon/Project default state@2x.png"/>
                 <p>你还没有参加任何项目</p>
-                <button class="middle-button red-buttom" v-if="uChild===0">创建项目</button>
-                <!-- <el-button class="is-custom" v-if="uChild===0">创建项目</el-button> -->
+                <button class="middle-button red-button" v-if="uChild===0">
+                  <router-link :to="{name: 'projectManagementList'}">创建项目</router-link>
+                </button>
               </div>
             </el-row>
           </section>
@@ -306,6 +309,7 @@
         self.$http.get(api.userStatistical, {}).then((response) => {
           if (response.data.meta.status_code === 200) {
             this.userItem = response.data.data
+            console.log(this.userItem)
             if (this.userItem.length > 0) {
               for (var i = 0; i < this.userItem.length; i++) {
                 if (this.userItem[i].start_time) {
