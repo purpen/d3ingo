@@ -113,6 +113,10 @@
     created() {
       document.body.scrollTop = 0
       document.documentElement.scrollTop = 0
+      this.$router.push({
+        name: 'itemCreate'
+      })
+      return false
     },
     mounted() {
       window.addEventListener('resize', this.countSize)

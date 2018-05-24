@@ -1,34 +1,9 @@
 <template>
   <div class="vcenter-container">
-    <div class="title">
-      <h1>{{ projectObject.name }} 项目报价</h1>
-    </div>
-    <div class="line"></div>
 
     <div class="form-box">
       <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
-
-        <el-row :gutter="20">
-          <el-col :xs="24" :sm="8" :md="8" :lg="8">
-            <el-form-item label="选择客户" prop="client">
-              <el-select v-model.number="client" filterable @change="selectClient" placeholder="请选择">
-                <el-option
-                  v-for="(d, index) in clientList"
-                  :key="index"
-                  :label="d.company_name"
-                  :value="d.id">
-                  <span style="float: left">{{ d.company_name }}</span>
-                </el-option>
-                <el-option
-                  label=""
-                  value="0">
-                  <span class="add-client" @click="newClientBtn">新建客户</span>
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
+        <!--
         <el-row :gutter="20">
           <el-col :xs="24" :sm="8" :md="8" :lg="8">
             <el-form-item label="客户" prop="company_name">
@@ -100,6 +75,7 @@
         </el-form-item>
 
         <div class="line"></div>
+        -->
 
         <el-form-item label="项目目标" prop="summary">
           <el-input type="textarea" :rows="5" v-model="form.summary"
@@ -296,6 +272,7 @@
     <el-dialog
       title="工作内容备注"
       :visible.sync="dialogPlanTxt"
+      :modal="false"
       width="30%">
       <div v-if="currentPlanTxtView">
         <p>{{ currentPlanTxt }}</p>
@@ -331,12 +308,18 @@ import '@/assets/js/math_format'
 // 城市联动
 import RegionPicker from '@/components/block/RegionPicker'
 export default {
-  name: 'projectQuoteSubmit',
+  name: 'blockProjectQuoteSubmit',
   components: {
     RegionPicker
   },
   props: {
-    projectObject: {
+    paramProp: {
+      type: Object,
+      default: function () {
+        return {}
+      }
+    },
+    formProp: {
       type: Object,
       default: function () {
         return {}
@@ -350,6 +333,10 @@ export default {
       isLoading: false,
       isLoadingBtn: false,
       isClientLoadingBtn: false,
+      param: {
+        isShow: true,
+        quoteId: 0
+      },
       form: {
         plan_format: []
       },
@@ -412,8 +399,6 @@ export default {
           return false
         }
 
-        this.$set(this.form, 'design_project_id', this.itemId)
-
         this.$set(this.form, 'is_tax', this.taxRate.isTax)
         this.$set(this.form, 'is_invoice', this.taxRate.isInvoice)
         this.$set(this.form, 'tax_rate', this.rate)
@@ -444,29 +429,31 @@ export default {
         let apiUrl
         let method
         this.isLoadingBtn = true
-        if (this.id) {
-          apiUrl = api.designQuotationUpdate
+        if (this.param.quoteId) {
+          apiUrl = api.updateQuotation.format(this.param.quoteId)
           method = 'put'
         } else {
-          apiUrl = api.designQuotationCreate
+          apiUrl = api.addQuotation
           method = 'post'
         }
 
         this.$http({method: method, url: apiUrl, data: this.form})
           .then((response) => {
+            this.isLoadingBtn = false
             if (response.data.meta.status_code === 200) {
-              console.log(response.data.data)
-              if (this.id) {
+              if (this.param.quoteId) {
                 this.$message.success('更新成功！')
               } else {
                 this.$message.success('创建成功！')
-                let project = this.$store.state.task.projectObject
-                this.$set(project, 'quotation_id', response.data.data.id)
-                this.$store.commit('setProjectObject', project)
               }
-              this.$router.push({name: 'projectQuote', params: {id: response.data.data.id}})
+              this.$set(this.form, 'id', response.data.data.id)
+              this.$set(this.form, 'plan_format', response.data.data.plan)
+              this.$set(this.form, 'status', 0)
+              console.log(response.data.data)
+              this.form = response.data.data
+              this.param.isShow = false
+              this.param.isUpdate = true
             } else {
-              this.isLoadingBtn = false
               this.$message.error(response.data.meta.message)
             }
           })
@@ -716,57 +703,44 @@ export default {
         taxPrice = this.totalMoney.mul(rate)
       }
       this.totalMoney.add(taxPrice)
+    },
+    formProp: {
+      handler(val, oldVal) {
+        this.form = val
+      },
+      deep: true
+    },
+    form: {
+      handler(val, oldVal) {
+        this.$emit('form', val)
+      },
+      deep: true
+    },
+    param: {
+      handler(val, oldVal) {
+        this.$emit('paramProp', val)
+      },
+      deep: true
+    },
+    paramProp: {
+      handler(val, oldVal) {
+        this.param = val
+      },
+      deep: true
     }
   },
   created() {
-    console.log(this.$store.state.task.projectObject)
-    this.itemId = this.$route.params.id
-    let id = this.$route.query.id
-    if (id) {
-      this.id = id
-      // 获取报价详情
-      this.$http.get(api.designQuotation, {params: {id: id}}).then((response) => {
-        if (response.data.meta.status_code === 200) {
-          let form = response.data.data
-          form.plan_format = form.plan
-          this.$set(this.taxRate, 'isTax', form.is_tax)
-          this.$set(this.taxRate, 'isInvoice', form.is_invoice)
-          this.rate = form.tax_rate
-          this.totalMoney = parseFloat(form.total_price)
-          if (form.area === 0) form.area = ''
-          if (form.design_area === 0) form.design_area = ''
-
-          this.form = form
-          console.log(response.data.data)
-        } else {
-          this.$message.error(response.data.meta.message)
-        }
-      }).catch((error) => {
-        this.$message.error(error.message)
-        console.error(error.message)
-      })
-    } else {
-      // 获取设计公司详情
-      this.$http.get(api.designCompanyChild, {}).then((response) => {
-        if (response.data.meta.status_code === 200) {
-          let item = response.data.data
-          this.$set(this.form, 'design_company_name', item.company_name)
-          this.$set(this.form, 'design_contact_name', item.contact_name)
-          this.$set(this.form, 'design_position', item.position)
-          this.$set(this.form, 'design_phone', item.phone)
-          this.$set(this.form, 'design_address', item.address)
-          this.$set(this.form, 'design_province', item.province)
-          this.$set(this.form, 'design_city', item.city)
-          this.$set(this.form, 'design_area', item.area)
-          console.log(item)
-        } else {
-          this.$message.error(response.data.meta.message)
-        }
-      }).catch((error) => {
-        this.$message.error(error.message)
-        console.error(error.message)
-      })
-    }
+    let form = this.formProp
+    this.$set(form, 'plan_format', form.plan)
+    this.$set(this.taxRate, 'isTax', form.is_tax ? form.is_tax : 0)
+    this.$set(this.taxRate, 'isInvoice', form.is_invoice ? form.is_invoince : 1)
+    this.rate = form.tax_rate ? form.tax_rate : 6
+    this.totalMoney = parseFloat(form.total_price ? form.total_price : 0)
+    if (form.area === 0) form.area = ''
+    if (form.design_area === 0) form.design_area = ''
+    this.form = form
+    // Object.assign(this.form, form)
+    this.param = this.paramProp
     // 获取客户信息列表
     this.$http.get(api.designClientList, {}).then((response) => {
       if (response.data.meta.status_code === 200) {
@@ -825,7 +799,7 @@ export default {
     top: -2px;
     width: 24px;
     height: 24px;
-    background: url('../../../../assets/images/member/add02@2x.png') no-repeat;
+    background: url('../../assets/images/member/add02@2x.png') no-repeat;
     background-size: contain;
     opacity: 1;
   }
@@ -850,7 +824,7 @@ export default {
     vertical-align: middle;
     width: 24px;
     height: 24px;
-    background: url('../../../../assets/images/member/add02@2x.png') no-repeat;
+    background: url('../../assets/images/member/add02@2x.png') no-repeat;
     background-size: contain;
     opacity: 1;
     margin: 0 5px 0 0;

@@ -105,7 +105,7 @@
                   </div>
                   <div class="clear"></div>
                   <div class="item-bj" v-if="quotation">
-                    <p>项目报价:  <span class="p-price">{{ quotation.price }} 元</span></p>
+                    <p>项目报价:  <span class="p-price">{{ quotation.price }} 元</span>  <span class="quota-btn">&nbsp;&nbsp;<a href="javascript:void(0);" @click="showQuotaBtn(quotation)">详情>></a></span></p>
                     <p>报价说明:  {{ quotation.summary }}</p>
                   </div>
 
@@ -301,10 +301,12 @@
       </el-col>
     </el-row>
 
-    <el-dialog title="提交项目报价" v-model="takingPriceDialog">
+    <el-dialog title="提交项目报价" v-model="takingPriceDialog" size="large" top="2%">
+      <v-quote-submit :paramProp="quoteProp" :formProp="takingPriceForm" @form="quoteFormProp" @param="quoteProp"></v-quote-submit>
+      <!--
       <el-form label-position="top" :model="takingPriceForm" :rules="takingPriceRuleForm" ref="takingPriceRuleForm">
         <el-form-item label="项目报价" prop="price" label-width="200px">
-          <el-input type="text" v-model="takingPriceForm.price" placeholder="" @blur="changePriceStyle(2)" @focus="changePriceStyle(1)" auto-complete="off">
+          <el-input type="text" v-model="takingPriceForm.price" :placeholder="" @blur="changePriceStyle(2)" @focus="changePriceStyle(1)" auto-complete="off">
             <template slot="prepend">¥</template>
           </el-input>
           <div class="description red">* 实际报价单位为‘元’,如1万,请添写10000</div>
@@ -321,6 +323,7 @@
         </div>
 
       </el-form>
+      -->
     </el-dialog>
 
     <el-dialog
@@ -336,6 +339,13 @@
         <el-button type="primary" :loading="comfirmLoadingBtn" @click="sureComfirmSubmit">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog title="报价单详情" v-model="quotaDialog" size="large" top="2%">
+      <v-quote-view :formProp="quota"></v-quote-view>
+
+      <div slot="footer" class="dialog-footer btn">
+        <el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>
+      </div>
+    </el-dialog>
 
   </div>
 </template>
@@ -343,10 +353,14 @@
 <script>
   import api from '@/api/api'
   import vItemProgress from '@/components/block/ItemProgress'
+  const vQuoteSubmit = () => import('@/components/block/QuoteSubmit')
+const vQuoteView = () => import('@/components/block/QuoteView')
   export default {
     name: 'vcenter_item_show',
     components: {
-      vItemProgress
+      vItemProgress,
+      vQuoteSubmit,
+      vQuoteView
     },
     data () {
       return {
@@ -388,21 +402,7 @@
 
           end: false
         },
-        takingPriceForm: {
-          id: '',
-          itemId: '',
-          o_price: '',
-          price: '',
-          summary: ''
-        },
-        takingPriceRuleForm: {
-          price: [
-            {required: true, message: '请添写报价金额,必须为整数', trigger: 'blur'}
-          ],
-          summary: [
-            {required: true, message: '请添写报价说明', trigger: 'blur'}
-          ]
-        },
+        takingPriceForm: {},
         uploadParam: {
           'token': '',
           'x:random': '',
@@ -419,6 +419,14 @@
         progressButt: 0,
         progressContract: -1,
         progressItem: -1,
+        quoteProp: {
+          isShow: false,
+          quoteId: 0,
+          isUpdate: false,
+          test: ''
+        },
+        quota: {},
+        quotaDialog: false,
         msg: ''
       }
     },
@@ -507,7 +515,56 @@
       },
       // 项目报价弹出层
       takingBtn(event) {
-        this.takingPriceDialog = true
+        this.quoteProp.isShow = true
+        this.quoteProp.isUpdate = false
+        // 获取报价信息
+        if (this.quotation) {
+          // this.quoteProp.quoteId = this.quotation.id
+          this.$set(this.quoteProp, 'quoteId', this.quotation.id)
+          Object.assign(this.takingPriceForm, this.quotation)
+        } else {
+          this.takingPriceForm.plan = []
+          this.takingPriceForm.item_demand_id = this.item.id
+          // 获取需求公司信息
+          this.$set(this.takingPriceForm, 'company_name', this.item.company_name)
+          this.$set(this.takingPriceForm, 'contact_name', this.item.contact_name)
+          this.$set(this.takingPriceForm, 'position', this.item.position)
+          this.$set(this.takingPriceForm, 'phone', this.item.phone)
+          this.$set(this.takingPriceForm, 'address', this.item.address)
+          this.$set(this.takingPriceForm, 'province', this.item.company_province)
+          this.$set(this.takingPriceForm, 'city', this.item.company_city)
+          this.$set(this.takingPriceForm, 'area', this.item.company_area)
+
+          // 获取设计公司详情
+          this.$http.get(api.designCompanyChild, {}).then((response) => {
+            if (response.data.meta.status_code === 200) {
+              let item = response.data.data
+              this.$set(this.takingPriceForm, 'design_company_name', item.company_name)
+              this.$set(this.takingPriceForm, 'design_contact_name', item.contact_name)
+              this.$set(this.takingPriceForm, 'design_position', item.position)
+              this.$set(this.takingPriceForm, 'design_phone', item.phone)
+              this.$set(this.takingPriceForm, 'design_address', item.address)
+              this.$set(this.takingPriceForm, 'design_province', item.province)
+              this.$set(this.takingPriceForm, 'design_city', item.city)
+              this.$set(this.takingPriceForm, 'design_area', item.area)
+            } else {
+              this.$message.error(response.data.meta.message)
+            }
+          }).catch((error) => {
+            this.$message.error(error.message)
+            console.error(error.message)
+          })
+        }
+      },
+      // 点击报价详情事件
+      showQuotaBtn(obj) {
+        this.quota = obj
+        console.log(this.quota)
+        this.quotaDialog = true
+      },
+      // 同步报价单子组件表单
+      quoteFormProp(obj) {
+        this.takingPriceForm = obj
       },
       // 对话框确认按钮
       sureComfirmSubmit() {
@@ -757,6 +814,28 @@
         }
       }
     },
+    watch: {
+      quoteProp: {
+        handler(val, oldVal) {
+          if (val.isShow) {
+            this.takingPriceDialog = true
+          } else {
+            this.takingPriceDialog = false
+          }
+          if (val.isUpdate) {
+            this.quotation = {}
+            Object.assign(this.quotation, this.takingPriceForm)
+            if (this.waitTakePrice) {
+              this.waitTakePrice = false
+            }
+          }
+        },
+        deep: true
+      },
+      takingPriceDialog(val) {
+        this.quoteProp.isShow = val
+      }
+    },
     created: function () {
       let id = this.$route.params.id
       if (!id) {
@@ -1000,7 +1079,6 @@
                       self.sureFinishBtn = true
                     }
                     self.stages = items
-//                    console.log('aa')
                     console.log(self.stages)
                   }
                 })
@@ -1596,5 +1674,18 @@
     font-weight: normal;
     line-height: 1;
     padding-bottom: 20px;
+  }
+  .quota-btn {
+
+  }
+  .quota-btn a {
+    font-size: 12px;
+    color: #666;
+  }
+  .dialog-footer.btn {
+    margin-right: 30px;
+  }
+  .dialog-footer.btn button {
+    padding: 10px 30px;
   }
 </style>

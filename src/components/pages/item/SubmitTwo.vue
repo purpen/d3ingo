@@ -114,10 +114,12 @@
         transitionName: 'expand',
         matchCount: '',
         form: {
-          type: '',
+          type: 1,
           design_types: [],
           field: '',
-          industry: ''
+          industry: '',
+          stage_status: 1,
+          test: ''
         },
         msg: ''
       }
@@ -156,14 +158,20 @@
         var apiUrl = null
         var method = null
 
-        method = 'put'
-        apiUrl = api.demandId.format(that.itemId)
+        if (this.$route.name === 'itemCreate') {
+          method = 'POST'
+          apiUrl = api.itemCreate
+        } else if (this.$route.name === 'itemSubmitTwo') {
+          method = 'PUT'
+          apiUrl = api.demandId.format(that.itemId)
+        }
 
         that.isLoadingBtn = true
         that.$http({method: method, url: apiUrl, data: row})
           .then(function (response) {
             that.isLoadingBtn = false
             if (response.data.meta.status_code === 200) {
+              console.log(response.data.data)
               that.$message.success('提交成功！')
               sessionStorage.setItem('position', 172)
               if (response.data.data.item.type === 1) {
@@ -188,6 +196,7 @@
             }
           })
           .catch(function (error) {
+            alert(22)
             that.$message.error(error.message)
             that.isLoadingBtn = false
             console.log(error.message)
@@ -278,46 +287,48 @@
       }
     },
     created: function () {
-      const that = this
-      var id = this.$route.params.id
-      if (id) {
-        that.itemId = id
-        that.$http.get(api.demandId.format(id), {})
-          .then(function (response) {
-            if (response.data.meta.status_code === 200) {
-              var row = response.data.data.item
-              that.form.id = row.id
-              that.form.type = row.type
-              if (row.design_types) {
-                that.form.design_types = row.design_types
+      if (this.$route.name === 'itemCreate') {
+      } else if (this.$route.name === 'itemSubmitTwo') {
+        var id = this.$route.params.id
+        if (id) {
+          this.itemId = id
+          this.$http.get(api.demandId.format(id), {})
+            .then((response) => {
+              if (response.data.meta.status_code === 200) {
+                var row = response.data.data.item
+                this.form.id = row.id
+                this.form.type = row.type
+                if (row.design_types) {
+                  this.form.design_types = row.design_types
+                } else {
+                  this.form.design_types = []
+                }
+                for (let i of this.form.design_types) {
+                  this.typeDesignOptions[i - 1].active = true
+                }
+                this.form.field = row.field
+                this.form.stage_status = row.stage_status
               } else {
-                that.form.design_types = []
+                this.$message.error(response.data.meta.message)
+                console.log(response.data.meta.message)
+                this.$router.push({
+                  name: 'home'
+                })
+                return false
               }
-              for (let i of that.form.design_types) {
-                that.typeDesignOptions[i - 1].active = true
-              }
-              that.form.field = row.field
-              that.form.stage_status = row.stage_status
-            } else {
-              that.$message.error(response.data.meta.message)
-              console.log(response.data.meta.message)
-              that.$router.push({
+            })
+            .catch((error) => {
+              this.$message.error(error.message)
+              this.$router.push({
                 name: 'home'
               })
-              return false
-            }
-          })
-          .catch(function (error) {
-            that.$message.error(error.message)
-            that.$router.push({
-              name: 'home'
             })
+        } else {
+          this.$message.error('缺少请求参数！')
+          this.$router.push({
+            name: 'home'
           })
-      } else {
-        that.$message.error('缺少请求参数！')
-        that.$router.push({
-          name: 'home'
-        })
+        }
       }
     },
     watch: {}

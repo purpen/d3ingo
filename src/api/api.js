@@ -51,6 +51,7 @@ export default {
 
   // 项目需求
   itemList: '/demand/itemList', // 客户项目列表
+  itemCreate: '/demand/create', // POST 创建项目
   demand: '/demand', // 添加项目领域
   demandId: '/demand/{0}', // 更改项目领域
   ProductDesignId: '/ProductDesign/{0}', // 更改产品设计基本资料
