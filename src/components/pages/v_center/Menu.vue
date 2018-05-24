@@ -42,8 +42,8 @@
               <span v-if="eventUser.realname" class="b-nickname">{{ eventUser.realname }}</span>
               <span v-else class="b-nickname">{{ eventUser.account }}</span>
             </template>
-            <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>个人中心</el-menu-item>
-            <el-menu-item index="/admin" v-if="isCompanyAdmin"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>后台管理</el-menu-item>
+            <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
+            <el-menu-item index="/admin" v-if="isCompanyAdmin"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
             <el-menu-item index="" @click="logout">
               <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
           </el-submenu>
@@ -655,9 +655,12 @@
   }
   .logo-icon {
     width: 30px;
-    height: 50px;
-    background: url(../../../assets/images/logo.png) no-repeat 0 5px;
-    background-size: contain;
+    height: 60px;
+    transition: none;
+    padding: 0 16px;
+    margin-right: 30px;
+    background: url(../../../assets/images/logo.png) no-repeat center / contain;
+    text-indent: -9999px;
   }
   .avatar {
     /* display: block; */

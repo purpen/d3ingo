@@ -1376,6 +1376,7 @@ export default {
 .capital-money {
   color: #ff5a5f;
   font-size: 2.5rem;
+  margin: 10px 0;
 }
 
 .capital-des {
@@ -1385,7 +1386,7 @@ export default {
 
 .capital-item .pay-btn {
   font-size: 2rem;
-  margin: 10px 0 20px 0;
+  /* margin: 10px 0 20px 0; */
 }
 
 .capital-item .pay-btn span {
@@ -1462,8 +1463,9 @@ p.contact {
 }
 
 .stage-title {
-  height: 40px;
-  border-bottom: 1px solid #ccc;
+  /* height: 40px; */
+  border-bottom: 1px solid #D2D2D2;
+  padding-bottom: 20px;
 }
 
 .stage-item .stage-title h3 {
@@ -1479,7 +1481,7 @@ p.contact {
 
 .stage-asset-box {
   padding: 10px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #D2D2D2;
 }
 
 .send-company-des {

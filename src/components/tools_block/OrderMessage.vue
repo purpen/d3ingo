@@ -231,7 +231,7 @@
 
   .content-box .item {
     position: relative;
-    border: 1px solid #ccc;
+    border: 1px solid #E6E6E6;
     margin-bottom: -1px;
     padding: 20px;
     cursor: pointer;
@@ -241,7 +241,7 @@
   }
 
   .content-box .item:hover {
-    background-color: #F2F1F1;
+    background-color: #F7F7F7;
   }
 
   .item p {

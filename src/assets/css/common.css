@@ -219,6 +219,11 @@
   border-color: #a02832;
   background-color: #a02832;
 }
+
+.el-button--primary {
+  background: #65A6FF;
+  border: 1px solid #65A6FF;
+}
 .white-button,
 .el-button--default {
   background: #fff;
@@ -270,6 +275,9 @@ button.el-button.is-custom.is-disabled,
 }
 .vcenter-right-mob {
   padding-left: 0
+}
+.fx-icon-nothing-close-error:hover {
+  color: #FF5A5F!important
 }
 @media screen and (min-width: 1200px) {
   .vcenter-right-plus {

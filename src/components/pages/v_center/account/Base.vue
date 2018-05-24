@@ -284,7 +284,7 @@
   .item {
     margin: 5px 0;
     padding: 10px 0;
-    border-bottom: 1px solid #d2d2d2;
+    border-bottom: 1px solid #E6E6E6;
   }
   .content-box .item:last-child {
     border-bottom: none;

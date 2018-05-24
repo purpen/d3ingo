@@ -651,7 +651,7 @@
   }
 
   .content-box .item {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #E6E6E6;
     margin-bottom: 20px;
     padding-bottom: 10px;
     position: relative;
@@ -735,8 +735,12 @@
     background: #FAFAFA;
   }
 
-  .content {
+  /* .content {
     border-bottom: 1px solid #ccc;
+  } */
+
+  .pre {
+    padding: 10px;
   }
 
   .item.ing p {

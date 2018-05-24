@@ -7,7 +7,7 @@
         'vcenter-right': leftWidth === 2,
         'vcenter-right-mob': isMob}">
         <div class="right-content vcenter-container">
-          <v-menu-sub></v-menu-sub>
+          <!-- <v-menu-sub></v-menu-sub> -->
           <div class="content-item-box" v-loading.body="isLoading">
             <div class="pub">
               <router-link :to="{name: 'itemSubmitOne'}">
@@ -581,6 +581,10 @@
   /*border-bottom: 1px solid #ccc;*/
   /*}*/
 
+  .pre {
+    padding: 0 10px;
+  }
+  
   .item.ing p {
     padding: 10px;
   }
