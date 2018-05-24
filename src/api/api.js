@@ -331,6 +331,7 @@ export default {
   deleteCommuneSummaryUser: '/communeSummaryUser/delete', // DELETE 删除
 
   // 项目列表
+  designProjectCollect: '/designProject/collect', // 设置项目收藏
   desiginProjectList: '/designProject/lists', // GET 项目列表
   createDesignProject: '/designProject/create', // POST 创建
   updateDesignProject: '/designProject/update', // PUT 创建

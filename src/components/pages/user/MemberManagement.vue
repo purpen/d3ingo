@@ -81,25 +81,25 @@
                     <!-- <i @click.stop="changeActive(index)"></i> -->
                     <i></i>
                     <ul>
-                      <li @click.stop="removeMemberFromGroup(ele.id, index)">从群组移除成员</li>
-                      <li @click.stop="removeMember(ele.id, index)">从企业移除成员</li>
+                      <li @click="removeMemberFromGroup(ele.id, index)">从群组移除成员</li>
+                      <li @click="removeMember(ele.id, index)">从企业移除成员</li>
                     </ul>
                   </div>
                 </div>
               </el-col>
               <el-col v-if="type === 'member'" :span="isMob? 8 : 4">
                 <div class="role">
-                  <span>{{ele.company_role_label}}</span>
+                  <span>{{ele.company_role_label}}<i style="font-size: 0">{{ele.company_role}}</i></span>
                   <div ref="moreList" tabindex="-1" :class="['more-list']"
                     v-if="company_role === 10 || company_role === 20"
                     v-show="type === 'member' && currentId !== ele.id">
-                    <!-- <i @click.stop="changeActive(index)"></i> -->
+                    <!-- <i @click="changeActive(index)"></i> -->
                     <i></i>
                     <ul>
-                      <li v-if="company_role === 20" @click.stop="setRole(ele.id, 10, index)">管理员</li>
-                      <li v-if="company_role === 20" @click.stop="setRole(ele.id, 0, index)">成员</li>
+                      <li v-if="company_role === 20" @click="setRole(ele.id, 10, index)">管理员</li>
+                      <li v-if="company_role === 20" @click="setRole(ele.id, 0, index)">成员</li>
                       <li v-if="false">停用账号</li>
-                      <li @click.stop="removeMember(ele.id)">从企业移除成员</li>
+                      <li @click="removeMember(ele.id)">从企业移除成员</li>
                     </ul>
                   </div>
                 </div>
@@ -355,19 +355,20 @@ export default {
       }).then(res => {
         this.loading = false
         if (res.data.meta.status_code === 200) {
-          this.$refs.moreList[index].blur()
-          this.$nextTick(() => {
+          this.$nextTick(_ => {
             this.memberList.forEach(item => {
               if (item.id === id) {
-                item.company_role = role
+                this.$set(item, 'company_role', role)
                 if (role === 10) {
-                  item.company_role_label = '管理员'
+                  // this.$set(item, 'company_role_label', '管理员')
+                  this.$set(item, 'company_role_label', '管理员')
                 } else if (role === 0) {
-                  item.company_role_label = '成员'
+                  this.$set(item, 'company_role_label', '成员')
                 }
               }
             })
           })
+          this.$refs.moreList[index].blur()
         } else {
           this.$message.error(res.data.meta.message)
         }

@@ -7,7 +7,7 @@
       <div class="vcenter-container blank30">
         <h2>项目管理</h2>
         <ul class="project-list" v-loading.body="isLoading">
-          <li class="create" v-if="isCompanyAdmin">
+          <li class="create" @click="showCover" v-if="isCompanyAdmin">
             <p @click="showCover">
               <i></i>
               <span>创建新项目</span>
@@ -25,7 +25,7 @@
                     删除
                   </span>
                 </p>
-                <span class="favorite-star fr" v-if="false"></span>
+                <span @click="setCollect(ele.id, ele.collect)" :class="['favorite-star', 'fr', {'favorite-star-light': ele.collect === 1}]"></span>
               </div>
             </div>
             <div class="content" @click="routePush(ele.id)">
@@ -39,7 +39,7 @@
       <el-pagination v-show="query.totalCount > query.pageSize" class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize" :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange">
       </el-pagination>
     </div>
-    <div class="dialog-bg" v-if="show.cover"></div>
+    <div class="dialog-bg" @click="closeCover" v-if="show.cover"></div>
       <div class="dialog-content" v-if="show.createContent">
         <div class="dialog-header">
           创建项目
@@ -188,6 +188,26 @@ export default {
       this.query.page = page
       this.$router.push({name: this.$route.name, query: {page: this.query.page}})
       this.getProjectList()
+    },
+    setCollect(id, collect) {
+      collect = collect === 1 ? 0 : 1
+      this.$http.put(api.designProjectCollect, {id: id, collect: collect})
+      .then((res) => {
+        if (res.data.meta.status_code === 200) {
+          this.$nextTick(_ => {
+            this.projectList.forEach((item) => {
+              if (item.id === id) {
+                this.$set(item, item.collect, collect)
+              }
+            })
+          })
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        console.error(err.message)
+        this.$message.error(err.message)
+      })
     }
   },
   computed: {
@@ -290,11 +310,14 @@ export default {
   .favorite-star {
     display: inline-block;
     cursor: pointer;
-    margin-right: 10px;
+    margin-right: 20px;
     width: 24px;
     height: 24px;
-    background: url(../../../../assets/images/tools/project_management/Collection.png) no-repeat center;
-    background-size: contain
+    background: url(../../../../assets/images/tools/project_management/Collection.png) no-repeat center / contain;
+  }
+
+  .favorite-star-light {
+    background: url(../../../../assets/images/tools/project_management/CollectionLight.png) no-repeat center / contain;
   }
 
   .favorite-star.active {
