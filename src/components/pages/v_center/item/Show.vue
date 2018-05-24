@@ -1656,7 +1656,7 @@ section ul li a {
   margin-right: 30px;
 }
 .dialog-footer.btn button {
-  padding: 10px 30px;
+  /* padding: 10px 30px; */
 }
 </style>
 <style>
