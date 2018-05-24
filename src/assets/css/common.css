@@ -276,6 +276,9 @@ button.el-button.is-custom.is-disabled,
 .vcenter-right-mob {
   padding-left: 0
 }
+.fx-icon-nothing-close-error:hover {
+  color: #FF5A5F!important
+}
 @media screen and (min-width: 1200px) {
   .vcenter-right-plus {
     padding-left: 200px

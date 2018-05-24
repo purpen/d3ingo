@@ -562,9 +562,9 @@
   }
 
   .item-box h3 {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     color: #666;
-    line-height: 2;
+    /* line-height: 2; */
   }
 
   .item-box-m h3 {
@@ -627,7 +627,7 @@
 
   .vcenter-menu-sub::after {
     content: "";
-    position: absolute;
+    /* position: absolute; */
     width: 100%;
     top: 42px;
     left: 0;
@@ -637,7 +637,7 @@
   @media screen and (max-width: 767px) {
     .vcenter-menu-sub::after {
       content: "";
-      position: absolute;
+      /* position: absolute; */
       width: 100%;
       top: 47px;
       left: 0;

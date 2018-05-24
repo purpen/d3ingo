@@ -1328,6 +1328,7 @@
   .capital-money {
     color: #FF5A5F;
     font-size: 2.5rem;
+    margin: 10px 0;
   }
 
   .capital-des {
@@ -1337,7 +1338,7 @@
 
   .capital-item .pay-btn {
     font-size: 1.8rem;
-    margin: 10px 0 20px 0;
+    /* margin: 10px 0 20px 0; */
   }
 
   .capital-item .capital-btn {
@@ -1410,7 +1411,8 @@
   }
 
   .stage-title {
-    border-bottom: 0.5px solid #D2D2D2;
+    border-bottom: 1px solid #D2D2D2;
+    padding-bottom: 20px;
   }
 
   .stage-item .stage-title h3 {
@@ -1426,7 +1428,7 @@
 
   .stage-asset-box {
     padding: 10px 0;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #D2D2D2;
   }
 
   .taking-price-btn {

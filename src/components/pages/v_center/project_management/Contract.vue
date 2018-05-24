@@ -285,7 +285,7 @@
   cursor:pointer;
 }
 .dialog-footer>button{
-  margin-right:50px;
+  margin-right: 20px;
 }
 .marginlf{
   margin-left:15px;

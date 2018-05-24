@@ -66,6 +66,11 @@
   .item-total .el-dialog__footer {
     text-align: center
   }
+  .el-dialog__footer .dialog-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   .aside>.el-progress .el-progress-bar__outer, .aside>.el-progress .el-progress-bar__outer>.el-progress-bar__inner {
     border-radius: 0px
   }
@@ -190,19 +195,19 @@
   .el-table th .cell {
     font-size: 12px;
   }
-.el-table .cell, .el-table th>div {
-    font-size: 12px;
-}
-.el-pagination__sizes .el-input .el-input__inner:hover {
-  border-color: #ff5a5f
-}
-.el-select-dropdown__list {
-  padding: 0
-}
-.el-collapse-item__header {
-  border-color: #E6E6E6
-}
-.el-collapse-item__wrap {
-  background-color: #FAFAFA;
-  border-color: #E6E6E6
-}
+  .el-table .cell, .el-table th>div {
+      font-size: 12px;
+  }
+  .el-pagination__sizes .el-input .el-input__inner:hover {
+    border-color: #ff5a5f
+  }
+  .el-select-dropdown__list {
+    padding: 0
+  }
+  .el-collapse-item__header {
+    border-color: #E6E6E6
+  }
+  .el-collapse-item__wrap {
+    background-color: #FAFAFA;
+    border-color: #E6E6E6
+  }

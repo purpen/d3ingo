@@ -292,7 +292,7 @@
   }
 
   .content-box {
-    border: 1px solid #ccc;
+    border: 1px solid #E6E6E6;
     margin-top: 0;
     min-height: 200px;
     padding: 20px 10px;
@@ -304,7 +304,7 @@
 
   .content-box .item {
     height: 60px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #E6E6E6;
     margin-bottom: 20px;
   }
 

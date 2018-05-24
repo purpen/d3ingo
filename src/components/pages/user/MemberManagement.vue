@@ -22,10 +22,10 @@
               {{firstGroupName}}
             </p>
             <p v-if="type === 'member' && company_role === 20" class="invite fr" @click="getVerifyStatus">邀请成员</p>
-            <div :class="['fr', 'more-list','more-list-group', {'active': isShowGroup}]"
+            <div tabindex="-1" ref="moreOption" :class="['fr', 'more-list','more-list-group']"
               v-if="company_role === 10 || company_role === 20"
               v-show="type === 'group' && memberList.length">
-              <i class="header-icon" @click.stop="isShowGroup = !isShowGroup"></i>
+              <i class="header-icon"></i>
               <ul>
                 <li @click.stop="confirmRenameGroup">重命名</li>
                 <li @click.stop="confirmRemoveGroup">删除群组</li>
@@ -75,13 +75,14 @@
               </el-col>
               <el-col v-if="type === 'group'" :span="2">
                 <div class="role role-group">
-                  <div :class="['more-list','more-list-group', {'active': isShow === index}]"
+                  <div ref="moreListGroup" tabindex="-1" :class="['more-list','more-list-group']"
                     v-if="company_role === 10 || company_role === 20"
                     v-show="type === 'group'">
-                    <i @click.stop="changeActive(index)"></i>
+                    <!-- <i @click.stop="changeActive(index)"></i> -->
+                    <i></i>
                     <ul>
-                      <li @click.stop="removeMemberFromGroup(ele.id)">从群组移除成员</li>
-                      <li @click.stop="removeMember(ele.id)">从企业移除成员</li>
+                      <li @click.stop="removeMemberFromGroup(ele.id, index)">从群组移除成员</li>
+                      <li @click.stop="removeMember(ele.id, index)">从企业移除成员</li>
                     </ul>
                   </div>
                 </div>
@@ -89,13 +90,14 @@
               <el-col v-if="type === 'member'" :span="isMob? 8 : 4">
                 <div class="role">
                   <span>{{ele.company_role_label}}</span>
-                  <div :class="['more-list', {'active': isShow === index}]"
+                  <div ref="moreList" tabindex="-1" :class="['more-list']"
                     v-if="company_role === 10 || company_role === 20"
                     v-show="type === 'member' && currentId !== ele.id">
-                    <i @click.stop="changeActive(index)"></i>
+                    <!-- <i @click.stop="changeActive(index)"></i> -->
+                    <i></i>
                     <ul>
-                      <li v-if="company_role === 20" @click.stop="setRole(ele.id, 10)">管理员</li>
-                      <li v-if="company_role === 20" @click.stop="setRole(ele.id, 0)">成员</li>
+                      <li v-if="company_role === 20" @click.stop="setRole(ele.id, 10, index)">管理员</li>
+                      <li v-if="company_role === 20" @click.stop="setRole(ele.id, 0, index)">成员</li>
                       <li v-if="false">停用账号</li>
                       <li @click.stop="removeMember(ele.id)">从企业移除成员</li>
                     </ul>
@@ -210,8 +212,6 @@ export default {
       isInvite: false, // 邀请界面
       isRename: false, // 修改界面
       inviteLink: '', // 邀请链接
-      isShow: -1, // 操作列表
-      isShowGroup: false, // 群组操作列表
       showMember: false, // 显示成员详情
       type: 'member',
       firstGroupId: -1,
@@ -293,9 +293,7 @@ export default {
     closeCover() {
       this.showCover = false
       this.isInvite = false
-      this.isShow = -1
       this.isRename = false
-      this.isShowGroup = false
       this.showGroupPush = false
       this.showMember = false
       this.showCreateGroup = false
@@ -349,14 +347,7 @@ export default {
       }
       console.log(clipboard)
     },
-    changeActive(index) {
-      if (this.isShow === index) {
-        this.isShow = -1
-      } else {
-        this.isShow = index
-      }
-    },
-    setRole(id, role) {
+    setRole(id, role, index) {
       this.loading = true
       this.$http.put(api.designMemberSetRole, {
         set_user_id: id,
@@ -364,6 +355,7 @@ export default {
       }).then(res => {
         this.loading = false
         if (res.data.meta.status_code === 200) {
+          this.$refs.moreList[index].blur()
           this.$nextTick(() => {
             this.memberList.forEach(item => {
               if (item.id === id) {
@@ -375,7 +367,6 @@ export default {
                 }
               }
             })
-            this.isShow = -1
           })
         } else {
           this.$message.error(res.data.meta.message)
@@ -385,7 +376,7 @@ export default {
         this.$message.error(err.message)
       })
     },
-    removeMember(id) {
+    removeMember(id, index) {
       this.$http.put(api.designDeleteMember, {
         delete_user_id: id
       })
@@ -393,14 +384,18 @@ export default {
         if (res.data.meta.status_code === 200) {
           this.$nextTick(() => {
             this.memberList = this.memberList.filter(item => { return id !== item.id })
-            this.isShow = -1
+            if (this.$refs.moreList) {
+              this.$refs.moreList[index].blur()
+            } else if (this.$refs.moreListGroup) {
+              this.$refs.moreListGroup[index].blur()
+            }
           })
         } else {
           this.$message.error(res.data.meta.message)
         }
       })
     },
-    removeMemberFromGroup(id) {
+    removeMemberFromGroup(id, index = -1) {
       this.$http.put(api.removeGroupMember, {
         user_id_arr: [id],
         group_id: this.firstGroupId
@@ -409,7 +404,9 @@ export default {
         if (res.data.meta.status_code === 200) {
           this.$nextTick(() => {
             this.memberList = this.memberList.filter(item => { return id !== item.id })
-            this.isShow = -1
+            if (index !== -1) {
+              this.$refs.moreListGroup[index].blur()
+            }
           })
         } else {
           this.$message.error(res.data.meta.message)
@@ -465,13 +462,11 @@ export default {
       this.liActive = index
       this.firstGroupId = ele.id
       this.firstGroupName = ele.name
-      this.isShow = -1
       this.getMemberList(ele.id)
     },
     groupConfirmPush() {
       this.closeCover()
       this.showGroupPush = true
-      this.isShow = -1
       this.getItemList()
     },
     addOrremoveMember(id) {
@@ -497,7 +492,7 @@ export default {
     },
     confirmRenameGroup() {
       if (this.memberList.length) {
-        this.closeCover()
+        this.$refs.moreOption.blur()
         this.showCover = true
         this.isRename = true
       } else {
@@ -506,7 +501,7 @@ export default {
     },
     confirmRemoveGroup() {
       if (this.memberList.length) {
-        this.closeCover()
+        this.$refs.moreOption.blur()
         this.showCover = true
         this.confirmDeleteGroup = true
       } else {
@@ -753,7 +748,7 @@ export default {
     transform: rotate(0)
   }
 
-  .more-list.active ul {
+  .more-list:focus ul {
     display: block
   }
 

@@ -123,7 +123,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-bottom: 1px solid #d7d7d7
+    border-bottom: 1px solid #E6E6E6
   }
   .cover-header span {
     cursor: pointer;
@@ -134,7 +134,8 @@
     border-bottom: 3px solid transparent
   }
   .cover-header .is-active {
-    border-color: #ff5a5f
+    color: #FF5A5F;
+    border-color: #FF5A5F
   }
   .cover-header span:nth-child(2) {
     margin: 0 60px
