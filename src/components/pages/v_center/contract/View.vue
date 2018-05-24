@@ -129,8 +129,7 @@
               </router-link>
             </div>
             <div class="form-btn" v-else>
-              <router-link :to="{name: 'vcenterContractDown', params: {unique_id: uniqueId}}" target="_blank"><i
-                class="fa fa-download" aria-hidden="true"></i> 下载合同
+              <router-link :to="{name: 'vcenterContractDown', params: {unique_id: uniqueId}}" target="_blank"><i class="fa fa-download" aria-hidden="true"></i> 下载合同
               </router-link>
             </div>
             <div class="clear"></div>
@@ -147,10 +146,10 @@
       v-model="sureDialog"
       size="tiny">
       <input type="hidden" ref="currentType" value="1"/>
-      <span>{{ sureDialogMessage }}</span>
+      <p class="alert-line-height">{{ sureDialogMessage }}</p>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="sureDialog = false">取 消</el-button>
-        <el-button type="primary" :loading="sureDialogLoadingBtn" @click="sureDialogSubmit">确 定</el-button>
+        <el-button class="is-custom" @click="sureDialog = false">取 消</el-button>
+        <el-button type="primary" class="is-custom" :loading="sureDialogLoadingBtn" @click="sureDialogSubmit">确 定</el-button>
       </span>
     </el-dialog>
 

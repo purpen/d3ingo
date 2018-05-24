@@ -5,7 +5,7 @@
         <h3 :class="{'m-h3' : isMob}">把需求交给铟果来解决</h3>
         <p :class="{'m-p' : isMob}">铟果聚集100+专业设计服务供应商，依托海量消费大数据，帮助客户洞察先机。 </p>
           <div class="pub" v-if="!isCompany">
-            <router-link :to="{name: 'itemSubmitOne'}">
+            <router-link :to="{name: 'itemCreate'}">
               <el-button class="pub-btn is-custom" type="primary" size="large"> 发布项目需求
               </el-button>
             </router-link>

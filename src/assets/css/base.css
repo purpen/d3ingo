@@ -2584,6 +2584,10 @@ td.fc-day.fc-widget-content.fc-today::before {
   /* font-weight: 600; */
   font-size:1.3rem;
 }
+
+.alert-line-height {
+  line-height: 1.5;
+}
 /**
 .content .body p {
   font-size: 1.4rem;

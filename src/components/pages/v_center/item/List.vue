@@ -10,8 +10,9 @@
           <!-- <v-menu-sub></v-menu-sub> -->
           <div class="content-item-box" v-loading.body="isLoading">
             <div class="pub">
-              <router-link :to="{name: 'itemSubmitOne'}">
-                <el-button class="pub-btn is-custom" type="primary"><i class="el-icon-plus"></i>发布项目</el-button>
+              <router-link :to="{name: 'itemCreate'}">
+                <el-button class="pub-btn is-custom" type="primary" size="large"><i class="el-icon-plus"></i> 发布项目
+                </el-button>
               </router-link>
             </div>
 

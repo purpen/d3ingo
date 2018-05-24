@@ -167,7 +167,7 @@
                   </div>
                   <div class="clear"></div>
                   <div class="item-bj" v-if="d.quotation">
-                    <p>项目报价:  <span class="p-price">{{ d.quotation.price }} 元</span></p>
+                    <p>项目报价:  <span class="p-price">{{ d.quotation.price }} 元</span> <span class="quota-btn">&nbsp;&nbsp;<a href="javascript:void(0);" @click="showQuotaBtn(d.quotation)">详情>></a></span></p>
                     <p>报价说明:  {{ d.quotation.summary }}</p>
                   </div>
 
@@ -228,7 +228,7 @@
                   </div>
                   <div class="clear"></div>
                   <div class="item-bj">
-                    <p>项目报价:  <span class="p-price">{{ cooperateCompany.quotation.price }} 元</span></p>
+                    <p>项目报价:  <span class="p-price">{{ cooperateCompany.quotation.price }} 元</span> <span class="quota-btn">&nbsp;&nbsp;<a href="javascript:void(0);" @click="showQuotaBtn(cooperateCompany.quotation)">详情>></a></span></p>
                     <p>报价说明:  {{ cooperateCompany.quotation.summary }}</p>
                   </div>
 
@@ -427,16 +427,26 @@
       </span>
     </el-dialog>
 
+    <el-dialog title="报价单详情" v-model="quotaDialog" size="large" top="2%">
+      <v-quote-view :formProp="quota"></v-quote-view>
+
+      <div slot="footer" class="dialog-footer btn">
+        <el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
 import api from '@/api/api'
 import vItemProgress from '@/components/block/ItemProgress'
+const vQuoteView = () => import('@/components/block/QuoteView')
 export default {
   name: 'vcenter_item_show',
   components: {
-    vItemProgress
+    vItemProgress,
+    vQuoteView
   },
   data() {
     return {
@@ -496,6 +506,8 @@ export default {
       progressButt: 0,
       progressContract: -1,
       progressItem: -1,
+      quota: {},
+      quotaDialog: false,
       msg: ''
     }
   },
@@ -560,6 +572,12 @@ export default {
       } else {
         this.comfirmLoadingBtn = false
       }
+    },
+    // 点击报价详情事件
+    showQuotaBtn(obj) {
+      this.quota = obj
+      console.log(this.quota)
+      this.quotaDialog = true
     },
     // 拒绝设计公司报价提交
     refuseCompanySubmit() {
@@ -1625,6 +1643,20 @@ section ul li a {
     margin-left: 0;
     margin-right: 16px;
   }
+}
+
+.quota-btn {
+
+}
+.quota-btn a {
+  font-size: 12px;
+  color: #666;
+}
+.dialog-footer.btn {
+  margin-right: 30px;
+}
+.dialog-footer.btn button {
+  padding: 10px 30px;
 }
 </style>
 <style>

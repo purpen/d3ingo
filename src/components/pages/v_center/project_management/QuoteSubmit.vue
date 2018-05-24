@@ -144,7 +144,7 @@
                               :label="p.name"
                               :value="p.name">
                                 <span style="float: left">{{ p.name }}</span>
-                                <span style="float: right; color: #8492a6; font-size: 13px" @click="delPosition(p.id, p_index)"><i class="fx fx-icon-close-error"></i></span>
+                                <span style="float: right; color: #8492a6; font-size: 13px" @click.stop="delPosition(p.id, p_index)"><i class="fx fx-icon-close-error"></i></span>
                             </el-option>
                           </el-select>
                         </el-form-item>
@@ -202,7 +202,7 @@
                   <p class="plan-opt-icon icon-box" v-else @click="planTxtBtn(d.summary, index, false)"><i class="fx fx-icon-edit"></i></p>
                 </el-col>
                 <el-col :xs="24" :sm="1" :md="1" :lg="1" style="padding:0;">
-                  <p class="plan-opt-icon"><i class="fx fx-icon-close-sm" @click="delPlanBtn(d.content, index)"></i></p>
+                  <p class="plan-opt-icon"><i class="fx fx-icon-close-sm" @click.stop="delPlanBtn(d.content, index)"></i></p>
                 </el-col>
               </el-row>
             </div>
@@ -599,8 +599,6 @@ export default {
     },
     // 删除职位
     delPosition(id, index) {
-      // 阻止点击事件冒泡
-      event.stopPropagation()
       if (!id) return false
       // 删除操作
       this.$http.delete(api.designPositionDelete, {params: {id: id}}).then((response) => {
@@ -721,7 +719,6 @@ export default {
     }
   },
   created() {
-    console.log('aaaa')
     console.log(this.$store.state.task.projectObject)
     this.itemId = this.$route.params.id
     let id = this.$route.query.id
@@ -735,7 +732,7 @@ export default {
           this.$set(this.taxRate, 'isTax', form.is_tax)
           this.$set(this.taxRate, 'isInvoice', form.is_invoice)
           this.rate = form.tax_rate
-          this.totalMoney = form.total_price
+          this.totalMoney = parseFloat(form.total_price)
           if (form.area === 0) form.area = ''
           if (form.design_area === 0) form.design_area = ''
 

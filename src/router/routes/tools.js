@@ -110,7 +110,11 @@ module.exports = [
           hideFooter: true
         },
         path: '/vcenter/project_management/quote/:id',
-        component: require('@/components/pages/v_center/project_management/Quote')
+        // component: require('@/components/pages/v_center/project_management/Quote')
+        // 按需加载
+        component: (resolve) => {
+          require(['@/components/pages/v_center/project_management/Quote'], resolve)
+        }
       },
       {
         name: 'projectQuoteSubmit',
@@ -122,6 +126,18 @@ module.exports = [
         },
         path: '/vcenter/project_management/quote_submit/:id',
         component: require('@/components/pages/v_center/project_management/QuoteSubmit')
+      },
+      {
+        name: 'projectQuoteDown',
+        meta: {
+          title: '项目报价下载',
+          requireAuth: true
+        },
+        path: '/vcenter/project_management/quote_down/:id',
+        // 按需加载
+        component: (resolve) => {
+          require(['@/components/pages/v_center/project_management/QuoteDown'], resolve)
+        }
       },
       {
         name: 'projectContract',
