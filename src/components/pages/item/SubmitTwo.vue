@@ -196,7 +196,6 @@
             }
           })
           .catch(function (error) {
-            alert(22)
             that.$message.error(error.message)
             that.isLoadingBtn = false
             console.log(error.message)
@@ -296,18 +295,13 @@
             .then((response) => {
               if (response.data.meta.status_code === 200) {
                 var row = response.data.data.item
-                this.form.id = row.id
-                this.form.type = row.type
-                if (row.design_types) {
-                  this.form.design_types = row.design_types
-                } else {
-                  this.form.design_types = []
+                if (!row.design_types) {
+                  row.design_types = []
                 }
                 for (let i of this.form.design_types) {
                   this.typeDesignOptions[i - 1].active = true
                 }
-                this.form.field = row.field
-                this.form.stage_status = row.stage_status
+                this.form = row
               } else {
                 this.$message.error(response.data.meta.message)
                 console.log(response.data.meta.message)
