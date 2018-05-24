@@ -1523,8 +1523,7 @@ input[type=text]:focus, input[type=password]:focus{
   line-height: 1;
   color: #666;
   text-transform: none;
-  font-weight: 400;
-  padding: 8px 15px;
+  padding: 12px 15px;
 }
 
 .menu-list .item:first-child {
@@ -1595,7 +1594,7 @@ input[type=text]:focus, input[type=password]:focus{
  */
 
 .h-right-content .content-box {
-  margin-top: 20px;
+  /* margin-top: 20px; */
 }
 
 .content-box p {
@@ -1706,8 +1705,6 @@ img.avatar2 {
 }
 
 .el-card:hover {
-  position: relative;
-  z-index: 1;
   transform: translate3D(0, -5px, 0);
   box-shadow: 6px 6px 10px rgba(10, 10, 10, 0.15)
 }
@@ -2355,16 +2352,6 @@ td.fc-day.fc-widget-content.fc-today::before {
 
   .fc-content .fc-title {
     font-size: 12px;
-  }
-
-  .el-card:hover {
-    transform: none;
-    /* box-shadow: 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04); */
-    box-shadow: none;
-  }
-
-  .blank40 {
-    margin-top: 0;
   }
 
   .vcenter-menu-sub::after {

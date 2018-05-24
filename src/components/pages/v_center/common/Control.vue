@@ -731,8 +731,12 @@
     background: #FAFAFA;
   }
 
-  .content {
+  /* .content {
     border-bottom: 1px solid #ccc;
+  } */
+
+  .pre {
+    padding: 10px;
   }
 
   .item.ing p {

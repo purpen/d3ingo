@@ -1,5 +1,5 @@
 <template>
-  <el-row class="control blank20 ">
+  <el-row class="control blank30 vcenter">
     <v-menu currentName="control"></v-menu>
     <!-- <el-col :span="!isMob? rightWidth : 24" :offset="!isMob ? leftWidth : 0" v-loading.body="isLoading">
 
@@ -448,12 +448,15 @@
     background: #FAFAFA;
   }
 
-  .content {
+  /* .content {
     border-bottom: 1px solid #ccc;
-  }
+  } */
 
-  .item.ing p {
+  .pre {
     padding: 10px;
+  }
+  .item.ing p {
+    padding: 10px 20px;
   }
 
   p.c-title-pro {

@@ -572,6 +572,7 @@
 
   .pub {
     margin: 80px 0 0 0;
+    margin: -20px;
   }
 
   .pub .pub-btn {
@@ -603,7 +604,7 @@
   }
 
   .el-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-5px);
   box-shadow: 6px 6px 10px rgba(10,10,10,.15)
   }
 
