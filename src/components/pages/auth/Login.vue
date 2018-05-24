@@ -83,68 +83,69 @@ export default {
   methods: {
     submit(formName) {
       const that = this
-
-      that.$refs[formName].validate(valid => {
-        if (valid) {
-          let account = this.$refs.account.value
-          let password = this.$refs.password.value
-          that.isLoadingBtn = true
-          // 验证通过，登录
-          that.$http
-            .post(api.login, { account: account, password: password })
-            .then(function(response) {
-              that.isLoadingBtn = false
-              if (response.data.meta.status_code === 200) {
-                let token = response.data.data.token
-                // 写入localStorage
-                auth.write_token(token)
-                // ajax拉取用户信息
-                that.$http
-                  .get(api.user, {})
-                  .then(function(response) {
-                    if (response.data.meta.status_code === 200) {
-                      that.$message({
-                        message: '登陆成功',
-                        type: 'success',
-                        duration: 800
-                      })
-                      that.$store.commit(MENU_STATUS, '')
-                      auth.write_user(response.data.data)
-                      that.restoreMember()
-                      let prevUrlName = that.$store.state.event.prevUrlName
-                      if (prevUrlName) {
-                        // 清空上一url
-                        auth.clear_prev_url_name()
-                        that.$router.replace({ path: prevUrlName })
-                      } else {
-                        if (that.isMob) {
-                          that.$router.replace({ name: 'home' })
+      if (that.$refs[formName]) {
+        that.$refs[formName].validate(valid => {
+          if (valid) {
+            let account = this.$refs.account.value
+            let password = this.$refs.password.value
+            that.isLoadingBtn = true
+            // 验证通过，登录
+            that.$http
+              .post(api.login, { account: account, password: password })
+              .then(function(response) {
+                that.isLoadingBtn = false
+                if (response.data.meta.status_code === 200) {
+                  let token = response.data.data.token
+                  // 写入localStorage
+                  auth.write_token(token)
+                  // ajax拉取用户信息
+                  that.$http
+                    .get(api.user, {})
+                    .then(function(response) {
+                      if (response.data.meta.status_code === 200) {
+                        that.$message({
+                          message: '登陆成功',
+                          type: 'success',
+                          duration: 800
+                        })
+                        that.$store.commit(MENU_STATUS, '')
+                        auth.write_user(response.data.data)
+                        that.restoreMember()
+                        let prevUrlName = that.$store.state.event.prevUrlName
+                        if (prevUrlName) {
+                          // 清空上一url
+                          auth.clear_prev_url_name()
+                          that.$router.replace({ path: prevUrlName })
                         } else {
-                          that.$router.replace({ name: 'vcenterControl' })
+                          if (that.isMob) {
+                            that.$router.replace({ name: 'home' })
+                          } else {
+                            that.$router.replace({ name: 'vcenterControl' })
+                          }
                         }
+                      } else {
+                        auth.logout()
+                        that.$message.error(response.data.meta.message)
                       }
-                    } else {
+                    })
+                    .catch(function(error) {
                       auth.logout()
-                      that.$message.error(response.data.meta.message)
-                    }
-                  })
-                  .catch(function(error) {
-                    auth.logout()
-                    that.$message.error(error.message)
-                  })
-              } else {
-                that.$message.error(response.data.meta.message)
-              }
-            })
-            .catch(function(error) {
-              that.isLoadingBtn = false
-              that.$message.error(error.message)
-            })
-        } else {
-          console.log('error submit!!')
-          return false
-        }
-      })
+                      that.$message.error(error.message)
+                    })
+                } else {
+                  that.$message.error(response.data.meta.message)
+                }
+              })
+              .catch(function(error) {
+                that.isLoadingBtn = false
+                that.$message.error(error.message)
+              })
+          } else {
+            console.log('error submit!!')
+            return false
+          }
+        })
+      }
     },
     restoreMember() {
       if (this.code) {

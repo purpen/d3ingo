@@ -219,6 +219,11 @@
   border-color: #a02832;
   background-color: #a02832;
 }
+
+.el-button--primary {
+  background: #65A6FF;
+  border: 1px solid #65A6FF;
+}
 .white-button,
 .el-button--default {
   background: #fff;

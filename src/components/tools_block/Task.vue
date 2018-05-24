@@ -1,5 +1,6 @@
 <template>
-  <div class="" v-if="taskState.power" v-loading="isLoading">
+  <div class="" v-if="taskState.power">
+    <!-- <div class="" v-if="taskState.power" v-loading="isLoading"> -->
     <section class="task-detail">
       <div class="task-detail-header">
         <span v-if="currentForm.tier === 0" class="task-detail-name">{{projectObject.name}}</span>
@@ -24,15 +25,13 @@
         </div>
         <i class="fx fx-icon-nothing-close-error" @click="closeBtn"></i>
       </div>
-      <p :class="['add-task-input', {'active': currentForm.stage === 2}]">
-        <span :class="['add-task-select']" @click="completeTask"></span>
-        <el-tooltip class="item" effect="dark" content="点击即可编辑" placement="top">
-          <el-input :autosize="{ minRows: 1}" type="textarea" @focus="saveOldVal(currentForm.name)" @blur="blurInput({name: currentForm.name})" v-model="currentForm.name" placeholder="请填写任务名称"></el-input>
-        </el-tooltip>
+      <p :class="['add-task-input', {'add-task-input-no_name': !currentForm.name, 'active': currentForm.stage === 2}]">
+        <span v-show="currentForm.name" :class="['add-task-select']" @click="completeTask"></span>
+        <el-input :autosize="{ minRows: 1}" type="textarea" @focus="saveOldVal(currentForm.name)" @blur="blurInput({name: currentForm.name})" v-model="currentForm.name" placeholder="请填写任务名称"></el-input>
       </p>
       <div class="task-detail-body">
         <div class="task-admin" v-if="true">
-          <p class="tc-9">分配给</p>
+          <p class="tc-9">分配给:</p>
           <ul class="task-member-list task-member-execute" v-if="executeUser">
             <li v-if="JSON.stringify(executeUser) !== '{}'">
               <a class="remove-member" @click.self="removeExecute()"></a>
@@ -41,7 +40,7 @@
             </li>
           </ul>
           <ul class="task-member-list task-member-execute" v-else>
-            <li @click="showMember = true">选择执行者</li>
+            <li class="margin-none" @click="showMember = true">选择执行者</li>
           </ul>
           <v-Member
             event="execute"
@@ -112,9 +111,7 @@
                 <el-tooltip class="item" effect="dark" content="查看子任务详情" placement="top">
                   <span @click="showChild(ele.id)" class="child-more"></span>
                 </el-tooltip>
-                <el-tooltip class="item" effect="dark" content="点击即可编辑" placement="top">
-                  <el-input :autosize="{ minRows: 1}" type="textarea" v-model="ele.name" placeholder="请填写任务名称" @focus="saveOldVal(ele.name)" @blur="updateChild(ele.id, {name: ele.name})"></el-input>
-                </el-tooltip>
+                <el-input :autosize="{ minRows: 1}" type="textarea" v-model="ele.name" placeholder="请填写任务名称" @focus="saveOldVal(ele.name)" @blur="updateChild(ele.id, {name: ele.name})"></el-input>
                 <el-date-picker
                   v-model="ele.over_time"
                   type="datetime"
@@ -158,14 +155,12 @@
         </div>
         <div class="task-summary">
           <p class="p-summary">备注</p>
-          <el-tooltip class="item" effect="dark" content="点击即可编辑" placement="top">
-            <el-input :autosize="{ minRows: 1}"
-              type="textarea" placeholder="请填写备注内容"
-              class="textarea-summary"
-              @focus="saveOldVal(currentForm.summary)" 
-              @blur="blurInput({summary: currentForm.summary})"
-              v-model="currentForm.summary"></el-input>
-          </el-tooltip>
+          <el-input :autosize="{ minRows: 1}"
+            type="textarea" placeholder="请填写备注内容"
+            class="textarea-summary"
+            @focus="saveOldVal(currentForm.summary)" 
+            @blur="blurInput({summary: currentForm.summary})"
+            v-model="currentForm.summary"></el-input>
         </div>
         <div class="task-member">
           <p class="p-member">参与者</p>
@@ -273,7 +268,7 @@
         {
           value: 8,
           label: '非常紧急',
-          color: '#ff5a5f'
+          color: '#FF5A5F'
         }],
         tagsId: [],
         isLoading: false,
@@ -636,6 +631,7 @@
             this.currentForm.execute_user_id = 0
             this.currentForm.logo_image = null
             this.$store.commit('updateTaskListItem', this.currentForm)
+            this.fetchStage()
           } else {
             this.$message.error(res.data.meta.message)
           }
@@ -901,17 +897,17 @@
     left: 2px;
   }
   .parent-task-name:hover {
-    color: #ff5a5f
+    color: #FF5A5F
   }
   .task-detail-name1:hover {
-    color: #ff5a5f
+    color: #FF5A5F
   }
   .task-detail-name1:hover::after {
-    background: #ff5a5f
+    background: #FF5A5F
   }
   .select-parent {
     position: relative;
-    margin-right: 20px;
+    padding-right: 20px;
   }
   .select-menu {
     position: absolute;
@@ -1000,6 +996,9 @@
     padding: 20px 0 10px 40px;
     border-bottom: 1px solid #d2d2d2;
   }
+  .add-task-input-no_name {
+    padding: 20px 0 10px;
+  }
   .add-child-input {
     padding: 20px 20px 20px 40px;
     border-bottom: none
@@ -1017,7 +1016,7 @@
     cursor: pointer;
   }
   .add-child-input .child-more:hover {
-    border-color: #ff5a5f
+    border-color: #FF5A5F
   }
   .add-task-input.active {
     text-decoration: line-through
@@ -1059,7 +1058,7 @@
     line-height: 24px;
     padding-left: 34px;
     position: relative;
-    color: #ff5a5f;
+    color: #FF5A5F;
     cursor: pointer;
     margin-top: 20px;
   }
@@ -1096,7 +1095,7 @@
     min-height: 50px;
     border: 1px solid transparent;
     border-radius: 4px;
-    padding: 8px;
+    padding: 10px 0;
   }
   .task-info li p,
   .task-summary p,
@@ -1242,10 +1241,10 @@
     opacity: 1;
   }
   .task-member-list li a:hover {
-    background-color: #ff5a5f
+    background-color: #FF5A5F
   }
   .task-member-list li a:hover+img {
-    border-color: #ff5a5f;
+    border-color: #FF5A5F;
   }
   .task-member-execute {
     padding-left: 0;
@@ -1254,6 +1253,14 @@
   .task-member-execute li {
     color: #222;
     font-size: 14px;
+  }
+  .task-member-execute li.margin-none {
+    font-family: PingFangSC-Medium;
+    margin: 0;
+    color: #666
+  }
+  .task-member-execute li.margin-none:hover {
+    color: #FF5A5F
   }
   .task-detail-body p {
     /* color: #999 */
@@ -1301,7 +1308,7 @@
     font-size: 12px;
   }
   .task-moments ul {
-    padding: 20px 0 0 30px
+    padding: 20px 0 0 34px
   }
   .task-moments li {
     padding: 0 0 10px;
@@ -1336,8 +1343,8 @@
     width: 16px;
     height: 16px;
     border-radius: 4px;
-    border: 1px solid #ff5a5f;
-    background: #ff5a5f;
+    border: 1px solid #FF5A5F;
+    background: #FF5A5F;
   }
   .complete-child::before {
     border-color: #D2D2D2;
