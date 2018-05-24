@@ -1277,8 +1277,9 @@ export default {
 .offer-company-item {
   position: relative;
   padding: 10px 0 0 0;
-  border: 1px solid #ccc;
+  border: 1px solid #E6E6E6;
   margin: 20px 0 20px 0;
+  background: #fff;
 }
 
 .item-logo {

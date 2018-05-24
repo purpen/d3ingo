@@ -404,10 +404,15 @@
   .tag.active {
     border: 1px solid #FF5A5F;
     color: #FF5A5F;
+    background: #FFF
   }
 
+  .tag.active:hover {
+    background: #FFF
+  }
+  
   .slider {
-    border: 1px solid #ccc;
+    border: 1px solid #E6E6E6;
     /*height: 250px;*/
     text-align: center;
   }

@@ -890,7 +890,7 @@ button.is-custom.is-outlined.is-loading:after {
 .el-input__inner {
   border: 1px solid #e6e6e6;
   color: #666;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 .el-input__inner:hover,
 .el-input__inner:focus {
