@@ -11,7 +11,7 @@
   </div>
 </template>
 <script>
-  import vTask from '@/components/pages/v_center/project_management/task'
+  import vTask from '@/components/pages/v_center/project_management/Task'
   export default {
     name: 'messageComponents',
     data() {
