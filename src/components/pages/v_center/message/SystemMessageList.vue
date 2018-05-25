@@ -27,7 +27,7 @@
           </div>
 
           <el-pagination
-            v-if="itemList.length"
+            v-if="query.totalCount > query.pageSize"
             class="pagination"
             @current-change="handleCurrentChange"
             :current-page="query.page"

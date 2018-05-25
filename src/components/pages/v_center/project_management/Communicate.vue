@@ -958,8 +958,8 @@
     border:none;
   }
   .titlec>span{
+    /* font-family: PingFangSC-Medium; */
     font-size: 18px;
-    font-weight: bold;
     color:#222222;
   }
   .titlec>.fr{
@@ -977,13 +977,12 @@
   }
   .titlec>.fr ul{
     display:none;
-    text-align: center;
     background: #FFFFFF;
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
     border-radius: 4px;
     position:absolute;
     width:180px;
-    right:-100px;
+    right: 0;
     z-index: 1;
   }
   .titlec>.fr ul>li{

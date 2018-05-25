@@ -15,7 +15,7 @@
     text-decoration: line-through
   }
   .child-input .el-textarea__inner {
-    border-color: #E6E6E6
+    /* border-color: #E6E6E6 */
   }
   .add-task-input .el-textarea__inner:hover,
   .add-task-input .el-textarea__inner:focus {
@@ -246,7 +246,10 @@
   }
   .el-picker-panel__btn,
   .el-time-panel__btn,
-  .el-date-table th {
+  .el-date-table th,
+  .el-input__icon,
+  .el-select .el-input .el-input__icon,
+  .el-menu--horizontal .el-submenu .el-submenu__icon-arrow {
     color: #999
   }
   .el-date-picker__header-label.active, .el-date-picker__header-label:hover, .el-picker-panel__icon-btn:hover,
@@ -260,8 +263,11 @@
     height: 73px;
   }
   .el-time-panel__content::after, .el-time-panel__content::before {
-    background-color: #FF5A5F
+    background-color: #999
   }
   .el-year-table td.current:not(.disabled) .cell {
     background-color: #FF5A5F!important
+  }
+  .el-icon-time:before {
+    content: "\E611"
   }

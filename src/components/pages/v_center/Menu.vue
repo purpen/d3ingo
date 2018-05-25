@@ -6,7 +6,7 @@
         <p class="home-icon"><router-link :to="{name: 'home'}" class="logo-icon"></router-link></p>
       </div>
       <div v-if="!isMob" class="menu-right">
-        <a class="nav-item is-hidden-mobile" ref="msgList">
+        <a tabindex="-1" class="nav-item is-hidden-mobile" ref="msgList">
           <span class="icon active">
             <i class="fx-4 fx-icon-notice">
               <span v-if="msgCount.quantity">{{ msgCount.quantity }}</span>
@@ -522,6 +522,8 @@
     width: inherit;
     max-width: 200px;
     height: calc(100% - 60px);
+    overflow-y: auto;
+    overflow-x: hidden;
   }
   .menu-list .item {
     overflow: hidden;
@@ -709,7 +711,7 @@
     position: relative;
     padding: 0 15px 0 0;
   }
-  .nav-item:hover .view-msg {
+  .nav-item:focus .view-msg {
     display: block
   }
   .menu-header .icon.active span {

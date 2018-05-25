@@ -223,8 +223,8 @@
     opacity: 1;
     background: url(../../../../assets/images/icon/moreHover@2x.png) no-repeat center / contain;
   }
-  .item-more:focus ul,
-  .item-more:hover ul {
+  /* .item-more:hover ul, */
+  .item-more:focus ul {
     display: block;
   }
   .item-more ul {

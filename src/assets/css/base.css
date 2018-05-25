@@ -39,7 +39,9 @@ html::-webkit-scrollbar-thumb:window-inactive,
 .scroll-bar::-webkit-scrollbar-thumb:window-inactive {
   background: rgba(0, 0, 0, .1)
 }
-
+* {
+  font-family: PingFangSC-Light;
+}
 *, *:before, *:after {
   box-sizing: inherit;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -721,7 +723,7 @@ input[type=text]:focus, input[type=password]:focus{
 }
 
 .m-Nav {
-  font-family: "Microsoft Yahei", PingFangSC-Regular, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: PingFangSC-Light, "Microsoft Yahei", "Helvetica Neue", Helvetica, Arial, sans-serif;
   position: absolute;
   top: 0;
   z-index: 9;
@@ -883,9 +885,11 @@ input[type=text]:focus, input[type=password]:focus{
 .menu-header .nav-item:hover span.icon i {
   color: #FF5A5F
 }
-
+/* 
 .nav-header .nav-item:hover .view-msg,
-.menu-header .nav-item:hover .view-msg {
+.menu-header .nav-item:hover .view-msg { */
+.nav-header .nav-item:focus .view-msg,
+.menu-header .nav-item:focus .view-msg {
     display: block
 }
 

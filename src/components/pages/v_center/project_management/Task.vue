@@ -583,7 +583,7 @@
     margin-top: 20px;
     font-size: 18px;
     color: #222222;
-    font-weight: bold;
+    /* font-weight: bold; */
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;

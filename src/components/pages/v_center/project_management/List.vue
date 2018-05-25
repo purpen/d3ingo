@@ -271,7 +271,7 @@ export default {
   }
   .project-list li:hover {
     /* transform: translate3d(0, -5px, 2px); */
-    /* transform: translateY(-5px); */
+    transform: translateY(-5px);
     z-index: 1;
     box-shadow: 6px 6px 10px rgba(10, 10, 10, 0.15);
   }
@@ -339,8 +339,8 @@ export default {
     width: 34px;
     height: 24px;
   }
-  .operate:focus .delete,
-  .operate:hover .delete {
+  /* .operate:hover .delete, */
+  .operate:focus .delete {
     display: block;
   }
   .delete {

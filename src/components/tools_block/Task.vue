@@ -919,7 +919,7 @@
   }
   .select-menu {
     position: absolute;
-    right: 34px;
+    right: 44px;
     top: 0;
     width: 24px;
     height: 24px;
@@ -978,7 +978,7 @@
     width: 10px;
     height: 10px;
     border: 2px solid #E6E6E6;
-    transform: rotate(45deg);
+    transform: rotate(45deg) translate(3px, -3px);
     border-left: none;
     border-top: none;
   }
@@ -989,14 +989,14 @@
     content: "";
     border: none;
   }
-  .select-parent:hover .stage-list,
+  /* .select-parent:hover .stage-list, */
   .select-parent:focus .stage-list {
     display: block
   }
   
-  .select-parent:hover .select-show::after,
+  /* .select-parent:hover .select-show::after, */
   .select-parent:focus .select-show::after {
-    transform: rotate(-135deg);
+    transform: rotate(-135deg) translate(-5px);
   }
   
   .add-task-input {
@@ -1008,7 +1008,7 @@
     padding: 20px 0 10px;
   }
   .add-child-input {
-    padding: 20px 0 20px 40px;
+    padding: 20px 20px 20px 40px;
     border-bottom: none
   }
   .add-child-input .child-more {
@@ -1196,6 +1196,7 @@
     display: inline-block
   }
   .task-member-list {
+    padding-top: 20px;
     display: inline-flex;
     flex-wrap: wrap;
     padding-left: 26px;
@@ -1256,7 +1257,6 @@
   }
   .task-member-execute {
     padding-left: 0;
-    padding-top: 20px;
   }
   .task-member-execute li {
     color: #222;
@@ -1274,7 +1274,7 @@
     /* color: #999 */
   }
   .task-detail-body .show-member {
-    margin-top: 20px;
+    margin-bottom: 4px;
     display: inline-block;
     width: 30px;
     height: 30px;

@@ -16,7 +16,7 @@
           </el-menu>
         </hgroup>
         <div class="nav-right nav-menu" v-if="isLogin">
-          <a class="nav-item is-hidden-mobile" @click="viewMsg" ref="msgList">
+          <a tabindex="-1" class="nav-item is-hidden-mobile" @click="viewMsg" ref="msgList">
             <span class="icon active">
               <i class="fx-4 fx-icon-notice">
                 <span v-if="msgCount.quantity">{{ msgCount.quantity }}</span>
