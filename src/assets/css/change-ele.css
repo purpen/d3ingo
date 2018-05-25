@@ -166,11 +166,12 @@
     transition: 268ms all ease
   }
   .el-select-dropdown__item.selected.hover {
-    background-color: #f7f7f7;
+    background-color: #fafafa;
     color: #666
   }
   .el-select-dropdown__item.selected {
-    background-color: #ffacaf;
+    background-color: #f7f7f7;
+    color: #666
   }
   .el-select-dropdown.is-multiple .el-select-dropdown__item.selected.hover, .el-select-dropdown__item.hover, .el-select-dropdown__item:hover {
     background-color: #f7f7f7

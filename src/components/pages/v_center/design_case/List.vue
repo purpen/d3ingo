@@ -26,8 +26,9 @@
                     <div tabindex="-1" class="item-more" ref="itemMore">
                       <i></i>
                       <ul>
-                        <li @click="blurItemMore(index)" class="edit"><router-link :to="{name: 'vcenterDesignCaseEdit',
-                          params: {id: d.id}}">编辑</router-link></li>
+                        <li @click="blurItemMore(index, d.id, d.match_id)" class="edit">
+                          编辑
+                        </li>
                         <li class="del" @click="delItem(d.id, index)">删除</li>
                       </ul>
                     </div>
@@ -134,8 +135,9 @@
           that.isLoading = false
         })
       },
-      blurItemMore(i) {
-        this.$refs.itemMore[i].blur()
+      blurItemMore(index, id, matchId) {
+        // this.$refs.itemMore[i].blur()
+        this.$router.push({name: 'vcenterDesignCaseEdit', params: {id: id, match_id: matchId}})
       }
     },
     computed: {
