@@ -97,6 +97,10 @@
         default: function () {
           return {}
         }
+      },
+      isMyTask: {
+        type: Boolean,
+        default: false
       }
     },
     data () {
@@ -302,6 +306,9 @@
           self.isLoading = false
         })
       },
+      fetchMyTask() {
+        this.loading = true
+      },
       // 添加任务
       addTaskBtn() {
         this.$store.commit('changeTaskStatePower', 1)
@@ -428,19 +435,22 @@
       }
     },
     created() {
-      let itemId = this.$route.params.id
-      if (!itemId) {
-        this.redirectItemList(1, '没有此项目')
-        return
+      if (this.isMyTask) {
+      } else {
+        let itemId = this.$route.params.id
+        if (!itemId) {
+          this.redirectItemList(1, '没有此项目')
+          return
+        }
+        this.$store.commit('changeTaskStatePower', 0)
+        // 请求项目详情，判断项目是否存在或有效
+        this.itemId = itemId
+        // 获取阶段列表
+        this.fetchStage()
+        // 获取主任务列表
+        this.fetchTask()
+        // this.getStageAndTaskList()
       }
-      this.$store.commit('changeTaskStatePower', 0)
-      // 请求项目详情，判断项目是否存在或有效
-      this.itemId = itemId
-      // 获取阶段列表
-      this.fetchStage()
-      // 获取主任务列表
-      this.fetchTask()
-      // this.getStageAndTaskList()
     },
     directives: {
       focus: {

@@ -18,8 +18,10 @@ let state = {
   projectMemberList: [],
   executeUser: {},
   parentTask: {},
-  showMessage: false,
-  myView: ''
+  showMessage: '',
+  myView: '',
+  showMine: '',
+  mineView: ''
 }
 let mutations = {
   setDisplayObj2(state, array) { // 容易出异步问题
@@ -209,11 +211,17 @@ let mutations = {
   removeParentTask(state) {
     state.parentTask = {id: -1}
   },
-  changeShowMsg(state, bool) {
-    state.showMessage = bool
+  changeShowMsg(state, str) {
+    state.showMessage = str
   },
   changeMyView(state, str) {
     state.myView = str
+  },
+  changeShowMine(state, str) {
+    state.showMine = str
+  },
+  changeMineView(state, str) {
+    state.mineView = str
   }
 }
 export default {

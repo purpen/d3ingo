@@ -24,17 +24,17 @@
             </span>
             <!-- <div :class="['view-msg',{'view-msg-plus': msgCount.quantity}]"> -->
             <div class="view-msg">
-              <a @click="showCover = true, myView = 'order'" class="news">
+              <a @click="showMyView('order')" class="news">
                 <i class="fx-4 fx-icon-notice"></i><i class="fx-4 fx-icon-news-hover"></i>
                 <span v-if="msgCount.message"><b>{{msgCount.message}}</b>条[订单提醒]未查看</span>
                 <span v-else>[订单提醒]</span>
               </a>
-              <a @click="showCover = true, myView = 'task'" class="news">
+              <a @click="showMyView('task')" class="news">
                 <i class="fx-4 fx-icon-notice"></i><i class="fx-4 fx-icon-news-hover"></i>
                 <span v-if="msgCount.design_notice"><b>{{msgCount.design_notice}}</b>条[项目通知]未查看</span>
                 <span v-else>[项目通知]</span>
               </a>
-              <a @click="showCover = true, myView = 'system'" class="notice">
+              <a @click="showMyView('system')" class="notice">
                 <i class="fx-4 fx-icon-sound-loudly"></i><i class="fx-4 fx-icon-notice-hover"></i>
                 <span v-if="msgCount.notice"><b>{{msgCount.notice}}</b>条[系统通知]未查看</span>
                 <span v-else>[系统通知]</span>
@@ -172,10 +172,11 @@
       }
     },
     watch: {
-      $route(to, from) {
+      $route (to, from) {
         // 对路由变化作出响应...
         // this.navdefact()
-        this.showCover = false
+        this.showCover = ''
+        this.showCover2 = ''
       }
     },
     methods: {
@@ -258,13 +259,18 @@
         this.$refs.mMenu.style.width = '100%'
         document.body.setAttribute('class', 'disableScroll')
         document.childNodes[1].setAttribute('class', 'disableScroll')
-      }, // 移动端显示 ↑  隐藏 ↓ 侧边栏
+      }, // 移动端显示 ↑ 隐藏 ↓ 侧边栏
       reScroll() {
         // this.$refs.mCover.style.width = 0
         this.$refs.mNav.style.marginLeft = '-54vw'
         this.$refs.mMenu.style.width = 0
         document.body.removeAttribute('class', 'disableScroll')
         document.childNodes[1].removeAttribute('class', 'disableScroll')
+      },
+      showMyView(view) {
+        this.showCover = 'show'
+        this.myView = view
+        this.$refs.msgList.blur()
       }
     },
     computed: {
@@ -317,6 +323,14 @@
         },
         set(e) {
           this.$store.commit('changeShowMsg', e)
+        }
+      },
+      showCover2: {
+        get() {
+          return this.$store.state.task.showMine
+        },
+        set(e) {
+          this.$store.commit('changeShowMine', e)
         }
       },
       myView: {

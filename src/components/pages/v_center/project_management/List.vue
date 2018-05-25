@@ -50,7 +50,7 @@
           <input placeholder="请填写项目名称" type="text" class="project-name"
           v-model="projectName">
           <p @click="show.writeSummary = true"
-            class="summary">项目描述</p>
+            :class="['summary', {'no-line': show.writeSummary}]">项目描述</p>
           <textarea v-model="projectSummary" v-if="show.writeSummary" placeholder="请填写项目描述" class="summary-content"></textarea>
           <p>项目等级</p>
           <p class="select-importance">
@@ -407,7 +407,8 @@ export default {
     top: 50%;
     z-index: 1999;
     transform: translate(-50%, -50%);
-    }
+    border-radius: 4px;
+  }
   .dialog-header {
     font-size: 14px;
     color: #222;
@@ -476,15 +477,21 @@ export default {
   .select-importance span::after {
     content: "";
     position: absolute;
-    left: 3px;
-    top: 3px;
-    width: 14px;
-    height: 14px;
+    left: 4px;
+    top: 4px;
+    width: 12px;
+    height: 12px;
     background: #fff;
     border-radius: 50%;
   }
+  .select-importance span.active {
+    color: #ff5a5f
+  }
+  .select-importance span.active::before {
+    border: 1px solid #ff5a5f;
+  }
   .select-importance span.active::after {
-    background: #666
+    background: #ff5a5f
   }
   .dialog-body .offer {
     cursor: pointer;
@@ -503,6 +510,10 @@ export default {
     border: 1px solid #666;
     border-radius: 4px;
   }
+  .offer.active:before {
+    background: #ff5a5f;
+    border-color: #ff5a5f;
+  }
   .offer.active:after {
     content: "";
     position: absolute;
@@ -510,7 +521,7 @@ export default {
     top: 4px;
     width: 12px;
     height: 8px;
-    border: 2px solid #666;
+    border: 2px solid #FFF;
     border-right: none;
     border-top: none;
     transform: rotate(-45deg)
@@ -522,6 +533,10 @@ export default {
   }
   .summary:hover {
     color: #666;
+  }
+  .no-line {
+    color: #666;
+    text-decoration: none
   }
   .pagination {
     text-align: center;

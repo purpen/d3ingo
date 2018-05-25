@@ -1,10 +1,11 @@
 <template>
-  <div v-if="token" :class="['cover', {'show-cover': showCover}]">
+  <div v-if="token" :class="['cover', 'animated',
+  {'bounceInDown': showCover === 'show', 'slideOutUp': showCover === 'hide'}]">
     <div class="cover-header">
-      <span :class="{'is-active': myView === 'order'}" @click="myView = 'order'">消息提醒</span>
-      <span :class="{'is-active': myView === 'task'}" @click="myView = 'task'">项目通知</span>
-      <span :class="{'is-active': myView === 'system'}" @click="myView = 'system'">系统通知</span>
-      <i class="fx fx-icon-nothing-close-error" @click="showCover = false, myView = false"></i>
+      <span :class="{'is-active': myView === 'order'}" @click="changeView('order')">消息提醒</span>
+      <span :class="{'is-active': myView === 'task'}" @click="changeView('task')">项目通知</span>
+      <span :class="{'is-active': myView === 'system'}" @click="changeView('system')">系统通知</span>
+      <i class="fx fx-icon-nothing-close-error" @click="showCover = 'hide', myView = false"></i>
     </div>
     <div v-if="myView === 'order'" class="cover-content">
       <order-message></order-message>
@@ -28,6 +29,10 @@
       }
     },
     methods: {
+      changeView(view) {
+        this.myView = view
+        this.showCover = 'show'
+      }
     },
     computed: {
       showCover: {
@@ -61,25 +66,16 @@
 <style scoped>
  .cover {
     position: fixed;
-    z-index: 9;
+    z-index: 99;
     left: 0;
     top: 60px;
     width: 100%;
-    height: calc(100% - 60px);
+    height: 100%;
     background: #fff;
-    transition: 0.45s all ease-in;
     transform: translateY(-150%);
+    -vendor-animation-duration: 500ms;
+    animation-duration: 500ms;
   }
-  .show-cover {
-    transition: 0.45s all cubic-bezier(0, 1, 0.5, 1);
-    transform: translateY(0);
-  }
-  /* .cover-mini {
-    left: 60px;
-    top: 60px;
-    width: calc(100% - 60px);
-    height: calc(100% - 60px);
-  } */
   .cover-header {
     position: relative;
     height: 50px;
