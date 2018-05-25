@@ -188,7 +188,7 @@
     height: 50px;
     border-radius: 50%;
     border: 1px solid #EBEBEB;
-    background: url("../../assets/images/logo.png") no-repeat center;
+    background: url("../../assets/images/logo.svg") no-repeat center;
     background-size: 25px;
   }
 

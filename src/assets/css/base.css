@@ -943,26 +943,26 @@ input[type=text]:focus, input[type=password]:focus{
 
 .m-nav-header .logo {
   transform: translateY(5px);
-  width: 30px;
+  width: 50px;
   height: 50px;
-  background: url(../images/logo.png) no-repeat center / contain;
+  background: url(../images/logo.svg) no-repeat center / contain;
   margin: 0 auto;
   text-indent: -9999em;
 }
 
 .nav-header .el-menu--horizontal > .el-menu-item.logo {
     display: block;
-    width: 30px;
+    width: 50px;
     height: 60px;
     transition: none;
     padding: 0 16px;
     margin-right: 30px;
-    background: url(../images/logo.png) no-repeat center / contain;
+    background: url(../images/logo.svg) no-repeat center / contain;
     text-indent: -9999px;
 }
 
 .nav-header .el-menu--horizontal > .el-menu-item.logo:hover {
-  background: url(../images/logo.png) no-repeat center / contain;
+  background: url(../images/logo.svg) no-repeat center / contain;
 }
 .nav-header .el-menu--horizontal > .el-menu-item.logo:hover, .el-menu--horizontal > .el-menu-item.logo.is-active {
   border-color: transparent
@@ -1427,6 +1427,7 @@ input[type=text]:focus, input[type=password]:focus{
 .vcenter-menu-sub::after {
   content: "";
   /* position: absolute; */
+  display: block;
   width: 100%;
   top: 27px;
   left: 0;

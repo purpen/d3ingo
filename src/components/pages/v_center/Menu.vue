@@ -657,12 +657,12 @@
     align-items: center;
   }
   .logo-icon {
-    width: 30px;
+    width: 50px;
     height: 60px;
     transition: none;
     padding: 0 16px;
     margin-right: 30px;
-    background: url(../../../assets/images/logo.png) no-repeat center / contain;
+    background: url(../../../assets/images/logo.svg) no-repeat center / contain;
     text-indent: -9999px;
   }
   .avatar {
