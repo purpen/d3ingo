@@ -14,25 +14,30 @@
                 <p class="main-status">订单状态: <span>{{ item.status_value }}</span></p>
                 <div v-if="item.pay_type === 5 && item.status === 0">
                   <div v-if="item.bank_transfer === 0">
-                    <p class="main-des">请于 {{ item.expire_at }} 前完成支付，逾期会关闭交易</p>
-                    <p class="main-des">已完成线下对公转账？</p>
+                    <p class="main-des">请于 {{ item.expire_at }} 前完成支付，逾期会关闭交易</p>         
+                    <p class="main-des">如已完成线下对公转账，请点击下方图片上传凭证</p>
+
                     <div>
                       <el-upload
                         class=""
                         :action="uploadParam.url"
                         :on-preview="handlePreview"
                         :on-remove="handleRemove"
-                        :file-list="fileList"
+                        :on-progress="handleProgress"
                         :data="uploadParam"
                         :on-error="uploadError"
                         :on-success="uploadSuccess"
                         :before-upload="beforeUpload"
+                        :show-file-list="false"
                         list-type="picture">
-                        <el-button size="small" class="is-custom" type="primary">上传凭证</el-button>&nbsp;&nbsp;
-                        <el-button v-if="surePay" size="small" class="is-custom" type="primary" @click.stop="surePaydBtn">确认打款</el-button>
-                        <div slot="tip" class="el-upload__tip">只能上传jpg/png/png文件，且不超过2M</div>
+                        <img v-if="fileUrl" :src="fileUrl" class="file-show">
+                        <i v-else class="uploader-icon"></i>
+                        <div slot="tip" class="el-upload__tip" v-if="!isMob">{{ fileDesc }}</div>
                       </el-upload>
                       
+                      <div class="sure-pay-btn" v-if="surePay">
+                        <el-button size="small" class="is-custom" type="primary" @click.stop="surePaydBtn">确认打款</el-button>
+                      </div>
                     </div>
                   </div>
                   <div v-else>
@@ -42,7 +47,7 @@
 
               </div>
               <div class="operation">
-                <p v-if="item.status === -1 || item.status === 0">
+                <p v-if="(item.status === -1 || item.status === 0) && item.bank_transfer === 0">
                   <el-button class="is-custom" @click="rePay">更改支付方式</el-button>
                 </p>
                 <!--<p><el-button >取消订单</el-button></p>-->
@@ -96,7 +101,6 @@
       return {
         item: {},
         itemUid: '',
-        fileList: [],
         upToken: null,
         uploadParam: {
           'url': '',
@@ -106,7 +110,8 @@
           'x:target_id': '',
           'x:type': 33
         },
-        imageUrl: '',
+        fileUrl: '',
+        fileDesc: '只能上传jpg/png/png文件，且不超过2M',
         surePay: false,
         msg: ''
       }
@@ -126,9 +131,12 @@
         this.$message.error(err + '附件上传失败!')
       },
       uploadSuccess(response, file, fileList) {
-        if (fileList.length > 0) {
-          this.surePay = true
-        }
+        this.surePay = true
+        this.fileDesc = '只能上传jpg/png/png文件，且不超过2M'
+        this.fileUrl = URL.createObjectURL(file.raw)
+      },
+      handleProgress() {
+        this.fileDesc = '上传中...'
       },
       beforeUpload(file) {
         const arr = ['image/jpeg', 'image/gif', 'image/png']
@@ -151,9 +159,6 @@
         this.$http.delete(api.asset.format(assetId), {})
           .then((response) => {
             if (response.data.meta.status_code === 200) {
-              if (fileList.length === 0) {
-                this.surePay = false
-              }
             } else {
               this.$message.error(response.data.meta.message)
               return false
@@ -203,26 +208,10 @@
               this.item.created_at = createdFormat.format('yyyy-MM-dd hh:mm')
               let expire = new Date((createdFormat / 1000 + 86400 * 3) * 1000)
               this.item.expire_at = expire.format('yyyy-MM-dd hh:mm')
-
               // 凭证
               if (response.data.data.assets) {
-                let files = []
-                for (let j = 0; j < response.data.data.assets.length; j++) {
-                  if (j > 5) {
-                    break
-                  }
-                  let pObj = response.data.data.assets[j]
-                  let fItem = {}
-                  fItem['response'] = {}
-                  fItem['name'] = pObj['name']
-                  fItem['url'] = pObj['small']
-                  fItem['response']['asset_id'] = pObj['id']
-                  files.push(fItem)
-                }
-                if (files.length > 0) {
-                  this.surePay = true
-                }
-                this.fileList = files
+                this.surePay = true
+                this.fileUrl = response.data.data.assets.small
               }
               this.uploadParam['x:target_id'] = response.data.data.id
               console.log(response.data.data)
@@ -346,6 +335,23 @@
     .main {
       padding-bottom: 0;
     }
+  }
+  .file-show {
+    width: 150px;
+  }
+  .sure-pay-btn {
+    margin: 10px 0;
+  }
+
+  .uploader-icon {
+    display: block;
+    color: #999;
+    background: url('../../../../assets/images/avatar_default.png') no-repeat;
+    background-size: contain;
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
   }
 </style>
 
