@@ -113,7 +113,7 @@
             </el-tooltip> -->
             <el-tooltip class="item" :effect="DarkorLight" content="项目订单" placement="right">
             <a @click="alick" :to="'/vcenter/citem/list'"
-              :class="['item', 'order', {'is-active': currentName === 'c_item'}]">
+              :class="['item', 'project-order', {'is-active': currentName === 'c_item'}]">
               项目订单
             </a>
             </el-tooltip>
@@ -252,7 +252,7 @@
               消息
             </a> -->
             <a @click="alick" :to="'/vcenter/citem/list'"
-              :class="['item', 'order', {'is-active': currentName === 'c_item'}]">
+              :class="['item', 'project-order', {'is-active': currentName === 'c_item'}]">
               项目订单
             </a>
             <a @click="alick" :to="'/vcenter/project_management/list'"
@@ -612,6 +612,10 @@
   .menu-list .item.message::before,
   .menu-list .item.match-case::before {
     background: url(../../../assets/images/v_center_menu/Case.png) no-repeat center;
+    background-size: contain
+  }
+  .menu-list .item.project-order::before {
+    background: url(../../../assets/images/v_center_menu/ProjectOrder.png) no-repeat center;
     background-size: contain
   }
   .menu-list .item.wallet::before {

@@ -488,7 +488,7 @@
   .add-stage {
     margin-left: 20px;
     display: none;
-    animation: slowShow 1s cubic-bezier(0.175, 0.885, 0.32, 1.275)
+    /* animation: slowShow 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) */
   }
   .operate {
     display: flex
