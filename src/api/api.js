@@ -48,9 +48,11 @@ export default {
   endPayOrderItemId: '/pay/endPayOrder/{0}', // GET 创建尾款支付订单
   secondAlipayId: '/pay/itemAliPay/{0}', // GET 支付尾款-支付宝
   payItemBankPayId: '/pay/itemBankPay/{0}', // GET 支付项目尾款--公对公银行转账
+  payBankTransferId: '/pay/bankTransfer/{0}', // PUT 确认上传凭证
 
   // 项目需求
   itemList: '/demand/itemList', // 客户项目列表
+  itemCreate: '/demand/create', // POST 创建项目
   demand: '/demand', // 添加项目领域
   demandId: '/demand/{0}', // 更改项目领域
   ProductDesignId: '/ProductDesign/{0}', // 更改产品设计基本资料
@@ -330,6 +332,7 @@ export default {
   deleteCommuneSummaryUser: '/communeSummaryUser/delete', // DELETE 删除
 
   // 项目列表
+  designProjectCollect: '/designProject/collect', // 设置项目收藏
   desiginProjectList: '/designProject/lists', // GET 项目列表
   createDesignProject: '/designProject/create', // POST 创建
   updateDesignProject: '/designProject/update', // PUT 创建

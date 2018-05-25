@@ -68,8 +68,8 @@
 
     <div class="form-btn">
       <el-button size="large" class="is-custom" @click="edit">编辑</el-button>
-      <el-button type="primary" size="large" :loading="isLoadingBtn" class="is-custom"
-                 @click="download">下载文件
+      <el-button type="primary" size="large" class="is-custom"
+                 @click="downBtn" :loading="downLoadingBtn"><i class="fa fa-download" aria-hidden="true"></i> 下载文件
       </el-button>
     </div>
 
@@ -92,21 +92,143 @@ export default {
         tax_rate: 0,
         test: ''
       },
-      isLoadingBtn: false,
+      downLoadingBtn: false,
       test: ''
     }
   },
   methods: {
-    download() {
-      this.isLoadingBtn = true
-      this.$http.get(api.designQuotationDown, {params: {id: this.projectObject.quotation_id}}).then((response) => {
-        this.isLoadingBtn = false
-        console.log(response.data)
-      }).catch((error) => {
-        this.isLoadingBtn = false
-        this.$message.error(error.message)
-        console.error(error.message)
+    downBtn() {
+      // this.$router.push({name: 'projectQuoteDown', params: {id: this.form.id}})
+      // 生成pdf插件太大，实现懒加载
+      var self = this
+      this.downLoadingBtn = true
+      require.ensure([], function (require) {
+        require('../../../../../lib/js/pdfmake.js')
+        require('../../../../../lib/js/vfs_h_fonts.js')
+        self.download()
       })
+    },
+    // 下载
+    download() {
+      let dd = {
+        content: [
+          {text: this.projectObject.name + '报价单', style: 'header'},
+          {image: 'line', height: 1},
+          {text: '', style: 'p'},
+          {text: '', style: 'p'},
+          {
+            columns: [
+              {
+                width: '50%',
+                text: '客户（甲方）: ' + this.form.company_name,
+                style: 'p'
+              },
+              {
+                width: '50%',
+                text: '服务方（乙方）: ' + this.form.design_company_name,
+                style: 'p'
+              }
+            ]
+          },
+          {
+            columns: [
+              {
+                width: '50%',
+                text: '联系人: ' + this.form.contact_name,
+                style: 'p'
+              },
+              {
+                width: '50%',
+                text: '联系人: ' + this.form.design_contact_name,
+                style: 'p'
+              }
+            ]
+          },
+          {
+            columns: [
+              {
+                width: '50%',
+                text: '联系电话: ' + this.form.phone,
+                style: 'p'
+              },
+              {
+                width: '50%',
+                text: '联系电话: ' + this.form.design_phone,
+                style: 'p'
+              }
+            ]
+          },
+          {
+            columns: [
+              {
+                width: '50%',
+                text: '地址: ' + this.form.address,
+                headlineLevel: 1,
+                style: 'p'
+              },
+              {
+                width: '50%',
+                text: '地址: ' + this.form.design_address,
+                headlineLevel: 1,
+                style: 'p'
+              }
+            ]
+          }
+        ],
+        defaultStyle: {
+          font: 'simhei'
+        },
+
+        images: {
+          line: require('assets/images/line.png')
+        },
+        styles: {
+          header: {
+            fontSize: 20,
+            bold: true,
+            alignment: 'center',
+            margin: [0, 10, 0, 20]
+          },
+          title: {
+            fontSize: 12,
+            bold: true,
+            margin: [0, 20, 0, 2]
+          },
+          p: {
+            fontSize: 10,
+            margin: [0, 2, 5, 2]
+          },
+          write: {
+            decoration: 'underline'
+          },
+          anotherStyle: {
+            italics: true,
+            alignment: 'right'
+          }
+        }
+      }
+
+      window.pdfMake.fonts = {
+        Roboto: {
+          normal: 'Roboto-Regular.ttf',
+          bold: 'Roboto-Medium.ttf',
+          italics: 'Roboto-Italic.ttf',
+          bolditalics: 'Roboto-Italic.ttf'
+        },
+        simhei: {
+          normal: 'simhei.ttf',
+          bold: 'simhei.ttf',
+          italics: 'simhei.ttf',
+          bolditalics: 'simhei.ttf'
+        }
+      }
+
+      window.pdfMake.createPdf(dd).download(this.projectObject.name + '报价单.pdf')
+      setTimeout(function () {
+        // window.close()
+      }, 3000)
+      this.downStatus = `已成功下载报价单，页面将在3秒后关闭`
+      this.downLoadingBtn = false
     },
     edit() {
       this.$router.push({name: 'projectQuoteSubmit', query: {id: this.form.id}})
@@ -165,7 +287,9 @@ export default {
     border-bottom: solid #EBEBEB 1px;
     margin: 10px 0 20px 0;
   }
-
+  .form-btn {
+    margin-bottom: 50px;
+  }
   .form-btn button {
     /* padding: 10px 40px; */
     margin: 0px;

@@ -20,7 +20,8 @@
     border-color: #D2D2D2
   }
   .add-task-input .el-textarea__inner:focus,
-  .el-textarea__inner:focus {
+  .el-textarea__inner:focus,
+  .el-input__inner:focus {
     box-shadow: inset 0 1px #D2D2D2
   }
   .textarea-summary .el-textarea__inner {
@@ -70,6 +71,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  .el-dialog__footer .dialog-footer .el-button:first-child {
+    margin-right: 20px;
   }
   .aside>.el-progress .el-progress-bar__outer, .aside>.el-progress .el-progress-bar__outer>.el-progress-bar__inner {
     border-radius: 0px
@@ -156,7 +160,7 @@
     background-color: #FF5A5F;
   }
   .el-select-dropdown__item.selected {
-    background-color: #ffacaf;
+    background-color: #FFACAF;
   }
   .el-select-dropdown.is-multiple .el-select-dropdown__item.selected.hover, .el-select-dropdown__item.hover, .el-select-dropdown__item:hover {
     background-color: #F7F7F7
@@ -199,7 +203,7 @@
       font-size: 12px;
   }
   .el-pagination__sizes .el-input .el-input__inner:hover {
-    border-color: #ff5a5f
+    border-color: #FF5A5F
   }
   .el-select-dropdown__list {
     padding: 0
@@ -210,4 +214,18 @@
   .el-collapse-item__wrap {
     background-color: #FAFAFA;
     border-color: #E6E6E6
+  }
+  .el-checkbox__input.is-checked .el-checkbox__inner {
+    background-color: #FF5A5F;
+    border-color: #FF5A5F;
+  }
+  .el-input--small .el-input__inner {
+    height: 30px;
+    line-height: 2
+  }
+  .el-collapse-item__content {
+    color: #666
+  }
+  .main .el-input-group__append {
+    background: #F7F7F7;
   }

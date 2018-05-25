@@ -1,10 +1,10 @@
 <template>
   <div class="container">
     <div class="blank20"></div>
-    <el-row :gutter="24" class="anli-elrow">
-      <v-menu class="rightmenu"></v-menu>
+    <el-row :gutter="24">
+      <!-- <v-menu class="rightmenu"></v-menu> -->
 
-      <el-col :span="isMob ? 24 : 20" class="stages-day">
+      <el-col class="stages-day">
         <div class="right-content">
           <div class="content-box">
             <h2>{{ itemName }}项目合同</h2>
@@ -74,13 +74,13 @@
 
               <p class="title">项目交付内容、工作周期及付款支付</p>
               <p>项目总金额(¥):
-                <input class="bottom-border" type="text" disabled v-model="form.total" style="width:50px;"/>
+                <span class="bottom-border" type="text" disabled v-html="form.total"></span>
                 ; 首付款(¥):
-                <input class="bottom-border" type="text" disabled :value="form.first_payment" style="width:50px;"/>
+                <span class="bottom-border" type="text" disabled v-html="form.first_payment"></span>
                 (首付款占比总项目额度的40%); 阶段金额(¥):
-                <input class="bottom-border" type="text" disabled :value="form.stage_money" style="width:50px;"/>
+                <span class="bottom-border" type="text" disabled v-html="form.stage_money"></span>
                 (阶段金额占比总项目额度的50%); 尾款(¥):
-                <input class="bottom-border" type="text" disabled v-model="form.warranty_money" style="width:50px;"/>
+                <span class="bottom-border" type="text" disabled v-html="form.warranty_money"></span>
                 (尾款占比总项目额度的10%)
               </p>
               <div class="blank20"></div>
@@ -98,7 +98,7 @@
                     </el-select>
                   </el-form-item>
                 </el-col>
-                <el-col :span="isMob ? 6 : 4" :offset="2" style="line-height: 40px;">
+                <el-col :span="isMob ? 6 : 4" :offset="2" style="line-height: 44px;">
                   <el-button class="is-custom" @click="genStageInput" size="small">{{ stateMsg }}</el-button>
                 </el-col>
               </el-row>
@@ -488,6 +488,9 @@
       },
       isMob() {
         return this.$store.state.event.isMob
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
       }
     },
     watch: {
@@ -597,12 +600,8 @@
     margin-bottom: 18px;
   }
 
-  .right-content {
-    margin-top: -20px;
-  }
-
   .content-box form {
-    padding: 10px 50px
+    padding: 10px 20px
   }
 
   .content-box h2 {
@@ -613,14 +612,14 @@
 
   .content-box p {
     line-height: 1.5;
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: #666;
   }
 
   .content-box p.title {
-    margin-top: 10px;
-    font-size: 1.3rem;
-    font-weight: bold;
+    margin: 10px 0;
+    font-size: 1.4rem;
+    font-family: PingFangSC-Medium;
     color: #333;
   }
 
@@ -628,18 +627,20 @@
     border: 0px;
   }
 
-  input.bottom-border {
+  span.bottom-border {
+    font-size: 14px;
     border-bottom: 1px solid #666;
-    border-top: 0px;
-    border-left: 0px;
-    border-right: 0px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    padding: 0 10px;
   }
 
   .sept {
     width: 100%;
     margin: 20px 0 20px 0;
     padding: 0;
-    border-top: 1px solid #ccc;
+    border-top: 1px solid #e6e6e6;
   }
 
   .form-btn {
@@ -648,7 +649,7 @@
 
   .sub-title {
     margin: 5px 0;
-    font-size: 1.5rem;
+    font-size: 1.6rem;
   }
 
   .el-input {
@@ -656,11 +657,11 @@
   }
 
   .el-form-item {
-    margin: 5px 0 12px 0;
+    margin: 6px 0 12px 0;
   }
 
   .add-substage {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     margin: 0 0 10px 5px;
     clear: both;
     cursor: pointer;

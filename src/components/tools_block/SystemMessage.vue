@@ -115,6 +115,7 @@
           window.open('http://' + link)
           return
         }
+        this.showCover = false
         window.open(link)
       }
     },
@@ -137,6 +138,16 @@
           this.query.page = 1
         }
         this.loadList()
+      }
+    },
+    computed: {
+      showCover: {
+        get() {
+          return this.$store.state.task.showMessage
+        },
+        set(e) {
+          this.$store.commit('changeShowMsg', e)
+        }
       }
     }
   }

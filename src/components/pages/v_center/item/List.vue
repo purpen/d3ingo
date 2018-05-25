@@ -10,8 +10,9 @@
           <!-- <v-menu-sub></v-menu-sub> -->
           <div class="content-item-box" v-loading.body="isLoading">
             <div class="pub">
-              <router-link :to="{name: 'itemSubmitOne'}">
-                <el-button class="pub-btn is-custom" type="primary"><i class="el-icon-plus"></i>发布项目</el-button>
+              <router-link :to="{name: 'itemCreate'}">
+                <el-button class="pub-btn is-custom" type="primary" size="large"><i class="el-icon-plus"></i> 发布项目
+                </el-button>
               </router-link>
             </div>
 
@@ -504,7 +505,7 @@
       // 支付项目资金
       secondPay(event) {
         let itemId = event.currentTarget.getAttribute('item_id')
-        this.$router.push({name: 'itemPayFund', params: {item_id: itemId}})
+        this.$router.push({name: 'itemPayFund', params: {item_id: itemId}, query: {check_pay: 1}})
       }
     },
     computed: {
@@ -617,7 +618,7 @@
   }
 
   .btn {
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 
   .btn p {

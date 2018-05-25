@@ -762,7 +762,7 @@
   }
 
   .btn {
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 
   .btn p {
@@ -782,7 +782,7 @@
   }
 
   .prefect {
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: #666;
     margin-top: 0;
     margin-bottom: -10px;

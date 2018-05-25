@@ -175,6 +175,7 @@
       $route(to, from) {
         // 对路由变化作出响应...
         // this.navdefact()
+        this.showCover = false
       }
     },
     methods: {

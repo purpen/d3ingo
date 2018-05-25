@@ -393,7 +393,7 @@
   .slide-des {
     color: #666;
     line-height: 1.5;
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 
   .competing {

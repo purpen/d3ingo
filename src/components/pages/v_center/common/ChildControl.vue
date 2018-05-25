@@ -27,8 +27,8 @@
     </el-col> -->
     <div :class="{'vcenter-right-plus': leftWidth === 4,
       'vcenter-right': leftWidth === 2,
-        'vcenter-right-mob': isMob}" v-loading.body="isLoading">
-      <div class="vcenter-container">
+        'vcenter-right-mob': isMob}">
+      <div class="vcenter-container" v-loading="isLoading">
         <div :class="['content-item-box', isMob ? 'content-item-box-m' : '']">
           <div class="item ing" v-for="(d, index) in itemIngList" :key="index">
             <div class="banner">
@@ -474,7 +474,7 @@
   }
 
   .btn {
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 
   .btn p {
@@ -494,7 +494,7 @@
   }
 
   .prefect {
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: #666;
     margin-top: 0;
     margin-bottom: -10px;

@@ -53,7 +53,7 @@
       <div v-if="isMob" class="menu-right">
         <router-link :to="{name: 'vcenterControl'}">
           <span v-if="eventUser.logo_url" class="avatar" :style="{background: `url(${eventUser.avatar.logo}) no-repeat center / contain`}"></span>
-          <span v-else class="avatar" :style="{background: `url(${defaultAvatar}) no-repeat center / contain`}"></span>
+          <span v-else class="avatar" :style="{background: `url(${require('@/assets/images/avatar_100.png')}) no-repeat center / contain`}"></span>
         </router-link>
       </div>
     </header>
@@ -497,6 +497,9 @@
     watch: {
       msgCount(val) {
         // console.log(val)
+      },
+      $route (to, from) {
+        this.showCover = false
       }
     },
     components: {
@@ -767,6 +770,11 @@
     }
     .menuHide-mini .menu-list .item::before {
       left: 13px;
+    }
+
+    .logo-icon {
+      width: 30px;
+      height: 50px;
     }
   }
 </style>

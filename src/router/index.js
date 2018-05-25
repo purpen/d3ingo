@@ -377,6 +377,16 @@ routes = [
     },
     component: require('@/components/pages/item/SubmitOne')
   },
+  // 发布需求new
+  {
+    path: '/item/create',
+    name: 'itemCreate',
+    meta: {
+      title: '选择类型',
+      requireAuth: true
+    },
+    component: require('@/components/pages/item/SubmitTwo')
+  },
 
   // 发布需求(第二步) 选择领域
   {

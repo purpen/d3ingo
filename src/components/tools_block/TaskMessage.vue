@@ -135,6 +135,7 @@
       },
       // 根据类型跳转
       redirect(d) {
+        this.showCover = false
         if (d.operation_log.target_type === 1) {
           this.$router.push({name: 'projectManagementTask', params: {id: d.operation_log.model_id}})
         }
@@ -182,6 +183,14 @@
       }
     },
     computed: {
+      showCover: {
+        get() {
+          return this.$store.state.task.showMessage
+        },
+        set(e) {
+          this.$store.commit('changeShowMsg', e)
+        }
+      },
       isMob() {
         return this.$store.state.event.isMob
       },

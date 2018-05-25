@@ -9,44 +9,36 @@
             <h2>{{ itemName }}</h2>
             <p class="title">1、基本信息 </p>
             <p>甲方(客户):</p>
-            <p>公司名称: <input class="no-border" type="text" disabled v-model="form.demand_company_name"
-                            style="width:250px;"/></p>
-            <p>地址: <input class="no-border" type="text" disabled v-model="form.demand_company_address"
-                          style="width:500px;"/></p>
-            <p>联系人: <input class="no-border" type="text" disabled v-model="form.demand_company_legal_person"
-                           style="width:150px;"/></p>
-            <p>电话: <input class="no-border" type="text" disabled v-model="form.demand_company_phone"
-                          style="width:150px;"/></p>
+            <p>公司名称: <span class="no-border">{{form.demand_company_name}}</span></p>
+            <p>地址: <span class="no-border">{{form.demand_company_address}}</span></p>
+            <p>联系人: <span class="no-border">{{form.demand_company_legal_person}}</span></p>
+            <p>电话: <span class="no-border">{{form.demand_company_phone}}</span></p>
             <p>&nbsp;</p>
             <p>乙方(服务商):</p>
-            <p>公司名称: <input class="no-border" type="text" disabled v-model="form.design_company_name"
-                            style="width:250px;"/></p>
-            <p>地址: <input class="no-border" type="text" disabled v-model="form.design_company_address"
-                          style="width:500px;"/></p>
-            <p>电话: <input class="no-border" type="text" disabled v-model="form.design_company_phone"
-                          style="width:150px;"/></p>
-            <p>联系人: <input class="no-border" type="text" disabled v-model="form.design_company_legal_person"
-                           style="width:150px;"/></p>
+            <p>公司名称: <span class="no-border">{{form.design_company_name}}</span></p>
+            <p>地址: <span class="no-border">{{form.design_company_address}}</span></p>
+            <p>电话: <span class="no-border">{{form.design_company_phone}}</span></p>
+            <p>联系人: <span class="no-border">{{form.design_company_legal_person}}</span></p>
 
             <p class="title">2、项目内容和费用</p>
             <p>
-              依照中华人民共和国法律及本行业相关法规条例之规定，甲乙双方本着平等自愿和互惠互利的原则，由乙方接受委托为甲方提供 <input class="bottom-border" disabled type="text"
-                                                                              v-model="form.title"
-                                                                              style="width:250px;"/>
-              设计。本合同设计费用总额为人民币 <input class="bottom-border" disabled type="text" v-model="form.total"
-                                      style="width:50px;"/> 整（￥元）。  双方共同签署此项设计委托合同（以下简称合同），甲方和乙方合称为合同双方（以下简称双方）。
+              依照中华人民共和国法律及本行业相关法规条例之规定，甲乙双方本着平等自愿和互惠互利的原则，由乙方接受委托为甲方提供
+              <span class="bottom-border">{{form.title}}</span>
+              设计。本合同设计费用总额为人民币(￥)
+              <span class="bottom-border">{{form.total}}</span> 整。双方共同签署此项设计委托合同（以下简称合同），甲方和乙方合称为合同双方（以下简称双方）。
             </p>
 
             <p class="title">3、项目交付内容及工作周期</p>
-            <p>经双方协商，本项目共分 <input class="bottom-border" disabled type="text" v-model="form.sort" style="width:20px;"/>
+            <p>经双方协商，本项目共分 
+              <span class="bottom-border">{{form.sort}}</span>
               个阶段进行，细节流程与时间节点如下：</p>
-            <p v-for="(d, index) in form.item_stage" :key="index">
-              第 <input class="bottom-border" disabled type="text" v-model="d.sort" style="width:20px;"/> 阶段：供应商在 <input
-              class="bottom-border" disabled type="text" v-model="d.time" style="width:20px;"/> 个工作日内提交 <input
-              class="bottom-border" disabled type="text" v-model="d.title" style="width:200px;"/>;
+            <p v-for="(d, index) in form.item_stage" :key="index + 'd'">
+              第 <span class="bottom-border">{{d.sort}}</span> 阶段：供应商在 <span
+              class="bottom-border">{{d.time}}</span> 个工作日内提交 <span
+              class="bottom-border">{{d.title}}</span>;
               <span if="d.content">包含:
-                <span v-for="(m, i) in d.content" :key="i">
-                  {{ m }}&nbsp;
+                <span class="bottom-border" v-for="(m, i) in d.content" :key="i + 'm'">
+                  {{ m }}
                 </span>
                 ;
               </span>
@@ -54,24 +46,15 @@
 
             <p class="title">4、付款方式</p>
             <p>甲方以银行支付方式或其他方式支付项目总金额到铟果产品创新SaaS平台，平台按甲乙双方约定的下列付款时间和金额分阶段向乙方支付设计费： </p>
-            <p>1、甲方确认合同后，支付项目总金额到平台托管，乙方确认开始项目，由平台向乙方支付项目总金额首付款 <input class="bottom-border" disabled type="text"
-                                                                       v-model="form.first_payment_proportion_p"
-                                                                       style="width:80px;"/>%，即人民币 <input
-              class="bottom-border" disabled type="text" v-model="form.first_payment" style="width:80px;"/> 整(￥)。</p>
+            <p>1、甲方确认合同后，支付项目总金额到平台托管，乙方确认开始项目，由平台向乙方支付项目总金额首付款 <span class="bottom-border">{{form.first_payment_proportion_p}}</span>%，即人民币(￥) <span
+              class="bottom-border">{{form.first_payment}}</span> 整。</p>
             <p v-for="(d, index) in form.stages" :key="index">
-              {{ index + 2 }}、<input class="bottom-border" disabled type="text" v-model="d.title" style="width:200px;"/>
-              确认后，支付该项目阶段款的 <input class="bottom-border" disabled type="text" v-model="d.percentage"
-                                   style="width:50px;"/> %，即人民币 <input class="bottom-border" disabled type="text"
-                                                                       v-model="d.amount" style="width:80px;"/> 整(￥)。
+              {{ index + 2 }}、<span class="bottom-border">{{d.title}}</span>
+              确认后，支付该项目阶段款的<span class="bottom-border">{{d.percentage}}</span> %，即人民币(￥) <span class="bottom-border">{{d.amount}}</span> 整。
             </p>
-            <p>{{ form.sort + 2 }}、设计全部完成确认后，支付该项目总金额尾款 <input class="bottom-border" disabled type="text"
-                                                               v-model="form.warranty_money_proportion_p"
-                                                               style="width:80px;"/> %，即人民币 <input class="bottom-border"
-                                                                                                   disabled type="text"
-                                                                                                   v-model="form.warranty_money"
-                                                                                                   style="width:80px;"/>
-              整(￥)。</p>
-
+            <p>{{ form.sort + 2 }}、设计全部完成确认后，支付该项目总金额尾款 <span class="bottom-border">{{form.warranty_money_proportion_p}}</span> %，即人民币(￥)
+            <span class="bottom-border">{{form.warranty_money}}</span>
+              整。</p>
             <p class="title">5、 甲方责任与义务  </p>
             <p>(1) 以书面形式提出对本设计项目的要求及有关技术资料。在双方合作的全过程中，向乙方提供必要的咨询，并委派专人（对该项目的方案评审具有决定权）负责本项目的事务接洽和业务联系。</p>
             <p>(2) 配合乙方的设计工作，积极参与该项目设计每个阶段的结果评审，及时得出结论并确认给乙方。</p>
@@ -124,21 +107,16 @@
               <el-button type="primary" :loading="isLoadingBtn" class="is-custom" @click="agreeBtn"
                          v-show="form.status === 0">确认合同
               </el-button>
-              <router-link :to="{name: 'vcenterContractDown', params: {unique_id: uniqueId}}" target="_blank"
-                           v-show="form.status === 1"><i class="fa fa-download" aria-hidden="true"></i> 下载合同
+              <router-link :to="{name: 'vcenterContractDown', params: {unique_id: uniqueId}}" target="_blank" v-show="form.status === 1"><i class="fa fa-download" aria-hidden="true"></i> 下载合同
               </router-link>
             </div>
             <div class="form-btn" v-else>
-              <router-link :to="{name: 'vcenterContractDown', params: {unique_id: uniqueId}}" target="_blank"><i
-                class="fa fa-download" aria-hidden="true"></i> 下载合同
+              <router-link :to="{name: 'vcenterContractDown', params: {unique_id: uniqueId}}" target="_blank"><i class="fa fa-download" aria-hidden="true"></i> 下载合同
               </router-link>
             </div>
             <div class="clear"></div>
-
           </div>
-
         </div>
-
       </el-col>
     </el-row>
 
@@ -147,10 +125,10 @@
       v-model="sureDialog"
       size="tiny">
       <input type="hidden" ref="currentType" value="1"/>
-      <span>{{ sureDialogMessage }}</span>
+      <p class="alert-line-height">{{ sureDialogMessage }}</p>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="sureDialog = false">取 消</el-button>
-        <el-button type="primary" :loading="sureDialogLoadingBtn" @click="sureDialogSubmit">确 定</el-button>
+        <el-button class="is-custom" @click="sureDialog = false">取 消</el-button>
+        <el-button type="primary" class="is-custom" :loading="sureDialogLoadingBtn" @click="sureDialogSubmit">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -251,7 +229,7 @@
                 item.first_payment_proportion_p = item.first_payment_proportion * 100
                 that.form = item
               }
-              console.log(response.data.data)
+              // console.log(response.data.data)
             }
           })
           .catch(function (error) {
@@ -271,6 +249,7 @@
 <style scoped>
   .right-content .content-box {
     margin-top: 0;
+    padding: 0 40px 40px;
   }
 
   .content-box input {
@@ -297,17 +276,23 @@
     color: #333;
   }
 
-  input.no-border {
+  span.no-border {
     border: 0;
   }
 
-  input.bottom-border {
+  span.bottom-border {
+    padding: 0 10px;
     border: 0;
     border-bottom: 1px solid #666;
     text-align: center;
+    cursor: pointer;
   }
 
-  input[type="text"]:disabled {
+  span.bottom-border:hover {
+    color: #FF5A5F;
+    border-color: #FF5A5F;
+  }
+  span:disabled {
     background-color: #fff;
   }
 
@@ -320,6 +305,7 @@
 
   .form-btn {
     float: right;
+    font-size: 20px;
   }
 
   @media screen and (max-width: 767px) {

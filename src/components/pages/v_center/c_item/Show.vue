@@ -105,8 +105,13 @@
                   </div>
                   <div class="clear"></div>
                   <div class="item-bj" v-if="quotation">
-                    <p>项目报价:  <span class="p-price">{{ quotation.price }} 元</span></p>
-                    <p>报价说明:  {{ quotation.summary }}</p>
+                    <p class="tc-2 protrude">项目报价:
+                      <span class="tc-6 fw-normal p-price">{{ quotation.price }} 元</span>
+                    <span class="tc-6 fw-normal quota-btn">&nbsp;&nbsp;<a
+                    class="tc-red" href="javascript:void(0);"
+                    @click="showQuotaBtn(quotation)">详情>></a></span></p>
+                    <p class="tc-2 protrude">报价说明: <span class="tc-6 fw-normal">
+                      {{ quotation.summary }}</span></p>
                   </div>
 
                   <div class="btn-quo" v-if="waitTakePrice">
@@ -301,10 +306,12 @@
       </el-col>
     </el-row>
 
-    <el-dialog title="提交项目报价" v-model="takingPriceDialog">
+    <el-dialog title="提交项目报价" v-model="takingPriceDialog" size="large" top="2%">
+      <v-quote-submit :paramProp="quoteProp" :formProp="takingPriceForm" @form="quoteFormProp" @param="quoteProp"></v-quote-submit>
+      <!--
       <el-form label-position="top" :model="takingPriceForm" :rules="takingPriceRuleForm" ref="takingPriceRuleForm">
         <el-form-item label="项目报价" prop="price" label-width="200px">
-          <el-input type="text" v-model="takingPriceForm.price" :placeholder="item.design_cost_value" @blur="changePriceStyle(2)" @focus="changePriceStyle(1)" auto-complete="off">
+          <el-input type="text" v-model="takingPriceForm.price" :placeholder="" @blur="changePriceStyle(2)" @focus="changePriceStyle(1)" auto-complete="off">
             <template slot="prepend">¥</template>
           </el-input>
           <div class="description red">* 实际报价单位为‘元’,如1万,请添写10000</div>
@@ -321,6 +328,7 @@
         </div>
 
       </el-form>
+      -->
     </el-dialog>
 
     <el-dialog
@@ -329,12 +337,19 @@
       size="tiny">
       <span>{{ comfirmMessage }}</span>
       <span slot="footer" class="dialog-footer">
+        <el-button @click="comfirmDialog = false">取 消</el-button>
+        <el-button type="primary" :loading="comfirmLoadingBtn" @click="sureComfirmSubmit">确 定</el-button>
         <input type="hidden" ref="comfirmType" value="1"/>
         <input type="hidden" ref="confirmTargetId"/>
         <input type="hidden" ref="confirmIndex"/>
-        <el-button @click="comfirmDialog = false">取 消</el-button>
-        <el-button type="primary" :loading="comfirmLoadingBtn" @click="sureComfirmSubmit">确 定</el-button>
       </span>
+    </el-dialog>
+    <el-dialog title="报价单详情" v-model="quotaDialog" size="large" top="2%">
+      <v-quote-view :formProp="quota"></v-quote-view>
+
+      <div slot="footer" class="dialog-footer btn">
+        <el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>
+      </div>
     </el-dialog>
 
   </div>
@@ -343,10 +358,14 @@
 <script>
   import api from '@/api/api'
   import vItemProgress from '@/components/block/ItemProgress'
+  const vQuoteSubmit = () => import('@/components/block/QuoteSubmit')
+const vQuoteView = () => import('@/components/block/QuoteView')
   export default {
     name: 'vcenter_item_show',
     components: {
-      vItemProgress
+      vItemProgress,
+      vQuoteSubmit,
+      vQuoteView
     },
     data () {
       return {
@@ -388,21 +407,7 @@
 
           end: false
         },
-        takingPriceForm: {
-          id: '',
-          itemId: '',
-          o_price: '',
-          price: '',
-          summary: ''
-        },
-        takingPriceRuleForm: {
-          price: [
-            {required: true, message: '请添写报价金额,必须为整数', trigger: 'blur'}
-          ],
-          summary: [
-            {required: true, message: '请添写报价说明', trigger: 'blur'}
-          ]
-        },
+        takingPriceForm: {},
         uploadParam: {
           'token': '',
           'x:random': '',
@@ -419,6 +424,14 @@
         progressButt: 0,
         progressContract: -1,
         progressItem: -1,
+        quoteProp: {
+          isShow: false,
+          quoteId: 0,
+          isUpdate: false,
+          test: ''
+        },
+        quota: {},
+        quotaDialog: false,
         msg: ''
       }
     },
@@ -507,7 +520,56 @@
       },
       // 项目报价弹出层
       takingBtn(event) {
-        this.takingPriceDialog = true
+        this.quoteProp.isShow = true
+        this.quoteProp.isUpdate = false
+        // 获取报价信息
+        if (this.quotation) {
+          // this.quoteProp.quoteId = this.quotation.id
+          this.$set(this.quoteProp, 'quoteId', this.quotation.id)
+          Object.assign(this.takingPriceForm, this.quotation)
+        } else {
+          this.takingPriceForm.plan = []
+          this.takingPriceForm.item_demand_id = this.item.id
+          // 获取需求公司信息
+          this.$set(this.takingPriceForm, 'company_name', this.item.company_name)
+          this.$set(this.takingPriceForm, 'contact_name', this.item.contact_name)
+          this.$set(this.takingPriceForm, 'position', this.item.position)
+          this.$set(this.takingPriceForm, 'phone', this.item.phone)
+          this.$set(this.takingPriceForm, 'address', this.item.address)
+          this.$set(this.takingPriceForm, 'province', this.item.company_province)
+          this.$set(this.takingPriceForm, 'city', this.item.company_city)
+          this.$set(this.takingPriceForm, 'area', this.item.company_area)
+
+          // 获取设计公司详情
+          this.$http.get(api.designCompanyChild, {}).then((response) => {
+            if (response.data.meta.status_code === 200) {
+              let item = response.data.data
+              this.$set(this.takingPriceForm, 'design_company_name', item.company_name)
+              this.$set(this.takingPriceForm, 'design_contact_name', item.contact_name)
+              this.$set(this.takingPriceForm, 'design_position', item.position)
+              this.$set(this.takingPriceForm, 'design_phone', item.phone)
+              this.$set(this.takingPriceForm, 'design_address', item.address)
+              this.$set(this.takingPriceForm, 'design_province', item.province)
+              this.$set(this.takingPriceForm, 'design_city', item.city)
+              this.$set(this.takingPriceForm, 'design_area', item.area)
+            } else {
+              this.$message.error(response.data.meta.message)
+            }
+          }).catch((error) => {
+            this.$message.error(error.message)
+            console.error(error.message)
+          })
+        }
+      },
+      // 点击报价详情事件
+      showQuotaBtn(obj) {
+        this.quota = obj
+        console.log(this.quota)
+        this.quotaDialog = true
+      },
+      // 同步报价单子组件表单
+      quoteFormProp(obj) {
+        this.takingPriceForm = obj
       },
       // 对话框确认按钮
       sureComfirmSubmit() {
@@ -757,6 +819,28 @@
         }
       }
     },
+    watch: {
+      quoteProp: {
+        handler(val, oldVal) {
+          if (val.isShow) {
+            this.takingPriceDialog = true
+          } else {
+            this.takingPriceDialog = false
+          }
+          if (val.isUpdate) {
+            this.quotation = {}
+            Object.assign(this.quotation, this.takingPriceForm)
+            if (this.waitTakePrice) {
+              this.waitTakePrice = false
+            }
+          }
+        },
+        deep: true
+      },
+      takingPriceDialog(val) {
+        this.quoteProp.isShow = val
+      }
+    },
     created: function () {
       let id = this.$route.params.id
       if (!id) {
@@ -949,7 +1033,7 @@
                       logoUrl = self.company.logo_image.logo
                     }
                     self.company.logo_url = logoUrl
-//                    console.log(self.company)
+                    // console.log(self.company)
                   }
                 })
                 .catch(function (error) {
@@ -1000,7 +1084,6 @@
                       self.sureFinishBtn = true
                     }
                     self.stages = items
-//                    console.log('aa')
                     console.log(self.stages)
                   }
                 })
@@ -1057,6 +1140,8 @@
             }]
 
             self.tableData = tab.concat(itemTab)
+          } else {
+            this.$message.error(response.data.meta.message)
           }
         })
         .catch(function (error) {
@@ -1073,6 +1158,8 @@
               self.uploadParam['x:random'] = response.data.data.random
               self.uploadUrl = response.data.data.upload_url
             }
+          } else {
+            this.$message.error(response.data.meta.message)
           }
         })
         .catch(function (error) {
@@ -1096,7 +1183,7 @@
     height: 200px;
     text-align: center;
     margin-bottom: 20px;
-    border: 1px solid #ccc;
+    border: 1px solid #E6E6E6;
     display: block;
   }
 
@@ -1111,7 +1198,7 @@
   }
 
   .banner p {
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: #666;
     margin: 10px;
   }
@@ -1127,8 +1214,8 @@
   .select-company-item {
     height: 200px;
     margin-bottom: 10px;
-    border: 1px solid #e6e6e6;
-    background: #fff
+    border: 1px solid E6E6E6;
+    background: #FFF
   }
 
   .select-company-item .check-box {
@@ -1158,7 +1245,7 @@
 
   .select-company-item .content p {
     color: #666;
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 
   .select-company-item .content p span {
@@ -1186,7 +1273,7 @@
 
   .quotation-item {
     position: relative;
-    border: 1px solid #ccc;
+    border: 1px solid #E6E6E6;
     margin: 20px 0 20px 0;
   }
 
@@ -1211,9 +1298,12 @@
 
   .item-bj {
     padding: 15px 10px 15px 10px;
-    border-top: 1px solid #ccc;
+    border-top: 1px solid #E6E6E6;
   }
 
+  .item-bj p:first-child {
+    margin-bottom: 10px;
+  }
   .item-title {
     margin-left: -30px;
     height: 150px;
@@ -1240,7 +1330,7 @@
   }
 
   .line {
-    border-top: 1px solid #ccc;
+    border-top: 1px solid #E6E6E6;
   }
 
   .btn {
@@ -1252,15 +1342,15 @@
   .btn-quo {
     text-align: right;
     padding: 10px;
-    border-top: 1px solid #ccc;
+    border-top: 1px solid #E6E6E6;
   }
 
   .contract-item {
     /*height: 60px;*/
     margin: 20px 0 10px 0;
-    padding: 10px 0 5px 0;
-    border-top: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
+    padding: 10px 10px 5px;
+    border-top: 1px solid #E6E6E6;
+    border-bottom: 1px solid #E6E6E6;
   }
 
   .contract-item.new {
@@ -1283,7 +1373,7 @@
 
   .contract-content p {
     max-width: 300px;
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: #666;
     line-height: 1.5;
     white-space: nowrap;
@@ -1292,7 +1382,7 @@
   }
 
   .contract-des {
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 
   .contract-right {
@@ -1332,8 +1422,9 @@
   }
 
   .capital-des {
-    color: #666;
-    font-size: 1rem;
+    margin-top: 10px;
+    color: #999;
+    font-size: 1.2rem;
   }
 
   .capital-item .pay-btn {
@@ -1464,7 +1555,7 @@
 
   section ul li {
     line-height: 40px;
-    border-bottom: 1px solid #e6e6e6;
+    border-bottom: 1px solid E6E6E6;
   }
 
   section ul li span {
@@ -1533,7 +1624,7 @@
 
     button.is-custom.el-button.el-button--primary.upload_btn {
       color: #FF5A5F;
-      background: #fff;
+      background: #FFF;
       border-color: #FF5A5F;
     }
 
@@ -1564,7 +1655,7 @@
 
 <style>
   .el-step__head.is-text.is-process {
-    color: #fff;
+    color: #FFF;
     background-color: #00ac84!important;
     border-color: #00ac84!important;
   }
@@ -1599,5 +1690,18 @@
     font-weight: normal;
     line-height: 1;
     padding-bottom: 20px;
+  }
+  .quota-btn {
+
+  }
+  .quota-btn a {
+    font-size: 12px;
+    color: #FF5A5F;
+  }
+  .dialog-footer.btn {
+    margin-right: 30px;
+  }
+  .dialog-footer.btn button {
+    /* padding: 10px 30px; */
   }
 </style>

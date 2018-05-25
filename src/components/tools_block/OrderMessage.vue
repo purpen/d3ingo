@@ -134,6 +134,7 @@
       },
       // 根据类型跳转
       redirect(d) {
+        this.showCover = false
         if (d.type === 2) {
           this.$router.push({name: 'vcenterItemShow', params: {id: d.target_id}})
         } else if (d.type === 3) {
@@ -183,6 +184,14 @@
       }
     },
     computed: {
+      showCover: {
+        get() {
+          return this.$store.state.task.showMessage
+        },
+        set(e) {
+          this.$store.commit('changeShowMsg', e)
+        }
+      },
       isMob() {
         return this.$store.state.event.isMob
       },

@@ -167,8 +167,10 @@
                   </div>
                   <div class="clear"></div>
                   <div class="item-bj" v-if="d.quotation">
-                    <p>项目报价:  <span class="p-price">{{ d.quotation.price }} 元</span></p>
-                    <p>报价说明:  {{ d.quotation.summary }}</p>
+                    <p class="tc-2 protrude">项目报价:  <span class="tc-6 p-price fw-normal">{{ d.quotation.price }} 元</span> <span class="quota-btn tc-6 fw-normal">&nbsp;&nbsp;<a 
+                    class="tc-red"
+                    href="javascript:void(0);" @click="showQuotaBtn(d.quotation)">详情>></a></span></p>
+                    <p class="tc-2 protrude">报价说明: <span class="tc-6 fw-normal">{{ d.quotation.summary }}</span></p>
                   </div>
 
                   <div class="btn" v-if="d.item_status === 0 && d.design_company_status === 2">
@@ -228,7 +230,9 @@
                   </div>
                   <div class="clear"></div>
                   <div class="item-bj">
-                    <p>项目报价:  <span class="p-price">{{ cooperateCompany.quotation.price }} 元</span></p>
+                    <p>项目报价:  <span class="p-price">{{ cooperateCompany.quotation.price }} 元</span> <span class="quota-btn">&nbsp;&nbsp;<a
+                    class="tc-red"
+                    href="javascript:void(0);" @click="showQuotaBtn(cooperateCompany.quotation)">详情>></a></span></p>
                     <p>报价说明:  {{ cooperateCompany.quotation.summary }}</p>
                   </div>
 
@@ -418,13 +422,21 @@
       size="tiny">
       <p>{{ comfirmMessage }}</p>
       <span slot="footer" class="dialog-footer">
+        <el-button @click="comfirmDialog = false">取 消</el-button>
+        <el-button type="primary" :loading="comfirmLoadingBtn" @click="sureComfirmSubmit">确 定</el-button>
         <input type="hidden" ref="companyId"/>
         <input type="hidden" ref="confirmTargetId"/>
         <input type="hidden" ref="comfirmType" value="1"/>
         <input type="hidden" ref="currentIndex"/>
-        <el-button @click="comfirmDialog = false">取 消</el-button>
-        <el-button type="primary" :loading="comfirmLoadingBtn" @click="sureComfirmSubmit">确 定</el-button>
       </span>
+    </el-dialog>
+
+    <el-dialog title="报价单详情" v-model="quotaDialog" size="large" top="2%">
+      <v-quote-view :formProp="quota"></v-quote-view>
+
+      <div slot="footer" class="dialog-footer btn">
+        <el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>
+      </div>
     </el-dialog>
 
   </div>
@@ -433,10 +445,12 @@
 <script>
 import api from '@/api/api'
 import vItemProgress from '@/components/block/ItemProgress'
+const vQuoteView = () => import('@/components/block/QuoteView')
 export default {
   name: 'vcenter_item_show',
   components: {
-    vItemProgress
+    vItemProgress,
+    vQuoteView
   },
   data() {
     return {
@@ -496,6 +510,8 @@ export default {
       progressButt: 0,
       progressContract: -1,
       progressItem: -1,
+      quota: {},
+      quotaDialog: false,
       msg: ''
     }
   },
@@ -561,6 +577,12 @@ export default {
         this.comfirmLoadingBtn = false
       }
     },
+    // 点击报价详情事件
+    showQuotaBtn(obj) {
+      this.quota = obj
+      console.log(this.quota)
+      this.quotaDialog = true
+    },
     // 拒绝设计公司报价提交
     refuseCompanySubmit() {
       let currentIndex = this.$refs.currentIndex.value
@@ -619,7 +641,8 @@ export default {
     secondPay() {
       this.$router.push({
         name: 'itemPayFund',
-        params: { item_id: this.item.id }
+        params: { item_id: this.item.id },
+        query: {check_pay: 1}
       })
     },
     // 确认项目完成弹出层
@@ -1161,7 +1184,7 @@ export default {
   height: 200px;
   text-align: center;
   margin-bottom: 20px;
-  border: 1px solid #e6e6e6;
+  border: 1px solid E6E6E6;
   display: block;
 }
 
@@ -1176,7 +1199,7 @@ export default {
 }
 
 .banner p {
-  font-size: 1rem;
+  font-size: 1.2rem;
   color: #666;
   margin: 10px;
 }
@@ -1194,7 +1217,7 @@ export default {
   margin-bottom: 10px;
   display: flex;
   align-items: center;
-  border: 1px solid #e6e6e6;
+  border: 1px solid E6E6E6;
   background: #fff
 }
 
@@ -1223,7 +1246,7 @@ export default {
 
 .select-company-item .content p {
   color: #666;
-  font-size: 1rem;
+  font-size: 1.2rem;
   white-space: normal
 }
 
@@ -1259,8 +1282,9 @@ export default {
 .offer-company-item {
   position: relative;
   padding: 10px 0 0 0;
-  border: 1px solid #ccc;
+  border: 1px solid #E6E6E6;
   margin: 20px 0 20px 0;
+  background: #fff;
 }
 
 .item-logo {
@@ -1300,27 +1324,27 @@ export default {
 }
 
 .p-price {
-  color: #ff5a5f;
+  color: #FF5A5F;
   font-size: 1.8rem;
   font-weight: bold;
   margin-bottom: -3px;
 }
 
 .line {
-  border-top: 1px solid #ccc;
+  border-top: 1px solid #E6E6E6;
 }
 
 .btn {
   text-align: right;
   padding: 10px;
-  border-top: 1px solid #ccc;
+  border-top: 1px solid #E6E6E6;
 }
 
 .contract-item {
   height: 60px;
-  margin: 15px 0 10px 0;
-  padding: 10px 0 5px 0;
-  border-bottom: 1px solid #ccc;
+  margin: 15px 0 10px;
+    padding: 10px 10px 5px;
+  border-bottom: 1px solid #E6E6E6;
 }
 
 .contract-item .contract-left {
@@ -1346,13 +1370,13 @@ export default {
 }
 
 .contract-content p {
-  font-size: 1rem;
+  font-size: 1.2rem;
   color: #666;
   line-height: 1.5;
 }
 
 .contract-des {
-  font-size: 1rem;
+  font-size: 1.2rem;
 }
 
 .no-offer-company {
@@ -1374,14 +1398,15 @@ export default {
 }
 
 .capital-money {
-  color: #ff5a5f;
+  color: #FF5A5F;
   font-size: 2.5rem;
   margin: 10px 0;
 }
 
 .capital-des {
-  color: #666;
-  font-size: 1rem;
+  margin-top: 10px;
+  color: #999;
+  font-size: 1.2rem;
 }
 
 .capital-item .pay-btn {
@@ -1429,9 +1454,12 @@ export default {
 
 .item-bj {
   padding: 15px 10px 15px 10px;
-  border-top: 1px solid #ccc;
+  border-top: 1px solid #E6E6E6;
 }
 
+.item-bj p:first-child {
+  margin-bottom: 10px;
+}
 .item-stick-des p {
   line-height: 40px;
 }
@@ -1485,7 +1513,7 @@ p.contact {
 }
 
 .send-company-des {
-  font-size: 1rem;
+  font-size: 1.2rem;
   margin: 5px;
   color: #666;
 }
@@ -1535,7 +1563,7 @@ section ul li:last-child {
 
 section ul li {
   line-height: 40px;
-  border-bottom: 1px solid #e6e6e6;
+  border-bottom: 1px solid E6E6E6;
 }
 
 section ul li span {
@@ -1625,6 +1653,20 @@ section ul li a {
     margin-left: 0;
     margin-right: 16px;
   }
+}
+
+.quota-btn {
+
+}
+.quota-btn a {
+  font-size: 12px;
+  color: #FF5A5F;
+}
+.dialog-footer.btn {
+  margin-right: 30px;
+}
+.dialog-footer.btn button {
+  /* padding: 10px 30px; */
 }
 </style>
 <style>
