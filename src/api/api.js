@@ -48,6 +48,7 @@ export default {
   endPayOrderItemId: '/pay/endPayOrder/{0}', // GET 创建尾款支付订单
   secondAlipayId: '/pay/itemAliPay/{0}', // GET 支付尾款-支付宝
   payItemBankPayId: '/pay/itemBankPay/{0}', // GET 支付项目尾款--公对公银行转账
+  payBankTransferId: '/pay/bankTransfer/{0}', // PUT 确认上传凭证
 
   // 项目需求
   itemList: '/demand/itemList', // 客户项目列表

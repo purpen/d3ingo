@@ -637,7 +637,8 @@ export default {
     secondPay() {
       this.$router.push({
         name: 'itemPayFund',
-        params: { item_id: this.item.id }
+        params: { item_id: this.item.id },
+        query: {check_pay: 1}
       })
     },
     // 确认项目完成弹出层

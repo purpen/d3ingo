@@ -159,6 +159,16 @@ export default {
               })
               return
             }
+            // 如果是对公转账，跳到相应页
+            if (self.$route.query.check_pay) {
+              if (self.item.pay_type === 5) {
+                self.$router.push({
+                  name: 'vcenterOrderShow',
+                  params: {id: self.item.uid}
+                })
+                return
+              }
+            }
             console.log(response.data.data)
           } else {
             self.$message.error(response.data.meta.message)

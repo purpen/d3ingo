@@ -500,7 +500,7 @@
       // 支付项目资金
       secondPay(event) {
         let itemId = event.currentTarget.getAttribute('item_id')
-        this.$router.push({name: 'itemPayFund', params: {item_id: itemId}})
+        this.$router.push({name: 'itemPayFund', params: {item_id: itemId}, query: {check_pay: 1}})
       }
     },
     computed: {
