@@ -59,6 +59,12 @@ axiosInstance.interceptors.response.use(
               redirect: router.currentRoute.fullPath
             }
           })
+          break
+        case 403:
+          // 无访问权限
+          router.replace({
+            path: '/home'
+          })
       }
     }
     // console.log(JSON.stringify(error));//console : Error: Request failed with status code 402

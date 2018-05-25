@@ -420,10 +420,10 @@
       title="提示"
       v-model="comfirmDialog"
       size="tiny">
-      <p>{{ comfirmMessage }}</p>
+      <p class="alert-line-height">{{ comfirmMessage }}</p>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="comfirmDialog = false">取 消</el-button>
-        <el-button type="primary" :loading="comfirmLoadingBtn" @click="sureComfirmSubmit">确 定</el-button>
+        <el-button class="is-custom" @click="comfirmDialog = false">取 消</el-button>
+        <el-button class="is-custom" type="primary" :loading="comfirmLoadingBtn" @click="sureComfirmSubmit">确 定</el-button>
         <input type="hidden" ref="companyId"/>
         <input type="hidden" ref="confirmTargetId"/>
         <input type="hidden" ref="comfirmType" value="1"/>
@@ -862,7 +862,7 @@ export default {
       .get(api.demandId.format(id), {})
       .then(function(response) {
         if (response.data.meta.status_code === 200) {
-          // console.log(response.data.data)
+          console.log(response.data.data)
           self.item = response.data.data.item
           // self.info = response.data.data.info
           self.contract = response.data.data.contract

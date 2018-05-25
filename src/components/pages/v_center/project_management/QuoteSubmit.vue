@@ -298,7 +298,7 @@
       :visible.sync="dialogPlanTxt"
       width="30%">
       <div v-if="currentPlanTxtView">
-        <p>{{ currentPlanTxt }}</p>
+        <p class="alert-line-height">{{ currentPlanTxt }}</p>
         <p class="form-btn">
           <el-button @click="PlanTxtEdit">编辑
           </el-button>
@@ -627,6 +627,10 @@ export default {
     },
     // 保存计划任务备注
     submitPlanTxt() {
+      if (this.currentPlanTxt.length > 150) {
+        this.$message.error('不能超过150个字符!')
+        return false
+      }
       this.$set(this.form.plan_format[this.currentPlanTxtIndex], 'summary', this.currentPlanTxt)
       this.dialogPlanTxt = false
     },
