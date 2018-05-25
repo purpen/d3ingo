@@ -174,9 +174,9 @@
             </el-input>
           </li>
           <li class="task-userimg">
-            <span @click="selectUser()">分配给</span>
-            <i class="userimg" @click="selectUser()" v-if="!formTack.log"></i>
-            <img class="user" :src="formTack.log" alt="" v-if="formTack.log" @click="selectUser()">
+            <span @click="isuserimg = true">分配给</span>
+            <i class="userimg" @click="isuserimg = true" v-if="!formTack.log"></i>
+            <img class="user" :src="formTack.log" alt="" v-if="formTack.log" @click="isuserimg = true">
             <div class="userlist" v-if="isuserimg">
               <p>
                 查看成员
@@ -1039,10 +1039,6 @@ export default {
       this.istaskedit = false
       this.formTack = {}
     },
-    // 编辑执行人
-    selectUser() {
-      this.isuserimg = true
-    },
     // 选择成员
     checkeds(op) {
       for (var i = 0; i < this.options.length; i++) {
@@ -1059,12 +1055,9 @@ export default {
     // 编辑子阶段
     updataTack(date) {
       if (this.formTackStart !== this.formup.start_time || !date) {
-        if (isNaN(this.formTack.duration)) {
+        if (isNaN(this.formTack.duration) || !this.formTack.duration) {
           this.$message.error('输入正确的投入天数')
           return
-        }
-        if (this.formTack.index) {
-          this.sortTasks(this.formTack.index)
         }
         if (date) {
           this.formTack.start_time = Math.round(new Date(date).getTime() / 1000)
@@ -1072,6 +1065,7 @@ export default {
         if (typeof this.formTack.start_time !== 'number') {
           this.formTack.start_time = Math.round(new Date(this.formTack.start_time).getTime() / 1000)
         }
+        console.log(this.formTack)
         this.$http.put(api.designSubstageUpdate.format(this.formTack.id), this.formTack).then((response) => {
           if (response.data.meta.status_code === 200) {
             console.log(response.data.data)
@@ -1086,11 +1080,14 @@ export default {
     },
     sortTasks(index) {
       let dur = parseInt(this.formTack.duration) * 86400
+      let ssr = []
       for (var i = index; i < this.indesignStage.design_substage.length; i++) {
         this.indesignStage.design_substage[i].start_time += dur
         this.indesignStage.design_substage[i].end_time += dur
+        ssr.push(this.indesignStage.design_substage[i].start_time)
+        ssr.push(this.indesignStage.design_substage[i].end_time)
       }
-      console.log(this.indesignStage)
+      console.log(ssr)
     },
     // 删除子阶段
     deleteTack(id, index) {
