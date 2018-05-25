@@ -1419,7 +1419,7 @@ export default {
 }
 
 .capital-item .capital-btn {
-  padding: 10px 30px 10px 30px;
+  /* padding: 10px 30px 10px 30px; */
 }
 
 .manage-item {

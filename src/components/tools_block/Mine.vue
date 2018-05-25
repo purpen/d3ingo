@@ -4,7 +4,7 @@
       <span :class="{'is-active': myView === 'order'}" @click="myView = 'order'">消息提醒</span>
       <span :class="{'is-active': myView === 'task'}" @click="myView = 'task'">项目通知</span>
       <span :class="{'is-active': myView === 'system'}" @click="myView = 'system'">系统通知</span>
-      <i class="fx fx-icon-nothing-close-error" @click="showCover = false, myView = false"></i>
+      <i class="fx fx-icon-nothing-close-error" @click="showCover = false"></i>
     </div>
     <div v-if="myView === 'order'" class="cover-content">
       <order-message></order-message>
@@ -18,9 +18,6 @@
   </div>
 </template>
 <script>
-  import orderMessage from '@/components/tools_block/OrderMessage'
-  import systemMessage from '@/components/tools_block/SystemMessage'
-  import taskMessage from '@/components/tools_block/TaskMessage'
   export default {
     name: 'messageComponents',
     data() {
@@ -57,7 +54,6 @@
     }
   }
 </script>
-
 <style scoped>
  .cover {
     position: fixed;
@@ -114,3 +110,4 @@
     padding-bottom: 50px;
   }
 </style>
+

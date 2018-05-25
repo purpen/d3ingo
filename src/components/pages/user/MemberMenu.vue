@@ -62,19 +62,17 @@ export default {
   created() {
     this.isActive = this.$route.query.type || 'member'
   },
-  mounted() {
-    window.addEventListener('keydown', (e) => {
-      if (e.keyCode === 13) {
-        if (this.searchKey) {
-          this.searchMember()
-        }
-      }
-    })
-  },
   watch: {
     '$route' (to, from) {
       this.isActive = this.$route.query.type
       this.firstGroupId = 0
+    },
+    searchKey(val) {
+      if (val) {
+        this.searchMember()
+      } else {
+        this.cancelSearch()
+      }
     }
   },
   computed: {

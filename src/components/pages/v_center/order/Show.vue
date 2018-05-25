@@ -1,20 +1,26 @@
 <template>
-  <div class="container">
-    <div class="blank20"></div>
+  <div class="blank30 vcenter">
     <el-row :gutter="24">
       <v-menu currentName="order"></v-menu>
 
-      <el-col :span="isMob ? 24 : 20">
-        <div class="right-content">
+      <div :class="{'vcenter-right-plus': leftWidth === 4,
+        'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}">
+        <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
           <div class="content-box">
-            <div class="main">
+            <div class="main clearfix">
               <div class="status">
                 <p class="main-status">订单状态: <span>{{ item.status_value }}</span></p>
                 <div v-if="item.pay_type === 5 && item.status === 0">
                   <div v-if="item.bank_transfer === 0">
+<<<<<<< HEAD
                     <p class="main-des">请于 {{ item.expire_at }} 前完成支付，逾期会关闭交易</p>         
                     <p class="main-des">如已完成线下对公转账，请点击下方图片上传凭证</p>
+=======
+                    <p class="main-des">请于 {{ item.expire_at }} 前完成支付，逾期会关闭交易</p>
+                    <p class="main-des">已完成线下对公转账？</p>
+>>>>>>> origin/lzh
                     <div>
                       <el-upload
                         class=""
@@ -78,7 +84,7 @@
           </div>
         </div>
 
-      </el-col>
+      </div>
     </el-row>
 
   </div>
@@ -188,6 +194,9 @@
     computed: {
       isMob() {
         return this.$store.state.event.isMob
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
       }
     },
     created: function () {

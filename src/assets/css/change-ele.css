@@ -14,9 +14,11 @@
     color: #999;
     text-decoration: line-through
   }
-  .add-task-input .el-textarea__inner:hover,
-  .add-task-input .el-textarea__inner:focus,
   .child-input .el-textarea__inner {
+    /* border-color: #E6E6E6 */
+  }
+  .add-task-input .el-textarea__inner:hover,
+  .add-task-input .el-textarea__inner:focus {
     border-color: #D2D2D2
   }
   .add-task-input .el-textarea__inner:focus,
@@ -226,6 +228,46 @@
   .el-collapse-item__content {
     color: #666
   }
-  .main .el-input-group__append {
+  .main .el-input-group__append,
+  .el-date-table td.available:hover,
+  .el-time-spinner__item:hover:not(.disabled):not(.active) {
     background: #F7F7F7;
+  }
+  .el-date-table td {
+    line-height: 32px;
+  }
+  .el-picker-panel,
+  .el-picker-panel__footer,
+  .el-picker-panel__btn {
+    border-color: #E6E6E6
+  }
+  .el-picker-panel {
+    color: #222;
+  }
+  .el-picker-panel__btn,
+  .el-time-panel__btn,
+  .el-date-table th,
+  .el-input__icon,
+  .el-select .el-input .el-input__icon,
+  .el-menu--horizontal .el-submenu .el-submenu__icon-arrow {
+    color: #999
+  }
+  .el-date-picker__header-label.active, .el-date-picker__header-label:hover, .el-picker-panel__icon-btn:hover,
+  .el-time-panel__btn.confirm {
+    color: #FF5A5F
+  }
+  .el-time-spinner__item {
+    /* line-height: 20px */
+  }
+  .el-time-spinner__list::after, .el-time-spinner__list::before {
+    height: 73px;
+  }
+  .el-time-panel__content::after, .el-time-panel__content::before {
+    background-color: #999
+  }
+  .el-year-table td.current:not(.disabled) .cell {
+    background-color: #FF5A5F!important
+  }
+  .el-icon-time:before {
+    content: "\E611"
   }

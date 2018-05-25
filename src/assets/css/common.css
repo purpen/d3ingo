@@ -136,6 +136,7 @@
   padding: 0;
   height: 34px;
 }
+.el-button,
 .large-button,
 .middle-button,
 .small-button,
@@ -144,6 +145,7 @@
 .el-button--primary,
 .el-button--default,
 .el-button--large {
+  font-family: PingFangSC-Light;
   padding: 0;
   margin: 0;
   font-size: 14px;
@@ -232,16 +234,16 @@
   background: #FFF;
   border: 1px solid #D2D2D2;
   border-radius: 4px;
-  color: #666;
+  color: #999;
 }
 .white-button:hover,
-.el-button--default:hover,
-.el-button:focus {
+.el-button--default:hover{
   background: #F5F5F5;
   border: 1px solid #D2D2D2;
-  color: #222;
+  color: #999;
 }
 .white-button:active,
+.el-button--default:focus,
 .el-button--default:active {
   background: #CCC;
   border: 1px solid #CCC;

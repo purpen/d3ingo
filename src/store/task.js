@@ -19,7 +19,7 @@ let state = {
   executeUser: {},
   parentTask: {},
   showMessage: false,
-  myView: 'order'
+  myView: ''
 }
 let mutations = {
   setDisplayObj2(state, array) { // 容易出异步问题

@@ -387,7 +387,9 @@ module.exports = [
     name: 'vcenterOrderShow',
     meta: {
       title: '订单详情',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/order/Show')
   },
