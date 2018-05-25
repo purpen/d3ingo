@@ -1,11 +1,12 @@
 <template>
-<section :class="['member-menu', {'member-menu-mini': !leftWidth}]">
+<section :class="['member-menu',
+  {'member-menu-mini': !leftWidth, 'member-menu-mob': isMob}]">
   <div class="seach-block">
     <span class="search-icon"></span>
     <input type="text" class="search" v-model.trim="searchKey">
     <span class="close-icon-solid" @click="cancelSearch"></span>
   </div>
-  <div class="menu-header">
+  <div class="menu-header bb-d2">
     <span :class="{'active': isActive === 'member'}" @click="changeActive('member')">成员</span>
     <span :class="{'active': isActive === 2}" @click="changeActive(2)" v-if="false">部门</span>
     <span :class="{'active': isActive === 'group'}" @click="changeActive('group')">群组</span>
@@ -77,6 +78,9 @@ export default {
     }
   },
   computed: {
+    isMob() {
+      return this.$store.state.event.isMob
+    },
     leftWidth() {
       let leftWidth = this.$store.state.event.leftWidth
       if (leftWidth === 2) {
@@ -94,10 +98,10 @@ export default {
     font-size: 14px;
     /* color: rgba(255, 255, 255, 0.5); */
     /* background: #333; */
+    /* transition: 0.2s all ease; */
     color: #999;
     max-width: 240px;
     height: calc(100vh - 60px);
-    transition: 0.2s all ease;
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.10)
   }
   .seach-block {
@@ -136,11 +140,18 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 50px;
+    padding: 0 24px;
     color: #666;
   }
   .menu-header span {
-    cursor: pointer
+    padding: 0 6px;
+    cursor: pointer;
+    height: 48px;
+    line-height: 48px;
+    border-bottom: 3px solid transparent
+  }
+  .menu-header span.active {
+    border-color: #ff5a5f
   }
   .menu-header span:hover {
     /* color: #fff */
@@ -197,11 +208,16 @@ export default {
   .new-group:hover {
     opacity: 1;
   }
-  
-  @media screen and (min-width: 1440px) {
+  .member-menu-mob {
+    /* margin-top: 50px; */
+    max-width: 100%;
+    height: auto;
+    padding: 0 15px;
+  }
+  @media screen and (min-width: 1200px) {
     .member-menu {
-      position: absolute;
-      left: 240px;
+      /* position: absolute; */
+      left: 200px;
     }
 
     .member-menu-mini {

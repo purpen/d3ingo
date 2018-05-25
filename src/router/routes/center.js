@@ -87,7 +87,9 @@ module.exports = [
     name: 'vcenterBankList',
     meta: {
       title: '我的银行卡',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/bank/List')
   },
@@ -447,7 +449,7 @@ module.exports = [
       hideHeader: true,
       hideFooter: true
     },
-    component: require('@/components/pages/v_center/match_case/MatchCase')
+    component: require('@/components/pages/v_center/design_case/MatchCase')
   },
   {
     path: '/v_center/match_case/submit/:match_id/:id',
@@ -458,7 +460,7 @@ module.exports = [
       hideHeader: true,
       hideFooter: true
     },
-    component: require('@/components/pages/v_center/match_case/UploadWork')
+    component: require('@/components/pages/v_center/design_case/UploadWork')
   },
   {
     path: '/v_center/match_case/submit/:match_id',
@@ -469,7 +471,7 @@ module.exports = [
       hideHeader: true,
       hideFooter: true
     },
-    component: require('@/components/pages/v_center/match_case/UploadWork')
+    component: require('@/components/pages/v_center/design_case/UploadWork')
   },
   {
     path: '/v_center/match_case/submit',
@@ -480,6 +482,6 @@ module.exports = [
       hideHeader: true,
       hideFooter: true
     },
-    component: require('@/components/pages/v_center/match_case/UploadWork')
+    component: require('@/components/pages/v_center/design_case/UploadWork')
   }
 ]

@@ -1,7 +1,9 @@
 <template>
 <section class="project-show">
   <v-menu-left currentName="project_management"></v-menu-left>
-  <div :class="['project-management',{'project-management-mini': !leftWidth}]">
+  <div :class="{'vcenter-right-plus': leftWidth === 4,
+  'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}">
     <menu-sub :currentRoute="currentRoute"></menu-sub>
     <router-view v-if="isShow" :projectObject="projectObject"></router-view>
   </div>
@@ -75,12 +77,10 @@ export default {
   },
   computed: {
     leftWidth() {
-      let leftWidth = this.$store.state.event.leftWidth
-      if (leftWidth === 2) {
-        return 0
-      } else if (leftWidth === 4) {
-        return leftWidth
-      }
+      return this.$store.state.event.leftWidth
+    },
+    isMob() {
+      return this.$store.state.event.isMob
     },
     projectObject() {
       return this.$store.state.task.projectObject
@@ -93,13 +93,16 @@ export default {
 }
 </script>
 <style scoped>
+.project-show {
+  /* overflow-x: auto */
+}
 .project-management {
   padding-left: 16.66667%;
 }
 .project-management-mini {
   padding-left: 60px;
 }
-@media screen and (min-width: 1440px) {
+@media screen and (min-width: 1200px) {
   .project-management {
     position: absolute;
     width: calc(100% - 240px);
@@ -121,7 +124,7 @@ export default {
     padding-left: 0;
   }
   .project-show {
-    padding: 20px 0 0
+    /* padding: 20px 0 0 */
   }
 }
 </style>

@@ -1,8 +1,10 @@
 <template>
-  <div class="blank20">
+  <div class="vcenter blank30">
     <el-row>
       <v-menu currentName="profile" :class="[isMob ? 'v-menu' : '']"></v-menu>
-      <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
+      <div :class="{'vcenter-right-plus': leftWidth === 4,
+      'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}">
           <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
 
@@ -80,7 +82,7 @@
 
           </div>
         </div>
-      </el-col>
+      </div>
     </el-row>
   </div>
 
@@ -282,7 +284,7 @@
   .item {
     margin: 5px 0;
     padding: 10px 0;
-    border-bottom: 1px solid #d2d2d2;
+    border-bottom: 1px solid #E6E6E6;
   }
   .content-box .item:last-child {
     border-bottom: none;

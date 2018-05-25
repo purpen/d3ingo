@@ -537,13 +537,13 @@
   }
 
   .categorie .list p{
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .title {
     color: #222;
-    font-size: 20px;
-    padding: 30px 10px 10px;
+    font-size: 24px;
+    padding: 40px 10px 0;
   }
 
   .title-center {
@@ -572,10 +572,11 @@
 
   .pub {
     margin: 80px 0 0 0;
+    margin: -20px;
   }
 
   .pub .pub-btn {
-    padding: 20px 80px 20px 80px;
+    /* padding: 20px 80px 20px 80px; */
   }
 
   .company-des {
@@ -603,7 +604,7 @@
   }
 
   .el-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-5px);
   box-shadow: 6px 6px 10px rgba(10,10,10,.15)
   }
 
@@ -680,7 +681,7 @@
   .image-box:not(.not-limit) {
     height: 220px;
     overflow: hidden;
-    border-bottom: 1px solid #D2D2D2;
+    border-bottom: 1px solid #e6e6e6;
     /* border-radius: 4px 4px 0 0; */
   }
 
@@ -844,7 +845,8 @@
     }
 
     .title {
-      font-size: 20px;
+      font-weight: 100;
+      font-size: 24px;
       padding: 30px 15px 10px;
     }
 

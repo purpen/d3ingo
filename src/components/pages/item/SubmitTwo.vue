@@ -366,7 +366,7 @@
   }
 
   .banner-title .des {
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: #666;
   }
 
@@ -398,10 +398,15 @@
   .tag.active {
     border: 1px solid #FF5A5F;
     color: #FF5A5F;
+    background: #FFF
   }
 
+  .tag.active:hover {
+    background: #FFF
+  }
+  
   .slider {
-    border: 1px solid #ccc;
+    border: 1px solid #E6E6E6;
     /*height: 250px;*/
     text-align: center;
   }
@@ -449,7 +454,7 @@
   .slider.info p.slide-des {
     color: #666;
     line-height: 1.5;
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 
   .collapse-banner {

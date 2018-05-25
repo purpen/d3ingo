@@ -84,7 +84,7 @@
                         <p class="contact">职位: {{ item.position }}</p>
                         <p class="contact">电话: {{ item.phone }}</p>
                         <p class="contact">邮箱: {{ item.email }}</p>
-                        <p slot="reference" class="name-wrapper contact-user">
+                        <p slot="reference" class="fl name-wrapper contact-user">
                           <i class="fa fa-phone" aria-hidden="true"></i>
                           联系我们
                         </p>
@@ -95,7 +95,7 @@
                         <p class="contact">职位: {{ item.position }}</p>
                         <p class="contact">电话: {{ item.phone }}</p>
                         <p class="contact">邮箱: {{ item.email }}</p>
-                        <p slot="reference" class="name-wrapper2 contact-user">和我联系
+                        <p slot="reference" class="fl name-wrapper2 contact-user">和我联系
                         </p>
                       </el-popover>
                     </div>
@@ -105,8 +105,13 @@
                   </div>
                   <div class="clear"></div>
                   <div class="item-bj" v-if="quotation">
-                    <p>项目报价:  <span class="p-price">{{ quotation.price }} 元</span>  <span class="quota-btn">&nbsp;&nbsp;<a href="javascript:void(0);" @click="showQuotaBtn(quotation)">详情>></a></span></p>
-                    <p>报价说明:  {{ quotation.summary }}</p>
+                    <p class="tc-2 protrude">项目报价:
+                      <span class="tc-6 fw-normal p-price">{{ quotation.price }} 元</span>
+                    <span class="tc-6 fw-normal quota-btn">&nbsp;&nbsp;<a
+                    class="tc-red" href="javascript:void(0);"
+                    @click="showQuotaBtn(quotation)">详情>></a></span></p>
+                    <p class="tc-2 protrude">报价说明: <span class="tc-6 fw-normal">
+                      {{ quotation.summary }}</span></p>
                   </div>
 
                   <div class="btn-quo" v-if="waitTakePrice">
@@ -332,11 +337,11 @@
       size="tiny">
       <span>{{ comfirmMessage }}</span>
       <span slot="footer" class="dialog-footer">
+        <el-button @click="comfirmDialog = false">取 消</el-button>
+        <el-button type="primary" :loading="comfirmLoadingBtn" @click="sureComfirmSubmit">确 定</el-button>
         <input type="hidden" ref="comfirmType" value="1"/>
         <input type="hidden" ref="confirmTargetId"/>
         <input type="hidden" ref="confirmIndex"/>
-        <el-button @click="comfirmDialog = false">取 消</el-button>
-        <el-button type="primary" :loading="comfirmLoadingBtn" @click="sureComfirmSubmit">确 定</el-button>
       </span>
     </el-dialog>
     <el-dialog title="报价单详情" v-model="quotaDialog" size="large" top="2%">
@@ -1028,7 +1033,7 @@ const vQuoteView = () => import('@/components/block/QuoteView')
                       logoUrl = self.company.logo_image.logo
                     }
                     self.company.logo_url = logoUrl
-//                    console.log(self.company)
+                    // console.log(self.company)
                   }
                 })
                 .catch(function (error) {
@@ -1135,6 +1140,8 @@ const vQuoteView = () => import('@/components/block/QuoteView')
             }]
 
             self.tableData = tab.concat(itemTab)
+          } else {
+            this.$message.error(response.data.meta.message)
           }
         })
         .catch(function (error) {
@@ -1151,6 +1158,8 @@ const vQuoteView = () => import('@/components/block/QuoteView')
               self.uploadParam['x:random'] = response.data.data.random
               self.uploadUrl = response.data.data.upload_url
             }
+          } else {
+            this.$message.error(response.data.meta.message)
           }
         })
         .catch(function (error) {
@@ -1174,7 +1183,7 @@ const vQuoteView = () => import('@/components/block/QuoteView')
     height: 200px;
     text-align: center;
     margin-bottom: 20px;
-    border: 1px solid #ccc;
+    border: 1px solid #E6E6E6;
     display: block;
   }
 
@@ -1189,7 +1198,7 @@ const vQuoteView = () => import('@/components/block/QuoteView')
   }
 
   .banner p {
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: #666;
     margin: 10px;
   }
@@ -1205,7 +1214,8 @@ const vQuoteView = () => import('@/components/block/QuoteView')
   .select-company-item {
     height: 200px;
     margin-bottom: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid E6E6E6;
+    background: #FFF
   }
 
   .select-company-item .check-box {
@@ -1235,7 +1245,7 @@ const vQuoteView = () => import('@/components/block/QuoteView')
 
   .select-company-item .content p {
     color: #666;
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 
   .select-company-item .content p span {
@@ -1263,7 +1273,7 @@ const vQuoteView = () => import('@/components/block/QuoteView')
 
   .quotation-item {
     position: relative;
-    border: 1px solid #ccc;
+    border: 1px solid #E6E6E6;
     margin: 20px 0 20px 0;
   }
 
@@ -1288,9 +1298,12 @@ const vQuoteView = () => import('@/components/block/QuoteView')
 
   .item-bj {
     padding: 15px 10px 15px 10px;
-    border-top: 1px solid #ccc;
+    border-top: 1px solid #E6E6E6;
   }
 
+  .item-bj p:first-child {
+    margin-bottom: 10px;
+  }
   .item-title {
     margin-left: -30px;
     height: 150px;
@@ -1317,7 +1330,7 @@ const vQuoteView = () => import('@/components/block/QuoteView')
   }
 
   .line {
-    border-top: 1px solid #ccc;
+    border-top: 1px solid #E6E6E6;
   }
 
   .btn {
@@ -1329,15 +1342,15 @@ const vQuoteView = () => import('@/components/block/QuoteView')
   .btn-quo {
     text-align: right;
     padding: 10px;
-    border-top: 1px solid #ccc;
+    border-top: 1px solid #E6E6E6;
   }
 
   .contract-item {
     /*height: 60px;*/
     margin: 20px 0 10px 0;
-    padding: 10px 0 5px 0;
-    border-top: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
+    padding: 10px 10px 5px;
+    border-top: 1px solid #E6E6E6;
+    border-bottom: 1px solid #E6E6E6;
   }
 
   .contract-item.new {
@@ -1360,7 +1373,7 @@ const vQuoteView = () => import('@/components/block/QuoteView')
 
   .contract-content p {
     max-width: 300px;
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: #666;
     line-height: 1.5;
     white-space: nowrap;
@@ -1369,7 +1382,7 @@ const vQuoteView = () => import('@/components/block/QuoteView')
   }
 
   .contract-des {
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 
   .contract-right {
@@ -1405,16 +1418,18 @@ const vQuoteView = () => import('@/components/block/QuoteView')
   .capital-money {
     color: #FF5A5F;
     font-size: 2.5rem;
+    margin: 10px 0;
   }
 
   .capital-des {
-    color: #666;
-    font-size: 1rem;
+    margin-top: 10px;
+    color: #999;
+    font-size: 1.2rem;
   }
 
   .capital-item .pay-btn {
     font-size: 1.8rem;
-    margin: 10px 0 20px 0;
+    /* margin: 10px 0 20px 0; */
   }
 
   .capital-item .capital-btn {
@@ -1447,7 +1462,7 @@ const vQuoteView = () => import('@/components/block/QuoteView')
   }
 
   .finish-item-btn button {
-    padding: 10px 60px 10px 60px;
+    /* padding: 10px 60px 10px 60px; */
   }
 
   .finish-item-stat {
@@ -1487,7 +1502,8 @@ const vQuoteView = () => import('@/components/block/QuoteView')
   }
 
   .stage-title {
-    border-bottom: 0.5px solid #D2D2D2;
+    border-bottom: 1px solid #D2D2D2;
+    padding-bottom: 20px;
   }
 
   .stage-item .stage-title h3 {
@@ -1503,7 +1519,7 @@ const vQuoteView = () => import('@/components/block/QuoteView')
 
   .stage-asset-box {
     padding: 10px 0;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #D2D2D2;
   }
 
   .taking-price-btn {
@@ -1539,7 +1555,7 @@ const vQuoteView = () => import('@/components/block/QuoteView')
 
   section ul li {
     line-height: 40px;
-    border-bottom: 1px solid #e6e6e6;
+    border-bottom: 1px solid E6E6E6;
   }
 
   section ul li span {
@@ -1608,7 +1624,7 @@ const vQuoteView = () => import('@/components/block/QuoteView')
 
     button.is-custom.el-button.el-button--primary.upload_btn {
       color: #FF5A5F;
-      background: #fff;
+      background: #FFF;
       border-color: #FF5A5F;
     }
 
@@ -1639,7 +1655,7 @@ const vQuoteView = () => import('@/components/block/QuoteView')
 
 <style>
   .el-step__head.is-text.is-process {
-    color: #fff;
+    color: #FFF;
     background-color: #00ac84!important;
     border-color: #00ac84!important;
   }
@@ -1680,12 +1696,12 @@ const vQuoteView = () => import('@/components/block/QuoteView')
   }
   .quota-btn a {
     font-size: 12px;
-    color: #666;
+    color: #FF5A5F;
   }
   .dialog-footer.btn {
     margin-right: 30px;
   }
   .dialog-footer.btn button {
-    padding: 10px 30px;
+    /* padding: 10px 30px; */
   }
 </style>

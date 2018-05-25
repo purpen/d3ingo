@@ -1,5 +1,5 @@
 <template>
-  <div class="blank20 min-height350">
+  <div class="blank20 ">
     <el-row>
       <v-menu currentName="message"></v-menu>
       <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
@@ -175,7 +175,7 @@
   }
 
   .content-box .item {
-    border: 1px solid #ccc;
+    border: 1px solid #E6E6E6;
     margin-bottom: -1px;
     padding: 30px 50px 30px 20px;
     min-height: 30px;
@@ -185,7 +185,7 @@
   }
 
   .content-box .item:hover {
-    background-color: #F2F1F1;
+    background-color: #F7F7F7;
   }
 
   .item .left {

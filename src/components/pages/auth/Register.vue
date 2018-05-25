@@ -404,7 +404,7 @@
     margin: 30px auto;
     background: #fff;
     border: 1px solid #E6E6E6;
-    box-shadow: 0 0 5px 0 rgba(0,0,0,0.10);
+    box-shadow: 0 0 6px 2px rgba(0,0,0,0.10);
   }
 
   .regisiter-title {
@@ -442,12 +442,12 @@
     margin-right: 8px;
   }
   .register-tab-user:hover {
-    box-shadow: 0 0 5px 0 rgba(0,0,0,0.10);
+    box-shadow: 0 0 6px 2px rgba(0,0,0,0.10);
   }
   .register-tab-user.active {
     border: 1px solid #FF5A5F;
     background-color: #fff;
-    box-shadow: 0 0 5px 0 rgba(0,0,0,0.10);
+    box-shadow: 0 0 6px 2px rgba(0,0,0,0.10);
   }
 
   .register-tab-user::before {

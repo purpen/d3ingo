@@ -1,10 +1,11 @@
 <template>
-  <el-row class="blank20 min-height350 ">
+  <el-row class="blank30 vcenter">
     <v-menu currentName="control"></v-menu>
-    <el-col :class="isoff?'':'inline'" :span="isoff?18:24" :offset="isoff? 5 : 0">
-      <!-- :span="22" :offset="!isMob? leftWidth : 0" -->
-      <el-row>
-        <el-col :xs="24" :sm="24" :md="12" :lg="12"  v-if="uChild===0&&messageCount.quantity">
+    <div :class="{'vcenter-right-plus': leftWidth === 4,
+        'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}">
+      <el-row class="vcenter-container">
+        <el-col :xs="24" :sm="24" :md="12" :lg="12" v-if="uChild===0&&messageCount.quantity">
           <section>
             <div class="control-childHeader">
             <span>待处理信息</span>
@@ -17,10 +18,12 @@
                 </div>
                 <div class="message-btn clearfix" v-else>
                 <router-link :to="{name: 'home'}">
-                  <el-button class="is-custom">返回首页</el-button>
+                  <button class="middle-button red-button">返回首页</button>
+                  <!-- <el-button class="is-custom">返回首页</el-button> -->
                 </router-link> &nbsp;&nbsp;
                 <router-link :to="{name: 'vcenterMessageList'}">
-                  <el-button type="primary" class="is-custom">查看消息</el-button>
+                  <button class="middle-button full-red-button">查看消息</button>
+                  <!-- <el-button type="primary" class="is-custom">查看消息</el-button> -->
                 </router-link>
               </div>
             </div>
@@ -55,7 +58,9 @@
                   <h3>公司认证</h3>
                   <p class="item-title">提交公司认证信息</p>
                   <p class="item-btn">
-                    <router-link :to="{name: 'vcenterComputerAccreditation'}">{{ item.verify_label }}</router-link>
+                    <router-link :to="{name: 'vcenterComputerAccreditation'}">
+                      <button class="small-button red-button">{{ item.verify_label }}</button>
+                    </router-link>
                   </p>
                 </div>
 
@@ -114,32 +119,35 @@
           <el-col :span="12" v-for="(i,indexi) in userItem" :key="indexi" v-if="userItem.length>0">
 
               <ul class="control-iteming">
-                <li class="titleSize">{{i.name}}</li>
-                <li>项目进度: 
-                  <span class="itemProgress">
+                <router-link :to="{name: 'projectManagementOverView', params: {id: i.id}}">
+                <li class="title-size">{{i.name}}</li>
+                <li class="fz-12"><span class="tc-6">项目进度:</span> <span class="itemProgress">
                     {{i.ok_stage_percentage}}%
                   </span>
                 </li>
-                <li>
+                <li class="progress-bar">
                   <el-progress 
                   :percentage="i.ok_stage_percentage"
                   :show-text="false"
                   :stroke-width=10
                   ></el-progress>
                 </li>
-                <li>
-                  <div class="iteming-grade" v-if="i.level !== 1">{{i.level_value}}</div>
+                <li class="fz-12 clearfix">
+                  <div :class="['iteming-grade', {'iteming-grade-very': i.level === 3}]" v-if="i.level !== 1">{{i.level_value}}</div>
                   <div class="iteming-time" v-if="i.start_time">
                     {{ i.start_time }} 启动
                   </div>
                 </li>
+                </router-link>
             </ul>
 
           </el-col>
-              <div class="message-btn" v-else>
+              <div class="message-btn" v-if="userItem.length===0">
                 <img src="../../../../assets/images/icon/Project default state@2x.png"/>
                 <p>你还没有参加任何项目</p>
-                <el-button class="is-custom" v-if="uChild===0">创建项目</el-button>
+                <button class="middle-button red-button" v-if="uChild===0">
+                  <router-link :to="{name: 'projectManagementList'}">创建项目</router-link>
+                </button>
               </div>
             </el-row>
           </section>
@@ -157,17 +165,17 @@
 
                 <div class="control-taskProgress">
                   <el-progress
-                    type="circle" 
+                    class="is-unclaimed"
+                    type="circle"
                     :percentage="userTask.no_get_percentage"
                     :width="60"
                     :show-text="false"
                   ></el-progress>
-
                   <div>
                     <p class="marginl">未认领
                       <span>{{ userTask.no_get }}</span>
                     </p>
-                    <p class="fx-6">{{userTask.no_get_percentage}} %</p>
+                    <p class="fx-6 is-unclaimed">{{userTask.no_get_percentage}} %</p>
                   </div>
 
                 </div>
@@ -184,7 +192,7 @@
                     <p class="marginl">未完成
                       <span>{{userTask.no_stage}}</span>
                     </p>
-                    <p class="fx-6">{{ userTask.no_stage_percentage }} %</p>
+                    <p class="fx-6 is-default">{{ userTask.no_stage_percentage }} %</p>
                   </div>
                 </div>
               </el-col>
@@ -201,7 +209,7 @@
                     <p class="marginl">已完成
                       <span>{{ userTask.ok_stage }}</span>
                     </p>
-                <p class="fx-6">{{userTask.ok_stage_percentage}} %</p>
+                <p class="fx-6 is-success">{{userTask.ok_stage_percentage}} %</p>
                   </div>
                 </div>
               </el-col>
@@ -218,7 +226,7 @@
                     <p class="marginl">已逾期
                       <span>{{ userTask.overdue }}</span>
                     </p>
-                    <p class="fx-6">{{userTask.overdue_percentage}} %</p>
+                    <p class="fx-6 is-exception">{{userTask.overdue_percentage}} %</p>
                   </div>
                 </div>
               </el-col>
@@ -230,7 +238,7 @@
           </section>
         </el-col>
       </el-row>
-    </el-col>
+    </div>
     
   </el-row>
 </template>
@@ -301,6 +309,7 @@
         self.$http.get(api.userStatistical, {}).then((response) => {
           if (response.data.meta.status_code === 200) {
             this.userItem = response.data.data
+            console.log(this.userItem)
             if (this.userItem.length > 0) {
               for (var i = 0; i < this.userItem.length; i++) {
                 if (this.userItem[i].start_time) {
@@ -495,12 +504,15 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .el-row>.el-col>section{
-    border:1px solid #d2d2d2;
+  .el-row>.el-col>section {
+    border:1px solid #e6e6e6;
     border-radius: 4px;
     height:360px;
-    margin:10px;
+    margin:0 0 20px 0;
     font-size:1.4rem;
+  }
+  .el-row>.el-col:nth-child(2n-1)>section {
+    margin:0 20px 20px 0;
   }
   .control-childHeader{
     display:flex;
@@ -508,12 +520,9 @@
     height:60px;
     line-height: 60px;
     padding:0 20px;
-    border-bottom:1px solid #d2d2d2;
+    border-bottom: 1px solid #e6e6e6;
     font-size:14px;
-    background:#f7f7f7;
-  }
-  .control-childHeader>span{
-    font-weight: 600;
+    border-radius: 4px 4px 0 0
   }
   .control-childHeader>div{
     color:#999999;
@@ -534,41 +543,49 @@
     height:60px;
   }
   .control-iteming{
-    height:150px;
+    /* height: 150px;
     display:flex;
     flex-direction:column;
-    justify-content:space-around;
-    padding:20px;
+    justify-content:space-around; */
+    padding: 16px 30px 18px;
   }
   .itemProgress{
-    color:#20a0ff;
+    color:#65A6FF;
   }
   .marginl>span{
     display:inline-block;
     margin-left:10px;
   }
-  .control-taskProgress .fx-6{
-    font-weight: 800;
+  .control-taskProgress .fx-6 {
   }
   .item-content{
     height:299px;
     overflow-y:auto;
   }
-  .iteming-grade{
+  .iteming-grade {
+    cursor: pointer;
     float: left;
-    padding:5px 10px;
+    padding: 0 23px;
     border-radius: 4px;
     color:#fff;
+    background:#F5C828;
+    height: 20px;
+    line-height: 20px;
+  }
+  .iteming-grade-very {
     background:#FF5A5F;
   }
-  .titleSize{
-    font-size:1.5rem;
-    font-weight: 600;
-    margin-bottom:15px;
+  .title-size {
+    color: #222;
+    font-size: 1.4rem;
+    margin: 0 0 12px 0
+  }
+  .progress-bar {
+    margin: 6px 0 10px 0
   }
   .iteming-time{
-    height:24px;
-    line-height: 24px;
+    height: 20px;
+    line-height: 20px;
     float: right;
   }
   .control-massagelist{
@@ -619,9 +636,10 @@
   }
 
   p.alert-title {
-    margin:0 -20px;
+    line-height: 30px;
+    font-size: 12px;
+    margin:0 -20px 20px;
     color: #666;
-    margin-bottom: 20px;
     background:#f7f7f7;
     padding:0 20px;
   }
@@ -633,7 +651,7 @@
   }
 
   .content-box .item {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #E6E6E6;
     margin-bottom: 20px;
     padding-bottom: 10px;
     position: relative;
@@ -670,10 +688,10 @@
   }
 
   .content-box .item .item-btn a {
-    color: #FE3824;
+    /* color: #FE3824;
     border: 1px solid #fe3824;
     border-radius: 5px;
-    padding: 4px 10px;
+    padding: 4px 10px; */
   }
 
   .no-line {
@@ -700,7 +718,7 @@
 
   .pub .pub-btn {
     position: absolute;
-    padding: 10px 40px 10px 40px;
+    /* padding: 10px 40px 10px 40px; */
     top: 40%;
     left: 40%;
   }
@@ -717,8 +735,12 @@
     background: #FAFAFA;
   }
 
-  .content {
+  /* .content {
     border-bottom: 1px solid #ccc;
+  } */
+
+  .pre {
+    padding: 10px;
   }
 
   .item.ing p {
@@ -740,7 +762,7 @@
   }
 
   .btn {
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 
   .btn p {
@@ -760,7 +782,7 @@
   }
 
   .prefect {
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: #666;
     margin-top: 0;
     margin-bottom: -10px;
@@ -799,13 +821,17 @@
     line-height: 1;
   }
 
-  .item-content {
-    padding: 10px 0 10px 0;
-  }
-
   @media screen and (max-width: 768px) {
     .prefect {
       font-size: 1.4rem;
+    }
+
+    .el-row>.el-col>section{
+      margin: 0 0 20px
+    }
+
+    .el-row>.el-col:nth-child(2n-1)>section {
+      margin: 0 0 20px
     }
   }
 

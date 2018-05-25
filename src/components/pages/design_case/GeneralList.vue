@@ -30,7 +30,7 @@
     </div>
     <div class="blank20"></div>
     <div class="pager" v-if="query.totalCount">
-      <el-pagination v-if="itemList.length" class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize"
+      <el-pagination v-if="itemList.length && query.totalCount > query.pageSize" class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize"
                      :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper"
                      @current-change="handleCurrentChange">
       </el-pagination>

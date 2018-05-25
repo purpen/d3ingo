@@ -191,7 +191,7 @@
   }
 
   .pub .pub-btn {
-    padding: 15px 40px 15px 40px;
+    /* padding: 15px 40px 15px 40px; */
   }
 
   .item_1_title {
@@ -204,7 +204,7 @@
 
   .item_1_desc {
     color: #666;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     line-height: 1.5;
     padding: 0 20px;
   }
@@ -286,7 +286,7 @@
     }
 
     .pub .pub-btn {
-      padding: 10px 15px;
+      /* padding: 10px 15px; */
     }
   }
 

@@ -2,7 +2,7 @@
   <div class="">
     <div class="container">
       <div class="top-menu-list">
-        <router-link :to="{name: 'item'}" class="item">服务条款</router-link>
+        <router-link :to="{name: 'terms'}" class="item">服务条款</router-link>
         <router-link :to="{name: 'question'}" class="item">常见问题</router-link>
         <router-link :to="{name: 'trade'}" class="item is-active">交易保障</router-link>
       </div>

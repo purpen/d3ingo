@@ -69,7 +69,7 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
+<style scoped>
 
 
   .process-item {
@@ -78,7 +78,7 @@
 
   .process-item p {
     line-height: 2;
-    font-size: 1.7rem;
+    font-size: 1.8rem;
     font-weight: bold;
   }
 
@@ -86,7 +86,7 @@
 
     min-width: 174px;
     padding: 20px;
-    border: 1px solid #ccc;
+    border: 1px solid #e6e6e6;
   }
 
   .progress-m {

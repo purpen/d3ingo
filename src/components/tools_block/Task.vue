@@ -1,17 +1,21 @@
 <template>
-  <div class="" v-if="taskState.power" v-loading="isLoading">
+  <div class="" v-if="taskState.power">
+    <!-- <div class="" v-if="taskState.power" v-loading="isLoading"> -->
     <section class="task-detail">
       <div class="task-detail-header">
         <span v-if="currentForm.tier === 0" class="task-detail-name">{{projectObject.name}}</span>
         <div v-if="currentForm.tier === 0" ref="selectParent" class="select-parent" tabindex="-1">
           <span class="select-show">请选择阶段</span>
-          <ul class="stage-list">
+          <ul class="stage-list stage-list0">
             <li :class="{'active': !currentForm.stage_id}" @click="stageItemClick(0)">无阶段</li>
             <li :class="{'active': d.id === currentForm.stage_id}" v-for="(d, index) in stageList" :key="index" @click="stageItemClick(d.id)">
               {{d.title}}</li>
           </ul>
         </div>
-        <div v-if="currentForm.tier === 1" class="task-detail-name" @click="showChild(parentTask.id)">属于任务：<span class="parent-task-name">{{parentTask.name}}</span></div>
+        <div v-if="currentForm.tier === 1"
+          class="task-detail-name task-detail-name1"
+          @click="showChild(parentTask.id)"
+          ><span class="parent-task-name">{{parentTask.name}}</span></div>
         <div ref="selectParent2" class="select-parent select-menu" tabindex="-1">
           <span class="select-show"></span>
           <ul class="stage-list">
@@ -21,15 +25,13 @@
         </div>
         <i class="fx fx-icon-nothing-close-error" @click="closeBtn"></i>
       </div>
-      <p :class="['add-task-input', {'active': currentForm.stage === 2}]">
-        <span :class="['add-task-select']" @click="completeTask"></span>
-        <el-tooltip class="item" effect="dark" content="点击即可编辑" placement="top">
-          <el-input :autosize="{ minRows: 1}" type="textarea" @focus="saveOldVal(currentForm.name)" @blur="blurInput({name: currentForm.name})" v-model="currentForm.name" placeholder="请填写任务名称"></el-input>
-        </el-tooltip>
+      <p :class="['add-task-input', {'add-task-input-no_name': !currentForm.name, 'active': currentForm.stage === 2}]">
+        <span v-show="currentForm.name" :class="['add-task-select']" @click="completeTask"></span>
+        <el-input :autosize="{ minRows: 1}" type="textarea" @focus="saveOldVal(currentForm.name)" @blur="blurInput({name: currentForm.name})" v-model="currentForm.name" placeholder="请填写任务名称"></el-input>
       </p>
       <div class="task-detail-body">
         <div class="task-admin" v-if="true">
-          <p>分配给</p>
+          <p class="tc-9">分配给:</p>
           <ul class="task-member-list task-member-execute" v-if="executeUser">
             <li v-if="JSON.stringify(executeUser) !== '{}'">
               <a class="remove-member" @click.self="removeExecute()"></a>
@@ -38,7 +40,7 @@
             </li>
           </ul>
           <ul class="task-member-list task-member-execute" v-else>
-            <li @click="showMember = true">选择执行者</li>
+            <li class="margin-none" @click="showMember = true">选择执行者</li>
           </ul>
           <v-Member
             event="execute"
@@ -87,18 +89,20 @@
                 :key="index">{{ d.title }}
                 <i class="close-icon-solid" @click="operateTags(d.id)"></i>
                 </span>
+                <div class="tags-parent">
+                  <v-tags
+                    :propParam = "propsTags"
+                    :tagsId = "tagsId"
+                    @changePropsTags = "changePropsTags"
+                    @addTagBtn = "addTagBtn"
+                    @changeTags="changeTags"
+                    @updateTags="updateTags"></v-tags>
+                </div>
             </div>
-            <v-tags
-              :propParam = "propsTags"
-              :tagsId = "tagsId"
-              @changePropsTags = "changePropsTags"
-              @addTagBtn = "addTagBtn"
-              @changeTags="changeTags"
-              @updateTags="updateTags"></v-tags>
           </li>
         </ul>
         <div class="task-child" v-if="currentForm.tier === 0">
-          <p class="p-task-child">子任务:</p>
+          <p class="p-task-child tc-9">子任务:</p>
           <ul class="add-child-ul" v-if="currentForm.childTask">
             <li v-for="(ele, index) in currentForm.childTask" :key="index">
               <div :class="['add-task-input', 'add-child-input', {'active': ele.stage === 2}]">
@@ -107,9 +111,7 @@
                 <el-tooltip class="item" effect="dark" content="查看子任务详情" placement="top">
                   <span @click="showChild(ele.id)" class="child-more"></span>
                 </el-tooltip>
-                <el-tooltip class="item" effect="dark" content="点击即可编辑" placement="top">
-                  <el-input :autosize="{ minRows: 1}" type="textarea" v-model="ele.name" placeholder="请填写任务名称" @blur="updateChild(ele.id, {name: ele.name})"></el-input>
-                </el-tooltip>
+                <el-input :autosize="{ minRows: 1}" type="textarea" v-model="ele.name" placeholder="请填写任务名称" @focus="saveOldVal(ele.name)" @blur="updateChild(ele.id, {name: ele.name})"></el-input>
                 <el-date-picker
                   v-model="ele.over_time"
                   type="datetime"
@@ -153,14 +155,12 @@
         </div>
         <div class="task-summary">
           <p class="p-summary">备注</p>
-          <el-tooltip class="item" effect="dark" content="点击即可编辑" placement="top">
-            <el-input :autosize="{ minRows: 1}"
-              type="textarea" placeholder="请填写备注内容"
-              class="textarea-summary"
-              @focus="saveOldVal(currentForm.summary)" 
-              @blur="blurInput({summary: currentForm.summary})"
-              v-model="currentForm.summary"></el-input>
-          </el-tooltip>
+          <el-input :autosize="{ minRows: 1}"
+            type="textarea" placeholder="请填写备注内容"
+            class="textarea-summary"
+            @focus="saveOldVal(currentForm.summary)" 
+            @blur="blurInput({summary: currentForm.summary})"
+            v-model="currentForm.summary"></el-input>
         </div>
         <div class="task-member">
           <p class="p-member">参与者</p>
@@ -186,14 +186,26 @@
           <ul v-if="showAllMoments">
             <li class="clearfix"
               v-for="(ele, index) in currentForm['moments']" :key="index">
-              <p class="fl"><span class="tc-2">{{ele.name}}</span> {{ele.info}}</p>
+              <p :class="['fl',
+                {'complete-parent': ele.type === 7,
+                'complete-child': ele.type === 9,
+                'protrude': ele.type === 7 || ele.type === 9,
+                'tc-red': ele.type === 7,
+                'tc-2': ele.type === 9}]">
+                <span>{{ele.name}}</span> {{ele.info}}</p>
               <p class="date fr">{{ele.date}}</p>
             </li>
           </ul>
           <ul v-else>
             <li class="clearfix"
               v-for="(ele, index) in currentForm['limitMoments']" :key="index">
-              <p class="fl"><span class="tc-2">{{ele.name}}</span> {{ele.info}}</p>
+              <p :class="['fl',
+                {'complete-parent': ele.type === 7,
+                'complete-child': ele.type === 9,
+                'protrude': ele.type === 7 || ele.type === 9,
+                'tc-red': ele.type === 7,
+                'tc-2': ele.type === 9}]">
+                <span>{{ele.name}}</span> {{ele.info}}</p>
               <p class="date fr">{{ele.date}}</p>
             </li>
           </ul>
@@ -256,7 +268,7 @@
         {
           value: 8,
           label: '非常紧急',
-          color: '#ff5a5f'
+          color: '#FF5A5F'
         }],
         tagsId: [],
         isLoading: false,
@@ -342,7 +354,7 @@
             self.currentForm.over_time = overTime.format('yyyy-MM-dd hh:mm')
           }
         }
-        self.currentForm.item_id = self.projectObject.id
+        self.currentForm.item_id = self.$route.params.id
         self.$http.post(api.task, self.currentForm).then(function (response) {
           self.isCreate = true
           if (response.data.meta.status_code === 200) {
@@ -363,7 +375,7 @@
         const self = this
         self.addChildForm.tier = 1
         self.addChildForm.pid = self.taskState.id
-        self.addChildForm.item_id = self.projectObject.id
+        self.addChildForm.item_id = self.$route.params.id
         self.$http.post(api.task, self.addChildForm).then(function (response) {
           self.isCreate = true
           if (response.data.meta.status_code === 200) {
@@ -433,9 +445,9 @@
           self.$message.error('ID不能为空!')
           return false
         }
-        this.$http.put(api.taskStage, {task_id: id, stage: complate}).then(function (response) {
+        this.$http.put(api.taskStage, {task_id: id, stage: complate, tier: self.currentForm.tier}).then(function (response) {
           if (response.data.meta.status_code === 200) {
-            // self.$set(self.currentForm, 'stage', complate)
+            self.$set(self.currentForm, 'stage', complate)
             self.$store.commit('updateTaskListItem', self.currentForm)
             self.fetchStage()
             self.view(id)
@@ -455,7 +467,7 @@
       completeTask2(id, stage) {
         const self = this
         stage = stage === 2 ? 0 : 2
-        this.$http.put(api.taskStage, {task_id: id, stage: stage}).then(function (response) {
+        this.$http.put(api.taskStage, {task_id: id, stage: stage, tier: 1}).then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.fetchStage()
             self.view(self.taskState.id)
@@ -526,6 +538,9 @@
         }
       },
       updateChild(id, obj) {
+        if (this.oldVal === obj.name) {
+          return
+        }
         this.$http.put(api.taskId.format(id), obj).then((response) => {
           if (response.data.meta.status_code === 200) {
             this.fetchStage()
@@ -601,6 +616,9 @@
       },
       changeExecute(id) {
         this.currentForm.execute_user_id = id
+        this.currentForm.logo_image = this.executeUser.logo_image
+        this.$store.commit('updateTaskListItem', this.currentForm)
+        this.fetchStage()
         this.showMember = false
       },
       removeExecute() {
@@ -611,6 +629,9 @@
         .then((res) => {
           if (res.data.meta.status_code === 200) {
             this.currentForm.execute_user_id = 0
+            this.currentForm.logo_image = null
+            this.$store.commit('updateTaskListItem', this.currentForm)
+            this.fetchStage()
           } else {
             this.$message.error(res.data.meta.message)
           }
@@ -752,14 +773,18 @@
                 let list = [6, 7, 8, 9]
                 if (list.indexOf(item.action_type) !== -1) {
                   arr.push({
+                    type: item.action_type,
                     name: item.user_name,
                     info: item.action,
-                    date: item.date})
+                    date: item.date,
+                    logo: item.logo_image})
                 } else {
                   arr.push({
+                    type: item.action_type,
                     name: item.user_name,
                     info: item.action + item.content,
-                    date: item.date
+                    date: item.date,
+                    logo: item.logo_image
                   })
                 }
               })
@@ -773,14 +798,18 @@
                 let list = [6, 7, 8, 9]
                 if (list.indexOf(item.action_type) !== -1) {
                   arr2.push({
+                    type: item.action_type,
                     name: item.user_name,
                     info: item.action,
-                    date: item.date})
+                    date: item.date,
+                    logo: item.logo_image})
                 } else {
                   arr2.push({
+                    type: item.action_type,
                     name: item.user_name,
                     info: item.action + item.content,
-                    date: item.date})
+                    date: item.date,
+                    logo: item.logo_image})
                 }
               })
               arr2.reverse()
@@ -829,6 +858,7 @@
     border: 1px solid #d2d2d2;
     border-radius: 4px;
     padding: 20px 30px;
+    margin-bottom: 50px;
   }
   .task-detail-header {
     display: flex;
@@ -851,12 +881,33 @@
     border-radius: 4px;
     cursor: pointer;
   }
+  .task-detail-name1 {
+    border: none;
+    position: relative;
+    padding: 0
+  }
+
+  .task-detail-name1::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background: #666;
+    top: 24px;
+    left: 2px;
+  }
   .parent-task-name:hover {
-    color: #ff5a5f
+    color: #FF5A5F
+  }
+  .task-detail-name1:hover {
+    color: #FF5A5F
+  }
+  .task-detail-name1:hover::after {
+    background: #FF5A5F
   }
   .select-parent {
     position: relative;
-    margin-right: 20px;
+    padding-right: 20px;
   }
   .select-menu {
     position: absolute;
@@ -868,12 +919,16 @@
   .stage-list {
     display: none;
     background: #fff;
-    width: 220px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.10);
+    width: 200px;
+    box-shadow: 0 0 6px 2px rgba(0,0,0,0.10);
     position: absolute;
-    left: 0;
+    right: -10px;
     top: 34px;
     z-index: 1;
+  }
+
+  .stage-list0 {
+    left: 0;
   }
   .stage-list li {
     height: 40px;
@@ -938,11 +993,14 @@
   
   .add-task-input {
     position: relative;
-    padding: 20px 0 12px 40px;
+    padding: 20px 0 10px 40px;
     border-bottom: 1px solid #d2d2d2;
   }
+  .add-task-input-no_name {
+    padding: 20px 0 10px;
+  }
   .add-child-input {
-    padding: 20px 30px 20px 40px;
+    padding: 20px 20px 20px 40px;
     border-bottom: none
   }
   .add-child-input .child-more {
@@ -958,7 +1016,7 @@
     cursor: pointer;
   }
   .add-child-input .child-more:hover {
-    border-color: #ff5a5f
+    border-color: #FF5A5F
   }
   .add-task-input.active {
     text-decoration: line-through
@@ -1000,7 +1058,7 @@
     line-height: 24px;
     padding-left: 34px;
     position: relative;
-    color: #ff5a5f;
+    color: #FF5A5F;
     cursor: pointer;
     margin-top: 20px;
   }
@@ -1020,8 +1078,11 @@
     display: flex;
     align-items: center;
     min-height: 40px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     font-size: 14px;
+  }
+  .task-info li:nth-child(3) {
+    align-items: flex-start
   }
   .task-summary {
     padding: 20px 0 0
@@ -1034,7 +1095,7 @@
     min-height: 50px;
     border: 1px solid transparent;
     border-radius: 4px;
-    padding: 8px;
+    padding: 10px 0;
   }
   .task-info li p,
   .task-summary p,
@@ -1080,7 +1141,7 @@
   .tags {
     display: flex;
     flex-wrap: wrap;
-    padding-top: 15px;
+    /* max-width: 200px; */
   }
   .tags span {
     position: relative;
@@ -1088,14 +1149,13 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    padding: 0 8px;
+    padding: 0 10px;
     text-align: center;
     line-height: 24px;
     color: #fff;
     height: 24px;
     border-radius: 12px;
-    margin-right: 15px;
-    margin-bottom: 15px;
+    margin: 4px 8px 0 0;
   }
   .tags span:hover .close-icon-solid {
     opacity: 1;
@@ -1134,7 +1194,7 @@
   }
   .task-member-list li {
     position: relative;
-    margin-right: 10px;
+    margin: 0 10px;
     cursor: pointer;
   }
   .task-member-list li a {
@@ -1181,10 +1241,10 @@
     opacity: 1;
   }
   .task-member-list li a:hover {
-    background-color: #ff5a5f
+    background-color: #FF5A5F
   }
   .task-member-list li a:hover+img {
-    border-color: #ff5a5f;
+    border-color: #FF5A5F;
   }
   .task-member-execute {
     padding-left: 0;
@@ -1194,8 +1254,16 @@
     color: #222;
     font-size: 14px;
   }
+  .task-member-execute li.margin-none {
+    font-family: PingFangSC-Medium;
+    margin: 0;
+    color: #666
+  }
+  .task-member-execute li.margin-none:hover {
+    color: #FF5A5F
+  }
   .task-detail-body p {
-    color: #999
+    /* color: #999 */
   }
   .task-detail-body .show-member {
     margin-top: 20px;
@@ -1240,7 +1308,7 @@
     font-size: 12px;
   }
   .task-moments ul {
-    padding: 20px 0 0
+    padding: 20px 0 0 34px
   }
   .task-moments li {
     padding: 0 0 10px;
@@ -1250,6 +1318,11 @@
   .task-moments li p {
     font-size: 12px;
   }
+  .moment-avator {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
   .task-moments .date {
     color: #999
   }
@@ -1257,6 +1330,39 @@
     cursor: pointer;
     padding-top: 20px;
     color: #666;
+  }
+  .task-moments ul li p.fl {
+    position: relative;
+  }
+  .complete-parent::before,
+  .complete-child::before {
+    content: "";
+    position: absolute;
+    left: -21px;
+    top: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 1px solid #FF5A5F;
+    background: #FF5A5F;
+  }
+  .complete-child::before {
+    border-color: #D2D2D2;
+    background: #D2D2D2;
+  }
+  .complete-parent::after,
+  .complete-child::after {
+    content: "";
+    position: absolute;
+    left: -16px;
+    top: 2px;
+    height: 10px;
+    width: 6px;
+    border: 2px solid #fff;
+    border-left: none;
+    border-top: none;
+    border-radius: 1px;
+    transform: rotate(45deg);
   }
   .task-detail-body .p-moments:hover {
     color: #222
@@ -1267,5 +1373,10 @@
   }
   .add-child-ul .template input {
     border-color: #d2d2d2;
+  }
+  .tags-parent {
+    position: relative;
+    height: 32px;
+    width: 100px;
   }
 </style>

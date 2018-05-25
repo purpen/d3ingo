@@ -17,24 +17,29 @@
         </hgroup>
         <div class="nav-right nav-menu" v-if="isLogin">
           <a class="nav-item is-hidden-mobile" @click="viewMsg" ref="msgList">
-              <span class="icon active">
-                <i class="fx-4 fx-icon-notice">
-                  <span v-if="messageCount.quantity">{{ messageCount.quantity }}</span>
-                </i>
-              </span>
-              <div :class="['view-msg',{'view-msg-plus': msg.message || msg.notice}]">
-              <!-- <div :class="['view-msg']"> -->
-                <router-link :to="{name: 'vcenterMessageList'}" class="news">
-                  <i class="fx-4 fx-icon-notice"></i><i class="fx-4 fx-icon-news-hover"></i>
-                  <span v-if="messageCount.message"><b>{{messageCount.message}}</b>条[项目提醒]未查看</span>
-                  <span v-else>[项目提醒]</span>
-                </router-link>
-                <router-link :to="{name: 'systemMessageList'}" class="notice">
-                  <i class="fx-4 fx-icon-sound-loudly"></i><i class="fx-4 fx-icon-notice-hover"></i>
-                  <span v-if="messageCount.notice"><b>{{messageCount.notice}}</b>条[系统通知]未查看</span>
-                  <span v-else>[系统通知]</span>
-                </router-link>
-              </div>
+            <span class="icon active">
+              <i class="fx-4 fx-icon-notice">
+                <span v-if="msgCount.quantity">{{ msgCount.quantity }}</span>
+              </i>
+            </span>
+            <!-- <div :class="['view-msg',{'view-msg-plus': msgCount.quantity}]"> -->
+            <div class="view-msg">
+              <a @click="showCover = true, myView = 'order'" class="news">
+                <i class="fx-4 fx-icon-notice"></i><i class="fx-4 fx-icon-news-hover"></i>
+                <span v-if="msgCount.message"><b>{{msgCount.message}}</b>条[订单提醒]未查看</span>
+                <span v-else>[订单提醒]</span>
+              </a>
+              <a @click="showCover = true, myView = 'task'" class="news">
+                <i class="fx-4 fx-icon-notice"></i><i class="fx-4 fx-icon-news-hover"></i>
+                <span v-if="msgCount.design_notice"><b>{{msgCount.design_notice}}</b>条[项目通知]未查看</span>
+                <span v-else>[项目通知]</span>
+              </a>
+              <a @click="showCover = true, myView = 'system'" class="notice">
+                <i class="fx-4 fx-icon-sound-loudly"></i><i class="fx-4 fx-icon-notice-hover"></i>
+                <span v-if="msgCount.notice"><b>{{msgCount.notice}}</b>条[系统通知]未查看</span>
+                <span v-else>[系统通知]</span>
+              </a>
+            </div>
           </a>
           <el-menu class="el-menu-info" mode="horizontal" router>
             <el-submenu index="2">
@@ -44,8 +49,8 @@
                 <span v-if="eventUser.realname" class="b-nickname">{{ eventUser.realname }}</span>
                 <span v-else class="b-nickname">{{ eventUser.account }}</span>
               </template>
-              <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>个人中心</el-menu-item>
-              <el-menu-item index="/admin" v-if="isAdmin > 0 ? true : false"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>后台管理</el-menu-item>
+              <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
+              <el-menu-item index="/admin" v-if="isAdmin > 0 ? true : false"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
               <el-menu-item index="" @click="logout">
                 <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
             </el-submenu>
@@ -128,6 +133,7 @@
       </div>
     </div>
     <div class="header-buttom-line"></div>
+    <Message></Message>
   </div>
 </template>
 
@@ -135,6 +141,7 @@
   import auth from '@/helper/auth'
   import api from '@/api/api'
   import { MSG_COUNT } from '@/store/mutation-types'
+  import Message from '@/components/tools_block/Message'
   export default {
     name: 'head_menu',
     data() {
@@ -159,6 +166,7 @@
         msg: {
           message: 0,
           notice: 0,
+          design_notice: 0,
           quantity: 0
         }
       }
@@ -167,6 +175,7 @@
       $route(to, from) {
         // 对路由变化作出响应...
         // this.navdefact()
+        this.showCover = false
       }
     },
     methods: {
@@ -195,11 +204,8 @@
         const self = this
         this.$http.get(api.messageGetMessageQuantity, {}).then(function (response) {
           if (response.data.meta.status_code === 200) {
-            self.msg.message = parseInt(response.data.data.message)
-            self.msg.notice = parseInt(response.data.data.notice)
-            sessionStorage.setItem('noticeCount', self.msg.notice)
-            let quantity = parseInt(response.data.data.quantity)
-            let msgCount = {message: self.msg.message, notice: self.msg.notice, quantity: quantity}
+            sessionStorage.setItem('noticeCount', response.data.data.notice)
+            let msgCount = response.data.data
             // 写入localStorage
             self.$store.commit(MSG_COUNT, msgCount)
           } else {
@@ -293,7 +299,7 @@
         }
         return menu
       },
-      messageCount() {
+      msgCount() {
         return this.$store.state.event.msgCount
       },
       menuStatus () {
@@ -304,6 +310,22 @@
       },
       hideHeader() {
         return this.$store.state.event.hideHeader
+      },
+      showCover: {
+        get() {
+          return this.$store.state.task.showMessage
+        },
+        set(e) {
+          this.$store.commit('changeShowMsg', e)
+        }
+      },
+      myView: {
+        get() {
+          return this.$store.state.task.myView
+        },
+        set(e) {
+          this.$store.commit('changeMyView', e)
+        }
       }
     },
     created: function () {
@@ -320,6 +342,9 @@
     destroyed() {
       clearInterval(this.requestMessageTask)
       window.addEventListener('resize', this.initPage)
+    },
+    components: {
+      Message: Message
     }
   }
 </script>

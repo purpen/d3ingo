@@ -30,7 +30,7 @@
           <router-link :to="{name: 'question'}" class="">常见问题</router-link>
         </p>
         <p>
-          <router-link :to="{name: 'item'}" class="">服务条款</router-link>
+          <router-link :to="{name: 'terms'}" class="">服务条款</router-link>
         </p>
       </el-col>
 
@@ -184,7 +184,7 @@
   .wxbox h3 {
     margin: 30px;
     font-size: 18px;
-    font-weight: 600;
+    /* font-weight: 600; */
   }
 
   .wxclose {

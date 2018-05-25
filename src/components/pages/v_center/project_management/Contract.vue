@@ -59,26 +59,17 @@
         </router-link>
       </div>
     </section>
-    <!-- <p>全部动态</p>
-    <ul class="dynamic-list">
-      <li>我</li>
-      <li>创建了标签:</li>
-      <li>这是一个标签</li>
-      <li class="fr">10:01</li>
-      <li class="fr">今天</li>
-      <li class="file"><i></i><span>文档说明.png</span></li>
-    </ul> -->
     <el-dialog
-  title="确认删除"
-  :visible.sync="dialogVisible"
-  size="tiny"
-  >
-  <p class="text-center">确认删除此合同</p>
-  <span slot="footer" class="dialog-footer">
-    <button class="small-button white-button" @click="dialogVisible = false">取 消</button>
-    <button class="small-button full-red-button" type="primary" @click="deleteFile()">确 定</button>
-  </span>
-</el-dialog>
+      title="确认删除"
+      :visible.sync="dialogVisible"
+      size="tiny"
+      >
+      <p class="text-center">确认删除此合同</p>
+      <span slot="footer" class="dialog-footer">
+        <button class="small-button white-button" @click="dialogVisible = false">取 消</button>
+        <button class="small-button full-red-button" type="primary" @click="deleteFile()">确 定</button>
+      </span>
+    </el-dialog>
   </section>
 </template>
 <script>
@@ -294,7 +285,7 @@
   cursor:pointer;
 }
 .dialog-footer>button{
-  margin-right:50px;
+  margin-right: 20px;
 }
 .marginlf{
   margin-left:15px;

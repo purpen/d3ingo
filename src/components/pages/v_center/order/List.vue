@@ -158,7 +158,7 @@
   }
   .pub .pub-btn {
     position: absolute;
-    padding: 10px 30px 10px 30px;
+    /* padding: 10px 30px 10px 30px; */
     top: 40%;
     left: 40%;
   }
@@ -178,7 +178,7 @@
     padding: 10px;
   }
   .l-item p {
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: #666;
     padding: 5px 10px 5px 10px;
   }
@@ -216,7 +216,7 @@
     font-size: 1.5rem;
   }
   .btn {
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
   .btn a {
     color: #666;
@@ -228,7 +228,7 @@
     color: #FF5A5F;
   }
   .prefect {
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: #666;
     margin-top: -12px;
     margin-bottom: -10px;

@@ -1,15 +1,13 @@
 <template>
-  <section :class="{'project-lists': !leftWidth}">
+  <section :class="{'project-lists': leftWidth === 2}">
     <v-menu currentName="project_management"></v-menu>
-    <el-col :offset="leftWidth"
-      :xs="24"
-      :sm="leftWidth? 20 : 24"
-      :md="leftWidth? 20 : 24"
-      :lg="leftWidth? 20 : 24">
-      <div class="vcenter-container blank40">
+    <div :class="{'vcenter-right-plus': leftWidth === 4,
+      'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}">
+      <div class="vcenter-container blank30">
         <h2>项目管理</h2>
         <ul class="project-list" v-loading.body="isLoading">
-          <li class="create">
+          <li class="create" @click="showCover" v-if="isCompanyAdmin">
             <p @click="showCover">
               <i></i>
               <span>创建新项目</span>
@@ -24,10 +22,10 @@
                   <span class="more">
                   </span>
                   <span class="delete" @click="projectDelete(ele.id, index)">
-                    删除{{ele.id}}
+                    删除
                   </span>
                 </p>
-                <span class="favorite-star fr" v-if="false"></span>
+                <span @click="setCollect(ele.id, ele.collect)" :class="['favorite-star', 'fr', {'favorite-star-light': ele.collect === 1}]"></span>
               </div>
             </div>
             <div class="content" @click="routePush(ele.id)">
@@ -38,8 +36,10 @@
           </li>
         </ul>
       </div>
-    </el-col>
-    <div class="dialog-bg" v-if="show.cover"></div>
+      <el-pagination v-show="query.totalCount > query.pageSize" class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize" :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange">
+      </el-pagination>
+    </div>
+    <div class="dialog-bg" @click="closeCover" v-if="show.cover"></div>
       <div class="dialog-content" v-if="show.createContent">
         <div class="dialog-header">
           创建项目
@@ -66,8 +66,6 @@
           </p>
         </div>
       </div>
-      <el-pagination v-if="query.totalCount / query.pageSize > 1" class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize" :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange">
-      </el-pagination>
   </section>
 </template>
 <script>
@@ -118,13 +116,14 @@ export default {
           this.query.totalCount = 0
           this.query.totalPges = 0
         }
-        let pages2 = this.query.totalCount % this.query.pageSize
-        let pages = Math.floor(this.query.totalCount / this.query.pageSize)
-        pages = pages2 ? pages + 1 : pages
-        console.log(pages)
-        if (this.query.page > pages) {
-          this.query.page = pages
-          this.$router.push({name: this.$route.name, query: {page: pages}})
+        if (res.data.meta.pagination.count) {
+          let pages2 = this.query.totalCount % this.query.pageSize
+          let pages = Math.floor(this.query.totalCount / this.query.pageSize)
+          pages = pages2 ? pages + 1 : pages
+          if (this.query.page > pages) {
+            this.query.page = pages
+            this.$router.push({name: this.$route.name, query: {page: pages}})
+          }
         }
       }).catch(err => {
         this.isLoading = false
@@ -189,20 +188,39 @@ export default {
       this.query.page = page
       this.$router.push({name: this.$route.name, query: {page: this.query.page}})
       this.getProjectList()
+    },
+    setCollect(id, collect) {
+      collect = collect === 1 ? 0 : 1
+      this.$http.put(api.designProjectCollect, {id: id, collect: collect})
+      .then((res) => {
+        if (res.data.meta.status_code === 200) {
+          this.$nextTick(_ => {
+            this.projectList.forEach((item) => {
+              if (item.id === id) {
+                this.$set(item, item.collect, collect)
+              }
+            })
+          })
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        console.error(err.message)
+        this.$message.error(err.message)
+      })
     }
   },
   computed: {
     leftWidth() {
-      let leftWidth = this.$store.state.event.leftWidth
-      if (this.isMob) {
-        return 0
-      } else {
-        if (leftWidth === 2) {
-          return 0
-        } else if (leftWidth === 4) {
-          return leftWidth
-        }
+      return this.$store.state.event.leftWidth
+    },
+    // 是否为管理员
+    isCompanyAdmin() {
+      let companyRoleId = this.$store.state.event.user.company_role
+      if (companyRoleId === 20 || companyRoleId === 10) {
+        return true
       }
+      return false
     },
     isMob() {
       return this.$store.state.event.isMob
@@ -218,37 +236,44 @@ export default {
   watch: {
     '$route'(to, from) {
       // 对路由变化作出响应...
-      this.getProjectList()
+      // this.getProjectList()
     }
   }
 }
 </script>
 <style scoped>
   h2 {
-    font-size: 16px;
+    font-size: 18px;
   }
   .project-list {
     display: flex;
+    justify-content: flex-start;
     flex-wrap: wrap;
-    padding: 15px 0
+    padding: 15px 0;
+    /* transform-style: preserve-3d; */
   }
 
   .project-list li {
     cursor: pointer;
     min-height: 168px;
     position: relative;
-    width: 30%;
-    margin-right: 20px;
+    width: 32%;
     margin-bottom: 20px;
     background: #f7f7f7;
     padding: 20px;
     padding-bottom: 40px;
-  transition: transform .218s ease;
+    transition: transform .218s ease;
+    /* transform: translate3d(0, 0, 0) */
   }
 
+  .project-list li:nth-child(3n-1) {
+    margin: 0 2% 20px
+  }
   .project-list li:hover {
+    /* transform: translate3d(0, -5px, 2px); */
     /* transform: translateY(-5px); */
-    box-shadow: 0 9pt 24px rgba(10,10,10,.15);
+    z-index: 1;
+    box-shadow: 6px 6px 10px rgba(10, 10, 10, 0.15);
   }
   .project-list li a {
     display: block;
@@ -275,7 +300,7 @@ export default {
   }
   .project-list li.create p i:hover {
     background: url(../../../../assets/images/member/add-hover@2x.png) no-repeat center;
-    background-size: contain  
+    background-size: contain
   }
   .project-list li h3 {
     line-height: 24px;
@@ -285,11 +310,14 @@ export default {
   .favorite-star {
     display: inline-block;
     cursor: pointer;
-    margin-right: 10px;
+    margin-right: 20px;
     width: 24px;
     height: 24px;
-    background: url(../../../../assets/images/tools/project_management/Collection.png) no-repeat center;
-    background-size: contain
+    background: url(../../../../assets/images/tools/project_management/Collection.png) no-repeat center / contain;
+  }
+
+  .favorite-star-light {
+    background: url(../../../../assets/images/tools/project_management/CollectionLight.png) no-repeat center / contain;
   }
 
   .favorite-star.active {
@@ -305,16 +333,21 @@ export default {
     background-size: contain
   }
   .operate {
-    position: relative;
+    position: absolute;
+    right: 0;
+    top: 20px;
+    width: 34px;
+    height: 24px;
   }
-  .operate:focus .delete {
+  .operate:focus .delete,
+  .operate:hover .delete {
     display: block;
   }
   .delete {
     display: none;
     position: absolute;
     z-index: 1;
-    left: 0;
+    right: 10px;
     top: 24px;
     width: 180px;
     height: 40px;
@@ -330,7 +363,7 @@ export default {
   }
   .content {
     max-height: 63px;
-    height: 63px;
+    /* height: 63px; */
     margin: 10px 0;
     line-height: 1.5;
     font-size: 14px;
@@ -359,6 +392,8 @@ export default {
   }
   .dialog-bg {
     position: fixed;
+    top: 60px;
+    left: 0;
     z-index: 1999;
     width: 100vw;
     height: 100vh;
@@ -488,9 +523,6 @@ export default {
   .summary:hover {
     color: #666;
   }
-  .project-lists {
-    padding-left: 60px;
-  }
   .pagination {
     text-align: center;
     white-space: inherit
@@ -498,14 +530,19 @@ export default {
   @media screen and (max-width: 767px) {
     .project-list li {
       width: 100%;
-      margin-right: 0
+      margin-right: 0;
+    }
+    .project-list li:nth-child(3n-1) {
+      margin: 0 0 20px 0
     }
     .project-lists {
       padding-left: 0;
-      padding-top: 20px;
     }
     .vcenter-container {
       margin-top: 0;
+    }
+    .project-list {
+      display: block
     }
   }
 </style>

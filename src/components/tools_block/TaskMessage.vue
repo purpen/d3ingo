@@ -117,7 +117,7 @@
         if (d.is_show) {
           this.itemList[index].is_show = false
         } else {
-          // this.fetchMessageCount()
+          this.fetchMessageCount()
           this.itemList[index].is_show = true
         }
         // 确认已读状态
@@ -135,6 +135,7 @@
       },
       // 根据类型跳转
       redirect(d) {
+        this.showCover = false
         if (d.operation_log.target_type === 1) {
           this.$router.push({name: 'projectManagementTask', params: {id: d.operation_log.model_id}})
         }
@@ -147,19 +148,30 @@
             var message = 0
             var notice = 0
             var quantity = 0
-            if (parseInt(response.data.data.message)) {
-              message = parseInt(response.data.data.message) - 1
+            var designNotice = 0
+            if (response.data.data.message) {
+              message = response.data.data.message - 1
             } else {
-              message = parseInt(response.data.data.message)
+              message = response.data.data.message
             }
-            notice = parseInt(response.data.data.notice)
+            notice = response.data.data.notice
             sessionStorage.setItem('noticeCount', notice)
-            if (parseInt(response.data.data.quantity)) {
-              quantity = parseInt(response.data.data.quantity) - 1
+            if (response.data.data.quantity) {
+              quantity = response.data.data.quantity - 1
             } else {
-              quantity = parseInt(response.data.data.quantity)
+              quantity = response.data.data.quantity
             }
-            var msgCount = {message: message, notice: notice, quantity: quantity}
+            designNotice = response.data.data.design_notice
+            if (response.data.data.design_notice) {
+              designNotice = response.data.data.design_notice - 1
+            } else {
+              designNotice = response.data.data.design_notice
+            }
+            var msgCount = {
+              message: message,
+              design_notice: designNotice,
+              notice: notice,
+              quantity: quantity}
             // 写入localStorage
             self.$store.commit(MSG_COUNT, msgCount)
           } else {
@@ -171,6 +183,14 @@
       }
     },
     computed: {
+      showCover: {
+        get() {
+          return this.$store.state.task.showMessage
+        },
+        set(e) {
+          this.$store.commit('changeShowMsg', e)
+        }
+      },
       isMob() {
         return this.$store.state.event.isMob
       },
@@ -218,7 +238,7 @@
 
   .content-box .item {
     position: relative;
-    border: 1px solid #ccc;
+    border: 1px solid #E6E6E6;
     margin-bottom: -1px;
     padding: 20px;
     cursor: pointer;
@@ -228,7 +248,7 @@
   }
 
   .content-box .item:hover {
-    background-color: #F2F1F1;
+    background-color: #F7F7F7;
   }
 
   .item p {

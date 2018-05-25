@@ -1,6 +1,6 @@
 <template>
   <div class="identification">
-    <div class="blank20"></div>
+    <div class="blank30 vcenter"></div>
     <el-row>
       <v-menu currentName="company"></v-menu>
 
@@ -626,7 +626,7 @@
   }
 
   .diage-footer button {
-    padding: 10px 30px;
+    /* padding: 10px 30px; */
   }
 
   .agree-content {

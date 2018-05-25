@@ -16,11 +16,10 @@
         :to="{name: 'projectManagementFile',
         params: {id: routeId},
         query: {id: projectObject.pan_director_id}}">文件</router-link>
-      <router-link :class="[{'active': currentRoute === 'projectManagementIncomeandExpenses'}]"
+      <router-link v-if="false" :class="[{'active': currentRoute === 'projectManagementIncomeandExpenses'}]"
         :to="{name: 'projectManagementIncomeandExpenses', params: {id: routeId}}">收支</router-link>
     </div>
     <div class="pm-right">
-      <router-link class="need" to="">项目需求</router-link>
       <router-link :to="{name: 'projectQuote', params: {id: routeId}}" :class="['quotation', {'active': isQuote}]">项目报价</router-link>
       <router-link class="contract border-right" :to="{name: 'projectContract', params: {id: routeId}}">合同</router-link>
       <a @click.self="controlMemberShow" class="member border-right">
@@ -40,7 +39,7 @@
           ></v-Member>
         </div>
       </a>
-      <a tabindex="-1" class="menu" ref="menu">
+      <a tabindex="-1" @focus="showMenu = true" @blur="showMenu = false" class="menu" ref="menu">
         <div class="word">菜单</div>
         <div class="menu-con">
           <div class="menu-header"><span>项目菜单</span>
@@ -50,16 +49,16 @@
             <p v-if="false" class="menu-label"><span>标签</span></p>
             <hr>
             <p class="menu-moment"><span>项目动态</span></p>
-            <ul class="item-moments">
-              <li>
+            <ul class="item-moments" v-if="shortProjectMoments.length">
+              <li v-for="(ele, index) in shortProjectMoments" :key="index">
                 <img class="br50 b-d2" src="" alt="">
                 <div class="item-con">
-                  <p class="tc-2"><span>王二</span>创建主任务</p>
-                  <p class="fz-12 tc-6">2018年05月08日 14:13:36</p>
+                  <p class="tc-2"><span>{{ele.user_name}}</span>{{ele.action}}</p>
+                  <p class="fz-12 tc-6">{{ele.date}}</p>
                 </div>
               </li>
             </ul>
-            <p>查看所有项目动态</p>
+            <p v-if="projectMoments.length > 5" @click="showDynamic">查看所有项目动态</p>
           </div>
         </div>
       </a>
@@ -452,6 +451,24 @@
         </div>
       </div>
     </section>
+    <section :class="['cover2',{'show-dynamic': cover2}]">
+      <div class="cover-header2">
+        <span>全部项目动态</span>
+        <i class="fx fx-icon-nothing-close-error" @click="cover2 = false"></i>
+      </div>
+      <div class="cover2-content">
+        <h3>全部动态</h3>
+        <ul class="cover2-list">
+          <li v-for="(ele, index) in projectMoments" :key="index">
+            <img class="br50 b-d2" src="" alt="">
+            <div class="list-con clearfix">
+              <p class="tc-2 fl"><span>{{ele.user_name}}</span>{{ele.action}}</p>
+              <p class="fz-12 tc-6 fr">{{ele.date}}</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
   </header>
 </template>
 <script>
@@ -476,6 +493,7 @@ export default {
   data() {
     return {
       cover: false,
+      cover2: false,
       option: 'project', // project customer permission
       project: {
         name: '',
@@ -513,23 +531,27 @@ export default {
       isClientLoadingBtn: false,
       isServerLoadingBtn: false,
       isFirstRegion: false,
-      levels: [{
-        value: 1,
-        label: '普通',
-        color: '#999'
-      },
-      {
-        value: 2,
-        label: '紧急',
-        color: '#ffd330'
-      },
-      {
-        value: 3,
-        label: '非常紧急',
-        color: '#ff5a5f'
-      }],
+      levels: [
+        {
+          value: 1,
+          label: '普通',
+          color: '#999'
+        },
+        {
+          value: 2,
+          label: '紧急',
+          color: '#ffd330'
+        },
+        {
+          value: 3,
+          label: '非常紧急',
+          color: '#ff5a5f'
+        }],
       itemId: -1,
-      showMember: false
+      showMember: false,
+      showMenu: false,
+      projectMoments: [],
+      shortProjectMoments: []
     }
   },
   computed: {
@@ -742,6 +764,77 @@ export default {
     showCover() {
       this.cover = true
       this.closeMenu()
+    },
+    showDynamic() {
+      this.cover2 = true
+    },
+    itemFormat(item) {
+      item['date'] = item.created_at.date_format().format('yyyy年MM月dd日 hh:mm:ss')
+      switch (item.action_type) {
+        case 1:
+          item['action'] = '创建主任务'
+          break
+        case 2:
+          item['action'] = '创建子任务'
+          break
+        case 3:
+          item['action'] = '更改了任务名称为：'
+          break
+        case 4:
+          item['action'] = '更改了备注为：'
+          break
+        case 5:
+          item['action'] = '更新任务优先级为：'
+          switch (Number(item['content'])) {
+            case 1:
+              item['content'] = '普通'
+              break
+            case 5:
+              item['content'] = '紧急'
+              break
+            case 8:
+              item['content'] = '非常重要'
+              break
+          }
+          break
+        case 6:
+          item['action'] = '重做了父任务'
+          break
+        case 7:
+          item['action'] = '完成了父任务'
+          break
+        case 8:
+          item['action'] = '重做了子任务'
+          break
+        case 9:
+          item['action'] = '完成了子任务'
+          break
+        case 10:
+          item['action'] = '更新了截至时间：'
+          break
+      }
+    },
+    getMoments() {
+      this.$http.get(api.designProjectDynamic, {params: {
+        item_id: this.projectObject.id
+      }}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.projectMoments = res.data.data
+          for (let i of this.projectMoments) {
+            this.itemFormat(i)
+          }
+          // shortProjectMoments
+          if (this.projectMoments.length > 5) {
+            this.shortProjectMoments = this.projectMoments.slice(0, 5)
+          } else {
+            this.shortProjectMoments = this.projectMoments
+          }
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        console.error(err)
+      })
     }
   },
   watch: {
@@ -791,11 +884,34 @@ export default {
           design_address: this.projectObject.design_address
         }
       }
+    },
+    showMenu(val) {
+      if (val) {
+        this.getMoments()
+      }
     }
   },
   created() {
     this.itemId = this.$route.params.id
     // console.log(this.projectObject)
+  },
+  directives: {
+    focus: {
+      inserted(el, binding) {
+        if (binding.value) {
+          el.focus()
+        } else {
+          el.blur()
+        }
+      },
+      componentUpdated(el, binding) {
+        if (binding.value) {
+          el.focus()
+        } else {
+          el.blur()
+        }
+      }
+    }
   }
 }
 </script>
@@ -807,7 +923,7 @@ header {
   background: #f7f7f7;
 }
 .pm-left {
-  min-width: 380px;
+  /* min-width: 380px; */
   font-size: 0;
   padding-left: 20px;
   flex: 1 0 auto;
@@ -897,7 +1013,7 @@ header {
   background-size: contain
 }
 .pm-middle {
-  flex: 0 1 600px;
+  flex: 1 1 auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -910,15 +1026,19 @@ header {
   border-bottom: 3px solid transparent;
   transition: border-color .3s,background-color .3s,color .3s;
 }
+.pm-middle a:last-child {
+  margin-right: 0
+}
 .pm-middle a:hover, .pm-middle a.active {
   color: #ff5a5f;
   border-bottom: 3px solid #ff5a5f
 }
 .pm-right {
   display: flex;
-  flex: 1 0 440px;
+  flex: 1 1 auto;
   justify-content: flex-end;
   align-items: center;
+  min-width: 320px;
 }
 .cover {
   position: fixed;
@@ -932,6 +1052,47 @@ header {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+.cover2 {
+  position: fixed;
+  z-index: 99;
+  left: 0;
+  top: 60px;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  background: #fff;
+  transition: 0.45s all ease-in;
+  transform: translateY(-150%);
+}
+.cover2-content {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.cover2-content h3 {
+  padding: 20px 0 10px;
+  font-size: 16px;
+  color: #222
+}
+.cover2-list li {
+  min-height: 60px;
+  border-bottom: 1px solid #e6e6e6;
+  display: flex;
+  align-items: center;
+}
+.cover2-list li img{
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+.cover2-list .list-con {
+  flex: 1 1 auto;
+  line-height: 60px;
+  min-height: 60px;
+}
+.show-dynamic {
+  transition: 0.45s all cubic-bezier(0, 1, 0.5, 1);
+  transform: translateY(0);
 }
 .cover-content {
   flex: 1;
@@ -958,6 +1119,28 @@ header {
   position: absolute;
   top: 18px;
   right: 15px;
+}
+
+.cover-header2 {
+  position: relative;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid #d7d7d7
+}
+.cover-header2 span {
+  cursor: pointer;
+  height: 50px;
+  line-height: 50px;
+  font-size: 14px;
+  color: #666;
+  border-bottom: 3px solid transparent
+}
+.cover-header2 i {
+  position: absolute;
+  right: 30px;
+  top: 17px;
 }
 .cover-body {
   flex: 0 1 auto;
@@ -1044,7 +1227,7 @@ header {
   right: 10px;
   top: 48px;
   background: #fff;
-  z-index: 1;
+  z-index: 99;
   width: 380px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1)
 }

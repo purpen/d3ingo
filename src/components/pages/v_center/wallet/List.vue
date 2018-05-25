@@ -1,9 +1,10 @@
 <template>
-  <div class="blank20">
+  <div class="blank30 vcenter">
     <el-row>
       <v-menu currentName="wallet"></v-menu>
-
-      <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
+      <div :class="{'vcenter-right-plus': leftWidth === 4,
+        'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}">
         <div class="right-content vcenter-container">
           <div :class="['my-wallet', isMob ? 'my-wallet-m' : '' ]">
             <div class="wallet-box">
@@ -138,7 +139,7 @@
 
             <el-pagination
               class="pagination"
-              v-if="query.totalCount > 1"
+              v-if="query.totalCount / query.pageSize > 1"
               @current-change="handleCurrentChange"
               :current-page="query.page"
               :page-size="query.pageSize"
@@ -148,7 +149,7 @@
           </div>
 
         </div>
-      </el-col>
+      </div>
     </el-row>
 
     <!--弹框模板-->
@@ -454,7 +455,6 @@
   .my-wallet-m {
     border: 1px solid #e6e6e6;
     height: auto;
-    margin-top: 20px;
   }
 
   .wallet-box {
@@ -523,9 +523,9 @@
     text-align: center;
   }
 
-  .amount-btn button {
+  /* .amount-btn button {
     padding: 8px 25px;
-  }
+  } */
 
   .amount-btn-m button {
     margin-top: 20px;
@@ -562,9 +562,9 @@
   }
 
   .item-box h3 {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     color: #666;
-    line-height: 2;
+    /* line-height: 2; */
   }
 
   .item-box-m h3 {
@@ -627,7 +627,7 @@
 
   .vcenter-menu-sub::after {
     content: "";
-    position: absolute;
+    /* position: absolute; */
     width: 100%;
     top: 42px;
     left: 0;
@@ -637,7 +637,7 @@
   @media screen and (max-width: 767px) {
     .vcenter-menu-sub::after {
       content: "";
-      position: absolute;
+      /* position: absolute; */
       width: 100%;
       top: 47px;
       left: 0;

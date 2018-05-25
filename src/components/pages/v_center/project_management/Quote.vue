@@ -287,9 +287,11 @@ export default {
     border-bottom: solid #EBEBEB 1px;
     margin: 10px 0 20px 0;
   }
-
+  .form-btn {
+    margin-bottom: 50px;
+  }
   .form-btn button {
-    padding: 10px 40px;
+    /* padding: 10px 40px; */
     margin: 0px;
     margin-left: 20px;
   }

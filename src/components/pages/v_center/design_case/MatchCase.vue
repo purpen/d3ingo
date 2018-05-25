@@ -2,7 +2,6 @@
   <div class="blank30 vcenter">
     <el-row>
       <v-menu :class="[isMob ? 'v-menu' : '']" currentName="design_case"></v-menu>
-
       <div :class="{'vcenter-right-plus': leftWidth === 4,
         'vcenter-right': leftWidth === 2,
         'vcenter-right-mob': isMob}">
@@ -10,35 +9,36 @@
           <v-menu-sub></v-menu-sub>
           <div :class="['content-box', isMob ? 'content-box-m' : '']">
             <!-- <div class="form-title">
-              <span>作品案例</span>
+              <span>提交产品</span>
             </div> -->
 
             <div class="design-case-list" v-loading.body="isLoading">
               <el-row :gutter="20">
                 <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                  <router-link :to="{name: 'vcenterDesignCaseAdd'}" class="item item-add el-card">
+                  <router-link :to="{name: 'vcenterMatchCaseCreated'}" class="item item-add el-card">
                     <i class="add-icon"></i>
-                    <p class="tc-red fz-16">添加作品案例</p>
+                    <p class="tc-red fz-16">提交产品案例</p>
                   </router-link>
                 </el-col>
+
                 <el-col :xs="24" :sm="8" :md="8" :lg="8" v-for="(d, index) in designCases" :key="index">
                   <el-card :body-style="{ padding: '0px' }" class="item">
                     <div tabindex="-1" class="item-more" ref="itemMore">
                       <i></i>
                       <ul>
-                        <li @click="blurItemMore(index)" class="edit"><router-link :to="{name: 'vcenterDesignCaseEdit',
-                          params: {id: d.id}}">编辑</router-link></li>
+                        <li @click="blurItemMore(index)" class="edit"><router-link :to="{name: 'vcenterMatchCaseEdit',
+                          params: {id: d.id, match_id: d.match_id}}">编辑</router-link></li>
                         <li class="del" @click="delItem(d.id, index)">删除</li>
                       </ul>
                     </div>
                     <div class="image-box">
-                      <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
-                        :target="isMob ? '_self' : '_blank'">
-                        <img v-if="d.cover" :src="d.cover.middle">
+                      <router-link :to="{name: 'vcenterMatchCaseShow', params: {id: d.id}}"
+                                   :target="isMob ? '_self' : '_blank'">
+                        <img v-lazy="d.cover.middle">
                       </router-link>
                     </div>
                     <div class="content">
-                      <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
+                      <router-link :to="{name: 'vcenterMatchCaseShow', params: {id: d.id}}"
                         :target="isMob ? '_self' : '_blank'"
                         class="tc-2 protrude">{{ d.title }}
                       </router-link>
@@ -50,7 +50,7 @@
             </div>
             <!-- <div class="add blank20">
               <el-button class="is-custom" @click="add" type="primary">
-                <i class="el-icon-plus"></i> 添加作品案例
+                <i class="el-icon-plus"></i> 提交产品
               </el-button>
             </div> -->
           </div>
@@ -95,7 +95,7 @@
           type: 'warning'
         }).then (() => {
           const that = this
-          that.$http.delete (api.designCaseId.format (id), {})
+          that.$http.delete (api.workid.format (id), {})
             .then (function (response) {
               if (response.data.meta.status_code === 200) {
                 that.$message.success ('删除成功!')
@@ -111,27 +111,29 @@
         })
       },
       // 添加作品案例
-      // add() {
-      //   this.$router.push ({name: 'vcenterDesignCaseAdd'})
-      // },
+      add() {
+        this.$router.push ({name: 'vcenterMatchCaseCreated'})
+      },
       getDesignCase () {
         const that = this
         that.isLoading = true
-        that.$http.get (api.designCase, {})
-        .then (function (response) {
+        that.$http.get (api.work)
+        .then ((res) => {
           that.isLoading = false
-          if (response.data.meta.status_code === 200) {
-            that.designCases = response.data.data
+          if (res.data.meta.status_code === 200) {
+            that.designCases = res.data.data
             for (let i of that.designCases) {
-              if (i.cover.created_at) {
-                i.date = i.cover.created_at.date_format().format('yy-MM-dd')
+              if (i.created_at) {
+                i.date = i.created_at.date_format().format('yy-MM-dd')
               }
             }
+          } else {
+            that.$message.error (res.data.meta.message)
           }
         })
-        .catch (function (error) {
-          that.$message.error (error.message)
+        .catch ((err) => {
           that.isLoading = false
+          console.error (err)
         })
       },
       blurItemMore(i) {
@@ -167,15 +169,15 @@
     border-top: 1px solid #E6E6E6;
     margin: 0;
     padding: 0;
-    }
+  }
 
   .content-box-m .form-title {
     margin: 10px 0 6px;
-    }
-    
+  }
+
   .design-case-list .item {
     min-height: 240px;
-    }
+  }
 
   .item {
     position: relative;
@@ -273,22 +275,23 @@
     font-size: 1.4rem;
     margin-bottom: 10px;
     }
+
   .opt {
     margin: 10px 0 0 0;
     text-align: right;
-    }
+  }
 
   .opt a {
     font-size: 1.2rem;
-    }
+  }
 
   @media screen and (max-width: 767px) {
     .opt a {
       font-size: 1.4rem;
-      }
     }
+  }
 
   .add {
     text-align: center;
-    }
+  }
 </style>

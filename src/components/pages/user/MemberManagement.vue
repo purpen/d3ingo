@@ -1,108 +1,114 @@
 <template>
-  <el-row :class="['member-management',{'member-management-mini' : !leftWidth}]">
+  <el-row :class="['member-management',{'member-management-mini' : !leftWidth, 'member-management-mob': isMob}]">
     <v-menu-left currentName="member"></v-menu-left>
-    <el-col :xs="24" :sm="4" :md="4" :lg="4" :offset="leftWidth">
-      <member-menu
-        :memberLeft="memberLeft"
-        :liActive="liActive"
-        @changeType="changeType"
-        @getGroupMember="getGroupMember"
-        @searchMember="searchMember"
-        @cancelSearch="creatGetList"
-        @createGroup="confirmCreateGroup"></member-menu>
-    </el-col>
-    <el-col :xs="24" :sm="16" :md="16" :lg="16">
-      <section :class="['member-list', {'member-list-mini' : !leftWidth}]"
-        v-loading.body="loading">
-        <div class="member-list-header">
-          <p class="fl">
-            {{firstGroupName}}
-          </p>
-          <p v-if="type === 'member' && company_role === 20" class="invite fr" @click="getVerifyStatus">邀请成员</p>
-          <div :class="['fr', 'more-list','more-list-group', {'active': isShowGroup}]"
-            v-if="company_role === 10 || company_role === 20"
-            v-show="type === 'group' && memberList.length">
-            <i class="header-icon" @click.stop="isShowGroup = !isShowGroup"></i>
-            <ul>
-              <li @click.stop="confirmRenameGroup">重命名</li>
-              <li @click.stop="confirmRemoveGroup">删除群组</li>
-            </ul>
-          </div>
-          <div v-if="type === 'group'" class="invite fr" @click="groupConfirmPush">
-            <span>添加成员</span>
-            <div class="cententList" v-if="showGroupPush">
-              <p class="clearfix">添加成员
-                <i class="fr fx-icon-nothing-close-error" @click.stop="showGroupPush = false"></i>
-              </p>
-              <div class="side clearfix">
-                <ul>
-                    <li :class="['info', {'active': addMemberIdList.indexOf(d.id) !== -1}]" v-for="(d, index) in itemList" :key="index" @click="addOrremoveMember(d.id)">
-                      <img v-if="d.logo_image" :src="d.logo_image.logo" alt="">
-                      <img v-else :src="require('assets/images/avatar_100.png')">
-                      <span class="name">{{d.realname}}</span>
-                      <span class="name">{{d.id}}</span>
-                    </li>
-                  </ul>
-                  <p v-if="company_role === 20" @click="getVerifyStatus" class="welcome">通过链接邀请</p>
+    <section :class="['parent-box',
+    {'parent-box-mob': isMob}]">
+      <el-col :span="isMob? 24: 4">
+        <member-menu
+          :memberLeft="memberLeft"
+          :liActive="liActive"
+          @changeType="changeType"
+          @getGroupMember="getGroupMember"
+          @searchMember="searchMember"
+          @cancelSearch="creatGetList"
+          @createGroup="confirmCreateGroup"></member-menu>
+      </el-col>
+      <el-col :span="isMob? 24: 20">
+        <section :class="['member-list', {'member-list-mini' : !leftWidth,
+        'member-list-mob': isMob}]"
+          v-loading.body="loading">
+          <div class="member-list-header">
+            <p class="fl">
+              {{firstGroupName}}
+            </p>
+            <p v-if="type === 'member' && company_role === 20" class="invite fr" @click="getVerifyStatus">邀请成员</p>
+            <div tabindex="-1" ref="moreOption" :class="['fr', 'more-list','more-list-group']"
+              v-if="company_role === 10 || company_role === 20"
+              v-show="type === 'group' && memberList.length">
+              <i class="header-icon"></i>
+              <ul>
+                <li @click.stop="confirmRenameGroup">重命名</li>
+                <li @click.stop="confirmRemoveGroup">删除群组</li>
+              </ul>
+            </div>
+            <div v-if="type === 'group'" class="invite fr" @click="groupConfirmPush">
+              <span>添加成员</span>
+              <div class="cententList" v-if="showGroupPush">
+                <p class="clearfix">添加成员
+                  <i class="fr fx-icon-nothing-close-error" @click.stop="showGroupPush = false"></i>
+                </p>
+                <div class="side clearfix">
+                  <ul>
+                      <li :class="['info', {'active': addMemberIdList.indexOf(d.id) !== -1}]" v-for="(d, index) in itemList" :key="index" @click="addOrremoveMember(d.id)">
+                        <img v-if="d.logo_image" :src="d.logo_image.logo" alt="">
+                        <img v-else :src="require('assets/images/avatar_100.png')">
+                        <span class="name">{{d.realname}}</span>
+                        <span class="name">{{d.id}}</span>
+                      </li>
+                    </ul>
+                    <p v-if="company_role === 20" @click="getVerifyStatus" class="welcome">通过链接邀请</p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="member-title">
-          <el-col :span="8"><p>成员名称</p></el-col>
-          <el-col :span="type === 'group' ? 8 : 12"><p>职位</p></el-col>
-          <el-col v-if="type === 'group'" :span="6"><p>成员属性</p></el-col>
-          <el-col :class="[{'align-right': type === 'group'}]" :span="type === 'group' ? 2 : 4"><p>操作</p></el-col>
-        </div>
-        <ul class="member-item">
-          <li v-for="(ele, index) in memberList" :key="index" @click="closeCover">
-            <el-col :span="8">
-              <div class="info" @click.stop="viewMember(ele)">
-                <img v-if="ele.logo_image" :src="ele.logo_image.logo" alt="">
-                <img v-else :src="require('assets/images/avatar_100.png')">
-                <span v-if="ele.realname">{{ele.realname}}</span>
-                <span v-else>{{ele.username}}</span>
-              </div>
-            </el-col>
-            <el-col :span="type === 'group' ? 8 : 12">
-              <span :style="{display: 'block', height: '60px'}">{{ele.position}}</span>
-            </el-col>
-            <el-col v-if="type === 'group'" :span="6">
-              <span>{{ele.company_role_label}}</span>
-            </el-col>
-            <el-col v-if="type === 'group'" :span="2">
-              <div class="role role-group">
-                <div :class="['more-list','more-list-group', {'active': isShow === index}]"
-                  v-if="company_role === 10 || company_role === 20"
-                  v-show="type === 'group'">
-                  <i @click.stop="changeActive(index)"></i>
-                  <ul>
-                    <li @click.stop="removeMemberFromGroup(ele.id)">从群组移除成员</li>
-                    <li @click.stop="removeMember(ele.id)">从企业移除成员</li>
-                  </ul>
+          <div class="member-title">
+            <el-col :span="8"><p>成员名称</p></el-col>
+            <el-col :span="type === 'group' ? 8 : isMob? 8 : 12"><p>职位</p></el-col>
+            <el-col v-if="type === 'group'" :span="6"><p>成员属性</p></el-col>
+            <el-col :class="[{'align-right': type === 'group'}]" :span="type === 'group' ? 2 : 4"><p>操作</p></el-col>
+          </div>
+          <ul class="member-item">
+            <li v-for="(ele, index) in memberList" :key="index" @click="closeCover">
+              <el-col :span="8">
+                <div class="info" @click.stop="viewMember(ele)">
+                  <img v-if="ele.logo_image" :src="ele.logo_image.logo" alt="">
+                  <img v-else :src="require('assets/images/avatar_100.png')">
+                  <span v-if="ele.realname">{{ele.realname}}</span>
+                  <span v-else>{{ele.username}}</span>
                 </div>
-              </div>
-            </el-col>
-            <el-col v-if="type === 'member'" :span="4">
-              <div class="role">
+              </el-col>
+              <el-col :span="type === 'group' ? 8 : isMob? 8 : 12">
+                <span :style="{display: 'block', height: '60px'}">{{ele.position}}</span>
+              </el-col>
+              <el-col v-if="type === 'group'" :span="6">
                 <span>{{ele.company_role_label}}</span>
-                <div :class="['more-list', {'active': isShow === index}]"
-                  v-if="company_role === 10 || company_role === 20"
-                  v-show="type === 'member' && currentId !== ele.id">
-                  <i @click.stop="changeActive(index)"></i>
-                  <ul>
-                    <li v-if="company_role === 20" @click.stop="setRole(ele.id, 10)">管理员</li>
-                    <li v-if="company_role === 20" @click.stop="setRole(ele.id, 0)">成员</li>
-                    <li v-if="false">停用账号</li>
-                    <li @click.stop="removeMember(ele.id)">从企业移除成员</li>
-                  </ul>
+              </el-col>
+              <el-col v-if="type === 'group'" :span="2">
+                <div class="role role-group">
+                  <div ref="moreListGroup" tabindex="-1" :class="['more-list','more-list-group']"
+                    v-if="company_role === 10 || company_role === 20"
+                    v-show="type === 'group'">
+                    <!-- <i @click.stop="changeActive(index)"></i> -->
+                    <i></i>
+                    <ul>
+                      <li @click="removeMemberFromGroup(ele.id, index)">从群组移除成员</li>
+                      <li @click="removeMember(ele.id, index)">从企业移除成员</li>
+                    </ul>
+                  </div>
                 </div>
-              </div>
-            </el-col>
-          </li>
-        </ul>
-      </section>
-    </el-col>
+              </el-col>
+              <el-col v-if="type === 'member'" :span="isMob? 8 : 4">
+                <div class="role">
+                  <span>{{ele.company_role_label}}<i style="font-size: 0">{{ele.company_role}}</i></span>
+                  <div ref="moreList" tabindex="-1" :class="['more-list']"
+                    v-if="company_role === 10 || company_role === 20"
+                    v-show="type === 'member' && currentId !== ele.id">
+                    <!-- <i @click="changeActive(index)"></i> -->
+                    <i></i>
+                    <ul>
+                      <li v-if="company_role === 20" @click="setRole(ele.id, 10, index)">管理员</li>
+                      <li v-if="company_role === 20" @click="setRole(ele.id, 0, index)">成员</li>
+                      <li v-if="false">停用账号</li>
+                      <li @click="removeMember(ele.id)">从企业移除成员</li>
+                    </ul>
+                  </div>
+                </div>
+              </el-col>
+            </li>
+          </ul>
+        </section>
+      </el-col>
+    </section>
     <section class="dialog-bg" v-if="showCover" @click.self="closeCover"></section>
     <section class="dialog-body" v-if="isInvite">
       <h3 class="dialog-header clearfix">
@@ -206,8 +212,6 @@ export default {
       isInvite: false, // 邀请界面
       isRename: false, // 修改界面
       inviteLink: '', // 邀请链接
-      isShow: -1, // 操作列表
-      isShowGroup: false, // 群组操作列表
       showMember: false, // 显示成员详情
       type: 'member',
       firstGroupId: -1,
@@ -289,9 +293,7 @@ export default {
     closeCover() {
       this.showCover = false
       this.isInvite = false
-      this.isShow = -1
       this.isRename = false
-      this.isShowGroup = false
       this.showGroupPush = false
       this.showMember = false
       this.showCreateGroup = false
@@ -345,14 +347,7 @@ export default {
       }
       console.log(clipboard)
     },
-    changeActive(index) {
-      if (this.isShow === index) {
-        this.isShow = -1
-      } else {
-        this.isShow = index
-      }
-    },
-    setRole(id, role) {
+    setRole(id, role, index) {
       this.loading = true
       this.$http.put(api.designMemberSetRole, {
         set_user_id: id,
@@ -360,19 +355,20 @@ export default {
       }).then(res => {
         this.loading = false
         if (res.data.meta.status_code === 200) {
-          this.$nextTick(() => {
+          this.$nextTick(_ => {
             this.memberList.forEach(item => {
               if (item.id === id) {
-                item.company_role = role
+                this.$set(item, 'company_role', role)
                 if (role === 10) {
-                  item.company_role_label = '管理员'
+                  // this.$set(item, 'company_role_label', '管理员')
+                  this.$set(item, 'company_role_label', '管理员')
                 } else if (role === 0) {
-                  item.company_role_label = '成员'
+                  this.$set(item, 'company_role_label', '成员')
                 }
               }
             })
-            this.isShow = -1
           })
+          this.$refs.moreList[index].blur()
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -381,7 +377,7 @@ export default {
         this.$message.error(err.message)
       })
     },
-    removeMember(id) {
+    removeMember(id, index) {
       this.$http.put(api.designDeleteMember, {
         delete_user_id: id
       })
@@ -389,14 +385,18 @@ export default {
         if (res.data.meta.status_code === 200) {
           this.$nextTick(() => {
             this.memberList = this.memberList.filter(item => { return id !== item.id })
-            this.isShow = -1
+            if (this.$refs.moreList) {
+              this.$refs.moreList[index].blur()
+            } else if (this.$refs.moreListGroup) {
+              this.$refs.moreListGroup[index].blur()
+            }
           })
         } else {
           this.$message.error(res.data.meta.message)
         }
       })
     },
-    removeMemberFromGroup(id) {
+    removeMemberFromGroup(id, index = -1) {
       this.$http.put(api.removeGroupMember, {
         user_id_arr: [id],
         group_id: this.firstGroupId
@@ -405,7 +405,9 @@ export default {
         if (res.data.meta.status_code === 200) {
           this.$nextTick(() => {
             this.memberList = this.memberList.filter(item => { return id !== item.id })
-            this.isShow = -1
+            if (index !== -1) {
+              this.$refs.moreListGroup[index].blur()
+            }
           })
         } else {
           this.$message.error(res.data.meta.message)
@@ -461,13 +463,11 @@ export default {
       this.liActive = index
       this.firstGroupId = ele.id
       this.firstGroupName = ele.name
-      this.isShow = -1
       this.getMemberList(ele.id)
     },
     groupConfirmPush() {
       this.closeCover()
       this.showGroupPush = true
-      this.isShow = -1
       this.getItemList()
     },
     addOrremoveMember(id) {
@@ -493,7 +493,7 @@ export default {
     },
     confirmRenameGroup() {
       if (this.memberList.length) {
-        this.closeCover()
+        this.$refs.moreOption.blur()
         this.showCover = true
         this.isRename = true
       } else {
@@ -502,7 +502,7 @@ export default {
     },
     confirmRemoveGroup() {
       if (this.memberList.length) {
-        this.closeCover()
+        this.$refs.moreOption.blur()
         this.showCover = true
         this.confirmDeleteGroup = true
       } else {
@@ -597,6 +597,9 @@ export default {
     company_role() {
       return this.$store.state.event.user.company_role
     },
+    isMob() {
+      return this.$store.state.event.isMob
+    },
     currentId() {
       return this.$store.state.event.user.id
     },
@@ -619,9 +622,10 @@ export default {
   .member-management-mini {
     padding-left: 60px;
   }
-  .member-list-mini {
-    width: 100%;
-    position: absolute;
+  .member-management-mob {
+    padding-left: 0;
+  }
+  .member-list-mob {
   }
   .member-list {
     padding: 20px 30px 0;
@@ -693,11 +697,20 @@ export default {
   }
   .info.active {
     background: #f7f7f7;
+    position: relative;
   }
   .info.active::after {
-    content: "已添加,点击移除";
-    font-size: 12px;
-    margin-left: 20px;
+    content: "";
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 10px;
+    height: 16px;
+    border: 2px solid #d2d2d2;
+    transform: rotate(45deg);
+    border-radius: 1px;
+    border-left: none;
+    border-top: none;
   }
   .align-right {
     text-align: right
@@ -736,7 +749,7 @@ export default {
     transform: rotate(0)
   }
 
-  .more-list.active ul {
+  .more-list:focus ul {
     display: block
   }
 
@@ -745,7 +758,7 @@ export default {
     border-radius: 4px;
     position: absolute;
     z-index: 999;
-    top: 44px;
+    top: 36px;
     left: -110px;
     width: 140px;
     background: #fff;
@@ -979,7 +992,7 @@ export default {
     position: absolute;
     right: 0;
     top: 29px;
-    z-index: 1999;
+    z-index: 99;
   }
 
   .cententList p {
@@ -1058,19 +1071,37 @@ export default {
     color: #ff5a5f
   }
   
-  @media screen and (min-width: 1440px) {
+  .parent-box {
+    /* position: relative; */
+    padding-left: 16.66667%;
+  }
+  .member-management-mini .parent-box {
+    padding-left: 0
+  }
+  .parent-box-mob {
+    padding-left: 0;
+  }
+  @media screen and (min-width: 1200px) {
     .member-list {
-      position: absolute;
-      width: calc(100% - 480px);
+      /* position: absolute;
+      width: calc(100% - 400px);
       top: 0;
-      left: 480px;
+      left: 400px; */
     }
     .member-list-mini {
-      position: absolute;
-      width: calc(100% - 300px);
+      /* position: absolute;
+      width: calc(100% - 260px);
       top: 0;
-      left: 300px;
+      left: 260px; */
       transition: 0.2s all ease;
+    }
+    .parent-box {
+      padding-left: 200px;
+    }
+  }
+  @media screen and (max-width: 767px) {
+    .member-list {
+      padding: 10px 15px;
     }
   }
 </style>

@@ -1,12 +1,14 @@
 <template>
-  <div class="blank20">
+  <div class="vcenter blank30">
     <el-row>
       <v-menu currentName="profile" :class="[isMob ? 'v-menu' : '']"></v-menu>
-      <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
+      <div :class="{'vcenter-right-plus': leftWidth === 4,
+      'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}">
         <div class="right-content modify-content vcenter-container">
           <v-menu-sub></v-menu-sub>
           <v-menu-sub v-if="false" currentSubName="identification"></v-menu-sub>
-          <div :class="['content-box' , isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
+          <div :class="['content-box', 'clearfix' , isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
             <div :class="['form-title', isMob ? 'form-title-m' : '']">
               <span v-if="!isMob">修改密码</span>
             </div>
@@ -35,7 +37,6 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-
               <div class="form-btn">
                 <el-button :loading="isLoadingBtn"
                            :class="['is-custom' , isMob ? 'is-custom-m' : '']"
@@ -44,11 +45,10 @@
                 </el-button>
               </div>
             </el-form>
-
           </div>
         </div>
 
-      </el-col>
+      </div>
     </el-row>
   </div>
 </template>
@@ -170,7 +170,6 @@
   .form-btn {
     width: 100%;
     overflow: hidden;
-    margin-top: 10px;
   }
 
   .is-custom {

@@ -1,7 +1,11 @@
 <template>
-  <div class="blank20 clearfix">
+  <div class="blank30 vcenter clearfix">
     <v-menu currentName="c_item"></v-menu>
-      <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
+    <!-- <el-col :span="isMob ? 24 : rightWidth"> -->
+    <!-- <el-col class="vcenter-right-plus" :xs="24" :sm="24" :md="24" :lg="24"> -->
+    <div :class="{'vcenter-right-plus': leftWidth === 4,
+      'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}">
       <div class="right-content vcenter-container">
         <v-menu-sub :waitCountProp="waitCount" :ingCountProp="ingCount"></v-menu-sub>
         <div :class="['content-item-box', isMob ? 'content-item-box-m' : '' ]" v-loading="isLoading">
@@ -32,7 +36,7 @@
                   <p class="contact">职位: {{ d.item.position }}</p>
                   <p class="contact">电话: {{ d.item.phone }}</p>
                   <p class="contact">邮箱: {{ d.item.email }}</p>
-                  <p slot="reference" class="name-wrapper contact-user"><i class="fa fa-phone" aria-hidden="true"></i>
+                  <p slot="reference" class="fl name-wrapper contact-user"><i class="fa fa-phone" aria-hidden="true"></i>
                     {{ d.item.company_name }}</p>
                   <!-- <p>产品功能：{{d.item.product_features}}</p> -->
                 </el-popover>
@@ -67,12 +71,12 @@
                 <div class="btn" v-if="d.design_company_status === 0">
                   <p>
                     <el-button class="is-custom" @click="takingBtn" size="small" :item_id="d.item.id" :index="index"
-                               :cost="d.item.design_cost_value" type="primary">提交报价单
+                              :cost="d.item.design_cost_value" type="primary">提交报价单
                     </el-button>
                   </p>
                   <p>
                     <el-button class="is-custom" @click="companyRefuseBtn" size="small" :index="index"
-                               :item_id="d.item.id">暂无兴趣
+                              :item_id="d.item.id">暂无兴趣
                     </el-button>
                   </p>
 
@@ -85,7 +89,7 @@
                 </p>
                 <p>
                   <el-button class="is-custom" v-if="d.design_company_status === 2" @click="showView" size="small"
-                             :index="index" :item_id="d.item.id">查看报价
+                            :index="index" :item_id="d.item.id">查看报价
                   </el-button>
                 </p>
               </el-col>
@@ -95,7 +99,7 @@
       </div>
       <div class="empty" v-if="isEmpty === true"></div>
       <p v-if="isEmpty === true" class="noMsg">暂无项目订单</p>
-    </el-col>
+    </div>
 
     <el-dialog title="提交项目报价" v-model="takingPriceDialog">
       <el-form label-position="top" :model="takingPriceForm" :rules="takingPriceRuleForm" ref="takingPriceRuleForm">
@@ -270,9 +274,6 @@
       },
       leftWidth() {
         return this.$store.state.event.leftWidth
-      },
-      rightWidth() {
-        return 24 - this.$store.state.event.leftWidth
       }
     },
     created: function () {
@@ -396,7 +397,7 @@
   }
 
   .btn {
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 
   .btn p {

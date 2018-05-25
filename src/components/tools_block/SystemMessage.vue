@@ -40,18 +40,12 @@
 </template>
 
 <script>
-  import vMenu from '@/components/pages/v_center/Menu'
-  import vMenuSub from '@/components/pages/v_center/message/MenuSub'
   import api from '@/api/api'
   import '@/assets/js/format'
   import '@/assets/js/date_format'
 
   export default {
     name: 'SystemMessageList',
-    components: {
-      vMenu,
-      vMenuSub
-    },
     data () {
       return {
         isLoading: false,
@@ -121,15 +115,11 @@
           window.open('http://' + link)
           return
         }
+        this.showCover = false
         window.open(link)
       }
     },
-    computed: {
-      isMob() {
-        return this.$store.state.event.isMob
-      }
-    },
-    created: function () {
+    created() {
       let page = this.$route.query.page
       if (page) {
         this.query.page = parseInt(page)
@@ -149,6 +139,16 @@
         }
         this.loadList()
       }
+    },
+    computed: {
+      showCover: {
+        get() {
+          return this.$store.state.task.showMessage
+        },
+        set(e) {
+          this.$store.commit('changeShowMsg', e)
+        }
+      }
     }
   }
 </script>
@@ -164,7 +164,7 @@
   }
 
   .content-box .item {
-    border: 1px solid #ccc;
+    border: 1px solid #E6E6E6;
     margin-bottom: -1px;
     padding: 30px 50px 30px 20px;
     min-height: 30px;
@@ -174,7 +174,7 @@
   }
 
   .content-box .item:hover {
-    background-color: #F2F1F1;
+    background-color: #F7F7F7;
   }
 
   .item .left {

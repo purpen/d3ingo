@@ -1,8 +1,10 @@
 <template>
-  <div class="taking-dialog blank20">
+  <div class="taking-dialog blank30 vcenter">
     <el-row :gutter="24">
       <v-menu currentName="company" :class="[isMob ? 'v-menu' : '']"></v-menu>
-      <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
+      <div :class="{'vcenter-right-plus': leftWidth === 4,
+      'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}">
         <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
           <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
@@ -44,7 +46,7 @@
           </div>
         </div>
 
-      </el-col>
+      </div>
     </el-row>
 
     <!--弹框模板-->
@@ -75,8 +77,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="cancelFormVisible">取 消</el-button>
-        <el-button type="primary" @click="submit('ruleForm')">确 定</el-button>
+        <el-button @click="cancelFormVisible">取消</el-button>
+        <el-button type="danger" @click="submit('ruleForm')">确定</el-button>
       </div>
     </el-dialog>
 
@@ -343,7 +345,7 @@
 
   .right-content .content-box-m {
     margin: 0;
-    padding: 0;
+    padding: 0 15px;
   }
 
   .taking-info {

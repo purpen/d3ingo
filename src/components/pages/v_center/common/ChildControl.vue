@@ -1,5 +1,5 @@
 <template>
-  <el-row class="control blank20 min-height350">
+  <el-row class="control blank30 vcenter">
     <v-menu currentName="control"></v-menu>
     <!-- <el-col :span="!isMob? rightWidth : 24" :offset="!isMob ? leftWidth : 0" v-loading.body="isLoading">
 
@@ -25,8 +25,10 @@
       </div>
 
     </el-col> -->
-    <el-col :span="!isMob? rightWidth : 24" :offset="!isMob? leftWidth : 0" v-loading.body="isLoading">
-      <div class="vcenter-container">
+    <div :class="{'vcenter-right-plus': leftWidth === 4,
+      'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}">
+      <div class="vcenter-container" v-loading="isLoading">
         <div :class="['content-item-box', isMob ? 'content-item-box-m' : '']">
           <div class="item ing" v-for="(d, index) in itemIngList" :key="index">
             <div class="banner">
@@ -144,7 +146,7 @@
           </div>
         </div>
       </div>
-    </el-col>
+    </div>
   </el-row>
 </template>
 
@@ -363,7 +365,7 @@
   }
 
   .content-box .item {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #E6E6E6;
     margin-bottom: 20px;
     padding-bottom: 10px;
     position: relative;
@@ -429,7 +431,7 @@
 
   .pub .pub-btn {
     position: absolute;
-    padding: 10px 40px 10px 40px;
+    /* padding: 10px 40px 10px 40px; */
     top: 40%;
     left: 40%;
   }
@@ -446,12 +448,15 @@
     background: #FAFAFA;
   }
 
-  .content {
+  /* .content {
     border-bottom: 1px solid #ccc;
-  }
+  } */
 
-  .item.ing p {
+  .pre {
     padding: 10px;
+  }
+  .item.ing p {
+    padding: 10px 20px;
   }
 
   p.c-title-pro {
@@ -469,7 +474,7 @@
   }
 
   .btn {
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 
   .btn p {
@@ -489,7 +494,7 @@
   }
 
   .prefect {
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: #666;
     margin-top: 0;
     margin-bottom: -10px;

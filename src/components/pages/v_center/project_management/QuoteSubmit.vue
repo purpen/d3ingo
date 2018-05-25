@@ -144,7 +144,7 @@
                               :label="p.name"
                               :value="p.name">
                                 <span style="float: left">{{ p.name }}</span>
-                                <span style="float: right; color: #8492a6; font-size: 13px" @click.stop="delPosition(p.id, p_index)"><i class="fx fx-icon-close-error"></i></span>
+                                <span style="float: right; color: #666; font-size: 13px" @click.stop="delPosition(p.id, p_index)"><i class="fx fx-icon-close-error"></i></span>
                             </el-option>
                           </el-select>
                         </el-form-item>
@@ -171,8 +171,8 @@
                         </el-form-item>
                       </el-col>
                       <el-col :xs="24" :sm="2" :md="2" :lg="2">
-                        <el-button size="small" v-if="c_index === 0" @click="addPlanMember(index, c_index)"><i class="el-icon-plus"></i></el-button>
-                        <el-button size="small" v-else @click="delPlanMember(index, c_index)"><i class="el-icon-close"></i></el-button>
+                        <el-button :style="{minWidth: 'auto', width: '100%'}" size="small" v-if="c_index === 0" @click="addPlanMember(index, c_index)"><i class="el-icon-plus"></i></el-button>
+                        <el-button :style="{minWidth: 'auto', width: '100%'}" size="small" v-else @click="delPlanMember(index, c_index)"><i class="el-icon-close"></i></el-button>
                       </el-col>
                   </el-row>
                   </div>
@@ -834,7 +834,7 @@ export default {
     margin: 0 0 20px 0;
   }
   .form-btn button {
-    padding: 10px 40px 10px 40px;
+    /* padding: 10px 40px 10px 40px; */
   }
   .add-plan {
     background-color: #F7F7F7;
@@ -858,7 +858,7 @@ export default {
   .plan-list {
     background-color: #F7F7F7;
     padding: 15px 10px;
-    margin: 0 0 10px;
+    margin: 0 0 50px;
   }
   .plan-row {
     margin: 0px 10px;
@@ -871,6 +871,9 @@ export default {
     padding-top: 8px;
     cursor: pointer;
     text-align: right;
+  }
+  .plan-opt-icon:hover .fx-icon-close-sm {
+    color: #FF5A5F
   }
   .icon-box {
     width: 45px;

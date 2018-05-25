@@ -1,11 +1,13 @@
 <template>
-  <div class="blank20">
+  <div class="blank30 vcenter">
     <el-row>
       <v-menu currentName="item"></v-menu>
 
-      <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
+      <div :class="{'vcenter-right-plus': leftWidth === 4,
+        'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}">
         <div class="right-content vcenter-container">
-          <v-menu-sub></v-menu-sub>
+          <!-- <v-menu-sub></v-menu-sub> -->
           <div class="content-item-box" v-loading.body="isLoading">
             <div class="pub">
               <router-link :to="{name: 'itemCreate'}">
@@ -34,17 +36,20 @@
                   <p class="prefect">您的项目需求填写已经完成了{{ d.item.progress }}%。</p>
 
                   <p v-if="d.item.status === -1">
-                    <el-button class="is-custom" @click="delItemBtn" :item_id="d.item.id" size="" type="primary">
+                    <el-button class="is-custom" @click="delItemBtn" :item_id="d.item.id" size="small" type="primary">
                       删除项目
                     </el-button>
                   </p>
-                  <p v-else>
-                    <el-button class="is-custom" :progress="d.item.stage_status" :item_id="d.item.id"
-                                :item_type="d.item.type" @click="editItem" size="" type="primary">
-                      <i class="el-icon-edit"> </i> 完善项目
+                  <p class="buttons" v-else>
+                    <el-button class="is-custom"
+                    size="small"
+                    :progress="d.item.stage_status" 
+                    :item_id="d.item.id"
+                    :item_type="d.item.type" @click="editItem" type="primary">
+                      <i class="el-icon-edit"></i> 完善项目
                     </el-button>
                     <el-tooltip class="item" effect="dark" content="关闭项目后，预付款自动转入我的钱包" placement="top-start">
-                      <el-button class="" @click="closeItemBtn" :item_id="d.item.id" :index="index" size="" type="gray">
+                      <el-button class="" @click="closeItemBtn" :item_id="d.item.id" :index="index" size="small">
                         关闭项目
                       </el-button>
                     </el-tooltip>
@@ -124,9 +129,9 @@
                   </p>
 
                   <div class="btn" v-show="d.item.status === 3">
-                    <p>
+                    <p class="margin-b-10">
                       <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary">
-                        选择设计服务供应商
+                        选择设计公司
                       </el-button>
                     </p>
                   </div>
@@ -164,7 +169,7 @@
                       评价
                     </el-button>
                   </p>
-                  <p class="btn" v-show="d.item.is_view_show">
+                  <p class="btn margin-b-10" v-show="d.item.is_view_show">
                     <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary">
                       查看详情
                     </el-button>
@@ -172,7 +177,7 @@
                   <div class="btn" v-show="d.item.is_close">
                     <p>
                       <el-tooltip class="item" effect="dark" content="关闭项目后，预付款自动转入我的钱包" placement="right-end">
-                        <el-button class="" @click="closeItemBtn" :item_id="d.item.id" :index="index" size="small" type="gray">
+                        <el-button class="" @click="closeItemBtn" :item_id="d.item.id" :index="index" size="small">
                           关闭项目
                         </el-button>
                       </el-tooltip>
@@ -225,9 +230,9 @@
                     </p>
 
                     <div class="btn" v-show="d.item.status === 3">
-                      <p>
+                      <p class="margin-b-10">
                         <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary">
-                          选择设计服务供应商
+                          选择设计公司
                         </el-button>
                       </p>
                     </div>
@@ -274,7 +279,7 @@
                     </p>
                     <p class="btn" v-show="d.item.is_close">
                       <el-tooltip class="item" effect="dark" content="关闭项目后，预付款自动转入我的钱包" placement="right-end">
-                        <el-button class="" @click="closeItemBtn" :item_id="d.item.id" :index="index" size="small" type="gray">
+                        <el-button class="" @click="closeItemBtn" :item_id="d.item.id" :index="index" size="small">
                           关闭项目
                         </el-button>
                       </el-tooltip>
@@ -287,7 +292,7 @@
 
         </div>
 
-      </el-col>
+      </div>
     </el-row>
 
     <el-dialog
@@ -558,7 +563,7 @@
   }
 
   .pub .pub-btn {
-    padding: 10px 40px 10px 40px;
+    /* padding: 10px 40px 10px 40px; */
   }
 
   .content-item-box .item {
@@ -577,6 +582,10 @@
   /*border-bottom: 1px solid #ccc;*/
   /*}*/
 
+  .pre {
+    padding: 0 10px;
+  }
+  
   .item.ing p {
     padding: 10px;
   }
@@ -605,11 +614,11 @@
 
   section .btn button {
     width: 100%;
-    line-height: 16px;
+    /* line-height: 16px; */
   }
 
   .btn {
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 
   .btn p {
@@ -711,5 +720,10 @@
     line-height: 1.5;
     font-weight: 600;
   }
-
+  .buttons button:first-child {
+    margin-right: 20px;
+  }
+  .margin-b-10 {
+    margin-bottom: 10px;
+  }
 </style>

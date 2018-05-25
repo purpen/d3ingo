@@ -118,8 +118,8 @@ routes = [
   },
   // 服务条款
   {
-    path: '/item',
-    name: 'item',
+    path: '/terms',
+    name: 'terms',
     meta: {
       title: '服务条款',
       requireAuth: false
@@ -581,7 +581,7 @@ routes = [
       title: '参赛作品详情',
       requireAuth: true
     },
-    component: require('@/components/pages/v_center/match_case/Show')
+    component: require('@/components/pages/v_center/design_case/Show')
   },
   {
     path: '/remind',
