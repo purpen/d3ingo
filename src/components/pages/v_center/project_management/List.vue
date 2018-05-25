@@ -197,7 +197,7 @@ export default {
           this.$nextTick(_ => {
             this.projectList.forEach((item) => {
               if (item.id === id) {
-                this.$set(item, item.collect, collect)
+                this.$set(item, 'collect', collect)
               }
             })
           })

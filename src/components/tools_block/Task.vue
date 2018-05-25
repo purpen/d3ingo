@@ -58,6 +58,7 @@
               v-model="currentForm.over_time"
               type="datetime"
               placeholder="选择截止时间"
+              format="yyyy-MM-dd HH:mm"
               @change="changeTime">
             </el-date-picker>
           </li>
@@ -116,6 +117,7 @@
                   v-model="ele.over_time"
                   type="datetime"
                   placeholder="选择截止时间"
+                  format="yyyy-MM-dd HH:mm"
                   @change="changeTime2($event, ele.id)">
                 </el-date-picker>
                 <!-- <v-Member
@@ -135,6 +137,7 @@
                   v-model="addChildForm.over_time"
                   type="datetime"
                   placeholder="选择截止时间"
+                  format="yyyy-MM-dd HH:mm"
                   @change="changeChildTime">
                 </el-date-picker>
                 <!-- <v-Member
@@ -250,9 +253,13 @@
           test: ''
         },
         currentForm: { // 当前任务表单
-          over_time: new Date().format('yyyy-MM-dd hh:mm:ss'),
+          over_time: new Date().format('yyyy-MM-dd HH:mm'),
           level: 1
         },
+        // currentForm: { // 当前任务表单
+        //   over_time: new Date().format('yyyy-MM-dd'),
+        //   level: 1
+        // },
         currentChange: {},
         msg: '',
         levels: [{
@@ -350,8 +357,8 @@
         if (JSON.stringify(self.currentForm) !== '{}') {
           let overTime = self.currentForm.over_time
           if (self.currentForm.over_time instanceof Date) {
-            // self.currentForm.over_time = overTime.format('yyyy-MM-dd hh:mm:ss')
-            self.currentForm.over_time = overTime.format('yyyy-MM-dd hh:mm')
+            self.currentForm.over_time = overTime.format('yyyy-MM-dd HH:mm')
+            // self.currentForm.over_time = overTime.format('yyyy-MM-dd')
           }
         }
         self.currentForm.item_id = self.$route.params.id
@@ -644,7 +651,8 @@
         this.oldVal = name
       },
       itemFormat(item) {
-        item['date'] = item.created_at.date_format().format('yyyy年MM月dd日 hh:mm:ss')
+        item['date'] = item.created_at.date_format().format('yyyy年MM月dd日 HH:mm')
+        // item['date'] = item.created_at.date_format().format('yyyy年MM月dd日')
         switch (item.action_type) {
           case 1:
             item['action'] = '创建主任务'
@@ -855,7 +863,7 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .task-detail {
-    border: 1px solid #d2d2d2;
+    border: 1px solid #E6E6E6;
     border-radius: 4px;
     padding: 20px 30px;
     margin-bottom: 50px;
@@ -877,7 +885,7 @@
     line-height: 34px;
     margin-right: 20px;
     padding: 0 10px;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #E6E6E6;
     border-radius: 4px;
     cursor: pointer;
   }
@@ -947,7 +955,7 @@
     top: 10px;
     width: 8px;
     height: 14px;
-    border: 2px solid #d2d2d2;
+    border: 2px solid #E6E6E6;
     border-left: none;
     border-top: none;
     transform: rotate(45deg);
@@ -969,7 +977,7 @@
     top: 10px;
     width: 10px;
     height: 10px;
-    border: 2px solid #d2d2d2;
+    border: 2px solid #E6E6E6;
     transform: rotate(45deg);
     border-left: none;
     border-top: none;
@@ -994,13 +1002,13 @@
   .add-task-input {
     position: relative;
     padding: 20px 0 10px 40px;
-    border-bottom: 1px solid #d2d2d2;
+    border-bottom: 1px solid #E6E6E6;
   }
   .add-task-input-no_name {
     padding: 20px 0 10px;
   }
   .add-child-input {
-    padding: 20px 20px 20px 40px;
+    padding: 20px 0 20px 40px;
     border-bottom: none
   }
   .add-child-input .child-more {
@@ -1009,7 +1017,7 @@
     top: 31px;
     width: 14px;
     height: 14px;
-    border: 2px solid #d2d2d2;
+    border: 2px solid #E6E6E6;
     border-left: none;
     border-bottom: none;
     transform: rotate(45deg);
@@ -1027,7 +1035,7 @@
     top: 29px;
     width: 24px;
     height: 24px;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #E6E6E6;
     border-radius: 4px;
     cursor: pointer;
   }
@@ -1038,7 +1046,7 @@
     top: 3px;
     width: 8px;
     height: 14px;
-    border: 2px solid #d2d2d2;
+    border: 2px solid #E6E6E6;
     border-left: none;
     border-top: none;
     transform: rotate(45deg);
@@ -1072,7 +1080,7 @@
   }
   .task-info {
     padding-top: 20px;
-    border-bottom: 1px solid #d2d2d2;
+    border-bottom: 1px solid #E6E6E6;
   }
   .task-info li {
     display: flex;
@@ -1202,7 +1210,7 @@
     position: absolute;
     right: -4px;
     top: -6px;
-    background: #d2d2d2;
+    background: #E6E6E6;
     border-radius: 50%;
     width: 14px;
     height: 14px;
@@ -1235,7 +1243,7 @@
     border: 2px solid transparent
   }
   .task-member-list li:hover img {
-    border-color: #d2d2d2
+    border-color: #E6E6E6
   }
   .task-member-list li:hover a {
     opacity: 1;
@@ -1273,7 +1281,7 @@
     min-width: 0;
     padding: 0;
     background: #fff;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #E6E6E6;
     border-radius: 50%;
     position: relative;
     cursor: pointer;
@@ -1303,7 +1311,7 @@
   }
   .task-moments {
     margin-top: 20px;
-    border-top: 1px solid #d2d2d2;
+    border-top: 1px solid #E6E6E6;
     color: #666;
     font-size: 12px;
   }
@@ -1347,8 +1355,8 @@
     background: #FF5A5F;
   }
   .complete-child::before {
-    border-color: #D2D2D2;
-    background: #D2D2D2;
+    border-color: #E6E6E6;
+    background: #E6E6E6;
   }
   .complete-parent::after,
   .complete-child::after {
@@ -1369,10 +1377,10 @@
   }
   .task-child {
     padding: 20px 0;
-    border-bottom: 1px solid #d2d2d2
+    border-bottom: 1px solid #E6E6E6
   }
   .add-child-ul .template input {
-    border-color: #d2d2d2;
+    border-color: #E6E6E6;
   }
   .tags-parent {
     position: relative;
