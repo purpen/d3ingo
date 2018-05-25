@@ -174,9 +174,9 @@
             </el-input>
           </li>
           <li class="task-userimg">
-            <span @click="isuserimg = true">分配给</span>
-            <i class="userimg" @click="isuserimg = true" v-if="!formTack.log"></i>
-            <img class="user" :src="formTack.log" alt="" v-if="formTack.log" @click="isuserimg = true">
+            <span @click="seeuser()">分配给</span>
+            <i class="userimg" @click="seeuser()" v-if="!formTack.log"></i>
+            <img class="user" :src="formTack.log" alt="" v-if="formTack.log" @click="seeuser()">
             <div class="userlist" v-if="isuserimg">
               <p>
                 查看成员
@@ -236,6 +236,7 @@
                 v-model="formTacktime"
                 placeholder="开始日期设置"
                 class="noborder"
+                @change="updataTack"
                >
                 </el-date-picker>
               </div>
@@ -991,7 +992,7 @@ export default {
       this.$http.post(api.designSubstageCreate, this.formTack).then((response) => {
         if (response.data.meta.status_code === 200) {
           var res = this.updateallleft(response.data.data)
-          this.formTack = res
+          this.formTack = {...res}
           if (!des.design_substage) {
             des.design_substage = []
           }
@@ -1005,21 +1006,44 @@ export default {
         console.error(error.message)
       })
     },
-    // 创建任务
-    createTack() {
-      this.formTack.execute_user_id = 33
-      this.formTack.design_stage_id = this.itemdesId
-      this.formTack.start_time = Math.round(new Date(this.formTack.start_time).getTime() / 1000)
-      this.$http.post(api.designSubstageCreate, this.formTack).then((response) => {
-        if (response.data.meta.status_code === 200) {
-          console.log(response.data.data)
-        } else {
-          this.$message.error(response.data.meta.message)
+    // 编辑子阶段
+    updataTack(date) {
+      if (this.formTacktime !== this.formTack.start_time || !date) {
+        if (isNaN(this.formTack.duration) || !this.formTack.duration) {
+          this.$message.error('输入正确的投入天数')
+          return
         }
-      }).catch((error) => {
-        this.$message.error(error.message)
-        console.error(error.message)
-      })
+        if (date) {
+          this.formTack.start_time = Math.round(new Date(date).getTime() / 1000)
+        }
+        if (typeof this.formTack.start_time !== 'number') {
+          this.formTack.start_time = Math.round(new Date(this.formTack.start_time).getTime() / 1000)
+        }
+        this.$http.put(api.designSubstageUpdate.format(this.formTack.id), this.formTack).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            var res = this.updateallleft(response.data.data)
+            this.formTack = {...res}
+            this.formTack.log = res.execute_user.logo_image.logo
+            delete this.formTack.execute_user
+            if (!this.indesignStage.design_substage) {
+              this.indesignStage.design_substage = []
+            }
+            for (var i = 0; i < this.indesignStage.design_substage.length; i++) {
+              let intask = this.indesignStage.design_substage[i]
+              if (res.id === intask.id) {
+                this.indesignStage.design_substage[i] = res
+              }
+            }
+            this.tackleft(this.designStageLists)
+            console.log(this.formTack.log)
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          this.$message.error(error.message)
+          console.error(error.message)
+        })
+      }
     },
     // 编辑子阶段按钮
     editTack(des, index, c) {
@@ -1039,6 +1063,19 @@ export default {
       this.istaskedit = false
       this.formTack = {}
     },
+    // 查看成员
+    seeuser() {
+      console.log(this.formTack)
+      if (this.formTack.execute_user_id) {
+        for (var i = 0; i < this.options.length; i++) {
+          if (this.options[i].id === this.formTack.execute_user_id) {
+            this.options[i].isckeck = true
+            this.$set(this.options, i, this.options[i])
+          } else this.options[i].isckeck = false
+        }
+      }
+      this.isuserimg = true
+    },
     // 选择成员
     checkeds(op) {
       for (var i = 0; i < this.options.length; i++) {
@@ -1051,32 +1088,6 @@ export default {
       }
       this.isuserimg = false
       this.updataTack()
-    },
-    // 编辑子阶段
-    updataTack(date) {
-      if (this.formTackStart !== this.formup.start_time || !date) {
-        if (isNaN(this.formTack.duration) || !this.formTack.duration) {
-          this.$message.error('输入正确的投入天数')
-          return
-        }
-        if (date) {
-          this.formTack.start_time = Math.round(new Date(date).getTime() / 1000)
-        }
-        if (typeof this.formTack.start_time !== 'number') {
-          this.formTack.start_time = Math.round(new Date(this.formTack.start_time).getTime() / 1000)
-        }
-        console.log(this.formTack)
-        this.$http.put(api.designSubstageUpdate.format(this.formTack.id), this.formTack).then((response) => {
-          if (response.data.meta.status_code === 200) {
-            console.log(response.data.data)
-          } else {
-            this.$message.error(response.data.meta.message)
-          }
-        }).catch((error) => {
-          this.$message.error(error.message)
-          console.error(error.message)
-        })
-      }
     },
     sortTasks(index) {
       let dur = parseInt(this.formTack.duration) * 86400
@@ -1699,9 +1710,9 @@ export default {
   }
   .item-tacklist {
     position:absolute;
-    top:80px;
-    height:20px;
-    line-height:20px;
+    top:75px;
+    height:30px;
+    line-height:30px;
     width:350%;
     border-radius: 4px;
     background:#65A6FF;
@@ -1737,7 +1748,7 @@ export default {
   }
   .no-tack{
     width:30px;
-    height:20px;
+    height:30px;
   }
   .item-chartContent>ul {
     display:inline-block;
