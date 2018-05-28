@@ -3,7 +3,7 @@
   {'bounceInDown': showCover === 'show', 'slideOutUp': showCover === 'hide'}]">
     <div class="cover-header">
       <span :class="{'is-active': myView === 'task'}" @click="changeView('task')">我的任务</span>
-      <i class="fx fx-icon-nothing-close-error" @click="showCover = 'hide', myView = false"></i>
+      <i class="fx fx-icon-nothing-close-error" @click="closeBtn"></i>
     </div>
     <div v-if="myView === 'task'" class="cover-content">
       <v-task :isMyTask="true"></v-task>
@@ -19,6 +19,13 @@
       }
     },
     methods: {
+      closeBtn() {
+        this.showCover = 'hide'
+        this.myView = false
+        this.$store.commit('removeParentTask')
+        this.$store.commit('changeTaskStatePower', 0)
+        this.$store.commit('changeTaskStateEvent', '')
+      },
       changeView(view) {
         this.myView = view
         this.showCover = 'show'

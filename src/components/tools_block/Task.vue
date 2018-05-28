@@ -3,8 +3,8 @@
     <!-- <div class="" v-if="taskState.power" v-loading="isLoading"> -->
     <section class="task-detail">
       <div class="task-detail-header">
-        <span v-if="currentForm.tier === 0" class="task-detail-name">{{projectObject.name}}</span>
-        <div v-if="currentForm.tier === 0" ref="selectParent" class="select-parent" tabindex="-1">
+        <span v-show="!isMyTask" v-if="currentForm.tier === 0" class="task-detail-name">{{projectObject.name}}</span>
+        <div v-show="!isMyTask" v-if="currentForm.tier === 0" ref="selectParent" class="select-parent" tabindex="-1">
           <span class="select-show">请选择阶段</span>
           <ul class="stage-list stage-list0">
             <li :class="{'active': !currentForm.stage_id}" @click="stageItemClick(0)">无阶段</li>
@@ -12,10 +12,11 @@
               {{d.title}}</li>
           </ul>
         </div>
-        <div v-if="currentForm.tier === 1"
+        <div v-show="!isMyTask" v-if="currentForm.tier === 1"
           class="task-detail-name task-detail-name1"
           @click="showChild(parentTask.id)"
-          ><span class="parent-task-name">{{parentTask.name}}</span></div>
+          ><span class="parent-task-name">{{parentTask.name}}</span>
+        </div>
         <div ref="selectParent2" class="select-parent select-menu" tabindex="-1">
           <span class="select-show"></span>
           <ul class="stage-list">
@@ -243,6 +244,10 @@
       completeState: {
         type: Number,
         default: -1
+      },
+      isMyTask: {
+        type: Boolean,
+        default: false
       }
     },
     data () {
@@ -337,6 +342,7 @@
         this.$http.get(api.taskId.format(id), {}).then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.currentForm = response.data.data
+            self.getItemId(self.currentForm.item_id)
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -721,6 +727,39 @@
       },
       showChild(id) {
         this.$store.commit('changeTaskStateId', id)
+      },
+      getProjectMemberList(id) {
+        this.$http.get(api.itemUsers, {params: {item_id: id}})
+        .then(res => {
+          if (res.data.meta.status_code === 200) {
+            this.$store.commit('setProjectMemberList', res.data.data)
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(err => {
+          this.$message.error(err.message)
+        })
+      },
+      // 跳回项目列表页 evt: 0.不提示信息；1.错误提示；2.成功提示；message: 消息
+      redirectItemList(evt, message) {
+        if (evt && message) {
+          if (evt === 1) {
+            this.$message.error(message)
+          } else if (evt === 2) {
+            this.$message.success(message)
+          }
+        }
+        this.$router.push({name: 'home'})
+        return
+      },
+      getItemId(id) {
+        let itemId = this.$route.params.id || id
+        if (!itemId) {
+          this.redirectItemList(1, '缺少请求参数！')
+          return
+        }
+        this.$set(this.propsTags, 'itemId', itemId)
+        this.getProjectMemberList(this.currentForm.item_id)
       }
     },
     mounted: function () {
@@ -832,12 +871,6 @@
       }
     },
     created() {
-      let itemId = this.$route.params.id
-      if (!itemId) {
-        this.redirectItemList(1, '缺少请求参数！')
-        return
-      }
-      this.$set(this.propsTags, 'itemId', itemId)
     },
     directives: {
       focus: {
@@ -866,7 +899,7 @@
     border: 1px solid #E6E6E6;
     border-radius: 4px;
     padding: 20px 30px;
-    margin-bottom: 50px;
+    margin-bottom: 150px;
   }
   .task-detail-header {
     display: flex;
@@ -1285,6 +1318,9 @@
     border-radius: 50%;
     position: relative;
     cursor: pointer;
+  }
+  .task-detail-body .show-member:hover {
+    border-color: #d2d2d2
   }
   .task-member-execute .show-member {
     margin-top: 0;

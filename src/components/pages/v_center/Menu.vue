@@ -390,6 +390,7 @@
         }
       },
       showMine() {
+        this.$store.commit('changeMineView', 'task')
         if (this.showCover === 'show') {
           this.showCover = 'hide'
           setTimeout(() => {

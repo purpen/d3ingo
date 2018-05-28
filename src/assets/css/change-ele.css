@@ -287,3 +287,23 @@
     color: #222;
     font-size: 18px;
   }
+  .el-alert {
+    border-radius: 0;
+  }
+  .el-alert--warning {
+    background-color: #fff5e6;
+    color: #222;
+  }
+  .el-alert__title {
+    font-size: 12px
+  }
+  .el-alert__icon {
+    color: #ff5a5f;
+    font-size: 12px;
+  }
+  .el-alert__closebtn {
+    color: #222;
+  }
+  .el-alert__closebtn:hover {
+    color: #ff5a5f
+  }

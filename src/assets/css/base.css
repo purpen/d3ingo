@@ -59,7 +59,7 @@ body {
   overflow-y: hidden;
 }
 
-#app {
+.app {
   width: 100%;
   min-height: 100%;
   position: relative;
@@ -67,7 +67,10 @@ body {
   padding-bottom: 340px;
   overflow-x: hidden
 }
-#app2 {
+.app3 {
+  padding-top: 94px;
+}
+.app2 {
   width: 100%;
   min-height: 100%;
   position: relative;

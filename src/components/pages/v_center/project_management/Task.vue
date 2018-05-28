@@ -3,7 +3,7 @@
     <div class="vcenter-container task-content" v-loading="isLoading">
       <el-row :gutter="30">
         <el-col :span="taskState.power ? 12 : 24" class="task-list">
-          <div class="operate">
+          <div class="operate" v-if="!isMyTask">
             <div class="add-btn">
               <button class="add-task middle-button full-red-button" @click="addTaskBtn()">添加任务</button>
               <button class="add-stage middle-button white-button" @click="addStageBtn()">添加阶段</button>
@@ -57,7 +57,7 @@
           </section>
         </el-col>
         <el-col :span="12">
-          <v-task :projectObject="projectObject" :completeState="completeState"></v-task>
+          <v-task :isMyTask="isMyTask" :projectObject="projectObject" :completeState="completeState"></v-task>
         </el-col>
       </el-row>
     </div>
@@ -308,6 +308,15 @@
       },
       fetchMyTask() {
         this.loading = true
+        this.$http.get(api.myTask)
+        .then(res => {
+          if (res.data.meta.status_code === 200) {
+            console.log(res)
+            this.$store.commit('setTaskList', res.data.data)
+          } else {
+            this.$messgae.error(res.data.meta.message)
+          }
+        })
       },
       // 添加任务
       addTaskBtn() {
@@ -436,11 +445,14 @@
     },
     created() {
       if (this.isMyTask) {
+        this.fetchMyTask()
       } else {
         let itemId = this.$route.params.id
         if (!itemId) {
-          this.redirectItemList(1, '没有此项目')
-          return
+          if (this.redirectItemList) {
+            this.redirectItemList(1, '没有此项目')
+            return
+          }
         }
         this.$store.commit('changeTaskStatePower', 0)
         // 请求项目详情，判断项目是否存在或有效
@@ -535,7 +547,7 @@
     border-radius: 4px;
     box-shadow: 0 0 6px 2px rgba(0,0,0,0.10);
   }
-  .filter:hover ul,
+  /* .filter:hover ul, */
   .filter:focus ul {
     display: block
   }
@@ -625,7 +637,7 @@
     animation: slowShow 1s cubic-bezier(0.175, 0.885, 0.32, 1.275)
   }
   .task-item {
-    border-left: 6px solid #d2d2d2;
+    border-left: 1px solid #d2d2d2;
   }
   .level1 {
     border-left: 1px solid #d2d2d2;

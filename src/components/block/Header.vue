@@ -134,13 +134,22 @@
     </div>
     <div class="header-buttom-line"></div>
     <Message></Message>
+    <el-alert
+      v-if="eventUser.role_id === 20 && eventUser.verify_status !== 1"
+      title="您还没有申请企业实名认证"
+      type="warning"
+      show-icon>
+      <template slot-scope="scope">
+        <router-link style="margin-left: 10px;" class="tc-red fz-12" to="/vcenter/company/accreditation">去认证</router-link>
+      </template>
+    </el-alert>
   </div>
 </template>
 
 <script>
   import auth from '@/helper/auth'
   import api from '@/api/api'
-  import { MSG_COUNT } from '@/store/mutation-types'
+  import { MSG_COUNT, MENU_STATUS } from '@/store/mutation-types'
   import Message from '@/components/tools_block/Message'
   export default {
     name: 'head_menu',
@@ -227,6 +236,9 @@
             return
           } else {
             self.fetchMessageCount()
+            if (self.isLogin) {
+              self.setUserInfo()
+            }
             limitTimes += 1
           }
         }, 30000)
@@ -271,6 +283,21 @@
         this.showCover = 'show'
         this.myView = view
         this.$refs.msgList.blur()
+      },
+      setUserInfo() {
+        // ajax拉取用户信息
+        this.$http
+          .get(api.user, {})
+          .then((response) => {
+            if (response.data.meta.status_code === 200) {
+              this.$store.commit(MENU_STATUS, '')
+              auth.write_user(response.data.data)
+            } else {
+              this.$message.error(response.data.meta.message)
+            }
+          }).catch((error) => {
+            this.$message.error(error.message)
+          })
       }
     },
     computed: {
