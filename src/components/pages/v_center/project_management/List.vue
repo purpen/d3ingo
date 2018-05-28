@@ -4,9 +4,33 @@
     <div :class="{'vcenter-right-plus': leftWidth === 4,
       'vcenter-right': leftWidth === 2,
         'vcenter-right-mob': isMob}">
-      <div class="vcenter-container blank30">
-        <h2>项目管理</h2>
-        <ul class="project-list" v-loading.body="isLoading">
+      <div class="vcenter-container blank30" v-loading.body="isLoading">
+        <h2 v-if="collectList.length">我收藏的项目</h2>
+        <ul class="project-list">
+          <li v-for="(ele, index) in collectList" :key="index"
+            @click.self="routePush(ele.id)">
+            <div class="clearfix">
+              <h3 class="fl" @click="routePush(ele.id)">{{ele.name}}</h3>
+              <div class="fr">
+                <p class="fr operate" tabindex="-1" ref="operate">
+                  <span class="more">
+                  </span>
+                  <span class="delete" @click="projectDelete(ele.id, index)">
+                    删除
+                  </span>
+                </p>
+                <span @click="setCollect(ele.id, ele.collect)" :class="['favorite-star', 'fr', {'favorite-star-light': ele.collect === 1}]"></span>
+              </div>
+            </div>
+            <div class="content" @click="routePush(ele.id)">
+              {{ele.description}}
+            </div>
+            <span class="importance level2" v-if="ele.level === 2">重要</span>
+            <span class="importance level3" v-if="ele.level === 3">非常重要</span>
+          </li>
+        </ul>
+        <h2>我拥有的项目</h2>
+        <ul class="project-list">
           <li class="create" @click="showCover" v-if="isCompanyAdmin">
             <p @click="showCover">
               <i></i>
@@ -77,6 +101,7 @@ export default {
   data() {
     return {
       projectList: [],
+      collectList: [],
       isLoading: false,
       show: {
         cover: false,
@@ -106,6 +131,11 @@ export default {
         this.isLoading = false
         if (res.data.meta.status_code === 200) {
           this.projectList = res.data.data
+          this.projectList.forEach((item, index) => {
+            if (item.collect === 1) {
+              this.collectList.push(item)
+            }
+          })
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -195,11 +225,25 @@ export default {
       .then((res) => {
         if (res.data.meta.status_code === 200) {
           this.$nextTick(_ => {
-            this.projectList.forEach((item) => {
-              if (item.id === id) {
-                this.$set(item, 'collect', collect)
-              }
-            })
+            if (collect === 1) {
+              this.projectList.forEach((item) => {
+                if (item.id === id) {
+                  this.$set(item, 'collect', collect)
+                  this.collectList.unshift(item)
+                }
+              })
+            } else {
+              this.projectList.forEach((item) => {
+                if (item.id === id) {
+                  this.$set(item, 'collect', collect)
+                }
+              })
+              this.collectList.forEach((item, index, array) => {
+                if (item.id === id) {
+                  array.splice(index, 1)
+                }
+              })
+            }
           })
         } else {
           this.$message.error(res.data.meta.message)

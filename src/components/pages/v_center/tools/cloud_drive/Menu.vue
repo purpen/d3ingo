@@ -27,6 +27,13 @@
         </ul>
       </el-collapse-item>
       <el-collapse-item title="项目" name="2">
+        <ul class="cloud-classify">
+          <li v-for="(ele, index) in list" :key="index">
+            <a :class="['project', {'active': id === ele.pan_director_id}]" @click="changeProject(ele.pan_director_id)">
+              <span>{{ele.name}}</span>
+            </a>
+          </li>
+        </ul>
       </el-collapse-item>
       <el-collapse-item title="文件类型" name="3">
         <ul class="cloud-classify">
@@ -76,6 +83,7 @@
   </div>
 </template>
 <script>
+  import api from '@/api/api'
   export default {
     name: 'cloud_drive_menu',
     props: {
@@ -86,8 +94,14 @@
     data() {
       return {
         test: 'test',
-        activeNames: ['1', '2', '3']
+        activeNames: ['1', '2', '3'],
+        list: [],
+        id: 0
       }
+    },
+    created() {
+      this.id = this.$route.query.id || 0
+      this.getProjectList()
     },
     methods: {
       changeTitle(name) {
@@ -97,6 +111,26 @@
           this.$emit('getTitle', name, 'local')
         }
         this.$router.push({name: this.$route.name, params: {modules: name}})
+      },
+      changeProject(id) {
+        this.$router.push({name: this.$route.name, params: {modules: 'project'}, query: {id: id}})
+      },
+      getProjectList() {
+        this.isLoading = true
+        this.$http.get(api.desiginProjectList, {params: {
+          status: 1,
+          page: 1,
+          per_page: 50
+        }}).then(res => {
+          this.isLoading = false
+          if (res.data.meta.status_code === 200) {
+            this.list = res.data.data
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(err => {
+          console.log(err.message)
+        })
       }
     },
     computed: {
@@ -107,6 +141,11 @@
         } else if (leftWidth === 4) {
           return leftWidth
         }
+      }
+    },
+    watch: {
+      '$route' (to, from) {
+        this.id = this.$route.query.id || 0
       }
     }
   }
@@ -142,6 +181,12 @@
     position: relative;
     padding-left: 68px;
     cursor: pointer;
+  }
+  .cloud-classify li a span {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .cloud-classify li a:before {
     content: '';

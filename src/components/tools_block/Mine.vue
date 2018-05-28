@@ -27,6 +27,9 @@
         this.$store.commit('changeTaskStateEvent', '')
       },
       changeView(view) {
+        this.$store.commit('removeParentTask')
+        this.$store.commit('changeTaskStatePower', 0)
+        this.$store.commit('changeTaskStateEvent', '')
         this.myView = view
         this.showCover = 'show'
       }
