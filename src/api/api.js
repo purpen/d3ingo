@@ -378,7 +378,7 @@ export default {
   designSubstageDelete: '/designSubstage/delete', // DELETE 删除
   designSubstage: '/designSubstage', // GET 子阶段详情
   designSubstageUpdate: '/designSubstage/update', // PUT 子任务更新
-
+  updateDuration: '/designSubstage/updateDuration', // put 批量修改子任务的时间
   // 阶段节点
   dsignStageNodeCreate: '/designStageNode/create', // POST 创建
   designStageNodeDelete: '/designStageNode/delete', // DELETE 删除

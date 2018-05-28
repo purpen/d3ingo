@@ -11,6 +11,17 @@
         <button class="small-button full-red-button" type="primary" @click="deleteDes(formup.id)">确 定</button>
       </span>
     </el-dialog>
+    <el-dialog
+      title="确认删除"
+      :visible.sync="dialogTask"
+      size="tiny"
+      >
+      <p class="text-center">确认删除此任务</p>
+      <span slot="footer" class="dialog-footer">
+        <button class="small-button white-button" @click="dialogTask = false">取 消</button>
+        <button class="small-button full-red-button" type="primary" @click="deleteTack(formTack.id)">确 定</button>
+      </span>
+    </el-dialog>
     <section class="add-itemStage-bg" v-if="isItemStage">
       <div class="add-itemStage">
         <div class="itemStage-title">新建项目阶段
@@ -42,7 +53,8 @@
             </el-form-item>
                 </el-col>
                 <el-col :span="12">
-            <el-form-item label="开始时间" prop="start_time">
+            <el-form-item label="开始时间" :editable='false'
+            prop="start_time">
               <div class="block">
                 <el-date-picker
                   type="date"
@@ -70,8 +82,8 @@
         </div>
       </div>
     </section>
-    <transition name="el-fade-in-linear">
-      <aside class="aside" v-if="isitemedit">
+    <transition name="el-fade-in-linear" v-if="isitemedit">
+      <aside class="aside">
         <div class="aside-title fx">
           <i class="fx fx-icon-delete2" @click="dialogVisible=true"></i>
           <span class="tc-2">项目阶段设置</span>
@@ -147,10 +159,10 @@
         
       </aside>
     </transition>
-    <transition>
-      <aside class="aside" v-if="istaskedit">
+    <transition name="el-fade-in-linear" v-if="istaskedit">
+      <aside class="aside">
         <div class="aside-title fx">
-          <i class="fx fx-icon-delete2" @click="dialogVisible=true"></i>
+          <i class="fx fx-icon-delete2" @click="dialogTask=true"></i>
           <span class="tc-2">任务设置</span>
           <p class="fx fx-icon-close-sm" @click="cancelTack()"></p>
         </div>
@@ -452,7 +464,7 @@
                     <div 
                       v-if="(c.design_substage&&(sort==='isday'||sort==='isweek'))" 
                       v-for="(tack, indextack) in c.design_substage" :key="indextack+ 'y'" :style="{left:tack.left*30+'px',width:tack.duration*30+'px'}"
-                      class="item-tacklist" @click.stop="editTack(tack, indextack, c)"
+                      class="item-tacklist" @click.stop="editTack(tack,c)"
                       >
                       {{tack.name}}
                     </div>
@@ -642,6 +654,7 @@ export default {
       formTacktime: '', // 任务时间
       sort: 'isday',
       dialogVisible: false,
+      dialogTask: false,
       isitemedit: false, // 项目阶段编辑
       istaskedit: false, // 项目子任务编辑新建
       endTimes: [], // 所有时间合集
@@ -663,7 +676,7 @@ export default {
         ],
         start_time: [
           {
-            required: true, message: '请添写项目开始时间', trigger: 'blur'
+            required: true, type: 'date', message: '请添写项目开始时间', trigger: 'change'
           }
         ]
       }
@@ -894,7 +907,9 @@ export default {
             if (response.data.meta.status_code === 200) {
               that.form = {}
               var res = this.updateallleft(response.data.data)
-              that.designStageLists.unshift(res)
+              that.designStageLists.push(res)
+              that.cancel()
+              that.addtack(res, 1)
             } else {
               that.$message.error(response.data.meta.message)
             }
@@ -952,7 +967,7 @@ export default {
           for (var i = 0; i < dthis.designStageLists.length; i++) {
             if (dthis.designStageLists[i].id === d) {
               dthis.designStageLists.splice(i, 1)
-              dthis.isItemStage = false
+              dthis.isitemedit = false
             }
           }
         } else {
@@ -964,13 +979,17 @@ export default {
       })
     },
     // 创建任务按钮
-    addtack(des) {
+    addtack(des, type) {
       this.itemdesId = des.id
       this.itemdesname = des.name
       this.isitemedit = false
       this.istaskedit = true
+      if (type === 1) {
+        this.istaskedit = false
+      }
       this.indesignStage = des
       var time = []
+      // 有任务时
       if (des.design_substage) {
         for (var i = 0; i < des.design_substage.length; i++) {
           let intask = des.design_substage[i]
@@ -979,8 +998,13 @@ export default {
         this.sortdate(time)
         this.formTack.start_time = time[time.length - 1]
       }
+      // 无任务时
       if (!des.design_substage) {
-        this.formTack.start_time = Date.parse(new Date(des.start_time)) / 1000
+        if (isNaN(des.start_time)) {
+          this.formTack.start_time = Date.parse(new Date(des.start_time)) / 1000
+        } else {
+          this.formTack.start_time = parseInt(des.start_time)
+        }
       }
       this.formTacktime = (new Date(this.formTack.start_time * 1000)).format('yyyy-MM-dd')
       this.formTack.duration = 1
@@ -989,26 +1013,71 @@ export default {
       if (this.formTack.execute_user_id === '') {
         delete this.formTack.execute_user_id
       }
-      this.$http.post(api.designSubstageCreate, this.formTack).then((response) => {
+      let self = this
+      self.$http.post(api.designSubstageCreate, self.formTack).then((response) => {
         if (response.data.meta.status_code === 200) {
-          var res = this.updateallleft(response.data.data)
-          this.formTack = {...res}
+          var res = self.updateallleft(response.data.data)
+          self.formTack = res
           if (!des.design_substage) {
             des.design_substage = []
           }
           des.design_substage.push(res)
-          this.tackleft(this.designStageLists)
+          self.tackleft(self.designStageLists)
         } else {
-          this.$message.error(response.data.meta.message)
+          self.$message.error(response.data.meta.message)
         }
       }).catch((error) => {
-        this.$message.error(error.message)
+        self.$message.error(error.message)
         console.error(error.message)
       })
     },
+    upDateDuration() {
+      let fts = Math.round(new Date(this.formTacktime).getTime() / 1000)
+      fts
+      arr
+      let arr = []
+      let time = ''
+      for (let i = 0; i < this.indesignStage.design_substage.length; i++) {
+        var start = this.indesignStage.design_substage
+        if (start[i].id === this.formTack.id) {
+          time = start[i].start_time
+        }
+        // arr.push({
+        //   'id': start[i].id,
+        //   'start_time': start[i].start_time,
+        //   'duration': start[i].duration
+        // })
+      }
+      for (let m = 0; m < this.indesignStage.design_substage.length; m++) {
+        var startm = this.indesignStage.design_substage
+        if (startm[m].start_time === time) {
+          this.startm[m].start_time = fts
+        } else if (startm[m].start_time < time) {
+          this.startm[m].start_time = this.startm[m - 1].start_time - this.startm[m].duration
+        } else if (startm[m].start_time > time) {
+          console.log(222222)
+        }
+      }
+      // this.$http.put(api.updateDuration, {durations: JSON.stringify(arr)}).then((response) => {
+      //   if (response.data.meta.status_code === 200) {
+      //     arr = []
+      //     this.tackleft(this.designStageLists)
+      //     for (var f = 0; f < this.designStageLists.length; f++) {
+      //       if (this.designStageLists[f].id === this.indesignStage.id) {
+      //         this.$set(this.designStageLists, f, this.indesignStage)
+      //       }
+      //     }
+      //   } else {
+      //     this.$message.error(response.data.meta.message)
+      //   }
+      // }).catch((error) => {
+      //   this.$message.error(error.message)
+      //   console.error(error.message)
+      // })
+    },
     // 编辑子阶段
     updataTack(date) {
-      if (this.formTacktime !== this.formTack.start_time || !date) {
+      if (Date.parse(new Date(this.formTacktime)) / 1000 !== this.formTack.start_time || !date) {
         if (isNaN(this.formTack.duration) || !this.formTack.duration) {
           this.$message.error('输入正确的投入天数')
           return
@@ -1019,37 +1088,41 @@ export default {
         if (typeof this.formTack.start_time !== 'number') {
           this.formTack.start_time = Math.round(new Date(this.formTack.start_time).getTime() / 1000)
         }
-        this.$http.put(api.designSubstageUpdate.format(this.formTack.id), this.formTack).then((response) => {
-          if (response.data.meta.status_code === 200) {
-            var res = this.updateallleft(response.data.data)
-            this.formTack = {...res}
-            this.formTack.log = res.execute_user.logo_image.logo
-            delete this.formTack.execute_user
-            if (!this.indesignStage.design_substage) {
-              this.indesignStage.design_substage = []
-            }
-            for (var i = 0; i < this.indesignStage.design_substage.length; i++) {
-              let intask = this.indesignStage.design_substage[i]
-              if (res.id === intask.id) {
-                this.indesignStage.design_substage[i] = res
-              }
-            }
-            this.tackleft(this.designStageLists)
-            console.log(this.formTack.log)
-          } else {
-            this.$message.error(response.data.meta.message)
-          }
-        }).catch((error) => {
-          this.$message.error(error.message)
-          console.error(error.message)
-        })
+        if (Date.parse(new Date(this.formTacktime)) / 1000 !== this.formTack.start_time) {
+          this.upDateDuration()
+        }
+        // let self = this
+        // self.$http.put(api.designSubstageUpdate.format(self.formTack.id), self.formTack).then((response) => {
+        //   if (response.data.meta.status_code === 200) {
+        //     var res = self.updateallleft(response.data.data)
+        //     self.formTack = {...res}
+        //     if (res.execute_user) {
+        //       self.formTack.log = res.execute_user.logo_image.logo
+        //       delete self.formTack.execute_user
+        //     }
+        //     if (!self.indesignStage.design_substage) {
+        //       self.indesignStage.design_substage = []
+        //     }
+        //     for (var i = 0; i < self.indesignStage.design_substage.length; i++) {
+        //       let intask = self.indesignStage.design_substage[i]
+        //       if (res.id === intask.id) {
+        //         self.indesignStage.design_substage[i] = res
+        //       }
+        //     }
+        //     self.tackleft(self.designStageLists)
+        //   } else {
+        //     self.$message.error(response.data.meta.message)
+        //   }
+        // }).catch((error) => {
+        //   self.$message.error(error.message)
+        //   console.error(error.message)
+        // })
       }
     },
     // 编辑子阶段按钮
-    editTack(des, index, c) {
+    editTack(des, c) {
       this.indesignStage = c
-      this.formTack = des
-      this.formTack.index = index
+      this.formTack = {...des}
       if (this.formTack.execute_user) {
         this.formTack.log = des.execute_user.logo_image.logo
         delete this.formTack.execute_user
@@ -1065,7 +1138,6 @@ export default {
     },
     // 查看成员
     seeuser() {
-      console.log(this.formTack)
       if (this.formTack.execute_user_id) {
         for (var i = 0; i < this.options.length; i++) {
           if (this.options[i].id === this.formTack.execute_user_id) {
@@ -1098,14 +1170,20 @@ export default {
         ssr.push(this.indesignStage.design_substage[i].start_time)
         ssr.push(this.indesignStage.design_substage[i].end_time)
       }
-      console.log(ssr)
     },
     // 删除子阶段
-    deleteTack(id, index) {
-      this.$http.delete(api.designSubstageDelete, {params: {design_substage_id: id}})
+    deleteTack(id) {
+      let self = this
+      self.$http.delete(api.designSubstageDelete, {params: {design_substage_id: id}})
       .then (function(response) {
         if (response.data.meta.status_code === 200) {
-          console.log(response.data.data)
+          for (var i = 0; i < self.indesignStage.design_substage.length; i++) {
+            if (self.indesignStage.design_substage[i].id === id) {
+              self.indesignStage.design_substage.splice(i, 1)
+              self.dialogTask = false
+              self.istaskedit = false
+            }
+          }
         } else {
           this.$message.error(response.data.meta.message)
         }
