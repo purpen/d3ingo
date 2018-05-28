@@ -390,6 +390,10 @@
         }
       },
       showMine() {
+        this.$store.commit('changeMineView', '')
+        this.$store.commit('removeParentTask')
+        this.$store.commit('changeTaskStatePower', 0)
+        this.$store.commit('changeTaskStateEvent', '')
         this.$store.commit('changeMineView', 'task')
         if (this.showCover === 'show') {
           this.showCover = 'hide'

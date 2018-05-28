@@ -59,7 +59,7 @@
               v-model="currentForm.over_time"
               type="datetime"
               placeholder="选择截止时间"
-              format="yyyy-MM-dd HH:mm"
+              format="yyyy-MM-dd hh:mm"
               @change="changeTime">
             </el-date-picker>
           </li>
@@ -118,7 +118,7 @@
                   v-model="ele.over_time"
                   type="datetime"
                   placeholder="选择截止时间"
-                  format="yyyy-MM-dd HH:mm"
+                  format="yyyy-MM-dd hh:mm"
                   @change="changeTime2($event, ele.id)">
                 </el-date-picker>
                 <!-- <v-Member
@@ -138,7 +138,7 @@
                   v-model="addChildForm.over_time"
                   type="datetime"
                   placeholder="选择截止时间"
-                  format="yyyy-MM-dd HH:mm"
+                  format="yyyy-MM-dd hh:mm"
                   @change="changeChildTime">
                 </el-date-picker>
                 <!-- <v-Member
@@ -258,7 +258,7 @@
           test: ''
         },
         currentForm: { // 当前任务表单
-          over_time: new Date().format('yyyy-MM-dd HH:mm'),
+          over_time: new Date().format('yyyy-MM-dd hh:mm'),
           level: 1
         },
         // currentForm: { // 当前任务表单
@@ -363,7 +363,7 @@
         if (JSON.stringify(self.currentForm) !== '{}') {
           let overTime = self.currentForm.over_time
           if (self.currentForm.over_time instanceof Date) {
-            self.currentForm.over_time = overTime.format('yyyy-MM-dd HH:mm')
+            self.currentForm.over_time = overTime.format('yyyy-MM-dd hh:mm')
             // self.currentForm.over_time = overTime.format('yyyy-MM-dd')
           }
         }
@@ -657,7 +657,7 @@
         this.oldVal = name
       },
       itemFormat(item) {
-        item['date'] = item.created_at.date_format().format('yyyy年MM月dd日 HH:mm')
+        item['date'] = item.created_at.date_format().format('yyyy年MM月dd日 hh:mm')
         // item['date'] = item.created_at.date_format().format('yyyy年MM月dd日')
         switch (item.action_type) {
           case 1:
