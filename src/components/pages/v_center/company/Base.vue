@@ -24,7 +24,8 @@
                   :on-progress="avatarProgress"
                   :on-success="handleAvatarSuccess"
                   :before-upload="beforeAvatarUpload">
-                  <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                  <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar"> -->
+                  <span v-if="imageUrl" :style="{background: `url(${imageUrl}) no-repeat center / cover`}" class="avatar"></span>
                   <i v-else class="avatar-uploader-icon"></i>
                   <div slot="tip" class="el-upload__tip" v-if="!isMob">{{ avatarStr }}</div>
                 </el-upload>
@@ -1214,6 +1215,8 @@
   }
 
   .avatar {
+    /* border: 1px solid #e6e6e6; */
+    border-radius: 50%;
     width: 100px;
     height: 100px;
     display: block;

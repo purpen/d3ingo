@@ -242,7 +242,7 @@
     position: relative;
     border: 1px solid #E6E6E6;
     margin-bottom: -1px;
-    padding: 20px;
+    padding: 30px 20px;
     cursor: pointer;
     min-height: 30px;
     line-height: 30px;

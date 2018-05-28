@@ -4,9 +4,33 @@
     <div :class="{'vcenter-right-plus': leftWidth === 4,
       'vcenter-right': leftWidth === 2,
         'vcenter-right-mob': isMob}">
-      <div class="vcenter-container blank30">
-        <h2>项目管理</h2>
-        <ul class="project-list" v-loading.body="isLoading">
+      <div class="vcenter-container blank30" v-loading.body="isLoading">
+        <h2 v-if="collectList.length">我收藏的项目</h2>
+        <ul class="project-list">
+          <li v-for="(ele, index) in collectList" :key="index"
+            @click.self="routePush(ele.id)">
+            <div class="clearfix">
+              <h3 class="fl" @click="routePush(ele.id)">{{ele.name}}</h3>
+              <div class="fr">
+                <p class="fr operate" tabindex="-1" ref="operate">
+                  <span class="more">
+                  </span>
+                  <span class="delete" @click="projectDelete(ele.id, index)">
+                    删除
+                  </span>
+                </p>
+                <span @click="setCollect(ele.id, ele.collect)" :class="['favorite-star', 'fr', {'favorite-star-light': ele.collect === 1}]"></span>
+              </div>
+            </div>
+            <div class="content" @click="routePush(ele.id)">
+              {{ele.description}}
+            </div>
+            <span class="importance level2" v-if="ele.level === 2">重要</span>
+            <span class="importance level3" v-if="ele.level === 3">非常重要</span>
+          </li>
+        </ul>
+        <h2>我拥有的项目</h2>
+        <ul class="project-list">
           <li class="create" @click="showCover" v-if="isCompanyAdmin">
             <p @click="showCover">
               <i></i>
@@ -50,7 +74,7 @@
           <input placeholder="请填写项目名称" type="text" class="project-name"
           v-model="projectName">
           <p @click="show.writeSummary = true"
-            class="summary">项目描述</p>
+            :class="['summary', {'no-line': show.writeSummary}]">项目描述</p>
           <textarea v-model="projectSummary" v-if="show.writeSummary" placeholder="请填写项目描述" class="summary-content"></textarea>
           <p>项目等级</p>
           <p class="select-importance">
@@ -77,6 +101,7 @@ export default {
   data() {
     return {
       projectList: [],
+      collectList: [],
       isLoading: false,
       show: {
         cover: false,
@@ -106,6 +131,11 @@ export default {
         this.isLoading = false
         if (res.data.meta.status_code === 200) {
           this.projectList = res.data.data
+          this.projectList.forEach((item, index) => {
+            if (item.collect === 1) {
+              this.collectList.push(item)
+            }
+          })
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -195,11 +225,25 @@ export default {
       .then((res) => {
         if (res.data.meta.status_code === 200) {
           this.$nextTick(_ => {
-            this.projectList.forEach((item) => {
-              if (item.id === id) {
-                this.$set(item, item.collect, collect)
-              }
-            })
+            if (collect === 1) {
+              this.projectList.forEach((item) => {
+                if (item.id === id) {
+                  this.$set(item, 'collect', collect)
+                  this.collectList.unshift(item)
+                }
+              })
+            } else {
+              this.projectList.forEach((item) => {
+                if (item.id === id) {
+                  this.$set(item, 'collect', collect)
+                }
+              })
+              this.collectList.forEach((item, index, array) => {
+                if (item.id === id) {
+                  array.splice(index, 1)
+                }
+              })
+            }
           })
         } else {
           this.$message.error(res.data.meta.message)
@@ -271,7 +315,7 @@ export default {
   }
   .project-list li:hover {
     /* transform: translate3d(0, -5px, 2px); */
-    /* transform: translateY(-5px); */
+    transform: translateY(-5px);
     z-index: 1;
     box-shadow: 6px 6px 10px rgba(10, 10, 10, 0.15);
   }
@@ -339,8 +383,8 @@ export default {
     width: 34px;
     height: 24px;
   }
-  .operate:focus .delete,
-  .operate:hover .delete {
+  /* .operate:hover .delete, */
+  .operate:focus .delete {
     display: block;
   }
   .delete {
@@ -407,7 +451,8 @@ export default {
     top: 50%;
     z-index: 1999;
     transform: translate(-50%, -50%);
-    }
+    border-radius: 4px;
+  }
   .dialog-header {
     font-size: 14px;
     color: #222;
@@ -476,15 +521,21 @@ export default {
   .select-importance span::after {
     content: "";
     position: absolute;
-    left: 3px;
-    top: 3px;
-    width: 14px;
-    height: 14px;
+    left: 4px;
+    top: 4px;
+    width: 12px;
+    height: 12px;
     background: #fff;
     border-radius: 50%;
   }
+  .select-importance span.active {
+    color: #ff5a5f
+  }
+  .select-importance span.active::before {
+    border: 1px solid #ff5a5f;
+  }
   .select-importance span.active::after {
-    background: #666
+    background: #ff5a5f
   }
   .dialog-body .offer {
     cursor: pointer;
@@ -503,6 +554,10 @@ export default {
     border: 1px solid #666;
     border-radius: 4px;
   }
+  .offer.active:before {
+    background: #ff5a5f;
+    border-color: #ff5a5f;
+  }
   .offer.active:after {
     content: "";
     position: absolute;
@@ -510,7 +565,7 @@ export default {
     top: 4px;
     width: 12px;
     height: 8px;
-    border: 2px solid #666;
+    border: 2px solid #FFF;
     border-right: none;
     border-top: none;
     transform: rotate(-45deg)
@@ -522,6 +577,10 @@ export default {
   }
   .summary:hover {
     color: #666;
+  }
+  .no-line {
+    color: #666;
+    text-decoration: none
   }
   .pagination {
     text-align: center;

@@ -3,8 +3,8 @@
     <!-- <div class="" v-if="taskState.power" v-loading="isLoading"> -->
     <section class="task-detail">
       <div class="task-detail-header">
-        <span v-if="currentForm.tier === 0" class="task-detail-name">{{projectObject.name}}</span>
-        <div v-if="currentForm.tier === 0" ref="selectParent" class="select-parent" tabindex="-1">
+        <span v-show="!isMyTask" v-if="currentForm.tier === 0" class="task-detail-name">{{projectObject.name}}</span>
+        <div v-show="!isMyTask" v-if="currentForm.tier === 0" ref="selectParent" class="select-parent" tabindex="-1">
           <span class="select-show">请选择阶段</span>
           <ul class="stage-list stage-list0">
             <li :class="{'active': !currentForm.stage_id}" @click="stageItemClick(0)">无阶段</li>
@@ -12,10 +12,11 @@
               {{d.title}}</li>
           </ul>
         </div>
-        <div v-if="currentForm.tier === 1"
+        <div v-show="!isMyTask" v-if="currentForm.tier === 1"
           class="task-detail-name task-detail-name1"
           @click="showChild(parentTask.id)"
-          ><span class="parent-task-name">{{parentTask.name}}</span></div>
+          ><span class="parent-task-name">{{parentTask.name}}</span>
+        </div>
         <div ref="selectParent2" class="select-parent select-menu" tabindex="-1">
           <span class="select-show"></span>
           <ul class="stage-list">
@@ -58,6 +59,7 @@
               v-model="currentForm.over_time"
               type="datetime"
               placeholder="选择截止时间"
+              format="yyyy-MM-dd hh:mm"
               @change="changeTime">
             </el-date-picker>
           </li>
@@ -116,6 +118,7 @@
                   v-model="ele.over_time"
                   type="datetime"
                   placeholder="选择截止时间"
+                  format="yyyy-MM-dd hh:mm"
                   @change="changeTime2($event, ele.id)">
                 </el-date-picker>
                 <!-- <v-Member
@@ -135,6 +138,7 @@
                   v-model="addChildForm.over_time"
                   type="datetime"
                   placeholder="选择截止时间"
+                  format="yyyy-MM-dd hh:mm"
                   @change="changeChildTime">
                 </el-date-picker>
                 <!-- <v-Member
@@ -240,6 +244,10 @@
       completeState: {
         type: Number,
         default: -1
+      },
+      isMyTask: {
+        type: Boolean,
+        default: false
       }
     },
     data () {
@@ -250,9 +258,13 @@
           test: ''
         },
         currentForm: { // 当前任务表单
-          over_time: new Date().format('yyyy-MM-dd hh:mm:ss'),
+          over_time: new Date().format('yyyy-MM-dd hh:mm'),
           level: 1
         },
+        // currentForm: { // 当前任务表单
+        //   over_time: new Date().format('yyyy-MM-dd'),
+        //   level: 1
+        // },
         currentChange: {},
         msg: '',
         levels: [{
@@ -330,6 +342,7 @@
         this.$http.get(api.taskId.format(id), {}).then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.currentForm = response.data.data
+            self.getItemId(self.currentForm.item_id)
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -350,8 +363,8 @@
         if (JSON.stringify(self.currentForm) !== '{}') {
           let overTime = self.currentForm.over_time
           if (self.currentForm.over_time instanceof Date) {
-            // self.currentForm.over_time = overTime.format('yyyy-MM-dd hh:mm:ss')
             self.currentForm.over_time = overTime.format('yyyy-MM-dd hh:mm')
+            // self.currentForm.over_time = overTime.format('yyyy-MM-dd')
           }
         }
         self.currentForm.item_id = self.$route.params.id
@@ -644,7 +657,8 @@
         this.oldVal = name
       },
       itemFormat(item) {
-        item['date'] = item.created_at.date_format().format('yyyy年MM月dd日 hh:mm:ss')
+        item['date'] = item.created_at.date_format().format('yyyy年MM月dd日 hh:mm')
+        // item['date'] = item.created_at.date_format().format('yyyy年MM月dd日')
         switch (item.action_type) {
           case 1:
             item['action'] = '创建主任务'
@@ -713,6 +727,39 @@
       },
       showChild(id) {
         this.$store.commit('changeTaskStateId', id)
+      },
+      getProjectMemberList(id) {
+        this.$http.get(api.itemUsers, {params: {item_id: id}})
+        .then(res => {
+          if (res.data.meta.status_code === 200) {
+            this.$store.commit('setProjectMemberList', res.data.data)
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(err => {
+          this.$message.error(err.message)
+        })
+      },
+      // 跳回项目列表页 evt: 0.不提示信息；1.错误提示；2.成功提示；message: 消息
+      redirectItemList(evt, message) {
+        if (evt && message) {
+          if (evt === 1) {
+            this.$message.error(message)
+          } else if (evt === 2) {
+            this.$message.success(message)
+          }
+        }
+        this.$router.push({name: 'home'})
+        return
+      },
+      getItemId(id) {
+        let itemId = this.$route.params.id || id
+        if (!itemId) {
+          this.redirectItemList(1, '缺少请求参数！')
+          return
+        }
+        this.$set(this.propsTags, 'itemId', itemId)
+        this.getProjectMemberList(this.currentForm.item_id)
       }
     },
     mounted: function () {
@@ -824,12 +871,6 @@
       }
     },
     created() {
-      let itemId = this.$route.params.id
-      if (!itemId) {
-        this.redirectItemList(1, '缺少请求参数！')
-        return
-      }
-      this.$set(this.propsTags, 'itemId', itemId)
     },
     directives: {
       focus: {
@@ -855,10 +896,10 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .task-detail {
-    border: 1px solid #d2d2d2;
+    border: 1px solid #E6E6E6;
     border-radius: 4px;
     padding: 20px 30px;
-    margin-bottom: 50px;
+    margin-bottom: 150px;
   }
   .task-detail-header {
     display: flex;
@@ -877,7 +918,7 @@
     line-height: 34px;
     margin-right: 20px;
     padding: 0 10px;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #E6E6E6;
     border-radius: 4px;
     cursor: pointer;
   }
@@ -911,7 +952,7 @@
   }
   .select-menu {
     position: absolute;
-    right: 34px;
+    right: 44px;
     top: 0;
     width: 24px;
     height: 24px;
@@ -947,7 +988,7 @@
     top: 10px;
     width: 8px;
     height: 14px;
-    border: 2px solid #d2d2d2;
+    border: 2px solid #E6E6E6;
     border-left: none;
     border-top: none;
     transform: rotate(45deg);
@@ -969,8 +1010,8 @@
     top: 10px;
     width: 10px;
     height: 10px;
-    border: 2px solid #d2d2d2;
-    transform: rotate(45deg);
+    border: 2px solid #E6E6E6;
+    transform: rotate(45deg) translate(3px, -3px);
     border-left: none;
     border-top: none;
   }
@@ -981,20 +1022,20 @@
     content: "";
     border: none;
   }
-  .select-parent:hover .stage-list,
+  /* .select-parent:hover .stage-list, */
   .select-parent:focus .stage-list {
     display: block
   }
   
-  .select-parent:hover .select-show::after,
+  /* .select-parent:hover .select-show::after, */
   .select-parent:focus .select-show::after {
-    transform: rotate(-135deg);
+    transform: rotate(-135deg) translate(-5px);
   }
   
   .add-task-input {
     position: relative;
     padding: 20px 0 10px 40px;
-    border-bottom: 1px solid #d2d2d2;
+    border-bottom: 1px solid #E6E6E6;
   }
   .add-task-input-no_name {
     padding: 20px 0 10px;
@@ -1009,7 +1050,7 @@
     top: 31px;
     width: 14px;
     height: 14px;
-    border: 2px solid #d2d2d2;
+    border: 2px solid #E6E6E6;
     border-left: none;
     border-bottom: none;
     transform: rotate(45deg);
@@ -1027,7 +1068,7 @@
     top: 29px;
     width: 24px;
     height: 24px;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #E6E6E6;
     border-radius: 4px;
     cursor: pointer;
   }
@@ -1038,7 +1079,7 @@
     top: 3px;
     width: 8px;
     height: 14px;
-    border: 2px solid #d2d2d2;
+    border: 2px solid #E6E6E6;
     border-left: none;
     border-top: none;
     transform: rotate(45deg);
@@ -1072,7 +1113,7 @@
   }
   .task-info {
     padding-top: 20px;
-    border-bottom: 1px solid #d2d2d2;
+    border-bottom: 1px solid #E6E6E6;
   }
   .task-info li {
     display: flex;
@@ -1188,6 +1229,7 @@
     display: inline-block
   }
   .task-member-list {
+    padding-top: 20px;
     display: inline-flex;
     flex-wrap: wrap;
     padding-left: 26px;
@@ -1202,7 +1244,7 @@
     position: absolute;
     right: -4px;
     top: -6px;
-    background: #d2d2d2;
+    background: #E6E6E6;
     border-radius: 50%;
     width: 14px;
     height: 14px;
@@ -1235,7 +1277,7 @@
     border: 2px solid transparent
   }
   .task-member-list li:hover img {
-    border-color: #d2d2d2
+    border-color: #E6E6E6
   }
   .task-member-list li:hover a {
     opacity: 1;
@@ -1248,7 +1290,6 @@
   }
   .task-member-execute {
     padding-left: 0;
-    padding-top: 20px;
   }
   .task-member-execute li {
     color: #222;
@@ -1266,17 +1307,20 @@
     /* color: #999 */
   }
   .task-detail-body .show-member {
-    margin-top: 20px;
+    margin-bottom: 4px;
     display: inline-block;
     width: 30px;
     height: 30px;
     min-width: 0;
     padding: 0;
     background: #fff;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #E6E6E6;
     border-radius: 50%;
     position: relative;
     cursor: pointer;
+  }
+  .task-detail-body .show-member:hover {
+    border-color: #d2d2d2
   }
   .task-member-execute .show-member {
     margin-top: 0;
@@ -1303,7 +1347,7 @@
   }
   .task-moments {
     margin-top: 20px;
-    border-top: 1px solid #d2d2d2;
+    border-top: 1px solid #E6E6E6;
     color: #666;
     font-size: 12px;
   }
@@ -1347,8 +1391,8 @@
     background: #FF5A5F;
   }
   .complete-child::before {
-    border-color: #D2D2D2;
-    background: #D2D2D2;
+    border-color: #E6E6E6;
+    background: #E6E6E6;
   }
   .complete-parent::after,
   .complete-child::after {
@@ -1369,10 +1413,10 @@
   }
   .task-child {
     padding: 20px 0;
-    border-bottom: 1px solid #d2d2d2
+    border-bottom: 1px solid #E6E6E6
   }
   .add-child-ul .template input {
-    border-color: #d2d2d2;
+    border-color: #E6E6E6;
   }
   .tags-parent {
     position: relative;

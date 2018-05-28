@@ -301,11 +301,11 @@
       size="tiny">
       <span>{{ sureDialogMessage }}</span>
       <span slot="footer" class="dialog-footer">
+        <el-button size="small" @click="sureDialog = false">取 消</el-button>
+        <el-button size="small" type="primary" :loading="sureDialogLoadingBtn" @click="sureDialogSubmit">确 定</el-button>
         <input type="hidden" ref="currentItemId"/>
         <input type="hidden" ref="currentIndex"/>
         <input type="hidden" ref="currentType"/>
-        <el-button @click="sureDialog = false">取 消</el-button>
-        <el-button type="primary" :loading="sureDialogLoadingBtn" @click="sureDialogSubmit">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -719,6 +719,9 @@
     font-size: 1.7rem;
     line-height: 1.5;
     font-weight: 600;
+  }
+  .buttons {
+    font-size: 0
   }
   .buttons button:first-child {
     margin-right: 20px;

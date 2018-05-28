@@ -382,18 +382,9 @@
 
   .tag {
     margin: 5px 3px 5px 3px;
-    color: #222;
+    /* color: #222; */
   }
 
-  .tag:hover,.tag:focus {
-    border: 1px solid #999;
-    color: #222;
-  }
-
-   .tag:active {
-    border: 1px solid #666;
-    color: #222;
-   }
 
   .tag.active {
     border: 1px solid #FF5A5F;

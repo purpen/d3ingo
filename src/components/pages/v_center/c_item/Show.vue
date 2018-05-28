@@ -231,12 +231,13 @@
                             </el-button>
                           </el-upload>
                         </p>
-                        <p v-if="d.status === 0" class="flex-1">
+
+                        <p v-if="d.status === 0 && d.item_stage_image.length > 0" class="flex-1">
                           <el-button type="primary" @click="stageSendBtn" size="small" :stage_id="d.id" :index="index"
                                      class="is-custom">发送
                           </el-button>
                         </p>
-                        <p v-else class="finish">
+                        <p v-if="d.status === 1" class="finish">
                           <span v-if="d.confirm === 1">完成</span>
                         </p>
                       </div>
@@ -253,7 +254,7 @@
                         <p><a href="javascript:void(0);" @click="removeStageAsset" :asset_id="asset.id"
                               :stage_index="index" :asset_index="asset_index" v-if="d.confirm === 0"><i
                           class="fa fa-times" aria-hidden="true"></i> 删除</a></p>
-                        <p><a :href="asset.file" target="_blank"><i class="fa fa-download" aria-hidden="true"></i>
+                        <p><a :href="asset.file + '?attname=' + asset.name" target="_blank"><i class="fa fa-download" aria-hidden="true"></i>
                           下载</a></p>
 
                       </div>
@@ -335,7 +336,7 @@
       title="提示"
       v-model="comfirmDialog"
       size="tiny">
-      <span>{{ comfirmMessage }}</span>
+      <p class="alert-line-height">{{ comfirmMessage }}</p>
       <span slot="footer" class="dialog-footer">
         <el-button @click="comfirmDialog = false">取 消</el-button>
         <el-button type="primary" :loading="comfirmLoadingBtn" @click="sureComfirmSubmit">确 定</el-button>
@@ -751,7 +752,7 @@ const vQuoteView = () => import('@/components/block/QuoteView')
         this.currentStageIndex = index
         this.uploadParam['x:type'] = 8
         this.uploadParam['x:target_id'] = stageId
-        document.getElementById('upload_btn_' + index).innerText = '上传中...'
+        // document.getElementById('upload_btn_' + index).innerText = '上传中...'
       },
       stageUploadProgress(event, file, fileList) {
       },
@@ -768,14 +769,11 @@ const vQuoteView = () => import('@/components/block/QuoteView')
           this.$message.error('上传文件大小不能超过 50MB!')
           return false
         }
+        document.getElementById('upload_btn_' + this.currentStageIndex).innerText = '上传中...'
       },
       uploadStageSuccess(response, file, fileList) {
         let index = this.currentStageIndex
-        if (this.isMob) {
-          document.getElementById('upload_btn_' + index).innerText = '上传附件'
-        } else {
-          document.getElementById('upload_btn_' + index).innerText = '上传附件(格式: jpg/png/pdf)'
-        }
+        document.getElementById('upload_btn_' + index).innerText = '上传附件'
         let row = {
           id: response.asset_id,
           name: response.name,
@@ -788,8 +786,6 @@ const vQuoteView = () => import('@/components/block/QuoteView')
         let index = this.currentStageIndex
         if (this.isMob) {
           document.getElementById('upload_btn_' + index).innerText = '上传附件'
-        } else {
-          document.getElementById('upload_btn_' + index).innerText = '上传附件(格式: jpg/png/pdf)'
         }
         this.$message.error(err)
       },
@@ -812,11 +808,7 @@ const vQuoteView = () => import('@/components/block/QuoteView')
         return this.$store.state.event.isMob
       },
       stageUploadBtnMsg() {
-        if (!this.isMob) {
-          return '上传附件(格式: jpg/png/pdf)'
-        } else {
-          return '上传附件'
-        }
+        return '上传附件'
       }
     },
     watch: {

@@ -15,6 +15,7 @@ import 'babel-polyfill'
 
 // 样式表导入
 import 'element-ui/lib/theme-default/index.css'
+import 'animate.css/animate.css'
 import 'swiper/dist/css/swiper.css'
 import './assets/css/reset.css'
 import './assets/css/font-awesome.min.css'

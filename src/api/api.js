@@ -306,6 +306,7 @@ export default {
    * 任务接口
    */
   task: '/tasks', // POST 创建 | GET 列表
+  myTask: 'myTasks', // GET 我的任务
   taskId: 'tasks/{0}', // PUT 更新 | DELETE 删除 | GET 详情
   tasksExecuteUser: '/tasks/executeUser', // POST 领取任务
   taskStage: '/isStage/tasks', // PUT 任务是否完成操作

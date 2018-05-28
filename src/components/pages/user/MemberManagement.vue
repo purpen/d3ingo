@@ -300,11 +300,12 @@ export default {
       this.confirmDeleteGroup = false
     },
     getVerifyStatus() {
-      this.loading = true
+      // this.loading = true
       this.$http.get(api.designCompany)
       .then(res => {
         this.loading = false
         if (res.data.meta.status_code === 200) {
+          this.showGroupPush = false
           this.verifyStatus = res.data.data.verify_status
           if (this.verifyStatus === 1) {
             this.getLink()

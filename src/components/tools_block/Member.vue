@@ -132,6 +132,9 @@ export default {
       })
     },
     clickTaskMember(selectId) {
+      if (this.event === 'menu') {
+        return
+      }
       if (this.executeId === -1) {
         let index = this.taskMemberIdList.indexOf(selectId)
         if (index === -1) {
@@ -383,7 +386,7 @@ export default {
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
     border-radius: 4px;
     position: absolute;
-    left: 0;
+    right: 0;
     top: 85px;
     z-index: 99;
     margin-bottom: 50px;

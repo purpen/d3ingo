@@ -26,8 +26,10 @@
                     <div tabindex="-1" class="item-more" ref="itemMore">
                       <i></i>
                       <ul>
-                        <li @click="blurItemMore(index)" class="edit"><router-link :to="{name: 'vcenterMatchCaseEdit',
-                          params: {id: d.id, match_id: d.match_id}}">编辑</router-link></li>
+                        <li @click="blurItemMore(index, d.id, d.match_id)" class="edit">
+                          编辑</li>
+                          <!-- <router-link :to="{name: 'vcenterMatchCaseEdit',
+                          params: {id: d.id, match_id: d.match_id}}">编辑1</router-link></li> -->
                         <li class="del" @click="delItem(d.id, index)">删除</li>
                       </ul>
                     </div>
@@ -136,8 +138,9 @@
           console.error (err)
         })
       },
-      blurItemMore(i) {
-        this.$refs.itemMore[i].blur()
+      blurItemMore(index, id, matchId) {
+        // this.$refs.itemMore[i].blur()
+        this.$router.push({name: 'vcenterMatchCaseEdit', params: {id: id, match_id: matchId}})
       }
     },
     computed: {
@@ -225,8 +228,8 @@
     opacity: 1;
     background: url(../../../../assets/images/icon/moreHover@2x.png) no-repeat center / contain;
   }
-  .item-more:focus ul,
-  .item-more:hover ul {
+  /* .item-more:hover ul  */
+  .item-more:focus ul {
     display: block;
   }
   .item-more ul {

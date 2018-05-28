@@ -16,7 +16,7 @@
           </el-menu>
         </hgroup>
         <div class="nav-right nav-menu" v-if="isLogin">
-          <a class="nav-item is-hidden-mobile" @click="viewMsg" ref="msgList">
+          <a tabindex="-1" class="nav-item is-hidden-mobile" @click="viewMsg" ref="msgList">
             <span class="icon active">
               <i class="fx-4 fx-icon-notice">
                 <span v-if="msgCount.quantity">{{ msgCount.quantity }}</span>
@@ -24,17 +24,17 @@
             </span>
             <!-- <div :class="['view-msg',{'view-msg-plus': msgCount.quantity}]"> -->
             <div class="view-msg">
-              <a @click="showCover = true, myView = 'order'" class="news">
+              <a @click="showMyView('order')" class="news">
                 <i class="fx-4 fx-icon-notice"></i><i class="fx-4 fx-icon-news-hover"></i>
                 <span v-if="msgCount.message"><b>{{msgCount.message}}</b>条[订单提醒]未查看</span>
                 <span v-else>[订单提醒]</span>
               </a>
-              <a @click="showCover = true, myView = 'task'" class="news">
+              <a @click="showMyView('task')" class="news">
                 <i class="fx-4 fx-icon-notice"></i><i class="fx-4 fx-icon-news-hover"></i>
                 <span v-if="msgCount.design_notice"><b>{{msgCount.design_notice}}</b>条[项目通知]未查看</span>
                 <span v-else>[项目通知]</span>
               </a>
-              <a @click="showCover = true, myView = 'system'" class="notice">
+              <a @click="showMyView('system')" class="notice">
                 <i class="fx-4 fx-icon-sound-loudly"></i><i class="fx-4 fx-icon-notice-hover"></i>
                 <span v-if="msgCount.notice"><b>{{msgCount.notice}}</b>条[系统通知]未查看</span>
                 <span v-else>[系统通知]</span>
@@ -134,13 +134,22 @@
     </div>
     <div class="header-buttom-line"></div>
     <Message></Message>
+    <el-alert
+      v-if="eventUser.role_id === 20 && eventUser.verify_status !== 1"
+      title="您还没有申请企业实名认证"
+      type="warning"
+      show-icon>
+      <template slot-scope="scope">
+        <router-link style="margin-left: 10px;" class="tc-red fz-12" to="/vcenter/company/accreditation">去认证</router-link>
+      </template>
+    </el-alert>
   </div>
 </template>
 
 <script>
   import auth from '@/helper/auth'
   import api from '@/api/api'
-  import { MSG_COUNT } from '@/store/mutation-types'
+  import { MSG_COUNT, MENU_STATUS } from '@/store/mutation-types'
   import Message from '@/components/tools_block/Message'
   export default {
     name: 'head_menu',
@@ -172,10 +181,11 @@
       }
     },
     watch: {
-      $route(to, from) {
+      $route (to, from) {
         // 对路由变化作出响应...
         // this.navdefact()
-        this.showCover = false
+        this.showCover = ''
+        this.showCover2 = ''
       }
     },
     methods: {
@@ -226,6 +236,9 @@
             return
           } else {
             self.fetchMessageCount()
+            if (self.isLogin) {
+              self.setUserInfo()
+            }
             limitTimes += 1
           }
         }, 30000)
@@ -258,13 +271,33 @@
         this.$refs.mMenu.style.width = '100%'
         document.body.setAttribute('class', 'disableScroll')
         document.childNodes[1].setAttribute('class', 'disableScroll')
-      }, // 移动端显示 ↑  隐藏 ↓ 侧边栏
+      }, // 移动端显示 ↑ 隐藏 ↓ 侧边栏
       reScroll() {
         // this.$refs.mCover.style.width = 0
         this.$refs.mNav.style.marginLeft = '-54vw'
         this.$refs.mMenu.style.width = 0
         document.body.removeAttribute('class', 'disableScroll')
         document.childNodes[1].removeAttribute('class', 'disableScroll')
+      },
+      showMyView(view) {
+        this.showCover = 'show'
+        this.myView = view
+        this.$refs.msgList.blur()
+      },
+      setUserInfo() {
+        // ajax拉取用户信息
+        this.$http
+          .get(api.user, {})
+          .then((response) => {
+            if (response.data.meta.status_code === 200) {
+              this.$store.commit(MENU_STATUS, '')
+              auth.write_user(response.data.data)
+            } else {
+              this.$message.error(response.data.meta.message)
+            }
+          }).catch((error) => {
+            this.$message.error(error.message)
+          })
       }
     },
     computed: {
@@ -317,6 +350,14 @@
         },
         set(e) {
           this.$store.commit('changeShowMsg', e)
+        }
+      },
+      showCover2: {
+        get() {
+          return this.$store.state.task.showMine
+        },
+        set(e) {
+          this.$store.commit('changeShowMine', e)
         }
       },
       myView: {
