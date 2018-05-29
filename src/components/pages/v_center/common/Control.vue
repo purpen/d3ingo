@@ -142,12 +142,12 @@
             </ul>
 
           </el-col>
-              <div class="message-btn" v-if="userItem.length===0">
+              <div class="message-btn" v-if="!userItem || userItem.length===0">
                 <img src="../../../../assets/images/icon/Project default state@2x.png"/>
                 <p>你还没有参加任何项目</p>
-                <button class="middle-button red-button" v-if="uChild===0">
+                <!-- <button class="middle-button red-button" v-if="uChild===0">
                   <router-link :to="{name: 'projectManagementList'}">创建项目</router-link>
-                </button>
+                </button> -->
               </div>
             </el-row>
           </section>
@@ -264,7 +264,7 @@
         companyId: '',
         statusLabel: '',
         userTask: {}, // 个人任务进度
-        userItem: {},
+        userItem: [],
         messageList: [],
         uChild: this.$store.state.event.user.child_account
       }
@@ -556,8 +556,6 @@
     display:inline-block;
     margin-left:10px;
   }
-  .control-taskProgress .fx-6 {
-  }
   .item-content{
     height:299px;
     overflow-y:auto;
@@ -643,9 +641,6 @@
     background:#f7f7f7;
     padding:0 20px;
   }
-  p.alert-title.clearfix{
-
-  }
   .alert-title span {
     color: red;
   }
@@ -685,13 +680,6 @@
 
   .content-box .item:last-child .item-btn {
     bottom: 14px;
-  }
-
-  .content-box .item .item-btn a {
-    /* color: #FE3824;
-    border: 1px solid #fe3824;
-    border-radius: 5px;
-    padding: 4px 10px; */
   }
 
   .no-line {
@@ -797,9 +785,6 @@
 
   .list-box .el-col {
     padding: 10px 20px 10px 20px;
-  }
-
-  .el-col p {
   }
 
   .status-str {

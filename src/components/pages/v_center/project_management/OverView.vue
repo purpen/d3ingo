@@ -234,7 +234,7 @@
                 v-model="formTack.duration"
                 :maxlength="3"
                 class="noborder"
-                @blur="updataTack()"
+                @blur="upDateDuration()"
               >
                 <template slot="append">工作日</template>
               </el-input>
@@ -248,7 +248,7 @@
                 v-model="formTacktime"
                 placeholder="开始日期设置"
                 class="noborder"
-                @change="updataTack"
+                @change="upDateDuration"
                >
                 </el-date-picker>
               </div>
@@ -257,8 +257,9 @@
             <i></i>
             <el-input
                 placeholder="添加节点"
-                v-model="formTack.content"
+                v-model="formNode.name"
                 class="noborder"
+                @blur="createNode()"
                 >
             </el-input>
           </li>
@@ -273,6 +274,66 @@
                 @blur="updataTack()"
                 >
             </el-input>
+          </li>
+        </ul>
+      </aside>
+    </transition>
+    <transition name="el-fade-in-linear" v-if="isnodeedit">
+      <aside class="aside">
+        <div class="aside-title fx">
+          <i class="fx fx-icon-delete2" @click="dialogTask=true"></i>
+          <span class="tc-2">节点设置</span>
+          <p class="fx fx-icon-close-sm" @click="isnodeedit = false"></p>
+        </div>
+        <el-progress 
+        :percentage="50"
+        :show-text="false"
+        :stroke-width="20"
+        status="success"
+        ></el-progress>
+        <ul class="aside-content">
+          <li class="designStage-name">
+            <span>
+              <el-checkbox v-model="checked"></el-checkbox>
+            </span>
+            <el-input 
+              v-model="formNode.name"
+              placeholder="节点名称"
+              class="noborder"
+            >
+            </el-input>
+          </li>
+          <li class="formup-time">
+            <i></i>
+            <div class="block">
+                <el-date-picker
+                type="date"
+                v-model="formNodetime"
+                placeholder="开始日期设置"
+                class="noborder"
+               >
+                </el-date-picker>
+              </div>
+          </li>
+          <li class="opvalue">
+            <i></i>
+            <el-select v-model="opvalue" placeholder="请选择">
+              <el-option
+                v-for="item in option"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </li>
+          <li>
+            <i>
+              <el-checkbox v-model="checked">
+              </el-checkbox>
+            </i>
+            <span class="owner">
+              甲方参与
+            </span>
           </li>
         </ul>
       </aside>
@@ -458,15 +519,23 @@
                     </div>
 
                   </div>
-
                   <div v-if="designStageLists" class="item-chartContent" v-for="(c,indexc) in designStageLists" :key="indexc">
-
-                    <div 
+                    <div
                       v-if="(c.design_substage&&(sort==='isday'||sort==='isweek'))" 
                       v-for="(tack, indextack) in c.design_substage" :key="indextack+ 'y'" :style="{left:tack.left*30+'px',width:tack.duration*30+'px'}"
-                      class="item-tacklist" @click.stop="editTack(tack,c)"
+                      class="item-tacklist"
                       >
-                      {{tack.name}}
+                      <i class="item-start" v-if="indextack === 0"></i>
+                      <i class="item-node" v-if="tack.design_stage_node" @click.stop="editNode(tack.design_stage_node)"></i>
+                      <div class="node-name" v-if="tack.design_stage_node">
+                        <p :style="{width:tack.duration*30+'px'}">
+                          {{tack.design_stage_node.name}}
+                        </p>
+                      </div>
+                      <div class="task-name text-center" @click.stop="editTack(tack,c)">
+                        {{tack.name}}
+                      </div>
+                      
                     </div>
 
                     <div v-if="c.design_substage&&sort==='ismonth'" class="item-tacklist" 
@@ -485,7 +554,7 @@
                       :style="{left:c.left*30+'px'}">
                     </div>
                     <div v-if="!c.design_substage&&sort==='ismonth'" class="item-tacklist no-tack" 
-                      :style="{left:c.left*6.77+'px'}">
+                      :style="{left:c.left*6.77+'px',width:6.77+'px'}">
                     </div>
                     <ul v-if="totaldays" v-for="(tt,indextt) in totaldays" :key="indextt">
                       <li v-for="(day,indexday) in tt.dayings" :key="indexday" :class="day.new?'bgc':''" v-if="sort === 'isday'" class="dateday">
@@ -590,7 +659,7 @@
       </div>
       </div>
     </section>
-    <div v-if="true">
+    <div v-if="false">
       <el-input placeholder="任务名称" v-model="formTack.name"></el-input>
       <el-input placeholder="任务投入时间" v-model="formTack.duration"></el-input>
       <el-date-picker
@@ -616,6 +685,17 @@ export default {
   name: 'projectManagementOverView',
   data () {
     return {
+      option: [
+        {
+          value: 0,
+          label: '未完成'
+        },
+        {
+          value: 1,
+          label: '已完成'
+        }
+      ],
+      opvalue: '',
       itemId: 0,
       form: { // 新建项目
         name: '',
@@ -652,11 +732,13 @@ export default {
       search: [],
       isuserimg: false,
       formTacktime: '', // 任务时间
+      formNodetime: '',
       sort: 'isday',
       dialogVisible: false,
       dialogTask: false,
       isitemedit: false, // 项目阶段编辑
       istaskedit: false, // 项目子任务编辑新建
+      isnodeedit: false, // 节点编辑
       endTimes: [], // 所有时间合集
       rules: {
         duration: [
@@ -999,7 +1081,7 @@ export default {
         this.formTack.start_time = time[time.length - 1]
       }
       // 无任务时
-      if (!des.design_substage) {
+      if (!des.design_substage || des.design_substage.length === 0) {
         if (isNaN(des.start_time)) {
           this.formTack.start_time = Date.parse(new Date(des.start_time)) / 1000
         } else {
@@ -1031,98 +1113,115 @@ export default {
         console.error(error.message)
       })
     },
-    upDateDuration() {
-      let fts = Math.round(new Date(this.formTacktime).getTime() / 1000)
-      fts
-      arr
-      let arr = []
-      let time = ''
-      for (let i = 0; i < this.indesignStage.design_substage.length; i++) {
-        var start = this.indesignStage.design_substage
-        if (start[i].id === this.formTack.id) {
-          time = start[i].start_time
-        }
-        // arr.push({
-        //   'id': start[i].id,
-        //   'start_time': start[i].start_time,
-        //   'duration': start[i].duration
-        // })
-      }
-      for (let m = 0; m < this.indesignStage.design_substage.length; m++) {
-        var startm = this.indesignStage.design_substage
-        if (startm[m].start_time === time) {
-          this.startm[m].start_time = fts
-        } else if (startm[m].start_time < time) {
-          this.startm[m].start_time = this.startm[m - 1].start_time - this.startm[m].duration
-        } else if (startm[m].start_time > time) {
-          console.log(222222)
-        }
-      }
-      // this.$http.put(api.updateDuration, {durations: JSON.stringify(arr)}).then((response) => {
-      //   if (response.data.meta.status_code === 200) {
-      //     arr = []
-      //     this.tackleft(this.designStageLists)
-      //     for (var f = 0; f < this.designStageLists.length; f++) {
-      //       if (this.designStageLists[f].id === this.indesignStage.id) {
-      //         this.$set(this.designStageLists, f, this.indesignStage)
-      //       }
-      //     }
-      //   } else {
-      //     this.$message.error(response.data.meta.message)
-      //   }
-      // }).catch((error) => {
-      //   this.$message.error(error.message)
-      //   console.error(error.message)
-      // })
-    },
-    // 编辑子阶段
-    updataTack(date) {
-      if (Date.parse(new Date(this.formTacktime)) / 1000 !== this.formTack.start_time || !date) {
+    // 事件和日期改变
+    upDateDuration(date) {
+      if (Date.parse(new Date(this.formTacktime)) / 1000 !== this.formTack.start_time || this.formTack.duration) {
         if (isNaN(this.formTack.duration) || !this.formTack.duration) {
           this.$message.error('输入正确的投入天数')
           return
         }
-        if (date) {
+        if (date && date !== 1) {
           this.formTack.start_time = Math.round(new Date(date).getTime() / 1000)
         }
         if (typeof this.formTack.start_time !== 'number') {
           this.formTack.start_time = Math.round(new Date(this.formTack.start_time).getTime() / 1000)
         }
-        if (Date.parse(new Date(this.formTacktime)) / 1000 !== this.formTack.start_time) {
-          this.upDateDuration()
+        let fts = Math.round(new Date(this.formTacktime).getTime() / 1000)
+        let arr = []
+        let ind = 0
+        var start = this.indesignStage.design_substage
+        for (let i = 0; i < start.length; i++) {
+          if (start[i].id === this.formTack.id) {
+            ind = i
+            start[i].duration = this.formTack.duration
+            start[i].start_time = fts
+            if (date === 1) {
+              start[i].duration = 0
+            }
+            if (date !== 1) {
+              arr.push({
+                'id': start[i].id,
+                'start_time': start[i].start_time,
+                'duration': start[i].duration
+              })
+            }
+          }
         }
-        // let self = this
-        // self.$http.put(api.designSubstageUpdate.format(self.formTack.id), self.formTack).then((response) => {
-        //   if (response.data.meta.status_code === 200) {
-        //     var res = self.updateallleft(response.data.data)
-        //     self.formTack = {...res}
-        //     if (res.execute_user) {
-        //       self.formTack.log = res.execute_user.logo_image.logo
-        //       delete self.formTack.execute_user
-        //     }
-        //     if (!self.indesignStage.design_substage) {
-        //       self.indesignStage.design_substage = []
-        //     }
-        //     for (var i = 0; i < self.indesignStage.design_substage.length; i++) {
-        //       let intask = self.indesignStage.design_substage[i]
-        //       if (res.id === intask.id) {
-        //         self.indesignStage.design_substage[i] = res
-        //       }
-        //     }
-        //     self.tackleft(self.designStageLists)
-        //   } else {
-        //     self.$message.error(response.data.meta.message)
-        //   }
-        // }).catch((error) => {
-        //   self.$message.error(error.message)
-        //   console.error(error.message)
-        // })
+        for (let m = ind - 1; m >= 0; m--) {
+          start[m].start_time = start[m + 1].start_time - start[m].duration * 86400
+          arr.push({
+            'id': start[m].id,
+            'start_time': start[m].start_time,
+            'duration': start[m].duration
+          })
+        }
+        for (let b = ind + 1; b < start.length; b++) {
+          start[b].start_time = start[b - 1].start_time + start[b - 1].duration * 86400
+          arr.push({
+            'id': start[b].id,
+            'start_time': start[b].start_time,
+            'duration': start[b].duration
+          })
+        }
+        this.$http.put(api.updateDuration, {durations: JSON.stringify(arr)}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            arr = []
+            this.tackleft(this.designStageLists)
+            for (var f = 0; f < this.designStageLists.length; f++) {
+              if (this.designStageLists[f].id === this.indesignStage.id) {
+                this.$set(this.designStageLists, f, this.indesignStage)
+              }
+            }
+            this.formTack.start_time = fts
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          this.$message.error(error.message)
+          console.error(error.message)
+        })
       }
+    },
+    // 编辑子阶段描述名称执行人
+    updataTack() {
+      if (typeof this.formTack.start_time !== 'number') {
+        this.formTack.start_time = Math.round(new Date(this.formTack.start_time).getTime() / 1000)
+      }
+      let self = this
+      self.$http.put(api.designSubstageUpdate.format(self.formTack.id), self.formTack).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          var res = self.updateallleft(response.data.data)
+          self.formTack = {...res}
+          if (res.execute_user) {
+            self.formTack.log = res.execute_user.logo_image.logo
+            delete self.formTack.execute_user
+          }
+          if (!self.indesignStage.design_substage) {
+            self.indesignStage.design_substage = []
+          }
+          for (var i = 0; i < self.indesignStage.design_substage.length; i++) {
+            let intask = self.indesignStage.design_substage[i]
+            if (res.id === intask.id) {
+              self.indesignStage.design_substage[i] = res
+            }
+          }
+          self.tackleft(self.designStageLists)
+        } else {
+          self.$message.error(response.data.meta.message)
+        }
+      }).catch((error) => {
+        self.$message.error(error.message)
+        console.error(error.message)
+      })
     },
     // 编辑子阶段按钮
     editTack(des, c) {
       this.indesignStage = c
+      this.itemdesname = c.name
       this.formTack = {...des}
+      if (this.formTack.design_stage_node) {
+        this.formNode.name = des.design_stage_node.name
+      } else this.formNode.name = ''
       if (this.formTack.execute_user) {
         this.formTack.log = des.execute_user.logo_image.logo
         delete this.formTack.execute_user
@@ -1177,6 +1276,7 @@ export default {
       self.$http.delete(api.designSubstageDelete, {params: {design_substage_id: id}})
       .then (function(response) {
         if (response.data.meta.status_code === 200) {
+          self.upDateDuration(1)
           for (var i = 0; i < self.indesignStage.design_substage.length; i++) {
             if (self.indesignStage.design_substage[i].id === id) {
               self.indesignStage.design_substage.splice(i, 1)
@@ -1192,16 +1292,18 @@ export default {
         console.error(error.message)
       })
     },
-    // 创建阶段节点按钮
-    addNode () {
-    },
     // 创建阶段节点
-    createNode(id, index) {
-      this.formNode.design_substage_id = id
+    createNode() {
+      if (!this.formNode.name) {
+        this.$message.error('节点名称不能为空')
+        return
+      }
+      let endt = this.formTack.start_time + this.formTack.duration * 86400
+      this.formNode.design_substage_id = this.formTack.id
       if (this.formNode.is_owner) {
         this.formNode.is_owner = 1
       } else this.formNode.is_owner = 0
-      this.formNode.time = Math.round(new Date(this.formNode.time).getTime() / 1000)
+      this.formNode.time = endt
       this.$http.post(api.dsignStageNodeCreate, this.formNode).then((response) => {
         if (response.data.meta.status_code === 200) {
           console.log(response.data.data)
@@ -1210,8 +1312,10 @@ export default {
         }
       })
     },
-    // 编辑阶段节点按钮
-    editNode() {
+    editNode(node) {
+      this.formNodetime = (new Date(node.time * 1000)).format('yyyy-MM-dd')
+      console.log(this.formNodetime)
+      this.isnodeedit = true
     },
     // 编辑阶段节点
     updataNode(sub, index) {
@@ -1307,6 +1411,7 @@ export default {
         this.$nextTick(_ => {
           this.scrollLeft()
         })
+        console.log(this.designStageLists)
       } else {
         this.$message.error(response.data.meta.message)
       }
@@ -1516,12 +1621,19 @@ export default {
     line-height: 20px;
   }
   .userlist .fx-icon-nothing-close-error {
-    position:absolute;
+    position: absolute;
     top: 19px;
     right: 20px;
   }
+  .owner {
+    line-height: 30px
+  }
   .task-itemdesname i {
     background:url('../../../../assets/images/tools/project_management/superior@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .opvalue i {
+    background:url('../../../../assets/images/tools/project_management/Completed@2x.png') 0 0 no-repeat;
     background-size: contain;
   }
   .userimg {
@@ -1794,9 +1906,15 @@ export default {
     width:350%;
     border-radius: 4px;
     background:#65A6FF;
-    overflow: hidden;
     text-align: center;
-    cursor: pointer
+    cursor: pointer;
+    border:1px solid #65A6FF;
+  }
+  .task-name {
+    height:100%;
+    width:100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .item-tacklist-last {
     position:absolute;
@@ -1822,11 +1940,61 @@ export default {
   }
   .item-tacklist-last>span {
     cursor: pointer;
-    font-size:1.4rem;
+    font-size:1.4rem
   }
-  .no-tack{
+  .no-tack {
     width:30px;
+    height:30px
+  }
+  .item-start {
+    background:url('../../../../assets/images/tools/project_management/ProjectStart@2x.png') 0 0 no-repeat;
+    background-size: contain;
+    position: absolute;
+    top:-30px;
+    left:0;
+    width:24px;
+    height:24px
+  }
+  .item-noded {
+    background:url('../../../../assets/images/tools/project_management/Node02@2x.png') 0 0 no-repeat;
+    background-size: contain;
+    position: absolute;
+    top:-30px;
+    right:0;
+    width:24px;
+    height:24px
+  }
+  .item-node {
+    background:url('../../../../assets/images/tools/project_management/Node03@2x.png') 0 0 no-repeat;
+    background-size: contain;
+    position: absolute;
+    top:-30px;
+    right:0;
+    width:24px;
+    height:24px
+  }
+  .item-nodenon {
+    background:url('../../../../assets/images/tools/project_management/NonNode@2x.png') 0 0 no-repeat;
+    background-size: contain;
+    position: absolute;
+    top:-30px;
+    right:0;
+    width:24px;
+    height:24px
+  }
+  .node-name {
+    position: absolute;
+    right:12px;
+    border-right:2px dashed #d2d2d2;
+    bottom:-30px;
     height:30px;
+  }
+  .node-name p {
+    position: absolute;
+    top: 25px;
+    right: -15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .item-chartContent>ul {
     display:inline-block;
