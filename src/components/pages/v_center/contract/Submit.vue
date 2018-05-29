@@ -229,7 +229,7 @@
 
               <p class="title">付款方式</p>
               <p>甲方以银行支付方式或其他方式支付项目总金额到丙方，丙方按照以下约定的付款时间和金额分阶段向乙方支付设计费：</p>
-              <p>1、本合同签订后 <span class="bottom-border" type="text" disabled v-html="3"></span> 日内，甲方支付项目总金额到丙方托管；丙方收到款项后 <span class="bottom-border" type="text" disabled v-html="3"></span> 日内向乙方支付项目总金额首付款 40 %，即人民币 <span class="bottom-border" type="text" disabled v-html="form.first_payment"></span> 整(￥)。</p>
+              <p>1、本合同签订后，甲方支付项目总金额到丙方托管；丙方收到款项后向乙方支付项目总金额首付款 40 %，即人民币 <span class="bottom-border" type="text" disabled v-html="form.first_payment"></span> 整(￥)。</p>
               <p>2、阶段金额占项目总金额的 50 %，即人民币 <span class="bottom-border" type="text" disabled v-html="form.stage_money"></span> 整(￥)。</p>
               <p>3、设计全部完成经甲方确认后，支付该项目总金额尾款 10 %，即人民币 <span class="bottom-border" type="text" disabled v-html="form.warranty_money"></span> 整(￥)。</p>
               <p>甲方支付的项目费用在当前阶段完成之前会由丙方托管，如果甲乙双方合作中出现争议，将由平台冻结当前资金，待纠纷解决后再按照法律法规相应规定执行。</p>

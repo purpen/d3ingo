@@ -121,7 +121,7 @@
             {text: '甲方以银行支付方式或其他方式支付项目总金额到丙方，丙方按照以下约定的付款时间和金额分阶段向乙方支付设计费： ', style: 'p'},
             {
               text: [
-                {text: '1、本合同签订后 3 日内，甲方支付项目总金额到丙方托管；丙方收到款项后 3 日内向乙方支付项目总金额首付款'},
+                {text: '1、本合同签订后，甲方支付项目总金额到丙方托管；丙方收到款项后向乙方支付项目总金额首付款'},
                 {text: '   ' + this.form.first_payment_proportion_p + '   ', style: 'write'},
                 {text: '%，即人民币'},
                 {text: '   ' + this.form.first_payment + '   ', style: 'write'},
