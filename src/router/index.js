@@ -14,6 +14,7 @@ Vue.use(VueRouter)
 
 // 页面刷新时，重新赋值token
 if (window.localStorage.getItem('token')) {
+  // console.log(window.localStorage.getItem('token'))
   store.commit(types.USER_SIGNIN, JSON.parse(window.localStorage.getItem('token')))
 }
 
@@ -117,8 +118,8 @@ routes = [
   },
   // 服务条款
   {
-    path: '/item',
-    name: 'item',
+    path: '/terms',
+    name: 'terms',
     meta: {
       title: '服务条款',
       requireAuth: false
@@ -376,6 +377,16 @@ routes = [
     },
     component: require('@/components/pages/item/SubmitOne')
   },
+  // 发布需求new
+  {
+    path: '/item/create',
+    name: 'itemCreate',
+    meta: {
+      title: '选择类型',
+      requireAuth: true
+    },
+    component: require('@/components/pages/item/SubmitTwo')
+  },
 
   // 发布需求(第二步) 选择领域
   {
@@ -512,7 +523,9 @@ routes = [
     name: 'userManagement',
     meta: {
       title: '',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/user/MemberManagement')
   },
@@ -522,7 +535,9 @@ routes = [
     name: 'vcenterControl',
     meta: {
       title: '控制面板',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/common/Control')
   },
@@ -532,7 +547,9 @@ routes = [
     name: 'vcenterChildControl',
     meta: {
       title: '控制面板',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/common/ChildControl')
   },
@@ -564,7 +581,7 @@ routes = [
       title: '参赛作品详情',
       requireAuth: true
     },
-    component: require('@/components/pages/v_center/match_case/Show')
+    component: require('@/components/pages/v_center/design_case/Show')
   },
   {
     path: '/remind',
@@ -617,7 +634,7 @@ router.beforeEach((to, from, next) => {
     if (store.state.event.token) {
       next()
     } else {
-      store.commit(types.PREV_URL_NAME, to.path)
+      store.commit(types.PREV_URL_NAME, to.fullPath)
       next({
         name: 'login'
       })
@@ -625,15 +642,14 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
-
   if (to.meta['hideHeader']) {
-    store.commit(types.HIDE_HEADER, to.meta.hideHeader)
+    store.commit(types.HIDE_HEADER, to.meta['hideHeader'])
   } else {
     store.commit(types.HIDE_HEADER, false)
   }
 
   if (to.meta['hideFooter']) {
-    store.commit(types.HIDE_FOOTER, to.meta.hideFooter)
+    store.commit(types.HIDE_FOOTER, to.meta['hideFooter'])
   } else {
     store.commit(types.HIDE_FOOTER, false)
   }

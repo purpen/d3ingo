@@ -1,15 +1,16 @@
 <template>
-  <div class="container blank40">
-    <el-row :gutter="20">
+  <div class="vcenter blank30">
+    <el-row>
       <v-menu currentName="profile" :class="[isMob ? 'v-menu' : '']"></v-menu>
-
-      <el-col :span="isMob ? 24 : 20">
-        <div class="right-content modify-content">
+      <div :class="{'vcenter-right-plus': leftWidth === 4,
+      'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}">
+        <div class="right-content modify-content vcenter-container">
           <v-menu-sub></v-menu-sub>
           <v-menu-sub v-if="false" currentSubName="identification"></v-menu-sub>
-          <div :class="['content-box' , isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
+          <div :class="['content-box', 'clearfix' , isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
             <div :class="['form-title', isMob ? 'form-title-m' : '']">
-              <span>修改密码</span>
+              <span v-if="!isMob">修改密码</span>
             </div>
             <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
 
@@ -36,7 +37,6 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-
               <div class="form-btn">
                 <el-button :loading="isLoadingBtn"
                            :class="['is-custom' , isMob ? 'is-custom-m' : '']"
@@ -45,11 +45,10 @@
                 </el-button>
               </div>
             </el-form>
-
           </div>
         </div>
 
-      </el-col>
+      </div>
     </el-row>
   </div>
 </template>
@@ -151,6 +150,12 @@
     computed: {
       isMob() {
         return this.$store.state.event.isMob
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
+      },
+      rightWidth() {
+        return 24 - this.$store.state.event.leftWidth
       }
     },
     watch: {},
@@ -165,7 +170,6 @@
   .form-btn {
     width: 100%;
     overflow: hidden;
-    margin-top: 10px;
   }
 
   .is-custom {
@@ -179,5 +183,8 @@
 
   .el-form-item {
     margin-bottom: 0;
+  }
+  .right-content .content-box-m {
+    padding: 0;
   }
 </style>

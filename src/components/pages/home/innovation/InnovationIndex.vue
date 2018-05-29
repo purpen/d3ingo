@@ -32,10 +32,19 @@ export default {
   computed: {
     isMob() {
       return this.$store.state.event.isMob
+    },
+    user() {
+      return this.$store.state.event.user
     }
   },
   watch: {
     '$route'(to) {
+    }
+  },
+  created() {
+    if (!this.user.role_id) {
+      this.$message.warning('排行页面仅限管理员可见')
+      this.$router.push({name: 'home'})
     }
   },
   methods: {
@@ -95,7 +104,7 @@ export default {
 @media screen and (max-width: 767px) {
 
   .innovation-foot img {
-    margin-bottom: -56px;
+    margin-bottom: -98px;
   }
 }
 </style>

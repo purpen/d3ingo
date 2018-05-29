@@ -113,6 +113,10 @@
     created() {
       document.body.scrollTop = 0
       document.documentElement.scrollTop = 0
+      this.$router.push({
+        name: 'itemCreate'
+      })
+      return false
     },
     mounted() {
       window.addEventListener('resize', this.countSize)
@@ -215,7 +219,7 @@
   }
 
   .pub-btn p {
-    margin: 20px;
+    margin: 0 0 20px;
     color: #666;
   }
 
@@ -234,7 +238,7 @@
   }
 
   .pub-btn p button {
-    padding: 10px 40px 10px 40px;
+    /* padding: 10px 40px 10px 40px; */
   }
 
   .pub-btn .des {
@@ -245,7 +249,6 @@
   p.des-title {
     font-size: 15px;
     color: #222;
-    margin-bottom: -10px;
     font-weight: 400;
   }
 

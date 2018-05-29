@@ -5,38 +5,41 @@
         <hgroup>
           <el-menu class="el-menu-header nav-left" :default-active="menuactive" mode="horizontal" router>
             <!--<img src="../../assets/images/logo.png" width="120" alt="太火鸟">-->
-            <div class="el-menu-item logo">
-              <span class="logo">太火鸟 SaaS</span>
-            </div>
+            <router-link :to="{name: 'home'}" class="el-menu-item logo">太火鸟 SaaS</router-link>
             <el-menu-item index="home" :route="menu.home">首页</el-menu-item>
             <el-menu-item index="server" :route="menu.server">服务</el-menu-item>
             <el-menu-item index="article" :route="menu.article">铟果说</el-menu-item>
             <el-menu-item index="design_case" :route="menu.design_case">灵感</el-menu-item>
             <el-menu-item index="commonly_sites" :route="menu.commonly_sites">设计工具</el-menu-item>
             <el-menu-item index="innovation_index" :route="menu.innovation_index"
-              v-if="isAdmin > 0">创新指数</el-menu-item>
+              v-if="isAdmin">创新指数</el-menu-item>
           </el-menu>
         </hgroup>
         <div class="nav-right nav-menu" v-if="isLogin">
-          <a class="nav-item is-hidden-mobile" @click="viewMsg" ref="msgList">
-              <span class="icon active">
-                <i class="fx-4 fx-icon-notice">
-                  <span v-if="messageCount.quantity">{{ messageCount.quantity }}</span>
-                </i>
-              </span>
-              <div :class="['view-msg',{'view-msg-plus': msg.message || msg.notice}]">
-              <!-- <div :class="['view-msg']"> -->
-                <router-link :to="{name: 'vcenterMessageList'}" class="news">
-                  <i class="fx-4 fx-icon-notice"></i><i class="fx-4 fx-icon-news-hover"></i>
-                  <span v-if="messageCount.message"><b>{{messageCount.message}}</b>条[项目提醒]未查看</span>
-                  <span v-else>[项目提醒]</span>
-                </router-link>
-                <router-link :to="{name: 'systemMessageList'}" class="notice">
-                  <i class="fx-4 fx-icon-sound-loudly"></i><i class="fx-4 fx-icon-notice-hover"></i>
-                  <span v-if="messageCount.notice"><b>{{messageCount.notice}}</b>条[系统通知]未查看</span>
-                  <span v-else>[系统通知]</span>
-                </router-link>
-              </div>
+          <a tabindex="-1" class="nav-item is-hidden-mobile" @click="viewMsg" ref="msgList">
+            <span class="icon active">
+              <i class="fx-4 fx-icon-notice">
+                <span v-if="msgCount.quantity">{{ msgCount.quantity }}</span>
+              </i>
+            </span>
+            <!-- <div :class="['view-msg',{'view-msg-plus': msgCount.quantity}]"> -->
+            <div class="view-msg">
+              <a v-if="(isCompany && isCompanyAdmin) || eventUser.type === 1" @click="showMyView('order')" class="news">
+                <i class="fx-4 fx-icon-OrderReminding"></i><i class="fx-4 fx-icon-OrderRemindingClick"></i>
+                <span v-if="msgCount.message"><b>{{msgCount.message}}</b>条[订单通知]未查看</span>
+                <span v-else>[订单通知]</span>
+              </a>
+              <a v-if="isCompany" @click="showMyView('task')" class="news">
+                <i class="fx-4 fx-icon-ProjectReminding"></i><i class="fx-4 fx-icon-ProjectRemindingclick"></i>
+                <span v-if="msgCount.design_notice"><b>{{msgCount.design_notice}}</b>条[项目通知]未查看</span>
+                <span v-else>[项目通知]</span>
+              </a>
+              <a @click="showMyView('system')" class="notice">
+                <i class="fx-4 fx-icon-sound-loudly"></i><i class="fx-4 fx-icon-notice-hover"></i>
+                <span v-if="msgCount.notice"><b>{{msgCount.notice}}</b>条[系统通知]未查看</span>
+                <span v-else>[系统通知]</span>
+              </a>
+            </div>
           </a>
           <el-menu class="el-menu-info" mode="horizontal" router>
             <el-submenu index="2">
@@ -46,10 +49,10 @@
                 <span v-if="eventUser.realname" class="b-nickname">{{ eventUser.realname }}</span>
                 <span v-else class="b-nickname">{{ eventUser.account }}</span>
               </template>
-              <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>个人中心</el-menu-item>
-              <el-menu-item index="/admin" v-if="isAdmin > 0 ? true : false"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>后台管理</el-menu-item>
+              <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
+              <el-menu-item index="/admin" v-if="isAdmin"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
               <el-menu-item index="" @click="logout">
-<i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
+                <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
             </el-submenu>
           </el-menu>
         </div>
@@ -91,7 +94,7 @@
           <li @click="closeMenu">
             <router-link :to="menu.commonly_sites">设计工具</router-link>
           </li>
-          <li @click="closeMenu" v-if="isAdmin > 0">
+          <li @click="closeMenu" v-if="isAdmin">
             <router-link :to="menu.innovation_index">创新指数</router-link>
           </li>
           <li @click="closeMenu" v-show="!isLogin">
@@ -130,6 +133,17 @@
       </div>
     </div>
     <div class="header-buttom-line"></div>
+    <Message></Message>
+    <el-alert
+      v-if="eventUser.role_id === 20 && eventUser.verify_status === 0"
+      title="您还没有申请企业实名认证"
+      type="warning"
+      :closable="false"
+      show-icon>
+      <template slot-scope="scope">
+        <router-link style="margin-left: 10px;" class="tc-red fz-12" to="/vcenter/company/accreditation">去认证</router-link>
+      </template>
+    </el-alert>
   </div>
 </template>
 
@@ -137,6 +151,7 @@
   import auth from '@/helper/auth'
   import api from '@/api/api'
   import { MSG_COUNT } from '@/store/mutation-types'
+  import Message from '@/components/tools_block/Message'
   export default {
     name: 'head_menu',
     data() {
@@ -161,14 +176,17 @@
         msg: {
           message: 0,
           notice: 0,
+          design_notice: 0,
           quantity: 0
         }
       }
     },
     watch: {
-      $route(to, from) {
+      $route (to, from) {
         // 对路由变化作出响应...
         // this.navdefact()
+        this.showCover = ''
+        this.showCover2 = ''
       }
     },
     methods: {
@@ -181,7 +199,6 @@
       },
       logout() {
         auth.logout()
-        this.isLogin = false
         this.$message({
           message: '已退出',
           type: 'success',
@@ -198,11 +215,8 @@
         const self = this
         this.$http.get(api.messageGetMessageQuantity, {}).then(function (response) {
           if (response.data.meta.status_code === 200) {
-            self.msg.message = parseInt(response.data.data.message)
-            self.msg.notice = parseInt(response.data.data.notice)
-            sessionStorage.setItem('noticeCount', self.msg.notice)
-            let quantity = parseInt(response.data.data.quantity)
-            let msgCount = {message: self.msg.message, notice: self.msg.notice, quantity: quantity}
+            sessionStorage.setItem('noticeCount', response.data.data.notice)
+            let msgCount = response.data.data
             // 写入localStorage
             self.$store.commit(MSG_COUNT, msgCount)
           } else {
@@ -225,7 +239,7 @@
             self.fetchMessageCount()
             limitTimes += 1
           }
-        }, 20000)
+        }, 30000)
       },
       // 查看消息
       viewMsg() {
@@ -255,13 +269,18 @@
         this.$refs.mMenu.style.width = '100%'
         document.body.setAttribute('class', 'disableScroll')
         document.childNodes[1].setAttribute('class', 'disableScroll')
-      }, // 移动端显示 ↑  隐藏 ↓ 侧边栏
+      }, // 移动端显示 ↑ 隐藏 ↓ 侧边栏
       reScroll() {
         // this.$refs.mCover.style.width = 0
         this.$refs.mNav.style.marginLeft = '-54vw'
         this.$refs.mMenu.style.width = 0
         document.body.removeAttribute('class', 'disableScroll')
         document.childNodes[1].removeAttribute('class', 'disableScroll')
+      },
+      showMyView(view) {
+        this.showCover = 'show'
+        this.myView = view
+        this.$refs.msgList.blur()
       }
     },
     computed: {
@@ -284,7 +303,7 @@
         return user
       },
       isAdmin() {
-        return this.$store.state.event.user.role_id
+        return this.$store.state.event.user.role_id > 0
       },
       menuactive() {
         let menu = this.$route.path.split('/')[1]
@@ -296,7 +315,7 @@
         }
         return menu
       },
-      messageCount() {
+      msgCount() {
         return this.$store.state.event.msgCount
       },
       menuStatus () {
@@ -305,8 +324,35 @@
       isCompany() {
         return this.$store.state.event.user.type === 2
       },
+      isCompanyAdmin() {
+        return this.$store.state.event.user.company_role > 0
+      },
       hideHeader() {
         return this.$store.state.event.hideHeader
+      },
+      showCover: {
+        get() {
+          return this.$store.state.task.showMessage
+        },
+        set(e) {
+          this.$store.commit('changeShowMsg', e)
+        }
+      },
+      showCover2: {
+        get() {
+          return this.$store.state.task.showMine
+        },
+        set(e) {
+          this.$store.commit('changeShowMine', e)
+        }
+      },
+      myView: {
+        get() {
+          return this.$store.state.task.myView
+        },
+        set(e) {
+          this.$store.commit('changeMyView', e)
+        }
       }
     },
     created: function () {
@@ -323,39 +369,26 @@
     destroyed() {
       clearInterval(this.requestMessageTask)
       window.addEventListener('resize', this.initPage)
+    },
+    components: {
+      Message: Message
     }
   }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  @keyframes slow {
-    0% {
-      transform: translateY(-60px);
-    }
-    100% {
-      transform: translateY(0px);
-    }
-  }
-
-  @keyframes slowShow {
-    0% {
-      height: 0;
-    }
-    100% {
-      height: 81.5px;
-    }
-  }
-
   .nav-right .el-menu-header {
     min-width: 120px;
   }
 
   #header-layout {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
     background:#fff;
-    position: relative;
     z-index: 999;
-    animation: slow 0.4s;
   }
 
   .Flogin {
@@ -452,10 +485,6 @@
     height: 100vh;
     background: #0006
   } */
-
-  .view-msg {
-    animation: slowShow 0.3s;
-  }
 
   .container {
     overflow:visible

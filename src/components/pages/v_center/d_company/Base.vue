@@ -1,10 +1,11 @@
 <template>
-  <div class="container blank40">
-    <el-row :gutter="24">
+  <div class="blank30">
+    <el-row>
       <v-menu currentName="company" :class="[isMob ? 'v-menu' : '']"></v-menu>
-
-      <el-col :span="isMob ? 24 : 20">
-        <div class="right-content">
+      <div :class="{'vcenter-right-plus': leftWidth === 4,
+      'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}">
+          <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
 
           <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
@@ -23,7 +24,8 @@
                   :on-progress="avatarProgress"
                   :on-success="handleAvatarSuccess"
                   :before-upload="beforeAvatarUpload">
-                  <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                  <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar"> -->
+                  <span v-if="imageUrl" :style="{background: `url(${imageUrl}) no-repeat center / cover`}" class="avatar"></span>
                   <i v-else class="el-icon-plus
                     avatar-uploader-icon"></i>
                   <div slot="tip" class="el-upload__tip" v-if="!isMob">{{ avatarStr }}</div>
@@ -175,7 +177,7 @@
           </div>
 
         </div>
-      </el-col>
+      </div>
     </el-row>
 
   </div>
@@ -275,6 +277,12 @@
       },
       isMob() {
         return this.$store.state.event.isMob
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
+      },
+      rightWidth() {
+        return 24 - this.$store.state.event.leftWidth
       }
     },
     methods: {
@@ -459,7 +467,7 @@
 <style scoped>
   .right-content .content-box-m {
     margin: 0;
-    padding: 0 15px;
+    padding: 0;
   }
 
   .item {
@@ -588,6 +596,8 @@
   }
 
   .avatar {
+    /* border: 1px solid #e6e6e6; */
+    border-radius: 50%;
     width: 100px;
     height: 100px;
     display: block;

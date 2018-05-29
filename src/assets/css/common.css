@@ -1,0 +1,312 @@
+
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
+}
+
+.clear {
+  clear: both;
+}
+
+.clearfix::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.fz-12 {
+  font-size: 12px;
+}
+.fz-14 {
+  font-size: 14px;
+}
+.fz-16 {
+  font-size: 16px;
+}
+.fz-18 {
+  font-size: 18px;
+}
+.fz-20 {
+  font-size: 20px;
+}
+.tc-2 {
+  color: #222
+}
+.tc-6 {
+  color: #666
+}
+.tc-9 {
+  color: #999
+}
+.tc-red {
+  color: #ff5a5f
+}
+.b-d2 {
+  border: 1px solid #d2d2d2
+}
+.bt-d2 {
+  border-top: 1px solid #d2d2d2
+}
+.bb-d2 {
+  border-bottom: 1px solid #d2d2d2
+}
+.bg-fa {
+  background: #fafafa
+}
+.bg-f7 {
+  background: #f7f7f7
+}
+.br50 {
+  border-radius: 50%
+}
+.is-default {
+  color: #65a6ff
+}
+.is-unclaimed {
+  color: #d2d2d2
+}
+.is-success {
+  color: #00AC84
+}
+.is-exception {
+  color: #ff5a5f
+}
+.no-select {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.protrude {
+  font-family: PingFangSC-Medium
+}
+.fw-normal {
+  font-family: PingFangSC-Light
+}
+.blank10 {
+  margin-top: 10px;
+}
+
+.blank20 {
+  margin-top: 20px;
+}
+
+.blank30 {
+  margin-top: 30px;
+}
+
+.blank40 {
+  margin-top: 40px;
+}
+
+.blank50 {
+  margin-top: 50px;
+}
+
+.blank60 {
+  margin-top: 60px;
+}
+
+.padding26 {
+  padding-bottom: 26px;
+}
+.text-center {
+  text-align: center
+}
+
+.fw-4 {
+  font-weight: 400;
+}
+
+.fw-5 {
+  font-weight: 500;
+}
+
+.fw-6 {
+  font-weight: 600;
+}
+
+/* 基本按钮 button >>>>>>>*/
+.el-button,
+.el-button--primary,
+.el-button--default {
+  margin: 0;
+  padding: 0;
+  height: 34px;
+}
+.el-button,
+.large-button,
+.middle-button,
+.small-button,
+.el-button--mini,
+.el-button--small,
+.el-button--primary,
+.el-button--default,
+.el-button--large {
+  font-family: PingFangSC-Light;
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+}
+
+.el-button--mini,
+.el-button--small {
+  font-size: 12px;
+}
+.large-button {
+  cursor: pointer;
+  width: 100%;
+  height: 34px;
+  line-height: 34px;
+}
+.big-button,
+.el-button--large {
+  cursor: pointer;
+  min-width: 120px;
+  height: 40px;
+  line-height: 40px;
+}
+
+.el-button,
+.middle-button,
+.el-button--primary,
+.el-button--default {
+  cursor: pointer;
+  min-width: 120px;
+  height: 34px;
+  line-height: 34px;
+}
+.small-button,
+.el-button--small {
+  cursor: pointer;
+  min-width: 100px;
+  height: 30px;
+  line-height: 30px;
+  font-size: 12px;
+}
+
+.mini-button,
+.el-button--mini {
+  font-size: 12px;
+  cursor: pointer;
+  min-width: 80px;
+  height: 30px;
+  line-height: 30px;
+}
+.red-button {
+  background: #fff;
+  border: 1px solid #ff5a5f;
+  border-radius: 4px;
+  color: #ff5a5f;
+}
+.red-button:hover {
+  background-color: #ffacaf;
+  color: #fff;
+}
+.red-button:active {
+  background-color: #ff5a5f;
+  color: #fff;
+}
+.full-red-button,
+.el-button--primary,
+.el-button--danger {
+  background: #ff5a5f;
+  border: 1px solid #ff5a5f;
+  border-radius: 4px;
+  color: #fff;
+}
+.full-red-button:hover,
+.el-button--primary:hover,
+.el-button--danger:hover {
+  border-color: #D23C46;
+  background-color: #D23C46;
+}
+.full-red-button:active,
+.el-button--primary:active,
+.el-button--danger:active {
+  border-color: #a02832;
+  background-color: #a02832;
+}
+
+.white-button,
+.el-button--default {
+  background: #fff;
+  border: 1px solid #d2d2d2;
+  border-radius: 4px;
+  color: #999;
+}
+.white-button:hover,
+.el-button--default:hover{
+  background: #f5f5f5;
+  border: 1px solid #d2d2d2;
+  color: #999;
+}
+.white-button:active,
+.el-button--default:focus,
+.el-button--default:active {
+  background: #ccc;
+  border: 1px solid #ccc;
+  color: #fff;
+}
+.disabled-button,
+.disabled-button:hover,
+.disabled-button:active {
+  font-size: 14px;
+  cursor: not-allowed;
+  background: #ccc;
+  color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.el-input.is-disabled .el-input__inner {
+  background: #fafafa;
+  color: #c8c8c8;
+}
+button.el-button.is-custom.is-disabled,
+.disabled-button-light,
+.disabled-button-light:hover,
+.disabled-button-light:active {
+  font-size: 14px;
+  cursor: not-allowed;
+  background: #fafafa;
+  color: #c8c8c8;
+  border: 1px solid #e6e6e6;
+  border-radius: 4px;
+}
+/* 基本按钮 button  <<<<<<<*/
+
+/* vcenter */
+
+.vcenter-right {
+  padding-left: 60px
+}
+.vcenter-right-mob {
+  padding-left: 0
+}
+.fx-icon-nothing-close-error:hover {
+  color: #ff5a5f!important
+}
+@media screen and (min-width: 1200px) {
+  .vcenter-right-plus {
+    padding-left: 200px
+  }
+  .vcenter-right-mob {
+    padding-left: 0
+  }
+}
+@media screen and (max-width: 1199px) {
+  .vcenter-right-plus {
+    padding-left: 16.667%
+  }
+  .vcenter-right-mob {
+    padding-left: 0
+  }
+}
+@media screen and (max-width: 767px) {
+  .vcenter {
+    margin: 0
+  }
+}

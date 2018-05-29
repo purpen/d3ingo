@@ -89,7 +89,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .admin-menu {
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 
 </style>

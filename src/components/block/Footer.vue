@@ -14,7 +14,7 @@
       <el-col class="item server" :xs="12" :sm="6" :md="6" :lg="6">
         <p class="title">服务</p>
         <p>
-          <router-link :to="{name: 'itemSubmitOne'}" class="">发布需求</router-link>
+          <router-link :to="{name: 'itemCreate'}" class="">发布需求</router-link>
         </p>
         <p>
           <router-link :to="{name: 'serverDesign'}" class="">申请加入</router-link>
@@ -30,7 +30,7 @@
           <router-link :to="{name: 'question'}" class="">常见问题</router-link>
         </p>
         <p>
-          <router-link :to="{name: 'item'}" class="">服务条款</router-link>
+          <router-link :to="{name: 'terms'}" class="">服务条款</router-link>
         </p>
       </el-col>
 
@@ -184,7 +184,7 @@
   .wxbox h3 {
     margin: 30px;
     font-size: 18px;
-    font-weight: 600;
+    /* font-weight: 600; */
   }
 
   .wxclose {

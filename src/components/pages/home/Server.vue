@@ -2,10 +2,10 @@
   <div class="content-box">
     <div class="banner" :style="{height : calcHeight}">
       <div class="banner-contant">
-        <h3 :class="{'m-h3' : BMob}">把需求交给铟果来解决</h3>
-        <p :class="{'m-p' : BMob}">铟果聚集100+专业设计服务供应商，依托海量消费大数据，帮助客户洞察先机。 </p>
+        <h3 :class="{'m-h3' : isMob}">把需求交给铟果来解决</h3>
+        <p :class="{'m-p' : isMob}">铟果聚集100+专业设计服务供应商，依托海量消费大数据，帮助客户洞察先机。 </p>
           <div class="pub" v-if="!isCompany">
-            <router-link :to="{name: 'itemSubmitOne'}">
+            <router-link :to="{name: 'itemCreate'}">
               <el-button class="pub-btn is-custom" type="primary" size="large"> 发布项目需求
               </el-button>
             </router-link>
@@ -179,7 +179,6 @@
   .banner p {
     font-size: 3rem;
     color: #fff;
-    line-height: 0.5;
     font-weight: 300;
   }
 
@@ -192,7 +191,7 @@
   }
 
   .pub .pub-btn {
-    padding: 15px 40px 15px 40px;
+    /* padding: 15px 40px 15px 40px; */
   }
 
   .item_1_title {
@@ -205,7 +204,7 @@
 
   .item_1_desc {
     color: #666;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     line-height: 1.5;
     padding: 0 20px;
   }
@@ -281,6 +280,13 @@
 
     .banner p {
       font-size: 2rem;
+    }
+    .pub {
+      margin: 10px 0 0 0;
+    }
+
+    .pub .pub-btn {
+      /* padding: 10px 15px; */
     }
   }
 

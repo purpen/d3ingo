@@ -1,10 +1,11 @@
 <template>
-  <div class="container blank40">
-    <el-row :gutter="24" class="anli-elrow">
+  <div class="blank30 vcenter">
+    <el-row>
       <v-menu currentName="wallet"></v-menu>
-
-      <el-col :span="isMob ? 24 : 20" v-loading.body="walletLoading">
-        <div class="right-content">
+      <div :class="{'vcenter-right-plus': leftWidth === 4,
+        'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}">
+        <div class="right-content vcenter-container">
           <div :class="['my-wallet', isMob ? 'my-wallet-m' : '' ]">
             <div class="wallet-box">
               <div :class="['amount-show', isMob ? 'amount-show-m' : '']">
@@ -138,7 +139,7 @@
 
             <el-pagination
               class="pagination"
-              v-if="query.totalCount > 1"
+              v-if="query.totalCount > query.pageSize"
               @current-change="handleCurrentChange"
               :current-page="query.page"
               :page-size="query.pageSize"
@@ -148,7 +149,7 @@
           </div>
 
         </div>
-      </el-col>
+      </div>
     </el-row>
 
     <!--弹框模板-->
@@ -168,10 +169,13 @@
 
       <div class="withdraw-input">
         <p class="withdraw-title">提现金额</p>
-        <el-input placeholder="请输入提现额度" v-model.number="withdrawPrice">
-          <template slot="prepend">¥</template>
-        </el-input>
-        <p class="withdraw-des">可提现金额: ¥ {{ wallet.price }} <a href="javascript:void(0)" @click="allPrice">全部提现</a></p>
+        <div class="flex">
+          <el-input placeholder="请输入提现额度" v-model.number="withdrawPrice">
+            <template slot="prepend">¥</template>
+          </el-input>
+          <button class="red-button middle-button" @click="allPrice">全部提现</button>
+        </div>
+        <p class="withdraw-des">可提现金额: ¥ {{ wallet.price }}</p>
       </div>
 
       <div slot="footer" class="dialog-footer">
@@ -215,7 +219,6 @@
           pageSize: 10,
           totalCount: 0,
           sort: 1,
-          type: 0,
           payType: 0,
           test: null
         },
@@ -234,8 +237,7 @@
           params: {
             page: self.query.page,
             per_page: self.query.pageSize,
-            sort: self.query.sort,
-            type: self.query.type
+            sort: self.query.sort
           }
         })
           .then (function (response) {
@@ -243,7 +245,7 @@
             self.tableData = []
             if (response.data.meta.status_code === 200) {
               self.itemList = response.data.data
-              self.query.totalCount = response.data.meta.pagination.total_pages
+              self.query.totalCount = response.data.meta.pagination.total
 
               for (let i = 0; i < self.itemList.length; i++) {
                 let item = self.itemList[i]
@@ -269,11 +271,12 @@
         this.isLoading = true
         this.$http.get(api.withdrawList, {params: {
           per_page: this.query.pageSize,
-          page: this.query.page
+          page: this.query.page,
+          status: 2
         }}).then((res) => {
           this.isLoading = false
           if (res.data.meta.status_code === 200) {
-            this.query.totalCount = res.data.meta.pagination.total_pages
+            this.query.totalCount = res.data.meta.pagination.total
             this.WithdrawList = res.data.data
             for (let i of this.WithdrawList) {
               i.created_at = i.created_at.date_format().format('yyyy-MM-dd hh:mm')
@@ -288,7 +291,7 @@
                   i.status_value = '申请中'
                   break
                 case 1:
-                  i.status_value = '已同意'
+                  i.status_value = '已提现'
                   break
               }
             }
@@ -386,6 +389,12 @@
     computed: {
       isMob() {
         return this.$store.state.event.isMob
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
+      },
+      rightWidth() {
+        return 24 - this.$store.state.event.leftWidth
       }
     },
     created: function () {
@@ -448,7 +457,6 @@
   .my-wallet-m {
     border: 1px solid #e6e6e6;
     height: auto;
-    margin-top: 20px;
   }
 
   .wallet-box {
@@ -517,9 +525,9 @@
     text-align: center;
   }
 
-  .amount-btn button {
+  /* .amount-btn button {
     padding: 8px 25px;
-  }
+  } */
 
   .amount-btn-m button {
     margin-top: 20px;
@@ -556,9 +564,9 @@
   }
 
   .item-box h3 {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     color: #666;
-    line-height: 2;
+    /* line-height: 2; */
   }
 
   .item-box-m h3 {
@@ -578,7 +586,7 @@
   }
 
   .withdraw-input .el-input {
-    width: 150px;
+    width: 200px;
   }
 
   .withdraw-input p.withdraw-des {
@@ -621,17 +629,24 @@
 
   .vcenter-menu-sub::after {
     content: "";
-    position: absolute;
+    /* position: absolute; */
     width: 100%;
     top: 42px;
     left: 0;
     border-bottom: 1px solid #d2d2d2;
     z-index: -1;
   }
+  .flex {
+    display: flex;
+    align-items: center;
+  }
+  .flex button:last-child {
+    margin-left: 10px;
+  }
   @media screen and (max-width: 767px) {
     .vcenter-menu-sub::after {
       content: "";
-      position: absolute;
+      /* position: absolute; */
       width: 100%;
       top: 47px;
       left: 0;

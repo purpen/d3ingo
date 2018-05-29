@@ -242,7 +242,7 @@ export default {
 }
 
 .pay-btn p button {
-  padding: 10px 40px;
+  /* padding: 10px 40px; */
 }
 
 .pay-btn-m p {

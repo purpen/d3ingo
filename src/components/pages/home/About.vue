@@ -102,7 +102,7 @@
 
   @media screen and (max-width: 767px) {
     .content-box {
-      padding: 20px
+      padding: 0 15px
     }
 
     .banner h3 {

@@ -390,7 +390,7 @@
     padding: 0 8px;
     color: #999999;
     height: 22px;
-    line-height: 20px;
+    line-height: 22px;
   }
 
   .fc-button-group .fc-month-button,

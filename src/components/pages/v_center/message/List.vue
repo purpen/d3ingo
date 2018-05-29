@@ -1,13 +1,11 @@
 <template>
-  <div class="container blank40 min-height350">
-    <el-row :gutter="20" class="anli-elrow">
+  <div class="blank20 ">
+    <el-row>
       <v-menu currentName="message"></v-menu>
-
-      <el-col :span="isMob ? 24 : 20" v-loading="isLoading">
-        <div class="right-content">
+      <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
+        <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
-          <div class="content-box">
-
+          <div class="content-box" v-loading="isLoading">
             <div class="item" v-for="(d, index) in itemList" @click="showDes(d, index)" :key="index">
               <div class="banner2">
                 <p class="read" v-if="d.status === 0"><i class="alert"></i></p>
@@ -188,6 +186,12 @@
     computed: {
       isMob() {
         return this.$store.state.event.isMob
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
+      },
+      rightWidth() {
+        return 24 - this.$store.state.event.leftWidth
       }
     },
     created: function () {
@@ -217,7 +221,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .container {
+  .vcenter-container {
     overflow: hidden;
   }
 
@@ -228,9 +232,9 @@
 
   .content-box .item {
     position: relative;
-    border: 1px solid #ccc;
+    border: 1px solid #E6E6E6;
     margin-bottom: -1px;
-    padding: 20px;
+    padding: 30px 20px;
     cursor: pointer;
     min-height: 30px;
     line-height: 30px;
@@ -238,7 +242,7 @@
   }
 
   .content-box .item:hover {
-    background-color: #F2F1F1;
+    background-color: #F7F7F7;
   }
 
   .item p {

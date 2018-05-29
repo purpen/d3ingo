@@ -144,7 +144,7 @@ pre {
 
 body {
   color: #4A4A4A;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 400;
   line-height: 1.5;
   }
@@ -629,7 +629,7 @@ a.box:active {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
-  font-size: 1rem;
+  font-size: 1.2rem;
   height: 2.25em;
   -webkit-box-pack: start;
   -ms-flex-pack: start;
@@ -1526,7 +1526,7 @@ input[type="submit"].button {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
-  font-size: 1rem;
+  font-size: 1.2rem;
   height: 2.25em;
   -webkit-box-pack: start;
   -ms-flex-pack: start;
@@ -1777,7 +1777,7 @@ input[type="submit"].button {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
-  font-size: 1rem;
+  font-size: 1.2rem;
   height: 2.25em;
   -webkit-box-pack: start;
   -ms-flex-pack: start;
@@ -1874,7 +1874,7 @@ input[type="submit"].button {
 .label {
   color: #363636;
   display: block;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 700;
   }
 
@@ -2109,7 +2109,7 @@ input[type="submit"].button {
   }
 
 .control {
-  font-size: 1rem;
+  font-size: 1.2rem;
   position: relative;
   text-align: left;
   }
@@ -2627,7 +2627,7 @@ input[type="submit"].button {
   }
 
 .tag.is-medium {
-  font-size: 1rem;
+  font-size: 1.2rem;
   }
 
 .tag.is-large {
@@ -2701,7 +2701,7 @@ input[type="submit"].button {
   }
 
 .title.is-6 {
-  font-size: 1rem;
+  font-size: 1.2rem;
   }
 
 .subtitle {
@@ -2740,7 +2740,7 @@ input[type="submit"].button {
   }
 
 .subtitle.is-6 {
-  font-size: 1rem;
+  font-size: 1.2rem;
   }
 
 .block:not(:last-child) {
@@ -2789,7 +2789,7 @@ input[type="submit"].button {
   border-radius: 290486px;
   cursor: pointer;
   display: inline-block;
-  font-size: 1rem;
+  font-size: 1.2rem;
   height: 20px;
   outline: none;
   position: relative;
@@ -3235,7 +3235,7 @@ input[type="submit"].button {
   }
 
 .menu {
-  font-size: 1rem;
+  font-size: 1.2rem;
   }
 
 .menu-list {
@@ -3283,7 +3283,7 @@ input[type="submit"].button {
 .message {
   background-color: whitesmoke;
   border-radius: 3px;
-  font-size: 1rem;
+  font-size: 1.2rem;
   }
 
 .message:not(:last-child) {
@@ -3523,7 +3523,7 @@ input[type="submit"].button {
   border-radius: 290486px;
   cursor: pointer;
   display: inline-block;
-  font-size: 1rem;
+  font-size: 1.2rem;
   height: 20px;
   outline: none;
   position: relative;
@@ -3759,7 +3759,7 @@ input[type="submit"].button {
   flex-grow: 0;
   -ms-flex-negative: 0;
   flex-shrink: 0;
-  font-size: 1rem;
+  font-size: 1.2rem;
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
@@ -3965,7 +3965,7 @@ a.nav-item.is-tab.is-active {
   }
 
 .pagination {
-  font-size: 1rem;
+  font-size: 1.2rem;
   }
 
 .pagination.is-small {
@@ -4009,7 +4009,7 @@ a.nav-item.is-tab.is-active {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
-  font-size: 1rem;
+  font-size: 1.2rem;
   height: 2.25em;
   -webkit-box-pack: start;
   -ms-flex-pack: start;
@@ -4237,7 +4237,7 @@ a.nav-item.is-tab.is-active {
   }
 
 .panel {
-  font-size: 1rem;
+  font-size: 1.2rem;
   }
 
 .panel:not(:last-child) {
@@ -4375,7 +4375,7 @@ label.panel-block:hover {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  font-size: 1rem;
+  font-size: 1.2rem;
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between;

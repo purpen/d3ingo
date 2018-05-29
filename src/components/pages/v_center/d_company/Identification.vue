@@ -1,153 +1,150 @@
 <template>
-  <div class="container">
-    <div class="blank20"></div>
-    <el-row :gutter="24">
-      <v-menu currentName="company"></v-menu>
+  <el-row class="blank30">
+    <v-menu currentName="company"></v-menu>
 
-      <el-col :span="isMob ? 24 : 20">
-        <div class="right-content">
-          <v-menu-sub currentSubName="identification"></v-menu-sub>
-          <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
-            <div class="form-title">
-              <span>企业实名认证</span>
-            </div>
-            <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
-
-              <el-row :gutter="24">
-                <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="企业名称" prop="company_name">
-                    <el-input v-model="form.company_name" name="company_name" ref="company_name"
-                              placeholder="请输入完整的公司名称"></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-
-              <el-form-item label="证件类型" prop="company_type" class="fullwidth">
-                <el-select v-model.number="form.company_type" style="width: 350px;" placeholder="请选择证件类型">
-                  <el-option
-                    v-for="(d, index) in certificateTypeOptions"
-                    :label="d.label"
-                    :key="index"
-                    :value="d.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-
-              <el-row :gutter="24">
-                <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="统一社会信用代码" prop="registration_number">
-                    <el-input v-model="form.registration_number" placeholder=""></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-
-              <el-row :gutter="24">
-                <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="公司法人营业执照" prop="">
-                    <el-upload
-                      class=""
-                      :action="uploadParam.url"
-                      :on-preview="handlePreview"
-                      :on-remove="handleRemove"
-                      :file-list="fileList"
-                      :data="uploadParam"
-                      :on-error="uploadError"
-                      :on-success="uploadSuccess"
-                      :before-upload="beforeUpload"
-                      list-type="text">
-                      <el-button size="small" type="primary">点击上传</el-button>
-                      <div slot="tip" class="el-upload__tip">只能上传jpg/pdf文件，且不超过5M</div>
-                    </el-upload>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-
-              <el-row :gutter="24">
-                <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="法人姓名" prop="legal_person">
-                    <el-input v-model="form.legal_person" placeholder=""></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-
-              <el-form-item label="证件类型" prop="document_type" class="fullwidth">
-                <el-select v-model.number="form.document_type" placeholder="请选择证件类型">
-                  <el-option
-                    v-for="(d, index) in documentTypeOptions"
-                    :label="d.label"
-                    :key="index"
-                    :value="d.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-
-              <el-row :gutter="24">
-                <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="证件号码" prop="document_number">
-                    <el-input v-model="form.document_number" placeholder=""></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-
-              <el-row :gutter="24">
-                <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="法人证件" prop="">
-                    <el-upload
-                      class=""
-                      :action="uploadParam.url"
-                      :on-preview="handlePreview"
-                      :on-remove="handleRemove"
-                      :file-list="filePersonList"
-                      :data="uploadParam"
-                      :on-error="uploadError"
-                      :on-success="uploadSuccessPerson"
-                      :before-upload="beforeUploadPerson"
-                      list-type="picture">
-                      <el-button size="small" type="primary">点击上传</el-button>
-                      <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过5M</div>
-                    </el-upload>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-
-              <!-- <el-row :gutter="10">
-                <el-col :span="isMob ? 24 : 6">
-                  <el-form-item label="联系人" prop="contact_name">
-                    <el-input v-model="form.contact_name" placeholder=""></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="isMob ? 24 : 6">
-                  <el-form-item label="职位" prop="position">
-                    <el-input v-model="form.position" placeholder=""></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="isMob ? 24 : 6">
-                  <el-form-item label="手机" prop="phone">
-                    <el-input v-model="form.phone" placeholder=""></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="isMob ? 24 : 6">
-                  <el-form-item label="邮箱" prop="email">
-                    <el-input v-model="form.email" placeholder=""></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row> -->
-
-
-              <div class="form-btn">
-                <el-button @click="returnBase">返回</el-button>
-                <el-button :loading="isLoadingBtn" class="is-custom" type="primary" @click="submit('ruleForm')">提交审核
-                </el-button>
-              </div>
-              <div class="clear"></div>
-            </el-form>
-
+    <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
+      <div class="right-content vcenter-container">
+        <v-menu-sub currentSubName="identification"></v-menu-sub>
+        <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
+          <div class="form-title">
+            <span>企业实名认证</span>
           </div>
-        </div>
+          <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
 
-      </el-col>
-    </el-row>
-  </div>
+            <el-row :gutter="24">
+              <el-col :span="isMob ? 24 : 12">
+                <el-form-item label="企业名称" prop="company_name">
+                  <el-input v-model="form.company_name" name="company_name" ref="company_name"
+                            placeholder="请输入完整的公司名称"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+            <el-form-item label="证件类型" prop="company_type" class="fullwidth">
+              <el-select v-model.number="form.company_type" style="width: 350px;" placeholder="请选择证件类型">
+                <el-option
+                  v-for="(d, index) in certificateTypeOptions"
+                  :label="d.label"
+                  :key="index"
+                  :value="d.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+
+            <el-row :gutter="24">
+              <el-col :span="isMob ? 24 : 12">
+                <el-form-item label="统一社会信用代码" prop="registration_number">
+                  <el-input v-model="form.registration_number" placeholder=""></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+            <el-row :gutter="24">
+              <el-col :span="isMob ? 24 : 12">
+                <el-form-item label="公司法人营业执照" prop="">
+                  <el-upload
+                    class=""
+                    :action="uploadParam.url"
+                    :on-preview="handlePreview"
+                    :on-remove="handleRemove"
+                    :file-list="fileList"
+                    :data="uploadParam"
+                    :on-error="uploadError"
+                    :on-success="uploadSuccess"
+                    :before-upload="beforeUpload"
+                    list-type="text">
+                    <el-button size="small" type="primary">点击上传</el-button>
+                    <div slot="tip" class="el-upload__tip">只能上传jpg/pdf文件，且不超过5M</div>
+                  </el-upload>
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+            <el-row :gutter="24">
+              <el-col :span="isMob ? 24 : 12">
+                <el-form-item label="法人姓名" prop="legal_person">
+                  <el-input v-model="form.legal_person" placeholder=""></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+            <el-form-item label="证件类型" prop="document_type" class="fullwidth">
+              <el-select v-model.number="form.document_type" placeholder="请选择证件类型">
+                <el-option
+                  v-for="(d, index) in documentTypeOptions"
+                  :label="d.label"
+                  :key="index"
+                  :value="d.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+
+            <el-row :gutter="24">
+              <el-col :span="isMob ? 24 : 12">
+                <el-form-item label="证件号码" prop="document_number">
+                  <el-input v-model="form.document_number" placeholder=""></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+            <el-row :gutter="24">
+              <el-col :span="isMob ? 24 : 12">
+                <el-form-item label="法人证件" prop="">
+                  <el-upload
+                    class=""
+                    :action="uploadParam.url"
+                    :on-preview="handlePreview"
+                    :on-remove="handleRemove"
+                    :file-list="filePersonList"
+                    :data="uploadParam"
+                    :on-error="uploadError"
+                    :on-success="uploadSuccessPerson"
+                    :before-upload="beforeUploadPerson"
+                    list-type="picture">
+                    <el-button size="small" type="primary">点击上传</el-button>
+                    <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过5M</div>
+                  </el-upload>
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+            <!-- <el-row :gutter="10">
+              <el-col :span="isMob ? 24 : 6">
+                <el-form-item label="联系人" prop="contact_name">
+                  <el-input v-model="form.contact_name" placeholder=""></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="isMob ? 24 : 6">
+                <el-form-item label="职位" prop="position">
+                  <el-input v-model="form.position" placeholder=""></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="isMob ? 24 : 6">
+                <el-form-item label="手机" prop="phone">
+                  <el-input v-model="form.phone" placeholder=""></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="isMob ? 24 : 6">
+                <el-form-item label="邮箱" prop="email">
+                  <el-input v-model="form.email" placeholder=""></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row> -->
+
+
+            <div class="form-btn">
+              <el-button @click="returnBase">返回</el-button>
+              <el-button :loading="isLoadingBtn" class="is-custom" type="primary" @click="submit('ruleForm')">提交审核
+              </el-button>
+            </div>
+            <div class="clear"></div>
+          </el-form>
+
+        </div>
+      </div>
+
+    </el-col>
+  </el-row>
 </template>
 
 <script>
@@ -155,7 +152,7 @@
   import vMenuSub from '@/components/pages/v_center/d_company/MenuSub'
   import api from '@/api/api'
   import typeData from '@/config'
-
+  import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
   import '@/assets/js/format'
 
   export default {
@@ -259,6 +256,7 @@
               .then(function (response) {
                 that.isLoadingBtn = false
                 if (response.data.meta.status_code === 200) {
+                  that.$store.commit(CHANGE_USER_VERIFY_STATUS, {verify_status: 3})
                   that.$message.success('提交成功,等待审核')
                   that.$router.push({name: 'vcenterDCompanyAccreditation'})
                   return false
@@ -370,6 +368,12 @@
       },
       isMob() {
         return this.$store.state.event.isMob
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
+      },
+      rightWidth() {
+        return 24 - this.$store.state.event.leftWidth
       }
     },
     watch: {},
@@ -466,7 +470,7 @@
 <style scoped>
   .right-content .content-box-m {
     margin: 0;
-    padding: 0 15px;
+    padding: 0;
   }
 
   .form-btn {

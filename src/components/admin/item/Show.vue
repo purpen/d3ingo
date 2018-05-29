@@ -158,7 +158,7 @@
                 {{ item.status_value }}
               </p>
 
-              <p class="opt" v-if="isSystem">
+              <p class="opt" v-if="isAdmin">
                 <el-button class="is-custom" size="small" @click="forceCloseBtn">关闭项目并退款</el-button>
               </p>
             </div>
@@ -370,7 +370,7 @@ export default {
     })
   },
   computed: {
-    isSystem() {
+    isAdmin() {
       var user = this.$store.state.event.user
       if (user.role_id === 15 || user.role_id === 20) {
         return true

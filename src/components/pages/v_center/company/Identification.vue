@@ -1,11 +1,11 @@
 <template>
-  <div class="container">
-    <div class="blank20"></div>
-    <el-row :gutter="20">
+  <div class="identification">
+    <div class="blank30 vcenter"></div>
+    <el-row>
       <v-menu currentName="company"></v-menu>
 
-      <el-col :span="isMob ? 24 : 20">
-        <div class="right-content">
+      <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
+        <div class="right-content vcenter-container">
           <v-menu-sub currentSubName="identification"></v-menu-sub>
           <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
 
@@ -260,7 +260,7 @@
   import vMenuSub from '@/components/pages/v_center/company/MenuSub'
   import api from '@/api/api'
   import typeData from '@/config'
-
+  import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
   import '@/assets/js/format'
 
   export default {
@@ -384,6 +384,7 @@
               .then(function (response) {
                 that.isLoadingBtn = false
                 if (response.data.meta.status_code === 200) {
+                  that.$store.commit(CHANGE_USER_VERIFY_STATUS, {verify_status: 3})
                   that.$message.success('提交成功,等待审核')
                   that.$router.push({name: 'vcenterComputerAccreditation'})
                   return false
@@ -504,6 +505,12 @@
       },
       isMob() {
         return this.$store.state.event.isMob
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
+      },
+      rightWidth() {
+        return 24 - this.$store.state.event.leftWidth
       }
     },
     watch: {},
@@ -598,6 +605,10 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .right-content .content-box-m {
+    margin: 0;
+    padding: 0;
+  }
 
   .form-btn {
     float: right;
@@ -616,7 +627,7 @@
   }
 
   .diage-footer button {
-    padding: 10px 30px;
+    /* padding: 10px 30px; */
   }
 
   .agree-content {

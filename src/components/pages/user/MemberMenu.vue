@@ -1,13 +1,13 @@
 <template>
-<section class="member-menu">
+<section :class="['member-menu',
+  {'member-menu-mini': !leftWidth, 'member-menu-mob': isMob}]">
   <div class="seach-block">
     <span class="search-icon"></span>
     <input type="text" class="search" v-model.trim="searchKey">
     <span class="close-icon-solid" @click="cancelSearch"></span>
   </div>
-  <div class="menu-header">
-    <span v-if="company_role === 20 || company_role === 10"
-      :class="{'active': isActive === 'member'}" @click="changeActive('member')">成员</span>
+  <div class="menu-header bb-d2">
+    <span :class="{'active': isActive === 'member'}" @click="changeActive('member')">成员</span>
     <span :class="{'active': isActive === 2}" @click="changeActive(2)" v-if="false">部门</span>
     <span :class="{'active': isActive === 'group'}" @click="changeActive('group')">群组</span>
   </div>
@@ -62,24 +62,30 @@ export default {
   created() {
     this.isActive = this.$route.query.type || 'member'
   },
-  mounted() {
-    window.addEventListener('keydown', (e) => {
-      if (e.keyCode === 13) {
-        if (this.searchKey) {
-          this.searchMember()
-        }
-      }
-    })
-  },
   watch: {
     '$route' (to, from) {
       this.isActive = this.$route.query.type
       this.firstGroupId = 0
+    },
+    searchKey(val) {
+      if (val) {
+        this.searchMember()
+      } else {
+        this.cancelSearch()
+      }
     }
   },
   computed: {
-    company_role() {
-      return this.$store.state.event.user.company_role
+    isMob() {
+      return this.$store.state.event.isMob
+    },
+    leftWidth() {
+      let leftWidth = this.$store.state.event.leftWidth
+      if (leftWidth === 2) {
+        return 0
+      } else if (leftWidth === 4) {
+        return leftWidth
+      }
     }
   }
 }
@@ -88,10 +94,17 @@ export default {
 <style scoped>
   .member-menu {
     font-size: 14px;
-    color: #222;
+    /* color: rgba(255, 255, 255, 0.5); */
+    /* background: #333; */
+    /* transition: 0.2s all ease; */
+    color: #999;
+    max-width: 240px;
+    height: calc(100vh - 60px);
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.10)
   }
   .seach-block {
     position: relative;
+    padding: 10px;
   }
   .search {
     width: 100%;
@@ -100,62 +113,81 @@ export default {
     border-radius: 4px;
     padding: 0 8px 0 34px;
     font-size: 14px;
-    color: #222;
+    /* color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.1); */
+    color: #999;
   }
   
   .search-icon {
     position: absolute;
-    top: 10px;
-    left: 8px;
+    top: 20px;
+    left: 18px;
     width: 20px;
     height: 20px;
-    background: url(../.../../../../assets/images/tools/cloud_drive/search@2x.png) no-repeat center;
+    background: url(../../../assets/images/tools/cloud_drive/search@2x.png) no-repeat center;
     background-size: contain;
   }
   
   .close-icon-solid {
     position: absolute;
-    top: 12px;
-    right: 8px;
+    top: 22px;
+    right: 18px;
   }
   .menu-header {
     height: 48px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 50px;
+    padding: 0 24px;
     color: #666;
-    border-bottom: 1px solid #d2d2d2;
   }
   .menu-header span {
-    cursor: pointer
+    padding: 0 6px;
+    cursor: pointer;
+    height: 48px;
+    line-height: 48px;
+    border-bottom: 3px solid transparent
+  }
+  .menu-header span.active {
+    border-color: #ff5a5f
   }
   .menu-header span:hover {
-    color: #222
+    /* color: #fff */
+    color: #ff5a5f
   }
   .menu-list {
     line-height: 40px;
   }
   .menu-list li {
     cursor: pointer;
-    padding: 0 10px;
+    padding: 0 15px;
   }
   
   .menu-list li:hover {
-    background: #f7f7f7
+    /* color: rgba(255, 255, 255, 0.5); */
+    color: #ff5a5f;
+    background: #f7f7f7;
   }
   .active {
+    /* color: #fff */
     color: #ff5a5f
   }
   .menu-header span.active:hover {
+    /* color: #fff */
     color: #ff5a5f
   }
   .li-active {
+    /* color: #fff; */
     color: #ff5a5f;
-    background: #f7f7f7
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  .menu-list .li-active:hover {
+    /* color: #fff; */
+    color: #ff5a5f;
   }
   .new-group {
-    padding-left: 40px;
+    padding-left: 45px;
     position: relative;
     opacity: 0.7;
     cursor: pointer;
@@ -163,7 +195,7 @@ export default {
   .new-group::before {
     content: "";
     position: absolute;
-    left: 10px;
+    left: 15px;
     top: 10px;
     width: 20px;
     height: 20px;
@@ -173,5 +205,27 @@ export default {
   
   .new-group:hover {
     opacity: 1;
+  }
+  .member-menu-mob {
+    /* margin-top: 50px; */
+    max-width: 100%;
+    height: auto;
+    padding: 0 15px;
+  }
+  @media screen and (min-width: 1200px) {
+    .member-menu {
+      /* position: absolute; */
+      left: 200px;
+    }
+
+    .member-menu-mini {
+      left: 60px;
+      transition: 0.2s all ease;
+    }
+  }
+  @media screen and (max-width: 1180px) {
+    .member-menu .menu-header {
+      padding: 0 10px;
+    }
   }
 </style>

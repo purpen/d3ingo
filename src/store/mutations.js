@@ -2,12 +2,14 @@ import {
   USER_SIGNIN,
   USER_SIGNOUT,
   USER_INFO,
+  CHANGE_USER_VERIFY_STATUS,
   MSG_COUNT,
   PREV_URL_NAME,
   CLEAR_PREV_URL_NAME,
   MENU_STATUS,
   HIDE_HEADER,
-  HIDE_FOOTER
+  HIDE_FOOTER,
+  LEFT_WIDTH
 } from './mutation-types.js'
 
 // 判断是否登录
@@ -62,6 +64,16 @@ let hashideFooter = function () {
   return Boolean(hideFooter)
 }
 
+// 是否隐藏尾部
+let getLeftWidth = function () {
+  if (localStorage.getItem('leftWidth')) {
+    let leftWidth = localStorage.getItem('leftWidth')
+    return Number(leftWidth)
+  } else {
+    return 2
+  }
+}
+
 // 判断是否登录
 let getMenustatus = function () {
   let menuStatus = localStorage.getItem('menuStatus')
@@ -91,7 +103,8 @@ const state = {
   isMob: false,
   menuStatus: getMenustatus() || '',
   hideHeader: hashideHeader(),
-  hideFooter: hashideFooter()
+  hideFooter: hashideFooter(),
+  leftWidth: getLeftWidth()
 }
 
 let IsMobile = function () {
@@ -153,6 +166,15 @@ const mutations = {
   [HIDE_FOOTER](state, status) {
     localStorage.setItem('hideFooter', status)
     state.hideFooter = status
+  },
+  [LEFT_WIDTH](state, status) {
+    localStorage.setItem('leftWidth', status)
+    state.leftWidth = status
+  },
+  [CHANGE_USER_VERIFY_STATUS](state, status) {
+    Object.assign(state.user, status)
+    console.log(state.user)
+    localStorage.setItem('leftWidth', state.user)
   },
   INIT_PAGE(state) {
     if (IsMobile()) {

@@ -1,19 +1,29 @@
 <template>
-  <div class="container blank40">
-    <el-row :gutter="24">
+  <div class="vcenter blank30">
+    <el-row>
       <v-menu currentName="profile" :class="[isMob ? 'v-menu' : '']"></v-menu>
-      <el-col :xs="24" :sm="20" :md="20" :lg="20">
-        <div class="right-content">
+      <div :class="{'vcenter-right-plus': leftWidth === 4,
+      'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}">
+          <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
 
           <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
 
             <el-row :gutter="gutter" :class="['item', isMob ? 'item-m item-mAvatar' : '']">
+              <el-col :span="titleSpan" class="title">
+                <p>我的账号</p>
+              </el-col>
+              <el-col :xs="12" :sm="20" :md="20" :lg="20" class="content avatarcontent">
+                <p>{{user.account}}</p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="gutter" :class="['item', isMob ? 'item-m item-mAvatar' : '']">
               <el-col :span="titleSpan" class="title avatarhead">
                 <p>头像</p>
                 <span v-if="isMob">{{ avatarStr }}</span>
               </el-col>
-              <el-col  :xs="12" :sm="20" :md="20" :lg="20" class="content avatarcontent">
+              <el-col :xs="12" :sm="20" :md="20" :lg="20" class="content avatarcontent">
                 <el-upload
                   class="avatar-uploader"
                   :action="uploadParam.url"
@@ -22,7 +32,8 @@
                   :on-progress="avatarProgress"
                   :on-success="handleAvatarSuccess"
                   :before-upload="beforeAvatarUpload">
-                  <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                  <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar"> -->
+                  <span v-if="imageUrl" :style="{background: `url(${imageUrl}) no-repeat center / cover`}" class="avatar"></span>
                   <i v-else class="avatar-uploader-icon"></i>
                   <div slot="tip" class="el-upload__tip" v-if="!isMob">{{ avatarStr }}</div>
                 </el-upload>
@@ -80,7 +91,7 @@
 
           </div>
         </div>
-      </el-col>
+      </div>
     </el-row>
   </div>
 
@@ -134,8 +145,17 @@
       }
     },
     computed: {
+      user() {
+        return this.$store.state.event.user
+      },
       isMob() {
         return this.$store.state.event.isMob
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
+      },
+      rightWidth() {
+        return 24 - this.$store.state.event.leftWidth
       }
     },
     methods: {
@@ -264,19 +284,19 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .right-content .content-box-m {
-    margin: 0;
+  .right-content .content-box {
     padding: 0 15px;
   }
 
-  .right-content .content-box {
-    padding: 0 20px;
+  .right-content .content-box-m {
+    margin: 0;
+    padding: 0;
   }
 
   .item {
     margin: 5px 0;
     padding: 10px 0;
-    border-bottom: 1px solid #d2d2d2;
+    border-bottom: 1px solid #E6E6E6;
   }
   .content-box .item:last-child {
     border-bottom: none;
@@ -404,6 +424,7 @@
   }
 
   .avatar {
+    border-radius: 50%;
     width: 100px;
     height: 100px;
     display: block;

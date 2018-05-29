@@ -39,7 +39,9 @@ module.exports = [
     name: 'vcenterDComputerBase',
     meta: {
       title: '公司基本设置',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/d_company/Base')
   },
@@ -49,7 +51,9 @@ module.exports = [
     name: 'vcenterDCompanyAccreditation',
     meta: {
       title: '公司认证',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/d_company/Accreditation')
   },
@@ -59,7 +63,9 @@ module.exports = [
     name: 'vcenterDCompanyIdentification',
     meta: {
       title: '公司认证',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/d_company/Identification')
   },
@@ -69,7 +75,9 @@ module.exports = [
     name: 'vcenterWalletList',
     meta: {
       title: '我的钱包',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/wallet/List')
   },
@@ -79,7 +87,9 @@ module.exports = [
     name: 'vcenterBankList',
     meta: {
       title: '我的银行卡',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/bank/List')
   },
@@ -89,7 +99,9 @@ module.exports = [
     name: 'vcenterBase',
     meta: {
       title: '个人账户设置',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/account/Base')
   },
@@ -101,7 +113,9 @@ module.exports = [
     name: 'modifyPwd',
     meta: {
       title: '修改密码',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/account/ModifyPwd')
   },
@@ -168,7 +182,9 @@ module.exports = [
     name: 'vcenterDesignCaseAdd',
     meta: {
       title: '添加作品',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/design_case/Submit')
   },
@@ -178,7 +194,9 @@ module.exports = [
     name: 'vcenterDesignCaseEdit',
     meta: {
       title: '编辑作品',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/design_case/Submit')
   },
@@ -188,7 +206,9 @@ module.exports = [
     name: 'vcenterItemList',
     meta: {
       title: '项目列表',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/item/List')
   },
@@ -219,7 +239,9 @@ module.exports = [
     name: 'vcenterCItemList',
     meta: {
       title: '项目列表',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/c_item/List')
   },
@@ -229,7 +251,9 @@ module.exports = [
     name: 'vcenterTrueCItemList',
     meta: {
       title: '项目列表',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/c_item/TrueList')
   },
@@ -295,7 +319,9 @@ module.exports = [
     name: 'vcenterComputerBase',
     meta: {
       title: '公司基本设置',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/company/Base')
   },
@@ -305,7 +331,9 @@ module.exports = [
     name: 'vcenterComputerTaking',
     meta: {
       title: '接单设置',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/company/Taking')
   },
@@ -315,7 +343,9 @@ module.exports = [
     name: 'vcenterComputerAccreditation',
     meta: {
       title: '公司认证',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/company/Accreditation')
   },
@@ -325,7 +355,9 @@ module.exports = [
     name: 'vcenterComputerIdentification',
     meta: {
       title: '公司认证',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/company/Identification')
   },
@@ -355,7 +387,9 @@ module.exports = [
     name: 'vcenterOrderShow',
     meta: {
       title: '订单详情',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/order/Show')
   },
@@ -365,9 +399,23 @@ module.exports = [
     name: 'vcenterMessageList',
     meta: {
       title: '消息列表',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/message/List')
+  },
+  // 任务消息列表
+  {
+    path: '/vcenter/taskmessage',
+    name: 'taskMessageList',
+    meta: {
+      title: '任务消息列表',
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/v_center/message/taskMessageList')
   },
   // 系统通知
   {
@@ -375,7 +423,9 @@ module.exports = [
     name: 'systemMessageList',
     meta: {
       title: '系统通知',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/message/SystemMessageList')
   },
@@ -385,7 +435,9 @@ module.exports = [
     name: 'vcenterDesignCaseList',
     meta: {
       title: '作品列表',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/v_center/design_case/List')
   },
@@ -395,17 +447,43 @@ module.exports = [
     name: 'vcenterMatchCaseList',
     meta: {
       title: '提交作品',
-      requireAuth: true
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
     },
-    component: require('@/components/pages/v_center/match_case/MatchCase')
+    component: require('@/components/pages/v_center/design_case/MatchCase')
+  },
+  {
+    path: '/v_center/match_case/submit/:match_id/:id',
+    name: 'vcenterMatchCaseEdit',
+    meta: {
+      title: '编辑作品',
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/v_center/design_case/UploadWork')
+  },
+  {
+    path: '/v_center/match_case/submit/:match_id',
+    name: 'vcenterMatchCaseUpload',
+    meta: {
+      title: '上传作品',
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/v_center/design_case/UploadWork')
   },
   {
     path: '/v_center/match_case/submit',
-    name: 'vcenterMatchCaseSubmit',
+    name: 'vcenterMatchCaseCreated',
     meta: {
+      title: '新建作品',
       requireAuth: true,
-      title: '上传作品'
+      hideHeader: true,
+      hideFooter: true
     },
-    component: require('@/components/pages/v_center/match_case/UploadWork')
+    component: require('@/components/pages/v_center/design_case/UploadWork')
   }
 ]

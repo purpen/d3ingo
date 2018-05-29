@@ -25,6 +25,7 @@ export default {
   fetch_msm_code: '/auth/sms', // 获取手机验证码
   fetch_img_captcha: '/captcha/getCaptcha', // 获取图片验证码
   user: '/auth/user', // 获取用户信息
+  userInfo: '/auth/userId', // 根据用户id获取用户信息
   updateUser: '/auth/updateUser', // POST 修改用户信息
   authFundInfo: '/auth/fundInfo', // GET 用户钱包信息
   fundLogList: '/fundLogList', // GET 交易记录
@@ -47,9 +48,11 @@ export default {
   endPayOrderItemId: '/pay/endPayOrder/{0}', // GET 创建尾款支付订单
   secondAlipayId: '/pay/itemAliPay/{0}', // GET 支付尾款-支付宝
   payItemBankPayId: '/pay/itemBankPay/{0}', // GET 支付项目尾款--公对公银行转账
+  payBankTransferId: '/pay/bankTransfer/{0}', // PUT 确认上传凭证
 
   // 项目需求
   itemList: '/demand/itemList', // 客户项目列表
+  itemCreate: '/demand/create', // POST 创建项目
   demand: '/demand', // 添加项目领域
   demandId: '/demand/{0}', // 更改项目领域
   ProductDesignId: '/ProductDesign/{0}', // 更改产品设计基本资料
@@ -116,6 +119,7 @@ export default {
   // 设计公司
   designCompanyId: 'designCompany/otherIndex/{0}', // 根据标识查看公司详情
   designCompany: '/designCompany', // POST 保存 /PUT 更新 / GET 设计公司基本资料
+  designCompanyChild: '/designCompany/child',   // GET 查看设计公司信息
 
   surveyDemandCompanySurvey: '/survey/demandCompanySurvey', // GET 需求方控制面板
   surveyDesignCompanySurvey: '/survey/designCompanySurvey', // GET 设计公司控制面板
@@ -298,8 +302,95 @@ export default {
   inviteValue: '/urlValue', // 解析邀请字符串
   restoreMember: '/design/restoreMember', // 恢复成员
 
+  /**
+   * 任务接口
+   */
+  task: '/tasks', // POST 创建 | GET 列表
+  myTask: 'myTasks', // GET 我的任务
+  taskId: 'tasks/{0}', // PUT 更新 | DELETE 删除 | GET 详情
+  tasksExecuteUser: '/tasks/executeUser', // POST 领取任务
+  taskStage: '/isStage/tasks', // PUT 任务是否完成操作
+  userTasks: '/statistical/userTasks', // GET 个人任务列表
+
+  // 任务成员
+  taskUsers: '/taskUsers', // GET 列表 | POST 创建 | {id} 成员详情
+  deleteTaskUsers: '/taskUsers/delete', // DELETE 删除
+  createTaskUser: '/taskUsers/newStore', // POST 创建
+  // 标签
+  itemTags: '/tags',  // POST 创建 | GET 列表
+  itemTagsId: '/tags/{0}',  // GET 详情 | PUT 更新 | DELETE 删除
+
+  // 项目阶段
+  toolsStage: '/stages', // GET 列表 | POST 创建
+  toolsStageId: '/stages/{0}', // PUT 更新 | GET 详情 | DELETE 删除
+
+  // 沟通纪要
+  communeSummaries: '/communeSummaries',  // GET 列表 | POST 创建
+  communeSummariesId: '/communeSummaries/{0}',  // PUT 更新 | GET 详情 | DELETE 删除
+
+  // 沟通纪要成员
+  communeSummaryUser: '/communeSummaryUser', // GET 列表
+  deleteCommuneSummaryUser: '/communeSummaryUser/delete', // DELETE 删除
+
+  // 项目列表
+  designProjectCollect: '/designProject/collect', // 设置项目收藏
+  desiginProjectList: '/designProject/lists', // GET 项目列表
+  createDesignProject: '/designProject/create', // POST 创建
+  updateDesignProject: '/designProject/update', // PUT 创建
+  deleteDesignProject: '/designProject/delete', // DELETE 放入回收站
+  designProject: '/designProject', // GET 展示详情
+  designProjectDynamic: '/designProject/dynamic', // GET 项目动态
+  // 项目中的合同列表
+  designProjectContracts: '/designProject/contracts', // GET 项目中的合同列表
+  // 项目成员列表
+  itemUsers: '/itemUsers', // POST 创建 | GET 详情
+  deleteItemUsers: '/itemUsers/delete', // DELETE 删除
+
+  // 客户信息
+  designClientList: '/designClient/lists',   // GET 列表
+  designClientCreate: '/designClient/create', // POST 创建
+
+  // 项目管理报价单
+  designQuotationCreate: '/designQuotation/create',  // POST 创建
+  designQuotationUpdate: '/designQuotation/update', // PUT 更新
+  designQuotation: '/designQuotation',   // 详情
+  designQuotationDown: '/designQuotationDown', // 下载
+
+  // 职位管理
+  designPositionList: '/designPosition/lists',    // GET 列表
+  designPositionCreate: '/designPosition/create',   // POST 创建
+  designPositionUpdate: '/designPosition/update',   // PUT 编辑
+  designPositionDelete: '/designPosition/delete',   // DELETE 删除
+
   // 创新力榜单
   companyRecord: '/opalus/company_record/list',
   // test
-  test: '/' // End
+  test: '/', // End
+
+  // 设计项目阶段
+  designStageLists: '/designStage/lists', // GET 列表
+  designStageCreate: '/designStage/create', // POST 创建
+  designStageUpdate: '/designStage/update', // PUT 编辑
+  designStageDelete: '/designStage/delete', // DELETE 删除
+  designStage: '/designStage', // GET 详情
+
+  // 子项目
+  designSubstageCreate: '/designSubstage/create', // POST 创建
+  designSubstageDelete: '/designSubstage/delete', // DELETE 删除
+  designSubstage: '/designSubstage', // GET 子阶段详情
+  designSubstageUpdate: '/designSubstage/update', // PUT 子任务更新
+
+  // 阶段节点
+  dsignStageNodeCreate: '/designStageNode/create', // POST 创建
+  designStageNodeDelete: '/designStageNode/delete', // DELETE 删除
+  designStageNodeUpdate: '/designStageNode/update', // PUT 编辑
+  designStageNode: '/designStageNode', // GET 详情
+
+  // 个人项目统计
+  userStatistical: '/designProject/userStatistical', // GET 列表
+
+  // 消息通知列表
+  designNoticeLists: '/designNotice/lists', // GET 列表
+  designNoticeTrueRead: '/designNotice/trueRead', // PUT 确认阅读
+  designNoticeDelete: '/designNotice/delete' // DELETE 删除
 }

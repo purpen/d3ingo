@@ -1,13 +1,14 @@
 <template>
-  <div class="container blank40">
-    <el-row :gutter="24">
+  <div class="blank30 vcenter">
+    <el-row>
       <v-menu currentName="company" :class="[isMob ? 'v-menu' : '']"></v-menu>
-      <el-col :xs="24" :sm="20" :md="20" :lg="20">
-        <div class="right-content">
+      <div :class="{'vcenter-right-plus': leftWidth === 4,
+      'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}">
+        <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
 
           <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
-
             <el-row :gutter="gutter" :class="['item', isMob ? 'item-m item-mAvatar' : '']">
               <el-col :span="titleSpan" class="title avatarhead">
                 <p>公司logo</p>
@@ -22,11 +23,11 @@
                   :on-progress="avatarProgress"
                   :on-success="handleAvatarSuccess"
                   :before-upload="beforeAvatarUpload">
-                  <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                  <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar"> -->
+                  <span v-if="imageUrl" :style="{background: `url(${imageUrl}) no-repeat center / cover`}" class="avatar"></span>
                   <i v-else class="avatar-uploader-icon"></i>
                   <div slot="tip" class="el-upload__tip" v-if="!isMob">{{ avatarStr }}</div>
                 </el-upload>
-
               </el-col>
             </el-row>
 
@@ -508,7 +509,7 @@
             </el-row>
           </div>
         </div>
-      </el-col>
+      </div>
     </el-row>
   </div>
 
@@ -675,6 +676,15 @@
       },
       isMob() {
         return this.$store.state.event.isMob
+      },
+      user() {
+        return this.$store.state.event.user
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
+      },
+      rightWidth() {
+        return 24 - this.$store.state.event.leftWidth
       }
     },
     methods: {
@@ -773,22 +783,22 @@
         }
         // 验证简介长度
         if (mark === 'profile' && row['company_profile']) {
-          if (row['company_profile'].length > 500) {
-            this.$message.error('不能超过500个字符！')
+          if (row['company_profile'].length > 300) {
+            this.$message.error('不能超过300个字符！')
             return false
           }
         }
         // 验证优势长度
         if (mark === 'advantage' && row['professional_advantage']) {
-          if (row['professional_advantage'].length > 500) {
-            this.$message.error('不能超过500个字符！')
+          if (row['professional_advantage'].length > 300) {
+            this.$message.error('不能超过300个字符！')
             return false
           }
         }
         // 验证奖项荣誉长度
         if (mark === 'awards' && row['awards']) {
-          if (row['awards'].length > 500) {
-            this.$message.error('不能超过500个字符！')
+          if (row['awards'].length > 300) {
+            this.$message.error('不能超过300个字符！')
             return false
           }
         }
@@ -957,7 +967,6 @@
           that.isFirst = true
           if (response.data.meta.status_code === 200) {
             if (response.data.data) {
-              console.log(response.data.data)
               // 重新渲染
               that.$nextTick(function () {
                 that.form = response.data.data
@@ -1068,11 +1077,7 @@
 <style scoped>
   .right-content .content-box-m {
     margin: 0;
-    padding: 0 15px;
-  }
-
-  .right-content .content-box {
-    padding: 0 20px;
+    padding: 0;
   }
 
   .item {
@@ -1210,6 +1215,8 @@
   }
 
   .avatar {
+    /* border: 1px solid #e6e6e6; */
+    border-radius: 50%;
     width: 100px;
     height: 100px;
     display: block;

@@ -1,12 +1,11 @@
 <template>
-  <div class="container blank40 min-height350">
-    <el-row :gutter="20" class="anli-elrow">
+  <div class="blank20 ">
+    <el-row>
       <v-menu currentName="message"></v-menu>
-
-      <el-col :span="isMob ? 24 : 20" v-loading="isLoading">
-        <div class="right-content">
+      <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
+        <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
-          <div class="content-box">
+          <div class="content-box" v-loading="isLoading">
             <div class="item clearfix" v-for="(d, index) in itemList" :key="index" @click="removeRedDot(index)">
               <div class="left">
                 <p class="logo"></p>
@@ -28,7 +27,7 @@
           </div>
 
           <el-pagination
-            v-if="itemList.length"
+            v-if="query.totalCount > query.pageSize"
             class="pagination"
             @current-change="handleCurrentChange"
             :current-page="query.page"
@@ -133,6 +132,12 @@
     computed: {
       isMob() {
         return this.$store.state.event.isMob
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
+      },
+      rightWidth() {
+        return 24 - this.$store.state.event.leftWidth
       }
     },
     created: function () {
@@ -160,7 +165,7 @@
 </script>
 
 <style scoped>
-  .container {
+  .vcenter-container {
     overflow: hidden;
   }
 
@@ -170,7 +175,7 @@
   }
 
   .content-box .item {
-    border: 1px solid #ccc;
+    border: 1px solid #E6E6E6;
     margin-bottom: -1px;
     padding: 30px 50px 30px 20px;
     min-height: 30px;
@@ -180,7 +185,7 @@
   }
 
   .content-box .item:hover {
-    background-color: #F2F1F1;
+    background-color: #F7F7F7;
   }
 
   .item .left {
@@ -194,7 +199,7 @@
     height: 50px;
     border-radius: 50%;
     border: 1px solid #EBEBEB;
-    background: url("../../../../assets/images/logo.png") no-repeat center;
+    background: url("../../../../assets/images/logo.svg") no-repeat center;
     background-size: 25px;
   }
 

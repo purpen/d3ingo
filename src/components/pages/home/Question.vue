@@ -2,7 +2,7 @@
   <div>
     <div class="container">
       <div class="top-menu-list">
-        <router-link :to="{name: 'item'}" class="item">服务条款</router-link>
+        <router-link :to="{name: 'terms'}" class="item">服务条款</router-link>
         <router-link :to="{name: 'question'}" class="item is-active">常见问题</router-link>
         <router-link :to="{name: 'trade'}" class="item">交易保障</router-link>
       </div>
@@ -231,9 +231,6 @@ export default {
   margin: 10px 0;
 }
 
-.content-box p {
-  line-height: 1.7;
-}
 
 .content-box p img {
   vertical-align: middle;

@@ -1,12 +1,11 @@
 <template>
-  <div class="container blank40">
+  <div class="blank30 vcenter clearfix">
     <v-menu currentName="c_item" class="c_item"></v-menu>
-
-    <el-col :span="isMob ? 24 : 20">
-      <div class="right-content">
+    <div :class="{'vcenter-right-plus': leftWidth === 4,
+      'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}">
+      <div class="right-content vcenter-container">
         <v-menu-sub :waitCountProp="waitCount" :ingCountProp="ingCount"></v-menu-sub>
-
-        <div class="loading"></div>
         <div :class="['content-item-box', isMob ? 'content-item-box-m' : '' ]" v-loading="isLoading">
 
           <el-row v-if="!isMob" class="item-title-box list-box" v-show="designItems.length">
@@ -35,7 +34,7 @@
                   <p class="contact">职位: {{ d.item.position }}</p>
                   <p class="contact">电话: {{ d.item.phone }}</p>
                   <p class="contact">邮箱: {{ d.item.email }}</p>
-                  <p slot="reference" class="name-wrapper contact-user"><i class="fa fa-phone" aria-hidden="true"></i>
+                  <p slot="reference" class="fl name-wrapper contact-user"><i class="fa fa-phone" aria-hidden="true"></i>
                     {{ d.item.company_name }}</p>
                 </el-popover>
               </el-col>
@@ -109,7 +108,7 @@
 
       <div class="empty" v-if="isEmpty === true"></div>
       <p v-if="isEmpty === true" class="noMsg">暂无已合作项目</p>
-    </el-col>
+    </div>
 
     <el-dialog
       title="提示"
@@ -220,6 +219,12 @@
     computed: {
       isMob() {
         return this.$store.state.event.isMob
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
+      },
+      rightWidth() {
+        return 24 - this.$store.state.event.leftWidth
       }
     },
     created: function () {
@@ -289,12 +294,8 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .container {
+  .vcenter-container {
     overflow: hidden;
-  }
-
-  .content-item-box-m {
-    margin: 0 15px 0;
   }
 
   .content-item-box .item {
@@ -362,7 +363,7 @@
   }
 
   .btn {
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 
   .btn a {

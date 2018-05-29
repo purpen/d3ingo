@@ -1,11 +1,18 @@
 <template>
-  <div class="container blank30 min-height350">
-    <el-row :gutter="20">
-      <el-col :xs="24" :sm="6" :md="6" :lg="6">
+  <el-row :class="['vcenter-rightMenu-plus',
+    'cloud-content',
+    {'slide-mini': leftWidth === 2 && withoutSide,
+    'slide-mini-none': isMob}]">
+    <v-menu-left v-if="withoutSide" :currentName="withoutSide? 'cloud_drive' : 'project_management'"></v-menu-left>
+    <section :class="{'parent-box': withoutSide,
+      'parent-box2': !withoutSide,
+      'parent-box-mob': isMob}">
+      <el-col v-if="withoutSide" :span="4">
         <v-menu :isActive='modules' @getTitle="headTitle"></v-menu>
       </el-col>
-      <el-col :xs="24" :sm="18" :md="18" :lg="18">
-        <div class="content" v-loading.body="isLoading">
+      <el-col :span="withoutSide?20 :24">
+        <div :class="['content', {'content-mini' : leftWidth === 2}, {'content-pm' : !withoutSide}]"
+          v-loading.body="isLoading">
           <div class="content-head">
             <div class="clearfix" v-show="showList">
               <p class="title fl" v-if="!isChoose && folderId === 0" v-html="title"></p>
@@ -66,7 +73,7 @@
                 </el-col>
                 <el-col :offset="5" :span="12">
                   <span v-if="modules !== 'recycle'" @click="confirmShare">分享</span>
-                  <span v-if="false" @click="downloadFile('')">下载</span>
+                  <span v-if="false" @click="downloadFile()">下载</span>
                   <span v-if="modules !== 'recycle'" @click="confirmCopy">复制</span>
                   <span v-if="modules !== 'recycle'" @click="confirmMove">移动</span>
                   <span v-if="modules !== 'recycle'" @click="rename" :class="{'disable': alreadyChoose > 1 || !alreadyChoose}">重命名</span>
@@ -112,7 +119,7 @@
           </transition>
         </div>
       </el-col>
-    </el-row>
+    </section>
     <footer class="drive-footer clearfix" v-if="webUploader" @click="isShowProgress = true">
       <span class="fl">正在上传文件{{uploadingNumber}}/{{totalNumber}}</span>
       <span class="fr"><i class="fx-0 fx-icon-nothing-close-error" @click="confirmClearUpload"></i></span>
@@ -150,7 +157,7 @@
             <!--ready success uploading fail-->
           </el-col>
           <el-col :span="10">
-          </el-col>
+          </el-col> 
         </el-row>
       </div>
     </div>
@@ -329,7 +336,6 @@
         <button class="create-btn" @click="CreateDir">创建</button>
       </div>
     </section>
-
     <section class="dialog-body dialog-body-plus" v-if="showConfirmCopy">
       <h3 class="dialog-header clearfix">
         复制到
@@ -368,7 +374,6 @@
         </div>
       </div>
     </section>
-
     <section class="dialog-body dialog-body-plus" v-if="showConfirmMove">
       <h3 class="dialog-header clearfix">
         移动到
@@ -435,18 +440,18 @@
       <div class="dialog-content" v-else>
         <p class="link"><span>链接:</span><input v-model.trim="shareInfo.link" type="text"></p>
         <p v-if="isEncryption" class="share-password"><span>密码:</span><input v-model.trim="shareInfo.pwd" type="text"></p>
-        <p class="share-password">有效期:{{validityVal}}</p>
+        <p class="share-password"><span>有效期:</span>{{validityVal}}</p>
         <div class="buttons">
           <button class="cancel-btn" @click="closeCover">取消</button>
           <button class="confirm-btn" @click="setClipboardText">复制链接</button>
         </div>
       </div>
     </section>
-    <el-col :span="18" :offset="6">
+    <el-col :span="16" :offset="8">
       <el-pagination v-if="query.totalCount / query.pageSize > 1" class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize" :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange">
       </el-pagination>
     </el-col>
-  </div>
+  </el-row>
 </template>
 <script>
 import api from '@/api/api'
@@ -454,6 +459,7 @@ import vMenu from '@/components/pages/v_center/tools/cloud_drive/Menu'
 import vContent from '@/components/pages/v_center/tools/cloud_drive/CloudContent'
 import Clipboard from 'clipboard'
 import download from 'downloadjs'
+import vMenuLeft from '@/components/pages/v_center/Menu'
 export default {
   name: 'cloud_drive',
   data() {
@@ -552,16 +558,23 @@ export default {
       }
     }
   },
+  props: {
+    withoutSide: {
+      type: Boolean,
+      default: true
+    }
+  },
   components: {
     vMenu,
-    vContent
+    vContent,
+    vMenuLeft
   },
   mounted() {
-    window.addEventListener('keydown', e => {
-      if (e.keyCode === 13) {
-        this.getSearchList()
-      }
-    })
+    // window.addEventListener('keydown', e => {
+    //   if (e.keyCode === 13) {
+    //     this.getSearchList()
+    //   }
+    // })
   },
   methods: {
     downloadFile(url) {
@@ -571,7 +584,14 @@ export default {
             this.$message.info('只支持下载单个文件')
             return
           } else {
-            download(url)
+            window.location.assign(url)
+            download
+            // download(`${url}&attname=a.dmg`)
+            // this.$http.get(`${url}&attname=a.dmg`).then(res => {
+            //   console.log(res)
+            // }).error(err => {
+            //   console.error(err)
+            // })
           }
         } else {
           this.$message.info('暂不支持下载文件夹')
@@ -662,6 +682,8 @@ export default {
       let type = 0
       if (this.modules === 'all') {
         url = api.yunpanList
+      } else if (this.modules === 'project') {
+        url = api.yunpanList
       } else if (this.modules === 'search') {
         url = api.yunpanList
       } else if (this.modules === 'recently-use') {
@@ -699,18 +721,12 @@ export default {
             }
             if (res.data.meta.pagination) {
               this.query.totalCount = res.data.meta.pagination.total
-              this.query.totalPges = res.data.meta.total_pages
+              this.query.totalPges = res.data.meta.pagination.total_pages
             } else {
               this.query.totalCount = 0
               this.query.totalPges = 0
             }
             this.list = res.data.data
-            // this.$http.get(this.list[2].url_file, {responseType: 'blob'})
-            // .then(res => {
-            //   console.log(res)
-            // }).catch(err => {
-            //   console.error(err)
-            // })
             if (this.list.length) {
               this.getImgList()
             }
@@ -721,6 +737,27 @@ export default {
           this.isLoading = false
           console.error(err)
         })
+    },
+    getProjectList() {
+      this.isLoading = true
+      this.$http.get(api.desiginProjectList, {params: {
+        status: 1,
+        page: 1,
+        per_page: 50
+      }}).then(res => {
+        this.isLoading = false
+        if (res.data.meta.status_code === 200) {
+          this.list = res.data.data
+          for (let i of this.list) {
+            this.formatList(i)
+          }
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        this.isLoading = false
+        console.log(err.message)
+      })
     },
     getSearchList() {
       this.isLoading = true
@@ -771,6 +808,9 @@ export default {
       this.webUploader = false
       if (str) {
         this.getList()
+      }
+      if (this.modules === 'project') {
+        this.getProjectList()
       }
     },
     changeChooseStatus() {
@@ -1370,12 +1410,21 @@ export default {
       this.showFolderInput = false
     },
     enterFolder(ele) {
-      this.$router.push({
-        name: this.$route.name,
-        params: this.$route.params,
-        query: {id: ele.id}})
-      this.folderId = this.$route.query.id
-      this.historyId.push(ele.id)
+      if (this.modules === 'project') {
+        this.$router.push({
+          name: this.$route.name,
+          params: this.$route.params,
+          query: {id: ele.pan_director_id}})
+        this.folderId = this.$route.query.id
+        this.historyId.push(ele.pan_director_id)
+      } else {
+        this.$router.push({
+          name: this.$route.name,
+          params: this.$route.params,
+          query: {id: ele.id}})
+        this.folderId = this.$route.query.id
+        this.historyId.push(ele.id)
+      }
     },
     backFolder() {
       this.historyId.pop()
@@ -1385,9 +1434,16 @@ export default {
           params: this.$route.params,
           query: {id: this.historyId[this.historyId.length - 1]}})
       } else {
-        this.$router.push({
-          name: this.$route.name,
-          params: this.$route.params})
+        if (this.withoutSide) {
+          this.$router.push({
+            name: this.$route.name,
+            params: this.$route.params})
+        } else {
+          this.$router.push({
+            name: this.$route.name,
+            params: this.$route.params,
+            query: {id: this.projectObject.pan_director_id}})
+        }
       }
     },
     changeSortGist(type) {
@@ -1476,7 +1532,11 @@ export default {
     this.folderId = this.$route.query.id || 0
     this.modules = this.$route.params.modules || 'all'
     this.getUploadUrl()
-    this.getList()
+    if (this.modules === 'project') {
+      this.getProjectList()
+    } else {
+      this.getList()
+    }
     if (this.IEVersion !== -1) {
       this.uploadParams['x:browser'] = 1
     }
@@ -1540,15 +1600,24 @@ export default {
       } else {
         return -1 // 不是ie浏览器
       }
+    },
+    leftWidth() {
+      return this.$store.state.event.leftWidth
+    },
+    projectObject() {
+      return this.$store.state.task.projectObject
     }
   },
   watch: {
     '$route' (to, from) {
+      this.modules = this.$route.params.modules || 'all'
       this.folderId = this.$route.query.id || 0
+      if (this.modules === 'project' && !this.$route.query.id) {
+        this.getProjectList()
+      }
       if (this.modules !== 'search') {
         this.getList()
       }
-      // this.modules = this.$route.params.modules || 'all'
     },
     validityKey(newVal) {
       switch (newVal) {
@@ -1584,8 +1653,8 @@ export default {
       },
       deep: true
     },
-    modules() {
-      switch (this.modules) {
+    modules(val) {
+      switch (val) {
         case 'all':
           this.title = '全部文件'
           break
@@ -1646,6 +1715,9 @@ export default {
     },
     folderId (newVal) {
       this.uploadParams['x:pan_director_id'] = newVal || 0
+    },
+    searchWord(val) {
+      this.getSearchList()
     }
   },
   directives: {
@@ -1677,7 +1749,21 @@ export default {
       opacity: 1;
     }
   }
-
+  .slide-mini {
+    padding-left: 60px;
+  }
+  .slide-mini-none {
+    padding-left: 0;
+  }
+  .content {
+    /* transition: 0.2s all ease; */
+  }
+  .content-mini {
+    /* position: absolute; */
+  }
+  .content-pm {
+    position: static
+  }
   .content-head {
     color: #999;
     font-size: 0;
@@ -1688,6 +1774,7 @@ export default {
     z-index: 10;
   }
   .content-head .title {
+    padding-left: 20px;
     font-size: 18px;
   }
   .operate {
@@ -1721,7 +1808,7 @@ export default {
     padding: 0 20px;
   }
   .operate p.sequence .add-option a.checked {
-    background: #f7f7f7
+    background: #fafafa
   }
   .operate p.sequence .add-option a.checked:after {
     content: "";
@@ -1788,7 +1875,7 @@ export default {
   
   .add-option a:hover {
     color: #222;
-    background: #f7f7f7
+    background: #fafafa
   }
   
   .add-option a span {
@@ -2079,7 +2166,9 @@ export default {
     margin-bottom: 20px;
   }
   .link span, .share-password span {
-    margin-right: 20px;
+    /* margin-right: 20px; */
+    display: inline-block;
+    min-width: 60px;
   }
   .link input, .share-password input {
     width: 260px;
@@ -2262,7 +2351,7 @@ export default {
   .selectFolderPermission li:hover,
   .selectFolderPermission li.lihover {
     color:#666;
-    background: #f7f7f7;
+    background: #fafafa;
   }
   .selectFolderPermission i {
     position: absolute;
@@ -2457,5 +2546,49 @@ export default {
   }
   .exclude-file span.checked::before {
     background: #666;
+  }
+  .parent-box {
+    padding-left: 16.66667%;
+    position: relative;
+  }
+  .slide-mini .parent-box {
+    padding-left: 0;
+  }
+  .parent-box2 {
+    position: relative;
+  }
+  .parent-box-mob {
+    padding-left: 0;
+  }
+  @media screen and (min-width: 768px) {
+    .content {
+      padding: 20px 30px 0;
+      position: relative
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    .content {
+      position: absolute;
+      width: calc(100% - 400px);
+      top: 0;
+      left: 400px;
+    }
+    .content-mini {
+      position: absolute;
+      width: calc(100% - 200px);
+      top: 0;
+      left: 200px;
+      transition: 0.2s all ease;
+    }
+    .content-pm {
+      position: static;
+      width: 100%;
+      top: 0;
+      left: 0;
+    }
+    .parent-box {
+      padding-left: 200px;
+    }
   }
 </style>

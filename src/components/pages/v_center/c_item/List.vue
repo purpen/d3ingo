@@ -1,8 +1,12 @@
 <template>
-  <div class="container blank40 clearfix">
-    <v-menu currentName="c_item" :class="[isMob ? 'v-menu' : '']"></v-menu>
-    <el-col :span="isMob ? 24 :20">
-      <div class="right-content">
+  <div class="blank30 vcenter clearfix">
+    <v-menu currentName="c_item"></v-menu>
+    <!-- <el-col :span="isMob ? 24 : rightWidth"> -->
+    <!-- <el-col class="vcenter-right-plus" :xs="24" :sm="24" :md="24" :lg="24"> -->
+    <div :class="{'vcenter-right-plus': leftWidth === 4,
+      'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}">
+      <div class="right-content vcenter-container">
         <v-menu-sub :waitCountProp="waitCount" :ingCountProp="ingCount"></v-menu-sub>
         <div :class="['content-item-box', isMob ? 'content-item-box-m' : '' ]" v-loading="isLoading">
           <el-row v-if="!isMob" class="item-title-box list-box" v-show="designItems.length">
@@ -32,7 +36,7 @@
                   <p class="contact">职位: {{ d.item.position }}</p>
                   <p class="contact">电话: {{ d.item.phone }}</p>
                   <p class="contact">邮箱: {{ d.item.email }}</p>
-                  <p slot="reference" class="name-wrapper contact-user"><i class="fa fa-phone" aria-hidden="true"></i>
+                  <p slot="reference" class="fl name-wrapper contact-user"><i class="fa fa-phone" aria-hidden="true"></i>
                     {{ d.item.company_name }}</p>
                   <!-- <p>产品功能：{{d.item.product_features}}</p> -->
                 </el-popover>
@@ -62,22 +66,30 @@
                   v-if="isMob">状态：</i><span>{{ d.status_value }}</span></p>
               </el-col>
               <el-col :span="isMob ? 24 : 4" :class="[isMob ? 'btnGroup' : '']">
+
+                <!--
                 <div class="btn" v-if="d.design_company_status === 0">
                   <p>
                     <el-button class="is-custom" @click="takingBtn" size="small" :item_id="d.item.id" :index="index"
-                               :cost="d.item.design_cost_value" type="primary">提交报价单
+                              :cost="d.item.design_cost_value" type="primary">提交报价单
                     </el-button>
                   </p>
                   <p>
                     <el-button class="is-custom" @click="companyRefuseBtn" size="small" :index="index"
-                               :item_id="d.item.id">暂无兴趣
+                              :item_id="d.item.id">暂无兴趣
                     </el-button>
                   </p>
 
                 </div>
+                -->
+                <p>
+                  <el-button class="is-custom" v-if="d.design_company_status === 0" @click="showView" size="small"
+                             :index="index" :item_id="d.item.id">提交报价单
+                  </el-button>
+                </p>
                 <p>
                   <el-button class="is-custom" v-if="d.design_company_status === 2" @click="showView" size="small"
-                             :index="index" :item_id="d.item.id">查看报价
+                            :index="index" :item_id="d.item.id">查看报价
                   </el-button>
                 </p>
               </el-col>
@@ -87,7 +99,7 @@
       </div>
       <div class="empty" v-if="isEmpty === true"></div>
       <p v-if="isEmpty === true" class="noMsg">暂无项目订单</p>
-    </el-col>
+    </div>
 
     <el-dialog title="提交项目报价" v-model="takingPriceDialog">
       <el-form label-position="top" :model="takingPriceForm" :rules="takingPriceRuleForm" ref="takingPriceRuleForm">
@@ -259,6 +271,9 @@
     computed: {
       isMob() {
         return this.$store.state.event.isMob
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
       }
     },
     created: function () {
@@ -270,58 +285,56 @@
         this.$router.replace({name: 'vcenterItemList'})
         return
       }
-      self.$http.get(api.designItemList, {})
-        .then(function (response) {
-          if (response.data.meta.status_code === 200) {
-            self.isLoading = false
-            if (!response.data.data.lenght) {
-              self.isEmpty = true
-            } else {
-              self.isEmpty = false
-              self.waitCount = response.data.meta.pagination.total
-              let designItems = response.data.data
-              for (let i = 0; i < designItems.length; i++) {
-                let item = designItems[i]
-                let typeLabel = ''
-                if (item.item.type === 1) {
-                  typeLabel = item.item.type_value + '/' + item.item.design_type_value + '/' + item.item.field_value + '/' + item.item.industry_value
-                } else if (item.item.type === 2) {
-                  typeLabel = item.item.type_value + '/' + item.item.design_type_value
-                }
-                designItems[i].item.type_label = typeLabel
-                designItems[i]['item']['created_at'] = item.item.created_at.date_format().format('yyyy-MM-dd')
-              } // endfor
-              self.designItems = designItems
-            }
-          } else {
-            self.$message.error(response.data.meta.message)
-            self.isLoading = false
-          }
-        })
-        .catch(function (error) {
+      self.$http.get(api.designItemList)
+      .then(function (response) {
+        if (response.data.meta.status_code === 200) {
           self.isLoading = false
-          self.$message.error(error.message)
-          return false
-        })
+          if (!response.data.data.length) {
+            self.isEmpty = true
+          } else {
+            self.isEmpty = false
+            self.waitCount = response.data.meta.pagination.total
+            let designItems = response.data.data
+            for (let i = 0; i < designItems.length; i++) {
+              let item = designItems[i]
+              let typeLabel = ''
+              if (item.item.type === 1) {
+                typeLabel = item.item.type_value + '/' + item.item.design_type_value + '/' + item.item.field_value + '/' + item.item.industry_value
+              } else if (item.item.type === 2) {
+                typeLabel = item.item.type_value + '/' + item.item.design_type_value
+              }
+              designItems[i].item.type_label = typeLabel
+              designItems[i]['item']['created_at'] = item.item.created_at.date_format().format('yyyy-MM-dd')
+            } // endfor
+            self.designItems = designItems
+          }
+        } else {
+          self.$message.error(response.data.meta.message)
+          self.isLoading = false
+        }
+      })
+      .catch(function (error) {
+        self.isLoading = false
+        self.$message.error(error.message)
+        return false
+      })
 
       // 获取已确认合作的项目数
-      self.$http.get(api.designCooperationLists, {})
-        .then(function (response) {
-          self.isLoading = false
-          console.log(response)
-          if (response.data.meta.status_code === 200) {
-            if (!response.data.data.length) {
-              return false
-            }
+      self.$http.get(api.designCooperationLists)
+      .then(function (response) {
+        self.isLoading = false
+        if (response.data.meta.status_code === 200) {
+          if (response.data.data.length) {
             self.ingCount = response.data.meta.pagination.total
-          } else {
-            self.$message.error(response.data.meta.message)
           }
-        })
-        .catch(function (error) {
-          self.$message.error(error.message)
-          self.isLoading = false
-        })
+        } else {
+          self.$message.error(response.data.meta.message)
+        }
+      })
+      .catch(function (error) {
+        self.$message.error(error.message)
+        self.isLoading = false
+      })
     }
   }
 
@@ -329,11 +342,8 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .container {
+  .vcenter-container {
     overflow: hidden;
-  }
-  .content-item-box-m {
-    margin: 0 15px 0;
   }
 
   .content-item-box .item {
@@ -387,7 +397,7 @@
   }
 
   .btn {
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 
   .btn p {

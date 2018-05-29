@@ -1,58 +1,48 @@
 <template>
-  <div class="container min-height350">
-    <div class="blank20"></div>
-    <el-row :gutter="24" class="anli-elrow">
-      <v-menu currentName="wallet"></v-menu>
+  <div class="blank30 vcenter">
+    <v-menu currentName="wallet"></v-menu>
+    <div :class="[{'vcenter-right-plus': leftWidth === 4,
+        'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}]">
+      <div class="vcenter-container">
+        <el-breadcrumb separator="/" class="bread">
+          <el-breadcrumb-item :to="{ name: 'home' }">首页</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ name: 'vcenterWalletList' }">我的钱包</el-breadcrumb-item>
+          <el-breadcrumb-item>银行卡管理</el-breadcrumb-item>
+        </el-breadcrumb>
 
-      <el-col :span="isMob ? 24 : 20">
-
-        <div :class="['right-content', isMob ? 'right-content-m' : '']">
-
-          <el-breadcrumb separator="/" class="bread">
-            <el-breadcrumb-item :to="{ name: 'home' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item :to="{ name: 'vcenterWalletList' }">我的钱包</el-breadcrumb-item>
-            <el-breadcrumb-item>银行卡管理</el-breadcrumb-item>
-          </el-breadcrumb>
-
-          <div class="item-list" v-loading.body="isLoading">
-            <el-row :gutter="15">
-
-              <el-col :xs="24" :sm="8" :md="8" :lg="8" v-for="(d, index) in itemList" :key="index">
-                <div class="item">
-                  <div class="item-title">
-                    <p>{{ d.bank_val }}</p>
-                  </div>
-                  <div class="item-content">
-                    <div class="number">
-                      <p>**** **** **** {{ d.m_number }}</p>
-                    </div>
-                    <div class="option">
-                      <a href="javascript:void(0);" @click="edit" :item_id="d.id" :index="index">编辑</a>
-                      <a href="javascript:void(0);" @click="del" :item_id="d.id" :index="index">删除</a>
-                    </div>
-                    <div class="clear default" v-if="d.default === 1">
-                      <p><i class="fa fa-check-circle-o" aria-hidden="true"></i> 默认银行账户</p>
-                    </div>
-                  </div>
+        <div class="item-list clearfix" v-loading.body="isLoading">
+          <el-col :xs="24" :sm="8" :md="8" :lg="8" v-for="(d, index) in itemList" :key="index">
+            <div class="item">
+              <div class="item-title">
+                <p>{{ d.bank_val }}</p>
+              </div>
+              <div class="item-content">
+                <div class="number">
+                  <p>**** **** **** {{ d.m_number }}</p>
                 </div>
-              </el-col>
-
-              <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                <div class="item add">
-                  <a href="javascript:void(0);" @click="add">
-                    <p class="add-icon"><i class="el-icon-plus avatar-uploader-icon"></i></p>
-                    <p class="add-des">添加银行卡</p>
-                  </a>
+                <div class="option">
+                  <a href="javascript:void(0);" @click="edit" :item_id="d.id" :index="index">编辑</a>
+                  <a href="javascript:void(0);" @click="del" :item_id="d.id" :index="index">删除</a>
                 </div>
-              </el-col>
+                <div class="clear default" v-if="d.default === 1">
+                  <p><i class="fa fa-check-circle-o" aria-hidden="true"></i> 默认银行账户</p>
+                </div>
+              </div>
+            </div>
+          </el-col>
 
-            </el-row>
-          </div>
+          <el-col :xs="24" :sm="8" :md="8" :lg="8">
+            <div class="item add">
+              <a href="javascript:void(0);" @click="add">
+                <p class="add-icon"><i class="el-icon-plus avatar-uploader-icon"></i></p>
+                <p class="add-des">添加银行卡</p>
+              </a>
+            </div>
+          </el-col>
         </div>
-
-      </el-col>
-    </el-row>
-
+      </div>
+    </div>
     <!--弹框模板-->
     <el-dialog :title="itemModelTitle" v-model="itemModel" class="bank-dialog">
 
@@ -93,7 +83,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="itemModel = false">取 消</el-button>
-        <el-button type="primary" :loading="isLoadingBtn" @click="submit('ruleForm')">确 定</el-button>
+        <el-button type="danger" :loading="isLoadingBtn" @click="submit('ruleForm')">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -104,7 +94,7 @@
       <span>{{ sureDialogMessage }}</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="sureDialog = false">取 消</el-button>
-        <el-button type="primary" :loading="sureDialogLoadingBtn" @click="sureDialogSubmit">确 定</el-button>
+        <el-button type="danger" :loading="sureDialogLoadingBtn" @click="sureDialogSubmit">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -336,6 +326,9 @@
         }
         return items
       },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
+      },
       isMob() {
         return this.$store.state.event.isMob
       }
@@ -355,7 +348,9 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+  .vcenter-container {
+    padding-right: 10px;
+  }
   .right-content-m {
     margin-top: 20px;
   }
@@ -364,20 +359,16 @@
     margin-bottom: 10px;
   }
 
-  .item-list {
-
-  }
-
   .el-form-item {
     margin-bottom: 15px;
   }
 
   .item {
     border: 1px solid #ccc;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    margin-right: 20px;
     height: 150px;
   }
-
   .item-title {
     background-color: #F3F3F3;
     padding: 5px 15px;
@@ -435,7 +426,13 @@
     color: #666;
   }
 
-  @media screen and (max-width: 767px) {
+  @media screen and (max-width: 767px) {  
+    .vcenter-container {
+      padding-right: 15px;
+    }
+    .item {
+      margin-right: 0;
+    }
     .item-content .number p {
       font-size: 1.7rem;
     }

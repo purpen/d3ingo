@@ -1,5 +1,5 @@
 <template>
-  <div class="min-height350">
+  <div class="">
     <div class="container">
       <div class="top-menu-list">
         <router-link :to="{name: 'contact'}" class="item is-active">联系我们</router-link>

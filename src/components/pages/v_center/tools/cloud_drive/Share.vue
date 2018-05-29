@@ -370,7 +370,7 @@ export default {
     padding: 0 20px;
   }
   .operate p.sequence .add-option a.checked {
-    background: #f7f7f7
+    background: #fafafa
   }
   .operate p.sequence .add-option a.checked:after {
     content: "";
@@ -436,7 +436,7 @@ export default {
   
   .add-option a:hover {
     color: #222;
-    background: #f7f7f7
+    background: #fafafa
   }
   
   .add-option a span {

@@ -442,10 +442,12 @@ export default {
       // headers: { 'Content-Type': 'multipart/form-data' }
       this.$http
         .post(api.categoryList, formdata)
-        .then(function(response) {
+        .then((response) => {
           if (response.data.meta.status_code === 200) {
             if (response.data.data) {
             }
+          } else {
+            this.$message.error(response.data.meta.message)
           }
         })
         .catch(function(error) {
@@ -526,6 +528,8 @@ export default {
               that.categoryOptions.push(row)
             }
           }
+        } else {
+          that.$message.error(response.data.meta.message)
         }
       })
       .catch(function(error) {

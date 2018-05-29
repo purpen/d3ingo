@@ -10,8 +10,27 @@
         <div class="admin-menu-sub">
           <div class="admin-menu-sub-list">
             <router-link :to="{name: 'adminOrderList'}" active-class="false" :class="{'item': true, 'is-active': menuType === 0}">全部</router-link>
+            <router-link :to="{name: 'adminOrderList', query: {status: '0', bank_transfer: '1'}}" active-class="false" :class="{'item': true, 'is-active': menuType === 5}">待审核</router-link>
           </div>
         </div>
+
+          <div class="admin-search-form">
+            <el-form :inline="true" :model="query">
+              <el-form-item>
+                <el-input v-model="query.val" placeholder="Search..." size="small"></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-select v-model="query.evt" placeholder="选择条件..." size="small">
+                  <el-option label="订单号" value="1"></el-option>
+                  <el-option label="项目ID" value="2"></el-option>
+                  <el-option label="用户ID" value="3"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="onSearch" size="small">查询</el-button>
+              </el-form-item>
+            </el-form>
+          </div>
 
           <el-table
             :data="tableData"
@@ -35,12 +54,6 @@
               width="140">
             </el-table-column>
             <el-table-column
-              prop="amount"
-              label="支付金额"
-              width="80">
-            </el-table-column>
-            <el-table-column
-              width="200"
               label="创建信息">
                 <template slot-scope="scope">
                   <p>用户: {{ scope.row.user.account }}[{{ scope.row.user_id }}]</p>
@@ -51,12 +64,13 @@
               label="支付信息"
               width="160">
                 <template slot-scope="scope">
+                  <p>支付金额: {{ scope.row.amount }}</p>
                   <p>支付类型: {{ scope.row.type_value }}</p>
                   <p>支付方式: {{ scope.row.pay_type_value }}</p>
                   <p v-if="scope.row.pay_type !== 5">交易号: {{ scope.row.pay_no }}</p>
                   <div v-else>
                     <p>银行: {{ scope.row.bank }}</p>
-                    <p>卡号: {{ scope.row.bank_id }}</p>
+                    <p>交易号: {{ scope.row.pay_no }}</p>
                   </div>
                 </template>
             </el-table-column>
@@ -74,6 +88,9 @@
               width="100"
               label="操作">
                 <template slot-scope="scope">
+                  <p>
+                    <a href="javascript:void(0);" v-show="scope.row.sure_outline_transfer" @click="showTransfer(scope.$index, scope.row)">查看凭证</a>
+                  </p>
                   <p>
                     <a href="javascript:void(0);" v-show="scope.row.sure_outline_transfer" @click="sureTransfer(scope.$index, scope.row)">确认收款</a>
                   </p>
@@ -135,6 +152,13 @@
       </div>
     </el-dialog>
 
+    <el-dialog title="打款凭证" v-model="transferDialog">
+      <img :src="imgUrl" width="100%" />
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="transferDialog = false">取 消</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -151,10 +175,12 @@ export default {
     return {
       menuType: 0,
       sureTransferDialog: false,
+      transferDialog: false,
       sureTransferLoading: false,
       itemList: [],
       tableData: [],
       isLoading: false,
+      imgUrl: '',
       orderForm: {
         index: '',
         orderId: '',
@@ -168,15 +194,22 @@ export default {
         pageSize: 50,
         totalCount: 0,
         sort: 1,
-        type: 0,
-        payType: 0,
-
-        test: null
+        type: '',
+        pay_type: '',
+        bank_transfer: '',
+        status: '',
+        evt: '',
+        val: ''
       },
       msg: ''
     }
   },
   methods: {
+    // 查询
+    onSearch() {
+      this.query.page = 1
+      this.$router.push({name: this.$route.name, query: this.query})
+    },
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
@@ -191,6 +224,12 @@ export default {
       this.orderForm.itemName = item.item_name
       this.orderForm.amount = item.amount
       this.sureTransferDialog = true
+    },
+    // 查看凭证弹层
+    showTransfer(index, item) {
+      this.imgUrl = ''
+      this.imgUrl = item.assets.big
+      this.transferDialog = true
     },
     // 确认对公打款
     sureTransferSubmit() {
@@ -226,16 +265,26 @@ export default {
     },
     handleCurrentChange(val) {
       this.query.page = val
-      this.$router.push({name: this.$route.name, query: {page: val}})
+      this.$router.push({name: this.$route.name, query: this.query})
     },
     loadList() {
       const self = this
       self.query.page = parseInt(this.$route.query.page || 1)
       self.query.sort = this.$route.query.sort || 1
-      self.query.type = this.$route.query.type || 0
-      self.payType = this.$route.query.pay_type || 0
+      self.query.type = this.$route.query.type
+      self.query.pay_type = this.$route.query.pay_type
+      self.query.bank_transfer = this.$route.query.bank_transfer
+      self.query.status = this.$route.query.status
+      self.query.evt = this.$route.query.evt || ''
+      self.query.val = this.$route.query.val || ''
+
+      if (self.query.status === '0' && self.query.bank_transfer === '1') {
+        this.menuType = 5
+      } else {
+        this.menuType = 0
+      }
       self.isLoading = true
-      self.$http.get(api.adminPayOrderLists, {params: {page: self.query.page, per_page: self.query.pageSize, sort: self.query.sort, type: self.query.type, pay_type: self.query.payType}})
+      self.$http.get(api.adminPayOrderLists, {params: {page: self.query.page, per_page: self.query.pageSize, status: self.query.status, sort: self.query.sort, type: self.query.type, pay_type: self.query.pay_type, bank_transfer: self.query.bank_transfer}})
       .then (function(response) {
         self.isLoading = false
         self.tableData = []
@@ -253,7 +302,7 @@ export default {
             item['type_value'] = typeValue
             item['created_at'] = item.created_at.date_format().format('yy-MM-dd')
             var sureOutlineTransfer = false
-            if (item.pay_type === 5 && item.status === 0 && item.type === 2) {
+            if (item.pay_type === 5 && item.status === 0 && item.bank_transfer === 1) {
               sureOutlineTransfer = true
             }
             item['sure_outline_transfer'] = sureOutlineTransfer
@@ -291,11 +340,6 @@ export default {
   watch: {
     '$route' (to, from) {
       // 对路由变化作出响应...
-      var type = this.$route.query.type
-      this.menuType = 0
-      if (type) {
-        this.menuType = parseInt(type)
-      }
       this.loadList()
     }
   }

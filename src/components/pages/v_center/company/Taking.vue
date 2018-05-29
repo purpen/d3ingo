@@ -1,10 +1,11 @@
 <template>
-  <div class="container taking-dialog blank40">
+  <div class="taking-dialog blank30 vcenter">
     <el-row :gutter="24">
       <v-menu currentName="company" :class="[isMob ? 'v-menu' : '']"></v-menu>
-
-      <el-col :span="isMob ? 24 : 20">
-        <div class="right-content">
+      <div :class="{'vcenter-right-plus': leftWidth === 4,
+      'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}">
+        <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
           <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
 
@@ -17,7 +18,7 @@
               <p>设置设计类别的接单价格区间</p>
             </div>
 
-            <div class="taking-box" v-for="d in typeData">
+            <div class="taking-box" v-for="(d, index) in typeData" :key="index">
               <div class="taking-item clear">
                 <div class="rz-title">
                   <span>{{ d.name }}</span>
@@ -27,7 +28,7 @@
                 <div class="clear"></div>
 
                 <div class="item-list">
-                  <div class="item-name" v-for="s in d.designType">
+                  <div class="item-name" v-for="(s, i) in d.designType" :key="i">
                     <div class="item-title">
                       <span class="sub-type">{{ s.name }}</span>
                     </div>
@@ -45,7 +46,7 @@
           </div>
         </div>
 
-      </el-col>
+      </div>
     </el-row>
 
     <!--弹框模板-->
@@ -76,8 +77,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="cancelFormVisible">取 消</el-button>
-        <el-button type="primary" @click="submit('ruleForm')">确 定</el-button>
+        <el-button @click="cancelFormVisible">取消</el-button>
+        <el-button type="danger" @click="submit('ruleForm')">确定</el-button>
       </div>
     </el-dialog>
 
@@ -164,6 +165,12 @@
       },
       isMob() {
         return this.$store.state.event.isMob
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
+      },
+      rightWidth() {
+        return 24 - this.$store.state.event.leftWidth
       }
     },
     methods: {
@@ -336,7 +343,7 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-  .content-box-m {
+  .right-content .content-box-m {
     margin: 0;
     padding: 0 15px;
   }
