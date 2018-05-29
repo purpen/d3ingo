@@ -160,7 +160,7 @@
                       <el-radio :label="true">是</el-radio>
                     </el-radio-group>
                   </el-col>
-                  <el-col :xs="24" :sm="6" :md="6" :lg="6" v-if="is_prize">
+                  <el-col :xs="24" :sm="21" :md="21" :lg="21" v-if="is_prize">
                     <el-form-item prop="">
                       <el-date-picker
                         key="prize_time"
@@ -170,8 +170,8 @@
                         placeholder="获奖日期">
                       </el-date-picker>
                     </el-form-item>
-                  </el-col>
-                  <el-col :xs="24" :sm="6" :md="6" :lg="6" v-if="is_prize">
+                  <!-- </el-col>
+                  <el-col :xs="24" :sm="6" :md="6" :lg="6" v-if="is_prize"> -->
                     <el-form-item prop="prize">
                       <el-select v-model.number="form.prize" placeholder="所属奖项">
                         <el-option

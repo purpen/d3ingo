@@ -9,7 +9,14 @@
           <v-menu-sub></v-menu-sub>
 
           <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
-
+            <el-row :gutter="gutter" :class="['item', isMob ? 'item-m no-border' : '']">
+              <el-col :span="titleSpan" class="title">
+                <p>账号</p>
+              </el-col>
+              <el-col :span="contentSpan" class="content">
+                <p>{{ user.account }}</p>
+              </el-col>
+            </el-row>
             <el-row :gutter="gutter" :class="['item', isMob ? 'item-m item-mAvatar' : '']">
               <el-col :span="titleSpan" class="title avatarhead">
                 <p>公司logo</p>
@@ -277,6 +284,9 @@
       },
       isMob() {
         return this.$store.state.event.isMob
+      },
+      user() {
+        return this.$store.state.event.user
       },
       leftWidth() {
         return this.$store.state.event.leftWidth

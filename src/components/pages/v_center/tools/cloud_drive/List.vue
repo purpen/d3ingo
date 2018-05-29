@@ -560,8 +560,10 @@ export default {
   },
   props: {
     withoutSide: {
-      type: Boolean,
       default: true
+    },
+    isMyFile: {
+      default: false
     }
   },
   components: {

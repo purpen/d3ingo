@@ -5,7 +5,7 @@
         'vcenter-right': leftWidth === 2,
         'vcenter-right-mob': isMob}">
       <el-row class="vcenter-container">
-        <el-col :xs="24" :sm="24" :md="12" :lg="12" v-if="uChild===0&&messageCount.quantity">
+        <el-col :xs="24" :sm="12" :md="12" :lg="12" v-if="uChild===0&&messageCount.quantity">
           <section>
             <div class="control-childHeader">
             <span>待处理信息</span>
@@ -38,7 +38,7 @@
               </div> -->
           </section>
         </el-col>
-        <el-col :xs="24" :sm="24" :md="12" :lg="12" v-if="uChild===0&&showBase">
+        <el-col :xs="24" :sm="12" :md="12" :lg="12" v-if="uChild===0&&showBase">
           <section>
             <div class="control-childHeader">
               <span>提示信息</span>
@@ -110,7 +110,7 @@
             </div>
           </section>
         </el-col>
-        <el-col :xs="24" :sm="24" :md="12" :lg="12">
+        <el-col :xs="24" :sm="12" :md="12" :lg="12">
           <section>
           <div class="control-childHeader">
             <span>进行中的项目</span>
@@ -152,7 +152,7 @@
             </el-row>
           </section>
         </el-col>
-        <el-col :xs="24" :sm="24" :md="12" :lg="12">
+        <el-col :xs="24" :sm="12" :md="12" :lg="12">
           <section class="control-tasks">
             <div class="control-childHeader">
               <span>我的任务</span>
@@ -614,16 +614,7 @@
   .message-btn>p{
     margin:10px 0px;
   }
-  .inline{
-    margin-left:120px;
-    padding-right: 180px;
-  }
-  @media (max-width: 768px) {
-    .inline{
-      margin-left:0px;
-      padding:0 20px;
-    }
-  }
+  
   /* 之前的样式 */
   .right-content{
     height:300px;

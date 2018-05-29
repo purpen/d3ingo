@@ -149,6 +149,12 @@
     color: #666;
     border-color: #e6e6e6;
   }
+  .el-radio__inner {
+    border-color: #e6e6e6
+  }
+  .el-radio__inner:hover {
+    border-color: #d2d2d2
+  }
   .el-radio__input.is-checked .el-radio__inner {
     border-color: #ff5a5f;
     background-color: #ff5a5f;
@@ -159,7 +165,7 @@
   }
   .el-switch.is-checked .el-switch__core {
     border-color: #fafafa;
-    background-color: #fafafa;
+    background-color: #ff5a5f;
   }
   .el-select-dropdown__item {
     color: #666;
