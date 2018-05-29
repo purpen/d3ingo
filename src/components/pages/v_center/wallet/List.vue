@@ -139,7 +139,7 @@
 
             <el-pagination
               class="pagination"
-              v-if="query.totalCount / query.pageSize > 1"
+              v-if="query.totalCount > query.pageSize"
               @current-change="handleCurrentChange"
               :current-page="query.page"
               :page-size="query.pageSize"
@@ -219,7 +219,6 @@
           pageSize: 10,
           totalCount: 0,
           sort: 1,
-          type: 0,
           payType: 0,
           test: null
         },
@@ -238,8 +237,7 @@
           params: {
             page: self.query.page,
             per_page: self.query.pageSize,
-            sort: self.query.sort,
-            type: self.query.type
+            sort: self.query.sort
           }
         })
           .then (function (response) {
@@ -247,7 +245,7 @@
             self.tableData = []
             if (response.data.meta.status_code === 200) {
               self.itemList = response.data.data
-              self.query.totalCount = response.data.meta.pagination.total_pages
+              self.query.totalCount = response.data.meta.pagination.total
 
               for (let i = 0; i < self.itemList.length; i++) {
                 let item = self.itemList[i]
@@ -277,7 +275,7 @@
         }}).then((res) => {
           this.isLoading = false
           if (res.data.meta.status_code === 200) {
-            this.query.totalCount = res.data.meta.pagination.total_pages
+            this.query.totalCount = res.data.meta.pagination.total
             this.WithdrawList = res.data.data
             for (let i of this.WithdrawList) {
               i.created_at = i.created_at.date_format().format('yyyy-MM-dd hh:mm')
