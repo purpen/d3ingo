@@ -21,18 +21,17 @@
             <p class="url"><a @click="aClick(d.url)">查看详情>></a></p>
           </div>
         </div>
+
+        <el-pagination
+          v-if="query.totalCount > query.pageSize"
+          class="pagination"
+          @current-change="handleCurrentChange"
+          :current-page="query.page"
+          :page-size="query.pageSize"
+          layout="prev, pager, next"
+          :total="query.totalCount">
+        </el-pagination>
       </div>
-
-      <el-pagination
-        v-if="query.totalCount > query.pageSize"
-        class="pagination"
-        @current-change="handleCurrentChange"
-        :current-page="query.page"
-        :page-size="query.pageSize"
-        layout="prev, pager, next"
-        :total="query.totalCount">
-      </el-pagination>
-
     </div>
     <div class="empty" v-if="isEmpty === true"></div>
     <p v-if="isEmpty === true" class="noMsg">您还没收到任何通知～</p>
@@ -107,7 +106,7 @@
       },
       handleCurrentChange(val) {
         this.query.page = val
-        this.$router.push({name: this.$route.name, query: {page: val}})
+        this.loadList()
       },
       aClick (link) {
         let reg = /^(http)/
@@ -120,25 +119,9 @@
       }
     },
     created() {
-      let page = this.$route.query.page
-      if (page) {
-        this.query.page = parseInt(page)
-      } else {
-        this.query.page = 1
-      }
       this.loadList()
     },
     watch: {
-      '$route' (to, from) {
-        // 对路由变化作出响应...
-        let page = this.$route.query.page
-        if (page) {
-          this.query.page = parseInt(page)
-        } else {
-          this.query.page = 1
-        }
-        this.loadList()
-      }
     },
     computed: {
       showCover: {
@@ -159,7 +142,7 @@
   }
 
   .right-content .content-box {
-    padding: 0;
+    padding: 0 0 50px 0;
     border: none;
   }
 

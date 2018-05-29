@@ -12,7 +12,7 @@
             <el-menu-item index="design_case" :route="menu.design_case">灵感</el-menu-item>
             <el-menu-item index="commonly_sites" :route="menu.commonly_sites">设计工具</el-menu-item>
             <el-menu-item index="innovation_index" :route="menu.innovation_index"
-              v-if="isAdmin > 0">创新指数</el-menu-item>
+              v-if="isAdmin">创新指数</el-menu-item>
           </el-menu>
         </hgroup>
         <div class="nav-right nav-menu" v-if="isLogin">
@@ -24,13 +24,13 @@
             </span>
             <!-- <div :class="['view-msg',{'view-msg-plus': msgCount.quantity}]"> -->
             <div class="view-msg">
-              <a @click="showMyView('order')" class="news">
-                <i class="fx-4 fx-icon-notice"></i><i class="fx-4 fx-icon-news-hover"></i>
-                <span v-if="msgCount.message"><b>{{msgCount.message}}</b>条[订单提醒]未查看</span>
-                <span v-else>[订单提醒]</span>
+              <a v-if="(isCompany && isCompanyAdmin) || eventUser.type === 1" @click="showMyView('order')" class="news">
+                <i class="fx-4 fx-icon-OrderReminding"></i><i class="fx-4 fx-icon-OrderRemindingClick"></i>
+                <span v-if="msgCount.message"><b>{{msgCount.message}}</b>条[订单通知]未查看</span>
+                <span v-else>[订单通知]</span>
               </a>
-              <a @click="showMyView('task')" class="news">
-                <i class="fx-4 fx-icon-notice"></i><i class="fx-4 fx-icon-news-hover"></i>
+              <a v-if="isCompany" @click="showMyView('task')" class="news">
+                <i class="fx-4 fx-icon-ProjectReminding"></i><i class="fx-4 fx-icon-ProjectRemindingclick"></i>
                 <span v-if="msgCount.design_notice"><b>{{msgCount.design_notice}}</b>条[项目通知]未查看</span>
                 <span v-else>[项目通知]</span>
               </a>
@@ -50,7 +50,7 @@
                 <span v-else class="b-nickname">{{ eventUser.account }}</span>
               </template>
               <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
-              <el-menu-item index="/admin" v-if="isAdmin > 0 ? true : false"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
+              <el-menu-item index="/admin" v-if="isAdmin"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
               <el-menu-item index="" @click="logout">
                 <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
             </el-submenu>
@@ -94,7 +94,7 @@
           <li @click="closeMenu">
             <router-link :to="menu.commonly_sites">设计工具</router-link>
           </li>
-          <li @click="closeMenu" v-if="isAdmin > 0">
+          <li @click="closeMenu" v-if="isAdmin">
             <router-link :to="menu.innovation_index">创新指数</router-link>
           </li>
           <li @click="closeMenu" v-show="!isLogin">
@@ -135,9 +135,10 @@
     <div class="header-buttom-line"></div>
     <Message></Message>
     <el-alert
-      v-if="eventUser.role_id === 20 && eventUser.verify_status !== 1"
+      v-if="eventUser.role_id === 20 && eventUser.verify_status === 0"
       title="您还没有申请企业实名认证"
       type="warning"
+      :closable="false"
       show-icon>
       <template slot-scope="scope">
         <router-link style="margin-left: 10px;" class="tc-red fz-12" to="/vcenter/company/accreditation">去认证</router-link>
@@ -149,7 +150,7 @@
 <script>
   import auth from '@/helper/auth'
   import api from '@/api/api'
-  import { MSG_COUNT, MENU_STATUS } from '@/store/mutation-types'
+  import { MSG_COUNT } from '@/store/mutation-types'
   import Message from '@/components/tools_block/Message'
   export default {
     name: 'head_menu',
@@ -236,9 +237,6 @@
             return
           } else {
             self.fetchMessageCount()
-            if (self.isLogin) {
-              self.setUserInfo()
-            }
             limitTimes += 1
           }
         }, 30000)
@@ -283,21 +281,6 @@
         this.showCover = 'show'
         this.myView = view
         this.$refs.msgList.blur()
-      },
-      setUserInfo() {
-        // ajax拉取用户信息
-        this.$http
-          .get(api.user, {})
-          .then((response) => {
-            if (response.data.meta.status_code === 200) {
-              this.$store.commit(MENU_STATUS, '')
-              auth.write_user(response.data.data)
-            } else {
-              this.$message.error(response.data.meta.message)
-            }
-          }).catch((error) => {
-            this.$message.error(error.message)
-          })
       }
     },
     computed: {
@@ -320,7 +303,7 @@
         return user
       },
       isAdmin() {
-        return this.$store.state.event.user.role_id
+        return this.$store.state.event.user.role_id > 0
       },
       menuactive() {
         let menu = this.$route.path.split('/')[1]
@@ -340,6 +323,9 @@
       },
       isCompany() {
         return this.$store.state.event.user.type === 2
+      },
+      isCompanyAdmin() {
+        return this.$store.state.event.user.company_role > 0
       },
       hideHeader() {
         return this.$store.state.event.hideHeader
