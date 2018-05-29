@@ -307,13 +307,8 @@
     border: 0;
     border-bottom: 1px solid #666;
     text-align: center;
-    cursor: pointer;
   }
 
-  span.bottom-border:hover {
-    color: #FF5A5F;
-    border-color: #FF5A5F;
-  }
   span:disabled {
     background-color: #fff;
   }
