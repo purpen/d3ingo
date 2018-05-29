@@ -357,7 +357,10 @@ export default {
         design_city: [{ required: true, type: 'number', message: '请选择城市', trigger: 'change' }],
         design_area: [{ required: true, message: '请选择地区', trigger: 'change' }],
         design_address: [{ required: true, message: '请添写详细地址', trigger: 'blur' }],
-        summary: [{ required: true, message: '请添写详细地址', trigger: 'blur' }]
+        summary: [
+          { required: true, message: '请添写项目目标', trigger: 'blur' },
+          {min: 20, max: 500, message: '长度在 20 到 500 个字符之间', trigger: 'blur'}
+        ]
       },
       clientForm: {},
       ruleClientForm: {
