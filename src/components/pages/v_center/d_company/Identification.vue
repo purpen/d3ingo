@@ -152,7 +152,7 @@
   import vMenuSub from '@/components/pages/v_center/d_company/MenuSub'
   import api from '@/api/api'
   import typeData from '@/config'
-
+  import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
   import '@/assets/js/format'
 
   export default {
@@ -256,6 +256,7 @@
               .then(function (response) {
                 that.isLoadingBtn = false
                 if (response.data.meta.status_code === 200) {
+                  that.$store.commit(CHANGE_USER_VERIFY_STATUS, {verify_status: 3})
                   that.$message.success('提交成功,等待审核')
                   that.$router.push({name: 'vcenterDCompanyAccreditation'})
                   return false

@@ -142,8 +142,8 @@
             </ul>
 
           </el-col>
-              <div class="message-btn" v-if="!userItem || userItem.length===0">
-                <img src="../../../../assets/images/icon/Project default state@2x.png"/>
+              <div class="message-btn" v-if="userItem.length===0">
+                <img src="../../../../assets/images/icon/Projectdefaultstate@2x.png"/>
                 <p>你还没有参加任何项目</p>
                 <!-- <button class="middle-button red-button" v-if="uChild===0">
                   <router-link :to="{name: 'projectManagementList'}">创建项目</router-link>
@@ -232,7 +232,7 @@
               </el-col>
               </el-row>
               <div class="message-btn" v-else>
-              <img src="../../../../assets/images/icon/Task default state@2x.png"/>
+              <img src="../../../../assets/images/icon/Taskdefaultstate@2x.png"/>
                 <p>您还没有任务</p>
             </div>
           </section>

@@ -25,7 +25,7 @@
   import '@/assets/js/date_format'
 
   export default {
-    name: 'vcenter_item_list',
+    name: 'vcenter_order_list',
     components: {
       vMenu,
       vMenuSub

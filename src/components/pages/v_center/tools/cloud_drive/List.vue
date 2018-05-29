@@ -570,11 +570,11 @@ export default {
     vMenuLeft
   },
   mounted() {
-    window.addEventListener('keydown', e => {
-      if (e.keyCode === 13) {
-        this.getSearchList()
-      }
-    })
+    // window.addEventListener('keydown', e => {
+    //   if (e.keyCode === 13) {
+    //     this.getSearchList()
+    //   }
+    // })
   },
   methods: {
     downloadFile(url) {
@@ -1715,6 +1715,9 @@ export default {
     },
     folderId (newVal) {
       this.uploadParams['x:pan_director_id'] = newVal || 0
+    },
+    searchWord(val) {
+      this.getSearchList()
     }
   },
   directives: {

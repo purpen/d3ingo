@@ -2,6 +2,7 @@ import {
   USER_SIGNIN,
   USER_SIGNOUT,
   USER_INFO,
+  CHANGE_USER_VERIFY_STATUS,
   MSG_COUNT,
   PREV_URL_NAME,
   CLEAR_PREV_URL_NAME,
@@ -169,6 +170,11 @@ const mutations = {
   [LEFT_WIDTH](state, status) {
     localStorage.setItem('leftWidth', status)
     state.leftWidth = status
+  },
+  [CHANGE_USER_VERIFY_STATUS](state, status) {
+    Object.assign(state.user, status)
+    console.log(state.user)
+    localStorage.setItem('leftWidth', state.user)
   },
   INIT_PAGE(state) {
     if (IsMobile()) {
