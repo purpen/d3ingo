@@ -271,7 +271,8 @@
         this.isLoading = true
         this.$http.get(api.withdrawList, {params: {
           per_page: this.query.pageSize,
-          page: this.query.page
+          page: this.query.page,
+          status: 2
         }}).then((res) => {
           this.isLoading = false
           if (res.data.meta.status_code === 200) {
@@ -290,7 +291,7 @@
                   i.status_value = '申请中'
                   break
                 case 1:
-                  i.status_value = '已同意'
+                  i.status_value = '已提现'
                   break
               }
             }
