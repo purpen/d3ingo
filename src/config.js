@@ -966,6 +966,23 @@ const TAGS_COLOR_TONE = [
   }
 ]
 
+// 合同 丙方信息
+const CONTRACT_THN = {
+  company_name: '太火鸟•铟果D³INGO',
+  contact_name: '耿霆',
+  contact_phone: '13031154842',
+  address: '北京市朝阳区酒仙桥路751广场B7栋南楼西侧（太火鸟）',
+  test: ''
+}
+
+// 合同款项比例配置
+const CONTRACT_SCALE = {
+  first: 40,
+  stage: 50,
+  end: 10,
+  test: ''
+}
+
 // test
 const TEST = {}
 
@@ -998,5 +1015,7 @@ module.exports = {
   INDUSTRIAL_DESIGN_GRADE,
   PATENT_FOR_INVENTION,
   TAGS_COLOR_TONE,
+  CONTRACT_THN,
+  CONTRACT_SCALE,
   TEST
 }

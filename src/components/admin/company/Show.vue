@@ -168,11 +168,8 @@
                     <span v-else-if="item.verify_status === 2" type="gray">拒绝</span>
                     <span v-else type="warning">待认证</span>
                 </p>
-                <p class="opt" v-if="item.verify_status === 0">
-                  <el-button class="is-custom" :loading="verifyLoadingBtn" size="small" @click="setRefuseRease(2)">拒绝</el-button>
-                  <el-button type="primary" class="is-custom" :loading="verifyLoadingBtn" size="small" @click="setVerify(1)">通过</el-button>
-                </p>
-                <p class="opt" v-else>
+
+                <p class="opt">
                   <el-button class="is-custom" :loading="verifyLoadingBtn" size="small" v-if="item.verify_status === 1" @click="setRefuseRease(2)">拒绝</el-button>
                   <el-button type="primary" class="is-custom" :loading="verifyLoadingBtn" size="small" v-else @click="setVerify(1)">通过</el-button>
                 </p>
