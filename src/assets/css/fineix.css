@@ -1,15 +1,15 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('../fonts/icomoon.eot?vxw3rh');
-  src:  url('../fonts/icomoon.eot?vxw3rh#iefix') format('embedded-opentype'),
-    url('../fonts/icomoon.ttf?vxw3rh') format('truetype'),
-    url('../fonts/icomoon.woff?vxw3rh') format('woff'),
-    url('../fonts/icomoon.svg?vxw3rh#icomoon') format('svg');
+  src:  url('../fonts/icomoon.eot?4h0iu6');
+  src:  url('../fonts/icomoon.eot?4h0iu6#iefix') format('embedded-opentype'),
+    url('../fonts/icomoon.ttf?4h0iu6') format('truetype'),
+    url('../fonts/icomoon.woff?4h0iu6') format('woff'),
+    url('../fonts/icomoon.svg?4h0iu6#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 
-[class^="fx-icon-"], [class*="fx-icon-"] {
+[class^="fx-icon-"], [class*=" fx-icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'icomoon' !important;
   speak: none;
@@ -947,4 +947,20 @@
 }
 .fx-icon-inspiration2:before {
   content: "\ea02";
+}
+.fx-icon-ProjectReminding:before {
+  content: "\ea03";
+  color: #999;
+}
+.fx-icon-ProjectRemindingclick:before {
+  content: "\ea04";
+  color: #ff5a5f;
+}
+.fx-icon-OrderReminding:before {
+  content: "\ea05";
+  color: #999;
+}
+.fx-icon-OrderRemindingClick:before {
+  content: "\ea06";
+  color: #ff5a5f;
 }

@@ -29,7 +29,7 @@
             <span class="importance level3" v-if="ele.level === 3">非常重要</span>
           </li>
         </ul>
-        <h2>我拥有的项目</h2>
+        <h2 v-if="projectList.length">我拥有的项目</h2>
         <ul class="project-list">
           <li class="create" @click="showCover" v-if="isCompanyAdmin">
             <p @click="showCover">
@@ -59,6 +59,10 @@
             <span class="importance level3" v-if="ele.level === 3">非常重要</span>
           </li>
         </ul>
+        <div v-if="!projectList.length">
+          <div class="empty"></div>
+          <p class="noMsg">暂时没有项目， 休息一下～</p>
+        </div>
       </div>
       <el-pagination v-show="query.totalCount > query.pageSize" class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize" :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange">
       </el-pagination>
@@ -585,6 +589,19 @@ export default {
   .pagination {
     text-align: center;
     white-space: inherit
+  }
+
+  .empty {
+    width: 122px;
+    height: 113px;
+    margin: 100px auto 0;
+    background: url("../../../../assets/images/icon/Projectdefaultstate@2x.png") no-repeat center / contain;
+  }
+
+  .noMsg {
+    text-align: center;
+    color: #969696;
+    line-height: 3;
   }
   @media screen and (max-width: 767px) {
     .project-list li {

@@ -17,18 +17,17 @@
           <p v-show="d.is_show" class="content">{{ d.operation_log.title }}</p>
           <a v-show="d.is_show" class="detail" href="javascript:void(0);"  @click.stop="redirect(d)">查看详情>></a>
         </div>
+
+        <el-pagination
+          v-if="query.totalCount > query.pageSize"
+          class="pagination"
+          @current-change="handleCurrentChange"
+          :current-page="query.page"
+          :page-size="query.pageSize"
+          layout="prev, pager, next"
+          :total="query.totalCount">
+        </el-pagination>
       </div>
-
-      <el-pagination
-        v-if="itemList.length"
-        class="pagination"
-        @current-change="handleCurrentChange"
-        :current-page="query.page"
-        :page-size="query.pageSize"
-        layout="prev, pager, next"
-        :total="query.totalCount">
-      </el-pagination>
-
     </div>
     <div class="empty" v-if="isEmpty === true"></div>
     <p v-if="isEmpty === true" class="noMsg">您还没收到任何消息～</p>
@@ -50,9 +49,6 @@
           page: 1,
           pageSize: 10,
           totalCount: 0,
-          sort: 1,
-          type: 0,
-          test: null,
           total_pages: 1
         },
         userId: this.$store.state.event.user.id,
@@ -60,39 +56,34 @@
       }
     },
     methods: {
-      loadList(type) {
+      loadList() {
         const self = this
-        self.query.page = parseInt(this.$route.query.page || 1)
-        self.query.sort = this.$route.query.sort || 1
-        self.query.type = this.$route.query.type || 0
-
         self.isLoading = true
-        self.itemList = []
         self.$http.get(api.designNoticeLists, {
           params: {
             page: self.query.page,
-            per_page: self.query.pageSize,
-            sort: self.query.sort,
-            type: self.query.type
+            per_page: self.query.pageSize
           }
         })
           .then(function (response) {
             self.isLoading = false
             if (response.data.meta.status_code === 200) {
-              let data = response.data.data
-              self.query.totalCount = response.data.meta.pagination.total
-              self.query.total_pages = response.data.meta.pagination.total_pages
-              for (let i = 0; i < data.length; i++) {
-                let item = data[i].operation_log
-                data[i]['created_at'] = item.created_at.date_format().format('yy-MM-dd hh:mm')
-                data[i]['is_show'] = false
-              }
-              self.itemList = data
-              if (self.itemList.length) {
-                self.isEmpty = false
-              } else {
-                self.isEmpty = true
-              }
+              self.$nextTick(_ => {
+                let data = response.data.data
+                self.query.totalCount = response.data.meta.pagination.total
+                self.query.total_pages = response.data.meta.pagination.total_pages
+                for (let i = 0; i < data.length; i++) {
+                  let item = data[i].operation_log
+                  data[i]['created_at'] = item.created_at.date_format().format('yy-MM-dd hh:mm')
+                  data[i]['is_show'] = false
+                }
+                self.itemList = data
+                if (self.itemList.length) {
+                  self.isEmpty = false
+                } else {
+                  self.isEmpty = true
+                }
+              })
             }
           })
           .catch(function (error) {
@@ -109,7 +100,7 @@
       },
       handleCurrentChange(val) {
         this.query.page = val
-        this.$router.push({name: this.$route.name, query: {page: val}})
+        this.loadList()
       },
       // 下拉展开
       showDes(d, index) {
@@ -202,25 +193,9 @@
       }
     },
     created: function () {
-      let type = this.$route.query.page
-      if (type) {
-        type = parseInt(type)
-      } else {
-        type = 0
-      }
-      this.loadList(type)
+      this.loadList()
     },
     watch: {
-      '$route' (to, from) {
-        // 对路由变化作出响应...
-        let type = this.$route.query.page
-        if (type) {
-          type = parseInt(type)
-        } else {
-          type = 0
-        }
-        this.loadList()
-      }
     }
   }
 
@@ -232,7 +207,7 @@
   }
 
   .right-content .content-box {
-    padding: 0;
+    padding: 0 0 40px 0;
     border: none;
   }
 

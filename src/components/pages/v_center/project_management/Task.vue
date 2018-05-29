@@ -55,6 +55,10 @@
               </div>
             </section>
           </section>
+          <section v-if="!displayObj['itemList'].length &&! displayObj['outsideStageList'].length">
+            <div class="empty"></div>
+            <p class="noMsg">暂时没有任务， 休息一下～</p>
+          </section>
         </el-col>
         <el-col :span="12">
           <v-task :isMyTask="isMyTask" :projectObject="projectObject" :completeState="completeState"></v-task>
@@ -753,6 +757,18 @@
   }
   .buttons button:first-child {
     margin-right: 20px;
+  }
+  .empty {
+    width: 122px;
+    height: 113px;
+    margin: 100px auto 0;
+    background: url("../../../../assets/images/icon/Taskdefaultstate@2x.png") no-repeat center / contain;
+  }
+
+  .noMsg {
+    text-align: center;
+    color: #969696;
+    line-height: 3;
   }
 </style>
 

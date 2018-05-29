@@ -14,13 +14,13 @@
           </span>
           <!-- <div :class="['view-msg',{'view-msg-plus': msgCount.quantity}]"> -->
           <div class="view-msg">
-            <a @click="showMyView('order')" class="news">
-              <i class="fx-4 fx-icon-notice"></i><i class="fx-4 fx-icon-news-hover"></i>
-              <span v-if="msgCount.message"><b>{{msgCount.message}}</b>条[消息提醒]未查看</span>
-              <span v-else>[消息提醒]</span>
+            <a v-if="(isCompany && isCompanyAdmin) || eventUser.type === 1" @click="showMyView('order')" class="news">
+              <i class="fx-4 fx-icon-OrderReminding"></i><i class="fx-4 fx-icon-OrderRemindingClick"></i>
+              <span v-if="msgCount.message"><b>{{msgCount.message}}</b>条[订单通知]未查看</span>
+              <span v-else>[订单通知]</span>
             </a>
-            <a @click="showMyView('task')" class="news">
-              <i class="fx-4 fx-icon-notice"></i><i class="fx-4 fx-icon-news-hover"></i>
+            <a v-if="isCompany" @click="showMyView('task')" class="news">
+              <i class="fx-4 fx-icon-ProjectReminding"></i><i class="fx-4 fx-icon-ProjectRemindingclick"></i>
               <span v-if="msgCount.design_notice"><b>{{msgCount.design_notice}}</b>条[项目通知]未查看</span>
               <span v-else>[项目通知]</span>
             </a>
@@ -31,7 +31,7 @@
             </a>
           </div>
         </a>
-        <div @click="showMine()" class="mine no-select">
+        <div v-if="isCompany" @click="showMine()" class="mine no-select">
           <span>我的</span>
         </div>
         <el-menu class="el-menu-info" mode="horizontal" router>
@@ -347,12 +347,11 @@
         designItems: [] // 订单提醒
       }
     },
-    // 判断是客户还是设计公司
     methods: {
       redirectCompany(e) {
         let companyId = this.$store.state.event.user.design_company_id
         if (!companyId || companyId === 0) {
-          this.$message.error('请先申请公司认证!')
+          // this.$message.error('请先申请公司认证!')
         } else {
           this.$router.push({name: 'companyShow', params: {id: companyId}})
         }

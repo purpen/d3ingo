@@ -11,6 +11,14 @@
           <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
 
             <el-row :gutter="gutter" :class="['item', isMob ? 'item-m item-mAvatar' : '']">
+              <el-col :span="titleSpan" class="title">
+                <p>我的账号</p>
+              </el-col>
+              <el-col :xs="12" :sm="20" :md="20" :lg="20" class="content avatarcontent">
+                <p>{{user.account}}</p>
+              </el-col>
+            </el-row>
+            <el-row :gutter="gutter" :class="['item', isMob ? 'item-m item-mAvatar' : '']">
               <el-col :span="titleSpan" class="title avatarhead">
                 <p>头像</p>
                 <span v-if="isMob">{{ avatarStr }}</span>
@@ -137,6 +145,9 @@
       }
     },
     computed: {
+      user() {
+        return this.$store.state.event.user
+      },
       isMob() {
         return this.$store.state.event.isMob
       },

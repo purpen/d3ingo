@@ -9,7 +9,6 @@
           <v-menu-sub></v-menu-sub>
 
           <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
-
             <el-row :gutter="gutter" :class="['item', isMob ? 'item-m item-mAvatar' : '']">
               <el-col :span="titleSpan" class="title avatarhead">
                 <p>公司logo</p>
@@ -29,7 +28,6 @@
                   <i v-else class="avatar-uploader-icon"></i>
                   <div slot="tip" class="el-upload__tip" v-if="!isMob">{{ avatarStr }}</div>
                 </el-upload>
-
               </el-col>
             </el-row>
 
@@ -679,6 +677,9 @@
       isMob() {
         return this.$store.state.event.isMob
       },
+      user() {
+        return this.$store.state.event.user
+      },
       leftWidth() {
         return this.$store.state.event.leftWidth
       },
@@ -966,7 +967,6 @@
           that.isFirst = true
           if (response.data.meta.status_code === 200) {
             if (response.data.data) {
-              console.log(response.data.data)
               // 重新渲染
               that.$nextTick(function () {
                 that.form = response.data.data
