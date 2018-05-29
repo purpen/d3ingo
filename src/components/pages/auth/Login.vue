@@ -110,6 +110,7 @@ export default {
                         })
                         that.$store.commit(MENU_STATUS, '')
                         auth.write_user(response.data.data)
+                        console.log(response.data.data)
                         that.restoreMember()
                         let prevUrlName = that.$store.state.event.prevUrlName
                         if (prevUrlName) {

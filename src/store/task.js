@@ -18,8 +18,10 @@ let state = {
   projectMemberList: [],
   executeUser: {},
   parentTask: {},
-  showMessage: false,
-  myView: ''
+  showMessage: '',
+  myView: '',
+  showMine: '',
+  mineView: ''
 }
 let mutations = {
   setDisplayObj2(state, array) { // 容易出异步问题
@@ -35,7 +37,6 @@ let mutations = {
       console.log(item)
       if (item['created_at']) {
         item['created_at_format'] = item['created_at'].date_format().format('yyyy年MM月dd日')
-        console.log(item['created_at_format'])
       }
     })
     state.stageList.forEach(ele => {
@@ -105,6 +106,9 @@ let mutations = {
   },
   setTaskList(state, arr) {
     state.taskList = arr.filter(item => {
+      if (item['created_at']) {
+        item['created_at_format'] = item['created_at'].date_format().format('yyyy年MM月dd日')
+      }
       return item.tier === 0
     })
     // state.taskList = arr
@@ -209,11 +213,17 @@ let mutations = {
   removeParentTask(state) {
     state.parentTask = {id: -1}
   },
-  changeShowMsg(state, bool) {
-    state.showMessage = bool
+  changeShowMsg(state, str) {
+    state.showMessage = str
   },
   changeMyView(state, str) {
     state.myView = str
+  },
+  changeShowMine(state, str) {
+    state.showMine = str
+  },
+  changeMineView(state, str) {
+    state.mineView = str
   }
 }
 export default {

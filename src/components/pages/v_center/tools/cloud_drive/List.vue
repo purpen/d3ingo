@@ -584,7 +584,6 @@ export default {
             this.$message.info('只支持下载单个文件')
             return
           } else {
-            console.log(`url`)
             window.location.assign(url)
             download
             // download(`${url}&attname=a.dmg`)
@@ -683,6 +682,8 @@ export default {
       let type = 0
       if (this.modules === 'all') {
         url = api.yunpanList
+      } else if (this.modules === 'project') {
+        url = api.yunpanList
       } else if (this.modules === 'search') {
         url = api.yunpanList
       } else if (this.modules === 'recently-use') {
@@ -726,12 +727,6 @@ export default {
               this.query.totalPges = 0
             }
             this.list = res.data.data
-            // this.$http.get(this.list[2].url_file, {responseType: 'blob'})
-            // .then(res => {
-            //   console.log(res)
-            // }).catch(err => {
-            //   console.error(err)
-            // })
             if (this.list.length) {
               this.getImgList()
             }
@@ -742,6 +737,27 @@ export default {
           this.isLoading = false
           console.error(err)
         })
+    },
+    getProjectList() {
+      this.isLoading = true
+      this.$http.get(api.desiginProjectList, {params: {
+        status: 1,
+        page: 1,
+        per_page: 50
+      }}).then(res => {
+        this.isLoading = false
+        if (res.data.meta.status_code === 200) {
+          this.list = res.data.data
+          for (let i of this.list) {
+            this.formatList(i)
+          }
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        this.isLoading = false
+        console.log(err.message)
+      })
     },
     getSearchList() {
       this.isLoading = true
@@ -792,6 +808,9 @@ export default {
       this.webUploader = false
       if (str) {
         this.getList()
+      }
+      if (this.modules === 'project') {
+        this.getProjectList()
       }
     },
     changeChooseStatus() {
@@ -1391,12 +1410,21 @@ export default {
       this.showFolderInput = false
     },
     enterFolder(ele) {
-      this.$router.push({
-        name: this.$route.name,
-        params: this.$route.params,
-        query: {id: ele.id}})
-      this.folderId = this.$route.query.id
-      this.historyId.push(ele.id)
+      if (this.modules === 'project') {
+        this.$router.push({
+          name: this.$route.name,
+          params: this.$route.params,
+          query: {id: ele.pan_director_id}})
+        this.folderId = this.$route.query.id
+        this.historyId.push(ele.pan_director_id)
+      } else {
+        this.$router.push({
+          name: this.$route.name,
+          params: this.$route.params,
+          query: {id: ele.id}})
+        this.folderId = this.$route.query.id
+        this.historyId.push(ele.id)
+      }
     },
     backFolder() {
       this.historyId.pop()
@@ -1504,7 +1532,11 @@ export default {
     this.folderId = this.$route.query.id || 0
     this.modules = this.$route.params.modules || 'all'
     this.getUploadUrl()
-    this.getList()
+    if (this.modules === 'project') {
+      this.getProjectList()
+    } else {
+      this.getList()
+    }
     if (this.IEVersion !== -1) {
       this.uploadParams['x:browser'] = 1
     }
@@ -1578,11 +1610,14 @@ export default {
   },
   watch: {
     '$route' (to, from) {
+      this.modules = this.$route.params.modules || 'all'
       this.folderId = this.$route.query.id || 0
+      if (this.modules === 'project' && !this.$route.query.id) {
+        this.getProjectList()
+      }
       if (this.modules !== 'search') {
         this.getList()
       }
-      // this.modules = this.$route.params.modules || 'all'
     },
     validityKey(newVal) {
       switch (newVal) {

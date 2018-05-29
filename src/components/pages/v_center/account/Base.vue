@@ -15,7 +15,7 @@
                 <p>头像</p>
                 <span v-if="isMob">{{ avatarStr }}</span>
               </el-col>
-              <el-col  :xs="12" :sm="20" :md="20" :lg="20" class="content avatarcontent">
+              <el-col :xs="12" :sm="20" :md="20" :lg="20" class="content avatarcontent">
                 <el-upload
                   class="avatar-uploader"
                   :action="uploadParam.url"
@@ -24,7 +24,8 @@
                   :on-progress="avatarProgress"
                   :on-success="handleAvatarSuccess"
                   :before-upload="beforeAvatarUpload">
-                  <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                  <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar"> -->
+                  <span v-if="imageUrl" :style="{background: `url(${imageUrl}) no-repeat center / cover`}" class="avatar"></span>
                   <i v-else class="avatar-uploader-icon"></i>
                   <div slot="tip" class="el-upload__tip" v-if="!isMob">{{ avatarStr }}</div>
                 </el-upload>
@@ -412,6 +413,7 @@
   }
 
   .avatar {
+    border-radius: 50%;
     width: 100px;
     height: 100px;
     display: block;

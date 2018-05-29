@@ -35,6 +35,7 @@
             </el-col>
             <el-col :span="5" :style="{height: '70px'}">
               <p v-if="!driveShare" :class="['file-uploader']">{{ele.user_name}}</p>
+              <p v-if="$route.params.modules === 'project' && !$route.query.id" :class="['file-uploader']">{{ele.realName}}</p>
             </el-col>
             <el-col :span="4">
               <p class="upload-date">{{ele.created_at_format}}</p>

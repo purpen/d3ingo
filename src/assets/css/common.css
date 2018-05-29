@@ -41,37 +41,37 @@
   color: #999
 }
 .tc-red {
-  color: #FF5A5F
+  color: #ff5a5f
 }
 .b-d2 {
-  border: 1px solid #D2D2D2
+  border: 1px solid #d2d2d2
 }
 .bt-d2 {
-  border-top: 1px solid #D2D2D2
+  border-top: 1px solid #d2d2d2
 }
 .bb-d2 {
-  border-bottom: 1px solid #D2D2D2
+  border-bottom: 1px solid #d2d2d2
 }
 .bg-fa {
-  background: #FAFAFA
+  background: #fafafa
 }
 .bg-f7 {
-  background: #F7F7F7
+  background: #f7f7f7
 }
 .br50 {
   border-radius: 50%
 }
 .is-default {
-  color: #65A6FF
+  color: #65a6ff
 }
 .is-unclaimed {
-  color: #D2D2D2
+  color: #d2d2d2
 }
 .is-success {
   color: #00AC84
 }
 .is-exception {
-  color: #FF5A5F
+  color: #ff5a5f
 }
 .no-select {
   -moz-user-select: none;
@@ -168,6 +168,8 @@
   height: 40px;
   line-height: 40px;
 }
+
+.el-button,
 .middle-button,
 .el-button--primary,
 .el-button--default {
@@ -194,75 +196,74 @@
   line-height: 30px;
 }
 .red-button {
-  background: #FFF;
-  border: 1px solid #FF5A5F;
+  background: #fff;
+  border: 1px solid #ff5a5f;
   border-radius: 4px;
-  color: #FF5A5F;
+  color: #ff5a5f;
 }
 .red-button:hover {
-  background-color: #FFACAF;
-  color: #FFF;
+  background-color: #ffacaf;
+  color: #fff;
 }
 .red-button:active {
-  background-color: #FF5A5F;
-  color: #FFF;
+  background-color: #ff5a5f;
+  color: #fff;
 }
 .full-red-button,
+.el-button--primary,
 .el-button--danger {
-  background: #FF5A5F;
-  border: 1px solid #FF5A5F;
+  background: #ff5a5f;
+  border: 1px solid #ff5a5f;
   border-radius: 4px;
-  color: #FFF;
+  color: #fff;
 }
 .full-red-button:hover,
+.el-button--primary:hover,
 .el-button--danger:hover {
   border-color: #D23C46;
   background-color: #D23C46;
 }
 .full-red-button:active,
+.el-button--primary:active,
 .el-button--danger:active {
-  border-color: #A02832;
-  background-color: #A02832;
+  border-color: #a02832;
+  background-color: #a02832;
 }
 
-.el-button--primary {
-  background: #65A6FF;
-  border: 1px solid #65A6FF;
-}
 .white-button,
 .el-button--default {
-  background: #FFF;
-  border: 1px solid #D2D2D2;
+  background: #fff;
+  border: 1px solid #d2d2d2;
   border-radius: 4px;
   color: #999;
 }
 .white-button:hover,
 .el-button--default:hover{
-  background: #F5F5F5;
-  border: 1px solid #D2D2D2;
+  background: #f5f5f5;
+  border: 1px solid #d2d2d2;
   color: #999;
 }
 .white-button:active,
 .el-button--default:focus,
 .el-button--default:active {
-  background: #CCC;
-  border: 1px solid #CCC;
-  color: #FFF;
+  background: #ccc;
+  border: 1px solid #ccc;
+  color: #fff;
 }
 .disabled-button,
 .disabled-button:hover,
 .disabled-button:active {
   font-size: 14px;
   cursor: not-allowed;
-  background: #CCC;
-  color: #FFF;
-  border: 1px solid #CCC;
+  background: #ccc;
+  color: #fff;
+  border: 1px solid #ccc;
   border-radius: 4px;
 }
 
 .el-input.is-disabled .el-input__inner {
-  background: #FAFAFA;
-  color: #C8C8C8;
+  background: #fafafa;
+  color: #c8c8c8;
 }
 button.el-button.is-custom.is-disabled,
 .disabled-button-light,
@@ -270,9 +271,9 @@ button.el-button.is-custom.is-disabled,
 .disabled-button-light:active {
   font-size: 14px;
   cursor: not-allowed;
-  background: #FAFAFA;
-  color: #C8C8C8;
-  border: 1px solid #E6E6E6;
+  background: #fafafa;
+  color: #c8c8c8;
+  border: 1px solid #e6e6e6;
   border-radius: 4px;
 }
 /* 基本按钮 button  <<<<<<<*/
@@ -286,7 +287,7 @@ button.el-button.is-custom.is-disabled,
   padding-left: 0
 }
 .fx-icon-nothing-close-error:hover {
-  color: #FF5A5F!important
+  color: #ff5a5f!important
 }
 @media screen and (min-width: 1200px) {
   .vcenter-right-plus {

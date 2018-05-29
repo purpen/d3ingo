@@ -169,10 +169,13 @@
 
       <div class="withdraw-input">
         <p class="withdraw-title">提现金额</p>
-        <el-input placeholder="请输入提现额度" v-model.number="withdrawPrice">
-          <template slot="prepend">¥</template>
-        </el-input>
-        <p class="withdraw-des">可提现金额: ¥ {{ wallet.price }} <a href="javascript:void(0)" @click="allPrice">全部提现</a></p>
+        <div class="flex">
+          <el-input placeholder="请输入提现额度" v-model.number="withdrawPrice">
+            <template slot="prepend">¥</template>
+          </el-input>
+          <button class="red-button middle-button" @click="allPrice">全部提现</button>
+        </div>
+        <p class="withdraw-des">可提现金额: ¥ {{ wallet.price }}</p>
       </div>
 
       <div slot="footer" class="dialog-footer">
@@ -584,7 +587,7 @@
   }
 
   .withdraw-input .el-input {
-    width: 150px;
+    width: 200px;
   }
 
   .withdraw-input p.withdraw-des {
@@ -633,6 +636,13 @@
     left: 0;
     border-bottom: 1px solid #d2d2d2;
     z-index: -1;
+  }
+  .flex {
+    display: flex;
+    align-items: center;
+  }
+  .flex button:last-child {
+    margin-left: 10px;
   }
   @media screen and (max-width: 767px) {
     .vcenter-menu-sub::after {

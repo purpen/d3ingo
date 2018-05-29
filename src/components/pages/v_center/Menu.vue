@@ -14,24 +14,24 @@
           </span>
           <!-- <div :class="['view-msg',{'view-msg-plus': msgCount.quantity}]"> -->
           <div class="view-msg">
-            <a @click="showCover = true, myView = 'order'" class="news">
+            <a @click="showMyView('order')" class="news">
               <i class="fx-4 fx-icon-notice"></i><i class="fx-4 fx-icon-news-hover"></i>
               <span v-if="msgCount.message"><b>{{msgCount.message}}</b>条[消息提醒]未查看</span>
               <span v-else>[消息提醒]</span>
             </a>
-            <a @click="showCover = true, myView = 'task'" class="news">
+            <a @click="showMyView('task')" class="news">
               <i class="fx-4 fx-icon-notice"></i><i class="fx-4 fx-icon-news-hover"></i>
               <span v-if="msgCount.design_notice"><b>{{msgCount.design_notice}}</b>条[项目通知]未查看</span>
               <span v-else>[项目通知]</span>
             </a>
-            <a @click="showCover = true, myView = 'system'" class="notice">
+            <a @click="showMyView('system')" class="notice">
               <i class="fx-4 fx-icon-sound-loudly"></i><i class="fx-4 fx-icon-notice-hover"></i>
               <span v-if="msgCount.notice"><b>{{msgCount.notice}}</b>条[系统通知]未查看</span>
               <span v-else>[系统通知]</span>
             </a>
           </div>
         </a>
-        <div class="mine no-select">
+        <div @click="showMine()" class="mine no-select">
           <span>我的</span>
         </div>
         <el-menu class="el-menu-info" mode="horizontal" router>
@@ -113,7 +113,7 @@
             </el-tooltip> -->
             <el-tooltip class="item" :effect="DarkorLight" content="项目订单" placement="right">
             <a @click="alick" :to="'/vcenter/citem/list'"
-              :class="['item', 'order', {'is-active': currentName === 'c_item'}]">
+              :class="['item', 'project-order', {'is-active': currentName === 'c_item'}]">
               项目订单
             </a>
             </el-tooltip>
@@ -252,7 +252,7 @@
               消息
             </a> -->
             <a @click="alick" :to="'/vcenter/citem/list'"
-              :class="['item', 'order', {'is-active': currentName === 'c_item'}]">
+              :class="['item', 'project-order', {'is-active': currentName === 'c_item'}]">
               项目订单
             </a>
             <a @click="alick" :to="'/vcenter/project_management/list'"
@@ -323,6 +323,9 @@
     <div>
       <message-components></message-components>
     </div>
+    <div>
+      <mine-view></mine-view>
+    </div>
   </section>
 </template>
 
@@ -332,6 +335,7 @@
   import { LEFT_WIDTH } from '@/store/mutation-types'
   import auth from '@/helper/auth'
   import messageComponents from 'components/tools_block/Message'
+  import mineView from 'components/tools_block/Mine'
   export default {
     name: 'vcenter_menu',
     props: {
@@ -373,9 +377,35 @@
           this.$store.commit(LEFT_WIDTH, 2)
         }
       },
-      showMyView() {
-        this.showCover = !this.showCover
-        if (this.showCover) {
+      showMyView(view) {
+        this.myView = view
+        this.$refs.msgList.blur()
+        if (this.showCover2 === 'show') {
+          this.showCover2 = 'hide'
+          setTimeout(() => {
+            this.showCover = 'show'
+          }, 520)
+        } else {
+          this.showCover = 'show'
+        }
+      },
+      showMine() {
+        this.$store.commit('changeMineView', '')
+        this.$store.commit('removeParentTask')
+        this.$store.commit('changeTaskStatePower', 0)
+        this.$store.commit('changeTaskStateEvent', '')
+        this.$store.commit('changeMineView', 'task')
+        if (this.showCover === 'show') {
+          this.showCover = 'hide'
+          setTimeout(() => {
+            this.showCover2 = 'show'
+          }, 520)
+        } else {
+          if (this.showCover2 === 'show') {
+            this.showCover2 = 'hide'
+          } else {
+            this.showCover2 = 'show'
+          }
         }
       },
       getOrder() {
@@ -492,6 +522,14 @@
         set(e) {
           this.$store.commit('changeShowMsg', e)
         }
+      },
+      showCover2: {
+        get() {
+          return this.$store.state.task.showMine
+        },
+        set(e) {
+          this.$store.commit('changeShowMine', e)
+        }
       }
     },
     watch: {
@@ -499,11 +537,13 @@
         // console.log(val)
       },
       $route (to, from) {
-        this.showCover = false
+        this.showCover = ''
+        this.showCover2 = ''
       }
     },
     components: {
-      messageComponents: messageComponents,
+      messageComponents,
+      mineView,
       Tooltip,
       Popover
     }
@@ -577,6 +617,10 @@
   .menu-list .item.message::before,
   .menu-list .item.match-case::before {
     background: url(../../../assets/images/v_center_menu/Case.png) no-repeat center;
+    background-size: contain
+  }
+  .menu-list .item.project-order::before {
+    background: url(../../../assets/images/v_center_menu/ProjectOrder.png) no-repeat center;
     background-size: contain
   }
   .menu-list .item.wallet::before {
