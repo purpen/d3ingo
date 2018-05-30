@@ -51,7 +51,7 @@
             <p class="menu-moment"><span>项目动态</span></p>
             <ul class="item-moments" v-if="shortProjectMoments.length">
               <li v-for="(ele, index) in shortProjectMoments" :key="index">
-                <img class="br50 b-d2" src="" alt="">
+                <img class="br50 b-d2" :src="ele.logo_image.small" alt="">
                 <div class="item-con">
                   <p class="tc-2"><span>{{ele.user_name}}</span>{{ele.action}}</p>
                   <p class="fz-12 tc-6">{{ele.date}}</p>

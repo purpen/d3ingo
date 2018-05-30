@@ -251,7 +251,7 @@
               </el-form-item>
 
               <div class="form-btn">
-                <button class="middle-button white-button" @click="returnList">取消</button>
+                <button class="middle-button white-button" @click.prevent="returnList">取消</button>
                 <el-button type="danger" :loading="isLoadingBtn" @click="submit('ruleForm')">提交</el-button>
               </div>
               <div class="clear"></div>
@@ -702,15 +702,20 @@
           .then (function (response) {
             if (response.data.meta.status_code === 200) {
               that.form = response.data.data
+              console.log(that.form)
               if (that.form.prizes) {
-                that.$set(that, 'is_prize', true)
-                that.$set(that.form, 'prize_time', that.form.prizes[0].time)
-                that.$set(that.form, 'prize', that.form.prizes[0].type)
+                if (that.form.prizes.length) {
+                  that.$set(that, 'is_prize', true)
+                  that.$set(that.form, 'prize_time', that.form.prizes[0].time)
+                  that.$set(that.form, 'prize', that.form.prizes[0].type)
+                }
               }
               if (that.form.patent) {
-                that.$set(that, 'is_apply', true)
-                that.$set(that.form, 'patent_time', that.form.patent[0].time)
-                that.$set(that.form, 'patent_info', that.form.patent[0].type)
+                if (that.form.patent.length) {
+                  that.$set(that, 'is_apply', true)
+                  that.$set(that.form, 'patent_time', that.form.patent[0].time)
+                  that.$set(that.form, 'patent_info', that.form.patent[0].type)
+                }
               } else {
                 that.$set(that, 'is_apply', false)
               }
