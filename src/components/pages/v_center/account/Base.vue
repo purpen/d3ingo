@@ -112,6 +112,7 @@
     },
     data () {
       return {
+        oldVal: {},
         gutter: 0,
         titleSpan: this.$store.state.event.isMob === true ? 12 : 3,
         contentSpan: this.$store.state.event.isMob === true ? 24 : 19,
@@ -164,8 +165,13 @@
           return false
         }
         this.element[mark] = true
+        this.$set(this.oldVal, mark, this.form[mark])
       },
       saveBtn(mark, nameArr, multi = false) {
+        if (this.oldVal[mark] === this.form[mark]) {
+          this.element[mark] = false
+          return false
+        }
         let that = this
         let row = {}
         if (multi) {
@@ -506,7 +512,7 @@
   .subsidiary .fx-icon-nothing-close-error {
     font-size: 12px;
     cursor: pointer;
-    color: #fff;
+    color: #666;
     margin-right: 0;
   }
 

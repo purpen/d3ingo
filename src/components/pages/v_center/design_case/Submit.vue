@@ -135,8 +135,7 @@
 
               </div>
 
-
-              <el-row :gutter="24">
+              <el-row>
                 <el-col :span="isMob ? 24 : 12">
                   <el-form-item label="标题" prop="title">
                     <el-input v-model="form.title" placeholder=""></el-input>
@@ -144,7 +143,7 @@
                 </el-col>
               </el-row>
 
-              <el-row :gutter="24">
+              <el-row>
                 <el-col :span="isMob ? 24 : 12">
                   <el-form-item label="服务客户" prop="customer">
                     <el-input v-model="form.customer" placeholder=""></el-input>
@@ -160,7 +159,7 @@
                       <el-radio :label="true">是</el-radio>
                     </el-radio-group>
                   </el-col>
-                  <el-col :xs="24" :sm="21" :md="21" :lg="21" v-if="is_prize">
+                  <el-col :xs="24" :sm="9" :md="9" :lg="9" v-if="is_prize">
                     <el-form-item prop="">
                       <el-date-picker
                         key="prize_time"
@@ -171,7 +170,7 @@
                       </el-date-picker>
                     </el-form-item>
                   <!-- </el-col>
-                  <el-col :xs="24" :sm="6" :md="6" :lg="6" v-if="is_prize"> -->
+                  <el-col :xs="24" :sm="9" :md="9" :lg="9" v-if="is_prize"> -->
                     <el-form-item prop="prize">
                       <el-select v-model.number="form.prize" placeholder="所属奖项">
                         <el-option
@@ -194,7 +193,7 @@
                       <el-radio :label="true">是</el-radio>
                     </el-radio-group>
                   </el-col>
-                  <el-col :xs="24" :sm="6" :md="6" :lg="6" v-if="is_apply">
+                  <el-col :xs="24" :sm="9" :md="9" :lg="9" v-if="is_apply">
                     <el-form-item>
                       <el-date-picker
                         key="patent_time"
@@ -204,8 +203,8 @@
                         placeholder="选择日期">
                       </el-date-picker>
                     </el-form-item>
-                  </el-col>
-                  <el-col :xs="24" :sm="6" :md="6" :lg="6" v-if="is_apply">
+                  <!-- </el-col>
+                  <el-col :xs="24" :sm="9" :md="9" :lg="9" v-if="is_apply"> -->
                     <el-form-item>
                       <el-select v-model.number="form.patent_info" placeholder="选择申请专利类型" 
                         key="patent_info">

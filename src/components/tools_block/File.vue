@@ -575,15 +575,9 @@ export default {
     getList() {
       this.isLoading = true
       let url = api.myFileList
-      let type = 0
       this.$http.get(url, {params: {
-        pan_director_id: this.folderId,
         page: this.query.page,
-        per_page: this.query.pageSize,
-        type: type,
-        resource_type: this.modules,
-        order_by: this.sortGist.order_by,
-        ascend: this.sortGist.ascend
+        per_page: this.query.pageSize
       }}).then(
         (res) => {
           this.isLoading = false
@@ -611,7 +605,7 @@ export default {
           }
         }).catch((err) => {
           this.isLoading = false
-          console.error(err)
+          this.$message.error(err.message)
         })
     },
     getProjectList() {
@@ -1570,6 +1564,7 @@ export default {
     }
   }
   .content-head {
+    margin-top: 20px;
     color: #999;
     font-size: 0;
     border-bottom: 1px solid #D2D2D2;
