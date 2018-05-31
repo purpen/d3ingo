@@ -217,43 +217,43 @@ routes = [
     component: require('@/components/pages/subject/XiaoMiInterview')
   },
   // 创新力指数
-  {
-    path: '/innovation_index',
-    redirect: '/innovation_index/home',
-    meta: {
-      name: 'InnovationIndex',
-      requireAuth: false,
-      title: '中国设计企业创新力指数'
-    },
-    children: [
-      {
-        name: 'innovationHome',
-        path: '/innovation_index/home',
-        component: require('@/components/pages/home/innovation/InnovationHome')
-      },
-      {
-        name: 'InnovateList',
-        path: '/innovation_index/list',
-        component: require('@/components/pages/home/innovation/InnovationList')
-      },
-      {
-        name: 'InnovateAbout',
-        path: '/innovation_index/about',
-        component: require('@/components/pages/home/innovation/InnovationAbout')
-      }
-    ],
-    component: require('@/components/pages/home/innovation/InnovationIndex')
-  },
-  {
-    name: 'innovationCompany',
-    path: '/innovation_index/company/:id',
-    component: require('@/components/pages/home/innovation/InnovationCompany')
-  },
-  {
-    name: 'innovationCompare',
-    path: '/innovation_index/compare',
-    component: require('@/components/pages/home/innovation/InnovationCompare')
-  },
+  // {
+  //   path: '/innovation_index',
+  //   redirect: '/innovation_index/home',
+  //   meta: {
+  //     name: 'InnovationIndex',
+  //     requireAuth: false,
+  //     title: '中国设计企业创新力指数'
+  //   },
+  //   children: [
+  //     {
+  //       name: 'innovationHome',
+  //       path: '/innovation_index/home',
+  //       component: require('@/components/pages/home/innovation/InnovationHome')
+  //     },
+  //     {
+  //       name: 'InnovateList',
+  //       path: '/innovation_index/list',
+  //       component: require('@/components/pages/home/innovation/InnovationList')
+  //     },
+  //     {
+  //       name: 'InnovateAbout',
+  //       path: '/innovation_index/about',
+  //       component: require('@/components/pages/home/innovation/InnovationAbout')
+  //     }
+  //   ],
+  //   component: require('@/components/pages/home/innovation/InnovationIndex')
+  // },
+  // {
+  //   name: 'innovationCompany',
+  //   path: '/innovation_index/company/:id',
+  //   component: require('@/components/pages/home/innovation/InnovationCompany')
+  // },
+  // {
+  //   name: 'innovationCompare',
+  //   path: '/innovation_index/compare',
+  //   component: require('@/components/pages/home/innovation/InnovationCompare')
+  // },
   // 企业招募
   {
     path: '/subject/EnterpriseRecruit',
