@@ -51,7 +51,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     // }),
     new UglifyJsPlugin({
       uglifyOptions: {
-        ecma: 8,
+        ecma: 5,
         ie8: true,
         output: { comments: false, beautify: false },
         compress: {
@@ -79,9 +79,9 @@ var webpackConfig = merge(baseWebpackConfig, {
       context: __dirname,
       manifest: require('../static/js/vendor/core-mainfest.json') // 指向这个json
     }),
-	  // 复制公共dll.js，并插入html
+    // 复制公共dll.js，并插入html
     new AddAssetHtmlPlugin([{
-      filepath: path.resolve(__dirname,'../static/js/vendor/core.dll.*.js'), // 同webpack.dll.conf.js output
+      filepath: path.resolve(__dirname, '../static/js/vendor/core.dll.*.js'), // 同webpack.dll.conf.js output
       outputPath: utils.assetsPath(''),
       publicPath: config.build.assetsPublicPath + 'static/js/vendor',
       includeSourcemap: false,
