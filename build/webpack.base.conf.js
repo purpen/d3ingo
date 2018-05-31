@@ -79,11 +79,11 @@ module.exports = {
         enforce: "pre",
         include: [
           resolve('src'),
-          resolve('test'),
-          resolve('node_modules/vue-echarts'),
-          resolve('node_modules/echarts'),
-          resolve('node_modules/resize-detector')]
+          resolve('test')]
       },
+      // resolve('node_modules/vue-echarts'),
+      // resolve('node_modules/echarts'),
+      // resolve('node_modules/resize-detector')
       {
         test: /\.vue$/,
         loader: 'vue-loader',
@@ -96,11 +96,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: ['happypack/loader?id=js'],
-        include: [
-          resolve('node_modules/vue-echarts'),
-          resolve('node_modules/echarts'),
-          resolve('node_modules/resize-detector'),
-          /pdfmake.js$/],
+        include: [/pdfmake.js$/],
         exclude: [/node_modules/, /pdfmake.js$/]
       },
       {
