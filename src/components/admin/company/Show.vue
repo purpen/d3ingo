@@ -295,6 +295,22 @@
             <div class="company-show">
               <el-row class="item" :gutter="gutter">
                 <el-col :span="spanKey">
+                  <p>测试账号</p>
+                </el-col>
+                <el-col :span="spanVal">
+                  <p>
+                    <span v-if="item.is_test_data === 1" type="success">是</span>
+                    <span v-else type="warning">否</span>
+                  </p>
+                </el-col>
+                <el-col :span="spanOpt">
+                  <el-button class="is-custom" :loading="setTestLoadingBtn" size="small" v-if="item.is_test_data === 1" @click="setTest(2)">设为正式</el-button>
+                  <el-button type="primary" class="is-custom" :loading="setTestLoadingBtn" size="small" v-else @click="setTest(1)">设为测式</el-button>
+                </el-col>
+              </el-row>
+
+              <el-row class="item" :gutter="gutter">
+                <el-col :span="spanKey">
                   <p>认证</p>
                 </el-col>
                 <el-col :span="spanVal">
@@ -342,6 +358,7 @@ export default {
       designItem: [],
       isLoading: false,
       verifyLoadingBtn: false,
+      setTestLoadingBtn: false,
       msg: '',
       dialogVisible: false,
       itemId: '',
@@ -359,6 +376,7 @@ export default {
       this.dialogVisible = !this.dialogVisible
       this.evt = evt
     },
+    // 审核事件
     setVerify(evt) {
       var self = this
       self.verifyLoadingBtn = true
@@ -374,6 +392,25 @@ export default {
       })
       .catch (function(error) {
         self.verifyLoadingBtn = false
+        self.$message.error(error.message)
+      })
+    },
+    // 设置测试账号（不推荐）
+    setTest(evt) {
+      var self = this
+      self.setTestLoadingBtn = true
+      self.$http.put(api.adminCompanySetTest, {id: self.itemId, status: evt})
+      .then (function(response) {
+        self.setTestLoadingBtn = false
+        if (response.data.meta.status_code === 200) {
+          self.item.is_test_data = evt
+          self.$message.success('操作成功')
+        } else {
+          self.$message.error(response.meta.message)
+        }
+      })
+      .catch (function(error) {
+        self.setTestLoadingBtn = false
         self.$message.error(error.message)
       })
     }
