@@ -107,7 +107,7 @@ module.exports = {
           resolve('node_modules/resize-detector'),
           resolve('node_modules/vue-pdf'),
           resolve('node_modules/vue-resize-sensor')],
-        exclude: [/node_modules/, /pdfmake.js$/]
+        exclude: [/pdfmake.js$/]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
