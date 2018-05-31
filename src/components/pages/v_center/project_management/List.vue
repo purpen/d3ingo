@@ -309,7 +309,7 @@ export default {
     margin-bottom: 20px;
     background: #f7f7f7;
     padding: 20px;
-    padding-bottom: 40px;
+    /* padding-bottom: 40px; */
     transition: transform .218s ease;
     /* transform: translate3d(0, 0, 0) */
   }
@@ -410,6 +410,7 @@ export default {
     color: #222;
   }
   .content {
+    color: #666;
     max-height: 63px;
     /* height: 63px; */
     margin: 10px 0;
@@ -524,8 +525,11 @@ export default {
     top: 0;
     width: 16px;
     height: 16px;
-    border: 1px solid #666;
+    border: 1px solid #d2d2d2;
     border-radius: 50%;
+  }
+  .select-importance span:hover::before {
+    border: 1px solid #ff5a5f;
   }
   .select-importance span::after {
     content: "";
@@ -536,6 +540,8 @@ export default {
     height: 10px;
     background: #fff;
     border-radius: 50%;
+    transform: scale(0);
+    transition: transform .15s cubic-bezier(.71,-.46,.88,.6);
   }
   .select-importance span.active {
     color: #ff5a5f
@@ -544,7 +550,8 @@ export default {
     border: 1px solid #ff5a5f;
   }
   .select-importance span.active::after {
-    background: #ff5a5f
+    background: #ff5a5f;
+    transform: scale(1);
   }
   .dialog-body .offer {
     cursor: pointer;

@@ -228,7 +228,10 @@
               </p>
             </div>
             <div class="tax-total-box" v-if="showRate.rate">
-              <p class="tax-total-money">税率:  <span><input placeholder="" v-model.number="rate" type="number" min="1" max="99" class="tax-input" @blur="checkRate" /> %</span> &nbsp;&nbsp;&nbsp;&nbsp;总计（含税）： <span>¥{{ taxTotalMoneyFormat }}</span> 元</p>
+              <p class="tax-total-money">税率:  <span class="tax-span">
+                <i class="before" @click="increaseRate"></i>
+                <i class="after"  @click="reduceRate"></i>
+                <input placeholder="" v-model.number="rate" class="tax-input" @blur="checkRate" /> %</span> &nbsp;&nbsp;&nbsp;&nbsp;总计（含税）： <span>¥{{ taxTotalMoneyFormat }}</span> 元</p>
             </div>
           </div>
         </div>
@@ -668,6 +671,18 @@ export default {
         this.rate = 0
         return
       }
+    },
+    increaseRate() {
+      this.rate ++
+      if (this.rate > 100) {
+        this.rate = 100
+      }
+    },
+    reduceRate() {
+      this.rate --
+      if (this.rate < 0) {
+        this.rate = 0
+      }
     }
   },
   computed: {
@@ -835,7 +850,7 @@ export default {
   }
   .form-btn {
     float: right;
-    margin: 0 0 20px 0;
+    margin: 0 0 50px 0;
   }
   .form-btn button {
     /* padding: 10px 40px 10px 40px; */
@@ -894,8 +909,8 @@ export default {
   .select-importance span {
     padding-right: 10px;
     padding-left: 25px;
-    height: 20px;
-    line-height: 20px;
+    height: 16px;
+    line-height: 16px;
     position: relative;
     cursor: pointer;
   }
@@ -904,33 +919,47 @@ export default {
     position: absolute;
     left: 0px;
     top: 0;
-    width: 20px;
-    height: 20px;
-    border: 1px solid #666;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #d2d2d2;
     border-radius: 50%;
+  }
+  .select-importance span:hover::before {
+    border: 1px solid #ff5a5f;
   }
   .select-importance span::after {
     content: "";
     position: absolute;
     left: 3px;
     top: 3px;
-    width: 14px;
-    height: 14px;
+    width: 10px;
+    height: 10px;
     background: #fff;
     border-radius: 50%;
+    transform: scale(0);
+    transition: transform .15s cubic-bezier(.71,-.46,.88,.6);
+  }
+  .select-importance span.active {
+    color: #ff5a5f
+  }
+  .select-importance span.active::before {
+    border: 1px solid #ff5a5f;
   }
   .select-importance span.active::after {
-    background: #666
+    background: #ff5a5f;
+    transform: scale(1);
   }
 
   .tax-input {
+    text-align: center;
     background: #FFFFFF;
     border: 1px solid #D2D2D2;
-    border-radius: 4px;
-    width: 50px;
-    height: 20px;
-    padding: 5px;
+    border-radius: 4px 0 0 4px;
+    width: 100px;
+    height: 34px;
+    padding: 5px 30px 5px 5px;
     color: #FF5A5F;
+    position: relative;
   }
 
   .sum-box {
@@ -961,12 +990,44 @@ export default {
     clear: both;
   }
   .tax-total-money {
-    line-height: 1.5;
+    line-height: 34px;
     float: right;
   }  
   .tax-total-money span {
+    display: inline-block;
+    height: 34px;
     color: #FF5A5F;
+    position: relative;
   }
 
-
+  .tax-span .before {
+    cursor: pointer;
+    position: absolute;
+    z-index: 1;
+    left: 70px;
+    top: 0;
+    width: 30px;
+    height: 17px;
+    background:url(../../../../assets/images/icon/Arrow.svg) no-repeat center / 10px;
+    transform: rotate(180deg);
+    border-right: 1px solid #d2d2d2;
+  }
+  .tax-span .before:hover {
+    background:url(../../../../assets/images/icon/Arrow.svg) no-repeat center / 10px #FFBEBE;
+  }
+  .tax-span .after {
+    cursor: pointer;
+    position: absolute;
+    z-index: 1;
+    left: 70px;
+    bottom: 0;
+    width: 30px;
+    height: 17px;
+    background:url(../../../../assets/images/icon/Arrow.svg) no-repeat center / 10px;
+    border-top: 1px solid #d2d2d2;
+    border-left: 1px solid #d2d2d2;
+  }
+  .tax-span .after:hover {
+    background:url(../../../../assets/images/icon/Arrow.svg) no-repeat center / 10px #FFBEBE;
+  }
 </style>

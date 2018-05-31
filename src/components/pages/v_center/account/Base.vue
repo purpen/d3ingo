@@ -50,7 +50,7 @@
                           placeholder=""></el-input>
                 <p v-else>{{ form.realname }}</p>
               </el-col>
-              <el-col :span="editSpan" class="edit">
+              <el-col :offset="7" :span="editSpan" class="edit">
                 <a v-if="element.realname" title="保存" href="javascript:void(0)"
                    @click="saveBtn('realname', ['realname'])">保存</a>
                 <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('realname')">编辑</a>
@@ -66,7 +66,7 @@
                           placeholder=""></el-input>
                 <p v-else>{{ form.position }}</p>
               </el-col>
-              <el-col :span="editSpan" class="edit">
+              <el-col :offset="7" :span="editSpan" class="edit">
                 <a v-if="element.position" title="保存" href="javascript:void(0)"
                    @click="saveBtn('position', ['position'])">保存</a>
                 <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('position')">编辑</a>
@@ -82,7 +82,7 @@
                           placeholder=""></el-input>
                 <p v-else>{{ form.email }}</p>
               </el-col>
-              <el-col :span="editSpan" class="edit">
+              <el-col :offset="7" :span="editSpan" class="edit">
                 <a v-if="element.email" title="保存" href="javascript:void(0)"
                    @click="saveBtn('email', ['email'])">保存</a>
                 <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('email')">编辑</a>
@@ -115,7 +115,7 @@
         oldVal: {},
         gutter: 0,
         titleSpan: this.$store.state.event.isMob === true ? 12 : 3,
-        contentSpan: this.$store.state.event.isMob === true ? 24 : 19,
+        contentSpan: this.$store.state.event.isMob === true ? 24 : 12,
         editSpan: 2,
         isLoaded: false,
         isLoading: false,
@@ -291,25 +291,26 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .right-content .content-box {
-    padding: 0 15px;
+    padding-bottom: 0;
   }
-
   .right-content .content-box-m {
     margin: 0;
     padding: 0;
   }
 
   .item {
-    margin: 5px 0;
-    padding: 10px 0;
-    border-bottom: 1px solid #E6E6E6;
+    min-height: 70px;
+    padding: 15px 0;
+    border-bottom: 1px solid #d2d2d2;
+    display: flex;
+    align-items: center;
   }
   .content-box .item:last-child {
     border-bottom: none;
   }
 
   .item-m {
-    padding: 0 0 10px 0;
+    padding: 10px 15px;
     margin: 0;
     position: relative;
   }
@@ -326,20 +327,17 @@
     padding: 0;
   }
 
+  .item .content {
+  }
+
   .item .edit {
-    padding-left: 10px;
+    text-align: right;
   }
 
   .item-m .edit {
-    position: absolute;
-    width: 36px;
-    right: 0;
-    top: 8px;
-    line-height: 21px;
   }
 
   .item p {
-    line-height: 1.6;
   }
 
   .title {
@@ -347,31 +345,24 @@
     padding: 0;
   }
   .title p {
-    line-height: 36px;
     color: #666;
-    font-size: 1.5rem;
   }
 
   .item-m .title p {
-    margin: 8px 0;
     color: #222;
-    line-height: 21px;
-    font-weight: 400;
   }
 
   .item .content {
-    padding: 6px 0
   }
 
   .item-m .content {
     color: #666;
     border: 1px solid #E6E6E6;
-    padding: 4px 8px;
     min-height: 30px;
   }
 
   .item-mAvatar {
-    padding: 10px 0 20px;
+    padding: 10px 15px;
   }
 
   .item-mAvatar .avatarhead p {
@@ -392,7 +383,7 @@
 
   .edit a {
     font-size: 1.3rem;
-    color: #0995F8;
+    color: #FF5A5F;
   }
 
   .item-m .edit a {
@@ -430,6 +421,7 @@
   }
 
   .avatar {
+    /* border: 1px solid #e6e6e6; */
     border-radius: 50%;
     width: 100px;
     height: 100px;
@@ -520,6 +512,10 @@
     .item-m .content {
       border: none;
       padding: 0;
+    }
+    .edit a {
+      font-size: 1.3rem;
+      color: #FF5A5F;
     }
   }
 </style>

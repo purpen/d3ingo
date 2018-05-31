@@ -613,6 +613,7 @@
   }
   .message-btn>p{
     margin:10px 0px;
+    color: #999
   }
   
   /* 之前的样式 */
