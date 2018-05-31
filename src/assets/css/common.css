@@ -186,7 +186,9 @@
   line-height: 30px;
   font-size: 12px;
 }
-
+.full-button {
+  width: 100%;
+}
 .mini-button,
 .el-button--mini {
   font-size: 12px;
@@ -201,11 +203,16 @@
   border-radius: 4px;
   color: #ff5a5f;
 }
-.red-button:hover {
+.red-button a {
+  color: #ff5a5f;
+}
+.red-button:hover,
+.red-button:hover a {
   background-color: #ffacaf;
   color: #fff;
 }
-.red-button:active {
+.red-button:active,
+.red-button:active a {
   background-color: #ff5a5f;
   color: #fff;
 }
@@ -307,6 +314,6 @@ button.el-button.is-custom.is-disabled,
 }
 @media screen and (max-width: 767px) {
   .vcenter {
-    margin: 0
+    margin: 0 0 -450px 0
   }
 }

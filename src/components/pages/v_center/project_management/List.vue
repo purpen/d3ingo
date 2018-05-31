@@ -309,7 +309,7 @@ export default {
     margin-bottom: 20px;
     background: #f7f7f7;
     padding: 20px;
-    padding-bottom: 40px;
+    /* padding-bottom: 40px; */
     transition: transform .218s ease;
     /* transform: translate3d(0, 0, 0) */
   }
@@ -410,6 +410,7 @@ export default {
     color: #222;
   }
   .content {
+    color: #666;
     max-height: 63px;
     /* height: 63px; */
     margin: 10px 0;
@@ -481,17 +482,21 @@ export default {
     color: #222;;
   }
   .dialog-body p {
-    line-height: 2;
+    line-height: 20px;
+    padding-bottom: 10px;
   }
   .project-name {
+    font-size: 14px;
     background: #FFFFFF;
     border: 1px solid #D2D2D2;
     border-radius: 4px;
     width: 100%;
     height: 40px;
     padding: 10px;
+    margin-bottom: 20px;
   }
   .summary-content {
+    font-size: 14px;
     resize: none;
     height: 70px;
     width: 100%;
@@ -499,16 +504,17 @@ export default {
     background: #FFFFFF;
     border: 1px solid #D2D2D2;
     border-radius: 4px;
+    margin-bottom: 20px;
   }
-  .select-importance {
+  .dialog-body .select-importance {
     display: flex;
-    padding: 6px 0 20px;
+    padding: 0 0 20px;
   }
   .select-importance span {
     padding-right: 10px;
     padding-left: 25px;
-    height: 20px;
-    line-height: 20px;
+    height: 16px;
+    line-height: 16px;
     position: relative;
     cursor: pointer;
   }
@@ -517,20 +523,25 @@ export default {
     position: absolute;
     left: 0px;
     top: 0;
-    width: 20px;
-    height: 20px;
-    border: 1px solid #666;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #d2d2d2;
     border-radius: 50%;
+  }
+  .select-importance span:hover::before {
+    border: 1px solid #ff5a5f;
   }
   .select-importance span::after {
     content: "";
     position: absolute;
-    left: 4px;
-    top: 4px;
-    width: 12px;
-    height: 12px;
+    left: 3px;
+    top: 3px;
+    width: 10px;
+    height: 10px;
     background: #fff;
     border-radius: 50%;
+    transform: scale(0);
+    transition: transform .15s cubic-bezier(.71,-.46,.88,.6);
   }
   .select-importance span.active {
     color: #ff5a5f
@@ -539,12 +550,13 @@ export default {
     border: 1px solid #ff5a5f;
   }
   .select-importance span.active::after {
-    background: #ff5a5f
+    background: #ff5a5f;
+    transform: scale(1);
   }
   .dialog-body .offer {
     cursor: pointer;
-    line-height: 20px;
-    height: 20px;
+    line-height: 16px;
+    height: 16px;
     padding-left: 30px;
     position: relative;
   }
@@ -553,8 +565,8 @@ export default {
     position: absolute;
     left: 0;
     top: 0;
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
     border: 1px solid #666;
     border-radius: 4px;
   }
@@ -565,10 +577,10 @@ export default {
   .offer.active:after {
     content: "";
     position: absolute;
-    left: 4px;
+    left: 3px;
     top: 4px;
-    width: 12px;
-    height: 8px;
+    width: 11px;
+    height: 6px;
     border: 2px solid #FFF;
     border-right: none;
     border-top: none;

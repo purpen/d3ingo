@@ -43,11 +43,11 @@
               <div class="more-list" tabindex="-1">
                 <i></i>
                 <ul>
-                  <li v-if="folderId === 0 && ele.user_id === user.id" @click="changePermission(ele.id, ele.user_id)">更改权限</li>
+                  <li v-if="folderId === 0 && ele.user_id === user.id && !isMyFile" @click="changePermission(ele.id, ele.user_id)">更改权限</li>
                   <li @click="shareFile(ele.id)">分享</li>
                   <li v-if="ele.mime_type" @click="downFile(ele.id, ele.url_download)">下载</li>
-                  <li @click="copyFile(ele.id)">复制</li>
-                  <li v-if="ele.user_id === user.id" @click="moveFile(ele.id)">移动</li>
+                  <li v-if="!isMyFile" @click="copyFile(ele.id)">复制</li>
+                  <li v-if="ele.user_id === user.id && !isMyFile" @click="moveFile(ele.id)">移动</li>
                   <li @click="rename(ele.id, index)">重命名</li>
                   <li @click="deleteFile(ele.id)">删除</li>
                 </ul>
@@ -119,7 +119,8 @@
       </el-row>
       <div v-if="!list.length" class="empty-list">
         <span class="empty-img"></span>
-        <p class="empty-content" v-if="modules === 'search'">没有文件与你的搜索匹配～</p>
+        <p class="empty-content" v-if="isMyFile">没有我的文件</p>
+        <p class="empty-content" v-else-if="modules === 'search'">没有文件与你的搜索匹配～</p>
         <p class="empty-content" v-else>文件夹为空～</p>
       </div>
     </section>
@@ -195,6 +196,9 @@ import api from '@/api/api'
 export default {
   name: 'cloud_content',
   props: {
+    isMyFile: {
+      default: false
+    },
     chooseStatus: {
       type: Boolean,
       default: false

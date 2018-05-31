@@ -180,7 +180,7 @@
             </el-tooltip> -->
             <el-tooltip class="item" :effect="DarkorLight" content="我的项目" placement="right">
             <a @click="alick" :to="'/vcenter/item/list'"
-              :class="['item', 'order', {'is-active': currentName === 'item'}]">
+              :class="['item', 'project-order', {'is-active': currentName === 'item'}]">
               我的项目
             </a>
             </el-tooltip>
@@ -301,7 +301,7 @@
               消息
             </a> -->
             <a @click="alick" :to="'/vcenter/item/list'"
-              :class="['item', 'order', {'is-active': currentName === 'item'}]">
+              :class="['item', 'project-order', {'is-active': currentName === 'item'}]">
               我的项目
             </a>
             <a @click="alick" :to="'/vcenter/wallet/list'"
@@ -330,7 +330,6 @@
 </template>
 
 <script>
-  import { Tooltip, Popover } from 'element-ui'
   import api from '@/api/api'
   import { LEFT_WIDTH } from '@/store/mutation-types'
   import auth from '@/helper/auth'
@@ -542,9 +541,7 @@
     },
     components: {
       messageComponents,
-      mineView,
-      Tooltip,
-      Popover
+      mineView
     }
   }
 </script>

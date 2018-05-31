@@ -11,7 +11,7 @@ let cleanOptions = {
 }
 module.exports = {
   entry: {
-    core: ['vue/dist/vue.esm.js', 'element-ui', 'vue-router', 'axios', 'vuex', 'vue-echarts']
+    core: ['vue/dist/vue.esm.js', 'element-ui', 'vue-router', 'axios', 'vuex']
     // 需要打包起来的依赖
   },
   output: {

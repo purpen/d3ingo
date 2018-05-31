@@ -283,6 +283,7 @@ export default {
   yunpanMove: '/yunpan/move', // PUT 云盘移动
   yunpanShare: '/yunpan/shareCreate', // GET 创建文件分享
   yunpanShareShow: '/yunpan/shareShow', // GET 查看分享
+  myFileList: 'yunpan/myFiles', // GET 我的文件列表
   // 成员管理
   designMemberList: '/design/members', // GET 获取成员列表
   designMemberSetRole: '/design/isAdmin', // PUT 设计成员权限

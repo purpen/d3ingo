@@ -298,10 +298,12 @@
             for (let i = 0; i < designItems.length; i++) {
               let item = designItems[i]
               let typeLabel = ''
-              if (item.item.type === 1) {
-                typeLabel = item.item.type_value + '/' + item.item.design_type_value + '/' + item.item.field_value + '/' + item.item.industry_value
-              } else if (item.item.type === 2) {
-                typeLabel = item.item.type_value + '/' + item.item.design_type_value
+              if (item.item) {
+                if (item.item.type === 1) {
+                  typeLabel = item.item.type_value + '/' + item.item.design_type_value + '/' + item.item.field_value + '/' + item.item.industry_value
+                } else if (item.item.type === 2) {
+                  typeLabel = item.item.type_value + '/' + item.item.design_type_value
+                }
               }
               designItems[i].item.type_label = typeLabel
               designItems[i]['item']['created_at'] = item.item.created_at.date_format().format('yyyy-MM-dd')
