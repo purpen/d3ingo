@@ -1346,7 +1346,7 @@ export default {
     right: 20px;
   }
   .task-itemdesname i {
-    background:url('../../../../assets/images/tools/project_management/Superior@2x.png') 0 0 no-repeat;
+    background:url('../../../../assets/images/tools/project_management/superior@2x.png') 0 0 no-repeat;
     background-size: contain;
   }
   .userimg {
