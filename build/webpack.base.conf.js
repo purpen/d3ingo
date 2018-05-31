@@ -97,13 +97,13 @@ module.exports = {
       {
         test: /\.js$/,
         loader: ['happypack/loader?id=js'],
-        exclude: [
+        include: [
           resolve('node_modules/vue-echarts'),
           resolve('node_modules/vue-echarts/node_modules/echarts'),
           resolve('node_modules/echarts'),
           resolve('node_modules/resize-detector'),
-          /pdfmake.js$/]
-        // exclude: [/node_modules/, /pdfmake.js$/]
+          /pdfmake.js$/],
+        exclude: [/node_modules/, /pdfmake.js$/]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
