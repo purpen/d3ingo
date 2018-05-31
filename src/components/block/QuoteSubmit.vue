@@ -409,15 +409,15 @@ export default {
         this.$set(this.form, 'total_price', this.totalMoney)
 
         if (!this.form.province || !this.form.city) {
-          this.$message.error('请补全客户方地址信息')
-          return
+          // this.$message.error('请补全客户方地址信息')
+          // return
         }
         if (!this.form.area) {
           this.$set(this.form, 'area', 0)
         }
         if (!this.form.design_province || !this.form.design_city) {
-          this.$message.error('请补全服务方地址信息')
-          return
+          // this.$message.error('请补全服务方地址信息')
+          // return
         }
         if (!this.form.area) {
           this.$set(this.form, 'design_area', 0)
