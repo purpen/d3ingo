@@ -307,3 +307,8 @@
   .el-alert__closebtn:hover {
     color: #ff5a5f
   }
+  .owner .el-checkbox__inner {
+    position: absolute;
+    top:-10px;
+    left:-31px;
+  }

@@ -117,7 +117,7 @@
               项目订单
             </a>
             </el-tooltip>
-            <el-tooltip v-if="false" class="item" :effect="DarkorLight" content="项目管理" placement="right">
+            <el-tooltip v-if="true" class="item" :effect="DarkorLight" content="项目管理" placement="right">
             <a @click="alick" :to="'/vcenter/project_management/list'"
               :class="['item', 'management', {'is-active': currentName === 'project_management'}]">
               项目管理

@@ -285,12 +285,6 @@
           <span class="tc-2">节点设置</span>
           <p class="fx fx-icon-close-sm" @click="isnodeedit = false"></p>
         </div>
-        <el-progress 
-        :percentage="50"
-        :show-text="false"
-        :stroke-width="20"
-        status="success"
-        ></el-progress>
         <ul class="aside-content">
           <li class="designStage-name">
             <span>
@@ -300,6 +294,7 @@
               v-model="formNode.name"
               placeholder="节点名称"
               class="noborder"
+              @blur="updataNode()"
             >
             </el-input>
           </li>
@@ -311,13 +306,16 @@
                 v-model="formNodetime"
                 placeholder="开始日期设置"
                 class="noborder"
+                @change="updataNode"
                >
                 </el-date-picker>
               </div>
           </li>
-          <li class="opvalue">
+          <li class="opvalue noborder">
             <i></i>
-            <el-select v-model="opvalue" placeholder="请选择">
+            <el-select v-model="formNode.status" placeholder="请选择"
+            @change="updataNode()"
+            >
               <el-option
                 v-for="item in option"
                 :key="item.value"
@@ -326,16 +324,70 @@
               </el-option>
             </el-select>
           </li>
-          <li>
-            <i>
-              <el-checkbox v-model="checked">
+          <li class="owner">
+              <el-checkbox v-model="formNodeowner" :style="{color:formNodeowner?'red':''}"
+              @change="updataNode()"
+              >
+                甲方参与
               </el-checkbox>
-            </i>
-            <span class="owner">
-              甲方参与
-            </span>
           </li>
         </ul>
+        <div>
+          <div class="node-file" tabindex="-1">
+            <i></i>
+              交付文件
+            <ul>
+              <li class="file-local">
+                <el-upload
+                  class="upload-demo"
+                  :action="uploadUrl"
+                  :data="uploadParam"
+                  :on-progress="uploadProgress"
+                  :on-success="uploadSuccess"
+                  :show-file-list="false"
+                  multiple
+                    >
+                  <i></i>
+                  从本地上传
+                </el-upload>
+              </li>
+              <li class="file-SkyDrive">
+                <i></i>
+                从设计云盘中选择
+              </li>
+            </ul>
+          </div>
+          <div class="file-edit">
+            <div class="files filesdl" v-for="(f,indexf) in fileLists" :key="indexf+'a'" 
+            v-if="f.percentage!==100"
+            >
+              <i class="video"></i>
+              <div class="files-content">
+                <div class="files-name">
+                  <span>{{f.name}}</span>
+                  <span>{{f.prog}}/{{f.size}}</span>
+                </div>
+                <el-progress :percentage="f.percentage"
+                  :show-text="false"
+                  v-if="f.percentage!==100"
+                >
+                </el-progress>
+              </div>
+            </div>
+            <div class="files" v-for='(as,indexas) in formNode.asset' :key="indexas">
+              <i class="video"></i>
+              <div class="files-content">
+                <div class="files-name">
+                  <span>{{as.name}}</span>
+                  <div>
+                    <span>下载</span>
+                    <span @click="deleteup(as.id)">删除</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </aside>
     </transition>
     <section class="top-progress">
@@ -735,11 +787,21 @@ export default {
       formNodetime: '',
       sort: 'isday',
       dialogVisible: false,
+      uploadUrl: '',
+      uploadParam: {
+        'token': '',
+        'x:random': '',
+        'x:user_id': this.$store.state.event.user.id,
+        'x:type': 31,
+        'x:target_id': ''
+      },
       dialogTask: false,
+      fileLists: [],
       isitemedit: false, // 项目阶段编辑
       istaskedit: false, // 项目子任务编辑新建
       isnodeedit: false, // 节点编辑
       endTimes: [], // 所有时间合集
+      formNodeowner: false, // 甲方是否参与
       rules: {
         duration: [
           {
@@ -1005,8 +1067,11 @@ export default {
     // 编辑项目按钮
     edit(des) {
       this.formup = des
-      this.formupStart = des.start_time
+      if (!isNaN(des.start_time)) {
+        this.formupStart = (new Date(des.start_time * 1000)).format('yyyy-MM-dd')
+      } else this.formupStart = des.start_time
       this.isitemedit = true
+      console.log(this.formupStart)
     },
   // 编辑项目
     updata(date) {
@@ -1017,9 +1082,6 @@ export default {
         }
         if (date) {
           this.formup.start_time = Math.round(new Date(date).getTime() / 1000)
-        }
-        if (typeof this.formup.start_time !== 'number') {
-          this.formup.start_time = Math.round(new Date(this.formup.start_time).getTime() / 1000)
         }
         this.$http.put(api.designStageUpdate.format(this.formup.id), this.formup).then((response) => {
           if (response.data.meta.status_code === 200) {
@@ -1314,20 +1376,25 @@ export default {
     },
     editNode(node) {
       this.formNodetime = (new Date(node.time * 1000)).format('yyyy-MM-dd')
-      console.log(this.formNodetime)
       this.isnodeedit = true
+      this.formNode = node
+      this.uploadParam['x:target_id'] = node.id
+      this.formNodeowner = Boolean(this.formNode.is_owner)
+      console.log(this.formNodeowner)
     },
     // 编辑阶段节点
-    updataNode(sub, index) {
-      this.formNodeUp.name = sub.name
-      if (sub.time) {
-        if (sub.time instanceof Date) {
-          this.formNodeUp.time = Math.round(sub.time.getTime() / 1000)
-        } else this.formNodeUp.time = Math.round(new Date(sub.time).getTime() / 1000)
+    updataNode(date) {
+      if (Date.parse(new Date(this.formNodetime)) / 1000 !== this.formNode.time || !date) {
+        if (typeof this.formNode.time !== 'number') {
+          this.formNode.time = Math.round(new Date(this.formNode.time).getTime() / 1000)
+        }
+        if (date) {
+          this.formNode.time = Math.round(new Date(date).getTime() / 1000)
+        }
+        this.formNode.is_owner = Number(this.formNodeowner)
+        this.formNode.stage_node_id = this.formNode.id
       }
-      this.formNodeUp.is_owner = sub.is_owner
-      this.formNodeUp.stage_node_id = sub.id
-      this.$http.put(api.designStageNodeUpdate.format(sub.id), this.formNodeUp).then((response) => {
+      this.$http.put(api.designStageNodeUpdate.format(this.formNode.id), this.formNode).then((response) => {
         if (response.data.meta.status_code === 200) {
           console.log(response.data.data)
         } else {
@@ -1343,6 +1410,59 @@ export default {
       this.$http.delete(api.designStageNodeDelete, {params: {stage_node_id: id}}).then (function(response) {
         if (response.data.meta.status_code === 200) {
           console.log(response.data.data)
+        } else {
+          this.$message.error(response.data.meta.message)
+        }
+      }).catch((error) => {
+        this.$message.error(error.message)
+        console.error(error.message)
+      })
+    },
+    // 节点文件上传时
+    uploadProgress(event, file, fileList) {
+      this.fileLists = fileList
+      for (var i = 0; i < this.fileLists.length; i++) {
+        this.fileLists[i].prog = (parseFloat(this.fileLists[i].size) * this.fileLists[i].percentage / 100).toFixed(2)
+        if (this.fileLists[i].percentage === 100) {
+          this.fileLists[i].prog = ''
+        }
+        var lastSize = this.fileLists[i].size
+        if (lastSize / (1024 * 1024) > 0.01) {
+          this.fileLists[i].size = (lastSize / (1024 * 1024)).toFixed(2) + 'MB'
+        } else if (lastSize / 1024 >= 0) {
+          this.fileLists[i].size = (lastSize / 1024).toFixed(2) + 'KB'
+        }
+      }
+    },
+    // 文件上传成功时
+    uploadSuccess(response, file, fileList) {
+      file.id = file.response.asset_id
+      file.file = file.response.file
+      this.formNode.asset.unshift(file)
+    },
+    // 删除上传的文件
+    deleteup(assetid) {
+      var self = this
+      self.$http.delete(api.asset.format(assetid), {})
+        .then (function(response) {
+          if (response.data.meta.status_code === 200) {
+            console.log(1111)
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+        })
+      .catch (function(error) {
+        self.$message.error(error.message)
+        self.dialogLoadingBtn = false
+      })
+    },
+    // 获取附件Token
+    upTokens() {
+      this.$http.get(api.upToken).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          this.uploadParam['token'] = response.data.data.upToken
+          this.uploadParam['x:random'] = response.data.data.random
+          this.uploadUrl = response.data.data.upload_url
         } else {
           this.$message.error(response.data.meta.message)
         }
@@ -1376,6 +1496,7 @@ export default {
     this.itemId = itemId
     // 读取公司成员
     this.readMembers()
+    this.upTokens()
     // 读取项目阶段列表
     this.$http.get(api.designStageLists, {params: {design_project_id: this.itemId}}).then((response) => {
       if (response.data.meta.status_code === 200) {
@@ -1626,20 +1747,126 @@ export default {
     right: 20px;
   }
   .owner {
-    line-height: 30px
+    line-height: 30px;
+  }
+  .node-file {
+    line-height: 50px;
+    padding-left: 60px;
+    cursor: pointer;
+    position: relative;
+    border-top:1px solid #d2d2d2;
+  }
+  .node-file:focus ul{
+    display:block
+  }
+  .node-file i {
+    position: absolute;
+    width:24px;
+    height:24px;
+    top:14px;
+    left: 18px;
+    background: url('../../../../assets/images/tools/project_management/Enclosure@2x.png') no-repeat center/18px 18px;
+  }
+  .node-file ul {
+    display: none;
+    width: 180px;
+    position: absolute;
+    left: -30px;
+    background: #FFFFFF;
+    box-shadow: 0 0 8px 0 rgba(0,0,0,0.10);
+    border-radius: 4px;
+  }
+  .node-file ul li {
+    height: 40px;
+    line-height: 40px;
+    padding-left: 50px;
+    position: relative;
+  }
+  .node-file ul i {
+    position: absolute;
+    width:24px;
+    height:24px;
+    top:10px;
+    left: 13px;
+  }
+  .file-local i {
+    background: url('../../../../assets/images/tools/project_management/Enclosure@2x.png') no-repeat center/18px 18px;
+  }
+  .file-SkyDrive i {
+    background: url('../../../../assets/images/tools/project_management/Enclosure@2x.png') no-repeat center/18px 18px;
+  }
+  .node-file ul li:hover {
+    background:#f7f7f7;
+  }
+  .file-edit {
+    padding:0 20px;
+  }
+  .files {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:6px 10px;
+    background:#f7f7f7;
+    margin-bottom:10px;
+  }
+  .files i {
+    width:30px;
+    height:30px;
+    margin-right:10px;
+  }
+  .filesdl::after{
+    content: 'x';
+    width:14px;
+    height:14px;
+    font-size:14px;
+    text-align:center;
+    background:#c1c1c1;
+    border-radius: 50%;
+    color:#fff;
+    cursor: pointer;
+  }
+  .files-content{
+    flex: 1;
+    padding-right:10px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  }
+  .files-content .el-progress {
+    margin-top:5px;
+  }
+  .files-name {
+    display:flex;
+    justify-content:space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #222222;
+  }
+  .files-name>span:first-child {
+    display:inline-block;
+    max-width:220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .files-name>div>span {
+    cursor: pointer;
+  }
+  .files-name>div>span:first-child {
+    margin-right:10px;
   }
   .task-itemdesname i {
-    background:url('../../../../assets/images/tools/project_management/superior@2x.png') 0 0 no-repeat;
+    background: url('../../../../assets/images/tools/project_management/superior@2x.png') 0 0 no-repeat;
     background-size: contain;
   }
   .opvalue i {
-    background:url('../../../../assets/images/tools/project_management/Completed@2x.png') 0 0 no-repeat;
+    background: url('../../../../assets/images/tools/project_management/Completed@2x.png') 0 0 no-repeat;
     background-size: contain;
   }
   .userimg {
-    background:url('../../../../assets/images/tools/project_management/Occupyinghead@2x.png') 0 0 no-repeat;
+    background: url('../../../../assets/images/tools/project_management/Occupyinghead@2x.png') 0 0 no-repeat;
     background-size: contain;
-    cursor:pointer;
+    cursor: pointer;
   }
   .task-userimg>img{
     position: absolute;
@@ -1651,21 +1878,21 @@ export default {
     cursor: pointer;
   }
   .task-itemdesname {
-    height:36px;
+    height: 36px;
     line-height: 36px;
   }
   .design-nodeName i{
-     background:url('../../../../assets/images/tools/project_management/Address@2x.png') 0 0 no-repeat;
+     background: url('../../../../assets/images/tools/project_management/Address@2x.png') 0 0 no-repeat;
     background-size: contain;
   }
   .designStage-name {
     position: relative;
-    height:40px;
+    height: 40px;
   }
   .designStage-name>span {
-    position:absolute;
-    left:-34px;
-    top:6px;
+    position: absolute;
+    left: -34px;
+    top: 6px;
   }
   .design-duration i{
     background: url('../../../../assets/images/tools/project_management/Repeat.png') 0 0 no-repeat;
@@ -2024,6 +2251,46 @@ export default {
   .bged {
     border:1px solid #00AC84;
     background:#00AC84;
+  }
+    .document{
+    background: url('../../../../assets/images/tools/cloud_drive/type/document@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .other {
+    background: url('../../../../assets/images/tools/cloud_drive/type/other@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .artboard {
+    background: url('../../../../assets/images/tools/cloud_drive/type/artboard@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .audio {
+    background: url('../../../../assets/images/tools/cloud_drive/type/audio@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .compress {
+    background: url('../../../../assets/images/tools/cloud_drive/type/compress@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .folder {
+    background: url('../../../../assets/images/tools/cloud_drive/type/folder@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .image {
+    background: url('../../../../assets/images/tools/cloud_drive/type/image@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .powerpoint {
+    background: url('../../../../assets/images/tools/cloud_drive/type/powerpoint@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .spreadsheet {
+    background: url('../../../../assets/images/tools/cloud_drive/type/spreadsheet@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .video {
+    background: url('../../../../assets/images/tools/cloud_drive/type/video@2x.png') 0 0 no-repeat;
+    background-size: contain;
   }
   @media screen and (max-width: 767px) {
     .item-total {
