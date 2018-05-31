@@ -330,7 +330,6 @@
 </template>
 
 <script>
-  import { Tooltip, Popover } from 'element-ui'
   import api from '@/api/api'
   import { LEFT_WIDTH } from '@/store/mutation-types'
   import auth from '@/helper/auth'
@@ -542,9 +541,7 @@
     },
     components: {
       messageComponents,
-      mineView,
-      Tooltip,
-      Popover
+      mineView
     }
   }
 </script>
