@@ -40,7 +40,8 @@
 
             <div class="item">
               <p class="p-key">类别</p>
-              <p class="p-val">{{ item.design_types_value.join(', ') }}</p>
+              <p class="p-val" v-if="item.design_types_value">{{ item.design_types_value.join(', ') }}</p>
+              <p class="p-val" v-else></p>
             </div>
 
             <div class="item">
@@ -142,8 +143,31 @@
               <p class="p-val">{{ item.price }}</p>
             </div>
             <div class="item">
+              <p class="p-key">佣金</p>
+              <p class="p-val">{{ item.commission_rate }}%</p>
+            </div>
+            <div class="item">
               <p class="p-key">项目剩余金额</p>
               <p class="p-val">{{ item.rest_fund }}</p>
+            </div>
+          </div>
+
+          <div class="form-title">
+            <span>设计公司</span>
+          </div>
+
+          <div class="company-show">
+            <div class="item" v-if="item.status === 3">
+              <p class="p-key">系统推荐</p>
+              <p class="p-val">
+                <span v-for="(d, index) in stickCompany" :key="index"><router-link :to="{name: 'companyShow', params: {id: d.id}}" target="_blank">{{ d.company_name }}</router-link>&nbsp;&nbsp;&nbsp;</span>
+              </p>
+            </div>
+            <div class="item" v-if="item.status === 4">
+              <p class="p-key">已选择</p>
+              <p class="p-val">
+                <span v-for="(d, index) in offerCompany" :key="index"><router-link :to="{name: 'companyShow', params: {id: d.design_company.id}}" target="_blank">{{ d.design_company.company_name }}[{{ d.status_value }}]</router-link>&nbsp;&nbsp;&nbsp;</span>
+              </p>
             </div>
           </div>
 
@@ -253,6 +277,9 @@ export default {
       },
       comfirmDialog: false,
       comfirmMessage: '确认执行此操作?',
+      offerCompany: [],
+      stickCompany: [],
+      cooperateCompany: '',
       msg: ''
     }
   },
@@ -340,6 +367,100 @@ export default {
         self.$message.error(error.message)
         self.isForceCloseLoadingBtn = false
       })
+    },
+    // 查看已选中的公司
+    checkSubmitCompany() {
+      const self = this
+      self.$http
+        .get(api.demandItemDesignListItemId.format(self.item.id), {})
+        .then(function(response) {
+          if (response.data.meta.status_code === 200) {
+            let offerCompany = response.data.data
+            // console.log(offerCompany)
+            for (let i = 0; i < offerCompany.length; i++) {
+              let item = offerCompany[i]
+              // 是否存在已提交报价的公司
+              if (item.design_company_status === 2) {
+                self.hasOfferCompany = true
+              }
+              if (
+                item.design_company.logo_image &&
+                item.design_company.logo_image.length !== 0
+              ) {
+                offerCompany[i].design_company.logo_url =
+                  item.design_company.logo_image.logo
+              } else {
+                offerCompany[i].design_company.logo_url = false
+              }
+            } // endfor
+            self.offerCompany = offerCompany
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+        })
+        .catch(function(error) {
+          self.$message.error(error.message)
+        })
+    },
+    // 已合作的设计公司
+    fetchCooperateCompany() {
+      const self = this
+      self.$http
+        .get(api.demandItemDesignListItemId.format(self.item.id), {})
+        .then(function(response) {
+          if (response.data.meta.status_code === 200) {
+            let offerCompany = response.data.data
+            for (let i = 0; i < offerCompany.length; i++) {
+              let item = offerCompany[i]
+              if (
+                item.design_company.logo_image &&
+                item.design_company.logo_image.length !== 0
+              ) {
+                offerCompany[i].design_company.logo_url =
+                  item.design_company.logo_image.logo
+              } else {
+                offerCompany[i].design_company.logo_url = false
+              }
+              if (item.status === 5) {
+                self.cooperateCompany = offerCompany[i]
+              }
+            } // endfor
+            self.offerCompany = offerCompany
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+        })
+        .catch(function(error) {
+          self.$message.error(error.message)
+        })
+    },
+    // 系统推荐的设计公司
+    fetchStickCompany() {
+      self.$http
+        .get(api.recommendListId.format(self.item.id), {})
+        .then(function(response) {
+          alert(13)
+          if (response.data.meta.status_code === 200) {
+            self.stickCompany = response.data.data
+            for (let i = 0; i < self.stickCompany.length; i++) {
+              let item = self.stickCompany[i]
+              if (item.logo_image && item.logo_image.length !== 0) {
+                self.stickCompany[i].logo_url = item.logo_image.logo
+              } else {
+                self.stickCompany[i].logo_url = false
+              }
+              if (item.item_type) {
+                self.stickCompany[i].item_type_label = item.item_type.join('／')
+              }
+            } // endfor
+            console.log(self.stickCompany)
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+        })
+        .catch(function(error) {
+          self.$message.error(error.message)
+        })
     }
   },
   created: function() {
@@ -358,8 +479,60 @@ export default {
       if (response.data.meta.status_code === 200) {
         self.item = response.data.data.item
         self.info = response.data.data.info
-        console.log(self.item)
-        console.log(self.info)
+        if (response.data.data.designCompany) {
+          self.stickCompany = response.data.data.designCompany
+        }
+        if (response.data.data.recommend) {
+          self.offerCompany = response.data.data.recommend
+        }
+        console.log(response.data.data)
+        switch (self.item.status) {
+          case -1: // 关闭项目
+            break
+          case -2: // 匹配失败
+            break
+          case 1:
+            break
+          case 2: // 等待系统匹配公司
+            break
+          case 3: // 获取系统推荐的设计公司,选择设计公司
+            // self.fetchStickCompany()
+            break
+          case 4: // 查看已提交报价的设计公司, 提交报价单
+            self.checkSubmitCompany()
+            break
+          case 5: // 等待提交合同
+            self.fetchCooperateCompany()
+            break
+          case 6: // 等待确认合同
+            self.fetchCooperateCompany()
+            break
+          case 7: // 已确认合同
+            self.fetchCooperateCompany()
+            break
+          case 8: // 等待托管资金
+            self.fetchCooperateCompany()
+            break
+          case 9: // 项目资金已托管
+            self.fetchCooperateCompany()
+            break
+          case 11: // 项目进行中
+            self.fetchCooperateCompany()
+            break
+          case 15: // 项目完成
+            self.fetchCooperateCompany()
+            break
+          case 18:
+            self.fetchCooperateCompany()
+            break
+          case 20:
+            self.fetchCooperateCompany()
+            break
+          case 22:
+            self.fetchCooperateCompany()
+            break
+          default:
+        }
       } else {
         self.$message.error(response.data.meta.message)
       }
