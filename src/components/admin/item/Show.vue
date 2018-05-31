@@ -401,66 +401,6 @@ export default {
         .catch(function(error) {
           self.$message.error(error.message)
         })
-    },
-    // 已合作的设计公司
-    fetchCooperateCompany() {
-      const self = this
-      self.$http
-        .get(api.demandItemDesignListItemId.format(self.item.id), {})
-        .then(function(response) {
-          if (response.data.meta.status_code === 200) {
-            let offerCompany = response.data.data
-            for (let i = 0; i < offerCompany.length; i++) {
-              let item = offerCompany[i]
-              if (
-                item.design_company.logo_image &&
-                item.design_company.logo_image.length !== 0
-              ) {
-                offerCompany[i].design_company.logo_url =
-                  item.design_company.logo_image.logo
-              } else {
-                offerCompany[i].design_company.logo_url = false
-              }
-              if (item.status === 5) {
-                self.cooperateCompany = offerCompany[i]
-              }
-            } // endfor
-            self.offerCompany = offerCompany
-          } else {
-            self.$message.error(response.data.meta.message)
-          }
-        })
-        .catch(function(error) {
-          self.$message.error(error.message)
-        })
-    },
-    // 系统推荐的设计公司
-    fetchStickCompany() {
-      self.$http
-        .get(api.recommendListId.format(self.item.id), {})
-        .then(function(response) {
-          alert(13)
-          if (response.data.meta.status_code === 200) {
-            self.stickCompany = response.data.data
-            for (let i = 0; i < self.stickCompany.length; i++) {
-              let item = self.stickCompany[i]
-              if (item.logo_image && item.logo_image.length !== 0) {
-                self.stickCompany[i].logo_url = item.logo_image.logo
-              } else {
-                self.stickCompany[i].logo_url = false
-              }
-              if (item.item_type) {
-                self.stickCompany[i].item_type_label = item.item_type.join('／')
-              }
-            } // endfor
-            console.log(self.stickCompany)
-          } else {
-            self.$message.error(response.data.meta.message)
-          }
-        })
-        .catch(function(error) {
-          self.$message.error(error.message)
-        })
     }
   },
   created: function() {
@@ -499,37 +439,26 @@ export default {
             // self.fetchStickCompany()
             break
           case 4: // 查看已提交报价的设计公司, 提交报价单
-            self.checkSubmitCompany()
             break
           case 5: // 等待提交合同
-            self.fetchCooperateCompany()
             break
           case 6: // 等待确认合同
-            self.fetchCooperateCompany()
             break
           case 7: // 已确认合同
-            self.fetchCooperateCompany()
             break
           case 8: // 等待托管资金
-            self.fetchCooperateCompany()
             break
           case 9: // 项目资金已托管
-            self.fetchCooperateCompany()
             break
           case 11: // 项目进行中
-            self.fetchCooperateCompany()
             break
           case 15: // 项目完成
-            self.fetchCooperateCompany()
             break
           case 18:
-            self.fetchCooperateCompany()
             break
           case 20:
-            self.fetchCooperateCompany()
             break
           case 22:
-            self.fetchCooperateCompany()
             break
           default:
         }
