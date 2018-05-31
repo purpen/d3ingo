@@ -49,6 +49,7 @@ module.exports = {
       id: 'js',
       threads: 4,
       loaders: [
+        'babel-loader?presets[]=es2015',
         {
           loader: 'babel-loader',
           query: {

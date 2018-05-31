@@ -52,10 +52,8 @@ var webpackConfig = merge(baseWebpackConfig, {
     new UglifyJsPlugin({
       uglifyOptions: {
         ecma: 8,
+        ie8: true,
         output: { comments: false, beautify: false },
-        mangle: {
-          screw_ie8: false
-        },
         compress: {
           drop_console: true,
           dead_code: true
