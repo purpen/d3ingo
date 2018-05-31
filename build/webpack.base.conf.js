@@ -96,7 +96,6 @@ module.exports = {
       {
         test: /\.js$/,
         loader: ['happypack/loader?id=js'],
-        include: [/pdfmake.js$/],
         exclude: [/node_modules/, /pdfmake.js$/]
       },
       {
