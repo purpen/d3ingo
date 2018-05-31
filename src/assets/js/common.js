@@ -1,10 +1,11 @@
-export function calcImgSize(width = 1520, height = 2880, maxVal = true) {
-  let oh = width
-  let ow = height
+export function calcImgSize(width, height, maxVal) {
+  let oh = width || 1520
+  let ow = height || 2880
+  let max = maxVal || true
   let nw = document.documentElement.clientWidth
   let nh = nw / ow * oh
   if (ow !== 0 && oh !== 0) {
-    if (nh > 800 && maxVal) {
+    if (nh > 800 && max) {
       nh = 800
     }
   } else {

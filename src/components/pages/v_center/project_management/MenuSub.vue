@@ -51,7 +51,7 @@
             <p class="menu-moment"><span>项目动态</span></p>
             <ul class="item-moments" v-if="shortProjectMoments.length">
               <li v-for="(ele, index) in shortProjectMoments" :key="index">
-                <img class="br50 b-d2" src="" alt="">
+                <img class="br50 b-d2" :src="ele.logo_image.small" alt="">
                 <div class="item-con">
                   <p class="tc-2"><span>{{ele.user_name}}</span>{{ele.action}}</p>
                   <p class="fz-12 tc-6">{{ele.date}}</p>
@@ -1044,7 +1044,7 @@ header {
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 9;
+  z-index: 99;
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.3);
@@ -1095,6 +1095,7 @@ header {
   transform: translateY(0);
 }
 .cover-content {
+  border-radius: 4px;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -1104,6 +1105,7 @@ header {
   max-height: 650px;
 }
 .cover-header {
+  border-radius: 4px 4px 0 0;
   flex: 0 1 60px;
   height: 50px;
   background: #f7f7f7;
@@ -1146,8 +1148,10 @@ header {
   flex: 0 1 auto;
   display: flex;
   height: 100%;
+  background: #fff;
 }
 .cover-body-left {
+  border-radius: 0 0 0 4px;
   flex: 0 0 200px;
   display: flex;
   flex-direction: column;
@@ -1171,6 +1175,7 @@ header {
   border-left: 6px solid #ff5a5f
 }
 .cover-body-right {
+  border-radius: 0 0 4px 0;
   flex: 1 1 auto;
   padding: 30px;
   overflow: auto;

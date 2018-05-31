@@ -210,7 +210,7 @@
   }
 
   .right-content .content-box {
-    padding: 0;
+    padding: 0 0 50px 0;
     border: none;
   }
 

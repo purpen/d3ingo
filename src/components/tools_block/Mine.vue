@@ -3,15 +3,20 @@
   {'bounceInDown': showCover === 'show', 'slideOutUp': showCover === 'hide'}]">
     <div class="cover-header">
       <span :class="{'is-active': myView === 'task'}" @click="changeView('task')">我的任务</span>
+      <span :class="{'is-active': myView === 'file'}" @click="changeView('file')">我的文件</span>
       <i class="fx fx-icon-nothing-close-error" @click="closeBtn"></i>
     </div>
     <div v-if="myView === 'task'" class="cover-content">
       <v-task :isMyTask="true"></v-task>
     </div>
+    <div v-if="myView === 'file'" class="cover-content">
+      <v-file :isMyFile="true"></v-file>
+    </div>
   </div>
 </template>
 <script>
   import vTask from '@/components/pages/v_center/project_management/Task'
+  import vFile from '@/components/tools_block/File'
   export default {
     name: 'messageComponents',
     data() {
@@ -56,7 +61,8 @@
       }
     },
     components: {
-      vTask
+      vTask,
+      vFile
     }
   }
 </script>

@@ -36,11 +36,11 @@
                 <p>公司简称</p>
               </el-col>
               <el-col :span="contentSpan" class="content">
-                <el-input v-if="element.company_abbreviation" v-model="form.company_abbreviation" style="width: 300px;"
+                <el-input v-if="element.company_abbreviation" v-model="form.company_abbreviation"
                           placeholder="如: 太火鸟"></el-input>
                 <p v-else>{{ form.company_abbreviation }}</p>
               </el-col>
-              <el-col :span="editSpan" class="edit">
+              <el-col :span="editSpan" :offset="7" class="edit">
                 <a v-if="element.company_abbreviation" title="保存" href="javascript:void(0)"
                    @click="saveBtn('company_abbreviation', ['company_abbreviation'])">保存</a>
                 <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('company_abbreviation')">编辑</a>
@@ -52,11 +52,11 @@
                 <p>公司英文名称</p>
               </el-col>
               <el-col :span="contentSpan" class="content">
-                <el-input v-if="element.company_english" v-model="form.company_english" style="width: 300px;"
+                <el-input v-if="element.company_english" v-model="form.company_english"
                           placeholder="如: thn"></el-input>
                 <p v-else>{{ form.company_english }}</p>
               </el-col>
-              <el-col :span="editSpan" class="edit">
+              <el-col :span="editSpan" :offset="7" class="edit">
                 <a v-if="element.company_english" title="保存" href="javascript:void(0)"
                    @click="saveBtn('company_english', ['company_english'])">保存</a>
                 <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('company_english')">编辑</a>
@@ -69,7 +69,7 @@
               </el-col>
               <el-col :span="contentSpan" class="content">
 
-                <el-form label-position="left" label-width="50px" style="width: 300px;" v-if="element.contact">
+                <el-form label-position="left" label-width="50px" v-if="element.contact">
                   <el-form-item label="姓名" style="margin: 0">
                     <el-input v-model="form.contact_name"></el-input>
                   </el-form-item>
@@ -91,7 +91,7 @@
                   <p v-show="form.email">{{ form.email }}</p>
                 </div>
               </el-col>
-              <el-col :span="editSpan" class="edit">
+              <el-col :span="editSpan" :offset="7" class="edit">
                 <a v-if="element.contact" title="保存" href="javascript:void(0)" @click="saveBtn('contact', ['contact_name', 'phone', 'email', 'position'])">保存</a>
                 <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('contact')">编辑</a>
               </el-col>
@@ -102,7 +102,7 @@
                 <p>地址</p>
               </el-col>
               <el-col :span="contentSpan" class="content">
-                <el-form label-position="top" label-width="50px" style="width: 90%;" v-show="element.address">
+                <el-form label-position="top" label-width="50px" v-show="element.address">
                   <region-picker :provinceProp="province" :cityProp="city" :districtProp="district"
                                  :isFirstProp="isFirst" titleProp="" propStyle="margin: 0;"
                                  @onchange="change"></region-picker>
@@ -115,7 +115,7 @@
                   <p>{{ form.address }}</p>
                 </div>
               </el-col>
-              <el-col :span="editSpan" class="edit">
+              <el-col :span="editSpan" :offset="7" class="edit">
                 <a v-if="element.address" title="保存" href="javascript:void(0)"
                    @click="saveBtn('address', ['province', 'city', 'area', 'address'])">保存</a>
                 <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('address')">编辑</a>
@@ -139,7 +139,7 @@
 
                 <p v-else>{{ form.company_size_val }}</p>
               </el-col>
-              <el-col :span="editSpan" class="edit">
+              <el-col :span="editSpan" :offset="7" class="edit">
                 <a v-if="element.company_size" title="保存" href="javascript:void(0)"
                    @click="saveBtn('company_size', ['company_size'])">保存</a>
                 <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('company_size')">编辑</a>
@@ -163,7 +163,7 @@
 
                 <p v-else>{{ form.revenue_value }}</p>
               </el-col>
-              <el-col :span="editSpan" class="edit">
+              <el-col :span="editSpan" :offset="7" class="edit">
                 <a v-if="element.revenue" title="保存" href="javascript:void(0)"
                    @click="saveBtn('revenue', ['revenue'])">保存</a>
                 <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('revenue')">编辑</a>
@@ -176,7 +176,7 @@
               <el-col :span="contentSpan" class="content">
                 <p>{{ form.verify_status_label }}</p>
               </el-col>
-              <el-col :span="editSpan" class="edit">
+              <el-col :span="editSpan" :offset="7" class="edit">
                 <router-link v-if="form.verify_status === 0 || form.verify_status === 2" to="/vcenter/company/accreditation">去认证</router-link>
               </el-col>
             </el-row>
@@ -197,7 +197,7 @@
 
                 <p v-else>{{ form.professional_advantage }}</p>
               </el-col>
-              <el-col :span="editSpan" class="edit">
+              <el-col :span="editSpan" :offset="7" class="edit">
                 <a v-if="element.advantage" title="保存" href="javascript:void(0)"
                    @click="saveBtn('advantage', ['professional_advantage'])">保存</a>
                 <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('advantage')">编辑</a>
@@ -220,7 +220,7 @@
 
                 <p v-else>{{ form.company_profile }}</p>
               </el-col>
-              <el-col :span="editSpan" class="edit">
+              <el-col :span="editSpan" :offset="7" class="edit">
                 <a v-if="element.profile" title="保存" href="javascript:void(0)"
                    @click="saveBtn('profile', ['company_profile'])">保存</a>
                 <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('profile')">编辑</a>
@@ -243,7 +243,7 @@
 
                 <p v-else>{{ form.awards }}</p>
               </el-col>
-              <el-col :span="editSpan" class="edit">
+              <el-col :span="editSpan" :offset="7" class="edit">
                 <a v-if="element.awards" title="保存" href="javascript:void(0)"
                    @click="saveBtn('awards', ['awards'])">保存</a>
                 <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('awards')">编辑</a>
@@ -262,7 +262,7 @@
 
                 <p v-else><a :href="form.web_p" target="_blank">{{ form.web_p }}</a></p>
               </el-col>
-              <el-col :span="editSpan" class="edit">
+              <el-col :span="editSpan" :offset="7" class="edit">
                 <a v-if="element.web" title="保存" href="javascript:void(0)" @click="saveBtn('web', ['web'])">保存</a>
                 <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('web')">编辑</a>
               </el-col>
@@ -279,7 +279,7 @@
 
                 <p v-else><a>{{ form.weixin_id }}</a></p>
               </el-col>
-              <el-col :span="editSpan" class="edit">
+              <el-col :span="editSpan" :offset="7" class="edit">
                 <a v-if="element.weixin_id" title="保存" href="javascript:void(0)" @click="saveBtn('weixin_id', ['weixin_id'])">保存</a>
                 <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('weixin_id')">编辑</a>
               </el-col>
@@ -316,7 +316,7 @@
                   </el-tag>
                 </p>
               </el-col>
-              <el-col :span="editSpan" class="edit">
+              <el-col :span="editSpan" :offset="7" class="edit">
                 <a v-if="element.good_field" title="保存" href="javascript:void(0)"
                    @click="saveBtn('good_field', ['good_field'])">保存</a>
                 <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('good_field')">编辑</a>
@@ -330,15 +330,13 @@
               <el-col :span="contentSpan" class="content subsidiary">
 
                 <div v-if="element.branch">
-                  <el-col :xs="6" :sm="2" :md="2" :lg="2">
+                  <el-col :span="12">
                     <el-switch
                       @change="isBranch"
                       v-model="is_branch"
                       on-text="有"
                       off-text="无">
                     </el-switch>
-                  </el-col>
-                  <el-col :xs="10" :sm="3" :md="3" :lg="3" v-show="is_branch">
                     <el-input v-model.number="form.branch_office" :disabled="!is_branch" placeholder="">
                       <template slot="append">家</template>
                     </el-input>
@@ -347,7 +345,7 @@
 
                 <p v-else>{{ form.branch }}</p>
               </el-col>
-              <el-col :span="editSpan" class="edit">
+              <el-col :span="editSpan" :offset="7" class="edit">
                 <a v-if="element.branch" title="保存" href="javascript:void(0)"
                    @click="saveBtn('branch', ['branch_office'])">保存</a>
                 <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('branch')">编辑</a>
@@ -358,11 +356,11 @@
               <el-col :span="titleSpan" class="title">
                 <p>高新企业</p>
               </el-col>
-              <el-col v-if="form.high_tech_enterprises.length||element.high_tech_enterprises" :span="contentSpan" class="content">
-                <div v-if="element.high_tech_enterprises">
+              <el-col v-if="form.high_tech_enterprises.length||element.high_tech_enterprises" :span="isMob ? 24 : 19" class="content">
+                <el-row :gutter="20" class="clearfix" v-if="element.high_tech_enterprises">
                   <el-col :span="20" class="margin-bottom10" v-for="(ele, index) in form.high_tech_enterprises" :key="index">
-                    <el-row :gutter="10">
-                      <el-col class="margin-bottom10" :xs="20" :sm="10" :md="10" :lg="10">
+                    <el-row :gutter="20">
+                      <el-col :xs="20" :sm="10" :md="10" :lg="10">
                         <el-date-picker
                           v-model="ele.time"
                           type="date"
@@ -380,14 +378,14 @@
                         </el-select>
                       </el-col>
                       <el-col :span="4">
-                        <el-button class="del-btn" type="danger" size="small" @click="delType(index, 'high_tech_enterprises')">删除</el-button>
+                        <button class="full-button small-button full-red-button" @click="delType(index, 'high_tech_enterprises')">删除</button>
                       </el-col>
                     </el-row>
                   </el-col>
                   <el-col :xs="24" :sm="4" :md="4" :lg="4">
-                    <el-button class="add-btn" type="primary" size="small" @click="addType('high_tech_enterprises')">添加</el-button>
+                    <el-button type="primary" size="small" @click="addType('high_tech_enterprises')">添加</el-button>
                   </el-col>
-                </div>
+                </el-row>
                 <p v-if="!element.high_tech_enterprises && form.high_tech_enterprises.length" v-for="(e, index) in form.high_tech_enterprises" :key="e.time + index">{{ e.time}}{{ e.val }}</p>
               </el-col>
               <el-col :xs="24" :sm="19" :md="19" :lg="19" class="content" v-else>
@@ -404,10 +402,10 @@
               <el-col :span="titleSpan" class="title">
                 <p>工业设计中心</p>
               </el-col>
-              <el-col v-if="form.industrial_design_center.length||element.industrial_design_center" :span="contentSpan" class="content">
-                <div v-if="element.industrial_design_center">
+              <el-col v-if="form.industrial_design_center.length||element.industrial_design_center" :span="isMob ? 24 : 19" class="content">
+                <el-row :gutter="20" v-if="element.industrial_design_center">
                   <el-col class="margin-bottom10" :span="20" v-for="(ele, index) in form.industrial_design_center" :key="index">
-                    <el-row :gutter="10">
+                    <el-row :gutter="20">
                       <el-col class="margin-bottom10" :xs="20" :sm="10" :md="10" :lg="10">
                         <el-date-picker
                           v-model="ele.time"
@@ -426,14 +424,14 @@
                       </el-select>
                       </el-col>
                       <el-col :span="4">
-                        <el-button class="del-btn" type="danger" size="small" @click="delType(index, 'industrial_design_center')">删除</el-button>
+                        <button class="full-button small-button full-red-button" @click="delType(index, 'industrial_design_center')">删除</button>
                       </el-col>
                     </el-row>
                   </el-col>
                   <el-col :xs="24" :sm="4" :md="4" :lg="4">
-                    <el-button class="add-btn" type="primary" size="small" @click="addType('industrial_design_center')">添加</el-button>
+                    <el-button  type="primary" size="small" @click="addType('industrial_design_center')">添加</el-button>
                   </el-col>
-                </div>
+                </el-row>
                 <p v-if="!element.industrial_design_center && form.industrial_design_center.length" v-for="(e, index) in form.industrial_design_center" :key="e.time + index">{{ e.time}}{{ e.val }}</p>
               </el-col>
               <el-col :xs="24" :sm="19" :md="19" :lg="19" class="content" v-else>
@@ -459,7 +457,7 @@
                 </el-switch>
               <p v-else>{{ hasProduct }}</p>
               </el-col>
-              <el-col :span="editSpan" class="edit">
+              <el-col :span="editSpan" :offset="7" class="edit">
                 <a v-if="element.investment_product" title="保存" href="javascript:void(0)" @click="saveBtn('investment_product', ['investment_product'])">保存</a>
                 <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('investment_product')">编辑</a>
               </el-col>
@@ -469,7 +467,7 @@
               <el-col :span="titleSpan" class="title">
                 <p>自有产品品牌</p>
               </el-col>
-              <el-col :span="contentSpan" class="content subsidiary">
+              <el-col :span="isMob ? 24 : 19" class="content subsidiary">
                 <div v-if="element.own_brand">
                   <el-row :gutter="10">
                     <el-col :xs="4" :sm="2" :md="2" :lg="2" class="margin-bottom10">
@@ -482,8 +480,8 @@
                     </el-col>
                     <el-col :xs="24" :sm="3" :md="3" :lg="3" class="margin-bottom10" v-if="hasBrand">
                       <p>品牌名称:</p>
-                    </el-col>                    
-                    <el-col class="input-brand margin-bottom10" v-if="hasBrand" v-for="(ele, index) in form.own_brand" :key="index" :xs="12" :sm="3" :md="3" :lg="3">
+                    </el-col>
+                    <el-col class="input-brand margin-bottom10" v-if="hasBrand" v-for="(ele, index) in form.own_brand" :key="index" :xs="12" :sm="5" :md="5" :lg="5">
                       <el-input v-model="form.own_brand[index]">
                         <template slot="append">
                           <i class="fx-icon-nothing-close-error" @click="delType(index, 'own_brand')"></i>
@@ -534,9 +532,10 @@
     },
     data () {
       return {
+        oldVal: {},
         gutter: 0,
         titleSpan: this.$store.state.event.isMob === true ? 12 : 3,
-        contentSpan: this.$store.state.event.isMob === true ? 24 : 19,
+        contentSpan: this.$store.state.event.isMob === true ? 24 : 12,
         editSpan: 2,
         isLoaded: false,
         isLoading: false,
@@ -1075,22 +1074,27 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .right-content .content-box {
+    padding-bottom: 0;
+  }
   .right-content .content-box-m {
     margin: 0;
     padding: 0;
   }
 
   .item {
-    margin: 5px 0;
-    padding: 10px 0;
+    min-height: 70px;
+    padding: 15px 0;
     border-bottom: 1px solid #d2d2d2;
+    display: flex;
+    align-items: center;
   }
   .content-box .item:last-child {
     border-bottom: none;
   }
 
   .item-m {
-    padding: 0 0 10px 0;
+    padding: 10px 15px;
     margin: 0;
     position: relative;
   }
@@ -1108,7 +1112,6 @@
   }
 
   .item .content {
-    min-height: 60px;
   }
 
   .item .edit {
@@ -1116,15 +1119,9 @@
   }
 
   .item-m .edit {
-    position: absolute;
-    width: 36px;
-    right: 0;
-    top: 8px;
-    line-height: 21px;
   }
 
   .item p {
-    line-height: 1.6;
   }
 
   .title {
@@ -1132,31 +1129,24 @@
     padding: 0;
   }
   .title p {
-    line-height: 36px;
     color: #666;
-    font-size: 1.5rem;
   }
 
   .item-m .title p {
-    margin: 8px 0;
     color: #222;
-    line-height: 21px;
-    font-weight: 400;
   }
 
   .item .content {
-    padding: 6px 0
   }
 
   .item-m .content {
     color: #666;
     border: 1px solid #E6E6E6;
-    padding: 4px 8px;
     min-height: 30px;
   }
 
   .item-mAvatar {
-    padding: 10px 0 20px;
+    padding: 10px 15px;
   }
 
   .item-mAvatar .avatarhead p {
@@ -1177,7 +1167,7 @@
 
   .edit a {
     font-size: 1.3rem;
-    color: #0995F8;
+    color: #FF5A5F;
   }
 
   .item-m .edit a {
@@ -1298,7 +1288,7 @@
   .subsidiary .fx-icon-nothing-close-error {
     font-size: 12px;
     cursor: pointer;
-    color: #fff;
+    color: #666;
     margin-right: 0;
   }
 
@@ -1306,6 +1296,10 @@
     .item-m .content {
       border: none;
       padding: 0;
+    }
+    .edit a {
+      font-size: 1.3rem;
+      color: #FF5A5F;
     }
   }
 </style>

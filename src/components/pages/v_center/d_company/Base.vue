@@ -9,7 +9,14 @@
           <v-menu-sub></v-menu-sub>
 
           <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
-
+            <el-row :gutter="gutter" :class="['item', isMob ? 'item-m no-border' : '']">
+              <el-col :span="titleSpan" class="title">
+                <p>账号</p>
+              </el-col>
+              <el-col :span="contentSpan" class="content">
+                <p>{{ user.account }}</p>
+              </el-col>
+            </el-row>
             <el-row :gutter="gutter" :class="['item', isMob ? 'item-m item-mAvatar' : '']">
               <el-col :span="titleSpan" class="title avatarhead">
                 <p>公司logo</p>
@@ -42,7 +49,7 @@
                           placeholder="如: 太火鸟"></el-input>
                 <p v-else>{{ form.company_abbreviation }}</p>
               </el-col>
-              <el-col :span="editSpan" class="edit">
+              <el-col :offset="7" :span="editSpan" class="edit">
                 <a v-if="element.company_abbreviation" title="保存" href="javascript:void(0)"
                    @click="saveBtn('company_abbreviation', ['company_abbreviation'])">保存</a>
                 <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('company_abbreviation')">编辑</a>
@@ -76,7 +83,7 @@
                   <p v-show="form.email">{{ form.email }}</p>
                 </div>
               </el-col>
-              <el-col :span="editSpan" class="edit">
+              <el-col :offset="7" :span="editSpan" class="edit">
                 <a v-if="element.contact" title="保存" href="javascript:void(0)" @click="saveBtn('contact', ['contact_name', 'phone', 'email', 'position'])">保存</a>
                 <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('contact')">编辑</a>
               </el-col>
@@ -99,7 +106,7 @@
                   <p>{{ form.address }}</p>
                 </div>
               </el-col>
-              <el-col :span="editSpan" class="edit">
+              <el-col :offset="7" :span="editSpan" class="edit">
                 <a v-if="element.address" title="保存" href="javascript:void(0)"
                    @click="saveBtn('address', ['province', 'city', 'area', 'address'])">保存</a>
                 <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('address')">编辑</a>
@@ -123,7 +130,7 @@
 
                 <p v-else>{{ form.company_property_value }}</p>
               </el-col>
-              <el-col :span="editSpan" class="edit">
+              <el-col :offset="7" :span="editSpan" class="edit">
                 <a v-if="element.company_property" title="保存" href="javascript:void(0)"
                    @click="saveBtn('company_property', ['company_property'])">保存</a>
                 <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('company_property')">编辑</a>
@@ -147,7 +154,7 @@
 
                 <p v-else>{{ form.company_size_value }}</p>
               </el-col>
-              <el-col :span="editSpan" class="edit">
+              <el-col :offset="7" :span="editSpan" class="edit">
                 <a v-if="element.company_size" title="保存" href="javascript:void(0)"
                    @click="saveBtn('company_size', ['company_size'])">保存</a>
                 <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('company_size')">编辑</a>
@@ -166,7 +173,7 @@
 
                 <p v-else><a :href="form.web" target="_blank">{{ form.web }}</a></p>
               </el-col>
-              <el-col :span="editSpan" class="edit">
+              <el-col :offset="7" :span="editSpan" class="edit">
                 <a v-if="element.web" title="保存" href="javascript:void(0)"
                    @click="saveBtn('web', ['company_web'])">保存</a>
                 <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('web')">编辑</a>
@@ -205,7 +212,7 @@
       return {
         gutter: 0,
         titleSpan: this.$store.state.event.isMob === true ? 12 : 3,
-        contentSpan: this.$store.state.event.isMob === true ? 24 : 19,
+        contentSpan: this.$store.state.event.isMob === true ? 24 : 12,
         editSpan: 2,
         isLoaded: false,
         isLoading: false,
@@ -277,6 +284,9 @@
       },
       isMob() {
         return this.$store.state.event.isMob
+      },
+      user() {
+        return this.$store.state.event.user
       },
       leftWidth() {
         return this.$store.state.event.leftWidth
@@ -465,43 +475,44 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .right-content .content-box {
+    padding-bottom: 0;
+  }
   .right-content .content-box-m {
     margin: 0;
     padding: 0;
   }
 
   .item {
-    margin: 5px 0;
-    padding: 10px 0;
-    border-bottom: 1px solid #ccc;
+    min-height: 70px;
+    padding: 15px 0;
+    border-bottom: 1px solid #d2d2d2;
+    display: flex;
+    align-items: center;
   }
-
   .content-box .item:last-child {
     border-bottom: none;
-    padding-bottom: 0;
-    margin-bottom: 0;
-  }
-
-  .no-border {
-    border: none;
   }
 
   .item-m {
-    padding: 0 0 10px 0;
+    padding: 10px 15px;
     margin: 0;
     position: relative;
   }
 
-  .item .el-col {
+  /* .item .el-col {
     padding: 10px 0 10px 0;
   }
+
+  .item .el-col .el-col {
+    padding: 0
+  } */
 
   .item-m .el-col {
     padding: 0;
   }
 
   .item .content {
-    min-height: 60px;
   }
 
   .item .edit {
@@ -509,43 +520,44 @@
   }
 
   .item-m .edit {
-    position: absolute;
-    width: 36px;
-    right: 0;
-    top: 8px;
-    line-height: 21px;
   }
 
+  .item p {
+  }
+
+  .title {
+    margin: 0;
+    padding: 0;
+  }
   .title p {
     color: #666;
-    font-size: 1.5rem;
   }
 
   .item-m .title p {
-    margin: 8px 0;
     color: #222;
-    line-height: 21px;
-    font-weight: 400;
+  }
+
+  .item .content {
   }
 
   .item-m .content {
+    color: #666;
     border: 1px solid #E6E6E6;
-    padding: 4px 8px;
     min-height: 30px;
   }
 
   .item-mAvatar {
-    padding-top: 10px;
+    padding: 10px 15px;
   }
 
   .item-mAvatar .avatarhead p {
-    margin: 0;
+    margin: 0 0 6px 0;
   }
 
   .item-mAvatar .avatarhead span {
     font-size: 10px;
     line-height: 1.1;
-    color: #8391a5;
+    color: #999;
   }
 
   .item-m .avatarcontent {
@@ -556,19 +568,15 @@
 
   .edit a {
     font-size: 1.3rem;
-    color: #0995F8;
+    color: #FF5A5F;
   }
 
   .item-m .edit a {
     color: #FF5A5F;
   }
 
-  .item p {
-    line-height: 1.6;
-  }
-
   .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
+    border: 1px dashed #d2d2d2;
     border-radius: 6px;
     cursor: pointer;
     position: relative;
@@ -580,13 +588,15 @@
   }
 
   .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
+    display: block;
+    border-radius: 50%;
+    color: #999;
+    background: url('../../../../assets/images/avatar_default.png') no-repeat;
+    background-size: contain;
     width: 100px;
     height: 100px;
     line-height: 100px;
     text-align: center;
-    border: 1px dashed #ccc;
   }
 
   .item-m .avatar-uploader-icon {
@@ -608,4 +618,89 @@
     height: 40px;
   }
 
+  .type-content .el-checkbox-button {
+    margin: 3px 0;
+  }
+
+  .field-box .el-tag {
+    margin: 5px;
+  }
+
+  .edit-field-tag {
+    margin-top: 20px;
+  }
+
+  .type-content p {
+    color: #222;
+    font-size: 1.8rem;
+    margin: 20px 0 10px 0;
+  }
+
+  .tag {
+    margin: 5px 0;
+  }
+
+  .tag:hover {
+    border: 1px solid #FF5A5F;
+    color: #FF5A5F;
+  }
+
+  .tag.active {
+    border: 1px solid #FF5A5F;
+    color: #FF5A5F;
+  }
+
+  .MmenuHide {
+    margin-left: 0;
+  }
+
+  .el-upload__tip {
+    color: #999;
+  }
+  .del-box {
+    display: inline-block;
+    /* padding-top: 7px; */
+  }
+  .del-btn, .add-btn {
+    margin-top: 4px;
+  }
+
+  .margin-bottom10 {
+    margin-bottom: 10px
+  }
+
+  .margin-bottom10:last-child {
+    margin-bottom: 0;
+  }
+
+  .input-brand.margin-bottom10:nth-child(2n+1) {
+    padding-left: 0!important;
+  }
+  .own-brand {
+    position: relative;
+    margin-right: 10px;
+  }
+  .own-brand::after {
+    content: ",";
+  }
+  .own-brand:last-child::after {
+    content: "";
+  }
+  .subsidiary .fx-icon-nothing-close-error {
+    font-size: 12px;
+    cursor: pointer;
+    color: #666;
+    margin-right: 0;
+  }
+
+  @media screen and (max-width: 767px) {
+    .item-m .content {
+      border: none;
+      padding: 0;
+    }
+    .edit a {
+      font-size: 1.3rem;
+      color: #FF5A5F;
+    }
+  }
 </style>

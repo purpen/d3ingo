@@ -135,8 +135,7 @@
 
               </div>
 
-
-              <el-row :gutter="24">
+              <el-row>
                 <el-col :span="isMob ? 24 : 12">
                   <el-form-item label="标题" prop="title">
                     <el-input v-model="form.title" placeholder=""></el-input>
@@ -144,7 +143,7 @@
                 </el-col>
               </el-row>
 
-              <el-row :gutter="24">
+              <el-row>
                 <el-col :span="isMob ? 24 : 12">
                   <el-form-item label="服务客户" prop="customer">
                     <el-input v-model="form.customer" placeholder=""></el-input>
@@ -160,7 +159,7 @@
                       <el-radio :label="true">是</el-radio>
                     </el-radio-group>
                   </el-col>
-                  <el-col :xs="24" :sm="6" :md="6" :lg="6" v-if="is_prize">
+                  <el-col :xs="24" :sm="9" :md="9" :lg="9" v-if="is_prize">
                     <el-form-item prop="">
                       <el-date-picker
                         key="prize_time"
@@ -170,8 +169,8 @@
                         placeholder="获奖日期">
                       </el-date-picker>
                     </el-form-item>
-                  </el-col>
-                  <el-col :xs="24" :sm="6" :md="6" :lg="6" v-if="is_prize">
+                  <!-- </el-col>
+                  <el-col :xs="24" :sm="9" :md="9" :lg="9" v-if="is_prize"> -->
                     <el-form-item prop="prize">
                       <el-select v-model.number="form.prize" placeholder="所属奖项">
                         <el-option
@@ -194,7 +193,7 @@
                       <el-radio :label="true">是</el-radio>
                     </el-radio-group>
                   </el-col>
-                  <el-col :xs="24" :sm="6" :md="6" :lg="6" v-if="is_apply">
+                  <el-col :xs="24" :sm="9" :md="9" :lg="9" v-if="is_apply">
                     <el-form-item>
                       <el-date-picker
                         key="patent_time"
@@ -204,8 +203,8 @@
                         placeholder="选择日期">
                       </el-date-picker>
                     </el-form-item>
-                  </el-col>
-                  <el-col :xs="24" :sm="6" :md="6" :lg="6" v-if="is_apply">
+                  <!-- </el-col>
+                  <el-col :xs="24" :sm="9" :md="9" :lg="9" v-if="is_apply"> -->
                     <el-form-item>
                       <el-select v-model.number="form.patent_info" placeholder="选择申请专利类型" 
                         key="patent_info">
@@ -252,7 +251,7 @@
               </el-form-item>
 
               <div class="form-btn">
-                <button class="middle-button white-button" @click="returnList">取消</button>
+                <button class="middle-button white-button" @click.prevent="returnList">取消</button>
                 <el-button type="danger" :loading="isLoadingBtn" @click="submit('ruleForm')">提交</el-button>
               </div>
               <div class="clear"></div>
@@ -703,15 +702,20 @@
           .then (function (response) {
             if (response.data.meta.status_code === 200) {
               that.form = response.data.data
+              console.log(that.form)
               if (that.form.prizes) {
-                that.$set(that, 'is_prize', true)
-                that.$set(that.form, 'prize_time', that.form.prizes[0].time)
-                that.$set(that.form, 'prize', that.form.prizes[0].type)
+                if (that.form.prizes.length) {
+                  that.$set(that, 'is_prize', true)
+                  that.$set(that.form, 'prize_time', that.form.prizes[0].time)
+                  that.$set(that.form, 'prize', that.form.prizes[0].type)
+                }
               }
               if (that.form.patent) {
-                that.$set(that, 'is_apply', true)
-                that.$set(that.form, 'patent_time', that.form.patent[0].time)
-                that.$set(that.form, 'patent_info', that.form.patent[0].type)
+                if (that.form.patent.length) {
+                  that.$set(that, 'is_apply', true)
+                  that.$set(that.form, 'patent_time', that.form.patent[0].time)
+                  that.$set(that.form, 'patent_info', that.form.patent[0].type)
+                }
               } else {
                 that.$set(that, 'is_apply', false)
               }

@@ -1,166 +1,79 @@
 <template>
-  <el-row :class="['vcenter-rightMenu-plus',
-    'cloud-content',
-    {'slide-mini': leftWidth === 2 && withoutSide,
-    'slide-mini-none': isMob}]">
-    <v-menu-left v-if="withoutSide" :currentName="withoutSide? 'cloud_drive' : 'project_management'"></v-menu-left>
-    <section :class="{'parent-box': withoutSide,
-      'parent-box2': !withoutSide,
-      'parent-box-mob': isMob}">
-      <el-col v-if="withoutSide" :span="4">
-        <v-menu :isActive='modules' @getTitle="headTitle"></v-menu>
-      </el-col>
-      <el-col :span="withoutSide?20 :24">
-        <div :class="['content', {'content-mini' : leftWidth === 2}, {'content-pm' : !withoutSide}]"
-          v-loading.body="isLoading">
-          <div class="content-head">
-            <div class="clearfix" v-show="showList">
-              <p class="title fl" v-if="!isChoose && folderId === 0" v-html="title"></p>
-              <p class="title fl" v-if="!isChoose && folderId !== 0">
-                <i class="fx fx-icon-nothing-left" @click="backFolder"></i>
-                {{parentFolder.name}}
-              </p>
-              <div class="fr operate" v-if="!isChoose">
-                <p class="add" v-if="modules !== 'recycle'">
-                  <span class="add-option">
-                    <a class="new-folder">
-                      <span @click="newFolder">新建文件夹</span>
-                    </a>
-                    <a class="upload-files">
-                      <el-upload
-                        ref="upload"
-                        class="upload-button"
-                        :action="uploadUrl"
-                        :multiple="true"
-                        list-type="picture"
-                        :data="uploadParams"
-                        :on-success="uploadSuccess"
-                        :on-progress="uploadProgress"
-                        :on-error="uploadError"
-                        :on-remove="uploadRemove"
-                        :before-upload="beforeUpload"
-                        :on-change="uploadChange"
-                        :show-file-list="false">
-                        <span>上传文件</span>
-                      </el-upload>
-                    </a>
-                  </span>
-                </p>
-                <p class="search" title="搜索" @click="searchClick" v-if="modules !== 'recycle'"></p>
-                <p :class="[{'chunk': curView === 'list','list': curView === 'chunk'}]" 
-                  :title="chunkTitle"
-                  @click="changeFileView" v-if="modules !== 'recycle'"></p>
-                <p class="sequence">
-                  <i :class="['icon', {'reverse': sortGist.ascend === -1}]" @click="changeSortAscend()"></i>
-                  <span class="add-option">
-                    <a :class="{'checked': sortGist.order_by === 1}"
-                      @click="changeSortGist(1)">时间</a>
-                    <a :class="{'checked': sortGist.order_by === 2}"
-                      @click="changeSortGist(2)">大小</a>
-                    <a :class="{'checked': sortGist.order_by === 3}"
-                      @click="changeSortGist(3)">名称</a>
-                  </span>
-                </p>
-                <p class="edit" title="编辑模式" @click="changeChooseStatus"></p>
-              </div>
-              <p class="edit-menu" v-if="isChoose">
-                <el-col :span="1">
-                  <i :class="['file-radio', {'active': isChooseAll === 'all'}, {'chunk-view': curView === 'chunk'}]" @click="changeChooseAll">file-icon</i>
-                </el-col>
-                <el-col :span="6" class="choose-info">
-                  <span class="already-choose" @click="changeChooseAll">已选择{{alreadyChoose}}项</span>
-                  <span class="cancel-choose" @click="cancelChoose">取消选择</span>
-                </el-col>
-                <el-col :offset="5" :span="12">
-                  <span v-if="modules !== 'recycle'" @click="confirmShare">分享</span>
-                  <span v-if="false" @click="downloadFile()">下载</span>
-                  <span v-if="modules !== 'recycle'" @click="confirmCopy">复制</span>
-                  <span v-if="modules !== 'recycle'" @click="confirmMove">移动</span>
-                  <span v-if="modules !== 'recycle'" @click="rename" :class="{'disable': alreadyChoose > 1 || !alreadyChoose}">重命名</span>
-                  <span v-if="modules !== 'recycle'" @click="deleteFile">删除</span>
-                  <span v-if="modules === 'recycle'" @click="shiftDelete">删除</span>
-                  <span v-if="modules === 'recycle'" @click="recoverFile">还原</span>
-                </el-col>
-              </p>
-            </div>
-            <div class="search-head" v-show="!showList">
-              <input v-model.trim="searchWord" class="search-input" placeholder="搜索...">
-              <i class="fr fx-0 fx-icon-nothing-close-error" @click="clearShowList"></i>
-            </div>
-          </div>
-          <!-- 文件列表 -->
-          <transition name="uploadList">
-            <vContent
-              :list="list"
-              :chooseStatus="isChoose"
-              :isChooseAll="isChooseAll"
-              :curView="curView"
-              :hasRename="hasRename"
-              :imgList="imgList"
-              :showList="showList"
-              :modules="modules"
-              :folderId="folderId"
-              @enterFolder="enterFolder"
-              @choose="chooseList"
-              @renameCancel="renameCancel"
-              @changeName="changeName"
-              @directRename="directRename"
-              @headDirectRename="headDirectRename"
-              @deleteFile="deleteFile"
-              @shiftDelete="shiftDelete"
-              @recoverFile="recoverFile"
-              @changePermission="changePermission"
-              @confirmCopy="confirmCopy"
-              @confirmMove="confirmMove"
-              @changeImgList="changeImgList"
-              @confirmShare="confirmShare"
-              @downloadFile="downloadFile">
-            </vContent>
-          </transition>
-        </div>
-      </el-col>
-    </section>
-    <footer class="drive-footer clearfix" v-if="webUploader" @click="isShowProgress = true">
-      <span class="fl">正在上传文件{{uploadingNumber}}/{{totalNumber}}</span>
-      <span class="fr"><i class="fx-0 fx-icon-nothing-close-error" @click="confirmClearUpload"></i></span>
-    </footer>
-
-    <div class="web-uploader" v-if="webUploader && isShowProgress">
-      <div class="web-uploader-header clearfix" @click="isShowProgress = !isShowProgress">
-        上传进度<i class="fr fx-0 fx-icon-nothing-close-error" @click.stop.prevent="isShowProgress = false"></i>
-      </div>
-      <div class="web-uploader-body">
-        <el-row v-for="(ele, index) in fileList" :key="index" class="upload-list">
-          <el-col :span="3" class="upload-list-logo">
-            <p :class="['file-icon', 'other', {
-                'folder': /folder/.test(ele.raw.type),
-                'artboard': /pdf/.test(ele.raw.type),
-                'audio': /audio/.test(ele.raw.type),
-                'compress': /(?:zip|rar|7z)/.test(ele.raw.type),
-                'document': /(?:text|msword)/.test(ele.raw.type),
-                'image': /image\/(?:jpg|jpeg|png|gif)/.test(ele.raw.type),
-                'powerpoint': /powerpoint/.test(ele.raw.type),
-                'spreadsheet': /excel/.test(ele.raw.type),
-                'video': /video/.test(ele.raw.type)
-              }]">file-icon</p>
-          </el-col>
-          <el-col :span="20" class="upload-list-title">
-            <p class="upload-list-title-p">
-              <span :title="ele.name">{{ele.name}}</span>
-              <span class="file-size">{{ele.format_size}}</span>
+  <el-row>
+    <el-col>
+      <div class="vcenter-container" v-loading.body="isLoading">
+        <div class="content-head">
+          <div class="clearfix" v-show="showList">
+            <p class="title fl" v-if="!isChoose && folderId === 0" v-html="title"></p>
+            <p class="title fl" v-if="!isChoose && folderId !== 0">
+              <i class="fx fx-icon-nothing-left" @click="backFolder"></i>
+              {{parentFolder.name}}
             </p>
-            <el-progress v-if="ele.status === 'uploading'" class="upload-progress" :percentage="ele.format_percentage" :show-text="false"></el-progress>
-            <p v-if="ele.status === 'success'" class="upload-success">完成</p>
-            <p v-if="ele.status === 'fail'" class="upload-fail">传输失败</p>
-            <p v-if="ele.status === 'ready'" class="upload-ready">正在等待</p>
-            <p class="percentage" v-if="ele.status === 'uploading'">{{ele.format_percentage}}%</p>
-            <!--ready success uploading fail-->
-          </el-col>
-          <el-col :span="10">
-          </el-col> 
-        </el-row>
+            <div class="fr operate" v-if="!isChoose">
+              <p :class="[{'chunk': curView === 'list','list': curView === 'chunk'}]" 
+                :title="chunkTitle"
+                @click="changeFileView"></p>
+              <p class="sequence">
+                <i :class="['icon', {'reverse': sortGist.ascend === -1}]" @click="changeSortAscend()"></i>
+                <span class="add-option">
+                  <a :class="{'checked': sortGist.order_by === 1}"
+                    @click="changeSortGist(1)">时间</a>
+                  <a :class="{'checked': sortGist.order_by === 2}"
+                    @click="changeSortGist(2)">大小</a>
+                  <a :class="{'checked': sortGist.order_by === 3}"
+                    @click="changeSortGist(3)">名称</a>
+                </span>
+              </p>
+              <p class="edit" title="编辑模式" @click="changeChooseStatus"></p>
+            </div>
+            <p class="edit-menu" v-if="isChoose">
+              <el-col :span="1">
+                <i :class="['file-radio', {'active': isChooseAll === 'all'}, {'chunk-view': curView === 'chunk'}]" @click="changeChooseAll">file-icon</i>
+              </el-col>
+              <el-col :span="6" class="choose-info">
+                <span class="already-choose" @click="changeChooseAll">已选择{{alreadyChoose}}项</span>
+                <span class="cancel-choose" @click="cancelChoose">取消选择</span>
+              </el-col>
+              <el-col :offset="5" :span="12">
+                <span @click="confirmShare">分享</span>
+                <span v-if="false" @click="downloadFile()">下载</span>
+                <span @click="rename" :class="{'disable': alreadyChoose > 1 || !alreadyChoose}">重命名</span>
+                <span @click="deleteFile">删除</span>
+              </el-col>
+            </p>
+          </div>
+          <div class="search-head" v-show="!showList">
+            <input v-model.trim="searchWord" class="search-input" placeholder="搜索...">
+            <i class="fr fx-0 fx-icon-nothing-close-error" @click="clearShowList"></i>
+          </div>
+        </div>
+        <!-- 文件列表 -->
+        <transition name="uploadList">
+          <vContent
+            :isMyFile="true"
+            :list="list"
+            :chooseStatus="isChoose"
+            :isChooseAll="isChooseAll"
+            :curView="curView"
+            :hasRename="hasRename"
+            :imgList="imgList"
+            :showList="showList"
+            :modules="modules"
+            :folderId="folderId"
+            @enterFolder="enterFolder"
+            @choose="chooseList"
+            @renameCancel="renameCancel"
+            @changeName="changeName"
+            @directRename="directRename"
+            @headDirectRename="headDirectRename"
+            @deleteFile="deleteFile"
+            @changeImgList="changeImgList"
+            @confirmShare="confirmShare"
+            @downloadFile="downloadFile">
+          </vContent>
+        </transition>
       </div>
-    </div>
+    </el-col>
     <section class="dialog-bg" v-if="showCover" @click.self="closeCover"></section>
     <section class="dialog-body" v-if="showConfirm">
       <h3 class="dialog-header clearfix">
@@ -455,17 +368,15 @@
 </template>
 <script>
 import api from '@/api/api'
-import vMenu from '@/components/pages/v_center/tools/cloud_drive/Menu'
 import vContent from '@/components/pages/v_center/tools/cloud_drive/CloudContent'
 import Clipboard from 'clipboard'
 import download from 'downloadjs'
-import vMenuLeft from '@/components/pages/v_center/Menu'
 export default {
   name: 'cloud_drive',
   data() {
     return {
       test: 'test',
-      title: '全部文件',
+      title: '我的文件',
       modules: '',
       folderId: 0, // 文件夹id
       isChoose: false, // 切换为选择状态
@@ -558,25 +469,8 @@ export default {
       }
     }
   },
-  props: {
-    withoutSide: {
-      default: true
-    },
-    isMyFile: {
-      default: false
-    }
-  },
   components: {
-    vMenu,
-    vContent,
-    vMenuLeft
-  },
-  mounted() {
-    // window.addEventListener('keydown', e => {
-    //   if (e.keyCode === 13) {
-    //     this.getSearchList()
-    //   }
-    // })
+    vContent
   },
   methods: {
     downloadFile(url) {
@@ -680,36 +574,10 @@ export default {
     },
     getList() {
       this.isLoading = true
-      let url = ''
-      let type = 0
-      if (this.modules === 'all') {
-        url = api.yunpanList
-      } else if (this.modules === 'project') {
-        url = api.yunpanList
-      } else if (this.modules === 'search') {
-        url = api.yunpanList
-      } else if (this.modules === 'recently-use') {
-        url = api.yunpanRecentUseFile
-      } else if (this.modules === 'recycle') {
-        url = api.yunpanRecycleStation
-      } else if (/[1-7]/.test(this.modules)) {
-        url = api.yunpanTypeList
-      } else if (this.modules === 0) {
-        url = api.yunpanList
-        type = 1
-      } else {
-        this.isLoading = false
-        this.list = []
-        return
-      }
+      let url = api.myFileList
       this.$http.get(url, {params: {
-        pan_director_id: this.folderId,
         page: this.query.page,
-        per_page: this.query.pageSize,
-        type: type,
-        resource_type: this.modules,
-        order_by: this.sortGist.order_by,
-        ascend: this.sortGist.ascend
+        per_page: this.query.pageSize
       }}).then(
         (res) => {
           this.isLoading = false
@@ -737,7 +605,7 @@ export default {
           }
         }).catch((err) => {
           this.isLoading = false
-          console.error(err)
+          this.$message.error(err.message)
         })
     },
     getProjectList() {
@@ -798,22 +666,6 @@ export default {
           this.$message.error(res.data.meta.message)
         }
       })
-    },
-    headTitle(name, str = '') {
-      this.modules = name
-      this.isChoose = false
-      this.isChooseAll = 'empty'
-      this.curView = 'list'
-      this.query.page = 1
-      this.query.totalCount = 0
-      this.isShowProgress = false
-      this.webUploader = false
-      if (str) {
-        this.getList()
-      }
-      if (this.modules === 'project') {
-        this.getProjectList()
-      }
     },
     changeChooseStatus() {
       this.isChoose = !this.isChoose
@@ -1658,47 +1510,7 @@ export default {
     modules(val) {
       switch (val) {
         case 'all':
-          this.title = '全部文件'
-          break
-        case 'project':
-          this.title = '项目'
-          break
-        case 'recently-use':
-          this.title = '最近使用'
-          break
-        case 'recycle':
-          this.title = '回收站'
-          break
-        case 'search':
-          this.title = '搜索'
-          this.showList = false
-          break
-        case 'folder':
-          this.title = '文件夹'
-          break
-        case '0':
-          this.title = '文件夹'
-          break
-        case '1':
-          this.title = '图片'
-          break
-        case '2':
-          this.title = '视频'
-          break
-        case '3':
-          this.title = '音频'
-          break
-        case '4':
-          this.title = '文档'
-          break
-        case '5':
-          this.title = '电子表格'
-          break
-        case '6':
-          this.title = '演示文稿'
-          break
-        case '7':
-          this.title = 'PDF'
+          this.title = '我的文件'
           break
       }
     },
@@ -1751,22 +1563,8 @@ export default {
       opacity: 1;
     }
   }
-  .slide-mini {
-    padding-left: 60px;
-  }
-  .slide-mini-none {
-    padding-left: 0;
-  }
-  .content {
-    /* transition: 0.2s all ease; */
-  }
-  .content-mini {
-    /* position: absolute; */
-  }
-  .content-pm {
-    position: static
-  }
   .content-head {
+    margin-top: 20px;
     color: #999;
     font-size: 0;
     border-bottom: 1px solid #D2D2D2;
@@ -1824,28 +1622,28 @@ export default {
     transform: rotate(45deg)
   }
   .operate p.add {
-    background: url('../../../../../assets/images/tools/cloud_drive/operate/add@2x.png') center no-repeat;
+    background: url('../../assets/images/tools/cloud_drive/operate/add@2x.png') center no-repeat;
     background-size: 26px
   }
   .operate p.search {
-    background: url('../../../../../assets/images/tools/cloud_drive/operate/search@2x.png') center no-repeat;
+    background: url('../../assets/images/tools/cloud_drive/operate/search@2x.png') center no-repeat;
     background-size: 26px
   }
   .operate p.chunk {
-    background: url('../../../../../assets/images/tools/cloud_drive/operate/chunk@2x.png') center no-repeat;
+    background: url('../../assets/images/tools/cloud_drive/operate/chunk@2x.png') center no-repeat;
     background-size: 26px
   }
   .operate p.list {
-    background: url('../../../../../assets/images/tools/cloud_drive/operate/list@2x.png') center no-repeat;
+    background: url('../../assets/images/tools/cloud_drive/operate/list@2x.png') center no-repeat;
     background-size: 26px
   }
   .operate p i.icon {
     transition: 0.3s all ease;
-    background: url('../../../../../assets/images/tools/cloud_drive/operate/sequence@2x.png') center no-repeat;
+    background: url('../../assets/images/tools/cloud_drive/operate/sequence@2x.png') center no-repeat;
     background-size: 26px
   }
   .operate p.edit {
-    background: url('../../../../../assets/images/tools/cloud_drive/operate/edit@2x.png') center no-repeat;
+    background: url('../../assets/images/tools/cloud_drive/operate/edit@2x.png') center no-repeat;
     background-size: 26px
   }
   .operate p:last-child {
@@ -1894,11 +1692,11 @@ export default {
     height: 24px;
   }
   .add-option .new-folder span:before {
-    background: url('../../../../../assets/images/tools/cloud_drive/operate/add_folder@2x.png') no-repeat;
+    background: url('../../assets/images/tools/cloud_drive/operate/add_folder@2x.png') no-repeat;
     background-size: contain
   }
   .add-option .upload-files span:before {
-    background: url('../../../../../assets/images/tools/cloud_drive/operate/upload@2x.png') no-repeat;
+    background: url('../../assets/images/tools/cloud_drive/operate/upload@2x.png') no-repeat;
     background-size: contain
   }
   .edit-menu {
@@ -2076,16 +1874,16 @@ export default {
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background: url('../../../../../assets/images/tools/cloud_drive/status/success@2x.png') no-repeat;
+    background: url('../../assets/images/tools/cloud_drive/status/success@2x.png') no-repeat;
     background-size: contain
   }
   p.upload-fail::before{
-    background: url('../../../../../assets/images/tools/cloud_drive/status/fail@2x.png') no-repeat;
+    background: url('../../assets/images/tools/cloud_drive/status/fail@2x.png') no-repeat;
     background-size: contain
   }
   
   p.upload-ready::before {
-    background: url('../../../../../assets/images/tools/cloud_drive/status/wait@2x.png') no-repeat;
+    background: url('../../assets/images/tools/cloud_drive/status/wait@2x.png') no-repeat;
     background-size: contain
   }
   p.percentage {
@@ -2272,7 +2070,7 @@ export default {
     line-height: 24px;
     height: 24px;
     cursor: pointer;
-    background: url('../../../../../assets/images/tools/cloud_drive/operate/add_folder@2x.png') no-repeat;
+    background: url('../../assets/images/tools/cloud_drive/operate/add_folder@2x.png') no-repeat;
     background-size: 24px;
     opacity: 0.6;
   }
@@ -2301,7 +2099,7 @@ export default {
     top: 12px;
     width: 30px;
     height: 25px;
-    background: url('../../../../../assets/images/tools/cloud_drive/type/folder@2x.png') no-repeat;
+    background: url('../../assets/images/tools/cloud_drive/type/folder@2x.png') no-repeat;
     background-size: cover;
   }
   .folder-body li:hover, .folder-body li.checked {
@@ -2396,15 +2194,15 @@ export default {
     border: 1px solid #999;
   }
   .public i {
-    background: url('../../../../../assets/images/tools/cloud_drive/permission/public@2x.png') no-repeat;
+    background: url('../../assets/images/tools/cloud_drive/permission/public@2x.png') no-repeat;
     background-size: contain;
   }
   .privacy i {
-    background: url('../../../../../assets/images/tools/cloud_drive/permission/privacy@2x.png') no-repeat;
+    background: url('../../assets/images/tools/cloud_drive/permission/privacy@2x.png') no-repeat;
     background-size: contain;
   }
   .group i {
-    background: url('../../../../../assets/images/tools/cloud_drive/permission/group@2x.png') no-repeat;
+    background: url('../../assets/images/tools/cloud_drive/permission/group@2x.png') no-repeat;
     background-size: contain;
   }
   .dialog-article {
@@ -2498,7 +2296,7 @@ export default {
     height: 20px;
     font-size: 14px;
     color: #666;
-    background: url('../../../../../assets/images/tools/cloud_drive/search@2x.png') no-repeat;
+    background: url('../../assets/images/tools/cloud_drive/search@2x.png') no-repeat;
     background-size: contain
   }
   
@@ -2561,36 +2359,5 @@ export default {
   }
   .parent-box-mob {
     padding-left: 0;
-  }
-  @media screen and (min-width: 768px) {
-    .content {
-      padding: 20px 30px 0;
-      position: relative
-    }
-  }
-
-  @media screen and (min-width: 1200px) {
-    .content {
-      position: absolute;
-      width: calc(100% - 400px);
-      top: 0;
-      left: 400px;
-    }
-    .content-mini {
-      position: absolute;
-      width: calc(100% - 200px);
-      top: 0;
-      left: 200px;
-      transition: 0.2s all ease;
-    }
-    .content-pm {
-      position: static;
-      width: 100%;
-      top: 0;
-      left: 0;
-    }
-    .parent-box {
-      padding-left: 200px;
-    }
   }
 </style>

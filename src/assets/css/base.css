@@ -293,8 +293,9 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   font-size: 0.875rem;
 }
 
-.el-select {
-  width: 100%;
+.el-select,
+.el-date-editor.el-input {
+  width: 100%
 }
 
 .no-border {
@@ -318,9 +319,6 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 
 .el-input-group__append {
   color: #999;
-}
-.el-date-editor.el-input {
-  width: auto;
 }
 .imgCodeInput .el-input-group__append {
   padding: 0
@@ -1997,7 +1995,7 @@ td.fc-day.fc-widget-content.fc-today::before {
 
   .el-select {
     flex: 1;
-    margin-bottom: 8px;
+    /* margin-bottom: 8px; */
     margin-right: 5px;
   }
   .el-row.item .el-select {
