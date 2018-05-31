@@ -1,28 +1,29 @@
-var path = require('path')
-var utils = require('./utils')
-var config = require('../config')
-var vueLoaderConfig = require('./vue-loader.conf')
-var os = require('os')
-var HappyPack = require('happypack')
-var happThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
-// var nodeExternals = require('webpack-node-externals')
-process.noDeprecation = true
-var webpack = require('webpack')
-// var ignoreFiles = new webpack.IgnorePlugin(/\.\.dll.js$/)
-// var ignoreFiles = new webpack.IgnorePlugin(/\.\/pdfmake.dll.js$/)
-// var ignoreFiles = new webpack.IgnorePlugin(/\.\/vfs_fonts.dll.js$/)
-// var ignoreFiles = new webpack.IgnorePlugin(/pdfmake.min$/, /vfs_fonts$/)
-function resolve(dir) {
+'use strict'
+const path = require('path')
+const utils = require('./utils')
+const config = require('../config')
+const vueLoaderConfig = require('./vue-loader.conf')
+
+function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
+const createLintingRule = () => ({
+  test: /\.(js|vue)$/,
+  loader: 'eslint-loader',
+  enforce: 'pre',
+  include: [resolve('src'), resolve('test')],
+  options: {
+    formatter: require('eslint-friendly-formatter'),
+    emitWarning: !config.dev.showEslintErrorsInOverlay
+  }
+})
+
 module.exports = {
+  context: path.resolve(__dirname, '../'),
   entry: {
     app: ['babel-polyfill', './src/main.js']
   },
-  externals: {
-  },
-  // externals: [nodeExternals()],
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
@@ -30,9 +31,8 @@ module.exports = {
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
   },
-  cache: true,
   resolve: {
-    extensions: ['.js', '.vue', '.json', '.styl'],
+    extensions: ['.js', '.vue', '.json'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
@@ -42,72 +42,21 @@ module.exports = {
       'pages': resolve('src/components/pages')
     }
   },
-  // 增加一个plugins
-  plugins: [
-    // ignoreFiles,
-    new HappyPack({
-      id: 'js',
-      threads: 4,
-      loaders: [
-        {
-          loader: 'babel-loader',
-          query: {
-            presets: ['es2015', 'stage-2']
-          }
-        }
-      ],
-      threadPool: happThreadPool
-    }),
-    new HappyPack({
-      id: 'eslint',
-      threads: 4,
-      loaders: [{
-        loader: 'eslint-loader',
-        // here you can place eslint-loader options:
-        options: {
-          formatter: require('eslint-friendly-formatter')
-        }
-      }],
-      threadPool: happThreadPool
-    })
-  ],
   module: {
     rules: [
-      {
-        test: /\.(js|vue)$/,
-        loader: 'happypack/loader?id=eslint',
-        enforce: "pre",
-        include: [
-          resolve('src'),
-          resolve('test'),
-          resolve('node_modules/vue-echarts'),
-          resolve('node_modules/echarts'),
-          resolve('node_modules/resize-detector'),
-          resolve('node_modules/vue-pdf'),
-          resolve('node_modules/vue-resize-sensor')]
-      },
-
+      ...(config.dev.useEslint ? [createLintingRule()] : []),
       {
         test: /\.vue$/,
         loader: 'vue-loader',
-        options: {
-          loaders: {
-            js: 'happypack/loader?id=js' // 将loader换成happypack
-          }
-        }
+        options: vueLoaderConfig
       },
       {
         test: /\.js$/,
-        loader: ['happypack/loader?id=js'],
-        include: [
-          resolve('src'),
-          resolve('test'),
-          resolve('node_modules/vue-echarts'),
-          resolve('node_modules/echarts'),
-          resolve('node_modules/resize-detector'),
-          resolve('node_modules/vue-pdf'),
-          resolve('node_modules/vue-resize-sensor')],
-        exclude: [/pdfmake.js$/]
+        loader: 'babel-loader',
+        query: {
+          presets: ['es2015', 'stage-2']
+        },
+        include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -115,6 +64,14 @@ module.exports = {
         options: {
           limit: 10000,
           name: utils.assetsPath('img/[name].[hash:5].[ext]')
+        }
+      },
+      {
+        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: utils.assetsPath('media/[name].[hash:5].[ext]')
         }
       },
       {
@@ -127,5 +84,17 @@ module.exports = {
       }
     ],
     noParse: /node_modules\/(jquery|pdf.js)/
+  },
+  node: {
+    // prevent webpack from injecting useless setImmediate polyfill because Vue
+    // source contains it (although only uses it if it's native).
+    setImmediate: false,
+    // prevent webpack from injecting mocks to Node native modules
+    // that does not make sense for the client
+    dgram: 'empty',
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty',
+    child_process: 'empty'
   }
 }
