@@ -8,7 +8,6 @@ import axios from './http'
 import ElementUI from 'element-ui'
 import phenix from '@/assets/js/base'
 import VueLazyload from 'vue-lazyload'
-// import ECharts from 'vue-echarts/components/ECharts'
 
 // 兼容 IE
 import 'babel-polyfill'

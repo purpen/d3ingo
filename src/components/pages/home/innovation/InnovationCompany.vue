@@ -1,6 +1,6 @@
 <template>
   <div class="innavation-company">
-    <div class="company-base">
+    <!-- <div class="company-base">
       <img class="company-logo" v-if="companyDetails.design_company" :src="companyDetails.design_company.logo_url" alt="">
       <img class="company-logo" v-else :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
       <h2 class="company-name" v-if="companyDetails.design_company">{{companyDetails.design_company.name}}</h2>
@@ -39,12 +39,12 @@
             </el-col>
           </el-row>
         </div>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
 import api from '@/api/api'
-import ECharts from 'vue-echarts'
+// import ECharts from 'vue-echarts'
 export default {
   name: 'innavationCompany',
   data() {
@@ -201,7 +201,7 @@ export default {
     }
   },
   components: {
-    ECharts
+    // ECharts
   },
   created() {
   },

@@ -1,6 +1,6 @@
 <template>
   <div class="innovation-compare container">
-    <p class="bread-crumb">
+    <!-- <p class="bread-crumb">
       <router-link :to="{name: 'innovationHome'}">创新指数</router-link>
       <router-link to="">设计企业对比</router-link>
     </p>
@@ -98,12 +98,12 @@
           </ul>
         </el-col>
       </el-row>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
 import api from '@/api/api'
-import ECharts from 'vue-echarts'
+// import ECharts from 'vue-echarts'
 export default {
   name: 'InnovationCompare',
   data() {
@@ -244,7 +244,7 @@ export default {
     }
   },
   components: {
-    ECharts
+    // ECharts
   },
   computed: {
     isMob() {

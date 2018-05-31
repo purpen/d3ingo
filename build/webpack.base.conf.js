@@ -49,7 +49,6 @@ module.exports = {
       id: 'js',
       threads: 4,
       loaders: [
-        'babel-loader?presets[]=es2015',
         {
           loader: 'babel-loader',
           query: {
@@ -82,7 +81,6 @@ module.exports = {
           resolve('src'),
           resolve('test'),
           resolve('node_modules/vue-echarts'),
-          resolve('node_modules/vue-echarts/node_modules/echarts'),
           resolve('node_modules/echarts'),
           resolve('node_modules/resize-detector')]
       },
@@ -100,7 +98,6 @@ module.exports = {
         loader: ['happypack/loader?id=js'],
         include: [
           resolve('node_modules/vue-echarts'),
-          resolve('node_modules/vue-echarts/node_modules/echarts'),
           resolve('node_modules/echarts'),
           resolve('node_modules/resize-detector'),
           /pdfmake.js$/],
