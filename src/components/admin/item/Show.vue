@@ -28,56 +28,116 @@
 
           <div class="company-show">
 
-            <div class="item">
-              <p class="p-key">名称</p>
-              <p class="p-val">{{ info.name }}</p>
-            </div>
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>名称</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p>{{ info.name }}</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
 
-            <div class="item">
-              <p class="p-key">类型</p>
-              <p class="p-val">{{ item.type_value }}</p>
-            </div>
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>类型</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p>{{ item.type_value }}</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
 
-            <div class="item">
-              <p class="p-key">类别</p>
-              <p class="p-val" v-if="item.design_types_value">{{ item.design_types_value.join(', ') }}</p>
-              <p class="p-val" v-else></p>
-            </div>
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>类别</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p>{{ item.design_types_value.join(', ') }}</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
 
-            <div class="item">
-              <p class="p-key">领域</p>
-              <p class="p-val">{{ info.field_value }}</p>
-            </div>
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>领域</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p>{{ info.field_value }}</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
 
-            <div class="item">
-              <p class="p-key">行业</p>
-              <p class="p-val">{{ info.industry_value }}</p>
-            </div>
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>行业</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p>{{ info.industry_value }}</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
 
-            <div class="item">
-              <p class="p-key">预算</p>
-              <p class="p-val">{{ info.design_cost_value }}</p>
-            </div>
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>预算</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p>{{ info.design_cost_value }}</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
 
-            <div class="item">
-              <p class="p-key">周期</p>
-              <p class="p-val">{{ info.cycle_value }}</p>
-            </div>
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>周期</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p>{{ info.cycle_value }}</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
 
-            <div class="item">
-              <p class="p-key">工作地点</p>
-              <p class="p-val">{{ info.province_value }} {{ info.city_value }}</p>
-            </div>
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>工作地点</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p>{{ info.province_value }} {{ info.city_value }}</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
 
-            <div class="item">
-              <p class="p-key">功能或卖点</p>
-              <p class="p-val">{{ info.product_features }}</p>
-            </div>
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>功能或卖点</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p>{{ info.product_features }}</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
 
-            <div class="item">
-              <p class="p-key">相关附件</p>
-              <p class="p-val" v-for="(d, index) in info.image"><a :href="d.file" target="_blank">{{ d.name }}</a></p>
-            </div>
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>相关附件</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p v-for="(d, index) in info.image"><a :href="d.file" target="_blank">{{ d.name }}</a></p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
+
 
           </div>
 
@@ -86,50 +146,105 @@
           </div>
 
           <div class="company-show">
-            <div class="item">
-              <p class="p-key">名称</p>
-              <p class="p-val">{{ item.company_name }}</p>
-            </div>
 
-            <div class="item">
-              <p class="p-key">规模</p>
-              <p class="p-val">{{ item.company_size_value }}</p>
-            </div>
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>名称</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p>{{ item.company_name }}</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
 
-            <div class="item">
-              <p class="p-key">网址</p>
-              <p class="p-val">{{ item.company_web }}</p>
-            </div>
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>规模</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p>{{ item.company_size_value }}</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
 
-            <div class="item">
-              <p class="p-key">所在地区</p>
-              <p class="p-val">{{ item.company_province_value + ', ' + item.company_city_value + ', ' + item.company_area_value }}</p>
-            </div>
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>网址</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p>{{ item.company_web }}</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
 
-            <div class="item">
-              <p class="p-key">详细地址</p>
-              <p class="p-val">{{ item.address }}</p>
-            </div>
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>所在地区</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p>{{ item.company_province_value + ', ' + item.company_city_value + ', ' + item.company_area_value }}</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
 
-            <div class="item">
-              <p class="p-key">联系人</p>
-              <p class="p-val">{{ item.contact_name }}</p>
-            </div>
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>详细地址</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p>{{ item.address }}</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
 
-            <div class="item">
-              <p class="p-key">职位</p>
-              <p class="p-val">{{ item.position }}</p>
-            </div>
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>联系人</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p>{{ item.contact_name }}</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
 
-            <div class="item">
-              <p class="p-key">手机</p>
-              <p class="p-val">{{ item.phone }}</p>
-            </div>
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>职位</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p>{{ item.position }}</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
 
-            <div class="item">
-              <p class="p-key">邮箱</p>
-              <p class="p-val">{{ item.email }}</p>
-            </div>
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>手机</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p>{{ item.phone }}</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
+
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>邮箱</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p>{{ item.email }}</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
 
           </div>
 
@@ -138,18 +253,39 @@
           </div>
 
           <div class="company-show">
-            <div class="item">
-              <p class="p-key">项目报价</p>
-              <p class="p-val">{{ item.price }}</p>
-            </div>
-            <div class="item">
-              <p class="p-key">佣金</p>
-              <p class="p-val">{{ item.commission_rate }}%</p>
-            </div>
-            <div class="item">
-              <p class="p-key">项目剩余金额</p>
-              <p class="p-val">{{ item.rest_fund }}</p>
-            </div>
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>项目报价</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p>{{ item.price }}</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
+
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>佣金</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p>{{ item.commission_rate }}%</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
+
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>剩余金额</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p>{{ item.rest_fund }}</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
+
           </div>
 
           <div class="form-title">
@@ -157,18 +293,28 @@
           </div>
 
           <div class="company-show">
-            <div class="item" v-if="item.status === 3">
-              <p class="p-key">系统推荐</p>
-              <p class="p-val">
-                <span v-for="(d, index) in stickCompany" :key="index"><router-link :to="{name: 'companyShow', params: {id: d.id}}" target="_blank">{{ d.company_name }}</router-link>&nbsp;&nbsp;&nbsp;</span>
-              </p>
-            </div>
-            <div class="item" v-if="item.status === 4">
-              <p class="p-key">已选择</p>
-              <p class="p-val">
-                <span v-for="(d, index) in offerCompany" :key="index"><router-link :to="{name: 'companyShow', params: {id: d.design_company.id}}" target="_blank">{{ d.design_company.company_name }}[{{ d.status_value }}]</router-link>&nbsp;&nbsp;&nbsp;</span>
-              </p>
-            </div>
+            <el-row class="item" :gutter="gutter" v-if="item.status === 3">
+              <el-col :span="spanKey">
+                <p>系统推荐</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p v-for="(d, index) in stickCompany" :key="index"><router-link :to="{name: 'companyShow', params: {id: d.id}}" target="_blank">{{ d.company_name }}</router-link>&nbsp;&nbsp;&nbsp;</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
+
+            <el-row class="item" :gutter="gutter" v-if="item.status > 3">
+              <el-col :span="spanKey">
+                <p>已选择</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p v-for="(d, index) in offerCompany" :key="index"><router-link :to="{name: 'companyShow', params: {id: d.design_company.id}}" target="_blank">{{ d.design_company.company_name }}</router-link>---<span>[{{ d.status_value }}]</span></p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
+
           </div>
 
           <div class="form-title">
@@ -176,16 +322,18 @@
           </div>
 
           <div class="company-show">
-            <div class="item">
-              <p class="p-key">状态</p>
-              <p class="p-val">
-                {{ item.status_value }}
-              </p>
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>状态</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p>{{ item.status_value }}</p>
+              </el-col>
+              <el-col :span="spanOpt">
+                <p><el-button class="is-custom" size="small" @click="forceCloseBtn">关闭并退款</el-button></p>
+              </el-col>
+            </el-row>
 
-              <p class="opt" v-if="isAdmin">
-                <el-button class="is-custom" size="small" @click="forceCloseBtn">关闭项目并退款</el-button>
-              </p>
-            </div>
           </div>
 
         </div>
@@ -280,6 +428,10 @@ export default {
       offerCompany: [],
       stickCompany: [],
       cooperateCompany: '',
+      gutter: 5,
+      spanKey: 3,
+      spanVal: 18,
+      spanOpt: 3,
       msg: ''
     }
   },
@@ -500,38 +652,9 @@ export default {
     min-height: 350px;
   }
 
-  .company-show {
-    clear: both;
-    margin-bottom: 40px;
-    margin-top: -5px;
-  }
-  .company-show .item {
-    clear: both;
-    min-height: 40px;
-    border-bottom: 1px solid #ccc;
-  }
-
-  .company-show .item p {
-    line-height: 40px;
-  }
-
-  .company-show .item p.p-key {
-    float: left;
-    width: 150px;
-    color: #666;
-  }
-
-  .company-show .item p.p-val {
-    width: 300px;
-    float: left;
-    font-size: 1.5rem;
-  }
-
-  .company-show .item p.opt {
-    text-align: right;
-    width: 150px;
-    float: right;
-    font-size: 1.2rem;
+  .item {
+    padding: 5px;
+    border-bottom: solid 1px #ccc;
   }
 
 </style>
