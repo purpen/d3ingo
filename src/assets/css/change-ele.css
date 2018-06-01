@@ -331,3 +331,11 @@
   .input-brand .el-input-group__append:hover {
     background: #f7f7f7
   }
+  .owner .el-checkbox__inner {
+    position: absolute;
+    top:-10px;
+    left:-31px;
+  }
+  .tack-list .el-checkbox__label {
+    padding-left:15px;
+  }
