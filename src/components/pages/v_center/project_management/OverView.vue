@@ -2086,8 +2086,7 @@ export default {
     width:100%;
     overflow: hidden;
     text-overflow: ellipsis;
-    position:relative;
-    color:
+    position:relative
   }
   .item-tacklist-last {
     position:absolute;
