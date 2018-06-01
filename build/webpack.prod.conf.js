@@ -50,6 +50,10 @@ var webpackConfig = merge(baseWebpackConfig, {
     //   sourceMap: true
     // }),
     new UglifyJsPlugin({
+      parallel: {
+        cache: true,
+        workers: os.cpus().length
+      },
       uglifyOptions: {
         ecma: 5,
         ie8: true,
