@@ -102,7 +102,11 @@
                 {text: '     ' + this.form.title + '     ', style: 'write'},
                 {text: '设计。本合同设计费用总额为人民币'},
                 {text: '     ' + this.form.total + '     ', style: 'write'},
-                {text: '整（￥元），丙方作为平台收取全部项目费的10%，也就是人民币(￥)1000 整作为佣金。三方共同签署此项设计委托合同（以下简称合同），甲方、乙方和丙方合称为合同三方（以下简称三方）。'}
+                {text: '整（￥元），丙方作为平台收取全部项目费的'},
+                {text: '     ' + this.form.commission_rate + '     ', style: 'write'},
+                {text: '%，也就是人民币(￥)'},
+                {text: '     ' + this.form.commission + '     ', style: 'write'},
+                {text: '整作为佣金。三方共同签署此项设计委托合同（以下简称合同），甲方、乙方和丙方合称为合同三方（以下简称三方）。'}
               ],
               style: 'p'
             },
