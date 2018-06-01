@@ -1059,6 +1059,7 @@ export default {
       this.itemdesId = des.id
       this.itemdesname = des.name
       this.isitemedit = false
+      this.isnodeedit = false
       this.istaskedit = true
       if (type === 1) {
         this.istaskedit = false
@@ -1223,6 +1224,7 @@ export default {
         delete this.formTack.execute_user
       }
       this.isitemedit = false
+      this.isnodeedit = false
       this.istaskedit = true
       this.formTacktime = (new Date(this.formTack.start_time * 1000)).format('yyyy-MM-dd')
     },
@@ -1317,6 +1319,8 @@ export default {
     },
     editNode(node) {
       this.formNodetime = (new Date(node.time * 1000)).format('yyyy-MM-dd')
+      this.isitemedit = false
+      this.istaskedit = false
       this.isnodeedit = true
       this.formNode = node
       this.uploadParam['x:target_id'] = node.id
