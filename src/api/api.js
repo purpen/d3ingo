@@ -178,6 +178,7 @@ export default {
   adminCompanyStatusDisable: '/admin/designCompany/unStatus', // PUT 禁用
   adminCompanyVerifyOk: '/admin/designCompany/verifyStatus', // PUT 通过审核
   adminCompanyVerifyCancel: '/admin/designCompany/unVerifyStatus', // PUT 取消审核 (停用)
+  adminCompanySetTest: '/admin/designCompany/isTest',  // PUT 设置为测试账号（不会系统推荐）
 
   // 订单管理
   adminPayOrderLists: '/admin/payOrder/lists', // GET 订单列表
