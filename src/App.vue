@@ -35,10 +35,18 @@ export default {
     },
     app3() {
       let user = this.user
-      if (user.verify_status !== 1 && user.role_id === 20 && !this.hideHeader) {
-        return true
+      if (user.type === 1) {
+        if (user.demand_verify_status === 0 && !this.hideHeader) {
+          return true
+        } else {
+          return false
+        }
       } else {
-        return false
+        if (user.verify_status === 0 && user.company_role === 20 && !this.hideHeader) {
+          return true
+        } else {
+          return false
+        }
       }
     }
   }
