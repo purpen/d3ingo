@@ -98,12 +98,18 @@
         <ul class="aside-content">
           <li class="designStage-name">
             <span>
-              <el-checkbox v-model="checked"></el-checkbox>
+              <el-checkbox 
+                v-model="formupstatus"
+                @change="updata()"
+                >
+
+              </el-checkbox>
             </span>
             <el-input 
               v-model="formup.name" 
               placeholder="项目阶段名称"
               @blur="updata()"
+              class="noborder"
             >
             </el-input>
           </li>
@@ -115,6 +121,7 @@
                 v-model="formup.duration"
                 :maxlength="3"
                 @blur="updata()"
+                class="noborder"
               >
                 <template slot="append">工作日</template>
               </el-input>
@@ -128,6 +135,7 @@
                 v-model="formupStart"
                 placeholder="选择日期时间"
                 @change="updata"
+                class="noborder"
                >
                 </el-date-picker>
               </div>
@@ -140,6 +148,7 @@
                 :maxlength=200
                 placeholder="请输入内容"
                 v-model="formup.content"
+                class="noborder"
                 >
                 </el-input>
           </li>
@@ -471,13 +480,9 @@
       </ul>
     </section>
     <section class="item-content">
-
       <p class="h3">项目执行进度规划</p>
-
         <div class="item-lists">
-
           <el-row v-if="designStageLists.length>0">
-
             <el-col :span="6">
               <div class="item-list-text">
 
@@ -541,7 +546,6 @@
                 </div>
               </div>
             </el-col>
-
             <el-col :span="18" :style="{height:Rheight +'px'}">
 
               <div class="item-chart">
@@ -574,11 +578,30 @@
                   <div v-if="designStageLists" class="item-chartContent" v-for="(c,indexc) in designStageLists" :key="indexc">
                     <div
                       v-if="(c.design_substage&&(sort==='isday'||sort==='isweek'))" 
-                      v-for="(tack, indextack) in c.design_substage" :key="indextack+ 'y'" :style="{left:tack.left*30+'px',width:tack.duration*30+'px'}"
-                      class="item-tacklist"
+                      v-for="(tack, indextack) in c.design_substage" 
+                      :key="indextack+ 'y'" 
+                      :style="{
+                        left:tack.left*30+'px',
+                        width:tack.duration*30+'px',
+                      }"
+                      :class="['item-tacklist',
+                      {
+                        'bgno': tack.status === 0?(tack.left+parseInt(tack.duration) <= newleft?true:false):false,
+                        'bged': tack.status === 1?true:false
+                      }]"
                       >
+                      <div class="bging item-tacking"
+                        :style="{
+                        width:(tack.left<=newleft+1 && newleft<(parseInt(tack.left)+parseInt(tack.duration)))?
+                        (parseInt(newleft)+1-parseInt(tack.left))*30 +'px':tack.duration*30+'px',
+                      }"
+                      v-if="tack.status !== 1&&tack.left <= newleft+1&&newleft<(parseInt(tack.left)+parseInt(tack.duration))"
+                      >
+                      </div>
                       <i class="item-start" v-if="indextack === 0"></i>
-                      <i class="item-node" v-if="tack.design_stage_node" @click.stop="editNode(tack.design_stage_node)"></i>
+                      <i 
+                        class="item-node" 
+                        v-if="tack.design_stage_node" @click.stop="editNode(tack.design_stage_node)"></i>
                       <div class="node-name" v-if="tack.design_stage_node">
                         <p :style="{width:tack.duration*30+'px'}">
                           {{tack.design_stage_node.name}}
@@ -624,110 +647,12 @@
 
             </el-col>
           </el-row>
-
-          <div  class="add-item" >
-            <div @click="isItemStage=true">+</div>
-            <p @click="isItemStage=true">添加项目阶段</p>
-          </div>
-      <div v-if="true" v-for="(designStage,index) in designStageLists" :key="index">
-        
-        <div>
-          名称: <p v-if="!designStage.isedit">{{designStage.name}}</p>
-          <el-input v-model="designStage.name" v-else></el-input>
+        <div  class="add-item" >
+          <div @click="isItemStage=true">+</div>
+          <p @click="isItemStage=true">添加项目阶段</p>
         </div>
-        <div>
-            投入时间: <p v-if="!designStage.isedit">{{designStage.duration}}</p>
-            <el-input placeholder="请输入内容" v-model="designStage.duration" v-else></el-input>
-        </div>
-        <div>
-          开始时间: <p v-if="!designStage.isedit">{{designStage.start_time}}</p>
-          <el-date-picker
-              v-model="designStage.start_time"
-              type="datetime"
-              placeholder="选择日期时间" v-else>
-          </el-date-picker>
-        </div>
-        <div>
-          内容: <p v-if="!designStage.isedit">{{designStage.content}}</p>
-          <el-input
-              type="textarea"
-              :autosize="{ minRows: 2, maxRows: 4}"
-              placeholder="请输入内容"
-              v-model="designStage.content"
-              v-else
-              >
-            </el-input>
-        </div>
-        <div v-for="(sub,indexsub) in designStage.design_substage" :key="indexsub">
-          <p>{{sub.name}}</p>
-          <el-input placeholder="任务名称" v-model="sub.name"></el-input>
-          <p>{{sub.summary}}</p>
-          <el-input
-              type="textarea"
-              :autosize="{ minRows: 2, maxRows: 4}"
-              placeholder="请输入内容"
-              v-model="sub.summary"
-              >
-          </el-input>
-          <p>{{sub.duration}}</p>
-          <el-input placeholder="任务投入时间" v-model="sub.duration"></el-input>
-          
-          <p>{{sub.start_time}}</p>
-          <el-date-picker
-          v-model="sub.start_time"
-          type="datetime"
-          placeholder="选择日期时间">
-          </el-date-picker>
-          <el-input placeholder="节点名称" v-model="formNode.name"></el-input>
-          <el-date-picker
-            v-model="formNode.time"
-            type="datetime"
-            placeholder="选择截止时间">
-            </el-date-picker>
-            <el-checkbox v-model="formNode.is_owner">甲方参与</el-checkbox>
-          <el-button  @click="createNode(sub.id,indexsub)">确定添加节点</el-button>
-          <el-button  @click="addNode()">添加节点</el-button>
-          <div v-if="sub.design_stage_node">
-            <p>节点名称: {{sub.design_stage_node.name}}</p>
-            <el-input v-model="sub.design_stage_node.name"></el-input>
-            <p>节点时间: {{sub.design_stage_node.time}}</p>
-            <el-date-picker
-            v-model="sub.design_stage_node.time"
-            type="datetime"
-            placeholder="选择截止时间">
-            </el-date-picker>
-            <el-button  @click="editNode(sub.design_stage_node,indexsub)">编辑节点</el-button>
-            <el-button  @click="updataNode(sub.design_stage_node,indexsub)">确定编辑节点</el-button>
-            <el-button  @click="deleteNode(sub.design_stage_node.id,indexsub)">删除节点</el-button>
-          </div>
-          <el-button  @click="updataTack(sub,indexsub)">确认编辑任务</el-button>
-          <el-button style="margin-bottom:30px" @click="editTack(sub,indexsub)">编辑任务</el-button>
-          <el-button style="margin-bottom:30px" @click="deleteTack(sub.id,indexsub)">删除任务</el-button>
-        </div>
-        <el-button @click="edit(designStage.id,index)">编辑</el-button>
-        <el-button @click="updata(designStage,index)">确定</el-button>
-        <el-button @click="deleteDes(designStage,index)">删除</el-button>
-        <el-button @click="addtack(designStage.id)">添加任务</el-button>
-      </div>
       </div>
     </section>
-    <div v-if="false">
-      <el-input placeholder="任务名称" v-model="formTack.name"></el-input>
-      <el-input placeholder="任务投入时间" v-model="formTack.duration"></el-input>
-      <el-date-picker
-          v-model="formTack.start_time"
-          type="datetime"
-          placeholder="选择日期时间">
-      </el-date-picker>
-      <el-input
-              type="textarea"
-              :autosize="{ minRows: 2, maxRows: 4}"
-              placeholder="请输入内容"
-              v-model="formTack.summary"
-              >
-      </el-input>
-      <el-button @click="createTack()">新建任务</el-button>
-    </div>
   </div>
 </template>
 <script>
@@ -802,6 +727,7 @@ export default {
       isnodeedit: false, // 节点编辑
       endTimes: [], // 所有时间合集
       formNodeowner: false, // 甲方是否参与
+      formupstatus: false, // 是否完成项目
       rules: {
         duration: [
           {
@@ -989,7 +915,7 @@ export default {
       }
       return arr
     },
-    // 滚动到当前位置
+    // 滚动到今天
     scrollLeft() {
       if (this.designStageLists.length > 0) {
         if (this.endTimes[0] !== (Date.parse(new Date()) / 1000)) {
@@ -1000,6 +926,9 @@ export default {
     },
     // 更新信息位置
     updateallleft(res) {
+      if (isNaN(res.start_time)) {
+        res.start_time = Math.round(new Date(res.start_time).getTime() / 1000)
+      }
       this.endTimes.push(parseInt(res.start_time))
       this.endTimes.push(parseInt(res.start_time) + parseInt(res.duration) * 86400)
       this.sortdate(this.endTimes)
@@ -1009,7 +938,6 @@ export default {
       let reset = new Date(this.endTimes[0] * 1000)
       let resxin = Date.parse(new Date(reset.getFullYear() + '-' + (reset.getMonth() + 1) + '-' + 1)) / 1000
       res.left = Math.floor(((res.start_time - resxin) / 86400))
-      // res.start_time = new Date(res.start_time * 1000).format('yyyy-MM-dd')
       return res
     },
     // 任务显示
@@ -1066,12 +994,12 @@ export default {
     },
     // 编辑项目按钮
     edit(des) {
-      this.formup = des
+      this.formup = {...des}
       if (!isNaN(des.start_time)) {
         this.formupStart = (new Date(des.start_time * 1000)).format('yyyy-MM-dd')
       } else this.formupStart = des.start_time
       this.isitemedit = true
-      console.log(this.formupStart)
+      this.formupstatus = Boolean(this.formup.status)
     },
   // 编辑项目
     updata(date) {
@@ -1083,6 +1011,10 @@ export default {
         if (date) {
           this.formup.start_time = Math.round(new Date(date).getTime() / 1000)
         }
+        if (isNaN(this.formup.start_time)) {
+          this.formup.start_time = Math.round(new Date(this.formup.start_time).getTime() / 1000)
+        }
+        // this.formup.status = Number(this.formupstatus)
         this.$http.put(api.designStageUpdate.format(this.formup.id), this.formup).then((response) => {
           if (response.data.meta.status_code === 200) {
             var res = this.updateallleft(response.data.data)
@@ -1204,7 +1136,7 @@ export default {
               arr.push({
                 'id': start[i].id,
                 'start_time': start[i].start_time,
-                'duration': start[i].duration
+                'duration': parseInt(start[i].duration)
               })
             }
           }
@@ -1214,7 +1146,7 @@ export default {
           arr.push({
             'id': start[m].id,
             'start_time': start[m].start_time,
-            'duration': start[m].duration
+            'duration': parseInt(start[m].duration)
           })
         }
         for (let b = ind + 1; b < start.length; b++) {
@@ -1222,18 +1154,20 @@ export default {
           arr.push({
             'id': start[b].id,
             'start_time': start[b].start_time,
-            'duration': start[b].duration
+            'duration': parseInt(start[b].duration)
           })
         }
         this.$http.put(api.updateDuration, {durations: JSON.stringify(arr)}).then((response) => {
           if (response.data.meta.status_code === 200) {
             arr = []
-            this.tackleft(this.designStageLists)
+            this.indesignStage.start_time = fts
+            let res = this.updateallleft(this.indesignStage)
             for (var f = 0; f < this.designStageLists.length; f++) {
               if (this.designStageLists[f].id === this.indesignStage.id) {
-                this.$set(this.designStageLists, f, this.indesignStage)
+                this.$set(this.designStageLists, f, res)
               }
             }
+            this.tackleft(this.designStageLists)
             this.formTack.start_time = fts
           } else {
             this.$message.error(response.data.meta.message)
@@ -1368,7 +1302,14 @@ export default {
       this.formNode.time = endt
       this.$http.post(api.dsignStageNodeCreate, this.formNode).then((response) => {
         if (response.data.meta.status_code === 200) {
-          console.log(response.data.data)
+          var res = response.data.data
+          var dessub = this.indesignStage.design_substage
+          for (var f = 0; f < dessub.length; f++) {
+            if (dessub[f].id === res.design_substage_id) {
+              dessub[f].design_stage_node = res
+            }
+          }
+          console.log(this.designStageLists)
         } else {
           this.$message.error(response.data.meta.message)
         }
@@ -1380,7 +1321,6 @@ export default {
       this.formNode = node
       this.uploadParam['x:target_id'] = node.id
       this.formNodeowner = Boolean(this.formNode.is_owner)
-      console.log(this.formNodeowner)
     },
     // 编辑阶段节点
     updataNode(date) {
@@ -1532,7 +1472,6 @@ export default {
         this.$nextTick(_ => {
           this.scrollLeft()
         })
-        console.log(this.designStageLists)
       } else {
         this.$message.error(response.data.meta.message)
       }
@@ -1913,7 +1852,7 @@ export default {
     align-items: center;
     border-top:1px solid #d2d2d2;
     border-bottom:1px solid #d2d2d2;
-    padding:10px 19px;
+    padding:10px 17px;
   }
   .add-tack>span{
     display: inline-block;
@@ -2132,16 +2071,23 @@ export default {
     line-height:30px;
     width:350%;
     border-radius: 4px;
-    background:#65A6FF;
+    background:rgba(101,166,255,0.05);
     text-align: center;
     cursor: pointer;
     border:1px solid #65A6FF;
+  }
+  .item-tacking {
+    height:28px;
+    border-radius: 4px;
+    position: absolute;
   }
   .task-name {
     height:100%;
     width:100%;
     overflow: hidden;
     text-overflow: ellipsis;
+    position:relative;
+    color:
   }
   .item-tacklist-last {
     position:absolute;
@@ -2222,6 +2168,7 @@ export default {
     right: -15px;
     overflow: hidden;
     text-overflow: ellipsis;
+    text-align:right
   }
   .item-chartContent>ul {
     display:inline-block;
@@ -2237,19 +2184,15 @@ export default {
     background:#bce6f0;
   }
   .bgwill {
-    background:#65A6FF;
-    border:1px solid #65A6FF;
+    background:rgba(101,166,255,0.05);
   }
   .bging {
-    border:1px solid #11bce2;
     background:#07b7e4;
   }
   .bgno {
-    border:1px solid #FF8B8F;
     background:#FF8B8F;
   }
   .bged {
-    border:1px solid #00AC84;
     background:#00AC84;
   }
     .document{
