@@ -50,10 +50,7 @@ module.exports = {
       threads: 4,
       loaders: [
         {
-          loader: 'babel-loader',
-          query: {
-            presets: ['es2015', 'stage-2']
-          }
+          loader: 'babel-loader'
         }
       ],
       threadPool: happThreadPool
@@ -106,13 +103,14 @@ module.exports = {
           resolve('node_modules/echarts'),
           resolve('node_modules/resize-detector'),
           resolve('node_modules/vue-pdf'),
-          resolve('node_modules/vue-resize-sensor')]
+          resolve('node_modules/vue-resize-sensor')],
+        exclude: [/node_modules/, /pdfmake.js$/]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
         options: {
-          limit: 10000,
+          limit: 2048,
           name: utils.assetsPath('img/[name].[hash:5].[ext]')
         }
       },

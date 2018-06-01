@@ -304,8 +304,8 @@
                   </p>
                 </el-col>
                 <el-col :span="spanOpt">
-                  <el-button class="is-custom" :loading="setTestLoadingBtn" size="small" v-if="item.is_test_data === 1" @click="setTest(2)">设为正式</el-button>
-                  <el-button type="primary" class="is-custom" :loading="setTestLoadingBtn" size="small" v-else @click="setTest(1)">设为测式</el-button>
+                  <el-button class="is-custom" :loading="setTestLoadingBtn" size="small" v-if="item.is_test_data === 1" @click="setTest(2)">取消测试号</el-button>
+                  <el-button type="primary" class="is-custom" :loading="setTestLoadingBtn" size="small" v-else @click="setTest(1)">设为测式号</el-button>
                 </el-col>
               </el-row>
 
@@ -395,11 +395,11 @@ export default {
         self.$message.error(error.message)
       })
     },
-    // 设置测试账号（不推荐）
+    // 设置测试账号（系统不推荐项目）
     setTest(evt) {
       var self = this
       self.setTestLoadingBtn = true
-      self.$http.put(api.adminCompanySetTest, {id: self.itemId, status: evt})
+      self.$http.put(api.adminCompanySetTest, {id: self.itemId, is_test_data: evt})
       .then (function(response) {
         self.setTestLoadingBtn = false
         if (response.data.meta.status_code === 200) {

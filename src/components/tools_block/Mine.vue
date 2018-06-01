@@ -111,6 +111,6 @@
   .cover-content {
     overflow: auto;
     height: 100%;
-    padding-bottom: 50px;
+    padding-bottom: 150px;
   }
 </style>

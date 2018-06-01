@@ -28,6 +28,7 @@ var webpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({
       sourceMap: config.build.productionSourceMap,
+      usePostCSS: true,
       extract: true
     })
   },
@@ -50,6 +51,10 @@ var webpackConfig = merge(baseWebpackConfig, {
     //   sourceMap: true
     // }),
     new UglifyJsPlugin({
+      parallel: {
+        cache: true,
+        workers: os.cpus().length
+      },
       uglifyOptions: {
         ecma: 5,
         ie8: true,
@@ -60,6 +65,7 @@ var webpackConfig = merge(baseWebpackConfig, {
         },
         warnings: false
       },
+      exclude: /node_modules\/element-ui\/packages\/tooltip/,
       sourceMap: false,
       cache: true,
       parallel: os.cpus().length * 2

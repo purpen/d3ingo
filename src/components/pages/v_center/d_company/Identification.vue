@@ -256,7 +256,7 @@
               .then(function (response) {
                 that.isLoadingBtn = false
                 if (response.data.meta.status_code === 200) {
-                  that.$store.commit(CHANGE_USER_VERIFY_STATUS, {verify_status: 3})
+                  that.$store.commit(CHANGE_USER_VERIFY_STATUS, {demand_verify_status: 3})
                   that.$message.success('提交成功,等待审核')
                   that.$router.push({name: 'vcenterDCompanyAccreditation'})
                   return false
