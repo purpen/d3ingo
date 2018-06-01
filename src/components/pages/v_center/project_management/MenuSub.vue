@@ -12,10 +12,12 @@
         :to="{name: 'projectManagementTask', params: {id: routeId}}">任务</router-link>
       <router-link :class="[{'active': currentRoute === 'projectManagementCommunicate'}]"
         :to="{name: 'projectManagementCommunicate', params: {id: routeId}}">沟通纪要</router-link>
-      <router-link :class="[{'active': currentRoute === 'projectManagementFile'}]"
+      <router-link v-if="projectObject.pan_director_id" :class="[{'active': currentRoute === 'projectManagementFile'}]"
         :to="{name: 'projectManagementFile',
         params: {id: routeId},
         query: {id: projectObject.pan_director_id}}">文件</router-link>
+      <router-link v-else :class="[{'active': currentRoute === 'projectManagementFile'}]"
+        to="">文件</router-link>
       <router-link v-if="false" :class="[{'active': currentRoute === 'projectManagementIncomeandExpenses'}]"
         :to="{name: 'projectManagementIncomeandExpenses', params: {id: routeId}}">收支</router-link>
     </div>

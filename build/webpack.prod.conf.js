@@ -60,6 +60,7 @@ var webpackConfig = merge(baseWebpackConfig, {
         },
         warnings: false
       },
+      exclude: /node_modules\/element-ui\/packages\/tooltip/,
       sourceMap: false,
       cache: true,
       parallel: os.cpus().length * 2
