@@ -117,6 +117,11 @@
               @downloadFile="downloadFile">
             </vContent>
           </transition>
+
+          <el-col>
+            <el-pagination v-if="query.totalCount / query.pageSize > 1" class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize" :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange">
+            </el-pagination>
+          </el-col>
         </div>
       </el-col>
     </section>
@@ -447,10 +452,6 @@
         </div>
       </div>
     </section>
-    <el-col :span="16" :offset="8">
-      <el-pagination v-if="query.totalCount / query.pageSize > 1" class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize" :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange">
-      </el-pagination>
-    </el-col>
   </el-row>
 </template>
 <script>
@@ -604,7 +605,7 @@ export default {
     },
     handleCurrentChange(page) {
       this.query.page = page
-      this.$router.push({name: this.$route.name, query: {page: this.query.page}})
+      this.$router.push({name: this.$route.name, query: {id: this.$route.query.id, page: this.query.page}})
       this.isChooseAll = 'empty'
       this.getList()
     },

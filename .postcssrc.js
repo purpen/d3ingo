@@ -1,8 +1,19 @@
 // https://github.com/michael-ciniawsky/postcss-load-config
 
 module.exports = {
-  "plugins": {
-    // to edit target browsers: use "browserlist" field in package.json
-    "autoprefixer": {}
+  plugins: {
+    cssnano: {
+      autoprefixer: false,
+      zindex: false,
+      discardComments: {
+        removeAll: true
+      }
+    },
+    // 'postcss-flexbugs-fixes': {},
+    "postcss-import": {},
+    autoprefixer: {
+      browsers: ['> 1%', 'last 4 versions', 'Firefox ESR', 'not ie < 9'],
+      flexbox: 'no-2009'
+    }
   }
 }

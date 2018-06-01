@@ -135,7 +135,7 @@
     <div class="header-buttom-line"></div>
     <Message></Message>
     <el-alert
-      v-if="eventUser.role_id === 20 && eventUser.verify_status === 0"
+      v-if="showAlert"
       title="您还没有申请企业实名认证"
       type="warning"
       :closable="false"
@@ -323,6 +323,22 @@
       },
       isCompany() {
         return this.$store.state.event.user.type === 2
+      },
+      showAlert() {
+        let user = this.eventUser
+        if (user.type === 1) {
+          if (user.demand_verify_status === 0) {
+            return true
+          } else {
+            return false
+          }
+        } else {
+          if (user.verify_status === 0 && user.company_role === 20) {
+            return true
+          } else {
+            return false
+          }
+        }
       },
       isCompanyAdmin() {
         return this.$store.state.event.user.company_role > 0

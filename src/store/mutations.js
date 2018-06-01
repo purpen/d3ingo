@@ -174,7 +174,7 @@ const mutations = {
   [CHANGE_USER_VERIFY_STATUS](state, status) {
     Object.assign(state.user, status)
     console.log(state.user)
-    localStorage.setItem('leftWidth', state.user)
+    localStorage.setItem('user', JSON.stringify(state.user))
   },
   INIT_PAGE(state) {
     if (IsMobile()) {
