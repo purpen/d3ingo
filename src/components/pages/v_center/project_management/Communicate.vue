@@ -391,7 +391,6 @@
       },
       // 取消新建/编辑的编辑
       cancel(event) {
-        console.log(event)
         let isnull = true
         for (var k in this.form) {
           if (this.form[k] && this.form[k] !== '') {
@@ -422,7 +421,6 @@
             this.uploadParam['token'] = response.data.data.upToken
             this.uploadParam['x:random'] = response.data.data.random
             this.uploadUrl = response.data.data.upload_url
-            console.log(response.data.data)
           } else {
             this.$message.error(response.data.meta.message)
           }
@@ -498,7 +496,6 @@
         this.$http.get(api.communeSummariesId.format(this.currentId), {}).then((response) => {
           if (response.data.meta.status_code === 200) {
             this.form = response.data.data
-            console.log(response.data.data)
           } else {
             this.$message.error(response.data.meta.message)
           }
@@ -520,7 +517,6 @@
         this.form.random = this.randoms
         this.form.token = this.tokens
         this.form.item_id = this.itemId
-        console.log()
         this.$http.post(api.communeSummaries, this.form).then((response) => {
           if (response.data.meta.status_code === 200) {
             this.form = {}
@@ -530,7 +526,6 @@
             response.data.data.created_at = (new Date(response.data.data.created_at * 1000)).format('yyyy-MM-dd')
             response.data.data.isedit = 1
             this.itemList.unshift(response.data.data)
-            console.log(response.data.data)
           } else {
             this.$message.error(response.data.meta.message)
           }
@@ -561,7 +556,6 @@
                 break
               }
             }
-            console.log(response.data.data)
           } else {
             this.$message.error(response.data.meta.message)
           }
@@ -585,7 +579,6 @@
                 break
               }
             }
-            console.log(response.data.data)
           } else {
             this.$message.error(response.data.meta.message)
           }
@@ -686,7 +679,6 @@
           })
       },
       addTime(e) {
-        console.log(e)
         if (e) {
           this.form.expire_time = e.slice(0, 10)
         }
@@ -856,7 +848,7 @@
       this.$http.get(api.communeSummaries, {params: {item_id: this.itemId}}).then((response) => {
         if (response.data.meta.status_code === 200) {
           this.itemList = response.data.data
-          if (this.itemList.length > 0) {
+          if (this.itemList && this.itemList.length > 0) {
             for (var i = 0; i < this.itemList.length; i++) {
               this.itemList[i].isedit = 1
               this.itemList[i].created_at = (new Date(this.itemList[i].created_at * 1000)).format('yyyy-MM-dd')
@@ -865,7 +857,6 @@
               }
             }
           }
-          console.log(response.data.data)
         } else {
           this.$message.error(response.data.meta.message)
         }
