@@ -462,15 +462,15 @@ export default {
           .then((response) => {
             if (response.data.meta.status_code === 200) {
               console.log(response.data.data)
+              let project = this.$store.state.task.projectObject
               if (this.id) {
                 this.$message.success('更新成功！')
               } else {
                 this.$message.success('创建成功！')
-                let project = this.$store.state.task.projectObject
                 this.$set(project, 'quotation_id', response.data.data.id)
                 this.$store.commit('setProjectObject', project)
               }
-              this.$router.push({name: 'projectQuote', params: {id: response.data.data.id}})
+              this.$router.push({name: 'projectQuote', params: {id: project.id}})
             } else {
               this.isLoadingBtn = false
               this.$message.error(response.data.meta.message)
@@ -749,6 +749,7 @@ export default {
       // 获取报价详情
       this.$http.get(api.designQuotation, {params: {id: id}}).then((response) => {
         if (response.data.meta.status_code === 200) {
+          this.isFirst = true
           let form = response.data.data
           form.plan_format = form.plan
           this.$set(this.taxRate, 'isTax', form.is_tax)

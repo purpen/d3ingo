@@ -76,7 +76,7 @@
             <a href="javascript:void(0);" @click="returnBtn"><img src="../../../assets/images/icon/return.png"/>&nbsp;&nbsp;返回</a>
           </div>
           <div class="form-btn">
-            <el-button type="primary" size="large" class="is-custom" @click="publish">确认发布</el-button>
+            <el-button type="primary" size="large" :loading="isLoadingBtn" class="is-custom" @click="publish">确认发布</el-button>
           </div>
           <div class="clear"></div>
 
@@ -147,11 +147,11 @@
         that.isLoadingBtn = true
         that.$http({method: 'POST', url: api.release, data: {id: that.itemId}})
           .then(function (response) {
+            that.isLoadingBtn = false
             if (response.data.meta.status_code === 200) {
               that.$router.push({name: 'itemPublish', query: {verify_status: response.data.data.verify_status}})
               return false
             } else {
-              that.isLoadingBtn = false
               that.$message.error(response.data.meta.message)
             }
           })
