@@ -10,13 +10,13 @@
           <p><span>客户（甲方）：</span>{{ form.company_name }}</p>
           <p><span>联系人：</span>{{ form.contact_name }}</p>
           <p><span>联系电话：</span>{{ form.phone }}</p>
-          <p><span>地址：</span>{{ form.address }}</p>
+          <p><span>地址：</span>{{ form.province_value }} {{ form.city_value }} {{ form.area_value }} {{ form.address }}</p>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="12">
           <p><span>服务方（乙方）：</span>{{ form.design_company_name }}</p>
           <p><span>联系人：</span>{{ form.design_contact_name }}</p>
           <p><span>联系电话：</span>{{ form.design_phone }}</p>
-          <p><span>地址：</span>{{ form.design_address }}</p>
+          <p><span>地址：</span>{{ form.design_province_value }} {{ form.design_city_value }} {{ form.design_area_value }} {{ form.design_address }}</p>
         </el-col>
       </el-row>
     </div>
@@ -231,7 +231,7 @@ export default {
       this.downLoadingBtn = false
     },
     edit() {
-      this.$router.push({name: 'projectQuoteSubmit', query: {id: this.form.id}})
+      this.$router.push({name: 'projectQuoteSubmit', params: {id: this.projectObject.id}, query: {id: this.form.id}})
     },
     formatPrice(price) {
       return parseFloat(price).toLocaleString('en-US')
@@ -352,6 +352,7 @@ export default {
     margin: 0 0 20px 0;
   }
   .item-money {
+    font-size: 16px;
     color: #FF5A5F;
     white-space: nowrap;
     margin: 10px 0 0 20px;

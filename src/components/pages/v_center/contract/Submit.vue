@@ -631,23 +631,24 @@
                 that.form.commission_rate = item.item.commission_rate
                 that.form.commission = item.item.commission
 
+                that.form.demand_company_name = item.item.company_name
+                that.form.demand_company_address = item.item.company_province_value + item.item.company_city_value + item.item.address
+                that.form.demand_company_legal_person = item.item.contact_name
+                that.form.demand_company_phone = item.item.phone
+                that.form.total = parseFloat(item.item.price)
+                that.form.warranty_money = parseFloat(item.item.warranty_money)
+                that.form.first_payment = parseFloat(item.item.first_payment)
+                that.form.stage_money =
+                  (that.form.total - (that.form.warranty_money + that.form.first_payment)).toFixed(2)
+
                 // 获取当前公司基本信息
                 that.$http.get(api.designCompany, {})
                   .then(function (response) {
                     if (response.data.meta.status_code === 200) {
                       let company = response.data.data
                       if (company) {
-                        that.form.demand_company_name = item.item.company_name
-                        that.form.demand_company_address = item.item.address
-                        that.form.demand_company_legal_person = item.item.contact_name
-                        that.form.demand_company_phone = item.item.phone
-                        that.form.total = parseFloat(item.item.price)
-                        that.form.warranty_money = parseFloat(item.item.warranty_money)
-                        that.form.first_payment = parseFloat(item.item.first_payment)
-                        that.form.stage_money =
-                          (that.form.total - (that.form.warranty_money + that.form.first_payment)).toFixed(2)
                         that.form.design_company_name = company.company_name
-                        that.form.design_company_address = company.address
+                        that.form.design_company_address = company.province_value + company.city_value + company.address
                         that.form.design_company_legal_person = company.contact_name
                         that.form.design_company_phone = company.phone
                       }

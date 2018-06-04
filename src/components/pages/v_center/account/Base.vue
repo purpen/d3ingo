@@ -12,7 +12,7 @@
 
             <el-row :gutter="gutter" :class="['item', isMob ? 'item-m item-mAvatar' : '']">
               <el-col :span="titleSpan" class="title">
-                <p>我的账号</p>
+                <p>账号</p>
               </el-col>
               <el-col :xs="12" :sm="20" :md="20" :lg="20" class="content avatarcontent">
                 <p>{{user.account}}</p>

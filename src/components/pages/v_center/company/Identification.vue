@@ -23,16 +23,20 @@
                 </el-col>
               </el-row>
 
-              <el-form-item label="证件类型" prop="company_type" class="fullwidth">
-                <el-select v-model.number="form.company_type" style="width: 350px;" placeholder="请选择证件类型">
-                  <el-option
-                    v-for="(d, index) in certificateTypeOptions"
-                    :label="d.label"
-                    :key="index"
-                    :value="d.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
+              <el-row :gutter="24">
+                <el-col :span="isMob ? 24 : 12">
+                  <el-form-item label="证件类型" prop="company_type" class="fullwidth">
+                    <el-select v-model.number="form.company_type" placeholder="请选择证件类型">
+                      <el-option
+                        v-for="(d, index) in certificateTypeOptions"
+                        :label="d.label"
+                        :key="index"
+                        :value="d.value">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
 
               <el-row :gutter="24">
                 <el-col :span="isMob ? 24 : 12">
@@ -71,16 +75,20 @@
                 </el-col>
               </el-row>
 
-              <el-form-item label="证件类型" prop="document_type" class="fullwidth">
-                <el-select v-model.number="form.document_type" placeholder="请选择证件类型">
-                  <el-option
-                    v-for="(d, index) in documentTypeOptions"
-                    :label="d.label"
-                    :key="index"
-                    :value="d.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
+              <el-row :gutter="24">
+                <el-col :span="isMob ? 24 : 12">
+                  <el-form-item label="证件类型" prop="document_type" class="fullwidth">
+                    <el-select v-model.number="form.document_type" placeholder="请选择证件类型">
+                      <el-option
+                        v-for="(d, index) in documentTypeOptions"
+                        :label="d.label"
+                        :key="index"
+                        :value="d.value">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
 
               <el-row :gutter="24">
                 <el-col :span="isMob ? 24 : 12">
@@ -397,6 +405,7 @@
                 return false
               })
           } else {
+            that.$message.error('验证失败，请检查信息')
             return false
           }
         })
@@ -610,12 +619,15 @@
     padding: 0;
   }
 
+
   .form-btn {
     float: right;
+    font-size: 0;
   }
 
   .form-btn button {
     width: 120px;
+    margin-left: 15px;
   }
 
   .form-btn-m {

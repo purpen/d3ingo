@@ -61,7 +61,7 @@
               </el-col>
               <el-col :span="contentSpan" class="content">
 
-                <el-form label-position="left" label-width="50px" style="width: 300px;" v-if="element.contact">
+                <el-form label-position="left" label-width="50px" v-if="element.contact">
                   <el-form-item label="姓名" style="margin: 0">
                     <el-input v-model="form.contact_name"></el-input>
                   </el-form-item>
@@ -93,11 +93,11 @@
                 <p>地址</p>
               </el-col>
               <el-col :span="contentSpan" class="content">
-                <el-form label-position="top" label-width="50px" style="width: 90%;" v-show="element.address">
+                <el-form label-position="top" label-width="50px" v-show="element.address">
                   <region-picker :provinceProp="province" :cityProp="city" :districtProp="district"
                                  :isFirstProp="isFirst" titleProp="" propStyle="margin: 0;"
                                  @onchange="change"></region-picker>
-                  <el-form-item label="" prop="address" style="margin: 0">
+                  <el-form-item label="" prop="address" style="margin-top: 10px">
                     <el-input v-model="form.address" name="address" ref="address" placeholder="街道地址"></el-input>
                   </el-form-item>
                 </el-form>
