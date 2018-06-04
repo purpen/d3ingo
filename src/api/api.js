@@ -374,13 +374,15 @@ export default {
   designStageUpdate: '/designStage/update', // PUT 编辑
   designStageDelete: '/designStage/delete', // DELETE 删除
   designStage: '/designStage', // GET 详情
+  designStageCompletes: '/designStage/completes', // PUT 编辑完成状态
 
   // 子项目
   designSubstageCreate: '/designSubstage/create', // POST 创建
   designSubstageDelete: '/designSubstage/delete', // DELETE 删除
   designSubstage: '/designSubstage', // GET 子阶段详情
   designSubstageUpdate: '/designSubstage/update', // PUT 子任务更新
-  updateDuration: '/designSubstage/updateDuration', // put 批量修改子任务的时间
+  designSubstageCompletes: '/designSubstage/completes', // PUT 编辑完成状态
+  updateDuration: '/designSubstage/updateDuration', // PUT 批量修改子任务的时间
   // 阶段节点
   dsignStageNodeCreate: '/designStageNode/create', // POST 创建
   designStageNodeDelete: '/designStageNode/delete', // DELETE 删除
