@@ -176,15 +176,16 @@
           <p class="fx fx-icon-close-sm" @click="cancelTack()"></p>
         </div>
         <el-progress 
-        :percentage="50"
-        :show-text="false"
-        :stroke-width="20"
-        status="success"
+          :percentage="50"
+          :show-text="false"
+          :stroke-width="20"
+          status="success"
         ></el-progress>
         <ul class="aside-content">
           <li class="designStage-name">
             <span>
-              <el-checkbox v-model="checked"></el-checkbox>
+              <el-checkbox v-model="formTackstatus" @change="desCompletes()">
+              </el-checkbox>
             </span>
             <el-input 
               v-model="formTack.name"
@@ -243,7 +244,7 @@
                 v-model="formTack.duration"
                 :maxlength="3"
                 class="noborder"
-                @blur="upDateDuration()"
+                @blur.stop="upDateDuration()"
               >
                 <template slot="append">工作日</template>
               </el-input>
@@ -504,14 +505,20 @@
                     </el-col>
 
                     <el-col>
-                      <div class="item-text-content">
-                        <span>项目阶段</span>
-                        <ul>
-                          <li>阶段</li>
-                          <li>投入时间</li>
-                          <li>完成度</li>
-                        </ul>
-                      </div>
+                      <el-row>
+                        <el-col :span="11">
+                          项目阶段
+                        </el-col >
+                        <el-col :span="3" class="text-center">
+                          阶段
+                        </el-col>
+                        <el-col :span="6" class="text-center">
+                          投入时间
+                        </el-col>
+                        <el-col :span="4" class="text-center">
+                          完成度
+                        </el-col>
+                      </el-row>
                     </el-col>
 
                   </el-row>
@@ -520,20 +527,29 @@
                 <div class="item-text-list" v-for="(des,indexdes) in designStageLists" :key="indexdes" @click="edit(des)">
                   <el-row >
                     <el-col>
-                      <div class="item-text-content">
-                        <span>{{des.name}}</span>
-                        <ul>
-                          <li>{{des.name}}</li>
-                          <li>{{des.duration}}</li>
-                          <li>0%</li>
-                        </ul>
-                      </div>
+                       <el-row>
+                        <el-col :span="11">
+                          <div class="item-desname">
+                            <i></i>
+                            {{des.name}}
+                          </div>
+                        </el-col>
+                        <el-col :span="3" class="text-center">
+                            1个
+                        </el-col>
+                        <el-col :span="6" class="text-center">
+                            {{des.duration}}天
+                        </el-col>
+                        <el-col :span="4" class="text-center">
+                          0%
+                        </el-col>
+                      </el-row>
                     </el-col>
 
                     <el-col>
                       <ul class="paycontent">
-                        
-                        <li>
+                        <li class="item-deliver">
+                          <i></i>
                           交付内容:
                         </li>
                         <li>
@@ -582,32 +598,42 @@
                       :key="indextack+ 'y'" 
                       :style="{
                         left:tack.left*30+'px',
-                        width:tack.duration*30+'px',
+                        width:tack.duration*30-2+'px',
                       }"
-                      :class="['item-tacklist',
-                      {
-                        'bgno': tack.status === 0?(tack.left+parseInt(tack.duration) <= newleft?true:false):false,
-                        'bged': tack.status === 1?true:false
+                      :class="['item-tacklist',{
+                        'bgno-border': tack.status === 0?(tack.left+parseInt(tack.duration) <= newleft?true:false):false,
+                        'bged-border': tack.status === 1?true:false
                       }]"
+                      @click.stop.self="editTack(tack,c)"
                       >
                       <div class="bging item-tacking"
                         :style="{
-                        width:(tack.left<=newleft+1 && newleft<(parseInt(tack.left)+parseInt(tack.duration)))?
-                        (parseInt(newleft)+1-parseInt(tack.left))*30 +'px':tack.duration*30+'px',
-                      }"
-                      v-if="tack.status !== 1&&tack.left <= newleft+1&&newleft<(parseInt(tack.left)+parseInt(tack.duration))"
+                          width:(tack.left<=newleft && newleft<(parseInt(tack.left)+parseInt(tack.duration)))?
+                            (parseInt(newleft)+1-parseInt(tack.left))*30-3+'px':tack.duration*30-3+'px',
+                          }"
+                        v-if="tack.status !== 1&&tack.left <= newleft&&newleft<(parseInt(tack.left)+parseInt(tack.duration))"
+                        @click.stop="editTack(tack,c)"
                       >
+                      </div>
+                      <div :class="['item-tacking',{
+                        'bgno': tack.status === 0?(tack.left+parseInt(tack.duration) <= newleft?true:false):false,
+                        'bged': tack.status === 1?true:false
+                      }]"
+                      @click.stop="editTack(tack,c)"
+                      v-else>
                       </div>
                       <i class="item-start" v-if="indextack === 0"></i>
                       <i 
-                        class="item-node" 
-                        v-if="tack.design_stage_node" @click.stop="editNode(tack.design_stage_node)"></i>
+                        class="item-node"
+                        v-if="tack.design_stage_node"
+                        @click.stop="editNode(tack.design_stage_node)">
+                      </i>
                       <div class="node-name" v-if="tack.design_stage_node">
                         <p :style="{width:tack.duration*30+'px'}">
                           {{tack.design_stage_node.name}}
                         </p>
                       </div>
-                      <div class="task-name text-center" @click.stop="editTack(tack,c)">
+                      <div class="task-name text-center">
                         {{tack.name}}
                       </div>
                       
@@ -618,7 +644,7 @@
                       {{indextack}}
                     </div>
                     <div  v-if="(sort==='isday'||sort==='isweek')" class="item-tacklist-last" :style="{left:(c.left+1)*30 + 'px'}">
-                      <div  @click="addtack(c)">+</div>
+                      <div  @click="addtack(c)"></div>
                       <span  @click="addtack(c)">添加任务</span>
                     </div>
                     <div  v-if="sort==='ismonth'" class="item-tacklist-last" :style="{left:(c.left+1)*6.77 + 'px'}">
@@ -728,6 +754,8 @@ export default {
       endTimes: [], // 所有时间合集
       formNodeowner: false, // 甲方是否参与
       formupstatus: false, // 是否完成项目
+      formTackstatus: false, // 是否完成任务
+      formTackup: {},
       rules: {
         duration: [
           {
@@ -929,6 +957,12 @@ export default {
       if (isNaN(res.start_time)) {
         res.start_time = Math.round(new Date(res.start_time).getTime() / 1000)
       }
+      if (res.design_substage && res.design_substage.length > 0) {
+        for (var i = 0; i < res.design_substage.length; i++) {
+          this.endTimes.push(parseInt(res.design_substage[i].start_time))
+          this.endTimes.push(parseInt(res.design_substage[i].start_time) + parseInt(res.design_substage[i].duration) * 86400)
+        }
+      }
       this.endTimes.push(parseInt(res.start_time))
       this.endTimes.push(parseInt(res.start_time) + parseInt(res.duration) * 86400)
       this.sortdate(this.endTimes)
@@ -998,6 +1032,8 @@ export default {
       if (!isNaN(des.start_time)) {
         this.formupStart = (new Date(des.start_time * 1000)).format('yyyy-MM-dd')
       } else this.formupStart = des.start_time
+      this.istaskedit = false
+      this.isnodeedit = false
       this.isitemedit = true
       this.formupstatus = Boolean(this.formup.status)
     },
@@ -1060,12 +1096,13 @@ export default {
       this.itemdesname = des.name
       this.isitemedit = false
       this.isnodeedit = false
-      this.istaskedit = true
+      this.istaskedit = false
       if (type === 1) {
         this.istaskedit = false
       }
       this.indesignStage = des
       var time = []
+      this.formTack = {}
       // 有任务时
       if (des.design_substage) {
         for (var i = 0; i < des.design_substage.length; i++) {
@@ -1223,10 +1260,34 @@ export default {
         this.formTack.log = des.execute_user.logo_image.logo
         delete this.formTack.execute_user
       }
+      this.formTackstatus = Boolean(this.formTack.status)
       this.isitemedit = false
       this.isnodeedit = false
       this.istaskedit = true
       this.formTacktime = (new Date(this.formTack.start_time * 1000)).format('yyyy-MM-dd')
+    },
+    // 编辑子任务状态
+    desCompletes() {
+      let self = this
+      self.formTackup.status = Number(self.formTackstatus)
+      console.log(self.formTackup.status)
+      self.formTackup.id = self.formTack.id
+      self.$http.put(api.designSubstageCompletes.format(self.formTackup.id), self.formTackup).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          let desTup = self.indesignStage.design_substage
+          for (var i = 0; i < desTup.length; i++) {
+            if (desTup[i].id === self.formTackup.id) {
+              desTup[i].status = response.data.data.status
+              // self.$set(self.indesignStage.design_substage, i, res)
+            }
+          }
+        } else {
+          self.$message.error(response.data.meta.message)
+        }
+      }).catch((error) => {
+        self.$message.error(error.message)
+        console.error(error.message)
+      })
     },
     // 取消编辑子阶段
     cancelTack() {
@@ -1544,11 +1605,13 @@ export default {
     width:30px;
     height:30px;
     background:#FF5A5F;
-    border-radius: 50%;
-    font-size:28px;
-    text-align: center;
-    color:#fff;
     margin-bottom:20px;
+    background: url('../../../../assets/images/member/add02@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .add-item>div:hover {
+    background: url('../../../../assets/images/member/add-hover@2x.png') 0 0 no-repeat;
+    background-size: contain;
   }
   .add-item>p {
     cursor: pointer;
@@ -1898,93 +1961,95 @@ export default {
     margin-bottom:40px;
   }
   .item-header>li {
-    flex:1;
-    margin:20px 0px;
-    height:80px;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
+    flex: 1;
+    margin: 20px 0px;
+    height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
   .item-header>li>div {
     font-size: 20px;
     color: #222222;
-    margin-bottom:10px;
+    margin-bottom: 10px;
   }
   .item-header>li:not(:first-child) {
     border-left: 1px solid #d2d2d2;
   }
   .item-task>ul {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
   }
   .item-task>ul>li {
-    flex:1;
-    display:flex;
-    align-items:center;
-    margin-right:10px;
-    border:1px solid #d2d2d2;
-    border-radius:4px;
-    padding:20px 0;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+    border: 1px solid #d2d2d2;
+    border-radius: 4px;
+    padding: 20px 0;
   }
   .item-task>ul>li:not(:first-child) {
     margin-left: 10px;
   }
   .item-task>ul>li>div {
-    margin-left:20px;
+    margin-left: 20px;
   }
   .item-task>ul>li>div>.fx-6 {
-    margin-top:10px;
+    margin-top: 10px;
   }
   .item-content {
-    min-height:300px;
-    margin-bottom:50px;
+    min-height: 300px;
+    margin-bottom: 50px;
   }
   .item-lists {
     border:1px solid #d2d2d2;
     border-radius: 4px;
+    font-size: 12px;
+    color:#666666;
   }
   .item-text-content {
-    display:flex;
-    justify-content:space-between;
+    display: flex;
+    justify-content: space-between;
   }
   .item-text-content ul {
-    display:flex;
+    display: flex;
     justify-content: space-between;
   }
   .item-text-content ul>li {
-    padding-left:5px;
+    padding-left: 5px;
   }
   .item-text-Header {
-    border-bottom:1px solid #d2d2d2;
+    border-bottom: 1px solid #d2d2d2;
     border-right: 1px solid #d2d2d2;
-    padding:10px 10px 0px 20px;
-    height:55px;
+    padding: 10px 10px 0px 30px;
+    height: 55px;
   }
   .item-text-Header>.el-row>.el-col {
-    margin-bottom: 10px;
+    padding-bottom: 8px;
   }
   .popover {
     position: relative;
   }
   .popover:focus ul {
-    display:block;
+    display: block;
   }
   .search-popover {
-    display:none;
+    display: none;
     position: absolute;
-    width:180px;
-    z-index:5;
+    width: 180px;
+    z-index: 5;
     background:#fff;
     border-radius: 4px;
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
-    top:20px;
+    top: 20px;
   }
   .search-popover>li {
-    padding:10px;
-    font-size:1.4rem;
+    padding: 10px;
+    font-size: 1.4rem;
   }
   .search-popover>li:hover {
     background:#f7f7f7;
@@ -1992,21 +2057,49 @@ export default {
 
   .item-text-list {
     height: 180px;
-    padding:20px 10px 10px 14px;
+    padding: 20px 10px 10px 24px;
     background:#f7f7f7;
-    border-bottom:1px solid #d2d2d2;
+    border-bottom: 1px solid #d2d2d2;
     border-right: 1px solid #d2d2d2;
     border-left:5px solid transparent;
     overflow: hidden;
   }
+  .item-desname i {
+    position: absolute;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    left: -29px;
+    top: -5px;
+    background:url(../../../../assets/images/tools/cloud_drive/permission/more@2x.png) 0 0 no-repeat;
+    background-size: contain;
+    transform: rotate(90deg);
+  }
   .item-text-list:hover {
     border-left:5px solid #FF5A5F;
-    cursor:pointer;
-    
+    cursor: pointer;
+  }
+  .item-desname {
+    font-size: 16px;
+    color: #222222;
+    position: relative;
+  }
+  .item-deliver {
+    position: relative;
+  }
+  .item-deliver i {
+    position: absolute;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    left: 0px;
+    top: 5px;
+    background: url('../../../../assets/images/tools/project_management/Deliver@2x.png') 0 0 no-repeat;
+    background-size: contain;
   }
   .paycontent>li {
-    padding:10px 0px 0px 20px;
-    word-wrap:break-word;
+    padding: 10px 0px 0px 30px;
+    word-wrap: break-word;
   }
   .paycontent>li:nth-child(2) {
     height: 110px;
@@ -2014,10 +2107,10 @@ export default {
     line-height: 20px;
   }
   .item-chart {
-    height:100%;
+    height: 100%;
     position: relative;
     overflow: hidden;
-    z-index:3;
+    z-index: 3;
   }
   .item-chart-list {
     position:absolute;
@@ -2070,49 +2163,48 @@ export default {
   }
   .item-tacklist {
     position:absolute;
+    z-index:1;
     top:75px;
-    height:30px;
-    line-height:30px;
+    height:14px;
+    line-height:14px;
     width:350%;
-    border-radius: 4px;
     background:rgba(101,166,255,0.05);
     text-align: center;
-    cursor: pointer;
     border:1px solid #65A6FF;
+    cursor: pointer;
   }
   .item-tacking {
-    height:28px;
-    border-radius: 4px;
-    position: absolute;
+    height:13px;
+    cursor: pointer;
   }
   .task-name {
-    height:100%;
     width:100%;
     overflow: hidden;
     text-overflow: ellipsis;
-    position:relative
+    position: absolute;
+    bottom:-20px;
   }
   .item-tacklist-last {
     position:absolute;
     display:flex;
     justify-content: space-around;
     align-items: center;
-    top:77px;
+    top:70px;
     height:25px;
     color:#FF5A5F;
   }
   .item-tacklist-last>div {
-    display:inline-block;
-    background:#FF5A5F;
-    color:#fff;
-    border-radius: 50%;
-    width:25px;
-    height:25px;
-    text-align: center;
-    line-height:24px;
-    font-size:25px;
-    margin:auto 10px;
+    display: inline-block;
+    width: 25px;
+    height: 25px;
     cursor: pointer;
+    background: url('../../../../assets/images/member/add02@2x.png') 0 0 no-repeat;
+    background-size: contain;
+    margin:0 6px 0 10px;
+  }
+  .item-tacklist-last>div:hover {
+    background: url('../../../../assets/images/member/add-hover@2x.png') 0 0 no-repeat;
+    background-size: contain;
   }
   .item-tacklist-last>span {
     cursor: pointer;
@@ -2126,7 +2218,7 @@ export default {
     background:url('../../../../assets/images/tools/project_management/ProjectStart@2x.png') 0 0 no-repeat;
     background-size: contain;
     position: absolute;
-    top:-30px;
+    top:-27px;
     left:0;
     width:24px;
     height:24px
@@ -2135,7 +2227,7 @@ export default {
     background:url('../../../../assets/images/tools/project_management/Node02@2x.png') 0 0 no-repeat;
     background-size: contain;
     position: absolute;
-    top:-30px;
+    top:-27px;
     right:0;
     width:24px;
     height:24px
@@ -2144,7 +2236,7 @@ export default {
     background:url('../../../../assets/images/tools/project_management/Node03@2x.png') 0 0 no-repeat;
     background-size: contain;
     position: absolute;
-    top:-30px;
+    top:-27px;
     right:0;
     width:24px;
     height:24px
@@ -2153,7 +2245,7 @@ export default {
     background:url('../../../../assets/images/tools/project_management/NonNode@2x.png') 0 0 no-repeat;
     background-size: contain;
     position: absolute;
-    top:-30px;
+    top:-27px;
     right:0;
     width:24px;
     height:24px
@@ -2162,12 +2254,12 @@ export default {
     position: absolute;
     right:12px;
     border-right:2px dashed #d2d2d2;
-    bottom:-30px;
-    height:30px;
+    bottom:-40px;
+    height:40px;
   }
   .node-name p {
     position: absolute;
-    top: 25px;
+    top: 40px;
     right: -15px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -2184,21 +2276,35 @@ export default {
     height:100%;
   }
   .bgc {
-    background:#bce6f0;
+    background:#65A6FF;
+    opacity: 0.1;
   }
   .bgwill {
     background:rgba(101,166,255,0.05);
   }
   .bging {
-    background:#07b7e4;
+    background:#65A6FF;
+    border:1px solid #65A6FF;
   }
   .bgno {
-    background:#FF8B8F;
+    background:#FF5A5F;
   }
   .bged {
     background:#00AC84;
   }
-    .document{
+  .bged, .bgno, .bging {
+    opacity: 0.6;
+  }
+  .bged:hover,.bgno:hover,.bging:hover{
+    opacity: 0.8;
+  }
+  .bgno-border {
+    border:1px solid #FF5A5F;
+  }
+  .bged-border {
+    border:1px solid #00AC84;
+  }
+  .document{
     background: url('../../../../assets/images/tools/cloud_drive/type/document@2x.png') 0 0 no-repeat;
     background-size: contain;
   }
