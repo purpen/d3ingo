@@ -241,7 +241,7 @@
             <div>
               <el-input 
                 placeholder="投入时间设置" 
-                v-model="formTack.duration"
+                v-model="formTackduration"
                 :maxlength="3"
                 class="noborder"
                 @blur.stop="upDateDuration()"
@@ -616,8 +616,8 @@
                       >
                       </div>
                       <div :class="['item-tacking',{
-                        'bgno': tack.status === 0 && ((tack.left+parseInt(tack.duration)) <= newleft),
-                        'bged': tack.status === 1
+                        'bgno': tack.status === 0?(tack.left+parseInt(tack.duration) <= newleft?true:false):false,
+                        'bged': tack.status === 1?true:false
                       }]"
                       @click.stop="editTack(tack,c)"
                       v-else>
@@ -674,7 +674,7 @@
             </el-col>
           </el-row>
         <div  class="add-item" >
-          <div @click="isItemStage=true"></div>
+          <div @click="isItemStage=true">+</div>
           <p @click="isItemStage=true">添加项目阶段</p>
         </div>
       </div>
@@ -755,6 +755,7 @@ export default {
       formNodeowner: false, // 甲方是否参与
       formupstatus: false, // 是否完成项目
       formTackstatus: false, // 是否完成任务
+      formTackduration: '',
       formTackup: {},
       rules: {
         duration: [
@@ -926,11 +927,9 @@ export default {
     },
     // 项目到最早的距离
     itemtostart(item) {
-      let et = new Date(this.endTimes[0])
-      // let xin = Date.parse(new Date(et.getFullYear() + '-' + (et.getMonth() + 1) + '-' + 1)) / 1000
-      let xin = Date.parse(et).date_format().format('yyyy-MM')
-      let xin2 = Date.parse(new Date(xin)) / 1000
-      return Math.floor((item - xin2) / 86400)
+      let et = new Date(this.endTimes[0] * 1000)
+      let xin = Date.parse(new Date(et.getFullYear() + '-' + (et.getMonth() + 1) + '-' + 1)) / 1000
+      return Math.floor((item - xin) / 86400)
     },
     // 时间排序
     sortdate(arr) {
@@ -971,19 +970,15 @@ export default {
       this.totaldays = this.dateDay(this.endTimes[0], this.endTimes[this.endTimes.length - 1])
       this.newDay()
       this.newtostart()
-      let reset = new Date(this.endTimes[0])
-      // let resxin = Date.parse(new Date(reset.getFullYear() + '-' + (reset.getMonth() + 1) + '-' + 1)) / 1000
-      let xin2 = Date.parse(reset).date_format().format('yyyy-MM')
-      let resxin = Date.parse(new Date(xin2)) / 1000
+      let reset = new Date(this.endTimes[0] * 1000)
+      let resxin = Date.parse(new Date(reset.getFullYear() + '-' + (reset.getMonth() + 1) + '-' + 1)) / 1000
       res.left = Math.floor(((res.start_time - resxin) / 86400))
       return res
     },
     // 任务显示
     tackleft(des) {
-      let et = new Date(this.endTimes[0])
-      let xin2 = Date.parse(et).date_format().format('yyyy-MM')
-      let xin = Date.parse(new Date(xin2)) / 1000
-      // let xin = Date.parse(new Date(et.getFullYear() + '-' + (et.getMonth() + 1) + '-' + 1)) / 1000
+      let et = new Date(this.endTimes[0] * 1000)
+      let xin = Date.parse(new Date(et.getFullYear() + '-' + (et.getMonth() + 1) + '-' + 1)) / 1000
       for (var tl = 0; tl < des.length; tl++) {
         if (!des[tl].design_substage) {
           let itemd = Date.parse(new Date(des[tl].start_time)) / 1000
@@ -1153,7 +1148,8 @@ export default {
     },
     // 事件和日期改变
     upDateDuration(date) {
-      if (Date.parse(new Date(this.formTacktime)) / 1000 !== this.formTack.start_time || this.formTack.duration) {
+      if (Date.parse(new Date(this.formTacktime)) / 1000 !== this.formTack.start_time || this.formTackduration !== this.formTack.duration) {
+        this.formTack.duration = this.formTackduration
         if (isNaN(this.formTack.duration) || !this.formTack.duration) {
           this.$message.error('输入正确的投入天数')
           return
@@ -1259,6 +1255,7 @@ export default {
       this.indesignStage = c
       this.itemdesname = c.name
       this.formTack = {...des}
+      this.formTackduration = des.duration
       if (this.formTack.design_stage_node) {
         this.formNode.name = des.design_stage_node.name
       } else this.formNode.name = ''
@@ -2001,7 +1998,7 @@ export default {
   .item-task>ul>li:not(:first-child) {
     margin-left: 10px;
   }
-  .item-task>ul>li>div {
+  .item-task>ugl>li>div {
     margin-left: 20px;
   }
   .item-task>ul>li>div>.fx-6 {
