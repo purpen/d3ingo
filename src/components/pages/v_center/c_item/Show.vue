@@ -1335,6 +1335,10 @@ const vQuoteView = () => import('@/components/block/QuoteView')
     text-align: right;
     padding: 10px;
     border-top: 1px solid #E6E6E6;
+    font-size: 0;
+  }
+  .btn-quo button:nth-child(2) {
+    margin-left: 15px;
   }
 
   .contract-item {
@@ -1624,6 +1628,13 @@ const vQuoteView = () => import('@/components/block/QuoteView')
       position: absolute;
       right: 0;
       top: -28px;
+    }
+    .btn-quo button {
+      width: 100%
+    }
+    
+    .btn-quo button:nth-child(2) {
+      margin: 20px 0 0 0
     }
   }
 

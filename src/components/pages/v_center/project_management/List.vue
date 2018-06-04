@@ -12,10 +12,10 @@
             <div class="clearfix">
               <h3 class="fl" @click="routePush(ele.id)">{{ele.name}}</h3>
               <div class="fr">
-                <p class="fr operate" tabindex="-1" ref="operate">
+                <p class="fr operate" tabindex="-1" ref="operate1">
                   <span class="more">
                   </span>
-                  <span class="delete" @click="projectDelete(ele.id, index)">
+                  <span class="delete" @click="projectDelete(ele.id, index, 'collect')">
                     删除
                   </span>
                 </p>
@@ -31,7 +31,7 @@
         </ul>
         <h2 v-if="projectList.length">我拥有的项目</h2>
         <ul class="project-list">
-          <li class="create" @click="showCover" v-if="isCompanyAdmin">
+          <li class="create" @click="showCover" v-if="isCompanyAdmin && projectList.length">
             <p @click="showCover">
               <i></i>
               <span>创建新项目</span>
@@ -62,6 +62,7 @@
         <div v-if="!projectList.length">
           <div class="empty"></div>
           <p class="noMsg">暂时没有项目， 休息一下～</p>
+          <p class="noMsg"><button @click="showCover" class="red-button middle-button">创建项目</button></p>
         </div>
       </div>
       <el-pagination v-show="query.totalCount > query.pageSize" class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize" :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange">
@@ -121,7 +122,10 @@ export default {
         pageSize: 11,
         totalPges: 0,
         totalCount: 0
-      }
+      },
+      isOpen: true,
+      isOpen2: true,
+      isOpen3: true
     }
   },
   methods: {
@@ -166,28 +170,33 @@ export default {
     },
     createProject() {
       if (this.projectName) {
-        this.$http.post(api.createDesignProject, {
-          name: this.projectName,
-          description: this.projectSummary,
-          level: this.importance
-        })
-        .then(res => {
-          if (res.data.meta.status_code === 200) {
-            res.data.data.level = Number(res.data.data.level)
-            this.projectList.unshift(res.data.data)
-            let isOffer = this.show.writeOffer
-            this.closeCover()
-            // 创建成功跳转到报价提交页
-            if (isOffer) {
-              this.$router.push({name: 'projectQuoteSubmit', params: {id: res.data.data.id}})
-              return
+        if (this.isOpen) {
+          this.isOpen = false
+          this.$http.post(api.createDesignProject, {
+            name: this.projectName,
+            description: this.projectSummary,
+            level: this.importance
+          })
+          .then(res => {
+            this.isOpen = true
+            if (res.data.meta.status_code === 200) {
+              res.data.data.level = Number(res.data.data.level)
+              this.projectList.unshift(res.data.data)
+              let isOffer = this.show.writeOffer
+              this.closeCover()
+              // 创建成功跳转到报价提交页
+              if (isOffer) {
+                this.$router.push({name: 'projectQuoteSubmit', params: {id: res.data.data.id}})
+                return
+              }
+            } else {
+              this.$message.error(res.data.meta.message)
             }
-          } else {
-            this.$message.error(res.data.meta.message)
-          }
-        }).catch(err => {
-          console.error(err)
-        })
+          }).catch(err => {
+            this.isOpen = true
+            console.error(err)
+          })
+        }
       } else {
         this.$message.error('请填写项目名称')
       }
@@ -205,18 +214,45 @@ export default {
     routePush(id) {
       this.$router.push({name: 'projectManagementOverView', params: {id: id}})
     },
-    projectDelete(id, index) {
-      this.$http.delete(api.deleteDesignProject, {params: {id: id}}).then(res => {
-        this.$refs.operate[index].blur()
-        if (res.data.meta.status_code === 200) {
-          this.projectList.splice(index, 1)
-        } else {
-          this.$message.error(res.data.meta.message)
-        }
-      }).catch(err => {
-        console.error(err)
-        this.$message.error(err.message)
-      })
+    projectDelete(id, index, str) {
+      if (this.isOpen3) {
+        this.isOpen3 = false
+        this.$http.delete(api.deleteDesignProject, {params: {id: id}})
+        .then(res => {
+          this.isOpen3 = true
+          if (str) {
+            this.$refs.operate1[index].blur()
+          } else {
+            this.$refs.operate[index].blur()
+          }
+          if (res.data.meta.status_code === 200) {
+            if (str) {
+              this.projectList.forEach((item, ind, array) => {
+                if (item.id === id) {
+                  array.splice(ind, 1)
+                }
+              })
+              this.collectList.forEach((item, ind, array) => {
+                if (item.id === id) {
+                  array.splice(ind, 1)
+                }
+              })
+            } else {
+              this.projectList.forEach((item, ind, array) => {
+                if (item.id === id) {
+                  array.splice(ind, 1)
+                }
+              })
+            }
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(err => {
+          this.isOpen3 = true
+          console.error(err)
+          this.$message.error(err.message)
+        })
+      }
     },
     handleCurrentChange(page) {
       this.query.page = page
@@ -224,38 +260,43 @@ export default {
       this.getProjectList()
     },
     setCollect(id, collect) {
-      collect = collect === 1 ? 0 : 1
-      this.$http.put(api.designProjectCollect, {id: id, collect: collect})
-      .then((res) => {
-        if (res.data.meta.status_code === 200) {
-          this.$nextTick(_ => {
-            if (collect === 1) {
-              this.projectList.forEach((item) => {
-                if (item.id === id) {
-                  this.$set(item, 'collect', collect)
-                  this.collectList.unshift(item)
-                }
-              })
-            } else {
-              this.projectList.forEach((item) => {
-                if (item.id === id) {
-                  this.$set(item, 'collect', collect)
-                }
-              })
-              this.collectList.forEach((item, index, array) => {
-                if (item.id === id) {
-                  array.splice(index, 1)
-                }
-              })
-            }
-          })
-        } else {
-          this.$message.error(res.data.meta.message)
-        }
-      }).catch(err => {
-        console.error(err.message)
-        this.$message.error(err.message)
-      })
+      if (this.isOpen2) {
+        this.isOpen2 = false
+        collect = collect === 1 ? 0 : 1
+        this.$http.put(api.designProjectCollect, {id: id, collect: collect})
+        .then((res) => {
+          this.isOpen2 = true
+          if (res.data.meta.status_code === 200) {
+            this.$nextTick(_ => {
+              if (collect === 1) {
+                this.projectList.forEach((item) => {
+                  if (item.id === id) {
+                    this.$set(item, 'collect', collect)
+                    this.collectList.unshift(item)
+                  }
+                })
+              } else {
+                this.projectList.forEach((item) => {
+                  if (item.id === id) {
+                    this.$set(item, 'collect', collect)
+                  }
+                })
+                this.collectList.forEach((item, index, array) => {
+                  if (item.id === id) {
+                    array.splice(index, 1)
+                  }
+                })
+              }
+            })
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(err => {
+          this.isOpen2 = true
+          console.error(err.message)
+          this.$message.error(err.message)
+        })
+      }
     }
   },
   computed: {
@@ -285,6 +326,14 @@ export default {
     '$route'(to, from) {
       // 对路由变化作出响应...
       // this.getProjectList()
+    },
+    projectList(val) {
+      this.collectList = []
+      this.projectList.forEach((item, index) => {
+        if (item.collect === 1) {
+          this.collectList.push(item)
+        }
+      })
     }
   }
 }

@@ -360,7 +360,7 @@
   }
 
   .el-form-item {
-    margin-bottom: 15px;
+    margin-bottom: 22px;
   }
 
   .item {
