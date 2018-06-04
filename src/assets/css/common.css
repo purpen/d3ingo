@@ -10,7 +10,9 @@
 .clear {
   clear: both;
 }
-
+.flex {
+  display: flex;
+}
 .clearfix::after {
   content: '';
   display: block;
@@ -218,6 +220,7 @@
 }
 .full-red-button,
 .el-button--primary,
+.el-button--primary:focus,
 .el-button--danger {
   background: #ff5a5f;
   border: 1px solid #ff5a5f;
@@ -295,6 +298,26 @@ button.el-button.is-custom.is-disabled,
 }
 .fx-icon-nothing-close-error:hover {
   color: #ff5a5f!important
+}
+
+/* border-radius */
+.border_radius {
+  border-radius: 4px
+}
+.left-border_radius {
+  border-radius: 4px 0 0 4px
+}
+.right-border_radius {
+  border-radius: 0 4px 4px 0
+}
+.top-border_radius {
+  border-radius: 4px 4px 0 0
+}
+.bottom-border_radius {
+  border-radius: 0 0 4px 4px
+}
+.no-border_radius {
+  border-radius: 0;
 }
 @media screen and (min-width: 1200px) {
   .vcenter-right-plus {

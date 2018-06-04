@@ -106,7 +106,7 @@
                   <region-picker :provinceProp="province" :cityProp="city" :districtProp="district"
                                  :isFirstProp="isFirst" titleProp="" propStyle="margin: 0;"
                                  @onchange="change"></region-picker>
-                  <el-form-item label="" prop="address" style="margin: 0">
+                  <el-form-item label="" prop="address" style="margin-top: 10px">
                     <el-input v-model="form.address" name="address" ref="address" placeholder="街道地址"></el-input>
                   </el-form-item>
                 </el-form>
@@ -331,15 +331,19 @@
 
                 <div v-if="element.branch">
                   <el-col :span="12">
-                    <el-switch
-                      @change="isBranch"
-                      v-model="is_branch"
-                      on-text="有"
-                      off-text="无">
-                    </el-switch>
-                    <el-input v-model.number="form.branch_office" :disabled="!is_branch" placeholder="">
-                      <template slot="append">家</template>
-                    </el-input>
+                    <el-col :span="6" class="flex" style="height:28px; align-items: center">
+                      <el-switch
+                        @change="isBranch"
+                        v-model="is_branch"
+                        on-text="有"
+                        off-text="无">
+                      </el-switch>
+                    </el-col>
+                    <el-col :span="6">
+                      <el-input v-model.number="form.branch_office" :disabled="!is_branch" placeholder="">
+                        <template slot="append">家</template>
+                      </el-input>
+                    </el-col>
                   </el-col>
                 </div>
 
@@ -1240,13 +1244,13 @@
   }
 
   .tag:hover {
-    border: 1px solid #FF5A5F;
-    color: #FF5A5F;
+    /* border: 1px solid #FF5A5F;
+    color: #FF5A5F; */
   }
 
   .tag.active {
-    border: 1px solid #FF5A5F;
-    color: #FF5A5F;
+    /* border: 1px solid #FF5A5F;
+    color: #FF5A5F; */
   }
 
   .MmenuHide {

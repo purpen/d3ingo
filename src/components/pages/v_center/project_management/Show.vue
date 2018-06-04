@@ -94,7 +94,8 @@ export default {
 </script>
 <style scoped>
 .project-show {
-  /* overflow-x: auto */
+  overflow: hidden;
+  padding-bottom: 50px;
 }
 .project-management {
   padding-left: 16.66667%;

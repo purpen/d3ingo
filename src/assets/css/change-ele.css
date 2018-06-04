@@ -203,6 +203,10 @@
   .el-select:hover .el-input__inner {
     border-color: #d2d2d2;
   }
+  .el-dialog__header {
+    padding: 20px;
+    background: #f7f7f7
+  }
   .el-dialog__headerbtn .el-dialog__close {
     color: #999
   }
@@ -307,6 +311,21 @@
     font-weight: 400;
     color: #222;
     font-size: 18px;
+    line-height: 22px;
+  }
+  .el-dialog {
+    border-radius: 4px;
+  }
+  .el-dialog--tiny {
+      width: 380px
+  }
+
+  .el-dialog--small {
+      width: 580px
+  }
+
+  .el-dialog--large {
+    width: 1240px;
   }
   .el-alert {
     border-radius: 0;

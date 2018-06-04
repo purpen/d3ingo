@@ -352,6 +352,7 @@ export default {
     margin: 0 0 20px 0;
   }
   .item-money {
+    font-size: 16px;
     color: #FF5A5F;
     white-space: nowrap;
     margin: 10px 0 0 20px;

@@ -361,7 +361,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 
 .el-form-item__content {
   line-height: 10px;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
 }
 
 .description {

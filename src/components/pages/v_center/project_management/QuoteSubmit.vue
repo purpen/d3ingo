@@ -59,7 +59,7 @@
                        :isFirstProp="isFirst" titleProp="企业地址"
                        @onchange="change" class="fullwidth"></region-picker>
 
-        <el-form-item label="" prop="address">
+        <el-form-item :style="{marginTop: '22px'}" label="" prop="address">
           <el-input v-model="form.address" placeholder="街道地址"></el-input>
         </el-form-item>
 
@@ -95,7 +95,7 @@
                        :isFirstProp="isFirst" titleProp="地址"
                        @onchange="changeServer" class="fullwidth"></region-picker>
 
-        <el-form-item label="" prop="design_address">
+        <el-form-item :style="{marginTop: '22px'}" label="" prop="design_address">
           <el-input v-model="form.design_address" placeholder="街道地址"></el-input>
         </el-form-item>
 
@@ -124,13 +124,14 @@
                 <el-col :xs="24" :sm="7" :md="7" :lg="7">
                   <div v-for="(c, c_index) in d.arranged">
 
-                    <el-row :gutter="1">
+                    <el-row>
                       <el-col :xs="24" :sm="12" :md="12" :lg="12">
                         <el-form-item
                           :prop="'plan_format.' + index + '.arranged.' + c_index + '.name'"
                           :rules="{
                           required: true, message: '请选择职位', trigger: 'change'}">
                           <el-select
+                            class="left-border_radius"
                             v-model="form.plan_format[index].arranged[c_index].name"
                             filterable
                             allow-create
@@ -144,17 +145,18 @@
                               :label="p.name"
                               :value="p.name">
                                 <span style="float: left">{{ p.name }}</span>
-                                <span style="float: right; color: #666; font-size: 13px" @click.stop="delPosition(p.id, p_index)"><i class="fx fx-icon-close-error"></i></span>
+                                <span style="float: right; color: #666; font-size: 13px" @click.stop="delPosition(p.id, p_index)"><i class="fx fx-icon-close-sm"></i></span>
                             </el-option>
                           </el-select>
                         </el-form-item>
                       </el-col>
-                      <el-col :xs="24" :sm="8" :md="8" :lg="8">
+                      <el-col :xs="20" :sm="10" :md="10" :lg="10">
                         <el-form-item
                           :prop="'plan_format.' + index + '.arranged.' + c_index + '.number'"
                           :rules="{
                           required: true, type: 'number', message: '请选择人数', trigger: 'change'}">
                           <el-select
+                            class="no-border_radius"
                             v-model="form.plan_format[index].arranged[c_index].number"
                             filterable
                             allow-create
@@ -170,9 +172,9 @@
                           </el-select>
                         </el-form-item>
                       </el-col>
-                      <el-col :xs="24" :sm="2" :md="2" :lg="2">
-                        <el-button :style="{minWidth: 'auto', width: '100%'}" size="small" v-if="c_index === 0" @click="addPlanMember(index, c_index)"><i class="el-icon-plus"></i></el-button>
-                        <el-button :style="{minWidth: 'auto', width: '100%'}" size="small" v-else @click="delPlanMember(index, c_index)"><i class="el-icon-close"></i></el-button>
+                      <el-col :xs="4" :sm="2" :md="2" :lg="2">
+                        <el-button class="right-border_radius" :style="{minWidth: 'auto', width: '100%'}" size="small" v-if="c_index === 0" @click="addPlanMember(index, c_index)"><i class="el-icon-plus"></i></el-button>
+                        <el-button class="right-border_radius" :style="{minWidth: 'auto', width: '100%'}" size="small" v-else @click="delPlanMember(index, c_index)"><i class="el-icon-close"></i></el-button>
                       </el-col>
                   </el-row>
                   </div>
@@ -250,7 +252,7 @@
       title="客户信息"
       :visible.sync="dialogClient"
       width="30%">
-      <el-form label-position="top" :model="clientForm" :rules="ruleClientForm" ref="ruleClientForm" label-width="80px">
+      <el-form class="clearfix" label-position="top" :model="clientForm" :rules="ruleClientForm" ref="ruleClientForm" label-width="80px">
 
           <el-row :gutter="20">
             <el-col :xs="24" :sm="24" :md="24" :lg="24">
@@ -282,7 +284,7 @@
                          :isFirstProp="isFirst" titleProp="企业地址"
                          @onchange="changeClient" class="fullwidth"></region-picker>
 
-          <el-form-item label="" prop="address">
+          <el-form-item :style="{marginTop: '22px'}" label="" prop="address">
             <el-input v-model="clientForm.address" placeholder="街道地址"></el-input>
           </el-form-item>
 
@@ -300,7 +302,7 @@
       title="工作内容备注"
       :visible.sync="dialogPlanTxt"
       width="30%">
-      <div v-if="currentPlanTxtView">
+      <div class="clearfix" v-if="currentPlanTxtView">
         <p class="alert-line-height">{{ currentPlanTxt }}</p>
         <p class="form-btn">
           <el-button @click="PlanTxtEdit">编辑
@@ -308,7 +310,7 @@
         </p>
       </div>
       <div v-else>
-        <el-form label-position="top" label-width="80px">
+        <el-form class="clearfix" label-position="top" label-width="80px">
           <el-form-item label="" prop="currentPlanTxt">
             <el-input type="textarea" :rows="5" placeholder="请详细描工作内容备注" v-model="currentPlanTxt"></el-input>
           </el-form-item>
@@ -841,19 +843,19 @@ export default {
     content: "";
     position: absolute;
     left: 0px;
-    top: -2px;
-    width: 24px;
-    height: 24px;
+    top: 0px;
+    width: 20px;
+    height: 20px;
     background: url('../../../../assets/images/member/add02@2x.png') no-repeat;
     background-size: contain;
     opacity: 1;
   }
   .form-btn {
     float: right;
-    margin: 0 0 50px 0;
+    font-size: 0
   }
-  .form-btn button {
-    /* padding: 10px 40px 10px 40px; */
+  .form-btn button:nth-child(2) {
+    margin-left: 15px;
   }
   .add-plan {
     background-color: #F7F7F7;
@@ -876,8 +878,8 @@ export default {
   }
   .plan-list {
     background-color: #F7F7F7;
-    padding: 15px 10px;
-    margin: 0 0 50px;
+    padding: 15px 15px 0;
+    margin: 0 0 22px;
   }
   .plan-row {
     margin: 0px 10px;
@@ -887,16 +889,18 @@ export default {
     width: 10px;
   }
   .plan-opt-icon {
-    padding-top: 8px;
+    padding-left: 6px;
     cursor: pointer;
-    text-align: right;
+    text-align: center;
+    line-height: 30px;
   }
-  .plan-opt-icon:hover .fx-icon-close-sm {
+  .plan-opt-icon:hover .fx-icon-nothing-close-error {
     color: #FF5A5F
   }
   .icon-box {
-    width: 45px;
-    padding: 8px 25px 8px 15px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
     border: 1px solid #D2D2D2;
     background: #fff;
     border-radius:5px;
@@ -954,7 +958,7 @@ export default {
     text-align: center;
     background: #FFFFFF;
     border: 1px solid #D2D2D2;
-    border-radius: 4px 0 0 4px;
+    border-radius: 4px;
     width: 100px;
     height: 34px;
     padding: 5px 30px 5px 5px;
@@ -1001,6 +1005,7 @@ export default {
   }
 
   .tax-span .before {
+    border-radius: 0 0 0 4px;
     cursor: pointer;
     position: absolute;
     z-index: 1;
@@ -1016,6 +1021,7 @@ export default {
     background:url(../../../../assets/images/icon/Arrow.svg) no-repeat center / 10px #FFBEBE;
   }
   .tax-span .after {
+    border-radius: 0 0 4px 0;
     cursor: pointer;
     position: absolute;
     z-index: 1;
@@ -1029,5 +1035,18 @@ export default {
   }
   .tax-span .after:hover {
     background:url(../../../../assets/images/icon/Arrow.svg) no-repeat center / 10px #FFBEBE;
+  }
+  .el-form-item .el-form-item {
+    margin-bottom: 22px;
+  }
+</style>
+<style>
+  .left-border_radius .el-input__inner {
+    border-radius: 4px 0 0 4px
+  }
+  .no-border_radius .el-input__inner {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
   }
 </style>

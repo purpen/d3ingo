@@ -44,7 +44,7 @@
 
       <el-col :xs="24" :sm="18" :md="18" :lg="18">
         <div class="design-case-content">
-          <div class="">
+          <div v-if="designCases.length">
             <h2>作品案例</h2>
             <div class="design-case-list" v-loading.body="isLoading">
               <el-row :gutter="10">

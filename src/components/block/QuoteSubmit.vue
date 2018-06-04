@@ -1,5 +1,5 @@
 <template>
-  <div class="vcenter-container">
+  <div>
 
     <div class="form-box">
       <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
@@ -7,7 +7,7 @@
         <el-row :gutter="20">
           <el-col :xs="24" :sm="8" :md="8" :lg="8">
             <el-form-item label="客户" prop="company_name">
-              <el-input v-model="form.company_name" placeholder="请添写公司名称"></el-input>
+              <el-input autosize v-model="form.company_name" placeholder="请添写公司名称"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -15,17 +15,17 @@
         <el-row :gutter="20">
           <el-col :xs="24" :sm="8" :md="8" :lg="8">
             <el-form-item label="联系人" prop="contact_name">
-              <el-input v-model="form.contact_name" placeholder=""></el-input>
+              <el-input autosize v-model="form.contact_name" placeholder=""></el-input>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="8" :md="8" :lg="8">
             <el-form-item label="职位" prop="position">
-              <el-input v-model="form.position" placeholder=""></el-input>
+              <el-input autosize v-model="form.position" placeholder=""></el-input>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="8" :md="8" :lg="8">
             <el-form-item label="手机" prop="phone">
-              <el-input v-model="form.phone" placeholder=""></el-input>
+              <el-input autosize v-model="form.phone" placeholder=""></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -35,7 +35,7 @@
                        @onchange="change" class="fullwidth"></region-picker>
 
         <el-form-item label="" prop="address">
-          <el-input v-model="form.address" placeholder="街道地址"></el-input>
+          <el-input autosize v-model="form.address" placeholder="街道地址"></el-input>
         </el-form-item>
 
         <div class="line"></div>
@@ -43,7 +43,7 @@
         <el-row :gutter="20">
           <el-col :xs="24" :sm="8" :md="8" :lg="8">
             <el-form-item label="服务方" prop="design_company_name">
-              <el-input v-model="form.design_company_name" placeholder=""></el-input>
+              <el-input autosize v-model="form.design_company_name" placeholder=""></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -51,17 +51,17 @@
         <el-row :gutter="20">
           <el-col :xs="24" :sm="8" :md="8" :lg="8">
             <el-form-item label="联系人" prop="design_contact_name">
-              <el-input v-model="form.design_contact_name" placeholder=""></el-input>
+              <el-input autosize v-model="form.design_contact_name" placeholder=""></el-input>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="8" :md="8" :lg="8">
             <el-form-item label="职位" prop="design_position	">
-              <el-input v-model="form.design_position	" placeholder=""></el-input>
+              <el-input autosize v-model="form.design_position	" placeholder=""></el-input>
             </el-form-item>
           </el-col>
           <el-col :xs="24" :sm="8" :md="8" :lg="8">
             <el-form-item label="手机" prop="design_phone">
-              <el-input v-model="form.design_phone" placeholder=""></el-input>
+              <el-input autosize v-model="form.design_phone" placeholder=""></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -71,14 +71,14 @@
                        @onchange="changeServer" class="fullwidth"></region-picker>
 
         <el-form-item label="" prop="design_address">
-          <el-input v-model="form.design_address" placeholder="街道地址"></el-input>
+          <el-input autosize v-model="form.design_address" placeholder="街道地址"></el-input>
         </el-form-item>
 
         <div class="line"></div>
         -->
 
         <el-form-item label="项目目标" prop="summary">
-          <el-input type="textarea" :rows="5" v-model="form.summary"
+          <el-input autosize type="textarea" :rows="5" v-model="form.summary"
                     placeholder="请详细描述项目的主要目标和主要重点"></el-input>
         </el-form-item>
 
@@ -94,19 +94,20 @@
                     :prop="'plan_format.' + index + '.content'"
                     :rules="{
                     required: true, message: '请添写工作内容', trigger: 'blur'}">
-                    <el-input v-model="form.plan_format[index].content" placeholder="请添写工作内容" size="small"></el-input>
+                    <el-input autosize v-model="form.plan_format[index].content" placeholder="请添写工作内容" size="small"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="7" :md="7" :lg="7">
-                  <div v-for="(c, c_index) in d.arranged">
+                  <div v-for="(c, c_index) in d.arranged" :key="c_index">
 
-                    <el-row :gutter="1">
+                    <el-row>
                       <el-col :xs="24" :sm="12" :md="12" :lg="12">
                         <el-form-item
                           :prop="'plan_format.' + index + '.arranged.' + c_index + '.name'"
                           :rules="{
                           required: true, message: '请选择职位', trigger: 'change'}">
                           <el-select
+                            class="left-border_radius"
                             v-model="form.plan_format[index].arranged[c_index].name"
                             filterable
                             allow-create
@@ -120,17 +121,18 @@
                               :label="p.name"
                               :value="p.name">
                                 <span style="float: left">{{ p.name }}</span>
-                                <span style="float: right; color: #666; font-size: 13px" @click.stop="delPosition(p.id, p_index)"><i class="fx fx-icon-close-error"></i></span>
+                                <span style="float: right; color: #666; font-size: 13px" @click.stop="delPosition(p.id, p_index)"><i class="fx fx-icon-close-sm"></i></span>
                             </el-option>
                           </el-select>
                         </el-form-item>
                       </el-col>
-                      <el-col :xs="24" :sm="8" :md="8" :lg="8">
+                      <el-col :xs="20" :sm="10" :md="10" :lg="10">
                         <el-form-item
                           :prop="'plan_format.' + index + '.arranged.' + c_index + '.number'"
                           :rules="{
                           required: true, type: 'number', message: '请选择人数', trigger: 'change'}">
                           <el-select
+                            class="no-border_radius"
                             v-model="form.plan_format[index].arranged[c_index].number"
                             filterable
                             allow-create
@@ -146,9 +148,17 @@
                           </el-select>
                         </el-form-item>
                       </el-col>
-                      <el-col :xs="24" :sm="2" :md="2" :lg="2">
-                        <el-button size="small" :style="{minWidth: 'auto', width: '100%'}" v-if="c_index === 0" @click="addPlanMember(index, c_index)"><i class="el-icon-plus"></i></el-button>
-                        <el-button size="small" :style="{minWidth: 'auto', width: '100%'}" v-else @click="delPlanMember(index, c_index)"><i class="el-icon-close"></i></el-button>
+                      <el-col :xs="4" :sm="2" :md="2" :lg="2">
+                        <el-button class="right-border_radius" size="small"
+                          :style="{minWidth: 'auto', width: '100%'}"
+                          v-if="c_index === 0" @click="addPlanMember(index, c_index)">
+                          <i class="el-icon-plus"></i>
+                        </el-button>
+                        <el-button class="right-border_radius" size="small"
+                          :style="{minWidth: 'auto', width: '100%'}"
+                          v-else @click="delPlanMember(index, c_index)">
+                          <i class="fx-icon-close-sm"></i>
+                        </el-button>
                       </el-col>
                   </el-row>
                   </div>
@@ -158,22 +168,22 @@
                     :prop="'plan_format.' + index + '.duration'"
                     :rules="{
                     required: true, type: 'number',  message: '请添写正确数字', trigger: 'blur'}">
-                    <el-input v-model.number="form.plan_format[index].duration" placeholder="天数" size="small">
+                    <el-input autosize v-model.number="form.plan_format[index].duration" placeholder="天数" size="small">
                       <template slot="append">工作日</template>
                     </el-input>
                   </el-form-item>
                 </el-col>
-                <el-col :xs="24" :sm="4" :md="4" :lg="4">
+                <el-col :xs="20" :sm="4" :md="4" :lg="4">
                   <el-form-item
                     :prop="'plan_format.' + index + '.price'"
                     :rules="{
                     required: true, type: 'number', message: '请添写正确的格式', trigger: 'blur'}">
-                    <el-input v-model.number="form.plan_format[index].price" @blur="statPrice" placeholder="请添写费用" size="small">
+                    <el-input autosize v-model.number="form.plan_format[index].price" @blur="statPrice" placeholder="请添写费用" size="small">
                       <template slot="append">元</template>
                     </el-input>
                   </el-form-item>
                 </el-col>
-                <el-col :xs="24" :sm="1" :md="1" :lg="1">
+                <el-col :xs="4" :sm="1" :md="1" :lg="1">
                   <p class="plan-opt-icon icon-box" v-if="d.summary" @click="planTxtBtn(d.summary, index, true)"><i class="fx fx-icon-see"></i></p>
                   <p class="plan-opt-icon icon-box" v-else @click="planTxtBtn(d.summary, index, false)"><i class="fx fx-icon-edit"></i></p>
                 </el-col>
@@ -231,7 +241,7 @@
           <el-row :gutter="20">
             <el-col :xs="24" :sm="24" :md="24" :lg="24">
               <el-form-item label="企业名称" prop="company_name">
-                <el-input v-model="clientForm.company_name" placeholder="请添写企业名称"></el-input>
+                <el-input autosize v-model="clientForm.company_name" placeholder="请添写企业名称"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -239,17 +249,17 @@
           <el-row :gutter="20">
             <el-col :xs="24" :sm="8" :md="8" :lg="8">
               <el-form-item label="联系人" prop="contact_name">
-                <el-input v-model="clientForm.contact_name" placeholder="请添写联系人姓名"></el-input>
+                <el-input autosize v-model="clientForm.contact_name" placeholder="请添写联系人姓名"></el-input>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="8" :md="8" :lg="8">
               <el-form-item label="联系电话" prop="phone">
-                <el-input v-model="clientForm.phone" placeholder="请添写联系电话"></el-input>
+                <el-input autosize v-model="clientForm.phone" placeholder="请添写联系电话"></el-input>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="8" :md="8" :lg="8">
               <el-form-item label="职位" prop="position">
-                <el-input v-model="clientForm.position" placeholder="请添写联系人职位"></el-input>
+                <el-input autosize v-model="clientForm.position" placeholder="请添写联系人职位"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -259,7 +269,7 @@
                          @onchange="changeClient" class="fullwidth"></region-picker>
 
           <el-form-item label="" prop="address">
-            <el-input v-model="clientForm.address" placeholder="街道地址"></el-input>
+            <el-input autosize v-model="clientForm.address" placeholder="街道地址"></el-input>
           </el-form-item>
 
           <p class="form-btn">
@@ -285,9 +295,9 @@
         </p>
       </div>
       <div v-else>
-        <el-form label-position="top" label-width="80px">
+        <el-form class="clearfix" label-position="top" label-width="80px">
           <el-form-item label="" prop="currentPlanTxt">
-            <el-input type="textarea" :rows="5" placeholder="请详细描工作内容备注" v-model="currentPlanTxt"></el-input>
+            <el-input autosize type="textarea" :rows="5" placeholder="请详细描工作内容备注" v-model="currentPlanTxt"></el-input>
           </el-form-item>
 
           <p class="form-btn">
@@ -827,9 +837,8 @@ export default {
   }
   .form-btn {
     float: right;
-    margin: 0 0 50px 0;
   }
-  .form-btn button {
+  .form-btn button:first-child {
     /* padding: 10px 40px 10px 40px; */
   }
   .add-plan {
@@ -853,8 +862,8 @@ export default {
   }
   .plan-list {
     background-color: #F7F7F7;
-    padding: 15px 10px;
-    margin: 0 0 50px;
+    padding: 15px 15px 0;
+    margin: 0 0 22px;
   }
   .plan-row {
     margin: 0px 10px;
@@ -864,16 +873,18 @@ export default {
     width: 10px;
   }
   .plan-opt-icon {
-    padding-top: 8px;
+    padding-left: 6px;
     cursor: pointer;
-    text-align: right;
+    text-align: center;
+    line-height: 30px;
   }
-  .plan-opt-icon:hover .fx-icon-close-sm {
+  .plan-opt-icon:hover .fx-icon-nothing-close-error {
     color: #FF5A5F
   }
   .icon-box {
-    width: 45px;
-    padding: 8px 25px 8px 15px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
     border: 1px solid #D2D2D2;
     background: #fff;
     border-radius:5px;
@@ -931,7 +942,7 @@ export default {
     text-align: center;
     background: #FFFFFF;
     border: 1px solid #D2D2D2;
-    border-radius: 4px 0 0 4px;
+    border-radius: 4px;
     width: 100px;
     height: 34px;
     padding: 5px 30px 5px 5px;
@@ -978,6 +989,7 @@ export default {
   }
 
   .tax-span .before {
+    border-radius: 0 0 0 4px;
     cursor: pointer;
     position: absolute;
     z-index: 1;
@@ -993,6 +1005,7 @@ export default {
     background:url(../../assets/images/icon/Arrow.svg) no-repeat center / 10px #FFBEBE;
   }
   .tax-span .after {
+    border-radius: 0 0 4px 0;
     cursor: pointer;
     position: absolute;
     z-index: 1;
@@ -1006,5 +1019,19 @@ export default {
   }
   .tax-span .after:hover {
     background:url(../../assets/images/icon/Arrow.svg) no-repeat center / 10px #FFBEBE;
+  }
+  .el-form-item .el-form-item {
+    margin-bottom: 22px;
+  }
+</style>
+
+<style>
+  .left-border_radius .el-input__inner {
+    border-radius: 4px 0 0 4px
+  }
+  .no-border_radius .el-input__inner {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
   }
 </style>
