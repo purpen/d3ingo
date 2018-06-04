@@ -9,6 +9,7 @@
   import api from '@/api/api'
   import '@/assets/js/format'
   import '@/assets/js/date_format'
+  import { CONTRACT_THN, CONTRACT_SCALE } from '@/config'
 
   export default {
     name: 'vcenter_contract_submit',
@@ -85,14 +86,14 @@
             {text: '公司名称: ' + this.form.design_company_name, style: 'p'},
             {text: '地址: ' + this.form.design_company_address, style: 'p'},
             {text: '联系人: ' + this.form.design_company_legal_person, style: 'p'},
-            {text: '电话: ' + this.form.design_company_address, style: 'p'},
+            {text: '电话: ' + this.form.design_company_phone, style: 'p'},
 
             {text: ' ', style: 'p'},
             {text: '丙方（平台方）：', style: 'p'},
-            {text: '公司名称: ' + this.form.design_company_name, style: 'p'},
-            {text: '地址: ' + this.form.design_company_address, style: 'p'},
-            {text: '联系人: ' + this.form.design_company_legal_person, style: 'p'},
-            {text: '电话: ' + this.form.design_company_address, style: 'p'},
+            {text: '公司名称: ' + this.form.thn_company_name, style: 'p'},
+            {text: '地址: ' + this.form.thn_company_address, style: 'p'},
+            {text: '联系人: ' + this.form.thn_company_legal_person, style: 'p'},
+            {text: '电话: ' + this.form.thn_company_phone, style: 'p'},
 
             {text: '项目内容和费用', style: 'title'},
             {
@@ -101,7 +102,11 @@
                 {text: '     ' + this.form.title + '     ', style: 'write'},
                 {text: '设计。本合同设计费用总额为人民币'},
                 {text: '     ' + this.form.total + '     ', style: 'write'},
-                {text: '整（￥元），丙方作为平台收取全部项目费的10%，也就是人民币(￥)1000 整作为佣金。三方共同签署此项设计委托合同（以下简称合同），甲方、乙方和丙方合称为合同三方（以下简称三方）。'}
+                {text: '整（￥元），丙方作为平台收取全部项目费的'},
+                {text: '     ' + this.form.commission_rate + '     ', style: 'write'},
+                {text: '%，也就是人民币(￥)'},
+                {text: '     ' + this.form.commission + '     ', style: 'write'},
+                {text: '整作为佣金。三方共同签署此项设计委托合同（以下简称合同），甲方、乙方和丙方合称为合同三方（以下简称三方）。'}
               ],
               style: 'p'
             },
@@ -121,7 +126,9 @@
             {text: '甲方以银行支付方式或其他方式支付项目总金额到丙方，丙方按照以下约定的付款时间和金额分阶段向乙方支付设计费： ', style: 'p'},
             {
               text: [
-                {text: '1、本合同签订后 3 日内，甲方支付项目总金额到丙方托管；丙方收到款项后 3 日内向乙方支付项目总金额首付款'},
+                {text: '1、本合同签订后'},
+                {text: '   ' + this.form.demand_pay_limit + '   ', style: 'write'},
+                {text: '日内，甲方支付项目总金额到丙方托管；丙方收到款项后向乙方支付项目总金额首付款'},
                 {text: '   ' + this.form.first_payment_proportion_p + '   ', style: 'write'},
                 {text: '%，即人民币'},
                 {text: '   ' + this.form.first_payment + '   ', style: 'write'},
@@ -268,7 +275,16 @@
         this.downStatus = `已成功下载合同文件，页面将在5秒后关闭`
       }
     },
-    computed: {},
+    computed: {
+      // 从配置获取丙方信息
+      companyThn() {
+        return CONTRACT_THN
+      },
+      // 从配获取合同配置
+      contractScale() {
+        return CONTRACT_SCALE
+      }
+    },
     watch: {},
     created: function () {
       const that = this
@@ -280,6 +296,15 @@
               let item = response.data.data
               if (item) {
                 item.stages = []
+                if (!item.demand_pay_limit) {
+                  item.demand_pay_limit = that.contractScale.demand_pay_limit
+                }
+                if (!item.thn_company_name) {
+                  item.thn_company_name = that.companyThn.company_name
+                  item.thn_company_address = that.companyThn.address
+                  item.thn_company_phone = that.companyThn.contact_phone
+                  item.thn_company_legal_person = that.companyThn.contact_name
+                }
                 item.sort = item.item_stage.length
                 if (item.item_stage && item.item_stage.length > 0) {
                   for (let i = 0; i < item.item_stage.length; i++) {

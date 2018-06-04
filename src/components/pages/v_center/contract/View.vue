@@ -54,7 +54,7 @@
 
             <p class="title">4、付款方式</p>
             <p>甲方以银行支付方式或其他方式支付项目总金额到丙方，丙方按照以下约定的付款时间和金额分阶段向乙方支付设计费： </p>
-            <p>1、本合同签订后 <span class="bottom-border">3</span> 日内，甲方支付项目总金额到丙方托管；丙方收到款项后 <span class="bottom-border">3</span> 日内向乙方支付项目总金额首付款 <span class="bottom-border">{{form.first_payment_proportion_p}}</span>%，即人民币(￥) <span
+            <p>1、本合同签订后 <span class="bottom-border">{{form.demand_pay_limit}}</span> 日内，甲方支付项目总金额到丙方托管；丙方收到款项后向乙方支付项目总金额首付款 <span class="bottom-border">{{form.first_payment_proportion_p}}</span>%，即人民币(￥) <span
               class="bottom-border">{{form.first_payment}}</span> 整。</p>
             <p v-for="(d, index) in form.stages" :key="index">
               {{ index + 2 }}、<span class="bottom-border">{{d.title}}</span>
@@ -152,7 +152,7 @@
   import api from '@/api/api'
   import '@/assets/js/format'
   import '@/assets/js/date_format'
-  import { CONTRACT_THN } from '@/config'
+  import { CONTRACT_THN, CONTRACT_SCALE } from '@/config'
 
   export default {
     name: 'vcenter_contract_submit',
@@ -212,6 +212,10 @@
       // 从配置获取丙方信息
       companyThn() {
         return CONTRACT_THN
+      },
+      // 从配获取合同配置
+      contractScale() {
+        return CONTRACT_SCALE
       }
     },
     watch: {},
@@ -228,6 +232,9 @@
                 that.itemId = item.id
                 that.itemName = item.title + '合同'
                 item.stages = []
+                if (!item.demand_pay_limit) {
+                  item.demand_pay_limit = that.contractScale.demand_pay_limit
+                }
                 item.sort = item.item_stage.length
                 if (item.item_stage && item.item_stage.length > 0) {
                   for (let i = 0; i < item.item_stage.length; i++) {

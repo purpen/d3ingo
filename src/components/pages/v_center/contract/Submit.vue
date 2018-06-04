@@ -229,7 +229,7 @@
 
               <p class="title">付款方式</p>
               <p>甲方以银行支付方式或其他方式支付项目总金额到丙方，丙方按照以下约定的付款时间和金额分阶段向乙方支付设计费：</p>
-              <p>1、本合同签订后 <span class="bottom-border" type="text" disabled v-html="3"></span> 日内，甲方支付项目总金额到丙方托管；丙方收到款项后 <span class="bottom-border" type="text" disabled v-html="3"></span> 日内向乙方支付项目总金额首付款 40 %，即人民币 <span class="bottom-border" type="text" disabled v-html="form.first_payment"></span> 整(￥)。</p>
+              <p>1、本合同签订后<span class="bottom-border" type="text" disabled v-html="form.demand_pay_limit"></span>日内，甲方支付项目总金额到丙方托管；丙方收到款项后向乙方支付项目总金额首付款 40 %，即人民币 <span class="bottom-border" type="text" disabled v-html="form.first_payment"></span> 整(￥)。</p>
               <p>2、阶段金额占项目总金额的 50 %，即人民币 <span class="bottom-border" type="text" disabled v-html="form.stage_money"></span> 整(￥)。</p>
               <p>3、设计全部完成经甲方确认后，支付该项目总金额尾款 10 %，即人民币 <span class="bottom-border" type="text" disabled v-html="form.warranty_money"></span> 整(￥)。</p>
               <p>甲方支付的项目费用在当前阶段完成之前会由丙方托管，如果甲乙双方合作中出现争议，将由平台冻结当前资金，待纠纷解决后再按照法律法规相应规定执行。</p>
@@ -309,7 +309,7 @@
   import '@/assets/js/format'
   import '@/assets/js/date_format'
   import '@/assets/js/math_format'
-  import { CONTRACT_THN } from '@/config'
+  import { CONTRACT_THN, CONTRACT_SCALE } from '@/config'
 
   export default {
     name: 'vcenter_contract_submit',
@@ -545,6 +545,10 @@
       // 从配置获取丙方信息
       companyThn() {
         return CONTRACT_THN
+      },
+      // 从配置获取合同配置信息
+      contractScale() {
+        return CONTRACT_SCALE
       }
     },
     watch: {
@@ -578,6 +582,9 @@
                     if (response.data.meta.status_code === 200) {
                       let contract = response.data.data
                       if (contract) {
+                        if (!contract.demand_pay_limit) {
+                          contract.demand_pay_limit = that.contractScale.demand_pay_limit
+                        }
                         contract.stages = []
                         contract.sort = contract.item_stage.length
                         contract.total = parseFloat(contract.total)
@@ -591,6 +598,10 @@
                           that.form.thn_company_address = that.companyThn.address
                           that.form.thn_company_phone = that.companyThn.contact_phone
                           that.form.thn_company_legal_person = that.companyThn.contact_name
+                        }
+                        if (!that.form.commission_rate) {
+                          that.form.commission_rate = item.item.commission_rate
+                          that.form.commission = item.item.commission
                         }
                         if (that.form.item_stage && that.form.item_stage.length > 0) {
                           for (let i = 0; i < that.form.item_stage.length; i++) {
@@ -616,25 +627,28 @@
                 that.form.thn_company_address = that.companyThn.address
                 that.form.thn_company_phone = that.companyThn.contact_phone
                 that.form.thn_company_legal_person = that.companyThn.contact_name
+                that.form.demand_pay_limit = that.contractScale.demand_pay_limit
+                that.form.commission_rate = item.item.commission_rate
+                that.form.commission = item.item.commission
+
+                that.form.demand_company_name = item.item.company_name
+                that.form.demand_company_address = item.item.company_province_value + item.item.company_city_value + item.item.address
+                that.form.demand_company_legal_person = item.item.contact_name
+                that.form.demand_company_phone = item.item.phone
+                that.form.total = parseFloat(item.item.price)
+                that.form.warranty_money = parseFloat(item.item.warranty_money)
+                that.form.first_payment = parseFloat(item.item.first_payment)
+                that.form.stage_money =
+                  (that.form.total - (that.form.warranty_money + that.form.first_payment)).toFixed(2)
 
                 // 获取当前公司基本信息
                 that.$http.get(api.designCompany, {})
                   .then(function (response) {
                     if (response.data.meta.status_code === 200) {
                       let company = response.data.data
-//                      console.log(response)
                       if (company) {
-                        that.form.demand_company_name = item.item.company_name
-                        that.form.demand_company_address = item.item.address
-                        that.form.demand_company_legal_person = item.item.contact_name
-                        that.form.demand_company_phone = item.item.phone
-                        that.form.total = parseFloat(item.item.price)
-                        that.form.warranty_money = parseFloat(item.item.warranty_money)
-                        that.form.first_payment = parseFloat(item.item.first_payment)
-                        that.form.stage_money =
-                          (that.form.total - (that.form.warranty_money + that.form.first_payment)).toFixed(2)
                         that.form.design_company_name = company.company_name
-                        that.form.design_company_address = company.address
+                        that.form.design_company_address = company.province_value + company.city_value + company.address
                         that.form.design_company_legal_person = company.contact_name
                         that.form.design_company_phone = company.phone
                       }

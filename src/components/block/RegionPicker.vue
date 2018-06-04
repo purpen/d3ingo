@@ -68,7 +68,7 @@
       disabled: Boolean,
       isFirstProp: {
         type: Boolean,
-        default: true
+        default: false
       },
       isEmpty: {
         default: false
@@ -82,7 +82,7 @@
         province: '',
         city: '',
         district: '',
-        isFirst: true
+        isFirst: false
       }
     },
     methods: {

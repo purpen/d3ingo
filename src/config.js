@@ -980,6 +980,7 @@ const CONTRACT_SCALE = {
   first: 40,
   stage: 50,
   end: 10,
+  demand_pay_limit: 3, // 合同签署后几日内
   test: ''
 }
 

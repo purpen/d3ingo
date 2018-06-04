@@ -281,7 +281,7 @@
           .then(function (response) {
             self.isLoading = false
             self.tableData = []
-            console.log(response.data.meta)
+            console.log(response.data)
             if (response.data.meta.status_code === 200) {
               self.itemList = response.data.data
               self.query.totalCount = parseInt(response.data.meta.pagination.total)
