@@ -11,6 +11,17 @@
         <button class="small-button full-red-button" type="primary" @click="deleteDes(formup.id)">确 定</button>
       </span>
     </el-dialog>
+    <el-dialog
+      title="确认删除"
+      :visible.sync="dialogTask"
+      size="tiny"
+      >
+      <p class="text-center">确认删除此任务</p>
+      <span slot="footer" class="dialog-footer">
+        <button class="small-button white-button" @click="dialogTask = false">取 消</button>
+        <button class="small-button full-red-button" type="primary" @click="deleteTack(formTack.id)">确 定</button>
+      </span>
+    </el-dialog>
     <section class="add-itemStage-bg" v-if="isItemStage">
       <div class="add-itemStage">
         <div class="itemStage-title">新建项目阶段
@@ -42,7 +53,8 @@
             </el-form-item>
                 </el-col>
                 <el-col :span="12">
-            <el-form-item label="开始时间" prop="start_time">
+            <el-form-item label="开始时间" :editable='false'
+            prop="start_time">
               <div class="block">
                 <el-date-picker
                   type="date"
@@ -70,8 +82,8 @@
         </div>
       </div>
     </section>
-    <transition name="el-fade-in-linear">
-      <aside class="aside" v-if="isitemedit">
+    <transition name="el-fade-in-linear" v-if="isitemedit">
+      <aside class="aside">
         <div class="aside-title fx">
           <i class="fx fx-icon-delete2" @click="dialogVisible=true"></i>
           <span class="tc-2">项目阶段设置</span>
@@ -86,12 +98,18 @@
         <ul class="aside-content">
           <li class="designStage-name">
             <span>
-              <el-checkbox v-model="checked"></el-checkbox>
+              <el-checkbox 
+                v-model="formupstatus"
+                @change="updata()"
+                >
+
+              </el-checkbox>
             </span>
             <el-input 
               v-model="formup.name" 
               placeholder="项目阶段名称"
               @blur="updata()"
+              class="noborder"
             >
             </el-input>
           </li>
@@ -103,6 +121,7 @@
                 v-model="formup.duration"
                 :maxlength="3"
                 @blur="updata()"
+                class="noborder"
               >
                 <template slot="append">工作日</template>
               </el-input>
@@ -116,6 +135,7 @@
                 v-model="formupStart"
                 placeholder="选择日期时间"
                 @change="updata"
+                class="noborder"
                >
                 </el-date-picker>
               </div>
@@ -128,6 +148,7 @@
                 :maxlength=200
                 placeholder="请输入内容"
                 v-model="formup.content"
+                class="noborder"
                 >
                 </el-input>
           </li>
@@ -147,10 +168,10 @@
         
       </aside>
     </transition>
-    <transition>
-      <aside class="aside" v-if="istaskedit">
+    <transition name="el-fade-in-linear" v-if="istaskedit">
+      <aside class="aside">
         <div class="aside-title fx">
-          <i class="fx fx-icon-delete2" @click="dialogVisible=true"></i>
+          <i class="fx fx-icon-delete2" @click="dialogTask=true"></i>
           <span class="tc-2">任务设置</span>
           <p class="fx fx-icon-close-sm" @click="cancelTack()"></p>
         </div>
@@ -174,9 +195,9 @@
             </el-input>
           </li>
           <li class="task-userimg">
-            <span @click="selectUser()">分配给</span>
-            <i class="userimg" @click="selectUser()" v-if="!formTack.log"></i>
-            <img class="user" :src="formTack.log" alt="" v-if="formTack.log" @click="selectUser()">
+            <span @click="seeuser()">分配给</span>
+            <i class="userimg" @click="seeuser()" v-if="!formTack.log"></i>
+            <img class="user" :src="formTack.log" alt="" v-if="formTack.log" @click="seeuser()">
             <div class="userlist" v-if="isuserimg">
               <p>
                 查看成员
@@ -222,7 +243,7 @@
                 v-model="formTack.duration"
                 :maxlength="3"
                 class="noborder"
-                @blur="updataTack()"
+                @blur="upDateDuration()"
               >
                 <template slot="append">工作日</template>
               </el-input>
@@ -236,6 +257,7 @@
                 v-model="formTacktime"
                 placeholder="开始日期设置"
                 class="noborder"
+                @change="upDateDuration"
                >
                 </el-date-picker>
               </div>
@@ -244,8 +266,9 @@
             <i></i>
             <el-input
                 placeholder="添加节点"
-                v-model="formTack.content"
+                v-model="formNode.name"
                 class="noborder"
+                @blur="createNode()"
                 >
             </el-input>
           </li>
@@ -262,6 +285,118 @@
             </el-input>
           </li>
         </ul>
+      </aside>
+    </transition>
+    <transition name="el-fade-in-linear" v-if="isnodeedit">
+      <aside class="aside">
+        <div class="aside-title fx">
+          <i class="fx fx-icon-delete2" @click="dialogTask=true"></i>
+          <span class="tc-2">节点设置</span>
+          <p class="fx fx-icon-close-sm" @click="isnodeedit = false"></p>
+        </div>
+        <ul class="aside-content">
+          <li class="designStage-name">
+            <span>
+              <el-checkbox v-model="checked"></el-checkbox>
+            </span>
+            <el-input 
+              v-model="formNode.name"
+              placeholder="节点名称"
+              class="noborder"
+              @blur="updataNode()"
+            >
+            </el-input>
+          </li>
+          <li class="formup-time">
+            <i></i>
+            <div class="block">
+                <el-date-picker
+                type="date"
+                v-model="formNodetime"
+                placeholder="开始日期设置"
+                class="noborder"
+                @change="updataNode"
+               >
+                </el-date-picker>
+              </div>
+          </li>
+          <li class="opvalue noborder">
+            <i></i>
+            <el-select v-model="formNode.status" placeholder="请选择"
+            @change="updataNode()"
+            >
+              <el-option
+                v-for="item in option"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </li>
+          <li class="owner">
+              <el-checkbox v-model="formNodeowner" :style="{color:formNodeowner?'red':''}"
+              @change="updataNode()"
+              >
+                甲方参与
+              </el-checkbox>
+          </li>
+        </ul>
+        <div>
+          <div class="node-file" tabindex="-1">
+            <i></i>
+              交付文件
+            <ul>
+              <li class="file-local">
+                <el-upload
+                  class="upload-demo"
+                  :action="uploadUrl"
+                  :data="uploadParam"
+                  :on-progress="uploadProgress"
+                  :on-success="uploadSuccess"
+                  :show-file-list="false"
+                  multiple
+                    >
+                  <i></i>
+                  从本地上传
+                </el-upload>
+              </li>
+              <li class="file-SkyDrive">
+                <i></i>
+                从设计云盘中选择
+              </li>
+            </ul>
+          </div>
+          <div class="file-edit">
+            <div class="files filesdl" v-for="(f,indexf) in fileLists" :key="indexf+'a'" 
+            v-if="f.percentage!==100"
+            >
+              <i class="video"></i>
+              <div class="files-content">
+                <div class="files-name">
+                  <span>{{f.name}}</span>
+                  <span>{{f.prog}}/{{f.size}}</span>
+                </div>
+                <el-progress :percentage="f.percentage"
+                  :show-text="false"
+                  v-if="f.percentage!==100"
+                >
+                </el-progress>
+              </div>
+            </div>
+            <div class="files" v-for='(as,indexas) in formNode.asset' :key="indexas">
+              <i class="video"></i>
+              <div class="files-content">
+                <div class="files-name">
+                  <span>{{as.name}}</span>
+                  <div>
+                    <span>下载</span>
+                    <span @click="deleteup(as.id)">删除</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </aside>
     </transition>
     <section class="top-progress">
@@ -345,13 +480,9 @@
       </ul>
     </section>
     <section class="item-content">
-
       <p class="h3">项目执行进度规划</p>
-
         <div class="item-lists">
-
           <el-row v-if="designStageLists.length>0">
-
             <el-col :span="6">
               <div class="item-list-text">
 
@@ -415,7 +546,6 @@
                 </div>
               </div>
             </el-col>
-
             <el-col :span="18" :style="{height:Rheight +'px'}">
 
               <div class="item-chart">
@@ -445,15 +575,42 @@
                     </div>
 
                   </div>
-
                   <div v-if="designStageLists" class="item-chartContent" v-for="(c,indexc) in designStageLists" :key="indexc">
-
-                    <div 
+                    <div
                       v-if="(c.design_substage&&(sort==='isday'||sort==='isweek'))" 
-                      v-for="(tack, indextack) in c.design_substage" :key="indextack+ 'y'" :style="{left:tack.left*30+'px',width:tack.duration*30+'px'}"
-                      class="item-tacklist" @click.stop="editTack(tack, indextack, c)"
+                      v-for="(tack, indextack) in c.design_substage" 
+                      :key="indextack+ 'y'" 
+                      :style="{
+                        left:tack.left*30+'px',
+                        width:tack.duration*30+'px',
+                      }"
+                      :class="['item-tacklist',
+                      {
+                        'bgno': tack.status === 0?(tack.left+parseInt(tack.duration) <= newleft?true:false):false,
+                        'bged': tack.status === 1?true:false
+                      }]"
                       >
-                      {{tack.name}}
+                      <div class="bging item-tacking"
+                        :style="{
+                        width:(tack.left<=newleft+1 && newleft<(parseInt(tack.left)+parseInt(tack.duration)))?
+                        (parseInt(newleft)+1-parseInt(tack.left))*30 +'px':tack.duration*30+'px',
+                      }"
+                      v-if="tack.status !== 1&&tack.left <= newleft+1&&newleft<(parseInt(tack.left)+parseInt(tack.duration))"
+                      >
+                      </div>
+                      <i class="item-start" v-if="indextack === 0"></i>
+                      <i 
+                        class="item-node" 
+                        v-if="tack.design_stage_node" @click.stop="editNode(tack.design_stage_node)"></i>
+                      <div class="node-name" v-if="tack.design_stage_node">
+                        <p :style="{width:tack.duration*30+'px'}">
+                          {{tack.design_stage_node.name}}
+                        </p>
+                      </div>
+                      <div class="task-name text-center" @click.stop="editTack(tack,c)">
+                        {{tack.name}}
+                      </div>
+                      
                     </div>
 
                     <div v-if="c.design_substage&&sort==='ismonth'" class="item-tacklist" 
@@ -472,7 +629,7 @@
                       :style="{left:c.left*30+'px'}">
                     </div>
                     <div v-if="!c.design_substage&&sort==='ismonth'" class="item-tacklist no-tack" 
-                      :style="{left:c.left*6.77+'px'}">
+                      :style="{left:c.left*6.77+'px',width:6.77+'px'}">
                     </div>
                     <ul v-if="totaldays" v-for="(tt,indextt) in totaldays" :key="indextt">
                       <li v-for="(day,indexday) in tt.dayings" :key="indexday" :class="day.new?'bgc':''" v-if="sort === 'isday'" class="dateday">
@@ -490,110 +647,12 @@
 
             </el-col>
           </el-row>
-
-          <div  class="add-item" >
-            <div @click="isItemStage=true">+</div>
-            <p @click="isItemStage=true">添加项目阶段</p>
-          </div>
-      <div v-if="true" v-for="(designStage,index) in designStageLists" :key="index">
-        
-        <div>
-          名称: <p v-if="!designStage.isedit">{{designStage.name}}</p>
-          <el-input v-model="designStage.name" v-else></el-input>
+        <div  class="add-item" >
+          <div @click="isItemStage=true">+</div>
+          <p @click="isItemStage=true">添加项目阶段</p>
         </div>
-        <div>
-            投入时间: <p v-if="!designStage.isedit">{{designStage.duration}}</p>
-            <el-input placeholder="请输入内容" v-model="designStage.duration" v-else></el-input>
-        </div>
-        <div>
-          开始时间: <p v-if="!designStage.isedit">{{designStage.start_time}}</p>
-          <el-date-picker
-              v-model="designStage.start_time"
-              type="datetime"
-              placeholder="选择日期时间" v-else>
-          </el-date-picker>
-        </div>
-        <div>
-          内容: <p v-if="!designStage.isedit">{{designStage.content}}</p>
-          <el-input
-              type="textarea"
-              :autosize="{ minRows: 2, maxRows: 4}"
-              placeholder="请输入内容"
-              v-model="designStage.content"
-              v-else
-              >
-            </el-input>
-        </div>
-        <div v-for="(sub,indexsub) in designStage.design_substage" :key="indexsub">
-          <p>{{sub.name}}</p>
-          <el-input placeholder="任务名称" v-model="sub.name"></el-input>
-          <p>{{sub.summary}}</p>
-          <el-input
-              type="textarea"
-              :autosize="{ minRows: 2, maxRows: 4}"
-              placeholder="请输入内容"
-              v-model="sub.summary"
-              >
-          </el-input>
-          <p>{{sub.duration}}</p>
-          <el-input placeholder="任务投入时间" v-model="sub.duration"></el-input>
-          
-          <p>{{sub.start_time}}</p>
-          <el-date-picker
-          v-model="sub.start_time"
-          type="datetime"
-          placeholder="选择日期时间">
-          </el-date-picker>
-          <el-input placeholder="节点名称" v-model="formNode.name"></el-input>
-          <el-date-picker
-            v-model="formNode.time"
-            type="datetime"
-            placeholder="选择截止时间">
-            </el-date-picker>
-            <el-checkbox v-model="formNode.is_owner">甲方参与</el-checkbox>
-          <el-button  @click="createNode(sub.id,indexsub)">确定添加节点</el-button>
-          <el-button  @click="addNode()">添加节点</el-button>
-          <div v-if="sub.design_stage_node">
-            <p>节点名称: {{sub.design_stage_node.name}}</p>
-            <el-input v-model="sub.design_stage_node.name"></el-input>
-            <p>节点时间: {{sub.design_stage_node.time}}</p>
-            <el-date-picker
-            v-model="sub.design_stage_node.time"
-            type="datetime"
-            placeholder="选择截止时间">
-            </el-date-picker>
-            <el-button  @click="editNode(sub.design_stage_node,indexsub)">编辑节点</el-button>
-            <el-button  @click="updataNode(sub.design_stage_node,indexsub)">确定编辑节点</el-button>
-            <el-button  @click="deleteNode(sub.design_stage_node.id,indexsub)">删除节点</el-button>
-          </div>
-          <el-button  @click="updataTack(sub,indexsub)">确认编辑任务</el-button>
-          <el-button style="margin-bottom:30px" @click="editTack(sub,indexsub)">编辑任务</el-button>
-          <el-button style="margin-bottom:30px" @click="deleteTack(sub.id,indexsub)">删除任务</el-button>
-        </div>
-        <el-button @click="edit(designStage.id,index)">编辑</el-button>
-        <el-button @click="updata(designStage,index)">确定</el-button>
-        <el-button @click="deleteDes(designStage,index)">删除</el-button>
-        <el-button @click="addtack(designStage.id)">添加任务</el-button>
-      </div>
       </div>
     </section>
-    <div v-if="true">
-      <el-input placeholder="任务名称" v-model="formTack.name"></el-input>
-      <el-input placeholder="任务投入时间" v-model="formTack.duration"></el-input>
-      <el-date-picker
-          v-model="formTack.start_time"
-          type="datetime"
-          placeholder="选择日期时间">
-      </el-date-picker>
-      <el-input
-              type="textarea"
-              :autosize="{ minRows: 2, maxRows: 4}"
-              placeholder="请输入内容"
-              v-model="formTack.summary"
-              >
-      </el-input>
-      <el-button @click="createTack()">新建任务</el-button>
-    </div>
   </div>
 </template>
 <script>
@@ -603,6 +662,17 @@ export default {
   name: 'projectManagementOverView',
   data () {
     return {
+      option: [
+        {
+          value: 0,
+          label: '未完成'
+        },
+        {
+          value: 1,
+          label: '已完成'
+        }
+      ],
+      opvalue: '',
       itemId: 0,
       form: { // 新建项目
         name: '',
@@ -639,11 +709,25 @@ export default {
       search: [],
       isuserimg: false,
       formTacktime: '', // 任务时间
+      formNodetime: '',
       sort: 'isday',
       dialogVisible: false,
+      uploadUrl: '',
+      uploadParam: {
+        'token': '',
+        'x:random': '',
+        'x:user_id': this.$store.state.event.user.id,
+        'x:type': 31,
+        'x:target_id': ''
+      },
+      dialogTask: false,
+      fileLists: [],
       isitemedit: false, // 项目阶段编辑
       istaskedit: false, // 项目子任务编辑新建
+      isnodeedit: false, // 节点编辑
       endTimes: [], // 所有时间合集
+      formNodeowner: false, // 甲方是否参与
+      formupstatus: false, // 是否完成项目
       rules: {
         duration: [
           {
@@ -662,7 +746,7 @@ export default {
         ],
         start_time: [
           {
-            required: true, message: '请添写项目开始时间', trigger: 'blur'
+            required: true, type: 'date', message: '请添写项目开始时间', trigger: 'change'
           }
         ]
       }
@@ -831,7 +915,7 @@ export default {
       }
       return arr
     },
-    // 滚动到当前位置
+    // 滚动到今天
     scrollLeft() {
       if (this.designStageLists.length > 0) {
         if (this.endTimes[0] !== (Date.parse(new Date()) / 1000)) {
@@ -842,6 +926,9 @@ export default {
     },
     // 更新信息位置
     updateallleft(res) {
+      if (isNaN(res.start_time)) {
+        res.start_time = Math.round(new Date(res.start_time).getTime() / 1000)
+      }
       this.endTimes.push(parseInt(res.start_time))
       this.endTimes.push(parseInt(res.start_time) + parseInt(res.duration) * 86400)
       this.sortdate(this.endTimes)
@@ -851,7 +938,6 @@ export default {
       let reset = new Date(this.endTimes[0] * 1000)
       let resxin = Date.parse(new Date(reset.getFullYear() + '-' + (reset.getMonth() + 1) + '-' + 1)) / 1000
       res.left = Math.floor(((res.start_time - resxin) / 86400))
-      // res.start_time = new Date(res.start_time * 1000).format('yyyy-MM-dd')
       return res
     },
     // 任务显示
@@ -893,7 +979,9 @@ export default {
             if (response.data.meta.status_code === 200) {
               that.form = {}
               var res = this.updateallleft(response.data.data)
-              that.designStageLists.unshift(res)
+              that.designStageLists.push(res)
+              that.cancel()
+              that.addtack(res, 1)
             } else {
               that.$message.error(response.data.meta.message)
             }
@@ -906,9 +994,12 @@ export default {
     },
     // 编辑项目按钮
     edit(des) {
-      this.formup = des
-      this.formupStart = des.start_time
+      this.formup = {...des}
+      if (!isNaN(des.start_time)) {
+        this.formupStart = (new Date(des.start_time * 1000)).format('yyyy-MM-dd')
+      } else this.formupStart = des.start_time
       this.isitemedit = true
+      this.formupstatus = Boolean(this.formup.status)
     },
   // 编辑项目
     updata(date) {
@@ -920,9 +1011,10 @@ export default {
         if (date) {
           this.formup.start_time = Math.round(new Date(date).getTime() / 1000)
         }
-        if (typeof this.formup.start_time !== 'number') {
+        if (isNaN(this.formup.start_time)) {
           this.formup.start_time = Math.round(new Date(this.formup.start_time).getTime() / 1000)
         }
+        // this.formup.status = Number(this.formupstatus)
         this.$http.put(api.designStageUpdate.format(this.formup.id), this.formup).then((response) => {
           if (response.data.meta.status_code === 200) {
             var res = this.updateallleft(response.data.data)
@@ -951,7 +1043,7 @@ export default {
           for (var i = 0; i < dthis.designStageLists.length; i++) {
             if (dthis.designStageLists[i].id === d) {
               dthis.designStageLists.splice(i, 1)
-              dthis.isItemStage = false
+              dthis.isitemedit = false
             }
           }
         } else {
@@ -963,13 +1055,18 @@ export default {
       })
     },
     // 创建任务按钮
-    addtack(des) {
+    addtack(des, type) {
       this.itemdesId = des.id
       this.itemdesname = des.name
       this.isitemedit = false
+      this.isnodeedit = false
       this.istaskedit = true
+      if (type === 1) {
+        this.istaskedit = false
+      }
       this.indesignStage = des
       var time = []
+      // 有任务时
       if (des.design_substage) {
         for (var i = 0; i < des.design_substage.length; i++) {
           let intask = des.design_substage[i]
@@ -978,8 +1075,13 @@ export default {
         this.sortdate(time)
         this.formTack.start_time = time[time.length - 1]
       }
-      if (!des.design_substage) {
-        this.formTack.start_time = Date.parse(new Date(des.start_time)) / 1000
+      // 无任务时
+      if (!des.design_substage || des.design_substage.length === 0) {
+        if (isNaN(des.start_time)) {
+          this.formTack.start_time = Date.parse(new Date(des.start_time)) / 1000
+        } else {
+          this.formTack.start_time = parseInt(des.start_time)
+        }
       }
       this.formTacktime = (new Date(this.formTack.start_time * 1000)).format('yyyy-MM-dd')
       this.formTack.duration = 1
@@ -988,49 +1090,141 @@ export default {
       if (this.formTack.execute_user_id === '') {
         delete this.formTack.execute_user_id
       }
-      this.$http.post(api.designSubstageCreate, this.formTack).then((response) => {
+      let self = this
+      self.$http.post(api.designSubstageCreate, self.formTack).then((response) => {
         if (response.data.meta.status_code === 200) {
-          var res = this.updateallleft(response.data.data)
-          this.formTack = res
+          var res = self.updateallleft(response.data.data)
+          self.formTack = res
           if (!des.design_substage) {
             des.design_substage = []
           }
           des.design_substage.push(res)
-          this.tackleft(this.designStageLists)
+          self.tackleft(self.designStageLists)
         } else {
-          this.$message.error(response.data.meta.message)
+          self.$message.error(response.data.meta.message)
         }
       }).catch((error) => {
-        this.$message.error(error.message)
+        self.$message.error(error.message)
         console.error(error.message)
       })
     },
-    // 创建任务
-    createTack() {
-      this.formTack.execute_user_id = 33
-      this.formTack.design_stage_id = this.itemdesId
-      this.formTack.start_time = Math.round(new Date(this.formTack.start_time).getTime() / 1000)
-      this.$http.post(api.designSubstageCreate, this.formTack).then((response) => {
+    // 事件和日期改变
+    upDateDuration(date) {
+      if (Date.parse(new Date(this.formTacktime)) / 1000 !== this.formTack.start_time || this.formTack.duration) {
+        if (isNaN(this.formTack.duration) || !this.formTack.duration) {
+          this.$message.error('输入正确的投入天数')
+          return
+        }
+        if (date && date !== 1) {
+          this.formTack.start_time = Math.round(new Date(date).getTime() / 1000)
+        }
+        if (typeof this.formTack.start_time !== 'number') {
+          this.formTack.start_time = Math.round(new Date(this.formTack.start_time).getTime() / 1000)
+        }
+        let fts = Math.round(new Date(this.formTacktime).getTime() / 1000)
+        let arr = []
+        let ind = 0
+        var start = this.indesignStage.design_substage
+        for (let i = 0; i < start.length; i++) {
+          if (start[i].id === this.formTack.id) {
+            ind = i
+            start[i].duration = this.formTack.duration
+            start[i].start_time = fts
+            if (date === 1) {
+              start[i].duration = 0
+            }
+            if (date !== 1) {
+              arr.push({
+                'id': start[i].id,
+                'start_time': start[i].start_time,
+                'duration': parseInt(start[i].duration)
+              })
+            }
+          }
+        }
+        for (let m = ind - 1; m >= 0; m--) {
+          start[m].start_time = start[m + 1].start_time - start[m].duration * 86400
+          arr.push({
+            'id': start[m].id,
+            'start_time': start[m].start_time,
+            'duration': parseInt(start[m].duration)
+          })
+        }
+        for (let b = ind + 1; b < start.length; b++) {
+          start[b].start_time = start[b - 1].start_time + start[b - 1].duration * 86400
+          arr.push({
+            'id': start[b].id,
+            'start_time': start[b].start_time,
+            'duration': parseInt(start[b].duration)
+          })
+        }
+        this.$http.put(api.updateDuration, {durations: JSON.stringify(arr)}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            arr = []
+            this.indesignStage.start_time = fts
+            let res = this.updateallleft(this.indesignStage)
+            for (var f = 0; f < this.designStageLists.length; f++) {
+              if (this.designStageLists[f].id === this.indesignStage.id) {
+                this.$set(this.designStageLists, f, res)
+              }
+            }
+            this.tackleft(this.designStageLists)
+            this.formTack.start_time = fts
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          this.$message.error(error.message)
+          console.error(error.message)
+        })
+      }
+    },
+    // 编辑子阶段描述名称执行人
+    updataTack() {
+      if (typeof this.formTack.start_time !== 'number') {
+        this.formTack.start_time = Math.round(new Date(this.formTack.start_time).getTime() / 1000)
+      }
+      let self = this
+      self.$http.put(api.designSubstageUpdate.format(self.formTack.id), self.formTack).then((response) => {
         if (response.data.meta.status_code === 200) {
-          console.log(response.data.data)
+          var res = self.updateallleft(response.data.data)
+          self.formTack = {...res}
+          if (res.execute_user) {
+            self.formTack.log = res.execute_user.logo_image.logo
+            delete self.formTack.execute_user
+          }
+          if (!self.indesignStage.design_substage) {
+            self.indesignStage.design_substage = []
+          }
+          for (var i = 0; i < self.indesignStage.design_substage.length; i++) {
+            let intask = self.indesignStage.design_substage[i]
+            if (res.id === intask.id) {
+              self.indesignStage.design_substage[i] = res
+            }
+          }
+          self.tackleft(self.designStageLists)
         } else {
-          this.$message.error(response.data.meta.message)
+          self.$message.error(response.data.meta.message)
         }
       }).catch((error) => {
-        this.$message.error(error.message)
+        self.$message.error(error.message)
         console.error(error.message)
       })
     },
     // 编辑子阶段按钮
-    editTack(des, index, c) {
+    editTack(des, c) {
       this.indesignStage = c
-      this.formTack = des
-      this.formTack.index = index
+      this.itemdesname = c.name
+      this.formTack = {...des}
+      if (this.formTack.design_stage_node) {
+        this.formNode.name = des.design_stage_node.name
+      } else this.formNode.name = ''
       if (this.formTack.execute_user) {
         this.formTack.log = des.execute_user.logo_image.logo
         delete this.formTack.execute_user
       }
       this.isitemedit = false
+      this.isnodeedit = false
       this.istaskedit = true
       this.formTacktime = (new Date(this.formTack.start_time * 1000)).format('yyyy-MM-dd')
     },
@@ -1039,8 +1233,16 @@ export default {
       this.istaskedit = false
       this.formTack = {}
     },
-    // 编辑执行人
-    selectUser() {
+    // 查看成员
+    seeuser() {
+      if (this.formTack.execute_user_id) {
+        for (var i = 0; i < this.options.length; i++) {
+          if (this.options[i].id === this.formTack.execute_user_id) {
+            this.options[i].isckeck = true
+            this.$set(this.options, i, this.options[i])
+          } else this.options[i].isckeck = false
+        }
+      }
       this.isuserimg = true
     },
     // 选择成员
@@ -1056,48 +1258,30 @@ export default {
       this.isuserimg = false
       this.updataTack()
     },
-    // 编辑子阶段
-    updataTack(date) {
-      if (this.formTackStart !== this.formup.start_time || !date) {
-        if (isNaN(this.formTack.duration)) {
-          this.$message.error('输入正确的投入天数')
-          return
-        }
-        if (this.formTack.index) {
-          this.sortTasks(this.formTack.index)
-        }
-        if (date) {
-          this.formTack.start_time = Math.round(new Date(date).getTime() / 1000)
-        }
-        if (typeof this.formTack.start_time !== 'number') {
-          this.formTack.start_time = Math.round(new Date(this.formTack.start_time).getTime() / 1000)
-        }
-        this.$http.put(api.designSubstageUpdate.format(this.formTack.id), this.formTack).then((response) => {
-          if (response.data.meta.status_code === 200) {
-            console.log(response.data.data)
-          } else {
-            this.$message.error(response.data.meta.message)
-          }
-        }).catch((error) => {
-          this.$message.error(error.message)
-          console.error(error.message)
-        })
-      }
-    },
     sortTasks(index) {
       let dur = parseInt(this.formTack.duration) * 86400
+      let ssr = []
       for (var i = index; i < this.indesignStage.design_substage.length; i++) {
         this.indesignStage.design_substage[i].start_time += dur
         this.indesignStage.design_substage[i].end_time += dur
+        ssr.push(this.indesignStage.design_substage[i].start_time)
+        ssr.push(this.indesignStage.design_substage[i].end_time)
       }
-      console.log(this.indesignStage)
     },
     // 删除子阶段
-    deleteTack(id, index) {
-      this.$http.delete(api.designSubstageDelete, {params: {design_substage_id: id}})
+    deleteTack(id) {
+      let self = this
+      self.$http.delete(api.designSubstageDelete, {params: {design_substage_id: id}})
       .then (function(response) {
         if (response.data.meta.status_code === 200) {
-          console.log(response.data.data)
+          self.upDateDuration(1)
+          for (var i = 0; i < self.indesignStage.design_substage.length; i++) {
+            if (self.indesignStage.design_substage[i].id === id) {
+              self.indesignStage.design_substage.splice(i, 1)
+              self.dialogTask = false
+              self.istaskedit = false
+            }
+          }
         } else {
           this.$message.error(response.data.meta.message)
         }
@@ -1106,38 +1290,55 @@ export default {
         console.error(error.message)
       })
     },
-    // 创建阶段节点按钮
-    addNode () {
-    },
     // 创建阶段节点
-    createNode(id, index) {
-      this.formNode.design_substage_id = id
+    createNode() {
+      if (!this.formNode.name) {
+        this.$message.error('节点名称不能为空')
+        return
+      }
+      let endt = this.formTack.start_time + this.formTack.duration * 86400
+      this.formNode.design_substage_id = this.formTack.id
       if (this.formNode.is_owner) {
         this.formNode.is_owner = 1
       } else this.formNode.is_owner = 0
-      this.formNode.time = Math.round(new Date(this.formNode.time).getTime() / 1000)
+      this.formNode.time = endt
       this.$http.post(api.dsignStageNodeCreate, this.formNode).then((response) => {
         if (response.data.meta.status_code === 200) {
-          console.log(response.data.data)
+          var res = response.data.data
+          var dessub = this.indesignStage.design_substage
+          for (var f = 0; f < dessub.length; f++) {
+            if (dessub[f].id === res.design_substage_id) {
+              dessub[f].design_stage_node = res
+            }
+          }
+          console.log(this.designStageLists)
         } else {
           this.$message.error(response.data.meta.message)
         }
       })
     },
-    // 编辑阶段节点按钮
-    editNode() {
+    editNode(node) {
+      this.formNodetime = (new Date(node.time * 1000)).format('yyyy-MM-dd')
+      this.isitemedit = false
+      this.istaskedit = false
+      this.isnodeedit = true
+      this.formNode = node
+      this.uploadParam['x:target_id'] = node.id
+      this.formNodeowner = Boolean(this.formNode.is_owner)
     },
     // 编辑阶段节点
-    updataNode(sub, index) {
-      this.formNodeUp.name = sub.name
-      if (sub.time) {
-        if (sub.time instanceof Date) {
-          this.formNodeUp.time = Math.round(sub.time.getTime() / 1000)
-        } else this.formNodeUp.time = Math.round(new Date(sub.time).getTime() / 1000)
+    updataNode(date) {
+      if (Date.parse(new Date(this.formNodetime)) / 1000 !== this.formNode.time || !date) {
+        if (typeof this.formNode.time !== 'number') {
+          this.formNode.time = Math.round(new Date(this.formNode.time).getTime() / 1000)
+        }
+        if (date) {
+          this.formNode.time = Math.round(new Date(date).getTime() / 1000)
+        }
+        this.formNode.is_owner = Number(this.formNodeowner)
+        this.formNode.stage_node_id = this.formNode.id
       }
-      this.formNodeUp.is_owner = sub.is_owner
-      this.formNodeUp.stage_node_id = sub.id
-      this.$http.put(api.designStageNodeUpdate.format(sub.id), this.formNodeUp).then((response) => {
+      this.$http.put(api.designStageNodeUpdate.format(this.formNode.id), this.formNode).then((response) => {
         if (response.data.meta.status_code === 200) {
           console.log(response.data.data)
         } else {
@@ -1153,6 +1354,59 @@ export default {
       this.$http.delete(api.designStageNodeDelete, {params: {stage_node_id: id}}).then (function(response) {
         if (response.data.meta.status_code === 200) {
           console.log(response.data.data)
+        } else {
+          this.$message.error(response.data.meta.message)
+        }
+      }).catch((error) => {
+        this.$message.error(error.message)
+        console.error(error.message)
+      })
+    },
+    // 节点文件上传时
+    uploadProgress(event, file, fileList) {
+      this.fileLists = fileList
+      for (var i = 0; i < this.fileLists.length; i++) {
+        this.fileLists[i].prog = (parseFloat(this.fileLists[i].size) * this.fileLists[i].percentage / 100).toFixed(2)
+        if (this.fileLists[i].percentage === 100) {
+          this.fileLists[i].prog = ''
+        }
+        var lastSize = this.fileLists[i].size
+        if (lastSize / (1024 * 1024) > 0.01) {
+          this.fileLists[i].size = (lastSize / (1024 * 1024)).toFixed(2) + 'MB'
+        } else if (lastSize / 1024 >= 0) {
+          this.fileLists[i].size = (lastSize / 1024).toFixed(2) + 'KB'
+        }
+      }
+    },
+    // 文件上传成功时
+    uploadSuccess(response, file, fileList) {
+      file.id = file.response.asset_id
+      file.file = file.response.file
+      this.formNode.asset.unshift(file)
+    },
+    // 删除上传的文件
+    deleteup(assetid) {
+      var self = this
+      self.$http.delete(api.asset.format(assetid), {})
+        .then (function(response) {
+          if (response.data.meta.status_code === 200) {
+            console.log(1111)
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+        })
+      .catch (function(error) {
+        self.$message.error(error.message)
+        self.dialogLoadingBtn = false
+      })
+    },
+    // 获取附件Token
+    upTokens() {
+      this.$http.get(api.upToken).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          this.uploadParam['token'] = response.data.data.upToken
+          this.uploadParam['x:random'] = response.data.data.random
+          this.uploadUrl = response.data.data.upload_url
         } else {
           this.$message.error(response.data.meta.message)
         }
@@ -1186,6 +1440,7 @@ export default {
     this.itemId = itemId
     // 读取公司成员
     this.readMembers()
+    this.upTokens()
     // 读取项目阶段列表
     this.$http.get(api.designStageLists, {params: {design_project_id: this.itemId}}).then((response) => {
       if (response.data.meta.status_code === 200) {
@@ -1430,18 +1685,131 @@ export default {
     line-height: 20px;
   }
   .userlist .fx-icon-nothing-close-error {
-    position:absolute;
+    position: absolute;
     top: 19px;
     right: 20px;
   }
+  .owner {
+    line-height: 30px;
+  }
+  .node-file {
+    line-height: 50px;
+    padding-left: 60px;
+    cursor: pointer;
+    position: relative;
+    border-top:1px solid #d2d2d2;
+  }
+  .node-file:focus ul{
+    display:block
+  }
+  .node-file i {
+    position: absolute;
+    width:24px;
+    height:24px;
+    top:14px;
+    left: 18px;
+    background: url('../../../../assets/images/tools/project_management/Enclosure@2x.png') no-repeat center/18px 18px;
+  }
+  .node-file ul {
+    display: none;
+    width: 180px;
+    position: absolute;
+    left: -30px;
+    background: #FFFFFF;
+    box-shadow: 0 0 8px 0 rgba(0,0,0,0.10);
+    border-radius: 4px;
+  }
+  .node-file ul li {
+    height: 40px;
+    line-height: 40px;
+    padding-left: 50px;
+    position: relative;
+  }
+  .node-file ul i {
+    position: absolute;
+    width:24px;
+    height:24px;
+    top:10px;
+    left: 13px;
+  }
+  .file-local i {
+    background: url('../../../../assets/images/tools/project_management/Enclosure@2x.png') no-repeat center/18px 18px;
+  }
+  .file-SkyDrive i {
+    background: url('../../../../assets/images/tools/project_management/Enclosure@2x.png') no-repeat center/18px 18px;
+  }
+  .node-file ul li:hover {
+    background:#f7f7f7;
+  }
+  .file-edit {
+    padding:0 20px;
+  }
+  .files {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:6px 10px;
+    background:#f7f7f7;
+    margin-bottom:10px;
+  }
+  .files i {
+    width:30px;
+    height:30px;
+    margin-right:10px;
+  }
+  .filesdl::after{
+    content: 'x';
+    width:14px;
+    height:14px;
+    font-size:14px;
+    text-align:center;
+    background:#c1c1c1;
+    border-radius: 50%;
+    color:#fff;
+    cursor: pointer;
+  }
+  .files-content{
+    flex: 1;
+    padding-right:10px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  }
+  .files-content .el-progress {
+    margin-top:5px;
+  }
+  .files-name {
+    display:flex;
+    justify-content:space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #222222;
+  }
+  .files-name>span:first-child {
+    display:inline-block;
+    max-width:220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .files-name>div>span {
+    cursor: pointer;
+  }
+  .files-name>div>span:first-child {
+    margin-right:10px;
+  }
   .task-itemdesname i {
-    background:url('../../../../assets/images/tools/project_management/superior@2x.png') 0 0 no-repeat;
+    background: url('../../../../assets/images/tools/project_management/superior@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .opvalue i {
+    background: url('../../../../assets/images/tools/project_management/Completed@2x.png') 0 0 no-repeat;
     background-size: contain;
   }
   .userimg {
-    background:url('../../../../assets/images/tools/project_management/Occupyinghead@2x.png') 0 0 no-repeat;
+    background: url('../../../../assets/images/tools/project_management/Occupyinghead@2x.png') 0 0 no-repeat;
     background-size: contain;
-    cursor:pointer;
+    cursor: pointer;
   }
   .task-userimg>img{
     position: absolute;
@@ -1453,21 +1821,21 @@ export default {
     cursor: pointer;
   }
   .task-itemdesname {
-    height:36px;
+    height: 36px;
     line-height: 36px;
   }
   .design-nodeName i{
-     background:url('../../../../assets/images/tools/project_management/Address@2x.png') 0 0 no-repeat;
+     background: url('../../../../assets/images/tools/project_management/Address@2x.png') 0 0 no-repeat;
     background-size: contain;
   }
   .designStage-name {
     position: relative;
-    height:40px;
+    height: 40px;
   }
   .designStage-name>span {
-    position:absolute;
-    left:-34px;
-    top:6px;
+    position: absolute;
+    left: -34px;
+    top: 6px;
   }
   .design-duration i{
     background: url('../../../../assets/images/tools/project_management/Repeat.png') 0 0 no-repeat;
@@ -1488,7 +1856,7 @@ export default {
     align-items: center;
     border-top:1px solid #d2d2d2;
     border-bottom:1px solid #d2d2d2;
-    padding:10px 19px;
+    padding:10px 17px;
   }
   .add-tack>span{
     display: inline-block;
@@ -1702,15 +2070,27 @@ export default {
   }
   .item-tacklist {
     position:absolute;
-    top:80px;
-    height:20px;
-    line-height:20px;
+    top:75px;
+    height:30px;
+    line-height:30px;
     width:350%;
     border-radius: 4px;
-    background:#65A6FF;
-    overflow: hidden;
+    background:rgba(101,166,255,0.05);
     text-align: center;
-    cursor: pointer
+    cursor: pointer;
+    border:1px solid #65A6FF;
+  }
+  .item-tacking {
+    height:28px;
+    border-radius: 4px;
+    position: absolute;
+  }
+  .task-name {
+    height:100%;
+    width:100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position:relative
   }
   .item-tacklist-last {
     position:absolute;
@@ -1736,11 +2116,62 @@ export default {
   }
   .item-tacklist-last>span {
     cursor: pointer;
-    font-size:1.4rem;
+    font-size:1.4rem
   }
-  .no-tack{
+  .no-tack {
     width:30px;
-    height:20px;
+    height:30px
+  }
+  .item-start {
+    background:url('../../../../assets/images/tools/project_management/ProjectStart@2x.png') 0 0 no-repeat;
+    background-size: contain;
+    position: absolute;
+    top:-30px;
+    left:0;
+    width:24px;
+    height:24px
+  }
+  .item-noded {
+    background:url('../../../../assets/images/tools/project_management/Node02@2x.png') 0 0 no-repeat;
+    background-size: contain;
+    position: absolute;
+    top:-30px;
+    right:0;
+    width:24px;
+    height:24px
+  }
+  .item-node {
+    background:url('../../../../assets/images/tools/project_management/Node03@2x.png') 0 0 no-repeat;
+    background-size: contain;
+    position: absolute;
+    top:-30px;
+    right:0;
+    width:24px;
+    height:24px
+  }
+  .item-nodenon {
+    background:url('../../../../assets/images/tools/project_management/NonNode@2x.png') 0 0 no-repeat;
+    background-size: contain;
+    position: absolute;
+    top:-30px;
+    right:0;
+    width:24px;
+    height:24px
+  }
+  .node-name {
+    position: absolute;
+    right:12px;
+    border-right:2px dashed #d2d2d2;
+    bottom:-30px;
+    height:30px;
+  }
+  .node-name p {
+    position: absolute;
+    top: 25px;
+    right: -15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align:right
   }
   .item-chartContent>ul {
     display:inline-block;
@@ -1756,20 +2187,56 @@ export default {
     background:#bce6f0;
   }
   .bgwill {
-    background:#65A6FF;
-    border:1px solid #65A6FF;
+    background:rgba(101,166,255,0.05);
   }
   .bging {
-    border:1px solid #11bce2;
     background:#07b7e4;
   }
   .bgno {
-    border:1px solid #FF8B8F;
     background:#FF8B8F;
   }
   .bged {
-    border:1px solid #00AC84;
     background:#00AC84;
+  }
+    .document{
+    background: url('../../../../assets/images/tools/cloud_drive/type/document@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .other {
+    background: url('../../../../assets/images/tools/cloud_drive/type/other@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .artboard {
+    background: url('../../../../assets/images/tools/cloud_drive/type/artboard@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .audio {
+    background: url('../../../../assets/images/tools/cloud_drive/type/audio@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .compress {
+    background: url('../../../../assets/images/tools/cloud_drive/type/compress@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .folder {
+    background: url('../../../../assets/images/tools/cloud_drive/type/folder@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .image {
+    background: url('../../../../assets/images/tools/cloud_drive/type/image@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .powerpoint {
+    background: url('../../../../assets/images/tools/cloud_drive/type/powerpoint@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .spreadsheet {
+    background: url('../../../../assets/images/tools/cloud_drive/type/spreadsheet@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .video {
+    background: url('../../../../assets/images/tools/cloud_drive/type/video@2x.png') 0 0 no-repeat;
+    background-size: contain;
   }
   @media screen and (max-width: 767px) {
     .item-total {
