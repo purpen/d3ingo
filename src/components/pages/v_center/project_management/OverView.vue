@@ -616,8 +616,8 @@
                       >
                       </div>
                       <div :class="['item-tacking',{
-                        'bgno': tack.status === 0?(tack.left+parseInt(tack.duration) <= newleft?true:false):false,
-                        'bged': tack.status === 1?true:false
+                        'bgno': tack.status === 0 && ((tack.left+parseInt(tack.duration)) <= newleft),
+                        'bged': tack.status === 1
                       }]"
                       @click.stop="editTack(tack,c)"
                       v-else>
@@ -674,7 +674,7 @@
             </el-col>
           </el-row>
         <div  class="add-item" >
-          <div @click="isItemStage=true">+</div>
+          <div @click="isItemStage=true"></div>
           <p @click="isItemStage=true">添加项目阶段</p>
         </div>
       </div>
@@ -926,9 +926,11 @@ export default {
     },
     // 项目到最早的距离
     itemtostart(item) {
-      let et = new Date(this.endTimes[0] * 1000)
-      let xin = Date.parse(new Date(et.getFullYear() + '-' + (et.getMonth() + 1) + '-' + 1)) / 1000
-      return Math.floor((item - xin) / 86400)
+      let et = new Date(this.endTimes[0])
+      // let xin = Date.parse(new Date(et.getFullYear() + '-' + (et.getMonth() + 1) + '-' + 1)) / 1000
+      let xin = Date.parse(et).date_format().format('yyyy-MM')
+      let xin2 = Date.parse(new Date(xin)) / 1000
+      return Math.floor((item - xin2) / 86400)
     },
     // 时间排序
     sortdate(arr) {
@@ -969,15 +971,19 @@ export default {
       this.totaldays = this.dateDay(this.endTimes[0], this.endTimes[this.endTimes.length - 1])
       this.newDay()
       this.newtostart()
-      let reset = new Date(this.endTimes[0] * 1000)
-      let resxin = Date.parse(new Date(reset.getFullYear() + '-' + (reset.getMonth() + 1) + '-' + 1)) / 1000
+      let reset = new Date(this.endTimes[0])
+      // let resxin = Date.parse(new Date(reset.getFullYear() + '-' + (reset.getMonth() + 1) + '-' + 1)) / 1000
+      let xin2 = Date.parse(reset).date_format().format('yyyy-MM')
+      let resxin = Date.parse(new Date(xin2)) / 1000
       res.left = Math.floor(((res.start_time - resxin) / 86400))
       return res
     },
     // 任务显示
     tackleft(des) {
-      let et = new Date(this.endTimes[0] * 1000)
-      let xin = Date.parse(new Date(et.getFullYear() + '-' + (et.getMonth() + 1) + '-' + 1)) / 1000
+      let et = new Date(this.endTimes[0])
+      let xin2 = Date.parse(et).date_format().format('yyyy-MM')
+      let xin = Date.parse(new Date(xin2)) / 1000
+      // let xin = Date.parse(new Date(et.getFullYear() + '-' + (et.getMonth() + 1) + '-' + 1)) / 1000
       for (var tl = 0; tl < des.length; tl++) {
         if (!des[tl].design_substage) {
           let itemd = Date.parse(new Date(des[tl].start_time)) / 1000
