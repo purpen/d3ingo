@@ -55,7 +55,7 @@
                 <p>类别</p>
               </el-col>
               <el-col :span="spanVal">
-                <p>{{ item.design_types_value.join(', ') }}</p>
+                <p v-if="item.design_types_value">{{ item.design_types_value.join(', ') }}</p>
               </el-col>
               <el-col :span="spanOpt">
               </el-col>
@@ -258,7 +258,7 @@
                 <p>项目报价</p>
               </el-col>
               <el-col :span="spanVal">
-                <p>{{ item.price }}</p>
+                <p>¥ {{ item.price }}</p>
               </el-col>
               <el-col :span="spanOpt">
               </el-col>
@@ -269,7 +269,7 @@
                 <p>佣金</p>
               </el-col>
               <el-col :span="spanVal">
-                <p>{{ item.commission_rate }}%</p>
+                <p>{{ item.commission_rate }} %</p>
               </el-col>
               <el-col :span="spanOpt">
               </el-col>
@@ -280,7 +280,7 @@
                 <p>剩余金额</p>
               </el-col>
               <el-col :span="spanVal">
-                <p>{{ item.rest_fund }}</p>
+                <p>¥ {{ item.rest_fund }}</p>
               </el-col>
               <el-col :span="spanOpt">
               </el-col>

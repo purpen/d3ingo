@@ -5,7 +5,7 @@
     </div>
     <div class="line"></div>
     <div class="contact-box">
-      <el-row :gutter="1">
+      <el-row :gutter="20">
         <el-col :xs="24" :sm="12" :md="12" :lg="12">
           <p><span>客户（甲方）：</span>{{ form.company_name }}</p>
           <p><span>联系人：</span>{{ form.contact_name }}</p>
@@ -110,12 +110,70 @@ export default {
     },
     // 下载
     download() {
+      let stages = []
+      for (let i = 0; i < this.form.plan.length; i++) {
+        let d = this.form.plan[i]
+        let sub = ''
+        for (var j = 0; j < d.arranged.length; j++) {
+          sub += d.arranged[j].number + '名 ' + d.arranged[j].name + '  '
+        }
+        let item = {
+          columns: [
+            {
+              text: d.content,
+              width: '20%',
+              style: 'p'
+            },
+            [
+              {text: sub, style: 'p'},
+              {text: d.duration + '个 工作日', style: 'p'},
+              {text: d.summary, style: 'p'}
+            ],
+            {
+              width: '10%',
+              text: '¥' + this.formatPrice(d.price),
+              style: 'p',
+              color: '#ff5a5f'
+            }
+          ],
+          margin: [0, 5, 0, 5]
+        }
+        stages.push(item)
+      }
+
+      let totalTxt = ''
+      if (this.form.is_tax) {
+        totalTxt = '总计（含税）：'
+      } else {
+        totalTxt = '总计：'
+      }
+
+      let totalTaxTxt = () => {
+        let str = {text: '', style: 'p'}
+        if (!this.form.is_tax && this.form.is_invoice) {
+          str = {
+            columns: [
+              {
+                text: [
+                  {text: '税率：', style: 'p'},
+                  {text: this.form.tax_rate, style: 'p', color: '#ff5a5f'},
+                  {text: ' %   总计（含税）： ', style: 'p'},
+                  {text: this.taxTotalMoneyFormat, style: 'p', color: '#ff5a5f'},
+                  {text: ' 元', style: 'p'}
+                ]
+              }
+            ],
+            alignment: 'right'
+          }
+        }
+        return str
+      }
+
       let dd = {
         content: [
-          {text: this.projectObject.name + '报价单', style: 'header'},
-          {image: 'line', height: 1},
-          {text: '', style: 'p'},
-          {text: '', style: 'p'},
+          {text: this.projectObject.name + ' 报价单', style: 'header'},
+          {image: 'line', height: 0.8, width: 510},
+          {text: '', style: 'title'},
           {
             columns: [
               {
@@ -162,18 +220,44 @@ export default {
             columns: [
               {
                 width: '50%',
-                text: '地址: ' + this.form.address,
+                text: '地址: ' + this.form.province_value + this.form.city_value + this.form.area_value + this.form.address,
                 headlineLevel: 1,
                 style: 'p'
               },
               {
                 width: '50%',
-                text: '地址: ' + this.form.design_address,
+                text: '地址: ' + this.form.design_province_value + this.form.design_city_value + this.form.design_area_value + this.form.design_address,
                 headlineLevel: 1,
                 style: 'p'
               }
             ]
-          }
+          },
+          {text: '', style: 'title'},
+          {image: 'line', height: 0.8, width: 510},
+          {text: '项目目标', style: 'title'},
+          {text: this.form.summary, style: 'p'},
+          {text: '项目工作计划及费用', style: 'title'},
+          {image: 'line', height: 0.8, width: 510},
+          {text: '', style: 'p'},
+          {text: '', style: 'p'},
+          stages,
+          {text: '', style: 'title'},
+          {image: 'line', height: 0.8, width: 510},
+          {text: '', style: 'title'},
+          {
+            columns: [
+              {
+                text: [
+                  {text: totalTxt, style: 'p'},
+                  {text: this.totalMoneyFormat, style: 'p', color: '#ff5a5f'},
+                  {text: ' 元', style: 'p'}
+                ]
+              }
+            ],
+            alignment: 'right'
+          },
+          totalTaxTxt(),
+          {text: '', style: 'p'}
         ],
         defaultStyle: {
           font: 'NotoSansCJK',
