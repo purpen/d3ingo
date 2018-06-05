@@ -103,8 +103,8 @@ export default {
       var self = this
       this.downLoadingBtn = true
       require.ensure([], function (require) {
-        require('../../../../../lib/js/pdfmake.js')
-        require('../../../../../lib/js/vfs_h_fonts.js')
+        require('../../../../../lib/js/pdfmake.min.js')
+        require('../../../../../lib/js/vfs_fonts.js')
         self.download()
       })
     },
@@ -176,7 +176,8 @@ export default {
           }
         ],
         defaultStyle: {
-          font: 'simhei'
+          font: 'NotoSansCJK',
+          lineHeight: 1.5
         },
 
         images: {
@@ -215,11 +216,11 @@ export default {
           italics: 'Roboto-Italic.ttf',
           bolditalics: 'Roboto-Italic.ttf'
         },
-        simhei: {
-          normal: 'simhei.ttf',
-          bold: 'simhei.ttf',
-          italics: 'simhei.ttf',
-          bolditalics: 'simhei.ttf'
+        NotoSansCJK: {
+          normal: 'NotoSansCJK.ttf',
+          bold: 'NotoSansCJK.ttf',
+          italics: 'NotoSansCJK.ttf',
+          bolditalics: 'NotoSansCJK.ttf'
         }
       }
 
