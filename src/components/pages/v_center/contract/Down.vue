@@ -224,7 +224,8 @@
             {text: '', style: 'p'}
           ],
           defaultStyle: {
-            font: 'simhei'
+            font: 'NotoSansCJK',
+            lineHeight: 1.5
           },
 
           styles: {
@@ -260,11 +261,11 @@
             italics: 'Roboto-Italic.ttf',
             bolditalics: 'Roboto-Italic.ttf'
           },
-          simhei: {
-            normal: 'simhei.ttf',
-            bold: 'simhei.ttf',
-            italics: 'simhei.ttf',
-            bolditalics: 'simhei.ttf'
+          NotoSansCJK: {
+            normal: 'NotoSansCJK.ttf',
+            bold: 'NotoSansCJK.ttf',
+            italics: 'NotoSansCJK.ttf',
+            bolditalics: 'NotoSansCJK.ttf'
           }
         }
 
@@ -329,8 +330,8 @@
                   that.form = item
                   // 生成pdf插件太大，实现懒加载
                   require.ensure([], function (require) {
-                    require('../../../../../lib/js/pdfmake.js')
-                    require('../../../../../lib/js/vfs_h_fonts.js')
+                    require('../../../../../lib/js/pdfmake.min.js')
+                    require('../../../../../lib/js/vfs_fonts.js')
                     that.downBtn()
                   })
                 })

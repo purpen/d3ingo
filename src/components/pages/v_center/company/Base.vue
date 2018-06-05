@@ -292,11 +292,11 @@
               <el-col :span="contentSpan" class="content">
 
                 <div v-if="element.good_field" class="type-content">
-                  <el-button :class="{ 'tag': true }" size="small" :key="index"
+                  <el-button :class="{ 'tag': true, 'full-red-button': form.good_field.indexOf(d.value) !== -1 }" size="small" :key="index"
                              @click="selectFieldBtn(d.value, d.label)" v-for="(d, index) in fieldOptions">{{ d.label }}
                   </el-button>
 
-                  <div class="edit-field-tag field-box">
+                  <!-- <div class="edit-field-tag field-box">
                     <el-tag
                       v-for="(d, index) in form.good_field_value"
                       :key="index"
@@ -305,7 +305,7 @@
                     >
                       {{ d }}
                     </el-tag>
-                  </div>
+                  </div> -->
                 </div>
                 <p class="field-box" v-else>
                   <el-tag
@@ -697,11 +697,15 @@
         this.form.good_field.splice(index, 1)
       },
       // 选择领域
-      selectFieldBtn(cId, cName) {
-        if (this.$phenix.in_array(this.form.good_field, cId) === -1) {
-          this.form.good_field_value.push(cName)
+      selectFieldBtn(cId, name) {
+        let index = this.form.good_field.indexOf(cId)
+        if (index === -1) {
           this.form.good_field.push(cId)
+          this.form.good_field_value.push(name)
+        } else {
+          this.delFieldBtn(index)
         }
+        console.log(index, this.form.good_field)
       },
       editBtn(mark) {
         if (!mark) {
@@ -1243,16 +1247,6 @@
     margin: 5px 0;
   }
 
-  .tag:hover {
-    /* border: 1px solid #FF5A5F;
-    color: #FF5A5F; */
-  }
-
-  .tag.active {
-    /* border: 1px solid #FF5A5F;
-    color: #FF5A5F; */
-  }
-
   .MmenuHide {
     margin-left: 0;
   }
@@ -1295,7 +1289,11 @@
     color: #666;
     margin-right: 0;
   }
-
+  .field-box .el-tag {
+     border: 1px solid #e6e6e6;
+    background: #fff;
+    color: #666
+  }
   @media screen and (max-width: 767px) {
     .item-m .content {
       border: none;

@@ -10,20 +10,40 @@ mallache.write_token = function (token) {
 }
 
 mallache.write_user = function (user) {
-  var userInfo = {
-    id: user.id,
-    account: user.account,
-    email: user.email,
-    phone: user.phone,
-    avatar: user.logo_image,
-    type: user.type,
-    design_company_id: user.design_company_id,
-    role_id: user.role_id,
-    realname: user.realname,
-    company_role: user.company_role,
-    child_account: user.child_account,
-    status: user.status,
-    verify_status: user.verify_status
+  let userInfo = {}
+  if (user.type === 1) {
+    userInfo = {
+      id: user.id,
+      account: user.account,
+      email: user.email,
+      phone: user.phone,
+      avatar: user.logo_image,
+      type: user.type,
+      design_company_id: user.design_company_id,
+      role_id: user.role_id,
+      realname: user.realname,
+      company_role: user.company_role,
+      child_account: user.child_account,
+      status: user.status,
+      verify_status: user.verify_status
+    }
+  } else {
+    userInfo = {
+      id: user.id,
+      account: user.account,
+      email: user.email,
+      phone: user.phone,
+      avatar: user.logo_image,
+      type: user.type,
+      design_company_id: user.design_company_id,
+      role_id: user.role_id,
+      realname: user.realname,
+      company_role: user.company_role,
+      child_account: user.child_account,
+      status: user.status,
+      verify_status: user.verify_status,
+      design_company_logo_image: user.design_company_logo_image
+    }
   }
   // 写入localStorage
   store.commit(USER_INFO, userInfo)
