@@ -35,7 +35,7 @@
           </section>
           
           <section v-if="!isMyTask" class="stage-item" v-for="(ele, index) in displayObj['itemList']" :key="index">
-            <p class="stage-name" @click.self="editStageBtn(ele.id, index)">{{ele.title}}:
+            <p :class="['stage-name', {'is-checked': currentStageStat.id === ele.id}]" @click.self="editStageBtn(ele.id, index)">{{ele.title}}:
               <input v-show="currentStageStat.id === ele.id"
               v-focus="true"
               class="stage-title" type="text" v-model="currentStageForm.title"
@@ -599,6 +599,9 @@
     line-height: 50px;
     height: 50px;
     margin-bottom: 10px;
+  }
+  .is-checked {
+    border: 1px solid #ff5a5f;
   }
   .task-item:hover {
     background: #fafafa
