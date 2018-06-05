@@ -95,8 +95,8 @@
           </div>
 
           <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist" v-else>
-            <div class="computer-btn" v-if="isCompany && !isMob && eventUser.avatar" @click="redirectCompany">
-              <span :style="{background: `url(${eventUser.avatar.logo}) no-repeat center / 40px 40px #222`}"></span>
+            <div class="computer-btn" v-if="isCompany && !isMob && eventUser.design_company_logo_image" @click="redirectCompany">
+              <span :style="{background: `url(${eventUser.design_company_logo_image.logo}) no-repeat center / 40px 40px #222`}"></span>
             </div>
             
             <el-tooltip class="item" :effect="DarkorLight" content="控制面板" placement="right">
@@ -239,8 +239,8 @@
 
           <!-- 设计公司4 -->
           <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist" v-else>
-            <div class="computer-btn" v-if="isCompany && !isMob && eventUser.avatar" @click="redirectCompany">
-              <span v-if="eventUser.design_company_logo_image" :style="{background: `url(${eventUser.design_company_logo_image.logo}) no-repeat center / 40px 40px #222`}"></span>
+            <div class="computer-btn" v-if="isCompany && !isMob && eventUser.design_company_logo_image" @click="redirectCompany">
+              <span :style="{background: `url(${eventUser.design_company_logo_image.logo}) no-repeat center / 40px 40px #222`}"></span>
               查看公司主页
             </div>
             <a @click="alick" :to="'/vcenter/control'"

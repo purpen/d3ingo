@@ -36,7 +36,9 @@
           
           <section v-if="!isMyTask" class="stage-item" v-for="(ele, index) in displayObj['itemList']" :key="index">
             <p class="stage-name" @click.self="editStageBtn(ele.id, index)">{{ele.title}}:
-              <input v-if="currentStageForm.title && currentStageStat.id === ele.id" class="stage-title" type="text" v-model="currentStageForm.title"
+              <input v-show="currentStageStat.id === ele.id"
+              v-focus="true"
+              class="stage-title" type="text" v-model="currentStageForm.title"
               @blur="submitStage()">
               <span @click="confirmDeleteStageBtn(ele.id, index)" class="close-icon-solid"></span></p>
             <section>
@@ -232,8 +234,6 @@
         self.currentStageForm.item_id = self.itemId
         this.$http.post(api.toolsStage, self.currentStageForm).then(function (response) {
           if (response.data.meta.status_code === 200) {
-            // console.log(response.data.data)
-            // self.stageList.unshift(response.data.data)
             self.currentStageForm.id = response.data.data.id
             self.$store.commit('createStageListItem', self.currentStageForm)
           } else {
@@ -248,14 +248,21 @@
       updateStage() {
         const self = this
         let id = self.currentStageStat.id
+        let oldId = id
         if (!id) {
           self.$message.error('ID不能为空!')
           return false
         }
+        if (self.currentStageForm.title === '') {
+          self.$message.error('阶段名不能为空!')
+          return false
+        }
         self.$http.put(api.toolsStageId.format(id), self.currentStageForm).then(function (response) {
           if (response.data.meta.status_code === 200) {
-            self.currentStageStat.id = -1
-            self.$store.commit('updateStageListItem', self.currentStageForm)
+            if (oldId === self.currentStageStat.id) {
+              self.currentStageStat.id = -1
+            }
+            self.$store.commit('updateStageListItem', response.data.data)
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -315,7 +322,6 @@
         this.$http.get(api.myTask)
         .then(res => {
           if (res.data.meta.status_code === 200) {
-            console.log(res)
             this.$store.commit('setTaskList', res.data.data)
           } else {
             this.$messgae.error(res.data.meta.message)
@@ -621,6 +627,7 @@
     line-height: 46px;
     height: 46px;
     width: 100%;
+    min-width: 20px;
     border: none;
     font-size: 18px;
     color: #222222;
@@ -638,7 +645,6 @@
   }
   .stage-name:hover .close-icon-solid {
     display: block;
-    animation: slowShow 1s cubic-bezier(0.175, 0.885, 0.32, 1.275)
   }
   .task-item {
     border-left: 1px solid #d2d2d2;
