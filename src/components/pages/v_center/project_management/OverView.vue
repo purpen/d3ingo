@@ -206,7 +206,7 @@
               </p>
               <div>
                 <el-input
-                   placeholder="请选择成员"
+                   placeholder="搜索成员"
                    v-model="searcher"
                 >
                 </el-input>

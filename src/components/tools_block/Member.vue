@@ -8,7 +8,7 @@
     </p>
     <div class="side clearfix">
       <div class="search-parent">
-        <input placeholder="请选择成员" class="member-search" v-model="seachKey" type="text">
+        <input placeholder="搜索成员" class="member-search" v-model="seachKey" type="text">
       </div>
       <ul class="scroll-bar">
         <li v-if="matchMemberList.length"

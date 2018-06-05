@@ -34,7 +34,7 @@
             </div>
           </section>
           
-          <section class="stage-item" v-for="(ele, index) in displayObj['itemList']" :key="index">
+          <section v-if="!isMyTask" class="stage-item" v-for="(ele, index) in displayObj['itemList']" :key="index">
             <p class="stage-name" @click.self="editStageBtn(ele.id, index)">{{ele.title}}:
               <input v-if="currentStageForm.title && currentStageStat.id === ele.id" class="stage-title" type="text" v-model="currentStageForm.title"
               @blur="submitStage()">
