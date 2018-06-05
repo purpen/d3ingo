@@ -298,13 +298,16 @@
         <ul class="aside-content">
           <li class="designStage-name">
             <span>
-              <el-checkbox v-model="checked"></el-checkbox>
+              <el-checkbox v-model="formNodeStatus"
+                @change="editNodeStatus()"
+              >
+              </el-checkbox>
             </span>
             <el-input 
               v-model="formNode.name"
               placeholder="节点名称"
               class="noborder"
-              @blur="updataNode()"
+              @blur.stop="updataNode()"
             >
             </el-input>
           </li>
@@ -317,6 +320,7 @@
                 placeholder="开始日期设置"
                 class="noborder"
                 @change="updataNode"
+                status
                >
                 </el-date-picker>
               </div>
@@ -324,7 +328,6 @@
           <li class="opvalue noborder">
             <i></i>
             <el-select v-model="formNode.status" placeholder="请选择"
-            @change="updataNode()"
             >
               <el-option
                 v-for="item in option"
@@ -601,8 +604,8 @@
                         width:tack.duration*30-2+'px',
                       }"
                       :class="['item-tacklist',{
-                        'bgno-border': tack.status === 0?(tack.left+parseInt(tack.duration) <= newleft?true:false):false,
-                        'bged-border': tack.status === 1?true:false
+                        'bgno-border': !tack.status&&(tack.left+parseInt(tack.duration) <= newleft),
+                        'bged-border': tack.status
                       }]"
                       @click.stop.self="editTack(tack,c)"
                       >
@@ -611,23 +614,28 @@
                           width:(tack.left<=newleft && newleft<(parseInt(tack.left)+parseInt(tack.duration)))?
                             (parseInt(newleft)+1-parseInt(tack.left))*30-3+'px':tack.duration*30-3+'px',
                           }"
-                        v-if="tack.status !== 1&&tack.left <= newleft&&newleft<(parseInt(tack.left)+parseInt(tack.duration))"
+                        v-if="!tack.status&&tack.left <= newleft&&newleft<(parseInt(tack.left)+parseInt(tack.duration))"
                         @click.stop="editTack(tack,c)"
                       >
                       </div>
                       <div :class="['item-tacking',{
-                        'bgno': tack.status === 0?(tack.left+parseInt(tack.duration) <= newleft?true:false):false,
-                        'bged': tack.status === 1?true:false
+                        'bgno': !tack.status&&(tack.left+parseInt(tack.duration) <= newleft),
+                        'bged': tack.status
                       }]"
                       @click.stop="editTack(tack,c)"
                       v-else>
                       </div>
                       <i class="item-start" v-if="indextack === 0"></i>
-                      <i 
-                        class="item-node"
+                      <i
+                        :class="[{
+                          'item-node': tack.design_stage_node.status,
+                          'item-nodenon': !tack.design_stage_node.status && tack.left >= newleft,
+                          'item-noded': !tack.design_stage_node.status && tack.left < newleft
+                        }]"
                         v-if="tack.design_stage_node"
-                        @click.stop="editNode(tack.design_stage_node)">
+                        @click.stop="editNode(tack.design_stage_node,c)">
                       </i>
+
                       <div class="node-name" v-if="tack.design_stage_node">
                         <p :style="{width:tack.duration*30+'px'}">
                           {{tack.design_stage_node.name}}
@@ -674,7 +682,7 @@
             </el-col>
           </el-row>
         <div  class="add-item" >
-          <div @click="isItemStage=true">+</div>
+          <div @click="isItemStage=true"></div>
           <p @click="isItemStage=true">添加项目阶段</p>
         </div>
       </div>
@@ -755,7 +763,9 @@ export default {
       formNodeowner: false, // 甲方是否参与
       formupstatus: false, // 是否完成项目
       formTackstatus: false, // 是否完成任务
-      formTackduration: '',
+      formTackduration: 0,
+      formNodeStatus: false, // 是否完成节点
+      formNodeup: {}, // 节点状态
       formTackup: {},
       rules: {
         duration: [
@@ -1148,7 +1158,7 @@ export default {
     },
     // 事件和日期改变
     upDateDuration(date) {
-      if (Date.parse(new Date(this.formTacktime)) / 1000 !== this.formTack.start_time || this.formTackduration !== this.formTack.duration) {
+      if (Date.parse(new Date(this.formTacktime)) / 1000 !== this.formTack.start_time || this.formTackduration !== this.formTack.duration || date === 1) {
         this.formTack.duration = this.formTackduration
         if (isNaN(this.formTack.duration) || !this.formTack.duration) {
           this.$message.error('输入正确的投入天数')
@@ -1258,6 +1268,7 @@ export default {
       this.formTackduration = des.duration
       if (this.formTack.design_stage_node) {
         this.formNode.name = des.design_stage_node.name
+        delete this.formTack.design_stage_node
       } else this.formNode.name = ''
       if (this.formTack.execute_user) {
         this.formTack.log = des.execute_user.logo_image.logo
@@ -1270,18 +1281,24 @@ export default {
       this.formTacktime = (new Date(this.formTack.start_time * 1000)).format('yyyy-MM-dd')
     },
     // 编辑子任务状态
-    desCompletes() {
+    desCompletes(id, st) {
       let self = this
-      self.formTackup.status = Number(self.formTackstatus)
-      console.log(self.formTackup.status)
-      self.formTackup.id = self.formTack.id
+      if (id) {
+        self.formTackup.status = Number(st)
+        self.formTackup.id = id
+      } else {
+        self.formTackup.status = Number(self.formTackstatus)
+        self.formTackup.id = self.formTack.id
+      }
       self.$http.put(api.designSubstageCompletes.format(self.formTackup.id), self.formTackup).then((response) => {
         if (response.data.meta.status_code === 200) {
           let desTup = self.indesignStage.design_substage
           for (var i = 0; i < desTup.length; i++) {
             if (desTup[i].id === self.formTackup.id) {
+              if (desTup[i].design_stage_node && !id) {
+                self.editNodeStatus(desTup[i].design_stage_node.id, response.data.data.status)
+              }
               desTup[i].status = response.data.data.status
-              // self.$set(self.indesignStage.design_substage, i, res)
             }
           }
         } else {
@@ -1341,6 +1358,7 @@ export default {
           self.upDateDuration(1)
           for (var i = 0; i < self.indesignStage.design_substage.length; i++) {
             if (self.indesignStage.design_substage[i].id === id) {
+              console.log(self.indesignStage.design_substage[i])
               self.indesignStage.design_substage.splice(i, 1)
               self.dialogTask = false
               self.istaskedit = false
@@ -1375,20 +1393,52 @@ export default {
               dessub[f].design_stage_node = res
             }
           }
-          console.log(this.designStageLists)
         } else {
           this.$message.error(response.data.meta.message)
         }
       })
     },
-    editNode(node) {
+    // 编辑阶段节点按钮
+    editNode(node, c) {
       this.formNodetime = (new Date(node.time * 1000)).format('yyyy-MM-dd')
       this.isitemedit = false
       this.istaskedit = false
       this.isnodeedit = true
-      this.formNode = node
+      this.formNode = {...node}
       this.uploadParam['x:target_id'] = node.id
       this.formNodeowner = Boolean(this.formNode.is_owner)
+      this.formNodeStatus = Boolean(this.formNode.status)
+      this.indesignStage = c
+    },
+    // 编辑节点完成状态
+    editNodeStatus(nid, nst) {
+      if (this.formNodeup.status !== Boolean(this.formNode.status) || nid) {
+        if (nid) {
+          this.formNodeup.status = Number(nst)
+          this.formNodeup.stage_node_id = nid
+        } else {
+          this.formNodeup.status = Number(this.formNodeStatus)
+          this.formNodeup.stage_node_id = this.formNode.id
+        }
+        this.$http.put(api.designStageNodeCompletes.format(this.formNodeup.stage_node_id), this.formNodeup).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            let node = this.indesignStage.design_substage
+            for (var i = 0; i < node.length; i++) {
+              if (node[i].design_stage_node && node[i].design_stage_node.id === response.data.data.id) {
+                node[i].design_stage_node.status = response.data.data.status
+              }
+            }
+            if (!nid) {
+              this.desCompletes(response.data.data.design_substage_id, this.formNodeStatus)
+            }
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          this.$message.error(error.message)
+          console.error(error.message)
+        })
+      }
     },
     // 编辑阶段节点
     updataNode(date) {
@@ -1401,17 +1451,17 @@ export default {
         }
         this.formNode.is_owner = Number(this.formNodeowner)
         this.formNode.stage_node_id = this.formNode.id
+        this.$http.put(api.designStageNodeUpdate.format(this.formNode.id), this.formNode).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            console.log(response.data.data)
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          this.$message.error(error.message)
+          console.error(error.message)
+        })
       }
-      this.$http.put(api.designStageNodeUpdate.format(this.formNode.id), this.formNode).then((response) => {
-        if (response.data.meta.status_code === 200) {
-          console.log(response.data.data)
-        } else {
-          this.$message.error(response.data.meta.message)
-        }
-      }).catch((error) => {
-        this.$message.error(error.message)
-        console.error(error.message)
-      })
     },
     // 删除阶段节点
     deleteNode(id, index) {
@@ -2032,7 +2082,12 @@ export default {
     height: 55px;
   }
   .item-text-Header>.el-row>.el-col {
-    padding-bottom: 8px;
+    padding: 5px 0px;
+  }
+  .item-text-Header>.el-row>.el-col .el-col {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .popover {
     position: relative;

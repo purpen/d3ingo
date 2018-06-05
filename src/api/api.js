@@ -389,6 +389,7 @@ export default {
   designStageNodeDelete: '/designStageNode/delete', // DELETE 删除
   designStageNodeUpdate: '/designStageNode/update', // PUT 编辑
   designStageNode: '/designStageNode', // GET 详情
+  designStageNodeCompletes: '/designStageNode/completes', // PUT 编辑完成状态
 
   // 个人项目统计
   userStatistical: '/designProject/userStatistical', // GET 列表
