@@ -249,7 +249,7 @@
           </div>
 
           <div class="form-title">
-            <span>相关信息</span>
+            <span>金额及协议</span>
           </div>
 
           <div class="company-show">
@@ -258,7 +258,7 @@
                 <p>项目报价</p>
               </el-col>
               <el-col :span="spanVal">
-                <p>¥ {{ item.price }}</p>
+                <p>¥ {{ item.price }} <a v-if="quotation" href="javascript:void(0);" @click="showQuotaBtn">查看报价单>></a></p>
               </el-col>
               <el-col :span="spanOpt">
               </el-col>
@@ -281,6 +281,56 @@
               </el-col>
               <el-col :span="spanVal">
                 <p>¥ {{ item.rest_fund }}</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
+
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>合同</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p v-if="quotation"><a href="javascript:void(0);" @click="viewContractBtn">点击查看>></a></p>
+                <p v-else>无</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
+
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>阶段</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p>
+                     <div class="stage-item clearfix" v-for="(d, index) in item_stage" :key="index">
+                      <div class="stage-title clearfix">
+                        <h3>第{{ d.no }}阶段: {{ d.title }}</h3>
+
+                        <p v-if="d.confirm === 0">
+                          <span>已确认</span>
+                        </p>
+                        <p v-else>
+                          <span v-if="d.confirm === 1">已确认</span>
+                        </p>
+                      </div>
+                      <div class="stage-asset-box clearfix" v-for="(asset, asset_index) in d.item_stage_image" :key="asset_index">
+                        <div class="contract-left">
+                          <img :src="require('assets/images/icon/pdf2x.png')" width="30"/>
+                          <div class="contract-content">
+                            <p>{{ asset.name }}</p>
+                            <p class="contract-des">{{ asset.created_at.date_format().format('yyyy-MM-dd') }}</p>
+                          </div>
+                        </div>
+                        <div class="contract-right">
+                          <p><a :href="asset.file + '?attname=' + asset.name"><i class="fa fa-download" aria-hidden="true"></i> 下载</a>
+                          </p>
+                        </div>
+                        <div class="clear"></div>
+                      </div>
+                    </div>
+                </p>
               </el-col>
               <el-col :span="spanOpt">
               </el-col>
@@ -391,16 +441,38 @@
       </div>
     </el-dialog>
 
+    <el-dialog title="报价单详情" v-model="quotaDialog" size="large" top="2%">
+      <v-quote-view :formProp="quotation"></v-quote-view>
+      <div slot="footer" class="dialog-footer btn">
+        <el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog
+      title="合同浏览"
+      v-model="contractDialog"
+      top="2%"
+      size="large">
+      <v-contract-view :propForm="contract"></v-contract-view>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" class="is-custom" @click="contractDialog = false">确 定</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
 import api from '@/api/api'
 import vMenu from '@/components/admin/Menu'
+const vQuoteView = () => import('@/components/block/QuoteView')
+const vContractView = () => import('@/components/block/ContractView')
 export default {
-  name: 'admin_item_list',
+  name: 'admin_item_view',
   components: {
-    vMenu
+    vMenu,
+    vQuoteView,
+    vContractView
   },
   data () {
     return {
@@ -411,6 +483,9 @@ export default {
       item: '',
       info: '',
       itemId: '',
+      quotation: null,
+      contract: null,
+      item_stage: [],
       currentMatchCompany: [],
       isLoading: false,
       matchCompanyForm: {
@@ -432,6 +507,8 @@ export default {
       spanKey: 3,
       spanVal: 18,
       spanOpt: 3,
+      contractDialog: false,
+      quotaDialog: false,
       msg: ''
     }
   },
@@ -553,6 +630,14 @@ export default {
         .catch(function(error) {
           self.$message.error(error.message)
         })
+    },
+    // 点击报价详情事件
+    showQuotaBtn() {
+      this.quotaDialog = true
+    },
+    // 查看合同点击事件
+    viewContractBtn() {
+      this.contractDialog = true
     }
   },
   created: function() {
@@ -571,6 +656,45 @@ export default {
       if (response.data.meta.status_code === 200) {
         self.item = response.data.data.item
         self.info = response.data.data.info
+        self.quotation = response.data.data.quotation
+        self.contract = response.data.data.contract
+        if (response.data.data.item_stage && response.data.data.item_stage.length > 0) {
+          for (let i = 0; i < response.data.data.item_stage.length; i++) {
+            let stage = response.data.data.item_stage[i]
+            if (stage.sort) {
+              switch (stage.sort) {
+                case 1:
+                  response.data.data.item_stage[i].no = '一'
+                  break
+                case 2:
+                  response.data.data.item_stage[i].no = '二'
+                  break
+                case 3:
+                  response.data.data.item_stage[i].no = '三'
+                  break
+                case 4:
+                  response.data.data.item_stage[i].no = '四'
+                  break
+                case 5:
+                  response.data.data.item_stage[i].no = '五'
+                  break
+                default:
+                  response.data.data.item_stage[i].no = ''
+              }
+            } else {
+              response.data.data.item_stage[i].no = ''
+            }
+            response.data.data.item_stage[i].created_at = stage.created_at
+              .date_format()
+              .format('yyyy-MM-dd')
+          } // endfor
+        }
+
+        self.item_stage = response.data.data.item_stage
+
+        if (self.contract) {
+          self.contract.item_stage = response.data.data.item_stage
+        }
         if (response.data.data.designCompany) {
           self.stickCompany = response.data.data.designCompany
         }
@@ -655,6 +779,31 @@ export default {
   .item {
     padding: 5px;
     border-bottom: solid 1px #ccc;
+  }
+
+  .stage-item {
+    margin: 10px 0 10px 0;
+  }
+
+  .stage-title {
+    /* height: 40px; */
+    border-bottom: 1px solid #D2D2D2;
+    padding-bottom: 10px;
+  }
+
+  .stage-item .stage-title h3 {
+    float: left;
+    color: #222;
+  }
+
+  .stage-title p {
+    margin: 0 0 0 10px;
+    float: right;
+  }
+
+  .stage-asset-box {
+    padding: 5px;
+    border-bottom: 1px solid #D2D2D2;
   }
 
 </style>
