@@ -347,7 +347,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 
 .el-form-item__label {
-  font-size: 1.6rem;
+  /* font-size: 1.6rem; */
   color: #666666;
 }
 

@@ -462,7 +462,7 @@
         <h3>全部动态</h3>
         <ul class="cover2-list">
           <li v-for="(ele, index) in projectMoments" :key="index">
-            <img class="br50 b-d2" src="" alt="">
+            <img v-if="ele.logo_image" class="br50 b-d2" :src="ele.logo_image.logo" alt="">
             <div class="list-con clearfix">
               <p class="tc-2 fl"><span>{{ele.user_name}}</span>{{ele.action}}</p>
               <p class="fz-12 tc-6 fr">{{ele.date}}</p>

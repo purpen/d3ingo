@@ -786,6 +786,7 @@
   }
   h3 {
     font-size: 18px;
-    margin-bottom: 20px;
+    color: #222;
+    margin: 50px 0 20px;
   }
 </style>
