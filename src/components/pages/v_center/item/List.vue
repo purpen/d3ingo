@@ -711,7 +711,7 @@
   h3 {
     font-size: 18px;
     color: #222;
-    margin-bottom: 20px;
+    margin: 50px 0 20px;
   }
 
   .c-body {

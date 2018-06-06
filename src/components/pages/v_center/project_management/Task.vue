@@ -111,6 +111,7 @@
     },
     data () {
       return {
+        isCreateStage: false,
         sureDialog: false,
         sureDialogMessage: '确认执行此操作？',
         sureDialogLoadingBtn: false,
@@ -178,6 +179,10 @@
       },
       // 添加阶段点击事件
       addStageBtn() {
+        if (this.isCreateStage) {
+          return
+        }
+        this.isCreateStage = true
         this.currentStageStat = {
           event: 'create',
           id: 0,
@@ -202,6 +207,7 @@
       confirmDeleteStageBtn(id, index) {
         this.showElement.showCover = true
         this.showElement.showComfirmDeleteStage = true
+        this.currentStageForm = {...this.stageList[index]}
         this.currentStageStat = {
           event: 'delete',
           id: id,
@@ -220,8 +226,6 @@
           this.createStage()
         } else if (event === 'update') {
           this.updateStage()
-        } else if (event === 'delete') {
-          this.deleteStage()
         }
       },
       // 创建阶段事件
@@ -232,7 +236,8 @@
           return false
         }
         self.currentStageForm.item_id = self.itemId
-        this.$http.post(api.toolsStage, self.currentStageForm).then(function (response) {
+        self.$http.post(api.toolsStage, self.currentStageForm).then(function (response) {
+          self.isCreateStage = false
           if (response.data.meta.status_code === 200) {
             self.currentStageForm.id = response.data.data.id
             self.$store.commit('createStageListItem', self.currentStageForm)
@@ -240,6 +245,7 @@
             self.$message.error(response.data.meta.message)
           }
         }).catch((error) => {
+          self.isCreateStage = false
           self.$message.error(error.message)
           console.error(error.message)
         })
@@ -251,6 +257,9 @@
         let oldId = id
         if (!id) {
           self.$message.error('ID不能为空!')
+          return false
+        }
+        if (id === -1) {
           return false
         }
         if (self.currentStageForm.title === '') {

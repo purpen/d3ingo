@@ -12,7 +12,7 @@
   import { CONTRACT_THN, CONTRACT_SCALE } from '@/config'
 
   export default {
-    name: 'vcenter_contract_submit',
+    name: 'vcenter_contract_down',
     components: {},
     data () {
       return {

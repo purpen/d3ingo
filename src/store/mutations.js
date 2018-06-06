@@ -137,6 +137,7 @@ const mutations = {
     localStorage.removeItem('user')
     localStorage.setItem('msgCount', JSON.stringify({ message: 0, notice: 0, quantity: 0 }))
     state.token = false
+    state.user = {}
   },
   [USER_INFO](state, user) {
     localStorage.setItem('user', {})

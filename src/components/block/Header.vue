@@ -335,8 +335,32 @@
             return false
           }
         } else {
-          if (user.verify_status === 0 && user.company_role === 20) {
-            return true
+          if (user.company_role === 20) {
+            if (user.design_verify_status === 0 || user.design_verify_status === 2) {
+              return true
+            } else if (user.design_verify_status === 1) {
+              if (user.design_info_status === 1) {
+                console.log('设计公司基础信息：已完善')
+                if (user.design_item_status === 1) {
+                  console.log('设计公司接单设置：已完善')
+                  if (user.design_case_status === 1) {
+                    console.log('设计公司接单设置：已完善')
+                  } else {
+                    console.log('设计公司接单设置：未完善')
+                    return true
+                  }
+                } else {
+                  console.log('设计公司接单设置：未完善')
+                  return true
+                }
+              } else {
+                console.log('设计公司基础信息：未完善')
+                return true
+              }
+              return false
+            } else {
+              return false
+            }
           } else {
             return false
           }
