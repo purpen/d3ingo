@@ -392,7 +392,7 @@
                                :isFirstProp="isFirstRegion" titleProp="企业地址"
                                @onchange="changeClient" class="fullwidth"></region-picker>
 
-                <el-form-item label="" prop="address">
+                <el-form-item style="margin-top: 10px" label="" prop="address">
                   <el-input v-model="clientForm.address" placeholder="街道地址"></el-input>
                 </el-form-item>
 
@@ -437,7 +437,7 @@
                                :isFirstProp="isFirstRegion" titleProp="企业地址"
                                @onchange="changeServer" class="fullwidth"></region-picker>
 
-                <el-form-item label="" prop="design_address">
+                <el-form-item style="margin-top: 10px" label="" prop="design_address">
                   <el-input v-model="serverForm.design_address" placeholder="街道地址"></el-input>
                 </el-form-item>
 
@@ -1313,5 +1313,23 @@ header {
 }
 .item-con p span {
   margin-right: 10px;
+}
+.form-btn {
+  position: absolute;
+  right: 30px;
+  bottom: 30px;
+  font-size: 0
+}
+.form-btn button:nth-child(2) {
+  margin: 0 0 0 15px;
+}
+.el-form {
+  min-height: 100%;
+  position: relative;
+  padding-bottom: 60px;
+}
+.el-form .form-btn {
+  bottom: 0;
+  right: 0;
 }
 </style>

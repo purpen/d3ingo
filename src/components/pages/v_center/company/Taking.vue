@@ -9,13 +9,13 @@
           <v-menu-sub></v-menu-sub>
           <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
 
-            <div class="form-title">
+            <!-- <div class="form-title">
               <span>接单设置</span>
-            </div>
+            </div> -->
 
             <div class="taking-info">
-              <p class="des">* 我们将根据设计公司的业务优势以及接单价格区间，来精准匹配推送项目。</p>
-              <p>设置设计类别的接单价格区间</p>
+              <p class="des"><i>*</i> 我们将根据设计公司的业务优势以及接单价格区间，来精准匹配推送项目。</p>
+              <!-- <p>设置设计类别的接单价格区间</p> -->
             </div>
 
             <div class="taking-box" v-for="(d, index) in typeData" :key="index">
@@ -32,15 +32,18 @@
                     <div class="item-title">
                       <span class="sub-type">{{ s.name }}</span>
                     </div>
-                    <v-design-item :pid="d.id" :sid="s.id" :item="items[s.key]" :isLoaded="isLoaded"
-                                   @submitItem="submitItem" @delItem="delItem"></v-design-item>
+                    <v-design-item 
+                      :pid="d.id" 
+                      :sid="s.id"
+                      :item="items[s.key]"
+                      :isLoaded="isLoaded"
+                      @submitItem="submitItem" 
+                      @delItem="delItem"></v-design-item>
                   </div>
-
-
                 </div>
+
                 <div class="line"></div>
               </div>
-
             </div>
 
           </div>
@@ -342,7 +345,6 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
   .right-content .content-box-m {
     margin: 0;
     padding: 0 15px;
@@ -352,17 +354,12 @@
     margin: 0 0 20px 0;
   }
 
-  .taking-info p {
-    line-height: 2.5;
-  }
-
   .rz-title {
-    float: left;
     padding: 0 0 20px 0;
   }
 
   .rz-title span {
-    font-size: 2.2rem;
+    font-size: 2rem;
     font-weight: 400;
   }
 
@@ -371,11 +368,13 @@
   }
 
   .taking-item {
-    padding: 0 0 30px 0;
+    padding: 0 0 50px 0;
   }
-
-  .item-list {
-    margin: 0 0 10px 0;
+  .taking-box:last-child .taking-item {
+    padding: 0
+  }
+  .taking-box:last-child .taking-item .line {
+    display: none;
   }
 
   .item-list .item-name:last-child .item {
@@ -385,23 +384,35 @@
   .item-name {
     margin: 0 0 10px 0;
   }
+  .item-list .item-name:last-child {
+    margin: 0
+  }
 
+  .item-name .item a {
+    color: #999
+  }
   .item-title {
     margin: 0 0 10px 0;
   }
 
   .item-title span {
-    font-size: 1.8rem;
+    color: #666;
+    font-size: 1.6rem;
   }
 
   .taking-info .des {
-    color: #666;
-    font-size: 1.5rem;
+    color: #999;
+    font-size: 1.4rem;
+    padding: 20px 0 10px
+  }
+
+  .taking-info .des i {
+    color: #ff5a5f;
   }
 
   .line {
     margin-top: 20px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #e6e6e6;
   }
 
 </style>

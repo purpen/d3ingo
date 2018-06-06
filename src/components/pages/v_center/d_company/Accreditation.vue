@@ -192,6 +192,7 @@
 <style scoped>
   .right-content .content-box {
     padding-bottom: 0;
+    border: 1px solid #e6e6e6;
   }
 
   .right-content .content-box-m {
@@ -207,29 +208,27 @@
   }
 
   .company-show .item {
-    clear: both;
-    height: 40px;
-    border-bottom: 1px solid #d2d2d2;
+    display: flex;
+    align-items: center;
+    min-height: 50px;
+    border-bottom: 1px solid #e6e6e6;
   }
 
   .company-show .item:last-child {
     border: none
   }
 
-  .item p {
-    line-height: 40px;
-  }
-
   .item p.p-key {
-    float: left;
     width: 150px;
     color: #666;
   }
+  
+  .p-val {
+    color: #999
+  }
 
-  .item p.p-val {
-    width: 300px;
-    float: left;
-    font-size: 1.5rem;
+  .p-val a {
+    color: #ff5a5f
   }
 
   .verify {
@@ -247,7 +246,7 @@
     margin-bottom: 20px;
     padding-bottom: 20px;
     height: auto;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
   }
 
   .verify img {

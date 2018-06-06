@@ -301,7 +301,7 @@
   .item {
     min-height: 70px;
     padding: 15px 0;
-    border-bottom: 1px solid #d2d2d2;
+    border-bottom: 1px solid #e6e6e6;
     display: flex;
     align-items: center;
   }
@@ -352,7 +352,12 @@
     color: #222;
   }
 
-  .item .content {
+  .item .content p {
+    color: #999
+  }
+
+  .item .content a {
+    color: #ff5a5f
   }
 
   .item-m .content {
@@ -391,7 +396,7 @@
   }
 
   .avatar-uploader .el-upload {
-    border: 1px dashed #d2d2d2;
+    border: 1px dashed #e6e6e6;
     border-radius: 6px;
     cursor: pointer;
     position: relative;

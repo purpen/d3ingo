@@ -53,7 +53,7 @@
 <script>
 import api from '@/api/api'
 import auth from '@/helper/auth'
-import { MENU_STATUS, MSG_COUNT } from '@/store/mutation-types'
+import { MENU_STATUS, MSG_COUNT, CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
 
 export default {
   name: 'login',
@@ -112,6 +112,7 @@ export default {
                         auth.write_user(response.data.data)
                         that.timeLoadMessage()
                         that.restoreMember()
+                        that.getStatus(that.$store.state.event.user.type)
                         let prevUrlName = that.$store.state.event.prevUrlName
                         if (prevUrlName) {
                           // 清空上一url
@@ -186,7 +187,7 @@ export default {
         this.$http.put(api.restoreMember, {rand_string: this.code})
         .then(res => {
           if (res.data.meta.status_code === 200) {
-            console.log(res)
+            // console.log(res)
           } else {
             this.$message.error(res)
           }
@@ -213,6 +214,22 @@ export default {
       } else {
         return
       }
+    },
+    getStatus(type) {
+      let url = ''
+      if (type === 2) {
+        url = api.surveyDesignCompanySurvey
+      } else {
+        url = api.surveyDemandCompanySurvey
+      }
+      this.$http.get(url, {})
+      .then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.$store.commit(CHANGE_USER_VERIFY_STATUS, res.data.data)
+        }
+      }).catch(err => {
+        console.error(err.message)
+      })
     }
   },
   mounted: function() {
@@ -402,4 +419,3 @@ form {
   }
 }
 </style>
-
