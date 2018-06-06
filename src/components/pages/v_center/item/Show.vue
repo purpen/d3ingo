@@ -1338,8 +1338,13 @@ export default {
   text-align: right;
   padding: 10px;
   border-top: 1px solid #E6E6E6;
+  font-size: 0;
 }
 
+.btn .is-custom {
+  margin-left: 15px;
+  margin-right: 0;
+}
 .contract-item {
   height: 60px;
   margin: 15px 0 10px;
@@ -1667,6 +1672,9 @@ section ul li a {
 }
 .dialog-footer.btn button {
   /* padding: 10px 30px; */
+}
+.alert-line-height {
+  text-align: center
 }
 </style>
 <style>

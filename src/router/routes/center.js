@@ -245,18 +245,6 @@ module.exports = [
     },
     component: require('@/components/pages/v_center/c_item/List')
   },
-  // 我的项目列表(设计公司) -- 已合作
-  {
-    path: '/vcenter/citem/true_list',
-    name: 'vcenterTrueCItemList',
-    meta: {
-      title: '项目列表',
-      requireAuth: true,
-      hideHeader: true,
-      hideFooter: true
-    },
-    component: require('@/components/pages/v_center/c_item/TrueList')
-  },
   // 在线合同预览
   {
     path: '/vcenter/contract/show/:unique_id',

@@ -1,6 +1,5 @@
 <template>
-  <div class="container">
-    <div class="blank20"></div>
+  <div>
     <el-row :gutter="24">
 
       <el-col :span="24">
@@ -113,100 +112,37 @@
             <p>(2) 本合同一式三份，甲乙丙三方各持一份，自签订之日起生效，具同等法律效力。</p>
 
             <div class="sept"></div>
-
-            <div class="form-btn" v-if="userType !== 2">
-              <el-button type="primary" :loading="isLoadingBtn" class="is-custom" @click="agreeBtn"
-                         v-show="form.status === 0">确认合同
-              </el-button>
-              <router-link :to="{name: 'vcenterContractDown', params: {unique_id: uniqueId}}" target="_blank" v-show="form.status === 1"><i class="fa fa-download" aria-hidden="true"></i> 下载合同
-              </router-link>
-            </div>
-            <div class="form-btn" v-else>
-              <router-link :to="{name: 'vcenterContractDown', params: {unique_id: uniqueId}}" target="_blank"><i class="fa fa-download" aria-hidden="true"></i> 下载合同
-              </router-link>
-            </div>
             <div class="clear"></div>
           </div>
         </div>
       </el-col>
     </el-row>
 
-    <el-dialog
-      title="提示"
-      v-model="sureDialog"
-      size="tiny">
-      <input type="hidden" ref="currentType" value="1"/>
-      <p class="alert-line-height">{{ sureDialogMessage }}</p>
-      <span slot="footer" class="dialog-footer">
-        <el-button class="is-custom" @click="sureDialog = false">取 消</el-button>
-        <el-button type="primary" class="is-custom" :loading="sureDialogLoadingBtn" @click="sureDialogSubmit">确 定</el-button>
-      </span>
-    </el-dialog>
-
   </div>
 </template>
 
 <script>
-  import vMenu from '@/components/pages/v_center/Menu'
-  import vMenuSub from '@/components/pages/v_center/c_item/MenuSub'
-  import api from '@/api/api'
-  import '@/assets/js/format'
   import '@/assets/js/date_format'
   import { CONTRACT_THN, CONTRACT_SCALE } from '@/config'
 
   export default {
-    name: 'vcenter_contract_view',
-    components: {
-      vMenu,
-      vMenuSub
+    name: 'block_contract_view',
+    props: {
+      propForm: {
+        default: ''
+      }
     },
     data () {
       return {
         itemId: '',
-        uniqueId: '',
-        item: {},
         itemName: '',
         form: {},
         userType: this.$store.state.event.user.type,
-        sureDialog: false,
-        sureDialogMessage: '确认执行此操作？',
-        sureDialogLoadingBtn: false,
         isLoadingBtn: false,
         userId: this.$store.state.event.user.id
       }
     },
     methods: {
-      // 同意合同
-      agreeBtn() {
-        this.sureDialogMessage = '本合同具有法律效力，确认合同后将按照合同内容付款并开始项目，请确保熟知合同内容。'
-        this.sureDialog = true
-      },
-      // 提示框确认操作
-      sureDialogSubmit() {
-        let type = parseInt(this.$refs.currentType.value)
-        let self = this
-        this.sureDialogLoadingBtn = true
-        if (type === 1) {
-          self.$http({method: 'post', url: api.demandTrueContract, data: {item_id: self.form.item_demand_id}})
-            .then(function (response) {
-              self.sureDialogLoadingBtn = false
-              self.sureDialog = false
-              if (response.data.meta.status_code === 200) {
-                self.form.status = 1
-                self.$message.success('提交成功！')
-                // 跳到支付页面
-                self.$router.push({name: 'itemPayFund', params: {item_id: self.form.item_demand_id}})
-                return false
-              } else {
-                self.$message.error(response.data.meta.message)
-              }
-            })
-            .catch(function (error) {
-              self.sureDialogLoadingBtn = false
-              self.$message.error(error.message)
-            })
-        }
-      }
     },
     computed: {
       // 从配置获取丙方信息
@@ -218,56 +154,40 @@
         return CONTRACT_SCALE
       }
     },
-    watch: {},
+    watch: {
+    },
     created: function () {
-      const that = this
-      let uniqueId = this.$route.params.unique_id
-      if (uniqueId) {
-        that.uniqueId = uniqueId
-        that.$http.get(api.contractId.format(uniqueId), {})
-          .then(function (response) {
-            if (response.data.meta.status_code === 200) {
-              let item = response.data.data
-              if (item) {
-                that.itemId = item.id
-                that.itemName = item.title + '合同'
-                item.stages = []
-                if (!item.demand_pay_limit) {
-                  item.demand_pay_limit = that.contractScale.demand_pay_limit
-                }
-                item.sort = item.item_stage.length
-                if (item.item_stage && item.item_stage.length > 0) {
-                  for (let i = 0; i < item.item_stage.length; i++) {
-                    let stageRow = item.item_stage[i]
-                    let newStageRow = {}
-                    newStageRow.sort = parseInt(stageRow.sort)
-                    newStageRow.title = stageRow.title
-                    newStageRow.percentage = parseFloat(stageRow.percentage).mul(100)
-                    newStageRow.amount = parseFloat(stageRow.amount)
-                    newStageRow.time = parseInt(stageRow.time)
-                    item.stages.push(newStageRow)
-                  }
-                }
-                item.warranty_money_proportion_p = item.warranty_money_proportion * 100
-                item.first_payment_proportion_p = item.first_payment_proportion * 100
-                that.form = item
-                if (!that.form.thn_company_name) {
-                  that.form.thn_company_name = that.companyThn.company_name
-                  that.form.thn_company_address = that.companyThn.address
-                  that.form.thn_company_phone = that.companyThn.contact_phone
-                  that.form.thn_company_legal_person = that.companyThn.contact_name
-                }
-              }
-              // console.log(response.data.data)
-            }
-          })
-          .catch(function (error) {
-            that.$message.error(error.message)
-            return false
-          })
-      } else {
-        that.$message.error('缺少请求参数!')
-        that.$router.push({name: 'home'})
+      let item = this.propForm
+      console.log(item)
+      if (item) {
+        this.itemId = item.id
+        this.itemName = item.title + '合同'
+        item.stages = []
+        if (!item.demand_pay_limit) {
+          item.demand_pay_limit = this.contractScale.demand_pay_limit
+        }
+        item.sort = item.item_stage.length
+        if (item.item_stage && item.item_stage.length > 0) {
+          for (let i = 0; i < item.item_stage.length; i++) {
+            let stageRow = item.item_stage[i]
+            let newStageRow = {}
+            newStageRow.sort = parseInt(stageRow.sort)
+            newStageRow.title = stageRow.title
+            newStageRow.percentage = parseFloat(stageRow.percentage).mul(100)
+            newStageRow.amount = parseFloat(stageRow.amount)
+            newStageRow.time = parseInt(stageRow.time)
+            item.stages.push(newStageRow)
+          }
+        }
+        item.warranty_money_proportion_p = item.warranty_money_proportion * 100
+        item.first_payment_proportion_p = item.first_payment_proportion * 100
+        this.form = item
+        if (!this.form.thn_company_name) {
+          this.form.thn_company_name = this.companyThn.company_name
+          this.form.thn_company_address = this.companyThn.address
+          this.form.thn_company_phone = this.companyThn.contact_phone
+          this.form.thn_company_legal_person = this.companyThn.contact_name
+        }
       }
     }
   }

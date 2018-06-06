@@ -16,6 +16,7 @@
               </router-link>
             </div>
 
+            <h3>项目待完善</h3>
             <div class="item ing" v-for="(d, index) in itemIngList" :key="index">
               <div class="banner">
                 <p>
@@ -58,15 +59,16 @@
               </div>
             </div>
 
-            <!-- <el-pagination
+            <el-pagination
+              v-if="query.total > query.pageSize"
               class="pagination"
-              v-if="query.totalCount > 1"
               @current-change="handleCurrentChange"
               :current-page="query.page"
               :page-size="query.pageSize"
               layout="prev, pager, next"
-              :total="query.totalCount">
-            </el-pagination> -->
+              :total="query.total">
+            </el-pagination>
+            <h3>项目对接中</h3>
             <el-row class="item-title-box list-box" v-show="itemList.length" v-if="!isMob">
               <el-col :span="10">
                 <p>项目名称</p>
@@ -288,6 +290,15 @@
                 </div>
               </div>
             </div>
+            <el-pagination
+              v-if="query2.total > query2.pageSize"
+              class="pagination"
+              @current-change="handleCurrentChange2"
+              :current-page="query2.page"
+              :page-size="query2.pageSize"
+              layout="prev, pager, next"
+              :total="query2.total">
+            </el-pagination>
           </div>
 
         </div>
@@ -337,8 +348,15 @@
         userId: this.$store.state.event.user.id,
         query: {
           page: 1,
-          pageSize: 1,
-          totalCount: 2
+          pageSize: 10,
+          totalPages: 0,
+          total: 0
+        },
+        query2: {
+          page: 1,
+          pageSize: 10,
+          totalPages: 0,
+          total: 0
         }
       }
     },
@@ -349,13 +367,29 @@
       },
       handleCurrentChange(val) {
         this.query.page = val
-        this.$router.push ({name: this.$route.name, query: {page: val}})
+        this.loadList(1)
+      },
+      handleCurrentChange2(val) {
+        this.query2.page = val
+        this.loadList(2)
       },
       loadList(type) {
         const that = this
         that.isLoading = true
-        that.$http.get(api.itemList, {params: {type: type, per_page: 50}})
+        let page = 0
+        let pageSize = 0
+        if (type === 1) {
+          page = this.query.page
+          pageSize = this.query.pageSize
+        } else {
+          page = this.query2.page
+          pageSize = this.query2.pageSize
+        }
+        that.$http.get(api.itemList, {params: {type: type,
+          page: page,
+          per_page: pageSize}})
           .then(function (response) {
+            that.isLoading = false
             if (response.data.meta.status_code === 200) {
               if (response.data.data) {
                 let data = response.data.data
@@ -396,19 +430,18 @@
 
                 if (type === 1) {
                   that.itemIngList = data
+                  that.query.totalPages = response.data.meta.pagination.total_pages
+                  that.query.total = response.data.meta.pagination.total
                 } else if (type === 2) {
                   that.itemList = data
-                  that.isLoading = false
+                  that.query2.totalPages = response.data.meta.pagination.total_pages
+                  that.query2.total = response.data.meta.pagination.total
                 }
               } else {
                 console.log('暂无项目')
-                if (type === 2) {
-                  that.isLoading = false
-                }
               }
             } else {
               that.$message.error(response.data.meta.message)
-              that.isLoading = false
             }
           })
           .catch(function (error) {
@@ -592,7 +625,7 @@
 
   p.c-title-pro {
     font-size: 1.5rem;
-    color: #333;
+    color: #222;
     margin-top: 20px;
     line-height: 0;
   }
@@ -645,8 +678,6 @@
   }
 
   .item-title-box {
-    margin-top: 20px;
-    /* margin-bottom: 10px; */
     border: 1px solid #d2d2d2;
     border-bottom: none;
   }
@@ -672,15 +703,15 @@
 
   p.c-title {
     font-size: 1.6rem;
-    color: #333;
+    color: #222;
     padding: 0 5px 10px 0;
     line-height: 1;
   }
 
-  h3.c-title {
-    font-size: 1.6rem;
-    color: #333;
-    padding: 14px 0;
+  h3 {
+    font-size: 18px;
+    color: #222;
+    margin-bottom: 20px;
   }
 
   .c-body {
@@ -728,5 +759,8 @@
   }
   .margin-b-10 {
     margin-bottom: 10px;
+  }
+  .pagination {
+    text-align: center
   }
 </style>

@@ -351,18 +351,10 @@
             var message = 0
             var notice = 0
             var quantity = 0
-            if (parseInt(response.data.data.message)) {
-              message = parseInt(response.data.data.message) - 1
-            } else {
-              message = parseInt(response.data.data.message)
-            }
+            message = parseInt(response.data.data.message)
             notice = parseInt(response.data.data.notice)
+            quantity = parseInt(response.data.data.quantity)
             sessionStorage.setItem('noticeCount', notice)
-            if (parseInt(response.data.data.quantity)) {
-              quantity = parseInt(response.data.data.quantity) - 1
-            } else {
-              quantity = parseInt(response.data.data.quantity)
-            }
             var msgCount = {message: message, notice: notice, quantity: quantity}
             // 写入localStorage
             self.$store.commit(MSG_COUNT, msgCount)

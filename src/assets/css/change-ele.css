@@ -204,6 +204,7 @@
     border-color: #d2d2d2;
   }
   .el-dialog__header {
+    border-radius: 4px 4px 0 0;
     padding: 20px;
     background: #f7f7f7
   }
@@ -319,7 +320,15 @@
   .el-dialog--tiny {
       width: 380px
   }
-
+  .el-dialog--tiny .el-dialog__header {
+    padding: 10px 20px;
+  }
+  .el-dialog--tiny .el-dialog__headerbtn {
+    font-size: 14px;
+  }
+  .el-dialog--tiny .el-dialog__title {
+    font-size: 16px;
+  }
   .el-dialog--small {
       width: 580px
   }
