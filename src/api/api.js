@@ -313,6 +313,7 @@ export default {
   tasksExecuteUser: '/tasks/executeUser', // POST 领取任务
   taskStage: '/isStage/tasks', // PUT 任务是否完成操作
   userTasks: '/statistical/userTasks', // GET 个人任务列表
+  statisticalTasks: '/statistical/tasks', // GET 单项目任务统计
 
   // 任务成员
   taskUsers: '/taskUsers', // GET 列表 | POST 创建 | {id} 成员详情
@@ -376,6 +377,7 @@ export default {
   designStageDelete: '/designStage/delete', // DELETE 删除
   designStage: '/designStage', // GET 详情
   designStageCompletes: '/designStage/completes', // PUT 编辑完成状态
+  designProjectStatistical: '/designProject/statistical', // GET 单项目统计
 
   // 子项目
   designSubstageCreate: '/designSubstage/create', // POST 创建
@@ -389,6 +391,7 @@ export default {
   designStageNodeDelete: '/designStageNode/delete', // DELETE 删除
   designStageNodeUpdate: '/designStageNode/update', // PUT 编辑
   designStageNode: '/designStageNode', // GET 详情
+  designStageNodeCompletes: '/designStageNode/completes', // PUT 编辑完成状态
 
   // 个人项目统计
   userStatistical: '/designProject/userStatistical', // GET 列表

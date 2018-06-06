@@ -99,17 +99,20 @@
           <li class="designStage-name">
             <span>
               <el-checkbox 
-                v-model="formupstatus"
-                @change="updata()"
+                v-model="formup.status"
+                @change="editItemStatus()"
+                :true-label=1
+                :false-label=0
                 >
-
               </el-checkbox>
             </span>
             <el-input 
               v-model="formup.name" 
               placeholder="项目阶段名称"
               @blur="updata()"
-              class="noborder"
+              :class="['noborder',{
+                'success': formup.status
+              } ]"
             >
             </el-input>
           </li>
@@ -153,14 +156,19 @@
                 </el-input>
           </li>
         </ul>
-        <div class="add-tack" @click="addtack(formup)">
-          <i>+</i>
+        <div class="add-task" @click="addtack(formup)">
+          <div></div>
           <span>添加任务</span>
         </div>
         <ul class="tack-list" v-if="formup.design_substage
         ">
           <li v-for="(itemup,indexip) in formup.design_substage" :key="indexip">
-            <el-checkbox v-model="checked">
+            <el-checkbox v-model="itemup.status"
+             :true-label=1
+             :false-label=0
+             @change="desCompletes(itemup.id,itemup.status, formup)"
+             :class="{'task-success':itemup.status}"
+             >
               {{itemup.name}}
             </el-checkbox>
           </li>
@@ -175,12 +183,21 @@
           <span class="tc-2">任务设置</span>
           <p class="fx fx-icon-close-sm" @click="cancelTack()"></p>
         </div>
-        <el-progress 
-          :percentage="50"
+        <!-- <el-progress 
+          :percentage="100"
           :show-text="false"
           :stroke-width="20"
           status="success"
-        ></el-progress>
+        >已完成</el-progress> -->
+        <div class="aside-task-pregress bg-success"
+          v-if="formTackstatus">
+          已完成
+        </div>
+        <div class="aside-task-pregress bg-exception"
+          v-if="!formTackstatus&&(formTack.left+parseInt(formTack.duration) <= newleft)"
+        >
+          已逾期
+        </div>
         <ul class="aside-content">
           <li class="designStage-name">
             <span>
@@ -190,7 +207,7 @@
             <el-input 
               v-model="formTack.name"
               placeholder="任务名称"
-              class="noborder"
+              :class="['noborder', {'success':formTackstatus}]"
               @blur="updataTack()"
             >
             </el-input>
@@ -298,13 +315,16 @@
         <ul class="aside-content">
           <li class="designStage-name">
             <span>
-              <el-checkbox v-model="checked"></el-checkbox>
+              <el-checkbox v-model="formNodeStatus"
+                @change="editNodeStatus()"
+              >
+              </el-checkbox>
             </span>
             <el-input 
               v-model="formNode.name"
               placeholder="节点名称"
               class="noborder"
-              @blur="updataNode()"
+              @blur.stop="updataNode()"
             >
             </el-input>
           </li>
@@ -317,6 +337,7 @@
                 placeholder="开始日期设置"
                 class="noborder"
                 @change="updataNode"
+                status
                >
                 </el-date-picker>
               </div>
@@ -324,7 +345,6 @@
           <li class="opvalue noborder">
             <i></i>
             <el-select v-model="formNode.status" placeholder="请选择"
-            @change="updataNode()"
             >
               <el-option
                 v-for="item in option"
@@ -401,87 +421,105 @@
       </aside>
     </transition>
     <section class="top-progress">
-      <div class="h3">笔记本设计</div>
+      <div class="h3 fz-20">{{itemName}}</div>
       <el-progress 
-      :percentage="0"
+      :percentage="20"
       :show-text="false"
-      :stroke-width="3"
-      ></el-progress>
+      :stroke-width="5"
+      status="success"
+      >
+      </el-progress>
       <ul class="item-header">
         <li>
-          <div>0</div>
+          <div>{{itemTask.total_count}}</div>
           <p>所有任务</p>
         </li>
         <li>
-          <div>0</div>
+          <div>{{itemStatistical.designStageCount}}</div>
           <p>项目阶段</p>
         </li>
         <li>
-          <div>0</div>
-          <p>投入时间</p>
+          <div>{{itemStatistical.durations}}</div>
+          <p>投入时间&nbsp;(天)</p>
         </li>
         <li>
-          <div>0%</div>
+          <div>{{itemStatistical.okDesignStage}}%</div>
           <p>项目进度</p>
         </li>
       </ul>
     </section>
     <section class="item-task">
-      <div class="h3">
+      <div class="h3 fz-16">
         任务统计
       </div>
-      <ul>
-        <li>
-          <el-progress
-            type="circle" 
-            :percentage="0"
-            :width="60"
-            :show-text="false"
-          ></el-progress>
-          <div >
-            <p>未认领</p>
-            <p class="fx-6">50%</p>
+      <el-row :gutter="20">
+        <el-col :span="6">
+          <div class="item-task-progress">
+            <el-progress
+              type="circle" 
+              :percentage="itemTask.no_get_percentage"
+              :width="60"
+              :show-text="false"
+              class="is-unclaimed"
+            >
+            </el-progress>
+            <div class="item-task-status">
+              <p>未认领&nbsp;&nbsp;{{itemTask.no_get}}</p>
+              <span class="color-gray">{{itemTask.no_get_percentage}}%</span>
+            </div>
           </div>
-        </li>
-        <li>
-          <el-progress 
-            type="circle" 
-            :percentage="0"
-            :show-text="false"
-            :width="60"></el-progress>
-          <div >
-            <p>未完成</p>
-            <p class="fx-6">50%</p>
+        </el-col>
+        <el-col :span="6">
+          <div class="item-task-progress">
+            <el-progress
+              type="circle"
+              :percentage="itemTask.no_stage_percentage"
+              :width="60"
+              :show-text="false"
+            >
+            </el-progress>
+            <div class="item-task-status">
+              <p>未完成&nbsp;&nbsp;{{itemTask.no_stage}}</p>
+              <span class="color-blue">{{itemTask.no_stage_percentage}}%</span>
+            </div>
           </div>
-        </li>
-        <li>
-          <el-progress
-            type="circle" 
-            :percentage="0"
-            :width="60"
-            :show-text="false"
-          ></el-progress>
-          <div>
-            <p>已完成</p>
-            <p class="fx-6">50%</p>
+        </el-col>
+        <el-col :span="6">
+          <div class="item-task-progress">
+            <el-progress
+              type="circle" 
+              :percentage="itemTask.ok_stage_percentage"
+              :width="60"
+              status="success"
+              :show-text="false"
+            >
+            </el-progress>
+            <div class="item-task-status">
+              <p>已完成&nbsp;&nbsp;{{itemTask.ok_stage}}</p>
+              <span class="color-green">{{itemTask.ok_stage_percentage}}%</span>
+            </div>
           </div>
-        </li>
-        <li>
-          <el-progress
-            type="circle" 
-            :percentage="0"
-            :width="60"
-            :show-text="false"
-          ></el-progress>
-          <div>
-            <p>已逾期</p>
-            <p class="fx-6">50%</p>
+        </el-col>
+        <el-col :span="6">
+          <div class="item-task-progress">
+            <el-progress
+              type="circle" 
+              :percentage="itemTask.overdue_percentage"
+              :width="60"
+              :show-text="false"
+              status="exception"
+            >
+            </el-progress>
+            <div class="item-task-status">
+              <p>已逾期&nbsp;&nbsp;{{itemTask.overdue}}</p>
+              <span class="color-red">{{itemTask.overdue_percentage}}%</span>
+            </div>
           </div>
-        </li>
-      </ul>
+        </el-col>
+      </el-row>
     </section>
     <section class="item-content">
-      <p class="h3">项目执行进度规划</p>
+      <p class="h3 fz-16">项目执行进度规划</p>
         <div class="item-lists">
           <el-row v-if="designStageLists.length>0">
             <el-col :span="6">
@@ -601,8 +639,8 @@
                         width:tack.duration*30-2+'px',
                       }"
                       :class="['item-tacklist',{
-                        'bgno-border': tack.status === 0?(tack.left+parseInt(tack.duration) <= newleft?true:false):false,
-                        'bged-border': tack.status === 1?true:false
+                        'bgno-border': !tack.status&&(tack.left+parseInt(tack.duration) <= newleft),
+                        'bged-border': tack.status
                       }]"
                       @click.stop.self="editTack(tack,c)"
                       >
@@ -611,23 +649,28 @@
                           width:(tack.left<=newleft && newleft<(parseInt(tack.left)+parseInt(tack.duration)))?
                             (parseInt(newleft)+1-parseInt(tack.left))*30-3+'px':tack.duration*30-3+'px',
                           }"
-                        v-if="tack.status !== 1&&tack.left <= newleft&&newleft<(parseInt(tack.left)+parseInt(tack.duration))"
+                        v-if="!tack.status&&tack.left <= newleft&&newleft<(parseInt(tack.left)+parseInt(tack.duration))"
                         @click.stop="editTack(tack,c)"
                       >
                       </div>
                       <div :class="['item-tacking',{
-                        'bgno': tack.status === 0?(tack.left+parseInt(tack.duration) <= newleft?true:false):false,
-                        'bged': tack.status === 1?true:false
+                        'bgno': !tack.status&&(tack.left+parseInt(tack.duration) <= newleft),
+                        'bged': tack.status
                       }]"
                       @click.stop="editTack(tack,c)"
                       v-else>
                       </div>
                       <i class="item-start" v-if="indextack === 0"></i>
-                      <i 
-                        class="item-node"
+                      <i
+                        :class="[{
+                          'item-node': tack.design_stage_node.status,
+                          'item-nodenon': !tack.design_stage_node.status && tack.left >= newleft,
+                          'item-noded': !tack.design_stage_node.status && tack.left < newleft
+                        }]"
                         v-if="tack.design_stage_node"
-                        @click.stop="editNode(tack.design_stage_node)">
+                        @click.stop="editNode(tack.design_stage_node,c)">
                       </i>
+
                       <div class="node-name" v-if="tack.design_stage_node">
                         <p :style="{width:tack.duration*30+'px'}">
                           {{tack.design_stage_node.name}}
@@ -674,7 +717,7 @@
             </el-col>
           </el-row>
         <div  class="add-item" >
-          <div @click="isItemStage=true">+</div>
+          <div @click="isItemStage=true"></div>
           <p @click="isItemStage=true">添加项目阶段</p>
         </div>
       </div>
@@ -733,12 +776,15 @@ export default {
       isSearch: false,
       searcher: '',
       search: [],
+      itemTask: {}, // 任务统计
       isuserimg: false,
       formTacktime: '', // 任务时间
       formNodetime: '',
       sort: 'isday',
       dialogVisible: false,
       uploadUrl: '',
+      itemName: '',
+      itemStatistical: {},
       uploadParam: {
         'token': '',
         'x:random': '',
@@ -753,9 +799,11 @@ export default {
       isnodeedit: false, // 节点编辑
       endTimes: [], // 所有时间合集
       formNodeowner: false, // 甲方是否参与
-      formupstatus: false, // 是否完成项目
+      formupst: {}, // 是否完成项目
       formTackstatus: false, // 是否完成任务
-      formTackduration: '',
+      formTackduration: 0,
+      formNodeStatus: false, // 是否完成节点
+      formNodeup: {}, // 节点状态
       formTackup: {},
       rules: {
         duration: [
@@ -1036,7 +1084,28 @@ export default {
       this.istaskedit = false
       this.isnodeedit = false
       this.isitemedit = true
-      this.formupstatus = Boolean(this.formup.status)
+    },
+  // 编辑项目状态
+    editItemStatus() {
+      this.formupst.status = this.formup.status
+      this.formupst.id = this.formup.id
+      let fup = this.formup.design_substage
+      for (var i = 0; i < fup.length; i++) {
+        if (!fup[i].status) {
+          this.formup.status = 0
+          this.redirectItemList(1, '子任务还没有全部完成')
+          return false
+        }
+      }
+      this.$http.put(api.designStageCompletes.format(this.formupst.id), this.formupst).then((response) => {
+        if (response.data.meta.status_code === 200) {
+        } else {
+          this.$message.error(response.data.meta.message)
+        }
+      }).catch((error) => {
+        this.$message.error(error.message)
+        console.error(error.message)
+      })
     },
   // 编辑项目
     updata(date) {
@@ -1051,7 +1120,6 @@ export default {
         if (isNaN(this.formup.start_time)) {
           this.formup.start_time = Math.round(new Date(this.formup.start_time).getTime() / 1000)
         }
-        // this.formup.status = Number(this.formupstatus)
         this.$http.put(api.designStageUpdate.format(this.formup.id), this.formup).then((response) => {
           if (response.data.meta.status_code === 200) {
             var res = this.updateallleft(response.data.data)
@@ -1148,7 +1216,7 @@ export default {
     },
     // 事件和日期改变
     upDateDuration(date) {
-      if (Date.parse(new Date(this.formTacktime)) / 1000 !== this.formTack.start_time || this.formTackduration !== this.formTack.duration) {
+      if (Date.parse(new Date(this.formTacktime)) / 1000 !== this.formTack.start_time || this.formTackduration !== this.formTack.duration || date === 1) {
         this.formTack.duration = this.formTackduration
         if (isNaN(this.formTack.duration) || !this.formTack.duration) {
           this.$message.error('输入正确的投入天数')
@@ -1169,6 +1237,9 @@ export default {
             ind = i
             start[i].duration = this.formTack.duration
             start[i].start_time = fts
+            if (start[i].design_stage_node) {
+              start[i].design_stage_node.time = fts + (this.formTack.duration - 1) * 86400
+            }
             if (date === 1) {
               start[i].duration = 0
             }
@@ -1183,6 +1254,9 @@ export default {
         }
         for (let m = ind - 1; m >= 0; m--) {
           start[m].start_time = start[m + 1].start_time - start[m].duration * 86400
+          if (start[m].design_stage_node) {
+            start[m].design_stage_node.time = start[m].start_time + (start[m].duration - 1) * 86400
+          }
           arr.push({
             'id': start[m].id,
             'start_time': start[m].start_time,
@@ -1191,6 +1265,9 @@ export default {
         }
         for (let b = ind + 1; b < start.length; b++) {
           start[b].start_time = start[b - 1].start_time + start[b - 1].duration * 86400
+          if (start[b].design_stage_node) {
+            start[b].design_stage_node.time = start[b].start_time + (start[b].duration - 1) * 86400
+          }
           arr.push({
             'id': start[b].id,
             'start_time': start[b].start_time,
@@ -1209,6 +1286,7 @@ export default {
             }
             this.tackleft(this.designStageLists)
             this.formTack.start_time = fts
+            console.log(res)
           } else {
             this.$message.error(response.data.meta.message)
           }
@@ -1258,6 +1336,7 @@ export default {
       this.formTackduration = des.duration
       if (this.formTack.design_stage_node) {
         this.formNode.name = des.design_stage_node.name
+        delete this.formTack.design_stage_node
       } else this.formNode.name = ''
       if (this.formTack.execute_user) {
         this.formTack.log = des.execute_user.logo_image.logo
@@ -1270,18 +1349,27 @@ export default {
       this.formTacktime = (new Date(this.formTack.start_time * 1000)).format('yyyy-MM-dd')
     },
     // 编辑子任务状态
-    desCompletes() {
+    desCompletes(id, st, type) {
       let self = this
-      self.formTackup.status = Number(self.formTackstatus)
-      console.log(self.formTackup.status)
-      self.formTackup.id = self.formTack.id
+      if (id) {
+        self.formTackup.status = Number(st)
+        self.formTackup.id = id
+      } else {
+        self.formTackup.status = Number(self.formTackstatus)
+        self.formTackup.id = self.formTack.id
+      }
+      if (type) {
+        self.indesignStage = type
+      }
       self.$http.put(api.designSubstageCompletes.format(self.formTackup.id), self.formTackup).then((response) => {
         if (response.data.meta.status_code === 200) {
           let desTup = self.indesignStage.design_substage
           for (var i = 0; i < desTup.length; i++) {
             if (desTup[i].id === self.formTackup.id) {
+              if ((desTup[i].design_stage_node && !id) || (desTup[i].design_stage_node && type)) {
+                self.editNodeStatus(desTup[i].design_stage_node.id, response.data.data.status)
+              }
               desTup[i].status = response.data.data.status
-              // self.$set(self.indesignStage.design_substage, i, res)
             }
           }
         } else {
@@ -1341,6 +1429,7 @@ export default {
           self.upDateDuration(1)
           for (var i = 0; i < self.indesignStage.design_substage.length; i++) {
             if (self.indesignStage.design_substage[i].id === id) {
+              console.log(self.indesignStage.design_substage[i])
               self.indesignStage.design_substage.splice(i, 1)
               self.dialogTask = false
               self.istaskedit = false
@@ -1357,7 +1446,6 @@ export default {
     // 创建阶段节点
     createNode() {
       if (!this.formNode.name) {
-        this.$message.error('节点名称不能为空')
         return
       }
       let endt = this.formTack.start_time + this.formTack.duration * 86400
@@ -1375,20 +1463,52 @@ export default {
               dessub[f].design_stage_node = res
             }
           }
-          console.log(this.designStageLists)
         } else {
           this.$message.error(response.data.meta.message)
         }
       })
     },
-    editNode(node) {
+    // 编辑阶段节点按钮
+    editNode(node, c) {
       this.formNodetime = (new Date(node.time * 1000)).format('yyyy-MM-dd')
       this.isitemedit = false
       this.istaskedit = false
       this.isnodeedit = true
-      this.formNode = node
+      this.formNode = {...node}
       this.uploadParam['x:target_id'] = node.id
       this.formNodeowner = Boolean(this.formNode.is_owner)
+      this.formNodeStatus = Boolean(this.formNode.status)
+      this.indesignStage = c
+    },
+    // 编辑节点完成状态
+    editNodeStatus(nid, nst) {
+      if (this.formNodeup.status !== Boolean(this.formNode.status) || nid) {
+        if (nid) {
+          this.formNodeup.status = Number(nst)
+          this.formNodeup.stage_node_id = nid
+        } else {
+          this.formNodeup.status = Number(this.formNodeStatus)
+          this.formNodeup.stage_node_id = this.formNode.id
+        }
+        this.$http.put(api.designStageNodeCompletes.format(this.formNodeup.stage_node_id), this.formNodeup).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            let node = this.indesignStage.design_substage
+            for (var i = 0; i < node.length; i++) {
+              if (node[i].design_stage_node && node[i].design_stage_node.id === response.data.data.id) {
+                node[i].design_stage_node.status = response.data.data.status
+              }
+            }
+            if (!nid) {
+              this.desCompletes(response.data.data.design_substage_id, this.formNodeStatus)
+            }
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          this.$message.error(error.message)
+          console.error(error.message)
+        })
+      }
     },
     // 编辑阶段节点
     updataNode(date) {
@@ -1401,17 +1521,17 @@ export default {
         }
         this.formNode.is_owner = Number(this.formNodeowner)
         this.formNode.stage_node_id = this.formNode.id
+        this.$http.put(api.designStageNodeUpdate.format(this.formNode.id), this.formNode).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            console.log(response.data.data)
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          this.$message.error(error.message)
+          console.error(error.message)
+        })
       }
-      this.$http.put(api.designStageNodeUpdate.format(this.formNode.id), this.formNode).then((response) => {
-        if (response.data.meta.status_code === 200) {
-          console.log(response.data.data)
-        } else {
-          this.$message.error(response.data.meta.message)
-        }
-      }).catch((error) => {
-        this.$message.error(error.message)
-        console.error(error.message)
-      })
     },
     // 删除阶段节点
     deleteNode(id, index) {
@@ -1485,7 +1605,34 @@ export default {
       this.$http.get(api.itemUsers, {params: {item_id: itemIds}}).then((response) => {
         if (response.data.meta.status_code === 200) {
           this.options = response.data.data
-          // this.members()
+        } else {
+          this.$message.error(response.data.meta.message)
+        }
+      }).catch((error) => {
+        this.$message.error(error.message)
+        console.error(error.message)
+      })
+    },
+    // 任务统计
+    statisticalTask () {
+      let item = this.$route.params.id
+      this.$http.get(api.statisticalTasks, {params: {item_id: item}}).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          this.itemTask = response.data.data
+        } else {
+          this.$message.error(response.data.meta.message)
+        }
+      }).catch((error) => {
+        this.$message.error(error.message)
+        console.error(error.message)
+      })
+    },
+    statisticalItem () {
+      this.itemName = this.$store.state.task.projectObject.name
+      let item = this.$route.params.id
+      this.$http.get(api.designProjectStatistical, {params: {item_id: item}}).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          this.itemStatistical = response.data.data
         } else {
           this.$message.error(response.data.meta.message)
         }
@@ -1505,6 +1652,8 @@ export default {
     // 读取公司成员
     this.readMembers()
     this.upTokens()
+    this.statisticalItem()
+    this.statisticalTask()
     // 读取项目阶段列表
     this.$http.get(api.designStageLists, {params: {design_project_id: this.itemId}}).then((response) => {
       if (response.data.meta.status_code === 200) {
@@ -1915,29 +2064,31 @@ export default {
     background:url('../../../../assets/images/tools/project_management/Deliver@2x.png') 0 0 no-repeat;
     background-size: contain;
   }
-  .add-tack {
-    position: relative;
-    display:flex;
-    justify-content: flex-start;
+  .add-task {
+    display: flex;
     align-items: center;
-    border-top:1px solid #d2d2d2;
-    border-bottom:1px solid #d2d2d2;
-    padding:10px 17px;
+    height: 50px;
+    color: #FF5A5F;
+    border-top: 1px solid #e6e6e6;
+    border-bottom: 1px solid #e6e6e6;
+    /* padding:10px 20px; */
   }
-  .add-tack>span{
+  .add-task>div {
     display: inline-block;
-    padding-left: 15px;
-    font-size: 1.4rem
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    background: url('../../../../assets/images/member/add02@2x.png') 0 0 no-repeat;
+    background-size: contain;
+    margin:0 18px 0 16px;
   }
-  .add-tack>i {
-    width:25px;
-    height:25px;
-    background:#FF5A5F;
-    border-radius: 50%;
-    font-size:23px;
-    text-align: center;
-    color:#fff;
-    display:inline-block;
+  .add-task>div:hover {
+    background: url('../../../../assets/images/member/add-hover@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .add-task>span {
+    cursor: pointer;
+    font-size:1.4rem
   }
   .tack-list {
     margin-top:10px;
@@ -1948,9 +2099,7 @@ export default {
     margin-bottom:10px;
   }
   .h3 {
-    font-size: 18px;
-    font-weight: bold;
-    color:#222222;
+    color:#000;
     margin-bottom:20px;
   }
   .full-red-button {
@@ -1980,29 +2129,38 @@ export default {
   .item-header>li:not(:first-child) {
     border-left: 1px solid #d2d2d2;
   }
-  .item-task>ul {
+  .item-task {
+    margin-bottom:40px;
+  }
+  .item-task-progress {
+    height: 100px;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
+    border-radius: 8px;
     display: flex;
+    align-items: center;
+    padding-left: 30px;
+  }
+  .item-task-status {
+    height: 60px;
+    display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 40px;
+    padding-left: 20px;
   }
-  .item-task>ul>li {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    margin-right: 10px;
-    border: 1px solid #d2d2d2;
-    border-radius: 4px;
-    padding: 20px 0;
+  .color-gray {
+    color: #999999;
   }
-  .item-task>ul>li:not(:first-child) {
-    margin-left: 10px;
+  .color-blue {
+    color: #65A6FF;
   }
-  .item-task>ugl>li>div {
-    margin-left: 20px;
+  .color-green {
+    color: #00AC84;
   }
-  .item-task>ul>li>div>.fx-6 {
-    margin-top: 10px;
+  .color-red {
+    color: #FF5A5F;
+  }
+  .item-task-status span {
+    font-size: 24px;
   }
   .item-content {
     min-height: 300px;
@@ -2032,7 +2190,12 @@ export default {
     height: 55px;
   }
   .item-text-Header>.el-row>.el-col {
-    padding-bottom: 8px;
+    padding: 5px 0px;
+  }
+  .item-text-Header>.el-row>.el-col .el-col {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .popover {
     position: relative;
@@ -2297,6 +2460,18 @@ export default {
   }
   .bged, .bgno, .bging {
     opacity: 0.6;
+  }
+  .aside-task-pregress {
+    line-height: 20px;
+    text-align: center;
+    color: #fff;
+    font-size: 12px;
+  }
+  .bg-success {
+    background:#00AC84;
+  }
+  .bg-exception {
+    background:#FF8B8F;
   }
   .bged:hover,.bgno:hover,.bging:hover{
     opacity: 0.8;
