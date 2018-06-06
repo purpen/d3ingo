@@ -53,7 +53,7 @@
 <script>
 import api from '@/api/api'
 import auth from '@/helper/auth'
-import { MENU_STATUS } from '@/store/mutation-types'
+import { MENU_STATUS, MSG_COUNT } from '@/store/mutation-types'
 
 export default {
   name: 'login',
@@ -110,7 +110,7 @@ export default {
                         })
                         that.$store.commit(MENU_STATUS, '')
                         auth.write_user(response.data.data)
-                        console.log(response.data.data)
+                        that.timeLoadMessage()
                         that.restoreMember()
                         let prevUrlName = that.$store.state.event.prevUrlName
                         if (prevUrlName) {
@@ -147,6 +147,39 @@ export default {
           }
         })
       }
+    },
+    // 请求消息数量
+    fetchMessageCount() {
+      if (this.isLogin) {
+        const self = this
+        this.$http.get(api.messageGetMessageQuantity, {}).then(function (response) {
+          if (response.data.meta.status_code === 200) {
+            sessionStorage.setItem('noticeCount', response.data.data.notice)
+            let msgCount = response.data.data
+            // 写入localStorage
+            self.$store.commit(MSG_COUNT, msgCount)
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          console.error(error)
+          clearInterval(this.requestMessageTask)
+        })
+      }
+    },
+    // 定时加载消息数量
+    timeLoadMessage() {
+      const self = this
+      // 定时请求消息数量
+      var limitTimes = 0
+      self.requestMessageTask = setInterval(function () {
+        if (limitTimes >= 18) {
+          return
+        } else {
+          self.fetchMessageCount()
+          limitTimes += 1
+        }
+      }, 30000)
     },
     restoreMember() {
       if (this.code) {

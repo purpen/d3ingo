@@ -20,7 +20,7 @@
         <i class="fr fx-0 fx-icon-nothing-close-error" @click="closeTagsBtn"></i></h3>
       </div>
       <div class="tag-header">
-        <input v-model.trim="currentTagsForm.title" class="tag-name" type="text">
+        <input placeholder="选择或添加标签" v-model.trim="currentTagsForm.title" class="tag-name" type="text">
       </div>
       <ul class="tag-list" v-if="!isChangeTags && matchTagsList.length">
         <li v-for="(d, index) in matchTagsList" :key="index"
