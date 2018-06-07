@@ -926,19 +926,8 @@ export default {
     newDay() {
       let newDate = new Date()
       for (var n = 0; n < this.totaldays.length; n++) {
-        if (this.totaldays[n].year < newDate.getFullYear() && this.totaldays[n].month < newDate.getMonth() + 1) {
-          for (var ed = 0; ed < this.totaldays[n].dayings.length; ed++) {
-            this.totaldays[n].dayings[ed].bg = 'bged'
-          }
-        } else if (this.totaldays[n].year === newDate.getFullYear() && this.totaldays[n].month === newDate.getMonth() + 1) {
-          for (var bed = 0; bed < newDate.getDate() - 1; bed++) {
-            this.totaldays[n].dayings[bed].bg = 'bged'
-          }
+        if (this.totaldays[n].year === newDate.getFullYear() && this.totaldays[n].month === newDate.getMonth() + 1) {
           this.totaldays[n].dayings[newDate.getDate() - 1].new = 'active'
-        } else {
-          for (var ing = 0; ing < this.totaldays[n].dayings.length; ing++) {
-            this.totaldays[n].dayings[ing].bg = 'bged'
-          }
         }
       }
     },
@@ -973,7 +962,7 @@ export default {
     // 项目到最早的距离
     itemtostart(item) {
       let et = new Date(this.endTimes[0] * 1000)
-      let xin = Date.parse(new Date(et.getFullYear() + '-' + (et.getMonth() + 1) + '-' + 1)) / 1000
+      let xin = Date.parse(new Date(et.format('yyyy-MM'))) / 1000
       return Math.floor((item - xin) / 86400)
     },
     // 时间排序
@@ -1012,18 +1001,21 @@ export default {
       this.endTimes.push(parseInt(res.start_time))
       this.endTimes.push(parseInt(res.start_time) + parseInt(res.duration) * 86400)
       this.sortdate(this.endTimes)
-      this.totaldays = this.dateDay(this.endTimes[0], this.endTimes[this.endTimes.length - 1])
+      let isenday = (this.endTimes[this.endTimes.length - 1] - this.endTimes[0]) / 86400
+      if (isenday < 180) {
+        this.totaldays = this.dateDay(this.endTimes[0], this.endTimes[this.endTimes.length - 1] + 86400 * (180 - isenday))
+      } else this.totaldays = this.dateDay(this.endTimes[0], this.endTimes[this.endTimes.length - 1])
       this.newDay()
       this.newtostart()
       let reset = new Date(this.endTimes[0] * 1000)
-      let resxin = Date.parse(new Date(reset.getFullYear() + '-' + (reset.getMonth() + 1) + '-' + 1)) / 1000
+      let resxin = Date.parse(new Date(reset.format('yyyy-MM'))) / 1000
       res.left = Math.floor(((res.start_time - resxin) / 86400))
       return res
     },
     // 任务显示
     tackleft(des) {
       let et = new Date(this.endTimes[0] * 1000)
-      let xin = Date.parse(new Date(et.getFullYear() + '-' + (et.getMonth() + 1) + '-' + 1)) / 1000
+      let xin = Date.parse(new Date(et.format('yyyy-MM'))) / 1000
       for (var tl = 0; tl < des.length; tl++) {
         if (!des[tl].design_substage) {
           let itemd = Date.parse(new Date(des[tl].start_time)) / 1000
@@ -1457,6 +1449,7 @@ export default {
           var dessub = this.indesignStage.design_substage
           for (var f = 0; f < dessub.length; f++) {
             if (dessub[f].id === res.design_substage_id) {
+              this.editNodeStatus(res.id, dessub[f].status)
               dessub[f].design_stage_node = res
             }
           }
@@ -1571,7 +1564,6 @@ export default {
       self.$http.delete(api.asset.format(assetid), {})
         .then (function(response) {
           if (response.data.meta.status_code === 200) {
-            console.log(1111)
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -1678,7 +1670,10 @@ export default {
         // 起始时间和终止时间
         this.endTimes.push(Date.parse(new Date()) / 1000)
         this.sortdate(this.endTimes)
-        this.totaldays = this.dateDay(this.endTimes[0], this.endTimes[this.endTimes.length - 1])
+        let isenday = (this.endTimes[this.endTimes.length - 1] - this.endTimes[0]) / 86400
+        if (isenday < 180) {
+          this.totaldays = this.dateDay(this.endTimes[0], this.endTimes[this.endTimes.length - 1] + 86400 * (180 - isenday))
+        } else this.totaldays = this.dateDay(this.endTimes[0], this.endTimes[this.endTimes.length - 1])
         this.newDay()
         this.newtostart()
         // 任务
@@ -1780,7 +1775,7 @@ export default {
     z-index:99;
     width:380px;
     height:100%;
-    border:1px solid #d2d2d2;
+    border:1px solid #e6e6e6;
     right:0px;
     top:60px;
     background:#fff;
@@ -1873,7 +1868,7 @@ export default {
     top: 20px;
     width: 8px;
     height: 14px;
-    border: 2px solid #d2d2d2;
+    border: 2px solid #e6e6e6;
     border-left: none;
     border-top: none;
     transform: rotate(45deg);
@@ -1909,7 +1904,7 @@ export default {
     padding-left: 60px;
     cursor: pointer;
     position: relative;
-    border-top:1px solid #d2d2d2;
+    border-top:1px solid #e6e6e6;
   }
   .node-file:focus ul{
     display:block
@@ -2106,7 +2101,7 @@ export default {
   }
   .item-header {
     display:flex;
-    border-bottom:1px solid #d2d2d2;
+    border-bottom:1px solid #e6e6e6;
     justify-content:space-between;
     align-items:center;
     margin-bottom:40px;
@@ -2126,7 +2121,7 @@ export default {
     margin-bottom: 10px;
   }
   .item-header>li:not(:first-child) {
-    border-left: 1px solid #d2d2d2;
+    border-left: 1px solid #e6e6e6;
   }
   .item-task {
     margin-bottom:40px;
@@ -2166,7 +2161,7 @@ export default {
     margin-bottom: 50px;
   }
   .item-lists {
-    border:1px solid #d2d2d2;
+    border:1px solid #e6e6e6;
     border-radius: 4px;
     font-size: 12px;
     color:#666666;
@@ -2183,8 +2178,8 @@ export default {
     padding-left: 5px;
   }
   .item-text-Header {
-    border-bottom: 1px solid #d2d2d2;
-    border-right: 1px solid #d2d2d2;
+    border-bottom: 1px solid #e6e6e6;
+    border-right: 1px solid #e6e6e6;
     padding: 10px 10px 0px 30px;
     height: 55px;
   }
@@ -2224,8 +2219,8 @@ export default {
     height: 180px;
     padding: 20px 10px 10px 24px;
     background:#f7f7f7;
-    border-bottom: 1px solid #d2d2d2;
-    border-right: 1px solid #d2d2d2;
+    border-bottom: 1px solid #e6e6e6;
+    border-right: 1px solid #e6e6e6;
     border-left:5px solid transparent;
     overflow: hidden;
   }
@@ -2298,7 +2293,7 @@ export default {
   }
   .item-chartHeader>div {
     display:inline-block;
-    border-bottom:1px solid #d2d2d2;
+    border-bottom:1px solid #e6e6e6;
   }
   .item-chartHeader>div>div {
     height:32px;
@@ -2311,8 +2306,8 @@ export default {
     line-height:22px;
   }
   .item-chartHeader ul>li {
-    border-right:1px solid #d2d2d2;
-    border-top:1px solid #d2d2d2;
+    border-right:1px solid #e6e6e6;
+    border-top:1px solid #e6e6e6;
     display:inline-block;
     text-align: center;
   }
@@ -2420,7 +2415,7 @@ export default {
   .node-name {
     position: absolute;
     right:12px;
-    border-right:1px dashed #d2d2d2;
+    border-right:1px dashed #e6e6e6;
     bottom:-40px;
     height:40px;
   }
@@ -2439,8 +2434,9 @@ export default {
   }
   .item-chartContent>ul>li {
     display:inline-block;
-    border-right:1px solid #bce6f0;
-    border-bottom:1px solid #d2d2d2;
+    border-right:1px solid #e6e6e6;
+    border-bottom:1px solid #e6e6e6;
+    opacity: 0.3;
     height:100%;
   }
   .bgc {
