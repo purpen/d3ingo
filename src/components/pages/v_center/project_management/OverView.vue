@@ -333,7 +333,7 @@
                 v-model="formNodetime"
                 placeholder="开始日期设置"
                 class="noborder"
-                @change="updataNode"
+                @change="editNodetime"
                >
                 </el-date-picker>
               </div>
@@ -419,7 +419,7 @@
     <section class="top-progress">
       <div class="h3 fz-20">{{itemName}}</div>
       <el-progress 
-      :percentage="20"
+      :percentage="itemStatistical.okDesignStage"
       :show-text="false"
       :stroke-width="5"
       status="success"
@@ -1203,21 +1203,19 @@ export default {
       })
     },
     // 编辑任务/节点时间
-    // editNodetime(date) {
-    //   if (Date.parse(new Date(this.formNodetime).format('yyyy-MM-dd')) / 1000 !== this.formNode.time) {
-    //     console.log(Date.parse(new Date(this.formNodetime).format('yyyy-MM-dd')))
-    //     console.log(this.formNode.time)
-    //     let insub = this.indesignStage.design_substage
-    //     for (var i = 0; i < insub.length; i++) {
-    //       if (insub[i].id === this.formNode.design_substage_id) {
-    //         this.formTack.id = insub[i].id
-    //         this.formTackduration = insub[i].duration
-    //         this.formTacktime = new Date(Date.parse(new Date(date)) - insub[i].duration * 86400000).format('yyyy-MM-dd')
-    //         // this.upDateDuration(this.formTacktime)
-    //       }
-    //     }
-    //   }
-    // },
+    editNodetime(date) {
+      if (Date.parse(new Date(this.formNodetime).format('yyyy-MM-dd')) / 1000 !== this.formNode.time) {
+        let insub = this.indesignStage.design_substage
+        for (var i = 0; i < insub.length; i++) {
+          if (insub[i].id === this.formNode.design_substage_id) {
+            this.formTack.id = insub[i].id
+            this.formTackduration = insub[i].duration
+            this.formTacktime = new Date(Date.parse(new Date(date)) - insub[i].duration * 86400000).format('yyyy-MM-dd')
+            this.upDateDuration(this.formTacktime)
+          }
+        }
+      }
+    },
     // 事件和日期改变
     upDateDuration(date) {
       if (Date.parse(new Date(this.formTacktime)) / 1000 !== this.formTack.start_time || this.formTackduration !== this.formTack.duration || date === 1) {
