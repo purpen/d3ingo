@@ -222,13 +222,13 @@
 
               <el-form-item label="产品量产">
                 <el-row class="flex">
-                  <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3" v-if="is_prize">
+                  <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3">
                     <el-radio-group v-model.number="form.mass_production" @change="isProduction">
                       <el-radio class="radio" :label="0">否</el-radio>
                       <el-radio class="radio" :label="1">是</el-radio>
                     </el-radio-group>
                   </el-col>
-                  <el-col :xs="24" :sm="6" :md="6" :lg="6" v-if="is_prize">
+                  <el-col :xs="24" :sm="6" :md="6" :lg="6">
                     <el-select v-model.number="form.sales_volume" v-if="!isDisabledProduct" placeholder="销售额">
                       <el-option
                         v-for="item in saleOptions"
