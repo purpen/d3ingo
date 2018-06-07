@@ -334,7 +334,6 @@
                 placeholder="开始日期设置"
                 class="noborder"
                 @change="updataNode"
-                status
                >
                 </el-date-picker>
               </div>
@@ -1203,6 +1202,22 @@ export default {
         console.error(error.message)
       })
     },
+    // 编辑任务/节点时间
+    // editNodetime(date) {
+    //   if (Date.parse(new Date(this.formNodetime).format('yyyy-MM-dd')) / 1000 !== this.formNode.time) {
+    //     console.log(Date.parse(new Date(this.formNodetime).format('yyyy-MM-dd')))
+    //     console.log(this.formNode.time)
+    //     let insub = this.indesignStage.design_substage
+    //     for (var i = 0; i < insub.length; i++) {
+    //       if (insub[i].id === this.formNode.design_substage_id) {
+    //         this.formTack.id = insub[i].id
+    //         this.formTackduration = insub[i].duration
+    //         this.formTacktime = new Date(Date.parse(new Date(date)) - insub[i].duration * 86400000).format('yyyy-MM-dd')
+    //         // this.upDateDuration(this.formTacktime)
+    //       }
+    //     }
+    //   }
+    // },
     // 事件和日期改变
     upDateDuration(date) {
       if (Date.parse(new Date(this.formTacktime)) / 1000 !== this.formTack.start_time || this.formTackduration !== this.formTack.duration || date === 1) {
@@ -2368,7 +2383,11 @@ export default {
     background: url('../../../../assets/images/member/add-hover@2x.png') 0 0 no-repeat;
     background-size: contain;
   }
+  .item-tacklist-last:hover span {
+    display: inline-block;
+  }
   .item-tacklist-last>span {
+    display: none;
     cursor: pointer;
     font-size:1.4rem
   }
