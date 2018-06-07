@@ -324,8 +324,11 @@ export default {
   }
   .entrepreneur li {
     position: relative;
-    background: #f3cbcc;
     margin-bottom: 22px;
+    transition: 268ms all ease;
+  }
+  .entrepreneur li:hover {
+    transform: translate(0, -5px);
   }
   .entrepreneur li a {
     display: block;

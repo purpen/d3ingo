@@ -55,8 +55,8 @@
               <li v-for="(ele, index) in shortProjectMoments" :key="index">
                 <img class="br50 b-d2" :src="ele.logo_image.logo" alt="">
                 <div class="item-con">
-                  <p class="tc-2"><span>{{ele.user_name}}</span>{{ele.action}}</p>
-                  <p class="fz-12 tc-6">{{ele.date}}</p>
+                  <p class="tc-2"><span>{{ele.user_name}}</span><span class="tc-6">{{ele.action}}</span></p>
+                  <p class="fz-12 tc-9">{{ele.date}}</p>
                 </div>
               </li>
             </ul>
@@ -1283,17 +1283,19 @@ header {
 .menu-content hr {
   border: none;
   border-top: 1px solid #d2d2d2;
+  margin: 0;
 }
 .menu-con span {
   cursor: pointer;
 }
 .item-moments li {
-  padding: 10px 0;
+  padding: 5px 0;
   height: 70px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
 }
+
 .item-moments li img {
   width: 36px;
   height: 36px;
@@ -1306,7 +1308,6 @@ header {
   line-height: 20px;
   height: 20px;
   padding: 0;
-  color: #222;
 }
 .item-con p:before {
   background: none;

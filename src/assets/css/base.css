@@ -1220,8 +1220,7 @@ input[type=text]:focus, input[type=password]:focus{
 
 }
 .el-menu-info .el-submenu .el-submenu__title .b-nickname {
-  padding-left: 8px;
-  padding-right: 3px;
+  padding: 0 8px;
   font-size: 1.4rem;
 }
 
@@ -1491,7 +1490,7 @@ img.avatar2 {
 }
 
 .el-card {
-  transition: transform .218s ease;
+  transition: transform 268ms ease;
   border-radius: 0;
   border: 1px solid #e6e6e6;
   box-shadow: none;
