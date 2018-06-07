@@ -89,12 +89,15 @@
           <span class="tc-2">项目阶段设置</span>
           <p class="fx fx-icon-close-sm" @click="isitemedit=false"></p>
         </div>
-        <el-progress 
-        :percentage="50"
-        :show-text="false"
-        :stroke-width="20"
-        status="success"
-        ></el-progress>
+        <div class="aside-task-pregress bg-success"
+          v-if="formup.status">
+          已完成
+        </div>
+        <div class="aside-task-pregress bg-exception"
+          v-if="!formup.status&&(formTack.left+parseInt(formTack.duration) <= newleft)"
+        >
+          已逾期
+        </div>
         <ul class="aside-content">
           <li class="designStage-name">
             <span>
@@ -160,7 +163,7 @@
           <div></div>
           <span>添加任务</span>
         </div>
-        <ul class="tack-list" v-if="formup.design_substage
+        <ul class="tack-list scroll" v-if="formup.design_substage
         ">
           <li v-for="(itemup,indexip) in formup.design_substage" :key="indexip">
             <el-checkbox v-model="itemup.status"
@@ -183,12 +186,6 @@
           <span class="tc-2">任务设置</span>
           <p class="fx fx-icon-close-sm" @click="cancelTack()"></p>
         </div>
-        <!-- <el-progress 
-          :percentage="100"
-          :show-text="false"
-          :stroke-width="20"
-          status="success"
-        >已完成</el-progress> -->
         <div class="aside-task-pregress bg-success"
           v-if="formTackstatus">
           已完成
@@ -342,7 +339,7 @@
                 </el-date-picker>
               </div>
           </li>
-          <li class="opvalue noborder">
+          <!-- <li class="opvalue noborder">
             <i></i>
             <el-select v-model="formNode.status" placeholder="请选择"
             >
@@ -353,7 +350,7 @@
                 :value="item.value">
               </el-option>
             </el-select>
-          </li>
+          </li> -->
           <li class="owner">
               <el-checkbox v-model="formNodeowner" :style="{color:formNodeowner?'red':''}"
               @change="updataNode()"
@@ -2093,7 +2090,9 @@ export default {
   .tack-list {
     margin-top:10px;
     padding-left:20px;
-    border-bottom:1px solid #d2d2d2;
+    /* border-bottom:1px solid #d2d2d2; */
+    overflow-y: auto;
+    max-height:200px;
   }
   .tack-list>li {
     margin-bottom:10px;
@@ -2250,6 +2249,16 @@ export default {
     color: #222222;
     position: relative;
   }
+  .paycontent li {
+    padding: 13px 0px 0px 25px;
+    word-wrap: break-word;
+  }
+  .paycontent>li:nth-child(2) {
+    padding-top: 10px;
+    height: 110px;
+    overflow: hidden;
+    line-height: 20px;
+  }
   .item-deliver {
     position: relative;
   }
@@ -2258,19 +2267,10 @@ export default {
     display: inline-block;
     width: 24px;
     height: 24px;
-    left: 0px;
-    top: 5px;
+    left: -4px;
+    top: 8px;
     background: url('../../../../assets/images/tools/project_management/Deliver@2x.png') 0 0 no-repeat;
     background-size: contain;
-  }
-  .paycontent>li {
-    padding: 10px 0px 0px 30px;
-    word-wrap: break-word;
-  }
-  .paycontent>li:nth-child(2) {
-    height: 110px;
-    overflow: hidden;
-    line-height: 20px;
   }
   .item-chart {
     height: 100%;
@@ -2358,6 +2358,7 @@ export default {
     top:70px;
     height:25px;
     color:#FF5A5F;
+    z-index: 1
   }
   .item-tacklist-last>div {
     display: inline-block;
@@ -2419,7 +2420,7 @@ export default {
   .node-name {
     position: absolute;
     right:12px;
-    border-right:2px dashed #d2d2d2;
+    border-right:1px dashed #d2d2d2;
     bottom:-40px;
     height:40px;
   }
@@ -2429,7 +2430,8 @@ export default {
     right: -15px;
     overflow: hidden;
     text-overflow: ellipsis;
-    text-align:right
+    text-align:right;
+    font-size: 12px;
   }
   .item-chartContent>ul {
     display:inline-block;
@@ -2437,7 +2439,7 @@ export default {
   }
   .item-chartContent>ul>li {
     display:inline-block;
-    border-right:1px dashed #bce6f0;
+    border-right:1px solid #bce6f0;
     border-bottom:1px solid #d2d2d2;
     height:100%;
   }
