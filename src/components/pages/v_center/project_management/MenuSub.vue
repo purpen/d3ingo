@@ -60,7 +60,7 @@
                 </div>
               </li>
             </ul>
-            <p v-if="projectMoments.length > 5" @click="showDynamic">查看所有项目动态</p>
+            <p class="project-news" v-if="projectMoments.length > 5" @click="showDynamic">查看所有项目动态</p>
           </div>
         </div>
       </a>
@@ -1259,7 +1259,6 @@ header {
   height: 40px;
   line-height: 40px;
   padding: 0 30px;
-  color: #666
 }
 .menu-content p:before {
   content: "";
@@ -1279,6 +1278,13 @@ header {
 .menu-content .menu-moment:before {
   background: url(../../../../assets/images/tools/project_management/Moment.png)
     no-repeat center / contain
+}
+.menu-content .project-news:before {
+  width: 24px;
+  height: 24px;
+  background: url(../../../../assets/images/tools/project_management/check@2x.png)
+    no-repeat center / contain;
+    left: -5px;
 }
 .menu-content hr {
   border: none;
