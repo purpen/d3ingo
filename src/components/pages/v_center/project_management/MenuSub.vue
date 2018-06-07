@@ -354,14 +354,6 @@
               </div>
             -->
             <el-form label-position="top" :model="clientForm" :rules="ruleClientForm" ref="ruleClientForm" label-width="80px">
-              <el-row :gutter="20">
-                <el-col :xs="24" :sm="24" :md="24" :lg="24">
-                  <el-form-item label="企业名称" prop="company_name">
-                    <el-input v-model="clientForm.company_name" placeholder="请添写企业名称"></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-
                 <el-row :gutter="10">
                   <el-col :xs="24" :sm="24" :md="24" :lg="24">
                     <el-form-item label="企业名称" prop="company_name">
@@ -532,7 +524,7 @@ export default {
       isBaseLoadingBtn: false,
       isClientLoadingBtn: false,
       isServerLoadingBtn: false,
-      isFirstRegion: false,
+      isFirstRegion: true,
       levels: [
         {
           value: 1,
@@ -571,11 +563,7 @@ export default {
     },
     // 成员列表
     memberList() {
-      let memberList = [
-        {id: 1, realname: '田帅'},
-        {id: 2, realname: '顾三'},
-        {id: 3, realname: '王五'}
-      ]
+      let memberList = this.projectMemberList
       return memberList
     },
     typeOptions() {
@@ -869,8 +857,8 @@ export default {
           contact_name: this.projectObject.contact_name,
           position: this.projectObject.position,
           phone: this.projectObject.phone,
-          province: this.projectObject.province,
-          city: this.projectObject.city,
+          province: this.projectObject.province === 0 ? '' : this.projectObject.province,
+          city: this.projectObject.city === 0 ? '' : this.projectObject.city,
           area: this.projectObject.area === 0 ? '' : this.projectObject.area,
           address: this.projectObject.address
         }
@@ -880,8 +868,8 @@ export default {
           design_contact_name: this.projectObject.design_contact_name,
           design_position: this.projectObject.design_position,
           design_phone: this.projectObject.design_phone,
-          design_province: this.projectObject.design_province,
-          design_city: this.projectObject.design_city,
+          design_province: this.projectObject.design_province === 0 ? '' : this.projectObject.design_province,
+          design_city: this.projectObject.design_city === 0 ? '' : this.projectObject.design_city,
           design_area: this.projectObject.design_area === 0 ? '' : this.projectObject.design_area,
           design_address: this.projectObject.design_address
         }
