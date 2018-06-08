@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="blank30 vcenter clearfix">
+    <div class="blank30 vcenter clearfix" v-if="!isEmpty">
       <v-menu currentName="c_item"></v-menu>
       <!-- <el-col :span="isMob ? 24 : rightWidth"> -->
       <!-- <el-col class="vcenter-right-plus" :xs="24" :sm="24" :md="24" :lg="24"> -->
@@ -25,7 +25,7 @@
               </el-col>
             </el-row>
 
-            <div class="item" v-for="(d, index) in designItems" :key="index">
+            <div class="item" v-for="(d, index) in designItems" :key="index" v-show="designItems.length">
 
               <el-row class="banner list-box">
                 <el-col :span="12">
@@ -106,8 +106,6 @@
             :total="query.total">
           </el-pagination>
         </div>
-        <div class="empty" v-if="isEmpty === true"></div>
-        <p v-if="isEmpty === true" class="noMsg">暂无项目订单</p>
       </div>
 
       <el-dialog title="提交项目报价" v-model="takingPriceDialog">
@@ -143,7 +141,7 @@
         </span>
       </el-dialog>
     </div>
-    <div class="blank30 vcenter clearfix">
+    <div class="blank30 vcenter clearfix" v-if="!isEmpty2">
       <v-menu currentName="c_item" class="c_item"></v-menu>
       <div :class="{'vcenter-right-plus': leftWidth === 4,
         'vcenter-right': leftWidth === 2,
@@ -256,9 +254,6 @@
             </el-pagination>
           </div>
         </div>
-
-        <div class="empty" v-if="isEmpty2 === true"></div>
-        <p v-if="isEmpty2 === true" class="noMsg">暂无已合作项目</p>
       </div>
 
       <el-dialog
@@ -275,6 +270,9 @@
         </span>
       </el-dialog>
     </div>
+
+    <div class="empty" v-if="isEmpty && isEmpty2"></div>
+    <p v-if="isEmpty && isEmpty2" class="noMsg">暂无已合作项目</p>
   </section>
 </template>
 

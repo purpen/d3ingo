@@ -5,7 +5,7 @@
         <div class="item" v-for="(d, index) in itemList" @click="showDes(d, index)" :key="index">
           <div class="banner2">
             <p class="read" v-if="d.status === 0"><i class="alert"></i></p>
-            <p class="notice">项目提醒
+            <p class="notice">消息提醒
               <span class="time">{{ d.created_at }}</span>
             </p>
             <p class="title">{{ d.title }}</p>
@@ -19,7 +19,7 @@
         </div>
 
         <el-pagination
-          v-if="itemList.length"
+          v-if="query.totalCount > query.pageSize"
           class="pagination"
           @current-change="handleCurrentChange"
           :current-page="query.page"

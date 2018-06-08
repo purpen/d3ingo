@@ -15,7 +15,7 @@
             </p>
           </div>
           <p v-show="d.is_show" class="content">{{ d.operation_log.title }}</p>
-          <a v-show="d.is_show" class="detail" href="javascript:void(0);"  @click.stop="redirect(d)">查看详情>></a>
+          <a v-show="d.is_show" class="detail" @click.stop="redirect(d)">查看详情>></a>
         </div>
 
         <el-pagination

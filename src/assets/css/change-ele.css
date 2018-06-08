@@ -391,3 +391,9 @@
   .tack-list .el-checkbox__label {
     padding-left:15px;
   }
+  .el-checkbox__inner {
+    border-color: #e6e6e6
+  }
+  .el-checkbox__inner:hover {
+    border-color: #d2d2d2
+  }

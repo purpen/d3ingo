@@ -1153,6 +1153,12 @@
     position: relative;
     display: inline-block
   }
+  .el-date-editor.el-input {
+    width: 195px;
+  }
+  .add-child-ul .el-date-editor.el-input {
+    width: 100%;
+  }
   .task-info li p.p-time {
     background: url(../../assets/images/tools/project_management/Time.png) no-repeat left;
     background-size: 24px;
@@ -1162,6 +1168,8 @@
     background-size: 24px;
   }
   .task-info li p.p-label {
+    height: 32px;
+    line-height: 32px;
     background: url(../../assets/images/tools/project_management/Label.png) no-repeat left;
     background-size: 24px;
   }

@@ -55,7 +55,8 @@
               <li v-for="(ele, index) in shortProjectMoments" :key="index">
                 <img class="br50 b-d2" :src="ele.logo_image.logo" alt="">
                 <div class="item-con">
-                  <p class="tc-2"><span>{{ele.user_name}}</span><span class="tc-6">{{ele.action}}</span></p>
+                  <!-- <p class="tc-2"><span>{{ele.user_name}}</span><span class="tc-6">{{ele.action}}</span></p> -->
+                  <p class="tc-2"><span>{{ele.title}}</span></p>
                   <p class="fz-12 tc-9">{{ele.date}}</p>
                 </div>
               </li>
@@ -459,12 +460,12 @@
         <i class="fx fx-icon-nothing-close-error" @click="cover2 = false"></i>
       </div>
       <div class="cover2-content">
-        <h3>全部动态</h3>
         <ul class="cover2-list">
           <li v-for="(ele, index) in projectMoments" :key="index">
             <img v-if="ele.logo_image" class="br50 b-d2" :src="ele.logo_image.logo" alt="">
             <div class="list-con clearfix">
-              <p class="tc-2 fl"><span>{{ele.user_name}}</span>{{ele.action}}</p>
+              <!-- <p class="tc-2 fl"><span>{{ele.user_name}}</span>{{ele.action}}</p> -->
+              <p class="tc-2 fl"><span>{{ele.title}}</span></p>
               <p class="fz-12 tc-6 fr">{{ele.date}}</p>
             </div>
           </li>
@@ -890,6 +891,15 @@ export default {
     showMenu(val) {
       if (val) {
         this.getMoments()
+      }
+    },
+    cover2(val) {
+      if (val) {
+        document.body.setAttribute('class', 'disableScroll')
+        document.childNodes[1].setAttribute('class', 'disableScroll')
+      } else {
+        document.body.removeAttribute('class', 'disableScroll')
+        document.childNodes[1].removeAttribute('class', 'disableScroll')
       }
     }
   },
