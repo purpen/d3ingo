@@ -9,9 +9,9 @@
           <v-menu-sub></v-menu-sub>
           <v-menu-sub v-if="false" currentSubName="identification"></v-menu-sub>
           <div :class="['content-box', 'clearfix' , isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
-            <div :class="['form-title', isMob ? 'form-title-m' : '']">
+            <!-- <div :class="['form-title', isMob ? 'form-title-m' : '']">
               <span v-if="!isMob">修改密码</span>
-            </div>
+            </div> -->
             <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
 
               <el-row :gutter="24">
@@ -167,6 +167,9 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .right-content .content-box {
+    padding: 20px;
+  }
   .form-btn {
     width: 100%;
     overflow: hidden;

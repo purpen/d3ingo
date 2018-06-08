@@ -136,12 +136,12 @@
     <Message></Message>
     <el-alert
       v-if="showAlert"
-      title="您还没有申请企业实名认证"
+      :title="alertTitle.title"
       type="warning"
       :closable="false"
       show-icon>
       <template slot-scope="scope">
-        <router-link style="margin-left: 10px;" class="tc-red fz-12" to="/vcenter/company/accreditation">去认证</router-link>
+        <router-link style="margin-left: 10px;" class="tc-red fz-12" :to="alertTitle.path">去完善</router-link>
       </template>
     </el-alert>
   </div>
@@ -178,6 +178,10 @@
           notice: 0,
           design_notice: 0,
           quantity: 0
+        },
+        alertTitle: {
+          title: '',
+          path: ''
         }
       }
     },
@@ -330,13 +334,66 @@
         let user = this.eventUser
         if (user.type === 1) {
           if (user.demand_verify_status === 0) {
+            console.log('没有认证')
+            this.alertTitle.title = '您还没有申请企业实名认证'
+            this.alertTitle.path = '/vcenter/d_company/accreditation'
             return true
+          } else if (user.demand_verify_status === 2) {
+            console.log('没有认证')
+            this.alertTitle.title = '您申请企业实名认证失败'
+            this.alertTitle.path = '/vcenter/d_company/accreditation'
+            return true
+          } else if (user.demand_verify_status === 1) {
+            if (user.demand_info_status === 1) {
+              console.log('需求公司基础信息：已完善')
+              return false
+            } else {
+              return true
+            }
           } else {
             return false
           }
         } else {
-          if (user.verify_status === 0 && user.company_role === 20) {
-            return true
+          if (user.company_role === 20) {
+            if (user.design_verify_status === 0) {
+              console.log('没有认证')
+              this.alertTitle.title = '您还没有申请企业实名认证'
+              this.alertTitle.path = '/vcenter/company/accreditation'
+              return true
+            } else if (user.design_verify_status === 2) {
+              console.log('公司认证失败')
+              this.alertTitle.title = '您申请企业实名认证失败'
+              this.alertTitle.path = '/vcenter/company/accreditation'
+              return true
+            } else if (user.design_verify_status === 1) {
+              if (user.design_info_status === 1) {
+                // console.log('设计公司基础信息：已完善')
+                if (user.design_item_status === 1) {
+                  // console.log('设计公司接单设置：已完善')
+                  if (user.design_case_status === 1) {
+                    // console.log('设计案例是否添加：已完善')
+                    return false
+                  } else {
+                    this.alertTitle.title = '上传案例作品,向客户更好的展示和推荐项目案例'
+                    this.alertTitle.path = '/vcenter/design_case'
+                    // console.log('设计案例是否添加：未完善')
+                    return true
+                  }
+                } else {
+                  this.alertTitle.title = '设计项目接单价格'
+                  this.alertTitle.path = '/vcenter/company/taking'
+                  // console.log('设计公司接单设置：未完善')
+                  return true
+                }
+              } else {
+                this.alertTitle.title = '填写公司基本信息、公司简介、荣誉奖励'
+                this.alertTitle.path = '/vcenter/company/base'
+                // console.log('设计公司基础信息：未完善')
+                return true
+              }
+            } else {
+              return false
+            }
           } else {
             return false
           }

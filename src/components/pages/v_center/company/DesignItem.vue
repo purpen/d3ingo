@@ -283,7 +283,7 @@
   }
 
   .item {
-    border-bottom: 1px dotted #ccc;
+    border-bottom: 1px dotted #e6e6e6;
   }
 
   .item span {
@@ -292,6 +292,6 @@
 
   .item p span {
     color: #666;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 </style>

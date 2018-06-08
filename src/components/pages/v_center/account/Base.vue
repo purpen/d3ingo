@@ -46,7 +46,7 @@
                 <p>姓名</p>
               </el-col>
               <el-col :span="contentSpan" class="content">
-                <el-input v-if="element.realname" v-model="form.realname" style="width: 200px;"
+                <el-input v-if="element.realname" v-model.trim="form.realname" style="width: 200px;"
                           placeholder=""></el-input>
                 <p v-else>{{ form.realname }}</p>
               </el-col>
@@ -62,7 +62,7 @@
                 <p>职位</p>
               </el-col>
               <el-col :span="contentSpan" class="content">
-                <el-input v-if="element.position" v-model="form.position" style="width: 300px;"
+                <el-input v-if="element.position" v-model.trim="form.position" style="width: 300px;"
                           placeholder=""></el-input>
                 <p v-else>{{ form.position }}</p>
               </el-col>
@@ -78,7 +78,7 @@
                 <p>邮箱</p>
               </el-col>
               <el-col :span="contentSpan" class="content">
-                <el-input v-if="element.email" v-model="form.email" style="width: 300px;"
+                <el-input v-if="element.email" v-model.trim="form.email" style="width: 300px;"
                           placeholder=""></el-input>
                 <p v-else>{{ form.email }}</p>
               </el-col>
@@ -103,6 +103,7 @@
   import api from '@/api/api'
   import '@/assets/js/format'
   import auth from '@/helper/auth'
+  import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
 
   export default {
     name: 'vcenter_base',
@@ -189,6 +190,9 @@
         that.$http({method: 'POST', url: api.updateUser, data: row})
           .then(function (response) {
             if (response.data.meta.status_code === 200) {
+              if (mark === 'realname') {
+                that.$store.commit(CHANGE_USER_VERIFY_STATUS, {realname: that.form.realname})
+              }
               that.element[mark] = false
               console.log(response.data.data)
             } else {
@@ -301,7 +305,7 @@
   .item {
     min-height: 70px;
     padding: 15px 0;
-    border-bottom: 1px solid #d2d2d2;
+    border-bottom: 1px solid #e6e6e6;
     display: flex;
     align-items: center;
   }
@@ -352,7 +356,12 @@
     color: #222;
   }
 
-  .item .content {
+  .item .content p {
+    color: #999
+  }
+
+  .item .content a {
+    color: #ff5a5f
   }
 
   .item-m .content {
@@ -391,7 +400,7 @@
   }
 
   .avatar-uploader .el-upload {
-    border: 1px dashed #d2d2d2;
+    border: 1px dashed #e6e6e6;
     border-radius: 6px;
     cursor: pointer;
     position: relative;

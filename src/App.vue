@@ -36,14 +36,38 @@ export default {
     app3() {
       let user = this.user
       if (user.type === 1) {
-        if (user.demand_verify_status === 0 && !this.hideHeader) {
+        if (user.demand_verify_status === 0 || user.demand_verify_status === 2) {
           return true
+        } else if (user.demand_verify_status === 1) {
+          if (user.demand_info_status === 1) {
+            return false
+          } else {
+            return true
+          }
         } else {
           return false
         }
       } else {
-        if (user.verify_status === 0 && user.company_role === 20 && !this.hideHeader) {
-          return true
+        if (user.company_role === 20) {
+          if (user.design_verify_status === 0 || user.design_verify_status === 2) {
+            return true
+          } else if (user.design_verify_status === 1) {
+            if (user.design_info_status === 1) {
+              if (user.design_item_status === 1) {
+                if (user.design_case_status === 1) {
+                  return false
+                } else {
+                  return true
+                }
+              } else {
+                return true
+              }
+            } else {
+              return true
+            }
+          } else {
+            return false
+          }
         } else {
           return false
         }

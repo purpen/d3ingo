@@ -16,7 +16,7 @@
       :visible.sync="dialogTask"
       size="tiny"
       >
-      <p class="text-center">确认删除此任务</p>
+      <p class="text-center">确认删除此子阶段</p>
       <span slot="footer" class="dialog-footer">
         <button class="small-button white-button" @click="dialogTask = false">取 消</button>
         <button class="small-button full-red-button" type="primary" @click="deleteTack(formTack.id)">确 定</button>
@@ -89,27 +89,33 @@
           <span class="tc-2">项目阶段设置</span>
           <p class="fx fx-icon-close-sm" @click="isitemedit=false"></p>
         </div>
-        <el-progress 
-        :percentage="50"
-        :show-text="false"
-        :stroke-width="20"
-        status="success"
-        ></el-progress>
+        <div class="aside-task-pregress bg-success"
+          v-if="formup.status">
+          已完成
+        </div>
+        <div class="aside-task-pregress bg-exception"
+          v-if="!formup.status&&(formTack.left+parseInt(formTack.duration) <= newleft)"
+        >
+          已逾期
+        </div>
         <ul class="aside-content">
           <li class="designStage-name">
             <span>
               <el-checkbox 
-                v-model="formupstatus"
-                @change="updata()"
+                v-model="formup.status"
+                @change="editItemStatus()"
+                :true-label=1
+                :false-label=0
                 >
-
               </el-checkbox>
             </span>
             <el-input 
               v-model="formup.name" 
               placeholder="项目阶段名称"
               @blur="updata()"
-              class="noborder"
+              :class="['noborder',{
+                'success': formup.status
+              } ]"
             >
             </el-input>
           </li>
@@ -153,14 +159,19 @@
                 </el-input>
           </li>
         </ul>
-        <div class="add-tack" @click="addtack(formup)">
-          <i>+</i>
-          <span>添加任务</span>
+        <div class="add-task" @click="addtack(formup)">
+          <div></div>
+          <span>添加子阶段</span>
         </div>
-        <ul class="tack-list" v-if="formup.design_substage
+        <ul class="tack-list scroll" v-if="formup.design_substage
         ">
           <li v-for="(itemup,indexip) in formup.design_substage" :key="indexip">
-            <el-checkbox v-model="checked">
+            <el-checkbox v-model="itemup.status"
+             :true-label=1
+             :false-label=0
+             @change="desCompletes(itemup.id,itemup.status, formup)"
+             :class="{'task-success':itemup.status}"
+             >
               {{itemup.name}}
             </el-checkbox>
           </li>
@@ -172,15 +183,18 @@
       <aside class="aside">
         <div class="aside-title fx">
           <i class="fx fx-icon-delete2" @click="dialogTask=true"></i>
-          <span class="tc-2">任务设置</span>
+          <span class="tc-2">子阶段设置</span>
           <p class="fx fx-icon-close-sm" @click="cancelTack()"></p>
         </div>
-        <el-progress 
-          :percentage="50"
-          :show-text="false"
-          :stroke-width="20"
-          status="success"
-        ></el-progress>
+        <div class="aside-task-pregress bg-success"
+          v-if="formTackstatus">
+          已完成
+        </div>
+        <div class="aside-task-pregress bg-exception"
+          v-if="!formTackstatus&&(formTack.left+parseInt(formTack.duration) <= newleft)"
+        >
+          已逾期
+        </div>
         <ul class="aside-content">
           <li class="designStage-name">
             <span>
@@ -189,8 +203,8 @@
             </span>
             <el-input 
               v-model="formTack.name"
-              placeholder="任务名称"
-              class="noborder"
+              placeholder="子阶段名称"
+              :class="['noborder', {'success':formTackstatus}]"
               @blur="updataTack()"
             >
             </el-input>
@@ -278,7 +292,7 @@
             <el-input
                 type="textarea"
                 :autosize='{ minRows: 4, maxRows: 6 }'
-                placeholder="任务描述"
+                placeholder="子阶段描述"
                 v-model="formTack.summary"
                 class="noborder"
                 @blur="updataTack()"
@@ -298,13 +312,16 @@
         <ul class="aside-content">
           <li class="designStage-name">
             <span>
-              <el-checkbox v-model="checked"></el-checkbox>
+              <el-checkbox v-model="formNodeStatus"
+                @change="editNodeStatus()"
+              >
+              </el-checkbox>
             </span>
             <el-input 
               v-model="formNode.name"
               placeholder="节点名称"
               class="noborder"
-              @blur="updataNode()"
+              @blur.stop="updataNode()"
             >
             </el-input>
           </li>
@@ -316,26 +333,16 @@
                 v-model="formNodetime"
                 placeholder="开始日期设置"
                 class="noborder"
-                @change="updataNode"
+                @change="editNodetime"
                >
                 </el-date-picker>
               </div>
           </li>
-          <li class="opvalue noborder">
-            <i></i>
-            <el-select v-model="formNode.status" placeholder="请选择"
-            @change="updataNode()"
-            >
-              <el-option
-                v-for="item in option"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-            </el-select>
-          </li>
           <li class="owner">
-              <el-checkbox v-model="formNodeowner" :style="{color:formNodeowner?'red':''}"
+              <el-checkbox v-model="formNode.is_owner"
+              :true-label="1"
+              :false-label="0"
+              :style="{color:formNodeowner?'red':''}"
               @change="updataNode()"
               >
                 甲方参与
@@ -401,88 +408,111 @@
       </aside>
     </transition>
     <section class="top-progress">
-      <div class="h3">笔记本设计</div>
+      <div class="h3 fz-20">{{itemName}}</div>
       <el-progress 
-      :percentage="0"
+      :percentage="itemStatistical.okDesignStage"
       :show-text="false"
-      :stroke-width="3"
-      ></el-progress>
+      :stroke-width="5"
+      status="success"
+      >
+      </el-progress>
       <ul class="item-header">
         <li>
-          <div>0</div>
+          <div>{{itemTask.total_count}}</div>
           <p>所有任务</p>
         </li>
         <li>
-          <div>0</div>
+          <div>{{itemStatistical.designStageCount}}</div>
           <p>项目阶段</p>
         </li>
         <li>
-          <div>0</div>
-          <p>投入时间</p>
+          <div>{{itemStatistical.durations}}</div>
+          <p>投入时间&nbsp;(天)</p>
         </li>
         <li>
-          <div>0%</div>
+          <div>{{itemStatistical.okDesignStage}}%</div>
           <p>项目进度</p>
         </li>
       </ul>
     </section>
     <section class="item-task">
-      <div class="h3">
+      <div class="h3 fz-16">
         任务统计
       </div>
-      <ul>
-        <li>
-          <el-progress
-            type="circle" 
-            :percentage="0"
-            :width="60"
-            :show-text="false"
-          ></el-progress>
-          <div >
-            <p>未认领</p>
-            <p class="fx-6">50%</p>
+      <el-row :gutter="20">
+        <el-col :span="6">
+          <div class="item-task-progress">
+            <el-progress
+              type="circle" 
+              :percentage="itemTask.no_get_percentage"
+              :width="60"
+              :show-text="false"
+              class="is-unclaimed"
+            >
+            </el-progress>
+            <div class="item-task-status">
+              <p>未认领&nbsp;&nbsp;{{itemTask.no_get}}</p>
+              <span class="color-gray">{{itemTask.no_get_percentage}}%</span>
+            </div>
           </div>
-        </li>
-        <li>
-          <el-progress 
-            type="circle" 
-            :percentage="0"
-            :show-text="false"
-            :width="60"></el-progress>
-          <div >
-            <p>未完成</p>
-            <p class="fx-6">50%</p>
+        </el-col>
+        <el-col :span="6">
+          <div class="item-task-progress">
+            <el-progress
+              type="circle"
+              :percentage="itemTask.no_stage_percentage"
+              :width="60"
+              :show-text="false"
+            >
+            </el-progress>
+            <div class="item-task-status">
+              <p>未完成&nbsp;&nbsp;{{itemTask.no_stage}}</p>
+              <span class="color-blue">{{itemTask.no_stage_percentage}}%</span>
+            </div>
           </div>
-        </li>
-        <li>
-          <el-progress
-            type="circle" 
-            :percentage="0"
-            :width="60"
-            :show-text="false"
-          ></el-progress>
-          <div>
-            <p>已完成</p>
-            <p class="fx-6">50%</p>
+        </el-col>
+        <el-col :span="6">
+          <div class="item-task-progress">
+            <el-progress
+              type="circle" 
+              :percentage="itemTask.ok_stage_percentage"
+              :width="60"
+              status="success"
+              :show-text="false"
+            >
+            </el-progress>
+            <div class="item-task-status">
+              <p>已完成&nbsp;&nbsp;{{itemTask.ok_stage}}</p>
+              <span class="color-green">{{itemTask.ok_stage_percentage}}%</span>
+            </div>
           </div>
-        </li>
-        <li>
-          <el-progress
-            type="circle" 
-            :percentage="0"
-            :width="60"
-            :show-text="false"
-          ></el-progress>
-          <div>
-            <p>已逾期</p>
-            <p class="fx-6">50%</p>
+        </el-col>
+        <el-col :span="6">
+          <div class="item-task-progress">
+            <el-progress
+              type="circle" 
+              :percentage="itemTask.overdue_percentage"
+              :width="60"
+              :show-text="false"
+              status="exception"
+            >
+            </el-progress>
+            <div class="item-task-status">
+              <p>已逾期&nbsp;&nbsp;{{itemTask.overdue}}</p>
+              <span class="color-red">{{itemTask.overdue_percentage}}%</span>
+            </div>
           </div>
-        </li>
-      </ul>
+        </el-col>
+      </el-row>
     </section>
     <section class="item-content">
-      <p class="h3">项目执行进度规划</p>
-        <div class="item-lists">
+      <!-- <div class="ceshi">
+        <i v-mouse>&lt;</i>
+        <p>拖拽实验</p>
+        <i v-mouse>&gt;</i>
+      </div> -->
+      <p class="h3 fz-16">项目执行进度规划</p>
+      <div class="item-lists">
           <el-row v-if="designStageLists.length>0">
             <el-col :span="6">
               <div class="item-list-text">
@@ -601,8 +631,8 @@
                         width:tack.duration*30-2+'px',
                       }"
                       :class="['item-tacklist',{
-                        'bgno-border': tack.status === 0?(tack.left+parseInt(tack.duration) <= newleft?true:false):false,
-                        'bged-border': tack.status === 1?true:false
+                        'bgno-border': !tack.status&&(tack.left+parseInt(tack.duration) <= newleft),
+                        'bged-border': tack.status
                       }]"
                       @click.stop.self="editTack(tack,c)"
                       >
@@ -611,23 +641,76 @@
                           width:(tack.left<=newleft && newleft<(parseInt(tack.left)+parseInt(tack.duration)))?
                             (parseInt(newleft)+1-parseInt(tack.left))*30-3+'px':tack.duration*30-3+'px',
                           }"
-                        v-if="tack.status !== 1&&tack.left <= newleft&&newleft<(parseInt(tack.left)+parseInt(tack.duration))"
+                        v-if="!tack.status&&tack.left <= newleft&&newleft<(parseInt(tack.left)+parseInt(tack.duration))"
                         @click.stop="editTack(tack,c)"
                       >
                       </div>
                       <div :class="['item-tacking',{
-                        'bgno': tack.status === 0?(tack.left+parseInt(tack.duration) <= newleft?true:false):false,
-                        'bged': tack.status === 1?true:false
+                        'bgno': !tack.status&&(tack.left+parseInt(tack.duration) <= newleft),
+                        'bged': tack.status
                       }]"
                       @click.stop="editTack(tack,c)"
                       v-else>
                       </div>
                       <i class="item-start" v-if="indextack === 0"></i>
-                      <i 
-                        class="item-node"
+                      <i
+                        :class="['nodebase',{
+                          'item-node': tack.design_stage_node.status,
+                          'item-nodenon': !tack.design_stage_node.status && tack.left >= newleft,
+                          'item-noded': !tack.design_stage_node.status && tack.left < newleft
+                        }]"
                         v-if="tack.design_stage_node"
-                        @click.stop="editNode(tack.design_stage_node)">
+                        @click.stop="editNode(tack.design_stage_node,c)">
                       </i>
+                      <i class="isowner" v-if="tack.design_stage_node&&tack.design_stage_node.is_owner">
+                      </i>
+
+                      <div class="node-name" v-if="tack.design_stage_node">
+                        <p :style="{width:tack.duration*30+'px'}">
+                          {{tack.design_stage_node.name}}
+                        </p>
+                      </div>
+                      <div class="task-name text-center">
+                        {{tack.name}}
+                      </div>
+                      
+                    </div>
+                    <div
+                     v-if="c.design_substage&&sort==='ismonth'" class="item-tacklist" 
+                      v-for="(tack, indextack) in c.design_substage" :key="indextack+ 'y'" :style="{left:tack.left*6.77+'px',width:tack.duration*6.77-1+'px'}"
+                      :class="['item-tacklist',{
+                        'bgno-border': !tack.status&&(tack.left+parseInt(tack.duration) <= newleft),
+                        'bged-border': tack.status
+                      }]"
+                      @click.stop.self="editTack(tack,c)"
+                      >
+                      <div class="bging item-tacking"
+                        :style="{
+                          width:(tack.left<=newleft && newleft<(parseInt(tack.left)+parseInt(tack.duration)))?
+                            (parseInt(newleft)+1-parseInt(tack.left))*30-3+'px':tack.duration*30-3+'px',
+                          }"
+                        v-if="!tack.status&&tack.left <= newleft&&newleft<(parseInt(tack.left)+parseInt(tack.duration))"
+                        @click.stop="editTack(tack,c)"
+                      >
+                      </div>
+                      <div :class="['item-tacking',{
+                        'bgno': !tack.status&&(tack.left+parseInt(tack.duration) <= newleft),
+                        'bged': tack.status
+                      }]"
+                      @click.stop="editTack(tack,c)"
+                      v-else>
+                      </div>
+                      <i class="item-start" v-if="indextack === 0"></i>
+                      <i
+                        :class="[{
+                          'item-node': tack.design_stage_node.status,
+                          'item-nodenon': !tack.design_stage_node.status && tack.left >= newleft,
+                          'item-noded': !tack.design_stage_node.status && tack.left < newleft
+                        }]"
+                        v-if="tack.design_stage_node"
+                        @click.stop="editNode(tack.design_stage_node,c)">
+                      </i>
+
                       <div class="node-name" v-if="tack.design_stage_node">
                         <p :style="{width:tack.duration*30+'px'}">
                           {{tack.design_stage_node.name}}
@@ -639,19 +722,15 @@
                       
                     </div>
 
-                    <div v-if="c.design_substage&&sort==='ismonth'" class="item-tacklist" 
-                      v-for="(tack, indextack) in c.design_substage" :key="indextack+ 'y'" :style="{left:tack.left*6.77+'px',width:tack.duration*6.77+'px'}">
-                      {{indextack}}
-                    </div>
                     <div  v-if="(sort==='isday'||sort==='isweek')" class="item-tacklist-last" :style="{left:(c.left+1)*30 + 'px'}">
                       <div  @click="addtack(c)"></div>
-                      <span  @click="addtack(c)">添加任务</span>
+                      <span  @click="addtack(c)">添加子阶段</span>
                     </div>
                     <div  v-if="sort==='ismonth'" class="item-tacklist-last" :style="{left:(c.left+1)*6.77 + 'px'}">
-                      <div>+</div>
-                      <span>添加任务</span>
+                      <div  @click="addtack(c)"></div>
+                      <span  @click="addtack(c)">添加子阶段</span>
                     </div>
-                    <div v-if="!c.design_substage&&sort==='isday'||sort==='isweek'" class="item-tacklist no-tack" 
+                    <div v-if="!c.design_substage&&(sort==='isday'||sort==='isweek')" class="item-tacklist no-tack" 
                       :style="{left:c.left*30+'px'}">
                     </div>
                     <div v-if="!c.design_substage&&sort==='ismonth'" class="item-tacklist no-tack" 
@@ -674,9 +753,14 @@
             </el-col>
           </el-row>
         <div  class="add-item" >
-          <div @click="isItemStage=true">+</div>
+          <div @click="isItemStage=true"></div>
           <p @click="isItemStage=true">添加项目阶段</p>
         </div>
+      </div>
+      <div class="push-file">
+        <i>
+        </i>
+        查看更多项目阶段提交文件
       </div>
     </section>
   </div>
@@ -684,6 +768,32 @@
 <script>
 import api from '@/api/api'
 import '@/assets/js/format'
+import Vue from 'vue'
+// 注册一个全局自定义指令 `v-focus`
+Vue.directive('mouse', {
+  // 当被绑定的元素插入到 DOM 中时……
+  inserted: function (el) {
+    // 聚焦元素
+    el.onmousedown = function(ev) {
+      var disX = ev.clientX - el.offsetLeft
+      var disY = ev.clientY - el.offsetTop
+      console.log(disX)
+      console.log(disY)
+      document.onmousemove = function(ev) {
+        var l = ev.clientX - disX
+        var t = ev.clientY - disY
+        el.style.left = l + 'px'
+        el.style.top = t + 'px'
+        console.log(l)
+        console.log(t)
+      }
+      document.onmouseup = function() {
+        document.onmousemove = null
+        document.onmouseup = null
+      }
+    }
+  }
+})
 export default {
   name: 'projectManagementOverView',
   data () {
@@ -717,8 +827,8 @@ export default {
         'duration': 1,
         'start_time': '',
         'summary': ''
-      }, // 新建任务
-      formTackUp: {}, // 编辑任务
+      }, // 新建子阶段
+      formTackUp: {}, // 编辑子阶段
       formNode: {}, // 新建节点
       formNodeUp: {}, // 编辑节点
       designStageLists: [], // 阶段列表
@@ -733,12 +843,15 @@ export default {
       isSearch: false,
       searcher: '',
       search: [],
+      itemTask: {}, // 子阶段统计
       isuserimg: false,
-      formTacktime: '', // 任务时间
+      formTacktime: '', // 子阶段时间
       formNodetime: '',
       sort: 'isday',
       dialogVisible: false,
       uploadUrl: '',
+      itemName: '',
+      itemStatistical: {},
       uploadParam: {
         'token': '',
         'x:random': '',
@@ -749,13 +862,15 @@ export default {
       dialogTask: false,
       fileLists: [],
       isitemedit: false, // 项目阶段编辑
-      istaskedit: false, // 项目子任务编辑新建
+      istaskedit: false, // 项目子子阶段编辑新建
       isnodeedit: false, // 节点编辑
       endTimes: [], // 所有时间合集
       formNodeowner: false, // 甲方是否参与
-      formupstatus: false, // 是否完成项目
-      formTackstatus: false, // 是否完成任务
-      formTackduration: '',
+      formupst: {}, // 是否完成项目
+      formTackstatus: false, // 是否完成子阶段
+      formTackduration: 0,
+      formNodeStatus: false, // 是否完成节点
+      formNodeup: {}, // 节点状态
       formTackup: {},
       rules: {
         duration: [
@@ -881,19 +996,8 @@ export default {
     newDay() {
       let newDate = new Date()
       for (var n = 0; n < this.totaldays.length; n++) {
-        if (this.totaldays[n].year < newDate.getFullYear() && this.totaldays[n].month < newDate.getMonth() + 1) {
-          for (var ed = 0; ed < this.totaldays[n].dayings.length; ed++) {
-            this.totaldays[n].dayings[ed].bg = 'bged'
-          }
-        } else if (this.totaldays[n].year === newDate.getFullYear() && this.totaldays[n].month === newDate.getMonth() + 1) {
-          for (var bed = 0; bed < newDate.getDate() - 1; bed++) {
-            this.totaldays[n].dayings[bed].bg = 'bged'
-          }
+        if (this.totaldays[n].year === newDate.getFullYear() && this.totaldays[n].month === newDate.getMonth() + 1) {
           this.totaldays[n].dayings[newDate.getDate() - 1].new = 'active'
-        } else {
-          for (var ing = 0; ing < this.totaldays[n].dayings.length; ing++) {
-            this.totaldays[n].dayings[ing].bg = 'bged'
-          }
         }
       }
     },
@@ -928,7 +1032,7 @@ export default {
     // 项目到最早的距离
     itemtostart(item) {
       let et = new Date(this.endTimes[0] * 1000)
-      let xin = Date.parse(new Date(et.getFullYear() + '-' + (et.getMonth() + 1) + '-' + 1)) / 1000
+      let xin = Date.parse(new Date(et.format('yyyy-MM'))) / 1000
       return Math.floor((item - xin) / 86400)
     },
     // 时间排序
@@ -967,18 +1071,21 @@ export default {
       this.endTimes.push(parseInt(res.start_time))
       this.endTimes.push(parseInt(res.start_time) + parseInt(res.duration) * 86400)
       this.sortdate(this.endTimes)
-      this.totaldays = this.dateDay(this.endTimes[0], this.endTimes[this.endTimes.length - 1])
+      let isenday = (this.endTimes[this.endTimes.length - 1] - this.endTimes[0]) / 86400
+      if (isenday < 180) {
+        this.totaldays = this.dateDay(this.endTimes[0], this.endTimes[this.endTimes.length - 1] + 86400 * (180 - isenday))
+      } else this.totaldays = this.dateDay(this.endTimes[0], this.endTimes[this.endTimes.length - 1])
       this.newDay()
       this.newtostart()
       let reset = new Date(this.endTimes[0] * 1000)
-      let resxin = Date.parse(new Date(reset.getFullYear() + '-' + (reset.getMonth() + 1) + '-' + 1)) / 1000
+      let resxin = Date.parse(new Date(reset.format('yyyy-MM'))) / 1000
       res.left = Math.floor(((res.start_time - resxin) / 86400))
       return res
     },
-    // 任务显示
+    // 子阶段显示
     tackleft(des) {
       let et = new Date(this.endTimes[0] * 1000)
-      let xin = Date.parse(new Date(et.getFullYear() + '-' + (et.getMonth() + 1) + '-' + 1)) / 1000
+      let xin = Date.parse(new Date(et.format('yyyy-MM'))) / 1000
       for (var tl = 0; tl < des.length; tl++) {
         if (!des[tl].design_substage) {
           let itemd = Date.parse(new Date(des[tl].start_time)) / 1000
@@ -987,7 +1094,7 @@ export default {
         if (des[tl].design_substage) {
           let sortTask = []
           for (var j = 0; j < des[tl].design_substage.length; j++) {
-            // 任务起始时间和终止时间
+            // 子阶段起始时间和终止时间
             var st = parseInt(des[tl].design_substage[j].start_time)
             var dur = parseInt(des[tl].design_substage[j].duration)
             des[tl].design_substage[j].end_time = st + (dur * 86400)
@@ -1036,7 +1143,28 @@ export default {
       this.istaskedit = false
       this.isnodeedit = false
       this.isitemedit = true
-      this.formupstatus = Boolean(this.formup.status)
+    },
+  // 编辑项目状态
+    editItemStatus() {
+      this.formupst.status = this.formup.status
+      this.formupst.id = this.formup.id
+      let fup = this.formup.design_substage
+      for (var i = 0; i < fup.length; i++) {
+        if (!fup[i].status) {
+          this.formup.status = 0
+          this.redirectItemList(1, '子子阶段还没有全部完成')
+          return false
+        }
+      }
+      this.$http.put(api.designStageCompletes.format(this.formupst.id), this.formupst).then((response) => {
+        if (response.data.meta.status_code === 200) {
+        } else {
+          this.$message.error(response.data.meta.message)
+        }
+      }).catch((error) => {
+        this.$message.error(error.message)
+        console.error(error.message)
+      })
     },
   // 编辑项目
     updata(date) {
@@ -1051,7 +1179,6 @@ export default {
         if (isNaN(this.formup.start_time)) {
           this.formup.start_time = Math.round(new Date(this.formup.start_time).getTime() / 1000)
         }
-        // this.formup.status = Number(this.formupstatus)
         this.$http.put(api.designStageUpdate.format(this.formup.id), this.formup).then((response) => {
           if (response.data.meta.status_code === 200) {
             var res = this.updateallleft(response.data.data)
@@ -1091,7 +1218,7 @@ export default {
         console.error(error.message)
       })
     },
-    // 创建任务按钮
+    // 创建子阶段按钮
     addtack(des, type) {
       this.itemdesId = des.id
       this.itemdesname = des.name
@@ -1104,7 +1231,7 @@ export default {
       this.indesignStage = des
       var time = []
       this.formTack = {}
-      // 有任务时
+      // 有子阶段时
       if (des.design_substage) {
         for (var i = 0; i < des.design_substage.length; i++) {
           let intask = des.design_substage[i]
@@ -1113,7 +1240,7 @@ export default {
         this.sortdate(time)
         this.formTack.start_time = time[time.length - 1]
       }
-      // 无任务时
+      // 无子阶段时
       if (!des.design_substage || des.design_substage.length === 0) {
         if (isNaN(des.start_time)) {
           this.formTack.start_time = Date.parse(new Date(des.start_time)) / 1000
@@ -1124,7 +1251,7 @@ export default {
       this.formTacktime = (new Date(this.formTack.start_time * 1000)).format('yyyy-MM-dd')
       this.formTack.duration = 1
       this.formTack.design_stage_id = this.itemdesId
-      this.formTack.name = '新任务'
+      this.formTack.name = '子阶段'
       if (this.formTack.execute_user_id === '') {
         delete this.formTack.execute_user_id
       }
@@ -1146,9 +1273,23 @@ export default {
         console.error(error.message)
       })
     },
+    // 编辑子阶段/节点时间
+    editNodetime(date) {
+      if (Date.parse(new Date(this.formNodetime).format('yyyy-MM-dd')) / 1000 !== this.formNode.time) {
+        let insub = this.indesignStage.design_substage
+        for (var i = 0; i < insub.length; i++) {
+          if (insub[i].id === this.formNode.design_substage_id) {
+            this.formTack.id = insub[i].id
+            this.formTackduration = insub[i].duration
+            this.formTacktime = new Date(Date.parse(new Date(date)) - insub[i].duration * 86400000).format('yyyy-MM-dd')
+            this.upDateDuration(this.formTacktime)
+          }
+        }
+      }
+    },
     // 事件和日期改变
     upDateDuration(date) {
-      if (Date.parse(new Date(this.formTacktime)) / 1000 !== this.formTack.start_time || this.formTackduration !== this.formTack.duration) {
+      if (Date.parse(new Date(this.formTacktime)) / 1000 !== this.formTack.start_time || this.formTackduration !== this.formTack.duration || date === 1) {
         this.formTack.duration = this.formTackduration
         if (isNaN(this.formTack.duration) || !this.formTack.duration) {
           this.$message.error('输入正确的投入天数')
@@ -1169,6 +1310,9 @@ export default {
             ind = i
             start[i].duration = this.formTack.duration
             start[i].start_time = fts
+            if (start[i].design_stage_node) {
+              start[i].design_stage_node.time = fts + (this.formTack.duration - 1) * 86400
+            }
             if (date === 1) {
               start[i].duration = 0
             }
@@ -1183,6 +1327,9 @@ export default {
         }
         for (let m = ind - 1; m >= 0; m--) {
           start[m].start_time = start[m + 1].start_time - start[m].duration * 86400
+          if (start[m].design_stage_node) {
+            start[m].design_stage_node.time = start[m].start_time + (start[m].duration - 1) * 86400
+          }
           arr.push({
             'id': start[m].id,
             'start_time': start[m].start_time,
@@ -1191,6 +1338,9 @@ export default {
         }
         for (let b = ind + 1; b < start.length; b++) {
           start[b].start_time = start[b - 1].start_time + start[b - 1].duration * 86400
+          if (start[b].design_stage_node) {
+            start[b].design_stage_node.time = start[b].start_time + (start[b].duration - 1) * 86400
+          }
           arr.push({
             'id': start[b].id,
             'start_time': start[b].start_time,
@@ -1209,6 +1359,7 @@ export default {
             }
             this.tackleft(this.designStageLists)
             this.formTack.start_time = fts
+            console.log(res)
           } else {
             this.$message.error(response.data.meta.message)
           }
@@ -1258,6 +1409,7 @@ export default {
       this.formTackduration = des.duration
       if (this.formTack.design_stage_node) {
         this.formNode.name = des.design_stage_node.name
+        delete this.formTack.design_stage_node
       } else this.formNode.name = ''
       if (this.formTack.execute_user) {
         this.formTack.log = des.execute_user.logo_image.logo
@@ -1269,19 +1421,28 @@ export default {
       this.istaskedit = true
       this.formTacktime = (new Date(this.formTack.start_time * 1000)).format('yyyy-MM-dd')
     },
-    // 编辑子任务状态
-    desCompletes() {
+    // 编辑子子阶段状态
+    desCompletes(id, st, type) {
       let self = this
-      self.formTackup.status = Number(self.formTackstatus)
-      console.log(self.formTackup.status)
-      self.formTackup.id = self.formTack.id
+      if (id) {
+        self.formTackup.status = Number(st)
+        self.formTackup.id = id
+      } else {
+        self.formTackup.status = Number(self.formTackstatus)
+        self.formTackup.id = self.formTack.id
+      }
+      if (type) {
+        self.indesignStage = type
+      }
       self.$http.put(api.designSubstageCompletes.format(self.formTackup.id), self.formTackup).then((response) => {
         if (response.data.meta.status_code === 200) {
           let desTup = self.indesignStage.design_substage
           for (var i = 0; i < desTup.length; i++) {
             if (desTup[i].id === self.formTackup.id) {
+              if ((desTup[i].design_stage_node && !id) || (desTup[i].design_stage_node && type)) {
+                self.editNodeStatus(desTup[i].design_stage_node.id, response.data.data.status)
+              }
               desTup[i].status = response.data.data.status
-              // self.$set(self.indesignStage.design_substage, i, res)
             }
           }
         } else {
@@ -1341,6 +1502,7 @@ export default {
           self.upDateDuration(1)
           for (var i = 0; i < self.indesignStage.design_substage.length; i++) {
             if (self.indesignStage.design_substage[i].id === id) {
+              console.log(self.indesignStage.design_substage[i])
               self.indesignStage.design_substage.splice(i, 1)
               self.dialogTask = false
               self.istaskedit = false
@@ -1357,7 +1519,6 @@ export default {
     // 创建阶段节点
     createNode() {
       if (!this.formNode.name) {
-        this.$message.error('节点名称不能为空')
         return
       }
       let endt = this.formTack.start_time + this.formTack.duration * 86400
@@ -1372,23 +1533,55 @@ export default {
           var dessub = this.indesignStage.design_substage
           for (var f = 0; f < dessub.length; f++) {
             if (dessub[f].id === res.design_substage_id) {
+              this.editNodeStatus(res.id, dessub[f].status)
               dessub[f].design_stage_node = res
             }
           }
-          console.log(this.designStageLists)
         } else {
           this.$message.error(response.data.meta.message)
         }
       })
     },
-    editNode(node) {
+    // 编辑阶段节点按钮
+    editNode(node, c) {
       this.formNodetime = (new Date(node.time * 1000)).format('yyyy-MM-dd')
       this.isitemedit = false
       this.istaskedit = false
       this.isnodeedit = true
-      this.formNode = node
+      this.formNode = {...node}
       this.uploadParam['x:target_id'] = node.id
-      this.formNodeowner = Boolean(this.formNode.is_owner)
+      this.formNodeStatus = Boolean(this.formNode.status)
+      this.indesignStage = c
+    },
+    // 编辑节点完成状态
+    editNodeStatus(nid, nst) {
+      if (this.formNodeup.status !== Boolean(this.formNode.status) || nid) {
+        if (nid) {
+          this.formNodeup.status = Number(nst)
+          this.formNodeup.stage_node_id = nid
+        } else {
+          this.formNodeup.status = Number(this.formNodeStatus)
+          this.formNodeup.stage_node_id = this.formNode.id
+        }
+        this.$http.put(api.designStageNodeCompletes.format(this.formNodeup.stage_node_id), this.formNodeup).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            let node = this.indesignStage.design_substage
+            for (var i = 0; i < node.length; i++) {
+              if (node[i].design_stage_node && node[i].design_stage_node.id === response.data.data.id) {
+                node[i].design_stage_node.status = response.data.data.status
+              }
+            }
+            if (!nid) {
+              this.desCompletes(response.data.data.design_substage_id, this.formNodeStatus)
+            }
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          this.$message.error(error.message)
+          console.error(error.message)
+        })
+      }
     },
     // 编辑阶段节点
     updataNode(date) {
@@ -1399,19 +1592,24 @@ export default {
         if (date) {
           this.formNode.time = Math.round(new Date(date).getTime() / 1000)
         }
-        this.formNode.is_owner = Number(this.formNodeowner)
         this.formNode.stage_node_id = this.formNode.id
+        this.$http.put(api.designStageNodeUpdate.format(this.formNode.id), this.formNode).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            // console.log(response.data.data)
+            let innode = this.indesignStage.design_substage
+            for (var i = 0; i < innode.length; i++) {
+              if (innode[i].design_stage_node && innode[i].design_stage_node.id === this.formNode.id) {
+                innode[i].design_stage_node = response.data.data
+              }
+            }
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          this.$message.error(error.message)
+          console.error(error.message)
+        })
       }
-      this.$http.put(api.designStageNodeUpdate.format(this.formNode.id), this.formNode).then((response) => {
-        if (response.data.meta.status_code === 200) {
-          console.log(response.data.data)
-        } else {
-          this.$message.error(response.data.meta.message)
-        }
-      }).catch((error) => {
-        this.$message.error(error.message)
-        console.error(error.message)
-      })
     },
     // 删除阶段节点
     deleteNode(id, index) {
@@ -1454,7 +1652,6 @@ export default {
       self.$http.delete(api.asset.format(assetid), {})
         .then (function(response) {
           if (response.data.meta.status_code === 200) {
-            console.log(1111)
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -1485,7 +1682,6 @@ export default {
       this.$http.get(api.itemUsers, {params: {item_id: itemIds}}).then((response) => {
         if (response.data.meta.status_code === 200) {
           this.options = response.data.data
-          // this.members()
         } else {
           this.$message.error(response.data.meta.message)
         }
@@ -1493,6 +1689,40 @@ export default {
         this.$message.error(error.message)
         console.error(error.message)
       })
+    },
+    // 子阶段统计
+    statisticalTask () {
+      let item = this.$route.params.id
+      this.$http.get(api.statisticalTasks, {params: {item_id: item}}).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          this.itemTask = response.data.data
+        } else {
+          this.$message.error(response.data.meta.message)
+        }
+      }).catch((error) => {
+        this.$message.error(error.message)
+        console.error(error.message)
+      })
+    },
+    statisticalItem () {
+      this.itemName = this.$store.state.task.projectObject.name
+      let item = this.$route.params.id
+      this.$http.get(api.designProjectStatistical, {params: {item_id: item}}).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          this.itemStatistical = response.data.data
+        } else {
+          this.$message.error(response.data.meta.message)
+        }
+      }).catch((error) => {
+        this.$message.error(error.message)
+        console.error(error.message)
+      })
+    },
+    onmousedown(ev) {
+      // var ev = ev||event;
+      // var disX = ev.clientX - this.offsetLeft;
+      // var disY = ev.clientY - this.offsetTop;
+      console.log(11111)
     }
   },
   created() {
@@ -1505,6 +1735,8 @@ export default {
     // 读取公司成员
     this.readMembers()
     this.upTokens()
+    this.statisticalItem()
+    this.statisticalTask()
     // 读取项目阶段列表
     this.$http.get(api.designStageLists, {params: {design_project_id: this.itemId}}).then((response) => {
       if (response.data.meta.status_code === 200) {
@@ -1532,10 +1764,13 @@ export default {
         // 起始时间和终止时间
         this.endTimes.push(Date.parse(new Date()) / 1000)
         this.sortdate(this.endTimes)
-        this.totaldays = this.dateDay(this.endTimes[0], this.endTimes[this.endTimes.length - 1])
+        let isenday = (this.endTimes[this.endTimes.length - 1] - this.endTimes[0]) / 86400
+        if (isenday < 180) {
+          this.totaldays = this.dateDay(this.endTimes[0], this.endTimes[this.endTimes.length - 1] + 86400 * (180 - isenday))
+        } else this.totaldays = this.dateDay(this.endTimes[0], this.endTimes[this.endTimes.length - 1])
         this.newDay()
         this.newtostart()
-        // 任务
+        // 子阶段
         this.tackleft(this.designStageLists)
         this.$nextTick(_ => {
           this.scrollLeft()
@@ -1634,7 +1869,7 @@ export default {
     z-index:99;
     width:380px;
     height:100%;
-    border:1px solid #d2d2d2;
+    border:1px solid #e6e6e6;
     right:0px;
     top:60px;
     background:#fff;
@@ -1727,7 +1962,7 @@ export default {
     top: 20px;
     width: 8px;
     height: 14px;
-    border: 2px solid #d2d2d2;
+    border: 2px solid #e6e6e6;
     border-left: none;
     border-top: none;
     transform: rotate(45deg);
@@ -1763,7 +1998,7 @@ export default {
     padding-left: 60px;
     cursor: pointer;
     position: relative;
-    border-top:1px solid #d2d2d2;
+    border-top:1px solid #e6e6e6;
   }
   .node-file:focus ul{
     display:block
@@ -1915,42 +2150,44 @@ export default {
     background:url('../../../../assets/images/tools/project_management/Deliver@2x.png') 0 0 no-repeat;
     background-size: contain;
   }
-  .add-tack {
-    position: relative;
-    display:flex;
-    justify-content: flex-start;
+  .add-task {
+    display: flex;
     align-items: center;
-    border-top:1px solid #d2d2d2;
-    border-bottom:1px solid #d2d2d2;
-    padding:10px 17px;
+    height: 50px;
+    color: #FF5A5F;
+    border-top: 1px solid #e6e6e6;
+    border-bottom: 1px solid #e6e6e6;
+    /* padding:10px 20px; */
   }
-  .add-tack>span{
+  .add-task>div {
     display: inline-block;
-    padding-left: 15px;
-    font-size: 1.4rem
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    background: url('../../../../assets/images/member/add02@2x.png') 0 0 no-repeat;
+    background-size: contain;
+    margin:0 18px 0 16px;
   }
-  .add-tack>i {
-    width:25px;
-    height:25px;
-    background:#FF5A5F;
-    border-radius: 50%;
-    font-size:23px;
-    text-align: center;
-    color:#fff;
-    display:inline-block;
+  .add-task>div:hover {
+    background: url('../../../../assets/images/member/add-hover@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .add-task>span {
+    cursor: pointer;
+    font-size:1.4rem
   }
   .tack-list {
     margin-top:10px;
     padding-left:20px;
-    border-bottom:1px solid #d2d2d2;
+    /* border-bottom:1px solid #d2d2d2; */
+    overflow-y: auto;
+    max-height:200px;
   }
   .tack-list>li {
     margin-bottom:10px;
   }
   .h3 {
-    font-size: 18px;
-    font-weight: bold;
-    color:#222222;
+    color:#000;
     margin-bottom:20px;
   }
   .full-red-button {
@@ -1958,7 +2195,7 @@ export default {
   }
   .item-header {
     display:flex;
-    border-bottom:1px solid #d2d2d2;
+    border-bottom:1px solid #e6e6e6;
     justify-content:space-between;
     align-items:center;
     margin-bottom:40px;
@@ -1978,38 +2215,47 @@ export default {
     margin-bottom: 10px;
   }
   .item-header>li:not(:first-child) {
-    border-left: 1px solid #d2d2d2;
+    border-left: 1px solid #e6e6e6;
   }
-  .item-task>ul {
+  .item-task {
+    margin-bottom:40px;
+  }
+  .item-task-progress {
+    height: 100px;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
+    border-radius: 8px;
     display: flex;
+    align-items: center;
+    padding-left: 30px;
+  }
+  .item-task-status {
+    height: 60px;
+    display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 40px;
+    padding-left: 20px;
   }
-  .item-task>ul>li {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    margin-right: 10px;
-    border: 1px solid #d2d2d2;
-    border-radius: 4px;
-    padding: 20px 0;
+  .color-gray {
+    color: #999999;
   }
-  .item-task>ul>li:not(:first-child) {
-    margin-left: 10px;
+  .color-blue {
+    color: #65A6FF;
   }
-  .item-task>ugl>li>div {
-    margin-left: 20px;
+  .color-green {
+    color: #00AC84;
   }
-  .item-task>ul>li>div>.fx-6 {
-    margin-top: 10px;
+  .color-red {
+    color: #FF5A5F;
+  }
+  .item-task-status span {
+    font-size: 24px;
   }
   .item-content {
     min-height: 300px;
     margin-bottom: 50px;
   }
   .item-lists {
-    border:1px solid #d2d2d2;
+    border:1px solid #e6e6e6;
     border-radius: 4px;
     font-size: 12px;
     color:#666666;
@@ -2026,13 +2272,18 @@ export default {
     padding-left: 5px;
   }
   .item-text-Header {
-    border-bottom: 1px solid #d2d2d2;
-    border-right: 1px solid #d2d2d2;
+    border-bottom: 1px solid #e6e6e6;
+    border-right: 1px solid #e6e6e6;
     padding: 10px 10px 0px 30px;
     height: 55px;
   }
   .item-text-Header>.el-row>.el-col {
-    padding-bottom: 8px;
+    padding: 5px 0px;
+  }
+  .item-text-Header>.el-row>.el-col .el-col {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .popover {
     position: relative;
@@ -2062,8 +2313,8 @@ export default {
     height: 180px;
     padding: 20px 10px 10px 24px;
     background:#f7f7f7;
-    border-bottom: 1px solid #d2d2d2;
-    border-right: 1px solid #d2d2d2;
+    border-bottom: 1px solid #e6e6e6;
+    border-right: 1px solid #e6e6e6;
     border-left:5px solid transparent;
     overflow: hidden;
   }
@@ -2087,6 +2338,16 @@ export default {
     color: #222222;
     position: relative;
   }
+  .paycontent li {
+    padding: 13px 0px 0px 25px;
+    word-wrap: break-word;
+  }
+  .paycontent>li:nth-child(2) {
+    padding-top: 10px;
+    height: 110px;
+    overflow: hidden;
+    line-height: 20px;
+  }
   .item-deliver {
     position: relative;
   }
@@ -2095,19 +2356,10 @@ export default {
     display: inline-block;
     width: 24px;
     height: 24px;
-    left: 0px;
-    top: 5px;
+    left: -4px;
+    top: 8px;
     background: url('../../../../assets/images/tools/project_management/Deliver@2x.png') 0 0 no-repeat;
     background-size: contain;
-  }
-  .paycontent>li {
-    padding: 10px 0px 0px 30px;
-    word-wrap: break-word;
-  }
-  .paycontent>li:nth-child(2) {
-    height: 110px;
-    overflow: hidden;
-    line-height: 20px;
   }
   .item-chart {
     height: 100%;
@@ -2135,7 +2387,7 @@ export default {
   }
   .item-chartHeader>div {
     display:inline-block;
-    border-bottom:1px solid #d2d2d2;
+    border-bottom:1px solid #e6e6e6;
   }
   .item-chartHeader>div>div {
     height:32px;
@@ -2148,8 +2400,8 @@ export default {
     line-height:22px;
   }
   .item-chartHeader ul>li {
-    border-right:1px solid #d2d2d2;
-    border-top:1px solid #d2d2d2;
+    border-right:1px solid #e6e6e6;
+    border-top:1px solid #e6e6e6;
     display:inline-block;
     text-align: center;
   }
@@ -2195,6 +2447,7 @@ export default {
     top:70px;
     height:25px;
     color:#FF5A5F;
+    z-index: 1
   }
   .item-tacklist-last>div {
     display: inline-block;
@@ -2209,64 +2462,70 @@ export default {
     background: url('../../../../assets/images/member/add-hover@2x.png') 0 0 no-repeat;
     background-size: contain;
   }
+  .item-tacklist-last:hover span {
+    display: inline-block;
+  }
   .item-tacklist-last>span {
+    display: none;
     cursor: pointer;
     font-size:1.4rem
   }
   .no-tack {
-    width:30px;
-    height:30px
+    width:28px;
+    height:14px
   }
   .item-start {
     background:url('../../../../assets/images/tools/project_management/ProjectStart@2x.png') 0 0 no-repeat;
     background-size: contain;
     position: absolute;
     top:-27px;
-    left:0;
+    left:-5px;
+    width:24px;
+    height:24px
+  }
+  .nodebase {
+    position: absolute;
+    top:-27px;
+    right:-5px;
     width:24px;
     height:24px
   }
   .item-noded {
     background:url('../../../../assets/images/tools/project_management/Node02@2x.png') 0 0 no-repeat;
     background-size: contain;
-    position: absolute;
-    top:-27px;
-    right:0;
-    width:24px;
-    height:24px
   }
   .item-node {
     background:url('../../../../assets/images/tools/project_management/Node03@2x.png') 0 0 no-repeat;
     background-size: contain;
+  }
+  .isowner {
+    background:url('../../../../assets/images/tools/project_management/FirstParty@2x.png') 0 0 no-repeat;
+    background-size: contain;
     position: absolute;
-    top:-27px;
-    right:0;
-    width:24px;
-    height:24px
+    top:-19px;
+    right:12px;
+    width:16px;
+    height:16px
   }
   .item-nodenon {
     background:url('../../../../assets/images/tools/project_management/NonNode@2x.png') 0 0 no-repeat;
     background-size: contain;
-    position: absolute;
-    top:-27px;
-    right:0;
-    width:24px;
-    height:24px
   }
   .node-name {
     position: absolute;
-    right:12px;
-    border-right:2px dashed #d2d2d2;
+    right:6px;
+    border-right:1px dashed #e6e6e6;
     bottom:-40px;
     height:40px;
   }
   .node-name p {
     position: absolute;
     top: 40px;
-    right: -15px;
+    right: -8px;
     overflow: hidden;
     text-overflow: ellipsis;
-    text-align:right
+    text-align:right;
+    font-size: 12px;
   }
   .item-chartContent>ul {
     display:inline-block;
@@ -2274,9 +2533,28 @@ export default {
   }
   .item-chartContent>ul>li {
     display:inline-block;
-    border-right:1px dashed #bce6f0;
-    border-bottom:1px solid #d2d2d2;
+    border-right:1px solid #e6e6e6;
+    border-bottom:1px solid #e6e6e6;
+    opacity: 0.3;
     height:100%;
+  }
+  .push-file{
+    height: 24px;
+    font-size: 14px;
+    color:#999;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top:25px;
+    cursor: pointer;
+  }
+  .push-file>i {
+    display:inline-block;
+    width: 24px;
+    height: 24px;
+    background: url(../../../../assets/images/tools/project_management/check@2x.png) 0 0 no-repeat;
+    background-size: contain;
   }
   .bgc {
     background:#65A6FF;
@@ -2297,6 +2575,18 @@ export default {
   }
   .bged, .bgno, .bging {
     opacity: 0.6;
+  }
+  .aside-task-pregress {
+    line-height: 20px;
+    text-align: center;
+    color: #fff;
+    font-size: 12px;
+  }
+  .bg-success {
+    background:#00AC84;
+  }
+  .bg-exception {
+    background:#FF8B8F;
   }
   .bged:hover,.bgno:hover,.bging:hover{
     opacity: 0.8;
@@ -2346,6 +2636,40 @@ export default {
   .video {
     background: url('../../../../assets/images/tools/cloud_drive/type/video@2x.png') 0 0 no-repeat;
     background-size: contain;
+  }
+  .ceshi {
+    width:100px;
+    height:50px;
+    border:1px solid #65A6FF;
+    border-radius: 4px;
+    cursor:move;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .ceshi>p {
+    text-align: center;
+    flex:1;
+  }
+  .ceshi i {
+    display: none;
+    height:100%;
+    width:auto;
+    line-height:50px;
+    background:#65A6FF;
+  }
+  .ceshi i:first-child {
+    cursor:w-resize
+  }
+  .ceshi i:last-child {
+    cursor: e-resize
+  }
+  .ceshi:hover {
+    border:1px solid rgb(16, 105, 230)
+  }
+  .ceshi:hover i {
+    font-size:20px;
+    display:inline-block;
   }
   @media screen and (max-width: 767px) {
     .item-total {

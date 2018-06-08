@@ -1093,7 +1093,7 @@
   .item {
     min-height: 70px;
     padding: 15px 0;
-    border-bottom: 1px solid #d2d2d2;
+    border-bottom: 1px solid #e6e6e6;
     display: flex;
     align-items: center;
   }
@@ -1141,12 +1141,21 @@
   }
 
   .item-m .title p {
+    color: #666;
+  }
+
+  .item-m .title p {
     color: #222;
   }
 
-  .item .content {
+  .item .content p {
+    color: #999
   }
 
+  .item .content a {
+    color: #ff5a5f
+  }
+  
   .item-m .content {
     color: #666;
     border: 1px solid #E6E6E6;
@@ -1175,15 +1184,15 @@
 
   .edit a {
     font-size: 1.3rem;
-    color: #FF5A5F;
+    color: #ff5a5f;
   }
 
   .item-m .edit a {
-    color: #FF5A5F;
+    color: #ff5a5f;
   }
 
   .avatar-uploader .el-upload {
-    border: 1px dashed #d2d2d2;
+    border: 1px dashed #e6e6e6;
     border-radius: 6px;
     cursor: pointer;
     position: relative;
@@ -1246,7 +1255,9 @@
   .tag {
     margin: 5px 0;
   }
-
+  .el-button.tag {
+    margin-right: 10px;
+  }
   .MmenuHide {
     margin-left: 0;
   }
@@ -1301,7 +1312,7 @@
     }
     .edit a {
       font-size: 1.3rem;
-      color: #FF5A5F;
+      color: #ff5a5f;
     }
   }
 </style>

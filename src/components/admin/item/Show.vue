@@ -317,7 +317,6 @@
                       </div>
                       <div class="stage-asset-box clearfix" v-for="(asset, asset_index) in d.item_stage_image" :key="asset_index">
                         <div class="contract-left">
-                          <img :src="require('assets/images/icon/pdf2x.png')" width="30"/>
                           <div class="contract-content">
                             <p>{{ asset.name }}</p>
                             <p class="contract-des">{{ asset.created_at.date_format().format('yyyy-MM-dd') }}</p>

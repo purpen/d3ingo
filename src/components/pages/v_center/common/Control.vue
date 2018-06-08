@@ -68,7 +68,9 @@
                   <h3>公司接单设置</h3>
                   <p class="item-title">设计项目接单价格</p>
                   <p class="item-btn">
-                    <router-link :to="{name: 'vcenterComputerTaking'}">设置接单价格</router-link>
+                    <router-link :to="{name: 'vcenterComputerTaking'}">
+                      <button class="small-button red-button">设置接单价格</button>
+                    </router-link>
                   </p>
                 </div>
 
@@ -76,7 +78,9 @@
                   <h3>上传案例作品</h3>
                   <p class="item-title">向客户更好的展示和推荐项目案例</p>
                   <p class="item-btn">
-                    <router-link :to="{name: 'vcenterDesignCaseList'}">上传</router-link>
+                    <router-link :to="{name: 'vcenterDesignCaseList'}">
+                      <button class="small-button red-button">上传案例</button>
+                    </router-link>
                   </p>
                 </div>
 
@@ -244,7 +248,7 @@
 </template>
 <script>
   import vMenu from '@/components/pages/v_center/Menu'
-  import { MSG_COUNT } from '@/store/mutation-types'
+  import { MSG_COUNT, CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
   import api from '@/api/api'
 
   export default {
@@ -309,7 +313,6 @@
         self.$http.get(api.userStatistical, {}).then((response) => {
           if (response.data.meta.status_code === 200) {
             this.userItem = response.data.data
-            console.log(this.userItem)
             if (this.userItem.length > 0) {
               for (var i = 0; i < this.userItem.length; i++) {
                 if (this.userItem[i].start_time) {
@@ -420,8 +423,10 @@
       that.$http.get(url, {})
         .then(function (response) {
           if (response.data.meta.status_code === 200) {
+            that.$store.commit(CHANGE_USER_VERIFY_STATUS, response.data.data)
             let item = null
-            that.item = item = response.data.data
+            that.item = response.data.data
+            item = response.data.data
             let verifyStatus = 0
             if (isCompany) {
               if (item.design_info_status === 0 || item.design_verify_status !== 1 || item.design_case_status === 0 || item.design_item_status === 0) {

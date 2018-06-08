@@ -82,7 +82,7 @@
         province: '',
         city: '',
         district: '',
-        isFirst: false
+        isFirst: true
       }
     },
     methods: {

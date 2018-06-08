@@ -6,9 +6,9 @@
     </p>
     <h3>对比设计企业</h3>
     <div v-if="!isMob" class="compare-comtent clearfix">
-      <el-row>
+      <el-row v-if="companyDetails.length">
         <el-col v-for="(ele, index) in companyDetails" :key="index" :xs="24" :sm="6" :md="6" :lg="6">
-          <router-link :to="{name: 'innovationCompany', params: {id: ele.design_company. d3ing_id}, query: {id: ele._id}}"
+          <router-link :to="{name: 'innovationCompany', params: {id: ele.design_company.d3ing_id}, query: {id: ele._id}}"
             :target="isMob ? '_self' : '_blank'" class="company-head">
           <img class="company-logo" v-if="ele.design_company.logo_url" :src="ele.design_company.logo_url" alt="">
           <img class="company-logo" v-else :src="require('assets/images/subject/innovation/basic_power@2x.png')" alt="">
@@ -17,7 +17,7 @@
         </el-col>
       </el-row>
       <h3>创新力指数</h3>
-      <el-row>
+      <el-row v-if="companyDetails.length">
         <el-col v-for="(ele, index) in companyDetails" :key="index" :xs="24" :sm="6" :md="6" :lg="6">
           <ul class="company-body">
             <li class="chart">
@@ -30,7 +30,10 @@
               <p class="profile-title">创新力指数（DCI）</p>
               <p class="profile-value">{{ele.ave_score}}</p>
             </li>
-            <li class="profile">
+            <li class="profile" v-if="ele.evaluates.length">
+              <p class="profile-value" v-for="(e, index) in ele.evaluates" :key="index">{{e}}</p>
+            </li>
+            <!-- <li class="profile">
               <p class="profile-title">基础运作力</p>
               <p class="profile-value">{{ele.base_average}}</p>
             </li>
@@ -49,7 +52,7 @@
             <li class="profile">
               <p class="profile-title">品牌溢价力</p>
               <p class="profile-value">{{ele.design_average}}</p>
-            </li>
+            </li> -->
           </ul>
         </el-col>
       </el-row>
@@ -75,7 +78,10 @@
               <p class="profile-title">创新力指数（DCI）</p>
               <p class="profile-value">{{ele.ave_score}}</p>
             </li>
-            <li class="profile">
+            <li class="profile" v-if="ele.evaluates.length">
+              <p class="profile-value" v-for="(e, index) in ele.evaluates" :key="index">{{e}}</p>
+            </li>
+            <!-- <li class="profile">
               <p class="profile-title">基础运作力</p>
               <p class="profile-value">{{ele.base_average}}</p>
             </li>
@@ -94,7 +100,7 @@
             <li class="profile">
               <p class="profile-title">品牌溢价力</p>
               <p class="profile-value">{{ele.design_average}}</p>
-            </li>
+            </li> -->
           </ul>
         </el-col>
       </el-row>

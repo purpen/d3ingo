@@ -1,6 +1,6 @@
 <template>
   <div class="footer clear" v-if="!hideFooter">
-    <el-row class="foot-main">
+    <el-row class="foot-main" justify="center">
       <el-col class="item" :xs="12" :sm="6" :md="6" :lg="6">
         <p class="title">铟果</p>
         <p>
@@ -11,12 +11,12 @@
         </p>
       </el-col>
 
-      <el-col class="item server" :xs="12" :sm="6" :md="6" :lg="6">
+      <el-col v-if="isDesignCompany" class="item server" :xs="12" :sm="6" :md="6" :lg="6">
         <p class="title">服务</p>
-        <p>
+        <p v-if="isDesignCompany === 1 || isDesignCompany === true">
           <router-link :to="{name: 'itemCreate'}" class="">发布需求</router-link>
         </p>
-        <p>
+        <p v-if="isDesignCompany === 2 || isDesignCompany === true">
           <router-link :to="{name: 'serverDesign'}" class="">申请加入</router-link>
         </p>
       </el-col>
@@ -101,6 +101,18 @@
       },
       hideFooter() {
         return this.$store.state.event.hideFooter
+      },
+      isDesignCompany() {
+        let user = this.$store.state.event.user
+        if (user) {
+          if (user.type) {
+            return user.type
+          } else {
+            return true
+          }
+        } else {
+          return true
+        }
       }
     },
     methods: {

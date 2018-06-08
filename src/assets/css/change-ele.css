@@ -88,7 +88,11 @@
     height:24px;
   }
   .designStage-name .el-checkbox__input.is-checked .el-checkbox__inner{
-    border-color:#d2d2d2;
+    border-color:#e6e6e6;
+    background-color:#fff;
+  }
+  .tack-list .el-checkbox__input.is-checked .el-checkbox__inner{
+    border-color:#e6e6e6;
     background-color:#fff;
   }
   .designStage-name .el-checkbox__inner::after{
@@ -98,6 +102,15 @@
     top:3px;
     border-bottom:2px solid #d2d2d2;
     border-right:2px solid #d2d2d2
+  }
+  .tack-list .el-checkbox__inner::after{
+    height:10px;
+    border-bottom:2px solid #d2d2d2;
+    border-right:2px solid #d2d2d2
+  }
+  .task-success .el-checkbox__label{
+    color: #999;
+    text-decoration: line-through
   }
   .formup-time .el-date-editor.el-input {
     width:100%
@@ -190,6 +203,10 @@
     background-color: #f7f7f7;
     border-color: #d2d2d2;
     color: #222;
+  }
+  .el-tag--primary .el-tag__close:hover {
+    color: #ff5a5f;
+    background: none
   }
   .el-select-dropdown.is-multiple .el-select-dropdown__item.selected {
     color: #222
@@ -364,6 +381,19 @@
     top:-10px;
     left:-31px;
   }
+  .top-progress .el-progress-bar__outer, .top-progress .el-progress-bar__inner{
+    border-radius: 0px;
+  }
+  .success .el-input__inner {
+    color: #999;
+    text-decoration: line-through;
+  }
   .tack-list .el-checkbox__label {
     padding-left:15px;
+  }
+  .el-checkbox__inner {
+    border-color: #e6e6e6
+  }
+  .el-checkbox__inner:hover {
+    border-color: #d2d2d2
   }

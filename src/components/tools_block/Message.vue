@@ -2,7 +2,7 @@
   <div v-if="token" :class="['cover', 'animated',
   {'bounceInDown': showCover === 'show', 'slideOutUp': showCover === 'hide'}]">
     <div class="cover-header">
-      <span v-if="(user.type === 2 && user.company_role > 0) || user.type === 1" :class="{'is-active': myView === 'order'}" @click="changeView('order')">订单通知</span>
+      <span v-if="(user.type === 2 && user.company_role > 0) || user.type === 1" :class="{'is-active': myView === 'order'}" @click="changeView('order')">消息提醒</span>
       <span v-if="user.type === 2" :class="{'is-active': myView === 'task'}" @click="changeView('task')">项目通知</span>
       <span :class="{'is-active': myView === 'system'}" @click="changeView('system')">系统通知</span>
       <i class="fx fx-icon-nothing-close-error" @click="showCover = 'hide', myView = false"></i>
@@ -56,6 +56,17 @@
       },
       token() {
         return this.$store.state.event.token
+      }
+    },
+    watch: {
+      myView(val) {
+        if (val) {
+          document.body.setAttribute('class', 'disableScroll')
+          document.childNodes[1].setAttribute('class', 'disableScroll')
+        } else {
+          document.body.removeAttribute('class', 'disableScroll')
+          document.childNodes[1].removeAttribute('class', 'disableScroll')
+        }
       }
     },
     components: {

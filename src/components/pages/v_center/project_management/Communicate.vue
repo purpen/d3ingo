@@ -36,28 +36,34 @@
                   <span v-if=" !getimg.logo_image.logo ">{{getimg.realnamehead}}</span>
                   <i :style="{background:`url(${ closered }) no-repeat center`}" @click="deleteGetimg(index,{type:'add'})"></i>
               </li>
-              <li tabindex="-1" class="showme">
-                <img class="adds" :src=" adduser " alt="">
-                <ul class="select-user scroll-bar">
-                  <li>
+              <li>
+                <img class="adds" :src=" adduser " alt="" @click="isuser=true">
+                <div class="select-user scroll-bar" v-if="isuser===true">
+                  <p class="select-header">
+                    查看成员
+                    <i class="fr fx-icon-nothing-close-error" @click="isuser=false"></i>
+                  </p>
+                  <p class="select-search">
                     <el-input placeholder="填写或选择参加会议的人员名称" v-model="searcher"></el-input>
-                  </li>
-                  <li v-for="(option,index) in options" :key="index" @click="creatMembers(index,{type:'add'})" v-if="!isSearch">
-                    <div  :style="{background:`url(${ option.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}" >
-                      <span v-if ="!option.logo_image.logo">{{option.realnamehead}}</span>
-                    </div>
-                    <span>{{option.realname}}</span>
-                      <i class="el-icon-check text-center" v-if="option.isadd"></i>
-                  </li>
-                  <li v-for="(sear,index) in search" :key="index" @click="creatMembers(index,{type:'add'})" v-if="isSearch">
-                    <div  :style="{background:`url(${ sear.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}" >
-                      <span v-if ="!sear.logo_image.logo">{{sear.realnamehead}}</span>
-                    </div>
-                      <span>{{sear.realname}}</span>
-                      <i class="el-icon-check text-center" v-if="sear.isadd"></i>
-                  </li>
-                  <li v-if="isSearch && search.length === 0">没有搜索到该人员</li>
-                </ul>
+                  </p>
+                  <ul>
+                    <li v-for="(option,index) in options" :key="index" @click="creatMembers(index,{type:'add'})" v-if="!isSearch">
+                      <div  :style="{background:`url(${ option.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}" >
+                        <span v-if ="!option.logo_image.logo">{{option.realnamehead}}</span>
+                      </div>
+                      <span>{{option.realname}}</span>
+                        <i class="el-icon-check text-center" v-if="option.isadd"></i>
+                    </li>
+                    <li v-for="(sear,index) in search" :key="index" @click="creatMembers(index,{type:'add'})" v-if="isSearch">
+                      <div  :style="{background:`url(${ sear.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}" >
+                        <span v-if ="!sear.logo_image.logo">{{sear.realnamehead}}</span>
+                      </div>
+                        <span>{{sear.realname}}</span>
+                        <i class="el-icon-check text-center" v-if="sear.isadd"></i>
+                    </li>
+                    <li v-if="isSearch && search.length === 0">没有搜索到该人员</li>
+                  </ul>
+                </div>
               </li>
             </ul>
           <el-row class="MeetingCenter" @click.native="addBtn()" :style="{borderTop:event!=='create'?'none':'1px solid #D2D2D2',
@@ -102,6 +108,7 @@
             <el-row class="uploads"> 
               <el-col :xs="24" :sm="12" :md="12" :lg="12">
                 <el-upload
+                  ref="upload"
                   class="upload-demo"
                   :action="uploadUrl"
                   :data="uploadParamadd"
@@ -110,6 +117,7 @@
                   :on-error="uploadError"
                   :on-success="uploadSuccess"
                   :on-progress="uploadProgress"
+                  :before-upload="uploadBefore"
                     >
                   <img :src=" uploadimg " alt="" v-if="event === 'create'"><span v-if="event === 'create'">添加附件</span>
                 </el-upload>
@@ -186,29 +194,35 @@
                     <i :style="{background:`url(${ closered }) no-repeat center`}" @click="deleteGetimg(indexus,{type:'noadd'})"  v-if="d.isedit === 2"></i>
                   </li>
                  
-                   <li class="showme" tabindex="-1">
+                   <li>
                       <img class="adds" :src=" adduser " alt="" @click="edituser(index)">
-                      <ul class="select-user scroll-bar" >
-                        <li>
+                      <div class="select-user scroll-bar" v-if="isuser===true">
+                        <p class="select-header">
+                        查看成员
+                          <i class="fr fx-icon-nothing-close-error" @click="isuser=false"></i>
+                        </p>
+                        <p class="select-search">
                           <el-input placeholder="填写或选择参加会议的人员名称" v-model="searcher"></el-input>
-                        </li>
-                        <li v-for="(option,index) in options" :key="index" @click="creatMembers(index,{type:'noadd'})" v-if="!isSearch">
-                          <div  :style="{background:`url(${ option.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}" >
-                            <span v-if ="!option.logo_image.logo">{{option.realnamehead}}</span>
-                          </div>
-                          <span class="font-color">{{option.realname}}</span>
-                          <i class="el-icon-check text-center" v-if="option.noadd"></i>
-                        </li>
-                        <li v-for="(sear,index) in search" :key="index" @click="creatMembers(index,{type:'noadd'})" v-if="isSearch">
-                          <div  :style="{background:`url(${ sear.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}" >
-                            <span v-if ="!sear.logo_image.logo">{{sear.realnamehead}}</span>
-                          </div>
-                          <span class="font-color">{{sear.realname}}</span>
-                          <i class="el-icon-check text-center" v-if="sear.noadd"></i>
-                        </li>
-                        <li v-if="isSearch && search.length === 0">没有搜索到该人员   </li>
-                  </ul>
-                </li>
+                        </p>
+                        <ul>
+                          <li v-for="(option,index) in options" :key="index" @click="creatMembers(index,{type:'noadd'})" v-if="!isSearch">
+                            <div  :style="{background:`url(${ option.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}" >
+                              <span v-if ="!option.logo_image.logo">{{option.realnamehead}}</span>
+                            </div>
+                            <span class="font-color">{{option.realname}}</span>
+                            <i class="el-icon-check text-center" v-if="option.noadd"></i>
+                          </li>
+                          <li v-for="(sear,index) in search" :key="index" @click="creatMembers(index,{type:'noadd'})" v-if="isSearch">
+                            <div  :style="{background:`url(${ sear.logo_image.logo }) no-repeat center`,backgroundSize:`36px 36px`}" >
+                              <span v-if ="!sear.logo_image.logo">{{sear.realnamehead}}</span>
+                            </div>
+                            <span class="font-color">{{sear.realname}}</span>
+                            <i class="el-icon-check text-center" v-if="sear.noadd"></i>
+                          </li>
+                          <li v-if="isSearch && search.length === 0">没有搜索到该人员  </li>
+                        </ul>
+                      </div>
+                    </li>
                 </ul>
               </li>
              </ul>
@@ -237,7 +251,7 @@
                   <li class="upload-delete" @click="deleteup(files.id, d.id)">删除</li>
                 </ul>
               </el-col>
-               <el-col :xs="23" :sm="11" :md="11" :lg="6" class="upload-list" v-for="(uploadinga,indexc) in d.uploading" :key="indexc" v-if="uploadinga.percentage!==100">
+               <el-col :xs="23" :sm="11" :md="11" :lg="6" class="upload-list" v-for="(uploadinga,indexc) in d.uploading" :key="indexc+'c'" v-if="uploadinga.percentage!==100">
                 <ul class="upload-read">
                   <li><i :class="['compress',{
                 'folder': /.folder/.test(uploadinga.name),
@@ -360,6 +374,7 @@
         selectedUser: [], // 当前选择的人员列表
         initemList: [], // 当前的沟通纪要
         uploadMsg: '',
+        isuser: false,
         cancelitem: {}
       }
     },
@@ -514,11 +529,15 @@
         for (var i = 0; i < this.getimgs.length; i++) {
           this.form.selected_user_id.push(this.getimgs[i].id)
         }
-        this.form.random = this.randoms
-        this.form.token = this.tokens
+        if (this.fileList && this.fileList.length > 0) {
+          this.form.random = this.randoms
+          this.form.token = this.tokens
+        }
         this.form.item_id = this.itemId
         this.$http.post(api.communeSummaries, this.form).then((response) => {
           if (response.data.meta.status_code === 200) {
+            this.$refs.upload.clearFiles()
+            this.upTokens()
             this.form = {}
             this.getimgs = []
             this.fileList = []
@@ -587,6 +606,9 @@
           console.error(error.message)
         })
       },
+      // 文件上传之前
+      uploadBefore(file) {
+      },
       // 文件上传失败
       uploadError(err, file, fileList) {
         this.uploadMsg = '上传失败'
@@ -595,7 +617,7 @@
           message: '文件上传失败!',
           type: 'error'
         })
-        console.log (err)
+        console.error(err.message)
       },
        // 新建文件上传时
       uploadProgress(event, file, fileList) {
@@ -615,6 +637,7 @@
       },
       // 文件上传成功
       uploadSuccess(response, file, fileList) {
+        console.log(fileList)
         for (var i = 0; i < this.fileList.length; i++) {
           this.fileList[i].asset_id = response.asset_id
         }
@@ -828,7 +851,7 @@
             } else ethis.options[j].noadd = false
           }
         }
-        this.operation === index ? this.operation = '' : this.operation = index
+        this.isuser = true
       },
       // 下载文件
       downupload(url) {
@@ -897,7 +920,7 @@
     padding:0px 20px;
     margin-top:10px;
   }
-   .uploads img {
+  .uploads img {
     width:20px;
     margin:16px 10px 0px 0px;
     float:left;
@@ -949,7 +972,6 @@
     border:none;
   }
   .titlec>span{
-    /* font-family: PingFangSC-Medium; */
     font-size: 18px;
     color:#222222;
   }
@@ -990,7 +1012,7 @@
   .updata-user {
     position: relative;
   }
-    .updata-user .userimg:not(:last-child):hover{
+  .updata-user .userimg:not(:last-child):hover{
     border:1px solid #FF5A5F;
   }
   .updata-user>li>.adds{
@@ -1077,7 +1099,6 @@
     display:inline-block;
   }
   .MeetingCenter {
-    /* padding-top:20px; */
     padding-bottom: 10px;
     margin-bottom:20px;
     min-height: 70px;
@@ -1097,7 +1118,6 @@
     min-height: 240px;
   }
   .select-user {
-    display:none;
     width:280px;
     background: #FFFFFF;
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
@@ -1108,14 +1128,29 @@
     max-height:250px;
     z-index:100
   }
-  .select-user>li{
+  .select-user li{
     height: 50px;
     padding:0px 20px;
     display: flex;
     justify-content:space-around;
     align-items:center;
   }
-  .select-user>li>div{
+  .select-user>.select-header {
+    line-height: 50px;
+    margin-top: 0px;
+    background: #f0f0f0;
+    font-size: 14px;
+    color: #222222;
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    align-items: center
+  }
+  .select-header i {
+    position: absolute;
+    right: 15px;
+  }
+  .select-user li>div{
     width:36px;
     height:36px;
     line-height: 36px;
@@ -1125,17 +1160,21 @@
     color: #FFFFFF;
     text-align: center;
   }
-  .select-user>li>span{
-    padding-left:10px;
-    flex-grow:1;
+  .select-user li>span{
+    padding-left: 10px;
+    flex-grow: 1;
   }
-  .select-user>li>.el-input{
-    width:90%;
+  .select-search {
+    padding: 0px 20px;
+    margin-top: 10px;
   }
-  .select-user>li:first-child{
+  .select-search>.el-input{
+    width:100%;
+  }
+  /* .select-user>li:first-child{
     margin-top:15px;
     padding:0px;
-  }
+  } */
   .upload-flex{
     display: flex;
     justify-content:space-around;

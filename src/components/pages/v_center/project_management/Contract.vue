@@ -13,7 +13,10 @@
     <button class="middle-button white-button">导入合同</button>
 </el-upload>
     </el-row>
-    <section class="contract-list" v-for="fi in fileing" v-if="fi.percentage!==100&&fileing.length>0">
+    <section class="contract-list" 
+      v-for="(fi,indexfi) in fileing" :key="indexfi+'f'"
+      v-if="fi.percentage!==100&&fileing.length>0"
+    >
       <img :src="Groupimg" alt="">
       <div class="contracct-Part">
         <div class="contracct-progress">
@@ -35,14 +38,14 @@
         <span class="contract-time">{{ f.created_at }}</span>
         <span class="contract-size">{{f.size}}</span>
       </div>
-      <div class="fr marginlf" @click="isdelete(f.id)">删除</div>
-      <!-- <div class="fr">预览</div> -->
+      <div class="fr marginlf" @click="downupload(f.file)">下载</div>
+      <div class="fr" @click="isdelete(f.id)">删除</div>
     </section>
     <section class="contract-list" v-if="infoList">
       <img :src="Groupimg" alt="">
-      <div class="contracct-Part">
+      <div class="contracct-Part info-title">
         <p>{{ infoList.title }}</p>
-        <span class="contract-time">时间</span>
+        <!-- <span class="contract-time">时间</span> -->
         <!-- <span class="contract-size">{{f.size}}</span> -->
       </div>
       <div class="fr marginlf">
@@ -75,6 +78,7 @@
 <script>
   import api from '@/api/api'
   import '@/assets/js/format'
+  import download from 'downloadjs'
   export default {
     name: 'projectContract',
     data() {
@@ -145,7 +149,6 @@
         } else if (lastSize / 1024 >= 0) {
           this.fileing[this.fileing.length - 1].size = (lastSize / 1024).toFixed(2) + 'KB'
         }
-        console.log(this.fileing)
       },
       // 上传成功
       uploadSuccess(res, file, fileList) {
@@ -182,6 +185,10 @@
           that.$message.error(error.message)
           console.error(error.message)
         })
+      },
+      // 下载文件
+      downupload(url) {
+        download(url)
       }
     },
     created() {
@@ -198,7 +205,6 @@
         if (response.data.meta.status_code === 200) {
           this.fileList = response.data.data.assets
           this.infoList = response.data.data.info
-          console.log(this.infoList)
           if (this.fileList.length > 0) {
             for (var i = 0; i < this.fileList.length; i++) {
               this.fileList[i].created_at = (new Date(this.fileList[i].created_at * 1000)).format('yyyy-MM-dd hh:mm')
@@ -284,14 +290,17 @@
   margin-top:14px;
   cursor:pointer;
 }
+.contract-list>.fr:hover {
+  color:#ff5a5f;
+}
 .dialog-footer>button{
   margin-right: 20px;
 }
 .marginlf{
   margin-left:15px;
 }
-.marginlf:hover{
-  color:#ff5a5f;
+.info-title {
+  margin:14px 0 0px 20px;
 }
 .dynamic-list{
   border-bottom:1px solid #d2d2d2;

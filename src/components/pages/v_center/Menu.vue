@@ -227,7 +227,7 @@
               :class="['item', 'account-management', {'is-active': currentName === 'profile'}]">
               账号设置
             </a>
-            <a v-if="false" @click="alick" :to="'/vcenter/project_management/list'"
+            <a @click="alick" :to="'/vcenter/project_management/list'"
               :class="['item', 'management', {'is-active': currentName === 'project_management'}]">
               项目管理
             </a>
@@ -255,7 +255,7 @@
               :class="['item', 'project-order', {'is-active': currentName === 'c_item'}]">
               项目订单
             </a>
-            <a v-if="false" @click="alick" :to="'/vcenter/project_management/list'"
+            <a @click="alick" :to="'/vcenter/project_management/list'"
               :class="['item', 'management', {'is-active': currentName === 'project_management'}]">
               项目管理
             </a>

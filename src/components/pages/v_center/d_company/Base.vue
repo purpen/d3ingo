@@ -33,8 +33,7 @@
                   :before-upload="beforeAvatarUpload">
                   <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar"> -->
                   <span v-if="imageUrl" :style="{background: `url(${imageUrl}) no-repeat center / cover`}" class="avatar"></span>
-                  <i v-else class="el-icon-plus
-                    avatar-uploader-icon"></i>
+                  <i v-else class="avatar-uploader-icon"></i>
                   <div slot="tip" class="el-upload__tip" v-if="!isMob">{{ avatarStr }}</div>
                 </el-upload>
               </el-col>
@@ -62,16 +61,16 @@
               <el-col :span="contentSpan" class="content">
 
                 <el-form label-position="left" label-width="50px" v-if="element.contact">
-                  <el-form-item label="姓名" style="margin: 0">
+                  <el-form-item label="姓名" style="margin-bottom: 10px">
                     <el-input v-model="form.contact_name"></el-input>
                   </el-form-item>
-                  <el-form-item label="职位" style="margin: 0">
+                  <el-form-item label="职位" style="margin-bottom: 10px">
                     <el-input v-model="form.position"></el-input>
                   </el-form-item>
-                  <el-form-item label="手机" style="margin: 0">
+                  <el-form-item label="手机" style="margin-bottom: 10px">
                     <el-input v-model="form.phone"></el-input>
                   </el-form-item>
-                  <el-form-item label="邮箱" style="margin: 0">
+                  <el-form-item label="邮箱" style="margin-bottom: 10px">
                     <el-input v-model="form.email"></el-input>
                   </el-form-item>
                 </el-form>
@@ -486,7 +485,7 @@
   .item {
     min-height: 70px;
     padding: 15px 0;
-    border-bottom: 1px solid #d2d2d2;
+    border-bottom: 1px solid #e6e6e6;
     display: flex;
     align-items: center;
   }
@@ -537,9 +536,14 @@
     color: #222;
   }
 
-  .item .content {
+  .item .content p {
+    color: #999
   }
 
+  .item .content a {
+    color: #ff5a5f
+  }
+  
   .item-m .content {
     color: #666;
     border: 1px solid #E6E6E6;
@@ -576,7 +580,7 @@
   }
 
   .avatar-uploader .el-upload {
-    border: 1px dashed #d2d2d2;
+    border: 1px dashed #e6e6e6;
     border-radius: 6px;
     cursor: pointer;
     position: relative;
