@@ -677,20 +677,62 @@
                       </div>
                       
                     </div>
+                    <div
+                     v-if="c.design_substage&&sort==='ismonth'" class="item-tacklist" 
+                      v-for="(tack, indextack) in c.design_substage" :key="indextack+ 'y'" :style="{left:tack.left*6.77+'px',width:tack.duration*6.77-1+'px'}"
+                      :class="['item-tacklist',{
+                        'bgno-border': !tack.status&&(tack.left+parseInt(tack.duration) <= newleft),
+                        'bged-border': tack.status
+                      }]"
+                      @click.stop.self="editTack(tack,c)"
+                      >
+                      <div class="bging item-tacking"
+                        :style="{
+                          width:(tack.left<=newleft && newleft<(parseInt(tack.left)+parseInt(tack.duration)))?
+                            (parseInt(newleft)+1-parseInt(tack.left))*30-3+'px':tack.duration*30-3+'px',
+                          }"
+                        v-if="!tack.status&&tack.left <= newleft&&newleft<(parseInt(tack.left)+parseInt(tack.duration))"
+                        @click.stop="editTack(tack,c)"
+                      >
+                      </div>
+                      <div :class="['item-tacking',{
+                        'bgno': !tack.status&&(tack.left+parseInt(tack.duration) <= newleft),
+                        'bged': tack.status
+                      }]"
+                      @click.stop="editTack(tack,c)"
+                      v-else>
+                      </div>
+                      <i class="item-start" v-if="indextack === 0"></i>
+                      <i
+                        :class="[{
+                          'item-node': tack.design_stage_node.status,
+                          'item-nodenon': !tack.design_stage_node.status && tack.left >= newleft,
+                          'item-noded': !tack.design_stage_node.status && tack.left < newleft
+                        }]"
+                        v-if="tack.design_stage_node"
+                        @click.stop="editNode(tack.design_stage_node,c)">
+                      </i>
 
-                    <div v-if="c.design_substage&&sort==='ismonth'" class="item-tacklist" 
-                      v-for="(tack, indextack) in c.design_substage" :key="indextack+ 'y'" :style="{left:tack.left*6.77+'px',width:tack.duration*6.77+'px'}">
-                      {{indextack}}
+                      <div class="node-name" v-if="tack.design_stage_node">
+                        <p :style="{width:tack.duration*30+'px'}">
+                          {{tack.design_stage_node.name}}
+                        </p>
+                      </div>
+                      <div class="task-name text-center">
+                        {{tack.name}}
+                      </div>
+                      
                     </div>
+
                     <div  v-if="(sort==='isday'||sort==='isweek')" class="item-tacklist-last" :style="{left:(c.left+1)*30 + 'px'}">
                       <div  @click="addtack(c)"></div>
                       <span  @click="addtack(c)">添加任务</span>
                     </div>
                     <div  v-if="sort==='ismonth'" class="item-tacklist-last" :style="{left:(c.left+1)*6.77 + 'px'}">
-                      <div>+</div>
-                      <span>添加任务</span>
+                      <div  @click="addtack(c)"></div>
+                      <span  @click="addtack(c)">添加任务</span>
                     </div>
-                    <div v-if="!c.design_substage&&sort==='isday'||sort==='isweek'" class="item-tacklist no-tack" 
+                    <div v-if="!c.design_substage&&(sort==='isday'||sort==='isweek')" class="item-tacklist no-tack" 
                       :style="{left:c.left*30+'px'}">
                     </div>
                     <div v-if="!c.design_substage&&sort==='ismonth'" class="item-tacklist no-tack" 
@@ -2390,8 +2432,8 @@ export default {
     font-size:1.4rem
   }
   .no-tack {
-    width:30px;
-    height:30px
+    width:28px;
+    height:14px
   }
   .item-start {
     background:url('../../../../assets/images/tools/project_management/ProjectStart@2x.png') 0 0 no-repeat;
