@@ -383,7 +383,8 @@ let routes = [
     name: 'itemCreate',
     meta: {
       title: '选择类型',
-      requireAuth: true
+      requireAuth: true,
+      isDesignInc: 1
     },
     component: require('@/components/pages/item/SubmitTwo')
   },
@@ -394,7 +395,8 @@ let routes = [
     name: 'itemSubmitTwo',
     meta: {
       title: '选择类型',
-      requireAuth: true
+      requireAuth: true,
+      isDesignInc: 1
     },
     component: require('@/components/pages/item/SubmitTwo')
   },
@@ -405,7 +407,8 @@ let routes = [
     name: 'itemSubmitThree',
     meta: {
       title: '基本信息',
-      requireAuth: true
+      requireAuth: true,
+      isDesignInc: 1
     },
     component: require('@/components/pages/item/SubmitThree')
   },
@@ -416,7 +419,8 @@ let routes = [
     name: 'itemSubmitUIThree',
     meta: {
       title: '基本信息',
-      requireAuth: true
+      requireAuth: true,
+      isDesignInc: 1
     },
     component: require('@/components/pages/item/SubmitUIThree')
   },
@@ -427,7 +431,8 @@ let routes = [
     name: 'itemSubmitFour',
     meta: {
       title: '补全公司信息',
-      requireAuth: true
+      requireAuth: true,
+      isDesignInc: 1
     },
     component: require('@/components/pages/item/SubmitFour')
   },
@@ -438,7 +443,8 @@ let routes = [
     name: 'itemSubmitFive',
     meta: {
       title: '检查并发布',
-      requireAuth: true
+      requireAuth: true,
+      isDesignInc: 1
     },
     component: require('@/components/pages/item/SubmitFive')
   },
@@ -449,7 +455,8 @@ let routes = [
     name: 'itemPublish',
     meta: {
       title: '发布',
-      requireAuth: true
+      requireAuth: true,
+      isDesignInc: 1
     },
     component: require('@/components/pages/item/Publish')
   },
