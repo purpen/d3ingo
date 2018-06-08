@@ -13,9 +13,13 @@
           ref="radar"></ECharts>
       </div>
     </div>
-    <div class="company-profile">
-      <h3 class="text-center">公司简介</h3>
-      <p class="text-center" v-if="companyDetails.design_company">{{companyDetails.design_company.description}}</p>
+    <div class="company-profile" v-if="companyDetails.evaluates.length">
+      <h3 class="text-center">创新表现描述</h3>
+      <p class="text-center" v-for="(ele, index) in companyDetails.evaluates" :key="index">{{ele}}</p>
+    </div>
+    <div class="company-profile" v-if="companyDetails.design_company">
+      <h3 class="text-center blank30">公司简介</h3>
+      <p class="text-center">{{companyDetails.design_company.description}}</p>
     </div>
     <div class="company-designcase" v-if="id && designCaseList.length">
       <h3 class="text-center">作品案例</h3>
@@ -114,7 +118,9 @@ export default {
       initOptions: {
         renderer: 'canvas'
       },
-      companyDetails: [],
+      companyDetails: {
+        evaluates: []
+      },
       radarList: []
     }
   },

@@ -34,6 +34,15 @@ let routes = [
     },
     component: require('@/components/pages/home/Home')
   },
+  // 京东云首页
+  {
+    path: '/jd_cloud',
+    name: 'JDCloud',
+    meta: {
+      title: '京东云'
+    },
+    component: require('@/components/pages/home/JDCloud')
+  },
   {
     path: '/test',
     name: 'test',
