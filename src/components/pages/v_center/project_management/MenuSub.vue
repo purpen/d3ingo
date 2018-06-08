@@ -831,7 +831,6 @@ export default {
   watch: {
     cover(d) {
       if (d) {
-        console.log(this.projectObject)
         this.baseForm = {
           id: this.projectObject.id,
           name: this.projectObject.name,

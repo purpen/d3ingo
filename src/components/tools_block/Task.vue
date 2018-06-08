@@ -248,6 +248,12 @@
       isMyTask: {
         type: Boolean,
         default: false
+      },
+      currentTaskForm: {
+        type: Object,
+        default: function () {
+          return {}
+        }
       }
     },
     data () {
@@ -261,10 +267,6 @@
           over_time: new Date().format('yyyy-MM-dd hh:mm'),
           level: 1
         },
-        // currentForm: { // 当前任务表单
-        //   over_time: new Date().format('yyyy-MM-dd'),
-        //   level: 1
-        // },
         currentChange: {},
         msg: '',
         levels: [{
@@ -868,6 +870,12 @@
       },
       completeState(val) {
         this.$set(this.currentForm, 'stage', val)
+      },
+      currentTaskForm: {
+        handler(val) {
+          this.currentForm.name = val.name
+        },
+        deep: true
       }
     },
     created() {
