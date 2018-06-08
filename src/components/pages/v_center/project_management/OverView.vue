@@ -333,8 +333,7 @@
                 v-model="formNodetime"
                 placeholder="开始日期设置"
                 class="noborder"
-                @change="updataNode"
-                status
+                @change="editNodetime"
                >
                 </el-date-picker>
               </div>
@@ -420,7 +419,7 @@
     <section class="top-progress">
       <div class="h3 fz-20">{{itemName}}</div>
       <el-progress 
-      :percentage="20"
+      :percentage="itemStatistical.okDesignStage"
       :show-text="false"
       :stroke-width="5"
       status="success"
@@ -678,20 +677,62 @@
                       </div>
                       
                     </div>
+                    <div
+                     v-if="c.design_substage&&sort==='ismonth'" class="item-tacklist" 
+                      v-for="(tack, indextack) in c.design_substage" :key="indextack+ 'y'" :style="{left:tack.left*6.77+'px',width:tack.duration*6.77-1+'px'}"
+                      :class="['item-tacklist',{
+                        'bgno-border': !tack.status&&(tack.left+parseInt(tack.duration) <= newleft),
+                        'bged-border': tack.status
+                      }]"
+                      @click.stop.self="editTack(tack,c)"
+                      >
+                      <div class="bging item-tacking"
+                        :style="{
+                          width:(tack.left<=newleft && newleft<(parseInt(tack.left)+parseInt(tack.duration)))?
+                            (parseInt(newleft)+1-parseInt(tack.left))*30-3+'px':tack.duration*30-3+'px',
+                          }"
+                        v-if="!tack.status&&tack.left <= newleft&&newleft<(parseInt(tack.left)+parseInt(tack.duration))"
+                        @click.stop="editTack(tack,c)"
+                      >
+                      </div>
+                      <div :class="['item-tacking',{
+                        'bgno': !tack.status&&(tack.left+parseInt(tack.duration) <= newleft),
+                        'bged': tack.status
+                      }]"
+                      @click.stop="editTack(tack,c)"
+                      v-else>
+                      </div>
+                      <i class="item-start" v-if="indextack === 0"></i>
+                      <i
+                        :class="[{
+                          'item-node': tack.design_stage_node.status,
+                          'item-nodenon': !tack.design_stage_node.status && tack.left >= newleft,
+                          'item-noded': !tack.design_stage_node.status && tack.left < newleft
+                        }]"
+                        v-if="tack.design_stage_node"
+                        @click.stop="editNode(tack.design_stage_node,c)">
+                      </i>
 
-                    <div v-if="c.design_substage&&sort==='ismonth'" class="item-tacklist" 
-                      v-for="(tack, indextack) in c.design_substage" :key="indextack+ 'y'" :style="{left:tack.left*6.77+'px',width:tack.duration*6.77+'px'}">
-                      {{indextack}}
+                      <div class="node-name" v-if="tack.design_stage_node">
+                        <p :style="{width:tack.duration*30+'px'}">
+                          {{tack.design_stage_node.name}}
+                        </p>
+                      </div>
+                      <div class="task-name text-center">
+                        {{tack.name}}
+                      </div>
+                      
                     </div>
+
                     <div  v-if="(sort==='isday'||sort==='isweek')" class="item-tacklist-last" :style="{left:(c.left+1)*30 + 'px'}">
                       <div  @click="addtack(c)"></div>
                       <span  @click="addtack(c)">添加任务</span>
                     </div>
                     <div  v-if="sort==='ismonth'" class="item-tacklist-last" :style="{left:(c.left+1)*6.77 + 'px'}">
-                      <div>+</div>
-                      <span>添加任务</span>
+                      <div  @click="addtack(c)"></div>
+                      <span  @click="addtack(c)">添加任务</span>
                     </div>
-                    <div v-if="!c.design_substage&&sort==='isday'||sort==='isweek'" class="item-tacklist no-tack" 
+                    <div v-if="!c.design_substage&&(sort==='isday'||sort==='isweek')" class="item-tacklist no-tack" 
                       :style="{left:c.left*30+'px'}">
                     </div>
                     <div v-if="!c.design_substage&&sort==='ismonth'" class="item-tacklist no-tack" 
@@ -1202,6 +1243,20 @@ export default {
         self.$message.error(error.message)
         console.error(error.message)
       })
+    },
+    // 编辑任务/节点时间
+    editNodetime(date) {
+      if (Date.parse(new Date(this.formNodetime).format('yyyy-MM-dd')) / 1000 !== this.formNode.time) {
+        let insub = this.indesignStage.design_substage
+        for (var i = 0; i < insub.length; i++) {
+          if (insub[i].id === this.formNode.design_substage_id) {
+            this.formTack.id = insub[i].id
+            this.formTackduration = insub[i].duration
+            this.formTacktime = new Date(Date.parse(new Date(date)) - insub[i].duration * 86400000).format('yyyy-MM-dd')
+            this.upDateDuration(this.formTacktime)
+          }
+        }
+      }
     },
     // 事件和日期改变
     upDateDuration(date) {
@@ -2368,13 +2423,17 @@ export default {
     background: url('../../../../assets/images/member/add-hover@2x.png') 0 0 no-repeat;
     background-size: contain;
   }
+  .item-tacklist-last:hover span {
+    display: inline-block;
+  }
   .item-tacklist-last>span {
+    display: none;
     cursor: pointer;
     font-size:1.4rem
   }
   .no-tack {
-    width:30px;
-    height:30px
+    width:28px;
+    height:14px
   }
   .item-start {
     background:url('../../../../assets/images/tools/project_management/ProjectStart@2x.png') 0 0 no-repeat;
