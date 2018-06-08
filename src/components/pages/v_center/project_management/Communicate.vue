@@ -108,6 +108,7 @@
             <el-row class="uploads"> 
               <el-col :xs="24" :sm="12" :md="12" :lg="12">
                 <el-upload
+                  ref="upload"
                   class="upload-demo"
                   :action="uploadUrl"
                   :data="uploadParamadd"
@@ -116,6 +117,7 @@
                   :on-error="uploadError"
                   :on-success="uploadSuccess"
                   :on-progress="uploadProgress"
+                  :before-upload="uploadBefore"
                     >
                   <img :src=" uploadimg " alt="" v-if="event === 'create'"><span v-if="event === 'create'">添加附件</span>
                 </el-upload>
@@ -249,7 +251,7 @@
                   <li class="upload-delete" @click="deleteup(files.id, d.id)">删除</li>
                 </ul>
               </el-col>
-               <el-col :xs="23" :sm="11" :md="11" :lg="6" class="upload-list" v-for="(uploadinga,indexc) in d.uploading" :key="indexc" v-if="uploadinga.percentage!==100">
+               <el-col :xs="23" :sm="11" :md="11" :lg="6" class="upload-list" v-for="(uploadinga,indexc) in d.uploading" :key="indexc+'c'" v-if="uploadinga.percentage!==100">
                 <ul class="upload-read">
                   <li><i :class="['compress',{
                 'folder': /.folder/.test(uploadinga.name),
@@ -527,11 +529,15 @@
         for (var i = 0; i < this.getimgs.length; i++) {
           this.form.selected_user_id.push(this.getimgs[i].id)
         }
-        this.form.random = this.randoms
-        this.form.token = this.tokens
+        if (this.fileList && this.fileList.length > 0) {
+          this.form.random = this.randoms
+          this.form.token = this.tokens
+        }
         this.form.item_id = this.itemId
         this.$http.post(api.communeSummaries, this.form).then((response) => {
           if (response.data.meta.status_code === 200) {
+            this.$refs.upload.clearFiles()
+            this.upTokens()
             this.form = {}
             this.getimgs = []
             this.fileList = []
@@ -600,6 +606,9 @@
           console.error(error.message)
         })
       },
+      // 文件上传之前
+      uploadBefore(file) {
+      },
       // 文件上传失败
       uploadError(err, file, fileList) {
         this.uploadMsg = '上传失败'
@@ -608,7 +617,7 @@
           message: '文件上传失败!',
           type: 'error'
         })
-        console.log (err)
+        console.error(err.message)
       },
        // 新建文件上传时
       uploadProgress(event, file, fileList) {
@@ -628,6 +637,7 @@
       },
       // 文件上传成功
       uploadSuccess(response, file, fileList) {
+        console.log(fileList)
         for (var i = 0; i < this.fileList.length; i++) {
           this.fileList[i].asset_id = response.asset_id
         }
@@ -841,7 +851,6 @@
             } else ethis.options[j].noadd = false
           }
         }
-        // this.operation === index ? this.operation = '' : this.operation = index
         this.isuser = true
       },
       // 下载文件
