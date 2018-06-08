@@ -4,7 +4,7 @@
   <div :class="{'vcenter-right-plus': leftWidth === 4,
   'vcenter-right': leftWidth === 2,
         'vcenter-right-mob': isMob}">
-    <menu-sub :currentRoute="currentRoute"></menu-sub>
+    <menu-sub v-if="isShow" :currentRoute="currentRoute"></menu-sub>
     <router-view v-if="isShow" :projectObject="projectObject"></router-view>
   </div>
 </section>

@@ -15,7 +15,7 @@
             </p>
           </div>
           <p v-show="d.is_show" class="content">{{ d.operation_log.title }}</p>
-          <a v-show="d.is_show" class="detail" href="javascript:void(0);"  @click.stop="redirect(d)">查看详情>></a>
+          <a v-show="d.is_show" class="detail" @click.stop="redirect(d)">查看详情>></a>
         </div>
 
         <el-pagination
@@ -207,7 +207,7 @@
   }
 
   .right-content .content-box {
-    padding: 0 0 40px 0;
+    padding: 0 0 50px 0;
     border: none;
   }
 

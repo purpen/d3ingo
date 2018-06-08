@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <section class="cover-bgf7"></section>
+    <!-- <section class="cover-bgf7"></section> -->
     <div class="register-box">
       <div class="regisiter-title">
         <h2>注册铟果{{identity}}</h2>
@@ -403,7 +403,6 @@
     text-align: center;
     margin: 30px auto;
     background: #fff;
-    border: 1px solid #E6E6E6;
     box-shadow: 0 0 6px 2px rgba(0,0,0,0.10);
   }
 

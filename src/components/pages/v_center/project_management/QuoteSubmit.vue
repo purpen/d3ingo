@@ -216,7 +216,7 @@
 
         <div class="sum-box">
           <div class="tax-box">
-            <p class="total-money">合计： <span>¥{{ totalMoneyFormat }}</span> 元</p>
+            <p class="total-money">合计： <span>{{ totalMoneyFormat }}</span> 元</p>
             <p class="select-importance">
               <span @click="radioChangeBtn(1, 0)" :class="{'active': taxRate.isTax === 0}">不含税</span>
               <span @click="radioChangeBtn(1, 1)" :class="{'active': taxRate.isTax === 1}">含税</span>
@@ -233,7 +233,7 @@
               <p class="tax-total-money">税率:  <span class="tax-span">
                 <i class="before" @click="increaseRate"></i>
                 <i class="after"  @click="reduceRate"></i>
-                <input placeholder="" v-model.number="rate" class="tax-input" @blur="checkRate" /> %</span> &nbsp;&nbsp;&nbsp;&nbsp;总计（含税）： <span>¥{{ taxTotalMoneyFormat }}</span> 元</p>
+                <input placeholder="" v-model.number="rate" class="tax-input" @blur="checkRate" /> %</span> &nbsp;&nbsp;&nbsp;&nbsp;总计（含税）： <span>{{ taxTotalMoneyFormat }}</span> 元</p>
             </div>
           </div>
         </div>

@@ -367,28 +367,28 @@
               return true
             } else if (user.design_verify_status === 1) {
               if (user.design_info_status === 1) {
-                console.log('设计公司基础信息：已完善')
+                // console.log('设计公司基础信息：已完善')
                 if (user.design_item_status === 1) {
-                  console.log('设计公司接单设置：已完善')
+                  // console.log('设计公司接单设置：已完善')
                   if (user.design_case_status === 1) {
-                    console.log('设计案例是否添加：已完善')
+                    // console.log('设计案例是否添加：已完善')
                     return false
                   } else {
                     this.alertTitle.title = '上传案例作品,向客户更好的展示和推荐项目案例'
                     this.alertTitle.path = '/vcenter/design_case'
-                    console.log('设计案例是否添加：未完善')
+                    // console.log('设计案例是否添加：未完善')
                     return true
                   }
                 } else {
                   this.alertTitle.title = '设计项目接单价格'
                   this.alertTitle.path = '/vcenter/company/taking'
-                  console.log('设计公司接单设置：未完善')
+                  // console.log('设计公司接单设置：未完善')
                   return true
                 }
               } else {
                 this.alertTitle.title = '填写公司基本信息、公司简介、荣誉奖励'
                 this.alertTitle.path = '/vcenter/company/base'
-                console.log('设计公司基础信息：未完善')
+                // console.log('设计公司基础信息：未完善')
                 return true
               }
             } else {

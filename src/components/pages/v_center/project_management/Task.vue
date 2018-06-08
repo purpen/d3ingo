@@ -26,11 +26,19 @@
                 'level1': ele.level === 1,
                 'level2': ele.level === 5,
                 'level3': ele.level === 8}]">
-              <p @click.self="showTaskBtn(ele, index)" class="task-name fl">
-              <span @click="completeTaskBtn(ele, index)" class="task-name-span"></span>
-              {{ele.name}}</p>
-              <p class="task-date fr">{{ele.created_at_format}}</p>
-              <img v-if="ele.logo_image" class="fr" :src="ele.logo_image.logo" alt="">
+              <p @click.self="showTaskBtn(ele, index)" class="task-name">
+                <span @click="completeTaskBtn(ele, index)" class="task-name-span"></span>
+                <span v-if="ele.id !== taskState.id || !taskState.power">{{ele.name}}</span>
+                <input
+                  v-focus="isFocus"
+                  class="task-name-input" type="text"
+                  v-if="taskState.power && ele.id === taskState.id"
+                  @focus="taskNameFocus(ele, index)"
+                  @blur="taskNameBlur(ele.id)"
+                  v-model="currentTaskForm.name">
+              </p>
+              <img v-if="ele.logo_image" :src="ele.logo_image.logo" alt="">
+              <p class="task-date">{{ele.created_at_format}}</p>
             </div>
           </section>
           
@@ -42,18 +50,28 @@
               @blur="submitStage()">
               <span @click="confirmDeleteStageBtn(ele.id, index)" class="close-icon-solid"></span></p>
             <section>
-              <div :class="['task-item','clearfix', {
+              <div
+                v-for="(e, i) in ele['task']" :key="i"
+                :class="['task-item','clearfix', {
                 'active': e.stage === 2,
                 'click': e.id === parentTask.id,
                 'level1': e.level === 1,
                 'level2': e.level === 5,
                 'level3': e.level === 8}]"
-                v-for="(e, i) in ele['task']" :key="i"
                 @click.self="showTaskBtn(e, i)">
-                <p @click.self="showTaskBtn(e, i)" class="task-name fl">
-                  <span @click="completeTaskBtn(e, i)" class="task-name-span"></span>{{e.name}}</p>
+                <p @click.self="showTaskBtn(e, i)" class="task-name">
+                  <span @click="completeTaskBtn(e, i)" class="task-name-span"></span>
+                  <span v-if="e.id !== taskState.id || !taskState.power">{{e.name}}</span>
+                  <input
+                    v-focus="isFocus"
+                    class="task-name-input" type="text"
+                    v-if="taskState.power && e.id === taskState.id"
+                    @focus="taskNameFocus(e, i)"
+                    @blur="taskNameBlur(e.id)"
+                    v-model="currentTaskForm.name">
+                  </p>
+                <img v-if="e.logo_image" :src="e.logo_image.logo" alt="">
                 <p class="task-date fr">{{e.created_at_format}}</p>
-                <img v-if="e.logo_image" class="fr" :src="e.logo_image.logo" alt="">
               </div>
             </section>
           </section>
@@ -63,7 +81,11 @@
           </section>
         </el-col>
         <el-col :span="12">
-          <v-task :isMyTask="isMyTask" :projectObject="projectObject" :completeState="completeState"></v-task>
+          <v-task
+           :currentTaskForm="currentTaskForm"
+           :isMyTask="isMyTask"
+           :projectObject="projectObject"
+           :completeState="completeState"></v-task>
         </el-col>
       </el-row>
     </div>
@@ -111,25 +133,30 @@
     },
     data () {
       return {
+        isFocus: false,
         isCreateStage: false,
         sureDialog: false,
         sureDialogMessage: '确认执行此操作？',
         sureDialogLoadingBtn: false,
         isLoading: false,
-        itemId: 0,   // 项目ID
+        itemId: 0, // 项目ID
         taskisDone: [], // 任务完成id
         itemList: [],
-        // stageList: [],  // 项目阶段列表
-        tagsList: [],   // 标签列表
-        itemUserList: [],   // 项目成员列表
-        currentStageForm: {   // 当前阶段表单
+        // stageList: [], // 项目阶段列表
+        tagsList: [], // 标签列表
+        itemUserList: [], // 项目成员列表
+        currentStageForm: { // 当前阶段表单
           title: '',
-          item_id: 0,
-          test: ''
+          item_id: 0
         },
-        propsTaskForm: {   // 当前任务表单
+        currentTaskForm: { // 当前任务表单
+          id: -1,
+          name: ''
         },
-        currentStageStat: {   // 当前阶段操作事件
+        oldTaskName: '',
+        propsTaskForm: { // 当前任务表单
+        },
+        currentStageStat: { // 当前阶段操作事件
           event: '',
           id: 0,
           index: 0
@@ -188,15 +215,16 @@
           id: 0,
           index: 0
         }
-        this.currentStageForm = {...{
+        this.currentStageForm = {
           title: '阶段',
           item_id: 0,
           test: ''
-        }}
+        }
         this.createStage()
       },
       // 编辑阶段按钮点击事件
       editStageBtn(id, index) {
+        this.closeBtn()
         this.currentStageForm = {...this.stageList[index]}
         this.currentStageStat = {
           event: 'update',
@@ -344,6 +372,7 @@
       },
       // 展开任务详情
       showTaskBtn(ele, index) {
+        this.isFocus = true
         this.$store.commit('setParentTask', ele)
         this.completeState = ele.stage
         this.$store.commit('changeTaskStatePower', 1)
@@ -353,24 +382,61 @@
       },
       // 完成/取消任务
       completeTaskBtn(ele, index) {
+        this.isFocus = true
         let item = {...ele}
         this.$store.commit('changeTaskStateEvent', 'update')
         this.$store.commit('changeTaskStateId', ele.id)
         let stage = ele.stage === 2 ? 0 : 2
-        this.$http.put(api.taskStage, {task_id: ele.id, stage: stage}).then((response) => {
-          if (response.data.meta.status_code === 200) {
-            this.$nextTick(() => {
-              item.stage = stage
-              this.completeState = stage
-              this.$store.commit('updateTaskListItem', item)
-              this.fetchStage()
-            })
+        this.$http.put(api.taskStage, {task_id: ele.id, stage: stage})
+          .then(res => {
+            if (res.data.meta.status_code === 200) {
+              this.$nextTick(() => {
+                item.stage = stage
+                this.completeState = stage
+                this.$store.commit('updateTaskListItem', item)
+                this.fetchStage()
+              })
+            } else {
+              this.$message.error(res.data.meta.message)
+            }
+          }).catch((error) => {
+            console.error(error)
+          })
+      },
+      taskNameFocus(ele, index) {
+        this.isFocus = true
+        this.oldTaskName = ele.name
+        Object.assign(this.currentTaskForm, ele)
+        this.$store.commit('setParentTask', ele)
+        this.completeState = ele.stage
+        this.$store.commit('changeTaskStatePower', 1)
+        this.$store.commit('changeTaskStateEvent', 'update')
+        this.$store.commit('changeTaskStateId', ele.id)
+        this.$store.commit('changeTaskStateId', ele.id)
+      },
+      taskNameBlur(id) {
+        this.isFocus = false
+        if (this.currentTaskForm.name) {
+          if (this.oldTaskName === this.currentTaskForm.name) {
+            return
           } else {
-            this.$message.error(response.data.meta.message)
+            this.$http.put(api.taskId.format(id), {
+              name: this.currentTaskForm.name
+            }).then(response => {
+              if (response.data.meta.status_code === 200) {
+                this.fetchStage()
+                this.fetchTask()
+              } else {
+                this.$message.error(response.data.meta.message)
+              }
+            }).catch((error) => {
+              this.$message.error(error.message)
+              console.error(error.message)
+            })
           }
-        }).catch((error) => {
-          console.error(error)
-        })
+        } else {
+          this.$message.error('任务不能为空')
+        }
       },
       closeCover() {
         for (let i in this.showElement) {
@@ -402,6 +468,11 @@
       changeTaskStatus(e) {
         this.taskStatus = e
         this.$refs.filter.blur()
+      },
+      closeBtn() {
+        this.$store.commit('removeParentTask')
+        this.$store.commit('changeTaskStatePower', 0)
+        this.$store.commit('changeTaskStateEvent', '')
       }
     },
     computed: {
@@ -454,6 +525,26 @@
     watch: {
       stageList: {
         handler(val) {
+          val.forEach(item => {
+            if (item.task.length) {
+              item.task.forEach(i => {
+                if (i.id === this.currentTaskForm.id) {
+                  Object.assign(this.currentTaskForm, i)
+                }
+              })
+            }
+          })
+          // this.$store.commit('setStageList', val)
+        },
+        deep: true
+      },
+      taskList: {
+        handler(val) {
+          val.forEach(item => {
+            if (item.id === this.currentTaskForm.id) {
+              Object.assign(this.currentTaskForm, item)
+            }
+          })
           // this.$store.commit('setStageList', val)
         },
         deep: true
@@ -601,11 +692,14 @@
   /* .task-list {
     padding-left: 30px;
   } */
+  .task-item {
+    display: flex;
+  }
   .task-item, .stage-name {
     cursor: pointer;
     border: 1px solid #d2d2d2;
     border-radius: 4px;
-    line-height: 50px;
+    line-height: 48px;
     height: 50px;
     margin-bottom: 10px;
   }
@@ -613,7 +707,7 @@
     border: 1px solid #ff5a5f;
   }
   .task-item:hover {
-    background: #fafafa
+    /* background: #fafafa */
   }
   .task-item img {
     width: 30px;
@@ -627,6 +721,7 @@
     margin-top: 20px;
     font-size: 18px;
     color: #222222;
+    line-height: 50px;
     /* font-weight: bold; */
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -674,7 +769,7 @@
     border-left: 6px solid #ff5a5f;
   }
   .task-item.active {
-    background: #fafafa;
+    /* background: #fafafa; */
     color: #999;
   }
   .task-item.active .task-name {
@@ -687,19 +782,26 @@
     border-color: #fff
   }
   .task-name {
-    padding-left: 54px;
+    padding: 0 20px 0 54px;
     height: 50px;
-    max-width: 70%;
+    flex: 1 1 auto;
     position: relative;
     cursor: pointer;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+  .task-name-input {
+    width: 100%;
+    height: 48px;
+    line-height: 48px;
+    border: none;
+    padding: 0;
+  }
   .task-name-span {
     position: absolute;
     left: 20px;
-    top: 13px;
+    top: 12px;
     height: 24px;
     width: 24px;
     border: 1px solid #d2d2d2;

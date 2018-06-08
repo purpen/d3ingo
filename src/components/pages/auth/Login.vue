@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <section class="cover-bgf7"></section>
+    <!-- <section class="cover-bgf7"></section> -->
     <div class="login-box">
       <div class="login-title">
         <h2>登录铟果</h2>

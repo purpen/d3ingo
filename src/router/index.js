@@ -6,6 +6,7 @@ import baseRoute from './routes/base.js'
 import adminRoute from './routes/admin.js'
 import centerRoute from './routes/center.js'
 import toolsRoute from './routes/tools.js'
+import { Message } from 'element-ui'
 import {
   calcImgSize
 } from 'assets/js/common'
@@ -18,8 +19,7 @@ if (window.localStorage.getItem('token')) {
   store.commit(types.USER_SIGNIN, JSON.parse(window.localStorage.getItem('token')))
 }
 
-let routes = []
-routes = [
+let routes = [
 
   // ### 静态页面 #####
   {
@@ -383,7 +383,8 @@ routes = [
     name: 'itemCreate',
     meta: {
       title: '选择类型',
-      requireAuth: true
+      requireAuth: true,
+      isDesignInc: 1
     },
     component: require('@/components/pages/item/SubmitTwo')
   },
@@ -394,7 +395,8 @@ routes = [
     name: 'itemSubmitTwo',
     meta: {
       title: '选择类型',
-      requireAuth: true
+      requireAuth: true,
+      isDesignInc: 1
     },
     component: require('@/components/pages/item/SubmitTwo')
   },
@@ -405,7 +407,8 @@ routes = [
     name: 'itemSubmitThree',
     meta: {
       title: '基本信息',
-      requireAuth: true
+      requireAuth: true,
+      isDesignInc: 1
     },
     component: require('@/components/pages/item/SubmitThree')
   },
@@ -416,7 +419,8 @@ routes = [
     name: 'itemSubmitUIThree',
     meta: {
       title: '基本信息',
-      requireAuth: true
+      requireAuth: true,
+      isDesignInc: 1
     },
     component: require('@/components/pages/item/SubmitUIThree')
   },
@@ -427,7 +431,8 @@ routes = [
     name: 'itemSubmitFour',
     meta: {
       title: '补全公司信息',
-      requireAuth: true
+      requireAuth: true,
+      isDesignInc: 1
     },
     component: require('@/components/pages/item/SubmitFour')
   },
@@ -438,7 +443,8 @@ routes = [
     name: 'itemSubmitFive',
     meta: {
       title: '检查并发布',
-      requireAuth: true
+      requireAuth: true,
+      isDesignInc: 1
     },
     component: require('@/components/pages/item/SubmitFive')
   },
@@ -449,7 +455,8 @@ routes = [
     name: 'itemPublish',
     meta: {
       title: '发布',
-      requireAuth: true
+      requireAuth: true,
+      isDesignInc: 1
     },
     component: require('@/components/pages/item/Publish')
   },
@@ -641,6 +648,19 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     next()
+  }
+  let type = store.state.event.user.type
+  if (to.meta['isDesignInc']) {
+    if (type !== to.meta['isDesignInc']) {
+      if (to.meta['isDesignInc'] === 1) {
+        Message.error('请使用服务方账号登录')
+      } else {
+        Message.error('请使用设计公司账号登录')
+      }
+      router.push({ name: 'home' })
+    }
+  } else {
+    console.log('d3in')
   }
   if (to.meta['hideHeader']) {
     store.commit(types.HIDE_HEADER, to.meta['hideHeader'])

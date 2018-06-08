@@ -248,6 +248,12 @@
       isMyTask: {
         type: Boolean,
         default: false
+      },
+      currentTaskForm: {
+        type: Object,
+        default: function () {
+          return {}
+        }
       }
     },
     data () {
@@ -261,10 +267,6 @@
           over_time: new Date().format('yyyy-MM-dd hh:mm'),
           level: 1
         },
-        // currentForm: { // 当前任务表单
-        //   over_time: new Date().format('yyyy-MM-dd'),
-        //   level: 1
-        // },
         currentChange: {},
         msg: '',
         levels: [{
@@ -868,6 +870,12 @@
       },
       completeState(val) {
         this.$set(this.currentForm, 'stage', val)
+      },
+      currentTaskForm: {
+        handler(val) {
+          this.currentForm.name = val.name
+        },
+        deep: true
       }
     },
     created() {
@@ -1153,6 +1161,12 @@
     position: relative;
     display: inline-block
   }
+  .el-date-editor.el-input {
+    width: 195px;
+  }
+  .add-child-ul .el-date-editor.el-input {
+    width: 100%;
+  }
   .task-info li p.p-time {
     background: url(../../assets/images/tools/project_management/Time.png) no-repeat left;
     background-size: 24px;
@@ -1162,6 +1176,8 @@
     background-size: 24px;
   }
   .task-info li p.p-label {
+    height: 32px;
+    line-height: 32px;
     background: url(../../assets/images/tools/project_management/Label.png) no-repeat left;
     background-size: 24px;
   }

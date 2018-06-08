@@ -55,12 +55,13 @@
               <li v-for="(ele, index) in shortProjectMoments" :key="index">
                 <img class="br50 b-d2" :src="ele.logo_image.logo" alt="">
                 <div class="item-con">
-                  <p class="tc-2"><span>{{ele.user_name}}</span><span class="tc-6">{{ele.action}}</span></p>
+                  <!-- <p class="tc-2"><span>{{ele.user_name}}</span><span class="tc-6">{{ele.action}}</span></p> -->
+                  <p class="tc-2"><span>{{ele.title}}</span></p>
                   <p class="fz-12 tc-9">{{ele.date}}</p>
                 </div>
               </li>
             </ul>
-            <p v-if="projectMoments.length > 5" @click="showDynamic">查看所有项目动态</p>
+            <p class="project-news" v-if="projectMoments.length > 5" @click="showDynamic">查看所有项目动态</p>
           </div>
         </div>
       </a>
@@ -354,14 +355,6 @@
               </div>
             -->
             <el-form label-position="top" :model="clientForm" :rules="ruleClientForm" ref="ruleClientForm" label-width="80px">
-              <el-row :gutter="20">
-                <el-col :xs="24" :sm="24" :md="24" :lg="24">
-                  <el-form-item label="企业名称" prop="company_name">
-                    <el-input v-model="clientForm.company_name" placeholder="请添写企业名称"></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-
                 <el-row :gutter="10">
                   <el-col :xs="24" :sm="24" :md="24" :lg="24">
                     <el-form-item label="企业名称" prop="company_name">
@@ -459,12 +452,12 @@
         <i class="fx fx-icon-nothing-close-error" @click="cover2 = false"></i>
       </div>
       <div class="cover2-content">
-        <h3>全部动态</h3>
         <ul class="cover2-list">
           <li v-for="(ele, index) in projectMoments" :key="index">
             <img v-if="ele.logo_image" class="br50 b-d2" :src="ele.logo_image.logo" alt="">
             <div class="list-con clearfix">
-              <p class="tc-2 fl"><span>{{ele.user_name}}</span>{{ele.action}}</p>
+              <!-- <p class="tc-2 fl"><span>{{ele.user_name}}</span>{{ele.action}}</p> -->
+              <p class="tc-2 fl"><span>{{ele.title}}</span></p>
               <p class="fz-12 tc-6 fr">{{ele.date}}</p>
             </div>
           </li>
@@ -532,7 +525,7 @@ export default {
       isBaseLoadingBtn: false,
       isClientLoadingBtn: false,
       isServerLoadingBtn: false,
-      isFirstRegion: false,
+      isFirstRegion: true,
       levels: [
         {
           value: 1,
@@ -571,11 +564,7 @@ export default {
     },
     // 成员列表
     memberList() {
-      let memberList = [
-        {id: 1, realname: '田帅'},
-        {id: 2, realname: '顾三'},
-        {id: 3, realname: '王五'}
-      ]
+      let memberList = this.projectMemberList
       return memberList
     },
     typeOptions() {
@@ -842,7 +831,6 @@ export default {
   watch: {
     cover(d) {
       if (d) {
-        console.log(this.projectObject)
         this.baseForm = {
           id: this.projectObject.id,
           name: this.projectObject.name,
@@ -869,8 +857,8 @@ export default {
           contact_name: this.projectObject.contact_name,
           position: this.projectObject.position,
           phone: this.projectObject.phone,
-          province: this.projectObject.province,
-          city: this.projectObject.city,
+          province: this.projectObject.province === 0 ? '' : this.projectObject.province,
+          city: this.projectObject.city === 0 ? '' : this.projectObject.city,
           area: this.projectObject.area === 0 ? '' : this.projectObject.area,
           address: this.projectObject.address
         }
@@ -880,8 +868,8 @@ export default {
           design_contact_name: this.projectObject.design_contact_name,
           design_position: this.projectObject.design_position,
           design_phone: this.projectObject.design_phone,
-          design_province: this.projectObject.design_province,
-          design_city: this.projectObject.design_city,
+          design_province: this.projectObject.design_province === 0 ? '' : this.projectObject.design_province,
+          design_city: this.projectObject.design_city === 0 ? '' : this.projectObject.design_city,
           design_area: this.projectObject.design_area === 0 ? '' : this.projectObject.design_area,
           design_address: this.projectObject.design_address
         }
@@ -890,6 +878,15 @@ export default {
     showMenu(val) {
       if (val) {
         this.getMoments()
+      }
+    },
+    cover2(val) {
+      if (val) {
+        document.body.setAttribute('class', 'disableScroll')
+        document.childNodes[1].setAttribute('class', 'disableScroll')
+      } else {
+        document.body.removeAttribute('class', 'disableScroll')
+        document.childNodes[1].removeAttribute('class', 'disableScroll')
       }
     }
   },
@@ -1259,7 +1256,6 @@ header {
   height: 40px;
   line-height: 40px;
   padding: 0 30px;
-  color: #666
 }
 .menu-content p:before {
   content: "";
@@ -1279,6 +1275,13 @@ header {
 .menu-content .menu-moment:before {
   background: url(../../../../assets/images/tools/project_management/Moment.png)
     no-repeat center / contain
+}
+.menu-content .project-news:before {
+  width: 24px;
+  height: 24px;
+  background: url(../../../../assets/images/tools/project_management/check@2x.png)
+    no-repeat center / contain;
+    left: -5px;
 }
 .menu-content hr {
   border: none;
