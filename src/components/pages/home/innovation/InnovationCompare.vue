@@ -294,6 +294,11 @@ h3 {
   padding: 10px 20px;
   border-bottom: 1px solid #d2d2d2;
 }
+.profile-value {
+  color: #666;
+  line-height: 20px;
+  margin-bottom: 15px;
+}
 .profile-title {
   padding-bottom: 15px;
 }

@@ -3,7 +3,7 @@
     <div class="pm-left">
       <router-link :to="{name: 'projectManagementList'}">项目管理</router-link>
       <router-link :to="{name: 'projectManagementOverView', params: {id: routeId}}">{{projectObject.name}}</router-link>
-      <!-- <span class="favorite-star"></span> -->
+      <span :class="['favorite-star', {'active':projectObject.collect === 1}]"></span>
     </div>
     <div class="pm-middle">
       <router-link :class="[{'active': currentRoute === 'projectManagementOverView'}]"
@@ -999,8 +999,8 @@ header {
   color: #222;
 }
 .favorite-star {
+  margin-left: -20px;
   cursor: pointer;
-  margin-left: 10px;
   width: 24px;
   height: 60px;
   background: url(../../../../assets/images/tools/project_management/Collection.png) no-repeat center;

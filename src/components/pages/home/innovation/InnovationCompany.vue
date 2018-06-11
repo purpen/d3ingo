@@ -15,11 +15,11 @@
     </div>
     <div class="company-profile" v-if="companyDetails.evaluates.length">
       <h3 class="text-center">创新表现描述</h3>
-      <p class="text-center" v-for="(ele, index) in companyDetails.evaluates" :key="index">{{ele}}</p>
+      <p v-for="(ele, index) in companyDetails.evaluates" :key="index">{{ele}}</p>
     </div>
     <div class="company-profile" v-if="companyDetails.design_company">
       <h3 class="text-center blank30">公司简介</h3>
-      <p class="text-center">{{companyDetails.design_company.description}}</p>
+      <p>{{companyDetails.design_company.description}}</p>
     </div>
     <div class="company-designcase" v-if="id && designCaseList.length">
       <h3 class="text-center">作品案例</h3>
@@ -270,7 +270,6 @@ export default {
   .company-profile p {
     color: #666;
     font-size: 14px;
-    text-align: center;
     line-height: 1.5
   }
 
