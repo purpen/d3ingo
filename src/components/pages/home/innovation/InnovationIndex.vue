@@ -42,10 +42,10 @@ export default {
     }
   },
   created() {
-    if (!this.user.role_id) {
-      this.$message.warning('排行页面仅限管理员可见')
-      this.$router.push({name: 'home'})
-    }
+    // if (!this.user.role_id) {
+    //   this.$message.warning('排行页面仅限管理员可见')
+    //   this.$router.push({name: 'home'})
+    // }
   },
   methods: {
     countSize() {

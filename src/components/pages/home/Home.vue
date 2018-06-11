@@ -197,20 +197,20 @@
       return {
         uType: this.$store.state.event.user.type || 1,
         bannerListMob: [
-          {
-            img: require ('assets/images/subject/innovation/home_banner.jpg'),
-            url: this.$store.state.event.user.role_id > 0 ? 'innovation_index' : 'home'
-          },
+          // {
+          //   img: require ('assets/images/subject/innovation/home_banner.jpg'),
+          //   url: this.$store.state.event.user.role_id > 0 ? 'innovation_index' : 'home'
+          // },
           {
             img: require ('assets/images/home/banner/homebanner_xiaomi_mob.jpg'),
             url: '/subject/xiaomiInterview'
           }
         ],
         bannerList: [
-          {
-            img: require ('assets/images/subject/innovation/innovationIndex.jpg'),
-            url: this.$store.state.event.user.role_id > 0 ? 'innovation_index' : 'home'
-          },
+          // {
+          //   img: require ('assets/images/subject/innovation/innovationIndex.jpg'),
+          //   url: this.$store.state.event.user.role_id > 0 ? 'innovation_index' : 'home'
+          // },
           {
             img: require ('assets/images/home/banner/home_xiaomi.jpg'),
             url: '/subject/xiaomiInterview'
