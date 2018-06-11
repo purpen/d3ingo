@@ -65,8 +65,10 @@
           </li>
           <li>
             <p class="p-level">优先级:</p>
-            <el-select v-model="currentForm.level" placeholder="请选择"
-            @change="changeLevel">
+            <el-select
+              style="width: 195px;"
+              v-model="currentForm.level" placeholder="请选择"
+              @change="changeLevel">
               <el-option
                 v-for="(item, index) in levels"
                 :key="index"

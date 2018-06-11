@@ -348,6 +348,9 @@
               console.log('需求公司基础信息：已完善')
               return false
             } else {
+              this.alertTitle.title = '基础信息待完善'
+              this.alertTitle.path = '/vcenter/d_company/base'
+              // console.log('需求公司基础信息：未完善')
               return true
             }
           } else {

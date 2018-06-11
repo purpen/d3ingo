@@ -2,7 +2,7 @@
   <section @click.self="currentStageStat.id = -1">
     <div class="vcenter-container task-content" v-loading="isLoading">
       <el-row :gutter="30">
-        <el-col :span="taskState.power ? 12 : 24" class="task-list">
+        <el-col :span="taskState.power ? 12 : 24" :class="['task-list']">
           <div class="operate" v-if="!isMyTask">
             <div class="add-btn">
               <button class="add-task middle-button full-red-button" @click="addTaskBtn()">添加任务</button>
@@ -80,7 +80,7 @@
             <p class="noMsg">暂时没有任务， 休息一下～</p>
           </section>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="12" :class="{'fadeInRight': taskState.power}">
           <v-task
            :currentTaskForm="currentTaskForm"
            :isMyTask="isMyTask"
@@ -689,9 +689,10 @@
   .filter ul li.active:after {
     border-color: #d2d2d2
   }
-  /* .task-list {
-    padding-left: 30px;
-  } */
+  .task-list {
+    /* padding-left: 30px; */
+    transition: 0.5s all ease;
+  }
   .task-item {
     display: flex;
   }
@@ -710,6 +711,7 @@
     /* background: #fafafa */
   }
   .task-item img {
+    border: 1px solid #e6e6e6;
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -730,15 +732,15 @@
   .stage-title {
     position: absolute;
     left: 0;
-    top: 2px;
-    line-height: 46px;
-    height: 46px;
+    top: 0;
+    line-height: 1;
+    height: 48px;
     width: 100%;
     min-width: 20px;
     border: none;
     font-size: 18px;
     color: #222222;
-    padding: 0 40px 0 20px;
+    padding: 15px 40px 15px 20px;
   }
   .close-icon-solid {
     display: none;
@@ -794,9 +796,9 @@
   .task-name-input {
     width: 100%;
     height: 48px;
-    line-height: 48px;
+    line-height: 1;
+    padding: 17px 0;
     border: none;
-    padding: 0;
   }
   .task-name-span {
     position: absolute;
