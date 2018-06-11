@@ -22,7 +22,8 @@
         :to="{name: 'projectManagementIncomeandExpenses', params: {id: routeId}}">收支</router-link>
     </div>
     <div class="pm-right">
-      <router-link :to="{name: 'projectQuote', params: {id: routeId}}" :class="['quotation', {'active': isQuote}]">项目报价</router-link>
+      <router-link
+      :to="{name: 'projectQuote', params: {id: routeId}}" :class="['quotation', {'active': isQuote}]">项目报价</router-link>
       <router-link class="contract border-right" :to="{name: 'projectContract', params: {id: routeId}}">合同</router-link>
       <a @click.self="controlMemberShow" class="member border-right">
         {{projectMemberList.length}}
@@ -550,6 +551,9 @@ export default {
     }
   },
   computed: {
+    user() {
+      return this.$store.state.event.user
+    },
     routeId() {
       return this.$route.params.id
     },
