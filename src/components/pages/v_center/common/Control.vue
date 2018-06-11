@@ -348,25 +348,22 @@
       },
       // 请求消息数量
       fetchMessageCount() {
-        const self = this
-        this.$http.get(api.messageGetMessageQuantity, {}).then(function (response) {
-          if (response.data.meta.status_code === 200) {
-            var message = 0
-            var notice = 0
-            var quantity = 0
-            message = parseInt(response.data.data.message)
-            notice = parseInt(response.data.data.notice)
-            quantity = parseInt(response.data.data.quantity)
-            sessionStorage.setItem('noticeCount', notice)
-            var msgCount = {message: message, notice: notice, quantity: quantity}
-            // 写入localStorage
-            self.$store.commit(MSG_COUNT, msgCount)
-          } else {
-            self.$message.error(response.data.meta.message)
-          }
-        }).catch((error) => {
-          console.error(error)
-        })
+        if (this.isLogin) {
+          const self = this
+          this.$http.get(api.messageGetMessageQuantity, {}).then(function (response) {
+            if (response.data.meta.status_code === 200) {
+              // sessionStorage.setItem('noticeCount', response.data.data.notice)
+              let msgCount = response.data.data
+              // 写入localStorage
+              self.$store.commit(MSG_COUNT, msgCount)
+            } else {
+              self.$message.error(response.data.meta.message)
+            }
+          }).catch((error) => {
+            console.error(error)
+            clearInterval(this.requestMessageTask)
+          })
+        }
       },
       // 获取消息列表
       getMessageList() {
@@ -381,6 +378,9 @@
       }
     },
     computed: {
+      isLogin() {
+        return this.$store.state.event.token
+      },
       messageCount() {
         return this.$store.state.event.msgCount
       },

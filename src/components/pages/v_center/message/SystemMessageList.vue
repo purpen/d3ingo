@@ -98,7 +98,8 @@
               } else {
                 self.isEmpty = true
               }
-              let noticeCount = sessionStorage.getItem('noticeCount')
+              // let noticeCount = sessionStorage.getItem('noticeCount')
+              let noticeCount = self.msgCount.notice
               for (let j = 0; j < noticeCount; j++) {
                 if (self.itemList[j]) {
                   self.itemList[j]['not_read'] = true // 给未读通知加上红点
@@ -130,6 +131,9 @@
       }
     },
     computed: {
+      msgCount() {
+        return this.$store.state.event.msgCount
+      },
       isMob() {
         return this.$store.state.event.isMob
       },

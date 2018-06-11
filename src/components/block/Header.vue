@@ -220,7 +220,7 @@
           const self = this
           this.$http.get(api.messageGetMessageQuantity, {}).then(function (response) {
             if (response.data.meta.status_code === 200) {
-              sessionStorage.setItem('noticeCount', response.data.data.notice)
+              // sessionStorage.setItem('noticeCount', response.data.data.notice)
               let msgCount = response.data.data
               // 写入localStorage
               self.$store.commit(MSG_COUNT, msgCount)
