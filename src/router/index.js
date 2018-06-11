@@ -669,7 +669,7 @@ router.beforeEach((to, from, next) => {
       router.push({ name: 'home' })
     }
   } else {
-    console.log('d3in')
+    // console.log('d3in')
   }
   if (to.meta['hideHeader']) {
     store.commit(types.HIDE_HEADER, to.meta['hideHeader'])

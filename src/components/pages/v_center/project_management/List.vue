@@ -59,14 +59,44 @@
             <span class="importance level3" v-if="ele.level === 3">非常重要</span>
           </li>
         </ul>
+        <h2 v-if="attendList.length">我拥有的项目</h2>
+        <ul class="project-list">
+          <li class="create" @click="showCover" v-if="isCompanyAdmin && attendList.length">
+            <p @click="showCover">
+              <i></i>
+              <span>创建新项目</span>
+            </p>
+          </li>
+          <li v-for="(ele, index) in attendList" :key="index"
+            @click.self="routePush(ele.id)">
+            <div class="clearfix">
+              <h3 class="fl" @click="routePush(ele.id)">{{ele.name}}</h3>
+              <div class="fr">
+                <p class="fr operate" tabindex="-1" ref="operate2">
+                  <span class="more">
+                  </span>
+                  <span class="delete" @click="projectDelete(ele.id, index, 'attend')">
+                    删除
+                  </span>
+                </p>
+                <span @click="setCollect(ele.id, ele.collect)" :class="['favorite-star', 'fr', {'favorite-star-light': ele.collect === 1}]"></span>
+              </div>
+            </div>
+            <div class="content" @click="routePush(ele.id)">
+              {{ele.description}}
+            </div>
+            <span class="importance level2" v-if="ele.level === 2">重要</span>
+            <span class="importance level3" v-if="ele.level === 3">非常重要</span>
+          </li>
+        </ul>
         <div v-if="!projectList.length">
           <div class="empty"></div>
           <p class="noMsg">暂时没有项目， 休息一下～</p>
           <p class="noMsg"><button @click="showCover" class="red-button middle-button">创建项目</button></p>
         </div>
       </div>
-      <el-pagination v-show="query.totalCount > query.pageSize" class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize" :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange">
-      </el-pagination>
+      <!-- <el-pagination v-show="query.totalCount > query.pageSize" class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize" :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange">
+      </el-pagination> -->
     </div>
     <div class="dialog-bg" @click="closeCover" v-if="show.cover"></div>
       <div class="dialog-content" v-if="show.createContent">
@@ -107,6 +137,7 @@ export default {
     return {
       projectList: [],
       collectList: [],
+      attendList: [],
       isLoading: false,
       show: {
         cover: false,
@@ -119,7 +150,7 @@ export default {
       importance: 1,
       query: {
         page: 1,
-        pageSize: 11,
+        pageSize: 100,
         totalPges: 0,
         totalCount: 0
       },
@@ -140,29 +171,32 @@ export default {
         if (res.data.meta.status_code === 200) {
           this.projectList = res.data.data
           this.projectList.forEach((item, index) => {
-            if (item.collect === 1) {
+            if (item.collect === 1) { // 我收藏的
               this.collectList.push(item)
+            }
+            if (item.user_status === 1) { // 我创建的
+              this.attendList.push(item)
             }
           })
         } else {
           this.$message.error(res.data.meta.message)
         }
-        if (res.data.meta.pagination) {
-          this.query.totalCount = res.data.meta.pagination.total
-          this.query.totalPges = res.data.meta.pagination.total_pages
-        } else {
-          this.query.totalCount = 0
-          this.query.totalPges = 0
-        }
-        if (res.data.meta.pagination.count) {
-          let pages2 = this.query.totalCount % this.query.pageSize
-          let pages = Math.floor(this.query.totalCount / this.query.pageSize)
-          pages = pages2 ? pages + 1 : pages
-          if (this.query.page > pages) {
-            this.query.page = pages
-            this.$router.push({name: this.$route.name, query: {page: pages}})
-          }
-        }
+        // if (res.data.meta.pagination) {
+        //   this.query.totalCount = res.data.meta.pagination.total
+        //   this.query.totalPges = res.data.meta.pagination.total_pages
+        // } else {
+        //   this.query.totalCount = 0
+        //   this.query.totalPges = 0
+        // }
+        // if (res.data.meta.pagination.count) {
+        //   let pages2 = this.query.totalCount % this.query.pageSize
+        //   let pages = Math.floor(this.query.totalCount / this.query.pageSize)
+        //   pages = pages2 ? pages + 1 : pages
+        //   if (this.query.page > pages) {
+        //     this.query.page = pages
+        //     this.$router.push({name: this.$route.name, query: {page: pages}})
+        //   }
+        // }
       }).catch(err => {
         this.isLoading = false
         console.error(err.message)
@@ -220,8 +254,10 @@ export default {
         this.$http.delete(api.deleteDesignProject, {params: {id: id}})
         .then(res => {
           this.isOpen3 = true
-          if (str) {
+          if (str === 'collect') {
             this.$refs.operate1[index].blur()
+          } else if (str === 'attend') {
+            this.$refs.operate2[index].blur()
           } else {
             this.$refs.operate[index].blur()
           }
@@ -233,6 +269,11 @@ export default {
                 }
               })
               this.collectList.forEach((item, ind, array) => {
+                if (item.id === id) {
+                  array.splice(ind, 1)
+                }
+              })
+              this.attendList.forEach((item, ind, array) => {
                 if (item.id === id) {
                   array.splice(ind, 1)
                 }

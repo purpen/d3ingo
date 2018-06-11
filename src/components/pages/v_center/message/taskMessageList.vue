@@ -9,7 +9,7 @@
             <div class="item" v-for="(d, index) in itemList" @click="showDes(d, index)" :key="index">
               <div class="banner2">
                 <p class="read" v-if="d.is_read=== 0"><i class="alert"></i></p>
-                <p class="notice">任务提醒
+                <p class="notice">项目通知
                   <span class="time">{{ d.created_at }}</span>
                 </p>
                 <p class="title">{{ d.title }}</p>
@@ -153,36 +153,28 @@
       },
       // 请求消息数量
       fetchMessageCount() {
-        const self = this
-        this.$http.get(api.messageGetMessageQuantity, {}).then(function (response) {
-          if (response.data.meta.status_code === 200) {
-            var message = 0
-            var notice = 0
-            var quantity = 0
-            if (parseInt(response.data.data.message)) {
-              message = parseInt(response.data.data.message) - 1
+        if (this.isLogin) {
+          const self = this
+          this.$http.get(api.messageGetMessageQuantity, {}).then(function (response) {
+            if (response.data.meta.status_code === 200) {
+              // sessionStorage.setItem('noticeCount', response.data.data.notice)
+              let msgCount = response.data.data
+              // 写入localStorage
+              self.$store.commit(MSG_COUNT, msgCount)
             } else {
-              message = parseInt(response.data.data.message)
+              self.$message.error(response.data.meta.message)
             }
-            notice = parseInt(response.data.data.notice)
-            sessionStorage.setItem('noticeCount', notice)
-            if (parseInt(response.data.data.quantity)) {
-              quantity = parseInt(response.data.data.quantity) - 1
-            } else {
-              quantity = parseInt(response.data.data.quantity)
-            }
-            var msgCount = {message: message, notice: notice, quantity: quantity}
-            // 写入localStorage
-            self.$store.commit(MSG_COUNT, msgCount)
-          } else {
-            self.$message.error(response.data.meta.message)
-          }
-        }).catch((error) => {
-          console.error(error)
-        })
+          }).catch((error) => {
+            console.error(error)
+            clearInterval(this.requestMessageTask)
+          })
+        }
       }
     },
     computed: {
+      isLogin() {
+        return this.$store.state.event.token
+      },
       isMob() {
         return this.$store.state.event.isMob
       },

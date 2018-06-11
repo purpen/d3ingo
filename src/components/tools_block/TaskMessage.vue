@@ -5,7 +5,7 @@
         <div class="item" v-for="(d, index) in itemList" @click="showDes(d, index)" :key="index">
           <div class="banner2">
             <p class="read" v-if="d.is_read=== 0"><i class="alert"></i></p>
-            <p class="notice">任务提醒
+            <p class="notice">项目通知
               <span class="time">{{ d.created_at }}</span>
             </p>
             <p class="title">{{ d.title }}</p>
@@ -106,17 +106,19 @@
       showDes(d, index) {
         const self = this
         if (d.is_show) {
-          this.itemList[index].is_show = false
+          d.is_show = false
         } else {
-          this.fetchMessageCount()
-          this.itemList[index].is_show = true
+          if (d.is_read === 0) {
+            this.fetchMessageCount()
+          }
+          d.is_show = true
         }
         // 确认已读状态
-        if (self.itemList[index].is_read === 0) {
+        if (d.is_read === 0) {
           self.$http.put(api.designNoticeTrueRead, {id: d.id})
             .then(function (response) {
               if (response.data.meta.status_code === 200) {
-                self.itemList[index].is_read = 1
+                d.is_read = 1
               }
             })
             .catch(function (error) {
@@ -133,47 +135,28 @@
       },
       // 请求消息数量
       fetchMessageCount() {
-        const self = this
-        this.$http.get(api.messageGetMessageQuantity, {}).then(function (response) {
-          if (response.data.meta.status_code === 200) {
-            var message = 0
-            var notice = 0
-            var quantity = 0
-            var designNotice = 0
-            if (response.data.data.message) {
-              message = response.data.data.message - 1
+        if (this.isLogin) {
+          const self = this
+          this.$http.get(api.messageGetMessageQuantity, {}).then(function (response) {
+            if (response.data.meta.status_code === 200) {
+              // sessionStorage.setItem('noticeCount', response.data.data.notice)
+              let msgCount = response.data.data
+              // 写入localStorage
+              self.$store.commit(MSG_COUNT, msgCount)
             } else {
-              message = response.data.data.message
+              self.$message.error(response.data.meta.message)
             }
-            notice = response.data.data.notice
-            sessionStorage.setItem('noticeCount', notice)
-            if (response.data.data.quantity) {
-              quantity = response.data.data.quantity - 1
-            } else {
-              quantity = response.data.data.quantity
-            }
-            designNotice = response.data.data.design_notice
-            if (response.data.data.design_notice) {
-              designNotice = response.data.data.design_notice - 1
-            } else {
-              designNotice = response.data.data.design_notice
-            }
-            var msgCount = {
-              message: message,
-              design_notice: designNotice,
-              notice: notice,
-              quantity: quantity}
-            // 写入localStorage
-            self.$store.commit(MSG_COUNT, msgCount)
-          } else {
-            self.$message.error(response.data.meta.message)
-          }
-        }).catch((error) => {
-          console.error(error)
-        })
+          }).catch((error) => {
+            console.error(error)
+            clearInterval(this.requestMessageTask)
+          })
+        }
       }
     },
     computed: {
+      isLogin() {
+        return this.$store.state.event.token
+      },
       showCover: {
         get() {
           return this.$store.state.task.showMessage

@@ -3,10 +3,10 @@
     <div :class="['vcenter-menu-sub-list', isMob ? 'vcenter-menu-sub-list-m' : '']">
       <router-link :to="{name: 'vcenterMessageList'}"
         active-class="false" :class="{'item': true, 'is-active': menuType === 'vcenterMessageList'}">
-        项目提醒</router-link>
+        消息提醒</router-link>
         <router-link :to="{name: 'taskMessageList'}"
         active-class="false" :class="{'item': true, 'is-active': menuType === 'taskMessageList'}">
-        项目管理通知</router-link>
+        项目通知</router-link>
       <router-link :to="{name: 'systemMessageList'}"
         active-class="false" :class="{'item': true, 'is-active': menuType === 'systemMessageList'}">
         系统通知</router-link>
