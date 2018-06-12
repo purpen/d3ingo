@@ -433,7 +433,7 @@ export default {
               this.getMemberList(this.firstGroupId)
             } else {
               this.memberList = []
-              this.firstGroupId = 0
+              this.firstGroupId = -1
               this.firstGroupName = ''
             }
           } else {
@@ -453,7 +453,7 @@ export default {
       this.type = this.$route.query.type || 'member'
       this.changeMemberLeft()
       if (this.$route.query.type === 'group') {
-        if (this.firstGroupId !== -1) {
+        if (this.firstGroupId && this.firstGroupId !== -1) {
           this.getMemberList(this.firstGroupId)
         }
       } else {
@@ -590,7 +590,7 @@ export default {
     '$route' (to, from) {
       this.type = this.$route.query.type || 'member'
       this.creatGetList()
-      this.changeMemberLeft()
+      // this.changeMemberLeft()
       this.liActive = 0
     }
   },

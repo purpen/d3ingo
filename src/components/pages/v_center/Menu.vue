@@ -43,7 +43,7 @@
               <span v-else class="b-nickname">{{ eventUser.account }}</span>
             </template>
             <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
-            <el-menu-item index="/admin" v-if="isCompanyAdmin"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
+            <el-menu-item index="/admin" v-if="isAdmin"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
             <el-menu-item index="" @click="logout">
               <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
           </el-submenu>
@@ -470,6 +470,16 @@
           return true
         }
         return false
+      },
+      // 是否能查看后台
+      isAdmin() {
+        let roleId = this.$store.state.event.user.role_id
+        console.log(roleId)
+        if (roleId >= 10) {
+          return true
+        } else {
+          return false
+        }
       },
       // 是否是子账号
       isChild() {
