@@ -404,7 +404,8 @@ let routes = [
     meta: {
       title: '选择类型',
       requireAuth: true,
-      isDesignInc: 2
+      hideFooter: true,
+      isDesignInc: 1
     },
     component: require('@/components/pages/projects/Create')
   },
