@@ -402,12 +402,24 @@ let routes = [
     path: '/projects/create',
     name: 'projectCreate',
     meta: {
-      title: '选择类型',
+      title: '发布需求',
       requireAuth: true,
       hideFooter: true,
       isDesignInc: 1
     },
     component: require('@/components/pages/projects/Create')
+  },
+  // 选择类型
+  {
+    path: '/projects/select/:id',
+    name: 'projectSelect',
+    meta: {
+      title: '选择类型',
+      requireAuth: true,
+      hideFooter: true,
+      isDesignInc: 1
+    },
+    component: require('@/components/pages/projects/Select')
   },
   // 发布需求(第二步) 选择领域
   {
@@ -676,7 +688,7 @@ router.beforeEach((to, from, next) => {
       if (to.meta['isDesignInc'] === 1) {
         Message.error('请使用服务方账号登录')
       } else {
-        Message.error('请使用设计公司账号登录')
+        Message.error('请使用需求公司账号登录')
       }
       router.push({ name: 'home' })
     }

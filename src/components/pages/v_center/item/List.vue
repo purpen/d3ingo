@@ -10,14 +10,14 @@
           <!-- <v-menu-sub></v-menu-sub> -->
           <div class="content-item-box" v-loading.body="isLoading">
             <div class="pub">
-              <router-link :to="{name: 'itemCreate'}">
+              <router-link :to="{name: 'projectCreate'}">
                 <el-button class="pub-btn is-custom" type="primary" size="large"><i class="el-icon-plus"></i> 发布项目
                 </el-button>
               </router-link>
             </div>
 
-            <h3>项目待完善</h3>
-            <div class="item ing" v-for="(d, index) in itemIngList" :key="index">
+            <h3 v-if="itemIngList.length">项目待完善</h3>
+            <div v-if="itemIngList.length" class="item ing" v-for="(d, index) in itemIngList" :key="index">
               <div class="banner">
                 <p>
                   <span>进行中</span>
