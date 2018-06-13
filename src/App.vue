@@ -3,8 +3,8 @@
     <v-header></v-header>
     <div class="main">
       <router-view></router-view>
+      <v-footer></v-footer>
     </div>
-    <v-footer></v-footer>
   </div>
 </template>
 

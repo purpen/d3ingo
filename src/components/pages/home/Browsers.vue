@@ -9,16 +9,17 @@
         <div class="click-browsers" v-for="(item,index) of browsersList">
           <div class="margin-wrapper">
             <img :src="item.browserUrl" alt="IE" class="browsers-img" :key="index">
+            <p class="choose-desc" v-text="item.browserDesc"></p>
+
           </div>
-          <p class="choose-desc" v-text="item.browserDesc"></p>
         </div>
       </div>
     </div>
-    <router-link to="/home">
-      <div class="goHome">
-        <span class="go-home-button">回到铟果</span>
-      </div>
-    </router-link>
+    <!--<router-link to="/home">-->
+      <!--<div class="goHome">-->
+        <!--<span class="go-home-button">回到铟果</span>-->
+      <!--</div>-->
+    <!--</router-link>-->
 
   </div>
 
@@ -80,8 +81,8 @@ export default {
   }
   .margin-wrapper{
     width: 114px;
-    height: 114px;
     display: flex;
+    flex-direction: column;
     margin: auto;
   }
   .browsers-img{
@@ -108,6 +109,9 @@ export default {
     padding: 10px 0;
     text-align: center;
     font-size: 14px;
+    color: #FF5A5F;
+  }
+  .margin-wrapper:hover .choose-desc{
     color: #FF5A5F;
   }
   @media screen and (max-width: 767px) {

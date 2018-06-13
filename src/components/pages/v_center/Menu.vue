@@ -568,7 +568,7 @@
     width: inherit;
     max-width: 200px;
     height: calc(100% - 60px);
-    overflow-y: auto;
+    /* overflow-y: auto; */
     overflow-x: hidden;
   }
   .menu-list .item {
