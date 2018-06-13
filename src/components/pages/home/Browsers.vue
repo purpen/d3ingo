@@ -8,7 +8,7 @@
       <div class="choose-browsers">
         <div class="click-browsers" v-for="(item,index) of browsersList" :key="index">
           <div class="margin-wrapper">
-            <img :src="item.browserUrl" alt="IE" class="browsers-img" :key="index">
+            <img :src="item.browserUrl" alt="IE" class="browsers-img">
             <p class="choose-desc" v-text="item.browserDesc"></p>
 
           </div>
@@ -52,7 +52,7 @@ export default {
 <style scoped>
   .Browsers{
     width: 100%;
-    padding-top: 167px;
+    margin: 0 auto;
   }
   .wrapper{
     display: flex;
