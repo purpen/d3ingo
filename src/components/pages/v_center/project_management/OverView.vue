@@ -82,103 +82,103 @@
         </div>
       </div>
     </section>
-    <transition name="el-fade-in-linear" v-if="isitemedit">
-      <aside class="aside">
-        <div class="aside-title fx">
-          <i class="fx fx-icon-delete2" @click="dialogVisible=true"></i>
-          <span class="tc-2">项目阶段设置</span>
-          <p class="fx fx-icon-close-sm" @click="isitemedit=false"></p>
-        </div>
-        <div class="aside-task-pregress bg-success"
-          v-if="formup.status">
-          已完成
-        </div>
-        <div class="aside-task-pregress bg-exception"
-          v-if="!formup.status&&(formTack.left+parseInt(formTack.duration) <= newleft)"
-        >
-          已逾期
-        </div>
-        <ul class="aside-content">
-          <li class="designStage-name">
-            <span>
-              <el-checkbox 
-                v-model="formup.status"
-                @change="editItemStatus()"
-                :true-label=1
-                :false-label=0
-                >
-              </el-checkbox>
-            </span>
-            <el-input 
-              v-model="formup.name" 
-              placeholder="项目阶段名称"
-              @blur="updata()"
-              :class="['noborder',{
-                'success': formup.status
-              } ]"
-            >
-            </el-input>
-          </li>
-          <li class="design-duration">
-            <i></i>
-            <div>
-              <el-input 
-                placeholder="请输入所需天数" 
-                v-model="formup.duration"
-                :maxlength="3"
-                @blur="updata()"
-                class="noborder"
+    <aside class="aside animated slideInRight" v-if="isitemedit">
+      <div class="aside-title fx">
+        <i class="fx fx-icon-delete2" @click="dialogVisible=true"></i>
+        <span class="tc-2">项目阶段设置</span>
+        <p class="fx fx-icon-close-sm" @click="isitemedit=false"></p>
+      </div>
+      <div class="aside-task-pregress bg-success"
+        v-if="formup.status">
+        已完成
+      </div>
+      <div class="aside-task-pregress bg-exception"
+        v-if="!formup.status&&(formTack.left+parseInt(formTack.duration) <= newleft)"
+      >
+        已逾期
+      </div>
+      <ul class="aside-content">
+        <li class="designStage-name">
+          <span>
+            <el-checkbox 
+              v-model="formup.status"
+              @change="editItemStatus()"
+              :true-label=1
+              :false-label=0
               >
-                <template slot="append">工作日</template>
-              </el-input>
+            </el-checkbox>
+          </span>
+          <el-input 
+            v-model="formup.name" 
+            placeholder="项目阶段名称"
+            @blur="updata()"
+            :class="['noborder',{
+              'success': formup.status
+            } ]"
+          >
+          </el-input>
+        </li>
+        <li class="design-duration">
+          <i></i>
+          <div>
+            {{formup.duration}}天
+          </div>
+        </li>
+        <li class="formup-time">
+          <i></i>
+          <div class="block">
+              <el-date-picker
+              type="date"
+              v-model="formupStart"
+              placeholder="选择日期时间"
+              @change="updata"
+              class="noborder"
+              >
+              </el-date-picker>
             </div>
-          </li>
-          <li class="formup-time">
-            <i></i>
-            <div class="block">
-                <el-date-picker
-                type="date"
-                v-model="formupStart"
-                placeholder="选择日期时间"
-                @change="updata"
-                class="noborder"
-               >
-                </el-date-picker>
-              </div>
-          </li>
-          <li class="design-content">
-            <i></i>
-            <el-input
-                type="textarea"
-                :autosize="{ minRows: 4, maxRows: 10}"
-                :maxlength=200
-                placeholder="请输入内容"
-                v-model="formup.content"
-                class="noborder"
-                >
-                </el-input>
-          </li>
-        </ul>
+        </li>
+        <li class="design-content">
+          <i></i>
+          <el-input
+              type="textarea"
+              :autosize="{ minRows: 4, maxRows: 10}"
+              :maxlength=200
+              placeholder="请输入内容"
+              v-model="formup.content"
+              class="noborder"
+              >
+              </el-input>
+        </li>
+      </ul>
+      <div class="milestone-substages">
         <div class="add-task" @click="addtack(formup)">
-          <div></div>
+          <div class="task-substages"></div>
+          <span>添加里程碑</span>
+        </div>
+        <div class="one-border">
+        </div>
+        <div class="add-task" @click="addtack(formup)">
+          <div class="task-milestone"></div>
           <span>添加子阶段</span>
         </div>
-        <ul class="tack-list scroll" v-if="formup.design_substage
-        ">
-          <li v-for="(itemup,indexip) in formup.design_substage" :key="indexip">
-            <el-checkbox v-model="itemup.status"
-             :true-label=1
-             :false-label=0
-             @change="desCompletes(itemup.id,itemup.status, formup)"
-             :class="{'task-success':itemup.status}"
-             >
-              {{itemup.name}}
-            </el-checkbox>
-          </li>
-        </ul>
-        
-      </aside>
-    </transition>
+      </div>
+      <ul class="tack-list scroll" v-if="formup.design_substage
+      ">
+        <li v-for="(itemup,indexip) in formup.design_substage" :key="indexip">
+          <el-checkbox v-model="itemup.status"
+            :true-label=1
+            :false-label=0
+            @change="desCompletes(itemup.id,itemup.status, formup)"
+            :class="{'task-success':itemup.status}"
+            >
+            {{itemup.name}}
+          </el-checkbox>
+          <span :class="['fr',{'tc-9':itemup.status}]">{{itemup.duration}}天</span>
+          <i class="fx-icon-delete2"></i>
+        </li>
+      </ul>
+      
+    </aside>
     <transition name="el-fade-in-linear" v-if="istaskedit">
       <aside class="aside">
         <div class="aside-title fx">
@@ -571,7 +571,7 @@
                             {{des.duration}}天
                         </el-col>
                         <el-col :span="4" class="text-center">
-                          0%
+                          10%
                         </el-col>
                       </el-row>
                     </el-col>
@@ -655,21 +655,20 @@
                       <i class="item-start" v-if="indextack === 0"></i>
                       <i
                         :class="['nodebase',{
-                          'item-node': tack.design_stage_node.status,
-                          'item-nodenon': !tack.design_stage_node.status && tack.left >= newleft,
-                          'item-noded': !tack.design_stage_node.status && tack.left < newleft
+                          'item-node': tack.status,
+                          'item-nodenon': !tack.status && tack.left >= newleft,
+                          'item-noded': !tack.status && tack.left < newleft
                         }]"
-                        v-if="tack.design_stage_node"
-                        @click.stop="editNode(tack.design_stage_node,c)">
+                      >
                       </i>
-                      <i class="isowner" v-if="tack.design_stage_node&&tack.design_stage_node.is_owner">
+                      <!-- <i class="isowner" v-if="tack.design_stage_node&&tack.design_stage_node.is_owner">
                       </i>
 
                       <div class="node-name" v-if="tack.design_stage_node">
                         <p :style="{width:tack.duration*30+'px'}">
                           {{tack.design_stage_node.name}}
                         </p>
-                      </div>
+                      </div> -->
                       <div class="task-name text-center">
                         {{tack.name}}
                       </div>
@@ -701,7 +700,7 @@
                       v-else>
                       </div>
                       <i class="item-start" v-if="indextack === 0"></i>
-                      <i
+                      <!-- <i
                         :class="[{
                           'item-node': tack.design_stage_node.status,
                           'item-nodenon': !tack.design_stage_node.status && tack.left >= newleft,
@@ -715,7 +714,7 @@
                         <p :style="{width:tack.duration*30+'px'}">
                           {{tack.design_stage_node.name}}
                         </p>
-                      </div>
+                      </div> -->
                       <div class="task-name text-center">
                         {{tack.name}}
                       </div>
@@ -723,8 +722,17 @@
                     </div>
 
                     <div  v-if="(sort==='isday'||sort==='isweek')" class="item-tacklist-last" :style="{left:(c.left+1)*30 + 'px'}">
-                      <div  @click="addtack(c)"></div>
-                      <span  @click="addtack(c)">添加子阶段</span>
+                      <div class="notmilestone-notsubstages">
+                        <div @click="addtack(c)" class="task-milestone"></div>
+                      </div>
+                      <div class="add-milestone">
+                        <div @click="addtack(c,2)" class="task-milestone"></div>
+                        <span @click="addtack(c,2)">添加里程碑</span>
+                      </div>
+                      <div class="add-substages">
+                        <div  @click="addtack(c,1)" class="task-substages"></div>
+                        <span  @click="addtack(c,1)">添加子阶段</span>
+                      </div>
                     </div>
                     <div  v-if="sort==='ismonth'" class="item-tacklist-last" :style="{left:(c.left+1)*6.77 + 'px'}">
                       <div  @click="addtack(c)"></div>
@@ -848,6 +856,7 @@ export default {
       formTacktime: '', // 子阶段时间
       formNodetime: '',
       sort: 'isday',
+      ceshi: false,
       dialogVisible: false,
       uploadUrl: '',
       itemName: '',
@@ -1054,7 +1063,6 @@ export default {
         if (this.endTimes[0] !== (Date.parse(new Date()) / 1000)) {
           this.$refs.chartlist.scrollLeft = this.newleft * 30 - 15 * 30
         }
-        // } else
       }
     },
     // 更新信息位置
@@ -1123,7 +1131,7 @@ export default {
               var res = this.updateallleft(response.data.data)
               that.designStageLists.push(res)
               that.cancel()
-              that.addtack(res, 1)
+              that.addtack(res, 3)
             } else {
               that.$message.error(response.data.meta.message)
             }
@@ -1152,7 +1160,7 @@ export default {
       for (var i = 0; i < fup.length; i++) {
         if (!fup[i].status) {
           this.formup.status = 0
-          this.redirectItemList(1, '子子阶段还没有全部完成')
+          this.redirectItemList(1, '子阶段还没有全部完成')
           return false
         }
       }
@@ -1225,12 +1233,13 @@ export default {
       this.isitemedit = false
       this.isnodeedit = false
       this.istaskedit = false
-      if (type === 1) {
+      this.formTack = {}
+      if (type === 3) {
         this.istaskedit = false
-      }
+        this.formTack.type = 2
+      } else this.formTack.type = type
       this.indesignStage = des
       var time = []
-      this.formTack = {}
       // 有子阶段时
       if (des.design_substage) {
         for (var i = 0; i < des.design_substage.length; i++) {
@@ -2142,6 +2151,10 @@ export default {
     background: url('../../../../assets/images/tools/project_management/Repeat.png') 0 0 no-repeat;
     background-size: contain;
   }
+  .design-duration>div {
+    line-height: 36px;
+    padding-left: 10px;
+  }
   .formup-time i{
     background:url('../../../../assets/images/tools/project_management/Time.png') 0 0 no-repeat;
     background-size: contain;
@@ -2150,41 +2163,62 @@ export default {
     background:url('../../../../assets/images/tools/project_management/Deliver@2x.png') 0 0 no-repeat;
     background-size: contain;
   }
+  .milestone-substages {
+    display: flex;
+  }
+  .one-border {
+    border-right:1px solid #e6e6e6;
+  }
   .add-task {
     display: flex;
     align-items: center;
     height: 50px;
-    color: #FF5A5F;
+    flex: 1;
     border-top: 1px solid #e6e6e6;
     border-bottom: 1px solid #e6e6e6;
-    /* padding:10px 20px; */
   }
   .add-task>div {
     display: inline-block;
-    width: 25px;
-    height: 25px;
+    width: 16px;
+    height: 16px;
     cursor: pointer;
-    background: url('../../../../assets/images/member/add02@2x.png') 0 0 no-repeat;
+    background: url('../../../../assets/images/tools/project_management/Add@2x.png') 0 0 no-repeat;
     background-size: contain;
     margin:0 18px 0 16px;
   }
-  .add-task>div:hover {
-    background: url('../../../../assets/images/member/add-hover@2x.png') 0 0 no-repeat;
+  .add-task:hover .task-milestone, .add-task:hover .task-substages{
+    background: url('../../../../assets/images/member/add02@2x.png') 0 0 no-repeat;
     background-size: contain;
+  }
+  
+  .add-task:hover span {
+    color: #FF5A5F;
   }
   .add-task>span {
     cursor: pointer;
     font-size:1.4rem
   }
   .tack-list {
-    margin-top:10px;
-    padding-left:20px;
-    /* border-bottom:1px solid #d2d2d2; */
     overflow-y: auto;
     max-height:200px;
   }
   .tack-list>li {
-    margin-bottom:10px;
+    line-height: 50px;
+    padding: 0 40px 0 20px;
+    position: relative;
+  }
+  .tack-list i {
+    position: absolute;
+    display: none;
+    height: 100%;
+    top: 18px;
+    right: 12px;
+  }
+  .tack-list>li:hover {
+    background:#f7f7f7;
+  }
+  .tack-list>li:hover .fx-icon-delete2 {
+    display: inline-block;
   }
   .h3 {
     color:#000;
@@ -2441,34 +2475,78 @@ export default {
   }
   .item-tacklist-last {
     position:absolute;
-    display:flex;
-    justify-content: space-around;
-    align-items: center;
     top:70px;
-    height:25px;
-    color:#FF5A5F;
-    z-index: 1
+    z-index: 1;
   }
-  .item-tacklist-last>div {
+  /* .item-tacklist-last>div {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  } */
+  .add-milestone {
+    display: none;
+  }
+  .add-substages {
+    display: none;
+  }
+  .notmilestone-notsubstages div {
     display: inline-block;
     width: 25px;
     height: 25px;
     cursor: pointer;
-    background: url('../../../../assets/images/member/add02@2x.png') 0 0 no-repeat;
+    background: url('../../../../assets/images/member/add-hover@2x.png') 0 0 no-repeat;
     background-size: contain;
     margin:0 6px 0 10px;
   }
-  .item-tacklist-last>div:hover {
+  .add-substages div {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    background: url('../../../../assets/images/tools/project_management/Add@2x.png') 0 0 no-repeat;
+    background-size: contain;
+    margin:0 6px 0 10px;
+  }
+  .add-milestone div {
+    width: 16px;
+    height: 16px;
+    background: url('../../../../assets/images/tools/project_management/Add@2x.png') 0 0 no-repeat;
+    background-size: contain;
+    margin: 0 6px 0 10px;
+  }
+  .item-tacklist-last:hover .notmilestone-notsubstages {
+    display: none;
+  }
+  .item-tacklist-last:hover .add-milestone {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: -9px;
+    margin-bottom: 10px;
+  }
+  .item-tacklist-last:hover .add-substages {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .add-milestone:hover .task-milestone {
     background: url('../../../../assets/images/member/add-hover@2x.png') 0 0 no-repeat;
     background-size: contain;
   }
-  .item-tacklist-last:hover span {
-    display: inline-block;
+  .add-substages:hover .task-substages {
+    background: url('../../../../assets/images/member/add-hover@2x.png') 0 0 no-repeat;
+    background-size: contain;
   }
-  .item-tacklist-last>span {
+  .add-milestone:hover span, .add-substages:hover span {
+    color: #FF5F64;
+  }
+  .item-tacklist-last span {
     display: none;
     cursor: pointer;
-    font-size:1.4rem
+    font-size:1.4rem;
+  }
+  .item-tacklist-last:hover span {
+    display: inline-block;
   }
   .no-tack {
     width:28px;

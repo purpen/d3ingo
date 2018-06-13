@@ -54,7 +54,7 @@
                 <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('company_abbreviation')">编辑</a>
               </el-col>
             </el-row>
-            <el-row :gutter="gutter" class="item">
+            <!-- <el-row :gutter="gutter" class="item">
               <el-col :span="titleSpan" class="title">
                 <p>联系人信息</p>
               </el-col>
@@ -110,7 +110,7 @@
                    @click="saveBtn('address', ['province', 'city', 'area', 'address'])">保存</a>
                 <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('address')">编辑</a>
               </el-col>
-            </el-row>
+            </el-row> -->
 
             <el-row :gutter="gutter" :class="['item', isMob ? 'item-m no-border' : '']">
               <el-col :span="titleSpan" class="title">
