@@ -52,6 +52,14 @@ let routes = [
     component: require('@/components/pages/home/test')
   },
   {
+    path: '/browsers',
+    name: 'browsers',
+    meta: {
+      title: '选择浏览器'
+    },
+    component: require('@/components/pages/home/Browsers')
+  },
+  {
     path: '/about',
     name: 'about',
     meta: {
