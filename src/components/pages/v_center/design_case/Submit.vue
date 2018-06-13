@@ -82,7 +82,7 @@
                 </el-col>
               </el-row>
 
-              <el-form-item label="设计类型" prop="type">
+              <!-- <el-form-item label="设计类型" prop="type">
                 <el-radio-group v-model.number="form.type" @change="typeChange" size="small">
                   <el-radio-button
                     v-for="item in typeOptions"
@@ -91,7 +91,6 @@
                   </el-radio-button>
                 </el-radio-group>
               </el-form-item>
-
               <div v-if="typeSwitch1">
                 <el-form-item label="设计类别" prop="design_type">
                   <el-radio-group v-model.number="form.design_type" size="small">
@@ -133,7 +132,67 @@
                   </el-radio-group>
                 </el-form-item>
 
-              </div>
+              </div> -->
+
+                <el-row :gutter="10">
+                  <el-col :xs="24" :sm="24" :md="24" :lg="24">
+                    <el-form-item label="设计类别" prop="type">
+                      <el-select v-model.number="form.type" @change="selectTypeChange" placeholder="请选择">
+                        <el-option
+                          v-for="(d, index) in typeOptions"
+                          :key="index"
+                          :label="d.label"
+                          :value="d.value">
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+
+                <el-row :gutter="10" v-show="form.type">
+                  <el-col :xs="24" :sm="24" :md="24" :lg="24">
+                    <el-form-item label="详细类别" prop="design_types">
+                      <el-select v-model="form.design_types" multiple placeholder="请选择">
+                        <el-option
+                          v-for="d in typeDesignOptions"
+                          :key="d.id"
+                          :label="d.label"
+                          :value="d.value">
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+
+                <el-row :gutter="10" v-show="form.type === 1">
+                  <el-col :xs="24" :sm="24" :md="24" :lg="24">
+                    <el-form-item label="所属领域" prop="field">
+                      <el-select v-model.number="form.field" placeholder="请选择">
+                        <el-option
+                          v-for="(d, index) in fieldOptions"
+                          :key="index"
+                          :label="d.label"
+                          :value="d.value">
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+
+                <el-row :gutter="10">
+                  <el-col :xs="24" :sm="24" :md="24" :lg="24">
+                    <el-form-item label="所属行业" prop="industry">
+                      <el-select v-model.number="form.industry" placeholder="请选择">
+                        <el-option
+                          v-for="(d, index) in industryOptions"
+                          :key="index"
+                          :label="d.label"
+                          :value="d.value">
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
 
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
@@ -355,6 +414,10 @@
       }
     },
     methods: {
+      // 选择分类事件
+      selectTypeChange(val) {
+        this.form.design_types = []
+      },
       submit(formName) {
         const that = this
         if (!that.coverId) {
@@ -581,6 +644,7 @@
     },
     computed: {
       typeOptions() {
+        console.log('typeOptions', this.form.type)
         let items = []
         for (let i = 0; i < typeData.COMPANY_TYPE.length; i++) {
           let item = {
@@ -594,10 +658,13 @@
       typeDesignOptions() {
         let items = []
         let index
+        console.log('typeDesignOptions', this.form.type)
         if (this.form.type === 1) {
           index = 0
         } else if (this.form.type === 2) {
           index = 1
+        } else {
+          return []
         }
         for (let i = 0; i < typeData.COMPANY_TYPE[index].designType.length; i++) {
           let item = {
@@ -611,10 +678,13 @@
       fieldOptions() {
         let items = []
         let index
+        console.log('fieldOptions', this.form.type)
         if (this.form.type === 1) {
           index = 0
         } else if (this.form.type === 2) {
           index = 1
+        } else {
+          return []
         }
         for (let i = 0; i < typeData.COMPANY_TYPE[index].field.length; i++) {
           let item = {
@@ -628,10 +698,13 @@
       industryOptions() {
         let items = []
         let index
+        console.log('industryOptions', this.form.type)
         if (this.form.type === 1) {
           index = 0
         } else if (this.form.type === 2) {
           index = 1
+        } else {
+          return []
         }
         for (let i = 0; i < typeData.COMPANY_TYPE[index].industry.length; i++) {
           let item = {
@@ -643,6 +716,7 @@
         return items
       },
       prizeOptions() {
+        console.log('prizeOptions', this.form.type)
         let items = []
         for (let i = 0; i < typeData.DESIGN_CASE_PRICE_OPTIONS.length; i++) {
           let item = {
