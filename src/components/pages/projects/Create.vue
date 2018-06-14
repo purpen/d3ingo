@@ -49,7 +49,7 @@ export default {
     font-family: PingFangSC-Thin, "Microsoft Yahei"
   }
   .name {
-    width: 500px;
+    width: 530px;
     height: 50px;
     background: rgba(255,255,255,0.30);
     border: 0.5px solid rgba(255,255,255,0.40);

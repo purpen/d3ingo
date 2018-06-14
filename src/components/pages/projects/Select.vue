@@ -7,7 +7,7 @@
         :xs="12" :sm="4" :md="4" :lg="4"
         :class="['item', {'active': item === ele.type}]"
         @click.native="item = ele.type">
-          <span class="item-bg"></span>
+          <span :class="['item-bg', 'item-bg'+ ele.type]"></span>
           <p class="item-name">{{ele.name}}</p>
         </el-col>
       </el-row>
@@ -28,7 +28,7 @@ export default {
   data() {
     return {
       id: 0,
-      item: -1,
+      item: 0,
       imgList: [
         {
           name: '产品设计',
@@ -51,7 +51,7 @@ export default {
         .then(res => {
           if (res.data.meta.status_code === 200) {
             this.selectObject = res.data.data.item
-            this.item = this.selectObject.type || Number(this.$route.query.type) || -1
+            this.item = this.selectObject.type || 0
           } else {
             this.$message.error(res.data.meta.message)
           }
@@ -65,11 +65,19 @@ export default {
         this.$message.error('请选择设计类型')
         return
       }
-      this.$router.push({name: 'projectType', params: {id: this.id}, query: {type: this.item}})
+      this.$http.put(api.demandId.format(this.id), {
+        type: this.item
+      }).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.$router.push({name: 'projectType', params: {id: this.id}})
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      })
     }
   },
   created() {
-    this.id = Number(this.$route.params.id)
+    this.id = parseInt(this.$route.params.id)
     this.getDemandObj()
   }
 }
@@ -107,7 +115,10 @@ export default {
     margin: 20px auto;
     width: 120px;
     height: 120px;
-    background: rgba(255, 255, 255, 0.5)
+    background: url(../../../assets/images/project/ProductDesign.png) no-repeat center / contain;
+  }
+  .item-bg2 {
+    background: url(../../../assets/images/project/Graphic.png) no-repeat center / contain;
   }
   .item-name {
     padding-bottom: 20px;

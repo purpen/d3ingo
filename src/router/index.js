@@ -453,6 +453,18 @@ let routes = [
     },
     component: require('@/components/pages/projects/Info')
   },
+  // 匹配公司
+  {
+    path: '/projects/match/:id',
+    name: 'projectMatch',
+    meta: {
+      title: '匹配公司',
+      requireAuth: true,
+      hideFooter: true,
+      isDesignInc: 1
+    },
+    component: require('@/components/pages/projects/Match')
+  },
   // 发布需求(第二步) 选择领域
   {
     path: '/item/submit_type/:id',

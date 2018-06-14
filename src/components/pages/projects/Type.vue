@@ -1,7 +1,7 @@
 <template>
   <div class="full-height">
     <div class="project-cover clearfix">
-      <div class="project-item-box">
+      <div class="project-item-box" v-if="type">
         <h3>请确定设计项目类型</h3>
         <div class="item items-flex">
           <i :class="{'active': designType.indexOf(ele.id) !== -1}" v-for="(ele, index) in COMPANY_TYPE[type - 1]['designType']"
@@ -19,52 +19,66 @@
                 </el-option>
               </el-select>
             </div>
+            <h3>产品功能描述</h3>
+            <div class="item">
+              <el-form :model="form">
+                <el-form-item
+                  prop="product_features"
+                  :rules="{
+                    required: true, message: '描述不能为空', trigger: 'blur'
+                  }">
+                <el-input
+                  type="textarea"
+                  :autosize="{ minRows: 4}"
+                  placeholder="请详细描述该产品的主要功能，以帮助设计公司进一步了解项目的实际功能与诉求。"
+                  v-model="form.product_features"
+                ></el-input>
+                </el-form-item>
+              </el-form>
+            </div>
         </section>
         <section v-if="type === 2">
-          <!-- <h3>请确定设计项目类型</h3>
-          <div class="item items-flex">
-            <el-button :class="{'active': designType.indexOf(ele.id) !== -1}" v-for="(ele, index) in COMPANY_TYPE[type - 1]['designType']"
-            :key="index"
-              @click="addDesignType(ele.id)">{{ele.name}}</el-button>
-          </div> -->
           <h3>项目现状</h3>
           <div class="item items-radio">
             <span>
-              <i :class="{'active': form.current === 1}" @click="addRadio(1, 'current')">改良/再设计 (针对已有网站/APP的用户)</i>
+              <i :class="{'active': form.stage === 1}" @click="addRadio(1, 'stage')">改良/再设计 (针对已有网站/APP的用户)</i>
             </span>
             <span>
-              <i :class="{'active': form.current === 2}" @click="addRadio(2, 'current')">全新设计（针对0基础产品）</i>
+              <i :class="{'active': form.stage === 2}" @click="addRadio(2, 'stage')">全新设计（针对0基础产品）</i>
             </span>
           </div>
-          <h3>现有设计内容</h3>
+          <h3>现有设计内容</h3>{{form.complete_content}}
           <div class="item items-radio">
             <span v-for="(ele, index) in designContent" :key="index">
-              <i :class="{'active': form.exist === ele.id}" @click="addRadio(ele.id, 'exist')">{{ele.name}}</i>
+              <i :class="{'active': form.complete_content.indexOf(ele.id) !== -1}"
+                @click="addArray(ele.id, 'complete_content')">{{ele.name}}</i>
+            </span>
+            <span :class="['hidden', {'show': form.complete_content.indexOf(5) !== -1}]">
+              <el-input type="text" v-model="form.other_content" placeholder="请输入..."></el-input>
             </span>
           </div>
+          <h3>项目需求描述</h3>
+          <div class="item">
+            <el-form :model="form">
+              <el-form-item
+                prop="summary"
+                :rules="{
+                  required: true, message: '描述不能为空', trigger: 'blur'
+                }">
+              <el-input
+                type="textarea"
+                :autosize="{ minRows: 4}"
+                placeholder="请详细描述该产品的主要功能，以帮助设计公司进一步了解项目的实际功能与诉求。"
+                v-model="form.summary"
+              ></el-input>
+              </el-form-item>
+            </el-form>
+          </div>
         </section>
-        <h3 v-if="type === 1">产品功能描述</h3>
-        <h3 v-else>项目需求描述</h3>
-        <div class="item">
-          <el-form :model="form">
-            <el-form-item
-              prop="description"
-              :rules="{
-                required: true, message: '描述不能为空', trigger: 'blur'
-              }">
-            <el-input
-              type="textarea"
-              :autosize="{ minRows: 4}"
-              placeholder="请详细描述该产品的主要功能，以帮助设计公司进一步了解项目的实际功能与诉求。"
-              v-model="form.description"
-            ></el-input>
-            </el-form-item>
-          </el-form>
-        </div>
       </div>
       <div class="project-foot">
         <div class="buttons clearfix">
-          <router-link :to="{name: 'projectSelect', params: {id: id}, query: {type: type}}">返回上一步</router-link>
+          <router-link :to="{name: 'projectSelect', params: {id: id}}">返回上一步</router-link>
           <button @click="submit" class="fr middle-button full-red-button">下一步</button>
         </div>
       </div>
@@ -72,21 +86,17 @@
   </div>
 </template>
 <script>
-// import api from '@/api/api'
+import api from '@/api/api'
 import {COMPANY_TYPE} from '@/config'
 export default {
   name: '',
   data() {
     return {
       id: -1,
-      type: -1,
+      type: 0,
       designType: [],
-      form: {
-        description: '',
-        field: '',
-        current: '',
-        exist: ''
-      },
+      form: {},
+      other: '',
       designContent: [
         {
           id: 1,
@@ -117,6 +127,32 @@ export default {
     }
   },
   methods: {
+    getDemandObj() {
+      if (this.id) {
+        this.$http.get(api.demandId.format(this.id))
+        .then(res => {
+          console.log(res.data.data.item)
+          if (res.data.meta.status_code === 200) {
+            this.form = res.data.data.item
+            if (!this.form.complete_content) {
+              this.form.complete_content = []
+            }
+            this.designType = this.form.design_types
+            if (this.form.type) {
+              this.type = this.form.type
+            } else {
+              this.$message.error('请选择类型')
+              this.$router.push({name: 'projectSelect', params: {id: this.id}})
+              return
+            }
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(err => {
+          console.error(err.message)
+        })
+      }
+    },
     addDesignType(id) {
       let index = this.designType.indexOf(id)
       if (index === -1) {
@@ -126,36 +162,86 @@ export default {
       }
     },
     addRadio(val, type) {
-      this.form[type] = val
+      this.$set(this.form, type, val)
+    },
+    addArray(val, type) {
+      let array = this.form[type] || []
+      if (array) {
+        let index = array.indexOf(val)
+        if (index === -1) {
+          array.push(val)
+        } else {
+          array.splice(index, 1)
+        }
+      } else {
+        array.push(val)
+      }
+      // this.$set(this.form, type, array)
+      this.form = Object.assign({}, this.form, {
+        type: array
+      })
     },
     submit() {
+      let row = {}
       if (this.type === 1) {
-        if (!this.designType.length || !this.form.description || !this.form.field) {
+        if (!this.designType.length || !this.form.product_features || !this.form.field) {
           this.$message.error('请完善内容')
           return
+        }
+        row = {
+          design_types: JSON.stringify(this.designType),
+          field: this.form.field,
+          product_features: this.form.product_features
         }
       } else if (this.type === 2) {
-        if (!this.designType.length || !this.form.description || !this.form.current || !this.form.exist) {
+        if (!this.designType.length || !this.form.summary || !this.form.complete_content.length || !this.form.stage) {
           this.$message.error('请完善内容')
           return
+        } else {
+          if (this.form.complete_content.indexOf(5) !== -1) {
+            if (!this.form.other_content) {
+              this.$message.error('请完善内容')
+            }
+          }
+        }
+        row = {
+          design_types: JSON.stringify(this.designType),
+          stage: this.form.stage,
+          complete_content: JSON.stringify(this.form.complete_content),
+          other_content: this.form.other_content,
+          summary: this.form.summary
         }
       }
-      this.$router.push({name: 'projectInfo', params: {id: this.id}, query: {type: this.type}})
-      // this.$http.put(api.ProductDesignId, {
-      // })
+      this.$http.put(api.ProductDesignId.format(this.id), row)
+      .then(res => {
+        if (res.data.meta.status_code === 200) {
+          // console.log(res)
+          this.$router.push({name: 'projectInfo', params: {id: this.id}})
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      })
     }
   },
   watch: {
+    form: {
+      handler(val) {
+        if (val.complete_content.indexOf(5) === -1) {
+          this.$set(this.form, 'other_content', '')
+        }
+      },
+      deep: true
+    }
   },
   created() {
-    this.type = Number(this.$route.query.type) || -1
     this.id = Number(this.$route.params.id) || -1
+    this.getDemandObj()
   }
 }
 </script>
 <style scoped>
   .project-item-box {
-    max-width: 580px;
+    max-width: 640px;
   }
   h3 {
     font-size: 18px;
@@ -261,5 +347,13 @@ export default {
     background: rgba(255,255,255,0.30);
     border: 1px solid rgba(255,255,255,0.40);
     color: #fff;
+  }
+  .hidden .el-input__inner {
+    height: 40px;
+    opacity: 0;
+    transition: 0.268s all ease
+  }
+  .show .el-input__inner {
+    opacity: 1;
   }
 </style>
