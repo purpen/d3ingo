@@ -148,20 +148,15 @@
                 </el-col>
               </el-row>
               <el-row :gutter="24">
-                <el-col :span="24">
-                  <p class="">地址</p>
-                </el-col>
                   <el-col :span="12" class="content">
-                    <el-form label-position="top" label-width="50px">
-                      <region-picker :provinceProp="form.province" :cityProp="form.city"  :isFirstProp="true" :districtProp="form.area" titleProp="" @onchange="changeServer"></region-picker>
+                      <region-picker :provinceProp="form.province" :cityProp="form.city"  :isFirstProp="true" :districtProp="form.area" titleProp="公司地址" @onchange="changeServer"></region-picker>
   
                       <!-- :provinceProp="province" :cityProp="city" :districtProp="district"
                         :isFirstProp="isFirst" titleProp="" propStyle="margin: 0;"
                       @onchange="change" -->
                       <el-form-item label="" prop="address" style="margin-top: 10px">
-                        <el-input v-model="form.address" name="address" ref="address" placeholder="街道地址"></el-input>
+                        <el-input v-model="form.address" placeholder="街道地址"></el-input>
                       </el-form-item>
-                    </el-form>
                   </el-col>
               </el-row>
               <el-row :gutter="24">
@@ -368,6 +363,21 @@
           ],
           document_type: [
             {type: 'number', required: true, message: '请选择法人证件类型', trigger: 'change'}
+          ],
+          contact_name: [
+            {required: true, message: '请添写联系人姓名', trigger: 'blur'}
+          ],
+          position: [
+            {required: true, message: '请添写联系人职位', trigger: 'blur'}
+          ],
+          phone: [
+            {required: true, message: '请添写联系人电话', trigger: 'blur'}
+          ],
+          email: [
+            {required: true, message: '请添写联系人邮箱', trigger: 'blur'}
+          ],
+          address: [
+            {required: true, message: '请添写公司地址', trigger: 'blur'}
           ]
         }
       }
@@ -382,6 +392,15 @@
         that.$refs[formName].validate((valid) => {
           // 验证通过，提交
           if (valid) {
+            if (!that.form.province) {
+              that.$message.error('请选择所在省份')
+              return false
+            }
+            if (!that.form.city) {
+              that.$message.error('请选择所在城市')
+              return false
+            }
+
             let row = {
               registration_number: that.form.registration_number,
               company_name: that.form.company_name,
@@ -395,7 +414,8 @@
               phone: that.form.phone,
               province: that.form.province,
               area: that.form.area,
-              city: that.form.city
+              city: that.form.city,
+              address: that.form.address
             }
 
             // let row = {
@@ -440,7 +460,7 @@
       changeServer: function(obj) {
         this.$set(this.form, 'province', obj.province)
         this.$set(this.form, 'city', obj.city)
-        this.$set(this.form, 'area', obj.area)
+        this.$set(this.form, 'area', obj.district)
       },
       // 返回基本信息页
       returnBase() {
