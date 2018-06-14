@@ -20,6 +20,9 @@
               <img :src="require('assets/images/item/to-examine@2x.png')" alt="认证中">
               <h3>您的实名认证正在审核中</h3>
               <p>请耐心等待...</p>
+              <router-link :to="{name: 'vcenterComputerIdentification'}" class="item">
+                <el-button class="is-custom" type="primary">重新修改</el-button>
+              </router-link>
             </section>
             <section v-if="item.verify_status === 1">
               <div class="verify verify-success">
