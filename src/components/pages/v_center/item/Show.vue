@@ -1,8 +1,8 @@
 <template>
-  <div class="container">
+  <div class="container" style="width: 100%">
     <div class="blank20"></div>
 
-    <el-breadcrumb separator="/" class="bread">
+    <el-breadcrumb separator="/" class="bread" style="padding-left: 150px;">
       <el-breadcrumb-item :to="{ name: 'home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ name: 'vcenterItemList' }">项目列表</el-breadcrumb-item>
       <el-breadcrumb-item>详情</el-breadcrumb-item>
@@ -12,7 +12,7 @@
       <v-item-progress :progressButt="progressButt" :progressContract="progressContract"
                        :progressItem="progressItem"></v-item-progress>
 
-      <el-col :span="isMob ? 24 : 18">
+      <el-col :span="isMob ? 24 : 16">
         <div class="content">
           <div :class="[{'banner-m' : isMob}, 'banner']">
             <img v-show="statusIconUrl" class="" :src="statusIconUrl" width="100"/>
@@ -85,9 +85,9 @@
                         </div>
                       </el-col>
                       <el-col
-                        :xs="24" 
-                        :sm="d.cases.length ? 12 : 10" 
-                        :md="d.cases.length ? 12 : 10" 
+                        :xs="24"
+                        :sm="d.cases.length ? 12 : 10"
+                        :md="d.cases.length ? 12 : 10"
                         :lg="d.cases.length ? 12 : 10">
                         <div class="company-title">
                           <h3 class="company-name">
@@ -167,7 +167,7 @@
                   </div>
                   <div class="clear"></div>
                   <div class="item-bj" v-if="d.quotation">
-                    <p class="tc-2 protrude">项目报价:  <span class="tc-6 p-price fw-normal">{{ d.quotation.price }} 元</span> <span class="quota-btn tc-6 fw-normal">&nbsp;&nbsp;<a 
+                    <p class="tc-2 protrude">项目报价:  <span class="tc-6 p-price fw-normal">{{ d.quotation.price }} 元</span> <span class="quota-btn tc-6 fw-normal">&nbsp;&nbsp;<a
                     class="tc-red"
                     href="javascript:void(0);" @click="showQuotaBtn(d.quotation)">详情>></a></span></p>
                     <p class="tc-2 protrude">报价说明: <span class="tc-6 fw-normal">{{ d.quotation.summary }}</span></p>

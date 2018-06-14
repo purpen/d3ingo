@@ -1632,7 +1632,7 @@ const vQuoteView = () => import('@/components/block/QuoteView')
     .btn-quo button {
       width: 100%
     }
-    
+
     .btn-quo button:nth-child(2) {
       margin: 20px 0 0 0
     }
@@ -1657,6 +1657,12 @@ const vQuoteView = () => import('@/components/block/QuoteView')
 </style>
 
 <style>
+  .el-step__head{
+    width: 12px !important;
+    height: 12px !important;
+    line-height:12px !important;
+    vertical-align: baseline !important;
+  }
   .el-step__head.is-text.is-process {
     color: #FFF;
     background-color: #00ac84!important;
@@ -1664,8 +1670,9 @@ const vQuoteView = () => import('@/components/block/QuoteView')
   }
 
   .el-step__head .el-step__line.is-vertical  {
+    display: none;
     position: absolute;
-    top: 28px;
+    top: 12px;
     left: 13px;
   }
 
@@ -1674,7 +1681,8 @@ const vQuoteView = () => import('@/components/block/QuoteView')
   }
 
   .el-step__head .el-step__icon {
-    line-height: 24px;
+    line-height: 12px;
+    display: none;
   }
   .el-step__main .el-step__title.is-process {
     color: #00ac84
@@ -1683,8 +1691,9 @@ const vQuoteView = () => import('@/components/block/QuoteView')
     color: #999;
   }
   .el-step .el-step__head.is-text.is-wait {
-    color: #d2d2d2;
-    border-color: #ededed;
+    opacity: 0.5;
+    background: #E6E6E6;
+    /*border-color: #ededed;*/
   }
   .is-wait .el-step__line {
     background-color: #ededed
