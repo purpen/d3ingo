@@ -429,6 +429,30 @@ let routes = [
     },
     component: require('@/components/pages/projects/Select')
   },
+  // 选择类型
+  {
+    path: '/projects/type/:id',
+    name: 'projectType',
+    meta: {
+      title: '填写需求',
+      requireAuth: true,
+      hideFooter: true,
+      isDesignInc: 1
+    },
+    component: require('@/components/pages/projects/Type')
+  },
+  // 选择类型
+  {
+    path: '/projects/info/:id',
+    name: 'projectInfo',
+    meta: {
+      title: '补全需求信息',
+      requireAuth: true,
+      hideFooter: true,
+      isDesignInc: 1
+    },
+    component: require('@/components/pages/projects/Info')
+  },
   // 发布需求(第二步) 选择领域
   {
     path: '/item/submit_type/:id',

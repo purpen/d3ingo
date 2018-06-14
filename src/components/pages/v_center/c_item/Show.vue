@@ -1133,7 +1133,7 @@ const vQuoteView = () => import('@/components/block/QuoteView')
 
             self.tableData = tab.concat(itemTab)
           } else {
-            this.$message.error(response.data.meta.message)
+            self.$message.error(response.data.meta.message)
           }
         })
         .catch(function (error) {
@@ -1151,7 +1151,7 @@ const vQuoteView = () => import('@/components/block/QuoteView')
               self.uploadUrl = response.data.data.upload_url
             }
           } else {
-            this.$message.error(response.data.meta.message)
+            self.$message.error(response.data.meta.message)
           }
         })
         .catch(function (error) {

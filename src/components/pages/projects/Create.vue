@@ -1,6 +1,6 @@
 <template>
-  <div class="create">
-    <div class="cover">
+  <div class="full-height">
+    <div class="project-cover">
       <div class="content">
         <h2>您需要设计什么？</h2>
         <input class="name" v-model="name" placeholder="输入要设计的名称,比如：杯子设计">
@@ -43,19 +43,6 @@ export default {
 </script>
 
 <style scoped>
-  .create {
-    height: 100%;
-    background: url(../../../assets/images/project/CreateBackground.png) no-repeat center / cover
-  }
-  .cover {
-    height: 100%;
-    color: #fff;
-    background: rgba(0, 0, 0, 0.75);
-    font-size: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
   h2 {
     padding-bottom: 20px;
     font-size: 24px;
