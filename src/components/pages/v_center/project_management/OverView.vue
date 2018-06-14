@@ -82,20 +82,30 @@
         </div>
       </div>
     </section>
-    <aside class="aside animated slideInRight" v-if="isitemedit">
+    <aside class="aside tc-6 animated slideInRight" v-if="isitemedit">
       <div class="aside-title fx">
         <i class="fx fx-icon-delete2" @click="dialogVisible=true"></i>
         <span class="tc-2">项目阶段设置</span>
         <p class="fx fx-icon-close-sm" @click="isitemedit=false"></p>
       </div>
       <div class="aside-task-pregress bg-success"
-        v-if="formup.status">
+        v-if="formup.status&&formup.statistical===100">
         已完成
       </div>
       <div class="aside-task-pregress bg-exception"
         v-if="!formup.status&&(formTack.left+parseInt(formTack.duration) <= newleft)"
       >
         已逾期
+      </div>
+      <div class="statistical-pro">
+        <el-progress :percentage="formup.statistical"
+        :stroke-width="20"
+        :show-text="false"
+        >
+        </el-progress>
+        <div class="pro">
+          完成度&nbsp;{{formup.statistical}}%
+        </div>
       </div>
       <ul class="aside-content">
         <li class="designStage-name">
@@ -120,7 +130,7 @@
         </li>
         <li class="design-duration">
           <i></i>
-          <div>
+          <div class="formup-duration">
             {{formup.duration}}天
           </div>
         </li>
@@ -141,7 +151,7 @@
           <i></i>
           <el-input
               type="textarea"
-              :autosize="{ minRows: 4, maxRows: 10}"
+              :autosize="{ minRows: 1, maxRows: 10}"
               :maxlength=200
               placeholder="请输入内容"
               v-model="formup.content"
@@ -162,7 +172,7 @@
           <span>添加子阶段</span>
         </div>
       </div>
-      <ul class="tack-list scroll" v-if="formup.design_substage
+      <ul class="tack-list" v-if="formup.design_substage
       ">
         <li v-for="(itemup,indexip) in formup.design_substage" :key="indexip">
           <el-checkbox v-model="itemup.status"
@@ -179,234 +189,254 @@
       </ul>
       
     </aside>
-    <transition name="el-fade-in-linear" v-if="istaskedit">
-      <aside class="aside">
-        <div class="aside-title fx">
-          <i class="fx fx-icon-delete2" @click="dialogTask=true"></i>
-          <span class="tc-2">子阶段设置</span>
-          <p class="fx fx-icon-close-sm" @click="cancelTack()"></p>
-        </div>
-        <div class="aside-task-pregress bg-success"
-          v-if="formTackstatus">
-          已完成
-        </div>
-        <div class="aside-task-pregress bg-exception"
-          v-if="!formTackstatus&&(formTack.left+parseInt(formTack.duration) <= newleft)"
-        >
-          已逾期
-        </div>
-        <ul class="aside-content">
-          <li class="designStage-name">
-            <span>
-              <el-checkbox v-model="formTackstatus" @change="desCompletes()">
-              </el-checkbox>
-            </span>
-            <el-input 
-              v-model="formTack.name"
-              placeholder="子阶段名称"
-              :class="['noborder', {'success':formTackstatus}]"
-              @blur="updataTack()"
-            >
-            </el-input>
-          </li>
-          <li class="task-userimg">
-            <span @click="seeuser()">分配给</span>
-            <i class="userimg" @click="seeuser()" v-if="!formTack.log"></i>
-            <img class="user" :src="formTack.log" alt="" v-if="formTack.log" @click="seeuser()">
-            <div class="userlist" v-if="isuserimg">
-              <p>
-                查看成员
-                <i class="fr fx-icon-nothing-close-error" @click="isuserimg=false"></i>
-              </p>
-              <div>
-                <el-input
-                   placeholder="搜索成员"
-                   v-model="searcher"
-                >
-                </el-input>
-              </div>
-              <ul class="options scroll-bar">
-                <li v-for="(op,indexop) in options" :key="indexop" 
-                  @click="checkeds(op)" :class="op.isckeck?'active':''"
-                  v-if="!isSearch"
-                >
-                  <img :src='op.logo_image.logo' alt="">
-                  {{op.realname}}
-                </li>
-                <li v-for="(s,indexs) in search" :key="indexs" 
-                  @click="checkeds(s)" :class="s.isckeck?'active':''"
-                  v-if="isSearch"
-                >
-                  <img :src='s.logo_image.logo' alt="">
-                  {{s.realname}}
-                </li>
-                <li v-if="!search.length&&isSearch" class="no-match">
-                  <span>没有搜索到相关人员～</span>
-                </li>
-              </ul>
-            </div>
-          </li>
-          <li class="task-itemdesname">
-            <i></i>
-            上级项目阶段: {{itemdesname}}
-          </li>
-          <li class="design-duration">
-            <i></i>
+    <aside class="aside tc-6 animated slideInRight" v-if="istaskedit">
+      <div class="aside-title fx">
+        <i class="fx fx-icon-delete2" @click="dialogTask=true"></i>
+        <span class="tc-2">子阶段设置</span>
+        <p class="fx fx-icon-close-sm" @click="cancelTack()"></p>
+      </div>
+      <div class="aside-task-pregress bg-success"
+        v-if="formTackstatus">
+        已完成
+      </div>
+      <div class="aside-task-pregress bg-exception"
+        v-if="!formTackstatus&&(formTack.left+parseInt(formTack.duration) <= newleft)"
+      >
+        已逾期
+      </div>
+      <ul class="aside-content">
+        <li class="designStage-name">
+          <span>
+            <el-checkbox v-model="formTackstatus" @change="desCompletes()">
+            </el-checkbox>
+          </span>
+          <el-input 
+            v-model="formTack.name"
+            placeholder="子阶段名称"
+            :class="['noborder', {'success':formTackstatus}]"
+            @blur="updataTack()"
+          >
+          </el-input>
+        </li>
+        <li class="task-userimg">
+          <span @click="seeuser()">分配给</span>
+          <i class="userimg" @click="seeuser()" v-if="!formTack.log"></i>
+          <img class="user" :src="formTack.log" alt="" v-if="formTack.log" @click="seeuser()">
+          <div class="userlist" v-if="isuserimg">
+            <p>
+              查看成员
+              <i class="fr fx-icon-nothing-close-error" @click="isuserimg=false"></i>
+            </p>
             <div>
-              <el-input 
-                placeholder="投入时间设置" 
-                v-model="formTackduration"
-                :maxlength="3"
-                class="noborder"
-                @blur.stop="upDateDuration()"
+              <el-input
+                  placeholder="搜索成员"
+                  v-model="searcher"
               >
-                <template slot="append">工作日</template>
               </el-input>
             </div>
-          </li>
-          <li class="formup-time">
-            <i></i>
-            <div class="block">
-                <el-date-picker
-                type="date"
-                v-model="formTacktime"
-                placeholder="开始日期设置"
-                class="noborder"
-                @change="upDateDuration"
-               >
-                </el-date-picker>
-              </div>
-          </li>
-          <li class="design-nodeName">
-            <i></i>
-            <el-input
-                placeholder="添加节点"
-                v-model="formNode.name"
-                class="noborder"
-                @blur="createNode()"
-                >
-            </el-input>
-          </li>
-          <li class="design-content">
-            <i></i>
-            <el-input
-                type="textarea"
-                :autosize='{ minRows: 4, maxRows: 6 }'
-                placeholder="子阶段描述"
-                v-model="formTack.summary"
-                class="noborder"
-                @blur="updataTack()"
-                >
-            </el-input>
-          </li>
-        </ul>
-      </aside>
-    </transition>
-    <transition name="el-fade-in-linear" v-if="isnodeedit">
-      <aside class="aside">
-        <div class="aside-title fx">
-          <i class="fx fx-icon-delete2" @click="dialogTask=true"></i>
-          <span class="tc-2">节点设置</span>
-          <p class="fx fx-icon-close-sm" @click="isnodeedit = false"></p>
-        </div>
-        <ul class="aside-content">
-          <li class="designStage-name">
-            <span>
-              <el-checkbox v-model="formNodeStatus"
-                @change="editNodeStatus()"
+            <ul class="options scroll-bar">
+              <li v-for="(op,indexop) in options" :key="indexop" 
+                @click="checkeds(op)" :class="op.isckeck?'active':''"
+                v-if="!isSearch"
               >
-              </el-checkbox>
-            </span>
-            <el-input 
-              v-model="formNode.name"
-              placeholder="节点名称"
-              class="noborder"
-              @blur.stop="updataNode()"
-            >
-            </el-input>
-          </li>
-          <li class="formup-time">
-            <i></i>
-            <div class="block">
-                <el-date-picker
-                type="date"
-                v-model="formNodetime"
-                placeholder="开始日期设置"
-                class="noborder"
-                @change="editNodetime"
-               >
-                </el-date-picker>
-              </div>
-          </li>
-          <li class="owner">
-              <el-checkbox v-model="formNode.is_owner"
-              :true-label="1"
-              :false-label="0"
-              :style="{color:formNodeowner?'red':''}"
-              @change="updataNode()"
-              >
-                甲方参与
-              </el-checkbox>
-          </li>
-        </ul>
-        <div>
-          <div class="node-file" tabindex="-1">
-            <i></i>
-              交付文件
-            <ul>
-              <li class="file-local">
-                <el-upload
-                  class="upload-demo"
-                  :action="uploadUrl"
-                  :data="uploadParam"
-                  :on-progress="uploadProgress"
-                  :on-success="uploadSuccess"
-                  :show-file-list="false"
-                  multiple
-                    >
-                  <i></i>
-                  从本地上传
-                </el-upload>
+                <img :src='op.logo_image.logo' alt="">
+                {{op.realname}}
               </li>
-              <li class="file-SkyDrive">
-                <i></i>
-                从设计云盘中选择
+              <li v-for="(s,indexs) in search" :key="indexs" 
+                @click="checkeds(s)" :class="s.isckeck?'active':''"
+                v-if="isSearch"
+              >
+                <img :src='s.logo_image.logo' alt="">
+                {{s.realname}}
+              </li>
+              <li v-if="!search.length&&isSearch" class="no-match">
+                <span>没有搜索到相关人员～</span>
               </li>
             </ul>
           </div>
-          <div class="file-edit">
-            <div class="files filesdl" v-for="(f,indexf) in fileLists" :key="indexf+'a'" 
-            v-if="f.percentage!==100"
+        </li>
+        <li class="task-itemdesname">
+          <i></i>
+          上级项目阶段: {{itemdesname}}
+        </li>
+        <li class="task-type">
+          <i></i>
+          <el-select v-model="formTacktype" placeholder="请选择"
             >
-              <i class="video"></i>
-              <div class="files-content">
-                <div class="files-name">
-                  <span>{{f.name}}</span>
-                  <span>{{f.prog}}/{{f.size}}</span>
-                </div>
-                <el-progress :percentage="f.percentage"
-                  :show-text="false"
-                  v-if="f.percentage!==100"
-                >
-                </el-progress>
-              </div>
+            <el-option
+              v-for="item in tackTypes"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+              @change="updataTack()"
+              >
+            </el-option>
+          </el-select>
+        </li>
+        <li class="design-duration">
+          <i></i>
+          <div>
+            <el-input 
+              placeholder="投入时间设置" 
+              v-model="formTackduration"
+              :maxlength="3"
+              @blur.stop="upDateDuration()"
+            >
+              <template slot="append">天</template>
+            </el-input>
+          </div>
+        </li>
+        <li class="formup-time">
+          <i></i>
+          <div class="block">
+              <el-date-picker
+              type="date"
+              v-model="formTacktime"
+              placeholder="开始日期设置"
+              @change="upDateDuration"
+              >
+              </el-date-picker>
             </div>
-            <div class="files" v-for='(as,indexas) in formNode.asset' :key="indexas">
-              <i class="video"></i>
-              <div class="files-content">
-                <div class="files-name">
-                  <span>{{as.name}}</span>
-                  <div>
-                    <span>下载</span>
-                    <span @click="deleteup(as.id)">删除</span>
-                  </div>
+        </li>
+        <li class="design-content">
+          <i></i>
+          <el-input
+              type="textarea"
+              :autosize='{ minRows: 1, maxRows: 6 }'
+              placeholder="子阶段描述"
+              v-model="formTack.summary"
+              @blur="updataTack()"
+              >
+          </el-input>
+        </li>
+      </ul>
+      <div class="task-files">
+        <div class="task-filesicon">
+          <i></i>
+          交付文件
+        </div>
+      </div>
+    </aside>
+    <aside class="aside tc-6 animated slideInRight" v-if="isnodeedit">
+      <div class="aside-title fx">
+        <i class="fx fx-icon-delete2" @click="dialogTask=true"></i>
+        <span class="tc-2">里程碑设置</span>
+        <p class="fx fx-icon-close-sm" @click="istaskedit = false"></p>
+      </div>
+      <ul class="aside-content">
+        <li class="designStage-name">
+          <span>
+            <el-checkbox v-model="formTackstatus" @change="desCompletes()"
+            >
+            </el-checkbox>
+          </span>
+          <el-input 
+            v-model="formTack.name"
+            placeholder="里程碑名称"
+            :class="['noborder',{'success':formTackstatus}]"
+            @blur.stop="updataNode()"
+          >
+          </el-input>
+        </li>
+        <li class="task-itemdesname">
+          <i></i>
+          上级项目阶段: {{itemdesname}}
+        </li>
+        <li class="task-switch">
+          <i></i>
+          <el-select v-model="formTack.type" placeholder="请选择" @change="updataTack()"
+            >
+            <el-option
+              v-for="item in tackTypes"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+              >
+            </el-option>
+          </el-select>
+        </li>
+        <li class="formup-time">
+          <i></i>
+          <div class="block">
+              <el-date-picker
+              type="date"
+              v-model="formTacktime"
+              placeholder="开始日期设置"
+              class="noborder"
+              @change="editNodetime"
+              >
+              </el-date-picker>
+            </div>
+        </li>
+        <li class="design-content">
+          <i></i>
+          <el-input
+              type="textarea"
+              :autosize='{ minRows: 1, maxRows: 6 }'
+              placeholder="里程碑描述"
+              v-model="formTack.summary"
+              @blur="updataTack()"
+              >
+          </el-input>
+        </li>
+      </ul>
+      <div>
+        <div class="node-file" tabindex="-1">
+          <i></i>
+            交付文件
+          <ul>
+            <li class="file-local">
+              <el-upload
+                class="upload-demo"
+                :action="uploadUrl"
+                :data="uploadParam"
+                :on-progress="uploadProgress"
+                :on-success="uploadSuccess"
+                :show-file-list="false"
+                multiple
+                  >
+                <i></i>
+                从本地上传
+              </el-upload>
+            </li>
+            <li class="file-SkyDrive">
+              <i></i>
+              从设计云盘中选择
+            </li>
+          </ul>
+        </div>
+        <div class="file-edit">
+          <div class="files filesdl" v-for="(f,indexf) in fileLists" :key="indexf+'a'" 
+          v-if="f.percentage!==100"
+          >
+            <i class="video"></i>
+            <div class="files-content">
+              <div class="files-name">
+                <span>{{f.name}}</span>
+                <span>{{f.prog}}/{{f.size}}</span>
+              </div>
+              <el-progress :percentage="f.percentage"
+                :show-text="false"
+                v-if="f.percentage!==100"
+              >
+              </el-progress>
+            </div>
+          </div>
+          <div class="files" v-for='(as,indexas) in formNode.asset' :key="indexas">
+            <i class="video"></i>
+            <div class="files-content">
+              <div class="files-name">
+                <span>{{as.name}}</span>
+                <div>
+                  <span>下载</span>
+                  <span @click="deleteup(as.id)">删除</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </aside>
-    </transition>
+      </div>
+    </aside>
     <section class="top-progress">
       <div class="h3 fz-20">{{itemName}}</div>
       <el-progress 
@@ -571,7 +601,7 @@
                             {{des.duration}}天
                         </el-col>
                         <el-col :span="4" class="text-center">
-                          10%
+                          {{des.statistical}}%
                         </el-col>
                       </el-row>
                     </el-col>
@@ -627,18 +657,20 @@
                       v-for="(tack, indextack) in c.design_substage" 
                       :key="indextack+ 'y'" 
                       :style="{
-                        left:tack.left*30+'px',
-                        width:tack.duration*30-2+'px',
+                        left:tack.type === 2?tack.left*30+4+'px':tack.left*30+'px',
+                        width:tack.type === 2?20+'px':tack.duration*30-2+'px',
                       }"
                       :class="['item-tacklist',{
                         'bgno-border': !tack.status&&(tack.left+parseInt(tack.duration) <= newleft),
-                        'bged-border': tack.status
+                        'bgm-border': !tack.status&&(tack.left+parseInt(tack.duration) <= newleft),
+                        'bged-border': tack.status,
+                        'transform-milestone': tack.type === 2
                       }]"
                       @click.stop.self="editTack(tack,c)"
                       >
                       <div class="bging item-tacking"
                         :style="{
-                          width:(tack.left<=newleft && newleft<(parseInt(tack.left)+parseInt(tack.duration)))?
+                          width:tack.type===2?19+'px':(tack.left<=newleft && newleft<(parseInt(tack.left)+parseInt(tack.duration)))?
                             (parseInt(newleft)+1-parseInt(tack.left))*30-3+'px':tack.duration*30-3+'px',
                           }"
                         v-if="!tack.status&&tack.left <= newleft&&newleft<(parseInt(tack.left)+parseInt(tack.duration))"
@@ -646,34 +678,33 @@
                       >
                       </div>
                       <div :class="['item-tacking',{
-                        'bgno': !tack.status&&(tack.left+parseInt(tack.duration) <= newleft),
-                        'bged': tack.status
-                      }]"
-                      @click.stop="editTack(tack,c)"
-                      v-else>
+                        'bgno': tack.type===1&&!tack.status&&(tack.left+parseInt(tack.duration) <= newleft),
+                        'bged': tack.status,
+                        'bgm':tack.type===2&&!tack.status&&(tack.left+parseInt(tack.duration) <= newleft)
+                        }]"
+                        @click.stop="editTack(tack,c)"
+                        v-else>
                       </div>
-                      <i class="item-start" v-if="indextack === 0"></i>
+                      <i class="item-start" v-if="indextack === 0">
+                      </i>
+                      <div class="isborder" v-if="tack.type === 2">
+
+                      </div>
                       <i
                         :class="['nodebase',{
                           'item-node': tack.status,
                           'item-nodenon': !tack.status && tack.left >= newleft,
                           'item-noded': !tack.status && tack.left < newleft
                         }]"
+                        v-if="tack.type===1"
                       >
                       </i>
-                      <!-- <i class="isowner" v-if="tack.design_stage_node&&tack.design_stage_node.is_owner">
-                      </i>
-
-                      <div class="node-name" v-if="tack.design_stage_node">
-                        <p :style="{width:tack.duration*30+'px'}">
-                          {{tack.design_stage_node.name}}
-                        </p>
-                      </div> -->
                       <div class="task-name text-center">
                         {{tack.name}}
                       </div>
-                      
                     </div>
+
+
                     <div
                      v-if="c.design_substage&&sort==='ismonth'" class="item-tacklist" 
                       v-for="(tack, indextack) in c.design_substage" :key="indextack+ 'y'" :style="{left:tack.left*6.77+'px',width:tack.duration*6.77-1+'px'}"
@@ -690,6 +721,7 @@
                           }"
                         v-if="!tack.status&&tack.left <= newleft&&newleft<(parseInt(tack.left)+parseInt(tack.duration))"
                         @click.stop="editTack(tack,c)"
+
                       >
                       </div>
                       <div :class="['item-tacking',{
@@ -745,7 +777,11 @@
                       :style="{left:c.left*6.77+'px',width:6.77+'px'}">
                     </div>
                     <ul v-if="totaldays" v-for="(tt,indextt) in totaldays" :key="indextt">
-                      <li v-for="(day,indexday) in tt.dayings" :key="indexday" :class="day.new?'bgc':''" v-if="sort === 'isday'" class="dateday">
+                      <li v-for="(day,indexday) in tt.dayings" :key="indexday" :class="['dateday',{
+                        'bgc': day.new,
+                        'bgweek': day.week===6 ||day.week===0
+                        } 
+                        ]" v-if="sort === 'isday'">
                       </li>
                       <li v-for="(day,indexday) in tt.dayings" :key="indexday" :class="day.new?'bgc':''" v-if="sort === 'isweek'" class="dateday">
                       </li>
@@ -881,6 +917,17 @@ export default {
       formNodeStatus: false, // 是否完成节点
       formNodeup: {}, // 节点状态
       formTackup: {},
+      formTacktype: '',
+      tackTypes: [
+        {
+          value: 1,
+          label: '子阶段'
+        },
+        {
+          value: 2,
+          label: '里程碑'
+        }
+      ],
       rules: {
         duration: [
           {
@@ -1226,7 +1273,7 @@ export default {
         console.error(error.message)
       })
     },
-    // 创建子阶段按钮
+    // 创建子阶段
     addtack(des, type) {
       this.itemdesId = des.id
       this.itemdesname = des.name
@@ -1234,10 +1281,20 @@ export default {
       this.isnodeedit = false
       this.istaskedit = false
       this.formTack = {}
+      if (type === 3 || type === 1) {
+        this.formTack.name = '子阶段'
+      }
+      if (type === 2) {
+        this.formTack.name = '新里程'
+      }
       if (type === 3) {
         this.istaskedit = false
-        this.formTack.type = 2
-      } else this.formTack.type = type
+        this.formTack.type = 1
+        this.formTack.duration = des.duration
+      } else {
+        this.formTack.type = type
+        this.formTack.duration = 1
+      }
       this.indesignStage = des
       var time = []
       // 有子阶段时
@@ -1258,9 +1315,7 @@ export default {
         }
       }
       this.formTacktime = (new Date(this.formTack.start_time * 1000)).format('yyyy-MM-dd')
-      this.formTack.duration = 1
       this.formTack.design_stage_id = this.itemdesId
-      this.formTack.name = '子阶段'
       if (this.formTack.execute_user_id === '') {
         delete this.formTack.execute_user_id
       }
@@ -1298,7 +1353,7 @@ export default {
     },
     // 事件和日期改变
     upDateDuration(date) {
-      if (Date.parse(new Date(this.formTacktime)) / 1000 !== this.formTack.start_time || this.formTackduration !== this.formTack.duration || date === 1) {
+      if (Date.parse(new Date(this.formTacktime)) !== Date.parse(new Date(new Date(this.formTacktime).format('yyyy-MM-dd'))) || this.formTackduration !== this.formTack.duration || date === 1) {
         this.formTack.duration = this.formTackduration
         if (isNaN(this.formTack.duration) || !this.formTack.duration) {
           this.$message.error('输入正确的投入天数')
@@ -1368,7 +1423,6 @@ export default {
             }
             this.tackleft(this.designStageLists)
             this.formTack.start_time = fts
-            console.log(res)
           } else {
             this.$message.error(response.data.meta.message)
           }
@@ -1426,8 +1480,14 @@ export default {
       }
       this.formTackstatus = Boolean(this.formTack.status)
       this.isitemedit = false
-      this.isnodeedit = false
-      this.istaskedit = true
+      if (des.type === 1) {
+        this.isnodeedit = false
+        this.istaskedit = true
+      }
+      if (des.type === 2) {
+        this.isnodeedit = true
+        this.istaskedit = false
+      }
       this.formTacktime = (new Date(this.formTack.start_time * 1000)).format('yyyy-MM-dd')
     },
     // 编辑子子阶段状态
@@ -1511,7 +1571,6 @@ export default {
           self.upDateDuration(1)
           for (var i = 0; i < self.indesignStage.design_substage.length; i++) {
             if (self.indesignStage.design_substage[i].id === id) {
-              console.log(self.indesignStage.design_substage[i])
               self.indesignStage.design_substage.splice(i, 1)
               self.dialogTask = false
               self.istaskedit = false
@@ -1526,113 +1585,112 @@ export default {
       })
     },
     // 创建阶段节点
-    createNode() {
-      if (!this.formNode.name) {
-        return
-      }
-      let endt = this.formTack.start_time + this.formTack.duration * 86400
-      this.formNode.design_substage_id = this.formTack.id
-      if (this.formNode.is_owner) {
-        this.formNode.is_owner = 1
-      } else this.formNode.is_owner = 0
-      this.formNode.time = endt
-      this.$http.post(api.dsignStageNodeCreate, this.formNode).then((response) => {
-        if (response.data.meta.status_code === 200) {
-          var res = response.data.data
-          var dessub = this.indesignStage.design_substage
-          for (var f = 0; f < dessub.length; f++) {
-            if (dessub[f].id === res.design_substage_id) {
-              this.editNodeStatus(res.id, dessub[f].status)
-              dessub[f].design_stage_node = res
-            }
-          }
-        } else {
-          this.$message.error(response.data.meta.message)
-        }
-      })
-    },
+    // createNode() {
+    //   if (!this.formNode.name) {
+    //     return
+    //   }
+    //   let endt = this.formTack.start_time + this.formTack.duration * 86400
+    //   this.formNode.design_substage_id = this.formTack.id
+    //   if (this.formNode.is_owner) {
+    //     this.formNode.is_owner = 1
+    //   } else this.formNode.is_owner = 0
+    //   this.formNode.time = endt
+    //   this.$http.post(api.dsignStageNodeCreate, this.formNode).then((response) => {
+    //     if (response.data.meta.status_code === 200) {
+    //       var res = response.data.data
+    //       var dessub = this.indesignStage.design_substage
+    //       for (var f = 0; f < dessub.length; f++) {
+    //         if (dessub[f].id === res.design_substage_id) {
+    //           this.editNodeStatus(res.id, dessub[f].status)
+    //           dessub[f].design_stage_node = res
+    //         }
+    //       }
+    //     } else {
+    //       this.$message.error(response.data.meta.message)
+    //     }
+    //   })
+    // },
     // 编辑阶段节点按钮
-    editNode(node, c) {
-      this.formNodetime = (new Date(node.time * 1000)).format('yyyy-MM-dd')
-      this.isitemedit = false
-      this.istaskedit = false
-      this.isnodeedit = true
-      this.formNode = {...node}
-      this.uploadParam['x:target_id'] = node.id
-      this.formNodeStatus = Boolean(this.formNode.status)
-      this.indesignStage = c
-    },
+    // editNode(node, c) {
+    //   this.formNodetime = (new Date(node.time * 1000)).format('yyyy-MM-dd')
+    //   this.isitemedit = false
+    //   this.istaskedit = false
+    //   this.isnodeedit = true
+    //   this.formNode = {...node}
+    //   this.uploadParam['x:target_id'] = node.id
+    //   this.formNodeStatus = Boolean(this.formNode.status)
+    //   this.indesignStage = c
+    // },
     // 编辑节点完成状态
-    editNodeStatus(nid, nst) {
-      if (this.formNodeup.status !== Boolean(this.formNode.status) || nid) {
-        if (nid) {
-          this.formNodeup.status = Number(nst)
-          this.formNodeup.stage_node_id = nid
-        } else {
-          this.formNodeup.status = Number(this.formNodeStatus)
-          this.formNodeup.stage_node_id = this.formNode.id
-        }
-        this.$http.put(api.designStageNodeCompletes.format(this.formNodeup.stage_node_id), this.formNodeup).then((response) => {
-          if (response.data.meta.status_code === 200) {
-            let node = this.indesignStage.design_substage
-            for (var i = 0; i < node.length; i++) {
-              if (node[i].design_stage_node && node[i].design_stage_node.id === response.data.data.id) {
-                node[i].design_stage_node.status = response.data.data.status
-              }
-            }
-            if (!nid) {
-              this.desCompletes(response.data.data.design_substage_id, this.formNodeStatus)
-            }
-          } else {
-            this.$message.error(response.data.meta.message)
-          }
-        }).catch((error) => {
-          this.$message.error(error.message)
-          console.error(error.message)
-        })
-      }
-    },
-    // 编辑阶段节点
-    updataNode(date) {
-      if (Date.parse(new Date(this.formNodetime)) / 1000 !== this.formNode.time || !date) {
-        if (typeof this.formNode.time !== 'number') {
-          this.formNode.time = Math.round(new Date(this.formNode.time).getTime() / 1000)
-        }
-        if (date) {
-          this.formNode.time = Math.round(new Date(date).getTime() / 1000)
-        }
-        this.formNode.stage_node_id = this.formNode.id
-        this.$http.put(api.designStageNodeUpdate.format(this.formNode.id), this.formNode).then((response) => {
-          if (response.data.meta.status_code === 200) {
-            // console.log(response.data.data)
-            let innode = this.indesignStage.design_substage
-            for (var i = 0; i < innode.length; i++) {
-              if (innode[i].design_stage_node && innode[i].design_stage_node.id === this.formNode.id) {
-                innode[i].design_stage_node = response.data.data
-              }
-            }
-          } else {
-            this.$message.error(response.data.meta.message)
-          }
-        }).catch((error) => {
-          this.$message.error(error.message)
-          console.error(error.message)
-        })
-      }
-    },
-    // 删除阶段节点
-    deleteNode(id, index) {
-      this.$http.delete(api.designStageNodeDelete, {params: {stage_node_id: id}}).then (function(response) {
-        if (response.data.meta.status_code === 200) {
-          console.log(response.data.data)
-        } else {
-          this.$message.error(response.data.meta.message)
-        }
-      }).catch((error) => {
-        this.$message.error(error.message)
-        console.error(error.message)
-      })
-    },
+    // editNodeStatus(nid, nst) {
+    //   if (this.formNodeup.status !== Boolean(this.formNode.status) || nid) {
+    //     if (nid) {
+    //       this.formNodeup.status = Number(nst)
+    //       this.formNodeup.stage_node_id = nid
+    //     } else {
+    //       this.formNodeup.status = Number(this.formNodeStatus)
+    //       this.formNodeup.stage_node_id = this.formNode.id
+    //     }
+    //     this.$http.put(api.designStageNodeCompletes.format(this.formNodeup.stage_node_id), this.formNodeup).then((response) => {
+    //       if (response.data.meta.status_code === 200) {
+    //         let node = this.indesignStage.design_substage
+    //         for (var i = 0; i < node.length; i++) {
+    //           if (node[i].design_stage_node && node[i].design_stage_node.id === response.data.data.id) {
+    //             node[i].design_stage_node.status = response.data.data.status
+    //           }
+    //         }
+    //         if (!nid) {
+    //           this.desCompletes(response.data.data.design_substage_id, this.formNodeStatus)
+    //         }
+    //       } else {
+    //         this.$message.error(response.data.meta.message)
+    //       }
+    //     }).catch((error) => {
+    //       this.$message.error(error.message)
+    //       console.error(error.message)
+    //     })
+    //   }
+    // },
+    // // 编辑阶段节点
+    // updataNode(date) {
+    //   if (Date.parse(new Date(this.formNodetime)) / 1000 !== this.formNode.time || !date) {
+    //     if (typeof this.formNode.time !== 'number') {
+    //       this.formNode.time = Math.round(new Date(this.formNode.time).getTime() / 1000)
+    //     }
+    //     if (date) {
+    //       this.formNode.time = Math.round(new Date(date).getTime() / 1000)
+    //     }
+    //     this.formNode.stage_node_id = this.formNode.id
+    //     this.$http.put(api.designStageNodeUpdate.format(this.formNode.id), this.formNode).then((response) => {
+    //       if (response.data.meta.status_code === 200) {
+    //         let innode = this.indesignStage.design_substage
+    //         for (var i = 0; i < innode.length; i++) {
+    //           if (innode[i].design_stage_node && innode[i].design_stage_node.id === this.formNode.id) {
+    //             innode[i].design_stage_node = response.data.data
+    //           }
+    //         }
+    //       } else {
+    //         this.$message.error(response.data.meta.message)
+    //       }
+    //     }).catch((error) => {
+    //       this.$message.error(error.message)
+    //       console.error(error.message)
+    //     })
+    //   }
+    // },
+    // // 删除阶段节点
+    // deleteNode(id, index) {
+    //   this.$http.delete(api.designStageNodeDelete, {params: {stage_node_id: id}}).then (function(response) {
+    //     if (response.data.meta.status_code === 200) {
+    //       console.log(response.data.data)
+    //     } else {
+    //       this.$message.error(response.data.meta.message)
+    //     }
+    //   }).catch((error) => {
+    //     this.$message.error(error.message)
+    //     console.error(error.message)
+    //   })
+    // },
     // 节点文件上传时
     uploadProgress(event, file, fileList) {
       this.fileLists = fileList
@@ -1713,6 +1771,7 @@ export default {
         console.error(error.message)
       })
     },
+    // 项目统计
     statisticalItem () {
       this.itemName = this.$store.state.task.projectObject.name
       let item = this.$route.params.id
@@ -1726,12 +1785,6 @@ export default {
         this.$message.error(error.message)
         console.error(error.message)
       })
-    },
-    onmousedown(ev) {
-      // var ev = ev||event;
-      // var disX = ev.clientX - this.offsetLeft;
-      // var disY = ev.clientY - this.offsetTop;
-      console.log(11111)
     }
   },
   created() {
@@ -1887,14 +1940,17 @@ export default {
   .aside-title {
     position: relative;
     padding:15px 20px;
-    text-align: center;
   }
   .aside-title>i {
-    width:20px;
-    height:20px;
+    width: 20px;
+    height: 20px;
     position: absolute;
-    left:18px;
-    top:15px;
+    right: 45px;
+    top: 15px;
+  }
+  .aside-title>span {
+    font-size: 16px;
+    color: #222222;
   }
   .aside-title>p {
     width:20px;
@@ -1926,6 +1982,9 @@ export default {
   .task-userimg>span {
     cursor:pointer;
   }
+  .task-switch i{
+    background: url('../../../../assets/images/tools/project_management/Milepost.png') no-repeat center / contain;
+  }
   .task-userimg>.userlist {
     width:280px;
     position: absolute;
@@ -1933,6 +1992,11 @@ export default {
     background:#fff;
     box-shadow:0 0 10px 0 rgba(0,0,0,0.10);
     border-radius:4px;
+  }
+  .item-chartContent .transform-milestone {
+    height: 20px;
+    transform: rotate(45deg);
+    top: 72px;
   }
   .userlist>p {
     line-height:50px;
@@ -2147,17 +2211,38 @@ export default {
     left: -34px;
     top: 6px;
   }
-  .design-duration i{
+  .task-type i {
+    background: url('../../../../assets/images/tools/project_management/Completed@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .design-duration i {
     background: url('../../../../assets/images/tools/project_management/Repeat.png') 0 0 no-repeat;
     background-size: contain;
   }
   .design-duration>div {
     line-height: 36px;
-    padding-left: 10px;
+  }
+  .formup-duration {
+    padding-left:105px;
   }
   .formup-time i{
     background:url('../../../../assets/images/tools/project_management/Time.png') 0 0 no-repeat;
     background-size: contain;
+  }
+  .task-files {
+    padding: 0 0px 10px 52px;
+  }
+  .task-filesicon {
+    line-height: 36px;
+    position: relative;
+  }
+  .task-filesicon i {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    left: -34px;
+    top: 6px;
+    background: url('../../../../assets/images/tools/project_management/Enclosure@2x.png') no-repeat center/18px 18px;
   }
   .design-content i{
     background:url('../../../../assets/images/tools/project_management/Deliver@2x.png') 0 0 no-repeat;
@@ -2198,10 +2283,6 @@ export default {
     cursor: pointer;
     font-size:1.4rem
   }
-  .tack-list {
-    overflow-y: auto;
-    max-height:200px;
-  }
   .tack-list>li {
     line-height: 50px;
     padding: 0 40px 0 20px;
@@ -2219,6 +2300,16 @@ export default {
   }
   .tack-list>li:hover .fx-icon-delete2 {
     display: inline-block;
+  }
+  .statistical-pro {
+    position: relative;
+  }
+  .statistical-pro .pro {
+    position: absolute;
+    top: 4px;
+    left: 10px;
+    color: #fff;
+    font-size: 12px;
   }
   .h3 {
     color:#000;
@@ -2463,7 +2554,7 @@ export default {
     cursor: pointer;
   }
   .item-tacking {
-    height:13px;
+    height: 100%;
     cursor: pointer;
   }
   .task-name {
@@ -2472,6 +2563,14 @@ export default {
     text-overflow: ellipsis;
     position: absolute;
     bottom:-20px;
+  }
+  .transform-milestone .task-name {
+    transform: rotate(-45deg);
+    left: 30px;
+    bottom: -42px;
+    width: 33px;
+    white-space: normal;
+    overflow: visible;
   }
   .item-tacklist-last {
     position:absolute;
@@ -2611,9 +2710,8 @@ export default {
   }
   .item-chartContent>ul>li {
     display:inline-block;
-    border-right:1px solid #e6e6e6;
-    border-bottom:1px solid #e6e6e6;
-    opacity: 0.3;
+    border-right:1px solid rgba(230,230,230,0.3);
+    border-bottom:1px solid rgba(230,230,230,0.3);
     height:100%;
   }
   .push-file{
@@ -2627,6 +2725,13 @@ export default {
     margin-top:25px;
     cursor: pointer;
   }
+  .isborder {
+    position: absolute;
+    border-right: 1px  dashed #C8C8C8;
+    height: 30px;
+    transform: rotate(-45deg);
+    left: 32px;
+  }
   .push-file>i {
     display:inline-block;
     width: 24px;
@@ -2637,6 +2742,10 @@ export default {
   .bgc {
     background:#65A6FF;
     opacity: 0.1;
+  }
+  .bgweek {
+    background: #FAFAFA;
+
   }
   .bgwill {
     background:rgba(101,166,255,0.05);
@@ -2651,7 +2760,10 @@ export default {
   .bged {
     background:#00AC84;
   }
-  .bged, .bgno, .bging {
+  .bgm {
+    background: #FFA64B;
+  }
+  .bged, .bgno, .bging, .bgm {
     opacity: 0.6;
   }
   .aside-task-pregress {
@@ -2666,11 +2778,14 @@ export default {
   .bg-exception {
     background:#FF8B8F;
   }
-  .bged:hover,.bgno:hover,.bging:hover{
+  .bged:hover, .bgno:hover, .bging:hover, .bgm:hover {
     opacity: 0.8;
   }
   .bgno-border {
     border:1px solid #FF5A5F;
+  }
+  .bgm-border {
+    border:1px solid #FFA64B;
   }
   .bged-border {
     border:1px solid #00AC84;
