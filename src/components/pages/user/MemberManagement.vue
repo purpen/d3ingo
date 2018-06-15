@@ -106,6 +106,14 @@
               </el-col>
             </li>
           </ul>
+          <el-pagination
+            class="text-center pagination"
+            v-if="query.total > query.pageSize"
+            layout="prev, pager, next"
+            :page-size="query.pageSize"
+            :total="query.total"
+            @current-change="changePage">
+          </el-pagination>
         </section>
       </el-col>
     </section>
@@ -223,7 +231,12 @@ export default {
       showCreateGroup: false, // 创建群组
       groupName: '', // 群组名称
       verifyStatus: -1, // 认证状态 0.未审核；1.审核通过；2.未通过审核 3.审核中
-      liActive: 0 // 左侧列表active
+      liActive: 0, // 左侧列表active
+      query: {
+        pageSize: 10,
+        page: 1,
+        total: 0
+      }
     }
   },
   methods: {
@@ -256,7 +269,9 @@ export default {
         url = api.designgroupUserLists
       }
       this.$http.get(url, {params: {
-        group_id: groupId
+        group_id: groupId,
+        per_page: this.query.pageSize,
+        page: this.query.page
       }})
       .then(res => {
         this.loading = false
@@ -268,6 +283,9 @@ export default {
             this.addMemberIdList.push(item.id)
           })
           this.addMemberIdList = Array.from(new Set(this.addMemberIdList))
+          if (res.data.meta.pagination) {
+            this.query.total = res.data.meta.pagination.total
+          }
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -581,6 +599,14 @@ export default {
       } else {
         this.$message.error('填写群组名称')
       }
+    },
+    changePage(val) {
+      this.query.page = val
+      if (this.type === 'member') {
+        this.getMemberList()
+      } else {
+        this.getMemberList(this.firstGroupId)
+      }
     }
   },
   created() {
@@ -631,6 +657,7 @@ export default {
   .member-list {
     padding: 20px 30px 0;
     font-size: 16px;
+    /* overflow: hidden; */
   }
   .member-list-header {
     height: 38px;
@@ -1082,18 +1109,22 @@ export default {
   .parent-box-mob {
     padding-left: 0;
   }
+  .pagination {
+    padding: 0;
+    margin: 30px 0 0;
+  }
   @media screen and (min-width: 1200px) {
     .member-list {
-      /* position: absolute;
+      position: absolute;
       width: calc(100% - 400px);
       top: 0;
-      left: 400px; */
+      left: 400px;
     }
     .member-list-mini {
-      /* position: absolute;
+      position: absolute;
       width: calc(100% - 260px);
       top: 0;
-      left: 260px; */
+      left: 260px;
       transition: 0.2s all ease;
     }
     .parent-box {

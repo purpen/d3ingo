@@ -91,7 +91,6 @@
                   </el-radio-button>
                 </el-radio-group>
               </el-form-item>
-
               <div v-if="typeSwitch1">
                 <el-form-item label="设计类别" prop="design_type">
                   <el-radio-group v-model.number="form.design_type" size="small">
@@ -134,6 +133,7 @@
                 </el-form-item>
 
               </div>
+
 
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
@@ -355,6 +355,10 @@
       }
     },
     methods: {
+      // 选择分类事件
+      selectTypeChange(val) {
+        this.form.design_types = []
+      },
       submit(formName) {
         const that = this
         if (!that.coverId) {
@@ -581,6 +585,7 @@
     },
     computed: {
       typeOptions() {
+        console.log('typeOptions', this.form.type)
         let items = []
         for (let i = 0; i < typeData.COMPANY_TYPE.length; i++) {
           let item = {
@@ -594,10 +599,13 @@
       typeDesignOptions() {
         let items = []
         let index
+        console.log('typeDesignOptions', this.form.type)
         if (this.form.type === 1) {
           index = 0
         } else if (this.form.type === 2) {
           index = 1
+        } else {
+          return []
         }
         for (let i = 0; i < typeData.COMPANY_TYPE[index].designType.length; i++) {
           let item = {
@@ -611,10 +619,13 @@
       fieldOptions() {
         let items = []
         let index
+        console.log('fieldOptions', this.form.type)
         if (this.form.type === 1) {
           index = 0
         } else if (this.form.type === 2) {
           index = 1
+        } else {
+          return []
         }
         for (let i = 0; i < typeData.COMPANY_TYPE[index].field.length; i++) {
           let item = {
@@ -628,10 +639,13 @@
       industryOptions() {
         let items = []
         let index
+        console.log('industryOptions', this.form.type)
         if (this.form.type === 1) {
           index = 0
         } else if (this.form.type === 2) {
           index = 1
+        } else {
+          return []
         }
         for (let i = 0; i < typeData.COMPANY_TYPE[index].industry.length; i++) {
           let item = {
@@ -643,6 +657,7 @@
         return items
       },
       prizeOptions() {
+        console.log('prizeOptions', this.form.type)
         let items = []
         for (let i = 0; i < typeData.DESIGN_CASE_PRICE_OPTIONS.length; i++) {
           let item = {

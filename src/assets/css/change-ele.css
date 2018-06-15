@@ -80,7 +80,7 @@
   .el-dialog__footer .dialog-footer .el-button:first-child {
     margin-right: 20px;
   }
-  .aside>.el-progress .el-progress-bar__outer, .aside>.el-progress .el-progress-bar__outer>.el-progress-bar__inner {
+  .aside .el-progress .el-progress-bar__outer, .aside .el-progress .el-progress-bar__outer .el-progress-bar__inner {
     border-radius: 0px
   }
   .designStage-name .el-checkbox__inner{
@@ -396,4 +396,15 @@
   }
   .el-checkbox__inner:hover {
     border-color: #d2d2d2
+  }
+
+  .task-name-input .el-input__inner,
+  .task-name-input .el-input__inner:focus {
+    padding: 0;
+    border: none;
+    box-shadow: none;
+  }
+  .item-total .animated {
+    -webkit-animation-duration: 0.5s;
+    animation-duration: 0.5s;
   }

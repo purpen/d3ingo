@@ -19,20 +19,21 @@
           </div>
           <section>
             <div v-for="(ele, index) in displayObj.outsideStageList" :key="index"
-              @click.self="showTaskBtn(ele, index)"
+              @click="showTaskBtn(ele, index)"
               :class="['task-item','clearfix', {
                 'active': ele.stage === 2,
                 'click': ele.id === parentTask.id,
                 'level1': ele.level === 1,
                 'level2': ele.level === 5,
                 'level3': ele.level === 8}]">
-              <p @click.self="showTaskBtn(ele, index)" class="task-name">
-                <span @click="completeTaskBtn(ele, index)" class="task-name-span"></span>
-                <span v-if="ele.id !== taskState.id || !taskState.power">{{ele.name}}</span>
+              <p class="task-name">
+                <span @click.stop.prevent="completeTaskBtn(ele, index)" class="task-name-span"></span>
+                <span v-if="(ele.id !== taskState.id) || !taskState.power">{{ele.name}}</span>
                 <input
                   v-focus="isFocus"
+                  :maxlength= 100
                   class="task-name-input" type="text"
-                  v-if="taskState.power && ele.id === taskState.id"
+                  v-if="taskState.power && (ele.id === taskState.id)"
                   @focus="taskNameFocus(ele, index)"
                   @blur="taskNameBlur(ele.id)"
                   v-model="currentTaskForm.name">
@@ -45,8 +46,9 @@
           <section v-if="!isMyTask" class="stage-item" v-for="(ele, index) in displayObj['itemList']" :key="index">
             <p :class="['stage-name', {'is-checked': currentStageStat.id === ele.id}]" @click.self="editStageBtn(ele.id, index)">{{ele.title}}:
               <input v-show="currentStageStat.id === ele.id"
-              v-focus="true"
+              v-focus="isFocus2"
               class="stage-title" type="text" v-model="currentStageForm.title"
+              @focus="saveStage(ele.title)"
               @blur="submitStage()">
               <span @click="confirmDeleteStageBtn(ele.id, index)" class="close-icon-solid"></span></p>
             <section>
@@ -58,14 +60,15 @@
                 'level1': e.level === 1,
                 'level2': e.level === 5,
                 'level3': e.level === 8}]"
-                @click.self="showTaskBtn(e, i)">
-                <p @click.self="showTaskBtn(e, i)" class="task-name">
-                  <span @click="completeTaskBtn(e, i)" class="task-name-span"></span>
-                  <span v-if="e.id !== taskState.id || !taskState.power">{{e.name}}</span>
+                @click="showTaskBtn(e, i)">
+                <p class="task-name">
+                  <span @click.stop.prevent="completeTaskBtn(e, i)" class="task-name-span"></span>
+                  <span v-if="(e.id !== taskState.id) || !taskState.power">{{e.name}}</span>
+                    <!-- v-focus="isFocus" -->
                   <input
                     v-focus="isFocus"
                     class="task-name-input" type="text"
-                    v-if="taskState.power && e.id === taskState.id"
+                    v-if="taskState.power && (e.id === taskState.id)"
                     @focus="taskNameFocus(e, i)"
                     @blur="taskNameBlur(e.id)"
                     v-model="currentTaskForm.name">
@@ -134,6 +137,7 @@
     data () {
       return {
         isFocus: false,
+        isFocus2: false,
         isCreateStage: false,
         sureDialog: false,
         sureDialogMessage: '确认执行此操作？',
@@ -170,6 +174,8 @@
           showComfirmDeleteStage: false
         },
         completeState: -1,
+        isUpdate: true,
+        oldStageTitle: '',
         taskStatus: 0 // 0: 全部， 2: 已完成， -1: 未完成
       }
     },
@@ -225,6 +231,7 @@
       // 编辑阶段按钮点击事件
       editStageBtn(id, index) {
         this.closeBtn()
+        this.isFocus2 = true
         this.currentStageForm = {...this.stageList[index]}
         this.currentStageStat = {
           event: 'update',
@@ -278,35 +285,50 @@
           console.error(error.message)
         })
       },
+      saveStage(title) {
+        this.isFocus2 = true
+        this.oldStageTitle = title
+        this.closeBtn()
+      },
       // 更新阶段
       updateStage() {
-        const self = this
-        let id = self.currentStageStat.id
-        let oldId = id
-        if (!id) {
-          self.$message.error('ID不能为空!')
-          return false
-        }
-        if (id === -1) {
-          return false
-        }
-        if (self.currentStageForm.title === '') {
-          self.$message.error('阶段名不能为空!')
-          return false
-        }
-        self.$http.put(api.toolsStageId.format(id), self.currentStageForm).then(function (response) {
-          if (response.data.meta.status_code === 200) {
-            if (oldId === self.currentStageStat.id) {
-              self.currentStageStat.id = -1
-            }
-            self.$store.commit('updateStageListItem', response.data.data)
-          } else {
-            self.$message.error(response.data.meta.message)
+        this.isFocus2 = false
+        if (this.isUpdate) {
+          this.isUpdate = false
+          const self = this
+          let id = self.currentStageStat.id
+          let oldId = id
+          if (!id) {
+            self.$message.error('ID不能为空!')
+            return false
           }
-        }).catch((error) => {
-          self.$message.error(error.message)
-          console.error(error.message)
-        })
+          if (id === -1) {
+            return false
+          }
+          if (self.currentStageForm.title === '') {
+            self.$message.error('阶段名不能为空!')
+            return false
+          } else {
+            if (this.oldStageTitle === self.currentStageForm.title) {
+              return
+            }
+          }
+          self.$http.put(api.toolsStageId.format(id), self.currentStageForm).then(function (response) {
+            self.isUpdate = true
+            if (response.data.meta.status_code === 200) {
+              if (oldId === self.currentStageStat.id) {
+                self.currentStageStat.id = -1
+              }
+              self.$store.commit('updateStageListItem', response.data.data)
+            } else {
+              self.$message.error(response.data.meta.message)
+            }
+          }).catch((error) => {
+            self.isUpdate = true
+            self.$message.error(error.message)
+            console.error(error.message)
+          })
+        }
       },
       // 删除阶段
       deleteStage() {
@@ -367,17 +389,18 @@
       },
       // 添加任务
       addTaskBtn() {
+        this.currentTaskForm = {}
         this.$store.commit('changeTaskStatePower', 1)
         this.$store.commit('changeTaskStateEvent', 'create')
       },
       // 展开任务详情
-      showTaskBtn(ele, index) {
+      showTaskBtn(ele) {
         this.isFocus = true
+        this.currentTaskForm = {...ele}
         this.$store.commit('setParentTask', ele)
         this.completeState = ele.stage
         this.$store.commit('changeTaskStatePower', 1)
         this.$store.commit('changeTaskStateEvent', 'update')
-        this.$store.commit('changeTaskStateId', ele.id)
         this.$store.commit('changeTaskStateId', ele.id)
       },
       // 完成/取消任务
@@ -404,9 +427,10 @@
           })
       },
       taskNameFocus(ele, index) {
+        this.$set(this.currentStageStat, 'id', -1)
         this.isFocus = true
         this.oldTaskName = ele.name
-        Object.assign(this.currentTaskForm, ele)
+        this.currentTaskForm = Object.assign({}, this.currentTaskForm, ele)
         this.$store.commit('setParentTask', ele)
         this.completeState = ele.stage
         this.$store.commit('changeTaskStatePower', 1)
@@ -529,7 +553,7 @@
             if (item.task.length) {
               item.task.forEach(i => {
                 if (i.id === this.currentTaskForm.id) {
-                  Object.assign(this.currentTaskForm, i)
+                  this.currentTaskForm = Object.assign({}, this.currentTaskForm, i)
                 }
               })
             }
@@ -542,7 +566,7 @@
         handler(val) {
           val.forEach(item => {
             if (item.id === this.currentTaskForm.id) {
-              Object.assign(this.currentTaskForm, item)
+              this.currentTaskForm = Object.assign({}, this.currentTaskForm, item)
             }
           })
           // this.$store.commit('setStageList', val)
@@ -796,9 +820,8 @@
   .task-name-input {
     width: 100%;
     height: 48px;
-    line-height: 1;
-    padding: 17px 0;
     border: none;
+    padding: 0;
   }
   .task-name-span {
     position: absolute;
@@ -825,6 +848,7 @@
   }
 
   .task-date {
+    flex: 0 0 auto;
     padding-right: 10px;
   }
   .dialog-bg {
@@ -893,4 +917,3 @@
     line-height: 3;
   }
 </style>
-

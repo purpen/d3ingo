@@ -53,7 +53,7 @@
             <hr>
             <p class="menu-moment"><span>项目动态</span></p>
             <ul class="item-moments" v-if="shortProjectMoments.length">
-              <li v-for="(ele, index) in shortProjectMoments" :key="index">
+              <li class="clearfix" v-for="(ele, index) in shortProjectMoments" :key="index">
                 <img class="br50 b-d2" :src="ele.logo_image.logo" alt="">
                 <div class="item-con">
                   <!-- <p class="tc-2"><span>{{ele.user_name}}</span><span class="tc-6">{{ele.action}}</span></p> -->
@@ -458,8 +458,8 @@
             <img v-if="ele.logo_image" class="br50 b-d2" :src="ele.logo_image.logo" alt="">
             <div class="list-con clearfix">
               <!-- <p class="tc-2 fl"><span>{{ele.user_name}}</span>{{ele.action}}</p> -->
-              <p class="tc-2 fl"><span>{{ele.title}}</span></p>
-              <p class="fz-12 tc-6 fr">{{ele.date}}</p>
+              <p class="tc-2"><span>{{ele.title}}</span></p>
+              <p class="fz-12 tc-6 min-width150">{{ele.date}}</p>
             </div>
           </li>
         </ul>
@@ -1080,18 +1080,33 @@ header {
 .cover2-list li {
   min-height: 60px;
   border-bottom: 1px solid #e6e6e6;
-  display: flex;
-  align-items: center;
+  position: relative;
+  padding-left: 40px;
+  /* display: flex;
+  align-items: center; */
 }
 .cover2-list li img{
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
   width: 30px;
   height: 30px;
   margin-right: 10px;
 }
 .cover2-list .list-con {
-  flex: 1 1 auto;
-  line-height: 60px;
   min-height: 60px;
+  padding-top: 15px;
+}
+.list-con p span {
+  display: block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.min-width150 {
+  padding-top: 10px;
+  min-width: 150px;
 }
 .show-dynamic {
   transition: 0.45s all cubic-bezier(0, 1, 0.5, 1);
@@ -1296,14 +1311,16 @@ header {
   cursor: pointer;
 }
 .item-moments li {
-  padding: 5px 0;
+  padding: 15px 0;
   height: 70px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  position: relative;
+  padding-left: 36px;
 }
 
 .item-moments li img {
+  position: absolute;
+  left: 0;
+  top: 17px;
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -1320,7 +1337,10 @@ header {
   background: none;
 }
 .item-con p span {
-  margin-right: 10px;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .form-btn {
   position: absolute;
