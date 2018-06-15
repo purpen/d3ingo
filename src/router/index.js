@@ -397,7 +397,17 @@ let routes = [
     },
     component: require('@/components/pages/item/SubmitTwo')
   },
-
+  // 发布需求new
+  {
+    path: '/projects/create',
+    name: 'projectCreate',
+    meta: {
+      title: '选择类型',
+      requireAuth: true,
+      isDesignInc: 2
+    },
+    component: require('@/components/pages/projects/Create')
+  },
   // 发布需求(第二步) 选择领域
   {
     path: '/item/submit_type/:id',
@@ -654,6 +664,7 @@ router.beforeEach((to, from, next) => {
       next({
         name: 'login'
       })
+      return false
     }
   } else {
     next()

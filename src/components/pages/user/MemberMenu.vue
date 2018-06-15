@@ -98,7 +98,7 @@ export default {
     /* background: #333; */
     /* transition: 0.2s all ease; */
     color: #999;
-    max-width: 240px;
+    max-width: 200px;
     height: calc(100vh - 60px);
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.10)
   }
@@ -214,7 +214,7 @@ export default {
   }
   @media screen and (min-width: 1200px) {
     .member-menu {
-      /* position: absolute; */
+      position: absolute;
       left: 200px;
     }
 
