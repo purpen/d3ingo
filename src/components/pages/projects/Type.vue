@@ -96,7 +96,9 @@ export default {
       id: -1,
       type: 0,
       designType: [],
-      form: {},
+      form: {
+        complete_content: []
+      },
       other: '',
       designContent: [
         {
@@ -134,10 +136,14 @@ export default {
         .then(res => {
           if (res.data.meta.status_code === 200) {
             this.form = res.data.data.item
+            console.log(this.form)
             if (!this.form.complete_content) {
-              this.form.complete_content = []
+              // this.form.complete_content = []
+              this.form = Object.assign({}, this.form, {
+                complete_content: []
+              })
             }
-            this.designType = this.form.design_types
+            this.designType = this.form.design_types || []
             if (this.form.type) {
               this.type = this.form.type
             } else {
