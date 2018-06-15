@@ -59,7 +59,7 @@ let mutations = {
         outsideStageList = array
       }
     })
-    Object.assign(state.displayObj, {
+    state.displayObj = Object.assign({}, state.displayObj, {
       itemList: itemList,
       outsideStageList: outsideStageList
     })
@@ -90,7 +90,7 @@ let mutations = {
     outsideStageList = outsideStageList.filter(item => {
       return list.indexOf(item.id) === -1
     })
-    Object.assign(state.displayObj, {
+    state.displayObj = Object.assign({}, state.displayObj, {
       itemList: state.stageList,
       outsideStageList: outsideStageList
     })
@@ -129,7 +129,7 @@ let mutations = {
   updateTaskListItem(state, obj) {
     state.taskList.forEach(item => {
       if (item.id === obj.id) {
-        Object.assign(item, obj)
+        item = Object.assign({}, item, obj)
       }
     })
     this.commit('setDisplayObj', state.taskList)
@@ -137,7 +137,7 @@ let mutations = {
   updateStageListItem(state, obj) {
     state.stageList.forEach(item => {
       if (item.id === obj.id) {
-        Object.assign(item, obj)
+        item = Object.assign({}, item, obj)
       }
     })
     this.commit('setDisplayObj', state.taskList)
@@ -168,7 +168,7 @@ let mutations = {
     this.commit('setDisplayObj', state.taskList)
   },
   setProjectObject(state, obj) {
-    Object.assign(state.projectObject, obj)
+    state.projectObject = Object.assign({}, state.projectObject, obj)
   },
   setProjectMemberList(state, obj) {
     state.projectMemberList = obj
