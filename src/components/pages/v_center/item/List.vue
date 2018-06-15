@@ -30,7 +30,7 @@
                     <span v-else>未命名项目</span>
                   </p>
                   <p class="progress-line">
-                    <el-progress :text-inside="true" :show-text="false" :stroke-width="18"
+                    <el-progress :text-inside="true" :show-text="false" :stroke-width="6"
                                   :percentage="d.item.progress"
                                   status="exception"></el-progress>
                   </p>
@@ -44,7 +44,7 @@
                   <p class="buttons" v-else>
                     <el-button class="is-custom"
                     size="small"
-                    :progress="d.item.stage_status" 
+                    :progress="d.item.stage_status"
                     :item_id="d.item.id"
                     :item_type="d.item.type" @click="editItem" type="primary">
                       <i class="el-icon-edit"></i> 完善项目
@@ -618,7 +618,7 @@
   .pre {
     padding: 0 10px;
   }
-  
+
   .item.ing p {
     padding: 10px;
   }

@@ -1,10 +1,10 @@
 <template>
-  <el-col :span="isMob ? 24 : 8">
+  <el-col :span="isMob ? 24 : 6">
     <div :class="[{'cover-m' : isMob }, 'cover']">
       <div :class="[{'progress-m' : isMob }, 'progress']">
         <div :class="[{'progress-item-m' : isMob}, 'process-item']">
           <p>项目对接</p>
-          <el-steps :space="isMob ? 80 : 44" :direction="isMob ? 'horizontal' : 'vertical'"
+          <el-steps :space="isMob ? 80 : 50" :direction="isMob ? 'horizontal' : 'vertical'"
                     :finish-status="isMob ? 'success' : 'process'"
                     :active="progressButt">
             <el-step title="项目创建" description=""></el-step>
@@ -73,19 +73,16 @@
 
   .process-item {
     margin: 0 0 30px 0;
-    padding-left: 150px;
   }
 
   .process-item p {
     font-size: 1.8rem;
     color: #222222;
-    line-height: 14px;
   }
 
   .progress {
-
     min-width: 174px;
-    padding: 20px 20px 20px 0;
+    padding: 0 20px 20px 0;
     /*border: 1px solid #e6e6e6;*/
   }
 
@@ -115,4 +112,5 @@
   .margin-50{
     margin-top: 50px;
   }
+
 </style>

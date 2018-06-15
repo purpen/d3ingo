@@ -1,18 +1,18 @@
 <template>
-  <div class="container" style="width: 100%">
+  <div class="container">
     <div class="blank20"></div>
 
-    <el-breadcrumb separator="/" class="bread" style="padding-left: 150px;">
+    <el-breadcrumb separator="/" class="bread">
       <el-breadcrumb-item :to="{ name: 'home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ name: 'vcenterItemList' }">项目列表</el-breadcrumb-item>
       <el-breadcrumb-item>详情</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <el-row :gutter="20">
+    <el-row :gutter="20" style="margin-top: 30px">
       <v-item-progress :progressButt="progressButt" :progressContract="progressContract"
                        :progressItem="progressItem"></v-item-progress>
 
-      <el-col :span="isMob ? 24 : 16">
+      <el-col :span="isMob ? 24 : 18" class="margin-auto">
         <div class="content">
           <div :class="[{'banner-m' : isMob}, 'banner']">
             <img v-show="statusIconUrl" class="" :src="statusIconUrl" width="100"/>
@@ -1184,8 +1184,8 @@ export default {
   height: 200px;
   text-align: center;
   margin-bottom: 20px;
-  border: 1px solid E6E6E6;
   display: block;
+  border: 1px solid #e6e6e6;
 }
 
 .banner img {
@@ -1217,8 +1217,8 @@ export default {
   margin-bottom: 10px;
   display: flex;
   align-items: center;
-  border: 1px solid E6E6E6;
-  background: #fff
+  background: #fff;
+  border: 1px solid #e6e6e6;
 }
 
 .select-company-item .check-box {
@@ -1675,6 +1675,14 @@ section ul li a {
 }
 .alert-line-height {
   text-align: center
+}
+.dis-flex{
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+.margin-auto{
+  margin: auto;
 }
 </style>
 <style>
