@@ -82,7 +82,7 @@
                 </el-col>
               </el-row>
 
-              <!-- <el-form-item label="设计类型" prop="type">
+              <el-form-item label="设计类型" prop="type">
                 <el-radio-group v-model.number="form.type" @change="typeChange" size="small">
                   <el-radio-button
                     v-for="item in typeOptions"
@@ -132,67 +132,8 @@
                   </el-radio-group>
                 </el-form-item>
 
-              </div> -->
+              </div>
 
-                <el-row :gutter="10">
-                  <el-col :xs="24" :sm="24" :md="24" :lg="24">
-                    <el-form-item label="设计类别" prop="type">
-                      <el-select v-model.number="form.type" @change="selectTypeChange" placeholder="请选择">
-                        <el-option
-                          v-for="(d, index) in typeOptions"
-                          :key="index"
-                          :label="d.label"
-                          :value="d.value">
-                        </el-option>
-                      </el-select>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-
-                <el-row :gutter="10" v-show="form.type">
-                  <el-col :xs="24" :sm="24" :md="24" :lg="24">
-                    <el-form-item label="详细类别" prop="design_types">
-                      <el-select v-model="form.design_types" multiple placeholder="请选择">
-                        <el-option
-                          v-for="d in typeDesignOptions"
-                          :key="d.id"
-                          :label="d.label"
-                          :value="d.value">
-                        </el-option>
-                      </el-select>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-
-                <el-row :gutter="10" v-show="form.type === 1">
-                  <el-col :xs="24" :sm="24" :md="24" :lg="24">
-                    <el-form-item label="所属领域" prop="field">
-                      <el-select v-model.number="form.field" placeholder="请选择">
-                        <el-option
-                          v-for="(d, index) in fieldOptions"
-                          :key="index"
-                          :label="d.label"
-                          :value="d.value">
-                        </el-option>
-                      </el-select>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-
-                <el-row :gutter="10">
-                  <el-col :xs="24" :sm="24" :md="24" :lg="24">
-                    <el-form-item label="所属行业" prop="industry">
-                      <el-select v-model.number="form.industry" placeholder="请选择">
-                        <el-option
-                          v-for="(d, index) in industryOptions"
-                          :key="index"
-                          :label="d.label"
-                          :value="d.value">
-                        </el-option>
-                      </el-select>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
 
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
