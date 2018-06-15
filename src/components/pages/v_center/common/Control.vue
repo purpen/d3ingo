@@ -557,6 +557,9 @@
     height:299px;
     overflow-y:auto;
   }
+  .item-content>.el-col {
+    height:35%;
+  }
   .iteming-grade {
     cursor: pointer;
     float: left;
