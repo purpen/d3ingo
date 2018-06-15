@@ -57,6 +57,7 @@
         </router-link>
       </div>
     </header>
+    <!-- 123123 -->
     <el-col v-if="leftWidth === 2" :span="isMob ? 24 : 2">
       <section :class="['menuHide', 'scroll-bar', {'MmenuHide': isMob, 'menuHide-mini': leftWidth === 2}]">
         <div v-if="isCompany">
@@ -84,6 +85,12 @@
             <a @click="alick" :to="'/vcenter/account/base'"
               :class="['item', 'account-management', {'is-active': currentName === 'profile'}]">
               账号设置
+            </a>
+            </el-tooltip>
+            <el-tooltip v-if="true" class="item" :effect="DarkorLight" content="项目管理" placement="right">
+            <a @click="alick" :to="'/vcenter/project_management/list'"
+              :class="['item', 'management', {'is-active': currentName === 'project_management'}]">
+              项目管理
             </a>
             </el-tooltip>
             <el-tooltip class="item" :effect="DarkorLight" content="查看公司主页" placement="right">

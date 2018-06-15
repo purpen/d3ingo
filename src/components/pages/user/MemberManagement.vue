@@ -631,6 +631,7 @@ export default {
   .member-list {
     padding: 20px 30px 0;
     font-size: 16px;
+    /* overflow: hidden; */
   }
   .member-list-header {
     height: 38px;
