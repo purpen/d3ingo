@@ -68,7 +68,7 @@
               layout="prev, pager, next"
               :total="query.total">
             </el-pagination>
-            <h3>项目对接中</h3>
+            <h3 v-if="itemList.length">项目对接中</h3>
             <el-row class="item-title-box list-box" v-show="itemList.length" v-if="!isMob">
               <el-col :span="10">
                 <p>项目名称</p>
@@ -430,6 +430,7 @@
 
                 if (type === 1) {
                   that.itemIngList = data
+                  console.log(that.itemIngList)
                   that.query.totalPages = response.data.meta.pagination.total_pages
                   that.query.total = response.data.meta.pagination.total
                 } else if (type === 2) {

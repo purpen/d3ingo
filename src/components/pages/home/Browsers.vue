@@ -37,10 +37,10 @@ export default {
         },
         {
           browserUrl: require('assets/images/home/chrome.png'),
-          browserDesc: 'chrome'
+          browserDesc: 'Chrome'
         },
         {
-          browserUrl: require('assets/images/home/Firefox.png'),
+          browserUrl: require('assets/images/home/firefox.png'),
           browserDesc: 'Firefox'
         }
       ]
