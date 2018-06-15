@@ -17,7 +17,7 @@
               <el-row :gutter="20">
                 <el-col :xs="24" :sm="8" :md="8" :lg="8">
                   <router-link :to="{name: 'vcenterDesignCaseAdd'}" class="item item-add el-card">
-                    <i class="add-icon"></i>
+                    <i class="add-i,,,,con"></i>
                     <p class="tc-red fz-16">添加作品案例</p>
                   </router-link>
                 </el-col>

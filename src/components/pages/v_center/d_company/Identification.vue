@@ -14,7 +14,7 @@
             <el-row :gutter="24">
               <el-col :span="isMob ? 24 : 12">
                 <el-form-item label="企业名称" prop="company_name">
-                  <el-input v-model="form.company_name" name="company_name" ref="company_name"
+                  <el-input v-model="form.company_name"
                             placeholder="请输入完整的公司名称"></el-input>
                 </el-form-item>
               </el-col>
@@ -116,28 +116,46 @@
               </el-col>
             </el-row>
 
-            <!-- <el-row :gutter="10">
-              <el-col :span="isMob ? 24 : 6">
+            <el-row :gutter="24">
+              <el-col :span="isMob ? 24 : 12">
                 <el-form-item label="联系人" prop="contact_name">
                   <el-input v-model="form.contact_name" placeholder=""></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="isMob ? 24 : 6">
-                <el-form-item label="职位" prop="position">
+            </el-row>
+            <el-row :gutter="24">
+              <el-col :span="isMob ? 24 : 12">
+                <el-form-item label="联系人职位" prop="position">
                   <el-input v-model="form.position" placeholder=""></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="isMob ? 24 : 6">
-                <el-form-item label="手机" prop="phone">
+            </el-row>
+            <el-row :gutter="24">
+              <el-col :span="isMob ? 24 : 12">
+                <el-form-item label="联系人手机" prop="phone">
                   <el-input v-model="form.phone" placeholder=""></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="isMob ? 24 : 6">
-                <el-form-item label="邮箱" prop="email">
+            </el-row>
+            <el-row :gutter="24">
+              <el-col :span="isMob ? 24 : 12">
+                <el-form-item label="联系人邮箱" prop="email">
                   <el-input v-model="form.email" placeholder=""></el-input>
                 </el-form-item>
               </el-col>
-            </el-row> -->
+            </el-row>
+            <el-row :gutter="24">
+                <el-col :span="12" class="content">
+                    <region-picker :provinceProp="form.province" :cityProp="form.city"  :isFirstProp="true" :districtProp="form.area" titleProp="公司地址" @onchange="changeServer"></region-picker>
+ 
+                    <!-- :provinceProp="province" :cityProp="city" :districtProp="district"
+                      :isFirstProp="isFirst" titleProp="" propStyle="margin: 0;"
+                    @onchange="change" -->
+                    <el-form-item label="" prop="address" style="margin-top: 10px">
+                      <el-input v-model="form.address" placeholder="街道地址"></el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
 
 
             <div class="form-btn">
@@ -160,6 +178,7 @@
   import vMenuSub from '@/components/pages/v_center/d_company/MenuSub'
   import api from '@/api/api'
   import typeData from '@/config'
+  import RegionPicker from '@/components/block/RegionPicker'
   import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
   import '@/assets/js/format'
 
@@ -167,7 +186,8 @@
     name: 'vcenter_d_company_identification',
     components: {
       vMenu,
-      vMenuSub
+      vMenuSub,
+      RegionPicker
     },
     data () {
       let checkNumber = (rule, value, callback) => {
@@ -201,6 +221,10 @@
           'x:type': 0
         },
         imageUrl: '',
+        province: '',
+        district: '',
+        isFirst: false,
+        city: '',
         form: {
           company_name: '',
           company_type: '',
@@ -234,23 +258,63 @@
           ],
           document_type: [
             {type: 'number', required: true, message: '请选择法人证件类型', trigger: 'change'}
+          ],
+          contact_name: [
+            {required: true, message: '请添写联系人姓名', trigger: 'blur'}
+          ],
+          position: [
+            {required: true, message: '请添写联系人职位', trigger: 'blur'}
+          ],
+          phone: [
+            {required: true, message: '请添写联系人电话', trigger: 'blur'}
+          ],
+          email: [
+            {required: true, message: '请添写联系人邮箱', trigger: 'blur'}
+          ],
+          address: [
+            {required: true, message: '请添写公司地址', trigger: 'blur'}
           ]
         }
       }
     },
     methods: {
+      change() {
+      },
+      // 改变城市组件值- 服务信息()
+      changeServer: function(obj) {
+        this.$set(this.form, 'province', obj.province)
+        this.$set(this.form, 'city', obj.city)
+        this.$set(this.form, 'area', obj.district)
+      },
       submit(formName) {
         const that = this
         that.$refs[formName].validate((valid) => {
           // 验证通过，提交
           if (valid) {
+            if (!that.form.province) {
+              that.$message.error('请选择所在省份')
+              return false
+            }
+            if (!that.form.city) {
+              that.$message.error('请选择所在城市')
+              return false
+            }
+
             let row = {
               registration_number: that.form.registration_number,
               company_name: that.form.company_name,
               company_type: that.form.company_type,
               legal_person: that.form.legal_person,
               document_number: that.form.document_number,
-              document_type: that.form.document_type
+              document_type: that.form.document_type,
+              contact_name: that.form.contact_name,
+              position: that.form.position,
+              phone: that.form.phone,
+              email: that.form.email,
+              address: that.form.address,
+              province: that.form.province,
+              area: that.form.area,
+              city: that.form.city
             }
 
             if (that.companyId) {
