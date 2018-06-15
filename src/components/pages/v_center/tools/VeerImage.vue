@@ -33,7 +33,7 @@
       </waterfall>
       <el-pagination
         class="pagination"
-        v-if="imgList.length && !isMob"
+        v-if="pagination.total > pagination.pageSize"
         :current-page.sync="pagination.curPage"
         :page-size="pagination.pageSize"
         layout="prev, pager, next"

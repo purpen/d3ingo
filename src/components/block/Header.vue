@@ -136,6 +136,7 @@
     <Message></Message>
     <el-alert
       v-if="showAlert"
+      class="alert-message"
       :title="alertTitle.title"
       type="warning"
       :closable="false"
@@ -309,7 +310,7 @@
         return user
       },
       isAdmin() {
-        return this.$store.state.event.user.role_id > 0
+        return this.$store.state.event.user.role_id >= 10
       },
       menuactive() {
         let menu = this.$route.path.split('/')[1]
@@ -348,6 +349,9 @@
               console.log('需求公司基础信息：已完善')
               return false
             } else {
+              this.alertTitle.title = '基础信息待完善'
+              this.alertTitle.path = '/vcenter/d_company/base'
+              // console.log('需求公司基础信息：未完善')
               return true
             }
           } else {
@@ -563,5 +567,10 @@
 
   .container {
     overflow:visible
+  }
+  .alert-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 </style>

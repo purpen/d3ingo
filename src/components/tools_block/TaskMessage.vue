@@ -106,19 +106,19 @@
       showDes(d, index) {
         const self = this
         if (d.is_show) {
-          this.itemList[index].is_show = false
+          d.is_show = false
         } else {
           if (d.is_read === 0) {
             this.fetchMessageCount()
           }
-          this.itemList[index].is_show = true
+          d.is_show = true
         }
         // 确认已读状态
-        if (self.itemList[index].is_read === 0) {
+        if (d.is_read === 0) {
           self.$http.put(api.designNoticeTrueRead, {id: d.id})
             .then(function (response) {
               if (response.data.meta.status_code === 200) {
-                self.itemList[index].is_read = 1
+                d.is_read = 1
               }
             })
             .catch(function (error) {

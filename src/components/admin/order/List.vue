@@ -17,6 +17,16 @@
           <div class="admin-search-form">
             <el-form :inline="true" :model="query">
               <el-form-item>
+                <el-select v-model="query.pay_type" placeholder="支付方式..." size="small">
+                  <el-option label="--请选择--" value=""></el-option>
+                  <el-option label="自平台" value="1"></el-option>
+                  <el-option label="支付宝" value="2"></el-option>
+                  <el-option label="微信" value="3"></el-option>
+                  <el-option label="京东" value="4"></el-option>
+                  <el-option label="银行转账" value="5"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item>
                 <el-input v-model="query.val" placeholder="Search..." size="small"></el-input>
               </el-form-item>
               <el-form-item>
@@ -284,7 +294,7 @@ export default {
         this.menuType = 0
       }
       self.isLoading = true
-      self.$http.get(api.adminPayOrderLists, {params: {page: self.query.page, per_page: self.query.pageSize, status: self.query.status, sort: self.query.sort, type: self.query.type, pay_type: self.query.pay_type, bank_transfer: self.query.bank_transfer}})
+      self.$http.get(api.adminPayOrderLists, {params: {page: self.query.page, per_page: self.query.pageSize, status: self.query.status, sort: self.query.sort, type: self.query.type, pay_type: self.query.pay_type, bank_transfer: self.query.bank_transfer, evt: self.query.evt, val: self.query.val}})
       .then (function(response) {
         self.isLoading = false
         self.tableData = []

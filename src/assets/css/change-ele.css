@@ -397,6 +397,13 @@
   .el-checkbox__inner:hover {
     border-color: #d2d2d2
   }
+
+  .task-name-input .el-input__inner,
+  .task-name-input .el-input__inner:focus {
+    padding: 0;
+    border: none;
+    box-shadow: none;
+  }
   .item-total .animated {
     -webkit-animation-duration: 0.5s;
     animation-duration: 0.5s;

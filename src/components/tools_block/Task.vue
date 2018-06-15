@@ -1,7 +1,7 @@
 <template>
   <div class="" v-if="taskState.power">
     <!-- <div class="" v-if="taskState.power" v-loading="isLoading"> -->
-    <section class="task-detail">
+    <section class="animated task-detail fadeIn">
       <div class="task-detail-header">
         <span v-show="!isMyTask" v-if="currentForm.tier === 0" class="task-detail-name">{{projectObject.name}}</span>
         <div v-show="!isMyTask" v-if="currentForm.tier === 0" ref="selectParent" class="select-parent" tabindex="-1">
@@ -28,7 +28,7 @@
       </div>
       <p :class="['add-task-input', {'add-task-input-no_name': !currentForm.name, 'active': currentForm.stage === 2}]">
         <span v-show="currentForm.name" :class="['add-task-select']" @click="completeTask"></span>
-        <el-input :autosize="{ minRows: 1}" type="textarea" @focus="saveOldVal(currentForm.name)" @blur="blurInput({name: currentForm.name})" v-model="currentForm.name" placeholder="请填写任务名称"></el-input>
+        <el-input :autosize="{ minRows: 1}" type="textarea" @focus="saveOldVal(currentForm.name)" @blur="blurInput({name: currentForm.name})" :maxlength= 100 v-model="currentForm.name" placeholder="请填写任务名称"></el-input>
       </p>
       <div class="task-detail-body">
         <div class="task-admin" v-if="true">
@@ -65,8 +65,10 @@
           </li>
           <li>
             <p class="p-level">优先级:</p>
-            <el-select v-model="currentForm.level" placeholder="请选择"
-            @change="changeLevel">
+            <el-select
+              style="width: 195px;"
+              v-model="currentForm.level" placeholder="请选择"
+              @change="changeLevel">
               <el-option
                 v-for="(item, index) in levels"
                 :key="index"
@@ -904,6 +906,7 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .task-detail {
+    animation-delay: 0.5s;
     border: 1px solid #E6E6E6;
     border-radius: 4px;
     padding: 20px 30px;
