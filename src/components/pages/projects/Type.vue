@@ -57,24 +57,25 @@
               <el-input type="text" v-model="form.other_content" placeholder="请输入..."></el-input>
             </span>
           </div>
-          <h3>项目需求描述</h3>
-          <div class="item">
-            <el-form :model="form">
-              <el-form-item
-                prop="summary"
-                :rules="{
-                  required: true, message: '描述不能为空', trigger: 'blur'
-                }">
-              <el-input
-                type="textarea"
-                :autosize="{ minRows: 4}"
-                placeholder="请详细描述该产品的主要功能，以帮助设计公司进一步了解项目的实际功能与诉求。"
-                v-model="form.summary"
-              ></el-input>
-              </el-form-item>
-            </el-form>
-          </div>
         </section>
+        <h3 v-if="type === 1">产品功能描述</h3>
+        <h3 v-else>项目需求描述</h3>
+        <div class="item">
+          <el-form :model="form">
+            <el-form-item
+              prop="product_features"
+              :rules="{
+                required: true, message: '描述不能为空', trigger: 'blur'
+              }">
+            <el-input
+              type="textarea"
+              :autosize="{ minRows: 4}"
+              placeholder="请详细描述该产品的主要功能，以帮助设计公司进一步了解项目的实际功能与诉求。"
+              v-model="form.product_features"
+            ></el-input>
+            </el-form-item>
+          </el-form>
+        </div>
       </div>
       <div class="project-foot">
         <div class="buttons clearfix">
@@ -131,7 +132,6 @@ export default {
       if (this.id) {
         this.$http.get(api.demandId.format(this.id))
         .then(res => {
-          console.log(res.data.data.item)
           if (res.data.meta.status_code === 200) {
             this.form = res.data.data.item
             if (!this.form.complete_content) {
@@ -186,7 +186,7 @@ export default {
       if (this.type === 1) {
         if (!this.designType.length || !this.form.product_features || !this.form.field) {
           this.$message.error('请完善内容')
-          return
+          return false
         }
         row = {
           design_types: JSON.stringify(this.designType),
@@ -194,25 +194,32 @@ export default {
           product_features: this.form.product_features
         }
       } else if (this.type === 2) {
-        if (!this.designType.length || !this.form.summary || !this.form.complete_content.length || !this.form.stage) {
+        if (!this.designType.length || !this.form.product_features || !this.form.complete_content.length || !this.form.stage) {
           this.$message.error('请完善内容')
-          return
+          return false
         } else {
           if (this.form.complete_content.indexOf(5) !== -1) {
             if (!this.form.other_content) {
               this.$message.error('请完善内容')
+              return false
+            }
+            row = {
+              design_types: JSON.stringify(this.designType),
+              stage: this.form.stage,
+              complete_content: this.form.complete_content,
+              other_content: this.form.other_content,
+              product_features: this.form.product_features
             }
           }
         }
         row = {
           design_types: JSON.stringify(this.designType),
           stage: this.form.stage,
-          complete_content: JSON.stringify(this.form.complete_content),
-          other_content: this.form.other_content,
-          summary: this.form.summary
+          complete_content: this.form.complete_content,
+          product_features: this.form.product_features
         }
       }
-      this.$http.put(api.ProductDesignId.format(this.id), row)
+      this.$http.put(api.UDesignId.format(this.id), row)
       .then(res => {
         if (res.data.meta.status_code === 200) {
           // console.log(res)
@@ -227,7 +234,7 @@ export default {
     form: {
       handler(val) {
         if (val.complete_content.indexOf(5) === -1) {
-          this.$set(this.form, 'other_content', '')
+          this.$set(val, 'other_content', '')
         }
       },
       deep: true
