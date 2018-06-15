@@ -82,7 +82,7 @@
         </div>
       </div>
     </section>
-    <aside class="aside tc-6 animated slideInRight" v-if="isitemedit">
+    <aside :class="['aside','tc-6', {'animated slideInRight': ispop}]" v-if="isitemedit">
       <div class="aside-title fx">
         <i class="fx fx-icon-delete2" @click="dialogVisible=true"></i>
         <span class="tc-2">项目阶段设置</span>
@@ -189,7 +189,7 @@
       </ul>
       
     </aside>
-    <aside class="aside tc-6 animated slideInRight" v-if="istaskedit">
+    <aside :class="['aside','tc-6', {'animated slideInRight': ispop}]" v-if="istaskedit">
       <div class="aside-title fx">
         <i class="fx fx-icon-delete2" @click="dialogTask=true"></i>
         <span class="tc-2">子阶段设置</span>
@@ -259,21 +259,21 @@
           <i></i>
           上级项目阶段: {{itemdesname}}
         </li>
-        <li class="task-type">
+        <li class="task-type noborder">
           <i></i>
-          <el-select v-model="formTacktype" placeholder="请选择"
+          <el-select v-model="formTack.type" placeholder="请选择"
+          @change="updataTack()"
             >
             <el-option
               v-for="item in tackTypes"
               :key="item.value"
               :label="item.label"
               :value="item.value"
-              @change="updataTack()"
               >
             </el-option>
           </el-select>
         </li>
-        <li class="design-duration">
+        <li class="design-duration noborder">
           <i></i>
           <div>
             <el-input 
@@ -286,7 +286,7 @@
             </el-input>
           </div>
         </li>
-        <li class="formup-time">
+        <li class="formup-time noborder">
           <i></i>
           <div class="block">
               <el-date-picker
@@ -298,7 +298,7 @@
               </el-date-picker>
             </div>
         </li>
-        <li class="design-content">
+        <li class="design-content noborder">
           <i></i>
           <el-input
               type="textarea"
@@ -311,17 +311,60 @@
         </li>
       </ul>
       <div class="task-files">
-        <div class="task-filesicon">
-          <i></i>
-          交付文件
-        </div>
+        <el-upload
+          :action="uploadUrl"
+          :data="uploadParam"
+          :on-success="uploadSuccess"
+          :on-progress="uploadProgress"
+          :show-file-list="false"
+          >
+          <div class="task-filesicon">
+            <i></i>
+            交付文件
+          </div>
+        </el-upload>
+      </div>
+      <div>
+        <ul>
+          <li class="fileing"
+            v-if="f.percentage !== 100"
+            v-for="(f,indexf) in fileLists" :key="indexf">
+            <i class="other" >
+            </i>
+            <div>
+              <div>
+                <div class="file-name">{{f.name}}</div>
+                <span class="fr">{{f.prog}}/{{f.size}}</span>
+              </div>
+              <el-progress :percentage="f.percentage"
+                :stroke-width='3'
+                :show-text="false"
+              >
+              </el-progress>
+            </div>
+            <!-- <p>
+            </p> -->
+          </li>
+        </ul>
+        <ul>
+          <li class="substage-files"
+            v-for="(sub, indexs) in formTack.sub_stage_image"
+            :key="indexs">
+            <i class="other"></i>
+            <span>{{sub.name}}</span>
+            <div>
+              <span @click="downupload(sub.file)">下载</span>
+              <span @click="deleteup(sub.id)">删除</span>
+            </div>
+          </li>
+        </ul>
       </div>
     </aside>
-    <aside class="aside tc-6 animated slideInRight" v-if="isnodeedit">
+    <aside :class="['aside','tc-6', {'animated slideInRight': ispop}]" v-if="isnodeedit">
       <div class="aside-title fx">
         <i class="fx fx-icon-delete2" @click="dialogTask=true"></i>
         <span class="tc-2">里程碑设置</span>
-        <p class="fx fx-icon-close-sm" @click="istaskedit = false"></p>
+        <p class="fx fx-icon-close-sm" @click="isnodeedit = false"></p>
       </div>
       <ul class="aside-content">
         <li class="designStage-name">
@@ -334,7 +377,7 @@
             v-model="formTack.name"
             placeholder="里程碑名称"
             :class="['noborder',{'success':formTackstatus}]"
-            @blur.stop="updataNode()"
+            @blur.stop="updataTack()"
           >
           </el-input>
         </li>
@@ -342,7 +385,7 @@
           <i></i>
           上级项目阶段: {{itemdesname}}
         </li>
-        <li class="task-switch">
+        <li class="task-switch noborder">
           <i></i>
           <el-select v-model="formTack.type" placeholder="请选择" @change="updataTack()"
             >
@@ -355,20 +398,19 @@
             </el-option>
           </el-select>
         </li>
-        <li class="formup-time">
+        <li class="formup-time noborder">
           <i></i>
           <div class="block">
               <el-date-picker
               type="date"
               v-model="formTacktime"
               placeholder="开始日期设置"
-              class="noborder"
               @change="editNodetime"
               >
               </el-date-picker>
             </div>
         </li>
-        <li class="design-content">
+        <li class="design-content noborder">
           <i></i>
           <el-input
               type="textarea"
@@ -380,7 +422,56 @@
           </el-input>
         </li>
       </ul>
+      <div class="task-files">
+        <el-upload
+          :action="uploadUrl"
+          :data="uploadParam"
+          :on-success="uploadSuccess"
+          :on-progress="uploadProgress"
+          :show-file-list="false"
+          >
+          <div class="task-filesicon">
+            <i></i>
+            交付文件
+          </div>
+        </el-upload>
+      </div>
       <div>
+        <ul>
+          <li class="fileing"
+            v-if="f.percentage !== 100"
+            v-for="(f,indexf) in fileLists" :key="indexf">
+            <i class="other" >
+            </i>
+            <div>
+              <div>
+                <div class="file-name">{{f.name}}</div>
+                <span class="fr">{{f.prog}}/{{f.size}}</span>
+              </div>
+              <el-progress :percentage="f.percentage"
+                :stroke-width='3'
+                :show-text="false"
+              >
+              </el-progress>
+            </div>
+            <!-- <p>
+            </p> -->
+          </li>
+        </ul>
+        <ul>
+          <li class="substage-files"
+            v-for="(sub, indexs) in formTack.sub_stage_image"
+            :key="indexs">
+            <i class="other"></i>
+            <span>{{sub.name}}</span>
+            <div>
+              <span @click="downupload(sub.file)">下载</span>
+              <span @click="deleteup(sub.id)">删除</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <!-- <div>
         <div class="node-file" tabindex="-1">
           <i></i>
             交付文件
@@ -435,7 +526,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </aside>
     <section class="top-progress">
       <div class="h3 fz-20">{{itemName}}</div>
@@ -693,7 +784,6 @@
                       <i
                         :class="['nodebase',{
                           'item-node': tack.status,
-                          'item-nodenon': !tack.status && tack.left >= newleft,
                           'item-noded': !tack.status && tack.left < newleft
                         }]"
                         v-if="tack.type===1"
@@ -813,6 +903,7 @@
 import api from '@/api/api'
 import '@/assets/js/format'
 import Vue from 'vue'
+import download from 'downloadjs'
 // 注册一个全局自定义指令 `v-focus`
 Vue.directive('mouse', {
   // 当被绑定的元素插入到 DOM 中时……
@@ -901,7 +992,7 @@ export default {
         'token': '',
         'x:random': '',
         'x:user_id': this.$store.state.event.user.id,
-        'x:type': 31,
+        'x:type': 34,
         'x:target_id': ''
       },
       dialogTask: false,
@@ -918,6 +1009,7 @@ export default {
       formNodeup: {}, // 节点状态
       formTackup: {},
       formTacktype: '',
+      ispop: false,
       tackTypes: [
         {
           value: 1,
@@ -1137,6 +1229,16 @@ export default {
       res.left = Math.floor(((res.start_time - resxin) / 86400))
       return res
     },
+    // 定时控制弹窗
+    setoutpop() {
+      let that = this
+      that.ispop = true
+      window.setTimeout(function() {
+        that.ispop = false
+      }, 500
+      )
+      window.clearTimeout(1)
+    },
     // 子阶段显示
     tackleft(des) {
       let et = new Date(this.endTimes[0] * 1000)
@@ -1198,6 +1300,7 @@ export default {
       this.istaskedit = false
       this.isnodeedit = false
       this.isitemedit = true
+      this.setoutpop()
     },
   // 编辑项目状态
     editItemStatus() {
@@ -1456,6 +1559,16 @@ export default {
             }
           }
           self.tackleft(self.designStageLists)
+          if (self.formTack.type === 1) {
+            self.isnodeedit = false
+            self.istaskedit = true
+            self.isitemedit = false
+          }
+          if (self.formTack.type === 2) {
+            self.isnodeedit = true
+            self.istaskedit = false
+            self.isitemedit = false
+          }
         } else {
           self.$message.error(response.data.meta.message)
         }
@@ -1480,6 +1593,7 @@ export default {
       }
       this.formTackstatus = Boolean(this.formTack.status)
       this.isitemedit = false
+      this.uploadParam['x:target_id'] = this.formTack.id
       if (des.type === 1) {
         this.isnodeedit = false
         this.istaskedit = true
@@ -1488,6 +1602,7 @@ export default {
         this.isnodeedit = true
         this.istaskedit = false
       }
+      this.setoutpop()
       this.formTacktime = (new Date(this.formTack.start_time * 1000)).format('yyyy-MM-dd')
     },
     // 编辑子子阶段状态
@@ -1584,114 +1699,7 @@ export default {
         console.error(error.message)
       })
     },
-    // 创建阶段节点
-    // createNode() {
-    //   if (!this.formNode.name) {
-    //     return
-    //   }
-    //   let endt = this.formTack.start_time + this.formTack.duration * 86400
-    //   this.formNode.design_substage_id = this.formTack.id
-    //   if (this.formNode.is_owner) {
-    //     this.formNode.is_owner = 1
-    //   } else this.formNode.is_owner = 0
-    //   this.formNode.time = endt
-    //   this.$http.post(api.dsignStageNodeCreate, this.formNode).then((response) => {
-    //     if (response.data.meta.status_code === 200) {
-    //       var res = response.data.data
-    //       var dessub = this.indesignStage.design_substage
-    //       for (var f = 0; f < dessub.length; f++) {
-    //         if (dessub[f].id === res.design_substage_id) {
-    //           this.editNodeStatus(res.id, dessub[f].status)
-    //           dessub[f].design_stage_node = res
-    //         }
-    //       }
-    //     } else {
-    //       this.$message.error(response.data.meta.message)
-    //     }
-    //   })
-    // },
-    // 编辑阶段节点按钮
-    // editNode(node, c) {
-    //   this.formNodetime = (new Date(node.time * 1000)).format('yyyy-MM-dd')
-    //   this.isitemedit = false
-    //   this.istaskedit = false
-    //   this.isnodeedit = true
-    //   this.formNode = {...node}
-    //   this.uploadParam['x:target_id'] = node.id
-    //   this.formNodeStatus = Boolean(this.formNode.status)
-    //   this.indesignStage = c
-    // },
-    // 编辑节点完成状态
-    // editNodeStatus(nid, nst) {
-    //   if (this.formNodeup.status !== Boolean(this.formNode.status) || nid) {
-    //     if (nid) {
-    //       this.formNodeup.status = Number(nst)
-    //       this.formNodeup.stage_node_id = nid
-    //     } else {
-    //       this.formNodeup.status = Number(this.formNodeStatus)
-    //       this.formNodeup.stage_node_id = this.formNode.id
-    //     }
-    //     this.$http.put(api.designStageNodeCompletes.format(this.formNodeup.stage_node_id), this.formNodeup).then((response) => {
-    //       if (response.data.meta.status_code === 200) {
-    //         let node = this.indesignStage.design_substage
-    //         for (var i = 0; i < node.length; i++) {
-    //           if (node[i].design_stage_node && node[i].design_stage_node.id === response.data.data.id) {
-    //             node[i].design_stage_node.status = response.data.data.status
-    //           }
-    //         }
-    //         if (!nid) {
-    //           this.desCompletes(response.data.data.design_substage_id, this.formNodeStatus)
-    //         }
-    //       } else {
-    //         this.$message.error(response.data.meta.message)
-    //       }
-    //     }).catch((error) => {
-    //       this.$message.error(error.message)
-    //       console.error(error.message)
-    //     })
-    //   }
-    // },
-    // // 编辑阶段节点
-    // updataNode(date) {
-    //   if (Date.parse(new Date(this.formNodetime)) / 1000 !== this.formNode.time || !date) {
-    //     if (typeof this.formNode.time !== 'number') {
-    //       this.formNode.time = Math.round(new Date(this.formNode.time).getTime() / 1000)
-    //     }
-    //     if (date) {
-    //       this.formNode.time = Math.round(new Date(date).getTime() / 1000)
-    //     }
-    //     this.formNode.stage_node_id = this.formNode.id
-    //     this.$http.put(api.designStageNodeUpdate.format(this.formNode.id), this.formNode).then((response) => {
-    //       if (response.data.meta.status_code === 200) {
-    //         let innode = this.indesignStage.design_substage
-    //         for (var i = 0; i < innode.length; i++) {
-    //           if (innode[i].design_stage_node && innode[i].design_stage_node.id === this.formNode.id) {
-    //             innode[i].design_stage_node = response.data.data
-    //           }
-    //         }
-    //       } else {
-    //         this.$message.error(response.data.meta.message)
-    //       }
-    //     }).catch((error) => {
-    //       this.$message.error(error.message)
-    //       console.error(error.message)
-    //     })
-    //   }
-    // },
-    // // 删除阶段节点
-    // deleteNode(id, index) {
-    //   this.$http.delete(api.designStageNodeDelete, {params: {stage_node_id: id}}).then (function(response) {
-    //     if (response.data.meta.status_code === 200) {
-    //       console.log(response.data.data)
-    //     } else {
-    //       this.$message.error(response.data.meta.message)
-    //     }
-    //   }).catch((error) => {
-    //     this.$message.error(error.message)
-    //     console.error(error.message)
-    //   })
-    // },
-    // 节点文件上传时
+    // 子阶段文件上传时
     uploadProgress(event, file, fileList) {
       this.fileLists = fileList
       for (var i = 0; i < this.fileLists.length; i++) {
@@ -1707,13 +1715,13 @@ export default {
         }
       }
     },
-    // 文件上传成功时
+    // 子阶段文件上传成功时
     uploadSuccess(response, file, fileList) {
       file.id = file.response.asset_id
       file.file = file.response.file
-      this.formNode.asset.unshift(file)
+      this.formTack.sub_stage_image.unshift(file)
     },
-    // 删除上传的文件
+    // 子阶段删除上传的文件
     deleteup(assetid) {
       var self = this
       self.$http.delete(api.asset.format(assetid), {})
@@ -1727,6 +1735,10 @@ export default {
         self.$message.error(error.message)
         self.dialogLoadingBtn = false
       })
+    },
+    // 下载文件
+    downupload(url) {
+      download(url)
     },
     // 获取附件Token
     upTokens() {
@@ -1976,7 +1988,8 @@ export default {
   .aside-content>.task-userimg {
     height:36px;
     line-height: 36px;
-    margin-bottom:0px;
+    margin-bottom: 0px;
+    padding-left: 10px;
     position:relative
   }
   .task-userimg>span {
@@ -2118,6 +2131,74 @@ export default {
   .file-edit {
     padding:0 20px;
   }
+  .substage-files {
+    height:42px;
+    background: #f7f7f7;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 20px 10px 20px;
+  }
+  .substage-files i {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    margin: auto 10px;
+  }
+  .file-name {
+    display: inline-block;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .substage-files>span {
+    flex: 1;
+    margin-right: 10;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .substage-files>div>span {
+    padding-right:10px;
+  }
+  .substage-files>div>span:hover {
+    color: #FF8B8F;
+    cursor: pointer;
+  }
+  .fileing {
+    height:42px;
+    background: #f7f7f7;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 20px 10px 20px;
+  }
+  .fileing>div {
+    flex: 1;
+    margin-right: 10px;
+  }
+  .fileing .el-progress {
+    margin-top: 3px;
+  }
+  .fileing>p {
+    width: 14px;
+    height: 14px;
+    /* background: url('../../../../assets/images/tools/project_management/Close@2x.png') 0 0 no-repeat;
+    background-size: contain; */
+    margin:auto 10px;
+    /* cursor: pointer; */
+  }
+  .fileing>p:hover {
+    background: url('../../../../assets/images/tools/project_management/Close@3x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .fileing i {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    margin: auto 10px;
+  }
   .files {
     display:flex;
     justify-content:space-between;
@@ -2172,6 +2253,9 @@ export default {
   .files-name>div>span:first-child {
     margin-right:10px;
   }
+  .task-itemdesname {
+    padding-left: 10px;
+  }
   .task-itemdesname i {
     background: url('../../../../assets/images/tools/project_management/superior@2x.png') 0 0 no-repeat;
     background-size: contain;
@@ -2223,7 +2307,7 @@ export default {
     line-height: 36px;
   }
   .formup-duration {
-    padding-left:105px;
+    padding-left:15px;
   }
   .formup-time i{
     background:url('../../../../assets/images/tools/project_management/Time.png') 0 0 no-repeat;
@@ -2235,6 +2319,7 @@ export default {
   .task-filesicon {
     line-height: 36px;
     position: relative;
+    padding-left: 10px;
   }
   .task-filesicon i {
     position: absolute;
@@ -2672,8 +2757,12 @@ export default {
     background-size: contain;
   }
   .item-node {
+    display: none;
     background:url('../../../../assets/images/tools/project_management/Node03@2x.png') 0 0 no-repeat;
     background-size: contain;
+  }
+  .item-tacklist:hover .item-node {
+    display: inline-block;
   }
   .isowner {
     background:url('../../../../assets/images/tools/project_management/FirstParty@2x.png') 0 0 no-repeat;
