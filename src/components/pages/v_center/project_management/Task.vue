@@ -731,9 +731,6 @@
   .is-checked {
     border: 1px solid #ff5a5f;
   }
-  .task-item:hover {
-    /* background: #fafafa */
-  }
   .task-item img {
     border: 1px solid #e6e6e6;
     width: 30px;
@@ -743,34 +740,38 @@
   }
   .stage-name {
     position: relative;
-    padding: 0 40px 0 20px;
-    margin-top: 20px;
+    border-radius: 0;
+    padding: 0 40px 0 0;
+    margin-top: 0;
     font-size: 18px;
     color: #222222;
-    line-height: 50px;
-    /* font-weight: bold; */
+    line-height: 40px;
+    height: 40px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    border-color: transparent;
+    border-bottom-color: #d2d2d2;
   }
   .stage-title {
     position: absolute;
     left: 0;
     top: 0;
     line-height: 1;
-    height: 48px;
+    height: 38px;
     width: 100%;
-    min-width: 20px;
+    /* min-width: 20px; */
     border: none;
     font-size: 18px;
     color: #222222;
-    padding: 15px 40px 15px 20px;
+    padding: 10px 40px 10px 0;
   }
   .close-icon-solid {
     display: none;
     position: absolute;
     right: 20px;
-    top: 17px;
+    top: 50%;
+    transform: translateY(-50%);
     background: rgba(0,0,0,0.30)
   }
   .close-icon-solid:hover {

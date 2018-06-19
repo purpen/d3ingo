@@ -191,11 +191,15 @@ let mutations = {
     state.taskMemberList.unshift(obj)
   },
   deleteTaskMemberList(state, id) {
-    state.taskMemberList.forEach((item, index, array) => {
-      if (item.user.id === id) {
-        array.splice(index, 1)
-      }
-    })
+    if (state.taskMemberList) {
+      state.taskMemberList.forEach((item, index, array) => {
+        if (item.user) {
+          if (item.user.id === id) {
+            array.splice(index, 1)
+          }
+        }
+      })
+    }
   },
   setExecuteUser(state, userId) {
     state.projectMemberList.forEach((item) => {

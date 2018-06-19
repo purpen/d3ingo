@@ -149,7 +149,17 @@ export default {
       console.log(response, file, fileList)
     },
     beforeUpload(file) {
-      console.log(file)
+      const arr = ['image/jpeg', 'image/gif', 'image/png']
+      const isLt5M = file.size / 1024 / 1024 < 5
+
+      if (arr.indexOf(file.type) === -1) {
+        this.$message.error('上传文件格式不正确!')
+        return false
+      }
+      if (!isLt5M) {
+        this.$message.error('上传文件大小不能超过 5MB!')
+        return false
+      }
     },
     getDemandObj() {
       if (this.id) {
@@ -186,7 +196,6 @@ export default {
       }
     },
     submit() {
-      // this.$router.push({name: 'projectMatch', params: {id: this.id}})
       if (!this.form.cycle || !this.form.design_cost || !this.form.industry || (!this.province || !this.city)) {
         this.$message.error('请完善内容')
         return false
@@ -205,6 +214,7 @@ export default {
       .then(res => {
         if (res.data.meta.status_code === 200) {
           console.log(res)
+          this.$router.push({name: 'projectMatch', params: {id: this.id}})
         } else {
           this.$message.error(res.data.meta.message)
         }
