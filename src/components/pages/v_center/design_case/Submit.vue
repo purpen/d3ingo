@@ -134,7 +134,28 @@
 
               </div>
 
-
+              <el-row>
+                <el-col :span="isMob ? 24 : 12">
+                  <el-form-item label="标签" prop="label">
+                    <el-select
+                      v-model="form.label"
+                      multiple
+                      filterable
+                      allow-create
+                      placeholder="请添加最多5个标签"
+                      no-data-text="请填写标签名"
+                      :multiple-limit="5"
+                      >
+                      <el-option
+                        v-for="item in options5"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
                   <el-form-item label="标题" prop="title">
@@ -290,6 +311,8 @@
         is_prize: false,
         typeSwitch1: false,
         typeSwitch2: false,
+        options5: [],
+        value10: [],
         uploadParam: {
           'token': '',
           'x:random': '',
@@ -314,7 +337,8 @@
           mass_production: 0,
           sales_volume: '',
           cover_id: '',
-          profile: ''
+          profile: '',
+          label: []
         },
         ruleForm: {
           type: [
@@ -350,6 +374,10 @@
           ],
           patent_time: [
             {required: true, type: 'date', message: '请选择申请时间', trigger: 'blur'}
+          ],
+          label: [
+            {required: true, type: 'array', message: '请填写标签', trigger: 'blur'},
+            {min: 1, max: 5, message: '请填写1~5个标签', trigger: 'blur'}
           ]
         }
       }
@@ -377,7 +405,8 @@
               customer: that.form.customer,
               mass_production: that.form.mass_production,
               sales_volume: that.form.sales_volume === '' ? 0 : that.form.sales_volume,
-              profile: that.form.profile
+              profile: that.form.profile,
+              label: that.form.label
             }
             row.cover_id = that.coverId
             if (that.is_prize && that.form.prize_time) {

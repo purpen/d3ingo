@@ -408,3 +408,6 @@
     -webkit-animation-duration: 0.5s;
     animation-duration: 0.5s;
   }
+  .el-select__tags>input[type=text]:focus {
+    box-shadow: 0 0 0 0 white inset;
+  }
