@@ -108,9 +108,6 @@
         if (d.is_show) {
           d.is_show = false
         } else {
-          if (d.is_read === 0) {
-            this.fetchMessageCount()
-          }
           d.is_show = true
         }
         // 确认已读状态
@@ -118,6 +115,7 @@
           self.$http.put(api.designNoticeTrueRead, {id: d.id})
             .then(function (response) {
               if (response.data.meta.status_code === 200) {
+                self.fetchMessageCount()
                 d.is_read = 1
               }
             })

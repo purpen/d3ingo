@@ -186,24 +186,25 @@
       editItem(event) {
         let progress = parseInt(event.currentTarget.getAttribute('progress'))
         let itemId = event.currentTarget.getAttribute('item_id')
-        let type = parseInt(event.currentTarget.getAttribute('item_type'))
+        // let type = parseInt(event.currentTarget.getAttribute('item_type'))
         let name = null
         switch (progress) {
           case 0:
             name = 'itemSubmitTwo'
             break
           case 1:
-            if (type === 1) {
-              name = 'itemSubmitThree'
-            } else if (type === 2) {
-              name = 'itemSubmitUIThree'
-            }
+            name = 'projectSelect'
+            // if (type === 1) {
+            //   name = 'itemSubmitThree'
+            // } else if (type === 2) {
+            //   name = 'itemSubmitUIThree'
+            // }
             break
           case 2:
-            name = 'itemSubmitFour'
+            name = 'projectType'
             break
           case 3:
-            name = 'itemSubmitFive'
+            name = 'projectInfo'
             break
         }
         this.$router.push({name: name, params: {id: itemId}})
@@ -254,12 +255,12 @@
       this.fetchMessageCount()
       const that = this
       let isCompany = that.isCompany()
-      let url = null
-      if (isCompany) {
-        url = api.surveyDesignCompanySurvey
-      } else {
-        url = api.surveyDemandCompanySurvey
-      }
+      let url = api.surveyDemandCompanySurvey
+      // if (isCompany) {
+      //   url = api.surveyDesignCompanySurvey
+      // } else {
+      //   url = api.surveyDemandCompanySurvey
+      // }
       that.$http.get(url, {})
         .then(function (response) {
           if (response.data.meta.status_code === 200) {

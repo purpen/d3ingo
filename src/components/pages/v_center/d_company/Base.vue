@@ -167,7 +167,7 @@
               <el-col :span="contentSpan" class="content">
 
                 <el-input v-model="form.company_web" placeholder="" v-if="element.web">
-                  <template slot="prepend">http://</template>
+                  <!-- <template slot="prepend">http://</template> -->
                 </el-input>
 
                 <p v-else><a :href="form.web" target="_blank">{{ form.web }}</a></p>

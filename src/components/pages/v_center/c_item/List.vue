@@ -1,13 +1,13 @@
 <template>
   <section>
-    <div class="blank30 vcenter clearfix" v-if="!isEmpty">
+    <div class="blank30 vcenter clearfix">
       <v-menu currentName="c_item"></v-menu>
       <!-- <el-col :span="isMob ? 24 : rightWidth"> -->
       <!-- <el-col class="vcenter-right-plus" :xs="24" :sm="24" :md="24" :lg="24"> -->
       <div :class="{'vcenter-right-plus': leftWidth === 4,
         'vcenter-right': leftWidth === 2,
           'vcenter-right-mob': isMob}">
-        <div class="right-content vcenter-container">
+        <div class="right-content vcenter-container" v-if="!isEmpty">
           <div :class="['content-item-box', isMob ? 'content-item-box-m' : '' ]" v-loading="isLoading">
             <h3>待确认</h3>
             <el-row v-if="!isMob" class="item-title-box list-box" v-show="designItems.length">
@@ -141,12 +141,12 @@
         </span>
       </el-dialog>
     </div>
-    <div class="blank30 vcenter clearfix" v-if="!isEmpty2">
+    <div class="blank30 vcenter clearfix">
       <v-menu currentName="c_item" class="c_item"></v-menu>
       <div :class="{'vcenter-right-plus': leftWidth === 4,
         'vcenter-right': leftWidth === 2,
           'vcenter-right-mob': isMob}">
-        <div class="right-content vcenter-container">
+        <div class="right-content vcenter-container" v-if="!isEmpty2">
           <div :class="['content-item-box', isMob ? 'content-item-box-m' : '' ]" v-loading="isLoading2">
             <h3>已合作</h3>
             <el-row v-if="!isMob" class="item-title-box list-box" v-show="designItems2.length">
@@ -768,7 +768,7 @@
   .empty {
     width: 122px;
     height: 113px;
-    margin: 100px auto 0;
+    margin: 220px auto 0;
     background: url("../../../../assets/images/\tools/report/NoContent.png") no-repeat;
     background-size: contain;
   }

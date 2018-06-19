@@ -104,13 +104,11 @@
       },
       // 下拉展开
       showDes(d, index) {
+        console.log(d.status)
         const self = this
         if (d.is_show) {
           d.is_show = false
         } else {
-          if (d.status === 0) {
-            this.fetchMessageCount()
-          }
           d.is_show = true
         }
         // 确认已读状态
@@ -118,6 +116,7 @@
           self.$http.put(api.messageTrueRead, {id: d.id})
             .then(function (response) {
               if (response.data.meta.status_code === 200) {
+                self.fetchMessageCount()
                 d.status = 1
               }
             })

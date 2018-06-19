@@ -414,12 +414,12 @@
       this.fetchMessageCount()
       const that = this
       let isCompany = that.isCompany()
-      let url = null
-      if (isCompany) {
-        url = api.surveyDesignCompanySurvey
-      } else {
-        url = api.surveyDemandCompanySurvey
-      }
+      let url = api.surveyDesignCompanySurvey
+      // if (isCompany) {
+      //   url = api.surveyDesignCompanySurvey
+      // } else {
+      //   url = api.surveyDemandCompanySurvey
+      // }
       that.$http.get(url, {})
         .then(function (response) {
           if (response.data.meta.status_code === 200) {
