@@ -14,7 +14,7 @@
         </div>
         <h3>项目预算</h3>
         <div class="item">
-          <el-select placeholder="请选择项目预算" v-model="form.budget">
+          <el-select placeholder="请选择项目预算" v-model="form.design_cost">
             <el-option v-for="(e, i) in DESIGN_COST_OPTIONS"
               :key="i"
               :label="e.name"
@@ -35,6 +35,7 @@
         <h3>项目工作地点</h3>
         <el-form class="item">
           <region-picker
+            :twoSelect="true"
             :provinceProp="province"
             :cityProp="city"
             :districtProp="district"
@@ -49,7 +50,7 @@
             :action="uploadUrl"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
-            :file-list="fileList"
+            :file-list="form.image"
             :data="uploadParam"
             :on-error="uploadError"
             :on-success="uploadSuccess"
@@ -81,21 +82,20 @@ export default {
   data() {
     return {
       id: -1,
-      type: -1,
       form: {
         cycle: '',
-        budget: '',
+        design_cost: '',
         industry: ''
       },
       province: 0,
       city: 0,
       district: 0,
-      fileList: [],
       uploadUrl: '',
       uploadParam: {
         'token': '',
         'x:random': '',
         'x:target_id': '',
+        'x:user_id': this.$store.state.event.user.id,
         'x:type': 4
       }
     }
@@ -130,7 +130,17 @@ export default {
       console.log(file)
     },
     handleRemove(file, fileList) {
-      console.log(file, fileList)
+      // console.log(file, fileList)
+      this.$http.delete(api.asset.format(file.id))
+      .then(res => {
+        if (res.data.meta.status_code === 200) {
+          console.log(res)
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
     },
     uploadError(err, file, fileList) {
       console.log(err, file, fileList)
@@ -141,8 +151,66 @@ export default {
     beforeUpload(file) {
       console.log(file)
     },
+    getDemandObj() {
+      if (this.id) {
+        this.$http.get(api.demandId.format(this.id))
+        .then(res => {
+          if (res.data.meta.status_code === 200) {
+            this.form = res.data.data.item
+            console.log(this.form)
+            if (!this.form.cycle) {
+              this.form.cycle = ''
+            }
+            if (!this.form.design_cost) {
+              this.form.design_cost = ''
+            }
+            if (!this.form.industry) {
+              this.form.industry = ''
+            }
+            this.province = this.form.province === 0 ? '' : this.form.province
+            this.city = this.form.city === 0 ? '' : this.form.city
+
+            if (this.form.type) {
+              this.type = this.form.type
+            } else {
+              this.$message.error('请选择类型')
+              this.$router.push({name: 'projectSelect', params: {id: this.id}})
+              return
+            }
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(err => {
+          console.error(err.message)
+        })
+      }
+    },
     submit() {
-      this.$router.push({name: 'projectMatch', params: {id: this.id}, query: {type: this.type}})
+      // this.$router.push({name: 'projectMatch', params: {id: this.id}})
+      if (!this.form.cycle || !this.form.design_cost || !this.form.industry || (!this.province || !this.city)) {
+        this.$message.error('请完善内容')
+        return false
+      }
+      let row = {
+        id: this.id,
+        cycle: this.form.cycle,
+        design_cost: this.form.design_cost,
+        industry: this.form.industry,
+        item_province: this.province,
+        item_city: this.city,
+        random: this.uploadParam['x:random']
+      }
+      let url = api.release
+      this.$http({method: 'post', url: url, data: row})
+      .then(res => {
+        if (res.data.meta.status_code === 200) {
+          console.log(res)
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        console.error(err)
+      })
     }
   },
   computed: {
@@ -154,12 +222,16 @@ export default {
     },
     INDUSTRY() {
       return INDUSTRY
+    },
+    user() {
+      return this.$store.state.event.user
     }
   },
   created() {
     this.id = Number(this.$route.params.id) || -1
-    this.type = Number(this.$route.query.type) || -1
+    this.uploadParam['x:target_id'] = this.id
     this.getToken()
+    this.getDemandObj()
   }
 }
 </script>

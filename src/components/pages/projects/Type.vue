@@ -19,7 +19,7 @@
                 </el-option>
               </el-select>
             </div>
-            <h3>产品功能描述</h3>
+            <!-- <h3>产品功能描述</h3>
             <div class="item">
               <el-form :model="form">
                 <el-form-item
@@ -35,7 +35,7 @@
                 ></el-input>
                 </el-form-item>
               </el-form>
-            </div>
+            </div> -->
         </section>
         <section v-if="type === 2">
           <h3>项目现状</h3>
@@ -47,7 +47,7 @@
               <i :class="{'active': form.stage === 2}" @click="addRadio(2, 'stage')">全新设计（针对0基础产品）</i>
             </span>
           </div>
-          <h3>现有设计内容</h3>{{form.complete_content}}
+          <h3>现有设计内容</h3>
           <div class="item items-radio">
             <span v-for="(ele, index) in designContent" :key="index">
               <i :class="{'active': form.complete_content.indexOf(ele.id) !== -1}"
@@ -136,7 +136,6 @@ export default {
         .then(res => {
           if (res.data.meta.status_code === 200) {
             this.form = res.data.data.item
-            console.log(this.form)
             if (!this.form.complete_content) {
               // this.form.complete_content = []
               this.form = Object.assign({}, this.form, {
@@ -189,7 +188,9 @@ export default {
     },
     submit() {
       let row = {}
+      let url = ''
       if (this.type === 1) {
+        console.log(222)
         if (!this.designType.length || !this.form.product_features || !this.form.field) {
           this.$message.error('请完善内容')
           return false
@@ -199,7 +200,9 @@ export default {
           field: this.form.field,
           product_features: this.form.product_features
         }
+        url = api.ProductDesignId.format(this.id)
       } else if (this.type === 2) {
+        console.log(222)
         if (!this.designType.length || !this.form.product_features || !this.form.complete_content.length || !this.form.stage) {
           this.$message.error('请完善内容')
           return false
@@ -216,6 +219,7 @@ export default {
               other_content: this.form.other_content,
               product_features: this.form.product_features
             }
+            url = api.UDesignId.format(this.id)
           }
         }
         row = {
@@ -224,8 +228,9 @@ export default {
           complete_content: this.form.complete_content,
           product_features: this.form.product_features
         }
+        url = api.UDesignId.format(this.id)
       }
-      this.$http.put(api.UDesignId.format(this.id), row)
+      this.$http.put(url, row)
       .then(res => {
         if (res.data.meta.status_code === 200) {
           // console.log(res)
@@ -233,6 +238,8 @@ export default {
         } else {
           this.$message.error(res.data.meta.message)
         }
+      }).catch(err => {
+        console.error(err)
       })
     }
   },
@@ -345,6 +352,21 @@ export default {
   .items-radio span i.active::after {
     transform: rotate(45deg) scale(1);
     border-color: #fff
+  }
+  .hidden {
+    position: relative;
+  }
+  .hidden::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  .show::before {
+    z-index: -1;
   }
 </style>
 <style>

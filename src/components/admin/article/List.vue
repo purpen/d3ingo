@@ -122,7 +122,7 @@ export default {
             self.itemList[index].status = evt
             self.$message.success('操作成功')
           } else {
-            self.$message.error(response.meta.message)
+            self.$message.error(response.data.meta.message)
           }
         })
         .catch(function(error) {
