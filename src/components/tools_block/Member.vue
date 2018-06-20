@@ -101,6 +101,19 @@ export default {
     }
   },
   methods: {
+    getTaskMemberList() {
+      this.$http.get(api.taskUsers, {params: {task_id: this.taskId}})
+      .then(res => {
+        if (res.data.meta.status_code === 200) {
+          // this.taskMemberList = res.data.data
+          this.$store.commit('setTaskMemberList', res.data.data)
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        this.$message.error(err.message)
+      })
+    },
     closeMember() {
       this.currentShow = false
     },
@@ -142,6 +155,7 @@ export default {
         } else {
           this.removeTaskMember(selectId)
         }
+        this.getTaskMemberList()
       } else {
         this.claimTask(selectId)
       }

@@ -465,6 +465,18 @@ let routes = [
     },
     component: require('@/components/pages/projects/Match')
   },
+  // 公司比较
+  {
+    path: '/projects/compare/:id',
+    name: 'projectCompare',
+    meta: {
+      title: '设计公司比较',
+      requireAuth: true,
+      hideFooter: true,
+      isDesignInc: 1
+    },
+    component: require('@/components/pages/projects/Compare')
+  },
   // 发布需求(第二步) 选择领域
   {
     path: '/item/submit_type/:id',

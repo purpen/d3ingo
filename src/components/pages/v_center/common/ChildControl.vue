@@ -152,7 +152,7 @@
 
 <script>
   import vMenu from '@/components/pages/v_center/Menu'
-  import { MSG_COUNT } from '@/store/mutation-types'
+  import { MSG_COUNT, CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
   import api from '@/api/api'
 
   export default {
@@ -265,6 +265,7 @@
         .then(function (response) {
           if (response.data.meta.status_code === 200) {
             let item = null
+            that.$store.commit(CHANGE_USER_VERIFY_STATUS, response.data.data)
             that.item = item = response.data.data
             let verifyStatus = 0
             if (isCompany) {

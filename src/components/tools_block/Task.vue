@@ -68,7 +68,7 @@
             <el-select
               style="width: 195px;"
               v-model="currentForm.level" placeholder="请选择"
-              @change="changeLevel">
+              @change="changeLevel(currentForm.level)">
               <el-option
                 v-for="(item, index) in levels"
                 :key="index"
@@ -121,7 +121,7 @@
                   type="datetime"
                   placeholder="选择截止时间"
                   format="yyyy-MM-dd hh:mm"
-                  @change="changeTime2($event, ele.id)">
+                  @change="changeTime2(ele.over_time, ele.id)">
                 </el-date-picker>
                 <!-- <v-Member
                   :propsShow="showMember3"
@@ -141,7 +141,7 @@
                   type="datetime"
                   placeholder="选择截止时间"
                   format="yyyy-MM-dd hh:mm"
-                  @change="changeChildTime">
+                  @change="changeChildTime(addChildForm.over_time)">
                 </el-date-picker>
                 <!-- <v-Member
                   :propsShow="showMember3"
@@ -170,13 +170,12 @@
         </div>
         <div class="task-member">
           <p class="p-member">参与者</p>
-          <ul class="task-member-list">
-            <li v-for="(ele, index) in taskMemberList" :key="index">
+          <ul :class="['task-member-list']">
+            <li v-for="(ele, index) in taskMemberList" :key="index" v-if="ele.user">
               <a class="remove-member" @click="removeMember(ele.user.id)"></a>
               <img @click="showMember2 = true" v-if="ele.user.logo_image" v-lazy="ele.user.logo_image.logo" alt="">
-              <img @click="showMember2 = true" v-else v-lazy="require('assets/images/avatar_100.png')">
+              <img v-else @click="showMember2 = true" v-lazy="require('assets/images/avatar_100.png')">
             </li>
-          </ul>
           <p class="show-member" v-if="true" @click="showMember2 = true">
           </p>
           <v-Member
@@ -185,6 +184,7 @@
             :taskId="taskState.id"
             event="participant"
             @closeMember="closeMember2"></v-Member>
+          </ul>
         </div>
         <div class="task-moments" v-if="currentForm['moments']">
           <p class="p-moments" v-if="showAllMoments" @click="showAllMoments = false">隐藏较早的动态</p>
@@ -266,7 +266,7 @@
           test: ''
         },
         currentForm: { // 当前任务表单
-          over_time: new Date().format('yyyy-MM-dd hh:mm'),
+          over_time: '',
           level: 1
         },
         currentChange: {},
@@ -368,7 +368,6 @@
           let overTime = self.currentForm.over_time
           if (self.currentForm.over_time instanceof Date) {
             self.currentForm.over_time = overTime.format('yyyy-MM-dd hh:mm')
-            // self.currentForm.over_time = overTime.format('yyyy-MM-dd')
           }
         }
         self.currentForm.item_id = self.$route.params.id
@@ -569,17 +568,22 @@
           console.error(error.message)
         })
       },
-      changeTime(e) {
-        if (this.atFirst) {
-          return
-        }
-        if (this.taskState.event === 'update') {
-          this.currentChange = {over_time: e}
-          this.update()
-        }
+      changeTime(time) {
+        console.log(time)
+        // if (this.atFirst) {
+        //   return
+        // }
+        // if (time) {
+        //   if (this.taskState.event === 'update') {
+        //     this.currentChange = {over_time: time}
+        //     this.update()
+        //   }
+        // }
       },
       changeTime2(overTime, id) {
-        this.updateChild(id, {over_time: overTime})
+        if (overTime) {
+          this.updateChild(id, {over_time: overTime})
+        }
       },
       changeChildTime(e) {
         this.addChildForm.over_time = e
@@ -633,7 +637,9 @@
       },
       changeExecute(id) {
         this.currentForm.execute_user_id = id
-        this.currentForm.logo_image = this.executeUser.logo_image
+        if (this.executeUser) {
+          this.currentForm.logo_image = this.executeUser.logo_image
+        }
         this.$store.commit('updateTaskListItem', this.currentForm)
         this.fetchStage()
         this.showMember = false
@@ -645,10 +651,12 @@
           execute_user_id: 0})
         .then((res) => {
           if (res.data.meta.status_code === 200) {
-            this.currentForm.execute_user_id = 0
-            this.currentForm.logo_image = null
-            this.$store.commit('updateTaskListItem', this.currentForm)
-            this.fetchStage()
+            if (this.currentForm) {
+              this.currentForm.execute_user_id = 0
+              this.currentForm.logo_image = null
+              this.$store.commit('updateTaskListItem', this.currentForm)
+              this.fetchStage()
+            }
           } else {
             this.$message.error(res.data.meta.message)
           }
@@ -662,7 +670,6 @@
       },
       itemFormat(item) {
         item['date'] = item.created_at.date_format().format('yyyy年MM月dd日 hh:mm')
-        // item['date'] = item.created_at.date_format().format('yyyy年MM月dd日')
         switch (item.action_type) {
           case 1:
             item['action'] = '创建主任务'
@@ -1250,12 +1257,13 @@
   .task-member-list {
     padding-top: 20px;
     display: inline-flex;
+    align-items: center;
     flex-wrap: wrap;
     padding-left: 26px;
   }
   .task-member-list li {
     position: relative;
-    margin: 0 10px;
+    margin: 0 5px;
     cursor: pointer;
   }
   .task-member-list li a {
@@ -1326,8 +1334,8 @@
     /* color: #999 */
   }
   .task-detail-body .show-member {
-    margin-bottom: 4px;
-    display: inline-block;
+    margin: 0 5px 0;
+    /* display: inline-block; */
     width: 30px;
     height: 30px;
     min-width: 0;
