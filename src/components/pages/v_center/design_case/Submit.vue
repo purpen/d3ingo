@@ -134,6 +134,19 @@
 
               </div>
 
+              <el-row>
+                <el-col :span="isMob ? 24 : 12">
+                  <el-form-item label="标签" prop="label"   class="label-tag"
+                  >
+                    <vue-input-tag
+                      placeholder="Enter添加新标签"
+                      :tags.sync="form.label"
+                      :limit="10"
+                      >
+                    </vue-input-tag>
+                  </el-form-item>
+                </el-col>
+              </el-row>
 
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
@@ -251,7 +264,7 @@
               </el-form-item>
 
               <div class="form-btn">
-                <button class="middle-button white-button" @click.prevent="returnList">取消</button>
+                <el-button  @click.prevent="returnList" class="middle-button white-button">取消</el-button>
                 <el-button type="danger" :loading="isLoadingBtn" @click="submit('ruleForm')">提交</el-button>
               </div>
               <div class="clear"></div>
@@ -270,12 +283,13 @@
   import '@/assets/js/format'
   import '@/assets/js/date_format'
   import typeData from '@/config'
-
+  import vueInputTag from 'vue-input-tag'
   export default {
     name: 'vcenter_design_case_submit',
     components: {
       vMenu,
-      vMenuSub
+      vMenuSub,
+      vueInputTag
     },
     data () {
       return {
@@ -290,6 +304,8 @@
         is_prize: false,
         typeSwitch1: false,
         typeSwitch2: false,
+        options5: [],
+        value10: [],
         uploadParam: {
           'token': '',
           'x:random': '',
@@ -314,7 +330,8 @@
           mass_production: 0,
           sales_volume: '',
           cover_id: '',
-          profile: ''
+          profile: '',
+          label: []
         },
         ruleForm: {
           type: [
@@ -350,11 +367,18 @@
           ],
           patent_time: [
             {required: true, type: 'date', message: '请选择申请时间', trigger: 'blur'}
+          ],
+          label: [
+            {required: true, type: 'array', message: '请填写标签', trigger: 'blur'},
+            {type: 'array', min: 1, max: 10, message: '请填写1~10个标签', trigger: 'blur'}
           ]
         }
       }
     },
     methods: {
+      ceshi(val) {
+        console.log('val', val)
+      },
       // 选择分类事件
       selectTypeChange(val) {
         this.form.design_types = []
@@ -377,7 +401,8 @@
               customer: that.form.customer,
               mass_production: that.form.mass_production,
               sales_volume: that.form.sales_volume === '' ? 0 : that.form.sales_volume,
-              profile: that.form.profile
+              profile: that.form.profile,
+              label: that.form.label
             }
             row.cover_id = that.coverId
             if (that.is_prize && that.form.prize_time) {
@@ -567,7 +592,6 @@
           }
         }
         this.fileList.push (item)
-      //        console.log(this.fileList)
       },
       beforeUpload(file) {
         const arr = ['image/jpeg', 'image/gif', 'image/png']
@@ -860,6 +884,13 @@
   }
   .margin-b-10 {
     margin-bottom: 10px
+  }
+  .label-tag .vue-input-tag-wrapper {
+    border-radius: 4px;
+    border: 1px solid #e6e6e6;
+  }
+  .form-btn>.el-button + .el-button {
+    margin-right: 0px;
   }
   @media screen and (max-width: 767px) {
     .right-content .content-box {
