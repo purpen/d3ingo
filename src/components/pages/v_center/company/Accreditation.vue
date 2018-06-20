@@ -131,6 +131,7 @@
   import vMenu from '@/components/pages/v_center/Menu'
   import vMenuSub from '@/components/pages/v_center/company/MenuSub'
   import api from '@/api/api'
+  import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
 
   export default {
     name: 'vcenter_company_accredition',
@@ -157,6 +158,12 @@
         return
       }
       const that = this
+      that.$http.get(api.surveyDesignCompanySurvey, {})
+      .then(function (response) {
+        if (response.data.meta.status_code === 200) {
+          that.$store.commit(CHANGE_USER_VERIFY_STATUS, response.data.data)
+        }
+      })
       that.$http.get(api.designCompany, {})
         .then(function (response) {
           that.isLoading = false
