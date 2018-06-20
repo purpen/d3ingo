@@ -411,3 +411,43 @@
   .el-select__tags>input[type=text]:focus {
     box-shadow: 0 0 0 0 white inset;
   }
+  .label-tag .vue-input-tag-wrapper>.input-tag {
+    background: #f7f7f7;
+    border: 1px solid #d2d2d2;
+    color: #000;
+  }
+  .label-tag .vue-input-tag-wrapper>.input-tag>.remove {
+    color: #000;
+    font-weight: 400;
+    position: relative;
+    display: inline-block;
+    height: 14px;
+    width: 14px;
+    
+  }
+  .label-tag .vue-input-tag-wrapper>.input-tag>.remove::before,
+  .label-tag .vue-input-tag-wrapper>.input-tag>.remove::after {
+    display:inline-block;
+    content: " ";
+    position: absolute;
+    border-radius: 50%;
+    transform: rotate(45deg)
+  }
+  .label-tag .vue-input-tag-wrapper>.input-tag>.remove::before {
+    width: 13px;
+    border-top: 1px solid #000;
+    left: 1px;
+    top: 9px;
+  }
+  .label-tag .vue-input-tag-wrapper>.input-tag>.remove::after {
+    height: 13px;
+    border-right: 1px solid #000;
+    left: 7px;
+    top: 3px;
+  }
+  .label-tag .vue-input-tag-wrapper .input-tag .remove:hover::after {
+    border-right: 1px solid #ff5a5f;
+  }
+  .label-tag .vue-input-tag-wrapper .input-tag .remove:hover::before {
+    border-top: 1px solid #ff5a5f;
+  }

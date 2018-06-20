@@ -136,26 +136,18 @@
 
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="标签" prop="label">
-                    <el-select
-                      v-model="form.label"
-                      multiple
-                      filterable
-                      allow-create
-                      placeholder="请添加最多5个标签"
-                      no-data-text="请填写标签名"
-                      :multiple-limit="5"
+                  <el-form-item label="标签" prop="label"   class="label-tag"
+                  >
+                    <vue-input-tag
+                      placeholder="Enter添加新标签"
+                      :tags.sync="form.label"
+                      :limit="10"
                       >
-                      <el-option
-                        v-for="item in options5"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                      </el-option>
-                    </el-select>
+                    </vue-input-tag>
                   </el-form-item>
                 </el-col>
               </el-row>
+
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
                   <el-form-item label="标题" prop="title">
@@ -272,7 +264,7 @@
               </el-form-item>
 
               <div class="form-btn">
-                <button class="middle-button white-button" @click.prevent="returnList">取消</button>
+                <el-button  @click.prevent="returnList" class="middle-button white-button">取消</el-button>
                 <el-button type="danger" :loading="isLoadingBtn" @click="submit('ruleForm')">提交</el-button>
               </div>
               <div class="clear"></div>
@@ -291,12 +283,13 @@
   import '@/assets/js/format'
   import '@/assets/js/date_format'
   import typeData from '@/config'
-
+  import vueInputTag from 'vue-input-tag'
   export default {
     name: 'vcenter_design_case_submit',
     components: {
       vMenu,
-      vMenuSub
+      vMenuSub,
+      vueInputTag
     },
     data () {
       return {
@@ -377,12 +370,15 @@
           ],
           label: [
             {required: true, type: 'array', message: '请填写标签', trigger: 'blur'},
-            {min: 1, max: 5, message: '请填写1~5个标签', trigger: 'blur'}
+            {type: 'array', min: 1, max: 10, message: '请填写1~10个标签', trigger: 'blur'}
           ]
         }
       }
     },
     methods: {
+      ceshi(val) {
+        console.log('val', val)
+      },
       // 选择分类事件
       selectTypeChange(val) {
         this.form.design_types = []
@@ -596,7 +592,6 @@
           }
         }
         this.fileList.push (item)
-      //        console.log(this.fileList)
       },
       beforeUpload(file) {
         const arr = ['image/jpeg', 'image/gif', 'image/png']
@@ -889,6 +884,13 @@
   }
   .margin-b-10 {
     margin-bottom: 10px
+  }
+  .label-tag .vue-input-tag-wrapper {
+    border-radius: 4px;
+    border: 1px solid #e6e6e6;
+  }
+  .form-btn>.el-button + .el-button {
+    margin-right: 0px;
   }
   @media screen and (max-width: 767px) {
     .right-content .content-box {

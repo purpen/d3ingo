@@ -113,8 +113,8 @@
             <el-checkbox 
               v-model="formup.status"
               @change="editItemStatus()"
-              :true-label=1
-              :false-label=0
+              :true-label="1"
+              :false-label="0"
               >
             </el-checkbox>
           </span>
@@ -196,24 +196,29 @@
         <p class="fx fx-icon-close-sm" @click="cancelTack()"></p>
       </div>
       <div class="aside-task-pregress bg-success"
-        v-if="formTackstatus">
+        v-if="formTack.status">
         已完成
       </div>
       <div class="aside-task-pregress bg-exception"
-        v-if="!formTackstatus&&(formTack.left+parseInt(formTack.duration) <= newleft)"
+        v-if="!formTack.status&&(formTack.left+parseInt(formTack.duration) <= newleft)"
       >
         已逾期
       </div>
       <ul class="aside-content">
         <li class="designStage-name">
           <span>
-            <el-checkbox v-model="formTack.status" @change="desCompletes()">
+            <el-checkbox 
+              v-model="formTack.status"
+              @change="desCompletes()"
+              :true-label="1"
+              :false-label="0"
+              >
             </el-checkbox>
           </span>
           <el-input 
             v-model="formTack.name"
             placeholder="子阶段名称"
-            :class="['noborder', {'success':formTackstatus}]"
+            :class="['noborder', {'success':formTack.status}]"
             @blur="updataTack()"
           >
           </el-input>
@@ -1208,6 +1213,19 @@ export default {
         }
       }
     },
+    // 进度计算
+    SubstageProgress(arr, ds) {
+      if (arr.design_substage && arr.design_substage.length > 0) {
+        let tasks = arr.design_substage
+        let dursuccess = 0
+        for (let i = 0; i < tasks.length; i++) {
+          if (tasks[i].status === 1) {
+            dursuccess += parseInt(tasks.duration)
+          }
+        }
+        console.log(dursuccess)
+      }
+    },
     // 创建项目
     create(formName) {
       let that = this
@@ -1483,9 +1501,8 @@ export default {
             this.indesignStage.start_time = new Date(fts * 1000).format('yyyy-MM-dd')
             this.indesignStage.duration = durs
             this.formup = {...this.indesignStage}
-            console.log(this.formup)
-            console.log(this.formup.start_time)
             this.updata(this.indesignStage.start_time)
+            this.SubstageProgress(this.indesignStage, durs)
             let res = this.updateallleft(this.indesignStage)
             for (var f = 0; f < this.designStageLists.length; f++) {
               if (this.designStageLists[f].id === this.indesignStage.id) {
