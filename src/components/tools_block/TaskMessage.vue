@@ -126,6 +126,11 @@
       },
       // 根据类型跳转
       redirect(d) {
+        let oldClass = document.body.childNodes[1].getAttribute('class')
+        if (oldClass) {
+          oldClass = oldClass.replace('disableScroll ', '')
+        }
+        document.body.childNodes[1].setAttribute('class', oldClass)
         this.showCover = false
         if (d.operation_log.target_type === 1) {
           this.$router.push({name: 'projectManagementTask', params: {id: d.operation_log.model_id}})
