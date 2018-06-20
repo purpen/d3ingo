@@ -735,7 +735,9 @@
         if (newValue && newValue.length > 0) {
           for (let n = 0; n < newValue.length; n++) {
             if (newValue[n].length > 7) {
-              console.log(1111)
+              newValue.splice(n, 1)
+              this.$message.error ('每个标签最多7个字!')
+              return false
             }
           }
         }
