@@ -9,7 +9,13 @@
             <p class="num">根据您的<i>设计类型</i>需求筛选出<i>1000+家</i>设计方</p>
           </section>
           <section v-else>
-            <p class="num">根据您的需求筛选出<i>4家</i>设计方</p>
+            <p class="num">根据您的需求筛选出<i>{{IncNumber}}家</i>设计方</p>
+            <div>
+              <p class="verify fz-16" v-if="demand_verify_status !== 1">您还没有认证，请先认证后才能查看匹配结果</p>
+              <router-link :to="{name: 'vcenterDCompanyAccreditation'}">
+                <button class="middle-button full-red-button">马上去认证</button>
+              </router-link>
+            </div>
           </section>
         </div>
       </div>
@@ -23,29 +29,67 @@
   </div>
 </template>
 <script>
-// import api from '@/api/api'
+import api from '@/api/api'
 export default {
   name: 'match',
   data() {
     return {
       id: -1,
       isMatching: false,
-      matchComplete: false
+      matchComplete: false,
+      companyList: [],
+      IncNumber: 0,
+      demand_verify_status: -1
     }
   },
   methods: {
     matchInc() {
-      // this.$http.get(api.match)
+      this.$http.get(api.recommendListId.format(this.id))
+      .then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.companyList = res.data.data
+          this.isMatching = false
+          this.matchComplete = true
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        console.error(err)
+      })
+    },
+    getVerify() {
+      this.$http.get(api.surveyDemandCompanySurvey, {})
+      .then((res) => {
+        if (res.data.meta.status_code === 200) {
+          console.log(res.data.data)
+          this.demand_verify_status = res.data.data.demand_verify_status
+        }
+      })
     },
     submit() {}
+  },
+  watch: {
+    companyList: {
+      handler(val) {
+        this.IncNumber = 0
+        let timer = null
+        if (val.length) {
+          timer = window.setInterval(_ => {
+            this.IncNumber ++
+            if (this.IncNumber === val.length) {
+              window.clearInterval(timer)
+            }
+          }, 200)
+        }
+      },
+      deep: true
+    }
   },
   created() {
     this.id = Number(this.$route.params.id) || -1
     this.isMatching = true
-    window.setTimeout(_ => {
-      this.isMatching = false
-      this.matchComplete = true
-    }, 4000)
+    this.matchInc()
+    this.getVerify()
   }
 }
 </script>
@@ -101,6 +145,9 @@ export default {
   }
   .num {
     font-size: 16px;
+  }
+  .verify {
+    padding: 15px 0;
   }
   .num i {
     padding: 0 10px;

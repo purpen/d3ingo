@@ -130,8 +130,13 @@ export default {
       console.log(file)
     },
     handleRemove(file, fileList) {
-      // console.log(file, fileList)
-      this.$http.delete(api.asset.format(file.id))
+      let id = 0
+      if (file.response) {
+        id = file.response.asset_id
+      } else {
+        id = file.id
+      }
+      this.$http.delete(api.asset.format(id))
       .then(res => {
         if (res.data.meta.status_code === 200) {
           console.log(res)
