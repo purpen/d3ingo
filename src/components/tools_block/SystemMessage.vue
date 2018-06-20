@@ -110,6 +110,11 @@
         this.loadList()
       },
       aClick (link) {
+        let oldClass = document.body.childNodes[1].getAttribute('class')
+        if (oldClass) {
+          oldClass = oldClass.replace('disableScroll ', '')
+        }
+        document.body.childNodes[1].setAttribute('class', oldClass)
         let reg = /^(http)/
         if (!reg.test(link)) {
           window.open('http://' + link)

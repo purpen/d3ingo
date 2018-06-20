@@ -127,7 +127,13 @@
       },
       // 根据类型跳转
       redirect(d) {
+        console.log(d.type)
         this.showCover = false
+        let oldClass = document.body.childNodes[1].getAttribute('class')
+        if (oldClass) {
+          oldClass = oldClass.replace('disableScroll ', '')
+        }
+        document.body.childNodes[1].setAttribute('class', oldClass)
         if (d.type === 2) {
           this.$router.push({name: 'vcenterItemShow', params: {id: d.target_id}})
         } else if (d.type === 3) {
