@@ -45,7 +45,7 @@
       <div class="project-foot">
         <div class="buttons">
           <span class="select-num" v-if="selectList.length">已选中<i>{{selectList.length}}家</i>设计方</span>
-          <button @click="submit" :class="['middle-button', 'full-red-button', {'disabled-button': !selectList.length}]">发送</button>
+          <button @click="stickCompanySubmit" :class="['middle-button', 'full-red-button', {'disabled-button': !selectList.length}]">发送</button>
         </div>
       </div>
     </div>
@@ -103,7 +103,33 @@ export default {
         this.selectList.splice(index, 1)
       }
     },
-    submit() {}
+    stickCompanySubmit() {
+      let companyIds = this.selectList
+      if (!companyIds.length) {
+        return
+      }
+      console.log(companyIds)
+      this.$http.post(api.demandPush, {
+        item_id: this.id,
+        design_company_id: companyIds
+      })
+      .then((response) => {
+        if (response.data.meta.status_code === 200) {
+          this.$message.success('操作成功，等待设计公司接单!')
+          this.$router.push({name: 'vcenterItemShow', params: {id: this.id}})
+        } else {
+          this.$message.error(response.data.meta.message)
+        }
+      })
+      .catch((error) => {
+        this.$message.error(error.message)
+      })
+    }
+  },
+  watch: {
+    selectList(val) {
+      console.log(val)
+    }
   },
   created() {
     this.id = this.$route.params.id || -1

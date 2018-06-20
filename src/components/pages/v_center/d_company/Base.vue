@@ -199,6 +199,7 @@
   import '@/assets/js/format'
   import typeData from '@/config'
   import auth from '@/helper/auth'
+  import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
 
   export default {
     name: 'vcenter_company_base',
@@ -407,6 +408,12 @@
         return
       }
       const that = this
+      that.$http.get(api.surveyDemandCompanySurvey, {})
+      .then(function (response) {
+        if (response.data.meta.status_code === 200) {
+          that.$store.commit(CHANGE_USER_VERIFY_STATUS, response.data.data)
+        }
+      })
       that.isLoading = true
       that.$http.get(api.demandCompany, {})
         .then(function (response) {
