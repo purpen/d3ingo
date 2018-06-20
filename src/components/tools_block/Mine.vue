@@ -62,11 +62,18 @@
     },
     watch: {
       myView(val) {
+        let oldClass = document.body.childNodes[1].getAttribute('class')
+        console.log(oldClass)
         if (val) {
           document.body.setAttribute('class', 'disableScroll')
+          document.body.childNodes[1].setAttribute('class', 'disableScroll ' + oldClass)
           document.childNodes[1].setAttribute('class', 'disableScroll')
         } else {
+          if (oldClass) {
+            oldClass = oldClass.replace('disableScroll ', '')
+          }
           document.body.removeAttribute('class', 'disableScroll')
+          document.body.childNodes[1].setAttribute('class', oldClass)
           document.childNodes[1].removeAttribute('class', 'disableScroll')
         }
       }

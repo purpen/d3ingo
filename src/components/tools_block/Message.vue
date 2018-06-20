@@ -62,9 +62,11 @@
       myView(val) {
         if (val) {
           document.body.setAttribute('class', 'disableScroll')
+          document.body.childNodes[1].setAttribute('class', 'disableScroll')
           document.childNodes[1].setAttribute('class', 'disableScroll')
         } else {
           document.body.removeAttribute('class', 'disableScroll')
+          document.body.childNodes[1].removeAttribute('class', 'disableScroll')
           document.childNodes[1].removeAttribute('class', 'disableScroll')
         }
       }

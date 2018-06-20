@@ -275,6 +275,7 @@
         this.$refs.mNav.style.marginLeft = 0
         this.$refs.mMenu.style.width = '100%'
         document.body.setAttribute('class', 'disableScroll')
+        document.body.childNodes[1].setAttribute('class', 'disableScroll')
         document.childNodes[1].setAttribute('class', 'disableScroll')
       }, // 移动端显示 ↑ 隐藏 ↓ 侧边栏
       reScroll() {
@@ -282,6 +283,7 @@
         this.$refs.mNav.style.marginLeft = '-54vw'
         this.$refs.mMenu.style.width = 0
         document.body.removeAttribute('class', 'disableScroll')
+        document.body.childNodes[1].removeAttribute('class', 'disableScroll')
         document.childNodes[1].removeAttribute('class', 'disableScroll')
       },
       showMyView(view) {

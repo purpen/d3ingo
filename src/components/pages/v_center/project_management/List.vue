@@ -306,7 +306,7 @@ export default {
       if (this.isOpen2) {
         this.isOpen2 = false
         collect = collect === 1 ? 0 : 1
-        this.$http.put(api.designProjectCollect, {id: id, collect: collect})
+        this.$http.put(api.designProjectCollect, {item_id: id, collect: collect})
         .then((res) => {
           this.isOpen2 = true
           if (res.data.meta.status_code === 200) {

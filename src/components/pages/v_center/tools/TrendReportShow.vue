@@ -196,6 +196,7 @@
         if (this.numPages) {
           this.isFullscreen = true
           document.body.setAttribute('class', 'disableScroll')
+          document.body.childNodes[1].setAttribute('class', 'disableScroll')
           document.childNodes[1].setAttribute('class', 'disableScroll')
           console.log(this.$refs.pdf.offsetHeight)
         }
@@ -203,6 +204,7 @@
       exitFullscreen () {
         this.isFullscreen = false
         document.body.removeAttribute('class', 'disableScroll')
+        document.body.childNodes[1].removeAttribute('class', 'disableScroll')
         document.childNodes[1].removeAttribute('class', 'disableScroll')
       },
       download() {
