@@ -92,7 +92,9 @@
         <div v-if="!projectList.length">
           <div class="empty"></div>
           <p class="noMsg">暂时没有项目， 休息一下～</p>
-          <p class="noMsg"><button @click="showCover" class="red-button middle-button">创建项目</button></p>
+          <p class="noMsg" v-if="isCompanyAdmin">
+            <button @click="showCover" class="red-button middle-button">创建项目</button>
+          </p>
         </div>
       </div>
       <!-- <el-pagination v-show="query.totalCount > query.pageSize" class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize" :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange">

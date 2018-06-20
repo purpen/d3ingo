@@ -43,7 +43,7 @@
               <span v-else class="b-nickname">{{ eventUser.account }}</span>
             </template>
             <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
-            <el-menu-item index="/admin" v-if="isCompanyAdmin"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
+            <el-menu-item index="/admin" v-if="isAdmin"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
             <el-menu-item index="" @click="logout">
               <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
           </el-submenu>
@@ -57,6 +57,7 @@
         </router-link>
       </div>
     </header>
+    <!-- 123123 -->
     <el-col v-if="leftWidth === 2" :span="isMob ? 24 : 2">
       <section :class="['menuHide', 'scroll-bar', {'MmenuHide': isMob, 'menuHide-mini': leftWidth === 2}]">
         <div v-if="isCompany">
@@ -66,6 +67,12 @@
                 :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
                 控制面板
               </a>
+            </el-tooltip>
+            <el-tooltip v-if="true" class="item" :effect="DarkorLight" content="项目管理" placement="right">
+            <a @click="alick" :to="'/vcenter/project_management/list'"
+              :class="['item', 'management', {'is-active': currentName === 'project_management'}]">
+              项目管理
+            </a>
             </el-tooltip>
             <el-tooltip class="item" :effect="DarkorLight" content="项目云盘" placement="right">
             <a @click="alick" :to="'/vcenter/cloud_drive/list/all'"
@@ -210,10 +217,14 @@
       <section :class="['menuHide', 'scroll-bar', {'MmenuHide': isMob, 'menuHide-mini': leftWidth === 2}]">
         <div v-if="isCompany">
           <div :class="['menu-list', 'clearfix', {'Mmenulist': isMob, }]" ref="Mmenulist" v-if="isChild">
-              <a @click="alick" :to="'/vcenter/child_control'"
-                :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
-                控制面板
-              </a>
+            <a @click="alick" :to="'/vcenter/child_control'"
+              :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
+              控制面板
+            </a>
+            <a @click="alick" :to="'/vcenter/project_management/list'"
+              :class="['item', 'management', {'is-active': currentName === 'project_management'}]">
+              项目管理
+            </a>
             <a @click="alick" :to="'/vcenter/cloud_drive/list/all'"
               :class="['item', 'cloud', {'is-active': currentName === 'cloud_drive'}]">
               项目云盘
@@ -226,10 +237,6 @@
             <a @click="alick" :to="'/vcenter/account/base'"
               :class="['item', 'account-management', {'is-active': currentName === 'profile'}]">
               账号设置
-            </a>
-            <a @click="alick" :to="'/vcenter/project_management/list'"
-              :class="['item', 'management', {'is-active': currentName === 'project_management'}]">
-              项目管理
             </a>
             <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" 
                v-if="isMob">
@@ -470,6 +477,16 @@
           return true
         }
         return false
+      },
+      // 是否能查看后台
+      isAdmin() {
+        let roleId = this.$store.state.event.user.role_id
+        console.log(roleId)
+        if (roleId >= 10) {
+          return true
+        } else {
+          return false
+        }
       },
       // 是否是子账号
       isChild() {

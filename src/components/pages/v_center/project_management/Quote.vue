@@ -54,9 +54,9 @@
       
       </div>
     </div>
-    <div class="line"></div>
+    <!-- <div class="line"></div> -->
     <div class="sum-box">
-      <div class="tax-box">
+      <div class="tax-box clearfix">
         <p class="total-money">总计<span v-if="form.is_tax">（含税）</span>： <span>¥{{ totalMoneyFormat }}</span> 元</p>
       </div>
       <div v-if="!form.is_tax && form.is_invoice">
@@ -396,18 +396,14 @@ export default {
   }
 
   .sum-box {
-    margin: 0 20px 50px 0;
-  }
-  .sum-box .tax-box {
-  
+    border-top: 1px solid #e6e6e6;
+    padding: 15px 15px 0 0;
+    margin: 0 0 15px 0;
   }
   .sum-box .tax-box p {
     float: right;
     line-height: 2.2;
     color: #222;
-  }
-  .total-money {
-    margin-left: 10px;
   }
   .total-money span {
     color: #FF5A5F;
@@ -437,7 +433,7 @@ export default {
     margin: 0 0 20px 0;
   }
   .item-money {
-    font-size: 16px;
+    font-size: 18px;
     color: #FF5A5F;
     white-space: nowrap;
     margin: 10px 0 0 20px;
