@@ -142,6 +142,7 @@
                       placeholder="Enter添加新标签"
                       :tags.sync="form.label"
                       :limit="10"
+                      :add-tag-on-blur="true"
                       >
                     </vue-input-tag>
                   </el-form-item>
@@ -376,9 +377,6 @@
       }
     },
     methods: {
-      ceshi(val) {
-        console.log('val', val)
-      },
       // 选择分类事件
       selectTypeChange(val) {
         this.form.design_types = []
@@ -608,6 +606,9 @@
       }
     },
     computed: {
+      label() {
+        return this.form.label
+      },
       typeOptions() {
         console.log('typeOptions', this.form.type)
         let items = []
@@ -726,9 +727,20 @@
     },
     watch: {
       form: {
-        handler: function () {
+        handler: function (newValue, oldValue) {
         },
         deep: true
+      },
+      label(newValue, oldValue) {
+        if (newValue && newValue.length > 0) {
+          for (let n = 0; n < newValue.length; n++) {
+            if (newValue[n].length > 7) {
+              newValue.splice(n, 1)
+              this.$message.error ('每个标签最多7个字!')
+              return false
+            }
+          }
+        }
       }
     },
     created: function () {
