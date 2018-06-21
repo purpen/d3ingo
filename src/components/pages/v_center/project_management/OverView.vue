@@ -11,7 +11,7 @@
         <button class="small-button full-red-button" type="primary" @click="deleteDes(formup.id)">确 定</button>
       </span>
     </el-dialog>
-    <el-dialog
+    <el-dialog 
       title="确认删除"
       :visible.sync="dialogTask"
       size="tiny"
@@ -93,11 +93,11 @@
         已完成
       </div>
       <div class="aside-task-pregress bg-exception"
-        v-if="!formup.status&&(formTack.left+parseInt(formTack.duration) <= newleft)"
+        v-if="!formup.status&&(formup.left+parseInt(formup.duration) < newleft)"
       >
         已逾期
       </div>
-      <div class="statistical-pro">
+      <div class="statistical-pro" v-else>
         <el-progress :percentage="formup.statistical"
         :stroke-width="20"
         :show-text="false"
@@ -176,15 +176,15 @@
       ">
         <li v-for="(itemup,indexip) in formup.design_substage" :key="indexip">
           <el-checkbox v-model="itemup.status"
-            :true-label=1
-            :false-label=0
-            @change="desCompletes(itemup.id,itemup.status, formup)"
+            :true-label="1"
+            :false-label="0"
+            @change="desCompletes(itemup.id,itemup.status,formup)"
             :class="{'task-success':itemup.status}"
             >
             {{itemup.name}}
           </el-checkbox>
           <span :class="['fr',{'tc-9':itemup.status}]">{{itemup.duration}}天</span>
-          <i class="fx-icon-delete2"></i>
+          <i class="fx-icon-delete2" @click="dialogdes(itemup)"></i>
         </li>
       </ul>
       
@@ -413,7 +413,7 @@
               type="date"
               v-model="formTacktime"
               placeholder="开始日期设置"
-              @change="editNodetime"
+              @change="upDateDuration"
               >
               </el-date-picker>
             </div>
@@ -637,7 +637,7 @@
                           </div>
                         </el-col>
                         <el-col :span="3" class="text-center">
-                            1个
+                            {{des.number}}个
                         </el-col>
                         <el-col :span="6" class="text-center">
                             {{des.duration}}天
@@ -735,7 +735,7 @@
                       <i
                         :class="['nodebase',{
                           'item-node': tack.status,
-                          'item-noded': !tack.status && tack.left < newleft
+                          'item-noded': !tack.status && tack.left + tack.duration <= newleft
                         }]"
                         v-if="tack.type===1"
                       >
@@ -773,28 +773,13 @@
                       v-else>
                       </div>
                       <i class="item-start" v-if="indextack === 0"></i>
-                      <!-- <i
-                        :class="[{
-                          'item-node': tack.design_stage_node.status,
-                          'item-nodenon': !tack.design_stage_node.status && tack.left >= newleft,
-                          'item-noded': !tack.design_stage_node.status && tack.left < newleft
-                        }]"
-                        v-if="tack.design_stage_node"
-                        @click.stop="editNode(tack.design_stage_node,c)">
-                      </i>
-
-                      <div class="node-name" v-if="tack.design_stage_node">
-                        <p :style="{width:tack.duration*30+'px'}">
-                          {{tack.design_stage_node.name}}
-                        </p>
-                      </div> -->
                       <div class="task-name text-center">
                         {{tack.name}}
                       </div>
                       
                     </div>
 
-                    <div  v-if="(sort==='isday'||sort==='isweek')" class="item-tacklist-last" :style="{left:(c.left+1)*30 + 'px'}">
+                    <div  v-if="(sort==='isday'||sort==='isweek')" class="item-tacklist-last" :style="{left:c.left*30 + 'px'}">
                       <div class="notmilestone-notsubstages">
                         <div @click="addtack(c)" class="task-milestone"></div>
                       </div>
@@ -845,7 +830,11 @@
       <div class="push-file">
         <i>
         </i>
-        查看更多项目阶段提交文件
+        <router-link 
+          :to="{name: 'projectManagementOverViewFiles', params: {id: item_id}}">
+          查看更多项目阶段提交文件
+        </router-link>
+        
       </div>
     </section>
   </div>
@@ -884,6 +873,7 @@ export default {
   name: 'projectManagementOverView',
   data () {
     return {
+      item_id: '', // 项目id
       option: [
         {
           value: 0,
@@ -1195,7 +1185,7 @@ export default {
       for (var tl = 0; tl < des.length; tl++) {
         if (!des[tl].design_substage) {
           let itemd = Date.parse(new Date(des[tl].start_time)) / 1000
-          des[tl].left = Math.floor((itemd - xin) / 86400)
+          des[tl].left = Math.ceil((itemd - xin) / 86400)
         }
         if (des[tl].design_substage) {
           let sortTask = []
@@ -1206,25 +1196,36 @@ export default {
             des[tl].design_substage[j].end_time = st + (dur * 86400)
             sortTask.push(st)
             sortTask.push(st + (dur * 86400))
-            des[tl].design_substage[j].left = Math.floor((st - xin) / 86400)
+            des[tl].design_substage[j].left = Math.ceil((st - xin) / 86400)
           }
           this.sortdate(sortTask)
-          des[tl].left = Math.floor((sortTask[sortTask.length - 1] - xin) / 86400) - 1
+          des[tl].left = Math.ceil((sortTask[sortTask.length - 1] - xin) / 86400)
         }
       }
     },
     // 进度计算
-    SubstageProgress(arr, ds) {
-      if (arr.design_substage && arr.design_substage.length > 0) {
-        let tasks = arr.design_substage
+    SubstageProgress(ar) {
+      if (ar.design_substage && ar.design_substage.length > 0) {
+        let tasks = ar.design_substage
         let dursuccess = 0
-        for (let i = 0; i < tasks.length; i++) {
+        for (var i = 0; i < tasks.length; i++) {
           if (tasks[i].status === 1) {
             dursuccess += parseInt(tasks[i].duration)
           }
         }
-        arr.statistical = (dursuccess / ds).toFixed(2) * 100
-        console.log(arr.statistical)
+        return dursuccess
+      }
+    },
+    taskNumber(des) {
+      des.number = 0
+      if (des.design_substage) {
+        for (let t = 0; t < des.design_substage.length; t++) {
+          let subt = des.design_substage[t]
+          if (subt.type === 1) {
+            des.number++
+          }
+        }
+        return des.number
       }
     },
     // 创建项目
@@ -1310,6 +1311,9 @@ export default {
         this.$http.put(api.designStageUpdate.format(this.formup.id), itemf).then((response) => {
           if (response.data.meta.status_code === 200) {
             var res = this.updateallleft(response.data.data)
+            let dur = this.SubstageProgress(res)
+            res.number = this.formup.number
+            res.statistical = Math.round(parseFloat((dur / this.formup.duration).toFixed(2)) * 100)
             for (var i = 0; i < this.designStageLists.length; i++) {
               if (this.designStageLists[i].id === this.formup.id) {
                 this.$set(this.designStageLists, i, res)
@@ -1372,11 +1376,15 @@ export default {
       var time = []
       var durations = 0
       // 有子阶段时
+      des.number = 0
       if (des.design_substage) {
         for (var i = 0; i < des.design_substage.length; i++) {
           let intask = des.design_substage[i]
           time.push(intask.end_time)
           durations += parseInt(intask.duration)
+          if (des.design_substage[i].type === 1) {
+            des.number++
+          }
         }
         this.sortdate(time)
         this.formTack.start_time = time[time.length - 1]
@@ -1397,6 +1405,7 @@ export default {
       let self = this
       self.$http.post(api.designSubstageCreate, self.formTack).then((response) => {
         if (response.data.meta.status_code === 200) {
+          des.number += 1
           var res = self.updateallleft(response.data.data)
           self.formTack = res
           if (!des.design_substage) {
@@ -1418,7 +1427,7 @@ export default {
         console.error(error.message)
       })
     },
-    // 编辑子阶段/节点时间
+    // 编辑子阶段日期和时间
     editNodetime(date) {
       if (Date.parse(new Date(this.formNodetime).format('yyyy-MM-dd')) / 1000 !== this.formNode.time) {
         let insub = this.indesignStage.design_substage
@@ -1503,7 +1512,6 @@ export default {
             this.indesignStage.duration = durs
             this.formup = {...this.indesignStage}
             this.updata(this.indesignStage.start_time)
-            this.SubstageProgress(this.indesignStage, durs)
             let res = this.updateallleft(this.indesignStage)
             for (var f = 0; f < this.designStageLists.length; f++) {
               if (this.designStageLists[f].id === this.indesignStage.id) {
@@ -1527,10 +1535,16 @@ export default {
         this.formTack.start_time = Math.round(new Date(this.formTack.start_time).getTime() / 1000)
       }
       let self = this
-      self.$http.put(api.designSubstageUpdate.format(self.formTack.id), self.formTack).then((response) => {
+      let taskf = {
+        'id': self.formTack.id,
+        'summary': self.formTack.summary,
+        'execute_user_id': self.formTack.execute_user_id,
+        'type': self.formTack.type,
+        'name': self.formTack.name
+      }
+      self.$http.put(api.designSubstageUpdate.format(self.formTack.id), taskf).then((response) => {
         if (response.data.meta.status_code === 200) {
           var res = self.updateallleft(response.data.data)
-          self.formTack = {...res}
           if (res.execute_user) {
             self.formTack.log = res.execute_user.logo_image.logo
             delete self.formTack.execute_user
@@ -1545,6 +1559,7 @@ export default {
             }
           }
           self.tackleft(self.designStageLists)
+          self.formTack = {...res}
           if (self.formTack.type === 1) {
             self.isnodeedit = false
             self.istaskedit = true
@@ -1595,7 +1610,7 @@ export default {
     desCompletes(id, st, type) {
       let self = this
       if (id) {
-        self.formTackup.status = Number(st)
+        self.formTackup.status = st
         self.formTackup.id = id
       } else {
         self.formTackup.id = self.formTack.id
@@ -1613,6 +1628,8 @@ export default {
                 self.editNodeStatus(desTup[i].design_stage_node.id, response.data.data.status)
               }
               desTup[i].status = response.data.data.status
+              let dur = self.SubstageProgress(self.indesignStage)
+              self.indesignStage.statistical = Math.round(parseFloat((dur / self.indesignStage.duration).toFixed(2)) * 100)
             }
           }
         } else {
@@ -1663,6 +1680,13 @@ export default {
         ssr.push(this.indesignStage.design_substage[i].end_time)
       }
     },
+    // 项目阶段删除子阶段
+    dialogdes(task) {
+      this.dialogTask = true
+      this.formTack = task
+      this.formTackduration = this.formTack.duration
+      this.indesignStage = this.formup
+    },
     // 删除子阶段
     deleteTack(id) {
       let self = this
@@ -1672,6 +1696,9 @@ export default {
           self.upDateDuration(1)
           for (var i = 0; i < self.indesignStage.design_substage.length; i++) {
             if (self.indesignStage.design_substage[i].id === id) {
+              if (self.indesignStage.design_substage[i].type === 1) {
+                self.indesignStage.number--
+              }
               self.indesignStage.design_substage.splice(i, 1)
               self.dialogTask = false
               self.istaskedit = false
@@ -1786,6 +1813,7 @@ export default {
     }
   },
   created() {
+    this.item_id = this.$route.params.id
     let itemId = this.$route.params.id
     if (!itemId) {
       this.redirectItemList(1, '缺少请求参数！')
@@ -1808,12 +1836,18 @@ export default {
             this.endTimes.push(end)
             this.endTimes.push(this.designStageLists[i].start_time)
           }
+          this.designStageLists[i].number = 0
           if (this.designStageLists[i].design_substage) {
+            let taskNumber = 0
             for (let t = 0; t < this.designStageLists[i].design_substage.length; t++) {
               var subt = this.designStageLists[i].design_substage[t]
               this.endTimes.push(subt.start_time)
               this.endTimes.push(parseInt(subt.duration) * 86400 + subt.start_time)
+              if (subt.type === 1) {
+                taskNumber++
+              }
             }
+            this.designStageLists[i].number = taskNumber
           }
           // 时间格式转换
           this.designStageLists[i].isedit = false
