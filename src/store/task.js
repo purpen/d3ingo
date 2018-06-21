@@ -106,7 +106,6 @@ let mutations = {
   },
   setTaskList(state, arr) {
     let child = arr.showChild
-    console.log(child)
     state.taskList = arr['data'].filter(item => {
       if (item['created_at']) {
         item['created_at_format'] = item['created_at'].date_format().format('yyyy年MM月dd日')
