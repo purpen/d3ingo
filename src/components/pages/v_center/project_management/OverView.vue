@@ -1220,10 +1220,11 @@ export default {
         let dursuccess = 0
         for (let i = 0; i < tasks.length; i++) {
           if (tasks[i].status === 1) {
-            dursuccess += parseInt(tasks.duration)
+            dursuccess += parseInt(tasks[i].duration)
           }
         }
-        console.log(dursuccess)
+        arr.statistical = (dursuccess / ds).toFixed(2) * 100
+        console.log(arr.statistical)
       }
     },
     // 创建项目

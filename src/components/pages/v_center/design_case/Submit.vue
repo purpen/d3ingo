@@ -139,7 +139,7 @@
                   <el-form-item label="标签" prop="label"   class="label-tag"
                   >
                     <vue-input-tag
-                      placeholder="Enter添加新标签"
+                      placeholder="Enter添加新标签,上限10个"
                       :tags.sync="form.label"
                       :limit="10"
                       :add-tag-on-blur="true"
@@ -736,9 +736,12 @@
           for (let n = 0; n < newValue.length; n++) {
             if (newValue[n].length > 7) {
               newValue.splice(n, 1)
-              this.$message.error ('每个标签最多7个字!')
+              this.$message ('每个标签最多7个字!')
               return false
             }
+            // if (newValue.length === 10) {
+            //   this.$message ('标签数已经达到上限,如需更改请删减')
+            // }
           }
         }
       }
@@ -900,6 +903,8 @@
   .label-tag .vue-input-tag-wrapper {
     border-radius: 4px;
     border: 1px solid #e6e6e6;
+    padding: 3px 10px;
+    min-height: 36px;
   }
   .form-btn>.el-button + .el-button {
     margin-right: 0px;

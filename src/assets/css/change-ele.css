@@ -415,6 +415,18 @@
     background: #f7f7f7;
     border: 1px solid #d2d2d2;
     color: #000;
+    margin-bottom: 0px;
+    height: 28px;
+    padding: 0 5px;
+    border-radius: 4px;
+  }
+  .label-tag .vue-input-tag-wrapper .new-tag {
+    margin-bottom: 0px;
+  }
+  .label-tag .vue-input-tag-wrapper>.input-tag>span {
+    display: inline-block;
+    height: 26px;
+    line-height: 26px;
   }
   .label-tag .vue-input-tag-wrapper>.input-tag>.remove {
     color: #000;
@@ -428,9 +440,8 @@
   .label-tag .vue-input-tag-wrapper>.input-tag>.remove::before,
   .label-tag .vue-input-tag-wrapper>.input-tag>.remove::after {
     display:inline-block;
-    content: " ";
+    content: "";
     position: absolute;
-    border-radius: 50%;
     transform: rotate(45deg)
   }
   .label-tag .vue-input-tag-wrapper>.input-tag>.remove::before {
