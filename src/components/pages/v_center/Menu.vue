@@ -481,7 +481,6 @@
       // 是否能查看后台
       isAdmin() {
         let roleId = this.$store.state.event.user.role_id
-        console.log(roleId)
         if (roleId >= 10) {
           return true
         } else {
