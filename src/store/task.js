@@ -105,11 +105,17 @@ let mutations = {
     this._vm.$set(state.taskState, 'id', val)
   },
   setTaskList(state, arr) {
-    state.taskList = arr.filter(item => {
+    let child = arr.showChild
+    console.log(child)
+    state.taskList = arr['data'].filter(item => {
       if (item['created_at']) {
         item['created_at_format'] = item['created_at'].date_format().format('yyyy年MM月dd日')
       }
-      return item.tier === 0
+      if (child) {
+        return true
+      } else {
+        return item.tier === 0
+      }
     })
     // state.taskList = arr
     this.commit('setDisplayObj', state.taskList)

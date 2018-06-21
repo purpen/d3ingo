@@ -1175,7 +1175,7 @@
     width: 195px;
   }
   .add-child-ul .el-date-editor.el-input {
-    width: 100%;
+    width: 85px;
   }
   .task-info li p.p-time {
     background: url(../../assets/images/tools/project_management/Time.png) no-repeat left;
