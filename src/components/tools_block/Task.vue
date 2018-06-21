@@ -350,10 +350,8 @@
           } else {
             self.$message.error(response.data.meta.message)
           }
-          self.$nextTick(() => {
-            self.isLoading = false
-            self.atFirst = false
-          })
+          self.isLoading = false
+          self.atFirst = false
         }).catch((error) => {
           self.$message.error(error.message)
           console.error(error.message)
@@ -1175,7 +1173,7 @@
     width: 195px;
   }
   .add-child-ul .el-date-editor.el-input {
-    width: 85px;
+    width: 100%;
   }
   .task-info li p.p-time {
     background: url(../../assets/images/tools/project_management/Time.png) no-repeat left;

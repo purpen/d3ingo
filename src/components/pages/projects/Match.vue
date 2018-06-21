@@ -136,7 +136,7 @@ export default {
     border-radius: 50%;
   }
   .pic-done {
-    background: #fff;
+    background: url(../../../assets/images/project/Done@2x.png) no-repeat center / contain;
   }
   .pic::before,
   .pic::after {
