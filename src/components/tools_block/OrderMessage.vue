@@ -133,6 +133,8 @@
         if (oldClass) {
           oldClass = oldClass.replace('disableScroll ', '')
         }
+        document.body.removeAttribute('class', 'disableScroll')
+        document.childNodes[1].removeAttribute('class', 'disableScroll')
         document.body.childNodes[1].setAttribute('class', oldClass)
         if (d.type === 2) {
           this.$router.push({name: 'vcenterItemShow', params: {id: d.target_id}})
