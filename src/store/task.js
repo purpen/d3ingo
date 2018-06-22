@@ -73,10 +73,26 @@ let mutations = {
     state.stageList.forEach(ele => {
       if (ele.task) {
         ele.task.forEach(e => {
+          if (e.over_time) {
+            if (typeof (e.over_time) === 'string') {
+              let time = e.over_time.replace(/-/g, '/')
+              e.over_time_stamp = new Date(time).getTime()
+            } else {
+              e.over_time_stamp = e.over_time.getTime()
+            }
+          }
           if (e['created_at']) {
             e['created_at_format'] = e['created_at'].date_format().format('MM月dd日')
           }
           outsideStageList.forEach(item => {
+            if (item.over_time) {
+              if (typeof (item.over_time) === 'string') {
+                let time = item.over_time.replace(/-/g, '/')
+                item.over_time_stamp = new Date(time).getTime()
+              } else {
+                item.over_time_stamp = item.over_time.getTime()
+              }
+            }
             if (item.id === e.id) {
               list.push(e.id)
             }
@@ -94,6 +110,7 @@ let mutations = {
       itemList: state.stageList,
       outsideStageList: outsideStageList
     })
+    console.log(state.displayObj)
   },
   changeTaskStatePower(state, val) {
     this._vm.$set(state.taskState, 'power', val)

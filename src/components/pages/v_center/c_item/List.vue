@@ -780,11 +780,19 @@
   }
   .pagination {
     text-align: center;
-    margin: 0;
+    margin: 0 0 20px;
   }
   h3 {
     font-size: 18px;
     color: #222;
     margin: 50px 0 20px;
+  }
+  @media screen and (max-width: 767px) {
+    h3 {
+      margin: 0 0 20px;
+    }
+    .vcenter {
+      margin: 0;
+    }
   }
 </style>

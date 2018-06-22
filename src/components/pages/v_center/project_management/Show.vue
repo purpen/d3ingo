@@ -95,7 +95,7 @@ export default {
 <style scoped>
 .project-show {
   /* overflow: hidden; */
-  padding-bottom: 50px;
+  /* padding-bottom: 50px; */
 }
 .project-management {
   padding-left: 16.66667%;

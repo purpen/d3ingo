@@ -798,7 +798,10 @@
     line-height: 1;
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 767px) {
+    .vcenter {
+      margin: 0;
+    }
     .prefect {
       font-size: 1.4rem;
     }

@@ -2,7 +2,8 @@
   <section @click.self="currentStageStat.id = -1">
     <div class="vcenter-container task-content" v-loading="isLoading">
       <el-row :gutter="30">
-        <el-col :span="taskState.power ? 12 : 24" :class="['task-list']">
+        <el-col :span="taskState.power ? 12 : 24"
+          :class="['task-list']">
           <div class="operate" v-if="!isMyTask">
             <div class="add-btn">
               <button class="add-task middle-button full-red-button" @click="addTaskBtn()">添加任务</button>
@@ -17,70 +18,84 @@
               </ul>
             </div>
           </div>
-          <section>
-            <div v-for="(ele, index) in displayObj.outsideStageList" :key="index"
-              @click="showTaskBtn(ele, index)"
-              :class="['task-item','clearfix', {
-                'active': ele.stage === 2,
-                'click': ele.id === parentTask.id,
-                'level1': ele.level === 1,
-                'level2': ele.level === 5,
-                'level3': ele.level === 8}]">
-              <p class="task-name">
-                <span @click.stop.prevent="completeTaskBtn(ele, index)" class="task-name-span"></span>
-                <span v-if="(ele.id !== taskState.id) || !taskState.power">{{ele.name}}</span>
-                <input
-                  v-focus="isFocus"
-                  :maxlength= 100
-                  class="task-name-input" type="text"
-                  v-if="taskState.power && (ele.id === taskState.id)"
-                  @focus="taskNameFocus(ele, index)"
-                  @blur="taskNameBlur(ele.id)"
-                  v-model="currentTaskForm.name">
-              </p>
-              <img v-if="ele.logo_image" :src="ele.logo_image.logo" alt="">
-              <p class="task-date">{{ele.created_at_format}}</p>
-            </div>
-          </section>
-          
-          <section v-if="!isMyTask" class="stage-item" v-for="(ele, index) in displayObj['itemList']" :key="index">
-            <p :class="['stage-name', {'is-checked': currentStageStat.id === ele.id}]" @click.self="editStageBtn(ele.id, index)">{{ele.title}}:
-              <input v-show="currentStageStat.id === ele.id"
-              v-focus="isFocus2"
-              class="stage-title" type="text" v-model="currentStageForm.title"
-              @focus="saveStage(ele.title)"
-              @blur="submitStage()">
-              <span @click="confirmDeleteStageBtn(ele.id, index)" class="close-icon-solid"></span></p>
+          <section :style="{maxHeight: docHeight, overflowY: 'auto'}">
             <section>
-              <div
-                v-for="(e, i) in ele['task']" :key="i"
+              <div v-for="(ele, index) in displayObj.outsideStageList" :key="index"
+                @click="showTaskBtn(ele, index)"
                 :class="['task-item','clearfix', {
-                'active': e.stage === 2,
-                'click': e.id === parentTask.id,
-                'level1': e.level === 1,
-                'level2': e.level === 5,
-                'level3': e.level === 8}]"
-                @click="showTaskBtn(e, i)">
+                  'active': ele.stage === 2,
+                  'click': ele.id === parentTask.id,
+                  'level1': ele.level === 1,
+                  'level2': ele.level === 5,
+                  'level3': ele.level === 8}]">
                 <p class="task-name">
-                  <span @click.stop.prevent="completeTaskBtn(e, i)" class="task-name-span"></span>
-                  <span v-if="(e.id !== taskState.id) || !taskState.power">{{e.name}}</span>
-                    <!-- v-focus="isFocus" -->
+                  <span @click.stop.prevent="completeTaskBtn(ele, index)" class="task-name-span"></span>
+                  <span v-if="(ele.id !== taskState.id) || !taskState.power">{{ele.name}}</span>
                   <input
                     v-focus="isFocus"
+                    :maxlength= 100
                     class="task-name-input" type="text"
-                    v-if="taskState.power && (e.id === taskState.id)"
-                    @focus="taskNameFocus(e, i)"
-                    @blur="taskNameBlur(e.id)"
+                    v-if="taskState.power && (ele.id === taskState.id)"
+                    @focus="taskNameFocus(ele, index)"
+                    @blur="taskNameBlur(ele.id)"
                     v-model="currentTaskForm.name">
-                  </p>
-                <img v-if="e.logo_image" :src="e.logo_image.logo" alt="">
-                <p class="task-date fr">{{e.created_at_format}}</p>
+                </p>
+                <p v-if="ele.over_time" :class="['task-date', 'fr', {
+                    'task-date-red': ele.over_time_stamp < new Date().getTime(),
+                  'task-date-green': ele.over_time_stamp - new Date().getTime() < 86400000
+                  }]">{{ele.over_time | filterOverTime}}</p>
+                <div class="fr task-item-div">
+                  <img v-if="ele.logo_image" :src="ele.logo_image.logo" alt="">
+                  <img v-else v-lazy="require('assets/images/avatar_100.png')">
+                </div>
               </div>
             </section>
-          </section>
-          <section v-if="!displayObj['itemList'].length &&! displayObj['outsideStageList'].length">
-            <div class="empty"></div>
-            <p class="noMsg">暂时没有任务， 休息一下～</p>
+            
+            <section v-if="!isMyTask" class="stage-item" v-for="(ele, index) in displayObj['itemList']" :key="index">
+              <p :class="['stage-name', {'is-checked': currentStageStat.id === ele.id}]" @click.self="editStageBtn(ele.id, index)">{{ele.title}}:
+                <input v-show="currentStageStat.id === ele.id"
+                v-focus="isFocus2"
+                class="stage-title" type="text" v-model="currentStageForm.title"
+                @focus="saveStage(ele.title)"
+                @blur="submitStage()">
+                <span @click="confirmDeleteStageBtn(ele.id, index)" class="close-icon-solid"></span></p>
+              <section>
+                <div
+                  v-for="(e, i) in ele['task']" :key="i"
+                  :class="['task-item','clearfix', {
+                  'active': e.stage === 2,
+                  'click': e.id === parentTask.id,
+                  'level1': e.level === 1,
+                  'level2': e.level === 5,
+                  'level3': e.level === 8}]"
+                  @click="showTaskBtn(e, i)">
+                  <p class="task-name">
+                    <span @click.stop.prevent="completeTaskBtn(e, i)" class="task-name-span"></span>
+                    <span v-if="(e.id !== taskState.id) || !taskState.power">{{e.name}}</span>
+                      <!-- v-focus="isFocus" -->
+                    <input
+                      v-focus="isFocus"
+                      class="task-name-input" type="text"
+                      v-if="taskState.power && (e.id === taskState.id)"
+                      @focus="taskNameFocus(e, i)"
+                      @blur="taskNameBlur(e.id)"
+                      v-model="currentTaskForm.name">
+                    </p>
+                  <p :class="['task-date', 'fr', {
+                    'task-date-red': e.over_time_stamp < new Date().getTime(),
+                    'task-date-green': e.over_time_stamp - new Date().getTime() < 86400000
+                  }]">{{e.over_time | filterOverTime}}</p>
+                  <div class="fr task-item-div">
+                    <img v-if="e.logo_image" :src="e.logo_image.logo" alt="">
+                    <img v-else v-lazy="require('assets/images/avatar_100.png')">
+                  </div>
+                </div>
+              </section>
+            </section>
+            <section v-if="!displayObj['itemList'].length &&! displayObj['outsideStageList'].length">
+              <div class="empty"></div>
+              <p class="noMsg">暂时没有任务， 休息一下～</p>
+            </section>
           </section>
         </el-col>
         <el-col :span="12" :class="{'fadeInRight': taskState.power}">
@@ -136,6 +151,8 @@
     },
     data () {
       return {
+        docHeight: '',
+        isReady: true,
         isFocus: false,
         isFocus2: false,
         isCreateStage: false,
@@ -179,7 +196,37 @@
         taskStatus: 0 // 0: 全部， 2: 已完成， -1: 未完成
       }
     },
+    filters: {
+      filterOverTime(val) {
+        if (val) {
+          if (typeof (val) === 'string') {
+            let time = val.replace(/-/g, '/')
+            let date = new Date(time).format('MM月dd日')
+            return date
+          } else {
+            return val.format('MM月dd日')
+          }
+        } else {
+          return ''
+        }
+      }
+    },
+    mounted() {
+      window.addEventListener('resize', this.getDocumentHeight)
+    },
+    destroyed() {
+      window.removeEventListener('resize', this.getDocumentHeight)
+    },
     methods: {
+      getDocumentHeight() {
+        if (this.isReady === true) {
+          this.isReady = false
+          this.isReady = setTimeout(() => {
+            this.isReady = true
+            this.docHeight = (document.body.clientHeight - 234) + 'px'
+          }, 100)
+        }
+      },
       // 跳回项目列表页 evt: 0.不提示信息；1.错误提示；2.成功提示；message: 消息
       redirectItemList(evt, message) {
         if (evt && message) {
@@ -587,6 +634,7 @@
       }
     },
     created() {
+      this.docHeight = (document.body.clientHeight - 234) + 'px'
       if (this.isMyTask) {
         this.fetchMyTask()
       } else {
@@ -762,6 +810,9 @@
     border-color: transparent;
     border-bottom-color: #d2d2d2;
   }
+  .stage-item:last-child .stage-name {
+    margin-bottom: 0
+  }
   .stage-title {
     position: absolute;
     left: 0;
@@ -858,8 +909,20 @@
   }
 
   .task-date {
+    font-size: 12px;
+    color: #999;
     flex: 0 0 auto;
     padding-right: 10px;
+  }
+  .task-date-green {
+    color: green
+  }
+  .task-date-red {
+    color: red
+  }
+  .task-item-div {
+    width: 40px;
+    height: 48px;
   }
   .dialog-bg {
     position: fixed;
