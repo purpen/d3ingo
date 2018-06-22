@@ -642,7 +642,6 @@
       },
       // 文件上传成功
       uploadSuccess(response, file, fileList) {
-        console.log(fileList)
         for (var i = 0; i < this.fileList.length; i++) {
           this.fileList[i].asset_id = response.asset_id
         }
