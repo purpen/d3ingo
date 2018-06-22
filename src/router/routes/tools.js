@@ -58,6 +58,17 @@ module.exports = [
         component: require('@/components/pages/v_center/project_management/OverView')
       },
       {
+        name: 'projectManagementOverViewFiles',
+        meta: {
+          title: '项目概况交付文件',
+          requireAuth: true,
+          hideHeader: true,
+          hideFooter: true
+        },
+        path: '/vcenter/project_management/overviewFiles/:id',
+        component: require('@/components/pages/v_center/project_management/OverViewFiles')
+      },
+      {
         name: 'projectManagementTask',
         meta: {
           title: '任务',
