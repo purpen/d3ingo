@@ -189,6 +189,86 @@ const COMPANY_TYPE = [
     ],
     industry: [
     ]
+  },
+  {
+    id: 3,
+    name: '平面设计',
+    designType: [
+      {
+        id: 1,
+        key: 'item_3_1',
+        name: 'logo/VI设计'
+      },
+      {
+        id: 2,
+        key: 'item_3_2',
+        name: '海报/宣传册'
+      },
+      {
+        id: 3,
+        key: 'item_3_3',
+        name: '画册/书装'
+      }
+    ],
+    field: [
+    ],
+    industry: [
+    ]
+  },
+  {
+    id: 4,
+    name: 'H5',
+    designType: [
+      {
+        id: 1,
+        key: 'item_4_1',
+        name: 'H5'
+      }
+    ],
+    field: [
+    ],
+    industry: [
+    ]
+  },
+  {
+    id: 5,
+    name: '包装设计',
+    designType: [
+      {
+        id: 1,
+        key: 'item_5_1',
+        name: '包装设计'
+      }
+    ],
+    field: [
+    ],
+    industry: [
+    ]
+  },
+  {
+    id: 6,
+    name: '插画设计',
+    designType: [
+      {
+        id: 1,
+        key: 'item_6_1',
+        name: '商业插画'
+      },
+      {
+        id: 2,
+        key: 'item_6_2',
+        name: '书藉插画'
+      },
+      {
+        id: 3,
+        key: 'item_6_3',
+        name: '形象/IP插画'
+      }
+    ],
+    field: [
+    ],
+    industry: [
+    ]
   }
 ]
 

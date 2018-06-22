@@ -56,11 +56,12 @@
           <li>
             <p class="p-time">截止时间:</p>
             <el-date-picker
+              @click.native="clickTime"
               v-model="currentForm.over_time"
               type="datetime"
               placeholder="选择截止时间"
-              format="yyyy-MM-dd hh:mm"
-              @change="changeTime">
+              @change="changeTime"
+              format="yyyy-MM-dd HH:mm">
             </el-date-picker>
           </li>
           <li>
@@ -120,8 +121,8 @@
                   v-model="ele.over_time"
                   type="datetime"
                   placeholder="选择截止时间"
-                  format="yyyy-MM-dd hh:mm"
-                  @change="changeTime2(ele.over_time, ele.id)">
+                  @change="changeTime2(ele.over_time, ele.id)"
+                  format="yyyy-MM-dd HH:mm">
                 </el-date-picker>
                 <!-- <v-Member
                   :propsShow="showMember3"
@@ -140,8 +141,8 @@
                   v-model="addChildForm.over_time"
                   type="datetime"
                   placeholder="选择截止时间"
-                  format="yyyy-MM-dd hh:mm"
-                  @change="changeChildTime(addChildForm.over_time)">
+                  @change="changeChildTime(addChildForm.over_time)"
+                  format="yyyy-MM-dd HH:mm">
                 </el-date-picker>
                 <!-- <v-Member
                   :propsShow="showMember3"
@@ -186,12 +187,12 @@
             @closeMember="closeMember2"></v-Member>
           </ul>
         </div>
-        <div class="task-moments" v-if="currentForm['moments']">
+        <div class="task-moments" v-if="moments">
           <p class="p-moments" v-if="showAllMoments" @click="showAllMoments = false">隐藏较早的动态</p>
-          <p class="p-moments" v-if="!showAllMoments && currentForm['moments'].length - 5 > 0" @click="showAllMoments = true">显示较早的{{currentForm['moments'].length - 5}}条动态</p>
+          <p class="p-moments" v-if="!showAllMoments && moments.length - 5 > 0" @click="showAllMoments = true">显示较早的{{moments.length - 5}}条动态</p>
           <ul v-if="showAllMoments">
             <li class="clearfix"
-              v-for="(ele, index) in currentForm['moments']" :key="index">
+              v-for="(ele, index) in moments" :key="index">
               <p :class="['fl',
                 {'complete-parent': ele.type === 7,
                 'complete-child': ele.type === 9,
@@ -204,7 +205,7 @@
           </ul>
           <ul v-else>
             <li class="clearfix"
-              v-for="(ele, index) in currentForm['limitMoments']" :key="index">
+              v-for="(ele, index) in limitMoments" :key="index">
               <p :class="['fl',
                 {'complete-parent': ele.type === 7,
                 'complete-child': ele.type === 9,
@@ -266,8 +267,8 @@
           test: ''
         },
         currentForm: { // 当前任务表单
-          over_time: '',
-          level: 1
+          level: 1,
+          over_time: new Date()
         },
         currentChange: {},
         msg: '',
@@ -296,6 +297,8 @@
         oldVal: '',
         showAllMoments: false,
         isAddChild: false,
+        limitMoments: '',
+        moments: '',
         addChildForm: {
           name: '',
           over_time: '',
@@ -341,19 +344,27 @@
       // 查详情
       view(id) {
         const self = this
-        self.atFirst = true
         self.isLoading = true
-        this.$http.get(api.taskId.format(id), {}).then(function (response) {
-          if (response.data.meta.status_code === 200) {
-            self.currentForm = response.data.data
+        this.$http.get(api.taskId.format(id), {}).then(function (res) {
+          if (res.data.meta.status_code === 200) {
+            self.currentForm = Object.assign({}, self.currentForm, res.data.data)
+            if (self.currentForm.over_time) {
+              self.currentForm.over_time = self.currentForm.over_time.replace(/-/g, '/')
+            }
+            if (self.currentForm.childTask) {
+              if (self.currentForm.childTask.length) {
+                self.currentForm.childTask.forEach(item => {
+                  if (item.over_time) {
+                    item.over_time = item.over_time.replace(/-/g, '/')
+                  }
+                })
+              }
+            }
             self.getItemId(self.currentForm.item_id)
           } else {
-            self.$message.error(response.data.meta.message)
+            self.$message.error(res.data.meta.message)
           }
-          self.$nextTick(() => {
-            self.isLoading = false
-            self.atFirst = false
-          })
+          self.isLoading = false
         }).catch((error) => {
           self.$message.error(error.message)
           console.error(error.message)
@@ -374,7 +385,7 @@
         self.$http.post(api.task, self.currentForm).then(function (response) {
           self.isCreate = true
           if (response.data.meta.status_code === 200) {
-            Object.assign(self.currentForm, response.data.data)
+            self.currentForm = Object.assign({}, self.currentForm, response.data.data)
             self.$store.commit('createTaskListItem', response.data.data)
             self.$store.commit('changeTaskStateEvent', 'update')
             self.$store.commit('changeTaskStateId', response.data.data.id)
@@ -391,11 +402,16 @@
         const self = this
         self.addChildForm.tier = 1
         self.addChildForm.pid = self.taskState.id
-        self.addChildForm.item_id = self.$route.params.id
+        self.addChildForm.item_id = self.$route.params.id || 0 // 这里可以不传项目ID吗？
+        self.addChildForm.over_time = self.addChildForm.over_time.format('yyyy-MM-dd hh:mm')
         self.$http.post(api.task, self.addChildForm).then(function (response) {
           self.isCreate = true
           if (response.data.meta.status_code === 200) {
-            self.currentForm.childTask.push(response.data.data)
+            let data = response.data.data
+            if (data.over_time) {
+              data.over_time = data.over_time.replace(/-/g, '/')
+            }
+            self.currentForm.childTask.push(data)
             self.$store.commit('changeTaskStateEvent', 'update')
             self.isAddChild = false
           } else {
@@ -568,17 +584,19 @@
           console.error(error.message)
         })
       },
+      clickTime() {
+        this.atFirst = false
+      },
       changeTime(time) {
-        console.log(time)
-        // if (this.atFirst) {
-        //   return
-        // }
-        // if (time) {
-        //   if (this.taskState.event === 'update') {
-        //     this.currentChange = {over_time: time}
-        //     this.update()
-        //   }
-        // }
+        if (this.atFirst) {
+          return
+        }
+        if (time) {
+          if (this.taskState.event === 'update') {
+            this.currentChange = {over_time: time}
+            this.update()
+          }
+        }
       },
       changeTime2(overTime, id) {
         if (overTime) {
@@ -712,6 +730,15 @@
           case 10:
             item['action'] = '更新了截至时间：'
             break
+          case 19:
+            item['action'] = '认领了任务：'
+            break
+          case 20:
+            item['action'] = '指派给了：'
+            break
+          case 21:
+            item['action'] = '移除了执行者：'
+            break
         }
       },
       cancelAddChild() {
@@ -805,7 +832,7 @@
               this.view(val.id)
             } else if (val.event === 'create') {
               if (this.isCreate) {
-                this.currentForm = {}
+                // this.currentForm = {}
                 this.create()
               }
             }
@@ -847,7 +874,8 @@
                 }
               })
               arr.reverse()
-              val['moments'] = arr
+              this.moments = arr
+              console.log(this.moments)
               let arr2 = []
               val['log'].forEach((item, index) => {
                 if (index > 4) {
@@ -871,7 +899,7 @@
                 }
               })
               arr2.reverse()
-              val['limitMoments'] = arr2
+              this.limitMoments = arr2
             }
           }
         },

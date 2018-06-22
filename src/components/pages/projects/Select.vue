@@ -3,11 +3,11 @@
     <div class="project-cover clearfix">
       <el-row class="project-item-box">
         <p class="title">请选择您需要的设计类型</p>
-        <el-col v-for="(ele, index) in imgList" :key="index"
+        <el-col v-for="(ele, index) in COMPANY_TYPE" :key="index"
         :xs="12" :sm="4" :md="4" :lg="4"
-        :class="['item', {'active': item === ele.type}]"
-        @click.native="item = ele.type">
-          <span :class="['item-bg', 'item-bg'+ ele.type]"></span>
+        :class="['item', {'active': item === ele.id}]"
+        @click.native="item = ele.id">
+          <span :class="['item-bg', 'item-bg'+ ele.id]"></span>
           <p class="item-name">{{ele.name}}</p>
         </el-col>
       </el-row>
@@ -23,6 +23,7 @@
 </template>
 <script>
 import api from '@/api/api'
+import {COMPANY_TYPE} from '@/config'
 export default {
   name: 'SelectType',
   data() {
@@ -74,6 +75,14 @@ export default {
           this.$message.error(res.data.meta.message)
         }
       })
+    }
+  },
+  computed: {
+    COMPANY_TYPE() {
+      let array = COMPANY_TYPE.filter(item => {
+        return item.id < 3
+      })
+      return array
     }
   },
   created() {

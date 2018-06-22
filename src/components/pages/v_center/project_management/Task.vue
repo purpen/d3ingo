@@ -365,7 +365,7 @@
           stage: stage
         }}).then(function (response) {
           if (response.data.meta.status_code === 200) {
-            self.$store.commit('setTaskList', response.data.data)
+            self.$store.commit('setTaskList', {data: response.data.data, showChild: false})
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -381,7 +381,8 @@
         this.$http.get(api.myTask)
         .then(res => {
           if (res.data.meta.status_code === 200) {
-            this.$store.commit('setTaskList', res.data.data)
+            console.log(res.data.data)
+            this.$store.commit('setTaskList', {data: res.data.data, showChild: true})
           } else {
             this.$messgae.error(res.data.meta.message)
           }
@@ -417,7 +418,11 @@
                 item.stage = stage
                 this.completeState = stage
                 this.$store.commit('updateTaskListItem', item)
-                this.fetchStage()
+                if (this.isMyTask) {
+                  this.fetchMyTask()
+                } else {
+                  this.fetchStage()
+                }
               })
             } else {
               this.$message.error(res.data.meta.message)
@@ -448,8 +453,12 @@
               name: this.currentTaskForm.name
             }).then(response => {
               if (response.data.meta.status_code === 200) {
-                this.fetchStage()
-                this.fetchTask()
+                if (this.isMyTask) {
+                  this.fetchMyTask()
+                } else {
+                  this.fetchStage()
+                  this.fetchTask()
+                }
               } else {
                 this.$message.error(response.data.meta.message)
               }
@@ -482,7 +491,7 @@
             this.$message.error(res1.data.meta.message)
           }
           if (res2.data.meta.status_code === 200) {
-            this.$store.commit('setTaskList', res2.data.data)
+            this.$store.commit('setTaskList', {data: res2.data.data, showChild: false})
           } else {
             this.$message.error(res2.data.meta.message)
           }

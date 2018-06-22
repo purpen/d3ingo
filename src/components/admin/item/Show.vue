@@ -33,7 +33,7 @@
                 <p>名称</p>
               </el-col>
               <el-col :span="spanVal">
-                <p>{{ info.name }}</p>
+                <p>{{ item.name }}</p>
               </el-col>
               <el-col :span="spanOpt">
               </el-col>
@@ -77,7 +77,7 @@
                 <p>行业</p>
               </el-col>
               <el-col :span="spanVal">
-                <p>{{ info.industry_value }}</p>
+                <p>{{ item.industry_value }}</p>
               </el-col>
               <el-col :span="spanOpt">
               </el-col>
@@ -88,7 +88,7 @@
                 <p>预算</p>
               </el-col>
               <el-col :span="spanVal">
-                <p>{{ info.design_cost_value }}</p>
+                <p>{{ item.design_cost_value }}</p>
               </el-col>
               <el-col :span="spanOpt">
               </el-col>
@@ -99,7 +99,7 @@
                 <p>周期</p>
               </el-col>
               <el-col :span="spanVal">
-                <p>{{ info.cycle_value }}</p>
+                <p>{{ item.cycle_value }}</p>
               </el-col>
               <el-col :span="spanOpt">
               </el-col>
@@ -110,7 +110,7 @@
                 <p>工作地点</p>
               </el-col>
               <el-col :span="spanVal">
-                <p>{{ info.province_value }} {{ info.city_value }}</p>
+                <p>{{ item.province_value }} {{ item.city_value }}</p>
               </el-col>
               <el-col :span="spanOpt">
               </el-col>
@@ -520,7 +520,7 @@ export default {
       this.currentMatchCompany = item.designCompany
       this.matchCompanyForm.itemId = item.item.id
       this.matchCompanyForm.itemStatus = item.item.status
-      this.matchCompanyForm.itemName = item.info.name
+      this.matchCompanyForm.itemName = item.item.name
       this.matchCompanyDialog = true
     },
     addMatchCompany() {

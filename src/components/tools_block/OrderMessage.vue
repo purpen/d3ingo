@@ -127,15 +127,21 @@
       },
       // 根据类型跳转
       redirect(d) {
-        console.log(d.type)
+        console.log(d)
         this.showCover = false
         let oldClass = document.body.childNodes[1].getAttribute('class')
         if (oldClass) {
           oldClass = oldClass.replace('disableScroll ', '')
         }
+        document.body.removeAttribute('class', 'disableScroll')
+        document.childNodes[1].removeAttribute('class', 'disableScroll')
         document.body.childNodes[1].setAttribute('class', oldClass)
         if (d.type === 2) {
-          this.$router.push({name: 'vcenterItemShow', params: {id: d.target_id}})
+          if (d.item_status) {
+            this.$router.push({name: 'projectCompare', params: {id: d.target_id}})
+          } else {
+            this.$router.push({name: 'vcenterItemShow', params: {id: d.target_id}})
+          }
         } else if (d.type === 3) {
           this.$router.push({name: 'vcenterWalletList'})
         }
