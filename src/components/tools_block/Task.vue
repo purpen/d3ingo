@@ -407,7 +407,11 @@
         self.$http.post(api.task, self.addChildForm).then(function (response) {
           self.isCreate = true
           if (response.data.meta.status_code === 200) {
-            self.currentForm.childTask.push(response.data.data)
+            let data = response.data.data
+            if (data.over_time) {
+              data.over_time = data.over_time.replace(/-/g, '/')
+            }
+            self.currentForm.childTask.push(data)
             self.$store.commit('changeTaskStateEvent', 'update')
             self.isAddChild = false
           } else {
@@ -726,6 +730,15 @@
           case 10:
             item['action'] = '更新了截至时间：'
             break
+          case 19:
+            item['action'] = '认领了任务：'
+            break
+          case 20:
+            item['action'] = '指派给了：'
+            break
+          case 21:
+            item['action'] = '移除了执行者：'
+            break
         }
       },
       cancelAddChild() {
@@ -862,6 +875,7 @@
               })
               arr.reverse()
               this.moments = arr
+              console.log(this.moments)
               let arr2 = []
               val['log'].forEach((item, index) => {
                 if (index > 4) {
