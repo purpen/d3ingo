@@ -71,7 +71,7 @@
                   @click="showTaskBtn(e, i)">
                   <p class="task-name">
                     <span @click.stop.prevent="completeTaskBtn(e, i)" class="task-name-span"></span>
-                    <span v-if="(e.id !== taskState.id) || !taskState.power">{{e.name | filterName}}</span>
+                    <span :class="{'tc-9': !e.name}" v-if="(e.id !== taskState.id) || !taskState.power">{{e.name | filterName}}</span>
                       <!-- v-focus="isFocus" -->
                     <input
                       v-focus="isFocus"
@@ -249,7 +249,7 @@
       fetchStage() {
         const self = this
         self.isLoading = true
-        self.$http.get(api.toolsStage, {params: {item_id: self.itemId}})
+        self.$http.get(api.toolsStage, {params: {item_id: self.itemId, stage: this.taskStatus}})
         .then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.$store.commit('setStageList', response.data.data)
@@ -414,12 +414,12 @@
         }
       },
       // 主任务列表
-      fetchTask(stage = 0) {
+      fetchTask() {
         const self = this
         self.isLoading = true
         self.$http.get(api.task, {params: {
           item_id: self.itemId,
-          stage: stage
+          stage: self.taskStatus
         }}).then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.$store.commit('setTaskList', {data: response.data.data, showChild: false})
@@ -478,6 +478,7 @@
                 if (this.isMyTask) {
                   this.fetchMyTask()
                 } else {
+                  this.fetchTask()
                   this.fetchStage()
                 }
               })
@@ -643,8 +644,9 @@
         },
         deep: true
       },
-      taskStatus(val) {
-        this.fetchTask(val)
+      taskStatus() {
+        this.fetchTask()
+        this.fetchStage()
       }
     },
     created() {

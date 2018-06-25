@@ -1096,7 +1096,8 @@ export default {
   }
   .cententList .welcome {
     background: #fff;
-    color: #ff5a5f
+    color: #ff5a5f;
+    border-radius: 0 0 4px 4px;
   }
   
   .parent-box {

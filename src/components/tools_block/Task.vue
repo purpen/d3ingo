@@ -383,14 +383,9 @@
       create() {
         const self = this
         self.isCreate = false
-        if (JSON.stringify(self.currentForm) !== '{}') {
-          let overTime = self.currentForm.over_time
-          if (self.currentForm.over_time instanceof Date) {
-            self.currentForm.over_time = overTime.format('yyyy-MM-dd hh:mm')
-          }
-        }
-        self.currentForm.item_id = self.$route.params.id
-        self.$http.post(api.task, self.currentForm).then(function (response) {
+        self.currentForm = {}
+        let id = self.$route.params.id
+        self.$http.post(api.task, {item_id: id}).then(function (response) {
           self.isCreate = true
           if (response.data.meta.status_code === 200) {
             self.currentForm = Object.assign({}, self.currentForm, response.data.data)
@@ -410,7 +405,6 @@
         const self = this
         self.addChildForm.tier = 1
         self.addChildForm.pid = self.taskState.id
-        self.addChildForm.item_id = self.$route.params.id || 0 // 这里可以不传项目ID吗？
         self.addChildForm.over_time = self.addChildForm.over_time.format('yyyy-MM-dd hh:mm')
         self.$http.post(api.task, self.addChildForm).then(function (response) {
           self.isCreate = true
@@ -863,13 +857,12 @@
           if (val) {
             if (val.event === 'update') {
               this.view(val.id)
+              this.getTaskMemberList()
             } else if (val.event === 'create') {
               if (this.isCreate) {
-                // this.currentForm = {}
                 this.create()
               }
             }
-            this.getTaskMemberList()
           }
         },
         deep: true

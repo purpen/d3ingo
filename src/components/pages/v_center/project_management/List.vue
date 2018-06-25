@@ -401,8 +401,9 @@ export default {
     margin-bottom: 20px;
     background: #f7f7f7;
     padding: 20px;
+    border-radius: 4px;
+    transition: transform .268s ease;
     /* padding-bottom: 40px; */
-    transition: transform .218s ease;
     /* transform: translate3d(0, 0, 0) */
   }
 
