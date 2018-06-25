@@ -184,8 +184,8 @@
             </p>
             <v-Member
               :isLeft="true"
-              :propsShow="showMember2" 
-              :itemId="propsTags.itemId" 
+              :propsShow="showMember2"
+              :itemId="propsTags.itemId"
               :taskId="taskState.id"
               event="participant"
               @closeMember="closeMember2"></v-Member>
@@ -969,20 +969,20 @@
   .task-detail {
     animation-delay: 0.5s;
     border: 1px solid #E6E6E6;
-    border-radius: 4px;
-    padding: 20px 0 0;
+    /* border-radius: 4px; */
   }
   .task-detail-header {
     display: flex;
     color: #666;
     font-size: 14px;
     position: relative;
-    height: 34px;
-    margin: 0 30px
+    padding: 0 30px 10px;
+    margin: 10px 0 0;
+    border-bottom: 1px solid #e6e6e6
   }
   .task-detail-header .fx-icon-nothing-close-error {
     position: absolute;
-    right: 0;
+    right: 30px;
     top: 10px;
   }
   .task-detail-name {
@@ -1028,7 +1028,7 @@
   }
   .select-menu {
     position: absolute;
-    right: 44px;
+    right: 74px;
     top: 0;
     width: 24px;
     height: 24px;

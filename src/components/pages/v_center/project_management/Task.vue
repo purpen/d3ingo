@@ -18,8 +18,8 @@
               </ul>
             </div>
           </div>
-          <section :style="{maxHeight: docHeight, overflowY: 'auto'}">
-            <section>
+          <section class="task-list-content" :style="{maxHeight: docHeight}">
+            <section class="no-stage-item">
               <div v-for="(ele, index) in displayObj.outsideStageList" :key="index"
                 @click="showTaskBtn(ele, index)"
                 :class="['task-item','clearfix', {
@@ -526,7 +526,7 @@
             })
           }
         } else {
-          this.$message.error('任务名不能为空')
+          console.log('任务名不能为空')
         }
       },
       closeCover() {
@@ -710,11 +710,12 @@
     /* animation: slowShow 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) */
   }
   .operate {
-    display: flex
+    display: flex;
+    border-bottom: 1px solid #d2d2d2;
   }
   .add-btn {
     flex: 1 1 auto;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
   }
   .add-btn:hover .add-stage {
     display: inline-block;
@@ -790,16 +791,29 @@
     /* padding-left: 30px; */
     transition: 0.5s all ease;
   }
+  .task-list-content {
+    overflow-y: auto;
+    /* padding-bottom: 20px; */
+    /* border-bottom: 1px solid #d2d2d2 */
+  }
   .task-item {
     display: flex;
   }
   .task-item, .stage-name {
     cursor: pointer;
     border: 1px solid #d2d2d2;
-    border-radius: 4px;
+    /* border-radius: 4px; */
     line-height: 48px;
-    height: 50px;
+    height: 51px;
     margin-bottom: 10px;
+  }
+  .task-item {
+    border-right: 0
+  }
+  .no-stage-item .task-item:first-child,
+  .stage-item .task-item:first-child {
+    border-top: none;
+    /* border-radius: 0 0 4px 4px; */
   }
   .is-checked {
     border: 1px solid #ff5a5f;
@@ -816,6 +830,7 @@
     border-radius: 0;
     padding: 0 40px 0 0;
     margin-top: 0;
+    margin-bottom: 0;
     font-size: 18px;
     color: #222222;
     line-height: 40px;
@@ -826,9 +841,12 @@
     border-color: transparent;
     border-bottom-color: #d2d2d2;
   }
-  /* .stage-item:last-child .stage-name {
-    margin-bottom: 0
-  } */
+  .stage-item:last-child .task-item:last-child {
+    margin-bottom: 0;
+    /* border-bottom: none; */
+    border-radius: 4px 4px 0 0
+  }
+
   .stage-title {
     position: absolute;
     left: 0;
@@ -875,8 +893,10 @@
     /* background: #fafafa; */
     color: #999;
   }
-  .task-item.active .task-name {
+  .task-item.active .task-name,
+  .task-item.active .task-name .task-name-input {
     text-decoration: line-through;
+    color: #999;
   }
   .task-item.active .task-name-span::after{
     border-color: #d2d2d2
@@ -1004,5 +1024,8 @@
     text-align: center;
     color: #969696;
     line-height: 3;
+  }
+  .line-through {
+    text-decoration: line-through
   }
 </style>
