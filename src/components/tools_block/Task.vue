@@ -5,7 +5,7 @@
       <div class="task-detail-header">
         <span v-show="!isMyTask" v-if="currentForm.tier === 0" class="task-detail-name">{{projectObject.name}}</span>
         <div v-show="!isMyTask" v-if="currentForm.tier === 0" ref="selectParent" class="select-parent" tabindex="-1">
-          <span class="select-show">请选择阶段</span>
+          <span class="select-show">{{currentForm.stage_title | stageTitle}}</span>
           <ul class="stage-list stage-list0">
             <li :class="{'active': !currentForm.stage_id}" @click="stageItemClick(0)">无阶段</li>
             <li :class="{'active': d.id === currentForm.stage_id}" v-for="(d, index) in stageList" :key="index" @click="stageItemClick(d.id)">
@@ -275,7 +275,7 @@
         },
         currentForm: { // 当前任务表单
           level: 1,
-          over_time: new Date()
+          over_time: ''
         },
         currentChange: {},
         msg: '',
@@ -354,6 +354,7 @@
         self.isLoading = true
         this.$http.get(api.taskId.format(id), {}).then(function (res) {
           if (res.data.meta.status_code === 200) {
+            // console.log(res.data.data)
             self.currentForm = Object.assign({}, self.currentForm, res.data.data)
             if (self.currentForm.over_time) {
               self.currentForm.over_time = self.currentForm.over_time.replace(/-/g, '/')
@@ -842,6 +843,15 @@
         return this.$store.state.task.parentTask
       }
     },
+    filters: {
+      stageTitle(val) {
+        if (val) {
+          return val
+        } else {
+          return '请选择阶段'
+        }
+      }
+    },
     watch: {
       taskState: {
         handler(val) {
@@ -992,9 +1002,13 @@
     cursor: pointer;
   }
   .task-detail-name1 {
+    margin-right: 70px;
     border: none;
     position: relative;
-    padding: 0
+    padding: 0;
+    white-space: normal;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   .task-detail-name1::after {
@@ -1034,7 +1048,7 @@
     position: absolute;
     right: -10px;
     top: 34px;
-    z-index: 1;
+    z-index: 2;
   }
 
   .stage-list0 {
@@ -1352,7 +1366,7 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: 2px solid transparent
+    border: 2px solid #e6e6e6
   }
   .task-member-list li:hover img {
     border-color: #E6E6E6

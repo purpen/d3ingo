@@ -110,7 +110,6 @@ let mutations = {
       itemList: state.stageList,
       outsideStageList: outsideStageList
     })
-    console.log(state.displayObj)
   },
   changeTaskStatePower(state, val) {
     this._vm.$set(state.taskState, 'power', val)

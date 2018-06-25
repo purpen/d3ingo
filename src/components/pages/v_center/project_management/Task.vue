@@ -30,8 +30,9 @@
                   'level3': ele.level === 8}]">
                 <p class="task-name">
                   <span @click.stop.prevent="completeTaskBtn(ele, index)" class="task-name-span"></span>
-                  <span v-if="(ele.id !== taskState.id) || !taskState.power">{{ele.name}}</span>
+                  <span :class="{'tc-9': !ele.name}" v-if="(ele.id !== taskState.id) || !taskState.power">{{ele.name | filterName}}</span>
                   <input
+                    placeholder="请填写任务名称"
                     v-focus="isFocus"
                     :maxlength= 100
                     class="task-name-input" type="text"
@@ -41,9 +42,8 @@
                     v-model="currentTaskForm.name">
                 </p>
                 <p v-if="ele.over_time" :class="['task-date', 'fr', {
-                    'task-date-red': ele.over_time_stamp < new Date().getTime(),
-                  'task-date-green': ele.over_time_stamp - new Date().getTime() < 86400000
-                  }]">{{ele.over_time | filterOverTime}}</p>
+                    'task-date-red': ele.over_time_stamp < new Date().getTime()
+                    }]">{{ele.over_time | filterOverTime}}</p>
                 <div class="fr task-item-div">
                   <img v-if="ele.logo_image" :src="ele.logo_image.logo" alt="">
                   <img v-else v-lazy="require('assets/images/avatar_100.png')">
@@ -71,7 +71,7 @@
                   @click="showTaskBtn(e, i)">
                   <p class="task-name">
                     <span @click.stop.prevent="completeTaskBtn(e, i)" class="task-name-span"></span>
-                    <span v-if="(e.id !== taskState.id) || !taskState.power">{{e.name}}</span>
+                    <span v-if="(e.id !== taskState.id) || !taskState.power">{{e.name | filterName}}</span>
                       <!-- v-focus="isFocus" -->
                     <input
                       v-focus="isFocus"
@@ -82,9 +82,8 @@
                       v-model="currentTaskForm.name">
                     </p>
                   <p :class="['task-date', 'fr', {
-                    'task-date-red': e.over_time_stamp < new Date().getTime(),
-                    'task-date-green': e.over_time_stamp - new Date().getTime() < 86400000
-                  }]">{{e.over_time | filterOverTime}}</p>
+                    'task-date-red': e.over_time_stamp < new Date().getTime()
+                    }]">{{e.over_time | filterOverTime}}</p>
                   <div class="fr task-item-div">
                     <img v-if="e.logo_image" :src="e.logo_image.logo" alt="">
                     <img v-else v-lazy="require('assets/images/avatar_100.png')">
@@ -209,6 +208,13 @@
         } else {
           return ''
         }
+      },
+      filterName(val) {
+        if (val) {
+          return val
+        } else {
+          return '请填写任务名称'
+        }
       }
     },
     mounted() {
@@ -303,6 +309,7 @@
       },
       // 提交阶段
       submitStage() {
+        this.isFocus2 = false
         let event = this.currentStageStat.event
         if (event === 'create') {
           this.createStage()
@@ -339,7 +346,6 @@
       },
       // 更新阶段
       updateStage() {
-        this.isFocus2 = false
         if (this.isUpdate) {
           this.isUpdate = false
           const self = this
@@ -347,16 +353,20 @@
           let oldId = id
           if (!id) {
             self.$message.error('ID不能为空!')
+            self.isUpdate = true
             return false
           }
           if (id === -1) {
+            self.isUpdate = true
             return false
           }
           if (self.currentStageForm.title === '') {
             self.$message.error('阶段名不能为空!')
+            self.isUpdate = true
             return false
           } else {
             if (this.oldStageTitle === self.currentStageForm.title) {
+              self.isUpdate = true
               return
             }
           }
@@ -515,7 +525,7 @@
             })
           }
         } else {
-          this.$message.error('任务不能为空')
+          this.$message.error('任务名不能为空')
         }
       },
       closeCover() {
@@ -606,12 +616,14 @@
       stageList: {
         handler(val) {
           val.forEach(item => {
-            if (item.task.length) {
-              item.task.forEach(i => {
-                if (i.id === this.currentTaskForm.id) {
-                  this.currentTaskForm = Object.assign({}, this.currentTaskForm, i)
-                }
-              })
+            if (item.task) {
+              if (item.task.length) {
+                item.task.forEach(i => {
+                  if (i.id === this.currentTaskForm.id) {
+                    this.currentTaskForm = Object.assign({}, this.currentTaskForm, i)
+                  }
+                })
+              }
             }
           })
           // this.$store.commit('setStageList', val)
@@ -620,11 +632,13 @@
       },
       taskList: {
         handler(val) {
-          val.forEach(item => {
-            if (item.id === this.currentTaskForm.id) {
-              this.currentTaskForm = Object.assign({}, this.currentTaskForm, item)
-            }
-          })
+          if (val) {
+            val.forEach(item => {
+              if (item.id === this.currentTaskForm.id) {
+                this.currentTaskForm = Object.assign({}, this.currentTaskForm, item)
+              }
+            })
+          }
           // this.$store.commit('setStageList', val)
         },
         deep: true
@@ -810,9 +824,9 @@
     border-color: transparent;
     border-bottom-color: #d2d2d2;
   }
-  .stage-item:last-child .stage-name {
+  /* .stage-item:last-child .stage-name {
     margin-bottom: 0
-  }
+  } */
   .stage-title {
     position: absolute;
     left: 0;
