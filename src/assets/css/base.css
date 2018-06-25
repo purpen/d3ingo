@@ -1995,6 +1995,7 @@ td.fc-day.fc-widget-content.fc-today::before {
 
   .fullwidth .el-form-item__content {
     display: flex;
+    flex-wrap: wrap;
   }
 
   /*下拉框宽度*/

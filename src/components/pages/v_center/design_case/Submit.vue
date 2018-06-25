@@ -165,28 +165,30 @@
                 </el-col>
               </el-row>
 
-              <el-form-item label="是否获得奖项" class="fullwidth">
-                <el-row class="flex">
-                  <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3">
+              <el-form-item label="获得奖项" class="fullwidth">
+                <el-row class="flex prize" :gutter="10" v-for="(p,indexp) in prizes" :key="indexp" v-if="prizes&&prizes.length>0">
+                  <!-- <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3">
                     <el-radio-group v-model="is_prize" @change="isPrize">
                       <el-radio :label="false">否</el-radio>
                       <el-radio :label="true">是</el-radio>
                     </el-radio-group>
-                  </el-col>
-                  <el-col :xs="24" :sm="9" :md="9" :lg="9" v-if="is_prize">
+                  </el-col> -->
+                  <el-col :xs="24" :sm="12" :md="12" :lg="12">
                     <el-form-item prop="">
                       <el-date-picker
-                        key="prize_time"
+                        key="p.time"
                         class="fullwidth"
-                        v-model="form.prize_time"
+                        v-model="p.time"
                         type="month"
                         placeholder="获奖日期">
                       </el-date-picker>
                     </el-form-item>
-                  <!-- </el-col>
-                  <el-col :xs="24" :sm="9" :md="9" :lg="9" v-if="is_prize"> -->
+                  </el-col>
+                  <!-- <el-col :xs="0" :sm="0" :md="0" :lg="0" v-if="is_prize">
+                  </el-col> -->
+                  <el-col :xs="24" :sm="12" :md="12" :lg="12">
                     <el-form-item prop="prize">
-                      <el-select v-model.number="form.prize" placeholder="所属奖项">
+                      <el-select v-model.number="p.type" placeholder="所属奖项">
                         <el-option
                           v-for="item in prizeOptions"
                           :label="item.label"
@@ -196,32 +198,41 @@
                       </el-select>
                     </el-form-item>
                   </el-col>
+                  <div class="p-after" @click="deletePrize(indexp)">
+                  </div>
+                </el-row>
+                <el-row>
+                  <el-col :xs="4" :sm="4" :md="4" :lg="4">
+                    <el-button class="red-button" @click="getPrize()">
+                      +&nbsp;&nbsp;添加奖项
+                    </el-button>
+                  </el-col>
                 </el-row>
               </el-form-item>
 
-              <el-form-item label="是否申请专利" class="fullwidth">
-                <el-row class="flex">
-                  <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3">
+              <el-form-item label="申请专利" class="fullwidth">
+                <el-row class="flex prize" :gutter="10" v-for="(t,indext) in patents" :key="indext" v-if="patents&&patents.length>0">
+                  <!-- <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3">
                     <el-radio-group v-model="is_apply" @change="isApplication">
                       <el-radio :label="false">否</el-radio>
                       <el-radio :label="true">是</el-radio>
                     </el-radio-group>
-                  </el-col>
-                  <el-col :xs="24" :sm="9" :md="9" :lg="9" v-if="is_apply">
+                  </el-col> -->
+                  <el-col :xs="24" :sm="12" :md="12" :lg="12">
                     <el-form-item>
                       <el-date-picker
-                        key="patent_time"
+                        key="t.time"
                         class="fullwidth"
-                        v-model="form.patent_time"
+                        v-model="t.time"
                         type="month"
                         placeholder="选择日期">
                       </el-date-picker>
                     </el-form-item>
-                  <!-- </el-col>
-                  <el-col :xs="24" :sm="9" :md="9" :lg="9" v-if="is_apply"> -->
+                  </el-col>
+                  <el-col :xs="24" :sm="12" :md="12" :lg="12">
                     <el-form-item>
-                      <el-select v-model.number="form.patent_info" placeholder="选择申请专利类型" 
-                        key="patent_info">
+                      <el-select v-model.number="t.type" placeholder="选择申请专利类型" 
+                        key="t.type">
                         <el-option
                           v-for="item in patentOptions"
                           :label="item.label"
@@ -230,6 +241,15 @@
                         </el-option>
                       </el-select>
                     </el-form-item>
+                  </el-col>
+                  <div class="p-after"  @click="deletePatent(indext)">
+                  </div>
+                </el-row>
+                <el-row>
+                  <el-col :xs="4" :sm="4" :md="4" :lg="4">
+                    <el-button class="red-button" @click="getPatent()">
+                      +&nbsp;&nbsp;添加专利
+                    </el-button>
                   </el-col>
                 </el-row>
               </el-form-item>
@@ -305,6 +325,8 @@
         is_prize: false,
         typeSwitch1: false,
         typeSwitch2: false,
+        prizes: [],
+        patents: [],
         options5: [],
         value10: [],
         uploadParam: {
@@ -377,6 +399,44 @@
       }
     },
     methods: {
+      // 获得奖项
+      getPrize() {
+        if (this.prizes && this.prizes.length > 0) {
+          for (var i = 0; i < this.prizes.length; i++) {
+            if (this.prizes[i].time === '' || this.prizes[i].type === '') {
+              this.$message ('请填写完整后再填写新的奖项')
+              return false
+            }
+          }
+        }
+        this.prizes.push({
+          'type': '',
+          'time': ''
+        })
+      },
+      // 申请专利
+      getPatent() {
+        if (this.patents && this.patents.length > 0) {
+          for (var i = 0; i < this.patents.length; i++) {
+            if (this.patents[i].time === '' || this.patents[i].type === '') {
+              this.$message ('请填写完整后再填写新的专利')
+              return false
+            }
+          }
+        }
+        this.patents.push({
+          'type': '',
+          'time': ''
+        })
+      },
+      // 删除奖项
+      deletePrize(index) {
+        this.prizes.splice(index, 1)
+      },
+      // 删除专利
+      deletePatent(index) {
+        this.patents.splice(index, 1)
+      },
       // 选择分类事件
       selectTypeChange(val) {
         this.form.design_types = []
@@ -403,18 +463,40 @@
               label: that.form.label
             }
             row.cover_id = that.coverId
-            if (that.is_prize && that.form.prize_time) {
-              that.form.prize_time = that.form.prize_time.format ('yyyy-MM-dd')
-              row.prizes = JSON.stringify([{time: that.form.prize_time, type: that.form.prize}])
+            // if (that.is_prize && that.form.prize_time) {
+            //   that.form.prize_time = that.form.prize_time.format ('yyyy-MM-dd')
+            //   row.prizes = JSON.stringify([{time: that.form.prize_time, type: that.form.prize}])
+            // } else {
+            //   row.prizes = null
+            // }
+            if (this.prizes && this.prizes.length !== 0) {
+              for (var i = 0; i < this.prizes.length; i++) {
+                if (this.prizes[i].time === '' || this.prizes[i].type === '') {
+                  this.prizes.splice(i, 1)
+                }
+                this.prizes[i].time = this.prizes[i].time.format ('yyyy-MM-dd')
+              }
+              row.prizes = JSON.stringify(this.prizes)
             } else {
               row.prizes = null
             }
-            if (that.is_apply && that.form.patent_time) {
-              that.form.patent_time = that.form.patent_time.format ('yyyy-MM-dd')
-              row.patent = JSON.stringify([{time: that.form.patent_time, type: that.form.patent_info}])
+            if (this.patents && this.patents.length !== 0) {
+              for (var c = 0; c < this.patents.length; c++) {
+                if (this.patents[c].time === '' || this.patents[c].type === '') {
+                  this.patents.splice(c, 1)
+                }
+                this.patents[c].time = this.patents[c].time.format ('yyyy-MM-dd')
+              }
+              row.patent = JSON.stringify(this.patents)
             } else {
-              row.patent = null
+              row.prizes = null
             }
+            // if (that.is_apply && that.form.patent_time) {
+            //   that.form.patent_time = that.form.patent_time.format ('yyyy-MM-dd')
+            //   row.patent = JSON.stringify([{time: that.form.patent_time, type: that.form.patent_info}])
+            // } else {
+            //   row.patent = null
+            // }
             let apiUrl = null
             let method = null
 
@@ -429,6 +511,7 @@
               }
             }
             that.isLoadingBtn = true
+            console.log(row)
             that.$http ({method: method, url: apiUrl, data: row})
               .then (function (response) {
                 if (response.data.meta.status_code === 200) {
@@ -479,7 +562,7 @@
         this.is_prize = val
         if (!val) {
           this.form.prize_time = null
-          this.form.prize = 0
+          this.form.prize = ''
         }
       },
       // 是否申请专利
@@ -739,9 +822,6 @@
               this.$message ('每个标签最多7个字!')
               return false
             }
-            // if (newValue.length === 10) {
-            //   this.$message ('标签数已经达到上限,如需更改请删减')
-            // }
           }
         }
       }
@@ -756,7 +836,6 @@
           .then (function (response) {
             if (response.data.meta.status_code === 200) {
               that.form = response.data.data
-              console.log(that.form)
               if (that.form.prizes) {
                 if (that.form.prizes.length) {
                   that.$set(that, 'is_prize', true)
@@ -796,6 +875,12 @@
                   files.push (item)
                 }
                 that.fileList = files
+              }
+              if (response.data.data.prizes && response.data.data.prizes.length !== 0) {
+                that.prizes = response.data.data.prizes
+              }
+              if (response.data.data.patent && response.data.data.patent.length !== 0) {
+                that.patents = response.data.data.patent
               }
             }
           })
@@ -877,15 +962,33 @@
     width: 178px;
     height: 178px;
     display: block;
-    }
-
+  }
   .upload-demo {
     position: relative;
     width: 160px;
   }
   .flex {
     display: flex;
-    align-items: center
+    align-items: center;
+  }
+  .prize {
+    width: 50%;
+    padding-right: 30px;
+    position: relative;
+    margin-bottom:10px;
+  }
+  .prize .p-after {
+    position: absolute;
+    right:-5px;
+    width:30px;
+    height:30px;
+    border-radius: 4px;
+    background:url('../../../../assets/images/works/Delete.png') 0 0 no-repeat;
+    background-size: 30px 30px;
+  }
+  .p-after:hover {
+    background:url('../../../../assets/images/works/DeleteClick.png') 0 0 no-repeat;
+    background-size: 30px 30px;
   }
   .el-upload__tip {
     text-align: center;
@@ -914,6 +1017,9 @@
       border: none;
       border-top: 1px solid #D9D9D9;
       padding: 0;
+    }
+    .prize {
+      width: 100%;
     }
   }
 </style>
