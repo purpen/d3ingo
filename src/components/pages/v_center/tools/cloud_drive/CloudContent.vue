@@ -324,7 +324,9 @@ export default {
                 this.previewObj.index = index
               }
             })
+            let oldClass = document.body.childNodes[1].getAttribute('class')
             document.body.setAttribute('class', 'disableScroll')
+            document.body.childNodes[1].setAttribute('class', 'disableScroll ' + oldClass)
             document.childNodes[1].setAttribute('class', 'disableScroll')
           } else {
             this.$message.info('正在加载组件, 请稍后尝试...')
@@ -352,7 +354,12 @@ export default {
       this.viewCover = false
       this.showProfile = false
       this.urlFile = ''
+      let oldClass = document.body.childNodes[1].getAttribute('class')
+      if (oldClass) {
+        oldClass = oldClass.replace('disableScroll ', '')
+      }
       document.body.removeAttribute('class', 'disableScroll')
+      document.body.childNodes[1].setAttribute('class', oldClass)
       document.childNodes[1].removeAttribute('class', 'disableScroll')
     },
     renameCancel() {

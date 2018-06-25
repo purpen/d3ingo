@@ -80,7 +80,7 @@
   .el-dialog__footer .dialog-footer .el-button:first-child {
     margin-right: 20px;
   }
-  .aside>.el-progress .el-progress-bar__outer, .aside>.el-progress .el-progress-bar__outer>.el-progress-bar__inner {
+  .aside .el-progress .el-progress-bar__outer, .aside .el-progress .el-progress-bar__outer .el-progress-bar__inner {
     border-radius: 0px
   }
   .designStage-name .el-checkbox__inner{
@@ -321,6 +321,13 @@
   .el-icon-time:before {
     content: "\E611"
   }
+  /* .add-child-ul .el-date-editor.el-input .el-icon-time {
+    display: none;
+  } */
+  /* .add-child-ul .el-date-editor.el-input .el-input__icon+.el-input__inner {
+    padding: 0;
+    text-align: center;
+  } */
   .el-input-group__append, .el-input-group__prepend {
     background: #f7f7f7;
     color: #999
@@ -396,4 +403,69 @@
   }
   .el-checkbox__inner:hover {
     border-color: #d2d2d2
+  }
+
+  .task-name-input .el-input__inner,
+  .task-name-input .el-input__inner:focus {
+    padding: 0;
+    border: none;
+    box-shadow: none;
+  }
+  .item-total .animated {
+    -webkit-animation-duration: 0.5s;
+    animation-duration: 0.5s;
+  }
+  .el-select__tags>input[type=text]:focus {
+    box-shadow: 0 0 0 0 white inset;
+  }
+  .label-tag .vue-input-tag-wrapper>.input-tag {
+    background: #f7f7f7;
+    border: 1px solid #d2d2d2;
+    color: #000;
+    margin-bottom: 0px;
+    height: 28px;
+    padding: 0 5px;
+    border-radius: 4px;
+  }
+  .label-tag .vue-input-tag-wrapper .new-tag {
+    margin-bottom: 0px;
+  }
+  .label-tag .vue-input-tag-wrapper>.input-tag>span {
+    display: inline-block;
+    height: 26px;
+    line-height: 26px;
+  }
+  .label-tag .vue-input-tag-wrapper>.input-tag>.remove {
+    color: #000;
+    font-weight: 400;
+    position: relative;
+    display: inline-block;
+    height: 14px;
+    width: 14px;
+    
+  }
+  .label-tag .vue-input-tag-wrapper>.input-tag>.remove::before,
+  .label-tag .vue-input-tag-wrapper>.input-tag>.remove::after {
+    display:inline-block;
+    content: "";
+    position: absolute;
+    transform: rotate(45deg)
+  }
+  .label-tag .vue-input-tag-wrapper>.input-tag>.remove::before {
+    width: 13px;
+    border-top: 1px solid #000;
+    left: 1px;
+    top: 9px;
+  }
+  .label-tag .vue-input-tag-wrapper>.input-tag>.remove::after {
+    height: 13px;
+    border-right: 1px solid #000;
+    left: 7px;
+    top: 3px;
+  }
+  .label-tag .vue-input-tag-wrapper .input-tag .remove:hover::after {
+    border-right: 1px solid #ff5a5f;
+  }
+  .label-tag .vue-input-tag-wrapper .input-tag .remove:hover::before {
+    border-top: 1px solid #ff5a5f;
   }

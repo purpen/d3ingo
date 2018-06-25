@@ -32,7 +32,7 @@
              </ul >
               <ul class="useredit updata-user addhover" v-if="event === 'create'">
               <li ><img :src=" userimg " alt=""></li>
-              <li v-for="(getimg,index) in getimgs" :key="index" v-if="getimgs.length > 0" :style="{background:`url(${ getimg.logo_image.logo }) no-repeat center`,backgroundSize:`24px 24px`}">
+              <li v-for="(getimg,index) in getimgs" :key="index" v-if="getimgs&&getimgs.length > 0" :style="{background:`url(${ getimg.logo_image.logo }) no-repeat center`,backgroundSize:`24px 24px`}">
                   <span v-if=" !getimg.logo_image.logo ">{{getimg.realnamehead}}</span>
                   <i :style="{background:`url(${ closered }) no-repeat center`}" @click="deleteGetimg(index,{type:'add'})"></i>
               </li>
@@ -66,7 +66,7 @@
                 </div>
               </li>
             </ul>
-          <el-row class="MeetingCenter" @click.native="addBtn()" :style="{borderTop:event!=='create'?'none':'1px solid #D2D2D2',
+          <el-row class="MeetingCenter" @click.native="addBtn()" :style="{borderTop:event!=='create'?'none':'1px solid #E6E6E6',
           paddingTop:event!=='create'?'10px':'0px'}">
               <el-col class="fx">
                 <div>
@@ -131,7 +131,7 @@
             </el-row>
           </div>
         </el-col>
-        <el-col :span="18" :offset="3" v-if=" itemList.length>0 " v-for="(d, index) in itemList" :key="index"><div class="grid-content bg-purple">
+        <el-col :span="18" :offset="3" v-if=" itemList&&itemList.length>0 " v-for="(d, index) in itemList" :key="index"><div class="grid-content bg-purple">
            <el-row>
               <el-col class="titlec" >
                 <el-input  v-model="d.title"  v-if ="d.isedit === 2" placeholder="请填写标题" class="noborder fx-3"></el-input>
@@ -171,17 +171,17 @@
                 </div>
                 <p v-else>{{ d.expire_time }}</p>
               </li>
-              <li v-if="d.isedit === 1&&d.selected_user.length>0">
+              <li v-if="d.isedit === 1&&d.selected_user&&d.selected_user.length>0">
                 <img :src=" userimg " alt="">
                 <ul class="updata-user">
                   <li v-for="(user,indexus) in d.selected_user" 
-                  :key="indexus" v-if="d.selected_user.length > 0" 
+                  :key="indexus" v-if="d.selected_user&&d.selected_user.length > 0" 
                   :style="{background:`url(${ user.logo_image.logo }) no-repeat center`,backgroundSize:`24px 24px`}"
                   >
                     <span v-if=" !user.logo_image.logo ">{{user.realnamehead}}</span>
                     <i :style="{background:`url(${ closered }) no-repeat center`}" @click="deleteGetimg(indexus,{type:'noadd'})"  v-if="d.isedit === 2"></i>
                   </li>
-                   <li v-if="d.isedit === 1&&d.selected_user.length>10" class="slice-user">+0</li>
+                   <li v-if="d.isedit === 1&&d.selected_user&&d.selected_user.length>10" class="slice-user">+0</li>
                 </ul>
               </li>
              </ul>
@@ -189,7 +189,7 @@
                <li><img :src=" userimg " alt=""></li>
               <li >
                 <ul class="updata-user hoverme">
-                  <li v-for="(user,indexus) in d.selected_user" :key="indexus" v-if="d.selected_user.length > 0" :style="{background:`url(${ user.logo_image.logo }) no-repeat center`,backgroundSize:`24px 24px`}">
+                  <li v-for="(user,indexus) in d.selected_user" :key="indexus" v-if="d.selected_user&&d.selected_user.length > 0" :style="{background:`url(${ user.logo_image.logo }) no-repeat center`,backgroundSize:`24px 24px`}">
                     <span v-if=" !user.logo_image.logo ">{{user.realnamehead}}</span>
                     <i :style="{background:`url(${ closered }) no-repeat center`}" @click="deleteGetimg(indexus,{type:'noadd'})"  v-if="d.isedit === 2"></i>
                   </li>
@@ -226,7 +226,7 @@
                 </ul>
               </li>
              </ul>
-            <el-row class="MeetingCenter" :style="{borderTop:!d.content&&d.isedit!==2?'none':'1px solid #D2D2D2'}">
+            <el-row class="MeetingCenter" :style="{borderTop:!d.content&&d.isedit!==2?'none':'1px solid #E6E6E6'}">
               <el-col class="fx">
                  <el-input  size="small" v-if ="d.isedit === 2" v-model=" d.content " type="textarea" :autosize="{ minRows: 4, maxRows: 10}" :maxlength="800" class="noborder"></el-input>
                  <p v-else>{{ d.content }}</p>
@@ -310,7 +310,7 @@
             </el-row>
           </div></el-col>
 
-       <el-col :span="18" :offset="3" v-if=" itemList.length===0" >
+       <el-col :span="18" :offset="3" v-if=" itemList&&itemList.length===0" >
          <div class="grid-content bg-purple onthing">
                   <img :src=" onThingimg "/>
                   <p>沟通纪要记录项目实施阶段与客户沟通后，达成共识以及客户意见反馈的历史记录。</p>
@@ -383,12 +383,17 @@
         if (!e) {
           this.isSearch = false
         } else this.isSearch = true
-        for (var i = 0, arr = []; i < this.options.length; i++) {
-          if (this.options[i].realname.indexOf(e) !== -1) {
-            arr.push(this.options[i])
-          }
+        if (!this.options) {
+          this.options = []
         }
-        this.search = arr
+        if (this.options.length > 0) {
+          for (var i = 0, arr = []; i < this.options.length; i++) {
+            if (this.options[i].realname.indexOf(e) !== -1) {
+              arr.push(this.options[i])
+            }
+          }
+          this.search = arr
+        }
       }
     },
     methods: {
@@ -637,7 +642,6 @@
       },
       // 文件上传成功
       uploadSuccess(response, file, fileList) {
-        console.log(fileList)
         for (var i = 0; i < this.fileList.length; i++) {
           this.fileList[i].asset_id = response.asset_id
         }
@@ -870,7 +874,7 @@
       this.itemId = itemId
       this.$http.get(api.communeSummaries, {params: {item_id: this.itemId}}).then((response) => {
         if (response.data.meta.status_code === 200) {
-          this.itemList = response.data.data
+          this.itemList = response.data.data || []
           if (this.itemList && this.itemList.length > 0) {
             for (var i = 0; i < this.itemList.length; i++) {
               this.itemList[i].isedit = 1
@@ -897,7 +901,7 @@
   }
   .AddCommunicate>.el-row>.el-col{
     background: #FFFFFF;
-    border: 1px solid #D2D2D2;
+    border: 1px solid #E6E6E6;
     border-radius: 4px;
     margin-top:20px;
   }
@@ -912,7 +916,7 @@
     color:#222222;
   }
   .uploads{
-    border-top: 1px solid #D2D2D2;
+    border-top: 1px solid #E6E6E6;
     background:#F7F7F7;
     opacity: 0.8;
     height:54px;
@@ -951,8 +955,8 @@
     margin-right:10px;
   }
   .full-red-button:disabled{
-    background:#D2D2D2;
-    border:1px solid #D2D2D2;
+    background:#E6E6E6;
+    border:1px solid #E6E6E6;
   }
   .upload-list>div>div{
     width:48%;
@@ -1102,7 +1106,7 @@
     padding-bottom: 10px;
     margin-bottom:20px;
     min-height: 70px;
-    border-top: 1px solid #D2D2D2;
+    border-top: 1px solid #E6E6E6;
   }
   .MeetingCenter>.fx>p{
     margin-top:10px;

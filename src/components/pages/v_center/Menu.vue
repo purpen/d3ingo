@@ -16,8 +16,8 @@
           <div class="view-msg">
             <a v-if="(isCompany && isCompanyAdmin) || eventUser.type === 1" @click="showMyView('order')" class="news">
               <i class="fx-4 fx-icon-OrderReminding"></i><i class="fx-4 fx-icon-OrderRemindingClick"></i>
-              <span v-if="msgCount.message"><b>{{msgCount.message}}</b>条[订单通知]未查看</span>
-              <span v-else>[订单通知]</span>
+              <span v-if="msgCount.message"><b>{{msgCount.message}}</b>条[消息提醒]未查看</span>
+              <span v-else>[消息提醒]</span>
             </a>
             <a v-if="isCompany" @click="showMyView('task')" class="news">
               <i class="fx-4 fx-icon-ProjectReminding"></i><i class="fx-4 fx-icon-ProjectRemindingclick"></i>
@@ -57,6 +57,7 @@
         </router-link>
       </div>
     </header>
+    <!-- 123123 -->
     <el-col v-if="leftWidth === 2" :span="isMob ? 24 : 2">
       <section :class="['menuHide', 'scroll-bar', {'MmenuHide': isMob, 'menuHide-mini': leftWidth === 2}]">
         <div v-if="isCompany">
@@ -66,6 +67,12 @@
                 :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
                 控制面板
               </a>
+            </el-tooltip>
+            <el-tooltip v-if="true" class="item" :effect="DarkorLight" content="项目管理" placement="right">
+            <a @click="alick" :to="'/vcenter/project_management/list'"
+              :class="['item', 'management', {'is-active': currentName === 'project_management'}]">
+              项目管理
+            </a>
             </el-tooltip>
             <el-tooltip class="item" :effect="DarkorLight" content="项目云盘" placement="right">
             <a @click="alick" :to="'/vcenter/cloud_drive/list/all'"
@@ -210,10 +217,14 @@
       <section :class="['menuHide', 'scroll-bar', {'MmenuHide': isMob, 'menuHide-mini': leftWidth === 2}]">
         <div v-if="isCompany">
           <div :class="['menu-list', 'clearfix', {'Mmenulist': isMob, }]" ref="Mmenulist" v-if="isChild">
-              <a @click="alick" :to="'/vcenter/child_control'"
-                :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
-                控制面板
-              </a>
+            <a @click="alick" :to="'/vcenter/child_control'"
+              :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
+              控制面板
+            </a>
+            <a @click="alick" :to="'/vcenter/project_management/list'"
+              :class="['item', 'management', {'is-active': currentName === 'project_management'}]">
+              项目管理
+            </a>
             <a @click="alick" :to="'/vcenter/cloud_drive/list/all'"
               :class="['item', 'cloud', {'is-active': currentName === 'cloud_drive'}]">
               项目云盘
@@ -226,10 +237,6 @@
             <a @click="alick" :to="'/vcenter/account/base'"
               :class="['item', 'account-management', {'is-active': currentName === 'profile'}]">
               账号设置
-            </a>
-            <a @click="alick" :to="'/vcenter/project_management/list'"
-              :class="['item', 'management', {'is-active': currentName === 'project_management'}]">
-              项目管理
             </a>
             <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" 
                v-if="isMob">
@@ -388,7 +395,7 @@
         }
       },
       showMine() {
-        this.$store.commit('changeMineView', '')
+        // this.$store.commit('changeMineView', '')
         this.$store.commit('removeParentTask')
         this.$store.commit('changeTaskStatePower', 0)
         this.$store.commit('changeTaskStateEvent', '')
@@ -474,7 +481,6 @@
       // 是否能查看后台
       isAdmin() {
         let roleId = this.$store.state.event.user.role_id
-        console.log(roleId)
         if (roleId >= 10) {
           return true
         } else {

@@ -22,7 +22,7 @@
         :to="{name: 'projectManagementIncomeandExpenses', params: {id: routeId}}">收支</router-link>
     </div>
     <div class="pm-right">
-      <router-link
+      <router-link v-if="showOffer"
       :to="{name: 'projectQuote', params: {id: routeId}}" :class="['quotation', {'active': isQuote}]">项目报价</router-link>
       <router-link class="contract border-right" :to="{name: 'projectContract', params: {id: routeId}}">合同</router-link>
       <a @click.self="controlMemberShow" class="member border-right">
@@ -48,21 +48,21 @@
           <div class="menu-header"><span>项目菜单</span>
             <span class="fx-0 fx-icon-nothing-close-error" @click="closeMenu"></span></div>
           <div class="menu-content">
-            <p @click="showCover"><span>项目设置</span></p>
+            <p class="hover-red" @click="showCover"><span>项目设置</span></p>
             <p v-if="false" class="menu-label"><span>标签</span></p>
             <hr>
             <p class="menu-moment"><span>项目动态</span></p>
             <ul class="item-moments" v-if="shortProjectMoments.length">
-              <li v-for="(ele, index) in shortProjectMoments" :key="index">
+              <li class="clearfix" v-for="(ele, index) in shortProjectMoments" :key="index">
                 <img class="br50 b-d2" :src="ele.logo_image.logo" alt="">
                 <div class="item-con">
                   <!-- <p class="tc-2"><span>{{ele.user_name}}</span><span class="tc-6">{{ele.action}}</span></p> -->
-                  <p class="tc-2"><span>{{ele.title}}</span></p>
+                  <p><span class="tc-2">{{ele.title}}</span></p>
                   <p class="fz-12 tc-9">{{ele.date}}</p>
                 </div>
               </li>
             </ul>
-            <p class="project-news" v-if="projectMoments.length > 5" @click="showDynamic">查看所有项目动态</p>
+            <p class="project-news hover-red" v-if="projectMoments.length > 5" @click="showDynamic">查看所有项目动态</p>
           </div>
         </div>
       </a>
@@ -458,8 +458,8 @@
             <img v-if="ele.logo_image" class="br50 b-d2" :src="ele.logo_image.logo" alt="">
             <div class="list-con clearfix">
               <!-- <p class="tc-2 fl"><span>{{ele.user_name}}</span>{{ele.action}}</p> -->
-              <p class="tc-2 fl"><span>{{ele.title}}</span></p>
-              <p class="fz-12 tc-6 fr">{{ele.date}}</p>
+              <p class="tc-2"><span>{{ele.title}}</span></p>
+              <p class="fz-12 tc-6 min-width150">{{ele.date}}</p>
             </div>
           </li>
         </ul>
@@ -610,6 +610,14 @@ export default {
     },
     projectMemberList() {
       return this.$store.state.task.projectMemberList
+    },
+    showOffer() {
+      let user = this.user
+      if (user.id === this.projectObject.leader || user.id === this.projectObject.business_manager || user.id === this.projectObject.user_id) {
+        return true
+      } else {
+        return false
+      }
     }
   },
   methods: {
@@ -885,11 +893,18 @@ export default {
       }
     },
     cover2(val) {
+      let oldClass = document.body.childNodes[1].getAttribute('class')
+      console.log(oldClass)
       if (val) {
         document.body.setAttribute('class', 'disableScroll')
+        document.body.childNodes[1].setAttribute('class', 'disableScroll ' + oldClass)
         document.childNodes[1].setAttribute('class', 'disableScroll')
       } else {
+        if (oldClass) {
+          oldClass = oldClass.replace('disableScroll ', '')
+        }
         document.body.removeAttribute('class', 'disableScroll')
+        document.body.childNodes[1].setAttribute('class', oldClass)
         document.childNodes[1].removeAttribute('class', 'disableScroll')
       }
     }
@@ -1080,18 +1095,33 @@ header {
 .cover2-list li {
   min-height: 60px;
   border-bottom: 1px solid #e6e6e6;
-  display: flex;
-  align-items: center;
+  position: relative;
+  padding-left: 40px;
+  /* display: flex;
+  align-items: center; */
 }
 .cover2-list li img{
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
   width: 30px;
   height: 30px;
   margin-right: 10px;
 }
 .cover2-list .list-con {
-  flex: 1 1 auto;
-  line-height: 60px;
   min-height: 60px;
+  padding-top: 15px;
+}
+.list-con p span {
+  display: block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.min-width150 {
+  padding-top: 10px;
+  min-width: 150px;
 }
 .show-dynamic {
   transition: 0.45s all cubic-bezier(0, 1, 0.5, 1);
@@ -1239,6 +1269,9 @@ header {
   width: 380px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1)
 }
+.menu-con .hover-red:hover {
+  color: #ff5a5f
+}
 .menu-header {
   height: 50px;
   background: #F7F7F7;
@@ -1256,6 +1289,7 @@ header {
   padding: 0 24px 20px;
 }
 .menu-content p {
+  color: #666;
   position: relative;
   height: 40px;
   line-height: 40px;
@@ -1296,14 +1330,16 @@ header {
   cursor: pointer;
 }
 .item-moments li {
-  padding: 5px 0;
+  padding: 15px 0;
   height: 70px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  position: relative;
+  padding-left: 36px;
 }
 
 .item-moments li img {
+  position: absolute;
+  left: 0;
+  top: 17px;
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -1320,7 +1356,10 @@ header {
   background: none;
 }
 .item-con p span {
-  margin-right: 10px;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .form-btn {
   position: absolute;

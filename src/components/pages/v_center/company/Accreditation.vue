@@ -20,6 +20,9 @@
               <img :src="require('assets/images/item/to-examine@2x.png')" alt="认证中">
               <h3>您的实名认证正在审核中</h3>
               <p>请耐心等待...</p>
+              <router-link :to="{name: 'vcenterComputerIdentification'}" class="item">
+                <el-button class="is-custom" type="primary">重新修改</el-button>
+              </router-link>
             </section>
             <section v-if="item.verify_status === 1">
               <div class="verify verify-success">
@@ -91,7 +94,7 @@
                   </p>
                 </div>
 
-                <!-- <div class="item">
+                <div class="item">
                   <p class="p-key">联系人</p>
                   <p class="p-val">{{ item.contact_name }}</p>
                 </div>
@@ -109,7 +112,11 @@
                 <div class="item">
                   <p class="p-key">邮箱</p>
                   <p class="p-val">{{ item.email }}</p>
-                </div> -->
+                </div>
+                <div class="item">
+                  <p class="p-key">地址</p>
+                  <p class="p-val">{{ item.province_value }} {{ item.city_value }} {{ item.area_value }} {{ item.address }}</p>
+                </div>
               </div>
             </section>
           </div>
@@ -124,6 +131,7 @@
   import vMenu from '@/components/pages/v_center/Menu'
   import vMenuSub from '@/components/pages/v_center/company/MenuSub'
   import api from '@/api/api'
+  import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
 
   export default {
     name: 'vcenter_company_accredition',
@@ -150,6 +158,12 @@
         return
       }
       const that = this
+      that.$http.get(api.surveyDesignCompanySurvey, {})
+      .then(function (response) {
+        if (response.data.meta.status_code === 200) {
+          that.$store.commit(CHANGE_USER_VERIFY_STATUS, response.data.data)
+        }
+      })
       that.$http.get(api.designCompany, {})
         .then(function (response) {
           that.isLoading = false

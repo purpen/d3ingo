@@ -42,9 +42,15 @@
                 </el-col>
               </el-row>
 
-              <region-picker :provinceProp="province" :cityProp="city" propStyle="margin:0;" :districtProp="district"
-                             :isFirstProp="isFirst" titleProp="详细地址"
-                             @onchange="change" class="fullwidth"></region-picker>
+              <region-picker
+                propStyle="margin:0;"
+                :provinceProp="province"
+                :cityProp="city"
+                :districtProp="district"
+                :isFirstProp="isFirst"
+                titleProp="详细地址"
+                @onchange="change"
+                class="fullwidth"></region-picker>
               <el-form-item label="" prop="address">
                 <el-input v-model="form.address" placeholder="街道地址"></el-input>
               </el-form-item>

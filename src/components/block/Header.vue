@@ -271,17 +271,24 @@
         this.closeMenu(e)
       },
       addScroll() {
+        let oldClass = document.body.childNodes[1].getAttribute('class')
         // this.$refs.mCover.style.width = '100%'
         this.$refs.mNav.style.marginLeft = 0
         this.$refs.mMenu.style.width = '100%'
         document.body.setAttribute('class', 'disableScroll')
+        document.body.childNodes[1].setAttribute('class', 'disableScroll ' + oldClass)
         document.childNodes[1].setAttribute('class', 'disableScroll')
       }, // 移动端显示 ↑ 隐藏 ↓ 侧边栏
       reScroll() {
+        let oldClass = document.body.childNodes[1].getAttribute('class')
+        if (oldClass) {
+          oldClass = oldClass.replace('disableScroll ', '')
+        }
         // this.$refs.mCover.style.width = 0
         this.$refs.mNav.style.marginLeft = '-54vw'
         this.$refs.mMenu.style.width = 0
         document.body.removeAttribute('class', 'disableScroll')
+        document.body.childNodes[1].setAttribute('class', oldClass)
         document.childNodes[1].removeAttribute('class', 'disableScroll')
       },
       showMyView(view) {
@@ -344,7 +351,7 @@
             this.alertTitle.title = '您申请企业实名认证失败'
             this.alertTitle.path = '/vcenter/d_company/accreditation'
             return true
-          } else if (user.demand_verify_status === 1) {
+          } else if (user.demand_verify_status === 1 || user.demand_verify_status === 3) {
             if (user.demand_info_status === 1) {
               console.log('需求公司基础信息：已完善')
               return false
@@ -369,7 +376,7 @@
               this.alertTitle.title = '您申请企业实名认证失败'
               this.alertTitle.path = '/vcenter/company/accreditation'
               return true
-            } else if (user.design_verify_status === 1) {
+            } else if (user.design_verify_status === 1 || user.design_verify_status === 3) {
               if (user.design_info_status === 1) {
                 // console.log('设计公司基础信息：已完善')
                 if (user.design_item_status === 1) {

@@ -2,7 +2,8 @@
   <section @click.self="currentStageStat.id = -1">
     <div class="vcenter-container task-content" v-loading="isLoading">
       <el-row :gutter="30">
-        <el-col :span="taskState.power ? 12 : 24" :class="['task-list']">
+        <el-col :span="taskState.power ? 12 : 24"
+          :class="['task-list']">
           <div class="operate" v-if="!isMyTask">
             <div class="add-btn">
               <button class="add-task middle-button full-red-button" @click="addTaskBtn()">添加任务</button>
@@ -17,67 +18,83 @@
               </ul>
             </div>
           </div>
-          <section>
-            <div v-for="(ele, index) in displayObj.outsideStageList" :key="index"
-              @click.self="showTaskBtn(ele, index)"
-              :class="['task-item','clearfix', {
-                'active': ele.stage === 2,
-                'click': ele.id === parentTask.id,
-                'level1': ele.level === 1,
-                'level2': ele.level === 5,
-                'level3': ele.level === 8}]">
-              <p @click.self="showTaskBtn(ele, index)" class="task-name">
-                <span @click="completeTaskBtn(ele, index)" class="task-name-span"></span>
-                <span v-if="ele.id !== taskState.id || !taskState.power">{{ele.name}}</span>
-                <input
-                  v-focus="isFocus"
-                  class="task-name-input" type="text"
-                  v-if="taskState.power && ele.id === taskState.id"
-                  @focus="taskNameFocus(ele, index)"
-                  @blur="taskNameBlur(ele.id)"
-                  v-model="currentTaskForm.name">
-              </p>
-              <img v-if="ele.logo_image" :src="ele.logo_image.logo" alt="">
-              <p class="task-date">{{ele.created_at_format}}</p>
-            </div>
-          </section>
-          
-          <section v-if="!isMyTask" class="stage-item" v-for="(ele, index) in displayObj['itemList']" :key="index">
-            <p :class="['stage-name', {'is-checked': currentStageStat.id === ele.id}]" @click.self="editStageBtn(ele.id, index)">{{ele.title}}:
-              <input v-show="currentStageStat.id === ele.id"
-              v-focus="true"
-              class="stage-title" type="text" v-model="currentStageForm.title"
-              @blur="submitStage()">
-              <span @click="confirmDeleteStageBtn(ele.id, index)" class="close-icon-solid"></span></p>
+          <section :style="{maxHeight: docHeight, overflowY: 'auto'}">
             <section>
-              <div
-                v-for="(e, i) in ele['task']" :key="i"
+              <div v-for="(ele, index) in displayObj.outsideStageList" :key="index"
+                @click="showTaskBtn(ele, index)"
                 :class="['task-item','clearfix', {
-                'active': e.stage === 2,
-                'click': e.id === parentTask.id,
-                'level1': e.level === 1,
-                'level2': e.level === 5,
-                'level3': e.level === 8}]"
-                @click.self="showTaskBtn(e, i)">
-                <p @click.self="showTaskBtn(e, i)" class="task-name">
-                  <span @click="completeTaskBtn(e, i)" class="task-name-span"></span>
-                  <span v-if="e.id !== taskState.id || !taskState.power">{{e.name}}</span>
+                  'active': ele.stage === 2,
+                  'click': ele.id === parentTask.id,
+                  'level1': ele.level === 1,
+                  'level2': ele.level === 5,
+                  'level3': ele.level === 8}]">
+                <p class="task-name">
+                  <span @click.stop.prevent="completeTaskBtn(ele, index)" class="task-name-span"></span>
+                  <span :class="{'tc-9': !ele.name}" v-if="(ele.id !== taskState.id) || !taskState.power">{{ele.name | filterName}}</span>
                   <input
+                    placeholder="请填写任务名称"
                     v-focus="isFocus"
+                    :maxlength= 100
                     class="task-name-input" type="text"
-                    v-if="taskState.power && e.id === taskState.id"
-                    @focus="taskNameFocus(e, i)"
-                    @blur="taskNameBlur(e.id)"
+                    v-if="taskState.power && (ele.id === taskState.id)"
+                    @focus="taskNameFocus(ele, index)"
+                    @blur="taskNameBlur(ele.id)"
                     v-model="currentTaskForm.name">
-                  </p>
-                <img v-if="e.logo_image" :src="e.logo_image.logo" alt="">
-                <p class="task-date fr">{{e.created_at_format}}</p>
+                </p>
+                <p v-if="ele.over_time" :class="['task-date', 'fr', {
+                    'task-date-red': ele.over_time_stamp < new Date().getTime()
+                    }]">{{ele.over_time | filterOverTime}}</p>
+                <div class="fr task-item-div">
+                  <img v-if="ele.logo_image" :src="ele.logo_image.logo" alt="">
+                  <img v-else v-lazy="require('assets/images/avatar_100.png')">
+                </div>
               </div>
             </section>
-          </section>
-          <section v-if="!displayObj['itemList'].length &&! displayObj['outsideStageList'].length">
-            <div class="empty"></div>
-            <p class="noMsg">暂时没有任务， 休息一下～</p>
+            
+            <section v-if="!isMyTask" class="stage-item" v-for="(ele, index) in displayObj['itemList']" :key="index">
+              <p :class="['stage-name', {'is-checked': currentStageStat.id === ele.id}]" @click.self="editStageBtn(ele.id, index)">{{ele.title}}:
+                <input v-show="currentStageStat.id === ele.id"
+                v-focus="isFocus2"
+                class="stage-title" type="text" v-model="currentStageForm.title"
+                @focus="saveStage(ele.title)"
+                @blur="submitStage()">
+                <span @click="confirmDeleteStageBtn(ele.id, index)" class="close-icon-solid"></span></p>
+              <section>
+                <div
+                  v-for="(e, i) in ele['task']" :key="i"
+                  :class="['task-item','clearfix', {
+                  'active': e.stage === 2,
+                  'click': e.id === parentTask.id,
+                  'level1': e.level === 1,
+                  'level2': e.level === 5,
+                  'level3': e.level === 8}]"
+                  @click="showTaskBtn(e, i)">
+                  <p class="task-name">
+                    <span @click.stop.prevent="completeTaskBtn(e, i)" class="task-name-span"></span>
+                    <span v-if="(e.id !== taskState.id) || !taskState.power">{{e.name | filterName}}</span>
+                      <!-- v-focus="isFocus" -->
+                    <input
+                      v-focus="isFocus"
+                      class="task-name-input" type="text"
+                      v-if="taskState.power && (e.id === taskState.id)"
+                      @focus="taskNameFocus(e, i)"
+                      @blur="taskNameBlur(e.id)"
+                      v-model="currentTaskForm.name">
+                    </p>
+                  <p :class="['task-date', 'fr', {
+                    'task-date-red': e.over_time_stamp < new Date().getTime()
+                    }]">{{e.over_time | filterOverTime}}</p>
+                  <div class="fr task-item-div">
+                    <img v-if="e.logo_image" :src="e.logo_image.logo" alt="">
+                    <img v-else v-lazy="require('assets/images/avatar_100.png')">
+                  </div>
+                </div>
+              </section>
+            </section>
+            <section v-if="!displayObj['itemList'].length &&! displayObj['outsideStageList'].length">
+              <div class="empty"></div>
+              <p class="noMsg">暂时没有任务， 休息一下～</p>
+            </section>
           </section>
         </el-col>
         <el-col :span="12" :class="{'fadeInRight': taskState.power}">
@@ -133,7 +150,10 @@
     },
     data () {
       return {
+        docHeight: '',
+        isReady: true,
         isFocus: false,
+        isFocus2: false,
         isCreateStage: false,
         sureDialog: false,
         sureDialogMessage: '确认执行此操作？',
@@ -170,10 +190,49 @@
           showComfirmDeleteStage: false
         },
         completeState: -1,
+        isUpdate: true,
+        oldStageTitle: '',
         taskStatus: 0 // 0: 全部， 2: 已完成， -1: 未完成
       }
     },
+    filters: {
+      filterOverTime(val) {
+        if (val) {
+          if (typeof (val) === 'string') {
+            let time = val.replace(/-/g, '/')
+            let date = new Date(time).format('MM月dd日')
+            return date
+          } else {
+            return val.format('MM月dd日')
+          }
+        } else {
+          return ''
+        }
+      },
+      filterName(val) {
+        if (val) {
+          return val
+        } else {
+          return '请填写任务名称'
+        }
+      }
+    },
+    mounted() {
+      window.addEventListener('resize', this.getDocumentHeight)
+    },
+    destroyed() {
+      window.removeEventListener('resize', this.getDocumentHeight)
+    },
     methods: {
+      getDocumentHeight() {
+        if (this.isReady === true) {
+          this.isReady = false
+          this.isReady = setTimeout(() => {
+            this.isReady = true
+            this.docHeight = (document.body.clientHeight - 234) + 'px'
+          }, 100)
+        }
+      },
       // 跳回项目列表页 evt: 0.不提示信息；1.错误提示；2.成功提示；message: 消息
       redirectItemList(evt, message) {
         if (evt && message) {
@@ -225,6 +284,7 @@
       // 编辑阶段按钮点击事件
       editStageBtn(id, index) {
         this.closeBtn()
+        this.isFocus2 = true
         this.currentStageForm = {...this.stageList[index]}
         this.currentStageStat = {
           event: 'update',
@@ -249,6 +309,7 @@
       },
       // 提交阶段
       submitStage() {
+        this.isFocus2 = false
         let event = this.currentStageStat.event
         if (event === 'create') {
           this.createStage()
@@ -278,35 +339,53 @@
           console.error(error.message)
         })
       },
+      saveStage(title) {
+        this.isFocus2 = true
+        this.oldStageTitle = title
+        this.closeBtn()
+      },
       // 更新阶段
       updateStage() {
-        const self = this
-        let id = self.currentStageStat.id
-        let oldId = id
-        if (!id) {
-          self.$message.error('ID不能为空!')
-          return false
-        }
-        if (id === -1) {
-          return false
-        }
-        if (self.currentStageForm.title === '') {
-          self.$message.error('阶段名不能为空!')
-          return false
-        }
-        self.$http.put(api.toolsStageId.format(id), self.currentStageForm).then(function (response) {
-          if (response.data.meta.status_code === 200) {
-            if (oldId === self.currentStageStat.id) {
-              self.currentStageStat.id = -1
-            }
-            self.$store.commit('updateStageListItem', response.data.data)
-          } else {
-            self.$message.error(response.data.meta.message)
+        if (this.isUpdate) {
+          this.isUpdate = false
+          const self = this
+          let id = self.currentStageStat.id
+          let oldId = id
+          if (!id) {
+            self.$message.error('ID不能为空!')
+            self.isUpdate = true
+            return false
           }
-        }).catch((error) => {
-          self.$message.error(error.message)
-          console.error(error.message)
-        })
+          if (id === -1) {
+            self.isUpdate = true
+            return false
+          }
+          if (self.currentStageForm.title === '') {
+            self.$message.error('阶段名不能为空!')
+            self.isUpdate = true
+            return false
+          } else {
+            if (this.oldStageTitle === self.currentStageForm.title) {
+              self.isUpdate = true
+              return
+            }
+          }
+          self.$http.put(api.toolsStageId.format(id), self.currentStageForm).then(function (response) {
+            self.isUpdate = true
+            if (response.data.meta.status_code === 200) {
+              if (oldId === self.currentStageStat.id) {
+                self.currentStageStat.id = -1
+              }
+              self.$store.commit('updateStageListItem', response.data.data)
+            } else {
+              self.$message.error(response.data.meta.message)
+            }
+          }).catch((error) => {
+            self.isUpdate = true
+            self.$message.error(error.message)
+            console.error(error.message)
+          })
+        }
       },
       // 删除阶段
       deleteStage() {
@@ -343,7 +422,7 @@
           stage: stage
         }}).then(function (response) {
           if (response.data.meta.status_code === 200) {
-            self.$store.commit('setTaskList', response.data.data)
+            self.$store.commit('setTaskList', {data: response.data.data, showChild: false})
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -359,7 +438,8 @@
         this.$http.get(api.myTask)
         .then(res => {
           if (res.data.meta.status_code === 200) {
-            this.$store.commit('setTaskList', res.data.data)
+            console.log(res.data.data)
+            this.$store.commit('setTaskList', {data: res.data.data, showChild: true})
           } else {
             this.$messgae.error(res.data.meta.message)
           }
@@ -367,17 +447,18 @@
       },
       // 添加任务
       addTaskBtn() {
+        this.currentTaskForm = {}
         this.$store.commit('changeTaskStatePower', 1)
         this.$store.commit('changeTaskStateEvent', 'create')
       },
       // 展开任务详情
-      showTaskBtn(ele, index) {
+      showTaskBtn(ele) {
         this.isFocus = true
+        this.currentTaskForm = {...ele}
         this.$store.commit('setParentTask', ele)
         this.completeState = ele.stage
         this.$store.commit('changeTaskStatePower', 1)
         this.$store.commit('changeTaskStateEvent', 'update')
-        this.$store.commit('changeTaskStateId', ele.id)
         this.$store.commit('changeTaskStateId', ele.id)
       },
       // 完成/取消任务
@@ -394,7 +475,11 @@
                 item.stage = stage
                 this.completeState = stage
                 this.$store.commit('updateTaskListItem', item)
-                this.fetchStage()
+                if (this.isMyTask) {
+                  this.fetchMyTask()
+                } else {
+                  this.fetchStage()
+                }
               })
             } else {
               this.$message.error(res.data.meta.message)
@@ -404,9 +489,10 @@
           })
       },
       taskNameFocus(ele, index) {
+        this.$set(this.currentStageStat, 'id', -1)
         this.isFocus = true
         this.oldTaskName = ele.name
-        Object.assign(this.currentTaskForm, ele)
+        this.currentTaskForm = Object.assign({}, this.currentTaskForm, ele)
         this.$store.commit('setParentTask', ele)
         this.completeState = ele.stage
         this.$store.commit('changeTaskStatePower', 1)
@@ -424,8 +510,12 @@
               name: this.currentTaskForm.name
             }).then(response => {
               if (response.data.meta.status_code === 200) {
-                this.fetchStage()
-                this.fetchTask()
+                if (this.isMyTask) {
+                  this.fetchMyTask()
+                } else {
+                  this.fetchStage()
+                  this.fetchTask()
+                }
               } else {
                 this.$message.error(response.data.meta.message)
               }
@@ -435,7 +525,7 @@
             })
           }
         } else {
-          this.$message.error('任务不能为空')
+          this.$message.error('任务名不能为空')
         }
       },
       closeCover() {
@@ -458,7 +548,7 @@
             this.$message.error(res1.data.meta.message)
           }
           if (res2.data.meta.status_code === 200) {
-            this.$store.commit('setTaskList', res2.data.data)
+            this.$store.commit('setTaskList', {data: res2.data.data, showChild: false})
           } else {
             this.$message.error(res2.data.meta.message)
           }
@@ -526,12 +616,14 @@
       stageList: {
         handler(val) {
           val.forEach(item => {
-            if (item.task.length) {
-              item.task.forEach(i => {
-                if (i.id === this.currentTaskForm.id) {
-                  Object.assign(this.currentTaskForm, i)
-                }
-              })
+            if (item.task) {
+              if (item.task.length) {
+                item.task.forEach(i => {
+                  if (i.id === this.currentTaskForm.id) {
+                    this.currentTaskForm = Object.assign({}, this.currentTaskForm, i)
+                  }
+                })
+              }
             }
           })
           // this.$store.commit('setStageList', val)
@@ -540,11 +632,13 @@
       },
       taskList: {
         handler(val) {
-          val.forEach(item => {
-            if (item.id === this.currentTaskForm.id) {
-              Object.assign(this.currentTaskForm, item)
-            }
-          })
+          if (val) {
+            val.forEach(item => {
+              if (item.id === this.currentTaskForm.id) {
+                this.currentTaskForm = Object.assign({}, this.currentTaskForm, item)
+              }
+            })
+          }
           // this.$store.commit('setStageList', val)
         },
         deep: true
@@ -554,6 +648,7 @@
       }
     },
     created() {
+      this.docHeight = (document.body.clientHeight - 234) + 'px'
       if (this.isMyTask) {
         this.fetchMyTask()
       } else {
@@ -707,9 +802,6 @@
   .is-checked {
     border: 1px solid #ff5a5f;
   }
-  .task-item:hover {
-    /* background: #fafafa */
-  }
   .task-item img {
     border: 1px solid #e6e6e6;
     width: 30px;
@@ -719,34 +811,41 @@
   }
   .stage-name {
     position: relative;
-    padding: 0 40px 0 20px;
-    margin-top: 20px;
+    border-radius: 0;
+    padding: 0 40px 0 0;
+    margin-top: 0;
     font-size: 18px;
     color: #222222;
-    line-height: 50px;
-    /* font-weight: bold; */
+    line-height: 40px;
+    height: 40px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    border-color: transparent;
+    border-bottom-color: #d2d2d2;
   }
+  /* .stage-item:last-child .stage-name {
+    margin-bottom: 0
+  } */
   .stage-title {
     position: absolute;
     left: 0;
     top: 0;
     line-height: 1;
-    height: 48px;
+    height: 38px;
     width: 100%;
-    min-width: 20px;
+    /* min-width: 20px; */
     border: none;
     font-size: 18px;
     color: #222222;
-    padding: 15px 40px 15px 20px;
+    padding: 10px 40px 10px 0;
   }
   .close-icon-solid {
     display: none;
     position: absolute;
     right: 20px;
-    top: 17px;
+    top: 50%;
+    transform: translateY(-50%);
     background: rgba(0,0,0,0.30)
   }
   .close-icon-solid:hover {
@@ -796,9 +895,8 @@
   .task-name-input {
     width: 100%;
     height: 48px;
-    line-height: 1;
-    padding: 17px 0;
     border: none;
+    padding: 0;
   }
   .task-name-span {
     position: absolute;
@@ -825,7 +923,20 @@
   }
 
   .task-date {
+    font-size: 12px;
+    color: #999;
+    flex: 0 0 auto;
     padding-right: 10px;
+  }
+  .task-date-green {
+    color: green
+  }
+  .task-date-red {
+    color: red
+  }
+  .task-item-div {
+    width: 40px;
+    height: 48px;
   }
   .dialog-bg {
     position: fixed;
@@ -893,4 +1004,3 @@
     line-height: 3;
   }
 </style>
-

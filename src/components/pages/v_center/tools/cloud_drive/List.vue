@@ -17,7 +17,8 @@
             <div class="clearfix" v-show="showList">
               <p class="title fl" v-if="!isChoose && folderId === 0" v-html="title"></p>
               <p class="title fl" v-if="!isChoose && folderId !== 0">
-                <i class="fx fx-icon-nothing-left" @click="backFolder"></i>
+                <i v-if="historyId.length"
+                  class="fx fx-icon-nothing-left" @click="backFolder"></i>
                 {{parentFolder.name}}
               </p>
               <div class="fr operate" v-if="!isChoose">

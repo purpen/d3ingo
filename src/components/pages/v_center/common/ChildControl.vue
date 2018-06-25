@@ -152,7 +152,7 @@
 
 <script>
   import vMenu from '@/components/pages/v_center/Menu'
-  import { MSG_COUNT } from '@/store/mutation-types'
+  import { MSG_COUNT, CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
   import api from '@/api/api'
 
   export default {
@@ -186,24 +186,25 @@
       editItem(event) {
         let progress = parseInt(event.currentTarget.getAttribute('progress'))
         let itemId = event.currentTarget.getAttribute('item_id')
-        let type = parseInt(event.currentTarget.getAttribute('item_type'))
+        // let type = parseInt(event.currentTarget.getAttribute('item_type'))
         let name = null
         switch (progress) {
           case 0:
             name = 'itemSubmitTwo'
             break
           case 1:
-            if (type === 1) {
-              name = 'itemSubmitThree'
-            } else if (type === 2) {
-              name = 'itemSubmitUIThree'
-            }
+            name = 'projectSelect'
+            // if (type === 1) {
+            //   name = 'itemSubmitThree'
+            // } else if (type === 2) {
+            //   name = 'itemSubmitUIThree'
+            // }
             break
           case 2:
-            name = 'itemSubmitFour'
+            name = 'projectType'
             break
           case 3:
-            name = 'itemSubmitFive'
+            name = 'projectInfo'
             break
         }
         this.$router.push({name: name, params: {id: itemId}})
@@ -254,16 +255,17 @@
       this.fetchMessageCount()
       const that = this
       let isCompany = that.isCompany()
-      let url = null
-      if (isCompany) {
-        url = api.surveyDesignCompanySurvey
-      } else {
-        url = api.surveyDemandCompanySurvey
-      }
+      let url = api.surveyDemandCompanySurvey
+      // if (isCompany) {
+      //   url = api.surveyDesignCompanySurvey
+      // } else {
+      //   url = api.surveyDemandCompanySurvey
+      // }
       that.$http.get(url, {})
         .then(function (response) {
           if (response.data.meta.status_code === 200) {
             let item = null
+            that.$store.commit(CHANGE_USER_VERIFY_STATUS, response.data.data)
             that.item = item = response.data.data
             let verifyStatus = 0
             if (isCompany) {

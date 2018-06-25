@@ -91,7 +91,6 @@
                   </el-radio-button>
                 </el-radio-group>
               </el-form-item>
-
               <div v-if="typeSwitch1">
                 <el-form-item label="设计类别" prop="design_type">
                   <el-radio-group v-model.number="form.design_type" size="small">
@@ -134,6 +133,21 @@
                 </el-form-item>
 
               </div>
+
+              <el-row>
+                <el-col :span="isMob ? 24 : 12">
+                  <el-form-item label="标签" prop="label"   class="label-tag"
+                  >
+                    <vue-input-tag
+                      placeholder="Enter添加新标签,上限10个"
+                      :tags.sync="form.label"
+                      :limit="10"
+                      :add-tag-on-blur="true"
+                      >
+                    </vue-input-tag>
+                  </el-form-item>
+                </el-col>
+              </el-row>
 
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
@@ -251,7 +265,7 @@
               </el-form-item>
 
               <div class="form-btn">
-                <button class="middle-button white-button" @click.prevent="returnList">取消</button>
+                <el-button  @click.prevent="returnList" class="middle-button white-button">取消</el-button>
                 <el-button type="danger" :loading="isLoadingBtn" @click="submit('ruleForm')">提交</el-button>
               </div>
               <div class="clear"></div>
@@ -270,12 +284,13 @@
   import '@/assets/js/format'
   import '@/assets/js/date_format'
   import typeData from '@/config'
-
+  import vueInputTag from 'vue-input-tag'
   export default {
     name: 'vcenter_design_case_submit',
     components: {
       vMenu,
-      vMenuSub
+      vMenuSub,
+      vueInputTag
     },
     data () {
       return {
@@ -290,6 +305,8 @@
         is_prize: false,
         typeSwitch1: false,
         typeSwitch2: false,
+        options5: [],
+        value10: [],
         uploadParam: {
           'token': '',
           'x:random': '',
@@ -314,7 +331,8 @@
           mass_production: 0,
           sales_volume: '',
           cover_id: '',
-          profile: ''
+          profile: '',
+          label: []
         },
         ruleForm: {
           type: [
@@ -350,11 +368,19 @@
           ],
           patent_time: [
             {required: true, type: 'date', message: '请选择申请时间', trigger: 'blur'}
+          ],
+          label: [
+            {required: true, type: 'array', message: '请填写标签', trigger: 'blur'},
+            {type: 'array', min: 1, max: 10, message: '请填写1~10个标签', trigger: 'blur'}
           ]
         }
       }
     },
     methods: {
+      // 选择分类事件
+      selectTypeChange(val) {
+        this.form.design_types = []
+      },
       submit(formName) {
         const that = this
         if (!that.coverId) {
@@ -373,7 +399,8 @@
               customer: that.form.customer,
               mass_production: that.form.mass_production,
               sales_volume: that.form.sales_volume === '' ? 0 : that.form.sales_volume,
-              profile: that.form.profile
+              profile: that.form.profile,
+              label: that.form.label
             }
             row.cover_id = that.coverId
             if (that.is_prize && that.form.prize_time) {
@@ -563,7 +590,6 @@
           }
         }
         this.fileList.push (item)
-      //        console.log(this.fileList)
       },
       beforeUpload(file) {
         const arr = ['image/jpeg', 'image/gif', 'image/png']
@@ -580,7 +606,11 @@
       }
     },
     computed: {
+      label() {
+        return this.form.label
+      },
       typeOptions() {
+        console.log('typeOptions', this.form.type)
         let items = []
         for (let i = 0; i < typeData.COMPANY_TYPE.length; i++) {
           let item = {
@@ -594,10 +624,13 @@
       typeDesignOptions() {
         let items = []
         let index
+        console.log('typeDesignOptions', this.form.type)
         if (this.form.type === 1) {
           index = 0
         } else if (this.form.type === 2) {
           index = 1
+        } else {
+          return []
         }
         for (let i = 0; i < typeData.COMPANY_TYPE[index].designType.length; i++) {
           let item = {
@@ -611,10 +644,13 @@
       fieldOptions() {
         let items = []
         let index
+        console.log('fieldOptions', this.form.type)
         if (this.form.type === 1) {
           index = 0
         } else if (this.form.type === 2) {
           index = 1
+        } else {
+          return []
         }
         for (let i = 0; i < typeData.COMPANY_TYPE[index].field.length; i++) {
           let item = {
@@ -628,10 +664,13 @@
       industryOptions() {
         let items = []
         let index
+        console.log('industryOptions', this.form.type)
         if (this.form.type === 1) {
           index = 0
         } else if (this.form.type === 2) {
           index = 1
+        } else {
+          return []
         }
         for (let i = 0; i < typeData.COMPANY_TYPE[index].industry.length; i++) {
           let item = {
@@ -643,6 +682,7 @@
         return items
       },
       prizeOptions() {
+        console.log('prizeOptions', this.form.type)
         let items = []
         for (let i = 0; i < typeData.DESIGN_CASE_PRICE_OPTIONS.length; i++) {
           let item = {
@@ -687,9 +727,23 @@
     },
     watch: {
       form: {
-        handler: function () {
+        handler: function (newValue, oldValue) {
         },
         deep: true
+      },
+      label(newValue, oldValue) {
+        if (newValue && newValue.length > 0) {
+          for (let n = 0; n < newValue.length; n++) {
+            if (newValue[n].length > 7) {
+              newValue.splice(n, 1)
+              this.$message ('每个标签最多7个字!')
+              return false
+            }
+            // if (newValue.length === 10) {
+            //   this.$message ('标签数已经达到上限,如需更改请删减')
+            // }
+          }
+        }
       }
     },
     created: function () {
@@ -845,6 +899,15 @@
   }
   .margin-b-10 {
     margin-bottom: 10px
+  }
+  .label-tag .vue-input-tag-wrapper {
+    border-radius: 4px;
+    border: 1px solid #e6e6e6;
+    padding: 3px 10px;
+    min-height: 36px;
+  }
+  .form-btn>.el-button + .el-button {
+    margin-right: 0px;
   }
   @media screen and (max-width: 767px) {
     .right-content .content-box {

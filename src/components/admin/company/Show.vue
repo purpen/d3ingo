@@ -387,7 +387,7 @@ export default {
           self.item.verify_status = evt
           self.$message.success('操作成功')
         } else {
-          self.$message.error(response.meta.message)
+          self.$message.error(response.data.meta.message)
         }
       })
       .catch (function(error) {
@@ -406,7 +406,7 @@ export default {
           self.item.is_test_data = evt
           self.$message.success('操作成功')
         } else {
-          self.$message.error(response.meta.message)
+          self.$message.error(response.data.meta.message)
         }
       })
       .catch (function(error) {
