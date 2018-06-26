@@ -82,7 +82,7 @@
                 </el-col>
               </el-row>
 
-              <el-form-item label="设计类型" prop="type">
+              <!-- <el-form-item label="设计类型" prop="type">
                 <el-radio-group v-model.number="form.type" @change="typeChange" size="small">
                   <el-radio-button
                     v-for="item in typeOptions"
@@ -118,8 +118,8 @@
                       :label="item.value">{{ item.label }}
                     </el-radio-button>
                   </el-radio-group>
-                </el-form-item>
-              </div>
+                </el-form-item> -->
+              <!-- </div>
 
               <div v-if="typeSwitch2">
                 <el-form-item label="设计类别" prop="design_type">
@@ -131,9 +131,66 @@
                     </el-radio-button>
                   </el-radio-group>
                 </el-form-item>
+              </div> -->
+              <el-row>
+                <el-col :span="isMob ? 24 : 12">
+                  <el-form-item label="设计类型" prop="type">
+                    <el-select v-model.number="form.type" placeholder="设计类型" 
+                    @change="typec"
+                    >
+                      <el-option
+                        v-for="item in typeOptions"
+                        :label="item.label"
+                        :key="item.index"
+                        :value="item.value">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="isMob ? 24 : 12">
+                  <el-form-item label="设计类别" prop="design_type">
+                    <el-select v-model="design_types" multiple placeholder="设计类别">
+                      <el-option
+                        v-for="item in typeDesignOptions"
+                        :label="item.name"
+                        :key="item.id"
+                        :value="item.id">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="isMob ? 24 : 12" v-if="form.type === 1">
+                  <el-form-item label="产品领域" prop="field">
+                    <el-select v-model.number="form.field" placeholder="产品领域">
+                      <el-option
+                        v-for="item in fieldOptions"
+                        :label="item.label"
+                        :key="item.index"
+                        :value="item.value">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
 
-              </div>
-
+              <el-row>
+                <el-col :span="isMob ? 24 : 12">
+                  <el-form-item label="所属行业" prop="industry">
+                    <el-select v-model.number="form.industry" placeholder="设计类别">
+                      <el-option
+                        v-for="item in industryOptions"
+                        :label="item.label"
+                        :key="item.index"
+                        :value="item.value">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
                   <el-form-item label="标签" prop="label"   class="label-tag"
@@ -339,12 +396,13 @@
         uploadMsg: '只能上传jpg/png文件，且不超过5M',
         imageUrl: '',
         coverId: '',
+        design_types: [],
         form: {
           type: '',
           field: '',
           industry: '',
           title: '',
-          design_type: '',
+          design_type: [],
           prize_time: '',
           prize: '',
           patent_time: '',
@@ -452,7 +510,6 @@
           if (valid) {
             let row = {
               type: that.form.type,
-              design_type: that.form.design_type,
               field: that.form.field,
               industry: that.form.industry,
               title: that.form.title,
@@ -463,12 +520,9 @@
               label: that.form.label
             }
             row.cover_id = that.coverId
-            // if (that.is_prize && that.form.prize_time) {
-            //   that.form.prize_time = that.form.prize_time.format ('yyyy-MM-dd')
-            //   row.prizes = JSON.stringify([{time: that.form.prize_time, type: that.form.prize}])
-            // } else {
-            //   row.prizes = null
-            // }
+            if (that.design_types && that.design_types.length !== 0) {
+              row.design_type = that.design_types
+            } else row.design_type = null
             if (this.prizes && this.prizes.length !== 0) {
               for (var i = 0; i < this.prizes.length; i++) {
                 if (this.prizes[i].time === '' || this.prizes[i].type === '') {
@@ -686,6 +740,9 @@
           this.$message.error ('上传文件大小不能超过 5MB!')
           return false
         }
+      },
+      typec(val) {
+        this.design_types = []
       }
     },
     computed: {
@@ -693,7 +750,6 @@
         return this.form.label
       },
       typeOptions() {
-        console.log('typeOptions', this.form.type)
         let items = []
         for (let i = 0; i < typeData.COMPANY_TYPE.length; i++) {
           let item = {
@@ -705,29 +761,16 @@
         return items
       },
       typeDesignOptions() {
-        let items = []
         let index
-        console.log('typeDesignOptions', this.form.type)
-        if (this.form.type === 1) {
-          index = 0
-        } else if (this.form.type === 2) {
-          index = 1
-        } else {
+        if (!this.form.type || isNaN(this.form.type)) {
           return []
         }
-        for (let i = 0; i < typeData.COMPANY_TYPE[index].designType.length; i++) {
-          let item = {
-            value: typeData.COMPANY_TYPE[index].designType[i]['id'],
-            label: typeData.COMPANY_TYPE[index].designType[i]['name']
-          }
-          items.push (item)
-        }
-        return items
+        index = this.form.type - 1
+        return typeData.COMPANY_TYPE[index].designType
       },
       fieldOptions() {
         let items = []
         let index
-        console.log('fieldOptions', this.form.type)
         if (this.form.type === 1) {
           index = 0
         } else if (this.form.type === 2) {
@@ -746,26 +789,16 @@
       },
       industryOptions() {
         let items = []
-        let index
-        console.log('industryOptions', this.form.type)
-        if (this.form.type === 1) {
-          index = 0
-        } else if (this.form.type === 2) {
-          index = 1
-        } else {
-          return []
-        }
-        for (let i = 0; i < typeData.COMPANY_TYPE[index].industry.length; i++) {
+        for (let i = 0; i < typeData.INDUSTRY.length; i++) {
           let item = {
-            value: typeData.COMPANY_TYPE[index].industry[i]['id'],
-            label: typeData.COMPANY_TYPE[index].industry[i]['name']
+            value: typeData.INDUSTRY[i]['id'],
+            label: typeData.INDUSTRY[i]['name']
           }
           items.push (item)
         }
         return items
       },
       prizeOptions() {
-        console.log('prizeOptions', this.form.type)
         let items = []
         for (let i = 0; i < typeData.DESIGN_CASE_PRICE_OPTIONS.length; i++) {
           let item = {

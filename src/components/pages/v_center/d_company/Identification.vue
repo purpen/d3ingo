@@ -115,7 +115,7 @@
                 </el-form-item>
               </el-col>
             </el-row>
-
+            
             <el-row :gutter="24">
               <el-col :span="isMob ? 24 : 12">
                 <el-form-item label="联系人" prop="contact_name">
