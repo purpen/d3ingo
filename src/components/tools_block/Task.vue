@@ -28,7 +28,7 @@
       </div>
       <section :style="{maxHeight: docHeight, overflowY: 'auto', padding: '0 30px'}">
       <!-- <section :style="{padding: '0 30px'}"> -->
-        <p :class="['add-task-input', {'add-task-input-no_name': !currentForm.name, 'active': currentForm.stage === 2}]">
+        <p :class="['parent-task-input', 'add-task-input', {'add-task-input-no_name': !currentForm.name, 'active': currentForm.stage === 2}]">
           <span v-show="currentForm.name" :class="['add-task-select']" @click="completeTask"></span>
           <el-input :autosize="{ minRows: 1}" type="textarea" @focus="saveOldVal(currentForm.name)" @blur="blurInput({name: currentForm.name})" :maxlength= 100 v-model="currentForm.name" placeholder="请填写任务名称"></el-input>
         </p>
@@ -197,14 +197,14 @@
             <ul v-if="showAllMoments">
               <li class="clearfix"
                 v-for="(ele, index) in moments" :key="index">
-                <p :class="['fl',
+                <p :class="['p-contnet',
                   {'complete-parent': ele.type === 7,
                   'complete-child': ele.type === 9,
                   'protrude': ele.type === 7 || ele.type === 9,
                   'tc-red': ele.type === 7,
                   'tc-2': ele.type === 9}]">
                   <span>{{ele.name}}</span> {{ele.info}}</p>
-                <p class="date fr">{{ele.date}}</p>
+                <p class="p-date">{{ele.date}}</p>
               </li>
             </ul>
             <ul v-else>
@@ -1139,6 +1139,11 @@
   .add-task-input.active {
     text-decoration: line-through
   }
+  .parent-task-input.add-task-input .add-task-select {
+    position: absolute;
+    left: 0;
+    top: 28px;
+  }
   .add-task-input .add-task-select {
     flex: 0 0 auto;
     width: 24px;
@@ -1460,8 +1465,17 @@
     padding-top: 20px;
     color: #666;
   }
-  .task-moments ul li p.fl {
+  .task-moments ul li {
+    display: flex;
+  }
+  .p-contnet {
+    flex: 1 1 auto;
     position: relative;
+  }
+  .p-date {
+    padding-left: 20px;
+    min-width: 150px;
+    flex: 0 1 auto
   }
   .complete-parent::before,
   .complete-child::before {
