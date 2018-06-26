@@ -229,7 +229,7 @@
           this.isReady = false
           this.isReady = setTimeout(() => {
             this.isReady = true
-            this.docHeight = (document.body.clientHeight - 234) + 'px'
+            this.docHeight = (document.body.clientHeight - 268) + 'px'
           }, 100)
         }
       },
@@ -650,7 +650,7 @@
       }
     },
     created() {
-      this.docHeight = (document.body.clientHeight - 234) + 'px'
+      this.docHeight = (document.body.clientHeight - 268) + 'px'
       if (this.isMyTask) {
         this.fetchMyTask()
       } else {

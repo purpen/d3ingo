@@ -115,18 +115,18 @@
               <li v-for="(ele, index) in currentForm.childTask" :key="index">
                 <div :class="['add-task-input', 'add-child-input', {'active': ele.stage === 2}]">
                   <span @click="completeTask2(ele.id, ele.stage)" class="add-task-select add-child-select"></span>
-
-                  <el-tooltip class="item" effect="dark" content="查看子任务详情" placement="top">
-                    <span @click="showChild(ele.id)" class="child-more"></span>
-                  </el-tooltip>
-                  <el-input :autosize="{ minRows: 1}" type="textarea" v-model="ele.name" placeholder="请填写任务名称" @focus="saveOldVal(ele.name)" @blur="updateChild(ele.id, {name: ele.name})"></el-input>
+                  <el-input class="child-name" :autosize="{ minRows: 1}" type="textarea" v-model="ele.name" placeholder="请填写任务名称" @focus="saveOldVal(ele.name)" @blur="updateChild(ele.id, {name: ele.name})"></el-input>
                   <el-date-picker
+                    class="child-date"
                     v-model="ele.over_time"
                     type="datetime"
                     placeholder="选择截止时间"
                     @change="changeTime2(ele.over_time, ele.id)"
                     format="yyyy-MM-dd HH:mm">
                   </el-date-picker>
+                  <el-tooltip class="item" effect="dark" content="查看子任务详情" placement="top">
+                    <span @click="showChild(ele.id)" class="child-more"></span>
+                  </el-tooltip>
                   <!-- <v-Member
                     :propsShow="showMember3"
                     :itemId="propsTags.itemId"
@@ -808,7 +808,7 @@
         if (this.isReady === true) {
           this.isReady = false
           this.isReady = setTimeout(() => {
-            this.docHeight = (document.body.clientHeight - 234) + 'px'
+            this.docHeight = (document.body.clientHeight - 280) + 'px'
             this.isReady = true
           }, 100)
         }
@@ -941,7 +941,7 @@
       }
     },
     created() {
-      this.docHeight = (document.body.clientHeight - 234) + 'px'
+      this.docHeight = (document.body.clientHeight - 280) + 'px'
     },
     directives: {
       focus: {
@@ -969,7 +969,7 @@
   .task-detail {
     animation-delay: 0.5s;
     border: 1px solid #E6E6E6;
-    /* border-radius: 4px; */
+    border-radius: 4px;
   }
   .task-detail-header {
     display: flex;
@@ -1117,12 +1117,13 @@
     padding: 20px 0 10px;
   }
   .add-child-input {
-    padding: 20px 20px 20px 40px;
-    border-bottom: none
+    padding: 20px 0;
+    border-bottom: none;
+    display: flex;
   }
   .add-child-input .child-more {
     position: absolute;
-    right: 0;
+    right: -20px;
     top: 31px;
     width: 14px;
     height: 14px;
@@ -1139,9 +1140,7 @@
     text-decoration: line-through
   }
   .add-task-input .add-task-select {
-    position: absolute;
-    left: 0;
-    top: 29px;
+    flex: 0 0 auto;
     width: 24px;
     height: 24px;
     border: 1px solid #E6E6E6;
@@ -1162,9 +1161,10 @@
   }
 
   .add-task-input .add-child-select {
+    position: relative;
     width: 24px;
     height: 24px;
-    top: 26px;
+    margin-top: 8px;
   }
   .add-task-input .add-child-template {
     border: none;
@@ -1233,7 +1233,7 @@
     width: 195px;
   }
   .add-child-ul .el-date-editor.el-input {
-    width: 100%;
+    width: auto;
   }
   .task-info li p.p-time {
     background: url(../../assets/images/tools/project_management/Time.png) no-repeat left;
@@ -1507,5 +1507,8 @@
     position: relative;
     height: 32px;
     width: 100px;
+  }
+  .child-name {
+    margin: 0 10px;
   }
 </style>
