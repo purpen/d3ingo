@@ -538,7 +538,7 @@
       return {
         oldVal: {},
         gutter: 0,
-        titleSpan: this.$store.state.event.isMob === true ? 12 : 3,
+        titleSpan: this.$store.state.event.isMob === true ? 16 : 3,
         contentSpan: this.$store.state.event.isMob === true ? 24 : 12,
         editSpan: 2,
         isLoaded: false,
