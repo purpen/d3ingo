@@ -1155,7 +1155,7 @@
   .item .content a {
     color: #ff5a5f
   }
-  
+
   .item-m .content {
     color: #666;
     border: 1px solid #E6E6E6;
@@ -1309,10 +1309,14 @@
     .item-m .content {
       border: none;
       padding: 0;
+      min-height: 0;
     }
     .edit a {
       font-size: 1.3rem;
       color: #ff5a5f;
+    }
+    .vcenter{
+      margin-top: 0;
     }
   }
 </style>

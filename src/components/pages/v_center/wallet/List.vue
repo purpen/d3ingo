@@ -653,5 +653,8 @@
       border-bottom: 1px solid #d2d2d2;
       z-index: -1;
     }
+    .vcenter{
+      margin-top: 0;
+    }
   }
 </style>

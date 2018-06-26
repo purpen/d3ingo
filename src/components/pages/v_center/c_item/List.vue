@@ -142,7 +142,7 @@
       </el-dialog>
     </div>
     <div class="blank30 vcenter clearfix">
-      <v-menu currentName="c_item" class="c_item"></v-menu>
+      <!--<v-menu currentName="c_item" class="c_item"></v-menu>-->
       <div :class="{'vcenter-right-plus': leftWidth === 4,
         'vcenter-right': leftWidth === 2,
           'vcenter-right-mob': isMob}">
