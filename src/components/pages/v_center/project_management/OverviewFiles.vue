@@ -264,7 +264,7 @@ export default {
   }
 }
 </script>
-<style scope>
+<style scoped>
   .OverView-files {
     margin: 30px 100px 150px 100px;
   }
