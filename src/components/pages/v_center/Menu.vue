@@ -569,6 +569,7 @@
     background: #222;
     transition: 0.2s all ease;
     position: fixed;
+    z-index: 1;
     left: 0;
     top: 60px;
     width: inherit;

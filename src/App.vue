@@ -1,7 +1,7 @@
 <template>
   <div id="app" :class="[hideHeader ? 'app2' : 'app']">
     <v-header></v-header>
-    <div class="main">
+    <div :class="['main',{'padding-t-34': showAlert}]">
       <el-alert
         v-if="showAlert"
         class="alert-message"
@@ -125,7 +125,13 @@ export default {
 </script>
 
 <style scoped>
+  .padding-t-34 {
+    padding-top: 34px;
+  }
   .alert-message {
+    position: absolute;
+    left: 0;
+    top: 0;
     height: 34px;
     padding: 17px;
     display: flex;

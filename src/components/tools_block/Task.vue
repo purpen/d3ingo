@@ -139,11 +139,11 @@
               <li class="template" v-if="isAddChild">
                 <div :class="['add-task-input', 'add-child-input', 'child-input']">
                   <span :class="['add-task-select', 'add-child-select', 'add-child-template']"></span>
-                  <el-input :autosize="{ minRows: 1}" type="textarea" v-model="addChildForm.name" placeholder="请填写任务名称"></el-input>
+                  <el-input class="child-name" :autosize="{ minRows: 1}" type="textarea" v-model="addChildForm.name" placeholder="请填写任务名称"></el-input>
                   <el-date-picker
                     v-model="addChildForm.over_time"
                     type="datetime"
-                    placeholder="选择截止时间"
+                    placeholder="截止时间"
                     @change="changeChildTime(addChildForm.over_time)"
                     format="yyyy-MM-dd HH:mm">
                   </el-date-picker>
@@ -197,9 +197,20 @@
             <ul v-if="showAllMoments">
               <li class="clearfix"
                 v-for="(ele, index) in moments" :key="index">
-                <p :class="['p-contnet',
-                  {'complete-parent': ele.type === 7,
+                <p :class="['p-content',
+                  { 'create-parent': ele.type === 1,
+                  'create-child': ele.type === 2,
+                  'change-name': ele.type === 3,
+                  'change-summary': ele.type === 4,
+                  'change-level': ele.type === 5,
+                  'parent-redo': ele.type === 6,
+                  'complete-parent': ele.type === 7,
+                  'child-redo': ele.type === 8,
                   'complete-child': ele.type === 9,
+                  'change-endTime': ele.type === 10,
+                  'claim-task': ele.type === 19,
+                  'assign-child': ele.type === 20,
+                  'rm-executer': ele.type === 21,
                   'protrude': ele.type === 7 || ele.type === 9,
                   'tc-red': ele.type === 7,
                   'tc-2': ele.type === 9}]">
@@ -210,14 +221,25 @@
             <ul v-else>
               <li class="clearfix"
                 v-for="(ele, index) in limitMoments" :key="index">
-                <p :class="['fl',
-                  {'complete-parent': ele.type === 7,
+                <p :class="['p-content',
+                  { 'create-parent': ele.type === 1,
+                  'create-child': ele.type === 2,
+                  'change-name': ele.type === 3,
+                  'change-summary': ele.type === 4,
+                  'change-level': ele.type === 5,
+                  'parent-redo': ele.type === 6,
+                  'complete-parent': ele.type === 7,
+                  'child-redo': ele.type === 8,
                   'complete-child': ele.type === 9,
+                  'change-endTime': ele.type === 10,
+                  'claim-task': ele.type === 19,
+                  'assign-child': ele.type === 20,
+                  'rm-executer': ele.type === 21,
                   'protrude': ele.type === 7 || ele.type === 9,
                   'tc-red': ele.type === 7,
                   'tc-2': ele.type === 9}]">
                   <span>{{ele.name}}</span> {{ele.info}}</p>
-                <p class="date fr">{{ele.date}}</p>
+                <p class="p-date fr">{{ele.date}}</p>
               </li>
             </ul>
           </div>
@@ -1239,6 +1261,7 @@
   }
   .add-child-ul .el-date-editor.el-input {
     width: auto;
+    min-width: 128px;
   }
   .task-info li p.p-time {
     background: url(../../assets/images/tools/project_management/Time.png) no-repeat left;
@@ -1468,7 +1491,8 @@
   .task-moments ul li {
     display: flex;
   }
-  .p-contnet {
+  .p-content {
+    position: relative;
     flex: 1 1 auto;
     position: relative;
   }
@@ -1477,14 +1501,52 @@
     min-width: 150px;
     flex: 0 1 auto
   }
-  .complete-parent::before,
-  .complete-child::before {
+  .p-content:before {
     content: "";
     position: absolute;
     left: -21px;
     top: 0;
     width: 16px;
     height: 16px;
+    border-radius: 50%;
+  }
+  .create-parent:before {
+    border-radius: 0;
+    background: url(../../assets/images/tools/project_management/CreatMasterTask.png) no-repeat center / cover
+  }
+  .create-child:before {
+    background: url(../../assets/images/tools/project_management/CreatSubtasks.png) no-repeat center / cover
+  }
+  .change-name:before {
+    background: url(../../assets/images/tools/project_management/Modify.png) no-repeat center / cover
+  }
+  .change-summary:before {
+    background: url(../../assets/images/tools/project_management/ReviseNotes.png) no-repeat center / cover
+  }
+  .change-level:before {
+    background: url(../../assets/images/tools/project_management/ModifyPriority.png) no-repeat center / cover
+  }
+  .parent-redo:before {
+    border-radius: 0;
+    background: url(../../assets/images/tools/project_management/RedoMasterTask.png) no-repeat center / cover
+  }
+  .child-redo:before {
+    background: url(../../assets/images/tools/project_management/RedoSubtasks.png) no-repeat center / cover
+  }
+  .change-endTime:before {
+    background: url(../../assets/images/tools/project_management/ModificationTime.png) no-repeat center / cover
+  }
+  .claim-task:before {
+    background: url(../../assets/images/tools/project_management/Claim@2x.png) no-repeat center / cover
+  }
+  .assign-child:before {
+    background: url(../../assets/images/tools/project_management/Assign@2x.png) no-repeat center / cover
+  }
+  .rm-executer:before {
+    background: url(../../assets/images/tools/project_management/Remove@2x.png) no-repeat center / cover
+  }
+  .complete-parent::before,
+  .complete-child::before {
     border-radius: 4px;
     border: 1px solid #FF5A5F;
     background: #FF5A5F;

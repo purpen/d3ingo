@@ -518,6 +518,11 @@ export default {
 }
 </script>
 <style scoped>
+  .cloud-content {
+    height: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+  }
   section .item {
     height: 70px;
     line-height: 70px;

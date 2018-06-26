@@ -19,7 +19,7 @@
             </div>
           </div>
           <section class="task-list-content" :style="{maxHeight: docHeight}">
-            <section class="no-stage-item">
+            <section :class="['no-stage-item', {'mytask-item': isMyTask}]">
               <div v-for="(ele, index) in displayObj.outsideStageList" :key="index"
                 @click="showTaskBtn(ele, index)"
                 :class="['task-item','clearfix', {
@@ -814,6 +814,12 @@
   .stage-item .task-item:first-child {
     border-top: none;
     /* border-radius: 0 0 4px 4px; */
+  }
+  .mytask-item .task-item:first-child {
+    border-top: 1px solid #e6e6e6;
+  }
+  .mytask-item .task-item {
+    border-right: 1px solid #e6e6e6;
   }
   .is-checked {
     border: 1px solid #ff5a5f;
