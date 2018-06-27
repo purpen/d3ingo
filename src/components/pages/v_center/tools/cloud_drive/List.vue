@@ -1,23 +1,25 @@
 <template>
   <el-row :class="['vcenter-rightMenu-plus',
-    'cloud-content',
+    'cloud-content', 'full-height',
     {'slide-mini': leftWidth === 2 && withoutSide,
     'slide-mini-none': isMob}]">
     <v-menu-left v-if="withoutSide" :currentName="withoutSide? 'cloud_drive' : 'project_management'"></v-menu-left>
-    <section :class="{'parent-box': withoutSide,
+    <section :class="['full-height', {'parent-box': withoutSide,
       'parent-box2': !withoutSide,
-      'parent-box-mob': isMob}">
-      <el-col v-if="withoutSide" :span="4">
+      'parent-box-mob': isMob}]">
+      <el-col v-if="withoutSide" :span="4" class="full-height">
         <v-menu :isActive='modules' @getTitle="headTitle"></v-menu>
       </el-col>
-      <el-col :span="withoutSide?20 :24">
-        <div :class="['content', {'content-mini' : leftWidth === 2}, {'content-pm' : !withoutSide}]"
-          v-loading.body="isLoading">
+      <el-col :span="withoutSide?20 :24" class="full-height">
+        <div :class="['content', 'full-height',
+          {'content-mini' : leftWidth === 2}, {'content-pm' : !withoutSide}]"
+          v-loading="isLoading">
           <div class="content-head">
             <div class="clearfix" v-show="showList">
               <p class="title fl" v-if="!isChoose && folderId === 0" v-html="title"></p>
               <p class="title fl" v-if="!isChoose && folderId !== 0">
-                <i class="fx fx-icon-nothing-left" @click="backFolder"></i>
+                <i v-if="historyId.length"
+                  class="fx fx-icon-nothing-left" @click="backFolder"></i>
                 {{parentFolder.name}}
               </p>
               <div class="fr operate" v-if="!isChoose">
@@ -355,7 +357,7 @@
               title="创建文件夹" v-else></p>
           </div>
           <ul class="folder-body"
-            v-loading.body="copyORmoveLoading && index === folderObj['length'] - 1">
+            v-loading="copyORmoveLoading && index === folderObj['length'] - 1">
             <li v-if="showFolderInput && ele.folderId === copyORmoveFolderId">
               <input
                 v-focus="ele.folderId === copyORmoveFolderId"
@@ -393,7 +395,7 @@
               title="创建文件夹" v-else></p>
           </div>
           <ul class="folder-body"
-            v-loading.body="copyORmoveLoading && index === folderObj['length'] - 1">
+            v-loading="copyORmoveLoading && index === folderObj['length'] - 1">
             <li v-if="showFolderInput && ele.folderId === copyORmoveFolderId">
               <input
                 v-focus="ele.folderId === copyORmoveFolderId"
@@ -1759,6 +1761,7 @@ export default {
     padding-left: 0;
   }
   .content {
+    position: relative;
     /* transition: 0.2s all ease; */
   }
   .content-mini {
@@ -1768,12 +1771,16 @@ export default {
     position: static
   }
   .content-head {
+    position: absolute;
+    width: calc(100% - 60px);
+    left: 30px;
+    top: 12px;
     color: #999;
     font-size: 0;
     border-bottom: 1px solid #D2D2D2;
     height: 30px;
     line-height: 20px;
-    position: relative;
+    /* position: relative; */
     z-index: 10;
   }
   .content-head .title {
@@ -2563,9 +2570,20 @@ export default {
   .parent-box-mob {
     padding-left: 0;
   }
+  @media screen and (max-width: 767px) {
+    .content {
+      padding-top: 41px;
+    }
+    .content-head {
+      width: 100%;
+      left: 0;
+      top: 11px;
+    }
+  }
   @media screen and (min-width: 768px) {
     .content {
-      padding: 20px 30px 0;
+      /* padding: 20px 30px 0; */
+      padding: 42px 30px 0;
       position: relative
     }
   }

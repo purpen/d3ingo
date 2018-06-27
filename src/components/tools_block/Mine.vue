@@ -50,7 +50,8 @@
       },
       myView: {
         get() {
-          return this.$store.state.task.mineView
+          let myView = this.$store.state.task.mineView
+          return myView
         },
         set(e) {
           this.$store.commit('changeMineView', e)
@@ -58,17 +59,6 @@
       },
       token() {
         return this.$store.state.event.token
-      }
-    },
-    watch: {
-      myView(val) {
-        if (val) {
-          document.body.setAttribute('class', 'disableScroll')
-          document.childNodes[1].setAttribute('class', 'disableScroll')
-        } else {
-          document.body.removeAttribute('class', 'disableScroll')
-          document.childNodes[1].removeAttribute('class', 'disableScroll')
-        }
       }
     },
     components: {

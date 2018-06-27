@@ -13,7 +13,7 @@
               <span>作品案例</span>
             </div> -->
 
-            <div class="design-case-list" v-loading.body="isLoading">
+            <div class="design-case-list" v-loading="isLoading">
               <el-row :gutter="20">
                 <el-col :xs="24" :sm="8" :md="8" :lg="8">
                   <router-link :to="{name: 'vcenterDesignCaseAdd'}" class="item item-add el-card">

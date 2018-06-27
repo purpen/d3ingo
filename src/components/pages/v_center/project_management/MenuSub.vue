@@ -22,7 +22,7 @@
         :to="{name: 'projectManagementIncomeandExpenses', params: {id: routeId}}">收支</router-link>
     </div>
     <div class="pm-right">
-      <router-link
+      <router-link v-if="showOffer"
       :to="{name: 'projectQuote', params: {id: routeId}}" :class="['quotation', {'active': isQuote}]">项目报价</router-link>
       <router-link class="contract border-right" :to="{name: 'projectContract', params: {id: routeId}}">合同</router-link>
       <a @click.self="controlMemberShow" class="member border-right">
@@ -48,7 +48,7 @@
           <div class="menu-header"><span>项目菜单</span>
             <span class="fx-0 fx-icon-nothing-close-error" @click="closeMenu"></span></div>
           <div class="menu-content">
-            <p @click="showCover"><span>项目设置</span></p>
+            <p class="hover-red" @click="showCover"><span>项目设置</span></p>
             <p v-if="false" class="menu-label"><span>标签</span></p>
             <hr>
             <p class="menu-moment"><span>项目动态</span></p>
@@ -57,12 +57,12 @@
                 <img class="br50 b-d2" :src="ele.logo_image.logo" alt="">
                 <div class="item-con">
                   <!-- <p class="tc-2"><span>{{ele.user_name}}</span><span class="tc-6">{{ele.action}}</span></p> -->
-                  <p class="tc-2"><span>{{ele.title}}</span></p>
+                  <p><span class="tc-2">{{ele.title}}</span></p>
                   <p class="fz-12 tc-9">{{ele.date}}</p>
                 </div>
               </li>
             </ul>
-            <p class="project-news" v-if="projectMoments.length > 5" @click="showDynamic">查看所有项目动态</p>
+            <p class="project-news hover-red" v-if="projectMoments.length > 5" @click="showDynamic">查看所有项目动态</p>
           </div>
         </div>
       </a>
@@ -610,6 +610,14 @@ export default {
     },
     projectMemberList() {
       return this.$store.state.task.projectMemberList
+    },
+    showOffer() {
+      let user = this.user
+      if (user.id === this.projectObject.leader || user.id === this.projectObject.business_manager || user.id === this.projectObject.user_id) {
+        return true
+      } else {
+        return false
+      }
     }
   },
   methods: {
@@ -885,11 +893,18 @@ export default {
       }
     },
     cover2(val) {
+      let oldClass = document.body.childNodes[1].getAttribute('class')
+      console.log(oldClass)
       if (val) {
         document.body.setAttribute('class', 'disableScroll')
+        document.body.childNodes[1].setAttribute('class', 'disableScroll ' + oldClass)
         document.childNodes[1].setAttribute('class', 'disableScroll')
       } else {
+        if (oldClass) {
+          oldClass = oldClass.replace('disableScroll ', '')
+        }
         document.body.removeAttribute('class', 'disableScroll')
+        document.body.childNodes[1].setAttribute('class', oldClass)
         document.childNodes[1].removeAttribute('class', 'disableScroll')
       }
     }
@@ -1183,7 +1198,7 @@ header {
   color: #666;
   height: 50px;
   border-bottom: 1px solid #d2d2d2;
-  border-left: 3px solid transparent
+  border-left: 6px solid transparent
 }
 .cover-body-left span:hover {
   color: #ff5a5f;
@@ -1254,6 +1269,9 @@ header {
   width: 380px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1)
 }
+.menu-con .hover-red:hover {
+  color: #ff5a5f
+}
 .menu-header {
   height: 50px;
   background: #F7F7F7;
@@ -1271,6 +1289,7 @@ header {
   padding: 0 24px 20px;
 }
 .menu-content p {
+  color: #666;
   position: relative;
   height: 40px;
   line-height: 40px;

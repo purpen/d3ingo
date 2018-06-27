@@ -14,7 +14,7 @@
       <el-col v-if="isDesignCompany" class="item server" :xs="12" :sm="6" :md="6" :lg="6">
         <p class="title">服务</p>
         <p v-if="isDesignCompany === 1 || isDesignCompany === true">
-          <router-link :to="{name: 'itemCreate'}" class="">发布需求</router-link>
+          <router-link :to="{name: 'projectCreate'}" class="">发布需求</router-link>
         </p>
         <p v-if="isDesignCompany === 2 || isDesignCompany === true">
           <router-link :to="{name: 'serverDesign'}" class="">申请加入</router-link>

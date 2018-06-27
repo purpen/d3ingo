@@ -8,16 +8,16 @@
         'vcenter-right-mob': isMob}">
         <div class="right-content vcenter-container">
           <!-- <v-menu-sub></v-menu-sub> -->
-          <div class="content-item-box" v-loading.body="isLoading">
+          <div class="content-item-box" v-loading="isLoading">
             <div class="pub">
-              <router-link :to="{name: 'itemCreate'}">
+              <router-link :to="{name: 'projectCreate'}">
                 <el-button class="pub-btn is-custom" type="primary" size="large"><i class="el-icon-plus"></i> 发布项目
                 </el-button>
               </router-link>
             </div>
 
-            <h3>项目待完善</h3>
-            <div class="item ing" v-for="(d, index) in itemIngList" :key="index">
+            <h3 v-if="itemIngList.length">项目待完善</h3>
+            <div v-if="itemIngList.length" class="item ing" v-for="(d, index) in itemIngList" :key="index">
               <div class="banner">
                 <p>
                   <span>进行中</span>
@@ -68,7 +68,7 @@
               layout="prev, pager, next"
               :total="query.total">
             </el-pagination>
-            <h3>项目对接中</h3>
+            <h3 v-if="itemList.length">项目对接中</h3>
             <el-row class="item-title-box list-box" v-show="itemList.length" v-if="!isMob">
               <el-col :span="10">
                 <p>项目名称</p>
@@ -430,6 +430,7 @@
 
                 if (type === 1) {
                   that.itemIngList = data
+                  console.log(that.itemIngList)
                   that.query.totalPages = response.data.meta.pagination.total_pages
                   that.query.total = response.data.meta.pagination.total
                 } else if (type === 2) {
@@ -487,24 +488,25 @@
       editItem(event) {
         let progress = parseInt(event.currentTarget.getAttribute('progress'))
         let itemId = event.currentTarget.getAttribute('item_id')
-        let type = parseInt(event.currentTarget.getAttribute('item_type'))
+        // let type = parseInt(event.currentTarget.getAttribute('item_type'))
         let name = null
         switch (progress) {
           case 0:
             name = 'itemSubmitTwo'
             break
           case 1:
-            if (type === 1) {
-              name = 'itemSubmitThree'
-            } else if (type === 2) {
-              name = 'itemSubmitUIThree'
-            }
+            name = 'projectSelect'
+            // if (type === 1) {
+            //   name = 'itemSubmitThree'
+            // } else if (type === 2) {
+            //   name = 'itemSubmitUIThree'
+            // }
             break
           case 2:
-            name = 'itemSubmitFour'
+            name = 'projectType'
             break
           case 3:
-            name = 'itemSubmitFive'
+            name = 'projectInfo'
             break
         }
         this.$router.push({name: name, params: {id: itemId}})
@@ -761,6 +763,7 @@
     margin-bottom: 10px;
   }
   .pagination {
-    text-align: center
+    text-align: center;
+    margin-bottom: 20px;
   }
 </style>

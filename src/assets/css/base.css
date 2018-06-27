@@ -62,21 +62,28 @@ body {
 
 .app {
   width: 100%;
+  height: 100%;
   min-height: 100%;
   position: relative;
   padding-top: 60px;
-  padding-bottom: 340px;
+  /* padding-bottom: 340px; */
   overflow-x: hidden
-}
-.app3 {
-  padding-top: 88px;
 }
 .app2 {
   width: 100%;
+  height: 100%;
   min-height: 100%;
   position: relative;
   overflow-x: hidden;
   padding: 60px 0 0;
+}
+.main {
+  position: relative;
+  height: 100%;
+  min-height: calc(100vh - 100px);
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between */
 }
 .cancel-icon {
   position: relative;
@@ -132,7 +139,7 @@ body {
   background: #666
 }
 
-.close-icon-solid::before, 
+.close-icon-solid::before,
 .close-icon-solid::after {
   content: "";
   position: absolute;
@@ -141,7 +148,7 @@ body {
   width: 10px;
   height: 1px;
   background: #fff;
-} 
+}
 
 .close-icon-solid::before {
   transform: translate(-50%, -50%) rotate(45deg);
@@ -331,7 +338,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 
 .input-brand .el-input-group__append:hover {
-  background: #ff6d6d;  
+  background: #ff6d6d;
 }
 
 .input-brand .el-input-group__append:active {
@@ -599,11 +606,12 @@ button.is-custom.is-outlined.is-loading:after {
 
 .footer {
   width: 100%;
+  margin-top: 50px;
   /* overflow: hidden; */
   text-align: center;
   background-color: #333333;
-  position: absolute;
-  bottom: 0;
+  /* position: absolute;
+  bottom: 0; */
 }
 
 .footer .item {
@@ -887,7 +895,7 @@ input[type=text]:focus, input[type=password]:focus{
 .menu-header .nav-item:hover span.icon i {
   color: #ff5a5f
 }
-/* 
+/*
 .nav-header .nav-item:hover .view-msg,
 .menu-header .nav-item:hover .view-msg { */
 .nav-header .nav-item:focus .view-msg,
@@ -1844,7 +1852,7 @@ td.fc-day.fc-widget-content.fc-today::before {
     margin-right: 16px;
     text-indent: -999em;
   }
-  
+
   p.file-icon.other {
     background: url('../images/tools/cloud_drive/type/other@2x.png') 0 0 no-repeat;
     background-size: contain;
@@ -1890,7 +1898,7 @@ td.fc-day.fc-widget-content.fc-today::before {
 
 @media screen and (max-width: 767px) {
   #app {
-    padding-bottom: 450px;
+    /* padding-bottom: 450px; */
   }
 
   .footer .item {
@@ -1979,13 +1987,14 @@ td.fc-day.fc-widget-content.fc-today::before {
   .el-dialog--small, .bank-dialog .el-dialog--small, .withdraw .el-dialog--small, .taking-dialog .el-dialog--small, .el-dialog--tiny {
     width: 90%;
   }
-  
+
   .fullwidth.el-date-editor {
     width: 100%;
   }
 
   .fullwidth .el-form-item__content {
     display: flex;
+    flex-wrap: wrap;
   }
 
   /*下拉框宽度*/

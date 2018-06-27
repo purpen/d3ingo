@@ -271,7 +271,6 @@ const COMPANY_TYPE = [
     ]
   }
 ]
-
 // 作品案例奖项选项
 const DESIGN_CASE_PRICE_OPTIONS = [
   {
@@ -502,23 +501,23 @@ const INDUSTRY = [
 const DESIGN_CASE_SALE_OPTIONS = [
   {
     id: 1,
-    name: '100-500w'
+    name: '100万-500万'
   },
   {
     id: 2,
-    name: '500-1000w'
+    name: '500万-1000万'
   },
   {
     id: 3,
-    name: '1000-5000w'
+    name: '1000万-5000万'
   },
   {
     id: 4,
-    name: '5000-10000w'
+    name: '5000万-10000万'
   },
   {
     id: 5,
-    name: '10000w以上'
+    name: '10000万以上'
   }
 
 ]

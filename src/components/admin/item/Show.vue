@@ -20,7 +20,7 @@
         </div>
 
 
-        <div class="content-box" v-loading.body="isLoading">
+        <div class="content-box" v-loading="isLoading">
 
           <div class="form-title">
             <span>基本信息</span>

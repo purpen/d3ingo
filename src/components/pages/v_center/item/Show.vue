@@ -70,7 +70,8 @@
           </div>
 
 
-          <div class="select-item-box clearfix" v-if="statusLabel.selectCompany">
+          <!-- <div class="select-item-box clearfix" v-if="statusLabel.selectCompany"> -->
+          <div class="select-item-box clearfix" v-if="false">
             <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
               <el-collapse-item title="选择系统推荐的设计公司" name="3">
                 <div class="select-company-item clearfix" v-for="(d, index) in stickCompany" :key="index">

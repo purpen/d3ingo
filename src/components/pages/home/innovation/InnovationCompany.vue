@@ -23,7 +23,7 @@
     </div>
     <div class="company-designcase" v-if="id && designCaseList.length">
       <h3 class="text-center">作品案例</h3>
-        <div class="design-case-list" v-loading.body="isLoading">
+        <div class="design-case-list" v-loading="isLoading">
           <el-row :gutter="20">
             <el-col :xs="24" :sm="8" :md="8" :lg="8"
               v-for="(d, index) in designCaseList" :key="index">

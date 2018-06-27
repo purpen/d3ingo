@@ -7,7 +7,7 @@
         'vcenter-right-mob': isMob}">
         <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
-          <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
+          <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading="isLoading">
 
             <!-- <div class="form-title">
               <span>接单设置</span>
@@ -93,6 +93,7 @@
   import vMenu from '@/components/pages/v_center/Menu'
   import vMenuSub from '@/components/pages/v_center/company/MenuSub'
   import vDesignItem from '@/components/pages/v_center/company/DesignItem'
+  import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
   import api from '@/api/api'
   import typeData from '@/config'
   import '@/assets/js/format'
@@ -343,6 +344,12 @@
     },
     created: function () {
       const that = this
+      that.$http.get(api.surveyDesignCompanySurvey, {})
+      .then(function (response) {
+        if (response.data.meta.status_code === 200) {
+          that.$store.commit(CHANGE_USER_VERIFY_STATUS, response.data.data)
+        }
+      })
       that.isLoading = true
       that.$http.get(api.designItems, {})
         .then(function (response) {

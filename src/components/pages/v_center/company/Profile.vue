@@ -8,7 +8,7 @@
         <div class="right-content">
           <v-menu-sub></v-menu-sub>
           <div class="content-box">
-            <div class="form-title" v-loading.body="isLoading">
+            <div class="form-title" v-loading="isLoading">
               <span>基本信息</span>
             </div>
             <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">

@@ -7,7 +7,7 @@
       <el-col :span="20">
         <div class="right-content">
           <v-menu-sub currentSubName="identification"></v-menu-sub>
-          <div class="content-box" v-loading.body="isLoading">
+          <div class="content-box" v-loading="isLoading">
             <div class="form-title">
               <span>企业实名认证</span>
             </div>

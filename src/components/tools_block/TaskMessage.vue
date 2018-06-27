@@ -108,9 +108,6 @@
         if (d.is_show) {
           d.is_show = false
         } else {
-          if (d.is_read === 0) {
-            this.fetchMessageCount()
-          }
           d.is_show = true
         }
         // 确认已读状态
@@ -118,6 +115,7 @@
           self.$http.put(api.designNoticeTrueRead, {id: d.id})
             .then(function (response) {
               if (response.data.meta.status_code === 200) {
+                self.fetchMessageCount()
                 d.is_read = 1
               }
             })
@@ -128,6 +126,13 @@
       },
       // 根据类型跳转
       redirect(d) {
+        let oldClass = document.body.childNodes[1].getAttribute('class')
+        if (oldClass) {
+          oldClass = oldClass.replace('disableScroll ', '')
+        }
+        document.body.removeAttribute('class', 'disableScroll')
+        document.childNodes[1].removeAttribute('class', 'disableScroll')
+        document.body.childNodes[1].setAttribute('class', oldClass)
         this.showCover = false
         if (d.operation_log.target_type === 1) {
           this.$router.push({name: 'projectManagementTask', params: {id: d.operation_log.model_id}})

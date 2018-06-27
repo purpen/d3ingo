@@ -18,7 +18,7 @@
             </div>
           </div>
 
-          <el-table :data="tableData" border v-loading.body="isLoading" class="admin-table" @selection-change="handleSelectionChange" style="width: 100%">
+          <el-table :data="tableData" border v-loading="isLoading" class="admin-table" @selection-change="handleSelectionChange" style="width: 100%">
             <el-table-column type="selection" width="55">
             </el-table-column>
             <el-table-column prop="id" label="ID" width="60">
@@ -122,7 +122,7 @@ export default {
             self.itemList[index].status = evt
             self.$message.success('操作成功')
           } else {
-            self.$message.error(response.meta.message)
+            self.$message.error(response.data.meta.message)
           }
         })
         .catch(function(error) {
