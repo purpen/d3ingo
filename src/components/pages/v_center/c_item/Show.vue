@@ -1185,7 +1185,7 @@ const vQuoteView = () => import('@/components/block/QuoteView')
 
   .banner h1 {
     padding-top: 10px;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: #222;
   }
 
@@ -1275,7 +1275,7 @@ const vQuoteView = () => import('@/components/block/QuoteView')
 
   .item-logo .p-title {
     line-height: 50px;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 500;
   }
 
@@ -1308,7 +1308,7 @@ const vQuoteView = () => import('@/components/block/QuoteView')
 
   .item-title .p-title {
     color: #333;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: bold;
     line-height: 50px;
     margin-bottom: 8px;

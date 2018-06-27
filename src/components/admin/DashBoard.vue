@@ -230,7 +230,7 @@
 
   .count-item p {
     line-height: 2;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: #666;
   }
 
@@ -338,7 +338,7 @@
   }
 
   p.alert-title {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: #666;
     margin-bottom: 20px;
     color: red;
@@ -351,7 +351,7 @@
 
   span.red {
     color: red;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
 </style>

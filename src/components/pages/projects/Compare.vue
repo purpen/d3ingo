@@ -5,7 +5,7 @@
         <h3>选择设计方，发送项目需求</h3>
         <div class="item">
           <el-row :gutter="20">
-            <el-col :xs="24" :sm="6" :md="6" :lg="6" v-for="(ele, index) in companyList" :key="index">
+            <el-col :xs="24" :sm="6" :md="6" :lg="6" v-for="(ele, index) in companyDetails" :key="index">
               <div class="logo" @click="changeList(ele.id)">
                 <i @click="changeList(ele.id)" :class="['radio', {'active': selectList.indexOf(ele.id) !== -1}]"></i>
                 <img v-if="ele.logo_image" :src="ele.logo_image.logo" :alt="ele.company_name">
@@ -79,7 +79,7 @@ export default {
       id: -1,
       test: '',
       demandObj: {},
-      companyList: [],
+      companyDetails: [],
       selectList: [],
       option: {
         tooltip: {},
@@ -156,7 +156,54 @@ export default {
       .then(res => {
         if (res.data.meta.status_code === 200) {
           console.log(res.data.data)
-          this.companyList = res.data.data
+          this.companyDetails = res.data.data
+          this.$nextTick(_ => {
+            for (let i in this.companyDetails) {
+              let radar = this.$refs[`radar${i}`][0]
+              this.radarList = [
+                {
+                  name: '基础运作力',
+                  max: 100,
+                  value: this.companyDetails[i]['rows'].base_average
+                },
+                {
+                  name: '风险应激力',
+                  max: 100,
+                  value: this.companyDetails[i]['rows'].credit_average
+                },
+                {
+                  name: '创新交付力',
+                  max: 100,
+                  value: this.companyDetails[i]['rows'].innovate_average
+                },
+                {
+                  name: '商业决策力',
+                  max: 100,
+                  value: this.companyDetails[i]['rows'].business_average
+                },
+                {
+                  name: '客观公信力',
+                  max: 100,
+                  value: this.companyDetails[i]['rows'].effect_average
+                },
+                {
+                  name: '品牌溢价力',
+                  max: 100,
+                  value: this.companyDetails[i]['rows'].design_average
+                }
+              ]
+              radar.mergeOptions({
+                radar: {
+                  indicator: this.radarList.map(({name, max}) => {
+                    return {name, max}
+                  })
+                },
+                series: [{
+                  data: [{value: this.radarList.map(({value}) => value)}]
+                }]
+              })
+            }
+          })
         } else {
           this.$message.error(res.data.meta.message)
         }

@@ -1195,7 +1195,7 @@ export default {
 
 .banner h1 {
   padding-top: 10px;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   color: #222;
 }
 
@@ -1318,7 +1318,7 @@ export default {
 
 .item-title .p-title {
   color: #333;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: bold;
   line-height: 50px;
   margin-bottom: 8px;

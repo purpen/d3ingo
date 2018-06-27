@@ -282,7 +282,7 @@ p.web {
 }
 
 .content a {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
 }
 .image-box {
   height: 150px;

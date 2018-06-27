@@ -77,8 +77,9 @@ export default {
           this.demand_verify_status = res.data.data.demand_verify_status || -1
           if (this.demand_verify_status === 1) {
             console.log('认证成功可以匹配')
+            this.matchInc()
           } else {
-            console.log('认证成功可以匹配')
+            console.log('公司待认证')
           }
         }
       })
@@ -87,6 +88,7 @@ export default {
       this.$http.get(api.demandId.format(this.id))
       .then(res => {
         if (res.data.meta.status_code === 200) {
+          console.log(111, res.data.data)
           this.demandObj = res.data.data
           if (this.demandObj) {
             this.projectStatus = this.demandObj.status

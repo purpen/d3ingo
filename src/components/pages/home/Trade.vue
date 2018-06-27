@@ -162,7 +162,7 @@
     }
 
     .trade-text p {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
     }
 
     .trade-text h3, .trade-text p {
@@ -188,7 +188,7 @@
       margin-bottom: 0;
     }
     .trade-text p {
-      font-size: 1.5rem
+      font-size: 1.4rem
     }
   }
 </style>
