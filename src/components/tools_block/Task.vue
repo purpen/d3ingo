@@ -12,11 +12,14 @@
               {{d.title}}</li>
           </ul>
         </div>
-        <div v-show="!isMyTask" v-if="currentForm.tier === 1"
-          class="task-detail-name task-detail-name1"
-          @click="showChild(parentTask.id)"
-          ><span class="parent-task-name">{{parentTask.name}}</span>
-        </div>
+          <div v-show="!isMyTask" v-if="currentForm.tier === 1"
+            class="task-detail-name task-detail-name1"
+            @click="showChild(parentTask.id)"
+            >
+            <el-tooltip effect="dark" :content="parentTask.name" placement="top">
+              <span class="parent-task-name">{{parentTask.name}}</span>
+            </el-tooltip>
+          </div>
         <div ref="selectParent2" class="select-parent select-menu" tabindex="-1">
           <span class="select-show"></span>
           <ul class="stage-list">
@@ -1005,7 +1008,7 @@
   }
   .task-detail-header .fx-icon-nothing-close-error {
     position: absolute;
-    right: 20px;
+    right: 10px;
     top: 10px;
   }
   .task-detail-name {
@@ -1018,7 +1021,7 @@
     cursor: pointer;
   }
   .task-detail-name1 {
-    margin-right: 70px;
+    margin-right: 50px;
     border: none;
     position: relative;
     padding: 0;
@@ -1051,7 +1054,7 @@
   }
   .select-menu {
     position: absolute;
-    right: 64px;
+    right: 54px;
     top: 0;
     width: 24px;
     height: 24px;
