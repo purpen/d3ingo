@@ -66,7 +66,8 @@
                 </div>
               </li>
             </ul>
-          <el-row class="MeetingCenter" @click.native="addBtn()" :style="{borderTop:event!=='create'?'none':'1px solid #E6E6E6',
+          <el-row :class="['MeetingCenter',{
+            'border-top': event!=='create'}]" @click.native="addBtn()" :style="{
           paddingTop:event!=='create'?'10px':'0px'}">
               <el-col class="fx">
                 <div>
@@ -226,7 +227,7 @@
                 </ul>
               </li>
              </ul>
-            <el-row class="MeetingCenter" :style="{borderTop:!d.content&&d.isedit!==2?'none':'1px solid #E6E6E6'}">
+            <el-row class="MeetingCenter">
               <el-col class="fx">
                  <el-input  size="small" v-if ="d.isedit === 2" v-model=" d.content " type="textarea" :autosize="{ minRows: 4, maxRows: 10}" :maxlength="800" class="noborder"></el-input>
                  <p v-else>{{ d.content }}</p>
@@ -1106,7 +1107,13 @@
     padding-bottom: 10px;
     margin-bottom:20px;
     min-height: 70px;
-    border-top: 1px solid #E6E6E6;
+    border-top: 1px solid #e6e6e6;
+  }
+  .MeetingCenter:hover {
+    border-top: 1px solid transparent;
+  }
+  .border-top {
+    border-top: 1px solid transparent;
   }
   .MeetingCenter>.fx>p{
     margin-top:10px;
@@ -1153,6 +1160,8 @@
   .select-header i {
     position: absolute;
     right: 15px;
+    top: 50%;
+    margin-top: -8px;
   }
   .select-user li>div{
     width:36px;
@@ -1162,11 +1171,14 @@
     background:#3DA8F5;
     font-size: 14px;
     color: #FFFFFF;
-    text-align: center;
+  }
+  .select-user li:hover {
+    background:#F7F7F7
   }
   .select-user li>span{
     padding-left: 10px;
     flex-grow: 1;
+    text-align: left;
   }
   .select-search {
     padding: 0px 20px;

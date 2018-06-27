@@ -9,8 +9,8 @@
           <v-menu-sub currentSubName="identification"></v-menu-sub>
           <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
 
-            <div class="form-title">
-              <span>企业实名认证</span>
+            <div class="sub-title">
+              <span>基本信息</span>
             </div>
             <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
 
@@ -118,46 +118,98 @@
                   </el-form-item>
                 </el-col>
               </el-row>
+              <el-row :gutter="24">
+                <el-col :span="12" class="content">
+                    <region-picker :provinceProp="form.province" :cityProp="form.city"  :isFirstProp="true" :districtProp="form.area" titleProp="公司地址" @onchange="changeServer"></region-picker>
 
+                    <!-- :provinceProp="province" :cityProp="city" :districtProp="district"
+                      :isFirstProp="isFirst" titleProp="" propStyle="margin: 0;"
+                    @onchange="change" -->
+                    <el-form-item label="" prop="address" style="margin-top: 10px">
+                      <el-input v-model="form.address" placeholder="街道地址"></el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <div class="sub-title">
+              <span>联系人信息</span>
+            </div>
+            <el-row :gutter="24">
+              <el-col :span="isMob ? 24 : 12">
+                <el-form-item label="联系人" prop="contact_name">
+                  <el-input v-model="form.contact_name" placeholder=""></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="24">
+              <el-col :span="isMob ? 24 : 12">
+                <el-form-item label="联系人职位" prop="position">
+                  <el-input v-model="form.position" placeholder=""></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="24">
+              <el-col :span="isMob ? 24 : 12">
+                <el-form-item label="联系人手机" prop="phone">
+                  <el-input v-model="form.phone" placeholder=""></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="24">
+              <el-col :span="isMob ? 24 : 12">
+                <el-form-item label="联系人邮箱" prop="email">
+                  <el-input v-model="form.email" placeholder=""></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <div class="sub-title">
+              <span>银行卡信息&nbsp;</span>
+              <i class="hint"></i>
+            </div>
               <el-row :gutter="24">
                 <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="联系人" prop="contact_name">
-                    <el-input v-model="form.contact_name" placeholder=""></el-input>
+                  <el-form-item label="开户名称" prop="account_name">
+                    <el-input v-model="form.account_name" placeholder=""></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="24">
+                <el-col :span="isMob ? 24 : 12" >
+                  <el-form-item label="开户银行" prop="bank_name">
+                    <el-input v-model="form.bank_name" placeholder=""></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row :gutter="24">
                 <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="联系人职位" prop="position">
-                    <el-input v-model="form.position" placeholder=""></el-input>
+                  <el-form-item label="对公银行账号" prop="account_number">
+                    <el-input v-model="form.account_number" placeholder=""></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row :gutter="24">
-                <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="联系人手机" prop="phone">
-                    <el-input v-model="form.phone" placeholder=""></el-input>
+              <div class="sub-title">
+                <span>开票信息&nbsp;</span>
+                <i class="hint">
+                </i>
+              </div>
+              <el-row>
+                <el-col class="margin-b-10" :xs="24" :sm="5" :md="5" :lg="5">
+                  <el-form-item label="纳税人类型">
+                  <el-radio-group v-model.number="form.taxable_type">
+                    <el-radio class="radio" :label="1">一般纳税人</el-radio>
+                    <el-radio class="radio" :label="2">小额纳税人</el-radio>
+                  </el-radio-group>
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row :gutter="24">
-                <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="联系人邮箱" prop="email">
-                    <el-input v-model="form.email" placeholder=""></el-input>
+              <el-row>
+                <el-col class="margin-b-10" :xs="24" :sm="5" :md="5" :lg="5">
+                  <el-form-item label="发票类型">
+                  <el-radio-group v-model.number="form.invoice_type">
+                    <el-radio class="radio" :label="1">专用发票</el-radio>
+                    <el-radio class="radio" :label="2">普通发票</el-radio>
+                  </el-radio-group>
                   </el-form-item>
                 </el-col>
-              </el-row>
-              <el-row :gutter="24">
-                  <el-col :span="12" class="content">
-                      <region-picker :provinceProp="form.province" :cityProp="form.city"  :isFirstProp="true" :districtProp="form.area" titleProp="公司地址" @onchange="changeServer"></region-picker>
-  
-                      <!-- :provinceProp="province" :cityProp="city" :districtProp="district"
-                        :isFirstProp="isFirst" titleProp="" propStyle="margin: 0;"
-                      @onchange="change" -->
-                      <el-form-item label="" prop="address" style="margin-top: 10px">
-                        <el-input v-model="form.address" placeholder="街道地址"></el-input>
-                      </el-form-item>
-                  </el-col>
               </el-row>
               <el-row :gutter="24">
                 <el-col :span="isMob ? 24 : 12">
@@ -378,6 +430,15 @@
           ],
           address: [
             {required: true, message: '请添写公司地址', trigger: 'blur'}
+          ],
+          account_name: [
+            {required: true, message: '请填写开户名称', trigger: 'blur'}
+          ],
+          bank_name: [
+            {required: true, message: '请填写开户银行', trigger: 'blur'}
+          ],
+          account_number: [
+            {required: true, message: '请填写对公银行账号', trigger: 'blur'}
           ]
         }
       }
@@ -415,9 +476,13 @@
               province: that.form.province,
               area: that.form.area,
               city: that.form.city,
-              address: that.form.address
+              address: that.form.address,
+              account_name: that.form.account_name,
+              bank_name: that.form.bank_name,
+              account_number: that.form.account_number,
+              taxable_type: that.form.taxable_type,
+              invoice_type: that.form.invoice_type
             }
-
             // let row = {
             //   registration_number: that.form.registration_number,
             //   company_name: that.form.company_name,
@@ -671,17 +736,26 @@
     padding: 0;
   }
 
-
+  .sub-title {
+    font-size: 16px;
+    color: #222;
+    margin: 20px 0;
+    position: relative;
+  }
   .form-btn {
     float: right;
     font-size: 0;
   }
-
   .form-btn button {
     width: 120px;
     margin-left: 15px;
   }
-
+  .el-radio-group {
+    width: 100%;
+  }
+  .el-radio-group>:first-child {
+    width: 50%;
+  }
   .form-btn-m {
     margin-top: 20px;
   }
@@ -701,7 +775,19 @@
   .agree-content h3 {
 
   }
-
+  .hint:after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    background: url('../../../../assets/images/item/Hint@2x.png') 0 0 no-repeat/16px 16px;
+  }
+  .hint:hover:after {
+    background: url('../../../../assets/images/item/HintHover02@2x.png') 0 0 no-repeat/16px 16px;
+  }
+  .margin-b-10 {
+    margin-bottom: 10px
+  }
   .agree-content p {
     line-height: 1.5;
     font-size: 1.2rem;

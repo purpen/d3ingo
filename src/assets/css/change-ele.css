@@ -469,3 +469,6 @@
   .label-tag .vue-input-tag-wrapper .input-tag .remove:hover::before {
     border-top: 1px solid #ff5a5f;
   }
+  .el-textarea__inner:hover .MeetingCenter {
+    border: none;
+  }
