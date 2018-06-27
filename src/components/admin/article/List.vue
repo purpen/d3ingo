@@ -18,7 +18,7 @@
             </div>
           </div>
 
-          <el-table :data="tableData" border v-loading.body="isLoading" class="admin-table" @selection-change="handleSelectionChange" style="width: 100%">
+          <el-table :data="tableData" border v-loading="isLoading" class="admin-table" @selection-change="handleSelectionChange" style="width: 100%">
             <el-table-column type="selection" width="55">
             </el-table-column>
             <el-table-column prop="id" label="ID" width="60">

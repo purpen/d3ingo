@@ -4,7 +4,7 @@
     <el-row :gutter="20">
       <v-menu></v-menu>
 
-      <el-col :span="20" v-loading.body="isLoading">
+      <el-col :span="20" v-loading="isLoading">
 
         <div class="count-items">
           <el-row :gutter="10">
@@ -107,7 +107,7 @@
                 <el-table
                   :data="tableItemData"
                   border
-                  v-loading.body="isItemLoading"
+                  v-loading="isItemLoading"
                   class="admin-table"
                   @selection-change="handleSelectionChange"
                   style="width: 100%">

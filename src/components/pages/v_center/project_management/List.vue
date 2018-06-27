@@ -4,7 +4,7 @@
     <div :class="{'vcenter-right-plus': leftWidth === 4,
       'vcenter-right': leftWidth === 2,
         'vcenter-right-mob': isMob}">
-      <div class="vcenter-container blank30" v-loading.body="isLoading">
+      <div class="vcenter-container blank30" v-loading="isLoading">
         <h2 v-if="collectList.length">我收藏的项目</h2>
         <ul class="project-list">
           <li v-for="(ele, index) in collectList" :key="index"

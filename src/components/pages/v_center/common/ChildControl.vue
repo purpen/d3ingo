@@ -1,7 +1,7 @@
 <template>
   <el-row class="control blank30 vcenter">
     <v-menu currentName="control"></v-menu>
-    <!-- <el-col :span="!isMob? rightWidth : 24" :offset="!isMob ? leftWidth : 0" v-loading.body="isLoading">
+    <!-- <el-col :span="!isMob? rightWidth : 24" :offset="!isMob ? leftWidth : 0" v-loading="isLoading">
 
       <div class="right-content message">
         <div class="content-box clearfix">

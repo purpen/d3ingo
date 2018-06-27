@@ -1,7 +1,7 @@
 <template>
   <el-row>
     <el-col>
-      <div class="vcenter-container" v-loading.body="isLoading">
+      <div class="vcenter-container" v-loading="isLoading">
         <div class="content-head">
           <div class="clearfix" v-show="showList">
             <p class="title fl" v-if="!isChoose && folderId === 0" v-html="title"></p>
@@ -263,7 +263,7 @@
               title="创建文件夹" v-else></p>
           </div>
           <ul class="folder-body"
-            v-loading.body="copyORmoveLoading && index === folderObj['length'] - 1">
+            v-loading="copyORmoveLoading && index === folderObj['length'] - 1">
             <li v-if="showFolderInput && ele.folderId === copyORmoveFolderId">
               <input
                 v-focus="ele.folderId === copyORmoveFolderId"
@@ -301,7 +301,7 @@
               title="创建文件夹" v-else></p>
           </div>
           <ul class="folder-body"
-            v-loading.body="copyORmoveLoading && index === folderObj['length'] - 1">
+            v-loading="copyORmoveLoading && index === folderObj['length'] - 1">
             <li v-if="showFolderInput && ele.folderId === copyORmoveFolderId">
               <input
                 v-focus="ele.folderId === copyORmoveFolderId"

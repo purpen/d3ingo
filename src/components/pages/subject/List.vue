@@ -10,7 +10,7 @@
       </div>
     </div>
 
-    <div class="case-list" v-loading.body="isLoading" ref="caseList">
+    <div class="case-list" v-loading="isLoading" ref="caseList">
       <el-row :gutter="20" class="anli-elrow">
         <el-col :xs="24" :sm="12" :md="12" :lg="12" v-for="(d, index) in itemList" :key="index">
           <el-card :body-style="{ padding: '0px' }" class="item">

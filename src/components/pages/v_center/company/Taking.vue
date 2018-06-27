@@ -7,7 +7,7 @@
         'vcenter-right-mob': isMob}">
         <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
-          <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
+          <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading="isLoading">
 
             <!-- <div class="form-title">
               <span>接单设置</span>

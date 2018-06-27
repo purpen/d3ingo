@@ -110,7 +110,7 @@
         </el-col>
         <el-col :span="isMob ? 24 : 6">
           <div id="right_box" :class="{'fixed': isFixed}">
-            <div class="slider" v-loading.body="matchLoading">
+            <div class="slider" v-loading="matchLoading">
 
               <div v-if="matchCount === 0">
                 <p class="slide-str error"><img src="../../../assets/images/icon/item_stick_fail.png" width="25"/> 匹配失败

@@ -8,7 +8,7 @@
         'vcenter-right-mob': isMob}">
         <div class="right-content vcenter-container">
           <!-- <v-menu-sub></v-menu-sub> -->
-          <div class="content-item-box" v-loading.body="isLoading">
+          <div class="content-item-box" v-loading="isLoading">
             <div class="pub">
               <router-link :to="{name: 'projectCreate'}">
                 <el-button class="pub-btn is-custom" type="primary" size="large"><i class="el-icon-plus"></i> 发布项目

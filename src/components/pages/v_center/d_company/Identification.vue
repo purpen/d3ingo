@@ -5,7 +5,7 @@
     <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
       <div class="right-content vcenter-container">
         <v-menu-sub currentSubName="identification"></v-menu-sub>
-        <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
+        <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading="isLoading">
           <div class="form-title">
             <span>企业实名认证</span>
           </div>

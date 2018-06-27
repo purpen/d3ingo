@@ -357,7 +357,7 @@
               title="创建文件夹" v-else></p>
           </div>
           <ul class="folder-body"
-            v-loading.body="copyORmoveLoading && index === folderObj['length'] - 1">
+            v-loading="copyORmoveLoading && index === folderObj['length'] - 1">
             <li v-if="showFolderInput && ele.folderId === copyORmoveFolderId">
               <input
                 v-focus="ele.folderId === copyORmoveFolderId"
@@ -395,7 +395,7 @@
               title="创建文件夹" v-else></p>
           </div>
           <ul class="folder-body"
-            v-loading.body="copyORmoveLoading && index === folderObj['length'] - 1">
+            v-loading="copyORmoveLoading && index === folderObj['length'] - 1">
             <li v-if="showFolderInput && ele.folderId === copyORmoveFolderId">
               <input
                 v-focus="ele.folderId === copyORmoveFolderId"

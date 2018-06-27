@@ -16,7 +16,7 @@
       <el-col :span="isMob? 24: 20">
         <section :class="['member-list', {'member-list-mini' : !leftWidth,
         'member-list-mob': isMob}]"
-          v-loading.body="loading">
+          v-loading="loading">
           <div class="member-list-header">
             <p class="fl">
               {{firstGroupName}}

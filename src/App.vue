@@ -13,7 +13,7 @@
           <router-link style="margin-left: 10px;" class="tc-red fz-12" :to="alertTitle.path">去完善</router-link>
         </template>
       </el-alert>
-      <router-view></router-view>
+      <router-view class="main-content"></router-view>
       <v-footer></v-footer>
     </div>
   </div>
@@ -127,6 +127,9 @@ export default {
 <style scoped>
   .padding-t-34 {
     padding-top: 34px;
+  }
+  .main-content {
+    flex: 1 1 auto;
   }
   .alert-message {
     position: absolute;

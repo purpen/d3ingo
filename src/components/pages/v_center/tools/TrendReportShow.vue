@@ -16,7 +16,7 @@
         </p>
       <div v-if="already" :class="['pdf', 'swiper-container', {'fullscreen-pdf' : isFullscreen}]" ref="pdf">
         <pdf :src="pdf.image.file"
-          v-loading.body="isLoading"
+          v-loading="isLoading"
           @progress="loadedRatio = $event"
           @loaded ="load = $event"
           @num-pages="numPages = $event"

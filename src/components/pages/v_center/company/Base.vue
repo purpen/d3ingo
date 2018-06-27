@@ -8,7 +8,7 @@
         <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
 
-          <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
+          <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading="isLoading">
             <el-row :gutter="gutter" :class="['item', isMob ? 'item-m item-mAvatar' : '']">
               <el-col :span="titleSpan" class="title avatarhead">
                 <p>公司logo</p>

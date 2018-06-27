@@ -7,7 +7,7 @@
         'vcenter-right-mob': isMob}">
         <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
-          <section v-loading.body="isLoading">
+          <section v-loading="isLoading">
             <section class="verify" v-if="item.verify_status === 0">
               <img :src="require('assets/images/item/authentication@2x.png')" alt="未认证">
               <h3>您还没有实名认证</h3>
