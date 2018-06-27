@@ -18,7 +18,7 @@
               </ul>
             </div>
           </div>
-          <section class="task-list-content" :style="{maxHeight: docHeight}">
+          <section class="task-list-content scroll-bar2" :style="{maxHeight: docHeight}">
             <section :class="['no-stage-item', {'mytask-item': isMyTask}]">
               <div v-for="(ele, index) in displayObj.outsideStageList" :key="index"
                 @click="showTaskBtn(ele, index)"
@@ -229,7 +229,7 @@
           this.isReady = false
           this.isReady = setTimeout(() => {
             this.isReady = true
-            this.docHeight = (document.body.clientHeight - 268) + 'px'
+            this.docHeight = (document.body.clientHeight - 225) + 'px'
           }, 100)
         }
       },
@@ -650,7 +650,7 @@
       }
     },
     created() {
-      this.docHeight = (document.body.clientHeight - 268) + 'px'
+      this.docHeight = (document.body.clientHeight - 225) + 'px'
       if (this.isMyTask) {
         this.fetchMyTask()
       } else {
@@ -711,7 +711,7 @@
   }
   .operate {
     display: flex;
-    border-bottom: 1px solid #d2d2d2;
+    /* border-bottom: 1px solid #d2d2d2; */
   }
   .add-btn {
     flex: 1 1 auto;
@@ -728,6 +728,7 @@
     border-radius: 4px;
     text-align: center;
     position: relative;
+    margin-right: 8px;
   }
   .filter p {
     line-height: 34px;
@@ -793,11 +794,12 @@
   }
   .task-list-content {
     overflow-y: auto;
-    /* padding-bottom: 20px; */
+    padding-right: 4px;
     /* border-bottom: 1px solid #d2d2d2 */
   }
   .task-item {
     display: flex;
+    border-radius: 4px;
   }
   .task-item, .stage-name {
     cursor: pointer;
@@ -808,12 +810,12 @@
     margin-bottom: 10px;
   }
   .task-item {
-    border-right: 0
+    border-right: 1px solid #d2d2d2;
   }
   .no-stage-item .task-item:first-child,
   .stage-item .task-item:first-child {
-    border-top: none;
-    /* border-radius: 0 0 4px 4px; */
+    /* border-top: none; */
+    /* border-radius: 0 0 0 4px; */
   }
   .mytask-item .task-item:first-child {
     border-top: 1px solid #e6e6e6;
@@ -836,7 +838,7 @@
     border-radius: 0;
     padding: 0 40px 0 0;
     margin-top: 0;
-    margin-bottom: 0;
+    margin-bottom: 10px;
     font-size: 18px;
     color: #222222;
     line-height: 40px;
@@ -886,9 +888,12 @@
   .level1 {
     border-left: 1px solid #d2d2d2;
   }
+  .level1 .task-name {
+    margin-left: 5px;
+  }
   .task-item.click {
     border: 1px solid rgba(255, 90, 95, 0.5);
-    border-right: none;
+    /* border-right: none; */
   }
   .task-item.level2 {
     border-left: 6px solid #FFD330;

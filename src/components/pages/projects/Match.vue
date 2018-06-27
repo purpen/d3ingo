@@ -74,7 +74,12 @@ export default {
       .then((res) => {
         if (res.data.meta.status_code === 200) {
           console.log(res.data.data)
-          this.demand_verify_status = res.data.data.demand_verify_status
+          this.demand_verify_status = res.data.data.demand_verify_status || -1
+          if (this.demand_verify_status === 1) {
+            console.log('认证成功可以匹配')
+          } else {
+            console.log('认证成功可以匹配')
+          }
         }
       })
     },
@@ -93,6 +98,11 @@ export default {
     },
     submit() {
       this.$router.push({name: 'projectCompare', params: {id: this.id}})
+    }
+  },
+  computed: {
+    user() {
+      return this.$store.state.event.user
     }
   },
   watch: {
@@ -115,7 +125,6 @@ export default {
   created() {
     this.id = Number(this.$route.params.id) || -1
     this.isMatching = true
-    this.matchInc()
     this.getVerify()
     this.getDemandObj()
   }

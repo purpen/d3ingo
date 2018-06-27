@@ -4,7 +4,7 @@
       <div class="content">
         <h2>您需要设计什么？</h2>
         <input class="name" v-model="name" placeholder="输入要设计的名称,比如：杯子设计">
-        <button class="full-red-button big-button" @click="submit">提交</button>
+        <button class="full-red-button big-button" @click="submit">{{val}}</button>
       </div>
     </div>
   </div>
@@ -15,13 +15,49 @@ export default {
   name: 'createProject',
   data() {
     return {
-      name: ''
+      id: 0,
+      name: '',
+      selectObject: {},
+      val: '提交'
     }
   },
+  created() {
+    this.id = this.$route.query.id || 0
+    if (this.id) {
+      this.val = '更改'
+    }
+    this.getDemandObj()
+  },
   methods: {
+    getDemandObj() {
+      if (this.id) {
+        this.$http.get(api.demandId.format(this.id))
+        .then(res => {
+          if (res.data.meta.status_code === 200) {
+            this.name = res.data.data.item.name
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(err => {
+          console.error(err.message)
+        })
+      }
+    },
     submit() {
+      let url = ''
+      let row = {}
+      let method = ''
+      if (this.id) {
+        url = api.updateName
+        row = {item_id: this.id, name: this.name}
+        method = 'PUT'
+      } else {
+        url = api.itemCreate
+        row = {name: this.name}
+        method = 'POST'
+      }
       if (this.name) {
-        this.$http.post(api.itemCreate, {name: this.name})
+        this.$http({method: method, url: url, data: row})
         .then(res => {
           if (res.data.meta.status_code === 200) {
             let item = res.data.data.item

@@ -14,7 +14,7 @@
       <div class="project-foot">
         div.
         <div class="buttons clearfix">
-          <router-link :to="{name: 'projectCreate', params: {id: id}}">返回上一步</router-link>
+          <router-link :to="{name: 'projectCreate', query: {id: id}}">返回上一步</router-link>
           <el-button type="error" @click="submit" class="fr middle-button full-red-button">下一步</el-button>
         </div>
       </div>
