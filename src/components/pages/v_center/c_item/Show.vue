@@ -12,7 +12,7 @@
       <v-item-progress :progressButt="progressButt" :progressContract="progressContract"
                        :progressItem="progressItem"></v-item-progress>
 
-      <el-col :span="isMob ? 24 : 18">
+      <el-col :span="isMob ? 24 : 14">
         <div class="content">
           <div :class="[{'banner-m' : isMob}, 'banner']">
             <img v-show="statusIconUrl" class="" :src="statusIconUrl" width="100"/>
@@ -1632,7 +1632,7 @@ const vQuoteView = () => import('@/components/block/QuoteView')
     .btn-quo button {
       width: 100%
     }
-    
+
     .btn-quo button:nth-child(2) {
       margin: 20px 0 0 0
     }
@@ -1657,6 +1657,13 @@ const vQuoteView = () => import('@/components/block/QuoteView')
 </style>
 
 <style>
+  /*改变步骤线的大小*/
+  .el-step__head{
+    width: 12px !important;
+    height: 12px !important;
+    /*line-height:12px !important;*/
+    vertical-align: baseline !important;
+  }
   .el-step__head.is-text.is-process {
     color: #FFF;
     background-color: #00ac84!important;
@@ -1665,26 +1672,47 @@ const vQuoteView = () => import('@/components/block/QuoteView')
 
   .el-step__head .el-step__line.is-vertical  {
     position: absolute;
-    top: 28px;
-    left: 13px;
+    top: 12px;
+    left: 5px;
   }
 
   .is-process .el-step__line.is-vertical  {
-    background-color: #00ac84;
+    background-color: #00ac84 !important;
   }
 
   .el-step__head .el-step__icon {
-    line-height: 24px;
+    line-height: 12px;
+    display: none;
+  }
+  /*三个行高 start*/
+  .el-step__title is-success{
+    line-height: 15px !important;
   }
   .el-step__main .el-step__title.is-process {
+    line-height: 15px !important;
     color: #00ac84
   }
   .el-step__main .el-step__title.is-wait {
+    line-height: 15px !important;
     color: #999;
   }
-  .el-step .el-step__head.is-text.is-wait {
-    color: #d2d2d2;
-    border-color: #ededed;
+  /*end*/
+  /*小屏的定位 start*/
+  @media screen and (max-width: 767px){
+    .el-step__line.is-horizontal {
+      top: 6px !important;
+      left: 12px !important;
+      background-color: #00ac84 !important;
+    }
+    /*end*/
+
+  }
+
+
+.el-step .el-step__head.is-text.is-wait {
+    opacity: 0.5;
+    background: #E6E6E6;
+    /*border-color: #ededed;*/
   }
   .is-wait .el-step__line {
     background-color: #ededed

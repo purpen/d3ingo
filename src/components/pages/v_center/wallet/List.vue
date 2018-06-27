@@ -20,12 +20,12 @@
                 </p>
               </div>
             </div>
-            <div :class="['bank-box', isMob ? 'bank-box-m' : '']">
-              <p>
-                <router-link :to="{name: 'vcenterBankList'}"><i class="fa fa-credit-card" aria-hidden="true"></i> 银行账户管理
-                </router-link>
-              </p>
-            </div>
+            <!--<div :class="['bank-box', isMob ? 'bank-box-m' : '']">-->
+              <!--<p>-->
+                <!--<router-link :to="{name: 'vcenterBankList'}"><i class="fa fa-credit-card" aria-hidden="true"></i> 银行账户管理-->
+                <!--</router-link>-->
+              <!--</p>-->
+            <!--</div>-->
           </div>
 
           <div :class="['item-box', isMob ? 'item-box-m' : '']" v-if="tableData.length">
@@ -449,7 +449,7 @@
 
   .my-wallet {
     background: #FAFAFA;
-    height: 190px;
+    height: 150px;
     margin: 0;
     position: relative;
   }
@@ -652,6 +652,9 @@
       left: 0;
       border-bottom: 1px solid #d2d2d2;
       z-index: -1;
+    }
+    .vcenter{
+      margin-top: 0;
     }
   }
 </style>

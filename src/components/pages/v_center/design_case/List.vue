@@ -174,7 +174,7 @@
   .content-box-m .form-title {
     margin: 10px 0 6px;
     }
-    
+
   .design-case-list .item {
     min-height: 240px;
     }
@@ -288,7 +288,10 @@
     .opt a {
       font-size: 1.4rem;
       }
+    .vcenter{
+      margin-top: 0;
     }
+  }
 
   .add {
     text-align: center;
