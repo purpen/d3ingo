@@ -888,6 +888,7 @@
   }
   .task-item.click {
     border: 1px solid rgba(255, 90, 95, 0.5);
+    border-right: none;
   }
   .task-item.level2 {
     border-left: 6px solid #FFD330;

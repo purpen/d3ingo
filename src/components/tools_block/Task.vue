@@ -70,6 +70,7 @@
             <li>
               <p class="p-level">优先级:</p>
               <el-select
+                @click.native="clickTime"
                 style="width: 195px;"
                 v-model="currentForm.level" placeholder="请选择"
                 @change="changeLevel(currentForm.level)">
@@ -197,7 +198,7 @@
             <ul v-if="showAllMoments">
               <li class="clearfix"
                 v-for="(ele, index) in moments" :key="index">
-                <p :class="['p-content',
+                <p v-if="ele" :class="['p-content',
                   { 'create-parent': ele.type === 1,
                   'create-child': ele.type === 2,
                   'change-name': ele.type === 3,
@@ -221,7 +222,7 @@
             <ul v-else>
               <li class="clearfix"
                 v-for="(ele, index) in limitMoments" :key="index">
-                <p :class="['p-content',
+                <p v-if="ele" :class="['p-content',
                   { 'create-parent': ele.type === 1,
                   'create-child': ele.type === 2,
                   'change-name': ele.type === 3,
@@ -288,7 +289,7 @@
     },
     data () {
       return {
-        isReady: false,
+        isReady: true,
         docHeight: '',
         propsTags: {
           itemId: 0,
