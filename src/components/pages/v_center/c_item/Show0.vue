@@ -12,7 +12,7 @@
       <v-item-progress :progressButt="progressButt" :progressContract="progressContract"
                        :progressItem="progressItem"></v-item-progress>
 
-      <el-col :span="isMob ? 24 : 14">
+      <el-col :span="isMob ? 24 : 18">
         <div class="content">
           <div :class="[{'banner-m' : isMob}, 'banner']">
             <img v-show="statusIconUrl" class="" :src="statusIconUrl" width="100"/>
@@ -173,52 +173,21 @@
 
           <div class="select-item-box" v-if="statusLabel.amount">
             <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
-              <el-collapse-item title="首付款资金" name="9">
+              <el-collapse-item title="托管项目资金" name="9">
                 <div class="capital-item" v-if="statusLabel.isPay">
-                  <div v-if="invoceStat(1, 0) === 0">
-                    <p>首付款已到账</p>
-                    <p class="capital-money">¥ {{ firstRestPayment }}</p>
-                    <p class="pay-btn">
-
-                    </p>
-                    <p class="capital-des">项目首付款已转入您的账户中</p>
-                  </div>
-                  <div v-if="invoceStat(1, 0) === 1">
-                    <p>首付款已转到太火鸟SaaS平台托管</p>
-                    <p class="capital-money">¥ {{ firstRestPayment }}</p>
-                    <p class="pay-btn">
-                      <el-button class="is-custom" @click="sendInvoiceBtn(1, 0)"
-                                 type="primary">开发票
-                      </el-button>
-                    </p>
-                    <p class="capital-des">需求方已将首付款转到太火鸟SaaS平台托管，</p>
-                    <p class="capital-des">您需要给太火鸟SaaS平台提供相关发票，平台收到发票后会将相关款项转入您的账户中。</p>
-                  </div>
-                  <div v-if="invoceStat(1, 0) === 2">
-                    <p>首付款已转到太火鸟SaaS平台托管</p>
-                    <p class="capital-money">¥ {{ firstRestPayment }}</p>
-                    <p class="pay-btn">
-                      <span>发票确认中</span>
-                    </p>
-                    <p class="capital-des">发票确认收取中，请您耐心等待…</p>
-                    <p class="capital-des">太火鸟SaaS平台收到发票后会将相关款项转入您的账户中。</p>
-                  </div>
-                  <div v-if="invoceStat(1, 0) === 3">
-                    <p>首付款已到账</p>
-                    <p class="capital-money">¥ {{ firstRestPayment }}</p>
-                    <p class="pay-btn">
-
-                    </p>
-                    <p class="capital-des">项目首付款已转入您的账户中</p>
-                  </div>
+                  <p>项目资金</p>
+                  <p class="capital-money">¥ {{ item.price }}</p>
+                  <p class="pay-btn">
+                    <span>项目资金已托管 </span>
+                  </p>
                 </div>
                 <div class="capital-item" v-else>
-                  <p>等待需求方付款</p>
-                  <p class="capital-money">¥ {{ firstRestPayment }}</p>
+                  <p>项目资金</p>
+                  <p class="capital-money">¥ {{ item.price }}</p>
                   <p class="pay-btn">
-                    <span>等待需求公司付款中 </span>
+                    <span>等待客户支付项目资金 </span>
                   </p>
-                  <p class="capital-des">等待需求方将首付款转到太火鸟SaaS平台托管中…</p>
+                  <p class="capital-des">＊客户需要将项目资金预先托管至太火鸟SaaS，完成后项目将自动启动并进入项目管理阶段。</p>
                 </div>
               </el-collapse-item>
             </el-collapse>
@@ -340,31 +309,27 @@
 
     <el-dialog title="提交项目报价" v-model="takingPriceDialog" size="large" top="2%">
       <v-quote-submit :paramProp="quoteProp" :formProp="takingPriceForm" @form="quoteFormProp" @param="quoteProp"></v-quote-submit>
-    </el-dialog>
-
-    <el-dialog title="发票信息" v-model="invoiceDialog">
-      <el-form label-position="top" :model="invoiceForm" :rules="invoiceRuleForm" ref="invoiceRuleForm">
-        <el-form-item label="快递公司" prop="logistics_id" class="fullwidth">
-          <el-select v-model.number="invoiceForm.logistics_id" placeholder="请选择快递公司">
-            <el-option
-              v-for="(d, index) in logisticsOptions"
-              :label="d.label"
-              :key="index"
-              :value="d.value">
-            </el-option>
-          </el-select>
+      <!--
+      <el-form label-position="top" :model="takingPriceForm" :rules="takingPriceRuleForm" ref="takingPriceRuleForm">
+        <el-form-item label="项目报价" prop="price" label-width="200px">
+          <el-input type="text" v-model="takingPriceForm.price" :placeholder="" @blur="changePriceStyle(2)" @focus="changePriceStyle(1)" auto-complete="off">
+            <template slot="prepend">¥</template>
+          </el-input>
+          <div class="description red">* 实际报价单位为‘元’,如1万,请添写10000</div>
         </el-form-item>
-        <el-form-item label="快递单号" prop="logistics_number">
-          <el-input v-model="invoiceForm.logistics_number"></el-input>
+        <el-form-item label="报价说明" prop="summary" label-width="80px">
+          <el-input type="textarea" v-model="takingPriceForm.summary" :autosize="{ minRows: 5, maxRows: 8}"
+                    auto-complete="off"></el-input>
         </el-form-item>
         <div class="taking-price-btn">
-          <el-button @click="invoiceDialog = false">取 消</el-button>
-          <el-button type="primary" :loading="sendInvoiceLoadingBtn" class="is-custom"
-                     @click="sendInvoiceSubmit('invoiceRuleForm')">确 定
+          <el-button @click="takingPriceDialog = false">取 消</el-button>
+          <el-button type="primary" :loading="isTakingLoadingBtn" class="is-custom"
+                     @click="takingPriceSubmit('takingPriceRuleForm')">确 定
           </el-button>
         </div>
 
       </el-form>
+      -->
     </el-dialog>
 
     <el-dialog
@@ -393,10 +358,9 @@
 
 <script>
   import api from '@/api/api'
-  import typeData from '@/config'
   import vItemProgress from '@/components/block/ItemProgress'
   const vQuoteSubmit = () => import('@/components/block/QuoteSubmit')
-  const vQuoteView = () => import('@/components/block/QuoteView')
+const vQuoteView = () => import('@/components/block/QuoteView')
   export default {
     name: 'vcenter_item_show',
     components: {
@@ -418,7 +382,6 @@
         info: {},
         quotation: null,
         contract: null,
-        invoice: [],
         isLoadingBtn: false,
         selectCompanyCollapse: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '11', '12', '15'],
         statusIconUrl: null,
@@ -471,18 +434,6 @@
         },
         quota: {},
         quotaDialog: false,
-        invoiceDialog: false,
-        invoiceForm: {},
-        invoiceRuleForm: {
-          logistics_id: [
-            {type: 'number', required: true, message: '请选择快递公司', trigger: 'change'}
-          ],
-          logistics_number: [
-            {required: true, message: '请添写快递单号', trigger: 'blur'}
-          ]
-        },
-        sendInvoiceLoadingBtn: false,
-        currentInvoiceId: 0,
         msg: ''
       }
     },
@@ -694,48 +645,6 @@
             self.$message.error(error.message)
           })
       },
-      // 开发票弹层
-      sendInvoiceBtn(payType, stage) {
-        let item = this.invoceSelect(payType, stage)
-        if (!item) {
-          this.$message.error('获取发票信息失败!')
-          return false
-        }
-        this.invoiceForm.id = item.id
-        this.invoiceDialog = true
-      },
-      // 发票状态
-      invoceStat(payType, stage) {
-        let item = this.invoceSelect(payType, stage)
-        if (!item) {
-          return 0
-        } else {
-          return item.status
-        }
-      },
-      // 根据条件返回发票信息
-      invoceSelect(payType, stage) {
-        if (this.invoice.length === 0) {
-          return null
-        }
-        for (let i = 0; i < this.invoice.length; i++) {
-          let item = this.invoice[i]
-          if (item.type === 2) {
-            continue
-          }
-          if (item.pay_type !== payType) {
-            continue
-          }
-          if (payType === 1) {
-            return item
-          } else if (payType === 2) {
-            if (item.item_stage_id === stage) {
-              return item
-            }
-          }
-        }
-        return null
-      },
       // 确认项目完成
       sureItemSubmit() {
         let self = this
@@ -760,28 +669,6 @@
       // 新增／编辑合同
       contractBtn() {
         this.$router.push({name: 'vcenterContractSubmit', params: {item_id: this.item.id}})
-      },
-      // 确认发票发送
-      sendInvoiceSubmit() {
-        let row = {
-          'id': this.invoiceForm.id,
-          'logistics_id': this.invoiceForm.logistics_id,
-          'logistics_number': this.invoiceForm.logistics_number
-        }
-        this.sendInvoiceLoadingBtn = true
-        this.$http.put(api.invoiceDesignTrueSend, row)
-          .then((response) => {
-            this.sendInvoiceLoadingBtn = false
-            if (response.data.meta.status_code === 200) {
-              this.invoiceDialog = false
-            } else {
-              this.$message.error(response.data.meta.message)
-            }
-          })
-          .catch((error) => {
-            this.$message.error(error.message)
-            this.sendInvoiceLoadingBtn = false
-          })
       },
       // 开始项目
       beginItem() {
@@ -919,30 +806,11 @@
         }
         return cnt
       },
-      // 应打首付款金额（首付款 - 佣金 - 税点）
-      firstRestPayment() {
-        if (this.contract) {
-          return parseFloat(this.contract.first_payment).sub(parseFloat(this.contract.commission).add(parseFloat(this.contract.tax_price)))
-        }
-        return 0
-      },
       isMob() {
         return this.$store.state.event.isMob
       },
       stageUploadBtnMsg() {
         return '上传附件'
-      },
-      // 快递信息
-      logisticsOptions() {
-        let items = []
-        for (let i = 0; i < typeData.LOGISTICS_OPTIONS.length; i++) {
-          let item = {
-            value: typeData.LOGISTICS_OPTIONS[i]['id'],
-            label: typeData.LOGISTICS_OPTIONS[i]['name']
-          }
-          items.push(item)
-        }
-        return items
       }
     },
     watch: {
@@ -985,14 +853,11 @@
       self.$http.get(api.designItemId.format(id), {})
         .then(function (response) {
           if (response.data.meta.status_code === 200) {
-            console.log(response.data.data)
+            console.log(response.data.data.item)
             self.item = response.data.data.item
             // self.info = response.data.data.info
             if (response.data.data.evaluate) {
               self.evaluate = response.data.data.evaluate
-            }
-            if (response.data.data.invoice && response.data.data.invoice.length > 0) {
-              self.invoice = response.data.data.invoice
             }
             self.contract = response.data.data.contract
             if (self.contract) {
@@ -1322,7 +1187,7 @@
 
   .banner h1 {
     padding-top: 10px;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     color: #222;
   }
 
@@ -1412,7 +1277,7 @@
 
   .item-logo .p-title {
     line-height: 50px;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     font-weight: 500;
   }
 
@@ -1445,7 +1310,7 @@
 
   .item-title .p-title {
     color: #333;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     font-weight: bold;
     line-height: 50px;
     margin-bottom: 8px;
@@ -1769,7 +1634,7 @@
     .btn-quo button {
       width: 100%
     }
-
+    
     .btn-quo button:nth-child(2) {
       margin: 20px 0 0 0
     }
@@ -1794,13 +1659,6 @@
 </style>
 
 <style>
-  /*改变步骤线的大小*/
-  .el-step__head{
-    width: 12px !important;
-    height: 12px !important;
-    /*line-height:12px !important;*/
-    vertical-align: baseline !important;
-  }
   .el-step__head.is-text.is-process {
     color: #FFF;
     background-color: #00ac84!important;
@@ -1809,47 +1667,26 @@
 
   .el-step__head .el-step__line.is-vertical  {
     position: absolute;
-    top: 12px;
-    left: 5px;
+    top: 28px;
+    left: 13px;
   }
 
   .is-process .el-step__line.is-vertical  {
-    background-color: #00ac84 !important;
+    background-color: #00ac84;
   }
 
   .el-step__head .el-step__icon {
-    line-height: 12px;
-    display: none;
-  }
-  /*三个行高 start*/
-  .el-step__title is-success{
-    line-height: 15px !important;
+    line-height: 24px;
   }
   .el-step__main .el-step__title.is-process {
-    line-height: 15px !important;
     color: #00ac84
   }
   .el-step__main .el-step__title.is-wait {
-    line-height: 15px !important;
     color: #999;
   }
-  /*end*/
-  /*小屏的定位 start*/
-  @media screen and (max-width: 767px){
-    .el-step__line.is-horizontal {
-      top: 6px !important;
-      left: 12px !important;
-      background-color: #00ac84 !important;
-    }
-    /*end*/
-
-  }
-
-
-.el-step .el-step__head.is-text.is-wait {
-    opacity: 0.5;
-    background: #E6E6E6;
-    /*border-color: #ededed;*/
+  .el-step .el-step__head.is-text.is-wait {
+    color: #d2d2d2;
+    border-color: #ededed;
   }
   .is-wait .el-step__line {
     background-color: #ededed

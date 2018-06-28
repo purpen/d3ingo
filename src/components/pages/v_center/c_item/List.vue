@@ -230,11 +230,6 @@
                       </div>
 
                     </div>
-                    <p class="btn" v-if="d.item.status === 9">
-                      <el-button class="is-custom" size="small" @click="sureBeginBtn" :index="index" :item_id="d.item.id"
-                                type="primary">确认开始
-                      </el-button>
-                    </p>
                     <p v-if="d.item.is_show_view">
                       <el-button class="is-custom" size="small" @click="showView2" :index="index" :item_id="d.item.id"
                                 type="primary">查看详情
@@ -467,7 +462,7 @@
         let index = parseInt(event.currentTarget.getAttribute('index'))
 
         let self = this
-        self.$http({method: 'post', url: api.designItems2tartId.format(itemId), data: {}})
+        self.$http({method: 'post', url: api.designItemsStartId.format(itemId), data: {}})
           .then(function (response) {
             if (response.data.meta.status_code === 200) {
               self.designItems2[index].item.status = 11
@@ -513,7 +508,7 @@
                 let showView2 = false
                 let status = item.item.status
                 if (item.item.status >= 5) showPrice = true
-                if (status === 7 || status === 8 || status === 11 || status === 15 || status === 18 || status === 20 || status === 22) {
+                if (status === 7 || status === 8 || status === 9 || status === 11 || status === 15 || status === 18 || status === 20 || status === 22) {
                   showView2 = true
                 }
                 designItems2[i].item.show_price = showPrice

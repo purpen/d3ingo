@@ -203,6 +203,40 @@
             this.itemName = 'App设计'
           } else if (sid === 2) {
             this.itemName = '网页设计'
+          } else if (sid === 3) {
+            this.itemName = '界面设计'
+          } else if (sid === 4) {
+            this.itemName = '服务设计'
+          } else if (sid === 5) {
+            this.itemName = '用户体验咨询'
+          }
+        } else if (pid === 3) {
+          this.pName = '平面设计'
+          if (sid === 1) {
+            this.itemName = 'logo/VI设计'
+          } else if (sid === 2) {
+            this.itemName = '海报/宣传册'
+          } else if (sid === 3) {
+            this.itemName = '画册/书装'
+          }
+        } else if (pid === 4) {
+          this.pName = 'H5'
+          if (sid === 1) {
+            this.itemName = 'H5'
+          }
+        } else if (pid === 5) {
+          this.pName = '包装设计'
+          if (sid === 1) {
+            this.itemName = '包装设计'
+          }
+        } else if (pid === 6) {
+          this.pName = '插画设计'
+          if (sid === 1) {
+            this.itemName = '商业插画'
+          } else if (sid === 2) {
+            this.itemName = '书藉插画'
+          } else if (sid === 3) {
+            this.itemName = '形象/IP插画'
           }
         }
 
