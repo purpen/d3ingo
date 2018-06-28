@@ -62,7 +62,7 @@
             <el-button size="small" class="is-custom" @click="toServer">设计服务商入驻</el-button>
           </div>
           <el-menu class="el-menu-header" :default-active="menuactive" mode="horizontal" router>
-            <el-menu-item index="register" :route="menu.register" style="color: #FF5A5F;">注册</el-menu-item>
+            <el-menu-item index="register" :route="menu.register" class="fc-red">注册</el-menu-item>
             <el-menu-item index="login" :route="menu.login">登录</el-menu-item>
           </el-menu>
         </div>
@@ -207,9 +207,11 @@
           this.$http.get(api.messageGetMessageQuantity, {}).then(function (response) {
             if (response.data.meta.status_code === 200) {
               // sessionStorage.setItem('noticeCount', response.data.data.notice)
-              let msgCount = response.data.data
-              // 写入localStorage
-              self.$store.commit(MSG_COUNT, msgCount)
+              if (response.data) {
+                let msgCount = response.data.data
+                // 写入localStorage
+                self.$store.commit(MSG_COUNT, msgCount)
+              }
             } else {
               self.$message.error(response.data.meta.message)
             }

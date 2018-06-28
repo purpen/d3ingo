@@ -1,5 +1,6 @@
 <template>
   <div class="full-height">
+    <menu-sub status="info"></menu-sub>
     <div class="project-cover clearfix">
       <el-row class="project-item-box">
         <p class="title">请选择您需要的设计类型</p>
@@ -23,9 +24,13 @@
 </template>
 <script>
 import api from '@/api/api'
+import menuSub from '@/components/pages/projects/MenuSub'
 import {COMPANY_TYPE} from '@/config'
 export default {
   name: 'SelectType',
+  components: {
+    menuSub: menuSub
+  },
   data() {
     return {
       id: 0,

@@ -1,5 +1,6 @@
 <template>
   <div class="full-height">
+    <menu-sub status="select"></menu-sub>
     <div class="project-cover clearfix">
       <div class="project-item-box">
         <h3>选择设计方，发送项目需求</h3>
@@ -60,11 +61,13 @@
 </template>
 <script>
 import api from '@/api/api'
+import menuSub from '@/components/pages/projects/MenuSub'
 import ECharts from 'vue-echarts'
 export default {
   name: 'projectsCompare',
   components: {
-    ECharts
+    ECharts,
+    menuSub: menuSub
   },
   data() {
     let scores = [

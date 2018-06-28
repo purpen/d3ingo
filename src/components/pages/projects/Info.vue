@@ -1,5 +1,6 @@
 <template>
   <div class="full-height">
+    <menu-sub status="info"></menu-sub>
     <div class="project-cover clearfix">
       <div class="project-item-box">
         <h3>项目周期</h3>
@@ -72,12 +73,14 @@
 </template>
 <script>
 import api from '@/api/api'
+import menuSub from '@/components/pages/projects/MenuSub'
 import RegionPicker from '@/components/block/RegionPicker'
 import { CYCLE_OPTIONS, DESIGN_COST_OPTIONS, INDUSTRY } from '@/config'
 export default {
   name: 'projectInfo',
   components: {
-    RegionPicker
+    RegionPicker,
+    menuSub: menuSub
   },
   data() {
     return {

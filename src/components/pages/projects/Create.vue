@@ -1,5 +1,6 @@
 <template>
   <div class="full-height">
+    <menu-sub status="info"></menu-sub>
     <div class="project-cover">
       <div class="content">
         <h2>您需要设计什么？</h2>
@@ -11,8 +12,12 @@
 </template>
 <script>
 import api from '@/api/api'
+import menuSub from '@/components/pages/projects/MenuSub'
 export default {
   name: 'createProject',
+  components: {
+    menuSub: menuSub
+  },
   data() {
     return {
       id: 0,

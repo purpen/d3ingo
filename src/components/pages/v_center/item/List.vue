@@ -138,7 +138,7 @@
 
                   <div class="btn" v-show="d.item.status === 3">
                     <p class="margin-b-10">
-                      <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary">
+                      <el-button class="is-custom" @click="viewShow2(d.item.id)" size="small" type="primary">
                         选择设计公司
                       </el-button>
                     </p>
@@ -177,15 +177,14 @@
                       评价
                     </el-button>
                   </p>
-                  <p v-if="d.item.status === 2" class="btn margin-b-10"     
-                    v-show="d.item.is_view_show">
+                  <p v-if="d.item.status === 2 || d.item.status === 3" class="btn margin-b-10" v-show="d.item.is_view_show">
                     <el-button class="is-custom" @click="viewShow2(d.item.id)" size="small" type="primary">
                       查看详情
                     </el-button>
                   </p>
                   <p class="margin-b-10" v-show="d.item.is_view_show" v-else>
                     <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary">
-                      查看详情111
+                      查看详情
                     </el-button>
                   </p>
                   <div class="btn" v-show="d.item.is_close">
