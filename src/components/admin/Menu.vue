@@ -29,8 +29,8 @@
         </el-submenu>
         <el-submenu index="7">
           <template slot="title"><i class="fa fa-money"></i> 发票管理</template>
-            <el-menu-item index="putReceiptList" :route="{name: 'adminReceiveInvoicetList'}">待收</el-menu-item>
-            <el-menu-item index="sendReceiptList" :route="{name: 'adminIssueInvoicetList'}">待发</el-menu-item>
+            <el-menu-item index="adminReceiveInvoicetList" :route="{name: 'adminReceiveInvoicetList'}">待收</el-menu-item>
+            <el-menu-item index="adminIssueInvoicetList" :route="{name: 'adminIssueInvoicetList'}">待发</el-menu-item>
         </el-submenu>
         <el-submenu index="8">
           <template slot="title"><i class="fa fa-clipboard"></i> 案例管理</template>
