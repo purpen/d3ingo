@@ -88,14 +88,14 @@
           </div>
         </li>
       </ul>
-      <div class="files-footer">
+      <!-- <div class="files-footer">
         <button class="red-button el-button--default">
           发送给客户
         </button>
-        <!-- <el-button disabled>
+        <el-button disabled>
           已发送
-        </el-button> -->
-      </div>
+        </el-button>
+      </div> -->
     </div>
   </section>
 </template>

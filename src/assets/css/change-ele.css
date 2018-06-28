@@ -487,3 +487,6 @@
   .el-textarea__inner:hover .MeetingCenter {
     border: none;
   }
+  .form-footer .el-button + .el-button {
+    margin-right: 0;
+  }
