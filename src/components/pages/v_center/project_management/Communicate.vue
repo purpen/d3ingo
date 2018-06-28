@@ -66,9 +66,9 @@
                 </div>
               </li>
             </ul>
-          <el-row :class="['MeetingCenter',{
-            'border-top': event!=='create'}]" @click.native="addBtn()" :style="{
-          paddingTop:event!=='create'?'10px':'0px'}">
+          <el-row class="MeetingCenter" @click.native="addBtn()" :style="{
+            borderTop:event==='create'?'1px solid #e6e6e6':'none',
+          paddingTop:'5px'}">
               <el-col class="fx">
                 <div>
                <el-input  placeholder="请输入会议内容" type="textarea" :autosize="{ minRows: 4, maxRows: 10}"  v-model="form.content" v-if=" event !== 'create'?false : true " :maxlength="800" class="noborder"></el-input>
@@ -176,16 +176,33 @@
                 <img :src=" userimg " alt="">
                 <ul class="updata-user">
                   <li v-for="(user,indexus) in d.selected_user" 
-                  :key="indexus" v-if="d.selected_user&&d.selected_user.length > 0" 
+                  :key="indexus" v-if="d.selected_user&&d.selected_user.length > 0&&indexus<10" 
                   :style="{background:`url(${ user.logo_image.logo }) no-repeat center`,backgroundSize:`24px 24px`}"
                   >
                     <span v-if=" !user.logo_image.logo ">{{user.realnamehead}}</span>
                     <i :style="{background:`url(${ closered }) no-repeat center`}" @click="deleteGetimg(indexus,{type:'noadd'})"  v-if="d.isedit === 2"></i>
                   </li>
-                   <li v-if="d.isedit === 1&&d.selected_user&&d.selected_user.length>10" class="slice-user">+0</li>
+                  <li 
+                    v-if="d.isedit === 1&&d.selected_user&&d.selected_user.length>10 "
+                    class="slice-user"
+                    >
+                    <el-tooltip class="item" effect="dark" placement="top">
+                      <div slot="content">
+                        <p
+                          v-for="(u,indexu) in d.selected_user" 
+                          :key="indexu"
+                          v-if="d.selected_user&&d.selected_user.length > 0&&indexu>=10"
+                          >
+                          {{u.realname}}
+                        </p>
+                      </div>
+                      <a>+{{d.selected_user.length - 10}}</a>
+                    </el-tooltip>
+                    
+                  </li>
                 </ul>
               </li>
-             </ul>
+            </ul>
              <ul class="useredit" v-if="d.isedit === 2">
                <li><img :src=" userimg " alt=""></li>
               <li >
@@ -227,7 +244,7 @@
                 </ul>
               </li>
              </ul>
-            <el-row class="MeetingCenter">
+            <el-row class="MeetingCenter" :style="{paddingTop:'5px'}">
               <el-col class="fx">
                  <el-input  size="small" v-if ="d.isedit === 2" v-model=" d.content " type="textarea" :autosize="{ minRows: 4, maxRows: 10}" :maxlength="800" class="noborder"></el-input>
                  <p v-else>{{ d.content }}</p>
@@ -1108,9 +1125,6 @@
     margin-bottom:20px;
     min-height: 70px;
     border-top: 1px solid #e6e6e6;
-  }
-  .MeetingCenter:hover {
-    border-top: 1px solid transparent;
   }
   .border-top {
     border-top: 1px solid transparent;
