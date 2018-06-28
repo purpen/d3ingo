@@ -156,11 +156,6 @@
                       支付项目款
                     </el-button>
                   </p>
-                  <p class="btn" v-show="d.item.status === 8">
-                    <el-button class="is-custom" @click="secondPay" :item_id="d.item.id" size="small" type="primary">
-                      支付项目款
-                    </el-button>
-                  </p>
                   <p class="btn" v-show="d.item.status === 15">
                     <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary">
                       验收项目
@@ -415,7 +410,7 @@
                     showOffer = true
                   }
                   let showView = false
-                  if (status === 2 || status === 5 || status === 9 || status === 11 || status === 20 || status === 22) {
+                  if (status === 2 || status === 5 || status === 8 || status === 9 || status === 11 || status === 20 || status === 22) {
                     showView = true
                   }
                   let isClose = false

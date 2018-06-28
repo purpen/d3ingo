@@ -28,7 +28,7 @@
       // 下载
       downBtn() {
         let stages = []
-        let stageInfo = []
+        let subStages = []
         for (let i = 0; i < this.form.item_stage.length; i++) {
           let d = this.form.item_stage[i]
           let content = ''
@@ -54,25 +54,21 @@
           stages.push(item)
         }
 
-        for (let i = 0; i < this.form.stages.length; i++) {
-          let d = this.form.stages[i]
-          let item = {
+        for (let x = 0; x < this.form.stages.length; x++) {
+          let d1 = this.form.stages[x]
+          let item1 = {
             text: [
-              {text: (i + 2) + '、第'},
-              {text: '    ' + d.sort + '   ', style: 'write'},
-              {text: '阶段'},
-              {text: '    ' + d.title + '   ', style: 'write'},
-              {text: '确认后，甲方在三个工作日内向丙方支付总设计费用款项'},
-              {text: '    ' + d.percentage + '   ', style: 'write'},
-              {text: '%： ¥'},
-              {text: '    ' + d.amount + '   ', style: 'write'},
-              {text: '（RMB）元，丙方收到款项后三个工作日内通知乙方开税票，收到乙方税票后三个工作日内，将剩余款项¥ '},
-              {text: '    ' + d.amount + '   ', style: 'write'},
-              {text: ' （RMB）元一次性全额支付给乙方。'}
+              {text: (x + 2) + '、'},
+              {text: '     ' + d1.title + '    ', style: 'write'},
+              {text: '确认后，支付该项目阶段款的'},
+              {text: '  ' + d1.percentage + '  ', style: 'write'},
+              {text: '%，即人民币'},
+              {text: '    ' + d1.amount + '   ', style: 'write'},
+              {text: '整(￥)。'}
             ],
             style: 'p'
           }
-          stageInfo.push(item)
+          subStages.push(item1)
         }
 
         let dd = {
@@ -99,29 +95,23 @@
             {text: '联系人: ' + this.form.thn_company_legal_person, style: 'p'},
             {text: '电话: ' + this.form.thn_company_phone, style: 'p'},
 
-            {text: '依照中华人民共和国法律及本行业相关法规条例之规定，甲乙丙三方本着平等自愿和互惠互利的原则，就乙方通过丙方平台接受委托为甲方提供设计事宜，约定如下：', style: 'p'},
-
-            {text: '一、项目名称和费用', style: 'title'},
-            {text: '1、项目名称：', style: 'p'},
-            {text: this.form.title, style: 'p'},
-            {text: '', style: 'p'},
-            {text: '2、费用：', style: 'p'},
+            {text: '项目内容和费用', style: 'title'},
             {
               text: [
-                {text: '本合同设计费用总额为人民币'},
-                {text: '     ' + this.form.total_han + '     ', style: 'write'},
-                {text: '整（小写：'},
+                {text: '依照中华人民共和国法律及本行业相关法规条例之规定，甲乙丙三方本着平等自愿和互惠互利的原则，就乙方通过丙方平台接受委托为甲方提供'},
+                {text: '     ' + this.form.title + '     ', style: 'write'},
+                {text: '设计。本合同设计费用总额为人民币'},
                 {text: '     ' + this.form.total + '     ', style: 'write'},
-                {text: '元），丙方作为平台收取全部项目费的'},
+                {text: '整（￥元），丙方作为平台收取全部项目费的'},
                 {text: '     ' + this.form.commission_rate + '     ', style: 'write'},
                 {text: '%，也就是人民币(￥)'},
                 {text: '     ' + this.form.commission + '     ', style: 'write'},
-                {text: '元作为佣金。'}
+                {text: '整作为佣金。三方共同签署此项设计委托合同（以下简称合同），甲方、乙方和丙方合称为合同三方（以下简称三方）。'}
               ],
               style: 'p'
             },
 
-            {text: '二、项目交付内容及工作周期', style: 'title'},
+            {text: '项目交付内容及工作周期', style: 'title'},
             {
               text: [
                 {text: '经双方协商，本项目共分'},
@@ -132,32 +122,39 @@
             },
             stages,
 
-            {text: '三、付款方式', style: 'title'},
-            {text: '甲方应将每个阶段的项目费用在对应阶段确认完成后支付给丙方，丙方按以下约定向乙方支付设计费，如果甲乙双方合作中出现争议，将由平台冻结当前资金，待纠纷解决后再按照法律法规相应规定执行。 ', style: 'p'},
-            {text: '设计过程中需开具的发票，按三方实际资金往来的具体金额，依中华人民共和国税务法操作执行，明细为设计费。丙方为一般纳税人，若乙方为小规模纳税人，则乙方给丙方开票涉及的差额税费由丙方从设计费用中扣除并代缴。 ', style: 'p'},
+            {text: '付款方式', style: 'title'},
+            {text: '甲方以银行支付方式或其他方式支付项目总金额到丙方，丙方按照以下约定的付款时间和金额分阶段向乙方支付设计费： ', style: 'p'},
             {
               text: [
-                {text: '1、合同签定后，甲方在', style: 'p'},
+                {text: '1、本合同签订后'},
                 {text: '   ' + this.form.demand_pay_limit + '   ', style: 'write'},
-                {text: '个工作日内向丙方支付首付款项，即总设计费用款项', style: 'p'},
+                {text: '日内，甲方支付项目总金额到丙方托管；丙方收到款项后向乙方支付项目总金额首付款'},
                 {text: '   ' + this.form.first_payment_proportion_p + '   ', style: 'write'},
-                {text: '%： ¥'},
+                {text: '%，即人民币'},
                 {text: '   ' + this.form.first_payment + '   ', style: 'write'},
-                {text: '（RMB）元，丙方收到款项后三个工作日内通知乙方开税票，收到乙方税票后三个工作日内，将抽取全部佣金及税费后的剩余款项¥', style: 'p'},
-                {text: '   ' + this.form.first_rest_payment + '   ', style: 'write'},
-                {text: '（RMB）元一次性全额支付给乙方。', style: 'p'}
+                {text: '整(￥)。'}
               ],
               style: 'p'
             },
-            stageInfo,
+            subStages,
             {
               text: [
-                {text: '注：首付款收到后启动项目，尾款收到后提交所有文件。'}
+                {text: (this.form.sort + 2) + '、设计全部完成确认后，支付该项目总金额尾款'},
+                {text: '   ' + this.form.warranty_money_proportion_p + '   ', style: 'write'},
+                {text: '%，即人民币'},
+                {text: '   ' + this.form.warranty_money + '   ', style: 'write'},
+                {text: '整(￥)。'}
+              ],
+              style: 'p'
+            },
+            {
+              text: [
+                {text: '甲方支付的项目费用在当前阶段完成之前会由丙方托管，如果甲乙双方合作中出现争议，将由平台冻结当前资金，待纠纷解决后再按照法律法规相应规定执行。'}
               ],
               style: 'p'
             },
 
-            {text: '四、甲方责任与义务', style: 'title'},
+            {text: '甲方责任与义务', style: 'title'},
             {text: '1、以书面形式提出对本设计项目的要求及有关技术资料。在合作的全过程中，向乙方提供必要的咨询，并委派专人（对该项目的方案评审具有决定权）负责本项目的事务接洽和业务联系。', style: 'p'},
             {text: '2、配合乙方的设计工作，积极参与该项目设计每个阶段的结果评审，及时得出结论并确认给乙方。', style: 'p'},
             {text: '3、甲方的任何修改意见，应以书面形式通知给乙方（包括电子邮件）。', style: 'p'},
@@ -170,7 +167,7 @@
               style: 'p'
             },
 
-            {text: '五、乙方责任与义务', style: 'title'},
+            {text: '乙方责任与义务', style: 'title'},
             {text: '1、严格执行本合同条款，按甲方所提供的文件、资料和具体要求进行设计制作，未经甲方书面许可乙方无权擅自变更设计方案或者以任何理由拖延交付时间。', style: 'p'},
             {
               text: '2、由于审美标准的不确定性，甲方对乙方的外观设计方案若不满意，乙方有责任继续为甲方进行不超过3次（包含3次）的方案调整，而无须甲方支付任何额外费用。对于超过3次（不含3次）的方案调整，乙方每调整一次，甲方需额外增加外观设计费用10%的设计费用。',
@@ -186,7 +183,7 @@
             {text: '7、设计方案未最终确定之前，乙方可以拒绝甲方提出的任何形式的方案留存。', style: 'p'},
             {text: '8、在合同签订后，对于项目涉及内容略有调整的情况，甲、乙双方应友好协商解决。', style: 'p'},
 
-            {text: '六、知识产权', style: 'title'},
+            {text: '知识产权', style: 'title'},
             {
               text: '1、对因本合同产生的甲方选定方案，其全部知识产权由甲方所有。乙方保留设计者署名权。除甲方选定的方案外，落选方案的全部知识产权仍归乙方所有。 若甲方需要享有其他设计方案的知识产权时，需与乙方协商买断知识产权相关事宜。 ',
               style: 'p'
@@ -198,24 +195,24 @@
             },
             {text: '4、任何一方如遇政府法令或法律程序要求向第三方提供上述资料，可按规定提供，但应尽快将此项事实通知对方。', style: 'p'},
 
-            {text: '七、违约责任', style: 'title'},
+            {text: '违约责任', style: 'title'},
             {text: '1、如甲方对乙方在设计过程中工作内容不满意，有权中止本合同，不再继续支付剩余之款项，乙方亦不退还甲方已付款项。', style: 'p'},
             {text: '2、如设计过程中甲方不能积极配合乙方工作，严重影响乙方的工作安排，在收到乙方书面通知后仍不能积极配合，则乙方有权中止合同。', style: 'p'},
             {text: '3、如甲方不能按照合同规定支付给乙方各设计阶段的设计费用，乙方有权中止合同。', style: 'p'},
             {text: '4、如甲方未付清该合同全部设计款项，则该项目所有设计方案之知识产权仍归乙方所有。', style: 'p'},
             {text: '5、非因丙方原因导致本合同无法履行的，丙方收取的非因不予退还。', style: 'p'},
 
-            {text: '八、不可抗力', style: 'title'},
+            {text: '不可抗力', style: 'title'},
             {text: '1、本合同所指不可抗力包括地震、水灾、火灾、战争、政府行动、意外事件或其他各方所不能预见、不能避免并不能克服的事件。 ', style: 'p'},
             {text: '2、由于不可抗力原因致使本合同无法履行时，无法履行合同义务的一方应在15日内将不能履行合同的事实通知另一方，本合同自动终止。', style: 'p'},
             {text: '3、由于不可抗力原因致使本合同项目开发中断，项目交付日期及付款日期相应顺延，各方不承担违约责任。如中断超过30日，本合同自动终止。', style: 'p'},
 
-            {text: '九、争议解决', style: 'title'},
+            {text: '争议解决', style: 'title'},
             {
               text: '本合同签订后，未经三方同意不得单方面中止，否则由责任方承担造成的损失。与合同有关的争议或执行中产生的争议将通过友好协商解决。如不能达成一致，可以直接向丙方所在地人民法院起诉。',
               style: 'p'
             },
-            {text: '十、其它', style: 'title'},
+            {text: '其它', style: 'title'},
             {
               text: '1、本合同如有不尽事宜，须经三方协商补充规定，补充规定与合同具有同等效力。',
               style: 'p'
@@ -299,8 +296,8 @@
             if (response.data.meta.status_code === 200) {
               let item = response.data.data
               if (item) {
-                if (item.version === 0) {
-                  that.$router.push({name: 'vcenterContractDown0', query: {unique_id: uniqueId}})
+                if (item.version === 1) {
+                  that.$router.push({name: 'vcenterContractDown', query: {unique_id: uniqueId}})
                   return false
                 }
                 item.stages = []
@@ -326,7 +323,7 @@
                     item.stages.push(newStageRow)
                   }
                 }
-                item.first_rest_payment = parseFloat(parseFloat(item.first_payment).sub(parseFloat(item.commission).add(parseFloat(item.tax_price))))
+
                 item.warranty_money_proportion_p = item.warranty_money_proportion * 100
                 item.first_payment_proportion_p = item.first_payment_proportion * 100
 

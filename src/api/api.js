@@ -45,6 +45,7 @@ export default {
   demandAlipay: '/pay/demandAliPay', // GET 支付保证金-支付宝
   demandJdPay: '/pay/demandJdPay', // GET 支付保证金-京东
   demandWxPay: '/pay/demandWxPay', // GET 支付保证金-微信
+  firstOrderItemId: '/pay/firstPayOrder/{0}', // GET 创建尾款支付订单
   endPayOrderItemId: '/pay/endPayOrder/{0}', // GET 创建尾款支付订单
   secondAlipayId: '/pay/itemAliPay/{0}', // GET 支付尾款-支付宝
   payItemBankPayId: '/pay/itemBankPay/{0}', // GET 支付项目尾款--公对公银行转账
@@ -139,6 +140,10 @@ export default {
 
   // 分类管理
   categoryList: '/classification/list', // GET 分类列表
+
+  // 发票信息
+  invoiceDesignTrueSend: '/invoice/designTrueSend', // PUT  设计公司确认发票已开出
+  invoiceDemandTrueGet: '/invoice/demandTrueGet',   // PUT 需求公司确认收到发票
 
   // 附件操作
   asset: '/upload/deleteFile/{0}', // 删除 | 查看图片

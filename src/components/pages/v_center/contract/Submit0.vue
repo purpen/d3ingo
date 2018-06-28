@@ -99,15 +99,13 @@
                 <el-input v-model="form.item_content" placeholder="项目设计内容" size="small"></el-input>
               </el-form-item>
               -->
-              <p>依照中华人民共和国法律及本行业相关法规条例之规定，甲乙丙三方本着平等自愿和互惠互利的原则，就乙方通过丙方平台接受委托为甲方提供设计事宜，约定如下：</p>
 
-              <p class="title">一、项目名称和费用</p>
-              <p>1、项目名称</p>
-              <p><span class="bottom-border" type="text" disabled v-html="form.title"></span></p>
-              <p>&nbsp;</p>
-              <p>2、费用</p>
-              <p>本合同设计费用总额为人民币<span class="bottom-border" type="text" disabled v-html="form.total"></span> 元，丙方作为平台收取全部项目费的<span class="bottom-border" type="text" disabled v-html="form.commission_rate"></span>%，也就是人民币<span class="bottom-border" type="text" disabled v-html="form.commission"></span>元作为佣金。</p>
-              <p>注：本合同中所有涉及费用金额均为含税。</p>
+              <p class="title">项目内容和费用</p>
+              <p>依照中华人民共和国法律及本行业相关法规条例之规定，甲乙丙三方本着平等自愿和互惠互利的原则，就乙方通过丙方平台接受委托为甲方提供
+              <span class="bottom-border" type="text" disabled v-html="form.title"></span>
+              设计。本合同设计费用总额为人民币(￥)
+              <span class="bottom-border" type="text" disabled v-html="form.total"></span> 整，丙方作为平台收取全部项目费的<span class="bottom-border" type="text" disabled v-html="form.commission_rate"></span>%，也就是人民币(￥)<span class="bottom-border" type="text" disabled v-html="form.commission"></span>整作为佣金。三方共同签署此项设计委托合同（以下简称合同），甲方、乙方和丙方合称为合同三方（以下简称三方）。</p>
+
 
               <div class="blank20"></div>
 
@@ -118,13 +116,13 @@
                 <span class="bottom-border" type="text" disabled v-html="form.first_payment"></span>
                 (首付款占比总项目额度的40%); 阶段金额(¥):
                 <span class="bottom-border" type="text" disabled v-html="form.stage_money"></span>
-                (阶段金额占比总项目额度的60%); 尾款(¥):
+                (阶段金额占比总项目额度的50%); 尾款(¥):
                 <span class="bottom-border" type="text" disabled v-html="form.warranty_money"></span>
                 (尾款占比总项目额度的10%)
               </p>
               -->
 
-              <p class="title">二、项目交付内容及工作周期</p>
+              <p class="title">项目交付内容及工作周期</p>
               <p>经甲乙双方协商，本项目共分 <span class="bottom-border" type="text" disabled v-html="form.sort"></span> 个阶段进行，细节流程与时间节点如下：</p>
 
               <el-row>
@@ -147,7 +145,7 @@
 
               <div v-for="(d, index) in form.stages" :key="index">
 
-                <p class="title">第{{ index + 1 }}阶段</p>
+                <p class="sub-title">第{{ index + 1 }}阶段</p>
                 <input type="hidden" v-model.number="form.stages[index].sort"/>
 
                 <el-row :gutter="6">
@@ -195,10 +193,10 @@
                     <el-form-item
                       :prop="'stages.' + index + '.amount'"
                       :rules="{
-                      required: true, message: '请添写阶段金额', trigger: 'blur'
+                      type: 'number', required: true, message: '请添写阶段金额', trigger: 'blur'
                     }"
                     >
-                      <el-input v-model="form.stages[index].amount" disabled placeholder="" size="small">
+                      <el-input v-model.number="form.stages[index].amount" disabled placeholder="" size="small">
                         <template slot="append">元</template>
                       </el-input>
                     </el-form-item>
@@ -226,24 +224,17 @@
                 <div class="add-substage" @click="addSubStage" :index="index"><i class="fa fa-plus-circle"
                                                                                  aria-hidden="true"></i> 添加子内容
                 </div>
-                <div class="blank20"></div>
+
               </div>
 
-              <p class="title">三、付款方式</p>
-              <p>甲方应将每个阶段的项目费用在对应阶段确认完成后支付给丙方，丙方按以下约定向乙方支付设计费，如果甲乙双方合作中出现争议，将由平台冻结当前资金，待纠纷解决后再按照法律法规相应规定执行。</p>
-              <p>&nbsp;</p>
-              <p>设计过程中需开具的发票，按三方实际资金往来的具体金额，依中华人民共和国税务法操作执行，明细为设计费。丙方为一般纳税人，若乙方为小规模纳税人，则乙方给丙方开票涉及的差额税费由丙方从设计费用中扣除并代缴。</p>
-              <p>&nbsp;</p>
-              
-              <p>1、合同签定后，甲方在<span class="bottom-border" type="text" disabled v-html="form.demand_pay_limit"></span>个工作日内向丙方支付首付款项，即总设计费用款项40%： ¥ <span class="bottom-border" type="text" disabled v-html="form.first_payment"></span>（RMB）元，丙方收到款项后三个工作日内通知乙方开税票，收到乙方税票后三个工作日内，将抽取全部佣金及税费后的剩余款项¥ <span class="bottom-border" type="text" disabled v-html="form.first_rest_payment"></span>（RMB）元一次性全额支付给乙方。</p>
-              <p>&nbsp;</p>
-              <div v-for="(d, index) in form.stages" :key="index + 100">
-                <p>{{ index + 2 }}、第{{ d.sort }}阶段 <span class="bottom-border" type="text" disabled v-html="d.title"></span> 确认后，甲方在三个工作日内向丙方支付总设计费用款项 <span class="bottom-border" type="text" disabled v-html="d.percentage"></span> %： ¥ <span class="bottom-border" type="text" disabled v-html="d.amount"></span>（RMB）元，丙方收到款项后三个工作日内通知乙方开税票，收到乙方税票后三个工作日内，将剩余款项¥ <span class="bottom-border" type="text" disabled v-html="d.amount"></span>（RMB）元一次性全额支付给乙方。</p>
-                <p>&nbsp;</p>
-              </div>
-              <p>注：首付款收到后启动项目，尾款收到后提交所有文件。</p>
+              <p class="title">付款方式</p>
+              <p>甲方以银行支付方式或其他方式支付项目总金额到丙方，丙方按照以下约定的付款时间和金额分阶段向乙方支付设计费：</p>
+              <p>1、本合同签订后<span class="bottom-border" type="text" disabled v-html="form.demand_pay_limit"></span>日内，甲方支付项目总金额到丙方托管；丙方收到款项后向乙方支付项目总金额首付款 40 %，即人民币 <span class="bottom-border" type="text" disabled v-html="form.first_payment"></span> 整(￥)。</p>
+              <p>2、阶段金额占项目总金额的 50 %，即人民币 <span class="bottom-border" type="text" disabled v-html="form.stage_money"></span> 整(￥)。</p>
+              <p>3、设计全部完成经甲方确认后，支付该项目总金额尾款 10 %，即人民币 <span class="bottom-border" type="text" disabled v-html="form.warranty_money"></span> 整(￥)。</p>
+              <p>甲方支付的项目费用在当前阶段完成之前会由丙方托管，如果甲乙双方合作中出现争议，将由平台冻结当前资金，待纠纷解决后再按照法律法规相应规定执行。</p>
 
-              <p class="title">四、甲方责任与义务 </p>
+              <p class="title">甲方责任与义务 </p>
               <p>1、以书面形式提出对本设计项目的要求及有关技术资料。在合作的全过程中，向乙方提供必要的咨询，并委派专人（对该项目的方案评审具有决定权）负责本项目的事务接洽和业务联系。</p>
               <p>2、配合乙方的设计工作，积极参与该项目设计每个阶段的结果评审，及时得出结论并确认给乙方。</p>
               <p>3、甲方的任何修改意见，应以书面形式通知给乙方（包括电子邮件）。</p>
@@ -253,7 +244,7 @@
               <p>7、在甲方实际生产之前，甲方的供应生产商应对结构设计文档进行仔细分析，如乙方结构设计存在不合理之处，应给乙方以书面确认，及时沟通处理。</p>
               <p>8、在乙方为甲方提供最终设计方案后，若因甲方产品结构或用途等而变更设计方案，视其为新方案设计，甲方应向乙方支付完成现阶段设计费用后，乙方将按实际工作量另行对修改工作收取费用。</p>
 
-              <p class="title">五、乙方责任与义务</p>
+              <p class="title">乙方责任与义务</p>
               <p>1、严格执行本合同条款，按甲方所提供的文件、资料和具体要求进行设计制作，未经甲方书面许可乙方无权擅自变更设计方案或者以任何理由拖延交付时间；</p>
               <p>
                 2、由于审美标准的不确定性，甲方对乙方的外观设计方案若不满意，乙方有责任继续为甲方进行不超过3次（包含3次）的方案调整，而无须甲方支付任何额外费用。对于超过3次（不含3次）的方案调整，乙方每调整一次，甲方需额外增加外观设计费用10%的设计费用；</p>
@@ -265,7 +256,7 @@
               <p>7、设计方案未最终确定之前，乙方可以拒绝甲方提出的任何形式的方案留存；</p>
               <p>8、在合同签订后，对于项目涉及内容略有调整的情况，甲、乙双方应友好协商解决。</p>
 
-              <p class="title">六、知识产权</p>
+              <p class="title">知识产权</p>
               <p>
                 1、对因本合同产生的甲方选定方案，其全部知识产权由甲方所有。乙方保留设计者署名权。除甲方选定的方案外，落选方案的全部知识产权仍归乙方所有。 若甲方需要享有其他设计方案的知识产权时，需与乙方协商买断知识产权相关事宜。</p>
               <p>2、乙方保证其设计方案不侵犯任何第三方的知识产权。</p>
@@ -273,23 +264,23 @@
                 3、乙方对本合同的内容、设计成果及其涉及的文档、数据资料负有保密义务，未经甲方许可，不得向任何第三方泄密。保密期限为一年（从本合同签订之日起计算），保密期间，落选的备用方案的文档资料不能泄露给第三方。</p>
               <p>4、任何一方如遇政府法令或法律程序要求向第三方提供上述资料，可按规定提供，但应尽快将此项事实通知对方。</p>
 
-              <p class="title">七、违约责任</p>
+              <p class="title">违约责任</p>
               <p>1、如甲方对乙方在设计过程中工作内容不满意，有权中止本合同，不再继续支付剩余之款项，乙方亦不退还甲方已付款项。</p>
               <p>2、如设计过程中甲方不能积极配合乙方工作，严重影响乙方的工作安排，在收到乙方书面通知后仍不能积极配合，则乙方有权中止合同。</p>
               <p>3、如甲方不能按照合同规定支付给乙方各设计阶段的设计费用，乙方有权中止合同。</p>
               <p>4、如甲方未付清该合同全部设计款项，则该项目所有设计方案之知识产权仍归乙方所有。</p>
               <p>5、非因丙方原因导致本合同无法履行的，丙方收取的非因不予退还。</p>
 
-              <p class="title">八、不可抗力</p>
+              <p class="title">不可抗力</p>
               <p>1、本合同所指不可抗力包括地震、水灾、火灾、战争、政府行动、意外事件或其他各方所不能预见、不能避免并不能克服的事件。</p>
               <p>2、由于不可抗力原因致使本合同无法履行时，无法履行合同义务的一方应在15日内将不能履行合同的事实通知另一方，本合同自动终止。</p>
               <p>3、由于不可抗力原因致使本合同项目开发中断，项目交付日期及付款日期相应顺延，各方不承担违约责任。如中断超过30日，本合同自动终止。</p>
 
-              <p class="title">九、争议解决</p>
+              <p class="title">争议解决</p>
               <p>
                 1、本合同签订后，未经三方同意不得单方面中止，否则由责任方承担造成的损失。与合同有关的争议或执行中产生的争议将通过友好协商解决。如不能达成一致，可以直接向丙方所在地人民法院起诉。</p>
 
-              <p class="title">十、其它</p>
+              <p class="title">其它</p>
               <p>1、本合同如有不尽事宜，须经三方协商补充规定，补充规定与合同具有同等效力。</p>
               <p>2、本合同一式三份，甲乙丙三方各持一份，自签订之日起生效，具同等法律效力。</p>
 
@@ -436,7 +427,7 @@
               let stageRow = row.stages[i]
               let newStageRow = {}
               totalPer = totalPer.add(stageRow.percentage)
-              totalAmount = parseFloat(totalAmount.add(parseFloat(stageRow.amount)))
+              totalAmount = totalAmount.add(stageRow.amount)
               newStageRow.sort = stageRow.sort
               newStageRow.title = stageRow.title
               newStageRow.amount = stageRow.amount
@@ -445,11 +436,11 @@
               newStageRow.content = stageRow.content
               row.item_stage.push(newStageRow)
             }
-            if (totalPer !== 60) {
-              that.$message.error('阶段比例之和应为60!')
+            if (totalPer !== 50) {
+              that.$message.error('阶段比例之和应为50!')
               return false
             }
-            let stagePrice = that.form.stage_money
+            let stagePrice = parseFloat(row.total.sub(parseFloat(row.warranty_money).add(parseFloat(row.first_payment))))
             if (totalAmount !== stagePrice) {
               that.$message.error('阶段金额总和不正确！')
               return false
@@ -525,9 +516,9 @@
         let self = this
         this.$refs['ruleForm'].validateField('stages.' + index + '.percentage', function (error) {
           if (!error) {
-            let total = self.form.total
-            let per = self.form.stages[index].percentage.mul(0.01)
-            self.form.stages[index].amount = total.mul(per).toFixed(2)
+            let total = parseFloat(self.form.total.sub(self.form.warranty_money.add(self.form.first_payment)))
+            let per = self.form.stages[index].percentage.mul(0.01).mul(2)
+            self.form.stages[index].amount = total.mul(per)
             // self.$set(self.form.stages[index], 'amount', total.mul(per))
           }
         })
@@ -599,9 +590,8 @@
                         contract.total = parseFloat(contract.total)
                         contract.warranty_money = parseFloat(contract.warranty_money)
                         contract.first_payment = parseFloat(contract.first_payment)
-                        contract.stage_money = parseFloat(contract.total.sub(contract.first_payment))
-                        contract.tax_price = parseFloat(contract.tax_price)
-                        contract.first_rest_payment = parseFloat(contract.first_payment.sub(contract.warranty_money.add(contract.tax_price)))
+                        contract.stage_money =
+                          (contract.total - (contract.warranty_money + contract.first_payment)).toFixed(2)
                         that.form = contract
                         if (!that.form.thn_company_name) {
                           that.form.thn_company_name = that.companyThn.company_name
@@ -645,12 +635,11 @@
                 that.form.demand_company_address = item.item.company_province_value + item.item.company_city_value + item.item.address
                 that.form.demand_company_legal_person = item.item.contact_name
                 that.form.demand_company_phone = item.item.phone
-                that.form.tax_price = parseFloat(item.item.tax)
                 that.form.total = parseFloat(item.item.price)
                 that.form.warranty_money = parseFloat(item.item.warranty_money)
                 that.form.first_payment = parseFloat(item.item.first_payment)
-                that.form.stage_money = parseFloat(that.form.total.sub(that.form.first_payment))
-                that.form.first_rest_payment = parseFloat(that.form.first_payment.sub(that.form.warranty_money.add(that.form.tax_price)))
+                that.form.stage_money =
+                  (that.form.total - (that.form.warranty_money + that.form.first_payment)).toFixed(2)
 
                 // 获取当前公司基本信息
                 that.$http.get(api.designCompany, {})
@@ -704,7 +693,7 @@
 
   .content-box p {
     line-height: 1.5;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     color: #666;
   }
 

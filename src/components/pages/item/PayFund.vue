@@ -146,7 +146,7 @@ export default {
     if (itemId) {
       self.itemId = itemId
       self.$http
-        .get(api.endPayOrderItemId.format(itemId), {})
+        .get(api.firstOrderItemId.format(itemId), {})
         .then(function(response) {
           if (response.data.meta.status_code === 200) {
             self.item = response.data.data

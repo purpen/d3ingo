@@ -274,24 +274,23 @@
 
           <div class="select-item-box clearfix" v-if="statusLabel.amount">
             <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
-              <el-collapse-item title="项目资金（首付款）" name="9">
+              <el-collapse-item title="托管项目资金" name="9">
                 <div class="capital-item clearfix" v-if="statusLabel.isPay">
-                  <p>首付款资金</p>
-                  <p class="capital-money">¥ {{ contract.first_payment }}</p>
+                  <p>项目资金</p>
+                  <p class="capital-money">¥ {{ item.price }}</p>
                   <p class="pay-btn">
-                    <span>支付成功</span>
+                    <span>项目资金已托管</span>
                   </p>
                 </div>
                 <div class="capital-item clearfix" v-else>
                   <p>项目资金</p>
-                  <p class="capital-money">¥ {{ contract.first_payment }}</p>
+                  <p class="capital-money">¥ {{ item.price }}</p>
                   <p class="pay-btn">
                     <el-button class="capital-btn is-custom" :loading="secondPayLoadingBtn" @click="secondPay"
                                type="primary"><i class="fa fa-money" aria-hidden="true"></i> 立即支付
                     </el-button>
                   </p>
-                  <p class="capital-des">客户需要将项目首付款资金托管至太火鸟SaaS，</p>
-                  <p class="capital-des">太火鸟SaaS收到款项后会抽取全额佣金并在三个工作日内将剩余款项一次性全额支付给设计方。</p>
+                  <p class="capital-des">＊客户需要将项目资金预先托管至太火鸟SaaS，完成后项目将自动启动并进入项目管理阶段。</p>
                 </div>
               </el-collapse-item>
             </el-collapse>
@@ -740,7 +739,7 @@ export default {
       this.$refs.comfirmType.value = 4
       this.$refs.confirmTargetId.value = stageId
       this.$refs.currentIndex.value = index
-      this.comfirmMessage = '确认验收阶段成果？'
+      this.comfirmMessage = '确认验收阶段成果？验收成功后该阶段项目款将进入设计服务供应商账户。'
       this.comfirmDialog = true
     },
     // 阶段确认通过
