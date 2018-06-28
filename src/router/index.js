@@ -598,7 +598,7 @@ let routes = [
     },
     component: require('@/components/pages/pay/wxCallback')
   },
-  // 支付项目资金
+  // 支付项目资金--首付款
   {
     path: '/item/pay_fund/:item_id',
     name: 'itemPayFund',
@@ -607,6 +607,16 @@ let routes = [
       requireAuth: true
     },
     component: require('@/components/pages/item/PayFund')
+  },
+  // 支付项目资金--阶段款
+  {
+    path: '/item/pay_stage_fund/:stage_id',
+    name: 'itemPayStageFund',
+    meta: {
+      title: '支付项目资金',
+      requireAuth: true
+    },
+    component: require('@/components/pages/item/PayStageFund')
   },
   // 自定义输出页面
   {
