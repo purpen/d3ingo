@@ -315,7 +315,7 @@
         this.wallet.price = parseFloat(parseFloat(this.wallet.price_total).sub(parseFloat(this.wallet.price_frozen)))
         if (this.wallet.price <= 0) {
           this.$message.error ('没有可提现余额!')
-          return false
+          // return false
         }
         this.itemModel = true
         if (this.bankOptions.length === 0) {

@@ -158,7 +158,6 @@ export default {
         totalCount: 0,
         sort: 1,
         status: 0,
-
         test: null
       },
       msg: ''

@@ -291,7 +291,7 @@ export default {
             self.tableData.push(item)
           } // endfor
 
-          console.log(self.itemList)
+          console.log(self.tableData)
         } else {
           self.$message.error(response.data.meta.message)
         }

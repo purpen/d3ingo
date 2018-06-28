@@ -92,6 +92,25 @@ module.exports = [
     },
     component: require('@/components/admin/with_draw/List')
   },
+  // 发票列表
+  {
+    path: '/admin/invoice/listReceive',
+    name: 'adminReceiveInvoicetList',
+    meta: {
+      title: '发票列表',
+      requireAuth: true
+    },
+    component: require('@/components/admin/invoice/List')
+  },
+  {
+    path: '/admin/invoice/listIssue',
+    name: 'adminIssueInvoicetList',
+    meta: {
+      title: '发票列表',
+      requireAuth: true
+    },
+    component: require('@/components/admin/invoice/List')
+  },
   // 设计公司列表
   {
     path: '/admin/company/list',
