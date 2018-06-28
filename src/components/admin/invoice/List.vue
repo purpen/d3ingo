@@ -55,8 +55,8 @@
               label="项目信息"
               min-width="100">
               <template slot-scope="scope">
-                <router-link :to="{name: 'adminItemShow', params: {id: scope.row.item_id}}"><p>项目名称：{{ scope.row.province_value }}</p></router-link>
-                <p>项目阶段：{{ scope.row.item_stage_id }}</p>
+                <router-link :to="{name: 'adminItemShow', params: {id: scope.row.item_id}}"><p>项目名称：{{ scope.row.item_name }}</p></router-link>
+                <p>项目阶段：{{ scope.row.item_stage_name }}</p>
                 <p>项目ID：{{ scope.row.item_id }}</p>
               </template>
             </el-table-column>
@@ -115,7 +115,7 @@
           </el-table>
 
           <el-dialog title="发票备注" :visible.sync="dialogVisible" size="tiny">
-            <el-input v-model="verify.refuseRease"></el-input>
+            <el-input type="textarea" v-model="verify.refuseRease"></el-input>
             <span slot="footer" class="dialog-footer">
               <el-button size="small" @click="dialogVisible = false">取 消</el-button>
               <el-button size="small" type="primary" @click="setVerify(verify.id,verify.refuseRease)">确 定</el-button>
