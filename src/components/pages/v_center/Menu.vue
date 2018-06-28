@@ -107,6 +107,7 @@
 
           <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist" v-else>
               <el-tooltip :effect="DarkorLight"
+                v-if="eventUser.company"
                 :content="eventUser.company.company_name" placement="right">
                 <div class="computer-btn"
                   v-if="isCompany && !isMob && eventUser.design_company_logo_image"
@@ -256,6 +257,7 @@
           <!-- 设计公司4 -->
           <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist" v-else>
             <el-tooltip :effect="DarkorLight"
+              v-if="eventUser.company"
               :content="eventUser.company.company_name" placement="right">
               <div class="computer-btn"
                 v-if="isCompany && !isMob && eventUser.company &&eventUser.design_company_logo_image"
