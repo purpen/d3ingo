@@ -1,5 +1,5 @@
 <template>
-  <div class="cloud-content">
+  <div class="cloud-content scroll-bar2">
     <section>
       <el-row :gutter="20" v-if="list.length">
         <!-- 默认显示列表 -->
@@ -520,7 +520,8 @@ export default {
 <style scoped>
   .cloud-content {
     height: 100%;
-    min-height: 100%;
+    /* min-height: 100%; */
+    min-height: 500px;
     overflow-x: hidden;
   }
   section .item {
@@ -600,6 +601,7 @@ export default {
     border-top: none;
     border-right: none;
     transform: rotate(-45deg);
+    border-radius: 0;
   }
   
   .active .file-radio {
@@ -902,7 +904,8 @@ export default {
     z-index: 999;
     top: 50px;
     /* left: 0; */
-    right: -10px;
+    /* right: -10px; */
+    right: 0;
     width: 140px;
     background: #fff;
     color: #666;

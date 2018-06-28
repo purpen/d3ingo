@@ -1299,6 +1299,7 @@
     display: flex;
     flex-wrap: wrap;
     /* max-width: 200px; */
+    margin-top: -4px;
   }
   .tags span {
     position: relative;
@@ -1312,7 +1313,7 @@
     color: #fff;
     height: 24px;
     border-radius: 12px;
-    margin: 4px 8px 0 0;
+    margin: 8px 8px 0 0;
   }
   .tags span:hover .close-icon-solid {
     opacity: 1;
@@ -1497,6 +1498,7 @@
     position: relative;
     flex: 1 1 auto;
     position: relative;
+    line-height: 1.5
   }
   .p-date {
     padding-left: 20px;

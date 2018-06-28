@@ -341,7 +341,7 @@
     box-shadow: 0 0 6px 2px rgba(0,0,0,0.10);
     border-radius: 4px;
     /* margin-left: 6px; */
-    /* margin-left: -200px; */
+    margin-left: -130px;
   }
   .tag-header {
     padding: 10px 20px;

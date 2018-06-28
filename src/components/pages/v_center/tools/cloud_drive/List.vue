@@ -299,10 +299,10 @@
       </h3>
       <div class="dialog-content dialog-folder">
         <p class="dialog-name">文件夹名称</p>
-        <input placeholder="请填写文件夹名称" v-focus="isFocusFolderName"
+        <el-input placeholder="请填写文件夹名称" v-focus="isFocusFolderName"
           @focus="focusFolderName"
           @blur="blurFolderName"
-          v-model.trim="folder.name">
+          v-model.trim="folder.name"></el-input>
         <p class="dialog-permission">设置查看权限</p>
         <input v-if="folderId === 0"
           class="select-permission" placeholder="请选择权限"
@@ -1352,6 +1352,10 @@ export default {
         } else if (!this.folder.permission) {
           this.$message.error('请选择文件夹权限')
           return
+        } else {
+          if (this.folder.name.length > 50) {
+            this.$message.error('最长不能超过50个字符')
+          }
         }
       } else {
         if (!this.folder.name) {
@@ -1786,6 +1790,10 @@ export default {
   .content-head .title {
     padding-left: 10px;
     font-size: 16px;
+    max-width: 200px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
   .operate {
     height: 40px;
@@ -1974,6 +1982,7 @@ export default {
     border-top: none;
     border-right: none;
     transform: rotate(-45deg);
+    border-radius: 0;
   }
 
   i.file-radio.active {
@@ -2587,7 +2596,11 @@ export default {
       position: relative
     }
   }
-
+  @media screen and (max-width: 1199px) {
+    .edit-menu .file-radio {
+      margin-left: 10px;
+    }
+  }
   @media screen and (min-width: 1200px) {
     .content {
       position: absolute;

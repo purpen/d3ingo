@@ -574,9 +574,10 @@
     background:#FF5A5F;
   }
   .title-size {
-    color: #222;
-    font-size: 1.4rem;
-    margin: 0 0 12px 0
+    color: #666;
+    font-size: 1.2rem;
+    margin: 0 0 12px 0;
+    line-height: 1.4;
   }
   .progress-bar {
     margin: 6px 0 10px 0

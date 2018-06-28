@@ -1201,6 +1201,10 @@ export default {
         } else if (!this.folder.permission) {
           this.$message.error('请选择文件夹权限')
           return
+        } else {
+          if (this.folder.name.length > 50) {
+            this.$message.error('最长不能超过50个字符')
+          }
         }
       } else {
         if (!this.folder.name) {
@@ -1764,6 +1768,7 @@ export default {
     border-top: none;
     border-right: none;
     transform: rotate(-45deg);
+    border-radius: 0;
   }
 
   i.file-radio.active {
@@ -2359,5 +2364,10 @@ export default {
   }
   .parent-box-mob {
     padding-left: 0;
+  }
+  @media screen and (max-width: 1199px) {
+    .edit-menu .file-radio {
+      margin-left: 10px;
+    }
   }
 </style>
