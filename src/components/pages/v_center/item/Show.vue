@@ -312,14 +312,6 @@
                       <div class="stage-title clearfix">
                         <h3>第{{ d.no }}阶段: {{ d.title }}</h3>
 
-                        <p v-if="d.confirm === 0">
-                          <el-button type="primary" @click="passStageBtn" size="small" :stage_id="d.id" :index="index"
-                                     class="is-custom"> 确认通过
-                          </el-button>
-                        </p>
-                        <p v-else>
-                          <span v-if="d.confirm === 1">已确认</span>
-                        </p>
                       </div>
                       <div class="stage-asset-box clearfix" v-for="(asset, asset_index) in d.item_stage_image" :key="asset_index">
                         <div class="contract-left">
@@ -335,7 +327,40 @@
                         </div>
                         <div class="clear"></div>
                       </div>
+                      <div class="capital-item clearfix" v-if="d.confirm === 0">
+                        <p>
+                          <el-button type="primary" @click="passStageBtn" size="small" :stage_id="d.id" :index="index"
+                                     class="is-custom"> 确认完成
+                          </el-button>
+                        </p>
+                      </div>
+                      <div class="capital-item clearfix" v-else>
+                        <div v-if="d.pay_status === 0">
+                          <p>阶段项目资金</p>
+                          <p class="capital-money">¥ {{ d.amount }}</p>
+                          <p class="pay-btn">
+                            <el-button type="primary" @click="payStageRedierct(d.id)" size="small"
+                                       class="is-custom"> 立即支付
+                            </el-button>
+                          </p>
+                          <p class="capital-des">项目第{{ d.no }}阶段确认，客户需在三个工作日内向太火鸟SaaS支付总阶段设计费用款项，</p>
+                          <p class="capital-des">太火鸟SaaS收到款项后在三个工作日内一次性全额支付给乙方。</p>
+                        </div>
+                        <div v-else>
+                          <p>阶段项目资金</p>
+                          <p class="capital-money">¥ {{ d.amount }}</p>
+                          <p class="pay-btn">
+                            <span>支付成功</span>
+                          </p>
+                          <p class="capital-des"></p>
+                        </div>
+
+                      </div>
+                      <div class="blank20"></div>
+                      <hr />
+                      <div class="blank20"></div>
                     </div>
+
                   </div>
 
                   <p class="finish-item-btn clearfix" v-if="item.status === 15">
@@ -765,6 +790,13 @@ export default {
           self.comfirmLoadingBtn = false
         })
     },
+    // 支付阶段款跳转
+    payStageRedierct(stageId) {
+      this.$router.push({
+        name: 'itemPayStageFund',
+        params: {stage_id: stageId}
+      })
+    },
     // 评价设计公司
     evaluateSubmit() {
       if (this.evaluate.score === 0) {
@@ -1107,6 +1139,7 @@ export default {
                     // self.sureFinishBtn = true
                   }
                   self.stages = items
+                  console.log(items)
                 } else {
                   self.$message.error(response.data.meta.message)
                 }
