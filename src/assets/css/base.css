@@ -715,9 +715,9 @@ button.is-custom.is-outlined.is-loading:after {
 input:-webkit-autofill {
   box-shadow: 0 0 0 1000px white inset;
 }
-input[type=text]:focus, input[type=password]:focus{
+/* input[type=text]:focus, input[type=password]:focus{
   box-shadow: 0 0 0 1000px white inset;
-}
+} */
 .m-nav-header {
   position: relative;
   height: 60px;

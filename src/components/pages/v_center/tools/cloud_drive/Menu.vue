@@ -1,5 +1,5 @@
 <template>
-  <div :class="['menu', {'menu-mini' : !leftWidth}]">
+  <div :class="['menu', 'scroll-bar2', {'menu-mini' : !leftWidth}]">
     <!-- <h3><router-link class="clearfix" to="/vcenter/control"><i class="fx fx-icon-nothing-left"></i>设计云盘</router-link></h3> -->
     <el-collapse v-model="activeNames" class="cloud-menu">
       <el-collapse-item title="设计云盘" name="1">
@@ -152,6 +152,8 @@
 </script>
 <style scoped>
   .menu {
+    overflow-x: hidden;
+    height: 100%;
     /* transition: 0.2s all ease; */
     /* height: calc(100vh - 60px); */
     max-width: 200px;

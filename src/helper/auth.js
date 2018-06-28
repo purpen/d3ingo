@@ -19,13 +19,17 @@ mallache.write_user = function (user) {
       phone: user.phone,
       avatar: user.logo_image,
       type: user.type,
-      design_company_id: user.design_company_id,
+      company_id: user.design_company_id,
       role_id: user.role_id,
       realname: user.realname,
       company_role: user.company_role,
       child_account: user.child_account,
       status: user.status,
-      verify_status: user.verify_status
+      verify_status: user.verify_status,
+      company: {
+        company_name: user.demand_company_name,
+        company_abbreviation: user.demand_company_abbreviation
+      }
     }
   } else {
     userInfo = {
@@ -35,14 +39,18 @@ mallache.write_user = function (user) {
       phone: user.phone,
       avatar: user.logo_image,
       type: user.type,
-      design_company_id: user.design_company_id,
+      company_id: user.design_company_id,
       role_id: user.role_id,
       realname: user.realname,
       company_role: user.company_role,
       child_account: user.child_account,
       status: user.status,
       verify_status: user.verify_status,
-      design_company_logo_image: user.design_company_logo_image
+      design_company_logo_image: user.design_company_logo_image,
+      company: {
+        company_name: user.design_company_name,
+        company_abbreviation: user.design_company_abbreviation
+      }
     }
   }
   // 写入localStorage

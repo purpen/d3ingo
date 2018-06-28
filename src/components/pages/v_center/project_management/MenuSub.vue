@@ -2,7 +2,9 @@
   <header>
     <div class="pm-left">
       <router-link :to="{name: 'projectManagementList'}">项目管理</router-link>
-      <router-link :to="{name: 'projectManagementOverView', params: {id: routeId}}">{{projectObject.name}}</router-link>
+      <el-tooltip :content="projectObject.name" placement="top">
+        <router-link class="pro-name" :to="{name: 'projectManagementOverView', params: {id: routeId}}">{{projectObject.name}}</router-link>
+      </el-tooltip>
       <span :class="['favorite-star', {'active':projectObject.collect === 1}]"></span>
     </div>
     <div class="pm-middle">
@@ -939,6 +941,12 @@ header {
   display: flex;
   position: relative;
   background: #f7f7f7;
+}
+.pro-name {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .pm-left {
   /* min-width: 380px; */

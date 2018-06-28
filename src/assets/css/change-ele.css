@@ -487,3 +487,12 @@
   .el-textarea__inner:hover .MeetingCenter {
     border: none;
   }
+  .el-tooltip__popper.is-dark {
+    background: rgba(0, 0, 0, 0.7)
+  }
+  .el-tooltip__popper[x-placement^=right] .popper__arrow {
+    border-right-color: rgba(0, 0, 0, 0.7)
+  }
+  .form-footer .el-button + .el-button {
+    margin-right: 0;
+  }

@@ -33,6 +33,8 @@
                       list-type="picture-card">
                       <i class="el-icon-plus"></i>
                       <div slot="tip" class="el-upload__tip" v-html="uploadMsg"></div>
+                      <!-- <button class="middle-button full-red-button">+上传图片</button>
+                      <span v-html="uploadMsg"></span> -->
                       <!-- <el-button size="small" type="danger">点击上传</el-button>
                       <div slot="tip" class="el-upload__tip">{{ uploadMsg }}</div> -->
                     </el-upload>
@@ -42,6 +44,7 @@
                         <el-col :span="isMob ? 24 : 6" v-for="(d, index) in fileList" :key="index">
                           <el-card :body-style="{ padding: '0px' }" class="item">
                             <div class="image-box">
+                              <i v-if="parseInt(coverId) === d.response.asset_id"></i>
                               <img :src="d.url">
                             </div>
                             <div class="content">
@@ -134,6 +137,35 @@
               </div> -->
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
+                  <el-form-item label="作品案例标题" prop="title">
+                    <el-input v-model="form.title" placeholder=""></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-row>
+                <el-col :span="isMob ? 24 : 12">
+                  <el-form-item label="作品案例描述" prop="profile">
+                    <el-input
+                      type="textarea"
+                      :rows="10"
+                      placeholder="请输入内容"
+                      v-model="form.profile">
+                    </el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-row>
+                <el-col :span="isMob ? 24 : 12">
+                  <el-form-item label="服务客户" prop="customer">
+                    <el-input v-model="form.customer" placeholder=""></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-row>
+                <el-col :span="isMob ? 24 : 12">
                   <el-form-item label="设计类型" prop="type">
                     <el-select v-model.number="form.type" placeholder="设计类型" 
                     @change="typec"
@@ -188,36 +220,6 @@
                         :value="item.value">
                       </el-option>
                     </el-select>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="标签" prop="label"   class="label-tag"
-                  >
-                    <vue-input-tag
-                      placeholder="Enter添加新标签,上限10个"
-                      :tags.sync="form.label"
-                      :limit="10"
-                      :add-tag-on-blur="true"
-                      >
-                    </vue-input-tag>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-
-              <el-row>
-                <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="标题" prop="title">
-                    <el-input v-model="form.title" placeholder=""></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-
-              <el-row>
-                <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="服务客户" prop="customer">
-                    <el-input v-model="form.customer" placeholder=""></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -313,13 +315,13 @@
 
               <el-form-item label="产品量产">
                 <el-row class="flex">
-                  <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3">
+                  <el-col  :xs="24" :sm="3" :md="3" :lg="3">
                     <el-radio-group v-model.number="form.mass_production" @change="isProduction">
                       <el-radio class="radio" :label="0">否</el-radio>
                       <el-radio class="radio" :label="1">是</el-radio>
                     </el-radio-group>
                   </el-col>
-                  <el-col :xs="24" :sm="6" :md="6" :lg="6">
+                  <el-col :xs="24" :sm="9" :md="9" :lg="9">
                     <el-select v-model.number="form.sales_volume" v-if="!isDisabledProduct" placeholder="销售额">
                       <el-option
                         v-for="item in saleOptions"
@@ -331,21 +333,31 @@
                   </el-col>
                 </el-row>
               </el-form-item>
-
-              <el-form-item label="描述" prop="profile">
-                <el-input
-                  type="textarea"
-                  :rows="10"
-                  placeholder="请输入内容"
-                  v-model="form.profile">
-                </el-input>
-              </el-form-item>
-
-              <div class="form-btn">
-                <el-button  @click.prevent="returnList" class="middle-button white-button">取消</el-button>
-                <el-button type="danger" :loading="isLoadingBtn" @click="submit('ruleForm')">提交</el-button>
-              </div>
-              <div class="clear"></div>
+              <el-row>
+                <el-col :span="isMob ? 24 : 12">
+                  <el-form-item label="标签" prop="label"   class="label-tag"
+                  >
+                    <vue-input-tag
+                      placeholder="Enter添加新标签,上限10个"
+                      :tags.sync="form.label"
+                      :limit="10"
+                      :add-tag-on-blur="true"
+                      >
+                    </vue-input-tag>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col>
+                  <div class="form-footer">
+                    <div class="form-btn">
+                      <el-button  @click.prevent="returnList" class="middle-button white-button">取消</el-button>
+                      <el-button type="danger" :loading="isLoadingBtn" @click="submit('ruleForm')">提交</el-button>
+                    </div>
+                    <div class="clear"></div>
+                  </div>
+                </el-col>
+              </el-row>
             </el-form>
           </div>
         </div>
@@ -1040,6 +1052,19 @@
     position: absolute;
     line-height: 1.5;
   }
+  .image-box {
+    position: relative
+  }
+  .image-box i{
+    position: absolute;
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    background:url('../../../../assets/images/works/CornerMark.png') 0 0 no-repeat;
+    background-size: 50px 50px;
+    left: 0px;
+    top: 0px;
+  }
   .margin-b-10 {
     margin-bottom: 10px
   }
@@ -1048,6 +1073,10 @@
     border: 1px solid #e6e6e6;
     padding: 3px 10px;
     min-height: 36px;
+  }
+  .form-footer {
+    border-top: 1px solid #e6e6e6;
+    padding-top: 20px;
   }
   .form-btn>.el-button + .el-button {
     margin-right: 0px;
