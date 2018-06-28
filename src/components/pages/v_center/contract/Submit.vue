@@ -647,7 +647,7 @@
                 that.form.demand_company_phone = item.item.phone
                 that.form.tax_price = parseFloat(item.item.tax)
                 that.form.total = parseFloat(item.item.price)
-                that.form.warranty_money = parseFloat(item.item.warranty_money)
+                that.form.warranty_money = parseFloat(item.item.commission)
                 that.form.first_payment = parseFloat(item.item.first_payment)
                 that.form.stage_money = parseFloat(that.form.total.sub(that.form.first_payment))
                 that.form.first_rest_payment = parseFloat(that.form.first_payment.sub(that.form.warranty_money.add(that.form.tax_price)))
