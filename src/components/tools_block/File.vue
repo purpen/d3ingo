@@ -4,11 +4,16 @@
       <div class="vcenter-container" v-loading="isLoading">
         <div class="content-head">
           <div class="clearfix" v-show="showList">
-            <p class="title fl" v-if="!isChoose && folderId === 0" v-html="title"></p>
-            <p class="title fl" v-if="!isChoose && folderId !== 0">
-              <i class="fx fx-icon-nothing-left" @click="backFolder"></i>
-              {{parentFolder.name}}
-            </p>
+            <el-tooltip effect="dark" :content="title" placement="top">
+              <p class="title fl" v-if="!isChoose && folderId === 0" v-html="title"></p>
+            </el-tooltip>
+            <el-tooltip effect="dark" :content="parentFolder.name" placement="top">
+              <p class="title fl" v-if="!isChoose && folderId !== 0">
+                <i v-if="historyId.length"
+                  class="fx fx-icon-nothing-left" @click="backFolder"></i>
+                {{parentFolder.name}}
+              </p>
+            </el-tooltip>
             <div class="fr operate" v-if="!isChoose">
               <p :class="[{'chunk': curView === 'list','list': curView === 'chunk'}]" 
                 :title="chunkTitle"
@@ -2368,9 +2373,53 @@ export default {
   .parent-box-mob {
     padding-left: 0;
   }
+  @media screen and (max-width: 767px) {
+    .content {
+      padding-top: 41px;
+    }
+    .content-head {
+      width: 100%;
+      left: 0;
+      top: 11px;
+    }
+  }
+  @media screen and (min-width: 768px) {
+    .content {
+      /* padding: 20px 30px 0; */
+      padding: 42px 30px 0;
+      position: relative
+    }
+  }
   @media screen and (max-width: 1199px) {
+    .content.full-height.content-mini {
+      width: 83.33333%;
+    }
     .edit-menu .file-radio {
       margin-left: 10px;
+    }
+  }
+  @media screen and (min-width: 1200px) {
+    .content {
+      position: absolute;
+      width: calc(100% - 400px);
+      top: 0;
+      left: 400px;
+    }
+    .content-mini {
+      position: absolute;
+      width: calc(100% - 200px);
+      top: 0;
+      left: 200px;
+      transition: 0.2s all ease;
+    }
+    .content-pm {
+      position: static;
+      width: 100%;
+      top: 0;
+      left: 0;
+    }
+    .parent-box {
+      padding-left: 200px;
     }
   }
 </style>
