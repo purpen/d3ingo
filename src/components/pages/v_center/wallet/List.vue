@@ -179,7 +179,7 @@
     <transition name="fade">
       <el-dialog :title="itemPointTitle" v-model="itemPointTitleInfo" class="withdraw">
         <div class="withdraw-input">
-          <p class="withdraw-title margin-t-b-10 text-center">您还没有认证</p>
+          <p class="withdraw-title margin-t-b-10 text-center font-16">您还没有认证</p>
         </div>
         <div slot="footer" class="dialog-footer">
           <el-button type="primary" :loading="isLoadingBtn" @click="goAttestation">点击认证</el-button>
@@ -402,7 +402,9 @@
           })
         } else {
           self.itemModel = false
-          self.itemPointTitleInfo = true
+          setTimeout (function () {
+            self.itemPointTitleInfo = true
+          }, 500)
         }
       },
       showTransaction() {
@@ -457,6 +459,10 @@
         let getCorporationInfo = response.data.data
         if (getCorporationInfo) {
           self.corporationInfo = getCorporationInfo
+          var str = self.corporationInfo.account_number
+          var reg = /^(\d{4})\d+(\d{4})$/
+          str = str.replace (reg, '$1****$2')
+          self.corporationInfo.account_number = str
           console.log(self.corporationInfo)
         }
       })
@@ -499,6 +505,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
   .fade-enter-active, .fade-leave-active {
     transition: opacity .5s;
   }
@@ -523,6 +530,13 @@
 
   .wallet-box {
 
+  }
+  .el-dialog__footer .dialog-footer .el-button:last-child {
+    margin: 0 !important;
+  }
+
+  .font-16 {
+    font-size: 16px;
   }
 
   .amount-show {
