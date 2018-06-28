@@ -342,6 +342,7 @@
     border-radius: 4px;
     /* margin-left: 6px; */
     margin-left: -130px;
+    /* margin-left: -200px; */
   }
   .tag-header {
     padding: 10px 20px;

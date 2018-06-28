@@ -160,7 +160,7 @@
             </el-row>
             <div class="sub-title">
               <span>银行卡信息&nbsp;</span>
-              <i class="hint"></i>
+              <!-- <i class="hint"></i> -->
             </div>
             <el-row :gutter="24">
               <el-col :span="isMob ? 24 : 12">
@@ -184,13 +184,18 @@
               </el-col>
             </el-row>
 
-
-            <div class="form-btn">
-              <el-button @click="returnBase">返回</el-button>
-              <el-button :loading="isLoadingBtn" class="is-custom" type="primary" @click="submit('ruleForm')">提交审核
-              </el-button>
-            </div>
-            <div class="clear"></div>
+            <el-row>
+              <el-col>
+                <div class="form-footer">
+                  <div class="form-btn">
+                    <el-button @click="returnBase">返回</el-button>
+                    <el-button :loading="isLoadingBtn" class="is-custom" type="primary" @click="submit('ruleForm')">提交审核
+                    </el-button>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+              </el-col>
+            </el-row>
           </el-form>
 
         </div>
@@ -608,6 +613,10 @@
   }
   .el-radio-group>:first-child {
     width: 50%;
+  }
+  .form-footer {
+    border-top: 1px solid #e6e6e6;
+    padding-top: 20px;
   }
   .form-btn button {
     width: 120px;

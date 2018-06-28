@@ -144,7 +144,7 @@
                   <p class="p-val">{{ item.taxable_type === 1?'一般纳税人':'小额纳税人' }}</p>
                 </div>
 
-                <div class="item">
+                <div class="item" v-if="item.invoice_type">
                   <p class="p-key">发票类型</p>
                   <p class="p-val">{{ item.invoice_type === 1?'专票':'普票'}}</p>
                 </div>

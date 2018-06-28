@@ -163,7 +163,7 @@
             </el-row>
             <div class="sub-title">
               <span>银行卡信息&nbsp;</span>
-              <i class="hint"></i>
+              <!-- <i class="hint"></i> -->
             </div>
               <el-row :gutter="24">
                 <el-col :span="isMob ? 24 : 12">
@@ -188,8 +188,8 @@
               </el-row>
               <div class="sub-title">
                 <span>开票信息&nbsp;</span>
-                <i class="hint">
-                </i>
+                <!-- <i class="hint">
+                </i> -->
               </div>
               <el-row>
                 <el-col class="margin-b-10" :xs="24" :sm="5" :md="5" :lg="5">
@@ -201,7 +201,7 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row>
+              <el-row v-if="form.taxable_type === 2">
                 <el-col class="margin-b-10" :xs="24" :sm="5" :md="5" :lg="5">
                   <el-form-item label="发票类型">
                   <el-radio-group v-model.number="form.invoice_type">
@@ -218,13 +218,18 @@
                   </el-checkbox>
                 </el-col>
               </el-row>
-
-              <div :class="['form-btn', isMob ? 'form-btn-m' : '']">
-                <el-button @click="returnBase">返回</el-button>
-                <el-button :loading="isLoadingBtn" class="is-custom" type="primary" @click="submit('ruleForm')">提交审核
-                </el-button>
-              </div>
-              <div class="clear"></div>
+              <el-row>
+                <el-col>
+                  <div class="form-footer">
+                    <div :class="['form-btn', isMob ? 'form-btn-m' : '']">
+                      <el-button @click="returnBase">返回</el-button>
+                      <el-button :loading="isLoadingBtn" class="is-custom" type="primary" @click="submit('ruleForm')">提交审核
+                      </el-button>
+                    </div>
+                    <div class="clear"></div>
+                  </div>
+                </el-col>
+              </el-row>
             </el-form>
 
           </div>
@@ -491,7 +496,9 @@
             //   document_number: that.form.document_number,
             //   document_type: that.form.document_type
             // }
-
+            if (that.form.taxable_type === 1) {
+              row.invoice_type = null
+            }
             if (that.companyId) {
             } else {
               if (that.uploadParam['x:random']) {
@@ -798,8 +805,12 @@
     line-height: 2;
     color: #222;
   }
-
+  .form-footer {
+    border-top: 1px solid #e6e6e6;
+    margin-top: 20px;
+    padding-top: 20px;
+  }
   .terms {
-    color: #00c
+    color: #ff5a5f
   }
 </style>

@@ -120,7 +120,7 @@
             <span>进行中的项目</span>
           </div>
           <el-row class="item-content scroll-bar">
-          <el-col :span="12" v-for="(i,indexi) in userItem" :key="indexi" v-if="userItem.length>0">
+          <el-col :span="12" v-for="(i,indexi) in userItem" :key="indexi" v-if="userItem&&userItem.length>0">
 
               <ul class="control-iteming">
                 <router-link :to="{name: 'projectManagementOverView', params: {id: i.id}}">
@@ -545,6 +545,10 @@
     flex-direction:column;
     justify-content:space-around; */
     padding: 16px 30px 18px;
+    height: 100%;
+  }
+  .control-iteming:hover {
+    background: #f7f7f7;
   }
   .itemProgress{
     color:#65A6FF;
@@ -578,6 +582,9 @@
     font-size: 1.2rem;
     margin: 0 0 12px 0;
     line-height: 1.4;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
   .progress-bar {
     margin: 6px 0 10px 0

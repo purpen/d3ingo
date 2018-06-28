@@ -9,11 +9,17 @@
       <router-link v-if="index!==1" :to="{name: 'vcenterMatchCaseList'}" :class="['item', 
       {'is-active': $route.name === 'vcenterMatchCaseList'}]">提交产品</router-link>
       <router-link v-if="index === 1 || index === 2" to="" class="item2 item is-active">
-        <span v-if="$route.name === 'vcenterDesignCaseAdd'|| $route.name === 'vcenterMatchCaseCreated'">
-          添加作品
+        <span v-if="$route.name === 'vcenterDesignCaseAdd'">
+          添加作品案例
         </span>
-        <span v-if="$route.name === 'vcenterDesignCaseEdit' || $route.name === 'vcenterMatchCaseEdit'">
-          编辑作品
+        <span v-if="$route.name === 'vcenterMatchCaseCreated'">
+          添加产品案例
+        </span>
+        <span v-if="$route.name === 'vcenterDesignCaseEdit'">
+          编辑作品案例
+        </span>
+        <span v-if="$route.name === 'vcenterMatchCaseEdit'">
+          编辑产品案例
         </span>
       </router-link>
     </div>

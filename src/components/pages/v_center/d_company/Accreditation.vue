@@ -136,15 +136,15 @@
                       <p class="p-val">{{ item.account_number }}</p>
                     </div>
 
-                    <div class="sub-title">
+                    <div class="sub-title" v-if="item.taxable_type || item.invoice_type">
                       <span>开票信息</span>
                     </div>
-                    <div class="item">
+                    <div class="item" v-if="item.taxable_type">
                       <p class="p-key">纳税人类型</p>
                       <p class="p-val">{{ item.taxable_type === 1?'一般纳税人':'小额纳税人' }}</p>
                     </div>
 
-                    <div class="item">
+                    <div class="item" v-if="item.invoice_type">
                       <p class="p-key">发票类型</p>
                       <p class="p-val">{{ item.invoice_type === 1?'专票':'普票'}}</p>
                     </div>
