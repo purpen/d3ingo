@@ -672,6 +672,7 @@
               }
 //              console.log(response.data.data)
             }
+            console.log(that.form)
           })
           .catch(function (error) {
             that.$message.error(error.message)

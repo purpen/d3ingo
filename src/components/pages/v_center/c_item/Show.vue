@@ -300,6 +300,7 @@
                       <div v-if="d.pay_status === 0">
                         <p>等待甲方打款</p>
                       </div>
+
                       <div v-else>
                         <div v-if="invoceStat(2, d.id) === 0">
                           <p>阶段项目资金</p>
@@ -756,6 +757,33 @@
         this.invoiceForm.id = item.id
         this.invoiceDialog = true
       },
+      // 确认发票发送
+      sendInvoiceSubmit() {
+        let row = {
+          'id': this.invoiceForm.id,
+          'logistics_id': this.invoiceForm.logistics_id,
+          'logistics_number': this.invoiceForm.logistics_number
+        }
+        this.sendInvoiceLoadingBtn = true
+        this.$http.put(api.invoiceDesignTrueSend, row)
+          .then((response) => {
+            this.sendInvoiceLoadingBtn = false
+            if (response.data.meta.status_code === 200) {
+              this.invoiceDialog = false
+              for (let i = 0; i < this.invoice.length; i++) {
+                if (this.invoice[i].id === row.id) {
+                  this.invoice[i].status = 1
+                }
+              }
+            } else {
+              this.$message.error(response.data.meta.message)
+            }
+          })
+          .catch((error) => {
+            this.$message.error(error.message)
+            this.sendInvoiceLoadingBtn = false
+          })
+      },
       // 发票状态
       invoceStat(payType, stage) {
         let item = this.invoceSelect(payType, stage)
@@ -782,7 +810,6 @@
             return item
           } else if (payType === 2) {
             if (item.item_stage_id === stage) {
-              alert(123)
               return item
             }
           }
@@ -813,28 +840,6 @@
       // 新增／编辑合同
       contractBtn() {
         this.$router.push({name: 'vcenterContractSubmit', params: {item_id: this.item.id}})
-      },
-      // 确认发票发送
-      sendInvoiceSubmit() {
-        let row = {
-          'id': this.invoiceForm.id,
-          'logistics_id': this.invoiceForm.logistics_id,
-          'logistics_number': this.invoiceForm.logistics_number
-        }
-        this.sendInvoiceLoadingBtn = true
-        this.$http.put(api.invoiceDesignTrueSend, row)
-          .then((response) => {
-            this.sendInvoiceLoadingBtn = false
-            if (response.data.meta.status_code === 200) {
-              this.invoiceDialog = false
-            } else {
-              this.$message.error(response.data.meta.message)
-            }
-          })
-          .catch((error) => {
-            this.$message.error(error.message)
-            this.sendInvoiceLoadingBtn = false
-          })
       },
       // 开始项目
       beginItem() {
