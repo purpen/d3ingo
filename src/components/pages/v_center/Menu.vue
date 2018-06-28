@@ -82,7 +82,7 @@
             </el-tooltip>
             <el-tooltip class="item" :effect="DarkorLight" content="成员管理" placement="right">
             <a @click="alick" :to="'/user/user_management'"
-              
+
               :class="['item', 'user-management', {'is-active': currentName === 'member'}]" v-if="isCompanyAdmin">
               成员管理
             </a>
@@ -147,13 +147,13 @@
             </a>
             </el-tooltip>
             <el-tooltip class="item" :effect="DarkorLight" content="作品案例" placement="right">
-            <a @click="alick" :to="'/vcenter/design_case'" 
+            <a @click="alick" :to="'/vcenter/design_case'"
               :class="['item', 'case', {'is-active': currentName === 'design_case'}]">
               作品案例
             </a>
             </el-tooltip>
             <el-tooltip class="item" :effect="DarkorLight" content="我的钱包" placement="right">
-            <a @click="alick" :to="'/vcenter/wallet/list'" 
+            <a @click="alick" :to="'/vcenter/wallet/list'"
               :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
               我的钱包
             </a>
@@ -240,7 +240,7 @@
               项目云盘
             </a>
             <a @click="alick" :to="'/user/user_management'"
-              
+
               :class="['item', 'user-management', {'is-active': currentName === 'member'}]" v-if="isCompanyAdmin">
               成员管理
             </a>
@@ -286,11 +286,11 @@
               :class="['item', 'cloud', {'is-active': currentName === 'cloud_drive'}]">
               项目云盘
             </a>
-            <a @click="alick" :to="'/vcenter/design_case'" 
+            <a @click="alick" :to="'/vcenter/design_case'"
               :class="['item', 'case', {'is-active': currentName === 'design_case'}]">
               作品案例
             </a>
-            <a @click="alick" :to="'/vcenter/wallet/list'" 
+            <a @click="alick" :to="'/vcenter/wallet/list'"
               :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
               我的钱包
             </a>
@@ -306,7 +306,7 @@
               :class="['item','user-management', {'is-active': currentName === 'member'}]">
               成员管理
             </a>
-            <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" 
+            <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany"
                v-if="isMob">
               查看公司主页
             </a>
@@ -315,7 +315,7 @@
         <div v-else>
           <!-- 需求公司4 -->
           <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist">
-            
+
             <a @click="alick" :to="'/vcenter/control'" :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
               控制面板
             </a>
@@ -618,7 +618,7 @@
     /* font-weight: bold; */
     border-color: #ff5a5f
   }
-  
+
   .menu-list .item::before {
     content: "";
     position: absolute;
@@ -641,8 +641,8 @@
     background: url(../../../assets/images/v_center_menu/Cloud.png) no-repeat center;
     background-size: contain
   }
-  .menu-list .item.case::before, 
-  .menu-list .item.order::before, 
+  .menu-list .item.case::before,
+  .menu-list .item.order::before,
   .menu-list .item.message::before,
   .menu-list .item.match-case::before {
     background: url(../../../assets/images/v_center_menu/Case.png) no-repeat center;
@@ -819,7 +819,7 @@
     left: auto;
     right: -15px;
   } */
-  
+
   @media screen and (min-width: 768px) {
     .menu-list {
       width: inherit;

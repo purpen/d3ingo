@@ -1,8 +1,8 @@
 <template>
-  <div class="container company-verify">
+  <div class="container company-verify1">
     <div class="blank20"></div>
     <el-row :gutter="20">
-      <v-menu selectedName="receiptList"></v-menu>
+      <v-menu :selectedName="putReceiptList"></v-menu>
 
       <el-col :span="20">
         <div class="content">
@@ -40,7 +40,7 @@
             </el-table-column>
             <el-table-column
               label="公司信息"
-              min-width="160">
+              min-width="140">
               <template slot-scope="scope">
                 <p>全称：{{ scope.row.company_name }}</p>
                 <p>收发类型: {{ scope.row.type_value }}</p>
@@ -53,36 +53,43 @@
             </el-table-column>
             <el-table-column
               label="项目信息"
-              min-width="140">
+              min-width="100">
               <template slot-scope="scope">
-                <p>项目名称：{{ scope.row.province_value }}</p>
-                <p>项目阶段：{{ scope.row.item_stage_id }}</p>
+                <router-link :to="{name: 'adminItemShow', params: {id: scope.row.item_id}}"><p>项目名称：{{ scope.row.item_name }}</p></router-link>
+                <p>项目阶段：{{ scope.row.item_stage_name }}</p>
                 <p>项目ID：{{ scope.row.item_id }}</p>
               </template>
             </el-table-column>
             <el-table-column
               align="center"
-              prop="price"
-              label="金额">
-            </el-table-column>
-            <el-table-column
-              align="center"
-              prop="pay_type"
-              label="支付类型">
+              label="支付详情">
+              <template slot-scope="scope">
+                <p>金额：{{ scope.row.price }}</p>
+                <p>支付类型：{{ scope.row.pay_type }}</p>
+              </template>
             </el-table-column>
             <el-table-column
               label="物流信息"
-              min-width="160">
+              min-width="120">
               <template slot-scope="scope">
-                <p>物流公司名称：{{ scope.row.logistics_name }}</p>
+                <p>名称：{{ scope.row.logistics_name }}</p>
                 <p>物流ID：{{ scope.row.logistics_id }}</p>
-                <p>物流单号：{{ scope.row.logistics_number }}</p>
+                <p>单号：{{ scope.row.logistics_number }}</p>
               </template>
             </el-table-column>
             <el-table-column
               align="center"
               prop="user_id"
               label="操作用户">
+            </el-table-column>
+            <el-table-column
+              align="center"
+              label="状态">
+              <template slot-scope="scope">
+                <p v-if="scope.row.status === 1"><el-tag type="warning">未开发票</el-tag></p>
+                <p v-if="scope.row.status === 2"><el-tag type="info">已开发票</el-tag></p>
+                <p v-if="scope.row.status === 3"><el-tag type="success">收到发票</el-tag></p>
+              </template>
             </el-table-column>
             <el-table-column
               align="center"
@@ -101,14 +108,14 @@
               label="操作">
               <template slot-scope="scope">
                 <!--设计公司已开发票&&收发票&&-->
-                <p v-if="scope.row.type === 1 && scope.row.status===2 && scope.row.company_type===2" @click="confirmReceipt(scope.row, 2)"><el-tag type="gray">确认收到发票</el-tag></p>
-                <p v-if="scope.row.type === 2 && scope.row.status===1 && scope.row.company_type===1" @click="confirmReceipt(scope.row, 1)"><el-tag type="gray">确认开出发票</el-tag></p>
+                <p v-if="scope.row.type === 1 && scope.row.status===2 && scope.row.company_type===2" @click="confirmReceipt(scope.row, 2)"><el-tag type="success">确认收到发票</el-tag></p>
+                <p v-if="scope.row.type === 2 && scope.row.status===1 && scope.row.company_type===1" @click="confirmReceipt(scope.row, 1)"><el-tag type="success">确认开出发票</el-tag></p>
               </template>
             </el-table-column>
           </el-table>
 
-          <el-dialog title="请填写拒绝原因" :visible.sync="dialogVisible" size="tiny">
-            <el-input v-model="verify.refuseRease"></el-input>
+          <el-dialog title="发票备注" :visible.sync="dialogVisible" size="tiny">
+            <el-input type="textarea" v-model="verify.refuseRease"></el-input>
             <span slot="footer" class="dialog-footer">
               <el-button size="small" @click="dialogVisible = false">取 消</el-button>
               <el-button size="small" type="primary" @click="setVerify(verify.id,verify.refuseRease)">确 定</el-button>
@@ -149,10 +156,14 @@
         tableData: [],
         isLoading: false,
         routerName: '',
+        putReceiptList: '',
+        test: {},
         query: {
           page: 1,
-          pageSize: 50,
-          status: 0
+          pageSize: 3,
+          status: 0,
+          totalCount: 1,
+          total: 0
         },
         verify: {
           id: '',
@@ -168,6 +179,7 @@
         this.multipleSelection = val
       },
       handleSizeChange(val) {
+        console.log(val)
         this.query.pageSize = val
         this.loadList()
       },
@@ -181,10 +193,9 @@
         this.dialogVisible = !this.dialogVisible
       },
       setVerify (id, refuseRease) {
+        this.test = id
         this.dialogVisible = false
         const self = this
-        console.log(id)
-        console.log(refuseRease)
         var confirmInvoice = ''
         if (self.verify.companytype === 2) {
           confirmInvoice = api.adminCompanyConfirmInvoice
@@ -195,10 +206,17 @@
         // adminDemandCompanyConfirmSendInvoice  确认发出
         self.$http.put(confirmInvoice, {id: id, summary: refuseRease})
         .then (function (response) {
-          console.log(response)
           if (response.data.meta.status_code === 200) {
             self.verify.refuseRease = ''
             self.$message.success('操作成功')
+            for (let i in self.tableData) {
+              if (self.tableData[i].id === self.test) {
+                self.$nextTick(_ => {
+                  self.tableData.splice(i, 1)
+                  console.log(self.tableData)
+                })
+              }
+            }
           } else {
             self.$message.error(response.data.meta.message)
           }
@@ -221,15 +239,19 @@
           adminCompanyInvoice = api.adminDemandCompanyInvoice
         }
         self.isLoading = true
+        console.log(self.query.pageSize)
         self.$http.get(adminCompanyInvoice, {params: {status: self.query.status, per_page: self.query.pageSize, page: self.query.page}})
         .then (function(response) {
           self.isLoading = false
           self.tableData = []
           if (response.data.meta.status_code === 200) {
             self.itemList = response.data.data
+            console.log(response)
+            self.query.totalCount = parseInt(response.data.meta.pagination.total)
+            self.query.current_page = parseInt(response.data.meta.pagination.current_page)
+            console.log(self.itemList)
             for (var i = 0; i < self.itemList.length; i++) {
               var item = self.itemList[i]
-              console.log(item)
               // 发票收发类型
               var typeValue = ''
               if (item.type === 1) {
@@ -265,8 +287,8 @@
               } else {
                 item.invoice_type = '普票'
               }
-
               self.tableData.push(item)
+              item['created_at'] = item.created_at.date_format().format('yy-MM-dd')
             } // endfor
           } else {
             self.$message.error(response.data.meta.message)
@@ -280,6 +302,7 @@
     },
     created: function() {
       this.loadList()
+      this.putReceiptList = this.$route.name
     },
     watch: {
       '$route' (to, from) {

@@ -16,12 +16,16 @@
           v-loading="isLoading">
           <div class="content-head">
             <div class="clearfix" v-show="showList">
-              <p class="title fl" v-if="!isChoose && folderId === 0" v-html="title"></p>
-              <p class="title fl" v-if="!isChoose && folderId !== 0">
-                <i v-if="historyId.length"
-                  class="fx fx-icon-nothing-left" @click="backFolder"></i>
-                {{parentFolder.name}}
-              </p>
+              <el-tooltip effect="dark" :content="title" placement="top">
+                <p class="title fl" v-if="!isChoose && folderId === 0" v-html="title"></p>
+              </el-tooltip>
+              <el-tooltip effect="dark" :content="parentFolder.name" placement="top">
+                <p class="title fl" v-if="!isChoose && folderId !== 0">
+                  <i v-if="historyId.length"
+                    class="fx fx-icon-nothing-left" @click="backFolder"></i>
+                  {{parentFolder.name}}
+                </p>
+              </el-tooltip>
               <div class="fr operate" v-if="!isChoose">
                 <p class="add" v-if="modules !== 'recycle'">
                   <span class="add-option">
@@ -2597,6 +2601,9 @@ export default {
     }
   }
   @media screen and (max-width: 1199px) {
+    .content.full-height.content-mini {
+      width: 83.33333%;
+    }
     .edit-menu .file-radio {
       margin-left: 10px;
     }
