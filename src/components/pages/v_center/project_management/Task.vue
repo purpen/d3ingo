@@ -18,8 +18,8 @@
               </ul>
             </div>
           </div>
-          <section :style="{maxHeight: docHeight, overflowY: 'auto'}">
-            <section>
+          <section class="task-list-content scroll-bar2" :style="{maxHeight: docHeight}">
+            <section :class="['no-stage-item', {'mytask-item': isMyTask}]">
               <div v-for="(ele, index) in displayObj.outsideStageList" :key="index"
                 @click="showTaskBtn(ele, index)"
                 :class="['task-item','clearfix', {
@@ -71,7 +71,7 @@
                   @click="showTaskBtn(e, i)">
                   <p class="task-name">
                     <span @click.stop.prevent="completeTaskBtn(e, i)" class="task-name-span"></span>
-                    <span v-if="(e.id !== taskState.id) || !taskState.power">{{e.name | filterName}}</span>
+                    <span :class="{'tc-9': !e.name}" v-if="(e.id !== taskState.id) || !taskState.power">{{e.name | filterName}}</span>
                       <!-- v-focus="isFocus" -->
                     <input
                       v-focus="isFocus"
@@ -229,7 +229,7 @@
           this.isReady = false
           this.isReady = setTimeout(() => {
             this.isReady = true
-            this.docHeight = (document.body.clientHeight - 234) + 'px'
+            this.docHeight = (document.body.clientHeight - 225) + 'px'
           }, 100)
         }
       },
@@ -249,7 +249,7 @@
       fetchStage() {
         const self = this
         self.isLoading = true
-        self.$http.get(api.toolsStage, {params: {item_id: self.itemId}})
+        self.$http.get(api.toolsStage, {params: {item_id: self.itemId, stage: this.taskStatus}})
         .then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.$store.commit('setStageList', response.data.data)
@@ -414,12 +414,12 @@
         }
       },
       // 主任务列表
-      fetchTask(stage = 0) {
+      fetchTask() {
         const self = this
         self.isLoading = true
         self.$http.get(api.task, {params: {
           item_id: self.itemId,
-          stage: stage
+          stage: self.taskStatus
         }}).then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.$store.commit('setTaskList', {data: response.data.data, showChild: false})
@@ -478,6 +478,7 @@
                 if (this.isMyTask) {
                   this.fetchMyTask()
                 } else {
+                  this.fetchTask()
                   this.fetchStage()
                 }
               })
@@ -525,7 +526,7 @@
             })
           }
         } else {
-          this.$message.error('任务名不能为空')
+          console.log('任务名不能为空')
         }
       },
       closeCover() {
@@ -643,12 +644,13 @@
         },
         deep: true
       },
-      taskStatus(val) {
-        this.fetchTask(val)
+      taskStatus() {
+        this.fetchTask()
+        this.fetchStage()
       }
     },
     created() {
-      this.docHeight = (document.body.clientHeight - 234) + 'px'
+      this.docHeight = (document.body.clientHeight - 225) + 'px'
       if (this.isMyTask) {
         this.fetchMyTask()
       } else {
@@ -708,11 +710,12 @@
     /* animation: slowShow 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) */
   }
   .operate {
-    display: flex
+    display: flex;
+    /* border-bottom: 1px solid #d2d2d2; */
   }
   .add-btn {
     flex: 1 1 auto;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
   }
   .add-btn:hover .add-stage {
     display: inline-block;
@@ -725,6 +728,7 @@
     border-radius: 4px;
     text-align: center;
     position: relative;
+    margin-right: 8px;
   }
   .filter p {
     line-height: 34px;
@@ -788,16 +792,36 @@
     /* padding-left: 30px; */
     transition: 0.5s all ease;
   }
+  .task-list-content {
+    overflow-y: auto;
+    padding-right: 4px;
+    /* border-bottom: 1px solid #d2d2d2 */
+  }
   .task-item {
     display: flex;
+    border-radius: 4px;
   }
   .task-item, .stage-name {
     cursor: pointer;
     border: 1px solid #d2d2d2;
-    border-radius: 4px;
+    /* border-radius: 4px; */
     line-height: 48px;
-    height: 50px;
+    height: 51px;
     margin-bottom: 10px;
+  }
+  .task-item {
+    border-right: 1px solid #d2d2d2;
+  }
+  .no-stage-item .task-item:first-child,
+  .stage-item .task-item:first-child {
+    /* border-top: none; */
+    /* border-radius: 0 0 0 4px; */
+  }
+  .mytask-item .task-item:first-child {
+    border-top: 1px solid #e6e6e6;
+  }
+  .mytask-item .task-item {
+    border-right: 1px solid #e6e6e6;
   }
   .is-checked {
     border: 1px solid #ff5a5f;
@@ -814,6 +838,7 @@
     border-radius: 0;
     padding: 0 40px 0 0;
     margin-top: 0;
+    margin-bottom: 10px;
     font-size: 18px;
     color: #222222;
     line-height: 40px;
@@ -824,9 +849,12 @@
     border-color: transparent;
     border-bottom-color: #d2d2d2;
   }
-  /* .stage-item:last-child .stage-name {
-    margin-bottom: 0
-  } */
+  .stage-item:last-child .task-item:last-child {
+    margin-bottom: 0;
+    /* border-bottom: none; */
+    border-radius: 4px 4px 0 0
+  }
+
   .stage-title {
     position: absolute;
     left: 0;
@@ -860,8 +888,12 @@
   .level1 {
     border-left: 1px solid #d2d2d2;
   }
+  .level1 .task-name {
+    margin-left: 5px;
+  }
   .task-item.click {
     border: 1px solid rgba(255, 90, 95, 0.5);
+    /* border-right: none; */
   }
   .task-item.level2 {
     border-left: 6px solid #FFD330;
@@ -873,8 +905,10 @@
     /* background: #fafafa; */
     color: #999;
   }
-  .task-item.active .task-name {
+  .task-item.active .task-name,
+  .task-item.active .task-name .task-name-input {
     text-decoration: line-through;
+    color: #999;
   }
   .task-item.active .task-name-span::after{
     border-color: #d2d2d2
@@ -1002,5 +1036,8 @@
     text-align: center;
     color: #969696;
     line-height: 3;
+  }
+  .line-through {
+    text-decoration: line-through
   }
 </style>

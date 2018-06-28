@@ -198,7 +198,7 @@
           </div>
         </el-form-item>
 
-        <div class="sum-box">
+        <div class="sum-box" v-if="!param.checkTaxer">
           <div class="tax-box">
             <p class="total-money">合计： <span>¥{{ totalMoneyFormat }}</span> 元</p>
             <p class="select-importance">
@@ -219,6 +219,60 @@
                 <i class="after"  @click="reduceRate"></i>
                 <input placeholder="" v-model.number="rate" class="tax-input" @blur="checkRate" /> %</span> &nbsp;&nbsp;&nbsp;&nbsp;总计（含税）： <span>¥{{ taxTotalMoneyFormat }}</span> 元</p>
             </div>
+          </div>
+        </div>
+
+        <div class="sum-box" v-else>
+          <div class="tax-box">
+            <p class="total-money">合计： <span>¥{{ totalMoneyFormat }}</span> 元</p>
+          </div>
+          <div class="invoice-box">
+            <p class="select-importance">
+              <span @click="taxChangeBtn(1, 1)" :class="{'active': taxRate.taxableType === 1}">一般纳税人</span>
+              <span @click="taxChangeBtn(1, 2)" :class="{'active': taxRate.taxableType === 2}">小额纳税人</span>
+            </p>
+          </div>
+          <div class="invoice-box" v-if="showRate.invoice">
+            <p class="select-importance">
+              <span @click="taxChangeBtn(2, 1)" :class="{'active': taxRate.invoiceType === 1}">专用发票</span>
+              <span @click="taxChangeBtn(2, 2)" :class="{'active': taxRate.invoiceType === 2}">普通发票</span>
+            </p>
+          </div>
+          <div class="tax-total-box">
+
+            <p class="tax-total-money">税率:  <span class="tax-span">
+              {{ rate }} %</span> &nbsp;&nbsp;&nbsp;&nbsp;总计（含税）： <span>¥{{ taxTotalMoneyFormat }}</span> 元</p>
+            <p class="question-prop" v-show="taxRate.taxableType === 2">
+              <el-popover class="contact-popover" trigger="hover" placement="left" v-if="taxRate.invoiceType === 1">
+                <p class="contact">税率详情：</p>
+                <p class="contact">3%服务费发票，增值税专用发票</p>
+                <p class="contact">甲方税率3%发票，去税务代开发票</p>
+                <p class="contact">&nbsp;</p>
+                <p class="contact">详细案例如下：</p>
+                <p class="contact">乙方开具3%专用发票给太火鸟，太火鸟开具6%专用发票给甲方</p>
+                <p class="contact">乙方需要承担差额部分4%部分的税赋，计算方法如下：</p>
+                <p class="contact">乙方给太火鸟开具90万发票，太火鸟给甲方开具100万发票。</p>
+                <p class="contact">乙方需要承担90万的税赋差额部分费用，合计费用4%，乙方收到款项为90-4=86万</p>
+                <p slot="reference" class="question-icon question">
+                  <i></i>
+                </p>
+              </el-popover>
+
+              <el-popover class="contact-popover" trigger="hover" placement="left" v-if="taxRate.invoiceType === 2">
+                <p class="contact">税率详情：</p>
+                <p class="contact">3%服务费发票，增值税普通发票</p>
+                <p class="contact">乙方税率3%发票，自开发票</p>
+                <p class="contact">&nbsp;</p>
+                <p class="contact">详细案例如下：</p>
+                <p class="contact">乙方开具3%普通发票给太火鸟，太火鸟开具6%普通发票给甲方</p>
+                <p class="contact">乙方需要承担其中7%部分的税赋，计算方法如下：</p>
+                <p class="contact">乙方给太火鸟开具90万发票，太火鸟给甲方开具100万发票。</p>
+                <p class="contact">乙方需要承担90万的税赋差额部分费用，合计费用7%，乙方收到款项为90-7=83万</p>
+                <p slot="reference" class="question-icon question">
+                  <i></i>
+                </p>
+              </el-popover>
+            </p>
           </div>
         </div>
         
@@ -396,7 +450,9 @@ export default {
       rate: 6,
       taxRate: {
         isTax: 0,
-        isInvoice: 1
+        isInvoice: 1,
+        taxableType: 1,
+        invoiceType: 1
       },
       showRate: {
         invoice: 1,
@@ -417,6 +473,8 @@ export default {
 
         this.$set(this.form, 'is_tax', this.taxRate.isTax)
         this.$set(this.form, 'is_invoice', this.taxRate.isInvoice)
+        this.$set(this.form, 'taxable_type', this.taxRate.taxableType)
+        this.$set(this.form, 'invoice_type', this.taxRate.invoiceType)
         this.$set(this.form, 'tax_rate', this.rate)
         this.$set(this.form, 'price', this.taxTotalMoney)
         this.$set(this.form, 'total_price', this.totalMoney)
@@ -648,6 +706,14 @@ export default {
         this.$set(this.taxRate, 'isInvoice', evt)
       }
     },
+    // radio change事件--一般/小额纳税人
+    taxChangeBtn(type, evt) {
+      if (type === 1) {
+        this.$set(this.taxRate, 'taxableType', evt)
+      } else if (type === 2) {
+        this.$set(this.taxRate, 'invoiceType', evt)
+      }
+    },
     // 添加计划成员
     addPlanMember(index) {
       this.form.plan_format[index].arranged.push({name: '', number: ''})
@@ -725,6 +791,17 @@ export default {
         } else if (val.isInvoice === 1) {
           this.$set(this.showRate, 'rate', 1)
         }
+        if (val.taxableType === 1) {
+          this.$set(this.showRate, 'invoice', 0)
+          this.rate = 6
+        } else if (val.taxableType === 2) {
+          this.$set(this.showRate, 'invoice', 1)
+          if (val.invoiceType === 1) {
+            this.rate = 7
+          } else if (val.invoiceType === 2) {
+            this.rate = 10
+          }
+        }
       },
       deep: true
     },
@@ -773,6 +850,8 @@ export default {
     }
     this.$set(this.taxRate, 'isTax', form.is_tax ? form.is_tax : 0)
     this.$set(this.taxRate, 'isInvoice', form.is_invoice ? form.is_invoince : 1)
+    this.$set(this.taxRate, 'taxableType', form.taxable_type ? form.taxable_type : 1)
+    this.$set(this.taxRate, 'invoiceType', form.invoice_type ? form.invoice_type : 1)
     this.rate = form.tax_rate ? form.tax_rate : 6
     this.totalMoney = parseFloat(form.total_price ? form.total_price : 0)
     if (form.area === 0) form.area = ''
@@ -1040,5 +1119,33 @@ export default {
     border-radius: 0;
     border-left: none;
     border-right: none;
+  }
+
+  .question-icon i {
+    display: block;
+    width: 15px;
+    height: 15px;
+    background: url(../../assets/images/icon/question.png) no-repeat center / contain;
+  }
+  .question-icon i:hover,
+  .question-icon:focus i {
+    background: url(../../assets/images/icon/question_hover.png) no-repeat center / contain;
+  }
+
+  .question-prop {
+    float: right;
+  }
+
+  .contact-popover {
+  }
+  .contact {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #ff5a5f;
+  }
+  .question {
+    width: 20px;
+    height: 20px;
+    margin: 8px 5px 0 0;
   }
 </style>

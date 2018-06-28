@@ -4,7 +4,7 @@
     <el-row :gutter="20">
       <v-menu></v-menu>
 
-      <el-col :span="20" v-loading.body="isLoading">
+      <el-col :span="20" v-loading="isLoading">
 
         <div class="count-items">
           <el-row :gutter="10">
@@ -107,7 +107,7 @@
                 <el-table
                   :data="tableItemData"
                   border
-                  v-loading.body="isItemLoading"
+                  v-loading="isItemLoading"
                   class="admin-table"
                   @selection-change="handleSelectionChange"
                   style="width: 100%">
@@ -230,7 +230,7 @@
 
   .count-item p {
     line-height: 2;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: #666;
   }
 
@@ -338,7 +338,7 @@
   }
 
   p.alert-title {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: #666;
     margin-bottom: 20px;
     color: red;
@@ -351,7 +351,7 @@
 
   span.red {
     color: red;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
 </style>

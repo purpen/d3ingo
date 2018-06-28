@@ -1315,7 +1315,7 @@ a.box:active {
   }
 
 .button.is-large {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   }
 
 .button[disabled], .button.is-disabled {
@@ -1510,7 +1510,7 @@ input[type="submit"].button {
   }
 
 .content.is-large {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   }
 
 .input,
@@ -1670,7 +1670,7 @@ input[type="submit"].button {
 
 .input.is-large,
 .textarea.is-large {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   }
 
 .input.is-fullwidth,
@@ -1860,7 +1860,7 @@ input[type="submit"].button {
   }
 
 .select.is-large {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   }
 
 .select.is-fullwidth {
@@ -2137,7 +2137,7 @@ input[type="submit"].button {
   }
 
 .control.has-icon .input.is-large + .icon {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   }
 
 .control.has-icon:not(.has-icon-right) .icon {
@@ -2693,7 +2693,7 @@ input[type="submit"].button {
   }
 
 .title.is-4 {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   }
 
 .title.is-5 {
@@ -2732,7 +2732,7 @@ input[type="submit"].button {
   }
 
 .subtitle.is-4 {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   }
 
 .subtitle.is-5 {
@@ -3626,7 +3626,7 @@ input[type="submit"].button {
   flex-grow: 1;
   -ms-flex-negative: 0;
   flex-shrink: 0;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   line-height: 1;
   }
 
@@ -3977,7 +3977,7 @@ a.nav-item.is-tab.is-active {
   }
 
 .pagination.is-large {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   }
 
 .pagination,
@@ -4547,7 +4547,7 @@ label.panel-block:hover {
   }
 
 .tabs.is-large {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   }
 
 .column {

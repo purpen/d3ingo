@@ -21,22 +21,44 @@
           </div>
         </swiper-slide>
         <swiper-slide v-if="isMob" v-for="(ele, index) in bannerListMob" :key="index">
-          <router-link class="banner-link slide"
+          <router-link
+            v-if="!ele.outSide"
+            class="banner-link slide"
             :to="ele.url"
             :style="{
               background: 'url(' + ele.img + ') no-repeat center',
               backgroundSize: 'contain',
               height: calcHeight
             }"></router-link>
+            <a v-else
+              :href="ele.url"
+              class="banner-link slide"
+              :style="{
+                background: 'url(' + ele.img + ') no-repeat center',
+                backgroundSize: 'contain',
+                height: calcHeight
+              }">
+            </a>
         </swiper-slide>
         <swiper-slide v-if="!isMob" v-for="(ele, index) in bannerList" :key="index">
-          <router-link class="banner-link slide"
+          <router-link
+            v-if="!ele.outSide"
+            class="banner-link slide"
             :to="ele.url"
             :style="{
               background: 'url(' + ele.img + ') no-repeat center',
               backgroundSize: 'cover',
               height: calcHeight
             }"></router-link>
+            <a v-else
+              :href="ele.url"
+              class="banner-link slide"
+              :style="{
+                background: 'url(' + ele.img + ') no-repeat center',
+                backgroundSize: 'contain',
+                height: calcHeight
+              }">
+            </a>
         </swiper-slide>
         <div class="swiper-pagination" slot="pagination">
         </div>
@@ -204,7 +226,13 @@
           // },
           {
             img: require ('assets/images/home/banner/homebanner_xiaomi_mob.jpg'),
-            url: '/subject/xiaomiInterview'
+            url: '/subject/xiaomiInterview',
+            outSide: false
+          },
+          {
+            img: require ('assets/images/home/qsyd4-m.jpg'),
+            url: 'https://www.taihuoniao.com/contest/qsyd4',
+            outSide: true
           }
         ],
         bannerList: [
@@ -214,7 +242,13 @@
           // },
           {
             img: require ('assets/images/home/banner/home_xiaomi.jpg'),
-            url: '/subject/xiaomiInterview'
+            url: '/subject/xiaomiInterview',
+            outSide: false
+          },
+          {
+            img: require ('assets/images/home/qsyd4.jpg'),
+            url: 'https://www.taihuoniao.com/contest/qsyd4',
+            outSide: true
           }
         ],
         caseSlideList: [

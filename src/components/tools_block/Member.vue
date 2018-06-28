@@ -478,6 +478,7 @@ export default {
     bottom: 0;
     left: 0;
     width: 100%;
+    border-radius: 0 0 4px 4px;
   }
   .side ul .info {
     position: relative;

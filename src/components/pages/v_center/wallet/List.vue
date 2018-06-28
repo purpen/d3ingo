@@ -38,7 +38,7 @@
 
             <article v-if="record === 'transaction'">
               <el-table v-if="!isMob"
-                        :data="tableData" :border="false" v-loading.body="isLoading"
+                        :data="tableData" :border="false" v-loading="isLoading"
                         @selection-change="handleSelectionChange"
                         key="transaction"
                         style="width: 100%">
@@ -69,7 +69,7 @@
                 </el-table-column>
               </el-table>
 
-              <section v-loading.body="isLoading" v-if="isMob">
+              <section v-loading="isLoading" v-if="isMob">
                 <div class="transaction-record"
                   v-for="(ele, index) in tableData" :key="index"
                     @selection-change="handleSelectionChange">
@@ -122,7 +122,7 @@
                   label="交易状态">
                 </el-table-column>
               </el-table>
-              <section v-loading.body="isLoading" v-if="isMob">
+              <section v-loading="isLoading" v-if="isMob">
                 <div class="transaction-record"
                   v-for="(ele, index) in WithdrawList" :key="index"
                     @selection-change="handleSelectionChange">

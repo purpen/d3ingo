@@ -183,12 +183,12 @@
     padding: 5px 10px 5px 10px;
   }
   p.c-title {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: #333;
     padding: 15px 10px 15px 10px;
   }
   p.c-title-pro {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: #333;
     padding: 15px 10px 5px 10px;
   }
@@ -213,7 +213,7 @@
     float: right;
   }
   .money-str {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
   .btn {
     font-size: 1.2rem;

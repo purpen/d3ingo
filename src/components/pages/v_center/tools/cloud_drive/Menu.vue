@@ -1,5 +1,5 @@
 <template>
-  <div :class="['menu', {'menu-mini' : !leftWidth}]">
+  <div :class="['menu', 'scroll-bar2', {'menu-mini' : !leftWidth}]">
     <!-- <h3><router-link class="clearfix" to="/vcenter/control"><i class="fx fx-icon-nothing-left"></i>设计云盘</router-link></h3> -->
     <el-collapse v-model="activeNames" class="cloud-menu">
       <el-collapse-item title="设计云盘" name="1">
@@ -152,9 +152,12 @@
 </script>
 <style scoped>
   .menu {
+    overflow-x: hidden;
+    height: 100%;
     /* transition: 0.2s all ease; */
+    /* height: calc(100vh - 60px); */
     max-width: 200px;
-    height: calc(100vh - 60px);
+    min-height: 100%;
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
     /* background: #333; */
   }
@@ -179,7 +182,7 @@
     color: #999;
     display: block;
     position: relative;
-    padding-left: 68px;
+    padding-left: 52px;
     cursor: pointer;
   }
   .cloud-classify li a span {
@@ -193,7 +196,7 @@
     position: absolute;
     width: 24px;
     height: 24px;
-    left: 34px;
+    left: 18px;
     top: 8px;
     background: url('../../../../../assets/images/tools/cloud_drive/file@2x.png') center no-repeat;
     background-size: contain

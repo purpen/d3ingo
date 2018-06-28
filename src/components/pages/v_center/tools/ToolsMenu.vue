@@ -89,7 +89,7 @@
   .menu-list span {
     display: block;
     padding: .85rem 1.5rem;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: #666666;
     position: relative;
     text-indent: 12px;

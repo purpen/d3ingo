@@ -293,7 +293,7 @@
   }
 
   .domain .des {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     padding: 0 1em;
     line-height: 1.9;
     color: #666;
@@ -338,7 +338,7 @@
     position: absolute;
     left: 68px;
     color: #0F7553;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   .sub-title .tig {

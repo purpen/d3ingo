@@ -14,8 +14,8 @@
 </el-upload>
     </el-row>
     <section class="contract-list" 
-      v-for="(fi,indexfi) in fileing" :key="indexfi+'f'"
       v-if="fi.percentage!==100&&fileing.length>0"
+      v-for="(fi,indexfi) in fileing" :key="indexfi+'f'"
     >
       <img :src="Groupimg" alt="">
       <div class="contracct-Part">
@@ -31,7 +31,9 @@
         </el-progress>
       </div>
     </section>
-    <section class="contract-list" v-for="(f,indexf) in fileList" :key="indexf">
+    <section class="contract-list"
+      v-if="fileList&&fileList.length>0" 
+      v-for="(f,indexf) in fileList" :key="indexf">
       <img :src="Groupimg" alt="">
       <div class="contracct-Part">
         <p>{{ f.name }}</p>
@@ -41,7 +43,7 @@
       <div class="fr marginlf" @click="downupload(f.file)">下载</div>
       <div class="fr" @click="isdelete(f.id)">删除</div>
     </section>
-    <section class="contract-list" v-if="infoList">
+    <section class="contract-list" v-if="infoList&&infoList.length>0">
       <img :src="Groupimg" alt="">
       <div class="contracct-Part info-title">
         <p>{{ infoList.title }}</p>

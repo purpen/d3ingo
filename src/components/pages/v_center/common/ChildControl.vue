@@ -1,7 +1,7 @@
 <template>
   <el-row class="control blank30 vcenter">
     <v-menu currentName="control"></v-menu>
-    <!-- <el-col :span="!isMob? rightWidth : 24" :offset="!isMob ? leftWidth : 0" v-loading.body="isLoading">
+    <!-- <el-col :span="!isMob? rightWidth : 24" :offset="!isMob ? leftWidth : 0" v-loading="isLoading">
 
       <div class="right-content message">
         <div class="content-box clearfix">
@@ -40,13 +40,21 @@
               <div class="pre">
                 <p class="c-title-pro">{{ d.item.name }}</p>
                 <p class="progress-line">
-                  <el-progress :text-inside="true" :show-text="false" :stroke-width="18" :percentage="d.item.progress"
+                  <el-progress
+                  :text-inside="true"
+                  :show-text="false"
+                  :stroke-width="6"
+                  :percentage="d.item.progress"
                   status="exception"></el-progress>
                 </p>
                 <p class="prefect">您的项目需求填写已经完成了{{ d.item.progress }}%。</p>
                 <p>
-                  <el-button class="is-custom" :progress="d.item.stage_status" :item_id="d.item.id"
-                              :item_type="d.item.type" @click="editItem" size="" type="primary">
+                  <el-button class="is-custom" :progress="d.item.stage_status"
+                    :item_id="d.item.id"
+                    :item_type="d.item.type"
+                    @click="editItem"
+                    size="small"
+                    type="primary">
                     <i class="el-icon-edit"></i>
                     完善项目
                   </el-button>
@@ -117,7 +125,7 @@
               <h3>公司认证</h3>
               <p class="item-title">提交公司认证信息</p>
               <p class="item-btn">
-                <router-link :to="{name: 'vcenterComputerAccreditation'}">未认证</router-link>
+                <router-link :to="{name: 'vcenterComputerAccreditation'}">去认证</router-link>
               </p>
             </div>
 
@@ -349,7 +357,7 @@
   }
 
   p.alert-title {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     color: #666;
     margin-bottom: 20px;
   }
@@ -396,10 +404,24 @@
   }
 
   .content-box .item .item-btn a {
-    color: #FE3824;
-    border: 1px solid #fe3824;
-    border-radius: 5px;
+    display: block;
+    text-align: center;
+    width: 100px;
+    height: 30px;
+    color: #ff5a5f;
+    border: 1px solid #ff5a5f;
+    border-radius: 4px;
     padding: 4px 10px;
+  }
+
+  .content-box .item .item-btn a:hover {
+    background-color: #ffacaf;
+    color: #fff;
+  }
+
+  .content-box .item .item-btn a:active {
+    background-color: #ff5a5f;
+    color: #fff;
   }
 
   .no-line {
@@ -454,7 +476,7 @@
   }
 
   p.c-title-pro {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: #333;
     padding: 15px 10px 5px 10px;
   }
@@ -464,7 +486,7 @@
   }
 
   .money-str {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   .btn {

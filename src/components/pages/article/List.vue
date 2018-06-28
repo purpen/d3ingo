@@ -9,7 +9,7 @@
         <router-link :to="{name: 'subjectList'}">专题</router-link>
       </div>
     </div>
-    <div class="case-list" v-loading.body="isLoading">
+    <div class="case-list" v-loading="isLoading">
       <el-row :gutter="20" class="anli-elrow">
         <el-col :xs="24" :sm="8" :md="8" :lg="8" v-for="(d, index) in itemList" :key="index">
           <el-card :body-style="{ padding: '0px' }" class="card">

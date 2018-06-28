@@ -8,7 +8,7 @@
           <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
 
-          <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
+          <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading="isLoading">
             <el-row :gutter="gutter" :class="['item', isMob ? 'item-m no-border' : '']">
               <el-col :span="titleSpan" class="title">
                 <p>账号</p>

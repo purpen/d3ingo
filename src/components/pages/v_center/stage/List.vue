@@ -165,7 +165,7 @@
     padding: 5px 5px 5px 5px;
   }
   .design-case-list .content a {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
 </style>

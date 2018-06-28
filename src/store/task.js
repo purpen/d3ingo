@@ -24,46 +24,6 @@ let state = {
   mineView: ''
 }
 let mutations = {
-  setDisplayObj2(state, array) { // 容易出异步问题
-    let outsideStageList = []
-    let itemList = state.stageList
-    if (!array) {
-      return
-    }
-    array.forEach((item) => {
-      if (item['use'] === true) {
-        item['use'] = false
-      }
-      console.log(item)
-      if (item['created_at']) {
-        item['created_at_format'] = item['created_at'].date_format().format('yyyy年MM月dd日')
-      }
-    })
-    state.stageList.forEach(ele => {
-      ele['itemList'] = []
-    })
-    array.forEach((item) => {
-      if (itemList.length) {
-        itemList.forEach(ele => {
-          ele.showItem = false
-          if (item.stage_id === ele.id) {
-            ele['itemList'].push(item)
-          } else {
-            if (!item['use']) {
-              outsideStageList.push(item)
-              item['use'] = true
-            }
-          }
-        })
-      } else {
-        outsideStageList = array
-      }
-    })
-    Object.assign(state.displayObj, {
-      itemList: itemList,
-      outsideStageList: outsideStageList
-    })
-  },
   setDisplayObj(state, array) {
     if (!array) {
       return

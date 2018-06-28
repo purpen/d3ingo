@@ -1810,6 +1810,11 @@ export default {
         this.$message.error(error.message)
         console.error(error.message)
       })
+    },
+    // 当前用户是否为项目负责人和商务经理
+    permissions() {
+      let user = this.$store.state.task.projectObject
+      user
     }
   },
   created() {
@@ -1821,6 +1826,7 @@ export default {
     }
     this.itemId = itemId
     // 读取公司成员
+    this.permissions()
     this.readMembers()
     this.upTokens()
     this.statisticalItem()

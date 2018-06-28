@@ -8,7 +8,7 @@
         'vcenter-right-mob': isMob}">
         <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
-          <section v-loading.body="isLoading">
+          <section v-loading="isLoading">
             <section class="verify" v-if="item.verify_status === 0">
               <img :src="require('assets/images/item/authentication@2x.png')" alt="未认证">
               <h3>您还没有实名认证</h3>
@@ -43,8 +43,8 @@
 
               <div :class="['content-box', isMob ? 'content-box-m' : '']">
                 <section class="certified">
-                  <div class="form-title">
-                    <span>企业实名认证</span>
+                  <div class="sub-title">
+                    <span>基本信息</span>
                   </div>
                   <div class="company-show">
                     <div class="item">
@@ -89,10 +89,16 @@
                       <p class="p-val">
                         <span v-for="(d, index) in item.document_image" :key="index">
                           <a :href="d.file" target="_blank">{{ d.name }}</a> &nbsp;&nbsp;
-                        </span>                 
+                        </span>
                       </p>
                     </div>
-
+                    <div class="item">
+                      <p class="p-key">地址</p>
+                      <p class="p-val">{{ item.province_value }} {{ item.city_value }} {{ item.area_value }} {{ item.address }}</p>
+                    </div>
+                    <div class="sub-title">
+                      <span>联系人信息</span>
+                    </div>
                     <div class="item">
                       <p class="p-key">联系人</p>
                       <p class="p-val">{{ item.contact_name }}</p>
@@ -112,9 +118,35 @@
                       <p class="p-key">邮箱</p>
                       <p class="p-val">{{ item.email }}</p>
                     </div>
+                    <div class="sub-title">
+                      <span>银行卡信息</span>
+                    </div>
                     <div class="item">
-                      <p class="p-key">地址</p>
-                      <p class="p-val">{{ item.province_value }} {{ item.city_value }} {{ item.area_value }} {{ item.address }}</p>
+                      <p class="p-key">开户名</p>
+                      <p class="p-val">{{ item.account_name }}</p>
+                    </div>
+
+                    <div class="item">
+                      <p class="p-key">开户银行</p>
+                      <p class="p-val">{{ item.bank_name }}</p>
+                    </div>
+
+                    <div class="item">
+                      <p class="p-key">对公银行账号</p>
+                      <p class="p-val">{{ item.account_number }}</p>
+                    </div>
+
+                    <div class="sub-title" v-if="item.taxable_type || item.invoice_type">
+                      <span>开票信息</span>
+                    </div>
+                    <div class="item" v-if="item.taxable_type">
+                      <p class="p-key">纳税人类型</p>
+                      <p class="p-val">{{ item.taxable_type === 1?'一般纳税人':'小额纳税人' }}</p>
+                    </div>
+
+                    <div class="item" v-if="item.invoice_type">
+                      <p class="p-key">发票类型</p>
+                      <p class="p-val">{{ item.invoice_type === 1?'专票':'普票'}}</p>
                     </div>
                   </div>
                 </section>
@@ -213,7 +245,14 @@
     background-size: contain;
     text-indent: 30px;
   }
-
+  .sub-title {
+    font-size: 16px;
+    color: #222;
+    margin-top: 20px;
+    padding-bottom: 10px;
+    border-bottom:1px solid #e6e6e6;
+    position: relative;
+  }
   .company-show .item {
     display: flex;
     align-items: center;

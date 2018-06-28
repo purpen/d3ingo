@@ -19,7 +19,7 @@
           </div>
         </div> -->
 
-        <div class="content-box" v-loading.body="isLoading">
+        <div class="content-box" v-loading="isLoading">
 
           <div class="form-title">
             <span>基本信息</span>
@@ -417,7 +417,7 @@ export default {
   .company-show .item p.p-val {
     width: 300px;
     float: left;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   .company-show .item p.opt {

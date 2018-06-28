@@ -97,7 +97,7 @@ export default {
   }
   .normal {
     color: #666;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
   .red {
     color: red;

@@ -2,7 +2,7 @@
   <div class="container">
     <div class="commonly">
       <ToolsMenu currentName="commonlySites"></ToolsMenu>
-      <div class="commonly-sites" v-loading.body="loading">
+      <div class="commonly-sites" v-loading="loading">
         <section class="lists design-info" v-if="designInfo.length">
           <h2><span class="fx-4 fx-icon-information"></span>设计资讯</h2>
           <article>
