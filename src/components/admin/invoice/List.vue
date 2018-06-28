@@ -193,7 +193,7 @@
         }
         // adminCompanyConfirmInvoice   //确认收到
         // adminDemandCompanyConfirmSendInvoice  确认发出
-        self.$http.put(confirmInvoice, {id: id, verify_summary: refuseRease})
+        self.$http.put(confirmInvoice, {id: id, summary: refuseRease})
         .then (function (response) {
           console.log(response)
           if (response.data.meta.status_code === 200) {
