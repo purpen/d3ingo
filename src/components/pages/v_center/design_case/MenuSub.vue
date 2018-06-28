@@ -57,7 +57,7 @@
     display: inline-block;
     position: relative;
     float: left;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     padding: 0 0 12px;
     margin: 0 20px 0 0;
     cursor: pointer;

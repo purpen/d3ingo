@@ -1,6 +1,6 @@
 <template>
   <section class="share">
-    <div class="container" v-loading.body="isLoading">
+    <div class="container" v-loading="isLoading">
       <div class="content-head">
         <div class="clearfix">
             <p class="title fl" v-if="!isChoose && folderId === 0" v-html="title"></p>

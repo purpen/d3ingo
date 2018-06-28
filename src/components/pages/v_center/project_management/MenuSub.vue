@@ -1198,7 +1198,7 @@ header {
   color: #666;
   height: 50px;
   border-bottom: 1px solid #d2d2d2;
-  border-left: 3px solid transparent
+  border-left: 6px solid transparent
 }
 .cover-body-left span:hover {
   color: #ff5a5f;

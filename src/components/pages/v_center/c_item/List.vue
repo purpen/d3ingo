@@ -142,7 +142,7 @@
       </el-dialog>
     </div>
     <div class="blank30 vcenter clearfix">
-      <v-menu currentName="c_item" class="c_item"></v-menu>
+      <!--<v-menu currentName="c_item" class="c_item"></v-menu>-->
       <div :class="{'vcenter-right-plus': leftWidth === 4,
         'vcenter-right': leftWidth === 2,
           'vcenter-right-mob': isMob}">
@@ -636,7 +636,7 @@
 
   p.c-title {
     width: 100%;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: #333;
     padding: 15px 10px 15px 10px;
   }
@@ -646,7 +646,7 @@
   }
 
   .money-str {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   .btnGroup {
@@ -712,7 +712,7 @@
   }
 
   .status-str-m {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     margin-top: 10px;
     padding: 10px 0;
     border-top: 1px solid #e6e6e6;
@@ -756,7 +756,7 @@
 
   .item-content-m .item-title p.c-title {
     padding: 11px 0 8px;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     line-height: 1
   }
 
@@ -780,11 +780,19 @@
   }
   .pagination {
     text-align: center;
-    margin: 0;
+    margin: 0 0 20px;
   }
   h3 {
     font-size: 18px;
     color: #222;
     margin: 50px 0 20px;
+  }
+  @media screen and (max-width: 767px) {
+    h3 {
+      margin: 0 0 20px;
+    }
+    .vcenter {
+      margin: 0;
+    }
   }
 </style>

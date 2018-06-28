@@ -46,7 +46,7 @@
         <div class="design-case-content">
           <div v-if="designCases.length">
             <h2>作品案例</h2>
-            <div class="design-case-list" v-loading.body="isLoading">
+            <div class="design-case-list" v-loading="isLoading">
               <el-row :gutter="10">
                 <el-col :xs="24" :sm="8" :md="8" :lg="8" v-for="(d, index) in designCases" :key="index">
                   <el-card :body-style="{ padding: '0px' }" class="item">
@@ -282,7 +282,7 @@ p.web {
 }
 
 .content a {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
 }
 .image-box {
   height: 150px;

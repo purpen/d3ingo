@@ -8,7 +8,7 @@
         <div class="right-content modify-content vcenter-container">
           <v-menu-sub></v-menu-sub>
           <v-menu-sub v-if="false" currentSubName="identification"></v-menu-sub>
-          <div :class="['content-box', 'clearfix' , isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
+          <div :class="['content-box', 'clearfix' , isMob ? 'content-box-m' : '']" v-loading="isLoading">
             <!-- <div :class="['form-title', isMob ? 'form-title-m' : '']">
               <span v-if="!isMob">修改密码</span>
             </div> -->

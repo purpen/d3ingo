@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <ToolsMenu currentName="veerImage"></ToolsMenu>
-    <div class="veer-image" v-loading.body="isLoading">
+    <div class="veer-image" v-loading="isLoading">
       <div class="veer-header">
       <el-input class="search-input" placeholder="请输入内容" v-model="keyword">
         <el-button slot="append" class="search-btn" @click="getImgList(keyword)">搜索</el-button>

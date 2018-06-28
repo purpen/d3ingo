@@ -13,7 +13,7 @@
               <span>作品案例</span>
             </div> -->
 
-            <div class="design-case-list" v-loading.body="isLoading">
+            <div class="design-case-list" v-loading="isLoading">
               <el-row :gutter="20">
                 <el-col :xs="24" :sm="8" :md="8" :lg="8">
                   <router-link :to="{name: 'vcenterDesignCaseAdd'}" class="item item-add el-card">
@@ -174,7 +174,7 @@
   .content-box-m .form-title {
     margin: 10px 0 6px;
     }
-    
+
   .design-case-list .item {
     min-height: 240px;
     }
@@ -288,7 +288,10 @@
     .opt a {
       font-size: 1.4rem;
       }
+    .vcenter{
+      margin-top: 0;
     }
+  }
 
   .add {
     text-align: center;

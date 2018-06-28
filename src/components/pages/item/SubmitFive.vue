@@ -9,7 +9,7 @@
 
           <el-table
             v-if="!isMob"
-            v-loading.body="isLoading"
+            v-loading="isLoading"
             :data="tableData"
             border
             style="width: 100%">

@@ -153,8 +153,9 @@
 <style scoped>
   .menu {
     /* transition: 0.2s all ease; */
+    /* height: calc(100vh - 60px); */
     max-width: 200px;
-    height: calc(100vh - 60px);
+    min-height: 100%;
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
     /* background: #333; */
   }
@@ -179,7 +180,7 @@
     color: #999;
     display: block;
     position: relative;
-    padding-left: 68px;
+    padding-left: 52px;
     cursor: pointer;
   }
   .cloud-classify li a span {
@@ -193,7 +194,7 @@
     position: absolute;
     width: 24px;
     height: 24px;
-    left: 34px;
+    left: 18px;
     top: 8px;
     background: url('../../../../../assets/images/tools/cloud_drive/file@2x.png') center no-repeat;
     background-size: contain

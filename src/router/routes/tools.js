@@ -66,7 +66,7 @@ module.exports = [
           hideFooter: true
         },
         path: '/vcenter/project_management/overviewFiles/:id',
-        component: require('@/components/pages/v_center/project_management/OverViewFiles')
+        component: require('@/components/pages/v_center/project_management/OverviewFiles')
       },
       {
         name: 'projectManagementTask',

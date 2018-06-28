@@ -2,7 +2,7 @@
   <div class="container">
     <div class="trend-report">
       <ToolsMenu currentName="trendReport"></ToolsMenu>
-      <div :class="['report', {isMob : 'm-report'}]" v-loading.body="isLoading">
+      <div :class="['report', {isMob : 'm-report'}]" v-loading="isLoading">
         <el-row :gutter="15" class="report-list">
           <el-col :xs="24" :sm="8" :md="8" :lg="8" v-for="(ele, index) in reportList" :key="index" class="item-cover">
             <router-link :to="{name: 'trendReportShow', params: {id: ele.id}}" class="item">

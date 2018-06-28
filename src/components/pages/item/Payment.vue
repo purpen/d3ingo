@@ -316,7 +316,7 @@ export default {
 
 .pay-type .item span {
   line-height: 30px;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   padding-left: 10px;
 }
 

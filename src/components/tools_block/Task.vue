@@ -5,18 +5,21 @@
       <div class="task-detail-header">
         <span v-show="!isMyTask" v-if="currentForm.tier === 0" class="task-detail-name">{{projectObject.name}}</span>
         <div v-show="!isMyTask" v-if="currentForm.tier === 0" ref="selectParent" class="select-parent" tabindex="-1">
-          <span class="select-show">请选择阶段</span>
+          <span class="select-show">{{currentForm.stage_title | stageTitle}}</span>
           <ul class="stage-list stage-list0">
             <li :class="{'active': !currentForm.stage_id}" @click="stageItemClick(0)">无阶段</li>
             <li :class="{'active': d.id === currentForm.stage_id}" v-for="(d, index) in stageList" :key="index" @click="stageItemClick(d.id)">
               {{d.title}}</li>
           </ul>
         </div>
-        <div v-show="!isMyTask" v-if="currentForm.tier === 1"
-          class="task-detail-name task-detail-name1"
-          @click="showChild(parentTask.id)"
-          ><span class="parent-task-name">{{parentTask.name}}</span>
-        </div>
+          <div v-show="!isMyTask" v-if="currentForm.tier === 1"
+            class="task-detail-name task-detail-name1"
+            @click="showChild(parentTask.id)"
+            >
+            <el-tooltip effect="dark" :content="parentTask.name" placement="top">
+              <span class="parent-task-name">{{parentTask.name}}</span>
+            </el-tooltip>
+          </div>
         <div ref="selectParent2" class="select-parent select-menu" tabindex="-1">
           <span class="select-show"></span>
           <ul class="stage-list">
@@ -26,198 +29,226 @@
         </div>
         <i class="fx fx-icon-nothing-close-error" @click="closeBtn"></i>
       </div>
-      <p :class="['add-task-input', {'add-task-input-no_name': !currentForm.name, 'active': currentForm.stage === 2}]">
-        <span v-show="currentForm.name" :class="['add-task-select']" @click="completeTask"></span>
-        <el-input :autosize="{ minRows: 1}" type="textarea" @focus="saveOldVal(currentForm.name)" @blur="blurInput({name: currentForm.name})" :maxlength= 100 v-model="currentForm.name" placeholder="请填写任务名称"></el-input>
-      </p>
-      <div class="task-detail-body">
-        <div class="task-admin" v-if="true">
-          <p class="tc-9">分配给:</p>
-          <ul class="task-member-list task-member-execute" v-if="executeUser">
-            <li v-if="JSON.stringify(executeUser) !== '{}'">
-              <a class="remove-member" @click.self="removeExecute()"></a>
-              <img @click="showMember = true" v-if="executeUser.logo_image" v-lazy="executeUser.logo_image.logo" alt="">
-              <img @click="showMember = true" v-else v-lazy="require('assets/images/avatar_100.png')">
+      <section class="scroll-bar2" :style="{maxHeight: docHeight, overflowY: 'auto', padding: '0 30px'}">
+      <!-- <section :style="{padding: '0 30px'}"> -->
+        <p :class="['parent-task-input', 'add-task-input', {'add-task-input-no_name': !currentForm.name, 'active': currentForm.stage === 2}]">
+          <span v-show="currentForm.name" :class="['add-task-select']" @click="completeTask"></span>
+          <el-input :autosize="{ minRows: 1}" type="textarea" @focus="saveOldVal(currentForm.name)" @blur="blurInput({name: currentForm.name})" :maxlength= 100 v-model="currentForm.name" placeholder="请填写任务名称"></el-input>
+        </p>
+        <div class="task-detail-body">
+          <div class="task-admin" v-if="true">
+            <p class="tc-9">分配给:</p>
+            <ul class="task-member-list task-member-execute" v-if="executeUser">
+              <li v-if="JSON.stringify(executeUser) !== '{}'">
+                <a class="remove-member" @click.self="removeExecute()"></a>
+                <img @click="showMember = true" v-if="executeUser.logo_image" v-lazy="executeUser.logo_image.logo" alt="">
+                <img @click="showMember = true" v-else v-lazy="require('assets/images/avatar_100.png')">
+              </li>
+            </ul>
+            <ul class="task-member-list task-member-execute" v-else>
+              <li class="margin-none" @click="showMember = true">选择执行者</li>
+            </ul>
+            <v-Member
+              :isLeft="true"
+              event="execute"
+              :propsShow="showMember"
+              :itemId="propsTags.itemId"
+              :taskId="taskState.id"
+              :executeId="currentForm.execute_user_id"
+              @closeMember="closeMember"
+              @changeExecute="changeExecute"></v-Member>
+          </div>
+          <ul class="task-info">
+            <li>
+              <p class="p-time">截止时间:</p>
+              <el-date-picker
+                @click.native="clickTime"
+                v-model="currentForm.over_time"
+                type="datetime"
+                placeholder="截止时间"
+                @change="changeTime"
+                format="yyyy-MM-dd HH:mm">
+              </el-date-picker>
+            </li>
+            <li>
+              <p class="p-level">优先级:</p>
+              <el-select
+                @click.native="clickTime"
+                style="width: 195px;"
+                v-model="currentForm.level" placeholder="请选择"
+                @change="changeLevel(currentForm.level)">
+                <el-option
+                  v-for="(item, index) in levels"
+                  :key="index"
+                  :label="item.label"
+                  :value="item.value">
+                  <span :style="{
+                    float: 'left',
+                    width: '10px',
+                    height: '10px',
+                    borderRadius: '50%',
+                    margin: '5px 10px 0 0',
+                    background: item.color}"></span>
+                  <span style="float: left">{{ item.label }}</span>
+                </el-option>
+              </el-select>
+            </li>
+            <li>
+              <p class="p-label">标签:</p>
+              <div class="tags">
+                <span v-for="(d, index) in currentForm.tagsAll"
+                  :style="{background: d.type_val}"
+                  :key="index">{{ d.title }}
+                  <i class="close-icon-solid" @click="operateTags(d.id)"></i>
+                  </span>
+                  <div class="tags-parent">
+                    <v-tags
+                      :propParam = "propsTags"
+                      :tagsId = "tagsId"
+                      @changePropsTags = "changePropsTags"
+                      @addTagBtn = "addTagBtn"
+                      @changeTags="changeTags"
+                      @updateTags="updateTags"></v-tags>
+                  </div>
+              </div>
             </li>
           </ul>
-          <ul class="task-member-list task-member-execute" v-else>
-            <li class="margin-none" @click="showMember = true">选择执行者</li>
-          </ul>
-          <v-Member
-            event="execute"
-            :propsShow="showMember"
-            :itemId="propsTags.itemId"
-            :taskId="taskState.id"
-            :executeId="currentForm.execute_user_id"
-            @closeMember="closeMember"
-            @changeExecute="changeExecute"></v-Member>
-        </div>
-        <ul class="task-info">
-          <li>
-            <p class="p-time">截止时间:</p>
-            <el-date-picker
-              @click.native="clickTime"
-              v-model="currentForm.over_time"
-              type="datetime"
-              placeholder="选择截止时间"
-              @change="changeTime"
-              format="yyyy-MM-dd HH:mm">
-            </el-date-picker>
-          </li>
-          <li>
-            <p class="p-level">优先级:</p>
-            <el-select
-              style="width: 195px;"
-              v-model="currentForm.level" placeholder="请选择"
-              @change="changeLevel(currentForm.level)">
-              <el-option
-                v-for="(item, index) in levels"
-                :key="index"
-                :label="item.label"
-                :value="item.value">
-                <span :style="{
-                  float: 'left',
-                  width: '10px',
-                  height: '10px',
-                  borderRadius: '50%',
-                  margin: '5px 10px 0 0',
-                  background: item.color}"></span>
-                <span style="float: left">{{ item.label }}</span>
-              </el-option>
-            </el-select>
-          </li>
-          <li>
-            <p class="p-label">标签:</p>
-            <div class="tags">
-              <span v-for="(d, index) in currentForm.tagsAll"
-                :style="{background: d.type_val}"
-                :key="index">{{ d.title }}
-                <i class="close-icon-solid" @click="operateTags(d.id)"></i>
-                </span>
-                <div class="tags-parent">
-                  <v-tags
-                    :propParam = "propsTags"
-                    :tagsId = "tagsId"
-                    @changePropsTags = "changePropsTags"
-                    @addTagBtn = "addTagBtn"
-                    @changeTags="changeTags"
-                    @updateTags="updateTags"></v-tags>
+          <div class="task-child" v-if="currentForm.tier === 0">
+            <p class="p-task-child tc-9">子任务:</p>
+            <ul class="add-child-ul" v-if="currentForm.childTask">
+              <li v-for="(ele, index) in currentForm.childTask" :key="index">
+                <div :class="['add-task-input', 'add-child-input', {'active': ele.stage === 2}]">
+                  <span @click="completeTask2(ele.id, ele.stage)" class="add-task-select add-child-select"></span>
+                  <el-input class="child-name" autosize type="textarea" v-model="ele.name" placeholder="请填写任务名称" @focus="saveOldVal(ele.name)" @blur="updateChild(ele.id, {name: ele.name})"></el-input>
+                  <el-date-picker
+                    class="child-date"
+                    v-model="ele.over_time"
+                    type="datetime"
+                    placeholder="截止时间"
+                    @change="changeTime2(ele.over_time, ele.id)"
+                    format="yyyy-MM-dd HH:mm">
+                  </el-date-picker>
+                  <el-tooltip class="item" effect="dark" content="查看子任务详情" placement="top">
+                    <span @click="showChild(ele.id)" class="child-more"></span>
+                  </el-tooltip>
+                  <!-- <v-Member
+                    :propsShow="showMember3"
+                    :itemId="propsTags.itemId"
+                    :taskId="taskState.id"
+                    :executeId="currentForm.execute_user_id"
+                    @closeMember="closeMember3"
+                    @changeExecute="changeExecute"></v-Member> -->
                 </div>
-            </div>
-          </li>
-        </ul>
-        <div class="task-child" v-if="currentForm.tier === 0">
-          <p class="p-task-child tc-9">子任务:</p>
-          <ul class="add-child-ul" v-if="currentForm.childTask">
-            <li v-for="(ele, index) in currentForm.childTask" :key="index">
-              <div :class="['add-task-input', 'add-child-input', {'active': ele.stage === 2}]">
-                <span @click="completeTask2(ele.id, ele.stage)" class="add-task-select add-child-select"></span>
-
-                <el-tooltip class="item" effect="dark" content="查看子任务详情" placement="top">
-                  <span @click="showChild(ele.id)" class="child-more"></span>
-                </el-tooltip>
-                <el-input :autosize="{ minRows: 1}" type="textarea" v-model="ele.name" placeholder="请填写任务名称" @focus="saveOldVal(ele.name)" @blur="updateChild(ele.id, {name: ele.name})"></el-input>
-                <el-date-picker
-                  v-model="ele.over_time"
-                  type="datetime"
-                  placeholder="选择截止时间"
-                  @change="changeTime2(ele.over_time, ele.id)"
-                  format="yyyy-MM-dd HH:mm">
-                </el-date-picker>
-                <!-- <v-Member
-                  :propsShow="showMember3"
-                  :itemId="propsTags.itemId"
-                  :taskId="taskState.id"
-                  :executeId="currentForm.execute_user_id"
-                  @closeMember="closeMember3"
-                  @changeExecute="changeExecute"></v-Member> -->
-              </div>
-            </li>
-            <li class="template" v-if="isAddChild">
-              <div :class="['add-task-input', 'add-child-input', 'child-input']">
-                <span :class="['add-task-select', 'add-child-select', 'add-child-template']"></span>
-                <el-input :autosize="{ minRows: 1}" type="textarea" v-model="addChildForm.name" placeholder="请填写任务名称"></el-input>
-                <el-date-picker
-                  v-model="addChildForm.over_time"
-                  type="datetime"
-                  placeholder="选择截止时间"
-                  @change="changeChildTime(addChildForm.over_time)"
-                  format="yyyy-MM-dd HH:mm">
-                </el-date-picker>
-                <!-- <v-Member
-                  :propsShow="showMember3"
-                  :itemId="propsTags.itemId"
-                  :taskId="taskState.id"
-                  :executeId="currentForm.execute_user_id"
-                  @closeMember="closeMember3"
-                  @changeExecute="changeExecute"></v-Member> -->
-              </div>
-              <p class="buttons">
-                <button @click="cancelAddChild" class="white-button middle-button">取消</button>
-                <button @click="createChild" class="full-red-button middle-button">确认</button>
-              </p>
-            </li>
-          </ul>
-          <p v-if="!isAddChild" @click="confirmAddChild" class="add-child-button"><i></i>添加子任务</p>
+              </li>
+              <li class="template" v-if="isAddChild">
+                <div :class="['add-task-input', 'add-child-input', 'child-input']">
+                  <span :class="['add-task-select', 'add-child-select', 'add-child-template']"></span>
+                  <el-input class="child-name" :autosize="{ minRows: 1}" type="textarea" v-model="addChildForm.name" placeholder="请填写任务名称"></el-input>
+                  <el-date-picker
+                    v-model="addChildForm.over_time"
+                    type="datetime"
+                    placeholder="截止时间"
+                    @change="changeChildTime(addChildForm.over_time)"
+                    format="yyyy-MM-dd HH:mm">
+                  </el-date-picker>
+                  <!-- <v-Member
+                    :propsShow="showMember3"
+                    :itemId="propsTags.itemId"
+                    :taskId="taskState.id"
+                    :executeId="currentForm.execute_user_id"
+                    @closeMember="closeMember3"
+                    @changeExecute="changeExecute"></v-Member> -->
+                </div>
+                <p class="buttons">
+                  <button @click="cancelAddChild" class="white-button middle-button">取消</button>
+                  <button @click="createChild" class="full-red-button middle-button">确认</button>
+                </p>
+              </li>
+            </ul>
+            <p v-if="!isAddChild" @click="confirmAddChild" class="add-child-button"><i></i>添加子任务</p>
+          </div>
+          <div class="task-summary">
+            <p class="p-summary">备注</p>
+            <el-input :autosize="{ minRows: 1}"
+              type="textarea" placeholder="请填写备注内容"
+              class="textarea-summary"
+              @focus="saveOldVal(currentForm.summary)" 
+              @blur="blurInput({summary: currentForm.summary})"
+              v-model="currentForm.summary"></el-input>
+          </div>
+          <div class="task-member">
+            <p class="p-member">参与者</p>
+            <ul :class="['task-member-list']">
+              <li v-for="(ele, index) in taskMemberList" :key="index" v-if="ele.user">
+                <a class="remove-member" @click="removeMember(ele.user.id)"></a>
+                <img @click="showMember2 = true" v-if="ele.user.logo_image" v-lazy="ele.user.logo_image.logo" alt="">
+                <img v-else @click="showMember2 = true" v-lazy="require('assets/images/avatar_100.png')">
+              </li>
+            <p class="show-member" v-if="true" @click="showMember2 = true">
+            </p>
+            <v-Member
+              :isLeft="true"
+              :propsShow="showMember2"
+              :itemId="propsTags.itemId"
+              :taskId="taskState.id"
+              event="participant"
+              @closeMember="closeMember2"></v-Member>
+            </ul>
+          </div>
+          <div class="task-moments" v-if="moments">
+            <p class="p-moments" v-if="showAllMoments" @click="showAllMoments = false">隐藏较早的动态</p>
+            <p class="p-moments" v-if="!showAllMoments && moments.length - 5 > 0" @click="showAllMoments = true">显示较早的{{moments.length - 5}}条动态</p>
+            <ul v-if="showAllMoments">
+              <li class="clearfix"
+                v-for="(ele, index) in moments" :key="index">
+                <p v-if="ele" :class="['p-content',
+                  'tc-9',
+                  { 'create-parent': ele.type === 1,
+                  'create-child': ele.type === 2,
+                  'change-name': ele.type === 3,
+                  'change-summary': ele.type === 4,
+                  'change-level': ele.type === 5,
+                  'parent-redo': ele.type === 6,
+                  'complete-parent': ele.type === 7,
+                  'child-redo': ele.type === 8,
+                  'complete-child': ele.type === 9,
+                  'change-endTime': ele.type === 10,
+                  'claim-task': ele.type === 19,
+                  'assign-child': ele.type === 20,
+                  'rm-executer': ele.type === 21,
+                  'tc-red': ele.type === 7,
+                  'tc-2': ele.type === 9}]">
+                  <span class="tc-6">{{ele.name}}</span> {{ele.info}}</p>
+                <p class="p-date tc-9">{{ele.date}}</p>
+              </li>
+            </ul>
+            <ul v-else>
+              <li class="clearfix"
+                v-for="(ele, index) in limitMoments" :key="index">
+                <p v-if="ele" :class="['p-content',
+                  'tc-9',
+                  { 'create-parent': ele.type === 1,
+                  'create-child': ele.type === 2,
+                  'change-name': ele.type === 3,
+                  'change-summary': ele.type === 4,
+                  'change-level': ele.type === 5,
+                  'parent-redo': ele.type === 6,
+                  'complete-parent': ele.type === 7,
+                  'child-redo': ele.type === 8,
+                  'complete-child': ele.type === 9,
+                  'change-endTime': ele.type === 10,
+                  'claim-task': ele.type === 19,
+                  'assign-child': ele.type === 20,
+                  'rm-executer': ele.type === 21,
+                  'tc-red': ele.type === 7,
+                  'tc-2': ele.type === 9}]">
+                  <span class="tc-6">{{ele.name}}</span> {{ele.info}}</p>
+                <p class="p-date tc-9">{{ele.date}}</p>
+              </li>
+            </ul>
+          </div>
         </div>
-        <div class="task-summary">
-          <p class="p-summary">备注</p>
-          <el-input :autosize="{ minRows: 1}"
-            type="textarea" placeholder="请填写备注内容"
-            class="textarea-summary"
-            @focus="saveOldVal(currentForm.summary)" 
-            @blur="blurInput({summary: currentForm.summary})"
-            v-model="currentForm.summary"></el-input>
-        </div>
-        <div class="task-member">
-          <p class="p-member">参与者</p>
-          <ul :class="['task-member-list']">
-            <li v-for="(ele, index) in taskMemberList" :key="index" v-if="ele.user">
-              <a class="remove-member" @click="removeMember(ele.user.id)"></a>
-              <img @click="showMember2 = true" v-if="ele.user.logo_image" v-lazy="ele.user.logo_image.logo" alt="">
-              <img v-else @click="showMember2 = true" v-lazy="require('assets/images/avatar_100.png')">
-            </li>
-          <p class="show-member" v-if="true" @click="showMember2 = true">
-          </p>
-          <v-Member
-            :propsShow="showMember2" 
-            :itemId="propsTags.itemId" 
-            :taskId="taskState.id"
-            event="participant"
-            @closeMember="closeMember2"></v-Member>
-          </ul>
-        </div>
-        <div class="task-moments" v-if="moments">
-          <p class="p-moments" v-if="showAllMoments" @click="showAllMoments = false">隐藏较早的动态</p>
-          <p class="p-moments" v-if="!showAllMoments && moments.length - 5 > 0" @click="showAllMoments = true">显示较早的{{moments.length - 5}}条动态</p>
-          <ul v-if="showAllMoments">
-            <li class="clearfix"
-              v-for="(ele, index) in moments" :key="index">
-              <p :class="['fl',
-                {'complete-parent': ele.type === 7,
-                'complete-child': ele.type === 9,
-                'protrude': ele.type === 7 || ele.type === 9,
-                'tc-red': ele.type === 7,
-                'tc-2': ele.type === 9}]">
-                <span>{{ele.name}}</span> {{ele.info}}</p>
-              <p class="date fr">{{ele.date}}</p>
-            </li>
-          </ul>
-          <ul v-else>
-            <li class="clearfix"
-              v-for="(ele, index) in limitMoments" :key="index">
-              <p :class="['fl',
-                {'complete-parent': ele.type === 7,
-                'complete-child': ele.type === 9,
-                'protrude': ele.type === 7 || ele.type === 9,
-                'tc-red': ele.type === 7,
-                'tc-2': ele.type === 9}]">
-                <span>{{ele.name}}</span> {{ele.info}}</p>
-              <p class="date fr">{{ele.date}}</p>
-            </li>
-          </ul>
-        </div>
-      </div>
+      </section>
     </section>
   </div>
 </template>
@@ -261,6 +292,8 @@
     },
     data () {
       return {
+        isReady: true,
+        docHeight: '',
         propsTags: {
           itemId: 0,
           power: 0,
@@ -268,7 +301,7 @@
         },
         currentForm: { // 当前任务表单
           level: 1,
-          over_time: new Date()
+          over_time: ''
         },
         currentChange: {},
         msg: '',
@@ -347,6 +380,7 @@
         self.isLoading = true
         this.$http.get(api.taskId.format(id), {}).then(function (res) {
           if (res.data.meta.status_code === 200) {
+            // console.log(res.data.data)
             self.currentForm = Object.assign({}, self.currentForm, res.data.data)
             if (self.currentForm.over_time) {
               self.currentForm.over_time = self.currentForm.over_time.replace(/-/g, '/')
@@ -375,14 +409,9 @@
       create() {
         const self = this
         self.isCreate = false
-        if (JSON.stringify(self.currentForm) !== '{}') {
-          let overTime = self.currentForm.over_time
-          if (self.currentForm.over_time instanceof Date) {
-            self.currentForm.over_time = overTime.format('yyyy-MM-dd hh:mm')
-          }
-        }
-        self.currentForm.item_id = self.$route.params.id
-        self.$http.post(api.task, self.currentForm).then(function (response) {
+        self.currentForm = {}
+        let id = self.$route.params.id
+        self.$http.post(api.task, {item_id: id}).then(function (response) {
           self.isCreate = true
           if (response.data.meta.status_code === 200) {
             self.currentForm = Object.assign({}, self.currentForm, response.data.data)
@@ -402,7 +431,6 @@
         const self = this
         self.addChildForm.tier = 1
         self.addChildForm.pid = self.taskState.id
-        self.addChildForm.item_id = self.$route.params.id || 0 // 这里可以不传项目ID吗？
         self.addChildForm.over_time = self.addChildForm.over_time.format('yyyy-MM-dd hh:mm')
         self.$http.post(api.task, self.addChildForm).then(function (response) {
           self.isCreate = true
@@ -572,6 +600,9 @@
       updateChild(id, obj) {
         if (this.oldVal === obj.name) {
           return
+        }
+        if (obj.over_time) {
+          obj.over_time = obj.over_time.format('yyyy-MM-dd hh:mm')
         }
         this.$http.put(api.taskId.format(id), obj).then((response) => {
           if (response.data.meta.status_code === 200) {
@@ -798,9 +829,22 @@
         }
         this.$set(this.propsTags, 'itemId', itemId)
         this.getProjectMemberList(this.currentForm.item_id)
+      },
+      getDocumentHeight() {
+        if (this.isReady === true) {
+          this.isReady = false
+          this.isReady = setTimeout(() => {
+            this.docHeight = (document.body.clientHeight - 237) + 'px'
+            this.isReady = true
+          }, 100)
+        }
       }
     },
-    mounted: function () {
+    mounted() {
+      window.addEventListener('resize', this.getDocumentHeight)
+    },
+    destroyed() {
+      window.removeEventListener('resize', this.getDocumentHeight)
     },
     computed: {
       taskState() {
@@ -819,6 +863,15 @@
         return this.$store.state.task.parentTask
       }
     },
+    filters: {
+      stageTitle(val) {
+        if (val) {
+          return val
+        } else {
+          return '请选择阶段'
+        }
+      }
+    },
     watch: {
       taskState: {
         handler(val) {
@@ -830,13 +883,12 @@
           if (val) {
             if (val.event === 'update') {
               this.view(val.id)
+              this.getTaskMemberList()
             } else if (val.event === 'create') {
               if (this.isCreate) {
-                // this.currentForm = {}
                 this.create()
               }
             }
-            this.getTaskMemberList()
           }
         },
         deep: true
@@ -875,7 +927,6 @@
               })
               arr.reverse()
               this.moments = arr
-              console.log(this.moments)
               let arr2 = []
               val['log'].forEach((item, index) => {
                 if (index > 4) {
@@ -916,6 +967,7 @@
       }
     },
     created() {
+      this.docHeight = (document.body.clientHeight - 237) + 'px'
     },
     directives: {
       focus: {
@@ -944,19 +996,19 @@
     animation-delay: 0.5s;
     border: 1px solid #E6E6E6;
     border-radius: 4px;
-    padding: 20px 30px;
-    margin-bottom: 150px;
   }
   .task-detail-header {
     display: flex;
     color: #666;
     font-size: 14px;
     position: relative;
-    height: 34px;
+    padding: 0 30px 10px;
+    margin: 10px 0 0;
+    border-bottom: 1px solid #e6e6e6
   }
   .task-detail-header .fx-icon-nothing-close-error {
     position: absolute;
-    right: 0;
+    right: 10px;
     top: 10px;
   }
   .task-detail-name {
@@ -969,9 +1021,13 @@
     cursor: pointer;
   }
   .task-detail-name1 {
+    margin-right: 50px;
     border: none;
     position: relative;
-    padding: 0
+    padding: 0;
+    white-space: normal;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   .task-detail-name1::after {
@@ -998,7 +1054,7 @@
   }
   .select-menu {
     position: absolute;
-    right: 44px;
+    right: 54px;
     top: 0;
     width: 24px;
     height: 24px;
@@ -1011,7 +1067,7 @@
     position: absolute;
     right: -10px;
     top: 34px;
-    z-index: 1;
+    z-index: 2;
   }
 
   .stage-list0 {
@@ -1087,13 +1143,14 @@
     padding: 20px 0 10px;
   }
   .add-child-input {
-    padding: 20px 20px 20px 40px;
-    border-bottom: none
+    padding: 10px 20px 10px 0;
+    border-bottom: none;
+    display: flex;
   }
   .add-child-input .child-more {
     position: absolute;
-    right: 0;
-    top: 31px;
+    right: 3px;
+    top: 21px;
     width: 14px;
     height: 14px;
     border: 2px solid #E6E6E6;
@@ -1108,10 +1165,13 @@
   .add-task-input.active {
     text-decoration: line-through
   }
-  .add-task-input .add-task-select {
+  .parent-task-input.add-task-input .add-task-select {
     position: absolute;
     left: 0;
-    top: 29px;
+    top: 28px;
+  }
+  .add-task-input .add-task-select {
+    flex: 0 0 auto;
     width: 24px;
     height: 24px;
     border: 1px solid #E6E6E6;
@@ -1132,9 +1192,10 @@
   }
 
   .add-task-input .add-child-select {
+    position: relative;
     width: 24px;
     height: 24px;
-    top: 26px;
+    margin-top: 8px;
   }
   .add-task-input .add-child-template {
     border: none;
@@ -1147,7 +1208,7 @@
     position: relative;
     color: #FF5A5F;
     cursor: pointer;
-    margin-top: 20px;
+    margin-top: 10px;
   }
   .add-child-button i {
     position: absolute;
@@ -1203,7 +1264,8 @@
     width: 195px;
   }
   .add-child-ul .el-date-editor.el-input {
-    width: 100%;
+    width: auto;
+    min-width: 128px;
   }
   .task-info li p.p-time {
     background: url(../../assets/images/tools/project_management/Time.png) no-repeat left;
@@ -1329,7 +1391,7 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: 2px solid transparent
+    border: 2px solid #e6e6e6
   }
   .task-member-list li:hover img {
     border-color: #E6E6E6
@@ -1403,16 +1465,13 @@
   .task-moments {
     margin-top: 20px;
     border-top: 1px solid #E6E6E6;
-    color: #666;
     font-size: 12px;
   }
   .task-moments ul {
     padding: 20px 0 0 34px
   }
   .task-moments li {
-    padding: 0 0 10px;
-    line-height: 1.5;
-    color: #666
+    padding: 0 0 20px;
   }
   .task-moments li p {
     font-size: 12px;
@@ -1426,21 +1485,67 @@
     color: #999
   }
   .task-detail-body .p-moments {
+    text-indent: 4px;
     cursor: pointer;
     padding-top: 20px;
     color: #666;
   }
-  .task-moments ul li p.fl {
+  .task-moments ul li {
+    display: flex;
+  }
+  .p-content {
+    position: relative;
+    flex: 1 1 auto;
     position: relative;
   }
-  .complete-parent::before,
-  .complete-child::before {
+  .p-date {
+    padding-left: 20px;
+    min-width: 150px;
+    flex: 0 1 auto
+  }
+  .p-content:before {
     content: "";
     position: absolute;
-    left: -21px;
+    left: -30px;
     top: 0;
     width: 16px;
     height: 16px;
+  }
+  .create-parent:before {
+    background: url(../../assets/images/tools/project_management/CreatMasterTask.png) no-repeat center / cover
+  }
+  .create-child:before {
+    background: url(../../assets/images/tools/project_management/CreatSubtasks.png) no-repeat center / cover
+  }
+  .change-name:before {
+    background: url(../../assets/images/tools/project_management/Modify.png) no-repeat center / cover
+  }
+  .change-summary:before {
+    background: url(../../assets/images/tools/project_management/ReviseNotes.png) no-repeat center / cover
+  }
+  .change-level:before {
+    background: url(../../assets/images/tools/project_management/ModifyPriority.png) no-repeat center / cover
+  }
+  .parent-redo:before {
+    background: url(../../assets/images/tools/project_management/RedoMasterTask.png) no-repeat center / cover
+  }
+  .child-redo:before {
+    background: url(../../assets/images/tools/project_management/RedoSubtasks.png) no-repeat center / cover
+  }
+  .change-endTime:before {
+    background: url(../../assets/images/tools/project_management/ModificationTime.png) no-repeat center / cover
+  }
+  .claim-task:before {
+    background: url(../../assets/images/tools/project_management/Claim@2x.png) no-repeat center / cover
+  }
+  .assign-child:before {
+    background: url(../../assets/images/tools/project_management/Assign@2x.png) no-repeat center / cover
+  }
+  .rm-executer:before {
+    background: url(../../assets/images/tools/project_management/Remove@2x.png) no-repeat center / cover
+  }
+  .complete-parent::before,
+  .complete-child::before {
     border-radius: 4px;
     border: 1px solid #FF5A5F;
     background: #FF5A5F;
@@ -1453,7 +1558,7 @@
   .complete-child::after {
     content: "";
     position: absolute;
-    left: -16px;
+    left: -25px;
     top: 2px;
     height: 10px;
     width: 6px;
@@ -1477,5 +1582,8 @@
     position: relative;
     height: 32px;
     width: 100px;
+  }
+  .child-name {
+    margin: 0 10px;
   }
 </style>

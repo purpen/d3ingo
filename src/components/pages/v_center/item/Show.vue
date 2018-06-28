@@ -8,11 +8,11 @@
       <el-breadcrumb-item>详情</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <el-row :gutter="20">
+    <el-row :gutter="20" style="margin-top: 30px">
       <v-item-progress :progressButt="progressButt" :progressContract="progressContract"
                        :progressItem="progressItem"></v-item-progress>
 
-      <el-col :span="isMob ? 24 : 18">
+      <el-col :span="isMob ? 24 : 18" class="margin-auto">
         <div class="content">
           <div :class="[{'banner-m' : isMob}, 'banner']">
             <img v-show="statusIconUrl" class="" :src="statusIconUrl" width="100"/>
@@ -86,9 +86,9 @@
                         </div>
                       </el-col>
                       <el-col
-                        :xs="24" 
-                        :sm="d.cases.length ? 12 : 10" 
-                        :md="d.cases.length ? 12 : 10" 
+                        :xs="24"
+                        :sm="d.cases.length ? 12 : 10"
+                        :md="d.cases.length ? 12 : 10"
                         :lg="d.cases.length ? 12 : 10">
                         <div class="company-title">
                           <h3 class="company-name">
@@ -168,7 +168,7 @@
                   </div>
                   <div class="clear"></div>
                   <div class="item-bj" v-if="d.quotation">
-                    <p class="tc-2 protrude">项目报价:  <span class="tc-6 p-price fw-normal">{{ d.quotation.price }} 元</span> <span class="quota-btn tc-6 fw-normal">&nbsp;&nbsp;<a 
+                    <p class="tc-2 protrude">项目报价:  <span class="tc-6 p-price fw-normal">{{ d.quotation.price }} 元</span> <span class="quota-btn tc-6 fw-normal">&nbsp;&nbsp;<a
                     class="tc-red"
                     href="javascript:void(0);" @click="showQuotaBtn(d.quotation)">详情>></a></span></p>
                     <p class="tc-2 protrude">报价说明: <span class="tc-6 fw-normal">{{ d.quotation.summary }}</span></p>
@@ -1185,8 +1185,8 @@ export default {
   height: 200px;
   text-align: center;
   margin-bottom: 20px;
-  border: 1px solid E6E6E6;
   display: block;
+  border: 1px solid #e6e6e6;
 }
 
 .banner img {
@@ -1195,7 +1195,7 @@ export default {
 
 .banner h1 {
   padding-top: 10px;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   color: #222;
 }
 
@@ -1218,8 +1218,8 @@ export default {
   margin-bottom: 10px;
   display: flex;
   align-items: center;
-  border: 1px solid E6E6E6;
-  background: #fff
+  background: #fff;
+  border: 1px solid #e6e6e6;
 }
 
 .select-company-item .check-box {
@@ -1318,7 +1318,7 @@ export default {
 
 .item-title .p-title {
   color: #333;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: bold;
   line-height: 50px;
   margin-bottom: 8px;
@@ -1676,6 +1676,14 @@ section ul li a {
 }
 .alert-line-height {
   text-align: center
+}
+.dis-flex{
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+.margin-auto{
+  margin: auto;
 }
 </style>
 <style>
