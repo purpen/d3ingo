@@ -64,7 +64,7 @@
             </el-col>
             <el-col :span="2" v-if="driveShare && ele.mime_type">
               <div class="more-list download">
-                <i @click="downFile(ele.id, ele.url_file)"></i>
+                <i @click="downFile(ele.id, ele.url_download)"></i>
               </div>
             </el-col>
           </div>
@@ -107,7 +107,7 @@
               <ul>
                 <li v-if="folderId === 0 && ele.user_id === user.id" @click="changePermission(ele.id, ele.user_id)">更改权限</li>
                 <li @click="shareFile(ele.id)">分享</li>
-                <li v-if="ele.mime_type" @click="downFile(ele.id, ele.url_file)">下载</li>
+                <li v-if="ele.mime_type" @click="downFile(ele.id, ele.url_download)">下载</li>
                 <li @click="copyFile(ele.id)">复制</li>
                 <li @click="moveFile(ele.id)">移动</li>
                   <li @click="rename(ele.id, index)">重命名</li>
@@ -138,7 +138,7 @@
           </p>
           <p class="fr operate" v-if="!driveShare">
             <span class="fl" @click="shareFile(prewiewInfo.id)">分享</span>
-            <span class="fl" @click="downFile(prewiewInfo.id, prewiewInfo.url_file)">下载</span>
+            <span class="fl" @click="downFile(prewiewInfo.id, prewiewInfo.url_download)">下载</span>
             <span class="fl" @click="moveFile(prewiewInfo.id)">移动</span>
             <span ref="moreRight" class="fl more" tabindex="-1">
               <i></i>
@@ -422,7 +422,6 @@ export default {
     },
     changePermission(id, userId, ele) {
       this.$refs.moreRight.blur()
-      console.log(this.user.company_role)
       if (this.user.id === userId) {
         this.directOperate(id)
         this.$emit('changePermission', id)
@@ -441,6 +440,7 @@ export default {
     },
     moveFile(id) {
       this.directOperate(id)
+      console.log(id, 111)
       this.$emit('confirmMove')
     },
     shareFile(id) {
@@ -991,8 +991,7 @@ export default {
   .view-content img {
     min-width: 100px;
     min-height: 100px;
-    background: url('../../../../../assets/images/tools/cloud_drive/status/loading.gif') center no-repeat;
-    background-size: 50px;
+    background: url('../../../../../assets/images/tools/cloud_drive/status/loading.gif') no-repeat center / 100px;
     display: block;
     margin: 0 auto;
     max-width: 800px;

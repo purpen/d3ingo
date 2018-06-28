@@ -69,7 +69,9 @@
             @deleteFile="deleteFile"
             @changeImgList="changeImgList"
             @confirmShare="confirmShare"
-            @downloadFile="downloadFile">
+            @downloadFile="downloadFile"
+            @confirmMove="confirmMove"
+            @changePermission="changePermission">
           </vContent>
         </transition>
       </div>
@@ -999,6 +1001,7 @@ export default {
       }
     },
     confirmMove() {
+      console.log(222)
       if (this.chooseFileList.length) {
         this.showConfirmMove = true
         this.showCover = true
