@@ -1777,15 +1777,15 @@ export default {
     top: 12px;
     color: #999;
     font-size: 0;
-    border-bottom: 1px solid #D2D2D2;
+    border-bottom: 1px solid #e6e6e6;
     height: 30px;
     line-height: 20px;
     /* position: relative; */
     z-index: 10;
   }
   .content-head .title {
-    padding-left: 20px;
-    font-size: 18px;
+    padding-left: 10px;
+    font-size: 16px;
   }
   .operate {
     height: 40px;
@@ -1865,7 +1865,7 @@ export default {
     left: -65px;
     top: 40px;
     width: 160px;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
     animation: slowShow2 0.2s linear;
     display: none;
     overflow: hidden;
@@ -1953,7 +1953,7 @@ export default {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
     background: #fff;
     position: relative;
     margin: 3px auto 0;
@@ -2004,7 +2004,7 @@ export default {
     right: 0;
     bottom: 60px;
     width: 580px;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
     border-radius: 4px;
   }
   .web-uploader-header {
@@ -2015,7 +2015,7 @@ export default {
     background: #f7f7f7;
     padding-right: 30px;
     font-size: 14px;
-    border-bottom: 1px solid #d2d2d2;
+    border-bottom: 1px solid #e6e6e6;
   }
   .web-uploader-body {
     overflow-y: auto;
@@ -2027,7 +2027,7 @@ export default {
   .upload-list {
     padding: 15px 10px;
     min-height: 69px;
-    border-bottom: 1px solid #d2d2d2;
+    border-bottom: 1px solid #e6e6e6;
   }
   .upload-list:last-child {
     border-bottom: 0;
@@ -2183,7 +2183,7 @@ export default {
   .link input, .share-password input {
     width: 260px;
     height: 34px;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
     border-radius: 4px;
     padding: 0 8px;
   }
@@ -2206,7 +2206,7 @@ export default {
     left: 0;
     top: 8px;
     border-radius: 50%;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
     width: 18px;
     height: 18px;
   }
@@ -2265,7 +2265,7 @@ export default {
     height: 330px;
     width: 200px;
     min-width: 200px;
-    border-right: 1px solid #d2d2d2
+    border-right: 1px solid #e6e6e6
   }
   .folder-item-head {
     overflow: hidden;
@@ -2323,11 +2323,11 @@ export default {
     font-size: 12px;
     padding-left: 8px;
     border-radius: 4px;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
   }
   .dialog-foot {
     height: 60px;
-    border-top: 1px solid #D2D2D2;
+    border-top: 1px solid #e6e6e6;
     padding: 14px 20px;
   }
 
@@ -2341,7 +2341,7 @@ export default {
     line-height: 20px;
     height: 38px;
     border-radius: 4px;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
     color: #222;
   }
   .selectFolderPermission {
@@ -2384,7 +2384,7 @@ export default {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
     background: #fff;
   }
   .grouplist li b:before {
@@ -2451,7 +2451,7 @@ export default {
     width: 118px;
     height: 32px;
     font-size: 14px;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
     margin-right: 25px;
     border-radius: 4px;
     background: #fff;
@@ -2484,7 +2484,7 @@ export default {
   
   .buttons button.disable, .buttons button.disable:hover, .buttons button.disable:active {
     background: #EDF1F2;
-    border-color: #d2d2d2;
+    border-color: #e6e6e6;
     color: #999;
   }
 

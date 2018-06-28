@@ -526,7 +526,7 @@ export default {
   section .item {
     height: 70px;
     line-height: 70px;
-    border-bottom: 1px solid #d2d2d2;
+    border-bottom: 1px solid #e6e6e6;
     background: #fff;
     cursor: pointer;
   }
@@ -569,7 +569,7 @@ export default {
   }
 
   section .item2:hover, section .item2.active {
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
   }
 
   .file-radio {
@@ -577,7 +577,7 @@ export default {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
     background: #fff;
     margin: 25px auto 25px;
     position: relative;
@@ -608,7 +608,8 @@ export default {
   }
 
   .item .file-icon {
-    margin-left: 10px;
+    /* margin-left: 10px; */
+    margin-left: 0;
   }
   .item2 .file-icon {
     float: none;
@@ -720,7 +721,7 @@ export default {
   }
   .rename-cancel {
     background: #fff;
-    border: 1px solid #d2d2d2
+    border: 1px solid #e6e6e6
   }
   .rename-cancel:active {
     background: #ccc;
@@ -947,7 +948,7 @@ export default {
   .file-profile .profile-head {
     background: #f7f7f7;
     height: 50px;
-    border-bottom: 1px solid #d2d2d2;
+    border-bottom: 1px solid #e6e6e6;
     font-size: 14px;
     color: #222;
     text-align: center;

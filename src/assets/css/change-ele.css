@@ -484,3 +484,6 @@
     height: auto;
     top: 10px;
   }
+  .el-textarea__inner:hover .MeetingCenter {
+    border: none;
+  }

@@ -315,7 +315,7 @@
 
   .content-box p.title {
     margin-top: 20px;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: bold;
     color: #333;
   }

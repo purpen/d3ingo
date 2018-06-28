@@ -286,7 +286,7 @@ p.total-price {
   color: #ff5a5f;
   text-align: center;
   line-height: 2.4;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   padding: 6px;
 }
 
@@ -323,7 +323,7 @@ p.total-txt {
   }
 
   .title-item h3 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: #222;
     font-weight: 600;
   }
@@ -342,7 +342,7 @@ p.total-txt {
     text-align: left;
     display: block;
     color: #666;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     border-bottom: 0.5px solid #d2d2d2;
     padding: 5px 0;
   }

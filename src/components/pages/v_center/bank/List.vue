@@ -376,7 +376,7 @@
 
   .item-title p {
     line-height: 2;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: #333;
   }
 
@@ -389,7 +389,7 @@
   }
 
   .item-content .number p {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: #333;
   }
 
@@ -438,7 +438,7 @@
     }
 
     .item-content .option a {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
     }
   }
 </style>

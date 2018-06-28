@@ -58,7 +58,7 @@ export default {
           return true
         } else if (user.demand_verify_status === 2) {
           console.log('没有认证')
-          this.alertTitle.title = '您申请企业实名认证失败'
+          this.alertTitle.title = '您申请企业实名认证失败了'
           this.alertTitle.path = '/vcenter/d_company/accreditation'
           return true
         } else if (user.demand_verify_status === 1 || user.demand_verify_status === 3) {
@@ -83,7 +83,7 @@ export default {
             return true
           } else if (user.design_verify_status === 2) {
             console.log('公司认证失败')
-            this.alertTitle.title = '您申请企业实名认证失败'
+            this.alertTitle.title = '您申请企业实名认证失败了'
             this.alertTitle.path = '/vcenter/company/accreditation'
             return true
           } else if (user.design_verify_status === 1 || user.design_verify_status === 3) {

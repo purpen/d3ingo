@@ -225,7 +225,7 @@
 
   .pub-btn .advance {
     color: #FF6C70;
-    font-size: 1.5rem
+    font-size: 1.4rem
   }
 
   .pub-btn .money {

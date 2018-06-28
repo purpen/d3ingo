@@ -516,7 +516,9 @@
     color: #666;
     margin-right: 0;
   }
-
+  .vcenter{
+    margin-top: 50px;
+  }
   @media screen and (max-width: 767px) {
     .item-m .content {
       border: none;
@@ -525,6 +527,9 @@
     .edit a {
       font-size: 1.3rem;
       color: #FF5A5F;
+    }
+    .vcenter{
+      margin-top: 0;
     }
   }
 </style>

@@ -42,6 +42,9 @@
 .tc-9 {
   color: #999
 }
+.tc-f {
+  color: #fff
+}
 .tc-red {
   color: #ff5a5f
 }
@@ -409,7 +412,5 @@ button.el-button.is-custom.is-disabled,
   }
 }
 @media screen and (max-width: 767px) {
-  .vcenter {
-    /* margin: 0 0 -450px 0 */
-  }
+
 }

@@ -412,6 +412,7 @@ let routes = [
     meta: {
       title: '发布需求',
       requireAuth: true,
+      hideHeader: true,
       hideFooter: true,
       isDesignInc: 1
     },
@@ -424,6 +425,7 @@ let routes = [
     meta: {
       title: '选择类型',
       requireAuth: true,
+      hideHeader: true,
       hideFooter: true,
       isDesignInc: 1
     },
@@ -436,6 +438,7 @@ let routes = [
     meta: {
       title: '填写需求',
       requireAuth: true,
+      hideHeader: true,
       hideFooter: true,
       isDesignInc: 1
     },
@@ -448,6 +451,7 @@ let routes = [
     meta: {
       title: '补全需求信息',
       requireAuth: true,
+      hideHeader: true,
       hideFooter: true,
       isDesignInc: 1
     },
@@ -460,6 +464,7 @@ let routes = [
     meta: {
       title: '匹配公司',
       requireAuth: true,
+      hideHeader: true,
       hideFooter: true,
       isDesignInc: 1
     },
@@ -472,6 +477,7 @@ let routes = [
     meta: {
       title: '设计公司比较',
       requireAuth: true,
+      hideHeader: true,
       hideFooter: true,
       isDesignInc: 1
     },

@@ -332,7 +332,7 @@ export default {
   .company-show .item p.p-val {
     float: left;
     width: 78%;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   .company-show .item p.opt {

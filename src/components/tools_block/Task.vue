@@ -12,11 +12,14 @@
               {{d.title}}</li>
           </ul>
         </div>
-        <div v-show="!isMyTask" v-if="currentForm.tier === 1"
-          class="task-detail-name task-detail-name1"
-          @click="showChild(parentTask.id)"
-          ><span class="parent-task-name">{{parentTask.name}}</span>
-        </div>
+          <div v-show="!isMyTask" v-if="currentForm.tier === 1"
+            class="task-detail-name task-detail-name1"
+            @click="showChild(parentTask.id)"
+            >
+            <el-tooltip effect="dark" :content="parentTask.name" placement="top">
+              <span class="parent-task-name">{{parentTask.name}}</span>
+            </el-tooltip>
+          </div>
         <div ref="selectParent2" class="select-parent select-menu" tabindex="-1">
           <span class="select-show"></span>
           <ul class="stage-list">
@@ -26,7 +29,7 @@
         </div>
         <i class="fx fx-icon-nothing-close-error" @click="closeBtn"></i>
       </div>
-      <section :style="{maxHeight: docHeight, overflowY: 'auto', padding: '0 30px'}">
+      <section class="scroll-bar2" :style="{maxHeight: docHeight, overflowY: 'auto', padding: '0 30px'}">
       <!-- <section :style="{padding: '0 30px'}"> -->
         <p :class="['parent-task-input', 'add-task-input', {'add-task-input-no_name': !currentForm.name, 'active': currentForm.stage === 2}]">
           <span v-show="currentForm.name" :class="['add-task-select']" @click="completeTask"></span>
@@ -62,7 +65,7 @@
                 @click.native="clickTime"
                 v-model="currentForm.over_time"
                 type="datetime"
-                placeholder="选择截止时间"
+                placeholder="截止时间"
                 @change="changeTime"
                 format="yyyy-MM-dd HH:mm">
               </el-date-picker>
@@ -116,12 +119,12 @@
               <li v-for="(ele, index) in currentForm.childTask" :key="index">
                 <div :class="['add-task-input', 'add-child-input', {'active': ele.stage === 2}]">
                   <span @click="completeTask2(ele.id, ele.stage)" class="add-task-select add-child-select"></span>
-                  <el-input class="child-name" :autosize="{ minRows: 1}" type="textarea" v-model="ele.name" placeholder="请填写任务名称" @focus="saveOldVal(ele.name)" @blur="updateChild(ele.id, {name: ele.name})"></el-input>
+                  <el-input class="child-name" autosize type="textarea" v-model="ele.name" placeholder="请填写任务名称" @focus="saveOldVal(ele.name)" @blur="updateChild(ele.id, {name: ele.name})"></el-input>
                   <el-date-picker
                     class="child-date"
                     v-model="ele.over_time"
                     type="datetime"
-                    placeholder="选择截止时间"
+                    placeholder="截止时间"
                     @change="changeTime2(ele.over_time, ele.id)"
                     format="yyyy-MM-dd HH:mm">
                   </el-date-picker>
@@ -199,6 +202,7 @@
               <li class="clearfix"
                 v-for="(ele, index) in moments" :key="index">
                 <p v-if="ele" :class="['p-content',
+                  'tc-9',
                   { 'create-parent': ele.type === 1,
                   'create-child': ele.type === 2,
                   'change-name': ele.type === 3,
@@ -212,17 +216,17 @@
                   'claim-task': ele.type === 19,
                   'assign-child': ele.type === 20,
                   'rm-executer': ele.type === 21,
-                  'protrude': ele.type === 7 || ele.type === 9,
                   'tc-red': ele.type === 7,
                   'tc-2': ele.type === 9}]">
-                  <span>{{ele.name}}</span> {{ele.info}}</p>
-                <p class="p-date">{{ele.date}}</p>
+                  <span class="tc-6">{{ele.name}}</span> {{ele.info}}</p>
+                <p class="p-date tc-9">{{ele.date}}</p>
               </li>
             </ul>
             <ul v-else>
               <li class="clearfix"
                 v-for="(ele, index) in limitMoments" :key="index">
                 <p v-if="ele" :class="['p-content',
+                  'tc-9',
                   { 'create-parent': ele.type === 1,
                   'create-child': ele.type === 2,
                   'change-name': ele.type === 3,
@@ -236,11 +240,10 @@
                   'claim-task': ele.type === 19,
                   'assign-child': ele.type === 20,
                   'rm-executer': ele.type === 21,
-                  'protrude': ele.type === 7 || ele.type === 9,
                   'tc-red': ele.type === 7,
                   'tc-2': ele.type === 9}]">
-                  <span>{{ele.name}}</span> {{ele.info}}</p>
-                <p class="p-date fr">{{ele.date}}</p>
+                  <span class="tc-6">{{ele.name}}</span> {{ele.info}}</p>
+                <p class="p-date tc-9">{{ele.date}}</p>
               </li>
             </ul>
           </div>
@@ -831,7 +834,7 @@
         if (this.isReady === true) {
           this.isReady = false
           this.isReady = setTimeout(() => {
-            this.docHeight = (document.body.clientHeight - 280) + 'px'
+            this.docHeight = (document.body.clientHeight - 237) + 'px'
             this.isReady = true
           }, 100)
         }
@@ -964,7 +967,7 @@
       }
     },
     created() {
-      this.docHeight = (document.body.clientHeight - 280) + 'px'
+      this.docHeight = (document.body.clientHeight - 237) + 'px'
     },
     directives: {
       focus: {
@@ -1005,7 +1008,7 @@
   }
   .task-detail-header .fx-icon-nothing-close-error {
     position: absolute;
-    right: 30px;
+    right: 10px;
     top: 10px;
   }
   .task-detail-name {
@@ -1018,7 +1021,7 @@
     cursor: pointer;
   }
   .task-detail-name1 {
-    margin-right: 70px;
+    margin-right: 50px;
     border: none;
     position: relative;
     padding: 0;
@@ -1051,7 +1054,7 @@
   }
   .select-menu {
     position: absolute;
-    right: 74px;
+    right: 54px;
     top: 0;
     width: 24px;
     height: 24px;
@@ -1140,14 +1143,14 @@
     padding: 20px 0 10px;
   }
   .add-child-input {
-    padding: 20px 0;
+    padding: 10px 20px 10px 0;
     border-bottom: none;
     display: flex;
   }
   .add-child-input .child-more {
     position: absolute;
-    right: -20px;
-    top: 31px;
+    right: 3px;
+    top: 21px;
     width: 14px;
     height: 14px;
     border: 2px solid #E6E6E6;
@@ -1205,7 +1208,7 @@
     position: relative;
     color: #FF5A5F;
     cursor: pointer;
-    margin-top: 20px;
+    margin-top: 10px;
   }
   .add-child-button i {
     position: absolute;
@@ -1462,16 +1465,13 @@
   .task-moments {
     margin-top: 20px;
     border-top: 1px solid #E6E6E6;
-    color: #666;
     font-size: 12px;
   }
   .task-moments ul {
     padding: 20px 0 0 34px
   }
   .task-moments li {
-    padding: 0 0 10px;
-    line-height: 1.5;
-    color: #666
+    padding: 0 0 20px;
   }
   .task-moments li p {
     font-size: 12px;
@@ -1485,6 +1485,7 @@
     color: #999
   }
   .task-detail-body .p-moments {
+    text-indent: 4px;
     cursor: pointer;
     padding-top: 20px;
     color: #666;
@@ -1505,14 +1506,12 @@
   .p-content:before {
     content: "";
     position: absolute;
-    left: -21px;
+    left: -30px;
     top: 0;
     width: 16px;
     height: 16px;
-    border-radius: 50%;
   }
   .create-parent:before {
-    border-radius: 0;
     background: url(../../assets/images/tools/project_management/CreatMasterTask.png) no-repeat center / cover
   }
   .create-child:before {
@@ -1528,7 +1527,6 @@
     background: url(../../assets/images/tools/project_management/ModifyPriority.png) no-repeat center / cover
   }
   .parent-redo:before {
-    border-radius: 0;
     background: url(../../assets/images/tools/project_management/RedoMasterTask.png) no-repeat center / cover
   }
   .child-redo:before {
@@ -1560,7 +1558,7 @@
   .complete-child::after {
     content: "";
     position: absolute;
-    left: -16px;
+    left: -25px;
     top: 2px;
     height: 10px;
     width: 6px;

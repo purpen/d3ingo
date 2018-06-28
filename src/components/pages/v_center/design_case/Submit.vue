@@ -386,6 +386,7 @@
         patents: [],
         options5: [],
         value10: [],
+        isfrist: false,
         uploadParam: {
           'token': '',
           'x:random': '',
@@ -521,8 +522,8 @@
             }
             row.cover_id = that.coverId
             if (that.design_types && that.design_types.length !== 0) {
-              row.design_type = that.design_types
-            } else row.design_type = null
+              row.design_types = JSON.stringify(that.design_types)
+            } else row.design_types = null
             if (this.prizes && this.prizes.length !== 0) {
               for (var i = 0; i < this.prizes.length; i++) {
                 if (this.prizes[i].time === '' || this.prizes[i].type === '') {
@@ -742,7 +743,10 @@
         }
       },
       typec(val) {
-        this.design_types = []
+        if (this.isfrist) {
+          this.design_types = []
+        }
+        this.isfrist = true
       }
     },
     computed: {
@@ -914,6 +918,9 @@
               }
               if (response.data.data.patent && response.data.data.patent.length !== 0) {
                 that.patents = response.data.data.patent
+              }
+              if (response.data.data.design_types && response.data.data.design_types.length !== 0) {
+                that.design_types = response.data.data.design_types
               }
             }
           })
