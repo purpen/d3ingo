@@ -263,14 +263,6 @@
                           </el-upload>
                         </p>
 
-                        <p v-if="d.status === 0 && d.item_stage_image.length > 0" class="flex-1">
-                          <el-button type="primary" @click="stageSendBtn" size="small" :stage_id="d.id" :index="index"
-                                     class="is-custom">发送
-                          </el-button>
-                        </p>
-                        <p v-if="d.status === 1" class="finish">
-                          <span v-if="d.confirm === 1">完成</span>
-                        </p>
                       </div>
                     </div>
                     <div class="stage-asset-box clearfix" v-for="(asset, asset_index) in d.item_stage_image" :key="asset.name + asset_index">
@@ -291,6 +283,67 @@
                       </div>
                       <div class="clear"></div>
                     </div>
+
+                    <div class="capital-item clearfix" v-if="d.status === 0 && d.item_stage_image.length > 0">
+                      <p>
+                        <el-button type="primary" @click="stageSendBtn" size="small" :stage_id="d.id" :index="index"
+                                   class="is-custom">发送
+                        </el-button>
+                      </p>
+                    </div>
+                    <div class="capital-item clearfix" v-if="d.status === 1 && d.confirm === 0">
+                      <div v-if="d.pay_status === 0">
+                        <p>等待甲方确认</p>
+                      </div>
+                    </div>
+                    <div class="capital-item clearfix" v-if="d.status === 1 && d.confirm === 1">
+                      <div v-if="d.pay_status === 0">
+                        <p>等待甲方打款</p>
+                      </div>
+
+                      <div v-else>
+                        <div v-if="invoceStat(2, d.id) === 0">
+                          <p>阶段项目资金</p>
+                          <p class="capital-money">¥ {{ d.amount }}</p>
+                          <p class="pay-btn">
+                            <span>支付成功</span>
+                          </p>
+                          <p class="capital-des">该阶段款已转入您的账户中</p>
+                        </div>
+                        <div v-if="invoceStat(2, d.id) === 1">
+                          <p>阶段款已转到太火鸟SaaS平台托管</p>
+                          <p class="capital-money">¥ {{ d.amount }}</p>
+                          <p class="pay-btn">
+                            <el-button class="is-custom" @click="sendInvoiceBtn(2, d.id)"
+                                       type="primary">开发票
+                            </el-button>
+                          </p>
+                          <p class="capital-des">需求方已将该阶段款转到太火鸟SaaS平台托管，</p>
+                          <p class="capital-des">您需要给太火鸟SaaS平台提供相关发票，平台收到发票后会将相关款项转入您的账户中。</p>
+                        </div>
+                        <div v-if="invoceStat(2, d.id) === 2">
+                          <p>阶段款已转到太火鸟SaaS平台托管</p>
+                          <p class="capital-money">¥ {{ d.amount }}</p>
+                          <p class="pay-btn">
+                            <span>发票确认中</span>
+                          </p>
+                          <p class="capital-des">发票确认收取中，请您耐心等待…</p>
+                          <p class="capital-des">太火鸟SaaS平台收到发票后会将相关款项转入您的账户中。</p>
+                        </div>
+                        <div v-if="invoceStat(2, d.id) === 3">
+                          <p>阶段项目资金</p>
+                          <p class="capital-money">¥ {{ d.amount }}</p>
+                          <p class="pay-btn">
+                            <span>支付成功</span>
+                          </p>
+                          <p class="capital-des">项目首付款已转入您的账户中</p>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="blank20"></div>
+                    <hr />
+
                   </div>
 
                   <p class="finish-item-btn" v-if="sureFinishBtn">
@@ -704,6 +757,33 @@
         this.invoiceForm.id = item.id
         this.invoiceDialog = true
       },
+      // 确认发票发送
+      sendInvoiceSubmit() {
+        let row = {
+          'id': this.invoiceForm.id,
+          'logistics_id': this.invoiceForm.logistics_id,
+          'logistics_number': this.invoiceForm.logistics_number
+        }
+        this.sendInvoiceLoadingBtn = true
+        this.$http.put(api.invoiceDesignTrueSend, row)
+          .then((response) => {
+            this.sendInvoiceLoadingBtn = false
+            if (response.data.meta.status_code === 200) {
+              this.invoiceDialog = false
+              for (let i = 0; i < this.invoice.length; i++) {
+                if (this.invoice[i].id === row.id) {
+                  this.invoice[i].status = 1
+                }
+              }
+            } else {
+              this.$message.error(response.data.meta.message)
+            }
+          })
+          .catch((error) => {
+            this.$message.error(error.message)
+            this.sendInvoiceLoadingBtn = false
+          })
+      },
       // 发票状态
       invoceStat(payType, stage) {
         let item = this.invoceSelect(payType, stage)
@@ -760,28 +840,6 @@
       // 新增／编辑合同
       contractBtn() {
         this.$router.push({name: 'vcenterContractSubmit', params: {item_id: this.item.id}})
-      },
-      // 确认发票发送
-      sendInvoiceSubmit() {
-        let row = {
-          'id': this.invoiceForm.id,
-          'logistics_id': this.invoiceForm.logistics_id,
-          'logistics_number': this.invoiceForm.logistics_number
-        }
-        this.sendInvoiceLoadingBtn = true
-        this.$http.put(api.invoiceDesignTrueSend, row)
-          .then((response) => {
-            this.sendInvoiceLoadingBtn = false
-            if (response.data.meta.status_code === 200) {
-              this.invoiceDialog = false
-            } else {
-              this.$message.error(response.data.meta.message)
-            }
-          })
-          .catch((error) => {
-            this.$message.error(error.message)
-            this.sendInvoiceLoadingBtn = false
-          })
       },
       // 开始项目
       beginItem() {

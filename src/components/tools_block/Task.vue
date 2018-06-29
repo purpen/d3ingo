@@ -37,7 +37,7 @@
         </p>
         <div class="task-detail-body">
           <div class="task-admin" v-if="true">
-            <p class="tc-9">分配给:</p>
+            <!-- <p class="tc-9">分配给:</p> -->
             <ul class="task-member-list task-member-execute" v-if="executeUser">
               <li v-if="JSON.stringify(executeUser) !== '{}'">
                 <a class="remove-member" @click.self="removeExecute()"></a>
@@ -45,8 +45,9 @@
                 <img @click="showMember = true" v-else v-lazy="require('assets/images/avatar_100.png')">
               </li>
             </ul>
-            <ul class="task-member-list task-member-execute" v-else>
-              <li class="margin-none" @click="showMember = true">选择执行者</li>
+            <ul class="task-member-list task-member-execute no-execute" v-else>
+              <li class="margin-none" @click="showMember = true">
+                <img @click="showMember = true" v-lazy="require('assets/images/avatar_100.png')">执行者</li>
             </ul>
             <v-Member
               :isLeft="true"
@@ -776,6 +777,10 @@
         this.isAddChild = false
       },
       confirmAddChild() {
+        if (!this.currentForm.name) {
+          this.$message.error('请先填写主任务名称')
+          return
+        }
         this.isAddChild = true
         for (let i in this.addChildForm) {
           this.addChildForm[i] = ''
@@ -1201,6 +1206,9 @@
     border: none;
     background: url(../../assets/images/member/add03@2x.png) no-repeat left / contain
   }
+  .task-detail-body {
+    position: relative;
+  }
   .task-detail-body .add-child-button {
     height: 24px;
     line-height: 24px;
@@ -1340,7 +1348,7 @@
     width: inherit
   }
   .task-admin {
-    position: relative;
+    /* position: relative; */
     padding: 0;
     margin-top: 20px;
     display: inline-block
@@ -1394,6 +1402,33 @@
     border-radius: 50%;
     border: 2px solid #e6e6e6
   }
+  .no-execute {
+    padding-top: 0;
+  }
+  .no-execute li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 8px;
+    border: 1px solid transparent;
+    border-radius: 50px;
+    color: #999
+  }
+  .no-execute li:hover {
+    background: #fafafa;
+    border-color: #e6e6e6;
+    color: #999;
+  }
+  .no-execute li:active {
+    background: #fafafa;
+    border-color: #ff5a5f;
+    color: #ff5a5f
+  }
+  .no-execute li img {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }
   .task-member-list li:hover img {
     border-color: #E6E6E6
   }
@@ -1414,12 +1449,9 @@
     font-size: 14px;
   }
   .task-member-execute li.margin-none {
-    font-family: PingFangSC-Medium;
+    /* font-family: PingFangSC-Medium; */
     margin: 0;
     color: #666
-  }
-  .task-member-execute li.margin-none:hover {
-    color: #FF5A5F
   }
   .task-detail-body p {
     /* color: #999 */

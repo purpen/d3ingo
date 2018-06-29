@@ -45,7 +45,8 @@ export default {
   demandAlipay: '/pay/demandAliPay', // GET 支付保证金-支付宝
   demandJdPay: '/pay/demandJdPay', // GET 支付保证金-京东
   demandWxPay: '/pay/demandWxPay', // GET 支付保证金-微信
-  firstOrderItemId: '/pay/firstPayOrder/{0}', // GET 创建尾款支付订单
+  firstOrderItemId: '/pay/firstPayOrder/{0}', // GET 创建首付款支付订单
+  payStagePayOrderStageId: '/pay/stagePayOrder/{0}', // GET 创建阶段款支付订单
   endPayOrderItemId: '/pay/endPayOrder/{0}', // GET 创建尾款支付订单
   secondAlipayId: '/pay/itemAliPay/{0}', // GET 支付尾款-支付宝
   payItemBankPayId: '/pay/itemBankPay/{0}', // GET 支付项目尾款--公对公银行转账
@@ -176,6 +177,8 @@ export default {
   adminDemandCompanyVerifyIng: '/admin/demandCompany/unVerifyStatus', // PUT 审核中(停用)
   adminDemandCompanyVerifyNo: '/admin/demandCompany/noVerifyStatus', // PUT 未能通过(停用)
   adminDemandCompanyVerifyOk: '/admin/demandCompany/verifyStatus', // PUT 通过审核
+  adminDemandCompanyInvoice: '/admin/invoice/pushLists', // GET 需要平台给需求公司开具发票列表
+  adminDemandCompanyConfirmSendInvoice: '/admin/invoice/trueDemandInvoice', // PUT 确认给需求公司的发票已开
 
   // 设计公司管理
   adminCompanyList: '/admin/designCompany/lists', // GET 设计公司列表
@@ -185,6 +188,8 @@ export default {
   adminCompanyVerifyOk: '/admin/designCompany/verifyStatus', // PUT 通过审核
   adminCompanyVerifyCancel: '/admin/designCompany/unVerifyStatus', // PUT 取消审核 (停用)
   adminCompanySetTest: '/admin/designCompany/isTest',  // PUT 设置为测试账号（不会系统推荐）
+  adminCompanyInvoice: '/admin/invoice/pullLists', // GET 设计公司给平台开具发票
+  adminCompanyConfirmInvoice: '/admin/invoice/trueInvoice', // GET 确认收到设计公司发票
 
   // 订单管理
   adminPayOrderLists: '/admin/payOrder/lists', // GET 订单列表
