@@ -179,7 +179,7 @@
             <el-row :gutter="24">
               <el-col :span="isMob ? 24 : 12">
                 <el-form-item label="对公银行账号" prop="account_number">
-                  <el-input v-model="form.account_number" placeholder=""></el-input>
+                  <el-input v-model.trim="form.account_number" placeholder=""></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
