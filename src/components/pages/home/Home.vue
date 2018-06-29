@@ -27,7 +27,6 @@
             :to="ele.url"
             :style="{
               background: 'url(' + ele.img + ') no-repeat center',
-              backgroundSize: 'contain',
               height: calcHeight
             }"></router-link>
             <a v-else
@@ -35,7 +34,6 @@
               class="banner-link slide"
               :style="{
                 background: 'url(' + ele.img + ') no-repeat center',
-                backgroundSize: 'contain',
                 height: calcHeight
               }">
             </a>
@@ -502,11 +500,11 @@
     min-height: 180px;
     margin: 0;
     background-size: cover;
-    background-position: center;
     background-repeat: no-repeat;
     text-align: left;
     /* padding-bottom: 50px; */
     overflow: hidden;
+    background-size: cover!important;
   }
 
   .slide h3 {
