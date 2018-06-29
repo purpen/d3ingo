@@ -3,7 +3,7 @@
     <!-- <div class="" v-if="taskState.power" v-loading="isLoading"> -->
     <section class="animated task-detail fadeIn">
       <div class="task-detail-header">
-        {{currentForm}}
+        <!-- {{currentForm}} -->
         <span v-show="!isMyTask" v-if="currentForm.tier === 0" class="task-detail-name">{{projectObject.name}}</span>
         <div v-show="!isMyTask" v-if="currentForm.tier === 0" ref="selectParent" class="select-parent" tabindex="-1">
           <div class="select-show-parent">
