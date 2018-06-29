@@ -194,9 +194,6 @@
                   <el-col :span="isMob ? 12 : 4">
                     <el-form-item
                       :prop="'stages.' + index + '.amount'"
-                      :rules="{
-                      required: true, message: '请添写阶段金额', trigger: 'blur'
-                    }"
                     >
                       <el-input v-model="form.stages[index].amount" disabled placeholder="" size="small">
                         <template slot="append">元</template>
