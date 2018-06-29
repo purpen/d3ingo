@@ -108,8 +108,8 @@
               label="操作">
               <template slot-scope="scope">
                 <!--设计公司已开发票&&收发票&&-->
-                <p v-if="scope.row.type === 1 && scope.row.status===2 && scope.row.company_type===2" @click="confirmReceipt(scope.row, 2)"><el-tag type="success">确认收到发票</el-tag></p>
-                <p v-if="scope.row.type === 2 && scope.row.status===1 && scope.row.company_type===1" @click="confirmReceipt(scope.row, 1)"><el-tag type="success">确认开出发票</el-tag></p>
+                <el-button v-if="scope.row.type === 1 && scope.row.status===2 && scope.row.company_type===2" type="success" size="mini" @click="confirmReceipt(scope.row, 2)">确认收到发票</el-button>
+                <el-button v-if="scope.row.type === 2 && scope.row.status===1 && scope.row.company_type===1" type="success" size="mini" @click="confirmReceipt(scope.row, 1)">确认开出发票</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -160,10 +160,11 @@
         test: {},
         query: {
           page: 1,
-          pageSize: 3,
+          pageSize: 50,
           status: 0,
           totalCount: 1,
-          total: 0
+          total: 0,
+          sort: 1
         },
         verify: {
           id: '',
@@ -206,6 +207,7 @@
         // adminDemandCompanyConfirmSendInvoice  确认发出
         self.$http.put(confirmInvoice, {id: id, summary: refuseRease})
         .then (function (response) {
+          console.log(response.data)
           if (response.data.meta.status_code === 200) {
             self.verify.refuseRease = ''
             self.$message.success('操作成功')
@@ -218,6 +220,7 @@
               }
             }
           } else {
+            alert(1)
             self.$message.error(response.data.meta.message)
           }
         })
@@ -227,6 +230,7 @@
         // 查询条件
         self.query.page = parseInt(this.$route.query.page || 1)
         self.query.status = parseInt(this.$route.query.status || 0)
+        self.query.sort = this.$route.query.sort || 1
         this.menuType = 0
         if (self.query.status) {
           this.menuType = parseInt(self.query.status)
@@ -240,7 +244,7 @@
         }
         self.isLoading = true
         console.log(self.query.pageSize)
-        self.$http.get(adminCompanyInvoice, {params: {status: self.query.status, per_page: self.query.pageSize, page: self.query.page}})
+        self.$http.get(adminCompanyInvoice, {params: {status: self.query.status, sort: self.query.sort, per_page: self.query.pageSize, page: self.query.page}})
         .then (function(response) {
           self.isLoading = false
           self.tableData = []
@@ -301,8 +305,9 @@
       }
     },
     created: function() {
-      this.loadList()
+      this.routerName = this.$route.name
       this.putReceiptList = this.$route.name
+      this.loadList()
     },
     watch: {
       '$route' (to, from) {

@@ -11,7 +11,7 @@
               <div :class="['amount-show', isMob ? 'amount-show-m' : '']">
                 <p :class="['price-title', isMob ? 'price-title-m' : '']">账户余额（元）</p>
                 <p :class="['price-text', isMob ? 'price-text-m' : '']">¥{{ wallet.price_total }}</p>
-                <p :class="['price-des', isMob ? 'price-des-m' : '']">*已冻结余额 {{ wallet.price_frozen }}元，不可提现</p>
+                <p :class="['price-des', isMob ? 'price-des-m' : '']">*已冻结余额 <span v-html="wallet.price_frozen"></span>元，不可提现</p>
               </div>
               <div :class="['amount-btn', isMob ? 'amount-show-m amount-btn-m' : '']">
                 <p>
@@ -153,39 +153,42 @@
     </el-row>
 
     <!--弹框模板-->
-    <el-dialog :title="itemModelTitle" v-model="itemModel" class="withdraw">
-      <div class="withdraw-input">
-        <p class="withdraw-title margin-t-b-10">公司名称: <span>{{corporationInfo.company_name}}</span></p>
-        <p class="withdraw-title margin-t-b-10">银行卡账号：<span>{{corporationInfo.account_number}}</span></p>
-        <p class="withdraw-title margin-t-b-10">开户行：<span>{{corporationInfo.bank_name}}</span></p>
+    <el-dialog :title="itemModelTitle" v-model="itemModel" class="withdraw text-center">
+      <div class="withdraw-input display-fl" v-if="corporationInfo.account_name !== '' || corporationInfo.bank_name !== '' || corporationInfo.account_number !== ''">
+        <div class="withdraw-title margin-t-b-20 dis-ju" v-if=""><p>开户名称:</p><span>{{corporationInfo.account_name}}</span></div>
+        <div class="withdraw-title margin-t-b-20 dis-ju"><p>开户银行：</p><span>{{corporationInfo.bank_name}}</span></div>
+        <div class="withdraw-title margin-t-b-20 dis-ju"><p>对公银行账号：</p><span>{{corporationInfo.account_number}}</span></div>
+      </div>
+      <div class="withdraw-input" v-else>
+        <p class="withdraw-title margin-t-b-20">请完善您的银行卡信息：<el-button @click="goAttestation" size="small" type="warning" class="mar-l-10">去完善</el-button> </p>
       </div>
 
       <div class="withdraw-input">
-        <p class="withdraw-title">提现金额</p>
+        <p class="withdraw-title margin-t-b-20">提现金额</p>
         <div class="flex">
-          <el-input placeholder="请输入提现额度" v-model.number="withdrawPrice">
+          <el-input placeholder="请输入提现额度" v-model.number.trim="withdrawPrice">
             <template slot="prepend">¥</template>
           </el-input>
           <button class="red-button middle-button" @click="allPrice">全部提现</button>
         </div>
-        <p class="withdraw-des">可提现金额: ¥ {{ wallet.price }}</p>
+        <p class="withdraw-des">可提现金额: <span class="color_ff5a">¥ {{ wallet.price }}</span></p>
       </div>
-
+`
       <div slot="footer" class="dialog-footer">
         <el-button @click="itemModel = false">取 消</el-button>
         <el-button type="primary" :loading="isLoadingBtn" @click="withdrawSubmit">确 定</el-button>
       </div>
     </el-dialog>
-    <transition name="fade">
-      <el-dialog :title="itemPointTitle" v-model="itemPointTitleInfo" class="withdraw">
-        <div class="withdraw-input">
-          <p class="withdraw-title margin-t-b-10 text-center font-16">您还没有认证</p>
-        </div>
-        <div slot="footer" class="dialog-footer">
-          <el-button type="primary" :loading="isLoadingBtn" @click="goAttestation">点击认证</el-button>
-        </div>
-      </el-dialog>
-    </transition>
+    <!--<transition name="fade">-->
+      <!--<el-dialog :title="itemPointTitle" v-model="itemPointTitleInfo" class="withdraw">-->
+        <!--<div class="withdraw-input">-->
+          <!--<p class="withdraw-title margin-t-b-10 text-center font-16">您还没有认证</p>-->
+        <!--</div>-->
+        <!--<div slot="footer" class="dialog-footer">-->
+          <!--<el-button type="primary" size="small" :loading="isLoadingBtn" @click="goAttestation">点击认证</el-button>-->
+        <!--</div>-->
+      <!--</el-dialog>-->
+    <!--</transition>-->
   </div>
 </template>
 
@@ -233,12 +236,16 @@
       }
     },
     methods: {
+      // 认证信息
       getStatus() {
         this.$http.get(api.surveyDemandCompanySurvey, {})
         .then(res => {
           if (res.data.meta.status_code === 200) {
             this.$store.commit(CHANGE_USER_VERIFY_STATUS, res.data.data)
+            console.log(res.data.data)
             this.demandVerifyStatus = res.data.data.demand_verify_status
+          } else {
+            console.log(res)
           }
         }).catch(err => {
           console.error(err.message)
@@ -340,7 +347,7 @@
         this.wallet.price = parseFloat(parseFloat(this.wallet.price_total).sub(parseFloat(this.wallet.price_frozen)))
         if (this.wallet.price <= 0) {
           this.$message.error ('没有可提现余额!')
-          // return false
+          return false
         }
         this.itemModel = true
         // if (this.bankOptions.length === 0) {
@@ -383,29 +390,30 @@
           self.$message.error ('提现金额超出范围!')
           return
         }
-        if (self.demandVerifyStatus === 1) {
-          self.isLoadingBtn = true
-          self.$http.post (api.withdrawCreate, {bank_id: self.bankId, amount: self.withdrawPrice})
-          .then (function (response) {
-            self.isLoadingBtn = false
-            if (response.data.meta.status_code === 200) {
-              self.itemModel = false
-              self.$message.success ('操作成功,等待财务打款！')
-            } else {
-              self.$message.error(response.data.meta.message)
-              console.log(response.data.meta.message)
-            }
-          })
-          .catch (function (error) {
-            self.isLoadingBtn = false
-            self.$message.error (error.message)
-          })
-        } else {
-          self.itemModel = false
-          setTimeout (function () {
-            self.itemPointTitleInfo = true
-          }, 500)
-        }
+        // if (self.demandVerifyStatus === 1) {
+        self.isLoadingBtn = true
+        self.$http.post (api.withdrawCreate, {bank_id: self.bankId, amount: self.withdrawPrice})
+        .then (function (response) {
+          self.isLoadingBtn = false
+          if (response.data.meta.status_code === 200) {
+            self.itemModel = false
+            self.wallet.price_frozen = parseFloat (self.wallet.price_frozen) + self.withdrawPrice
+            self.$message.success ('操作成功,等待财务打款！')
+          } else {
+            self.$message.error(response.data.meta.message)
+            console.log(response.data.meta.message)
+          }
+        })
+        .catch (function (error) {
+          self.isLoadingBtn = false
+          self.$message.error (error.message)
+        })
+        // } else {
+        //   self.itemModel = false
+          // setTimeout (function () {
+          //   self.itemPointTitleInfo = true
+          // }, 500)
+        // }
       },
       showTransaction() {
         this.record = 'transaction'
@@ -442,7 +450,7 @@
       }
       var userInfo = ''
       var requestMethod = ''
-      if (this.user === 1) {
+      if (this.user.type === 1) {
         // 需求公司
         this.userType = 1
         requestMethod = 'get'
@@ -452,18 +460,18 @@
         requestMethod = 'put'
         userInfo = api.designCompany
       }
-      console.log(userInfo)
       const self = this
       // 获取公司名称银行卡信息
       self.$http({method: requestMethod, url: userInfo}).then (function (response) {
         let getCorporationInfo = response.data.data
+        console.log(getCorporationInfo)
+        self.bankId = getCorporationInfo.id
         if (getCorporationInfo) {
           self.corporationInfo = getCorporationInfo
           var str = self.corporationInfo.account_number
           var reg = /^(\d{4})\d+(\d{4})$/
           str = str.replace (reg, '$1****$2')
           self.corporationInfo.account_number = str
-          console.log(self.corporationInfo)
         }
       })
       // 获取我的钱包
@@ -534,7 +542,9 @@
   .el-dialog__footer .dialog-footer .el-button:last-child {
     margin: 0 !important;
   }
-
+  .el-dialog .el-dialog__header {
+    text-align: center !important;
+  }
   .font-16 {
     font-size: 16px;
   }
@@ -654,15 +664,33 @@
 
   .withdraw-input {
     margin: 10px;
+    text-align: left;
+  }
+  .el-dialog__body {
+    padding: 0 20px !important;
   }
 
-  .margin-t-b-10{
-    margin: 15px 0;
+  .margin-t-b-20 {
+    margin-bottom: 20px;
+  }
+  .display-fl {
+    display: flex;
+    flex-direction: column;
   }
 
-  .withdraw-input p.withdraw-title {
+  .dis-ju {
+    display: flex;
+    align-items: center;
+  }
+
+  .withdraw-input .dis-ju p {
+    width: 100px;
     line-height: 2;
-    color: #222;
+    color: #666;
+  }
+
+  .withdraw-input p.withdraw-title span{
+    color: #999;
   }
 
   .withdraw-input .el-input {
@@ -723,6 +751,14 @@
   .flex button:last-child {
     margin-left: 10px;
   }
+  .mar-l-10 {
+    margin-left: 10px;
+  }
+
+  .color_ff5a {
+    color: #ff5a5f;
+  }
+
   @media screen and (max-width: 767px) {
     .vcenter-menu-sub::after {
       content: "";
