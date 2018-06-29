@@ -170,7 +170,6 @@
               </el-collapse-item>
             </el-collapse>
           </div>
-
           <div class="select-item-box" v-if="statusLabel.amount">
             <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
               <el-collapse-item title="托管项目资金" name="9">
