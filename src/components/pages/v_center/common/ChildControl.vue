@@ -198,7 +198,7 @@
         let name = null
         switch (progress) {
           case 0:
-            name = 'itemSubmitTwo'
+            name = 'projectSelect'
             break
           case 1:
             name = 'projectSelect'

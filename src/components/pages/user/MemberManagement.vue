@@ -13,7 +13,7 @@
           @cancelSearch="creatGetList"
           @createGroup="confirmCreateGroup"></member-menu>
       </el-col>
-      <el-col :span="isMob? 24: 20">
+      <el-col :span="isMob? 24: 20" class="relative">
         <section :class="['member-list', {'member-list-mini' : !leftWidth,
         'member-list-mob': isMob}]"
           v-loading="loading">
@@ -663,7 +663,7 @@ export default {
     height: 38px;
     line-height: 20px;
     color: #666;
-    border-bottom: 1px solid #d2d2d2;
+    border-bottom: 1px solid #e6e6e6;
   }
   .member-list-header p {
     font-size: 16px;
@@ -691,7 +691,7 @@ export default {
   .member-title {
     height: 50px;
     line-height: 50px;
-    border-bottom: 1px solid #d2d2d2;
+    border-bottom: 1px solid #e6e6e6;
     font-size: 14px;
     color: #999;
     padding-left: 10px;
@@ -700,7 +700,7 @@ export default {
     font-size: 14px;
     height: 60px;
     line-height: 60px;
-    border-bottom: 1px solid #d2d2d2;
+    border-bottom: 1px solid #e6e6e6;
     padding-left: 10px;
   }
   .member-item li:hover {
@@ -734,7 +734,7 @@ export default {
     top: 20px;
     width: 10px;
     height: 16px;
-    border: 2px solid #d2d2d2;
+    border: 2px solid #e6e6e6;
     transform: rotate(45deg);
     border-radius: 1px;
     border-left: none;
@@ -967,7 +967,7 @@ export default {
   .buttons .confirm-btn, .buttons .cancel-btn {
     width: 118px;
     height: 32px;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
     border-radius: 4px;
     background: #fff;
   }
@@ -1000,7 +1000,7 @@ export default {
     line-height: 20px;
     height: 38px;
     border-radius: 4px;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
     color: #222;
   }
   .validity {
@@ -1044,7 +1044,7 @@ export default {
   .search {
     width: 100%;
     height: 40px;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
     border-radius: 4px;
     padding: 0 8px 0 34px;
     font-size: 14px;
@@ -1113,6 +1113,14 @@ export default {
   .pagination {
     padding: 0;
     margin: 30px 0 0;
+  }
+  @media screen and (max-width: 1199px) {
+    .relative {
+      position: relative;
+    }
+    .member-list {
+      width: 100%
+    }
   }
   @media screen and (min-width: 1200px) {
     .member-list {

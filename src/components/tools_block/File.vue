@@ -2014,7 +2014,7 @@ export default {
     height: 18px;
   }
   .share-type i::after {
-    transition: 0.3s background cubic-bezier(0.42, -0.07, 0, 0.98);
+    transition: 0.15s background cubic-bezier(0.42, -0.07, 0, 0.98);
     content: "";
     position: absolute;
     left: 3px;
@@ -2025,10 +2025,10 @@ export default {
     height: 12px;
   }
   .share-type i.checked::before {
-    border: 1px solid #666;
+    border: 1px solid #ff5a5f;
   }
   .share-type i.checked::after {
-    background: #666;
+    background: #ff5a5f;
   }
   .share-type::before {
     content: "分享形式";
