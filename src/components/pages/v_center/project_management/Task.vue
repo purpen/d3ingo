@@ -150,6 +150,7 @@
     },
     data () {
       return {
+        oldShowMine: '',
         docHeight: '',
         isReady: true,
         isFocus: false,
@@ -370,6 +371,7 @@
               return
             }
           }
+          self.currentStageForm['stage'] = self.taskStatus
           self.$http.put(api.toolsStageId.format(id), self.currentStageForm).then(function (response) {
             self.isUpdate = true
             if (response.data.meta.status_code === 200) {
@@ -438,7 +440,6 @@
         this.$http.get(api.myTask)
         .then(res => {
           if (res.data.meta.status_code === 200) {
-            console.log(res.data.data)
             this.$store.commit('setTaskList', {data: res.data.data, showChild: true})
           } else {
             this.$messgae.error(res.data.meta.message)
@@ -567,6 +568,9 @@
       }
     },
     computed: {
+      showMine() {
+        return this.$store.state.task.showMine
+      },
       isMob() {
         return this.$store.state.event.isMob
       },
@@ -614,6 +618,13 @@
       }
     },
     watch: {
+      showMine(val) {
+        if (this.oldShowMine === 'show') {
+          this.fetchStage()
+          this.fetchTask()
+        }
+        this.oldShowMine = val
+      },
       stageList: {
         handler(val) {
           val.forEach(item => {

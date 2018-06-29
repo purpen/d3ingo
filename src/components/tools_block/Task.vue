@@ -5,7 +5,9 @@
       <div class="task-detail-header">
         <span v-show="!isMyTask" v-if="currentForm.tier === 0" class="task-detail-name">{{projectObject.name}}</span>
         <div v-show="!isMyTask" v-if="currentForm.tier === 0" ref="selectParent" class="select-parent" tabindex="-1">
-          <span class="select-show">{{currentForm.stage_title | stageTitle}}</span>
+          <div class="select-show-parent">
+            <span class="select-show">{{currentForm.stage_title | stageTitle}}</span>
+          </div>
           <ul class="stage-list stage-list0">
             <li :class="{'active': !currentForm.stage_id}" @click="stageItemClick(0)">无阶段</li>
             <li :class="{'active': d.id === currentForm.stage_id}" v-for="(d, index) in stageList" :key="index" @click="stageItemClick(d.id)">
@@ -1024,6 +1026,10 @@
     border: 1px solid #E6E6E6;
     border-radius: 4px;
     cursor: pointer;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .task-detail-name1 {
     margin-right: 50px;
@@ -1033,6 +1039,7 @@
     white-space: normal;
     text-overflow: ellipsis;
     overflow: hidden;
+    max-width: 100%;
   }
 
   .task-detail-name1::after {
@@ -1040,7 +1047,7 @@
     position: absolute;
     width: 100%;
     height: 1px;
-    background: #666;
+    background: transparent;
     top: 24px;
     left: 2px;
   }
@@ -1081,8 +1088,11 @@
   .stage-list li {
     height: 40px;
     line-height: 40px;
-    padding: 0 20px;
+    padding: 0 30px 0 20px;
     position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .stage-list li:hover {
     background: #fafafa;
@@ -1107,9 +1117,15 @@
     line-height: 34px;
     position: relative;
     cursor: pointer;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
-
-  .select-show::after {
+  .select-show-parent {
+    position: relative;
+  }
+  .select-show-parent::after {
     transition: 0.2s all ease;
     content: "";
     position: absolute;
@@ -1135,7 +1151,7 @@
   }
   
   /* .select-parent:hover .select-show::after, */
-  .select-parent:focus .select-show::after {
+  .select-parent:focus .select-show-parent::after {
     transform: rotate(-135deg) translate(-5px);
   }
   

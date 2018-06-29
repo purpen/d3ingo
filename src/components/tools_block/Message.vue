@@ -61,7 +61,6 @@
     watch: {
       myView(val) {
         let oldClass = document.body.childNodes[1].getAttribute('class')
-        console.log(oldClass)
         if (val) {
           document.body.setAttribute('class', 'disableScroll')
           document.body.childNodes[1].setAttribute('class', 'disableScroll ' + oldClass)

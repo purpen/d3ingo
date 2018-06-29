@@ -329,7 +329,8 @@
   .tags-component {
     position: absolute;
     left: 0;
-    top: 0;
+    /* top: 0; */
+    top: 4px;
     z-index: 1
   }
   .select-tag {

@@ -411,11 +411,11 @@
         }
       },
       showMine() {
-        // this.$store.commit('changeMineView', '')
+        this.$store.commit('changeMineView', '')
         this.$store.commit('removeParentTask')
         this.$store.commit('changeTaskStatePower', 0)
         this.$store.commit('changeTaskStateEvent', '')
-        this.$store.commit('changeMineView', 'task')
+        // this.$store.commit('changeMineView', 'task')
         if (this.showCover === 'show') {
           this.showCover = 'hide'
           setTimeout(() => {
@@ -425,6 +425,7 @@
           if (this.showCover2 === 'show') {
             this.showCover2 = 'hide'
           } else {
+            this.$store.commit('changeMineView', 'task')
             this.showCover2 = 'show'
           }
         }
