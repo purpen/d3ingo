@@ -56,7 +56,7 @@
             <p class="menu-moment"><span>项目动态</span></p>
             <ul class="item-moments" v-if="shortProjectMoments.length">
               <li class="clearfix" v-for="(ele, index) in shortProjectMoments" :key="index">
-                <img class="br50 b-d2" :src="ele.logo_image.logo" alt="">
+                <img class="br50 b-e6" :src="ele.logo_image.logo" alt="">
                 <div class="item-con">
                   <!-- <p class="tc-2"><span>{{ele.user_name}}</span><span class="tc-6">{{ele.action}}</span></p> -->
                   <p><span class="tc-2">{{ele.title}}</span></p>
@@ -457,7 +457,7 @@
       <div class="cover2-content">
         <ul class="cover2-list">
           <li v-for="(ele, index) in projectMoments" :key="index">
-            <img v-if="ele.logo_image" class="br50 b-d2" :src="ele.logo_image.logo" alt="">
+            <img v-if="ele.logo_image" class="br50 b-e6" :src="ele.logo_image.logo" alt="">
             <div class="list-con clearfix">
               <!-- <p class="tc-2 fl"><span>{{ele.user_name}}</span>{{ele.action}}</p> -->
               <p class="tc-2"><span>{{ele.title}}</span></p>

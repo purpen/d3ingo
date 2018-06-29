@@ -266,8 +266,12 @@
       </el-dialog>
     </div>
 
-    <div class="empty" v-if="isEmpty && isEmpty2"></div>
-    <p v-if="isEmpty && isEmpty2" class="noMsg">暂无已合作项目</p>
+    <div :class="{'vcenter-right-plus': leftWidth === 4,
+      'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}">
+      <div class="empty" v-if="isEmpty && isEmpty2"></div>
+      <p v-if="isEmpty && isEmpty2" class="noMsg">暂无已合作项目</p>
+    </div>
   </section>
 </template>
 
@@ -616,7 +620,7 @@
 
   .banner {
     line-height: 25px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #e6e6e6;
     background: #FAFAFA;
   }
 
@@ -625,7 +629,7 @@
   }
 
   .content {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #e6e6e6;
     height: 120px;
   }
 
