@@ -8,7 +8,7 @@
           <el-row :gutter="20">
             <el-col :xs="24" :sm="6" :md="6" :lg="6" v-for="(ele, index) in companyDetails" :key="index">
               <div class="logo" @click="changeList(ele.id)">
-                <i @click="changeList(ele.id)" :class="['radio', {'active': selectList.indexOf(ele.id) !== -1}]"></i>
+                <i :class="['radio', {'active': selectList.indexOf(ele.id) !== -1}]"></i>
                 <img v-if="ele.logo_image" :src="ele.logo_image.logo" :alt="ele.company_name">
                 <img v-else :src="require('assets/images/avatar_100.png')"/>
                 <span class="tc-2">{{ele.company_name}}</span>
@@ -277,6 +277,7 @@ export default {
     cursor: pointer;
     content: "";
     position: absolute;
+    z-index: 9;
     left: 14px;
     top: 14px;
     width: 24px;
@@ -348,6 +349,7 @@ export default {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    background: url(../../../assets/images/project/BG-Gradient.jpg) no-repeat center / contain
   }
   .select-num {
     padding: 10px 20px;
