@@ -481,7 +481,7 @@
       </div>
     </aside>
     <section class="top-progress">
-      <div class="h3 fz-20">{{itemName}}</div>
+      <div class="h3 no-wrap fz-20">{{itemName}}</div>
       <el-progress 
       :percentage="itemStatistical.okDesignStage"
       :show-text="false"
@@ -2978,6 +2978,11 @@ export default {
   .ceshi:hover i {
     font-size:20px;
     display:inline-block;
+  }
+  .no-wrap {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   @media screen and (max-width: 767px) {
     .item-total {

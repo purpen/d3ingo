@@ -90,7 +90,7 @@
           </div>
         </el-col>
         <!-- 显示九宫格 -->
-        <el-col v-for="(ele, index) in list" :key="ele.name + index" :span="4" v-if="curView === 'chunk'">
+        <el-col v-for="(ele, index) in list" :key="ele.name + index" :span="isMob ? 12 : 4" v-if="curView === 'chunk'">
           <div :class="[{'active' : chooseList.indexOf(ele.id) !== -1}, 'item2']">
             <p v-if="chooseStatus" @click="liClick(ele.id, index)" :class="['file-radio', ele.name]">file-radio</p>
             <p v-if="ele.format_type === 'image' && modules !== 'recycle'" :class="['file-icon', ele.format_type]" :style="{background: 'url(' + ele.url_small + ')'}" @click="showView(ele)">file-icon</p>
@@ -574,11 +574,10 @@ export default {
   }
 
   .file-radio {
+    cursor: pointer;
     text-indent: -999em;
     width: 20px;
     height: 20px;
-    border-radius: 50%;
-    border: 1px solid #e6e6e6;
     background: #fff;
     margin: 25px auto 25px;
     position: relative;
@@ -593,8 +592,9 @@ export default {
   .file-radio:before {
     content: '';
     position: absolute;
-    left: 3px;
-    top: 4px;
+    z-index: 1;
+    left: 4px;
+    top: 5px;
     width: 12px;
     height: 7px;
     border: 2px solid #fff;
@@ -602,9 +602,22 @@ export default {
     border-right: none;
     transform: rotate(-45deg);
     border-radius: 0;
+    cursor: pointer;
+  }
+  .file-radio:after {
+    content: '';
+    border-radius: 50%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    cursor: pointer;
   }
   
-  .active .file-radio {
+  .active .file-radio:after {
     border: 1px solid #999;
     background: #999;
   }

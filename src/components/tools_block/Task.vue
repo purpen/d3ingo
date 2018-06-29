@@ -777,6 +777,10 @@
         this.isAddChild = false
       },
       confirmAddChild() {
+        if (!this.currentForm.name) {
+          this.$message.error('请先填写主任务名称')
+          return
+        }
         this.isAddChild = true
         for (let i in this.addChildForm) {
           this.addChildForm[i] = ''
