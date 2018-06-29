@@ -67,7 +67,6 @@
               </el-collapse-item>
             </el-collapse>
           </div>
-
           <div class="select-item-box">
             <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
               <el-collapse-item title="报价管理" name="4" class="partnersDesign">
@@ -471,7 +470,7 @@
       <div class="fz-16 tc-2 sub-title">
         邮寄信息
       </div>
-      <el-form label-position="top" :model="invoiceForm" :rules="invoiceRuleForm" ref="invoiceRuleForm">
+      <el-form label-position="top" :model="invoiceForm" class="form-line" :rules="invoiceRuleForm" ref="invoiceRuleForm">
         <el-form-item prop="logistics_id" class="fullwidth">
           <el-row>
             <el-col :span="4">
@@ -2034,7 +2033,7 @@
   .taking-price-btn>.el-button + .el-button{
     margin-right: 0;
   }
-  .el-form-item__content .el-row {
+  .form-line .el-row {
     line-height: 36px;
   }
 </style>
