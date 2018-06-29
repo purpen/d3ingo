@@ -248,7 +248,7 @@
   .sub-title {
     font-size: 16px;
     color: #222;
-    margin-top: 20px;
+    margin-top: 30px;
     padding-bottom: 10px;
     border-bottom:1px solid #e6e6e6;
     position: relative;

@@ -194,9 +194,6 @@
                   <el-col :span="isMob ? 12 : 4">
                     <el-form-item
                       :prop="'stages.' + index + '.amount'"
-                      :rules="{
-                      required: true, message: '请添写阶段金额', trigger: 'blur'
-                    }"
                     >
                       <el-input v-model="form.stages[index].amount" disabled placeholder="" size="small">
                         <template slot="append">元</template>
@@ -597,7 +594,7 @@
                         contract.stages = []
                         contract.sort = contract.item_stage.length
                         contract.total = parseFloat(contract.total)
-                        contract.warranty_money = parseFloat(contract.warranty_money)
+                        contract.warranty_money = parseFloat(contract.commission)
                         contract.first_payment = parseFloat(contract.first_payment)
                         contract.stage_money = parseFloat(contract.total.sub(contract.first_payment))
                         contract.tax_price = parseFloat(contract.tax_price)
@@ -670,7 +667,6 @@
                     return false
                   })
               }
-//              console.log(response.data.data)
             }
             console.log(that.form)
           })
