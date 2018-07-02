@@ -221,7 +221,7 @@
                 </el-row>
 
                 <div class="add-substage" @click="addSubStage" :index="index"><i class="fa fa-plus-circle"
-                                                                                 aria-hidden="true"></i> 添加子内容
+                                                                                 aria-hidden="true"></i> 添加交付内容
                 </div>
                 <div class="blank20"></div>
               </div>
