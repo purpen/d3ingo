@@ -9,12 +9,12 @@
         <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
           <div class="content-box">
-            <div class="main clearfix">
+            <div class="main clearfix min-height-0">
               <div class="status">
                 <p class="main-status">订单状态: <span>{{ item.status_value }}</span></p>
                 <div v-if="item.pay_type === 5 && item.status === 0">
                   <div v-if="item.bank_transfer === 0">
-                    <p class="main-des">请于 {{ item.expire_at }} 前完成支付，逾期会关闭交易</p>         
+                    <p class="main-des">请于 {{ item.expire_at }} 前完成支付，逾期会关闭交易</p>
                     <p class="main-des">如已完成线下对公转账，请点击下方图片上传凭证</p>
 
                     <div>
@@ -34,7 +34,7 @@
                         <i v-else class="uploader-icon"></i>
                         <div slot="tip" class="el-upload__tip" v-if="!isMob">{{ fileDesc }}</div>
                       </el-upload>
-                      
+
                       <div class="sure-pay-btn" v-if="surePay">
                         <el-button size="small" class="is-custom" type="primary" @click.stop="surePaydBtn">确认打款</el-button>
                       </div>
@@ -255,6 +255,9 @@
     height: 100%;
     border: 1px solid #ccc;
     padding: 20px;
+  }
+  .min-height-0 {
+    min-height: 0;
   }
 
   .main {
