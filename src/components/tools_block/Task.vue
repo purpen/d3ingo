@@ -852,6 +852,11 @@
         if (this.isReady === true) {
           this.isReady = false
           this.isReady = setTimeout(() => {
+            // if (this.isMyTask) {
+            //   this.docHeight = (document.body.clientHeight - 240) + 'px'
+            // } else {
+            //   this.docHeight = (document.body.clientHeight - 237) + 'px'
+            // }
             this.docHeight = (document.body.clientHeight - 237) + 'px'
             this.isReady = true
           }, 100)
@@ -986,6 +991,10 @@
     },
     created() {
       this.docHeight = (document.body.clientHeight - 237) + 'px'
+      // if (this.isMyTask) {
+      //   this.docHeight = (document.body.clientHeight - 240) + 'px'
+      // } else {
+      // }
     },
     directives: {
       focus: {

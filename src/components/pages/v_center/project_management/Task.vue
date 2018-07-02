@@ -230,7 +230,11 @@
           this.isReady = false
           this.isReady = setTimeout(() => {
             this.isReady = true
-            this.docHeight = (document.body.clientHeight - 225) + 'px'
+            if (this.isMyTask) {
+              this.docHeight = (document.body.clientHeight - 180) + 'px'
+            } else {
+              this.docHeight = (document.body.clientHeight - 225) + 'px'
+            }
           }, 100)
         }
       },
@@ -661,10 +665,11 @@
       }
     },
     created() {
-      this.docHeight = (document.body.clientHeight - 225) + 'px'
       if (this.isMyTask) {
+        this.docHeight = (document.body.clientHeight - 180) + 'px'
         this.fetchMyTask()
       } else {
+        this.docHeight = (document.body.clientHeight - 225) + 'px'
         let itemId = this.$route.params.id
         if (!itemId) {
           if (this.redirectItemList) {

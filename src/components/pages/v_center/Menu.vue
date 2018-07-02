@@ -418,6 +418,7 @@
         // this.$store.commit('changeMineView', 'task')
         if (this.showCover === 'show') {
           this.showCover = 'hide'
+          this.$store.commit('changeMineView', 'task')
           setTimeout(() => {
             this.showCover2 = 'show'
           }, 520)
