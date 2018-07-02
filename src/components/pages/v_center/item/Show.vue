@@ -274,7 +274,10 @@
 
           <div class="select-item-box clearfix" v-if="statusLabel.amount">
             <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
-              <el-collapse-item title="项目资金（首付款）" name="9" class="start-money">
+              <el-collapse-item title="托管项目资金(首付款)" name="9" :class="[{
+                'start-money':statusLabel.isPay,
+                'nostart-money':!statusLabel.isPay
+                }]">
                 <div class="capital-item clearfix" v-if="statusLabel.isPay">
                   <p>首付款资金</p>
                   <p class="capital-money">¥ {{ contract.first_payment }}</p>
@@ -362,7 +365,9 @@
 
                       </div>
                       <div class="blank20"></div>
-                      <hr />
+                      <div class="border-t">
+
+                      </div>
                       <div class="blank20"></div>
                     </div>
 
@@ -901,7 +906,6 @@ export default {
       .get(api.demandId.format(id), {})
       .then(function(response) {
         if (response.data.meta.status_code === 200) {
-          console.log(response.data.data)
           self.item = response.data.data.item
           // self.info = response.data.data.info
           self.contract = response.data.data.contract
@@ -1144,7 +1148,6 @@ export default {
                     // self.sureFinishBtn = true
                   }
                   self.stages = items
-                  console.log(items)
                 } else {
                   self.$message.error(response.data.meta.message)
                 }
@@ -1153,10 +1156,13 @@ export default {
                 self.$message.error(error.message)
               })
           }
-          console.log(self.item)
           let tab = []
           if (self.item.type === 1) {
             tab = [
+              {
+                name: '项目名称',
+                title: self.item.name
+              },
               {
                 name: '项目类型',
                 title: self.item.type_value
@@ -1164,6 +1170,10 @@ export default {
               {
                 name: '设计类别',
                 title: self.item.design_types_value.join(', ')
+              },
+              {
+                name: '产品功能描述',
+                title: self.item.product_features
               },
               {
                 name: '产品领域',
@@ -1177,12 +1187,20 @@ export default {
           } else if (self.item.type === 2) {
             tab = [
               {
+                name: '项目名称',
+                title: self.item.name
+              },
+              {
                 name: '项目类型',
                 title: self.item.type_value
               },
               {
                 name: '设计类别',
                 title: self.item.design_types_value.join(', ')
+              },
+              {
+                name: '产品功能描述',
+                title: self.item.product_features
               }
             ]
           }
@@ -1205,7 +1223,6 @@ export default {
               image: self.item.image
             }
           ]
-
           self.tableData = tab.concat(itemTab)
         } else {
           self.$message.error(response.data.meta.message) // not found ?????
@@ -1558,7 +1575,9 @@ p.contact {
   font-size: 1.8rem;
   color: #222;
 }
-
+.border-t {
+  border-top: 1px solid #d2d2d2;
+}
 .stage-title p {
   margin: 0 0 0 10px;
   float: right;
@@ -1757,12 +1776,27 @@ section ul li a {
     position: relative;
   }
   .content .start-money:after {
-    content: '等待支付项目首付款';
+    content: '首付款支付成功';
+    padding-left: 20px;
     position: absolute;
     top: 15px;
     right:50px;
     font-size: 14px;
     color: #333333;
+    background: url('../../../../assets/images/item/complete@2x.png') no-repeat center left / contain
+  }
+  .content .nostart-money {
+    position: relative;
+  }
+  .content .nostart-money:after {
+    content: '等待支付项目首付款';
+    padding-left: 20px;
+    position: absolute;
+    top: 15px;
+    right:50px;
+    font-size: 14px;
+    color: #333333;
+    background: url('../../../../assets/images/item/wait@2x.png') no-repeat center left / contain
   }
 </style>
 
