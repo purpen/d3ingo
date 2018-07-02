@@ -112,7 +112,7 @@
                 <div class="computer-btn"
                   v-if="isCompany && !isMob && eventUser.design_company_logo_image"
                   @click="redirectCompany">
-                  <span :style="{background: `url(${eventUser.design_company_logo_image.logo}) no-repeat center / 40px 40px #222`}"></span>
+                  <span :style="{background: `url(${eventUser.design_company_logo_image.logo}) no-repeat center / cover #222`}"></span>
                 </div>
             </el-tooltip>
             
@@ -262,7 +262,7 @@
               <div class="computer-btn"
                 v-if="isCompany && !isMob && eventUser.company &&eventUser.design_company_logo_image"
                 @click="redirectCompany">
-                <span :style="{background: `url(${eventUser.design_company_logo_image.logo}) no-repeat center / 40px 40px #222`}"></span>
+                <span :style="{background: `url(${eventUser.design_company_logo_image.logo}) no-repeat center / cover #222`}"></span>
                 {{eventUser.company.company_name}}
               </div>
             </el-tooltip>

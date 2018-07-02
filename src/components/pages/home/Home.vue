@@ -415,7 +415,6 @@
         .then((res) => {
           this.isLoading = false
           if (res.data.meta.status_code === 200) {
-            console.log(res.data.data.code)
             this.tags = res.data.data.code.split(';')[0].split('|')
             // this.tags = res.data.data.code.split(';')[0].split('+|').toString().split('万+').toString().split(',')
             // this.number[0] = this.tags[0]

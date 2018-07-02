@@ -77,13 +77,13 @@
           power: 0,
           test: ''
         },
-        currentTagsForm: {   // 当前标签表单
+        currentTagsForm: { // 当前标签表单
           title: '',
           type: 1,
           item_id: 0,
           test: ''
         },
-        currentTagsStat: {   // 当前标签操作事件
+        currentTagsStat: { // 当前标签操作事件
           event: '',
           id: 0
         },

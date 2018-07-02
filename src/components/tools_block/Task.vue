@@ -3,8 +3,12 @@
     <!-- <div class="" v-if="taskState.power" v-loading="isLoading"> -->
     <section class="animated task-detail fadeIn">
       <div class="task-detail-header">
-        <!-- {{currentForm}} -->
-        <span v-show="!isMyTask" v-if="currentForm.tier === 0" class="task-detail-name">{{projectObject.name}}</span>
+        <!-- <el-tooltip effect="dark" :content="'属于项目: ' + projectObject.name" placement="top">
+          <span v-show="!isMyTask" v-if="currentForm.tier === 0" class="task-detail-name">{{projectObject.name}}</span>
+        </el-tooltip> -->
+        <el-tooltip v-if="currentForm.itemName" effect="dark" :content="'属于项目: ' + currentForm.itemName" placement="top">
+          <span v-if="currentForm.tier === 0" class="task-detail-name">{{ currentForm.itemName }}</span>
+        </el-tooltip>
         <div v-show="!isMyTask" v-if="currentForm.tier === 0" ref="selectParent" class="select-parent" tabindex="-1">
           <div class="select-show-parent">
             <span class="select-show">{{currentForm.stage_title | stageTitle}}</span>
@@ -15,14 +19,20 @@
               {{d.title}}</li>
           </ul>
         </div>
-          <div v-show="!isMyTask" v-if="currentForm.tier === 1"
-            class="task-detail-name task-detail-name1"
-            @click="showChild(parentTask.id)"
-            >
-            <el-tooltip effect="dark" :content="parentTask.name" placement="top">
-              <span class="parent-task-name">{{parentTask.name}}</span>
-            </el-tooltip>
-          </div>
+        <div v-show="!isMyTask" v-if="currentForm.tier === 1"
+          class="task-detail-name task-detail-name1"
+          @click="showChild(parentTask.id)"
+          >
+          <el-tooltip effect="dark" :content="parentTask.name" placement="top">
+            <span class="parent-task-name">{{parentTask.name}}</span>
+          </el-tooltip>
+        </div>
+        <div v-show="isMyTask" v-if="currentForm.tier === 1"
+          class="task-detail-name task-detail-name1">
+          <el-tooltip effect="dark" :content="'属于任务: ' + parentTask.name" placement="top">
+            <span class="parent-task-name">{{parentTask.name}}</span>
+          </el-tooltip>
+        </div>
         <div ref="selectParent2" class="select-parent select-menu" tabindex="-1">
           <span class="select-show"></span>
           <ul class="stage-list">
@@ -1006,6 +1016,7 @@
     border-radius: 4px;
   }
   .task-detail-header {
+    height: 45px;
     display: flex;
     color: #666;
     font-size: 14px;

@@ -829,7 +829,7 @@
     /* border-radius: 0 0 0 4px; */
   }
   .mytask-item .task-item:first-child {
-    border-top: 1px solid #e6e6e6;
+    /* border-top: 1px solid #e6e6e6; */
   }
   .mytask-item .task-item {
     border-right: 1px solid #e6e6e6;

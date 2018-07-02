@@ -493,3 +493,13 @@
   .form-footer .el-button + .el-button {
     margin-right: 0;
   }
+  .el-loading-spinner .circular {
+    width: 100px;
+    height: 100px;
+    background: url('../images/tools/cloud_drive/status/loading.gif') no-repeat center / cover;
+    animation: none
+  }
+  .el-loading-spinner .path {
+    stroke: transparent;
+    animation: none
+  }
