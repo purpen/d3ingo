@@ -455,8 +455,8 @@ export default {
         invoiceType: 1
       },
       showRate: {
-        invoice: 1,
-        rate: 1
+        invoice: 0,
+        rate: 0
       },
       test: ''
     }

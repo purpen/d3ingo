@@ -7,7 +7,9 @@
         'vcenter-right': leftWidth === 2,
         'vcenter-right-mob': isMob}">
         <div class="right-content vcenter-container">
+          <!--
           <v-menu-sub></v-menu-sub>
+          -->
           <div class="content-box">
             <div class="main clearfix">
               <div class="status">
