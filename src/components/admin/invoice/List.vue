@@ -86,9 +86,9 @@
               align="center"
               label="状态">
               <template slot-scope="scope">
-                <p v-if="scope.row.status === 1"><el-tag type="warning">未开发票</el-tag></p>
-                <p v-if="scope.row.status === 2"><el-tag type="info">已开发票</el-tag></p>
-                <p v-if="scope.row.status === 3"><el-tag type="success">收到发票</el-tag></p>
+                <p v-if="scope.row.status === 1">未开发票</p>
+                <p v-if="scope.row.status === 2">已开发票</p>
+                <p v-if="scope.row.status === 3">收到发票</p>
               </template>
             </el-table-column>
             <el-table-column
