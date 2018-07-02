@@ -164,12 +164,11 @@
 
                 </div>
                 <div class="contract-item new" v-else>
-                  <el-button @click="contractBtn" class="contract-btn is-custom">编辑在线合同</el-button>
+                  <el-button @click="contractBtn" type="danger" class="contract-btn is-custom">编辑在线合同</el-button>
                 </div>
               </el-collapse-item>
             </el-collapse>
           </div>
-
           <div class="select-item-box" v-if="statusLabel.amount">
             <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
               <el-collapse-item title="首付款资金" name="9">
@@ -875,6 +874,7 @@
       // 发票状态
       invoceStat(payType, stage) {
         let item = this.invoceSelect(payType, stage)
+        console.log('1111111', item)
         if (!item) {
           return 0
         } else {

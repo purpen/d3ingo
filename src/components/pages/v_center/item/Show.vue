@@ -274,12 +274,12 @@
 
           <div class="select-item-box clearfix" v-if="statusLabel.amount">
             <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
-              <el-collapse-item title="项目资金（首付款）" name="9">
+              <el-collapse-item title="项目资金（首付款）" name="9" class="start-money">
                 <div class="capital-item clearfix" v-if="statusLabel.isPay">
                   <p>首付款资金</p>
                   <p class="capital-money">¥ {{ contract.first_payment }}</p>
                   <p class="pay-btn">
-                    <span>支付成功</span>
+                    <span class="pay-ok">支付成功</span>
                   </p>
                 </div>
                 <div class="capital-item clearfix" v-else>
@@ -322,6 +322,11 @@
                           </div>
                         </div>
                         <div class="contract-right">
+                          <p>
+                            <!-- <router-link :to="{name: 'vcenterContractView', params: {unique_id: contract.unique_id}}"
+                                      target="_blank"><i class="fa fa-eye" aria-hidden="true"></i> 预览
+                            </router-link> -->
+                          </p>
                           <p><a :href="asset.file + '?attname=' + asset.name"><i class="fa fa-download" aria-hidden="true"></i> 下载</a>
                           </p>
                         </div>
@@ -350,7 +355,7 @@
                           <p>阶段项目资金</p>
                           <p class="capital-money">¥ {{ d.amount }}</p>
                           <p class="pay-btn">
-                            <span>支付成功</span>
+                            <span class="pay-ok">支付成功</span>
                           </p>
                           <p class="capital-des"></p>
                         </div>
@@ -1457,7 +1462,19 @@ export default {
 .capital-item .pay-btn span {
   color: #00ac84;
 }
-
+.pay-ok {
+  position: relative;
+}
+.pay-ok::before {
+  content: '';
+  position: absolute;
+  left: -30px;
+  top: 0;
+  display: inline-block;
+  width: 24px;
+  height: 26px;
+  background: url('../../../../assets/images/item/CompleteBig@2x.png') no-repeat center center / contain 
+}
 .capital-item .capital-btn {
   /* padding: 10px 30px 10px 30px; */
 }
@@ -1723,6 +1740,29 @@ section ul li a {
 <style>
   .select-company-item .check-box .el-checkbox__label {
     width: 100%;
+  }
+  .content .el-collapse-item__header {
+    position: relative;
+    font-size: 18px;
+    color: #222;
+  }
+  .content .el-icon-arrow-right {
+    position: absolute;
+    right: 13px;
+    top: 16px;
+    color: #d2d2d2;
+    font-size: 14px;
+  }
+  .content .start-money {
+    position: relative;
+  }
+  .content .start-money:after {
+    content: '等待支付项目首付款';
+    position: absolute;
+    top: 15px;
+    right:50px;
+    font-size: 14px;
+    color: #333333;
   }
 </style>
 
