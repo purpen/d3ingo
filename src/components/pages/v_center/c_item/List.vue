@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="blank30 vcenter clearfix">
+    <div class="vcenter clearfix">
       <v-menu currentName="c_item"></v-menu>
       <!-- <el-col :span="isMob ? 24 : rightWidth"> -->
       <!-- <el-col class="vcenter-right-plus" :xs="24" :sm="24" :md="24" :lg="24"> -->
@@ -141,8 +141,8 @@
         </span>
       </el-dialog>
     </div>
-    <div class="blank30 vcenter clearfix">
-      <v-menu currentName="c_item" class="c_item"></v-menu>
+    <div class="vcenter clearfix">
+      <!--<v-menu currentName="c_item" class="c_item"></v-menu>-->
       <div :class="{'vcenter-right-plus': leftWidth === 4,
         'vcenter-right': leftWidth === 2,
           'vcenter-right-mob': isMob}">
@@ -230,11 +230,6 @@
                       </div>
 
                     </div>
-                    <p class="btn" v-if="d.item.status === 9">
-                      <el-button class="is-custom" size="small" @click="sureBeginBtn" :index="index" :item_id="d.item.id"
-                                type="primary">确认开始
-                      </el-button>
-                    </p>
                     <p v-if="d.item.is_show_view">
                       <el-button class="is-custom" size="small" @click="showView2" :index="index" :item_id="d.item.id"
                                 type="primary">查看详情
@@ -271,8 +266,12 @@
       </el-dialog>
     </div>
 
-    <div class="empty" v-if="isEmpty && isEmpty2"></div>
-    <p v-if="isEmpty && isEmpty2" class="noMsg">暂无已合作项目</p>
+    <div :class="{'vcenter-right-plus': leftWidth === 4,
+      'vcenter-right': leftWidth === 2,
+        'vcenter-right-mob': isMob}">
+      <div class="empty" v-if="isEmpty && isEmpty2"></div>
+      <p v-if="isEmpty && isEmpty2" class="noMsg">暂无已合作项目</p>
+    </div>
   </section>
 </template>
 
@@ -467,7 +466,7 @@
         let index = parseInt(event.currentTarget.getAttribute('index'))
 
         let self = this
-        self.$http({method: 'post', url: api.designItems2tartId.format(itemId), data: {}})
+        self.$http({method: 'post', url: api.designItemsStartId.format(itemId), data: {}})
           .then(function (response) {
             if (response.data.meta.status_code === 200) {
               self.designItems2[index].item.status = 11
@@ -513,7 +512,7 @@
                 let showView2 = false
                 let status = item.item.status
                 if (item.item.status >= 5) showPrice = true
-                if (status === 7 || status === 8 || status === 11 || status === 15 || status === 18 || status === 20 || status === 22) {
+                if (status === 7 || status === 8 || status === 9 || status === 11 || status === 15 || status === 18 || status === 20 || status === 22) {
                   showView2 = true
                 }
                 designItems2[i].item.show_price = showPrice
@@ -621,7 +620,7 @@
 
   .banner {
     line-height: 25px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #e6e6e6;
     background: #FAFAFA;
   }
 
@@ -630,13 +629,13 @@
   }
 
   .content {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #e6e6e6;
     height: 120px;
   }
 
   p.c-title {
     width: 100%;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: #333;
     padding: 15px 10px 15px 10px;
   }
@@ -646,7 +645,7 @@
   }
 
   .money-str {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   .btnGroup {
@@ -712,7 +711,7 @@
   }
 
   .status-str-m {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     margin-top: 10px;
     padding: 10px 0;
     border-top: 1px solid #e6e6e6;
@@ -756,7 +755,7 @@
 
   .item-content-m .item-title p.c-title {
     padding: 11px 0 8px;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     line-height: 1
   }
 
@@ -780,11 +779,19 @@
   }
   .pagination {
     text-align: center;
-    margin: 0;
+    margin: 0 0 20px;
   }
   h3 {
     font-size: 18px;
     color: #222;
-    margin: 50px 0 20px;
+    margin: 30px 0 20px;
+  }
+  @media screen and (max-width: 767px) {
+    h3 {
+      margin: 0 0 20px;
+    }
+    .vcenter {
+      margin: 0;
+    }
   }
 </style>

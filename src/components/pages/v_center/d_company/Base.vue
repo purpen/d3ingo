@@ -8,7 +8,7 @@
           <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
 
-          <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
+          <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading="isLoading">
             <el-row :gutter="gutter" :class="['item', isMob ? 'item-m no-border' : '']">
               <el-col :span="titleSpan" class="title">
                 <p>账号</p>
@@ -160,7 +160,7 @@
               </el-col>
             </el-row>
 
-            <el-row :gutter="gutter" :class="['item', isMob ? 'item-m no-border' : '']">
+            <el-row :gutter="gutter" :class="['item', 'border-b-no', isMob ? 'item-m no-border' : '']">
               <el-col :span="titleSpan" class="title">
                 <p>网址</p>
               </el-col>
@@ -178,10 +178,8 @@
                 <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('web')">编辑</a>
               </el-col>
             </el-row>
-
-
+            
           </div>
-
         </div>
       </div>
     </el-row>

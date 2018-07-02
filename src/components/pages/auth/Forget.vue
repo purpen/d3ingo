@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <section class="cover-bgf7"></section>
     <div class="forget-box">
       <div class="forget-title">
         <h2>找回密码</h2>
@@ -241,6 +240,7 @@
     width: 580px;
     text-align: center;
     margin: 30px auto 30px auto;
+    box-shadow: 0 0 6px 2px rgba(0,0,0,0.10)
   }
 
   .forget-title {

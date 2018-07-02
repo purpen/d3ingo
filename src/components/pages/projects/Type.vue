@@ -1,5 +1,6 @@
 <template>
   <div class="full-height">
+    <menu-sub status="info"></menu-sub>
     <div class="project-cover clearfix">
       <div class="project-item-box" v-if="type">
         <h3>请确定设计项目类型</h3>
@@ -88,9 +89,13 @@
 </template>
 <script>
 import api from '@/api/api'
+import menuSub from '@/components/pages/projects/MenuSub'
 import {COMPANY_TYPE} from '@/config'
 export default {
-  name: '',
+  name: 'type',
+  components: {
+    menuSub: menuSub
+  },
   data() {
     return {
       id: -1,

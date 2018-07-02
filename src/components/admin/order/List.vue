@@ -45,7 +45,7 @@
           <el-table
             :data="tableData"
             border
-            v-loading.body="isLoading"
+            v-loading="isLoading"
             class="admin-table"
             @selection-change="handleSelectionChange"
             style="width: 100%">
@@ -59,9 +59,12 @@
               width="150">
             </el-table-column>
             <el-table-column
-              prop="item_name"
-              label="项目名称"
+              label="项目信息"
               width="140">
+                <template slot-scope="scope">
+                  <p>名称: <router-link :to="{name: 'adminItemShow', params: {id: scope.row.item_id}}" target="_blank">{{ scope.row.item_name }}</router-link></p>
+                  <p>阶段: {{ scope.row.item_stage_id }}</p>
+                </template>
             </el-table-column>
             <el-table-column
               label="创建信息">
@@ -308,6 +311,10 @@ export default {
               typeValue = '预付押金'
             } else if (item.type === 2) {
               typeValue = '项目尾款'
+            } else if (item.type === 3) {
+              typeValue = '首付款'
+            } else if (item.type === 4) {
+              typeValue = '阶段款'
             }
             item['type_value'] = typeValue
             item['created_at'] = item.created_at.date_format().format('yy-MM-dd')

@@ -24,46 +24,6 @@ let state = {
   mineView: ''
 }
 let mutations = {
-  setDisplayObj2(state, array) { // 容易出异步问题
-    let outsideStageList = []
-    let itemList = state.stageList
-    if (!array) {
-      return
-    }
-    array.forEach((item) => {
-      if (item['use'] === true) {
-        item['use'] = false
-      }
-      console.log(item)
-      if (item['created_at']) {
-        item['created_at_format'] = item['created_at'].date_format().format('yyyy年MM月dd日')
-      }
-    })
-    state.stageList.forEach(ele => {
-      ele['itemList'] = []
-    })
-    array.forEach((item) => {
-      if (itemList.length) {
-        itemList.forEach(ele => {
-          ele.showItem = false
-          if (item.stage_id === ele.id) {
-            ele['itemList'].push(item)
-          } else {
-            if (!item['use']) {
-              outsideStageList.push(item)
-              item['use'] = true
-            }
-          }
-        })
-      } else {
-        outsideStageList = array
-      }
-    })
-    Object.assign(state.displayObj, {
-      itemList: itemList,
-      outsideStageList: outsideStageList
-    })
-  },
   setDisplayObj(state, array) {
     if (!array) {
       return
@@ -73,10 +33,26 @@ let mutations = {
     state.stageList.forEach(ele => {
       if (ele.task) {
         ele.task.forEach(e => {
+          if (e.over_time) {
+            if (typeof (e.over_time) === 'string') {
+              let time = e.over_time.replace(/-/g, '/')
+              e.over_time_stamp = new Date(time).getTime()
+            } else {
+              e.over_time_stamp = e.over_time.getTime()
+            }
+          }
           if (e['created_at']) {
             e['created_at_format'] = e['created_at'].date_format().format('MM月dd日')
           }
           outsideStageList.forEach(item => {
+            if (item.over_time) {
+              if (typeof (item.over_time) === 'string') {
+                let time = item.over_time.replace(/-/g, '/')
+                item.over_time_stamp = new Date(time).getTime()
+              } else {
+                item.over_time_stamp = item.over_time.getTime()
+              }
+            }
             if (item.id === e.id) {
               list.push(e.id)
             }
@@ -140,6 +116,7 @@ let mutations = {
     this.commit('setDisplayObj', state.taskList)
   },
   updateStageListItem(state, obj) {
+    console.log(obj)
     state.stageList.forEach(item => {
       if (item.id === obj.id) {
         Object.assign(item, obj)

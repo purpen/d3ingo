@@ -2,7 +2,9 @@
   <header>
     <div class="pm-left">
       <router-link :to="{name: 'projectManagementList'}">项目管理</router-link>
-      <router-link :to="{name: 'projectManagementOverView', params: {id: routeId}}">{{projectObject.name}}</router-link>
+      <el-tooltip :content="projectObject.name" placement="top">
+        <router-link class="pro-name" :to="{name: 'projectManagementOverView', params: {id: routeId}}">{{projectObject.name}}</router-link>
+      </el-tooltip>
       <span :class="['favorite-star', {'active':projectObject.collect === 1}]"></span>
     </div>
     <div class="pm-middle">
@@ -54,7 +56,7 @@
             <p class="menu-moment"><span>项目动态</span></p>
             <ul class="item-moments" v-if="shortProjectMoments.length">
               <li class="clearfix" v-for="(ele, index) in shortProjectMoments" :key="index">
-                <img class="br50 b-d2" :src="ele.logo_image.logo" alt="">
+                <img class="br50 b-e6" :src="ele.logo_image.logo" alt="">
                 <div class="item-con">
                   <!-- <p class="tc-2"><span>{{ele.user_name}}</span><span class="tc-6">{{ele.action}}</span></p> -->
                   <p><span class="tc-2">{{ele.title}}</span></p>
@@ -455,7 +457,7 @@
       <div class="cover2-content">
         <ul class="cover2-list">
           <li v-for="(ele, index) in projectMoments" :key="index">
-            <img v-if="ele.logo_image" class="br50 b-d2" :src="ele.logo_image.logo" alt="">
+            <img v-if="ele.logo_image" class="br50 b-e6" :src="ele.logo_image.logo" alt="">
             <div class="list-con clearfix">
               <!-- <p class="tc-2 fl"><span>{{ele.user_name}}</span>{{ele.action}}</p> -->
               <p class="tc-2"><span>{{ele.title}}</span></p>
@@ -940,6 +942,12 @@ header {
   position: relative;
   background: #f7f7f7;
 }
+.pro-name {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .pm-left {
   /* min-width: 380px; */
   font-size: 0;
@@ -1198,7 +1206,7 @@ header {
   color: #666;
   height: 50px;
   border-bottom: 1px solid #d2d2d2;
-  border-left: 3px solid transparent
+  border-left: 6px solid transparent
 }
 .cover-body-left span:hover {
   color: #ff5a5f;

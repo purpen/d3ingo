@@ -1,5 +1,4 @@
 <template>
-  <div>
     <div class="Browsers">
       <div class="wrapper">
         <p class="wrapper-title">请使用更先进的浏览器</p>
@@ -8,7 +7,7 @@
       <div class="choose-browsers">
         <div class="click-browsers" v-for="(item,index) of browsersList" :key="index">
           <div class="margin-wrapper">
-            <img :src="item.browserUrl" alt="IE" class="browsers-img" :key="index">
+            <img :src="item.browserUrl" alt="IE" class="browsers-img">
             <p class="choose-desc" v-text="item.browserDesc"></p>
 
           </div>
@@ -20,8 +19,6 @@
         <!--<span class="go-home-button">回到铟果</span>-->
       <!--</div>-->
     <!--</router-link>-->
-
-  </div>
 
 </template>
 
@@ -52,7 +49,7 @@ export default {
 <style scoped>
   .Browsers{
     width: 100%;
-    padding-top: 167px;
+    margin: auto;
   }
   .wrapper{
     display: flex;
@@ -91,7 +88,7 @@ export default {
   }
   .choose-desc{
     text-align: center;
-    margin: 25px 0 80px 0;
+    margin: 25px 0 0 0;
     font-size: 24px;
     color: #666666;
     line-height: 33px;

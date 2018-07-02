@@ -412,6 +412,7 @@ let routes = [
     meta: {
       title: '发布需求',
       requireAuth: true,
+      hideHeader: true,
       hideFooter: true,
       isDesignInc: 1
     },
@@ -424,6 +425,7 @@ let routes = [
     meta: {
       title: '选择类型',
       requireAuth: true,
+      hideHeader: true,
       hideFooter: true,
       isDesignInc: 1
     },
@@ -436,6 +438,7 @@ let routes = [
     meta: {
       title: '填写需求',
       requireAuth: true,
+      hideHeader: true,
       hideFooter: true,
       isDesignInc: 1
     },
@@ -448,6 +451,7 @@ let routes = [
     meta: {
       title: '补全需求信息',
       requireAuth: true,
+      hideHeader: true,
       hideFooter: true,
       isDesignInc: 1
     },
@@ -460,6 +464,7 @@ let routes = [
     meta: {
       title: '匹配公司',
       requireAuth: true,
+      hideHeader: true,
       hideFooter: true,
       isDesignInc: 1
     },
@@ -472,6 +477,7 @@ let routes = [
     meta: {
       title: '设计公司比较',
       requireAuth: true,
+      hideHeader: true,
       hideFooter: true,
       isDesignInc: 1
     },
@@ -592,7 +598,7 @@ let routes = [
     },
     component: require('@/components/pages/pay/wxCallback')
   },
-  // 支付项目资金
+  // 支付项目资金--首付款
   {
     path: '/item/pay_fund/:item_id',
     name: 'itemPayFund',
@@ -601,6 +607,16 @@ let routes = [
       requireAuth: true
     },
     component: require('@/components/pages/item/PayFund')
+  },
+  // 支付项目资金--阶段款
+  {
+    path: '/item/pay_stage_fund/:stage_id',
+    name: 'itemPayStageFund',
+    meta: {
+      title: '支付项目资金',
+      requireAuth: true
+    },
+    component: require('@/components/pages/item/PayStageFund')
   },
   // 自定义输出页面
   {

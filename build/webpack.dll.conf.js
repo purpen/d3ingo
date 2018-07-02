@@ -1,6 +1,8 @@
+var UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const path = require('path');
 const webpack = require('webpack');
 var CleanWebpackPlugin = require('clean-webpack-plugin')
+var os = require('os')
 let pathsToClean = [
   'static/js/vendor'
 ]
@@ -11,7 +13,7 @@ let cleanOptions = {
 }
 module.exports = {
   entry: {
-    core: ['vue/dist/vue.esm.js', 'element-ui', 'vue-router', 'axios', 'vuex']
+    core: ['vue/dist/vue.esm.js', 'vue-router', 'axios', 'vuex']
     // 需要打包起来的依赖
   },
   output: {
@@ -25,6 +27,25 @@ module.exports = {
       path: path.join(__dirname, '../static/js/vendor', '[name]-mainfest.json'), // 描述依赖对应关系的json文件
       name: '[name]_library_[hash:5]',
       context: __dirname // 执行的上下文环境，对之后DllReferencePlugin有用
+    }),
+    new UglifyJsPlugin({
+      parallel: {
+        cache: true,
+        workers: os.cpus().length
+      },
+      uglifyOptions: {
+        ecma: 5,
+        ie8: true,
+        output: { comments: false, beautify: false },
+        compress: {
+          drop_console: true,
+          dead_code: true
+        },
+        warnings: false
+      },
+      sourceMap: false,
+      cache: true,
+      parallel: os.cpus().length * 2
     })
   ]
 }

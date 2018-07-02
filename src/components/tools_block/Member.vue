@@ -1,5 +1,5 @@
 <template>
-  <div class="cententList" v-show="propsShow">
+  <div :class="['cententList', isLeft ?'cententList-left': 'cententList-right']" v-show="propsShow">
     <p v-if="!executeId" class="clearfix">添加成员
       <i class="fr fx-icon-nothing-close-error" @click="closeMember"></i>
     </p>
@@ -65,6 +65,10 @@ import Clipboard from 'clipboard'
 export default {
   name: '',
   props: {
+    isLeft: {
+      type: Boolean,
+      default: false
+    },
     propsShow: {
       type: Boolean,
       default: false
@@ -400,12 +404,16 @@ export default {
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
     border-radius: 4px;
     position: absolute;
-    right: 0;
     top: 85px;
     z-index: 98;
     margin-bottom: 50px;
   }
-
+  .cententList-right {
+    right: 0;
+  }
+  .cententList-left {
+    left: 0;
+  }
   .cententList p {
     background: #f0f0f0;
     font-size: 14px;
@@ -470,6 +478,7 @@ export default {
     bottom: 0;
     left: 0;
     width: 100%;
+    border-radius: 0 0 4px 4px;
   }
   .side ul .info {
     position: relative;

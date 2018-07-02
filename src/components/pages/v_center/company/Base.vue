@@ -8,7 +8,7 @@
         <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
 
-          <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
+          <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading="isLoading">
             <el-row :gutter="gutter" :class="['item', isMob ? 'item-m item-mAvatar' : '']">
               <el-col :span="titleSpan" class="title avatarhead">
                 <p>公司logo</p>
@@ -467,7 +467,7 @@
               </el-col>
             </el-row>
 
-            <el-row :gutter="gutter" :class="['item', isMob ? 'item-m' : '']">
+            <el-row :gutter="gutter" :class="['item', 'border-b-no', isMob ? 'item-m' : '']">
               <el-col :span="titleSpan" class="title">
                 <p>自有产品品牌</p>
               </el-col>
@@ -538,7 +538,7 @@
       return {
         oldVal: {},
         gutter: 0,
-        titleSpan: this.$store.state.event.isMob === true ? 12 : 3,
+        titleSpan: this.$store.state.event.isMob === true ? 16 : 3,
         contentSpan: this.$store.state.event.isMob === true ? 24 : 12,
         editSpan: 2,
         isLoaded: false,
@@ -1155,7 +1155,7 @@
   .item .content a {
     color: #ff5a5f
   }
-  
+
   .item-m .content {
     color: #666;
     border: 1px solid #E6E6E6;
@@ -1309,10 +1309,14 @@
     .item-m .content {
       border: none;
       padding: 0;
+      min-height: 0;
     }
     .edit a {
       font-size: 1.3rem;
       color: #ff5a5f;
+    }
+    .vcenter{
+      margin-top: 0;
     }
   }
 </style>

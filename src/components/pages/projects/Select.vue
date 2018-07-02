@@ -1,12 +1,13 @@
 <template>
   <div class="full-height">
+    <menu-sub status="info"></menu-sub>
     <div class="project-cover clearfix">
       <el-row class="project-item-box">
         <p class="title">请选择您需要的设计类型</p>
         <el-col v-for="(ele, index) in COMPANY_TYPE" :key="index"
         :xs="12" :sm="4" :md="4" :lg="4"
         :class="['item', {'active': item === ele.id}]"
-        @click.native="item = ele.id">
+        @click.native="changeItemId(ele.id, index)">
           <span :class="['item-bg', 'item-bg'+ ele.id]"></span>
           <p class="item-name">{{ele.name}}</p>
         </el-col>
@@ -14,7 +15,7 @@
       <div class="project-foot">
         div.
         <div class="buttons clearfix">
-          <router-link :to="{name: 'projectCreate', params: {id: id}}">返回上一步</router-link>
+          <router-link :to="{name: 'projectCreate', query: {id: id}}">返回上一步</router-link>
           <el-button type="error" @click="submit" class="fr middle-button full-red-button">下一步</el-button>
         </div>
       </div>
@@ -23,9 +24,13 @@
 </template>
 <script>
 import api from '@/api/api'
+import menuSub from '@/components/pages/projects/MenuSub'
 import {COMPANY_TYPE} from '@/config'
 export default {
   name: 'SelectType',
+  components: {
+    menuSub: menuSub
+  },
   data() {
     return {
       id: 0,
@@ -46,6 +51,13 @@ export default {
     }
   },
   methods: {
+    changeItemId(id, index) {
+      console.log(index)
+      if (index > 1) {
+        return
+      }
+      this.item = id
+    },
     getDemandObj() {
       if (this.id) {
         this.$http.get(api.demandId.format(this.id))
@@ -80,7 +92,7 @@ export default {
   computed: {
     COMPANY_TYPE() {
       let array = COMPANY_TYPE.filter(item => {
-        return item.id < 3
+        return item.id
       })
       return array
     }
@@ -112,6 +124,17 @@ export default {
     transition: none;
     border-color: rgba(255, 255, 255, 0.75)
   }
+  .project-item-box .item:nth-child(n + 4) {
+    cursor: not-allowed;
+    color: rgba(255, 255, 255, 0.5)
+  }
+  .project-item-box .item:nth-child(n + 4):hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    border-right-color: rgba(255, 255, 255, 0.1);
+  }
+  .project-item-box .item:nth-child(7):hover {
+    border-right-color: rgba(255, 255, 255, 0.2);
+  }
   .item.active,
   .item.active:hover {
     position: relative;
@@ -127,7 +150,19 @@ export default {
     background: url(../../../assets/images/project/ProductDesign.png) no-repeat center / contain;
   }
   .item-bg2 {
-    background: url(../../../assets/images/project/Graphic.png) no-repeat center / contain;
+    background: url(../../../assets/images/project/UI.png) no-repeat center / contain;
+  }
+  .item-bg3 {
+    background: url(../../../assets/images/project/Graphic2.png) no-repeat center / contain;
+  }
+  .item-bg4 {
+    background: url(../../../assets/images/project/H52.png) no-repeat center / contain;
+  }
+  .item-bg5 {
+    background: url(../../../assets/images/project/Guarantee.png) no-repeat center / contain;
+  }
+  .item-bg6 {
+    background: url(../../../assets/images/project/Illustration.png) no-repeat center / contain;
   }
   .item-name {
     padding-bottom: 20px;

@@ -77,13 +77,13 @@
           power: 0,
           test: ''
         },
-        currentTagsForm: {   // 当前标签表单
+        currentTagsForm: { // 当前标签表单
           title: '',
           type: 1,
           item_id: 0,
           test: ''
         },
-        currentTagsStat: {   // 当前标签操作事件
+        currentTagsStat: { // 当前标签操作事件
           event: '',
           id: 0
         },
@@ -329,7 +329,8 @@
   .tags-component {
     position: absolute;
     left: 0;
-    top: 0;
+    /* top: 0; */
+    top: 4px;
     z-index: 1
   }
   .select-tag {
@@ -341,7 +342,8 @@
     box-shadow: 0 0 6px 2px rgba(0,0,0,0.10);
     border-radius: 4px;
     /* margin-left: 6px; */
-    margin-left: -200px;
+    margin-left: -130px;
+    /* margin-left: -200px; */
   }
   .tag-header {
     padding: 10px 20px;

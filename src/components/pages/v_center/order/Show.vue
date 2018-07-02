@@ -7,7 +7,9 @@
         'vcenter-right': leftWidth === 2,
         'vcenter-right-mob': isMob}">
         <div class="right-content vcenter-container">
+          <!--
           <v-menu-sub></v-menu-sub>
+          -->
           <div class="content-box">
             <div class="main clearfix">
               <div class="status">
@@ -119,7 +121,11 @@
     methods: {
       // 更改支付方式
       rePay() {
-        this.$router.push({name: 'itemPayFund', params: {item_id: this.item.item_id}})
+        if (this.item.type === 4) {
+          this.$router.push({name: 'itemPayStageFund', params: {stage_id: this.item.item_stage_id}})
+        } else {
+          this.$router.push({name: 'itemPayFund', params: {item_id: this.item.item_id}})
+        }
       },
       handlePreview(file) {
         console.log(file)

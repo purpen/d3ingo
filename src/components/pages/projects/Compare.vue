@@ -1,13 +1,14 @@
 <template>
   <div class="full-height">
+    <menu-sub status="select"></menu-sub>
     <div class="project-cover clearfix">
       <div class="project-item-box">
         <h3>选择设计方，发送项目需求</h3>
         <div class="item">
           <el-row :gutter="20">
-            <el-col :xs="24" :sm="6" :md="6" :lg="6" v-for="(ele, index) in companyList" :key="index">
-              <div class="logo">
-                <i @click="changeList(ele.id)" :class="['radio', {'active': selectList.indexOf(ele.id) !== -1}]"></i>
+            <el-col :xs="24" :sm="6" :md="6" :lg="6" v-for="(ele, index) in companyDetails" :key="index">
+              <div class="logo" @click="changeList(ele.id)">
+                <i :class="['radio', {'active': selectList.indexOf(ele.id) !== -1}]"></i>
                 <img v-if="ele.logo_image" :src="ele.logo_image.logo" :alt="ele.company_name">
                 <img v-else :src="require('assets/images/avatar_100.png')"/>
                 <span class="tc-2">{{ele.company_name}}</span>
@@ -17,24 +18,31 @@
                   </i>
                 </span>
               </div>
-              <div class="radar"></div>
+              <div class="radar">
+                <ECharts
+                  :options="option"
+                  auto-resize
+                  :ref="`radar${index}`"></ECharts>
+              </div>
               <div class="design-case">
                 <h4>设计案例</h4>
                 <el-row v-if="ele.design_case.length">
                   <el-col class="case" v-for="(e, i) in ele.design_case" :key="i">
-                    <div v-if="e.case_image" class="img-box" :style="{background: `url(${e.case_image[0].middle}) no-repeat center / cover`}">
-                    </div>
-                    <div class="case-content">
-                      <p class="fz-14 tc-2">
-                        {{e.title}}
-                      </p>
-                      <p class="tags fz-12 tc-9">
-                        {{e.design_type_val}}
-                      </p>
-                      <p class="fz-12 tc-9">
-                        {{e.created_at}}
-                      </p>
-                    </div>
+                    <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: e.id}}">
+                      <div v-if="e.case_image" class="img-box" :style="{background: `url(${e.case_image[0].middle}) no-repeat center / cover`}">
+                      </div>
+                      <div class="case-content">
+                        <p class="fz-14 tc-2">
+                          {{e.title}}
+                        </p>
+                        <p class="tags fz-12 tc-9">
+                          {{e.design_type_val}}
+                        </p>
+                        <p class="fz-12 tc-9">
+                          {{e.created_at}}
+                        </p>
+                      </div>
+                    </router-link>
                   </el-col>
                 </el-row>
               </div>
@@ -53,15 +61,79 @@
 </template>
 <script>
 import api from '@/api/api'
+import menuSub from '@/components/pages/projects/MenuSub'
+import ECharts from 'vue-echarts'
 export default {
   name: 'projectsCompare',
+  components: {
+    ECharts,
+    menuSub: menuSub
+  },
   data() {
+    let scores = [
+      {name: '基础运作力', max: 20, value: 10},
+      {name: '风险应激力', max: 20, value: 20},
+      {name: '创新交付力', max: 20, value: 11},
+      {name: '商业决策力', max: 20, value: 10},
+      {name: '客观公信力', max: 20, value: 12},
+      {name: '品牌溢价力', max: 20, value: 15}
+    ]
     return {
       id: -1,
       test: '',
       demandObj: {},
-      companyList: [],
-      selectList: []
+      companyDetails: [],
+      selectList: [],
+      option: {
+        tooltip: {},
+        radar: {
+          indicator: scores.map(({name, max}) => {
+            return {name, max}
+          }),
+          name: {
+            fontSize: 10,
+            textStyle: {
+              color: '#666'
+            }
+          },
+          nameGap: 10,
+          shape: 'circle',
+          axisLine: {
+            lineStyle: {
+              color: 'rgba(255,90,95, 0.5)'
+            }
+          },
+          splitNumber: 4,
+          splitLine: {
+            lineStyle: {
+              color: '#FF5A5F',
+              type: 'dotted'
+            }
+          },
+          splitArea: {
+            areaStyle: {
+              color: '#fff'
+            }
+          }
+        },
+        series: [{
+          name: '能力值',
+          type: 'radar',
+          data: [{value: scores.map(({value}) => value)}],
+          symbol: 'circle',
+          symbolSize: 4,
+          itemStyle: {
+            normal: {
+              areaStyle: {
+                color: 'rgba(255,90,95, 0.3)'
+              },
+              lineStyle: {
+                color: 'rgba(255,90,95, 0.5)'
+              }
+            }
+          }
+        }]
+      }
     }
   },
   mounted() {
@@ -87,7 +159,54 @@ export default {
       .then(res => {
         if (res.data.meta.status_code === 200) {
           console.log(res.data.data)
-          this.companyList = res.data.data
+          this.companyDetails = res.data.data
+          this.$nextTick(_ => {
+            for (let i in this.companyDetails) {
+              let radar = this.$refs[`radar${i}`][0]
+              this.radarList = [
+                {
+                  name: '基础运作力',
+                  max: 100,
+                  value: this.companyDetails[i]['rows'].base_average
+                },
+                {
+                  name: '风险应激力',
+                  max: 100,
+                  value: this.companyDetails[i]['rows'].credit_average
+                },
+                {
+                  name: '创新交付力',
+                  max: 100,
+                  value: this.companyDetails[i]['rows'].innovate_average
+                },
+                {
+                  name: '商业决策力',
+                  max: 100,
+                  value: this.companyDetails[i]['rows'].business_average
+                },
+                {
+                  name: '客观公信力',
+                  max: 100,
+                  value: this.companyDetails[i]['rows'].effect_average
+                },
+                {
+                  name: '品牌溢价力',
+                  max: 100,
+                  value: this.companyDetails[i]['rows'].design_average
+                }
+              ]
+              radar.mergeOptions({
+                radar: {
+                  indicator: this.radarList.map(({name, max}) => {
+                    return {name, max}
+                  })
+                },
+                series: [{
+                  data: [{value: this.radarList.map(({value}) => value)}]
+                }]
+              })
+            }
+          })
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -144,6 +263,7 @@ export default {
     padding-bottom: 10px;
   }
   .logo {
+    cursor: pointer;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -157,6 +277,7 @@ export default {
     cursor: pointer;
     content: "";
     position: absolute;
+    z-index: 9;
     left: 14px;
     top: 14px;
     width: 24px;
@@ -195,7 +316,7 @@ export default {
     font-size: 14px;
   }
   .radar {
-    height: 260px;
+    height: 240px;
     background: #fff;
     border-radius: 0 0 4px 4px;
   }
@@ -228,6 +349,7 @@ export default {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    background: url(../../../assets/images/project/BG-Gradient.jpg) no-repeat center / contain
   }
   .select-num {
     padding: 10px 20px;
@@ -248,6 +370,11 @@ export default {
     color: rgba(255, 255, 255, 0.5);
     border: 1px solid #D2D2D2;
     border-radius: 4px;
+  }
+  .echarts {
+    width: 100%;
+    height: 100%;
+    padding: 20px 10px
   }
 </style>
 

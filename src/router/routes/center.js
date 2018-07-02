@@ -258,6 +258,19 @@ module.exports = [
       require(['@/components/pages/v_center/contract/View'], resolve)
     }
   },
+  // 在线合同预览--version 0
+  {
+    path: '/vcenter/contract/show0/:unique_id',
+    name: 'vcenterContractView1',
+    meta: {
+      title: '合同预览',
+      requireAuth: true
+    },
+    // 按需加载
+    component: (resolve) => {
+      require(['@/components/pages/v_center/contract/View0'], resolve)
+    }
+  },
   // 在线合同编辑
   {
     path: '/vcenter/contract/submit/:item_id',
@@ -279,6 +292,19 @@ module.exports = [
     // 按需加载
     component: (resolve) => {
       require(['@/components/pages/v_center/contract/Down'], resolve)
+    }
+  },
+  // 合同下载 version - 0
+  {
+    path: '/vcenter/contract/download0/:unique_id',
+    name: 'vcenterContractDown0',
+    meta: {
+      title: '合同下载',
+      requireAuth: true
+    },
+    // 按需加载
+    component: (resolve) => {
+      require(['@/components/pages/v_center/contract/Down0'], resolve)
     }
   },
   // 基本设置

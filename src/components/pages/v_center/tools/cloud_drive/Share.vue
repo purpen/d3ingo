@@ -1,6 +1,6 @@
 <template>
   <section class="share">
-    <div class="container" v-loading.body="isLoading">
+    <div class="container" v-loading="isLoading">
       <div class="content-head">
         <div class="clearfix">
             <p class="title fl" v-if="!isChoose && folderId === 0" v-html="title"></p>
@@ -525,6 +525,7 @@ export default {
     border-top: none;
     border-right: none;
     transform: rotate(-45deg);
+    border-radius: 0;
   }
 
   i.file-radio.active {
@@ -631,5 +632,10 @@ export default {
   }
   .pagination {
     text-align: center;
+  }
+  @media screen and (max-width: 1199px) {
+    .edit-menu .file-radio {
+      margin-left: 10px;
+    }
   }
 </style>

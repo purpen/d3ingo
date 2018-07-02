@@ -16,7 +16,7 @@
           <el-table
             :data="tableData"
             border
-            v-loading.body="isLoading"
+            v-loading="isLoading"
             class="admin-table"
             @selection-change="handleSelectionChange"
             style="width: 100%">

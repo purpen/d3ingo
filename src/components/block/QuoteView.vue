@@ -33,14 +33,21 @@
       </div>
     </div>
     <div class="line"></div>
-    <div class="sum-box">
-      <div class="tax-box">
-        <p class="total-money">总计<span v-if="form.is_tax">（含税）</span>： <span>¥{{ totalMoneyFormat }}</span> 元</p>
+    <div class="sum-box" v-if="false">
+      <div class="tax-box" v-if="!form.is_tax && form.is_invoince">
+        <p class="total-money">费用： <span>¥{{ totalMoneyFormat }}</span> 元</p>
       </div>
-      <div v-if="!form.is_tax && form.is_invoice">
-        <div class="tax-total-box">
-          <p class="tax-total-money">税率:  <span> {{ form.tax_rate }}%</span> &nbsp;&nbsp;&nbsp;&nbsp;总计（含税）： <span>¥{{ taxTotalMoneyFormat }}</span> 元</p>
-        </div>
+      <div class="tax-total-box">
+        <p v-show="form.is_tax" class="tax-total-money"></span>总计（含税）： <span>¥{{ taxTotalMoneyFormat }}</span> 元</p>
+        <p v-show="!form.is_tax && form.is_invoince" class="tax-total-money">税率:  <span> {{ form.tax_rate }}%</span> &nbsp;&nbsp;&nbsp;&nbsp;总计（含税）： <span>¥{{ taxTotalMoneyFormat }}</span> 元</p>
+      </div>
+    </div>
+    <div class="sum-box" v-else>
+      <div class="tax-box">
+        <p class="total-money">费用： <span>¥{{ totalMoneyFormat }}</span> 元</p>
+      </div>
+      <div class="tax-total-box">
+        <p class="tax-total-money">税率:  <span> {{ form.tax_rate }}%</span> &nbsp;&nbsp;&nbsp;&nbsp;总计（含税）： <span>¥{{ taxTotalMoneyFormat }}</span> 元</p>
       </div>
     </div>
 

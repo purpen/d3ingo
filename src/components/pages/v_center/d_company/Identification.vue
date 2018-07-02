@@ -6,8 +6,8 @@
       <div class="right-content vcenter-container">
         <v-menu-sub currentSubName="identification"></v-menu-sub>
         <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
-          <div class="form-title">
-            <span>企业实名认证</span>
+          <div class="sub-title">
+            <span>基本信息</span>
           </div>
           <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
 
@@ -115,7 +115,21 @@
                 </el-form-item>
               </el-col>
             </el-row>
+            <el-row :gutter="24">
+              <el-col :span="12" class="content">
+                <region-picker :provinceProp="form.province" :cityProp="form.city"  :isFirstProp="true" :districtProp="form.area" titleProp="公司地址" @onchange="changeServer"></region-picker>
 
+                <!-- :provinceProp="province" :cityProp="city" :districtProp="district"
+                  :isFirstProp="isFirst" titleProp="" propStyle="margin: 0;"
+                @onchange="change" -->
+                <el-form-item label="" prop="address" style="margin-top: 10px">
+                  <el-input v-model="form.address" placeholder="街道地址"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <div class="sub-title">
+              <span>联系人信息&nbsp;</span>
+            </div>
             <el-row :gutter="24">
               <el-col :span="isMob ? 24 : 12">
                 <el-form-item label="联系人" prop="contact_name">
@@ -144,26 +158,44 @@
                 </el-form-item>
               </el-col>
             </el-row>
+            <div class="sub-title">
+              <span>银行卡信息&nbsp;</span>
+              <!-- <i class="hint"></i> -->
+            </div>
             <el-row :gutter="24">
-                <el-col :span="12" class="content">
-                    <region-picker :provinceProp="form.province" :cityProp="form.city"  :isFirstProp="true" :districtProp="form.area" titleProp="公司地址" @onchange="changeServer"></region-picker>
- 
-                    <!-- :provinceProp="province" :cityProp="city" :districtProp="district"
-                      :isFirstProp="isFirst" titleProp="" propStyle="margin: 0;"
-                    @onchange="change" -->
-                    <el-form-item label="" prop="address" style="margin-top: 10px">
-                      <el-input v-model="form.address" placeholder="街道地址"></el-input>
-                    </el-form-item>
-                </el-col>
+              <el-col :span="isMob ? 24 : 12">
+                <el-form-item label="开户名称" prop="account_name">
+                  <el-input v-model="form.account_name" placeholder=""></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="24">
+              <el-col :span="isMob ? 24 : 12">
+                <el-form-item label="开户银行" prop="bank_name">
+                  <el-input v-model="form.bank_name" placeholder=""></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="24">
+              <el-col :span="isMob ? 24 : 12">
+                <el-form-item label="对公银行账号" prop="account_number">
+                  <el-input v-model.trim="form.account_number" placeholder=""></el-input>
+                </el-form-item>
+              </el-col>
             </el-row>
 
-
-            <div class="form-btn">
-              <el-button @click="returnBase">返回</el-button>
-              <el-button :loading="isLoadingBtn" class="is-custom" type="primary" @click="submit('ruleForm')">提交审核
-              </el-button>
-            </div>
-            <div class="clear"></div>
+            <el-row>
+              <el-col>
+                <div class="form-footer">
+                  <div class="form-btn">
+                    <el-button @click="returnBase">返回</el-button>
+                    <el-button :loading="isLoadingBtn" class="is-custom" type="primary" @click="submit('ruleForm')">提交审核
+                    </el-button>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+              </el-col>
+            </el-row>
           </el-form>
 
         </div>
@@ -273,6 +305,15 @@
           ],
           address: [
             {required: true, message: '请添写公司地址', trigger: 'blur'}
+          ],
+          account_name: [
+            {required: true, message: '请添写开户名称', trigger: 'blur'}
+          ],
+          bank_name: [
+            {required: true, message: '请添写开户银行', trigger: 'blur'}
+          ],
+          account_number: [
+            {required: true, message: '请添写对公银行账号', trigger: 'blur'}
           ]
         }
       }
@@ -314,7 +355,10 @@
               address: that.form.address,
               province: that.form.province,
               area: that.form.area,
-              city: that.form.city
+              city: that.form.city,
+              account_name: that.form.account_name,
+              bank_name: that.form.bank_name,
+              account_number: that.form.account_number
             }
 
             if (that.companyId) {
@@ -545,12 +589,35 @@
     margin: 0;
     padding: 0;
   }
-
+  .sub-title {
+    font-size: 16px;
+    color: #222;
+    margin: 20px 0;
+  }
+  .hint:after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    background: url('../../../../assets/images/item/Hint@2x.png') 0 0 no-repeat/16px 16px;
+  }
+  .hint:hover:after {
+    background: url('../../../../assets/images/item/HintHover02@2x.png') 0 0 no-repeat/16px 16px;
+  }
   .form-btn {
     float: right;
     font-size: 0;
   }
-
+  .el-radio-group {
+    width: 100%;
+  }
+  .el-radio-group>:first-child {
+    width: 50%;
+  }
+  .form-footer {
+    border-top: 1px solid #e6e6e6;
+    padding-top: 20px;
+  }
   .form-btn button {
     width: 120px;
     margin-left: 15px;
