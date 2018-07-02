@@ -147,9 +147,9 @@
               <router-link :to="{name: 'home'}">
                 <el-button class="is-custom">返回首页</el-button>
               </router-link> &nbsp;&nbsp;
-              <router-link :to="{name: 'vcenterMessageList'}">
-                <el-button type="primary" class="is-custom">查看消息</el-button>
-              </router-link>
+              <a>
+                <el-button type="primary" class="is-custom" @click="showMyView">查看消息</el-button>
+              </a>
             </div>
           </div>
         </div>
@@ -183,6 +183,17 @@
       }
     },
     methods: {
+      showMyView() {
+        this.myView = 'order'
+        if (this.showCover2 === 'show') {
+          this.showCover2 = 'hide'
+          setTimeout(() => {
+            this.showCover = 'show'
+          }, 520)
+        } else {
+          this.showCover = 'show'
+        }
+      },
       isCompany() {
         let uType = this.$store.state.event.user.type
         if (uType === 2) {
@@ -198,7 +209,7 @@
         let name = null
         switch (progress) {
           case 0:
-            name = 'itemSubmitTwo'
+            name = 'projectSelect'
             break
           case 1:
             name = 'projectSelect'
@@ -252,6 +263,30 @@
       },
       rightWidth() {
         return 24 - this.$store.state.event.leftWidth
+      },
+      myView: {
+        get() {
+          return this.$store.state.task.myView
+        },
+        set(e) {
+          this.$store.commit('changeMyView', e)
+        }
+      },
+      showCover: {
+        get() {
+          return this.$store.state.task.showMessage
+        },
+        set(e) {
+          this.$store.commit('changeShowMsg', e)
+        }
+      },
+      showCover2: {
+        get() {
+          return this.$store.state.task.showMine
+        },
+        set(e) {
+          this.$store.commit('changeShowMine', e)
+        }
       }
     },
     created: function () {

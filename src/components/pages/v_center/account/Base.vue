@@ -73,7 +73,7 @@
               </el-col>
             </el-row>
 
-            <el-row :gutter="gutter" :class="['item', isMob ? 'item-m' : '']">
+            <el-row :gutter="gutter" :class="['item', 'border-b-no', isMob ? 'item-m' : '']">
               <el-col :span="titleSpan" class="title">
                 <p>邮箱</p>
               </el-col>
@@ -309,9 +309,6 @@
     display: flex;
     align-items: center;
   }
-  .content-box .item:last-child {
-    border-bottom: none;
-  }
 
   .item-m {
     padding: 10px 15px;
@@ -516,9 +513,9 @@
     color: #666;
     margin-right: 0;
   }
-  .vcenter{
+  /* .vcenter{
     margin-top: 50px;
-  }
+  } */
   @media screen and (max-width: 767px) {
     .item-m .content {
       border: none;

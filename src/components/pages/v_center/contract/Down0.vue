@@ -330,7 +330,7 @@
                 that.itemId = item.id
                 // 重新渲染
                 that.$nextTick(function () {
-                  that.itemName = item.item_name + '项目合同'
+                  that.itemName = item.title + '项目合同'
                   that.form = item
                   // 生成pdf插件太大，实现懒加载
                   require.ensure([], function (require) {

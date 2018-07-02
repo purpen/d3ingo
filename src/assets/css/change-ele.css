@@ -19,12 +19,12 @@
   }
   .add-task-input .el-textarea__inner:hover,
   .add-task-input .el-textarea__inner:focus {
-    border-color: #d2d2d2
+    border-color: #e6e6e6
   }
   .add-task-input .el-textarea__inner:focus,
   .el-textarea .el-textarea__inner:focus,
   .el-input .el-input__inner:focus {
-    box-shadow: inset 0 1px #d2d2d2
+    box-shadow: inset 0 1px #e6e6e6
   }
   .add-task-input .el-input-group__prepend+.el-input__inner {
     box-shadow: none
@@ -34,7 +34,7 @@
   }
   .textarea-summary .el-textarea__inner:hover,
   .textarea-summary .el-textarea__inner:focus {
-    border-color: #d2d2d2
+    border-color: #e6e6e6
   }
   .el-menu-info.el-menu--horizontal > .el-submenu .el-submenu__title {
     padding-right: 0
@@ -100,13 +100,13 @@
     width:5px;
     left:7px;
     top:3px;
-    border-bottom:2px solid #d2d2d2;
-    border-right:2px solid #d2d2d2
+    border-bottom:2px solid #e6e6e6;
+    border-right:2px solid #e6e6e6
   }
   .tack-list .el-checkbox__inner::after{
     height:10px;
-    border-bottom:2px solid #d2d2d2;
-    border-right:2px solid #d2d2d2
+    border-bottom:2px solid #e6e6e6;
+    border-right:2px solid #e6e6e6
   }
   .task-success .el-checkbox__label{
     color: #999;
@@ -128,7 +128,7 @@
     stroke: #65a6ff
   }
   .is-unclaimed .el-progress-circle__path {
-    stroke: #d2d2d2
+    stroke: #e6e6e6
   }
   .is-success .el-progress-circle__path {
     stroke: #00ac84
@@ -156,7 +156,7 @@
   }
   .el-radio-button__inner:hover {
     color: #222;
-    border-color: #d2d2d2
+    border-color: #e6e6e6
   }
   .el-radio-button__inner {
     color: #666;
@@ -180,8 +180,8 @@
     background-color: #fff;
   }
   .el-switch .el-switch__core {
-    background: #d2d2d2;
-    border-color: #d2d2d2
+    background: #e6e6e6;
+    border-color: #e6e6e6
   }
   .el-switch.is-checked .el-switch__core {
     border-color: #fafafa;
@@ -201,7 +201,7 @@
   }
   .el-tag--primary {
     background-color: #f7f7f7;
-    border-color: #d2d2d2;
+    border-color: #e6e6e6;
     color: #222;
   }
   .el-tag--primary .el-tag__close:hover {
@@ -215,10 +215,10 @@
     background-color: #f7f7f7
   }
   .el-select .el-input__inner:focus {
-    border-color: #d2d2d2;
+    border-color: #e6e6e6;
   }
   .el-select:hover .el-input__inner {
-    border-color: #d2d2d2;
+    border-color: #e6e6e6;
   }
   .el-dialog__header {
     border-radius: 4px 4px 0 0;
@@ -402,7 +402,7 @@
     border-color: #e6e6e6
   }
   .el-checkbox__inner:hover {
-    border-color: #d2d2d2
+    border-color: #e6e6e6
   }
 
   .task-name-input .el-input__inner,
@@ -420,7 +420,7 @@
   }
   .label-tag .vue-input-tag-wrapper>.input-tag {
     background: #f7f7f7;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
     color: #000;
     margin-bottom: 0px;
     height: 28px;
@@ -488,11 +488,18 @@
     border: none;
   }
   .el-tooltip__popper.is-dark {
-    background: rgba(0, 0, 0, 0.7)
-  }
-  .el-tooltip__popper[x-placement^=right] .popper__arrow {
-    border-right-color: rgba(0, 0, 0, 0.7)
+    max-width: 320px;
   }
   .form-footer .el-button + .el-button {
     margin-right: 0;
+  }
+  .el-loading-spinner .circular {
+    width: 100px;
+    height: 100px;
+    background: url('../images/tools/cloud_drive/status/loading.gif') no-repeat center / cover;
+    animation: none
+  }
+  .el-loading-spinner .path {
+    stroke: transparent;
+    animation: none
   }

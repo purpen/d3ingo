@@ -116,6 +116,7 @@ let mutations = {
     this.commit('setDisplayObj', state.taskList)
   },
   updateStageListItem(state, obj) {
+    console.log(obj)
     state.stageList.forEach(item => {
       if (item.id === obj.id) {
         Object.assign(item, obj)

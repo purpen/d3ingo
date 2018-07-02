@@ -304,7 +304,7 @@
                           <p>阶段项目资金</p>
                           <p class="capital-money">¥ {{ d.amount }}</p>
                           <p class="pay-btn">
-                            <span>支付成功</span>
+                            <span>收款成功</span>
                           </p>
                           <p class="capital-des">该阶段款已转入您的账户中</p>
                         </div>
@@ -332,9 +332,9 @@
                           <p>阶段项目资金</p>
                           <p class="capital-money">¥ {{ d.amount }}</p>
                           <p class="pay-btn">
-                            <span>支付成功</span>
+                            <span>收款成功</span>
                           </p>
-                          <p class="capital-des">项目首付款已转入您的账户中</p>
+                          <p class="capital-des">该阶段款已转入您的账户中</p>
                         </div>
                       </div>
 
@@ -846,7 +846,7 @@
       },
       // 确认发票发送
       sendInvoiceSubmit() {
-        let row = {
+        var row = {
           'id': this.invoiceForm.id,
           'logistics_id': this.invoiceForm.logistics_id,
           'logistics_number': this.invoiceForm.logistics_number
@@ -859,7 +859,7 @@
               this.invoiceDialog = false
               for (let i = 0; i < this.invoice.length; i++) {
                 if (this.invoice[i].id === row.id) {
-                  this.invoice[i].status = 1
+                  this.invoice[i].status = 2
                 }
               }
             } else {
