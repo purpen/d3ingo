@@ -258,7 +258,7 @@
                 'artboard': /.pdf/.test(files.name),
                 'audio': /.audio/.test(files.name),
                 'compress': /(?:.zip|.rar|.7z)/.test(files.name),
-                'document': /(?:.text|.msword|.tx说t)/.test(files.name),
+                'document': /(?:.text|.msword|.txt)/.test(files.name),
                 'image': /(?:.jpg|.jpeg|.png|.gif)/.test(files.name),
                 'powerpoint': /.powerpoint/.test(files.name),
                 'spreadsheet': /.excel/.test(files.name),

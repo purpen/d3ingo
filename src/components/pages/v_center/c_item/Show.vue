@@ -67,7 +67,6 @@
               </el-collapse-item>
             </el-collapse>
           </div>
-
           <div class="select-item-box">
             <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
               <el-collapse-item title="报价管理" name="4" class="partnersDesign">
@@ -306,7 +305,7 @@
                           <p>阶段项目资金</p>
                           <p class="capital-money">¥ {{ d.amount }}</p>
                           <p class="pay-btn">
-                            <span>支付成功</span>
+                            <span>收款成功</span>
                           </p>
                           <p class="capital-des">该阶段款已转入您的账户中</p>
                         </div>
@@ -334,9 +333,9 @@
                           <p>阶段项目资金</p>
                           <p class="capital-money">¥ {{ d.amount }}</p>
                           <p class="pay-btn">
-                            <span>支付成功</span>
+                            <span>收款成功</span>
                           </p>
-                          <p class="capital-des">项目首付款已转入您的账户中</p>
+                          <p class="capital-des">该阶段款已转入您的账户中</p>
                         </div>
                       </div>
 
@@ -396,19 +395,108 @@
     </el-dialog>
 
     <el-dialog title="发票信息" v-model="invoiceDialog">
-      <el-form label-position="top" :model="invoiceForm" :rules="invoiceRuleForm" ref="invoiceRuleForm">
-        <el-form-item label="快递公司" prop="logistics_id" class="fullwidth">
-          <el-select v-model.number="invoiceForm.logistics_id" placeholder="请选择快递公司">
-            <el-option
-              v-for="(d, index) in logisticsOptions"
-              :label="d.label"
-              :key="index"
-              :value="d.value">
-            </el-option>
-          </el-select>
+      <div class="corp-info">
+        <div class="fz-16 tc-2 sub-title">
+          太火鸟SaaS平台发票信息
+        </div>
+        <el-row>
+          <el-col :span="4">
+            名称
+          </el-col>
+          <el-col :span="20">
+            北京太火红鸟科技有限公司
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="4">
+            注册地址
+          </el-col>
+          <el-col :span="20">
+            北京市&nbsp;朝阳区&nbsp;酒仙桥路4号&nbsp;正东集团院内A9-1楼二层218室
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="4">
+            税号
+          </el-col>
+          <el-col :span="20">
+            911101050573014370
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="4">
+            开户银行
+          </el-col>
+          <el-col :span="20">
+            招商银行北京华贸中心支行
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="4">
+            银行账户
+          </el-col>
+          <el-col :span="20">
+            110910028310202
+          </el-col>
+        </el-row>
+        <div class="fz-16 tc-2 sub-title">
+          发票快递地址
+        </div>
+        <el-row>
+          <el-col :span="4">
+            收件人姓名
+          </el-col>
+          <el-col :span="20">
+            耿霆
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="4">
+            收件人电话
+          </el-col>
+          <el-col :span="20">
+            13031154842
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="4">
+            收件人地址
+          </el-col>
+          <el-col :span="20">
+            北京市&nbsp;朝阳区&nbsp;酒仙桥751D北京时尚设计广场&nbsp;B7南侧太火鸟 
+          </el-col>
+        </el-row>
+      </div>
+      <div class="fz-16 tc-2 sub-title">
+        邮寄信息
+      </div>
+      <el-form label-position="top" :model="invoiceForm" class="form-line" :rules="invoiceRuleForm" ref="invoiceRuleForm">
+        <el-form-item prop="logistics_id" class="fullwidth">
+          <el-row>
+            <el-col :span="4">
+              快递公司
+            </el-col>
+            <el-col :span="20">
+              <el-select v-model.number="invoiceForm.logistics_id" placeholder="请选择快递公司">
+                <el-option
+                  v-for="(d, index) in logisticsOptions"
+                  :label="d.label"
+                  :key="index"
+                  :value="d.value">
+                </el-option>
+              </el-select>
+            </el-col>
+          </el-row>
         </el-form-item>
-        <el-form-item label="快递单号" prop="logistics_number">
-          <el-input v-model="invoiceForm.logistics_number"></el-input>
+        <el-form-item prop="logistics_number">
+          <el-row>
+            <el-col :span="4">
+              快递单号
+            </el-col>
+            <el-col :span="20">
+              <el-input v-model="invoiceForm.logistics_number"></el-input>
+            </el-col>
+          </el-row>
         </el-form-item>
         <div class="taking-price-btn">
           <el-button @click="invoiceDialog = false">取 消</el-button>
@@ -759,7 +847,7 @@
       },
       // 确认发票发送
       sendInvoiceSubmit() {
-        let row = {
+        var row = {
           'id': this.invoiceForm.id,
           'logistics_id': this.invoiceForm.logistics_id,
           'logistics_number': this.invoiceForm.logistics_number
@@ -772,7 +860,7 @@
               this.invoiceDialog = false
               for (let i = 0; i < this.invoice.length; i++) {
                 if (this.invoice[i].id === row.id) {
-                  this.invoice[i].status = 1
+                  this.invoice[i].status = 2
                 }
               }
             } else {
@@ -1929,5 +2017,23 @@
   }
   .dialog-footer.btn button {
     /* padding: 10px 30px; */
+  }
+  .corp-info>.el-row {
+    margin-top: 20px;
+  }
+  .sub-title {
+    margin:30px 0 20px;
+  }
+  .corp-info>:first-child {
+    margin-top: 0;
+  }
+  .el-dialog__header {
+    text-align: center;
+  }
+  .taking-price-btn>.el-button + .el-button{
+    margin-right: 0;
+  }
+  .form-line .el-row {
+    line-height: 36px;
   }
 </style>
