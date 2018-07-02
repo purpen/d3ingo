@@ -1481,6 +1481,7 @@
   }
   .task-member-execute {
     padding-left: 0;
+    margin-left: -14px;
   }
   .task-member-execute li {
     color: #222;

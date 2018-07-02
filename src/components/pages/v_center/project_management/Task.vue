@@ -868,7 +868,7 @@
   .stage-item:last-child .task-item:last-child {
     margin-bottom: 0;
     /* border-bottom: none; */
-    border-radius: 4px 4px 0 0
+    /* border-radius: 4px 4px 0 0 */
   }
 
   .stage-title {
