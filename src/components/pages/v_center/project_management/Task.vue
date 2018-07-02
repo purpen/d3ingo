@@ -1100,7 +1100,6 @@
     color: #969696;
     line-height: 3;
   }
-<<<<<<< HEAD
   /* 合并 */
   .task-detail {
     animation-delay: 0.5s;
@@ -1229,9 +1228,8 @@
   .select-menu .select-show::after {
     content: "";
     border: none;
-=======
+  }
   .line-through {
     text-decoration: line-through
->>>>>>> lzh2
   }
 </style>
