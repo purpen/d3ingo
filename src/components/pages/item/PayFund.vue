@@ -1,11 +1,19 @@
 <template>
   <div class="container">
     <div style="width:900px;margin: 20px auto" class="ordershow-span-color">
-      <el-breadcrumb separator="＞">
-        <el-breadcrumb-item :to="{ path: '/vcenter/item/list' }">我的项目</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ name: 'vcenterItemShow', params: {id: this.$route.query.id}}">项目详情</el-breadcrumb-item>
-        <el-breadcrumb-item>付款</el-breadcrumb-item>
-      </el-breadcrumb>
+      <div class="dis-flex" style="margin-bottom: 10px">
+        <div class="mar-r-10">
+          <router-link :to="{ path: '/vcenter/item/list' }" class="font-14">我的项目</router-link>
+          <span class="border"></span>
+        </div>
+        <div class="mar-r-10">
+          <router-link :to="{ name: 'vcenterItemShow', params: {id: this.$route.params.item_id}}" class="font-14">项目详情</router-link>
+          <span class="border"></span>
+        </div>
+        <div class="mar-r-10">
+          <span class="font-14">付款</span>
+        </div>
+      </div>
     </div>
     <div class="payment">
       <div class="title-item">
@@ -149,6 +157,7 @@ export default {
   created: function() {
     const self = this
     let itemId = this.$route.params.item_id
+    console.log(this.$route)
     if (itemId) {
       self.itemId = itemId
       self.$http
@@ -324,7 +333,45 @@ p.total-txt {
   left: 0;
 }
 
+.border {
+  width: 10px;
+  height: 10px;
+  border-top: 1px solid #bfcbd9;
+  border-right: 1px solid #bfcbd9;
+  border-left: 2px solid #FFFFFF;
+  border-bottom: 2px solid #ffffff;
+  transform: rotate(45deg);
+  display: inline-block;
+}
 
+.font-14 {
+  font-size: 14px;
+}
+
+.dis-flex {
+  display: flex;
+}
+
+.mar-r-10 {
+  margin-right: 10px;
+}
+
+.mar-r-10 span {
+  font-size: 14px;
+  color: #666666;
+}
+
+.mar-r-10:last-child span {
+  color: #222222;
+}
+
+.mar-r-10:last-child span:hover {
+  color: #222222;
+}
+
+.mar-r-10 span:hover {
+  color: #ff5a5f;
+}
 @media screen and (max-width: 899px) {
   .payment {
     width: auto;

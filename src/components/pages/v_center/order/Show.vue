@@ -9,13 +9,20 @@
           <!--
           <v-menu-sub></v-menu-sub>
           -->
-          <div style="margin-bottom :20px" class="ordershow-span-color">
-            <el-breadcrumb separator="＞">
-              <el-breadcrumb-item :to="{ path: '/vcenter/item/list' }">我的项目</el-breadcrumb-item>
-              <el-breadcrumb-item :to="{ name: 'vcenterItemShow', params: {id: this.$route.query.id}}">项目详情</el-breadcrumb-item>
-              <el-breadcrumb-item>付款</el-breadcrumb-item>
-            </el-breadcrumb>
+          <div class="dis-flex" style="margin-bottom: 10px">
+            <div class="mar-r-10">
+              <router-link :to="{ path: '/vcenter/item/list' }" class="font-14">我的项目</router-link>
+              <span class="border"></span>
+            </div>
+            <div class="mar-r-10">
+              <router-link :to="{ name: 'vcenterItemShow', params: {id: this.$route.query.id}}" class="font-14">项目详情</router-link>
+              <span class="border"></span>
+            </div>
+            <div class="mar-r-10">
+              <span class="font-14">付款</span>
+            </div>
           </div>
+
           <!--v-if="item.status !== 1" 暂时的-->
           <div class="content-box" v-if="item.status !== 1">
             <div class="main clearfix min-height-0">
@@ -43,7 +50,7 @@
                           <img v-if="fileUrl" :src="fileUrl" class="file-show">
                           <i v-else class="uploader-icon">
                           </i>
-                          <div slot="tip" class="el-upload__tip padd-t-7" v-if="!isMob">{{ fileDesc }}</div>
+                          <div slot="tip" class="el-upload__tip" v-if="!isMob">{{ fileDesc }}</div>
                         </el-upload>
 
 
@@ -162,7 +169,7 @@
       },
       uploadSuccess(response, file, fileList) {
         this.surePay = true
-        this.fileDesc = '只能上传jpg/png/png文件，且不超过2M'
+        this.fileDesc = '格式：JPG／PNG   大小：小于2MB'
         this.fileUrl = URL.createObjectURL(file.raw)
       },
       handleProgress() {
@@ -397,37 +404,72 @@
     margin: auto;
   }
 
-  .padd-t-7 {
-    padding-top: 7px;
+  .border {
+    width: 10px;
+    height: 10px;
+    border-top: 1px solid #bfcbd9;
+    border-right: 1px solid #bfcbd9;
+    border-left: 2px solid #FFFFFF;
+    border-bottom: 2px solid #ffffff;
+    transform: rotate(45deg);
+    display: inline-block;
   }
 
-  @media screen and (max-width: 767px) {
-    .right-content .content-box {
-      border: none;
-      margin-top: 0;
-    }
-
-    .main {
-      padding-bottom: 0;
-    }
-  }
-  .file-show {
-    width: 150px;
-  }
-  .sure-pay-btn {
-    margin-bottom: 20px;
+  .font-14 {
+    font-size: 14px;
   }
 
-  .uploader-icon {
-    display: block;
-    color: #999;
-    background: url('../../../../assets/images/voucher@2x.png') no-repeat;
-    background-size: contain;
-    width: 100px;
-    height: 100px;
-    line-height: 100px;
-    text-align: center;
-    margin: 14px 0 10px 0;
+  .dis-flex {
+    display: flex;
   }
+
+  .mar-r-10 {
+    margin-right: 10px;
+  }
+
+  .mar-r-10 span {
+    font-size: 14px;
+    color: #666666;
+  }
+
+  .mar-r-10:last-child span {
+    color: #222222;
+  }
+
+  .mar-r-10:last-child span:hover {
+    color: #222222;
+  }
+
+  .mar-r-10 span:hover {
+    color: #ff5a5f;
+  }
+
+@media screen and (max-width: 767px) {
+  .right-content .content-box {
+    border: none;
+    margin-top: 0;
+  }
+
+  .main {
+    padding-bottom: 0;
+  }
+}
+.file-show {
+  width: 150px;
+}
+.sure-pay-btn {
+  margin-bottom: 20px;
+}
+
+.uploader-icon {
+  display: block;
+  color: #999;
+  background: url('../../../../assets/images/voucher@2x.png') no-repeat;
+  background-size: contain;
+  width: 100px;
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+}
 </style>
 
