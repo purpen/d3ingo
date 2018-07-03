@@ -60,7 +60,7 @@
             </ul>
             <ul class="task-member-list task-member-execute no-execute" v-else>
               <li class="margin-none" @click="showMember = true">
-                <img @click="showMember = true" v-lazy="require('assets/images/avatar_100.png')">执行者</li>
+                <img @click="showMember = true" v-lazy="require('assets/images/avatar_100.png')">执行人</li>
             </ul>
             <v-Member
               :isLeft="true"
@@ -782,7 +782,7 @@
             item['action'] = '指派给了：'
             break
           case 21:
-            item['action'] = '移除了执行者：'
+            item['action'] = '移除了执行人：'
             break
         }
       },
@@ -1179,21 +1179,23 @@
   
   .add-task-input {
     position: relative;
-    padding: 20px 0 10px 40px;
+    padding: 20px 0 10px 26px;
     border-bottom: 1px solid #E6E6E6;
   }
   .add-task-input-no_name {
     padding: 20px 0 10px;
   }
   .add-child-input {
-    padding: 10px 20px 10px 0;
+    padding: 5px 20px 5px 0;
     border-bottom: none;
     display: flex;
   }
   .add-child-input .child-more {
     position: absolute;
     right: 3px;
-    top: 21px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
     width: 14px;
     height: 14px;
     border: 2px solid #E6E6E6;
@@ -1238,7 +1240,7 @@
     position: relative;
     width: 24px;
     height: 24px;
-    margin-top: 8px;
+    margin-top: 6px;
   }
   .add-task-input .add-child-template {
     border: none;
@@ -1254,7 +1256,7 @@
     position: relative;
     color: #FF5A5F;
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 5px;
   }
   .add-child-button i {
     position: absolute;
@@ -1265,7 +1267,7 @@
     background: url(../../assets/images/member/add02@2x.png) no-repeat left / contain
   }
   .task-info {
-    padding-top: 20px;
+    padding-top: 10px;
     border-bottom: 1px solid #E6E6E6;
   }
   .task-info li {
@@ -1312,6 +1314,9 @@
   .add-child-ul .el-date-editor.el-input {
     width: auto;
     min-width: 128px;
+  }
+  .add-child-ul {
+    padding-top: 5px;
   }
   .task-info li p.p-time {
     background: url(../../assets/images/tools/project_management/Time.png) no-repeat left;
@@ -1388,15 +1393,16 @@
   .task-admin {
     /* position: relative; */
     padding: 0;
-    margin-top: 20px;
+    margin-top: 10px;
     display: inline-block
   }
   .task-member-list {
-    padding-top: 20px;
+    padding-top: 10px;
+    margin-left: -10px;
     display: inline-flex;
     align-items: center;
     flex-wrap: wrap;
-    padding-left: 26px;
+    /* padding-left: 26px; */
   }
   .task-member-list li {
     position: relative;
@@ -1447,7 +1453,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 5px 8px;
+    padding: 5px;
     border: 1px solid transparent;
     border-radius: 50px;
     color: #999
@@ -1462,10 +1468,14 @@
     border-color: #ff5a5f;
     color: #ff5a5f
   }
+  .task-member-execute li.margin-none:active {
+    color: #ff5a5f
+  }
+
   .no-execute li img {
     width: 30px;
     height: 30px;
-    margin-right: 10px;
+    margin-right: 8px;
   }
   .task-member-list li:hover img {
     border-color: #E6E6E6
@@ -1481,6 +1491,7 @@
   }
   .task-member-execute {
     padding-left: 0;
+    margin-left: -10px;
   }
   .task-member-execute li {
     color: #222;
@@ -1497,8 +1508,8 @@
   .task-detail-body .show-member {
     margin: 0 5px 0;
     /* display: inline-block; */
-    width: 30px;
-    height: 30px;
+    width: 36px;
+    height: 36px;
     min-width: 0;
     padding: 0;
     background: #fff;
@@ -1656,6 +1667,6 @@
     width: 100px;
   }
   .child-name {
-    margin: 0 10px;
+    margin: 0 3px;
   }
 </style>

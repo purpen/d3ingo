@@ -152,44 +152,45 @@ export default {
   methods: {
     getProjectList() {
       this.isLoading = true
-      this.$http.get(api.desiginProjectList, {params: {
-        status: 1,
-        page: this.query.page,
-        per_page: this.query.pageSize
-      }}).then(res => {
+      Promise.all([
+        this.$http.get(api.desiginProjectList, {params: { // 我参与的
+          status: 1,
+          page: this.query.page,
+          per_page: this.query.pageSize
+        }}),
+        this.$http.get(api.desiginProjectList, {params: { // 我收藏的
+          status: 1,
+          collect: 1,
+          page: this.query.page,
+          per_page: this.query.pageSize
+        }}),
+        this.$http.get(api.desiginProjectList, {params: { // 我拥有的
+          status: 1,
+          user_status: 1,
+          page: this.query.page,
+          per_page: this.query.pageSize
+        }})
+      ]).then(([res1, res2, res3]) => {
+        // console.log(res1.data.data, res2.data.data, res3.data.data)
         this.isLoading = false
-        if (res.data.meta.status_code === 200) {
-          this.projectList = res.data.data
-          this.projectList.forEach((item, index) => {
-            if (item.collect === 1) { // 我收藏的
-              this.collectList.push(item)
-            }
-            if (item.user_status === 1) { // 我创建的
-              this.attendList.push(item)
-            }
-          })
+
+        if (res1.data.meta.status_code === 200) {
+          this.projectList = res1.data.data
         } else {
-          this.$message.error(res.data.meta.message)
+          this.$message.error(res1.data.meta.message)
         }
-        // if (res.data.meta.pagination) {
-        //   this.query.totalCount = res.data.meta.pagination.total
-        //   this.query.totalPges = res.data.meta.pagination.total_pages
-        // } else {
-        //   this.query.totalCount = 0
-        //   this.query.totalPges = 0
-        // }
-        // if (res.data.meta.pagination.count) {
-        //   let pages2 = this.query.totalCount % this.query.pageSize
-        //   let pages = Math.floor(this.query.totalCount / this.query.pageSize)
-        //   pages = pages2 ? pages + 1 : pages
-        //   if (this.query.page > pages) {
-        //     this.query.page = pages
-        //     this.$router.push({name: this.$route.name, query: {page: pages}})
-        //   }
-        // }
-      }).catch(err => {
-        this.isLoading = false
-        console.error(err.message)
+
+        if (res3.data.meta.status_code === 200) {
+          this.attendList = res3.data.data
+        } else {
+          this.$message.error(res3.data.meta.message)
+        }
+
+        if (res2.data.meta.status_code === 200) {
+          this.collectList = res2.data.data
+        } else {
+          this.$message.error(res2.data.meta.message)
+        }
       })
     },
     createProject() {
@@ -300,14 +301,18 @@ export default {
           if (res.data.meta.status_code === 200) {
             this.$nextTick(_ => {
               if (collect === 1) {
-                this.projectList.forEach((item) => {
+                this.projectList.forEach((item, index) => {
                   if (item.id === id) {
-                    this.$set(item, 'collect', collect)
                     this.collectList.unshift(item)
                   }
                 })
               } else {
                 this.projectList.forEach((item) => {
+                  if (item.id === id) {
+                    this.$set(item, 'collect', collect)
+                  }
+                })
+                this.attendList.forEach((item) => {
                   if (item.id === id) {
                     this.$set(item, 'collect', collect)
                   }
@@ -358,13 +363,34 @@ export default {
       // 对路由变化作出响应...
       // this.getProjectList()
     },
-    projectList(val) {
-      this.collectList = []
-      this.projectList.forEach((item, index) => {
-        if (item.collect === 1) {
-          this.collectList.push(item)
-        }
+    collectList(val) {
+      val.forEach(item2 => {
+        this.$set(item2, 'collect', 1)
+        this.projectList.forEach(item1 => {
+          if (item1.id === item2.id) {
+            this.$set(item1, 'collect', 1)
+          }
+        })
+
+        this.attendList.forEach(item3 => {
+          if (item3.id === item2.id) {
+            this.$set(item3, 'collect', 1)
+          }
+        })
       })
+
+      // for (let j = 0; j < this.projectList.length; j++) {
+      //   for (let i = 0; i < val.length; i++) {
+      //     this.$set(val[i], 'collect', 1)
+      //     if (val[i]['id'] === this.projectList[j]['id']) {
+      //       this.$set(this.projectList[j], 'collect', 1)
+      //       break
+      //     } else {
+      //       this.$set(this.projectList[j], 'collect', 0)
+      //     }
+      //   }
+      // }
+      // console.log(this.projectList)
     }
   }
 }
