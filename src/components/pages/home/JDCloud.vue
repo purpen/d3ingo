@@ -385,7 +385,6 @@ export default {
     width: 60px;
     height: 60px;
     margin-right: 20px;
-    border-radius: 50%;
   }
   .col-column img {
     width: 100px;

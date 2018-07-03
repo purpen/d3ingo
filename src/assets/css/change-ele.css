@@ -565,3 +565,6 @@
   .ordershow-span-color .el-breadcrumb__item:last-child .el-breadcrumb__item__inner {
     color: #222222;
   }
+  .content .el-icon-arrow-right {
+    position: static
+  }
