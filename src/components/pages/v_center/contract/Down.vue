@@ -66,9 +66,9 @@
               {text: '    ' + d.percentage + '   ', style: 'write'},
               {text: '%： ¥'},
               {text: '    ' + d.amount + '   ', style: 'write'},
-              {text: '（RMB）元，丙方收到款项后三个工作日内通知乙方开税票，收到乙方税票后三个工作日内，将剩余款项¥ '},
+              {text: '元，丙方收到款项后三个工作日内通知乙方开税票，收到乙方税票后三个工作日内，将剩余款项¥ '},
               {text: '    ' + d.amount + '   ', style: 'write'},
-              {text: ' （RMB）元一次性全额支付给乙方。'}
+              {text: ' 元一次性全额支付给乙方。'}
             ],
             style: 'p'
           }
@@ -143,9 +143,9 @@
                 {text: '   ' + this.form.first_payment_proportion_p + '   ', style: 'write'},
                 {text: '%： ¥'},
                 {text: '   ' + this.form.first_payment + '   ', style: 'write'},
-                {text: '（RMB）元，丙方收到款项后三个工作日内通知乙方开税票，收到乙方税票后三个工作日内，将抽取全部佣金及税费后的剩余款项¥', style: 'p'},
+                {text: '元，丙方收到款项后三个工作日内通知乙方开税票，收到乙方税票后三个工作日内，将抽取全部佣金及税费后的剩余款项¥', style: 'p'},
                 {text: '   ' + this.form.first_rest_payment + '   ', style: 'write'},
-                {text: '（RMB）元一次性全额支付给乙方。', style: 'p'}
+                {text: '元一次性全额支付给乙方。', style: 'p'}
               ],
               style: 'p'
             },
