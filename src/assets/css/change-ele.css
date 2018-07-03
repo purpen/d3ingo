@@ -512,3 +512,7 @@
     stroke: transparent;
     animation: none
   }
+
+  #quote-dialog .el-dialog--large {
+    width: 100%;
+  }

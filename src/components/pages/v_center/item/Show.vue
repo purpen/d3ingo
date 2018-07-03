@@ -468,12 +468,12 @@
       </span>
     </el-dialog>
 
-    <el-dialog title="报价单详情" v-model="quotaDialog" size="large" top="2%">
+    <el-dialog title="报价单详情" id="quote-dialog" v-model="quotaDialog" style="width: 880px;margin: auto" size="large" top="2%">
       <v-quote-view :formProp="quota"></v-quote-view>
 
-      <div slot="footer" class="dialog-footer btn">
-        <el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>
-      </div>
+      <!--<div slot="footer" class="dialog-footer btn">-->
+        <!--<el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>-->
+      <!--</div>-->
     </el-dialog>
 
   </div>
@@ -1278,6 +1278,10 @@ export default {
   border: 1px solid #e6e6e6;
 }
 
+ #quote-dialog .el-dialog el-dialog--large {
+   width: 100%;
+ }
+
 .select-company-item .check-box {
   width: 100%;
   margin: 10px;
@@ -1490,7 +1494,7 @@ export default {
   display: inline-block;
   width: 24px;
   height: 26px;
-  background: url('../../../../assets/images/item/CompleteBig@2x.png') no-repeat center center / contain 
+  background: url('../../../../assets/images/item/CompleteBig@2x.png') no-repeat center center / contain
 }
 .capital-item .capital-btn {
   /* padding: 10px 30px 10px 30px; */
