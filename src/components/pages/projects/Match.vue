@@ -58,9 +58,12 @@
       <div class="project-foot" v-if="matchComplete">
         <div class="buttons clearfix">
           <router-link v-if="projectStatus === -2" :to="{name: 'projectInfo', params: {id: id}}">重新编辑</router-link>
-          <p class="clearfix" v-if="projectStatus !== -2">
-            <button v-if="demand_verify_status === 1 && projectStatus !== 2" @click="submit" class="middle-button full-red-button">查看匹配结果</button>
+          <p class="clearfix" v-if="projectStatus !== -2 && projectStatus !== 2">
+            <button v-if="demand_verify_status === 1" @click="submit" class="middle-button full-red-button">查看匹配结果</button>
             <button v-else class="middle-button disabled-button">查看匹配结果</button>
+          </p>
+          <p class="clearfix" v-if="projectStatus === 2">
+            <button @click="redirect" class="middle-button full-red-button">查看项目详情</button>
           </p>
         </div>
       </div>
@@ -89,6 +92,9 @@ export default {
     }
   },
   methods: {
+    redirect() {
+      this.$router.push({name: 'vcenterItemShow', params: {id: this.id}})
+    },
     matchInc() {
       this.$http.get(api.recommendListId.format(this.id))
       .then(res => {
