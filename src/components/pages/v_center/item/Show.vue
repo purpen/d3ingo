@@ -8,7 +8,7 @@
       <el-breadcrumb-item>详情</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <el-row :gutter="20" style="margin-top: 30px">
+    <el-row :gutter="20" class="blank30">
       <v-item-progress :progressButt="progressButt" :progressContract="progressContract"
                        :progressItem="progressItem"></v-item-progress>
 
