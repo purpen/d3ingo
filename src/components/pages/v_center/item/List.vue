@@ -151,7 +151,7 @@
                                 v-if="d.item.show_offer">查看报价
                     </el-button>
                     <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary"
-                                v-else>查看设计公司
+                                v-else>查看详情
                     </el-button>
                   </p>
 
@@ -175,13 +175,8 @@
                       评价
                     </el-button>
                   </p>
-                  <p v-if="d.item.status === 2 || d.item.status === 3" class="btn margin-b-10" v-show="d.item.is_view_show">
+                  <p v-if="d.item.status === 2" class="btn margin-b-10">
                     <el-button class="is-custom" @click="viewShow2(d.item.id)" size="small" type="primary">
-                      查看详情
-                    </el-button>
-                  </p>
-                  <p class="margin-b-10" v-show="d.item.is_view_show" v-else>
-                    <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary">
                       查看详情
                     </el-button>
                   </p>

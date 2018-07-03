@@ -175,7 +175,7 @@ export default {
     sureTransfer(index, item) {
       this.withDrawForm.index = index
       this.withDrawForm.id = item.id
-      this.withDrawForm.bankName = item.account_bank_value
+      this.withDrawForm.bankName = item.branch_name
       this.withDrawForm.bankNumber = item.account_number
       this.withDrawForm.bankUser = item.account_name
       this.sureTransferDialog = true
