@@ -78,7 +78,7 @@
                         {{ item.company_name }}
                       </p>
 
-                      <el-popover class="contact-popover fl contact-us" trigger="hover" placement="top" v-if="!isMob">
+                      <el-popover class="contact-popover fr contact-us" trigger="hover" placement="top" v-if="!isMob">
                         <p class="contact">联系人: {{ item.contact_name }}</p>
                         <p class="contact">职位: {{ item.position }}</p>
                         <p class="contact">电话: {{ item.phone }}</p>
@@ -164,12 +164,11 @@
 
                 </div>
                 <div class="contract-item new" v-else>
-                  <el-button @click="contractBtn" class="contract-btn is-custom">编辑在线合同</el-button>
+                  <el-button @click="contractBtn" type="danger" class="contract-btn is-custom">编辑在线合同</el-button>
                 </div>
               </el-collapse-item>
             </el-collapse>
           </div>
-
           <div class="select-item-box" v-if="statusLabel.amount">
             <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
               <el-collapse-item title="首付款资金" name="9">
@@ -197,7 +196,7 @@
                     <p>首付款已转到太火鸟SaaS平台托管</p>
                     <p class="capital-money">¥ {{ firstRestPayment }}</p>
                     <p class="pay-btn">
-                      <span>发票确认中</span>
+                      <span class="pay-await">发票确认中</span>
                     </p>
                     <p class="capital-des">发票确认收取中，请您耐心等待…</p>
                     <p class="capital-des">太火鸟SaaS平台收到发票后会将相关款项转入您的账户中。</p>
@@ -324,7 +323,7 @@
                           <p>阶段款已转到太火鸟SaaS平台托管</p>
                           <p class="capital-money">¥ {{ d.amount }}</p>
                           <p class="pay-btn">
-                            <span>发票确认中</span>
+                            <span class="pay-await">发票确认中</span>
                           </p>
                           <p class="capital-des">发票确认收取中，请您耐心等待…</p>
                           <p class="capital-des">太火鸟SaaS平台收到发票后会将相关款项转入您的账户中。</p>
@@ -341,8 +340,8 @@
 
                     </div>
                     <div class="blank20"></div>
-                    <hr />
-
+                    <div class="border-t" v-if="d.item_stage_image&&d.item_stage_image.length>0">
+                    </div>
                   </div>
 
                   <p class="finish-item-btn" v-if="sureFinishBtn">
@@ -463,7 +462,7 @@
             收件人地址
           </el-col>
           <el-col :span="20">
-            北京市&nbsp;朝阳区&nbsp;酒仙桥751D北京时尚设计广场&nbsp;B7南侧太火鸟 
+            北京市&nbsp;朝阳区&nbsp;酒仙桥751D北京时尚设计广场&nbsp;B7南侧太火鸟
           </el-col>
         </el-row>
       </div>
@@ -521,12 +520,12 @@
         <input type="hidden" ref="confirmIndex"/>
       </span>
     </el-dialog>
-    <el-dialog title="报价单详情" v-model="quotaDialog" size="large" top="2%">
+    <el-dialog title="报价单详情" v-model="quotaDialog" id="quote-dialog" style="width: 880px;margin: auto" size="large" top="2%">
       <v-quote-view :formProp="quota"></v-quote-view>
 
-      <div slot="footer" class="dialog-footer btn">
-        <el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>
-      </div>
+      <!--<div slot="footer" class="dialog-footer btn">-->
+        <!--<el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>-->
+      <!--</div>-->
     </el-dialog>
 
   </div>
@@ -1371,12 +1370,20 @@
             if (self.item.type === 1) {
               tab = [
                 {
+                  name: '项目名称',
+                  title: self.item.name
+                },
+                {
                   name: '项目类型',
                   title: self.item.type_value
                 },
                 {
                   name: '设计类别',
                   title: self.item.design_types_value.join(', ')
+                },
+                {
+                  name: '产品功能描述',
+                  title: self.item.product_features
                 },
                 {
                   name: '产品领域',
@@ -1390,12 +1397,20 @@
             } else if (self.item.type === 2) {
               tab = [
                 {
+                  name: '项目名称',
+                  title: self.item.name
+                },
+                {
                   name: '项目类型',
                   title: self.item.type_value
                 },
                 {
                   name: '设计类别',
                   title: self.item.design_types_value.join(', ')
+                },
+                {
+                  name: '产品功能描述',
+                  title: self.item.product_features
                 }
               ]
             }
@@ -1710,7 +1725,35 @@
     font-size: 1.8rem;
     /* margin: 10px 0 20px 0; */
   }
-
+  .pay-ok {
+    position: relative;
+  }
+  .pay-ok:before {
+    content: '';
+    position: absolute;
+    left: -30px;
+    top: 0;
+    display: inline-block;
+    width: 24px;
+    height: 26px;
+    background: url('../../../../assets/images/item/CompleteBig@2x.png') no-repeat center center / contain
+  }
+  .pay-await {
+    position: relative;
+  }
+  .pay-await:before {
+    content: '';
+    position: absolute;
+    left: -30px;
+    top: 0;
+    display: inline-block;
+    width: 24px;
+    height: 26px;
+    background: url('../../../../assets/images/item/Waiting@2x.png') no-repeat center center / contain
+  }
+  .border-t {
+    border-top: 1px solid #d2d2d2;
+  }
   .capital-item .capital-btn {
     padding: 10px 30px 10px 30px;
   }
