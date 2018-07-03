@@ -3,23 +3,36 @@
     <!-- <div class="" v-if="taskState.power" v-loading="isLoading"> -->
     <section class="animated task-detail fadeIn">
       <div class="task-detail-header">
-        <span v-show="!isMyTask" v-if="currentForm.tier === 0" class="task-detail-name">{{projectObject.name}}</span>
+        <!-- <el-tooltip effect="dark" :content="'属于项目: ' + projectObject.name" placement="top">
+          <span v-show="!isMyTask" v-if="currentForm.tier === 0" class="task-detail-name">{{projectObject.name}}</span>
+        </el-tooltip> -->
+        <el-tooltip v-if="currentForm.itemName" effect="dark" :content="'属于项目: ' + currentForm.itemName" placement="top">
+          <span v-if="currentForm.tier === 0" class="task-detail-name">{{ currentForm.itemName }}</span>
+        </el-tooltip>
         <div v-show="!isMyTask" v-if="currentForm.tier === 0" ref="selectParent" class="select-parent" tabindex="-1">
-          <span class="select-show">{{currentForm.stage_title | stageTitle}}</span>
+          <div class="select-show-parent">
+            <span class="select-show">{{currentForm.stage_title | stageTitle}}</span>
+          </div>
           <ul class="stage-list stage-list0">
             <li :class="{'active': !currentForm.stage_id}" @click="stageItemClick(0)">无阶段</li>
             <li :class="{'active': d.id === currentForm.stage_id}" v-for="(d, index) in stageList" :key="index" @click="stageItemClick(d.id)">
               {{d.title}}</li>
           </ul>
         </div>
-          <div v-show="!isMyTask" v-if="currentForm.tier === 1"
-            class="task-detail-name task-detail-name1"
-            @click="showChild(parentTask.id)"
-            >
-            <el-tooltip effect="dark" :content="parentTask.name" placement="top">
-              <span class="parent-task-name">{{parentTask.name}}</span>
-            </el-tooltip>
-          </div>
+        <div v-show="!isMyTask" v-if="currentForm.tier === 1"
+          class="task-detail-name task-detail-name1"
+          @click="showChild(parentTask.id)"
+          >
+          <el-tooltip effect="dark" :content="parentTask.name" placement="top">
+            <span class="parent-task-name">{{parentTask.name}}</span>
+          </el-tooltip>
+        </div>
+        <div v-show="isMyTask" v-if="currentForm.tier === 1"
+          class="task-detail-name task-detail-name1">
+          <el-tooltip effect="dark" :content="'属于任务: ' + parentTask.name" placement="top">
+            <span class="parent-task-name">{{parentTask.name}}</span>
+          </el-tooltip>
+        </div>
         <div ref="selectParent2" class="select-parent select-menu" tabindex="-1">
           <span class="select-show"></span>
           <ul class="stage-list">
@@ -47,7 +60,7 @@
             </ul>
             <ul class="task-member-list task-member-execute no-execute" v-else>
               <li class="margin-none" @click="showMember = true">
-                <img @click="showMember = true" v-lazy="require('assets/images/avatar_100.png')">执行者</li>
+                <img @click="showMember = true" v-lazy="require('assets/images/avatar_100.png')">执行人</li>
             </ul>
             <v-Member
               :isLeft="true"
@@ -769,7 +782,7 @@
             item['action'] = '指派给了：'
             break
           case 21:
-            item['action'] = '移除了执行者：'
+            item['action'] = '移除了执行人：'
             break
         }
       },
@@ -839,6 +852,11 @@
         if (this.isReady === true) {
           this.isReady = false
           this.isReady = setTimeout(() => {
+            // if (this.isMyTask) {
+            //   this.docHeight = (document.body.clientHeight - 240) + 'px'
+            // } else {
+            //   this.docHeight = (document.body.clientHeight - 237) + 'px'
+            // }
             this.docHeight = (document.body.clientHeight - 237) + 'px'
             this.isReady = true
           }, 100)
@@ -972,6 +990,11 @@
       }
     },
     created() {
+      // if (this.isMyTask) {
+      //   this.docHeight = (document.body.clientHeight - 240) + 'px'
+      // } else {
+      //   this.docHeight = (document.body.clientHeight - 237) + 'px'
+      // }
       this.docHeight = (document.body.clientHeight - 237) + 'px'
     },
     directives: {
@@ -1003,6 +1026,7 @@
     border-radius: 4px;
   }
   .task-detail-header {
+    height: 45px;
     display: flex;
     color: #666;
     font-size: 14px;
@@ -1024,6 +1048,10 @@
     border: 1px solid #E6E6E6;
     border-radius: 4px;
     cursor: pointer;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .task-detail-name1 {
     margin-right: 50px;
@@ -1033,6 +1061,7 @@
     white-space: normal;
     text-overflow: ellipsis;
     overflow: hidden;
+    max-width: 100%;
   }
 
   .task-detail-name1::after {
@@ -1040,7 +1069,7 @@
     position: absolute;
     width: 100%;
     height: 1px;
-    background: #666;
+    background: transparent;
     top: 24px;
     left: 2px;
   }
@@ -1081,8 +1110,11 @@
   .stage-list li {
     height: 40px;
     line-height: 40px;
-    padding: 0 20px;
+    padding: 0 30px 0 20px;
     position: relative;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .stage-list li:hover {
     background: #fafafa;
@@ -1107,9 +1139,15 @@
     line-height: 34px;
     position: relative;
     cursor: pointer;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
-
-  .select-show::after {
+  .select-show-parent {
+    position: relative;
+  }
+  .select-show-parent::after {
     transition: 0.2s all ease;
     content: "";
     position: absolute;
@@ -1135,27 +1173,29 @@
   }
   
   /* .select-parent:hover .select-show::after, */
-  .select-parent:focus .select-show::after {
+  .select-parent:focus .select-show-parent::after {
     transform: rotate(-135deg) translate(-5px);
   }
   
   .add-task-input {
     position: relative;
-    padding: 20px 0 10px 40px;
+    padding: 20px 0 10px 26px;
     border-bottom: 1px solid #E6E6E6;
   }
   .add-task-input-no_name {
     padding: 20px 0 10px;
   }
   .add-child-input {
-    padding: 10px 20px 10px 0;
+    padding: 5px 20px 5px 0;
     border-bottom: none;
     display: flex;
   }
   .add-child-input .child-more {
     position: absolute;
     right: 3px;
-    top: 21px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
     width: 14px;
     height: 14px;
     border: 2px solid #E6E6E6;
@@ -1200,7 +1240,7 @@
     position: relative;
     width: 24px;
     height: 24px;
-    margin-top: 8px;
+    margin-top: 6px;
   }
   .add-task-input .add-child-template {
     border: none;
@@ -1216,7 +1256,7 @@
     position: relative;
     color: #FF5A5F;
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 5px;
   }
   .add-child-button i {
     position: absolute;
@@ -1227,7 +1267,7 @@
     background: url(../../assets/images/member/add02@2x.png) no-repeat left / contain
   }
   .task-info {
-    padding-top: 20px;
+    padding-top: 10px;
     border-bottom: 1px solid #E6E6E6;
   }
   .task-info li {
@@ -1274,6 +1314,9 @@
   .add-child-ul .el-date-editor.el-input {
     width: auto;
     min-width: 128px;
+  }
+  .add-child-ul {
+    padding-top: 5px;
   }
   .task-info li p.p-time {
     background: url(../../assets/images/tools/project_management/Time.png) no-repeat left;
@@ -1350,15 +1393,16 @@
   .task-admin {
     /* position: relative; */
     padding: 0;
-    margin-top: 20px;
+    margin-top: 10px;
     display: inline-block
   }
   .task-member-list {
-    padding-top: 20px;
+    padding-top: 10px;
+    margin-left: -10px;
     display: inline-flex;
     align-items: center;
     flex-wrap: wrap;
-    padding-left: 26px;
+    /* padding-left: 26px; */
   }
   .task-member-list li {
     position: relative;
@@ -1409,7 +1453,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 5px 8px;
+    padding: 5px;
     border: 1px solid transparent;
     border-radius: 50px;
     color: #999
@@ -1424,10 +1468,14 @@
     border-color: #ff5a5f;
     color: #ff5a5f
   }
+  .task-member-execute li.margin-none:active {
+    color: #ff5a5f
+  }
+
   .no-execute li img {
     width: 30px;
     height: 30px;
-    margin-right: 10px;
+    margin-right: 8px;
   }
   .task-member-list li:hover img {
     border-color: #E6E6E6
@@ -1443,6 +1491,7 @@
   }
   .task-member-execute {
     padding-left: 0;
+    margin-left: -10px;
   }
   .task-member-execute li {
     color: #222;
@@ -1459,8 +1508,8 @@
   .task-detail-body .show-member {
     margin: 0 5px 0;
     /* display: inline-block; */
-    width: 30px;
-    height: 30px;
+    width: 36px;
+    height: 36px;
     min-width: 0;
     padding: 0;
     background: #fff;
@@ -1618,6 +1667,6 @@
     width: 100px;
   }
   .child-name {
-    margin: 0 10px;
+    margin: 0 3px;
   }
 </style>

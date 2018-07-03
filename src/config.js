@@ -197,17 +197,17 @@ const COMPANY_TYPE = [
       {
         id: 1,
         key: 'item_3_1',
-        name: 'logo/VI设计'
+        name: 'logo、VI设计'
       },
       {
         id: 2,
         key: 'item_3_2',
-        name: '海报/宣传册'
+        name: '海报、宣传册'
       },
       {
         id: 3,
         key: 'item_3_3',
-        name: '画册/书装'
+        name: '画册、书装'
       }
     ],
     field: [
@@ -222,7 +222,7 @@ const COMPANY_TYPE = [
       {
         id: 1,
         key: 'item_4_1',
-        name: 'H5'
+        name: 'H5设计'
       }
     ],
     field: [
@@ -262,7 +262,7 @@ const COMPANY_TYPE = [
       {
         id: 3,
         key: 'item_6_3',
-        name: '形象/IP插画'
+        name: '形象、IP插画'
       }
     ],
     field: [

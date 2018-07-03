@@ -251,7 +251,7 @@
           console.error(err.message)
         })
       },
-      // 去认证
+      // 去完善信息
       goAttestation() {
         if (this.userType === 1) {
           this.$router.push({name: 'vcenterDCompanyIdentification'})
@@ -464,7 +464,6 @@
       // 获取公司名称银行卡信息
       self.$http({method: requestMethod, url: userInfo}).then (function (response) {
         let getCorporationInfo = response.data.data
-        console.log(getCorporationInfo)
         self.bankId = getCorporationInfo.id
         if (getCorporationInfo) {
           self.corporationInfo = getCorporationInfo

@@ -804,5 +804,9 @@ export default {
     padding: 5px;
     border-bottom: 1px solid #D2D2D2;
   }
-
+  
+  .admin-menu-sub .item {
+    border: none;
+    padding: 0;
+  }
 </style>

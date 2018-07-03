@@ -513,9 +513,9 @@
     color: #666;
     margin-right: 0;
   }
-  .vcenter{
+  /* .vcenter{
     margin-top: 50px;
-  }
+  } */
   @media screen and (max-width: 767px) {
     .item-m .content {
       border: none;

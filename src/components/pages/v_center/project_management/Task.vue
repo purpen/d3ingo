@@ -41,9 +41,12 @@
                     @blur="taskNameBlur(ele.id)"
                     v-model="currentTaskForm.name">
                 </p>
-                <p v-if="ele.over_time" :class="['task-date', 'fr', {
+                <el-tooltip effect="dark" :content="ele.time_detail" placement="top">
+                  <p v-if="ele.over_time" :class="['task-date', 'fr', {
                     'task-date-red': ele.over_time_stamp < new Date().getTime()
-                    }]">{{ele.over_time | filterOverTime}}</p>
+                    }]">{{ele.over_time | filterOverTime}}
+                  </p>
+                </el-tooltip>
                 <div class="fr task-item-div">
                   <img v-if="ele.logo_image" :src="ele.logo_image.logo" alt="">
                   <img v-else v-lazy="require('assets/images/avatar_100.png')">
@@ -81,9 +84,11 @@
                       @blur="taskNameBlur(e.id)"
                       v-model="currentTaskForm.name">
                     </p>
-                  <p :class="['task-date', 'fr', {
-                    'task-date-red': e.over_time_stamp < new Date().getTime()
-                    }]">{{e.over_time | filterOverTime}}</p>
+                  <el-tooltip effect="dark" :content="e.time_detail" placement="top">
+                    <p :class="['task-date', 'fr', {
+                      'task-date-red': e.over_time_stamp < new Date().getTime()
+                      }]">{{e.over_time | filterOverTime}}</p>
+                  </el-tooltip>
                   <div class="fr task-item-div">
                     <img v-if="e.logo_image" :src="e.logo_image.logo" alt="">
                     <img v-else v-lazy="require('assets/images/avatar_100.png')">
@@ -98,11 +103,39 @@
           </section>
         </el-col>
         <el-col :span="12" :class="{'fadeInRight': taskState.power}">
-          <v-task
+          <!-- <v-task
            :currentTaskForm="currentTaskForm"
            :isMyTask="isMyTask"
            :projectObject="projectObject"
-           :completeState="completeState"></v-task>
+           :completeState="completeState"></v-task> -->
+           <div v-if="taskState.power">
+            <section class="animated task-detail fadeIn">
+              <div class="task-detail-header">
+                <span v-show="!isMyTask" v-if="currentForm.tier === 0" class="task-detail-name">{{projectObject.name}}</span>
+                <div v-show="!isMyTask" v-if="currentForm.tier === 0" ref="selectParent" class="select-parent" tabindex="-1">
+                  <span class="select-show">请选择阶段</span>
+                  <ul class="stage-list stage-list0">
+                    <li :class="{'active': !currentForm.stage_id}" @click="stageItemClick(0)">无阶段</li>
+                    <li :class="{'active': d.id === currentForm.stage_id}" v-for="(d, index) in stageList" :key="index" @click="stageItemClick(d.id)">
+                      {{d.title}}</li>
+                  </ul>
+                </div>
+                <div v-show="!isMyTask" v-if="currentForm.tier === 1"
+                  class="task-detail-name task-detail-name1"
+                  @click="showChild(parentTask.id)"
+                  ><span class="parent-task-name">{{parentTask.name}}</span>
+                </div>
+                <div ref="selectParent2" class="select-parent select-menu" tabindex="-1">
+                  <span class="select-show"></span>
+                  <ul class="stage-list">
+                    <li v-if="currentForm.tier === 0" @click="deleteBtn()">删除</li>
+                    <li v-if="currentForm.tier === 1" @click="deleteBtn()">删除子任务</li>
+                  </ul>
+                </div>
+                <i class="fx fx-icon-nothing-close-error" @click="closeBtn"></i>
+              </div>
+            </section>
+           </div>
         </el-col>
       </el-row>
     </div>
@@ -150,6 +183,7 @@
     },
     data () {
       return {
+        oldShowMine: '',
         docHeight: '',
         isReady: true,
         isFocus: false,
@@ -192,6 +226,7 @@
         completeState: -1,
         isUpdate: true,
         oldStageTitle: '',
+        currentForm: {},
         taskStatus: 0 // 0: 全部， 2: 已完成， -1: 未完成
       }
     },
@@ -229,7 +264,11 @@
           this.isReady = false
           this.isReady = setTimeout(() => {
             this.isReady = true
-            this.docHeight = (document.body.clientHeight - 225) + 'px'
+            if (this.isMyTask) {
+              this.docHeight = (document.body.clientHeight - 180) + 'px'
+            } else {
+              this.docHeight = (document.body.clientHeight - 225) + 'px'
+            }
           }, 100)
         }
       },
@@ -370,6 +409,7 @@
               return
             }
           }
+          self.currentStageForm['stage'] = self.taskStatus
           self.$http.put(api.toolsStageId.format(id), self.currentStageForm).then(function (response) {
             self.isUpdate = true
             if (response.data.meta.status_code === 200) {
@@ -438,7 +478,6 @@
         this.$http.get(api.myTask)
         .then(res => {
           if (res.data.meta.status_code === 200) {
-            console.log(res.data.data)
             this.$store.commit('setTaskList', {data: res.data.data, showChild: true})
           } else {
             this.$messgae.error(res.data.meta.message)
@@ -564,9 +603,30 @@
         this.$store.commit('removeParentTask')
         this.$store.commit('changeTaskStatePower', 0)
         this.$store.commit('changeTaskStateEvent', '')
+      },
+      // 查详情
+      view(id) {
+        this.atFirst = true
+        // this.isLoading = true
+        this.$http.get(api.taskId.format(id), {}).then((res) => {
+          if (res.data.meta.status_code === 200) {
+            this.currentForm = res.data.data
+            this.getItemId(this.currentForm.item_id)
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+          // this.isLoading = false
+        }).catch((error) => {
+          this.$message.error(error.message)
+          console.error(error.message)
+          // this.isLoading = false
+        })
       }
     },
     computed: {
+      showMine() {
+        return this.$store.state.task.showMine
+      },
       isMob() {
         return this.$store.state.event.isMob
       },
@@ -614,6 +674,13 @@
       }
     },
     watch: {
+      showMine(val) {
+        if (this.oldShowMine === 'show') {
+          this.fetchStage()
+          this.fetchTask()
+        }
+        this.oldShowMine = val
+      },
       stageList: {
         handler(val) {
           val.forEach(item => {
@@ -650,10 +717,11 @@
       }
     },
     created() {
-      this.docHeight = (document.body.clientHeight - 225) + 'px'
       if (this.isMyTask) {
+        this.docHeight = (document.body.clientHeight - 180) + 'px'
         this.fetchMyTask()
       } else {
+        this.docHeight = (document.body.clientHeight - 225) + 'px'
         let itemId = this.$route.params.id
         if (!itemId) {
           if (this.redirectItemList) {
@@ -818,7 +886,7 @@
     /* border-radius: 0 0 0 4px; */
   }
   .mytask-item .task-item:first-child {
-    border-top: 1px solid #e6e6e6;
+    /* border-top: 1px solid #e6e6e6; */
   }
   .mytask-item .task-item {
     border-right: 1px solid #e6e6e6;
@@ -852,7 +920,7 @@
   .stage-item:last-child .task-item:last-child {
     margin-bottom: 0;
     /* border-bottom: none; */
-    border-radius: 4px 4px 0 0
+    /* border-radius: 4px 4px 0 0 */
   }
 
   .stage-title {
@@ -1036,6 +1104,135 @@
     text-align: center;
     color: #969696;
     line-height: 3;
+  }
+  /* 合并 */
+  .task-detail {
+    animation-delay: 0.5s;
+    border: 1px solid #E6E6E6;
+    border-radius: 4px;
+    padding: 20px 30px;
+    margin-bottom: 150px;
+  }
+  .task-detail-header {
+    display: flex;
+    color: #666;
+    font-size: 14px;
+    position: relative;
+    height: 34px;
+  }
+  .task-detail-header .fx-icon-nothing-close-error {
+    position: absolute;
+    right: 0;
+    top: 10px;
+  }
+  .task-detail-name {
+    height: 34px;
+    line-height: 34px;
+    margin-right: 20px;
+    padding: 0 10px;
+    border: 1px solid #E6E6E6;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .task-detail-name1 {
+    border: none;
+    position: relative;
+    padding: 0
+  }
+
+  .task-detail-name1::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background: #666;
+    top: 24px;
+    left: 2px;
+  }
+  .parent-task-name:hover {
+    color: #FF5A5F
+  }
+  .task-detail-name1:hover {
+    color: #FF5A5F
+  }
+  .task-detail-name1:hover::after {
+    background: #FF5A5F
+  }
+  .select-parent {
+    position: relative;
+    padding-right: 20px;
+  }
+  .select-menu {
+    position: absolute;
+    right: 44px;
+    top: 0;
+    width: 24px;
+    height: 24px;
+  }
+  .stage-list {
+    display: none;
+    background: #fff;
+    width: 200px;
+    box-shadow: 0 0 6px 2px rgba(0,0,0,0.10);
+    position: absolute;
+    right: -10px;
+    top: 34px;
+    z-index: 1;
+  }
+
+  .stage-list0 {
+    left: 0;
+  }
+  .stage-list li {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 20px;
+    position: relative;
+  }
+  .stage-list li:hover {
+    background: #fafafa;
+    cursor: pointer;
+  }
+  .stage-list li.active::after {
+    content: "";
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    width: 8px;
+    height: 14px;
+    border: 2px solid #E6E6E6;
+    border-left: none;
+    border-top: none;
+    transform: rotate(45deg);
+  }
+  .select-show {
+    display: block;
+    min-width: 34px;
+    height: 34px;
+    line-height: 34px;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .select-show::after {
+    transition: 0.2s all ease;
+    content: "";
+    position: absolute;
+    right: -16px;
+    top: 10px;
+    width: 10px;
+    height: 10px;
+    border: 2px solid #E6E6E6;
+    transform: rotate(45deg) translate(3px, -3px);
+    border-left: none;
+    border-top: none;
+  }
+  .select-menu .select-show {
+    background: url(../../../../assets/images/tools/cloud_drive/permission/more@2x.png) no-repeat center / contain
+  }
+  .select-menu .select-show::after {
+    content: "";
+    border: none;
   }
   .line-through {
     text-decoration: line-through

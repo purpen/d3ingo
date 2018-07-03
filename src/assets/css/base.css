@@ -12,7 +12,7 @@ html {
 html::-webkit-scrollbar,
 .scroll-bar::-webkit-scrollbar,
 .scroll-bar2::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
   height: 8px;
 }
 .scroll-bar2::-webkit-scrollbar {
@@ -22,7 +22,7 @@ html::-webkit-scrollbar,
 html::-webkit-scrollbar-track,
 .scroll-bar::-webkit-scrollbar-track,
 .scroll-bar2::-webkit-scrollbar-track {
-  background-color: #e5e5e5;
+  background-color: #fafafa;
   /* background: rgba(0, 0, 0, 0); */
   border-left: 2px solid transparent
 }
@@ -918,7 +918,7 @@ input:-webkit-autofill {
 .nav-item .view-msg {
   display: none;
   position: absolute;
-  z-index: 100;
+  z-index: 999;
   top: 56px;
   right: 0;
   width: 200px;

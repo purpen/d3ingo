@@ -112,7 +112,7 @@
                 <div class="computer-btn"
                   v-if="isCompany && !isMob && eventUser.design_company_logo_image"
                   @click="redirectCompany">
-                  <span :style="{background: `url(${eventUser.design_company_logo_image.logo}) no-repeat center / 40px 40px #222`}"></span>
+                  <span :style="{background: `url(${eventUser.design_company_logo_image.logo}) no-repeat center / cover #222`}"></span>
                 </div>
             </el-tooltip>
             
@@ -262,7 +262,7 @@
               <div class="computer-btn"
                 v-if="isCompany && !isMob && eventUser.company &&eventUser.design_company_logo_image"
                 @click="redirectCompany">
-                <span :style="{background: `url(${eventUser.design_company_logo_image.logo}) no-repeat center / 40px 40px #222`}"></span>
+                <span :style="{background: `url(${eventUser.design_company_logo_image.logo}) no-repeat center / cover #222`}"></span>
                 {{eventUser.company.company_name}}
               </div>
             </el-tooltip>
@@ -411,13 +411,14 @@
         }
       },
       showMine() {
-        // this.$store.commit('changeMineView', '')
+        this.$store.commit('changeMineView', '')
         this.$store.commit('removeParentTask')
         this.$store.commit('changeTaskStatePower', 0)
         this.$store.commit('changeTaskStateEvent', '')
-        this.$store.commit('changeMineView', 'task')
+        // this.$store.commit('changeMineView', 'task')
         if (this.showCover === 'show') {
           this.showCover = 'hide'
+          this.$store.commit('changeMineView', 'task')
           setTimeout(() => {
             this.showCover2 = 'show'
           }, 520)
@@ -425,6 +426,7 @@
           if (this.showCover2 === 'show') {
             this.showCover2 = 'hide'
           } else {
+            this.$store.commit('changeMineView', 'task')
             this.showCover2 = 'show'
           }
         }

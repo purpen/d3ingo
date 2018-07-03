@@ -1,19 +1,32 @@
 <template>
   <div class="container">
+    <div style="width:900px;margin: 20px auto" class="ordershow-span-color">
+      <div class="dis-flex" style="margin-bottom: 10px">
+        <div class="mar-r-10">
+          <router-link :to="{ path: '/vcenter/item/list' }" class="font-14">我的项目</router-link>
+          <span class="border"></span>
+        </div>
+        <div class="mar-r-10">
+          <router-link :to="{ name: 'vcenterItemShow', params: {id: this.$route.params.item_id}}" class="font-14">项目详情</router-link>
+          <span class="border"></span>
+        </div>
+        <div class="mar-r-10">
+          <span class="font-14">付款</span>
+        </div>
+      </div>
+    </div>
     <div class="payment">
       <div class="title-item">
-        <h3>支付项目资金</h3>
-        <p>客户需要将项目资金预先托管至太火鸟SaaS，完成后项目将自动启动并进入项目管理阶段。</p>
+        <p>订单详情</p>
       </div>
       <div class="order-item">
-        <p class="banner">订单详情</p>
         <p><span>订单内容:&nbsp;&nbsp; </span>{{ item.item_name }}</p>
         <p><span>金&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;额:&nbsp;&nbsp; </span>¥ {{ item.amount }}</p>
         <p><span>订单编号:&nbsp;&nbsp; </span>{{ item.uid }}</p>
       </div>
       <div class="pay-item">
         <div class="clearfix payItem-m">
-          <p class="banner">选择支付方式</p>
+          <p class="font-size-16 mar-t-30 mar-b-10">选择支付方式</p>
           <div class="pay-type">
             <ul v-if="!isMob">
               <li>
@@ -125,7 +138,8 @@ export default {
             if (payType === 5) {
               self.$router.push({
                 name: 'vcenterOrderShow',
-                params: { id: self.item.uid }
+                params: { id: self.item.uid },
+                query: {id: self.$route.params.item_id}
               })
             }
           } else {
@@ -143,6 +157,7 @@ export default {
   created: function() {
     const self = this
     let itemId = this.$route.params.item_id
+    console.log(this.$route)
     if (itemId) {
       self.itemId = itemId
       self.$http
@@ -195,7 +210,7 @@ export default {
 .payment {
   width: 900px;
   border: 1px solid #ccc;
-  margin: 30px auto 30px auto;
+  margin: 0 auto 30px auto;
   padding: 20px 20px 20px 20px;
 }
 
@@ -203,21 +218,31 @@ export default {
   color: #333;
 }
 
-.title-item h3 {
-  font-size: 2rem;
+.title-item p {
+  font-size: 16px;
+  color: #222222;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #E6E6E6;
 }
 
-.title-item p {
-  color: #666;
-  font-size: 1.2rem;
-  margin: 20px 0 20px 0;
+.font-size-16 {
+  font-size: 16px;
+  color: #222222 !important;
+}
+
+.mar-t-30 {
+  margin-top: 30px;
+}
+
+.mar-b-10 {
+  margin-bottom: 10px;
 }
 
 .order-item p {
+  margin-top: 20px;
   line-height: 2;
 }
 
-.order-item p.banner,
 .pay-item p.banner {
   font-size: 1.6rem;
   border-bottom: 2px solid #ccc;
@@ -233,6 +258,7 @@ export default {
 }
 
 .pay-type {
+  border-top: 2px solid #E6E6E6;
   height: 100px;
 }
 
@@ -242,11 +268,12 @@ export default {
 }
 
 .pay-type .item {
+  height: 68px;
   position: relative;
   cursor: pointer;
   border: 1px solid #ccc;
   width: 160px;
-  margin: 10px;
+  margin: 20px 20px 0 0;
   padding: 15px 20px 15px 20px;
 }
 
@@ -306,6 +333,45 @@ p.total-txt {
   left: 0;
 }
 
+.border {
+  width: 10px;
+  height: 10px;
+  border-top: 1px solid #bfcbd9;
+  border-right: 1px solid #bfcbd9;
+  border-left: 2px solid #FFFFFF;
+  border-bottom: 2px solid #ffffff;
+  transform: rotate(45deg);
+  display: inline-block;
+}
+
+.font-14 {
+  font-size: 14px;
+}
+
+.dis-flex {
+  display: flex;
+}
+
+.mar-r-10 {
+  margin-right: 10px;
+}
+
+.mar-r-10 span {
+  font-size: 14px;
+  color: #666666;
+}
+
+.mar-r-10:last-child span {
+  color: #222222;
+}
+
+.mar-r-10:last-child span:hover {
+  color: #222222;
+}
+
+.mar-r-10 span:hover {
+  color: #ff5a5f;
+}
 @media screen and (max-width: 899px) {
   .payment {
     width: auto;

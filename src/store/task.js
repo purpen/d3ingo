@@ -40,6 +40,11 @@ let mutations = {
             } else {
               e.over_time_stamp = e.over_time.getTime()
             }
+            if (e.over_time_stamp < new Date().getTime()) {
+              e.time_detail = (e.over_time_stamp / 1000).date_format().format('yyyy年MM月dd日 hh:mm') + ' 已逾期'
+            } else {
+              e.time_detail = (e.over_time_stamp / 1000).date_format().format('yyyy年MM月dd日 hh:mm')
+            }
           }
           if (e['created_at']) {
             e['created_at_format'] = e['created_at'].date_format().format('MM月dd日')
@@ -51,6 +56,13 @@ let mutations = {
                 item.over_time_stamp = new Date(time).getTime()
               } else {
                 item.over_time_stamp = item.over_time.getTime()
+              }
+              if (item.over_time_stamp < new Date().getTime()) {
+                item.time_detail = (item.over_time_stamp / 1000).date_format().format('yyyy年MM月dd日 hh:mm') + ' 已逾期'
+                console.log(item.over_time)
+                console.log(item.over_time_stamp)
+              } else {
+                item.time_detail = (item.over_time_stamp / 1000).date_format().format('yyyy年MM月dd日 hh:mm')
               }
             }
             if (item.id === e.id) {
@@ -116,6 +128,7 @@ let mutations = {
     this.commit('setDisplayObj', state.taskList)
   },
   updateStageListItem(state, obj) {
+    console.log(obj)
     state.stageList.forEach(item => {
       if (item.id === obj.id) {
         Object.assign(item, obj)

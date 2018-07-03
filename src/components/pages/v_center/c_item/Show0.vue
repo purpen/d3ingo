@@ -8,7 +8,7 @@
       <el-breadcrumb-item>详情</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <el-row :gutter="24">
+    <el-row :gutter="24" class="blank30">
       <v-item-progress :progressButt="progressButt" :progressContract="progressContract"
                        :progressItem="progressItem"></v-item-progress>
 
@@ -170,7 +170,6 @@
               </el-collapse-item>
             </el-collapse>
           </div>
-
           <div class="select-item-box" v-if="statusLabel.amount">
             <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
               <el-collapse-item title="托管项目资金" name="9">
