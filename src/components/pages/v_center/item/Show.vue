@@ -1012,40 +1012,40 @@ export default {
               self.statusLabel.manage = true
               self.statusLabel.stage = true
               break
-            case 18:
+            case 18:  // 项目验收
               self.progressButt = 3
               self.progressContract = 3
               self.progressItem = 2
               self.statusIconUrl = require('@/assets/images/item/item_yanshou.png')
               self.statusLabel.cooperateCompany = true
               self.statusLabel.contract = true
-              self.statusLabel.amount = false
+              self.statusLabel.amount = true
               self.statusLabel.isPay = true
               self.statusLabel.manage = true
               self.statusLabel.stage = true
               self.statusLabel.evaluate = true
               break
-            case 20:
+            case 20:  // 无状态
               self.progressButt = 3
               self.progressContract = 3
               self.progressItem = 4
               self.statusIconUrl = require('@/assets/images/item/item_success.png')
               self.statusLabel.cooperateCompany = true
               self.statusLabel.contract = true
-              self.statusLabel.amount = false
+              self.statusLabel.amount = true
               self.statusLabel.isPay = true
               self.statusLabel.manage = true
               self.statusLabel.stage = true
               self.statusLabel.evaluate = true
               break
-            case 22:
+            case 22:  // 已评价
               self.progressButt = 3
               self.progressContract = 3
               self.progressItem = 4
               self.statusIconUrl = require('@/assets/images/item/item_success.png')
               self.statusLabel.cooperateCompany = true
               self.statusLabel.contract = true
-              self.statusLabel.amount = false
+              self.statusLabel.amount = true
               self.statusLabel.isPay = true
               self.statusLabel.manage = true
               self.statusLabel.stage = true
