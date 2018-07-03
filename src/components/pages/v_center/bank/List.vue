@@ -11,7 +11,7 @@
           <el-breadcrumb-item>银行卡管理</el-breadcrumb-item>
         </el-breadcrumb>
 
-        <div class="item-list clearfix" v-loading.body="isLoading">
+        <div class="item-list clearfix" v-loading="isLoading">
           <el-col :xs="24" :sm="8" :md="8" :lg="8" v-for="(d, index) in itemList" :key="index">
             <div class="item">
               <div class="item-title">
@@ -376,7 +376,7 @@
 
   .item-title p {
     line-height: 2;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: #333;
   }
 
@@ -389,7 +389,7 @@
   }
 
   .item-content .number p {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: #333;
   }
 
@@ -438,7 +438,7 @@
     }
 
     .item-content .option a {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
     }
   }
 </style>

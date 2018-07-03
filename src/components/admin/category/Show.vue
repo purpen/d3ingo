@@ -19,7 +19,7 @@
             </div>
           </div>
 
-          <div class="content-box" v-loading.body="isLoading">
+          <div class="content-box" v-loading="isLoading">
 
             <div class="form-title">
               <span>基本信息</span>
@@ -224,7 +224,7 @@ export default {
           self.item.verify_status = evt
           self.$message.success('操作成功')
         } else {
-          self.$message.error(response.meta.message)
+          self.$message.error(response.data.meta.message)
         }
       })
       .catch (function(error) {
@@ -247,7 +247,7 @@ export default {
           self.item.status = evt
           self.$message.success('操作成功')
         } else {
-          self.$message.error(response.meta.message)
+          self.$message.error(response.data.meta.message)
         }
       })
       .catch (function(error) {
@@ -332,7 +332,7 @@ export default {
   .company-show .item p.p-val {
     float: left;
     width: 78%;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   .company-show .item p.opt {

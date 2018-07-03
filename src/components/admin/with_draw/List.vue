@@ -17,7 +17,7 @@
           <el-table
             :data="tableData"
             border
-            v-loading.body="isLoading"
+            v-loading="isLoading"
             class="admin-table"
             @selection-change="handleSelectionChange"
             style="width: 100%">
@@ -158,7 +158,6 @@ export default {
         totalCount: 0,
         sort: 1,
         status: 0,
-
         test: null
       },
       msg: ''

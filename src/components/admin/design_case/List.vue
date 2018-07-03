@@ -16,7 +16,7 @@
           <el-table
             :data="tableData"
             border
-            v-loading.body="isLoading"
+            v-loading="isLoading"
             class="admin-table"
             @selection-change="handleSelectionChange"
             style="width: 100%">
@@ -168,7 +168,7 @@ export default {
           self.itemList[index].open = evt
           self.$message.success('操作成功')
         } else {
-          self.$message.error(response.meta.message)
+          self.$message.error(response.data.meta.message)
         }
       })
       .catch (function(error) {
@@ -191,7 +191,7 @@ export default {
           self.itemList[index].status = evt
           self.$message.success('操作成功')
         } else {
-          self.$message.error(response.meta.message)
+          self.$message.error(response.data.meta.message)
         }
       })
       .catch (function(error) {

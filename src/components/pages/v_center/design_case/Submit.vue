@@ -33,6 +33,8 @@
                       list-type="picture-card">
                       <i class="el-icon-plus"></i>
                       <div slot="tip" class="el-upload__tip" v-html="uploadMsg"></div>
+                      <!-- <button class="middle-button full-red-button">+上传图片</button>
+                      <span v-html="uploadMsg"></span> -->
                       <!-- <el-button size="small" type="danger">点击上传</el-button>
                       <div slot="tip" class="el-upload__tip">{{ uploadMsg }}</div> -->
                     </el-upload>
@@ -42,6 +44,7 @@
                         <el-col :span="isMob ? 24 : 6" v-for="(d, index) in fileList" :key="index">
                           <el-card :body-style="{ padding: '0px' }" class="item">
                             <div class="image-box">
+                              <i v-if="parseInt(coverId) === d.response.asset_id"></i>
                               <img :src="d.url">
                             </div>
                             <div class="content">
@@ -82,7 +85,7 @@
                 </el-col>
               </el-row>
 
-              <el-form-item label="设计类型" prop="type">
+              <!-- <el-form-item label="设计类型" prop="type">
                 <el-radio-group v-model.number="form.type" @change="typeChange" size="small">
                   <el-radio-button
                     v-for="item in typeOptions"
@@ -118,8 +121,8 @@
                       :label="item.value">{{ item.label }}
                     </el-radio-button>
                   </el-radio-group>
-                </el-form-item>
-              </div>
+                </el-form-item> -->
+              <!-- </div>
 
               <div v-if="typeSwitch2">
                 <el-form-item label="设计类别" prop="design_type">
@@ -131,14 +134,24 @@
                     </el-radio-button>
                   </el-radio-group>
                 </el-form-item>
-
-              </div>
-
+              </div> -->
+              <el-row>
+                <el-col :span="isMob ? 24 : 12">
+                  <el-form-item label="作品案例标题" prop="title">
+                    <el-input v-model="form.title" placeholder=""></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
 
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="标题" prop="title">
-                    <el-input v-model="form.title" placeholder=""></el-input>
+                  <el-form-item label="作品案例描述" prop="profile">
+                    <el-input
+                      type="textarea"
+                      :rows="10"
+                      placeholder="请输入内容"
+                      v-model="form.profile">
+                    </el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -151,28 +164,90 @@
                 </el-col>
               </el-row>
 
-              <el-form-item label="是否获得奖项" class="fullwidth">
-                <el-row class="flex">
-                  <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3">
+              <el-row>
+                <el-col :span="isMob ? 24 : 12">
+                  <el-form-item label="设计类型" prop="type">
+                    <el-select v-model.number="form.type" placeholder="设计类型" 
+                    @change="typec"
+                    >
+                      <el-option
+                        v-for="item in typeOptions"
+                        :label="item.label"
+                        :key="item.index"
+                        :value="item.value">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="isMob ? 24 : 12">
+                  <el-form-item label="设计类别" prop="design_type">
+                    <el-select v-model="design_types" multiple placeholder="设计类别">
+                      <el-option
+                        v-for="item in typeDesignOptions"
+                        :label="item.name"
+                        :key="item.id"
+                        :value="item.id">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="isMob ? 24 : 12" v-if="form.type === 1">
+                  <el-form-item label="产品领域" prop="field">
+                    <el-select v-model.number="form.field" placeholder="产品领域">
+                      <el-option
+                        v-for="item in fieldOptions"
+                        :label="item.label"
+                        :key="item.index"
+                        :value="item.value">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-row>
+                <el-col :span="isMob ? 24 : 12">
+                  <el-form-item label="所属行业" prop="industry">
+                    <el-select v-model.number="form.industry" placeholder="设计类别">
+                      <el-option
+                        v-for="item in industryOptions"
+                        :label="item.label"
+                        :key="item.index"
+                        :value="item.value">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-form-item label="获得奖项" class="fullwidth">
+                <el-row class="flex prize" :gutter="10" v-for="(p,indexp) in prizes" :key="indexp" v-if="prizes&&prizes.length>0">
+                  <!-- <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3">
                     <el-radio-group v-model="is_prize" @change="isPrize">
                       <el-radio :label="false">否</el-radio>
                       <el-radio :label="true">是</el-radio>
                     </el-radio-group>
-                  </el-col>
-                  <el-col :xs="24" :sm="9" :md="9" :lg="9" v-if="is_prize">
+                  </el-col> -->
+                  <el-col :xs="24" :sm="12" :md="12" :lg="12">
                     <el-form-item prop="">
                       <el-date-picker
-                        key="prize_time"
+                        key="p.time"
                         class="fullwidth"
-                        v-model="form.prize_time"
+                        v-model="p.time"
                         type="month"
                         placeholder="获奖日期">
                       </el-date-picker>
                     </el-form-item>
-                  <!-- </el-col>
-                  <el-col :xs="24" :sm="9" :md="9" :lg="9" v-if="is_prize"> -->
+                  </el-col>
+                  <!-- <el-col :xs="0" :sm="0" :md="0" :lg="0" v-if="is_prize">
+                  </el-col> -->
+                  <el-col :xs="24" :sm="12" :md="12" :lg="12">
                     <el-form-item prop="prize">
-                      <el-select v-model.number="form.prize" placeholder="所属奖项">
+                      <el-select v-model.number="p.type" placeholder="所属奖项">
                         <el-option
                           v-for="item in prizeOptions"
                           :label="item.label"
@@ -182,32 +257,41 @@
                       </el-select>
                     </el-form-item>
                   </el-col>
+                  <div class="p-after" @click="deletePrize(indexp)">
+                  </div>
+                </el-row>
+                <el-row>
+                  <el-col :xs="4" :sm="4" :md="4" :lg="4">
+                    <el-button class="red-button" @click="getPrize()">
+                      +&nbsp;&nbsp;添加奖项
+                    </el-button>
+                  </el-col>
                 </el-row>
               </el-form-item>
 
-              <el-form-item label="是否申请专利" class="fullwidth">
-                <el-row class="flex">
-                  <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3">
+              <el-form-item label="申请专利" class="fullwidth">
+                <el-row class="flex prize" :gutter="10" v-for="(t,indext) in patents" :key="indext" v-if="patents&&patents.length>0">
+                  <!-- <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3">
                     <el-radio-group v-model="is_apply" @change="isApplication">
                       <el-radio :label="false">否</el-radio>
                       <el-radio :label="true">是</el-radio>
                     </el-radio-group>
-                  </el-col>
-                  <el-col :xs="24" :sm="9" :md="9" :lg="9" v-if="is_apply">
+                  </el-col> -->
+                  <el-col :xs="24" :sm="12" :md="12" :lg="12">
                     <el-form-item>
                       <el-date-picker
-                        key="patent_time"
+                        key="t.time"
                         class="fullwidth"
-                        v-model="form.patent_time"
+                        v-model="t.time"
                         type="month"
                         placeholder="选择日期">
                       </el-date-picker>
                     </el-form-item>
-                  <!-- </el-col>
-                  <el-col :xs="24" :sm="9" :md="9" :lg="9" v-if="is_apply"> -->
+                  </el-col>
+                  <el-col :xs="24" :sm="12" :md="12" :lg="12">
                     <el-form-item>
-                      <el-select v-model.number="form.patent_info" placeholder="选择申请专利类型" 
-                        key="patent_info">
+                      <el-select v-model.number="t.type" placeholder="选择申请专利类型" 
+                        key="t.type">
                         <el-option
                           v-for="item in patentOptions"
                           :label="item.label"
@@ -217,18 +301,27 @@
                       </el-select>
                     </el-form-item>
                   </el-col>
+                  <div class="p-after"  @click="deletePatent(indext)">
+                  </div>
+                </el-row>
+                <el-row>
+                  <el-col :xs="4" :sm="4" :md="4" :lg="4">
+                    <el-button class="red-button" @click="getPatent()">
+                      +&nbsp;&nbsp;添加专利
+                    </el-button>
+                  </el-col>
                 </el-row>
               </el-form-item>
 
               <el-form-item label="产品量产">
                 <el-row class="flex">
-                  <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3">
+                  <el-col  :xs="24" :sm="3" :md="3" :lg="3">
                     <el-radio-group v-model.number="form.mass_production" @change="isProduction">
                       <el-radio class="radio" :label="0">否</el-radio>
                       <el-radio class="radio" :label="1">是</el-radio>
                     </el-radio-group>
                   </el-col>
-                  <el-col :xs="24" :sm="6" :md="6" :lg="6">
+                  <el-col :xs="24" :sm="9" :md="9" :lg="9">
                     <el-select v-model.number="form.sales_volume" v-if="!isDisabledProduct" placeholder="销售额">
                       <el-option
                         v-for="item in saleOptions"
@@ -240,21 +333,31 @@
                   </el-col>
                 </el-row>
               </el-form-item>
-
-              <el-form-item label="描述" prop="profile">
-                <el-input
-                  type="textarea"
-                  :rows="10"
-                  placeholder="请输入内容"
-                  v-model="form.profile">
-                </el-input>
-              </el-form-item>
-
-              <div class="form-btn">
-                <button class="middle-button white-button" @click.prevent="returnList">取消</button>
-                <el-button type="danger" :loading="isLoadingBtn" @click="submit('ruleForm')">提交</el-button>
-              </div>
-              <div class="clear"></div>
+              <el-row>
+                <el-col :span="isMob ? 24 : 12">
+                  <el-form-item label="标签" prop="label"   class="label-tag"
+                  >
+                    <vue-input-tag
+                      placeholder="Enter添加新标签,上限10个"
+                      :tags.sync="form.label"
+                      :limit="10"
+                      :add-tag-on-blur="true"
+                      >
+                    </vue-input-tag>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col>
+                  <div class="form-footer">
+                    <div class="form-btn">
+                      <el-button  @click.prevent="returnList" class="middle-button white-button">取消</el-button>
+                      <el-button type="danger" :loading="isLoadingBtn" @click="submit('ruleForm')">提交</el-button>
+                    </div>
+                    <div class="clear"></div>
+                  </div>
+                </el-col>
+              </el-row>
             </el-form>
           </div>
         </div>
@@ -270,12 +373,13 @@
   import '@/assets/js/format'
   import '@/assets/js/date_format'
   import typeData from '@/config'
-
+  import vueInputTag from 'vue-input-tag'
   export default {
     name: 'vcenter_design_case_submit',
     components: {
       vMenu,
-      vMenuSub
+      vMenuSub,
+      vueInputTag
     },
     data () {
       return {
@@ -290,6 +394,11 @@
         is_prize: false,
         typeSwitch1: false,
         typeSwitch2: false,
+        prizes: [],
+        patents: [],
+        options5: [],
+        value10: [],
+        isfrist: false,
         uploadParam: {
           'token': '',
           'x:random': '',
@@ -300,12 +409,13 @@
         uploadMsg: '只能上传jpg/png文件，且不超过5M',
         imageUrl: '',
         coverId: '',
+        design_types: [],
         form: {
           type: '',
           field: '',
           industry: '',
           title: '',
-          design_type: '',
+          design_type: [],
           prize_time: '',
           prize: '',
           patent_time: '',
@@ -314,7 +424,8 @@
           mass_production: 0,
           sales_volume: '',
           cover_id: '',
-          profile: ''
+          profile: '',
+          label: []
         },
         ruleForm: {
           type: [
@@ -350,11 +461,53 @@
           ],
           patent_time: [
             {required: true, type: 'date', message: '请选择申请时间', trigger: 'blur'}
+          ],
+          label: [
+            {required: true, type: 'array', message: '请填写标签', trigger: 'blur'},
+            {type: 'array', min: 1, max: 10, message: '请填写1~10个标签', trigger: 'blur'}
           ]
         }
       }
     },
     methods: {
+      // 获得奖项
+      getPrize() {
+        if (this.prizes && this.prizes.length > 0) {
+          for (var i = 0; i < this.prizes.length; i++) {
+            if (this.prizes[i].time === '' || this.prizes[i].type === '') {
+              this.$message ('请填写完整后再填写新的奖项')
+              return false
+            }
+          }
+        }
+        this.prizes.push({
+          'type': '',
+          'time': ''
+        })
+      },
+      // 申请专利
+      getPatent() {
+        if (this.patents && this.patents.length > 0) {
+          for (var i = 0; i < this.patents.length; i++) {
+            if (this.patents[i].time === '' || this.patents[i].type === '') {
+              this.$message ('请填写完整后再填写新的专利')
+              return false
+            }
+          }
+        }
+        this.patents.push({
+          'type': '',
+          'time': ''
+        })
+      },
+      // 删除奖项
+      deletePrize(index) {
+        this.prizes.splice(index, 1)
+      },
+      // 删除专利
+      deletePatent(index) {
+        this.patents.splice(index, 1)
+      },
       // 选择分类事件
       selectTypeChange(val) {
         this.form.design_types = []
@@ -370,28 +523,47 @@
           if (valid) {
             let row = {
               type: that.form.type,
-              design_type: that.form.design_type,
               field: that.form.field,
               industry: that.form.industry,
               title: that.form.title,
               customer: that.form.customer,
               mass_production: that.form.mass_production,
               sales_volume: that.form.sales_volume === '' ? 0 : that.form.sales_volume,
-              profile: that.form.profile
+              profile: that.form.profile,
+              label: that.form.label
             }
             row.cover_id = that.coverId
-            if (that.is_prize && that.form.prize_time) {
-              that.form.prize_time = that.form.prize_time.format ('yyyy-MM-dd')
-              row.prizes = JSON.stringify([{time: that.form.prize_time, type: that.form.prize}])
+            if (that.design_types && that.design_types.length !== 0) {
+              row.design_types = JSON.stringify(that.design_types)
+            } else row.design_types = null
+            if (this.prizes && this.prizes.length !== 0) {
+              for (var i = 0; i < this.prizes.length; i++) {
+                if (this.prizes[i].time === '' || this.prizes[i].type === '') {
+                  this.prizes.splice(i, 1)
+                }
+                this.prizes[i].time = this.prizes[i].time.format ('yyyy-MM-dd')
+              }
+              row.prizes = JSON.stringify(this.prizes)
             } else {
               row.prizes = null
             }
-            if (that.is_apply && that.form.patent_time) {
-              that.form.patent_time = that.form.patent_time.format ('yyyy-MM-dd')
-              row.patent = JSON.stringify([{time: that.form.patent_time, type: that.form.patent_info}])
+            if (this.patents && this.patents.length !== 0) {
+              for (var c = 0; c < this.patents.length; c++) {
+                if (this.patents[c].time === '' || this.patents[c].type === '') {
+                  this.patents.splice(c, 1)
+                }
+                this.patents[c].time = this.patents[c].time.format ('yyyy-MM-dd')
+              }
+              row.patent = JSON.stringify(this.patents)
             } else {
-              row.patent = null
+              row.prizes = null
             }
+            // if (that.is_apply && that.form.patent_time) {
+            //   that.form.patent_time = that.form.patent_time.format ('yyyy-MM-dd')
+            //   row.patent = JSON.stringify([{time: that.form.patent_time, type: that.form.patent_info}])
+            // } else {
+            //   row.patent = null
+            // }
             let apiUrl = null
             let method = null
 
@@ -406,6 +578,7 @@
               }
             }
             that.isLoadingBtn = true
+            console.log(row)
             that.$http ({method: method, url: apiUrl, data: row})
               .then (function (response) {
                 if (response.data.meta.status_code === 200) {
@@ -456,7 +629,7 @@
         this.is_prize = val
         if (!val) {
           this.form.prize_time = null
-          this.form.prize = 0
+          this.form.prize = ''
         }
       },
       // 是否申请专利
@@ -567,7 +740,6 @@
           }
         }
         this.fileList.push (item)
-      //        console.log(this.fileList)
       },
       beforeUpload(file) {
         const arr = ['image/jpeg', 'image/gif', 'image/png']
@@ -581,11 +753,19 @@
           this.$message.error ('上传文件大小不能超过 5MB!')
           return false
         }
+      },
+      typec(val) {
+        if (this.isfrist) {
+          this.design_types = []
+        }
+        this.isfrist = true
       }
     },
     computed: {
+      label() {
+        return this.form.label
+      },
       typeOptions() {
-        console.log('typeOptions', this.form.type)
         let items = []
         for (let i = 0; i < typeData.COMPANY_TYPE.length; i++) {
           let item = {
@@ -597,29 +777,16 @@
         return items
       },
       typeDesignOptions() {
-        let items = []
         let index
-        console.log('typeDesignOptions', this.form.type)
-        if (this.form.type === 1) {
-          index = 0
-        } else if (this.form.type === 2) {
-          index = 1
-        } else {
+        if (!this.form.type || isNaN(this.form.type)) {
           return []
         }
-        for (let i = 0; i < typeData.COMPANY_TYPE[index].designType.length; i++) {
-          let item = {
-            value: typeData.COMPANY_TYPE[index].designType[i]['id'],
-            label: typeData.COMPANY_TYPE[index].designType[i]['name']
-          }
-          items.push (item)
-        }
-        return items
+        index = this.form.type - 1
+        return typeData.COMPANY_TYPE[index].designType
       },
       fieldOptions() {
         let items = []
         let index
-        console.log('fieldOptions', this.form.type)
         if (this.form.type === 1) {
           index = 0
         } else if (this.form.type === 2) {
@@ -638,26 +805,16 @@
       },
       industryOptions() {
         let items = []
-        let index
-        console.log('industryOptions', this.form.type)
-        if (this.form.type === 1) {
-          index = 0
-        } else if (this.form.type === 2) {
-          index = 1
-        } else {
-          return []
-        }
-        for (let i = 0; i < typeData.COMPANY_TYPE[index].industry.length; i++) {
+        for (let i = 0; i < typeData.INDUSTRY.length; i++) {
           let item = {
-            value: typeData.COMPANY_TYPE[index].industry[i]['id'],
-            label: typeData.COMPANY_TYPE[index].industry[i]['name']
+            value: typeData.INDUSTRY[i]['id'],
+            label: typeData.INDUSTRY[i]['name']
           }
           items.push (item)
         }
         return items
       },
       prizeOptions() {
-        console.log('prizeOptions', this.form.type)
         let items = []
         for (let i = 0; i < typeData.DESIGN_CASE_PRICE_OPTIONS.length; i++) {
           let item = {
@@ -702,9 +859,20 @@
     },
     watch: {
       form: {
-        handler: function () {
+        handler: function (newValue, oldValue) {
         },
         deep: true
+      },
+      label(newValue, oldValue) {
+        if (newValue && newValue.length > 0) {
+          for (let n = 0; n < newValue.length; n++) {
+            if (newValue[n].length > 7) {
+              newValue.splice(n, 1)
+              this.$message ('每个标签最多7个字!')
+              return false
+            }
+          }
+        }
       }
     },
     created: function () {
@@ -717,7 +885,6 @@
           .then (function (response) {
             if (response.data.meta.status_code === 200) {
               that.form = response.data.data
-              console.log(that.form)
               if (that.form.prizes) {
                 if (that.form.prizes.length) {
                   that.$set(that, 'is_prize', true)
@@ -757,6 +924,15 @@
                   files.push (item)
                 }
                 that.fileList = files
+              }
+              if (response.data.data.prizes && response.data.data.prizes.length !== 0) {
+                that.prizes = response.data.data.prizes
+              }
+              if (response.data.data.patent && response.data.data.patent.length !== 0) {
+                that.patents = response.data.data.patent
+              }
+              if (response.data.data.design_types && response.data.data.design_types.length !== 0) {
+                that.design_types = response.data.data.design_types
               }
             }
           })
@@ -838,15 +1014,33 @@
     width: 178px;
     height: 178px;
     display: block;
-    }
-
+  }
   .upload-demo {
     position: relative;
     width: 160px;
   }
   .flex {
     display: flex;
-    align-items: center
+    align-items: center;
+  }
+  .prize {
+    width: 50%;
+    padding-right: 30px;
+    position: relative;
+    margin-bottom:10px;
+  }
+  .prize .p-after {
+    position: absolute;
+    right:-5px;
+    width:30px;
+    height:30px;
+    border-radius: 4px;
+    background:url('../../../../assets/images/works/Delete.png') 0 0 no-repeat;
+    background-size: 30px 30px;
+  }
+  .p-after:hover {
+    background:url('../../../../assets/images/works/DeleteClick.png') 0 0 no-repeat;
+    background-size: 30px 30px;
   }
   .el-upload__tip {
     text-align: center;
@@ -858,14 +1052,43 @@
     position: absolute;
     line-height: 1.5;
   }
+  .image-box {
+    position: relative
+  }
+  .image-box i{
+    position: absolute;
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    background:url('../../../../assets/images/works/CornerMark.png') 0 0 no-repeat;
+    background-size: 50px 50px;
+    left: 0px;
+    top: 0px;
+  }
   .margin-b-10 {
     margin-bottom: 10px
+  }
+  .label-tag .vue-input-tag-wrapper {
+    border-radius: 4px;
+    border: 1px solid #e6e6e6;
+    padding: 3px 10px;
+    min-height: 36px;
+  }
+  .form-footer {
+    border-top: 1px solid #e6e6e6;
+    padding-top: 20px;
+  }
+  .form-btn>.el-button + .el-button {
+    margin-right: 0px;
   }
   @media screen and (max-width: 767px) {
     .right-content .content-box {
       border: none;
       border-top: 1px solid #D9D9D9;
       padding: 0;
+    }
+    .prize {
+      width: 100%;
     }
   }
 </style>

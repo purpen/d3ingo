@@ -8,16 +8,16 @@
         'vcenter-right-mob': isMob}">
         <div class="right-content vcenter-container">
           <!-- <v-menu-sub></v-menu-sub> -->
-          <div class="content-item-box" v-loading.body="isLoading">
+          <div class="content-item-box" v-loading="isLoading">
             <div class="pub">
-              <router-link :to="{name: 'itemCreate'}">
+              <router-link :to="{name: 'projectCreate'}">
                 <el-button class="pub-btn is-custom" type="primary" size="large"><i class="el-icon-plus"></i> 发布项目
                 </el-button>
               </router-link>
             </div>
 
-            <h3>项目待完善</h3>
-            <div class="item ing" v-for="(d, index) in itemIngList" :key="index">
+            <h3 v-if="itemIngList.length">项目待完善</h3>
+            <div v-if="itemIngList.length" class="item ing" v-for="(d, index) in itemIngList" :key="index">
               <div class="banner">
                 <p>
                   <span>进行中</span>
@@ -30,7 +30,10 @@
                     <span v-else>未命名项目</span>
                   </p>
                   <p class="progress-line">
-                    <el-progress :text-inside="true" :show-text="false" :stroke-width="18"
+                    <el-progress
+                      :text-inside="true"
+                      :show-text="false"
+                      :stroke-width="6"
                                   :percentage="d.item.progress"
                                   status="exception"></el-progress>
                   </p>
@@ -44,12 +47,12 @@
                   <p class="buttons" v-else>
                     <el-button class="is-custom"
                     size="small"
-                    :progress="d.item.stage_status" 
+                    :progress="d.item.stage_status"
                     :item_id="d.item.id"
                     :item_type="d.item.type" @click="editItem" type="primary">
                       <i class="el-icon-edit"></i> 完善项目
                     </el-button>
-                    <el-tooltip class="item" effect="dark" content="关闭项目后，预付款自动转入我的钱包" placement="top-start">
+                    <el-tooltip effect="dark" content="关闭项目后，预付款自动转入我的钱包" placement="top-start">
                       <el-button class="" @click="closeItemBtn" :item_id="d.item.id" :index="index" size="small">
                         关闭项目
                       </el-button>
@@ -68,7 +71,7 @@
               layout="prev, pager, next"
               :total="query.total">
             </el-pagination>
-            <h3>项目对接中</h3>
+            <h3 v-if="itemList.length">项目对接中</h3>
             <el-row class="item-title-box list-box" v-show="itemList.length" v-if="!isMob">
               <el-col :span="10">
                 <p>项目名称</p>
@@ -98,10 +101,16 @@
                     </router-link>
                   </p>
                   <p>项目预算: {{ d.item.design_cost_value }}</p>
-                  <p v-if="d.item.type === 1">
+                  <!-- <p v-if="d.item.type === 1">
                     {{ d.item.type_value + '/' + d.item.design_type_value + '/' + d.item.field_value + '/' + d.item.industry_value
-                    }}</p>
-                  <p v-if="d.item.type === 2">{{ d.item.type_value + '/' + d.item.design_type_value }}</p>
+                    }}{{d.item}}</p>
+                  <p v-if="d.item.type === 2">{{ d.item.type_value + '/' + d.item.design_type_value }}{{d.item}}</p> 
+                  <p v-if="d.item.type === 1">
+                    {{ d.item.type_value | formatNull }}{{ d.item.design_types_value | formatNull }}{{ d.item.field_value | formatNull }}{{ d.item.industry_value | formatEnd }}</p>
+                  <p v-if="d.item.type === 2">{{ d.item.type_value | formatNull }}{{ d.item.design_types_value| formatEnd }}</p>
+                  -->
+                  <p>设计类型: {{ d.item.type_value }}</p>
+                  <p>设计类别: {{ d.item.design_types_value | formatEnd }}</p>
                   <p>项目周期: {{ d.item.cycle_value }}</p>
                   <p>产品功能：{{d.item.product_features}}</p>
                 </el-col>
@@ -132,7 +141,7 @@
 
                   <div class="btn" v-show="d.item.status === 3">
                     <p class="margin-b-10">
-                      <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary">
+                      <el-button class="is-custom" @click="viewShow2(d.item.id)" size="small" type="primary">
                         选择设计公司
                       </el-button>
                     </p>
@@ -156,11 +165,6 @@
                       支付项目款
                     </el-button>
                   </p>
-                  <p class="btn" v-show="d.item.status === 8">
-                    <el-button class="is-custom" @click="secondPay" :item_id="d.item.id" size="small" type="primary">
-                      支付项目款
-                    </el-button>
-                  </p>
                   <p class="btn" v-show="d.item.status === 15">
                     <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary">
                       验收项目
@@ -171,19 +175,23 @@
                       评价
                     </el-button>
                   </p>
-                  <p class="btn margin-b-10" v-show="d.item.is_view_show">
+                  <p v-if="d.item.status === 2 || d.item.status === 3" class="btn margin-b-10" v-show="d.item.is_view_show">
+                    <el-button class="is-custom" @click="viewShow2(d.item.id)" size="small" type="primary">
+                      查看详情
+                    </el-button>
+                  </p>
+                  <p class="margin-b-10" v-show="d.item.is_view_show" v-else>
                     <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary">
                       查看详情
                     </el-button>
                   </p>
                   <div class="btn" v-show="d.item.is_close">
-                    <p>
-                      <el-tooltip class="item" effect="dark" content="关闭项目后，预付款自动转入我的钱包" placement="right-end">
-                        <el-button class="" @click="closeItemBtn" :item_id="d.item.id" :index="index" size="small">
+                    <el-tooltip effect="dark" content="关闭项目后，预付款自动转入我的钱包"    
+                      placement="right-end">
+                      <el-button class="" @click="closeItemBtn" :item_id="d.item.id" :index="index"   size="small">
                           关闭项目
                         </el-button>
                       </el-tooltip>
-                    </p>
                   </div>
                 </el-col>
               </el-row>
@@ -200,13 +208,11 @@
                 </p>
                 <div class="list-content">
                   <section class="c-body">
-                    <p>项目预算： {{ d.item.design_cost_value }}</p>
+                    <p>项目预算：{{ d.item.design_cost_value }}</p>
                     <p>项目周期：{{ d.item.cycle_value }}</p>
-                    <p v-if="d.item.type === 1">
-                      {{ d.item.type_value + '/' + d.item.design_type_value + '/' + d.item.field_value + '/' + d.item.industry_value
-                      }}</p>
-                    <p v-if="d.item.type === 2">{{ d.item.type_value + '/' + d.item.design_type_value }}</p>
-                    <p>产品功能：{{d.item.product_features}}</p>
+                    <p>设计类型: {{ d.item.type_value }}</p>
+                    <p>设计类别: {{ d.item.design_types_value | formatEnd }}</p>
+                    <p>产品功能：{{ d.item.product_features }}</p>
                   </section>
                   <p class="money-str price-m Bborder">交易金额：
                     <span v-if="d.item.price !== 0">¥ <b>{{ d.item.price }}</b></span>
@@ -279,13 +285,13 @@
                         查看详情
                       </el-button>
                     </p>
-                    <p class="btn" v-show="d.item.is_close">
+                    <div class="btn" v-show="d.item.is_close">
                       <el-tooltip class="item" effect="dark" content="关闭项目后，预付款自动转入我的钱包" placement="right-end">
                         <el-button class="" @click="closeItemBtn" :item_id="d.item.id" :index="index" size="small">
                           关闭项目
                         </el-button>
                       </el-tooltip>
-                    </p>
+                    </div>
                   </section>
                 </div>
               </div>
@@ -365,6 +371,9 @@
         let itemId = parseInt(event.currentTarget.getAttribute('item_id'))
         this.$router.push({name: 'vcenterItemShow', params: {id: itemId}})
       },
+      viewShow2(itemId) {
+        this.$router.push({name: 'projectMatch', params: {id: itemId}})
+      },
       handleCurrentChange(val) {
         this.query.page = val
         this.loadList(1)
@@ -415,7 +424,7 @@
                     showOffer = true
                   }
                   let showView = false
-                  if (status === 2 || status === 5 || status === 9 || status === 11 || status === 20 || status === 22) {
+                  if (status === 2 || status === 5 || status === 8 || status === 9 || status === 11 || status === 20 || status === 22) {
                     showView = true
                   }
                   let isClose = false
@@ -430,6 +439,7 @@
 
                 if (type === 1) {
                   that.itemIngList = data
+                  console.log(that.itemIngList)
                   that.query.totalPages = response.data.meta.pagination.total_pages
                   that.query.total = response.data.meta.pagination.total
                 } else if (type === 2) {
@@ -487,24 +497,25 @@
       editItem(event) {
         let progress = parseInt(event.currentTarget.getAttribute('progress'))
         let itemId = event.currentTarget.getAttribute('item_id')
-        let type = parseInt(event.currentTarget.getAttribute('item_type'))
+        // let type = parseInt(event.currentTarget.getAttribute('item_type'))
         let name = null
         switch (progress) {
           case 0:
             name = 'itemSubmitTwo'
             break
           case 1:
-            if (type === 1) {
-              name = 'itemSubmitThree'
-            } else if (type === 2) {
-              name = 'itemSubmitUIThree'
-            }
+            name = 'projectSelect'
+            // if (type === 1) {
+            //   name = 'itemSubmitThree'
+            // } else if (type === 2) {
+            //   name = 'itemSubmitUIThree'
+            // }
             break
           case 2:
-            name = 'itemSubmitFour'
+            name = 'projectType'
             break
           case 3:
-            name = 'itemSubmitFive'
+            name = 'projectInfo'
             break
         }
         this.$router.push({name: name, params: {id: itemId}})
@@ -573,6 +584,38 @@
         }
         this.loadList(type)
       }
+    },
+    filters: {
+      formatNull(val) {
+        if (val) {
+          if (typeof (val) === 'string') {
+            return val + ' / '
+          } else {
+            if (val.length === 1) {
+              return val.join() + ' / '
+            } else {
+              return val.join(' / ') + ' / '
+            }
+          }
+        } else {
+          return ''
+        }
+      },
+      formatEnd(val) {
+        if (val) {
+          if (typeof (val) === 'string') {
+            return val
+          } else {
+            if (val.length === 1) {
+              return val.join()
+            } else {
+              return val.join(' / ')
+            }
+          }
+        } else {
+          return ''
+        }
+      }
     }
   }
 
@@ -586,7 +629,7 @@
   }
 
   .pub {
-    background: #FAFAFA;
+    background: #fafafa;
     height: 150px;
     margin: 0 0 20px 0;
     position: relative;
@@ -600,15 +643,15 @@
   }
 
   .content-item-box .item {
-    border: 1px solid #D2D2D2;
+    border: 1px solid #e6e6e6;
     margin: 0 0 20px 0;
   }
 
   .banner {
     height: 40px;
     line-height: 20px;
-    border-bottom: 1px solid #ccc;
-    background: #FAFAFA;
+    border-bottom: 1px solid #e6e6e6;
+    background: #fafafa;
   }
 
   /*.content {*/
@@ -618,13 +661,13 @@
   .pre {
     padding: 0 10px;
   }
-  
+
   .item.ing p {
     padding: 10px;
   }
 
   p.c-title-pro {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: #222;
     margin-top: 20px;
     line-height: 0;
@@ -635,7 +678,7 @@
   }
 
   .money-str {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: #222;
     overflow: hidden;
   }
@@ -671,14 +714,15 @@
   }
 
   .prefect {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: #666;
     margin-top: 0;
     margin-bottom: -10px;
   }
 
   .item-title-box {
-    border: 1px solid #d2d2d2;
+    background: #f7f7f7;
+    border: 1px solid #e6e6e6;
     border-bottom: none;
   }
 
@@ -716,7 +760,7 @@
 
   .c-body {
     padding-bottom: 16px;
-    border-bottom: 1px solid #E6E6E6
+    border-bottom: 1px solid #e6e6e6
   }
 
   .c-body p {
@@ -741,7 +785,7 @@
   }
 
   .Bborder {
-    border-bottom: 1px solid #E6E6E6
+    border-bottom: 1px solid #e6e6e6
   }
 
   .list-title {
@@ -760,7 +804,11 @@
   .margin-b-10 {
     margin-bottom: 10px;
   }
+  .margin-b-20 {
+    margin-bottom: 20px;
+  }
   .pagination {
-    text-align: center
+    text-align: center;
+    margin-bottom: 20px;
   }
 </style>

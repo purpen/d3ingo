@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <ToolsMenu currentName="exhibition"></ToolsMenu>
-    <div class="exhibition" :span="24" v-loading.body="loading">
+    <div class="exhibition" :span="24" v-loading="loading">
       <vCalendar
         :events="events"
         @event-click="eventClick"

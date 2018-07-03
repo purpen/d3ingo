@@ -10,34 +10,46 @@ html {
 }
 
 html::-webkit-scrollbar,
-.scroll-bar::-webkit-scrollbar {
-  width: 8px;
+.scroll-bar::-webkit-scrollbar,
+.scroll-bar2::-webkit-scrollbar {
+  width: 6px;
   height: 8px;
+}
+.scroll-bar2::-webkit-scrollbar {
+  width: 4px;
 }
 
 html::-webkit-scrollbar-track,
-.scroll-bar::-webkit-scrollbar-track {
-  background-color: #e5e5e5;
+.scroll-bar::-webkit-scrollbar-track,
+.scroll-bar2::-webkit-scrollbar-track {
+  background-color: #fafafa;
   /* background: rgba(0, 0, 0, 0); */
   border-left: 2px solid transparent
 }
+.scroll-bar2::-webkit-scrollbar-track {
+  background-color: transparent;
+}
 
 html::-webkit-scrollbar-thumb,
-.scroll-bar::-webkit-scrollbar-thumb {
-  background-color: #c1c1c1;
+.scroll-bar::-webkit-scrollbar-thumb,
+.scroll-bar2::-webkit-scrollbar-thumb {
+  background-color: #e6e6e6;
   border-left: 2px solid transparent;
   border-radius: 4px;
 }
 html::-webkit-scrollbar-thumb:hover,
-.scroll-bar::-webkit-scrollbar-thumb:hover {
-  background-color: #7d7d7d;
+.scroll-bar::-webkit-scrollbar-thumb:hover,
+.scroll-bar2::-webkit-scrollbar-thumb:hover {
+  background-color: #b2b2b2;
 }
 html::-webkit-scrollbar-corner,
-.scroll-bar::-webkit-scrollbar-corner {
+.scroll-bar::-webkit-scrollbar-corner ,
+.scroll-bar2::-webkit-scrollbar-corner {
     background: #EEE
 }
 html::-webkit-scrollbar-thumb:window-inactive,
-.scroll-bar::-webkit-scrollbar-thumb:window-inactive {
+.scroll-bar::-webkit-scrollbar-thumb:window-inactive,
+.scroll-bar2::-webkit-scrollbar-thumb:window-inactive {
   background: rgba(0, 0, 0, .1)
 }
 * {
@@ -62,21 +74,28 @@ body {
 
 .app {
   width: 100%;
+  height: 100%;
   min-height: 100%;
   position: relative;
   padding-top: 60px;
-  padding-bottom: 340px;
+  /* padding-bottom: 340px; */
   overflow-x: hidden
-}
-.app3 {
-  padding-top: 88px;
 }
 .app2 {
   width: 100%;
+  height: 100%;
   min-height: 100%;
   position: relative;
   overflow-x: hidden;
   padding: 60px 0 0;
+}
+.main {
+  position: relative;
+  height: 100%;
+  min-height: calc(100vh - 100px);
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between */
 }
 .cancel-icon {
   position: relative;
@@ -132,7 +151,7 @@ body {
   background: #666
 }
 
-.close-icon-solid::before, 
+.close-icon-solid::before,
 .close-icon-solid::after {
   content: "";
   position: absolute;
@@ -141,7 +160,7 @@ body {
   width: 10px;
   height: 1px;
   background: #fff;
-} 
+}
 
 .close-icon-solid::before {
   transform: translate(-50%, -50%) rotate(45deg);
@@ -205,7 +224,7 @@ textarea {
 }
 
 .markdown-body blockquote {
-  border-left: 6px solid #d2d2d2;
+  border-left: 6px solid #e6e6e6;
   padding-left: 8px;
   background: #f7f7f7;
   margin: 20px 0
@@ -217,12 +236,12 @@ textarea {
 }
 
 .markdown-body table {
-  border: 1px solid #d2d2d2;
+  border: 1px solid #e6e6e6;
   margin: 20px 0;
 }
 .markdown-body th , .markdown-body td {
-  border-right: 1px solid #d2d2d2;
-  border-bottom: 1px solid #d2d2d2;
+  border-right: 1px solid #e6e6e6;
+  border-bottom: 1px solid #e6e6e6;
   padding: 10px;
 }
 .markdown-body table thead {
@@ -309,7 +328,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   border-color: #e6e6e6
 }
 .el-input-group__append:hover {
-  border-color: #d2d2d2;
+  border-color: #e6e6e6;
 }
 .el-input__inner {
   color: #222;
@@ -331,7 +350,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 
 .input-brand .el-input-group__append:hover {
-  background: #ff6d6d;  
+  background: #ff6d6d;
 }
 
 .input-brand .el-input-group__append:active {
@@ -462,7 +481,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   transform: translateY(-50%) rotate(45deg);
   width: 8px;
   height: 8px;
-  border: 1px solid #d2d2d2;
+  border: 1px solid #e6e6e6;
   border-left: none;
   border-bottom: none;
 }
@@ -599,11 +618,12 @@ button.is-custom.is-outlined.is-loading:after {
 
 .footer {
   width: 100%;
+  margin-top: 50px;
   /* overflow: hidden; */
   text-align: center;
   background-color: #333333;
-  position: absolute;
-  bottom: 0;
+  /* position: absolute;
+  bottom: 0; */
 }
 
 .footer .item {
@@ -664,7 +684,7 @@ button.is-custom.is-outlined.is-loading:after {
 }
 
 .footer p.title {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   margin: 20px 20px 10px 0;
   color: #ffffff;
 }
@@ -685,7 +705,7 @@ button.is-custom.is-outlined.is-loading:after {
 }
 .el-input__inner:hover,
 .el-input__inner:focus {
-  border: 1px solid #d2d2d2
+  border: 1px solid #e6e6e6
 }
 /*解决safari 移动端布局中*/
 
@@ -695,9 +715,9 @@ button.is-custom.is-outlined.is-loading:after {
 input:-webkit-autofill {
   box-shadow: 0 0 0 1000px white inset;
 }
-input[type=text]:focus, input[type=password]:focus{
+/* input[type=text]:focus, input[type=password]:focus{
   box-shadow: 0 0 0 1000px white inset;
-}
+} */
 .m-nav-header {
   position: relative;
   height: 60px;
@@ -887,7 +907,7 @@ input[type=text]:focus, input[type=password]:focus{
 .menu-header .nav-item:hover span.icon i {
   color: #ff5a5f
 }
-/* 
+/*
 .nav-header .nav-item:hover .view-msg,
 .menu-header .nav-item:hover .view-msg { */
 .nav-header .nav-item:focus .view-msg,
@@ -898,7 +918,7 @@ input[type=text]:focus, input[type=password]:focus{
 .nav-item .view-msg {
   display: none;
   position: absolute;
-  z-index: 100;
+  z-index: 999;
   top: 56px;
   right: 0;
   width: 200px;
@@ -1147,7 +1167,7 @@ input[type=text]:focus, input[type=password]:focus{
   z-index: 999;
   top: 56px;
   left: 10px;
-  border: 1px solid #d2d2d2;
+  border: 1px solid #e6e6e6;
   width: 200px;
   padding: 0;
   border-radius: 4px;
@@ -1240,7 +1260,7 @@ input[type=text]:focus, input[type=password]:focus{
 .top-menu-list .item {
   float: right;
   padding: 0 15px;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
 }
 
 .top-menu-list .item.is-active {
@@ -1269,7 +1289,7 @@ input[type=text]:focus, input[type=password]:focus{
   width: 100%;
   top: 27px;
   left: 0;
-  border-bottom: 1px solid #d2d2d2;
+  border-bottom: 1px solid #e6e6e6;
   z-index: -1;
 }
 
@@ -1281,7 +1301,7 @@ input[type=text]:focus, input[type=password]:focus{
 
 .vcenter-menu-sub-list .item {
   float: left;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   padding: 0 0 12px;
   margin: 0 20px 0 0;
   cursor: pointer;
@@ -1360,7 +1380,7 @@ input[type=text]:focus, input[type=password]:focus{
 
 .right-content .content-box {
   margin-bottom: 50px;
-  border: 1px solid #d2d2d2;
+  border: 1px solid #e6e6e6;
   padding: 0 20px 20px;
 }
 
@@ -1651,7 +1671,7 @@ td.fc-day.fc-widget-content.fc-today::before {
 .fc .fc-state-default {
   padding: 0;
   background: #ffffff;
-  border: 1px solid #d2d2d2;
+  border: 1px solid #e6e6e6;
   box-shadow: none;
   height: 22px;
 }
@@ -1844,7 +1864,7 @@ td.fc-day.fc-widget-content.fc-today::before {
     margin-right: 16px;
     text-indent: -999em;
   }
-  
+
   p.file-icon.other {
     background: url('../images/tools/cloud_drive/type/other@2x.png') 0 0 no-repeat;
     background-size: contain;
@@ -1890,7 +1910,7 @@ td.fc-day.fc-widget-content.fc-today::before {
 
 @media screen and (max-width: 767px) {
   #app {
-    padding-bottom: 450px;
+    /* padding-bottom: 450px; */
   }
 
   .footer .item {
@@ -1907,7 +1927,7 @@ td.fc-day.fc-widget-content.fc-today::before {
   }
 
   .footer p.title {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     margin: 20px 20px 10px 40px;
   }
 
@@ -1972,20 +1992,21 @@ td.fc-day.fc-widget-content.fc-today::before {
   /*查看公司主页按钮*/
   .companyBtn {
     padding: 10px 5px;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
   }
 
   /*bank 弹出层*/
   .el-dialog--small, .bank-dialog .el-dialog--small, .withdraw .el-dialog--small, .taking-dialog .el-dialog--small, .el-dialog--tiny {
     width: 90%;
   }
-  
+
   .fullwidth.el-date-editor {
     width: 100%;
   }
 
   .fullwidth .el-form-item__content {
     display: flex;
+    flex-wrap: wrap;
   }
 
   /*下拉框宽度*/
@@ -2175,7 +2196,7 @@ td.fc-day.fc-widget-content.fc-today::before {
     left: 0;
     width: 100%;
     height: 1px;
-    background: #d2d2d2;
+    background: #e6e6e6;
   }
 
   .vcenter-menu-sub-list-m:after {
@@ -2186,7 +2207,7 @@ td.fc-day.fc-widget-content.fc-today::before {
     left: 0;
     width: 100%;
     height: 1px;
-    background: #d2d2d2;
+    background: #e6e6e6;
   }
 
   .vcenter-menu-sub-list-m .item {
@@ -2337,10 +2358,10 @@ td.fc-day.fc-widget-content.fc-today::before {
 }
 .el-textarea__inner:hover,
 .el-textarea__inner:focus {
-  border-color: #d2d2d2
+  border-color: #e6e6e6
 }
 .el-upload--picture-card {
-  border-color: #d2d2d2
+  border-color: #e6e6e6
 }
 .el-upload--picture-card:hover {
   border-color: #999;

@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" style="width: 880px;">
     <div class="blank20"></div>
     <el-row :gutter="24">
 
@@ -7,7 +7,6 @@
         <div class="right-content">
           <div class="content-box">
             <h2>{{ itemName }}</h2>
-            <p class="title">1、基本信息 </p>
             <p>甲方(客户):</p>
             <p>公司名称: <span class="no-border">{{form.demand_company_name}}</span></p>
             <p>地址: <span class="no-border">{{form.demand_company_address}}</span></p>
@@ -27,17 +26,18 @@
             <p>电话: <span class="no-border">{{ form.thn_company_phone }}</span></p>
             <p>联系人: <span class="no-border">{{ form.thn_company_legal_person }}</span></p>
 
+            <p>&nbsp;</p>
+            <p>依照中华人民共和国法律及本行业相关法规条例之规定，甲乙丙三方本着平等自愿和互惠互利的原则，就乙方通过丙方平台接受委托为甲方提供设计事宜，约定如下：</p>
+            <p class="title mar-t-40 font-size-18">一、项目名称和费用</p>
+            <p class="font-size-16">1、项目名称：</p>
+            <p><span class="bottom-border">{{form.title}}</span></p>
+            <p>&nbsp;</p>
+            <p class="font-size-16 mar-b-10">2、费用：</p>
+            <p class="mar-b-10">本合同设计费用总额为人民币(￥)<span class="bottom-border">{{form.total_han}}</span> 整（小写：<span class="bottom-border">{{form.total}}</span>元），丙方作为平台收取全部项目费的<span class="bottom-border">{{form.commission_rate}}</span>%，也就是人民币(￥)<span class="bottom-border">{{form.commission}}</span> 元作为佣金。</p>
+            <p style="color: #FF5A5F">注：本合同中所有涉及费用金额均为含税。</p>
 
-            <p class="title">2、项目内容和费用</p>
-            <p>
-              依照中华人民共和国法律及本行业相关法规条例之规定，甲乙丙三方本着平等自愿和互惠互利的原则，就乙方通过丙方平台接受委托为甲方提供
-              <span class="bottom-border">{{form.title}}</span>
-              设计。本合同设计费用总额为人民币(￥)
-              <span class="bottom-border">{{form.total}}</span> 整，丙方作为平台收取全部项目费的<span class="bottom-border">{{form.commission_rate}}</span>%，也就是人民币(￥)<span class="bottom-border">{{form.commission}}</span> 整作为佣金。三方共同签署此项设计委托合同（以下简称合同），甲方、乙方和丙方合称为合同三方（以下简称三方）。
-            </p>
-
-            <p class="title">3、项目交付内容及工作周期</p>
-            <p>经甲、乙双方协商，本项目共分 
+            <p class="title mar-t-40 font-size-18">二、项目交付内容及工作周期</p>
+            <p>经甲、乙双方协商，本项目共分
               <span class="bottom-border">{{form.sort}}</span>
               个阶段进行，细节流程与时间节点如下：</p>
             <p v-for="(d, index) in form.item_stage" :key="index + 'd'">
@@ -52,65 +52,92 @@
               </span>
             </p>
 
-            <p class="title">4、付款方式</p>
-            <p>甲方以银行支付方式或其他方式支付项目总金额到丙方，丙方按照以下约定的付款时间和金额分阶段向乙方支付设计费： </p>
-            <p>1、本合同签订后 <span class="bottom-border">{{form.demand_pay_limit}}</span> 日内，甲方支付项目总金额到丙方托管；丙方收到款项后向乙方支付项目总金额首付款 <span class="bottom-border">{{form.first_payment_proportion_p}}</span>%，即人民币(￥) <span
-              class="bottom-border">{{form.first_payment}}</span> 整。</p>
-            <p v-for="(d, index) in form.stages" :key="index">
-              {{ index + 2 }}、<span class="bottom-border">{{d.title}}</span>
-              确认后，支付该项目阶段款的<span class="bottom-border">{{d.percentage}}</span> %，即人民币(￥) <span class="bottom-border">{{d.amount}}</span> 整。
-            </p>
-            <p>{{ form.sort + 2 }}、设计全部完成确认后，支付该项目总金额尾款 <span class="bottom-border">{{form.warranty_money_proportion_p}}</span> %，即人民币(￥)
-            <span class="bottom-border">{{form.warranty_money}}</span>
-              整。</p>
-            <p>甲方支付的项目费用在当前阶段完成之前会由丙方托管，如果甲乙双方合作中出现争议，将由平台冻结当前资金，待纠纷解决后再按照法律法规相应规定执行。</p>
-            <p class="title">5、 甲方责任与义务  </p>
-            <p>(1) 以书面形式提出对本设计项目的要求及有关技术资料。在合作的全过程中，向乙方提供必要的咨询，并委派专人（对该项目的方案评审具有决定权）负责本项目的事务接洽和业务联系。</p>
-            <p>(2) 配合乙方的设计工作，积极参与该项目设计每个阶段的结果评审，及时得出结论并确认给乙方。</p>
-            <p>(3) 甲方的任何修改意见，应以书面形式通知给乙方（包括电子邮件）。</p>
-            <p>(4) 甲方不得以任何形式使用或转让乙方提供的除正选方案之外的其它方案，除非双方达成关于其他方案合作的书面认同。</p>
-            <p>(5) 甲方按照合同的规定，及时按量地支付每一期的费用给乙方。</p>
-            <p>(6) 设计方案一旦经甲方确认后，如再发生改动，乙方将按实际工作量另行收费。</p>
-            <p>(7) 在甲方实际生产之前，甲方的供应生产商应对结构设计文档进行仔细分析，如乙方结构设计存在不合理之处，应给乙方以书面确认，及时沟通处理。</p>
-            <p>(8) 在乙方为甲方提供最终设计方案后，若因甲方产品结构或用途等而变更设计方案，视其为新方案设计，甲方应向乙方支付完成现阶段设计费用后，乙方将按实际工作量另行对修改工作收取费用。</p>
+            <p class="title mar-t-40 font-size-18">三、付款方式</p>
+            <p>甲方应将每个阶段的项目费用在对应阶段确认完成后支付给丙方，丙方按以下约定向乙方支付设计费，如果甲乙双方合作中出现争议，将由平台冻结当前资金，待纠纷解决后再按照法律法规相应规定执行。</p>
+            <p>&nbsp;</p>
+            <p>设计过程中需开具的发票，按三方实际资金往来的具体金额，依中华人民共和国税务法操作执行，明细为设计费。丙方为一般纳税人，若乙方为小规模纳税人，则乙方给丙方开票涉及的差额税费由丙方从设计费用中扣除并代缴。</p>
+            <p>&nbsp;</p>
+            <p>1、合同签定后，甲方在<span class="bottom-border" type="text" disabled v-html="form.demand_pay_limit"></span>个工作日内向丙方支付首付款项，即总设计费用款项40%： ¥ <span class="bottom-border" type="text" disabled v-html="form.first_payment"></span>元，丙方收到款项后三个工作日内通知乙方开税票，收到乙方税票后三个工作日内，将抽取全部佣金及税费后的剩余款项¥ <span class="bottom-border" type="text" disabled v-html="form.first_rest_payment"></span>元一次性全额支付给乙方。</p>
+            <p>&nbsp;</p>
+            <div v-for="(d, index) in form.stages" :key="index + 100">
+              <p>{{ index + 2 }}、第{{ d.sort }}阶段 <span class="bottom-border" type="text" disabled v-html="d.title"></span> 确认后，甲方在三个工作日内向丙方支付总设计费用款项 <span class="bottom-border" type="text" disabled v-html="d.percentage"></span> %： ¥ <span class="bottom-border" type="text" disabled v-html="d.amount"></span>元，丙方收到款项后三个工作日内通知乙方开税票，收到乙方税票后三个工作日内，将剩余款项¥ <span class="bottom-border" type="text" disabled v-html="d.amount"></span>元一次性全额支付给乙方。</p>
+              <p>&nbsp;</p>
+            </div>
+            <p style="color: #FF5A5F">注：首付款收到后启动项目，尾款收到后提交所有文件。</p>
 
-            <p class="title">6、 乙方责任与义务 </p>
-            <p>(1) 严格执行本合同条款，按甲方所提供的文件、资料和具体要求进行设计制作，未经甲方书面许可乙方无权擅自变更设计方案或者以任何理由拖延交付时间。</p>
+            <p class="title mar-t-40 font-size-18">四、甲方责任与义务 </p>
+            <p>1、以书面形式提出对本设计项目的要求及有关技术资料。在合作的全过程中，向乙方提供必要的咨询，并委派专人（对该项目的方案评审具有决定权）负责本项目的事务接洽和业务联系。</p>
+            <p>&nbsp;</p>
+            <p>2、配合乙方的设计工作，积极参与该项目设计每个阶段的结果评审，及时得出结论并确认给乙方。</p>
+            <p>&nbsp;</p>
+            <p>3、甲方的任何修改意见，应以书面形式通知给乙方（包括电子邮件）。</p>
+            <p>&nbsp;</p>
+            <p>4、甲方不得以任何形式使用或转让乙方提供的除正选方案之外的其它方案，除非双方达成关于其他方案合作的书面认同。</p>
+            <p>&nbsp;</p>
+            <p>5、甲方按照合同的规定，及时按量地支付每一期的费用给乙方。</p>
+            <p>&nbsp;</p>
+            <p>6、设计方案一旦经甲方确认后，如再发生改动，乙方将按实际工作量另行收费。</p>
+            <p>&nbsp;</p>
+            <p>7、在甲方实际生产之前，甲方的供应生产商应对结构设计文档进行仔细分析，如乙方结构设计存在不合理之处，应给乙方以书面确认，及时沟通处理。</p>
+            <p>&nbsp;</p>
+            <p>8、在乙方为甲方提供最终设计方案后，若因甲方产品结构或用途等而变更设计方案，视其为新方案设计，甲方应向乙方支付完成现阶段设计费用后，乙方将按实际工作量另行对修改工作收取费用。</p>
+
+            <p class="title mar-t-40 font-size-18">五、乙方责任与义务</p>
+            <p>1、严格执行本合同条款，按甲方所提供的文件、资料和具体要求进行设计制作，未经甲方书面许可乙方无权擅自变更设计方案或者以任何理由拖延交付时间；</p>
+            <p>&nbsp;</p>
             <p>
-              (2) 由于审美标准的不确定性，甲方对乙方的外观设计方案若不满意，乙方有责任继续为甲方进行不超过3次（包含3次）的方案调整，而无须甲方支付任何额外费用。对于超过3次（不含3次）的方案调整，乙方每调整一次，甲方需额外增加外观设计费用10%的设计费用。</p>
-            <p>(3) 乙方在设计过程中应及时书面提请甲方进行设计、技术研究和阶段性把关。</p>
-            <p>(4) 乙方保证为甲方设计制作的方案与国家相关的法律、法规不相抵触且并不侵犯任何第三方的权益。</p>
-            <p>(5) 协助甲方对产品生产加工过程中涉及外观设计、结构设计等方面的内容进行监督管理。</p>
+              2、由于审美标准的不确定性，甲方对乙方的外观设计方案若不满意，乙方有责任继续为甲方进行不超过3次（包含3次）的方案调整，而无须甲方支付任何额外费用。对于超过3次（不含3次）的方案调整，乙方每调整一次，甲方需额外增加外观设计费用10%的设计费用；</p>
+            <p>&nbsp;</p>
+            <p>3、乙方在设计过程中应及时书面提请甲方进行设计、技术研究和阶段性把关；</p>
+            <p>&nbsp;</p>
+            <p>4、乙方保证为甲方设计制作的方案与国家相关的法律、法规不相抵触且并不侵犯任何第三方的权益；</p>
+            <p>&nbsp;</p>
+            <p>5、协助甲方对产品生产加工过程中涉及外观设计、结构设计等方面的内容进行监督管理；</p>
+            <p>&nbsp;</p>
             <p>
-              (6) 在合同执行过程中，若因乙方原因导致合同执行期的延误，则乙方应为执行周期延误而向甲方支付每日合同总额千分之五的延期违约金，但违约金总和最高不超过合同总额的百分之十；若因甲方不及时交付款项，则甲方应为拖欠款项向乙方支付每日合同总额千分之五的延期违约金，但违约金总和最高不超过合同总额的百分之十。</p>
-            <p>(7) 设计方案未最终确定之前，乙方可以拒绝甲方提出的任何形式的方案留存。</p>
-            <p>(8) 在合同签订后，对于项目涉及内容略有调整的情况，甲、乙双方应友好协商解决。</p>
+              6、在合同执行过程中，若因乙方原因导致合同执行期的延误，则乙方应为执行周期延误而向甲方支付每日合同总额千分之五的延期违约金，但违约金总和最高不超过合同总额的百分之十；若因甲方不及时交付款项，则甲方应为拖欠款项向乙方支付每日合同总额千分之五的延期违约金，但违约金总和最高不超过合同总额的百分之十；</p>
+            <p>&nbsp;</p>
+            <p>7、设计方案未最终确定之前，乙方可以拒绝甲方提出的任何形式的方案留存；</p>
+            <p>&nbsp;</p>
+            <p>8、在合同签订后，对于项目涉及内容略有调整的情况，甲、乙双方应友好协商解决。</p>
 
-            <p class="title">7、知识产权</p>
+            <p class="title mar-t-40 font-size-18">六、知识产权</p>
             <p>
-              (1) 对因本合同产生的甲方选定方案，其全部知识产权由甲方所有。乙方保留设计者署名权。除甲方选定的方案外，落选方案的全部知识产权仍归乙方所有。 若甲方需要享有其他设计方案的知识产权时，需与乙方协商买断知识产权相关事宜。</p>
-            <p>(2) 乙方保证其设计方案不侵犯任何第三方的知识产权。</p>
+              1、对因本合同产生的甲方选定方案，其全部知识产权由甲方所有。乙方保留设计者署名权。除甲方选定的方案外，落选方案的全部知识产权仍归乙方所有。 若甲方需要享有其他设计方案的知识产权时，需与乙方协商买断知识产权相关事宜。</p>
+            <p>&nbsp;</p>
+            <p>2、乙方保证其设计方案不侵犯任何第三方的知识产权。</p>
+            <p>&nbsp;</p>
             <p>
-              (3) 乙方对本合同的内容、设计成果及其涉及的文档、数据资料负有保密义务，未经甲方许可，不得向任何第三方泄密。保密期限为一年（从本合同签订之日起计算），保密期间，落选的备用方案的文档资料不能泄露给第三方。</p>
-            <p>(4) 任何一方如遇政府法令或法律程序要求向第三方提供上述资料，可按规定提供，但应尽快将此项事实通知对方。</p>
+              3、乙方对本合同的内容、设计成果及其涉及的文档、数据资料负有保密义务，未经甲方许可，不得向任何第三方泄密。保密期限为一年（从本合同签订之日起计算），保密期间，落选的备用方案的文档资料不能泄露给第三方。</p>
+            <p>&nbsp;</p>
+            <p>4、任何一方如遇政府法令或法律程序要求向第三方提供上述资料，可按规定提供，但应尽快将此项事实通知对方。</p>
 
-            <p class="title">8、违约责任</p>
-            <p>(1) 如甲方对乙方在设计过程中工作内容不满意，有权中止本合同，不再继续支付剩余之款项，乙方亦不退还甲方已付款项。</p>
-            <p>(2) 如设计过程中甲方不能积极配合乙方工作，严重影响乙方的工作安排，在收到乙方书面通知后仍不能积极配合，则乙方有权中止合同。</p>
-            <p>(3) 如甲方不能按照合同规定支付给乙方各设计阶段的设计费用，乙方有权中止合同。</p>
-            <p>(4) 如甲方未付清该合同全部设计款项，则该项目所有设计方案之知识产权仍归乙方所有。</p>
-            <p>(5) 非因丙方原因导致本合同无法履行的，丙方收取的非因不予退还。</p>
+            <p class="title mar-t-40 font-size-18">七、违约责任</p>
+            <p>1、如甲方对乙方在设计过程中工作内容不满意，有权中止本合同，不再继续支付剩余之款项，乙方亦不退还甲方已付款项。</p>
+            <p>&nbsp;</p>
+            <p>2、如设计过程中甲方不能积极配合乙方工作，严重影响乙方的工作安排，在收到乙方书面通知后仍不能积极配合，则乙方有权中止合同。</p>
+            <p>&nbsp;</p>
+            <p>3、如甲方不能按照合同规定支付给乙方各设计阶段的设计费用，乙方有权中止合同。</p>
+            <p>&nbsp;</p>
+            <p>4、如甲方未付清该合同全部设计款项，则该项目所有设计方案之知识产权仍归乙方所有。</p>
+            <p>&nbsp;</p>
+            <p>5、非因丙方原因导致本合同无法履行的，丙方收取的非因不予退还。</p>
 
-            <p class="title">9、不可抗力</p>
-            <p>(1) 本合同所指不可抗力包括地震、水灾、火灾、战争、政府行动、意外事件或其他各方所不能预见、不能避免并不能克服的事件。 </p>
-            <p>(2) 由于不可抗力原因致使本合同无法履行时，无法履行合同义务的一方应在15日内将不能履行合同的事实通知另一方，本合同自动终止。</p>
-            <p>(3) 由于不可抗力原因致使本合同项目开发中断，项目交付日期及付款日期相应顺延，各方不承担违约责任。如中断超过30日，本合同自动终止。</p>
+            <p class="title mar-t-40 font-size-18">八、不可抗力</p>
+            <p>1、本合同所指不可抗力包括地震、水灾、火灾、战争、政府行动、意外事件或其他各方所不能预见、不能避免并不能克服的事件。</p>
+            <p>&nbsp;</p>
+            <p>2、由于不可抗力原因致使本合同无法履行时，无法履行合同义务的一方应在15日内将不能履行合同的事实通知另一方，本合同自动终止。</p>
+            <p>&nbsp;</p>
+            <p>3、由于不可抗力原因致使本合同项目开发中断，项目交付日期及付款日期相应顺延，各方不承担违约责任。如中断超过30日，本合同自动终止。</p>
 
-            <p class="title">10、争议解决</p>
-            <p>(1) 本合同签订后，未经三方同意不得单方面中止，否则由责任方承担造成的损失。与合同有关的争议或执行中产生的争议将通过友好协商解决。如不能达成一致，可以直接向丙方所在地人民法院起诉。</p>
-            <p class="title">11、其它</p>
-            <p>(1) 本合同如有不尽事宜，须经三方协商补充规定，补充规定与合同具有同等效力。</p>
-            <p>(2) 本合同一式三份，甲乙丙三方各持一份，自签订之日起生效，具同等法律效力。</p>
+            <p class="title mar-t-40 font-size-18">九、争议解决</p>
+            <p>
+              1、本合同签订后，未经三方同意不得单方面中止，否则由责任方承担造成的损失。与合同有关的争议或执行中产生的争议将通过友好协商解决。如不能达成一致，可以直接向丙方所在地人民法院起诉。</p>
+
+            <p class="title mar-t-40 font-size-18">十、其它</p>
+            <p>1、本合同如有不尽事宜，须经三方协商补充规定，补充规定与合同具有同等效力。</p>
+            <p>&nbsp;</p>
+            <p>2、本合同一式三份，甲乙丙三方各持一份，自签订之日起生效，具同等法律效力。</p>
 
             <div class="sept"></div>
 
@@ -229,6 +256,10 @@
             if (response.data.meta.status_code === 200) {
               let item = response.data.data
               if (item) {
+                if (item.version === 0) {
+                  that.$router.push({name: 'vcenterContractView1', query: {unique_id: uniqueId}})
+                  return false
+                }
                 that.itemId = item.id
                 that.itemName = item.title + '合同'
                 item.stages = []
@@ -250,6 +281,7 @@
                 }
                 item.warranty_money_proportion_p = item.warranty_money_proportion * 100
                 item.first_payment_proportion_p = item.first_payment_proportion * 100
+                item.first_rest_payment = parseFloat(parseFloat(item.first_payment).sub(parseFloat(item.commission).add(parseFloat(item.tax_price))))
                 that.form = item
                 if (!that.form.thn_company_name) {
                   that.form.thn_company_name = that.companyThn.company_name
@@ -257,8 +289,11 @@
                   that.form.thn_company_phone = that.companyThn.contact_phone
                   that.form.thn_company_legal_person = that.companyThn.contact_name
                 }
+              } else {
+                that.$message.error('合同不存在!')
+                that.$router.push({name: 'home'})
               }
-              // console.log(response.data.data)
+              console.log(response.data.data)
             }
           })
           .catch(function (error) {
@@ -287,7 +322,7 @@
   }
 
   .content-box p {
-    line-height: 1.5;
+    line-height: 2;
     font-size: 1.4rem;
     color: #666;
   }
@@ -300,9 +335,26 @@
 
   .content-box p.title {
     margin-top: 20px;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: bold;
     color: #333;
+  }
+
+  .content-box p.mar-t-40 {
+    margin: 40px 0 20px 0;
+  }
+
+  .content-box p.font-size-18 {
+    font-size: 18px;
+  }
+
+  .content-box p.font-size-16 {
+    font-size: 16px;
+    color: #222222;
+  }
+
+  .content-box p.mar-b-10 {
+    margin-bottom: 10px;
   }
 
   span.no-border {
@@ -322,9 +374,9 @@
 
   .sept {
     width: 100%;
-    margin: 20px 0 20px 0;
+    margin: 30px 0 20px 0;
     padding: 0;
-    border-top: 1px solid #ccc;
+    /*border-top: 1px solid #ccc;*/
   }
 
   .form-btn {

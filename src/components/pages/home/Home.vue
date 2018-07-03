@@ -14,28 +14,49 @@
               </div>
             </div>
             <div class="head-cover">
+              <!--<p :class="[{'need': uType !== 2}]"><span>{{tags[0]}}</span>专业设计服务商，<span>{{tags[1]}}</span>成交项目，<span>{{tags[2]}}</span>成交金额</p>-->
               <p :class="[{'need': uType !== 2}]"><span>{{tags[0]}}</span>专业设计服务商，<span>{{tags[1]}}</span>成交项目，<span>{{tags[2]}}</span>成交金额</p>
               <router-link v-if="uType !== 2" to="/item/submit_one">发布项目需求</router-link>
             </div>
           </div>
         </swiper-slide>
         <swiper-slide v-if="isMob" v-for="(ele, index) in bannerListMob" :key="index">
-          <router-link class="banner-link slide"
+          <router-link
+            v-if="!ele.outSide"
+            class="banner-link slide"
             :to="ele.url"
             :style="{
               background: 'url(' + ele.img + ') no-repeat center',
-              backgroundSize: 'contain',
               height: calcHeight
             }"></router-link>
+            <a v-else
+              :href="ele.url"
+              class="banner-link slide"
+              :style="{
+                background: 'url(' + ele.img + ') no-repeat center',
+                height: calcHeight
+              }">
+            </a>
         </swiper-slide>
         <swiper-slide v-if="!isMob" v-for="(ele, index) in bannerList" :key="index">
-          <router-link class="banner-link slide"
+          <router-link
+            v-if="!ele.outSide"
+            class="banner-link slide"
             :to="ele.url"
             :style="{
               background: 'url(' + ele.img + ') no-repeat center',
               backgroundSize: 'cover',
               height: calcHeight
             }"></router-link>
+            <a v-else
+              :href="ele.url"
+              class="banner-link slide"
+              :style="{
+                background: 'url(' + ele.img + ') no-repeat center',
+                backgroundSize: 'contain',
+                height: calcHeight
+              }">
+            </a>
         </swiper-slide>
         <div class="swiper-pagination" slot="pagination">
         </div>
@@ -203,7 +224,13 @@
           // },
           {
             img: require ('assets/images/home/banner/homebanner_xiaomi_mob.jpg'),
-            url: '/subject/xiaomiInterview'
+            url: '/subject/xiaomiInterview',
+            outSide: false
+          },
+          {
+            img: require ('assets/images/home/qsyd4-m.jpg'),
+            url: 'https://www.taihuoniao.com/contest/qsyd4',
+            outSide: true
           }
         ],
         bannerList: [
@@ -213,7 +240,13 @@
           // },
           {
             img: require ('assets/images/home/banner/home_xiaomi.jpg'),
-            url: '/subject/xiaomiInterview'
+            url: '/subject/xiaomiInterview',
+            outSide: false
+          },
+          {
+            img: require ('assets/images/home/qsyd4.jpg'),
+            url: 'https://www.taihuoniao.com/contest/qsyd4',
+            outSide: true
           }
         ],
         caseSlideList: [
@@ -326,7 +359,8 @@
             content: '2017年初，太火鸟与投资方罗莱生活、海泉基金、京东金融、麦顿资本、泰德资本以及创新工场、真格基金等战略合作方共同发起了名为 “智见未来-太火鸟AesTech联合加速计划”，希望能够将太火鸟在产品孵化方面的前瞻性与各资本方及平台、渠道方在创新产品研发、孵化、营销环节的势能最大限度发挥出来，促进设计相关产业发展，改善设计生态，惠及大众。'
           }],
         designCaseList: [],
-        tags: []
+        tags: [],
+        number: []
       }
     },
     created() {
@@ -375,12 +409,47 @@
         })
       },
       getBlock () {
+        // const that = this
         this.isLoading = true
         this.$http.get(api.block, {params: {mark: 'data_number_view'}})
         .then((res) => {
           this.isLoading = false
           if (res.data.meta.status_code === 200) {
             this.tags = res.data.data.code.split(';')[0].split('|')
+            // this.tags = res.data.data.code.split(';')[0].split('+|').toString().split('万+').toString().split(',')
+            // this.number[0] = this.tags[0]
+            // this.number[1] = this.tags[1]
+            // this.number[2] = this.tags[2]
+            // let time1 = null
+            // let time2 = null
+            // let time3 = null
+            // let n1 = 1
+            // let n2 = 1
+            // let n3 = 1
+            // time1 = setInterval(function() {
+            //   if (n1 < that.number[0]) {
+            //     n1++
+            //     that.$set(that.tags, 0, n1 + '+')
+            //   } else {
+            //     clearInterval(time1)
+            //   }
+            // }, 100)
+            // time2 = setInterval(function() {
+            //   if (n2 < that.number[1]) {
+            //     n2++
+            //     that.$set(that.tags, 1, n2 + '+')
+            //   } else {
+            //     clearInterval(time2)
+            //   }
+            // }, 100)
+            // time3 = setInterval(function() {
+            //   if (n3 < that.number[2]) {
+            //     n3++
+            //     that.$set(that.tags, 2, n3 + '万+')
+            //   } else {
+            //     clearInterval(time3)
+            //   }
+            // }, 100)
           } else {
             this.$Message.error(res.data.meta.message)
           }
@@ -430,11 +499,11 @@
     min-height: 180px;
     margin: 0;
     background-size: cover;
-    background-position: center;
     background-repeat: no-repeat;
     text-align: left;
     /* padding-bottom: 50px; */
     overflow: hidden;
+    background-size: cover!important;
   }
 
   .slide h3 {

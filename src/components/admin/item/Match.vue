@@ -54,7 +54,7 @@ export default {
 
         console.log(self.item)
       } else {
-        self.$message.error(response.meta.message)
+        self.$message.error(response.data.meta.message)
         self.$router.push({name: 'adminDashBoard'})
       }
     })

@@ -52,6 +52,14 @@ let routes = [
     component: require('@/components/pages/home/test')
   },
   {
+    path: '/browsers',
+    name: 'browsers',
+    meta: {
+      title: '选择浏览器'
+    },
+    component: require('@/components/pages/home/Browsers')
+  },
+  {
     path: '/about',
     name: 'about',
     meta: {
@@ -402,11 +410,78 @@ let routes = [
     path: '/projects/create',
     name: 'projectCreate',
     meta: {
-      title: '选择类型',
+      title: '发布需求',
       requireAuth: true,
-      isDesignInc: 2
+      hideHeader: true,
+      hideFooter: true,
+      isDesignInc: 1
     },
     component: require('@/components/pages/projects/Create')
+  },
+  // 选择类型
+  {
+    path: '/projects/select/:id',
+    name: 'projectSelect',
+    meta: {
+      title: '选择类型',
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true,
+      isDesignInc: 1
+    },
+    component: require('@/components/pages/projects/Select')
+  },
+  // 选择类型
+  {
+    path: '/projects/type/:id',
+    name: 'projectType',
+    meta: {
+      title: '填写需求',
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true,
+      isDesignInc: 1
+    },
+    component: require('@/components/pages/projects/Type')
+  },
+  // 选择类型
+  {
+    path: '/projects/info/:id',
+    name: 'projectInfo',
+    meta: {
+      title: '补全需求信息',
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true,
+      isDesignInc: 1
+    },
+    component: require('@/components/pages/projects/Info')
+  },
+  // 匹配公司
+  {
+    path: '/projects/match/:id',
+    name: 'projectMatch',
+    meta: {
+      title: '匹配公司',
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true,
+      isDesignInc: 1
+    },
+    component: require('@/components/pages/projects/Match')
+  },
+  // 公司比较
+  {
+    path: '/projects/compare/:id',
+    name: 'projectCompare',
+    meta: {
+      title: '设计公司比较',
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true,
+      isDesignInc: 1
+    },
+    component: require('@/components/pages/projects/Compare')
   },
   // 发布需求(第二步) 选择领域
   {
@@ -523,7 +598,7 @@ let routes = [
     },
     component: require('@/components/pages/pay/wxCallback')
   },
-  // 支付项目资金
+  // 支付项目资金--首付款
   {
     path: '/item/pay_fund/:item_id',
     name: 'itemPayFund',
@@ -532,6 +607,16 @@ let routes = [
       requireAuth: true
     },
     component: require('@/components/pages/item/PayFund')
+  },
+  // 支付项目资金--阶段款
+  {
+    path: '/item/pay_stage_fund/:stage_id',
+    name: 'itemPayStageFund',
+    meta: {
+      title: '支付项目资金',
+      requireAuth: true
+    },
+    component: require('@/components/pages/item/PayStageFund')
   },
   // 自定义输出页面
   {
@@ -669,19 +754,6 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
-  let type = store.state.event.user.type
-  if (to.meta['isDesignInc']) {
-    if (type !== to.meta['isDesignInc']) {
-      if (to.meta['isDesignInc'] === 1) {
-        Message.error('请使用服务方账号登录')
-      } else {
-        Message.error('请使用设计公司账号登录')
-      }
-      router.push({ name: 'home' })
-    }
-  } else {
-    // console.log('d3in')
-  }
   if (to.meta['hideHeader']) {
     store.commit(types.HIDE_HEADER, to.meta['hideHeader'])
   } else {
@@ -692,6 +764,20 @@ router.beforeEach((to, from, next) => {
     store.commit(types.HIDE_FOOTER, to.meta['hideFooter'])
   } else {
     store.commit(types.HIDE_FOOTER, false)
+  }
+
+  let type = store.state.event.user.type
+  if (to.meta['isDesignInc']) {
+    if (type !== to.meta['isDesignInc']) {
+      if (to.meta['isDesignInc'] === 1) {
+        Message.error('请使用需求公司账号登录')
+      } else {
+        Message.error('请使用服务方账号登录')
+      }
+      router.push({ name: 'home' })
+    }
+  } else {
+    // console.log('d3in')
   }
 })
 

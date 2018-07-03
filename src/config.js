@@ -189,9 +189,88 @@ const COMPANY_TYPE = [
     ],
     industry: [
     ]
+  },
+  {
+    id: 3,
+    name: '平面设计',
+    designType: [
+      {
+        id: 1,
+        key: 'item_3_1',
+        name: 'logo、VI设计'
+      },
+      {
+        id: 2,
+        key: 'item_3_2',
+        name: '海报、宣传册'
+      },
+      {
+        id: 3,
+        key: 'item_3_3',
+        name: '画册、书装'
+      }
+    ],
+    field: [
+    ],
+    industry: [
+    ]
+  },
+  {
+    id: 4,
+    name: 'H5',
+    designType: [
+      {
+        id: 1,
+        key: 'item_4_1',
+        name: 'H5设计'
+      }
+    ],
+    field: [
+    ],
+    industry: [
+    ]
+  },
+  {
+    id: 5,
+    name: '包装设计',
+    designType: [
+      {
+        id: 1,
+        key: 'item_5_1',
+        name: '包装设计'
+      }
+    ],
+    field: [
+    ],
+    industry: [
+    ]
+  },
+  {
+    id: 6,
+    name: '插画设计',
+    designType: [
+      {
+        id: 1,
+        key: 'item_6_1',
+        name: '商业插画'
+      },
+      {
+        id: 2,
+        key: 'item_6_2',
+        name: '书藉插画'
+      },
+      {
+        id: 3,
+        key: 'item_6_3',
+        name: '形象、IP插画'
+      }
+    ],
+    field: [
+    ],
+    industry: [
+    ]
   }
 ]
-
 // 作品案例奖项选项
 const DESIGN_CASE_PRICE_OPTIONS = [
   {
@@ -422,23 +501,23 @@ const INDUSTRY = [
 const DESIGN_CASE_SALE_OPTIONS = [
   {
     id: 1,
-    name: '100-500w'
+    name: '100万-500万'
   },
   {
     id: 2,
-    name: '500-1000w'
+    name: '500万-1000万'
   },
   {
     id: 3,
-    name: '1000-5000w'
+    name: '1000万-5000万'
   },
   {
     id: 4,
-    name: '5000-10000w'
+    name: '5000万-10000万'
   },
   {
     id: 5,
-    name: '10000w以上'
+    name: '10000万以上'
   }
 
 ]
@@ -966,9 +1045,73 @@ const TAGS_COLOR_TONE = [
   }
 ]
 
+// 快递信息
+const LOGISTICS_OPTIONS = [
+  {
+    id: 1,
+    name: '圆通快递'
+  },
+  {
+    id: 2,
+    name: '申通快递'
+  },
+  {
+    id: 3,
+    name: '顺丰快递'
+  },
+  {
+    id: 4,
+    name: '天天快递'
+  },
+  {
+    id: 5,
+    name: '中通速递'
+  },
+  {
+    id: 6,
+    name: '邮政EMS'
+  },
+  {
+    id: 7,
+    name: '韵达快递'
+  },
+  {
+    id: 8,
+    name: '优速快递'
+  },
+  {
+    id: 9,
+    name: '全峰快递'
+  },
+  {
+    id: 10,
+    name: '宅急送'
+  },
+  {
+    id: 11,
+    name: '百世快递'
+  },
+  {
+    id: 12,
+    name: '国通快递'
+  },
+  {
+    id: 13,
+    name: '德邦物流'
+  },
+  {
+    id: 14,
+    name: '快捷快递'
+  },
+  {
+    id: 15,
+    name: '全一快递'
+  }
+]
+
 // 合同 丙方信息
 const CONTRACT_THN = {
-  company_name: '太火鸟•铟果D³INGO',
+  company_name: '北京太火红鸟科技有限公司',
   contact_name: '耿霆',
   contact_phone: '13031154842',
   address: '北京市朝阳区酒仙桥路751广场B7栋南楼西侧（太火鸟）',
@@ -1018,5 +1161,6 @@ module.exports = {
   TAGS_COLOR_TONE,
   CONTRACT_THN,
   CONTRACT_SCALE,
+  LOGISTICS_OPTIONS,
   TEST
 }

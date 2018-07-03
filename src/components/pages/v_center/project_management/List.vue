@@ -4,24 +4,22 @@
     <div :class="{'vcenter-right-plus': leftWidth === 4,
       'vcenter-right': leftWidth === 2,
         'vcenter-right-mob': isMob}">
-      <div class="vcenter-container blank30" v-loading.body="isLoading">
+      <div class="vcenter-container blank30" v-loading="isLoading">
         <h2 v-if="collectList.length">我收藏的项目</h2>
         <ul class="project-list">
           <li v-for="(ele, index) in collectList" :key="index"
             @click.self="routePush(ele.id)">
-            <div class="clearfix">
-              <h3 class="fl" @click="routePush(ele.id)">{{ele.name}}</h3>
-              <div class="fr">
-                <p class="fr operate" tabindex="-1" ref="operate1">
-                  <span class="more">
-                  </span>
-                  <span class="delete" @click="projectDelete(ele.id, index, 'collect')">
-                    删除
-                  </span>
-                </p>
-                <span @click="setCollect(ele.id, ele.collect)" :class="['favorite-star', 'fr', {'favorite-star-light': ele.collect === 1}]"></span>
+            <el-tooltip :content="ele.name" placement="top">
+              <div class="pro-header">
+                <h3 @click="routePush(ele.id)">{{ele.name}}</h3>
+                  <p class="operate" tabindex="-1" ref="operate1">
+                    <span class="more"></span>
+                    <span class="delete" @click="projectDelete(ele.id, index, 'collect')">删除</span>
+                  </p>
+                <span @click="setCollect(ele.id, ele.collect)"
+                :class="['favorite-star', {'favorite-star-light': ele.collect === 1}]"></span>
               </div>
-            </div>
+            </el-tooltip>
             <div class="content" @click="routePush(ele.id)">
               {{ele.description}}
             </div>
@@ -39,19 +37,17 @@
           </li>
           <li v-for="(ele, index) in projectList" :key="index"
             @click.self="routePush(ele.id)">
-            <div class="clearfix">
-              <h3 class="fl" @click="routePush(ele.id)">{{ele.name}}</h3>
-              <div class="fr">
-                <p class="fr operate" tabindex="-1" ref="operate">
-                  <span class="more">
-                  </span>
-                  <span class="delete" @click="projectDelete(ele.id, index)">
-                    删除
-                  </span>
+            <el-tooltip :content="ele.name" placement="top">
+              <div class="pro-header">
+                <h3 @click="routePush(ele.id)">{{ele.name}}</h3>
+                <p class="operate" tabindex="-1" ref="operate">
+                  <span class="more"></span>
+                  <span class="delete" @click="projectDelete(ele.id, index)">删除</span>
                 </p>
-                <span @click="setCollect(ele.id, ele.collect)" :class="['favorite-star', 'fr', {'favorite-star-light': ele.collect === 1}]"></span>
+                <span @click="setCollect(ele.id, ele.collect)"
+                :class="['favorite-star', {'favorite-star-light': ele.collect === 1}]"></span>
               </div>
-            </div>
+            </el-tooltip>
             <div class="content" @click="routePush(ele.id)">
               {{ele.description}}
             </div>
@@ -59,29 +55,21 @@
             <span class="importance level3" v-if="ele.level === 3">非常重要</span>
           </li>
         </ul>
-        <h2 v-if="attendList.length">我拥有的项目</h2>
+        <h2 v-if="attendList.length">我参与的项目</h2>
         <ul class="project-list">
-          <li class="create" @click="showCover" v-if="isCompanyAdmin && attendList.length">
-            <p @click="showCover">
-              <i></i>
-              <span>创建新项目</span>
-            </p>
-          </li>
           <li v-for="(ele, index) in attendList" :key="index"
             @click.self="routePush(ele.id)">
-            <div class="clearfix">
-              <h3 class="fl" @click="routePush(ele.id)">{{ele.name}}</h3>
-              <div class="fr">
-                <p class="fr operate" tabindex="-1" ref="operate2">
-                  <span class="more">
-                  </span>
-                  <span class="delete" @click="projectDelete(ele.id, index, 'attend')">
-                    删除
-                  </span>
+            <el-tooltip :content="ele.name" placement="top">
+              <div class="pro-header">
+                <h3 @click="routePush(ele.id)">{{ele.name}}</h3>
+                <p class="operate" tabindex="-1" ref="operate2">
+                  <span class="more"></span>
+                  <span class="delete" @click="projectDelete(ele.id, index, 'attend')">删除</span>
                 </p>
-                <span @click="setCollect(ele.id, ele.collect)" :class="['favorite-star', 'fr', {'favorite-star-light': ele.collect === 1}]"></span>
+                <span @click="setCollect(ele.id, ele.collect)"
+                :class="['favorite-star', {'favorite-star-light': ele.collect === 1}]"></span>
               </div>
-            </div>
+            </el-tooltip>
             <div class="content" @click="routePush(ele.id)">
               {{ele.description}}
             </div>
@@ -164,44 +152,45 @@ export default {
   methods: {
     getProjectList() {
       this.isLoading = true
-      this.$http.get(api.desiginProjectList, {params: {
-        status: 1,
-        page: this.query.page,
-        per_page: this.query.pageSize
-      }}).then(res => {
+      Promise.all([
+        this.$http.get(api.desiginProjectList, {params: { // 我参与的
+          status: 1,
+          page: this.query.page,
+          per_page: this.query.pageSize
+        }}),
+        this.$http.get(api.desiginProjectList, {params: { // 我收藏的
+          status: 1,
+          collect: 1,
+          page: this.query.page,
+          per_page: this.query.pageSize
+        }}),
+        this.$http.get(api.desiginProjectList, {params: { // 我拥有的
+          status: 1,
+          user_status: 1,
+          page: this.query.page,
+          per_page: this.query.pageSize
+        }})
+      ]).then(([res1, res2, res3]) => {
+        // console.log(res1.data.data, res2.data.data, res3.data.data)
         this.isLoading = false
-        if (res.data.meta.status_code === 200) {
-          this.projectList = res.data.data
-          this.projectList.forEach((item, index) => {
-            if (item.collect === 1) { // 我收藏的
-              this.collectList.push(item)
-            }
-            if (item.user_status === 1) { // 我创建的
-              this.attendList.push(item)
-            }
-          })
+
+        if (res1.data.meta.status_code === 200) {
+          this.projectList = res1.data.data
         } else {
-          this.$message.error(res.data.meta.message)
+          this.$message.error(res1.data.meta.message)
         }
-        // if (res.data.meta.pagination) {
-        //   this.query.totalCount = res.data.meta.pagination.total
-        //   this.query.totalPges = res.data.meta.pagination.total_pages
-        // } else {
-        //   this.query.totalCount = 0
-        //   this.query.totalPges = 0
-        // }
-        // if (res.data.meta.pagination.count) {
-        //   let pages2 = this.query.totalCount % this.query.pageSize
-        //   let pages = Math.floor(this.query.totalCount / this.query.pageSize)
-        //   pages = pages2 ? pages + 1 : pages
-        //   if (this.query.page > pages) {
-        //     this.query.page = pages
-        //     this.$router.push({name: this.$route.name, query: {page: pages}})
-        //   }
-        // }
-      }).catch(err => {
-        this.isLoading = false
-        console.error(err.message)
+
+        if (res3.data.meta.status_code === 200) {
+          this.attendList = res3.data.data
+        } else {
+          this.$message.error(res3.data.meta.message)
+        }
+
+        if (res2.data.meta.status_code === 200) {
+          this.collectList = res2.data.data
+        } else {
+          this.$message.error(res2.data.meta.message)
+        }
       })
     },
     createProject() {
@@ -306,20 +295,24 @@ export default {
       if (this.isOpen2) {
         this.isOpen2 = false
         collect = collect === 1 ? 0 : 1
-        this.$http.put(api.designProjectCollect, {id: id, collect: collect})
+        this.$http.put(api.designProjectCollect, {item_id: id, collect: collect})
         .then((res) => {
           this.isOpen2 = true
           if (res.data.meta.status_code === 200) {
             this.$nextTick(_ => {
               if (collect === 1) {
-                this.projectList.forEach((item) => {
+                this.projectList.forEach((item, index) => {
                   if (item.id === id) {
-                    this.$set(item, 'collect', collect)
                     this.collectList.unshift(item)
                   }
                 })
               } else {
                 this.projectList.forEach((item) => {
+                  if (item.id === id) {
+                    this.$set(item, 'collect', collect)
+                  }
+                })
+                this.attendList.forEach((item) => {
                   if (item.id === id) {
                     this.$set(item, 'collect', collect)
                   }
@@ -370,13 +363,34 @@ export default {
       // 对路由变化作出响应...
       // this.getProjectList()
     },
-    projectList(val) {
-      this.collectList = []
-      this.projectList.forEach((item, index) => {
-        if (item.collect === 1) {
-          this.collectList.push(item)
-        }
+    collectList(val) {
+      val.forEach(item2 => {
+        this.$set(item2, 'collect', 1)
+        this.projectList.forEach(item1 => {
+          if (item1.id === item2.id) {
+            this.$set(item1, 'collect', 1)
+          }
+        })
+
+        this.attendList.forEach(item3 => {
+          if (item3.id === item2.id) {
+            this.$set(item3, 'collect', 1)
+          }
+        })
       })
+
+      // for (let j = 0; j < this.projectList.length; j++) {
+      //   for (let i = 0; i < val.length; i++) {
+      //     this.$set(val[i], 'collect', 1)
+      //     if (val[i]['id'] === this.projectList[j]['id']) {
+      //       this.$set(this.projectList[j], 'collect', 1)
+      //       break
+      //     } else {
+      //       this.$set(this.projectList[j], 'collect', 0)
+      //     }
+      //   }
+      // }
+      // console.log(this.projectList)
     }
   }
 }
@@ -401,8 +415,9 @@ export default {
     margin-bottom: 20px;
     background: #f7f7f7;
     padding: 20px;
+    border-radius: 4px;
+    transition: transform .268s ease;
     /* padding-bottom: 40px; */
-    transition: transform .218s ease;
     /* transform: translate3d(0, 0, 0) */
   }
 
@@ -442,12 +457,22 @@ export default {
     background: url(../../../../assets/images/member/add-hover@2x.png) no-repeat center;
     background-size: contain
   }
+  .pro-header {
+    padding-right: 40px;
+  }
   .project-list li h3 {
     line-height: 24px;
     font-size: 18px;
     color: #222;
+    word-break: break-all;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
   .favorite-star {
+    position: absolute;
+    right: 20px;
+    top: 20px;
     display: inline-block;
     cursor: pointer;
     margin-right: 20px;

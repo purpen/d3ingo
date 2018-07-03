@@ -1,6 +1,6 @@
 <template>
   <section class="contract">
-    <p class="fx-2">合同管理</p>
+    <p class="fz-16">合同管理</p>
     <el-row class="contract-add">
       <el-upload
       :action="uploadUrl"
@@ -14,8 +14,8 @@
 </el-upload>
     </el-row>
     <section class="contract-list" 
-      v-for="(fi,indexfi) in fileing" :key="indexfi+'f'"
       v-if="fi.percentage!==100&&fileing.length>0"
+      v-for="(fi,indexfi) in fileing" :key="indexfi+'f'"
     >
       <img :src="Groupimg" alt="">
       <div class="contracct-Part">
@@ -31,17 +31,19 @@
         </el-progress>
       </div>
     </section>
-    <section class="contract-list" v-for="(f,indexf) in fileList" :key="indexf">
+    <section class="contract-list"
+      v-if="fileList&&fileList.length>0" 
+      v-for="(f,indexf) in fileList" :key="indexf">
       <img :src="Groupimg" alt="">
       <div class="contracct-Part">
         <p>{{ f.name }}</p>
-        <span class="contract-time">{{ f.created_at }}</span>
-        <span class="contract-size">{{f.size}}</span>
+        <span class="contract-time tc-9">{{ f.created_at }}</span>
+        <span class="contract-size tc-9">{{f.size}}</span>
       </div>
-      <div class="fr marginlf" @click="downupload(f.file)">下载</div>
-      <div class="fr" @click="isdelete(f.id)">删除</div>
+      <div class="fr marginlf tc-9" @click="downupload(f.file)">下载</div>
+      <div class="fr tc-9" @click="isdelete(f.id)">删除</div>
     </section>
-    <section class="contract-list" v-if="infoList">
+    <section class="contract-list" v-if="infoList&&infoList.length>0">
       <img :src="Groupimg" alt="">
       <div class="contracct-Part info-title">
         <p>{{ infoList.title }}</p>
@@ -228,9 +230,6 @@
 .contract{
   margin:30px 50px 50px 50px;
 }
-.contract>p{
-  font-weight: 600;
-}
 .contract-add{
   margin-top:10px;
   height:90px;
@@ -246,6 +245,7 @@
   margin-top:20px;
   border-radius: 4px;
   padding:25px 20px;
+  font-size: 14px;
 }
 .contract-list>img{
   height:40px;

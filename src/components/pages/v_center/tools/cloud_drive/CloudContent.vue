@@ -1,5 +1,5 @@
 <template>
-  <div class="cloud-content">
+  <div class="cloud-content scroll-bar2">
     <section>
       <el-row :gutter="20" v-if="list.length">
         <!-- 默认显示列表 -->
@@ -64,7 +64,7 @@
             </el-col>
             <el-col :span="2" v-if="driveShare && ele.mime_type">
               <div class="more-list download">
-                <i @click="downFile(ele.id, ele.url_file)"></i>
+                <i @click="downFile(ele.id, ele.url_download)"></i>
               </div>
             </el-col>
           </div>
@@ -90,7 +90,7 @@
           </div>
         </el-col>
         <!-- 显示九宫格 -->
-        <el-col v-for="(ele, index) in list" :key="ele.name + index" :span="4" v-if="curView === 'chunk'">
+        <el-col v-for="(ele, index) in list" :key="ele.name + index" :span="isMob ? 12 : 4" v-if="curView === 'chunk'">
           <div :class="[{'active' : chooseList.indexOf(ele.id) !== -1}, 'item2']">
             <p v-if="chooseStatus" @click="liClick(ele.id, index)" :class="['file-radio', ele.name]">file-radio</p>
             <p v-if="ele.format_type === 'image' && modules !== 'recycle'" :class="['file-icon', ele.format_type]" :style="{background: 'url(' + ele.url_small + ')'}" @click="showView(ele)">file-icon</p>
@@ -107,7 +107,7 @@
               <ul>
                 <li v-if="folderId === 0 && ele.user_id === user.id" @click="changePermission(ele.id, ele.user_id)">更改权限</li>
                 <li @click="shareFile(ele.id)">分享</li>
-                <li v-if="ele.mime_type" @click="downFile(ele.id, ele.url_file)">下载</li>
+                <li v-if="ele.mime_type" @click="downFile(ele.id, ele.url_download)">下载</li>
                 <li @click="copyFile(ele.id)">复制</li>
                 <li @click="moveFile(ele.id)">移动</li>
                   <li @click="rename(ele.id, index)">重命名</li>
@@ -138,7 +138,7 @@
           </p>
           <p class="fr operate" v-if="!driveShare">
             <span class="fl" @click="shareFile(prewiewInfo.id)">分享</span>
-            <span class="fl" @click="downFile(prewiewInfo.id, prewiewInfo.url_file)">下载</span>
+            <span class="fl" @click="downFile(prewiewInfo.id, prewiewInfo.url_download)">下载</span>
             <span class="fl" @click="moveFile(prewiewInfo.id)">移动</span>
             <span ref="moreRight" class="fl more" tabindex="-1">
               <i></i>
@@ -155,7 +155,7 @@
           <div class="image-preview" v-if="showType === 1">
             <swiper :options="swiperOption" :not-next-tick="notNextTick" ref="mySwiper">
               <swiper-slide v-for="(ele, index) in imgList" :key="index">
-                <img :src="ele.url_file" :alt="ele.name">
+                <img :src="ele.url_file" :alt="ele.name" :class="{'is-load': isLoad}">
               </swiper-slide>
               <div @click="switchPrevPic" class="swiper-button-prev" slot="button-prev">
                 <i class="el-icon-arrow-left"></i>
@@ -305,6 +305,7 @@ export default {
       this.$emit('changeImgList', ele)
     },
     showView(ele) {
+      this.isLoad = false
       this.urlFile = ele.url_file
       if (!this.driveShare) {
         this.$http.post(api.yunpanRecentUseLog, {id: ele.id}).then(res => {
@@ -318,13 +319,21 @@ export default {
           if (this.$refs.mySwiper) {
             this.imgList.forEach((item, index) => {
               if (ele.id === item.id) {
+                let img = new Image()
+                img.src = ele.url_file
+                img.onload = () => {
+                  this.isLoad = true
+                  console.log('加载完成')
+                }
                 this.swiperObj.slideTo(index)
                 this.viewCover = true
                 this.previewObj.info = item
                 this.previewObj.index = index
               }
             })
+            let oldClass = document.body.childNodes[1].getAttribute('class')
             document.body.setAttribute('class', 'disableScroll')
+            document.body.childNodes[1].setAttribute('class', 'disableScroll ' + oldClass)
             document.childNodes[1].setAttribute('class', 'disableScroll')
           } else {
             this.$message.info('正在加载组件, 请稍后尝试...')
@@ -352,7 +361,12 @@ export default {
       this.viewCover = false
       this.showProfile = false
       this.urlFile = ''
+      let oldClass = document.body.childNodes[1].getAttribute('class')
+      if (oldClass) {
+        oldClass = oldClass.replace('disableScroll ', '')
+      }
       document.body.removeAttribute('class', 'disableScroll')
+      document.body.childNodes[1].setAttribute('class', oldClass)
       document.childNodes[1].removeAttribute('class', 'disableScroll')
     },
     renameCancel() {
@@ -402,20 +416,33 @@ export default {
       console.log(e)
     },
     switchPrevPic() {
+      this.isLoad = false
       this.previewObj.index --
       if (this.previewObj.index < 0) {
         this.previewObj.index = 0
       }
+      let img = new Image()
+      img.src = this.imgList[this.previewObj.index]['url_file']
+      img.onload = () => {
+        this.isLoad = true
+        console.log('加载完成')
+      }
     },
     switchNextPic() {
+      this.isLoad = false
       this.previewObj.index ++
       if (this.previewObj.index > this.imgList.length - 1) {
         this.previewObj.index = this.imgList.length - 1
       }
+      let img = new Image()
+      img.src = this.imgList[this.previewObj.index]['url_file']
+      img.onload = () => {
+        this.isLoad = true
+        console.log('加载完成')
+      }
     },
     changePermission(id, userId, ele) {
       this.$refs.moreRight.blur()
-      console.log(this.user.company_role)
       if (this.user.id === userId) {
         this.directOperate(id)
         this.$emit('changePermission', id)
@@ -434,6 +461,7 @@ export default {
     },
     moveFile(id) {
       this.directOperate(id)
+      console.log(id, 111)
       this.$emit('confirmMove')
     },
     shareFile(id) {
@@ -469,15 +497,12 @@ export default {
         this.closeView()
       }
     },
-    imgList: {
-      handler: function (newVal) {
-        if (newVal.length) {
-          if (this.previewObj['index'] === -1) {
-            this.previewObj['index'] = 0
-          }
+    imgList(newVal) {
+      if (newVal.length) {
+        if (this.previewObj['index'] === -1) {
+          this.previewObj['index'] = 0
         }
-      },
-      deep: true
+      }
     }
   },
   computed: {
@@ -511,10 +536,16 @@ export default {
 }
 </script>
 <style scoped>
+  .cloud-content {
+    height: 100%;
+    /* min-height: 100%; */
+    min-height: 500px;
+    overflow-x: hidden;
+  }
   section .item {
     height: 70px;
     line-height: 70px;
-    border-bottom: 1px solid #d2d2d2;
+    border-bottom: 1px solid #e6e6e6;
     background: #fff;
     cursor: pointer;
   }
@@ -557,15 +588,14 @@ export default {
   }
 
   section .item2:hover, section .item2.active {
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
   }
 
   .file-radio {
+    cursor: pointer;
     text-indent: -999em;
     width: 20px;
     height: 20px;
-    border-radius: 50%;
-    border: 1px solid #d2d2d2;
     background: #fff;
     margin: 25px auto 25px;
     position: relative;
@@ -580,23 +610,39 @@ export default {
   .file-radio:before {
     content: '';
     position: absolute;
-    left: 3px;
-    top: 4px;
+    z-index: 1;
+    left: 4px;
+    top: 5px;
     width: 12px;
     height: 7px;
     border: 2px solid #fff;
     border-top: none;
     border-right: none;
     transform: rotate(-45deg);
+    border-radius: 0;
+    cursor: pointer;
+  }
+  .file-radio:after {
+    content: '';
+    border-radius: 50%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    cursor: pointer;
   }
   
-  .active .file-radio {
+  .active .file-radio:after {
     border: 1px solid #999;
     background: #999;
   }
 
   .item .file-icon {
-    margin-left: 10px;
+    /* margin-left: 10px; */
+    margin-left: 0;
   }
   .item2 .file-icon {
     float: none;
@@ -708,7 +754,7 @@ export default {
   }
   .rename-cancel {
     background: #fff;
-    border: 1px solid #d2d2d2
+    border: 1px solid #e6e6e6
   }
   .rename-cancel:active {
     background: #ccc;
@@ -889,7 +935,8 @@ export default {
     z-index: 999;
     top: 50px;
     /* left: 0; */
-    right: -10px;
+    /* right: -10px; */
+    right: 0;
     width: 140px;
     background: #fff;
     color: #666;
@@ -935,7 +982,7 @@ export default {
   .file-profile .profile-head {
     background: #f7f7f7;
     height: 50px;
-    border-bottom: 1px solid #d2d2d2;
+    border-bottom: 1px solid #e6e6e6;
     font-size: 14px;
     color: #222;
     text-align: center;
@@ -975,14 +1022,15 @@ export default {
   .view-content img {
     min-width: 100px;
     min-height: 100px;
-    background: url('../../../../../assets/images/tools/cloud_drive/status/loading.gif') center no-repeat;
-    background-size: 50px;
+    background: url('../../../../../assets/images/tools/cloud_drive/status/loading.gif') no-repeat center / 100px;
     display: block;
     margin: 0 auto;
     max-width: 800px;
     max-height: calc(100vh - 120px);
   }
-
+  .view-content .is-load {
+    background: none
+  }
   .image-preview {
     max-width: 980px;
     margin: 0 auto;

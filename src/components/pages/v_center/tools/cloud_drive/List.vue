@@ -1,25 +1,31 @@
 <template>
   <el-row :class="['vcenter-rightMenu-plus',
-    'cloud-content',
+    'cloud-content', 'full-height',
     {'slide-mini': leftWidth === 2 && withoutSide,
     'slide-mini-none': isMob}]">
     <v-menu-left v-if="withoutSide" :currentName="withoutSide? 'cloud_drive' : 'project_management'"></v-menu-left>
-    <section :class="{'parent-box': withoutSide,
+    <section :class="['full-height', {'parent-box': withoutSide,
       'parent-box2': !withoutSide,
-      'parent-box-mob': isMob}">
-      <el-col v-if="withoutSide" :span="4">
+      'parent-box-mob': isMob}]">
+      <el-col v-if="withoutSide" :span="4" class="full-height">
         <v-menu :isActive='modules' @getTitle="headTitle"></v-menu>
       </el-col>
-      <el-col :span="withoutSide?20 :24">
-        <div :class="['content', {'content-mini' : leftWidth === 2}, {'content-pm' : !withoutSide}]"
-          v-loading.body="isLoading">
+      <el-col :span="withoutSide?20 :24" class="full-height">
+        <div :class="['content', 'full-height',
+          {'content-mini' : leftWidth === 2}, {'content-pm' : !withoutSide}]"
+          v-loading="isLoading">
           <div class="content-head">
             <div class="clearfix" v-show="showList">
-              <p class="title fl" v-if="!isChoose && folderId === 0" v-html="title"></p>
-              <p class="title fl" v-if="!isChoose && folderId !== 0">
-                <i class="fx fx-icon-nothing-left" @click="backFolder"></i>
-                {{parentFolder.name}}
-              </p>
+              <el-tooltip effect="dark" :content="title" placement="top">
+                <p class="title fl" v-if="!isChoose && folderId === 0" v-html="title"></p>
+              </el-tooltip>
+              <el-tooltip effect="dark" :content="parentFolder.name" placement="top">
+                <p class="title fl" v-if="!isChoose && folderId !== 0">
+                  <i v-if="historyId.length"
+                    class="fx fx-icon-nothing-left" @click="backFolder"></i>
+                  {{parentFolder.name}}
+                </p>
+              </el-tooltip>
               <div class="fr operate" v-if="!isChoose">
                 <p class="add" v-if="modules !== 'recycle'">
                   <span class="add-option">
@@ -119,7 +125,7 @@
           </transition>
 
           <el-col>
-            <el-pagination v-if="query.totalCount / query.pageSize > 1" class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize" :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange">
+            <el-pagination v-if="query.totalCount / query.pageSize > 1" :class="['pagination', {'relative': isProject}]" :small="isMob" :current-page="query.page" :page-size="query.pageSize" :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange">
             </el-pagination>
           </el-col>
         </div>
@@ -297,10 +303,10 @@
       </h3>
       <div class="dialog-content dialog-folder">
         <p class="dialog-name">文件夹名称</p>
-        <input placeholder="请填写文件夹名称" v-focus="isFocusFolderName"
+        <el-input placeholder="请填写文件夹名称" v-focus="isFocusFolderName"
           @focus="focusFolderName"
           @blur="blurFolderName"
-          v-model.trim="folder.name">
+          v-model.trim="folder.name"></el-input>
         <p class="dialog-permission">设置查看权限</p>
         <input v-if="folderId === 0"
           class="select-permission" placeholder="请选择权限"
@@ -355,7 +361,7 @@
               title="创建文件夹" v-else></p>
           </div>
           <ul class="folder-body"
-            v-loading.body="copyORmoveLoading && index === folderObj['length'] - 1">
+            v-loading="copyORmoveLoading && index === folderObj['length'] - 1">
             <li v-if="showFolderInput && ele.folderId === copyORmoveFolderId">
               <input
                 v-focus="ele.folderId === copyORmoveFolderId"
@@ -393,7 +399,7 @@
               title="创建文件夹" v-else></p>
           </div>
           <ul class="folder-body"
-            v-loading.body="copyORmoveLoading && index === folderObj['length'] - 1">
+            v-loading="copyORmoveLoading && index === folderObj['length'] - 1">
             <li v-if="showFolderInput && ele.folderId === copyORmoveFolderId">
               <input
                 v-focus="ele.folderId === copyORmoveFolderId"
@@ -564,6 +570,9 @@ export default {
       default: true
     },
     isMyFile: {
+      default: false
+    },
+    isProject: {
       default: false
     }
   },
@@ -1350,6 +1359,10 @@ export default {
         } else if (!this.folder.permission) {
           this.$message.error('请选择文件夹权限')
           return
+        } else {
+          if (this.folder.name.length > 50) {
+            this.$message.error('最长不能超过50个字符')
+          }
         }
       } else {
         if (!this.folder.name) {
@@ -1759,6 +1772,8 @@ export default {
     padding-left: 0;
   }
   .content {
+    position: relative;
+    /* padding-bottom: 60px!important; */
     /* transition: 0.2s all ease; */
   }
   .content-mini {
@@ -1768,17 +1783,25 @@ export default {
     position: static
   }
   .content-head {
+    position: absolute;
+    width: calc(100% - 60px);
+    left: 30px;
+    top: 12px;
     color: #999;
     font-size: 0;
-    border-bottom: 1px solid #D2D2D2;
+    border-bottom: 1px solid #e6e6e6;
     height: 30px;
     line-height: 20px;
-    position: relative;
+    /* position: relative; */
     z-index: 10;
   }
   .content-head .title {
-    padding-left: 20px;
-    font-size: 18px;
+    padding-left: 10px;
+    font-size: 16px;
+    max-width: 200px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
   .operate {
     height: 40px;
@@ -1858,7 +1881,7 @@ export default {
     left: -65px;
     top: 40px;
     width: 160px;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
     animation: slowShow2 0.2s linear;
     display: none;
     overflow: hidden;
@@ -1946,7 +1969,7 @@ export default {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
     background: #fff;
     position: relative;
     margin: 3px auto 0;
@@ -1967,6 +1990,7 @@ export default {
     border-top: none;
     border-right: none;
     transform: rotate(-45deg);
+    border-radius: 0;
   }
 
   i.file-radio.active {
@@ -1997,7 +2021,7 @@ export default {
     right: 0;
     bottom: 60px;
     width: 580px;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
     border-radius: 4px;
   }
   .web-uploader-header {
@@ -2008,7 +2032,7 @@ export default {
     background: #f7f7f7;
     padding-right: 30px;
     font-size: 14px;
-    border-bottom: 1px solid #d2d2d2;
+    border-bottom: 1px solid #e6e6e6;
   }
   .web-uploader-body {
     overflow-y: auto;
@@ -2020,7 +2044,7 @@ export default {
   .upload-list {
     padding: 15px 10px;
     min-height: 69px;
-    border-bottom: 1px solid #d2d2d2;
+    border-bottom: 1px solid #e6e6e6;
   }
   .upload-list:last-child {
     border-bottom: 0;
@@ -2176,7 +2200,7 @@ export default {
   .link input, .share-password input {
     width: 260px;
     height: 34px;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
     border-radius: 4px;
     padding: 0 8px;
   }
@@ -2199,12 +2223,12 @@ export default {
     left: 0;
     top: 8px;
     border-radius: 50%;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
     width: 18px;
     height: 18px;
   }
   .share-type i::after {
-    transition: 0.3s background cubic-bezier(0.42, -0.07, 0, 0.98);
+    transition: 0.15s background cubic-bezier(0.42, -0.07, 0, 0.98);
     content: "";
     position: absolute;
     left: 3px;
@@ -2215,10 +2239,10 @@ export default {
     height: 12px;
   }
   .share-type i.checked::before {
-    border: 1px solid #666;
+    border: 1px solid #ff5a5f;
   }
   .share-type i.checked::after {
-    background: #666;
+    background: #ff5a5f;
   }
   .share-type::before {
     content: "分享形式";
@@ -2258,7 +2282,7 @@ export default {
     height: 330px;
     width: 200px;
     min-width: 200px;
-    border-right: 1px solid #d2d2d2
+    border-right: 1px solid #e6e6e6
   }
   .folder-item-head {
     overflow: hidden;
@@ -2316,11 +2340,11 @@ export default {
     font-size: 12px;
     padding-left: 8px;
     border-radius: 4px;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
   }
   .dialog-foot {
     height: 60px;
-    border-top: 1px solid #D2D2D2;
+    border-top: 1px solid #e6e6e6;
     padding: 14px 20px;
   }
 
@@ -2334,7 +2358,7 @@ export default {
     line-height: 20px;
     height: 38px;
     border-radius: 4px;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
     color: #222;
   }
   .selectFolderPermission {
@@ -2377,7 +2401,7 @@ export default {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
     background: #fff;
   }
   .grouplist li b:before {
@@ -2444,7 +2468,7 @@ export default {
     width: 118px;
     height: 32px;
     font-size: 14px;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
     margin-right: 25px;
     border-radius: 4px;
     background: #fff;
@@ -2477,7 +2501,7 @@ export default {
   
   .buttons button.disable, .buttons button.disable:hover, .buttons button.disable:active {
     background: #EDF1F2;
-    border-color: #d2d2d2;
+    border-color: #e6e6e6;
     color: #999;
   }
 
@@ -2515,7 +2539,17 @@ export default {
   }
 
   .pagination {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    bottom: 0;
     text-align: center;
+    padding: 20px 0;
+    background: #fff;
+  }
+  .relative {
+    position: relative;
   }
   .exclude-file {
     margin-top: 20px;
@@ -2563,13 +2597,31 @@ export default {
   .parent-box-mob {
     padding-left: 0;
   }
+  @media screen and (max-width: 767px) {
+    .content {
+      padding-top: 41px;
+    }
+    .content-head {
+      width: 100%;
+      left: 0;
+      top: 11px;
+    }
+  }
   @media screen and (min-width: 768px) {
     .content {
-      padding: 20px 30px 0;
+      /* padding: 20px 30px 0; */
+      padding: 42px 30px 0;
       position: relative
     }
   }
-
+  @media screen and (max-width: 1199px) {
+    .content.full-height.content-mini {
+      width: 83.33333%;
+    }
+    .edit-menu .file-radio {
+      margin-left: 10px;
+    }
+  }
   @media screen and (min-width: 1200px) {
     .content {
       position: absolute;

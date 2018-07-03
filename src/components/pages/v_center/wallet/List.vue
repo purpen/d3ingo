@@ -11,7 +11,7 @@
               <div :class="['amount-show', isMob ? 'amount-show-m' : '']">
                 <p :class="['price-title', isMob ? 'price-title-m' : '']">账户余额（元）</p>
                 <p :class="['price-text', isMob ? 'price-text-m' : '']">¥{{ wallet.price_total }}</p>
-                <p :class="['price-des', isMob ? 'price-des-m' : '']">*已冻结余额 {{ wallet.price_frozen }}元，不可提现</p>
+                <p :class="['price-des', isMob ? 'price-des-m' : '']">*已冻结余额 <span v-html="wallet.price_frozen"></span>元，不可提现</p>
               </div>
               <div :class="['amount-btn', isMob ? 'amount-show-m amount-btn-m' : '']">
                 <p>
@@ -20,12 +20,12 @@
                 </p>
               </div>
             </div>
-            <div :class="['bank-box', isMob ? 'bank-box-m' : '']">
-              <p>
-                <router-link :to="{name: 'vcenterBankList'}"><i class="fa fa-credit-card" aria-hidden="true"></i> 银行账户管理
-                </router-link>
-              </p>
-            </div>
+            <!--<div :class="['bank-box', isMob ? 'bank-box-m' : '']">-->
+              <!--<p>-->
+                <!--<router-link :to="{name: 'vcenterBankList'}"><i class="fa fa-credit-card" aria-hidden="true"></i> 银行账户管理-->
+                <!--</router-link>-->
+              <!--</p>-->
+            <!--</div>-->
           </div>
 
           <div :class="['item-box', isMob ? 'item-box-m' : '']" v-if="tableData.length">
@@ -38,7 +38,7 @@
 
             <article v-if="record === 'transaction'">
               <el-table v-if="!isMob"
-                        :data="tableData" :border="false" v-loading.body="isLoading"
+                        :data="tableData" :border="false" v-loading="isLoading"
                         @selection-change="handleSelectionChange"
                         key="transaction"
                         style="width: 100%">
@@ -69,7 +69,7 @@
                 </el-table-column>
               </el-table>
 
-              <section v-loading.body="isLoading" v-if="isMob">
+              <section v-loading="isLoading" v-if="isMob">
                 <div class="transaction-record"
                   v-for="(ele, index) in tableData" :key="index"
                     @selection-change="handleSelectionChange">
@@ -122,7 +122,7 @@
                   label="交易状态">
                 </el-table-column>
               </el-table>
-              <section v-loading.body="isLoading" v-if="isMob">
+              <section v-loading="isLoading" v-if="isMob">
                 <div class="transaction-record"
                   v-for="(ele, index) in WithdrawList" :key="index"
                     @selection-change="handleSelectionChange">
@@ -153,45 +153,49 @@
     </el-row>
 
     <!--弹框模板-->
-    <el-dialog :title="itemModelTitle" v-model="itemModel" class="withdraw">
-
-      <div class="withdraw-input">
-        <p class="withdraw-title">选择银行卡</p>
-        <el-select v-model.number="bankId" placeholder="选择银行卡">
-          <el-option
-            v-for="(item, index) in bankOptions"
-            :label="item.label"
-            :key="index"
-            :value="item.value">
-          </el-option>
-        </el-select>
+    <el-dialog :title="itemModelTitle" v-model="itemModel" class="withdraw text-center">
+      <div class="withdraw-input display-fl" v-if="corporationInfo.account_name !== '' || corporationInfo.bank_name !== '' || corporationInfo.account_number !== ''">
+        <div class="withdraw-title margin-t-b-20 dis-ju" v-if=""><p>开户名称:</p><span>{{corporationInfo.account_name}}</span></div>
+        <div class="withdraw-title margin-t-b-20 dis-ju"><p>开户银行：</p><span>{{corporationInfo.bank_name}}</span></div>
+        <div class="withdraw-title margin-t-b-20 dis-ju"><p>对公银行账号：</p><span>{{corporationInfo.account_number}}</span></div>
+      </div>
+      <div class="withdraw-input" v-else>
+        <p class="withdraw-title margin-t-b-20">请完善您的银行卡信息：<el-button @click="goAttestation" size="small" type="warning" class="mar-l-10">去完善</el-button> </p>
       </div>
 
       <div class="withdraw-input">
-        <p class="withdraw-title">提现金额</p>
+        <p class="withdraw-title margin-t-b-20">提现金额</p>
         <div class="flex">
-          <el-input placeholder="请输入提现额度" v-model.number="withdrawPrice">
+          <el-input placeholder="请输入提现额度" v-model.number.trim="withdrawPrice">
             <template slot="prepend">¥</template>
           </el-input>
           <button class="red-button middle-button" @click="allPrice">全部提现</button>
         </div>
-        <p class="withdraw-des">可提现金额: ¥ {{ wallet.price }}</p>
+        <p class="withdraw-des">可提现金额: <span class="color_ff5a">¥ {{ wallet.price }}</span></p>
       </div>
-
+`
       <div slot="footer" class="dialog-footer">
         <el-button @click="itemModel = false">取 消</el-button>
         <el-button type="primary" :loading="isLoadingBtn" @click="withdrawSubmit">确 定</el-button>
       </div>
     </el-dialog>
-
-
+    <!--<transition name="fade">-->
+      <!--<el-dialog :title="itemPointTitle" v-model="itemPointTitleInfo" class="withdraw">-->
+        <!--<div class="withdraw-input">-->
+          <!--<p class="withdraw-title margin-t-b-10 text-center font-16">您还没有认证</p>-->
+        <!--</div>-->
+        <!--<div slot="footer" class="dialog-footer">-->
+          <!--<el-button type="primary" size="small" :loading="isLoadingBtn" @click="goAttestation">点击认证</el-button>-->
+        <!--</div>-->
+      <!--</el-dialog>-->
+    <!--</transition>-->
   </div>
 </template>
 
 <script>
   import vMenu from '@/components/pages/v_center/Menu'
   import api from '@/api/api'
-
+  import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
   export default {
     name: 'vcenter_wallet_list',
     components: {
@@ -214,6 +218,10 @@
         withdrawPrice: '',
         bankId: '',
         bankOptions: [],
+        corporationInfo: {},
+        demandVerifyStatus: -1,
+        itemPointTitle: '未认证',
+        itemPointTitleInfo: false,
         query: {
           page: 1,
           pageSize: 10,
@@ -223,10 +231,34 @@
           test: null
         },
         userId: this.$store.state.event.user.id,
-        record: 'transaction' // transaction || withdraw
+        record: 'transaction', // transaction || withdraw
+        userType: ''
       }
     },
     methods: {
+      // 认证信息
+      getStatus() {
+        this.$http.get(api.surveyDemandCompanySurvey, {})
+        .then(res => {
+          if (res.data.meta.status_code === 200) {
+            this.$store.commit(CHANGE_USER_VERIFY_STATUS, res.data.data)
+            console.log(res.data.data)
+            this.demandVerifyStatus = res.data.data.demand_verify_status
+          } else {
+            console.log(res)
+          }
+        }).catch(err => {
+          console.error(err.message)
+        })
+      },
+      // 去完善信息
+      goAttestation() {
+        if (this.userType === 1) {
+          this.$router.push({name: 'vcenterDCompanyIdentification'})
+        } else {
+          this.$router.push({name: 'vcenterComputerIdentification'})
+        }
+      },
       loadList() {
         const self = this
         self.query.page = parseInt (this.$route.query.page || 1)
@@ -318,29 +350,31 @@
           return false
         }
         this.itemModel = true
-        if (this.bankOptions.length === 0) {
-          const self = this
-          // 银行卡列表
-          self.$http.get (api.bank, {})
-            .then (function (response) {
-              if (response.data.meta.status_code === 200) {
-                for (let i = 0; i < response.data.data.length; i++) {
-                  let item = response.data.data[i]
-                  let newItem = {}
-                  let number = item.account_number.substr (item.account_number.length - 4)
-                  newItem.label = item.bank_val + '[' + number + ']'
-                  newItem.value = item.id
-                  if (item.default === 1) {
-                    self.bankId = item.id
-                  }
-                  self.bankOptions.push (newItem)
-                } // endfor
-              }
-            })
-            .catch (function (error) {
-              self.$message.error (error.message)
-            })
-        }
+        // if (this.bankOptions.length === 0) {
+        //   const self = this
+        //   // 银行卡列表
+        //   self.$http.get (api.bank, {})
+        //     .then (function (response) {
+        //       if (response.data.meta.status_code === 200) {
+        //         console.log(response.data.data)
+        //
+        //         for (let i = 0; i < response.data.data.length; i++) {
+        //           let item = response.data.data[i]
+        //           let newItem = {}
+        //           let number = item.account_number.substr (item.account_number.length - 4)
+        //           newItem.label = item.bank_val + '[' + number + ']'
+        //           newItem.value = item.id
+        //           if (item.default === 1) {
+        //             self.bankId = item.id
+        //           }
+        //           self.bankOptions.push (newItem)
+        //         } // endfor
+        //       }
+        //     })
+        //     .catch (function (error) {
+        //       self.$message.error (error.message)
+        //     })
+        // }
       },
       allPrice() {
         this.withdrawPrice = this.wallet.price
@@ -356,22 +390,30 @@
           self.$message.error ('提现金额超出范围!')
           return
         }
+        // if (self.demandVerifyStatus === 1) {
         self.isLoadingBtn = true
         self.$http.post (api.withdrawCreate, {bank_id: self.bankId, amount: self.withdrawPrice})
-          .then (function (response) {
-            self.isLoadingBtn = false
-            if (response.data.meta.status_code === 200) {
-              self.itemModel = false
-              self.$message.success ('操作成功,等待财务打款！')
-            } else {
-              self.$message.error(response.data.meta.message)
-              console.log(response.data.meta.message)
-            }
-          })
-          .catch (function (error) {
-            self.isLoadingBtn = false
-            self.$message.error (error.message)
-          })
+        .then (function (response) {
+          self.isLoadingBtn = false
+          if (response.data.meta.status_code === 200) {
+            self.itemModel = false
+            self.wallet.price_frozen = parseFloat (self.wallet.price_frozen) + self.withdrawPrice
+            self.$message.success ('操作成功,等待财务打款！')
+          } else {
+            self.$message.error(response.data.meta.message)
+            console.log(response.data.meta.message)
+          }
+        })
+        .catch (function (error) {
+          self.isLoadingBtn = false
+          self.$message.error (error.message)
+        })
+        // } else {
+        //   self.itemModel = false
+          // setTimeout (function () {
+          //   self.itemPointTitleInfo = true
+          // }, 500)
+        // }
       },
       showTransaction() {
         this.record = 'transaction'
@@ -395,6 +437,9 @@
       },
       rightWidth() {
         return 24 - this.$store.state.event.leftWidth
+      },
+      user () {
+        return this.$store.state.event.user
       }
     },
     created: function () {
@@ -403,7 +448,31 @@
       } else {
         this.query.pageSize = 10
       }
+      var userInfo = ''
+      var requestMethod = ''
+      if (this.user.type === 1) {
+        // 需求公司
+        this.userType = 1
+        requestMethod = 'get'
+        userInfo = api.demandCompany
+      } else {
+        this.userType = 2
+        requestMethod = 'put'
+        userInfo = api.designCompany
+      }
       const self = this
+      // 获取公司名称银行卡信息
+      self.$http({method: requestMethod, url: userInfo}).then (function (response) {
+        let getCorporationInfo = response.data.data
+        self.bankId = getCorporationInfo.id
+        if (getCorporationInfo) {
+          self.corporationInfo = getCorporationInfo
+          var str = self.corporationInfo.account_number
+          var reg = /^(\d{4})\d+(\d{4})$/
+          str = str.replace (reg, '$1****$2')
+          self.corporationInfo.account_number = str
+        }
+      })
       // 获取我的钱包
       self.walletLoading = true
       self.$http.get (api.authFundInfo, {})
@@ -425,6 +494,7 @@
 
       // 交易记录
       this.loadList ()
+      this.getStatus ()
     },
     watch: {
       '$route' (to, from) {
@@ -443,13 +513,19 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+  }
   .content-item-box {
 
   }
 
   .my-wallet {
     background: #FAFAFA;
-    height: 190px;
+    height: 150px;
     margin: 0;
     position: relative;
   }
@@ -461,6 +537,15 @@
 
   .wallet-box {
 
+  }
+  .el-dialog__footer .dialog-footer .el-button:last-child {
+    margin: 0 !important;
+  }
+  .el-dialog .el-dialog__header {
+    text-align: center !important;
+  }
+  .font-16 {
+    font-size: 16px;
   }
 
   .amount-show {
@@ -578,11 +663,33 @@
 
   .withdraw-input {
     margin: 10px;
+    text-align: left;
+  }
+  .el-dialog__body {
+    padding: 0 20px !important;
   }
 
-  .withdraw-input p.withdraw-title {
+  .margin-t-b-20 {
+    margin-bottom: 20px;
+  }
+  .display-fl {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dis-ju {
+    display: flex;
+    align-items: center;
+  }
+
+  .withdraw-input .dis-ju p {
+    width: 100px;
     line-height: 2;
-    color: #222;
+    color: #666;
+  }
+
+  .withdraw-input p.withdraw-title span{
+    color: #999;
   }
 
   .withdraw-input .el-input {
@@ -633,7 +740,7 @@
     width: 100%;
     top: 42px;
     left: 0;
-    border-bottom: 1px solid #d2d2d2;
+    border-bottom: 1px solid #e6e6e6;
     z-index: -1;
   }
   .flex {
@@ -643,6 +750,14 @@
   .flex button:last-child {
     margin-left: 10px;
   }
+  .mar-l-10 {
+    margin-left: 10px;
+  }
+
+  .color_ff5a {
+    color: #ff5a5f;
+  }
+
   @media screen and (max-width: 767px) {
     .vcenter-menu-sub::after {
       content: "";
@@ -650,8 +765,11 @@
       width: 100%;
       top: 47px;
       left: 0;
-      border-bottom: 1px solid #d2d2d2;
+      border-bottom: 1px solid #e6e6e6;
       z-index: -1;
+    }
+    .vcenter{
+      margin-top: 0;
     }
   }
 </style>

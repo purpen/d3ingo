@@ -78,30 +78,55 @@
         -->
 
         <el-form-item label="项目目标" prop="summary">
-          <el-input autosize type="textarea" :rows="5" v-model="form.summary"
+          <el-input  type="textarea" :rows="5" v-model="form.summary"
                     placeholder="请详细描述项目的主要目标和主要重点"></el-input>
         </el-form-item>
-
-        <el-form-item label="项目工作计划及费用" prop="">
+        <el-form-item  prop="">
+          <div v-show="form.plan_format.length">
+            <p class="laber-title-font">项目工作计划及费用</p>
+            <el-row style="padding: 20px 25px">
+              <el-col :xs="24" :sm="7" :md="7" :lg="7">
+                <p class="font-14">工作内容</p>
+              </el-col>
+              <el-col :xs="24" :sm="7" :md="7" :lg="7">
+                <el-row>
+                  <el-col :xs="24" :sm="12" :md="12" :lg="12">
+                    <p class="padd-l-10 font-14">人员安排</p>
+                  </el-col>
+                  <el-col :xs="20" :sm="10" :md="10" :lg="10"></el-col>
+                  <el-col :xs="4" :sm="2" :md="2" :lg="2"></el-col>
+                </el-row>
+              </el-col>
+              <el-col :xs="24" :sm="3" :md="3" :lg="3">
+                <p class="padd-l-10 font-14">持续时间</p>
+              </el-col>
+              <el-col :xs="20" :sm="4" :md="4" :lg="4">
+                <p class="padd-l-25 font-14">费用</p>
+              </el-col>
+              <el-col :xs="4" :sm="1" :md="1" :lg="1" class="mar-l-25">
+                <p class="font-14 padd-l-15">备注</p>
+              </el-col>
+              <el-col :xs="24" :sm="1" :md="1" :lg="1"></el-col>
+            </el-row>
+          </div>
           <div class="plan-list" v-for="(d, index) in form.plan_format" :key="index">
             <div class="plan-row">
               <el-row :gutter="10">
-                <el-col :xs="24" :sm="1" :md="1" :lg="1" style="width:12px;margin-top:5px;padding:0;">
-                    <img :src="require('assets/images/tools/project_management/quote_row@2x.png')" class="plan-icon" />
-                </el-col>
-                <el-col :xs="24" :sm="7" :md="7" :lg="7">
+                <!--<el-col :xs="24" :sm="1" :md="1" :lg="1" style="width:12px;margin-top:5px;padding:0;">-->
+                    <!--<img :src="require('assets/images/tools/project_management/quote_row@2x.png')" class="plan-icon" />-->
+                <!--</el-col>-->
+                <el-col :xs="24" :sm="7" :md="7" :lg="7" class="qouteSubmit">
                   <el-form-item
                     :prop="'plan_format.' + index + '.content'"
                     :rules="{
                     required: true, message: '请添写工作内容', trigger: 'blur'}">
-                    <el-input autosize v-model="form.plan_format[index].content" placeholder="请添写工作内容" size="small"></el-input>
+                    <el-input autosize v-model="form.plan_format[index].content" placeholder="请添写工作内容"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="7" :md="7" :lg="7">
-                  <div v-for="(c, c_index) in d.arranged" :key="c_index">
-
+                  <div v-for="(c, c_index) in d.arranged" :key="c_index" class="mar-r-15">
                     <el-row>
-                      <el-col :xs="24" :sm="12" :md="12" :lg="12">
+                      <el-col :xs="24" :sm="12" :md="12" :lg="12" class="qouteSubmit">
                         <el-form-item
                           :prop="'plan_format.' + index + '.arranged.' + c_index + '.name'"
                           :rules="{
@@ -126,7 +151,7 @@
                           </el-select>
                         </el-form-item>
                       </el-col>
-                      <el-col :xs="20" :sm="10" :md="10" :lg="10">
+                      <el-col :xs="20" :sm="10" :md="10" :lg="10" class="qouteSubmit">
                         <el-form-item
                           :prop="'plan_format.' + index + '.arranged.' + c_index + '.number'"
                           :rules="{
@@ -150,20 +175,20 @@
                       </el-col>
                       <el-col :xs="4" :sm="2" :md="2" :lg="2">
                         <el-button class="right-border_radius" size="small"
-                          :style="{minWidth: 'auto', width: '100%'}"
+                          :style="{minWidth: '36px', width: '100%', height: '40px'}"
                           v-if="c_index === 0" @click="addPlanMember(index, c_index)">
                           <i class="el-icon-plus"></i>
                         </el-button>
                         <el-button class="right-border_radius" size="small"
-                          :style="{minWidth: 'auto', width: '100%'}"
+                          :style="{minWidth: '36px', width: '100%', height: '40px'}"
                           v-else @click="delPlanMember(index, c_index)">
-                          <i class="fx-icon-close-sm"></i>
+                          <i class="el-icon-close"></i>
                         </el-button>
                       </el-col>
                   </el-row>
                   </div>
                 </el-col>
-                <el-col :xs="24" :sm="3" :md="3" :lg="3">
+                <el-col :xs="24" :sm="3" :md="3" :lg="3" class="qouteSubmit mar-r-15">
                   <el-form-item
                     :prop="'plan_format.' + index + '.duration'"
                     :rules="{
@@ -173,7 +198,7 @@
                     </el-input>
                   </el-form-item>
                 </el-col>
-                <el-col :xs="20" :sm="4" :md="4" :lg="4">
+                <el-col :xs="20" :sm="4" :md="4" :lg="4" class="qouteSubmit mar-r-15">
                   <el-form-item
                     :prop="'plan_format.' + index + '.price'"
                     :rules="{
@@ -183,12 +208,15 @@
                     </el-input>
                   </el-form-item>
                 </el-col>
-                <el-col :xs="4" :sm="1" :md="1" :lg="1">
-                  <p class="plan-opt-icon icon-box" v-if="d.summary" @click="planTxtBtn(d.summary, index, true)"><i class="fx fx-icon-see"></i></p>
-                  <p class="plan-opt-icon icon-box" v-else @click="planTxtBtn(d.summary, index, false)"><i class="fx fx-icon-edit"></i></p>
+                <el-col :xs="4" :sm="1" :md="1" :lg="1" class="qouteSubmit">
+                  <el-form-item
+                  >
+                    <p class="plan-opt-icon icon-box" v-if="d.summary" @click="planTxtBtn(d.summary, index, true)"><i class="fx fx-icon-see padd-l-6"></i></p>
+                    <p class="plan-opt-icon icon-box" v-else @click="planTxtBtn(d.summary, index, false)"><i class="fx fx-icon-edit padd-l-6"></i></p>
+                  </el-form-item>
                 </el-col>
-                <el-col :xs="24" :sm="1" :md="1" :lg="1" style="padding:0;">
-                  <p class="plan-opt-icon"><i class="fx fx-icon-close-sm" @click.stop="delPlanBtn(d.content, index)"></i></p>
+                <el-col :xs="24" :sm="1" :md="1" :lg="1" style="padding:0" class="dis-flex">
+                  <p class="plan-opt-icon"><i class="fx fx-icon-close-sm mar-t-24" @click.stop="delPlanBtn(d.content, index)"></i></p>
                 </el-col>
               </el-row>
             </div>
@@ -198,7 +226,7 @@
           </div>
         </el-form-item>
 
-        <div class="sum-box">
+        <div class="sum-box" v-if="!param.checkTaxer">
           <div class="tax-box">
             <p class="total-money">合计： <span>¥{{ totalMoneyFormat }}</span> 元</p>
             <p class="select-importance">
@@ -221,7 +249,61 @@
             </div>
           </div>
         </div>
-        
+
+        <div class="sum-box" v-else>
+          <div class="tax-box">
+            <p class="total-money">合计： <span>¥{{ totalMoneyFormat }}</span> 元</p>
+          </div>
+          <div class="invoice-box">
+            <p class="select-importance">
+              <span @click="taxChangeBtn(1, 1)" :class="{'active': taxRate.taxableType === 1}">一般纳税人</span>
+              <span @click="taxChangeBtn(1, 2)" :class="{'active': taxRate.taxableType === 2}">小额纳税人</span>
+            </p>
+          </div>
+          <div class="invoice-box" v-if="showRate.invoice">
+            <p class="select-importance">
+              <span @click="taxChangeBtn(2, 1)" :class="{'active': taxRate.invoiceType === 1}">专用发票</span>
+              <span @click="taxChangeBtn(2, 2)" :class="{'active': taxRate.invoiceType === 2}">普通发票</span>
+            </p>
+          </div>
+          <div class="tax-total-box">
+
+            <p class="tax-total-money">税率:  <span class="tax-span">
+              {{ rate }} %</span> &nbsp;&nbsp;&nbsp;&nbsp;总计（含税）： <span>¥{{ taxTotalMoneyFormat }}</span> 元</p>
+            <p class="question-prop" v-show="taxRate.taxableType === 2">
+              <el-popover class="contact-popover" trigger="hover" placement="left" v-if="taxRate.invoiceType === 1">
+                <p class="contact">税率详情：</p>
+                <p class="contact">3%服务费发票，增值税专用发票</p>
+                <p class="contact">甲方税率3%发票，去税务代开发票</p>
+                <p class="contact">&nbsp;</p>
+                <p class="contact">详细案例如下：</p>
+                <p class="contact">乙方开具3%专用发票给太火鸟，太火鸟开具6%专用发票给甲方</p>
+                <p class="contact">乙方需要承担差额部分4%部分的税赋，计算方法如下：</p>
+                <p class="contact">乙方给太火鸟开具90万发票，太火鸟给甲方开具100万发票。</p>
+                <p class="contact">乙方需要承担90万的税赋差额部分费用，合计费用4%，乙方收到款项为90-4=86万</p>
+                <p slot="reference" class="question-icon question">
+                  <i></i>
+                </p>
+              </el-popover>
+
+              <el-popover class="contact-popover" trigger="hover" placement="left" v-if="taxRate.invoiceType === 2">
+                <p class="contact">税率详情：</p>
+                <p class="contact">3%服务费发票，增值税普通发票</p>
+                <p class="contact">乙方税率3%发票，自开发票</p>
+                <p class="contact">&nbsp;</p>
+                <p class="contact">详细案例如下：</p>
+                <p class="contact">乙方开具3%普通发票给太火鸟，太火鸟开具6%普通发票给甲方</p>
+                <p class="contact">乙方需要承担其中7%部分的税赋，计算方法如下：</p>
+                <p class="contact">乙方给太火鸟开具90万发票，太火鸟给甲方开具100万发票。</p>
+                <p class="contact">乙方需要承担90万的税赋差额部分费用，合计费用7%，乙方收到款项为90-7=83万</p>
+                <p slot="reference" class="question-icon question">
+                  <i></i>
+                </p>
+              </el-popover>
+            </p>
+          </div>
+        </div>
+
         <div class="form-btn">
           <el-button type="primary" size="large" :loading="isLoadingBtn" class="is-custom"
                      @click="submit('ruleForm')">保存
@@ -288,20 +370,24 @@
       :modal="false"
       width="30%">
       <div v-if="currentPlanTxtView">
-        <p class="alert-line-height">{{ currentPlanTxt }}</p>
-        <p class="form-btn">
-          <el-button @click="PlanTxtEdit">编辑
-          </el-button>
-        </p>
+        <el-form class="clearfix" label-position="top" label-width="80px">
+          <el-form-item prop="currentPlanTxt">
+            <el-input type="textarea" :rows="5" :value="currentPlanTxt"></el-input>
+          </el-form-item>
+          <p class="form-btn">
+            <el-button @click="PlanTxtEdit">编辑
+            </el-button>
+          </p>
+        </el-form>
       </div>
       <div v-else>
         <el-form class="clearfix" label-position="top" label-width="80px">
           <el-form-item label="" prop="currentPlanTxt">
-            <el-input autosize type="textarea" :rows="5" placeholder="请详细描工作内容备注" v-model="currentPlanTxt"></el-input>
+            <el-input type="textarea" :rows="5" placeholder="请填写工作内容备注" v-model="currentPlanTxt"></el-input>
           </el-form-item>
 
           <p class="form-btn">
-            <el-button @click="dialogPlanTxt = false">取消
+            <el-button class="mar-r-25" @click="dialogPlanTxt = false">取消
             </el-button>
             <el-button type="primary" class="is-custom"
                        @click="submitPlanTxt">保存
@@ -396,11 +482,13 @@ export default {
       rate: 6,
       taxRate: {
         isTax: 0,
-        isInvoice: 1
+        isInvoice: 1,
+        taxableType: 1,
+        invoiceType: 1
       },
       showRate: {
-        invoice: 1,
-        rate: 1
+        invoice: 0,
+        rate: 0
       },
       test: ''
     }
@@ -417,6 +505,8 @@ export default {
 
         this.$set(this.form, 'is_tax', this.taxRate.isTax)
         this.$set(this.form, 'is_invoice', this.taxRate.isInvoice)
+        this.$set(this.form, 'taxable_type', this.taxRate.taxableType)
+        this.$set(this.form, 'invoice_type', this.taxRate.invoiceType)
         this.$set(this.form, 'tax_rate', this.rate)
         this.$set(this.form, 'price', this.taxTotalMoney)
         this.$set(this.form, 'total_price', this.totalMoney)
@@ -648,6 +738,14 @@ export default {
         this.$set(this.taxRate, 'isInvoice', evt)
       }
     },
+    // radio change事件--一般/小额纳税人
+    taxChangeBtn(type, evt) {
+      if (type === 1) {
+        this.$set(this.taxRate, 'taxableType', evt)
+      } else if (type === 2) {
+        this.$set(this.taxRate, 'invoiceType', evt)
+      }
+    },
     // 添加计划成员
     addPlanMember(index) {
       this.form.plan_format[index].arranged.push({name: '', number: ''})
@@ -725,6 +823,17 @@ export default {
         } else if (val.isInvoice === 1) {
           this.$set(this.showRate, 'rate', 1)
         }
+        if (val.taxableType === 1) {
+          this.$set(this.showRate, 'invoice', 0)
+          this.rate = 6
+        } else if (val.taxableType === 2) {
+          this.$set(this.showRate, 'invoice', 1)
+          if (val.invoiceType === 1) {
+            this.rate = 7
+          } else if (val.invoiceType === 2) {
+            this.rate = 10
+          }
+        }
       },
       deep: true
     },
@@ -773,6 +882,8 @@ export default {
     }
     this.$set(this.taxRate, 'isTax', form.is_tax ? form.is_tax : 0)
     this.$set(this.taxRate, 'isInvoice', form.is_invoice ? form.is_invoince : 1)
+    this.$set(this.taxRate, 'taxableType', form.taxable_type ? form.taxable_type : 1)
+    this.$set(this.taxRate, 'invoiceType', form.invoice_type ? form.invoice_type : 1)
     this.rate = form.tax_rate ? form.tax_rate : 6
     this.totalMoney = parseFloat(form.total_price ? form.total_price : 0)
     if (form.area === 0) form.area = ''
@@ -880,7 +991,6 @@ export default {
     width: 10px;
   }
   .plan-opt-icon {
-    padding-left: 6px;
     cursor: pointer;
     text-align: center;
     line-height: 30px;
@@ -888,9 +998,14 @@ export default {
   .plan-opt-icon:hover .fx-icon-nothing-close-error {
     color: #FF5A5F
   }
+  .mar-t-24 {
+    margin-top: 24px;
+  }
+
   .icon-box {
-    height: 30px;
-    line-height: 30px;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
     text-align: center;
     border: 1px solid #D2D2D2;
     background: #fff;
@@ -961,7 +1076,7 @@ export default {
     margin: 0 0 50px 0;
   }
   .sum-box .tax-box {
-  
+
   }
   .sum-box .tax-box p {
     float: right;
@@ -987,7 +1102,7 @@ export default {
   .tax-total-money {
     line-height: 34px;
     float: right;
-  }  
+  }
   .tax-total-money span {
     display: inline-block;
     height: 34px;
@@ -1030,6 +1145,9 @@ export default {
   .el-form-item .el-form-item {
     margin-bottom: 22px;
   }
+  .padd-l-6 {
+    padding-left: 6px;
+  }
 </style>
 
 <style>
@@ -1040,5 +1158,80 @@ export default {
     border-radius: 0;
     border-left: none;
     border-right: none;
+  }
+  .plan-list input{
+    color: #222222;
+  }
+
+  .question-icon i {
+    display: block;
+    width: 15px;
+    height: 15px;
+    background: url(../../assets/images/icon/question.png) no-repeat center / contain;
+  }
+  .question-icon i:hover,
+  .question-icon:focus i {
+    background: url(../../assets/images/icon/question_hover.png) no-repeat center / contain;
+  }
+
+  .question-prop {
+    float: right;
+  }
+
+  .contact-popover {
+  }
+  .contact {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #ff5a5f;
+  }
+  .question {
+    width: 20px;
+    height: 20px;
+    margin: 8px 5px 0 0;
+  }
+
+  .mar-r-25 {
+    margin-right: 25px;
+  }
+
+  .el-input--small .el-input__inner {
+    height: 40px;
+  }
+
+  .mar-r-15 {
+    margin-right: 15px;
+  }
+
+  .dis-flex {
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .laber-title-font {
+    font-size: 16px;
+  }
+
+  .padd-l-10 {
+    padding-left: 10px;
+  }
+
+  .padd-l-15 {
+    padding-left: 15px;
+  }
+
+  .font-14 {
+    font-size: 14px;
+    color: #999999;
+  }
+
+  .mar-l-25 {
+    margin-left: 25px;
+  }
+
+  .padd-l-25 {
+    padding-left: 25px;
   }
 </style>

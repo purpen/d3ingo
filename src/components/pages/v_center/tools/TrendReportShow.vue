@@ -16,7 +16,7 @@
         </p>
       <div v-if="already" :class="['pdf', 'swiper-container', {'fullscreen-pdf' : isFullscreen}]" ref="pdf">
         <pdf :src="pdf.image.file"
-          v-loading.body="isLoading"
+          v-loading="isLoading"
           @progress="loadedRatio = $event"
           @loaded ="load = $event"
           @num-pages="numPages = $event"
@@ -194,15 +194,22 @@
       },
       fullscreen () {
         if (this.numPages) {
+          let oldClass = document.body.childNodes[1].getAttribute('class')
           this.isFullscreen = true
           document.body.setAttribute('class', 'disableScroll')
+          document.body.childNodes[1].setAttribute('class', 'disableScroll ' + oldClass)
           document.childNodes[1].setAttribute('class', 'disableScroll')
           console.log(this.$refs.pdf.offsetHeight)
         }
       },
       exitFullscreen () {
+        let oldClass = document.body.childNodes[1].getAttribute('class')
+        if (oldClass) {
+          oldClass = oldClass.replace('disableScroll ', '')
+        }
         this.isFullscreen = false
         document.body.removeAttribute('class', 'disableScroll')
+        document.body.childNodes[1].setAttribute('class', oldClass)
         document.childNodes[1].removeAttribute('class', 'disableScroll')
       },
       download() {

@@ -2,17 +2,17 @@
   <div class="container">
     <div class="blank20"></div>
 
-    <el-breadcrumb separator="/" class="bread">
-      <el-breadcrumb-item :to="{ name: 'home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ name: 'vcenterItemList' }">项目列表</el-breadcrumb-item>
-      <el-breadcrumb-item>详情</el-breadcrumb-item>
-    </el-breadcrumb>
+    <!--<el-breadcrumb separator="/" class="bread">-->
+      <!--<el-breadcrumb-item :to="{ name: 'home' }">首页</el-breadcrumb-item>-->
+      <!--<el-breadcrumb-item :to="{ name: 'vcenterItemList' }">项目列表</el-breadcrumb-item>-->
+      <!--<el-breadcrumb-item>详情</el-breadcrumb-item>-->
+    <!--</el-breadcrumb>-->
 
-    <el-row :gutter="20">
+    <el-row :gutter="20" class="blank30">
       <v-item-progress :progressButt="progressButt" :progressContract="progressContract"
                        :progressItem="progressItem"></v-item-progress>
 
-      <el-col :span="isMob ? 24 : 18">
+      <el-col :span="isMob ? 24 : 18" class="margin-auto">
         <div class="content">
           <div :class="[{'banner-m' : isMob}, 'banner']">
             <img v-show="statusIconUrl" class="" :src="statusIconUrl" width="100"/>
@@ -70,7 +70,8 @@
           </div>
 
 
-          <div class="select-item-box clearfix" v-if="statusLabel.selectCompany">
+          <!-- <div class="select-item-box clearfix" v-if="statusLabel.selectCompany"> -->
+          <div class="select-item-box clearfix" v-if="false">
             <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
               <el-collapse-item title="选择系统推荐的设计公司" name="3">
                 <div class="select-company-item clearfix" v-for="(d, index) in stickCompany" :key="index">
@@ -85,9 +86,9 @@
                         </div>
                       </el-col>
                       <el-col
-                        :xs="24" 
-                        :sm="d.cases.length ? 12 : 10" 
-                        :md="d.cases.length ? 12 : 10" 
+                        :xs="24"
+                        :sm="d.cases.length ? 12 : 10"
+                        :md="d.cases.length ? 12 : 10"
                         :lg="d.cases.length ? 12 : 10">
                         <div class="company-title">
                           <h3 class="company-name">
@@ -167,7 +168,7 @@
                   </div>
                   <div class="clear"></div>
                   <div class="item-bj" v-if="d.quotation">
-                    <p class="tc-2 protrude">项目报价:  <span class="tc-6 p-price fw-normal">{{ d.quotation.price }} 元</span> <span class="quota-btn tc-6 fw-normal">&nbsp;&nbsp;<a 
+                    <p class="tc-2 protrude">项目报价:  <span class="tc-6 p-price fw-normal">{{ d.quotation.price }} 元</span> <span class="quota-btn tc-6 fw-normal">&nbsp;&nbsp;<a
                     class="tc-red"
                     href="javascript:void(0);" @click="showQuotaBtn(d.quotation)">详情>></a></span></p>
                     <p class="tc-2 protrude">报价说明: <span class="tc-6 fw-normal">{{ d.quotation.summary }}</span></p>
@@ -273,23 +274,27 @@
 
           <div class="select-item-box clearfix" v-if="statusLabel.amount">
             <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
-              <el-collapse-item title="托管项目资金" name="9">
+              <el-collapse-item title="托管项目资金(首付款)" name="9" :class="[{
+                'start-money':statusLabel.isPay,
+                'nostart-money':!statusLabel.isPay
+                }]">
                 <div class="capital-item clearfix" v-if="statusLabel.isPay">
-                  <p>项目资金</p>
-                  <p class="capital-money">¥ {{ item.price }}</p>
+                  <p>首付款资金</p>
+                  <p class="capital-money">¥ {{ contract.first_payment }}</p>
                   <p class="pay-btn">
-                    <span>项目资金已托管</span>
+                    <span class="pay-ok">支付成功</span>
                   </p>
                 </div>
                 <div class="capital-item clearfix" v-else>
                   <p>项目资金</p>
-                  <p class="capital-money">¥ {{ item.price }}</p>
+                  <p class="capital-money">¥ {{ contract.first_payment }}</p>
                   <p class="pay-btn">
                     <el-button class="capital-btn is-custom" :loading="secondPayLoadingBtn" @click="secondPay"
                                type="primary"><i class="fa fa-money" aria-hidden="true"></i> 立即支付
                     </el-button>
                   </p>
-                  <p class="capital-des">＊客户需要将项目资金预先托管至太火鸟SaaS，完成后项目将自动启动并进入项目管理阶段。</p>
+                  <p class="capital-des">客户需要将项目首付款资金托管至太火鸟SaaS，</p>
+                  <p class="capital-des">太火鸟SaaS收到款项后会抽取全额佣金并在三个工作日内将剩余款项一次性全额支付给设计方。</p>
                 </div>
               </el-collapse-item>
             </el-collapse>
@@ -310,14 +315,6 @@
                       <div class="stage-title clearfix">
                         <h3>第{{ d.no }}阶段: {{ d.title }}</h3>
 
-                        <p v-if="d.confirm === 0">
-                          <el-button type="primary" @click="passStageBtn" size="small" :stage_id="d.id" :index="index"
-                                     class="is-custom"> 确认通过
-                          </el-button>
-                        </p>
-                        <p v-else>
-                          <span v-if="d.confirm === 1">已确认</span>
-                        </p>
                       </div>
                       <div class="stage-asset-box clearfix" v-for="(asset, asset_index) in d.item_stage_image" :key="asset_index">
                         <div class="contract-left">
@@ -328,12 +325,52 @@
                           </div>
                         </div>
                         <div class="contract-right">
+                          <p>
+                            <!-- <router-link :to="{name: 'vcenterContractView', params: {unique_id: contract.unique_id}}"
+                                      target="_blank"><i class="fa fa-eye" aria-hidden="true"></i> 预览
+                            </router-link> -->
+                          </p>
                           <p><a :href="asset.file + '?attname=' + asset.name"><i class="fa fa-download" aria-hidden="true"></i> 下载</a>
                           </p>
                         </div>
                         <div class="clear"></div>
                       </div>
+                      <div class="capital-item clearfix" v-if="d.confirm === 0">
+                        <p>
+                          <el-button type="primary" @click="passStageBtn" size="small" :stage_id="d.id" :index="index"
+                                     class="is-custom"> 确认完成
+                          </el-button>
+                        </p>
+                      </div>
+                      <div class="capital-item clearfix" v-else>
+                        <div v-if="d.pay_status === 0">
+                          <p>阶段项目资金</p>
+                          <p class="capital-money">¥ {{ d.amount }}</p>
+                          <p class="pay-btn">
+                            <el-button type="primary" @click="payStageRedierct(d.id)" size="small"
+                                       class="is-custom"> 立即支付
+                            </el-button>
+                          </p>
+                          <p class="capital-des">项目第{{ d.no }}阶段确认，客户需在三个工作日内向太火鸟SaaS支付总阶段设计费用款项，</p>
+                          <p class="capital-des">太火鸟SaaS收到款项后在三个工作日内一次性全额支付给乙方。</p>
+                        </div>
+                        <div v-else>
+                          <p>阶段项目资金</p>
+                          <p class="capital-money">¥ {{ d.amount }}</p>
+                          <p class="pay-btn">
+                            <span class="pay-ok">支付成功</span>
+                          </p>
+                          <p class="capital-des"></p>
+                        </div>
+
+                      </div>
+                      <div class="blank20"></div>
+                      <div class="border-t">
+
+                      </div>
+                      <div class="blank20"></div>
                     </div>
+
                   </div>
 
                   <p class="finish-item-btn clearfix" v-if="item.status === 15">
@@ -405,7 +442,6 @@
                     </p>
                   </div>
                 </div>
-
               </el-collapse-item>
             </el-collapse>
           </div>
@@ -431,12 +467,12 @@
       </span>
     </el-dialog>
 
-    <el-dialog title="报价单详情" v-model="quotaDialog" size="large" top="2%">
+    <el-dialog title="报价单详情" id="quote-dialog" v-model="quotaDialog" style="width: 880px;margin: auto" size="large" top="2%">
       <v-quote-view :formProp="quota"></v-quote-view>
 
-      <div slot="footer" class="dialog-footer btn">
-        <el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>
-      </div>
+      <!--<div slot="footer" class="dialog-footer btn">-->
+        <!--<el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>-->
+      <!--</div>-->
     </el-dialog>
 
   </div>
@@ -642,7 +678,7 @@ export default {
       this.$router.push({
         name: 'itemPayFund',
         params: { item_id: this.item.id },
-        query: {check_pay: 1}
+        query: {check_pay: 1, id: this.$route.params.id}
       })
     },
     // 确认项目完成弹出层
@@ -738,7 +774,7 @@ export default {
       this.$refs.comfirmType.value = 4
       this.$refs.confirmTargetId.value = stageId
       this.$refs.currentIndex.value = index
-      this.comfirmMessage = '确认验收阶段成果？验收成功后该阶段项目款将进入设计服务供应商账户。'
+      this.comfirmMessage = '确认验收阶段成果？'
       this.comfirmDialog = true
     },
     // 阶段确认通过
@@ -762,6 +798,14 @@ export default {
           self.$message.error(error.message)
           self.comfirmLoadingBtn = false
         })
+    },
+    // 支付阶段款跳转
+    payStageRedierct(stageId) {
+      this.$router.push({
+        name: 'itemPayStageFund',
+        params: {stage_id: stageId},
+        query: {id: this.$route.params.id}
+      })
     },
     // 评价设计公司
     evaluateSubmit() {
@@ -845,6 +889,7 @@ export default {
   },
   created: function() {
     let id = this.$route.params.id
+    console.log(id)
     if (!id) {
       this.$message.error('缺少请求参数!')
       this.$router.push({ name: 'home' })
@@ -862,7 +907,6 @@ export default {
       .get(api.demandId.format(id), {})
       .then(function(response) {
         if (response.data.meta.status_code === 200) {
-          console.log(response.data.data)
           self.item = response.data.data.item
           // self.info = response.data.data.info
           self.contract = response.data.data.contract
@@ -1113,10 +1157,13 @@ export default {
                 self.$message.error(error.message)
               })
           }
-          console.log(self.item)
           let tab = []
           if (self.item.type === 1) {
             tab = [
+              {
+                name: '项目名称',
+                title: self.item.name
+              },
               {
                 name: '项目类型',
                 title: self.item.type_value
@@ -1124,6 +1171,10 @@ export default {
               {
                 name: '设计类别',
                 title: self.item.design_types_value.join(', ')
+              },
+              {
+                name: '产品功能描述',
+                title: self.item.product_features
               },
               {
                 name: '产品领域',
@@ -1137,12 +1188,20 @@ export default {
           } else if (self.item.type === 2) {
             tab = [
               {
+                name: '项目名称',
+                title: self.item.name
+              },
+              {
                 name: '项目类型',
                 title: self.item.type_value
               },
               {
                 name: '设计类别',
                 title: self.item.design_types_value.join(', ')
+              },
+              {
+                name: '产品功能描述',
+                title: self.item.product_features
               }
             ]
           }
@@ -1165,7 +1224,6 @@ export default {
               image: self.item.image
             }
           ]
-
           self.tableData = tab.concat(itemTab)
         } else {
           self.$message.error(response.data.meta.message) // not found ?????
@@ -1184,8 +1242,8 @@ export default {
   height: 200px;
   text-align: center;
   margin-bottom: 20px;
-  border: 1px solid E6E6E6;
   display: block;
+  border: 1px solid #e6e6e6;
 }
 
 .banner img {
@@ -1194,7 +1252,7 @@ export default {
 
 .banner h1 {
   padding-top: 10px;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   color: #222;
 }
 
@@ -1217,9 +1275,13 @@ export default {
   margin-bottom: 10px;
   display: flex;
   align-items: center;
-  border: 1px solid E6E6E6;
-  background: #fff
+  background: #fff;
+  border: 1px solid #e6e6e6;
 }
+
+ #quote-dialog .el-dialog el-dialog--large {
+   width: 100%;
+ }
 
 .select-company-item .check-box {
   width: 100%;
@@ -1317,7 +1379,7 @@ export default {
 
 .item-title .p-title {
   color: #333;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: bold;
   line-height: 50px;
   margin-bottom: 8px;
@@ -1422,7 +1484,19 @@ export default {
 .capital-item .pay-btn span {
   color: #00ac84;
 }
-
+.pay-ok {
+  position: relative;
+}
+.pay-ok::before {
+  content: '';
+  position: absolute;
+  left: -30px;
+  top: 0;
+  display: inline-block;
+  width: 24px;
+  height: 26px;
+  background: url('../../../../assets/images/item/CompleteBig@2x.png') no-repeat center center / contain
+}
 .capital-item .capital-btn {
   /* padding: 10px 30px 10px 30px; */
 }
@@ -1506,7 +1580,9 @@ p.contact {
   font-size: 1.8rem;
   color: #222;
 }
-
+.border-t {
+  border-top: 1px solid #d2d2d2;
+}
 .stage-title p {
   margin: 0 0 0 10px;
   float: right;
@@ -1676,10 +1752,56 @@ section ul li a {
 .alert-line-height {
   text-align: center
 }
+.dis-flex{
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+.margin-auto{
+  margin: auto;
+}
 </style>
 <style>
   .select-company-item .check-box .el-checkbox__label {
     width: 100%;
+  }
+  .content .el-collapse-item__header {
+    position: relative;
+    font-size: 18px;
+    color: #222;
+  }
+  .content .el-icon-arrow-right {
+    position: absolute;
+    right: 13px;
+    top: 16px;
+    color: #d2d2d2;
+    font-size: 14px;
+  }
+  .content .start-money {
+    position: relative;
+  }
+  .content .start-money:after {
+    content: '首付款支付成功';
+    padding-left: 20px;
+    position: absolute;
+    top: 15px;
+    right:50px;
+    font-size: 14px;
+    color: #333333;
+    background: url('../../../../assets/images/item/complete@2x.png') no-repeat center left / contain
+  }
+  .content .nostart-money {
+    position: relative;
+  }
+  .content .nostart-money:after {
+    content: '等待支付项目首付款';
+    padding-left: 20px;
+    position: absolute;
+    top: 15px;
+    right:50px;
+    font-size: 14px;
+    color: #333333;
+    background: url('../../../../assets/images/item/wait@2x.png') no-repeat center left / contain
   }
 </style>
 

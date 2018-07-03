@@ -8,7 +8,7 @@
           <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
 
-          <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading.body="isLoading">
+          <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading="isLoading">
 
             <el-row :gutter="gutter" :class="['item', isMob ? 'item-m item-mAvatar' : '']">
               <el-col :span="titleSpan" class="title">
@@ -73,7 +73,7 @@
               </el-col>
             </el-row>
 
-            <el-row :gutter="gutter" :class="['item', isMob ? 'item-m' : '']">
+            <el-row :gutter="gutter" :class="['item', 'border-b-no', isMob ? 'item-m' : '']">
               <el-col :span="titleSpan" class="title">
                 <p>邮箱</p>
               </el-col>
@@ -309,9 +309,6 @@
     display: flex;
     align-items: center;
   }
-  .content-box .item:last-child {
-    border-bottom: none;
-  }
 
   .item-m {
     padding: 10px 15px;
@@ -516,7 +513,9 @@
     color: #666;
     margin-right: 0;
   }
-
+  /* .vcenter{
+    margin-top: 50px;
+  } */
   @media screen and (max-width: 767px) {
     .item-m .content {
       border: none;
@@ -525,6 +524,9 @@
     .edit a {
       font-size: 1.3rem;
       color: #FF5A5F;
+    }
+    .vcenter{
+      margin-top: 0;
     }
   }
 </style>

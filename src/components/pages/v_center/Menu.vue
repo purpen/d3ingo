@@ -16,8 +16,8 @@
           <div class="view-msg">
             <a v-if="(isCompany && isCompanyAdmin) || eventUser.type === 1" @click="showMyView('order')" class="news">
               <i class="fx-4 fx-icon-OrderReminding"></i><i class="fx-4 fx-icon-OrderRemindingClick"></i>
-              <span v-if="msgCount.message"><b>{{msgCount.message}}</b>条[订单通知]未查看</span>
-              <span v-else>[订单通知]</span>
+              <span v-if="msgCount.message"><b>{{msgCount.message}}</b>条[消息提醒]未查看</span>
+              <span v-else>[消息提醒]</span>
             </a>
             <a v-if="isCompany" @click="showMyView('task')" class="news">
               <i class="fx-4 fx-icon-ProjectReminding"></i><i class="fx-4 fx-icon-ProjectRemindingclick"></i>
@@ -59,7 +59,7 @@
     </header>
     <!-- 123123 -->
     <el-col v-if="leftWidth === 2" :span="isMob ? 24 : 2">
-      <section :class="['menuHide', 'scroll-bar', {'MmenuHide': isMob, 'menuHide-mini': leftWidth === 2}]">
+      <section :class="['menuHide', 'scroll-bar2', {'MmenuHide': isMob, 'menuHide-mini': leftWidth === 2}]">
         <div v-if="isCompany">
           <div :class="['menu-list', 'clearfix', {'Mmenulist': isMob, }]" ref="Mmenulist" v-if="isChild">
             <el-tooltip class="item" :effect="DarkorLight" content="控制面板" placement="right">
@@ -82,7 +82,7 @@
             </el-tooltip>
             <el-tooltip class="item" :effect="DarkorLight" content="成员管理" placement="right">
             <a @click="alick" :to="'/user/user_management'"
-              
+
               :class="['item', 'user-management', {'is-active': currentName === 'member'}]" v-if="isCompanyAdmin">
               成员管理
             </a>
@@ -93,18 +93,28 @@
               账号设置
             </a>
             </el-tooltip>
-            <el-tooltip class="item" :effect="DarkorLight" content="查看公司主页" placement="right">
+            <el-tooltip
+              v-if="eventUser.company"
+              class="item" :effect="DarkorLight"
+              :content="eventUser.company.company_name"
+              placement="right">
             <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" 
                v-if="isMob">
-              查看公司主页
+              {{eventUser.company.company_name}}
             </a>
             </el-tooltip>
           </div>
 
           <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist" v-else>
-            <div class="computer-btn" v-if="isCompany && !isMob && eventUser.design_company_logo_image" @click="redirectCompany">
-              <span :style="{background: `url(${eventUser.design_company_logo_image.logo}) no-repeat center / 40px 40px #222`}"></span>
-            </div>
+              <el-tooltip :effect="DarkorLight"
+                v-if="eventUser.company"
+                :content="eventUser.company.company_name" placement="right">
+                <div class="computer-btn"
+                  v-if="isCompany && !isMob && eventUser.design_company_logo_image"
+                  @click="redirectCompany">
+                  <span :style="{background: `url(${eventUser.design_company_logo_image.logo}) no-repeat center / cover #222`}"></span>
+                </div>
+            </el-tooltip>
             
             <el-tooltip class="item" :effect="DarkorLight" content="控制面板" placement="right">
             <a @click="alick" :to="'/vcenter/control'"
@@ -137,13 +147,13 @@
             </a>
             </el-tooltip>
             <el-tooltip class="item" :effect="DarkorLight" content="作品案例" placement="right">
-            <a @click="alick" :to="'/vcenter/design_case'" 
+            <a @click="alick" :to="'/vcenter/design_case'"
               :class="['item', 'case', {'is-active': currentName === 'design_case'}]">
               作品案例
             </a>
             </el-tooltip>
             <el-tooltip class="item" :effect="DarkorLight" content="我的钱包" placement="right">
-            <a @click="alick" :to="'/vcenter/wallet/list'" 
+            <a @click="alick" :to="'/vcenter/wallet/list'"
               :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
               我的钱包
             </a>
@@ -167,8 +177,8 @@
             </a>
             </el-tooltip>
             <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" 
-               v-if="isMob">
-              查看公司主页
+               v-if="isMob && eventUser.company">
+              {{eventUser.company.company_name}}
             </a>
           </div>
         </div>
@@ -214,7 +224,7 @@
       </section>
     </el-col>
     <el-col v-if="leftWidth === 4" :span="isMob ? 24 : 4">
-      <section :class="['menuHide', 'scroll-bar', {'MmenuHide': isMob, 'menuHide-mini': leftWidth === 2}]">
+      <section :class="['menuHide', 'scroll-bar2', {'MmenuHide': isMob, 'menuHide-mini': leftWidth === 2}]">
         <div v-if="isCompany">
           <div :class="['menu-list', 'clearfix', {'Mmenulist': isMob, }]" ref="Mmenulist" v-if="isChild">
             <a @click="alick" :to="'/vcenter/child_control'"
@@ -230,7 +240,7 @@
               项目云盘
             </a>
             <a @click="alick" :to="'/user/user_management'"
-              
+
               :class="['item', 'user-management', {'is-active': currentName === 'member'}]" v-if="isCompanyAdmin">
               成员管理
             </a>
@@ -239,17 +249,23 @@
               账号设置
             </a>
             <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" 
-               v-if="isMob">
-              查看公司主页
+               v-if="isMob && eventUser.company">
+              {{eventUser.company.company_name}}
             </a>
           </div>
 
           <!-- 设计公司4 -->
           <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist" v-else>
-            <div class="computer-btn" v-if="isCompany && !isMob && eventUser.design_company_logo_image" @click="redirectCompany">
-              <span :style="{background: `url(${eventUser.design_company_logo_image.logo}) no-repeat center / 40px 40px #222`}"></span>
-              查看公司主页
-            </div>
+            <el-tooltip :effect="DarkorLight"
+              v-if="eventUser.company"
+              :content="eventUser.company.company_name" placement="right">
+              <div class="computer-btn"
+                v-if="isCompany && !isMob && eventUser.company &&eventUser.design_company_logo_image"
+                @click="redirectCompany">
+                <span :style="{background: `url(${eventUser.design_company_logo_image.logo}) no-repeat center / cover #222`}"></span>
+                {{eventUser.company.company_name}}
+              </div>
+            </el-tooltip>
             <a @click="alick" :to="'/vcenter/control'"
               :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
               控制面板
@@ -270,11 +286,11 @@
               :class="['item', 'cloud', {'is-active': currentName === 'cloud_drive'}]">
               项目云盘
             </a>
-            <a @click="alick" :to="'/vcenter/design_case'" 
+            <a @click="alick" :to="'/vcenter/design_case'"
               :class="['item', 'case', {'is-active': currentName === 'design_case'}]">
               作品案例
             </a>
-            <a @click="alick" :to="'/vcenter/wallet/list'" 
+            <a @click="alick" :to="'/vcenter/wallet/list'"
               :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
               我的钱包
             </a>
@@ -290,7 +306,7 @@
               :class="['item','user-management', {'is-active': currentName === 'member'}]">
               成员管理
             </a>
-            <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" 
+            <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany"
                v-if="isMob">
               查看公司主页
             </a>
@@ -299,7 +315,7 @@
         <div v-else>
           <!-- 需求公司4 -->
           <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist">
-            
+
             <a @click="alick" :to="'/vcenter/control'" :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
               控制面板
             </a>
@@ -355,7 +371,7 @@
     },
     methods: {
       redirectCompany(e) {
-        let companyId = this.$store.state.event.user.design_company_id
+        let companyId = this.$store.state.event.user.company_id
         if (!companyId || companyId === 0) {
           // this.$message.error('请先申请公司认证!')
         } else {
@@ -399,9 +415,10 @@
         this.$store.commit('removeParentTask')
         this.$store.commit('changeTaskStatePower', 0)
         this.$store.commit('changeTaskStateEvent', '')
-        this.$store.commit('changeMineView', 'task')
+        // this.$store.commit('changeMineView', 'task')
         if (this.showCover === 'show') {
           this.showCover = 'hide'
+          this.$store.commit('changeMineView', 'task')
           setTimeout(() => {
             this.showCover2 = 'show'
           }, 520)
@@ -409,6 +426,7 @@
           if (this.showCover2 === 'show') {
             this.showCover2 = 'hide'
           } else {
+            this.$store.commit('changeMineView', 'task')
             this.showCover2 = 'show'
           }
         }
@@ -481,7 +499,6 @@
       // 是否能查看后台
       isAdmin() {
         let roleId = this.$store.state.event.user.role_id
-        console.log(roleId)
         if (roleId >= 10) {
           return true
         } else {
@@ -570,12 +587,13 @@
     background: #222;
     transition: 0.2s all ease;
     position: fixed;
+    z-index: 1;
     left: 0;
     top: 60px;
     width: inherit;
     max-width: 200px;
     height: calc(100% - 60px);
-    overflow-y: auto;
+    /* overflow-y: auto; */
     overflow-x: hidden;
   }
   .menu-list .item {
@@ -602,7 +620,7 @@
     /* font-weight: bold; */
     border-color: #ff5a5f
   }
-  
+
   .menu-list .item::before {
     content: "";
     position: absolute;
@@ -625,8 +643,8 @@
     background: url(../../../assets/images/v_center_menu/Cloud.png) no-repeat center;
     background-size: contain
   }
-  .menu-list .item.case::before, 
-  .menu-list .item.order::before, 
+  .menu-list .item.case::before,
+  .menu-list .item.order::before,
   .menu-list .item.message::before,
   .menu-list .item.match-case::before {
     background: url(../../../assets/images/v_center_menu/Case.png) no-repeat center;
@@ -653,15 +671,18 @@
     background-size: contain
   }
   .computer-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    line-height: 70px;
     font-size: 14px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     color: rgba(255, 255, 255, 0.5);
     height: 70px;
+    line-height: 70px;
     cursor: pointer;
     position: relative;
+    padding-left: 55px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
   }
   .computer-btn span {
     position: absolute;
@@ -800,7 +821,7 @@
     left: auto;
     right: -15px;
   } */
-  
+
   @media screen and (min-width: 768px) {
     .menu-list {
       width: inherit;

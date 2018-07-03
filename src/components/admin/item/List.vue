@@ -7,7 +7,7 @@
       <el-col :span="20">
         <div class="content">
 
-          <div class="admin-menu-sub">
+          <div class="admin-menu-sub clearfix">
             <div class="admin-menu-sub-list">
               <router-link :to="{name: 'adminItemList'}" active-class="false"
                            :class="{'item': true, 'is-active': menuType === 0}">全部
@@ -47,7 +47,7 @@
           <el-table
             :data="tableData"
             border
-            v-loading.body="isLoading"
+            v-loading="isLoading"
             class="admin-table"
             @selection-change="handleSelectionChange"
             style="width: 100%">
@@ -64,10 +64,10 @@
               label="内容"
               min-width="140">
               <template slot-scope="scope">
-                <p>标题: {{ scope.row.info.name }}</p>
+                <p>标题: {{ scope.row.item.name }}</p>
                 <p>类型: {{ scope.row.item.type_label }}</p>
-                <p>预算: {{ scope.row.info.design_cost_value }}</p>
-                <p>周期: {{ scope.row.info.cycle_value }}</p>
+                <p>预算: {{ scope.row.item.design_cost_value }}</p>
+                <p>周期: {{ scope.row.item.cycle_value }}</p>
               </template>
             </el-table-column>
             <el-table-column
@@ -80,7 +80,7 @@
               </template>
             </el-table-column>
             <el-table-column
-              prop="info.locale"
+              prop="item.locale"
               label="工作地点">
             </el-table-column>
             <el-table-column
@@ -208,7 +208,7 @@
         this.currentMatchCompany = item.designCompany
         this.matchCompanyForm.itemId = item.item.id
         this.matchCompanyForm.itemStatus = item.item.status
-        this.matchCompanyForm.itemName = item.info.name
+        this.matchCompanyForm.itemName = item.item.name
         this.matchCompanyDialog = true
       },
       addMatchCompany() {
@@ -299,7 +299,7 @@
                 item['item']['status_label'] = '[{0}]{1}'.format(item.item.status, item.item.status_value)
 
                 if (item.info) {
-                  item['info']['locale'] = '{0}/{1}'.format(item.info.province_value, item.info.city_value)
+                  item['item']['locale'] = '{0}/{1}'.format(item.item.province_value, item.info.city_value)
                 }
                 item['item']['created_at'] = item.item.created_at.date_format().format('yy-MM-dd')
                 self.tableData.push(item)

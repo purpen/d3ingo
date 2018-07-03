@@ -392,11 +392,16 @@ form {
   transition: 268ms all ease
 }
 @media screen and (max-width: 767px) {
+  .container {
+    margin: 0;
+  }
+  .login-content {
+    padding: 0
+  }
   .login-box {
-    width: auto;
-    max-width: 450px;
+    width: 100%;
     border: none;
-    margin: 0 auto;
+    box-shadow: none;
     padding-bottom: 20px;
   }
 

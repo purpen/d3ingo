@@ -105,7 +105,7 @@
                   <h3>公司认证</h3>
                   <p class="item-title">提交公司认证信息</p>
                   <p class="item-btn">
-                    <router-link :to="{name: 'vcenterComputerAccreditation'}">未认证</router-link>
+                    <router-link :to="{name: 'vcenterComputerAccreditation'}">去认证</router-link>
                   </p>
                 </div>
 
@@ -120,7 +120,7 @@
             <span>进行中的项目</span>
           </div>
           <el-row class="item-content scroll-bar">
-          <el-col :span="12" v-for="(i,indexi) in userItem" :key="indexi" v-if="userItem.length>0">
+          <el-col :span="12" v-for="(i,indexi) in userItem" :key="indexi" v-if="userItem&&userItem.length>0">
 
               <ul class="control-iteming">
                 <router-link :to="{name: 'projectManagementOverView', params: {id: i.id}}">
@@ -131,9 +131,9 @@
                 </li>
                 <li class="progress-bar">
                   <el-progress 
-                  :percentage="i.ok_stage_percentage"
-                  :show-text="false"
-                  :stroke-width=10
+                  :percentage = "i.ok_stage_percentage"
+                  :show-text = "false"
+                  :stroke-width = "10"
                   ></el-progress>
                 </li>
                 <li class="fz-12 clearfix">
@@ -414,12 +414,12 @@
       this.fetchMessageCount()
       const that = this
       let isCompany = that.isCompany()
-      let url = null
-      if (isCompany) {
-        url = api.surveyDesignCompanySurvey
-      } else {
-        url = api.surveyDemandCompanySurvey
-      }
+      let url = api.surveyDesignCompanySurvey
+      // if (isCompany) {
+      //   url = api.surveyDesignCompanySurvey
+      // } else {
+      //   url = api.surveyDemandCompanySurvey
+      // }
       that.$http.get(url, {})
         .then(function (response) {
           if (response.data.meta.status_code === 200) {
@@ -545,6 +545,10 @@
     flex-direction:column;
     justify-content:space-around; */
     padding: 16px 30px 18px;
+    height: 100%;
+  }
+  .control-iteming:hover {
+    background: #fafafa;
   }
   .itemProgress{
     color:#65A6FF;
@@ -576,10 +580,14 @@
   .title-size {
     color: #222;
     font-size: 1.4rem;
-    margin: 0 0 12px 0
+    margin: 0 0 6px 0;
+    line-height: 1.4;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
   .progress-bar {
-    margin: 6px 0 10px 0
+    margin: 6px 0 6px 0
   }
   .iteming-time{
     height: 20px;
@@ -704,14 +712,14 @@
   }
 
   .content-item-box .item {
-    border: 1px solid #D2D2D2;
+    border: 1px solid #E6E6E6;
     margin: 0 0 20px 0;
   }
 
   .banner {
     height: 40px;
     line-height: 20px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #E6E6E6;
     background: #FAFAFA;
   }
 
@@ -728,7 +736,7 @@
   }
 
   p.c-title-pro {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     color: #333;
     padding: 15px 10px 5px 10px;
   }
@@ -738,7 +746,7 @@
   }
 
   .money-str {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
 
   .btn {
@@ -771,7 +779,7 @@
   .item-title-box {
     margin-top: 20px;
     margin-bottom: 10px;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #E6E6E6;
     border-bottom: none;
   }
 
@@ -798,7 +806,10 @@
     line-height: 1;
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 767px) {
+    .vcenter {
+      margin: 0;
+    }
     .prefect {
       font-size: 1.4rem;
     }

@@ -2,7 +2,9 @@
   <header>
     <div class="pm-left">
       <router-link :to="{name: 'projectManagementList'}">项目管理</router-link>
-      <router-link :to="{name: 'projectManagementOverView', params: {id: routeId}}">{{projectObject.name}}</router-link>
+      <el-tooltip :content="projectObject.name" placement="top">
+        <router-link class="pro-name" :to="{name: 'projectManagementOverView', params: {id: routeId}}">{{projectObject.name}}</router-link>
+      </el-tooltip>
       <span :class="['favorite-star', {'active':projectObject.collect === 1}]"></span>
     </div>
     <div class="pm-middle">
@@ -22,7 +24,7 @@
         :to="{name: 'projectManagementIncomeandExpenses', params: {id: routeId}}">收支</router-link>
     </div>
     <div class="pm-right">
-      <router-link
+      <router-link v-if="showOffer"
       :to="{name: 'projectQuote', params: {id: routeId}}" :class="['quotation', {'active': isQuote}]">项目报价</router-link>
       <router-link class="contract border-right" :to="{name: 'projectContract', params: {id: routeId}}">合同</router-link>
       <a @click.self="controlMemberShow" class="member border-right">
@@ -48,21 +50,21 @@
           <div class="menu-header"><span>项目菜单</span>
             <span class="fx-0 fx-icon-nothing-close-error" @click="closeMenu"></span></div>
           <div class="menu-content">
-            <p @click="showCover"><span>项目设置</span></p>
+            <p class="hover-red" @click="showCover"><span>项目设置</span></p>
             <p v-if="false" class="menu-label"><span>标签</span></p>
             <hr>
             <p class="menu-moment"><span>项目动态</span></p>
             <ul class="item-moments" v-if="shortProjectMoments.length">
               <li class="clearfix" v-for="(ele, index) in shortProjectMoments" :key="index">
-                <img class="br50 b-d2" :src="ele.logo_image.logo" alt="">
+                <img class="br50 b-e6" :src="ele.logo_image.logo" alt="">
                 <div class="item-con">
                   <!-- <p class="tc-2"><span>{{ele.user_name}}</span><span class="tc-6">{{ele.action}}</span></p> -->
-                  <p class="tc-2"><span>{{ele.title}}</span></p>
+                  <p><span class="tc-2">{{ele.title}}</span></p>
                   <p class="fz-12 tc-9">{{ele.date}}</p>
                 </div>
               </li>
             </ul>
-            <p class="project-news" v-if="projectMoments.length > 5" @click="showDynamic">查看所有项目动态</p>
+            <p class="project-news hover-red" v-if="projectMoments.length > 5" @click="showDynamic">查看所有项目动态</p>
           </div>
         </div>
       </a>
@@ -455,7 +457,7 @@
       <div class="cover2-content">
         <ul class="cover2-list">
           <li v-for="(ele, index) in projectMoments" :key="index">
-            <img v-if="ele.logo_image" class="br50 b-d2" :src="ele.logo_image.logo" alt="">
+            <img v-if="ele.logo_image" class="br50 b-e6" :src="ele.logo_image.logo" alt="">
             <div class="list-con clearfix">
               <!-- <p class="tc-2 fl"><span>{{ele.user_name}}</span>{{ele.action}}</p> -->
               <p class="tc-2"><span>{{ele.title}}</span></p>
@@ -610,6 +612,14 @@ export default {
     },
     projectMemberList() {
       return this.$store.state.task.projectMemberList
+    },
+    showOffer() {
+      let user = this.user
+      if (user.id === this.projectObject.leader || user.id === this.projectObject.business_manager || user.id === this.projectObject.user_id) {
+        return true
+      } else {
+        return false
+      }
     }
   },
   methods: {
@@ -885,11 +895,18 @@ export default {
       }
     },
     cover2(val) {
+      let oldClass = document.body.childNodes[1].getAttribute('class')
+      console.log(oldClass)
       if (val) {
         document.body.setAttribute('class', 'disableScroll')
+        document.body.childNodes[1].setAttribute('class', 'disableScroll ' + oldClass)
         document.childNodes[1].setAttribute('class', 'disableScroll')
       } else {
+        if (oldClass) {
+          oldClass = oldClass.replace('disableScroll ', '')
+        }
         document.body.removeAttribute('class', 'disableScroll')
+        document.body.childNodes[1].setAttribute('class', oldClass)
         document.childNodes[1].removeAttribute('class', 'disableScroll')
       }
     }
@@ -924,6 +941,12 @@ header {
   display: flex;
   position: relative;
   background: #f7f7f7;
+}
+.pro-name {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .pm-left {
   /* min-width: 380px; */
@@ -1183,7 +1206,7 @@ header {
   color: #666;
   height: 50px;
   border-bottom: 1px solid #d2d2d2;
-  border-left: 3px solid transparent
+  border-left: 6px solid transparent
 }
 .cover-body-left span:hover {
   color: #ff5a5f;
@@ -1254,6 +1277,9 @@ header {
   width: 380px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1)
 }
+.menu-con .hover-red:hover {
+  color: #ff5a5f
+}
 .menu-header {
   height: 50px;
   background: #F7F7F7;
@@ -1271,6 +1297,7 @@ header {
   padding: 0 24px 20px;
 }
 .menu-content p {
+  color: #666;
   position: relative;
   height: 40px;
   line-height: 40px;
