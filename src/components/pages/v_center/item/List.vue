@@ -104,10 +104,13 @@
                   <!-- <p v-if="d.item.type === 1">
                     {{ d.item.type_value + '/' + d.item.design_type_value + '/' + d.item.field_value + '/' + d.item.industry_value
                     }}{{d.item}}</p>
-                  <p v-if="d.item.type === 2">{{ d.item.type_value + '/' + d.item.design_type_value }}{{d.item}}</p> -->
+                  <p v-if="d.item.type === 2">{{ d.item.type_value + '/' + d.item.design_type_value }}{{d.item}}</p> 
                   <p v-if="d.item.type === 1">
                     {{ d.item.type_value | formatNull }}{{ d.item.design_types_value | formatNull }}{{ d.item.field_value | formatNull }}{{ d.item.industry_value | formatEnd }}</p>
                   <p v-if="d.item.type === 2">{{ d.item.type_value | formatNull }}{{ d.item.design_types_value| formatEnd }}</p>
+                  -->
+                  <p>设计类型: {{ d.item.type_value }}</p>
+                  <p>设计类别: {{ d.item.design_types_value | formatEnd }}</p>
                   <p>项目周期: {{ d.item.cycle_value }}</p>
                   <p>产品功能：{{d.item.product_features}}</p>
                 </el-col>
@@ -205,11 +208,10 @@
                 </p>
                 <div class="list-content">
                   <section class="c-body">
-                    <p>项目预算： {{ d.item.design_cost_value }}</p>
+                    <p>项目预算：{{ d.item.design_cost_value }}</p>
                     <p>项目周期：{{ d.item.cycle_value }}</p>
-                    <p v-if="d.item.type === 1">
-                      {{ d.item.type_value | formatNull }}{{ d.item.design_types_value | formatNull }}{{ d.item.field_value | formatNull }}{{ d.item.industry_value | formatEnd }}</p>
-                    <p v-if="d.item.type === 2">{{ d.item.type_value | formatNull }}{{ d.item.design_types_value| formatEnd }}</p>
+                    <p>设计类型: {{ d.item.type_value }}</p>
+                    <p>设计类别: {{ d.item.design_types_value | formatEnd }}</p>
                     <p>产品功能：{{ d.item.product_features }}</p>
                   </section>
                   <p class="money-str price-m Bborder">交易金额：

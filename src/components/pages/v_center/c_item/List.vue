@@ -51,10 +51,8 @@
                     </router-link>
                   </p>
                   <p>项目预算: {{ d.item.design_cost_value }}</p>
-                  <p v-if="d.item.type === 1">
-                    {{ d.item.type_value + '/' + d.item.design_type_value + '/' + d.item.field_value + '/' + d.item.industry_value
-                    }}</p>
-                  <p v-if="d.item.type === 2">{{ d.item.type_value + '/' + d.item.design_type_value }}</p>
+                  <p>设计类型: {{ d.item.type_value }}</p>
+                  <p>设计类别: {{ d.item.design_types_value | formatEnd }}</p>
                   <p>项目周期: {{ d.item.cycle_value }}</p>
                 </el-col>
                 <el-col :span="isMob ? 24 : 3">
@@ -186,7 +184,8 @@
                     <router-link :to="{name: 'vcenterItemShow', params: {id: d.item.id}}">{{ d.item.name }}</router-link>
                   </p>
                   <p>项目预算: {{ d.item.design_cost_value }}</p>
-                  <p>设计类别: {{ d.item.type_label }}</p>
+                  <p>设计类型: {{ d.item.type_value }}</p>
+                  <p>设计类别: {{ d.item.design_types_value | formatEnd }}</p>
                   <p>项目周期: {{ d.item.cycle_value }}</p>
                 </el-col>
                 <el-col :span="isMob ? 24 : 3">
@@ -590,6 +589,38 @@
       },
       leftWidth() {
         return this.$store.state.event.leftWidth
+      }
+    },
+    filters: {
+      formatNull(val) {
+        if (val) {
+          if (typeof (val) === 'string') {
+            return val + ' / '
+          } else {
+            if (val.length === 1) {
+              return val.join() + ' / '
+            } else {
+              return val.join(' / ') + ' / '
+            }
+          }
+        } else {
+          return ''
+        }
+      },
+      formatEnd(val) {
+        if (val) {
+          if (typeof (val) === 'string') {
+            return val
+          } else {
+            if (val.length === 1) {
+              return val.join()
+            } else {
+              return val.join(' / ')
+            }
+          }
+        } else {
+          return ''
+        }
       }
     },
     created() {
