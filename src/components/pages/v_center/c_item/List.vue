@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="blank30 vcenter clearfix">
+    <div class="vcenter clearfix">
       <v-menu currentName="c_item"></v-menu>
       <!-- <el-col :span="isMob ? 24 : rightWidth"> -->
       <!-- <el-col class="vcenter-right-plus" :xs="24" :sm="24" :md="24" :lg="24"> -->
@@ -141,7 +141,7 @@
         </span>
       </el-dialog>
     </div>
-    <div class="blank30 vcenter clearfix">
+    <div class="vcenter clearfix">
       <!--<v-menu currentName="c_item" class="c_item"></v-menu>-->
       <div :class="{'vcenter-right-plus': leftWidth === 4,
         'vcenter-right': leftWidth === 2,
@@ -784,7 +784,7 @@
   h3 {
     font-size: 18px;
     color: #222;
-    margin: 50px 0 20px;
+    margin: 30px 0 20px;
   }
   @media screen and (max-width: 767px) {
     h3 {

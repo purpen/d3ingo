@@ -5,7 +5,7 @@
       :visible.sync="dialogVisible"
       size="tiny"
       >
-      <p class="text-center">确认删除此合同</p>
+      <p class="text-center">确认删除此文件</p>
       <span slot="footer" class="dialog-footer">
         <button class="small-button white-button" @click="dialogVisible = false">取 消</button>
         <button class="small-button full-red-button" type="primary" @click="deleteFile()">确 定</button>
@@ -48,15 +48,16 @@
       <div class="design-centent fz-14 tc-6">
         {{des.content}}
       </div>
-      <ul class="file-list fz-14">
+      <ul class="fileing-list fz-14">
         <li
-          v-if="fileList&&fileList.length>0&&f.percentage!==100" v-for="(f, indexf) in fileList" :key="indexf">
-          <img src="" alt="" class="Groupimg">
-          <div class="file-details details-padding">
+          v-if="fileList&&fileList.length>0&&f.percentage!==100"
+          v-for="(f, indexf) in fileList" :key="indexf">
+          <i class="Groupimg"></i>
+          <div class="fileing-details details-padding">
             <p class="tc-2">
               {{f.name}}
               <span class="fr">
-                {{parseInt(f.percentage * f.size)}}/{{f.size | sizeFormat}}
+                {{f.percentage | percenterFormat(f.size)}}/{{f.size | sizeFormat}}
               </span>
             </p>
             <el-progress :percentage="f.percentage"
@@ -69,7 +70,7 @@
         <li v-if="des.stage_image && des.stage_image.length > 0"
           v-for="(sta,indexs) in des.stage_image" :key="indexs"
           >
-          <img src="" alt="" class="Groupimg">
+          <i class="Groupimg"></i>
           <div class="file-details">
             <p class="tc-2">{{sta.name}}</p>
             <div class="tc-9">
@@ -83,7 +84,7 @@
           </div>
           <div class="file-event tc-9">
             <!-- <span>分享</span> -->
-            <span @click="downupload(f.file)">下载</span>
+            <span @click="downupload(sta.file)">下载</span>
             <span @click="isdelete(des,sta.id)">删除</span>
           </div>
         </li>
@@ -139,6 +140,15 @@ export default {
       } else {
         return val + 'B'
       }
+    },
+    percenterFormat(val, size) {
+      if (size > 1024 * 1024) {
+        return parseInt(Math.round(size / 1024 / 1024) * (parseInt(val) / 100))
+      } else if (size > 1024) {
+        return parseInt(Math.round(size / 1024) * (parseInt(val) / 100))
+      } else {
+        return parseInt(size * (parseInt(val) / 100))
+      }
     }
   },
   methods: {
@@ -163,10 +173,10 @@ export default {
     },
     // 上传文件之前
     uploadBefore(file) {
-      if (!(/pdf/.test(file.type) || /image/.test(file.type))) {
-        this.$message.error('只能上传pdf或图片格式的文件!')
-        return false
-      }
+      // if (!(/pdf/.test(file.type) || /image/.test(file.type))) {
+      //   this.$message.error('只能上传pdf或图片格式的文件!')
+      //   return false
+      // }
     },
     // 文件上传成功
     uploadSuccess(res, file, fileList) {
@@ -268,9 +278,9 @@ export default {
   .OverView-files {
     margin: 30px 100px 150px 100px;
   }
-  .files-header {
+  /* .files-header {
     margin-bottom: 30px;
-  }
+  } */
   .files-header span {
     font-size: 16px;
   }
@@ -288,7 +298,7 @@ export default {
   .design-centent {
     margin-top: 12px;
     padding-top: 20px;
-    border-top: 2px solid #e6e6e6;
+    border-top: 1px solid #e6e6e6;
     line-height: 28px;
   }
   .file-list li {
@@ -299,16 +309,25 @@ export default {
     background: #f7f7f7;
     padding: 0px 30px;
     margin-bottom: 10px;
+    border-radius: 4px;
+    font-size: 14px;
   }
-  .file-list li img {
-    width: 40px;
-    height: 40px;
-    margin-right: 20px;
+    .fileing-list li {
+    display: flex;
+    /* justify-content: space-between; */
+    align-items: center;
+    height: 80px;
+    background: #f7f7f7;
+    padding: 0px 30px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    font-size: 14px;
   }
   .design-name {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 30px;
   }
   .file-details {
     flex: 1;
@@ -316,6 +335,13 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+  }
+  .fileing-details {
+    height: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30%
   }
   .details-padding {
     padding: 5px 0px;
@@ -326,6 +352,9 @@ export default {
     line-height: 24px;
     background:url('../../../../assets/images/tools/cloud_drive/operate/upload@2x.png')no-repeat center left;
     background-size:24px 24px; 
+  }
+  .file-icon:hover {
+    color: #ff5a5f;
   }
   .file-details>div>span {
     display: inline-block;
@@ -356,7 +385,14 @@ export default {
   .dialog-footer>button{
     margin-right: 20px;
   }
+  .w-50 {
+    width: 50%;
+  }
   .Groupimg {
+    display: inline-block;
+    width: 36px;
+    height: 40px;
+    margin-right: 20px;
     background: url('../../../../assets/images/tools/project_management/Group@2x.jpg') 0 0 no-repeat;
     background-size: contain;
   }

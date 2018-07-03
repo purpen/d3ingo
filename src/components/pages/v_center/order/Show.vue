@@ -209,6 +209,7 @@
           .then((response) => {
             if (response.data.meta.status_code === 200) {
               this.item = response.data.data
+              console.log('1', this.item)
               let createdAt = this.item.created_at
               let createdFormat = createdAt.date_format()
               this.item.created_at = createdFormat.format('yyyy-MM-dd hh:mm')
@@ -220,7 +221,6 @@
                 this.fileUrl = response.data.data.assets.small
               }
               this.uploadParam['x:target_id'] = response.data.data.id
-              console.log(response.data.data)
             } else {
               this.$message.error(response.data.meta.message)
             }

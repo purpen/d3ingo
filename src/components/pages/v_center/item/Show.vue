@@ -274,12 +274,15 @@
 
           <div class="select-item-box clearfix" v-if="statusLabel.amount">
             <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
-              <el-collapse-item title="项目资金（首付款）" name="9">
+              <el-collapse-item title="托管项目资金(首付款)" name="9" :class="[{
+                'start-money':statusLabel.isPay,
+                'nostart-money':!statusLabel.isPay
+                }]">
                 <div class="capital-item clearfix" v-if="statusLabel.isPay">
                   <p>首付款资金</p>
                   <p class="capital-money">¥ {{ contract.first_payment }}</p>
                   <p class="pay-btn">
-                    <span>支付成功</span>
+                    <span class="pay-ok">支付成功</span>
                   </p>
                 </div>
                 <div class="capital-item clearfix" v-else>
@@ -322,6 +325,11 @@
                           </div>
                         </div>
                         <div class="contract-right">
+                          <p>
+                            <!-- <router-link :to="{name: 'vcenterContractView', params: {unique_id: contract.unique_id}}"
+                                      target="_blank"><i class="fa fa-eye" aria-hidden="true"></i> 预览
+                            </router-link> -->
+                          </p>
                           <p><a :href="asset.file + '?attname=' + asset.name"><i class="fa fa-download" aria-hidden="true"></i> 下载</a>
                           </p>
                         </div>
@@ -350,14 +358,16 @@
                           <p>阶段项目资金</p>
                           <p class="capital-money">¥ {{ d.amount }}</p>
                           <p class="pay-btn">
-                            <span>支付成功</span>
+                            <span class="pay-ok">支付成功</span>
                           </p>
                           <p class="capital-des"></p>
                         </div>
 
                       </div>
                       <div class="blank20"></div>
-                      <hr />
+                      <div class="border-t">
+
+                      </div>
                       <div class="blank20"></div>
                     </div>
 
@@ -896,7 +906,6 @@ export default {
       .get(api.demandId.format(id), {})
       .then(function(response) {
         if (response.data.meta.status_code === 200) {
-          console.log(response.data.data)
           self.item = response.data.data.item
           // self.info = response.data.data.info
           self.contract = response.data.data.contract
@@ -1139,7 +1148,6 @@ export default {
                     // self.sureFinishBtn = true
                   }
                   self.stages = items
-                  console.log(items)
                 } else {
                   self.$message.error(response.data.meta.message)
                 }
@@ -1148,10 +1156,13 @@ export default {
                 self.$message.error(error.message)
               })
           }
-          console.log(self.item)
           let tab = []
           if (self.item.type === 1) {
             tab = [
+              {
+                name: '项目名称',
+                title: self.item.name
+              },
               {
                 name: '项目类型',
                 title: self.item.type_value
@@ -1159,6 +1170,10 @@ export default {
               {
                 name: '设计类别',
                 title: self.item.design_types_value.join(', ')
+              },
+              {
+                name: '产品功能描述',
+                title: self.item.product_features
               },
               {
                 name: '产品领域',
@@ -1172,12 +1187,20 @@ export default {
           } else if (self.item.type === 2) {
             tab = [
               {
+                name: '项目名称',
+                title: self.item.name
+              },
+              {
                 name: '项目类型',
                 title: self.item.type_value
               },
               {
                 name: '设计类别',
                 title: self.item.design_types_value.join(', ')
+              },
+              {
+                name: '产品功能描述',
+                title: self.item.product_features
               }
             ]
           }
@@ -1200,7 +1223,6 @@ export default {
               image: self.item.image
             }
           ]
-
           self.tableData = tab.concat(itemTab)
         } else {
           self.$message.error(response.data.meta.message) // not found ?????
@@ -1457,7 +1479,19 @@ export default {
 .capital-item .pay-btn span {
   color: #00ac84;
 }
-
+.pay-ok {
+  position: relative;
+}
+.pay-ok::before {
+  content: '';
+  position: absolute;
+  left: -30px;
+  top: 0;
+  display: inline-block;
+  width: 24px;
+  height: 26px;
+  background: url('../../../../assets/images/item/CompleteBig@2x.png') no-repeat center center / contain 
+}
 .capital-item .capital-btn {
   /* padding: 10px 30px 10px 30px; */
 }
@@ -1541,7 +1575,9 @@ p.contact {
   font-size: 1.8rem;
   color: #222;
 }
-
+.border-t {
+  border-top: 1px solid #d2d2d2;
+}
 .stage-title p {
   margin: 0 0 0 10px;
   float: right;
@@ -1723,6 +1759,44 @@ section ul li a {
 <style>
   .select-company-item .check-box .el-checkbox__label {
     width: 100%;
+  }
+  .content .el-collapse-item__header {
+    position: relative;
+    font-size: 18px;
+    color: #222;
+  }
+  .content .el-icon-arrow-right {
+    position: absolute;
+    right: 13px;
+    top: 16px;
+    color: #d2d2d2;
+    font-size: 14px;
+  }
+  .content .start-money {
+    position: relative;
+  }
+  .content .start-money:after {
+    content: '首付款支付成功';
+    padding-left: 20px;
+    position: absolute;
+    top: 15px;
+    right:50px;
+    font-size: 14px;
+    color: #333333;
+    background: url('../../../../assets/images/item/complete@2x.png') no-repeat center left / contain
+  }
+  .content .nostart-money {
+    position: relative;
+  }
+  .content .nostart-money:after {
+    content: '等待支付项目首付款';
+    padding-left: 20px;
+    position: absolute;
+    top: 15px;
+    right:50px;
+    font-size: 14px;
+    color: #333333;
+    background: url('../../../../assets/images/item/wait@2x.png') no-repeat center left / contain
   }
 </style>
 

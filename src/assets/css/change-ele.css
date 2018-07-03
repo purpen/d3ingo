@@ -480,19 +480,35 @@
     box-shadow: none;
     background: #f7f7f7;
   }
+
   .el-input.child-date .el-input__icon {
     height: auto;
     top: 10px;
   }
+
   .el-textarea__inner:hover .MeetingCenter {
     border: none;
   }
+
   .el-tooltip__popper.is-dark {
     max-width: 320px;
   }
+
   .form-footer .el-button + .el-button {
     margin-right: 0;
   }
-.qouteSubmit .el-form-item .el-form-item__label {
-  height: 24px;
-}
+
+  .qouteSubmit .el-form-item .el-form-item__label {
+    height: 24px;
+  }
+
+  .el-loading-spinner .circular {
+    width: 100px;
+    height: 100px;
+    background: url('../images/tools/cloud_drive/status/loading.gif') no-repeat center / cover;
+    animation: none
+  }
+  .el-loading-spinner .path {
+    stroke: transparent;
+    animation: none
+  }
