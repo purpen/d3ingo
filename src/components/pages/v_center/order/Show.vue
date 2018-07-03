@@ -2,84 +2,108 @@
   <div class="blank30 vcenter">
     <el-row :gutter="24">
       <v-menu currentName="order"></v-menu>
-
       <div :class="{'vcenter-right-plus': leftWidth === 4,
         'vcenter-right': leftWidth === 2,
         'vcenter-right-mob': isMob}">
-        <div class="right-content vcenter-container">
+        <div class="right-content vcenter-container" style="width: 880px">
           <!--
           <v-menu-sub></v-menu-sub>
           -->
-          <div class="content-box">
+          <div style="margin-bottom :20px" class="ordershow-span-color">
+            <el-breadcrumb separator="＞">
+              <el-breadcrumb-item :to="{ path: '/vcenter/item/list' }">我的项目</el-breadcrumb-item>
+              <el-breadcrumb-item :to="{ name: 'vcenterItemShow', params: {id: this.$route.query.id}}">项目详情</el-breadcrumb-item>
+              <el-breadcrumb-item>付款</el-breadcrumb-item>
+            </el-breadcrumb>
+          </div>
+          <!--v-if="item.status !== 1" 暂时的-->
+          <div class="content-box" v-if="item.status !== 1">
             <div class="main clearfix min-height-0">
               <div class="status">
-                <p class="main-status">订单状态: <span>{{ item.status_value }}</span></p>
-                <div v-if="item.pay_type === 5 && item.status === 0">
-                  <div v-if="item.bank_transfer === 0">
-                    <p class="main-des">请于 {{ item.expire_at }} 前完成支付，逾期会关闭交易</p>
-                    <p class="main-des">如已完成线下对公转账，请点击下方图片上传凭证</p>
+                <div style="width: 100%">
+                  <p class="main-status" v-if="item.bank_transfer === 0">订单状态: <span>{{ item.status_value }}</span></p>
+                  <div v-if="item.pay_type === 5 && item.status === 0">
+                    <div v-if="item.bank_transfer === 0">
+                      <p class="main-des">请于 {{ item.expire_at }} 前完成支付，逾期会关闭交易</p>
+                      <p class="main-des">如果您已经完成对公转账，请上传凭证</p>
 
-                    <div>
-                      <el-upload
-                        class=""
-                        :action="uploadParam.url"
-                        :on-preview="handlePreview"
-                        :on-remove="handleRemove"
-                        :on-progress="handleProgress"
-                        :data="uploadParam"
-                        :on-error="uploadError"
-                        :on-success="uploadSuccess"
-                        :before-upload="beforeUpload"
-                        :show-file-list="false"
-                        list-type="picture">
-                        <img v-if="fileUrl" :src="fileUrl" class="file-show">
-                        <i v-else class="uploader-icon"></i>
-                        <div slot="tip" class="el-upload__tip" v-if="!isMob">{{ fileDesc }}</div>
-                      </el-upload>
+                      <div class="order-show">
+                        <el-upload
+                          class=""
+                          :action="uploadParam.url"
+                          :on-preview="handlePreview"
+                          :on-remove="handleRemove"
+                          :on-progress="handleProgress"
+                          :data="uploadParam"
+                          :on-error="uploadError"
+                          :on-success="uploadSuccess"
+                          :before-upload="beforeUpload"
+                          :show-file-list="false"
+                          list-type="picture">
+                          <img v-if="fileUrl" :src="fileUrl" class="file-show">
+                          <i v-else class="uploader-icon">
+                          </i>
+                          <div slot="tip" class="el-upload__tip padd-t-7" v-if="!isMob">{{ fileDesc }}</div>
+                        </el-upload>
 
-                      <div class="sure-pay-btn" v-if="surePay">
-                        <el-button size="small" class="is-custom" type="primary" @click.stop="surePaydBtn">确认打款</el-button>
+
                       </div>
                     </div>
-                  </div>
-                  <div v-else>
-                    <p class="main-des">您已确认打款，请等待人工审核</p>
+                    <div v-else>
+                      <div class="wid-100 mar-auto">
+                        <img  src="../../../../assets/images/payconfirm@2x.png" alt="">
+                      </div>
+                      <div class="payconfirmTitle">
+                        <p class="font-18 text-center">支付确认中…</p>
+                      </div>
+                      <p class="main-des text-center">您已确认打款，请等待铟果SaaS平台人工审核</p>
+                    </div>
                   </div>
                 </div>
 
+                <div class="operation" v-if="(item.status === -1 || item.status === 0) && item.bank_transfer === 0">
+                  <div class="sure-pay-btn" >
+                    <el-button v-if="surePay" class="is-custom" type="primary" @click.stop="surePaydBtn">确认打款</el-button>
+                    <el-button v-else  disabled type="primary">确认打款</el-button>
+                  </div>
+                  <div class="sure-pay-btn">
+                    <p v-if="(item.status === -1 || item.status === 0) && item.bank_transfer === 0">
+                      <el-button class="is-custom" @click="rePay">更改支付方式</el-button>
+                    </p>
+                  </div>
+                  <!--<div class="sure-pay-btn">-->
+                    <!--<p><el-button>取消订单</el-button></p>-->
+                  <!--</div>-->
+                </div>
               </div>
-              <div class="operation">
-                <p v-if="(item.status === -1 || item.status === 0) && item.bank_transfer === 0">
-                  <el-button class="is-custom" @click="rePay">更改支付方式</el-button>
-                </p>
-                <!--<p><el-button >取消订单</el-button></p>-->
-              </div>
-            </div>
 
+            </div>
+          </div>
+          <div class="content-box" style="margin-bottom: 0">
             <div class="clear detail">
               <p class="detail-banner">订单详情</p>
-              <p>项目名称: {{ item.item_name }}</p>
-              <p>支付方式: {{ item.pay_type_value }}</p>
-              <p>金&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;额: ¥ {{ item.amount }}</p>
-              <p>订单编号: {{ item.uid }}</p>
-              <p>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注: {{ item.summary }}</p>
-              <p>创建时间: {{ item.created_at }}</p>
+              <p>项目名称: <span>{{ item.item_name }}</span></p>
+              <p>支付方式: <span>{{ item.pay_type_value }}</span></p>
+              <p>金&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;额: <span><i>¥ </i>{{ item.amount }}</span></p>
+              <p>订单编号: <span>{{ item.uid }}</span></p>
+              <p>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注: <span>{{ item.summary }}</span></p>
+              <p>创建时间: <span>{{ item.created_at }}</span></p>
 
               <div class="outline-pay" v-show="item.pay_type === 5">
                 <p class="detail-banner">对公转账</p>
-                <p>收款公司: 北京太火红鸟科技有限公司</p>
-                <p>收款账户: 1109 1002 8310 202</p>
-                <p>开&nbsp;&nbsp;户&nbsp;行: 招商银行北京华贸中心支行</p>
+                <p>收款公司: <span>北京太火红鸟科技有限公司</span></p>
+                <p>收款账户: <span>1109 1002 8310 202</span></p>
+                <p>开&nbsp;&nbsp;户&nbsp;行: <span>招商银行北京华贸中心支行</span></p>
               </div>
             </div>
-
-            <div class="server">
-              <p>如果您有任何疑问，请立即联系客服。</p>
-              <p>邮箱：support@taihuoniao.com</p>
-              <p>电话：010-84599328</p>
-            </div>
-
           </div>
+          <div class="server">
+            <p>如果您有任何疑问，请立即联系客服。</p>
+            <p>邮箱：support@taihuoniao.com</p>
+            <p>电话：010-84599328</p>
+          </div>
+
+
         </div>
 
       </div>
@@ -113,7 +137,7 @@
           'x:type': 33
         },
         fileUrl: '',
-        fileDesc: '只能上传jpg/png/png文件，且不超过2M',
+        fileDesc: '格式：JPG／PNG   大小：小于2MB',
         surePay: false,
         msg: ''
       }
@@ -203,6 +227,8 @@
     },
     created: function () {
       let itemUid = this.$route.params.id
+      // let itemUid2 = this.$route.query.id
+      console.log(this.$route.query.id)
       if (itemUid) {
         this.itemUid = itemUid
         this.$http.get(api.orderId.format(itemUid), {})
@@ -267,7 +293,7 @@
   }
 
   .main {
-    padding: 20px 0 20px 0;
+    padding: 20px 0 0 0;
   }
 
   .main p {
@@ -275,8 +301,11 @@
   }
 
   .main .status {
-    margin-bottom: 20px;
     float: left;
+    display: flex;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
   }
 
   .main .operation {
@@ -284,8 +313,8 @@
   }
 
   .main-status {
-    font-size: 2rem;
-    color: #222;
+    font-size: 1.8rem;
+    color: #000f00;
     font-weight: 400;
   }
 
@@ -299,7 +328,7 @@
   }
 
   .operation p {
-    line-height: 50px;
+    /*line-height: 50px;*/
   }
 
   .operation p button {
@@ -311,14 +340,20 @@
   }
 
   .detail p {
+    margin-top: 20px;
     line-height: 2.5;
   }
 
+  .detail p span {
+    color: #222222;
+    margin-left: 20px;
+  }
+
   .detail-banner {
-    font-size: 1.8rem;
+    color: #222222;
+    font-size: 1.6rem;
     line-height: 2;
     border-bottom: 1px solid #ccc;
-    margin-bottom: 20px;
   }
 
   .outline-pay {
@@ -326,13 +361,44 @@
   }
 
   .server {
-    margin-top: 50px;
+    height: 50px;
+    background: #f7f7f7;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
   }
 
   .server p {
-    color: #999;
-    font-size: 1.8rem;
+    color: #666666;
+    font-size: 1.2rem;
     line-height: 2;
+    margin-right: 20px;
+  }
+
+  .wid-100 {
+    width: 120px;
+    height: 120px;
+  }
+
+  .wid-100 img {
+    width: 100%;
+  }
+
+  .payconfirmTitle {
+    margin: 12px 0 10px 0;
+  }
+
+  .font-18 {
+    font-size: 18px;
+    color: #FF5A5F;
+  }
+
+  .mar-auto {
+    margin: auto;
+  }
+
+  .padd-t-7 {
+    padding-top: 7px;
   }
 
   @media screen and (max-width: 767px) {
@@ -349,18 +415,19 @@
     width: 150px;
   }
   .sure-pay-btn {
-    margin: 10px 0;
+    margin-bottom: 20px;
   }
 
   .uploader-icon {
     display: block;
     color: #999;
-    background: url('../../../../assets/images/avatar_default.png') no-repeat;
+    background: url('../../../../assets/images/voucher@2x.png') no-repeat;
     background-size: contain;
     width: 100px;
     height: 100px;
     line-height: 100px;
     text-align: center;
+    margin: 14px 0 10px 0;
   }
 </style>
 

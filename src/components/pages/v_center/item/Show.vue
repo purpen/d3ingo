@@ -2,11 +2,11 @@
   <div class="container">
     <div class="blank20"></div>
 
-    <el-breadcrumb separator="/" class="bread">
-      <el-breadcrumb-item :to="{ name: 'home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item :to="{ name: 'vcenterItemList' }">项目列表</el-breadcrumb-item>
-      <el-breadcrumb-item>详情</el-breadcrumb-item>
-    </el-breadcrumb>
+    <!--<el-breadcrumb separator="/" class="bread">-->
+      <!--<el-breadcrumb-item :to="{ name: 'home' }">首页</el-breadcrumb-item>-->
+      <!--<el-breadcrumb-item :to="{ name: 'vcenterItemList' }">项目列表</el-breadcrumb-item>-->
+      <!--<el-breadcrumb-item>详情</el-breadcrumb-item>-->
+    <!--</el-breadcrumb>-->
 
     <el-row :gutter="20" style="margin-top: 30px">
       <v-item-progress :progressButt="progressButt" :progressContract="progressContract"
@@ -442,7 +442,6 @@
                     </p>
                   </div>
                 </div>
-
               </el-collapse-item>
             </el-collapse>
           </div>
@@ -679,7 +678,7 @@ export default {
       this.$router.push({
         name: 'itemPayFund',
         params: { item_id: this.item.id },
-        query: {check_pay: 1}
+        query: {check_pay: 1, id: this.$route.params.id}
       })
     },
     // 确认项目完成弹出层
@@ -804,7 +803,8 @@ export default {
     payStageRedierct(stageId) {
       this.$router.push({
         name: 'itemPayStageFund',
-        params: {stage_id: stageId}
+        params: {stage_id: stageId},
+        query: {id: this.$route.params.id}
       })
     },
     // 评价设计公司
@@ -889,6 +889,7 @@ export default {
   },
   created: function() {
     let id = this.$route.params.id
+    console.log(id)
     if (!id) {
       this.$message.error('缺少请求参数!')
       this.$router.push({ name: 'home' })
