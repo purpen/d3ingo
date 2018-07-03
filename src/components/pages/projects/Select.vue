@@ -4,13 +4,16 @@
     <div class="project-cover clearfix">
       <el-row class="project-item-box">
         <p class="title">请选择您需要的设计类型</p>
-        <el-col v-for="(ele, index) in COMPANY_TYPE" :key="index"
-        :xs="12" :sm="4" :md="4" :lg="4"
-        :class="['item', {'active': item === ele.id}]"
-        @click.native="changeItemId(ele.id, index)">
-          <span :class="['item-bg', 'item-bg'+ ele.id]"></span>
-          <p class="item-name">{{ele.name}}</p>
-        </el-col>
+        <el-tooltip class="tooltip" v-for="(ele, index) in COMPANY_TYPE"
+          :key="index"
+          :content="ele.type" placement="bottom">
+          <el-col :xs="12" :sm="4" :md="4" :lg="4"
+          :class="['item', {'active': item === ele.id}]"
+          @click.native="changeItemId(ele.id, index)">
+            <span :class="['item-bg', 'item-bg'+ ele.id]"></span>
+            <p class="item-name">{{ele.name}}</p>
+          </el-col>
+        </el-tooltip>
       </el-row>
       <div class="project-foot">
         div.
@@ -35,18 +38,6 @@ export default {
     return {
       id: 0,
       item: 0,
-      imgList: [
-        {
-          name: '产品设计',
-          type: 1,
-          src: ''
-        },
-        {
-          name: 'UI/UX 设计',
-          type: 2,
-          src: ''
-        }
-      ],
       selectObject: {}
     }
   },
@@ -91,10 +82,14 @@ export default {
   },
   computed: {
     COMPANY_TYPE() {
-      let array = COMPANY_TYPE.filter(item => {
-        return item.id
+      COMPANY_TYPE.forEach(item => {
+        item.type = []
+        item['designType'].forEach(i => {
+          item.type.push(i.name)
+        })
+        item.type = item.type.join('/')
       })
-      return array
+      return COMPANY_TYPE
     }
   },
   created() {

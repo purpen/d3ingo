@@ -1770,6 +1770,7 @@ export default {
   }
   .content {
     position: relative;
+    /* padding-bottom: 60px!important; */
     /* transition: 0.2s all ease; */
   }
   .content-mini {
@@ -2535,7 +2536,14 @@ export default {
   }
 
   .pagination {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    bottom: 0;
     text-align: center;
+    padding: 20px 0;
+    background: #fff;
   }
   .exclude-file {
     margin-top: 20px;

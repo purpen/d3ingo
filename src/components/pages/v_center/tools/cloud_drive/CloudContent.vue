@@ -155,7 +155,7 @@
           <div class="image-preview" v-if="showType === 1">
             <swiper :options="swiperOption" :not-next-tick="notNextTick" ref="mySwiper">
               <swiper-slide v-for="(ele, index) in imgList" :key="index">
-                <img :src="ele.url_file" :alt="ele.name">
+                <img :src="ele.url_file" :alt="ele.name" :class="{'is-load': isLoad}">
               </swiper-slide>
               <div @click="switchPrevPic" class="swiper-button-prev" slot="button-prev">
                 <i class="el-icon-arrow-left"></i>
@@ -305,6 +305,7 @@ export default {
       this.$emit('changeImgList', ele)
     },
     showView(ele) {
+      this.isLoad = false
       this.urlFile = ele.url_file
       if (!this.driveShare) {
         this.$http.post(api.yunpanRecentUseLog, {id: ele.id}).then(res => {
@@ -318,6 +319,12 @@ export default {
           if (this.$refs.mySwiper) {
             this.imgList.forEach((item, index) => {
               if (ele.id === item.id) {
+                let img = new Image()
+                img.src = ele.url_file
+                img.onload = () => {
+                  this.isLoad = true
+                  console.log('加载完成')
+                }
                 this.swiperObj.slideTo(index)
                 this.viewCover = true
                 this.previewObj.info = item
@@ -409,15 +416,29 @@ export default {
       console.log(e)
     },
     switchPrevPic() {
+      this.isLoad = false
       this.previewObj.index --
       if (this.previewObj.index < 0) {
         this.previewObj.index = 0
       }
+      let img = new Image()
+      img.src = this.imgList[this.previewObj.index]['url_file']
+      img.onload = () => {
+        this.isLoad = true
+        console.log('加载完成')
+      }
     },
     switchNextPic() {
+      this.isLoad = false
       this.previewObj.index ++
       if (this.previewObj.index > this.imgList.length - 1) {
         this.previewObj.index = this.imgList.length - 1
+      }
+      let img = new Image()
+      img.src = this.imgList[this.previewObj.index]['url_file']
+      img.onload = () => {
+        this.isLoad = true
+        console.log('加载完成')
       }
     },
     changePermission(id, userId, ele) {
@@ -476,15 +497,12 @@ export default {
         this.closeView()
       }
     },
-    imgList: {
-      handler: function (newVal) {
-        if (newVal.length) {
-          if (this.previewObj['index'] === -1) {
-            this.previewObj['index'] = 0
-          }
+    imgList(newVal) {
+      if (newVal.length) {
+        if (this.previewObj['index'] === -1) {
+          this.previewObj['index'] = 0
         }
-      },
-      deep: true
+      }
     }
   },
   computed: {
@@ -1010,7 +1028,9 @@ export default {
     max-width: 800px;
     max-height: calc(100vh - 120px);
   }
-
+  .view-content .is-load {
+    background: none
+  }
   .image-preview {
     max-width: 980px;
     margin: 0 auto;
