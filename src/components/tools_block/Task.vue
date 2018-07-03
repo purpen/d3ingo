@@ -1398,7 +1398,7 @@
   }
   .task-member-list {
     padding-top: 10px;
-    margin-left: -6px;
+    margin-left: -10px;
     display: inline-flex;
     align-items: center;
     flex-wrap: wrap;

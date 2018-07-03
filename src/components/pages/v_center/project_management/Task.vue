@@ -41,9 +41,12 @@
                     @blur="taskNameBlur(ele.id)"
                     v-model="currentTaskForm.name">
                 </p>
-                <p v-if="ele.over_time" :class="['task-date', 'fr', {
+                <el-tooltip effect="dark" :content="ele.time_detail" placement="top">
+                  <p v-if="ele.over_time" :class="['task-date', 'fr', {
                     'task-date-red': ele.over_time_stamp < new Date().getTime()
-                    }]">{{ele.over_time | filterOverTime}}</p>
+                    }]">{{ele.over_time | filterOverTime}}
+                  </p>
+                </el-tooltip>
                 <div class="fr task-item-div">
                   <img v-if="ele.logo_image" :src="ele.logo_image.logo" alt="">
                   <img v-else v-lazy="require('assets/images/avatar_100.png')">
@@ -81,9 +84,11 @@
                       @blur="taskNameBlur(e.id)"
                       v-model="currentTaskForm.name">
                     </p>
-                  <p :class="['task-date', 'fr', {
-                    'task-date-red': e.over_time_stamp < new Date().getTime()
-                    }]">{{e.over_time | filterOverTime}}</p>
+                  <el-tooltip effect="dark" :content="e.time_detail" placement="top">
+                    <p :class="['task-date', 'fr', {
+                      'task-date-red': e.over_time_stamp < new Date().getTime()
+                      }]">{{e.over_time | filterOverTime}}</p>
+                  </el-tooltip>
                   <div class="fr task-item-div">
                     <img v-if="e.logo_image" :src="e.logo_image.logo" alt="">
                     <img v-else v-lazy="require('assets/images/avatar_100.png')">
