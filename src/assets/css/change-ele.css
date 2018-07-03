@@ -489,6 +489,27 @@
   }
   .el-tooltip__popper.is-dark {
     max-width: 320px;
+    background: #4c4c4c
+  }
+  .el-tooltip__popper[x-placement^=right] .popper__arrow,
+  .el-tooltip__popper[x-placement^=right] .popper__arrow::after {
+    border-color: transparent;
+    border-right-color: #4c4c4c
+  }
+  .el-tooltip__popper[x-placement^=left] .popper__arrow,
+  .el-tooltip__popper[x-placement^=left] .popper__arrow::after {
+    border-color: transparent;
+    border-left-color: #4c4c4c
+  }
+  .el-tooltip__popper[x-placement^=top] .popper__arrow,
+  .el-tooltip__popper[x-placement^=top] .popper__arrow::after {
+    border-color: transparent;
+    border-top-color: #4c4c4c
+  }
+  .el-tooltip__popper[x-placement^=bottom] .popper__arrow,
+  .el-tooltip__popper[x-placement^=bottom] .popper__arrow::after {
+    border-color: transparent;
+    border-bottom-color: #4c4c4c
   }
   .form-footer .el-button + .el-button {
     margin-right: 0;
