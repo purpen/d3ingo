@@ -754,19 +754,6 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
-  let type = store.state.event.user.type
-  if (to.meta['isDesignInc']) {
-    if (type !== to.meta['isDesignInc']) {
-      if (to.meta['isDesignInc'] === 1) {
-        Message.error('请使用服务方账号登录')
-      } else {
-        Message.error('请使用需求公司账号登录')
-      }
-      router.push({ name: 'home' })
-    }
-  } else {
-    // console.log('d3in')
-  }
   if (to.meta['hideHeader']) {
     store.commit(types.HIDE_HEADER, to.meta['hideHeader'])
   } else {
@@ -777,6 +764,20 @@ router.beforeEach((to, from, next) => {
     store.commit(types.HIDE_FOOTER, to.meta['hideFooter'])
   } else {
     store.commit(types.HIDE_FOOTER, false)
+  }
+
+  let type = store.state.event.user.type
+  if (to.meta['isDesignInc']) {
+    if (type !== to.meta['isDesignInc']) {
+      if (to.meta['isDesignInc'] === 1) {
+        Message.error('请使用需求公司账号登录')
+      } else {
+        Message.error('请使用服务方账号登录')
+      }
+      router.push({ name: 'home' })
+    }
+  } else {
+    // console.log('d3in')
   }
 })
 

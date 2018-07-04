@@ -113,7 +113,7 @@
                       :before-upload="beforeUploadPerson"
                       list-type="picture">
                       <el-button size="small" type="primary">点击上传</el-button>
-                      <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过5M</div>
+                      <div slot="tip" class="el-upload__tip">只能上传jpg/png/pdf文件，且不超过5M</div>
                     </el-upload>
                   </el-form-item>
                 </el-col>
@@ -597,7 +597,7 @@
         }
       },
       beforeUploadPerson(file) {
-        const arr = ['image/jpeg', 'image/gif', 'image/png']
+        const arr = ['image/jpeg', 'image/gif', 'image/png', 'application/pdf']
         const isLt5M = file.size / 1024 / 1024 < 5
 
         this.uploadParam['x:type'] = 10

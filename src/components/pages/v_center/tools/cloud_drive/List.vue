@@ -125,7 +125,7 @@
           </transition>
 
           <el-col>
-            <el-pagination v-if="query.totalCount / query.pageSize > 1" class="pagination" :small="isMob" :current-page="query.page" :page-size="query.pageSize" :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange">
+            <el-pagination v-if="query.totalCount / query.pageSize > 1" :class="['pagination', {'relative': isProject}]" :small="isMob" :current-page="query.page" :page-size="query.pageSize" :total="query.totalCount" :page-count="query.totalPges" layout="total, prev, pager, next, jumper" @current-change="handleCurrentChange">
             </el-pagination>
           </el-col>
         </div>
@@ -570,6 +570,9 @@ export default {
       default: true
     },
     isMyFile: {
+      default: false
+    },
+    isProject: {
       default: false
     }
   },
@@ -2544,6 +2547,9 @@ export default {
     text-align: center;
     padding: 20px 0;
     background: #fff;
+  }
+  .relative {
+    position: relative;
   }
   .exclude-file {
     margin-top: 20px;

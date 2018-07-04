@@ -5,10 +5,10 @@
     <el-breadcrumb separator="/" class="bread">
       <el-breadcrumb-item :to="{ name: 'home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ name: 'vcenterCItemList' }">项目列表</el-breadcrumb-item>
-      <el-breadcrumb-item>详情</el-breadcrumb-item>
+      <el-breadcrumb-item>{{ item.name }}</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <el-row :gutter="24">
+    <el-row :gutter="24" class="blank30">
       <v-item-progress :progressButt="progressButt" :progressContract="progressContract"
                        :progressItem="progressItem"></v-item-progress>
 
@@ -188,7 +188,7 @@
                       <el-button class="is-custom" @click="sendInvoiceBtn(1, 0)"
                                  type="primary">开发票
                       </el-button>
-                    </p>   
+                    </p>
                     <p class="capital-des">需求方已将首付款转到太火鸟SaaS平台托管，</p>
                     <p class="capital-des">您需要给太火鸟SaaS平台提供相关发票，平台收到发票后会将相关款项转入您的账户中。</p>
                   </div>
@@ -462,7 +462,7 @@
             收件人地址
           </el-col>
           <el-col :span="20">
-            北京市&nbsp;朝阳区&nbsp;酒仙桥751D北京时尚设计广场&nbsp;B7南侧太火鸟 
+            北京市&nbsp;朝阳区&nbsp;酒仙桥751D北京时尚设计广场&nbsp;B7南侧太火鸟
           </el-col>
         </el-row>
       </div>
@@ -520,12 +520,12 @@
         <input type="hidden" ref="confirmIndex"/>
       </span>
     </el-dialog>
-    <el-dialog title="报价单详情" v-model="quotaDialog" size="large" top="2%">
+    <el-dialog title="报价单详情" v-model="quotaDialog" id="quote-dialog" style="width: 880px;margin: auto" size="large" top="2%">
       <v-quote-view :formProp="quota"></v-quote-view>
 
-      <div slot="footer" class="dialog-footer btn">
-        <el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>
-      </div>
+      <!--<div slot="footer" class="dialog-footer btn">-->
+        <!--<el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>-->
+      <!--</div>-->
     </el-dialog>
 
   </div>
@@ -1255,39 +1255,39 @@
                 self.statusLabel.manage = true
                 self.statusLabel.stage = true
                 break
-              case 18:
+              case 18:  // 已验收
                 self.progressButt = 3
                 self.progressContract = 3
                 self.progressItem = 2
                 self.statusIconUrl = require('@/assets/images/item/item_yanshou.png')
                 self.statusLabel.cooperateCompany = true
                 self.statusLabel.contract = true
-                self.statusLabel.amount = false
+                self.statusLabel.amount = true
                 self.statusLabel.isPay = true
                 self.statusLabel.manage = true
                 self.statusLabel.stage = true
                 break
-              case 20:
+              case 20:  // 无
                 self.progressButt = 3
                 self.progressContract = 3
                 self.progressItem = 4
                 self.statusIconUrl = require('@/assets/images/item/item_success.png')
                 self.statusLabel.cooperateCompany = true
                 self.statusLabel.contract = true
-                self.statusLabel.amount = false
+                self.statusLabel.amount = true
                 self.statusLabel.isPay = true
                 self.statusLabel.manage = true
                 self.statusLabel.stage = true
                 self.statusLabel.evaluate = true
                 break
-              case 22:
+              case 22:  // 已评价
                 self.progressButt = 3
                 self.progressContract = 3
                 self.progressItem = 4
                 self.statusIconUrl = require('@/assets/images/item/item_success.png')
                 self.statusLabel.cooperateCompany = true
                 self.statusLabel.contract = true
-                self.statusLabel.amount = false
+                self.statusLabel.amount = true
                 self.statusLabel.isPay = true
                 self.statusLabel.manage = true
                 self.statusLabel.stage = true
@@ -1736,7 +1736,7 @@
     display: inline-block;
     width: 24px;
     height: 26px;
-    background: url('../../../../assets/images/item/CompleteBig@2x.png') no-repeat center center / contain 
+    background: url('../../../../assets/images/item/CompleteBig@2x.png') no-repeat center center / contain
   }
   .pay-await {
     position: relative;
@@ -1749,11 +1749,11 @@
     display: inline-block;
     width: 24px;
     height: 26px;
-    background: url('../../../../assets/images/item/Waiting@2x.png') no-repeat center center / contain 
+    background: url('../../../../assets/images/item/Waiting@2x.png') no-repeat center center / contain
   }
   .border-t {
     border-top: 1px solid #d2d2d2;
-  } 
+  }
   .capital-item .capital-btn {
     padding: 10px 30px 10px 30px;
   }

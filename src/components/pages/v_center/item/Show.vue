@@ -5,10 +5,10 @@
     <el-breadcrumb separator="/" class="bread">
       <el-breadcrumb-item :to="{ name: 'home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ name: 'vcenterItemList' }">项目列表</el-breadcrumb-item>
-      <el-breadcrumb-item>详情</el-breadcrumb-item>
+      <el-breadcrumb-item>{{ item.name }}</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <el-row :gutter="20" style="margin-top: 30px">
+    <el-row :gutter="20" class="blank30">
       <v-item-progress :progressButt="progressButt" :progressContract="progressContract"
                        :progressItem="progressItem"></v-item-progress>
 
@@ -69,54 +69,14 @@
             </el-collapse>
           </div>
 
-
-          <!-- <div class="select-item-box clearfix" v-if="statusLabel.selectCompany"> -->
-          <div class="select-item-box clearfix" v-if="false">
+          <div class="select-item-box clearfix" v-if="statusLabel.selectCompany">
             <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
               <el-collapse-item title="选择系统推荐的设计公司" name="3">
-                <div class="select-company-item clearfix" v-for="(d, index) in stickCompany" :key="index">
-                  <el-checkbox class="check-box" v-model="stickCompanyIds" :label="d.id">
-                    <el-row class="content">
-                      <el-col :xs="24" :sm="2" :md="2" :lg="2">
-                        <div class="img">
-                          <router-link :to="{name: 'companyShow', params: {id: d.id}}" target="_blank">
-                            <img class="avatar" v-if="d.logo_url" :src="d.logo_url" width="50"/>
-                            <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="50"/>
-                          </router-link>
-                        </div>
-                      </el-col>
-                      <el-col
-                        :xs="24"
-                        :sm="d.cases.length ? 12 : 10"
-                        :md="d.cases.length ? 12 : 10"
-                        :lg="d.cases.length ? 12 : 10">
-                        <div class="company-title">
-                          <h3 class="company-name">
-                            <router-link :to="{name: 'companyShow', params: {id: d.id}}" target="_blank">{{ d.company_name
-                              }}
-                            </router-link>
-                          </h3>
-                          <p class="company-addr"><i class="fa fa-map-marker" aria-hidden="true"></i> {{ d.city_arr.join(',') }}</p>
-                          <p class="des company-padding" v-if="d.item_type"><span>类型: </span>{{ d.item_type_label }}</p>
-                          <p class="des company-padding"><span>优势: </span>{{ d.professional_advantage }}</p>
-                        </div>
-                      </el-col>
-                      <el-col :xs="24" :sm="10" :md="10" :lg="10" v-if="d.cases.length">
-                        <div class="case-box">
-                          <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: m.id}}" target="_blank"
-                                      :title="m.title" v-for="(m, index) in d.cases" :key="index">
-                            <img width="120" :src="m.cover_url"/></router-link>
-                        </div>
-                      </el-col>
-                    </el-row>
-                  </el-checkbox>
-                </div>
+              
                 <div class="clear"></div>
-                <div class="pub-btn clearfix" v-if="item.status === 3">
-                  <el-button class="is-custom" @click="stickCompanySubmit" :loading="isLoadingBtn"
-                             :disabled="this.stickCompanyIds.length <= 0" type="primary">发送项目需求
-                  </el-button>
-                  <p class="send-company-des">项目需求详情将发送给已选中的设计服务供应商</p>
+                <div class="pub-btn clearfix" v-if="item.status === 2 || item.status === 3">
+                  <el-button class="is-custom" @click="redirectMatch" :disabled="item.status === 2" type="primary">选择设计公司</el-button>
+                  <p class="send-company-des tc-9">等待人工匹配...</p>
                 </div>
               </el-collapse-item>
             </el-collapse>
@@ -442,7 +402,6 @@
                     </p>
                   </div>
                 </div>
-
               </el-collapse-item>
             </el-collapse>
           </div>
@@ -468,12 +427,12 @@
       </span>
     </el-dialog>
 
-    <el-dialog title="报价单详情" v-model="quotaDialog" size="large" top="2%">
+    <el-dialog title="报价单详情" id="quote-dialog" v-model="quotaDialog" style="width: 880px;margin: auto" size="large" top="2%">
       <v-quote-view :formProp="quota"></v-quote-view>
 
-      <div slot="footer" class="dialog-footer btn">
-        <el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>
-      </div>
+      <!--<div slot="footer" class="dialog-footer btn">-->
+        <!--<el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>-->
+      <!--</div>-->
     </el-dialog>
 
   </div>
@@ -553,6 +512,14 @@ export default {
     }
   },
   methods: {
+    // 跳转到匹配公司页
+    redirectMatch() {
+      this.$router.push({
+        name: 'projectMatch',
+        params: { item_id: this.item.id }
+      })
+      return false
+    },
     selectCompanyboxChange() {},
     stickCompanySubmit() {
       let companyIds = this.stickCompanyIds
@@ -679,7 +646,7 @@ export default {
       this.$router.push({
         name: 'itemPayFund',
         params: { item_id: this.item.id },
-        query: {check_pay: 1}
+        query: {check_pay: 1, id: this.$route.params.id}
       })
     },
     // 确认项目完成弹出层
@@ -804,7 +771,8 @@ export default {
     payStageRedierct(stageId) {
       this.$router.push({
         name: 'itemPayStageFund',
-        params: {stage_id: stageId}
+        params: {stage_id: stageId},
+        query: {id: this.$route.params.id}
       })
     },
     // 评价设计公司
@@ -889,6 +857,7 @@ export default {
   },
   created: function() {
     let id = this.$route.params.id
+    console.log(id)
     if (!id) {
       this.$message.error('缺少请求参数!')
       this.$router.push({ name: 'home' })
@@ -935,6 +904,7 @@ export default {
               self.progressButt = 0
               self.progressContract = -1
               self.progressItem = -1
+              self.statusLabel.selectCompany = true
               self.statusIconUrl = require('@/assets/images/item/match_company.png')
               break
             case 3: // 获取系统推荐的设计公司,选择设计公司
@@ -1011,40 +981,40 @@ export default {
               self.statusLabel.manage = true
               self.statusLabel.stage = true
               break
-            case 18:
+            case 18:  // 项目验收
               self.progressButt = 3
               self.progressContract = 3
               self.progressItem = 2
               self.statusIconUrl = require('@/assets/images/item/item_yanshou.png')
               self.statusLabel.cooperateCompany = true
               self.statusLabel.contract = true
-              self.statusLabel.amount = false
+              self.statusLabel.amount = true
               self.statusLabel.isPay = true
               self.statusLabel.manage = true
               self.statusLabel.stage = true
               self.statusLabel.evaluate = true
               break
-            case 20:
+            case 20:  // 无状态
               self.progressButt = 3
               self.progressContract = 3
               self.progressItem = 4
               self.statusIconUrl = require('@/assets/images/item/item_success.png')
               self.statusLabel.cooperateCompany = true
               self.statusLabel.contract = true
-              self.statusLabel.amount = false
+              self.statusLabel.amount = true
               self.statusLabel.isPay = true
               self.statusLabel.manage = true
               self.statusLabel.stage = true
               self.statusLabel.evaluate = true
               break
-            case 22:
+            case 22:  // 已评价
               self.progressButt = 3
               self.progressContract = 3
               self.progressItem = 4
               self.statusIconUrl = require('@/assets/images/item/item_success.png')
               self.statusLabel.cooperateCompany = true
               self.statusLabel.contract = true
-              self.statusLabel.amount = false
+              self.statusLabel.amount = true
               self.statusLabel.isPay = true
               self.statusLabel.manage = true
               self.statusLabel.stage = true
@@ -1054,6 +1024,7 @@ export default {
           }
 
           // 获取系统推荐的设计公司
+          /**
           if (self.statusLabel.selectCompany) {
             self.$http
               .get(api.recommendListId.format(self.item.id), {})
@@ -1100,6 +1071,7 @@ export default {
                 self.$message.error(error.message)
               })
           }
+          **/
 
           // 项目阶段列表
           if (self.statusLabel.stage) {
@@ -1277,6 +1249,10 @@ export default {
   background: #fff;
   border: 1px solid #e6e6e6;
 }
+
+ #quote-dialog .el-dialog el-dialog--large {
+   width: 100%;
+ }
 
 .select-company-item .check-box {
   width: 100%;
@@ -1490,7 +1466,7 @@ export default {
   display: inline-block;
   width: 24px;
   height: 26px;
-  background: url('../../../../assets/images/item/CompleteBig@2x.png') no-repeat center center / contain 
+  background: url('../../../../assets/images/item/CompleteBig@2x.png') no-repeat center center / contain
 }
 .capital-item .capital-btn {
   /* padding: 10px 30px 10px 30px; */

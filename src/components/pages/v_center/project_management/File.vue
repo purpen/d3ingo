@@ -1,6 +1,6 @@
 <template>
   <section>
-    <v-file :withoutSide="false"></v-file>
+    <v-file :withoutSide="false" :isProject="true"></v-file>
   </section>
 </template>
 <script>

@@ -7,7 +7,7 @@
       <el-col :span="20">
         <div class="content">
 
-          <div class="admin-menu-sub">
+          <div class="admin-menu-sub clearfix">
             <div class="admin-menu-sub-list">
               <router-link :to="{name: 'adminItemList'}" active-class="false"
                            :class="{'item': true, 'is-active': menuType === 0}">全部

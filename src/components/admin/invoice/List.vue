@@ -86,9 +86,9 @@
               align="center"
               label="状态">
               <template slot-scope="scope">
-                <p v-if="scope.row.status === 1"><el-tag type="warning">未开发票</el-tag></p>
-                <p v-if="scope.row.status === 2"><el-tag type="info">已开发票</el-tag></p>
-                <p v-if="scope.row.status === 3"><el-tag type="success">收到发票</el-tag></p>
+                <p v-if="scope.row.status === 1">未开发票</p>
+                <p v-if="scope.row.status === 2">已开发票</p>
+                <p v-if="scope.row.status === 3">收到发票</p>
               </template>
             </el-table-column>
             <el-table-column
@@ -107,7 +107,7 @@
               width="100"
               label="操作">
               <template slot-scope="scope">
-                <!--设计公司已开发票&&收发票&&-->
+                <!--是设计设计公司&&已开发票&&是收发票-->
                 <el-button v-if="scope.row.type === 1 && scope.row.status===2 && scope.row.company_type===2" type="success" size="mini" @click="confirmReceipt(scope.row, 2)">确认收到发票</el-button>
                 <el-button v-if="scope.row.type === 2 && scope.row.status===1 && scope.row.company_type===1" type="success" size="mini" @click="confirmReceipt(scope.row, 1)">确认开出发票</el-button>
               </template>
@@ -189,16 +189,19 @@
         this.$router.push({name: this.$route.name, query: this.query})
       },
       confirmReceipt (item, companytype) {
+        console.log(item)
         this.verify.id = item.id
         this.verify.companytype = companytype
         this.dialogVisible = !this.dialogVisible
       },
+      // 判断需求方还是设计公司收到发票/发出发票
       setVerify (id, refuseRease) {
         this.test = id
         this.dialogVisible = false
         const self = this
         var confirmInvoice = ''
         if (self.verify.companytype === 2) {
+          // 设计公司
           confirmInvoice = api.adminCompanyConfirmInvoice
         } else {
           confirmInvoice = api.adminDemandCompanyConfirmSendInvoice
@@ -220,7 +223,6 @@
               }
             }
           } else {
-            alert(1)
             self.$message.error(response.data.meta.message)
           }
         })
@@ -238,19 +240,18 @@
         // 判断访问接口
         var adminCompanyInvoice = ''
         if (self.routerName === 'adminReceiveInvoicetList') {
+          // 设计公司
           adminCompanyInvoice = api.adminCompanyInvoice
         } else {
           adminCompanyInvoice = api.adminDemandCompanyInvoice
         }
         self.isLoading = true
-        console.log(self.query.pageSize)
         self.$http.get(adminCompanyInvoice, {params: {status: self.query.status, sort: self.query.sort, per_page: self.query.pageSize, page: self.query.page}})
         .then (function(response) {
           self.isLoading = false
           self.tableData = []
           if (response.data.meta.status_code === 200) {
             self.itemList = response.data.data
-            console.log(response)
             self.query.totalCount = parseInt(response.data.meta.pagination.total)
             self.query.current_page = parseInt(response.data.meta.pagination.current_page)
             console.log(self.itemList)

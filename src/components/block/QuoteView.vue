@@ -1,12 +1,12 @@
 <template>
   <div class="vcenter-container">
     <div>
-      <h3>项目目标</h3>
-      <p>{{ form.summary }}</p>
+      <p class="font-size-16 color-222">项目目标</p>
+      <p class="font-size-14 color-666">{{ form.summary }}</p>
     </div>
     <div class="blank40"></div>
     <div>
-      <h3>项目工作计划及费用</h3>
+      <p class="font-size-16 color-222">项目工作计划及费用</p>
       <div class="line"></div>
       <div class="" v-for="(d, index) in form.plan" :key="index">
         <el-row :gutter="1">
@@ -22,32 +22,32 @@
                   </span>
                 </p>
                 <p>{{ d.duration }}个 工作日</p>
-                <p>{{ d.summary }}</p>
+                <p class="font-size-14 color-666">{{ d.summary }}</p>
               </div>
               <div class="item-money">¥ {{ formatPrice(d.price) }}</div>
             </div>
             <div class="line" v-if="index !== form.plan.length - 1"></div>
           </el-col>
         </el-row>
-      
+
       </div>
     </div>
     <div class="line"></div>
     <div class="sum-box" v-if="false">
       <div class="tax-box" v-if="!form.is_tax && form.is_invoince">
-        <p class="total-money">费用： <span>¥{{ totalMoneyFormat }}</span> 元</p>
+        <p class="total-money">费用： <span class="font-size-16">¥{{ totalMoneyFormat }}</span> 元</p>
       </div>
       <div class="tax-total-box">
-        <p v-show="form.is_tax" class="tax-total-money"></span>总计（含税）： <span>¥{{ taxTotalMoneyFormat }}</span> 元</p>
-        <p v-show="!form.is_tax && form.is_invoince" class="tax-total-money">税率:  <span> {{ form.tax_rate }}%</span> &nbsp;&nbsp;&nbsp;&nbsp;总计（含税）： <span>¥{{ taxTotalMoneyFormat }}</span> 元</p>
+        <p v-show="form.is_tax" class="tax-total-money">总计（含税）： <span class="font-size-16">¥{{ taxTotalMoneyFormat }}</span> 元</p>
+        <p v-show="!form.is_tax && form.is_invoince" class="tax-total-money">税率:  <span class="font-size-16"> {{ form.tax_rate }}%</span> &nbsp;&nbsp;&nbsp;&nbsp;总计（含税）： <span class="font-size-16">¥{{ taxTotalMoneyFormat }}</span> 元</p>
       </div>
     </div>
     <div class="sum-box" v-else>
       <div class="tax-box">
-        <p class="total-money">费用： <span>¥{{ totalMoneyFormat }}</span> 元</p>
+        <p class="total-money">费用： <span class="font-size-16">¥{{ totalMoneyFormat }}</span> 元</p>
       </div>
       <div class="tax-total-box">
-        <p class="tax-total-money">税率:  <span> {{ form.tax_rate }}%</span> &nbsp;&nbsp;&nbsp;&nbsp;总计（含税）： <span>¥{{ taxTotalMoneyFormat }}</span> 元</p>
+        <p class="tax-total-money">税率:  <span class="font-size-16"> {{ form.tax_rate }}%</span> &nbsp;&nbsp;&nbsp;&nbsp;总计（含税）： <span class="font-size-16">¥{{ taxTotalMoneyFormat }}</span> 元</p>
       </div>
     </div>
 
@@ -141,7 +141,7 @@ export default {
   }
 
   .contact-box {
-  
+
   }
   .contact-box p span {
     color: #666;
@@ -151,7 +151,7 @@ export default {
     margin: 0 20px 50px 0;
   }
   .sum-box .tax-box {
-  
+
   }
   .sum-box .tax-box p {
     float: right;
@@ -177,7 +177,7 @@ export default {
   .tax-total-money {
     line-height: 1.5;
     float: right;
-  }  
+  }
   .tax-total-money span {
     color: #FF5A5F;
   }
@@ -192,5 +192,22 @@ export default {
     color: #FF5A5F;
     white-space: nowrap;
     margin: 10px 0 0 20px;
+    font-size: 16px;
+  }
+
+  .font-size-14 {
+    font-size: 14px;
+  }
+
+  .font-size-16 {
+    font-size: 16px;
+  }
+
+  .color-666 {
+    color: #666666;
+  }
+
+  .color-222 {
+    color: #222222;
   }
 </style>
