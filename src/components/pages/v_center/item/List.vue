@@ -104,10 +104,13 @@
                   <!-- <p v-if="d.item.type === 1">
                     {{ d.item.type_value + '/' + d.item.design_type_value + '/' + d.item.field_value + '/' + d.item.industry_value
                     }}{{d.item}}</p>
-                  <p v-if="d.item.type === 2">{{ d.item.type_value + '/' + d.item.design_type_value }}{{d.item}}</p> -->
+                  <p v-if="d.item.type === 2">{{ d.item.type_value + '/' + d.item.design_type_value }}{{d.item}}</p> 
                   <p v-if="d.item.type === 1">
                     {{ d.item.type_value | formatNull }}{{ d.item.design_types_value | formatNull }}{{ d.item.field_value | formatNull }}{{ d.item.industry_value | formatEnd }}</p>
                   <p v-if="d.item.type === 2">{{ d.item.type_value | formatNull }}{{ d.item.design_types_value| formatEnd }}</p>
+                  -->
+                  <p>设计类型: {{ d.item.type_value }}</p>
+                  <p>设计类别: {{ d.item.design_types_value | formatEnd }}</p>
                   <p>项目周期: {{ d.item.cycle_value }}</p>
                   <p>产品功能：{{d.item.product_features}}</p>
                 </el-col>
@@ -148,7 +151,7 @@
                                 v-if="d.item.show_offer">查看报价
                     </el-button>
                     <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary"
-                                v-else>查看设计公司
+                                v-else>查看详情
                     </el-button>
                   </p>
 
@@ -172,13 +175,8 @@
                       评价
                     </el-button>
                   </p>
-                  <p v-if="d.item.status === 2 || d.item.status === 3" class="btn margin-b-10" v-show="d.item.is_view_show">
+                  <p v-if="d.item.status === 2" class="btn margin-b-10">
                     <el-button class="is-custom" @click="viewShow2(d.item.id)" size="small" type="primary">
-                      查看详情
-                    </el-button>
-                  </p>
-                  <p class="margin-b-10" v-show="d.item.is_view_show" v-else>
-                    <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary">
                       查看详情
                     </el-button>
                   </p>
@@ -205,11 +203,10 @@
                 </p>
                 <div class="list-content">
                   <section class="c-body">
-                    <p>项目预算： {{ d.item.design_cost_value }}</p>
+                    <p>项目预算：{{ d.item.design_cost_value }}</p>
                     <p>项目周期：{{ d.item.cycle_value }}</p>
-                    <p v-if="d.item.type === 1">
-                      {{ d.item.type_value | formatNull }}{{ d.item.design_types_value | formatNull }}{{ d.item.field_value | formatNull }}{{ d.item.industry_value | formatEnd }}</p>
-                    <p v-if="d.item.type === 2">{{ d.item.type_value | formatNull }}{{ d.item.design_types_value| formatEnd }}</p>
+                    <p>设计类型: {{ d.item.type_value }}</p>
+                    <p>设计类别: {{ d.item.design_types_value | formatEnd }}</p>
                     <p>产品功能：{{ d.item.product_features }}</p>
                   </section>
                   <p class="money-str price-m Bborder">交易金额：

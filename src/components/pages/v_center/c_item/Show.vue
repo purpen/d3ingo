@@ -5,10 +5,10 @@
     <el-breadcrumb separator="/" class="bread">
       <el-breadcrumb-item :to="{ name: 'home' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item :to="{ name: 'vcenterCItemList' }">项目列表</el-breadcrumb-item>
-      <el-breadcrumb-item>详情</el-breadcrumb-item>
+      <el-breadcrumb-item>{{ item.name }}</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <el-row :gutter="24">
+    <el-row :gutter="24" class="blank30">
       <v-item-progress :progressButt="progressButt" :progressContract="progressContract"
                        :progressItem="progressItem"></v-item-progress>
 
@@ -1254,39 +1254,39 @@
                 self.statusLabel.manage = true
                 self.statusLabel.stage = true
                 break
-              case 18:
+              case 18:  // 已验收
                 self.progressButt = 3
                 self.progressContract = 3
                 self.progressItem = 2
                 self.statusIconUrl = require('@/assets/images/item/item_yanshou.png')
                 self.statusLabel.cooperateCompany = true
                 self.statusLabel.contract = true
-                self.statusLabel.amount = false
+                self.statusLabel.amount = true
                 self.statusLabel.isPay = true
                 self.statusLabel.manage = true
                 self.statusLabel.stage = true
                 break
-              case 20:
+              case 20:  // 无
                 self.progressButt = 3
                 self.progressContract = 3
                 self.progressItem = 4
                 self.statusIconUrl = require('@/assets/images/item/item_success.png')
                 self.statusLabel.cooperateCompany = true
                 self.statusLabel.contract = true
-                self.statusLabel.amount = false
+                self.statusLabel.amount = true
                 self.statusLabel.isPay = true
                 self.statusLabel.manage = true
                 self.statusLabel.stage = true
                 self.statusLabel.evaluate = true
                 break
-              case 22:
+              case 22:  // 已评价
                 self.progressButt = 3
                 self.progressContract = 3
                 self.progressItem = 4
                 self.statusIconUrl = require('@/assets/images/item/item_success.png')
                 self.statusLabel.cooperateCompany = true
                 self.statusLabel.contract = true
-                self.statusLabel.amount = false
+                self.statusLabel.amount = true
                 self.statusLabel.isPay = true
                 self.statusLabel.manage = true
                 self.statusLabel.stage = true
