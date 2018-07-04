@@ -176,9 +176,6 @@
                   <div v-if="invoceStat(1, 0) === 0">
                     <p>首付款已到账</p>
                     <p class="capital-money">¥ {{ firstRestPayment }}</p>
-                    <p class="pay-btn">
-
-                    </p>
                     <p class="capital-des">项目首付款已转入您的账户中</p>
                   </div>
                   <div v-if="invoceStat(1, 0) === 1">
@@ -204,8 +201,10 @@
                   <div v-if="invoceStat(1, 0) === 3">
                     <p>首付款已到账</p>
                     <p class="capital-money">¥ {{ firstRestPayment }}</p>
-                    <p class="pay-btn">
-
+                    <p class="pay-btn reviseBtn">
+                      <router-link :to="{name: 'vcenterWalletList'}">
+                        <el-button>查看详情</el-button>
+                      </router-link>
                     </p>
                     <p class="capital-des">项目首付款已转入您的账户中</p>
                   </div>
@@ -1724,6 +1723,7 @@
   .capital-item .pay-btn {
     font-size: 1.8rem;
     /* margin: 10px 0 20px 0; */
+    padding: 10px 0;
   }
   .pay-ok {
     position: relative;
@@ -1740,6 +1740,8 @@
   }
   .pay-await {
     position: relative;
+    margin-left: 25px;
+    color: #ff5a5f;
   }
   .pay-await:before {
     content: '';
@@ -1891,6 +1893,11 @@
     max-width: 50%;
   }
 
+  .reviseBtn .el-button--default {
+    background: #fff;
+    border: 1px solid #ff5a5a;
+    color: #ff5a5a;
+  }
   @media screen and (max-width: 767px) {
     .bread {
       margin-left: 15px;

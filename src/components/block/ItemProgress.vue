@@ -2,7 +2,7 @@
   <el-col :span="isMob ? 24 : 6">
     <div :class="[{'cover-m' : isMob }, 'cover']">
       <div :class="[{'progress-m' : isMob }, 'progress']">
-        <div :class="[{'progress-item-m' : isMob}, 'process-item']">
+        <div :class="[{'progress-item-m' : isMob}, 'process-item']" class="font-wei">
           <p>项目对接</p>
           <el-steps :space="isMob ? 80 : 50" :direction="isMob ? 'horizontal' : 'vertical'"
                     :finish-status="isMob ? 'success' : 'process'"
@@ -13,7 +13,7 @@
           </el-steps>
         </div>
 
-        <div :class="[{'progress-item-m' : isMob}, 'process-item']">
+        <div :class="[{'progress-item-m' : isMob}, 'process-item']" class="font-wei">
           <p class="margin-50">合同管理</p>
           <el-steps :space="isMob ? 80 : 50" :direction="isMob ? 'horizontal' : 'vertical'"
                     :finish-status="isMob ? 'success' : 'process'" :active="progressContract">
@@ -24,7 +24,7 @@
           </el-steps>
         </div>
 
-        <div :class="[{'progress-item-m' : isMob}, 'process-item']">
+        <div :class="[{'progress-item-m' : isMob}, 'process-item']" class="font-wei">
           <p class="margin-50">项目管理</p>
           <el-steps :space="isMob ? 80 : 50" :direction="isMob ? 'horizontal' : 'vertical'"
                     :finish-status="isMob ? 'success' : 'process'" :active="progressItem">
