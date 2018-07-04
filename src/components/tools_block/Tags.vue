@@ -102,7 +102,9 @@
         this.$http.get(api.itemTags, {params: {item_id: self.attr.itemId}})
         .then(function (response) {
           if (response.data.meta.status_code === 200) {
-            self.tagsList = response.data.data
+            if (response.data) {
+              self.tagsList = response.data.data
+            }
           } else {
             self.$message.error(response.data.meta.message)
           }

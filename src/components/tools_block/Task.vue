@@ -51,12 +51,11 @@
         <div class="task-detail-body">
           <div class="task-admin" v-if="true">
             <!-- <p class="tc-9">分配给:</p> -->
-            <ul class="task-member-list task-member-execute" v-if="executeUser">
-              <li v-if="JSON.stringify(executeUser) !== '{}'">
+            <ul class="task-member-list task-member-execute no-execute" v-if="executeUser">
+              <li class="tc-9" v-if="JSON.stringify(executeUser) !== '{}'" @click.self="showMember = true">
                 <a class="remove-member" @click.self="removeExecute()"></a>
-                <img @click="showMember = true" v-if="executeUser.logo_image" v-lazy="executeUser.logo_image.logo" alt="">
-                <img @click="showMember = true" v-else v-lazy="require('assets/images/avatar_100.png')">
-              </li>
+                <img v-if="executeUser.logo_image" v-lazy="executeUser.logo_image.logo" alt="">
+                <img @click="showMember = true" v-else v-lazy="require('assets/images/avatar_100.png')">执行人</li>
             </ul>
             <ul class="task-member-list task-member-execute no-execute" v-else>
               <li class="margin-none" @click="showMember = true">
@@ -857,7 +856,7 @@
             // } else {
             //   this.docHeight = (document.body.clientHeight - 237) + 'px'
             // }
-            this.docHeight = (document.body.clientHeight - 237) + 'px'
+            this.docHeight = (document.body.clientHeight - 257) + 'px'
             this.isReady = true
           }, 100)
         }
@@ -995,7 +994,7 @@
       // } else {
       //   this.docHeight = (document.body.clientHeight - 237) + 'px'
       // }
-      this.docHeight = (document.body.clientHeight - 237) + 'px'
+      this.docHeight = (document.body.clientHeight - 257) + 'px'
     },
     directives: {
       focus: {
@@ -1380,6 +1379,7 @@
     background: rgba(0, 0, 0, 0.6);
   }
   .buttons {
+    padding-top: 20px;
     flex: 1;
     display: flex;
     justify-content: flex-end
@@ -1494,7 +1494,7 @@
     margin-left: -10px;
   }
   .task-member-execute li {
-    color: #222;
+    /* color: #222; */
     font-size: 14px;
   }
   .task-member-execute li.margin-none {

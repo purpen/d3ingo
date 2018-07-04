@@ -227,7 +227,7 @@
         isUpdate: true,
         oldStageTitle: '',
         currentForm: {},
-        taskStatus: 0 // 0: 全部， 2: 已完成， -1: 未完成
+        taskStatus: -1 // 0: 全部， 2: 已完成， -1: 未完成
       }
     },
     filters: {
@@ -265,9 +265,9 @@
           this.isReady = setTimeout(() => {
             this.isReady = true
             if (this.isMyTask) {
-              this.docHeight = (document.body.clientHeight - 180) + 'px'
+              this.docHeight = (document.body.clientHeight - 200) + 'px'
             } else {
-              this.docHeight = (document.body.clientHeight - 225) + 'px'
+              this.docHeight = (document.body.clientHeight - 245) + 'px'
             }
           }, 100)
         }
@@ -718,10 +718,10 @@
     },
     created() {
       if (this.isMyTask) {
-        this.docHeight = (document.body.clientHeight - 180) + 'px'
+        this.docHeight = (document.body.clientHeight - 200) + 'px'
         this.fetchMyTask()
       } else {
-        this.docHeight = (document.body.clientHeight - 225) + 'px'
+        this.docHeight = (document.body.clientHeight - 245) + 'px'
         let itemId = this.$route.params.id
         if (!itemId) {
           if (this.redirectItemList) {
@@ -794,19 +794,18 @@
     height: 34px;
     border: 1px solid #d2d2d2;
     border-radius: 4px;
-    text-align: center;
     position: relative;
     margin-right: 8px;
   }
   .filter p {
     line-height: 34px;
     position: relative;
-    padding-left: 24px;
+    padding-left: 30px;
   }
   .filter p:before {
     content: "";
     position: absolute;
-    left: 0;
+    left: 4px;
     top: 4px;
     width: 24px;
     height: 24px;
@@ -818,7 +817,7 @@
     position: absolute;
     z-index: 9;
     right: 0;
-    top: 34px;
+    top: 38px;
     width: 200px;
     background: #fff;
     border-radius: 4px;
@@ -831,7 +830,8 @@
   .filter ul li {
     height: 40px;
     line-height: 40px;
-    text-align: center;
+    padding-left: 20px;
+    text-align: left;
     position: relative;
     font-size: 14px;
     cursor: pointer;
@@ -843,7 +843,7 @@
   .filter ul li:after {
     content: "";
     position: absolute;
-    right: 10px;
+    right: 20px;
     top: 8px;
     width: 10px;
     height: 16px;
@@ -873,8 +873,8 @@
     cursor: pointer;
     border: 1px solid #d2d2d2;
     /* border-radius: 4px; */
-    line-height: 48px;
-    height: 51px;
+    line-height: 40px;
+    height: 42px;
     margin-bottom: 10px;
   }
   .task-item {
@@ -899,7 +899,7 @@
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    margin: 10px 10px 0 0;
+    margin: 5px 10px 0 0;
   }
   .stage-name {
     position: relative;
@@ -986,7 +986,7 @@
   }
   .task-name {
     padding: 0 20px 0 54px;
-    height: 50px;
+    height: 100%;
     flex: 1 1 auto;
     position: relative;
     cursor: pointer;
@@ -996,14 +996,16 @@
   }
   .task-name-input {
     width: 100%;
-    height: 48px;
+    height: 100%;
     border: none;
     padding: 0;
   }
   .task-name-span {
     position: absolute;
-    left: 20px;
-    top: 12px;
+    left: 16px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
     height: 24px;
     width: 24px;
     border: 1px solid #d2d2d2;
@@ -1028,7 +1030,7 @@
     font-size: 12px;
     color: #999;
     flex: 0 0 auto;
-    padding-right: 10px;
+    margin-right: 10px;
   }
   .task-date-green {
     color: green
@@ -1038,7 +1040,7 @@
   }
   .task-item-div {
     width: 40px;
-    height: 48px;
+    height: 100%;
   }
   .dialog-bg {
     position: fixed;
