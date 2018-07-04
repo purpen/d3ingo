@@ -7,27 +7,29 @@
         <div class="item">
           <el-row :gutter="20">
             <el-col :xs="24" :sm="6" :md="6" :lg="6" v-for="(ele, index) in companyDetails" :key="index">
-              <div class="logo" @click="changeList(ele.id)">
-                <i :class="['radio', {'active': selectList.indexOf(ele.id) !== -1}]"></i>
-                <router-link :to="{name: 'companyShow', params: {id: ele.id}}">
-                  <img v-if="ele.logo_image" :src="ele.logo_image.logo" :alt="ele.company_name">
-                  <img v-else :src="require('assets/images/avatar_100.png')"/>
-                </router-link>
-                <router-link :to="{name: 'companyShow', params: {id: ele.id}}">
-                  <span class="tc-2">{{ele.company_name}}</span>
-                </router-link>
-                <span class="tc-9">
-                  <i v-for="(e, i) in ele.city_arr" :key="i">
-                    {{e}}
-                  </i>
-                </span>
-              </div>
-              <div class="radar">
-                <ECharts
-                  :options="option"
-                  auto-resize
-                  :ref="`radar${index}`"></ECharts>
-              </div>
+              <section :class="['company-info', {'active': selectList.indexOf(ele.id) !== -1}]">
+                <div class="logo">
+                  <i :class="['radio', {'active': selectList.indexOf(ele.id) !== -1}]" @click="changeList(ele.id)"></i>
+                  <router-link target="_blank" :to="{name: 'companyShow', params: {id: ele.id}}">
+                    <img v-if="ele.logo_image" :src="ele.logo_image.logo" :alt="ele.company_name">
+                    <img v-else :src="require('assets/images/avatar_100.png')"/>
+                  </router-link>
+                  <router-link target="_blank" :to="{name: 'companyShow', params: {id: ele.id}}">
+                    <span class="tc-2">{{ele.company_name}}</span>
+                  </router-link>
+                  <span class="tc-9">
+                    <i v-for="(e, i) in ele.city_arr" :key="i">
+                      {{e}}
+                    </i>
+                  </span>
+                </div>
+                <div class="radar">
+                  <ECharts
+                    :options="option"
+                    auto-resize
+                    :ref="`radar${index}`"></ECharts>
+                </div>
+              </section>
               <div class="design-case">
                 <h4 v-if="ele.design_case.length">设计案例</h4>
                 <h4 v-else>暂无设计案例</h4>
@@ -309,14 +311,21 @@ export default {
     font-size: 18px;
     padding-bottom: 10px;
   }
+  .company-info {
+    border-radius: 4px;
+    background: #fff;
+    border: 2px solid transparent
+  }
+  .company-info.active {
+    border-color: #ff5a5f
+  }
   .logo {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: #fff;
     padding: 20px 0;
-    border: 1px solid #e6e6e6;
+    border-bottom: 1px solid #e6e6e6;
     border-radius: 4px 4px 0 0;
   }
   .radio {
@@ -329,14 +338,14 @@ export default {
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
   }
   .radio:hover {
     border-color: #ff5a5f
   }
   .radio.active {
     background: #ff5a5f;
-    border: 1px solid #ff5a5f;
+    border-color: #ff5a5f
   }
   .radio.active::after {
     transform: rotate(45deg) scale(1);
@@ -368,7 +377,6 @@ export default {
   }
   .radar {
     height: 240px;
-    background: #fff;
     border-radius: 0 0 4px 4px;
   }
   .design-case h4 {
