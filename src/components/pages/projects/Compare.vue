@@ -28,15 +28,15 @@
                 <h4>设计案例</h4>
                 <el-row v-if="ele.design_case.length">
                   <el-col class="case" v-for="(e, i) in ele.design_case" :key="i">
-                    <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: e.id}}">
+                    <router-link target="_blank" :to="{name: 'vcenterDesignCaseShow', params: {id: e.id}}">
                       <div v-if="e.case_image" class="img-box" :style="{background: `url(${e.case_image[0].middle}) no-repeat center / cover`}">
                       </div>
                       <div class="case-content">
-                        <p class="fz-14 tc-2">
+                        <p class="title fz-14 tc-2">
                           {{e.title}}
                         </p>
                         <p class="tags fz-12 tc-9">
-                          {{e.design_type_val}}
+                          {{e.design_types_val | formatType}}
                         </p>
                         <p class="fz-12 tc-9">
                           {{e.created_at}}
@@ -162,37 +162,55 @@ export default {
           this.companyDetails = res.data.data
           this.$nextTick(_ => {
             for (let i in this.companyDetails) {
+              if (this.companyDetails[i].base_average < 50) {
+                this.companyDetails[i].base_average = 50
+              }
+              if (this.companyDetails[i].credit_average < 50) {
+                this.companyDetails[i].credit_average = 50
+              }
+              if (this.companyDetails[i].innovate_average < 50) {
+                this.companyDetails[i].innovate_average = 50
+              }
+              if (this.companyDetails[i].business_average < 50) {
+                this.companyDetails[i].business_average = 50
+              }
+              if (this.companyDetails[i].effect_average < 50) {
+                this.companyDetails[i].effect_average = 50
+              }
+              if (this.companyDetails[i].design_average < 50) {
+                this.companyDetails[i].design_average = 50
+              }
               let radar = this.$refs[`radar${i}`][0]
               this.radarList = [
                 {
                   name: '基础运作力',
                   max: 100,
-                  value: this.companyDetails[i]['rows'].base_average
+                  value: this.companyDetails[i].base_average
                 },
                 {
                   name: '风险应激力',
                   max: 100,
-                  value: this.companyDetails[i]['rows'].credit_average
+                  value: this.companyDetails[i].credit_average
                 },
                 {
                   name: '创新交付力',
                   max: 100,
-                  value: this.companyDetails[i]['rows'].innovate_average
+                  value: this.companyDetails[i].innovate_average
                 },
                 {
                   name: '商业决策力',
                   max: 100,
-                  value: this.companyDetails[i]['rows'].business_average
+                  value: this.companyDetails[i].business_average
                 },
                 {
                   name: '客观公信力',
                   max: 100,
-                  value: this.companyDetails[i]['rows'].effect_average
+                  value: this.companyDetails[i].effect_average
                 },
                 {
                   name: '品牌溢价力',
                   max: 100,
-                  value: this.companyDetails[i]['rows'].design_average
+                  value: this.companyDetails[i].design_average
                 }
               ]
               radar.mergeOptions({
@@ -243,6 +261,23 @@ export default {
       .catch((error) => {
         this.$message.error(error.message)
       })
+    }
+  },
+  filters: {
+    formatType(val) {
+      if (val) {
+        if (typeof (val) === 'string') {
+          return val
+        } else {
+          if (val.length === 1) {
+            return val.join()
+          } else {
+            return val.join(' / ')
+          }
+        }
+      } else {
+        return ''
+      }
     }
   },
   watch: {
@@ -334,13 +369,27 @@ export default {
     border-radius: 4px 4px 0 0;
   }
   .tags {
-    padding: 8px 0 10px;
-    height: 30px;
+    padding: 4px 0;
+    max-height: 20px;
+    overflow : hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    /* padding: 8px 0 10px;
+    height: 30px; */
   }
   .case-content {
+    height: 80px;
     padding: 10px 20px;
     background: #fff;
     border-radius: 0 0 4px 4px ;
+  }
+  .case-content .title {
+    max-height: 28px;
+    overflow : hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
   .project-foot .buttons {
     height: 100%;

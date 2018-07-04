@@ -27,7 +27,7 @@
             <span class="importance level3" v-if="ele.level === 3">非常重要</span>
           </li>
         </ul>
-        <h2 v-if="projectList.length">我拥有的项目</h2>
+        <h2 v-if="attendList.length">我创建的项目</h2>
         <ul class="project-list">
           <li class="create" @click="showCover" v-if="isCompanyAdmin && projectList.length">
             <p @click="showCover">
@@ -35,14 +35,14 @@
               <span>创建新项目</span>
             </p>
           </li>
-          <li v-for="(ele, index) in projectList" :key="index"
+          <li v-for="(ele, index) in attendList" :key="index"
             @click.self="routePush(ele.id)">
             <el-tooltip :content="ele.name" placement="top">
               <div class="pro-header">
                 <h3 @click="routePush(ele.id)">{{ele.name}}</h3>
-                <p class="operate" tabindex="-1" ref="operate">
+                <p class="operate" tabindex="-1" ref="operate2">
                   <span class="more"></span>
-                  <span class="delete" @click="projectDelete(ele.id, index)">删除</span>
+                  <span class="delete" @click="projectDelete(ele.id, index, 'attend')">删除</span>
                 </p>
                 <span @click="setCollect(ele.id, ele.collect)"
                 :class="['favorite-star', {'favorite-star-light': ele.collect === 1}]"></span>
@@ -55,16 +55,16 @@
             <span class="importance level3" v-if="ele.level === 3">非常重要</span>
           </li>
         </ul>
-        <h2 v-if="attendList.length">我参与的项目</h2>
+        <h2 v-if="projectList.length">我参与的项目</h2>
         <ul class="project-list">
-          <li v-for="(ele, index) in attendList" :key="index"
+          <li v-for="(ele, index) in projectList" :key="index"
             @click.self="routePush(ele.id)">
             <el-tooltip :content="ele.name" placement="top">
               <div class="pro-header">
                 <h3 @click="routePush(ele.id)">{{ele.name}}</h3>
-                <p class="operate" tabindex="-1" ref="operate2">
+                <p class="operate" tabindex="-1" ref="operate">
                   <span class="more"></span>
-                  <span class="delete" @click="projectDelete(ele.id, index, 'attend')">删除</span>
+                  <span class="delete" @click="projectDelete(ele.id, index)">删除</span>
                 </p>
                 <span @click="setCollect(ele.id, ele.collect)"
                 :class="['favorite-star', {'favorite-star-light': ele.collect === 1}]"></span>
