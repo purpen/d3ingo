@@ -573,3 +573,7 @@
   .content .el-icon-arrow-right {
     position: static
   }
+
+  .opt-mar .el-button {
+    margin: 0;
+  }
