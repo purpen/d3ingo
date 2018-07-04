@@ -25,7 +25,7 @@
                   :ref="`radar${index}`"></ECharts>
               </div>
               <div class="design-case">
-                <h4>设计案例</h4>
+                <h4 v-if="ele.design_case.length">设计案例</h4>
                 <el-row v-if="ele.design_case.length">
                   <el-col class="case" v-for="(e, i) in ele.design_case" :key="i">
                     <router-link target="_blank" :to="{name: 'vcenterDesignCaseShow', params: {id: e.id}}">
@@ -363,6 +363,14 @@ export default {
   }
   .case {
     padding-bottom: 20px;
+  }
+  .case a {
+    display: block;
+    transition: 0.268s all ease
+  }
+  .case a:hover {
+    box-shadow: 6px 6px 10px rgba(245, 245, 245, .15);
+    transform: translateY(-6px);
   }
   .img-box {
     height: 180px;
