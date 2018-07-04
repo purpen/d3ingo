@@ -463,8 +463,6 @@
       },
       submit(formName, index) {
         const that = this
-        // console.log(index)
-        console.log(that.$refs[formName][index])
         that.$refs[formName][index].validate((valid) => {
           // 验证通过，提交
           if (valid) {
