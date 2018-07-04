@@ -640,11 +640,12 @@ button.is-custom.is-outlined.is-loading:after {
   color: #999999;
 }
 
-.Fshare-box {
+.fshare-box {
   overflow: hidden;
 }
 
 .footer p.share {
+  cursor: pointer;
   margin: 0 10px 0 0;
   float: left;
 }
