@@ -492,7 +492,7 @@
             </el-col>
             <el-col :span="20">
               <el-form-item prop="logistics_number">
-                <el-input v-model="invoiceForm.logistics_number"></el-input>
+                <el-input v-model.number="invoiceForm.logistics_number"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -617,7 +617,7 @@
             {type: 'number', required: true, message: '请选择快递公司', trigger: 'change'}
           ],
           logistics_number: [
-            {required: true, message: '请添写快递单号', trigger: 'blur'},
+            {type: 'number', required: true, message: '请添写快递单号', trigger: 'blur'},
             {type: 'number', message: '请添写正确的快递单号', trigger: 'blur'}
           ]
         },
@@ -846,6 +846,7 @@
       },
       // 确认发票发送
       sendInvoiceSubmit(formName) {
+        console.log(this.invoiceForm.logistics_number)
         this.$refs[formName].validate((valid) => {
           if (valid) {
             var row = {
