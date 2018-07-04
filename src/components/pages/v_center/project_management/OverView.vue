@@ -802,12 +802,15 @@
                     <div v-if="!c.design_substage&&sort==='ismonth'" class="item-tacklist no-tack" 
                       :style="{left:c.left*6.77+'px',width:6.77+'px'}">
                     </div>
-                    <ul v-if="totaldays" v-for="(tt,indextt) in totaldays" :key="indextt">
+                    <ul v-if="totaldays" v-for="(tt,indextt) in totaldays" :key="indextt" class="daylist">
                       <li v-for="(day,indexday) in tt.dayings" :key="indexday" :class="['dateday',{
                         'bgc': day.new,
                         'bgweek': day.week===6 ||day.week===0
                         } 
                         ]" v-if="sort === 'isday'">
+                        <div class="milestone-icon">
+                          <i class="on-milestone"></i>
+                        </div>
                       </li>
                       <li v-for="(day,indexday) in tt.dayings" :key="indexday" :class="day.new?'bgc':''" v-if="sort === 'isweek'" class="dateday">
                       </li>
@@ -2647,6 +2650,29 @@ export default {
   .dateday {
     width:30px;
   }
+  .daylist>li:hover {
+    background: rgba(255,90,95,0.05);
+  }
+  .daylist>li {
+    position: relative;
+  }
+  .milestone-icon {
+    position: absolute;
+    left: 4px;
+    bottom: 65%;
+    height: 20px;
+    width: 20px;
+    z-index: 1
+  }
+  .daylist li:hover .on-milestone {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background:url('../../../../assets/images/tools/project_management/MilepostAdd@2x.png') no-repeat center center / 20px 20px
+  }
+  .daylist>.milestone-icon:hover .on-milestone {
+    background:url('../../../../assets/images/tools/project_management/MilepostAddHover@2x.png') no-repeat center center / 20px 20px
+  }
   .item-chartContent {
     white-space: nowrap;
     position: relative;
@@ -2766,8 +2792,8 @@ export default {
     background:url('../../../../assets/images/tools/project_management/ProjectStart@2x.png') 0 0 no-repeat;
     background-size: contain;
     position: absolute;
-    top:-27px;
-    left:-5px;
+    top:-26px;
+    left:-1px;
     width:24px;
     height:24px
   }
@@ -2855,8 +2881,7 @@ export default {
     background-size: contain;
   }
   .bgc {
-    background:#65A6FF;
-    opacity: 0.1;
+    background:rgba(101,166,255,0.1)
   }
   .bgweek {
     background: #FAFAFA;
