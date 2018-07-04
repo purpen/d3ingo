@@ -9,9 +9,13 @@
             <el-col :xs="24" :sm="6" :md="6" :lg="6" v-for="(ele, index) in companyDetails" :key="index">
               <div class="logo" @click="changeList(ele.id)">
                 <i :class="['radio', {'active': selectList.indexOf(ele.id) !== -1}]"></i>
-                <img v-if="ele.logo_image" :src="ele.logo_image.logo" :alt="ele.company_name">
-                <img v-else :src="require('assets/images/avatar_100.png')"/>
-                <span class="tc-2">{{ele.company_name}}</span>
+                <router-link :to="{name: 'companyShow', params: {id: ele.id}}">
+                  <img v-if="ele.logo_image" :src="ele.logo_image.logo" :alt="ele.company_name">
+                  <img v-else :src="require('assets/images/avatar_100.png')"/>
+                </router-link>
+                <router-link :to="{name: 'companyShow', params: {id: ele.id}}">
+                  <span class="tc-2">{{ele.company_name}}</span>
+                </router-link>
                 <span class="tc-9">
                   <i v-for="(e, i) in ele.city_arr" :key="i">
                     {{e}}
@@ -26,6 +30,7 @@
               </div>
               <div class="design-case">
                 <h4 v-if="ele.design_case.length">设计案例</h4>
+                <h4 v-else>暂无设计案例</h4>
                 <el-row v-if="ele.design_case.length">
                   <el-col class="case" v-for="(e, i) in ele.design_case" :key="i">
                     <router-link target="_blank" :to="{name: 'vcenterDesignCaseShow', params: {id: e.id}}">
@@ -160,6 +165,13 @@ export default {
         if (res.data.meta.status_code === 200) {
           console.log(res.data.data)
           this.companyDetails = res.data.data
+          if (this.companyDetails) {
+            if (this.companyDetails.length > 4) {
+              this.companyDetails.splice(0, 4)
+            }
+          } else {
+            return
+          }
           this.$nextTick(_ => {
             for (let i in this.companyDetails) {
               if (this.companyDetails[i].base_average < 50) {
@@ -298,7 +310,6 @@ export default {
     padding-bottom: 10px;
   }
   .logo {
-    cursor: pointer;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -320,8 +331,12 @@ export default {
     border-radius: 50%;
     border: 1px solid #d2d2d2;
   }
+  .radio:hover {
+    border-color: #ff5a5f
+  }
   .radio.active {
-    background: #ff5a5f
+    background: #ff5a5f;
+    border: 1px solid #ff5a5f;
   }
   .radio.active::after {
     transform: rotate(45deg) scale(1);
@@ -347,6 +362,7 @@ export default {
     border-radius: 50%;
   }
   .logo span {
+    display: block;
     padding: 10px 0 5px;
     font-size: 14px;
   }

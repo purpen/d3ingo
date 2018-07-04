@@ -570,6 +570,9 @@
     font-weight: 500;
   }
 
-  .content .el-icon-arrow-right {
+  .el-pagination .el-icon-arrow-right {
     position: static
+  }
+  .pagination {
+    text-align: center
   }
