@@ -103,12 +103,12 @@
           </section>
         </el-col>
         <el-col :span="12" :class="{'fadeInRight': taskState.power}">
-          <!-- <v-task
+          <v-task
            :currentTaskForm="currentTaskForm"
            :isMyTask="isMyTask"
            :projectObject="projectObject"
-           :completeState="completeState"></v-task> -->
-           <div v-if="taskState.power">
+           :completeState="completeState"></v-task>
+           <!-- <div v-if="taskState.power">
             <section class="animated task-detail fadeIn">
               <div class="task-detail-header">
                 <span v-show="!isMyTask" v-if="currentForm.tier === 0" class="task-detail-name">{{projectObject.name}}</span>
@@ -135,7 +135,7 @@
                 <i class="fx fx-icon-nothing-close-error" @click="closeBtn"></i>
               </div>
             </section>
-           </div>
+           </div> -->
         </el-col>
       </el-row>
     </div>
