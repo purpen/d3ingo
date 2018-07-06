@@ -261,13 +261,13 @@
                 </p>
               </el-col>
               <el-col :span="spanOpt">
-                <p class="opt" v-if="item.verify_status === 0">
+                <p class="opt opt-mar" v-if="item.verify_status === 0">
                   <el-button class="is-custom" :loading="verifyLoadingBtn" size="small" @click="setRefuseRease(2)">拒绝</el-button>
                   <el-button type="primary" class="is-custom" :loading="verifyLoadingBtn" size="small" @click="setVerify(1)">通过</el-button>
                 </p>
-                <p class="opt" v-else>
+                <p class="opt opt-mar" v-else>
                   <el-button class="is-custom" :loading="verifyLoadingBtn" size="small" v-if="item.verify_status === 1" @click="setRefuseRease(2)">拒绝</el-button>
-                  <el-button type="primary" class="is-custom" :loading="verifyLoadingBtn" size="small" v-else @click="setVerify(1)">通过</el-button>
+                  <el-button type="primary" class="is-custom mar-0" :loading="verifyLoadingBtn" size="small" v-else @click="setVerify(1)">通过</el-button>
                 </p>
               </el-col>
             </el-row>
@@ -425,6 +425,11 @@ export default {
     width: 150px;
     float: right;
     font-size: 1.2rem;
+  }
+
+
+  .mar-0 {
+    margin: 0;
   }
 
 </style>

@@ -520,6 +520,7 @@
       </span>
     </el-dialog>
     <el-dialog title="报价单详情" v-model="quotaDialog" id="quote-dialog" style="width: 880px;margin: auto" size="large" top="2%">
+      
       <v-quote-view :formProp="quota"></v-quote-view>
 
       <!--<div slot="footer" class="dialog-footer btn">-->
