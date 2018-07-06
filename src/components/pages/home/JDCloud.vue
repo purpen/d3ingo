@@ -383,7 +383,7 @@ export default {
   }
   .col img {
     width: 60px;
-    height: 60px;
+    /* height: 60px; */
   }
   .col p {
     margin-left: 20px;
