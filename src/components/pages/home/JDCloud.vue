@@ -384,7 +384,9 @@ export default {
   .col img {
     width: 60px;
     height: 60px;
-    margin-right: 20px;
+  }
+  .col p {
+    margin-left: 20px;
   }
   .col-column img {
     width: 100px;

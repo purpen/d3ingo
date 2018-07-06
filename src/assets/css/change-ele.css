@@ -576,3 +576,6 @@
   .pagination {
     text-align: center
   }
+  .opt-mar .el-button {
+    margin: 0;
+  }
