@@ -210,6 +210,7 @@
 </template>
 
 <script>
+  import { SOURCE_TYPE } from '../../../../config/prod.env.js'
   import { calcImgSize } from 'assets/js/common'
   import api from '@/api/api'
   export default {
@@ -364,6 +365,10 @@
       }
     },
     created() {
+      if (SOURCE_TYPE === 1) {
+        this.$router.replace({name: 'JDCloud'})
+        return
+      }
       this.getArticleList()
       this.getDesignCase()
       this.getBlock()
