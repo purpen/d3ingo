@@ -367,6 +367,23 @@
           </div>
 
           <div class="form-title">
+            <span>其它</span>
+          </div>
+
+          <div class="company-show">
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>来源</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p v-if="item.source === 0">铟果</p>
+                <p v-else-if="item.source === 1">京东云</p>
+              </el-col>
+            </el-row>
+
+          </div>
+
+          <div class="form-title">
             <span>状态</span>
           </div>
 
