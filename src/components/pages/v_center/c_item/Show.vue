@@ -8,7 +8,7 @@
       <el-breadcrumb-item>{{ item.name }}</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <el-row :gutter="24" class="blank30">
+    <el-row :gutter="24" class="blank30 vcenter">
       <v-item-progress :progressButt="progressButt" :progressContract="progressContract"
                        :progressItem="progressItem"></v-item-progress>
 

@@ -834,6 +834,12 @@
 
   }
   @media screen and (max-width: 767px) {
+    .menu-icon {
+      display: none
+    }
+    .home-icon {
+      padding: 0 15px;
+    }
     .menu-list .item {
       padding-left: 0;
       text-align: center
@@ -853,8 +859,14 @@
     }
 
     .logo-icon {
-      width: 30px;
+      width: 40px;
       height: 50px;
+    }
+    .menu-right {
+      padding-right: 15px;
+    }
+    .avatar {
+      display: block
     }
   }
 </style>

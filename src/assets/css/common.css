@@ -414,5 +414,7 @@ button.el-button.is-custom.is-disabled,
   }
 }
 @media screen and (max-width: 767px) {
-
+  .vcenter {
+    margin: 0
+  }
 }
