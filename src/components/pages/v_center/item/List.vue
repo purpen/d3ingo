@@ -806,4 +806,10 @@
     text-align: center;
     margin-bottom: 20px;
   }
+  @media screen and (max-width: 767px) {
+    .pub {
+      display: block;
+      height: auto;
+    }
+  }
 </style>
