@@ -98,6 +98,17 @@
             </el-table-column>
             <el-table-column
               width="80"
+              label="来源">
+                <template slot-scope="scope">
+                  <p v-if="scope.row.source === 0">铟果</p>
+                  <p v-else-if="scope.row.source === 1">京东云</p>
+                  <p v-else-if="scope.row.source === 2">--</p>
+                  <p v-else-if="scope.row.source === 3">--</p>
+                  <p v-else>--</p>
+                </template>
+            </el-table-column>
+            <el-table-column
+              width="80"
               label="权限">
                 <template slot-scope="scope">
                   <p v-if="scope.row.role_id === 0">用户</p>
