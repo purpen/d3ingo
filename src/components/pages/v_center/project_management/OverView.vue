@@ -808,9 +808,9 @@
                         'bgweek': day.week===6 ||day.week===0
                         } 
                         ]" v-if="sort === 'isday'">
-                        <div class="milestone-icon">
+                        <!-- <div class="milestone-icon">
                           <i class="on-milestone"></i>
-                        </div>
+                        </div> -->
                       </li>
                       <li v-for="(day,indexday) in tt.dayings" :key="indexday" :class="day.new?'bgc':''" v-if="sort === 'isweek'" class="dateday">
                       </li>
