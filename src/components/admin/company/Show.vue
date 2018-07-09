@@ -129,6 +129,77 @@
             </div>
 
             <div class="form-title">
+              <span>创新指数</span>
+            </div>
+
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>基础运作力</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p>{{ item.base_average }}</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
+
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>风险应激力</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p>{{ item.credit_average }}</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
+
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>商业决策力</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p>{{ item.business_average }}</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
+
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>品牌溢价力</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p>{{ item.design_average }}</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
+
+
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>客观公信力</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p>{{ item.effect_average }}</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
+
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>创新交付力</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p>{{ item.innovate_average }}</p>
+              </el-col>
+              <el-col :span="spanOpt">
+              </el-col>
+            </el-row>
+
+            <div class="form-title">
               <span>认证信息</span>
             </div>
 
@@ -425,13 +496,13 @@ export default {
       self.isLoading = false
       if (response.data.meta.status_code === 200) {
         self.item = response.data.data
+        console.log(response.data.data)
         self.designItem = response.data.data.users.design_item
         if (self.item.logo_image) {
           self.item.logo_url = self.item.logo_image.logo
         } else {
           self.item.logo_url = false
         }
-        console.log(self.item)
       } else {
         self.$message.error(response.data.meta.message)
       }
@@ -470,4 +541,7 @@ export default {
     border-bottom: solid 1px #ccc;
   }
 
+  .company-show p {
+    margin: 3px 0;
+  }
 </style>

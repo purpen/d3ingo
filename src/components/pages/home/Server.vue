@@ -6,7 +6,7 @@
         <p :class="{'m-p' : isMob}">铟果聚集100+专业设计服务供应商，依托海量消费大数据，帮助客户洞察先机。 </p>
           <div class="pub" v-if="!isCompany">
             <router-link :to="{name: 'itemCreate'}">
-              <el-button class="pub-btn is-custom" type="primary" size="large"> 发布项目需求
+              <el-button class="pub-btn is-custom" type="primary" :size="isMob? 'small' : 'large'"> 发布项目需求
               </el-button>
             </router-link>
           </div>
@@ -44,61 +44,61 @@
     <div class=" container">
       <div class="pub-title">发布项目流程</div>
       <div class="process" v-if="!isMob">
-        <div class="item-process">
+        <!-- <div class="item-process">
           <img src="../../../assets/images/item/item_dj.png"/>
           <p>1.支付预付金</p>
-        </div>
-        <div class="item-process line"></div>
+        </div> -->
+        <!-- <div class="item-process line"></div> -->
         <div class="item-process">
           <img src="../../../assets/images/item/item_lx.png"/>
-          <p>2.选择项目类型</p>
+          <p>1.选择项目类型</p>
         </div>
         <div class="item-process line"></div>
         <div class="item-process">
           <img src="../../../assets/images/item/item_xq.png"/>
-          <p>3.完善项目需求</p>
+          <p>2.完善项目需求</p>
         </div>
-        <div class="item-process line"></div>
+        <!-- <div class="item-process line"></div>
         <div class="item-process">
           <img src="../../../assets/images/item/item_lxx.png"/>
-          <p>4.填写公司信息</p>
-        </div>
+          <p>3.填写公司信息</p>
+        </div> -->
         <div class="item-process line"></div>
         <div class="item-process">
           <img src="../../../assets/images/item/item_fb.png"/>
-          <p>5.检查并发布</p>
+          <p>3.检查并发布</p>
         </div>
         <div class="item-process line"></div>
         <div class="item-process item-last">
           <img src="../../../assets/images/item/item_tj.png"/>
-          <p>6.匹配设计服务商</p>
+          <p>4.匹配设计服务商</p>
         </div>
       </div>
 
       <el-row class="m-process" v-if="isMob">
-        <div class="item-process">
+        <!-- <div class="item-process">
           <img src="../../../assets/images/item/item_dj.png"/>
           <p>1.支付预付金</p>
-        </div>
+        </div> -->
         <div class="item-process">
           <img src="../../../assets/images/item/item_lx.png"/>
-          <p>2.选择项目类型</p>
+          <p>1.选择项目类型</p>
         </div>
         <div class="item-process">
           <img src="../../../assets/images/item/item_xq.png"/>
-          <p>3.完善项目需求</p>
+          <p>2.完善项目需求</p>
         </div>
-        <div class="item-process">
+        <!-- <div class="item-process">
           <img src="../../../assets/images/item/item_lxx.png"/>
-          <p>4.填写公司信息</p>
-        </div>
+          <p>3.填写公司信息</p>
+        </div> -->
         <div class="item-process">
           <img src="../../../assets/images/item/item_fb.png"/>
-          <p>5.检查并发布</p>
+          <p>3.检查并发布</p>
         </div>
         <div class="item-process item-last">
           <img src="../../../assets/images/item/item_tj.png"/>
-          <p>6.匹配设计服务商</p>
+          <p>4.匹配设计服务商</p>
         </div>
       </el-row>
     </div>
@@ -233,11 +233,20 @@
   }
 
   .process {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
     text-align: center;
     margin: 0 auto;
     height: 150px;
   }
-
+  .m-process .item-process {
+    width: 50%
+  }
+  .m-process {
+    padding: 0 15px;
+  }
   .process .item-process {
     width: 10%;
     margin: 10px 0.8%;
@@ -260,9 +269,9 @@
   }
 
   .process .item-process.line {
-    width: 4%;
-    height: 30%;
-    border-bottom: 1px dashed #979797;
+    width: 10%;
+    height: 45px;
+    border-top: 1px dashed #d2d2d2;
   }
 
   @media screen and (max-width: 767px) {

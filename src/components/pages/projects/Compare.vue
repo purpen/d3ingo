@@ -7,36 +7,43 @@
         <div class="item">
           <el-row :gutter="20">
             <el-col :xs="24" :sm="6" :md="6" :lg="6" v-for="(ele, index) in companyDetails" :key="index">
-              <div class="logo" @click="changeList(ele.id)">
-                <i :class="['radio', {'active': selectList.indexOf(ele.id) !== -1}]"></i>
-                <img v-if="ele.logo_image" :src="ele.logo_image.logo" :alt="ele.company_name">
-                <img v-else :src="require('assets/images/avatar_100.png')"/>
-                <span class="tc-2">{{ele.company_name}}</span>
-                <span class="tc-9">
-                  <i v-for="(e, i) in ele.city_arr" :key="i">
-                    {{e}}
-                  </i>
-                </span>
-              </div>
-              <div class="radar">
-                <ECharts
-                  :options="option"
-                  auto-resize
-                  :ref="`radar${index}`"></ECharts>
-              </div>
+              <section :class="['company-info', {'active': selectList.indexOf(ele.id) !== -1}]">
+                <div class="logo">
+                  <i :class="['radio', {'active': selectList.indexOf(ele.id) !== -1}]" @click="changeList(ele.id)"></i>
+                  <router-link target="_blank" :to="{name: 'companyShow', params: {id: ele.id}}">
+                    <img v-if="ele.logo_image" :src="ele.logo_image.logo" :alt="ele.company_name">
+                    <img v-else :src="require('assets/images/avatar_100.png')"/>
+                  </router-link>
+                  <router-link target="_blank" :to="{name: 'companyShow', params: {id: ele.id}}">
+                    <span class="tc-2">{{ele.company_name}}</span>
+                  </router-link>
+                  <span class="tc-9">
+                    <i v-for="(e, i) in ele.city_arr" :key="i">
+                      {{e}}
+                    </i>
+                  </span>
+                </div>
+                <div class="radar">
+                  <ECharts
+                    :options="option"
+                    auto-resize
+                    :ref="`radar${index}`"></ECharts>
+                </div>
+              </section>
               <div class="design-case">
-                <h4>设计案例</h4>
+                <h4 v-if="ele.design_case.length">设计案例</h4>
+                <h4 v-else>暂无设计案例</h4>
                 <el-row v-if="ele.design_case.length">
                   <el-col class="case" v-for="(e, i) in ele.design_case" :key="i">
-                    <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: e.id}}">
+                    <router-link target="_blank" :to="{name: 'vcenterDesignCaseShow', params: {id: e.id}}">
                       <div v-if="e.case_image" class="img-box" :style="{background: `url(${e.case_image[0].middle}) no-repeat center / cover`}">
                       </div>
                       <div class="case-content">
-                        <p class="fz-14 tc-2">
+                        <p class="title fz-14 tc-2">
                           {{e.title}}
                         </p>
                         <p class="tags fz-12 tc-9">
-                          {{e.design_type_val}}
+                          {{e.design_types_val | formatType}}
                         </p>
                         <p class="fz-12 tc-9">
                           {{e.created_at}}
@@ -160,39 +167,64 @@ export default {
         if (res.data.meta.status_code === 200) {
           console.log(res.data.data)
           this.companyDetails = res.data.data
+          if (this.companyDetails) {
+            if (this.companyDetails.length > 4) {
+              this.companyDetails.splice(0, 4)
+            }
+          } else {
+            return
+          }
           this.$nextTick(_ => {
             for (let i in this.companyDetails) {
+              if (this.companyDetails[i].base_average < 50) {
+                this.companyDetails[i].base_average = 50
+              }
+              if (this.companyDetails[i].credit_average < 50) {
+                this.companyDetails[i].credit_average = 50
+              }
+              if (this.companyDetails[i].innovate_average < 50) {
+                this.companyDetails[i].innovate_average = 50
+              }
+              if (this.companyDetails[i].business_average < 50) {
+                this.companyDetails[i].business_average = 50
+              }
+              if (this.companyDetails[i].effect_average < 50) {
+                this.companyDetails[i].effect_average = 50
+              }
+              if (this.companyDetails[i].design_average < 50) {
+                this.companyDetails[i].design_average = 50
+              }
               let radar = this.$refs[`radar${i}`][0]
               this.radarList = [
                 {
                   name: '基础运作力',
                   max: 100,
-                  value: this.companyDetails[i]['rows'].base_average
+                  value: this.companyDetails[i].base_average
                 },
                 {
                   name: '风险应激力',
                   max: 100,
-                  value: this.companyDetails[i]['rows'].credit_average
+                  value: this.companyDetails[i].credit_average
                 },
                 {
                   name: '创新交付力',
                   max: 100,
-                  value: this.companyDetails[i]['rows'].innovate_average
+                  value: this.companyDetails[i].innovate_average
                 },
                 {
                   name: '商业决策力',
                   max: 100,
-                  value: this.companyDetails[i]['rows'].business_average
+                  value: this.companyDetails[i].business_average
                 },
                 {
                   name: '客观公信力',
                   max: 100,
-                  value: this.companyDetails[i]['rows'].effect_average
+                  value: this.companyDetails[i].effect_average
                 },
                 {
                   name: '品牌溢价力',
                   max: 100,
-                  value: this.companyDetails[i]['rows'].design_average
+                  value: this.companyDetails[i].design_average
                 }
               ]
               radar.mergeOptions({
@@ -245,6 +277,23 @@ export default {
       })
     }
   },
+  filters: {
+    formatType(val) {
+      if (val) {
+        if (typeof (val) === 'string') {
+          return val
+        } else {
+          if (val.length === 1) {
+            return val.join()
+          } else {
+            return val.join(' / ')
+          }
+        }
+      } else {
+        return ''
+      }
+    }
+  },
   watch: {
     selectList(val) {
       console.log(val)
@@ -262,15 +311,21 @@ export default {
     font-size: 18px;
     padding-bottom: 10px;
   }
+  .company-info {
+    border-radius: 4px;
+    background: #fff;
+    border: 2px solid transparent
+  }
+  .company-info.active {
+    border-color: #ff5a5f
+  }
   .logo {
-    cursor: pointer;
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: #fff;
     padding: 20px 0;
-    border: 1px solid #e6e6e6;
+    border-bottom: 1px solid #e6e6e6;
     border-radius: 4px 4px 0 0;
   }
   .radio {
@@ -283,10 +338,14 @@ export default {
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    border: 1px solid #d2d2d2;
+    border: 1px solid #e6e6e6;
+  }
+  .radio:hover {
+    border-color: #ff5a5f
   }
   .radio.active {
-    background: #ff5a5f
+    background: #ff5a5f;
+    border-color: #ff5a5f
   }
   .radio.active::after {
     transform: rotate(45deg) scale(1);
@@ -312,12 +371,12 @@ export default {
     border-radius: 50%;
   }
   .logo span {
+    display: block;
     padding: 10px 0 5px;
     font-size: 14px;
   }
   .radar {
     height: 240px;
-    background: #fff;
     border-radius: 0 0 4px 4px;
   }
   .design-case h4 {
@@ -329,18 +388,40 @@ export default {
   .case {
     padding-bottom: 20px;
   }
+  .case a {
+    display: block;
+    transition: 0.268s all ease
+  }
+  .case a:hover {
+    box-shadow: 6px 6px 10px rgba(245, 245, 245, .15);
+    transform: translateY(-6px);
+  }
   .img-box {
     height: 180px;
     border-radius: 4px 4px 0 0;
   }
   .tags {
-    padding: 8px 0 10px;
-    height: 30px;
+    padding: 4px 0;
+    max-height: 20px;
+    overflow : hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    /* padding: 8px 0 10px;
+    height: 30px; */
   }
   .case-content {
+    height: 80px;
     padding: 10px 20px;
     background: #fff;
     border-radius: 0 0 4px 4px ;
+  }
+  .case-content .title {
+    max-height: 28px;
+    overflow : hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
   .project-foot .buttons {
     height: 100%;
