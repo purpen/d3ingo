@@ -5,7 +5,13 @@ var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-
+var costum = require('../config/prod.env')
+var favicon = ''
+if (costum.CUSTOM === '') {
+  favicon = './static/favicon.ico'
+} else if (costum.CUSTOM === 'jdc') {
+  favicon = './static/yh.ico'
+}
 // add hot-reload related code to entry chunks
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
   baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])
@@ -32,7 +38,7 @@ module.exports = merge(baseWebpackConfig, {
       filename: 'index.html',
       template: 'index.html',
       inject: true,
-      favicon: './static/favicon.ico'
+      favicon: favicon
     }),
     new FriendlyErrorsPlugin()
   ]

@@ -65,7 +65,7 @@
         </div>
 
         <div class="right-content" v-if="showBase">
-          <div class="content-box" v-if="isCompany()">
+          <div class="content-box first-box" v-if="isCompany()">
 
             <div class="form-title">
               <span>提示信息</span>
@@ -106,7 +106,7 @@
 
           </div>
 
-          <div class="content-box" v-else>
+          <div class="content-box first-box" v-else>
 
             <div class="form-title">
               <span>提示信息</span>
@@ -561,10 +561,6 @@
   .list-box .el-col {
     padding: 10px 20px 10px 20px;
   }
-
-  .el-col p {
-  }
-
   .status-str {
     color: #FF5A5F;
     font-size: 1.2rem;
@@ -589,6 +585,9 @@
   }
 
   @media screen and (max-width: 767px) {
+    .first-box {
+      margin-top: 50px
+    }
     .prefect {
       font-size: 1.4rem;
     }

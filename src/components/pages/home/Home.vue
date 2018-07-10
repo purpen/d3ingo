@@ -210,7 +210,6 @@
 </template>
 
 <script>
-  import { SOURCE_TYPE } from '../../../../config/prod.env.js'
   import { calcImgSize } from 'assets/js/common'
   import api from '@/api/api'
   export default {
@@ -365,7 +364,8 @@
       }
     },
     created() {
-      if (SOURCE_TYPE === 1) {
+      console.log(this)
+      if (this.prod.SOURCE_TYPE === 1) {
         this.$router.replace({name: 'JDCloud'})
         return
       }
@@ -472,6 +472,9 @@
       user() {
         let user = this.$store.state.event.user // role_id
         return user
+      },
+      prod() {
+        return this.$store.state.event.prod
       }
     },
     components: {
@@ -647,10 +650,6 @@
   .pub {
     margin: 80px 0 0 0;
     margin: -20px;
-  }
-
-  .pub .pub-btn {
-    /* padding: 20px 80px 20px 80px; */
   }
 
   .company-des {

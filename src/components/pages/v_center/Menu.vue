@@ -1,9 +1,13 @@
 <template>
   <section>
-    <header class="menu-header">
+    <header :class="['menu-header', {'jdc': prod.name=== 'jdc'}]">
       <div class="menu-left">
         <span class="menu-icon" @click="changeWidth"></span>
-        <p class="home-icon"><router-link :to="{name: 'home'}" class="logo-icon"></router-link></p>
+        <p class="home-icon">
+          <router-link :to="{name: 'home'}" class="logo-icon">
+            <img :src="prod.logo" alt="logo">
+          </router-link>
+        </p>
       </div>
       <div v-if="!isMob" class="menu-right">
         <a tabindex="-1" class="nav-item is-hidden-mobile" ref="msgList">
@@ -562,6 +566,9 @@
         set(e) {
           this.$store.commit('changeShowMine', e)
         }
+      },
+      prod() {
+        return this.$store.state.event.prod
       }
     },
     watch: {
@@ -732,11 +739,12 @@
     background-size: 24px;
   }
   .home-icon {
+    height: 60px;
     padding:0 20px;
     display: flex;
     align-items: center;
   }
-  .logo-icon {
+  /* .logo-icon {
     width: 50px;
     height: 60px;
     transition: none;
@@ -744,6 +752,12 @@
     margin-right: 30px;
     background: url(../../../assets/images/logo.svg) no-repeat center / contain;
     text-indent: -9999px;
+  } */
+  .logo-icon img {
+    height: 50px;
+  }
+  .jdc .logo-icon img {
+    height: 30px;
   }
   .avatar {
     /* display: block; */
@@ -844,23 +858,17 @@
       padding-left: 0;
       text-align: center
     }
-    .menuHide {
-      /* position: relative;
-      top: 0; */
-      /* z-index: 1; */
-      /* width: 100% */
-    }
-
+    /* .menuHide {
+      position: relative;
+      top: 0;
+      z-index: 1;
+      width: 100%
+    } */
     .menu-list .item::before {
       left: 0;
     }
     .menuHide-mini .menu-list .item::before {
       left: 13px;
-    }
-
-    .logo-icon {
-      width: 40px;
-      height: 50px;
     }
     .menu-right {
       padding-right: 15px;

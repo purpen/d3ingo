@@ -11,6 +11,7 @@ import {
   HIDE_FOOTER,
   LEFT_WIDTH
 } from './mutation-types.js'
+import prod from 'conf/prod.env'
 
 // 判断是否登录
 let isLoggedIn = function () {
@@ -83,7 +84,24 @@ let getMenustatus = function () {
     return false
   }
 }
-
+function showProd() {
+  switch (prod.CUSTOM) {
+    case '':
+      return {
+        id: 0,
+        name: '',
+        logo: require('assets/images/logo.png'),
+        info: '铟果'
+      }
+    case 'jdc':
+      return {
+        id: 1,
+        name: 'jdc',
+        logo: require('assets/images/logo-yh.png'),
+        info: '艺火'
+      }
+  }
+}
 const state = {
   token: isLoggedIn() || null,
   user: userInfo() || {},
@@ -104,7 +122,8 @@ const state = {
   menuStatus: getMenustatus() || '',
   hideHeader: hashideHeader(),
   hideFooter: hashideFooter(),
-  leftWidth: getLeftWidth()
+  leftWidth: getLeftWidth(),
+  prod: showProd()
 }
 
 let IsMobile = function () {
