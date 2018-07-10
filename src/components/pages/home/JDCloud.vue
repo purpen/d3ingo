@@ -506,6 +506,7 @@ export default {
   .slide-intro {
     font-size: 14px;
     color:#666;
+    line-height: 1.5
   }
 
 

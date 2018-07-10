@@ -38,7 +38,7 @@
             <p class="num">您还没有认证，请先认证后才能查看匹配结果</p>
             <div class="blank20">
               <button class="middle-button full-red-button">
-                <router-link class="tc-f" to="/vcenter/d_company/accreditation">重新认证</router-link>
+                <router-link class="tc-f" to="/vcenter/d_company/accreditation">马上去认证</router-link>
               </button>
             </div>
           </section>
@@ -55,7 +55,7 @@
           </section>
         </div>
       </div>
-      <div class="project-foot" v-if="matchComplete">
+      <div class="project-foot" v-if="matchComplete && (demand_verify_status === 1 || demand_verify_status === 3)">
         <div class="buttons clearfix">
           <router-link v-if="projectStatus === -2" :to="{name: 'projectInfo', params: {id: id}}">重新编辑</router-link>
           <p class="clearfix" v-if="projectStatus !== -2 && projectStatus !== 2">
@@ -114,7 +114,7 @@ export default {
       .then((res) => {
         if (res.data.meta.status_code === 200) {
           this.$store.commit(CHANGE_USER_VERIFY_STATUS, res.data.data)
-          this.demand_verify_status = res.data.data.demand_verify_status || -1
+          this.demand_verify_status = res.data.data.demand_verify_status
           if (this.demand_verify_status === 1) {
             console.log(this.demandObj, this.projectStatus)
             console.log('认证成功可以匹配')

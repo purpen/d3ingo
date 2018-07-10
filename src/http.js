@@ -33,9 +33,9 @@ const axiosInstance = axios.create({
 // http request 拦截器
 axiosInstance.interceptors.request.use(
   config => {
+    config.headers['source-type'] = SOURCE_TYPE
     if (store.state.event.token) {
       config.headers.Authorization = `Bearer ${store.state.event.token}`
-      config.headers['source-type'] = SOURCE_TYPE || 0
     }
     return config
   },
