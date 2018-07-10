@@ -35,7 +35,7 @@ axiosInstance.interceptors.request.use(
   config => {
     if (store.state.event.token) {
       config.headers.Authorization = `Bearer ${store.state.event.token}`
-      config.headers['source-type'] = SOURCE_TYPE
+      config.headers['source-type'] = SOURCE_TYPE || 0
     }
     return config
   },
