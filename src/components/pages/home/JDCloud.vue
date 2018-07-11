@@ -383,8 +383,10 @@ export default {
   }
   .col img {
     width: 60px;
-    height: 60px;
-    margin-right: 20px;
+    /* height: 60px; */
+  }
+  .col p {
+    margin-left: 20px;
   }
   .col-column img {
     width: 100px;
@@ -504,6 +506,7 @@ export default {
   .slide-intro {
     font-size: 14px;
     color:#666;
+    line-height: 1.5
   }
 
 

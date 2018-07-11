@@ -7,6 +7,7 @@ html {
   /* 10÷16=62.5% */
   box-sizing: border-box;
   height: 100%;
+  overflow-y: scroll;
 }
 
 html::-webkit-scrollbar,
@@ -62,10 +63,19 @@ html::-webkit-scrollbar-thumb:window-inactive,
 *:focus {
   outline: none
 }
+:root {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
 
+:root body {
+  position: absolute;
+}
 body {
   font-family: PingFangSC-Light, "Microsoft Yahei", "Helvetica Neue", Helvetica, Arial, sans-serif;
   height: 100%;
+  width: 100vw;
+  overflow: hidden;
 }
 
 .disableScroll {
@@ -640,11 +650,12 @@ button.is-custom.is-outlined.is-loading:after {
   color: #999999;
 }
 
-.Fshare-box {
+.fshare-box {
   overflow: hidden;
 }
 
 .footer p.share {
+  cursor: pointer;
   margin: 0 10px 0 0;
   float: left;
 }
@@ -1909,6 +1920,10 @@ td.fc-day.fc-widget-content.fc-today::before {
 /* 设置了浏览器宽度不大于768, footer,关注部分竖列显示 */
 
 @media screen and (max-width: 767px) {
+  body {
+    height: auto;
+    min-height: 100%
+  }
   #app {
     /* padding-bottom: 450px; */
   }
@@ -1975,7 +1990,11 @@ td.fc-day.fc-widget-content.fc-today::before {
   .input .el-form-item {
     margin-bottom: 0;
   }
-
+  .login-box .el-form-item,
+  .register-box .el-form-item,
+  .forget-box .el-form-item {
+    margin-bottom: 10px;
+  }
   .el-form-item__error {
     position: static;
   }

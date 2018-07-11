@@ -59,8 +59,6 @@ let mutations = {
               }
               if (item.over_time_stamp < new Date().getTime()) {
                 item.time_detail = (item.over_time_stamp / 1000).date_format().format('yyyy年MM月dd日 hh:mm') + ' 已逾期'
-                console.log(item.over_time)
-                console.log(item.over_time_stamp)
               } else {
                 item.time_detail = (item.over_time_stamp / 1000).date_format().format('yyyy年MM月dd日 hh:mm')
               }

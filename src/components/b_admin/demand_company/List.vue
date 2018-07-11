@@ -1,45 +1,35 @@
 <template>
-  <div class="container">
+  <div class="container company-verify">
     <div class="blank20"></div>
     <el-row :gutter="20">
-      <v-menu selectedName="userList"></v-menu>
+      <v-menu selectedName="demandCompanyList"></v-menu>
 
       <el-col :span="20">
         <div class="content">
 
           <div class="admin-menu-sub">
             <div class="admin-menu-sub-list">
-              <router-link :to="{name: 'adminUserList'}" active-class="false" :class="{'item': true, 'is-active': menuType == 0}">全部</router-link>
+              <router-link :to="{name: 'adminDemandCompanyList'}" active-class="false" :class="{'item': true, 'is-active': menuType == ''}">全部</router-link>
+            </div>
+            <div class="admin-menu-sub-list">
+              <router-link :to="{name: 'adminDemandCompanyList', query: {type: 1}}" :class="{'item': true, 'is-active': menuType === 1}" active-class="false">通过认证</router-link>
+            </div>
+            <div class="admin-menu-sub-list">
+              <router-link :to="{name: 'adminDemandCompanyList', query: {type: 2}}" :class="{'item': true, 'is-active': menuType === 2}" active-class="false">拒绝认证</router-link>
             </div>
           </div>
 
           <div class="admin-search-form">
             <el-form :inline="true" :model="query">
               <el-form-item>
-                <el-select v-model="query.role_id" placeholder="权限查询..." size="small">
-                  <el-option label="全部" value="0"></el-option>
-                  <el-option label="用户" value="1"></el-option>
-                  <el-option label="编辑" value="5"></el-option>
-                  <el-option label="管理员" value="10"></el-option>
-                  <el-option label="管理员plus" value="15"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item>
-                <el-select v-model="query.type" placeholder="目标人群..." size="small">
-                  <el-option label="全部" value="0"></el-option>
-                  <el-option label="需求方" value="1"></el-option>
-                  <el-option label="设计公司" value="2"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item>
                 <el-input v-model="query.val" placeholder="Search..." size="small"></el-input>
               </el-form-item>
               <el-form-item>
                 <el-select v-model="query.evt" placeholder="选择条件..." size="small">
-                  <el-option label="ID" value="1"></el-option>
-                  <el-option label="手机号" value="2"></el-option>
-                  <el-option label="昵称" value="3"></el-option>
-                  <el-option label="邮箱" value="4"></el-option>
+                  <el-option label="公司ID" value="1"></el-option>
+                  <el-option label="公司名称" value="2"></el-option>
+                  <el-option label="公司简称" value="3"></el-option>
+                  <el-option label="用户ID" value="4"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item>
@@ -60,6 +50,7 @@
               width="55">
             </el-table-column>
             <el-table-column
+              align="center"
               prop="id"
               label="ID"
               width="60">
@@ -72,84 +63,69 @@
                 </template>
             </el-table-column>
             <el-table-column
-              label="用户信息"
-              min-width="180">
+              label="内容"
+              min-width="160">
                 <template slot-scope="scope">
-                  <p>账户: {{ scope.row.account }}</p>
-                  <p>昵称: {{ scope.row.username }}</p>
-                  <p v-if="scope.row.realname">真实姓名: {{ scope.row.realname }} [{{ scope.row.position }}]</p>
+                  <p>全称: {{ scope.row.company_name }}</p>
+                  <p>简称: {{ scope.row.company_abbreviation }}</p>
+                  <p>网址: {{ scope.row.company_web }}</p>
+                  <p>规模: {{ scope.row.company_property_value }}</p>
+                  <p>地址: {{ scope.row.province_value }} {{ scope.row.city_value }}</p>
                 </template>
             </el-table-column>
             <el-table-column
-              width="60"
-              label="属性">
+              width="120"
+              label="创建人">
                 <template slot-scope="scope">
-                  <p v-if="scope.row.kind === 2">鸟人</p>
-                  <p v-else>默认</p>
+                  <p v-if="scope.row.user">
+                    {{ scope.row.user.account }}[{{ scope.row.user_id }}]
+                  </p>
                 </template>
             </el-table-column>
             <el-table-column
+              align="center"
               width="80"
-              label="类型">
+              label="认证状态">
                 <template slot-scope="scope">
-                  <p v-if="scope.row.type === 2">设计公司</p>
-                  <p v-else>用户</p>
+                  <p v-if="scope.row.verify_status === 0"><el-tag type="gray">未认证</el-tag></p>
+                  <p v-if="scope.row.verify_status === 1"><el-tag type="success">通过</el-tag></p>
+                  <p v-if="scope.row.verify_status === 2"><el-tag type="danger">失败</el-tag></p>
+                  <p v-if="scope.row.verify_status === 3"><el-tag type="warning">待认证</el-tag></p>
                 </template>
             </el-table-column>
-            <el-table-column
-              width="80"
-              label="来源">
-                <template slot-scope="scope">
-                  <p v-if="scope.row.source === 0">铟果</p>
-                  <p v-else-if="scope.row.source === 1">京东云</p>
-                  <p v-else-if="scope.row.source === 2">--</p>
-                  <p v-else-if="scope.row.source === 3">--</p>
-                  <p v-else>--</p>
-                </template>
-            </el-table-column>
-            <el-table-column
-              width="80"
-              label="权限">
-                <template slot-scope="scope">
-                  <p v-if="scope.row.role_id === 0">用户</p>
-                  <p v-else-if="scope.row.role_id === 5">编辑</p>
-                  <p v-else-if="scope.row.role_id === 10">管理员</p>
-                  <p v-else-if="scope.row.role_id === 15">管理员Plus</p>
-                  <p v-else-if="scope.row.role_id === 20">超级管理员</p>
-                  <p v-else>--</p>
-                </template>
-            </el-table-column>
-            <el-table-column
-              width="80"
-              label="状态">
-                <template slot-scope="scope">
-                  <p v-if="scope.row.status === -1"><el-tag type="gray">禁用</el-tag></p>
-                  <p v-else><el-tag type="success">正常</el-tag></p>
-                </template>
-            </el-table-column>
+
             <el-table-column
               prop="created_at"
               width="80"
               label="创建时间">
             </el-table-column>
             <el-table-column
+              align="center"
               width="100"
               label="操作">
                 <template slot-scope="scope">
-                  <p>
-                    <a href="javascript:void(0);" v-if="scope.row.status === 0" @click="setStatus(scope.$index, scope.row, -1)">禁用</a>
-                    <a href="javascript:void(0);" v-else @click="setStatus(scope.$index, scope.row, 0)">启用</a>
+                <p class="operate">
+                  <a @click="setRefuseRease(scope.$index, scope.row, 2)" v-if="scope.row.verify_status === 1 || scope.row.verify_status === 3" class="tag-refuse">拒绝</a>
+                  <a v-if="scope.row.verify_status === 2 || scope.row.verify_status === 3" @click="setVerify(scope.$index, scope.row, 1)" class="tag-pass">通过</a>
+                  <router-link :to="{name: 'adminDemandCompanyShow', params: {id: scope.row.id}}" target="_blank" class="tag-view">查看</router-link>
                   </p>
+                  <!--
                   <p>
-                    <a href="javascript:void(0);" @click="setRoleBtn(scope.$index, scope.row)">权限设置</a>
+                    <a href="javascript:void(0);" @click="handleEdit(scope.$index, scope.row.id)">编辑</a>
+                    <a href="javascript:void(0);" @click="handleDelete(scope.$index, scope.row.id)">删除</a>
                   </p>
-                  <p>
-                    <router-link :to="{name: 'adminUserSubmit', query: {id: scope.row.id}}">编辑</router-link>
-                    <!--<a href="javascript:void(0);" @click="handleDelete(scope.$index, scope.row.id)">删除</a>-->
-                  </p>
+                  -->
                 </template>
             </el-table-column>
           </el-table>
+
+          <el-dialog title="请填写拒绝原因" :visible.sync="dialogVisible" size="tiny">
+            <el-input v-model="verify.refuseRease"></el-input>
+            <span slot="footer" class="dialog-footer">
+              <el-button size="small" @click="dialogVisible = false">取 消</el-button>
+              <el-button size="small" type="primary" @click="setVerify(verify.index, verify.item, verify.evt, verify.refuseRease)">确 定</el-button>
+            </span>
+          </el-dialog>
 
           <el-pagination
             class="pagination"
@@ -161,31 +137,9 @@
             layout="total, sizes, prev, pager, next, jumper"
             :total="query.totalCount">
           </el-pagination>
-
         </div>
       </el-col>
     </el-row>
-
-    <input type="hidden" ref="roleUserId" />
-    <input type="hidden" ref="roleIndex" />
-    <el-dialog title="设置权限" v-model="setRoleDialog">
-      <div class="set-role-name">
-        <p>账户：{{ currentAccount }}</p>
-      </div>
-      <div>
-        <el-radio-group v-model.number="roleId">
-          <el-radio :label="0">用户</el-radio>
-          <el-radio :label="5">编辑</el-radio>
-          <el-radio :label="10">管理员</el-radio>
-          <el-radio :label="15">管理员plus</el-radio>
-        </el-radio-group>
-      </div>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="setRoleDialog = false">取 消</el-button>
-        <el-button type="primary" @click="setRole">确 定</el-button>
-      </div>
-    </el-dialog>
-
   </div>
 </template>
 
@@ -193,7 +147,7 @@
 import api from '@/api/api'
 import vMenu from '@/components/admin/Menu'
 export default {
-  name: 'admin_user_list',
+  name: 'admin_company_list',
   components: {
     vMenu
   },
@@ -203,21 +157,23 @@ export default {
       itemList: [],
       tableData: [],
       isLoading: false,
-      setRoleDialog: false,
-      currentAccount: '',
-      roleId: 0,
       query: {
         page: 1,
         pageSize: 50,
         totalCount: 0,
         sort: 1,
-        type: '',
+        type: 0,
         evt: '',
         val: '',
-        role_id: '',
-
         test: null
       },
+      verify: {
+        index: '',
+        item: '',
+        evt: '',
+        refuseRease: ''
+      },
+      dialogVisible: false,
       msg: ''
     }
   },
@@ -238,37 +194,41 @@ export default {
       this.query.page = val
       this.$router.push({name: this.$route.name, query: this.query})
     },
-    setRoleBtn(index, item) {
-      this.$refs.roleIndex.value = index
-      this.$refs.roleUserId.value = item.id
-      this.currentAccount = item.account
-      this.roleId = item.role_id
-      this.setRoleDialog = true
+    setRefuseRease (index, item, evt) {
+      this.dialogVisible = !this.dialogVisible
+      this.verify.index = index
+      this.verify.item = item
+      this.verify.evt = evt
     },
-    setRole() {
-      var userId = parseInt(this.$refs.roleUserId.value)
-      var index = parseInt(this.$refs.roleIndex.value)
+    setVerify(index, item, evt, refuseRease = '') {
+      this.dialogVisible = false
+      var id = item.id
       var self = this
-      self.$http.post(api.adminUserSetRole, {user_id: userId, role_id: self.roleId})
+      self.$http.put(api.adminDemandCompanyVerifyOk, {id: id, status: evt, verify_summary: refuseRease})
       .then (function(response) {
-        self.setRoleDialog = false
+        self.verify.refuseRease = ''
         if (response.data.meta.status_code === 200) {
-          self.itemList[index].role_id = self.roleId
+          self.itemList[index].verify_status = evt
           self.$message.success('操作成功')
         } else {
           self.$message.error(response.data.meta.message)
         }
       })
       .catch (function(error) {
-        self.setRoleDialog = false
         self.$message.error(error.message)
+        console.log(error.message)
       })
     },
     setStatus(index, item, evt) {
       var id = item.id
-      var url = api.adminUserSetStatus
+      var url = ''
+      if (evt === 0) {
+        url = api.adminCompanyStatusDisable
+      } else {
+        url = api.adminCompanyStatusOk
+      }
       var self = this
-      self.$http.post(url, {user_id: id, status: evt})
+      self.$http.put(url, {id: id})
       .then (function(response) {
         if (response.data.meta.status_code === 200) {
           self.itemList[index].status = evt
@@ -279,6 +239,7 @@ export default {
       })
       .catch (function(error) {
         self.$message.error(error.message)
+        console.log(error.message)
       })
     },
     loadList() {
@@ -288,20 +249,18 @@ export default {
       self.query.type = this.$route.query.type || ''
       self.query.evt = this.$route.query.evt || ''
       self.query.val = this.$route.query.val || ''
-      self.query.role_id = this.$route.query.role_id || ''
       this.menuType = 0
-      if (self.query.type) {
-        this.menuType = parseInt(self.query.type)
+      if (this.$route.query.type) {
+        this.menuType = parseInt(this.$route.query.type)
       }
       self.isLoading = true
-      self.$http.get(api.adminUserLists, {params: {page: self.query.page, per_page: self.query.pageSize, sort: self.query.sort, type: self.query.type, evt: self.query.evt, val: self.query.val, role_id: self.query.role_id}})
+      self.$http.get(api.adminDemandCompanyList, {params: {page: self.query.page, per_page: self.query.pageSize, sort: self.query.sort, type_verify_status: self.query.type, evt: self.query.evt, val: self.query.val}})
       .then (function(response) {
         self.isLoading = false
         self.tableData = []
         if (response.data.meta.status_code === 200) {
           self.itemList = response.data.data
           self.query.totalCount = response.data.meta.pagination.total
-
           for (var i = 0; i < self.itemList.length; i++) {
             var item = self.itemList[i]
             item.logo_url = require ('@/assets/images/df_100x100.png')
@@ -335,9 +294,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-  .set-role-name {
-    margin-bottom: 20px;
+  .operate a {
+    cursor: pointer;
+    display: block;
+    margin-bottom: 8px;
+    border-radius: 4px;
   }
-
 </style>

@@ -4,7 +4,7 @@
     <div class="project-cover">
       <div class="content">
         <h2>您需要设计什么？</h2>
-        <input class="name" v-model="name" placeholder="输入要设计的名称,比如：杯子设计">
+        <input class="name" v-model="name" placeholder="请输入您要设计的项目名称">
         <button class="full-red-button big-button" @click="submit">{{val}}</button>
       </div>
     </div>

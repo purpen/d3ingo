@@ -588,9 +588,17 @@
     padding: 10px 0 10px 0;
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 767px) {
     .prefect {
       font-size: 1.4rem;
+    }
+
+    .vcenter {
+      margin: 0;
+    }
+    
+    .right-content.message {
+      margin-top: 50px;
     }
   }
 </style>

@@ -104,6 +104,7 @@
   }
 
   .type {
+    margin: auto;
     max-width: 300px;
     min-width: 288px;
     height: 120px;

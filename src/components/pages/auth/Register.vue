@@ -276,6 +276,8 @@
                       that.timer()
                       that.$emit('send')
                     } else {
+                      console.log('验证码错误')
+                      that.fetchImgCaptcha()
                       that.$message({
                         showClose: true,
                         message: response.data.meta.message,
@@ -522,6 +524,12 @@
   .code-btn {
     cursor: pointer;
   }
+  .code-btn.is-disabled:hover,
+  .code-btn.is-disabled:focus {
+    background: transparent;
+    color: #666;
+    border-color: transparent
+  }
 
   .reg {
     text-align: center;
@@ -556,7 +564,7 @@
       width: auto;
       max-width: 450px;
       height: auto;
-      margin: 0;
+      margin: 20px 0 0 0;
     }
 
     form {
