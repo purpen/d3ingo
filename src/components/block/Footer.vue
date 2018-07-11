@@ -1,8 +1,8 @@
 <template>
-  <div class="footer clear" v-if="!hideFooter && prod.id === 0">
+  <div class="footer clear" v-if="!hideFooter">
     <el-row class="foot-main" justify="center">
       <el-col class="item" :xs="12" :sm="6" :md="6" :lg="6">
-        <p class="title">铟果</p>
+        <p class="title">{{prod.info}}</p>
         <p>
           <router-link :to="{name: 'about'}">关于我们</router-link>
         </p>
@@ -55,14 +55,14 @@
       </el-col>
     </el-row>
     <div class="copy-right" v-if="!isMob">
-      <p>Copyright © 2018 <a href="https://www.d3ingo.com">www.d3ingo.com</a> 版权所有.All rights reserved.</p>
-      <p>太火鸟 营业执照【京ICP备14025430号-2】经营许可证:【京ICP证150139号】</p>
+      <p>{{prod.copyright}} <a :href="prod.fullurl">{{prod.url}}</a> 版权所有.All rights reserved.</p>
+      <p>{{prod.license}}{{prod.business}}</p>
     </div>
     <div class="copy-right" v-if="isMob">
-      <p>Copyright © 2018 <a href="https://www.d3ingo.com">www.d3ingo.com</a></p>
+      <p>{{prod.copyright}} <a :href="prod.fullurl">{{prod.url}}</a></p>
       <p>版权所有.All rights reserved.</p>
-      <p>太火鸟 营业执照【京ICP备14025430号-2】</p>
-      <p>经营许可证:【京ICP证150139号】</p>
+      <p>{{prod.license}}</p>
+      <p>{{prod.business}}</p>
     </div>
     <transition name="fade">
       <section class="hidweixin" v-if="iswxhide && !isMob">

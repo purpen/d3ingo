@@ -40,7 +40,7 @@ let routes = [
     path: '/jd_cloud',
     name: 'JDCloud',
     meta: {
-      title: '京东云'
+      title: '京东云艺火'
     },
     component: require('@/components/pages/home/JDCloud')
   },
@@ -735,13 +735,13 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.meta.title) {
-    if (to.meta.title === '首页') {
-      document.title = '铟果-中国领先的产品创新SaaS平台'
+    if (to.meta.title === '首页' || to.meta.title === '京东云艺火') {
+      document.title = store.state.event.prod.title
     } else {
-      document.title = to.meta.title + '-铟果-中国领先的产品创新SaaS平台'
+      document.title = to.meta.title + '-' + store.state.event.prod.title
     }
   } else {
-    document.title = '铟果-中国领先的产品创新SaaS平台'
+    document.title = store.state.event.prod.title
   }
   if (to.matched.some(r => r.meta.requireAuth)) {
     if (store.state.event.token) {
