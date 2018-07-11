@@ -4,6 +4,7 @@ import store from '../store/index'
 import * as types from '../store/mutation-types'
 import baseRoute from './routes/base.js'
 import adminRoute from './routes/admin.js'
+import bAdminRoute from './routes/b_admin.js'
 import centerRoute from './routes/center.js'
 import toolsRoute from './routes/tools.js'
 import { Message } from 'element-ui'
@@ -707,6 +708,7 @@ let routes = [
 
 routes = routes.concat(baseRoute)
 routes = routes.concat(adminRoute)
+routes = routes.concat(bAdminRoute)
 routes = routes.concat(centerRoute)
 routes = routes.concat(toolsRoute)
 
