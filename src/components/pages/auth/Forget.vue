@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div :class="['container', {'jdc': prod.name === 'jdc'}]">
     <div class="forget-box">
       <div class="forget-title">
         <h2>找回密码</h2>
@@ -212,6 +212,9 @@
     computed: {
       codeMsg() {
         return this.time > 0 ? '重新发送' + this.time + 's' : '获取验证码'
+      },
+      prod() {
+        return this.$store.state.event.prod
       }
     },
     mounted: function () {
@@ -269,6 +272,12 @@
     width: 100%;
   }
 
+  .jdc .forget-btn {
+    background-image: linear-gradient(-90deg, #0989C5 0%, #5D6FBC 45%, #995CB6 100%);
+  }
+  .jdc .forget-btn:hover {
+    border-color: #0989C5
+  }
   .code-btn {
     cursor: pointer;
   }

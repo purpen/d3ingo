@@ -1,5 +1,5 @@
 <template>
-  <div class="footer clear" v-if="!hideFooter">
+  <div class="footer clear" v-if="!hideFooter && prod.id === 0">
     <el-row class="foot-main" justify="center">
       <el-col class="item" :xs="12" :sm="6" :md="6" :lg="6">
         <p class="title">铟果</p>
@@ -113,6 +113,9 @@
         } else {
           return true
         }
+      },
+      prod() {
+        return this.$store.state.event.prod
       }
     },
     methods: {

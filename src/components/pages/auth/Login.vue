@@ -1,9 +1,9 @@
 <template>
-  <div class="container">
+  <div :class="['container', {'jdc': prod.name === 'jdc'}]">
     <!-- <section class="cover-bgf7"></section> -->
     <div class="login-box">
       <div class="login-title">
-        <h2>登录铟果</h2>
+        <h2>登录{{prod.info}}</h2>
       </div>
 
       <div class="login-content">
@@ -34,15 +34,15 @@
     </div>
     <div class="reg">
       <p class="join-company" v-if="code">登陆并加入 <span>{{item.design_company_name}}</span></p>
-      <p v-if="code">没有铟果账户？
+      <p v-if="code">没有{{prod.info}}账户？
         <router-link :to="{name: 'invite', params: {code: code}}">立即注册</router-link>
       </p>
       <div v-if="!code">
-        <p v-if="!isMob">还没有铟果账户？
+        <p v-if="!isMob">还没有{{prod.info}}账户？
           <router-link v-if="type" :to="{name: 'register',params:{type: type}}">立即注册</router-link>
           <router-link v-else :to="{name: 'register'}">立即注册</router-link>
         </p>
-        <p v-else>还没有铟果账户？
+        <p v-else>还没有{{prod.info}}账户？
           <router-link :to="{name: 'identity'}">立即注册</router-link>
         </p>
       </div>
@@ -266,6 +266,9 @@ export default {
     },
     code() {
       return this.$route.params.code
+    },
+    prod() {
+      return this.$store.state.event.prod
     }
   }
 }
@@ -310,6 +313,12 @@ form {
   width: 100%;
 }
 
+.jdc .login-btn {
+  background-image: linear-gradient(-90deg, #0989C5 0%, #5D6FBC 45%, #995CB6 100%);
+}
+.jdc .login-btn:hover {
+  border-color: #0989C5
+}
 .reg {
   text-align: center;
   margin-top: 20px;
@@ -328,6 +337,9 @@ form {
   color: #ff5a5f;
 }
 
+.jdc .reg p a {
+  color: #0989C5
+}
 .opt {
   overflow: hidden;
   padding: 0 0 20px;
@@ -354,6 +366,9 @@ form {
 .forget a:hover {
   color: #ff5a5f;
 }
+.jdc .forget a:hover {
+  color: #0989C5;
+}
 
 #passwd {
   display: none;
@@ -362,6 +377,11 @@ form {
   background: rgba(255,41,41,0.50);
   border: 1px solid #FF2929;
 }
+.jdc #passwd:checked ~.password-show::before {
+  background: rgba(9, 137, 197, .6);
+  border-color: #5D6FBC
+}
+
 #passwd:checked ~.password-show::after {
   content: "";
   width: 4px;

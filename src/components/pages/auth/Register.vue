@@ -1,9 +1,9 @@
 <template>
-  <div class="container">
+  <div :class="['container', {'jdc': prod.name === 'jdc'}]">
     <!-- <section class="cover-bgf7"></section> -->
     <div class="register-box">
       <div class="regisiter-title">
-        <h2>注册铟果{{identity}}</h2>
+        <h2>注册{{prod.info}}{{identity}}账号</h2>
       </div>
 
       <div class="register-tab clearfix" v-if="!isMob">
@@ -61,7 +61,7 @@
       </div>
     </div>
     <div class="reg">
-      <p>已有铟果账户，您可以
+      <p>已有{{prod.info}}账户，您可以
         <router-link :to="{name: 'login'}">立即登录</router-link>
       </p>
     </div>
@@ -351,6 +351,9 @@
       },
       isMob() {
         return this.$store.state.event.isMob
+      },
+      prod() {
+        return this.$store.state.event.prod
       }
     },
     mounted() {
@@ -450,7 +453,9 @@
     background-color: #fff;
     box-shadow: 0 0 6px 2px rgba(0,0,0,0.10);
   }
-
+  .jdc .register-tab-user.active {
+    border-color: #0989C5
+  }
   .register-tab-user::before {
     content: "";
     position: absolute;
@@ -462,9 +467,13 @@
     border: 1px solid #d2d2d2;
     transition: 268ms all ease;
   }
-  .register-tab-user.active::before {
+  .register-tab-user.active:before {
     background: #ff5a5f;
     border: 1px solid #ff5a5f;
+  }
+  .jdc .register-tab-user.active:before {
+    background: #0989C5;
+    border-color: #0989C5
   }
   .register-tab-user.active::after {
     content: "";
@@ -481,6 +490,9 @@
   }
   .register-tab-user.active h3 {
     color: #FF5A5F;
+  }
+  .jdc .register-tab-user.active h3 {
+    color: #0989C5
   }
   .register-tab-user .tab-left {
     height: 100%;
@@ -520,7 +532,12 @@
   .register-btn {
     width: 100%;
   }
-
+  .jdc .register-btn {
+    background-image: linear-gradient(-90deg, #0989C5 0%, #5D6FBC 45%, #995CB6 100%);
+  }
+  .jdc .register-btn:hover {
+    border-color: #0989C5
+  }
   .code-btn {
     cursor: pointer;
   }
@@ -543,6 +560,10 @@
 
   .reg p a {
     color: #FF5A5F;
+  }
+
+  .jdc .reg p a {
+    color: #0989C5
   }
 
   .imgCode {
