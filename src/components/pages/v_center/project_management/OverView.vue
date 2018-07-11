@@ -264,7 +264,7 @@
           <i></i>
           上级项目阶段: {{itemdesname}}
         </li>
-        <li class="task-type noborder">
+        <!-- <li class="task-type noborder">
           <i></i>
           <el-select v-model="formTack.type" placeholder="请选择"
           @change="updataTack()"
@@ -277,7 +277,7 @@
               >
             </el-option>
           </el-select>
-        </li>
+        </li> -->
         <li class="design-duration noborder">
           <i></i>
           <div>
@@ -315,7 +315,7 @@
           </el-input>
         </li>
       </ul>
-      <div class="task-files">
+      <!-- <div class="task-files">
         <el-upload
           :action="uploadUrl"
           :data="uploadParam"
@@ -328,8 +328,8 @@
             交付文件
           </div>
         </el-upload>
-      </div>
-      <div>
+      </div> -->
+      <!-- <div>
         <ul>
           <li class="fileing"
             v-if="f.percentage !== 100"
@@ -347,8 +347,6 @@
               >
               </el-progress>
             </div>
-            <!-- <p>
-            </p> -->
           </li>
         </ul>
         <ul>
@@ -363,7 +361,7 @@
             </div>
           </li>
         </ul>
-      </div>
+      </div> -->
     </aside>
     <aside :class="['aside','tc-6', {'animated slideInRight': ispop}]" v-if="isnodeedit">
       <div class="aside-title fx">
@@ -374,18 +372,16 @@
       <ul class="aside-content">
         <li class="designStage-name">
           <span>
-            <el-checkbox v-model="formTack.status" 
+            <el-checkbox v-model="formNode.status" 
             :true-label="1"
             :false-label="0"
-            @change="desCompletes()"
             >
             </el-checkbox>
           </span>
           <el-input 
-            v-model="formTack.name"
+            v-model="formNode.name"
             placeholder="里程碑名称"
-            :class="['noborder',{'success':formTack.status}]"
-            @blur.stop="updataTack()"
+            :class="['noborder',{'success':formNode.status}]"
           >
           </el-input>
         </li>
@@ -393,7 +389,7 @@
           <i></i>
           上级项目阶段: {{itemdesname}}
         </li>
-        <li class="task-switch noborder">
+        <!-- <li class="task-switch noborder">
           <i></i>
           <el-select v-model="formTack.type" placeholder="请选择" @change="updataTack()"
             >
@@ -405,15 +401,14 @@
               >
             </el-option>
           </el-select>
-        </li>
+        </li> -->
         <li class="formup-time noborder">
           <i></i>
           <div class="block">
               <el-date-picker
               type="date"
-              v-model="formTacktime"
+              v-model="formNodestart"
               placeholder="开始日期设置"
-              @change="upDateDuration"
               >
               </el-date-picker>
             </div>
@@ -424,13 +419,12 @@
               type="textarea"
               :autosize='{ minRows: 1, maxRows: 6 }'
               placeholder="里程碑描述"
-              v-model="formTack.summary"
-              @blur="updataTack()"
+              v-model="formNode.summary"
               >
           </el-input>
         </li>
       </ul>
-      <div class="task-files">
+      <!-- <div class="task-files">
         <el-upload
           :action="uploadUrl"
           :data="uploadParam"
@@ -462,8 +456,6 @@
               >
               </el-progress>
             </div>
-            <!-- <p>
-            </p> -->
           </li>
         </ul>
         <ul>
@@ -478,7 +470,7 @@
             </div>
           </li>
         </ul>
-      </div>
+      </div> -->
     </aside>
     <section class="top-progress">
       <div class="h3 no-wrap fz-20">{{itemName}}</div>
@@ -694,52 +686,63 @@
 
                   </div>
                   <div v-if="designStageLists" class="item-chartContent" v-for="(c,indexc) in designStageLists" :key="indexc">
+                    <div v-for="(m,indexm) in c.milestone" :key="indexm+'m'"
+                      :style="{left:(m.left*30+125)+'px'}"
+                      class="milestone-list"
+                    > 
+                      <p>{{m.name}}</p>
+                      <i :class="[
+                        {'noseccess-milestone':m.status === 0},
+                        {'seccess-milestone':m.status===1}
+                        ]"
+                        @click="editNode(m,c)"
+                        >
+                      </i>
+                    </div>
                     <div
                       v-if="(c.design_substage&&(sort==='isday'||sort==='isweek'))" 
                       v-for="(tack, indextack) in c.design_substage" 
                       :key="indextack+ 'y'" 
                       :style="{
-                        left:tack.type === 2?tack.left*30+4+'px':tack.left*30+'px',
-                        width:tack.type === 2?20+'px':tack.duration*30-2+'px',
+                        left:(tack.left+4)*30+'px',
+                        width:tack.duration*30-2+'px',
                       }"
                       :class="['item-tacklist',{
                         'bgno-border': !tack.status&&(tack.left+parseInt(tack.duration) <= newleft),
                         'bgm-border': !tack.status&&(tack.left+parseInt(tack.duration) <= newleft),
-                        'bged-border': tack.status,
-                        'transform-milestone': tack.type === 2
+                        'bged-border': tack.status
                       }]"
                       @click.stop.self="editTack(tack,c)"
                       >
                       <div class="bging item-tacking"
                         :style="{
-                          width:tack.type===2?19+'px':(tack.left<=newleft && newleft<(parseInt(tack.left)+parseInt(tack.duration)))?
-                            (parseInt(newleft)+1-parseInt(tack.left))*30-3+'px':tack.duration*30-3+'px',
+                          width:(tack.left<=newleft && newleft<(parseInt(tack.left)+parseInt(tack.duration)))?
+                            (parseInt(newleft)+1-parseInt(tack.left))*30-2+'px':tack.duration*30-2+'px',
                           }"
                         v-if="!tack.status&&tack.left <= newleft&&newleft<(parseInt(tack.left)+parseInt(tack.duration))"
                         @click.stop="editTack(tack,c)"
                       >
                       </div>
                       <div :class="['item-tacking',{
-                        'bgno': tack.type===1&&!tack.status&&(tack.left+parseInt(tack.duration) <= newleft),
-                        'bged': tack.status,
-                        'bgm':tack.type===2&&!tack.status&&(tack.left+parseInt(tack.duration) <= newleft)
+                        'bgno': !tack.status&&(tack.left+parseInt(tack.duration) <= newleft),
+                        'bged': tack.status
                         }]"
                         @click.stop="editTack(tack,c)"
                         v-else>
                       </div>
                       <i class="item-start" v-if="indextack === 0">
                       </i>
-                      <div class="isborder" v-if="tack.type === 2">
+                      <!-- <div class="isborder" v-if="tack.type === 2">
 
-                      </div>
-                      <i
+                      </div> -->
+                      <!-- <i
                         :class="['nodebase',{
                           'item-node': tack.status,
                           'item-noded': !tack.status && tack.left + tack.duration <= newleft
                         }]"
                         v-if="tack.type===1"
                       >
-                      </i>
+                      </i> -->
                       <div class="task-name text-center">
                         {{tack.name}}
                       </div>
@@ -762,7 +765,6 @@
                           }"
                         v-if="!tack.status&&tack.left <= newleft&&newleft<(parseInt(tack.left)+parseInt(tack.duration))"
                         @click.stop="editTack(tack,c)"
-
                       >
                       </div>
                       <div :class="['item-tacking',{
@@ -779,18 +781,21 @@
                       
                     </div>
 
-                    <div  v-if="(sort==='isday'||sort==='isweek')" class="item-tacklist-last" :style="{left:c.left*30 + 'px'}">
+                    <div v-if="(sort==='isday'||sort==='isweek')" class="item-tacklist-last" :style="{left:(c.left+4)*30 + 'px'}">
                       <div class="notmilestone-notsubstages">
                         <div @click="addtack(c)" class="task-milestone"></div>
+                        <span class="tc-red" @click="addtack(c)">
+                          添加子阶段
+                        </span>
                       </div>
-                      <div class="add-milestone">
+                      <!-- <div class="add-milestone">
                         <div @click="addtack(c,2)" class="task-milestone"></div>
                         <span @click="addtack(c,2)">添加里程碑</span>
-                      </div>
-                      <div class="add-substages">
+                      </div> -->
+                      <!-- <div class="add-substages">
                         <div  @click="addtack(c,1)" class="task-substages"></div>
                         <span  @click="addtack(c,1)">添加子阶段</span>
-                      </div>
+                      </div> -->
                     </div>
                     <div  v-if="sort==='ismonth'" class="item-tacklist-last" :style="{left:(c.left+1)*6.77 + 'px'}">
                       <div  @click="addtack(c)"></div>
@@ -806,11 +811,15 @@
                       <li v-for="(day,indexday) in tt.dayings" :key="indexday" :class="['dateday',{
                         'bgc': day.new,
                         'bgweek': day.week===6 ||day.week===0
-                        } 
+                        }
                         ]" v-if="sort === 'isday'">
-                        <!-- <div class="milestone-icon">
-                          <i class="on-milestone"></i>
-                        </div> -->
+                        <div class="milestone-icon" @click="addMilestone(day, tt,c)">
+                          <span class="tc-red">
+                            添加里程碑
+                          </span>
+                          <i class="on-milestone">
+                          </i>
+                        </div>
                       </li>
                       <li v-for="(day,indexday) in tt.dayings" :key="indexday" :class="day.new?'bgc':''" v-if="sort === 'isweek'" class="dateday">
                       </li>
@@ -825,7 +834,7 @@
 
             </el-col>
           </el-row>
-        <div  class="add-item" >
+        <div  class="add-item">
           <div @click="isItemStage=true"></div>
           <p @click="isItemStage=true">添加项目阶段</p>
         </div>
@@ -953,6 +962,7 @@ export default {
       isnodeedit: false, // 节点编辑
       endTimes: [], // 所有时间合集
       ispop: false,
+      formNodestart: '',
       tackTypes: [
         {
           value: 1,
@@ -1025,10 +1035,12 @@ export default {
     monthday(y, d, n) {
       var daying = []
       for (var i = 1; i <= n; i++) {
-        let week = new Date(y.getFullYear() + '-' + d + '-' + i).getDay()
+        let week = new Date(y.getFullYear() + '/' + d + '/' + i).getDay()
+        let time = new Date(y.getFullYear() + '/' + d + '/' + i) / 1000
         daying.push({
           'i': i,
-          'week': week
+          'week': week,
+          'time': time
         })
       }
       return daying
@@ -1093,12 +1105,14 @@ export default {
     },
     // 获取某个阶段日期的所有天数和所有参数的对象
     dateDay(s, e) {
-      s = new Date(s * 1000)
+      s = new Date((s - 5 * 86400) * 1000)
       e = new Date(e * 1000)
       let syear = s.getFullYear()
       let smonth = s.getMonth() + 1
       let eyear = e.getFullYear()
       let emonth = e.getMonth() + 1
+      let snowday = s.getDate()
+      snowday
       let total = []
       if (eyear - syear > 0) {
         var startDay = this.yearDay(smonth, s)
@@ -1112,6 +1126,8 @@ export default {
       } else {
         total = this.yearDay(smonth, e, emonth)
       }
+      total[0].day -= snowday
+      total[0].dayings.splice(0, snowday)
       return total
     },
     // 今天到最早的一天的距离
@@ -1122,7 +1138,7 @@ export default {
     // 项目到最早的距离
     itemtostart(item) {
       let et = new Date(this.endTimes[0] * 1000)
-      let xin = Date.parse(new Date(et.format('yyyy-MM'))) / 1000
+      let xin = Date.parse(new Date(et.format('yyyy-MM-dd'))) / 1000
       return Math.floor((item - xin) / 86400)
     },
     // 时间排序
@@ -1184,7 +1200,7 @@ export default {
     // 子阶段显示
     tackleft(des) {
       let et = new Date(this.endTimes[0] * 1000)
-      let xin = Date.parse(new Date(et.format('yyyy-MM'))) / 1000
+      let xin = Date.parse(new Date(et.format('yyyy-MM-dd'))) / 1000
       for (var tl = 0; tl < des.length; tl++) {
         if (!des[tl].design_substage) {
           let itemd = Date.parse(new Date(des[tl].start_time)) / 1000
@@ -1361,12 +1377,7 @@ export default {
       this.isnodeedit = false
       this.istaskedit = false
       this.formTack = {}
-      if (type === 3 || type === 1) {
-        this.formTack.name = '子阶段'
-      }
-      if (type === 2) {
-        this.formTack.name = '新里程'
-      }
+      this.formTack.name = '子阶段'
       if (type === 3) {
         this.istaskedit = false
         this.formTack.type = 1
@@ -1385,9 +1396,7 @@ export default {
           let intask = des.design_substage[i]
           time.push(intask.end_time)
           durations += parseInt(intask.duration)
-          if (des.design_substage[i].type === 1) {
-            des.number++
-          }
+          des.number++
         }
         this.sortdate(time)
         this.formTack.start_time = time[time.length - 1]
@@ -1598,14 +1607,8 @@ export default {
       this.formTackstatus = Boolean(this.formTack.status)
       this.isitemedit = false
       this.uploadParam['x:target_id'] = this.formTack.id
-      if (des.type === 1) {
-        this.isnodeedit = false
-        this.istaskedit = true
-      }
-      if (des.type === 2) {
-        this.isnodeedit = true
-        this.istaskedit = false
-      }
+      this.isnodeedit = false
+      this.istaskedit = true
       this.setoutpop()
       this.formTacktime = (new Date(this.formTack.start_time * 1000)).format('yyyy-MM-dd')
     },
@@ -1752,6 +1755,64 @@ export default {
         self.dialogLoadingBtn = false
       })
     },
+    // 创建里程碑
+    addMilestone(d, t, c) {
+      if (!d || !t || !c) {
+        return false
+      }
+      let time = Math.round(new Date(t.year + '/' + t.month + '/' + d.i) / 1000)
+      let get = {
+        design_stage_id: c.id,
+        start_time: time,
+        name: '里程碑'
+      }
+      let that = this
+      that.$http.post(api.milestoneCreate, get).then(
+        (response) => {
+          if (response.data.meta.status_code === 200) {
+            that.formNode = response.data.data
+            that.isnodeedit = true
+            for (var i = 0; i < that.designStageLists.length; i++) {
+              if (that.designStageLists[i].id === c.id) {
+                if (!that.designStageLists[i].milestone) {
+                  that.designStageLists[i].milestone = []
+                }
+                that.designStageLists[i].milestone.push(response.data.data)
+                that.$set(this.designStageLists, i, that.designStageLists[i])
+              }
+            }
+            console.log(that.designStageLists)
+          } else {
+            that.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          that.$message.error(error.message)
+          console.log(error.message)
+        })
+    },
+    // 编辑里程碑
+    editNode(m, c) {
+      this.indesignStage = c
+      this.formNode = {...m}
+      this.isnodeedit = true
+      this.formNodestart = new Date(m.start_time * 1000).format('yyyy-MM-dd')
+    },
+    // 时间
+    mtime(des) {
+      if (!des || des.length === 0) {
+        return
+      }
+      for (let i = 0; i < des.length; i++) {
+        if (des[i].milestone && des[i].milestone.length > 0) {
+          let mil = des[i].milestone
+          for (let m = 0; m < mil.length; m++) {
+            let et = new Date(this.endTimes[0] * 1000)
+            let xin = Date.parse(new Date(et.format('yyyy-MM-dd'))) / 1000
+            mil[m].left = Math.ceil((mil[m].start_time - xin) / 86400)
+          }
+        }
+      }
+    },
     // 下载文件
     downupload(url) {
       download(url)
@@ -1875,6 +1936,7 @@ export default {
         this.newtostart()
         // 子阶段
         this.tackleft(this.designStageLists)
+        this.mtime(this.designStageLists)
         this.$nextTick(_ => {
           this.scrollLeft()
         })
@@ -2035,6 +2097,7 @@ export default {
     box-shadow:0 0 10px 0 rgba(0,0,0,0.10);
     border-radius:4px;
   }
+  /* transform-milestone之前的里程碑 */
   .item-chartContent .transform-milestone {
     height: 20px;
     transform: rotate(45deg);
@@ -2385,10 +2448,10 @@ export default {
     background-size: contain;
     margin:0 18px 0 16px;
   }
-  .add-task:hover .task-milestone, .add-task:hover .task-substages{
+  /* .add-task:hover .task-milestone, .add-task:hover .task-substages{
     background: url('../../../../assets/images/member/add02@2x.png') 0 0 no-repeat;
     background-size: contain;
-  }
+  } */
   
   .add-task:hover span {
     color: #FF5A5F;
@@ -2658,25 +2721,78 @@ export default {
   }
   .milestone-icon {
     position: absolute;
-    left: 4px;
-    bottom: 65%;
+    left: 5px;
+    top: 45px;
     height: 20px;
     width: 20px;
-    z-index: 1
+    z-index: 1;
+    cursor: pointer;
   }
-  .daylist li:hover .on-milestone {
+  .daylist li i{
     display: inline-block;
     width: 20px;
     height: 20px;
+  }
+  .noseccess-milestone {
+    background:url('../../../../assets/images/tools/project_management/Milepost@2x.png') no-repeat center center / 20px 20px
+  }
+  .noseccess-milestone:hover {
+    background:url('../../../../assets/images/tools/project_management/MilepostHover@2x.png') no-repeat center center / 20px 20px
+  }
+  .seccess-milestone {
+    background:url('../../../../assets/images/tools/project_management/MilepostComplete@2x.png') no-repeat center center / 20px 20px
+  }
+  .seccess-milestone:hover {
+    background:url('../../../../assets/images/tools/project_management/MilepostCompleteHover@2x.png') no-repeat center center / 20px 20px
+  }
+  .daylist li:hover .on-milestone {
     background:url('../../../../assets/images/tools/project_management/MilepostAdd@2x.png') no-repeat center center / 20px 20px
   }
-  .daylist>.milestone-icon:hover .on-milestone {
+  .daylist>li>.milestone-icon>.on-milestone:hover {
     background:url('../../../../assets/images/tools/project_management/MilepostAddHover@2x.png') no-repeat center center / 20px 20px
   }
+  .milestone-list p {
+    width: 30px;
+    white-space:normal;
+    position: absolute;
+    left: -3px;
+    top: -30px;
+    font-size: 12px;
+    height:26px;
+    overflow: hidden;
+  }
+  .daylist>li>.milestone-icon:hover span{
+    display: block;
+    position: absolute;
+    left: -20px;
+    top: -16px;
+    
+  }
+  .daylist>li span {
+    display: none;
+  }
+  /* .daylist>li:hover span {
+    display: block;
+    position: absolute;
+    left: -20px;
+    top: -15px;
+  } */
   .item-chartContent {
     white-space: nowrap;
     position: relative;
     height:180px;
+  }
+  .milestone-list {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 45px;
+    z-index: 2
+  }
+  .milestone-list i {
+    display: block;
+    width: 20px;
+    height: 20px;
   }
   .item-tacklist {
     position:absolute;
@@ -2725,6 +2841,11 @@ export default {
   .add-substages {
     display: none;
   }
+  .notmilestone-notsubstages {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
   .notmilestone-notsubstages div {
     display: inline-block;
     width: 25px;
@@ -2749,9 +2870,6 @@ export default {
     background: url('../../../../assets/images/tools/project_management/Add@2x.png') 0 0 no-repeat;
     background-size: contain;
     margin: 0 6px 0 10px;
-  }
-  .item-tacklist-last:hover .notmilestone-notsubstages {
-    display: none;
   }
   .item-tacklist-last:hover .add-milestone {
     display: flex;
@@ -2866,13 +2984,13 @@ export default {
     margin-top:25px;
     cursor: pointer;
   }
-  .isborder {
+  /* .isborder {
     position: absolute;
     border-right: 1px  dashed #C8C8C8;
     height: 30px;
     transform: rotate(-45deg);
     left: 32px;
-  }
+  } */
   .push-file>i {
     display:inline-block;
     width: 24px;

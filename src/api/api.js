@@ -403,7 +403,12 @@ export default {
   designStageNodeUpdate: '/designStageNode/update', // PUT 编辑
   designStageNode: '/designStageNode', // GET 详情
   designStageNodeCompletes: '/designStageNode/completes', // PUT 编辑完成状态
-
+  // 里程碑
+  milestoneCreate: '/milestone/create', // POST 创建
+  milestoneDelete: '/milestone/delete', // DELETE 删除
+  milestoneUpdate: '/milestone/update', // PUT 更新
+  milestoneCompletes: '/milestone/completes', // PUT 完成未完成
+  milestone: '/milestone', // GET 里程碑详情
   // 个人项目统计
   userStatistical: '/designProject/userStatistical', // GET 列表
 
