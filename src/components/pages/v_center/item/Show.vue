@@ -72,7 +72,7 @@
           <div class="select-item-box clearfix" v-if="statusLabel.selectCompany">
             <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
               <el-collapse-item title="选择系统推荐的设计公司" name="3">
-              
+
                 <div class="clear"></div>
                 <div class="pub-btn clearfix" v-if="item.status === 2 || item.status === 3">
                   <el-button class="is-custom" @click="redirectMatch" :disabled="item.status === 2" type="primary">选择设计公司</el-button>
@@ -462,6 +462,7 @@ export default {
       item: {},
       info: {},
       contract: {},
+      stageId: '',
       isLoadingBtn: false,
       selectCompanyCollapse: [
         '1',

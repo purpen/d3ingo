@@ -24,7 +24,7 @@
           </div>
 
           <!--v-if="item.status !== 1" 暂时的-->
-          <div class="content-box" v-if="item.status !== 1">
+          <div class="content-box mar-b-20" v-if="item.status !== 1">
             <div class="main clearfix min-height-0">
               <div class="status">
                 <div style="width: 100%">
@@ -295,6 +295,11 @@
     border: 1px solid #ccc;
     padding: 20px;
   }
+
+  .mar-b-20 {
+    margin-bottom: 20px !important;
+  }
+
   .min-height-0 {
     min-height: 0;
   }
