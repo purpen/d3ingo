@@ -263,7 +263,6 @@
         const self = this
         self.query.page = parseInt (this.$route.query.page || 1)
         self.query.sort = this.$route.query.sort || 1
-
         self.isLoading = true
         self.$http.get (api.fundLogList, {
           params: {
@@ -464,14 +463,21 @@
       // 获取公司名称银行卡信息
       self.$http({method: requestMethod, url: userInfo}).then (function (response) {
         let getCorporationInfo = response.data.data
-        self.bankId = getCorporationInfo.id
-        if (getCorporationInfo) {
-          self.corporationInfo = getCorporationInfo
-          var str = self.corporationInfo.account_number
-          var reg = /^(\d{4})\d+(\d{4})$/
-          str = str.replace (reg, '$1****$2')
-          self.corporationInfo.account_number = str
+        if (response.data.meta.status_code === 200 && response.data.data !== '') {
+          self.bankId = getCorporationInfo.id
+          if (getCorporationInfo) {
+            self.corporationInfo = getCorporationInfo
+            var str = self.corporationInfo.account_number
+            var reg = /^(\d{4})\d+(\d{4})$/
+            str = str.replace (reg, '$1****$2')
+            self.corporationInfo.account_number = str
+          }
         }
+      })
+      .catch (function (error) {
+        self.$message.error (error.message)
+        self.walletLoading = false
+        return false
       })
       // 获取我的钱包
       self.walletLoading = true
