@@ -10,7 +10,7 @@
     <div class="line"></div>
 
     <div class="banner" :style="{height: calcHeight}">
-      <h3>选择太火鸟SaaS，交易有保障</h3>
+      <h3>选择{{custom.info}}，交易有保障</h3>
     </div>
 
     <div class="">
@@ -18,17 +18,17 @@
       <div class="content-box">
         <div class="trade-text gray">
           <h3>保证交易完成</h3>
-          <p>服务商未在约定工期内完成工作时，雇主有权发起维权并申请赔付，若判定成立，雇主将获得双倍赔付（双赔赔付由服务商的保证金赔付和服务商需退还的交易款项两部分共同构成）</p>
+          <p>服务商未在约定工期内完成工作时，雇主有权发起维权并申请赔付，若判定成立，雇主将获得赔付（赔付由服务商的保证金赔付和服务商需退还的交易款项两部分共同构成）</p>
         </div>
 
         <div class="trade-text">
           <h3>保证原创</h3>
-          <p>铟果平台担保版权。交易完成一年内，如设计需求方发现交易产品非原创，有权发起维权。经判定非原创事实，需求方将获得双倍赔付。</p>
+          <p>{{custom.info}}平台担保版权。交易完成一年内，如设计需求方发现交易产品非原创，有权发起维权。经判定非原创事实，需求方将获得赔付。</p>
         </div>
 
         <div class="trade-text in-foot gray">
           <h3>版权保护</h3>
-          <p>铟果引入时间戳工具，保证设计服务供应商的产品版权，以切实有效的法律手段避免侵权事件发生。</p>
+          <p>{{custom.info}}保证设计服务供应商的产品版权，以切实有效的法律手段避免侵权事件发生。</p>
         </div>
 
       </div>
@@ -61,6 +61,9 @@
     computed: {
       isMob() {
         return this.$store.state.event.isMob
+      },
+      custom() {
+        return this.$store.state.event.prod
       }
     },
     methods: {

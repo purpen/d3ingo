@@ -980,6 +980,7 @@ input:-webkit-autofill {
   .el-menu-info .el-submenu .el-submenu__title .b-nickname {
     padding: 0 8px;
     font-size: 1.4rem;
+    color: #666
   }
 
   .el-menu-info:hover > .el-submenu .el-submenu__title, .el-menu-info:hover .el-submenu .el-submenu__icon-arrow {

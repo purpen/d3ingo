@@ -364,8 +364,7 @@
       }
     },
     created() {
-      console.log(this)
-      if (this.prod.SOURCE_TYPE === 1) {
+      if (this.prod.id === 1) {
         this.$router.replace({name: 'JDCloud'})
         return
       }

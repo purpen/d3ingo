@@ -3,10 +3,10 @@
     <div class="jdc-banner">
       <div class="content">
         <section class="con-left">
-          <h2>京东创意云</h2>
-          <h4>定制化产品轻创新造物平台</h4>
+          <h2>京东云艺火</h2>
+          <h4>专业B2B设计交易服务SaaS平台</h4>
           <p>结合AI、大数据等先进技术，智能对接、批量处理创意诉求，</p>
-          <p>为京东云客户提供定制化产品设计服务</p>
+          <p>为京东云客户提供定制化产品设计服务。</p>
           <span @click="jump" class="release">发布项目需求</span>
         </section>
         <section class="con-right">
@@ -57,7 +57,7 @@
     <section class="bg-gray">
       <div class="anli">
         <div class="container">
-          <h3 class="title">铟果案例</h3>
+          <h3 class="title">成功案例</h3>
         </div>
         <swiper :options="swiperOption" class="clearfix">
           <swiper-slide v-for="(ele, index) in caseSlideList" :key="index" class="clearfix">
@@ -95,7 +95,7 @@ export default {
     return {
       colList: [{
         img: require('assets/images/home/jd/1.png'),
-        title: '京东创意云平台整合全产业链资源'
+        title: '京东云平台整合全产业链资源'
       },
       {
         img: require('assets/images/home/jd/2.png'),

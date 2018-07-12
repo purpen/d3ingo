@@ -22,7 +22,7 @@
               </div>
               <div v-if="projectStatus === 2">
                 <p class="num">智能匹配未筛选到合适的设计方</p>
-                <p class="verify fz-14">铟果将对您发布的需求进行人工匹配，请耐心等待...</p>
+                <p class="verify fz-14">{{custom.info}}将对您发布的需求进行人工匹配，请耐心等待...</p>
               </div>
               <div v-if="projectStatus === -2">
                 <p class="num">根据您的需求筛选出未匹配到合适的设计方</p>
@@ -30,7 +30,7 @@
               </div>
             </section>
             <section v-else>
-              <p class="find">铟果 正在从 1000+ 设计方为您寻找</p>
+              <p class="find">{{custom.info}} 正在从 1000+ 设计方为您寻找</p>
               <p class="num">根据您的<i>设计类型</i>需求筛选出<i>1000+家</i>设计方</p>
             </section>
           </section>
@@ -156,6 +156,9 @@ export default {
   computed: {
     user() {
       return this.$store.state.event.user
+    },
+    custom() {
+      return this.$store.state.event.prod
     }
   },
   watch: {
