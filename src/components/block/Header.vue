@@ -7,7 +7,7 @@
             <el-menu class="el-menu-header nav-left" :default-active="menuactive" mode="horizontal" router>
               <!---->
               <router-link :to="{name: 'home'}" class="el-menu-item logo">
-                <img :src="custom.logo" alt="太火鸟">
+                <img :src="custom.logo" :alt="custom.info">
               </router-link>
               <el-menu-item index="home" :route="menu.home">首页</el-menu-item>
               <el-menu-item index="server" :route="menu.server">服务</el-menu-item>
@@ -75,7 +75,7 @@
       <div class="m-nav-header" v-if="isMob">
 
         <div class="el-menu-item logo">
-          <img :src="custom.logo" alt="太火鸟SaaS">
+          <img :src="custom.logo" :alt="custom.info">
         </div>
         <div class="bars" @click="mMenuHide"></div>
         <section class="m-Menu" ref="mMenu" @click="mNavClick">
@@ -132,7 +132,7 @@
           <hgroup>
             <el-menu class="el-menu-header nav-left" :default-active="menuactive" mode="horizontal" router>
               <router-link :to="{name: 'home'}" class="el-menu-item logo">
-                <img :src="custom.logo" alt="京东云艺火">
+                <img :src="custom.logo" :alt="custom.info">
               </router-link>
             </el-menu>
           </hgroup>
@@ -190,7 +190,7 @@
       <div class="m-nav-header" v-if="isMob">
 
         <div class="el-menu-item logo">
-          <img :src="custom.logo" alt="太火鸟">
+          <img :src="custom.logo" :alt="custom.info">
           <!-- <span class="logo">京东云 艺火</span> -->
         </div>
         <div class="bars" @click="mMenuHide"></div>

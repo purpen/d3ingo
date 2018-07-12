@@ -1,7 +1,9 @@
 <template>
-  <section class="menu-sub">
+  <section :class="['menu-sub', {'jdc': custom.name === 'jdc'}]">
     <div class="nav-left nav-menu">
-      <router-link :to="{name: 'home'}" class="el-menu-item logo">太火鸟 SaaS</router-link>
+      <router-link :to="{name: 'home'}" class="el-menu-item logo">
+        <img :src="custom.logo" :alt="custom.info">
+      </router-link>
       <div class="flex">
         <p :class="['info', {'active': status === 'info'}]">项目需求信息</p>
         <p :class="['match', {'active': status === 'match'}]">分析匹配</p>
@@ -74,6 +76,9 @@ export default {
     },
     token() {
       return this.$store.state.event.token
+    },
+    custom() {
+      return this.$store.state.event.prod
     }
   }
 }
@@ -102,18 +107,16 @@ export default {
     flex: 0 0 auto;
   }
   .logo {
-    display: block;
-    width: 50px;
+    border-bottom: 3px solid transparent;
     height: 60px;
-    transition: none;
-    padding: 0 16px;
-    background: url(../../../assets/images/logo.svg)
-      no-repeat center / contain;
-    text-indent: -9999px;
+    display: flex;
+    align-items: center
+  }
+  .logo img {
+    height: 50px;
   }
   .logo:hover {
-    background: url(../../../assets/images/logo.svg)
-      no-repeat center / contain;
+    background: #fff
   }
   .flex {
     flex: 1;

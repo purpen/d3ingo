@@ -16,8 +16,8 @@
         <p v-if="isDesignCompany === 1 || isDesignCompany === true">
           <router-link :to="{name: 'projectCreate'}" class="">发布需求</router-link>
         </p>
-        <p v-if="isDesignCompany === 2 || isDesignCompany === true">
-          <router-link :to="{name: 'serverDesign'}" class="">申请加入</router-link>
+        <p v-if="isDesignCompany === 2 || isDesignCompany === true" v-show="token">
+          <router-link :to="{name: 'serverDesign'}" class="">申请入驻</router-link>
         </p>
       </el-col>
 
@@ -34,7 +34,7 @@
         </p>
       </el-col>
 
-      <el-col class="item fllow" :xs="12" :sm="6" :md="6" :lg="6">
+      <el-col class="item fllow" :xs="12" :sm="6" :md="6" :lg="6" v-if="prod.id === 0">
         <p class="title">关注我们</p>
         <!-- <p class="call clearfix"><span>电话：</span><span><a href="tel:4008798751">4008-798-751</a></span></p> -->
         <div class="fshare-box">
@@ -98,6 +98,9 @@
     computed: {
       isMob() {
         return this.$store.state.event.isMob
+      },
+      token() {
+        return this.$store.state.event.token
       },
       hideFooter() {
         return this.$store.state.event.hideFooter

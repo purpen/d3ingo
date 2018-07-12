@@ -70,7 +70,7 @@
             <div class="form-title">
               <span>提示信息</span>
             </div>
-            <p class="alert-title"><span>*</span> 在铟果平台接单前，请先完善以下信息并完成公司认证，便于系统精准推送项目需求。</p>
+            <p class="alert-title"><span>*</span> 在{{custom.info}}平台接单前，请先完善以下信息并完成公司认证，便于系统精准推送项目需求。</p>
 
             <div class="item clearfix" v-if="item.design_info_status === 0">
               <h3>完善公司信息</h3>
@@ -111,7 +111,7 @@
             <div class="form-title">
               <span>提示信息</span>
             </div>
-            <p class="alert-title"><span>*</span> 在铟果平台发布需求前，请先完善以下信息并完成公司认证，便于系统精准匹配设计服务供应商。</p>
+            <p class="alert-title"><span>*</span> 在{{custom.info}}平台发布需求前，请先完善以下信息并完成公司认证，便于系统精准匹配设计服务供应商。</p>
 
             <div class="item clearfix" v-show="item.demand_info_status === 0">
               <h3>完善公司信息</h3>
@@ -287,6 +287,9 @@
         set(e) {
           this.$store.commit('changeShowMine', e)
         }
+      },
+      custom() {
+        return this.$store.state.event.prod
       }
     },
     created: function () {
