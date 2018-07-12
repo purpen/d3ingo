@@ -303,9 +303,15 @@
                   that.$router.push({name: 'vcenterContractDown0', query: {unique_id: uniqueId}})
                   return false
                 }
-                // 是否来源铟果
-                if (item.source === 0) {
-                  that.$router.replace({name: 'vcenterContractDown', params: {unique_id: uniqueId}})
+                // 是否来源京东
+                if (item.source === 1) {
+                  let uType = that.$store.state.event.user.type
+                  // 如果是设计公司
+                  if (uType === 2) {
+                    that.$router.replace({name: 'vcenterContractJdDesignDown', params: {unique_id: uniqueId}})
+                  } else {
+                    that.$router.replace({name: 'vcenterContractJdDemandDown', params: {unique_id: uniqueId}})
+                  }
                   return
                 }
                 item.stages = []
