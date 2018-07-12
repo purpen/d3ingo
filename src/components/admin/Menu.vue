@@ -2,7 +2,7 @@
   <el-col :span="4">
     <div class="admin-menu">
       <el-menu :default-active="selectedName" class="" @select="handleSelect" @open="handleOpen" @close="handleClose" router>
-        <el-submenu index="1" v-if="isthirdParty===0">
+        <el-submenu index="1" v-if="isthirdParty.id===0">
           <template slot="title"><i class="fa fa-tachometer"></i> 控制台</template>
             <el-menu-item index="dashBoard" :route="{name: 'adminDashBoard'}">概览</el-menu-item>
         </el-submenu>
