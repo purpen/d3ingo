@@ -878,6 +878,16 @@
     border-top: 3px solid transparent;
     margin-top: -3px;
   }
+  
+  .el-menu-info.el-menu--horizontal > .el-submenu .el-submenu__title {
+    height: 60px;
+    line-height: 60px;
+    border: none;
+    background: #ffffff;
+    color: #666;
+    padding: 0;
+    padding-right: 14px;
+  }
   /* jdc */
   .jdc .nav-header .nav-right .register {
     border: none;

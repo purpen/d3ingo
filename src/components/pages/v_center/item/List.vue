@@ -154,6 +154,11 @@
                                 v-else>查看详情
                     </el-button>
                   </p>
+                  <p v-if="d.item.status === 5" class="btn margin-b-10">
+                    <el-button class="is-custom" @click="viewShow" size="small" :item_id="d.item.id" type="primary">
+                      查看详情
+                    </el-button>
+                  </p>
 
                   <p class="btn" v-show="d.item.status === 6">
                     <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary">
@@ -165,6 +170,21 @@
                       支付项目款
                     </el-button>
                   </p>
+                  <p v-if="d.item.status === 8" class="btn margin-b-10">
+                    <el-button class="is-custom" @click="viewShow" size="small" :item_id="d.item.id" type="primary">
+                      查看详情
+                    </el-button>
+                  </p>
+                  <p v-if="d.item.status === 9" class="btn margin-b-10">
+                    <el-button class="is-custom" @click="viewShow" size="small" :item_id="d.item.id" type="primary">
+                      查看详情
+                    </el-button>
+                  </p>
+                  <p v-if="d.item.status === 11" class="btn margin-b-10">
+                    <el-button class="is-custom" @click="viewShow" size="small" :item_id="d.item.id" type="primary">
+                      查看详情
+                    </el-button>
+                  </p>
                   <p class="btn" v-show="d.item.status === 15">
                     <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary">
                       验收项目
@@ -173,6 +193,11 @@
                   <p class="btn" v-show="d.item.status === 18">
                     <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary">
                       评价
+                    </el-button>
+                  </p>
+                  <p v-if="d.item.status === 22" class="btn margin-b-10">
+                    <el-button class="is-custom" @click="viewShow" size="small" :item_id="d.item.id" type="primary">
+                      查看详情
                     </el-button>
                   </p>
                   <p v-if="d.item.status === 2" class="btn margin-b-10">
