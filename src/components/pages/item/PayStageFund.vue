@@ -120,11 +120,11 @@ export default {
             if (payType === 2) {
             }
             if (payType === 5) {
-              self.$router.push({
-                name: 'vcenterOrderShow',
-                params: { id: self.item.uid },
-                query: {id: self.$route.query.id}
-              })
+              // self.$router.push({
+              //   name: 'vcenterOrderShow',
+              //   params: { id: self.item.uid },
+              //   query: {id: self.$route.query.id}
+              // })
             }
           } else {
             self.$message.error(response.data.meta.message)
@@ -141,6 +141,7 @@ export default {
   created: function() {
     const self = this
     let stageId = this.$route.params.stage_id
+    console.log(this.$route.query.id)
     if (stageId) {
       self.stageId = stageId
       self.$http
@@ -158,14 +159,14 @@ export default {
             }
             // 如果是对公转账，跳到相应页
             if (self.$route.query.id) {
-              if (self.item.pay_type === 5) {
-                self.$router.push({
-                  name: 'vcenterOrderShow',
-                  params: {id: self.item.uid},
-                  query: {id: self.$route.query.id}
-                })
-                return
-              }
+              // if (self.item.pay_type === 5) {
+              //   self.$router.push({
+              //     name: 'vcenterOrderShow',
+              //     params: {id: self.item.uid},
+              //     query: {id: self.$route.query.id}
+              //   })
+              //   return
+              // }
             }
             console.log(response.data.data)
           } else {

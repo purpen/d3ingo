@@ -879,6 +879,7 @@ export default {
           self.item = response.data.data.item
           // self.info = response.data.data.info
           self.contract = response.data.data.contract
+          console.log(self.contract)
           if (response.data.data.evaluate) {
             self.evaluate = response.data.data.evaluate
           }

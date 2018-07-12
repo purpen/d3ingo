@@ -179,7 +179,8 @@ export default {
               if (self.item.pay_type === 5) {
                 self.$router.push({
                   name: 'vcenterOrderShow',
-                  params: {id: self.item.uid}
+                  params: {id: self.item.uid},
+                  query: {id: self.$route.params.item_id}
                 })
                 return
               }
