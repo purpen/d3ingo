@@ -54,6 +54,7 @@
     name: 'test',
     data() {
       return {
+        test: ''
       }
     }
   }

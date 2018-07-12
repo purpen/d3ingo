@@ -463,18 +463,33 @@
       },
       submit(formName, index) {
         const that = this
-        // console.log(index)
-        that.$refs[formName][0].validate((valid) => {
+        that.$refs[formName][index].validate((valid) => {
           // 验证通过，提交
           if (valid) {
-            that.isedit = {}
             let row = {
               design_type: that.form.design_type,
               type: that.form.type,
               project_cycle: that.form.project_cycle,
               min_price: that.form.min_price
             }
-
+            if (row.min_price === '') {
+              that.$message({
+                showClose: true,
+                message: '最低接单价格不能为空',
+                type: 'success'
+              })
+              return false
+            }
+            if (row.project_cycle === '') {
+              that.$message({
+                showClose: true,
+                message: '项目平均周期不能为空',
+                type: 'success'
+              })
+              return false
+            }
+            that.isedit = {}
+            console.log(row)
             let apiUrl = null
             let method = null
 

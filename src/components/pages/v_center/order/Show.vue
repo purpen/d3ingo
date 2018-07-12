@@ -32,7 +32,7 @@
                   <div v-if="item.pay_type === 5 && item.status === 0">
                     <div v-if="item.bank_transfer === 0">
                       <p class="main-des">请于 {{ item.expire_at }} 前完成支付，逾期会关闭交易</p>
-                      <p class="main-des">如果您已经完成对公转账，请上传凭证</p>
+                      <p class="main-des">如果您已经完成打款，请上传凭证</p>
 
                       <div class="order-show">
                         <el-upload
@@ -63,7 +63,7 @@
                       <div class="payconfirmTitle">
                         <p class="font-18 text-center">支付确认中…</p>
                       </div>
-                      <p class="main-des text-center">您已确认打款，请等待铟果SaaS平台人工审核</p>
+                      <p class="main-des text-center">您已确认打款，请等待{{custom.info}}平台人工审核</p>
                     </div>
                   </div>
                 </div>
@@ -230,6 +230,9 @@
       },
       leftWidth() {
         return this.$store.state.event.leftWidth
+      },
+      custom() {
+        return this.$store.state.event.prod
       }
     },
     created: function () {

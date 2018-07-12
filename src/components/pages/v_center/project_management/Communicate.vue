@@ -401,10 +401,7 @@
         if (!e) {
           this.isSearch = false
         } else this.isSearch = true
-        if (!this.options) {
-          this.options = []
-        }
-        if (this.options.length > 0) {
+        if (this.options && this.options.length > 0) {
           for (var i = 0, arr = []; i < this.options.length; i++) {
             if (this.options[i].realname.indexOf(e) !== -1) {
               arr.push(this.options[i])
@@ -730,16 +727,20 @@
       },
       // 公司成员列表显示操作
       members() {
-        for (var i in this.options) {
-          for (var j = 0; j < this.getimgs.length; j++) {
-            if (this.getimgs[j].id === this.options[i].id) {
-              this.options[i].isadd = true
-              break
-            } else this.options[i].isadd = false
+        if (this.options && this.options.length > 0) {
+          for (var i in this.options) {
+            if (this.getimgs && this.getimgs.length > 0) {
+              for (var j = 0; j < this.getimgs.length; j++) {
+                if (this.getimgs[j].id === this.options[i].id) {
+                  this.options[i].isadd = true
+                  break
+                } else this.options[i].isadd = false
+              }
+            }
+            if (this.options[i].realname.length > 2) {
+              this.options[i].realnamehead = this.options[i].realname.slice(this.options[i].realname.length - 2)
+            } else this.options[i].realnamehead = this.options[i].realname
           }
-          if (this.options[i].realname.length > 2) {
-            this.options[i].realnamehead = this.options[i].realname.slice(this.options[i].realname.length - 2)
-          } else this.options[i].realnamehead = this.options[i].realname
         }
       },
       // 获取公司成员

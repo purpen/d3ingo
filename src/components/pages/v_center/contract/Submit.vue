@@ -449,7 +449,7 @@
             }
             for (let j = 0; j < row.stages.length; j++) {
               if (!row.stages[j].content || row.stages[j].content.length === 0) {
-                that.$message.error('每个阶段至少添加一项子内容!')
+                that.$message.error('每个阶段至少添加一个交付文件!')
                 return false
               }
             }
@@ -597,18 +597,23 @@
       }
     },
     created () {
-      let that = this
-      let id = this.$route.params.item_id
+      var that = this
+      var id = this.$route.params.item_id
       if (id) {
         that.itemId = id
         that.$http.get(api.designItemId.format(id), {})
           .then(function (response) {
             if (response.data.meta.status_code === 200) {
-              let item = that.item = response.data.data
+              var item = that.item = response.data.data
               that.itemName = that.item.item.name
               that.companyId = item.quotation.design_company_id
 
               if (item.contract) {
+                // 如果是京东，跳转
+                if (item.contract.source === 1) {
+                  that.$router.replace({name: 'vcenterContractJdSubmit', params: {item_id: id}})
+                  return
+                }
                 that.contractId = item.contract.id
                 that.$http.get(api.contractId.format(item.contract.unique_id), {})
                   .then(function (response) {
@@ -655,6 +660,11 @@
                     }
                   })
               } else {  // 合同首次创建，从项目表调用基础信息
+                // 如果是京东，跳转
+                if (item.item.source === 1) {
+                  that.$router.replace({name: 'vcenterContractJdSubmit', params: {item_id: id}})
+                  return
+                }
                 that.form.item_content = that.itemName
                 that.form.title = that.itemName
                 that.form.thn_company_name = that.companyThn.company_name

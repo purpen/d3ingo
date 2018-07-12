@@ -258,6 +258,32 @@ module.exports = [
       require(['@/components/pages/v_center/contract/View'], resolve)
     }
   },
+  // 在线合同预览--京东云-需求公司
+  {
+    path: '/vcenter/contract/jd_demand_show/:unique_id',
+    name: 'vcenterContractJdDemandView',
+    meta: {
+      title: '合同预览',
+      requireAuth: true
+    },
+    // 按需加载
+    component: (resolve) => {
+      require(['@/components/pages/v_center/contract/JdDemandView'], resolve)
+    }
+  },
+  // 在线合同预览--京东云-设计公司
+  {
+    path: '/vcenter/contract/jd_design_show/:unique_id',
+    name: 'vcenterContractJdDesignView',
+    meta: {
+      title: '合同预览',
+      requireAuth: true
+    },
+    // 按需加载
+    component: (resolve) => {
+      require(['@/components/pages/v_center/contract/JdDesignView'], resolve)
+    }
+  },
   // 在线合同预览--version 0
   {
     path: '/vcenter/contract/show0/:unique_id',
@@ -280,6 +306,16 @@ module.exports = [
       requireAuth: true
     },
     component: require('@/components/pages/v_center/contract/Submit')
+  },
+  // 在线合同编辑--京东
+  {
+    path: '/vcenter/contract/jd_submit/:item_id',
+    name: 'vcenterContractJdSubmit',
+    meta: {
+      title: '在线合同编辑',
+      requireAuth: true
+    },
+    component: require('@/components/pages/v_center/contract/JdSubmit')
   },
   // 合同下载
   {

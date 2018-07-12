@@ -8,7 +8,7 @@
       <el-breadcrumb-item>{{ item.name }}</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <el-row :gutter="24" class="blank30">
+    <el-row :gutter="24" class="blank30 vcenter">
       <v-item-progress :progressButt="progressButt" :progressContract="progressContract"
                        :progressItem="progressItem"></v-item-progress>
 
@@ -402,7 +402,7 @@
             名称
           </el-col>
           <el-col :span="20">
-            北京太火红鸟科技有限公司
+            杭州太火鸟科技有限公司
           </el-col>
         </el-row>
         <el-row>
@@ -410,7 +410,7 @@
             注册地址
           </el-col>
           <el-col :span="20">
-            北京市&nbsp;朝阳区&nbsp;酒仙桥路4号&nbsp;正东集团院内A9-1楼二层218室
+            浙江省&nbsp;杭州市&nbsp;下城区&nbsp;新华路266号370室
           </el-col>
         </el-row>
         <el-row>
@@ -418,7 +418,7 @@
             税号
           </el-col>
           <el-col :span="20">
-            911101050573014370
+            91330103MA2B0NBY10
           </el-col>
         </el-row>
         <el-row>
@@ -426,7 +426,7 @@
             开户银行
           </el-col>
           <el-col :span="20">
-            招商银行北京华贸中心支行
+            杭州联合农村商业银行股份有限公司中山支行
           </el-col>
         </el-row>
         <el-row>
@@ -434,7 +434,7 @@
             银行账户
           </el-col>
           <el-col :span="20">
-            110910028310202
+            201000194545213
           </el-col>
         </el-row>
         <div class="fz-16 tc-2 sub-title">
@@ -461,7 +461,7 @@
             收件人地址
           </el-col>
           <el-col :span="20">
-            北京市&nbsp;朝阳区&nbsp;酒仙桥751D北京时尚设计广场&nbsp;B7南侧太火鸟
+            北京市&nbsp;朝阳区&nbsp;酒仙桥路4号&nbsp;751&nbsp;北京时尚设计广场&nbsp;B7栋&nbsp;太火鸟科技
           </el-col>
         </el-row>
       </div>
@@ -469,33 +469,33 @@
         邮寄信息
       </div>
       <el-form label-position="top" :model="invoiceForm" class="form-line" :rules="invoiceRuleForm" ref="invoiceRuleForm">
-        <el-form-item prop="logistics_id" class="fullwidth">
           <el-row>
             <el-col :span="4">
               快递公司
             </el-col>
             <el-col :span="20">
-              <el-select v-model.number="invoiceForm.logistics_id" placeholder="请选择快递公司">
-                <el-option
-                  v-for="(d, index) in logisticsOptions"
-                  :label="d.label"
-                  :key="index"
-                  :value="d.value">
-                </el-option>
-              </el-select>
+              <el-form-item prop="logistics_id" class="fullwidth">
+                <el-select v-model.number="invoiceForm.logistics_id" placeholder="请选择快递公司">
+                  <el-option
+                    v-for="(d, index) in logisticsOptions"
+                    :label="d.label"
+                    :key="index"
+                    :value="d.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
             </el-col>
           </el-row>
-        </el-form-item>
-        <el-form-item prop="logistics_number">
           <el-row>
             <el-col :span="4">
               快递单号
             </el-col>
             <el-col :span="20">
-              <el-input v-model="invoiceForm.logistics_number"></el-input>
+              <el-form-item prop="logistics_number">
+                <el-input v-model.number="invoiceForm.logistics_number"></el-input>
+              </el-form-item>
             </el-col>
           </el-row>
-        </el-form-item>
         <div class="taking-price-btn">
           <el-button @click="invoiceDialog = false">取 消</el-button>
           <el-button type="primary" :loading="sendInvoiceLoadingBtn" class="is-custom"
@@ -520,6 +520,7 @@
       </span>
     </el-dialog>
     <el-dialog title="报价单详情" v-model="quotaDialog" id="quote-dialog" style="width: 880px;margin: auto" size="large" top="2%">
+      
       <v-quote-view :formProp="quota"></v-quote-view>
 
       <!--<div slot="footer" class="dialog-footer btn">-->
@@ -617,7 +618,8 @@
             {type: 'number', required: true, message: '请选择快递公司', trigger: 'change'}
           ],
           logistics_number: [
-            {required: true, message: '请添写快递单号', trigger: 'blur'}
+            {type: 'number', required: true, message: '请添写快递单号', trigger: 'blur'},
+            {type: 'number', message: '请添写正确的快递单号', trigger: 'blur'}
           ]
         },
         sendInvoiceLoadingBtn: false,
@@ -844,31 +846,39 @@
         this.invoiceDialog = true
       },
       // 确认发票发送
-      sendInvoiceSubmit() {
-        var row = {
-          'id': this.invoiceForm.id,
-          'logistics_id': this.invoiceForm.logistics_id,
-          'logistics_number': this.invoiceForm.logistics_number
-        }
-        this.sendInvoiceLoadingBtn = true
-        this.$http.put(api.invoiceDesignTrueSend, row)
-          .then((response) => {
-            this.sendInvoiceLoadingBtn = false
-            if (response.data.meta.status_code === 200) {
-              this.invoiceDialog = false
-              for (let i = 0; i < this.invoice.length; i++) {
-                if (this.invoice[i].id === row.id) {
-                  this.invoice[i].status = 2
-                }
-              }
-            } else {
-              this.$message.error(response.data.meta.message)
+      sendInvoiceSubmit(formName) {
+        console.log(this.invoiceForm.logistics_number)
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            var row = {
+              'id': this.invoiceForm.id,
+              'logistics_id': this.invoiceForm.logistics_id,
+              'logistics_number': this.invoiceForm.logistics_number
             }
-          })
-          .catch((error) => {
-            this.$message.error(error.message)
-            this.sendInvoiceLoadingBtn = false
-          })
+            this.sendInvoiceLoadingBtn = true
+            this.$http.put(api.invoiceDesignTrueSend, row)
+              .then((response) => {
+                this.sendInvoiceLoadingBtn = false
+                if (response.data.meta.status_code === 200) {
+                  this.invoiceDialog = false
+                  for (let i = 0; i < this.invoice.length; i++) {
+                    if (this.invoice[i].id === row.id) {
+                      this.invoice[i].status = 2
+                    }
+                  }
+                } else {
+                  this.$message.error(response.data.meta.message)
+                }
+              })
+              .catch((error) => {
+                this.$message.error(error.message)
+                this.sendInvoiceLoadingBtn = false
+              })
+          } else {
+            console.log('error submit!!')
+            return false
+          }
+        })
       },
       // 发票状态
       invoceStat(payType, stage) {

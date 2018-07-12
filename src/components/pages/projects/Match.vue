@@ -22,7 +22,7 @@
               </div>
               <div v-if="projectStatus === 2">
                 <p class="num">智能匹配未筛选到合适的设计方</p>
-                <p class="verify fz-14">铟果将对您发布的需求进行人工匹配，请耐心等待...</p>
+                <p class="verify fz-14">{{custom.info}}将对您发布的需求进行人工匹配，请耐心等待...</p>
               </div>
               <div v-if="projectStatus === -2">
                 <p class="num">根据您的需求筛选出未匹配到合适的设计方</p>
@@ -30,7 +30,7 @@
               </div>
             </section>
             <section v-else>
-              <p class="find">铟果 正在从 1000+ 设计方为您寻找</p>
+              <p class="find">{{custom.info}} 正在从 1000+ 设计方为您寻找</p>
               <p class="num">根据您的<i>设计类型</i>需求筛选出<i>1000+家</i>设计方</p>
             </section>
           </section>
@@ -38,7 +38,7 @@
             <p class="num">您还没有认证，请先认证后才能查看匹配结果</p>
             <div class="blank20">
               <button class="middle-button full-red-button">
-                <router-link class="tc-f" to="/vcenter/d_company/accreditation">重新认证</router-link>
+                <router-link class="tc-f" to="/vcenter/d_company/accreditation">马上去认证</router-link>
               </button>
             </div>
           </section>
@@ -55,12 +55,15 @@
           </section>
         </div>
       </div>
-      <div class="project-foot" v-if="matchComplete">
+      <div class="project-foot" v-if="matchComplete && (demand_verify_status === 1 || demand_verify_status === 3)">
         <div class="buttons clearfix">
           <router-link v-if="projectStatus === -2" :to="{name: 'projectInfo', params: {id: id}}">重新编辑</router-link>
-          <p class="clearfix" v-if="projectStatus !== -2">
-            <button v-if="demand_verify_status === 1 && projectStatus !== 2" @click="submit" class="middle-button full-red-button">查看匹配结果</button>
+          <p class="clearfix" v-if="projectStatus !== -2 && projectStatus !== 2">
+            <button v-if="demand_verify_status === 1" @click="submit" class="middle-button full-red-button">查看匹配结果</button>
             <button v-else class="middle-button disabled-button">查看匹配结果</button>
+          </p>
+          <p class="clearfix" v-if="projectStatus === 2">
+            <button @click="redirect" class="middle-button full-red-button">查看项目详情</button>
           </p>
         </div>
       </div>
@@ -89,6 +92,9 @@ export default {
     }
   },
   methods: {
+    redirect() {
+      this.$router.push({name: 'vcenterItemShow', params: {id: this.id}})
+    },
     matchInc() {
       this.$http.get(api.recommendListId.format(this.id))
       .then(res => {
@@ -108,7 +114,7 @@ export default {
       .then((res) => {
         if (res.data.meta.status_code === 200) {
           this.$store.commit(CHANGE_USER_VERIFY_STATUS, res.data.data)
-          this.demand_verify_status = res.data.data.demand_verify_status || -1
+          this.demand_verify_status = res.data.data.demand_verify_status
           if (this.demand_verify_status === 1) {
             console.log(this.demandObj, this.projectStatus)
             console.log('认证成功可以匹配')
@@ -150,6 +156,9 @@ export default {
   computed: {
     user() {
       return this.$store.state.event.user
+    },
+    custom() {
+      return this.$store.state.event.prod
     }
   },
   watch: {

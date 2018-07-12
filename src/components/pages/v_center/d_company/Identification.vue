@@ -1,5 +1,5 @@
 <template>
-  <el-row class="blank30">
+  <el-row class="blank30 vcenter">
     <v-menu currentName="company"></v-menu>
 
     <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">

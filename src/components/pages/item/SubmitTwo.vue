@@ -286,44 +286,45 @@
       }
     },
     created: function () {
-      if (this.$route.name === 'itemCreate') {
-      } else if (this.$route.name === 'itemSubmitTwo') {
-        var id = this.$route.params.id
-        if (id) {
-          this.itemId = id
-          this.$http.get(api.demandId.format(id), {})
-            .then((response) => {
-              if (response.data.meta.status_code === 200) {
-                var row = response.data.data.item
-                if (!row.design_types) {
-                  row.design_types = []
-                }
-                for (let i of this.form.design_types) {
-                  this.typeDesignOptions[i - 1].active = true
-                }
-                this.form = row
-              } else {
-                this.$message.error(response.data.meta.message)
-                console.log(response.data.meta.message)
-                this.$router.push({
-                  name: 'home'
-                })
-                return false
-              }
-            })
-            .catch((error) => {
-              this.$message.error(error.message)
-              this.$router.push({
-                name: 'home'
-              })
-            })
-        } else {
-          this.$message.error('缺少请求参数！')
-          this.$router.push({
-            name: 'home'
-          })
-        }
-      }
+      this.$router.replace({name: 'projectCreate'})
+      // if (this.$route.name === 'itemCreate') {
+      // } else if (this.$route.name === 'itemSubmitTwo') {
+      //   var id = this.$route.params.id
+      //   if (id) {
+      //     this.itemId = id
+      //     this.$http.get(api.demandId.format(id), {})
+      //       .then((response) => {
+      //         if (response.data.meta.status_code === 200) {
+      //           var row = response.data.data.item
+      //           if (!row.design_types) {
+      //             row.design_types = []
+      //           }
+      //           for (let i of this.form.design_types) {
+      //             this.typeDesignOptions[i - 1].active = true
+      //           }
+      //           this.form = row
+      //         } else {
+      //           this.$message.error(response.data.meta.message)
+      //           console.log(response.data.meta.message)
+      //           this.$router.push({
+      //             name: 'home'
+      //           })
+      //           return false
+      //         }
+      //       })
+      //       .catch((error) => {
+      //         this.$message.error(error.message)
+      //         this.$router.push({
+      //           name: 'home'
+      //         })
+      //       })
+      //   } else {
+      //     this.$message.error('缺少请求参数！')
+      //     this.$router.push({
+      //       name: 'home'
+      //     })
+      //   }
+      // }
     },
     watch: {}
   }

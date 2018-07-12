@@ -88,6 +88,11 @@
                 </template>
             </el-table-column>
             <el-table-column
+              prop="source_value"
+              width="80"
+              label="来源">
+            </el-table-column>
+            <el-table-column
               prop="status_value"
               width="80"
               label="状态">
@@ -146,6 +151,7 @@
         </el-form-item>
         <el-form-item label="所属银行" prop="bandId">
           <el-select v-model.number="orderForm.bankId" placeholder="请选择银行">
+            <el-option label="京东云支付" :value="-1"></el-option>
             <el-option
               v-for="(item, index) in bankOptions"
               :label="item.label"
@@ -316,7 +322,14 @@ export default {
             } else if (item.type === 4) {
               typeValue = '阶段款'
             }
+            var sourceVal = ''
+            if (item.source === 0) {
+              sourceVal = '铟果'
+            } else if (item.source === 1) {
+              sourceVal = '京东云'
+            }
             item['type_value'] = typeValue
+            item['source_value'] = sourceVal
             item['created_at'] = item.created_at.date_format().format('yy-MM-dd')
             var sureOutlineTransfer = false
             if (item.pay_type === 5 && item.status === 0 && item.bank_transfer === 1) {
