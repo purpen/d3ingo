@@ -63,7 +63,7 @@
                       <div class="payconfirmTitle">
                         <p class="font-18 text-center">支付确认中…</p>
                       </div>
-                      <p class="main-des text-center">您已确认打款，请等待铟果SaaS平台人工审核</p>
+                      <p class="main-des text-center">您已确认打款，请等待{{custom.info}}平台人工审核</p>
                     </div>
                   </div>
                 </div>
@@ -230,6 +230,9 @@
       },
       leftWidth() {
         return this.$store.state.event.leftWidth
+      },
+      custom() {
+        return this.$store.state.event.prod
       }
     },
     created: function () {

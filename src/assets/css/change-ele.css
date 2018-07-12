@@ -579,3 +579,11 @@
   .opt-mar .el-button {
     margin: 0;
   }
+  .project-menu-sub .el-menu,
+  .nav-header .el-menu,
+  .menu-header .el-menu {
+    background: transparent
+  }
+  .el-message__group p {
+    color: #666
+  }

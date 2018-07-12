@@ -7,7 +7,7 @@ import axios from 'axios'
 import store from './store/index'
 import * as types from './store/mutation-types'
 import router from './router'
-import { SOURCE_TYPE } from '../config/prod.env'
+import { SOURCE_TYPE } from 'conf/prod.env'
 // npm install axios的时候默认会安装qs
 // qs相关的问题请搜索"nodejs qs"或者看这里https://www.npmjs.com/package/qs
 import Qs from 'qs'
