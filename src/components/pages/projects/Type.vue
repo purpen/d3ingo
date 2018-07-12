@@ -67,10 +67,11 @@
               prop="product_features"
               :rules="{
                 required: true, message: '描述不能为空', trigger: 'blur',
-                max: 10, message: '描述不能超过500字', trigger: 'blur'
+                max: 500, message: '描述不能超过500字', trigger: 'change'
               }">
             <el-input
               type="textarea"
+              :maxlength="500"
               :autosize="{ minRows: 4}"
               placeholder="请详细描述该产品的主要功能，以帮助设计公司进一步了解项目的实际功能与诉求。"
               v-model="form.product_features"

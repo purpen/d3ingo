@@ -583,3 +583,6 @@
   .menu-header .el-menu {
     background: transparent
   }
+  .el-message__group p {
+    color: #666
+  }
