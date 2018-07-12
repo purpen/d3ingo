@@ -1,5 +1,5 @@
 <template>
-  <section :class="['menu-sub', {'jdc': custom.name === 'jdc'}]">
+  <section :class="['menu-sub','project-menu-sub', {'jdc': custom.name === 'jdc'}]">
     <div class="nav-left nav-menu">
       <router-link :to="{name: 'home'}" class="el-menu-item logo">
         <img :src="custom.logo" :alt="custom.info">
