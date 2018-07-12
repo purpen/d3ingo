@@ -16,7 +16,7 @@
         <p v-if="isDesignCompany === 1 || isDesignCompany === true">
           <router-link :to="{name: 'projectCreate'}" class="">发布需求</router-link>
         </p>
-        <p v-if="isDesignCompany === 2 || isDesignCompany === true" v-show="token">
+        <p v-show="!token && prod.id === 0">
           <router-link :to="{name: 'serverDesign'}" class="">申请入驻</router-link>
         </p>
       </el-col>
@@ -69,7 +69,7 @@
         <div class="hidebox" @click="clickwx"></div>
         <div class="wxbox">
           <i class="wxclose" @click="clickwx"></i>
-          <h3>铟果官方微信二维码</h3>
+          <h3>关注铟果微信公众号</h3>
           <p class="openxw">打开微信，点击右上角的“+”，选择“扫一扫”功能，对准下方二维码即可。</p>
           <div class="d3INeq">
             <p class="saoqr">扫码关注我们</p>
