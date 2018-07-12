@@ -579,3 +579,6 @@
   .opt-mar .el-button {
     margin: 0;
   }
+  .el-menu {
+    background: transparent
+  }
