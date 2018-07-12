@@ -299,5 +299,9 @@
      text-align: left;
      margin-right: 40px;
     }
+    .copy-right p {
+      line-height: 1.5;
+      font-size: 12px;
+    }
   }
 </style>

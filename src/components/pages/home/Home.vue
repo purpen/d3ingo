@@ -203,6 +203,8 @@
           <img v-lazy="require('assets/images/home/5logo.jpg')" />
           <img v-lazy="require('assets/images/home/6logo.jpg')" />
           <img v-lazy="require('assets/images/home/7logo.jpg')" />
+          <img v-lazy="require('assets/images/home/8logo.jpg')" />
+          <img v-lazy="require('assets/images/home/9logo.jpg')" />
         </span>
       </div>
     </div>

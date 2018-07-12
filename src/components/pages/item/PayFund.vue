@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div style="width:900px;margin: 20px auto" class="ordershow-span-color">
+    <div class="ordershow-span-color">
       <div class="dis-flex" style="margin-bottom: 10px">
         <div class="mar-r-10">
           <router-link :to="{ path: '/vcenter/item/list' }" class="font-14">我的项目</router-link>
@@ -62,6 +62,9 @@
             </el-radio-group>
 
             <div class="clear"></div>
+          </div>
+          <div>
+
           </div>
         </div>
 
@@ -207,6 +210,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.ordershow-span-color {
+  width:900px;
+  margin: 20px auto
+}
 .payment {
   width: 900px;
   border: 1px solid #ccc;

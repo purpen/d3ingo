@@ -380,7 +380,9 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   line-height: 10px;
   /* margin-bottom: 10px; */
 }
-
+.is-error .el-form-item__content {
+  margin-bottom: 10px;
+}
 .description {
   color: #666666;
   font-size: 1.2rem;
@@ -1650,7 +1652,8 @@ td.fc-day.fc-widget-content.fc-today::before {
 @media screen and (max-width: 767px) {
   body {
     height: auto;
-    min-height: 100%
+    min-height: 100%;
+    overflow: auto
   }
   #app {
     /* padding-bottom: 450px; */
