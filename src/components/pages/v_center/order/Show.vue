@@ -289,10 +289,6 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-  .content {
-  }
-
   .content-box {
     height: 100%;
     border: 1px solid #ccc;
@@ -337,16 +333,8 @@
     font-size: 1.2rem;
   }
 
-  .operation p {
-    /*line-height: 50px;*/
-  }
-
   .operation p button {
     width: 120px;
-  }
-
-  .detail {
-
   }
 
   .detail p {

@@ -113,16 +113,10 @@
     padding: 0 150px;
   }
 
-  .content-box {
-  }
-
   .content-box h3 {
     font-size: 1.8rem;
     line-height: 2;
     margin: 10px 0;
-  }
-
-  .content-box p {
   }
 
   .content-box p img {
