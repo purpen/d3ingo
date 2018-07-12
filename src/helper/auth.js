@@ -10,6 +10,7 @@ mallache.write_token = function (token) {
 }
 
 mallache.write_user = function (user) {
+  console.log('user1', user)
   let userInfo = {}
   if (user.type === 1) {
     userInfo = {

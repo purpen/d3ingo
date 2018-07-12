@@ -666,7 +666,7 @@ export default {
     const self = this
     self.itemId = id
     self.isLoading = true
-    self.$http.get(api.adminItemShow, {params: {id: id}})
+    self.$http.get(api.jdItemShow, {params: {id: id}})
     .then (function(response) {
       self.isLoading = false
       if (response.data.meta.status_code === 200) {

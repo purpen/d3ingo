@@ -77,10 +77,6 @@ export default {
   },
   computed: {
     isthirdParty() {
-      // let a = {
-      //   'id': 1
-      // }
-      // return a
       return this.$store.state.event.prod
     }
   },

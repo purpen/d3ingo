@@ -279,7 +279,7 @@
           this.menuType = parseInt(self.query.type)
         }
         self.isLoading = true
-        self.$http.get(api.adminItemList, {
+        self.$http.get(api.jdItemLists, {
           params: {
             page: self.query.page,
             per_page: self.query.pageSize,

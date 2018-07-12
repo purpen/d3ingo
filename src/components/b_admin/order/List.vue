@@ -297,7 +297,7 @@ export default {
         this.menuType = 0
       }
       self.isLoading = true
-      self.$http.get(api.adminPayOrderLists, {params: {page: self.query.page, per_page: self.query.pageSize, status: self.query.status, sort: self.query.sort, type: self.query.type, pay_type: self.query.pay_type, bank_transfer: self.query.bank_transfer, evt: self.query.evt, val: self.query.val}})
+      self.$http.get(api.jdPayOrderLists, {params: {page: self.query.page, per_page: self.query.pageSize, status: self.query.status, sort: self.query.sort, type: self.query.type, pay_type: self.query.pay_type, bank_transfer: self.query.bank_transfer, evt: self.query.evt, val: self.query.val}})
       .then (function(response) {
         self.isLoading = false
         self.tableData = []

@@ -424,5 +424,15 @@ export default {
 
   // jd需求公司
   jdDemandCompanyLists: '/jd/demandCompany/lists', // GET 需求公司列表
-  jdDemandCompanyShow: '/jd/demandCompany/show' // GET 需求公司详情
+  jdDemandCompanyShow: '/jd/demandCompany/show', // GET 需求公司详情
+
+  // jd项目列表
+  jdItemLists: '/jd/item/lists', // GET jd项目列表
+  jdItemShow: '/jd/item/show', // GET jd项目详情
+
+  // 项目订单
+  jdPayOrderTruePay: '/jd/payOrder/truePay', // POST 确认项目支付单付款
+  jdPayOrderLists: '/jd/payOrder/lists', // GET 项目支付单列表
+  jdPayOrderShow: '/jd/payOrder/show' // GET 项目支付单详情
+
 }
