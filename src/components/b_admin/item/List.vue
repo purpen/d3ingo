@@ -9,17 +9,17 @@
 
           <div class="admin-menu-sub clearfix">
             <div class="admin-menu-sub-list">
-              <router-link :to="{name: 'adminItemList'}" active-class="false"
+              <router-link :to="{name: 'bAdminItemList'}" active-class="false"
                            :class="{'item': true, 'is-active': menuType === 0}">全部
               </router-link>
             </div>
             <div class="admin-menu-sub-list">
-              <router-link :to="{name: 'adminItemList', query: {type: 1}}" active-class="false"
+              <router-link :to="{name: 'bAdminItemList', query: {type: 1}}" active-class="false"
                            :class="{'item': true, 'is-active': menuType === 1}">完善资料
               </router-link>
             </div>
             <div class="admin-menu-sub-list">
-              <router-link :to="{name: 'adminItemList', query: {type: 2}}" active-class="false"
+              <router-link :to="{name: 'bAdminItemList', query: {type: 2}}" active-class="false"
                            :class="{'item': true, 'is-active': menuType === 2}">等待推荐
               </router-link>
             </div>
@@ -108,12 +108,12 @@
               width="100"
               label="操作">
               <template slot-scope="scope">
-                <p>
+                <!-- <p>
                   <a href="javascript:void(0);" v-show="scope.row.item.status === 2 || scope.row.item.status === 3"
                      @click="handleMatch(scope.$index, scope.row)">匹配公司</a>
-                </p>
+                </p> -->
                 <p>
-                  <router-link :to="{name: 'adminItemShow', params: {id: scope.row.item.id}}" target="_blank">查看
+                  <router-link :to="{name: 'bAdminItemShow', params: {id: scope.row.item.id}}" target="_blank">查看
                   </router-link>
                 </p>
               </template>

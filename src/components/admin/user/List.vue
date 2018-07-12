@@ -178,6 +178,7 @@
           <el-radio :label="5">编辑</el-radio>
           <el-radio :label="10">管理员</el-radio>
           <el-radio :label="15">管理员plus</el-radio>
+          <el-radio :label="1">京东管理员</el-radio>
         </el-radio-group>
       </div>
       <div slot="footer" class="dialog-footer">
@@ -215,7 +216,6 @@ export default {
         evt: '',
         val: '',
         role_id: '',
-
         test: null
       },
       msg: ''
@@ -248,12 +248,22 @@ export default {
     setRole() {
       var userId = parseInt(this.$refs.roleUserId.value)
       var index = parseInt(this.$refs.roleIndex.value)
+      userId
+      index
       var self = this
-      self.$http.post(api.adminUserSetRole, {user_id: userId, role_id: self.roleId})
+      let url = api.adminUserSetRole
+      let data = {'user_id': userId, 'role_id': self.roleId}
+      if (self.roleId === 1) {
+        url = api.adminUserChangeSourceAdmin
+        data = {'user_id': userId, 'source_admin': self.roleId}
+      }
+      self.$http.post(url, data)
       .then (function(response) {
         self.setRoleDialog = false
         if (response.data.meta.status_code === 200) {
-          self.itemList[index].role_id = self.roleId
+          if (self.roleId !== 1) {
+            self.itemList[index].role_id = self.roleId
+          }
           self.$message.success('操作成功')
         } else {
           self.$message.error(response.data.meta.message)

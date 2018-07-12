@@ -9,8 +9,8 @@
 
         <div class="admin-menu-sub">
           <div class="admin-menu-sub-list">
-            <router-link :to="{name: 'adminOrderList'}" active-class="false" :class="{'item': true, 'is-active': menuType === 0}">全部</router-link>
-            <router-link :to="{name: 'adminOrderList', query: {status: '0', bank_transfer: '1'}}" active-class="false" :class="{'item': true, 'is-active': menuType === 5}">待审核</router-link>
+            <router-link :to="{name: 'bAdminOrderList'}" active-class="false" :class="{'item': true, 'is-active': menuType === 0}">全部</router-link>
+            <router-link :to="{name: 'bAdminOrderList', query: {status: '0', bank_transfer: '1'}}" active-class="false" :class="{'item': true, 'is-active': menuType === 5}">待审核</router-link>
           </div>
         </div>
 
@@ -101,12 +101,12 @@
               width="100"
               label="操作">
                 <template slot-scope="scope">
-                  <p>
+                  <!-- <p>
                     <a href="javascript:void(0);" v-show="scope.row.sure_outline_transfer" @click="showTransfer(scope.$index, scope.row)">查看凭证</a>
                   </p>
                   <p>
                     <a href="javascript:void(0);" v-show="scope.row.sure_outline_transfer" @click="sureTransfer(scope.$index, scope.row)">确认收款</a>
-                  </p>
+                  </p> -->
                   <p>
                   <!--
                     <a href="javascript:void(0);" @click="handleEdit(scope.$index, scope.row.id)">编辑</a>

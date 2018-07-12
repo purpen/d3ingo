@@ -374,10 +374,10 @@
                     <span v-else type="warning">否</span>
                   </p>
                 </el-col>
-                <el-col :span="spanOpt">
+                <!-- <el-col :span="spanOpt">
                   <el-button class="is-custom" :loading="setTestLoadingBtn" size="small" v-if="item.is_test_data === 1" @click="setTest(2)">取消测试号</el-button>
                   <el-button type="primary" class="is-custom" :loading="setTestLoadingBtn" size="small" v-else @click="setTest(1)">设为测式号</el-button>
-                </el-col>
+                </el-col> -->
               </el-row>
 
               <el-row class="item" :gutter="gutter">
@@ -391,10 +391,10 @@
                     <span v-else type="warning">待认证</span>
                   </p>
                 </el-col>
-                <el-col :span="spanOpt">
+                <!-- <el-col :span="spanOpt">
                   <el-button class="is-custom" :loading="verifyLoadingBtn" size="small" v-if="item.verify_status === 1" @click="setRefuseRease(2)">拒绝</el-button>
                   <el-button type="primary" class="is-custom" :loading="verifyLoadingBtn" size="small" v-else @click="setVerify(1)">通过</el-button>
-                </el-col>
+                </el-col> -->
               </el-row>
 
             </div>
