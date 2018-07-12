@@ -66,7 +66,8 @@
             <el-form-item
               prop="product_features"
               :rules="{
-                required: true, message: '描述不能为空', trigger: 'blur'
+                required: true, message: '描述不能为空', trigger: 'blur',
+                max: 10, message: '描述不能超过500字', trigger: 'blur'
               }">
             <el-input
               type="textarea"

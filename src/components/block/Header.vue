@@ -667,7 +667,7 @@
   .el-menu--horizontal > .el-submenu.is-active .el-submenu__title,
   .el-menu--horizontal > .el-submenu:hover .el-submenu__title,
   .el-menu--horizontal > .el-menu-item.is-active {
-    border-color: #ff5a5f;
+    border-bottom: 3px solid #ff5a5f;
     color: #ff5a5f;
     background: none;
   }
@@ -675,7 +675,7 @@
  .jdc .el-menu--horizontal > .el-submenu.is-active .el-submenu__title,
  .jdc .el-menu--horizontal > .el-submenu:hover .el-submenu__title,
  .jdc .el-menu--horizontal > .el-menu-item.is-active {
-    border-color: transparent;
+    border-bottom: 3px solid transparent;
  }
   .nav-header .el-menu-item, .el-submenu__title {
     padding: 0 14px;

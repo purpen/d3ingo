@@ -209,7 +209,7 @@
     position: absolute;
     color: #BEBEBE;
     right: 40px;
-    top: 30px;
+    top: 28px;
     width: 20px;
     height: 20px;
     line-height: 20px;
