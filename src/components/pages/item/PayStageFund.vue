@@ -11,7 +11,7 @@
       <div class="pay-item">
         <div class="clearfix payItem-m">
           <p class="details">选择支付方式</p>
-          <div class="pay-type">
+          <div class="pay-type" v-if="item.source === 0">
             <ul v-if="!isMob">
               <li>
                 <label>
@@ -43,6 +43,26 @@
             <el-radio-group v-model="payType" class="choicePay" v-if="isMob">
               <el-radio :label="1" class="choiceList clearfix zfb">支付宝支付</el-radio>
               <el-radio :label="5" class="choiceList clearfix dg">对公转账</el-radio>
+            </el-radio-group>
+
+            <div class="clear"></div>
+          </div>
+
+          <div class="pay-type" v-if="item.source === 1">
+            <ul v-if="!isMob">
+              <li>
+                <label>
+                  <div :class="{'item': true, active: payType === 5 ? true : false}"
+                       @click="checkedPayBtn(5)">
+                    <p>京东云市场支付</p>
+                    <img class="pay-active" src="../../../assets/images/icon/pay_checked.png"/>
+                  </div>
+                </label>
+              </li>
+            </ul>
+
+            <el-radio-group v-model="payType" class="choicePay" v-if="isMob">
+              <el-radio :label="5" class="choiceList clearfix dg">京东云市场支付</el-radio>
             </el-radio-group>
 
             <div class="clear"></div>
@@ -94,6 +114,9 @@ export default {
           url = 'wxpay'
           break
         case 5:
+          if (this.item.source === 1) {
+            window.open('https://market.jdcloud.com/#/service/details/576846')
+          }
           url = api.payItemBankPayId.format(this.item.id)
           break
       }
@@ -245,7 +268,7 @@ export default {
   position: relative;
   cursor: pointer;
   border: 1px solid #ccc;
-  width: 160px;
+  min-width: 160px;
   margin: 10px;
   padding: 15px 20px 15px 20px;
 }

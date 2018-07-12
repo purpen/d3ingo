@@ -65,19 +65,11 @@
           </div>
           <div class="pay-type" v-if="item.source === 1">
             <ul v-if="!isMob">
-              <!--<li>-->
-              <!--<label>-->
-              <!--<div :class="{'item': true, active: payType === 2 ? true : false}" @click="checkedPayBtn(2)">-->
-              <!--<img src="../../../assets/images/icon/union1.png"/>-->
-              <!--<img class="pay-active" src="../../../assets/images/icon/pay_checked.png"/>-->
-              <!--</div>-->
-              <!--</label>-->
-              <!--</li>-->
               <li>
                 <label>
                   <div :class="{'item': true, active: payType === 5 ? true : false}"
                        @click="checkedPayBtn(5)">
-                    <p>京东支付</p>
+                    <p>京东云市场支付</p>
                     <img class="pay-active" src="../../../assets/images/icon/pay_checked.png"/>
                   </div>
                 </label>
@@ -85,13 +77,10 @@
             </ul>
 
             <el-radio-group v-model="payType" class="choicePay" v-if="isMob">
-              <el-radio :label="5" class="choiceList clearfix dg">京东支付</el-radio>
+              <el-radio :label="5" class="choiceList clearfix dg">京东云市场支付</el-radio>
             </el-radio-group>
 
             <div class="clear"></div>
-          </div>
-          <div>
-
           </div>
         </div>
 
@@ -310,7 +299,7 @@ export default {
   position: relative;
   cursor: pointer;
   border: 1px solid #ccc;
-  width: 160px;
+  min-width: 160px;
   margin: 20px 20px 0 0;
   padding: 15px 20px 15px 20px;
 }
@@ -510,6 +499,13 @@ p.total-txt {
   .dg {
     background: url('../../../assets/images/icon/TA.png') no-repeat left center;
     background-size: 30px;
+  }
+
+  .ordershow-span-color {
+    width: 100%
+  }
+  .container {
+    margin: 0 20px
   }
 }
 

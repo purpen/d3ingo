@@ -186,7 +186,7 @@
                   <p class="pay-btn">
                     <span>等待客户支付项目资金 </span>
                   </p>
-                  <p class="capital-des">＊客户需要将项目资金预先托管至太火鸟SaaS，完成后项目将自动启动并进入项目管理阶段。</p>
+                  <p class="capital-des">＊客户需要将项目资金预先托管至{{custom.info}}，完成后项目将自动启动并进入项目管理阶段。</p>
                 </div>
               </el-collapse-item>
             </el-collapse>

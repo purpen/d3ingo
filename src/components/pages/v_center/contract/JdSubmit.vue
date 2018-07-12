@@ -808,6 +808,7 @@
     margin: 0 0 10px 5px;
     clear: both;
     cursor: pointer;
+    color: #ff5a5f
   }
 
   #line-hei-30 {

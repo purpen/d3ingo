@@ -746,6 +746,7 @@
     margin: 0 0 10px 5px;
     clear: both;
     cursor: pointer;
+    color: #ff5a5f
   }
 
   @media screen and (max-width: 767px) {
