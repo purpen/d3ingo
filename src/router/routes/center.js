@@ -343,6 +343,32 @@ module.exports = [
       require(['@/components/pages/v_center/contract/Down0'], resolve)
     }
   },
+  // 合同下载--京东（需求方）
+  {
+    path: '/vcenter/contract/jd_demand_download/:unique_id',
+    name: 'vcenterContractJdDemandDown',
+    meta: {
+      title: '合同下载',
+      requireAuth: true
+    },
+    // 按需加载
+    component: (resolve) => {
+      require(['@/components/pages/v_center/contract/JdDemandDown'], resolve)
+    }
+  },
+  // 合同下载--京东（设计方）
+  {
+    path: '/vcenter/contract/jd_design_download/:unique_id',
+    name: 'vcenterContractJdDesignDown',
+    meta: {
+      title: '合同下载',
+      requireAuth: true
+    },
+    // 按需加载
+    component: (resolve) => {
+      require(['@/components/pages/v_center/contract/JdDesignDown'], resolve)
+    }
+  },
   // 基本设置
   {
     path: '/vcenter/profile',

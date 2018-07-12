@@ -141,6 +141,7 @@ export default {
   created: function() {
     const self = this
     let stageId = this.$route.params.stage_id
+    console.log(this.$route.query.id)
     if (stageId) {
       self.stageId = stageId
       self.$http
