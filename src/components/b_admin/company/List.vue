@@ -9,13 +9,13 @@
 
           <div class="admin-menu-sub">
             <div class="admin-menu-sub-list">
-              <router-link :to="{name: 'adminCompanyList'}" active-class="false" :class="{'item': true, 'is-active': menuType == ''}">全部</router-link>
+              <router-link :to="{name: 'bAdminCompanyList'}" active-class="false" :class="{'item': true, 'is-active': menuType == ''}">全部</router-link>
             </div>
             <div class="admin-menu-sub-list">
-              <router-link :to="{name: 'adminCompanyList', query: {type: 3}}" :class="{'item': true, 'is-active': menuType === 3}" active-class="false">待审核</router-link>
+              <router-link :to="{name: 'bAdminCompanyList', query: {type: 3}}" :class="{'item': true, 'is-active': menuType === 3}" active-class="false">待审核</router-link>
             </div>
             <div class="admin-menu-sub-list">
-              <router-link :to="{name: 'adminCompanyList', query: {type: 1}}" :class="{'item': true, 'is-active': menuType === 1}" active-class="false">通过审核</router-link>
+              <router-link :to="{name: 'bAdminCompanyList', query: {type: 1}}" :class="{'item': true, 'is-active': menuType === 1}" active-class="false">通过审核</router-link>
             </div>
           </div>
 
@@ -113,7 +113,7 @@
               label="操作">
                 <template slot-scope="scope">
                   <p class="operate">
-                    <span class="clearfix">
+                    <!-- <span class="clearfix">
                       <a href="javascript:void(0);"
                         v-if="scope.row.verify_status === 2 || scope.row.verify_status === 3" @click="setVerify(scope.$index, scope.row, 1)" class="tag-pass">通过</a>
                       <a href="javascript:void(0);" v-if="scope.row.verify_status === 1 || scope.row.verify_status === 3" @click="setRefuseRease(scope.$index, scope.row, 2)"
@@ -121,8 +121,8 @@
                     </span>
                     <a href="javascript:void(0);" v-if="scope.row.status === 1" @click="setStatus(scope.$index, scope.row, 0)" class="tag-disable">禁用</a>
                     <a href="javascript:void(0);" v-else @click="setStatus(scope.$index, scope.row, 1)"
-                    class="tag-able">启用</a>
-                    <router-link :to="{name: 'adminCompanyShow', params: {id: scope.row.id}}" target="_blank" class="tag-view">查看</router-link>
+                    class="tag-able">启用</a> -->
+                    <router-link :to="{name: 'bAdminCompanyShow', params: {id: scope.row.id}}" target="_blank" class="tag-view">查看</router-link>
                   </p>
                   <!--
                   <p>

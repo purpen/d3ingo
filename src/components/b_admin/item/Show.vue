@@ -132,7 +132,7 @@
                 <p>相关附件</p>
               </el-col>
               <el-col :span="spanVal">
-                <p v-for="(d, index) in info.image"><a :href="d.file" target="_blank">{{ d.name }}</a></p>
+                <p v-for="(d, index) in info.image" :key="index+'d'"><a :href="d.file" target="_blank">{{ d.name }}</a></p>
               </el-col>
               <el-col :span="spanOpt">
               </el-col>
@@ -304,31 +304,31 @@
               </el-col>
               <el-col :span="spanVal">
                 <p>
-                     <div class="stage-item clearfix" v-for="(d, index) in item_stage" :key="index">
-                      <div class="stage-title clearfix">
-                        <h3>第{{ d.no }}阶段: {{ d.title }}</h3>
+                  <div class="stage-item clearfix" v-for="(d, index) in item_stage" :key="index">
+                  <div class="stage-title clearfix">
+                    <h3>第{{ d.no }}阶段: {{ d.title }}</h3>
 
-                        <p v-if="d.confirm === 0">
-                          <span>已确认</span>
-                        </p>
-                        <p v-else>
-                          <span v-if="d.confirm === 1">已确认</span>
-                        </p>
-                      </div>
-                      <div class="stage-asset-box clearfix" v-for="(asset, asset_index) in d.item_stage_image" :key="asset_index">
-                        <div class="contract-left">
-                          <div class="contract-content">
-                            <p>{{ asset.name }}</p>
-                            <p class="contract-des">{{ asset.created_at.date_format().format('yyyy-MM-dd') }}</p>
-                          </div>
-                        </div>
-                        <div class="contract-right">
-                          <p><a :href="asset.file + '?attname=' + asset.name"><i class="fa fa-download" aria-hidden="true"></i> 下载</a>
-                          </p>
-                        </div>
-                        <div class="clear"></div>
+                    <p v-if="d.confirm === 0">
+                      <span>已确认</span>
+                    </p>
+                    <p v-else>
+                      <span v-if="d.confirm === 1">已确认</span>
+                    </p>
+                  </div>
+                  <div class="stage-asset-box clearfix" v-for="(asset, asset_index) in d.item_stage_image" :key="asset_index">
+                    <div class="contract-left">
+                      <div class="contract-content">
+                        <p>{{ asset.name }}</p>
+                        <p class="contract-des">{{ asset.created_at.date_format().format('yyyy-MM-dd') }}</p>
                       </div>
                     </div>
+                    <div class="contract-right">
+                      <p><a :href="asset.file + '?attname=' + asset.name"><i class="fa fa-download" aria-hidden="true"></i> 下载</a>
+                      </p>
+                    </div>
+                    <div class="clear"></div>
+                  </div>
+                </div>
                 </p>
               </el-col>
               <el-col :span="spanOpt">
@@ -395,9 +395,9 @@
               <el-col :span="spanVal">
                 <p>{{ item.status_value }}</p>
               </el-col>
-              <el-col :span="spanOpt">
+              <!-- <el-col :span="spanOpt">
                 <p><el-button class="is-custom" size="small" @click="forceCloseBtn">关闭并退款</el-button></p>
-              </el-col>
+              </el-col> -->
             </el-row>
 
           </div>
@@ -666,7 +666,7 @@ export default {
     const self = this
     self.itemId = id
     self.isLoading = true
-    self.$http.get(api.adminItemShow, {params: {id: id}})
+    self.$http.get(api.jdItemShow, {params: {id: id}})
     .then (function(response) {
       self.isLoading = false
       if (response.data.meta.status_code === 200) {

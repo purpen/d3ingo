@@ -10,6 +10,7 @@ mallache.write_token = function (token) {
 }
 
 mallache.write_user = function (user) {
+  console.log('user1', user)
   let userInfo = {}
   if (user.type === 1) {
     userInfo = {
@@ -26,6 +27,7 @@ mallache.write_user = function (user) {
       child_account: user.child_account,
       status: user.status,
       verify_status: user.verify_status,
+      source_admin: user.source_admin,
       company: {
         company_name: user.demand_company_name,
         company_abbreviation: user.demand_company_abbreviation
@@ -46,6 +48,7 @@ mallache.write_user = function (user) {
       child_account: user.child_account,
       status: user.status,
       verify_status: user.verify_status,
+      source_admin: user.source_admin,
       design_company_logo_image: user.design_company_logo_image,
       company: {
         company_name: user.design_company_name,

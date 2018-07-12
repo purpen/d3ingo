@@ -172,20 +172,44 @@
       <div class="set-role-name">
         <p>账户：{{ currentAccount }}</p>
       </div>
-      <div>
-        <el-radio-group v-model.number="roleId">
-          <el-radio :label="0">用户</el-radio>
-          <el-radio :label="5">编辑</el-radio>
-          <el-radio :label="10">管理员</el-radio>
-          <el-radio :label="15">管理员plus</el-radio>
-        </el-radio-group>
-      </div>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="setRoleDialog = false">取 消</el-button>
-        <el-button type="primary" @click="setRole">确 定</el-button>
+      <el-row type="flex" align="middle">
+        <el-col :span="18">
+          <div>
+            <el-radio-group v-model.number="roleId">
+              <el-radio :label="0">用户</el-radio>
+              <el-radio :label="5">编辑</el-radio>
+              <el-radio :label="10">管理员</el-radio>
+              <el-radio :label="15">管理员plus</el-radio>
+            </el-radio-group>
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <div class="dialog-footer">
+            <!-- <el-button @click="setRoleDialog = false">取 消</el-button> -->
+            <el-button type="primary" @click="setRole">确 定</el-button>
+            <!-- slot="footer" -->
+          </div>
+        </el-col>
+      </el-row>
+      <p class="set-role-name m-t-10">京东权限</p>
+      <el-row type="flex" align="middle">
+        <el-col :span="12">
+          <el-radio-group v-model.number="jdRole">
+            <el-radio :label="1">京东管理员</el-radio>
+          </el-radio-group>
+          <!-- <el-checkbox v-model="checked">备选项</el-checkbox> -->
+        </el-col>
+        <el-col :span="6">
+          <el-button @click="setJdRole(1)">取 消</el-button>
+        </el-col>
+        <el-col :span="6">
+          <el-button type="primary" @click="setJdRole">确 定</el-button>
+        </el-col>
+      </el-row>
+      <div class="downDialog">
+        <el-button @click="setRoleDialog = false">关 闭</el-button>
       </div>
     </el-dialog>
-
   </div>
 </template>
 
@@ -206,6 +230,7 @@ export default {
       setRoleDialog: false,
       currentAccount: '',
       roleId: 0,
+      jdRole: '',
       query: {
         page: 1,
         pageSize: 50,
@@ -215,7 +240,6 @@ export default {
         evt: '',
         val: '',
         role_id: '',
-
         test: null
       },
       msg: ''
@@ -243,6 +267,7 @@ export default {
       this.$refs.roleUserId.value = item.id
       this.currentAccount = item.account
       this.roleId = item.role_id
+      this.jdRole = item.source_admin
       this.setRoleDialog = true
     },
     setRole() {
@@ -254,6 +279,32 @@ export default {
         self.setRoleDialog = false
         if (response.data.meta.status_code === 200) {
           self.itemList[index].role_id = self.roleId
+          self.$message.success('操作成功')
+        } else {
+          self.$message.error(response.data.meta.message)
+        }
+      })
+      .catch (function(error) {
+        self.setRoleDialog = false
+        self.$message.error(error.message)
+      })
+    },
+    setJdRole(dt) {
+      if (dt === 1 && this.jdRole !== 1) {
+        this.setRoleDialog = false
+        return false
+      }
+      if (dt === 1 && this.jdRole === 1) {
+        this.jdRole = 0
+      }
+      var userId = parseInt(this.$refs.roleUserId.value)
+      var index = parseInt(this.$refs.roleIndex.value)
+      var self = this
+      self.$http.post(api.adminUserChangeSourceAdmin, {user_id: userId, source_admin: self.jdRole})
+      .then (function(response) {
+        self.setRoleDialog = false
+        if (response.data.meta.status_code === 200) {
+          self.itemList[index].source_admin = self.jdRole
           self.$message.success('操作成功')
         } else {
           self.$message.error(response.data.meta.message)
@@ -339,5 +390,11 @@ export default {
   .set-role-name {
     margin-bottom: 20px;
   }
-
+  .downDialog {
+    text-align: center;
+    margin-top: 40px;
+  }
+  .m-t-10 {
+    margin-top: 10px;
+  }
 </style>

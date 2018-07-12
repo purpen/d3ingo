@@ -19,15 +19,20 @@
               </el-radio-group>
 
               <el-form label-position="top" :model="form" :rules="rules" class="uploadform" ref="ruleForm">
-
-                <el-form-item label="作品标题" prop="title" class="color222">
-                  <el-input v-model="form.title" class="title"></el-input>
-                </el-form-item>
-
-                <el-form-item label="作品介绍" prop="content" class="color222">
-                  <el-input type="textarea" :rows="rows" v-model="form.content" class="content"></el-input>
-                </el-form-item>
-
+                <el-row>
+                  <el-col :xs="24" :sm="24" :md="12" :lg="12">
+                    <el-form-item label="作品标题" prop="title" class="color222">
+                      <el-input v-model="form.title" class="title"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :xs="24" :sm="24" :md="12" :lg="12">
+                    <el-form-item label="作品介绍" prop="content" class="color222">
+                      <el-input type="textarea" :rows="rows" v-model="form.content" class="content"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
                 <p class="upload-pic">上传图片</p>
                 <el-upload
                   class="upload-demo"
@@ -53,6 +58,7 @@
                     <el-col :span="isMob ? 24 : 6" v-for="(d, index) in fileList" :key="index">
                       <el-card :body-style="{ padding: '0px' }" class="item">
                         <div class="image-box">
+                          <i v-if="parseInt(coverId) === d.response.asset_id"></i>
                           <img v-lazy="d.url">
                         </div>
                         <div class="content">
@@ -489,7 +495,19 @@
     position: relative;
     width: 160px;
   }
-
+  .image-box {
+    position: relative
+  }
+  .image-box i{
+    position: absolute;
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    background:url('../../../../assets/images/works/CornerMark.png') 0 0 no-repeat;
+    background-size: 50px 50px;
+    left: 0px;
+    top: 0px;
+  }
   .el-upload__tip {
     text-align: center;
     width: 100px;

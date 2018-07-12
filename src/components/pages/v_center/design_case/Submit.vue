@@ -183,7 +183,7 @@
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
                   <el-form-item label="设计类别" prop="design_type">
-                    <el-select v-model="design_types" multiple placeholder="设计类别">
+                    <el-select v-model="form.design_types" multiple placeholder="设计类别">
                       <el-option
                         v-for="item in typeDesignOptions"
                         :label="item.name"
@@ -382,6 +382,11 @@
       vueInputTag
     },
     data () {
+      // var designTypeval = (rule, value, callback) => {
+      //   if (!this.form.design_types || this.form.design_types.length === 0) {
+      //     callback('请选择设计类别')
+      //   }
+      // }
       return {
         userId: this.$store.state.event.user.id,
         itemId: null,
@@ -415,7 +420,6 @@
           field: '',
           industry: '',
           title: '',
-          design_type: [],
           prize_time: '',
           prize: '',
           patent_time: '',
@@ -431,9 +435,9 @@
           type: [
             {type: 'number', message: '请选择设计类型', trigger: 'change'}
           ],
-          design_type: [
-            {type: 'number', message: '请选择设计类别', trigger: 'change'}
-          ],
+          // design_type: [
+          //   {type: 'array', validator: designTypeval, trigger: 'blur'}
+          // ],
           field: [
             {type: 'number', message: '请选择设计领域', trigger: 'change'}
           ],
@@ -518,9 +522,15 @@
           that.$message.error ('必须设置一张封面图!')
           return false
         }
+        if (!that.form.design_types || that.form.design_types.length === 0) {
+          that.$message.error ('请选择至少一个设计类型!')
+          return false
+        }
         that.$refs[formName].validate ((valid) => {
+          console.log('1111')
           // 验证通过，提交
           if (valid) {
+            console.log('22222')
             let row = {
               type: that.form.type,
               field: that.form.field,
@@ -533,9 +543,9 @@
               label: that.form.label
             }
             row.cover_id = that.coverId
-            if (that.design_types && that.design_types.length !== 0) {
-              row.design_types = JSON.stringify(that.design_types)
-            } else row.design_types = null
+            if (that.form.design_types && that.form.design_types.length !== 0) {
+              row.design_types = JSON.stringify(that.form.design_types)
+            } else row.design_types = ''
             if (this.prizes && this.prizes.length !== 0) {
               for (var i = 0; i < this.prizes.length; i++) {
                 if (this.prizes[i].time === '' || this.prizes[i].type === '') {
@@ -566,7 +576,7 @@
             // }
             let apiUrl = null
             let method = null
-
+            console.log('333333')
             if (that.itemId) {
               method = 'put'
               apiUrl = api.designCaseId.format (that.itemId)
@@ -578,7 +588,6 @@
               }
             }
             that.isLoadingBtn = true
-            console.log(row)
             that.$http ({method: method, url: apiUrl, data: row})
               .then (function (response) {
                 if (response.data.meta.status_code === 200) {
@@ -931,9 +940,11 @@
               if (response.data.data.patent && response.data.data.patent.length !== 0) {
                 that.patents = response.data.data.patent
               }
-              if (response.data.data.design_types && response.data.data.design_types.length !== 0) {
-                that.design_types = response.data.data.design_types
-              }
+              that.form.design_types = response.data.data.design_types
+              console.log(response.data.data.design_types)
+              // if (des_types && des_types.length !== 0) {
+              //   that.form.design_types = des_types
+              // }
             }
           })
           .catch (function (error) {
