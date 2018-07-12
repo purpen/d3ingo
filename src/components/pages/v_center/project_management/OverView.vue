@@ -161,12 +161,12 @@
         </li>
       </ul>
       <div class="milestone-substages">
-        <div class="add-task" @click="addtack(formup)">
+        <!-- <div class="add-task" @click="addtack(formup)">
           <div class="task-substages"></div>
           <span>添加里程碑</span>
         </div>
         <div class="one-border">
-        </div>
+        </div> -->
         <div class="add-task" @click="addtack(formup)">
           <div class="task-milestone"></div>
           <span>添加子阶段</span>
@@ -686,10 +686,11 @@
 
                   </div>
                   <div v-if="designStageLists" class="item-chartContent" v-for="(c,indexc) in designStageLists" :key="indexc">
-                    <div v-for="(m,indexm) in c.milestone" :key="indexm+'m'"
+                    <!-- <div v-for="(m,indexm) in c.milestone" :key="indexm+'m'"
                       :style="{left:(m.left*30+125)+'px'}"
                       class="milestone-list"
                     > 
+                    储存
                       <p>{{m.name}}</p>
                       <i :class="[
                         {'noseccess-milestone':m.status === 0},
@@ -698,7 +699,7 @@
                         @click="editNode(m,c)"
                         >
                       </i>
-                    </div>
+                    </div> -->
                     <div
                       v-if="(c.design_substage&&(sort==='isday'||sort==='isweek'))" 
                       v-for="(tack, indextack) in c.design_substage" 
@@ -813,13 +814,14 @@
                         'bgweek': day.week===6 ||day.week===0
                         }
                         ]" v-if="sort === 'isday'">
-                        <div class="milestone-icon" @click="addMilestone(day, tt,c)">
+                        <!-- <div class="milestone-icon" @click="addMilestone(day, tt,c)">
                           <span class="tc-red">
+                            储存
                             添加里程碑
                           </span>
                           <i class="on-milestone">
                           </i>
-                        </div>
+                        </div> -->
                       </li>
                       <li v-for="(day,indexday) in tt.dayings" :key="indexday" :class="day.new?'bgc':''" v-if="sort === 'isweek'" class="dateday">
                       </li>
