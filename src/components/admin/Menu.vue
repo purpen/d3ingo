@@ -11,7 +11,7 @@
             <el-menu-item index="itemList" :route="{name: isthirdParty.id===0?'adminItemList':'bAdminItemList'}">列表</el-menu-item>
         </el-submenu>
 
-        <el-submenu index="3">
+        <el-submenu index="3" v-if="isthirdParty.id===0">
           <template slot="title"><i class="fa fa-product-hunt"></i> 设计公司管理</template>
             <el-menu-item index="companyList" :route="{name: isthirdParty.id===0?'adminCompanyList':'bAdminCompanyList'}">列表</el-menu-item>
         </el-submenu>

@@ -101,12 +101,12 @@
               width="100"
               label="操作">
                 <template slot-scope="scope">
-                  <!-- <p>
+                  <p>
                     <a href="javascript:void(0);" v-show="scope.row.sure_outline_transfer" @click="showTransfer(scope.$index, scope.row)">查看凭证</a>
                   </p>
                   <p>
                     <a href="javascript:void(0);" v-show="scope.row.sure_outline_transfer" @click="sureTransfer(scope.$index, scope.row)">确认收款</a>
-                  </p> -->
+                  </p>
                   <p>
                   <!--
                     <a href="javascript:void(0);" @click="handleEdit(scope.$index, scope.row.id)">编辑</a>
@@ -252,7 +252,7 @@ export default {
       }
       var self = this
       self.sureTransferLoading = true
-      this.$http.post(api.adminPayOrderTruePay, {pay_order_id: this.orderForm.orderId, bank_id: this.orderForm.bankId, pay_no: this.orderForm.payNo})
+      this.$http.post(api.jdPayOrderTruePay, {pay_order_id: this.orderForm.orderId, bank_id: this.orderForm.bankId, pay_no: this.orderForm.payNo})
       .then (function(response) {
         self.sureTransferLoading = false
         if (response.data.meta.status_code === 200) {
