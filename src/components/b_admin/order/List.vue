@@ -177,7 +177,7 @@
 
 <script>
 import api from '@/api/api'
-import vMenu from '@/components/admin/Menu'
+import vMenu from '@/components/b_admin/Menu'
 import typeData from '@/config'
 export default {
   name: 'admin_order_list',

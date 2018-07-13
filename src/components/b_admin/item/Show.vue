@@ -480,7 +480,7 @@
 
 <script>
 import api from '@/api/api'
-import vMenu from '@/components/admin/Menu'
+import vMenu from '@/components/b_admin/Menu'
 const vQuoteView = () => import('@/components/block/QuoteView')
 const vContractView = () => import('@/components/block/ContractView')
 export default {

@@ -460,8 +460,6 @@
           that.$message.error('请选择纳税人类型!')
           return false
         }
-        console.log('tax', that.form.taxable_type)
-        console.log('aaa', that.form.invoice_type)
         that.$refs[formName].validate((valid) => {
           // 验证通过，提交
           if (valid) {
