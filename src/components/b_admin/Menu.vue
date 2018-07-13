@@ -29,6 +29,13 @@
             <el-menu-item index="userList" :route="{name: 'bAdminUserList'}">列表</el-menu-item>
         </el-submenu>
       </el-menu>
+      <div class="go-d3ingo" v-if="isSysAdmin">
+        <router-link :to="{name: 'adminDashBoard'}">
+          <el-button type="danger">
+            铟果后台&nbsp;&gt;&gt;
+          </el-button>
+        </router-link>
+      </div>
     </div>
 
   </el-col>
@@ -50,6 +57,9 @@ export default {
   computed: {
     isthirdParty() {
       return this.$store.state.event.prod
+    },
+    isSysAdmin() {
+      return this.$store.state.event.user.role_id >= 10
     }
   },
   methods: {
@@ -73,5 +83,8 @@ export default {
   .admin-menu {
     font-size: 1.2rem;
   }
-
+  .go-d3ingo {
+    text-align: center;
+    margin-top :20px;
+  }
 </style>
