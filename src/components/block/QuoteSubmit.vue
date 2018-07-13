@@ -958,9 +958,6 @@ export default {
   .form-btn {
     float: right;
   }
-  .form-btn button:first-child {
-    /* padding: 10px 40px 10px 40px; */
-  }
   .add-plan {
     background-color: #F7F7F7;
   }
@@ -1076,9 +1073,6 @@ export default {
 
   .sum-box {
     margin: 0 0 50px 0;
-  }
-  .sum-box .tax-box {
-
   }
   .sum-box .tax-box p {
     float: right;

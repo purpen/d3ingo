@@ -122,7 +122,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="7" :md="7" :lg="7">
-                  <div v-for="(c, c_index) in d.arranged">
+                  <div v-for="(c, c_index) in d.arranged" :key="c_index">
 
                     <el-row>
                       <el-col :xs="24" :sm="12" :md="12" :lg="12">
@@ -974,9 +974,6 @@ export default {
 
   .sum-box {
     margin: 0 0 50px 0;
-  }
-  .sum-box .tax-box {
-  
   }
   .sum-box .tax-box p {
     float: right;
