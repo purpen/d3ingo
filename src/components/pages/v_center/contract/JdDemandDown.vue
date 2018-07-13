@@ -84,23 +84,25 @@
             {text: '地址: ' + this.form.demand_company_address, style: 'p'},
             {text: '联系人: ' + this.form.demand_company_legal_person, style: 'p'},
             {text: '电话: ' + this.form.demand_company_phone, style: 'p'},
-
-            {text: ' ', style: 'p'},
-            {text: '乙方（设计方）：', style: 'p'},
-            {text: '公司名称: ' + this.form.design_company_name, style: 'p'},
-            {text: '地址: ' + this.form.design_company_address, style: 'p'},
-            {text: '联系人: ' + this.form.design_company_legal_person, style: 'p'},
-            {text: '电话: ' + this.form.design_company_phone, style: 'p'},
-            {text: ' ', style: 'p'},
+            {text: '', style: 'marTB'},
+            {text: '乙方：', style: 'p'},
+            {text: '公司名称: ' + this.form.other_company_name, style: 'p'},
+            {text: '地址: ' + this.form.other_company_address, style: 'p'},
+            {text: '联系人: ' + this.form.other_company_legal_person, style: 'p'},
+            {text: '电话: ' + this.form.other_company_phone, style: 'p'},
+            {text: '', style: 'marTB'},
             {text: '依照中华人民共和国法律及本行业相关法规条例之规定，甲乙双方本着平等自愿和互惠互利的原则，就甲乙双方围绕设计项目展开的各项合作做如下约定：', style: 'p'},
             {text: '甲方在“京东云艺火”平台（以下简称“平台”）上发布设计需求项目（以下简称“项目”）；', style: 'p'},
             {text: '乙方通过平台承接项目，并有权为履行本合同之目的，委托第三方设计公司履行本合同项下全部或部分权利义务；', style: 'p'},
             {text: '甲、乙双方一致同意按照本合同的约定，由乙方向甲方提供项目所包含的设计服务成果交付等相应支持，为甲方实现设计需求。', style: 'p'},
             {text: '关于双方合作的相关细节约定如下：', style: 'p'},
-
             {text: '一、项目内容和项目费用', style: 'title'},
-            {text: '1、项目内容：', style: 'p'},
-            {text: this.form.title, style: 'p'},
+            {
+              text: [
+                {text: '1、项目内容：', style: 'p'},
+                {text: this.form.title}
+              ]
+            },
             {text: '', style: 'p'},
             {text: '2、项目费用：', style: 'p'},
             {
@@ -115,8 +117,8 @@
               ],
               style: 'p'
             },
-            {text: '', style: 'marB'},
-            // {text: '', style: 'p'},
+            // {text: '', style: 'marB'},
+            {text: '', style: 'p'},
             {text: '二、项目交付内容及交付时间', style: 'title'},
             {
               text: [
@@ -133,7 +135,7 @@
                 {text: '本项目总费用共计 '},
                 {text: ' ' + this.form.total + ' ', style: 'write'},
                 {text: '元，由甲方分'},
-                {text: ' ' + parseInt(this.form.sort + 1) + ' ', style: 'write'},
+                {text: '   ' + parseInt(this.form.sort + 1) + '   ', style: 'write'},
                 {text: '期支付给乙方。甲方履行付款义务的期限及支付金额如下：'}
               ],
               style: 'p'
@@ -215,6 +217,7 @@
               text: '1、本合同签订后，未经双方同意不得单方面中止，否则由责任方承担造成的损失。与合同有关的争议或执行中产生的争议将通过友好协商解决。如不能达成一致，可以直接向北京市大兴区有管辖权的人民法院起诉。',
               style: 'p'
             },
+            {text: ' ', style: 'marTB'},
             {text: '十、保密条款', style: 'title'},
             {
               text: '1、甲乙双方在签署及履行本协议过程中获得的有关技术方案、业务数据、投资者信息、费用支付及本协议内容等所有信息、资料和数据（无论其载体如何）、双方各自对投资者基于本协议约定的产生的业务数据均为保密信息。双方在方案设计、系统开发及业务开展的任何阶段，都应对保密信息承担保密义务。未经对方书面同意，任何一方不得在任何时间以任何方式向任何第三方透漏相关保密信息。但以下情况除外：',
@@ -284,6 +287,10 @@
             },
             marB: {
               marginBottom: 40
+            },
+            marTB: {
+              // marginTop: 5,
+              marginBottom: 13
             },
             write: {
               decoration: 'underline'

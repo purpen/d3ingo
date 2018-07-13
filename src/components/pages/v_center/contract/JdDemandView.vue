@@ -53,7 +53,7 @@
             <p>本项目总费用共计 <span class="bottom-border">{{form.total}}</span> 元，由甲方分<span class="bottom-border">{{form.sort + 1}}</span>期支付给乙方。甲方履行付款义务的期限及支付金额如下：</p>
             <p>1、合同签定后，甲方在<span class="bottom-border" type="text" disabled v-html="form.demand_pay_limit"></span>个工作日内向乙方支付首付款项，即总设计费用款项<span class="bottom-border">{{form.first_payment_proportion_p}}</span>%： ¥ <span class="bottom-border" type="text" disabled v-html="form.first_payment"></span>（RMB）元。</p>
             <div v-for="(d, index) in form.stages" :key="index + 100">
-              <p>{{ index + 2 }}、第{{ d.sort }}阶段 <span class="bottom-border" type="text" disabled v-html="d.title"></span> 确认后，甲方在三个工作日内向乙方支付总设计费用款项 <span class="bottom-border" type="text" disabled v-html="d.percentage"></span> %： ¥ <span class="bottom-border" type="text" disabled v-html="d.amount"></span>（RMB）元</p>
+              <p>{{ index + 2 }}、第 {{ d.sort }} 阶段 <span class="bottom-border" type="text" disabled v-html="d.title"></span> 确认后，甲方在三个工作日内向乙方支付总设计费用款项 <span class="bottom-border" type="text" disabled v-html="d.percentage"></span> %： ¥ <span class="bottom-border" type="text" disabled v-html="d.amount"></span>（RMB）元</p>
             </div>
             <p>&nbsp;</p>
             <p style="color: #FF5A5F">注：首付款收到后启动项目，最终款项收到后提交项目涉及的所有文件。</p>

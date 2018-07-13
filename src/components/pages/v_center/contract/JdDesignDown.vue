@@ -47,7 +47,7 @@
               {text: '个工作日内提交'},
               {text: '    ' + d.title + '   ', style: 'write'},
               {text: '; '},
-              {text: content}
+              {text: content, style: 'write'}
             ],
             style: 'p'
           }
@@ -80,10 +80,10 @@
             {text: this.itemName, style: 'header'},
             {text: '基本信息', style: 'title'},
             {text: '甲方(太火鸟)：', style: 'p'},
-            {text: '公司名称: ' + this.form.demand_company_name, style: 'p'},
-            {text: '地址: ' + this.form.demand_company_address, style: 'p'},
-            {text: '联系人: ' + this.form.demand_company_legal_person, style: 'p'},
-            {text: '电话: ' + this.form.demand_company_phone, style: 'p'},
+            {text: '公司名称: ' + this.form.thn_company_name, style: 'p'},
+            {text: '地址: ' + this.form.thn_company_address, style: 'p'},
+            {text: '联系人: ' + this.form.thn_company_legal_person, style: 'p'},
+            {text: '电话: ' + this.form.thn_company_phone, style: 'p'},
             {text: '', style: 'marTB'},
             {text: '乙方(设计公司)：', style: 'p'},
             {text: '公司名称: ' + this.form.design_company_name, style: 'p'},
@@ -98,8 +98,13 @@
             {text: '关于双方合作的相关细节约定如下：', style: 'p'},
 
             {text: '一、项目名称和费用', style: 'title'},
-            {text: '1、项目名称：', style: 'p'},
-            {text: '     ' + this.form.title, style: 'p'},
+            {
+              text: [
+                {text: '1、项目名称：'},
+                {text: this.form.title, style: 'write'}
+              ],
+              style: 'p'
+            },
             {text: '', style: 'p'},
             {text: '2、费用：', style: 'p'},
             {
