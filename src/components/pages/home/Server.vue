@@ -190,10 +190,6 @@
     align-items: center;
   }
 
-  .pub .pub-btn {
-    /* padding: 15px 40px 15px 40px; */
-  }
-
   .item_1_title {
     color: #222;
     font-size: 2rem;
@@ -292,10 +288,6 @@
     }
     .pub {
       margin: 10px 0 0 0;
-    }
-
-    .pub .pub-btn {
-      /* padding: 10px 15px; */
     }
   }
 

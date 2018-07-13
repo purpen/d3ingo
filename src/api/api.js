@@ -163,6 +163,7 @@ export default {
   adminUserEdit: '/admin/user/edit', // POST 修改用户信息
   adminUserSetStatus: '/admin/user/changeStatus', // POST 修改用户状态
   adminUserSetRole: '/admin/user/changeRole', // POST 修改用户角色
+  adminUserChangeSourceAdmin: '/admin/user/changeSourceAdmin', // POST 修改来源管理员
 
   // 项目管理
   adminItemList: '/admin/item/lists', // 项目列表
@@ -403,12 +404,35 @@ export default {
   designStageNodeUpdate: '/designStageNode/update', // PUT 编辑
   designStageNode: '/designStageNode', // GET 详情
   designStageNodeCompletes: '/designStageNode/completes', // PUT 编辑完成状态
-
+  // 里程碑
+  milestoneCreate: '/milestone/create', // POST 创建
+  milestoneDelete: '/milestone/delete', // DELETE 删除
+  milestoneUpdate: '/milestone/update', // PUT 更新
+  milestoneCompletes: '/milestone/completes', // PUT 完成未完成
+  milestone: '/milestone', // GET 里程碑详情
   // 个人项目统计
   userStatistical: '/designProject/userStatistical', // GET 列表
 
   // 消息通知列表
   designNoticeLists: '/designNotice/lists', // GET 列表
   designNoticeTrueRead: '/designNotice/trueRead', // PUT 确认阅读
-  designNoticeDelete: '/designNotice/delete' // DELETE 删除
+  designNoticeDelete: '/designNotice/delete', // DELETE 删除
+
+  // jd用户信息
+  jdUserLists: '/jd/user/lists', // GET 获取用户信息列表
+  jdUserShow: '/jd/user/show', // GET 用户详情
+
+  // jd需求公司
+  jdDemandCompanyLists: '/jd/demandCompany/lists', // GET 需求公司列表
+  jdDemandCompanyShow: '/jd/demandCompany/show', // GET 需求公司详情
+
+  // jd项目列表
+  jdItemLists: '/jd/item/lists', // GET jd项目列表
+  jdItemShow: '/jd/item/show', // GET jd项目详情
+
+  // 项目订单
+  jdPayOrderTruePay: '/jd/payOrder/truePay', // POST 确认项目支付单付款
+  jdPayOrderLists: '/jd/payOrder/lists', // GET 项目支付单列表
+  jdPayOrderShow: '/jd/payOrder/show' // GET 项目支付单详情
+
 }

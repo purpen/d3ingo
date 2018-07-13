@@ -9,8 +9,8 @@
 
         <div class="admin-menu-sub">
           <div class="admin-menu-sub-list">
-            <router-link :to="{name: 'adminOrderList'}" active-class="false" :class="{'item': true, 'is-active': menuType === 0}">全部</router-link>
-            <router-link :to="{name: 'adminOrderList', query: {status: '0', bank_transfer: '1'}}" active-class="false" :class="{'item': true, 'is-active': menuType === 5}">待审核</router-link>
+            <router-link :to="{name: 'bAdminOrderList'}" active-class="false" :class="{'item': true, 'is-active': menuType === 0}">全部</router-link>
+            <router-link :to="{name: 'bAdminOrderList', query: {status: '0', bank_transfer: '1'}}" active-class="false" :class="{'item': true, 'is-active': menuType === 5}">待审核</router-link>
           </div>
         </div>
 
@@ -252,7 +252,7 @@ export default {
       }
       var self = this
       self.sureTransferLoading = true
-      this.$http.post(api.adminPayOrderTruePay, {pay_order_id: this.orderForm.orderId, bank_id: this.orderForm.bankId, pay_no: this.orderForm.payNo})
+      this.$http.post(api.jdPayOrderTruePay, {pay_order_id: this.orderForm.orderId, bank_id: this.orderForm.bankId, pay_no: this.orderForm.payNo})
       .then (function(response) {
         self.sureTransferLoading = false
         if (response.data.meta.status_code === 200) {
@@ -297,7 +297,7 @@ export default {
         this.menuType = 0
       }
       self.isLoading = true
-      self.$http.get(api.adminPayOrderLists, {params: {page: self.query.page, per_page: self.query.pageSize, status: self.query.status, sort: self.query.sort, type: self.query.type, pay_type: self.query.pay_type, bank_transfer: self.query.bank_transfer, evt: self.query.evt, val: self.query.val}})
+      self.$http.get(api.jdPayOrderLists, {params: {page: self.query.page, per_page: self.query.pageSize, status: self.query.status, sort: self.query.sort, type: self.query.type, pay_type: self.query.pay_type, bank_transfer: self.query.bank_transfer, evt: self.query.evt, val: self.query.val}})
       .then (function(response) {
         self.isLoading = false
         self.tableData = []

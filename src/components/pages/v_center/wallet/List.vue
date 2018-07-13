@@ -155,7 +155,7 @@
     <!--弹框模板-->
     <el-dialog :title="itemModelTitle" v-model="itemModel" class="withdraw text-center">
       <div class="withdraw-input display-fl" v-if="corporationInfo.account_name !== '' || corporationInfo.bank_name !== '' || corporationInfo.account_number !== ''">
-        <div class="withdraw-title margin-t-b-20 dis-ju" v-if=""><p>开户名称:</p><span>{{corporationInfo.account_name}}</span></div>
+        <div class="withdraw-title margin-t-b-20 dis-ju"><p>开户名称:</p><span>{{corporationInfo.account_name}}</span></div>
         <div class="withdraw-title margin-t-b-20 dis-ju"><p>开户银行：</p><span>{{corporationInfo.bank_name}}</span></div>
         <div class="withdraw-title margin-t-b-20 dis-ju"><p>对公银行账号：</p><span>{{corporationInfo.account_number}}</span></div>
       </div>
@@ -525,9 +525,6 @@
   .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
     opacity: 0;
   }
-  .content-item-box {
-
-  }
 
   .my-wallet {
     background: #FAFAFA;
@@ -539,10 +536,6 @@
   .my-wallet-m {
     border: 1px solid #e6e6e6;
     height: auto;
-  }
-
-  .wallet-box {
-
   }
   .el-dialog__footer .dialog-footer .el-button:last-child {
     margin: 0 !important;

@@ -13,7 +13,7 @@
             <p>联系人: <span class="no-border">{{form.demand_company_legal_person}}</span></p>
             <p>电话: <span class="no-border">{{form.demand_company_phone}}</span></p>
             <p>&nbsp;</p>
-            <p>乙方(设计方):</p>
+            <p>乙方:</p>
             <p>公司名称: <span class="no-border">{{form.other_company_name}}</span></p>
             <p>地址: <span class="no-border">{{form.other_company_address}}</span></p>
             <p>联系人: <span class="no-border">{{form.other_company_legal_person}}</span></p>

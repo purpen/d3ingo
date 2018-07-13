@@ -260,7 +260,7 @@
                   <span v-else type="warning">待认证</span>
                 </p>
               </el-col>
-              <el-col :span="spanOpt">
+              <!-- <el-col :span="spanOpt">
                 <p class="opt opt-mar" v-if="item.verify_status === 0">
                   <el-button class="is-custom" :loading="verifyLoadingBtn" size="small" @click="setRefuseRease(2)">拒绝</el-button>
                   <el-button type="primary" class="is-custom" :loading="verifyLoadingBtn" size="small" @click="setVerify(1)">通过</el-button>
@@ -269,7 +269,7 @@
                   <el-button class="is-custom" :loading="verifyLoadingBtn" size="small" v-if="item.verify_status === 1" @click="setRefuseRease(2)">拒绝</el-button>
                   <el-button type="primary" class="is-custom mar-0" :loading="verifyLoadingBtn" size="small" v-else @click="setVerify(1)">通过</el-button>
                 </p>
-              </el-col>
+              </el-col> -->
             </el-row>
 
           </div>
@@ -354,7 +354,7 @@ export default {
     const self = this
     self.itemId = id
     self.isLoading = true
-    self.$http.get(api.adminDemandCompanyShow, {params: {id: id}})
+    self.$http.get(api.jdDemandCompanyShow, {params: {id: id}})
     .then (function(response) {
       self.isLoading = false
       if (response.data.meta.status_code === 200) {

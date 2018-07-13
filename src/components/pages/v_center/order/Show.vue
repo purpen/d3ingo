@@ -5,7 +5,7 @@
       <div :class="{'vcenter-right-plus': leftWidth === 4,
         'vcenter-right': leftWidth === 2,
         'vcenter-right-mob': isMob}">
-        <div class="right-content vcenter-container" style="width: 880px">
+        <div class="right-content vcenter-container">
           <!--
           <v-menu-sub></v-menu-sub>
           -->
@@ -95,12 +95,19 @@
               <p>订单编号: <span>{{ item.uid }}</span></p>
               <p>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注: <span>{{ item.summary }}</span></p>
               <p>创建时间: <span>{{ item.created_at }}</span></p>
-
-              <div class="outline-pay" v-show="item.pay_type === 5">
+              
+              <div class="outline-pay" v-if="item.source === 0" v-show="item.pay_type === 5">
                 <p class="detail-banner">对公转账</p>
                 <p>收款公司: <span>北京太火红鸟科技有限公司</span></p>
                 <p>收款账户: <span>1109 1002 8310 202</span></p>
                 <p>开&nbsp;&nbsp;户&nbsp;行: <span>招商银行北京华贸中心支行</span></p>
+              </div>
+              <div class="outline-pay jd-pay" v-if="item.source === 1" v-show="item.pay_type === 5">
+                <p class="detail-banner">京东云市场支付</p>
+                <p>如未支付，请点击下面按钮，到京东云市场完成下单支付</p>
+                <a target="_blank" href="https://market.jdcloud.com/#/service/details/576846"
+                class="to-pay middle-button full-red-button">去支付</a>
+                <p class="margin-top-0">并在支付完成后，上传订单详情截图凭证。</p>
               </div>
             </div>
           </div>
@@ -289,10 +296,14 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-  .content {
+  .to-pay {
+    display: block;
+    width: 120px;
+    text-align: center
   }
-
+  .right-content {
+    width: 880px
+  }
   .content-box {
     height: 100%;
     border: 1px solid #ccc;
@@ -342,16 +353,8 @@
     font-size: 1.2rem;
   }
 
-  .operation p {
-    /*line-height: 50px;*/
-  }
-
   .operation p button {
     width: 120px;
-  }
-
-  .detail {
-
   }
 
   .detail p {
@@ -359,6 +362,9 @@
     line-height: 2.5;
   }
 
+  .detail p.margin-top-0 {
+    margin-top: 0
+  }
   .detail p span {
     color: #222222;
     margin-left: 20px;
@@ -452,6 +458,11 @@
     color: #ff5a5f;
   }
 
+@media screen and (max-width: 879px) {
+  .right-content {
+    width: 100%
+  }
+}
 @media screen and (max-width: 767px) {
   .right-content .content-box {
     border: none;

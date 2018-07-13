@@ -150,7 +150,7 @@
             <el-row :gutter="24">
               <el-col :span="isMob ? 24 : 12">
                 <el-form-item label="联系人手机" prop="phone">
-                  <el-input v-model="form.phone" placeholder=""></el-input>
+                  <el-input v-model.number="form.phone" placeholder=""></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -428,10 +428,11 @@
             {required: true, message: '请添写联系人职位', trigger: 'blur'}
           ],
           phone: [
-            {required: true, message: '请添写联系人电话', trigger: 'blur'}
+            {type: 'integer', required: true, message: '请添写正确的电话', trigger: 'blur'},
+            {type: 'integer', message: '请添写正确的电话', trigger: 'blur'}
           ],
           email: [
-            {required: true, message: '请添写联系人邮箱', trigger: 'blur'}
+            {type: 'email', required: true, message: '请添写联系人邮箱', trigger: 'blur'}
           ],
           address: [
             {required: true, message: '请添写公司地址', trigger: 'blur'}
@@ -455,6 +456,12 @@
           that.$message.error('公司认证之前请先确认条款!')
           return false
         }
+        if (that.form.taxable_type === 0) {
+          that.$message.error('请选择纳税人类型!')
+          return false
+        }
+        console.log('tax', that.form.taxable_type)
+        console.log('aaa', that.form.invoice_type)
         that.$refs[formName].validate((valid) => {
           // 验证通过，提交
           if (valid) {
@@ -772,18 +779,6 @@
 
   .diage-footer {
     text-align: center;
-  }
-
-  .diage-footer button {
-    /* padding: 10px 30px; */
-  }
-
-  .agree-content {
-
-  }
-
-  .agree-content h3 {
-
   }
   .hint:after {
     content: '';

@@ -135,7 +135,7 @@
             <el-table-column
               width="100"
               label="操作">
-                <template slot-scope="scope">
+                <!-- <template slot-scope="scope">
                   <p>
                     <a href="javascript:void(0);" v-if="scope.row.status === 0" @click="setStatus(scope.$index, scope.row, -1)">禁用</a>
                     <a href="javascript:void(0);" v-else @click="setStatus(scope.$index, scope.row, 0)">启用</a>
@@ -144,10 +144,10 @@
                     <a href="javascript:void(0);" @click="setRoleBtn(scope.$index, scope.row)">权限设置</a>
                   </p>
                   <p>
-                    <router-link :to="{name: 'adminUserSubmit', query: {id: scope.row.id}}">编辑</router-link>
+                    <router-link :to="{name: 'adminUserSubmit', query: {id: scope.row.id}}">编辑</router-link> -->
                     <!--<a href="javascript:void(0);" @click="handleDelete(scope.$index, scope.row.id)">删除</a>-->
-                  </p>
-                </template>
+                  <!-- </p>
+                </template> -->
             </el-table-column>
           </el-table>
 
@@ -294,7 +294,7 @@ export default {
         this.menuType = parseInt(self.query.type)
       }
       self.isLoading = true
-      self.$http.get(api.adminUserLists, {params: {page: self.query.page, per_page: self.query.pageSize, sort: self.query.sort, type: self.query.type, evt: self.query.evt, val: self.query.val, role_id: self.query.role_id}})
+      self.$http.get(api.jdUserLists, {params: {page: self.query.page, per_page: self.query.pageSize, sort: self.query.sort, type: self.query.type, evt: self.query.evt, val: self.query.val, role_id: self.query.role_id}})
       .then (function(response) {
         self.isLoading = false
         self.tableData = []
