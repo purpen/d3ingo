@@ -787,7 +787,9 @@
   }
 
   .slide-left, .slide-right {
-    flex: 1;
+    /* flex: 1 0 auto; */
+    display: block;
+    width: 50%;
     padding: 10px 15px;
   }
 
@@ -796,11 +798,12 @@
     align-items: center;
   }
   .slide-left_c {
+    width: 100%;
     padding-bottom: 60px;
   }
 
   .slide-right img {
-    width: 100%;
+    width: calc(100% - 60px);
     border-radius: 6px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   }

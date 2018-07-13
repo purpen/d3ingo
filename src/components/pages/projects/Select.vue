@@ -119,6 +119,13 @@ export default {
     transition: none;
     border-color: rgba(255, 255, 255, 0.75)
   }
+  .project-cover {
+    display: block;
+  }
+  .project-item-box {
+    margin: 0 auto;
+    padding-top: 150px;
+  }
   .project-item-box .item:nth-child(n + 4) {
     cursor: not-allowed;
     color: rgba(255, 255, 255, 0.5)

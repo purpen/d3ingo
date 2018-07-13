@@ -84,6 +84,14 @@ export default {
 </script>
 
 <style scoped>
+  .project-cover {
+    display: block;
+  }
+  .content {
+    margin: 0 auto;
+    padding-top: 280px;
+    width: 650px;
+  }
   h2 {
     padding-bottom: 20px;
     font-size: 24px;
