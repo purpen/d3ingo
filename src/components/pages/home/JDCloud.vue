@@ -1,5 +1,5 @@
 <template>
-  <div class="js-cloud">
+  <div class="jd-cloud">
     <div class="jdc-banner">
       <div class="content">
         <section class="con-left">
@@ -20,9 +20,11 @@
       <p class="text-center fz-14 tc-6 padding-b-50">包括：产品初态定义、产能科学匹配、创意产品设计，产品创新升级；开发成熟的潜力产品还可直接进入投资孵化快速通道，享受全网精准零售渠道和投资孵化等增值服务，打通产品从0-1再从1-N的通路，铸造单品爆款。</p>
       <el-row :gutter="isMob ? 0 : 20" class="flex padding-b-60">
         <el-col class="col-parent" :xs="24" :sm="8" :md="8" :lg="8" v-for="(ele, index) in colList" :key="index">
-          <div class="col">
-            <img :src="ele.img" alt="">
-            <p class="tc-6">{{ele.title}}</p>
+          <div class="col clearfix">
+            <img class="fl" :src="ele.img" alt="">
+            <p class="fl tc-6 table">
+              <span>{{ele.title}}</span>
+            </p>
           </div>
         </el-col>
       </el-row>
@@ -167,7 +169,7 @@ export default {
         pagination: '.swiper-pagination',
         paginationClickable: true,
         lazyLoading: true,
-        autoplay: 5000,
+        autoplay: 5000000,
         prevButton: '.swiper-button-prev',
         nextButton: '.swiper-button-next',
         spaceBetween: 0
@@ -286,6 +288,9 @@ export default {
 }
 </script>
 <style scoped>
+  .jd-cloud {
+    flex: 1 0 auto
+  }
   .jdc-banner {
     color: #fff;
     height: 440px;
@@ -372,21 +377,36 @@ export default {
   .col {
     padding: 20px 30px;
     border: 1px solid #E4F1FA;
-    display: flex;
-    align-items: center;
+    /* display: flex;
+    align-items: center; */
     height: 100%;
   }
   .col-column {
+    display: flex;
+    align-items: center;
     flex-direction: column;
     border: 0;
     margin: 0;
+  }
+  .table {
+    display: table;
+    /* vertical-align: middle; */
+    height: inherit
+  }
+  .table span {
+    display: table-cell;
+    vertical-align: middle;
   }
   .col img {
     width: 60px;
     /* height: 60px; */
   }
   .col p {
+    max-width: calc(100% - 80px);
     margin-left: 20px;
+  }
+  .col-column p {
+    margin-left: 0
   }
   .col-column img {
     width: 100px;
@@ -436,7 +456,7 @@ export default {
 
   .anli {
     overflow: hidden;
-    max-width: 1280px;
+    max-width: 1180px;
     padding-bottom: 50px;
     margin: 0 auto -50px;
   }
@@ -446,7 +466,9 @@ export default {
   }
 
   .slide-left, .slide-right {
-    flex: 1;
+    /* flex: 1 0 auto; */
+    display: block;
+    width: 50%;
     padding: 10px 15px;
   }
 
@@ -455,11 +477,12 @@ export default {
     align-items: center;
   }
   .slide-left_c {
+    width: 100%;
     padding-bottom: 60px;
   }
 
   .slide-right img {
-    width: 100%;
+    width: calc(100% - 60px);
     border-radius: 6px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   }

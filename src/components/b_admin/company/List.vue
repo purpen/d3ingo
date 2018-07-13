@@ -163,7 +163,7 @@
 
 <script>
 import api from '@/api/api'
-import vMenu from '@/components/admin/Menu'
+import vMenu from '@/components/b_admin/Menu'
 export default {
   name: 'admin_company_list',
   components: {

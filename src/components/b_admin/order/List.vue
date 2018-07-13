@@ -62,7 +62,7 @@
               label="项目信息"
               width="140">
                 <template slot-scope="scope">
-                  <p>名称: <router-link :to="{name: 'adminItemShow', params: {id: scope.row.item_id}}" target="_blank">{{ scope.row.item_name }}</router-link></p>
+                  <p>名称: <router-link :to="{name: 'bAdminItemShow', params: {id: scope.row.item_id}}" target="_blank">{{ scope.row.item_name }}</router-link></p>
                   <p>阶段: {{ scope.row.item_stage_id }}</p>
                 </template>
             </el-table-column>
@@ -146,6 +146,7 @@
         </el-form-item>
         <el-form-item label="所属银行" prop="bandId">
           <el-select v-model.number="orderForm.bankId" placeholder="请选择银行">
+            <el-option label="京东云支付" :value="-1"></el-option>
             <el-option
               v-for="(item, index) in bankOptions"
               :label="item.label"
@@ -177,7 +178,7 @@
 
 <script>
 import api from '@/api/api'
-import vMenu from '@/components/admin/Menu'
+import vMenu from '@/components/b_admin/Menu'
 import typeData from '@/config'
 export default {
   name: 'admin_order_list',

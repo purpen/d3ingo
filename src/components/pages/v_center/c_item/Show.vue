@@ -1473,10 +1473,6 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-  .content {
-  }
-
   .red {
     color: red;
   }
@@ -1526,13 +1522,6 @@
     float: left;
   }
 
-  .select-company-item .company-title {
-    /*width: 350px;*/
-    /*height: 160px;*/
-    /*float: left;*/
-    /*overflow: hidden;*/
-  }
-
   .select-company-item .content .img {
     height: 180px;
     display: block;
@@ -1564,9 +1553,6 @@
     margin: 10px;
     float: left;
     padding-top: 45px;
-  }
-
-  .select-company-item .case-box a {
   }
 
   .pub-btn {
@@ -1798,10 +1784,6 @@
     text-align: center;
   }
 
-  .finish-item-btn button {
-    /* padding: 10px 60px 10px 60px; */
-  }
-
   .finish-item-stat {
     margin-top: 20px;
     font-size: 2rem;
@@ -1862,9 +1844,6 @@
   .taking-price-btn {
     float: right;
     margin-bottom: 20px;
-  }
-
-  .evaluate-result {
   }
 
   .eva-content {

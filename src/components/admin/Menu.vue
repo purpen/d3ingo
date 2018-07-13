@@ -2,41 +2,41 @@
   <el-col :span="4">
     <div class="admin-menu">
       <el-menu :default-active="selectedName" class="" @select="handleSelect" @open="handleOpen" @close="handleClose" router>
-        <el-submenu index="1" v-if="isthirdParty.id===0">
+        <el-submenu index="1">
           <template slot="title"><i class="fa fa-tachometer"></i> 控制台</template>
             <el-menu-item index="dashBoard" :route="{name: 'adminDashBoard'}">概览</el-menu-item>
         </el-submenu>
         <el-submenu index="2">
           <template slot="title"><i class="fa fa-file-text"></i> 项目管理</template>
-            <el-menu-item index="itemList" :route="{name: isthirdParty.id===0?'adminItemList':'bAdminItemList'}">列表</el-menu-item>
+            <el-menu-item index="itemList" :route="{name:'adminItemList'}">列表</el-menu-item>
         </el-submenu>
 
-        <el-submenu index="3" v-if="isthirdParty.id===0">
+        <el-submenu index="3">
           <template slot="title"><i class="fa fa-product-hunt"></i> 设计公司管理</template>
-            <el-menu-item index="companyList" :route="{name: isthirdParty.id===0?'adminCompanyList':'bAdminCompanyList'}">列表</el-menu-item>
+            <el-menu-item index="companyList" :route="{name: 'adminCompanyList'}">列表</el-menu-item>
         </el-submenu>
         <el-submenu index="4">
           <template slot="title"><i class="fa fa-product-hunt"></i> 需求公司管理</template>
-            <el-menu-item index="demandCompanyList" :route="{name: isthirdParty.id===0?'adminDemandCompanyList':'bAdminDemandCompanyList'}">列表</el-menu-item>
+            <el-menu-item index="demandCompanyList" :route="{name:'adminDemandCompanyList'}">列表</el-menu-item>
         </el-submenu>
         <el-submenu index="5">
           <template slot="title"><i class="fa fa-file-text"></i> 订单管理</template>
-            <el-menu-item index="orderList" :route="{name:isthirdParty.id===0?'adminOrderList':'bAdminOrderList'}">列表</el-menu-item>
+            <el-menu-item index="orderList" :route="{name:'adminOrderList'}">列表</el-menu-item>
         </el-submenu>
-        <el-submenu index="6" v-if="isthirdParty.id===0">
+        <el-submenu index="6">
           <template slot="title"><i class="fa fa-money"></i> 提现管理</template>
             <el-menu-item index="withDrawList" :route="{name: 'adminWithDrawList'}">列表</el-menu-item>
         </el-submenu>
-        <el-submenu index="7" v-if="isthirdParty.id===0">
+        <el-submenu index="7">
           <template slot="title"><i class="fa fa-money"></i> 发票管理</template>
             <el-menu-item index="adminReceiveInvoicetList" :route="{name: 'adminReceiveInvoicetList'}">待收</el-menu-item>
             <el-menu-item index="adminIssueInvoicetList" :route="{name: 'adminIssueInvoicetList'}">待发</el-menu-item>
         </el-submenu>
-        <el-submenu index="8" v-if="isthirdParty.id===0">
+        <el-submenu index="8">
           <template slot="title"><i class="fa fa-clipboard"></i> 案例管理</template>
             <el-menu-item index="designCaseList" :route="{name: 'adminDesignCaseList'}">列表</el-menu-item>
         </el-submenu>
-        <el-submenu index="15" v-if="isthirdParty.id===0">
+        <el-submenu index="15">
           <template slot="title"><i class="fa fa-window-maximize" aria-hidden="true"></i> 内容管理</template>
             <el-menu-item index="columnList" :route="{name: 'adminColumnList'}">栏目列表</el-menu-item>
             <el-menu-item index="blockList" :route="{name: 'adminBlockList'}">区块列表</el-menu-item>
@@ -47,14 +47,14 @@
             <el-menu-item index="commonlySiteList" :route="{name: 'adminCommonlySiteList'}">常用网站列表</el-menu-item>
             <el-menu-item index="awardCaseList" :route="{name: 'adminAwardCaseList'}">奖项案例列表</el-menu-item>
         </el-submenu>
-        <el-submenu index="18" v-if="isthirdParty.id===0">
+        <el-submenu index="18">
           <template slot="title"><i class="fa fa-cogs"></i> 系统管理</template>
             <el-menu-item index="categoryList" :route="{name: 'adminCategoryList'}">分类列表</el-menu-item>
             <el-menu-item index="noticeList" :route="{name: 'adminNoticeList'}">通知列表</el-menu-item>
         </el-submenu>
         <el-submenu index="20">
           <template slot="title"><i class="fa fa-user"></i> 用户管理</template>
-            <el-menu-item index="userList" :route="{name: isthirdParty.id===0?'adminUserList':'bAdminUserList'}">列表</el-menu-item>
+            <el-menu-item index="userList" :route="{name: 'adminUserList'}">列表</el-menu-item>
         </el-submenu>
       </el-menu>
     </div>
