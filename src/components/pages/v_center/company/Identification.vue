@@ -780,18 +780,6 @@
   .diage-footer {
     text-align: center;
   }
-
-  .diage-footer button {
-    /* padding: 10px 30px; */
-  }
-
-  .agree-content {
-
-  }
-
-  .agree-content h3 {
-
-  }
   .hint:after {
     content: '';
     width: 16px;

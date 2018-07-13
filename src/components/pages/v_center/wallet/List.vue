@@ -155,7 +155,7 @@
     <!--弹框模板-->
     <el-dialog :title="itemModelTitle" v-model="itemModel" class="withdraw text-center">
       <div class="withdraw-input display-fl" v-if="corporationInfo.account_name !== '' || corporationInfo.bank_name !== '' || corporationInfo.account_number !== ''">
-        <div class="withdraw-title margin-t-b-20 dis-ju" v-if=""><p>开户名称:</p><span>{{corporationInfo.account_name}}</span></div>
+        <div class="withdraw-title margin-t-b-20 dis-ju"><p>开户名称:</p><span>{{corporationInfo.account_name}}</span></div>
         <div class="withdraw-title margin-t-b-20 dis-ju"><p>开户银行：</p><span>{{corporationInfo.bank_name}}</span></div>
         <div class="withdraw-title margin-t-b-20 dis-ju"><p>对公银行账号：</p><span>{{corporationInfo.account_number}}</span></div>
       </div>
@@ -263,7 +263,6 @@
         const self = this
         self.query.page = parseInt (this.$route.query.page || 1)
         self.query.sort = this.$route.query.sort || 1
-
         self.isLoading = true
         self.$http.get (api.fundLogList, {
           params: {
@@ -464,14 +463,21 @@
       // 获取公司名称银行卡信息
       self.$http({method: requestMethod, url: userInfo}).then (function (response) {
         let getCorporationInfo = response.data.data
-        self.bankId = getCorporationInfo.id
-        if (getCorporationInfo) {
-          self.corporationInfo = getCorporationInfo
-          var str = self.corporationInfo.account_number
-          var reg = /^(\d{4})\d+(\d{4})$/
-          str = str.replace (reg, '$1****$2')
-          self.corporationInfo.account_number = str
+        if (response.data.meta.status_code === 200 && response.data.data !== '') {
+          self.bankId = getCorporationInfo.id
+          if (getCorporationInfo) {
+            self.corporationInfo = getCorporationInfo
+            var str = self.corporationInfo.account_number
+            var reg = /^(\d{4})\d+(\d{4})$/
+            str = str.replace (reg, '$1****$2')
+            self.corporationInfo.account_number = str
+          }
         }
+      })
+      .catch (function (error) {
+        self.$message.error (error.message)
+        self.walletLoading = false
+        return false
       })
       // 获取我的钱包
       self.walletLoading = true
@@ -519,9 +525,6 @@
   .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
     opacity: 0;
   }
-  .content-item-box {
-
-  }
 
   .my-wallet {
     background: #FAFAFA;
@@ -533,10 +536,6 @@
   .my-wallet-m {
     border: 1px solid #e6e6e6;
     height: auto;
-  }
-
-  .wallet-box {
-
   }
   .el-dialog__footer .dialog-footer .el-button:last-child {
     margin: 0 !important;

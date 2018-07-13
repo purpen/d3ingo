@@ -11,7 +11,7 @@
             <el-menu-item index="itemList" :route="{name:'adminItemList'}">列表</el-menu-item>
         </el-submenu>
 
-        <el-submenu index="3" v-if="isthirdParty.id===0">
+        <el-submenu index="3">
           <template slot="title"><i class="fa fa-product-hunt"></i> 设计公司管理</template>
             <el-menu-item index="companyList" :route="{name: 'adminCompanyList'}">列表</el-menu-item>
         </el-submenu>
@@ -54,7 +54,7 @@
         </el-submenu>
         <el-submenu index="20">
           <template slot="title"><i class="fa fa-user"></i> 用户管理</template>
-            <el-menu-item index="userList" :route="{name: isthirdParty.id===0?'adminUserList':'bAdminUserList'}">列表</el-menu-item>
+            <el-menu-item index="userList" :route="{name: 'adminUserList'}">列表</el-menu-item>
         </el-submenu>
       </el-menu>
     </div>

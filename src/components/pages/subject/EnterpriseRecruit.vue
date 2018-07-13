@@ -49,7 +49,7 @@
       </div>
       <h3 class="D3title"><i class="D3iLeft"></i><b>已入驻设计公司</b><i class="D3iRight"></i></h3>
       <section class="img-list clearfix">
-        <div v-for="(ele, index) in imgList">
+        <div v-for="(ele, index) in imgList" :key="index">
           <img v-lazy="require(`assets/images/company_logo/${index + 1}@3x.png`)" :alt="ele" :key="index"/>
           <span>{{ele}}</span>
         </div>
