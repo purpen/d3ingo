@@ -16,9 +16,8 @@
             <p>乙方(设计公司):</p>
             <p>公司名称: <span class="no-border">{{form.design_company_name}}</span></p>
             <p>地址: <span class="no-border">{{form.design_company_address}}</span></p>
-            <p>电话: <span class="no-border">{{form.design_company_phone}}</span></p>
             <p>联系人: <span class="no-border">{{form.design_company_legal_person}}</span></p>
-
+            <p>电话: <span class="no-border">{{form.design_company_phone}}</span></p>
             <p>&nbsp;</p>
             <p>依照中华人民共和国法律及本行业相关法规条例之规定，甲乙双方本着平等自愿和互惠互利的原则，就甲乙双方围绕设计项目展开的各项合作做如下约定：</p>
             <p id="line-hei-30">客户（以下简称“客户”）在“京东云艺火”平台（以下简称“平台”）上发布设计需求项目（以下简称“项目”）；</p>
