@@ -1,5 +1,5 @@
 <template>
-  <div class="js-cloud">
+  <div class="jd-cloud">
     <div class="jdc-banner">
       <div class="content">
         <section class="con-left">
@@ -286,6 +286,9 @@ export default {
 }
 </script>
 <style scoped>
+  .jd-cloud {
+    flex: 1 0 auto
+  }
   .jdc-banner {
     color: #fff;
     height: 440px;
@@ -372,8 +375,8 @@ export default {
   .col {
     padding: 20px 30px;
     border: 1px solid #E4F1FA;
-    display: flex;
-    align-items: center;
+    /* display: flex;
+    align-items: center; */
     height: 100%;
   }
   .col-column {
@@ -446,7 +449,8 @@ export default {
   }
 
   .slide-left, .slide-right {
-    flex: 1;
+    /* flex: 1; */
+    width: 50%;
     padding: 10px 15px;
   }
 
