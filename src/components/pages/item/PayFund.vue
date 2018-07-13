@@ -313,9 +313,6 @@ export default {
   display: block;
 }
 
-.pay-type .item img {
-}
-
 .pay-type .item p {
   line-height: 35px;
   font-size: 2.5rem;

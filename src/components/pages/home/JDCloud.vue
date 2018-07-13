@@ -32,7 +32,7 @@
         <h3>四个关键亮点</h3>
         <el-row class="flex padding-b-80">
           <el-col class="col-parent" :xs="24" :sm="6" :md="6" :lg="6" v-for="(ele, index) in colList2" :key="index">
-            <div class="col col-column text-center">
+            <div class="col-column text-center">
               <img :src="ele.img" alt="">
               <p class="tc-6">{{ele.title}}</p>
               <p class="tc-6 fz-14">{{ele.title2}}</p>
@@ -45,7 +45,7 @@
       <h3>创意项目发布流程</h3>
       <el-row class="flex padding-b-40">
         <el-col class="col-parent" :xs="24" :sm="4" :md="4" :lg="4" v-for="(ele, index) in colList3" :key="index">
-          <div class="col col-column col-column2 text-center">
+          <div class="col-column col-column2 text-center">
             <img :src="ele.img" alt="">
             <p class="tc-6">{{ele.title}}</p>
             <p class="tc-6 fz-14">{{ele.title2}}</p>

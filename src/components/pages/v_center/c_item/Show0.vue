@@ -1164,10 +1164,6 @@ const vQuoteView = () => import('@/components/block/QuoteView')
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-  .content {
-  }
-
   .red {
     color: red;
   }
@@ -1217,13 +1213,6 @@ const vQuoteView = () => import('@/components/block/QuoteView')
     float: left;
   }
 
-  .select-company-item .company-title {
-    /*width: 350px;*/
-    /*height: 160px;*/
-    /*float: left;*/
-    /*overflow: hidden;*/
-  }
-
   .select-company-item .content .img {
     height: 180px;
     display: block;
@@ -1255,9 +1244,6 @@ const vQuoteView = () => import('@/components/block/QuoteView')
     margin: 10px;
     float: left;
     padding-top: 45px;
-  }
-
-  .select-company-item .case-box a {
   }
 
   .pub-btn {
@@ -1458,10 +1444,6 @@ const vQuoteView = () => import('@/components/block/QuoteView')
     text-align: center;
   }
 
-  .finish-item-btn button {
-    /* padding: 10px 60px 10px 60px; */
-  }
-
   .finish-item-stat {
     margin-top: 20px;
     font-size: 2rem;
@@ -1522,9 +1504,6 @@ const vQuoteView = () => import('@/components/block/QuoteView')
   .taking-price-btn {
     float: right;
     margin-bottom: 20px;
-  }
-
-  .evaluate-result {
   }
 
   .eva-content {
