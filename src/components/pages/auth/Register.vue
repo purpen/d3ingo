@@ -1,5 +1,5 @@
 <template>
-  <div :class="['container', {'jdc': prod.name === 'jdc'}]">
+  <div :class="['container', {'jdc': prod.name === 'jdc', 'other': prod.name !== ''}]">
     <!-- <section class="cover-bgf7"></section> -->
     <div class="register-box">
       <div class="regisiter-title">
@@ -15,7 +15,7 @@
             <p class="des">找到设计服务商</p>
           </div>
         </div>
-        <div :class="{'register-tab-user': true, active: cActive}" @click="selectComputer">
+        <div v-if="prod.name === ''" :class="{'register-tab-user': true, active: cActive}" @click="selectComputer">
           <div class="tab-left"></div>
           <div class="tab-right">
             <h3>我是设计公司</h3>
@@ -586,6 +586,7 @@
       max-width: 450px;
       height: auto;
       margin: 20px 0 0 0;
+      box-shadow: none
     }
 
     form {
@@ -606,5 +607,11 @@
     .reg {
       margin: 20px 0 -20px
     }
+  }
+  .other .register-tab {
+    padding: 30px 30px 0
+  }
+  .other .register-tab-user {
+    flex: 1 1 auto;
   }
 </style>

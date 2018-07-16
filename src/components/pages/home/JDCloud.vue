@@ -1,40 +1,54 @@
 <template>
-  <div class="jd-cloud">
-    <div class="jdc-banner">
-      <div class="content">
-        <section class="con-left">
-          <h2>京东云艺火</h2>
-          <h4>专业B2B设计交易服务SaaS平台</h4>
-          <p>结合AI、大数据等先进技术，智能对接、批量处理创意诉求，</p>
-          <p>为京东云客户提供定制化产品设计服务。</p>
-          <span @click="jump" class="release">发布项目需求</span>
-        </section>
-        <section class="con-right">
-          <img :src="require('assets/images/home/banner/jd_banner.png')" alt="">
-        </section>
+  <section>
+    <div v-if="custom.name === 'jdc'" :class="['jd-cloud']">
+      <div class="jdc-banner">
+        <div class="content">
+          <section class="con-left">
+            <h2>京东云艺火</h2>
+            <h4>专业B2B设计交易服务SaaS平台</h4>
+            <p class="padding-t-10">结合AI、大数据等先进技术，智能对接、批量处理创意诉求，</p>
+            <p>为京东云客户提供定制化产品设计服务。</p>
+            <span @click="jump" class="release">发布项目需求</span>
+          </section>
+          <section class="con-right">
+            <img :src="require('assets/images/home/banner/jd_banner.png')" alt="">
+          </section>
+        </div>
       </div>
-    </div>
-    <div class="jdc-content tc-2">
-      <h3>创意实现与升级</h3>
-      <p class="text-center fz-18 sub-title">设计驱动创新力发展与传统产业升级</p>
-      <p class="text-center fz-14 tc-6 padding-b-50">包括：产品初态定义、产能科学匹配、创意产品设计，产品创新升级；开发成熟的潜力产品还可直接进入投资孵化快速通道，享受全网精准零售渠道和投资孵化等增值服务，打通产品从0-1再从1-N的通路，铸造单品爆款。</p>
-      <el-row :gutter="isMob ? 0 : 20" class="flex padding-b-60">
-        <el-col class="col-parent" :xs="24" :sm="8" :md="8" :lg="8" v-for="(ele, index) in colList" :key="index">
-          <div class="col clearfix">
-            <img class="fl" :src="ele.img" alt="">
-            <p class="fl tc-6 table">
-              <span>{{ele.title}}</span>
-            </p>
-          </div>
-        </el-col>
-      </el-row>
-    </div>
-    <section class="bg-gray">
+      <div class="jdc-content tc-2 fz-14">
+        <h3>创意实现与升级</h3>
+        <p class="text-center fz-18 sub-title">设计驱动创新力发展与传统产业升级</p>
+        <p class="text-center fz-14 tc-6 padding-b-50 max-880 ti-2">包括：产品初态定义、产能科学匹配、创意产品设计，产品创新升级；开发成熟的潜力产品还可直接进入投资孵化快速通道，享受全网精准零售渠道和投资孵化等增值服务，打通产品从0-1再从1-N的通路，铸造单品爆款。</p>
+        <el-row :gutter="isMob ? 0 : 20" class="flex padding-b-60">
+          <el-col class="col-parent" :xs="24" :sm="8" :md="8" :lg="8" v-for="(ele, index) in colList" :key="index">
+            <div class="col clearfix">
+              <img class="fl" :src="ele.img" alt="">
+              <p class="fl tc-6 table">
+                <span>{{ele.title}}</span>
+              </p>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+      <section class="bg-gray">
+        <div class="jdc-content">
+          <h3>四个关键亮点</h3>
+          <el-row class="flex padding-b-80">
+            <el-col class="col-parent" :xs="24" :sm="6" :md="6" :lg="6" v-for="(ele, index) in colList2" :key="index">
+              <div class="col col-column text-center">
+                <img :src="ele.img" alt="">
+                <p class="tc-6">{{ele.title}}</p>
+                <p class="tc-6 fz-14">{{ele.title2}}</p>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      </section>
       <div class="jdc-content">
-        <h3>四个关键亮点</h3>
-        <el-row class="flex padding-b-80">
-          <el-col class="col-parent" :xs="24" :sm="6" :md="6" :lg="6" v-for="(ele, index) in colList2" :key="index">
-            <div class="col col-column text-center">
+        <h3>创意项目发布流程</h3>
+        <el-row class="flex padding-b-40">
+          <el-col class="col-parent" :xs="24" :sm="4" :md="4" :lg="4" v-for="(ele, index) in colList3" :key="index">
+            <div class="col col-column col-column2 text-center">
               <img :src="ele.img" alt="">
               <p class="tc-6">{{ele.title}}</p>
               <p class="tc-6 fz-14">{{ele.title2}}</p>
@@ -42,52 +56,95 @@
           </el-col>
         </el-row>
       </div>
-    </section>
-    <div class="jdc-content">
-      <h3>创意项目发布流程</h3>
-      <el-row class="flex padding-b-40">
-        <el-col class="col-parent" :xs="24" :sm="4" :md="4" :lg="4" v-for="(ele, index) in colList3" :key="index">
-          <div class="col col-column col-column2 text-center">
-            <img :src="ele.img" alt="">
-            <p class="tc-6">{{ele.title}}</p>
-            <p class="tc-6 fz-14">{{ele.title2}}</p>
-          </div>
-        </el-col>
-      </el-row>
-    </div>
 
-    <section class="bg-gray">
-      <div class="anli">
-        <div class="container">
-          <h3 class="title">成功案例</h3>
-        </div>
-        <swiper :options="swiperOption" class="clearfix">
-          <swiper-slide v-for="(ele, index) in caseSlideList" :key="index" class="clearfix">
-            <div class="slide-content container">
-              <div class="slide-left">
-                <div class="slide-left_c">
-                  <p :class="['slide-company', 'slide' + index]"><img v-lazy="ele.companyLogo" :alt="ele.title" width="40px">{{ele.company}}</p>
-                  <h4 class="slide-title">{{ele.title}}</h4>
-                  <p class="slide-sales">{{ele.sales}}</p>
-                  <p class="slide-intro">{{ele.intro}}</p>
-                </div>
+      <section class="bg-gray">
+        <div class="anli">
+          <div class="container">
+            <h3 class="title">成功案例</h3>
+          </div>
+          <el-row>
+            <el-col :xs="12" :sm="6" :md="6" :lg="6" v-for="(ele, index) in caseSlideList" :key="index" class="anli-col">
+              <img class="anli-content" :src="ele.image" :alt="ele.title">
+              <div class="anli-title animated fadeInUp">
+                {{ele.title}}
               </div>
-              <a class="slide-right" :href="ele.clickUrl">
-                <img v-lazy="ele.image" :alt="ele.title">
-              </a>
-            </div>
-          </swiper-slide>
-          <div class="swiper-pagination" slot="pagination"></div>
-          <div v-if="!isMob" class="swiper-button-prev" slot="button-prev">
-            <i class="el-icon-arrow-left"></i>
-          </div>
-          <div v-if="!isMob" class="swiper-button-next" slot="button-next">
-            <i class="el-icon-arrow-right"></i>
-          </div>
-        </swiper>
+            </el-col>
+          </el-row>
+        </div>
+      </section>
+    </div>
+    <div v-if="custom.name === 'wb'" :class="['jd-cloud', {'wb': custom.name === 'wb'}]">
+      <div class="jdc-banner">
+        <div class="content">
+          <section class="con-left">
+            <h2>义乌设计大脑</h2>
+            <p class="padding-t-10">由浙江万博大数据和太火鸟科技合作推出的产品创新资源与工贸企业对接平台。平台依托大量设计行业资源，借助智能匹配技术，旨在为地方企业提供设计资源对接、渠道营销分发等服务。</p>
+            <span @click="jump" class="release">发布项目需求</span>
+          </section>
+          <section class="con-right">
+            <img :src="require('assets/images/home/banner/wb_banner.jpg')" alt="">
+          </section>
+        </div>
       </div>
-    </section>
-  </div>
+      <div class="jdc-content tc-2 fz-14">
+        <h3>义乌设计大脑</h3>
+        <p class="fz-14 tc-6 padding-b-50 max-880 ti-2">义乌设计大脑是浙江万博大数据运营有限公司和太火鸟科技有限公司合作，落地在义乌的一个产品创新资源与工贸企业对接的平台。平台上积累了大量的设计行业资源，企业在平台上发布需求，平台借助大数据和智能匹配技术，提供设计资源对接、渠道营销分发等服务，孵化出产品创新设计成果，且为设计产品开通京东绿色通道，回馈地方经济，带动产业发展和企业转型升级。</p>
+        <el-row :gutter="isMob ? 0 : 20" class="flex padding-b-60">
+          <el-col class="col-parent" :xs="24" :sm="8" :md="8" :lg="8" v-for="(ele, index) in colList" :key="index">
+            <div class="col clearfix">
+              <img class="fl" :src="ele.img" alt="">
+              <p class="fl tc-6 table">
+                <span>{{ele.title}}</span>
+              </p>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+      <section class="bg-gray">
+        <div class="jdc-content">
+          <h3>四个关键亮点</h3>
+          <el-row class="flex padding-b-80">
+            <el-col class="col-parent" :xs="24" :sm="6" :md="6" :lg="6" v-for="(ele, index) in colList2_wb" :key="index">
+              <div class="col col-column text-center">
+                <img :src="ele.img" alt="">
+                <p class="tc-2 fz-18 padding-b-20">{{ele.title0}}</p>
+                <p class="tc-6">{{ele.title}}</p>
+                <p class="tc-6 fz-14">{{ele.title2}}</p>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      </section>
+      <div class="jdc-content">
+        <h3>创意项目发布流程</h3>
+        <el-row class="flex padding-b-40">
+          <el-col class="col-parent" :xs="24" :sm="4" :md="4" :lg="4" v-for="(ele, index) in colList3_wb" :key="index">
+            <div class="col col-column col-column2 text-center">
+              <img :src="ele.img" alt="">
+              <p class="tc-6">{{ele.title}}</p>
+              <p class="tc-6 fz-14">{{ele.title2}}</p>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+
+      <section class="bg-gray">
+        <div class="anli">
+          <div class="container">
+            <h3 class="title">成功案例</h3>
+          </div>
+          <el-row>
+            <el-col :xs="12" :sm="6" :md="6" :lg="6" v-for="(ele, index) in caseSlideList" :key="index" class="anli-col">
+              <img class="anli-content" :src="ele.image" :alt="ele.title">
+              <div class="anli-title animated fadeInUp">
+                {{ele.title}}
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      </section>
+    </div>
+  </section>
 </template>
 
 <script>
@@ -95,76 +152,160 @@ export default {
   name: 'JDCloud',
   data() {
     return {
-      colList: [{
-        img: require('assets/images/home/jd/1.png'),
-        title: '京东云平台整合全产业链资源'
-      },
-      {
-        img: require('assets/images/home/jd/2.png'),
-        title: '集成零售流量需求方与设计服务供应商，以及背后的制造业生态链'
-      },
-      {
-        img: require('assets/images/home/jd/3.png'),
-        title: '专业视角与深度洞察'
-      },
-      {
-        img: require('assets/images/home/jd/4.png'),
-        title: '理念、流程的前瞻性和前沿技术打造差异化的创新产品'
-      },
-      {
-        img: require('assets/images/home/jd/5.png'),
-        title: '为多样化的需求提供科学、合理、有针对性的创新解决方案'
-      },
-      {
-        img: require('assets/images/home/jd/6.png'),
-        title: '供需双方互动作用，共同释放消费升级趋势下的市场创新力'
-      }],
+      colList: [
+        {
+          img: require('assets/images/home/jd/1.png'),
+          title: '京东云平台整合全产业链资源'
+        },
+        {
+          img: require('assets/images/home/jd/2.png'),
+          title: '集成零售流量需求方与设计服务供应商，以及背后的制造业生态链'
+        },
+        {
+          img: require('assets/images/home/jd/3.png'),
+          title: '专业视角与深度洞察'
+        },
+        {
+          img: require('assets/images/home/jd/4.png'),
+          title: '理念、流程的前瞻性和前沿技术打造差异化的创新产品'
+        },
+        {
+          img: require('assets/images/home/jd/5.png'),
+          title: '为多样化的需求提供科学、合理、有针对性的创新解决方案'
+        },
+        {
+          img: require('assets/images/home/jd/6.png'),
+          title: '供需双方互动作用，共同释放消费升级趋势下的市场创新力'
+        }
+      ],
+      colList_wb: [
+        {
+          img: require('assets/images/home/jd/1-wb.png'),
+          title: '产业链资源整合'
+        },
+        {
+          img: require('assets/images/home/jd/2-wb.png'),
+          title: '合作方无缝集成'
+        },
+        {
+          img: require('assets/images/home/jd/3-wb.png'),
+          title: '全流程监察跟踪'
+        },
+        {
+          img: require('assets/images/home/jd/4-wb.png'),
+          title: '产品创新差异化'
+        },
+        {
+          img: require('assets/images/home/jd/5-wb.png'),
+          title: '解决方案定制化'
+        },
+        {
+          img: require('assets/images/home/jd/6-wb.png'),
+          title: '消费力互动释放'
+        }
+      ],
 
-      colList2: [{
-        img: require('assets/images/home/jd/7.png'),
-        title: '聚合100+领先设计服务供应商',
-        title2: '兼顾成果原创性、创新性与可行性'
-      },
-      {
-        img: require('assets/images/home/jd/8.png'),
-        title: '严谨的线上项目管理追踪流程',
-        title2: '完善的风险规避、原创监管、权益保障机制'
-      },
-      {
-        img: require('assets/images/home/jd/9.png'),
-        title: '高效便捷的线上需求对接体验'
-      },
-      {
-        img: require('assets/images/home/jd/10.png'),
-        title: '互联网+时代前沿科技',
-        title2: '体验属于“明天”的设计交易与办公模式'
-      }],
+      colList2: [
+        {
+          img: require('assets/images/home/jd/7.png'),
+          title: '聚合100+领先设计服务供应商',
+          title2: '兼顾成果原创性、创新性与可行性'
+        },
+        {
+          img: require('assets/images/home/jd/8.png'),
+          title: '严谨的线上项目管理追踪流程',
+          title2: '完善的风险规避、原创监管、权益保障机制'
+        },
+        {
+          img: require('assets/images/home/jd/9.png'),
+          title: '高效便捷的线上需求对接体验'
+        },
+        {
+          img: require('assets/images/home/jd/10.png'),
+          title: '互联网+时代前沿科技',
+          title2: '体验属于“明天”的设计交易与办公模式'
+        }
+      ],
+      colList2_wb: [
+        {
+          img: require('assets/images/home/jd/7-wb.png'),
+          title: '聚合100+领先设计服务供应商',
+          title2: '兼顾成果原创性、创新性与可行性',
+          title0: '100+国内顶尖设计机构'
+        },
+        {
+          img: require('assets/images/home/jd/8-wb.png'),
+          title: '严谨的线上项目管理追踪流程',
+          title2: '完善的风险规避、原创监管、权益保障机制',
+          title0: '24小时线上项目管理追踪'
+        },
+        {
+          img: require('assets/images/home/jd/9-wb.png'),
+          title: '高效便捷的线上需求对接体验',
+          title0: '365天实时需求对接体验'
+        },
+        {
+          img: require('assets/images/home/jd/10-wb.png'),
+          title: '互联网+设计+交易+办公',
+          title0: '4维步进型组合创新模式'
+        }
+      ],
 
-      colList3: [{
-        img: require('assets/images/home/jd/11.png'),
-        title: '新用户注册'
-      },
-      {
-        img: require('assets/images/home/jd/12.png'),
-        title: '填写公司基本信息',
-        title2: '（实名认证）'
-      },
-      {
-        img: require('assets/images/home/jd/13.png'),
-        title: '在线填写项目需求单'
-      },
-      {
-        img: require('assets/images/home/jd/14.png'),
-        title: '发布项目需求'
-      },
-      {
-        img: require('assets/images/home/jd/15.png'),
-        title: '匹配设计服务供应商'
-      },
-      {
-        img: require('assets/images/home/jd/16.png'),
-        title: '在线合作直至项目完成'
-      }],
+      colList3: [
+        {
+          img: require('assets/images/home/jd/11.png'),
+          title: '新用户注册'
+        },
+        {
+          img: require('assets/images/home/jd/12.png'),
+          title: '填写公司基本信息',
+          title2: '（实名认证）'
+        },
+        {
+          img: require('assets/images/home/jd/13.png'),
+          title: '在线填写项目需求单'
+        },
+        {
+          img: require('assets/images/home/jd/14.png'),
+          title: '发布项目需求'
+        },
+        {
+          img: require('assets/images/home/jd/15.png'),
+          title: '匹配设计服务供应商'
+        },
+        {
+          img: require('assets/images/home/jd/16.png'),
+          title: '在线合作直至项目完成'
+        }
+      ],
+
+      colList3_wb: [
+        {
+          img: require('assets/images/home/jd/11-wb.png'),
+          title: '新用户注册'
+        },
+        {
+          img: require('assets/images/home/jd/12-wb.png'),
+          title: '填写公司基本信息',
+          title2: '（实名认证）'
+        },
+        {
+          img: require('assets/images/home/jd/13-wb.png'),
+          title: '在线填写项目需求单'
+        },
+        {
+          img: require('assets/images/home/jd/14-wb.png'),
+          title: '发布项目需求'
+        },
+        {
+          img: require('assets/images/home/jd/15-wb.png'),
+          title: '匹配设计服务供应商'
+        },
+        {
+          img: require('assets/images/home/jd/16-wb.png'),
+          title: '在线合作直至项目完成'
+        }
+      ],
       swiperOption: {
         pagination: '.swiper-pagination',
         paginationClickable: true,
@@ -192,15 +333,6 @@ export default {
           sales: '众筹总额高达23,134,254元',
           intro: '众筹纪录创造者，产品由太火鸟运营众筹，3月27日众筹正式开始便展现了惊人的潜力，众筹表现38分钟众筹金额破百万、4天破千万。经过一个月的众筹，最终的众筹总额高达23,134,254元，支持人数14,804人，2313%完成众筹目标。',
           image: require ('@/assets/images/home/micoe&WOW.jpg')
-        },
-        {
-          clickUrl: 'http://d3ingo.taihuoniao.com/article/show/24',
-          company: '小蚁',
-          companyLogo: require('@/assets/images/home/xiaoyi@2x.png'),
-          title: '小蚁智能行车记录仪',
-          sales: '众筹总额高达16,191,730元',
-          intro: '2015年，太火鸟联合小蚁智能行车记录仪的出品公司小蚁科技，在淘宝众筹首发小蚁智能行车记录仪。太火鸟社区发起“募百人首批小蚁样机体验团”试用活动，申请使用人数突破2300人，3天众筹金额突破1000万。',
-          image: require ('@/assets/images/home/yi.jpg')
         },
         {
           clickUrl: 'http://d3ingo.taihuoniao.com/article/show/23',
@@ -266,6 +398,14 @@ export default {
     user() {
       let user = this.$store.state.event.user // role_id
       return user
+    },
+    custom() {
+      return this.$store.state.event.prod
+    }
+  },
+  created() {
+    if (this.$store.state.event.prod.id === 0) {
+      this.$router.replace({name: 'home'})
     }
   },
   methods: {
@@ -288,6 +428,13 @@ export default {
 }
 </script>
 <style scoped>
+  .ti-2 {
+    text-indent: 2em
+  }
+  .max-880 {
+    max-width: 880px;
+    margin: 0 auto
+  }
   .jd-cloud {
     flex: 1 0 auto
   }
@@ -296,8 +443,12 @@ export default {
     height: 440px;
     background-image: linear-gradient(90deg, #0070CF 0%, #8A5CCA 100%);
   }
+  .wb .jdc-banner {
+    background: #0A2052
+  }
   h2 {
     font-size: 48px;
+    padding-bottom: 20px
   }
   h3 {
     text-align: center;
@@ -309,7 +460,6 @@ export default {
     padding-bottom: 20px;
   }
   h4 {
-    padding: 20px 0 10px;
     font-size: 24px;
   }
   .sub-title {
@@ -359,6 +509,12 @@ export default {
     font-size: 20px;
     margin-top: 35px;
   }
+  .padding-t-10 {
+    padding-top: 10px;
+  }
+  .padding-b-20 {
+    padding-bottom: 20px;
+  }
   .padding-b-40 {
     padding-bottom: 40px;
   }
@@ -375,7 +531,7 @@ export default {
     margin-bottom: 20px;
   }
   .col {
-    padding: 20px 30px;
+    padding: 20px 0;
     border: 1px solid #E4F1FA;
     /* display: flex;
     align-items: center; */
@@ -460,79 +616,26 @@ export default {
     padding-bottom: 50px;
     margin: 0 auto -50px;
   }
-
-  .slide-content {
-    display: flex;
+  .anli-col {
+    position: relative;
+    overflow: hidden;
   }
-
-  .slide-left, .slide-right {
-    /* flex: 1 0 auto; */
-    display: block;
-    width: 50%;
-    padding: 10px 15px;
-  }
-
-  .slide-left {
-    display: flex;
-    align-items: center;
-  }
-  .slide-left_c {
-    width: 100%;
-    padding-bottom: 60px;
-  }
-
-  .slide-right img {
-    width: calc(100% - 60px);
-    border-radius: 6px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  }
-
-  .slide-company {
-    font-size: 18px;
-    color: #222;
-    display: flex;
-    align-items: center;
-    padding-bottom: 20px;
-
-  }
-  .slide1 img, .slide4 img, .slide8 img {
-    height: 30px;
-    width: auto
-  }
-
-  .slide3 img {
-    height: 40px;
-    width: auto
-  }
-
-  .slide7 img {
-    height: 14px;
-    width: auto;
-  }
-
-  .slide-company img{
-    padding-right: 10px;
-  }
-
-  .slide-title {
-    font-size: 24px;
-    color: #222;
-    padding-bottom: 10px;
-  }
-
-  .slide-sales {
-    font-size: 18px;
-    color: #666;
-    padding-bottom: 10px;
-  }
-
-  .slide-intro {
+  .anli-title {
+    animation-duration: 268ms;
+    color: #fff;
+    line-height: 20px;
     font-size: 14px;
-    color:#666;
-    line-height: 1.5
+    padding: 10px;
+    position: absolute;
+    left: 0;bottom: 0;
+    width: 100%;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.5)
   }
-
-
+  .anli-content {
+    width: 100%;
+    vertical-align: top
+  }
   @media screen and (min-width: 767px) and (max-width: 850px) {
     .col-column2:before {
       left: 100px;
@@ -617,29 +720,6 @@ export default {
       font-size: 16px;
       line-height: 34px;
       margin-top: 10px;
-    }
-    /* .col-parent .col-column2:before,
-    .col-parent .col-column2:after {
-      width: 0;
-      height: 0;
-      border: 0
-    } */
-
-    .slide-content {
-      display: flex;
-      flex-direction: column-reverse;
-    }
-
-    .slide p {
-      font-size: 2.2rem
-    }
-
-    .slide h3 {
-      font-size: 1.2rem
-    }
-
-    .slide-left_c {
-      padding: 0
     }
   }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <section>
-    <header :class="['menu-header', {'jdc': prod.name=== 'jdc'}]">
+    <header :class="['menu-header', {'jdc': prod.name === 'jdc', 'other': prod.name !== ''}]">
       <div class="menu-left">
         <span class="menu-icon" @click="changeWidth"></span>
         <p class="home-icon">
@@ -38,7 +38,7 @@
         <div v-if="isCompany" @click="showMine()" class="mine no-select">
           <span>我的</span>
         </div>
-        <el-menu class="el-menu-info" mode="horizontal" router v-if="prod.id === 0">
+        <el-menu class="el-menu-info" mode="horizontal" router v-if="prod.name === ''">
           <el-submenu index="2">
             <template slot="title">
               <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
@@ -52,7 +52,7 @@
               <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
           </el-submenu>
         </el-menu>
-        <el-menu class="el-menu-info" mode="horizontal" router v-if="prod.id === 1">
+        <el-menu class="el-menu-info" mode="horizontal" router v-if="prod.name !== ''">
           <el-submenu index="2">
             <template slot="title">
               <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
@@ -773,7 +773,7 @@
   .logo-icon img {
     height: 50px;
   }
-  .jdc .logo-icon img {
+  .other .logo-icon img {
     height: 30px;
   }
   .avatar {

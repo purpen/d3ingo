@@ -14,7 +14,7 @@
         </div>
       </label>
       <input name="type" type="radio" id="business" value="business" v-show="false"/>
-      <label class="cover2" for="business">
+      <label class="cover2" for="business" v-if="prod.name === ''">
         <div class="type business">
           <p></p>
           <article>

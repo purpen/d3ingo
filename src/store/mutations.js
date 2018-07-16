@@ -112,6 +112,20 @@ function showProd() {
         copyright: 'Copyright © 2012-2018',
         business: '经营许可证:【京ICP证070359号】'
       }
+    case 'wb':
+      return {
+        id: 2,
+        name: 'wb',
+        logo: require('assets/images/logo-wb2.png'),
+        logo2: require('assets/images/logo-wb.png'),
+        info: '义乌设计大脑',
+        title: '义乌设计大脑-产品创新资源与工贸企业对接平台',
+        url: 'JDCloud.com',
+        fullurl: 'https://www.jdcloud.com/',
+        license: '万博大数据 营业执照【浙ICP备18008501号-1】',
+        copyright: 'Copyright © 2012-2018',
+        business: '经营许可证:【京ICP证070359号】'
+      }
   }
 }
 const state = {
