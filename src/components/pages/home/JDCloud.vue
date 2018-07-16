@@ -531,7 +531,7 @@ export default {
     margin-bottom: 20px;
   }
   .col {
-    padding: 20px 0;
+    padding: 20px 10px;
     border: 1px solid #E4F1FA;
     /* display: flex;
     align-items: center; */
