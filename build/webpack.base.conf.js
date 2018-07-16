@@ -79,6 +79,7 @@ module.exports = {
         include: [
           resolve('src'),
           resolve('test'),
+          resolve('node_modules/element-ui'),
           resolve('node_modules/vue-echarts'),
           resolve('node_modules/echarts'),
           resolve('node_modules/resize-detector'),
