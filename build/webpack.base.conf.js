@@ -58,10 +58,6 @@ module.exports = {
       threadPool: happThreadPool
     }),
     new HappyPack({
-      id: 'css',
-      loaders: ['css-loader?mportLoaders=1'],
-    }),
-    new HappyPack({
       id: 'eslint',
       threads: 4,
       loaders: [{
@@ -95,8 +91,7 @@ module.exports = {
         loader: 'vue-loader',
         options: {
           loaders: {
-            js: 'happypack/loader?id=babel', // 将loader换成happypack
-            css: 'happypack/loader?id=css'
+            js: 'happypack/loader?id=babel' // 将loader换成happypack
           }
         }
       },
