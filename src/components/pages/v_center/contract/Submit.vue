@@ -494,6 +494,7 @@
             console.log(row, 'data')
             that.$http({method: method, url: apiUrl, data: row})
               .then(function (response) {
+                console.log(response)
                 if (response.data.meta.status_code === 200) {
                   that.$message.success('提交成功！')
                   that.isLoadingBtn = false

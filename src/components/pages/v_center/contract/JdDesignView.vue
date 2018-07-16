@@ -56,7 +56,7 @@
             <p>1、合同签定后，甲方在收到平台发放的首批款项后，即总设计费用款项40%： ¥ <span class="bottom-border" type="text" disabled v-html="form.first_payment"></span>元，在三个工作日内，将抽取全部佣金后的剩余款项¥ <span class="bottom-border" type="text" disabled v-html="form.first_rest_payment"></span>元一次性全额支付给乙方。</p>
             <p>&nbsp;</p>
             <div v-for="(d, index) in form.stages" :key="index + 100">
-              <p>{{ index + 2 }}、第 {{  d.sort  }} 阶段  <span class="bottom-border" type="text" disabled v-html="d.title"></span> 确认后，甲方在收到平台发放的阶段款项后，即总设计费用款项 <span class="bottom-border" type="text" disabled v-html="d.percentage"></span> %： ¥ <span class="bottom-border" type="text" disabled v-html="d.amount"></span>元，在三个工
+              <p>{{ index + 2 }}、第 {{  d.sort  }} 阶段  <span class="bottom-border" type="text" disabled v-html="d.title"></span> 确认后，甲方在收到平台发放的阶段款项后，即总设计费用款项 <span class="bottom-border" type="text" disabled v-html="d.percentage"></span> %： ¥ <span class="bottom-border" type="text" disabled v-text="d.amount"></span>元，在三个工
 作日内通知乙方开税票，收到乙方税票后三个工作日内，将该阶段款项¥ <span class="bottom-border" type="text" disabled v-html="d.amount"></span>元一次性全额支付给乙方。</p>
               <p>&nbsp;</p>
             </div>
@@ -287,15 +287,17 @@
                     newStageRow.sort = parseInt(stageRow.sort)
                     newStageRow.title = stageRow.title
                     newStageRow.percentage = parseFloat(stageRow.percentage).mul(100)
-                    newStageRow.amount = parseFloat(stageRow.amount)
+                    newStageRow.amount = parseFloat(stageRow.amount).toFixed(2)
                     newStageRow.time = parseInt(stageRow.time)
                     item.stages.push(newStageRow)
                   }
                 }
                 item.warranty_money_proportion_p = item.warranty_money_proportion * 100
                 item.first_payment_proportion_p = item.first_payment_proportion * 100
-                item.first_rest_payment = parseFloat(parseFloat(item.first_payment).sub(parseFloat(item.commission).add(parseFloat(item.tax_price))))
+                item.first_rest_payment = parseFloat(parseFloat(item.first_payment).sub(parseFloat(item.commission).add(parseFloat(item.tax_price)))).toFixed(2)
                 that.form = item
+                console.log(item.first_rest_payment)
+                console.log(that.form)
                 if (!that.form.thn_company_name) {
                   that.form.thn_company_name = that.companyThn.company_name
                   that.form.thn_company_address = that.companyThn.address
@@ -306,7 +308,6 @@
                 that.$message.error('合同不存在!')
                 that.$router.push({name: 'home'})
               }
-              console.log(response.data.data)
             }
           })
           .catch(function (error) {

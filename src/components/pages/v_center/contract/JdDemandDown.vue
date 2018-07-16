@@ -377,12 +377,12 @@
                     newStageRow.sort = parseInt(stageRow.sort)
                     newStageRow.title = stageRow.title
                     newStageRow.percentage = parseFloat(stageRow.percentage).mul(100)
-                    newStageRow.amount = parseFloat(stageRow.amount)
+                    newStageRow.amount = parseFloat(stageRow.amount).toFixed(2)
                     newStageRow.time = parseInt(stageRow.time)
                     item.stages.push(newStageRow)
                   }
                 }
-                item.first_rest_payment = parseFloat(parseFloat(item.first_payment).sub(parseFloat(item.commission).add(parseFloat(item.tax_price))))
+                item.first_rest_payment = parseFloat(parseFloat(item.first_payment).sub(parseFloat(item.commission).add(parseFloat(item.tax_price)))).toFixed(2)
                 item.warranty_money_proportion_p = item.warranty_money_proportion * 100
                 item.first_payment_proportion_p = item.first_payment_proportion * 100
 

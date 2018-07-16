@@ -766,6 +766,7 @@ const router = new VueRouter({
 })
 let custom = showProd()
 router.beforeEach((to, from, next) => {
+  console.log(to)
   if (to.meta.title) {
     if (to.meta.title === '首页' || to.meta.title === '京东云艺火') {
       document.title = custom.title
