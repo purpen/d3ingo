@@ -48,21 +48,24 @@ module.exports = {
   plugins: [
     // ignoreFiles,
     new HappyPack({
-      id: 'js',
+      id: 'babel',
       threads: 4,
       loaders: [
         {
-          loader: 'babel-loader'
+          loader: 'babel-loader?cacheDirectory=true'
         }
       ],
       threadPool: happThreadPool
+    }),
+    new HappyPack({
+      id: 'css',
+      loaders: ['css-loader?mportLoaders=1'],
     }),
     new HappyPack({
       id: 'eslint',
       threads: 4,
       loaders: [{
         loader: 'eslint-loader',
-        // here you can place eslint-loader options:
         options: {
           formatter: require('eslint-friendly-formatter')
         }
@@ -72,36 +75,38 @@ module.exports = {
   ],
   module: {
     rules: [
-      {
-        test: /\.(js|vue)$/,
-        loader: 'happypack/loader?id=eslint',
-        enforce: "pre",
-        include: [
-          resolve('src'),
-          resolve('test'),
-          resolve('node_modules/element-ui'),
-          resolve('node_modules/vue-echarts'),
-          resolve('node_modules/echarts'),
-          resolve('node_modules/resize-detector'),
-          resolve('node_modules/vue-pdf'),
-          resolve('node_modules/vue-resize-sensor')]
-      },
+      // {
+      //   test: /\.(js|vue)$/,
+      //   loader: 'happypack/loader?id=eslint',
+      //   enforce: "pre",
+      //   include: [
+      //     resolve('src'),
+      //     resolve('test'),
+      //     resolve('node_modules/element-ui'),
+      //     resolve('node_modules/vue-echarts'),
+      //     resolve('node_modules/echarts'),
+      //     resolve('node_modules/resize-detector'),
+      //     resolve('node_modules/vue-pdf'),
+      //     resolve('node_modules/vue-resize-sensor')]
+      // },
 
       {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
           loaders: {
-            js: 'happypack/loader?id=js' // 将loader换成happypack
+            js: 'happypack/loader?id=babel', // 将loader换成happypack
+            css: 'happypack/loader?id=css'
           }
         }
       },
       {
         test: /\.js$/,
-        loader: ['happypack/loader?id=js'],
+        loader: ['happypack/loader?id=babel'],
         include: [
           resolve('src'),
           resolve('test'),
+          resolve('node_modules/element-ui'),
           resolve('node_modules/vue-echarts'),
           resolve('node_modules/echarts'),
           resolve('node_modules/resize-detector'),
