@@ -129,13 +129,13 @@
       redirect(d) {
         console.log(d)
         this.showCover = false
-        let oldClass = document.body.childNodes[1].getAttribute('class')
+        let oldClass = document.getElementById('app').getAttribute('class')
         if (oldClass) {
-          oldClass = oldClass.replace('disableScroll ', '')
+          oldClass = oldClass.replace(/disableScroll\x20?/g, '')
         }
         document.body.removeAttribute('class', 'disableScroll')
         document.childNodes[1].removeAttribute('class', 'disableScroll')
-        document.body.childNodes[1].setAttribute('class', oldClass)
+        document.getElementById('app').setAttribute('class', oldClass)
         if (d.type === 2) {
           if (d.item_status) {
             this.$router.push({name: 'projectCompare', params: {id: d.target_id}})
