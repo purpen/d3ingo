@@ -107,7 +107,7 @@ function showProd() {
         info: '艺火',
         title: '京东云艺火-专业B2B设计交易服务SaaS平台',
         url: 'JDCloud.com',
-        fullurl: 'https://www.jdcloud.com/',
+        fullurl: 'https://www.jdcloud.com',
         license: '京东云 营业执照【京ICP备11041704号-31】',
         copyright: 'Copyright © 2012-2018',
         business: '经营许可证:【京ICP证070359号】'
@@ -120,8 +120,8 @@ function showProd() {
         logo2: require('assets/images/logo-wb.png'),
         info: '义乌设计大脑',
         title: '义乌设计大脑-产品创新资源与工贸企业对接平台',
-        url: 'JDCloud.com',
-        fullurl: 'https://www.jdcloud.com/',
+        url: 'zjbdos.com',
+        fullurl: 'http://www.zjbdos.com',
         license: '万博大数据 营业执照【浙ICP备18008501号-1】',
         copyright: 'Copyright © 2012-2018',
         business: '经营许可证:【京ICP证070359号】'
