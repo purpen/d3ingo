@@ -895,18 +895,20 @@ export default {
       }
     },
     cover2(val) {
-      let oldClass = document.body.childNodes[1].getAttribute('class')
-      console.log(oldClass)
+      let oldClass = document.getElementById('app').getAttribute('class')
+      if (oldClass) {
+        oldClass = oldClass.replace(/disableScroll\x20?/g, '')
+      }
       if (val) {
         document.body.setAttribute('class', 'disableScroll')
-        document.body.childNodes[1].setAttribute('class', 'disableScroll ' + oldClass)
+        document.getElementById('app').setAttribute('class', 'disableScroll ' + oldClass)
         document.childNodes[1].setAttribute('class', 'disableScroll')
       } else {
         if (oldClass) {
           oldClass = oldClass.replace('disableScroll ', '')
         }
         document.body.removeAttribute('class', 'disableScroll')
-        document.body.childNodes[1].setAttribute('class', oldClass)
+        document.getElementById('app').setAttribute('class', oldClass)
         document.childNodes[1].removeAttribute('class', 'disableScroll')
       }
     }

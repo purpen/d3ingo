@@ -29,8 +29,7 @@
             <p>&nbsp;</p>
             <p>依照中华人民共和国法律及本行业相关法规条例之规定，甲乙丙三方本着平等自愿和互惠互利的原则，就乙方通过丙方平台接受委托为甲方提供设计事宜，约定如下：</p>
             <p class="title mar-t-40 font-size-18">一、项目名称和费用</p>
-            <p class="font-size-16">1、项目名称：</p>
-            <p><span class="bottom-border">{{form.title}}</span></p>
+            <p class="font-size-16">1、项目名称：<span class="bottom-border">{{form.title}}</span></p>
             <p>&nbsp;</p>
             <p class="font-size-16 mar-b-10">2、费用：</p>
             <p class="mar-b-10">本合同设计费用总额为人民币(￥)<span class="bottom-border">{{form.total_han}}</span> 整（小写：<span class="bottom-border">{{form.total}}</span>元），丙方作为平台收取全部项目费的<span class="bottom-border">{{form.commission_rate}}</span>%，也就是人民币(￥)<span class="bottom-border">{{form.commission}}</span> 元作为佣金。</p>
@@ -60,7 +59,7 @@
             <p>1、合同签定后，甲方在<span class="bottom-border" type="text" disabled v-html="form.demand_pay_limit"></span>个工作日内向丙方支付首付款项，即总设计费用款项40%： ¥ <span class="bottom-border" type="text" disabled v-html="form.first_payment"></span>元，丙方收到款项后三个工作日内通知乙方开税票，收到乙方税票后三个工作日内，将抽取全部佣金及税费后的剩余款项¥ <span class="bottom-border" type="text" disabled v-html="form.first_rest_payment"></span>元一次性全额支付给乙方。</p>
             <p>&nbsp;</p>
             <div v-for="(d, index) in form.stages" :key="index + 100">
-              <p>{{ index + 2 }}、第{{ d.sort }}阶段 <span class="bottom-border" type="text" disabled v-html="d.title"></span> 确认后，甲方在三个工作日内向丙方支付总设计费用款项 <span class="bottom-border" type="text" disabled v-html="d.percentage"></span> %： ¥ <span class="bottom-border" type="text" disabled v-html="d.amount"></span>元，丙方收到款项后三个工作日内通知乙方开税票，收到乙方税票后三个工作日内，将剩余款项¥ <span class="bottom-border" type="text" disabled v-html="d.amount"></span>元一次性全额支付给乙方。</p>
+              <p>{{ index + 2 }}、第 {{ d.sort }} 阶段 <span class="bottom-border" type="text" disabled v-html="d.title"></span> 确认后，甲方在三个工作日内向丙方支付总设计费用款项 <span class="bottom-border" type="text" disabled v-html="d.percentage"></span> %： ¥ <span class="bottom-border" type="text" disabled v-html="d.amount"></span>元，丙方收到款项后三个工作日内通知乙方开税票，收到乙方税票后三个工作日内，将剩余款项¥ <span class="bottom-border" type="text" disabled v-html="d.amount"></span>元一次性全额支付给乙方。</p>
               <p>&nbsp;</p>
             </div>
             <p style="color: #FF5A5F">注：首付款收到后启动项目，尾款收到后提交所有文件。</p>
@@ -255,10 +254,23 @@
           .then(function (response) {
             if (response.data.meta.status_code === 200) {
               let item = response.data.data
+              console.log(item)
               if (item) {
                 if (item.version === 0) {
                   that.$router.push({name: 'vcenterContractView1', query: {unique_id: uniqueId}})
                   return false
+                }
+                // 是否来源京东
+                if (item.source === 1) {
+                  console.log(1)
+                  let uType = that.$store.state.event.user.type
+                  // 如果是设计公司
+                  if (uType === 2) {
+                    that.$router.replace({name: 'vcenterContractJdDesignView', params: {unique_id: uniqueId}})
+                  } else {
+                    that.$router.replace({name: 'vcenterContractJdDemandView', params: {unique_id: uniqueId}})
+                  }
+                  return
                 }
                 that.itemId = item.id
                 that.itemName = item.title + '合同'

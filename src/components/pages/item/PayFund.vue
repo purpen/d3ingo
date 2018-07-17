@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div style="width:900px;margin: 20px auto" class="ordershow-span-color">
+    <div class="ordershow-span-color">
       <div class="dis-flex" style="margin-bottom: 10px">
         <div class="mar-r-10">
           <router-link :to="{ path: '/vcenter/item/list' }" class="font-14">我的项目</router-link>
@@ -27,7 +27,7 @@
       <div class="pay-item">
         <div class="clearfix payItem-m">
           <p class="font-size-16 mar-t-30 mar-b-10">选择支付方式</p>
-          <div class="pay-type">
+          <div class="pay-type" v-if="item.source === 0">
             <ul v-if="!isMob">
               <li>
                 <label>
@@ -59,6 +59,25 @@
             <el-radio-group v-model="payType" class="choicePay" v-if="isMob">
               <el-radio :label="1" class="choiceList clearfix zfb">支付宝支付</el-radio>
               <el-radio :label="5" class="choiceList clearfix dg">对公转账</el-radio>
+            </el-radio-group>
+
+            <div class="clear"></div>
+          </div>
+          <div class="pay-type" v-if="item.source === 1">
+            <ul v-if="!isMob">
+              <li>
+                <label>
+                  <div :class="{'item': true, active: payType === 5 ? true : false}"
+                       @click="checkedPayBtn(5)">
+                    <p>京东云市场支付</p>
+                    <img class="pay-active" src="../../../assets/images/icon/pay_checked.png"/>
+                  </div>
+                </label>
+              </li>
+            </ul>
+
+            <el-radio-group v-model="payType" class="choicePay" v-if="isMob">
+              <el-radio :label="5" class="choiceList clearfix dg">京东云市场支付</el-radio>
             </el-radio-group>
 
             <div class="clear"></div>
@@ -110,6 +129,9 @@ export default {
           url = 'wxpay'
           break
         case 5:
+          if (this.item.source === 1) {
+            window.open('https://market.jdcloud.com/#/service/details/576846')
+          }
           url = api.payItemBankPayId.format(this.item.id)
           break
       }
@@ -179,7 +201,8 @@ export default {
               if (self.item.pay_type === 5) {
                 self.$router.push({
                   name: 'vcenterOrderShow',
-                  params: {id: self.item.uid}
+                  params: {id: self.item.uid},
+                  query: {id: self.$route.params.item_id}
                 })
                 return
               }
@@ -207,6 +230,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.ordershow-span-color {
+  width:900px;
+  margin: 20px auto
+}
 .payment {
   width: 900px;
   border: 1px solid #ccc;
@@ -272,7 +299,7 @@ export default {
   position: relative;
   cursor: pointer;
   border: 1px solid #ccc;
-  width: 160px;
+  min-width: 160px;
   margin: 20px 20px 0 0;
   padding: 15px 20px 15px 20px;
 }
@@ -284,9 +311,6 @@ export default {
 
 .pay-type .item.active .pay-active {
   display: block;
-}
-
-.pay-type .item img {
 }
 
 .pay-type .item p {
@@ -472,6 +496,13 @@ p.total-txt {
   .dg {
     background: url('../../../assets/images/icon/TA.png') no-repeat left center;
     background-size: 30px;
+  }
+
+  .ordershow-span-color {
+    width: 100%
+  }
+  .container {
+    margin: 0 20px
   }
 }
 

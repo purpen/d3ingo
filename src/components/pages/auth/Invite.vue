@@ -456,7 +456,7 @@
       width: auto;
       max-width: 450px;
       height: auto;
-      margin-top: 0;
+      margin: 20px 0 0 0;
     }
 
     form {

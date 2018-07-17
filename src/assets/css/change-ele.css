@@ -14,9 +14,6 @@
     color: #999;
     text-decoration: line-through
   }
-  .child-input .el-textarea__inner {
-    /* border-color: #e6e6e6 */
-  }
   .add-task-input .el-textarea__inner:hover,
   .add-task-input .el-textarea__inner:focus {
     border-color: #e6e6e6
@@ -256,9 +253,7 @@
   .el-month-table td .cell:hover {
     background-color: #f7f7f7
   }
-  .el-table td.gutter, .el-table th.gutter {
-    /* display: none */
-  }
+  
   .el-table th .cell {
     font-size: 12px;
   }
@@ -578,4 +573,12 @@
   }
   .opt-mar .el-button {
     margin: 0;
+  }
+  .project-menu-sub .el-menu,
+  .nav-header .el-menu,
+  .menu-header .el-menu {
+    background: transparent
+  }
+  .el-message__group p {
+    color: #666
   }

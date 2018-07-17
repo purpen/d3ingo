@@ -203,6 +203,8 @@
           <img v-lazy="require('assets/images/home/5logo.jpg')" />
           <img v-lazy="require('assets/images/home/6logo.jpg')" />
           <img v-lazy="require('assets/images/home/7logo.jpg')" />
+          <img v-lazy="require('assets/images/home/8logo.jpg')" />
+          <img v-lazy="require('assets/images/home/9logo.jpg')" />
         </span>
       </div>
     </div>
@@ -364,6 +366,10 @@
       }
     },
     created() {
+      if (this.prod.name !== '') {
+        this.$router.replace({name: 'SaaSIndex'})
+        return
+      }
       this.getArticleList()
       this.getDesignCase()
       this.getBlock()
@@ -467,6 +473,9 @@
       user() {
         let user = this.$store.state.event.user // role_id
         return user
+      },
+      prod() {
+        return this.$store.state.event.prod
       }
     },
     components: {
@@ -644,10 +653,6 @@
     margin: -20px;
   }
 
-  .pub .pub-btn {
-    /* padding: 20px 80px 20px 80px; */
-  }
-
   .company-des {
     clear: both;
   }
@@ -782,7 +787,9 @@
   }
 
   .slide-left, .slide-right {
-    flex: 1;
+    /* flex: 1 0 auto; */
+    display: block;
+    width: 50%;
     padding: 10px 15px;
   }
 
@@ -791,11 +798,12 @@
     align-items: center;
   }
   .slide-left_c {
+    width: 100%;
     padding-bottom: 60px;
   }
 
   .slide-right img {
-    width: 100%;
+    width: calc(100% - 60px);
     border-radius: 6px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   }

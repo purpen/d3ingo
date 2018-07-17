@@ -492,8 +492,10 @@
       },
       // 展开任务详情
       showTaskBtn(ele) {
+        if (!this.isFocus) {
+          this.currentTaskForm = {...ele}
+        }
         this.isFocus = true
-        this.currentTaskForm = {...ele}
         this.$store.commit('setParentTask', ele)
         this.completeState = ele.stage
         this.$store.commit('changeTaskStatePower', 1)

@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div :class="['main', {'jdc': prod.name === 'jdc'}]">
     <h2>请选择您的身份</h2>
     <div class="identity">
       <input name="type" type="radio" id="customer" value="customer" v-show="false"/>
@@ -14,7 +14,7 @@
         </div>
       </label>
       <input name="type" type="radio" id="business" value="business" v-show="false"/>
-      <label class="cover2" for="business">
+      <label class="cover2" for="business" v-if="prod.name === ''">
         <div class="type business">
           <p></p>
           <article>
@@ -39,16 +39,6 @@
     data() {
       return {}
     },
-    methods: {
-      divClick(e) {
-        let that = e.path[0]
-        if (that.style.borderColor === 'rgba(255, 90, 95, 0.6)') {
-          that.style.borderColor = 'rgba(255, 90, 95, 0)'
-          return true
-        }
-        that.style.border = '1px solid rgba(255, 90, 95, 0.6)'
-      }
-    },
     created() {
       if (!this.isMob) {
         this.$router.replace({name: 'register'})
@@ -57,6 +47,9 @@
     computed: {
       isMob() {
         return this.$store.state.event.isMob
+      },
+      prod() {
+        return this.$store.state.event.prod
       }
     }
   }
@@ -66,24 +59,25 @@
     display: block;
     padding: 0 15px 20px;
   }
-  input[id = customer]:checked ~ .cover1 > .type > article > h3 {
-    color: #FF5A5F;
-  }
-
+  input[id = customer]:checked ~ .cover1 > .type > article > h3,
   input[id = business]:checked ~ .cover2 > .type > article > h3 {
     color: #FF5A5F;
   }
-
-  input[id = customer]:checked ~ .cover1 > .type {
-    border: 2px solid rgba(255, 90, 95, 0.6);
-    box-shadow: 0 0 5px rgba(10, 10, 10, 0.1);
+  input[id = customer]:checked ~ .cover1 > .type > article > h3,
+  .jdc input[id = business]:checked ~ .cover2 > .type > article > h3 {
+    color: #0989C5
   }
-
+  input[id = customer]:checked ~ .cover1 > .type,
   input[id = business]:checked ~ .cover2 > .type {
     border: 2px solid rgba(255, 90, 95, 0.6);
     box-shadow: 0 0 5px rgba(10, 10, 10, 0.1);
   }
 
+  .jdc input[id = customer]:checked ~ .cover1 > .type,
+  .jdc input[id = business]:checked ~ .cover2 > .type {
+    border: 2px solid rgba(9, 137, 197, 0.6);
+    box-shadow: 0 0 5px rgba(10, 10, 10, 0.1);
+  }
   input[id = customer]:checked ~ a.cus {
     display: block;
   }
@@ -104,6 +98,7 @@
   }
 
   .type {
+    margin: auto;
     max-width: 300px;
     min-width: 288px;
     height: 120px;
@@ -156,7 +151,13 @@
     display: none;
     padding: 0 15px;
   }
-
+  .jdc .pub-btn {
+    border-color: #0989C5;
+    background-image: linear-gradient(-90deg, #0989C5 0%, #5D6FBC 45%, #995CB6 100%);
+  }
+  .jdc .pub-btn:hover {
+    border-color: #0989C5
+  }
   /* .pub-btn {
     position: absolute;
     left: 0;

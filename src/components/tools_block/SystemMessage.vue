@@ -110,13 +110,13 @@
         this.loadList()
       },
       aClick (link) {
-        let oldClass = document.body.childNodes[1].getAttribute('class')
+        let oldClass = document.getElementById('app').getAttribute('class')
         if (oldClass) {
-          oldClass = oldClass.replace('disableScroll ', '')
+          oldClass = oldClass.replace(/disableScroll\x20?/g, '')
         }
         document.body.removeAttribute('class', 'disableScroll')
         document.childNodes[1].removeAttribute('class', 'disableScroll')
-        document.body.childNodes[1].setAttribute('class', oldClass)
+        document.getElementById('app').setAttribute('class', oldClass)
         let reg = /^(http)/
         if (!reg.test(link)) {
           window.open('http://' + link)

@@ -1118,6 +1118,15 @@ const CONTRACT_THN = {
   test: ''
 }
 
+// 合同 京东信息
+const CONTRACT_JD = {
+  company_name: '北京京东叁佰陆拾度电子商务有限公司',
+  contact_name: '周申蓉',
+  contact_phone: '13911290469',
+  address: '北京市朝阳区北辰西路8号北辰世纪中心A座8层',
+  test: ''
+}
+
 // 合同款项比例配置
 const CONTRACT_SCALE = {
   first: 40,
@@ -1160,6 +1169,7 @@ module.exports = {
   PATENT_FOR_INVENTION,
   TAGS_COLOR_TONE,
   CONTRACT_THN,
+  CONTRACT_JD,
   CONTRACT_SCALE,
   LOGISTICS_OPTIONS,
   TEST

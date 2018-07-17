@@ -5,7 +5,7 @@
       <div :class="{'vcenter-right-plus': leftWidth === 4,
         'vcenter-right': leftWidth === 2,
         'vcenter-right-mob': isMob}">
-        <div class="right-content vcenter-container" style="width: 880px">
+        <div class="right-content vcenter-container">
           <!--
           <v-menu-sub></v-menu-sub>
           -->
@@ -24,7 +24,7 @@
           </div>
 
           <!--v-if="item.status !== 1" 暂时的-->
-          <div class="content-box" v-if="item.status !== 1">
+          <div class="content-box mar-b-20" v-if="item.status !== 1">
             <div class="main clearfix min-height-0">
               <div class="status">
                 <div style="width: 100%">
@@ -32,7 +32,7 @@
                   <div v-if="item.pay_type === 5 && item.status === 0">
                     <div v-if="item.bank_transfer === 0">
                       <p class="main-des">请于 {{ item.expire_at }} 前完成支付，逾期会关闭交易</p>
-                      <p class="main-des">如果您已经完成对公转账，请上传凭证</p>
+                      <p class="main-des">如果您已经完成打款，请上传凭证</p>
 
                       <div class="order-show">
                         <el-upload
@@ -63,7 +63,7 @@
                       <div class="payconfirmTitle">
                         <p class="font-18 text-center">支付确认中…</p>
                       </div>
-                      <p class="main-des text-center">您已确认打款，请等待铟果SaaS平台人工审核</p>
+                      <p class="main-des text-center">您已确认打款，请等待{{custom.info}}平台人工审核</p>
                     </div>
                   </div>
                 </div>
@@ -95,22 +95,32 @@
               <p>订单编号: <span>{{ item.uid }}</span></p>
               <p>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注: <span>{{ item.summary }}</span></p>
               <p>创建时间: <span>{{ item.created_at }}</span></p>
-
-              <div class="outline-pay" v-show="item.pay_type === 5">
+              
+              <div class="outline-pay" v-if="item.source === 0 && item.status !== 1" v-show="item.pay_type === 5">
                 <p class="detail-banner">对公转账</p>
                 <p>收款公司: <span>北京太火红鸟科技有限公司</span></p>
                 <p>收款账户: <span>1109 1002 8310 202</span></p>
                 <p>开&nbsp;&nbsp;户&nbsp;行: <span>招商银行北京华贸中心支行</span></p>
               </div>
+              <div class="outline-pay jd-pay" v-if="item.source === 1 && item.status !== 1" v-show="item.pay_type === 5">
+                <p class="detail-banner">京东云市场支付</p>
+                <p>如未支付，请点击下面按钮，到京东云市场完成下单支付</p>
+                <a target="_blank" href="https://market.jdcloud.com/#/service/details/576846"
+                class="to-pay middle-button full-red-button">去支付</a>
+                <p class="margin-top-0">并在支付完成后，上传订单详情截图凭证。</p>
+              </div>
             </div>
           </div>
-          <div class="server">
+          <div class="server" v-if="custom.id === 0">
             <p>如果您有任何疑问，请立即联系客服。</p>
             <p>邮箱：support@taihuoniao.com</p>
             <p>电话：010-84599328</p>
           </div>
-
-
+          <div class="server" v-if="custom.id === 1">
+            <p>如果您有任何疑问，请立即联系客服。</p>
+            <p>邮箱：lvdongdong@jd.com</p>
+            <p>电话：010-57656075</p>
+          </div>
         </div>
 
       </div>
@@ -230,6 +240,9 @@
       },
       leftWidth() {
         return this.$store.state.event.leftWidth
+      },
+      custom() {
+        return this.$store.state.event.prod
       }
     },
     created: function () {
@@ -286,15 +299,24 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-  .content {
+  .to-pay {
+    display: block;
+    width: 120px;
+    text-align: center
   }
-
+  .right-content {
+    width: 880px
+  }
   .content-box {
     height: 100%;
     border: 1px solid #ccc;
     padding: 20px;
   }
+
+  .mar-b-20 {
+    margin-bottom: 20px !important;
+  }
+
   .min-height-0 {
     min-height: 0;
   }
@@ -334,16 +356,8 @@
     font-size: 1.2rem;
   }
 
-  .operation p {
-    /*line-height: 50px;*/
-  }
-
   .operation p button {
     width: 120px;
-  }
-
-  .detail {
-
   }
 
   .detail p {
@@ -351,6 +365,9 @@
     line-height: 2.5;
   }
 
+  .detail p.margin-top-0 {
+    margin-top: 0
+  }
   .detail p span {
     color: #222222;
     margin-left: 20px;
@@ -444,6 +461,11 @@
     color: #ff5a5f;
   }
 
+@media screen and (max-width: 879px) {
+  .right-content {
+    width: 100%
+  }
+}
 @media screen and (max-width: 767px) {
   .right-content .content-box {
     border: none;

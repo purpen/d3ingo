@@ -11,6 +11,7 @@ import {
   HIDE_FOOTER,
   LEFT_WIDTH
 } from './mutation-types.js'
+import prod from 'conf/prod.env'
 
 // 判断是否登录
 let isLoggedIn = function () {
@@ -83,7 +84,49 @@ let getMenustatus = function () {
     return false
   }
 }
-
+function showProd() {
+  switch (prod.CUSTOM) {
+    case '':
+      return {
+        id: 0,
+        name: '',
+        logo: require('assets/images/logo.png'),
+        info: '铟果',
+        title: '铟果-中国领先的产品创新SaaS平台',
+        url: 'www.d3ingo.com',
+        fullurl: 'https://www.d3ingo.com',
+        license: '太火鸟【京ICP备14025430号-2】',
+        copyright: 'Copyright © 2018',
+        business: '经营许可证:【京ICP证150139号】'
+      }
+    case 'jdc':
+      return {
+        id: 1,
+        name: 'jdc',
+        logo: require('assets/images/logo-yh.png'),
+        info: '艺火',
+        title: '京东云艺火-专业B2B设计交易服务SaaS平台',
+        url: 'JDCloud.com',
+        fullurl: 'https://www.jdcloud.com',
+        license: '京东云【京ICP备11041704号-31】',
+        copyright: 'Copyright © 2012-2018',
+        business: '经营许可证:【京ICP证070359号】'
+      }
+    case 'wb':
+      return {
+        id: 2,
+        name: 'wb',
+        logo: require('assets/images/logo-wb2.png'),
+        logo2: require('assets/images/logo-wb.png'),
+        info: '义乌设计大脑',
+        title: '义乌设计大脑-产品创新资源与工贸企业对接平台',
+        url: 'zjbdos.com',
+        fullurl: 'http://www.zjbdos.com',
+        license: '万博大数据【浙ICP备18008501号-1】',
+        copyright: 'Copyright © 2017'
+      }
+  }
+}
 const state = {
   token: isLoggedIn() || null,
   user: userInfo() || {},
@@ -104,7 +147,8 @@ const state = {
   menuStatus: getMenustatus() || '',
   hideHeader: hashideHeader(),
   hideFooter: hashideFooter(),
-  leftWidth: getLeftWidth()
+  leftWidth: getLeftWidth(),
+  prod: showProd()
 }
 
 let IsMobile = function () {

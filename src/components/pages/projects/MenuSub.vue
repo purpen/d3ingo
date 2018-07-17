@@ -1,7 +1,9 @@
 <template>
-  <section class="menu-sub">
+  <section :class="['menu-sub','project-menu-sub', {'jdc': custom.name === 'jdc', 'wb': custom.name === 'wb'}]">
     <div class="nav-left nav-menu">
-      <router-link :to="{name: 'home'}" class="el-menu-item logo">太火鸟 SaaS</router-link>
+      <router-link :to="{name: 'home'}" class="el-menu-item logo">
+        <img :src="custom.logo" :alt="custom.info">
+      </router-link>
       <div class="flex">
         <p :class="['info', {'active': status === 'info'}]">项目需求信息</p>
         <p :class="['match', {'active': status === 'match'}]">分析匹配</p>
@@ -10,7 +12,7 @@
     </div>
 
     <div class="nav-right nav-menu" v-if="token">
-      <el-menu class="el-menu-info" mode="horizontal" router>
+      <el-menu class="el-menu-info" mode="horizontal" router v-if="custom.id === 0">
         <el-submenu index="2">
           <template slot="title">
             <img class="avatar2" v-if="user.logo_url" :src="user.logo_url"/>
@@ -19,7 +21,27 @@
             <span v-else class="b-nickname">{{ user.account }}</span>
           </template>
           <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
-          <el-menu-item index="/admin" v-if="isSysAdmin"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
+          <el-menu-item :index="'/admin'" v-if="isSysAdmin">
+            <i class="fx-4 fx-icon-control-center"></i>
+            <i class="fx-4 fx-icon-console-hover"></i>后台管理
+          </el-menu-item>
+          <el-menu-item index="" @click="logout">
+            <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
+        </el-submenu>
+      </el-menu>
+      <el-menu class="el-menu-info" mode="horizontal" router v-if="custom.id === 1">
+        <el-submenu index="2">
+          <template slot="title">
+            <img class="avatar2" v-if="user.logo_url" :src="user.logo_url"/>
+            <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
+            <span v-if="user.realname" class="b-nickname">{{ user.realname }}</span>
+            <span v-else class="b-nickname">{{ user.account }}</span>
+          </template>
+          <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
+          <el-menu-item :index="'/b_admin/item/list'" v-if="user.source_admin===1">
+            <i class="fx-4 fx-icon-control-center"></i>
+            <i class="fx-4 fx-icon-console-hover"></i>后台管理
+          </el-menu-item>
           <el-menu-item index="" @click="logout">
             <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
         </el-submenu>
@@ -74,6 +96,9 @@ export default {
     },
     token() {
       return this.$store.state.event.token
+    },
+    custom() {
+      return this.$store.state.event.prod
     }
   }
 }
@@ -102,18 +127,19 @@ export default {
     flex: 0 0 auto;
   }
   .logo {
-    display: block;
-    width: 50px;
+    border-bottom: 3px solid transparent;
     height: 60px;
-    transition: none;
-    padding: 0 16px;
-    background: url(../../../assets/images/logo.svg)
-      no-repeat center / contain;
-    text-indent: -9999px;
+    display: flex;
+    align-items: center
+  }
+  .logo img {
+    height: 50px;
+  }
+  .wb img {
+    height: 30px;
   }
   .logo:hover {
-    background: url(../../../assets/images/logo.svg)
-      no-repeat center / contain;
+    background: #fff
   }
   .flex {
     flex: 1;

@@ -254,8 +254,13 @@ export default {
 }
 </script>
 <style scoped>
+  .project-cover {
+    display: block;
+  }
   .project-item-box {
     max-width: 640px;
+    margin: 0 auto;
+    padding-top: 50px;
   }
   h3 {
     font-size: 18px;

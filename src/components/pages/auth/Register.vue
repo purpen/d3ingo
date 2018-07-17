@@ -1,9 +1,9 @@
 <template>
-  <div class="container">
+  <div :class="['container', {'jdc': prod.name === 'jdc', 'other': prod.name !== '', 'wb': prod.name === 'wb'}]">
     <!-- <section class="cover-bgf7"></section> -->
     <div class="register-box">
       <div class="regisiter-title">
-        <h2>注册铟果{{identity}}</h2>
+        <h2>注册{{prod.info}}{{identity}}账号</h2>
       </div>
 
       <div class="register-tab clearfix" v-if="!isMob">
@@ -15,7 +15,7 @@
             <p class="des">找到设计服务商</p>
           </div>
         </div>
-        <div :class="{'register-tab-user': true, active: cActive}" @click="selectComputer">
+        <div v-if="prod.name === ''" :class="{'register-tab-user': true, active: cActive}" @click="selectComputer">
           <div class="tab-left"></div>
           <div class="tab-right">
             <h3>我是设计公司</h3>
@@ -61,7 +61,7 @@
       </div>
     </div>
     <div class="reg">
-      <p>已有铟果账户，您可以
+      <p>已有{{prod.info}}账户，您可以
         <router-link :to="{name: 'login'}">立即登录</router-link>
       </p>
     </div>
@@ -276,6 +276,8 @@
                       that.timer()
                       that.$emit('send')
                     } else {
+                      console.log('验证码错误')
+                      that.fetchImgCaptcha()
                       that.$message({
                         showClose: true,
                         message: response.data.meta.message,
@@ -349,6 +351,9 @@
       },
       isMob() {
         return this.$store.state.event.isMob
+      },
+      prod() {
+        return this.$store.state.event.prod
       }
     },
     mounted() {
@@ -448,7 +453,12 @@
     background-color: #fff;
     box-shadow: 0 0 6px 2px rgba(0,0,0,0.10);
   }
-
+  .jdc .register-tab-user.active {
+    border-color: #0989C5
+  }
+  .wb .register-tab-user.active {
+    border-color: #4A90E2
+  }
   .register-tab-user::before {
     content: "";
     position: absolute;
@@ -460,9 +470,17 @@
     border: 1px solid #d2d2d2;
     transition: 268ms all ease;
   }
-  .register-tab-user.active::before {
+  .register-tab-user.active:before {
     background: #ff5a5f;
     border: 1px solid #ff5a5f;
+  }
+  .jdc .register-tab-user.active:before {
+    background: #0989C5;
+    border-color: #0989C5
+  }
+  .wb .register-tab-user.active:before {
+    background: #4A90E2;
+    border-color: #4A90E2
   }
   .register-tab-user.active::after {
     content: "";
@@ -479,6 +497,12 @@
   }
   .register-tab-user.active h3 {
     color: #FF5A5F;
+  }
+  .jdc .register-tab-user.active h3 {
+    color: #0989C5
+  }
+  .wb .register-tab-user.active h3 {
+    color: #4A90E2
   }
   .register-tab-user .tab-left {
     height: 100%;
@@ -518,9 +542,27 @@
   .register-btn {
     width: 100%;
   }
-
+  .jdc .register-btn {
+    background-image: linear-gradient(-90deg, #0989C5 0%, #5D6FBC 45%, #995CB6 100%);
+  }
+  .jdc .register-btn:hover {
+    border-color: #0989C5
+  }
+  .wb .register-btn {
+    background: #4A90E2;
+  }
+  .wb .register-btn:hover {
+    border-color: #4A90E2;
+    background: #0989C5
+  }
   .code-btn {
     cursor: pointer;
+  }
+  .code-btn.is-disabled:hover,
+  .code-btn.is-disabled:focus {
+    background: transparent;
+    color: #666;
+    border-color: transparent
   }
 
   .reg {
@@ -535,6 +577,13 @@
 
   .reg p a {
     color: #FF5A5F;
+  }
+
+  .jdc .reg p a {
+    color: #0989C5
+  }
+  .wb .reg p a {
+    color: #4A90E2 
   }
 
   .imgCode {
@@ -556,7 +605,8 @@
       width: auto;
       max-width: 450px;
       height: auto;
-      margin: 0;
+      margin: 20px 0 0 0;
+      box-shadow: none
     }
 
     form {
@@ -577,5 +627,11 @@
     .reg {
       margin: 20px 0 -20px
     }
+  }
+  .other .register-tab {
+    padding: 30px 30px 0
+  }
+  .other .register-tab-user {
+    flex: 1 1 auto;
   }
 </style>

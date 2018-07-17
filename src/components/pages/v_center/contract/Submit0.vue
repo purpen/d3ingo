@@ -416,7 +416,7 @@
             }
             for (let j = 0; j < row.stages.length; j++) {
               if (!row.stages[j].content || row.stages[j].content.length === 0) {
-                that.$message.error('每个阶段至少添加一项子内容!')
+                that.$message.error('每个阶段至少添加一个阶段内容!')
                 return false
               }
             }
@@ -746,6 +746,7 @@
     margin: 0 0 10px 5px;
     clear: both;
     cursor: pointer;
+    color: #ff5a5f
   }
 
   @media screen and (max-width: 767px) {

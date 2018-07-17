@@ -1,9 +1,13 @@
 <template>
   <section>
-    <header class="menu-header">
+    <header :class="['menu-header', {'jdc': prod.name === 'jdc', 'other': prod.name !== ''}]">
       <div class="menu-left">
         <span class="menu-icon" @click="changeWidth"></span>
-        <p class="home-icon"><router-link :to="{name: 'home'}" class="logo-icon"></router-link></p>
+        <p class="home-icon">
+          <router-link :to="{name: 'home'}" class="logo-icon">
+            <img :src="prod.logo" alt="logo">
+          </router-link>
+        </p>
       </div>
       <div v-if="!isMob" class="menu-right">
         <a tabindex="-1" class="nav-item is-hidden-mobile" ref="msgList">
@@ -34,7 +38,7 @@
         <div v-if="isCompany" @click="showMine()" class="mine no-select">
           <span>我的</span>
         </div>
-        <el-menu class="el-menu-info" mode="horizontal" router>
+        <el-menu class="el-menu-info" mode="horizontal" router v-if="prod.name === ''">
           <el-submenu index="2">
             <template slot="title">
               <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
@@ -44,6 +48,20 @@
             </template>
             <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
             <el-menu-item index="/admin" v-if="isAdmin"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
+            <el-menu-item index="" @click="logout">
+              <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
+          </el-submenu>
+        </el-menu>
+        <el-menu class="el-menu-info" mode="horizontal" router v-if="prod.name !== ''">
+          <el-submenu index="2">
+            <template slot="title">
+              <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
+              <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
+              <span v-if="eventUser.realname" class="b-nickname">{{ eventUser.realname }}</span>
+              <span v-else class="b-nickname">{{ eventUser.account }}</span>
+            </template>
+            <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
+            <el-menu-item :index="'/b_admin/item/list'" v-if="eventUser.source_admin ===1"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
             <el-menu-item index="" @click="logout">
               <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
           </el-submenu>
@@ -536,6 +554,9 @@
         }
         return user
       },
+      isthirdParty() {
+        return this.$store.state.event.prod
+      },
       msgCount() {
         return this.$store.state.event.msgCount
       },
@@ -562,6 +583,9 @@
         set(e) {
           this.$store.commit('changeShowMine', e)
         }
+      },
+      prod() {
+        return this.$store.state.event.prod
       }
     },
     watch: {
@@ -732,11 +756,12 @@
     background-size: 24px;
   }
   .home-icon {
+    height: 60px;
     padding:0 20px;
     display: flex;
     align-items: center;
   }
-  .logo-icon {
+  /* .logo-icon {
     width: 50px;
     height: 60px;
     transition: none;
@@ -744,6 +769,12 @@
     margin-right: 30px;
     background: url(../../../assets/images/logo.svg) no-repeat center / contain;
     text-indent: -9999px;
+  } */
+  .logo-icon img {
+    height: 50px;
+  }
+  .other .logo-icon img {
+    height: 30px;
   }
   .avatar {
     /* display: block; */
@@ -834,27 +865,33 @@
 
   }
   @media screen and (max-width: 767px) {
+    .menu-icon {
+      display: none
+    }
+    .home-icon {
+      padding: 0 15px;
+    }
     .menu-list .item {
       padding-left: 0;
       text-align: center
     }
-    .menuHide {
-      /* position: relative;
-      top: 0; */
-      /* z-index: 1; */
-      /* width: 100% */
-    }
-
+    /* .menuHide {
+      position: relative;
+      top: 0;
+      z-index: 1;
+      width: 100%
+    } */
     .menu-list .item::before {
       left: 0;
     }
     .menuHide-mini .menu-list .item::before {
       left: 13px;
     }
-
-    .logo-icon {
-      width: 30px;
-      height: 50px;
+    .menu-right {
+      padding-right: 15px;
+    }
+    .avatar {
+      display: block
     }
   }
 </style>

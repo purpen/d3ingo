@@ -191,9 +191,10 @@
                 <el-col :xs="24" :sm="3" :md="3" :lg="3" class="qouteSubmit mar-r-15">
                   <el-form-item
                     :prop="'plan_format.' + index + '.duration'"
-                    :rules="{
-                    required: true, type: 'number',  message: '请添写正确数字', trigger: 'blur'}">
-                    <el-input autosize v-model.number="form.plan_format[index].duration" placeholder="天数" size="small">
+                    :rules="[{
+                    required: true, type: 'number', message: '请添写正确天数', trigger: 'blur'},
+                    {min: 1, type: 'number', message: '请添写正确天数', trigger: 'blur'}]">
+                    <el-input type="number" min="1" autosize v-model.number="form.plan_format[index].duration" placeholder="天数" size="small">
                       <template slot="append">工作日</template>
                     </el-input>
                   </el-form-item>
@@ -201,9 +202,10 @@
                 <el-col :xs="20" :sm="4" :md="4" :lg="4" class="qouteSubmit mar-r-15">
                   <el-form-item
                     :prop="'plan_format.' + index + '.price'"
-                    :rules="{
-                    required: true, type: 'number', message: '请添写正确的格式', trigger: 'blur'}">
-                    <el-input autosize v-model.number="form.plan_format[index].price" @blur="statPrice" placeholder="请添写费用" size="small">
+                    :rules="[{
+                    required: true, type: 'number', message: '请添写正确的金额', trigger: 'blur'},
+                    {min: 1, type: 'number', message: '请添写正确天数', trigger: 'blur'}]">
+                    <el-input type="number"  min="1" autosize v-model.number="form.plan_format[index].price" @blur="statPrice" placeholder="请添写费用" size="small">
                       <template slot="append">元</template>
                     </el-input>
                   </el-form-item>
@@ -956,9 +958,6 @@ export default {
   .form-btn {
     float: right;
   }
-  .form-btn button:first-child {
-    /* padding: 10px 40px 10px 40px; */
-  }
   .add-plan {
     background-color: #F7F7F7;
   }
@@ -1074,9 +1073,6 @@ export default {
 
   .sum-box {
     margin: 0 0 50px 0;
-  }
-  .sum-box .tax-box {
-
   }
   .sum-box .tax-box p {
     float: right;

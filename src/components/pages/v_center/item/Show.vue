@@ -8,7 +8,7 @@
       <el-breadcrumb-item>{{ item.name }}</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <el-row :gutter="20" class="blank30">
+    <el-row :gutter="20" class="blank30 vcenter">
       <v-item-progress :progressButt="progressButt" :progressContract="progressContract"
                        :progressItem="progressItem"></v-item-progress>
 
@@ -72,7 +72,7 @@
           <div class="select-item-box clearfix" v-if="statusLabel.selectCompany">
             <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
               <el-collapse-item title="选择系统推荐的设计公司" name="3">
-              
+
                 <div class="clear"></div>
                 <div class="pub-btn clearfix" v-if="item.status === 2 || item.status === 3">
                   <el-button class="is-custom" @click="redirectMatch" :disabled="item.status === 2" type="primary">选择设计公司</el-button>
@@ -462,6 +462,7 @@ export default {
       item: {},
       info: {},
       contract: {},
+      stageId: '',
       isLoadingBtn: false,
       selectCompanyCollapse: [
         '1',
@@ -878,6 +879,7 @@ export default {
           self.item = response.data.data.item
           // self.info = response.data.data.info
           self.contract = response.data.data.contract
+          console.log(self.contract)
           if (response.data.data.evaluate) {
             self.evaluate = response.data.data.evaluate
           }

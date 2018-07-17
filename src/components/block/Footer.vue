@@ -2,7 +2,7 @@
   <div class="footer clear" v-if="!hideFooter">
     <el-row class="foot-main" justify="center">
       <el-col class="item" :xs="12" :sm="6" :md="6" :lg="6">
-        <p class="title">铟果</p>
+        <p class="title">{{prod.info}}</p>
         <p>
           <router-link :to="{name: 'about'}">关于我们</router-link>
         </p>
@@ -16,8 +16,8 @@
         <p v-if="isDesignCompany === 1 || isDesignCompany === true">
           <router-link :to="{name: 'projectCreate'}" class="">发布需求</router-link>
         </p>
-        <p v-if="isDesignCompany === 2 || isDesignCompany === true">
-          <router-link :to="{name: 'serverDesign'}" class="">申请加入</router-link>
+        <p v-show="!token && prod.name === ''">
+          <router-link :to="{name: 'serverDesign'}" class="">申请入驻</router-link>
         </p>
       </el-col>
 
@@ -34,7 +34,7 @@
         </p>
       </el-col>
 
-      <el-col class="item fllow" :xs="12" :sm="6" :md="6" :lg="6">
+      <el-col class="item fllow" :xs="12" :sm="6" :md="6" :lg="6" v-if="prod.name === 0">
         <p class="title">关注我们</p>
         <!-- <p class="call clearfix"><span>电话：</span><span><a href="tel:4008798751">4008-798-751</a></span></p> -->
         <div class="fshare-box">
@@ -55,21 +55,21 @@
       </el-col>
     </el-row>
     <div class="copy-right" v-if="!isMob">
-      <p>Copyright © 2018 <a href="https://www.d3ingo.com">www.d3ingo.com</a> 版权所有.All rights reserved.</p>
-      <p>太火鸟 营业执照【京ICP备14025430号-2】经营许可证:【京ICP证150139号】</p>
+      <p>{{prod.copyright}} <a :href="prod.fullurl">{{prod.url}}</a> 版权所有.All rights reserved.</p>
+      <p>{{prod.license}}{{prod.business}}</p>
     </div>
     <div class="copy-right" v-if="isMob">
-      <p>Copyright © 2018 <a href="https://www.d3ingo.com">www.d3ingo.com</a></p>
+      <p>{{prod.copyright}} <a :href="prod.fullurl">{{prod.url}}</a></p>
       <p>版权所有.All rights reserved.</p>
-      <p>太火鸟 营业执照【京ICP备14025430号-2】</p>
-      <p>经营许可证:【京ICP证150139号】</p>
+      <p>{{prod.license}}</p>
+      <p>{{prod.business}}</p>
     </div>
     <transition name="fade">
       <section class="hidweixin" v-if="iswxhide && !isMob">
         <div class="hidebox" @click="clickwx"></div>
         <div class="wxbox">
           <i class="wxclose" @click="clickwx"></i>
-          <h3>铟果官方微信二维码</h3>
+          <h3>关注铟果微信公众号</h3>
           <p class="openxw">打开微信，点击右上角的“+”，选择“扫一扫”功能，对准下方二维码即可。</p>
           <div class="d3INeq">
             <p class="saoqr">扫码关注我们</p>
@@ -99,6 +99,9 @@
       isMob() {
         return this.$store.state.event.isMob
       },
+      token() {
+        return this.$store.state.event.token
+      },
       hideFooter() {
         return this.$store.state.event.hideFooter
       },
@@ -113,6 +116,9 @@
         } else {
           return true
         }
+      },
+      prod() {
+        return this.$store.state.event.prod
       }
     },
     methods: {
@@ -203,7 +209,7 @@
     position: absolute;
     color: #BEBEBE;
     right: 40px;
-    top: 30px;
+    top: 28px;
     width: 20px;
     height: 20px;
     line-height: 20px;
@@ -292,6 +298,10 @@
     .copy-right {
      text-align: left;
      margin-right: 40px;
+    }
+    .copy-right p {
+      line-height: 1.5;
+      font-size: 12px;
     }
   }
 </style>

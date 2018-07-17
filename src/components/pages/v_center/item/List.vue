@@ -154,6 +154,11 @@
                                 v-else>查看详情
                     </el-button>
                   </p>
+                  <p v-if="d.item.status === 5" class="btn margin-b-10">
+                    <el-button class="is-custom" @click="viewShow" size="small" :item_id="d.item.id" type="primary">
+                      查看详情
+                    </el-button>
+                  </p>
 
                   <p class="btn" v-show="d.item.status === 6">
                     <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary">
@@ -165,6 +170,21 @@
                       支付项目款
                     </el-button>
                   </p>
+                  <p v-if="d.item.status === 8" class="btn margin-b-10">
+                    <el-button class="is-custom" @click="viewShow" size="small" :item_id="d.item.id" type="primary">
+                      查看详情
+                    </el-button>
+                  </p>
+                  <p v-if="d.item.status === 9" class="btn margin-b-10">
+                    <el-button class="is-custom" @click="viewShow" size="small" :item_id="d.item.id" type="primary">
+                      查看详情
+                    </el-button>
+                  </p>
+                  <p v-if="d.item.status === 11" class="btn margin-b-10">
+                    <el-button class="is-custom" @click="viewShow" size="small" :item_id="d.item.id" type="primary">
+                      查看详情
+                    </el-button>
+                  </p>
                   <p class="btn" v-show="d.item.status === 15">
                     <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary">
                       验收项目
@@ -173,6 +193,11 @@
                   <p class="btn" v-show="d.item.status === 18">
                     <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary">
                       评价
+                    </el-button>
+                  </p>
+                  <p v-if="d.item.status === 22" class="btn margin-b-10">
+                    <el-button class="is-custom" @click="viewShow" size="small" :item_id="d.item.id" type="primary">
+                      查看详情
                     </el-button>
                   </p>
                   <p v-if="d.item.status === 2" class="btn margin-b-10">
@@ -217,7 +242,7 @@
                     <span class="status-str" v-if="d.item.show_offer">有设计服务供应商报价</span>
                     <span class="status-str" v-else>{{ d.item.status_value }}</span>
                   </p>
-                  <section>
+                  <section class="btns">
                     <div class="btn" v-show="d.item.status === -2">
                       <p>
                         <el-button class="is-custom" @click="restartBtn" :item_id="d.item.id" size="small"
@@ -281,7 +306,7 @@
                       </el-button>
                     </p>
                     <div class="btn" v-show="d.item.is_close">
-                      <el-tooltip class="item" effect="dark" content="关闭项目后，预付款自动转入我的钱包" placement="right-end">
+                      <el-tooltip effect="dark" content="关闭项目后，预付款自动转入我的钱包" placement="right-end">
                         <el-button class="" @click="closeItemBtn" :item_id="d.item.id" :index="index" size="small">
                           关闭项目
                         </el-button>
@@ -805,5 +830,42 @@
   .pagination {
     text-align: center;
     margin-bottom: 20px;
+  }
+  @media screen and (max-width: 767px) {
+    .pub {
+      display: block;
+      height: auto;
+      background: transparent
+    }
+    .pub .pub-btn {
+      display: block;
+      width: 120px;
+      height: 30px;
+      line-height: 28px;
+      margin: auto;
+    }
+    h3 {
+      margin-top: 30px;
+    }
+    .ing .buttons {
+      display: flex;
+      justify-content: center
+    }
+    .ing .is-custom {
+      width: 100px;
+      height: 30px;
+    }
+    .btn p {
+      line-height: 1
+    }
+    .btns .btn {
+      width: 100px;
+      margin: 10px 10px 0 0;
+      height: 30px
+    }
+    .btns {
+      display: flex;
+      justify-content: center
+    }
   }
 </style>

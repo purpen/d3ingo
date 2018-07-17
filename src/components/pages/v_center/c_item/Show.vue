@@ -8,7 +8,7 @@
       <el-breadcrumb-item>{{ item.name }}</el-breadcrumb-item>
     </el-breadcrumb>
 
-    <el-row :gutter="24" class="blank30">
+    <el-row :gutter="24" class="blank30 vcenter">
       <v-item-progress :progressButt="progressButt" :progressContract="progressContract"
                        :progressItem="progressItem"></v-item-progress>
 
@@ -179,24 +179,24 @@
                     <p class="capital-des">项目首付款已转入您的账户中</p>
                   </div>
                   <div v-if="invoceStat(1, 0) === 1">
-                    <p>首付款已转到太火鸟SaaS平台托管</p>
+                    <p>首付款已转到{{custom.info}}平台托管</p>
                     <p class="capital-money">¥ {{ firstRestPayment }}</p>
                     <p class="pay-btn">
                       <el-button class="is-custom" @click="sendInvoiceBtn(1, 0)"
                                  type="primary">开发票
                       </el-button>
                     </p>
-                    <p class="capital-des">需求方已将首付款转到太火鸟SaaS平台托管，</p>
-                    <p class="capital-des">您需要给太火鸟SaaS平台提供相关发票，平台收到发票后会将相关款项转入您的账户中。</p>
+                    <p class="capital-des">需求方已将首付款转到{{custom.info}}平台托管，</p>
+                    <p class="capital-des">您需要给{{custom.info}}平台提供相关发票，平台收到发票后会将相关款项转入您的账户中。</p>
                   </div>
                   <div v-if="invoceStat(1, 0) === 2">
-                    <p>首付款已转到太火鸟SaaS平台托管</p>
+                    <p>首付款已转到{{custom.info}}平台托管</p>
                     <p class="capital-money">¥ {{ firstRestPayment }}</p>
                     <p class="pay-btn">
                       <span class="pay-await">发票确认中</span>
                     </p>
                     <p class="capital-des">发票确认收取中，请您耐心等待…</p>
-                    <p class="capital-des">太火鸟SaaS平台收到发票后会将相关款项转入您的账户中。</p>
+                    <p class="capital-des">{{custom.info}}平台收到发票后会将相关款项转入您的账户中。</p>
                   </div>
                   <div v-if="invoceStat(1, 0) === 3">
                     <p>首付款已到账</p>
@@ -215,7 +215,7 @@
                   <p class="pay-btn">
                     <span>等待需求公司付款中 </span>
                   </p>
-                  <p class="capital-des">等待需求方将首付款转到太火鸟SaaS平台托管中…</p>
+                  <p class="capital-des">等待需求方将首付款转到{{custom.info}}平台托管中…</p>
                 </div>
               </el-collapse-item>
             </el-collapse>
@@ -308,24 +308,24 @@
                           <p class="capital-des">该阶段款已转入您的账户中</p>
                         </div>
                         <div v-if="invoceStat(2, d.id) === 1">
-                          <p>阶段款已转到太火鸟SaaS平台托管</p>
+                          <p>阶段款已转到{{custom.info}}平台托管</p>
                           <p class="capital-money">¥ {{ d.amount }}</p>
                           <p class="pay-btn">
                             <el-button class="is-custom" @click="sendInvoiceBtn(2, d.id)"
                                        type="primary">开发票
                             </el-button>
                           </p>
-                          <p class="capital-des">需求方已将该阶段款转到太火鸟SaaS平台托管，</p>
-                          <p class="capital-des">您需要给太火鸟SaaS平台提供相关发票，平台收到发票后会将相关款项转入您的账户中。</p>
+                          <p class="capital-des">需求方已将该阶段款转到{{custom.info}}平台托管，</p>
+                          <p class="capital-des">您需要给{{custom.info}}平台提供相关发票，平台收到发票后会将相关款项转入您的账户中。</p>
                         </div>
                         <div v-if="invoceStat(2, d.id) === 2">
-                          <p>阶段款已转到太火鸟SaaS平台托管</p>
+                          <p>阶段款已转到{{custom.info}}平台托管</p>
                           <p class="capital-money">¥ {{ d.amount }}</p>
                           <p class="pay-btn">
                             <span class="pay-await">发票确认中</span>
                           </p>
                           <p class="capital-des">发票确认收取中，请您耐心等待…</p>
-                          <p class="capital-des">太火鸟SaaS平台收到发票后会将相关款项转入您的账户中。</p>
+                          <p class="capital-des">{{custom.info}}平台收到发票后会将相关款项转入您的账户中。</p>
                         </div>
                         <div v-if="invoceStat(2, d.id) === 3">
                           <p>阶段项目资金</p>
@@ -395,7 +395,7 @@
     <el-dialog title="发票信息" v-model="invoiceDialog">
       <div class="corp-info">
         <div class="fz-16 tc-2 sub-title">
-          太火鸟SaaS平台发票信息
+          {{custom.info}}平台发票信息
         </div>
         <el-row>
           <el-col :span="4">
@@ -1097,6 +1097,9 @@
           items.push(item)
         }
         return items
+      },
+      custom() {
+        return this.$store.state.event.prod
       }
     },
     watch: {
@@ -1470,10 +1473,6 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-  .content {
-  }
-
   .red {
     color: red;
   }
@@ -1523,13 +1522,6 @@
     float: left;
   }
 
-  .select-company-item .company-title {
-    /*width: 350px;*/
-    /*height: 160px;*/
-    /*float: left;*/
-    /*overflow: hidden;*/
-  }
-
   .select-company-item .content .img {
     height: 180px;
     display: block;
@@ -1561,9 +1553,6 @@
     margin: 10px;
     float: left;
     padding-top: 45px;
-  }
-
-  .select-company-item .case-box a {
   }
 
   .pub-btn {
@@ -1795,10 +1784,6 @@
     text-align: center;
   }
 
-  .finish-item-btn button {
-    /* padding: 10px 60px 10px 60px; */
-  }
-
   .finish-item-stat {
     margin-top: 20px;
     font-size: 2rem;
@@ -1859,9 +1844,6 @@
   .taking-price-btn {
     float: right;
     margin-bottom: 20px;
-  }
-
-  .evaluate-result {
   }
 
   .eva-content {
