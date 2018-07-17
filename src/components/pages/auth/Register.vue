@@ -552,7 +552,8 @@
     background: #4A90E2;
   }
   .wb .register-btn:hover {
-    border-color: #4A90E2
+    border-color: #4A90E2;
+    background: #0989C5
   }
   .code-btn {
     cursor: pointer;

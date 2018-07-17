@@ -3,5 +3,6 @@ module.exports = {
   CUSTOM: '', // 定制： 默认铟果, jdc: 京东云
   VUE_ENV: '"server"',
   NODE_ENV: '"production"',
-  API_ROOT: '"http://mc.taihuoniao.com/api"'  // nginx 反向代理
+  API_ROOT: '"http://mc.taihuoniao.com/api"', // nginx 反向代理
+  LOCAL_URL: 'http://mc.taihuoniao.com'
 }
