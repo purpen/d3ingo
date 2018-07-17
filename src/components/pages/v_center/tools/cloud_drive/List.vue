@@ -1776,9 +1776,9 @@ export default {
     /* padding-bottom: 60px!important; */
     /* transition: 0.2s all ease; */
   }
-  .content-mini {
-    /* position: absolute; */
-  }
+  /* .content-mini {
+    position: absolute;
+  } */
   .content-pm {
     position: static
   }

@@ -1,5 +1,5 @@
 <template>
-  <div :class="['container', {'jdc': prod.name === 'jdc'}]">
+  <div :class="['container', {'jdc': prod.name === 'jdc', 'wb': prod.name === 'wb'}]">
     <!-- <section class="cover-bgf7"></section> -->
     <div class="login-box">
       <div class="login-title">
@@ -338,6 +338,12 @@ form {
 .jdc .login-btn:hover {
   border-color: #0989C5
 }
+.wb .login-btn {
+  background: #4A90E2;
+}
+.wb .login-btn:hover {
+  border-color: #4A90E2
+}
 .reg {
   text-align: center;
   margin-top: 20px;
@@ -358,6 +364,9 @@ form {
 
 .jdc .reg p a {
   color: #0989C5
+}
+.wb .reg p a {
+  color: #4A90E2
 }
 .opt {
   overflow: hidden;
@@ -388,6 +397,9 @@ form {
 .jdc .forget a:hover {
   color: #0989C5;
 }
+.wb .forget a:hover {
+  color: #4A90E2;
+}
 
 #passwd {
   display: none;
@@ -399,6 +411,10 @@ form {
 .jdc #passwd:checked ~.password-show::before {
   background: rgba(9, 137, 197, .6);
   border-color: #5D6FBC
+}
+.wb #passwd:checked ~.password-show::before {
+  background: rgba(9, 137, 197, .6);
+  border-color: #4A90E2
 }
 
 #passwd:checked ~.password-show::after {

@@ -45,21 +45,21 @@
           </p>
         </div>
         <menu class="clearfix" v-if="!isFullscreen">
-          <menuitem class="fullscreen" @click="fullscreen">
+          <div class="menuitem fullscreen" @click="fullscreen">
             <span class="fx-4 fx-icon-full-screen"></span>
-          </menuitem>
-          <menuitem class="add" @click="prev">
+          </div>
+          <div class="menuitem add" @click="prev">
             <span class="fx-icon-nothing-left"></span>
-          </menuitem>
-          <menuitem class="subtract" @click="next">
+          </div>
+          <div class="menuitem subtract" @click="next">
             <span class="fx-icon-nothing-right"></span>
-          </menuitem>
-          <menuitem class="rotate" @click="rotate += 90" v-if="isMob">
+          </div>
+          <div class="menuitem rotate" @click="rotate += 90" v-if="isMob">
             <span class="fx-icon-rotate"></span>
-          </menuitem>
-          <menuitem v-if="false">
+          </div>
+          <div class="menuitem" v-if="false">
             <span @click="download" class="fx-icon-download"></span>
-          </menuitem>
+          </div>
           <p class="total-page">
             <i>共{{numPages}}页</i>前往
             <input type="text" class="page-input" v-model.number="page" @blur="gotoPage(page)">
@@ -296,7 +296,7 @@
     color: #999;
   }
 
-  menu menuitem {
+  menu .menuitem {
     margin-right: 20px;
     width: 30px;
     height: 30px;
@@ -314,7 +314,7 @@
     border: none;
   }
 
-  menuitem span {
+  .menuitem span {
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -343,7 +343,7 @@
     font-size: 24px;
   }
 
-  menuitem span:hover {
+  .menuitem span:hover {
     color: #FF5D62;
     border-color: #FF5D62;
   }
@@ -486,7 +486,7 @@
     margin:auto;
   }
   @media screen and (max-width:330px) {
-    menuitem.rotate {
+    .menuitem.rotate {
       margin-right: 0;
     }
   }
