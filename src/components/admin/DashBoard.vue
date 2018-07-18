@@ -243,10 +243,6 @@
     color: #222;
   }
 
-  p.title {
-
-  }
-
   .count-item.red {
     border-top: 2px solid red;
   }
@@ -277,9 +273,6 @@
 
   .count-item.yellow p.count {
     color: #B766AD;
-  }
-
-  .content-items {
   }
 
   .content-item {

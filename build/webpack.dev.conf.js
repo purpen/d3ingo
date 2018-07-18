@@ -11,8 +11,8 @@ if (costum.CUSTOM === '') {
   favicon = './static/favicon.ico'
 } else if (costum.CUSTOM === 'jdc') {
   favicon = './static/yh.ico'
-} else if (costum.CUSTOM === 'wb') {
-  favicon = './static/wb.png'
+} else if (costum.CUSTOM === 'yw') {
+  favicon = './static/yw.png'
 }
 // add hot-reload related code to entry chunks
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
