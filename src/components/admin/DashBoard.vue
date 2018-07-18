@@ -223,7 +223,7 @@
 
   .count-item {
     border-top: 2px solid #ccc;
-    background-color: #FAF8F8;
+    background-color: #f7f7f7;
     padding: 10px;
     margin-bottom: 10px;
   }

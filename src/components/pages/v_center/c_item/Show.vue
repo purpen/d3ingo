@@ -719,7 +719,6 @@
           // this.quoteProp.quoteId = this.quotation.id
           this.$set(this.quoteProp, 'quoteId', this.quotation.id)
           Object.assign(this.takingPriceForm, this.quotation)
-          console.log(this.takingPriceForm)
         } else {
           this.takingPriceForm.plan = []
           this.takingPriceForm.item_demand_id = this.item.id
@@ -757,7 +756,6 @@
       // 点击报价详情事件
       showQuotaBtn(obj) {
         this.quota = obj
-        console.log(this.quota)
         this.quotaDialog = true
       },
       // 同步报价单子组件表单
@@ -847,7 +845,6 @@
       },
       // 确认发票发送
       sendInvoiceSubmit(formName) {
-        console.log(this.invoiceForm.logistics_number)
         this.$refs[formName].validate((valid) => {
           if (valid) {
             var row = {
@@ -940,11 +937,11 @@
       // 开始项目
       beginItem() {
         let self = this
-        this.beginItemLoadingBtn = true
         self.$http.post(api.designItemStartId.format(self.item.id), {})
           .then(function (response) {
             if (response.data.meta.status_code === 200) {
               self.$message.success('操作成功!')
+              self.beginItemLoadingBtn = true
               self.item.status = 11
               self.item.status_value = '项目进行中'
             } else {
@@ -1142,7 +1139,6 @@
       self.$http.get(api.designItemId.format(id), {})
         .then(function (response) {
           if (response.data.meta.status_code === 200) {
-            console.log(response.data.data)
             self.item = response.data.data.item
             // self.info = response.data.data.info
             if (response.data.data.evaluate) {
@@ -1156,7 +1152,6 @@
               self.contract.created_at = self.contract.created_at.date_format().format('yyyy-MM-dd')
             }
             self.quotation = response.data.data.quotation
-            // console.log(self.quotation)
             if (self.quotation) {
               self.takingPriceForm.id = self.quotation.id
               self.takingPriceForm.price = parseInt(self.quotation.price).toLocaleString('en-US')
@@ -1178,7 +1173,6 @@
                   .then(function (response) {
                     if (response.data.meta.status_code === 200) {
                       let offerCompany = response.data.data
-                      // console.log(offerCompany)
                       for (let i = 0; i < offerCompany.length; i++) {
                         let item = offerCompany[i]
                         // 是否存在已提交报价的公司
@@ -1242,6 +1236,7 @@
                 self.statusLabel.amount = true
                 self.statusLabel.isPay = true
                 self.statusLabel.manage = true
+                self.statusLabel.stage = true
                 break
               case 11:  // 项目进行中
                 self.progressButt = 3
@@ -1326,12 +1321,10 @@
                   self.$message.error(error.message)
                 })
             }
-
             // 项目阶段列表
             if (self.statusLabel.stage) {
               self.$http.get(api.itemStageDesignCompanyLists, {params: {item_id: self.item.id}})
                 .then(function (response) {
-                  console.log(response)
                   if (response.data.meta.status_code === 200) {
                     let items = response.data.data
                     let isAllPass = true
@@ -1370,7 +1363,6 @@
                       self.sureFinishBtn = true
                     }
                     self.stages = items
-                    console.log(self.stages)
                   }
                 })
                 .catch(function (error) {
