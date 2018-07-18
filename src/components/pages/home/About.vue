@@ -11,7 +11,7 @@
       <h3>关于我们</h3>
     </div>
 
-    <div class="container" v-if="prod.id === 0">
+    <div class="container" v-if="prod.name === ''">
       <el-row :gutter="20">
 
         <el-col :span="24">
@@ -33,7 +33,7 @@
         </el-col>
       </el-row>
     </div>
-    <div class="container" v-if="prod.id === 1">
+    <div class="container" v-if="prod.name !== ''">
       <el-row :gutter="20">
         <el-col :span="24">
           <div class="h-right-content">

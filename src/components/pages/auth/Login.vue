@@ -1,5 +1,5 @@
 <template>
-  <div :class="['container', {'jdc': prod.name === 'jdc'}]">
+  <div :class="['container', {'jdc': prod.name === 'jdc', 'wb': prod.name === 'wb'}]">
     <!-- <section class="cover-bgf7"></section> -->
     <div class="login-box">
       <div class="login-title">
@@ -10,8 +10,10 @@
 
         <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
           <el-form-item label="" prop="account" class="input">
-            <el-input v-model="form.account" name="username" ref="account" auto-complete="on"
-                      placeholder="手机号"></el-input>
+            <el-input v-model="form.account" name="username"
+              :maxlength="11"
+              ref="account" auto-complete="on"
+              placeholder="手机号"></el-input>
           </el-form-item>
           <el-form-item label="" prop="password" class="input">
             <el-input v-model="form.password" type="password" name="password" ref="password"
@@ -57,8 +59,27 @@ import { MENU_STATUS, MSG_COUNT, CHANGE_USER_VERIFY_STATUS } from '@/store/mutat
 
 export default {
   name: 'login',
-
   data() {
+    let checkNumber = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('请添写手机号'))
+      } else {
+        if (!Number.isInteger(Number(value))) {
+          callback(new Error('手机号只能为数字！'))
+        } else {
+          let len = value.toString().length
+          if (len === 11) {
+            if (/^((13|14|15|17|18)[0-9]{1}\d{8})$/.test(value)) {
+              callback()
+            } else {
+              callback(new Error('手机号格式不正确'))
+            }
+          } else {
+            callback(new Error('手机号长度应为11位'))
+          }
+        }
+      }
+    }
     return {
       isLoadingBtn: false,
       labelPosition: 'top',
@@ -67,10 +88,7 @@ export default {
         password: ''
       },
       ruleForm: {
-        account: [
-          { required: true, message: '请输入手机号码', trigger: 'blur' },
-          { min: 11, max: 11, message: '手机号码位数不正确！', trigger: 'blur' }
-        ],
+        account: [{validator: checkNumber, trigger: 'blur'}],
         password: [
           { required: true, message: '请输入密码', trigger: 'change' },
           { min: 6, max: 18, message: '密码长度在6-18字符之间！', trigger: 'blur' }
@@ -320,6 +338,13 @@ form {
 .jdc .login-btn:hover {
   border-color: #0989C5
 }
+.wb .login-btn {
+  background: #4A90E2;
+}
+.wb .login-btn:hover {
+  border-color: #4A90E2;
+  background: #0989C5;
+}
 .reg {
   text-align: center;
   margin-top: 20px;
@@ -340,6 +365,9 @@ form {
 
 .jdc .reg p a {
   color: #0989C5
+}
+.wb .reg p a {
+  color: #4A90E2
 }
 .opt {
   overflow: hidden;
@@ -370,6 +398,9 @@ form {
 .jdc .forget a:hover {
   color: #0989C5;
 }
+.wb .forget a:hover {
+  color: #4A90E2;
+}
 
 #passwd {
   display: none;
@@ -381,6 +412,10 @@ form {
 .jdc #passwd:checked ~.password-show::before {
   background: rgba(9, 137, 197, .6);
   border-color: #5D6FBC
+}
+.wb #passwd:checked ~.password-show::before {
+  background: rgba(9, 137, 197, .6);
+  border-color: #4A90E2
 }
 
 #passwd:checked ~.password-show::after {

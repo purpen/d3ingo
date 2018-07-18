@@ -366,8 +366,8 @@
       }
     },
     created() {
-      if (this.prod.id === 1) {
-        this.$router.replace({name: 'JDCloud'})
+      if (this.prod.name !== '') {
+        this.$router.replace({name: 'SaaSIndex'})
         return
       }
       this.getArticleList()

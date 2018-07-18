@@ -1,6 +1,6 @@
 <template>
   <section v-if="!hideHeader">
-    <div class="header-layout d3in" v-if="custom.name === ''">
+    <div :class="['header-layout', 'd3in']" v-if="custom.name === ''">
       <div class="container">
         <div class="nav-header" v-if="!this.isMob">
           <hgroup>
@@ -126,13 +126,14 @@
       <div class="header-buttom-line"></div>
       <Message></Message>
     </div>
-    <div class="header-layout jdc" v-if="custom.name === 'jdc'">
+    <div :class="['header-layout', 'other', 'jdc', {'blue-header': $route.name === 'SaaSIndex' && $store.state.event.prod.name === 'wb'}]" v-else>
       <div class="container">
         <div class="nav-header" v-if="!this.isMob">
           <hgroup>
             <el-menu class="el-menu-header nav-left" :default-active="menuactive" mode="horizontal" router>
               <router-link :to="{name: 'home'}" class="el-menu-item logo">
-                <img :src="custom.logo" :alt="custom.info">
+                <img v-if="$route.name === 'SaaSIndex' && $store.state.event.prod.name === 'wb'" :src="custom.logo2" :alt="custom.info">
+                <img v-else :src="custom.logo" :alt="custom.info">
               </router-link>
             </el-menu>
           </hgroup>
@@ -373,24 +374,27 @@
         this.closeMenu(e)
       },
       addScroll() {
-        let oldClass = document.body.childNodes[1].getAttribute('class')
+        let oldClass = document.getElementById('app').getAttribute('class')
+        if (oldClass) {
+          oldClass = oldClass.replace(/disableScroll\x20?/g, '')
+        }
         // this.$refs.mCover.style.width = '100%'
         this.$refs.mNav.style.marginLeft = 0
         this.$refs.mMenu.style.width = '100%'
         document.body.setAttribute('class', 'disableScroll')
-        document.body.childNodes[1].setAttribute('class', 'disableScroll ' + oldClass)
+        document.getElementById('app').setAttribute('class', 'disableScroll ' + oldClass)
         document.childNodes[1].setAttribute('class', 'disableScroll')
       }, // 移动端显示 ↑ 隐藏 ↓ 侧边栏
       reScroll() {
-        let oldClass = document.body.childNodes[1].getAttribute('class')
+        let oldClass = document.getElementById('app').getAttribute('class')
         if (oldClass) {
-          oldClass = oldClass.replace('disableScroll ', '')
+          oldClass = oldClass.replace(/disableScroll\x20?/g, '')
         }
         // this.$refs.mCover.style.width = 0
         this.$refs.mNav.style.marginLeft = '-54vw'
         this.$refs.mMenu.style.width = 0
         document.body.removeAttribute('class', 'disableScroll')
-        document.body.childNodes[1].setAttribute('class', oldClass)
+        document.getElementById('app').setAttribute('class', oldClass)
         document.childNodes[1].removeAttribute('class', 'disableScroll')
       },
       showMyView(view) {
@@ -416,7 +420,6 @@
         } else {
           user.logo_url = null
         }
-        console.log('user', user)
         return user
       },
       isAdmin() {
@@ -509,6 +512,15 @@
     width: 100%;
     background:#fff;
     z-index: 999;
+  }
+
+  .blue-header,
+  .blue-header .nav-header {
+    background: #0A2052
+  }
+  
+  .blue-header .header-buttom-line {
+    box-shadow: none
   }
 
   .Flogin {
@@ -902,4 +914,5 @@
   .jdc .nav-header .nav-right .register:hover {
     background-image: linear-gradient(90deg, #0989C5 0%, #5D6FBC 45%, #995CB6 100%);
   }
+
 </style>

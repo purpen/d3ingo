@@ -359,7 +359,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   border-right: none
 }
 
-.avatarhead  .el-upload__tip {
+.avatarhead .el-upload__tip {
   color: #999;
 }
 
@@ -381,7 +381,8 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   /* margin-bottom: 10px; */
 }
 .is-error .el-form-item__content {
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
+  margin-bottom: 0
 }
 .description {
   color: #666666;
@@ -902,7 +903,10 @@ input:-webkit-autofill {
     padding: 0;
     padding-right: 14px;
   }
-
+  .blue-header 
+  .el-menu-info.el-menu--horizontal > .el-submenu .el-submenu__title {
+    background: #0A2052
+  }
   .el-menu-info .el-submenu > .el-menu {
     z-index: 999;
     top: 56px;

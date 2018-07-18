@@ -24,6 +24,18 @@ import './assets/css/change-ele.css'
 import './assets/css/fineix.css'
 import './assets/css/admin.css'
 import 'fullcalendar/dist/fullcalendar.css'
+import { LOCAL_URL } from 'conf/prod.env'
+
+let locationUrl = document.location.href
+let confUrl = false
+if (LOCAL_URL) {
+  confUrl = /^https:/.test(LOCAL_URL)
+}
+let currentUrl = /^http:/.test(locationUrl)
+if (confUrl && currentUrl) {
+  locationUrl = locationUrl.replace(/^http:/, 'https:')
+  document.location.href = locationUrl
+}
 
 Vue.use(ElementUI)
 // 图片懒加载

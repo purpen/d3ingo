@@ -1,5 +1,5 @@
 <template>
-  <div :class="['container', {'jdc': prod.name === 'jdc'}]">
+  <div :class="['container', {'jdc': prod.name === 'jdc', 'other': prod.name !== '', 'wb': prod.name === 'wb'}]">
     <!-- <section class="cover-bgf7"></section> -->
     <div class="register-box">
       <div class="regisiter-title">
@@ -15,7 +15,7 @@
             <p class="des">找到设计服务商</p>
           </div>
         </div>
-        <div :class="{'register-tab-user': true, active: cActive}" @click="selectComputer">
+        <div v-if="prod.name === ''" :class="{'register-tab-user': true, active: cActive}" @click="selectComputer">
           <div class="tab-left"></div>
           <div class="tab-right">
             <h3>我是设计公司</h3>
@@ -456,6 +456,9 @@
   .jdc .register-tab-user.active {
     border-color: #0989C5
   }
+  .wb .register-tab-user.active {
+    border-color: #4A90E2
+  }
   .register-tab-user::before {
     content: "";
     position: absolute;
@@ -475,6 +478,10 @@
     background: #0989C5;
     border-color: #0989C5
   }
+  .wb .register-tab-user.active:before {
+    background: #4A90E2;
+    border-color: #4A90E2
+  }
   .register-tab-user.active::after {
     content: "";
     position: absolute;
@@ -493,6 +500,9 @@
   }
   .jdc .register-tab-user.active h3 {
     color: #0989C5
+  }
+  .wb .register-tab-user.active h3 {
+    color: #4A90E2
   }
   .register-tab-user .tab-left {
     height: 100%;
@@ -538,6 +548,13 @@
   .jdc .register-btn:hover {
     border-color: #0989C5
   }
+  .wb .register-btn {
+    background: #4A90E2;
+  }
+  .wb .register-btn:hover {
+    border-color: #4A90E2;
+    background: #0989C5
+  }
   .code-btn {
     cursor: pointer;
   }
@@ -565,6 +582,9 @@
   .jdc .reg p a {
     color: #0989C5
   }
+  .wb .reg p a {
+    color: #4A90E2 
+  }
 
   .imgCode {
     width: 102px;
@@ -586,6 +606,7 @@
       max-width: 450px;
       height: auto;
       margin: 20px 0 0 0;
+      box-shadow: none
     }
 
     form {
@@ -606,5 +627,11 @@
     .reg {
       margin: 20px 0 -20px
     }
+  }
+  .other .register-tab {
+    padding: 30px 30px 0
+  }
+  .other .register-tab-user {
+    flex: 1 1 auto;
   }
 </style>

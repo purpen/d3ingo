@@ -11,37 +11,38 @@ import { Message } from 'element-ui'
 import {
   calcImgSize
 } from 'assets/js/common'
-import prod from 'conf/prod.env'
+// import prod from 'conf/prod.env'
 
 function showProd() {
-  switch (prod.CUSTOM) {
-    case '':
-      return {
-        id: 0,
-        name: '',
-        logo: require('assets/images/logo.png'),
-        info: '铟果',
-        title: '铟果-中国领先的产品创新SaaS平台',
-        url: 'www.d3ingo.com',
-        fullurl: 'https://www.d3ingo.com',
-        license: '太火鸟 营业执照【京ICP备14025430号-2】',
-        copyright: 'Copyright © 2018',
-        business: '经营许可证:【京ICP证150139号】'
-      }
-    case 'jdc':
-      return {
-        id: 1,
-        name: 'jdc',
-        logo: require('assets/images/logo-yh.png'),
-        info: '艺火',
-        title: '京东云艺火-专业B2B设计交易服务SaaS平台',
-        url: 'JDCloud.com',
-        fullurl: 'https://www.jdcloud.com/',
-        license: '京东云 营业执照【京ICP备11041704号-31】',
-        copyright: 'Copyright © 2012-2018',
-        business: '经营许可证:【京ICP证070359号】'
-      }
-  }
+  // switch (prod.CUSTOM) {
+  //   case '':
+  //     return {
+  //       id: 0,
+  //       name: '',
+  //       logo: require('assets/images/logo.png'),
+  //       info: '铟果',
+  //       title: '铟果-中国领先的产品创新SaaS平台',
+  //       url: 'www.d3ingo.com',
+  //       fullurl: 'https://www.d3ingo.com',
+  //       license: '太火鸟 营业执照【京ICP备14025430号-2】',
+  //       copyright: 'Copyright © 2018',
+  //       business: '经营许可证:【京ICP证150139号】'
+  //     }
+  //   case 'jdc':
+  //     return {
+  //       id: 1,
+  //       name: 'jdc',
+  //       logo: require('assets/images/logo-yh.png'),
+  //       info: '艺火',
+  //       title: '京东云艺火-专业B2B设计交易服务SaaS平台',
+  //       url: 'JDCloud.com',
+  //       fullurl: 'https://www.jdcloud.com/',
+  //       license: '京东云 营业执照【京ICP备11041704号-31】',
+  //       copyright: 'Copyright © 2012-2018',
+  //       business: '经营许可证:【京ICP证070359号】'
+  //     }
+  // }
+  return store.state.event.prod
 }
 
 Vue.use(VueRouter)
@@ -69,12 +70,16 @@ let routes = [
   },
   // 京东云首页
   {
-    path: '/jd_cloud',
-    name: 'JDCloud',
+    path: '/SaaS_Index',
+    name: 'SaaSIndex',
     meta: {
       title: '京东云艺火'
     },
     component: require('@/components/pages/home/JDCloud')
+  },
+  {
+    path: '/jd_cloud',
+    redirect: '/SaaS_Index'
   },
   {
     path: '/test',
@@ -766,7 +771,6 @@ const router = new VueRouter({
 })
 let custom = showProd()
 router.beforeEach((to, from, next) => {
-  console.log(to)
   if (to.meta.title) {
     if (to.meta.title === '首页' || to.meta.title === '京东云艺火') {
       document.title = custom.title
