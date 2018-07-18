@@ -1,5 +1,5 @@
 <template>
-  <div :class="['container', {'jdc': prod.name === 'jdc', 'wb': prod.name === 'wb'}]">
+  <div :class="['container', {'jdc': prod.name === 'jdc', 'yw': prod.name === 'yw'}]">
     <div class="forget-box">
       <div class="forget-title">
         <h2>找回密码</h2>
@@ -278,10 +278,10 @@
   .jdc .forget-btn:hover {
     border-color: #0989C5
   }
-  .wb .forget-btn {
+  .yw .forget-btn {
     background: #4A90E2;
   }
-  .wb .forget-btn:hover {
+  .yw .forget-btn:hover {
     border-color: #4A90E2;
     background: #0989C5
   }

@@ -112,12 +112,12 @@ function showProd() {
         copyright: 'Copyright © 2012-2018',
         business: '经营许可证:【京ICP证070359号】'
       }
-    case 'wb':
+    case 'yw':
       return {
         id: 2,
-        name: 'wb',
-        logo: require('assets/images/logo-wb2.png'),
-        logo2: require('assets/images/logo-wb.png'),
+        name: 'yw',
+        logo: require('assets/images/logo-yw2.png'),
+        logo2: require('assets/images/logo-yw.png'),
         info: '义乌设计大脑',
         title: '义乌设计大脑-产品创新资源与工贸企业对接平台',
         url: 'zjbdos.com',

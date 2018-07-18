@@ -73,7 +73,7 @@
         </div>
       </section>
     </div>
-    <div v-if="custom.name === 'wb'" :class="['jd-cloud', {'wb': custom.name === 'wb'}]">
+    <div v-if="custom.name === 'yw'" :class="['jd-cloud', {'yw': custom.name === 'yw'}]">
       <div class="jdc-banner">
         <div class="content">
           <section class="con-left">
@@ -82,7 +82,7 @@
             <span @click="jump" class="release">发布项目需求</span>
           </section>
           <section class="con-right">
-            <img :src="require('assets/images/home/banner/wb_banner.jpg')" alt="">
+            <img :src="require('assets/images/home/banner/yw_banner.jpg')" alt="">
           </section>
         </div>
       </div>
@@ -104,7 +104,7 @@
         <div class="jdc-content">
           <h3>四个关键亮点</h3>
           <el-row class="flex padding-b-80">
-            <el-col class="col-parent" :xs="24" :sm="6" :md="6" :lg="6" v-for="(ele, index) in colList2_wb" :key="index">
+            <el-col class="col-parent" :xs="24" :sm="6" :md="6" :lg="6" v-for="(ele, index) in colList2_yw" :key="index">
               <div class="col col-column text-center">
                 <img :src="ele.img" alt="">
                 <p class="tc-2 fz-18 padding-b-20">{{ele.title0}}</p>
@@ -118,7 +118,7 @@
       <div class="jdc-content">
         <h3>创意项目发布流程</h3>
         <el-row class="flex padding-b-40">
-          <el-col class="col-parent" :xs="24" :sm="4" :md="4" :lg="4" v-for="(ele, index) in colList3_wb" :key="index">
+          <el-col class="col-parent" :xs="24" :sm="4" :md="4" :lg="4" v-for="(ele, index) in colList3_yw" :key="index">
             <div class="col col-column col-column2 text-center">
               <img :src="ele.img" alt="">
               <p class="tc-6">{{ele.title}}</p>
@@ -178,29 +178,29 @@ export default {
           title: '供需双方互动作用，共同释放消费升级趋势下的市场创新力'
         }
       ],
-      colList_wb: [
+      colList_yw: [
         {
-          img: require('assets/images/home/jd/1-wb.png'),
+          img: require('assets/images/home/jd/1-yw.png'),
           title: '产业链资源整合'
         },
         {
-          img: require('assets/images/home/jd/2-wb.png'),
+          img: require('assets/images/home/jd/2-yw.png'),
           title: '合作方无缝集成'
         },
         {
-          img: require('assets/images/home/jd/3-wb.png'),
+          img: require('assets/images/home/jd/3-yw.png'),
           title: '全流程监察跟踪'
         },
         {
-          img: require('assets/images/home/jd/4-wb.png'),
+          img: require('assets/images/home/jd/4-yw.png'),
           title: '产品创新差异化'
         },
         {
-          img: require('assets/images/home/jd/5-wb.png'),
+          img: require('assets/images/home/jd/5-yw.png'),
           title: '解决方案定制化'
         },
         {
-          img: require('assets/images/home/jd/6-wb.png'),
+          img: require('assets/images/home/jd/6-yw.png'),
           title: '消费力互动释放'
         }
       ],
@@ -226,26 +226,26 @@ export default {
           title2: '体验属于“明天”的设计交易与办公模式'
         }
       ],
-      colList2_wb: [
+      colList2_yw: [
         {
-          img: require('assets/images/home/jd/7-wb.png'),
+          img: require('assets/images/home/jd/7-yw.png'),
           title: '聚合100+领先设计服务供应商',
           title2: '兼顾成果原创性、创新性与可行性',
           title0: '100+国内顶尖设计机构'
         },
         {
-          img: require('assets/images/home/jd/8-wb.png'),
+          img: require('assets/images/home/jd/8-yw.png'),
           title: '严谨的线上项目管理追踪流程',
           title2: '完善的风险规避、原创监管、权益保障机制',
           title0: '24小时线上项目管理追踪'
         },
         {
-          img: require('assets/images/home/jd/9-wb.png'),
+          img: require('assets/images/home/jd/9-yw.png'),
           title: '高效便捷的线上需求对接体验',
           title0: '365天实时需求对接体验'
         },
         {
-          img: require('assets/images/home/jd/10-wb.png'),
+          img: require('assets/images/home/jd/10-yw.png'),
           title: '互联网+设计+交易+办公',
           title0: '4维步进型组合创新模式'
         }
@@ -279,30 +279,30 @@ export default {
         }
       ],
 
-      colList3_wb: [
+      colList3_yw: [
         {
-          img: require('assets/images/home/jd/11-wb.png'),
+          img: require('assets/images/home/jd/11-yw.png'),
           title: '新用户注册'
         },
         {
-          img: require('assets/images/home/jd/12-wb.png'),
+          img: require('assets/images/home/jd/12-yw.png'),
           title: '填写公司基本信息',
           title2: '（实名认证）'
         },
         {
-          img: require('assets/images/home/jd/13-wb.png'),
+          img: require('assets/images/home/jd/13-yw.png'),
           title: '在线填写项目需求单'
         },
         {
-          img: require('assets/images/home/jd/14-wb.png'),
+          img: require('assets/images/home/jd/14-yw.png'),
           title: '发布项目需求'
         },
         {
-          img: require('assets/images/home/jd/15-wb.png'),
+          img: require('assets/images/home/jd/15-yw.png'),
           title: '匹配设计服务供应商'
         },
         {
-          img: require('assets/images/home/jd/16-wb.png'),
+          img: require('assets/images/home/jd/16-yw.png'),
           title: '在线合作直至项目完成'
         }
       ],
@@ -443,7 +443,7 @@ export default {
     height: 440px;
     background-image: linear-gradient(90deg, #0070CF 0%, #8A5CCA 100%);
   }
-  .wb .jdc-banner {
+  .yw .jdc-banner {
     background: #0A2052
   }
   h2 {
