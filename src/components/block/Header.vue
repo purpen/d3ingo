@@ -669,7 +669,7 @@
   }
 
   .nav-header .el-menu-header {
-    background: #ffffff;
+    /* background: #ffffff; */
   }
 
   .nav-header .el-menu-header .el-menu-item, .m-nav-header .el-menu-header .el-menu-item, .el-menu-header .el-submenu {
