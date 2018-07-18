@@ -167,7 +167,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus" scoped>
 .design-case-content {
-  padding: 20px 40px 20px 40px;
+  padding: 0 40px;
   // border: 1px solid #ccc;
 }
 
@@ -227,6 +227,7 @@ export default {
 .design-case-slide h3 {
   margin: 20px;
   font-size: 1.8rem;
+  line-height: 1.5
 }
 
 .design-case-slide .rate {

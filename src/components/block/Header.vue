@@ -557,7 +557,11 @@
   }
 </style>
 <style>
-
+  .nav-header .el-submenu .el-menu-item:hover,
+  .menu-header .el-submenu .el-menu-item:hover,
+  .project-menu-sub .el-submenu .el-menu-item:hover {
+    background: #fafafa
+  }
   .m-nav-header {
     position: relative;
     height: 60px;

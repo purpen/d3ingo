@@ -41,7 +41,8 @@
     left: auto;
     right: 0;
   }
-  .el-table td, .el-table th.is-leaf {
+  .el-table td, .el-table th.is-leaf,
+  .el-table--border td, .el-table--border th {
     border-color: #e6e6e6
   }
   .el-table th,
