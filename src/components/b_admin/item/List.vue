@@ -89,7 +89,7 @@
                 <template slot-scope="scope">
                   <p v-if="scope.row.item.source === 0">铟果</p>
                   <p v-else-if="scope.row.item.source === 1">京东云</p>
-                  <p v-else-if="scope.row.item.source === 2">--</p>
+                  <p v-else-if="scope.row.item.source === 2">义乌</p>
                   <p v-else-if="scope.row.item.source === 3">--</p>
                   <p v-else>--</p>
                 </template>
