@@ -295,7 +295,8 @@
               type="date"
               v-model="formTacktime"
               placeholder="开始日期设置"
-              @change="upDateDuration"
+              @change="updateTime"
+              :picker-options="pickerOptions0"
               >
               </el-date-picker>
             </div>
@@ -643,14 +644,15 @@
                       :style="{left:(m.left*30+125)+'px'}"
                       class="milestone-list"
                     > 
-                      <p>{{m.name}}</p>
-                      <i :class="[
-                        {'noseccess-milestone':m.status === 0},
-                        {'seccess-milestone':m.status===1}
-                        ]"
-                        @click="editNode(m,c)"
-                        >
-                      </i>
+                      <el-tooltip :content="m.name" placement="top">
+                        <i :class="[
+                          {'noseccess-milestone':m.status === 0},
+                          {'seccess-milestone':m.status===1}
+                          ]"
+                          @click="editNode(m,c)"
+                          >
+                        </i>
+                      </el-tooltip>
                     </div>
                     <div
                       v-if="(c.design_substage&&(sort==='isday'||sort==='isweek'))" 
@@ -928,6 +930,7 @@ export default {
           label: '里程碑'
         }
       ],
+      pickerOptions0: {},
       rules: {
         // duration: [
         //   {required: true, type: 'number', message: '请添写阶段所需时间', trigger: 'blur'},
@@ -1410,107 +1413,43 @@ export default {
     //     }
     //   }
     // },
-    // 事件和日期改变
-    upDateDuration(date) {
-      if (Date.parse(new Date(this.formTacktime)) / 1000 !== this.formTack.start_time || this.formTackduration !== this.formTack.duration || date === 1) {
-        this.formTack.duration = this.formTackduration
-        if (isNaN(this.formTack.duration) || !this.formTack.duration) {
-          this.$message.error('输入正确的投入天数')
-          return
-        }
-        if (date && date !== 1) {
-          this.formTack.start_time = Math.round(new Date(date).getTime() / 1000)
-        }
-        if (typeof this.formTack.start_time !== 'number') {
-          this.formTack.start_time = Math.round(new Date(this.formTack.start_time).getTime() / 1000)
-        }
+    // 子阶段日期改变
+    updateTime (date) {
+      if (Date.parse(new Date(date.replace(/-/g, "/"))) / 1000 !== this.formTack.start_time) {
+        let movet = (this.formTack.start_time - Date.parse(new Date(date.replace(/-/g, "/"))) / 1000)
         let fts = Math.round(new Date(this.formTacktime).getTime() / 1000)
         let arr = []
-        let indur = 0
+        let ind = ''
         var start = this.indesignStage.design_substage
         for (let i = 0; i < start.length; i++) {
           if (start[i].id === this.formTack.id) {
-            let fd = this.formTackduration - start[i].duration
-            let ft = fts - start[i - 1].start_time
-            let et = start[i].start_time + start[i].duration * 86400
-
-            start[i].duration = this.formTackduration
+            ind = i
+            start[i].duration = this.formTack.duration
             start[i].start_time = fts
-
-            // 如果时间变化
-            if (fts !== this.formTack.start_time && i > 0) {
-              start[i].duration = (et - fts) / 86400
-              start[i - 1].duration = ft / 86400
+            arr.push({
+              'id': start[i].id,
+              'start_time': start[i].start_time,
+              'duration': parseInt(start[i].duration)
+            })
+            if (i > 0) {
+              start[i - 1].duration = (start[i].start_time - start[i - 1].start_time) / 86400
               arr.push({
-                'id': start[i - 1].id,
-                'start_time': start[i - 1].start_time,
-                'duration': parseInt(start[i - 1].duration)
+              'id': start[i - 1].id,
+              'start_time': start[i - 1].start_time,
+              'duration': parseInt(start[i - 1].duration)
               })
-            }
-
-            // 如果天数变化
-            if (fd !== 0 && i < start.length - 1) {
-              start[i + 1].duration = start[i + 1].duration - fd
-              start[i + 1].start_time = fts + start[i].duration * 86400
-              arr.push({
-                'id': start[i + 1].id,
-                'start_time': start[i + 1].start_time,
-                'duration': parseInt(start[i + 1].duration)
-              })
-            }
-            if (date !== 1) {
-              arr.push({
-                'id': start[i].id,
-                'start_time': start[i].start_time,
-                'duration': parseInt(start[i].duration)
-              })
-              indur = start[i].duration
             }
           }
         }
-        // for (let i = 0; i < start.length; i++) {
-        //   if (start[i].id === this.formTack.id) {
-        //     ind = i
-        //     start[i].duration = this.formTack.duration
-        //     start[i].start_time = fts
-        //     if (start[i].design_stage_node) {
-        //       start[i].design_stage_node.time = fts + (this.formTack.duration - 1) * 86400
-        //     }
-        //     if (date === 1) {
-        //       start[i].duration = 0
-        //     }
-        //     if (date !== 1) {
-        //       arr.push({
-        //         'id': start[i].id,
-        //         'start_time': start[i].start_time,
-        //         'duration': parseInt(start[i].duration)
-        //       })
-        //     }
-        //   }
-        // }
-        // for (let m = ind - 1; m >= 0; m--) {
-        //   start[m].start_time = start[m + 1].start_time - start[m].duration * 86400
-        //   if (start[m].design_stage_node) {
-        //     start[m].design_stage_node.time = start[m].start_time + (start[m].duration - 1) * 86400
-        //   }
-        //   arr.push({
-        //     'id': start[m].id,
-        //     'start_time': start[m].start_time,
-        //     'duration': parseInt(start[m].duration)
-        //   })
-        // }
-        // for (let b = ind + 1; b < start.length; b++) {
-        //   start[b].start_time = start[b - 1].start_time + start[b - 1].duration * 86400
-        //   if (start[b].design_stage_node) {
-        //     start[b].design_stage_node.time = start[b].start_time + (start[b].duration - 1) * 86400
-        //   }
-        //   arr.push({
-        //     'id': start[b].id,
-        //     'start_time': start[b].start_time,
-        //     'duration': parseInt(start[b].duration)
-        //   })
-        // }
-        console.log(arr)
+        // 后面的阶段变化
+        for (let b = ind + 1; b < start.length; b++) {
+          start[b].start_time = start[b - 1].start_time + start[b - 1].duration * 86400
+          arr.push({
+            'id': start[b].id,
+            'start_time': start[b].start_time,
+            'duration': parseInt(start[b].duration)
+          })
+        }
         this.$http.put(api.updateDuration, {durations: JSON.stringify(arr)}).then((response) => {
           if (response.data.meta.status_code === 200) {
             var durs = 0
@@ -1530,7 +1469,91 @@ export default {
             }
             this.tackleft(this.designStageLists)
             this.formTack.start_time = fts
-            this.formTack.duration = indur
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          this.$message.error(error.message)
+          console.error(error.message)
+        })
+      }
+    },
+    // 子阶段天数改变
+    upDateDuration(date) {
+      if (this.formTackduration !== this.formTack.duration || date === 1) {
+        this.formTack.duration = this.formTackduration
+        if (isNaN(this.formTack.duration) || !this.formTack.duration) {
+          this.$message.error('输入正确的投入天数')
+          return
+        }
+        if (date && date !== 1) {
+          this.formTack.start_time = Math.round(new Date(date).getTime() / 1000)
+        }
+        if (typeof this.formTack.start_time !== 'number') {
+          this.formTack.start_time = Math.round(new Date(this.formTack.start_time).getTime() / 1000)
+        }
+
+        let fts = Math.round(new Date(this.formTacktime).getTime() / 1000)
+        let arr = []
+        let ind = ''
+        var start = this.indesignStage.design_substage
+        for (let i = 0; i < start.length; i++) {
+          if (start[i].id === this.formTack.id) {
+            ind = i
+            start[i].duration = this.formTack.duration
+            start[i].start_time = fts
+            // if (start[i].design_stage_node) {
+            //   start[i].design_stage_node.time = fts + (this.formTack.duration - 1) * 86400
+            // }
+            if (date === 1) {
+              start[i].duration = 0
+            }
+            if (date !== 1) {
+              arr.push({
+                'id': start[i].id,
+                'start_time': start[i].start_time,
+                'duration': parseInt(start[i].duration)
+              })
+            }
+          }
+        }
+        for (let m = ind - 1; m >= 0; m--) {
+          start[m].start_time = start[m + 1].start_time - start[m].duration * 86400
+          arr.push({
+            'id': start[m].id,
+            'start_time': start[m].start_time,
+            'duration': parseInt(start[m].duration)
+          })
+        }
+        for (let b = ind + 1; b < start.length; b++) {
+          start[b].start_time = start[b - 1].start_time + start[b - 1].duration * 86400
+          arr.push({
+            'id': start[b].id,
+            'start_time': start[b].start_time,
+            'duration': parseInt(start[b].duration)
+          })
+        }
+        console.log('arr', arr)
+
+        this.$http.put(api.updateDuration, {durations: JSON.stringify(arr)}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            var durs = 0
+            for (var ts = 0; ts < arr.length; ts++) {
+              durs += arr[ts].duration
+            }
+            arr = []
+            this.indesignStage.start_time = new Date(fts * 1000).format('yyyy/MM/dd')
+            this.indesignStage.duration = durs
+            this.formup = {...this.indesignStage}
+            this.updata(this.indesignStage.start_time)
+            let res = this.updateallleft(this.indesignStage)
+            for (var f = 0; f < this.designStageLists.length; f++) {
+              if (this.designStageLists[f].id === this.indesignStage.id) {
+                this.$set(this.designStageLists, f, res)
+              }
+            }
+            this.tackleft(this.designStageLists)
+            this.formTack.start_time = fts
           } else {
             this.$message.error(response.data.meta.message)
           }
@@ -1603,6 +1626,20 @@ export default {
         this.formTack.log = des.execute_user.logo_image.logo
         delete this.formTack.execute_user
       }
+      // 限制时间
+      for (var i = 0; i < c.design_substage.length; i++) {
+        if (c.design_substage[i].id === des.id) {
+          if (i > 0) {
+            let st = new Date(c.design_substage[i - 1].start_time * 1000 + 86400)
+            this.pickerOptions0 = {
+              disabledDate (time) {
+                return time.getTime() < st
+              }
+            }
+          }
+        }
+      }
+
       this.formTackstatus = Boolean(this.formTack.status)
       this.isitemedit = false
       this.isnodeedit = false
@@ -1694,6 +1731,10 @@ export default {
     // 删除子阶段
     deleteTack(id) {
       let self = this
+      if (self.indesignStage.design_substage.length === 1) {
+        this.$message('最少为一个阶段,无法继续删除')
+        return false
+      }
       self.$http.delete(api.designSubstageDelete, {params: {design_substage_id: id}})
       .then (function(response) {
         if (response.data.meta.status_code === 200) {
@@ -2800,7 +2841,7 @@ export default {
   .milestone-icon {
     position: absolute;
     left: 5px;
-    top: 45px;
+    top: 20px;
     height: 20px;
     width: 20px;
     z-index: 1;
@@ -2864,7 +2905,7 @@ export default {
     width: 20px;
     height: 20px;
     position: absolute;
-    top: 45px;
+    top: 20px;
     z-index: 2
   }
   .milestone-list i {
