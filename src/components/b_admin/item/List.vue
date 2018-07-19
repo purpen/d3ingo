@@ -89,7 +89,7 @@
                 <template slot-scope="scope">
                   <p v-if="scope.row.item.source === 0">铟果</p>
                   <p v-else-if="scope.row.item.source === 1">京东云</p>
-                  <p v-else-if="scope.row.item.source === 2">--</p>
+                  <p v-else-if="scope.row.item.source === 2">义乌</p>
                   <p v-else-if="scope.row.item.source === 3">--</p>
                   <p v-else>--</p>
                 </template>
@@ -310,7 +310,7 @@
                 item['item']['status_label'] = '[{0}]{1}'.format(item.item.status, item.item.status_value)
 
                 if (item.info) {
-                  item['item']['locale'] = '{0}/{1}'.format(item.item.province_value, item.info.city_value)
+                  item['item']['locale'] = '{0}/{1}'.format(item.item.province_value, item.item.city_value)
                 }
                 item['item']['created_at'] = item.item.created_at.date_format().format('yy-MM-dd')
                 self.tableData.push(item)

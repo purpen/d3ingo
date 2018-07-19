@@ -4,5 +4,5 @@ module.exports = {
   VUE_ENV: '"server"',
   NODE_ENV: '"production"',
   API_ROOT: '"http://mc.taihuoniao.com/api"', // nginx 反向代理
-  LOCAL_URL: 'http://mc.taihuoniao.com'
+  LOCAL_URL: '"http://mc.taihuoniao.com"'
 }
