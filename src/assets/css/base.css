@@ -396,12 +396,23 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 .el-submenu .el-menu-item {
   min-width: initial;
 }
+.el-menu-item, .el-submenu__title {
+  color: #666
+}
+.el-menu--horizontal.el-menu--dark .el-submenu .el-menu-item.is-active,
+.el-menu-item.is-active {
+  color: #ff5a5f;
+}
 .el-submenu .el-menu-item:hover, .el-submenu__title:hover {
-  background: #fafafa;
+  color: #222;
+  background: #e6e6e6;
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+.el-submenu .el-menu-item.is-active:hover {
+  color: #ff5a5f
 }
 /*  */
 .cover-bgf7 {

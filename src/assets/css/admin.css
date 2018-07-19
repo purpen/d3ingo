@@ -25,10 +25,16 @@
 /**
  * Admin Menu Sub --- Start
  */
+.admin-menu .el-submenu__title {
+  text-align: left
+}
+.admin-menu .el-menu {
+  background: #f7f7f7
+}
 .admin-menu-sub {
-  height: 21px;
+  height: 24px;
   line-height: 10px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #e6e6e6;
   margin: 0 0 10px 0;
 }
 
@@ -42,8 +48,8 @@
   float: left;
 }
 .admin-menu-sub-list .item.is-active {
-  color: #222;
-  border-bottom: 1px solid #222;
+  color: #ff5a5f;
+  border-bottom: 3px solid #ff5a5f;
   /* padding-bottom: 10px; */
 }
 /**

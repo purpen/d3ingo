@@ -1,5 +1,5 @@
 <template>
-  <div :class="['container', {'jdc': prod.name === 'jdc', 'wb': prod.name === 'wb'}]">
+  <div :class="['container', {'jdc': prod.name === 'jdc', 'yw': prod.name === 'yw'}]">
     <!-- <section class="cover-bgf7"></section> -->
     <div class="login-box">
       <div class="login-title">
@@ -338,10 +338,10 @@ form {
 .jdc .login-btn:hover {
   border-color: #0989C5
 }
-.wb .login-btn {
+.yw .login-btn {
   background: #4A90E2;
 }
-.wb .login-btn:hover {
+.yw .login-btn:hover {
   border-color: #4A90E2;
   background: #0989C5;
 }
@@ -366,7 +366,7 @@ form {
 .jdc .reg p a {
   color: #0989C5
 }
-.wb .reg p a {
+.yw .reg p a {
   color: #4A90E2
 }
 .opt {
@@ -398,7 +398,7 @@ form {
 .jdc .forget a:hover {
   color: #0989C5;
 }
-.wb .forget a:hover {
+.yw .forget a:hover {
   color: #4A90E2;
 }
 
@@ -413,7 +413,7 @@ form {
   background: rgba(9, 137, 197, .6);
   border-color: #5D6FBC
 }
-.wb #passwd:checked ~.password-show::before {
+.yw #passwd:checked ~.password-show::before {
   background: rgba(9, 137, 197, .6);
   border-color: #4A90E2
 }

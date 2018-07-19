@@ -1,5 +1,5 @@
 <template>
-  <div :class="['container', {'jdc': prod.name === 'jdc', 'other': prod.name !== '', 'wb': prod.name === 'wb'}]">
+  <div :class="['container', {'jdc': prod.name === 'jdc', 'other': prod.name !== '', 'yw': prod.name === 'yw'}]">
     <!-- <section class="cover-bgf7"></section> -->
     <div class="register-box">
       <div class="regisiter-title">
@@ -456,7 +456,7 @@
   .jdc .register-tab-user.active {
     border-color: #0989C5
   }
-  .wb .register-tab-user.active {
+  .yw .register-tab-user.active {
     border-color: #4A90E2
   }
   .register-tab-user::before {
@@ -478,7 +478,7 @@
     background: #0989C5;
     border-color: #0989C5
   }
-  .wb .register-tab-user.active:before {
+  .yw .register-tab-user.active:before {
     background: #4A90E2;
     border-color: #4A90E2
   }
@@ -501,7 +501,7 @@
   .jdc .register-tab-user.active h3 {
     color: #0989C5
   }
-  .wb .register-tab-user.active h3 {
+  .yw .register-tab-user.active h3 {
     color: #4A90E2
   }
   .register-tab-user .tab-left {
@@ -548,10 +548,10 @@
   .jdc .register-btn:hover {
     border-color: #0989C5
   }
-  .wb .register-btn {
+  .yw .register-btn {
     background: #4A90E2;
   }
-  .wb .register-btn:hover {
+  .yw .register-btn:hover {
     border-color: #4A90E2;
     background: #0989C5
   }
@@ -582,7 +582,7 @@
   .jdc .reg p a {
     color: #0989C5
   }
-  .wb .reg p a {
+  .yw .reg p a {
     color: #4A90E2 
   }
 

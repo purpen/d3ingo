@@ -126,13 +126,13 @@
       <div class="header-buttom-line"></div>
       <Message></Message>
     </div>
-    <div :class="['header-layout', 'other', 'jdc', {'blue-header': $route.name === 'SaaSIndex' && $store.state.event.prod.name === 'wb'}]" v-else>
+    <div :class="['header-layout', 'other', 'jdc', {'blue-header': $route.name === 'SaaSIndex' && $store.state.event.prod.name === 'yw'}]" v-else>
       <div class="container">
         <div class="nav-header" v-if="!this.isMob">
           <hgroup>
             <el-menu class="el-menu-header nav-left" :default-active="menuactive" mode="horizontal" router>
               <router-link :to="{name: 'home'}" class="el-menu-item logo">
-                <img v-if="$route.name === 'SaaSIndex' && $store.state.event.prod.name === 'wb'" :src="custom.logo2" :alt="custom.info">
+                <img v-if="$route.name === 'SaaSIndex' && $store.state.event.prod.name === 'yw'" :src="custom.logo2" :alt="custom.info">
                 <img v-else :src="custom.logo" :alt="custom.info">
               </router-link>
             </el-menu>
@@ -557,7 +557,11 @@
   }
 </style>
 <style>
-
+  .nav-header .el-submenu .el-menu-item:hover,
+  .menu-header .el-submenu .el-menu-item:hover,
+  .project-menu-sub .el-submenu .el-menu-item:hover {
+    background: #fafafa
+  }
   .m-nav-header {
     position: relative;
     height: 60px;
@@ -665,7 +669,7 @@
   }
 
   .nav-header .el-menu-header {
-    background: #ffffff;
+    /* background: #ffffff; */
   }
 
   .nav-header .el-menu-header .el-menu-item, .m-nav-header .el-menu-header .el-menu-item, .el-menu-header .el-submenu {

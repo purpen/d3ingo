@@ -223,7 +223,7 @@
 
   .count-item {
     border-top: 2px solid #ccc;
-    background-color: #FAF8F8;
+    background-color: #f7f7f7;
     padding: 10px;
     margin-bottom: 10px;
   }
@@ -241,10 +241,6 @@
   p.des {
     font-size: 1.2rem;
     color: #222;
-  }
-
-  p.title {
-
   }
 
   .count-item.red {
@@ -277,9 +273,6 @@
 
   .count-item.yellow p.count {
     color: #B766AD;
-  }
-
-  .content-items {
   }
 
   .content-item {
