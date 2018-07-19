@@ -13,7 +13,15 @@ var CleanWebpackPlugin = require('clean-webpack-plugin')
 var AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
 // var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 var os = require('os')
-
+var costum = require('../config/prod.env')
+var favicon = ''
+if (costum.CUSTOM === '') {
+  favicon = './static/favicon.ico'
+} else if (costum.CUSTOM === 'jdc') {
+  favicon = './static/yh.ico'
+} else if (costum.CUSTOM === 'yw') {
+  favicon = './static/yw.png'
+}
 var env = config.build.env
 
 let pathsToClean = [
@@ -108,7 +116,8 @@ var webpackConfig = merge(baseWebpackConfig, {
         // https://github.com/kangax/html-minifier#options-quick-reference
       },
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-      chunksSortMode: 'dependency'
+      chunksSortMode: 'dependency',
+      favicon: favicon
     }),
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({
