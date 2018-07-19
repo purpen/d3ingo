@@ -29,7 +29,7 @@ import { LOCAL_URL } from 'conf/prod.env'
 let locationUrl = document.location.href
 let confUrl = false
 if (LOCAL_URL) {
-  confUrl = /^https:/.test(LOCAL_URL)
+  confUrl = /^"?https:/.test(LOCAL_URL)
 }
 let currentUrl = /^http:/.test(locationUrl)
 if (confUrl && currentUrl) {
