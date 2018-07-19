@@ -191,18 +191,23 @@
           </div>
         </el-col>
       </el-row>
-      <p class="set-role-name m-t-10">京东权限</p>
+      <p class="set-role-name m-t-10">第三方权限</p>
       <el-row type="flex" align="middle">
         <el-col :span="12">
-          <el-radio-group v-model.number="jdRole">
+          <!-- <el-radio-group v-model.number="jdRole">
             <el-radio :label="1">京东管理员</el-radio>
-          </el-radio-group>
+          </el-radio-group> -->
           <!-- <el-checkbox v-model="checked">备选项</el-checkbox> -->
+          <el-select v-model="jdRole" placeholder="请选择">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </el-col>
-        <el-col :span="6">
-          <el-button @click="setJdRole(1)">取 消</el-button>
-        </el-col>
-        <el-col :span="6">
+        <el-col :offset="6" :span="6">
           <el-button type="primary" @click="setJdRole">确 定</el-button>
         </el-col>
       </el-row>
@@ -230,7 +235,7 @@ export default {
       setRoleDialog: false,
       currentAccount: '',
       roleId: 0,
-      jdRole: '',
+      jdRole: 0,
       query: {
         page: 1,
         pageSize: 50,
@@ -242,7 +247,17 @@ export default {
         role_id: '',
         test: null
       },
-      msg: ''
+      msg: '',
+      options: [
+        {
+          value: 0,
+          label: '无'
+        },
+        {
+          value: 1,
+          label: '京东管理员'
+        }
+      ]
     }
   },
   methods: {
@@ -267,7 +282,7 @@ export default {
       this.$refs.roleUserId.value = item.id
       this.currentAccount = item.account
       this.roleId = item.role_id
-      this.jdRole = item.source_admin
+      this.jdRole = item.source_admin || 0
       this.setRoleDialog = true
     },
     setRole() {
