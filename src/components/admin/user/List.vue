@@ -256,6 +256,10 @@ export default {
         {
           value: 1,
           label: '京东管理员'
+        },
+        {
+          value: 2,
+          label: '义乌管理员'
         }
       ]
     }
