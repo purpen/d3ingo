@@ -310,7 +310,7 @@
                 item['item']['status_label'] = '[{0}]{1}'.format(item.item.status, item.item.status_value)
 
                 if (item.info) {
-                  item['item']['locale'] = '{0}/{1}'.format(item.item.province_value, item.info.city_value)
+                  item['item']['locale'] = '{0}/{1}'.format(item.item.province_value, item.item.city_value)
                 }
                 item['item']['created_at'] = item.item.created_at.date_format().format('yy-MM-dd')
                 self.tableData.push(item)

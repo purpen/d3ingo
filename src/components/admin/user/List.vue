@@ -92,8 +92,8 @@
               width="80"
               label="类型">
                 <template slot-scope="scope">
-                  <p v-if="scope.row.type === 2">设计公司</p>
-                  <p v-else>用户</p>
+                  <p v-if="scope.row.type === 2">设计方</p>
+                  <p v-else>需求方</p>
                 </template>
             </el-table-column>
             <el-table-column
@@ -102,7 +102,7 @@
                 <template slot-scope="scope">
                   <p v-if="scope.row.source === 0">铟果</p>
                   <p v-else-if="scope.row.source === 1">京东云</p>
-                  <p v-else-if="scope.row.source === 2">--</p>
+                  <p v-else-if="scope.row.source === 2">义乌</p>
                   <p v-else-if="scope.row.source === 3">--</p>
                   <p v-else>--</p>
                 </template>
