@@ -86,7 +86,7 @@ let getMenustatus = function () {
 }
 function showProd() {
   switch (prod.CUSTOM) {
-    case '':
+    case null:
       return {
         id: 0,
         name: '',
