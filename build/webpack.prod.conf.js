@@ -13,6 +13,7 @@ var CleanWebpackPlugin = require('clean-webpack-plugin')
 var AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
 // var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 var os = require('os')
+var costum = require('../config/prod.env')
 var favicon = ''
 if (costum.CUSTOM === '') {
   favicon = './static/favicon.ico'
