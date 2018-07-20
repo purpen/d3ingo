@@ -7,7 +7,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 var costum = require('../config/prod.env')
 var favicon = ''
-if (costum.CUSTOM === null) {
+if (costum.CUSTOM === 'd3ingo') {
   favicon = './static/favicon.ico'
 } else if (costum.CUSTOM === 'jdc') {
   favicon = './static/yh.ico'

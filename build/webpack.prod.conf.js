@@ -15,7 +15,7 @@ var AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
 var os = require('os')
 var costum = require('../config/prod.env')
 var favicon = ''
-if (costum.CUSTOM === null) {
+if (costum.CUSTOM === 'd3ingo') {
   favicon = './static/favicon.ico'
 } else if (costum.CUSTOM === 'jdc') {
   favicon = './static/yh.ico'
