@@ -15,12 +15,12 @@ var AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
 var os = require('os')
 var costum = require('../config/prod.env')
 var favicon = ''
-if (costum.CUSTOM === 'd3ingo') {
-  favicon = './static/favicon.ico'
-} else if (costum.CUSTOM === 'jdc') {
+if (costum.CUSTOM === 'jdc') {
   favicon = './static/yh.ico'
 } else if (costum.CUSTOM === 'yw') {
   favicon = './static/yw.png'
+} else {
+  favicon = './static/favicon.ico'
 }
 var env = config.build.env
 
