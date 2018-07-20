@@ -18,7 +18,7 @@
                            :class="{'item': true, 'is-active': menuType === 1}">完善资料
               </router-link>
             </div>
-            <div class="admin-menu-sub-list">
+            <div class="admin-menu-sub-scope.row.source === 1list">
               <router-link :to="{name: 'bAdminItemList', query: {type: 2}}" active-class="false"
                            :class="{'item': true, 'is-active': menuType === 2}">等待推荐
               </router-link>
@@ -82,17 +82,6 @@
             <el-table-column
               prop="item.locale"
               label="工作地点">
-            </el-table-column>
-            <el-table-column
-              width="80"
-              label="来源">
-                <template slot-scope="scope">
-                  <p v-if="scope.row.item.source === 0">铟果</p>
-                  <p v-else-if="scope.row.item.source === 1">京东云</p>
-                  <p v-else-if="scope.row.item.source === 2">义乌</p>
-                  <p v-else-if="scope.row.item.source === 3">--</p>
-                  <p v-else>--</p>
-                </template>
             </el-table-column>
             <el-table-column
               prop="item.status_label"
