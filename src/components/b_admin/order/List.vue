@@ -100,7 +100,7 @@
             <el-table-column
               width="100"
               label="操作">
-                <template slot-scope="scope">
+                <template slot-scope="scope" v-if="scope.row.source === 1">
                   <p>
                     <a href="javascript:void(0);" v-show="scope.row.sure_outline_transfer" @click="showTransfer(scope.$index, scope.row)">查看凭证</a>
                   </p>
