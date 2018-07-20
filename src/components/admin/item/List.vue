@@ -39,6 +39,15 @@
                 </el-select>
               </el-form-item>
               <el-form-item>
+                <el-select v-model="query.source" placeholder="来源..." size="small">
+                  <el-option label="全部" value="0"></el-option>
+                  <el-option label="铟果" value="-1"></el-option>
+                  <el-option label="艺火" value="1"></el-option>
+                  <el-option label="义乌" value="2"></el-option>
+                  <el-option label="--" value="3"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item>
                 <el-button type="primary" @click="onSearch" size="small">查询</el-button>
               </el-form-item>
             </el-form>
@@ -88,7 +97,7 @@
               label="来源">
                 <template slot-scope="scope">
                   <p v-if="scope.row.item.source === 0">铟果</p>
-                  <p v-else-if="scope.row.item.source === 1">京东云</p>
+                  <p v-else-if="scope.row.item.source === 1">艺火</p>
                   <p v-else-if="scope.row.item.source === 2">义乌</p>
                   <p v-else-if="scope.row.item.source === 3">--</p>
                   <p v-else>--</p>
@@ -190,6 +199,7 @@
           totalCount: 0,
           sort: 1,
           type: 0,
+          source: 0,
           evt: '',
           val: '',
 
@@ -272,6 +282,7 @@
         self.query.page = parseInt(this.$route.query.page) || 1
         self.query.sort = this.$route.query.sort || 0
         self.query.type = this.$route.query.type || 0
+        self.query.source = this.$route.query.source || ''
         self.query.evt = this.$route.query.evt || ''
         self.query.val = this.$route.query.val || ''
         this.menuType = 0
@@ -285,6 +296,7 @@
             per_page: self.query.pageSize,
             sort: self.query.sort,
             type: self.query.type,
+            source: self.query.source,
             evt: self.query.evt,
             val: self.query.val
           }
