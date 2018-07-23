@@ -33,6 +33,15 @@
                 </el-select>
               </el-form-item>
               <el-form-item>
+                <el-select v-model="query.source" placeholder="来源..." size="small">
+                  <el-option label="全部" value="0"></el-option>
+                  <el-option label="铟果" value="-1"></el-option>
+                  <el-option label="艺火" value="1"></el-option>
+                  <el-option label="义乌" value="2"></el-option>
+                  <el-option label="--" value="3"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item>
                 <el-button type="primary" @click="onSearch" size="small">查询</el-button>
               </el-form-item>
             </el-form>
@@ -80,6 +89,17 @@
                   <p v-if="scope.row.user">
                     {{ scope.row.user.account }}[{{ scope.row.user_id }}]
                   </p>
+                </template>
+            </el-table-column>
+            <el-table-column
+              width="80"
+              label="来源">
+                <template slot-scope="scope">
+                  <p v-if="scope.row.source === 0">铟果</p>
+                  <p v-else-if="scope.row.source === 1">艺火</p>
+                  <p v-else-if="scope.row.source === 2">义乌</p>
+                  <p v-else-if="scope.row.source === 3">--</p>
+                  <p v-else>--</p>
                 </template>
             </el-table-column>
             <el-table-column
@@ -163,6 +183,7 @@ export default {
         totalCount: 0,
         sort: 1,
         type: 0,
+        source: 0,
         evt: '',
         val: '',
         test: null
@@ -247,6 +268,7 @@ export default {
       self.query.page = parseInt(this.$route.query.page || 1)
       self.query.sort = this.$route.query.sort || 0
       self.query.type = this.$route.query.type || ''
+      self.query.source = this.$route.query.source || ''
       self.query.evt = this.$route.query.evt || ''
       self.query.val = this.$route.query.val || ''
       this.menuType = 0
@@ -254,7 +276,7 @@ export default {
         this.menuType = parseInt(this.$route.query.type)
       }
       self.isLoading = true
-      self.$http.get(api.adminDemandCompanyList, {params: {page: self.query.page, per_page: self.query.pageSize, sort: self.query.sort, type_verify_status: self.query.type, evt: self.query.evt, val: self.query.val}})
+      self.$http.get(api.adminDemandCompanyList, {params: {page: self.query.page, per_page: self.query.pageSize, sort: self.query.sort, type_verify_status: self.query.type, source: self.query.source, evt: self.query.evt, val: self.query.val}})
       .then (function(response) {
         self.isLoading = false
         self.tableData = []
