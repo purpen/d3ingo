@@ -17,6 +17,7 @@ config/prod.env.js
 package-lock.json
 static/js/vendor/*
 deploy.sh
+client.sh
 *.swp
 *.swo
 *.swn
