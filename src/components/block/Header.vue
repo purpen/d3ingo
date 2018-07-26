@@ -398,6 +398,7 @@
         document.childNodes[1].removeAttribute('class', 'disableScroll')
       },
       showMyView(view) {
+        console.log(11234)
         this.showCover = 'show'
         this.myView = view
         this.$refs.msgList.blur()
@@ -759,11 +760,11 @@
   .menu-header .nav-item:hover span.icon i {
     color: #ff5a5f
   }
-  /*
+  
   .nav-header .nav-item:hover .view-msg,
-  .menu-header .nav-item:hover .view-msg { */
-  .nav-header .nav-item:focus .view-msg,
-  .menu-header .nav-item:focus .view-msg {
+  .menu-header .nav-item:hover .view-msg {
+  /* .nav-header .nav-item:focus .view-msg,
+  .menu-header .nav-item:focus .view-msg { */
       display: block
   }
 
@@ -835,7 +836,7 @@
     justify-content: center;
     height: 1.5rem;
     vertical-align: top;
-    width: 1.5rem;
+    /* width: 1.5rem; */
     position: relative;
   }
 

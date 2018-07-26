@@ -143,6 +143,9 @@
   .is-exception .el-progress-circle__path {
     stroke: #ff5a5f
   }
+  .el-progress.is-exception .el-progress-bar__inner {
+    background:#FF686A
+  }
   .el-autocomplete-suggestion__wrap,
   .el-pager li,
   .el-pagination .btn-next,

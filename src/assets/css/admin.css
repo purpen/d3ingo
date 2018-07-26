@@ -63,7 +63,11 @@
     float: right;
     margin: 0 0 10px 0;
   }
+
+  .admin-search-form .el-form {
+  }
   .admin-search-form .el-form-item {
     margin: 0;
     padding: 0;
   }
+

@@ -771,9 +771,11 @@
     text-indent: -9999px;
   } */
   .logo-icon img {
+    width: auto;
     height: 50px;
   }
   .other .logo-icon img {
+    width: auto;
     height: 30px;
   }
   .avatar {
@@ -820,7 +822,7 @@
     position: relative;
     padding: 0 15px 0 0;
   }
-  .nav-item:focus .view-msg {
+  .nav-item:hover .view-msg {
     display: block
   }
   .menu-header .icon.active span {
