@@ -623,12 +623,10 @@
                         contract.tax_price = parseFloat(contract.tax_price)
                         contract.first_rest_payment = parseFloat(contract.first_payment.sub(contract.warranty_money.add(contract.tax_price)))
                         that.form = contract
-                        if (!that.form.thn_company_name) {
-                          that.form.thn_company_name = that.companyThn.company_name
-                          that.form.thn_company_address = that.companyThn.address
-                          that.form.thn_company_phone = that.companyThn.contact_phone
-                          that.form.thn_company_legal_person = that.companyThn.contact_name
-                        }
+                        that.form.thn_company_name = that.companyThn.company_name
+                        that.form.thn_company_address = that.companyThn.address
+                        that.form.thn_company_phone = that.companyThn.contact_phone
+                        that.form.thn_company_legal_person = that.companyThn.contact_name
                         if (!that.form.commission_rate) {
                           that.form.commission_rate = item.item.commission_rate
                           that.form.commission = item.item.commission

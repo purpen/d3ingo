@@ -56,7 +56,7 @@
               <p>{{ index + 2 }}、第 {{ d.sort }} 阶段 <span class="bottom-border" type="text" disabled v-html="d.title"></span> 确认后，甲方在三个工作日内向乙方支付总设计费用款项 <span class="bottom-border" type="text" disabled v-html="d.percentage"></span> %： ¥ <span class="bottom-border" type="text" disabled v-html="d.amount"></span>（RMB）元</p>
             </div>
             <p>&nbsp;</p>
-            <p style="color: #FF5A5F">注：首付款收到后启动项目，最终款项收到后提交项目涉及的所有文件。</p>
+            <p style="color: #FF5A5F">注：首付款项收到后启动项目，最终款项收到后提交项目涉及的所有文件。</p>
             <p>甲方可自行登录京东云市场（https://market.jdcloud.com/）完成合同款支付，乙方收到上述款项后三个工作日内向甲方开具相应金额的增值税发票。</p>
 
             <p class="title mar-t-40 font-size-18">四、甲方责任与义务 </p>
