@@ -51,6 +51,7 @@
             <span class="fx-0 fx-icon-nothing-close-error" @click="closeMenu"></span></div>
           <div class="menu-content">
             <p class="hover-red" @click="showCover"><span>项目设置</span></p>
+            <p :class="['hover-red', projectObject.pigeonhole === 1 ? 'un-menu-arch' : 'menu-arch']" @click="projectArchive(projectObject)"><span>{{projectObject.pigeonhole | arch}}</span></p>
             <p v-if="false" class="menu-label"><span>标签</span></p>
             <hr>
             <p class="menu-moment"><span>项目动态</span></p>
@@ -64,6 +65,7 @@
                 </div>
               </li>
             </ul>
+            <span class="fz-14 tc-9 no-moment" v-else>暂无动态</span>
             <p class="project-news hover-red" v-if="projectMoments.length > 5" @click="showDynamic">查看所有项目动态</p>
           </div>
         </div>
@@ -552,6 +554,15 @@ export default {
       shortProjectMoments: []
     }
   },
+  filters: {
+    arch(val) {
+      if (val) {
+        return '取消归档'
+      } else {
+        return '项目归档'
+      }
+    }
+  },
   computed: {
     user() {
       return this.$store.state.event.user
@@ -769,6 +780,27 @@ export default {
     showCover() {
       this.cover = true
       this.closeMenu()
+    },
+    projectArchive(data) {
+      data.pigeonhole = data.pigeonhole === 1 ? 0 : 1
+      this.$http.put(api.archiveProject, {
+        item_id: data.id,
+        pigeonhole: data.pigeonhole
+      }).then(res => {
+        if (res.data && res.data.meta.status_code === 200) {
+          this.$store.commit('setProjectObject', data)
+          this.closeMenu()
+          if (data.pigeonhole) {
+            this.$message.success('项目已归档')
+          } else {
+            this.$message.success('项目已取消归档')
+          }
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
     },
     showDynamic() {
       this.cover2 = true
@@ -1316,6 +1348,20 @@ header {
   background: url(../../../../assets/images/tools/project_management/Option.png)
     no-repeat center / contain
 }
+.menu-content .menu-arch:before {
+  left: -2px;
+  width: 24px;
+  height: 24px;
+  background: url(../../../../assets/images/tools/project_management/Archive@2x.png)
+    no-repeat center / contain
+}
+.menu-content .un-menu-arch:before {
+  left: -2px;
+  width: 24px;
+  height: 24px;
+  background: url(../../../../assets/images/tools/project_management/Unarchive@2x.png)
+    no-repeat center / contain
+}
 .menu-content .menu-label:before {
   background: url(../../../../assets/images/tools/project_management/Label2@2x.png)
     no-repeat center / contain
@@ -1338,6 +1384,9 @@ header {
 }
 .menu-con span {
   cursor: pointer;
+}
+.no-moment {
+  padding-left: 30px;
 }
 .item-moments li {
   padding: 15px 0;
