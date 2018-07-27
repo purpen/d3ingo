@@ -10,7 +10,7 @@
                 <p :class="{'m-p' : isMob}">用设计重塑品质生活</p>
               </div>
               <div class="draw">
-                <img :src="require('assets/images/home/banner/BG02@2x.png')" width="90%" alt="">
+                <img :src="require('assets/images/home/banner/BG02@2x.png')" width="90%" height="auto" alt="">
               </div>
             </div>
             <div class="head-cover">
