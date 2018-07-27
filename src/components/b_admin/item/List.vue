@@ -18,7 +18,7 @@
                            :class="{'item': true, 'is-active': menuType === 1}">完善资料
               </router-link>
             </div>
-            <div class="admin-menu-sub-scope.row.source === 1list">
+            <div class="admin-menu-sub-list">
               <router-link :to="{name: 'bAdminItemList', query: {type: 2}}" active-class="false"
                            :class="{'item': true, 'is-active': menuType === 2}">等待推荐
               </router-link>
