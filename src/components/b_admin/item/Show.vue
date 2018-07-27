@@ -291,7 +291,7 @@
                 <p>合同</p>
               </el-col>
               <el-col :span="spanVal">
-                <p v-if="quotation"><span v-if="item.source === 1"><a href="javascript:void(0);" @click="viewContractBtn(1)">查看甲方>></a> &nbsp;&nbsp; <a href="javascript:void(0);" @click="viewContractBtn(2)">查看乙方>></a></span><span v-else><a href="javascript:void(0);" @click="viewContractBtn(0)">点击查看>></a></span> <span style="color: red;">*仅供参考，实际模板显示以用户端查看为准</span></p>
+                <p v-if="quotation"><span v-if="item.source === 1"><a href="javascript:void(0);" @click="viewContractBtn(1)">查看甲方>></a></span><span v-else><a href="javascript:void(0);" @click="viewContractBtn(0)">点击查看>></a></span> <span style="color: red;">*仅供参考，实际模板显示以用户端查看为准</span></p>
                 <p v-else>无</p>
               </el-col>
               <el-col :span="spanOpt">
