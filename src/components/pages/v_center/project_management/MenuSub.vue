@@ -51,6 +51,7 @@
             <span class="fx-0 fx-icon-nothing-close-error" @click="closeMenu"></span></div>
           <div class="menu-content">
             <p class="hover-red" @click="showCover"><span>项目设置</span></p>
+            <p class="hover-red" @click="projectArchive(projectObject)"><span>{{projectObject.pigeonhole | arch}}</span></p>
             <p v-if="false" class="menu-label"><span>标签</span></p>
             <hr>
             <p class="menu-moment"><span>项目动态</span></p>
@@ -552,6 +553,15 @@ export default {
       shortProjectMoments: []
     }
   },
+  filters: {
+    arch(val) {
+      if (val) {
+        return '取消归档'
+      } else {
+        return '项目归档'
+      }
+    }
+  },
   computed: {
     user() {
       return this.$store.state.event.user
@@ -769,6 +779,21 @@ export default {
     showCover() {
       this.cover = true
       this.closeMenu()
+    },
+    projectArchive(data) {
+      data.pigeonhole = data.pigeonhole === 1 ? 0 : 1
+      this.$http.put(api.archiveProject, {
+        item_id: data.id,
+        pigeonhole: data.pigeonhole
+      }).then(res => {
+        if (res.data && res.data.meta.status_code === 200) {
+          this.$store.commit('setProjectObject', data)
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
     },
     showDynamic() {
       this.cover2 = true
