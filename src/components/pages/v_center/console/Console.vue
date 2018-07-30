@@ -6,11 +6,11 @@
         'vcenter-right-mob': isMob}">
       <div class="vcenter-container">
         <el-row :gutter="20" class="mar-b-10">
-          <el-col :xs="24" :sm="12" :md="6" :lg="6">
+          <el-col :xs="24" :sm="12" :md="6" :lg="6" v-if="!target">
             <div class="head-item b-e6 border_radius mar-b-20">
               <div class="clearfix">
                 <span class="fz-14 tc-6 fl">年度项目目标</span>
-                <span class="edit fr pointer"></span>
+                <span class="edit fr pointer"  @click="target=true"></span>
               </div>
               <h3 class="tc-2 fz-20">{{20}} 个</h3>
               <div class="number bb-e6">
@@ -24,14 +24,54 @@
               <p class="tc-9 fz-14">已完成项目: <span class="tc-2">{{10}}个</span></p>
             </div>
           </el-col>
-          <el-col :xs="24" :sm="12" :md="6" :lg="6">
+          <el-col :xs="24" :sm="12" :md="6" :lg="6" v-if="target">
+            <div class="head-item b-e6 border_radius mar-b-20">
+              <div class="clearfix">
+                <span class="fz-14 tc-6 fl">年度项目目标</span>
+                <span class="fr fz-14 tc-red"  @click="target=flase">确定</span>
+              </div>
+              <el-input placeholder="请输入内容" value="20" class="padding-t-10">
+                <template slot="append">万元</template>
+              </el-input>
+              <div class="edit-centent mar-b-10 bb-e6">
+                <el-progress
+                status="exception"
+                :percentage = "50"
+                :show-text = "false"
+                :stroke-width = "8"
+                ></el-progress>
+              </div>
+              <p class="tc-9 fz-14">已完成项目: <span class="tc-2">{{10}}个</span></p>
+            </div>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="6" :lg="6" v-if="!Turnover">
             <div class="head-item b-e6 border_radius mar-b-20">
               <div class="clearfix">
                 <span class="fz-14 tc-6 fl">年度营业额目标</span>
-                <span class="edit fr pointer"></span>
+                <span class="edit fr pointer" @click="Turnover =true"></span>
               </div>
               <h3 class="tc-2 fz-20">{{100}} 万元</h3>
               <div class="number bb-e6">
+                <el-progress
+                status="exception"
+                :percentage = "50"
+                :show-text = "false"
+                :stroke-width = "8"
+                ></el-progress>
+              </div>
+              <p class="tc-9 fz-14">已收入金额: <span class="tc-2">{{50}}万元</span></p>
+            </div>
+          </el-col>
+          <el-col :xs="24" :sm="12" :md="6" :lg="6" v-if="Turnover">
+            <div class="head-item b-e6 border_radius mar-b-20">
+              <div class="clearfix">
+                <span class="fz-14 tc-6 fl">年度营业额目标</span>
+                <span class="fr fz-14 tc-red"  @click="Turnover=false">确定</span>
+              </div>
+              <el-input placeholder="请输入内容" value="20" class="padding-t-10">
+                <template slot="append">万元</template>
+              </el-input>
+              <div class="edit-centent mar-b-10 bb-e6">
                 <el-progress
                 status="exception"
                 :percentage = "50"
@@ -46,7 +86,7 @@
             <div class="head-item b-e6 border_radius">
               <div class="clearfix">
                 <span class="fz-14 tc-6 fl">收入</span>
-                <span class="edit fr pointer"></span>
+                <!-- <span class="edit fr pointer"></span> -->
               </div>
               <h3 class="tc-2 fz-20">{{50}} 万元</h3>
               <div class="number bb-e6 clearfix">
@@ -60,15 +100,15 @@
             <div class="head-item b-e6 border_radius">
               <div class="clearfix">
                 <span class="fz-14 tc-6 fl">项目</span>
-                <span class="edit fr pointer"></span>
+                <!-- <span class="edit fr pointer"></span> -->
               </div>
               <h3 class="tc-2 fz-20">{{20}} 个</h3>
               <div class="number bb-e6">
                 <section class="lines">
-                  <p class="yellow" :style="{width: '25%'}"></p>
-                  <p class="green" :style="{width: '25%'}"></p>
-                  <p class="blue" :style="{width: '25%'}"></p>
-                  <p class="red" :style="{width: '25%'}"></p>
+                  <!-- <p class="yellow" :style="{width: '25%'}"></p> -->
+                  <p class="green" :style="{width: '50%'}"></p>
+                  <p class="blue" :style="{width: '50%'}"></p>
+                  <!-- <p class="red" :style="{width: '25%'}"></p> -->
                 </section>
               </div>
               <p class="tc-9 fz-14">月均项目: <span class="tc-2">{{3}}个</span></p>
@@ -305,7 +345,7 @@
           </div>
         </el-col>
         <el-col :span="24" class="mar-b-20">
-          <div>
+          <section>
             <div class="pie-header">
                客户统计
               <span class="tc-9 fz-14 fr">客户总数: 140个</span>
@@ -314,11 +354,11 @@
             <el-col :span="18">
               <div class="content-header">
                 <div class="client-select">
-                  <span>地点</span>
-                  <span>评分</span>
+                  <div>地点</div>
+                  <div>评分</div>
                 </div>
                 <div>
-                  <el-row>
+                  <el-row class="radio-class">
                     <el-col :span="12">
                       <el-radio v-model="radio1" label="1">按数量显示</el-radio>
                     </el-col>
@@ -328,11 +368,88 @@
                   </el-row>
                 </div>
               </div>
+              <div>
+                <ECharts :options="baropt" class="bar">
+
+                </ECharts>
+              </div>
             </el-col>
             <el-col :span="6">
-
+              <p class="title-table">城市客户数量排名</p>
+              <ul>
+                <li v-for="(cr, indexcr) in cityRanking" :key="indexcr" class="city-table">
+                  <el-row>
+                    <el-col :span="2"><i>{{indexcr+1}}</i></el-col>
+                    <el-col :span="9">{{cr.name}}</el-col>
+                    <el-col :span="9">{{cr.value}}</el-col>
+                    <el-col :span="4">{{cr.pre}}</el-col>
+                  </el-row>
+                </li>
+              </ul>
             </el-col>
           </el-row>
+          </section>
+        </el-col>
+        <el-col :xs="24" :sm="12" :md="12" :lg="12" class="mar-b-20">
+          <div>
+            <div class="pie-header mar-b-10">
+              成员统计
+            </div>
+            <el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-row class="select-cl user-sele">
+                    <el-col :span="12">部门</el-col>
+                    <el-col :span="12">职位</el-col>
+                  </el-row>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <div class="user-echart">
+                    <ECharts :options="income" style="width: 200px;height:200px;">
+                    </ECharts>
+                  </div>
+                </el-col>
+                <el-col :span="12">
+                  <ul class="p-t-20">
+                    <li v-for="(u, indexu) in colorusers" :key="indexu" class="table-class">
+                      <el-row>
+                        <el-col :span="2" >
+                          <i :style="{backgroundColor:u.color}">
+                          </i>
+                        </el-col>
+                        <el-col :span="9">{{u.name}}</el-col>
+                        <el-col :span="9">{{u.value}}</el-col>
+                        <el-col :span="4">{{u.pre}}</el-col>
+                      </el-row>
+                    </li>
+                  </ul>
+                </el-col>
+              </el-row>
+            </el-row>
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <div>
+            <div class="pie-header">
+              成员权限
+            </div>
+            <div class="admin-Echart">
+              <ECharts :options="income" style="width: 200px;height:200px;">
+              </ECharts>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <div>
+            <div class="pie-header">
+              成员执行能力
+            </div>
+            <div class="admin-Echart">
+              <ECharts :options="gauge" style="width: 200px;height:200px;">
+              </ECharts>
+            </div>
           </div>
         </el-col>
         </el-row>
@@ -365,6 +482,8 @@ export default {
     return {
       radio1: '1',
       radio: '1',
+      target: false,
+      Turnover: false,
       lineType: '', // 收入金额:1, 项目数2
       lineTypeDate: '', // 月:month, 季度: quarter, 全年: year
       colorincome: [
@@ -441,6 +560,80 @@ export default {
           pre: 20
         }
       ],
+      cityRanking: [
+        {
+          color: '#FF686A',
+          name: '0-5000',
+          value: '335.00',
+          number: '3',
+          pre: 20
+        },
+        {
+          color: '#CD6DE0',
+          name: '5000-10000',
+          value: '310.00',
+          number: '3',
+          pre: 20
+        },
+        {
+          color: '#6CE1A8',
+          name: '10000-15000',
+          value: '234.00',
+          number: '3',
+          pre: 20
+        },
+        {
+          color: '#65A6FF',
+          name: '15000-20000',
+          value: '135.00',
+          number: '3',
+          pre: 20
+        },
+        {
+          color: '#FFE583',
+          name: '20000-25000',
+          value: '1548.00',
+          number: '3',
+          pre: 20
+        }
+      ],
+      colorusers: [
+        {
+          color: '#FF686A',
+          name: '0-5000',
+          value: '335.00',
+          number: '3',
+          pre: 20
+        },
+        {
+          color: '#CD6DE0',
+          name: '5000-10000',
+          value: '310.00',
+          number: '3',
+          pre: 20
+        },
+        {
+          color: '#6CE1A8',
+          name: '10000-15000',
+          value: '234.00',
+          number: '3',
+          pre: 20
+        },
+        {
+          color: '#65A6FF',
+          name: '15000-20000',
+          value: '135.00',
+          number: '3',
+          pre: 20
+        },
+        {
+          color: '#FFE583',
+          name: '20000-25000',
+          value: '1548.00',
+          number: '3',
+          pre: 20
+        }
+      ],
       polar: {
         title: {
           text: '收入趋势',
@@ -460,14 +653,6 @@ export default {
             inside: true,
             show: false
           }
-          // axisPointer: {
-          //   show: true,
-          //   label: {
-          //     formatter: function (params) {
-          //       return '收入: ' + params.seriesData[0].data + '元'
-          //     }
-          //   },
-          // },
         },
         yAxis: {
           name: '单位: 元',
@@ -506,18 +691,11 @@ export default {
             radius: ['50%', '70%'],
             avoidLabelOverlap: false,
             label: {
-              normal: {
-                show: false,
-                position: 'center'
-              }
-              // emphasis: {
-              //   show: true,
-              //   textStyle: {
-              //     fontSize: '30',
-              //     fontWeight: 'bold'
-              //   },
-              // formatter: '总额\n33333'
-              // }
+              show: true,
+              position: 'center',
+              formatter: '总人数\n \n100',
+              fontSize: 20,
+              color: '#FF686A'
             },
             labelLine: {
               normal: {
@@ -551,14 +729,6 @@ export default {
                 show: false,
                 position: 'center'
               }
-              // emphasis: {
-              //   show: true,
-              //   textStyle: {
-              //     fontSize: '30',
-              //     fontWeight: 'bold'
-              //   },
-              // formatter: '总额\n33333'
-              // }
             },
             labelLine: {
               normal: {
@@ -572,6 +742,84 @@ export default {
               {value: '135.00', name: '15000-20000'},
               {value: '1548.00', name: '20000-25000'}
             ]
+          }
+        ]
+      },
+      baropt: {
+        color: ['#FF686A'],
+        xAxis: {
+          type: 'category',
+          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          axisTick: {
+            show: false
+          },
+          axisLine: {
+            show: false
+          }
+        },
+        yAxis: {
+          name: '单位: 位',
+          type: 'value',
+          axisTick: {
+            show: false
+          },
+          axisLine: {
+            show: false
+          }
+        },
+        series: [{
+          data: [120, 200, 150, 80, 70, 110, 130],
+          type: 'bar',
+          itemStyle: {
+            barBorderRadius: [4, 4, 0, 0],
+          },
+          barMaxWidth: 10
+        }]
+      },
+      gauge : {
+        tooltip : {
+          formatter: "{a} <br/>{b} : {c}%"
+        },
+        series: [
+          {
+            name: '业务指标',
+            type: 'gauge',
+            detail: {
+              formatter:'{value}%',
+              fontSize:15
+            },
+            data: [{value: 50, name: ''}],
+            splitNumber: 3,
+            axisLine: {
+              lineStyle: {
+                width: 10
+              }
+            },
+            splitLine: {
+              length: 15,
+              lineStyle: {
+                color: '#65A6FF'
+              }
+            },
+            axisLabel: {
+              formatter: function (value) {
+                if (value <= 25) {
+                  return '差'
+                }
+                else if (value <= 50) {
+                  return '中'
+                }
+                else if (value <= 75) {
+                  return '良'
+                } else {
+                  return '优'
+                }
+              }
+            },
+            pointer: {
+              width: 4,
+              length: '80%'
+            }
           }
         ]
       }
@@ -671,6 +919,10 @@ export default {
     height: 360px;
     border-radius: 4px;
   }
+  .pie-chart>.el-col>section {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
   .pie-header {
     height: 50px;
     line-height: 50px;
@@ -758,27 +1010,66 @@ export default {
     line-height: 30px;
     text-align: center;
     margin-top: 10px;
+    display: flex;
   }
-  .client-select>span {
-    display: inline-block;
+  .client-select>div {
     width: 120px;
   }
-  .client-select>span:hover {
+  .client-select>div:hover {
     background:#f7f7f7;
     color: #ff5a5f;
     cursor: pointer;
   }
-  .client-select>span:first-child {
+  .client-select>div:first-child {
     border-right: 1px solid #e6e6e6
   }
-  .mar-b-10 {
-    margin-bottom: 10px
+  .radio-class .el-radio {
+    font-size: 12px;
+    color: #666;
+    width: 120px;
   }
-  .mar-b-20 {
-    margin-bottom: 20px
+  .title-table {
+    line-height: 40px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #222;
   }
-  .mar-b-30 {
-    margin-bottom: 30px
+  .city-table {
+    line-height: 20px;
+    padding-bottom: 20px;
+  }
+  .city-table i{
+    display:inline-block;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    border-radius: 50%;
+    background: #FF686A;
+    color: #fff;
+  }
+  .user-sele {
+    margin: 0 30px 0 20px;
+  }
+  .user-echart {
+    display: flex;
+    justify-content: center;
+    padding-top: 30px;
+  }
+  .bar {
+    width: 100%;
+    height: 300px;
+  }
+  .admin-Echart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 310px;
+  }
+  .clearfix .fr {
+    cursor: pointer;
+  }
+  .edit-centent {
+    padding: 10px 0 20px 0px;
   }
   .head,
   .line-body {
@@ -792,20 +1083,35 @@ export default {
     cursor: pointer;
     float: left;
   }
+  .mar-b-10 {
+    margin-bottom: 10px
+  }
+  .mar-b-20 {
+    margin-bottom: 20px
+  }
+  .mar-b-30 {
+    margin-bottom: 30px
+  }
   .mar-r-20 {
     margin-right: 20px
   }
   .padding-t-5 {
     padding-top: 5px
   }
-  .padding-tb-15 {
-    padding: 15px 0;
+  .padding-t-10 {
+    padding-top: 10px
   }
   .padding-t-15 {
     padding-top: 15px;
   }
   .p-t-20 {
     padding-top: 20px;
+  }
+  .p-t-50 {
+    padding-top: 50px;
+  }
+  .padding-tb-15 {
+    padding: 15px 0;
   }
   .p-rl-30 {
     padding: 0 30px;
@@ -818,9 +1124,6 @@ export default {
   }
   .padding-tb-5 {
     padding: 5px 0;
-  }
-  .p-t-50 {
-    padding-top: 50px;
   }
   .line-echarts {
     height:350px;
