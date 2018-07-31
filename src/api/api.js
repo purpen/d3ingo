@@ -434,6 +434,9 @@ export default {
   // 项目订单
   jdPayOrderTruePay: '/jd/payOrder/truePay', // POST 确认项目支付单付款
   jdPayOrderLists: '/jd/payOrder/lists', // GET 项目支付单列表
-  jdPayOrderShow: '/jd/payOrder/show' // GET 项目支付单详情
+  jdPayOrderShow: '/jd/payOrder/show', // GET 项目支付单详情
 
+  // 计划年营业额
+  designTargetCreate: '/designTarget/create', // PUST 计划年营业额，年度项目数量添加更新
+  designTargetShow: '/designTarget/show' // GET 详情
 }

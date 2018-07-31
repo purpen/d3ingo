@@ -794,7 +794,7 @@
           <p @click="isItemStage=true">添加项目阶段</p>
         </div>
       </div>
-      <div class="push-file">
+      <div class="push-file" v-if="designStageLists.length > 0">
         <i>
         </i>
         <router-link 
@@ -1533,7 +1533,6 @@ export default {
             'duration': parseInt(start[b].duration)
           })
         }
-        console.log('arr', arr)
 
         this.$http.put(api.updateDuration, {durations: JSON.stringify(arr)}).then((response) => {
           if (response.data.meta.status_code === 200) {
@@ -2018,6 +2017,10 @@ export default {
     this.$http.get(api.designStageLists, {params: {design_project_id: this.itemId}}).then((response) => {
       if (response.data.meta.status_code === 200) {
         this.designStageLists = response.data.data
+        if (!this.designStageLists || this.designStageLists.length === 0) {
+          this.designStageLists = []
+          return
+        }
         for (let i = 0; i < this.designStageLists.length; i++) {
           // 时间合集
           if (this.designStageLists.length > 0) {
@@ -2041,7 +2044,7 @@ export default {
           // 时间格式转换
           this.designStageLists[i].isedit = false
           if (this.designStageLists[i].start_time) {
-            this.designStageLists[i].start_time = (new Date(this.designStageLists[i].start_time * 1000)).format('yyyy-MM-dd')
+            this.designStageLists[i].start_time = (new Date(this.designStageLists[i].start_time * 1000)).format('yyyy/MM/dd')
           }
         }
         // 起始时间和终止时间
