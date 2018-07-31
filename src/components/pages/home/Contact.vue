@@ -26,6 +26,13 @@
             <a class="mail" href="mailto:zhoushenrong@jd.com"><i class="fx-2 fx-icon-mail"></i>zhoushenrong@jd.com</a>
             <a class="addr"><i class="fx-2 fx-icon-address"></i>北京市朝阳区北辰西路8号北辰世纪中心A座8层</a>
           </div>
+          <div class="container content-box" v-if="custom.id === 2">
+            <h3>联系我们</h3>
+            <!-- <a class="contact"><i class="fx-2 fx-icon-personal-center"></i></a> -->
+            <a class="phone" href="tel:400-183-8028"><i class="fx-2 fx-icon-phone"></i>400-183-8028</a>
+            <!-- <a class="mail" href="mailto:zhoushenrong@jd.com"><i class="fx-2 fx-icon-mail"></i>zhoushenrong@jd.com</a> -->
+            <a class="addr"><i class="fx-2 fx-icon-address"></i>浙江省义乌市北苑街道雪峰西路968号科技大楼A区12层</a>
+          </div>
         </div>
       </el-col>
     </el-row>

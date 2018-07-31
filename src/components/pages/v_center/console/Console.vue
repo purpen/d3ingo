@@ -115,11 +115,12 @@
             </div>
           </el-col>
         </el-row>
+        <p class="mar-b-20 tc-2">项目款</p>
         <div class="line-map border_radius b-e6">
           <div class="head bb-e6 tc-6 clearfix mar-b-10">
             <p class="fl">
-              <span class="fz-14 mar-r-20">收入金额</span>
-              <span class="fz-14">项目数</span>
+              <span :class="['fz-14','mar-r-20',{'tc-red':isIncome}]" @click="isIncome=true">收入金额</span>
+              <span :class="['fz-14',{'tc-red':!isIncome}]" @click="isIncome=false">项目数</span>
             </p>
             <p class="fr">
               <span class="fz-12 mar-r-20">月</span>
@@ -132,11 +133,13 @@
               <el-col :xs="24" :sm="24" :md="24" :lg="18" :xl="18">
                 <!-- <h4 class="fz-14 tc-6 padding-t-15">收入趋势</h4> -->
                 <div class="line-echarts">
-                  <ECharts :options="polar" class="line-echarts">
+                  <ECharts :options="polar" class="line-echarts" v-if="isIncome">
+                  </ECharts>
+                  <ECharts :options="polar2" class="line-echarts" v-if="!isIncome">
                   </ECharts>
                 </div>
               </el-col>
-              <el-col :xs="24" :sm="24" :md="24" :lg="6" :xl="6" class="padding-t-5">
+              <el-col :xs="24" :sm="24" :md="24" :lg="6" :xl="6" class="padding-t-5" v-if="isIncome">
                 <h4 class="fz-14 tc-2 padding-tb-10">
                   项目总收入
                 </h4>
@@ -155,6 +158,21 @@
                 <p class="fz-18 tc-red padding-tb-5">
                   1个
                 </p>
+              </el-col>
+              <el-col :xs="24" :sm="24" :md="24" :lg="6" :xl="6" class="padding-t-5" v-if="!isIncome">
+                <p class="mar-b-20">项目进度占比</p>
+                <ECharts :options="income" style="width: 200px;height:200px;">
+                </ECharts>
+                  <el-row>
+                    <el-col :span="12" v-for="(tt,indextt) in cityRanking" :key="indextt">
+                      <el-row class="pre-table" >
+                        <el-col :span="3"><i :style="{backgroundColor:tt.color}" ></i></el-col>
+                        <el-col :span="8">{{tt.name}}</el-col>
+                        <el-col :span="8">{{tt.value}}</el-col>
+                        <el-col :span="5">{{tt.pre}}</el-col>
+                      </el-row>
+                    </el-col>
+                  </el-row>
               </el-col>
             </el-row>
           </div>
@@ -261,10 +279,10 @@
               </div>
             </div>
           </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="12" class="mar-b-20">
+        <el-col :xs="24" :sm="24" :md="12" :lg="12" class="mar-b-20">
           <div class="control-tasks">
             <div class="pie-header">
-              我的任务
+              任务统计
                 <span class="tc-9 fz-14 fr">任务总数: 140个</span>
             </div>
             <el-row>
@@ -353,20 +371,24 @@
           <el-row class="p-rl-30">
             <el-col :span="18">
               <div class="content-header">
-                <div class="client-select">
-                  <div>地点</div>
-                  <div>评分</div>
-                </div>
-                <div>
-                  <el-row class="radio-class">
-                    <el-col :span="12">
-                      <el-radio v-model="radio1" label="1">按数量显示</el-radio>
-                    </el-col>
-                    <el-col :span="12">
-                      <el-radio v-model="radio1" label="2">按金额显示</el-radio>
-                    </el-col>
-                  </el-row>
-                </div>
+                <el-row>
+                  <el-col :xs="24" :sm="24" :md="12" :lg="12"  >
+                    <div class="client-select">
+                      <div>地点</div>
+                      <div>评分</div>
+                    </div>
+                  </el-col>
+                  <el-col :xs="24" :sm="24" :md="12" :lg="12">
+                    <el-row class="radio-class fr">
+                      <el-col :span="12">
+                        <el-radio v-model="radio1" label="1">按数量显示</el-radio>
+                      </el-col>
+                      <el-col :span="12">
+                        <el-radio v-model="radio1" label="2">按金额显示</el-radio>
+                      </el-col>
+                    </el-row>
+                  </el-col>
+                </el-row>
               </div>
               <div>
                 <ECharts :options="baropt" class="bar">
@@ -430,7 +452,7 @@
             </el-row>
           </div>
         </el-col>
-        <el-col :span="6">
+        <el-col :xs="12" :sm="6" :md="6" :lg="6">
           <div>
             <div class="pie-header">
               成员权限
@@ -441,7 +463,7 @@
             </div>
           </div>
         </el-col>
-        <el-col :span="6">
+        <el-col :xs="12" :sm="6" :md="6" :lg="6">
           <div>
             <div class="pie-header">
               成员执行能力
@@ -460,6 +482,7 @@
 <script>
 import vMenu from '@/components/pages/v_center/Menu'
 import ECharts from 'vue-echarts'
+import api from '@/api/api'
 export default {
   name: 'console',
   created() {
@@ -482,8 +505,9 @@ export default {
     return {
       radio1: '1',
       radio: '1',
-      target: false,
-      Turnover: false,
+      target: false, // 编辑年度项目目标
+      Turnover: false, // 编辑年度营业额目标
+      isIncome: true, // 按收入金额与项目数分类
       lineType: '', // 收入金额:1, 项目数2
       lineTypeDate: '', // 月:month, 季度: quarter, 全年: year
       colorincome: [
@@ -678,6 +702,44 @@ export default {
         color: ['#FF686A'],
         animationDuration: 2000
       },
+      polar2: {
+        title: {
+          text: '完成的项目',
+          textStyle: {
+            color: '#222',
+            fontSize: 14
+          }
+        },
+        color: ['#FF686A'],
+        xAxis: {
+          type: 'category',
+          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          axisTick: {
+            show: false
+          },
+          axisLine: {
+            show: false
+          }
+        },
+        yAxis: {
+          name: '单位: 位',
+          type: 'value',
+          axisTick: {
+            show: false
+          },
+          axisLine: {
+            show: false
+          }
+        },
+        series: [{
+          data: [120, 200, 150, 80, 70, 110, 130],
+          type: 'bar',
+          itemStyle: {
+            barBorderRadius: [4, 4, 0, 0],
+          },
+          barMaxWidth: 10
+        }]
+      },
       income: {
         color: ['#FF686A', '#CD6DE0', '#6CE1A8', '#65A6FF', '#FFE583'],
         tooltip: {
@@ -836,6 +898,17 @@ export default {
     leftWidth() {
       return this.$store.state.event.leftWidth
     }
+  },
+  created() {
+    this.$http.get(api.designTargetShow, {}).then((response) => {
+      if (response.data.meta.status_code === 200) {
+        console.log(response.data.data)
+      } else {
+        this.$message.error(response.data.meta.message)
+      }
+    }).catch((error) => {
+      this.$message.error(error.message)
+    })
   }
 }
 </script>
@@ -999,18 +1072,19 @@ export default {
     height:150px;
   }
   .content-header {
-    display: flex;
+    /* display: flex;
     justify-content: space-between;
+    align-items: center; */
     line-height: 40px;
-    /* align-items: center; */
   }
   .client-select {
-    border:1px solid #e6e6e6;
+    border: 1px solid #e6e6e6;
     border-radius: 4px;
     line-height: 30px;
     text-align: center;
     margin-top: 10px;
     display: flex;
+    width: 240px;
   }
   .client-select>div {
     width: 120px;
@@ -1070,6 +1144,17 @@ export default {
   }
   .edit-centent {
     padding: 10px 0 20px 0px;
+  }
+  .pre-table i {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .pre-table>.el-col {
+    overflow: hidden;
+    white-space: nowrap;
+    padding-bottom: 10px;
   }
   .head,
   .line-body {
