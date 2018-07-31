@@ -176,7 +176,7 @@
                     :show-text="false"
                   ></el-progress>
                   <div>
-                    <p class="marginl">未认领
+                    <p class="mar-b-10">未认领
                       <span>{{ userTask.no_get }}</span>
                     </p>
                     <p class="fx-6 is-unclaimed">{{userTask.no_get_percentage}} %</p>

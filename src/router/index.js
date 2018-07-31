@@ -16,7 +16,7 @@ import {
 function showProd() {
   return store.state.event.prod
 }
-
+let custom = showProd()
 Vue.use(VueRouter)
 
 // 页面刷新时，重新赋值token
@@ -38,7 +38,7 @@ let routes = [
     meta: {
       title: '首页'
     },
-    component: require('@/components/pages/home/Home')
+    component: custom.id ? require('@/components/pages/home/JDCloud') : require('@/components/pages/home/Home')
   },
   // 京东云首页
   {
@@ -753,7 +753,6 @@ const router = new VueRouter({
     }
   }
 })
-let custom = showProd()
 router.beforeEach((to, from, next) => {
   if (to.meta.title) {
     if (to.meta.title === '首页' || to.meta.title === '京东云艺火') {

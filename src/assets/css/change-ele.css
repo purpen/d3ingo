@@ -586,3 +586,6 @@
   .el-message__group p {
     color: #666
   }
+  .radio-class .el-radio__label {
+    font-size: 12px;
+  }
