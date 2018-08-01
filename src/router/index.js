@@ -16,7 +16,7 @@ import {
 function showProd() {
   return store.state.event.prod
 }
-
+let custom = showProd()
 Vue.use(VueRouter)
 
 // 页面刷新时，重新赋值token
@@ -38,7 +38,7 @@ let routes = [
     meta: {
       title: '首页'
     },
-    component: require('@/components/pages/home/Home')
+    component: custom.id ? require('@/components/pages/home/JDCloud') : require('@/components/pages/home/Home')
   },
   // 京东云首页
   {
@@ -662,6 +662,18 @@ let routes = [
     },
     component: require('@/components/pages/v_center/common/Control')
   },
+  // 统计
+  {
+    path: '/vcenter/console',
+    name: 'vcenterConsole',
+    meta: {
+      title: '统计',
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/v_center/console/Console')
+  },
   // 控制面板--子账户
   {
     path: '/vcenter/child_control',
@@ -741,7 +753,6 @@ const router = new VueRouter({
     }
   }
 })
-let custom = showProd()
 router.beforeEach((to, from, next) => {
   if (to.meta.title) {
     if (to.meta.title === '首页' || to.meta.title === '京东云艺火') {

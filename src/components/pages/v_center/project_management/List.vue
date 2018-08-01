@@ -12,10 +12,13 @@
             <el-tooltip :content="ele.name" placement="top">
               <div class="pro-header">
                 <h3 @click="routePush(ele.id)">{{ele.name}}</h3>
-                  <p class="operate" tabindex="-1" ref="operate1">
+                  <div class="operate" tabindex="-1" ref="operate1">
                     <span class="more"></span>
-                    <span class="delete" @click="projectDelete(ele.id, index, 'collect')">删除</span>
-                  </p>
+                    <p class="opt-item">
+                      <span class="delete" @click="projectArchive(ele, index,'collect')">{{ ele.pigeonhole | arch }}</span>
+                      <span class="delete" @click="projectDelete(ele.id, index, 'collect')">删除</span>
+                    </p>
+                  </div>
                 <span @click="setCollect(ele.id, ele.collect)"
                 :class="['favorite-star', {'favorite-star-light': ele.collect === 1}]"></span>
               </div>
@@ -40,10 +43,13 @@
             <el-tooltip :content="ele.name" placement="top">
               <div class="pro-header">
                 <h3 @click="routePush(ele.id)">{{ele.name}}</h3>
-                <p class="operate" tabindex="-1" ref="operate2">
+                <div class="operate" tabindex="-1" ref="operate2">
                   <span class="more"></span>
-                  <span class="delete" @click="projectDelete(ele.id, index, 'attend')">删除</span>
-                </p>
+                    <p class="opt-item">
+                    <span class="delete" @click="projectArchive(ele, index, 'attend')">{{ ele.pigeonhole | arch }}</span>
+                    <span class="delete" @click="projectDelete(ele.id, index, 'attend')">删除</span>
+                  </p>
+                </div>
                 <span @click="setCollect(ele.id, ele.collect)"
                 :class="['favorite-star', {'favorite-star-light': ele.collect === 1}]"></span>
               </div>
@@ -62,10 +68,38 @@
             <el-tooltip :content="ele.name" placement="top">
               <div class="pro-header">
                 <h3 @click="routePush(ele.id)">{{ele.name}}</h3>
-                <p class="operate" tabindex="-1" ref="operate">
+                <div class="operate" tabindex="-1" ref="operate">
                   <span class="more"></span>
-                  <span class="delete" @click="projectDelete(ele.id, index)">删除</span>
-                </p>
+                    <p class="opt-item">
+                    <span class="delete" @click="projectArchive(ele, index)">{{ ele.pigeonhole | arch }}</span>
+                    <span class="delete" @click="projectDelete(ele.id, index)">删除</span>
+                  </p>
+                </div>
+                <span @click="setCollect(ele.id, ele.collect)"
+                :class="['favorite-star', {'favorite-star-light': ele.collect === 1}]"></span>
+              </div>
+            </el-tooltip>
+            <div class="content" @click="routePush(ele.id)">
+              {{ele.description}}
+            </div>
+            <span class="importance level2" v-if="ele.level === 2">重要</span>
+            <span class="importance level3" v-if="ele.level === 3">非常重要</span>
+          </li>
+        </ul>
+        <h2 v-if="archiveList.length">已归档项目</h2>
+        <ul class="project-list">
+          <li v-for="(ele, index) in archiveList" :key="index"
+            @click.self="routePush(ele.id)">
+            <el-tooltip :content="ele.name" placement="top">
+              <div class="pro-header">
+                <h3 @click="routePush(ele.id)">{{ele.name}}</h3>
+                  <div class="operate" tabindex="-1" ref="operate3">
+                    <span class="more"></span>
+                    <p class="opt-item">
+                      <span class="delete" @click="projectArchive(ele, index, 'archive')">{{ 1 | arch }}</span>
+                      <span class="delete" @click="projectDelete(ele.id, index, 'archive')">删除</span>
+                    </p>
+                  </div>
                 <span @click="setCollect(ele.id, ele.collect)"
                 :class="['favorite-star', {'favorite-star-light': ele.collect === 1}]"></span>
               </div>
@@ -128,6 +162,7 @@ export default {
       projectList: [],
       collectList: [],
       attendList: [],
+      archiveList: [],
       isLoading: false,
       show: {
         cover: false,
@@ -146,7 +181,8 @@ export default {
       },
       isOpen: true,
       isOpen2: true,
-      isOpen3: true
+      isOpen3: true,
+      isOpen4: true
     }
   },
   methods: {
@@ -163,27 +199,14 @@ export default {
           collect: 1,
           page: this.query.page,
           per_page: this.query.pageSize
-        }}),
-        this.$http.get(api.desiginProjectList, {params: { // 我拥有的
-          status: 1,
-          user_status: 1,
-          page: this.query.page,
-          per_page: this.query.pageSize
         }})
-      ]).then(([res1, res2, res3]) => {
-        // console.log(res1.data.data, res2.data.data, res3.data.data)
+      ]).then(([res1, res2]) => {
         this.isLoading = false
 
         if (res1.data.meta.status_code === 200) {
           this.projectList = res1.data.data
         } else {
           this.$message.error(res1.data.meta.message)
-        }
-
-        if (res3.data.meta.status_code === 200) {
-          this.attendList = res3.data.data
-        } else {
-          this.$message.error(res3.data.meta.message)
         }
 
         if (res2.data.meta.status_code === 200) {
@@ -207,6 +230,7 @@ export default {
             if (res.data.meta.status_code === 200) {
               res.data.data.level = Number(res.data.data.level)
               this.projectList.unshift(res.data.data)
+              this.attendList.unshift(res.data.data)
               let isOffer = this.show.writeOffer
               this.closeCover()
               // 创建成功跳转到报价提交页
@@ -239,6 +263,43 @@ export default {
     routePush(id) {
       this.$router.push({name: 'projectManagementOverView', params: {id: id}})
     },
+    projectArchive(ele, index, str) {
+      if (str === 'collect') {
+        this.$refs.operate1[index].blur()
+      } else if (str === 'attend') {
+        this.$refs.operate2[index].blur()
+      } else if (str === 'archive') {
+        this.$refs.operate3[index].blur()
+      } else {
+        this.$refs.operate[index].blur()
+      }
+      ele.pigeonhole = ele.pigeonhole === 1 ? 0 : 1
+      this.$http.put(api.archiveProject, {
+        item_id: ele.id,
+        pigeonhole: ele.pigeonhole
+      }).then(res => {
+        if (res.data && res.data.meta.status_code === 200) {
+          if (ele.pigeonhole === 1) {
+            this.archiveList.push(ele)
+          } else {
+            this.archiveList.forEach((item, index, array) => {
+              if (item.id === ele.id) {
+                array.splice(index, 1)
+              }
+            })
+          }
+          this.projectList.forEach(i => {
+            if (i.id === ele.id) {
+              this.$set(i, 'pigeonhole', ele.pigeonhole)
+            }
+          })
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
     projectDelete(id, index, str) {
       if (this.isOpen3) {
         this.isOpen3 = false
@@ -249,33 +310,23 @@ export default {
             this.$refs.operate1[index].blur()
           } else if (str === 'attend') {
             this.$refs.operate2[index].blur()
+          } else if (str === 'archive') {
+            this.$refs.operate3[index].blur()
           } else {
             this.$refs.operate[index].blur()
           }
           if (res.data.meta.status_code === 200) {
-            if (str) {
-              this.projectList.forEach((item, ind, array) => {
-                if (item.id === id) {
-                  array.splice(ind, 1)
-                }
-              })
-              this.collectList.forEach((item, ind, array) => {
-                if (item.id === id) {
-                  array.splice(ind, 1)
-                }
-              })
-              this.attendList.forEach((item, ind, array) => {
-                if (item.id === id) {
-                  array.splice(ind, 1)
-                }
-              })
-            } else {
-              this.projectList.forEach((item, ind, array) => {
-                if (item.id === id) {
-                  array.splice(ind, 1)
-                }
-              })
-            }
+            // if (str) {
+            this.projectList.forEach((item, ind, array) => {
+              if (item.id === id) {
+                array.splice(ind, 1)
+              }
+            })
+            this.collectList.forEach((item, ind, array) => {
+              if (item.id === id) {
+                array.splice(ind, 1)
+              }
+            })
           } else {
             this.$message.error(res.data.meta.message)
           }
@@ -312,15 +363,8 @@ export default {
                     this.$set(item, 'collect', collect)
                   }
                 })
-                this.attendList.forEach((item) => {
-                  if (item.id === id) {
-                    this.$set(item, 'collect', collect)
-                  }
-                })
                 this.collectList.forEach((item, index, array) => {
-                  if (item.id === id) {
-                    array.splice(index, 1)
-                  }
+                  array.splice(index, 1)
                 })
               }
             })
@@ -332,6 +376,15 @@ export default {
           console.error(err.message)
           this.$message.error(err.message)
         })
+      }
+    }
+  },
+  filters: {
+    arch(val) {
+      if (val) {
+        return '取消归档'
+      } else {
+        return '项目归档'
       }
     }
   },
@@ -349,6 +402,9 @@ export default {
     },
     isMob() {
       return this.$store.state.event.isMob
+    },
+    user() {
+      return this.$store.state.event.user
     }
   },
   created() {
@@ -363,34 +419,28 @@ export default {
       // 对路由变化作出响应...
       // this.getProjectList()
     },
+    projectList(val) {
+      this.attendList = []
+      this.archiveList = []
+      val.forEach(item => {
+        item.collect = 0
+        if (item.user_id === this.user.id) {
+          this.attendList.push(item)
+        }
+        if (item.pigeonhole === 1) {
+          this.archiveList.push(item)
+        }
+      })
+    },
     collectList(val) {
-      val.forEach(item2 => {
-        this.$set(item2, 'collect', 1)
-        this.projectList.forEach(item1 => {
-          if (item1.id === item2.id) {
-            this.$set(item1, 'collect', 1)
-          }
-        })
-
-        this.attendList.forEach(item3 => {
-          if (item3.id === item2.id) {
-            this.$set(item3, 'collect', 1)
+      val.forEach(item => {
+        this.$set(item, 'collect', 1)
+        this.projectList.forEach(i => {
+          if (i.id === item.id) {
+            this.$set(i, 'collect', 1)
           }
         })
       })
-
-      // for (let j = 0; j < this.projectList.length; j++) {
-      //   for (let i = 0; i < val.length; i++) {
-      //     this.$set(val[i], 'collect', 1)
-      //     if (val[i]['id'] === this.projectList[j]['id']) {
-      //       this.$set(this.projectList[j], 'collect', 1)
-      //       break
-      //     } else {
-      //       this.$set(this.projectList[j], 'collect', 0)
-      //     }
-      //   }
-      // }
-      // console.log(this.projectList)
     }
   }
 }
@@ -505,26 +555,30 @@ export default {
     height: 24px;
   }
   /* .operate:hover .delete, */
-  .operate:focus .delete {
+  .operate:focus .opt-item {
     display: block;
   }
-  .delete {
+  .operate .opt-item {
     display: none;
     position: absolute;
     z-index: 1;
     right: 10px;
     top: 24px;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
+    border-radius: 4px;
+  }
+  .delete {
+    display: block;
     width: 180px;
     height: 40px;
     line-height: 40px;
     text-align: center;
     background: #FFFFFF;
-    box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
-    border-radius: 4px;
     color: #999
   }
   .delete:hover {
     color: #222;
+    background: #f7f7f7;
   }
   .content {
     color: #666;

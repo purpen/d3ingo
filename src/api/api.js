@@ -355,6 +355,7 @@ export default {
   deleteDesignProject: '/designProject/delete', // DELETE 放入回收站
   designProject: '/designProject', // GET 展示详情
   designProjectDynamic: '/designProject/dynamic', // GET 项目动态
+  archiveProject: '/designProject/pigeonhole', // PUT 项目归档
   // 项目中的合同列表
   designProjectContracts: '/designProject/contracts', // GET 项目中的合同列表
   // 项目成员列表
@@ -433,6 +434,9 @@ export default {
   // 项目订单
   jdPayOrderTruePay: '/jd/payOrder/truePay', // POST 确认项目支付单付款
   jdPayOrderLists: '/jd/payOrder/lists', // GET 项目支付单列表
-  jdPayOrderShow: '/jd/payOrder/show' // GET 项目支付单详情
+  jdPayOrderShow: '/jd/payOrder/show', // GET 项目支付单详情
 
+  // 计划年营业额
+  designTargetCreate: '/designTarget/create', // PUST 计划年营业额，年度项目数量添加更新
+  designTargetShow: '/designTarget/show' // GET 详情
 }
