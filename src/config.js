@@ -1111,10 +1111,10 @@ const LOGISTICS_OPTIONS = [
 
 // 合同 丙方信息
 const CONTRACT_THN = {
-  company_name: '北京太火红鸟科技有限公司',
+  company_name: '杭州太火鸟科技有限公司',
   contact_name: '耿霆',
   contact_phone: '13031154842',
-  address: '北京市朝阳区酒仙桥路751广场B7栋南楼西侧（太火鸟）',
+  address: '浙江省杭州市下城区新华路266号370室（太火鸟）',
   test: ''
 }
 

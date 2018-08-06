@@ -34,7 +34,7 @@
               <li ><img :src=" userimg " alt=""></li>
               <li v-for="(getimg,index) in getimgs" :key="index" v-if="getimgs&&getimgs.length > 0" :style="{background:`url(${ getimg.logo_image.logo }) no-repeat center`,backgroundSize:`24px 24px`}">
                   <span v-if=" !getimg.logo_image.logo ">{{getimg.realnamehead}}</span>
-                  <i :style="{background:`url(${ closered }) no-repeat center`}" @click="deleteGetimg(index,{type:'add'})"></i>
+                  <i :style="{background:`url(${ closered }) no-repeat center`,backgroundSize:`24px 24px`}" @click="deleteGetimg(index,{type:'add'})"></i>
               </li>
               <li>
                 <img class="adds" :src=" adduser " alt="" @click="isuser=true">

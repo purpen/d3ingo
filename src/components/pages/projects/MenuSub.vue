@@ -1,5 +1,5 @@
 <template>
-  <section :class="['menu-sub','project-menu-sub', {'jdc': custom.name === 'jdc', 'wb': custom.name === 'wb'}]">
+  <section :class="['menu-sub','project-menu-sub', {'jdc': custom.name === 'jdc', 'yw': custom.name === 'yw'}]">
     <div class="nav-left nav-menu">
       <router-link :to="{name: 'home'}" class="el-menu-item logo">
         <img :src="custom.logo" :alt="custom.info">
@@ -29,7 +29,7 @@
             <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
         </el-submenu>
       </el-menu>
-      <el-menu class="el-menu-info" mode="horizontal" router v-if="custom.id === 1">
+      <el-menu class="el-menu-info" mode="horizontal" router v-else>
         <el-submenu index="2">
           <template slot="title">
             <img class="avatar2" v-if="user.logo_url" :src="user.logo_url"/>
@@ -38,7 +38,7 @@
             <span v-else class="b-nickname">{{ user.account }}</span>
           </template>
           <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
-          <el-menu-item :index="'/b_admin/item/list'" v-if="user.source_admin===1">
+          <el-menu-item :index="'/b_admin/item/list'" v-if="user.source_admin===1 || user.source_admin===2">
             <i class="fx-4 fx-icon-control-center"></i>
             <i class="fx-4 fx-icon-console-hover"></i>后台管理
           </el-menu-item>
@@ -135,7 +135,7 @@ export default {
   .logo img {
     height: 50px;
   }
-  .wb img {
+  .yw img {
     height: 30px;
   }
   .logo:hover {

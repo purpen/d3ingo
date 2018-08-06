@@ -15,36 +15,59 @@
 
           <div class="admin-search-form">
             <el-form :inline="true" :model="query">
-              <el-form-item>
-                <el-select v-model="query.role_id" placeholder="权限查询..." size="small">
-                  <el-option label="全部" value="0"></el-option>
-                  <el-option label="用户" value="1"></el-option>
-                  <el-option label="编辑" value="5"></el-option>
-                  <el-option label="管理员" value="10"></el-option>
-                  <el-option label="管理员plus" value="15"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item>
-                <el-select v-model="query.type" placeholder="目标人群..." size="small">
-                  <el-option label="全部" value="0"></el-option>
-                  <el-option label="需求方" value="1"></el-option>
-                  <el-option label="设计公司" value="2"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item>
-                <el-input v-model="query.val" placeholder="Search..." size="small"></el-input>
-              </el-form-item>
-              <el-form-item>
-                <el-select v-model="query.evt" placeholder="选择条件..." size="small">
-                  <el-option label="ID" value="1"></el-option>
-                  <el-option label="手机号" value="2"></el-option>
-                  <el-option label="昵称" value="3"></el-option>
-                  <el-option label="邮箱" value="4"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item>
-                <el-button type="primary" @click="onSearch" size="small">查询</el-button>
-              </el-form-item>
+            <el-row :gutter="5" justify="end">
+              <el-col :span="3">
+                <el-form-item>
+                  <el-input v-model="query.val" placeholder="Search..." size="small"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="3">
+                <el-form-item>
+                  <el-select v-model="query.role_id" placeholder="权限查询..." size="small">
+                    <el-option label="全部" value="0"></el-option>
+                    <el-option label="用户" value="1"></el-option>
+                    <el-option label="编辑" value="5"></el-option>
+                    <el-option label="管理员" value="10"></el-option>
+                    <el-option label="管理员plus" value="15"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="3">
+                <el-form-item>
+                  <el-select v-model="query.source" placeholder="来源..." size="small">
+                    <el-option label="全部" value="0"></el-option>
+                    <el-option label="铟果" value="-1"></el-option>
+                    <el-option label="艺火" value="1"></el-option>
+                    <el-option label="义乌" value="2"></el-option>
+                    <el-option label="--" value="3"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="3">
+                <el-form-item>
+                  <el-select v-model="query.type" placeholder="目标人群..." size="small">
+                    <el-option label="全部" value="0"></el-option>
+                    <el-option label="需求方" value="1"></el-option>
+                    <el-option label="设计公司" value="2"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="3">
+                <el-form-item>
+                  <el-select v-model="query.evt" placeholder="选择条件..." size="small">
+                    <el-option label="ID" value="1"></el-option>
+                    <el-option label="手机号" value="2"></el-option>
+                    <el-option label="昵称" value="3"></el-option>
+                    <el-option label="邮箱" value="4"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="2">
+                <el-form-item>
+                  <el-button type="primary" @click="onSearch" size="small">查询</el-button>
+                </el-form-item>
+              </el-col>
+              </el-row>
             </el-form>
           </div>
 
@@ -92,8 +115,8 @@
               width="80"
               label="类型">
                 <template slot-scope="scope">
-                  <p v-if="scope.row.type === 2">设计公司</p>
-                  <p v-else>用户</p>
+                  <p v-if="scope.row.type === 2">设计方</p>
+                  <p v-else>需求方</p>
                 </template>
             </el-table-column>
             <el-table-column
@@ -101,8 +124,8 @@
               label="来源">
                 <template slot-scope="scope">
                   <p v-if="scope.row.source === 0">铟果</p>
-                  <p v-else-if="scope.row.source === 1">京东云</p>
-                  <p v-else-if="scope.row.source === 2">--</p>
+                  <p v-else-if="scope.row.source === 1">艺火</p>
+                  <p v-else-if="scope.row.source === 2">义乌</p>
                   <p v-else-if="scope.row.source === 3">--</p>
                   <p v-else>--</p>
                 </template>
@@ -191,18 +214,23 @@
           </div>
         </el-col>
       </el-row>
-      <p class="set-role-name m-t-10">京东权限</p>
+      <p class="set-role-name m-t-10">第三方权限</p>
       <el-row type="flex" align="middle">
         <el-col :span="12">
-          <el-radio-group v-model.number="jdRole">
+          <!-- <el-radio-group v-model.number="jdRole">
             <el-radio :label="1">京东管理员</el-radio>
-          </el-radio-group>
+          </el-radio-group> -->
           <!-- <el-checkbox v-model="checked">备选项</el-checkbox> -->
+          <el-select v-model="jdRole" placeholder="请选择">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </el-col>
-        <el-col :span="6">
-          <el-button @click="setJdRole(1)">取 消</el-button>
-        </el-col>
-        <el-col :span="6">
+        <el-col :offset="6" :span="6">
           <el-button type="primary" @click="setJdRole">确 定</el-button>
         </el-col>
       </el-row>
@@ -230,19 +258,34 @@ export default {
       setRoleDialog: false,
       currentAccount: '',
       roleId: 0,
-      jdRole: '',
+      jdRole: 0,
       query: {
         page: 1,
         pageSize: 50,
         totalCount: 0,
         sort: 1,
+        source: 0,
         type: '',
         evt: '',
         val: '',
         role_id: '',
         test: null
       },
-      msg: ''
+      msg: '',
+      options: [
+        {
+          value: 0,
+          label: '无'
+        },
+        {
+          value: 1,
+          label: '京东管理员'
+        },
+        {
+          value: 2,
+          label: '义乌管理员'
+        }
+      ]
     }
   },
   methods: {
@@ -267,7 +310,7 @@ export default {
       this.$refs.roleUserId.value = item.id
       this.currentAccount = item.account
       this.roleId = item.role_id
-      this.jdRole = item.source_admin
+      this.jdRole = item.source_admin || 0
       this.setRoleDialog = true
     },
     setRole() {
@@ -337,6 +380,7 @@ export default {
       self.query.page = parseInt(this.$route.query.page || 1)
       self.query.sort = this.$route.query.sort || 0
       self.query.type = this.$route.query.type || ''
+      self.query.source = this.$route.query.source || ''
       self.query.evt = this.$route.query.evt || ''
       self.query.val = this.$route.query.val || ''
       self.query.role_id = this.$route.query.role_id || ''
@@ -345,7 +389,7 @@ export default {
         this.menuType = parseInt(self.query.type)
       }
       self.isLoading = true
-      self.$http.get(api.adminUserLists, {params: {page: self.query.page, per_page: self.query.pageSize, sort: self.query.sort, type: self.query.type, evt: self.query.evt, val: self.query.val, role_id: self.query.role_id}})
+      self.$http.get(api.adminUserLists, {params: {page: self.query.page, per_page: self.query.pageSize, sort: self.query.sort, type: self.query.type, evt: self.query.evt, val: self.query.val, role_id: self.query.role_id, source: self.query.source}})
       .then (function(response) {
         self.isLoading = false
         self.tableData = []

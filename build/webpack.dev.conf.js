@@ -7,12 +7,12 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 var costum = require('../config/prod.env')
 var favicon = ''
-if (costum.CUSTOM === '') {
-  favicon = './static/favicon.ico'
-} else if (costum.CUSTOM === 'jdc') {
+if (costum.CUSTOM === 'jdc') {
   favicon = './static/yh.ico'
-} else if (costum.CUSTOM === 'wb') {
-  favicon = './static/wb.png'
+} else if (costum.CUSTOM === 'yw') {
+  favicon = './static/yw.png'
+} else {
+  favicon = './static/favicon.ico'
 }
 // add hot-reload related code to entry chunks
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {

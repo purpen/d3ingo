@@ -126,13 +126,13 @@
       <div class="header-buttom-line"></div>
       <Message></Message>
     </div>
-    <div :class="['header-layout', 'other', 'jdc', {'blue-header': $route.name === 'SaaSIndex' && $store.state.event.prod.name === 'wb'}]" v-else>
+    <div :class="['header-layout', 'other', 'jdc', {'blue-header': $route.name === 'SaaSIndex' && $store.state.event.prod.name === 'yw'}]" v-else>
       <div class="container">
         <div class="nav-header" v-if="!this.isMob">
           <hgroup>
             <el-menu class="el-menu-header nav-left" :default-active="menuactive" mode="horizontal" router>
               <router-link :to="{name: 'home'}" class="el-menu-item logo">
-                <img v-if="$route.name === 'SaaSIndex' && $store.state.event.prod.name === 'wb'" :src="custom.logo2" :alt="custom.info">
+                <img v-if="$route.name === 'SaaSIndex' && $store.state.event.prod.name === 'yw'" :src="custom.logo2" :alt="custom.info">
                 <img v-else :src="custom.logo" :alt="custom.info">
               </router-link>
             </el-menu>
@@ -173,7 +173,7 @@
                 </template>
                 <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心 
                 </el-menu-item>
-                <el-menu-item :index="'/b_admin/item/list'" v-if="eventUser.source_admin ===1"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
+                <el-menu-item :index="'/b_admin/item/list'" v-if="eventUser.source_admin ===1 || eventUser.source_admin ===2"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
                 <!-- <el-menu-item :index="custom.id === 0?'/admin':'/b_admin/item/list'" v-if="eventUser.source_admin===1"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item> -->
                 <el-menu-item index="" @click="logout">
                   <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
@@ -398,6 +398,7 @@
         document.childNodes[1].removeAttribute('class', 'disableScroll')
       },
       showMyView(view) {
+        console.log(11234)
         this.showCover = 'show'
         this.myView = view
         this.$refs.msgList.blur()
@@ -669,7 +670,7 @@
   }
 
   .nav-header .el-menu-header {
-    background: #ffffff;
+    /* background: #ffffff; */
   }
 
   .nav-header .el-menu-header .el-menu-item, .m-nav-header .el-menu-header .el-menu-item, .el-menu-header .el-submenu {
@@ -759,11 +760,11 @@
   .menu-header .nav-item:hover span.icon i {
     color: #ff5a5f
   }
-  /*
+  
   .nav-header .nav-item:hover .view-msg,
-  .menu-header .nav-item:hover .view-msg { */
-  .nav-header .nav-item:focus .view-msg,
-  .menu-header .nav-item:focus .view-msg {
+  .menu-header .nav-item:hover .view-msg {
+  /* .nav-header .nav-item:focus .view-msg,
+  .menu-header .nav-item:focus .view-msg { */
       display: block
   }
 
@@ -835,7 +836,7 @@
     justify-content: center;
     height: 1.5rem;
     vertical-align: top;
-    width: 1.5rem;
+    /* width: 1.5rem; */
     position: relative;
   }
 

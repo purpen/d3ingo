@@ -291,7 +291,7 @@
                 <p>合同</p>
               </el-col>
               <el-col :span="spanVal">
-                <p v-if="quotation"><a href="javascript:void(0);" @click="viewContractBtn">点击查看>></a></p>
+                <p v-if="quotation"><span v-if="item.source === 1"><a href="javascript:void(0);" @click="viewContractBtn(1)">查看甲方>></a></span><span v-else><a href="javascript:void(0);" @click="viewContractBtn(0)">点击查看>></a></span> <span style="color: red;">*仅供参考，实际模板显示以用户端查看为准</span></p>
                 <p v-else>无</p>
               </el-col>
               <el-col :span="spanOpt">
@@ -469,7 +469,15 @@
       v-model="contractDialog"
       top="2%"
       size="large">
-      <v-contract-view :propForm="contract"></v-contract-view>
+      <div v-if="contractEvt === 1">
+        <v-jd-demand-contract-view :propForm="contract"></v-jd-demand-contract-view>
+      </div>
+      <div v-else-if="contractEvt === 2">
+        <v-jd-design-contract-view :propForm="contract"></v-jd-design-contract-view>
+      </div>
+      <div v-else>
+        <v-contract-view :propForm="contract"></v-contract-view>
+      </div>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" class="is-custom" @click="contractDialog = false">确 定</el-button>
       </span>
@@ -483,12 +491,16 @@ import api from '@/api/api'
 import vMenu from '@/components/b_admin/Menu'
 const vQuoteView = () => import('@/components/block/QuoteView')
 const vContractView = () => import('@/components/block/ContractView')
+const vJdDemandContractView = () => import('@/components/block/JdDemandContractView')
+const vJdDesignContractView = () => import('@/components/block/JdDesignContractView')
 export default {
   name: 'admin_item_view',
   components: {
     vMenu,
     vQuoteView,
-    vContractView
+    vContractView,
+    vJdDemandContractView,
+    vJdDesignContractView
   },
   data () {
     return {
@@ -525,6 +537,7 @@ export default {
       spanOpt: 3,
       contractDialog: false,
       quotaDialog: false,
+      contractEvt: 0,
       msg: ''
     }
   },
@@ -652,7 +665,8 @@ export default {
       this.quotaDialog = true
     },
     // 查看合同点击事件
-    viewContractBtn() {
+    viewContractBtn(evt) {
+      this.contractEvt = evt
       this.contractDialog = true
     }
   },
