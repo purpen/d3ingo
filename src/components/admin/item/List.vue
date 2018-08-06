@@ -310,7 +310,12 @@
               self.query.totalCount = parseInt(response.data.meta.pagination.total)
               for (var i = 0; i < self.itemList.length; i++) {
                 var item = self.itemList[i]
-
+                if (!item.item.user) {
+                  item.item.user = {}
+                }
+                if (!item.item.user.account) {
+                  item.item.user.account = ''
+                }
                 var typeLabel = ''
                 if (item.item.type === 1) {
                   typeLabel = item.item.type_value + '/' + item.item.design_types_value.join(', ') + '/' + item.info.field_value + '/' + item.info.industry_value
