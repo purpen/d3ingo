@@ -1,10 +1,10 @@
 <template>
   <el-row class="blank30 vcenter">
-    <v-menu currentName="control"></v-menu>
+    <v-menu currentName="console"></v-menu>
     <div :class="{'vcenter-right-plus': leftWidth === 4,
         'vcenter-right': leftWidth === 2,
         'vcenter-right-mob': isMob}">
-      <div class="vcenter-container">
+      <div class="vcenter-container" v-loading="isLoading">
         <el-row :gutter="20" class="mar-b-10">
           <el-col :xs="24" :sm="12" :md="6" :lg="6" v-if="!target">
             <div class="head-item b-e6 border_radius mar-b-20">
@@ -54,7 +54,7 @@
               <div class="number bb-e6">
                 <el-progress
                 status="exception"
-                :percentage = "50"
+                :percentage ="totalItem.ok_turnover_percentage"
                 :show-text = "false"
                 :stroke-width = "8"
                 ></el-progress>
@@ -76,7 +76,7 @@
               <div class="edit-centent mar-b-10 bb-e6">
                 <el-progress
                 status="exception"
-                :percentage = "50"
+                :percentage ="totalItem.ok_turnover_percentage"
                 :show-text = "false"
                 :stroke-width = "8"
                 ></el-progress>
@@ -108,8 +108,8 @@
               <div class="number bb-e6">
                 <section class="lines">
                   <!-- <p class="yellow" :style="{width: '25%'}"></p> -->
-                  <p class="green" :style="{width: '50%'}"></p>
-                  <p class="blue" :style="{width: '50%'}"></p>
+                  <p class="green" :style="{width: ratio.ok_count_percentage + '%'}"></p>
+                  <p class="blue" :style="{width: ratio.no_count_percentage + '%'}"></p>
                   <!-- <p class="red" :style="{width: '25%'}"></p> -->
                 </section>
               </div>
@@ -211,7 +211,7 @@
                     <ul>
                       <li v-for="(s,indexs) in stage" :key="indexs" class="table-money">
                         <el-row>
-                          <el-col :span='2'><i :style="{backgroundColor:color[0]}"></i></el-col>
+                          <el-col :span='2'><i :style="{backgroundColor:color[indexs]}"></i></el-col>
                           <el-col :span='10'>{{s.name}}</el-col>
                           <el-col :span='3'>{{s.count}}个</el-col>
                           <el-col :span='7'>¥{{s.money}}</el-col>
@@ -296,7 +296,7 @@
                     <ul>
                       <li v-for="(cl,indexcl) in classify" :key="indexcl" class="table-class">
                         <el-row>
-                          <el-col :span="2"><i :style="{backgroundColor:cl.color}"></i></el-col>
+                          <el-col :span="2"><i :style="{backgroundColor:color[indexcl]}"></i></el-col>
                           <el-col :span="9">{{cl.type}}</el-col>
                           <el-col :span="9" v-if="radio === '1'">¥ {{cl.money}}</el-col>
                           <el-col :span="9" v-if="radio === '2'">{{cl.count}} 个</el-col>
@@ -399,7 +399,7 @@
               <span class="tc-9 fz-14 fr">客户总数: {{clients}}个</span>
           </div>
           <el-row class="p-rl-30">
-            <el-col :span="18">
+            <el-col  :xs="24" :sm="24" :md="24" :lg="18">
               <div class="content-header">
                 <el-row>
                   <!-- <el-col :xs="24" :sm="24" :md="12" :lg="12">
@@ -426,7 +426,7 @@
                 </ECharts>
               </div>
             </el-col>
-            <el-col :span="6">
+            <el-col  :xs="24" :sm="12" :md="12" :lg="6">
               <p class="title-table">城市客户数量排名</p>
               <ul>
                 <li v-for="(ci, indexci) in city" :key="indexci" class="city-table">
@@ -448,14 +448,6 @@
               成员统计
             </div>
             <el-row>
-              <!-- <el-row>
-                <el-col :span="12">
-                  <el-row class="select-cl user-sele">
-                    <el-col :span="12">部门</el-col>
-                    <el-col :span="12">职位</el-col>
-                  </el-row>
-                </el-col>
-              </el-row> -->
               <el-row>
                 <el-col :span="12">
                   <div class="user-echart">
@@ -468,7 +460,7 @@
                     <li v-for="(u, indexu) in positions" :key="indexu" class="table-class">
                       <el-row>
                         <el-col :span="2" >
-                          <i :style="{backgroundColor:color[0]}">
+                          <i :style="{backgroundColor:color[indexu]}">
                           </i>
                         </el-col>
                         <el-col :span="9">{{u.position}}</el-col>
@@ -500,7 +492,7 @@
                     <li class="table-class" v-for="(us, indexus) in userList" :key="indexus">
                       <el-row>
                         <el-col :span="2" >
-                          <i :style="{backgroundColor:color[0]}">
+                          <i :style="{backgroundColor:color[indexus]}">
                           </i>
                         </el-col>
                         <el-col :span="9">{{us.name}}</el-col>
@@ -537,7 +529,9 @@ import api from '@/api/api'
 export default {
   name: 'console',
   data() {
+    let colors = ['#FF686A', '#65A6FF', '#6CE1A8', '#FFE583', '#CD6DE0', '#82C8FF', '#73D13D', '#F8E71C', '#FF5AB0', '#4EE9DF', '#6CE1A8', '#FFBB96', '#FFADD2', '#00CBCB', '#D3F261', '#D53E53', '#413385', '#129C4F', '#FFC330', '#999999']
     return {
+      isLoading: true,
       radio1: '1',
       radio: '1',
       classify: [], // 分类
@@ -559,118 +553,7 @@ export default {
       task: {}, // 所有项目的任务
       lineType: '', // 收入金额:1, 项目数2
       lineTypeDate: '', // 月:month, 季度: quarter, 全年: year
-      color: ['#FF686A', '#CD6DE0', '#6CE1A8', '#65A6FF', '#FFE583'],
-      colorincome: [
-        {
-          color: '#FF686A',
-          name: '0-5000',
-          value: '335.00',
-          number: '3',
-          pre: 20
-        },
-        {
-          color: '#CD6DE0',
-          name: '5000-10000',
-          value: '310.00',
-          number: '3',
-          pre: 20
-        },
-        {
-          color: '#6CE1A8',
-          name: '10000-15000',
-          value: '234.00',
-          number: '3',
-          pre: 20
-        },
-        {
-          color: '#65A6FF',
-          name: '15000-20000',
-          value: '135.00',
-          number: '3',
-          pre: 20
-        },
-        {
-          color: '#FFE583',
-          name: '20000-25000',
-          value: '1548.00',
-          number: '3',
-          pre: 20
-        }
-      ],
-      colorranking: [
-        {
-          color: '#FF686A',
-          name: '0-5000',
-          value: '335.00',
-          number: '3',
-          pre: 20
-        },
-        {
-          color: '#CD6DE0',
-          name: '5000-10000',
-          value: '310.00',
-          number: '3',
-          pre: 20
-        },
-        {
-          color: '#6CE1A8',
-          name: '10000-15000',
-          value: '234.00',
-          number: '3',
-          pre: 20
-        },
-        {
-          color: '#65A6FF',
-          name: '15000-20000',
-          value: '135.00',
-          number: '3',
-          pre: 20
-        },
-        {
-          color: '#FFE583',
-          name: '20000-25000',
-          value: '1548.00',
-          number: '3',
-          pre: 20
-        }
-      ],
-      colorusers: [
-        {
-          color: '#FF686A',
-          name: '0-5000',
-          value: '335.00',
-          number: '3',
-          pre: 20
-        },
-        {
-          color: '#CD6DE0',
-          name: '5000-10000',
-          value: '310.00',
-          number: '3',
-          pre: 20
-        },
-        {
-          color: '#6CE1A8',
-          name: '10000-15000',
-          value: '234.00',
-          number: '3',
-          pre: 20
-        },
-        {
-          color: '#65A6FF',
-          name: '15000-20000',
-          value: '135.00',
-          number: '3',
-          pre: 20
-        },
-        {
-          color: '#FFE583',
-          name: '20000-25000',
-          value: '1548.00',
-          number: '3',
-          pre: 20
-        }
-      ],
+      color: ['#FF686A', '#65A6FF', '#6CE1A8', '#FFE583', '#CD6DE0', '#82C8FF', '#73D13D', '#F8E71C', '#FF5AB0', '#4EE9DF', '#6CE1A8', '#FFBB96', '#FFADD2', '#00CBCB', '#D3F261', '#D53E53', '#413385', '#129C4F', '#FFC330', '#999999'],
       polar: {
         title: {
           text: '收入趋势',
@@ -754,7 +637,7 @@ export default {
         }]
       },
       pieRatio: {
-        color: ['#65A6FF', '#6CE1A8', '#FFE583', '#FF686A', '#CD6DE0'],
+        color: ['#FFE583', '#6CE1A8'],
         tooltip: {
           trigger: 'item',
           formatter: '状态: {b}<br/>数量: {c}个 <br/>占比: {d}%'
@@ -770,7 +653,7 @@ export default {
               position: 'center',
               formatter: '\n总项目数量\n\n0个',
               fontSize: 20,
-              color: '#FF686A'
+              color: '#222'
             },
             labelLine: {
               normal: {
@@ -785,7 +668,7 @@ export default {
         ]
       },
       incomeClassify: {
-        color: ['#FF686A', '#CD6DE0', '#6CE1A8', '#65A6FF', '#FFE583'],
+        color: colors,
         tooltip: {
           trigger: 'item',
           formatter: '价格阶段: {b}<br/>金额: ¥ {c} <br/>占比: {d}%'
@@ -801,7 +684,7 @@ export default {
               position: 'center',
               formatter: '总金额\n \n0',
               fontSize: 20,
-              color: '#FF686A'
+              color: '#222'
             },
             labelLine: {
               normal: {
@@ -813,10 +696,10 @@ export default {
         ]
       },
       ranking: {
-        color: ['#FF686A', '#CD6DE0', '#6CE1A8', '#65A6FF', '#FFE583', '#B8E986'],
+        color: colors,
         tooltip: {
           trigger: 'item',
-          formatter: '项目名称:{b}<br/>金额: ¥{c} <br/>占比:({d}%)'
+          formatter: '项目名称: {b}<br/>金额: ¥ {c} <br/>占比: {d}%'
         },
         series: [
           {
@@ -829,14 +712,15 @@ export default {
               show: true,
               formatter: '总金额\n \n¥0.00',
               fontSize: 20,
-              color: '#FF686A'
+              color: '#222'
             },
             labelLine: {
               normal: {
                 show: false
               }
             },
-            data:[]
+            data:[
+            ]
           }
         ]
       },
@@ -919,10 +803,10 @@ export default {
         ]
       },
       stages: {
-        color: ['#FF686A', '#CD6DE0', '#6CE1A8', '#65A6FF', '#FFE583'],
+        color: colors,
         tooltip: {
           trigger: 'item',
-          formatter: '价格阶段:{b}<br/>项目数:0个<br/>项目总金额: ¥{c} <br/>金额占比:({d}%)'
+          formatter: '价格阶段: {b}<br/>项目数: 0个<br/>项目总金额: ¥ {c} <br/>金额占比: {d}%'
         },
         series: [
           {
@@ -935,7 +819,7 @@ export default {
               position: 'center',
               formatter: '总金额\n \n¥0,00',
               fontSize: 20,
-              color: '#FF686A'
+              color: '#222'
             },
             labelLine: {
               normal: {
@@ -954,10 +838,10 @@ export default {
         ]
       },
       barUser: {
-        color: ['#FF686A', '#CD6DE0', '#6CE1A8', '#65A6FF', '#FFE583'],
+        color: colors,
         tooltip: {
           trigger: 'item',
-          formatter: '职位:{b}<br/>人数: {c}人 <br/>占比:({d}%)'
+          formatter: '职位: {b}<br/>人数: {c}人 <br/>占比: {d}%'
         },
         series: [
           {
@@ -970,23 +854,22 @@ export default {
               position: 'center',
               formatter: '总人数\n \n0人',
               fontSize: 20,
-              color: '#FF686A'
+              color: '#222'
             },
             labelLine: {
               normal: {
                 show: false
               }
             },
-            data:[
-            ]
+            data:[]
           }
         ]
       },
       powerUser: {
-        color: ['#FF686A', '#CD6DE0', '#6CE1A8', '#65A6FF', '#FFE583'],
+        color: colors,
         tooltip: {
           trigger: 'item',
-          formatter: '职位:{b}<br/>人数: {c}人 <br/>占比:({d}%)'
+          formatter: '职位: {b}<br/>人数: {c}人 <br/>占比: {d}%'
         },
         series: [
           {
@@ -999,7 +882,7 @@ export default {
               position: 'center',
               formatter: '总人数\n \n0人',
               fontSize: 20,
-              color: '#FF686A'
+              color: '#222'
             },
             labelLine: {
               normal: {
@@ -1240,6 +1123,11 @@ export default {
       this.$http.get(api.designTargetIncomeMonth).then((response) => {
         if (response.data.meta.status_code === 200) {
           if (!response.data.data.incomeMonths || response.data.data.incomeMonths.length === 0) {
+            let date = new Date()
+            let monthdays = date.getMonthDay(Number((date.format('yyyy/MM/dd').substring(5,7))))
+            this.polar.xAxis.data = this.polar2.xAxis.data = this.monthDay(monthdays).days
+            this.polar.series[0].data = this.monthDay(monthdays).data
+            this.polar2.series[0].data = this.monthDay(monthdays).data
             return response.data.data.incomeMonths = []
           }
           let res = response.data.data
@@ -1253,7 +1141,7 @@ export default {
             if (!resi[i].sum_day_cost || !Boolean(resi[i].sum_day_cost)) {
               resi[i].sum_day_cost = 0
             }
-            this.polar.xAxis.data = this.polar2.xAxis.data  = this.monthDay(monthdays).days
+            this.polar.xAxis.data = this.polar2.xAxis.data = this.monthDay(monthdays).days
             this.polar.series[0].data = this.monthDay(monthdays).data
             this.polar2.series[0].data = this.monthDay(monthdays).data
             this.polar.series[0].data[day - 1] = resi[i].sum_day_cost
@@ -1276,7 +1164,6 @@ export default {
             'total_year_item _count': res.total_month_item_count,
             'average': res.average
           }
-          console.log('res', res)
         }
       })
       .catch((error) => {
@@ -1301,19 +1188,33 @@ export default {
     incomeRanked() {
       this.$http.get(api.designTargetIncomeRanked, {}).then((response) => {
       if (response.data.meta.status_code === 200) {
-        this.income20 = response.data.data.income20
+        if (!response.data.data.income20 || response.data.data.income20.length === 0) {
+          this.income20 = []
+        } else {
+          this.income20 = response.data.data.income20
+        }
         let money = 0
-        for (var i = 0; i < this.income20.length; i++) {
-          if (!this.income20[i].cost || Boolean(this.income20[i].cost)) {
-            this.income20[i].cost = '0.00'
-          }
-          money += Number(this.income20[i].cost)
-          this.ranking.series[0].data.push(
-            {
-              'name': this.income20[i].name,
-              'value': this.income20[i].cost
+        if (this.income20.length > 0) {
+          let data = []
+          for (var i = 0; i < this.income20.length; i++) {
+            if (!this.income20[i].cost || Boolean(this.income20[i].cost)) {
+              this.income20[i].cost = '0.00'
             }
-          )
+            money += Number(this.income20[i].cost)
+            data.push(
+              {
+                'name': this.income20[i].name,
+                'value': this.income20[i].cost
+              }
+            )
+          }
+          this.ranking.series[0].data = data
+        }
+        if (this.income20.length === 0) {
+          this.ranking.series[0].data = {
+            'name': '',
+            'value': ''
+          }
         }
         this.ranking.series[0].label.formatter = '总金额\n\n¥' + money.toFixed(2)
       } else {
@@ -1538,6 +1439,22 @@ export default {
               'color': '#FF686A'
             }
           ]
+          let data = []
+          for (var i = 0; i < this.classify.length; i++) {
+            data.push(
+              {
+                'value': this.radio === '1'?this.classify[i].count:this.classify[i].money,
+                'name': this.classify[i].type
+              }
+            )
+          }
+          this.incomeClassify.series[0].data = data
+          if (this.radio === '1') {
+            this.incomeClassify.series[0].label.formatter = '总人数\n\n' + res.total_year_count + '人'
+          }
+          if (this.radio === '2') {
+            this.incomeClassify.series[0].label.formatter = '总金额\n\n¥' + res.total_year_money.toFixed(2)
+          }
         }
       })
       .catch((error) => {
@@ -1548,7 +1465,6 @@ export default {
     positionsRatio() {
       this.$http.get(api.designPositionPercentage, {}).then((response) => {
         if (response.data.meta.status_code === 200) {
-          console.log('post', response.data.data)
           let res = response.data.data
           if (!res.positions || res.positions.length === 0) {
             return res.positions = []
@@ -1677,11 +1593,13 @@ export default {
   created() {
     this.$http.get(api.designTargetShow, {}).then((response) => {
       if (response.data.meta.status_code === 200) {
+        this.isLoading = false
         this.totalItem = response.data.data
       } else {
         this.$message.error(response.data.meta.message)
       }
     }).catch((error) => {
+      this.isLoading = false
       this.$message.error(error.message)
     })
     this.incomeYear()

@@ -86,6 +86,12 @@
                 控制面板
               </a>
             </el-tooltip>
+            <el-tooltip class="item" :effect="DarkorLight" content="统计" placement="right">
+              <a @click="alick" :to="'/vcenter/console'"
+                :class="['item', 'Statistics', {'is-active': currentName === 'console'}]">
+                统计
+              </a>
+            </el-tooltip>
             <el-tooltip v-if="true" class="item" :effect="DarkorLight" content="项目管理" placement="right">
             <a @click="alick" :to="'/vcenter/project_management/list'"
               :class="['item', 'management', {'is-active': currentName === 'project_management'}]">
@@ -139,6 +145,12 @@
               :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
               控制面板
             </a>
+            </el-tooltip>
+            <el-tooltip class="item" :effect="DarkorLight" content="统计" placement="right">
+              <a @click="alick" :to="'/vcenter/console'"
+                :class="['item', 'Statistics', {'is-active': currentName === 'console'}]">
+                统计
+              </a>
             </el-tooltip>
             <!-- <el-tooltip class="item" :effect="DarkorLight" content="消息" placement="right">
             <a @click="alick" :to="'/vcenter/message'"
@@ -207,6 +219,12 @@
               控制面板
             </a>
             </el-tooltip>
+            <el-tooltip class="item" :effect="DarkorLight" content="统计" placement="right">
+              <a @click="alick" :to="'/vcenter/console'"
+                :class="['item', 'Statistics', {'is-active': currentName === 'console'}]">
+                统计
+              </a>
+            </el-tooltip>
             <!-- <el-tooltip class="item" :effect="DarkorLight" content="消息" placement="right">
             <a @click="alick" :to="'/vcenter/message'"
               :class="['item', 'message', {'is-active': currentName === 'message'}]">
@@ -249,6 +267,10 @@
               :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
               控制面板
             </a>
+            <a @click="alick" :to="'/vcenter/console'"
+              :class="['item', 'Statistics', {'is-active': currentName === 'console'}]">
+              统计
+            </a>
             <a @click="alick" :to="'/vcenter/project_management/list'"
               :class="['item', 'management', {'is-active': currentName === 'project_management'}]">
               项目管理
@@ -287,6 +309,10 @@
             <a @click="alick" :to="'/vcenter/control'"
               :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
               控制面板
+            </a>
+            <a @click="alick" :to="'/vcenter/console'"
+              :class="['item', 'Statistics', {'is-active': currentName === 'console'}]">
+              统计
             </a>
             <!-- <a @click="alick" :to="'/vcenter/message'"
               :class="['item', 'message', {'is-active': currentName === 'message'}]">
@@ -336,6 +362,10 @@
 
             <a @click="alick" :to="'/vcenter/control'" :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
               控制面板
+            </a>
+            <a @click="alick" :to="'/vcenter/console'"
+              :class="['item', 'Statistics', {'is-active': currentName === 'console'}]">
+              统计
             </a>
             <!-- <a @click="alick" :to="'/vcenter/message'"
               :class="['item', 'message', {'is-active': currentName === 'message'}]">
@@ -661,6 +691,10 @@
   }
   .menu-list .item.management::before {
     background: url(../../../assets/images/v_center_menu/Management.png) no-repeat center;
+    background-size: contain
+  }
+  .menu-list .item.Statistics::before {
+    background: url(../../../assets/images/v_center_menu/Statistics@2x.png) no-repeat center;
     background-size: contain
   }
   .menu-list .item.cloud::before {
