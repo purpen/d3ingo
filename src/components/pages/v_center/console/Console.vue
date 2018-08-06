@@ -288,7 +288,7 @@
                       </el-col>
                     </el-row>
                     <div class='money-proportion'>
-                      <ECharts :options="income" style="width: 200px;height:200px;">
+                      <ECharts :options="incomeClassify" style="width: 200px;height:200px;">
                       </ECharts>
                     </div>
                   </el-col>
@@ -411,10 +411,10 @@
                   <el-col :xs="24" :sm="24" :md="{span: 12, offset: 12}" :lg="{span: 12, offset: 12}">
                     <el-row class="radio-class fr">
                       <el-col :span="12">
-                        <el-radio v-model="radio1" label="2">按数量显示</el-radio>
+                        <el-radio v-model="radio1" label="1">按金额显示</el-radio>
                       </el-col>
                       <el-col :span="12">
-                        <el-radio v-model="radio1" label="1">按金额显示</el-radio>
+                        <el-radio v-model="radio1" label="2">按数量显示</el-radio>
                       </el-col>
                     </el-row>
                   </el-col>
@@ -784,11 +784,11 @@ export default {
           }
         ]
       },
-      income: {
+      incomeClassify: {
         color: ['#FF686A', '#CD6DE0', '#6CE1A8', '#65A6FF', '#FFE583'],
         tooltip: {
           trigger: 'item',
-          formatter: '价格阶段:{b}<br/>项目数:4个<br/>项目总金额: ¥{c} <br/>金额占比:({d}%)'
+          formatter: '价格阶段: {b}<br/>金额: ¥ {c} <br/>占比: {d}%'
         },
         series: [
           {
@@ -799,7 +799,7 @@ export default {
             label: {
               show: true,
               position: 'center',
-              formatter: '总人数\n \n100',
+              formatter: '总金额\n \n0',
               fontSize: 20,
               color: '#FF686A'
             },
@@ -808,13 +808,7 @@ export default {
                 show: false
               }
             },
-            data:[
-              {value: '335.00', name: '0-5000'},
-              {value: '310.00', name: '5000-10000'},
-              {value: '234.00', name: '10000-15000'},
-              {value: '135.00', name: '15000-20000'},
-              {value: '1548.00', name: '20000-25000'}
-            ]
+            data:[]
           }
         ]
       },
@@ -1034,6 +1028,17 @@ export default {
   watch: {
     radio1() {
       this.cityRanking()
+    },
+    radio() {
+      if(this.category === '1') {
+        this.incomeType()
+      }
+      if(this.category === '2') {
+        this.iscomeProduct()
+      }
+      if(this.category === '3') {
+        this.iscomeIndustry()
+      }
     }
   },
   methods: {
@@ -1340,6 +1345,22 @@ export default {
               'color': '#CD6DE0'
             }
           ]
+          this.incomeClassify.series[0].data = [
+            {
+              'value': this.radio === '1'? res.year_p_count:res.year_p_money.toFixed(2),
+              'name': '产品设计'
+            },
+            {
+              'value': this.radio === '1'? res.year_u_count:res.year_u_money.toFixed(2),
+              'name': 'ui设计'
+            }
+          ]
+          if (this.radio === '1') {
+            this.incomeClassify.series[0].label.formatter = '总人数\n\n' + res.total_year_count + '人'
+          }
+          if (this.radio === '2') {
+            this.incomeClassify.series[0].label.formatter = '总金额\n\n¥' + res.total_year_money.toFixed(2)
+          }
         }
       })
       .catch((error) => {
@@ -1410,6 +1431,22 @@ export default {
               'color': '#CD6DE0'
             }
           ]
+          let data = []
+          for (var i = 0; i < this.classify.length; i++) {
+            data.push(
+              {
+                'value': this.radio === '1'?this.classify[i].count:this.classify[i].money,
+                'name': this.classify[i].type
+              }
+            )
+          }
+          this.incomeClassify.series[0].data = data
+          if (this.radio === '1') {
+            this.incomeClassify.series[0].label.formatter = '总人数\n\n' + res.total_year_count + '人'
+          }
+          if (this.radio === '2') {
+            this.incomeClassify.series[0].label.formatter = '总金额\n\n¥' + res.total_year_money.toFixed(2)
+          }
         }
       })
       .catch((error) => {
@@ -1608,19 +1645,23 @@ export default {
       })
     },
     // 城市排名
-    cityRanking() {  
+    cityRanking() {
       this.$http.get(api.designTargetIncomeCity, {params: {sort: this.radio1}}).then((response) => {
         if (response.data.meta.status_code === 200) {
           this.city = response.data.data
           let data = []
           let val = []
+          this.clients = 0
           for (var i = 0; i < this.city.length; i++) {
             val.push(this.city[i].item_province_val)
+            if (!this.city[i].city_cost || !Boolean(this.city[i].city_cost)) {
+              this.city[i].city_cost = '0.00'
+            }
             this.clients += this.city[i].item_count
-            if (this.radio1 === '1') {
+            if (this.radio1 === '2') {
               data.push(this.city[i].item_count)
             }
-            if (this.radio === '2') {
+            if (this.radio1 === '1') {
               data.push(this.city[i].city_cost)
             }
           }
