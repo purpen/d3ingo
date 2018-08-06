@@ -438,5 +438,17 @@ export default {
 
   // 计划年营业额
   designTargetCreate: '/designTarget/create', // PUST 计划年营业额，年度项目数量添加更新
-  designTargetShow: '/designTarget/show' // GET 详情
+  designTargetShow: '/designTarget/show', // GET 详情
+  designTargetIncomeYear: '/designTarget/incomeYear', // GET 收入年报表
+  designTargetIncomeMonth: '/designTarget/incomeMonth', // GET收入月报表
+  designTargetIncomeQuarter: '/designTarget/incomeQuarter', // GET 收入季度表
+  designTargetIncomeRanked: '/designTarget/incomeRanked', // GET 项目收入排名
+  designTargetIncomeType: '/designTarget/incomeType', // GET 按设计类别分类
+  designTargetIncomeDesignTypes: '/designTarget/incomeDesignTypes', // GET 按设计详细类别分类
+  designTargetIncomeIndustry: '/designTarget/incomeIndustry', // GET 按设计行业分类
+  designPositionPercentage: '/design/positionPercentage', // GET 职位占比
+  designUserPercentage: '/design/userPercentage', // GET 成员占比
+  designTargetIncomeStage: '/designTarget/incomeStage', // GET 收入阶段
+  designItemTasks: '/design/itemTasks', // GET 所有项目任务统计
+  designTargetIncomeCity: '/designTarget/incomeCity' // GET 城市排名
 }
