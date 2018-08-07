@@ -152,19 +152,22 @@
                   项目总收入
                 </h4>
                 <p class="fz-18 tc-red padding-tb-5">
-                  ¥{{totalItem.ok_turnover}}
+                  ¥ {{totalItem.ok_turnover}}
                 </p>
                 <h4 class="fz-14 tc-2 padding-tb-10">
                   项目平均单价
                 </h4>
-                <p class="fz-18 tc-red padding-tb-5">
+                <p class="fz-18 tc-red padding-tb-5" v-if="totalItem.ok_turnover !== 0 || totalItem.ok_count_percentage !== 0">
                   ¥{{totalItem.ok_turnover / totalItem.ok_count_percentage}}
+                </p>
+                <p class="fz-18 tc-red padding-tb-5" v-else>
+                  ¥ 0.00
                 </p>
                 <h4 class="fz-14 tc-2 padding-tb-10">
                   月平均工作数量
                 </h4>
                 <p class="fz-18 tc-red padding-tb-5">
-                  {{totalItem.m_item}}个
+                  {{totalItem.m_item}} 个
                 </p>
               </el-col>
               <el-col :xs="24" :sm="24" :md="24" :lg="6" :xl="6" class="padding-t-5" v-if="!isIncome">
@@ -199,7 +202,7 @@
               <div class="pie-header">
                 收入金额阶段占比
               </div>
-              <div class="centent-class p-t-50 scroll-bar">
+              <div class="centent-class p-t-50 scroll-bar" v-if="nostage!==0">
                 <el-row>
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <div class='money-proportion'>
@@ -222,6 +225,10 @@
                   </el-col>
                 </el-row>
               </div>
+              <div class="noDate" v-if="nostage===0">
+                <img src="../../../../assets/images/member/Nodata@2x.png"  alt="">
+                <p>您还没有相关数据</p>
+              </div>
             </div>
           </el-col>
           <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12" class="mar-b-20">
@@ -229,7 +236,7 @@
               <div class="pie-header">
                 项目收入排名
               </div>
-              <el-row>
+              <el-row v-if="income20&&income20.length>0">
                 <el-col :span="12" class="p-t-40" >
                   <div class="money-proportion p-t-50">
                       <ECharts :options="ranking" style="width: 200px;height:200px;">
@@ -250,6 +257,14 @@
                   </ul>
                 </el-col>
               </el-row>
+              <el-row>
+                <el-col :span="24" v-if="!income20||income20.length===0">
+                  <div class="noDate">
+                    <img src="../../../../assets/images/member/Nodata@2x.png"  alt="">
+                    <p>您还没有相关数据</p>
+                  </div>
+                </el-col>
+              </el-row>
             </div>
           </el-col>
           <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12" class="mar-b-20">
@@ -257,7 +272,7 @@
               <div class="pie-header">
                 收入类别占比
               </div>
-              <div class="centent-class scroll-bar">
+              <div class="centent-class scroll-bar" v-if="isclassify">
                 <el-row class="select-cl">
                   <el-col :span="8"
                     :class="{'bg-f7':category === '1'}">
@@ -273,7 +288,7 @@
                     </el-col>
                   <!-- <el-col :span="6">项目阶段</el-col> -->
                 </el-row>
-                <el-row>
+                <el-row v-if="isclassify">
                   <el-col :span="12">
                     <el-row class="p-t-20">
                       <el-col :span="12">
@@ -293,7 +308,7 @@
                     </div>
                   </el-col>
                   <el-col :span="12" class="p-t-20">
-                    <ul>
+                    <ul v-if="isclassify">
                       <li v-for="(cl,indexcl) in classify" :key="indexcl" class="table-class">
                         <el-row>
                           <el-col :span="2"><i :style="{backgroundColor:color[indexcl]}"></i></el-col>
@@ -307,6 +322,10 @@
                   </el-col>
                 </el-row>
               </div>
+              <div class="noDate" v-if="!isclassify">
+                <img src="../../../../assets/images/member/Nodata@2x.png"  alt="">
+                <p>您还没有相关数据</p>
+              </div>
             </div>
           </el-col>
         <el-col :xs="24" :sm="24" :md="12" :lg="12" class="mar-b-20">
@@ -315,7 +334,7 @@
               任务统计
                 <span class="tc-9 fz-14 fr">任务总数: {{task.total_count}}个</span>
             </div>
-            <el-row>
+            <el-row v-if="task.total_count>0">
               <el-col :span="12">
 
                 <div class="control-taskProgress">
@@ -389,10 +408,18 @@
                   </div>
                 </div>
               </el-col>
-              </el-row>
+            </el-row>
+            <el-row v-if="task.total_count === 0">
+              <el-col>
+                <div class="noDate">
+                  <img src="../../../../assets/images/member/NoContent.png"  alt="">
+                  <p>您还没有任务</p>
+                </div>
+              </el-col>
+            </el-row>
           </div>
         </el-col>
-        <el-col :span="24" class="mar-b-20">
+        <el-col :span="24" class="mar-b-20" >
           <section>
             <div class="pie-header">
                客户统计
@@ -428,7 +455,7 @@
             </el-col>
             <el-col  :xs="24" :sm="12" :md="12" :lg="6">
               <p class="title-table">城市客户数量排名</p>
-              <ul>
+              <ul v-if="clients > 0">
                 <li v-for="(ci, indexci) in city" :key="indexci" class="city-table">
                   <el-row>
                     <el-col :span="2"><i>{{indexci+1}}</i></el-col>
@@ -438,6 +465,10 @@
                   </el-row>
                 </li>
               </ul>
+              <div class="noDate" v-if="clients === 0">
+                <img src="../../../../assets/images/member/Noclient.png"  alt="">
+                <p>没有相关客户信息</p>
+              </div>
             </el-col>
           </el-row>
           </section>
@@ -463,7 +494,7 @@
                           <i :style="{backgroundColor:color[indexu]}">
                           </i>
                         </el-col>
-                        <el-col :span="9">{{u.position}}</el-col>
+                        <el-col :span="9">{{!Boolean(u.position)?'其他职位':u.position}}</el-col>
                         <el-col :span="9">{{u.user_count}}人</el-col>
                         <el-col :span="4">{{u.position_percentage}}%</el-col>
                       </el-row>
@@ -539,7 +570,15 @@ export default {
       ecount: '', // 年度目标
       eturnover: '', // 年度营业额
       totalItem: {}, // 项目目标总对象
-      ratio: {}, // 年月季收入饼图
+      ratio: {
+        'no_count_percentage': 0,
+        'ok_count_percentage': 0,
+        'total_money': '0.00',
+        'total_no_count': 0,
+        'total_ok_count': 0,
+        'total_year_item _count': 0,
+        'average': 0
+      }, // 年月季收入饼图
       target: false, // 编辑年度项目目标
       Turnover: false, // 编辑年度营业额目标
       isIncome: true, // 按收入金额与项目数分类
@@ -550,6 +589,8 @@ export default {
       stage: [], // 阶段占比
       city: [], // 城市排名
       clients: 0,
+      nostage: 0,
+      isclassify: false,
       task: {}, // 所有项目的任务
       lineType: '', // 收入金额:1, 项目数2
       lineTypeDate: '', // 月:month, 季度: quarter, 全年: year
@@ -739,6 +780,7 @@ export default {
         yAxis: {
           name: '单位: 位',
           type: 'value',
+          min: 1,
           axisTick: {
             show: false
           },
@@ -827,12 +869,12 @@ export default {
               }
             },
             data:[
-              {value: '0.00', name: '0-50000'},
-              {value: '0.00', name: '50000-100000'},
-              {value: '0.00', name: '10000-200000'},
-              {value: '0.00', name: '200000-300000'},
-              {value: '0.00', name: '300000-500000'},
-              {value: '0.00', name: '500000以上'},
+              {value: '0.00', name: ''},
+              {value: '0.00', name: ''},
+              {value: '0.00', name: ''},
+              {value: '0.00', name: ''},
+              {value: '0.00', name: ''},
+              {value: '0.00', name: ''},
             ]
           }
         ]
@@ -995,11 +1037,15 @@ export default {
           if (type === 1) {
             this.totalItem.count = this.ecount
             this.target = false
+            this.Turnover = false
           }
           if (type === 2) {
             this.totalItem.turnover = this.eturnover
             this.Turnover = false
+            this.target = false
           }
+        } else {
+          this.$message.error(response.data.meta.message)
         }
       })
       .catch(function (error) {
@@ -1025,6 +1071,9 @@ export default {
       } else this.isItemYMQ = '1'
       this.$http.get(api.designTargetIncomeYear).then((response) => {
         if (response.data.meta.status_code === 200) {
+          this.polar2.xAxis.data = this.polar.xAxis.data = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+          this.polar.series[0].data = ['0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00','0.00','0.00', '0.00', '0.00', '0.00']
+          this.polar2.series[0].data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
           if (!response.data.data.incomeYears || response.data.data.incomeYears.length === 0) {
             return response.data.data.incomeYears = []
           }
@@ -1034,9 +1083,6 @@ export default {
             if (!resi[i].cost || !Boolean(resi[i].cost)) {
               resi[i].cost = '0.00'
             }
-            this.polar2.xAxis.data = this.polar.xAxis.data = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
-            this.polar.series[0].data = ['0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00','0.00','0.00', '0.00', '0.00', '0.00']
-            this.polar2.series[0].data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             let data = Number(resi[i].year_m[resi[i].year_m.length - 1])
             this.polar.series[0].data[data - 1] = resi[i].cost
             this.polar2.series[0].data[data - 1] = resi[i].item_count
@@ -1053,6 +1099,8 @@ export default {
             'total_year_item _count': res.total_year_item_count,
             'average': res.average
           }
+        } else {
+          this.$message.error(response.data.meta.message)
         }
       })
       .catch((error) => {
@@ -1066,6 +1114,9 @@ export default {
       } else this.isItemYMQ = '2'
       this.$http.get(api.designTargetIncomeQuarter).then((response) => {
         if (response.data.meta.status_code === 200) {
+          this.polar2.xAxis.data = this.polar.xAxis.data = ['第一季度', '第二季度', '第三季度 ', '第四季度']
+          this.polar.series[0].data = [0, 0, 0, 0]
+          this.polar2.series[0].data = [0, 0, 0, 0]
           if (!response.data.data.incomeQuarters || response.data.data.incomeQuarters.length === 0) {
             return response.data.data.incomeQuarters = []
           }
@@ -1086,9 +1137,6 @@ export default {
             } else {
               jd = 3
             }
-            this.polar2.xAxis.data = this.polar.xAxis.data = ['第一季度', '第二季度', '第三季度 ', '第四季度']
-            this.polar.series[0].data = [0, 0, 0, 0]
-            this.polar2.series[0].data = [0, 0, 0, 0]
             this.polar.series[0].data[jd] += resi[i].cost
             this.polar2.series[0].data[jd] += resi[i].item_count
             this.pieRatio.series[0].data[0].value = res.total_no_count
@@ -1109,6 +1157,8 @@ export default {
             'total_year_item _count': res.total_quarter_item_count,
             'average': res.average
           }
+        } else {
+          this.$message.error(response.data.meta.message)
         }
       })
       .catch((error) => {
@@ -1164,6 +1214,8 @@ export default {
             'total_year_item _count': res.total_month_item_count,
             'average': res.average
           }
+        } else {
+          this.$message.error(response.data.meta.message)
         }
       })
       .catch((error) => {
@@ -1213,7 +1265,7 @@ export default {
         if (this.income20.length === 0) {
           this.ranking.series[0].data = {
             'name': '',
-            'value': ''
+            'value': '0.00'
           }
         }
         this.ranking.series[0].label.formatter = '总金额\n\n¥' + money.toFixed(2)
@@ -1230,6 +1282,9 @@ export default {
         if (response.data.meta.status_code === 200) {
           this.category = '1'
           let res = response.data.data
+          if (res.year_p_money + res.year_u_money === 0 || res.year_p_count + res.year_u_count === 0) {
+            this.isclassify = false
+          } else this.isclassify = true
           this.classify = [
             {
               'type': '产品设计',
@@ -1262,6 +1317,8 @@ export default {
           if (this.radio === '2') {
             this.incomeClassify.series[0].label.formatter = '总金额\n\n¥' + res.total_year_money.toFixed(2)
           }
+        } else {
+          this.$message.error(response.data.meta.message)
         }
       })
       .catch((error) => {
@@ -1348,6 +1405,8 @@ export default {
           if (this.radio === '2') {
             this.incomeClassify.series[0].label.formatter = '总金额\n\n¥' + res.total_year_money.toFixed(2)
           }
+        } else {
+          this.$message.error(response.data.meta.message)
         }
       })
       .catch((error) => {
@@ -1455,6 +1514,8 @@ export default {
           if (this.radio === '2') {
             this.incomeClassify.series[0].label.formatter = '总金额\n\n¥' + res.total_year_money.toFixed(2)
           }
+        } else {
+          this.$message.error(response.data.meta.message)
         }
       })
       .catch((error) => {
@@ -1479,6 +1540,8 @@ export default {
             )
           }
           this.barUser.series[0].label.formatter = '总人数\n\n' + res.total_user_count + '人'
+        } else {
+          this.$message.error(response.data.meta.message)
         }
       })
       .catch((error) => {
@@ -1516,6 +1579,8 @@ export default {
             )
           }
           this.powerUser.series[0].label.formatter = '总人数\n \n' + res.total_users + '人'
+        } else {
+          this.$message.error(response.data.meta.message)
         }
       })
       .catch((error) => {
@@ -1529,6 +1594,7 @@ export default {
           let res = response.data.data
           let arr = ['0-50000', '50000-100000', '100000-200000', '200000-300000', '300000-500000', '500000以上']
           for (var i = 0; i < 6; i++) {
+            this.nostage += res['year_stage' + (i + 1) + '_money'] + res['year_stage' + (i + 1) + '_count']
             this.stage.push(
               {
                 'name': arr[i],
@@ -1539,10 +1605,11 @@ export default {
             )
             this.stages.series[0].data[i] = {
               'value': res['year_stage' + (i + 1) + '_money'],
-              // 'count': res['year_stage' + (i + 1) + '_count'],
               'name': arr[i],
             }
           }
+        } else {
+          this.$message.error(response.data.meta.message)
         }
       })
       .catch((error) => {
@@ -1554,6 +1621,8 @@ export default {
       this.$http.get(api.designItemTasks, {}).then((response) => {
         if (response.data.meta.status_code === 200) {
           this.task = response.data.data
+        } else {
+          this.$message.error(response.data.meta.message)
         }
       })
       .catch((error) => {
@@ -1581,8 +1650,15 @@ export default {
               data.push(this.city[i].city_cost)
             }
           }
-          this.baropt.xAxis.data = val
-          this.baropt.series[0].data = data
+          if (val.length > 0) {
+            this.baropt.xAxis.data = val
+            this.baropt.series[0].data = data
+          } else {
+            this.baropt.xAxis.data = ['']
+            this.baropt.series[0].data = ['0']
+          }
+        } else {
+          this.$message.error(response.data.meta.message)
         }
       })
       .catch((error) => {
@@ -1866,6 +1942,18 @@ export default {
   .admin-Echart>ul {
     width: 100%;
   }
+  .noDate {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 310px;
+  }
+  .noDate>img {
+    height: 120px;
+    margin-bottom: 15px;
+  }
+
   .head,
   .line-body {
     padding: 0 30px

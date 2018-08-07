@@ -436,7 +436,7 @@
       <p class="alert-line-height">如果确定请告诉我们拒绝原因:</p>
       <el-row class="cause">
         <el-col :span="8" :class="[{
-          'iscause': refuse_types === 1
+          'iscause': refuse_types.indexOf(1) !== -1
         }]">
           <div @click="upTpye(1)">
             <i></i>
@@ -445,7 +445,7 @@
         </el-col>
         <el-col :span="8" 
           :class="[{
-            'iscause': refuse_types === 2
+            'iscause': refuse_types.indexOf(2) !== -1
           }]"
         >
           <div @click="upTpye(2)">
@@ -454,9 +454,9 @@
           </div>
         </el-col>
         <el-col :span="8" :class="[{
-          'iscause': refuse_types === 3
+          'iscause': refuse_types.indexOf(10) !== -1
         }]">
-          <div @click="upTpye(3)">
+          <div @click="upTpye(10)">
             <i></i>
             <span>其他</span>
           </div>
@@ -567,7 +567,7 @@ export default {
       quotaDialog: false,
       msg: '',
       summary: '',
-      refuse_types: 0,
+      refuse_types: [],
     }
   },
   methods: {
@@ -613,35 +613,42 @@ export default {
       this.$refs.companyId.value = companyId
       this.$refs.currentIndex.value = index
       this.$refs.comfirmType.value = 1
-      this.refuse_types = 0
+      this.refuse_types = []
       this.summary = ''
       // this.comfirmMessage = '您确定要拒绝此公司报价？'
       // this.comfirmDialog = true
       this.noOfferDialog = true
+      console.log('index', event.currentTarget)
     },
     // 提交拒单说明
     commitExplain() {
+      let currentIndex = this.$refs.currentIndex.value
       let form = {
-        'item_id': this.$refs.currentIndex.value,
-        'design_company_id': this.$refs.companyId.value,
+        'item_id': this.item.id,
+        'design_company_id': Number(this.$refs.companyId.value),
         'summary': this.summary,
         'refuse_types': this.refuse_types
       }
-      if (!form.refuse_types) {
+      if (!this.refuse_types || this.refuse_types.length === 0) {
         this.$message.error('请至少选择一个原因')
         return
       }
-      console.log('aaa', form)
-      // this.$http.post(api.demandFalseDesign, this.form).then(
-      //   (response) => {
-      //     if (response.data.meta.status_code === 200) {
-        // this.noOfferDialog = false
-      //       console.log('ok')
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     this.$message.error(error.message)
-      //   })
+      this.comfirmLoadingBtn = true
+      this.$http.post(api.demandFalseDesign, form).then(
+        (response) => {
+          if (response.data.meta.status_code === 200) {
+            this.offerCompany[currentIndex].item_status = -1
+            this.offerCompany[currentIndex].status_value = '已拒绝设计公司报价'
+            this.noOfferDialog = false
+            this.comfirmLoadingBtn = false
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        })
+        .catch((error) => {
+          this.comfirmLoadingBtn = false 
+          this.$message.error(error.message)
+        })
     },
     greeCompanyBtn(event) {
       let companyId = parseInt(event.currentTarget.getAttribute('company_id'))
@@ -656,7 +663,7 @@ export default {
       let comfirmType = parseInt(this.$refs.comfirmType.value)
       this.comfirmLoadingBtn = true
       if (comfirmType === 1) {
-        this.refuseCompanySubmit()
+        this.commitExplain()
       } else if (comfirmType === 2) {
         this.agreeCompanySubmit()
       } else if (comfirmType === 3) {
@@ -674,32 +681,32 @@ export default {
       this.quotaDialog = true
     },
     // 拒绝设计公司报价提交
-    refuseCompanySubmit() {
-      let currentIndex = this.$refs.currentIndex.value
-      let companyId = this.$refs.companyId.value
-      let self = this
-      self.$http
-        .post(api.refuseDesignPrice, {
-          item_id: self.item.id,
-          design_company_id: companyId
-        })
-        .then(function(response) {
-          if (response.data.meta.status_code === 200) {
-            self.comfirmLoadingBtn = false
-            self.comfirmDialog = false
-            self.$message.success('操作成功!')
-            self.offerCompany[currentIndex].item_status = -1
-            self.offerCompany[currentIndex].status_value = '已拒绝设计公司报价'
-          } else {
-            self.comfirmLoadingBtn = false
-            self.$message.error(response.data.meta.message)
-          }
-        })
-        .catch(function(error) {
-          self.$message.error(error.message)
-          self.comfirmLoadingBtn = false
-        })
-    },
+    // refuseCompanySubmit() {
+    //   let currentIndex = this.$refs.currentIndex.value
+    //   let companyId = this.$refs.companyId.value
+    //   let self = this
+    //   self.$http
+    //     .post(api.refuseDesignPrice, {
+    //       item_id: self.item.id,
+    //       design_company_id: companyId
+    //     })
+    //     .then(function(response) {
+    //       if (response.data.meta.status_code === 200) {
+    //         // self.comfirmLoadingBtn = false
+    //         // self.comfirmDialog = false
+    //         self.$message.success('操作成功!')
+    //         self.offerCompany[currentIndex].item_status = -1
+    //         self.offerCompany[currentIndex].status_value = '已拒绝设计公司报价'
+    //       } else {
+    //         self.comfirmLoadingBtn = false
+    //         self.$message.error(response.data.meta.message)
+    //       }
+    //     })
+    //     .catch(function(error) {
+    //       self.$message.error(error.message)
+    //       self.comfirmLoadingBtn = false
+    //     })
+    // },
     // 同意设计公司报价, 开始合作
     agreeCompanySubmit() {
       let companyId = this.$refs.companyId.value
@@ -899,7 +906,15 @@ export default {
     },
     // 改拒单类型
     upTpye(type) {
-      this.refuse_types = type
+      if (this.refuse_types.indexOf(type) === -1) {
+        this.refuse_types.push(type)
+      } else {
+        for (var i = 0; i < this.refuse_types.length; i++) {
+          if (this.refuse_types[i] === type) {
+            this.refuse_types.splice(i, 1)
+          }
+        }
+      }
     }
   },
   computed: {
