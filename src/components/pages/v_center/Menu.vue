@@ -86,7 +86,7 @@
                 控制面板
               </a>
             </el-tooltip>
-            <el-tooltip class="item" :effect="DarkorLight" content="统计" placement="right">
+            <el-tooltip class="item" :effect="DarkorLight" content="统计" placement="right" v-if="isCompanyAdmin || isCompanySystemAdmin">
               <a @click="alick" :to="'/vcenter/console'"
                 :class="['item', 'Statistics', {'is-active': currentName === 'console'}]">
                 统计
@@ -146,7 +146,7 @@
               控制面板
             </a>
             </el-tooltip>
-            <el-tooltip class="item" :effect="DarkorLight" content="统计" placement="right">
+            <el-tooltip class="item" :effect="DarkorLight" content="统计" placement="right" v-if="isCompanyAdmin || isCompanySystemAdmin">
               <a @click="alick" :to="'/vcenter/console'"
                 :class="['item', 'Statistics', {'is-active': currentName === 'console'}]">
                 统计
@@ -219,7 +219,7 @@
               控制面板
             </a>
             </el-tooltip>
-            <el-tooltip class="item" :effect="DarkorLight" content="统计" placement="right">
+            <el-tooltip class="item" :effect="DarkorLight" content="统计" placement="right" v-if="isCompanyAdmin || isCompanySystemAdmin">
               <a @click="alick" :to="'/vcenter/console'"
                 :class="['item', 'Statistics', {'is-active': currentName === 'console'}]">
                 统计
@@ -268,7 +268,9 @@
               控制面板
             </a>
             <a @click="alick" :to="'/vcenter/console'"
-              :class="['item', 'Statistics', {'is-active': currentName === 'console'}]">
+              :class="['item', 'Statistics', {'is-active': currentName === 'console'}]"
+              v-if="isCompanyAdmin || isCompanySystemAdmin"
+              >
               统计
             </a>
             <a @click="alick" :to="'/vcenter/project_management/list'"
@@ -311,7 +313,9 @@
               控制面板
             </a>
             <a @click="alick" :to="'/vcenter/console'"
-              :class="['item', 'Statistics', {'is-active': currentName === 'console'}]">
+              :class="['item', 'Statistics', {'is-active': currentName === 'console'}]"
+              v-if="isCompanyAdmin || isCompanySystemAdmin"
+              >
               统计
             </a>
             <!-- <a @click="alick" :to="'/vcenter/message'"
@@ -364,7 +368,9 @@
               控制面板
             </a>
             <a @click="alick" :to="'/vcenter/console'"
-              :class="['item', 'Statistics', {'is-active': currentName === 'console'}]">
+              :class="['item', 'Statistics', {'is-active': currentName === 'console'}]"
+              v-if="isCompanyAdmin || isCompanySystemAdmin"
+              >
               统计
             </a>
             <!-- <a @click="alick" :to="'/vcenter/message'"
