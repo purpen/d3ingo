@@ -339,7 +339,7 @@
           pagination: '.swiper-pagination',
           paginationClickable: true,
           lazyLoading: true,
-          autoplay: 5000,
+          autoplay: 500,
           prevButton: '.swiper-button-prev',
           nextButton: '.swiper-button-next',
           spaceBetween: 0
@@ -406,15 +406,17 @@
         this.$http.get(api.designCaseOpenLists,
         {params: {per_page: 6, sort: 5}})
         .then((res) => {
-          this.designCaseList = res.data.data
-          for (let i = 0; i < res.data.data.length; i++) {
-            this.designCaseList[i].cover_url = res.data.data[i].cover.middle
-          }
+        	if (res.data && res.data.meta.status_code === 200){
+        		this.designCaseList = res.data.data
+	          for (let i = 0; i < res.data.data.length; i++) {
+	            this.designCaseList[i].cover_url = res.data.data[i].cover.middle
+	          }
+        	}
         }).catch((err) => {
           console.error(err)
         })
       },
-      getBlock () {
+      getBlock() {
         // const that = this
         this.isLoading = true
         this.$http.get(api.block, {params: {mark: 'data_number_view'}})
@@ -920,7 +922,12 @@
       z-index: 9;
       /* width: 94px; */
     }
-
+    .slide-left,.slide-right{
+    	width:auto
+    }
+		.slide-right img{
+			width:100%
+		}
     .title {
       font-weight: 100;
       font-size: 24px;

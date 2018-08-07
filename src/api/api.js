@@ -64,7 +64,7 @@ export default {
   recommendListId: '/demand/recommendList/{0}', // 项目获取推荐的设计公司
   demandPush: '/demand/push', // 选定系统推荐的设计公司
   demandItemDesignListItemId: '/demand/itemDesignList/{0}', // 选择已报价的设计公司
-  refuseDesignPrice: '/demand/falseDesign', // 拒绝设计公司报价
+  demandFalseDesign: '/demand/falseDesign', // 拒绝设计公司报价
   agreeDesignCompany: '/demand/trueDesign', // 同意合作的设计公司
   demandItemRestart: '/demand/itemRestart', // post 修改项目，重新匹配
   demandCloseItem: '/demand/closeItem', // post 用户关闭项目
@@ -451,4 +451,5 @@ export default {
   designTargetIncomeStage: '/designTarget/incomeStage', // GET 收入阶段
   designItemTasks: '/design/itemTasks', // GET 所有项目任务统计
   designTargetIncomeCity: '/designTarget/incomeCity' // GET 城市排名
+
 }

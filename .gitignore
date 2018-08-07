@@ -28,3 +28,5 @@ client.sh
 composer.lock
 /.vscode
 npm-debug.log
+3.0
+.project
