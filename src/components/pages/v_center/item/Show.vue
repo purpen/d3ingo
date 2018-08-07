@@ -135,7 +135,8 @@
                   </div>
 
                   <div class="btn" v-if="d.item_status === 0 && d.design_company_status === 2">
-                    <el-button @click="refuseCompanyBtn" :index="index" :company_id="d.design_company.id">拒绝此单
+                    <el-button @click="refuseCompanyBtn" :index="index" :company_id="d.design_company.id" >拒绝此单
+                      <!-- noOfferDialog -->
                     </el-button>
                     <el-button class="is-custom" @click="greeCompanyBtn" :index="index"
                                :company_id="d.design_company.id" type="primary">确认合作
@@ -427,6 +428,60 @@
       </span>
     </el-dialog>
 
+    <el-dialog
+      title="拒单说明"
+      v-model="noOfferDialog"
+      size="tiny">
+      <p class="alert-line-height">您确定要拒绝此单么?</p>
+      <p class="alert-line-height">如果确定请告诉我们拒绝原因:</p>
+      <el-row class="cause">
+        <el-col :span="8" :class="[{
+          'iscause': refuse_types.indexOf(1) !== -1
+        }]">
+          <div @click="upTpye(1)">
+            <i></i>
+            <span >价格低</span>
+          </div>
+        </el-col>
+        <el-col :span="8" 
+          :class="[{
+            'iscause': refuse_types.indexOf(2) !== -1
+          }]"
+        >
+          <div @click="upTpye(2)">
+            <i></i>
+            <span>不擅长</span>
+          </div>
+        </el-col>
+        <el-col :span="8" :class="[{
+          'iscause': refuse_types.indexOf(10) !== -1
+        }]">
+          <div @click="upTpye(10)">
+            <i></i>
+            <span>其他</span>
+          </div>
+        </el-col>
+      </el-row>
+      <div>
+        <el-input
+          type="textarea"
+          :rows="4"
+          :maxlength="80"
+          placeholder="请输入内容"
+          v-model="summary"
+        >
+        </el-input>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button class="is-custom" @click="noOfferDialog = false">取 消</el-button>
+        <el-button class="is-custom" type="primary" :loading="comfirmLoadingBtn" @click="commitExplain">确 定</el-button>
+        <input type="hidden" ref="companyId"/>
+        <input type="hidden" ref="confirmTargetId"/>
+        <input type="hidden" ref="comfirmType" value="1"/>
+        <input type="hidden" ref="currentIndex"/>
+      </span>
+    </el-dialog>
+
     <el-dialog title="报价单详情" id="quote-dialog" v-model="quotaDialog" style="width: 880px;margin: auto" size="large" top="2%">
       <v-quote-view :formProp="quota"></v-quote-view>
 
@@ -453,6 +508,7 @@ export default {
       showStickCompanyBtn: true,
       comfirmLoadingBtn: false,
       comfirmDialog: false,
+      noOfferDialog: false,
       comfirmMessage: '确认执行此操作?',
       stickCompanyIds: [],
       stages: [],
@@ -509,7 +565,9 @@ export default {
       progressItem: -1,
       quota: {},
       quotaDialog: false,
-      msg: ''
+      msg: '',
+      summary: '',
+      refuse_types: [],
     }
   },
   methods: {
@@ -555,8 +613,42 @@ export default {
       this.$refs.companyId.value = companyId
       this.$refs.currentIndex.value = index
       this.$refs.comfirmType.value = 1
-      this.comfirmMessage = '您确定要拒绝此公司报价？'
-      this.comfirmDialog = true
+      this.refuse_types = []
+      this.summary = ''
+      // this.comfirmMessage = '您确定要拒绝此公司报价？'
+      // this.comfirmDialog = true
+      this.noOfferDialog = true
+      console.log('index', event.currentTarget)
+    },
+    // 提交拒单说明
+    commitExplain() {
+      let currentIndex = this.$refs.currentIndex.value
+      let form = {
+        'item_id': this.item.id,
+        'design_company_id': Number(this.$refs.companyId.value),
+        'summary': this.summary,
+        'refuse_types': this.refuse_types
+      }
+      if (!this.refuse_types || this.refuse_types.length === 0) {
+        this.$message.error('请至少选择一个原因')
+        return
+      }
+      this.comfirmLoadingBtn = true
+      this.$http.post(api.demandFalseDesign, form).then(
+        (response) => {
+          if (response.data.meta.status_code === 200) {
+            this.offerCompany[currentIndex].item_status = -1
+            this.offerCompany[currentIndex].status_value = '已拒绝设计公司报价'
+            this.noOfferDialog = false
+            this.comfirmLoadingBtn = false
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        })
+        .catch((error) => {
+          this.comfirmLoadingBtn = false 
+          this.$message.error(error.message)
+        })
     },
     greeCompanyBtn(event) {
       let companyId = parseInt(event.currentTarget.getAttribute('company_id'))
@@ -571,7 +663,7 @@ export default {
       let comfirmType = parseInt(this.$refs.comfirmType.value)
       this.comfirmLoadingBtn = true
       if (comfirmType === 1) {
-        this.refuseCompanySubmit()
+        this.commitExplain()
       } else if (comfirmType === 2) {
         this.agreeCompanySubmit()
       } else if (comfirmType === 3) {
@@ -589,32 +681,32 @@ export default {
       this.quotaDialog = true
     },
     // 拒绝设计公司报价提交
-    refuseCompanySubmit() {
-      let currentIndex = this.$refs.currentIndex.value
-      let companyId = this.$refs.companyId.value
-      let self = this
-      self.$http
-        .post(api.refuseDesignPrice, {
-          item_id: self.item.id,
-          design_company_id: companyId
-        })
-        .then(function(response) {
-          if (response.data.meta.status_code === 200) {
-            self.comfirmLoadingBtn = false
-            self.comfirmDialog = false
-            self.$message.success('操作成功!')
-            self.offerCompany[currentIndex].item_status = -1
-            self.offerCompany[currentIndex].status_value = '已拒绝设计公司报价'
-          } else {
-            self.comfirmLoadingBtn = false
-            self.$message.error(response.data.meta.message)
-          }
-        })
-        .catch(function(error) {
-          self.$message.error(error.message)
-          self.comfirmLoadingBtn = false
-        })
-    },
+    // refuseCompanySubmit() {
+    //   let currentIndex = this.$refs.currentIndex.value
+    //   let companyId = this.$refs.companyId.value
+    //   let self = this
+    //   self.$http
+    //     .post(api.refuseDesignPrice, {
+    //       item_id: self.item.id,
+    //       design_company_id: companyId
+    //     })
+    //     .then(function(response) {
+    //       if (response.data.meta.status_code === 200) {
+    //         // self.comfirmLoadingBtn = false
+    //         // self.comfirmDialog = false
+    //         self.$message.success('操作成功!')
+    //         self.offerCompany[currentIndex].item_status = -1
+    //         self.offerCompany[currentIndex].status_value = '已拒绝设计公司报价'
+    //       } else {
+    //         self.comfirmLoadingBtn = false
+    //         self.$message.error(response.data.meta.message)
+    //       }
+    //     })
+    //     .catch(function(error) {
+    //       self.$message.error(error.message)
+    //       self.comfirmLoadingBtn = false
+    //     })
+    // },
     // 同意设计公司报价, 开始合作
     agreeCompanySubmit() {
       let companyId = this.$refs.companyId.value
@@ -811,6 +903,18 @@ export default {
           self.$message.error(error.message)
           self.evaluateLoadingBtn = false
         })
+    },
+    // 改拒单类型
+    upTpye(type) {
+      if (this.refuse_types.indexOf(type) === -1) {
+        this.refuse_types.push(type)
+      } else {
+        for (var i = 0; i < this.refuse_types.length; i++) {
+          if (this.refuse_types[i] === type) {
+            this.refuse_types.splice(i, 1)
+          }
+        }
+      }
     }
   },
   computed: {
@@ -1235,6 +1339,44 @@ export default {
   margin: 10px;
 }
 
+.cause i {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #e6e6e6;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.cause>.el-col>div {
+  line-height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  cursor: pointer;
+}
+.iscause {
+  color: #FF5A5F;
+}
+.iscause i {
+  background: #FF9494;
+  border: 1px solid #FF2929;
+  position: relative;
+}
+
+.iscause i:after {
+  transform: rotate(45deg) scaleY(1);
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height:10px;
+  border-bottom:2px solid #fff;
+  border-right: 2px solid #fff;
+}
 .el-step__title.is-finish {
   font-size: 3rem;
 }
