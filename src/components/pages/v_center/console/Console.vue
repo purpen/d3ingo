@@ -54,7 +54,7 @@
               <div class="number bb-e6">
                 <el-progress
                 status="exception"
-                :percentage ="totalItem.ok_turnover_percentage"
+                :percentage ="totalItem.ok_turnover_percentage>=100?100:totalItem.ok_turnover_percentage"
                 :show-text = "false"
                 :stroke-width = "8"
                 ></el-progress>
@@ -76,7 +76,7 @@
               <div class="edit-centent mar-b-10 bb-e6">
                 <el-progress
                 status="exception"
-                :percentage ="totalItem.ok_turnover_percentage"
+                :percentage ="totalItem.ok_turnover_percentage>=100?100:totalItem.ok_turnover_percentage"
                 :show-text = "false"
                 :stroke-width = "8"
                 ></el-progress>
@@ -152,7 +152,7 @@
                   项目总收入
                 </h4>
                 <p class="fz-18 tc-red padding-tb-5">
-                  ¥ {{totalItem.ok_turnover}}
+                  ¥ {{totalItem.ok_turnover | formatNum}}
                 </p>
                 <h4 class="fz-14 tc-2 padding-tb-10">
                   项目平均单价
@@ -607,7 +607,7 @@ export default {
           data: ['line']
         },
         xAxis: {
-          name: '月份',
+          // name: '月份',
           type: 'category',
           data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
           axisTick: {
@@ -780,7 +780,6 @@ export default {
         yAxis: {
           name: '单位: 位',
           type: 'value',
-          min: 1,
           axisTick: {
             show: false
           },
@@ -966,6 +965,13 @@ export default {
       }
     }
   },
+  filters: {
+    formatNum(val) {
+      if (!Boolean(val)) {
+       return '0.00'
+      } else return val.toFixed(2)
+    }
+  },
   methods: {
     getDay(d) {
       let date = d || new Date()
@@ -1114,9 +1120,21 @@ export default {
       } else this.isItemYMQ = '2'
       this.$http.get(api.designTargetIncomeQuarter).then((response) => {
         if (response.data.meta.status_code === 200) {
-          this.polar2.xAxis.data = this.polar.xAxis.data = ['第一季度', '第二季度', '第三季度 ', '第四季度']
-          this.polar.series[0].data = [0, 0, 0, 0]
-          this.polar2.series[0].data = [0, 0, 0, 0]
+          let date = new Date()
+          let month = Number((date.format('yyyy/MM/dd').substring(5,7)))
+          let xaxis = []
+          if (month <= 3) {
+            xaxis = ['1月', '2月', '3月']
+          } else if (month <= 6) {
+            xaxis = ['4月', '5月', '6月']
+          } else if (month <= 9) {
+            xaxis = ['7月', '8月', '9月']
+          } else {
+            xaxis = ['10月', '11月', '12月']
+          }
+          this.polar2.xAxis.data = this.polar.xAxis.data = xaxis
+          this.polar.series[0].data = [0, 0, 0]
+          this.polar2.series[0].data = [0, 0, 0]
           if (!response.data.data.incomeQuarters || response.data.data.incomeQuarters.length === 0) {
             return response.data.data.incomeQuarters = []
           }
@@ -1249,7 +1267,7 @@ export default {
         if (this.income20.length > 0) {
           let data = []
           for (var i = 0; i < this.income20.length; i++) {
-            if (!this.income20[i].cost || Boolean(this.income20[i].cost)) {
+            if (!this.income20[i].cost || !Boolean(this.income20[i].cost)) {
               this.income20[i].cost = '0.00'
             }
             money += Number(this.income20[i].cost)
@@ -1269,6 +1287,7 @@ export default {
           }
         }
         this.ranking.series[0].label.formatter = '总金额\n\n¥' + money.toFixed(2)
+        console.log('thisa', this.income20)
       } else {
         this.$message.error(response.data.meta.message)
       }
@@ -1593,8 +1612,10 @@ export default {
         if (response.data.meta.status_code === 200) {
           let res = response.data.data
           let arr = ['0-50000', '50000-100000', '100000-200000', '200000-300000', '300000-500000', '500000以上']
+          let moneys = 0
           for (var i = 0; i < 6; i++) {
             this.nostage += res['year_stage' + (i + 1) + '_money'] + res['year_stage' + (i + 1) + '_count']
+            moneys += res['year_stage' + (i + 1) + '_money']
             this.stage.push(
               {
                 'name': arr[i],
@@ -1608,6 +1629,7 @@ export default {
               'name': arr[i],
             }
           }
+          this.stages.series[0].label.formatter = '总金额\n\n¥' + moneys.toFixed(2)
         } else {
           this.$message.error(response.data.meta.message)
         }
@@ -1645,9 +1667,11 @@ export default {
             this.clients += this.city[i].item_count
             if (this.radio1 === '2') {
               data.push(this.city[i].item_count)
+              this.baropt.yAxis.name = '单位: 位'
             }
             if (this.radio1 === '1') {
               data.push(this.city[i].city_cost)
+              this.baropt.yAxis.name = '单位: 元'
             }
           }
           if (val.length > 0) {
@@ -1671,6 +1695,7 @@ export default {
       if (response.data.meta.status_code === 200) {
         this.isLoading = false
         this.totalItem = response.data.data
+        console.log('total', this.totalItem)
       } else {
         this.$message.error(response.data.meta.message)
       }
