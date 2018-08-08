@@ -340,11 +340,13 @@ export default {
     }
   },
   created() {
-    this.getBoard()
+    for (let i = 0; i<= 6; i ++) {
+    this.getBoard(i)
+    }
   },
   mounted() {
-    window.addEventListener('scroll', this.handleScroll)
-    this.handleScroll()
+    // window.addEventListener('scroll', this.handleScroll)
+    // this.handleScroll()
   },
   methods: {
     addCompare(id) {
@@ -368,7 +370,7 @@ export default {
       }
     },
     handleScroll() {
-      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
       let clentHeight = document.body.clientHeight + scrollTop
       if (((scrollTop <= this.$refs.power.offsetTop) &&
         (this.$refs.power.offsetTop <= clentHeight)) ||
@@ -462,7 +464,7 @@ export default {
     }
   },
   destroyed() {
-    window.removeEventListener('scroll', this.handleScroll)
+    // window.removeEventListener('scroll', this.handleScroll)
   }
 }
 </script>
