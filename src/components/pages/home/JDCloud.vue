@@ -11,7 +11,7 @@
             <span @click="jump" class="release">发布项目需求</span>
           </section>
           <section class="con-right">
-            <img :src="require('assets/images/home/banner/jd_banner.png')" alt="">
+            <!-- <img :src="require('assets/images/home/banner/jd_banner.png')" alt=""> -->
           </section>
         </div>
       </div>
@@ -82,7 +82,7 @@
             <span @click="jump" class="release">发布项目需求</span>
           </section>
           <section class="con-right">
-            <img :src="require('assets/images/home/banner/yw_banner.jpg')" alt="">
+            <!-- <img :src="require('assets/images/home/banner/yw_banner.jpg')" alt=""> -->
           </section>
         </div>
       </div>
@@ -446,6 +446,16 @@ export default {
   .yw .jdc-banner {
     background: #0A2052
   }
+  .jd-cloud .con-right {
+    height: 100%;
+    background: url('../../../assets/images/home/banner/jd_banner.png') no-repeat
+    bottom / contain
+  }
+  .yw .con-right {
+    height: 100%;
+    background: url('../../../assets/images/home/banner/yw_banner.jpg') no-repeat
+    bottom / contain
+  }
   h2 {
     font-size: 48px;
     padding-bottom: 20px
@@ -680,10 +690,14 @@ export default {
     .content {
       flex-direction: column;
       justify-content: center;
-      padding: 30px;
+      padding: 15px 15px 0;
     }
     .jdc-content {
       padding: 0 15px;
+    }
+    .jd-cloud .con-right {
+      flex: 1 1 auto;
+      width: 100%
     }
     .col-parent {
       margin-bottom: 15px;
