@@ -11,7 +11,7 @@
             <span @click="jump" class="release">发布项目需求</span>
           </section>
           <section class="con-right">
-            <img :src="require('assets/images/home/banner/jd_banner.png')" alt="">
+            <!-- <img :src="require('assets/images/home/banner/jd_banner.png')" alt=""> -->
           </section>
         </div>
       </div>
@@ -82,7 +82,7 @@
             <span @click="jump" class="release">发布项目需求</span>
           </section>
           <section class="con-right">
-            <img :src="require('assets/images/home/banner/yw_banner.jpg')" alt="">
+            <!-- <img :src="require('assets/images/home/banner/yw_banner.jpg')" alt=""> -->
           </section>
         </div>
       </div>
@@ -90,7 +90,7 @@
         <h3>义乌设计大脑</h3>
         <p class="fz-14 tc-6 padding-b-50 max-880 ti-2">义乌设计大脑是浙江万博大数据运营有限公司和太火鸟科技有限公司合作，落地在义乌的一个产品创新资源与工贸企业对接的平台。平台上积累了大量的设计行业资源，企业在平台上发布需求，平台借助大数据和智能匹配技术，提供设计资源对接、渠道营销分发等服务，孵化出产品创新设计成果，且为设计产品开通京东绿色通道，回馈地方经济，带动产业发展和企业转型升级。</p>
         <el-row :gutter="isMob ? 0 : 20" class="flex padding-b-60">
-          <el-col class="col-parent" :xs="24" :sm="8" :md="8" :lg="8" v-for="(ele, index) in colList" :key="index">
+          <el-col class="col-parent" :xs="24" :sm="8" :md="8" :lg="8" v-for="(ele, index) in colList_yw" :key="index">
             <div class="col clearfix">
               <img class="fl" :src="ele.img" alt="">
               <p class="fl tc-6 table">
@@ -446,6 +446,16 @@ export default {
   .yw .jdc-banner {
     background: #0A2052
   }
+  .jd-cloud .con-right {
+    height: 100%;
+    background: url('../../../assets/images/home/banner/jd_banner.png') no-repeat
+    bottom / contain
+  }
+  .yw .con-right {
+    height: 100%;
+    background: url('../../../assets/images/home/banner/yw_banner.jpg') no-repeat
+    bottom / contain
+  }
   h2 {
     font-size: 48px;
     padding-bottom: 20px
@@ -680,10 +690,14 @@ export default {
     .content {
       flex-direction: column;
       justify-content: center;
-      padding: 30px;
+      padding: 15px 15px 0;
     }
     .jdc-content {
       padding: 0 15px;
+    }
+    .jd-cloud .con-right {
+      flex: 1 1 auto;
+      width: 100%
     }
     .col-parent {
       margin-bottom: 15px;

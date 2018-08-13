@@ -585,7 +585,7 @@ export default {
       return memberList
     },
     typeOptions() {
-      return typeData.COMPANY_TYPE
+      return typeData.COMPANY_TYPE2
     },
     typeDesignOptions: {
       get() {
@@ -597,7 +597,7 @@ export default {
         } else {
           return []
         }
-        return typeData.COMPANY_TYPE[index].designType
+        return typeData.COMPANY_TYPE2[index].designType
       },
       set() {
       }
@@ -612,7 +612,7 @@ export default {
         return []
       }
 
-      return typeData.COMPANY_TYPE[index].field
+      return typeData.COMPANY_TYPE2[index].field
     },
     // 所属行业下拉选项
     industryOptions() {

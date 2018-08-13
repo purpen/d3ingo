@@ -146,7 +146,12 @@
             </el-row>
             <el-row :gutter="24">
               <el-col :span="isMob ? 24 : 12">
-                <el-form-item label="联系人手机" prop="phone">
+                <el-form-item label="联系人手机" prop="phone" class="phone">
+                  <div class="phoneExplain">
+                    <div class="pMassgae">
+                      该手机号将会被默认作为消息通知接收号码
+                    </div>
+                  </div>
                   <el-input v-model="form.phone" placeholder=""></el-input>
                 </el-form-item>
               </el-col>
@@ -622,5 +627,54 @@
     width: 120px;
     margin-left: 15px;
   }
-
+  .phone {
+    position: relative;
+  }
+  .phoneExplain:hover:before {
+    background: url('../../../../assets/images/item/TipsHover@2x.png') 0 0 no-repeat/18px 18px;
+  }
+  .phoneExplain:hover .pMassgae {
+    display: block;
+  }
+  .phoneExplain:before {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background: url('../../../../assets/images/item/Tips@2x.png') 0 0 no-repeat/18px 18px;
+    cursor: pointer;
+  }
+  .phoneExplain {
+    height: 18px;
+    width: 75%;
+    position: absolute;
+    left: 77px;
+    top: -26px;
+    z-index: 1;
+  }
+  .pMassgae {
+    display: none;
+    position: absolute;
+    line-height: 30px;
+    border: 2px solid #FF5A5F;
+    border-radius: 4px;
+    left: 35px;
+    top: -100%;
+    padding: 10px 20px;
+    color: #ff5a5f;
+  }
+  .pMassgae:before {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    left: -10px;
+    top: 15px;
+    transform: rotate(45deg) scaleY(1);
+    border-bottom: 2px solid #FF5A5F;
+    border-left: 2px solid #FF5A5F;
+    z-index: 3;
+    background: #fff
+  }
 </style>
