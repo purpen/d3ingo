@@ -269,7 +269,7 @@ export default {
       self.query.sort = this.$route.query.sort || 0
       self.query.type = this.$route.query.type || ''
       self.query.source = this.$route.query.source || ''
-      self.query.evt = this.$route.query.evt || ''
+      self.query.evt = this.$route.query.evt || '2'
       self.query.val = this.$route.query.val || ''
       this.menuType = 0
       if (this.$route.query.type) {
