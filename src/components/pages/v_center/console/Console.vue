@@ -31,7 +31,7 @@
                 <span class="fr fz-14 tc-red"  @click="updataCount(1)">确定</span>
               </div>
               <el-input placeholder="请输入内容" v-model="ecount" class="padding-t-10" @blur="blurCount">
-                <template slot="append">万元</template>
+                <template slot="append">个</template>
               </el-input>
               <div class="edit-centent mar-b-10 bb-e6">
                 <el-progress
@@ -50,16 +50,16 @@
                 <span class="fz-14 tc-6 fl">年度营业额目标</span>
                 <span class="edit fr pointer" @click="upturnover()"></span>
               </div>
-              <h3 class="tc-2 fz-20">{{totalItem.turnover}} 万元</h3>
+              <h3 class="tc-2 fz-20">{{totalItem.turnover | formatUnit}} 万元</h3>
               <div class="number bb-e6">
                 <el-progress
                 status="exception"
-                :percentage ="totalItem.ok_turnover_percentage"
+                :percentage ="totalItem.ok_turnover_percentage>=100?100:totalItem.ok_turnover_percentage"
                 :show-text = "false"
                 :stroke-width = "8"
                 ></el-progress>
               </div>
-              <p class="tc-9 fz-14">已收入金额: <span class="tc-2">{{totalItem.ok_turnover}}万元</span></p>
+              <p class="tc-9 fz-14">已收入金额: <span class="tc-2">{{totalItem.ok_turnover | formatUnit}}万元</span></p>
             </div>
           </el-col>
           <el-col :xs="24" :sm="12" :md="6" :lg="6" v-if="Turnover">
@@ -76,7 +76,7 @@
               <div class="edit-centent mar-b-10 bb-e6">
                 <el-progress
                 status="exception"
-                :percentage ="totalItem.ok_turnover_percentage"
+                :percentage ="totalItem.ok_turnover_percentage>=100?100:totalItem.ok_turnover_percentage"
                 :show-text = "false"
                 :stroke-width = "8"
                 ></el-progress>
@@ -90,12 +90,12 @@
                 <span class="fz-14 tc-6 fl">收入</span>
                 <!-- <span class="edit fr pointer"></span> -->
               </div>
-              <h3 class="tc-2 fz-20">{{totalItem.ok_turnover}} 万元</h3>
+              <h3 class="tc-2 fz-20">{{totalItem.ok_turnover | formatUnit}} 万元</h3>
               <div class="number bb-e6 clearfix">
-                <p class="tc-9 fl">月同比: <span class="upper">{{totalItem.month_on_month}}%</span></p>
-                <p class="tc-9 fl">季度同比: <span class="down">{{totalItem.quarter_on_quarter}}%</span></p>
+                <p class="tc-9 fl">月环比: <span class="upper">{{totalItem.month_on_month}}%</span></p>
+                <p class="tc-9 fl">季度环比: <span class="down">{{totalItem.quarter_on_quarter}}%</span></p>
               </div>
-              <p class="tc-9 fz-14">月均收入: <span class="tc-2">{{totalItem.m_money}}万元</span></p>
+              <p class="tc-9 fz-14">月均收入: <span class="tc-2">{{totalItem.m_money | formatUnit}}万元</span></p>
             </div>
           </el-col>
           <el-col :xs="24" :sm="12" :md="6" :lg="6">
@@ -152,13 +152,13 @@
                   项目总收入
                 </h4>
                 <p class="fz-18 tc-red padding-tb-5">
-                  ¥ {{totalItem.ok_turnover}}
+                  ¥ {{totalItem.ok_turnover | formatNum}}
                 </p>
                 <h4 class="fz-14 tc-2 padding-tb-10">
                   项目平均单价
                 </h4>
                 <p class="fz-18 tc-red padding-tb-5" v-if="totalItem.ok_turnover !== 0 || totalItem.ok_count_percentage !== 0">
-                  ¥{{totalItem.ok_turnover / totalItem.ok_count_percentage}}
+                  ¥{{totalItem.ok_turnover | formatPrice(totalItem.item_counts)}}
                 </p>
                 <p class="fz-18 tc-red padding-tb-5" v-else>
                   ¥ 0.00
@@ -607,7 +607,7 @@ export default {
           data: ['line']
         },
         xAxis: {
-          name: '月份',
+          // name: '月份',
           type: 'category',
           data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
           axisTick: {
@@ -687,13 +687,13 @@ export default {
           {
             name:'状态',
             type:'pie',
-            radius: ['50%', '70%'],
             avoidLabelOverlap: false,
+            radius: ['60%', '80%'],
             label: {
               show: true,
               position: 'center',
               formatter: '\n总项目数量\n\n0个',
-              fontSize: 20,
+              fontSize: 18,
               color: '#222'
             },
             labelLine: {
@@ -718,13 +718,13 @@ export default {
           {
             name:'访问来源',
             type:'pie',
-            radius: ['50%', '70%'],
+            radius: ['60%', '80%'],
             avoidLabelOverlap: false,
             label: {
               show: true,
               position: 'center',
               formatter: '总金额\n \n0',
-              fontSize: 20,
+              fontSize: 18,
               color: '#222'
             },
             labelLine: {
@@ -746,13 +746,13 @@ export default {
           {
             name:'访问来源',
             type:'pie',
-            radius: ['50%', '70%'],
+            radius: ['60%', '80%'],
             avoidLabelOverlap: false,
             label: {
               position: 'center',
               show: true,
               formatter: '总金额\n \n¥0.00',
-              fontSize: 20,
+              fontSize: 18,
               color: '#222'
             },
             labelLine: {
@@ -777,10 +777,13 @@ export default {
             show: false
           }
         },
+        tooltip: {
+          trigger: 'item',
+          formatter: '地点: {b}<br/>数量: {c}人 '
+        },
         yAxis: {
           name: '单位: 位',
           type: 'value',
-          min: 1,
           axisTick: {
             show: false
           },
@@ -848,19 +851,20 @@ export default {
         color: colors,
         tooltip: {
           trigger: 'item',
-          formatter: '价格阶段: {b}<br/>项目数: 0个<br/>项目总金额: ¥ {c} <br/>金额占比: {d}%'
+          formatter: '价格阶段: {b}<br/>项目总金额: ¥ {c} <br/>金额占比: {d}%'
         },
+        // 项目数: 0个<br/>
         series: [
           {
             name:'访问来源',
             type:'pie',
-            radius: ['50%', '70%'],
+            radius: ['60%', '80%'],
             avoidLabelOverlap: false,
             label: {
               show: true,
               position: 'center',
               formatter: '总金额\n \n¥0,00',
-              fontSize: 20,
+              fontSize: 18,
               color: '#222'
             },
             labelLine: {
@@ -876,7 +880,7 @@ export default {
               {value: '0.00', name: ''},
               {value: '0.00', name: ''},
             ]
-          }
+          },
         ]
       },
       barUser: {
@@ -889,13 +893,13 @@ export default {
           {
             name:'访问来源',
             type:'pie',
-            radius: ['50%', '70%'],
+            radius: ['60%', '80%'],
             avoidLabelOverlap: false,
             label: {
               show: true,
               position: 'center',
               formatter: '总人数\n \n0人',
-              fontSize: 20,
+              fontSize: 18,
               color: '#222'
             },
             labelLine: {
@@ -917,13 +921,13 @@ export default {
           {
             name:'访问来源',
             type:'pie',
-            radius: ['50%', '70%'],
+            radius: ['60%', '80%'],
             avoidLabelOverlap: false,
             label: {
               show: true,
               position: 'center',
               formatter: '总人数\n \n0人',
-              fontSize: 20,
+              fontSize: 18,
               color: '#222'
             },
             labelLine: {
@@ -966,6 +970,25 @@ export default {
       }
     }
   },
+  filters: {
+    // 项目总金额
+    formatNum(val) {
+      if (!Boolean(val)) {
+       return '0.00'
+      } else return val.toFixed(2)
+    },
+    // 项目单价
+    formatPrice(val, pre) {
+      if (!Boolean(val)) {
+       return '0.00'
+      } else return (val / pre).toFixed(2)
+    },
+    formatUnit(val) {
+      if (!Boolean(val)) {
+        return '0.00'
+      } else return (val / 10000).toFixed(2)
+    }
+  },
   methods: {
     getDay(d) {
       let date = d || new Date()
@@ -976,34 +999,6 @@ export default {
         quarter: quarter,
         month: month,
         day: day
-      }
-    },
-    IEVersion() {
-      var userAgent = navigator.userAgent // 取得浏览器的userAgent字符串
-      var isIE = userAgent.indexOf('compatible') > -1 && userAgent.indexOf('MSIE') > -1 // 判断是否IE<11浏览器
-      var isEdge = userAgent.indexOf('Edge') > -1 && !isIE // 判断是否IE的Edge浏览器
-      var isIE11 = userAgent.indexOf('Trident') > -1 && userAgent.indexOf('rv:11.0') > -1
-      if (isIE) {
-        var reIE = new RegExp('MSIE (\\d+\\.\\d+)')
-        reIE.test(userAgent)
-        var fIEVersion = parseFloat(RegExp['$1'])
-        if (fIEVersion === 7) {
-          return 7
-        } else if (fIEVersion === 8) {
-          return 8
-        } else if (fIEVersion === 9) {
-          return 9
-        } else if (fIEVersion === 10) {
-          return 10
-        } else {
-          return 6 // IE版本<=7
-        }
-      } else if (isEdge) {
-        return 'edge' // edge
-      } else if (isIE11) {
-        return 11 // IE11
-      } else {
-        return -1 // 不是ie浏览器
       }
     },
     // 判断年度目标数值
@@ -1029,21 +1024,22 @@ export default {
         }
       } else if (type === 2) {
         form = {
-          'turnover': this.eturnover,
+          'turnover': this.eturnover * 10000,
         }
       } else return
       this.$http.post(api.designTargetCreate, form).then((response) => {
         if (response.data.meta.status_code === 200) {
-          if (type === 1) {
-            this.totalItem.count = this.ecount
-            this.target = false
-            this.Turnover = false
-          }
-          if (type === 2) {
-            this.totalItem.turnover = this.eturnover
-            this.Turnover = false
-            this.target = false
-          }
+          this.getTargetShow()
+          // if (type === 1) {
+          //   this.totalItem.count = this.ecount
+          this.target = false
+          this.Turnover = false
+          // }
+          // if (type === 2) {
+          //   this.totalItem.turnover = this.eturnover * 10000
+          //   this.Turnover = false
+          //   this.target = false
+          // }
         } else {
           this.$message.error(response.data.meta.message)
         }
@@ -1060,7 +1056,7 @@ export default {
     },
     // 编辑年度营业额
     upturnover() {
-      this.eturnover = this.totalItem.turnover
+      this.eturnover = this.totalItem.turnover / 10000
       this.Turnover = true
       this.target = false
     },
@@ -1114,9 +1110,21 @@ export default {
       } else this.isItemYMQ = '2'
       this.$http.get(api.designTargetIncomeQuarter).then((response) => {
         if (response.data.meta.status_code === 200) {
-          this.polar2.xAxis.data = this.polar.xAxis.data = ['第一季度', '第二季度', '第三季度 ', '第四季度']
-          this.polar.series[0].data = [0, 0, 0, 0]
-          this.polar2.series[0].data = [0, 0, 0, 0]
+          let date = new Date()
+          let month = Number((date.format('yyyy/MM/dd').substring(5,7)))
+          let xaxis = []
+          if (month <= 3) {
+            xaxis = ['1月', '2月', '3月']
+          } else if (month <= 6) {
+            xaxis = ['4月', '5月', '6月']
+          } else if (month <= 9) {
+            xaxis = ['7月', '8月', '9月']
+          } else {
+            xaxis = ['10月', '11月', '12月']
+          }
+          this.polar2.xAxis.data = this.polar.xAxis.data = xaxis
+          this.polar.series[0].data = [0, 0, 0]
+          this.polar2.series[0].data = [0, 0, 0]
           if (!response.data.data.incomeQuarters || response.data.data.incomeQuarters.length === 0) {
             return response.data.data.incomeQuarters = []
           }
@@ -1249,7 +1257,7 @@ export default {
         if (this.income20.length > 0) {
           let data = []
           for (var i = 0; i < this.income20.length; i++) {
-            if (!this.income20[i].cost || Boolean(this.income20[i].cost)) {
+            if (!this.income20[i].cost || !Boolean(this.income20[i].cost)) {
               this.income20[i].cost = '0.00'
             }
             money += Number(this.income20[i].cost)
@@ -1593,8 +1601,10 @@ export default {
         if (response.data.meta.status_code === 200) {
           let res = response.data.data
           let arr = ['0-50000', '50000-100000', '100000-200000', '200000-300000', '300000-500000', '500000以上']
+          let moneys = 0
           for (var i = 0; i < 6; i++) {
             this.nostage += res['year_stage' + (i + 1) + '_money'] + res['year_stage' + (i + 1) + '_count']
+            moneys += res['year_stage' + (i + 1) + '_money']
             this.stage.push(
               {
                 'name': arr[i],
@@ -1608,6 +1618,7 @@ export default {
               'name': arr[i],
             }
           }
+          this.stages.series[0].label.formatter = '总金额\n\n¥' + moneys.toFixed(2)
         } else {
           this.$message.error(response.data.meta.message)
         }
@@ -1645,9 +1656,13 @@ export default {
             this.clients += this.city[i].item_count
             if (this.radio1 === '2') {
               data.push(this.city[i].item_count)
+              this.baropt.yAxis.name = '单位: 位'
+              this.baropt.tooltip.formatter = '地点: {b}<br/>数量: {c}人 '
             }
-            if (this.radio1 === '1') {
+             if (this.radio1 === '1') {
               data.push(this.city[i].city_cost)
+              this.baropt.yAxis.name = '单位: 元'
+              this.baropt.tooltip.formatter = '地点: {b}<br/>金额: {c}元 '
             }
           }
           if (val.length > 0) {
@@ -1664,20 +1679,25 @@ export default {
       .catch((error) => {
         this.$message.error(error.message)
       })
+    },
+    // 获取所有排名
+    getTargetShow() {
+      this.$http.get(api.designTargetShow, {}).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          this.isLoading = false
+          this.totalItem = response.data.data
+          console.log('this.totalItem', this.totalItem)
+        } else {
+          this.$message.error(response.data.meta.message)
+        }
+      }).catch((error) => {
+        this.isLoading = false
+        this.$message.error(error.message)
+      })
     }
   },
   created() {
-    this.$http.get(api.designTargetShow, {}).then((response) => {
-      if (response.data.meta.status_code === 200) {
-        this.isLoading = false
-        this.totalItem = response.data.data
-      } else {
-        this.$message.error(response.data.meta.message)
-      }
-    }).catch((error) => {
-      this.isLoading = false
-      this.$message.error(error.message)
-    })
+    this.getTargetShow()
     this.incomeYear()
     this.incomeRanked()
     this.incomeType()

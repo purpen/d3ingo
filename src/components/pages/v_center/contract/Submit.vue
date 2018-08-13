@@ -473,8 +473,11 @@
               that.$message.error('阶段比例之和应为60!')
               return false
             }
+            console.log('row', row)
             let stagePrice = that.form.stage_money
-            if (totalAmount !== stagePrice) {
+            if (totalAmount - stagePrice) {
+              console.log('totalAmount', totalAmount)
+              console.log('stagePrice', stagePrice)
               that.$message.error('阶段金额总和不正确！')
               return false
             }
@@ -550,9 +553,22 @@
         let self = this
         this.$refs['ruleForm'].validateField('stages.' + index + '.percentage', function (error) {
           if (!error) {
+            let stages = self.form.stages
             let total = self.form.total
             let per = self.form.stages[index].percentage.mul(0.01)
-            self.form.stages[index].amount = total.mul(per).toFixed(2)
+            let amount = 0
+            let money = 0
+            for (var i = 0; i < stages.length;i++) {
+              if (stages[i].amount && stages[i].amount !== '') {
+                amount += 1
+                money += Number(stages[i].amount)
+              }
+            }
+            if (amount === stages.length - 1) {
+              self.form.stages[index].amount = (Number((total * 0.6).toFixed(2)) - money).toFixed(2)
+            } else self.form.stages[index].amount = total.mul(per).toFixed(2)
+
+
             // self.$set(self.form.stages[index], 'amount', total.mul(per))
           }
         })
