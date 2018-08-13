@@ -287,12 +287,6 @@
         // this.navdefact()
         this.showCover = ''
         this.showCover2 = ''
-      },
-      eventUser: {
-        handler(val) {
-          console.log(val)
-        },
-        deep: true
       }
     },
     methods: {
