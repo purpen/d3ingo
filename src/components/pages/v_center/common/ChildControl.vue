@@ -446,6 +446,7 @@
     text-align: center;
     width: 100px;
     height: 30px;
+    line-height: 22px;
     color: #ff5a5f;
     border: 1px solid #ff5a5f;
     border-radius: 4px;
