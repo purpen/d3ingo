@@ -801,6 +801,13 @@ router.beforeEach((to, from, next) => {
   } else {
     // console.log('d3in')
   }
+  let oldClass = document.getElementById('app').getAttribute('class')
+  if (oldClass) {
+    oldClass = oldClass.replace(/disableScroll\x20?/g, '')
+  }
+  document.body.removeAttribute('class', 'disableScroll')
+  document.getElementById('app').setAttribute('class', oldClass)
+  document.childNodes[1].removeAttribute('class', 'disableScroll')
 })
 
 router.afterEach((to, from) => {

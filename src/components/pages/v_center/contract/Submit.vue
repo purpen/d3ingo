@@ -133,18 +133,25 @@
               <el-row>
                 <el-col :span="isMob ? 16 : 8">
                   <el-form-item prop="sort" style="margin: 0">
-                    <el-select v-model.number="form.sort" placeholder="设置项目阶段">
+                    <!-- 阶段选择 -->
+                    <el-radio-group  v-model.number="form.sort" @change="genStageInput">
+                        <el-radio-button 
+                        class="el-radio-button__phase"
+                        v-for="item in stageOptions"
+                        :label="item.label"
+                        :key="item.index"
+                        :value="item.value"
+                        ></el-radio-button>
+                    </el-radio-group>
+                    <!-- <el-select v-model.number="form.sort" placeholder="设置项目阶段">
                       <el-option
                         v-for="item in stageOptions"
                         :label="item.label"
                         :key="item.index"
                         :value="item.value">
                       </el-option>
-                    </el-select>
+                    </el-select> -->
                   </el-form-item>
-                </el-col>
-                <el-col :span="isMob ? 6 : 4" :offset="1" style="">
-                  <el-button class="is-custom" @click="genStageInput">{{ stateMsg }}</el-button>
                 </el-col>
               </el-row>
 
@@ -358,7 +365,8 @@
         companyId: '',
         isLoadingBtn: false,
         contractId: '',
-        stateMsg: '生成阶段',
+        // stateMsg: '生成阶段',
+        value: '2个阶段',
         form: {
           demand_company_name: '',
           demand_company_address: '',
@@ -396,6 +404,7 @@
           stages: [],
           sort: ''
         },
+        sort: '2个阶段',
         ruleForm: {
           demand_company_name: [
             {required: true, message: '请添写公司名称', trigger: 'blur'}
@@ -520,10 +529,10 @@
       // 生成阶段
       genStageInput() {
         let count = this.form.sort
-        if (!count) {
-          this.$message.error('请选择阶段')
-          return false
-        }
+        // if (!count) {
+        //   this.$message.error('请选择阶段')
+        //   return false
+        // }
         this.form.stages = []
         for (let i = 0; i < count; i++) {
           let row = {
@@ -532,7 +541,7 @@
             amount: '',
             title: '',
             time: '',
-            content: []
+            content: ['']
           }
           this.form.stages.push(row)
         }
@@ -580,7 +589,7 @@
         for (let i = 2; i < 4; i++) {
           let item = {
             value: i,
-            label: '共' + i + '阶段'
+            label: i + '个阶段'
           }
           items.push(item)
         }
@@ -601,18 +610,18 @@
         return CONTRACT_SCALE
       }
     },
-    watch: {
-      form: {
-        deep: true,
-        handler: function (val, oldVal) {
-          if (val.stages && val.stages.length > 0) {
-            this.stateMsg = '重置阶段'
-          } else {
-            this.stateMsg = '生成阶段'
-          }
-        }
-      }
-    },
+    // watch: {
+    //   form: {
+    //     deep: true,
+    //     handler: function (val, oldVal) {
+    //       if (val.stages && val.stages.length > 0) {
+    //         this.stateMsg = '重置阶段'
+    //       } else {
+    //         this.stateMsg = '生成阶段'
+    //       }
+    //     }
+    //   }
+    // },
     created () {
       var that = this
       var id = this.$route.params.item_id
@@ -830,10 +839,17 @@
     color: #ff5a5f
   }
 
+  .el-radio-button__inner{
+    border: 0;
+  }
+
+  .el-radio-button__phase{
+    width: 21rem;
+  }
+
   #line-hei-30 {
     line-height: 30px;
   }
-
 
   @media screen and (max-width: 767px) {
     .right-content .content-box {
