@@ -23,7 +23,7 @@
       <router-link v-if="false" :class="[{'active': currentRoute === 'projectManagementIncomeandExpenses'}]"
         :to="{name: 'projectManagementIncomeandExpenses', params: {id: routeId}}">收支</router-link>
     </div>
-    <div class="pm-right">
+    <div class="pm-right no-select">
       <router-link v-if="showOffer"
       :to="{name: 'projectQuote', params: {id: routeId}}" :class="['quotation', {'active': isQuote}]">项目报价</router-link>
       <router-link class="contract border-right" :to="{name: 'projectContract', params: {id: routeId}}">合同</router-link>
@@ -40,11 +40,11 @@
           :taskId="taskState.id"
           :executeId="-1"
           event="menu"
-          @closeMember="controlMemberShow"
+          @closeMember="closeMember"
           ></v-Member>
         </div>
       </a>
-      <a tabindex="-1" @focus="showMenu = true" @blur="showMenu = false" class="menu" ref="menu">
+      <a tabindex="-1" @click.self="focusMenu" @blur="blurMenu" class="menu" ref="menu">
         <div class="word">菜单</div>
         <div class="menu-con">
           <div class="menu-header"><span>项目菜单</span>
@@ -634,8 +634,21 @@ export default {
     }
   },
   methods: {
+    focusMenu() {
+      this.showMenu = !this.showMenu
+      if (!this.showMenu) {
+        this.closeMenu()
+      }
+    },
+    blurMenu() {
+      this.showMenu = false
+    },
     controlMemberShow() {
       this.showMember = !this.showMember
+      console.log(this.showMember)
+    },
+    closeMember() {
+      this.showMember = false
     },
     changeOption(e) {
       this.option = e

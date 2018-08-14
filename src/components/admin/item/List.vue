@@ -33,6 +33,7 @@
               <el-form-item>
                 <el-select v-model="query.evt" placeholder="选择条件..." size="small">
                   <el-option label="项目ID" value="1"></el-option>
+                  <el-option label="项目名称" value="4"></el-option>
                   <el-option label="公司名称" value="2"></el-option>
                   <el-option label="联系人电话" value="3"></el-option>
                   <el-option label="用户ID" value="8"></el-option>
@@ -283,7 +284,7 @@
         self.query.sort = this.$route.query.sort || 0
         self.query.type = this.$route.query.type || 0
         self.query.source = this.$route.query.source || ''
-        self.query.evt = this.$route.query.evt || ''
+        self.query.evt = this.$route.query.evt || '4'
         self.query.val = this.$route.query.val || ''
         this.menuType = 0
         if (self.query.type) {
