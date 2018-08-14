@@ -339,10 +339,11 @@
           pagination: '.swiper-pagination',
           paginationClickable: true,
           lazyLoading: true,
-          autoplay: 500,
+          autoplay: 5000,
           prevButton: '.swiper-button-prev',
           nextButton: '.swiper-button-next',
-          spaceBetween: 0
+          spaceBetween: 0,
+          loop:true
         },
         articleList: [],
         designList: [
