@@ -104,7 +104,7 @@
       },
       // 下拉展开
       showDes(d, index) {
-        console.log(d.status)
+        // console.log(d)
         const self = this
         if (d.is_show) {
           d.is_show = false
@@ -136,12 +136,20 @@
         document.body.removeAttribute('class', 'disableScroll')
         document.childNodes[1].removeAttribute('class', 'disableScroll')
         document.getElementById('app').setAttribute('class', oldClass)
-        if (d.type === 2) {
-          if (d.item_status) {
-            this.$router.push({name: 'projectCompare', params: {id: d.target_id}})
-          } else {
-            this.$router.push({name: 'vcenterItemShow', params: {id: d.target_id}})
-          }
+        if (d.type === 2 && this.user.type === 1) {
+          this.$http.get(api.demandId.format(d.target_id))
+          .then(res => {
+            if (res.data && res.data.meta.status_code === 200) {
+              let status = res.data.data.item.status
+              if (status < 4) {
+                this.$router.push({name: 'projectCompare', params: {id: d.target_id}})
+              } else {
+                this.$router.push({name: 'vcenterItemShow', params: {id: d.target_id}})
+              }
+            } else {
+              this.$messgae.error(res.data.meta.message)
+            }
+          })
         } else if (d.type === 3) {
           this.$router.push({name: 'vcenterWalletList'})
         }
@@ -186,6 +194,9 @@
       },
       rightWidth() {
         return 24 - this.$store.state.event.leftWidth
+      },
+      user() {
+        return this.$store.state.event.user
       }
     },
     created: function () {
