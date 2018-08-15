@@ -96,11 +96,11 @@
 
               <el-row class="item-content list-box">
                 <el-col :span="10" class="item-title">
-                  <p class="c-title" v-if="contentShowIndex === index">
+                  <p class="c-title">
                     <router-link :to="{name: 'vcenterItemShow', params: {id: d.item.id}}">{{ d.item.name }}
                     </router-link>
                   </p>
-                  <p>项目预算: {{ d.item.design_cost_value }}</p>
+                  <p v-if="contentShowIndex === index">项目预算: {{ d.item.design_cost_value }}</p>
                   <!-- <p v-if="d.item.type === 1">
                     {{ d.item.type_value + '/' + d.item.design_type_value + '/' + d.item.field_value + '/' + d.item.industry_value
                     }}{{d.item}}</p>
