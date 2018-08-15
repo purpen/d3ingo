@@ -454,9 +454,9 @@
           </div>
         </el-col>
         <el-col :span="8" :class="[{
-          'iscause': refuse_types.indexOf('其他') !== -1
+          'iscause': refuse_types.indexOf('') !== -1
         }]">
-          <div @click="upType('其他')">
+          <div @click="upType('')">
             <i></i>
             <span>其他</span>
           </div>
