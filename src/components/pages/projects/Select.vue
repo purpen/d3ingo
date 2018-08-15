@@ -44,9 +44,9 @@ export default {
   methods: {
     changeItemId(id, index) {
       console.log(index)
-      if (index > 1) {
-        return
-      }
+      // if (index > 4) {
+      //   return
+      // }
       this.item = id
     },
     getDemandObj() {
@@ -126,14 +126,14 @@ export default {
     margin: 0 auto;
     padding-top: 150px;
   }
-  .project-item-box .item:nth-child(n + 4) {
+  /* .project-item-box .item:nth-child(n + 7) {
     cursor: not-allowed;
     color: rgba(255, 255, 255, 0.5)
   }
-  .project-item-box .item:nth-child(n + 4):hover {
+  .project-item-box .item:nth-child(n + 7):hover {
     border-color: rgba(255, 255, 255, 0.2);
     border-right-color: rgba(255, 255, 255, 0.1);
-  }
+  } */
   .project-item-box .item:nth-child(7):hover {
     border-right-color: rgba(255, 255, 255, 0.2);
   }
@@ -155,16 +155,18 @@ export default {
     background: url(../../../assets/images/project/UI.png) no-repeat center / contain;
   }
   .item-bg3 {
-    background: url(../../../assets/images/project/Graphic2.png) no-repeat center / contain;
+    background: url(../../../assets/images/project/Graphic.png) no-repeat center / contain;
   }
   .item-bg4 {
-    background: url(../../../assets/images/project/H52.png) no-repeat center / contain;
+    background: url(../../../assets/images/project/H5.png) no-repeat center / contain;
   }
   .item-bg5 {
-    background: url(../../../assets/images/project/Guarantee.png) no-repeat center / contain;
+    /* background: url(../../../assets/images/project/Guarantee.png) no-repeat center / contain; */
+    background: url(../../../assets/images/project/Packing.png) no-repeat center / contain;
   }
   .item-bg6 {
-    background: url(../../../assets/images/project/Illustration.png) no-repeat center / contain;
+    /* background: url(../../../assets/images/project/Illustration.png) no-repeat center / contain; */
+    background: url(../../../assets/images/project/Illustrations.png) no-repeat center / contain;
   }
   .item-name {
     padding-bottom: 20px;

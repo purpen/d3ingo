@@ -236,7 +236,7 @@
               <div class="pie-header">
                 项目收入排名
               </div>
-              <el-row v-if="income20&&income20.length>0">
+              <el-row v-if="income20&&income20.length>0" class="scroll-bar scroll-max">
                 <el-col :span="12" class="p-t-40" >
                   <div class="money-proportion p-t-50">
                       <ECharts :options="ranking" style="width: 200px;height:200px;">
@@ -272,7 +272,7 @@
               <div class="pie-header">
                 收入类别占比
               </div>
-              <div class="centent-class scroll-bar" v-if="isclassify">
+              <div class="centent-class scroll-bar scroll-max" v-if="isclassify">
                 <el-row class="select-cl">
                   <el-col :span="8"
                     :class="{'bg-f7':category === '1'}">
@@ -453,7 +453,7 @@
                 </ECharts>
               </div>
             </el-col>
-            <el-col  :xs="24" :sm="12" :md="12" :lg="6">
+            <el-col  :xs="24" :sm="12" :md="12" :lg="6" class="scroll-bar scroll-max">
               <p class="title-table">城市客户数量排名</p>
               <ul v-if="clients > 0">
                 <li v-for="(ci, indexci) in city" :key="indexci" class="city-table">
@@ -478,7 +478,7 @@
             <div class="pie-header mar-b-10">
               成员统计
             </div>
-            <el-row>
+            <el-row class="scroll-bar scroll-max">
               <el-row>
                 <el-col :span="12">
                   <div class="user-echart">
@@ -1110,17 +1110,22 @@ export default {
       } else this.isItemYMQ = '2'
       this.$http.get(api.designTargetIncomeQuarter).then((response) => {
         if (response.data.meta.status_code === 200) {
+          console.log('res', response.data.data)
           let date = new Date()
           let month = Number((date.format('yyyy/MM/dd').substring(5,7)))
           let xaxis = []
+          let jd = 0
           if (month <= 3) {
             xaxis = ['1月', '2月', '3月']
           } else if (month <= 6) {
             xaxis = ['4月', '5月', '6月']
+            jd = 1
           } else if (month <= 9) {
             xaxis = ['7月', '8月', '9月']
+            jd = 2
           } else {
             xaxis = ['10月', '11月', '12月']
+            jd = 3
           }
           this.polar2.xAxis.data = this.polar.xAxis.data = xaxis
           this.polar.series[0].data = [0, 0, 0]
@@ -1135,18 +1140,9 @@ export default {
               resi[i].cost = 0
             }
             let data = Number(resi[i].quarter_month[resi[i].quarter_month.length - 1])
-            let jd = 0
-            if (data <= 3) {
-              jd = 0
-            } else if (data <= 6) {
-              jd = 1
-            } else if (data <= 9) {
-              jd = 2
-            } else {
-              jd = 3
-            }
-            this.polar.series[0].data[jd] += resi[i].cost
-            this.polar2.series[0].data[jd] += resi[i].item_count
+            data = data - jd * 3 - 1
+            this.polar.series[0].data[data] += resi[i].cost
+            this.polar2.series[0].data[data] += resi[i].item_count
             this.pieRatio.series[0].data[0].value = res.total_no_count
             this.pieRatio.series[0].data[1].value = res.total_quarter_ok_count
             this.pieRatio.series[0].label.formatter = '\n总项目数量\n\n' + res.total_quarter_item_count + '个'
@@ -1686,7 +1682,6 @@ export default {
         if (response.data.meta.status_code === 200) {
           this.isLoading = false
           this.totalItem = response.data.data
-          console.log('this.totalItem', this.totalItem)
         } else {
           this.$message.error(response.data.meta.message)
         }
@@ -1840,8 +1835,6 @@ export default {
   }
   .centent-class {
     padding: 10px 30px 0px 30px;
-    height: 310px;
-    overflow-y: auto;
   }
   .select-cl {
     border: 1px solid #e6e6e6;
@@ -1973,7 +1966,10 @@ export default {
     height: 120px;
     margin-bottom: 15px;
   }
-
+  .scroll-max {
+    max-height: 310px;
+    overflow-y: auto;
+  }
   .head,
   .line-body {
     padding: 0 30px

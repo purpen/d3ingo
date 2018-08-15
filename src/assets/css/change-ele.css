@@ -164,6 +164,25 @@
     border-color: #ff5a5f;
     box-shadow: -1px 0 0 0 #ff5a5f;
   }
+  /* 合同阶段选择按钮 */
+  .el-form-item__content .el-radio-group{
+    width: 44rem;
+  }
+  .el-form-item__content .el-radio-button__inner{
+    width: 20rem;
+    border:1px solid rgba(210,210,210,1);
+    border-radius:4px;
+  }
+  .el-form-item__content .el-radio-button__inner:hover{
+    background: #ff5a5f;
+  }
+
+  .el-form-item__content .el-radio-button__orig-radio:checked+.el-radio-button__inner{
+    background-color: #fff;
+    color: #000;
+    box-shadow: 0 0 0 0 #ff5a5f;
+  }
+
   .el-radio-button__inner:hover {
     color: #222;
     border-color: #e6e6e6
