@@ -3,8 +3,8 @@
     <menu-sub status="info"></menu-sub>
     <div class="project-cover clearfix">
       <div class="project-item-box" v-if="type">
-        <h3>请确定设计项目类型</h3>
-        <div class="item items-flex">
+        <h3 v-if="type!==4&&type!==5">请确定设计项目类型</h3>
+        <div class="item items-flex" v-if="type!==4&&type!==5">
           <i :class="{'active': designType.indexOf(ele.id) !== -1}" v-for="(ele, index) in COMPANY_TYPE[type - 1]['designType']"
           :key="index"
             @click="addDesignType(ele.id)">{{ele.name}}</i>
@@ -57,6 +57,105 @@
             <span :class="['hidden', {'show': form.complete_content.indexOf(5) !== -1}]">
               <el-input type="text" v-model="form.other_content" placeholder="请输入..."></el-input>
             </span>
+          </div>
+        </section>
+        <section v-if="type === 3">
+          <h3>产品现状</h3>
+          <div class="item items-radio">
+            <span>
+              <i :class="{'active': form.situation === 1}" @click="addRadio(1, 'situation')">设计理念与需求明确</i>
+            </span>
+            <span>
+              <i :class="{'active': form.situation === 2}" @click="addRadio(2, 'situation')">设计理念与需求部分确定/待定</i>
+            </span>
+            <span>
+              <i :class="{'active': form.situation === 3}" @click="addRadio(3, 'situation')">无设计理念</i>
+            </span>
+            <span></span>
+          </div>
+          <h3>现有设计内容</h3>
+          <div class="item items-radio">
+            <span>
+              <i :class="{'active': form.existing_content === 1}" @click="addRadio(1, 'existing_content')">所需设计内容齐全</i>
+            </span>
+            <span>
+              <i :class="{'active': form.existing_content === 2}" @click="addRadio(2, 'existing_content')">有核心视觉元素与标识使用手册</i>
+            </span>
+            <span>
+              <i :class="{'active': form.existing_content === 3}" @click="addRadio(3, 'existing_content')">只有核心视觉元素</i>
+            </span>
+            <span>
+              <i :class="{'active': form.existing_content === 4}" @click="addRadio(4, 'existing_content')">只有标识使用手册</i>
+            </span>
+            <span>
+              <i :class="{'active': form.existing_content === 5}" @click="addRadio(5, 'existing_content')">没有任何设计元素或内容</i>
+            </span>
+            <span></span>
+          </div>
+        </section>
+        <section v-if="type === 4">
+          <h3>项目现状</h3>
+          <div class="item items-radio">
+            <span>
+              <i :class="{'active': form.situation === 1}" @click="addRadio(1, 'situation')">设计概念清晰</i>
+            </span>
+            <span>
+              <i :class="{'active': form.situation === 2}" @click="addRadio(2, 'situation')">设计概念模糊</i>
+            </span>
+            <span>
+              <i :class="{'active': form.situation === 3}" @click="addRadio(3, 'situation')">无设计概念</i>
+            </span>
+            <span></span>
+          </div>
+          <h3>现有设计内容</h3>
+        </section>
+        <section v-if="type === 5">
+          <h3>项目现状</h3>
+          <div class="item items-radio">
+            <span>
+              <i :class="{'active': form.situation === 1}" @click="addRadio(1, 'situation')">设计概念清晰</i>
+            </span>
+            <span>
+              <i :class="{'active': form.situation === 2}" @click="addRadio(2, 'situation')">设计概念模糊</i>
+            </span>
+            <span>
+              <i :class="{'active': form.situation === 3}" @click="addRadio(3, 'situation')">无设计概念</i>
+            </span>
+            <span></span>
+          </div>
+          <h3>现有设计内容</h3>
+          <div class="item items-radio">
+            <span>
+              <i :class="{'active': form.existing_content === 1}" @click="addRadio(1, 'existing_content')">所需设计内容齐全</i>
+            </span>
+            <span>
+              <i :class="{'active': form.existing_content === 2}" @click="addRadio(2, 'existing_content')">有核心视觉元素与标识使用手册</i>
+            </span>
+            <span>
+              <i :class="{'active': form.existing_content === 3}" @click="addRadio(3, 'existing_content')">只有核心视觉元素</i>
+            </span>
+            <span>
+              <i :class="{'active': form.existing_content === 4}" @click="addRadio(4, 'existing_content')">只有标识使用手册</i>
+            </span>
+            <span>
+              <i :class="{'active': form.existing_content === 5}" @click="addRadio(5, 'existing_content')">没有任何设计元素或内容</i>
+            </span>
+            <span></span>
+          </div>
+        </section>
+        <section v-if="type === 6">
+          <h3>项目现状</h3>
+          <div class="item items-radio">
+            <span>
+              <i :class="{'active': form.situation === 1}" @click="addRadio(1, 'situation')">设计概念清晰</i>
+            </span>
+            <span>
+              <i :class="{'active': form.situation === 2}" @click="addRadio(2, 'situation')">设计概念模糊</i>
+            </span>
+            <span>
+              <i :class="{'active': form.situation === 3}" @click="addRadio(3, 'situation')">无设计概念</i>
+            </span>
+            <span></span>
           </div>
         </section>
         <h3 v-if="type === 1">产品功能描述</h3>
@@ -235,11 +334,55 @@ export default {
           product_features: this.form.product_features
         }
         url = api.UDesignId.format(this.id)
+      } else if (this.type === 3) {
+        if (!this.designType.length || !this.form.existing_content || !this.form.product_features || !this.form.situation) {
+          this.$message.error('请完善内容')
+          return false
+        }
+        row = {
+          design_types: JSON.stringify(this.designType),
+          existing_content: this.form.existing_content,
+          present_situation: this.form.situation,
+          product_features: this.form.product_features
+        }
+        url = api.GraphicId.format(this.id)
+      } else if (this.type === 4) {
+        if (!this.form.product_features || !this.form.situation) {
+          this.$message.error('请完善内容')
+          return false
+        }
+        row = {
+          present_situation: this.form.situation,
+          product_features: this.form.product_features
+        }
+        url = api.H5Id.format(this.id)
+      } else if (this.type === 5) {
+        if (!this.form.product_features || !this.form.situation || !this.form.existing_content) {
+          this.$message.error('请完善内容')
+          return false
+        }
+        row = {
+          existing_content: this.form.existing_content,
+          present_situation: this.form.situation,
+          product_features: this.form.product_features
+        }
+        console.log('row', row)
+        url = api.PackId.format(this.id)
+      } else if (this.type === 6) {
+        if (!this.form.product_features || !this.form.situation || !this.designType.length) {
+          this.$message.error('请完善内容')
+          return false
+        }
+        row = {
+          design_types: JSON.stringify(this.designType),
+          present_situation: this.form.situation,
+          product_features: this.form.product_features
+        }
+        url = api.IllustrationId.format(this.id)
       }
       this.$http.put(url, row)
       .then(res => {
         if (res.data.meta.status_code === 200) {
-          // console.log(res)
           this.$router.push({name: 'projectInfo', params: {id: this.id}})
         } else {
           this.$message.error(res.data.meta.message)
