@@ -88,7 +88,7 @@
             </el-row>
 
             <div class="item" v-for="(d, index) in itemList" :key="d + index" v-if="!isMob">
-              <el-row class="banner list-box" v-if="contentShowIndex === index">
+              <el-row class="banner list-box">
                 <el-col :span="24">
                   <p>{{ d.item.created_at }}</p>
                 </el-col>
@@ -96,7 +96,7 @@
 
               <el-row class="item-content list-box">
                 <el-col :span="10" class="item-title">
-                  <p class="c-title">
+                  <p class="c-title" v-if="contentShowIndex === index">
                     <router-link :to="{name: 'vcenterItemShow', params: {id: d.item.id}}">{{ d.item.name }}
                     </router-link>
                   </p>
