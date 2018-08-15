@@ -585,34 +585,41 @@ export default {
       return memberList
     },
     typeOptions() {
-      return typeData.COMPANY_TYPE2
+      return typeData.COMPANY_TYPE
     },
     typeDesignOptions: {
       get() {
-        var index = 0
-        if (this.baseForm.type === 1) {
-          index = 0
-        } else if (this.baseForm.type === 2) {
-          index = 1
-        } else {
+        // var index = 0
+        // if (this.baseForm.type === 1) {
+        //   index = 0
+        // } else if (this.baseForm.type === 2) {
+        //   index = 1
+        // } else {
+        //   return []
+        // }
+        if (!this.baseForm.type) {
           return []
         }
-        return typeData.COMPANY_TYPE2[index].designType
+        var index = this.baseForm.type - 1
+        return typeData.COMPANY_TYPE[index].designType
       },
       set() {
       }
     },
     fieldOptions() {
-      var index
-      if (this.baseForm.type === 1) {
-        index = 0
-      } else if (this.baseForm.type === 2) {
-        index = 1
-      } else {
+      // var index
+      // if (this.baseForm.type === 1) {
+      //   index = 0
+      // } else if (this.baseForm.type === 2) {
+      //   index = 1
+      // } else {
+      //   return []
+      // }
+      if (!this.baseForm.type) {
         return []
       }
-
-      return typeData.COMPANY_TYPE2[index].field
+      var index = this.baseForm.type - 1
+      return typeData.COMPANY_TYPE[index].field
     },
     // 所属行业下拉选项
     industryOptions() {
