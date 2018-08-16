@@ -1298,8 +1298,37 @@
                     self.$message.error(error.message)
                   })
                 break
+              case 45: // 已有设计公司报价
+                self.progressButt = 3
+                self.progressContract = -1
+                self.progressItem = -1
+                self.statusIconUrl = require('@/assets/images/item/wait_taking.png')
+                self.statusLabel.trueCompany = true
+                self.$http.get(api.demandItemDesignListItemId.format(self.item.id), {})
+                  .then(function (response) {
+                    if (response.data.meta.status_code === 200) {
+                      let offerCompany = response.data.data
+                      for (let i = 0; i < offerCompany.length; i++) {
+                        let item = offerCompany[i]
+                        // 是否存在已提交报价的公司
+                        if (item.design_company_status === 2) {
+                          self.hasOfferCompany = true
+                        }
+                        if (item.design_company.logo_image && item.design_company.logo_image.length !== 0) {
+                          offerCompany[i].design_company.logo_url = item.design_company.logo_image.logo
+                        } else {
+                          offerCompany[i].design_company.logo_url = false
+                        }
+                      } // endfor
+                      self.offerCompany = offerCompany
+                    }
+                  })
+                  .catch(function (error) {
+                    self.$message.error(error.message)
+                  })
+                break
               case 5: // 等待提交合同
-                self.progressButt = 2
+                self.progressButt = 3
                 self.progressContract = 0
                 self.progressItem = -1
                 self.statusIconUrl = require('@/assets/images/item/wait_submit_ht.png')
@@ -1307,7 +1336,7 @@
                 self.statusLabel.contract = true
                 break
               case 6: // 等待确认合同
-                self.progressButt = 2
+                self.progressButt = 3
                 self.progressContract = 1
                 self.progressItem = -1
                 self.statusLabel.cooperateCompany = true
@@ -1315,7 +1344,7 @@
                 self.statusIconUrl = require('@/assets/images/item/wait_sure_ht.png')
                 break
               case 7: // 已确认合同
-                self.progressButt = 2
+                self.progressButt = 3
                 self.progressContract = 2
                 self.progressItem = -1
                 self.statusIconUrl = require('@/assets/images/item/sure_ht.png')
@@ -1324,7 +1353,7 @@
                 self.statusLabel.amount = true
                 break
               case 8: // 等待托管资金
-                self.progressButt = 2
+                self.progressButt = 3
                 self.progressContract = 2
                 self.progressItem = -1
                 self.statusIconUrl = require('@/assets/images/item/wait_pay.png')
@@ -1333,7 +1362,7 @@
                 self.statusLabel.amount = true
                 break
               case 9: // 项目资金已托管
-                self.progressButt = 2
+                self.progressButt = 3
                 self.progressContract = 3
                 self.progressItem = -1
                 self.statusIconUrl = require('@/assets/images/item/item_ing.png')
