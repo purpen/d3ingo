@@ -22,7 +22,6 @@ export default {
     return {
       id: 0,
       name: '',
-      isSucceed: true,
       selectObject: {},
       val: '提交'
     }
@@ -50,40 +49,34 @@ export default {
       }
     },
     submit() {
-      if (this.isSucceed) {
-        let url = ''
-        let row = {}
-        let method = ''
-        if (this.id) {
-          url = api.updateName
-          row = {item_id: this.id, name: this.name}
-          method = 'PUT'
-        } else {
-          url = api.itemCreate
-          row = {name: this.name}
-          method = 'POST'
-        }
-        if (this.name) {
-          this.isSucceed = false
-          this.$http({method: method, url: url, data: row})
-          .then(res => {
-            if (res.data.meta.status_code === 200) {
-              this.isSucceed = true
-              let item = res.data.data.item
-              if (item) {
-                this.isSucceed = true
-                this.$router.push({name: 'projectSelect', params: {id: item.id}})
-              }
-            } else {
-              this.isSucceed = true
-              this.$message.error(res.data.meta.message)
+      let url = ''
+      let row = {}
+      let method = ''
+      if (this.id) {
+        url = api.updateName
+        row = {item_id: this.id, name: this.name}
+        method = 'PUT'
+      } else {
+        url = api.itemCreate
+        row = {name: this.name}
+        method = 'POST'
+      }
+      if (this.name) {
+        this.$http({method: method, url: url, data: row})
+        .then(res => {
+          if (res.data.meta.status_code === 200) {
+            let item = res.data.data.item
+            if (item) {
+              this.$router.push({name: 'projectSelect', params: {id: item.id}})
             }
-          }).catch(err => {
-            console.error(err)
-          })
-        } else {
-          this.$message.error()
-        }
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(err => {
+          console.error(err)
+        })
+      } else {
+        this.$message.error()
       }
     }
   }
