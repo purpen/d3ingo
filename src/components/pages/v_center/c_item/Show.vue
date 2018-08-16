@@ -146,17 +146,22 @@
                     </p>
                     <p>
                       <router-link :to="{name: 'vcenterContractDown', params: {unique_id: contract.unique_id}}"
-                                   target="_blank"><i class="fa fa-download" aria-hidden="true"></i> 下载
+                                   target="_blank">
+                                   <!-- <i class="fa fa-download" aria-hidden="true"></i> 下载 -->
+                                    <el-button type="primary" class="contract-right-preview">下载</el-button>
                       </router-link>
                     </p>
                     <p>
                       <router-link :to="{name: 'vcenterContractView', params: {unique_id: contract.unique_id}}"
-                                   target="_blank"><i class="fa fa-eye" aria-hidden="true"></i> 预览
+                                   target="_blank">
+                                   <!-- <i class="fa fa-eye" aria-hidden="true"></i> 预览 -->
+                                    <el-button type="primary" class="contract-right-preview">预览</el-button>
                       </router-link>
                     </p>
                     <p v-if="item.status < 7">
-                      <router-link :to="{name: 'vcenterContractSubmit', params: {item_id: item.id}}"><i
-                        class="fa fa-pencil-square-o" aria-hidden="true"></i> 修改
+                      <router-link :to="{name: 'vcenterContractSubmit', params: {item_id: item.id}}">
+                        <!-- <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 修改 -->
+                         <el-button type="primary" class="contract-right-preview">修改</el-button>
                       </router-link>
                     </p>
 
@@ -674,8 +679,8 @@
             {type: 'number', required: true, message: '请选择快递公司', trigger: 'change'}
           ],
           logistics_number: [
-            {type: 'number', required: true, message: '请添写快递单号', trigger: 'blur'},
-            {type: 'number', message: '请添写正确的快递单号', trigger: 'blur'}
+            {type: 'number', required: true, message: '请填写快递单号', trigger: 'blur'},
+            {type: 'number', message: '请填写正确的快递单号', trigger: 'blur'}
           ]
         },
         sendInvoiceLoadingBtn: false,
@@ -1298,8 +1303,37 @@
                     self.$message.error(error.message)
                   })
                 break
+              case 45: // 已有设计公司报价
+                self.progressButt = 3
+                self.progressContract = -1
+                self.progressItem = -1
+                self.statusIconUrl = require('@/assets/images/item/wait_taking.png')
+                self.statusLabel.trueCompany = true
+                self.$http.get(api.demandItemDesignListItemId.format(self.item.id), {})
+                  .then(function (response) {
+                    if (response.data.meta.status_code === 200) {
+                      let offerCompany = response.data.data
+                      for (let i = 0; i < offerCompany.length; i++) {
+                        let item = offerCompany[i]
+                        // 是否存在已提交报价的公司
+                        if (item.design_company_status === 2) {
+                          self.hasOfferCompany = true
+                        }
+                        if (item.design_company.logo_image && item.design_company.logo_image.length !== 0) {
+                          offerCompany[i].design_company.logo_url = item.design_company.logo_image.logo
+                        } else {
+                          offerCompany[i].design_company.logo_url = false
+                        }
+                      } // endfor
+                      self.offerCompany = offerCompany
+                    }
+                  })
+                  .catch(function (error) {
+                    self.$message.error(error.message)
+                  })
+                break
               case 5: // 等待提交合同
-                self.progressButt = 2
+                self.progressButt = 3
                 self.progressContract = 0
                 self.progressItem = -1
                 self.statusIconUrl = require('@/assets/images/item/wait_submit_ht.png')
@@ -1307,7 +1341,7 @@
                 self.statusLabel.contract = true
                 break
               case 6: // 等待确认合同
-                self.progressButt = 2
+                self.progressButt = 3
                 self.progressContract = 1
                 self.progressItem = -1
                 self.statusLabel.cooperateCompany = true
@@ -1315,7 +1349,7 @@
                 self.statusIconUrl = require('@/assets/images/item/wait_sure_ht.png')
                 break
               case 7: // 已确认合同
-                self.progressButt = 2
+                self.progressButt = 3
                 self.progressContract = 2
                 self.progressItem = -1
                 self.statusIconUrl = require('@/assets/images/item/sure_ht.png')
@@ -1324,7 +1358,7 @@
                 self.statusLabel.amount = true
                 break
               case 8: // 等待托管资金
-                self.progressButt = 2
+                self.progressButt = 3
                 self.progressContract = 2
                 self.progressItem = -1
                 self.statusIconUrl = require('@/assets/images/item/wait_pay.png')
@@ -1333,7 +1367,7 @@
                 self.statusLabel.amount = true
                 break
               case 9: // 项目资金已托管
-                self.progressButt = 2
+                self.progressButt = 3
                 self.progressContract = 3
                 self.progressItem = -1
                 self.statusIconUrl = require('@/assets/images/item/item_ing.png')

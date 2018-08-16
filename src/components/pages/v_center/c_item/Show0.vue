@@ -147,17 +147,22 @@
                     </p>
                     <p>
                       <router-link :to="{name: 'vcenterContractDown', params: {unique_id: contract.unique_id}}"
-                                   target="_blank"><i class="fa fa-download" aria-hidden="true"></i> 下载
+                                   target="_blank">
+                                   <!-- <i class="fa fa-download" aria-hidden="true"></i> 下载 -->
+                                    <el-button type="primary" class="contract-right-preview">下载</el-button>
                       </router-link>
                     </p>
                     <p>
                       <router-link :to="{name: 'vcenterContractView', params: {unique_id: contract.unique_id}}"
-                                   target="_blank"><i class="fa fa-eye" aria-hidden="true"></i> 预览
+                                   target="_blank">
+                                   <!-- <i class="fa fa-eye" aria-hidden="true"></i> 预览 -->
+                                    <el-button type="primary" class="contract-right-preview">预览</el-button>
                       </router-link>
                     </p>
                     <p v-if="item.status < 7">
-                      <router-link :to="{name: 'vcenterContractSubmit', params: {item_id: item.id}}"><i
-                        class="fa fa-pencil-square-o" aria-hidden="true"></i> 修改
+                      <router-link :to="{name: 'vcenterContractSubmit', params: {item_id: item.id}}">
+                        <!-- <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 修改 -->
+                         <el-button type="primary" class="contract-right-preview">修改</el-button>
                       </router-link>
                     </p>
 
@@ -314,7 +319,7 @@
           <el-input type="text" v-model="takingPriceForm.price" :placeholder="" @blur="changePriceStyle(2)" @focus="changePriceStyle(1)" auto-complete="off">
             <template slot="prepend">¥</template>
           </el-input>
-          <div class="description red">* 实际报价单位为‘元’,如1万,请添写10000</div>
+          <div class="description red">* 实际报价单位为‘元’,如1万,请填写10000</div>
         </el-form-item>
         <el-form-item label="报价说明" prop="summary" label-width="80px">
           <el-input type="textarea" v-model="takingPriceForm.summary" :autosize="{ minRows: 5, maxRows: 8}"

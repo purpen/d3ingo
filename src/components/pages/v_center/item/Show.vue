@@ -218,12 +218,16 @@
                   <div class="contract-right minileft">
                     <p v-show="contract.status === 1">
                       <router-link :to="{name: 'vcenterContractDown', params: {unique_id: contract.unique_id}}"
-                                   target="_blank"><i class="fa fa-download" aria-hidden="true"></i> 下载
+                                   target="_blank">
+                                   <!-- <i class="fa fa-download" aria-hidden="true"></i> 下载 -->
+                                   <el-button type="primary" class="contract-right-preview">下载</el-button>
                       </router-link>
                     </p>
                     <p>
                       <router-link :to="{name: 'vcenterContractView', params: {unique_id: contract.unique_id}}"
-                                   target="_blank"><i class="fa fa-eye" aria-hidden="true"></i> 预览
+                                   target="_blank">
+                                   <!-- <i class="fa fa-eye" aria-hidden="true"></i> 预览 -->
+                                   <el-button type="primary" class="contract-right-preview">预览</el-button>
                       </router-link>
                     </p>
                   </div>
@@ -783,6 +787,9 @@ export default {
     checkSubmitCompany() {
       const self = this
       self.progressButt = 2
+      if (self.item.status > 4) {
+        self.progressButt = 3
+      }
       self.progressContract = -1
       self.progressItem = -1
       self.statusIconUrl = require('@/assets/images/item/wait_taking.png')
@@ -820,7 +827,7 @@ export default {
     },
     // 查看已合作的设计公司
     cooperCompany() {
-      this.progressButt = 2
+      this.progressButt = 3
       this.progressContract = 0
       this.progressItem = -1
       this.statusIconUrl = require('@/assets/images/item/wait_submit_ht.png')
@@ -874,7 +881,7 @@ export default {
         return
       }
       if (!this.evaluate.content) {
-        this.$message.error('请添写评价内容！')
+        this.$message.error('请填写评价内容！')
         return
       }
 
@@ -1020,11 +1027,14 @@ export default {
             case 4: // 查看已提交报价的设计公司, 提交报价单
               self.checkSubmitCompany()
               break
+            case 45: // 查看已提交报价的设计公司, 提交报价单
+              self.checkSubmitCompany()
+              break
             case 5: // 等待提交合同
               self.cooperCompany()
               break
             case 6: // 等待确认合同
-              self.progressButt = 2
+              self.progressButt = 3
               self.progressContract = 1
               self.progressItem = -1
               self.statusLabel.cooperateCompany = true
@@ -1032,7 +1042,7 @@ export default {
               self.statusIconUrl = require('@/assets/images/item/wait_sure_ht.png')
               break
             case 7: // 已确认合同
-              self.progressButt = 2
+              self.progressButt = 3
               self.progressContract = 2
               self.progressItem = -1
               self.statusIconUrl = require('@/assets/images/item/sure_ht.png')
@@ -1041,7 +1051,7 @@ export default {
               self.statusLabel.amount = true
               break
             case 8: // 等待托管资金
-              self.progressButt = 2
+              self.progressButt = 3
               self.progressContract = 2
               self.progressItem = -1
               self.statusIconUrl = require('@/assets/images/item/wait_pay.png')
@@ -1050,7 +1060,7 @@ export default {
               self.statusLabel.amount = true
               break
             case 9: // 项目资金已托管
-              self.progressButt = 2
+              self.progressButt = 3
               self.progressContract = 3
               self.progressItem = -1
               self.statusIconUrl = require('@/assets/images/item/tuoguan.png')
@@ -1546,6 +1556,14 @@ export default {
 .contract-right p {
   float: right;
   margin: 10px;
+}
+
+.contract-right.minileft{
+  line-height: 1rem;
+}
+.contract-right-preview{
+  margin-top: -5.25rem;
+  width: 3.6rem;
 }
 
 .contract-content p {

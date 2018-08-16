@@ -130,7 +130,7 @@
         var row = {}
         if (that.form.type === 1) {
           if (!that.form.design_types.length || !that.form.field) {
-            that.$message.error('添写信息不完整!')
+            that.$message.error('填写信息不完整!')
             return false
           }
           row = {
@@ -140,7 +140,7 @@
           }
         } else if (that.form.type === 2) {
           if (!that.form.design_types.length) {
-            that.$message.error('添写信息不完整!')
+            that.$message.error('填写信息不完整!')
             return false
           }
           row = {

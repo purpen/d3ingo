@@ -241,16 +241,16 @@
         awards: '',
         ruleForm: {
           company_name: [
-            { required: true, message: '请添写公司全称', trigger: 'blur' }
+            { required: true, message: '请填写公司全称', trigger: 'blur' }
           ],
           company_abbreviation: [
-            { required: true, message: '请添写公司简称', trigger: 'blur' }
+            { required: true, message: '请填写公司简称', trigger: 'blur' }
           ],
           company_type: [
             { type: 'number', message: '请选择公司规模', trigger: 'change' }
           ],
           registration_number: [
-            { required: true, message: '请添写公司注册号', trigger: 'blur' }
+            { required: true, message: '请填写公司注册号', trigger: 'blur' }
           ],
           company_size: [
             { type: 'number', message: '请选择公司规模', trigger: 'change' }
@@ -259,26 +259,26 @@
             { type: 'number', message: '必须为数字', trigger: 'blur' }
           ],
           address: [
-            { required: true, message: '请添写公司详细地址', trigger: 'blur' }
+            { required: true, message: '请填写公司详细地址', trigger: 'blur' }
           ],
           contact_name: [
-            { required: true, message: '请添写联系人', trigger: 'blur' }
+            { required: true, message: '请填写联系人', trigger: 'blur' }
           ],
           phone: [
-            { required: true, message: '请添写联系电话', trigger: 'blur' }
+            { required: true, message: '请填写联系电话', trigger: 'blur' }
           ],
           email: [
-            { required: true, message: '请添写联系人邮箱', trigger: 'blur' },
+            { required: true, message: '请填写联系人邮箱', trigger: 'blur' },
             { type: 'email', message: '请输入正确的邮箱格式', trigger: 'blur' }
           ],
           professional_advantage: [
-            { required: true, message: '请添写专业优势', trigger: 'blur' }
+            { required: true, message: '请填写专业优势', trigger: 'blur' }
           ],
           company_profile: [
-            { required: true, message: '请添写公司简介', trigger: 'blur' }
+            { required: true, message: '请填写公司简介', trigger: 'blur' }
           ],
           province: [
-            { required: true, message: '请添写公司简介', trigger: 'change' }
+            { required: true, message: '请填写公司简介', trigger: 'change' }
           ]
         }
       }

@@ -173,13 +173,13 @@ export default {
           { type: 'number', message: '请选择目标人群', trigger: 'change' }
         ],
         title: [
-          { required: true, message: '请添写标题', trigger: 'blur' }
+          { required: true, message: '请填写标题', trigger: 'blur' }
         ],
         url: [
           { required: true, message: '链接不能为空', trigger: 'blur' }
         ],
         content: [
-          { required: true, message: '请添写内容', trigger: 'blur' }
+          { required: true, message: '请填写内容', trigger: 'blur' }
         ]
       },
       msg: ''

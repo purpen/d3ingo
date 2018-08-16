@@ -201,7 +201,7 @@ export default {
       },
       ruleForm: {
         title: [
-          { required: true, message: '请添写标题', trigger: 'blur' }
+          { required: true, message: '请填写标题', trigger: 'blur' }
         ]
       },
       // 上一页信息

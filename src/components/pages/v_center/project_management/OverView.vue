@@ -736,7 +736,7 @@
                       
                     </div>
 
-                    <div v-if="(sort==='isday'||sort==='isweek')" class="item-tacklist-last" :style="{left:(c.left+4)*30 + 'px'}">
+                    <div v-if="((sort==='isday'|| sort==='isweek') && userAdmin)" class="item-tacklist-last" :style="{left:(c.left+4)*30 + 'px'}">
                       <div class="notmilestone-notsubstages">
                         <div @click="addtack(c)" class="task-milestone"></div>
                         <span class="tc-red" @click="addtack(c)">
@@ -752,7 +752,7 @@
                         <span  @click="addtack(c,1)">添加子阶段</span>
                       </div> -->
                     </div>
-                    <div  v-if="sort==='ismonth'" class="item-tacklist-last" :style="{left:(c.left+1)*6.77 + 'px'}">
+                    <div  v-if="sort==='ismonth' && userAdmin" class="item-tacklist-last" :style="{left:(c.left+1)*6.77 + 'px'}">
                       <div  @click="addtack(c)"></div>
                       <span  @click="addtack(c)">添加子阶段</span>
                     </div>
@@ -789,7 +789,7 @@
 
             </el-col>
           </el-row>
-        <div  class="add-item">
+        <div  class="add-item" v-if="userAdmin">
           <div @click="isItemStage=true"></div>
           <p @click="isItemStage=true">添加项目阶段</p>
         </div>
@@ -933,22 +933,22 @@ export default {
       pickerOptions0: {},
       rules: {
         // duration: [
-        //   {required: true, type: 'number', message: '请添写阶段所需时间', trigger: 'blur'},
+        //   {required: true, type: 'number', message: '请填写阶段所需时间', trigger: 'blur'},
         //   {min: 1, max: 500, message: '天数必须为大于0小于500的数', trigger: 'blur'}
         // ],
         name: [
           {
-            required: true, message: '请添写项目阶段名称', trigger: 'blur'
+            required: true, message: '请填写项目阶段名称', trigger: 'blur'
           }
         ],
         content: [
           {
-            required: true, message: '请添写交付内容', trigger: 'blur'
+            required: true, message: '请填写交付内容', trigger: 'blur'
           }
         ],
         start_time: [
           {
-            required: true, type: 'date', message: '请添写项目开始时间', trigger: 'change'
+            required: true, type: 'date', message: '请填写项目开始时间', trigger: 'change'
           }
         ]
       }
@@ -957,6 +957,12 @@ export default {
   computed: {
     Rheight() {
       return (this.designStageLists.length) * 180 + 63
+    },
+    userAdmin() {
+      let user = this.$store.state.event.user.role_id
+      if (user > 0) {
+        return true
+      } else return false
     }
   },
   watch: {
@@ -1085,7 +1091,6 @@ export default {
       }
       total[0].day -= snowday
       total[0].dayings.splice(0, snowday)
-      console.log(total)
       return total
     },
     // 今天到最早的一天的距离
@@ -1593,6 +1598,9 @@ export default {
           }
           self.tackleft(self.designStageLists)
           self.formTack = {...res}
+          if (self.formTack.execute_user_id) {
+            self.formTack.log = self.formTack.execute_user.logo_image.logo
+          }
           if (self.formTack.type === 1) {
             self.isnodeedit = false
             self.istaskedit = true
@@ -1704,7 +1712,7 @@ export default {
         if (this.options[i].id === op.id) {
           this.options[i].isckeck = true
           this.formTack.execute_user_id = op.id
-          this.formTack.log = op.logo_image.logo
+          // this.formTack.log = op.logo_image.logo
           this.$set(this.options, i, this.options[i])
         } else this.options[i].isckeck = false
       }

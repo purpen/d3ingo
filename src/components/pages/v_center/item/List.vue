@@ -18,13 +18,13 @@
 
             <h3 v-if="itemIngList.length">项目待完善</h3>
             <div v-if="itemIngList.length" class="item ing" v-for="(d, index) in itemIngList" :key="index">
-              <div class="banner">
+              <div class="banner" v-if="contentShowIndex === index">
                 <p>
                   <span>进行中</span>
                 </p>
               </div>
               <div class="content">
-                <div class="pre">
+                <div class="pre"> 
                   <p class="c-title-pro">
                     <span v-if="d.item.name">{{ d.item.name }}</span>
                     <span v-else>未命名项目</span>
@@ -39,21 +39,21 @@
                   </p>
                   <p class="prefect">您的项目需求填写已经完成了{{ d.item.progress }}%。</p>
 
-                  <p v-if="d.item.status === -1">
+                   <p v-if="d.item.status === -1">
                     <el-button class="is-custom" @click="delItemBtn" :item_id="d.item.id" size="small" type="primary">
                       删除项目
                     </el-button>
                   </p>
-                  <p class="buttons" v-else>
+                  <p class="buttons" v-else>   
                     <el-button class="is-custom"
                     size="small"
                     :progress="d.item.stage_status"
                     :item_id="d.item.id"
-                    :item_type="d.item.type" @click="editItem" type="primary">
+                    :item_type="d.item.type" @click="editItem" type="primary"> 
                       <i class="el-icon-edit"></i> 完善项目
                     </el-button>
                     <el-tooltip effect="dark" content="关闭项目后，预付款自动转入我的钱包" placement="top-start">
-                      <el-button class="" @click="closeItemBtn" :item_id="d.item.id" :index="index" size="small">
+                      <el-button class="" @click="closeItemBtnOngo" :item_id="d.item.id" :index="index" size="small">
                         关闭项目
                       </el-button>
                     </el-tooltip>
@@ -63,7 +63,7 @@
             </div>
 
             <el-pagination
-              v-if="query.total > query.pageSize"
+              v-if="query.total > query.pageSize && contentShowIndex === index"
               class="pagination"
               @current-change="handleCurrentChange"
               :current-page="query.page"
@@ -133,8 +133,8 @@
                       </el-button>
                     </p>
                   </div>
-                  <p class="btn" v-if="false" v-show="d.item.status === -1">
-                    <el-button class="is-custom" @click="delItemBtn" :item_id="d.item.id" size="small" type="primary">
+                  <p class="btn" v-if="true" v-show="d.item.status === -1">
+                    <el-button class="is-custom" @click="delItemBtnPhase(d.item.id)" size="small" type="primary">
                       删除项目
                     </el-button>
                   </p>
@@ -208,7 +208,7 @@
                   <div class="btn" v-show="d.item.is_close">
                     <el-tooltip effect="dark" content="关闭项目后，预付款自动转入我的钱包"    
                       placement="right-end">
-                      <el-button class="" @click="closeItemBtn" :item_id="d.item.id" :index="index"   size="small">
+                      <el-button class="" @click="closeItemBtnDock" :item_id="d.item.id" :index="index"   size="small">
                           关闭项目
                         </el-button>
                       </el-tooltip>
@@ -334,7 +334,7 @@
 
     <el-dialog
       title="提示"
-      v-model="sureDialog"
+      :visible.sync="sureDialog"
       size="tiny">
       <span>{{ sureDialogMessage }}</span>
       <span slot="footer" class="dialog-footer">
@@ -345,6 +345,48 @@
         <input type="hidden" ref="currentType"/>
       </span>
     </el-dialog>
+    <!-- 进行中关闭按钮提示 -->
+    <el-dialog
+      title="提示"
+      :visible.sync="sureDialogOngo"
+      size="tiny">
+      <span>{{ sureDialogMessage }}</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" @click="sureDialog = false">取 消</el-button>
+        <el-button size="small" type="primary" :loading="sureDialogLoadingBtn" @click="sureDialogSubmitOngo">确 定</el-button>
+        <input type="hidden" ref="currentItemId"/>
+        <input type="hidden" ref="currentIndex"/>
+        <input type="hidden" ref="currentType"/>
+      </span>
+    </el-dialog>
+      <!-- 对接中关闭按钮提示 -->
+     <el-dialog
+      title="提示"
+      :visible.sync="sureDialogDock"
+      size="tiny">
+      <span>{{ sureDialogMessage }}</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" @click="sureDialog = false">取 消</el-button>
+        <el-button size="small" type="primary" :loading="sureDialogLoadingBtn" @click="sureDialogSubmitDock">确 定</el-button>
+        <input type="hidden" ref="currentItemId"/>
+        <input type="hidden" ref="currentIndex"/>
+        <input type="hidden" ref="currentType"/>
+      </span>
+    </el-dialog>
+       <!-- 删除按钮提示 -->
+    <!-- <el-dialog
+      title="提示"
+      :visible.sync="sureDialogDelete"
+      size="tiny">
+      <span>{{ sureDialogMessage }}</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" @click="sureDialog = false">取 消</el-button>
+        <el-button size="small" type="primary" :loading="sureDialogLoadingBtn" @click="sureDialogSubmitDelete(list)">确 定</el-button>
+        <input type="hidden" ref="currentItemId"/>
+        <input type="hidden" ref="currentIndex"/>
+        <input type="hidden" ref="currentType"/>
+      </span>
+    </el-dialog> -->
 
   </div>
 </template>
@@ -355,7 +397,7 @@
   import api from '@/api/api'
   import '@/assets/js/format'
   import '@/assets/js/date_format'
-
+  
   export default {
     name: 'vcenter_item_list',
     components: {
@@ -365,9 +407,13 @@
     data () {
       return {
         sureDialog: false,
-        sureDialogMessage: '确认执行此操作？',
+        sureDialogOngo: false,
+        sureDialogDock: false,
+        sureDialogDelete: false,     
+        sureDialogMessage: '确定要关闭项目？',
         sureDialogLoadingBtn: false,
         isLoading: false,
+        contentShowIndex: 0,
         itemList: [],
         itemIngList: [],
         pagination: {},
@@ -420,6 +466,7 @@
           .then(function (response) {
             that.isLoading = false
             if (response.data.meta.status_code === 200) {
+              console.log(response.data.data)
               if (response.data.data) {
                 let data = response.data.data
                 for (let i = 0; i < data.length; i++) {
@@ -498,10 +545,8 @@
                   self.itemList[index].item.status = -1
                   self.itemList[index].item.status_value = '项目关闭'
                   self.itemList[index].item.is_close = false
-                  self.itemList[index].item.is_view_show = false
-                } else if (self.itemIngList[index] && self.itemIngList[index].item.id === itemId) {
-                  self.itemIngList[index].item.status = -1
-                }
+                  self.itemList[index].is_view_show = false
+                } 
               } else {
                 self.$message.error(response.data.meta.message)
               }
@@ -512,6 +557,73 @@
 
           self.sureDialogLoadingBtn = false
           self.sureDialog = false
+        }
+      },
+      // 进行中确认对话框
+      sureDialogSubmitOngo() {
+        let itemId = parseInt(this.$refs.currentItemId.value)
+        let index = parseInt(this.$refs.currentIndex.value)
+        let type = parseInt(this.$refs.currentType.value)
+
+        let self = this
+        this.sureDialogLoadingBtn = true
+
+        if (type === 1) {
+          self.$http.post(api.demandCloseItem, {item_id: itemId})
+            .then(function (response) {
+              self.sureDialogLoadingBtn = false
+              if (response.data.meta.status_code === 200) {
+                if (self.itemList[index] && self.itemList[index].item.id === itemId) {
+                  self.itemList[index].item.status = -1
+                  self.itemList[index].item.status_value = '项目关闭'
+                  self.itemList[index].item.is_close = false
+                  self.itemList[index].is_view_show = false
+                } 
+              } else {
+                self.$message.error(response.data.meta.message)
+              }
+            })
+            .catch(function (error) {
+              self.$message.error(error.message)
+            })
+
+          self.sureDialogLoadingBtn = false
+          self.sureDialogOngo = false
+          self.itemIngList.splice(index, 1) 
+        }
+      },
+      // 对接中关闭确认执行对话框
+      sureDialogSubmitDock() {
+        let itemId = parseInt(this.$refs.currentItemId.value)
+        let index = parseInt(this.$refs.currentIndex.value)
+        let type = parseInt(this.$refs.currentType.value)
+
+        let self = this
+        this.sureDialogLoadingBtn = true
+
+        if (type === 1) {
+          self.$http.post(api.demandCloseItem, {item_id: itemId})
+            .then(function (response) {
+              self.sureDialogLoadingBtn = false
+              if (response.data.meta.status_code === 200) {
+                if (self.itemList[index] && self.itemList[index].item.id === itemId) {
+                  self.itemList[index].item.status = -1
+                  self.itemList[index].item.status_value = '项目关闭'
+                  self.itemList[index].item.is_close = false
+                  self.itemList[index].is_view_show = false
+                  self.itemList.splice(index, 1)
+                  self.loadList(2)
+                } 
+              } else {
+                self.$message.error(response.data.meta.message)
+              }
+            })
+            .catch(function (error) {
+              self.$message.error(error.message)
+            })
+
+          self.sureDialogLoadingBtn = false
+          self.sureDialogDock = false    
         }
       },
       editItem(event) {
@@ -563,8 +675,35 @@
         this.$refs.currentType.value = 1
         this.sureDialog = true
       },
+      // 进行中关闭项目
+      closeItemBtnOngo(event) {
+        this.$refs.currentItemId.value = parseInt(event.currentTarget.getAttribute('item_id'))
+        this.$refs.currentIndex.value = parseInt(event.currentTarget.getAttribute('index'))
+        this.$refs.currentType.value = 1
+        this.sureDialogOngo = true
+      },
+      // 对接中关闭项目
+      closeItemBtnDock(event) {
+        this.$refs.currentItemId.value = parseInt(event.currentTarget.getAttribute('item_id'))
+        this.$refs.currentIndex.value = parseInt(event.currentTarget.getAttribute('index'))
+        this.$refs.currentType.value = 1
+        this.sureDialogDock = true
+      },
       // 关闭项目后删除项目
-      delItemBtn(event) {
+      delItemBtnPhase(id) {
+        let self = this
+        console.log(self.itemList)
+          self.$http.delete(api.deleteItem.format(id))
+            .then(function (response) {
+              if (response.data.meta.status_code === 200) {
+                self.loadList(2)
+              } else {
+                self.$message.error(response.data.meta.message)
+              }
+            })
+            .catch(function (error) {
+              self.$message.error(error.message)
+            })
       },
       // 支付项目资金
       secondPay(event) {

@@ -209,12 +209,12 @@
                 <el-row :gutter="10">
                   <el-col :xs="24" :sm="12" :md="12" :lg="12">
                     <el-form-item label="项目费用" prop="cost">
-                      <el-input v-model="baseForm.cost" placeholder="请添写项目费用"></el-input>
+                      <el-input v-model="baseForm.cost" placeholder="请填写项目费用"></el-input>
                     </el-form-item>
                   </el-col>
                   <el-col :xs="24" :sm="12" :md="12" :lg="12">
                     <el-form-item label="项目工作地点" prop="workplace">
-                      <el-input v-model="baseForm.workplace" placeholder="请添写工作地点"></el-input>
+                      <el-input v-model="baseForm.workplace" placeholder="请填写工作地点"></el-input>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -363,7 +363,7 @@
                 <el-row :gutter="10">
                   <el-col :xs="24" :sm="24" :md="24" :lg="24">
                     <el-form-item label="企业名称" prop="company_name">
-                      <el-input v-model="clientForm.company_name" placeholder="请添写企业名称"></el-input>
+                      <el-input v-model="clientForm.company_name" placeholder="请填写企业名称"></el-input>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -371,17 +371,17 @@
                 <el-row :gutter="10">
                   <el-col :xs="24" :sm="8" :md="8" :lg="8">
                     <el-form-item label="联系人" prop="contact_name">
-                      <el-input v-model="clientForm.contact_name" placeholder="请添写联系人姓名"></el-input>
+                      <el-input v-model="clientForm.contact_name" placeholder="请填写联系人姓名"></el-input>
                     </el-form-item>
                   </el-col>
                   <el-col :xs="24" :sm="8" :md="8" :lg="8">
                     <el-form-item label="联系电话" prop="phone">
-                      <el-input v-model="clientForm.phone" placeholder="请添写联系电话"></el-input>
+                      <el-input v-model="clientForm.phone" placeholder="请填写联系电话"></el-input>
                     </el-form-item>
                   </el-col>
                   <el-col :xs="24" :sm="8" :md="8" :lg="8">
                     <el-form-item label="职位" prop="position">
-                      <el-input v-model="clientForm.position" placeholder="请添写联系人职位"></el-input>
+                      <el-input v-model="clientForm.position" placeholder="请填写联系人职位"></el-input>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -408,7 +408,7 @@
                 <el-row :gutter="10">
                   <el-col :xs="24" :sm="24" :md="24" :lg="24">
                     <el-form-item label="企业名称" prop="design_company_name">
-                      <el-input v-model="serverForm.design_company_name" placeholder="请添写企业名称"></el-input>
+                      <el-input v-model="serverForm.design_company_name" placeholder="请填写企业名称"></el-input>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -416,17 +416,17 @@
                 <el-row :gutter="10">
                   <el-col :xs="24" :sm="8" :md="8" :lg="8">
                     <el-form-item label="联系人" prop="design_contact_name">
-                      <el-input v-model="serverForm.design_contact_name" placeholder="请添写联系人姓名"></el-input>
+                      <el-input v-model="serverForm.design_contact_name" placeholder="请填写联系人姓名"></el-input>
                     </el-form-item>
                   </el-col>
                   <el-col :xs="24" :sm="8" :md="8" :lg="8">
                     <el-form-item label="联系电话" prop="design_phone">
-                      <el-input v-model="serverForm.design_phone" placeholder="请添写联系电话"></el-input>
+                      <el-input v-model="serverForm.design_phone" placeholder="请填写联系电话"></el-input>
                     </el-form-item>
                   </el-col>
                   <el-col :xs="24" :sm="8" :md="8" :lg="8">
                     <el-form-item label="职位" prop="design_position">
-                      <el-input v-model="serverForm.design_position" placeholder="请添写联系人职位"></el-input>
+                      <el-input v-model="serverForm.design_position" placeholder="请填写联系人职位"></el-input>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -511,21 +511,21 @@ export default {
       clientForm: {},
       serverForm: {},
       ruleBaseForm: {
-        name: [{ required: true, message: '请添写项目名称', trigger: 'blur' }]
+        name: [{ required: true, message: '请填写项目名称', trigger: 'blur' }]
       },
       ruleClientForm: {
-        company_name: [{ required: true, message: '请添写企业名称', trigger: 'blur' }],
+        company_name: [{ required: true, message: '请填写企业名称', trigger: 'blur' }],
         contact_name: [{ required: true, message: '请添联系人姓名', trigger: 'blur' }],
-        phone: [{ required: true, message: '请添写联系人电话', trigger: 'blur' }],
-        position: [{ required: true, message: '请添写联系人职位', trigger: 'blur' }],
-        address: [{ required: true, message: '请添写企业详细地址', trigger: 'blur' }]
+        phone: [{ required: true, message: '请填写联系人电话', trigger: 'blur' }],
+        position: [{ required: true, message: '请填写联系人职位', trigger: 'blur' }],
+        address: [{ required: true, message: '请填写企业详细地址', trigger: 'blur' }]
       },
       ruleServerForm: {
-        design_company_name: [{ required: true, message: '请添写企业名称', trigger: 'blur' }],
+        design_company_name: [{ required: true, message: '请填写企业名称', trigger: 'blur' }],
         design_contact_name: [{ required: true, message: '请添联系人姓名', trigger: 'blur' }],
-        design_phone: [{ required: true, message: '请添写联系人电话', trigger: 'blur' }],
-        design_position: [{ required: true, message: '请添写联系人职位', trigger: 'blur' }],
-        design_address: [{ required: true, message: '请添写企业详细地址', trigger: 'blur' }]
+        design_phone: [{ required: true, message: '请填写联系人电话', trigger: 'blur' }],
+        design_position: [{ required: true, message: '请填写联系人职位', trigger: 'blur' }],
+        design_address: [{ required: true, message: '请填写企业详细地址', trigger: 'blur' }]
       },
       isBaseLoadingBtn: false,
       isClientLoadingBtn: false,
