@@ -144,16 +144,16 @@
         },
         ruleForm: {
           account_name: [
-            {required: true, message: '请添写开户人姓名', trigger: 'blur'}
+            {required: true, message: '请填写开户人姓名', trigger: 'blur'}
           ],
           account_bank_id: [
             {type: 'number', required: true, message: '请选择银行', trigger: 'change'}
           ],
           branch_name: [
-            {required: true, message: '请添写开户行信息', trigger: 'blur'}
+            {required: true, message: '请填写开户行信息', trigger: 'blur'}
           ],
           account_number: [
-            {required: true, message: '请添写银行账号', trigger: 'blur'}
+            {required: true, message: '请填写银行账号', trigger: 'blur'}
           ]
         },
         userId: this.$store.state.event.user.id

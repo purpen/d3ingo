@@ -618,8 +618,8 @@
             {type: 'number', required: true, message: '请选择快递公司', trigger: 'change'}
           ],
           logistics_number: [
-            {type: 'number', required: true, message: '请添写快递单号', trigger: 'blur'},
-            {type: 'number', message: '请添写正确的快递单号', trigger: 'blur'}
+            {type: 'number', required: true, message: '请填写快递单号', trigger: 'blur'},
+            {type: 'number', message: '请填写正确的快递单号', trigger: 'blur'}
           ]
         },
         sendInvoiceLoadingBtn: false,

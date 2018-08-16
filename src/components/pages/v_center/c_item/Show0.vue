@@ -314,7 +314,7 @@
           <el-input type="text" v-model="takingPriceForm.price" :placeholder="" @blur="changePriceStyle(2)" @focus="changePriceStyle(1)" auto-complete="off">
             <template slot="prepend">¥</template>
           </el-input>
-          <div class="description red">* 实际报价单位为‘元’,如1万,请添写10000</div>
+          <div class="description red">* 实际报价单位为‘元’,如1万,请填写10000</div>
         </el-form-item>
         <el-form-item label="报价说明" prop="summary" label-width="80px">
           <el-input type="textarea" v-model="takingPriceForm.summary" :autosize="{ minRows: 5, maxRows: 8}"

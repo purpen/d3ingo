@@ -179,9 +179,9 @@ export default {
         cProducts: []
       },
       ruleForm: {
-        name: [{ required: true, message: '请添写项目名称', trigger: 'blur' }],
+        name: [{ required: true, message: '请填写项目名称', trigger: 'blur' }],
         product_features: [
-          { required: true, message: '请添写产品功能或卖点', trigger: 'blur' }
+          { required: true, message: '请填写产品功能或卖点', trigger: 'blur' }
         ],
         industry: [
           {

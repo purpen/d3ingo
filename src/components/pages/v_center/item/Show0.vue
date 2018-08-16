@@ -257,7 +257,8 @@
                   <div class="contract-right minileft">
                     <p v-show="contract.status === 1">
                       <router-link :to="{name: 'vcenterContractDown', params: {unique_id: contract.unique_id}}"
-                                   target="_blank"><i class="fa fa-download" aria-hidden="true"></i> 下载
+                                   target="_blank">
+                                   <i class="fa fa-download" aria-hidden="true"></i> 下载
                       </router-link>
                     </p>
                     <p>
@@ -771,7 +772,7 @@ export default {
         return
       }
       if (!this.evaluate.content) {
-        this.$message.error('请添写评价内容！')
+        this.$message.error('请填写评价内容！')
         return
       }
 

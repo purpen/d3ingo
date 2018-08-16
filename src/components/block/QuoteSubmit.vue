@@ -7,7 +7,7 @@
         <el-row :gutter="20">
           <el-col :xs="24" :sm="8" :md="8" :lg="8">
             <el-form-item label="客户" prop="company_name">
-              <el-input autosize v-model="form.company_name" placeholder="请添写公司名称"></el-input>
+              <el-input autosize v-model="form.company_name" placeholder="请填写公司名称"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -119,8 +119,8 @@
                   <el-form-item
                     :prop="'plan_format.' + index + '.content'"
                     :rules="{
-                    required: true, message: '请添写工作内容', trigger: 'blur'}">
-                    <el-input autosize v-model="form.plan_format[index].content" placeholder="请添写工作内容"></el-input>
+                    required: true, message: '请填写工作内容', trigger: 'blur'}">
+                    <el-input autosize v-model="form.plan_format[index].content" placeholder="请填写工作内容"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="7" :md="7" :lg="7">
@@ -192,8 +192,8 @@
                   <el-form-item
                     :prop="'plan_format.' + index + '.duration'"
                     :rules="[{
-                    required: true, type: 'number', message: '请添写正确天数', trigger: 'blur'},
-                    {min: 1, type: 'number', message: '请添写正确天数', trigger: 'blur'}]">
+                    required: true, type: 'number', message: '请填写正确天数', trigger: 'blur'},
+                    {min: 1, type: 'number', message: '请填写正确天数', trigger: 'blur'}]">
                     <el-input type="number" min="1" autosize v-model.number="form.plan_format[index].duration" placeholder="天数" size="small">
                       <template slot="append">工作日</template>
                     </el-input>
@@ -203,9 +203,9 @@
                   <el-form-item
                     :prop="'plan_format.' + index + '.price'"
                     :rules="[{
-                    required: true, type: 'number', message: '请添写正确的金额', trigger: 'blur'},
-                    {min: 1, type: 'number', message: '请添写正确天数', trigger: 'blur'}]">
-                    <el-input type="number"  min="1" autosize v-model.number="form.plan_format[index].price" @blur="statPrice" placeholder="请添写费用" size="small">
+                    required: true, type: 'number', message: '请填写正确的金额', trigger: 'blur'},
+                    {min: 1, type: 'number', message: '请填写正确天数', trigger: 'blur'}]">
+                    <el-input type="number"  min="1" autosize v-model.number="form.plan_format[index].price" @blur="statPrice" placeholder="请填写费用" size="small">
                       <template slot="append">元</template>
                     </el-input>
                   </el-form-item>
@@ -325,7 +325,7 @@
           <el-row :gutter="20">
             <el-col :xs="24" :sm="24" :md="24" :lg="24">
               <el-form-item label="企业名称" prop="company_name">
-                <el-input autosize v-model="clientForm.company_name" placeholder="请添写企业名称"></el-input>
+                <el-input autosize v-model="clientForm.company_name" placeholder="请填写企业名称"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -333,17 +333,17 @@
           <el-row :gutter="20">
             <el-col :xs="24" :sm="8" :md="8" :lg="8">
               <el-form-item label="联系人" prop="contact_name">
-                <el-input autosize v-model="clientForm.contact_name" placeholder="请添写联系人姓名"></el-input>
+                <el-input autosize v-model="clientForm.contact_name" placeholder="请填写联系人姓名"></el-input>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="8" :md="8" :lg="8">
               <el-form-item label="联系电话" prop="phone">
-                <el-input autosize v-model="clientForm.phone" placeholder="请添写联系电话"></el-input>
+                <el-input autosize v-model="clientForm.phone" placeholder="请填写联系电话"></el-input>
               </el-form-item>
             </el-col>
             <el-col :xs="24" :sm="8" :md="8" :lg="8">
               <el-form-item label="职位" prop="position">
-                <el-input autosize v-model="clientForm.position" placeholder="请添写联系人职位"></el-input>
+                <el-input autosize v-model="clientForm.position" placeholder="请填写联系人职位"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -442,34 +442,34 @@ export default {
         plan_format: []
       },
       ruleForm: {
-        company_name: [{ required: true, message: '请添写客户名称', trigger: 'blur' }],
-        contact_name: [{ required: true, message: '请添写客户联系姓名', trigger: 'blur' }],
-        position: [{ required: true, message: '请添写联系人职位', trigger: 'blur' }],
-        phone: [{ required: true, message: '请添写客户联系电话', trigger: 'blur' }],
+        company_name: [{ required: true, message: '请填写客户名称', trigger: 'blur' }],
+        contact_name: [{ required: true, message: '请填写客户联系姓名', trigger: 'blur' }],
+        position: [{ required: true, message: '请填写联系人职位', trigger: 'blur' }],
+        phone: [{ required: true, message: '请填写客户联系电话', trigger: 'blur' }],
         province: [{ required: true, message: '请选择省份/自治区', trigger: 'change' }],
         city: [{ required: true, type: 'number', message: '请选择城市', trigger: 'change' }],
         area: [{ required: true, message: '请选择地区', trigger: 'change' }],
-        address: [{ required: true, message: '请添写详细地址', trigger: 'blur' }],
-        design_company_name: [{ required: true, message: '请添写客户名称', trigger: 'blur' }],
-        design_contact_name: [{ required: true, message: '请添写客户联系姓名', trigger: 'blur' }],
-        design_position: [{ required: true, message: '请添写联系人职位', trigger: 'blur' }],
-        design_phone: [{ required: true, message: '请添写客户联系电话', trigger: 'blur' }],
+        address: [{ required: true, message: '请填写详细地址', trigger: 'blur' }],
+        design_company_name: [{ required: true, message: '请填写客户名称', trigger: 'blur' }],
+        design_contact_name: [{ required: true, message: '请填写客户联系姓名', trigger: 'blur' }],
+        design_position: [{ required: true, message: '请填写联系人职位', trigger: 'blur' }],
+        design_phone: [{ required: true, message: '请填写客户联系电话', trigger: 'blur' }],
         design_province: [{ required: true, message: '请选择省份/自治区', trigger: 'change' }],
         design_city: [{ required: true, type: 'number', message: '请选择城市', trigger: 'change' }],
         design_area: [{ required: true, message: '请选择地区', trigger: 'change' }],
-        design_address: [{ required: true, message: '请添写详细地址', trigger: 'blur' }],
+        design_address: [{ required: true, message: '请填写详细地址', trigger: 'blur' }],
         summary: [
-          { required: true, message: '请添写项目目标', trigger: 'blur' },
+          { required: true, message: '请填写项目目标', trigger: 'blur' },
           {min: 20, max: 500, message: '长度在 20 到 500 个字符之间', trigger: 'blur'}
         ]
       },
       clientForm: {},
       ruleClientForm: {
-        company_name: [{ required: true, message: '请添写企业名称', trigger: 'blur' }],
+        company_name: [{ required: true, message: '请填写企业名称', trigger: 'blur' }],
         contact_name: [{ required: true, message: '请添联系人姓名', trigger: 'blur' }],
-        phone: [{ required: true, message: '请添写联系人电话', trigger: 'blur' }],
-        position: [{ required: true, message: '请添写联系人职位', trigger: 'blur' }],
-        address: [{ required: true, message: '请添写企业详细地址', trigger: 'blur' }]
+        phone: [{ required: true, message: '请填写联系人电话', trigger: 'blur' }],
+        position: [{ required: true, message: '请填写联系人职位', trigger: 'blur' }],
+        address: [{ required: true, message: '请填写企业详细地址', trigger: 'blur' }]
       },
       clientList: [],
       client: '',
@@ -529,7 +529,7 @@ export default {
         }
 
         if (this.form.plan_format.length === 0) {
-          this.$message.error('请添写项目工作计划及费用')
+          this.$message.error('请填写项目工作计划及费用')
           return
         }
         this.$set(this.form, 'plan', JSON.stringify(this.form.plan_format))

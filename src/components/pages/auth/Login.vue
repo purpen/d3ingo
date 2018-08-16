@@ -62,7 +62,7 @@ export default {
   data() {
     let checkNumber = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error('请添写手机号'))
+        return callback(new Error('请填写手机号'))
       } else {
         if (!Number.isInteger(Number(value))) {
           callback(new Error('手机号只能为数字！'))

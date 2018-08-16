@@ -78,7 +78,7 @@ export default {
   // 公司项目接口
   // 设计公司获取项目订单
   designItemList: '/design/itemList', // 设计公司获取项目列表
-  addQuotation: '/quotation', // 添写报价单
+  addQuotation: '/quotation', // 填写报价单
   updateQuotation: '/quotation/{0}', // PUT 更新报价单
   companyRefuseItemId: '/design/refuseItem/{0}', // get 拒绝推送的项目报价
   designCooperationLists: '/design/cooperationLists', // 已确定合作的项目列表

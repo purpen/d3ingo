@@ -933,22 +933,22 @@ export default {
       pickerOptions0: {},
       rules: {
         // duration: [
-        //   {required: true, type: 'number', message: '请添写阶段所需时间', trigger: 'blur'},
+        //   {required: true, type: 'number', message: '请填写阶段所需时间', trigger: 'blur'},
         //   {min: 1, max: 500, message: '天数必须为大于0小于500的数', trigger: 'blur'}
         // ],
         name: [
           {
-            required: true, message: '请添写项目阶段名称', trigger: 'blur'
+            required: true, message: '请填写项目阶段名称', trigger: 'blur'
           }
         ],
         content: [
           {
-            required: true, message: '请添写交付内容', trigger: 'blur'
+            required: true, message: '请填写交付内容', trigger: 'blur'
           }
         ],
         start_time: [
           {
-            required: true, type: 'date', message: '请添写项目开始时间', trigger: 'change'
+            required: true, type: 'date', message: '请填写项目开始时间', trigger: 'change'
           }
         ]
       }
