@@ -134,7 +134,7 @@
                     </p>
                   </div>
                   <p class="btn" v-if="true" v-show="d.item.status === -1">
-                    <el-button class="is-custom" @click="delItemBtn" :item_id="d.item.id" size="small" type="primary">
+                    <el-button class="is-custom" @click="delItemBtnPhase(d.item.id)" size="small" type="primary">
                       删除项目
                     </el-button>
                   </p>
@@ -466,6 +466,7 @@
           .then(function (response) {
             that.isLoading = false
             if (response.data.meta.status_code === 200) {
+              console.log(response.data.data)
               if (response.data.data) {
                 let data = response.data.data
                 for (let i = 0; i < data.length; i++) {
@@ -611,6 +612,7 @@
                   self.itemList[index].item.is_close = false
                   self.itemList[index].is_view_show = false
                   self.itemList.splice(index, 1)
+                  self.loadList(2)
                 } 
               } else {
                 self.$message.error(response.data.meta.message)
@@ -624,35 +626,6 @@
           self.sureDialogDock = false    
         }
       },
-        // 删除确认执行对话框
-      // sureDialogSubmitDelete(list) {
-      //   let itemId = parseInt(this.$refs.currentItemId.value)
-      //   let index = parseInt(this.$refs.currentIndex.value)
-      //   let type = parseInt(this.$refs.currentType.value)
-
-      //   let self = this
-      //   this.sureDialogLoadingBtn = true
-
-      //   if (type === 1) {
-      //     self.$http.post(api.demandCloseItem, {item_id: itemId})
-      //       .then(function (response) {
-      //         self.sureDialogLoadingBtn = false
-      //         if (response.data.meta.status_code === 200) {
-      //           if (self.itemList[index] && self.itemList[index].item.id === itemId) {
-      //             self.itemList = self.itemList.filter(o => o.itemId != list.itemId)
-      //           } 
-      //         } else {
-      //           self.$message.error(response.data.meta.message)
-      //         }
-      //       })
-      //       .catch(function (error) {
-      //         self.$message.error(error.message)
-      //       })
-
-      //     self.sureDialogLoadingBtn = false
-      //     self.sureDialogDelete = false    
-      //   }
-      // },
       editItem(event) {
         let progress = parseInt(event.currentTarget.getAttribute('progress'))
         let itemId = event.currentTarget.getAttribute('item_id')
@@ -717,13 +690,20 @@
         this.sureDialogDock = true
       },
       // 关闭项目后删除项目
-      delItemBtn(event) {
-        let itemId = event.currentTarget.getAttribute('item_id')
-        let index = parseInt(event.currentTarget.getAttribute('index'))
+      delItemBtnPhase(id) {
         let self = this
-        console.log(itemId)
-        self.itemList.splice(index, 1)
-        // this.itemList[index]=this.itemList[index].filter(list => list.itemId !=event.itemId)
+        console.log(self.itemList)
+          self.$http.delete(api.deleteItem.format(id))
+            .then(function (response) {
+              if (response.data.meta.status_code === 200) {
+                self.loadList(2)
+              } else {
+                self.$message.error(response.data.meta.message)
+              }
+            })
+            .catch(function (error) {
+              self.$message.error(error.message)
+            })
       },
       // 支付项目资金
       secondPay(event) {

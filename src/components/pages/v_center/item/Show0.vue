@@ -258,12 +258,15 @@
                     <p v-show="contract.status === 1">
                       <router-link :to="{name: 'vcenterContractDown', params: {unique_id: contract.unique_id}}"
                                    target="_blank">
-                                   <i class="fa fa-download" aria-hidden="true"></i> 下载
+                                   <!-- <i class="fa fa-download" aria-hidden="true"></i> 下载 -->
+                                    <el-button type="primary" class="contract-right-preview">下载</el-button>
                       </router-link>
                     </p>
                     <p>
                       <router-link :to="{name: 'vcenterContractView', params: {unique_id: contract.unique_id}}"
-                                   target="_blank"><i class="fa fa-eye" aria-hidden="true"></i> 预览
+                                   target="_blank">
+                                   <!-- <i class="fa fa-eye" aria-hidden="true"></i> 预览 -->
+                                    <el-button type="primary" class="contract-right-preview">预览</el-button>
                       </router-link>
                     </p>
                   </div>
