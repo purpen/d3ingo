@@ -127,7 +127,7 @@
       },
       // 根据类型跳转
       redirect(d) {
-        console.log(d)
+        // console.log(d)
         this.showCover = false
         let oldClass = document.getElementById('app').getAttribute('class')
         if (oldClass) {

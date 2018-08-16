@@ -41,7 +41,7 @@
                     @blur="taskNameBlur(ele.id)"
                     v-model="currentTaskForm.name">
                 </p>
-                <el-tooltip effect="dark" :content="ele.time_detail" placement="top">
+                <el-tooltip effect="dark" :content="ele.over_time" placement="top">
                   <p v-if="ele.over_time" :class="['task-date', 'fr', {
                     'task-date-red': ele.over_time_stamp < new Date().getTime()
                     }]">{{ele.over_time | filterOverTime}}
@@ -84,7 +84,7 @@
                       @blur="taskNameBlur(e.id)"
                       v-model="currentTaskForm.name">
                     </p>
-                  <el-tooltip effect="dark" :content="e.time_detail" placement="top">
+                  <el-tooltip effect="dark" :content="e.over_time" placement="top">
                     <p :class="['task-date', 'fr', {
                       'task-date-red': e.over_time_stamp < new Date().getTime()
                       }]">{{e.over_time | filterOverTime}}</p>
@@ -1001,6 +1001,18 @@
     height: 100%;
     border: none;
     padding: 0;
+  }
+  .task-name-input::-webkit-input-placeholder {
+    font-family: PingFangSC-Light, "Microsoft Yahei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  .task-name-input:-moz-placeholder {
+    font-family: PingFangSC-Light, "Microsoft Yahei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  .task-name-input::-moz-placeholder {
+    font-family: PingFangSC-Light, "Microsoft Yahei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  .task-name-input:-ms-input-placeholder {
+    font-family: PingFangSC-Light, "Microsoft Yahei", "Helvetica Neue", Helvetica, Arial, sans-serif;
   }
   .task-name-span {
     position: absolute;
