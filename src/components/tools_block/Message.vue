@@ -73,22 +73,6 @@
           document.getElementById('app').setAttribute('class', oldClass)
           document.childNodes[1].removeAttribute('class', 'disableScroll')
         }
-      },
-      showCover(val) {
-        console.log(val)
-        let oldClass = document.getElementById('app').getAttribute('class')
-        if (oldClass) {
-          oldClass = oldClass.replace(/disableScroll\x20?/g, '')
-        }
-        if (val === '' || val === 'hide') {
-          document.body.removeAttribute('class', 'disableScroll')
-          document.getElementById('app').setAttribute('class', oldClass)
-          document.childNodes[1].removeAttribute('class', 'disableScroll')
-        } else {
-          document.body.setAttribute('class', 'disableScroll')
-          document.getElementById('app').setAttribute('class', 'disableScroll ' + oldClass)
-          document.childNodes[1].setAttribute('class', 'disableScroll')
-        }
       }
     },
     components: {

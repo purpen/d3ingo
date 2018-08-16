@@ -698,17 +698,13 @@
         })
       },
       changeExecute(id) {
-        this.$nextTick(_ => {
-          this.$set(this.currentForm, 'execute_user_id', id)
-          // this.currentForm.execute_user_id = id
-          if (this.executeUser) {
-            this.$set(this.currentForm, 'logo_image', this.executeUser.logo_image)
-            // this.currentForm.logo_image = this.executeUser.logo_image
-          }
-          this.$store.commit('updateTaskListItem', this.currentForm)
-          this.fetchStage()
-          this.showMember = false
-        })
+        this.currentForm.execute_user_id = id
+        if (this.executeUser) {
+          this.currentForm.logo_image = this.executeUser.logo_image
+        }
+        this.$store.commit('updateTaskListItem', this.currentForm)
+        this.fetchStage()
+        this.showMember = false
       },
       removeExecute() {
         this.$http.post(api.tasksExecuteUser, {
@@ -803,7 +799,6 @@
         }
       },
       getTaskMemberList() {
-        this.$store.commit('setTaskMemberList', [])
         this.$http.get(api.taskUsers, {params: {task_id: this.taskState.id}})
         .then(res => {
           if (res.data.meta.status_code === 200) {

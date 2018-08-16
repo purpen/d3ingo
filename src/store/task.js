@@ -177,9 +177,7 @@ let mutations = {
     this.commit('deleteTaskMemberList', id)
   },
   setTaskMemberList(state, obj) {
-    // state.taskMemberList = obj
-    this._vm.$set(state, 'taskMemberList', obj)
-    // Object.assign(state.taskMemberList, obj)
+    state.taskMemberList = obj
   },
   addTaskMemberList(state, obj) {
     state.taskMemberList.unshift(obj)
@@ -198,8 +196,7 @@ let mutations = {
   setExecuteUser(state, userId) {
     state.projectMemberList.forEach((item) => {
       if (item.id === userId) {
-        this._vm.$set(state, 'executeUser', item)
-        // state.executeUser = item
+        state.executeUser = item
       }
     })
   },
