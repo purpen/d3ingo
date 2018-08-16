@@ -10,6 +10,7 @@
             <el-step title="项目创建" description=""></el-step>
             <el-step title="推荐设计公司"></el-step>
             <el-step title="等待设计公司接单(报价)"></el-step>
+            <el-step title="已有设计公司报价"></el-step>
           </el-steps>
         </div>
 
