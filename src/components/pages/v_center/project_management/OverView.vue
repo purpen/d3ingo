@@ -1593,6 +1593,9 @@ export default {
           }
           self.tackleft(self.designStageLists)
           self.formTack = {...res}
+          // if (self.formTack.execute_user_id) {
+          //   self.formTack.log = 
+          // }
           if (self.formTack.type === 1) {
             self.isnodeedit = false
             self.istaskedit = true
