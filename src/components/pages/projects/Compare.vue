@@ -8,7 +8,7 @@
           <el-row :gutter="20">
             <el-col :xs="24" :sm="6" :md="6" :lg="6" v-for="(ele, index) in companyDetails" :key="index">
               <section :class="['company-info', {'active': selectList.indexOf(ele.id) !== -1}]">
-                <div class="logo">
+                <div class="logo" @click="clickSelf(ele.id)">
                   <i :class="['radio', {'active': selectList.indexOf(ele.id) !== -1}]" @click="changeList(ele.id)"></i>
                   <router-link target="_blank" :to="{name: 'companyShow', params: {id: ele.id}}">
                     <img v-if="ele.logo_image" :src="ele.logo_image.logo" :alt="ele.company_name">
@@ -254,6 +254,15 @@ export default {
         this.selectList.splice(index, 1)
       }
     },
+    //点击推荐公司上半部分选中
+    clickSelf(id){
+      let index = this.selectList.indexOf(id)
+      if (index === -1) {
+        this.selectList.push(id)
+      } else {
+        this.selectList.splice(index, 1)
+      }
+    },
     stickCompanySubmit() {
       let companyIds = this.selectList
       if (!companyIds.length) {
@@ -314,10 +323,15 @@ export default {
   .company-info {
     border-radius: 4px;
     background: #fff;
-    border: 2px solid transparent
+    border: 3px solid transparent;
+  }
+  .company-info:hover {
+    border-radius: 4px;
+    border: 3px solid rgba(255, 90, 95,.4);
   }
   .company-info.active {
-    border-color: #ff5a5f
+    border: 3px solid;
+    border-image: -webkit-linear-gradient( #6637FFed, #FF5A5F) 30 30;
   }
   .logo {
     position: relative;

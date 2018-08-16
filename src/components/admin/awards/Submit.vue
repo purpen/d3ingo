@@ -126,10 +126,10 @@ export default {
           { type: 'number', message: '请选择类型', trigger: 'change' }
         ],
         name: [
-          { required: true, message: '请添写名称', trigger: 'blur' }
+          { required: true, message: '请填写名称', trigger: 'blur' }
         ],
         summary: [
-          { required: true, message: '请添写简介', trigger: 'blur' }
+          { required: true, message: '请填写简介', trigger: 'blur' }
         ]
       },
       // 上一页信息

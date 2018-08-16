@@ -140,10 +140,10 @@
         },
         rules: {
           title: [
-            {required: true, message: '请添写作品标题', trigger: 'blur'}
+            {required: true, message: '请填写作品标题', trigger: 'blur'}
           ],
           content: [
-            {required: true, message: '请添写作品介绍', trigger: 'blur'}
+            {required: true, message: '请填写作品介绍', trigger: 'blur'}
           ]
         },
         match: '',

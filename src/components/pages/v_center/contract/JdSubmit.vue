@@ -134,7 +134,7 @@
                       style="margin: 0"
                       :prop="'stages.' + index + '.title'"
                       :rules="{
-                      required: true, message: '请添写阶段标题', trigger: 'blur'
+                      required: true, message: '请填写阶段标题', trigger: 'blur'
                     }"
                     >
                       <el-input v-model="form.stages[index].title" placeholder="阶段标题"></el-input>
@@ -147,7 +147,7 @@
                     <el-form-item
                       :prop="'stages.' + index + '.time'"
                       :rules="{
-                      type: 'number', required: true, message: '请添写工作日', trigger: 'blur'
+                      type: 'number', required: true, message: '请填写工作日', trigger: 'blur'
                     }"
                     >
                       <el-input v-model.number="form.stages[index].time" placeholder="">
@@ -159,7 +159,7 @@
                     <el-form-item
                       :prop="'stages.' + index + '.percentage'"
                       :rules="{
-                      type: 'number', required: true, message: '请添写阶段支付百分比', trigger: 'blur',
+                      type: 'number', required: true, message: '请填写阶段支付百分比', trigger: 'blur',
                       min: 10, max: 50, message: '比例在10-50之间', trigger: 'blur'
                     }"
                     >
@@ -186,7 +186,7 @@
                     <el-form-item
                       :prop="'stages.' + index + '.content.' + i + ''"
                       :rules="{
-                      required: true, message: '请添写内容', trigger: 'blur'
+                      required: true, message: '请填写内容', trigger: 'blur'
                     }"
                     >
                       <el-input v-model="form.stages[index].content[i]" placeholder="阶段内容">
@@ -385,33 +385,33 @@
         },
         ruleForm: {
           demand_company_name: [
-            {required: true, message: '请添写公司名称', trigger: 'blur'}
+            {required: true, message: '请填写公司名称', trigger: 'blur'}
           ],
           demand_company_address: [
-            {required: true, message: '请添写公司地址名称', trigger: 'blur'}
+            {required: true, message: '请填写公司地址名称', trigger: 'blur'}
           ],
           demand_company_phone: [
-            {required: true, message: '请添写联系人方式', trigger: 'blur'}
+            {required: true, message: '请填写联系人方式', trigger: 'blur'}
           ],
           demand_company_legal_person: [
-            {required: true, message: '请添写联系人姓名', trigger: 'blur'}
+            {required: true, message: '请填写联系人姓名', trigger: 'blur'}
           ],
 
           design_company_name: [
-            {required: true, message: '请添写公司名称', trigger: 'blur'}
+            {required: true, message: '请填写公司名称', trigger: 'blur'}
           ],
           design_company_address: [
-            {required: true, message: '请添写公司地址名称', trigger: 'blur'}
+            {required: true, message: '请填写公司地址名称', trigger: 'blur'}
           ],
           design_company_phone: [
-            {required: true, message: '请添写联系人方式', trigger: 'blur'}
+            {required: true, message: '请填写联系人方式', trigger: 'blur'}
           ],
           design_company_legal_person: [
-            {required: true, message: '请添写联系人姓名', trigger: 'blur'}
+            {required: true, message: '请填写联系人姓名', trigger: 'blur'}
           ],
 
           total: [
-            {type: 'number', required: true, message: '请添写项目总金额', trigger: 'blur'}
+            {type: 'number', required: true, message: '请填写项目总金额', trigger: 'blur'}
           ]
         },
         userId: this.$store.state.event.user.id

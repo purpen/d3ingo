@@ -13,14 +13,19 @@
                 <span class="edit fr pointer"  @click="upcount()"></span>
               </div>
               <h3 class="tc-2 fz-20">{{totalItem.count}} 个</h3>
-              <div class="number bb-e6">
-                <el-progress
-                status="exception"
-                :percentage="totalItem.ok_count_percentage>=100?100:totalItem.ok_count_percentage"
-                :show-text = "false"
-                :stroke-width = "8"
-                ></el-progress>
-              </div>
+                <div class="number bb-e6">
+                  <el-tooltip class="item" effect="dark" 
+                    :content="'已完成项目: ' + (totalItem.ok_count_percentage>=100?100:totalItem.ok_count_percentage) + '%'" 
+                    placement="top">
+                    <el-progress
+                      status="exception"
+                      :percentage="totalItem.ok_count_percentage>=100?100:totalItem.ok_count_percentage"
+                      :show-text = "false"
+                      :stroke-width = "8"
+                      >
+                    </el-progress>
+                  </el-tooltip>
+                </div>
               <p class="tc-9 fz-14">已完成项目: <span class="tc-2">{{totalItem.item_counts}}个</span></p>
             </div>
           </el-col>
@@ -52,12 +57,15 @@
               </div>
               <h3 class="tc-2 fz-20">{{totalItem.turnover | formatUnit}} 万元</h3>
               <div class="number bb-e6">
-                <el-progress
-                status="exception"
-                :percentage ="totalItem.ok_turnover_percentage>=100?100:totalItem.ok_turnover_percentage"
-                :show-text = "false"
-                :stroke-width = "8"
-                ></el-progress>
+                <el-tooltip class="item" effect="dark" 
+                  :content="'已收入: ' + (totalItem.ok_turnover_percentage>=100?100:totalItem.ok_turnover_percentage) + '%'" placement="top">
+                  <el-progress
+                  status="exception"
+                  :percentage ="totalItem.ok_turnover_percentage>=100?100:totalItem.ok_turnover_percentage"
+                  :show-text = "false"
+                  :stroke-width = "8"
+                  ></el-progress>
+                </el-tooltip>
               </div>
               <p class="tc-9 fz-14">已收入金额: <span class="tc-2">{{totalItem.ok_turnover | formatUnit}}万元</span></p>
             </div>
@@ -108,8 +116,13 @@
               <div class="number bb-e6">
                 <section class="lines">
                   <!-- <p class="yellow" :style="{width: '25%'}"></p> -->
-                  <p class="green" :style="{width: ratio.ok_count_percentage + '%'}"></p>
-                  <p class="blue" :style="{width: ratio.no_count_percentage + '%'}"></p>
+                  <el-tooltip class="item" effect="dark" :content="'已完成: ' +ratio.ok_count_percentage + '%'" placement="top">
+                    <p class="green" :style="{width: ratio.ok_count_percentage + '%'}"></p>
+                  </el-tooltip>
+                  <el-tooltip class="item" effect="dark" :content="'进行中: '+ratio.no_count_percentage + '%'" placement="top">
+                    <p class="blue" :style="{width: ratio.no_count_percentage + '%'}"></p>
+                  </el-tooltip>
+                 
                   <!-- <p class="red" :style="{width: '25%'}"></p> -->
                 </section>
               </div>
@@ -1772,6 +1785,9 @@ export default {
   }
   .lines p.red {
     background: #ff5a5f
+  }
+  .lines p.green:hover {
+
   }
   .lines p:first-child {
     border-radius: 4px 0 0 4px

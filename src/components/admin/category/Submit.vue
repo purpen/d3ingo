@@ -92,10 +92,10 @@ export default {
           { type: 'number', message: '请选择类型', trigger: 'change' }
         ],
         name: [
-          { required: true, message: '请添写分类名称', trigger: 'blur' }
+          { required: true, message: '请填写分类名称', trigger: 'blur' }
         ],
         content: [
-          { required: true, message: '请添写内容', trigger: 'blur' }
+          { required: true, message: '请填写内容', trigger: 'blur' }
         ]
       },
       msg: ''

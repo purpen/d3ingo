@@ -164,7 +164,7 @@ export default {
   data() {
     var checkNumber = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error('请添写公司注册号!'))
+        return callback(new Error('请填写公司注册号!'))
       }
       setTimeout(() => {
         if (!Number.isInteger(value)) {
@@ -213,21 +213,21 @@ export default {
       },
 
       ruleForm: {
-        company_name: [{ required: true, message: '请添写公司全称', trigger: 'blur' }],
+        company_name: [{ required: true, message: '请填写公司全称', trigger: 'blur' }],
         company_type: [
           {
             type: 'number',
             required: true,
-            message: '请添写公司全称',
+            message: '请填写公司全称',
             trigger: 'change'
           }
         ],
         registration_number: [{ validator: checkNumber, trigger: 'blur' }],
         legal_person: [
-          { required: true, message: '请添写法人真实姓名', trigger: 'blur' }
+          { required: true, message: '请填写法人真实姓名', trigger: 'blur' }
         ],
         document_number: [
-          { required: true, message: '请添写法人证件号码', trigger: 'blur' },
+          { required: true, message: '请填写法人证件号码', trigger: 'blur' },
           { max: 20, min: 4, message: '证件号码格式不正确', trigger: 'blur' }
         ],
         document_type: [
@@ -238,13 +238,13 @@ export default {
             trigger: 'change'
           }
         ],
-        contact_name: [{ required: true, message: '请添写联系人', trigger: 'blur' }],
-        phone: [{ required: true, message: '请添写联系电话', trigger: 'blur' }],
+        contact_name: [{ required: true, message: '请填写联系人', trigger: 'blur' }],
+        phone: [{ required: true, message: '请填写联系电话', trigger: 'blur' }],
         email: [
-          { required: true, message: '请添写联系人邮箱', trigger: 'blur' },
+          { required: true, message: '请填写联系人邮箱', trigger: 'blur' },
           { type: 'email', message: '请输入正确的邮箱格式', trigger: 'blur' }
         ],
-        position: [{ required: true, message: '请添写联系人职位', trigger: 'blur' }]
+        position: [{ required: true, message: '请填写联系人职位', trigger: 'blur' }]
       }
     }
   },

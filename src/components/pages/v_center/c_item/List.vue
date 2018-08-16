@@ -301,10 +301,10 @@
         },
         takingPriceRuleForm: {
           price: [
-            {required: true, type: 'number', message: '请添写报价金额,必须为整数', trigger: 'blur'}
+            {required: true, type: 'number', message: '请填写报价金额,必须为整数', trigger: 'blur'}
           ],
           summary: [
-            {required: true, message: '请添写报价说明', trigger: 'blur'}
+            {required: true, message: '请填写报价说明', trigger: 'blur'}
           ]
         },
         userId: this.$store.state.event.user.id,
