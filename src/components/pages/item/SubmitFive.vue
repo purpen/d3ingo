@@ -20,12 +20,12 @@
             </el-table-column>
             <el-table-column
               prop="key"
-              label="需要添写信息"
+              label="需要填写信息"
               width="180">
             </el-table-column>
             <el-table-column
               prop="info"
-              label="客户添写信息">
+              label="客户填写信息">
               <template slot-scope="scope">
                 <div v-if="scope.row.key === '相关附件'">
                   <p v-for="(d, index) in scope.row.image" :key="index"><a :href="d.file" target="_blank">{{ d.name }}</a></p>
@@ -133,7 +133,7 @@
     methods: {
       publish() {
         if (this.matchCount === 0) {
-          this.comfirmMessage = '您添写的信息没有匹配到合适的设计公司，确认发布？'
+          this.comfirmMessage = '您填写的信息没有匹配到合适的设计公司，确认发布？'
           this.comfirmDialog = true
         } else {
           this.publishSubmit()

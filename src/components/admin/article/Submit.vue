@@ -202,9 +202,9 @@ export default {
         classification_id: [
           { type: 'number', message: '请选择分类', trigger: 'change' }
         ],
-        title: [{ required: true, message: '请添写标题', trigger: 'blur' }],
+        title: [{ required: true, message: '请填写标题', trigger: 'blur' }],
         type: [{ type: 'number', message: '请选择类型', trigger: 'change' }],
-        content: [{ required: true, message: '请添写内容', trigger: 'blur' }]
+        content: [{ required: true, message: '请填写内容', trigger: 'blur' }]
       },
       // 上一页信息
       beforeRoute: {

@@ -505,7 +505,7 @@ let routes = [
     component: require('@/components/pages/item/SubmitTwo')
   },
 
-  // 发布需求(第三步) 添写基本信息(产品设计)
+  // 发布需求(第三步) 填写基本信息(产品设计)
   {
     path: '/item/submit_base/:id',
     name: 'itemSubmitThree',
@@ -517,7 +517,7 @@ let routes = [
     component: require('@/components/pages/item/SubmitThree')
   },
 
-  // 发布需求(第三步) 添写基本信息(UI设计)
+  // 发布需求(第三步) 填写基本信息(UI设计)
   {
     path: '/item/submit_ui_base/:id',
     name: 'itemSubmitUIThree',
@@ -529,7 +529,7 @@ let routes = [
     component: require('@/components/pages/item/SubmitUIThree')
   },
 
-  // 发布需求(第四步) 添写公司信息
+  // 发布需求(第四步) 填写公司信息
   {
     path: '/item/submit_company/:id',
     name: 'itemSubmitFour',
