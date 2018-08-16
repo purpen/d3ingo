@@ -198,7 +198,7 @@
         },
         ruleForm: {
           name: [
-            {required: true, message: '请添写项目名称', trigger: 'blur'}
+            {required: true, message: '请填写项目名称', trigger: 'blur'}
           ],
           complete_content: [
             {type: 'array', required: true, message: '请至少选择一项已有项目设计内容', trigger: 'blur'}
@@ -250,7 +250,7 @@
             let cIndex = that.form.complete_content.indexOf('其它')
             if (cIndex !== -1) {
               if (!that.form.other_content) {
-                that.$message.error('请添写自定义设计内容!')
+                that.$message.error('请填写自定义设计内容!')
                 return false
               }
               that.form.complete_content.splice(cIndex, 1)
