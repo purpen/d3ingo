@@ -877,10 +877,24 @@ export default {
   },
   created() {
     let form = this.formProp
-    if (form.plan) {
+    if (form.plan && form.plan.length > 0) {
       this.$set(form, 'plan_format', form.plan)
     } else {
-      this.$set(form, 'plan_format', [])
+      this.$set(form, 'plan_format', [
+        {
+        content: '',
+        duration: '',
+        price: '',
+        summary: '',
+        arranged: [
+          {
+            name: '',
+            number: ''
+          }
+        ],
+        test: ''
+      }
+      ])
     }
     this.$set(this.taxRate, 'isTax', form.is_tax ? form.is_tax : 0)
     this.$set(this.taxRate, 'isInvoice', form.is_invoice ? form.is_invoince : 1)

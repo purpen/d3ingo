@@ -218,12 +218,16 @@
                   <div class="contract-right minileft">
                     <p v-show="contract.status === 1">
                       <router-link :to="{name: 'vcenterContractDown', params: {unique_id: contract.unique_id}}"
-                                   target="_blank"><i class="fa fa-download" aria-hidden="true"></i> 下载
+                                   target="_blank">
+                                   <!-- <i class="fa fa-download" aria-hidden="true"></i> 下载 -->
+                                   <el-button type="primary" class="contract-right-preview">下载</el-button>
                       </router-link>
                     </p>
                     <p>
                       <router-link :to="{name: 'vcenterContractView', params: {unique_id: contract.unique_id}}"
-                                   target="_blank"><i class="fa fa-eye" aria-hidden="true"></i> 预览
+                                   target="_blank">
+                                   <!-- <i class="fa fa-eye" aria-hidden="true"></i> 预览 -->
+                                   <el-button type="primary" class="contract-right-preview">预览</el-button>
                       </router-link>
                     </p>
                   </div>
@@ -1546,6 +1550,14 @@ export default {
 .contract-right p {
   float: right;
   margin: 10px;
+}
+
+.contract-right.minileft{
+  line-height: 1rem;
+}
+.contract-right-preview{
+  margin-top: -5.25rem;
+  width: 3.6rem;
 }
 
 .contract-content p {
