@@ -440,27 +440,27 @@
       <p class="alert-line-height">如果确定请告诉我们拒绝原因:</p>
       <el-row class="cause">
         <el-col :span="8" :class="[{
-          'iscause': refuse_types.indexOf(1) !== -1
+          'iscause': refuse_types.indexOf('价格高') !== -1
         }]">
-          <div @click="upTpye(1)">
+          <div @click="upType('价格高')">
             <i></i>
-            <span >价格低</span>
+            <span>价格高</span>
           </div>
         </el-col>
         <el-col :span="8" 
           :class="[{
-            'iscause': refuse_types.indexOf(2) !== -1
+            'iscause': refuse_types.indexOf('需求变动') !== -1
           }]"
         >
-          <div @click="upTpye(2)">
+          <div @click="upType('需求变动')">
             <i></i>
-            <span>不擅长</span>
+            <span>需求变动</span>
           </div>
         </el-col>
         <el-col :span="8" :class="[{
-          'iscause': refuse_types.indexOf(10) !== -1
+          'iscause': refuse_types.indexOf('') !== -1
         }]">
-          <div @click="upTpye(10)">
+          <div @click="upType('')">
             <i></i>
             <span>其他</span>
           </div>
@@ -622,7 +622,6 @@ export default {
       // this.comfirmMessage = '您确定要拒绝此公司报价？'
       // this.comfirmDialog = true
       this.noOfferDialog = true
-      console.log('index', event.currentTarget)
     },
     // 提交拒单说明
     commitExplain() {
@@ -646,6 +645,7 @@ export default {
             this.noOfferDialog = false
             this.comfirmLoadingBtn = false
           } else {
+            this.comfirmLoadingBtn = false
             this.$message.error(response.data.meta.message)
           }
         })
@@ -681,7 +681,6 @@ export default {
     // 点击报价详情事件
     showQuotaBtn(obj) {
       this.quota = obj
-      console.log(this.quota)
       this.quotaDialog = true
     },
     // 拒绝设计公司报价提交
@@ -909,7 +908,7 @@ export default {
         })
     },
     // 改拒单类型
-    upTpye(type) {
+    upType(type) {
       if (this.refuse_types.indexOf(type) === -1) {
         this.refuse_types.push(type)
       } else {
@@ -966,7 +965,6 @@ export default {
   },
   created: function() {
     let id = this.$route.params.id
-    console.log(id)
     if (!id) {
       this.$message.error('缺少请求参数!')
       this.$router.push({ name: 'home' })
@@ -987,7 +985,6 @@ export default {
           self.item = response.data.data.item
           // self.info = response.data.data.info
           self.contract = response.data.data.contract
-          console.log(self.contract)
           if (response.data.data.evaluate) {
             self.evaluate = response.data.data.evaluate
           }

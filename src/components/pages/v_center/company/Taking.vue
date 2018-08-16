@@ -86,7 +86,7 @@
                     <el-col :span="4">
                       <div class="editbt">
                         <span v-if="isedit.index === indexc&&isedit.indexd ===indexdt" 
-                          @click="submit('ruleForm',indexc)">保存</span>
+                          @click="submit('ruleForm',indexdt)">保存</span>
                         <span v-else @click="editType(items['item_'+ (indexc+1) +'_'+ (indexdt+1)],indexdt,indexc)">编辑</span>
                       </div>
                     </el-col>

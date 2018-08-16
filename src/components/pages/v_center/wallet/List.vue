@@ -468,9 +468,13 @@
           if (getCorporationInfo) {
             self.corporationInfo = getCorporationInfo
             var str = self.corporationInfo.account_number
-            var reg = /^(\d{4})\d+(\d{4})$/
-            str = str.replace (reg, '$1****$2')
-            self.corporationInfo.account_number = str
+            if (str) {
+              var reg = /^(\d{4})\d+(\d{4})$/
+              str = str.replace (reg, '$1****$2')
+              self.corporationInfo.account_number = str
+            } else {
+              self.corporationInfo.account_number = ''
+            }
           }
         }
       })

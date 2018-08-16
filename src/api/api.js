@@ -60,6 +60,10 @@ export default {
   demandId: '/demand/{0}', // 更改项目领域
   ProductDesignId: '/ProductDesign/{0}', // 更改产品设计基本资料
   UDesignId: '/UDesign/{0}', // 更改UI设计基本资料
+  GraphicId: '/GraphicDesign/{0}', // 更改平面设计详细信息
+  H5Id: '/H5Design/{0}', // 更改H5详细信息
+  PackId: '/PackDesign/{0}', // 更改 包装设计详细信息
+  IllustrationId: '/IllustrationDesign/{0}', // 更改 插画详细信息
   release: '/demand/release', // 发布项目
   recommendListId: '/demand/recommendList/{0}', // 项目获取推荐的设计公司
   demandPush: '/demand/push', // 选定系统推荐的设计公司

@@ -1683,6 +1683,7 @@ export default {
     // 取消编辑子阶段
     cancelTack() {
       this.istaskedit = false
+      this.isuserimg = false
       this.formTack = {}
     },
     // 查看成员

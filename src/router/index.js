@@ -801,6 +801,7 @@ router.beforeEach((to, from, next) => {
   } else {
     // console.log('d3in')
   }
+  store.commit('changeShowMsg', false)
   let oldClass = document.getElementById('app').getAttribute('class')
   if (oldClass) {
     oldClass = oldClass.replace(/disableScroll\x20?/g, '')

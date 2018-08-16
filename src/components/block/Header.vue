@@ -287,12 +287,6 @@
         // this.navdefact()
         this.showCover = ''
         this.showCover2 = ''
-      },
-      eventUser: {
-        handler(val) {
-          console.log(val)
-        },
-        deep: true
       }
     },
     methods: {
@@ -398,7 +392,6 @@
         document.childNodes[1].removeAttribute('class', 'disableScroll')
       },
       showMyView(view) {
-        console.log(11234)
         this.showCover = 'show'
         this.myView = view
         this.$refs.msgList.blur()
@@ -781,6 +774,7 @@
     overflow: hidden;
     border: 1px solid #ccc;
     border-radius: 4px;
+    transition: transform .3s cubic-bezier(.23,1,.32,1) .1s,opacity .3s cubic-bezier(.23,1,.32,1) .1s;
   }
 
   .nav-item .view-msg-plus {

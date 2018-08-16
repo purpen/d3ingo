@@ -1,5 +1,5 @@
 <template>
-  <div class="vcenter-container">
+  <div class="vcenter-container m-b-20">
     <div class="title">
       <h1>{{ projectObject.name }} 项目报价</h1>
     </div>
@@ -1006,7 +1006,9 @@ export default {
     color: #FF5A5F;
     position: relative;
   }
-
+  .m-b-20 {
+    margin-bottom: 20px;
+  }
   .tax-span .before {
     border-radius: 0 0 0 4px;
     cursor: pointer;

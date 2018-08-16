@@ -519,6 +519,59 @@
         <input type="hidden" ref="confirmIndex"/>
       </span>
     </el-dialog>
+        <el-dialog
+      title="拒单说明"
+      v-model="noOfferDialog"
+      size="tiny">
+      <p class="alert-line-height">您确定要拒绝此单么?</p>
+      <p class="alert-line-height">如果确定请告诉我们拒绝原因:</p>
+      <el-row class="cause">
+        <el-col :span="8" :class="[{
+          'iscause': refuse_types.indexOf('不擅长') !== -1
+        }]">
+          <div @click="upType('不擅长')">
+            <i></i>
+            <span>不擅长</span>
+          </div>
+        </el-col>
+        <el-col :span="8" 
+          :class="[{
+            'iscause': refuse_types.indexOf('排期紧张') !== -1
+          }]"
+        >
+          <div @click="upType('排期紧张')">
+            <i></i>
+            <span>排期紧张</span>
+          </div>
+        </el-col>
+        <el-col :span="8" :class="[{
+          'iscause': refuse_types.indexOf('') !== -1
+        }]">
+          <div @click="upType('')">
+            <i></i>
+            <span>其他</span>
+          </div>
+        </el-col>
+      </el-row>
+      <div>
+        <el-input
+          type="textarea"
+          :rows="4"
+          :maxlength="80"
+          placeholder="请输入内容"
+          v-model="summary"
+        >
+        </el-input>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button class="is-custom" @click="noOfferDialog = false">取 消</el-button>
+        <el-button class="is-custom" type="primary" :loading="comfirmLoadingBtn" @click="commitExplain">确 定</el-button>
+        <input type="hidden" ref="companyId"/>
+        <input type="hidden" ref="confirmTargetId"/>
+        <input type="hidden" ref="comfirmType" value="1"/>
+        <input type="hidden" ref="currentIndex"/>
+      </span>
+    </el-dialog>
     <el-dialog title="报价单详情" v-model="quotaDialog" id="quote-dialog" style="width: 880px;margin: auto" size="large" top="2%">
       
       <v-quote-view :formProp="quota"></v-quote-view>
@@ -556,6 +609,9 @@
         secondPayLoadingBtn: false,
         item: {},
         info: {},
+        refuse_types: [], // 拒单选项
+        summary: '', // 拒单原因
+        noOfferDialog: false, // 拒单弹窗
         quotation: null,
         contract: null,
         invoice: [],
@@ -753,6 +809,48 @@
           })
         }
       },
+      // 改拒单类型
+      upType(type) {
+        if (this.refuse_types.indexOf(type) === -1) {
+          this.refuse_types.push(type)
+        } else {
+          for (var i = 0; i < this.refuse_types.length; i++) {
+            if (this.refuse_types[i] === type) {
+              this.refuse_types.splice(i, 1)
+            }
+          }
+        }
+      },
+      // 提交拒单说明
+      commitExplain() {
+        let currentIndex = this.$refs.currentIndex.value
+        let form = {
+          'item_id': this.item.id,
+          'summary': this.summary,
+          'refuse_types': this.refuse_types
+        }
+        if (!this.refuse_types || this.refuse_types.length === 0) {
+          this.$message.error('请至少选择一个原因')
+          return
+        }
+        this.comfirmLoadingBtn = true
+        this.$http.get(api.companyRefuseItemId.format(this.item.id), {params: form}).then(
+          (response) => {
+            if (response.data.meta.status_code === 200) {
+              this.$message.success('提交成功！')
+              this.$router.replace({name: 'vcenterCItemList'})
+              return
+            } else {
+              this.noOfferDialog = false
+              this.comfirmLoadingBtn = false
+              this.$message.error(response.data.meta.message)
+            }
+          })
+          .catch((error) => {
+            this.comfirmLoadingBtn = false
+            this.$message.error(error.message)
+          })
+      },
       // 点击报价详情事件
       showQuotaBtn(obj) {
         this.quota = obj
@@ -782,9 +880,16 @@
       },
       // 拒绝项目确认框
       companyRefuseBtn(event) {
+        let companyId = parseInt(event.currentTarget.getAttribute('company_id'))
+        let index = parseInt(event.currentTarget.getAttribute('index'))
+        this.$refs.companyId.value = companyId
+        this.$refs.currentIndex.value = index
         this.$refs.comfirmType.value = 2
-        this.comfirmMessage = '确认拒绝该项目？'
-        this.comfirmDialog = true
+        this.refuse_types = []
+        this.summary = ''
+        this.noOfferDialog = true
+        // this.comfirmMessage = '确认拒绝该项目？'
+        // this.comfirmDialog = true
       },
       // 确认拒绝项目
       sureRefuseItemSubmit() {
@@ -1129,6 +1234,7 @@
         return
       }
       let uType = this.$store.state.event.user.type
+      console.log('user', this.$store.state.event.user)
       // 如果是设计公司，跳到设计公司项目详情
       if (uType !== 2) {
         this.$router.replace({name: 'vcenterItemShow'})
@@ -1468,7 +1574,47 @@
   .red {
     color: red;
   }
+  .alert-line-height {
+    text-align: center
+  }
+  .cause i {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #e6e6e6;
+  border-radius: 4px;
+  margin-right: 10px;
+  }
 
+  .cause>.el-col>div {
+    line-height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .iscause {
+    color: #FF5A5F;
+  }
+  .iscause i {
+    background: #FF9494;
+    border: 1px solid #FF2929;
+    position: relative;
+  }
+
+  .iscause i:after {
+    transform: rotate(45deg) scaleY(1);
+    position: absolute;
+    left: 4px;
+    top: 1px;
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height:10px;
+    border-bottom:2px solid #fff;
+    border-right: 2px solid #fff;
+  }
   .banner {
     height: 200px;
     text-align: center;
