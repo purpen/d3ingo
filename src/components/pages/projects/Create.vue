@@ -51,7 +51,6 @@ export default {
     },
     submit() {
       if (this.isSucceed) {
-        this.isSucceed = false
         let url = ''
         let row = {}
         let method = ''
@@ -65,15 +64,18 @@ export default {
           method = 'POST'
         }
         if (this.name) {
+          this.isSucceed = false
           this.$http({method: method, url: url, data: row})
           .then(res => {
             if (res.data.meta.status_code === 200) {
               this.isSucceed = true
               let item = res.data.data.item
               if (item) {
+                this.isSucceed = true
                 this.$router.push({name: 'projectSelect', params: {id: item.id}})
               }
             } else {
+              this.isSucceed = true
               this.$message.error(res.data.meta.message)
             }
           }).catch(err => {

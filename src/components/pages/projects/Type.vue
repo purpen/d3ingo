@@ -257,6 +257,9 @@ export default {
             this.designType = this.form.design_types || []
             if (this.form.type) {
               this.type = this.form.type
+              if (this.form.type === 3 || this.form.type === 5) {
+                this.form.other_content2 = this.form.other_content
+              }
             } else {
               this.$message.error('请选择类型')
               this.$router.push({name: 'projectSelect', params: {id: this.id}})
@@ -324,22 +327,17 @@ export default {
               this.$message.error('请完善内容')
               return false
             }
-            row = {
-              design_types: JSON.stringify(this.designType),
-              stage: this.form.stage,
-              complete_content: this.form.complete_content,
-              other_content: this.form.other_content,
-              product_features: this.form.product_features
-            }
-            url = api.UDesignId.format(this.id)
+            // url = api.UDesignId.format(this.id)
           }
         }
         row = {
           design_types: JSON.stringify(this.designType),
           stage: this.form.stage,
           complete_content: this.form.complete_content,
+          other_content: this.form.other_content,
           product_features: this.form.product_features
         }
+        console.log('row', row)
         url = api.UDesignId.format(this.id)
       } else if (this.type === 3) {
         if (!this.designType.length || !this.form.existing_content.length || !this.form.product_features || !this.form.present_situation) {
