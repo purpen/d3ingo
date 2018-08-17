@@ -74,7 +74,10 @@
               label="内容"
               min-width="140">
               <template slot-scope="scope">
-                <p>标题: {{ scope.row.item.name }}</p>
+                <p>标题: {{ scope.row.item.name }}
+                <el-tag v-if="scope.row.item.test_status === 1" class="" type="danger">内测</el-tag>
+                <el-tag v-else-if="scope.row.item.test_status === 2" class="" type="warning">公测</el-tag>
+                </p>
                 <p>类型: {{ scope.row.item.type_label }}</p>
                 <p>预算: {{ scope.row.item.design_cost_value }}</p>
                 <p>周期: {{ scope.row.item.cycle_value }}</p>
