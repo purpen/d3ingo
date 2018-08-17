@@ -103,10 +103,10 @@ export default {
       },
       ruleForm: {
         mark: [
-          { required: true, message: '请添写标识', trigger: 'blur' }
+          { required: true, message: '请填写标识', trigger: 'blur' }
         ],
         name: [
-          { required: true, message: '请添写分类名称', trigger: 'blur' }
+          { required: true, message: '请填写分类名称', trigger: 'blur' }
         ]
       },
       // 上一页信息

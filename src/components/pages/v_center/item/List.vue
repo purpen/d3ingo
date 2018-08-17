@@ -133,8 +133,8 @@
                       </el-button>
                     </p>
                   </div>
-                  <p class="btn" v-if="false" v-show="d.item.status === -1">
-                    <el-button class="is-custom" @click="delItemBtn" :item_id="d.item.id" size="small" type="primary">
+                  <p class="btn" v-if="true" v-show="d.item.status === -1">
+                    <el-button class="is-custom" @click="delItemBtnPhase(d.item.id)" size="small" type="primary">
                       删除项目
                     </el-button>
                   </p>
@@ -373,6 +373,20 @@
         <input type="hidden" ref="currentType"/>
       </span>
     </el-dialog>
+       <!-- 删除按钮提示 -->
+    <!-- <el-dialog
+      title="提示"
+      :visible.sync="sureDialogDelete"
+      size="tiny">
+      <span>{{ sureDialogMessage }}</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" @click="sureDialog = false">取 消</el-button>
+        <el-button size="small" type="primary" :loading="sureDialogLoadingBtn" @click="sureDialogSubmitDelete(list)">确 定</el-button>
+        <input type="hidden" ref="currentItemId"/>
+        <input type="hidden" ref="currentIndex"/>
+        <input type="hidden" ref="currentType"/>
+      </span>
+    </el-dialog> -->
 
   </div>
 </template>
@@ -395,6 +409,7 @@
         sureDialog: false,
         sureDialogOngo: false,
         sureDialogDock: false,
+        sureDialogDelete: false,     
         sureDialogMessage: '确定要关闭项目？',
         sureDialogLoadingBtn: false,
         isLoading: false,
@@ -451,6 +466,7 @@
           .then(function (response) {
             that.isLoading = false
             if (response.data.meta.status_code === 200) {
+              console.log(response.data.data)
               if (response.data.data) {
                 let data = response.data.data
                 for (let i = 0; i < data.length; i++) {
@@ -596,6 +612,7 @@
                   self.itemList[index].item.is_close = false
                   self.itemList[index].is_view_show = false
                   self.itemList.splice(index, 1)
+                  self.loadList(2)
                 } 
               } else {
                 self.$message.error(response.data.meta.message)
@@ -673,7 +690,20 @@
         this.sureDialogDock = true
       },
       // 关闭项目后删除项目
-      delItemBtn(event) {
+      delItemBtnPhase(id) {
+        let self = this
+        console.log(self.itemList)
+          self.$http.delete(api.deleteItem.format(id))
+            .then(function (response) {
+              if (response.data.meta.status_code === 200) {
+                self.loadList(2)
+              } else {
+                self.$message.error(response.data.meta.message)
+              }
+            })
+            .catch(function (error) {
+              self.$message.error(error.message)
+            })
       },
       // 支付项目资金
       secondPay(event) {

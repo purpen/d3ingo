@@ -100,7 +100,7 @@
                             <div class="content">
                               <p>{{ d.name }}</p>
                               <div class="summary-edit" v-if="d.edit">
-                                <textarea v-model="d.summary">{{ d.summary }}</textarea>
+                                <textarea v-model="d.summary"></textarea>
                               </div>
                               <div class="summary" v-else>
                                 <p v-if="d.summary">{{ d.summary }}</p>
@@ -250,10 +250,10 @@ export default {
           { type: 'number', message: '请选择所属奖项', trigger: 'change' }
         ],
         title: [
-          { required: true, message: '请添写标题', trigger: 'blur' }
+          { required: true, message: '请填写标题', trigger: 'blur' }
         ],
         summary: [
-          { required: true, message: '请添写简述内容', trigger: 'blur' }
+          { required: true, message: '请填写简述内容', trigger: 'blur' }
         ]
       },
       // 上一页信息

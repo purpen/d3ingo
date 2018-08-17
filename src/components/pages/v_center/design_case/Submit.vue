@@ -445,13 +445,13 @@
             {type: 'number', message: '请选择所属行业', trigger: 'change'}
           ],
           title: [
-            {required: true, message: '请添写标题', trigger: 'blur'}
+            {required: true, message: '请填写标题', trigger: 'blur'}
           ],
           customer: [
-            {required: true, message: '请添写服务客户', trigger: 'blur'}
+            {required: true, message: '请填写服务客户', trigger: 'blur'}
           ],
           profile: [
-            {required: true, message: '请添写案例描述', trigger: 'blur'},
+            {required: true, message: '请填写案例描述', trigger: 'blur'},
             {min: 10, max: 500, message: '长度在 10 到 500 个字符', trigger: 'blur'}
           ],
           prize: [

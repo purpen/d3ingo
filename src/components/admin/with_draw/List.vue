@@ -123,7 +123,7 @@
         </el-form-item>
 
         <el-form-item label="备注" label-width="80px">
-          <el-input type="textarea" :rows="3" v-model="withDrawForm.summary" placeholder="请添写交易单号及相关说明" auto-complete="off"></el-input>
+          <el-input type="textarea" :rows="3" v-model="withDrawForm.summary" placeholder="请填写交易单号及相关说明" auto-complete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

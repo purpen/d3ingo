@@ -138,7 +138,7 @@ export default {
         stage_status: ''
       },
       ruleForm: {
-        company_name: [{ required: true, message: '请添写公司全称', trigger: 'blur' }],
+        company_name: [{ required: true, message: '请填写公司全称', trigger: 'blur' }],
         company_size: [
           {
             type: 'number',
@@ -147,14 +147,14 @@ export default {
             trigger: 'change'
           }
         ],
-        address: [{ required: true, message: '请添写公司详细地址', trigger: 'blur' }],
-        contact_name: [{ required: true, message: '请添写联系人', trigger: 'blur' }],
-        phone: [{ required: true, message: '请添写联系电话', trigger: 'blur' }],
+        address: [{ required: true, message: '请填写公司详细地址', trigger: 'blur' }],
+        contact_name: [{ required: true, message: '请填写联系人', trigger: 'blur' }],
+        phone: [{ required: true, message: '请填写联系电话', trigger: 'blur' }],
         email: [
-          { required: true, message: '请添写联系人邮箱', trigger: 'blur' },
+          { required: true, message: '请填写联系人邮箱', trigger: 'blur' },
           { type: 'email', message: '请输入正确的邮箱格式', trigger: 'blur' }
         ],
-        position: [{ required: true, message: '请添写联系人职位', trigger: 'blur' }]
+        position: [{ required: true, message: '请填写联系人职位', trigger: 'blur' }]
       },
       msg: ''
     }
@@ -297,7 +297,7 @@ export default {
             that.city = row.company_city === 0 ? '' : row.company_city
             that.district = row.company_area === 0 ? '' : row.company_area
 
-            // 如果是第一次添写，获取公司基本信息
+            // 如果是第一次填写，获取公司基本信息
             if (that.form.stage_status < 3) {
               that.$http.get(api.demandCompany, {}).then(function(response) {
                 if (response.data.meta.status_code === 200) {
