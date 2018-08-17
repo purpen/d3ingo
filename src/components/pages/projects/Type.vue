@@ -63,97 +63,79 @@
           <h3>产品现状</h3>
           <div class="item items-radio">
             <span>
-              <i :class="{'active': form.situation === 1}" @click="addRadio(1, 'situation')">设计理念与需求明确</i>
+              <i :class="{'active': form.present_situation===1}" @click="addRadio(1, 'present_situation')">设计理念与需求明确</i>
             </span>
             <span>
-              <i :class="{'active': form.situation === 2}" @click="addRadio(2, 'situation')">设计理念与需求部分确定/待定</i>
+              <i :class="{'active': form.present_situation === 2}" @click="addRadio(2, 'present_situation')">设计理念与需求部分确定/待定</i>
             </span>
             <span>
-              <i :class="{'active': form.situation === 3}" @click="addRadio(3, 'situation')">无设计理念</i>
+              <i :class="{'active': form.present_situation === 3}" @click="addRadio(3, 'present_situation')">无设计理念</i>
             </span>
             <span></span>
           </div>
           <h3>现有设计内容</h3>
+          
           <div class="item items-radio">
-            <span>
-              <i :class="{'active': form.existing_content === 1}" @click="addRadio(1, 'existing_content')">所需设计内容齐全</i>
+            <span v-for="(ec, indexec) in existingContent" :key="indexec">
+              <i :class="{'active': form.existing_content.indexOf(ec.id) !== -1}"
+                @click="addArray(ec.id, 'existing_content')">{{ec.name}}</i>
             </span>
-            <span>
-              <i :class="{'active': form.existing_content === 2}" @click="addRadio(2, 'existing_content')">有核心视觉元素与标识使用手册</i>
+            <span :class="['hidden', {'show': form.existing_content.indexOf(3) !== -1}]">
+              <el-input v-model="form.other_content2" placeholder="请输入..."></el-input>
             </span>
-            <span>
-              <i :class="{'active': form.existing_content === 3}" @click="addRadio(3, 'existing_content')">只有核心视觉元素</i>
-            </span>
-            <span>
-              <i :class="{'active': form.existing_content === 4}" @click="addRadio(4, 'existing_content')">只有标识使用手册</i>
-            </span>
-            <span>
-              <i :class="{'active': form.existing_content === 5}" @click="addRadio(5, 'existing_content')">没有任何设计元素或内容</i>
-            </span>
-            <span></span>
           </div>
         </section>
         <section v-if="type === 4">
           <h3>项目现状</h3>
           <div class="item items-radio">
             <span>
-              <i :class="{'active': form.situation === 1}" @click="addRadio(1, 'situation')">设计概念清晰</i>
+              <i :class="{'active': form.present_situation === 1}" @click="addRadio(1, 'present_situation')">设计概念清晰</i>
             </span>
             <span>
-              <i :class="{'active': form.situation === 2}" @click="addRadio(2, 'situation')">设计概念模糊</i>
+              <i :class="{'active': form.present_situation === 2}" @click="addRadio(2, 'present_situation')">设计概念模糊</i>
             </span>
             <span>
-              <i :class="{'active': form.situation === 3}" @click="addRadio(3, 'situation')">无设计概念</i>
+              <i :class="{'active': form.present_situation === 3}" @click="addRadio(3, 'present_situation')">无设计概念</i>
             </span>
             <span></span>
           </div>
-          <h3>现有设计内容</h3>
         </section>
         <section v-if="type === 5">
           <h3>项目现状</h3>
           <div class="item items-radio">
             <span>
-              <i :class="{'active': form.situation === 1}" @click="addRadio(1, 'situation')">设计概念清晰</i>
+              <i :class="{'active': form.present_situation === 1}" @click="addRadio(1, 'present_situation')">设计概念清晰</i>
             </span>
             <span>
-              <i :class="{'active': form.situation === 2}" @click="addRadio(2, 'situation')">设计概念模糊</i>
+              <i :class="{'active': form.present_situation === 2}" @click="addRadio(2, 'present_situation')">设计概念模糊</i>
             </span>
             <span>
-              <i :class="{'active': form.situation === 3}" @click="addRadio(3, 'situation')">无设计概念</i>
+              <i :class="{'active': form.present_situation === 3}" @click="addRadio(3, 'present_situation')">无设计概念</i>
             </span>
             <span></span>
           </div>
           <h3>现有设计内容</h3>
           <div class="item items-radio">
-            <span>
-              <i :class="{'active': form.existing_content === 1}" @click="addRadio(1, 'existing_content')">所需设计内容齐全</i>
+            <span v-for="(ec, indexec) in existingContent" :key="indexec">
+              <i :class="{'active': form.existing_content.indexOf(ec.id) !== -1}"
+                @click="addArray(ec.id, 'existing_content')">{{ec.name}}</i>
             </span>
-            <span>
-              <i :class="{'active': form.existing_content === 2}" @click="addRadio(2, 'existing_content')">有核心视觉元素与标识使用手册</i>
+            <span :class="['hidden', {'show': form.existing_content.indexOf(3) !== -1}]">
+              <el-input type="text" v-model="form.other_content2" placeholder="请输入..."></el-input>
             </span>
-            <span>
-              <i :class="{'active': form.existing_content === 3}" @click="addRadio(3, 'existing_content')">只有核心视觉元素</i>
-            </span>
-            <span>
-              <i :class="{'active': form.existing_content === 4}" @click="addRadio(4, 'existing_content')">只有标识使用手册</i>
-            </span>
-            <span>
-              <i :class="{'active': form.existing_content === 5}" @click="addRadio(5, 'existing_content')">没有任何设计元素或内容</i>
-            </span>
-            <span></span>
           </div>
         </section>
         <section v-if="type === 6">
           <h3>项目现状</h3>
           <div class="item items-radio">
             <span>
-              <i :class="{'active': form.situation === 1}" @click="addRadio(1, 'situation')">设计概念清晰</i>
+              <i :class="{'active': form.present_situation === 1}" @click="addRadio(1, 'present_situation')">设计概念清晰</i>
             </span>
             <span>
-              <i :class="{'active': form.situation === 2}" @click="addRadio(2, 'situation')">设计概念模糊</i>
+              <i :class="{'active': form.present_situation === 2}" @click="addRadio(2, 'present_situation')">设计概念模糊</i>
             </span>
             <span>
-              <i :class="{'active': form.situation === 3}" @click="addRadio(3, 'situation')">无设计概念</i>
+              <i :class="{'active': form.present_situation === 3}" @click="addRadio(3, 'present_situation')">无设计概念</i>
             </span>
             <span></span>
           </div>
@@ -202,7 +184,8 @@ export default {
       type: 0,
       designType: [],
       form: {
-        complete_content: []
+        complete_content: [],
+        existing_content: []
       },
       other: '',
       designContent: [
@@ -226,6 +209,20 @@ export default {
           id: 5,
           name: '其他'
         }
+      ],
+      existingContent: [
+        {
+          id: 1,
+          name: '核心视觉元素'
+        },
+        {
+          id: 2,
+          name: '标识使用手册'
+        },
+        {
+          id: 3,
+          name: '其他'
+        }
       ]
     }
   },
@@ -247,9 +244,22 @@ export default {
                 complete_content: []
               })
             }
+            if (!this.form.existing_content) {
+              // this.form.complete_content = []
+              this.form = Object.assign({}, this.form, {
+                existing_content: []
+              })
+            } else {
+              for (var i = 0; i < this.form.existing_content.length; i++) {
+                this.form.existing_content[i] = Number(this.form.existing_content[i])
+              }
+            }
             this.designType = this.form.design_types || []
             if (this.form.type) {
               this.type = this.form.type
+              if (this.form.type === 3 || this.form.type === 5) {
+                this.form.other_content2 = this.form.other_content
+              }
             } else {
               this.$message.error('请选择类型')
               this.$router.push({name: 'projectSelect', params: {id: this.id}})
@@ -317,65 +327,74 @@ export default {
               this.$message.error('请完善内容')
               return false
             }
-            row = {
-              design_types: JSON.stringify(this.designType),
-              stage: this.form.stage,
-              complete_content: this.form.complete_content,
-              other_content: this.form.other_content,
-              product_features: this.form.product_features
-            }
-            url = api.UDesignId.format(this.id)
+            // url = api.UDesignId.format(this.id)
           }
         }
         row = {
           design_types: JSON.stringify(this.designType),
           stage: this.form.stage,
           complete_content: this.form.complete_content,
+          other_content: this.form.other_content,
           product_features: this.form.product_features
         }
+        console.log('row', row)
         url = api.UDesignId.format(this.id)
       } else if (this.type === 3) {
-        if (!this.designType.length || !this.form.existing_content || !this.form.product_features || !this.form.situation) {
+        if (!this.designType.length || !this.form.existing_content.length || !this.form.product_features || !this.form.present_situation) {
           this.$message.error('请完善内容')
           return false
+        }
+        if (this.form.existing_content.indexOf(3) !== -1) {
+          if (!this.form.other_content2) {
+            this.$message.error('请完善内容')
+            return false
+          }
         }
         row = {
           design_types: JSON.stringify(this.designType),
           existing_content: this.form.existing_content,
-          present_situation: this.form.situation,
-          product_features: this.form.product_features
+          present_situation: this.form.present_situation,
+          product_features: this.form.product_features,
+          other_content: this.form.other_content2
         }
         url = api.GraphicId.format(this.id)
       } else if (this.type === 4) {
-        if (!this.form.product_features || !this.form.situation) {
+        if (!this.form.product_features || !this.form.present_situation) {
           this.$message.error('请完善内容')
           return false
         }
         row = {
-          present_situation: this.form.situation,
+          present_situation: this.form.present_situation,
           product_features: this.form.product_features
         }
         url = api.H5Id.format(this.id)
       } else if (this.type === 5) {
-        if (!this.form.product_features || !this.form.situation || !this.form.existing_content) {
+        if (!this.form.product_features || !this.form.present_situation || !this.form.existing_content.length) {
           this.$message.error('请完善内容')
           return false
         }
+        if (this.form.complete_content.indexOf(3) !== -1) {
+          if (!this.form.other_content2) {
+            this.$message.error('请完善内容')
+            return false
+          }
+        }
         row = {
           existing_content: this.form.existing_content,
-          present_situation: this.form.situation,
-          product_features: this.form.product_features
+          present_situation: this.form.present_situation,
+          product_features: this.form.product_features,
+          other_content: this.form.other_content2
         }
         console.log('row', row)
         url = api.PackId.format(this.id)
       } else if (this.type === 6) {
-        if (!this.form.product_features || !this.form.situation || !this.designType.length) {
+        if (!this.form.product_features || !this.form.present_situation || !this.designType.length) {
           this.$message.error('请完善内容')
           return false
         }
         row = {
           design_types: JSON.stringify(this.designType),
-          present_situation: this.form.situation,
+          present_situation: this.form.present_situation,
           product_features: this.form.product_features
         }
         url = api.IllustrationId.format(this.id)
@@ -397,6 +416,9 @@ export default {
       handler(val) {
         if (val.complete_content.indexOf(5) === -1) {
           this.$set(val, 'other_content', '')
+        }
+        if (val.existing_content.indexOf(3) === -1) {
+          this.$set(val, 'other_content2', '')
         }
       },
       deep: true
