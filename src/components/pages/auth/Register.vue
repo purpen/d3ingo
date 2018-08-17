@@ -391,7 +391,7 @@
       form: {
         handler(val) {
           if (val.account.length === 11) {
-            // this.showImgCode = true
+            this.showImgCode = true
             let url = api.check_account.format(val.account)
             this.$http.get(url)
             .then( res => {
