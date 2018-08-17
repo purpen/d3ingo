@@ -138,10 +138,9 @@
                         <el-radio-button 
                         class="el-radio-button__phase"
                         v-for="item in stageOptions"
-                        :label="item.label"
                         :key="item.index"
-                        :value="item.value"
-                        ></el-radio-button>
+                        :label="item.label"
+                        >{{item.label}}个阶段</el-radio-button>
                     </el-radio-group>
                     <!-- <el-select v-model.number="form.sort" placeholder="设置项目阶段">
                       <el-option
@@ -156,9 +155,8 @@
               </el-row>
 
               <div v-for="(d, index) in form.stages" :key="index">
-
-                <p class="title font-size-16 mar-t-b-20">第{{ index + 1 }}阶段</p>
-                <input type="hidden" v-model.number="form.stages[index].sort"/>
+                <p class="title font-size-16 mar-t-b-20">第{{ d.sort }}阶段</p>
+                <input type="hidden" v-model.number="d.sort"/>
                 <el-row :gutter="6">
                   <el-col :span="isMob ? 24 : 12">
                     <el-form-item
@@ -168,7 +166,7 @@
                       required: true, message: '请填写阶段标题', trigger: 'blur'
                     }"
                     >
-                      <el-input v-model="form.stages[index].title" placeholder="阶段标题"></el-input>
+                      <el-input v-model="d.title" placeholder="阶段标题"></el-input>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -181,7 +179,7 @@
                       type: 'number', required: true, message: '请填写工作日', trigger: 'blur'
                     }"
                     >
-                      <el-input v-model.number="form.stages[index].time" placeholder="">
+                      <el-input v-model.number="d.time" placeholder="">
                         <template slot="append">工作日</template>
                       </el-input>
                     </el-form-item>
@@ -194,7 +192,7 @@
                       min: 10, max: 50, message: '比例在10-50之间', trigger: 'blur'
                     }"
                     >
-                      <el-input v-model.number="form.stages[index].percentage" placeholder="阶段百分比"
+                      <el-input v-model.number="d.percentage" placeholder="阶段百分比"
                                 @blur="fetchAmount(index)">
                         <template slot="append">%</template>
                       </el-input>
@@ -204,7 +202,9 @@
                     <el-form-item
                       :prop="'stages.' + index + '.amount'"
                     >
-                      <el-input v-model="form.stages[index].amount" disabled placeholder="">
+                    <!-- 
+                      :prop="'stages.' + index + '.amount'" -->
+                      <el-input v-model="d.amount" disabled placeholder="">
                         <template slot="append">元</template>
                       </el-input>
                     </el-form-item>
@@ -215,12 +215,12 @@
                 <el-row :gutter="10" v-for="(s, i) in d.content" :key="i">
                   <el-col :span="isMob ? 24 : 12">
                     <el-form-item
-                      :prop="'stages.' + index + '.content.' + i + ''"
+                      :prop="s"
                       :rules="{
                       required: true, message: '请填写内容', trigger: 'blur'
                     }"
                     >
-                      <el-input v-model="form.stages[index].content[i]" placeholder="阶段内容">
+                      <el-input v-model="d.content[i]" placeholder="阶段内容">
                         <template slot="append">
                           <el-button @click="removeSubStage" :index="i" :stage_index="index">删除</el-button>
                         </template>
@@ -482,7 +482,6 @@
               that.$message.error('阶段比例之和应为60!')
               return false
             }
-            console.log('row', row)
             let stagePrice = that.form.stage_money
             if (totalAmount - stagePrice) {
               console.log('totalAmount', totalAmount)
@@ -501,9 +500,6 @@
               apiUrl = api.contract
             }
             that.isLoadingBtn = true
-            console.log(method, 'method')
-            console.log(apiUrl, 'url')
-            console.log(row, 'data')
             that.$http({method: method, url: apiUrl, data: row})
               .then(function (response) {
                 console.log(response)
@@ -588,8 +584,7 @@
         let items = []
         for (let i = 2; i < 4; i++) {
           let item = {
-            value: i,
-            label: i + '个阶段'
+            label: i
           }
           items.push(item)
         }
@@ -669,6 +664,7 @@
                           that.form.commission = item.item.commission
                         }
                         if (that.form.item_stage && that.form.item_stage.length > 0) {
+                          let stageList = []
                           for (let i = 0; i < that.form.item_stage.length; i++) {
                             let stageRow = that.form.item_stage[i]
                             let newStageRow = {}
@@ -678,8 +674,11 @@
                             newStageRow.amount = parseFloat(stageRow.amount)
                             newStageRow.time = parseInt(stageRow.time)
                             newStageRow.content = stageRow.content
-                            that.form.stages.push(newStageRow)
+                            stageList.push(newStageRow)
                           }
+                          that.$nextTick(_ => {
+                            that.form.stages = stageList
+                          })
                         }
                       }
 //                      console.log(response.data.data)
