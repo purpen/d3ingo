@@ -840,6 +840,7 @@ export default {
   name: 'projectManagementOverView',
   data () {
     return {
+      socket: null,
       item_id: '', // 项目id
       option: [
         {
