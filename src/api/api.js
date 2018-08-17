@@ -175,8 +175,8 @@ export default {
   addItemToCompany: '/admin/item/addDesignToItem', // 给项目推荐公司
   ConfirmItemToCompany: '/admin/item/trueItem', // 确认项目推荐公司
   forceCloseSubmit: '/admin/item/closeItem', // POST 强制关闭项目并返还款项
-  deleteItem: 'demand/{0}', // DELETE 删除项目
   adminItemTestStatus: '/admin/item/testStatus', // PUT 更改项目类型：内测、公测
+  deleteItem: 'demand/{0}', // DELETE 删除项目
 
   // 需求公司管理
   adminDemandCompanyList: '/admin/demandCompany/lists', // GET 需求公司列表
