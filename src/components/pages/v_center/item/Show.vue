@@ -127,7 +127,7 @@
                     </div>
                   </div>
                   <div class="clear"></div>
-                  <div class="item-bj" v-if="d.quotation">
+                  <div class="item-bj" v-if="d.quotation" ref="anchor" id="anchor">
                     <p class="tc-2 protrude">项目报价:  <span class="tc-6 p-price fw-normal">{{ d.quotation.price }} 元</span> <span class="quota-btn tc-6 fw-normal">&nbsp;&nbsp;<a
                     class="tc-red"
                     href="javascript:void(0);" @click="showQuotaBtn(d.quotation)">详情>></a></span></p>
@@ -513,6 +513,7 @@ export default {
       comfirmLoadingBtn: false,
       comfirmDialog: false,
       noOfferDialog: false,
+      isStop: false,
       comfirmMessage: '确认执行此操作?',
       stickCompanyIds: [],
       stages: [],
@@ -623,6 +624,13 @@ export default {
       // this.comfirmDialog = true
       this.noOfferDialog = true
     },
+    // handleScroll(index) {
+    //   let jump = document.querySelectorAll('.anchor')
+    //   // 获取需要滚动的距离
+    //   let total = jump[index].offsetTop
+    //   // Chrome
+    //   document.body.scrollTop = total
+    // },
     // 提交拒单说明
     commitExplain() {
       let currentIndex = this.$refs.currentIndex.value
@@ -796,7 +804,6 @@ export default {
         .then(function(response) {
           if (response.data.meta.status_code === 200) {
             let offerCompany = response.data.data
-            // console.log(offerCompany)
             for (let i = 0; i < offerCompany.length; i++) {
               let item = offerCompany[i]
               // 是否存在已提交报价的公司
@@ -976,7 +983,6 @@ export default {
       this.$router.replace({ name: 'vcenterCItemShow' })
       return
     }
-
     const self = this
     self.$http
       .get(api.demandId.format(id), {})
@@ -1169,7 +1175,6 @@ export default {
                     }
                     self.stickCompany[i].cases = cases
                   } // endfor
-                  // console.log(self.stickCompany)
                 } else {
                   self.$message.error(stickCompanyResponse.data.meta.message)
                 }
@@ -1310,6 +1315,21 @@ export default {
       .catch(function(error) {
         self.$message.error(error.message)
       })
+  },
+  updated(){
+    // var anchor = this.$refs.anchor
+    // //  document.documentElement.scrollTop = anchor.offsetTop
+    // var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+    // var offsetTop = anchor.offsetTop
+    // console.log(offsetTop)
+      // let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      // let clentHeight = document.body.clientHeight + scrollTop
+      // if (((scrollTop <= this.$refs.anchor.offsetTop) &&
+      //   (this.$refs.anchor.offsetTop <= clentHeight)) ||
+      //   ((scrollTop <= this.$refs.anchor.offsetTop + this.$refs.anchor.offsetHeight) &&
+      //   (this.$refs.anchor.offsetTop + this.$refs.anchor.offsetHeight <= clentHeight))) {
+        // this.isStop = true
+      // }
   }
 }
 </script>
