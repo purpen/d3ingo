@@ -202,6 +202,13 @@ export default {
   adminPayOrderLists: '/admin/payOrder/lists', // GET 订单列表
   adminPayOrderTruePay: '/admin/payOrder/truePay', // POST 确认订单支付款（对公转账）
 
+  // 推荐配置
+  adminWeightSave: '/admin/weight/save', // POST 保存更新权重配置
+  adminWeightShow: '/admin/weight/show', // GET 权重详情
+  adminSaveIntervene: '/admin/saveIntervene', // POST 人工干预分值修改
+  adminTesMatching: '/admin/test/matching', // GET 测试设计公司匹配
+  adminStatisticsList: '/admin/statistics/list', // GET 设计公司信息列表
+
   // 提现管理
   adminWithDrawLists: '/admin/withdrawOrder/lists', // GET 订单列表
   adminWithDrawTruePay: '/admin/withdrawOrder/trueWithdraw', // 确认提现单已提现

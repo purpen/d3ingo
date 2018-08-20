@@ -608,3 +608,6 @@
   .radio-class .el-radio__label {
     font-size: 12px;
   }
+  .region .el-col {
+    padding: 0px 10px;
+  }
