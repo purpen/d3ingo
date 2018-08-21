@@ -324,7 +324,7 @@ export default {
       }
     },
     sale_options() {
-      return con.DESIGN_CASE_SALE_OPTIONS
+      return con.DESIGN_COST_OPTIONS
     }
   },
   methods: {
