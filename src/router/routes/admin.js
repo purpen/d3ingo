@@ -90,7 +90,7 @@ module.exports = [
       title: '推荐公司列表',
       requireAuth: true
     },
-    component: require('@/components/admin/recommend/List')
+    component: require('@/components/admin/recommend/list')
   },
   // 推荐权重配置
   {

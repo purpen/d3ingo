@@ -204,7 +204,7 @@
                     :prop="'plan_format.' + index + '.price'"
                     :rules="[{
                     required: true, type: 'number', message: '请填写正确的金额', trigger: 'blur'},
-                    {min: 1, type: 'number', message: '请填写正确天数', trigger: 'blur'}]">
+                    {min: 1, type: 'number', message: '请填写正确的金额', trigger: 'blur'}]">
                     <el-input type="number"  min="1" autosize v-model.number="form.plan_format[index].price" @blur="statPrice" placeholder="请填写费用" size="small">
                       <template slot="append">元</template>
                     </el-input>
