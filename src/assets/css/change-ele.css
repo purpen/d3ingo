@@ -173,13 +173,9 @@
     border:1px solid rgba(210,210,210,1);
     border-radius:4px;
   }
-  .el-form-item__content .el-radio-button__inner:hover{
-    background: #ff5a5f;
-  }
-
   .el-form-item__content .el-radio-button__orig-radio:checked+.el-radio-button__inner{
-    background-color: #fff;
-    color: #000;
+    background-color: #ff5a5f;
+    color: #fff;
     box-shadow: 0 0 0 0 #ff5a5f;
   }
 
@@ -607,4 +603,7 @@
   }
   .radio-class .el-radio__label {
     font-size: 12px;
+  }
+  .stages-day .el-form-item__error {
+    position: relative
   }

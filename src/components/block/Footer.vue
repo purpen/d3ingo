@@ -34,24 +34,15 @@
         </p>
       </el-col>
 
-      <el-col class="item fllow" :xs="12" :sm="6" :md="6" :lg="6" v-if="prod.name === 0">
+      <el-col class="item fllow" :xs="12" :sm="6" :md="6" :lg="6" v-if="prod.name === ''">
         <p class="title">关注我们</p>
-        <!-- <p class="call clearfix"><span>电话：</span><span><a href="tel:4008798751">4008-798-751</a></span></p> -->
+        <img class="qrcode" :src="require('assets/images/d3in_qr.jpg')">
+        <!-- <p class="call clearfix"><span>电话：</span><span><a href="tel:4008798751">4008-798-751</a></span></p>
         <div class="fshare-box">
           <p class="share" @click="clickwx">
             <i class="wechat"></i>
           </p>
-          <!--
-          <p class="share">
-            <i class="weibo"></i>
-          </p>
-          -->
-          <!--<p class="share">-->
-          <!--<router-link :to="{name: 'test'}" class="">-->
-          <!--<i class="fa fa-qq fa-2x" aria-hidden="true"></i>-->
-          <!--</router-link>-->
-          <!--</p>-->
-        </div>
+        </div> -->
       </el-col>
     </el-row>
     <div class="copy-right" v-if="!isMob">
@@ -280,6 +271,10 @@
   .copy-right p {
     line-height: 1;
     font-size: 12px;
+  }
+  .qrcode {
+    width: 100px;
+    height: 100px;
   }
   @media screen and (min-width: 768px) and (max-width: 1055px) {
     .footer .fllow {

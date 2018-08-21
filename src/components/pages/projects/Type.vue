@@ -63,7 +63,7 @@
           <h3>产品现状</h3>
           <div class="item items-radio">
             <span>
-              <i :class="{'active': form.present_situation === 1}" @click="addRadio(1, 'present_situation')">设计理念与需求明确</i>
+              <i :class="{'active': form.present_situation===1}" @click="addRadio(1, 'present_situation')">设计理念与需求明确</i>
             </span>
             <span>
               <i :class="{'active': form.present_situation === 2}" @click="addRadio(2, 'present_situation')">设计理念与需求部分确定/待定</i>

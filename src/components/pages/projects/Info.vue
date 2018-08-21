@@ -85,7 +85,6 @@ export default {
   data() {
     return {
       id: -1,
-      isSucceed: true,
       form: {
         cycle: '',
         design_cost: '',
@@ -205,38 +204,32 @@ export default {
       }
     },
     submit() {
-      if (this.isSucceed) {
-        if (!this.form.cycle || !this.form.design_cost || !this.form.industry || (!this.province || !this.city)) {
-            this.$message.error('请完善内容')
-            return false
-          }
-          let row = {
-            id: this.id,
-            cycle: this.form.cycle,
-            design_cost: this.form.design_cost,
-            industry: this.form.industry,
-            item_province: this.province,
-            item_city: this.city,
-            random: this.uploadParam['x:random']
-          }
-          let url = api.release
-          this.isSucceed = false
-          this.$http({method: 'post', url: url, data: row})
-          .then(res => {
-            if (res.data.meta.status_code === 200) {
-              this.isSucceed = true
-              console.log(res)
-              this.$router.push({name: 'projectMatch', params: {id: this.id}})
-            } else {
-              this.isSucceed = true
-              this.$message.error(res.data.meta.message)
-            }
-          }).catch(err => {
-            this.isSucceed = true
-            console.error(err)
-          })
-        }
+      if (!this.form.cycle || !this.form.design_cost || !this.form.industry || (!this.province || !this.city)) {
+        this.$message.error('请完善内容')
+        return false
       }
+      let row = {
+        id: this.id,
+        cycle: this.form.cycle,
+        design_cost: this.form.design_cost,
+        industry: this.form.industry,
+        item_province: this.province,
+        item_city: this.city,
+        random: this.uploadParam['x:random']
+      }
+      let url = api.release
+      this.$http({method: 'post', url: url, data: row})
+      .then(res => {
+        if (res.data.meta.status_code === 200) {
+          console.log(res)
+          this.$router.push({name: 'projectMatch', params: {id: this.id}})
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(err => {
+        console.error(err)
+      })
+    }
   },
   computed: {
     CYCLE_OPTIONS() {

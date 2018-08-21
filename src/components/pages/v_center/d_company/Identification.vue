@@ -656,6 +656,7 @@
     display: none;
     position: absolute;
     line-height: 30px;
+    background: #fff;
     border: 2px solid #FF5A5F;
     border-radius: 4px;
     left: 35px;

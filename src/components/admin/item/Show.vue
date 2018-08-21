@@ -382,6 +382,22 @@
             </el-row>
 
           </div>
+          <div class="company-show">
+            <el-row class="item" :gutter="gutter">
+              <el-col :span="spanKey">
+                <p>是否测试数据</p>
+              </el-col>
+              <el-col :span="spanVal">
+                <p v-if="item.test_status === 0">否</p>
+                <p v-else-if="item.test_status === 1">内测</p>
+                <p v-else-if="item.test_status === 2">公测</p>
+              </el-col>
+              <el-col :span="spanOpt">
+                <p><el-button class="is-custom" size="small" @click="setTestBtn">修改</el-button></p>
+              </el-col>
+            </el-row>
+
+          </div>
 
           <div class="form-title">
             <span>状态</span>
@@ -483,6 +499,22 @@
       </span>
     </el-dialog>
 
+    <el-dialog title="设置测试数据" v-model="setTestDataDialog">
+      <el-form label-position="top">
+        <el-form-item label="属性" label-width="200px">
+          <el-radio-group v-model.number="testStatus">
+            <el-radio :label="0">正常</el-radio>
+            <el-radio :label="1">内测</el-radio>
+            <el-radio :label="2">公测</el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="setTestDataDialog = false">取 消</el-button>
+        <el-button type="primary" @click="setTestDataSubmit">确 定</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -538,6 +570,9 @@ export default {
       contractDialog: false,
       quotaDialog: false,
       contractEvt: 0,
+      setTestDataDialog: false,
+      testStatus: 0,
+      isTestDataLoadingBtn: false,
       msg: ''
     }
   },
@@ -668,6 +703,30 @@ export default {
     viewContractBtn(evt) {
       this.contractEvt = evt
       this.contractDialog = true
+    },
+    // 设置是否为测试数据
+    setTestBtn() {
+      this.item.test_status = this.testStatus
+      this.setTestDataDialog = true
+    },
+    // 设置测试数据提交
+    setTestDataSubmit() {
+      this.isTestDataLoadingBtn = true
+      this.$http.put(api.adminItemTestStatus, { item_id: this.itemId, test_status: this.testStatus})
+      .then ((response) => {
+        this.isTestDataLoadingBtn = false
+        if (response.data.meta.status_code === 200) {
+          this.item.test_status = this.testStatus
+          this.setTestDataDialog = false
+          this.$message.success('操作成功！')
+        } else {
+          this.$message.error(response.data.meta.message)
+        }
+      })
+      .catch ((error) => {
+        this.$message.error(error.message)
+        this.isTestDataLoadingBtn = false
+      })
     }
   },
   created: function() {
