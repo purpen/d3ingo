@@ -1121,7 +1121,7 @@ export default {
     // 滚动到今天
     scrollLeft() {
       if (this.designStageLists.length > 0) {
-        if (this.endTimes[0] !== (Date.parse(new Date()) / 1000)) {
+        if (this.endTimes[0] !== (Date.parse(new Date()) / 1000)) { 
           this.$refs.chartlist.scrollLeft = this.newleft * 30 - 15 * 30
         }
       }
