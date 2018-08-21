@@ -3,6 +3,7 @@
     'cloud-content', 'full-height',
     {'slide-mini': leftWidth === 2 && withoutSide,
     'slide-mini-none': isMob}]">
+     <v-menu-left v-if="withoutSide" :currentName="withoutSide? 'cloud_drive' : 'project_management'"></v-menu-left>
     <section :class="['full-height', {'parent-box': withoutSide,
       'parent-box2': !withoutSide,
       'parent-box-mob': isMob}]">
@@ -462,6 +463,7 @@
 <script>
 import api from '@/api/api'
 import vMenu from '@/components/pages/v_center/tools/cloud_drive/Menu'
+import vMenuLeft from '@/components/pages/v_center/Menu'
 import vContent from '@/components/pages/v_center/tools/cloud_drive/CloudContent'
 import Clipboard from 'clipboard'
 import download from 'downloadjs'
@@ -577,6 +579,7 @@ export default {
   },
   components: {
     vMenu,
+    vMenuLeft,
     vContent
     
   },
