@@ -115,7 +115,7 @@
             </div>
             <p class="h3">推荐测试</p>
             <div class="p-t-30">
-              <el-form ref="form" :model="form" :rules="rules2" label-width="120px">
+              <el-form ref="form" :model="form" :rules="rules2" label-width="80px">
                 <el-row>
                   <el-col :span="12">
                     <el-form-item prop="type" label="设计类型">
@@ -430,7 +430,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .h3 {
-    text-align: center;
     font-size: 16px;
   }
   .weight-th {
@@ -440,7 +439,7 @@ export default {
   }
   .submit-bt {
     margin-top: 30px;
-    text-align: center;
+    text-align: right;
   }
   .borderT-1 {
     border-top: 1px solid #e6e6e6;
