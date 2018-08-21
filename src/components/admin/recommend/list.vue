@@ -10,11 +10,11 @@
               <router-link :to="{name: 'adminRecommendList'}" active-class="false" :class="{'item': true}">全部</router-link>
               <!-- 'is-active': menuType == 0 -->
             </div>
-            <div class="fr">
+            <!-- <div class="fr">
               <div class="item add">
                 <i class="el-icon-plus"></i> 添加
               </div>
-            </div>
+            </div> -->
           </div>
           <el-table
             :data="tableData"
@@ -182,7 +182,12 @@ export default {
             }
           }
           self.dialogVisible = false
+        } else {
+          this.$message.error(response.data.meta.message)
         }
+      })
+      .catch ((error) => {
+        this.$message.error(error.message)
       })
     },
     // 分页

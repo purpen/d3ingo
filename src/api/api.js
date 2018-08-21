@@ -75,6 +75,7 @@ export default {
   demandTrueItemDoneId: '/demand/trueItemDone/{0}', // POST 确认项目完成
   demandMatchingCount: '/demand/matchingCount', // POST 获取已匹配公司数量
   demandEvaluate: '/demand/evaluate', // POST 评价设计公司
+  demandUsersEvaluate: '/demand/users/evaluate', // POST 评价设计公司
 
   // 需求方公司管理
   demandCompany: '/demandCompany', // POST 保存需求方公司信息;  GET 获取信息

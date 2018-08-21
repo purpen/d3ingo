@@ -115,45 +115,52 @@
             </div>
             <p class="h3">推荐测试</p>
             <div class="p-t-30">
-              <el-form ref="form" :model="form" label-width="120px">
+              <el-form ref="form" :model="form" :rules="rules2" label-width="120px">
                 <el-row>
                   <el-col :span="12">
-                    <el-select v-model="form.type"
-                      @change="changeType">
-                      <el-option
-                        v-for="t in company_type"
-                        :key="t.id"
-                        :label="t.name"
-                        :value="t.id"
+                    <el-form-item prop="type" label="设计类型">
+                      <el-select v-model="form.type"
+                        @change="changeType"
                         >
-                      </el-option>
-                    </el-select>
+                        <el-option
+                          v-for="t in company_type"
+                          :key="t.id"
+                          :label="t.name"
+                          :value="t.id"
+                          >
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
                   </el-col>
                 </el-row>
                 <el-row>
                   <el-col :span="12">
-                    <el-select v-model="form.design_type"
-                      @change="changeDes"
-                    >
-                      <el-option
-                        v-for="d in designType"
-                        :key="d.id"
-                        :label="d.name"
-                        :value="d.id">
-                      </el-option>
-                    </el-select>
+                    <el-form-item prop="design_type" label="设计类别">
+                      <el-select v-model="form.design_type" multiple
+                        @change="changeDes"
+                      >
+                        <el-option
+                          v-for="d in designType"
+                          :key="d.id"
+                          :label="d.name"
+                          :value="d.id">
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
                   </el-col>
                 </el-row>
                 <el-row>
                   <el-col :span="12">
-                    <el-select v-model="form.design_cost">
-                      <el-option
-                        v-for="s in sale_options"
-                        :key="s.id"
-                        :label="s.name"
-                        :value="s.id">
-                      </el-option>
-                    </el-select>
+                    <el-form-item prop="design_cost" label="设计费用">
+                      <el-select v-model="form.design_cost">
+                        <el-option
+                          v-for="s in sale_options"
+                          :key="s.id"
+                          :label="s.name"
+                          :value="s.id">
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
                   </el-col>
                 </el-row>
                 <!-- <el-row>
@@ -208,32 +215,33 @@
                 class="matching-table"
                 @selection-change="handleSelectionChange"
                 style="width: 100%">
-                <el-table-column
+                <!-- <el-table-column
                   type="selection"
                   width="55">
-                </el-table-column>
-                <el-table-column
+                </el-table-column> -->
+                <!-- <el-table-column
                   prop="id"
                   label="ID"
                   width="60">
+                </el-table-column> -->
+                <el-table-column
+                  prop="company_name"
+                  label="公司名称"
+                  >
                 </el-table-column>
                 <el-table-column
-                  prop="name"
-                  label="名称">
+                  prop="address"
+                  label="详细地址">
                 </el-table-column>
                 <el-table-column
-                  prop="mark"
-                  label="标识">
+                  prop="contact_name"
+                  label="联系人姓名"
+                 >
                 </el-table-column>
                 <el-table-column
-                  prop="user_id"
-                  label="创建人"
-                  width="60">
-                </el-table-column>
-                <el-table-column
-                  prop="type"
-                  label="类型"
-                  width="60">
+                  prop="phone"
+                  label="手机"
+                  >
                 </el-table-column>
               </el-table>
             </div>
@@ -265,7 +273,9 @@ export default {
       formRegion: {},
       desType: 1,
       ruleForm: {},
-      form: {},
+      form: {
+        'design_type': []
+      },
       userId: this.$store.state.event.user.id,
       rules: {
         case: [
@@ -292,6 +302,14 @@ export default {
           {required: true, type: 'number', message: '接单均价权重比不能为空', trigger: 'blur'},
           {type: 'number', min: 0, max: 100, message: '请填写大于等于0小于100的数字', trigger: 'blur'}
         ]
+      },
+      rules2: {
+        type: [
+          {required: true, message: '设计类型不能为空', trigger: 'blur'}
+        ],
+        design_cost: [
+          {required: true, message: '设计价格不能为空', trigger: 'blur'}
+        ]
       }
     }
   },
@@ -312,13 +330,33 @@ export default {
   methods: {
     changeType(val) {
       this.desType = val
-      this.form.design_type = 1
+      this.form.design_type = []
     },
     changeDes(val) {
       console.log('11', val)
     },
     editMatching() {
       console.log('form', this.form)
+      if(this.form.design_type.length === 0) {
+        this.$message.error('设计类型不能为空')
+        return
+      }
+      let row = {
+        'design_types': this.form.design_type,
+        'design_cost': this.form.design_cost,
+        'type': this.form.type
+      }
+      this.$http.post(api.adminTesMatching, row).then(
+        (response) => {
+          if (Number(response.data.meta.status_code) === 200) {
+            this.tableData = response.data.data
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+            this.$message.error(error.message)
+            console.log(error.message)
+          })
     },
     updataWeight(formName) {
       this.$refs[formName].validate((valid) => {
@@ -345,9 +383,11 @@ export default {
                 this.$message({
                   message: '修改成功',
                   type: 'success'
-                });
+                })
+              } else {
+                this.$message.error(response.data.meta.message)
               }
-            } 
+            }
           ).catch((error) => {
             this.$message.error(error.message)
             console.log(error.message)
