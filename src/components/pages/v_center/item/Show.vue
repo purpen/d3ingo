@@ -921,6 +921,12 @@ export default {
           }
         }
       }
+    },
+    anchor() {
+      let anchor = this.$refs.anchor
+      document.getElementById('app').scrollTop = anchor.offsetTop;
+      console.log(document.getElementById('app').scrollTop)
+      // console.log(document.documentElement.scrollTop)
     }
   },
   computed: {
@@ -1317,7 +1323,7 @@ export default {
       })
       .catch(function(error) {
         self.$message.error(error.message)
-      })
+      })  
   },
   updated: function() {
    this.anchor
