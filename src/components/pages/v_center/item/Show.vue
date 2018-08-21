@@ -493,7 +493,7 @@
         <!--<el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>-->
       <!--</div>-->
     </el-dialog>
-
+  <div ref="anchor" id="anchor"></div>
   </div>
 </template>
 
@@ -513,6 +513,7 @@ export default {
       comfirmLoadingBtn: false,
       comfirmDialog: false,
       noOfferDialog: false,
+      isStop: false,
       comfirmMessage: '确认执行此操作?',
       stickCompanyIds: [],
       stages: [],
@@ -799,7 +800,6 @@ export default {
         .then(function(response) {
           if (response.data.meta.status_code === 200) {
             let offerCompany = response.data.data
-            // console.log(offerCompany)
             for (let i = 0; i < offerCompany.length; i++) {
               let item = offerCompany[i]
               // 是否存在已提交报价的公司
@@ -921,12 +921,22 @@ export default {
           }
         }
       }
+    },
+    anchor() {
+      let anchor = this.$refs.anchor
+      document.getElementById('app').scrollTop = anchor.offsetTop;
+      console.log(document.getElementById('app').scrollTop)
+      // console.log(document.documentElement.scrollTop)
     }
   },
   computed: {
     isMob() {
       return this.$store.state.event.isMob
-    }
+    },
+    anchor() {
+      var anchor = this.$refs.anchor
+      document.getElementById('app').scrollTop =  anchor.offsetTop
+    }    
   },
   watch: {
     statusLabel: {
@@ -979,7 +989,6 @@ export default {
       this.$router.replace({ name: 'vcenterCItemShow' })
       return
     }
-
     const self = this
     self.$http
       .get(api.demandId.format(id), {})
@@ -1175,7 +1184,6 @@ export default {
                     }
                     self.stickCompany[i].cases = cases
                   } // endfor
-                  // console.log(self.stickCompany)
                 } else {
                   self.$message.error(stickCompanyResponse.data.meta.message)
                 }
@@ -1315,7 +1323,10 @@ export default {
       })
       .catch(function(error) {
         self.$message.error(error.message)
-      })
+      })  
+  },
+  updated: function() {
+   this.anchor
   }
 }
 </script>

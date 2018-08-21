@@ -797,9 +797,9 @@
     align-items: center;
   }
 
-  .pub .pub-btn {
-    /* padding: 10px 40px 10px 40px; */
-  }
+  /* .pub .pub-btn {
+    padding: 10px 40px 10px 40px;
+  } */
 
   .content-item-box .item {
     border: 1px solid #e6e6e6;

@@ -9,7 +9,7 @@
             <el-col :xs="24" :sm="6" :md="6" :lg="6" v-for="(ele, index) in companyDetails" :key="index">
               <section :class="['company-info', {'active': selectList.indexOf(ele.id) !== -1}]">
                 <div class="logo" @click="clickSelf(ele.id)">
-                  <i :class="['radio', {'active': selectList.indexOf(ele.id) !== -1}]" @click="changeList(ele.id)"></i>
+                  <i :class="['radio', {'active': selectList.indexOf(ele.id) !== -1}]" @click.stop="changeList(ele.id)"></i>
                   <router-link target="_blank" :to="{name: 'companyShow', params: {id: ele.id}}">
                     <img v-if="ele.logo_image" :src="ele.logo_image.logo" :alt="ele.company_name">
                     <img v-else :src="require('assets/images/avatar_100.png')"/>

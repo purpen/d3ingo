@@ -127,7 +127,6 @@
       },
       // 根据类型跳转
       redirect(d) {
-        console.log(d)
         this.showCover = false
         let oldClass = document.getElementById('app').getAttribute('class')
         if (oldClass) {
@@ -136,22 +135,40 @@
         document.body.removeAttribute('class', 'disableScroll')
         document.childNodes[1].removeAttribute('class', 'disableScroll')
         document.getElementById('app').setAttribute('class', oldClass)
-        if (d.type === 2 && this.user.type === 1) {
-          this.$http.get(api.demandId.format(d.target_id))
-          .then(res => {
-            if (res.data && res.data.meta.status_code === 200) {
-              let status = res.data.data.item.status
-              if (status < 4) {
-                this.$router.push({name: 'projectCompare', params: {id: d.target_id}})
+        if (d.type === 2) {
+          if (this.user.type === 1) {
+            this.$http.get(api.demandId.format(d.target_id))
+            .then(res => {
+              if (res.data && res.data.meta.status_code === 200) {
+                  let status = res.data.data.item.status
+                  if (status < 4) {
+                    this.$router.push({name: 'projectCompare', params: {id: d.target_id}})
+                  } else {
+                    this.$router.push({name: 'vcenterItemShow', params: {id: d.target_id}})
+                  }
               } else {
-                this.$router.push({name: 'vcenterItemShow', params: {id: d.target_id}})
+                this.$messgae.error(res.data.meta.message)
               }
-            } else {
-              this.$messgae.error(res.data.meta.message)
-            }
-          })
+            })
+          }
+          if (this.user.type === 2) {
+            this.$http.get(api.designItemId.format(d.target_id))
+            .then(res => {
+              if (res.data && res.data.meta.status_code === 200) {
+                  let status = res.data.data.item.status
+                  if (status < 4) {
+                    this.$messgae.error(res.data.meta.message)
+                  } else {
+                    this.$router.push({name: 'vcenterItemShow', params: {id: d.target_id}})
+                  }
+              } else {
+                this.$messgae.error(res.data.meta.message)
+              }
+            })
+          }
         } else if (d.type === 3) {
           this.$router.push({name: 'vcenterWalletList'})
+          // this.$message.warning('此消息已过期')
         }
       },
       // 请求消息数量
