@@ -361,12 +361,29 @@
                   <p class="ev-c-name">
                     {{ cooperateCompany.design_company.company_name }}
                   </p>
-                  <p>
-                    <el-rate
-                      v-model.number="evaluate.score"
+                  <el-row class="grade">
+                    <el-col :span="8">
+                      <p>设计水平</p>
+                      <el-rate
+                      v-model.number="evaluate.design_level"
                       show-text>
                     </el-rate>
-                  </p>
+                    </el-col>
+                    <el-col :span="8">
+                      <p>响应速度</p>
+                      <el-rate
+                      v-model.number="evaluate.response_speed"
+                      show-text>
+                    </el-rate>
+                    </el-col>
+                    <el-col :span="8">
+                      <p>服务态度</p>
+                      <el-rate
+                      v-model.number="evaluate.service"
+                      show-text>
+                    </el-rate>
+                    </el-col>
+                  </el-row>
                   <p class="ev-c-content">
                     <el-input
                       type="textarea"
@@ -383,29 +400,58 @@
                 </div>
 
                 <div class="evaluate-result clearfix" v-if="item.status === 22">
-                  <p class="ev-c-ava fl">
-                    <img class="avatar" v-if="cooperateCompany.design_company.logo_url"
-                         :src="cooperateCompany.design_company.logo_url" width="50"/>
-                    <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="50"/>
-                  </p>
-                  <div class="eva-content fl">
-                    <p class="ev-c-name">
+                  <el-row>
+                    <el-col :span="2">
+                      <p class="ev-c-ava fl">
+                        <img class="avatar" v-if="cooperateCompany.design_company.logo_url"
+                            :src="cooperateCompany.design_company.logo_url" width="50"/>
+                        <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="50"/>
+                      </p>
+                    </el-col>
+                    <el-col :span="22">
+                      <div class="eva-content">
+                        <p class="ev-c-name">
 
-                      <router-link :to="{name: 'companyShow', params: {id: cooperateCompany.design_company.id}}"
-                                   target="_blank">
-                        {{ cooperateCompany.design_company.company_name }}
-                      </router-link>
-                    </p>
-                    <p class="eva-score">
-                      <el-rate
-                        v-model.number="evaluate.score"
-                        disabled>
-                      </el-rate>
-                    </p>
-                    <p class="ev-c-content">
-                      {{ evaluate.content }}
-                    </p>
-                  </div>
+                          <router-link :to="{name: 'companyShow', params: {id: cooperateCompany.design_company.id}}"
+                                      target="_blank">
+                            {{ cooperateCompany.design_company.company_name }}
+                          </router-link>
+                        </p>
+                        <!-- <p class="eva-score">
+                          <el-rate
+                            v-model.number="evaluate.design_level"
+                            disabled>
+                          </el-rate>
+                        </p> -->
+                        <el-row class="grade pl">
+                          <el-col :span="8">
+                            <p>设计水平</p>
+                            <el-rate
+                            v-model.number="evaluate.design_level"
+                            disabled>
+                          </el-rate>
+                          </el-col>
+                          <el-col :span="8">
+                            <p>响应速度</p>
+                            <el-rate
+                            v-model.number="evaluate.response_speed"
+                            disabled>
+                          </el-rate>
+                          </el-col>
+                          <el-col :span="8">
+                            <p>服务态度</p>
+                            <el-rate
+                            v-model.number="evaluate.service"
+                            disabled>
+                          </el-rate>
+                          </el-col>
+                        </el-row>
+                        <p class="ev-c-content">
+                          {{ evaluate.content }}
+                        </p>
+                      </div>
+                    </el-col>
+                  </el-row>
                 </div>
               </el-collapse-item>
             </el-collapse>
@@ -493,7 +539,7 @@
         <!--<el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>-->
       <!--</div>-->
     </el-dialog>
-
+  <div ref="anchor" id="anchor"></div>
   </div>
 </template>
 
@@ -513,6 +559,7 @@ export default {
       comfirmLoadingBtn: false,
       comfirmDialog: false,
       noOfferDialog: false,
+      isStop: false,
       comfirmMessage: '确认执行此操作?',
       stickCompanyIds: [],
       stages: [],
@@ -541,7 +588,7 @@ export default {
       ],
       statusIconUrl: null,
       evaluate: {
-        score: 0,
+        design_level: 0,
         content: ''
       },
       statusLabel: {
@@ -799,7 +846,6 @@ export default {
         .then(function(response) {
           if (response.data.meta.status_code === 200) {
             let offerCompany = response.data.data
-            // console.log(offerCompany)
             for (let i = 0; i < offerCompany.length; i++) {
               let item = offerCompany[i]
               // 是否存在已提交报价的公司
@@ -876,8 +922,8 @@ export default {
     },
     // 评价设计公司
     evaluateSubmit() {
-      if (this.evaluate.score === 0) {
-        this.$message.error('请选择分数！')
+      if (this.evaluate.design_level === 0 || this.evaluate.response_speed === 0 || this.evaluate.service === 0) {
+        this.$message.error('每项分数至少为一星')
         return
       }
       if (!this.evaluate.content) {
@@ -887,19 +933,21 @@ export default {
 
       let row = {
         item_id: this.item.id,
-        score: this.evaluate.score,
-        content: this.evaluate.content
+        service: this.evaluate.service,
+        content: this.evaluate.content,
+        design_level: this.evaluate.design_level,
+        response_speed: this.evaluate.response_speed
       }
 
       let self = this
       self.evaluateLoadingBtn = true
       self.$http
-        .post(api.demandEvaluate, row)
+        .post(api.demandUsersEvaluate, row)
         .then(function(response) {
           self.evaluateLoadingBtn = false
           if (response.data.meta.status_code === 200) {
             self.item.status = 22
-            self.item.status_value = '已评价'
+            self.item.status_value = '已评价' 
             self.$message.success('评价成功!')
           } else {
             self.$message.error(response.data.meta.message)
@@ -921,12 +969,22 @@ export default {
           }
         }
       }
+    },
+    anchor() {
+      let anchor = this.$refs.anchor
+      document.getElementById('app').scrollTop = anchor.offsetTop;
+      console.log(document.getElementById('app').scrollTop)
+      // console.log(document.documentElement.scrollTop)
     }
   },
   computed: {
     isMob() {
       return this.$store.state.event.isMob
-    }
+    },
+    anchor() {
+      var anchor = this.$refs.anchor
+      document.getElementById('app').scrollTop =  anchor.offsetTop
+    }    
   },
   watch: {
     statusLabel: {
@@ -979,7 +1037,6 @@ export default {
       this.$router.replace({ name: 'vcenterCItemShow' })
       return
     }
-
     const self = this
     self.$http
       .get(api.demandId.format(id), {})
@@ -988,9 +1045,13 @@ export default {
           self.item = response.data.data.item
           // self.info = response.data.data.info
           self.contract = response.data.data.contract
+          let evalu = {}
           if (response.data.data.evaluate) {
-            self.evaluate = response.data.data.evaluate
+            evalu = JSON.parse(response.data.data.evaluate.user_score)
+            evalu.content = response.data.data.evaluate.content
           }
+          self.evaluate = evalu
+          console.log(self.evaluate)
           if (self.contract) {
             self.contract.created_at = self.contract.created_at
               .date_format()
@@ -1175,7 +1236,6 @@ export default {
                     }
                     self.stickCompany[i].cases = cases
                   } // endfor
-                  // console.log(self.stickCompany)
                 } else {
                   self.$message.error(stickCompanyResponse.data.meta.message)
                 }
@@ -1315,7 +1375,10 @@ export default {
       })
       .catch(function(error) {
         self.$message.error(error.message)
-      })
+      })  
+  },
+  updated: function() {
+   this.anchor
   }
 }
 </script>
@@ -1455,6 +1518,12 @@ export default {
   overflow: hidden;
 }
 
+.grade>.el-col:not(:first-child) {
+  border-left: 1px solid #e6e6e6;
+}
+.pl>.el-col:not(:first-child) {
+  padding-left: 20px;
+}
 .select-company-item .case-box a img {
   overflow: hidden;
 }

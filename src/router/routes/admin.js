@@ -82,6 +82,26 @@ module.exports = [
     },
     component: require('@/components/admin/order/List')
   },
+  // 推荐配置公司列表
+  {
+    path: '/admin/recommend/list',
+    name: 'adminRecommendList',
+    meta: {
+      title: '推荐公司列表',
+      requireAuth: true
+    },
+    component: require('@/components/admin/recommend/List')
+  },
+  // 推荐权重配置
+  {
+    path: '/admin/recommend/Submit',
+    name: 'adminRecommendSubmit',
+    meta: {
+      title: '权重配置',
+      requireAuth: true
+    },
+    component: require('@/components/admin/recommend/Submit')
+  },
   // 提现列表
   {
     path: '/admin/with_draw/list',
