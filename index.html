@@ -41,7 +41,7 @@
         return 999 // 不是ie浏览器
       }
     }
-    if (IEVersion() && IEVersion() >= 10) {
+    if (IEVersion() || IEVersion() >= 10) {
       console.log('浏览器可以正常显示')
     } else {
       console.log('浏览器版本太低')

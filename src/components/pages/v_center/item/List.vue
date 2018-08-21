@@ -34,8 +34,9 @@
                       :text-inside="true"
                       :show-text="false"
                       :stroke-width="6"
-                                  :percentage="d.item.progress"
-                                  status="exception"></el-progress>
+                      :percentage="d.item.progress"
+                      status="exception">
+                    </el-progress>
                   </p>
                   <p class="prefect">您的项目需求填写已经完成了{{ d.item.progress }}%。</p>
 
@@ -146,7 +147,7 @@
                       </el-button>
                     </p>
                   </div>
-                  <p class="btn" v-show="d.item.status === 4">
+                  <p class="btn" v-show="d.item.status === 4||d.item.status === 45">
                     <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary"
                                 v-if="d.item.show_offer">查看报价
                     </el-button>
@@ -797,9 +798,9 @@
     align-items: center;
   }
 
-  .pub .pub-btn {
-    /* padding: 10px 40px 10px 40px; */
-  }
+  /* .pub .pub-btn {
+    padding: 10px 40px 10px 40px;
+  } */
 
   .content-item-box .item {
     border: 1px solid #e6e6e6;
