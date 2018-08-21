@@ -146,7 +146,7 @@
                       </el-button>
                     </p>
                   </div>
-                  <p class="btn" v-show="d.item.status === 4">
+                  <p class="btn" v-show="d.item.status === 4 || d.item.status === 45">
                     <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary"
                                 v-if="d.item.show_offer">查看报价
                     </el-button>
@@ -264,7 +264,7 @@
                         </el-button>
                       </p>
                     </div>
-                    <p class="btn" v-show="d.item.status === 4">
+                    <p class="btn" v-show="d.item.status === 4||d.item.status ===45">
                       <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary"
                                   v-if="d.item.show_offer">查看报价
                       </el-button>
