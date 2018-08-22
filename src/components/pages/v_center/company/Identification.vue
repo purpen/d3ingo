@@ -397,7 +397,10 @@
           position: '',
           phone: '',
           email: '',
-
+          province: '',
+          city: '',
+          area: '',
+          phone: '',
           test: ''
         },
 
@@ -674,6 +677,10 @@
                 that.form = response.data.data
                 that.form.registration_number = that.form.registration_number
                 that.form.company_type = that.form.company_type === 0 ? '' : that.form.company_type
+                that.form.province = that.form.province === 0 ? '' : that.form.province
+                that.form.city = that.form.city === 0 ? '' : that.form.city
+                that.form.area = that.form.area === 0 ? '' : that.form.area
+                that.form.phone = that.form.phone === 0 ? '' : that.form.phone
                 that.form.document_type = that.form.document_type === 0 ? '' : that.form.document_type
                 that.companyId = response.data.data.id
                 that.uploadParam['x:target_id'] = response.data.data.id
