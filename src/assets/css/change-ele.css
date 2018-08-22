@@ -607,6 +607,6 @@
   .stages-day .el-form-item__error {
     position: relative
   }
-  .region .el-col {
-    padding: 0px 10px;
+  .region .el-col:not(:last-child) {
+    padding-right: 10px;
   }
