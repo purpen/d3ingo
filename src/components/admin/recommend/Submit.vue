@@ -229,19 +229,19 @@
                   width="60">
                 </el-table-column> -->
                 <el-table-column
-                  label="公司基本信息"
+                  label="公司名称"
                   min-width="120"
+                  prop="company_name"
                   >
-                  <template slot-scope="scope">
-                    <p>全称: {{scope.row.company_name}}</p>
-                    <p>详细地址: {{ scope.row.address }}</p>
-                    <p>联系人姓名: {{ scope.row.contact_name }}</p>
-                    <p>手机: {{ scope.row.phone }}</p>
-                  </template>
                 </el-table-column>
                 <el-table-column
                   prop="design_statistic.design_company_id"
                   label="ID">
+                </el-table-column>
+                <el-table-column
+                  label="公司地址"
+                  prop="dz"
+                  >
                 </el-table-column>
                 <el-table-column
                   prop="design_statistic.average_price"
@@ -363,8 +363,16 @@ export default {
       this.form.design_type = []
     },
     editMatching() {
-      if(this.form.design_type.length === 0) {
+      if (this.form.design_type.length === 0) {
         this.$message.error('设计类型不能为空')
+        return
+      }
+      if (!this.form.city) {
+        this.$message.error('省份不能为空')
+        return
+      }
+      if (!this.form.province) {
+        this.$message.error('城市不能为空')
         return
       }
       let row = {
@@ -381,6 +389,7 @@ export default {
               let res = response.data.data
               for (var i = 0; i < res.length; i++) {
                 res[i].design_statistic.recommend_time = res[i].design_statistic.recommend_time.date_format().format('yy-MM-dd')
+                res[i].dz = res[i].province_value + res[i].city_value
               }
             }
             this.tableData = response.data.data
