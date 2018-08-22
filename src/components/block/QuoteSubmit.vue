@@ -368,10 +368,11 @@
 
     <el-dialog
       title="工作内容备注"
+      :show-close="false"
       :visible.sync="dialogPlanTxt"
       :modal="false"
       width="30%">
-      <div v-if="currentPlanTxtView">
+      <!-- <div v-if="currentPlanTxtView">
         <el-form class="clearfix" label-position="top" label-width="80px">
           <el-form-item prop="currentPlanTxt">
             <el-input type="textarea" :rows="5" :value="currentPlanTxt"></el-input>
@@ -381,8 +382,9 @@
             </el-button>
           </p>
         </el-form>
-      </div>
-      <div v-else>
+      </div> -->
+      <!-- <div v-else> -->
+        <div>
         <el-form class="clearfix" label-position="top" label-width="80px">
           <el-form-item label="" prop="currentPlanTxt">
             <el-input type="textarea" :rows="5" placeholder="请填写工作内容备注" v-model="currentPlanTxt"></el-input>
