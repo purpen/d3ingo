@@ -162,6 +162,11 @@
                     </el-form-item>
                   </el-col>
                 </el-row>
+                <el-row>
+                  <el-col :span="24" class="region">
+                    <region-picker :provinceProp="form.province" :cityProp="form.city"  :isFirstProp="true" :twoSelect="true" :gutter="0" @onchange="changeServer"></region-picker>
+                  </el-col>
+                </el-row>
                 <!-- <el-row>
                   <el-col :span="12">
                     <el-form-item label="案列数量">
@@ -365,7 +370,9 @@ export default {
       let row = {
         'design_types': this.form.design_type,
         'design_cost': this.form.design_cost,
-        'type': this.form.type
+        'type': this.form.type,
+        'province': this.form.province,
+        'city': this.form.city
       }
       this.$http.post(api.adminTesMatching, row).then(
         (response) => {
@@ -427,9 +434,9 @@ export default {
     },
     // 改变城市组件值- 服务信息()
     changeServer: function(obj) {
-      this.$set(this.formRegion, 'province', obj.province)
-      this.$set(this.formRegion, 'city', obj.city)
-      this.$set(this.formRegion, 'area', obj.district)
+      this.$set(this.form, 'province', obj.province)
+      this.$set(this.form, 'city', obj.city)
+      this.$set(this.form, 'area', obj.district)
     },
     weightShow() {
       this.$http.get(api.adminWeightShow).then(
