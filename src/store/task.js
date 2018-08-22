@@ -74,6 +74,11 @@ let mutations = {
       }
     })
     outsideStageList = outsideStageList.filter(item => {
+      if (item.over_time_stamp < new Date().getTime()) {
+        item.time_detail = (item.over_time_stamp / 1000).date_format().format('yyyy年MM月dd日 hh:mm') + ' 已逾期'
+      } else {
+        item.time_detail = (item.over_time_stamp / 1000).date_format().format('yyyy年MM月dd日 hh:mm')
+      }
       return list.indexOf(item.id) === -1
     })
     Object.assign(state.displayObj, {
@@ -120,13 +125,13 @@ let mutations = {
   updateTaskListItem(state, obj) {
     state.taskList.forEach(item => {
       if (item.id === obj.id) {
-        Object.assign(item, obj)
+        // Object.assign(item, obj)
+        item = obj
       }
     })
     this.commit('setDisplayObj', state.taskList)
   },
   updateStageListItem(state, obj) {
-    console.log(obj)
     state.stageList.forEach(item => {
       if (item.id === obj.id) {
         Object.assign(item, obj)
