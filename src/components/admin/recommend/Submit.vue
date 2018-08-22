@@ -137,7 +137,6 @@
                   <el-col :span="12">
                     <el-form-item prop="design_type" label="设计类别">
                       <el-select v-model="form.design_type" multiple
-                        @change="changeDes"
                       >
                         <el-option
                           v-for="d in designType"
@@ -225,22 +224,48 @@
                   width="60">
                 </el-table-column> -->
                 <el-table-column
-                  prop="company_name"
-                  label="公司名称"
+                  label="公司基本信息"
+                  min-width="120"
                   >
+                  <template slot-scope="scope">
+                    <p>全称: {{scope.row.company_name}}</p>
+                    <p>详细地址: {{ scope.row.address }}</p>
+                    <p>联系人姓名: {{ scope.row.contact_name }}</p>
+                    <p>手机: {{ scope.row.phone }}</p>
+                  </template>
                 </el-table-column>
                 <el-table-column
-                  prop="address"
-                  label="详细地址">
+                  prop="design_statistic.design_company_id"
+                  label="ID">
                 </el-table-column>
                 <el-table-column
-                  prop="contact_name"
-                  label="联系人姓名"
+                  prop="design_statistic.average_price"
+                  label="接单均价"
                  >
                 </el-table-column>
                 <el-table-column
-                  prop="phone"
-                  label="手机"
+                  prop="design_statistic.case"
+                  label="作品案例数"
+                  >
+                </el-table-column>
+                <el-table-column
+                  prop="design_statistic.success_rate"
+                  label="成功率"
+                  >
+                </el-table-column>
+                <el-table-column
+                  prop="design_statistic.recommend_count"
+                  label="推荐次数"
+                  >
+                </el-table-column>
+                <el-table-column
+                  prop="design_statistic.recommend_time"
+                  label="最近推荐时间"
+                  >
+                </el-table-column>
+                <el-table-column
+                  prop="design_statistic.intervene"
+                  label="人工干预分值"
                   >
                 </el-table-column>
               </el-table>
@@ -332,11 +357,7 @@ export default {
       this.desType = val
       this.form.design_type = []
     },
-    changeDes(val) {
-      console.log('11', val)
-    },
     editMatching() {
-      console.log('form', this.form)
       if(this.form.design_type.length === 0) {
         this.$message.error('设计类型不能为空')
         return
@@ -349,6 +370,12 @@ export default {
       this.$http.post(api.adminTesMatching, row).then(
         (response) => {
           if (Number(response.data.meta.status_code) === 200) {
+            if (response.data.data && response.data.data.length !== 0) {
+              let res = response.data.data
+              for (var i = 0; i < res.length; i++) {
+                res[i].design_statistic.recommend_time = res[i].design_statistic.recommend_time.date_format().format('yy-MM-dd')
+              }
+            }
             this.tableData = response.data.data
           } else {
             this.$message.error(response.data.meta.message)
@@ -408,7 +435,6 @@ export default {
       this.$http.get(api.adminWeightShow).then(
         (response) => {
           if (response.data.meta.status_code === 200) {
-            console.log(response.data.data)
             this.ruleForm = response.data.data
           }
         } 
@@ -453,5 +479,8 @@ export default {
   }
   .matching-table {
     min-height: 200px;
+  }
+  .matching-table p {
+    font-size: 12px;
   }
 </style>

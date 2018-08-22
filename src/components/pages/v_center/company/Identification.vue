@@ -460,6 +460,7 @@
           that.$message.error('请选择纳税人类型!')
           return false
         }
+        console.log('that.form', that.form)
         that.$refs[formName].validate((valid) => {
           // 验证通过，提交
           if (valid) {
