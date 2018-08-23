@@ -12,6 +12,9 @@
               <router-link :to="{name: 'adminDemandCompanyList'}" active-class="false" :class="{'item': true, 'is-active': menuType == ''}">全部</router-link>
             </div>
             <div class="admin-menu-sub-list">
+              <router-link :to="{name: 'adminDemandCompanyList', query: {type: 3}}" :class="{'item': true, 'is-active': menuType === 3}" active-class="false">待审核</router-link>
+            </div>
+            <div class="admin-menu-sub-list">
               <router-link :to="{name: 'adminDemandCompanyList', query: {type: 1}}" :class="{'item': true, 'is-active': menuType === 1}" active-class="false">通过认证</router-link>
             </div>
             <div class="admin-menu-sub-list">
