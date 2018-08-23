@@ -5,7 +5,7 @@
   'vcenter-right': leftWidth === 2,
         'vcenter-right-mob': isMob}">
     <menu-sub v-if="isShow" :currentRoute="currentRoute"></menu-sub>
-    <router-view v-if="isShow" :projectObject="projectObject"></router-view>
+    <router-view v-if="isShow" :projectObject="projectObject" class="right-auto"></router-view>
   </div>
 </section>
 </template>
@@ -94,8 +94,19 @@ export default {
 </script>
 <style scoped>
 .project-show {
-  /* overflow: hidden; */
+  overflow: hidden;
+  height: 100%;
   /* padding-bottom: 50px; */
+}
+.vcenter-right-plus {
+  height: 100%;
+}
+.right-auto{
+  height: 100%;
+  overflow: auto;
+}
+.vcenter-right {
+  height: 100%;
 }
 .project-management {
   padding-left: 16.66667%;

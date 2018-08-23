@@ -277,6 +277,7 @@
             if (response.data.meta.status_code === 200) {
               self.itemList = response.data.data
               self.query.totalCount = response.data.meta.pagination.total
+              console.log('selfq', self.query)
 
               for (let i = 0; i < self.itemList.length; i++) {
                 let item = self.itemList[i]
@@ -309,6 +310,7 @@
           if (res.data.meta.status_code === 200) {
             this.query.totalCount = res.data.meta.pagination.total
             this.WithdrawList = res.data.data
+            console.log('thisq', this.query)
             for (let i of this.WithdrawList) {
               i.created_at = i.created_at.date_format().format('yyyy-MM-dd hh:mm')
               i.account_number = i.account_number.substring(i.account_number.length - 4)
@@ -416,13 +418,13 @@
       },
       showTransaction() {
         this.record = 'transaction'
-        this.loadList()
+        // this.loadList()
         this.query.page = 1
         this.$router.push ({name: this.$route.name, query: {page: 1}})
       },
       showWithdraw() {
         this.record = 'withdraw'
-        this.getWithdrawList()
+        // this.getWithdrawList()
         this.query.page = 1
         this.$router.push ({name: this.$route.name, query: {page: 1}})
       }
@@ -507,8 +509,15 @@
       this.getStatus ()
     },
     watch: {
-      '$route' (to, from) {
-        // 对路由变化作出响应...
+      // '$route' (to, from) {
+      //   // 对路由变化作出响应...
+      //   if (this.record === 'transaction') {
+      //     this.loadList()
+      //   } else {
+      //     this.getWithdrawList()
+      //   }
+      // }
+      record() {
         if (this.record === 'transaction') {
           this.loadList()
         } else {
