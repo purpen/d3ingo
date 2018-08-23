@@ -1003,6 +1003,15 @@ header {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  line-height: 60px;
+}
+
+/* 项目动态样式 */
+.tc-2 {
+  line-height: 16px;
+}
+.tc-6 {
+  line-height: 10px;
 }
 
 .pm-left a,
