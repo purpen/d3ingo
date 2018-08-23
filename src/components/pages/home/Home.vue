@@ -8,6 +8,7 @@
               <div class="left">
                 <h3 :class="{'m-h3' : isMob}">铟果D³INGO产品创新SaaS平台</h3>
                 <p :class="{'m-p' : isMob}">用设计重塑品质生活</p>
+                <router-link v-if="uType !== 2" to="/item/submit_one">发布项目需求</router-link>
               </div>
               <div class="draw">
                 <img :src="require('assets/images/home/banner/BG02@2x.png')" width="90%" height="auto" alt="">
@@ -16,7 +17,6 @@
             <div class="head-cover">
               <!--<p :class="[{'need': uType !== 2}]"><span>{{tags[0]}}</span>专业设计服务商，<span>{{tags[1]}}</span>成交项目，<span>{{tags[2]}}</span>成交金额</p>-->
               <p :class="[{'need': uType !== 2}]"><span>{{tags[0]}}</span>专业设计服务商，<span>{{tags[1]}}</span>成交项目，<span>{{tags[2]}}</span>成交金额</p>
-              <router-link v-if="uType !== 2" to="/item/submit_one">发布项目需求</router-link>
             </div>
           </div>
         </swiper-slide>
@@ -543,7 +543,18 @@
     flex-direction: column;
     justify-content: center
   }
-
+  .slide .left a {
+    border-radius: 30px;
+    background: #FF5A5F;
+    display: block;
+    width: 180px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    color: #fff;
+    font-size: 16px;
+    margin-top: 15px;
+  }
   .slide .draw {
     height: 100%;
     flex: 1;
