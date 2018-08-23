@@ -140,10 +140,16 @@
           </el-table>
 
           <el-dialog title="请填写拒绝原因" :visible.sync="dialogVisible" size="tiny">
-            <el-input v-model="verify.refuseRease"></el-input>
+            <el-form v-model="verify" ref="verifyForm" :rules="verifyForm" @submit.native.prevent>
+              <el-form-item prop="refuseRease">
+                <el-input v-model="verify.refuseRease" placeholder="请填写拒绝原因"></el-input>
+              </el-form-item>
+            </el-form>
             <span slot="footer" class="dialog-footer">
               <el-button size="small" @click="dialogVisible = false">取 消</el-button>
-              <el-button size="small" type="primary" @click="setVerify(verify.index, verify.item, verify.evt, verify.refuseRease)">确 定</el-button>
+              <el-button size="small" type="primary" v-if="verify.refuseRease" @click="setVerify(verify.index, verify.item, verify.evt, verify.refuseRease)">确 定</el-button>
+              <el-button size="small" type="primary" class="button" v-else>确 定</el-button>
+
             </span>
           </el-dialog>
 
@@ -195,7 +201,12 @@ export default {
         refuseRease: ''
       },
       dialogVisible: false,
-      msg: ''
+      msg: '',
+      verifyForm: {
+        refuseRease: [
+        {required: true, message: '请填写拒绝原因', trigger: 'blur'}
+        ]
+      }
     }
   },
   methods: {
@@ -321,5 +332,9 @@ export default {
     display: block;
     margin-bottom: 8px;
     border-radius: 4px;
+  }
+  .dialog-footer .button {
+    background-color: #cacaca;
+    border-color: #cacaca;
   }
 </style>
