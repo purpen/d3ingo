@@ -162,7 +162,7 @@
               </el-col>
             </el-row>
             <div class="sub-title">
-              <span>银行卡信息&nbsp;</span>
+              <span>公司银行账户信息&nbsp;</span>
               <!-- <i class="hint"></i> -->
             </div>
               <el-row :gutter="24">
