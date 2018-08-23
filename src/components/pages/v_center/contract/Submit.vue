@@ -211,11 +211,10 @@
                   </el-col>
 
                 </el-row>
-
                 <el-row :gutter="10" v-for="(s, i) in d.content" :key="i">
                   <el-col :span="isMob ? 24 : 12">
                     <el-form-item
-                      :prop="s"
+                      :prop="'stages.' + index + '.content.' + i + ''"
                       :rules="{
                       required: true, message: '请填写内容', trigger: 'blur'
                     }"
@@ -228,9 +227,9 @@
                     </el-form-item>
                   </el-col>
                 </el-row>
-
-                <div class="add-substage" @click="addSubStage" :index="index"><i class="fa fa-plus-circle"
-                                                                                 aria-hidden="true"></i> 添加交付内容
+                <div class="add-substage" @click="addSubStage" :index="index">
+                  <i class="fa fa-plus-circle" aria-hidden="true"></i> 
+                  添加交付内容
                 </div>
                 <div class="blank20"></div>
               </div>
@@ -431,7 +430,9 @@
           design_company_legal_person: [
             {required: true, message: '请填写联系人姓名', trigger: 'blur'}
           ],
-
+          // stages: {
+          //    content: [{required: true, message: '不能为空', trigger: 'blur'}],
+          // },
           total: [
             {type: 'number', required: true, message: '请填写项目总金额', trigger: 'blur'}
           ]
@@ -650,10 +651,10 @@
                         contract.stages = []
                         contract.sort = contract.item_stage.length
                         contract.total = parseFloat(contract.total)
-                        contract.warranty_money = parseFloat(contract.commission)
+                        contract.warranty_money = contract.commission ? parseFloat(contract.commission) : 0
                         contract.first_payment = parseFloat(contract.first_payment)
                         contract.stage_money = parseFloat(contract.total.sub(contract.first_payment))
-                        contract.tax_price = parseFloat(contract.tax_price)
+                        contract.tax_price = contract.tax_price ? parseFloat(contract.tax_price) : 0
                         contract.first_rest_payment = parseFloat(contract.first_payment.sub(contract.warranty_money.add(contract.tax_price)))
                         that.form = contract
                         if (!that.form.thn_company_name) {
@@ -707,9 +708,9 @@
                 that.form.demand_company_address = item.item.company_province_value + item.item.company_city_value + item.item.address
                 that.form.demand_company_legal_person = item.item.contact_name
                 that.form.demand_company_phone = Number(item.item.phone)
-                that.form.tax_price = parseFloat(item.item.tax)
+                that.form.tax_price = item.item.tax ? parseFloat(item.item.tax) : 0
                 that.form.total = parseFloat(item.item.price)
-                that.form.warranty_money = parseFloat(item.item.commission)
+                that.form.warranty_money = item.item.commission ? parseFloat(item.item.commission) : 0
                 that.form.first_payment = parseFloat(item.item.first_payment)
                 that.form.stage_money = parseFloat(that.form.total.sub(that.form.first_payment))
                 that.form.first_rest_payment = parseFloat(that.form.first_payment.sub(that.form.warranty_money.add(that.form.tax_price)))
