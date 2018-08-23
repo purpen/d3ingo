@@ -17,6 +17,9 @@
             <div class="admin-menu-sub-list">
               <router-link :to="{name: 'adminCompanyList', query: {type: 1}}" :class="{'item': true, 'is-active': menuType === 1}" active-class="false">通过审核</router-link>
             </div>
+            <div class="admin-menu-sub-list">
+              <router-link :to="{name: 'adminCompanyList', query: {type: 2}}" :class="{'item': true, 'is-active': menuType === 2}" active-class="false">未通过</router-link>
+            </div>
           </div>
 
           <div class="admin-search-form">
