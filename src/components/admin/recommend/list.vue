@@ -162,8 +162,9 @@ export default {
     },
     // 打开人工干扰弹窗
     editScore(val) {
-      this.designId = val.id
+      this.designId = val.design_company_id
       this.cname = val.company_name
+      this.num = val.intervene
       this.dialogVisible = true
     },
     // 更新人工干扰分数
@@ -177,7 +178,7 @@ export default {
       .then((response) => {
         if (response.data.meta.status_code === 200) {
           for (var i = 0; i < self.tableData.length; i++) {
-            if (self.tableData[i].id === self.designId) {
+            if (self.tableData[i].design_company_id === self.designId) {
               self.$set(self.tableData[i], 'intervene', self.num)
             }
           }

@@ -2152,11 +2152,11 @@ export default {
     cursor: pointer;
   }
   .item-total {
-    /* margin: 20px 50px; */
-    padding: 30px;
+    margin: 20px 50px;
+    /* padding: 30px; */
     position: relative;
-    height: 100%;
-    overflow: auto;
+    /* height: 100%;
+    overflow: auto; */
   }
   .cs {
     position: absolute;
