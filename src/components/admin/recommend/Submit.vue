@@ -115,7 +115,7 @@
             </div>
             <p class="h3">推荐测试</p>
             <div class="p-t-30">
-              <el-form ref="form" :model="form" :rules="rules2" label-width="80px">
+              <el-form ref="form" label-position="top" :model="form" :rules="rules2" label-width="80px">
                 <el-row>
                   <el-col :span="12">
                     <el-form-item prop="type" label="设计类型">
@@ -163,7 +163,7 @@
                   </el-col>
                 </el-row>
                 <el-row>
-                  <el-col :span="24" class="region">
+                  <el-col :span="12" class="region">
                     <region-picker :provinceProp="form.province" :cityProp="form.city"  :isFirstProp="true" :twoSelect="true" :gutter="0" @onchange="changeServer"></region-picker>
                   </el-col>
                 </el-row>
@@ -239,7 +239,7 @@
                   label="ID">
                 </el-table-column>
                 <el-table-column
-                  label="公司地址"
+                  label="所在省市"
                   prop="dz"
                   >
                 </el-table-column>
@@ -348,6 +348,9 @@ export default {
       return con.COMPANY_TYPE
     },
     designType() {
+      if (!this.form || !this.form.type) {
+        return []
+      }
       if (con) {
         let index = this.desType - 1
         return con.COMPANY_TYPE[index].designType
