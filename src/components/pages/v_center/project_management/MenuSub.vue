@@ -1318,7 +1318,7 @@ header {
   display: none;
   position: absolute;
   right: 10px;
-  top: 45px;
+  top: 48px;
   background: #fff;
   z-index: 99;
   width: 380px;
@@ -1402,8 +1402,8 @@ header {
   padding-left: 30px;
 }
 .item-moments li {
-  padding: 5px 0;
-  height: 60px;
+  padding: 15px 0;
+  height: 70px;
   position: relative;
   padding-left: 36px;
 }
