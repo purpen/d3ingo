@@ -11,7 +11,7 @@
             <el-form :model="form" :rules="ruleForm" ref="ruleForm">
 
               <!--<p class="title">基本信息</p>-->
-              <p class="sub-title mar-b-10">甲方（客户）1</p>
+              <p class="sub-title mar-b-10">甲方（客户） </p>
               <el-row :gutter="10">
                 <el-col :span="isMob ? 24 : 12">
                   <el-form-item style="margin: 0" label="" prop="demand_company_name">
