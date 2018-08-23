@@ -35,7 +35,7 @@
                 {'bronze': index === 2},]">{{index + 1}}</span>
             </el-col>
             <el-col :span="5" v-if="ele.design_company">
-              <el-tooltip class="item" effect="dark" :content="ele.design_company.name" placement="top">
+              <el-tooltip class="item" effect="dark" :content="ele.design_company.name" placement="left">
                 <router-link target="_blank" :to="{name: 'innovationCompany', params: {id: ele.design_company. d3ing_id}, query: {id: ele._id}}" class="name">
                   <img v-if="ele.design_company.logo_url"
                     :src="ele.design_company.logo_url"

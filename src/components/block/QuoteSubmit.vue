@@ -204,7 +204,7 @@
                     :prop="'plan_format.' + index + '.price'"
                     :rules="[{
                     required: true, type: 'number', message: '请填写正确的金额', trigger: 'blur'},
-                    {min: 1, type: 'number', message: '请填写正确天数', trigger: 'blur'}]">
+                    {min: 1, type: 'number', message: '请填写正确的金额', trigger: 'blur'}]">
                     <el-input type="number"  min="1" autosize v-model.number="form.plan_format[index].price" @blur="statPrice" placeholder="请填写费用" size="small">
                       <template slot="append">元</template>
                     </el-input>
@@ -368,10 +368,11 @@
 
     <el-dialog
       title="工作内容备注"
+      :show-close="false"
       :visible.sync="dialogPlanTxt"
       :modal="false"
       width="30%">
-      <div v-if="currentPlanTxtView">
+      <!-- <div v-if="currentPlanTxtView">
         <el-form class="clearfix" label-position="top" label-width="80px">
           <el-form-item prop="currentPlanTxt">
             <el-input type="textarea" :rows="5" :value="currentPlanTxt"></el-input>
@@ -381,8 +382,9 @@
             </el-button>
           </p>
         </el-form>
-      </div>
-      <div v-else>
+      </div> -->
+      <!-- <div v-else> -->
+        <div>
         <el-form class="clearfix" label-position="top" label-width="80px">
           <el-form-item label="" prop="currentPlanTxt">
             <el-input type="textarea" :rows="5" placeholder="请填写工作内容备注" v-model="currentPlanTxt"></el-input>

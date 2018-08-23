@@ -164,7 +164,7 @@
               </el-col>
             </el-row>
             <div class="sub-title">
-              <span>银行卡信息&nbsp;</span>
+              <span>公司银行账户信息&nbsp;</span>
               <!-- <i class="hint"></i> -->
             </div>
             <el-row :gutter="24">
@@ -273,6 +273,10 @@
           position: '',
           phone: '',
           email: '',
+          province: '',
+          city: '',
+          area: '',
+          phone: '',
           test: ''
         },
 
@@ -517,6 +521,10 @@
               that.$nextTick(function () {
                 that.form = response.data.data
                 that.form.registration_number = that.form.registration_number
+                that.form.province = that.form.province === 0 ? '' : that.form.province
+                that.form.city = that.form.city === 0 ? '' : that.form.city
+                that.form.area = that.form.area === 0 ? '' : that.form.area
+                that.form.phone = that.form.phone === 0 ? '' : that.form.phone
                 that.form.company_type = that.form.company_type === 0 ? '' : that.form.company_type
                 that.form.document_type = that.form.document_type === 0 ? '' : that.form.document_type
                 that.companyId = response.data.data.id

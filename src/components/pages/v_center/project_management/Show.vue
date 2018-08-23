@@ -95,8 +95,19 @@ export default {
 <style scoped>
 .project-show {
   /* overflow: hidden; */
+  /* height: 100%; */
   /* padding-bottom: 50px; */
 }
+/* .vcenter-right-plus {
+  height: 100%;
+}
+.right-auto{
+  height: 100%;
+  overflow: auto;
+}
+.vcenter-right {
+  height: 100%;
+} */
 .project-management {
   padding-left: 16.66667%;
 }

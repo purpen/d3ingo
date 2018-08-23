@@ -1121,7 +1121,7 @@ export default {
     // 滚动到今天
     scrollLeft() {
       if (this.designStageLists.length > 0) {
-        if (this.endTimes[0] !== (Date.parse(new Date()) / 1000)) {
+        if (this.endTimes[0] !== (Date.parse(new Date()) / 1000)) { 
           this.$refs.chartlist.scrollLeft = this.newleft * 30 - 15 * 30
         }
       }
@@ -2152,8 +2152,11 @@ export default {
     cursor: pointer;
   }
   .item-total {
-    margin:30px 50px;
+    margin: 20px 50px;
+    /* padding: 30px; */
     position: relative;
+    /* height: 100%;
+    overflow: auto; */
   }
   .cs {
     position: absolute;

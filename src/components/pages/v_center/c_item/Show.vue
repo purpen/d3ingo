@@ -140,7 +140,7 @@
                   </div>
                   <div class="contract-right">
                     <p v-if="item.status === 5">
-                      <el-button @click="contractSendBtn" class="is-custom" type="primary" size="small"><i
+                      <el-button @click="contractSendBtn" class="is-custom" type="primary"><i
                         class="fa fa-share-square-o" aria-hidden="true"></i> 发送
                       </el-button>
                     </p>

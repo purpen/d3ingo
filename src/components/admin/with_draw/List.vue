@@ -31,7 +31,7 @@
               width="60">
             </el-table-column>
             <el-table-column
-              label="银行卡信息"
+              label="公司银行账户信息"
               min-width="200">
                 <template slot-scope="scope">
                   <p>

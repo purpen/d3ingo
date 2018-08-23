@@ -3,7 +3,7 @@
     'cloud-content', 'full-height',
     {'slide-mini': leftWidth === 2 && withoutSide,
     'slide-mini-none': isMob}]">
-    <v-menu-left v-if="withoutSide" :currentName="withoutSide? 'cloud_drive' : 'project_management'"></v-menu-left>
+     <v-menu-left v-if="withoutSide" :currentName="withoutSide? 'cloud_drive' : 'project_management'"></v-menu-left>
     <section :class="['full-height', {'parent-box': withoutSide,
       'parent-box2': !withoutSide,
       'parent-box-mob': isMob}]">
@@ -16,16 +16,16 @@
           v-loading="isLoading">
           <div class="content-head">
             <div class="clearfix" v-show="showList">
-              <el-tooltip effect="dark" :content="title" placement="top">
+              <!-- <el-tooltip effect="dark" :content="title" placement="right">
+              </el-tooltip> -->
+              <!-- <el-tooltip effect="dark" :content="parentFolder.name" placement="right">
+              </el-tooltip> -->
                 <p class="title fl" v-if="!isChoose && folderId === 0" v-html="title"></p>
-              </el-tooltip>
-              <el-tooltip effect="dark" :content="parentFolder.name" placement="top">
                 <p class="title fl" v-if="!isChoose && folderId !== 0">
                   <i v-if="historyId.length"
                     class="fx fx-icon-nothing-left" @click="backFolder"></i>
                   {{parentFolder.name}}
                 </p>
-              </el-tooltip>
               <div class="fr operate" v-if="!isChoose">
                 <p class="add" v-if="modules !== 'recycle'">
                   <span class="add-option">
@@ -463,14 +463,15 @@
 <script>
 import api from '@/api/api'
 import vMenu from '@/components/pages/v_center/tools/cloud_drive/Menu'
+import vMenuLeft from '@/components/pages/v_center/Menu'
 import vContent from '@/components/pages/v_center/tools/cloud_drive/CloudContent'
 import Clipboard from 'clipboard'
 import download from 'downloadjs'
-import vMenuLeft from '@/components/pages/v_center/Menu'
 export default {
   name: 'cloud_drive',
   data() {
     return {
+      getDirector: 0,
       test: 'test',
       title: '全部文件',
       modules: '',
@@ -578,8 +579,9 @@ export default {
   },
   components: {
     vMenu,
-    vContent,
-    vMenuLeft
+    vMenuLeft,
+    vContent
+    
   },
   mounted() {
     // window.addEventListener('keydown', e => {
@@ -823,6 +825,9 @@ export default {
       }
       if (this.modules === 'project') {
         this.getProjectList()
+      }
+      if (name !== 'all' && name !== 'recently-use' && name !== 'recycle') {
+        this.changeDirector(1)
       }
     },
     changeChooseStatus() {
@@ -1425,21 +1430,29 @@ export default {
       }
       this.showFolderInput = false
     },
+    changeDirector(e) {
+      this.getDirector = e
+    },
     enterFolder(ele) {
-      if (this.modules === 'project') {
+      if (this.getDirector) {
+        this.changeDirector(0)
         this.$router.push({
           name: this.$route.name,
           params: this.$route.params,
           query: {id: ele.pan_director_id}})
-        this.folderId = this.$route.query.id
-        this.historyId.push(ele.pan_director_id)
+        this.folderId = this.$route.query.pan_director_id
+        if (this.historyId[this.historyId.length - 1] !== ele.pan_director_id) {
+          this.historyId.push(ele.pan_director_id)
+        }
       } else {
         this.$router.push({
           name: this.$route.name,
           params: this.$route.params,
           query: {id: ele.id}})
         this.folderId = this.$route.query.id
-        this.historyId.push(ele.id)
+        if (this.historyId[this.historyId.length - 1] !== ele.id) {
+          this.historyId.push(ele.id)
+        }
       }
     },
     backFolder() {
@@ -1547,6 +1560,11 @@ export default {
     this.query.page = Number(this.$route.query.page) || 1
     this.folderId = this.$route.query.id || 0
     this.modules = this.$route.params.modules || 'all'
+    if (this.$route.params.modules !== 'all'
+      || this.$route.params.modules !== 'recently-use'
+      || this.$route.params.modules !== 'recycle') {
+      this.changeDirector(1)
+    }
     this.getUploadUrl()
     if (this.modules === 'project') {
       this.getProjectList()
@@ -1630,6 +1648,7 @@ export default {
       this.folderId = this.$route.query.id || 0
       if (this.modules === 'project' && !this.$route.query.id) {
         this.getProjectList()
+        this.changeDirector(1)
       }
       if (this.modules !== 'search') {
         this.getList()
@@ -1731,6 +1750,7 @@ export default {
     },
     folderId (newVal) {
       this.uploadParams['x:pan_director_id'] = newVal || 0
+      this.$set(this.query, 'page', 1)
     },
     searchWord(val) {
       this.getSearchList()
@@ -2539,13 +2559,13 @@ export default {
   }
 
   .pagination {
-    position: absolute;
+    /* position: absolute;
     left: 0;
     right: 0;
-    margin: 0 auto;
     bottom: 0;
-    text-align: center;
-    padding: 20px 0;
+    text-align: center; */
+    margin: 0 auto;
+    padding: 10px 0 0;
     background: #fff;
   }
   .relative {
@@ -2610,13 +2630,14 @@ export default {
   @media screen and (min-width: 768px) {
     .content {
       /* padding: 20px 30px 0; */
-      padding: 42px 30px 0;
+      padding: 42px 30px;
       position: relative
     }
   }
   @media screen and (max-width: 1199px) {
     .content.full-height.content-mini {
-      width: 83.33333%;
+      /* width: 83.33333%; */
+      width: 100%
     }
     .edit-menu .file-radio {
       margin-left: 10px;
