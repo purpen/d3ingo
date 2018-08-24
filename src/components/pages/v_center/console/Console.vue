@@ -112,21 +112,31 @@
                 <span class="fz-14 tc-6 fl">项目</span>
                 <!-- <span class="edit fr pointer"></span> -->
               </div>
-              <h3 class="tc-2 fz-20">{{totalItem.item_counts}} 个</h3>
+              <h3 class="tc-2 fz-20">{{totalItem.total_item_counts}} 个</h3>
               <div class="number bb-e6">
                 <section class="lines">
                   <!-- <p class="yellow" :style="{width: '25%'}"></p> -->
-                  <el-tooltip class="item" effect="dark" :content="'已完成: ' +ratio.ok_count_percentage + '%'" placement="top">
+                  <el-tooltip class="item" effect="dark" placement="top">
+                    <div slot="content">
+                      状态: 已完成<br/>
+                      数量: {{totalItem.item_counts}}个<br/>
+                      占比: {{ratio.ok_count_percentage}}%
+                    </div>
                     <p class="green" :style="{width: ratio.ok_count_percentage + '%'}"></p>
                   </el-tooltip>
-                  <el-tooltip class="item" effect="dark" :content="'进行中: '+ratio.no_count_percentage + '%'" placement="top">
+                  <el-tooltip class="item" effect="dark" placement="top">
+                    <div slot="content">
+                      状态: 进行中<br/>
+                      数量: {{totalItem.no_item_counts}}个<br/>
+                      占比: {{ratio.no_count_percentage}}%
+                    </div>
                     <p class="blue" :style="{width: ratio.no_count_percentage + '%'}"></p>
                   </el-tooltip>
                  
                   <!-- <p class="red" :style="{width: '25%'}"></p> -->
                 </section>
               </div>
-              <p class="tc-9 fz-14">月均项目: <span class="tc-2">{{totalItem.m_item}}个</span></p>
+              <p class="tc-9 fz-14">月均完成项目: <span class="tc-2">{{totalItem.m_item}}个</span></p>
             </div>
           </el-col>
         </el-row>
