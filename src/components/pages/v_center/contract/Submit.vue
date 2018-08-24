@@ -11,7 +11,7 @@
             <el-form :model="form" :rules="ruleForm" ref="ruleForm">
 
               <!--<p class="title">基本信息</p>-->
-              <p class="sub-title mar-b-10">甲方（客户）</p>
+              <p class="sub-title mar-b-10">甲方（客户） </p>
               <el-row :gutter="10">
                 <el-col :span="isMob ? 24 : 12">
                   <el-form-item style="margin: 0" label="" prop="demand_company_name">
@@ -211,11 +211,10 @@
                   </el-col>
 
                 </el-row>
-
                 <el-row :gutter="10" v-for="(s, i) in d.content" :key="i">
                   <el-col :span="isMob ? 24 : 12">
                     <el-form-item
-                      :prop="s"
+                      :prop="'stages.' + index + '.content.' + i + ''"
                       :rules="{
                       required: true, message: '请填写内容', trigger: 'blur'
                     }"
@@ -228,9 +227,9 @@
                     </el-form-item>
                   </el-col>
                 </el-row>
-
-                <div class="add-substage" @click="addSubStage" :index="index"><i class="fa fa-plus-circle"
-                                                                                 aria-hidden="true"></i> 添加交付内容
+                <div class="add-substage" @click="addSubStage" :index="index">
+                  <i class="fa fa-plus-circle" aria-hidden="true"></i> 
+                  添加交付内容
                 </div>
                 <div class="blank20"></div>
               </div>
@@ -413,7 +412,7 @@
             {required: true, message: '请填写公司地址名称', trigger: 'blur'}
           ],
           demand_company_phone: [
-            {required: true, message: '请填写联系人方式', trigger: 'blur'}
+            {required: true, type: 'number', message: '请填写联系人方式', trigger: 'blur'}
           ],
           demand_company_legal_person: [
             {required: true, message: '请填写联系人姓名', trigger: 'blur'}
@@ -426,12 +425,14 @@
             {required: true, message: '请填写公司地址名称', trigger: 'blur'}
           ],
           design_company_phone: [
-            {required: true, message: '请填写联系人方式', trigger: 'blur'}
+            {required: true, type: 'number', message: '请填写联系人方式', trigger: 'blur'}
           ],
           design_company_legal_person: [
             {required: true, message: '请填写联系人姓名', trigger: 'blur'}
           ],
-
+          // stages: {
+          //    content: [{required: true, message: '不能为空', trigger: 'blur'}],
+          // },
           total: [
             {type: 'number', required: true, message: '请填写项目总金额', trigger: 'blur'}
           ]
@@ -628,7 +629,8 @@
               var item = that.item = response.data.data
               that.itemName = that.item.item.name
               that.companyId = item.quotation.design_company_id
-
+              that.item.item.phone = Number(that.item.item.phone)
+              that.item.quotation.phone = Number(that.item.quotation.phone)
               if (item.contract) {
                 // 如果是京东，跳转
                 if (item.contract.source === 1) {
@@ -641,16 +643,18 @@
                     if (response.data.meta.status_code === 200) {
                       let contract = response.data.data
                       if (contract) {
+                        contract.demand_company_phone = Number(contract.demand_company_phone)
+                        contract.design_company_phone = Number(contract.design_company_phone)
                         if (!contract.demand_pay_limit) {
                           contract.demand_pay_limit = that.contractScale.demand_pay_limit
                         }
                         contract.stages = []
                         contract.sort = contract.item_stage.length
                         contract.total = parseFloat(contract.total)
-                        contract.warranty_money = parseFloat(contract.commission)
+                        contract.warranty_money = contract.commission ? parseFloat(contract.commission) : 0
                         contract.first_payment = parseFloat(contract.first_payment)
                         contract.stage_money = parseFloat(contract.total.sub(contract.first_payment))
-                        contract.tax_price = parseFloat(contract.tax_price)
+                        contract.tax_price = contract.tax_price ? parseFloat(contract.tax_price) : 0
                         contract.first_rest_payment = parseFloat(contract.first_payment.sub(contract.warranty_money.add(contract.tax_price)))
                         that.form = contract
                         if (!that.form.thn_company_name) {
@@ -681,7 +685,7 @@
                           })
                         }
                       }
-//                      console.log(response.data.data)
+                     console.log('1111', that.form)
                     }
                   })
               } else {  // 合同首次创建，从项目表调用基础信息
@@ -703,10 +707,10 @@
                 that.form.demand_company_name = item.item.company_name
                 that.form.demand_company_address = item.item.company_province_value + item.item.company_city_value + item.item.address
                 that.form.demand_company_legal_person = item.item.contact_name
-                that.form.demand_company_phone = item.item.phone
-                that.form.tax_price = parseFloat(item.item.tax)
+                that.form.demand_company_phone = Number(item.item.phone)
+                that.form.tax_price = item.item.tax ? parseFloat(item.item.tax) : 0
                 that.form.total = parseFloat(item.item.price)
-                that.form.warranty_money = parseFloat(item.item.commission)
+                that.form.warranty_money = item.item.commission ? parseFloat(item.item.commission) : 0
                 that.form.first_payment = parseFloat(item.item.first_payment)
                 that.form.stage_money = parseFloat(that.form.total.sub(that.form.first_payment))
                 that.form.first_rest_payment = parseFloat(that.form.first_payment.sub(that.form.warranty_money.add(that.form.tax_price)))
@@ -720,8 +724,9 @@
                         that.form.design_company_name = company.company_name
                         that.form.design_company_address = company.province_value + company.city_value + company.address
                         that.form.design_company_legal_person = company.contact_name
-                        that.form.design_company_phone = company.phone
+                        that.form.design_company_phone = Number(company.phone)
                       }
+                      console.log(33333)
                     }
                   })
                   .catch(function (error) {

@@ -292,7 +292,7 @@
     background-color: #fafafa;
     border-color: #e6e6e6
   }
-  .el-checkbox__input.is-checked .el-checkbox__inner {
+  .el-checkbox .el-checkbox__input.is-checked .el-checkbox__inner {
     background-color: #ff5a5f;
     border-color: #ff5a5f;
   }
@@ -606,4 +606,7 @@
   }
   .stages-day .el-form-item__error {
     position: relative
+  }
+  .region .el-col:not(:last-child) {
+    padding-right: 10px;
   }

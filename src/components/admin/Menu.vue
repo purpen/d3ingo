@@ -23,6 +23,11 @@
           <template slot="title"><i class="fa fa-file-text"></i> 订单管理</template>
             <el-menu-item index="orderList" :route="{name:'adminOrderList'}">列表</el-menu-item>
         </el-submenu>
+        <el-submenu index="21">
+          <template slot="title"><i class="fa fa-file-text"></i> 推荐配置</template>
+            <el-menu-item index="recommendList" :route="{name:'adminRecommendList'}">列表</el-menu-item>
+            <el-menu-item index="recommendSubmit" :route="{name:'adminRecommendSubmit'}">权重配置</el-menu-item>
+        </el-submenu>
         <el-submenu index="6">
           <template slot="title"><i class="fa fa-money"></i> 提现管理</template>
             <el-menu-item index="withDrawList" :route="{name: 'adminWithDrawList'}">列表</el-menu-item>

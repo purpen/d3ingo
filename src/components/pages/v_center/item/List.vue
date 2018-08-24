@@ -34,8 +34,9 @@
                       :text-inside="true"
                       :show-text="false"
                       :stroke-width="6"
-                                  :percentage="d.item.progress"
-                                  status="exception"></el-progress>
+                      :percentage="d.item.progress"
+                      status="exception">
+                    </el-progress>
                   </p>
                   <p class="prefect">您的项目需求填写已经完成了{{ d.item.progress }}%。</p>
 

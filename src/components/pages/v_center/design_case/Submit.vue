@@ -504,6 +504,11 @@
           'time': ''
         })
       },
+      // 清空类别
+      upType() {
+        console.log(111)
+        this.form.design_types = []
+      },
       // 删除奖项
       deletePrize(index) {
         this.prizes.splice(index, 1)
@@ -763,9 +768,9 @@
           return false
         }
       },
-      typec(val) {
+      typec() {
         if (this.isfrist) {
-          this.design_types = []
+          this.form.design_types = []  
         }
         this.isfrist = true
       }
