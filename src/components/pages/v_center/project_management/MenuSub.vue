@@ -456,18 +456,18 @@
         <span>全部项目动态</span>
         <i class="fx fx-icon-nothing-close-error" @click="cover2 = false"></i>
       </div>
-      <div class="cover2-content">
-        <ul class="cover2-list">
-          <li v-for="(ele, index) in projectMoments" :key="index">
-            <img v-if="ele.logo_image" class="br50 b-e6" :src="ele.logo_image.logo" alt="">
-            <div class="list-con clearfix">
-              <!-- <p class="tc-2 fl"><span>{{ele.user_name}}</span>{{ele.action}}</p> -->
-              <p class="tc-2"><span>{{ele.title}}</span></p>
-              <p class="fz-12 tc-6 min-width150">{{ele.date}}</p>
-            </div>
-          </li>
-        </ul>
-      </div>
+        <div class="cover2-content">
+          <ul class="cover2-list container">
+            <li v-for="(ele, index) in projectMoments" :key="index">
+              <img v-if="ele.logo_image" class="br50 b-e6" :src="ele.logo_image.logo" alt="">
+              <div class="list-con clearfix">
+                <!-- <p class="tc-2 fl"><span>{{ele.user_name}}</span>{{ele.action}}</p> -->
+                <p class="tc-2"><span>{{ele.title}}</span></p>
+                <p class="fz-12 tc-6 min-width150">{{ele.date}}</p>
+              </div>
+            </li>
+          </ul>
+        </div>
     </section>
   </header>
 </template>
@@ -996,6 +996,15 @@ header {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  line-height: 60px;
+}
+
+/* 项目动态样式 */
+.tc-2 {
+  line-height: 16px;
+}
+.tc-6 {
+  line-height: 10px;
 }
 
 .pm-left a,
@@ -1132,13 +1141,19 @@ header {
   transform: translateY(-150%);
 }
 .cover2-content {
-  max-width: 1000px;
+  /* max-width: 1000px; */
   margin: 0 auto;
+  height: calc(100% - 110px);
+  overflow-y: auto;
+  padding-bottom: 50px;
 }
 .cover2-content h3 {
   padding: 20px 0 10px;
   font-size: 16px;
   color: #222
+}
+.cover2-list {
+  padding-left: 100px;
 }
 .cover2-list li {
   min-height: 60px;

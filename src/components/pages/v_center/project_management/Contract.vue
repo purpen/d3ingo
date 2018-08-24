@@ -228,7 +228,7 @@
 </script>
 <style scoped>
 .contract{
-  margin:30px 50px 50px 50px;
+  padding:30px 50px 50px 50px;
 }
 .contract-add{
   margin-top:10px;
