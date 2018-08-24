@@ -1005,7 +1005,8 @@ export default {
         daying.push({
           'i': i,
           'week': week,
-          'time': time
+          'time': time,
+          'new': ''
         })
       }
       return daying
@@ -1064,7 +1065,12 @@ export default {
       let newDate = new Date()
       for (var n = 0; n < this.totaldays.length; n++) {
         if (this.totaldays[n].year === newDate.getFullYear() && this.totaldays[n].month === newDate.getMonth() + 1) {
-          this.totaldays[n].dayings[newDate.getDate() - 1].new = 'active'
+          let newday = this.totaldays[n].dayings
+          for (var c = 0; c < newday.length; c++) {
+            if (newday[c].i === newDate.getDate()) {
+              newday[c].new = 'active'
+            }
+          }
         }
       }
     },
@@ -1096,6 +1102,7 @@ export default {
     },
     // 今天到最早的一天的距离
     newtostart() {
+      console.log('new1', new Date())
       let date = Date.parse(new Date()) / 1000
       this.newleft = this.itemtostart(date)
     },
@@ -2002,11 +2009,6 @@ export default {
         this.$message.error(error.message)
         console.error(error.message)
       })
-    },
-    // 当前用户是否为项目负责人和商务经理
-    permissions() {
-      let user = this.$store.state.task.projectObject
-      user
     }
   },
   created() {
@@ -2018,7 +2020,6 @@ export default {
     }
     this.itemId = itemId
     // 读取公司成员
-    this.permissions()
     this.readMembers()
     this.upTokens()
     this.statisticalItem()
@@ -2064,7 +2065,9 @@ export default {
         if (isenday < 180) {
           this.totaldays = this.dateDay(this.endTimes[0], this.endTimes[this.endTimes.length - 1] + 86400 * (180 - isenday))
         } else this.totaldays = this.dateDay(this.endTimes[0], this.endTimes[this.endTimes.length - 1])
+        console.log(222)
         this.newDay()
+        console.log(333)
         this.newtostart()
         // 子阶段
         this.tackleft(this.designStageLists)

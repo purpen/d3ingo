@@ -204,7 +204,7 @@
                   </el-col>
                 </el-row> -->
                 <div class="submit-bt">
-                  <el-button class="is-custom el-button--default" @click="editMatching()">匹配</el-button>
+                  <el-button class="is-custom el-button--default" @click="editMatching()" :loading="isSubloading">匹配</el-button>
                 </div>
               </el-form>
             </div>
@@ -301,6 +301,7 @@ export default {
       tableData: [],
       isLoading: false,
       formRegion: {},
+      isSubloading: false,
       desType: 1,
       ruleForm: {},
       form: {
@@ -385,21 +386,29 @@ export default {
         'province': this.form.province,
         'city': this.form.city
       }
+      this.isSubloading = true
       this.$http.post(api.adminTesMatching, row).then(
         (response) => {
           if (Number(response.data.meta.status_code) === 200) {
+            this.isSubloading = false
+            let res = []
             if (response.data.data && response.data.data.length !== 0) {
-              let res = response.data.data
+              console.log('res', response.data.data)
+              res = response.data.data
               for (var i = 0; i < res.length; i++) {
-                res[i].design_statistic.recommend_time = res[i].design_statistic.recommend_time.date_format().format('yy-MM-dd')
+                if (res[i].design_statistic.recommend_time !== 0) {
+                  res[i].design_statistic.recommend_time = res[i].design_statistic.recommend_time.date_format().format('yy-MM-dd')
+                }
                 res[i].dz = res[i].province_value + res[i].city_value
               }
             }
-            this.tableData = response.data.data
+            this.tableData = res
           } else {
+            this.isSubloading = false
             this.$message.error(response.data.meta.message)
           }
         }).catch((error) => {
+            this.isSubloading = false
             this.$message.error(error.message)
             console.log(error.message)
           })

@@ -412,7 +412,7 @@
             {required: true, message: '请填写公司地址名称', trigger: 'blur'}
           ],
           demand_company_phone: [
-            {required: true, type: 'number', message: '请填写联系人方式', trigger: 'blur'}
+            {required: true, message: '请填写联系人方式', trigger: 'blur'}
           ],
           demand_company_legal_person: [
             {required: true, message: '请填写联系人姓名', trigger: 'blur'}
@@ -425,7 +425,7 @@
             {required: true, message: '请填写公司地址名称', trigger: 'blur'}
           ],
           design_company_phone: [
-            {required: true, type: 'number', message: '请填写联系人方式', trigger: 'blur'}
+            {required: true, message: '请填写联系人方式', trigger: 'blur'}
           ],
           design_company_legal_person: [
             {required: true, message: '请填写联系人姓名', trigger: 'blur'}
@@ -632,7 +632,7 @@
               that.item.item.phone = Number(that.item.item.phone)
               that.item.quotation.phone = Number(that.item.quotation.phone)
               if (item.contract) {
-                // 如果是京东，跳转
+                // // 如果是京东，跳转
                 if (item.contract.source === 1) {
                   that.$router.replace({name: 'vcenterContractJdSubmit', params: {item_id: id}})
                   return
@@ -643,8 +643,8 @@
                     if (response.data.meta.status_code === 200) {
                       let contract = response.data.data
                       if (contract) {
-                        contract.demand_company_phone = Number(contract.demand_company_phone)
-                        contract.design_company_phone = Number(contract.design_company_phone)
+                        contract.demand_company_phone = contract.demand_company_phone
+                        contract.design_company_phone = contract.design_company_phone
                         if (!contract.demand_pay_limit) {
                           contract.demand_pay_limit = that.contractScale.demand_pay_limit
                         }
@@ -707,7 +707,7 @@
                 that.form.demand_company_name = item.item.company_name
                 that.form.demand_company_address = item.item.company_province_value + item.item.company_city_value + item.item.address
                 that.form.demand_company_legal_person = item.item.contact_name
-                that.form.demand_company_phone = Number(item.item.phone)
+                that.form.demand_company_phone = item.item.phone
                 that.form.tax_price = item.item.tax ? parseFloat(item.item.tax) : 0
                 that.form.total = parseFloat(item.item.price)
                 that.form.warranty_money = item.item.commission ? parseFloat(item.item.commission) : 0
@@ -724,7 +724,7 @@
                         that.form.design_company_name = company.company_name
                         that.form.design_company_address = company.province_value + company.city_value + company.address
                         that.form.design_company_legal_person = company.contact_name
-                        that.form.design_company_phone = Number(company.phone)
+                        that.form.design_company_phone = company.phone
                       }
                       console.log(33333)
                     }
