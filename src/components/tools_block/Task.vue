@@ -50,7 +50,6 @@
         </p>
         <div class="task-detail-body">
           <div class="task-admin" v-if="true">
-            <!-- <p class="tc-9">分配给:</p> -->
             <ul class="task-member-list task-member-execute no-execute">
               <li class="tc-9" v-if="executeUser" @click.self="showMember = true">
                 <a class="remove-member" @click.self="removeExecute()"></a>
@@ -192,8 +191,8 @@
             <ul :class="['task-member-list']">
               <li v-for="(ele, index) in taskMemberList" :key="index" v-if="ele.user">
                 <a class="remove-member" @click="removeMember(ele.user.id)"></a>
-                <img @click="showMember2 = true" v-if="ele.user.logo_image" v-lazy="ele.user.logo_image.logo" alt="">
-                <img v-else @click="showMember2 = true" v-lazy="require('assets/images/avatar_100.png')">
+                <img @click="showMember2 = true" v-if="ele.user.logo_image" :src="ele.user.logo_image.logo" alt="">
+                <img v-else @click="showMember2 = true" :src="require('assets/images/avatar_100.png')">
               </li>
             <p class="show-member" v-if="true" @click="showMember2 = true">
             </p>
@@ -698,7 +697,7 @@
       changeExecute(id) {
         this.currentForm.execute_user_id = id
         if (this.executeUser) {
-          this.currentForm.logo_image = this.executeUser.logo_image
+            this.currentForm.logo_image = this.executeUser.logo_image
         }
         this.$store.commit('updateTaskListItem', this.currentForm)
         this.fetchStage()
@@ -1500,9 +1499,9 @@
     margin: 0;
     color: #666
   }
-  .task-detail-body p {
-    /* color: #999 */
-  }
+  /* .task-detail-body p {
+    color: #999
+  } */
   .task-detail-body .show-member {
     margin: 0 5px 0;
     /* display: inline-block; */
