@@ -81,6 +81,18 @@
 .is-exception {
   color: #ff5a5f
 }
+.line-height {
+  line-height: 1px;
+}
+.line-height16 {
+  line-height: 16px;
+}
+.line-height24 {
+  line-height: 24px;
+}
+.line-height32 {
+  line-height: 32px;
+}
 .main .border-b-no {
   border-bottom: none;
 }
