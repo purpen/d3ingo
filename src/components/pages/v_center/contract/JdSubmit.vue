@@ -1,4 +1,4 @@
-<template>
+     <template>
   <div class="container" style="width: 880px;">
     <div class="blank20"></div>
     <el-row :gutter="24">
@@ -109,18 +109,15 @@
               <el-row>
                 <el-col :span="isMob ? 16 : 8">
                   <el-form-item prop="sort" style="margin: 0">
-                    <el-select v-model.number="form.sort" placeholder="设置项目阶段">
-                      <el-option
+                    <el-radio-group  v-model.number="form.sort" @change="genStageInput">
+                      <el-radio-button 
+                        class="el-radio-button__phase"
                         v-for="item in stageOptions"
-                        :label="item.label"
                         :key="item.index"
-                        :value="item.value">
-                      </el-option>
-                    </el-select>
+                        :label="item.label"
+                      >{{item.label}}个阶段</el-radio-button>
+                    </el-radio-group>
                   </el-form-item>
-                </el-col>
-                <el-col :span="isMob ? 6 : 4" :offset="1" style="">
-                  <el-button class="is-custom" @click="genStageInput">{{ stateMsg }}</el-button>
                 </el-col>
               </el-row>
 
@@ -383,6 +380,7 @@
           stages: [],
           sort: ''
         },
+        sort: '2个阶段',
         ruleForm: {
           demand_company_name: [
             {required: true, message: '请填写公司名称', trigger: 'blur'}
@@ -503,10 +501,10 @@
       // 生成阶段
       genStageInput() {
         let count = this.form.sort
-        if (!count) {
-          this.$message.error('请选择阶段')
-          return false
-        }
+        // if (!count) {
+        //   this.$message.error('请选择阶段')
+        //   return false
+        // }
         this.form.stages = []
         for (let i = 0; i < count; i++) {
           let row = {
@@ -515,7 +513,7 @@
             amount: '',
             title: '',
             time: '',
-            content: []
+            content: ['']
           }
           this.form.stages.push(row)
         }
@@ -549,8 +547,7 @@
         let items = []
         for (let i = 2; i < 4; i++) {
           let item = {
-            value: i,
-            label: '共' + i + '阶段'
+            label: i
           }
           items.push(item)
         }
@@ -575,18 +572,18 @@
         return CONTRACT_SCALE
       }
     },
-    watch: {
-      form: {
-        deep: true,
-        handler: function (val, oldVal) {
-          if (val.stages && val.stages.length > 0) {
-            this.stateMsg = '重置阶段'
-          } else {
-            this.stateMsg = '生成阶段'
-          }
-        }
-      }
-    },
+    // watch: {
+    //   form: {
+    //     deep: true,
+    //     handler: function (val, oldVal) {
+    //       if (val.stages && val.stages.length > 0) {
+    //         this.stateMsg = '重置阶段'
+    //       } else {
+    //         this.stateMsg = '生成阶段'
+    //       }
+    //     }
+    //   }
+    // },
     created () {
       var that = this
       var id = this.$route.params.item_id
@@ -632,6 +629,7 @@
                           that.form.commission = item.item.commission
                         }
                         if (that.form.item_stage && that.form.item_stage.length > 0) {
+                          let stageList = []
                           for (let i = 0; i < that.form.item_stage.length; i++) {
                             let stageRow = that.form.item_stage[i]
                             let newStageRow = {}
@@ -641,8 +639,11 @@
                             newStageRow.amount = parseFloat(stageRow.amount)
                             newStageRow.time = parseInt(stageRow.time)
                             newStageRow.content = stageRow.content
-                            that.form.stages.push(newStageRow)
+                            stageList.push(newStageRow)
                           }
+                          that.$nextTick(_ => {
+                            that.form.stages = stageList
+                          })
                         }
                       }
 //                      console.log(response.data.data)
@@ -738,6 +739,9 @@
     color: #666;
   }
 
+  .el-radio-button__phase {
+    width: 21rem;
+  }
   .content-box p.title {
     font-size: 1.4rem;
     font-family: PingFangSC-Medium;

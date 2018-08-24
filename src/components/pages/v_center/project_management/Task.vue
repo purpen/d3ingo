@@ -49,7 +49,7 @@
                 </el-tooltip>
                 <div class="fr task-item-div">
                   <img v-if="ele.logo_image" :src="ele.logo_image.logo" alt="">
-                  <img v-else v-lazy="require('assets/images/avatar_100.png')">
+                  <img v-else :src="require('assets/images/avatar_100.png')">
                 </div>
               </div>
             </section>
@@ -91,7 +91,7 @@
                   </el-tooltip>
                   <div class="fr task-item-div">
                     <img v-if="e.logo_image" :src="e.logo_image.logo" alt="">
-                    <img v-else v-lazy="require('assets/images/avatar_100.png')">
+                    <img v-else :src="require('assets/images/avatar_100.png')">
                   </div>
                 </div>
               </section>
