@@ -393,13 +393,17 @@ export default {
             this.isSubloading = false
             let res = []
             if (response.data.data && response.data.data.length !== 0) {
-              console.log('res', response.data.data)
               res = response.data.data
               for (var i = 0; i < res.length; i++) {
-                if (res[i].design_statistic.recommend_time !== 0) {
+                if (!res[i].design_statistic) {
+                  res[i].design_statistic = {
+                    'recommend_time': 0
+                  }
+                }
+                if (res[i].design_statistic.recommend_time && res[i].design_statistic.recommend_time !== 0) {
                   res[i].design_statistic.recommend_time = res[i].design_statistic.recommend_time.date_format().format('yy-MM-dd')
                 }
-                res[i].dz = res[i].province_value + res[i].city_value
+                res[i].dz = res[i].province_value + res[i].city_value || ''
               }
             }
             this.tableData = res
