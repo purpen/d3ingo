@@ -16,14 +16,14 @@
             <p>信用指数：<span>{{ item.score }}分</span></p>
           </div>
 
-          <div class="cate" v-if="item.design_type_val">
+          <div class="cate" v-if="item.design_type_val.length != 0">
             <p class="c-title">设计类别</p>
             <p class="tag">
-              <el-tag type="gray" v-for="(d, index) in item.design_type_val" :key="index">{{ d }}</el-tag>
+              <el-tag type="gray" v-for="(d, index) in item.design_type_val" :key="index" v-if="d">{{ d }}</el-tag>
             </p>
           </div>
-
-          <div class="cate" v-if="item.good_field_value">
+  
+          <div class="cate" v-if="item.good_field_value.length != 0">
             <p class="c-title">擅长领域</p>
             <p class="tag">
               <el-tag type="gray" v-for="(d, index) in item.good_field_value" :key="index">{{ d }}</el-tag>
