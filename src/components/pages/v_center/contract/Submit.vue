@@ -326,7 +326,7 @@
               <div class="sept"></div>
 
               <div class="form-btn">
-                <el-button type="primary" :loading="isLoadingBtn" class="is-custom" @click="submit('ruleForm')">保存
+                <el-button type="primary" :loading="isLoadingBtn" class="is-custom" @click="submit('ruleForm')">{{contractText}}
                 </el-button>
               </div>
               <div class="clear"></div>
@@ -362,6 +362,7 @@
         item: '',
         itemName: '',
         companyId: '',
+        contractText: '保存',
         isLoadingBtn: false,
         contractId: '',
         // stateMsg: '生成阶段',
@@ -485,8 +486,6 @@
             }
             let stagePrice = that.form.stage_money
             if (totalAmount - stagePrice) {
-              console.log('totalAmount', totalAmount)
-              console.log('stagePrice', stagePrice)
               that.$message.error('阶段金额总和不正确！')
               return false
             }
@@ -503,7 +502,6 @@
             that.isLoadingBtn = true
             that.$http({method: method, url: apiUrl, data: row})
               .then(function (response) {
-                console.log(response)
                 if (response.data.meta.status_code === 200) {
                   that.$message.success('提交成功！')
                   that.isLoadingBtn = false
@@ -628,6 +626,9 @@
             if (response.data.meta.status_code === 200) {
               var item = that.item = response.data.data
               that.itemName = that.item.item.name
+              if(that.itemName && that.item.item.status === 6){
+                that.contractText = "发送"
+              }
               that.companyId = item.quotation.design_company_id
               that.item.item.phone = Number(that.item.item.phone)
               that.item.quotation.phone = Number(that.item.quotation.phone)
@@ -685,7 +686,6 @@
                           })
                         }
                       }
-                     console.log('1111', that.form)
                     }
                   })
               } else {  // 合同首次创建，从项目表调用基础信息
@@ -726,7 +726,6 @@
                         that.form.design_company_legal_person = company.contact_name
                         that.form.design_company_phone = company.phone
                       }
-                      console.log(33333)
                     }
                   })
                   .catch(function (error) {
@@ -735,7 +734,6 @@
                   })
               }
             }
-            console.log(that.form)
           })
           .catch(function (error) {
             that.$message.error(error.message)
