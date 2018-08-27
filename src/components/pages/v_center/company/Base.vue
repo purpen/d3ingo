@@ -1324,15 +1324,19 @@
   }
   .is-active {
     background: #ff5a5f;
+    border: 1px solid #ff5a5f;
+    border-radius: 4px;
     color: #fff;
   }
   .is-active:hover {
-    border: 1px solid #ff5a5f;
-    color: #ff5a5f;
+    border-color: #ff5a5f;
+    background-color: #ff5a5f;
+    color: #fff
   }
   .is-active:active {
-    background: #ff5a5f;
-    color: #fff;
+    border-color: #ff5a5f;
+    background-color: #ff5a5f;
+    color: #fff
   }
   /* .white-button:hover {
     border-color: #ff5a5f;
