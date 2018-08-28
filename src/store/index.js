@@ -9,6 +9,7 @@ Vue.use(Vuex)
 const debug = process.env.NODE_ENV !== 'production'
 Vue.config.debug = debug
 Vue.config.warnExpressionErrors = false
+Vue.config.devtools = debug
 
 export default new Vuex.Store({
   modules: {

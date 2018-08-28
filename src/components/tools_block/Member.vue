@@ -35,7 +35,7 @@
         <input type="text" v-model="inviteLink">
         <p class="validity">链接7天后失效</p>
         <p class="buttons">
-          <button class="large-button full-red-button" @click="setClipboardText">复制链接</button>
+          <button class="small-button full-red-button" @click="setClipboardText">复制链接</button>
         </p>
       </div>
     </section>
@@ -120,11 +120,12 @@ export default {
     },
     closeMember() {
       this.currentShow = false
+      this.$emit('closeMember', false)
     },
     getProjectMemberList() {
-      if (this.projectMemberList.length) {
-        return
-      }
+      // if (this.projectMemberList.length) {
+      //   return
+      // }
       this.$http.get(api.itemUsers, {params: {item_id: this.itemId}})
       .then(res => {
         if (res.data.meta.status_code === 200) {
@@ -285,6 +286,7 @@ export default {
       .then(res => {
         if (res.data.meta.status_code === 200) {
           this.inviteLink = `${location.origin}/Invite/${res.data.data.rand_string}`
+          this.isCompanyAdd = false
           this.showCover = true
           this.isInvite = true
         } else {
@@ -366,7 +368,8 @@ export default {
       this.currentShow = val
     },
     currentShow(val) {
-      if (val === true) {
+      if (val) {
+        // this.$emit('closeMember', val)
         this.getProjectMemberList()
         if (this.executeId === -1) {
           let idList = []
