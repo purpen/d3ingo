@@ -1,7 +1,7 @@
 require('./check-versions')()
 
 process.env.NODE_ENV = 'production'
-
+var fs = require('fs')
 var ora = require('ora')
 var rm = require('rimraf')
 var path = require('path')
@@ -25,6 +25,15 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
       chunks: false,
       chunkModules: false
     }) + '\n\n')
+
+    var version = new Date().getTime()
+    var content = "getVersion('" + version + "')"
+    fs.writeFile(config.build.assetsRoot + "/static/version.js", content, function(err) {
+      if(err) {
+          console.log(err)
+      }
+      console.log("The file was saved!", version)
+    })
 
     console.log(chalk.cyan('  Build complete.\n'))
     console.log(chalk.yellow(

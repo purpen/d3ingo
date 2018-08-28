@@ -1558,11 +1558,11 @@ export default {
   },
   created() {
     this.query.page = Number(this.$route.query.page) || 1
-    this.folderId = this.$route.query.id || 0
+    this.folderId = Number(this.$route.query.id) || 0
     this.modules = this.$route.params.modules || 'all'
-    if (this.$route.params.modules !== 'all'
-      || this.$route.params.modules !== 'recently-use'
-      || this.$route.params.modules !== 'recycle') {
+    if (this.modules !== 'all'
+      && this.modules !== 'recently-use'
+      && this.modules !== 'recycle') {
       this.changeDirector(1)
     }
     this.getUploadUrl()
@@ -1689,8 +1689,10 @@ export default {
       deep: true
     },
     modules(val) {
+      this.historyId = []
       switch (val) {
         case 'all':
+          this.changeDirector(0)
           this.title = '全部文件'
           break
         case 'project':
