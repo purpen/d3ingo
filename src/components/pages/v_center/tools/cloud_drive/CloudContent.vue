@@ -16,7 +16,7 @@
               <p v-else 
                 @click="showView(ele)"
                 :class="['file-icon', ele.format_type]">file-icon</p>
-              <div class="file-name">
+              <div class="file-name" @click.self="showView(ele)">
                 <span class="file-name-span" v-show="chooseList[0] !== ele.id || !hasRename" @click="showView(ele)">{{ele.name}}</span>
                 <p v-show="chooseList[0] === ele.id && hasRename">
                   <input class="rename" type="text" v-model.trim="renameVal">

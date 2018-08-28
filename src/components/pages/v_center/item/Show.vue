@@ -1047,11 +1047,15 @@ export default {
           self.contract = response.data.data.contract
           let evalu = {}
           if (response.data.data.evaluate) {
-            evalu = JSON.parse(response.data.data.evaluate.user_score)
+            if (response.data.data.evaluate.user_score) {
+              evalu = JSON.parse(response.data.data.evaluate.user_score)
+            }
             evalu.content = response.data.data.evaluate.content
           }
           self.evaluate = evalu
-          console.log(self.evaluate)
+          self.evaluate.design_level = self.evaluate.design_level ? self.evaluate.design_level : 5
+          self.evaluate.response_speed = self.evaluate.response_speed ? self.evaluate.response_speed : 5
+          self.evaluate.service = self.evaluate.service ? self.evaluate.service : 5
           if (self.contract) {
             self.contract.created_at = self.contract.created_at
               .date_format()
