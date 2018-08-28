@@ -23,6 +23,11 @@
                            :class="{'item': true, 'is-active': menuType === 2}">等待推荐
               </router-link>
             </div>
+
+            <div class="admin-menu-sub-list fr">
+              <a href="javascript:void(0);" @click="multipleDelItem" class="item">
+                <i class="el-icon-delete"></i> 批量删除</a>
+            </div>
           </div>
 
           <div class="admin-search-form">
@@ -191,6 +196,7 @@
         itemList: [],
         tableData: [],
         currentMatchCompany: [],
+        multipleSelection: [],
         isLoading: false,
         matchCompanyForm: {
           itemId: '',
@@ -218,6 +224,7 @@
         this.query.page = 1
         this.$router.push({name: this.$route.name, query: this.query})
       },
+      // 多选
       handleSelectionChange(val) {
         this.multipleSelection = val
       },
@@ -280,6 +287,36 @@
       handleCurrentChange(val) {
         this.query.page = parseInt(val)
         this.$router.push({name: this.$route.name, query: this.query})
+      },
+      // 删除项目
+      multipleDelItem() {
+        if (this.multipleSelection.length === 0) {
+          this.$message.error('至少选择一个要删除的项目')
+          return false
+        }
+        var idArr = []
+        for (var i = 0; i < this.multipleSelection.length; i++) {
+          idArr.push(this.multipleSelection[i].item.id)
+        }
+        this.$http.delete(api.adminItemDeleteIds, {params: {ids: idArr}})
+          .then((response) => {
+            if (response.data.meta.status_code === 200) {
+              for (let i = 0; i < idArr.length; i++) {
+                for (let j = 0; j < this.tableData.length; j++) {
+                  if (idArr[i] === this.tableData[j].item.id) {
+                    this.tableData.splice(j, 1)
+                  }
+                }
+              }
+              this.$message.success('删除成功!')
+            } else {
+              this.$message.error(response.data.meta.message)
+              return
+            }
+          })
+          .catch((error) => {
+            this.$message.error(error.message)
+          })
       },
       loadList() {
         const self = this
