@@ -389,8 +389,10 @@ export default {
     },
     directOperate(id) {
       this.chooseList = []
-      this.chooseList.push(id)
-      this.$emit('choose', this.chooseList, '')
+      this.$nextTick(_ => {
+        this.chooseList.push(id)
+        this.$emit('choose', this.chooseList, '')
+      })
     },
     headRename(id) {
       this.directOperate(id)
