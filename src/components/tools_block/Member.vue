@@ -138,7 +138,7 @@ export default {
       })
     },
     getCompanyMemberList() {
-      this.$http.get(api.designMemberList)
+      this.$http.get(api.designMemberList, {params: {per_page: 100}})
       .then(res => {
         if (res.data.meta.status_code === 200) {
           this.companyMemberList = res.data.data
