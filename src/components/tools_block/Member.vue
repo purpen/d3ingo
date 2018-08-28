@@ -123,9 +123,9 @@ export default {
       this.$emit('closeMember', false)
     },
     getProjectMemberList() {
-      if (this.projectMemberList.length) {
-        return
-      }
+      // if (this.projectMemberList.length) {
+      //   return
+      // }
       this.$http.get(api.itemUsers, {params: {item_id: this.itemId}})
       .then(res => {
         if (res.data.meta.status_code === 200) {
@@ -369,7 +369,7 @@ export default {
     },
     currentShow(val) {
       if (val) {
-        this.$emit('closeMember', val)
+        // this.$emit('closeMember', val)
         this.getProjectMemberList()
         if (this.executeId === -1) {
           let idList = []

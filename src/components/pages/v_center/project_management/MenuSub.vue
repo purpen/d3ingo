@@ -638,7 +638,6 @@ export default {
     },
     controlMemberShow() {
       this.showMember = !this.showMember
-      console.log(this.showMember)
     },
     closeMember() {
       this.showMember = false
