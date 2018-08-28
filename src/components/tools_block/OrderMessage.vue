@@ -142,7 +142,7 @@
               if (res.data && res.data.meta.status_code === 200) {
                   let status = res.data.data.item.status
                   if (status < 4) {
-                    this.$router.push({name: 'projectCompare', params: {id: d.target_id}})
+                    this.$router.push({name: 'projectInfo', params: {id: d.target_id}})
                   } else {
                     this.$router.push({name: 'vcenterItemShow', params: {id: d.target_id}})
                   }

@@ -157,6 +157,7 @@
         file.id = res.asset_id
         file.created_at = (new Date(res.created_at * 1000)).format('yyyy-MM-dd hh:mm')
         this.fileList.unshift(file)
+        console.log('fileList', this.fileList)
       },
       // 删除按钮
       isdelete(id) {
@@ -205,6 +206,7 @@
       // 获取合同列表
       this.$http.get(api.designProjectContracts, {params: {item_id: this.itemId}}).then((response) => {
         if (response.data.meta.status_code === 200) {
+          console.log('res', response.data.data)
           this.fileList = response.data.data.assets
           this.infoList = response.data.data.info
           if (this.fileList.length > 0) {

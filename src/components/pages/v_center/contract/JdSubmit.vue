@@ -304,7 +304,7 @@
               <div class="sept"></div>
 
               <div class="form-btn">
-                <el-button type="primary" :loading="isLoadingBtn" class="is-custom" @click="submit('ruleForm')">保存
+                <el-button type="primary" :loading="isLoadingBtn" class="is-custom" @click="submit('ruleForm')">{{contractText}}
                 </el-button>
               </div>
               <div class="clear"></div>
@@ -340,6 +340,7 @@
         item: '',
         itemName: '',
         companyId: '',
+        contractText: '保存',
         isLoadingBtn: false,
         contractId: '',
         stateMsg: '生成阶段',
@@ -594,8 +595,10 @@
             if (response.data.meta.status_code === 200) {
               let item = that.item = response.data.data
               that.itemName = that.item.item.name
+              if(that.itemName && that.item.item.status === 6){
+                that.contractText = "发送"
+              }
               that.companyId = item.quotation.design_company_id
-
               if (item.contract) {
                 // 如果是铟果，跳转
                 if (item.contract.source === 0) {
@@ -622,7 +625,7 @@
                         that.form = contract
                         that.form.thn_company_name = that.companyThn.company_name
                         that.form.thn_company_address = that.companyThn.address
-                        that.form.thn_company_phone = that.companyThn.contact_phone
+                        that.form.thn_company_phone = that.companyThn.contact_phone + ''
                         that.form.thn_company_legal_person = that.companyThn.contact_name
                         if (!that.form.commission_rate) {
                           that.form.commission_rate = item.item.commission_rate
@@ -692,7 +695,7 @@
                         that.form.design_company_name = company.company_name
                         that.form.design_company_address = company.province_value + company.city_value + company.address
                         that.form.design_company_legal_person = company.contact_name
-                        that.form.design_company_phone = company.phone
+                        that.form.design_company_phone = company.phone + ''
                       }
                     }
                   })

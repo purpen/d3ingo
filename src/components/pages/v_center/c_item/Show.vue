@@ -155,13 +155,13 @@
                       <router-link :to="{name: 'vcenterContractView', params: {unique_id: contract.unique_id}}"
                                    target="_blank">
                                    <!-- <i class="fa fa-eye" aria-hidden="true"></i> 预览 -->
-                                    <el-button type="primary" class="contract-right-preview">预览</el-button>
+                                    <el-button type="primary" class="contract-right-preview" :class="{'view-button': item.status > 4}">预览</el-button>
                       </router-link>
                     </p>
                     <p v-if="item.status < 7">
                       <router-link :to="{name: 'vcenterContractSubmit', params: {item_id: item.id}}">
                         <!-- <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 修改 -->
-                         <el-button type="primary" class="contract-right-preview">修改</el-button>
+                         <el-button type="primary" class="contract-right-preview" :class="{'view-button': item.status > 4}">修改</el-button>
                       </router-link>
                     </p>
 

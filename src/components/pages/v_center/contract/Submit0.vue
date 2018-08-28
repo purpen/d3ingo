@@ -287,7 +287,7 @@
               <div class="sept"></div>
 
               <div class="form-btn">
-                <el-button type="primary" :loading="isLoadingBtn" class="is-custom" @click="submit('ruleForm')">保存合同
+                <el-button type="primary" :loading="isLoadingBtn" class="is-custom" @click="submit('ruleForm')">{{contractText}}
                 </el-button>
               </div>
               <div class="clear"></div>
@@ -323,6 +323,7 @@
         item: '',
         itemName: '',
         companyId: '',
+        contractText: '保存',
         isLoadingBtn: false,
         contractId: '',
         stateMsg: '生成阶段',
@@ -573,8 +574,10 @@
             if (response.data.meta.status_code === 200) {
               let item = that.item = response.data.data
               that.itemName = that.item.item.name
+              if(that.itemName && that.item.item.status === 6){
+                that.contractText = "发送"
+              }
               that.companyId = item.quotation.design_company_id
-
               if (item.contract) {
                 that.contractId = item.contract.id
                 that.$http.get(api.contractId.format(item.contract.unique_id), {})

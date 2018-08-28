@@ -159,7 +159,7 @@
               }]" @click="incomeYear()">全年</span>
             </p>
           </div>
-          <div class="line-body">
+          <div class="line-body" v-loading="itemLoading">
             <el-row>
               <el-col :xs="24" :sm="24" :md="24" :lg="18" :xl="18">
                 <!-- <h4 class="fz-14 tc-6 padding-t-15">收入趋势</h4> -->
@@ -235,13 +235,13 @@
                   </el-col>
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <ul>
-                      <li v-for="(s,indexs) in stage" :key="indexs" class="table-money">
+                      <li v-for="(s,indexs) in stage" :key="indexs" class="table-money oneline">
                         <el-row>
                           <el-col :span='2'><i :style="{backgroundColor:color[indexs]}"></i></el-col>
                           <el-col :span='10'>{{s.name}}</el-col>
                           <el-col :span='3'>{{s.count}}个</el-col>
-                          <el-col :span='7'>¥{{s.money}}</el-col>
-                          <el-col :span='2'>{{s.pre}}%</el-col>
+                          <el-col :span='6'>¥{{s.money}}</el-col>
+                          <el-col :span='3'>{{s.pre}}%</el-col>
                         </el-row>
                       </li>
                     </ul>
@@ -269,7 +269,7 @@
                 <el-col :span="12">
                   <ul class="p-t-20">
                     <li class="tc-2 fz-14 padding-b-15">全部排名</li>
-                    <li v-for="(r, indexr) in income20" :key="indexr" class="ranking-table">
+                    <li v-for="(r, indexr) in income20" :key="indexr" class="ranking-table oneline">
                       <el-row>
                         <el-col :span="3"><i>{{indexr+1}}</i></el-col>
                         <el-col :span="8">{{r.name}}</el-col>
@@ -311,7 +311,7 @@
                     </el-col>
                   <!-- <el-col :span="6">项目阶段</el-col> -->
                 </el-row>
-                <el-row v-if="isclassify">
+                <el-row v-if="isclassify" v-loading="desLoading">
                   <el-col :span="12">
                     <el-row class="p-t-20">
                       <el-col :span="12">
@@ -332,12 +332,12 @@
                   </el-col>
                   <el-col :span="12" class="p-t-20">
                     <ul v-if="isclassify">
-                      <li v-for="(cl,indexcl) in classify" :key="indexcl" class="table-class">
+                      <li v-for="(cl,indexcl) in classify" :key="indexcl" class="table-class oneline">
                         <el-row>
                           <el-col :span="2"><i :style="{backgroundColor:color[indexcl]}"></i></el-col>
                           <el-col :span="9">{{cl.type}}</el-col>
-                          <el-col :span="9" v-if="radio === '1'">¥ {{cl.money}}</el-col>
-                          <el-col :span="9" v-if="radio === '2'">{{cl.count}} 个</el-col>
+                          <el-col :span="9" v-if="radio === '2'">¥ {{cl.money}}</el-col>
+                          <el-col :span="9" v-if="radio === '1'">{{cl.count}} 个</el-col>
                           <el-col :span="4">{{cl.pre}}%</el-col>
                         </el-row>
                       </li>
@@ -448,16 +448,10 @@
                客户统计
               <span class="tc-9 fz-14 fr">客户总数: {{clients}}个</span>
           </div>
-          <el-row class="p-rl-30">
+          <el-row class="p-l-30" v-loading="cliLoading">
             <el-col  :xs="24" :sm="24" :md="24" :lg="18">
               <div class="content-header">
                 <el-row>
-                  <!-- <el-col :xs="24" :sm="24" :md="12" :lg="12">
-                    <div class="client-select">
-                      <div>地点</div>
-                      <div>评分</div>
-                    </div>
-                  </el-col> -->
                   <el-col :xs="24" :sm="24" :md="{span: 12, offset: 12}" :lg="{span: 12, offset: 12}">
                     <el-row class="radio-class fr">
                       <el-col :span="12">
@@ -476,19 +470,21 @@
                 </ECharts>
               </div>
             </el-col>
-            <el-col  :xs="24" :sm="12" :md="12" :lg="6" class="scroll-bar scroll-max">
+            <el-col  :xs="24" :sm="12" :md="12" :lg="6">
               <p class="title-table">城市客户数量排名</p>
-              <ul v-if="clients > 0">
-                <li v-for="(ci, indexci) in city" :key="indexci" class="city-table">
+              <ul v-if="clients > 0" class="scroll-bar scroll-min">
+                <li v-for="(ci, indexci) in city" :key="indexci" class="city-table oneline">
                   <el-row>
                     <el-col :span="2"><i>{{indexci+1}}</i></el-col>
                     <el-col :span="9">{{ci.item_province_val === ''? '&nbsp;':ci.item_province_val}}</el-col>
-                    <el-col :span="9">{{ci.item_count}}位</el-col>
-                    <el-col :span="4">{{ci.item_count_percentage}}%</el-col>
+                    <el-col :span="9" v-if="radio1==='2'">{{ci.item_count}}位</el-col>
+                    <el-col :span="4" v-if="radio1==='2'">{{ci.item_count_percentage}}%</el-col>
+                    <el-col :span="9" v-if="radio1==='1'">¥ {{ci.city_cost}}</el-col>
+                    <el-col :span="4" v-if="radio1==='1'">{{ci.city_cost_percentage}}%</el-col>
                   </el-row>
                 </li>
               </ul>
-              <div class="noDate" v-if="clients === 0">
+              <div class="noDate scroll-bar scroll-min" v-if="clients === 0">
                 <img src="../../../../assets/images/member/Noclient.png"  alt="">
                 <p>没有相关客户信息</p>
               </div>
@@ -511,7 +507,7 @@
                 </el-col>
                 <el-col :span="12">
                   <ul class="p-t-20">
-                    <li v-for="(u, indexu) in positions" :key="indexu" class="table-class">
+                    <li v-for="(u, indexu) in positions" :key="indexu" class="table-class oneline">
                       <el-row>
                         <el-col :span="2" >
                           <i :style="{backgroundColor:color[indexu]}">
@@ -543,7 +539,7 @@
               <el-col :span="12">
                 <div class="admin-Echart">
                   <ul>
-                    <li class="table-class" v-for="(us, indexus) in userList" :key="indexus">
+                    <li class="table-class oneline" v-for="(us, indexus) in userList" :key="indexus">
                       <el-row>
                         <el-col :span="2" >
                           <i :style="{backgroundColor:color[indexus]}">
@@ -580,6 +576,7 @@
 import vMenu from '@/components/pages/v_center/Menu'
 import ECharts from 'vue-echarts'
 import api from '@/api/api'
+import con from '@/config'
 export default {
   name: 'console',
   data() {
@@ -612,6 +609,9 @@ export default {
       stage: [], // 阶段占比
       city: [], // 城市排名
       clients: 0,
+      desLoading: true, // 加载不同类型.类别的数据
+      itemLoading: true, // 项目款加载
+      cliLoading: true, // 客户加载
       nostage: 0,
       isclassify: false,
       task: {}, // 所有项目的任务
@@ -735,7 +735,8 @@ export default {
         color: colors,
         tooltip: {
           trigger: 'item',
-          formatter: '价格阶段: {b}<br/>金额: ¥ {c} <br/>占比: {d}%'
+          formatter: '价格阶段: {b}<br/>金额: ¥ {c} <br/>占比: {d}%',
+          confine: true
         },
         series: [
           {
@@ -763,7 +764,8 @@ export default {
         color: colors,
         tooltip: {
           trigger: 'item',
-          formatter: '项目名称: {b}<br/>金额: ¥ {c} <br/>占比: {d}%'
+          formatter: '项目名称: {b}<br/>金额: ¥ {c} <br/>占比: {d}%',
+          confine: true
         },
         series: [
           {
@@ -910,7 +912,8 @@ export default {
         color: colors,
         tooltip: {
           trigger: 'item',
-          formatter: '职位: {b}<br/>人数: {c}人 <br/>占比: {d}%'
+          formatter: '职位: {b}<br/>人数: {c}人 <br/>占比: {d}%',
+          confine: true
         },
         series: [
           {
@@ -938,7 +941,8 @@ export default {
         color: colors,
         tooltip: {
           trigger: 'item',
-          formatter: '职位: {b}<br/>人数: {c}人 <br/>占比: {d}%'
+          formatter: '职位: {b}<br/>人数: {c}人 <br/>占比: {d}%',
+          confine: true
         },
         series: [
           {
@@ -967,9 +971,13 @@ export default {
   },
   components: {
     vMenu,
-    ECharts
+    ECharts,
+    con
   },
   computed: {
+    con_type() {
+      return con.COMPANY_TYPE3
+    },
     isMob() {
       return this.$store.state.event.isMob
     },
@@ -1053,16 +1061,8 @@ export default {
       this.$http.post(api.designTargetCreate, form).then((response) => {
         if (response.data.meta.status_code === 200) {
           this.getTargetShow()
-          // if (type === 1) {
-          //   this.totalItem.count = this.ecount
           this.target = false
           this.Turnover = false
-          // }
-          // if (type === 2) {
-          //   this.totalItem.turnover = this.eturnover * 10000
-          //   this.Turnover = false
-          //   this.target = false
-          // }
         } else {
           this.$message.error(response.data.meta.message)
         }
@@ -1088,12 +1088,14 @@ export default {
       if (this.isItemYMQ === '1') {
         return
       } else this.isItemYMQ = '1'
+      this.itemLoading = true
       this.$http.get(api.designTargetIncomeYear).then((response) => {
-        if (response.data.meta.status_code === 200) {
+        if (response.data.meta.status_code === 200) {        
           this.polar2.xAxis.data = this.polar.xAxis.data = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
           this.polar.series[0].data = ['0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00','0.00','0.00', '0.00', '0.00', '0.00']
           this.polar2.series[0].data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
           if (!response.data.data.incomeYears || response.data.data.incomeYears.length === 0) {
+            this.itemLoading = false
             return response.data.data.incomeYears = []
           }
           let res = response.data.data
@@ -1118,11 +1120,14 @@ export default {
             'total_year_item _count': res.total_year_item_count,
             'average': res.average
           }
+          this.itemLoading = false
         } else {
+          this.itemLoading = false
           this.$message.error(response.data.meta.message)
         }
       })
       .catch((error) => {
+        this.itemLoading = false
         this.$message.error(error.message)
       })
     },
@@ -1131,9 +1136,9 @@ export default {
       if (this.isItemYMQ === '2') {
         return
       } else this.isItemYMQ = '2'
+      this.itemLoading = true
       this.$http.get(api.designTargetIncomeQuarter).then((response) => {
         if (response.data.meta.status_code === 200) {
-          console.log('res', response.data.data)
           let date = new Date()
           let month = Number((date.format('yyyy/MM/dd').substring(5,7)))
           let xaxis = []
@@ -1154,6 +1159,7 @@ export default {
           this.polar.series[0].data = [0, 0, 0]
           this.polar2.series[0].data = [0, 0, 0]
           if (!response.data.data.incomeQuarters || response.data.data.incomeQuarters.length === 0) {
+            this.itemLoading = false
             return response.data.data.incomeQuarters = []
           }
           let res = response.data.data
@@ -1171,7 +1177,7 @@ export default {
             this.pieRatio.series[0].label.formatter = '\n总项目数量\n\n' + res.total_quarter_item_count + '个'
           }
           for (var c = 0; c < this.polar.series[0].data.length; c++) {
-            if (this.polar.series[0].data[c] === 0) {
+            if (Number(this.polar.series[0].data[c]) === 0) {
               this.polar.series[0].data[c] = '0.00'
             } else this.polar.series[0].data[c] = this.polar.series[0].data[c].toFixed(2)
           }
@@ -1184,11 +1190,14 @@ export default {
             'total_year_item _count': res.total_quarter_item_count,
             'average': res.average
           }
+          this.itemLoading = false
         } else {
+          this.itemLoading = false
           this.$message.error(response.data.meta.message)
         }
       })
       .catch((error) => {
+        this.itemLoading = false
         this.$message.error(error.message)
       })
     },
@@ -1197,6 +1206,7 @@ export default {
       if (this.isItemYMQ === '3') {
         return
       } else this.isItemYMQ = '3'
+      this.itemLoading = true
       this.$http.get(api.designTargetIncomeMonth).then((response) => {
         if (response.data.meta.status_code === 200) {
           if (!response.data.data.incomeMonths || response.data.data.incomeMonths.length === 0) {
@@ -1205,6 +1215,7 @@ export default {
             this.polar.xAxis.data = this.polar2.xAxis.data = this.monthDay(monthdays).days
             this.polar.series[0].data = this.monthDay(monthdays).data
             this.polar2.series[0].data = this.monthDay(monthdays).data
+            this.itemLoading = false
             return response.data.data.incomeMonths = []
           }
           let res = response.data.data
@@ -1241,11 +1252,14 @@ export default {
             'total_year_item _count': res.total_month_item_count,
             'average': res.average
           }
+          this.itemLoading = false
         } else {
+          this.itemLoading = false
           this.$message.error(response.data.meta.message)
         }
       })
       .catch((error) => {
+        this.itemLoading = false
         this.$message.error(error.message)
       })
     },
@@ -1282,7 +1296,7 @@ export default {
             money += Number(this.income20[i].cost)
             data.push(
               {
-                'name': this.income20[i].name,
+                'name': this.income20[i].name.length > 15 ? this.income20[i].name.slice(0, 15) + '...' : this.income20[i].name,
                 'value': this.income20[i].cost
               }
             )
@@ -1305,6 +1319,7 @@ export default {
     },
     // 设计类别分类
     incomeType() {
+      this.desLoading = true
       this.$http.get(api.designTargetIncomeType, {}).then((response) => {
         if (response.data.meta.status_code === 200) {
           this.category = '1'
@@ -1312,136 +1327,93 @@ export default {
           if (res.year_p_money + res.year_u_money === 0 || res.year_p_count + res.year_u_count === 0) {
             this.isclassify = false
           } else this.isclassify = true
-          this.classify = [
-            {
-              'type': '产品设计',
-              'count': res.year_p_count,
-              'money': res.year_p_money.toFixed(2),
-              'pre': res.year_p_percentage,
-              'color': '#FF686A'
-            },
-            {
-              'type': 'ui设计',
-              'count': res.year_u_count,
-              'money': res.year_u_money.toFixed(2),
-              'pre': res.year_u_percentage,
-              'color': '#CD6DE0'
-            }
-          ]
-          this.incomeClassify.series[0].data = [
-            {
-              'value': this.radio === '1'? res.year_p_count:res.year_p_money.toFixed(2),
-              'name': '产品设计'
-            },
-            {
-              'value': this.radio === '1'? res.year_u_count:res.year_u_money.toFixed(2),
-              'name': 'ui设计'
-            }
-          ]
+          let arr = []
+          let data = []
+          for (var t = 0; t < this.con_type.length; t++) {
+            arr.push({
+              'type': this.con_type[t].name,
+              'count': res['year_' + this.con_type[t].val + '_count'],
+              'money': res['year_' + this.con_type[t].val + '_money'].toFixed(2),
+              'pre': res['year_' + this.con_type[t].val + '_percentage'],
+              'color': this.color[t]
+            })
+            data.push({
+              'value': this.radio === '1'? res['year_' + this.con_type[t].val + '_count']:res['year_' + this.con_type[t].val + '_money'].toFixed(2),
+              'name': this.con_type[t].val
+            })
+          }
+          this.classify = arr
+          this.incomeClassify.series[0].data = data
           if (this.radio === '1') {
-            this.incomeClassify.series[0].label.formatter = '总人数\n\n' + res.total_year_count + '人'
+            this.incomeClassify.series[0].label.formatter = '总项目\n\n' + res.total_year_count + '个'
+            this.incomeClassify.tooltip.formatter = '价格阶段: {b}<br/>项目数: {c}个 <br/>占比: {d}%'
           }
           if (this.radio === '2') {
             this.incomeClassify.series[0].label.formatter = '总金额\n\n¥' + res.total_year_money.toFixed(2)
+            this.incomeClassify.tooltip.formatter= '价格阶段: {b}<br/>金额: ¥ {c} <br/>占比: {d}%'
           }
+          this.desLoading = false
         } else {
+          this.desLoading = false
           this.$message.error(response.data.meta.message)
         }
       })
       .catch((error) => {
-      this.$message.error(error.message)
+        this.desLoading = false
+        this.$message.error(error.message)
       })
     },
     // 产品类别分类
     iscomeProduct() {
+      this.desLoading = true
       this.$http.get(api.designTargetIncomeDesignTypes, {}).then((response) => {
         if (response.data.meta.status_code === 200) {
           this.category = '2'
           let res = response.data.data
-          this.classify = [
-            {
-              'type': '产品策略',
-              'count': res.year_p_s_count,
-              'money': res.year_p_s_money.toFixed(2),
-              'pre': res.year_p_s_percentage,
-              'color': '#FF686A'
-            },
-            {
-              'type': '产品设计',
-              'count': res.year_p_p_count,
-              'money': res.year_p_p_money.toFixed(2),
-              'pre': res.year_p_p_percentage,
-              'color': '#CD6DE0'
-            },
-            {
-              'type': '结构设计',
-              'count': res.year_p_c_count,
-              'money': res.year_p_c_money.toFixed(2),
-              'pre': res.year_p_c_percentage,
-              'color': '#CD6DE0'
-            },
-            {
-              'type': 'app设计',
-              'count': res.year_u_a_count,
-              'money': res.year_u_a_money.toFixed(2),
-              'pre': res.year_u_a_percentage,
-              'color': '#CD6DE0'
-            },
-            {
-              'type': '网页设计',
-              'count': res.year_u_w_count,
-              'money': res.year_u_w_money.toFixed(2),
-              'pre': res.year_u_w_percentage,
-              'color': '#CD6DE0'
-            },
-            {
-              'type': '界面设计',
-              'count': res.year_u_i_count,
-              'money': res.year_u_i_money.toFixed(2),
-              'pre': res.year_u_i_percentage,
-              'color': '#CD6DE0'
-            },
-            {
-              'type': '服务设计',
-              'count': res.year_u_s_count,
-              'money': res.year_u_s_money.toFixed(2),
-              'pre': res.year_u_s_percentage,
-              'color': '#CD6DE0'
-            },
-            {
-              'type': '用户体验咨询',
-              'count': res.year_u_u_count,
-              'money': res.year_u_u_money.toFixed(2),
-              'pre': res.year_u_u_percentage,
-              'color': '#CD6DE0'
-            }
-          ]
+          let clf = []
+          let colork = 0
           let data = []
-          for (var i = 0; i < this.classify.length; i++) {
-            data.push(
-              {
-                'value': this.radio === '1'?this.classify[i].count:this.classify[i].money,
-                'name': this.classify[i].type
-              }
-            )
+          for(var y = 0; y < this.con_type.length; y++) {
+            for (let d = 0; d < this.con_type[y].designType.length; d++) {
+              let key = this.con_type[y].val + '_' + this.con_type[y].designType[d].val
+              clf.push({
+                'type': this.con_type[y].designType[d].name,
+                'count': res['year_' + key + '_count'],
+                'money': res['year_' + key + '_money'].toFixed(2),
+                'pre': res['year_' + key + '_percentage'],
+                'color': this.color[colork]
+              })
+              data.push(
+                {
+                  'value': this.radio === '1'?res['year_' + key + '_count']:res['year_' + key + '_money'].toFixed(2),
+                  'name': this.con_type[y].designType[d].name
+                }
+              )
+              colork++
+            }
           }
+          this.classify = clf
           this.incomeClassify.series[0].data = data
           if (this.radio === '1') {
-            this.incomeClassify.series[0].label.formatter = '总人数\n\n' + res.total_year_count + '人'
+            this.incomeClassify.series[0].label.formatter = '总项目\n\n' + res.total_year_count + '个'
           }
           if (this.radio === '2') {
             this.incomeClassify.series[0].label.formatter = '总金额\n\n¥' + res.total_year_money.toFixed(2)
           }
+          this.desLoading = false
         } else {
+          this.desLoading = false
           this.$message.error(response.data.meta.message)
         }
       })
       .catch((error) => {
+        this.desLoading = false
         this.$message.error(error.message)
       })
     },
     // 所属行业
     iscomeIndustry() {
+      this.desLoading = true
       this.$http.get(api.designTargetIncomeIndustry, {}).then((response) => {
         if (response.data.meta.status_code === 200) {
           this.category = '3'
@@ -1536,16 +1508,19 @@ export default {
           }
           this.incomeClassify.series[0].data = data
           if (this.radio === '1') {
-            this.incomeClassify.series[0].label.formatter = '总人数\n\n' + res.total_year_count + '人'
+            this.incomeClassify.series[0].label.formatter = '总项目\n\n' + res.total_year_count + '个'
           }
           if (this.radio === '2') {
             this.incomeClassify.series[0].label.formatter = '总金额\n\n¥' + res.total_year_money.toFixed(2)
           }
+          this.desLoading = false
         } else {
+          this.desLoading = false
           this.$message.error(response.data.meta.message)
         }
       })
       .catch((error) => {
+        this.desLoading = false
         this.$message.error(error.message)
       })
     },
@@ -1633,7 +1608,7 @@ export default {
               },
             )
             this.stages.series[0].data[i] = {
-              'value': res['year_stage' + (i + 1) + '_money'],
+              'value': res['year_stage' + (i + 1) + '_money'].toFixed(2),
               'name': arr[i],
             }
           }
@@ -1661,6 +1636,7 @@ export default {
     },
     // 城市排名
     cityRanking() {
+      this.cliLoading = true
       this.$http.get(api.designTargetIncomeCity, {params: {sort: this.radio1}}).then((response) => {
         if (response.data.meta.status_code === 200) {
           this.city = response.data.data
@@ -1691,11 +1667,14 @@ export default {
             this.baropt.xAxis.data = ['']
             this.baropt.series[0].data = ['0']
           }
+          this.cliLoading = false
         } else {
+          this.cliLoading = false
           this.$message.error(response.data.meta.message)
         }
       })
       .catch((error) => {
+        this.cliLoading = false
         this.$message.error(error.message)
       })
     },
@@ -1703,13 +1682,11 @@ export default {
     getTargetShow() {
       this.$http.get(api.designTargetShow, {}).then((response) => {
         if (response.data.meta.status_code === 200) {
-          this.isLoading = false
           this.totalItem = response.data.data
         } else {
           this.$message.error(response.data.meta.message)
         }
       }).catch((error) => {
-        this.isLoading = false
         this.$message.error(error.message)
       })
     }
@@ -1724,6 +1701,9 @@ export default {
     this.incomeStage()
     this.getTaskList()
     this.cityRanking()
+  },
+  beforeMount() {
+    this.isLoading = false
   }
 }
 </script>
@@ -1845,7 +1825,7 @@ export default {
     font-size: 12px;
     padding-bottom: 20px;
   }
-  .ranking-table>.el-row>.el-col {
+  .oneline>.el-row>.el-col {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap
@@ -1987,6 +1967,7 @@ export default {
     justify-content: center;
     align-items: center;
     height: 310px;
+    color: #999;
   }
   .noDate>img {
     height: 120px;
@@ -1995,6 +1976,10 @@ export default {
   .scroll-max {
     max-height: 310px;
     overflow-y: auto;
+  }
+  .scroll-min {
+    max-height: 250px;
+    overflow-y: auto; 
   }
   .head,
   .line-body {
@@ -2038,8 +2023,8 @@ export default {
   .padding-tb-15 {
     padding: 15px 0;
   }
-  .p-rl-30 {
-    padding: 0 30px;
+  .p-l-30 {
+    padding-left: 30px;
   }
   .padding-b-15 {
     padding-bottom: 15px;
