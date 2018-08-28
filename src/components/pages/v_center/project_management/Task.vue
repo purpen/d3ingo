@@ -12,9 +12,9 @@
             <div tabindex="-1" class="filter" ref="filter">
               <p>筛选</p>
               <ul>
-                <li @click="changeTaskStatus(0)" :class="{'active': taskStatus === 0}">全部任务</li>
-                <li @click="changeTaskStatus(2)" :class="{'active': taskStatus === 2}">已完成</li>
                 <li @click="changeTaskStatus(-1)" :class="{'active': taskStatus === -1}">未完成</li>
+                <li @click="changeTaskStatus(2)" :class="{'active': taskStatus === 2}">已完成</li>
+                <li @click="changeTaskStatus(0)" :class="{'active': taskStatus === 0}">全部任务</li>
               </ul>
             </div>
           </div>
