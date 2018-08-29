@@ -599,7 +599,7 @@
                         if (!that.form.thn_company_name) {
                           that.form.thn_company_name = that.companyThn.company_name
                           that.form.thn_company_address = that.companyThn.address
-                          that.form.thn_company_phone = that.companyThn.contact_phone
+                          that.form.thn_company_phone = that.companyThn.contact_phone + ''
                           that.form.thn_company_legal_person = that.companyThn.contact_name
                         }
                         if (!that.form.commission_rate) {
@@ -628,7 +628,7 @@
                 that.form.title = that.itemName
                 that.form.thn_company_name = that.companyThn.company_name
                 that.form.thn_company_address = that.companyThn.address
-                that.form.thn_company_phone = that.companyThn.contact_phone
+                that.form.thn_company_phone = that.companyThn.contact_phone + ''
                 that.form.thn_company_legal_person = that.companyThn.contact_name
                 that.form.demand_pay_limit = that.contractScale.demand_pay_limit
                 that.form.commission_rate = item.item.commission_rate
@@ -637,7 +637,7 @@
                 that.form.demand_company_name = item.item.company_name
                 that.form.demand_company_address = item.item.company_province_value + item.item.company_city_value + item.item.address
                 that.form.demand_company_legal_person = item.item.contact_name
-                that.form.demand_company_phone = item.item.phone
+                that.form.demand_company_phone = item.item.phone + ''
                 that.form.total = parseFloat(item.item.price)
                 that.form.warranty_money = parseFloat(item.item.warranty_money)
                 that.form.first_payment = parseFloat(item.item.first_payment)
@@ -653,7 +653,7 @@
                         that.form.design_company_name = company.company_name
                         that.form.design_company_address = company.province_value + company.city_value + company.address
                         that.form.design_company_legal_person = company.contact_name
-                        that.form.design_company_phone = company.phone
+                        that.form.design_company_phone = company.phone + ''
                       }
                     }
                   })

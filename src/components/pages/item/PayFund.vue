@@ -34,7 +34,7 @@
                 <label>
                   <div :class="{'item': true, active: payType === 1 ? true : false}" @click="checkedPayBtn(1)">
                     <img src="../../../assets/images/icon/alipay.png"/>
-                    <img class="pay-active" src="../../../assets/images/icon/pay_checked.png"/>
+                    <img class="pay-active" src="../../../assets/images/icon/pay_checked2.png"/>
                   </div>
                 </label>
               </li>
@@ -51,7 +51,7 @@
                   <div :class="{'item': true, active: payType === 5 ? true : false}"
                        @click="checkedPayBtn(5)">
                     <p>对公转账</p>
-                    <img class="pay-active" src="../../../assets/images/icon/pay_checked.png"/>
+                    <img class="pay-active" src="../../../assets/images/icon/pay_checked2.png"/>
                   </div>
                 </label>
               </li>
