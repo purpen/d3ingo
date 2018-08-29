@@ -60,7 +60,10 @@ Vue.config.productionTip = false
 // })
 
 router.afterEach((to, from, next) => {
-  document.getElementById('app').scrollTo(0, 0)
+  let scroll = document.getElementById('app')
+  if (scroll.scrollTop !== 0 && typeof (scroll.scrollTo) === 'function') {
+    scroll.scrollTo(0, 0)
+  }
 })
 
 // 将axios挂载到prototype上，在组件中可以直接使用this.http访问
