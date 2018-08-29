@@ -609,7 +609,7 @@ export default {
             this.$set(this.form, 'company_name', item.company_name)
             this.$set(this.form, 'contact_name', item.contact_name)
             this.$set(this.form, 'position', item.position)
-            this.$set(this.form, 'phone', item.phone)
+            this.$set(this.form, 'phone', item.phone + '')
             this.$set(this.form, 'address', item.address)
             this.$set(this.form, 'province', item.province)
             this.$set(this.form, 'city', item.city)
