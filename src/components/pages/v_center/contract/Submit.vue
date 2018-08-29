@@ -644,8 +644,8 @@
                     if (response.data.meta.status_code === 200) {
                       let contract = response.data.data
                       if (contract) {
-                        contract.demand_company_phone = contract.demand_company_phone
-                        contract.design_company_phone = contract.design_company_phone
+                        contract.demand_company_phone = contract.demand_company_phone + ''
+                        contract.design_company_phone = contract.design_company_phone + ''
                         if (!contract.demand_pay_limit) {
                           contract.demand_pay_limit = that.contractScale.demand_pay_limit
                         }
@@ -698,7 +698,7 @@
                 that.form.title = that.itemName
                 that.form.thn_company_name = that.companyThn.company_name
                 that.form.thn_company_address = that.companyThn.address
-                that.form.thn_company_phone = that.companyThn.contact_phone
+                that.form.thn_company_phone = that.companyThn.contact_phone + ''
                 that.form.thn_company_legal_person = that.companyThn.contact_name
                 that.form.demand_pay_limit = that.contractScale.demand_pay_limit
                 that.form.commission_rate = item.item.commission_rate
@@ -707,7 +707,7 @@
                 that.form.demand_company_name = item.item.company_name
                 that.form.demand_company_address = item.item.company_province_value + item.item.company_city_value + item.item.address
                 that.form.demand_company_legal_person = item.item.contact_name
-                that.form.demand_company_phone = item.item.phone
+                that.form.demand_company_phone = item.item.phone + ''
                 that.form.tax_price = item.item.tax ? parseFloat(item.item.tax) : 0
                 that.form.total = parseFloat(item.item.price)
                 that.form.warranty_money = item.item.commission ? parseFloat(item.item.commission) : 0
