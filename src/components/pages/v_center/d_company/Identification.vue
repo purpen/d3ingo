@@ -276,7 +276,6 @@
           province: '',
           city: '',
           area: '',
-          phone: '',
           test: ''
         },
 
@@ -359,7 +358,7 @@
               document_type: that.form.document_type,
               contact_name: that.form.contact_name,
               position: that.form.position,
-              phone: that.form.phone,
+              phone: that.form.phone + '',
               email: that.form.email,
               address: that.form.address,
               province: that.form.province,
