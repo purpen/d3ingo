@@ -31,13 +31,13 @@
               </div>
             </el-col>
             <el-col :span="3">
-              <p :class="['file-size', {'hidden': ele.format_type === 'folder'}]">{{ele.format_size}}</p>
+              <p @click="showView(ele)" :class="['file-size', {'hidden': ele.format_type === 'folder'}]">{{ele.format_size}}</p>
             </el-col>
             <el-col :span="5" :style="{height: '70px'}">
-              <p v-if="!driveShare" :class="['file-uploader']">{{ele.user_name}}</p>
+              <p @click="showView(ele)" v-if="!driveShare" :class="['file-uploader']">{{ele.user_name}}</p>
             </el-col>
             <el-col :span="4">
-              <p class="upload-date">{{ele.created_at_format}}</p>
+              <p @click="showView(ele)" class="upload-date">{{ele.created_at_format}}</p>
             </el-col>
             <el-col :span="2" v-if="!chooseStatus && modules !== 'recycle' && !driveShare">
               <div class="more-list" tabindex="-1">
