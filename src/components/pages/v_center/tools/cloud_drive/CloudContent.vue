@@ -389,33 +389,41 @@ export default {
     },
     directOperate(id) {
       this.chooseList = []
-      this.$nextTick(_ => {
-        this.chooseList.push(id)
-        this.$emit('choose', this.chooseList, '')
-      })
+      this.chooseList.push(id)
+      this.$emit('choose', this.chooseList, '')
     },
     headRename(id) {
-      this.directOperate(id)
-      this.$emit('headDirectRename', id, this.headName)
-      this.isEditHeadName = false
+      this.$nextTick(_ => {
+        this.directOperate(id)
+        this.$emit('headDirectRename', id, this.headName)
+        this.isEditHeadName = false
+      })
     },
     rename(id, index) {
-      this.directOperate(id)
-      this.$emit('directRename')
-      this.renameVal = this.list[index]['name']
+      this.$nextTick(_ => {
+        this.directOperate(id)
+        this.$emit('directRename')
+        this.renameVal = this.list[index]['name']
+      })
     },
     deleteFile(id, ObjIndex = -1) {
-      this.$refs.moreRight.blur()
-      this.directOperate(id)
-      this.$emit('deleteFile')
+      this.$nextTick(_ => {
+        this.directOperate(id)
+        this.$refs.moreRight.blur()
+        this.$emit('deleteFile')
+      })
     },
     shiftDelete(id) {
-      this.directOperate(id)
-      this.$emit('shiftDelete')
+      this.$nextTick(_ => {
+        this.directOperate(id)
+        this.$emit('shiftDelete')
+      })
     },
     recoverFile(id) {
-      this.directOperate(id)
-      this.$emit('recoverFile')
+      this.$nextTick(_ => {
+        this.directOperate(id)
+        this.$emit('recoverFile')
+      })
     },
     switchPic(e) {
       console.log(e)
@@ -461,21 +469,28 @@ export default {
       }
     },
     copyFile(id) {
-      this.directOperate(id)
-      this.$emit('confirmCopy')
+      this.$nextTick(_ => {
+        this.directOperate(id)
+        this.$emit('confirmCopy')
+      })
     },
     moveFile(id) {
-      this.directOperate(id)
-      console.log(id, 111)
-      this.$emit('confirmMove')
+      this.$nextTick(_ => {
+        this.directOperate(id)
+        this.$emit('confirmMove')
+      })
     },
     shareFile(id) {
-      this.directOperate(id)
-      this.$emit('confirmShare')
+      this.$nextTick(_ => {
+        this.directOperate(id)
+        this.$emit('confirmShare')
+      })
     },
     downFile(id, url) {
-      this.directOperate(id)
-      this.$emit('downloadFile', url)
+      this.$nextTick(_ => {
+        this.directOperate(id)
+        this.$emit('downloadFile', url)
+      })
     }
   },
   watch: {

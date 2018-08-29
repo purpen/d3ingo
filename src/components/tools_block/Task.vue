@@ -1182,13 +1182,14 @@
     padding: 20px 0 10px;
   }
   .add-child-input {
-    padding: 5px 20px 5px 0;
+    /* padding: 5px 20px 5px 0; */
+    padding: 5px 0;
     border-bottom: none;
     display: flex;
   }
   .add-child-input .child-more {
     position: absolute;
-    right: 3px;
+    right: -17px;
     top: 0;
     bottom: 0;
     margin: auto;

@@ -1820,7 +1820,7 @@ export default {
   .content-head .title {
     padding-left: 10px;
     font-size: 16px;
-    max-width: 200px;
+    max-width: 500px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
