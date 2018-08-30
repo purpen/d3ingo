@@ -918,7 +918,7 @@ export default {
           design_company_name: this.projectObject.design_company_name,
           design_contact_name: this.projectObject.design_contact_name,
           design_position: this.projectObject.design_position,
-          design_phone: this.projectObject.design_phone,
+          design_phone: this.projectObject.design_phone + '',
           design_province: this.projectObject.design_province === 0 ? '' : this.projectObject.design_province,
           design_city: this.projectObject.design_city === 0 ? '' : this.projectObject.design_city,
           design_area: this.projectObject.design_area === 0 ? '' : this.projectObject.design_area,
