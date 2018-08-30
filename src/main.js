@@ -45,27 +45,6 @@ Vue.use(VueLazyload, {
 
 Vue.config.productionTip = false
 
-// 路由滚动到顶端
-// router.afterEach(function (to) {
-//   var interval = setInterval (() => {
-//     var yscr = document.getElementById('app').scrollTop
-//     yscr -= 60
-//     if (yscr > 0) {
-//       document.getElementById('app').scrollTo(0, yscr)
-//     } else {
-//       clearInterval(interval)
-//       document.getElementById('app').scrollTo(0, 0)
-//     }
-//   }, 17)
-// })
-
-router.afterEach((to, from, next) => {
-  let scroll = document.getElementById('app')
-  if (scroll.scrollTop !== 0 && typeof (scroll.scrollTo) === 'function') {
-    scroll.scrollTo(0, 0)
-  }
-})
-
 // 将axios挂载到prototype上，在组件中可以直接使用this.http访问
 Vue.prototype.$http = axios
 

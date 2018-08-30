@@ -697,7 +697,7 @@
       changeExecute(id) {
         this.currentForm.execute_user_id = id
         if (this.executeUser) {
-            this.currentForm.logo_image = this.executeUser.logo_image
+          this.currentForm.logo_image = this.executeUser.logo_image
         }
         this.$store.commit('updateTaskListItem', this.currentForm)
         this.fetchStage()

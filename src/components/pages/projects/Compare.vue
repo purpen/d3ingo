@@ -254,8 +254,8 @@ export default {
         this.selectList.splice(index, 1)
       }
     },
-    //点击推荐公司上半部分选中
-    clickSelf(id){
+    // 点击推荐公司上半部分选中
+    clickSelf(id) {
       let index = this.selectList.indexOf(id)
       if (index === -1) {
         this.selectList.push(id)

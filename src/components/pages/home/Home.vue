@@ -343,7 +343,7 @@
           prevButton: '.swiper-button-prev',
           nextButton: '.swiper-button-next',
           spaceBetween: 0,
-          loop:true
+          loop: true
         },
         articleList: [],
         designList: [
@@ -406,13 +406,15 @@
       getDesignCase() {
         this.$http.get(api.designCaseOpenLists,
         {params: {per_page: 6, sort: 5}})
-        .then((res) => {
-        	if (res.data && res.data.meta.status_code === 200){
-        		this.designCaseList = res.data.data
-	          for (let i = 0; i < res.data.data.length; i++) {
-	            this.designCaseList[i].cover_url = res.data.data[i].cover.middle
-	          }
-        	}
+        .then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.designCaseList = response.data.data
+            if (this.designCaseList && this.designCaseList.length > 0) {
+              for (let i = 0; i < response.data.data.length; i++) {
+                this.designCaseList[i].cover_url = response.data.data[i].cover.middle
+              }
+            }
+          }
         }).catch((err) => {
           console.error(err)
         })
