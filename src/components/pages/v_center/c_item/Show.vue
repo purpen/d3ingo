@@ -369,16 +369,33 @@
 
               <div class="evaluate-result" v-if="item.status === 22">
 
-                <div class="eva-content fl">
+                <div class="eva-content">
                   <p class="ev-c-name">
                     {{ item.company_name }}
                   </p>
-                  <p class="eva-score">
-                    <el-rate
-                      v-model.number="evaluate.score"
+                  <el-row class="grade pl">
+                    <el-col :span="8">
+                      <p>设计水平</p>
+                      <el-rate
+                      v-model.number="evaluate.design_level"
                       disabled>
                     </el-rate>
-                  </p>
+                    </el-col>
+                    <el-col :span="8">
+                      <p>响应速度</p>
+                      <el-rate
+                      v-model.number="evaluate.response_speed"
+                      disabled>
+                    </el-rate>
+                    </el-col>
+                    <el-col :span="8">
+                      <p>服务态度</p>
+                      <el-rate
+                      v-model.number="evaluate.service"
+                      disabled>
+                    </el-rate>
+                    </el-col>
+                  </el-row>
                   <p class="ev-c-content">
                     {{ evaluate.content }}
                   </p>
@@ -1254,6 +1271,18 @@
             // self.info = response.data.data.info
             if (response.data.data.evaluate) {
               self.evaluate = response.data.data.evaluate
+              if (self.evaluate.user_score) {
+                self.evaluate.user_score = JSON.parse(self.evaluate.user_score)
+              } else {
+                self.evaluate.user_score = {
+                  'design_level': 5,
+                  'response_speed': 5,
+                  'service': 5
+                }
+              }
+              self.evaluate.design_level = self.evaluate.user_score.design_level ? self.evaluate.user_score.design_level : 5
+              self.evaluate.response_speed = self.evaluate.user_score.response_speed ? self.evaluate.user_score.response_speed : 5
+              self.evaluate.service = self.evaluate.user_score.service ? self.evaluate.user_score.service : 5
             }
             if (response.data.data.invoice && response.data.data.invoice.length > 0) {
               self.invoice = response.data.data.invoice
@@ -1726,7 +1755,12 @@
     float: left;
     padding-top: 45px;
   }
-
+  .grade>.el-col:not(:first-child) {
+    border-left: 1px solid #e6e6e6;
+  }
+  .pl>.el-col:not(:first-child) {
+    padding-left: 20px;
+  }
   .pub-btn {
     text-align: center;
   }

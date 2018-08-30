@@ -108,7 +108,34 @@
                   <el-input :value="form.title" disabled></el-input>
                 </el-col>
               </el-form-item>
-              <p class="font-size-16 mar-b-10">2、费用</p>
+              <p class="font-size-16">2、项目内容</p>
+              <el-col :span="24" style="padding: 0">
+                <el-form-item prop="item_content">
+                  <el-input 
+                    type="textarea"
+                    :rows="5"
+                    placeholder="请填写项目包含的主要内容"
+                    v-model="form.item_content"
+                    ></el-input>
+                </el-form-item>
+              </el-col>
+              <!-- <p class="font-size-16">2、设计类型</p>
+              <el-form-item>
+                <el-col :span="12" style="padding: 0">
+                  <el-input :value="form.type_value" disabled></el-input>
+                </el-col>
+              </el-form-item>
+              <p class="font-size-16">3、项目类型</p>
+              <el-form-item>
+                <el-col :span="12" style="padding: 0">
+                  <el-input :value="form.design_types_value" disabled></el-input>
+                </el-col>
+              </el-form-item>
+              <p class="font-size-16 mar-b-10">4、产品功能描述:</p>
+              <p class="mar-b-10">
+                <span v-if="form.product_features">&nbsp;&nbsp;</span>{{form.product_features}}
+              </p> -->
+              <p class="font-size-16 mar-b-10">3、费用</p>
               <p class="mar-b-10">本合同设计费用总额为人民币<span class="bottom-border" type="text" disabled v-html="form.total"></span> 元，丙方作为平台收取全部项目费的<span class="bottom-border" type="text" disabled v-html="form.commission_rate"></span>%，也就是人民币<span class="bottom-border" type="text" disabled v-html="form.commission"></span>元作为佣金。</p>
               <p style="color: #FF5A5F">注：本合同中所有涉及费用金额均为含税。</p>
 
@@ -402,7 +429,7 @@
           design_work_content: '',
           item_stage: [],
           stages: [],
-          sort: ''
+          sort: '',
         },
         sort: '2个阶段',
         ruleForm: {
@@ -434,6 +461,9 @@
           // stages: {
           //    content: [{required: true, message: '不能为空', trigger: 'blur'}],
           // },
+          item_content: [
+            {required: true, message: '请填写项目包含的主要内容', trigger: 'blur'}
+          ],
           total: [
             {type: 'number', required: true, message: '请填写项目总金额', trigger: 'blur'}
           ]
@@ -658,6 +688,9 @@
                         contract.tax_price = contract.tax_price ? parseFloat(contract.tax_price) : 0
                         contract.first_rest_payment = parseFloat(contract.first_payment.sub(contract.warranty_money.add(contract.tax_price)))
                         that.form = contract
+                        that.form.type_value = item.item.type_value ? item.item.type_value : ''
+                        that.form.design_types_value = item.item.design_types_value ? item.item.design_types_value.join('、') : ''
+                        that.form.product_features = item.item.product_features
                         if (!that.form.thn_company_name) {
                           that.form.thn_company_name = that.companyThn.company_name
                           that.form.thn_company_address = that.companyThn.address
@@ -694,7 +727,7 @@
                   that.$router.replace({name: 'vcenterContractJdSubmit', params: {item_id: id}})
                   return
                 }
-                that.form.item_content = that.itemName
+                that.form.item_content = that.item.item.item_content ? that.item.item.item_content : ''
                 that.form.title = that.itemName
                 that.form.thn_company_name = that.companyThn.company_name
                 that.form.thn_company_address = that.companyThn.address
@@ -714,12 +747,15 @@
                 that.form.first_payment = parseFloat(item.item.first_payment)
                 that.form.stage_money = parseFloat(that.form.total.sub(that.form.first_payment))
                 that.form.first_rest_payment = parseFloat(that.form.first_payment.sub(that.form.warranty_money.add(that.form.tax_price)))
-
+                that.form.type_value = item.item.type_value ? item.item.type_value : ''
+                that.form.design_types_value = item.item.design_types_value ? item.item.design_types_value.join('、') : ''
+                that.form.product_features = item.item.product_features
                 // 获取当前公司基本信息
                 that.$http.get(api.designCompany, {})
                   .then(function (response) {
                     if (response.data.meta.status_code === 200) {
                       let company = response.data.data
+                      console.log('ccc', company)
                       if (company) {
                         that.form.design_company_name = company.company_name
                         that.form.design_company_address = company.province_value + company.city_value + company.address
