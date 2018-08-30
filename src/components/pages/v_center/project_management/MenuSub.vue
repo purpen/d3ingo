@@ -907,7 +907,7 @@ export default {
           company_name: this.projectObject.company_name,
           contact_name: this.projectObject.contact_name,
           position: this.projectObject.position,
-          phone: this.projectObject.phone,
+          phone: this.projectObject.phone + '',
           province: this.projectObject.province === 0 ? '' : this.projectObject.province,
           city: this.projectObject.city === 0 ? '' : this.projectObject.city,
           area: this.projectObject.area === 0 ? '' : this.projectObject.area,

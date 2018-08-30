@@ -394,7 +394,7 @@
             this.showImgCode = true
             let url = api.check_account.format(val.account)
             this.$http.get(url)
-            .then( res => {
+            .then(res => {
               console.log(res)
             })
           }
