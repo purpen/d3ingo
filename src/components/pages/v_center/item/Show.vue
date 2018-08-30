@@ -427,27 +427,27 @@
                           <el-col :span="8">
                             <p>设计水平</p>
                             <el-rate
-                            v-model.number="evaluate.design_level"
+                            v-model.number="evalu.design_level"
                             disabled>
                           </el-rate>
                           </el-col>
                           <el-col :span="8">
                             <p>响应速度</p>
                             <el-rate
-                            v-model.number="evaluate.response_speed"
+                            v-model.number="evalu.response_speed"
                             disabled>
                           </el-rate>
                           </el-col>
                           <el-col :span="8">
                             <p>服务态度</p>
                             <el-rate
-                            v-model.number="evaluate.service"
+                            v-model.number="evalu.service"
                             disabled>
                           </el-rate>
                           </el-col>
                         </el-row>
                         <p class="ev-c-content">
-                          {{ evaluate.content }}
+                          {{ evalu.content }}
                         </p>
                       </div>
                     </el-col>
@@ -590,6 +590,8 @@ export default {
       evaluate: {
         design_level: 0,
         content: ''
+      },
+      evalu: {
       },
       statusLabel: {
         detail: true,
@@ -946,6 +948,7 @@ export default {
         .then(function(response) {
           self.evaluateLoadingBtn = false
           if (response.data.meta.status_code === 200) {
+            self.evalu = self.evaluate
             self.item.status = 22
             self.item.status_value = '已评价' 
             self.$message.success('评价成功!')
@@ -1052,10 +1055,11 @@ export default {
             }
             evalu.content = response.data.data.evaluate.content
           }
-          self.evaluate = evalu
-          self.evaluate.design_level = self.evaluate.design_level ? self.evaluate.design_level : 5
-          self.evaluate.response_speed = self.evaluate.response_speed ? self.evaluate.response_speed : 5
-          self.evaluate.service = self.evaluate.service ? self.evaluate.service : 5
+          // self.evaluate = evalu
+          self.evalu = evalu
+          self.evalu.design_level = self.evalu.design_level ? self.evalu.design_level : 5
+          self.evalu.response_speed = self.evalu.response_speed ? self.evalu.response_speed : 5
+          self.evalu.service = self.evalu.service ? self.evalu.service : 5
           if (self.contract) {
             self.contract.created_at = self.contract.created_at
               .date_format()
