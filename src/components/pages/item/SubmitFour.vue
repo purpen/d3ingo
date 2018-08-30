@@ -316,7 +316,7 @@ export default {
                     that.form.company_web = bWeb
                     that.form.address = bRow.address
                     that.form.contact_name = bRow.contact_name
-                    that.form.phone = bRow.phone
+                    that.form.phone = bRow.phone + ''
                     that.form.email = bRow.email
                     that.form.position = bRow.position
 
