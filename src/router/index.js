@@ -738,19 +738,20 @@ const router = new VueRouter({
   linkActiveClass: 'is-active', // 这是链接激活时的class
   routes,
   scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) {
-      return savedPosition
-    } else {
-      const position = {}
-      if (to.hash) {
-        if (to.hash === '#innovation') {
-          return { x: 100, y: 0 }
-        } else {
-          position.selector = to.hash
-          return position
-        }
-      }
-    }
+    return savedPosition || { x: 0, y: 0 }
+    // if (savedPosition) {
+    //   return savedPosition
+    // } else {
+    //   const position = {}
+    //   if (to.hash) {
+    //     if (to.hash === '#innovation') {
+    //       return { x: 100, y: 0 }
+    //     } else {
+    //       position.selector = to.hash
+    //       return position
+    //     }
+    //   }
+    // }
   }
 })
 router.beforeEach((to, from, next) => {
