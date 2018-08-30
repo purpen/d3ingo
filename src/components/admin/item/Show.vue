@@ -712,7 +712,7 @@ export default {
     // 设置测试数据提交
     setTestDataSubmit() {
       this.isTestDataLoadingBtn = true
-      this.$http.put(api.adminItemTestStatus, { item_id: this.itemId, test_status: this.testStatus})
+      this.$http.put(api.adminItemTestStatus, {item_id: this.itemId, test_status: this.testStatus})
       .then ((response) => {
         this.isTestDataLoadingBtn = false
         if (response.data.meta.status_code === 200) {

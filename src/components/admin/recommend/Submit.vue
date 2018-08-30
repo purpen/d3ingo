@@ -412,10 +412,10 @@ export default {
             this.$message.error(response.data.meta.message)
           }
         }).catch((error) => {
-            this.isSubloading = false
-            this.$message.error(error.message)
-            console.log(error.message)
-          })
+          this.isSubloading = false
+          this.$message.error(error.message)
+          console.log(error.message)
+        })
     },
     updataWeight(formName) {
       this.$refs[formName].validate((valid) => {
@@ -469,7 +469,7 @@ export default {
           if (response.data.meta.status_code === 200) {
             this.ruleForm = response.data.data
           }
-        } 
+        }
       ).catch((error) => {
         this.$message.error(error.message)
         console.log(error.message)

@@ -140,12 +140,12 @@
             this.$http.get(api.demandId.format(d.target_id))
             .then(res => {
               if (res.data && res.data.meta.status_code === 200) {
-                  let status = res.data.data.item.status
-                  if (status < 4) {
-                    this.$router.push({name: 'projectInfo', params: {id: d.target_id}})
-                  } else {
-                    this.$router.push({name: 'vcenterItemShow', params: {id: d.target_id}})
-                  }
+                let status = res.data.data.item.status
+                if (status < 4) {
+                  this.$router.push({name: 'projectInfo', params: {id: d.target_id}})
+                } else {
+                  this.$router.push({name: 'vcenterItemShow', params: {id: d.target_id}})
+                }
               } else {
                 this.$messgae.error(res.data.meta.message)
               }
@@ -155,12 +155,12 @@
             this.$http.get(api.designItemId.format(d.target_id))
             .then(res => {
               if (res.data && res.data.meta.status_code === 200) {
-                  let status = res.data.data.item.status
-                  if (status < 4) {
-                    this.$messgae.error(res.data.meta.message)
-                  } else {
-                    this.$router.push({name: 'vcenterItemShow', params: {id: d.target_id}})
-                  }
+                let status = res.data.data.item.status
+                if (status < 4) {
+                  this.$messgae.error(res.data.meta.message)
+                } else {
+                  this.$router.push({name: 'vcenterItemShow', params: {id: d.target_id}})
+                }
               } else {
                 this.$messgae.error(res.data.meta.message)
               }

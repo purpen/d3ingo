@@ -595,8 +595,8 @@
             if (response.data.meta.status_code === 200) {
               let item = that.item = response.data.data
               that.itemName = that.item.item.name
-              if(that.itemName && that.item.item.status === 6){
-                that.contractText = "发送"
+              if (that.itemName && that.item.item.status === 6) {
+                that.contractText = '发送'
               }
               that.companyId = item.quotation.design_company_id
               if (item.contract) {

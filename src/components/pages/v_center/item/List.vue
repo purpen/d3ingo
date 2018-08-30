@@ -410,7 +410,7 @@
         sureDialog: false,
         sureDialogOngo: false,
         sureDialogDock: false,
-        sureDialogDelete: false,     
+        sureDialogDelete: false,
         sureDialogMessage: '确定要关闭项目？',
         sureDialogLoadingBtn: false,
         isLoading: false,
@@ -547,7 +547,7 @@
                   self.itemList[index].item.status_value = '项目关闭'
                   self.itemList[index].item.is_close = false
                   self.itemList[index].is_view_show = false
-                } 
+                }
               } else {
                 self.$message.error(response.data.meta.message)
               }
@@ -579,7 +579,7 @@
                   self.itemList[index].item.status_value = '项目关闭'
                   self.itemList[index].item.is_close = false
                   self.itemList[index].is_view_show = false
-                } 
+                }
               } else {
                 self.$message.error(response.data.meta.message)
               }
@@ -590,7 +590,7 @@
 
           self.sureDialogLoadingBtn = false
           self.sureDialogOngo = false
-          self.itemIngList.splice(index, 1) 
+          self.itemIngList.splice(index, 1)
         }
       },
       // 对接中关闭确认执行对话框
@@ -614,7 +614,7 @@
                   self.itemList[index].is_view_show = false
                   self.itemList.splice(index, 1)
                   self.loadList(2)
-                } 
+                }
               } else {
                 self.$message.error(response.data.meta.message)
               }
@@ -624,7 +624,7 @@
             })
 
           self.sureDialogLoadingBtn = false
-          self.sureDialogDock = false    
+          self.sureDialogDock = false
         }
       },
       editItem(event) {
@@ -693,18 +693,17 @@
       // 关闭项目后删除项目
       delItemBtnPhase(id) {
         let self = this
-        console.log(self.itemList)
-          self.$http.delete(api.deleteItem.format(id))
-            .then(function (response) {
-              if (response.data.meta.status_code === 200) {
-                self.loadList(2)
-              } else {
-                self.$message.error(response.data.meta.message)
-              }
-            })
-            .catch(function (error) {
-              self.$message.error(error.message)
-            })
+        self.$http.delete(api.deleteItem.format(id))
+          .then(function (response) {
+            if (response.data.meta.status_code === 200) {
+              self.loadList(2)
+            } else {
+              self.$message.error(response.data.meta.message)
+            }
+          })
+          .catch(function (error) {
+            self.$message.error(error.message)
+          })
       },
       // 支付项目资金
       secondPay(event) {

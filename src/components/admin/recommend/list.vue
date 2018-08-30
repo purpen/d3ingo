@@ -153,7 +153,7 @@ export default {
         val: '',
         role_id: '',
         test: null
-      },
+      }
     }
   },
   methods: {

@@ -429,7 +429,7 @@
           design_work_content: '',
           item_stage: [],
           stages: [],
-          sort: '',
+          sort: ''
         },
         sort: '2个阶段',
         ruleForm: {
@@ -592,7 +592,7 @@
             let per = self.form.stages[index].percentage.mul(0.01)
             let amount = 0
             let money = 0
-            for (var i = 0; i < stages.length;i++) {
+            for (var i = 0; i < stages.length; i++) {
               if (stages[i].amount && stages[i].amount !== '') {
                 amount += 1
                 money += Number(stages[i].amount)
@@ -601,9 +601,6 @@
             if (amount === stages.length - 1) {
               self.form.stages[index].amount = (Number((total * 0.6).toFixed(2)) - money).toFixed(2)
             } else self.form.stages[index].amount = total.mul(per).toFixed(2)
-
-
-            // self.$set(self.form.stages[index], 'amount', total.mul(per))
           }
         })
       }
@@ -656,8 +653,8 @@
             if (response.data.meta.status_code === 200) {
               var item = that.item = response.data.data
               that.itemName = that.item.item.name
-              if(that.itemName && that.item.item.status === 6){
-                that.contractText = "发送"
+              if (that.itemName && that.item.item.status === 6) {
+                that.contractText = '发送'
               }
               that.companyId = item.quotation.design_company_id
               that.item.item.phone = Number(that.item.item.phone)

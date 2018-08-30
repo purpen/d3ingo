@@ -845,7 +845,7 @@
       },
       // 提交拒单说明
       commitExplain() {
-        let currentIndex = this.$refs.currentIndex.value
+        // let currentIndex = this.$refs.currentIndex.value
         let form = {
           'item_id': this.item.id,
           'summary': this.summary,
