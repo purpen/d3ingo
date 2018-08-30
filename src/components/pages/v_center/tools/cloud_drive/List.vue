@@ -581,7 +581,6 @@ export default {
     vMenu,
     vMenuLeft,
     vContent
-    
   },
   mounted() {
     // window.addEventListener('keydown', e => {
@@ -1560,9 +1559,7 @@ export default {
     this.query.page = Number(this.$route.query.page) || 1
     this.folderId = Number(this.$route.query.id) || 0
     this.modules = this.$route.params.modules || 'all'
-    if (this.modules !== 'all'
-      && this.modules !== 'recently-use'
-      && this.modules !== 'recycle') {
+    if (this.modules !== 'all' && this.modules !== 'recently-use' && this.modules !== 'recycle') {
       this.changeDirector(1)
     }
     this.getUploadUrl()

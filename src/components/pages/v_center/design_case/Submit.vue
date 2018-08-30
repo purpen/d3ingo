@@ -770,7 +770,7 @@
       },
       typec() {
         if (this.isfrist) {
-          this.form.design_types = []  
+          this.form.design_types = []
         }
         this.isfrist = true
       }

@@ -748,6 +748,25 @@ export default {
     console.log(this.$store.state.task.projectObject)
     this.itemId = this.$route.params.id
     let id = this.$route.query.id
+    if (this.form.plan && this.form.plan.length > 0) {
+      this.$set(this.form, 'plan_format', this.form.plan)
+    } else {
+      this.$set(this.form, 'plan_format', [
+        {
+          content: '',
+          duration: '',
+          price: '',
+          summary: '',
+          arranged: [
+            {
+              name: '',
+              number: ''
+            }
+          ],
+          test: ''
+        }
+      ])
+    }
     if (id) {
       this.id = id
       // 获取报价详情

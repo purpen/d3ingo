@@ -884,18 +884,18 @@ export default {
     } else {
       this.$set(form, 'plan_format', [
         {
-        content: '',
-        duration: '',
-        price: '',
-        summary: '',
-        arranged: [
-          {
-            name: '',
-            number: ''
-          }
-        ],
-        test: ''
-      }
+          content: '',
+          duration: '',
+          price: '',
+          summary: '',
+          arranged: [
+            {
+              name: '',
+              number: ''
+            }
+          ],
+          test: ''
+        }
       ])
     }
     this.$set(this.taxRate, 'isTax', form.is_tax ? form.is_tax : 0)

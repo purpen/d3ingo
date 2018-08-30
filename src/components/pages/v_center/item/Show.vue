@@ -620,7 +620,7 @@ export default {
       quotaDialog: false,
       msg: '',
       summary: '',
-      refuse_types: [],
+      refuse_types: []
     }
   },
   methods: {
@@ -699,7 +699,7 @@ export default {
           }
         })
         .catch((error) => {
-          this.comfirmLoadingBtn = false 
+          this.comfirmLoadingBtn = false
           this.$message.error(error.message)
         })
     },
@@ -950,7 +950,7 @@ export default {
           if (response.data.meta.status_code === 200) {
             self.evalu = self.evaluate
             self.item.status = 22
-            self.item.status_value = '已评价' 
+            self.item.status_value = '已评价'
             self.$message.success('评价成功!')
           } else {
             self.$message.error(response.data.meta.message)
@@ -986,8 +986,8 @@ export default {
     },
     anchor() {
       var anchor = this.$refs.anchor
-      document.getElementById('app').scrollTop =  anchor.offsetTop
-    }    
+      document.getElementById('app').scrollTop = anchor.offsetTop
+    }
   },
   watch: {
     statusLabel: {
@@ -1383,10 +1383,10 @@ export default {
       })
       .catch(function(error) {
         self.$message.error(error.message)
-      })  
+      })
   },
   updated: function() {
-   this.anchor
+    this.anchor
   }
 }
 </script>
