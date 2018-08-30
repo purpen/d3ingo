@@ -1406,9 +1406,7 @@ export default {
     this.query.page = Number(this.$route.query.page) || 1
     this.folderId = this.$route.query.id || 0
     this.modules = this.$route.params.modules || 'all'
-    if (this.$route.params.modules !== 'all'
-      || this.$route.params.modules !== 'recently-use'
-      || this.$route.params.modules !== 'recycle') {
+    if (this.$route.params.modules !== 'all' || this.$route.params.modules !== 'recently-use' || this.$route.params.modules !== 'recycle') {
       this.changeDirector(1)
     }
     this.getUploadUrl()

@@ -71,20 +71,21 @@ module.exports = {
   ],
   module: {
     rules: [
-      // {
-      //   test: /\.(js|vue)$/,
-      //   loader: 'happypack/loader?id=eslint',
-      //   enforce: "pre",
-      //   include: [
-      //     resolve('src'),
-      //     resolve('test'),
-      //     resolve('node_modules/element-ui'),
-      //     resolve('node_modules/vue-echarts'),
-      //     resolve('node_modules/echarts'),
-      //     resolve('node_modules/resize-detector'),
-      //     resolve('node_modules/vue-pdf'),
-      //     resolve('node_modules/vue-resize-sensor')]
-      // },
+      {
+        test: /\.(js|vue)$/,
+        loader: 'happypack/loader?id=eslint',
+        enforce: "pre",
+        // include: [
+        //   resolve('src'),
+        //   resolve('test'),
+        //   resolve('node_modules/element-ui'),
+        //   resolve('node_modules/vue-echarts'),
+        //   resolve('node_modules/echarts'),
+        //   resolve('node_modules/resize-detector'),
+        //   resolve('node_modules/vue-pdf'),
+        //   resolve('node_modules/vue-resize-sensor')],
+        exclude: [/node_modules/, /lib/]
+      },
 
       {
         test: /\.vue$/,
