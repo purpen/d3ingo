@@ -395,12 +395,10 @@
           document_type: '',
           contact_name: '',
           position: '',
-          phone: '',
           email: '',
           province: '',
           city: '',
           area: '',
-          phone: '',
           test: ''
         },
 
@@ -431,8 +429,7 @@
             {required: true, message: '请填写联系人职位', trigger: 'blur'}
           ],
           phone: [
-            {type: 'integer', required: true, message: '请填写正确的电话', trigger: 'blur'},
-            {type: 'integer', message: '请填写正确的电话', trigger: 'blur'}
+            {required: true, message: '请填写联系人电话', trigger: 'blur'}
           ],
           email: [
             {type: 'email', required: true, message: '请填写联系人邮箱', trigger: 'blur'}
@@ -681,12 +678,12 @@
                 that.form.province = that.form.province === 0 ? '' : that.form.province
                 that.form.city = that.form.city === 0 ? '' : that.form.city
                 that.form.area = that.form.area === 0 ? '' : that.form.area
-                that.form.phone = that.form.phone === 0 ? '' : that.form.phone
+                that.form.phone = that.form.phone.length === 0 ? '' : that.form.phone + ''
                 that.form.document_type = that.form.document_type === 0 ? '' : that.form.document_type
-                that.form.province = that.form.province === 0 ? '' : that.form.province
-                that.form.city = that.form.city === 0 ? '' : that.form.city
-                that.form.area = that.form.area === 0 ? '' : that.form.area
-                that.form.phone = that.form.phone === 0 ? '' : that.form.phone
+                // that.form.province = that.form.province === 0 ? '' : that.form.province
+                // that.form.city = that.form.city === 0 ? '' : that.form.city
+                // that.form.area = that.form.area === 0 ? '' : that.form.area
+                // that.form.phone = that.form.phone === 0 ? '' : that.form.phone
                 that.companyId = response.data.data.id
                 that.uploadParam['x:target_id'] = response.data.data.id
 
