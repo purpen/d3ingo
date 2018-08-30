@@ -285,7 +285,7 @@ export default {
             that.form.company_web = web
             that.form.address = row.address
             that.form.contact_name = row.contact_name
-            that.form.phone = row.phone
+            that.form.phone = row.phone + ''
             that.form.email = row.email
             that.form.position = row.position
             that.form.stage_status = row.stage_status
