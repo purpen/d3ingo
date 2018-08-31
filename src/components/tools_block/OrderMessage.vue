@@ -144,12 +144,13 @@
                 let status = res.data.data.item.status
                 if (status < 4) {
                   if (status === -2) {
+                    this.$router.push({name: 'redirect', query: {id: d.target_id, name: 'projectCreate', type: 'query'}})
                     this.$http.post(api.demandItemRestart, {item_id: d.target_id})
                     .then(res => {
                       if (res.data && res.data.meta) {
                         if (res.data.meta.status_code === 200) {
                           // console.log(res)
-                          this.$router.push({name: 'redirect', query: {id: d.target_id, name: 'projectCreate', type: 'query'}})
+                          // this.$router.push({name: 'redirect', query: {id: d.target_id, name: 'projectCreate', type: 'query'}})
                         } else {
                           this.$message.error(res.data.meta.message)
                         }
