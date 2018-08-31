@@ -724,6 +724,11 @@ let routes = [
       requireAuth: true
     },
     component: require('@/components/pages/home/Apply')
+  },
+  {
+    path: '/redirect',
+    name: 'redirect',
+    component: require('@/components/block/Redirect')
   }
 ]
 

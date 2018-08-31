@@ -135,7 +135,8 @@
         document.getElementById('app').setAttribute('class', oldClass)
         this.showCover = false
         if (d.operation_log.target_type === 1) {
-          this.$router.push({name: 'projectManagementTask', params: {id: d.operation_log.model_id}})
+          // this.$router.push({name: 'projectManagementTask', params: {id: d.operation_log.model_id}})
+          this.$router.push({name: 'redirect', query: {id: d.operation_log.model_id, name: 'projectManagementTask'}})
         }
       },
       // 请求消息数量

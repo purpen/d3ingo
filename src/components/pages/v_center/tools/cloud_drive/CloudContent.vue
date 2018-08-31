@@ -244,6 +244,7 @@ export default {
   },
   data() {
     return {
+      isLoad: false,
       date: '2017-03-09',
       chooseList: [],
       showProfile: false, // 显示详情
