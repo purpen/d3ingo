@@ -139,17 +139,34 @@
           if (this.user.type === 1) {
             this.$http.get(api.demandId.format(d.target_id))
             .then(res => {
-              if (res.data && res.data.meta.status_code === 200) {
+              if (res.data && res.data.data && res.data.meta.status_code === 200) {
+                console.log(res.data.data)
                 let status = res.data.data.item.status
                 if (status < 4) {
-                  // this.$router.push({name: 'projectInfo', params: {id: d.target_id}})
-                  this.$router.push({name: 'redirect', query: {id: d.target_id, name: 'projectInfo'}})
+                  if (status === -2) {
+                    this.$http.post(api.demandItemRestart, {item_id: d.target_id})
+                    .then(res => {
+                      if (res.data && res.data.meta) {
+                        if (res.data.meta.status_code === 200) {
+                          console.log(res)
+                          this.$router.push({name: 'redirect', query: {id: d.target_id, name: 'itemCreate'}})
+                        } else {
+                          this.$message.error(res.data.meta.message)
+                        }
+                      }
+                    }).catch(err => {
+                      console.error(err)
+                    })
+                  } else {
+                    // this.$router.push({name: 'projectInfo', params: {id: d.target_id}})
+                    this.$router.push({name: 'redirect', query: {id: d.target_id, name: 'projectInfo'}})
+                  }
                 } else {
                   // this.$router.push({name: 'vcenterItemShow', params: {id: d.target_id}})
                   this.$router.push({name: 'redirect', query: {id: d.target_id, name: 'vcenterItemShow'}})
                 }
               } else {
-                this.message.error(res.data.meta.message)
+                this.$message.error(res.data.meta.message)
               }
             })
           }
@@ -167,7 +184,7 @@
                   this.$router.push({name: 'redirect', query: {id: d.target_id, name: 'vcenterItemShow'}})
                 }
               } else {
-                this.message.error(res.data.meta.message)
+                this.$message.error(res.data.meta.message)
               }
             })
           }
