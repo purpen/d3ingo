@@ -175,7 +175,7 @@ export default {
         .then(res => {
           if (res.data.meta.status_code === 200) {
             this.form = res.data.data.item
-            console.log(this.form)
+            // console.log(this.form)
             if (!this.form.cycle) {
               this.form.cycle = ''
             }
