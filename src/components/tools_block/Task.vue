@@ -46,14 +46,14 @@
       <!-- <section :style="{padding: '0 30px'}"> -->
         <p :class="['parent-task-input', 'add-task-input', {'add-task-input-no_name': !currentForm.name, 'active': currentForm.stage === 2}]">
           <span v-show="currentForm.name" :class="['add-task-select']" @click="completeTask"></span>
-          <el-input :autosize="{ minRows: 1}" type="textarea" @focus="saveOldVal(currentForm.name)" @blur="blurInput({name: currentForm.name})" :maxlength= 100 v-model="currentForm.name" placeholder="请填写任务名称"></el-input>
+          <el-input @focus="saveOldVal(currentForm.name)" @blur="blurInput({name: currentForm.name})" :maxlength= 100 v-model="currentForm.name" placeholder="请填写任务名称"></el-input>
         </p>
         <div class="task-detail-body">
           <div class="task-admin" v-if="true">
             <ul class="task-member-list task-member-execute no-execute">
               <li class="tc-9" v-if="executeUser" @click.self="showMember = true">
                 <a class="remove-member" @click.self="removeExecute()"></a>
-                <img v-if="executeUser.logo_image" :src="executeUser.logo_image.logo" alt="">
+                <img v-if="executeUser.logo_image" @click="showMember = true" :src="executeUser.logo_image.logo" alt="">
                 <img @click="showMember = true" v-else :src="require('assets/images/avatar_100.png')">执行人</li>
               <li class="margin-none" @click="showMember = true" v-else>
                 <img @click="showMember = true" :src="require('assets/images/avatar_100.png')">选择执行人</li>
@@ -97,7 +97,7 @@
                     width: '10px',
                     height: '10px',
                     borderRadius: '50%',
-                    margin: '5px 10px 0 0',
+                    margin: '14px 10px 0 0',
                     background: item.color}"></span>
                   <span style="float: left">{{ item.label }}</span>
                 </el-option>
@@ -129,7 +129,7 @@
               <li v-for="(ele, index) in currentForm.childTask" :key="index">
                 <div :class="['add-task-input', 'add-child-input', {'active': ele.stage === 2}]">
                   <span @click="completeTask2(ele.id, ele.stage)" class="add-task-select add-child-select"></span>
-                  <el-input class="child-name" autosize type="textarea" v-model="ele.name" placeholder="请填写任务名称" @focus="saveOldVal(ele.name)" @blur="updateChild(ele.id, {name: ele.name})"></el-input>
+                  <el-input class="child-name" v-model="ele.name" placeholder="请填写任务名称" @focus="saveOldVal(ele.name)" @blur="updateChild(ele.id, {name: ele.name})"></el-input>
                   <el-date-picker
                     class="child-date"
                     v-model="ele.over_time"
@@ -153,7 +153,7 @@
               <li class="template" v-if="isAddChild">
                 <div :class="['add-task-input', 'add-child-input', 'child-input']">
                   <span :class="['add-task-select', 'add-child-select', 'add-child-template']"></span>
-                  <el-input class="child-name" :autosize="{ minRows: 1}" type="textarea" v-model="addChildForm.name" placeholder="请填写任务名称"></el-input>
+                  <el-input class="child-name" v-model="addChildForm.name" placeholder="请填写任务名称"></el-input>
                   <el-date-picker
                     v-model="addChildForm.over_time"
                     type="datetime"
@@ -182,7 +182,7 @@
             <el-input :autosize="{ minRows: 1}"
               type="textarea" placeholder="请填写备注内容"
               class="textarea-summary"
-              @focus="saveOldVal(currentForm.summary)" 
+              @focus="saveOldVal(currentForm.summary)"
               @blur="blurInput({summary: currentForm.summary})"
               v-model="currentForm.summary"></el-input>
           </div>
@@ -298,6 +298,10 @@
         default: function () {
           return {}
         }
+      },
+      taskStatus: {
+        type: Number,
+        default: -1
       }
     },
     data () {
@@ -475,8 +479,14 @@
             self.view(id)
             self.$store.commit('updateTaskListItem', self.currentForm)
             self.fetchStage()
+            if (self.isMyTask) {
+              self.fetchMyTask()
+            } else {
+              self.fetchTask()
+            }
           } else {
             self.$message.error(response.data.meta.message)
+            self.view(id)
           }
         }).catch((error) => {
           self.$message.error(error.message)
@@ -520,6 +530,11 @@
             self.$set(self.currentForm, 'stage', complate)
             self.$store.commit('updateTaskListItem', self.currentForm)
             self.fetchStage()
+            if (self.isMyTask) {
+              self.fetchMyTask()
+            } else {
+              self.fetchTask()
+            }
             self.view(id)
           } else {
             self.$message.error(response.data.meta.message)
@@ -540,6 +555,11 @@
         this.$http.put(api.taskStage, {task_id: id, stage: stage, tier: 1}).then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.fetchStage()
+            if (self.isMyTask) {
+              self.fetchMyTask()
+            } else {
+              self.fetchTask()
+            }
             self.view(self.taskState.id)
           } else {
             self.$message.error(response.data.meta.message)
@@ -617,6 +637,11 @@
         this.$http.put(api.taskId.format(id), obj).then((response) => {
           if (response.data.meta.status_code === 200) {
             this.fetchStage()
+            if (this.isMyTask) {
+              this.fetchMyTask()
+            } else {
+              this.fetchTask()
+            }
           } else {
             this.$message.error(response.data.meta.message)
           }
@@ -634,6 +659,8 @@
         }
         if (time) {
           if (this.taskState.event === 'update') {
+            console.log(time, 'time')
+            time = time.format('yyyy-MM-dd hh:mm')
             this.currentChange = {over_time: time}
             this.update()
           }
@@ -641,6 +668,8 @@
       },
       changeTime2(overTime, id) {
         if (overTime) {
+          console.log(overTime, 'overTime')
+          overTime = overTime.format('yyyy-MM-dd hh:mm')
           this.updateChild(id, {over_time: overTime})
         }
       },
@@ -679,6 +708,37 @@
           self.isLoading = false
         })
       },
+      // 主任务列表
+      fetchTask() {
+        const self = this
+        self.isLoading = true
+        self.$http.get(api.task, {params: {
+          item_id: self.projectObject.id,
+          stage: self.taskStatus
+        }}).then(function (response) {
+          if (response.data.meta.status_code === 200) {
+            self.$store.commit('setTaskList', {data: response.data.data, showChild: false})
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+          self.isLoading = false
+        }).catch((error) => {
+          self.$message.error(error.message)
+          console.error(error.message)
+          self.isLoading = false
+        })
+      },
+      fetchMyTask() {
+        this.loading = true
+        this.$http.get(api.myTask)
+        .then(res => {
+          if (res.data.meta.status_code === 200) {
+            this.$store.commit('setTaskList', {data: res.data.data, showChild: true})
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        })
+      },
       removeMember(id) {
         this.$http.delete(api.deleteTaskUsers, {params: {
           task_id: this.taskState.id,
@@ -701,6 +761,11 @@
         }
         this.$store.commit('updateTaskListItem', this.currentForm)
         this.fetchStage()
+        if (this.isMyTask) {
+          this.fetchMyTask()
+        } else {
+          this.fetchTask()
+        }
         this.showMember = false
       },
       removeExecute() {
@@ -715,6 +780,11 @@
               this.currentForm.logo_image = null
               this.$store.commit('updateTaskListItem', this.currentForm)
               this.fetchStage()
+              if (this.isMyTask) {
+                this.fetchMyTask()
+              } else {
+                this.fetchTask()
+              }
             }
           } else {
             this.$message.error(res.data.meta.message)
@@ -1175,14 +1245,14 @@
   
   .add-task-input {
     position: relative;
-    padding: 20px 0 10px 26px;
+    /* padding: 20px 0 10px 26px; */
+    padding: 20px 0 10px 38px;
     border-bottom: 1px solid #E6E6E6;
   }
   .add-task-input-no_name {
     padding: 20px 0 10px;
   }
   .add-child-input {
-    /* padding: 5px 20px 5px 0; */
     padding: 5px 0;
     border-bottom: none;
     display: flex;
@@ -1310,7 +1380,7 @@
   }
   .add-child-ul .el-date-editor.el-input {
     width: auto;
-    min-width: 128px;
+    min-width: 146px;
   }
   .add-child-ul {
     padding-top: 5px;
@@ -1665,6 +1735,6 @@
     width: 100px;
   }
   .child-name {
-    margin: 0 3px;
+    margin: 0 15px;
   }
 </style>
