@@ -47,6 +47,9 @@
               <span v-else class="b-nickname">{{ eventUser.account }}</span>
             </template>
             <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
+            <el-menu-item index="/vcenter/company/base" v-if="isCompanySystemAdmin || !isCompanyAdmin"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>公司设置 </el-menu-item>
+            <el-menu-item index="/vcenter/account/base" v-if="isCompany"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>账号设置 </el-menu-item>
+            <el-menu-item index="/vcenter/account/modify_pwd" v-else><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>账号设置 </el-menu-item>
             <el-menu-item index="/admin" v-if="isAdmin"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
             <el-menu-item index="" @click="logout">
               <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
@@ -111,12 +114,12 @@
               成员管理
             </a>
             </el-tooltip>
-            <el-tooltip class="item" :effect="DarkorLight" content="账号设置" placement="right">
+            <!-- <el-tooltip class="item" :effect="DarkorLight" content="账号设置" placement="right">
             <a @click="alick" :to="'/vcenter/account/base'"
               :class="['item', 'account-management', {'is-active': currentName === 'profile'}]">
               账号设置
             </a>
-            </el-tooltip>
+            </el-tooltip> -->
             <el-tooltip
               v-if="eventUser.company"
               class="item" :effect="DarkorLight"
@@ -188,7 +191,7 @@
               我的钱包
             </a>
             </el-tooltip>
-            <el-tooltip class="item" :effect="DarkorLight" content="公司设置" placement="right">
+            <!-- <el-tooltip class="item" :effect="DarkorLight" content="公司设置" placement="right">
             <a @click="alick" :to="'/vcenter/company/base'"
               :class="['item', 'company', {'is-active': currentName === 'company'}]">
               公司设置
@@ -199,7 +202,7 @@
               :class="['item', 'account-management', {'is-active': currentName === 'profile'}]">
               账号设置
             </a>
-            </el-tooltip>
+            </el-tooltip> -->
             <el-tooltip class="item" :effect="DarkorLight" content="成员管理" placement="right">
             <a @click="alick" :to="'/user/user_management'"
               :class="['item','user-management', {'is-active': currentName === 'member'}]">
@@ -243,7 +246,7 @@
               我的钱包
             </a>
             </el-tooltip>
-            <el-tooltip class="item" :effect="DarkorLight" content="公司设置" placement="right">
+            <!-- <el-tooltip class="item" :effect="DarkorLight" content="公司设置" placement="right">
             <a @click="alick" :to="'/vcenter/d_company/base'"
               :class="['item', 'company', {'is-active': currentName === 'company'}]">
               公司设置
@@ -254,7 +257,7 @@
               :class="['item', 'account-management', {'is-active': currentName === 'profile'}]">
               账号设置
             </a>
-            </el-tooltip>
+            </el-tooltip> -->
           </div>
         </div>
       </section>
@@ -286,10 +289,10 @@
               :class="['item', 'user-management', {'is-active': currentName === 'member'}]" v-if="isCompanyAdmin">
               成员管理
             </a>
-            <a @click="alick" :to="'/vcenter/account/base'"
+            <!-- <a @click="alick" :to="'/vcenter/account/base'"
               :class="['item', 'account-management', {'is-active': currentName === 'profile'}]">
               账号设置
-            </a>
+            </a> -->
             <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" 
                v-if="isMob && eventUser.company">
               {{eventUser.company.company_name}}
@@ -342,14 +345,14 @@
               :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
               我的钱包
             </a>
-            <a @click="alick" :to="'/vcenter/company/base'"
+            <!-- <a @click="alick" :to="'/vcenter/company/base'"
               :class="['item', 'company', {'is-active': currentName === 'company'}]">
               公司设置
             </a>
             <a @click="alick" :to="'/vcenter/account/base'"
               :class="['item', 'account-management', {'is-active': currentName === 'profile'}]">
               账号设置
-            </a>
+            </a> -->
             <a @click="alick" :to="'/user/user_management'"
               :class="['item','user-management', {'is-active': currentName === 'member'}]">
               成员管理
@@ -385,14 +388,14 @@
               :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
               我的钱包
             </a>
-            <a @click="alick" :to="'/vcenter/d_company/base'"
+            <!-- <a @click="alick" :to="'/vcenter/d_company/base'"
               :class="['item', 'company', {'is-active': currentName === 'company'}]">
               公司设置
             </a>
             <a @click="alick" :to="'/vcenter/account/modify_pwd'"
               :class="['item', 'account-management', {'is-active': currentName === 'profile'}]">
               账号设置
-            </a>
+            </a> -->
           </div>
         </div>
       </section>

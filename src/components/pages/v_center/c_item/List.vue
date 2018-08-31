@@ -11,10 +11,10 @@
           <div :class="['content-item-box', isMob ? 'content-item-box-m' : '' ]" v-loading="isLoading">
             <el-row :gutter="10">
                 <el-col :xm="12" :sm="12" :md="12" :lg="3">
-                  <button class="white-button large-button" :class="{'full-red-button': value == 1}" @click="change(1)">待确认</button>
+                  <button class="white-button large-button" :class="{'full-red-button': value === 1}" @click="change(1)">待确认</button>
                 </el-col>
                 <el-col :xm="12" :sm="12" :md="12" :lg="3">
-                  <button class="white-button large-button" :class="{'full-red-button': value == 2}" @click="change(2)">已合作</button>
+                  <button class="white-button large-button" :class="{'full-red-button': value === 2}" @click="change(2)">已合作</button>
                 </el-col>
             </el-row>
             <div v-if="value === 1">

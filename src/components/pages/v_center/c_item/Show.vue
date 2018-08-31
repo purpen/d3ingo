@@ -126,7 +126,6 @@
               </el-collapse-item>
             </el-collapse>
           </div>
-
           <div class="select-item-box" v-if="statusLabel.contract">
             <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
               <el-collapse-item title="合同管理" name="6">
@@ -602,6 +601,7 @@
         <!--<el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>-->
       <!--</div>-->
     </el-dialog>
+  <div ref="anchor" id="anchor"></div>
 
   </div>
 </template>
@@ -1225,6 +1225,10 @@
       custom() {
         return this.$store.state.event.prod
       }
+      // anchor() {
+      //   var anchor = this.$refs.anchor
+      //   document.documentElement.scrollTop = anchor.offsetTop
+      // }
     },
     watch: {
       quoteProp: {
@@ -1629,6 +1633,10 @@
           self.$message.error(error.message)
         })
     }
+    // updated: function () {
+    //   console.log(this.$refs.anchor.offsetTop)
+    //   // this.anchor
+    // }
   }
 </script>
 
