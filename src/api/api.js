@@ -70,8 +70,8 @@ export default {
   demandItemDesignListItemId: '/demand/itemDesignList/{0}', // 选择已报价的设计公司
   demandFalseDesign: '/demand/falseDesign', // 拒绝设计公司报价
   agreeDesignCompany: '/demand/trueDesign', // 同意合作的设计公司
-  demandItemRestart: '/demand/itemRestart', // post 修改项目，重新匹配
-  demandCloseItem: '/demand/closeItem', // post 用户关闭项目
+  demandItemRestart: '/demand/itemRestart', // POST 修改项目，重新匹配
+  demandCloseItem: '/demand/closeItem', // POST 用户关闭项目
   demandTrueItemDoneId: '/demand/trueItemDone/{0}', // POST 确认项目完成
   demandMatchingCount: '/demand/matchingCount', // POST 获取已匹配公司数量
   demandEvaluate: '/demand/evaluate', // POST 评价设计公司
@@ -94,7 +94,7 @@ export default {
   itemStageSend: '/itemStage/ok/status', // PUT 项目阶段发送
 
   // 合同
-  contract: '/contract', // post 保存合同
+  contract: '/contract', // POST 保存合同
   contractId: '/contract/{0}', // put/get 更新/查看合同
   demandTrueContract: '/demand/trueContract', // POST 需求方确认项目合同
 
