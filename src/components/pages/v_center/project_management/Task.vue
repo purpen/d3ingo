@@ -107,7 +107,8 @@
            :currentTaskForm="currentTaskForm"
            :isMyTask="isMyTask"
            :projectObject="projectObject"
-           :completeState="completeState"></v-task>
+           :completeState="completeState"
+           :taskStatus="taskStatus"></v-task>
            <!-- <div v-if="taskState.power">
             <section class="animated task-detail fadeIn">
               <div class="task-detail-header">
@@ -480,7 +481,7 @@
           if (res.data.meta.status_code === 200) {
             this.$store.commit('setTaskList', {data: res.data.data, showChild: true})
           } else {
-            this.$messgae.error(res.data.meta.message)
+            this.$message.error(res.data.meta.message)
           }
         })
       },

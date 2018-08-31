@@ -378,12 +378,15 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 
 .el-form-item__content {
-  line-height: 10px;
+  line-height: 20px;
   /* margin-bottom: 10px; */
 }
 .is-error .el-form-item__content {
   /* margin-bottom: 10px; */
   margin-bottom: 0
+}
+.modify-content .is-error .el-form-item__content {
+  margin-bottom: 20px;
 }
 .description {
   color: #666666;
