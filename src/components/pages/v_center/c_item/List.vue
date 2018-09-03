@@ -9,14 +9,15 @@
           'vcenter-right-mob': isMob}">
         <div class="right-content vcenter-container" v-if="!isEmpty">
           <div :class="['content-item-box', isMob ? 'content-item-box-m' : '' ]" v-loading="isLoading">
-            <el-row :gutter="10">
+            <!-- <el-row :gutter="10">
                 <el-col :xm="12" :sm="12" :md="12" :lg="3">
                   <button class="white-button large-button" :class="{'full-red-button': value === 1}" @click="change(1)">待确认</button>
                 </el-col>
                 <el-col :xm="12" :sm="12" :md="12" :lg="3">
                   <button class="white-button large-button" :class="{'full-red-button': value === 2}" @click="change(2)">已合作</button>
                 </el-col>
-            </el-row>
+            </el-row> -->
+            <v-menu-sub></v-menu-sub>
             <div v-if="value === 1">
               <el-row v-if="!isMob" class="item-title-box list-box" v-show="designItems.length">
                 <el-col :span="10">
@@ -288,13 +289,15 @@
 
 <script>
   import vMenu from '@/components/pages/v_center/Menu'
+  import vMenuSub from '@/components/pages/v_center/c_item/MenuSub'
   import api from '@/api/api'
   import '@/assets/js/format'
 
   export default {
     name: 'vcenter_item_list',
     components: {
-      vMenu
+      vMenu,
+      vMenuSub
     },
     data () {
       return {
@@ -352,6 +355,11 @@
       // 切换列表
       change(index) {
         this.value = index
+        if (index === 1) {
+          this.getVcenterItemList()
+        } else {
+          this.getDesignCooperationLists()
+        }
       },
       // 项目报价弹出层
       takingBtn(event) {
@@ -648,8 +656,17 @@
         this.$router.replace({name: 'vcenterItemList'})
         return
       }
-      this.getVcenterItemList()
-      this.getDesignCooperationLists()
+      let type = Number(this.$route.query.value)
+      this.change(type)
+      // this.getVcenterItemList()
+      // this.getDesignCooperationLists()
+    },
+    watch: {
+      '$route' (to, from) {
+        // 对路由变化作出响应...
+        let type = Number(this.$route.query.value)
+        this.change(type)
+      }
     }
   }
 
