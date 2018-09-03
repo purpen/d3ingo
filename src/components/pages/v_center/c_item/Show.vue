@@ -125,8 +125,8 @@
 
               </el-collapse-item>
             </el-collapse>
-          </div>
-
+          </div>   
+          <div ref="anchor" id="anchor"></div>
           <div class="select-item-box" v-if="statusLabel.contract">
             <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
               <el-collapse-item title="合同管理" name="6">
@@ -1224,6 +1224,18 @@
       },
       custom() {
         return this.$store.state.event.prod
+      },
+      anchor() {
+        let that = this
+        var yscr = document.documentElement.scrollTop
+        var interval = setInterval (() => {
+          if (that.$refs.anchor.offsetTop > yscr && that.$refs.anchor) {
+            yscr += 50
+            document.documentElement.scrollTo(0, yscr)
+          } else {
+            clearInterval(interval)
+          }
+        }, 17)
       }
     },
     watch: {
@@ -1628,6 +1640,14 @@
         .catch(function (error) {
           self.$message.error(error.message)
         })
+    },
+    mounted: function () {
+      this.$nextTick(() => {
+        this.$refs.anchor.offsetTop
+      })
+    },
+    updated: function () {
+      this.anchor
     }
   }
 </script>
