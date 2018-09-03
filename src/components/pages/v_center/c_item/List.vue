@@ -515,6 +515,8 @@
         .then(function (response) {
           self.isLoading2 = false
           if (response.data.meta.status_code === 200) {
+            self.designItems = []
+            self.designItems2 = []
             self.query2.totalPages = response.data.meta.pagination.total_pages
             self.query2.total = response.data.meta.pagination.total
             if (!response.data.data.length) {
@@ -541,7 +543,6 @@
                 designItems2[i].item.type_label = typeLabel
                 designItems2[i]['item']['created_at'] = item.item.created_at.date_format().format('yyyy-MM-dd')
               } // endfor
-              self.designItems = []
               self.designItems2 = designItems2
             }
           } else {
@@ -563,6 +564,8 @@
         .then(function (response) {
           self.isLoading = false
           if (response.data.meta.status_code === 200) {
+            self.designItems = []
+            self.designItems2 = []
             self.query.totalPages = response.data.meta.pagination.total_pages
             self.query.total = response.data.meta.pagination.total
             if (!response.data.data.length) {
@@ -583,7 +586,6 @@
                 designItems[i].item.type_label = typeLabel
                 designItems[i]['item']['created_at'] = item.item.created_at.date_format().format('yyyy-MM-dd')
               } // endfor
-              self.designItems2 = []
               self.designItems = designItems
             }
           } else {
