@@ -28,12 +28,12 @@
               <!-- <div :class="['view-msg',{'view-msg-plus': msgCount.quantity}]"> -->
               <div class="view-msg">
                 <a v-if="(isCompany && isCompanyAdmin) || eventUser.type === 1" @click="showMyView('order')" class="news">
-                  <i class="fx-4 fx-icon-OrderReminding"></i><i class="fx-4 fx-icon-OrderRemindingClick"></i>
+                  <i class="fx-4 fx-icon-orderReminding"></i><i class="fx-4 fx-icon-orderRemindingClick"></i>
                   <span v-if="msgCount.message"><b>{{msgCount.message}}</b>条[订单通知]未查看</span>
                   <span v-else>[订单通知]</span>
                 </a>
                 <a v-if="isCompany" @click="showMyView('task')" class="news">
-                  <i class="fx-4 fx-icon-ProjectReminding"></i><i class="fx-4 fx-icon-ProjectRemindingclick"></i>
+                  <i class="fx-4 fx-icon-projectReminding"></i><i class="fx-4 fx-icon-projectRemindingclick"></i>
                   <span v-if="msgCount.design_notice"><b>{{msgCount.design_notice}}</b>条[项目通知]未查看</span>
                   <span v-else>[项目通知]</span>
                 </a>
@@ -147,12 +147,12 @@
               <!-- <div :class="['view-msg',{'view-msg-plus': msgCount.quantity}]"> -->
               <div class="view-msg">
                 <a v-if="(isCompany && isCompanyAdmin) || eventUser.type === 1" @click="showMyView('order')" class="news">
-                  <i class="fx-4 fx-icon-OrderReminding"></i><i class="fx-4 fx-icon-OrderRemindingClick"></i>
+                  <i class="fx-4 fx-icon-orderReminding"></i><i class="fx-4 fx-icon-orderRemindingClick"></i>
                   <span v-if="msgCount.message"><b>{{msgCount.message}}</b>条[订单通知]未查看</span>
                   <span v-else>[订单通知]</span>
                 </a>
                 <a v-if="isCompany" @click="showMyView('task')" class="news">
-                  <i class="fx-4 fx-icon-ProjectReminding"></i><i class="fx-4 fx-icon-ProjectRemindingclick"></i>
+                  <i class="fx-4 fx-icon-projectReminding"></i><i class="fx-4 fx-icon-projectRemindingclick"></i>
                   <span v-if="msgCount.design_notice"><b>{{msgCount.design_notice}}</b>条[项目通知]未查看</span>
                   <span v-else>[项目通知]</span>
                 </a>
@@ -337,7 +337,7 @@
         // 定时请求消息数量
         var limitTimes = 0
         self.requestMessageTask = setInterval(function () {
-          if (limitTimes >= 100) {
+          if (limitTimes >= 360) {
             return
           } else {
             self.fetchMessageCount()
