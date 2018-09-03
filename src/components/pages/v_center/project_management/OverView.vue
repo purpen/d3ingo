@@ -1231,7 +1231,7 @@ export default {
           }).catch((error) => {
             that.isLoading = false
             that.$message.error(error.messsage)
-            console.log(error.message)
+            console.error(error.message)
           })
         }
       })
@@ -1858,7 +1858,7 @@ export default {
           }
         }).catch((error) => {
           that.$message.error(error.message)
-          console.log(error.message)
+          console.error(error.message)
         })
     },
     // 编辑里程碑按钮
@@ -1897,7 +1897,7 @@ export default {
           }
         ).catch((error) => {
           self.$message.error(error.message)
-          console.log(error.message)
+          console.error(error.message)
         })
       }
     },

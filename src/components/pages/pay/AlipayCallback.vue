@@ -74,7 +74,7 @@ export default {
     })
     .catch (function(error) {
       self.errorMessage = error.message
-      console.log(error.message)
+      console.error(error.message)
       return false
     })
   }

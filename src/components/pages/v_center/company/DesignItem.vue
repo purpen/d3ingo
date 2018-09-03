@@ -219,7 +219,7 @@
               message: error.message,
               type: 'error'
             })
-            console.log(error.message)
+            console.error(error.message)
             return false
           })
       },
@@ -274,7 +274,7 @@
                   message: error.message,
                   type: 'error'
                 })
-                console.log(error.message)
+                console.error(error.message)
                 return false
               })
 

@@ -30,7 +30,7 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
     var content = "getVersion('" + version + "')"
     fs.writeFile(config.build.assetsRoot + "/static/version.js", content, function(err) {
       if(err) {
-          console.log(err)
+          console.error(err)
       }
       console.log("The file was saved!", version)
     })

@@ -328,7 +328,7 @@ export default {
     uploadError(err, file, fileList) {
       this.uploadMsg = '上传失败'
       this.$message.error('文件上传失败!')
-      console.log(err)
+      console.error(err)
     },
     uploadProgress(event, file, fileList) {
       this.uploadMsg = '上传中...'
