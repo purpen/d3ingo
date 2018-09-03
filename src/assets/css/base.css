@@ -987,6 +987,12 @@ input:-webkit-autofill {
   .el-menu-info .el-menu .el-menu-item:hover i[class*="hover"] {
     opacity: 1;
   }
+  .el-menu-info .el-menu .el-menu-item:hover i.fx-icon-account {
+    display: none;
+  }
+  .el-menu-info .el-menu .el-menu-item:hover i.fx-icon-company {
+    display: none;
+  }
 
   .el-menu-info .el-submenu .el-submenu__title img {
     width: 36px;
