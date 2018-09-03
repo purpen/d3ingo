@@ -108,7 +108,7 @@
                   <el-input :value="form.title" disabled></el-input>
                 </el-col>
               </el-form-item>
-              <p class="font-size-16" ref="item-anchor" id="item-anchor">2、项目内容</p>
+              <p class="font-size-16" ref="anchor" id="anchor">2、项目内容</p>
               <el-col :span="24" style="padding: 0">
                 <el-form-item prop="item_content">
                   <el-input 
@@ -154,7 +154,7 @@
               </p>
               -->
 
-              <p class="title mar-t-40 font-size-18" ref="cycle-anchor" id="cycle-anchor">二、项目交付内容及工作周期</p>
+              <p class="title mar-t-40 font-size-18">二、项目交付内容及工作周期</p>
               <p class="mar-b-10">经甲乙双方协商，本项目共分 <span class="bottom-border" type="text" disabled v-html="form.sort"></span> 个阶段进行，细节流程与时间节点如下：</p>
 
               <el-row>
@@ -472,12 +472,6 @@
       }
     },
     methods: {
-      // 未填锚点跳转
-      // anchor() {
-      //   var yscr = document.documentElement.scrollTop
-      //   yscr -= 60
-      //   if(yscr > this.$refs.)
-      // },
       submit(formName) {
         const that = this
         that.$refs[formName].validate((valid) => {
@@ -554,6 +548,17 @@
                 return false
               })
           } else {
+            // 未填锚点跳转
+            var tysc = document.documentElement.scrollTop
+            var interval = setInterval (() => {
+              if (tysc > that.$refs.anchor.offsetTop) {
+                tysc -= 60
+                document.documentElement.scrollTo(0, tysc)
+              } else {
+                clearInterval(interval)
+                that.$message.error('有内容未填，请填写')
+              }
+            }, 17)
           }
         })
       },
