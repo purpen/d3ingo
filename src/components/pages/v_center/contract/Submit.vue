@@ -108,7 +108,7 @@
                   <el-input :value="form.title" disabled></el-input>
                 </el-col>
               </el-form-item>
-              <p class="font-size-16">2、项目内容</p>
+              <p class="font-size-16" ref="item-anchor" id="item-anchor">2、项目内容</p>
               <el-col :span="24" style="padding: 0">
                 <el-form-item prop="item_content">
                   <el-input 
