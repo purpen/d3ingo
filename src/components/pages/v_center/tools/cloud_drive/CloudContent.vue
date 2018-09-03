@@ -848,7 +848,7 @@ export default {
   }
   .item2 .more-list ul {
     /* left: 50%; */
-    left: -10%;
+    right: 20px;
     top: 30px;
   }
   .more-list {
