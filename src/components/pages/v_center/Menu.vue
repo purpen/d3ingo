@@ -19,12 +19,12 @@
           <!-- <div :class="['view-msg',{'view-msg-plus': msgCount.quantity}]"> -->
           <div class="view-msg">
             <a v-if="(isCompany && isCompanyAdmin) || eventUser.type === 1" @click="showMyView('order')" class="news">
-              <i class="fx-4 fx-icon-OrderReminding"></i><i class="fx-4 fx-icon-OrderRemindingClick"></i>
+              <i class="fx-4 fx-icon-orderReminding"></i><i class="fx-4 fx-icon-orderRemindingClick"></i>
               <span v-if="msgCount.message"><b>{{msgCount.message}}</b>条[消息提醒]未查看</span>
               <span v-else>[消息提醒]</span>
             </a>
             <a v-if="isCompany" @click="showMyView('task')" class="news">
-              <i class="fx-4 fx-icon-ProjectReminding"></i><i class="fx-4 fx-icon-ProjectRemindingclick"></i>
+              <i class="fx-4 fx-icon-projectReminding"></i><i class="fx-4 fx-icon-projectRemindingclick"></i>
               <span v-if="msgCount.design_notice"><b>{{msgCount.design_notice}}</b>条[项目通知]未查看</span>
               <span v-else>[项目通知]</span>
             </a>
