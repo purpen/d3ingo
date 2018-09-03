@@ -742,6 +742,8 @@
       '$route' (to, from) {
         // 对路由变化作出响应...
         let type = Number(this.$route.query.type) || 1
+        this.query.page = 1
+        this.query2.page = 1
         this.loadList(type)
       }
     },

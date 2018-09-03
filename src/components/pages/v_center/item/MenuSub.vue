@@ -3,7 +3,7 @@
 
     <div class="vcenter-menu-sub-list">
       <router-link :to="{name: 'vcenterItemList', query: {type: 1}}"
-        active-class="false" :class="{'item': true, 'is-active': menuType === 1}">全部
+        active-class="false" :class="{'item': true, 'is-active': menuType === 1}">项目待完善
       </router-link>
       <router-link :to="{name: 'vcenterItemList', query: {type: 2}}"
         active-class="false" :class="['item', {'is-active': menuType === 2}]">项目对接中
