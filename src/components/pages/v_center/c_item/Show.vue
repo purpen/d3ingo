@@ -1226,8 +1226,16 @@
         return this.$store.state.event.prod
       }
       // anchor() {
-      //   var anchor = this.$refs.anchor
-      //   document.documentElement.scrollTop = anchor.offsetTop
+      //   const scroll = document.documentElement
+      //   const anchor = this.$refs.anchor
+      //   if (anchor.offsetTop > scroll.scrollTop) {
+      //     setInterval (() => {
+      //       anchor.offsetTop -= 40
+      //       scroll.scrollTop = anchor.offsetTop
+      //     }, 17)
+      //   } else {
+      //     clearInterval(this.setInterval)
+      //   }
       // }
     },
     watch: {
@@ -1632,11 +1640,14 @@
         .catch(function (error) {
           self.$message.error(error.message)
         })
+    },
+    updated: function () {
+      const scroll = document.documentElement
+      const anchor = this.$refs.anchor
+      console.log(scroll.scrollTop)
+      console.log(anchor.offsetTop)
+      // this.anchor
     }
-    // updated: function () {
-    //   console.log(this.$refs.anchor.offsetTop)
-    //   // this.anchor
-    // }
   }
 </script>
 
