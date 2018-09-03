@@ -804,7 +804,7 @@ export default {
           this.$message.error(res.data.meta.message)
         }
       }).catch(err => {
-        console.log(err)
+        console.error(err)
       })
     },
     showDynamic() {

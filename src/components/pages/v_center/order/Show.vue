@@ -214,7 +214,7 @@
           })
           .catch((error) => {
             this.$message.error(error.message)
-            console.log(error.message)
+            console.error(error.message)
             return false
           })
       },

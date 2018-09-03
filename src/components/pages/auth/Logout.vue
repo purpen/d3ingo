@@ -41,7 +41,7 @@ export default {
           type: 'danger',
           dismissAfter: 3000
         })
-        console.log(error.message)
+        console.error(error.message)
         return false
       })
     },
