@@ -7,7 +7,6 @@
         'vcenter-right': leftWidth === 2,
         'vcenter-right-mob': isMob}">
         <div class="right-content vcenter-container">
-          <!-- <v-menu-sub></v-menu-sub> -->
           <div class="content-item-box" v-loading="isLoading">
             <div class="pub">
               <router-link :to="{name: 'projectCreate'}">
@@ -16,7 +15,9 @@
               </router-link>
             </div>
 
-            <h3 v-if="itemIngList.length">项目待完善</h3>
+            <v-menu-sub></v-menu-sub>
+            <!-- {{itemIngList}} -->
+            <!-- <h3 v-if="itemIngList.length">项目待完善</h3> -->
             <div v-if="itemIngList.length" class="item ing" v-for="(d, index) in itemIngList" :key="index">
               <div class="banner" v-if="contentShowIndex === index">
                 <p>
@@ -72,7 +73,7 @@
               layout="prev, pager, next"
               :total="query.total">
             </el-pagination>
-            <h3 v-if="itemList.length">项目对接中</h3>
+            <!-- <h3 v-if="itemList.length">项目对接中</h3> -->
             <el-row class="item-title-box list-box" v-show="itemList.length" v-if="!isMob">
               <el-col :span="10">
                 <p>项目名称</p>
@@ -468,6 +469,12 @@
             that.isLoading = false
             if (response.data.meta.status_code === 200) {
               if (response.data.data) {
+                that.itemList = []
+                that.itemIngList = []
+                that.query.totalPages = 0
+                that.query.total = 0
+                that.query2.totalPages = 0
+                that.query2.total = 0
                 let data = response.data.data
                 for (let i = 0; i < data.length; i++) {
                   let d = data[i]
@@ -727,18 +734,16 @@
         this.$router.replace({name: 'vcenterCItemList'})
         return
       }
-      this.loadList(1) // 填写资料中
-      this.loadList(2) // 进行中
+      let type = Number(this.$route.query.type) || 1
+      this.loadList(type) // 填写资料中
+      // this.loadList(2) // 进行中
     },
     watch: {
       '$route' (to, from) {
         // 对路由变化作出响应...
-        let type = this.$route.query.type
-        if (type) {
-          type = parseInt(type)
-        } else {
-          type = 0
-        }
+        let type = Number(this.$route.query.type) || 1
+        this.query.page = 1
+        this.query2.page = 1
         this.loadList(type)
       }
     },
