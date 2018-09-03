@@ -125,7 +125,8 @@
 
               </el-collapse-item>
             </el-collapse>
-          </div>
+          </div>   
+          <div ref="anchor" id="anchor"></div>
           <div class="select-item-box" v-if="statusLabel.contract">
             <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
               <el-collapse-item title="合同管理" name="6">
@@ -601,7 +602,6 @@
         <!--<el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>-->
       <!--</div>-->
     </el-dialog>
-  <div ref="anchor" id="anchor"></div>
 
   </div>
 </template>
@@ -1224,19 +1224,19 @@
       },
       custom() {
         return this.$store.state.event.prod
+      },
+      anchor() {
+        let that = this
+        var yscr = document.documentElement.scrollTop
+        var interval = setInterval (() => {
+          if (that.$refs.anchor.offsetTop > yscr && that.$refs.anchor) {
+            yscr += 60
+            document.documentElement.scrollTo(0, yscr)
+          } else {
+            clearInterval(interval)
+          }
+        }, 17)
       }
-      // anchor() {
-      //   const scroll = document.documentElement
-      //   const anchor = this.$refs.anchor
-      //   if (anchor.offsetTop > scroll.scrollTop) {
-      //     setInterval (() => {
-      //       anchor.offsetTop -= 40
-      //       scroll.scrollTop = anchor.offsetTop
-      //     }, 17)
-      //   } else {
-      //     clearInterval(this.setInterval)
-      //   }
-      // }
     },
     watch: {
       quoteProp: {
@@ -1641,12 +1641,13 @@
           self.$message.error(error.message)
         })
     },
+    mounted: function () {
+      this.$nextTick(() => {
+        this.$refs.anchor.offsetTop
+      })
+    },
     updated: function () {
-      const scroll = document.documentElement
-      const anchor = this.$refs.anchor
-      console.log(scroll.scrollTop)
-      console.log(anchor.offsetTop)
-      // this.anchor
+      this.anchor
     }
   }
 </script>
