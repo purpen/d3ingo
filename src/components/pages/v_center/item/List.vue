@@ -468,9 +468,9 @@
           .then(function (response) {
             that.isLoading = false
             if (response.data.meta.status_code === 200) {
+              that.itemList = []
+              that.itemIngList = []
               if (response.data.data) {
-                that.itemList = []
-                that.itemIngList = []
                 that.query.totalPages = 0
                 that.query.total = 0
                 that.query2.totalPages = 0
