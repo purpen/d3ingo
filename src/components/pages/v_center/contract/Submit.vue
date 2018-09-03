@@ -154,7 +154,7 @@
               </p>
               -->
 
-              <p class="title mar-t-40 font-size-18">二、项目交付内容及工作周期</p>
+              <p class="title mar-t-40 font-size-18" ref="cycle-anchor" id="cycle-anchor">二、项目交付内容及工作周期</p>
               <p class="mar-b-10">经甲乙双方协商，本项目共分 <span class="bottom-border" type="text" disabled v-html="form.sort"></span> 个阶段进行，细节流程与时间节点如下：</p>
 
               <el-row>
@@ -472,6 +472,12 @@
       }
     },
     methods: {
+      // 未填锚点跳转
+      // anchor() {
+      //   var yscr = document.documentElement.scrollTop
+      //   yscr -= 60
+      //   if(yscr > this.$refs.)
+      // },
       submit(formName) {
         const that = this
         that.$refs[formName].validate((valid) => {
