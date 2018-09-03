@@ -158,6 +158,8 @@
                     }).catch(err => {
                       console.error(err)
                     })
+                  } else if (status === 3) {
+                    this.$router.push({name: 'redirect', query: {id: d.target_id, name: 'projectMatch'}})
                   } else {
                     // this.$router.push({name: 'projectInfo', params: {id: d.target_id}})
                     this.$router.push({name: 'redirect', query: {id: d.target_id, name: 'projectType'}})
