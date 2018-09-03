@@ -106,9 +106,9 @@
     methods: {
       changeTitle(name) {
         if (this.isActive !== name) {
-          this.$emit('getTitle', name)
+          this.$emit('headTitle', name)
         } else {
-          this.$emit('getTitle', name, 'local')
+          this.$emit('headTitle', name, 'local')
         }
         this.$router.push({name: this.$route.name, params: {modules: name}})
       },
@@ -129,7 +129,7 @@
             this.$message.error(res.data.meta.message)
           }
         }).catch(err => {
-          console.log(err.message)
+          console.error(err.message)
         })
       }
     },

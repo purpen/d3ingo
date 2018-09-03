@@ -230,7 +230,7 @@
                   type: 'error'
                 })
                 that.isLoadingBtn = false
-                console.log(error.message)
+                console.error(error.message)
                 return false
               })
             return false
@@ -291,7 +291,7 @@
                       message: error.message,
                       type: 'error'
                     })
-                    console.log(error.message)
+                    console.error(error.message)
                     return false
                   })
               } else {

@@ -573,7 +573,7 @@ export default {
           .catch((error) => {
             this.$message.error(error.message)
             this.isLoadingBtn = false
-            console.log(error.message)
+            console.error(error.message)
           })
       })
     },

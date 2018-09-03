@@ -216,7 +216,7 @@ export default {
       })
       .catch (function(error) {
         self.$message.error(error.message)
-        console.log(error.message)
+        console.error(error.message)
       })
     },
     // 状态设置
@@ -234,7 +234,7 @@ export default {
       })
       .catch (function(error) {
         self.$message.error(error.message)
-        console.log(error.message)
+        console.error(error.message)
       })
     },
     loadList() {

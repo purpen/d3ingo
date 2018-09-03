@@ -8,7 +8,7 @@
       'parent-box2': !withoutSide,
       'parent-box-mob': isMob}]">
       <el-col v-if="withoutSide" :span="4" class="full-height">
-        <v-menu :isActive='modules' @getTitle="headTitle"></v-menu>
+        <v-menu :isActive='modules' @headTitle="headTitle"></v-menu>
       </el-col>
       <el-col :span="withoutSide?20 :24" class="full-height">
         <div :class="['content', 'full-height',
@@ -769,7 +769,7 @@ export default {
         }
       }).catch(err => {
         this.isLoading = false
-        console.log(err.message)
+        console.error(err.message)
       })
     },
     getSearchList() {
@@ -819,12 +819,12 @@ export default {
       this.query.totalCount = 0
       this.isShowProgress = false
       this.webUploader = false
-      if (str) {
-        this.getList()
-      }
-      if (this.modules === 'project') {
-        this.getProjectList()
-      }
+      // if (str) {
+      //   this.getList()
+      // }
+      // if (this.modules === 'project') {
+      //   this.getProjectList()
+      // }
       if (name !== 'all' && name !== 'recently-use' && name !== 'recycle') {
         this.changeDirector(1)
       }
@@ -1643,12 +1643,13 @@ export default {
     '$route' (to, from) {
       this.modules = this.$route.params.modules || 'all'
       this.folderId = this.$route.query.id || 0
-      if (this.modules === 'project' && !this.$route.query.id) {
-        this.getProjectList()
-        this.changeDirector(1)
-      }
       if (this.modules !== 'search') {
-        this.getList()
+        if (this.modules === 'project' && !this.$route.query.id) {
+          this.getProjectList()
+          this.changeDirector(1)
+        } else {
+          this.getList()
+        }
       }
     },
     validityKey(newVal) {

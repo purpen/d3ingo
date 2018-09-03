@@ -61,7 +61,7 @@ export default {
     .catch (function(error) {
       self.$message.error(error.message)
       self.$router.push({name: 'adminDashBoard'})
-      console.log(error.message)
+      console.error(error.message)
     })
   }
 }

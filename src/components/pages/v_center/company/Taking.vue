@@ -415,7 +415,7 @@
               message: error.message,
               type: 'error'
             })
-            console.log(error.message)
+            console.error(error.message)
             return false
           })
       },
@@ -454,7 +454,7 @@
               message: error.message,
               type: 'error'
             })
-            console.log(error.message)
+            console.error(error.message)
             return false
           })
       },
@@ -577,7 +577,7 @@
         .catch(function (error) {
           that.$message.error(error.message)
           that.isLoading = false
-          console.log(error.message)
+          console.error(error.message)
           return false
         })
     }

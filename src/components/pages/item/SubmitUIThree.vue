@@ -294,7 +294,7 @@
               .catch(function (error) {
                 that.$message.error(error.message)
                 that.isLoadingBtn = false
-                console.log(error.message)
+                console.error(error.message)
                 return false
               })
 
@@ -343,7 +343,7 @@
           type: 'error',
           duration: 1000
         })
-        console.log(err)
+        console.error(err)
       },
       uploadSuccess(response, file, fileList) {
       },
@@ -366,7 +366,7 @@
           })
           .catch(function (error) {
             that.$message.error(error.message)
-            console.log(error.message)
+            console.error(error.message)
             return false
           })
       },
@@ -530,7 +530,7 @@
         })
         .catch(function (error) {
           that.$message.error(error.message)
-          console.log(error.message)
+          console.error(error.message)
           return false
         })
     },

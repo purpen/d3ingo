@@ -275,7 +275,7 @@ export default {
       .catch (function(error) {
         self.$message.error(error.message)
         self.sureTransferLoading = false
-        console.log(error.message)
+        console.error(error.message)
       })
     },
     handleSizeChange(val) {

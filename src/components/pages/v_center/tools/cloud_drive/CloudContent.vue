@@ -847,7 +847,8 @@ export default {
     background-size: 25px
   }
   .item2 .more-list ul {
-    left: 50%;
+    /* left: 50%; */
+    left: -10%;
     top: 30px;
   }
   .more-list {
