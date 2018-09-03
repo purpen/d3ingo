@@ -264,7 +264,7 @@
               </el-collapse-item>
             </el-collapse>
           </div>
-
+          <div ref="anchor" id="anchor"></div>
           <div class="select-item-box clearfix" v-if="statusLabel.manage">
             <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
               <el-collapse-item title="项目管理" name="11">
@@ -539,7 +539,6 @@
         <!--<el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>-->
       <!--</div>-->
     </el-dialog>
-  <div ref="anchor" id="anchor"></div>
   </div>
 </template>
 
@@ -973,21 +972,23 @@ export default {
         }
       }
     }
-    // anchor() {
-    //   let anchor = this.$refs.anchor
-    //   document.getElementById('app').scrollTop = anchor.offsetTop;
-    //   console.log(document.getElementById('app').scrollTop)
-    //   // console.log(document.documentElement.scrollTop)
-    // }
   },
   computed: {
     isMob() {
       return this.$store.state.event.isMob
-    },
-    anchor() {
-      var anchor = this.$refs.anchor
-      document.getElementById('app').scrollTop = anchor.offsetTop
     }
+    // anchor() {
+    //   var anch = this.$refs.anchor.offsetTop
+    //   var interval = setInterval (() => {
+    //     if (anch > 0 && anch !== undefined) {
+    //       anch -= 40
+    //       document.documentElment.scrollTop = anch
+    //     }
+    //     if (document.documentElement.scrollTop === anch) {
+    //       clearInterval(interval)
+    //     }
+    //   }, 17)
+    // }
   },
   watch: {
     statusLabel: {
@@ -1386,7 +1387,7 @@ export default {
       })
   },
   updated: function() {
-    this.anchor
+    // this.anchor
   }
 }
 </script>

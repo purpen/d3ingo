@@ -414,7 +414,7 @@ export default {
         }).catch((error) => {
           this.isSubloading = false
           this.$message.error(error.message)
-          console.log(error.message)
+          console.error(error.message)
         })
     },
     updataWeight(formName) {
@@ -449,7 +449,7 @@ export default {
             }
           ).catch((error) => {
             this.$message.error(error.message)
-            console.log(error.message)
+            console.error(error.message)
           })
         } else {
           console.log('error submit!!')
@@ -472,7 +472,7 @@ export default {
         }
       ).catch((error) => {
         this.$message.error(error.message)
-        console.log(error.message)
+        console.error(error.message)
       })
     },
     handleSelectionChange(val) {

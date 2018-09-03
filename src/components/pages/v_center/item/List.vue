@@ -467,7 +467,6 @@
           .then(function (response) {
             that.isLoading = false
             if (response.data.meta.status_code === 200) {
-              console.log(response.data.data)
               if (response.data.data) {
                 let data = response.data.data
                 for (let i = 0; i < data.length; i++) {
@@ -507,7 +506,6 @@
 
                 if (type === 1) {
                   that.itemIngList = data
-                  console.log(that.itemIngList)
                   that.query.totalPages = response.data.meta.pagination.total_pages
                   that.query.total = response.data.meta.pagination.total
                 } else if (type === 2) {

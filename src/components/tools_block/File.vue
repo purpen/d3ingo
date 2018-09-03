@@ -634,7 +634,7 @@ export default {
         }
       }).catch(err => {
         this.isLoading = false
-        console.log(err.message)
+        console.error(err.message)
       })
     },
     getSearchList() {

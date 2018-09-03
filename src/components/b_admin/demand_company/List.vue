@@ -216,7 +216,7 @@ export default {
       })
       .catch (function(error) {
         self.$message.error(error.message)
-        console.log(error.message)
+        console.error(error.message)
       })
     },
     setStatus(index, item, evt) {
@@ -239,7 +239,7 @@ export default {
       })
       .catch (function(error) {
         self.$message.error(error.message)
-        console.log(error.message)
+        console.error(error.message)
       })
     },
     loadList() {

@@ -968,15 +968,13 @@
   content: "\ea07";
   color: #999;
 }
-.fx-icon-accountHover:before {
+.fx-icon-account-hover:before {
   content: "\ea08";
-  color: #ff5a5f;
 }
 .fx-icon-company:before {
   content: "\ea09";
   color: #999;
 }
-.fx-icon-companyHover:before {
+.fx-icon-company-hover:before {
   content: "\ea0a";
-  color: #ff5a5f;
 }

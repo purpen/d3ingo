@@ -166,7 +166,7 @@ export default {
       })
       .catch (function(error) {
         self.$message.error(error.message)
-        console.log(error.message)
+        console.error(error.message)
       })
     },
     // 删除弹层
