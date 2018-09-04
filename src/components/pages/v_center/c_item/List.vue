@@ -8,7 +8,7 @@
         'vcenter-right': leftWidth === 2,
           'vcenter-right-mob': isMob}">
         <div class="right-content vcenter-container" v-if="!isEmpty">
-          <div :class="['content-item-box', isMob ? 'content-item-box-m' : '' ]" v-loading.body="isLoading">
+          <div :class="['content-item-box', isMob ? 'content-item-box-m' : '' ]" v-loading="isLoading">
             <!-- <el-row :gutter="10">
                 <el-col :xm="12" :sm="12" :md="12" :lg="3">
                   <button class="white-button large-button" :class="{'full-red-button': value === 1}" @click="change(1)">待确认</button>
@@ -154,7 +154,7 @@
         'vcenter-right': leftWidth === 2,
           'vcenter-right-mob': isMob}">
         <div class="right-content vcenter-container" v-if="!isEmpty2">
-          <div :class="['content-item-box', isMob ? 'content-item-box-m' : '' ]" v-loading.body="isLoading">
+          <div :class="['content-item-box', isMob ? 'content-item-box-m' : '' ]" v-loading="isLoading">
             <!-- <h3>已合作</h3> -->
             <el-row v-if="!isMob" class="item-title-box list-box" v-show="designItems2.length">
               <el-col :span="10">
@@ -779,8 +779,8 @@
     font-size: 1.4rem;
     line-height: 1.3;
   }
-
-  .status-str-m {
+  
+    .status-str-m {
     font-size: 1.4rem;
     margin-top: 10px;
     padding: 10px 0;
