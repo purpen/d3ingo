@@ -154,7 +154,7 @@
         'vcenter-right': leftWidth === 2,
           'vcenter-right-mob': isMob}">
         <div class="right-content vcenter-container" v-if="!isEmpty2">
-          <div :class="['content-item-box', isMob ? 'content-item-box-m' : '' ]" v-loading.body="isLoading2">
+          <div :class="['content-item-box', isMob ? 'content-item-box-m' : '' ]" v-loading.body="isLoading">
             <!-- <h3>已合作</h3> -->
             <el-row v-if="!isMob" class="item-title-box list-box" v-show="designItems2.length">
               <el-col :span="10">
@@ -506,14 +506,14 @@
         this.$router.push({name: 'vcenterCItemShow', params: {id: itemId}})
       },
       getDesignCooperationLists() {
-        this.isLoading2 = true
+        this.isLoading = true
         let self = this
         self.$http.get(api.designCooperationLists, {params: {
           page: this.query2.page,
           per_page: this.query2.pageSize
         }})
         .then(function (response) {
-          self.isLoading2 = false
+          self.isLoading = false
           if (response.data.meta.status_code === 200) {
             self.designItems = []
             self.designItems2 = []
@@ -551,7 +551,7 @@
         })
         .catch(function (error) {
           self.$message.error(error.message)
-          self.isLoading2 = false
+          self.isLoading = false
         })
       },
       getVcenterItemList() {
