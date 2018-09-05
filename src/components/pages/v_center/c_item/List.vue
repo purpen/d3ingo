@@ -18,6 +18,18 @@
                 </el-col>
             </el-row> -->
             <v-menu-sub></v-menu-sub>
+            <div v-if="!designItems.length && this.$route.query.value === 1" class="empty-header">
+              <div class="empty-height">
+                <div class="empty"></div>
+                <p class="prompt">暂时没有待确认项目～</p>
+              </div>
+            </div>
+            <div v-if="!designItems2.length && this.$route.query.value === 2" class="empty-header">
+              <div class="empty-height">
+                <div class="empty"></div>
+                <p class="prompt">暂时没有已合作项目～</p>
+              </div>
+            </div>
             <el-row v-if="!isMob" class="item-title-box list-box" v-show="designItems.length">
               <el-col :span="10">
                 <p>项目名称</p>
@@ -275,10 +287,11 @@
     </div>
 
     <div :class="{'vcenter-right-plus': leftWidth === 4,
-      'vcenter-right': leftWidth === 2,
-        'vcenter-right-mob': isMob}">
-      <div class="empty" v-if="isEmpty && isEmpty2"></div>
-      <p v-if="isEmpty && isEmpty2" class="noMsg">暂无已合作项目</p>
+      'vcenter-right': leftWidth === 2, 'vcenter-right-mob': isMob}">
+      <div class="middle">
+        <div class="empty" v-if="isEmpty && isEmpty2"></div>
+        <p v-if="isEmpty && isEmpty2" class="noMsg">暂无已合作项目</p>
+      </div>
     </div>
   </section>
 </template>
@@ -648,6 +661,7 @@
       }
     },
     created() {
+      this.$route.query.value = 1
       // 如果是用户，跳到设计用户列表
       let uType = this.$store.state.event.user.type
       if (uType !== 2) {
@@ -678,6 +692,7 @@
 <style scoped>
   .vcenter-container {
     overflow: hidden;
+    /* height: 100%; */
   }
 
   .content-item-box .item {
@@ -780,7 +795,7 @@
     line-height: 1.3;
   }
   
-    .status-str-m {
+  .status-str-m {
     font-size: 1.4rem;
     margin-top: 10px;
     padding: 10px 0;
@@ -833,15 +848,38 @@
     font-size: 1.4rem;
     line-height: 1.4;
   }
-
+  /* 未填显示 */
+  .prompt {
+    text-align: center;
+    color: #969696;
+    line-height: 3;
+  }
   .empty {
     width: 122px;
     height: 113px;
-    margin: 220px auto 0;
-    background: url("../../../../assets/images/\tools/report/NoContent.png") no-repeat;
-    background-size: contain;
+    margin: 200px auto 0;
+    background: url("../../../../assets/images/icon/Projectdefaultstate@2x.png") no-repeat center / contain;
   }
-
+  .main-content {
+    height: 100%;
+  }
+  /* .vcenter-right-plus {
+    height: 100%;
+  } */
+  /* .content-item-box {
+    height: inherit;
+  }
+  .vcenter {
+    height: inherit;
+  }
+  .empty-header {
+    height: inherit;
+  }
+  .empty-height {
+    position: absolute;
+    top: 50%;
+    margin: 0 atuo;
+  } */
   .noMsg {
     text-align: center;
     color: #969696;

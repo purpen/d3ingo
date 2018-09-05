@@ -24,7 +24,7 @@
             </div>
             <div v-if="!itemList.length && this.$route.query.type === 2">
               <div class="empty"></div>
-              <p class="prompt">暂时没有待完善项目， 请发布需求～</p>
+              <p class="prompt">暂时没有对接项目， 请发布需求～</p>
             </div>
             <div v-if="itemIngList.length" class="item ing" v-for="(d, index) in itemIngList" :key="index">
               <div class="banner" v-if="contentShowIndex === index">
