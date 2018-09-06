@@ -551,7 +551,7 @@
             // 未填锚点跳转
             var tysc = document.documentElement.scrollTop
             var interval = setInterval (() => {
-              if (tysc > that.$refs.anchor.offsetTop) {
+              if (tysc > that.$refs.anchor.offsetTop && document.documentElement.scrollTo) {
                 tysc -= 60
                 document.documentElement.scrollTo(0, tysc)
               } else {
