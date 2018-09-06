@@ -1,9 +1,9 @@
 <template>
   <div :class="['vcenter-menu-sub', isMob ? 'vcenter-menu-sub-m' : '', 'clearfix']">
     <div :class="['vcenter-menu-sub-list', isMob ? 'vcenter-menu-sub-list-m' : '']">
-      <router-link :to="{name: 'vcenterCItemList', query: {value: 1}}"
+      <router-link :to="{name: 'vcenterCItemList', query: {type: 1}}"
       active-class="false" :class="{'item': true, 'is-active': type === 1}">待确认</router-link>
-      <router-link :to="{name: 'vcenterCItemList', query: {value: 2}}"
+      <router-link :to="{name: 'vcenterCItemList', query: {type: 2}}"
       active-class="false" :class="{'item': true, 'is-active': type === 2}">已合作</router-link>
     </div>
   </div>
@@ -27,12 +27,12 @@
       }
     },
     created: function () {
-      this.type = Number(this.$route.query.value) || 1
+      this.type = Number(this.$route.query.type) || 1
     },
     watch: {
       '$route' (to, from) {
         // 对路由变化作出响应...
-        this.type = Number(this.$route.query.value) || 1
+        this.type = Number(this.$route.query.type) || 1
       }
     },
     computed: {
