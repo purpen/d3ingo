@@ -619,7 +619,7 @@
             self.designItems2 = []
             self.query2.totalPages = response.data.meta.pagination.total_pages
             self.query2.total = response.data.meta.pagination.total
-            if (!response.data.data && !response.data.data.length) {
+            if (!response.data.data.length) {
               self.isEmpty2 = true
             } else {
               let designItems2 = response.data.data
@@ -761,6 +761,12 @@
       '$route' (to, from) {
         // 对路由变化作出响应...
         let type = Number(this.$route.query.type) || 1
+        this.query.total = 0
+        this.query.page = 0
+        this.query2.total = 0
+        this.query2.page = 0
+        this.isEmpty = false
+        this.isEmpty2 = false
         this.change(type)
       }
     }

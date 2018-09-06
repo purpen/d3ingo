@@ -482,7 +482,7 @@
             if (response.data.meta.status_code === 200) {
               that.itemList = []
               that.itemIngList = []
-              if (response.data.data && response.data.data.length) {
+              if (response.data.data.length) {
                 that.query.totalPages = 0
                 that.query.total = 0
                 that.query2.totalPages = 0
@@ -758,6 +758,12 @@
         // 对路由变化作出响应...
         this.type = Number(this.$route.query.type) || 1
         this.loadList(this.type)
+        this.query.total = 0
+        this.query.page = 0
+        this.query2.total = 0
+        this.query2.page = 0
+        this.isEmpty = false
+        this.isEmpty2 = false
       }
     },
     filters: {
