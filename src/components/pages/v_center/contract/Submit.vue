@@ -261,7 +261,7 @@
                 <div class="blank20"></div>
               </div>
 
-              <p class="title mar-t-40 font-size-18">三、付款方式</p>
+              <p class="title mar-t-40 font-size-18" ref="anchor2" id="anchor2">三、付款方式</p>
               <p>甲方应将每个阶段的项目费用在对应阶段确认完成后支付给丙方，丙方按以下约定向乙方支付设计费，如果甲乙双方合作中出现争议，将由平台冻结当前资金，待纠纷解决后再按照法律法规相应规定执行。</p>
               <p>&nbsp;</p>
               <p>设计过程中需开具的发票，按三方实际资金往来的具体金额，依中华人民共和国税务法操作执行，明细为设计费。丙方为一般纳税人，若乙方为小规模纳税人，则乙方给丙方开票涉及的差额税费由丙方从设计费用中扣除并代缴。</p>
@@ -481,11 +481,22 @@
             row.item_demand_id = that.itemId
             row.title = that.itemName
             if (!row.sort) {
-              that.$message.error('请至少添加一项项目阶段!')
+            // 未填锚点跳转
+              var tysc2 = document.documentElement.scrollTop
+              var setInter = setInterval (() => {
+                if (tysc2 > that.$refs.anchor2.offsetTop && document.documentElement.scrollTo) {
+                  tysc2 -= 60
+                  document.documentElement.scrollTo(0, tysc2)
+                } else {
+                  clearInterval(setInter)
+                  that.$message.error('请至少添加一项项目阶段!')
+                }
+              }, 17)
               return false
             }
             if (!row.stages || row.stages.length === 0) {
               that.$message.error('请至少添加一项项目阶段!')
+              console.log(1)
               return false
             }
             for (let j = 0; j < row.stages.length; j++) {
