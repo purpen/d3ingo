@@ -23,19 +23,11 @@
     },
     methods: {},
     created: function () {
-      let type = Number(this.$route.query.type)
-      if (type) {
-        this.menuType = type
-      }
+      this.menuType = Number(this.$route.query.type) || 1
     },
     watch: {
       '$route' (to, from) {
-        // 对路由变化作出响应...
-        let type = this.$route.query.type
-        this.menuType = 1
-        if (type) {
-          this.menuType = type
-        }
+        this.menuType = Number(this.$route.query.type) || 1
       }
     },
     computed: {
