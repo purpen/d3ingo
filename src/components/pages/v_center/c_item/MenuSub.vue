@@ -32,7 +32,7 @@
     watch: {
       '$route' (to, from) {
         // 对路由变化作出响应...
-        this.type = Number(this.$route.query.value)
+        this.type = Number(this.$route.query.value) || 1
       }
     },
     computed: {
