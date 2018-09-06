@@ -458,7 +458,7 @@
       // 是否为管理员
       isCompanyAdmin() {
         let companyRoleId = this.$store.state.event.user.company_role
-        if (companyRoleId === 20 || companyRoleId === 15 || companyRoleId === 10) {
+        if (companyRoleId > 0) {
           return true
         }
         return false

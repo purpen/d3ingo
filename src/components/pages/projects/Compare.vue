@@ -36,7 +36,9 @@
                 <el-row v-if="ele.design_case.length">
                   <el-col class="case" v-for="(e, i) in ele.design_case" :key="i">
                     <router-link target="_blank" :to="{name: 'vcenterDesignCaseShow', params: {id: e.id}}">
-                      <div v-if="e.case_image" class="img-box" :style="{background: `url(${e.case_image[0].middle}) no-repeat center / cover`}">
+                      <div v-if="e.case_image && e.case_image.length" class="img-box" :style="{background: `url(${e.case_image[0].middle}) no-repeat center / cover`}">
+                      </div>
+                      <div v-else class="img-box" >
                       </div>
                       <div class="case-content">
                         <p class="title fz-14 tc-2">
@@ -413,6 +415,7 @@ export default {
   .img-box {
     height: 180px;
     border-radius: 4px 4px 0 0;
+    background: url(../../../assets/images/Bitmap.png) no-repeat center
   }
   .tags {
     padding: 4px 0;
