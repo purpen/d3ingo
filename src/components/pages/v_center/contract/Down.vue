@@ -287,7 +287,7 @@
         window.pdfMake.createPdf(dd).download(this.itemName + '.pdf')
         setTimeout(function () {
           window.close()
-        }, 50000)
+        }, 5000)
         this.downStatus = `已成功下载合同文件，页面将在5秒后关闭`
       }
     },
