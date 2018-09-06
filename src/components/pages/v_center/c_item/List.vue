@@ -619,7 +619,7 @@
             self.designItems2 = []
             self.query2.totalPages = response.data.meta.pagination.total_pages
             self.query2.total = response.data.meta.pagination.total
-            if (!response.data.data.length) {
+            if (!response.data.data && !response.data.data.length) {
               self.isEmpty2 = true
             } else {
               let designItems2 = response.data.data
@@ -668,7 +668,7 @@
             self.designItems2 = []
             self.query.totalPages = response.data.meta.pagination.total_pages
             self.query.total = response.data.meta.pagination.total
-            if (!response.data.data.length) {
+            if (!response.data.data && !response.data.data.length) {
               self.isEmpty = true
             } else {
               self.isEmpty = false
