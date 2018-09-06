@@ -74,12 +74,20 @@ let mutations = {
       }
     })
     outsideStageList = outsideStageList.filter(item => {
-      if (item.over_time_stamp < new Date().getTime()) {
-        item.time_detail = (item.over_time_stamp / 1000).date_format().format('yyyy年MM月dd日 hh:mm') + ' 已逾期'
-      } else {
-        item.time_detail = (item.over_time_stamp / 1000).date_format().format('yyyy年MM月dd日 hh:mm')
+      if (item.over_time) {
+        if (typeof (item.over_time) === 'string') {
+          let time = item.over_time.replace(/-/g, '/')
+          item.over_time_stamp = new Date(time).getTime()
+        } else {
+          item.over_time_stamp = item.over_time.getTime()
+        }
+        if (item.over_time_stamp < new Date().getTime()) {
+          item.time_detail = (item.over_time_stamp / 1000).date_format().format('yyyy年MM月dd日 hh:mm') + ' 已逾期'
+        } else {
+          item.time_detail = (item.over_time_stamp / 1000).date_format().format('yyyy年MM月dd日 hh:mm')
+        }
+        return list.indexOf(item.id) === -1
       }
-      return list.indexOf(item.id) === -1
     })
     Object.assign(state.displayObj, {
       itemList: state.stageList,
