@@ -18,6 +18,14 @@
             <v-menu-sub></v-menu-sub>
             <!-- {{itemIngList}} -->
             <!-- <h3 v-if="itemIngList.length">项目待完善</h3> -->
+            <div v-if="!itemIngList.length && this.$route.query.type === 1">
+              <div class="empty"></div>
+              <p class="prompt">暂时没有待完善项目， 请发布需求～</p>
+            </div>
+            <div v-if="!itemList.length && this.$route.query.type === 2">
+              <div class="empty"></div>
+              <p class="prompt">暂时没有对接项目， 请发布需求～</p>
+            </div>
             <div v-if="itemIngList.length" class="item ing" v-for="(d, index) in itemIngList" :key="index">
               <div class="banner" v-if="contentShowIndex === index">
                 <p>
@@ -728,6 +736,7 @@
       }
     },
     created: function () {
+      this.$route.query.type = 1
       let uType = this.$store.state.event.user.type
       // 如果是设计公司，跳到设计公司列表
       if (uType === 2) {
@@ -817,7 +826,17 @@
     border-bottom: 1px solid #e6e6e6;
     background: #fafafa;
   }
-
+  .empty {
+    width: 122px;
+    height: 113px;
+    margin: 100px auto 0;
+    background: url("../../../../assets/images/icon/Projectdefaultstate@2x.png") no-repeat center / contain;
+  }
+  .prompt {
+    text-align: center;
+    color: #969696;
+    line-height: 3;
+  }
   /*.content {*/
   /*border-bottom: 1px solid #ccc;*/
   /*}*/

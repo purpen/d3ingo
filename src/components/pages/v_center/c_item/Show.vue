@@ -1229,7 +1229,7 @@
         let that = this
         var yscr = document.documentElement.scrollTop
         var interval = setInterval (() => {
-          if (that.$refs.anchor.offsetTop > yscr && that.$refs.anchor) {
+          if (that.$refs.anchor.offsetTop > yscr && that.$refs.anchor && document.documentElement.scrollTo) {
             yscr += 50
             document.documentElement.scrollTo(0, yscr)
           } else {

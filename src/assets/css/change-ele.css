@@ -566,7 +566,9 @@
   #quote-dialog .el-dialog--large {
     width: 100%;
   }
-
+  .blank20 .right-content .content-box {
+    margin-bottom: 0;
+  }
   .order-show .el-upload {
     width: 100px;
     height: 100px;
