@@ -619,7 +619,17 @@
         cliLoading: true, // 客户加载
         nostage: 0,
         isclassify: false,
-        task: {}, // 所有项目的任务
+        task: {
+          total_count: 0,
+          no_get: 0,
+          no_get_percentage: 0,
+          no_stage_percentage: 0,
+          no_stage: 0,
+          ok_stage_percentage: 0,
+          ok_stage: 0,
+          overdue_percentage: 0,
+          overdue: 0
+        }, // 所有项目的任务
         lineType: '', // 收入金额:1, 项目数2
         lineTypeDate: '', // 月:month, 季度: quarter, 全年: year
         color: ['#FF686A', '#65A6FF', '#6CE1A8', '#FFE583', '#CD6DE0', '#82C8FF', '#73D13D', '#F8E71C', '#FF5AB0', '#4EE9DF', '#6CE1A8', '#FFBB96', '#FFADD2', '#00CBCB', '#D3F261', '#D53E53', '#413385', '#129C4F', '#FFC330', '#999999'],
@@ -822,57 +832,12 @@
           },
           series: [
             {
-              data: [],
+              data: ['0.00', '0.00', '0.00', '0.00'],
               type: 'bar',
               itemStyle: {
                 barBorderRadius: [4, 4, 0, 0]
               },
               barMaxWidth: 10
-            }
-          ]
-        },
-        gauge: {
-          tooltip: {
-            formatter: '{a} <br/>{b} : {c}%'
-          },
-          series: [
-            {
-              name: '业务指标',
-              type: 'gauge',
-              detail: {
-                formatter: '{value}%',
-                fontSize: 15
-              },
-              data: [{value: 50, name: ''}],
-              splitNumber: 3,
-              axisLine: {
-                lineStyle: {
-                  width: 10
-                }
-              },
-              splitLine: {
-                length: 15,
-                lineStyle: {
-                  color: '#65A6FF'
-                }
-              },
-              axisLabel: {
-                formatter: function (value) {
-                  if (value <= 25) {
-                    return '差'
-                  } else if (value <= 50) {
-                    return '中'
-                  } else if (value <= 75) {
-                    return '良'
-                  } else {
-                    return '优'
-                  }
-                }
-              },
-              pointer: {
-                width: 4,
-                length: '80%'
-              }
             }
           ]
         },
@@ -1664,9 +1629,6 @@
             if (val.length > 0) {
               this.baropt.xAxis.data = val
               this.baropt.series[0].data = data
-            } else {
-              this.baropt.xAxis.data = ['']
-              this.baropt.series[0].data = ['0']
             }
             this.cliLoading = false
           } else {

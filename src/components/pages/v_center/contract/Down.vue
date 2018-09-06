@@ -117,7 +117,7 @@
             {text: '2、项目内容：', style: 'p'},
             {text: this.form.item_content, style: 'p'},
             {text: '', style: 'p'},
-            {text: '2、费用：', style: 'p'},
+            {text: '3、费用：', style: 'p'},
             {
               text: [
                 {text: '本合同设计费用总额为人民币'},
@@ -287,7 +287,7 @@
         window.pdfMake.createPdf(dd).download(this.itemName + '.pdf')
         setTimeout(function () {
           window.close()
-        }, 50000)
+        }, 5000)
         this.downStatus = `已成功下载合同文件，页面将在5秒后关闭`
       }
     },
