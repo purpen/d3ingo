@@ -97,8 +97,8 @@
                     width: '10px',
                     height: '10px',
                     borderRadius: '50%',
-                    margin: '14px 10px 0 0',
-                    background: item.color}"></span>
+                    margin: '6px 10px 0 0',
+                    background: item.color}" class="vertical-center"></span>
                   <span style="float: left">{{ item.label }}</span>
                 </el-option>
               </el-select>
