@@ -562,7 +562,9 @@
     stroke: transparent;
     animation: none
   }
-
+  .right-content .content-box .el-loading-mask .el-loading-spinner {
+    top: 0;
+  }
   #quote-dialog .el-dialog--large {
     width: 100%;
   }
