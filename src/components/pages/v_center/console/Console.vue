@@ -295,7 +295,7 @@
               <div class="pie-header">
                 收入类别占比
               </div>
-              <div class="centent-class scroll-bar scroll-max" v-if="isclassify">
+              <div class="centent-class scroll-bar scroll-max" >
                 <el-row class="select-cl">
                   <el-col :span="8"
                     :class="{'bg-f7':category === '1'}">
@@ -311,7 +311,7 @@
                     </el-col>
                   <!-- <el-col :span="6">项目阶段</el-col> -->
                 </el-row>
-                <el-row v-if="isclassify" v-loading="desLoading">
+                <el-row  v-loading="desLoading">
                   <el-col :span="12">
                     <el-row class="p-t-20">
                       <el-col :span="12">
@@ -331,7 +331,7 @@
                     </div>
                   </el-col>
                   <el-col :span="12" class="p-t-20">
-                    <ul v-if="isclassify">
+                    <ul>
                       <li v-for="(cl,indexcl) in classify" :key="indexcl" class="table-class oneline">
                         <el-row>
                           <el-col :span="2"><i :style="{backgroundColor:color[indexcl]}"></i></el-col>
@@ -345,10 +345,10 @@
                   </el-col>
                 </el-row>
               </div>
-              <div class="noDate" v-if="!isclassify">
+              <!-- <div class="noDate" v-if="!isclassify && !desLoading">
                 <img src="../../../../assets/images/member/Nodata@2x.png"  alt="">
                 <p>您还没有相关数据</p>
-              </div>
+              </div> -->
             </div>
           </el-col>
         <el-col :xs="24" :sm="24" :md="12" :lg="12" class="mar-b-20">
@@ -357,7 +357,7 @@
               任务统计
                 <span class="tc-9 fz-14 fr">任务总数: {{task.total_count}}个</span>
             </div>
-            <el-row v-if="task.total_count>0">
+            <el-row v-if="task.total_count>0" v-loading="tackLoading">
               <el-col :span="12">
 
                 <div class="control-taskProgress">
@@ -475,7 +475,7 @@
               <ul v-if="clients > 0" class="scroll-bar scroll-min">
                 <li v-for="(ci, indexci) in city" :key="indexci" class="city-table oneline">
                   <el-row>
-                    <el-col :span="2"><i>{{indexci+1}}</i></el-col>
+                    <el-col :span="2"><i :class="indexci<3?'city-notopThree':'city-topThree'">{{indexci+1}}</i></el-col>
                     <el-col :span="9">{{ci.item_province_val === ''? '&nbsp;':ci.item_province_val}}</el-col>
                     <el-col :span="9" v-if="radio1==='2'">{{ci.item_count}}位</el-col>
                     <el-col :span="4" v-if="radio1==='2'">{{ci.item_count_percentage}}%</el-col>
@@ -619,6 +619,7 @@
         cliLoading: true, // 客户加载
         nostage: 0,
         isclassify: false,
+        tackLoading: true, // 任务加载中
         task: {
           total_count: 0,
           no_get: 0,
@@ -1290,9 +1291,6 @@
           if (response.data.meta.status_code === 200) {
             this.category = '1'
             let res = response.data.data
-            if (res.year_p_money + res.year_u_money === 0 || res.year_p_count + res.year_u_count === 0) {
-              this.isclassify = false
-            } else this.isclassify = true
             let arr = []
             let data = []
             for (var t = 0; t < this.con_type.length; t++) {
@@ -1309,6 +1307,7 @@
               })
             }
             this.classify = arr
+            console.log('class', arr)
             this.incomeClassify.series[0].data = data
             if (this.radio === '1') {
               this.incomeClassify.series[0].label.formatter = '总项目\n\n' + res.total_year_count + '个'
@@ -1592,11 +1591,14 @@
         this.$http.get(api.designItemTasks, {}).then((response) => {
           if (response.data.meta.status_code === 200) {
             this.task = response.data.data
+            this.tackLoading = false
           } else {
+            this.tackLoading = false
             this.$message.error(response.data.meta.message)
           }
         })
         .catch((error) => {
+          this.tackLoading = false
           this.$message.error(error.message)
         })
       },
@@ -1883,8 +1885,13 @@
     height: 20px;
     text-align: center;
     border-radius: 50%;
-    background: #FF686A;
     color: #fff;
+  }
+  .city-notopThree {
+    background: #FF686A;
+  }
+  .city-topThree {
+    background: #D2D2D2;
   }
   .user-sele {
     margin: 0 30px 0 20px;
