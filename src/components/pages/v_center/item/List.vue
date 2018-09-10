@@ -482,7 +482,7 @@
             if (response.data.meta.status_code === 200) {
               that.itemList = []
               that.itemIngList = []
-              if (response.data.data.length) {
+              if (response.data && response.data.data && response.data.data.length) {
                 that.query.totalPages = 0
                 that.query.total = 0
                 that.query2.totalPages = 0
