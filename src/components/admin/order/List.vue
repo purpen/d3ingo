@@ -69,7 +69,7 @@
             <el-table-column
               label="创建信息">
                 <template slot-scope="scope">
-                  <p>用户: {{ scope.row.user.account }}[{{ scope.row.user_id }}]</p>
+                  <p>用户: {{ scope.row.user?(scope.row.user.account? scope.row.user.account: ''):'' }}[{{ scope.row.user_id }}]</p>
                   <p>公司: {{ scope.row.company_name }}</p>
                 </template>
             </el-table-column>
@@ -336,7 +336,6 @@ export default {
               sureOutlineTransfer = true
             }
             item['sure_outline_transfer'] = sureOutlineTransfer
-
             self.tableData.push(item)
           } // endfor
 

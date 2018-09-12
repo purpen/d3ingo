@@ -153,15 +153,18 @@
                     </p>
                     <p>
                       <router-link :to="{name: 'vcenterContractView', params: {unique_id: contract.unique_id}}"
-                                   target="_blank">
-                                   <!-- <i class="fa fa-eye" aria-hidden="true"></i> 预览 -->
-                                    <el-button type="primary" class="contract-right-preview" :class="{'view-button': item.status > 4}">预览</el-button>
+                        target="_blank">
+                        <!-- <i class="fa fa-eye" aria-hidden="true"></i> 预览 -->
+                        <!-- <el-button type="danger" class="contract-right-preview" :class="{'view-button': item.status > 4}">预览</el-button> -->
+                        <button class="look-button">
+                          预览
+                        </button>
                       </router-link>
                     </p>
                     <p v-if="item.status < 7">
                       <router-link :to="{name: 'vcenterContractSubmit', params: {item_id: item.id}}">
                         <!-- <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 修改 -->
-                         <el-button type="primary" class="contract-right-preview" :class="{'view-button': item.status > 4}">修改</el-button>
+                         <button class="look-button">修改</button>
                       </router-link>
                     </p>
 
@@ -1656,6 +1659,25 @@
 <style scoped>
   .red {
     color: red;
+  }
+  .look-button {
+    width: 120px;
+    height:34px;
+    background: #fff;
+    border: 1px solid #ff5a5f;
+    border-radius: 4px;
+    color: #ff5a5f;
+  }
+  .contract-right .look-button:hover {
+    background: #ff5a5f;
+    border: 1px solid #ff5a5f;
+    border-radius: 4px;
+    color: #fff;
+  }
+  .contract-right .look-button:active {
+    color: #ff5a5f;
+    border: 1px solid #ff5a5f;
+    background: #fff;
   }
   .alert-line-height {
     text-align: center
