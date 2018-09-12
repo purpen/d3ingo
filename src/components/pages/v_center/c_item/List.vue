@@ -614,14 +614,12 @@
         }})
         .then(function (response) {
           self.isLoading = false
-          if (response.data.meta.status_code === 200) {
+          if (response.data && response.data.meta.status_code === 200) {
             self.designItems = []
             self.designItems2 = []
             self.query2.totalPages = response.data.meta.pagination.total_pages
             self.query2.total = response.data.meta.pagination.total
-            if (!response.data.data.length) {
-              self.isEmpty2 = true
-            } else {
+            if (response.data.data && response.data.data.length) {
               let designItems2 = response.data.data
               for (let i = 0; i < designItems2.length; i++) {
                 let item = designItems2[i]
@@ -644,6 +642,8 @@
                 designItems2[i]['item']['created_at'] = item.item.created_at.date_format().format('yyyy-MM-dd')
               } // endfor
               self.designItems2 = designItems2
+            } else {
+              self.isEmpty2 = true
             }
           } else {
             self.$message.error(response.data.meta.message)
@@ -668,9 +668,7 @@
             self.designItems2 = []
             self.query.totalPages = response.data.meta.pagination.total_pages
             self.query.total = response.data.meta.pagination.total
-            if (!response.data.data && !response.data.data.length) {
-              self.isEmpty = true
-            } else {
+            if (response.data.data && response.data.data.length) {
               self.isEmpty = false
               let designItems = response.data.data
               for (let i = 0; i < designItems.length; i++) {
@@ -687,6 +685,8 @@
                 designItems[i]['item']['created_at'] = item.item.created_at.date_format().format('yyyy-MM-dd')
               } // endfor
               self.designItems = designItems
+            } else {
+              self.isEmpty = true
             }
           } else {
             self.$message.error(response.data.meta.message)

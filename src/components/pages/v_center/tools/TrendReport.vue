@@ -73,7 +73,7 @@
           //          console.log(res.data.data)
           if (res.data.meta.status_code === 200) {
             let meta = res.data.meta
-            if (res.data.data.length) {
+            if (res.data && res.data.data && res.data.data.length) {
               for (let i of res.data.data) {
                 i.created_at = i.created_at.date_format().format('yyyy年MM月dd日')
               }

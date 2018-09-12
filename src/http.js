@@ -49,6 +49,7 @@ axiosInstance.interceptors.response.use(
     return response
   },
   error => {
+    console.log(error)
     if (error.response) {
       switch (error.response.status) {
         case 401:
@@ -67,9 +68,11 @@ axiosInstance.interceptors.response.use(
             path: '/home'
           })
       }
+      // console.log(JSON.stringify(error));//console : Error: Request failed with status code 402
+      return Promise.reject(error.response.data)
+    } else {
+      return Promise.reject(error)
     }
-    // console.log(JSON.stringify(error));//console : Error: Request failed with status code 402
-    return Promise.reject(error.response.data)
   })
 
 export default axiosInstance

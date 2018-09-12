@@ -28,8 +28,7 @@ let mutations = {
     if (!array) {
       return
     }
-    let outsideStageList = array
-    let list = []
+    // let list = []
     state.stageList.forEach(ele => {
       if (ele.task) {
         ele.task.forEach(e => {
@@ -49,31 +48,31 @@ let mutations = {
           if (e['created_at']) {
             e['created_at_format'] = e['created_at'].date_format().format('MM月dd日')
           }
-          outsideStageList.forEach(item => {
-            if (item.over_time) {
-              if (typeof (item.over_time) === 'string') {
-                let time = item.over_time.replace(/-/g, '/')
-                item.over_time_stamp = new Date(time).getTime()
-              } else {
-                item.over_time_stamp = item.over_time.getTime()
-              }
-              if (item.over_time_stamp < new Date().getTime()) {
-                item.time_detail = (item.over_time_stamp / 1000).date_format().format('yyyy年MM月dd日 hh:mm') + ' 已逾期'
-              } else {
-                item.time_detail = (item.over_time_stamp / 1000).date_format().format('yyyy年MM月dd日 hh:mm')
-              }
-            }
-            if (item.id === e.id) {
-              list.push(e.id)
-            }
-            if (item['created_at']) {
-              item['created_at_format'] = item['created_at'].date_format().format('MM月dd日')
-            }
-          })
+          // outsideStageList.forEach(item => {
+          //   if (item.over_time) {
+          //     if (typeof (item.over_time) === 'string') {
+          //       let time = item.over_time.replace(/-/g, '/')
+          //       item.over_time_stamp = new Date(time).getTime()
+          //     } else {
+          //       item.over_time_stamp = item.over_time.getTime()
+          //     }
+          //     if (item.over_time_stamp < new Date().getTime()) {
+          //       item.time_detail = (item.over_time_stamp / 1000).date_format().format('yyyy年MM月dd日 hh:mm') + ' 已逾期'
+          //     } else {
+          //       item.time_detail = (item.over_time_stamp / 1000).date_format().format('yyyy年MM月dd日 hh:mm')
+          //     }
+          //   }
+          //   if (item.id === e.id) {
+          //     list.push(e.id)
+          //   }
+          //   if (item['created_at']) {
+          //     item['created_at_format'] = item['created_at'].date_format().format('MM月dd日')
+          //   }
+          // })
         })
       }
     })
-    outsideStageList = outsideStageList.filter(item => {
+    let outsideStageList = array.filter(item => {
       if (item.over_time) {
         if (typeof (item.over_time) === 'string') {
           let time = item.over_time.replace(/-/g, '/')
@@ -86,8 +85,12 @@ let mutations = {
         } else {
           item.time_detail = (item.over_time_stamp / 1000).date_format().format('yyyy年MM月dd日 hh:mm')
         }
-        return list.indexOf(item.id) === -1
+        if (item['created_at']) {
+          item['created_at_format'] = item['created_at'].date_format().format('MM月dd日')
+        }
+        // return list.indexOf(item.id) === -1
       }
+      return item.stage_id === 0
     })
     Object.assign(state.displayObj, {
       itemList: state.stageList,
