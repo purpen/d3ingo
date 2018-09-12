@@ -695,7 +695,10 @@
       fetchStage() {
         const self = this
         self.isLoading = true
-        self.$http.get(api.toolsStage, {params: {item_id: self.$route.params.id}})
+        self.$http.get(api.toolsStage, {params: {
+          item_id: self.$route.params.id,
+          stage: self.taskStatus
+        }})
         .then(function (response) {
           if (response.data.meta.status_code === 200) {
             self.$store.commit('setStageList', response.data.data)

@@ -119,8 +119,8 @@
           <div class="control-childHeader">
             <span>进行中的项目</span>
           </div>
-          <el-row class="item-content scroll-bar">
-          <el-col :span="12" v-for="(i,indexi) in userItem" :key="indexi" v-if="userItem&&userItem.length>0">
+          <el-row class="item-content scroll-bar" v-loading="itemLoading">
+            <el-col :span="12" v-for="(i,indexi) in userItem" :key="indexi" v-if="userItem&&userItem.length>0">
 
               <ul class="control-iteming">
                 <router-link :to="{name: 'projectManagementOverView', params: {id: i.id}}">
@@ -143,9 +143,10 @@
                   </div>
                 </li>
                 </router-link>
-            </ul>
+              </ul>
 
-          </el-col>
+            </el-col>
+            <el-col>
               <div class="message-btn" v-if="userItem.length===0">
                 <img src="../../../../assets/images/icon/Projectdefaultstate@2x.png"/>
                 <p>你还没有参加任何项目</p>
@@ -153,8 +154,9 @@
                   <router-link :to="{name: 'projectManagementList'}">创建项目</router-link>
                 </button> -->
               </div>
-            </el-row>
-          </section>
+            </el-col>
+          </el-row>
+        </section>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="12">
           <section class="control-tasks">
@@ -164,7 +166,7 @@
                 <span>{{ userTask.total_count }}</span>个
               </div>
             </div>
-            <el-row v-if="userTask.total_count>0">
+            <el-row v-if="userTask.total_count>0" v-loading="tackLoading">
               <el-col :span="12">
 
                 <div class="control-taskProgress">
@@ -234,11 +236,13 @@
                   </div>
                 </div>
               </el-col>
-              </el-row>
-              <div class="message-btn" v-else>
-              <img src="../../../../assets/images/icon/Taskdefaultstate@2x.png"/>
-                <p>您还没有任务</p>
-            </div>
+              <el-col>
+                <div class="message-btn" v-if="userTask.total_count === 0">
+                  <img src="../../../../assets/images/icon/Taskdefaultstate@2x.png"/>
+                  <p>您还没有任务</p>
+                </div>
+              </el-col>
+            </el-row>
           </section>
         </el-col>
       </el-row>
@@ -265,9 +269,13 @@
         itemIngList: [],
         showBase: false,
         isLoading: false,
+        itemLoading: true, // 进行中项目加载
+        tackLoading: true, // 我的任务
         companyId: '',
         statusLabel: '',
-        userTask: {}, // 个人任务进度
+        userTask: {
+          'total_count': 0
+        }, // 个人任务进度
         userItem: [],
         messageList: [],
         uChild: this.$store.state.event.user.child_account
@@ -326,10 +334,13 @@
                 }
               }
             }
+            this.itemLoading = false
           } else {
+            this.itemLoading = false
             self.$message.error(response.data.meta.message)
           }
         }).catch((error) => {
+          this.itemLoading = false
           console.error(error)
         })
       },
@@ -338,11 +349,14 @@
         const self = this
         self.$http.get(api.userTasks, {}).then((response) => {
           if (response.data.meta.status_code === 200) {
-            this.userTask = response.data.data
+            self.userTask = response.data.data
+            self.tackLoading = false
           } else {
+            self.tackLoading = false
             self.$message.error(response.data.meta.message)
           }
         }).catch((error) => {
+          self.tackLoading = false
           console.error(error)
         })
       },
