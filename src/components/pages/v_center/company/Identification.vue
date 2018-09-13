@@ -686,6 +686,7 @@
                 that.form.city = that.form.city === 0 ? '' : that.form.city
                 that.form.area = that.form.area === 0 ? '' : that.form.area
                 that.form.phone = that.form.phone.length === 0 ? '' : that.form.phone + ''
+                that.form.phone === 0 ? '' : that.form.phone + ''
                 that.form.document_type = that.form.document_type === 0 ? '' : that.form.document_type
                 // that.form.province = that.form.province === 0 ? '' : that.form.province
                 // that.form.city = that.form.city === 0 ? '' : that.form.city
