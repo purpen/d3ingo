@@ -393,7 +393,7 @@
           legal_person: '',
           document_number: '',
           document_type: '',
-          address:'',
+          address: '',
           contact_name: '',
           position: '',
           phone: '',
