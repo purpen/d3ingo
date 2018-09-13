@@ -150,7 +150,7 @@
             <el-row :gutter="24">
               <el-col :span="isMob ? 24 : 12">
                 <el-form-item label="联系人手机" prop="phone">
-                  <el-input v-model.number="form.phone" placeholder=""></el-input>
+                  <el-input v-model="form.phone" placeholder=""></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -483,7 +483,7 @@
               contact_name: that.form.contact_name,
               position: that.form.position,
               email: that.form.email,
-              phone: that.form.phone,
+              phone: that.form.phone + '',
               province: that.form.province,
               area: that.form.area,
               city: that.form.city,
