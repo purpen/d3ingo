@@ -60,7 +60,7 @@
                   paddingTop:indexc === 0?20 + 'px':40+'px',
                   borderTop:indexc === 0?'none':'1px solid #e6e6e6'
                   }">{{c.name}}</div>
-                <el-form :model="form"  ref="ruleForm">
+                <el-form :model="form" :ref="'ruleForm' + indexc">
                   <el-row class="edit-designType" v-for="(dt,indexdt) in c.designType" :key="indexdt">
                     <el-col :span="4">
                       {{dt.name}}
@@ -91,7 +91,7 @@
                     <el-col :span="4">
                       <div class="editbt">
                         <span v-if="isedit.index === indexc&&isedit.indexd ===indexdt" 
-                          @click="submit('ruleForm', c)">保存</span>
+                          @click="submit('ruleForm' + indexc)">保存</span>
                         <span v-else @click="editType(items['item_'+ (indexc+1) +'_'+ (indexdt+1)],indexdt,indexc)">编辑</span>
                       </div>
                     </el-col>
@@ -471,21 +471,21 @@
       cancelFormVisible() {
         this.itemModel = false
       },
-      submit(formName, c) {
+      submit(formName) {
         const that = this
-        let index = 0
-        for (var cc = 0; cc < that.typeData.length; cc++) {
-          if (that.typeData[cc].isopt) {
-            index++
-          }
-          if (that.typeData[cc].id === c.id) {
-            break
-          }
-        }
-        if (index < 0) {
-          index = 0
-        }
-        that.$refs[formName][index - 1].validate((valid) => {
+        // let index = 0
+        // for (var cc = 0; cc < that.typeData.length; cc++) {
+        //   if (that.typeData[cc].isopt) {
+        //     index++
+        //   }
+        //   if (that.typeData[cc].id === c.id) {
+        //     break
+        //   }
+        // }
+        // if (index < 0) {
+        //   index = 0
+        // }
+        that.$refs[formName][0].validate((valid) => {
           // 验证通过，提交
           if (valid) {
             let row = {
