@@ -60,7 +60,7 @@
                   paddingTop:indexc === 0?20 + 'px':40+'px',
                   borderTop:indexc === 0?'none':'1px solid #e6e6e6'
                   }">{{c.name}}</div>
-                <el-form :model="form" :rules="rules" ref="ruleForm">
+                <el-form :model="form"  ref="ruleForm">
                   <el-row class="edit-designType" v-for="(dt,indexdt) in c.designType" :key="indexdt">
                     <el-col :span="4">
                       {{dt.name}}
@@ -69,7 +69,12 @@
                       项目平均周期
                     </el-col>
                     <el-col :span="12">
-                        <el-form-item prop="project_cycle" v-if="isedit.index === indexc&&isedit.indexd ===indexdt">
+                        <el-form-item :prop="'project_cycle'" 
+                          v-if="isedit.index === indexc&&isedit.indexd ===indexdt"
+                          :rules="{
+                              required: true, type: 'number', message: '请选择项目平均周期', trigger: 'change'
+                            }"
+                          >
                           <el-select v-model.number="form.project_cycle" placeholder="请选择平均周期">
                             <el-option
                               v-for="item in projectCycleOptions"
@@ -86,7 +91,7 @@
                     <el-col :span="4">
                       <div class="editbt">
                         <span v-if="isedit.index === indexc&&isedit.indexd ===indexdt" 
-                          @click="submit('ruleForm',indexdt)">保存</span>
+                          @click="submit('ruleForm', indexc)">保存</span>
                         <span v-else @click="editType(items['item_'+ (indexc+1) +'_'+ (indexdt+1)],indexdt,indexc)">编辑</span>
                       </div>
                     </el-col>
@@ -94,7 +99,12 @@
                       项目最低接单价格
                     </el-col>
                     <el-col :span="12" class="m-t-20">
-                      <el-form-item prop="min_price" v-if="isedit.index === indexc&&isedit.indexd ===indexdt">
+                      <el-form-item :prop="'min_price'" 
+                        v-if="isedit.index === indexc&&isedit.indexd ===indexdt"
+                        :rules="{
+                          required: true, type: 'number', message: '请选择最低接单价格', trigger: 'change'
+                        }"
+                        >
                         <el-select v-model.number="form.min_price" placeholder="请选择最低接单价格">
                           <el-option
                             v-for="item in minPriceOptions"
@@ -240,14 +250,14 @@
           itemId: '',
           sid: ''
         },
-        rules: {
-          project_cycle: [
-            {type: 'number', message: '请选择项目平均周期', trigger: 'change'}
-          ],
-          min_price: [
-            {type: 'number', message: '请选择最低接单价格', trigger: 'change'}
-          ]
-        },
+        // rules: {
+        //   project_cycle: [
+        //     {type: 'number', message: '请选择项目平均周期', trigger: 'change'}
+        //   ],
+        //   min_price: [
+        //     {type: 'number', message: '请选择最低接单价格', trigger: 'change'}
+        //   ]
+        // },
         formLabelWidth: '150px'
       }
     },
@@ -461,9 +471,9 @@
       cancelFormVisible() {
         this.itemModel = false
       },
-      submit(formName, index) {
+      submit(formName, indexmax, index) {
         const that = this
-        that.$refs[formName][index].validate((valid) => {
+        that.$refs[formName][indexmax].validate((valid) => {
           // 验证通过，提交
           if (valid) {
             let row = {
