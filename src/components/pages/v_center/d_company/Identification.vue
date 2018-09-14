@@ -38,7 +38,7 @@
             <el-row :gutter="24">
               <el-col :span="isMob ? 24 : 12">
                 <el-form-item label="统一社会信用代码" prop="registration_number">
-                  <el-input v-model="form.registration_number" placeholder=""></el-input>
+                  <el-input v-model="form.registration_number" placeholder="请输入统一社会信用代码"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -67,7 +67,7 @@
             <el-row :gutter="24">
               <el-col :span="isMob ? 24 : 12">
                 <el-form-item label="法人姓名" prop="legal_person">
-                  <el-input v-model="form.legal_person" placeholder=""></el-input>
+                  <el-input v-model="form.legal_person" placeholder="请输入法人姓名"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -90,7 +90,7 @@
             <el-row :gutter="24">
               <el-col :span="isMob ? 24 : 12">
                 <el-form-item label="证件号码" prop="document_number">
-                  <el-input v-model="form.document_number" placeholder=""></el-input>
+                  <el-input v-model="form.document_number" placeholder="请输入证件号码"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -133,14 +133,14 @@
             <el-row :gutter="24">
               <el-col :span="isMob ? 24 : 12">
                 <el-form-item label="联系人" prop="contact_name">
-                  <el-input v-model="form.contact_name" placeholder=""></el-input>
+                  <el-input v-model="form.contact_name" placeholder="请输入联系人"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row :gutter="24">
               <el-col :span="isMob ? 24 : 12">
                 <el-form-item label="联系人职位" prop="position">
-                  <el-input v-model="form.position" placeholder=""></el-input>
+                  <el-input v-model="form.position" placeholder="请输入职位"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -152,14 +152,14 @@
                       该手机号将会被默认作为消息通知接收号码
                     </div>
                   </div>
-                  <el-input v-model="form.phone" placeholder=""></el-input>
+                  <el-input v-model="form.phone" placeholder="请输入手机号"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row :gutter="24">
               <el-col :span="isMob ? 24 : 12">
                 <el-form-item label="联系人邮箱" prop="email">
-                  <el-input v-model="form.email" placeholder=""></el-input>
+                  <el-input v-model="form.email" placeholder="请输入邮箱"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -170,21 +170,21 @@
             <el-row :gutter="24">
               <el-col :span="isMob ? 24 : 12">
                 <el-form-item label="开户名称" prop="account_name">
-                  <el-input v-model="form.account_name" placeholder=""></el-input>
+                  <el-input v-model="form.account_name" placeholder="请输入开户名称"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row :gutter="24">
               <el-col :span="isMob ? 24 : 12">
                 <el-form-item label="开户银行" prop="bank_name">
-                  <el-input v-model="form.bank_name" placeholder=""></el-input>
+                  <el-input v-model="form.bank_name" placeholder="请输入开户行"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row :gutter="24">
               <el-col :span="isMob ? 24 : 12">
                 <el-form-item label="对公银行账号" prop="account_number">
-                  <el-input v-model.trim="form.account_number" placeholder=""></el-input>
+                  <el-input v-model.trim="form.account_number" placeholder="请输入银行账号"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -313,7 +313,8 @@
             {required: true, message: '请填写联系人电话', trigger: 'blur'}
           ],
           email: [
-            {required: true, message: '请填写联系人邮箱', trigger: 'blur'}
+            {required: true, message: '请填写联系人邮箱', trigger: 'blur'},
+            {type: 'email', message: '请输入正确的邮箱格式', trigger: 'blur'}
           ],
           address: [
             {required: true, message: '请填写公司地址', trigger: 'blur'}
@@ -527,8 +528,11 @@
                 that.form.province = that.form.province === 0 ? '' : that.form.province
                 that.form.city = that.form.city === 0 ? '' : that.form.city
                 that.form.area = that.form.area === 0 ? '' : that.form.area
-                that.form.phone = that.form.phone.length === 0 ? '' : that.form.phone + ''
-                that.form.phone === '0' ? '' : that.form.phone + ''
+                if (that.form.phone) {
+                  that.form.phone = that.form.phone + ''
+                } else {
+                  that.form.phone = ''
+                }
                 that.form.company_type = that.form.company_type === 0 ? '' : that.form.company_type + ''
                 that.form.document_type = that.form.document_type === 0 ? '' : that.form.document_type
                 that.companyId = response.data.data.id
