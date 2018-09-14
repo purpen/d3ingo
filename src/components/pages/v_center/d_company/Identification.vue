@@ -528,7 +528,7 @@
                 that.form.city = that.form.city === 0 ? '' : that.form.city
                 that.form.area = that.form.area === 0 ? '' : that.form.area
                 that.form.phone = that.form.phone.length === 0 ? '' : that.form.phone + ''
-                that.form.phone === 0 ? '' : that.form.phone + ''
+                that.form.phone === '0' ? '' : that.form.phone + ''
                 that.form.company_type = that.form.company_type === 0 ? '' : that.form.company_type + ''
                 that.form.document_type = that.form.document_type === 0 ? '' : that.form.document_type
                 that.companyId = response.data.data.id
