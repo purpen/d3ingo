@@ -432,7 +432,8 @@
             {required: true, message: '请填写联系人电话', trigger: 'blur'}
           ],
           email: [
-            {type: 'email', required: true, message: '请填写联系人邮箱', trigger: 'blur'}
+            {required: true, message: '请填写联系人邮箱', trigger: 'blur'},
+            { type: 'email', message: '请输入正确的邮箱格式', trigger: 'blur' }
           ],
           address: [
             {required: true, message: '请填写公司地址', trigger: 'blur'}
