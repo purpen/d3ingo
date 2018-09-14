@@ -91,7 +91,7 @@
                     <el-col :span="4">
                       <div class="editbt">
                         <span v-if="isedit.index === indexc&&isedit.indexd ===indexdt" 
-                          @click="submit('ruleForm', indexc)">保存</span>
+                          @click="submit('ruleForm', c)">保存</span>
                         <span v-else @click="editType(items['item_'+ (indexc+1) +'_'+ (indexdt+1)],indexdt,indexc)">编辑</span>
                       </div>
                     </el-col>
@@ -471,9 +471,21 @@
       cancelFormVisible() {
         this.itemModel = false
       },
-      submit(formName, indexmax, index) {
+      submit(formName, c) {
         const that = this
-        that.$refs[formName][indexmax].validate((valid) => {
+        let index = 0
+        for (var cc = 0; cc < that.typeData.length; cc++) {
+          if (that.typeData[cc].isopt) {
+            index++
+          }
+          if (that.typeData[cc].id === c.id) {
+            break
+          }
+        }
+        if (index < 0) {
+          index = 0
+        }
+        that.$refs[formName][index - 1].validate((valid) => {
           // 验证通过，提交
           if (valid) {
             let row = {
@@ -499,7 +511,6 @@
               return false
             }
             that.isedit = {}
-            console.log(row)
             let apiUrl = null
             let method = null
 
