@@ -28,8 +28,7 @@
               <router-link :to="{name: 'forget'}">忘记密码?</router-link>
             </p>
           </div>
-          <el-button type="primary" :loading="isLoadingBtn" @keyup="submit('ruleForm')" @click="submit('ruleForm')"
-                    class="login-btn is-custom">登录
+          <el-button type="primary" :loading="isLoadingBtn" @keyup="submit('ruleForm')" @click="submit('ruleForm')" class="login-btn is-custom">登录
           </el-button>
         </el-form>
       </div>
@@ -47,6 +46,31 @@
         <p v-else>还没有{{prod.info}}账户？
           <router-link :to="{name: 'identity'}">立即注册</router-link>
         </p>
+      </div>
+    </div>
+    <div class="register-tab-cover animated"
+      :class="[chooseType ? 'fadeIn' : 'fadeOut']" v-if="chooseType">
+      <div class="register-tab clearfix">
+        <h2 class="fz-20 tc-6 text-center">请选择用户类型</h2>
+        <p class="fz-14 tc-red type-error" v-if="typeError">没有选择用户类型!</p>
+        <div :class="{'register-tab-user register-tab-user1 fl': true, active: userType === 1}" @click="userType = 1, typeError = false">
+          <div class="tab-left customer"></div>
+          <div class="tab-right">
+            <h3>我是客户</h3>
+            <p class="des">发布项目需求</p>
+            <p class="des">找到设计服务商</p>
+          </div>
+        </div>
+        <div v-if="prod.name === ''" :class="{'fl register-tab-user': true, active: userType === 2}" @click="userType = 2, typeError = false">
+          <div class="tab-left"></div>
+          <div class="tab-right">
+            <h3>我是设计公司</h3>
+            <p class="des">为客户提供</p>
+            <p class="des">专业设计服务</p>
+          </div>
+        </div>
+        <el-button type="primary" @click="selectType" :loading="isLoading" class="type-btn is-custom">登录
+        </el-button>
       </div>
     </div>
   </div>
@@ -95,7 +119,13 @@ export default {
         ]
       },
       type: 0,
-      item: {}
+      item: {},
+      userType: 0,
+      chooseType: false,
+      isLoading: false,
+      user: {},
+      token: '',
+      typeError: false
     }
   },
   methods: {
@@ -115,33 +145,40 @@ export default {
                 that.isLoadingBtn = false
                 if (response.data.meta.status_code === 200) {
                   let token = response.data.data.token
+                  that.token = token
                   // 写入localStorage
                   auth.write_token(token)
                   // ajax拉取用户信息
                   that.$http
                     .get(api.user, {})
                     .then(function(response) {
+                      console.log(response.data.data)
                       if (response.data.meta.status_code === 200) {
-                        that.$message({
-                          message: '登陆成功',
-                          type: 'success',
-                          duration: 800
-                        })
-                        that.$store.commit(MENU_STATUS, '')
-                        auth.write_user(response.data.data)
-                        that.timeLoadMessage()
-                        that.restoreMember()
-                        that.getStatus(that.$store.state.event.user.type)
-                        let prevUrlName = that.$store.state.event.prevUrlName
-                        if (prevUrlName) {
-                          // 清空上一url
-                          auth.clear_prev_url_name()
-                          that.$router.replace({ path: prevUrlName })
+                        if (response.data.data.type === 0) {
+                          that.chooseType = true
+                          that.user = response.data.data
                         } else {
-                          if (that.isMob) {
-                            that.$router.replace({ name: 'home' })
+                          that.$message({
+                            message: '登陆成功',
+                            type: 'success',
+                            duration: 800
+                          })
+                          that.$store.commit(MENU_STATUS, '')
+                          auth.write_user(response.data.data)
+                          that.timeLoadMessage()
+                          that.restoreMember()
+                          that.getStatus(that.$store.state.event.user.type)
+                          let prevUrlName = that.$store.state.event.prevUrlName
+                          if (prevUrlName) {
+                            // 清空上一url
+                            auth.clear_prev_url_name()
+                            that.$router.replace({ path: prevUrlName })
                           } else {
-                            that.$router.replace({ name: 'vcenterControl' })
+                            if (that.isMob) {
+                              that.$router.replace({ name: 'home' })
+                            } else {
+                              that.$router.replace({ name: 'vcenterControl' })
+                            }
                           }
                         }
                       } else {
@@ -249,6 +286,45 @@ export default {
       }).catch(err => {
         console.error(err.message)
       })
+    },
+    selectType() {
+      if (this.userType) {
+        this.isLoading = true
+        this.$http.post(api.setUserType, {type: this.userType, token: this.token})
+        .then(res => {
+          this.isLoading = false
+          if (res.data && res.data.meta.status_code === 200) {
+            this.$message({
+              message: '登陆成功',
+              type: 'success',
+              duration: 800
+            })
+            this.chooseType = false
+            this.$store.commit(MENU_STATUS, '')
+            auth.write_user(this.user)
+            this.timeLoadMessage()
+            this.restoreMember()
+            this.getStatus(this.$store.state.event.user.type)
+            let prevUrlName = this.$store.state.event.prevUrlName
+            if (prevUrlName) {
+              // 清空上一url
+              auth.clear_prev_url_name()
+              this.$router.replace({ path: prevUrlName })
+            } else {
+              if (this.isMob) {
+                this.$router.replace({ name: 'home' })
+              } else {
+                this.$router.replace({ name: 'vcenterControl' })
+              }
+            }
+          }
+        }).catch(err => {
+          this.isLoading = false
+          console.log(err)
+        })
+      } else {
+        this.typeError = true
+      }
     }
   },
   mounted: function() {
@@ -320,7 +396,8 @@ export default {
   padding: 0 30px;
 }
 p.des {
-  font-size: 0.8em;
+  font-size: 1.2rem;
+  color: #999
 }
 
 form {
@@ -446,6 +523,124 @@ form {
   border-radius: 2px;
   cursor: pointer;
   transition: 268ms all ease
+}
+
+.register-tab-cover {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 2999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.register-tab {
+  padding: 60px 100px 40px;
+  width: 730px;
+  background: #fff;
+  border-radius: 10px;
+  text-align: center
+}
+
+.register-tab-user {
+  margin: 20px 0 40px;
+  background: #fff;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 250px;
+  height: 120px;
+  cursor: pointer;
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  transition: 268ms all ease
+}
+
+.register-tab-user1 {
+  margin-right: 30px;
+}
+.register-tab-user:hover {
+  box-shadow: 0 0 6px 2px rgba(0,0,0,0.10);
+}
+.register-tab-user.active {
+  border: 1px solid #FF5A5F;
+  background-color: #fff;
+  box-shadow: 0 0 6px 2px rgba(0,0,0,0.10);
+}
+.jdc .register-tab-user.active {
+  border-color: #0989C5
+}
+.yw .register-tab-user.active {
+  border-color: #4A90E2
+}
+.register-tab-user::before {
+  content: "";
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid #d2d2d2;
+  transition: 268ms all ease;
+}
+.register-tab-user.active:before {
+  background: #ff5a5f;
+  border: 1px solid #ff5a5f;
+}
+.jdc .register-tab-user.active:before {
+  background: #0989C5;
+  border-color: #0989C5
+}
+.yw .register-tab-user.active:before {
+  background: #4A90E2;
+  border-color: #4A90E2
+}
+.register-tab-user.active::after {
+  content: "";
+  position: absolute;
+  right: 16px;
+  bottom: 14px;
+  width: 6px;
+  height: 11px;
+  border: 1.5px solid #fff;
+  border-left: none;
+  border-top: none;
+  transform: rotate(45deg);
+  border-radius: 0 0 1px 0
+}
+.register-tab-user.active h3 {
+  color: #FF5A5F;
+}
+.register-tab-user .tab-left {
+  height: 100%;
+  flex: 1;
+  background: url("../../../assets/images/home/ServiceProvider@2x.png") no-repeat center / contain;
+}
+.register-tab-user .customer {
+  height: 100%;
+  flex: 1;
+  background: url("../../../assets/images/home/Customer@2x.png") no-repeat center / contain;
+}
+.register-tab-user .tab-right {
+  flex: 1;
+  text-align: left;
+}
+.register-content {
+  padding: 30px;
+}
+
+.register-tab h3 {
+  font-size: 14px;
+  padding: 3px 0 6px 0;
+  color: #666;
+}
+.type-error {
+  padding-top: 10px;
 }
 @media screen and (max-width: 767px) {
   .container {
