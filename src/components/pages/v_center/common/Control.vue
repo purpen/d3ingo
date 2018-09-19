@@ -114,7 +114,7 @@
             </div>
           </section>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="12">
+        <el-col :xs="24" :sm="12" :md="12" :lg="12" v-if="false">
           <section>
           <div class="control-childHeader">
             <span>进行中的项目</span>
@@ -158,7 +158,7 @@
           </el-row>
         </section>
         </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="12">
+        <el-col :xs="24" :sm="12" :md="12" :lg="12" v-if="false">
           <section class="control-tasks">
             <div class="control-childHeader">
               <span>我的任务</span>

@@ -32,11 +32,11 @@
                   <span v-if="msgCount.message"><b>{{msgCount.message}}</b>条[订单通知]未查看</span>
                   <span v-else>[订单通知]</span>
                 </a>
-                <a v-if="isCompany" @click="showMyView('task')" class="news">
+                <!-- <a v-if="isCompany" @click="showMyView('task')" class="news">
                   <i class="fx-4 fx-icon-projectReminding"></i><i class="fx-4 fx-icon-projectRemindingclick"></i>
                   <span v-if="msgCount.design_notice"><b>{{msgCount.design_notice}}</b>条[项目通知]未查看</span>
                   <span v-else>[项目通知]</span>
-                </a>
+                </a> -->
                 <a @click="showMyView('system')" class="notice">
                   <i class="fx-4 fx-icon-sound-loudly"></i><i class="fx-4 fx-icon-notice-hover"></i>
                   <span v-if="msgCount.notice"><b>{{msgCount.notice}}</b>条[系统通知]未查看</span>
@@ -154,11 +154,11 @@
                   <span v-if="msgCount.message"><b>{{msgCount.message}}</b>条[订单通知]未查看</span>
                   <span v-else>[订单通知]</span>
                 </a>
-                <a v-if="isCompany" @click="showMyView('task')" class="news">
+                <!-- <a v-if="isCompany" @click="showMyView('task')" class="news">
                   <i class="fx-4 fx-icon-projectReminding"></i><i class="fx-4 fx-icon-projectRemindingclick"></i>
                   <span v-if="msgCount.design_notice"><b>{{msgCount.design_notice}}</b>条[项目通知]未查看</span>
                   <span v-else>[项目通知]</span>
-                </a>
+                </a> -->
                 <a @click="showMyView('system')" class="notice">
                   <i class="fx-4 fx-icon-sound-loudly"></i><i class="fx-4 fx-icon-notice-hover"></i>
                   <span v-if="msgCount.notice"><b>{{msgCount.notice}}</b>条[系统通知]未查看</span>
