@@ -301,6 +301,7 @@ export default {
             })
             this.chooseType = false
             this.$store.commit(MENU_STATUS, '')
+            this.$set(this.user, 'type', this.userType)
             auth.write_user(this.user)
             this.timeLoadMessage()
             this.restoreMember()
