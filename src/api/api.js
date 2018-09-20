@@ -16,6 +16,7 @@
 
 export default {
   login: '/auth/login', // 登录
+  setUserType: '/auth/setUserType', // POST 选择用户类型
   logout: '/auth/logout', // 退出登录
   register: '/auth/register', // 注册
   inviteRegister: '/auth/childRegister', // POST 邀请注册
