@@ -23,7 +23,7 @@
             <el-row :gutter="24">
               <el-col :span="isMob ? 24 : 12">
                 <el-form-item label="证件类型" prop="company_type" class="fullwidth">
-                  <el-select v-model="form.company_type" placeholder="请选择证件类型">
+                  <el-select v-model.number="form.company_type" placeholder="请选择证件类型">
                     <el-option
                       v-for="(d, index) in certificateTypeOptions"
                       :label="d.label"
@@ -288,7 +288,7 @@
             {required: true, message: '请填写公司全称', trigger: 'blur'}
           ],
           company_type: [
-            {required: true, message: '请填写公司全称', trigger: 'change'}
+            {type: 'number', required: true, message: '请选择证件类型', trigger: 'change'}
           ],
           registration_number: [
             {validator: checkNumber, trigger: 'blur'}
@@ -357,7 +357,7 @@
             let row = {
               registration_number: that.form.registration_number,
               company_name: that.form.company_name,
-              company_type: that.form.company_type + '',
+              company_type: that.form.company_type,
               legal_person: that.form.legal_person,
               document_number: that.form.document_number,
               document_type: that.form.document_type,
@@ -533,7 +533,7 @@
                 } else {
                   that.form.phone = ''
                 }
-                that.form.company_type = that.form.company_type === 0 ? '' : that.form.company_type + ''
+                that.form.company_type = that.form.company_type === 0 ? '' : that.form.company_type
                 that.form.document_type = that.form.document_type === 0 ? '' : that.form.document_type
                 that.companyId = response.data.data.id
                 that.uploadParam['x:target_id'] = response.data.data.id
