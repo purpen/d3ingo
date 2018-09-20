@@ -620,3 +620,16 @@
   .region .el-col:not(:last-child) {
     padding-right: 10px;
   }
+
+@media screen and (max-width: 767px) {
+  .el-dialog--large,
+  .el-dialog--small,
+  .el-dialog--tiny {
+    width: 90%
+  }
+
+  /* 合同阶段选择按钮 */
+  .el-form-item__content .el-radio-group {
+    width: 100%;
+  }
+}

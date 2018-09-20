@@ -16,14 +16,14 @@
             <p>信用指数：<span>{{ item.score }}分</span></p>
           </div>
 
-          <div class="cate" v-if="item.design_type_val.length != 0">
+          <div class="cate" v-if="item.design_type_val && item.design_type_val.length">
             <p class="c-title">设计类别</p>
             <p class="tag">
               <el-tag type="gray" v-for="(d, index) in item.design_type_val" :key="index" v-if="d">{{ d }}</el-tag>
             </p>
           </div>
   
-          <div class="cate" v-if="item.good_field_value.length != 0">
+          <div class="cate" v-if="item.good_field_value && item.good_field_value.length">
             <p class="c-title">擅长领域</p>
             <p class="tag">
               <el-tag type="gray" v-for="(d, index) in item.good_field_value" :key="index">{{ d }}</el-tag>
@@ -44,7 +44,7 @@
 
       <el-col :xs="24" :sm="18" :md="18" :lg="18">
         <div class="design-case-content">
-          <div v-if="designCases.length">
+          <div v-if="designCases && designCases.length">
             <h2>作品案例</h2>
             <div class="design-case-list" v-loading="isLoading">
               <el-row :gutter="10">
