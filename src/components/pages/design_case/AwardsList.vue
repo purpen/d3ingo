@@ -211,4 +211,10 @@ a {
     width: 100%;
   }
 }
+@media screen and ( max-width: 480px) {
+  .container {
+    width: 375px;
+    overflow-x: hidden;
+  }
+}
 </style>
