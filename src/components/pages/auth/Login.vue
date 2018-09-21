@@ -53,20 +53,22 @@
       <div class="register-tab clearfix">
         <h2 class="fz-20 tc-6 text-center">请选择用户类型</h2>
         <p class="fz-14 tc-red type-error" v-if="typeError">没有选择用户类型!</p>
-        <div :class="{'register-tab-user register-tab-user1 fl': true, active: userType === 1}" @click="userType = 1, typeError = false">
-          <div class="tab-left customer"></div>
-          <div class="tab-right">
-            <h3>我是客户</h3>
-            <p class="des">发布项目需求</p>
-            <p class="des">找到设计服务商</p>
+        <div class="flex">
+          <div :class="{'register-tab-user register-tab-user1 fl': true, active: userType === 1}" @click="userType = 1, typeError = false">
+            <div class="tab-left customer"></div>
+            <div class="tab-right">
+              <h3>我是客户</h3>
+              <p class="des">发布项目需求</p>
+              <p class="des">找到设计服务商</p>
+            </div>
           </div>
-        </div>
-        <div v-if="prod.name === ''" :class="{'fl register-tab-user': true, active: userType === 2}" @click="userType = 2, typeError = false">
-          <div class="tab-left"></div>
-          <div class="tab-right">
-            <h3>我是设计公司</h3>
-            <p class="des">为客户提供</p>
-            <p class="des">专业设计服务</p>
+          <div v-if="prod.name === ''" :class="{'fl register-tab-user': true, active: userType === 2}" @click="userType = 2, typeError = false">
+            <div class="tab-left"></div>
+            <div class="tab-right">
+              <h3>我是设计公司</h3>
+              <p class="des">为客户提供</p>
+              <p class="des">专业设计服务</p>
+            </div>
           </div>
         </div>
         <el-button type="primary" @click="selectType" :loading="isLoading" class="type-btn is-custom">登录
@@ -318,6 +320,8 @@ export default {
                 this.$router.replace({ name: 'vcenterControl' })
               }
             }
+          } else {
+            this.$message.error(res.data.meta.message)
           }
         }).catch(err => {
           this.isLoading = false
@@ -337,6 +341,9 @@ export default {
     })
   },
   created: function() {
+    if (this.prod.name) {
+      this.userType = 1
+    }
     this.getItem()
     let prevUrlName = this.$store.state.event.prevUrlName
     this.type = this.$route.params.type
@@ -547,6 +554,7 @@ form {
 }
 
 .register-tab-user {
+  flex: 1 1 auto;
   margin: 20px 0 40px;
   background: #fff;
   position: relative;
