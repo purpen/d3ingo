@@ -239,4 +239,9 @@ p.img-des {
     text-align: center;
   }
 }
+@media screen and ( max-width: 480px) {
+  .container {
+    overflow-x: hidden;
+  }
+}
 </style>

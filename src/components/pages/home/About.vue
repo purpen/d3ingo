@@ -142,4 +142,9 @@
       font-size: 3rem;
     }
   }
+  @media screen and ( max-width: 480px) {
+    .container {
+      overflow-x: hidden;
+    }
+  }
 </style>

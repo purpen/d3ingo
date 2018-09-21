@@ -250,4 +250,10 @@ export default {
     margin-top: 0;
   }
 }
+@media screen and ( max-width: 480px) {
+  .main-content {
+    width: 375px;
+    overflow-x: hidden;
+  }
+}
 </style>
