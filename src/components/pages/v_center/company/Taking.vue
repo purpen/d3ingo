@@ -20,9 +20,9 @@
             <div>
               <div class="fz-16 ct-2 check-title">选择接单类型</div>
               <el-row :gutter="20">
-                <el-col :span="isPhone = isMob ? 12 : isPhone" class="m-b-20"
+                <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="8" class="m-b-20"
                   v-for="(t, indext) in typeData" :key="indext"
-                >
+                  >
                   <div :class="['check-types',{'opttype':t.isopt}]"
                     @click="deletetype(t, indext)"
                   >
@@ -697,7 +697,7 @@
   .types-radio {
     position: absolute;
     right: 20px;
-    bottom: 20px;
+    bottom: 10px;
     border-radius: 50%;
     width: 18px;
     height: 18px;
@@ -738,8 +738,11 @@
     font-size: 14px;
     color: #666;
   }
-  .edit-designType .el-col{
+  .edit-designType .el-col {
     line-height: 36px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
   .mg-t-30 {
     margin-top: 20px;
