@@ -597,7 +597,6 @@
   .ordershow-span-color .el-breadcrumb__item:last-child .el-breadcrumb__item__inner {
     color: #222222;
   }
-
   .font-wei .el-step__title.is-process {
     font-weight: 500;
   }
@@ -628,7 +627,14 @@
   .region .el-col:not(:last-child) {
     padding-right: 10px;
   }
-
+  .disabled-hover .is-disabled, .disabled-hover .is-disabled:focus, .disabled-hover .is-disabled:hover{
+    border-color: transparent;
+    background-color: transparent;
+    color: inherit;
+  }
+  .forget-content .el-form--label-top .disabled-hover .el-form-item__content .el-input-group--append .el-input-group__append:hover {
+    background-color: #f7f7f7;
+  }
 @media screen and (max-width: 767px) {
   .el-dialog--large,
   .el-dialog--small,
