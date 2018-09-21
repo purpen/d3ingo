@@ -4,7 +4,7 @@
       <v-menu currentName="wallet"></v-menu>
       <div :class="{'vcenter-right-plus': leftWidth === 4,
         'vcenter-right': leftWidth === 2,
-        'vcenter-right-mob': isMob}">
+        'vcenter-right-mob': isMob}" class="vcenter-phone">
         <div class="right-content vcenter-container">
           <div :class="['my-wallet', isMob ? 'my-wallet-m' : '' ]">
             <div class="wallet-box">
@@ -15,7 +15,7 @@
               </div>
               <div :class="['amount-btn', isMob ? 'amount-show-m amount-btn-m' : '']">
                 <p>
-                  <el-button class="is-custom withdraw" @click="withdraw" size="small">提现</el-button>
+                  <el-button class="is-custom withdraw btn-phone" @click="withdraw" size="small">提现</el-button>
                   <!--<el-button class="is-custom" type="primary" size="small">充值</el-button>-->
                 </p>
               </div>
@@ -782,6 +782,12 @@
     }
     .vcenter{
       margin-top: 0;
+    }
+    .vcenter-phone {
+      padding-top: 50px;
+    }
+    .btn-phone {
+      margin-bottom: 10px;
     }
   }
 </style>
