@@ -257,21 +257,25 @@
     .nav-list {
       margin-top: 16px;
       height: 22px;
-      overflow: hidden;
+      overflow-y: hidden;
+      padding-left: 25px;
     }
 
     .category-list {
       margin: 0 0 16px 0;
-      padding: 2px 0 48px 16px;
+      /* padding: 2px 0 48px 16px; */
+      padding-bottom: 48px;
       white-space: nowrap;
-      overflow-x: auto;
+      /* overflow-x: auto; */
     }
-
+    .container {
+      width: 375px;
+      overflow-x: hidden;
+    }
     .category-list a {
       margin-right: 0;
       margin-right: 30px;
     }
-
     .content {
       padding: 15px;
     }

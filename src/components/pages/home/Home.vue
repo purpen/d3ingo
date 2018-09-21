@@ -1036,4 +1036,10 @@
       display: none
     }
   }
+  @media screen and ( max-width: 480px) {
+  .content-box {
+    width: 375px;
+    overflow-x: hidden;
+  }
+}
 </style>
