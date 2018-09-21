@@ -242,10 +242,9 @@
         .then(res => {
           if (res.data.meta.status_code === 200) {
             this.$store.commit(CHANGE_USER_VERIFY_STATUS, res.data.data)
-            console.log(res.data.data)
             this.demandVerifyStatus = res.data.data.demand_verify_status
           } else {
-            console.log(res)
+            this.$message.error(res.data.meta.message)
           }
         }).catch(err => {
           console.error(err.message)
@@ -260,10 +259,11 @@
         }
       },
       loadList() {
+        this.query.page = parseInt (this.$route.query.page || 1)
+        this.query.sort = this.$route.query.sort || 1
+        this.query.totalCount = 0
+        this.isLoading = true
         const self = this
-        self.query.page = parseInt (this.$route.query.page || 1)
-        self.query.sort = this.$route.query.sort || 1
-        self.isLoading = true
         self.$http.get (api.fundLogList, {
           params: {
             page: self.query.page,
@@ -299,7 +299,7 @@
         this.query.page = parseInt (this.$route.query.page || 1)
         this.query.sort = this.$route.query.sort || 1
         this.query.type = this.$route.query.type || 0
-
+        this.query.totalCount = 0
         this.isLoading = true
         this.$http.get(api.withdrawList, {params: {
           per_page: this.query.pageSize,
@@ -310,7 +310,6 @@
           if (res.data.meta.status_code === 200) {
             this.query.totalCount = res.data.meta.pagination.total
             this.WithdrawList = res.data.data
-            console.log('thisq', this.query)
             for (let i of this.WithdrawList) {
               i.created_at = i.created_at.date_format().format('yyyy-MM-dd hh:mm')
               i.account_number = i.account_number.substring(i.account_number.length - 4)
@@ -402,7 +401,6 @@
             self.$message.success ('操作成功,等待财务打款！')
           } else {
             self.$message.error(response.data.meta.message)
-            console.log(response.data.meta.message)
           }
         })
         .catch (function (error) {
@@ -495,7 +493,6 @@
             if (wallet) {
               self.wallet = wallet
             }
-            // console.log(self.wallet)
           }
         })
         .catch (function (error) {
@@ -506,17 +503,17 @@
 
       // 交易记录
       this.loadList ()
-      this.getStatus ()
+      // this.getStatus ()
     },
     watch: {
-      // '$route' (to, from) {
-      //   // 对路由变化作出响应...
-      //   if (this.record === 'transaction') {
-      //     this.loadList()
-      //   } else {
-      //     this.getWithdrawList()
-      //   }
-      // }
+      '$route' (to, from) {
+        // 对路由变化作出响应...
+        if (this.record === 'transaction') {
+          this.loadList()
+        } else {
+          this.getWithdrawList()
+        }
+      },
       record() {
         if (this.record === 'transaction') {
           this.loadList()

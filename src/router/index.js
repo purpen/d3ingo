@@ -663,17 +663,17 @@ let routes = [
     component: require('@/components/pages/v_center/common/Control')
   },
   // 统计
-  {
-    path: '/vcenter/console',
-    name: 'vcenterConsole',
-    meta: {
-      title: '统计',
-      requireAuth: true,
-      hideHeader: true,
-      hideFooter: true
-    },
-    component: require('@/components/pages/v_center/console/Console')
-  },
+  // {
+  //   path: '/vcenter/console',
+  //   name: 'vcenterConsole',
+  //   meta: {
+  //     title: '统计',
+  //     requireAuth: true,
+  //     hideHeader: true,
+  //     hideFooter: true
+  //   },
+  //   component: require('@/components/pages/v_center/console/Console')
+  // },
   // 控制面板--子账户
   {
     path: '/vcenter/child_control',

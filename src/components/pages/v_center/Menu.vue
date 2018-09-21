@@ -23,11 +23,11 @@
               <span v-if="msgCount.message"><b>{{msgCount.message}}</b>条[消息提醒]未查看</span>
               <span v-else>[消息提醒]</span>
             </a>
-            <a v-if="isCompany" @click="showMyView('task')" class="news">
+            <!-- <a v-if="isCompany" @click="showMyView('task')" class="news">
               <i class="fx-4 fx-icon-projectReminding"></i><i class="fx-4 fx-icon-projectRemindingclick"></i>
               <span v-if="msgCount.design_notice"><b>{{msgCount.design_notice}}</b>条[项目通知]未查看</span>
               <span v-else>[项目通知]</span>
-            </a>
+            </a> -->
             <a @click="showMyView('system')" class="notice">
               <i class="fx-4 fx-icon-sound-loudly"></i><i class="fx-4 fx-icon-notice-hover"></i>
               <span v-if="msgCount.notice"><b>{{msgCount.notice}}</b>条[系统通知]未查看</span>
@@ -35,9 +35,9 @@
             </a>
           </div>
         </a>
-        <div v-if="isCompany" @click="showMine()" class="mine no-select">
+        <!-- <div v-if="isCompany" @click="showMine()" class="mine no-select">
           <span>我的</span>
-        </div>
+        </div> -->
         <el-menu class="el-menu-info" mode="horizontal" router v-if="prod.name === ''">
           <el-submenu index="2">
             <template slot="title">
@@ -89,7 +89,7 @@
                 控制面板
               </a>
             </el-tooltip>
-            <el-tooltip class="item" :effect="DarkorLight" content="统计" placement="right" v-if="isCompanyAdmin || isCompanySystemAdmin">
+            <!-- <el-tooltip class="item" :effect="DarkorLight" content="统计" placement="right" v-if="isCompanyAdmin || isCompanySystemAdmin">
               <a @click="alick" :to="'/vcenter/console'"
                 :class="['item', 'Statistics', {'is-active': currentName === 'console'}]">
                 统计
@@ -113,7 +113,9 @@
               :class="['item', 'user-management', {'is-active': currentName === 'member'}]" v-if="isCompanyAdmin">
               成员管理
             </a>
-            </el-tooltip>
+            </el-tooltip> -->
+
+
             <!-- <el-tooltip class="item" :effect="DarkorLight" content="账号设置" placement="right">
             <a @click="alick" :to="'/vcenter/account/base'"
               :class="['item', 'account-management', {'is-active': currentName === 'profile'}]">
@@ -149,12 +151,12 @@
               控制面板
             </a>
             </el-tooltip>
-            <el-tooltip class="item" :effect="DarkorLight" content="统计" placement="right" v-if="isCompanyAdmin || isCompanySystemAdmin">
+            <!-- <el-tooltip class="item" :effect="DarkorLight" content="统计" placement="right" v-if="isCompanyAdmin || isCompanySystemAdmin">
               <a @click="alick" :to="'/vcenter/console'"
                 :class="['item', 'Statistics', {'is-active': currentName === 'console'}]">
                 统计
               </a>
-            </el-tooltip>
+            </el-tooltip> -->
             <!-- <el-tooltip class="item" :effect="DarkorLight" content="消息" placement="right">
             <a @click="alick" :to="'/vcenter/message'"
               :class="['item', 'message', {'is-active': currentName === 'message'}]">
@@ -167,7 +169,7 @@
               项目订单
             </a>
             </el-tooltip>
-            <el-tooltip v-if="true" class="item" :effect="DarkorLight" content="项目管理" placement="right">
+            <!-- <el-tooltip v-if="true" class="item" :effect="DarkorLight" content="项目管理" placement="right">
             <a @click="alick" :to="'/vcenter/project_management/list'"
               :class="['item', 'management', {'is-active': currentName === 'project_management'}]">
               项目管理
@@ -178,7 +180,7 @@
               :class="['item', 'cloud', {'is-active': currentName === 'cloud_drive'}]">
               项目云盘
             </a>
-            </el-tooltip>
+            </el-tooltip> -->
             <el-tooltip class="item" :effect="DarkorLight" content="作品案例" placement="right">
             <a @click="alick" :to="'/vcenter/design_case'"
               :class="['item', 'case', {'is-active': currentName === 'design_case'}]">
@@ -203,12 +205,12 @@
               账号设置
             </a>
             </el-tooltip> -->
-            <el-tooltip class="item" :effect="DarkorLight" content="成员管理" placement="right">
+            <!-- <el-tooltip class="item" :effect="DarkorLight" content="成员管理" placement="right">
             <a @click="alick" :to="'/user/user_management'"
               :class="['item','user-management', {'is-active': currentName === 'member'}]">
               成员管理
             </a>
-            </el-tooltip>
+            </el-tooltip> -->
             <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" 
                v-if="isMob && eventUser.company">
               {{eventUser.company.company_name}}
@@ -222,12 +224,12 @@
               控制面板
             </a>
             </el-tooltip>
-            <el-tooltip class="item" :effect="DarkorLight" content="统计" placement="right" v-if="isCompanyAdmin || isCompanySystemAdmin">
+            <!-- <el-tooltip class="item" :effect="DarkorLight" content="统计" placement="right" v-if="isCompanyAdmin || isCompanySystemAdmin">
               <a @click="alick" :to="'/vcenter/console'"
                 :class="['item', 'Statistics', {'is-active': currentName === 'console'}]">
                 统计
               </a>
-            </el-tooltip>
+            </el-tooltip> -->
             <!-- <el-tooltip class="item" :effect="DarkorLight" content="消息" placement="right">
             <a @click="alick" :to="'/vcenter/message'"
               :class="['item', 'message', {'is-active': currentName === 'message'}]">
@@ -270,7 +272,7 @@
               :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
               控制面板
             </a>
-            <a @click="alick" :to="'/vcenter/console'"
+            <!-- <a @click="alick" :to="'/vcenter/console'"
               :class="['item', 'Statistics', {'is-active': currentName === 'console'}]"
               v-if="isCompanyAdmin || isCompanySystemAdmin"
               >
@@ -288,7 +290,7 @@
 
               :class="['item', 'user-management', {'is-active': currentName === 'member'}]" v-if="isCompanyAdmin">
               成员管理
-            </a>
+            </a> -->
             <!-- <a @click="alick" :to="'/vcenter/account/base'"
               :class="['item', 'account-management', {'is-active': currentName === 'profile'}]">
               账号设置
@@ -315,17 +317,17 @@
               :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
               控制面板
             </a>
-            <a @click="alick" :to="'/vcenter/console'"
+            <!-- <a @click="alick" :to="'/vcenter/console'"
               :class="['item', 'Statistics', {'is-active': currentName === 'console'}]"
               v-if="isCompanyAdmin || isCompanySystemAdmin"
               >
               统计
-            </a>
+            </a> -->
             <!-- <a @click="alick" :to="'/vcenter/message'"
               :class="['item', 'message', {'is-active': currentName === 'message'}]">
               消息
             </a> -->
-            <a @click="alick" :to="'/vcenter/citem/list'"
+            <!-- <a @click="alick" :to="'/vcenter/citem/list'"
               :class="['item', 'project-order', {'is-active': currentName === 'c_item'}]">
               项目订单
             </a>
@@ -336,7 +338,7 @@
             <a @click="alick" :to="'/vcenter/cloud_drive/list/all'"
               :class="['item', 'cloud', {'is-active': currentName === 'cloud_drive'}]">
               项目云盘
-            </a>
+            </a> -->
             <a @click="alick" :to="'/vcenter/design_case'"
               :class="['item', 'case', {'is-active': currentName === 'design_case'}]">
               作品案例
@@ -353,10 +355,10 @@
               :class="['item', 'account-management', {'is-active': currentName === 'profile'}]">
               账号设置
             </a> -->
-            <a @click="alick" :to="'/user/user_management'"
+            <!-- <a @click="alick" :to="'/user/user_management'"
               :class="['item','user-management', {'is-active': currentName === 'member'}]">
               成员管理
-            </a>
+            </a> -->
             <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany"
                v-if="isMob">
               查看公司主页
@@ -370,12 +372,12 @@
             <a @click="alick" :to="'/vcenter/control'" :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
               控制面板
             </a>
-            <a @click="alick" :to="'/vcenter/console'"
+            <!-- <a @click="alick" :to="'/vcenter/console'"
               :class="['item', 'Statistics', {'is-active': currentName === 'console'}]"
               v-if="isCompanyAdmin || isCompanySystemAdmin"
               >
               统计
-            </a>
+            </a> -->
             <!-- <a @click="alick" :to="'/vcenter/message'"
               :class="['item', 'message', {'is-active': currentName === 'message'}]">
               消息
