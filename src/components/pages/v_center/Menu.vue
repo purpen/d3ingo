@@ -224,12 +224,12 @@
               控制面板
             </a>
             </el-tooltip>
-            <el-tooltip class="item" :effect="DarkorLight" content="统计" placement="right" v-if="isCompanyAdmin || isCompanySystemAdmin">
+            <!-- <el-tooltip class="item" :effect="DarkorLight" content="统计" placement="right" v-if="isCompanyAdmin || isCompanySystemAdmin">
               <a @click="alick" :to="'/vcenter/console'"
                 :class="['item', 'Statistics', {'is-active': currentName === 'console'}]">
                 统计
               </a>
-            </el-tooltip>
+            </el-tooltip> -->
             <!-- <el-tooltip class="item" :effect="DarkorLight" content="消息" placement="right">
             <a @click="alick" :to="'/vcenter/message'"
               :class="['item', 'message', {'is-active': currentName === 'message'}]">
@@ -372,12 +372,12 @@
             <a @click="alick" :to="'/vcenter/control'" :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
               控制面板
             </a>
-            <a @click="alick" :to="'/vcenter/console'"
+            <!-- <a @click="alick" :to="'/vcenter/console'"
               :class="['item', 'Statistics', {'is-active': currentName === 'console'}]"
               v-if="isCompanyAdmin || isCompanySystemAdmin"
               >
               统计
-            </a>
+            </a> -->
             <!-- <a @click="alick" :to="'/vcenter/message'"
               :class="['item', 'message', {'is-active': currentName === 'message'}]">
               消息
