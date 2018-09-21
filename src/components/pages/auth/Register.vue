@@ -3,7 +3,7 @@
     <!-- <section class="cover-bgf7"></section> -->
     <div class="register-box">
       <div class="regisiter-title">
-        <h2>注册{{prod.info}}{{identity}}账号</h2>
+        <h2>注册{{prod.login}}{{identity}}账号</h2>
       </div>
 
       <div class="register-tab clearfix" v-if="!isMob">
@@ -61,7 +61,7 @@
       </div>
     </div>
     <div class="reg">
-      <p>已有{{prod.info}}账户，您可以
+      <p>已有{{prod.login}}账户，您可以
         <router-link :to="{name: 'login'}">立即登录</router-link>
       </p>
     </div>
