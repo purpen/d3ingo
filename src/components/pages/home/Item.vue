@@ -113,4 +113,9 @@ export default {
 .content-box p img {
   vertical-align: middle;
 }
+@media screen and ( max-width: 480px) {
+  .container {
+    overflow-x: hidden;
+  }
+}
 </style>
