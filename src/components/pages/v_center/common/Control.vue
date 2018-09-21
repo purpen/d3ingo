@@ -5,43 +5,10 @@
         'vcenter-right': leftWidth === 2,
         'vcenter-right-mob': isMob}">
       <el-row class="vcenter-container">
-        <el-col :xs="24" :sm="12" :md="12" :lg="12" v-if="uChild===0&&messageCount.quantity">
+        <el-col :xs="24" :sm="24" :md="24" :lg="24" v-if="uChild===0&&showBase">
           <section>
             <div class="control-childHeader">
-            <span>待处理信息</span>
-            </div>
-              <div class="content-box clearfix message-content">
-                <p class="message-title clearfix" v-if="messageCount.quantity">{{ messageCount.quantity }} 条消息</p>
-                <div class="message-btn" v-if="!messageCount.quantity">
-                  <img src="../../../../assets/images/icon/control_icon.png"/>
-                  <p>当前无待处理事项</p>
-                </div>
-                <div class="message-btn clearfix" v-else>
-                <router-link :to="{name: 'home'}">
-                  <button class="middle-button red-button">返回首页</button>
-                  <!-- <el-button class="is-custom">返回首页</el-button> -->
-                </router-link> &nbsp;&nbsp;
-                <router-link :to="{name: 'vcenterMessageList'}">
-                  <button class="middle-button full-red-button">查看消息</button>
-                  <!-- <el-button type="primary" class="is-custom">查看消息</el-button> -->
-                </router-link>
-              </div>
-            </div>
-              <!-- <div class="control-massagelist scroll-bar">
-                <div v-for="(m,indexm) in messageList" :key="indexm">
-                  <p >{{m.created_at}}</p>
-                  <div class="control-massage">
-                    <p>{{m.content}}</p>
-                  <span>{{m.created_at}}</span>
-                </div>
-                </div>
-              </div> -->
-          </section>
-        </el-col>
-        <el-col :xs="24" :sm="12" :md="12" :lg="12" v-if="uChild===0&&showBase">
-          <section>
-            <div class="control-childHeader">
-              <span>提示信息</span>
+              <span class="base-title">提示信息</span>
             </div>
             <div class="right-content scroll-bar" v-if="showBase">
               <div class="content-box" v-if="isCompany()">
@@ -112,6 +79,39 @@
               </div>
 
             </div>
+          </section>
+        </el-col>
+        <el-col :xs="24" :sm="24" :md="24" :lg="24" v-if="uChild===0&&messageCount.quantity">
+          <section>
+            <div class="control-childHeader">
+            <span class="base-title">待处理信息</span>
+            </div>
+              <div class="content-box clearfix message-content">
+                <p class="message-title clearfix" v-if="messageCount.quantity">{{ messageCount.quantity }} 条消息</p>
+                <div class="message-btn" v-if="!messageCount.quantity">
+                  <img src="../../../../assets/images/icon/control_icon.png"/>
+                  <p>当前无待处理事项</p>
+                </div>
+                <div class="message-btn clearfix" v-else>
+                <router-link :to="{name: 'home'}">
+                  <button class="middle-button red-button">返回首页</button>
+                  <!-- <el-button class="is-custom">返回首页</el-button> -->
+                </router-link> &nbsp;&nbsp;
+                <router-link :to="{name: 'vcenterMessageList'}">
+                  <button class="middle-button full-red-button">查看消息</button>
+                  <!-- <el-button type="primary" class="is-custom">查看消息</el-button> -->
+                </router-link>
+              </div>
+            </div>
+              <!-- <div class="control-massagelist scroll-bar">
+                <div v-for="(m,indexm) in messageList" :key="indexm">
+                  <p >{{m.created_at}}</p>
+                  <div class="control-massage">
+                    <p>{{m.content}}</p>
+                  <span>{{m.created_at}}</span>
+                </div>
+                </div>
+              </div> -->
           </section>
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="12" v-if="false">
@@ -520,26 +520,30 @@
 <style scoped>
   .el-row>.el-col>section {
     border:1px solid #e6e6e6;
-    border-radius: 4px;
-    height:360px;
-    margin:0 0 20px 0;
+    /* border-radius: 4px; */
+    min-height:200px;
+    margin:0 0 50px 0;
     font-size:1.4rem;
   }
-  .el-row>.el-col:nth-child(2n-1)>section {
+  /* .el-row>.el-col:nth-child(2n-1)>section {
     margin:0 20px 20px 0;
-  }
+  } */
   .control-childHeader{
     display:flex;
     justify-content:space-between;
     height:60px;
     line-height: 60px;
     padding:0 20px;
-    border-bottom: 1px solid #e6e6e6;
+    /* border-bottom: 1px solid #e6e6e6; */
     font-size:14px;
     border-radius: 4px 4px 0 0
   }
   .control-childHeader>div{
     color:#999999;
+  }
+  .base-title {
+    font-size: 1.8rem;
+    font-weight: 400;
   }
   .control-taskProgress{
     display:flex;
@@ -629,7 +633,7 @@
     font-size:1.6rem;
   }
   .message-title{
-    margin:30px 20px;
+    margin:20px 20px;
   }
   .message-btn>img{
     width:125px;
@@ -641,13 +645,14 @@
   
   /* 之前的样式 */
   .right-content{
-    height:300px;
+    /* height:300px; */
     overflow-y:auto; 
   }
   .right-content .content-box {
     border:none;
-    min-height: 200px;
+    min-height: 140px;
     padding-bottom: 0;
+    margin-bottom: 0px;
   }
 
   p.alert-title {
@@ -655,7 +660,7 @@
     font-size: 12px;
     margin:0 -20px 20px;
     color: #666;
-    background:#f7f7f7;
+    /* background:#f7f7f7; */
     padding:0 20px;
   }
   .alert-title span {
@@ -711,7 +716,7 @@
   .message-btn {
     text-align: center;
     margin-bottom: 20px;
-    margin-top:60px;
+    /* margin-top:60px; */
   }
 
   .pub {
@@ -831,9 +836,9 @@
       font-size: 1.4rem;
     }
 
-    .el-row>.el-col>section{
+    /* .el-row>.el-col>section{
       margin: 0 0 20px
-    }
+    } */
 
     .el-row>.el-col:nth-child(2n-1)>section {
       margin: 0 0 20px
