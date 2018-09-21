@@ -571,6 +571,14 @@
   .blank20 .right-content .content-box {
     margin-bottom: 0;
   }
+
+  /* 验证码按钮样式 */
+  .register-content .el-form--label-top .is-required .el-form-item__content .el-input-group .el-input-group__append:hover {
+    background: #e6e6e6;
+  }
+  .forget-content .el-form--label-top .is-required .el-form-item__content .el-input-group--append .el-input-group__append:hover {
+    background: #e6e6e6;
+  }
   .order-show .el-upload {
     width: 100px;
     height: 100px;
