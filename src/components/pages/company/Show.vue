@@ -298,4 +298,9 @@ p.web {
     border: none;
   }
 }
+@media screen and ( max-width: 480px) {
+  .container {
+    overflow-x: hidden;
+  }
+}
 </style>
