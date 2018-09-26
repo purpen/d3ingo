@@ -1314,7 +1314,7 @@
               self.takingPriceForm.summary = self.quotation.summary
             }
             // 是否显示提交报价单按钮
-            if (self.quotation === null && (self.item.status === 3 || self.item.status === 4)) {
+            if (self.quotation === null && (self.item.status === 3 || self.item.status === 4 || self.item.status === 45)) {
               self.waitTakePrice = true
             }
             switch (self.item.status) {
