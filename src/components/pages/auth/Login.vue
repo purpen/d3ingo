@@ -3,7 +3,7 @@
     <!-- <section class="cover-bgf7"></section> -->
     <div class="login-box">
       <div class="login-title">
-        <h2>登录{{prod.info}}</h2>
+        <h2>登录{{prod.login}}</h2>
       </div>
 
       <div class="login-content">
@@ -35,15 +35,15 @@
     </div>
     <div class="reg">
       <p class="join-company" v-if="code">登陆并加入 <span>{{item.design_company_name}}</span></p>
-      <p v-if="code">没有{{prod.info}}账户？
+      <p v-if="code">没有{{prod.login}}账户？
         <router-link :to="{name: 'invite', params: {code: code}}">立即注册</router-link>
       </p>
       <div v-if="!code">
-        <p v-if="!isMob">还没有{{prod.info}}账户？
+        <p v-if="!isMob">还没有{{prod.login}}账户？
           <router-link v-if="type" :to="{name: 'register',params:{type: type}}">立即注册</router-link>
           <router-link v-else :to="{name: 'register'}">立即注册</router-link>
         </p>
-        <p v-else>还没有{{prod.info}}账户？
+        <p v-else>还没有{{prod.login}}账户？
           <router-link :to="{name: 'identity'}">立即注册</router-link>
         </p>
       </div>

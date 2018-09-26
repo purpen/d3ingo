@@ -385,7 +385,8 @@ button.el-button.is-custom.is-disabled,
 /* vcenter */
 
 .vcenter-right {
-  padding-left: 60px
+  padding-left: 60px;
+  transition: all 268ms ease;
 }
 .vcenter-right-mob {
   padding-left: 0
@@ -415,7 +416,8 @@ button.el-button.is-custom.is-disabled,
 }
 @media screen and (min-width: 1200px) {
   .vcenter-right-plus {
-    padding-left: 200px
+    padding-left: 200px;
+    transition: all 268ms ease;
   }
   .vcenter-right-mob {
     padding-left: 0

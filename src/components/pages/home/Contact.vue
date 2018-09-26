@@ -131,4 +131,10 @@ export default {
     margin-top: 1px;
   }
 }
+@media screen and ( max-width: 480px) {
+  .main-content {
+    width: 375px;
+    overflow-x: hidden;
+  }
+}
 </style>

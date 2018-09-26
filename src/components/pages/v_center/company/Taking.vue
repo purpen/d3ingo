@@ -62,13 +62,13 @@
                   }">{{c.name}}</div>
                 <el-form :model="form" :ref="'ruleForm' + indexc">
                   <el-row class="edit-designType" v-for="(dt,indexdt) in c.designType" :key="indexdt">
-                    <el-col :span="4">
+                    <el-col :span="typePhone = isMob ? 7 : 4">
                       {{dt.name}}
                     </el-col>
-                    <el-col :span="4">
+                    <el-col :span="typePhone = isMob ? 7 : 4">
                       项目平均周期
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="typePhone = isMob ? 7 : 12">
                         <el-form-item :prop="'project_cycle'" 
                           v-if="isedit.index === indexc&&isedit.indexd ===indexdt"
                           :rules="{
@@ -88,17 +88,17 @@
                           {{ items['item_'+ (indexc+1) +'_'+ (indexdt+1)] | cycleval}}
                         </span>
                     </el-col>
-                    <el-col :span="4">
+                    <el-col :span="typePhone = isMob ? 3 : 4">
                       <div class="editbt">
                         <span v-if="isedit.index === indexc&&isedit.indexd ===indexdt" 
                           @click="submit('ruleForm' + indexc)">保存</span>
                         <span v-else @click="editType(items['item_'+ (indexc+1) +'_'+ (indexdt+1)],indexdt,indexc)">编辑</span>
                       </div>
                     </el-col>
-                    <el-col :span="4" :offset="4" class="m-t-20">
+                    <el-col :span="typePhone = isMob ? 10 : 4" :offset="4" class="m-t-20">
                       项目最低接单价格
                     </el-col>
-                    <el-col :span="12" class="m-t-20">
+                    <el-col :span="10" class="m-t-20">
                       <el-form-item :prop="'min_price'" 
                         v-if="isedit.index === indexc&&isedit.indexd ===indexdt"
                         :rules="{
@@ -217,6 +217,8 @@
         itemModelPid: '',
         isedit: {},
         itemId: '',
+        isPhone: 8,
+        typePhone: '',
         isLoading: false,
         pid: '',
         sid: '',
@@ -791,5 +793,16 @@
   }
   .ProductDesign {
     background: url('../../../../assets/images/project/ProductDesign.png') 0 0 no-repeat / 100px 100px
+  }
+  @media screen and ( max-width: 480px) {
+    .vcenter {
+      width: 375px;
+      overflow-x: hidden;
+      margin: 0 auto;
+    }
+    .check-types i {
+      width: 50px;
+      margin: auto 10px;
+    }
   }
 </style>
