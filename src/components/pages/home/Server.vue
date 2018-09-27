@@ -20,7 +20,7 @@
             <div class="">
               <img src="../../../assets/images/home/server_10.png"/>
               <p class="item_1_title">专业服务</p>
-              <p class="item_1_desc">聚合国内100+专业设计服务供应商</p>
+              <p class="item_1_desc">聚合国内1000+专业设计服务供应商</p>
             </div>
           </el-col>
           <el-col :xs="24" :sm="8" :md="8" :lg="8">
