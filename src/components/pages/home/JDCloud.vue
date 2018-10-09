@@ -208,7 +208,7 @@ export default {
       colList2: [
         {
           img: require('assets/images/home/jd/7.png'),
-          title: '聚合100+领先设计服务供应商',
+          title: '聚合1000+领先设计服务供应商',
           title2: '兼顾成果原创性、创新性与可行性'
         },
         {
@@ -229,7 +229,7 @@ export default {
       colList2_yw: [
         {
           img: require('assets/images/home/jd/7-yw.png'),
-          title: '聚合100+领先设计服务供应商',
+          title: '聚合1000+领先设计服务供应商',
           title2: '兼顾成果原创性、创新性与可行性',
           title0: '100+国内顶尖设计机构'
         },
