@@ -124,7 +124,7 @@
                     <p>设计类型: {{ d.item.type_value }}</p>
                     <p>设计类别: {{ d.item.design_types_value | formatEnd }}</p>
                     <p>项目周期: {{ d.item.cycle_value }}</p>
-                    <p>产品功能：{{d.item.product_features}}</p>
+                    <p class="fc-content">产品功能：{{d.item.product_features}}</p>
                   </el-col>
                   <el-col :span="3">
                     <p>
@@ -244,7 +244,7 @@
                       <p>项目周期：{{ d.item.cycle_value }}</p>
                       <p>设计类型: {{ d.item.type_value }}</p>
                       <p>设计类别: {{ d.item.design_types_value | formatEnd }}</p>
-                      <p>产品功能：{{ d.item.product_features }}</p>
+                      <p class="fc-content">产品功能：{{ d.item.product_features }}</p>
                     </section>
                     <p class="money-str price-m Bborder">交易金额：
                       <span v-if="d.item.price !== 0">¥ <b>{{ d.item.price }}</b></span>
