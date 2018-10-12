@@ -13,11 +13,18 @@
             <el-input v-model="form.account" name="username"
               :maxlength="11"
               ref="account" auto-complete="on"
-              placeholder="手机号"></el-input>
+              placeholder="手机号" @change="checkAccount"></el-input>
           </el-form-item>
           <el-form-item label="" prop="password" class="input">
             <el-input v-model="form.password" type="password" name="password" ref="password"
                       placeholder="密码"></el-input>
+          </el-form-item>
+          <el-form-item v-if="showImgCode" label="" prop="imgCode">
+            <el-input class="imgCodeInput" v-model="form.imgCode" name="imgCode" ref="imgCode" placeholder="图形验证码">
+              <template slot="append">
+                <div @click="fetchImgCaptcha" class="imgCode" :style="{'background': `url(${imgCaptchaUrl}) no-repeat`}"></div>
+              </template>
+            </el-input>
           </el-form-item>
           <div class="opt">
             <p class="rember">
@@ -111,13 +118,17 @@ export default {
       labelPosition: 'top',
       form: {
         account: '',
-        password: ''
+        password: '',
+        imgCode: ''
       },
       ruleForm: {
         account: [{validator: checkNumber, trigger: 'blur'}],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
           { min: 6, max: 18, message: '密码长度在6-18字符之间！', trigger: 'blur' }
+        ],
+        imgCode: [
+          {required: true, message: '请输入图形验证码', trigger: 'blur'}
         ]
       },
       type: 0,
@@ -127,10 +138,38 @@ export default {
       isLoading: false,
       user: {},
       token: '',
-      typeError: false
+      typeError: false,
+      imgCaptchaUrl: '',
+      imgCaptchaStr: '',
+      showImgCode: false
     }
   },
   methods: {
+    checkAccount(number) {
+      if (number && number.length === 11) {
+        this.$http.post(api.errCount, {account: number}).then(res => {
+          console.log(res.data.data.err_count)
+          if (res.data.meta.status_code === 200) {
+            if (res.data.data.err_count && res.data.data.err_count >= 3) {
+              this.showImgCode = true
+            }
+          }
+        }).catch(err => {
+          console.error(err)
+        })
+      }
+    },
+    fetchImgCaptcha() {
+      this.$http.get(api.fetch_img_captcha)
+      .then((res) => {
+        if (res.data.meta.status_code === 200) {
+          this.imgCaptchaUrl = res.data.data.url
+          this.imgCaptchaStr = res.data.data.str
+        } else {
+          console.log(res.data.meta.message)
+        }
+      })
+    },
     submit(formName) {
       const that = this
       if (that.$refs[formName]) {
@@ -142,7 +181,7 @@ export default {
             that.isLoadingBtn = true
             // 验证通过，登录
             that.$http
-              .post(api.login, { account: account, password: password })
+              .post(api.login, { account: account, password: password, str: that.imgCaptchaStr, captcha: that.form.imgCode })
               .then(function(response) {
                 that.isLoadingBtn = false
                 if (response.data.meta.status_code === 200) {
@@ -193,7 +232,12 @@ export default {
                       that.$message.error(error.message)
                     })
                 } else {
+                  console.log(response.data.data.err_count)
                   that.$message.error(response.data.meta.message)
+                  if (response.data.meta.status_code === 403 && response.data.data.err_count >= 3) {
+                    that.fetchImgCaptcha()
+                    that.showImgCode = true
+                  }
                 }
               })
               .catch(function(error) {
@@ -362,6 +406,7 @@ export default {
       this.$message.error('已经登录!')
       this.$router.replace({ name: 'home' })
     }
+    this.fetchImgCaptcha()
   },
   computed: {
     isMob() {
@@ -650,6 +695,14 @@ form {
 }
 .type-error {
   padding-top: 10px;
+}
+
+.imgCode {
+  width: 102px;
+  height: 34px;
+  background-size: cover;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
 }
 @media screen and (max-width: 767px) {
   .container {
