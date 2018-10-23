@@ -6,6 +6,7 @@ import baseRoute from './routes/base.js'
 import adminRoute from './routes/admin.js'
 import bAdminRoute from './routes/b_admin.js'
 import centerRoute from './routes/center.js'
+import shundeRoute from './routes/shunde.js'
 import toolsRoute from './routes/tools.js'
 import { Message } from 'element-ui'
 import {
@@ -737,6 +738,7 @@ routes = routes.concat(adminRoute)
 routes = routes.concat(bAdminRoute)
 routes = routes.concat(centerRoute)
 routes = routes.concat(toolsRoute)
+routes = routes.concat(shundeRoute)
 
 const router = new VueRouter({
   mode: 'history',
