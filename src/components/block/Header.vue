@@ -16,6 +16,7 @@
               <el-menu-item index="commonly_sites" :route="menu.commonly_sites">设计工具</el-menu-item>
               <el-menu-item index="innovation_index" :route="menu.innovation_index"
                 v-if="isAdmin">创新指数</el-menu-item>
+              <el-menu-item index="trade_fairs" :route="menu.home_page">交易会</el-menu-item>
             </el-menu>
           </hgroup>
           <div class="nav-right nav-menu" v-if="isLogin">
@@ -103,6 +104,9 @@
             <li @click="closeMenu" v-if="isAdmin">
               <router-link :to="menu.innovation_index">创新指数</router-link>
             </li>
+            <!-- <li @click="closeMenu">
+              <router-link :to="menu.home_page">交易会</router-link>
+            </li> -->
             <li @click="closeMenu" v-show="!isLogin">
               <router-link :to="menu.design">设计服务商入驻</router-link>
             </li>
@@ -269,6 +273,7 @@
           server: {path: '/server'},
           design: {path: '/server_design'},
           article: {path: '/article/list'},
+          home_page: {path: '/shunde/trade_fairs/demand_login'},
           design_case: {path: '/design_case/general_list'},
           commonly_sites: {path: '/vcenter/commonly_sites'},
           innovation_index: {path: '/innovation_index/home'},
