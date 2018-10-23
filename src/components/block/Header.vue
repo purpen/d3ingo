@@ -16,7 +16,8 @@
               <el-menu-item index="commonly_sites" :route="menu.commonly_sites">设计工具</el-menu-item>
               <el-menu-item index="innovation_index" :route="menu.innovation_index"
                 v-if="isAdmin">创新指数</el-menu-item>
-              <el-menu-item index="trade_fairs" :route="menu.home_page">交易会</el-menu-item>
+              <el-menu-item index="trade_fairs" :route="menu.home_page" v-if="!token">交易会</el-menu-item>
+              <el-menu-item index="trade_fairs" :route="menu.demand_login" v-if="token">交易会</el-menu-item>
             </el-menu>
           </hgroup>
           <div class="nav-right nav-menu" v-if="isLogin">
@@ -273,7 +274,8 @@
           server: {path: '/server'},
           design: {path: '/server_design'},
           article: {path: '/article/list'},
-          home_page: {path: '/shunde/trade_fairs/demand_login'},
+          home_page: {path: '/shunde/trade_fairs/home_page'},
+          demand_login: {path: '/shunde/trade_fairs/demand_login'},
           design_case: {path: '/design_case/general_list'},
           commonly_sites: {path: '/vcenter/commonly_sites'},
           innovation_index: {path: '/innovation_index/home'},
@@ -411,6 +413,9 @@
     computed: {
       isMob() {
         return this.$store.state.event.isMob
+      },
+      token() {
+        return this.$store.state.event.token
       },
       isLogin: {
         get() {
