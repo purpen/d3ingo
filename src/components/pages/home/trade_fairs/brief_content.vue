@@ -1,14 +1,5 @@
 <template>
   <div class="content-box">
-    <div class="home_banner">
-      <div class="background-banner">
-        <div class="banner-button">
-          <div class="text-width">
-            <span class="banner-text">立即参与</span>
-          </div>
-        </div>
-      </div>
-    </div>
     <div class="large-background">
       <div class="right-background"></div>
       <div class="left-background"></div>
@@ -242,7 +233,7 @@
 <script>
   // import api from '@/api/api'
   export default {
-    name: 'trade_fairs',
+    name: 'home_page',
     data() {
       return {
       }
@@ -272,47 +263,6 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .background-banner {
-    /* position: absolute; */
-    height: 500px;
-    background: url('../../../assets/images/trade_fairs/banner/pc-banner.png') no-repeat center
-  }
-  .home_banner {
-    height: 500px;
-    position: relative;
-  }
-  .banner-button {
-    float: right;
-    background: #02EBA5;
-    border: 2px solid #02EBA5;
-    height: 44px;
-    width: 144px;
-    line-height: 40px;
-    margin: 277px 516px 0 0;
-  }
-  .banner-button:hover {
-    background: #00BE89;
-    border: 2px solid #00BE89;
-    cursor: pointer;
-  }
-  .text-width {
-    margin: 0 auto;
-    height: 28px;
-    width: 100px;
-    text-align: justify;
-  }
-  .text-width:after {
-    display: inline-block;
-    width: 100%;
-    content: '';
-  }
-  .banner-text {
-    left: 20px;
-    right: 20px;
-    font-family: PingFangSC-Semibold;
-    font-size: 20px;
-    color: #3917C3;
-  }
   .large-background {
     position: relative;
   }
@@ -324,7 +274,7 @@
     top: -50px;
     right: -50px;
     bottom: 0;
-    background: url('../../../assets/images/trade_fairs/large-background/BG02@2x.png') no-repeat right / contain
+    background: url('../../../../assets/images/trade_fairs/large-background/BG02@2x.png') no-repeat right / contain
   }
   .left-background {
     position: absolute;
@@ -334,7 +284,7 @@
     top: 30px;
     left: 0;
     bottom: 0;
-    background: url('../../../assets/images/trade_fairs/large-background/BG01@2x.png') no-repeat -40px 0 / contain
+    background: url('../../../../assets/images/trade_fairs/large-background/BG01@2x.png') no-repeat -40px 0 / contain
   }
   /* 活动特色 */
   .features {
@@ -346,7 +296,7 @@
     margin: 0 auto;
     width: 170px;
     height: 35px;
-    background: url('../../../assets/images/trade_fairs/title/Title-01@2x.png') no-repeat center;
+    background: url('../../../../assets/images/trade_fairs/title/Title-01@2x.png') no-repeat center;
     background-size: contain;
   }
   .features-text {
@@ -368,7 +318,7 @@
     height: 400px;
     width: 800px;
     margin: 0 auto;
-    background: url('../../../assets/images/trade_fairs/ActivityCharacteristics@2x.png') no-repeat 0 50px;
+    background: url('../../../../assets/images/trade_fairs/ActivityCharacteristics@2x.png') no-repeat 0 50px;
     background-size: contain;
   }
 
@@ -382,7 +332,7 @@
     margin: 0 auto;
     width: 170px;
     height: 35px;
-    background: url('../../../assets/images/trade_fairs/title/Title-02@2x.png') no-repeat center;
+    background: url('../../../../assets/images/trade_fairs/title/Title-02@2x.png') no-repeat center;
     background-size: contain;
   }
   .content-includ {
@@ -484,14 +434,14 @@
     margin: 0 auto;
     width: 170px;
     height: 35px;
-    background: url('../../../assets/images/trade_fairs/title/Title-03@2x.png') no-repeat center;
+    background: url('../../../../assets/images/trade_fairs/title/Title-03@2x.png') no-repeat center;
     background-size: contain;
   }
   .scene-background {
     margin: 0 auto;
     width: 630px;
     height: 515px;
-    background: url('../../../assets/images/trade_fairs/BG@2x.png') no-repeat 0 30px;
+    background: url('../../../../assets/images/trade_fairs/BG@2x.png') no-repeat 0 30px;
     background-size: contain;
   }
   .scene-cloud {
@@ -511,7 +461,7 @@
     width: 12px;
     height: 400px;
     padding-left: 40px;
-    background: url('../../../assets/images/trade_fairs/Timeline@2x.png') no-repeat 0px 0px;
+    background: url('../../../../assets/images/trade_fairs/Timeline@2x.png') no-repeat 0px 0px;
     background-size: contain;
   }
   .span-text {
@@ -640,7 +590,7 @@
     margin: 0 auto;
     width: 223px;
     height: 35px;
-    background: url('../../../assets/images/trade_fairs/title/Title-04@2x.png') no-repeat center;
+    background: url('../../../../assets/images/trade_fairs/title/Title-04@2x.png') no-repeat center;
     background-size: contain;
   }
   .online-content {
@@ -661,7 +611,7 @@
     position: relative;
     height: 100px;
     width: 880px;
-    background: url('../../../assets/images/trade_fairs/process/DesignCompany@2x.png') no-repeat center;
+    background: url('../../../../assets/images/trade_fairs/process/DesignCompany@2x.png') no-repeat center;
     background-size: contain;
   }
   .side {
@@ -677,7 +627,7 @@
     position: relative;
     height: 100px;
     width: 880px;
-    background: url('../../../assets/images/trade_fairs/process/DemandSide@2x.png') no-repeat center;
+    background: url('../../../../assets/images/trade_fairs/process/DemandSide@2x.png') no-repeat center;
     background-size: contain;
   }
 
@@ -691,7 +641,7 @@
     margin: 0 auto;
     width: 170px;
     height: 35px;
-    background: url('../../../assets/images/trade_fairs/title/Title-05@2x.png') no-repeat center;
+    background: url('../../../../assets/images/trade_fairs/title/Title-05@2x.png') no-repeat center;
     background-size: contain;
   }
   .cloud-count {
@@ -710,7 +660,7 @@
     width: 100px;
     height: 74px;
     margin-bottom: 10px;
-    background: url('../../../assets/images/trade_fairs/review/PC/Number@2x.png') no-repeat center;
+    background: url('../../../../assets/images/trade_fairs/review/PC/Number@2x.png') no-repeat center;
     background-size: contain;
   }
   .number-text {
@@ -732,7 +682,7 @@
     width: 100px;
     height: 74px;
     margin-bottom: 10px;
-    background: url('../../../assets/images/trade_fairs/review/PC/Enterprise@2x.png') no-repeat center;
+    background: url('../../../../assets/images/trade_fairs/review/PC/Enterprise@2x.png') no-repeat center;
     background-size: contain;
   }
   .enterprise-text {
@@ -754,7 +704,7 @@
     width: 100px;
     height: 74px;
     margin-bottom: 10px;
-    background: url('../../../assets/images/trade_fairs/review/PC/DesignCompany@2x.png') no-repeat center;
+    background: url('../../../../assets/images/trade_fairs/review/PC/DesignCompany@2x.png') no-repeat center;
     background-size: contain;
   }
   .company-text {
@@ -776,7 +726,7 @@
     width: 100px;
     height: 74px;
     margin-bottom: 10px;
-    background: url('../../../assets/images/trade_fairs/review/PC/DisplayProject@2x.png') no-repeat center;
+    background: url('../../../../assets/images/trade_fairs/review/PC/DisplayProject@2x.png') no-repeat center;
     background-size: contain;
   }
   .project-text {
@@ -798,7 +748,7 @@
     width: 120px;
     height: 74px;
     margin-bottom: 10px;
-    background: url('../../../assets/images/trade_fairs/review/PC/Turnover@2x.png') no-repeat center;
+    background: url('../../../../assets/images/trade_fairs/review/PC/Turnover@2x.png') no-repeat center;
     background-size: contain;
   }
   .amount-text {
@@ -819,7 +769,7 @@
     margin: 0 auto;
     width: 170px;
     height: 35px;
-    background: url('../../../assets/images/trade_fairs/title/Title-06@2x.png') no-repeat center;
+    background: url('../../../../assets/images/trade_fairs/title/Title-06@2x.png') no-repeat center;
     background-size: contain;
   }
   .woderful-content {
@@ -843,36 +793,36 @@
     float: left;
   }
   .one {
-    background: url('../../../assets/images/trade_fairs/wonderful/1@2x.png') no-repeat center;
+    background: url('../../../../assets/images/trade_fairs/wonderful/1@2x.png') no-repeat center;
     background-size: cover;
   }
   .two {
-    background: url('../../../assets/images/trade_fairs/wonderful/2@2x.png') no-repeat center;
+    background: url('../../../../assets/images/trade_fairs/wonderful/2@2x.png') no-repeat center;
     background-size: cover;
   }
   .three {
     float: left;
-    background: url('../../../assets/images/trade_fairs/wonderful/3@2x.png') no-repeat center;
+    background: url('../../../../assets/images/trade_fairs/wonderful/3@2x.png') no-repeat center;
     background-size: cover;
   }
   .four {
-    background: url('../../../assets/images/trade_fairs/wonderful/4@2x.png') no-repeat center;
+    background: url('../../../../assets/images/trade_fairs/wonderful/4@2x.png') no-repeat center;
     background-size: cover;
   }
   .one1 {
-    background: url('../../../assets/images/trade_fairs/wonderful/5@2x.png') no-repeat center;
+    background: url('../../../../assets/images/trade_fairs/wonderful/5@2x.png') no-repeat center;
     background-size: cover;
   }
   .two2 {
-    background: url('../../../assets/images/trade_fairs/wonderful/6@2x.png') no-repeat center;
+    background: url('../../../../assets/images/trade_fairs/wonderful/6@2x.png') no-repeat center;
     background-size: cover;
   }
   .three3 {
-    background: url('../../../assets/images/trade_fairs/wonderful/7@2x.png') no-repeat center;
+    background: url('../../../../assets/images/trade_fairs/wonderful/7@2x.png') no-repeat center;
     background-size: cover;
   }
   .four4 {
-    background: url('../../../assets/images/trade_fairs/wonderful/8@2x.png') no-repeat center;
+    background: url('../../../../assets/images/trade_fairs/wonderful/8@2x.png') no-repeat center;
     background-size: cover;
   }
   /* 主办单位 */
@@ -885,7 +835,7 @@
     margin: 0 auto;
     width: 170px;
     height: 35px;
-    background: url('../../../assets/images/trade_fairs/title/Title-07@2x.png') no-repeat center;
+    background: url('../../../../assets/images/trade_fairs/title/Title-07@2x.png') no-repeat center;
     background-size: contain;
   }
   .background-height {
@@ -898,7 +848,7 @@
     height: 98px;
     width: 110px;
     float: left;
-    background: url('../../../assets/images/trade_fairs/organizers/HostUnit01@2x.png') no-repeat center;
+    background: url('../../../../assets/images/trade_fairs/organizers/HostUnit01@2x.png') no-repeat center;
     background-size: contain;
   }
   .host-content {
@@ -906,7 +856,7 @@
     width: 110px;
     float: left;
     margin-left: 62px;
-    background: url('../../../assets/images/trade_fairs/organizers/HostUnit02@2x.png') no-repeat center;
+    background: url('../../../../assets/images/trade_fairs/organizers/HostUnit02@2x.png') no-repeat center;
     background-size: contain;
   }
   .host-right {
@@ -914,7 +864,7 @@
     width: 110px;
     float: left;
     margin-left: 62px;
-    background: url('../../../assets/images/trade_fairs/organizers/HostUnit03@2x.png') no-repeat center;
+    background: url('../../../../assets/images/trade_fairs/organizers/HostUnit03@2x.png') no-repeat center;
     background-size: contain;
   }
   .host-text {
@@ -935,27 +885,7 @@
   .bottom-background {
     margin-bottom: -50px;
     height: 100px;
-    background: url('../../../assets/images/trade_fairs/bottom.png') no-repeat center;
+    background: url('../../../../assets/images/trade_fairs/bottom.png') no-repeat center;
     background-size: cover;
-  }
-  @media screen and (max-width: 1980px) {
-    .banner-button {
-      margin: 277px 516px 0 0;
-    }
-  }
-  @media screen and (max-width: 1600px) {
-    .banner-button {
-      margin: 277px 355px 0 0;
-    }
-  }
-  @media screen and (max-width: 1440px) {
-    .banner-button {
-      margin: 277px 275px 0 0;
-    }
-  }
-  @media screen and (max-width: 1366px) {
-    .banner-button {
-      margin: 277px 235px 0 0;
-    }
   }
 </style>
