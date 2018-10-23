@@ -115,16 +115,16 @@
                   <span class="button-text">路演厅</span>
                 </div>
                 <div class="text4">
-                  <span class="span-text">第一批高级待售项目演示(15个)&nbsp;评委点评</span>
+                  <span class="span-text">第一批高级待售项目演示(15个)评委点评</span>
                 </div>
                 <div class="text5">
-                  <span class="span-text">第二批高级待售项目演示(15个)&nbsp;&nbsp;评委点评</span>
+                  <span class="span-text">第二批高级待售项目演示(15个)评委点评</span>
                 </div>
                 <div class="text6">
                   <span class="span-text">茶歇时间，洽谈区交流</span>
                 </div>
                 <div class="text7">
-                  <span class="span-text">第三批合作项目演示(20个)&nbsp;评委点评</span>
+                  <span class="span-text">第三批合作项目演示(20个)评委点评</span>
                 </div>
                 <div class="text8">
                   <span class="span-text">交流酒会</span>
@@ -203,16 +203,16 @@
         <div class="wonderful-title">
         </div>
         <div class="woderful-content">
-          <div class="one"></div>
-          <div class="two"></div>
-          <div class="three"></div>
-          <div class="four"></div>
+          <div class="public-one one"></div>
+          <div class="public-rest two"></div>
+          <div class="public-rest three"></div>
+          <div class="public-rest four"></div>
         </div>
-        <div class="woderful-content">
-          <div class="one1"></div>
-          <div class="two2"></div>
-          <div class="three3"></div>
-          <div class="four4"></div>
+        <div class="woderful-content content-wod">
+          <div class="public-one one1"></div>
+          <div class="public-rest two2"></div>
+          <div class="public-rest three3"></div>
+          <div class="public-rest four4"></div>
         </div>
       </div>
 
@@ -288,7 +288,12 @@
     height: 44px;
     width: 144px;
     line-height: 40px;
-    margin: 277px 235px 0 0;
+    margin: 277px 516px 0 0;
+  }
+  .banner-button:hover {
+    background: #00BE89;
+    border: 2px solid #00BE89;
+    cursor: pointer;
   }
   .text-width {
     margin: 0 auto;
@@ -382,7 +387,7 @@
   }
   .content-includ {
     margin: 0 auto;
-    width: 910px;
+    width: 880px;
     height: 290px;
     padding-top: 40px;
   }
@@ -538,7 +543,7 @@
     padding-top: 40px;
   }
   .time8 {
-    padding-top: 60px;
+    padding-top: 65px;
   }
   
   .scene-right {
@@ -558,6 +563,9 @@
     border-radius: 20px;
     text-align: center;
     line-height: 20px;
+    position: absolute;
+    right: 0;
+    left: 61px;
   }
   .span-button2 {
     float: left;
@@ -567,15 +575,21 @@
     border-radius: 20px;
     text-align: center;
     line-height: 20px;
+    position: absolute;
+    right: 0;
+    left: 82px;
   }
   .button-left {
     float: left;
     padding-top: 40px;
+    position: relative;
   }
   .button-right {
     float: left;
     padding-top: 40px;
     padding-left: 20px;
+    text-align: center;
+    position: relative;
   }
   .text2 {
     padding-top: 25px
@@ -809,63 +823,55 @@
     background-size: contain;
   }
   .woderful-content {
-    width: 850px;
+    width: 879px;
     margin: 0 auto;
     height: 120px;
+    padding-top: 30px;
   }
-  .one {
+  .content-wod {
+    padding-top: 40px;
+  }
+  .public-one {
     width: 210px;
     height: 120px;
     float: left;
+  }
+  .public-rest {
+    margin-left: 13px;
+    width: 210px;
+    height: 120px;
+    float: left;
+  }
+  .one {
     background: url('../../../assets/images/trade_fairs/wonderful/1@2x.png') no-repeat center;
     background-size: cover;
   }
   .two {
-    width: 210px;
-    height: 120px;
-    float: left;
     background: url('../../../assets/images/trade_fairs/wonderful/2@2x.png') no-repeat center;
     background-size: cover;
   }
   .three {
-    width: 210px;
-    height: 120px;
     float: left;
     background: url('../../../assets/images/trade_fairs/wonderful/3@2x.png') no-repeat center;
     background-size: cover;
   }
   .four {
-    width: 210px;
-    height: 120px;
-    float: left;
     background: url('../../../assets/images/trade_fairs/wonderful/4@2x.png') no-repeat center;
     background-size: cover;
   }
   .one1 {
-    width: 210px;
-    height: 120px;
-    float: left;
     background: url('../../../assets/images/trade_fairs/wonderful/5@2x.png') no-repeat center;
     background-size: cover;
   }
   .two2 {
-    width: 210px;
-    height: 120px;
-    float: left;
     background: url('../../../assets/images/trade_fairs/wonderful/6@2x.png') no-repeat center;
     background-size: cover;
   }
   .three3 {
-    width: 210px;
-    height: 120px;
-    float: left;
     background: url('../../../assets/images/trade_fairs/wonderful/7@2x.png') no-repeat center;
     background-size: cover;
   }
   .four4 {
-    width: 210px;
-    height: 120px;
-    float: left;
     background: url('../../../assets/images/trade_fairs/wonderful/8@2x.png') no-repeat center;
     background-size: cover;
   }
@@ -884,7 +890,7 @@
   }
   .background-height {
     height: 98px;
-    width: 460px;
+    width: 455px;
     margin: 0 auto;
     padding-top: 30px;
   }
@@ -931,5 +937,25 @@
     height: 100px;
     background: url('../../../assets/images/trade_fairs/bottom.png') no-repeat center;
     background-size: cover;
+  }
+  @media screen and (max-width: 1980px) {
+    .banner-button {
+      margin: 277px 516px 0 0;
+    }
+  }
+  @media screen and (max-width: 1600px) {
+    .banner-button {
+      margin: 277px 355px 0 0;
+    }
+  }
+  @media screen and (max-width: 1440px) {
+    .banner-button {
+      margin: 277px 275px 0 0;
+    }
+  }
+  @media screen and (max-width: 1366px) {
+    .banner-button {
+      margin: 277px 235px 0 0;
+    }
   }
 </style>
