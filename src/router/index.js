@@ -78,6 +78,14 @@ let routes = [
     component: require('@/components/pages/home/About')
   },
   {
+    path: '/trade_fairs',
+    name: 'trade_fairs',
+    meta: {
+      title: '交易会'
+    },
+    component: require('@/components/pages/home/trade_fairs')
+  },
+  {
     path: '/server',
     name: 'server',
     meta: {
