@@ -4,7 +4,7 @@
       <div class="background-banner">
         <div class="banner-button" v-if="user.type === 1">
           <div class="text-width">
-            <span class="banner-text">发布需求</span>
+            <router-link :to="{name: 'demand_list', query: {type: 1}}" class="banner-text">发布需求</router-link>
           </div>
         </div>
         <div class="banner-button" v-if="user.type === 2">
