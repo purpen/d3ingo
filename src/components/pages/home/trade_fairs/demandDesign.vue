@@ -34,7 +34,7 @@
                   </div>
                   <div class="list-bottom" :class="{'bottom-style': interestButton}">
                     <div class="list-left">
-                      <div class="list-button">
+                      <div class="list-button" :route="'/shunde/trade_fairs/saleResult/workDatails'">
                         <span class="details-text">查看详情</span>
                       </div>
                     </div>
@@ -42,7 +42,7 @@
                       <div class="list-button" v-if="!interestButton">
                         <span class="button-text">感兴趣</span>
                       </div>
-                      <div class="list-button" v-if="interestButton">
+                      <div class="list-button interest-border" v-if="interestButton">
                         <span class="button-interest">已感兴趣</span>
                       </div>
                     </div>
@@ -103,6 +103,9 @@
     methods: {
       interesClick() {
         this.interestButton = !this.interestButton
+      },
+      // 点击跳转到详情页
+      datailsShow() {
       }
     },
     computed: {
@@ -132,20 +135,20 @@
     height: 100%;
     width: 390px;
     z-index: 2;
-    top: -50px;
+    top: 0;
     right: -50px;
     bottom: 0;
-    background: url('../../../../assets/images/trade_fairs/large-background/BG02@2x.png') no-repeat right / contain
+    background: url('../../../../assets/images/trade_fairs/large-background/BG02@2x.png') no-repeat right / cover
   }
   .left-background {
     position: absolute;
     width: 390px;
     height: calc(100% - 50px);
     z-index: 2;
-    top: 30px;
+    top: 0;
     left: 0;
     bottom: 0;
-    background: url('../../../../assets/images/trade_fairs/large-background/BG01@2x.png') no-repeat -40px 0 / contain
+    background: url('../../../../assets/images/trade_fairs/large-background/BG01@2x.png') no-repeat -40px 0 / cover
   }
   /* 列表为空的时候 */
   .empty {
@@ -176,7 +179,7 @@
 
   /* 右侧屏幕浮动 */
   .right {
-    z-index: 3;
+    z-index: 99;
     height: 140px;
     width: 60px;
     position:fixed;
@@ -290,6 +293,9 @@
     height: 100%;
     margin: 0 auto;
   }
+  .list-cloud {
+    z-index: 4
+  }
   .list-item {
     height: 200px;
     background: #fff;
@@ -400,6 +406,35 @@
     left: -14px;
     background: url('../../../../assets/images/trade_fairs/list/BeInterested@2x.png') no-repeat center;
     background-size: contain;
+  }
+  .list-button:hover {
+    height: 30px;
+    width: 80px;
+    border: 1px solid #FF4696;
+  }
+  .list-button:hover .details-text {
+    color: #FF4696;
+  }
+  .list-button:hover .details-text::before {
+    background: url('../../../../assets/images/trade_fairs/list/DetailsHover@2x.png') no-repeat center;
+    background-size: contain;
+  }
+  .list-button:hover .button-text {
+    color: #FF4696;
+  }
+  .list-button:hover .contact-text {
+    color: #FF4696;
+  }
+  .list-button:hover .contact-text::before {
+    background: url('../../../../assets/images/trade_fairs/list/ContactHover@2x.png') no-repeat center;
+    background-size: contain;
+  }
+  .list-button:hover .button-text:before {
+    background: url('../../../../assets/images/trade_fairs/list/BeInterestedHover@2x.png') no-repeat center;
+    background-size: contain;
+  }
+  .interest-border {
+    border: 1px solid #FF4696;
   }
   .button-interest {
     position: relative;
