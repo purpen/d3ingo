@@ -181,6 +181,7 @@ export default {
   adminItemTestStatus: '/admin/item/testStatus', // PUT 更改项目类型：内测、公测
   adminItemDeleteIds: '/admin/item/deleteIds', // DELETED 批量删除项目
   deleteItem: 'demand/{0}', // DELETE 删除项目
+  adminSmallItemLists: 'admin/smallItem/lists', // 小程序项目列表
 
   // 需求公司管理
   adminDemandCompanyList: '/admin/demandCompany/lists', // GET 需求公司列表
