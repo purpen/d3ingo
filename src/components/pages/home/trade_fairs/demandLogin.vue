@@ -31,16 +31,16 @@
     </briefContent>
     <demandDesign v-if="demandShows">
     </demandDesign>
-    <!-- <saleResult v-if="true">
-    </saleResult> -->
+    <saleResult v-if="false">
+    </saleResult>
   </div>
 </template>
 
 <script>
   // import api from '@/api/api'
-  import briefContent from '@/components/pages/home/trade_fairs/brief_content'
-  import demandDesign from '@/components/pages/home/trade_fairs/demand_design'
-  import saleResult from '@/components/pages/home/trade_fairs/sale_result'
+  import briefContent from '@/components/pages/home/trade_fairs/briefContent'
+  import demandDesign from '@/components/pages/home/trade_fairs/demandDesign'
+  import saleResult from '@/components/pages/home/trade_fairs/saleResult'
   export default {
     name: 'demand_login',
     components: {
