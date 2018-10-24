@@ -98,7 +98,7 @@
       },
       listDatail() {
         // this.$router.push({path: '/shunde/trade_fairs/saleResult/workDatails', params: {id: 1}})
-        this.$router.push({path: '/shunde/trade_fairs/saleResult/workDatails', params: {id: 1}})
+        this.$router.push({name: 'work_datails', params: {id: 1}})
       }
     },
     computed: {
@@ -128,17 +128,17 @@
     height: 100%;
     width: 390px;
     z-index: 2;
-    top: -50px;
+    top: 0;
     right: -50px;
     bottom: 0;
-    background: url('../../../../assets/images/trade_fairs/large-background/BG02@2x.png') no-repeat right / cover
+    background: url('../../../../assets/images/trade_fairs/large-background/BG02@2x.png') no-repeat right top / cover
   }
   .left-background {
     position: absolute;
     width: 390px;
     height: calc(100% - 50px);
     z-index: 2;
-    top: 30px;
+    top: 0;
     left: 0;
     bottom: 0;
     background: url('../../../../assets/images/trade_fairs/large-background/BG01@2x.png') no-repeat -40px 0 / cover
