@@ -55,7 +55,7 @@
       }
     },
     created() {
-      this.briefShows = true
+      this.demandShows = true
       console.log('user', this.user)
     },
     mounted() {
