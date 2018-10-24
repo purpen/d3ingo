@@ -178,6 +178,7 @@ export default {
       this.withDrawForm.bankName = item.branch_name
       this.withDrawForm.bankNumber = item.account_number
       this.withDrawForm.bankUser = item.account_name
+      this.withDrawForm.summary = ''
       this.sureTransferDialog = true
     },
     // 确认对公打款
