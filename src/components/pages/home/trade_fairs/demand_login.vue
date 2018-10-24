@@ -2,12 +2,12 @@
   <div class="content-box">
     <div class="home_banner">
       <div class="background-banner">
-        <div class="banner-button" v-if="false">
+        <div class="banner-button">
           <div class="text-width">
             <span class="banner-text">发布需求</span>
           </div>
         </div>
-        <div class="banner-button">
+        <div class="banner-button" v-if="false">
           <div class="text-width">
             <span class="banner-text">上传成果</span>
           </div>
@@ -31,8 +31,8 @@
     </briefContent>
     <demandDesign v-if="demandShows">
     </demandDesign>
-    <saleResult v-if="false">
-    </saleResult>
+    <!-- <saleResult v-if="true">
+    </saleResult> -->
   </div>
 </template>
 

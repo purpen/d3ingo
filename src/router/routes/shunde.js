@@ -8,7 +8,7 @@ module.exports = [
     name: 'trade_fairs',
     meta: {
       title: '交易会',
-      requireAuth: true
+      requireAuth: false
     },
     component: require('@/components/pages/home/trade_fairs/home_page')
   },
