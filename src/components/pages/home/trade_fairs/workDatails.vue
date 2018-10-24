@@ -55,7 +55,7 @@
 
 <script>
 export default {
-  name: 'work_datails',
+  name: 'work_datails', // 代售成果详情页
   data() {
     return {
       isFullLoading: false
