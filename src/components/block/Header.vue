@@ -275,8 +275,9 @@
           server: {path: '/server'},
           design: {path: '/server_design'},
           article: {path: '/article/list'},
-          home_page: {path: '/shunde/trade_fairs/homePage'},
-          demand_login: {path: '/shunde/trade_fairs/demandLogin'},
+          home_page: {path: '/shunde/trade_fairs/homePage'}, // 交易会未登录首页
+          demand_login: {path: '/shunde/trade_fairs/demandLogin'}, // 交易会登陆后首页
+          // demand_login: {path: '/shunde/trade_fairs/saleResult/workDatails'},
           design_case: {path: '/design_case/general_list'},
           commonly_sites: {path: '/vcenter/commonly_sites'},
           innovation_index: {path: '/innovation_index/home'},

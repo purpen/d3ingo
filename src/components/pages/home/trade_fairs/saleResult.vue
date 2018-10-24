@@ -17,7 +17,9 @@
           <el-row :gutter="20" class="list-cloud">
             <el-col :span="6" class="item-cloud">
               <div class="list-item">
-                <div class="list-image"></div>
+                <div class="list-image" @click="listDatail">
+                  <div class="image-size"></div>
+                </div>
                 <div class="list-text">
                   <div class="list-title">
                     <span>作品案例标题</span>
@@ -93,6 +95,10 @@
     methods: {
       interesClick() {
         this.interestButton = !this.interestButton
+      },
+      listDatail() {
+        // this.$router.push({path: '/shunde/trade_fairs/saleResult/workDatails', params: {id: 1}})
+        this.$router.push({path: '/shunde/trade_fairs/saleResult/workDatails', params: {id: 1}})
       }
     },
     computed: {
@@ -294,6 +300,12 @@
     height: 186px;
     background: #fff;
     border: 1px solid #E6E6E6;
+  }
+  .image-size {
+    cursor: pointer;
+    height: 184px;
+    background: url('../../../../assets/images/trade_fairs/title/Title-06@2x.png') no-repeat center;
+    background-size: contain;
   }
   .list-text {
     padding-top: 10px;
