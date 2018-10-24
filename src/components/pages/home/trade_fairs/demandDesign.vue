@@ -138,7 +138,7 @@
     top: 0;
     right: -50px;
     bottom: 0;
-    background: url('../../../../assets/images/trade_fairs/large-background/BG02@2x.png') no-repeat right / cover
+    background: url('../../../../assets/images/trade_fairs/large-background/BG02@2x.png') no-repeat right top / cover
   }
   .left-background {
     position: absolute;
