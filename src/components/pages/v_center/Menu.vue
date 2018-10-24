@@ -160,9 +160,9 @@
                 我的钱包
               </a>
               </el-tooltip>
-              <el-tooltip class="item" :effect="DarkorLight" content="我的钱包" placement="right">
-              <a @click="alick" :to="'/vcenter/wallet/list'"
-                :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
+              <el-tooltip class="item" :effect="DarkorLight" content="顺德交易会" placement="right">
+              <a @click="alick" :to="'/shunde/trade_fairs/demandList'"
+                :class="['item', 'demandList', {'is-active': currentName === 'demandList'}]">
                 顺德交易会
               </a>
               </el-tooltip>
@@ -231,8 +231,8 @@
                 :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
                 我的钱包
               </a>
-              <a @click="alick" :to="'/vcenter/wallet/list'"
-                :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
+              <a @click="alick" :to="'/shunde/trade_fairs/demandList'"
+                :class="['item', 'demandList', {'is-active': currentName === 'demandList'}]">
                 顺德交易会
               </a>
             </div>
