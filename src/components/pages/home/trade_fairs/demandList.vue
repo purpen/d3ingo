@@ -11,7 +11,7 @@
             <div v-if="type === 1">
               <div class="post-demand">
                 <div class="post-header">
-                  <el-button class="is-custom mg-r-20" type="primary" size="small">
+                  <el-button class="is-custom mg-r-20" type="primary" size="small" @click="dialogFormVisible=true">
                     <i class="el-icon-plus"></i>
                     发布需求
                   </el-button>
@@ -62,6 +62,97 @@
                   </div>
                 </div>
               </div>
+              <el-dialog
+                title="发布需求"
+                :visible.sync="dialogFormVisible"
+                width="40%"
+                class="submit-form"
+                >
+                <el-form :model="form" ref="form" :rules="rules">
+                  <el-form-item label="项目名称" prop="name">
+                    <el-input v-model="form.name" placeholder="请输入项目名称"></el-input>
+                  </el-form-item>
+                  <p class="mg-b-10">产品类型</p>
+                  <el-row>
+                    <el-col :span="6">
+                      <el-button :plain="true" type="danger">产品策略</el-button>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-button :plain="true" type="danger">外观设计</el-button>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-button :plain="true" type="danger">结构设计</el-button>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-button :plain="true" type="danger">其他</el-button>
+                    </el-col>
+                  </el-row>
+                  <el-row :gutter="10">
+                    <el-col :span="12">
+                      <el-form-item label="项目周期" prop="cycle">
+                        <el-select v-model="form.cycle">
+                          <el-option value='1'>
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                      <el-form-item label="项目预算" prop="design_cost">
+                        <el-select v-model="form.design_cost">
+                          <el-option value="123">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row :gutter="10">
+                    <el-col :span="12">
+                      <el-form-item label="产品类别" prop="field">
+                        <el-select v-model="form.field">
+                          <el-option value="123">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                      <el-form-item label="所属行业" prop="industry">
+                        <el-select v-model="form.industry">
+                          <el-option value="333">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row :gutter="10">
+                    <el-col :span="12">
+                      <el-form-item label="工作地点" prop="item_province">
+                        <el-select v-model="form.item_province">
+                          <el-option value="333">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                      <el-form-item label="城市" prop="item_city">
+                        <el-select v-model="form.item_city">
+                          <el-option value="666">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-form-item label="产品功能描述" prop="content">
+                    <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}"
+                      v-model="form.content"
+                      >
+                    </el-input>
+                  </el-form-item>
+                </el-form>
+                <span slot="footer" class="dialog-footer">
+                  <el-button @click="dialogFormVisible = false">取 消</el-button>
+                  <el-button type="primary" @click="dialogFormVisible = false">发 布</el-button>
+                </span>
+              </el-dialog>
             </div>
           </div>
         </div>
@@ -73,16 +164,22 @@
   import vMenu from '@/components/pages/v_center/Menu'
   import vMenuSub from '@/components/pages/home/trade_fairs/MenuSub'
   import api from '@/api/api'
+  import config from '@/config'
   export default {
     name: 'demand_list',
     components: {
       vMenu,
       vMenuSub,
-      api
+      api,
+      config
     },
     data() {
       return {
-        type: 1
+        type: 1,
+        rules: {
+        },
+        dialogFormVisible: false,
+        form: {}
       }
     },
     computed: {
@@ -163,5 +260,8 @@
   }
   .details .c-title:hover {
     color: #ff5a5f;
+  }
+  .mg-b-10 {
+    margin-bottom: 10px;
   }
 </style>

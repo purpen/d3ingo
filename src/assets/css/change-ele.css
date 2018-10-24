@@ -646,4 +646,7 @@
   .el-form-item__content .el-radio-group {
     width: 100%;
   }
+  .submit-form>.el-dialog .el-dialog__body {
+    padding: 0 20px;
+  }
 }
