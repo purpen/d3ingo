@@ -61,6 +61,18 @@ module.exports = [
       requireAuth: true
     },
     component: require('@/components/pages/home/trade_fairs/workDatails')
+  },
+  // 需求方详情
+  {
+    path: '/shunde/trade_fairs/demandList',
+    name: 'demand_list',
+    meta: {
+      title: '需求列表',
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/home/trade_fairs/demandList')
   }
 
 ]
