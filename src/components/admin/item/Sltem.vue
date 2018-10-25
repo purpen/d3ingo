@@ -69,7 +69,9 @@
             </el-table-column>
             <el-table-column width="120" label="状态">
               <template slot-scope="scope">
-                <p>{{scope.row.is_ok === 0 ? '未解决' : '已解决'}}</p>
+                <!-- <p>{{scope.row.is_ok === 0 ? '未解决' : '已解决'}}</p> -->
+                <el-tag v-if="scope.row.is_ok === 0" color="#999999">未解决</el-tag>
+                <el-tag v-else color="#FF5A5F">已解决</el-tag>
               </template>
             </el-table-column>
             <el-table-column width="80" label="创建时间">
@@ -272,5 +274,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.el-form-item__content {
+  margin-top: 10px;
 }
 </style>
