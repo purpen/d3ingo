@@ -6,21 +6,12 @@
         'vcenter-right': leftWidth === 2,
         'vcenter-right-mob': isMob}" class="vcenter-phone">
         <div class="right-content vcenter-container">
-          <div class="content-item-box">
+          <div class="content-item-box" v-loading="isLoading">
             <v-menu-sub></v-menu-sub>
             <div v-if="type === 1">
-              <div class="no-demand" v-if="!demandList.length">
+              <div class="no-demand" v-if="!demandList.length&&!isLoading">
                 <img src="../../../../assets/images/trade_fairs/default/NoDemand@2x.png" alt="">
                 <p class="tc-9">还没有设计需求，立即发布一个吧～</p>
-                <div class="post-header">
-                  <el-button class="is-custom mg-r-20" type="primary" size="small" @click="dialogUpdateVisible=true">
-                    <i class="el-icon-plus"></i>
-                    发布需求
-                  </el-button>
-                  <el-button class="is-custom withdraw btn-phone" size="small">查看设计成果</el-button>
-                </div>
-              </div>
-              <div class="post-demand" v-if="demandList.length">
                 <div class="post-header">
                   <el-button class="is-custom mg-r-20" type="primary" size="small" @click="dialogFormVisible=true">
                     <i class="el-icon-plus"></i>
@@ -29,7 +20,16 @@
                   <el-button class="is-custom withdraw btn-phone" size="small">查看设计成果</el-button>
                 </div>
               </div>
-              <div class="demand-list" v-if="demandList.length">
+              <div class="post-demand" v-if="demandList.length&&!isLoading">
+                <div class="post-header">
+                  <el-button class="is-custom mg-r-20" type="primary" size="small" @click="dialogFormVisible=true">
+                    <i class="el-icon-plus"></i>
+                    发布需求
+                  </el-button>
+                  <el-button class="is-custom withdraw btn-phone" size="small">查看设计成果</el-button>
+                </div>
+              </div>
+              <div class="demand-list" v-if="demandList.length&&!isLoading">
                 <div class="demand-header">
                   <el-row>
                     <el-col :span="10">
@@ -49,25 +49,33 @@
                 <div class="demand-subject" v-for="(d, index) in demandList" :key="index" >
                   <el-row class="demand-time">
                     <el-col>
-                      发布时间: 2018-10-25 10:10:10
+                      发布时间: {{d.created_at| timeFormat}}
                     </el-col>
                   </el-row>
                   <div class="demand-content">
                     <el-row>
                       <el-col :span="10" class="details">
-                        <p class="c-title">这个是需求的名字</p>
-                        <p>项目预算: 123万</p>
-                        <p>设计类型: 这个行</p>
-                        <p>项目周期: 好几个月呢</p>
+                        <p class="c-title">{{d.name}}</p>
+                        <p>项目预算: {{d.design_cost}}</p>
+                        <p>设计类型:{{d.design_types}}</p>
+                        <p>项目周期: {{d.cycle}}</p>
                       </el-col>
                       <el-col :span="3">
-                        几人关注
+                        {{d.follow_count}}人关注
                       </el-col>
                       <el-col :span="7">
-                        审核中
+                        {{d.status | statusFormat}}
                       </el-col>
                       <el-col :span="4">
-                        <el-button class="is-custom" type="primary" size="small">编辑</el-button>
+                        <el-button v-if="d.status>0" @click="upDetails(d.id)">
+                          查看详情
+                        </el-button>
+                        <el-button class="is-custom" type="primary" size="small"
+                        v-if="d.status === -1"
+                        >编辑</el-button>
+                        <el-button class="mg-t-10" @click="deleteVisible(d)" v-if="d.status === 2">
+                          关闭项目
+                        </el-button>
                       </el-col>
                     </el-row>
                   </div>
@@ -78,6 +86,7 @@
                 :visible.sync="dialogFormVisible"
                 size="small"
                 class="submit-form"
+                @close="closeBtn"
                 >
                 <el-form :model="form" ref="form" :rules="rules" @submit.native.prevent>
                   <el-form-item label="项目名称" prop="name" label-position="top">
@@ -158,7 +167,7 @@
                     </el-col>
                   </el-row>
                   <p class="mg-b-10">工作地点</p>
-                  <region-picker :provinceProp="form.item_province" :cityProp="form.item_city"  :isFirstProp="true" :twoSelect="true" :gutter="10"
+                  <region-picker :provinceProp="form.item_province" :cityProp="form.item_city" :isFirstProp="true" :twoSelect="true" :gutter="10"
                   titleProp='' @onchange="changeServer"></region-picker>
                   <el-form-item label="产品功能描述" prop="content">
                     <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}"
@@ -168,12 +177,12 @@
                   </el-form-item>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
-                  <el-button @click="dialogFormVisible = false">取 消</el-button>
+                  <el-button @click="closeBtn">取 消</el-button>
                   <el-button type="primary" @click="createDemand('form')">发 布</el-button>
                 </span>
               </el-dialog>
               <el-dialog
-                title="需求详情"
+                title="项目详情"
                 :visible.sync="dialogUpdateVisible"
                 size="tiny"
                 class="submit-form"
@@ -185,7 +194,7 @@
                         <span>项目名称</span>
                       </el-col>
                       <el-col :span="18">
-                        这是项目名称这是项目名称这是项目名称
+                        {{formup.name}}
                       </el-col>
                     </el-row>
                   </div>
@@ -195,7 +204,7 @@
                         <span>设计类别</span>
                       </el-col>
                       <el-col :span="18">
-                        这是项目名称
+                        {{formup.design_types}}
                       </el-col>
                     </el-row>
                   </div>
@@ -205,7 +214,7 @@
                         <span>项目周期</span>
                       </el-col>
                       <el-col :span="18">
-                        这是项目名称
+                        {{formup.cycle}}
                       </el-col>
                     </el-row>
                   </div>
@@ -215,7 +224,7 @@
                         <span>项目预算</span>
                       </el-col>
                       <el-col :span="18">
-                        这是项目名称
+                        {{formup.design_cost}}
                       </el-col>
                     </el-row>
                   </div>
@@ -225,7 +234,7 @@
                         <span>产品类别</span>
                       </el-col>
                       <el-col :span="18">
-                        这是项目名称
+                        {{formup.field}}
                       </el-col>
                     </el-row>
                   </div>
@@ -235,7 +244,7 @@
                         <span>所属行业</span>
                       </el-col>
                       <el-col :span="18">
-                        这是项目名称
+                        {{formup.industry}}
                       </el-col>
                     </el-row>
                   </div>
@@ -245,7 +254,7 @@
                         <span>工作地点</span>
                       </el-col>
                       <el-col :span="18">
-                        这是项目名称
+                        {{formup.item_city}}{{formup.item_province}}
                       </el-col>
                     </el-row>
                   </div>
@@ -255,15 +264,28 @@
                         <span>功能描述</span>
                       </el-col>
                       <el-col :span="18">
-                        这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称
+                        {{formup.content}}
                       </el-col>
                     </el-row>
                   </div>
                 </div>
                 <span slot="footer" class="dialog-footer">
-                  <el-button>编辑修改</el-button>
+                  <el-button @click="updateBtn()">编辑修改</el-button>
                 </span>
               </el-dialog>
+               <el-dialog
+                title="关闭项目"
+                :visible.sync="dialogDeleteVisible"
+                size="tiny"
+                class="submit-form"
+                >
+                <p class="text-align-c">确认关闭 {{deleteForm.name}} 吗？</p>
+                <p class="text-align-c">关闭项目将彻底从您的项目列表移除</p>
+                <span slot="footer" class="dialog-footer">
+                  <el-button @click="dialogDeleteVisible=false">取消</el-button>
+                  <el-button @click="dialogDeleteVisible=false" class="is-custom" type="primary" size="small">确定</el-button>
+                </span>
+               </el-dialog>
             </div>
 
           </div>
@@ -290,15 +312,44 @@
     data() {
       return {
         type: 1,
+        isLoading: false, // 加载中
         rules: {
+          name: [
+            {required: true, message: '请填写项目名称', trigger: 'blur'}
+          ],
+          cycle: [
+            {required: true, type: 'number', message: '请选择项目周期', trigger: 'blur'}
+          ],
+          design_cost: [
+            {required: true, type: 'number', message: '请选择项目预算', trigger: 'blur'}
+          ],
+          field: [
+            {required: true, type: 'number', message: '请选择产品类型', trigger: 'blur'}
+          ],
+          industry: [
+            {required: true, type: 'number', message: '请选择所属行业', trigger: 'blur'}
+          ],
+          // item_city: [
+          //   {required: true, message: '请选择工作地点', trigger: 'blur'}
+          // ],
+          // item_province: [
+          //   {required: true, message: '请选择工作地点', trigger: 'blur'}
+          // ],
+          content: [
+            {required: true, message: '请选择产品描述', trigger: 'blur'}
+          ]
         },
         dialogFormVisible: false, // 发布需求弹窗
         dialogUpdateVisible: false, // 查看详情弹窗
+        dialogDeleteVisible: false,
         form: {
           design_types: []
         },
-        demandList: [],
-        collectList: []
+        formup: {
+        },
+        demandList: [], // 需求列表
+        collectList: [], // 收藏列表
+        deleteForm: '' // 删除项目id
       }
     },
     computed: {
@@ -324,6 +375,22 @@
         return config.COMPANY_TYPE[0]
       }
     },
+    filters: {
+      statusFormat(val) {
+        if (val === 1) {
+          return '审核中'
+        } else if (val === -1) {
+          return '审核未通过'
+        } else {
+          return '发布成功'
+        }
+      },
+      timeFormat(val) {
+        if (!isNaN(val)) {
+          return new Date(val * 1000).format('yyyy-MM-dd hh:mm:ss')
+        }
+      }
+    },
     watch: {
       '$route' (to, from) {
         // 对路由变化作出响应...
@@ -336,54 +403,104 @@
         this.$set(this.form, 'item_province', obj.province)
         this.$set(this.form, 'item_city', obj.city)
       },
+      // 获取详情
+      upDetails(id) {
+        this.$http.get(api.sdDemandDemandInfo, {params: {demand_id: id}}).then(
+          (response) => {
+            if (response.data.meta.status_code === 200) {
+              this.dialogUpdateVisible = true
+              this.$nextTick(_ => {
+                this.formup = response.data.data
+              })
+            }
+          }
+        )
+      },
+      updateBtn() {
+        this.dialogUpdateVisible = false
+        this.dialogFormVisible = true
+        this.$nextTick(_ => {
+          this.form = {...this.formup}
+        })
+      },
+      // 删除项目弹窗
+      deleteVisible(d) {
+        this.deleteForm = {
+          'id': d.id,
+          'name': d.name
+        }
+        this.dialogDeleteVisible = true
+      },
       // 切换小类型
       addType (type) {
         let index = this.form.design_types.findIndex(val => {
           return val === type
         })
-        console.log('index', index)
         if (index > -1) {
           this.form.design_types.splice(index, 1)
         } else {
           this.form.design_types.push(type)
         }
-        console.log('this.form.design_types', this.form.design_types)
       },
       // 发布需求
       createDemand (formName) {
-        console.log('form', this.form)
         let self = this
-        if (!self.form.design_types || !self.form.design_types.length) {
-          self.$Message.error('设计类型未选择')
-          return
-        } else {
-          self.form.design_types = JSON.stringify(self.form.design_types)
-        }
-        self.$http.post(api.sdDemandRelease, self.form).then((response) => {
-          if (response.data.meta.status_code === 200) {
-            console.log('res', response.data.data)
+        self.$refs[formName].validate((valid) => {
+          if (valid) {
+            if (!self.form.design_types || !self.form.design_types.length) {
+              self.$message.error('设计类型未选择')
+              return
+            } else {
+              self.form.design_types = JSON.stringify(self.form.design_types)
+            }
+            if (!self.form.item_city || !self.form.item_province) {
+              self.$message.error('请填写工作地点')
+              return
+            }
+            self.$http.post(api.sdDemandRelease, self.form).then((response) => {
+              if (response.data.meta.status_code === 200) {
+                this.dialogFormVisible = false
+                this.form = {
+                  'design_types': []
+                }
+              } else {
+                self.$message.error(response.data.meta.message)
+                return
+              }
+            })
+            .catch(function (error) {
+              self.$message.error(error.message)
+              console.error(error.message)
+              return
+            })
           } else {
-            self.$message.error(response.data.meta.message)
-            return
+            self.$message.error('请完善信息')
+            console.log('error submit!!')
+            return false
           }
-        })
-        .catch(function (error) {
-          this.$message.error(error.message)
-          console.error(error.message)
-          return
         })
       },
       // 需求列表
       getDemandList() {
-        this.$http.get(api.sdDemandDemandList).then((response) => {
+        let self = this
+        self.isLoading = true
+        self.$http.get(api.sdDemandDemandList).then((response) => {
           if (response.data.meta.status_code === 200) {
-            console.log('需求列表', response.data.data)
+            if (response.data.data && response.data.data.length) {
+              self.demandList = response.data.data
+              self.isLoading = false
+              self.demandList.forEach(item => {
+                item.design_types = JSON.parse(item.design_types)
+              })
+            }
           } else {
+            self.isLoading = false
             this.$message.error(response.data.meta.message)
             return
           }
         })
         .catch(function (error) {
+          self.isLoading = false
           this.$message.error(error.message)
           console.error(error.message)
           return
@@ -404,6 +521,15 @@
           console.error(error.message)
           return
         })
+      },
+      // 关闭弹窗按钮
+      closeBtn() {
+        this.form = {
+          'design_types': []
+        }
+        this.dialogFormVisible = false
+        this.dialogUpdateVisible = false
+        this.dialogDeleteVisible = false
       },
       // 关闭项目
       deleteDemand(id) {
@@ -446,6 +572,9 @@
   }
   .mg-r-20 {
     margin-right: 20px;
+  }
+  .mg-t-10 {
+    margin-top: 10px;
   }
   .demand-header {
     background: #f7f7f7;
@@ -523,5 +652,8 @@
   }
   .details .el-row {
     margin-bottom: 10px;
+  }
+  .text-align-c {
+    text-align: center;
   }
 </style>
