@@ -74,6 +74,27 @@ module.exports = [
       hideFooter: true
     },
     component: require('@/components/pages/home/trade_fairs/demandList')
+  },
+  // 付款-托管资金
+  {
+    path: '/shunde/trade_fairs/managedFunds/:id',
+    name: 'managed_funds',
+    meta: {
+      title: '托管资金',
+      requireAuth: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/home/trade_fairs/managedFunds')
+  },
+  // 付款-支付
+  {
+    path: '/shunde/trade_fairs/paymentAmount',
+    name: 'payment_amount',
+    meta: {
+      title: '支付',
+      requireAuth: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/home/trade_fairs/paymentAmount')
   }
-
 ]

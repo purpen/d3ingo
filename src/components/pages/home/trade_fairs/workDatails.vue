@@ -98,7 +98,7 @@
           </div>
           <div class="list-left">
             <div class="list-button buy-text">
-              <span class="details-text">立即购买</span>
+              <router-link :to="{name: 'managed_funds', params: {id: 1}}" class="details-text">立即购买</router-link>
             </div>
           </div>
           <div class="list-left" v-if="false">
