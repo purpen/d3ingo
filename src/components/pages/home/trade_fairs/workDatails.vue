@@ -238,12 +238,11 @@
             </div>
           </div>
         </div>
-        <div class="patent">
-          <div class="patent-text">
-            <span>专利证书</span>
-          </div>
-          <div class="patent-img"></div>
-        </div>
+        <el-collapse v-model="credential" class="patent">
+          <el-collapse-item title="专利证书" name="1">
+            <div class="patent-img"></div>
+          </el-collapse-item>
+        </el-collapse>
         <div class="patent-details">
           <div class="instruction-blook">
           <span class="blook-left">产品功能说明书</span>
@@ -267,6 +266,7 @@ export default {
       isFullLoading: false,
       interestButton: false,
       selectCompanyCollapse: ['1'],
+      credential: ['1'],
       evaluate: {
         design_level: 0,
         content: ''
@@ -612,11 +612,10 @@ export default {
 
 /* 专利证书 */
 .patent {
-  height: 360px;
   width: 280px;
   background: #FAFAFA;
   margin-top: 60px;
-  border-bottom: 1px solid black
+  /* border-bottom: 1px solid black */
 }
 .patent-text {
   padding-top: 18px;
@@ -631,7 +630,8 @@ export default {
   width: 200px;
   height: 270px;
   margin: 0 auto;
-  margin-top: 40px;
+  margin-top: 15px;
+  margin-bottom: 15px;
   background: #fff
 }
 .patent-details {
