@@ -467,6 +467,19 @@ export default {
   designUserPercentage: '/design/userPercentage', // GET 成员占比
   designTargetIncomeStage: '/designTarget/incomeStage', // GET 收入阶段
   designItemTasks: '/design/itemTasks', // GET 所有项目任务统计
-  designTargetIncomeCity: '/designTarget/incomeCity' // GET 城市排名
+  designTargetIncomeCity: '/designTarget/incomeCity', // GET 城市排名
 
+  // 顺德需求方
+  sdDemandRelease: '/sd/demand/release', // POST 发布需求
+  sdDemandDemandShut: '/sd/demand/demandShut', // POST 关闭需求
+  sdDemandDemandUpdate: '/sd/demand/demandUpdate', // POST 更新需求
+  sdDemandDemandInfo: '/sd/demand/demandInfo', // GET 需求详情
+  sdDemandDesignDemandInfo: '/sd/demand/designDemandInfo', // GET 设计公司查看某个需求详情
+  sdDemandDesignDemandList: '/sd/demand/designDemandList', // GET 设计公司查看需求列表
+  sdDemandDemandList: '/sd/demand/demandList', // GET 需求列表
+
+  // 顺德设计方
+  sdDesignCancelCollectDemand: '/sd/design/cancelCollectDemand', // POST 取消收藏需求
+  sdDesignDesignCollectList: '/sd/design/designCollectList', // GET 收藏列表
+  sdDesignCollectDemand: '/sd/design/collectDemand' // POST 收藏需求
 }
