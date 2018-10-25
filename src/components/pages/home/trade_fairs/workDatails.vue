@@ -3,6 +3,7 @@
     <div class="navigate-header">
       <div class="navigate-text">
         <router-link to="/shunde/trade_fairs/demandLogin">代售成果</router-link>
+        <router-link to="/shunde/trade_fairs/demandLogin" v-if="false">我的订单</router-link>
       </div>
       <div class="navigate-text arrow-text">
         <span>iPhone 7 Plus设计</span>
@@ -33,8 +34,133 @@
             </div>
           </div>
         </div>
-      </el-col>
 
+        <!-- 评价 -->
+        <!-- <div class="select-item-box clearfix" v-if="statusLabel.evaluate"> -->
+        <div class="select-item-box clearfix" v-if="false">
+          <el-collapse v-model="selectCompanyCollapse">
+            <!-- <el-collapse-item title="评价" name="12" v-if="cooperateCompany">
+              <div class="evaluate-report clearfix" v-if="item.status === 18"> -->
+            <el-collapse-item title="评价" name="1">
+
+              <!-- 未提交的评价 -->
+              <div class="evaluate-report clearfix">
+                <p class="ev-c-ava">
+                  <!-- <img class="avatar" v-if="cooperateCompany.design_company.logo_url"
+                        :src="cooperateCompany.design_company.logo_url" width="60"/>
+                  <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="60"/> -->
+                  <img class="avatar" :src="require('assets/images/avatar_100.png')" width="60"/>
+                </p>
+                <p class="ev-c-name">
+                  <!-- {{ cooperateCompany.design_company.company_name }} -->
+                  北京品物设计有限公司
+                </p>
+                <el-row class="grade">
+                  <el-col :span="8">
+                    <p>设计水平</p>
+                    <el-rate
+                    v-model.number="evaluate.design_level"
+                    show-text>
+                  </el-rate>
+                  </el-col>
+                  <el-col :span="8">
+                    <p>响应速度</p>
+                    <el-rate
+                    v-model.number="evaluate.response_speed"
+                    show-text>
+                  </el-rate>
+                  </el-col>
+                  <el-col :span="8">
+                    <p>服务态度</p>
+                    <el-rate
+                    v-model.number="evaluate.service"
+                    show-text>
+                  </el-rate>
+                  </el-col>
+                </el-row>
+                <p class="ev-c-content">
+                  <el-input
+                    type="textarea"
+                    :rows="5"
+                    placeholder="请输入内容"
+                    v-model="evaluate.content">
+                  </el-input>
+                </p>
+                <p class="ev-c-btn">
+                  <el-button class="is-custom" type="primary" :loading="evaluateLoadingBtn" @click="evaluateSubmit">
+                    提交
+                  </el-button>
+                </p>
+              </div>
+
+              <!-- 提交的评价展示 -->
+              <!-- <div class="evaluate-result clearfix" v-if="item.status === 22"> -->
+              <div class="evaluate-result clearfix" v-if="false">
+                <el-row>
+                  <el-col :span="2">
+                    <p class="ev-c-ava fl">
+                      <!-- <img class="avatar" v-if="cooperateCompany.design_company.logo_url"
+                          :src="cooperateCompany.design_company.logo_url" width="50"/>
+                      <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="50"/> -->
+                      <img class="avatar" :src="require('assets/images/avatar_100.png')" width="50"/>
+                    </p>
+                  </el-col>
+                  <el-col :span="22">
+                    <div class="eva-content">
+                      <p class="ev-c-name">
+
+                        <!-- <router-link :to="{name: 'companyShow', params: {id: cooperateCompany.design_company.id}}"
+                                    target="_blank">
+                          {{ cooperateCompany.design_company.company_name }}
+                        </router-link> -->
+                        <router-link :to="{name: 'companyShow', params: {id: 1}}"
+                                    target="_blank">
+                          测试
+                        </router-link>
+                      </p>
+                      <!-- <p class="eva-score">
+                        <el-rate
+                          v-model.number="evaluate.design_level"
+                          disabled>
+                        </el-rate>
+                      </p> -->
+                      <el-row class="grade pl">
+                        <el-col :span="8">
+                          <p>设计水平</p>
+                          <el-rate
+                          v-model.number="evalu.design_level"
+                          disabled>
+                        </el-rate>
+                        </el-col>
+                        <el-col :span="8">
+                          <p>响应速度</p>
+                          <el-rate
+                          v-model.number="evalu.response_speed"
+                          disabled>
+                        </el-rate>
+                        </el-col>
+                        <el-col :span="8">
+                          <p>服务态度</p>
+                          <el-rate
+                          v-model.number="evalu.service"
+                          disabled>
+                        </el-rate>
+                        </el-col>
+                      </el-row>
+                      <p class="ev-c-content">
+                        <!-- {{ evalu.content }} -->
+                        测试测试测试
+                      </p>
+                    </div>
+                  </el-col>
+                </el-row>
+              </div>
+            </el-collapse-item>
+          </el-collapse>
+        </div>
+      </el-col>
+      
+      <!-- 右半部分 -->
       <el-col :xs="24" :sm="6" :md="6" :lg="6">
         <div class="design-case-slide">
           <div class="info">
@@ -102,6 +228,11 @@
             </div>
           </div>
           <div class="list-left" v-if="false">
+            <div class="list-button buy-text">
+              <router-link :to="{name: 'managed_funds', params: {id: 1}}" class="to-pay">继续支付</router-link>
+            </div>
+          </div>
+          <div class="list-left" v-if="false">
             <div class="bought-bg">
               <span class="bought-text">已购买</span>
             </div>
@@ -134,12 +265,58 @@ export default {
   data() {
     return {
       isFullLoading: false,
-      interestButton: false
+      interestButton: false,
+      selectCompanyCollapse: ['1'],
+      evaluate: {
+        design_level: 0,
+        content: ''
+      },
+      evalu: {},
+      evaluateLoadingBtn: false // 提交评价的loading
     }
   },
   methods: {
     interesClick() {
       this.interestButton = !this.interestButton
+    },
+    // 评价设计公司
+    evaluateSubmit() {
+      // if (this.evaluate.design_level === 0 || this.evaluate.response_speed === 0 || this.evaluate.service === 0) {
+      //   this.$message.error('每项分数至少为一星')
+      //   return
+      // }
+      // if (!this.evaluate.content) {
+      //   this.$message.error('请填写评价内容！')
+      //   return
+      // }
+
+      // let row = {
+      //   item_id: this.item.id,
+      //   service: this.evaluate.service,
+      //   content: this.evaluate.content,
+      //   design_level: this.evaluate.design_level,
+      //   response_speed: this.evaluate.response_speed
+      // }
+
+      // let self = this
+      // self.evaluateLoadingBtn = true
+      // self.$http
+      //   .post(api.demandUsersEvaluate, row)
+      //   .then(function(response) {
+      //     self.evaluateLoadingBtn = false
+      //     if (response.data.meta.status_code === 200) {
+      //       self.evalu = self.evaluate
+      //       self.item.status = 22
+      //       self.item.status_value = '已评价'
+      //       self.$message.success('评价成功!')
+      //     } else {
+      //       self.$message.error(response.data.meta.message)
+      //     }
+      //   })
+      //   .catch(function(error) {
+      //     self.$message.error(error.message)
+      //     self.evaluateLoadingBtn = false
+      //   })
     }
   },
   created() {
@@ -358,6 +535,23 @@ export default {
   background: url('../../../../assets/images/trade_fairs/list/Purchase@2x.png') no-repeat center;
   background-size: contain;
 }
+.to-pay {
+  position: relative;
+  font-family: PingFangSC-Regular;
+  font-size: 16px;
+  padding-left: 10px;
+  color: #fff;
+}
+.to-pay:before {
+  content: '';
+  position: absolute;
+  height: 24px;
+  top: -1px;
+  width: 24px;
+  left: -20px;
+  background: url('../../../../assets/images/trade_fairs/list/payment@2x.png') no-repeat center;
+  background-size: contain;
+}
 .button-text {
   position: relative;
   font-family: PingFangSC-Regular;
@@ -507,6 +701,36 @@ export default {
   color: #FF5A5F;
   text-align: right;
   padding-left: 60px;
+}
+
+/* 评价 */
+.select-item-box {
+  margin: 20px 0 20px 0;
+}
+.evaluate-report {
+  text-align: center;
+}
+.evaluate-report .ev-c-name {
+  line-height: 2;
+}
+.eva-content {
+  margin: 15px 0 20px 20px;
+}
+.eva-content .ev-c-name {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+.eva-content .ev-c-content {
+  padding: 10px 0;
+}
+.grade>.el-col:not(:first-child) {
+  border-left: 1px solid #e6e6e6;
+}
+.pl>.el-col:not(:first-child) {
+  padding-left: 20px;
+}
+p.ev-c-content {
+  padding: 10px 50px;
 }
 
 p.img-des {
