@@ -35,7 +35,7 @@
                   <div class="list-bottom" :class="{'bottom-style': interestButton}">
                     <div class="list-left">
                       <div class="list-button" :route="'/shunde/trade_fairs/saleResult/workDatails'">
-                        <span class="details-text">查看详情</span>
+                        <span class="details-text" @click="dialogUpdateVisible=true">查看详情</span>
                       </div>
                     </div>
                     <div class="list-contain" @click="interesClick">
@@ -84,6 +84,98 @@
         </div>
       </div>
     </div>
+    <el-dialog
+      title="需求详情"
+      :visible.sync="dialogUpdateVisible"
+      size="tiny"
+      class="submit-form"
+      >
+      <div>
+        <div class="details">
+          <el-row>
+            <el-col :span="6">
+              <span>项目名称</span>
+            </el-col>
+            <el-col :span="18">
+              这是项目名称这是项目名称这是项目名称
+            </el-col>
+          </el-row>
+        </div>
+        <div class="details">
+          <el-row>
+            <el-col :span="6">
+              <span>设计类别</span>
+            </el-col>
+            <el-col :span="18">
+              这是项目名称
+            </el-col>
+          </el-row>
+        </div>
+        <div class="details">
+          <el-row>
+            <el-col :span="6">
+              <span>项目周期</span>
+            </el-col>
+            <el-col :span="18">
+              这是项目名称
+            </el-col>
+          </el-row>
+        </div>
+        <div class="details">
+          <el-row>
+            <el-col :span="6">
+              <span>项目预算</span>
+            </el-col>
+            <el-col :span="18">
+              这是项目名称
+            </el-col>
+          </el-row>
+        </div>
+        <div class="details">
+          <el-row>
+            <el-col :span="6">
+              <span>产品类别</span>
+            </el-col>
+            <el-col :span="18">
+              这是项目名称
+            </el-col>
+          </el-row>
+        </div>
+        <div class="details">
+          <el-row>
+            <el-col :span="6">
+              <span>所属行业</span>
+            </el-col>
+            <el-col :span="18">
+              这是项目名称
+            </el-col>
+          </el-row>
+        </div>
+        <div class="details">
+          <el-row>
+            <el-col :span="6">
+              <span>工作地点</span>
+            </el-col>
+            <el-col :span="18">
+              这是项目名称
+            </el-col>
+          </el-row>
+        </div>
+        <div class="details">
+          <el-row>
+            <el-col :span="6">
+              <span>功能描述</span>
+            </el-col>
+            <el-col :span="18">
+              这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button>编辑修改</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -93,7 +185,8 @@
     name: 'demand_design', // 设计需求
     data() {
       return {
-        interestButton: false
+        interestButton: false,
+        dialogUpdateVisible: false
       }
     },
     created() {
