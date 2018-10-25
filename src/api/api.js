@@ -481,5 +481,10 @@ export default {
   // 顺德设计方
   sdDesignCancelCollectDemand: '/sd/design/cancelCollectDemand', // POST 取消收藏需求
   sdDesignDesignCollectList: '/sd/design/designCollectList', // GET 收藏列表
-  sdDesignCollectDemand: '/sd/design/collectDemand' // POST 收藏需求
+  sdDesignCollectDemand: '/sd/design/collectDemand', // POST 收藏需求
+
+  // 顺德后台
+  designDemandLists: 'designDemand/lists', // GET 发布的设计需求列表
+  designDemandAuditStatus: 'designDemand/auditStatus' // PUT  设计需求信息审核
+
 }

@@ -133,6 +133,10 @@
                 :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
                 我的钱包
               </a>
+              <a @click="alick" :to="'/shunde/trade_fairs/achieveList'"
+                :class="['item', 'achieveList', {'is-active': currentName === 'achieveList'}]">
+                顺德交易会
+              </a>
               </el-tooltip>
               <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" 
                 v-if="isMob && eventUser.company">
@@ -213,6 +217,10 @@
               <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany"
                 v-if="isMob">
                 查看公司主页
+              </a>
+              <a @click="alick" :to="'/shunde/trade_fairs/achieveList'"
+                :class="['item', 'achieveList', {'is-active': currentName === 'achieveList'}]">
+                顺德交易会
               </a>
             </div>
           </div>

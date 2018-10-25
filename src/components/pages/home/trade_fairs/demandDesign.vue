@@ -88,7 +88,7 @@
       title="需求详情"
       :visible.sync="dialogUpdateVisible"
       size="tiny"
-      class="submit-form"
+      class="submit-form scroll-bar"
       >
       <div>
         <div class="details">
@@ -167,13 +167,27 @@
               <span>功能描述</span>
             </el-col>
             <el-col :span="18">
-              这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称
+              这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称这是项目名称
             </el-col>
           </el-row>
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button>编辑修改</el-button>
+        <div class="dialog-bottom" :class="{'bottom-style': interestButton}">
+          <div class="list-contain" @click="interesClick">
+          <div class="list-button" v-if="!interestButton">
+            <span class="button-text">感兴趣</span>
+          </div>
+          <div class="list-button interest-border" v-if="interestButton">
+            <span class="button-interest">已感兴趣</span>
+          </div>
+        </div>
+        <div class="list-right" v-if="interestButton">
+          <div class="list-button">
+            <span class="contact-text">联系他</span>
+          </div>
+        </div>
+        </div>
       </span>
     </el-dialog>
   </div>
@@ -542,5 +556,28 @@
     left: -8px;
     background: url('../../../../assets/images/trade_fairs/list/BeInterestedClick@2x.png') no-repeat center;
     background-size: contain;
+  }
+
+  /* 需求弹出框样式 */
+  .details .el-row {
+    margin-bottom: 10px;
+  }
+  .details {
+    line-height: 20px;
+    color: #999;
+  }
+  .details span {
+    display: inline-block;
+    width: 80px;
+    font-size: 14px;
+    color: #666;
+  }
+  .dialog-bottom {
+    width: 170px;
+    margin: 0 auto;
+    padding-top: 10px;
+  }
+  .submit-form {
+    overflow: hidden
   }
 </style>
