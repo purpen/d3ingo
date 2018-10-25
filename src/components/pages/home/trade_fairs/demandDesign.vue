@@ -103,9 +103,6 @@
     methods: {
       interesClick() {
         this.interestButton = !this.interestButton
-      },
-      // 点击跳转到详情页
-      datailsShow() {
       }
     },
     computed: {

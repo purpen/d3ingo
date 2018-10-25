@@ -3,6 +3,7 @@
     <div class="navigate-header">
       <div class="navigate-text">
         <router-link to="/shunde/trade_fairs/demandLogin">代售成果</router-link>
+        <router-link to="/shunde/trade_fairs/demandLogin" v-if="false">我的订单</router-link>
       </div>
       <div class="navigate-text arrow-text">
         <span>iPhone 7 Plus设计</span>
@@ -28,13 +29,138 @@
             </p>
           </div> -->
           <div class="des">
-            <div>
-              <img src="../../../../assets/images/1.jpg"/>
+            <div class="des-image">
+              <img class="image-size" src="../../../../assets/images/1.jpg"/>
             </div>
           </div>
         </div>
-      </el-col>
 
+        <!-- 评价 -->
+        <!-- <div class="select-item-box clearfix" v-if="statusLabel.evaluate"> -->
+        <div class="select-item-box clearfix" v-if="false">
+          <el-collapse v-model="selectCompanyCollapse">
+            <!-- <el-collapse-item title="评价" name="12" v-if="cooperateCompany">
+              <div class="evaluate-report clearfix" v-if="item.status === 18"> -->
+            <el-collapse-item title="评价" name="1">
+
+              <!-- 未提交的评价 -->
+              <div class="evaluate-report clearfix">
+                <p class="ev-c-ava">
+                  <!-- <img class="avatar" v-if="cooperateCompany.design_company.logo_url"
+                        :src="cooperateCompany.design_company.logo_url" width="60"/>
+                  <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="60"/> -->
+                  <img class="avatar" :src="require('assets/images/avatar_100.png')" width="60"/>
+                </p>
+                <p class="ev-c-name">
+                  <!-- {{ cooperateCompany.design_company.company_name }} -->
+                  北京品物设计有限公司
+                </p>
+                <el-row class="grade">
+                  <el-col :span="8">
+                    <p>设计水平</p>
+                    <el-rate
+                    v-model.number="evaluate.design_level"
+                    show-text>
+                  </el-rate>
+                  </el-col>
+                  <el-col :span="8">
+                    <p>响应速度</p>
+                    <el-rate
+                    v-model.number="evaluate.response_speed"
+                    show-text>
+                  </el-rate>
+                  </el-col>
+                  <el-col :span="8">
+                    <p>服务态度</p>
+                    <el-rate
+                    v-model.number="evaluate.service"
+                    show-text>
+                  </el-rate>
+                  </el-col>
+                </el-row>
+                <p class="ev-c-content">
+                  <el-input
+                    type="textarea"
+                    :rows="5"
+                    placeholder="请输入内容"
+                    v-model="evaluate.content">
+                  </el-input>
+                </p>
+                <p class="ev-c-btn">
+                  <el-button class="is-custom" type="primary" :loading="evaluateLoadingBtn" @click="evaluateSubmit">
+                    提交
+                  </el-button>
+                </p>
+              </div>
+
+              <!-- 提交的评价展示 -->
+              <!-- <div class="evaluate-result clearfix" v-if="item.status === 22"> -->
+              <div class="evaluate-result clearfix" v-if="false">
+                <el-row>
+                  <el-col :span="2">
+                    <p class="ev-c-ava fl">
+                      <!-- <img class="avatar" v-if="cooperateCompany.design_company.logo_url"
+                          :src="cooperateCompany.design_company.logo_url" width="50"/>
+                      <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="50"/> -->
+                      <img class="avatar" :src="require('assets/images/avatar_100.png')" width="50"/>
+                    </p>
+                  </el-col>
+                  <el-col :span="22">
+                    <div class="eva-content">
+                      <p class="ev-c-name">
+
+                        <!-- <router-link :to="{name: 'companyShow', params: {id: cooperateCompany.design_company.id}}"
+                                    target="_blank">
+                          {{ cooperateCompany.design_company.company_name }}
+                        </router-link> -->
+                        <router-link :to="{name: 'companyShow', params: {id: 1}}"
+                                    target="_blank">
+                          测试
+                        </router-link>
+                      </p>
+                      <!-- <p class="eva-score">
+                        <el-rate
+                          v-model.number="evaluate.design_level"
+                          disabled>
+                        </el-rate>
+                      </p> -->
+                      <el-row class="grade pl">
+                        <el-col :span="8">
+                          <p>设计水平</p>
+                          <el-rate
+                          v-model.number="evalu.design_level"
+                          disabled>
+                        </el-rate>
+                        </el-col>
+                        <el-col :span="8">
+                          <p>响应速度</p>
+                          <el-rate
+                          v-model.number="evalu.response_speed"
+                          disabled>
+                        </el-rate>
+                        </el-col>
+                        <el-col :span="8">
+                          <p>服务态度</p>
+                          <el-rate
+                          v-model.number="evalu.service"
+                          disabled>
+                        </el-rate>
+                        </el-col>
+                      </el-row>
+                      <p class="ev-c-content">
+                        <!-- {{ evalu.content }} -->
+                        测试测试测试
+                      </p>
+                    </div>
+                  </el-col>
+                </el-row>
+              </div>
+            </el-collapse-item>
+          </el-collapse>
+        </div>
+      </el-col>
+      
+      <!-- 右半部分 -->
       <el-col :xs="24" :sm="6" :md="6" :lg="6">
         <div class="design-case-slide">
           <div class="info">
@@ -42,22 +168,88 @@
               <img class="avatar" v-if="item.design_company.logo_url" :src="item.design_company.logo_url" width="100"/>
               <img class="avatar" v-else src="../../../../assets/images/avatar_100.png" width="100"/>
             </router-link> -->
-            <img class="avatar" src="../../../../assets/images/avatar_100.png" width="100"/>
-            <h3>北京品物设计有限公司</h3>
+            <div class="title-center">
+              <img class="avatar" src="../../../../assets/images/avatar_100.png" width="60"/>
+              <div class="company-name">北京品物设计有限公司</div>
+            </div>
             <div class="com-addr">
-              <span>联系方式</span>
-              <span>13655139068</span>
+              <span class="right-word">联系方式</span>
+              <span class="right-number">13655139068</span>
             </div>
           </div>
-          <div class="com-addr">
-            <span>出让方式</span>
-            <span>股权出让40%</span>
+        </div>
+        <!-- 出让的两行 -->
+        <div class="sell-stock">
+          <div class="right-sell">
+            <span class="right-word">出让方式</span>
+            <span class="right-pah">股权出让40%</span>
           </div>
-          <div class="com-addr">
-            <span>股权价格</span>
-            <span>￥50000.00</span>
+          <div class="right-sell">
+            <span class="right-word">股权价格</span>
+            <span class="right-money">￥50000.00</span>
           </div>
-
+        </div>
+        <!-- 已出售的中间部分 -->
+        <div class="sell-bought" v-if="false">
+          <div class="right-sell">
+            <span class="right-word">订单编号：</span>
+            <span class="right-serial">070122544000000341</span>
+          </div>
+          <div class="right-sell">
+            <span class="right-word">创建时间：</span>
+            <span class="right-data">2018-07-01 22:54</span>
+          </div>
+          <div class="right-sell">
+            <span class="right-word">出让方式：</span>
+            <span class="right-way">全额出售</span>
+          </div>
+          <div class="right-sell">
+            <span class="right-word">支付方式：</span>
+            <span class="right-way">对公转账</span>
+          </div>
+          <div class="right-sell">
+            <span class="right-word">支付金额：</span>
+            <span class="bought-money">￥50000.00</span>
+          </div>
+        </div>
+        <!-- 下面按钮 -->
+        <div class="right-interset">
+          <div class="list-contain" @click="interesClick">
+            <div class="list-button interset-hover" v-if="!interestButton">
+              <span class="button-text">感兴趣</span>
+            </div>
+            <div class="list-button interest-border" v-if="interestButton">
+              <span class="button-interest">已感兴趣</span>
+            </div>
+          </div>
+          <div class="list-left">
+            <div class="list-button buy-text">
+              <router-link :to="{name: 'managed_funds', params: {id: 1}}" class="details-text">立即购买</router-link>
+            </div>
+          </div>
+          <div class="list-left" v-if="false">
+            <div class="list-button buy-text">
+              <router-link :to="{name: 'managed_funds', params: {id: 1}}" class="to-pay">继续支付</router-link>
+            </div>
+          </div>
+          <div class="list-left" v-if="false">
+            <div class="bought-bg">
+              <span class="bought-text">已购买</span>
+            </div>
+          </div>
+        </div>
+        <el-collapse v-model="credential" class="patent">
+          <el-collapse-item title="专利证书" name="1">
+            <div class="patent-img"></div>
+          </el-collapse-item>
+        </el-collapse>
+        <div class="patent-details">
+          <div class="instruction-blook">
+          <span class="blook-left">产品功能说明书</span>
+          <div class="seen-button">
+            <span class="seen-text">查看详情</span>
+          </div>
+          </div>
         </div>
       </el-col>
 
@@ -71,10 +263,63 @@ export default {
   name: 'work_datails', // 代售成果详情页
   data() {
     return {
-      isFullLoading: false
+      isFullLoading: false,
+      interestButton: false,
+      selectCompanyCollapse: ['1'],
+      credential: ['1'],
+      evaluate: {
+        design_level: 0,
+        content: ''
+      },
+      evalu: {},
+      evaluateLoadingBtn: false // 提交评价的loading
     }
   },
-  created: function() {
+  methods: {
+    interesClick() {
+      this.interestButton = !this.interestButton
+    },
+    // 评价设计公司
+    evaluateSubmit() {
+      // if (this.evaluate.design_level === 0 || this.evaluate.response_speed === 0 || this.evaluate.service === 0) {
+      //   this.$message.error('每项分数至少为一星')
+      //   return
+      // }
+      // if (!this.evaluate.content) {
+      //   this.$message.error('请填写评价内容！')
+      //   return
+      // }
+
+      // let row = {
+      //   item_id: this.item.id,
+      //   service: this.evaluate.service,
+      //   content: this.evaluate.content,
+      //   design_level: this.evaluate.design_level,
+      //   response_speed: this.evaluate.response_speed
+      // }
+
+      // let self = this
+      // self.evaluateLoadingBtn = true
+      // self.$http
+      //   .post(api.demandUsersEvaluate, row)
+      //   .then(function(response) {
+      //     self.evaluateLoadingBtn = false
+      //     if (response.data.meta.status_code === 200) {
+      //       self.evalu = self.evaluate
+      //       self.item.status = 22
+      //       self.item.status_value = '已评价'
+      //       self.$message.success('评价成功!')
+      //     } else {
+      //       self.$message.error(response.data.meta.message)
+      //     }
+      //   })
+      //   .catch(function(error) {
+      //     self.$message.error(error.message)
+      //     self.evaluateLoadingBtn = false
+      //   })
+    }
+  },
+  created() {
   }
 }
 </script>
@@ -137,30 +382,23 @@ export default {
   line-height:24px;
 }
 .des {
-  padding-top: 30px;
+  padding-top: 40px;
   width:880px;
 }
+.des-image {
+  height: 660px;
+}
+.image-size {
+  width: 100%;
+  height: 100%;
+  border: 1px solid #979797;
+}
 .design-case-slide {
-  padding: 20px;
+  margin-top: 105px;
   color: #222;
-}
-
-.design-case-slide .info {
-  margin: 10px;
-  margin-bottom: 0;
-  text-align: center;
-}
-
-.design-case-slide .info h3 {
-  color: #222;
-}
-
-.design-case-slide .info p {
-  color: #222;
-}
-
-.info p span, .info p i {
-  margin-right: 10px
+  background: #FAFAFA;
+  height: 160px;
+  width: 280px;
 }
 
 .design-case-slide .info img {
@@ -170,20 +408,329 @@ export default {
   border: 1px solid #c8c8c8;
 }
 
-.design-case-slide h3 {
+.company-name {
+  padding-top: 10px;
+  font-family: PingFangSC-Regular;
+  font-size: 16px;
+  color: #222222;
+  letter-spacing: 0;
+}
+.title-center {
+  text-align: center;
+  padding-top: 20px;
+}
+.com-addr {
+  padding-top: 20px;
+}
+.right-sell {
+  height: 50px;
+  width: 280px;
+  line-height: 50px;
+}
+.sell-stock {
   margin-top: 10px;
-  font-size: 1.8rem;
-  line-height: 2.8rem;
+  height: 100px;
+  width: 280px;
+  background: #FAFAFA;
 }
-
-.design-case-slide .com-addr {
-  line-height: 2.8rem;
-  color: #666;
+.right-word {
+  font-family: PingFangSC-Regular;
+  font-size: 16px;
+  color: #222222;
+  padding-left: 16px;
 }
-
+.right-number {
+  font-family: PingFangSC-Regular;
+  font-size: 16px;
+  color: #999999;
+  text-align: right;
+  padding-left: 79px;
+}
+.right-pah {
+  font-family: PingFangSC-Regular;
+  font-size: 16px;
+  color: #999999;
+  text-align: right;
+  padding-left: 84px;
+}
+.right-money {
+  font-family: PingFangSC-Semibold;
+  font-size: 20px;
+  color: #FF5A5F;
+  text-align: right;
+  padding-left: 74px;
+}
 .edit-content {
-  padding: 20px;
+  padding-top: 30px;
   overflow: hidden;
+}
+
+/* 右边button */
+.right-interset {
+  padding-top: 20px;
+}
+.list-left {
+  cursor: pointer;
+  float: left;
+}
+.list-contain {
+  cursor: pointer;
+  float: left;
+  padding-right: 10px;
+}
+.list-button {
+  height: 40px;
+  width: 135px;
+  border: 1px solid #FF5A5F;
+  text-align: center;
+  line-height: 38px;
+  border-radius: 4px;
+}
+.buy-text {
+  background: #FF5A5F;
+}
+.buy-text:hover {
+  background: #D23C46;
+}
+.bought-bg {
+  height: 40px;
+  width: 135px;
+  text-align: center;
+  line-height: 38px;
+  border-radius: 4px;
+  background: #D2D2D2;
+  border: 1px solid #D2D2D2;
+}
+.bought-text {
+  position: relative;
+  font-family: PingFangSC-Regular;
+  font-size: 16px;
+  padding-left: 10px;
+  color: #fff;
+}
+.bought-text:before {
+  content: '';
+  position: absolute;
+  height: 24px;
+  top: -1px;
+  width: 24px;
+  left: -20px;
+  background: url('../../../../assets/images/trade_fairs/list/Purchase@2x.png') no-repeat center;
+  background-size: contain;
+}
+.details-text {
+  position: relative;
+  font-family: PingFangSC-Regular;
+  font-size: 16px;
+  padding-left: 10px;
+  color: #fff;
+}
+.details-text:before {
+  content: '';
+  position: absolute;
+  height: 24px;
+  top: -1px;
+  width: 24px;
+  left: -20px;
+  background: url('../../../../assets/images/trade_fairs/list/Purchase@2x.png') no-repeat center;
+  background-size: contain;
+}
+.to-pay {
+  position: relative;
+  font-family: PingFangSC-Regular;
+  font-size: 16px;
+  padding-left: 10px;
+  color: #fff;
+}
+.to-pay:before {
+  content: '';
+  position: absolute;
+  height: 24px;
+  top: -1px;
+  width: 24px;
+  left: -20px;
+  background: url('../../../../assets/images/trade_fairs/list/payment@2x.png') no-repeat center;
+  background-size: contain;
+}
+.button-text {
+  position: relative;
+  font-family: PingFangSC-Regular;
+  font-size: 16px;
+  padding-left: 10px;
+  color: #ff5a5f;
+}
+.button-text:before {
+  content: '';
+  position: absolute;
+  height: 24px;
+  top: -1px;
+  width: 24px;
+  left: -20px;
+  background: url('../../../../assets/images/trade_fairs/list/BeInterested02@2x.png') no-repeat center;
+  background-size: contain;
+}
+.list-button:hover {
+  height: 40px;
+  width: 135px;
+}
+.list-button:hover .button-text {
+  color: #FF5A5F;
+}
+.list-button:hover .contact-text {
+  color: #FF5A5F;
+}
+.list-button:hover .button-text:before {
+  background: url('../../../../assets/images/trade_fairs/list/BeInterestedHover02@2x.png') no-repeat center;
+  background-size: contain;
+}
+.interest-border {
+  border: 1px solid #E6E6E6;
+  background: #fff
+}
+.interset-hover:hover {
+  background: rgba(255,90,95,0.3);
+  border: 1px solid #FF4559;
+  border-radius: 4px;
+}
+.button-interest {
+  position: relative;
+  font-family: PingFangSC-Regular;
+  font-size: 16px;
+  padding-left: 15px;
+  color: #999;
+}
+.button-interest:before {
+  content: '';
+  position: absolute;
+  height: 24px;
+  top: -1px;
+  width: 24px;
+  left: -16px;
+  background: url('../../../../assets/images/trade_fairs/list/BeInterested02grey@2x.png') no-repeat center;
+  background-size: contain;
+}
+
+/* 专利证书 */
+.patent {
+  width: 280px;
+  background: #FAFAFA;
+  margin-top: 60px;
+  /* border-bottom: 1px solid black */
+}
+.patent-text {
+  padding-top: 18px;
+  width: 240px;
+  margin: 0 auto;
+  height: 22px;
+  font-family: PingFangSC-Regular;
+  font-size: 16px;
+  color: #222222;
+}
+.patent-img {
+  width: 200px;
+  height: 270px;
+  margin: 0 auto;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  background: #fff
+}
+.patent-details {
+  height: 60px;
+  width: 280px;
+  background: #FAFAFA;
+}
+.instruction-blook {
+  width: 236px;
+  height: 30px;
+  font-family: PingFangSC-Regular;
+  font-size: 16px;
+  color: #222222;
+  line-height: 30px;
+  padding-top: 15px;
+  margin: 0 auto;
+}
+.blook-left {
+  float:left;
+}
+.seen-button {
+  cursor: pointer;
+  float:right;
+  width: 80px;
+  height: 30px;
+  line-height: 28px;
+  text-align: center;
+  border: 1px solid #FF5A5F;
+  font-family: PingFangSC-Regular;
+  font-size: 14px;
+  color: #FF5A5F;
+  border-radius: 4px;
+}
+.seen-button:hover {
+  background: rgba(255,90,95,0.30);
+}
+/* 已售出样式 */
+.sell-bought {
+  margin-top: 10px;
+  height: 250px;
+  width: 280px;
+  background: #FAFAFA;
+}
+.right-serial {
+  font-family: PingFangSC-Regular;
+  font-size: 16px;
+  color: #999999;
+  text-align: right;
+}
+.right-data {
+  font-family: PingFangSC-Regular;
+  font-size: 16px;
+  color: #999999;
+  text-align: right;
+  padding-left: 30px;
+}
+.right-way {
+  font-family: PingFangSC-Regular;
+  font-size: 16px;
+  color: #999999;
+  text-align: right;
+  padding-left: 102px;
+}
+.bought-money {
+  font-family: PingFangSC-Semibold;
+  font-size: 20px;
+  color: #FF5A5F;
+  text-align: right;
+  padding-left: 60px;
+}
+
+/* 评价 */
+.select-item-box {
+  margin: 20px 0 20px 0;
+}
+.evaluate-report {
+  text-align: center;
+}
+.evaluate-report .ev-c-name {
+  line-height: 2;
+}
+.eva-content {
+  margin: 15px 0 20px 20px;
+}
+.eva-content .ev-c-name {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+.eva-content .ev-c-content {
+  padding: 10px 0;
+}
+.grade>.el-col:not(:first-child) {
+  border-left: 1px solid #e6e6e6;
+}
+.pl>.el-col:not(:first-child) {
+  padding-left: 20px;
+}
+p.ev-c-content {
+  padding: 10px 50px;
 }
 
 p.img-des {
