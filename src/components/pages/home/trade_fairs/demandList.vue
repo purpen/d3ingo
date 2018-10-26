@@ -493,6 +493,7 @@
             let mothod = api.sdDemandRelease
             if (this.isUpdate) {
               mothod = api.sdDemandDemandUpdate
+              this.isUpdate = false
             }
             self.$http.post(mothod, row).then((response) => {
               if (response.data.meta.status_code === 200) {
