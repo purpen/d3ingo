@@ -4,7 +4,7 @@
       <div class="right-background"></div>
       <div class="left-background"></div>
       <!-- 代售成果 -->
-      <div class="empty" v-if="false">
+      <div class="empty">
         <div class="empty-list">
           <span class="empty-img"></span>
           <p class="empty-content">暂无服务商上传代售成果，请耐心等待～</p>
@@ -12,7 +12,7 @@
       </div>
 
       <!-- 列表 -->
-      <div class="large-list">
+      <div class="large-list" v-if="false">
         <div class="list-center">
           <el-row :gutter="20" class="list-cloud">
             <el-col :span="6" class="item-cloud">
