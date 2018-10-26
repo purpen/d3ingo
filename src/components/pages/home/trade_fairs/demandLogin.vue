@@ -7,11 +7,11 @@
             <router-link :to="{name: 'demand_list', query: {type: 1}}" class="banner-text">发布需求</router-link>
           </div>
         </div>
-        <div class="banner-button" v-if="user.type === 2">
+        <!-- <div class="banner-button" v-if="user.type === 2">
           <div class="text-width">
             <span class="banner-text">上传成果</span>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="list-background">
@@ -22,17 +22,17 @@
         <div class="list-text list-left" @click="demandShow" :class="{'active': demandShows}" v-if="user.type === 2">
           <span>设计需求</span>
         </div>
-        <div class="list-text list-left" @click="demandShow" :class="{'active': demandShows}" v-if="user.type === 1">
+        <!-- <div class="list-text list-left" @click="demandShow" :class="{'active': demandShows}" v-if="user.type === 1">
           <span>代售成果</span>
-        </div>
+        </div> -->
       </div>
     </div>
     <briefContent v-if="briefShows">
     </briefContent>
     <demandDesign v-if="demandShows && user.type === 2">
     </demandDesign>
-    <saleResult v-if="demandShows && user.type === 1">
-    </saleResult>
+    <!-- <saleResult v-if="demandShows && user.type === 1">
+    </saleResult> -->
   </div>
 </template>
 
@@ -55,8 +55,8 @@
       }
     },
     created() {
-      this.demandShows = true
-      console.log('user', this.user)
+      // this.demandShows = true
+      this.briefShows = true
     },
     mounted() {
     },
