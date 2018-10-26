@@ -598,8 +598,8 @@
     background: url(../../../assets/images/v_center_menu/Company.png) no-repeat center;
     background-size: contain
   }
-  .menu-list .item.achieveList::before {
-    background: url(../../../assets/images/v_center_menu/fire@2x.png) no-repeat center;
+  .menu-list .item.demandList::before {
+    background: url(../../../assets/images/v_center_menu/Fire.png) no-repeat center;
     background-size: contain
   }
   .computer-btn {

@@ -4,12 +4,12 @@
       <router-link :to="{name: 'demand_list', query: {type: 1}}"
         active-class="false" :class="{'item': true, 'is-active': menuType === 1}">我的需求
       </router-link>
-      <router-link :to="{name: 'demand_list', query: {type: 2}}"
+      <!-- <router-link :to="{name: 'demand_list', query: {type: 2}}"
         active-class="false" :class="['item', {'is-active': menuType === 2}]">我的收藏
       </router-link>
       <router-link :to="{name: 'demand_list', query: {type: 3}}"
         active-class="false" :class="['item', {'is-active': menuType === 3}]">我的订单
-      </router-link>
+      </router-link> -->
     </div>
   </div>
 </template>
