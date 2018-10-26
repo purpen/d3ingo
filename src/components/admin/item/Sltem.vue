@@ -243,7 +243,7 @@ export default {
         .then(response => {
           if (response.data.meta.status_code === 200) {
             for (let i = 0; i < len; i++) {
-              if (id === this.tableData[i].id) {
+              if (this.tableData[i] && id === this.tableData[i].id) {
                 this.tableData.splice(i, 1)
               }
             }
@@ -269,7 +269,8 @@ export default {
 }
 </script>
 <style scoped>
-.edit, .delete {
+.edit,
+.delete {
   height: 40px;
   display: flex;
   align-items: center;
