@@ -497,7 +497,8 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .home_banner {
-    max-height: 500px
+    max-height: 500px;
+    overflow: hidden;
   }
 
   .banner-link {
@@ -1036,10 +1037,10 @@
       display: none
     }
   }
-  @media screen and ( max-width: 480px) {
+  /* @media screen and ( max-width: 480px) {
   .content-box {
     width: 375px;
     overflow-x: hidden;
   }
-}
+} */
 </style>

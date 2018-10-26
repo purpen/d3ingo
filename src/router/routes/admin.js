@@ -52,6 +52,16 @@ module.exports = [
     },
     component: require('@/components/admin/item/List')
   },
+  // 小程序列表
+  {
+    path: '/admin/item/Sltem',
+    name: 'adminItemSltem',
+    meta: {
+      title: '小程序列表',
+      requireAuth: true
+    },
+    component: require('@/components/admin/item/Sltem')
+  },
   // 项目详情
   {
     path: '/admin/item/show/:id',
@@ -150,6 +160,26 @@ module.exports = [
       requireAuth: true
     },
     component: require('@/components/admin/company/Show')
+  },
+  // 顺德交易会成果列表
+  {
+    path: '/admin/trade_fairs/AchievmentList',
+    name: 'adminAchievmentList',
+    meta: {
+      title: '成果列表',
+      requireAuth: true
+    },
+    component: require('@/components/admin/trade_fairs/AchievmentList')
+  },
+  // 顺德交易会需求列表
+  {
+    path: '/admin/trade_fairs/DemandtList',
+    name: 'adminDemandtList',
+    meta: {
+      title: '需求列表',
+      requireAuth: true
+    },
+    component: require('@/components/admin/trade_fairs/DemandtList')
   },
   // 需求公司列表
   {
