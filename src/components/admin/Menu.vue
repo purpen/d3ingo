@@ -22,7 +22,7 @@
         </el-submenu>
         <el-submenu index="30">
           <template slot="title"><i class="fa fa-product-hunt"></i> 顺德交易会</template>
-            <el-menu-item index="achievmentList" :route="{name:'adminAchievmentList'}">成果列表</el-menu-item>
+            <!-- <el-menu-item index="achievmentList" :route="{name:'adminAchievmentList'}">成果列表</el-menu-item> -->
             <el-menu-item index="demandtList" :route="{name:'adminDemandtList'}">需求列表</el-menu-item>
         </el-submenu>
         <el-submenu index="5">
