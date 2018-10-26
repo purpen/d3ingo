@@ -16,7 +16,8 @@
               <el-menu-item index="commonly_sites" :route="menu.commonly_sites">设计工具</el-menu-item>
               <el-menu-item index="innovation_index" :route="menu.innovation_index"
                 v-if="isAdmin">创新指数</el-menu-item>
-              <el-menu-item index="trade_fairs" :route="menu.home_page">交易会</el-menu-item>
+              <el-menu-item index="trade_fairs" :route="menu.home_page" v-if="!token">交易会</el-menu-item>
+              <el-menu-item index="trade_fairs" :route="menu.demand_login" v-if="token">交易会</el-menu-item>
             </el-menu>
           </hgroup>
           <div class="nav-right nav-menu" v-if="isLogin">
@@ -104,9 +105,8 @@
             <li @click="closeMenu" v-if="isAdmin">
               <router-link :to="menu.innovation_index">创新指数</router-link>
             </li>
-            <!-- <li @click="closeMenu">
-              <router-link :to="menu.home_page">交易会</router-link>
-            </li> -->
+            <li @click="closeMenu" :route="menu.home_page" v-if="!token">交易会</li>
+            <li @click="closeMenu" :route="menu.demand_login" v-if="token">交易会</li>
             <li @click="closeMenu" v-show="!isLogin">
               <router-link :to="menu.design">设计服务商入驻</router-link>
             </li>
@@ -229,6 +229,8 @@
             <li @click="closeMenu" v-if="isAdmin">
               <router-link :to="menu.innovation_index">创新指数</router-link>
             </li>
+            <li @click="closeMenu" :route="menu.home_page" v-if="!token">交易会</li>
+            <li @click="closeMenu" :route="menu.demand_login" v-if="token">交易会</li>
             <li @click="closeMenu" v-show="!isLogin">
               <router-link :to="menu.design">设计服务商入驻</router-link>
             </li>
@@ -273,7 +275,9 @@
           server: {path: '/server'},
           design: {path: '/server_design'},
           article: {path: '/article/list'},
-          home_page: {path: '/shunde/trade_fairs/demand_login'},
+          home_page: {path: '/shunde/trade_fairs/homePage'}, // 交易会未登录首页
+          demand_login: {path: '/shunde/trade_fairs/demandLogin'}, // 交易会登陆后首页
+          // demand_login: {path: '/shunde/trade_fairs/saleResult/workDatails'},
           design_case: {path: '/design_case/general_list'},
           commonly_sites: {path: '/vcenter/commonly_sites'},
           innovation_index: {path: '/innovation_index/home'},
@@ -412,6 +416,9 @@
       isMob() {
         return this.$store.state.event.isMob
       },
+      token() {
+        return this.$store.state.event.token
+      },
       isLogin: {
         get() {
           return this.$store.state.event.token
@@ -430,6 +437,7 @@
       isAdmin() {
         return this.$store.state.event.user.role_id >= 10
       },
+      // is-active下划线添加
       menuactive() {
         let menu = this.$route.path.split('/')[1]
         let menu2 = this.$route.path.split('/')[2]
@@ -437,6 +445,8 @@
           return 'article'
         } else if (menu2 === 'commonly_sites' || menu2 === 'veer_image' || menu2 === 'trend_report' || menu2 === 'exhibition') {
           return 'commonly_sites'
+        } else if (menu === 'shunde') {
+          return 'trade_fairs'
         }
         return menu
       },

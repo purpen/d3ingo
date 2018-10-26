@@ -2,72 +2,35 @@
   <div class="content-box">
     <div class="home_banner">
       <div class="background-banner">
-        <div class="banner-button" v-if="false">
-          <div class="text-width">
-            <span class="banner-text">发布需求</span>
-          </div>
-        </div>
         <div class="banner-button">
           <div class="text-width">
-            <span class="banner-text">上传成果</span>
+            <router-link to="/shunde/trade_fairs/demandLogin" class="banner-text">立即参与</router-link>
           </div>
         </div>
       </div>
     </div>
-    <div class="list-background">
-      <div class="list-contant">
-        <div class="list-text" @click="briefShow" :class="{'active': briefShows}">
-          <span>活动简介</span>
-        </div>
-        <div class="list-text list-left" @click="demandShow" :class="{'active': demandShows}">
-          <span>设计需求</span>
-        </div>
-        <div class="list-text list-left" @click="demandShow" :class="{'active': demandShows}" v-if="false">
-          <span>代售成果</span>
-        </div>
-      </div>
-    </div>
-    <briefContent v-if="briefShows">
+    <briefContent>
     </briefContent>
-    <demandDesign v-if="demandShows">
-    </demandDesign>
-    <saleResult v-if="false">
-    </saleResult>
   </div>
 </template>
 
 <script>
   // import api from '@/api/api'
-  import briefContent from '@/components/pages/home/trade_fairs/brief_content'
-  import demandDesign from '@/components/pages/home/trade_fairs/demand_design'
-  import saleResult from '@/components/pages/home/trade_fairs/sale_result'
+  import briefContent from '@/components/pages/home/trade_fairs/briefContent'
   export default {
-    name: 'demand_login',
+    name: 'home_page',
     components: {
-      briefContent,
-      demandDesign,
-      saleResult
+      briefContent
     },
     data() {
       return {
-        briefShows: false,
-        demandShows: false
       }
     },
     created() {
-      this.briefShows = true
     },
     mounted() {
     },
     methods: {
-      briefShow() {
-        this.briefShows = true
-        this.demandShows = false
-      },
-      demandShow() {
-        this.demandShows = true
-        this.briefShows = false
-      }
     },
     computed: {
       isMob() {
@@ -126,38 +89,6 @@
     font-family: PingFangSC-Semibold;
     font-size: 20px;
     color: #3917C3;
-  }
-  .list-background {
-    background: #3519B2;
-    border-bottom: 1px solid rgba(2,235,165,.3)
-  }
-  .list-contant{
-    height: 40px;
-    width: 168px;
-    margin: 0 auto;
-    line-height: 40px;
-  }
-  .list-text {
-    cursor: pointer;
-    float: left;
-    width:64px;
-    height:38px;
-    font-size:16px;
-    font-family:PingFangSC-Regular;
-    font-weight:400;
-    color: #fff;
-    line-height:38px;
-  }
-  .list-left {
-    margin-left: 40px;
-  }
-  .list-text:hover {
-    color: #02EBA5;
-    border-bottom: 2px solid #02EBA5
-  }
-  .active {
-    color: #02EBA5;
-    border-bottom: 2px solid #02EBA5
   }
   @media screen and (max-width: 1980px) {
     .banner-button {
