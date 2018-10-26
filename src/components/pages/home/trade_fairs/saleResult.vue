@@ -68,7 +68,7 @@
             联系客服
           </div>
         </div>
-        <div class="right-bottom">
+        <div class="right-bottom" @click="demandBanner">
           <div class="pMassgae-bottom">
             发布设计需求
           </div>
@@ -95,6 +95,9 @@
     methods: {
       interesClick() {
         this.interestButton = !this.interestButton
+      },
+      demandBanner() {
+        this.$router.push({name: 'demand_list', query: {type: 1}})
       },
       listDatail() {
         // this.$router.push({path: '/shunde/trade_fairs/saleResult/workDatails', params: {id: 1}})
