@@ -55,8 +55,7 @@
       }
     },
     created() {
-      // this.demandShows = true
-      this.briefShows = true
+      this.demandShows = true
     },
     mounted() {
     },
