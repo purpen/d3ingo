@@ -1,5 +1,5 @@
 <template>
-  <div class="content-box"  v-loading="isLoading">
+  <div class="content-box" v-loading="isLoading">
     <div class="large-background">
       <div class="right-background"></div>
       <div class="left-background"></div>
@@ -34,8 +34,8 @@
                   </div>
                   <div class="list-bottom" :class="{'bottom-style': interestButton}">
                     <div class="list-left">
-                      <div class="list-button" :route="'/shunde/trade_fairs/saleResult/workDatails'">
-                        <span class="details-text" @click.stop="upDetails(item.id)">查看详情</span>
+                      <div class="list-button" @click.stop="upDetails(item.id)">
+                        <span class="details-text">查看详情</span>
                       </div>
                     </div>
                     <div class="list-contain" @click="interesClick">
@@ -77,7 +77,7 @@
       title="需求详情"
       :visible.sync="dialogUpdateVisible"
       size="tiny"
-      class="submit-form scroll-bar"
+      class="submit-form seen-deta"
       >
       <div>
         <div class="details">
@@ -136,7 +136,7 @@
               <span>所属行业</span>
             </el-col>
             <el-col :span="18">
-              {{formup.type_value}}
+              {{formup.field_value}}
             </el-col>
           </el-row>
         </div>
@@ -155,24 +155,24 @@
             <el-col :span="6">
               <span>功能描述</span>
             </el-col>
-            <el-col :span="18">
+            <el-col :span="18" class="content-height">
               {{formup.content}}
             </el-col>
           </el-row>
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <div class="dialog-bottom" :class="{'bottom-style': interestButton}">
-          <div class="list-contain" @click="interesClick">
-          <div class="list-button" v-if="!interestButton">
+        <div class="dia-bottom" :class="{'dialog-bottom': interestButton}">
+          <div class="dia-contain" @click="interesClick">
+          <div class="dia-button" v-if="!interestButton">
             <span class="button-text">感兴趣</span>
           </div>
-          <div class="list-button interest-border" v-if="interestButton">
-            <span class="button-interest">已感兴趣</span>
+          <div class="dia-button interest-dia" v-if="interestButton">
+            <span class="dia-interest">已感兴趣</span>
           </div>
         </div>
-        <div class="list-right" v-if="interestButton">
-          <div class="list-button">
+        <div class="dia-right" v-if="interestButton">
+          <div class="dia-button">
             <span class="contact-text">联系他</span>
           </div>
         </div>
@@ -191,7 +191,7 @@
         interestButton: false,
         dialogUpdateVisible: false,
         demandList: '',
-        formup: '',
+        formup: {},
         isLoading: false
       }
     },
@@ -232,13 +232,14 @@
       },
       // 获取详情
       upDetails(id) {
-        this.isLoading = true
+        this.formup = {}
         this.dialogUpdateVisible = true
         this.$http.get(api.sdDemandDesignDemandInfo, {params: {demand_id: id}}).then(
           (response) => {
             if (response.data.meta.status_code === 200) {
-              this.isLoading = false
-              this.formup = response.data.data
+              setTimeout(() => {
+                this.formup = response.data.data
+              }, 1)
             }
           }
         )
@@ -277,8 +278,12 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .content-box {
+    min-height: 200px;
+  }
   .large-background {
     position: relative;
+    min-height: 200px;
   }
   .right-background {
     position: absolute;
@@ -618,12 +623,76 @@
     font-size: 14px;
     color: #666;
   }
-  .dialog-bottom {
-    width: 170px;
+  .dia-bottom {
+    width: 120px;
     margin: 0 auto;
-    padding-top: 10px;
+  }
+  .dialog-bottom {
+    width: 260px;
   }
   .submit-form {
     overflow: hidden
+  }
+  .content-height {
+    overflow-x: hidden;
+    max-height: 180px;
+  }
+  /* 感兴趣 */
+  .dia-contain {
+    cursor: pointer;
+    float: left;
+  }
+  .dia-right {
+    cursor: pointer;
+    float: left;
+    padding-left: 20px;
+  }
+  .dia-button {
+    height: 34px;
+    width: 120px;
+    border: 1px solid #E6E6E6;
+    text-align: center;
+    line-height: 32px;
+    border-radius: 4px;
+  }
+  .interest-dia {
+    border: 1px solid #FF5A5F;
+  }
+  .dia-interest {
+    position: relative;
+    font-family: PingFangSC-Regular;
+    font-size: 12px;
+    padding-left: 15px;
+    color: #FF5A5F;
+  }
+  .dia-interest:before {
+    content: '';
+    position: absolute;
+    height: 24px;
+    top: -4px;
+    width: 24px;
+    left: -8px;
+    background: url('../../../../assets/images/trade_fairs/list/BeInterestedHover02@2x.png') no-repeat center;
+    background-size: contain;
+  }
+  .dia-button:hover {
+    height: 34px;
+    width: 120px;
+    border: 1px solid #FF5A5F;
+    border-radius: 4px;
+  }
+  .dia-button:hover .button-text {
+    color: #FF5A5F;
+  }
+  .dia-button:hover .button-text:before {
+    background: url('../../../../assets/images/trade_fairs/list/BeInterested02@2x.png') no-repeat center;
+    background-size: contain;
+  }
+  .dia-button:hover .contact-text {
+    color: #FF5A5F;
+  }
+  .dia-button:hover .contact-text:before {
+    background: url('../../../../assets/images/trade_fairs/list/ContactHover@02x.png') no-repeat center;
+    background-size: contain;
   }
 </style>
