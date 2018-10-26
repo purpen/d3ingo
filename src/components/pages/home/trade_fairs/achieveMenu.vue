@@ -1,13 +1,13 @@
 <template>
   <div class="vcenter-menu-sub" v-if="!isMob">
     <div class="vcenter-menu-sub-list">
-      <router-link :to="{name: 'achieveList', query: {type: 1}}"
+      <router-link :to="{name: 'achieve_list', query: {type: 1}}"
         active-class="false" :class="{'item': true, 'is-active': menuType === 1}">设计成果
       </router-link>
-      <router-link :to="{name: 'achieveList', query: {type: 2}}"
+      <router-link :to="{name: 'achieve_list', query: {type: 2}}"
         active-class="false" :class="['item', {'is-active': menuType === 2}]">我的收藏
       </router-link>
-      <router-link :to="{name: 'achieveList', query: {type: 3}}"
+      <router-link :to="{name: 'achieve_list', query: {type: 3}}"
         active-class="false" :class="['item', {'is-active': menuType === 3}]">我的订单
       </router-link>
     </div>

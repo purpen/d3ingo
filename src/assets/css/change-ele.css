@@ -389,6 +389,13 @@
   .el-dialog--large {
     width: 1240px;
   }
+  .patent .el-carousel__container {
+    width: 200px;
+    height: 270px;
+    margin: 0 auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
   .el-alert {
     border-radius: 0;
   }

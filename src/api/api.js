@@ -474,17 +474,16 @@ export default {
   sdDemandDemandShut: '/sd/demand/demandShut', // POST 关闭需求
   sdDemandDemandUpdate: '/sd/demand/demandUpdate', // POST 更新需求
   sdDemandDemandInfo: '/sd/demand/demandInfo', // GET 需求详情
-  sdDemandDesignDemandInfo: '/sd/demand/designDemandInfo', // GET 设计公司查看某个需求详情
-  sdDemandDesignDemandList: '/sd/demand/designDemandList', // GET 设计公司查看需求列表
   sdDemandDemandList: '/sd/demand/demandList', // GET 需求列表
 
   // 顺德设计方
   sdDesignCancelCollectDemand: '/sd/design/cancelCollectDemand', // POST 取消收藏需求
   sdDesignDesignCollectList: '/sd/design/designCollectList', // GET 收藏列表
   sdDesignCollectDemand: '/sd/design/collectDemand', // POST 收藏需求
-
+  sdDemandDesignDemandInfo: '/sd/demand/designDemandInfo', // GET 设计公司查看某个需求详情
+  sdDemandDesignDemandList: '/sd/demand/designDemandList', // GET 设计公司查看需求列表
   // 顺德后台
-  designDemandLists: 'designDemand/lists', // GET 发布的设计需求列表
-  designDemandAuditStatus: 'designDemand/auditStatus' // PUT  设计需求信息审核
+  adminDesignDemandLists: 'admin/designDemand/lists', // GET 发布的设计需求列表
+  adminDesignDemandAuditStatus: 'admin/designDemand/auditStatus' // PUT  设计需求信息审核
 
 }

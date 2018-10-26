@@ -1,14 +1,14 @@
 <template>
   <div class="blank30 vcenter">
     <el-row>
-      <v-menu currentName="achieve_list"></v-menu>
+      <v-menu currentName="achieveList"></v-menu>
       <div :class="{'vcenter-right-plus': leftWidth === 4,
         'vcenter-right': leftWidth === 2,
         'vcenter-right-mob': isMob}" class="vcenter-phone">
         <div class="right-content vcenter-container">
           <div class="content-item-box">
             <v-menu-sub></v-menu-sub>
-            <div v-if="type === 2">
+            <div v-if="type === 1">
               <div class="no-demand" v-if="!demandList.length">
                 <img src="../../../../assets/images/trade_fairs/default/NoDemand@2x.png" alt="">
                 <p class="tc-9">还没有上传成果，立即上传一个吧～</p>
@@ -423,7 +423,7 @@
       }
     },
     created () {
-      this.getDemandList()
+      // this.getDemandList()
     }
   }
 </script>

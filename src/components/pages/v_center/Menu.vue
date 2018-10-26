@@ -166,7 +166,7 @@
               </el-tooltip>
               <el-tooltip class="item" :effect="DarkorLight" content="顺德交易会" placement="right">
               <a @click="alick" :to="'/shunde/trade_fairs/demandList'"
-                :class="['item', 'demandList', {'is-active': currentName === 'demandList'}]">
+                :class="['item', 'achieveList', {'is-active': currentName === 'demandList'}]">
                 顺德交易会
               </a>
               </el-tooltip>
@@ -240,7 +240,7 @@
                 我的钱包
               </a>
               <a @click="alick" :to="'/shunde/trade_fairs/demandList'"
-                :class="['item', 'demandList', {'is-active': currentName === 'demandList'}]">
+                :class="['item', 'achieveList', {'is-active': currentName === 'demandList'}]">
                 顺德交易会
               </a>
             </div>
@@ -596,6 +596,10 @@
   }
   .menu-list .item.company::before {
     background: url(../../../assets/images/v_center_menu/Company.png) no-repeat center;
+    background-size: contain
+  }
+  .menu-list .item.achieveList::before {
+    background: url(../../../assets/images/v_center_menu/fire@2x.png) no-repeat center;
     background-size: contain
   }
   .computer-btn {

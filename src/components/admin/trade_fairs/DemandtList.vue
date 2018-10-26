@@ -12,13 +12,13 @@
               <router-link :to="{name: 'adminDemandtList'}" active-class="false" :class="{'item': true, 'is-active': menuType == ''}">全部</router-link>
             </div>
             <div class="admin-menu-sub-list">
-              <router-link :to="{name: 'adminDemandtList', query: {type: 3}}" :class="{'item': true, 'is-active': menuType === 3}" active-class="false">待审核</router-link>
+              <router-link :to="{name: 'adminDemandtList', query: {type: 1}}" :class="{'item': true, 'is-active': menuType === 1}" active-class="false">待审核</router-link>
             </div>
             <div class="admin-menu-sub-list">
-              <router-link :to="{name: 'adminDemandtList', query: {type: 1}}" :class="{'item': true, 'is-active': menuType === 1}" active-class="false">通过审核</router-link>
+              <router-link :to="{name: 'adminDemandtList', query: {type: 2}}" :class="{'item': true, 'is-active': menuType === 2}" active-class="false">通过审核</router-link>
             </div>
             <div class="admin-menu-sub-list">
-              <router-link :to="{name: 'adminDemandtList', query: {type: 2}}" :class="{'item': true, 'is-active': menuType === 2}" active-class="false">未通过</router-link>
+              <router-link :to="{name: 'adminDemandtList', query: {type: -1}}" :class="{'item': true, 'is-active': menuType === -1}" active-class="false">未通过</router-link>
             </div>
           </div>
 
@@ -68,14 +68,14 @@
               label="内容"
               min-width="160">
                 <template slot-scope="scope">
-                  <p>项目名称: {{ scope.row.company_name }}</p>
-                  <p>设计类别: {{ scope.row.company_abbreviation }}</p>
-                  <p>项目周期: {{ scope.row.web }}</p>
-                  <p>项目预算: {{ scope.row.company_type_val }}</p>
-                  <p>产品类别: {{ scope.row.company_size_val }}</p>
+                  <p>项目名称: {{ scope.row.name }}</p>
+                  <p>设计类型: {{ scope.row.design_types_value}}</p>
+                  <p>项目周期: {{ scope.row.cycle_value }}</p>
+                  <p>项目预算: {{ scope.row.design_cost_value }}</p>
+                  <p>产品类别: {{ scope.row.type_value }}</p>
                   <p>所属行业: {{ scope.row.province_value }}</p>
-                  <p>工作地点: 北京市</p>
-                  <p>功能描述: 啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊</p>
+                  <p>工作地点: </p>
+                  <p>功能描述: </p>
                 </template>
             </el-table-column>
             <el-table-column
@@ -89,23 +89,22 @@
             </el-table-column>
             <el-table-column
               align="center"
-              prop="verify_status"
+              prop="status"
               label="审核状态">
                 <template slot-scope="scope">
-                  <p v-if="scope.row.verify_status === 0"><el-tag type="gray">未审核</el-tag></p>
-                  <p v-if="scope.row.verify_status === 1"><el-tag type="success">通过</el-tag></p>
-                  <p v-if="scope.row.verify_status === 2"><el-tag type="danger">失败</el-tag></p>
-                  <p v-if="scope.row.verify_status === 3"><el-tag type="warning">待审核</el-tag></p>
+                  <p v-if="scope.row.status === 2"><el-tag type="success">已发布</el-tag></p>
+                  <p v-if="scope.row.status === -1"><el-tag type="danger">未通过</el-tag></p>
+                  <p v-if="scope.row.status === 1"><el-tag type="warning">待审核</el-tag></p>
                 </template>
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
               align="center"
               label="状态">
                 <template slot-scope="scope">
                   <p v-if="scope.row.status === 1"><el-tag type="success">正常</el-tag></p>
                   <p v-else><el-tag type="danger">禁用</el-tag></p>
                 </template>
-            </el-table-column>
+            </el-table-column> -->
             <el-table-column
               align="center"
               prop="created_at"
@@ -120,21 +119,14 @@
                   <p class="operate">
                     <span class="clearfix">
                       <a href="javascript:void(0);"
-                        v-if="scope.row.verify_status === 2 || scope.row.verify_status === 3" @click="setVerify(scope.$index, scope.row, 1)" class="tag-pass">通过</a>
-                      <a href="javascript:void(0);" v-if="scope.row.verify_status === 1 || scope.row.verify_status === 3" @click="setRefuseRease(scope.$index, scope.row, 2)"
+                        v-if="scope.row.status === 1" @click="setVerify(scope.$index, scope.row,2)" class="tag-pass">通过</a>
+                      <a href="javascript:void(0);" v-if="scope.row.status === 1" @click="setRefuseRease(scope.$index, scope.row, -1)"
                       class="tag-refuse">拒绝</a>
                     </span>
-                    <a href="javascript:void(0);" v-if="scope.row.status === 1" @click="setStatus(scope.$index, scope.row, 0)" class="tag-disable">禁用</a>
+                    <!-- <a href="javascript:void(0);" v-if="scope.row.status === 1" @click="setStatus(scope.$index, scope.row, 0)" class="tag-disable">禁用</a>
                     <a href="javascript:void(0);" v-else @click="setStatus(scope.$index, scope.row, 1)"
-                    class="tag-able">启用</a>
-                    <router-link :to="{name: 'adminCompanyShow', params: {id: scope.row.id}}" target="_blank" class="tag-view">查看</router-link>
+                    class="tag-able">启用</a> -->
                   </p>
-                  <!--
-                  <p>
-                    <a href="javascript:void(0);" @click="handleEdit(scope.$index, scope.row.id)">编辑</a>
-                    <a href="javascript:void(0);" @click="handleDelete(scope.$index, scope.row.id)">删除</a>
-                  </p>
-                  -->
                 </template>
             </el-table-column>
           </el-table>
@@ -228,21 +220,25 @@ export default {
       this.query.page = val
       this.$router.push({name: this.$route.name, query: this.query})
     },
+
+    // 拒绝
     setRefuseRease (index, item, evt) {
       this.dialogVisible = !this.dialogVisible
       this.verify.index = index
       this.verify.item = item
       this.verify.evt = evt
     },
+
+    // 通过
     setVerify(index, item, evt, refuseRease = '') {
       this.dialogVisible = false
       var id = item.id
       var self = this
-      self.$http.put(api.adminCompanyVerifyOk, {id: id, status: evt, verify_summary: refuseRease})
+      self.$http.put(api.adminDesignDemandAuditStatus, {demand_id: id, status: evt})
       .then (function(response) {
         self.verify.refuseRease = ''
         if (response.data.meta.status_code === 200) {
-          self.itemList[index].verify_status = evt
+          self.itemList[index].status = evt
           self.$message.success('操作成功')
         } else {
           self.$message.error(response.data.meta.message)
@@ -289,7 +285,7 @@ export default {
         this.menuType = parseInt(self.query.type)
       }
       self.isLoading = true
-      self.$http.get(api.designDemandLists, {params: {page: self.query.page, per_page: self.query.pageSize, sort: self.query.sort, type_verify_status: self.query.type, evt: self.query.evt, val: self.query.val}})
+      self.$http.get(api.adminDesignDemandLists, {params: {page: self.query.page, per_page: self.query.pageSize, sort: self.query.sort, status: self.query.type}})
       .then (function(response) {
         self.isLoading = false
         self.tableData = []
