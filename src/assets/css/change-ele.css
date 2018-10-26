@@ -370,8 +370,11 @@
   .el-dialog {
     border-radius: 4px;
   }
+  .seen-deta .el-dialog--tiny {
+    width: 480px
+  }
   .el-dialog--tiny {
-      width: 380px
+    width: 380px
   }
   .el-dialog--tiny .el-dialog__header {
     padding: 10px 20px;
@@ -388,6 +391,13 @@
 
   .el-dialog--large {
     width: 1240px;
+  }
+  .patent .el-carousel__container {
+    width: 200px;
+    height: 270px;
+    margin: 0 auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
   }
   .el-alert {
     border-radius: 0;
@@ -645,5 +655,8 @@
   /* 合同阶段选择按钮 */
   .el-form-item__content .el-radio-group {
     width: 100%;
+  }
+  .submit-form>.el-dialog .el-dialog__body {
+    padding: 0 20px;
   }
 }

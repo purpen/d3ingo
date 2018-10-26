@@ -133,6 +133,10 @@
                 :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
                 我的钱包
               </a>
+              <!-- <a @click="alick" :to="'/shunde/trade_fairs/achieveList'"
+                :class="['item', 'demandList', {'is-active': currentName === 'achieveList'}]">
+                顺德交易会
+              </a> -->
               </el-tooltip>
               <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" 
                 v-if="isMob && eventUser.company">
@@ -160,9 +164,9 @@
                 我的钱包
               </a>
               </el-tooltip>
-              <el-tooltip class="item" :effect="DarkorLight" content="我的钱包" placement="right">
-              <a @click="alick" :to="'/vcenter/wallet/list'"
-                :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
+              <el-tooltip class="item" :effect="DarkorLight" content="顺德交易会" placement="right">
+              <a @click="alick" :to="'/shunde/trade_fairs/demandList'"
+                :class="['item', 'demandList', {'is-active': currentName === 'demandList'}]">
                 顺德交易会
               </a>
               </el-tooltip>
@@ -214,6 +218,10 @@
                 v-if="isMob">
                 查看公司主页
               </a>
+              <!-- <a @click="alick" :to="'/shunde/trade_fairs/achieveList'"
+                :class="['item', 'demandList', {'is-active': currentName === 'achieveList'}]">
+                顺德交易会
+              </a> -->
             </div>
           </div>
           <!-- 默认需求方 -->
@@ -231,8 +239,8 @@
                 :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
                 我的钱包
               </a>
-              <a @click="alick" :to="'/vcenter/wallet/list'"
-                :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
+              <a @click="alick" :to="'/shunde/trade_fairs/demandList'"
+                :class="['item', 'demandList', {'is-active': currentName === 'demandList'}]">
                 顺德交易会
               </a>
             </div>
@@ -588,6 +596,10 @@
   }
   .menu-list .item.company::before {
     background: url(../../../assets/images/v_center_menu/Company.png) no-repeat center;
+    background-size: contain
+  }
+  .menu-list .item.demandList::before {
+    background: url(../../../assets/images/v_center_menu/Fire.png) no-repeat center;
     background-size: contain
   }
   .computer-btn {
