@@ -439,8 +439,8 @@
           }
         )
         .catch(function (error) {
-          that.$message.error(error.message)
-          that.isLoading = false
+          this.$message.error(error.message)
+          this.isLoading = false
         })
       },
       // 删除项目弹窗
