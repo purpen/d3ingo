@@ -590,6 +590,10 @@
     background: url(../../../assets/images/v_center_menu/Company.png) no-repeat center;
     background-size: contain
   }
+  .menu-list .item.demandList::before {
+    background: url(../../../assets/images/v_center_menu/Fire.png) no-repeat center;
+    background-size: contain
+  }
   .computer-btn {
     line-height: 70px;
     font-size: 14px;
