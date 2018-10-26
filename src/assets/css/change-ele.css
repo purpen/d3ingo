@@ -370,8 +370,11 @@
   .el-dialog {
     border-radius: 4px;
   }
+  .seen-deta .el-dialog--tiny {
+    width: 480px
+  }
   .el-dialog--tiny {
-      width: 380px
+    width: 380px
   }
   .el-dialog--tiny .el-dialog__header {
     padding: 10px 20px;
