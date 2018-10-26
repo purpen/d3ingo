@@ -83,7 +83,7 @@
               min-width="90">
                 <template slot-scope="scope">
                   <p>
-                    {{ scope.row.users.account }}[{{ scope.row.user_id }}]
+                    {{ scope.row.username || scope.row.account }}
                   </p>
                 </template>
             </el-table-column>
