@@ -495,14 +495,13 @@
             }
             let url = api.sdDemandRelease
             let data = row
-            let mothod = 'post'
             if (self.isUpdate) {
               url = api.sdDemandDemandUpdate
               if (!row.demand_id) {
                 row.demand_id = self.form.id
               }
             }
-            self.$http(mothod, url, data).then((response) => {
+            self.$http.post(url, data).then((response) => {
               if (response.data.meta.status_code === 200) {
                 if (!self.isUpdate) {
                   self.demandList.unshift(response.data.data)
