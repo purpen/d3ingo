@@ -179,7 +179,7 @@
                 </el-form>
                 <span slot="footer" class="dialog-footer">
                   <el-button @click="closeBtn">取 消</el-button>
-                  <el-button type="primary" @click="createDemand('form')">发 布</el-button>
+                  <el-button type="primary" :loading="addLoading" @click="createDemand('form')">发 布</el-button>
                 </span>
               </el-dialog>
               <el-dialog
@@ -343,11 +343,12 @@
         dialogFormVisible: false, // 发布需求弹窗
         dialogUpdateVisible: false, // 查看详情弹窗
         dialogDeleteVisible: false,
+        addLoading: false, // 发布需求加载中
         form: {
           design_types: []
-        },
+        }, // 发需求表单
         formup: {
-        },
+        }, // 查看详情表单
         demandList: [], // 需求列表
         collectList: [], // 收藏列表
         deleteForm: '' // 删除项目id
@@ -419,11 +420,11 @@
           (response) => {
             if (response.data.meta.status_code === 200) {
               if (type === 1) {
+                // this.$nextTick(_ => {
+                this.formup = response.data.data
+                this.formup.design_types = JSON.parse(this.formup.design_types)
                 this.dialogUpdateVisible = true
-                this.$nextTick(_ => {
-                  this.formup = response.data.data
-                  this.formup.design_types = JSON.parse(this.formup.design_types)
-                })
+                // })
               }
               if (type === 2) {
                 this.dialogUpdateVisible = false
@@ -465,6 +466,7 @@
       // 发布需求
       createDemand (formName) {
         let self = this
+        self.addLoading = true
         self.$refs[formName].validate((valid) => {
           if (valid) {
             if (!self.form.design_types || !self.form.design_types.length) {
@@ -490,22 +492,26 @@
             }
             self.$http.post(api.sdDemandRelease, row).then((response) => {
               if (response.data.meta.status_code === 200) {
-                this.demandList.unshift(response.data.data)
-                this.dialogFormVisible = false
-                this.form = {
+                self.demandList.unshift(response.data.data)
+                self.dialogFormVisible = false
+                self.form = {
                   'design_types': []
                 }
+                self.addLoading = false
               } else {
+                self.addLoading = false
                 self.$message.error(response.data.meta.message)
                 return
               }
             })
             .catch(function (error) {
+              self.addLoading = false
               self.$message.error(error.message)
               console.error(error.message)
               return
             })
           } else {
+            self.addLoading = false
             self.$message.error('请完善信息')
             return false
           }
