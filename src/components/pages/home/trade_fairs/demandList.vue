@@ -476,10 +476,12 @@
           if (valid) {
             if (!self.form.design_types || !self.form.design_types.length) {
               self.$message.error('设计类型未选择')
+              self.addLoading = false
               return
             }
             if (!self.form.item_city || !self.form.item_province) {
               self.$message.error('请填写工作地点')
+              self.addLoading = false
               return
             }
             let row = {
@@ -529,14 +531,14 @@
               }
             })
             .catch(function (error) {
-              self.addLoading = false
               self.$message.error(error.message)
               console.error(error.message)
+              self.addLoading = false
               return
             })
           } else {
-            self.addLoading = false
             self.$message.error('请完善信息')
+            self.addLoading = false
             return false
           }
         })
