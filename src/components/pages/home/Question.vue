@@ -252,7 +252,7 @@ export default {
 }
 @media screen and ( max-width: 480px) {
   .main-content {
-    width: 375px;
+    /* width: 375px; */
     overflow-x: hidden;
   }
 }
