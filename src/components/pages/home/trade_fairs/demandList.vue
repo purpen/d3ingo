@@ -63,7 +63,7 @@
                       <el-col :span="3">
                         {{d.follow_count?d.follow_count:0}}人关注
                       </el-col>
-                      <el-col :span="7">
+                      <el-col :span="7" :class="{'tc-red': d.status < 0}">
                         {{d.status | statusFormat}}
                       </el-col>
                       <el-col :span="4">
@@ -179,7 +179,7 @@
                 </el-form>
                 <span slot="footer" class="dialog-footer">
                   <el-button @click="closeBtn">取 消</el-button>
-                  <el-button type="primary" @click="createDemand('form')">发 布</el-button>
+                  <el-button type="primary" :loading="addLoading" @click="createDemand('form')">发 布</el-button>
                 </span>
               </el-dialog>
               <el-dialog
@@ -314,6 +314,7 @@
       return {
         type: 1,
         isLoading: false, // 加载中
+        isUpdate: false,
         rules: {
           name: [
             {required: true, message: '请填写项目名称', trigger: 'blur'}
@@ -343,11 +344,12 @@
         dialogFormVisible: false, // 发布需求弹窗
         dialogUpdateVisible: false, // 查看详情弹窗
         dialogDeleteVisible: false,
+        addLoading: false, // 发布需求加载中
         form: {
           design_types: []
-        },
+        }, // 发需求表单
         formup: {
-        },
+        }, // 查看详情表单
         demandList: [], // 需求列表
         collectList: [], // 收藏列表
         deleteForm: '' // 删除项目id
@@ -419,16 +421,17 @@
           (response) => {
             if (response.data.meta.status_code === 200) {
               if (type === 1) {
+                // this.$nextTick(_ => {
+                this.formup = response.data.data
+                this.formup.design_types = JSON.parse(this.formup.design_types)
                 this.dialogUpdateVisible = true
-                this.$nextTick(_ => {
-                  this.formup = response.data.data
-                  this.formup.design_types = JSON.parse(this.formup.design_types)
-                })
+                // })
               }
               if (type === 2) {
                 this.dialogUpdateVisible = false
                 this.dialogFormVisible = true
                 this.$nextTick(_ => {
+                  this.isUpdate = true
                   this.form = response.data.data
                   this.form.design_types = JSON.parse(this.form.design_types)
                 })
@@ -465,13 +468,12 @@
       // 发布需求
       createDemand (formName) {
         let self = this
+        self.addLoading = true
         self.$refs[formName].validate((valid) => {
           if (valid) {
             if (!self.form.design_types || !self.form.design_types.length) {
               self.$message.error('设计类型未选择')
               return
-            } else {
-              self.form.design_types = JSON.stringify(self.form.design_types)
             }
             if (!self.form.item_city || !self.form.item_province) {
               self.$message.error('请填写工作地点')
@@ -488,24 +490,32 @@
               'item_province': self.form.item_province,
               'content': self.form.content
             }
-            self.$http.post(api.sdDemandRelease, row).then((response) => {
+            let mothod = api.sdDemandRelease
+            if (this.isUpdate) {
+              mothod = api.sdDemandDemandUpdate
+            }
+            self.$http.post(mothod, row).then((response) => {
               if (response.data.meta.status_code === 200) {
-                this.demandList.unshift(response.data.data)
-                this.dialogFormVisible = false
-                this.form = {
+                self.demandList.unshift(response.data.data)
+                self.dialogFormVisible = false
+                self.form = {
                   'design_types': []
                 }
+                self.addLoading = false
               } else {
+                self.addLoading = false
                 self.$message.error(response.data.meta.message)
                 return
               }
             })
             .catch(function (error) {
+              self.addLoading = false
               self.$message.error(error.message)
               console.error(error.message)
               return
             })
           } else {
+            self.addLoading = false
             self.$message.error('请完善信息')
             return false
           }
@@ -650,6 +660,9 @@
     color: #222;
     padding: 0 5px 10px 0;
     line-height: 1;
+  }
+  .details .el-col {
+    max-height: 180px;
   }
   /* .details .c-title:hover {
     color: #ff5a5f;
