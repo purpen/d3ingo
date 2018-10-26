@@ -420,10 +420,14 @@
         this.$http.get(api.sdDemandDemandInfo, {params: {demand_id: id}}).then(
           (response) => {
             if (response.data.meta.status_code === 200) {
+              let res = response.data.data
+              res.design_types = JSON.parse(res.design_types)
+              res.design_types.forEach(i => {
+                i = Number(i)
+              })
               if (type === 1) {
                 // this.$nextTick(_ => {
                 this.formup = response.data.data
-                this.formup.design_types = JSON.parse(this.formup.design_types)
                 this.dialogUpdateVisible = true
                 // })
               }
@@ -433,7 +437,6 @@
                 this.$nextTick(_ => {
                   this.isUpdate = true
                   this.form = response.data.data
-                  this.form.design_types = JSON.parse(this.form.design_types)
                 })
               }
             } else {
@@ -490,14 +493,31 @@
               'item_province': self.form.item_province,
               'content': self.form.content
             }
-            let mothod = api.sdDemandRelease
-            if (this.isUpdate) {
-              mothod = api.sdDemandDemandUpdate
-              this.isUpdate = false
+            let url = api.sdDemandRelease
+            let data = row
+            let mothod = 'post'
+            if (self.isUpdate) {
+              url = api.sdDemandDemandUpdate
+              if (!row.demand_id) {
+                row.demand_id = self.form.id
+              }
             }
-            self.$http.post(mothod, row).then((response) => {
+            self.$http(mothod, url, data).then((response) => {
               if (response.data.meta.status_code === 200) {
-                self.demandList.unshift(response.data.data)
+                if (!self.isUpdate) {
+                  self.demandList.unshift(response.data.data)
+                  self.isUpdate = false
+                } else {
+                  self.demandList.forEach((item, index) => {
+                    if (item.id === response.data.data.id) {
+                      response.data.data.design_types = JSON.parse(response.data.data.design_types)
+                      response.data.data.design_types.forEach(i => {
+                        i = Number(i)
+                      })
+                      self.$set(self.demandList, index, response.data.data)
+                    }
+                  })
+                }
                 self.dialogFormVisible = false
                 self.form = {
                   'design_types': []
@@ -664,6 +684,7 @@
   }
   .details .el-col {
     max-height: 180px;
+    overflow: hidden;
   }
   /* .details .c-title:hover {
     color: #ff5a5f;
