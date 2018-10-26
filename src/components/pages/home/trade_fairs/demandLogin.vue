@@ -2,9 +2,9 @@
   <div class="content-box">
     <div class="home_banner">
       <div class="background-banner">
-        <div class="banner-button" v-if="user.type === 1">
+        <div class="banner-button"  @click="demandBanner" v-if="user.type === 1">
           <div class="text-width">
-            <router-link :to="{name: 'demand_list', query: {type: 1}}" class="banner-text">发布需求</router-link>
+            <span class="banner-text">发布需求</span>
           </div>
         </div>
         <!-- <div class="banner-button" v-if="user.type === 2">
@@ -68,6 +68,9 @@
       demandShow() {
         this.demandShows = true
         this.briefShows = false
+      },
+      demandBanner() {
+        this.$router.push({name: 'demand_list', query: {type: 1}})
       }
     },
     computed: {
