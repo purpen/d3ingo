@@ -52,6 +52,16 @@ module.exports = [
     },
     component: require('@/components/admin/item/List')
   },
+  // 小程序列表
+  {
+    path: '/admin/item/Sltem',
+    name: 'adminItemSltem',
+    meta: {
+      title: '小程序列表',
+      requireAuth: true
+    },
+    component: require('@/components/admin/item/Sltem')
+  },
   // 项目详情
   {
     path: '/admin/item/show/:id',
