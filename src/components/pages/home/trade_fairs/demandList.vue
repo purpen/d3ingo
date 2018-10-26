@@ -63,7 +63,7 @@
                       <el-col :span="3">
                         {{d.follow_count?d.follow_count:0}}人关注
                       </el-col>
-                      <el-col :span="7">
+                      <el-col :span="7" :class="{'tc-red': d.status < 0}">
                         {{d.status | statusFormat}}
                       </el-col>
                       <el-col :span="4">
@@ -314,6 +314,7 @@
       return {
         type: 1,
         isLoading: false, // 加载中
+        isUpdate: false,
         rules: {
           name: [
             {required: true, message: '请填写项目名称', trigger: 'blur'}
@@ -430,6 +431,7 @@
                 this.dialogUpdateVisible = false
                 this.dialogFormVisible = true
                 this.$nextTick(_ => {
+                  this.isUpdate = true
                   this.form = response.data.data
                   this.form.design_types = JSON.parse(this.form.design_types)
                 })
@@ -472,8 +474,6 @@
             if (!self.form.design_types || !self.form.design_types.length) {
               self.$message.error('设计类型未选择')
               return
-            } else {
-              self.form.design_types = JSON.stringify(self.form.design_types)
             }
             if (!self.form.item_city || !self.form.item_province) {
               self.$message.error('请填写工作地点')
@@ -490,7 +490,11 @@
               'item_province': self.form.item_province,
               'content': self.form.content
             }
-            self.$http.post(api.sdDemandRelease, row).then((response) => {
+            let mothod = api.sdDemandRelease
+            if (this.isUpdate) {
+              mothod = api.sdDemandDemandUpdate
+            }
+            self.$http.post(mothod, row).then((response) => {
               if (response.data.meta.status_code === 200) {
                 self.demandList.unshift(response.data.data)
                 self.dialogFormVisible = false
@@ -656,6 +660,9 @@
     color: #222;
     padding: 0 5px 10px 0;
     line-height: 1;
+  }
+  .details .el-col {
+    max-height: 180px;
   }
   /* .details .c-title:hover {
     color: #ff5a5f;
