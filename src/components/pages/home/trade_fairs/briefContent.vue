@@ -271,7 +271,7 @@
     height: 100%;
     width: 390px;
     z-index: 2;
-    top: -50px;
+    top: -80px;
     right: -50px;
     bottom: 0;
     background: url('../../../../assets/images/trade_fairs/large-background/BG02@2x.png') no-repeat right / contain
