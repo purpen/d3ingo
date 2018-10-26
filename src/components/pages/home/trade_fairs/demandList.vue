@@ -97,19 +97,19 @@
                   <el-row class="des-type">
                     <el-col :span="6">
                       <button  @click="addType(1)" 
-                        :class="[{'red-btn': form.design_types.indexOf(1) !== -1}]"> 产品策略</button>
+                        :class="[{'red-btn': form.design_types.indexOf(1) !== -1 || form.design_types.indexOf('1') !== -1}]"> 产品策略</button>
                     </el-col>
                     <el-col :span="6">
                         <button  @click="addType(2)"
-                          :class="[{'red-btn': form.design_types.indexOf(2) !== -1}]">外观设计</button>
+                          :class="[{'red-btn': form.design_types.indexOf(2) !== -1 || form.design_types.indexOf('2') !== -1}]">外观设计</button>
                     </el-col>
                     <el-col :span="6">
                         <button  @click="addType(3)"
-                          :class="[{'red-btn': form.design_types.indexOf(3) !== -1}]">结构设计</button>
+                          :class="[{'red-btn': form.design_types.indexOf(3) !== -1 ||form.design_types.indexOf('3') !== -1}]">结构设计</button>
                     </el-col>
                     <el-col :span="6">
                         <button  @click="addType(4)"
-                        :class="[{'red-btn': form.design_types.indexOf(4) !== -1}]">其他</button>
+                        :class="[{'red-btn': form.design_types.indexOf(4) !== -1 || form.design_types.indexOf('4') !== -1}]">其他</button>
                     </el-col>
                   </el-row>
                   <el-row :gutter="10">
