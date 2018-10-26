@@ -240,7 +240,26 @@
         </div>
         <el-collapse v-model="credential" class="patent">
           <el-collapse-item title="专利证书" name="1">
-            <div class="patent-img"></div>
+            <!-- <div class="patent-img"></div> -->
+            <swiper :options="swiperOption" class="patent-img">
+              <swiper-slide>
+                <div class="slide" :style="{ background: 'url(' + require ('assets/images/home/banner/BG@2x.jpg') + ') no-repeat center', height: '100%'}">
+                  <div style="height:100%;">
+                    <div class="draw">
+                      <img :src="require('assets/images/home/banner/BG02@2x.png')" width="90%" height="auto" alt="">
+                    </div>
+                  </div>
+                </div>
+              </swiper-slide>
+              <div class="swiper-pagination" slot="pagination">
+              </div>
+              <!-- <div v-if="!isMob" class="swiper-button-prev" slot="button-prev">
+                <i class="el-icon-arrow-left"></i>
+              </div>
+              <div v-if="!isMob" class="swiper-button-next" slot="button-next">
+                <i class="el-icon-arrow-right"></i>
+              </div> -->
+            </swiper>
           </el-collapse-item>
         </el-collapse>
         <div class="patent-details">
@@ -271,8 +290,26 @@ export default {
         design_level: 0,
         content: ''
       },
+      swiperOption: {
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        lazyLoading: true,
+        autoplay: 5000,
+        prevButton: '.swiper-button-prev',
+        nextButton: '.swiper-button-next',
+        spaceBetween: 0,
+        loop: true
+      },
       evalu: {},
       evaluateLoadingBtn: false // 提交评价的loading
+    }
+  },
+  components: {
+    swiper: (resolve) => {
+      require(['vue-awesome-swiper/src/swiper'], resolve)
+    },
+    swiperSlide: (resolve) => {
+      require(['vue-awesome-swiper/src/slide'], resolve)
     }
   },
   methods: {
@@ -733,6 +770,29 @@ p.ev-c-content {
   padding: 10px 50px;
 }
 
+/* 轮播图 */
+/* .el-carousel__container {
+  width: 200px;
+  height: 270px;
+  margin: 0 auto;
+  margin-top: 15px;
+  margin-bottom: 15px;
+} */
+.el-carousel__item h3 {
+    color: #475669;
+    font-size: 18px;
+    opacity: 0.75;
+    line-height: 300px;
+    margin: 0;
+  }
+  
+.el-carousel__item:nth-child(2n) {
+  background-color: #99a9bf;
+}
+
+.el-carousel__item:nth-child(2n+1) {
+  background-color: #d3dce6;
+}
 p.img-des {
   margin-bottom: 20px;
 }

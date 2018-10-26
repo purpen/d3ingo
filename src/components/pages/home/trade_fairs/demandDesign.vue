@@ -1,5 +1,5 @@
 <template>
-  <div class="content-box">
+  <div class="content-box"  v-loading="isLoading">
     <div class="large-background">
       <div class="right-background"></div>
       <div class="left-background"></div>
@@ -14,28 +14,28 @@
       <div class="large-list">
         <div class="list-center">
           <el-row :gutter="20" class="list-cloud">
-            <el-col :span="8" class="item-cloud">
+            <el-col :span="8" class="item-cloud" v-for="(item, index) in demandList" :key="index">
               <div class="list-item">
                 <div class="list-text">
                   <div class="list-title">
-                    <span>项目需求名称</span>
+                    <span>{{item.name}}</span>
                   </div>
                   <div class="list-data">
-                    <span>2018-10-09</span>
+                    <span>{{item.created_at| timeFormat}}</span>
                   </div>
                   <div class="list-word">
-                    <span>项目预算：&nbsp;1-5万之间</span>
+                    <span>项目预算：&nbsp;{{item.design_cost_value}}</span>
                   </div>
                   <div class="list-word">
-                    <span>设计类别：&nbsp;产品策略</span>
+                    <span>设计类别：&nbsp;{{item.design_types_value | typeJoin}}</span>
                   </div>
                   <div class="list-word">
-                    <span>项目周期：&nbsp;1-2个月</span>
+                    <span>项目周期：&nbsp;{{item.cycle_value}}</span>
                   </div>
                   <div class="list-bottom" :class="{'bottom-style': interestButton}">
                     <div class="list-left">
                       <div class="list-button" :route="'/shunde/trade_fairs/saleResult/workDatails'">
-                        <span class="details-text">查看详情</span>
+                        <span class="details-text" @click.stop="upDetails(item.id)">查看详情</span>
                       </div>
                     </div>
                     <div class="list-contain" @click="interesClick">
@@ -55,18 +55,6 @@
                 </div>
               </div>
             </el-col>
-            <el-col :span="8" class="item-cloud">
-              <div class="list-item"></div>
-            </el-col>
-            <el-col :span="8" class="item-cloud">
-              <div class="list-item"></div>
-            </el-col>
-            <el-col :span="8" class="item-cloud">
-              <div class="list-item"></div>
-            </el-col>
-            <el-col :span="8" class="item-cloud">
-              <div class="list-item"></div>
-            </el-col>
           </el-row>
         </div>
       </div>
@@ -84,25 +72,190 @@
         </div>
       </div>
     </div>
+
+    <el-dialog
+      title="需求详情"
+      :visible.sync="dialogUpdateVisible"
+      size="tiny"
+      class="submit-form scroll-bar"
+      >
+      <div>
+        <div class="details">
+          <el-row>
+            <el-col :span="6">
+              <span>项目名称</span>
+            </el-col>
+            <el-col :span="18">
+              {{formup.name}}
+            </el-col>
+          </el-row>
+        </div>
+        <div class="details">
+          <el-row>
+            <el-col :span="6">
+              <span>设计类别</span>
+            </el-col>
+            <el-col :span="18">
+              {{formup.design_types_value | typeJoin}}
+            </el-col>
+          </el-row>
+        </div>
+        <div class="details">
+          <el-row>
+            <el-col :span="6">
+              <span>项目周期</span>
+            </el-col>
+            <el-col :span="18">
+              {{formup.cycle_value}}
+            </el-col>
+          </el-row>
+        </div>
+        <div class="details">
+          <el-row>
+            <el-col :span="6">
+              <span>项目预算</span>
+            </el-col>
+            <el-col :span="18">
+              {{formup.design_cost_value}}
+            </el-col>
+          </el-row>
+        </div>
+        <div class="details">
+          <el-row>
+            <el-col :span="6">
+              <span>产品类别</span>
+            </el-col>
+            <el-col :span="18">
+              {{formup.type_value}}
+            </el-col>
+          </el-row>
+        </div>
+        <div class="details">
+          <el-row>
+            <el-col :span="6">
+              <span>所属行业</span>
+            </el-col>
+            <el-col :span="18">
+              {{formup.type_value}}
+            </el-col>
+          </el-row>
+        </div>
+        <div class="details">
+          <el-row>
+            <el-col :span="6">
+              <span>工作地点</span>
+            </el-col>
+            <el-col :span="18">
+              {{formup.item_province_value}}{{formup.item_city_value}}
+            </el-col>
+          </el-row>
+        </div>
+        <div class="details">
+          <el-row>
+            <el-col :span="6">
+              <span>功能描述</span>
+            </el-col>
+            <el-col :span="18">
+              {{formup.content}}
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <div class="dialog-bottom" :class="{'bottom-style': interestButton}">
+          <div class="list-contain" @click="interesClick">
+          <div class="list-button" v-if="!interestButton">
+            <span class="button-text">感兴趣</span>
+          </div>
+          <div class="list-button interest-border" v-if="interestButton">
+            <span class="button-interest">已感兴趣</span>
+          </div>
+        </div>
+        <div class="list-right" v-if="interestButton">
+          <div class="list-button">
+            <span class="contact-text">联系他</span>
+          </div>
+        </div>
+        </div>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-  // import api from '@/api/api'
+  import api from '@/api/api'
   export default {
     name: 'demand_design', // 设计需求
     data() {
       return {
-        interestButton: false
+        interestButton: false,
+        dialogUpdateVisible: false,
+        demandList: '',
+        formup: '',
+        isLoading: false
       }
     },
     created() {
+      this.getDemandList()
     },
     mounted() {
     },
     methods: {
       interesClick() {
         this.interestButton = !this.interestButton
+      },
+      // 获取列表
+      getDemandList() {
+        let that = this
+        that.isLoading = true
+        that.$http.get(api.sdDemandDesignDemandList).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            if (response.data.data && response.data.data.length) {
+              that.demandList = response.data.data
+              that.isLoading = false
+              that.demandList.forEach(item => {
+                item.design_types = JSON.parse(item.design_types)
+              })
+            }
+          } else {
+            that.isLoading = false
+            this.$message.error(response.data.meta.message)
+            return
+          }
+        })
+        .catch(function (error) {
+          that.isLoading = false
+          this.$message.error(error.message)
+          console.error(error.message)
+          return
+        })
+      },
+      // 获取详情
+      upDetails(id) {
+        this.isLoading = true
+        this.dialogUpdateVisible = true
+        this.$http.get(api.sdDemandDesignDemandInfo, {params: {demand_id: id}}).then(
+          (response) => {
+            if (response.data.meta.status_code === 200) {
+              this.isLoading = false
+              this.formup = response.data.data
+            }
+          }
+        )
+      }
+    },
+    filters: {
+      timeFormat(val) {
+        if (!isNaN(val)) {
+          return new Date(val * 1000).format('yyyy-MM-dd')
+        } else {
+          return
+        }
+      },
+      typeJoin(val) {
+        if (val) {
+          return val.join('、')
+        }
       }
     },
     computed: {
@@ -449,5 +602,28 @@
     left: -8px;
     background: url('../../../../assets/images/trade_fairs/list/BeInterestedClick@2x.png') no-repeat center;
     background-size: contain;
+  }
+
+  /* 需求弹出框样式 */
+  .details .el-row {
+    margin-bottom: 10px;
+  }
+  .details {
+    line-height: 20px;
+    color: #999;
+  }
+  .details span {
+    display: inline-block;
+    width: 80px;
+    font-size: 14px;
+    color: #666;
+  }
+  .dialog-bottom {
+    width: 170px;
+    margin: 0 auto;
+    padding-top: 10px;
+  }
+  .submit-form {
+    overflow: hidden
   }
 </style>

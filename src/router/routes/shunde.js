@@ -63,7 +63,7 @@ module.exports = [
     },
     component: require('@/components/pages/home/trade_fairs/workDatails')
   },
-  // 需求方详情
+  // 个人中心需求列表页
   {
     path: '/shunde/trade_fairs/demandList',
     name: 'demand_list',
@@ -74,6 +74,18 @@ module.exports = [
       hideFooter: true
     },
     component: require('@/components/pages/home/trade_fairs/demandList')
+  },
+  // 个人中心成果列表页
+  {
+    path: '/shunde/trade_fairs/achieveList',
+    name: 'achieve_list',
+    meta: {
+      title: '需求列表',
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/home/trade_fairs/achieveList')
   },
   // 付款-托管资金
   {
