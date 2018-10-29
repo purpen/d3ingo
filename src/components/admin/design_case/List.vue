@@ -11,6 +11,12 @@
           <div class="admin-menu-sub-list">
             <router-link :to="{name: 'adminDesignCaseList'}" active-class="false" :class="{'item': true, 'is-active': menuType == 0}">全部</router-link>
           </div>
+          <div class="admin-menu-sub-list">
+            <router-link :to="{name: 'adminDesignCaseList', query: {type: 2}}" :class="{'item': true, 'is-active': menuType === 2}" active-class="false">待审核</router-link>
+          </div>
+          <div class="admin-menu-sub-list">
+            <router-link :to="{name: 'adminDesignCaseList', query: {type: 3}}" :class="{'item': true, 'is-active': menuType === 3}" active-class="false">通过</router-link>
+          </div>
         </div>
 
           <el-table
@@ -43,6 +49,7 @@
                   <p>标题: <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: scope.row.id}}" target="_blank">{{ scope.row.title }}</router-link></p>
                   <p>类型: {{ scope.row.type_label }}</p>
                   <p>服务客户: {{ scope.row.customer }}</p>
+                  <p>标签: {{ scope.row.tags }}</p>
                 </template>
             </el-table-column>
             <el-table-column
@@ -139,6 +146,7 @@ export default {
         page: 1,
         pageSize: 50,
         totalCount: 0,
+        open: 0,
         sort: 1,
         type: 0,
 
@@ -209,7 +217,7 @@ export default {
         this.menuType = parseInt(self.query.type)
       }
       self.isLoading = true
-      self.$http.get(api.adminDesignCaseLists, {params: {page: self.query.page, per_page: self.query.pageSize, sort: self.query.sort, type: self.query.type}})
+      self.$http.get(api.adminDesignCaseLists, {params: {page: self.query.page, per_page: self.query.pageSize, sort: self.query.sort, type: self.query.type, open: self.query.open}})
       .then (function(response) {
         self.isLoading = false
         self.tableData = []
@@ -226,11 +234,17 @@ export default {
             }
             var typeLabel = ''
             if (item.type === 1) {
-              typeLabel = item.type_val + '/' + item.design_type_val + '/' + item.field_val + '/' + item.industry_val
+              typeLabel = item.type_val + '|' + item.design_types_val + '/' + item.field_val + '/' + item.industry_val
             } else {
-              typeLabel = item.type_val + '/' + item.design_type_val
+              typeLabel = item.type_val + '|' + item.design_types_val
             }
 
+            var tags = ''
+            if (item.label) {
+              tags = item.label.join(',')
+            }
+
+            item.tags = tags
             item.type_label = typeLabel
             item['created_at'] = item.created_at.date_format().format('yy-MM-dd')
             self.tableData.push(item)
