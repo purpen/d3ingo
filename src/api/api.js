@@ -485,6 +485,10 @@ export default {
   sdDesignCollectDemand: '/sd/design/collectDemand', // POST 收藏需求
   sdDemandDesignDemandInfo: '/sd/demand/designDemandInfo', // GET 设计公司查看某个需求详情
   sdDemandDesignDemandList: '/sd/demand/designDemandList', // GET 设计公司查看需求列表
+  sdDesignResultsSave: '/designResults/save', // POST 保存设计成果
+  sdDesignResultsMyCollectionList: '/designResults/myCollectionList', // 我的设计成果收藏列表
+  sdDesignResultsList: '/designResults/list', // 设计成果列表
+
   // 顺德后台
   adminDesignDemandLists: 'admin/designDemand/lists', // GET 发布的设计需求列表
   adminDesignDemandAuditStatus: 'admin/designDemand/auditStatus' // PUT  设计需求信息审核

@@ -10,7 +10,7 @@
             <v-menu-sub></v-menu-sub>
             <div v-if="type === 1">
               <div class="no-demand" v-if="!demandList.length&&!isLoading">
-                <img src="../../../../assets/images/trade_fairs/default/NoDemand@2x.png" alt="">
+                <img src="../../../../../assets/images/trade_fairs/default/NoDemand@2x.png" alt="">
                 <p class="tc-9">还没有设计需求，立即发布一个吧～</p>
                 <div class="post-header">
                   <el-button class="is-custom mg-r-20" type="primary" size="small" @click="dialogFormVisible=true">
@@ -297,7 +297,7 @@
 </template>
 <script>
   import vMenu from '@/components/pages/v_center/Menu'
-  import vMenuSub from '@/components/pages/home/trade_fairs/MenuSub'
+  import vMenuSub from '@/components/pages/home/trade_fairs/demand/MenuSub'
   import api from '@/api/api'
   import config from '@/config'
   import RegionPicker from '@/components/block/RegionPicker'
