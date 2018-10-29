@@ -45,50 +45,54 @@ module.exports = {
     }
   },
   // 增加一个plugins
-  // plugins: [
-  //   // ignoreFiles,
-  //   new HappyPack({
-  //     id: 'babel',
-  //     threads: 4,
-  //     loaders: [
-  //       {
-  //         loader: 'babel-loader?cacheDirectory=true'
-  //       }
-  //     ],
-  //     threadPool: happThreadPool
-  //   }),
-  //   new HappyPack({
-  //     id: 'eslint',
-  //     threads: 4,
-  //     loaders: [{
-  //       loader: 'eslint-loader',
-  //       options: {
-  //         formatter: require('eslint-friendly-formatter')
-  //       }
-  //     }],
-  //     threadPool: happThreadPool
-  //   })
-  // ],
-  module: {
-    rules: [
-      {
-        test: /\.(js|vue)$/,
+  plugins: [
+    // ignoreFiles,
+    new HappyPack({
+      id: 'babel',
+      threads: 4,
+      loaders: [
+        {
+          loader: 'babel-loader?cacheDirectory=true'
+        }
+      ],
+      threadPool: happThreadPool
+    }),
+    new HappyPack({
+      id: 'eslint',
+      threads: 4,
+      loaders: [{
         loader: 'eslint-loader',
-        enforce: "pre",
-        include: [resolve('src'), resolve('test')],
         options: {
           formatter: require('eslint-friendly-formatter')
         }
-      },
+      }],
+      threadPool: happThreadPool
+    })
+  ],
+  module: {
+    rules: [
       {
         test: /\.vue$/,
         loader: 'vue-loader',
-        options: vueLoaderConfig
+        options: {
+          loaders: {
+            js: 'happypack/loader?id=babel' // 将loader换成happypack
+          }
+        }
       },
       {
         test: /\.js$/,
-        loader: ['babel-loader?cacheDirectory=true'],
-        exclude: /node_modules/
+        loader: ['happypack/loader?id=babel'],
+        include: [
+          resolve('src'),
+          resolve('test'),
+          resolve('node_modules/element-ui'),
+          resolve('node_modules/vue-echarts'),
+          resolve('node_modules/echarts'),
+          resolve('node_modules/resize-detector'),
+          resolve('node_modules/vue-pdf'),
+          resolve('node_modules/vue-resize-sensor')],
+        exclude: [/node_modules/, /pdfmake.js$/]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
