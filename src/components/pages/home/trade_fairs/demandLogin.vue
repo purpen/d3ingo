@@ -7,11 +7,11 @@
             <span class="banner-text">发布需求</span>
           </div>
         </div>
-        <!-- <div class="banner-button" v-if="user.type === 2">
+        <div class="banner-button" v-if="user.type === 2">
           <div class="text-width">
             <span class="banner-text">上传成果</span>
           </div>
-        </div> -->
+        </div>
       </div>
     </div>
     <div class="list-background">
@@ -91,12 +91,14 @@
 <style scoped>
   .background-banner {
     /* position: absolute; */
+    background: #3519B2;
     height: 500px;
     background: url('../../../../assets/images/trade_fairs/banner/pc-banner.png') no-repeat center
   }
   .home_banner {
     height: 500px;
     position: relative;
+    background: #3519B2;
   }
   .banner-button {
     float: right;
@@ -132,7 +134,6 @@
   }
   .list-background {
     background: #3519B2;
-    border-bottom: 1px solid rgba(2,235,165,.3)
   }
   .list-contant{
     height: 40px;

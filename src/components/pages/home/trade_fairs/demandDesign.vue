@@ -1,10 +1,10 @@
 <template>
-  <div class="content-box" v-loading="isLoading">
+  <div class="content-box load-index" v-loading="isLoading">
     <div class="large-background">
       <div class="right-background"></div>
       <div class="left-background"></div>
       <!-- 设计需求 -->
-      <div class="empty" v-if="false">
+      <div class="empty" v-if="!demandList.length && !isLoading">
         <div class="empty-list">
           <span class="empty-img"></span>
           <p class="empty-content">暂无需求方发布设计需求，请耐心等待～</p>
@@ -32,23 +32,23 @@
                   <div class="list-word">
                     <span>项目周期：&nbsp;{{item.cycle_value}}</span>
                   </div>
-                  <div class="list-bottom" :class="{'bottom-style': interestButton}">
-                    <div class="list-left">
-                      <div class="list-button" @click.stop="upDetails(item.id)">
-                        <span class="details-text">查看详情</span>
-                      </div>
-                    </div>
-                    <div class="list-contain" @click="interesClick">
-                      <div class="list-button" v-if="!interestButton">
+                  <div class="list-bottom bottom-style">
+                    <div class="list-contain" @click="collect(item.id, item.follow_status)">
+                      <div class="list-button" v-if="item.follow_status === 2">
                         <span class="button-text">感兴趣</span>
                       </div>
-                      <div class="list-button interest-border" v-if="interestButton">
+                      <div class="list-button interest-border" v-if="item.follow_status === 1">
                         <span class="button-interest">已感兴趣</span>
                       </div>
                     </div>
-                    <div class="list-right" v-if="interestButton">
+                    <div class="list-right">
                       <div class="list-button">
                         <span class="contact-text">联系他</span>
+                      </div>
+                    </div>
+                    <div class="list-left">
+                      <div class="list-button" @click.stop="upDetails(item.id)">
+                        <span class="details-text">查看详情</span>
                       </div>
                     </div>
                   </div>
@@ -162,16 +162,16 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <div class="dia-bottom" :class="{'dialog-bottom': interestButton}">
-          <div class="dia-contain" @click="interesClick">
-          <div class="dia-button" v-if="!interestButton">
+        <div class="dia-bottom dialog-bottom">
+          <div class="dia-contain" @click="collect(formup.id, formup.follow_status)">
+          <div class="dia-button" v-if="formup.follow_status === 2">
             <span class="button-text">感兴趣</span>
           </div>
-          <div class="dia-button interest-dia" v-if="interestButton">
+          <div class="dia-button interest-dia" v-if="formup.follow_status === 1">
             <span class="dia-interest">已感兴趣</span>
           </div>
         </div>
-        <div class="dia-right" v-if="interestButton">
+        <div class="dia-right">
           <div class="dia-button">
             <span class="contact-text">联系他</span>
           </div>
@@ -192,7 +192,9 @@
         dialogUpdateVisible: false,
         demandList: '',
         formup: {},
-        isLoading: false
+        isLoading: false,
+        collectId: '',
+        setIndex: -1
       }
     },
     created() {
@@ -201,9 +203,6 @@
     mounted() {
     },
     methods: {
-      interesClick() {
-        this.interestButton = !this.interestButton
-      },
       // 获取列表
       getDemandList() {
         let that = this
@@ -240,9 +239,60 @@
               setTimeout(() => {
                 this.formup = response.data.data
               }, 1)
+            } else {
+              this.$message.error(response.data.meta.message)
             }
           }
         )
+      },
+      // 收藏需求
+      collect(id, status) {
+        this.isLoading = true
+        this.collectId = id
+        if (status === 2) {
+          this.$http.post(api.sdDesignCollectDemand, {design_demand_id: id}).then((response) => {
+            if (response.data.meta.status_code === 200) {
+              this.isLoading = false
+              for (let index in this.demandList) {
+                if (this.demandList[index].id === id) {
+                  this.demandList[index].follow_status = 1
+                }
+              }
+              this.formup.follow_status = 1
+            } else {
+              this.isLoading = false
+              this.$message.error(response.data.meta.message)
+              return
+            }
+          })
+          .catch(function (error) {
+            this.isLoading = false
+            this.$message.error(error.message)
+            return
+          })
+        } else {
+          this.isLoading = true
+          this.$http.post(api.sdDesignCancelCollectDemand, {design_demand_id: id}).then((response) => {
+            if (response.data.meta.status_code === 200) {
+              this.isLoading = false
+              for (let index in this.demandList) {
+                if (this.demandList[index].id === id) {
+                  this.demandList[index].follow_status = 2
+                }
+              }
+              this.formup.follow_status = 2
+            } else {
+              this.isLoading = false
+              this.$message.error('点击过快，请稍后')
+              return
+            }
+          })
+          .catch(function (error) {
+            this.isLoading = false
+            this.$message.error(error.message)
+            return
+          })
+        }
       }
     },
     filters: {
@@ -256,6 +306,8 @@
       typeJoin(val) {
         if (val) {
           return val.join('、')
+        } else {
+          return
         }
       }
     },
@@ -499,12 +551,12 @@
   .list-contain {
     cursor: pointer;
     float: left;
-    padding-left: 10px;
+    padding-right: 10px;
   }
   .list-right {
     cursor: pointer;
     float: left;
-    padding-left: 10px;
+    padding-right: 10px;
   }
   .list-button {
     height: 30px;

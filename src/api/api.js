@@ -487,6 +487,7 @@ export default {
   sdDemandDesignDemandList: '/sd/demand/designDemandList', // GET 设计公司查看需求列表
   // 顺德后台
   adminDesignDemandLists: 'admin/designDemand/lists', // GET 发布的设计需求列表
-  adminDesignDemandAuditStatus: 'admin/designDemand/auditStatus' // PUT  设计需求信息审核
+  adminDesignDemandAuditStatus: 'admin/designDemand/auditStatus', // PUT  设计需求信息审核
+  adminDesignDemandShowCollectList: 'admin/designDemand/showCollectList' // GET  查看设计需求被那些设计公司收藏
 
 }

@@ -645,6 +645,15 @@
   .forget-content .el-form--label-top .disabled-hover .el-form-item__content .el-input-group--append .el-input-group__append:hover {
     background-color: #f7f7f7;
   }
+  .background-style .el-dialog--tiny {
+    width: 480px;
+  }
+  .background-style .el-dialog__footer .dialog-footer .el-button:first-child {
+    margin-right: 0;
+  }
+  .load-index .el-loading-mask {
+    z-index: 2009;
+  }
 @media screen and (max-width: 767px) {
   .el-dialog--large,
   .el-dialog--small,

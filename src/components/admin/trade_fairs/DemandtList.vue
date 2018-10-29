@@ -75,7 +75,10 @@
                   <p>产品类别: {{ scope.row.type_value }}</p>
                   <p>所属行业: {{ scope.row.field_value }}</p>
                   <p>工作地点: {{scope.row.item_province_value}}{{scope.row.item_city_value}}</p>
-                  <p>功能描述: {{scope.row.content}}</p>
+                  <el-tooltip class="item" effect="light" placement="bottom">
+                    <div slot="content" style="width:400px; font-size:14px">{{scope.row.content}}</div>
+                    <p class="text-flow">功能描述: {{scope.row.content}}</p>
+                  </el-tooltip>
                 </template>
             </el-table-column>
             <el-table-column
@@ -120,16 +123,38 @@
                     <span class="clearfix">
                       <a href="javascript:void(0);"
                         v-if="scope.row.status === 1" @click="setVerify(scope.$index, scope.row,2)" class="tag-pass">通过</a>
-                      <a href="javascript:void(0);" v-if="scope.row.status === 1" @click="setRefuseRease(scope.$index, scope.row, -1)"
+                      <a href="javascript:void(0);" v-if="scope.row.status === 1 || scope.row.status === 2" @click="setRefuseRease(scope.$index, scope.row, -1)"
                       class="tag-refuse">拒绝</a>
                     </span>
                     <!-- <a href="javascript:void(0);" v-if="scope.row.status === 1" @click="setStatus(scope.$index, scope.row, 0)" class="tag-disable">禁用</a>
                     <a href="javascript:void(0);" v-else @click="setStatus(scope.$index, scope.row, 1)"
                     class="tag-able">启用</a> -->
                   </p>
+                  <div v-if="scope.row.status === 2" @click="upDetails(scope.row.id)"
+                      class="tag-pass focus-cursor">收藏数: {{scope.row.follow_count}}</div>
                 </template>
             </el-table-column>
           </el-table>
+          <el-dialog
+            title="收藏数"
+            :visible.sync="focusOn"
+            size="tiny" class="background-style">
+            <el-row class="title-style">
+              <el-col :span="4"><div class="">序号</div></el-col>
+              <el-col :span="10"><div class="">公司名称</div></el-col>
+              <el-col :span="10"><div class="">联系电话</div></el-col>
+            </el-row>
+            <div class="row-height scroll-bar">
+              <el-row class="dialog-top" v-for="(company, index) in formup" :key="index">
+                <el-col :span="4"><div class="">{{index}}</div></el-col>
+                <el-col :span="10"><div class="">{{company.design_company_name || ''}}</div></el-col>
+                <el-col :span="10"><div class="">{{company.phone}}</div></el-col>
+              </el-row>
+            </div>
+            <span slot="footer" class="dialog-footer">
+              <el-button type="primary" @click="focusOn = false">关 闭</el-button>
+            </span>
+          </el-dialog>
 
           <el-dialog title="请填写拒绝原因" :visible.sync="dialogVisible" size="tiny">
             <el-form v-model="verify" ref="verifyForm" :rules="verifyForm" @submit.native.prevent>
@@ -177,7 +202,10 @@ export default {
       menuType: 0,
       itemList: [],
       tableData: [],
+      formup: {},
+      count: 0,
       isLoading: false,
+      focusOn: false,
       query: {
         page: 1,
         pageSize: 50,
@@ -204,6 +232,26 @@ export default {
     }
   },
   methods: {
+    // 获取收藏的公司
+    upDetails(id) {
+      this.formup = {}
+      this.focusOn = true
+      this.$http.get(api.adminDesignDemandShowCollectList, {params: {demand_id: id}}).then(
+        (response) => {
+          if (response.data.meta.status_code === 200) {
+            setTimeout(() => {
+              this.formup = response.data.data
+            }, 1)
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        }
+      )
+      .catch (function(error) {
+        self.$message.error(error.message)
+        console.error(error.message)
+      })
+    },
     // 查询
     onSearch() {
       this.query.page = 1
@@ -356,5 +404,34 @@ export default {
   .dialog-footer .button {
     background-color: #cacaca;
     border-color: #cacaca;
+  }
+  .text-flow {
+    height: 30px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .focus-on {
+    height: 30px;
+    font-size: 14px;
+    width: 380px;
+    color: red;
+  }
+  .dialog-top {
+    margin-top: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #999
+  }
+  .focus-cursor {
+    cursor: pointer;
+  }
+  .title-style {
+    font-size: 16px;
+    font-weight: 500;
+  }
+  .row-height {
+    margin-top: 15px;
+    max-height: 280px;
+    overflow: auto
   }
 </style>
