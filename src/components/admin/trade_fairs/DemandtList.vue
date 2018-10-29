@@ -69,13 +69,13 @@
               min-width="160">
                 <template slot-scope="scope">
                   <p>项目名称: {{ scope.row.name }}</p>
-                  <p>设计类型: {{ scope.row.design_types_value}}</p>
+                  <p>设计类别: {{ scope.row.design_types_value | typeJoin}}</p>
                   <p>项目周期: {{ scope.row.cycle_value }}</p>
                   <p>项目预算: {{ scope.row.design_cost_value }}</p>
                   <p>产品类别: {{ scope.row.type_value }}</p>
-                  <p>所属行业: {{ scope.row.province_value }}</p>
-                  <p>工作地点: </p>
-                  <p>功能描述: </p>
+                  <p>所属行业: {{ scope.row.field_value }}</p>
+                  <p>工作地点: {{scope.row.item_province_value}}{{scope.row.item_city_value}}</p>
+                  <p>功能描述: {{scope.row.content}}</p>
                 </template>
             </el-table-column>
             <el-table-column
@@ -83,7 +83,7 @@
               min-width="90">
                 <template slot-scope="scope">
                   <p>
-                    {{ scope.row.users.account }}[{{ scope.row.user_id }}]
+                    {{ scope.row.realname || scope.row.account }}
                   </p>
                 </template>
             </el-table-column>
@@ -321,6 +321,20 @@ export default {
   },
   created: function() {
     this.loadList()
+  },
+  filters: {
+    timeFormat(val) {
+      if (!isNaN(val)) {
+        return new Date(val * 1000).format('yyyy-MM-dd')
+      } else {
+        return
+      }
+    },
+    typeJoin(val) {
+      if (val) {
+        return val.join('、')
+      }
+    }
   },
   watch: {
     '$route' (to, from) {

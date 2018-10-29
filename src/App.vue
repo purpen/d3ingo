@@ -39,6 +39,12 @@ export default {
   },
   watch: {
   },
+  mounted() {
+    // console.log('app created')
+    let loading = document.getElementById('loading')
+    let classVal = 'animated fadeOutUp'
+    loading.setAttribute('class', classVal)
+  },
   created() {
   },
   computed: {
