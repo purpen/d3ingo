@@ -115,14 +115,14 @@
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
                   <el-row :gutter="10">
-                    <el-col :span="12" v-if="form.sell_type&&form.sell_type===1">
+                    <el-col :span="12" v-if="form.sell_type&&form.sell_type===2">
                       <el-form-item label="出让比例" prop="share_ratio">
                         <el-input v-model="form.share_ratio" >
                           <template slot="append">%</template>
                         </el-input>
                       </el-form-item>
                     </el-col>
-                    <el-col :span="(form.sell_type&&form.sell_type===1)?12:24">
+                    <el-col :span="(form.sell_type&&form.sell_type===2)?12:24">
                       <el-form-item label="出让金额">
                         <el-input v-model="form.price">
                           <template slot="append">元</template>
@@ -257,7 +257,7 @@
           patent_info: '',
           customer: '',
           mass_production: 0,
-          sell_type: 0,
+          sell_type: 1,
           sales_volume: '',
           cover_id: '',
           profile: '',

@@ -22,30 +22,30 @@
                     <div tabindex="-1" class="item-more" ref="itemMore">
                       <i></i>
                       <ul v-if="d.status === 1">
-                        <li class="edit">提交</li>
+                        <li class="edit" @click="updateStatus(d.id, 2)">提交</li>
                         <li class="del">编辑</li>
-                        <li class="del">删除</li>
+                        <li class="del" @click="updateBtn(d, 2)">删除</li>
                       </ul>
                       <ul v-if="d.status === 2">
-                        <li class="edit">撤回</li>
+                        <li class="edit" @click="updateBtn(d, 3)">撤回</li>
                       </ul>
                       <ul v-if="d.status === 3">
-                        <li class="edit">下架</li>
+                        <li class="edit" @click="updateBtn(d, 1)">下架</li>
                         <li class="edit">修改价格</li>
                       </ul>
                       <ul v-if="d.status === -1">
                         <li class="edit">修改</li>
-                        <li class="edit">删除</li>
+                        <li class="edit" @click="updateBtn(d, 2)">删除</li>
                       </ul>
                     </div>
                     <div class="image-box">
-                      <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
+                      <router-link :to="{name: 'work_datails', params: {id: d.id}}"
                         :target="isMob ? '_self' : '_blank'">
                         <img v-if="d.cover" :src="d.cover.middle">
                       </router-link>
                     </div>
                     <div class="content">
-                      <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
+                      <router-link :to="{name: 'work_datails', params: {id: d.id}}"
                         :target="isMob ? '_self' : '_blank'"
                         class="tc-2 protrude fz-18">{{ d.title }}
                       </router-link>
@@ -68,6 +68,30 @@
         </div>
       </div>
     </el-row>
+    <el-dialog
+      title="项目详情"
+      :visible.sync="dialogUpdateVisible"
+      size="tiny"
+      >
+      <!-- <p v-if="updateform.opt ==1">确认要删除 {{updateform.title}} 吗？</p> -->
+      <div class="align-c">
+        <p v-if="updateform.opt===2">确认删除
+          <span class="tc-red">{{updateform.title}}</span>
+        么?</p>
+        <p v-if="updateform.opt===1">确认要下架
+          <span class="tc-red">{{updateform.title}}</span>吗？
+        </p>
+        <p v-if="updateform.opt===3">确认要撤回
+          <span class="tc-red">{{updateform.title}}</span>吗？
+        </p>
+        <p class="tc-9" v-if="updateform.opt ==3">撤回后，设计成果状态将改为已下架</p>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogUpdateVisible=false">取消</el-button>
+        <el-button class="is-custom" type="primary" size="small" @click="deleteResults" v-if="updateform.opt ===2">确定</el-button>
+        <el-button class="is-custom" type="primary" size="small" @click="updateStatus" v-else>确定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -86,7 +110,15 @@
     data() {
       return {
         isLoading: false,
-        designCases: [],
+        designCases: [], // 成果列表
+        designId: '', // 修改状态id
+        dialogUpdateVisible: false, // 更新状态弹窗
+        updateform: { // 修改状态表单
+          status: '',
+          id: [],
+          title: '',
+          opt: ''
+        },
         userId: this.$store.state.event.user.id
       }
     },
@@ -108,13 +140,7 @@
       }
     },
     methods: {
-      hasImg(d) {
-        if (d) {
-          return true
-        } else {
-          return false
-        }
-      },
+      // 获取作品列表
       getDesignCase () {
         const that = this
         that.isLoading = true
@@ -128,6 +154,70 @@
                 i.date = i.cover.created_at.date_format().format('yy-MM-dd')
               }
             }
+          }
+        })
+        .catch (function (error) {
+          that.$message.error (error.message)
+          that.isLoading = false
+        })
+      },
+      // 修改状态按钮
+      updateBtn(ele, opt) {
+        this.updateform = {
+          id: ele.id,
+          status: 1,
+          title: ele.title,
+          opt: opt
+        }
+        if (opt === 1 || opt === 3) {
+          this.updateform.status = 1
+        }
+        if (opt === 2) {
+          this.updateform.status = 2
+        }
+        this.dialogUpdateVisible = true
+      },
+      // 修改作品状态
+      updateStatus(id, status) {
+        let that = this
+        that.isLoading = true
+        if (id && status) {
+          this.updateform.id = id
+          this.updateform.status = status
+        }
+        that.$http.get (api.sdDesignResultsSaveStatus, {params: {id: this.updateform.id, status: this.updateform.status}})
+        .then (function (response) {
+          if (response.data.meta.status_code === 200) {
+            that.designCases.forEach(item => {
+              if (item.id === designId) {
+                that.$set(item, 'status', this.updateform.status)
+              }
+            })
+            that.isLoading = false
+          }
+        })
+        .catch (function (error) {
+          that.$message.error (error.message)
+          that.isLoading = false
+        })
+      },
+      // 删除成果
+      deleteResults() {
+        let that = this
+        that.isLoading = true
+        that.$http.post (api.sdDesignResultsDelete, {id: [that.updateform.id]})
+        .then (function (response) {
+          if (response.data.meta.status_code === 200) {
+            that.designCases.forEach((item, index) => {
+              if (item.id === id) {
+                that.designCases.splice(index, 1)
+              }
+            })
+            that.isLoading = false
+          } else {
+            that.$message.error(response.data.meta.message)
+            that.isLoading = false
+            return
           }
         })
         .catch (function (error) {
@@ -284,7 +374,9 @@
   .opt a {
     font-size: 1.2rem;
     }
-
+  .align-c {
+    text-align: center;
+  }
   @media screen and (max-width: 767px) {
     .opt a {
       font-size: 1.4rem;
