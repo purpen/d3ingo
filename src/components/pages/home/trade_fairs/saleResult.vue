@@ -17,9 +17,9 @@
           <el-row :gutter="20" class="list-cloud">
             <el-col :span="6" class="item-cloud" v-for="(achieve, index) in designCases" :key="index">
               <div class="list-item">
-                <div class="list-image" @click="listDatail">
+                <div class="list-image" @click="listDatail(achieve.id)">
                   <div class="image-size">
-                    <img src="achieve.cover.small" alt="点击查看详情" class="img-size">
+                    <img :src="achieve.cover.small" alt="点击查看详情" class="img-size">
                   </div>
                 </div>
                 <div class="list-text">
@@ -108,8 +108,8 @@
         this.$router.push({name: 'demand_list', query: {type: 1}})
       },
       // 跳转到设计详情
-      listDatail() {
-        this.$router.push({name: 'work_datails', params: {id: 1}})
+      listDatail(id) {
+        this.$router.push({name: 'work_datails', params: {id: id}})
       },
       // 获取成果列表
       getDesignCase () {

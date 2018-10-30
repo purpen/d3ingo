@@ -1,8 +1,9 @@
 <template>
-  <div class="container" v-loading.fullscreen.lock="isFullLoading">
+  <div class="container" v-loading="diaLoading">
     <div class="navigate-header">
       <div class="navigate-text">
         <router-link to="/shunde/trade_fairs/demandLogin">代售成果</router-link>
+        <!-- <router-link to="/shunde/trade_fairs/demandLogin">设计成果</router-link> -->
         <router-link to="/shunde/trade_fairs/demandLogin" v-if="false">我的订单</router-link>
       </div>
       <div class="navigate-text arrow-text">
@@ -278,14 +279,16 @@
 </template>
 
 <script>
+import api from '@/api/api'
 export default {
   name: 'work_datails', // 代售成果详情页
   data() {
     return {
-      isFullLoading: false,
+      diaLoading: false,
       interestButton: false,
       selectCompanyCollapse: ['1'],
       credential: ['1'],
+      formup: '',
       evaluate: {
         design_level: 0,
         content: ''
@@ -354,9 +357,29 @@ export default {
       //     self.$message.error(error.message)
       //     self.evaluateLoadingBtn = false
       //   })
-    }
+    },
+    // 获取详情
+    upDetails() {
+      this.diaLoading = true
+      this.$http.post(api.designResultsShow, {id: this.$route.params.id}).then(
+        (response) => {
+          if (response.data.meta.status_code === 200) {
+            this.diaLoading = false
+            this.formup = response.data.data
+          } else {
+            this.diaLoading = false
+            this.$message.error(response.data.meta.message)
+          }
+        }
+      )
+      .catch (function (error) {
+        this.$message.error (error.message)
+        this.diaLoading = false
+      })
+    },
   },
   created() {
+    this.upDetails()
   }
 }
 </script>

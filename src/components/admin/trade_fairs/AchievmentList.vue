@@ -9,13 +9,13 @@
 
           <div class="admin-menu-sub">
             <div class="admin-menu-sub-list">
-              <router-link :to="{name: 'adminAchievmentList'}" active-class="false" :class="{'item': true, 'is-active': menuType === 0}">全部</router-link>
+              <router-link :to="{name: 'adminAchievmentList', query: {type: 0}}" active-class="false" :class="{'item': true, 'is-active': menuType === 0}">全部</router-link>
             </div>
             <div class="admin-menu-sub-list">
-              <router-link :to="{name: 'adminAchievmentList', query: {type: 1}}" :class="{'item': true, 'is-active': menuType === 2}" active-class="false">待审核</router-link>
+              <router-link :to="{name: 'adminAchievmentList', query: {type: 2}}" :class="{'item': true, 'is-active': menuType === 2}" active-class="false">待审核</router-link>
             </div>
             <div class="admin-menu-sub-list">
-              <router-link :to="{name: 'adminAchievmentList', query: {type: 2}}" :class="{'item': true, 'is-active': menuType === 3}" active-class="false">已上架</router-link>
+              <router-link :to="{name: 'adminAchievmentList', query: {type: 3}}" :class="{'item': true, 'is-active': menuType === 3}" active-class="false">已上架</router-link>
             </div>
             <div class="admin-menu-sub-list">
               <router-link :to="{name: 'adminAchievmentList', query: {type: -1}}" :class="{'item': true, 'is-active': menuType === -1}" active-class="false">已下架</router-link>
@@ -325,9 +325,9 @@ export default {
       self.query.type = this.$route.query.type || 0
       self.query.evt = this.$route.query.evt || '2'
       self.query.val = this.$route.query.val || ''
-      this.menuType = 0
+      self.menuType = 0
       if (self.query.type) {
-        this.menuType = parseInt(self.query.type)
+        self.menuType = parseInt(self.query.type)
       }
       self.isLoading = true
       self.$http.get(api.adminDesignResultList, {params: {page: self.query.page, per_page: self.query.pageSize, sort: self.query.sort, status: self.query.type}})

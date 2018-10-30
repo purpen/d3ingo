@@ -478,7 +478,8 @@ export default {
   sdDemandDemandUpdate: '/sd/demand/demandUpdate', // POST 更新需求
   sdDemandDemandInfo: '/sd/demand/demandInfo', // GET 需求详情
   sdDemandDemandList: '/sd/demand/demandList', // GET 需求列表
-  designResultsAlLists: 'designResults/alLists', // GET  所有上架设计成果列表
+  designResultsAlLists: '/designResults/alLists', // GET 所有上架设计成果列表
+  designResultsShow: '/designResults/show', // POST 设计成果详情
 
   // 顺德设计方
   sdDesignCancelCollectDemand: '/sd/design/cancelCollectDemand', // POST 取消收藏需求
@@ -495,8 +496,8 @@ export default {
 
   // 顺德后台
   adminDesignDemandLists: 'admin/designDemand/lists', // GET 发布的设计需求列表
-  adminDesignDemandAuditStatus: 'admin/designDemand/auditStatus', // PUT 设计需求信息审核
-  adminDesignDemandShowCollectList: 'admin/designDemand/showCollectList', // GET 查看设计需求被那些设计公司收藏
+  adminDesignDemandAuditStatus: '/admin/designDemand/auditStatus', // PUT 设计需求信息审核
+  adminDesignDemandShowCollectList: '/admin/designDemand/showCollectList', // GET 查看设计需求被那些设计公司收藏
   adminDesignResultList: '/admin/designResult/list', // GET 设计成果待审核列表
   adminDesignResultSave: '/admin/designResult/save' // GET 设计成果审核
 }
