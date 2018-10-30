@@ -380,25 +380,29 @@
   }
   .list-title {
     font-family: PingFangSC-Regular;
+    padding-left: 15px;
     font-size: 16px;
     color: #222222;
     line-height: 17.04px;
   }
   .list-data {
     padding-top: 10px;
+    padding-left: 15px;
     font-family: PingFangSC-Regular;
     font-size: 12px;
     color: #999999;
   }
   .list-word {
     font-family: PingFangSC-Regular;
+    padding-left: 15px;
     font-size: 14px;
     color: #666666;
     padding-top: 10px;
   }
   .list-bottom {
     margin: 0 auto;
-    padding: 20px;
+    padding-top: 20px;
+    width: 290px;
   }
   .list-left {
     cursor: pointer;
@@ -467,36 +471,10 @@
     content: '';
     position: absolute;
     height: 24px;
-    top: -4px;
+    top: -2px;
     width: 24px;
     left: -14px;
     background: url('../../../../../assets/images/trade_fairs/list/BeInterested@2x.png') no-repeat center;
-    background-size: contain;
-  }
-  .list-button:hover {
-    height: 40px;
-    width: 90px;
-    border: 1px solid #FF4696;
-  }
-  .list-button:hover .details-text {
-    color: #FF4696;
-  }
-  .list-button:hover .details-text::before {
-    background: url('../../../../../assets/images/trade_fairs/list/DetailsHover@2x.png') no-repeat center;
-    background-size: contain;
-  }
-  .list-button:hover .button-text {
-    color: #FF4696;
-  }
-  .list-button:hover .contact-text {
-    color: #FF4696;
-  }
-  .list-button:hover .contact-text::before {
-    background: url('../../../../../assets/images/trade_fairs/list/ContactHover@2x.png') no-repeat center;
-    background-size: contain;
-  }
-  .list-button:hover .button-text:before {
-    background: url('../../../../../assets/images/trade_fairs/list/BeInterestedHover@2x.png') no-repeat center;
     background-size: contain;
   }
   .interest-border {
@@ -513,7 +491,7 @@
     content: '';
     position: absolute;
     height: 24px;
-    top: -4px;
+    top: -2px;
     width: 24px;
     left: -8px;
     background: url('../../../../../assets/images/trade_fairs/list/BeInterestedClick@2x.png') no-repeat center;
@@ -584,26 +562,6 @@
     width: 24px;
     left: -8px;
     background: url('../../../../../assets/images/trade_fairs/list/BeInterestedHover02@2x.png') no-repeat center;
-    background-size: contain;
-  }
-  .dia-button:hover {
-    height: 34px;
-    width: 120px;
-    border: 1px solid #FF5A5F;
-    border-radius: 4px;
-  }
-  .dia-button:hover .button-text {
-    color: #FF5A5F;
-  }
-  .dia-button:hover .button-text:before {
-    background: url('../../../../../assets/images/trade_fairs/list/BeInterested02@2x.png') no-repeat center;
-    background-size: contain;
-  }
-  .dia-button:hover .contact-text {
-    color: #FF5A5F;
-  }
-  .dia-button:hover .contact-text:before {
-    background: url('../../../../../assets/images/trade_fairs/list/ContactHover@02x.png') no-repeat center;
     background-size: contain;
   }
 </style>
