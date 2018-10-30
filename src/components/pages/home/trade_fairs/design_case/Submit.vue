@@ -302,7 +302,7 @@
               illustrate: [that.uploadParam3['x:random']] || [],
               patent: [that.uploadParam2['x:random']] || [],
               images: [that.uploadParam['x:random']] || [],
-              status: 1,
+              status: 2,
               id: that.form.id || ''
             }
             console.log('rew', row)

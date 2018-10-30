@@ -16,9 +16,9 @@
               <el-menu-item index="commonly_sites" :route="menu.commonly_sites">设计工具</el-menu-item>
               <el-menu-item index="innovation_index" :route="menu.innovation_index"
                 v-if="isAdmin">创新指数</el-menu-item>
-              <!-- <el-menu-item index="trade_fairs" :route="menu.home_page" v-if="!token">交易会</el-menu-item>
-              <el-menu-item index="trade_fairs" :route="menu.demand_login" v-if="token">交易会</el-menu-item> -->
-              <el-menu-item index="trade_fairs" :route="menu.mobile_login">交易会</el-menu-item>
+              <el-menu-item index="trade_fairs" :route="menu.home_page" v-if="!token">交易会</el-menu-item>
+              <el-menu-item index="trade_fairs" :route="menu.demand_login" v-if="token">交易会</el-menu-item>
+              <!-- <el-menu-item index="trade_fairs" :route="menu.mobile_login">交易会</el-menu-item> -->
             </el-menu>
           </hgroup>
           <div class="nav-right nav-menu" v-if="isLogin">

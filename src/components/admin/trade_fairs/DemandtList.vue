@@ -82,11 +82,12 @@
                 </template>
             </el-table-column>
             <el-table-column
-              label="创建人"
+              label="所属公司"
               min-width="90">
                 <template slot-scope="scope">
                   <p>
-                    {{ scope.row.realname || scope.row.account }}
+                    {{scope.row.realname}}
+                    {{scope.row.account}}
                   </p>
                 </template>
             </el-table-column>
