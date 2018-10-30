@@ -89,7 +89,7 @@
                 class="submit-form"
                 @close="closeBtn"
                 >
-                <el-form :model="form" ref="form" :rules="rules" @submit.native.prevent>
+                <el-form :model="form" ref="form" :rules="rules" @submit.native.prevent class="scroll-bar">
                   <el-form-item label="项目名称" prop="name" label-position="top">
                     <el-input v-model="form.name" placeholder="请输入项目名称"></el-input>
                   </el-form-item>
@@ -735,5 +735,10 @@
   }
   .demand-content .is-custom {
     min-width: 120px;
+  }
+  .submit-form .el-form {
+    padding: 10px 20px;
+    max-height: 300px;
+    overflow-y: auto;
   }
 </style>

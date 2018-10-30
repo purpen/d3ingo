@@ -21,11 +21,21 @@
                   <el-card :body-style="{ padding: '0px' }" class="item">
                     <div tabindex="-1" class="item-more" ref="itemMore">
                       <i></i>
-                      <ul>
-                        <li @click="blurItemMore(index, d.id, d.match_id)" class="edit">
-                          编辑
-                        </li>
-                        <li class="del" @click="delItem(d.id, index)">删除</li>
+                      <ul v-if="d.status === 1">
+                        <li class="edit">提交</li>
+                        <li class="del">编辑</li>
+                        <li class="del">删除</li>
+                      </ul>
+                      <ul v-if="d.status === 2">
+                        <li class="edit">撤回</li>
+                      </ul>
+                      <ul v-if="d.status === 3">
+                        <li class="edit">下架</li>
+                        <li class="edit">修改价格</li>
+                      </ul>
+                      <ul v-if="d.status === -1">
+                        <li class="edit">修改</li>
+                        <li class="edit">删除</li>
                       </ul>
                     </div>
                     <div class="image-box">
@@ -37,9 +47,18 @@
                     <div class="content">
                       <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
                         :target="isMob ? '_self' : '_blank'"
-                        class="tc-2 protrude">{{ d.title }}
+                        class="tc-2 protrude fz-18">{{ d.title }}
                       </router-link>
-                      <span class="fz-12 tc-9">{{ d.date }}</span>
+                      <span class="fz-14 tc-6">出让方式: {{d.sell_type===1?'全款出售':'股权出让'+d.share_ratio+'%'}}</span>
+                      <p class="tc-6 mg-top-5">
+                        <span>
+                          出让金额: 
+                          <span class="tc-red">
+                            ¥{{d.price}}
+                          </span>
+                        </span>
+                        <span class="fr">{{d.status | statusFormat}}</span>
+                      </p>
                     </div>
                   </el-card>
                 </el-col>
@@ -71,6 +90,23 @@
         userId: this.$store.state.event.user.id
       }
     },
+    filters: {
+      statusFormat(val) {
+        if (val) {
+          if (val === 1) {
+            return '待提交'
+          } else if (val === 2) {
+            return '审核中'
+          } else if (val === 3) {
+            return '已上架'
+          } else if (val === -1) {
+            return '已下架'
+          } else {
+            return ''
+          }
+        }
+      }
+    },
     methods: {
       hasImg(d) {
         if (d) {
@@ -79,33 +115,6 @@
           return false
         }
       },
-      delItem(id, index) {
-        this.$refs.itemMore[index].blur()
-        this.$confirm ('是否执行此操作?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then (() => {
-          const that = this
-          that.$http.delete (api.designCaseId.format (id), {})
-            .then (function (response) {
-              if (response.data.meta.status_code === 200) {
-                that.$message.success ('删除成功!')
-                that.getDesignCase ()
-              }
-            })
-            .catch (function (error) {
-              that.$message.error (error.message)
-              console.log (error.message)
-              return false
-            })
-        }).catch (() => {
-        })
-      },
-      // 添加作品案例
-      // add() {
-      //   this.$router.push ({name: 'vcenterDesignCaseAdd'})
-      // },
       getDesignCase () {
         const that = this
         that.isLoading = true
@@ -125,10 +134,6 @@
           that.$message.error (error.message)
           that.isLoading = false
         })
-      },
-      blurItemMore(index, id, matchId) {
-        // this.$refs.itemMore[i].blur()
-        this.$router.push({name: 'vcenterDesignCaseEdit', params: {id: id, match_id: matchId}})
       }
     },
     computed: {
@@ -253,19 +258,24 @@
 
   .image-box {
     border-radius: 4px 4px 0 0;
-    height: 180px;
+    height: 160px;
     overflow: hidden;
     }
 
   .content {
-    padding: 10px 20px;
+    padding: 8px 20px;
+    height: 80px;
     }
 
   .content a {
     display: block;
-    font-size: 1.4rem;
+    font-size: 1.8rem;
     margin-bottom: 10px;
+    color: #222;
     }
+  .mg-top-5 {
+    margin-top: 5px;
+  }
   .opt {
     margin: 10px 0 0 0;
     text-align: right;

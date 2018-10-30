@@ -645,6 +645,9 @@
   .forget-content .el-form--label-top .disabled-hover .el-form-item__content .el-input-group--append .el-input-group__append:hover {
     background-color: #f7f7f7;
   }
+  .submit-form .el-dialog__body {
+    padding: 0;
+  }
 @media screen and (max-width: 767px) {
   .el-dialog--large,
   .el-dialog--small,
@@ -656,7 +659,5 @@
   .el-form-item__content .el-radio-group {
     width: 100%;
   }
-  .submit-form>.el-dialog .el-dialog__body {
-    padding: 0 20px;
-  }
+
 }
