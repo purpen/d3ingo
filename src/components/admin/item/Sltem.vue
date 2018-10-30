@@ -52,7 +52,7 @@
             </el-table-column>
             <el-table-column prop="id" label="ID" width="60">
             </el-table-column>
-            <el-table-column label="内容" min-width="100">
+            <el-table-column label="内容" min-width="80">
               <template slot-scope="scope">
                 <p>标题: {{ scope.row.item_name }}
                 </p>
@@ -80,6 +80,8 @@
                   {{ scope.row.created_at }}
                 </p>
               </template>
+            </el-table-column>
+            <el-table-column width="100" label="备注" prop="summary">
             </el-table-column>
             <el-table-column width="100" label="操作">
               <template slot-scope="scope">
@@ -243,7 +245,7 @@ export default {
         .then(response => {
           if (response.data.meta.status_code === 200) {
             for (let i = 0; i < len; i++) {
-              if (id === this.tableData[i].id) {
+              if (this.tableData[i] && id === this.tableData[i].id) {
                 this.tableData.splice(i, 1)
               }
             }
@@ -269,7 +271,8 @@ export default {
 }
 </script>
 <style scoped>
-.edit, .delete {
+.edit,
+.delete {
   height: 40px;
   display: flex;
   align-items: center;

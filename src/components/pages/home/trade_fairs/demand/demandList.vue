@@ -10,7 +10,7 @@
             <v-menu-sub></v-menu-sub>
             <div v-if="type === 1">
               <div class="no-demand" v-if="!demandList.length&&!isLoading">
-                <img src="../../../../assets/images/trade_fairs/default/NoDemand@2x.png" alt="">
+                <img src="../../../../../assets/images/trade_fairs/default/NoDemand@2x.png" alt="">
                 <p class="tc-9">还没有设计需求，立即发布一个吧～</p>
                 <div class="post-header">
                   <el-button class="is-custom mg-r-20" type="primary" size="small" @click="dialogFormVisible=true">
@@ -97,19 +97,19 @@
                   <el-row class="des-type">
                     <el-col :span="6">
                       <button  @click="addType(1)" 
-                        :class="[{'red-btn': form.design_types.indexOf(1) !== -1}]"> 产品策略</button>
+                        :class="[{'red-btn': form.design_types.indexOf(1) !== -1 || form.design_types.indexOf('1') !== -1}]"> 产品策略</button>
                     </el-col>
                     <el-col :span="6">
                         <button  @click="addType(2)"
-                          :class="[{'red-btn': form.design_types.indexOf(2) !== -1}]">外观设计</button>
+                          :class="[{'red-btn': form.design_types.indexOf(2) !== -1 || form.design_types.indexOf('2') !== -1}]">外观设计</button>
                     </el-col>
                     <el-col :span="6">
                         <button  @click="addType(3)"
-                          :class="[{'red-btn': form.design_types.indexOf(3) !== -1}]">结构设计</button>
+                          :class="[{'red-btn': form.design_types.indexOf(3) !== -1 ||form.design_types.indexOf('3') !== -1}]">结构设计</button>
                     </el-col>
                     <el-col :span="6">
                         <button  @click="addType(4)"
-                        :class="[{'red-btn': form.design_types.indexOf(4) !== -1}]">其他</button>
+                        :class="[{'red-btn': form.design_types.indexOf(4) !== -1 || form.design_types.indexOf('4') !== -1}]">其他</button>
                     </el-col>
                   </el-row>
                   <el-row :gutter="10">
@@ -297,7 +297,7 @@
 </template>
 <script>
   import vMenu from '@/components/pages/v_center/Menu'
-  import vMenuSub from '@/components/pages/home/trade_fairs/MenuSub'
+  import vMenuSub from '@/components/pages/home/trade_fairs/demand/MenuSub'
   import api from '@/api/api'
   import config from '@/config'
   import RegionPicker from '@/components/block/RegionPicker'
@@ -420,10 +420,14 @@
         this.$http.get(api.sdDemandDemandInfo, {params: {demand_id: id}}).then(
           (response) => {
             if (response.data.meta.status_code === 200) {
+              let res = response.data.data
+              res.design_types = JSON.parse(res.design_types)
+              res.design_types.forEach(i => {
+                i = Number(i)
+              })
               if (type === 1) {
                 // this.$nextTick(_ => {
                 this.formup = response.data.data
-                this.formup.design_types = JSON.parse(this.formup.design_types)
                 this.dialogUpdateVisible = true
                 // })
               }
@@ -433,7 +437,6 @@
                 this.$nextTick(_ => {
                   this.isUpdate = true
                   this.form = response.data.data
-                  this.form.design_types = JSON.parse(this.form.design_types)
                 })
               }
             } else {
@@ -473,10 +476,12 @@
           if (valid) {
             if (!self.form.design_types || !self.form.design_types.length) {
               self.$message.error('设计类型未选择')
+              self.addLoading = false
               return
             }
             if (!self.form.item_city || !self.form.item_province) {
               self.$message.error('请填写工作地点')
+              self.addLoading = false
               return
             }
             let row = {
@@ -490,13 +495,30 @@
               'item_province': self.form.item_province,
               'content': self.form.content
             }
-            let mothod = api.sdDemandRelease
-            if (this.isUpdate) {
-              mothod = api.sdDemandDemandUpdate
+            let url = api.sdDemandRelease
+            let data = row
+            if (self.isUpdate) {
+              url = api.sdDemandDemandUpdate
+              if (!row.demand_id) {
+                row.demand_id = self.form.id
+              }
             }
-            self.$http.post(mothod, row).then((response) => {
+            self.$http.post(url, data).then((response) => {
               if (response.data.meta.status_code === 200) {
-                self.demandList.unshift(response.data.data)
+                if (!self.isUpdate) {
+                  self.demandList.unshift(response.data.data)
+                } else {
+                  self.demandList.forEach((item, index) => {
+                    if (item.id === response.data.data.id) {
+                      response.data.data.design_types = JSON.parse(response.data.data.design_types)
+                      response.data.data.design_types.forEach(i => {
+                        i = Number(i)
+                      })
+                      self.$set(self.demandList, index, response.data.data)
+                    }
+                  })
+                  self.isUpdate = false
+                }
                 self.dialogFormVisible = false
                 self.form = {
                   'design_types': []
@@ -509,14 +531,14 @@
               }
             })
             .catch(function (error) {
-              self.addLoading = false
               self.$message.error(error.message)
               console.error(error.message)
+              self.addLoading = false
               return
             })
           } else {
-            self.addLoading = false
             self.$message.error('请完善信息')
+            self.addLoading = false
             return false
           }
         })
@@ -663,6 +685,7 @@
   }
   .details .el-col {
     max-height: 180px;
+    overflow: hidden;
   }
   /* .details .c-title:hover {
     color: #ff5a5f;

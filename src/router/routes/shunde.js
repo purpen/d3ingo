@@ -65,7 +65,7 @@ module.exports = [
   },
   // 个人中心需求列表页
   {
-    path: '/shunde/trade_fairs/demandList',
+    path: '/shunde/trade_fairs/demand/demandList',
     name: 'demand_list',
     meta: {
       title: '需求列表',
@@ -73,19 +73,31 @@ module.exports = [
       hideHeader: true,
       hideFooter: true
     },
-    component: require('@/components/pages/home/trade_fairs/demandList')
+    component: require('@/components/pages/home/trade_fairs/demand/demandList')
   },
-  // 个人中心成果列表页
+  // 个人中心设计方成果列表页
   {
-    path: '/shunde/trade_fairs/achieveList',
-    name: 'achieve_list',
+    path: '/shunde/trade_fairs/design_case',
+    name: 'sdDesignCase_list',
     meta: {
-      title: '需求列表',
+      title: '成果列表',
       requireAuth: true,
       hideHeader: true,
       hideFooter: true
     },
-    component: require('@/components/pages/home/trade_fairs/achieveList')
+    component: require('@/components/pages/home/trade_fairs/design_case/list')
+  },
+  // 个人中心设计方成果新建页
+  {
+    path: '/shunde/trade_fairs/design_case/submit',
+    name: 'sdDesignCase_submit',
+    meta: {
+      title: '成果详情',
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/home/trade_fairs/design_case/submit')
   },
   // 付款-托管资金
   {
