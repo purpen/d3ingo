@@ -106,8 +106,8 @@
                 <el-col :span="isMob ? 24 : 12">
                   <el-form-item label="出让方式" prop="sell_type">
                     <el-radio-group v-model.number="form.sell_type" @change="sell">
-                      <el-radio class="radio" :label="0">全额出让</el-radio>
-                      <el-radio class="radio" :label="1">股权合作</el-radio>
+                      <el-radio class="radio" :label="1">全额出让</el-radio>
+                      <el-radio class="radio" :label="2">股权合作</el-radio>
                     </el-radio-group>
                   </el-form-item>
                 </el-col>
@@ -297,7 +297,7 @@
               title: that.form.title,
               sell_type: that.form.sell_type,
               price: that.form.price,
-              share_ratio: that.form.sell_type === 0 ? 100 : that.form.share_ratio,
+              share_ratio: that.form.sell_type === 1 ? 100 : that.form.share_ratio,
               design_company_id: that.$store.state.event.user.company_id,
               illustrate: [that.uploadParam3['x:random']] || [],
               patent: [that.uploadParam2['x:random']] || [],
@@ -305,7 +305,6 @@
               status: 2,
               id: that.form.id || ''
             }
-            console.log('rew', row)
             row.cover_id = that.coverId
             that.isLoadingBtn = true
             that.$http({method: 'post', url: api.sdDesignResultsSave, data: row})
