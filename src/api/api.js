@@ -487,13 +487,16 @@ export default {
   sdDemandDesignDemandInfo: '/sd/demand/designDemandInfo', // GET 设计公司查看某个需求详情
   sdDemandDesignDemandList: '/sd/demand/designDemandList', // GET 设计公司查看需求列表
   sdDesignResultsSave: '/designResults/save', // POST 保存设计成果
-  sdDesignResultsMyCollectionList: '/designResults/myCollectionList', // 我的设计成果收藏列表
-  sdDesignResultsList: '/designResults/list', // 设计成果列表
+  sdDesignResultsMyCollectionList: '/designResults/myCollectionList', // GET 我的设计成果收藏列表
+  sdDesignResultsList: '/designResults/list', // GET 设计成果列表
+  sdDesignResultsSaveStatus: '/designResults/saveStatus', // GET 设计成果状态修改
+  sdDesignResultsDelete: '/designResults/delete', // POST 设计成果状态删除
+  sdDesignResultsShow: 'designResults/show', // GET 设计成果详情
 
   // 顺德后台
   adminDesignDemandLists: 'admin/designDemand/lists', // GET 发布的设计需求列表
-  adminDesignDemandAuditStatus: 'admin/designDemand/auditStatus', // PUT  设计需求信息审核
-  adminDesignDemandShowCollectList: 'admin/designDemand/showCollectList', // GET  查看设计需求被那些设计公司收藏
+  adminDesignDemandAuditStatus: 'admin/designDemand/auditStatus', // PUT 设计需求信息审核
+  adminDesignDemandShowCollectList: 'admin/designDemand/showCollectList', // GET 查看设计需求被那些设计公司收藏
   adminDesignResultList: '/admin/designResult/list', // GET 设计成果待审核列表
   adminDesignResultSave: '/admin/designResult/save' // GET 设计成果审核
 }
