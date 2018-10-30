@@ -478,6 +478,7 @@ export default {
   sdDemandDemandUpdate: '/sd/demand/demandUpdate', // POST 更新需求
   sdDemandDemandInfo: '/sd/demand/demandInfo', // GET 需求详情
   sdDemandDemandList: '/sd/demand/demandList', // GET 需求列表
+  designResultsAlLists: 'designResults/alLists', // GET  所有上架设计成果列表
 
   // 顺德设计方
   sdDesignCancelCollectDemand: '/sd/design/cancelCollectDemand', // POST 取消收藏需求

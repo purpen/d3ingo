@@ -56,6 +56,15 @@
               </div>
             </el-col>
           </el-row>
+          <el-pagination
+            v-if="demandList.length > query.pageSize"
+            class="pagination"
+            @current-change="handleCurrentChange"
+            :current-page="query.page"
+            :page-size="query.pageSize"
+            layout="prev, pager, next"
+            :total="query.totalCount">
+          </el-pagination>
         </div>
       </div>
       <!-- 右下角图标 -->
@@ -65,7 +74,7 @@
             联系客服
           </div>
         </div>
-        <div class="right-bottom">
+        <div class="right-bottom" @click="achieveBanner">
           <div class="pMassgae-bottom">
             上传代售成果
           </div>
@@ -77,7 +86,7 @@
       title="需求详情"
       :visible.sync="dialogUpdateVisible"
       size="tiny"
-      class="submit-form seen-deta"
+      class="submit2-form seen-deta"
       >
       <div v-loading="diaLoading">
         <div class="details">
@@ -195,7 +204,15 @@
         isLoading: false,
         collectId: '',
         diaLoading: false,
-        setIndex: -1
+        setIndex: -1,
+        query: {
+          page: 1,
+          pageSize: 21,
+          totalCount: 0,
+          sort: 1,
+          type: 0,
+          test: null
+        },
       }
     },
     created() {
@@ -208,10 +225,11 @@
       getDemandList() {
         let that = this
         that.isLoading = true
-        that.$http.get(api.sdDemandDesignDemandList).then((response) => {
+        that.$http.get(api.sdDemandDesignDemandList, {params: {per_page: this.query.pageSize, page: this.query.page}}).then((response) => {
           if (response.data.meta.status_code === 200) {
             if (response.data.data && response.data.data.length) {
               that.demandList = response.data.data
+              that.query.totalCount = response.data.meta.pagination.total
               that.isLoading = false
               that.demandList.forEach(item => {
                 item.design_types = JSON.parse(item.design_types)
@@ -297,6 +315,21 @@
             return
           })
         }
+      },
+      achieveBanner() {
+        this.$router.push({name: 'sdDesignCase_list', query: {type: 1}})
+      },
+      // 分页
+      handleSelectionChange(val) {
+        this.multipleSelection = val
+      },
+      handleSizeChange(val) {
+        this.query.pageSize = val
+        this.loadList()
+      },
+      handleCurrentChange(val) {
+        this.query.page = val
+        this.$router.push({name: this.$route.name, query: {page: val}})
       }
     },
     filters: {
@@ -418,7 +451,7 @@
     margin-top: 20px;
     height: 60px;
     width: 60px;
-    background: url('../../../../assets/images/trade_fairs/list/SendOut@2x.png') no-repeat center;
+    background: url('../../../../assets/images/trade_fairs/list/Uploading@2x.png') no-repeat center;
     background-size: contain;
   }
   .right-bottom:hover {
@@ -426,7 +459,7 @@
     margin-top: 20px;
     height: 60px;
     width: 60px;
-    background: url('../../../../assets/images/trade_fairs/list/SendOutHover@2x.png') no-repeat center;
+    background: url('../../../../assets/images/trade_fairs/list/UploadingHover@2x.png') no-repeat center;
     background-size: contain;
   }
   .pMassgae {
@@ -688,7 +721,7 @@
   .dialog-bottom {
     width: 260px;
   }
-  .submit-form {
+  .submit2-form {
     overflow: hidden
   }
   .content-height {

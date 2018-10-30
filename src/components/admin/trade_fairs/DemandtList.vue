@@ -85,10 +85,12 @@
               label="所属公司"
               min-width="90">
                 <template slot-scope="scope">
-                  <p>
-                    {{scope.row.realname}}
-                    {{scope.row.account}}
-                  </p>
+                  <div>
+                    {{scope.row.demand_company_name}}
+                  </div>
+                  <div>
+                    {{scope.row.phone}}
+                  </div>
                 </template>
             </el-table-column>
             <el-table-column
