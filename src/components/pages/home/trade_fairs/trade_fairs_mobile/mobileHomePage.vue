@@ -47,7 +47,7 @@
           </div>
         </div>
         <div class="content-texts">
-          <span class="content-text">说明：本次交易会，组织费用由主办方负责，平台对真实买卖的项目收取交易额10%的服务费，对未产生买卖的与会双方不收取任何费用。</span>
+          <span class="contents-text">说明：本次交易会，组织费用由主办方负责，平台对真实买卖的项目收取交易额10%的服务费，对未产生买卖的与会双方不收取任何费用。</span>
         </div>
       </div>
 
@@ -56,99 +56,6 @@
         <div class="scene-title">
         </div>
         <div class="scene-background">
-          <div class="scene-cloud">
-            <div class="scene-left">
-              <div class="time1">
-                <span class="span-text">14:00 – 14:30</span>
-              </div>
-              <div class="time1 time2">
-                <span class="span-text">14:30 – 14:35</span>
-              </div>
-              <div class="time1 time3">
-                <span class="span-text">14:35 – 14:45</span>
-              </div>
-              <div class="time1 time4">
-                <span class="span-text">14:45 – 15:20</span>
-              </div>
-              <div class="time1 time5">
-                <span class="span-text">15:20 – 15:55</span>
-              </div>
-              <div class="time1 time6">
-                <span class="span-text">15:55 – 16:10</span>
-              </div>
-              <div class="time1 time7">
-                <span class="span-text">16:10 – 17:30</span>
-              </div>
-              <div class="time1 time8">
-                <span class="span-text">17:30</span>
-              </div>
-            </div>
-            <div class="scene-right">
-              <div class="span-right-text">
-                <span class="span-text">与会嘉宾签到</span>
-                <span class="span-text">参观碧桂园汽车小镇展厅</span>
-              </div>
-              <div class="span-right-text text2">
-                <span class="span-text">领导致欢迎辞</span>
-              </div>
-              <div class="span-right-text text3">
-                <span class="span-text">创新成果线上交易平台展示</span>
-              </div>
-              <div class="button-left">
-                <div class="span-button">
-                  <span class="button-text">路演厅</span>
-                </div>
-                <div class="text4">
-                  <span class="span-text">第一批高级待售项目演示</span>
-                  <span class="span-text">(15个)评委点评</span>
-                </div>
-                <div class="span-button">
-                  <span class="button-text">洽谈区</span>
-                </div>
-                <div class="text6">
-                  <span class="span-text">项目供方进入洽谈区域</span>
-                </div>
-                <div class="span-button">
-                  <span class="button-text">路演厅</span>
-                </div>
-                <div class="text5">
-                  <span class="span-text">第二批高级待售项目演示</span>
-                  <span class="span-text">(15个)评委点评</span>
-                </div>
-                <div class="span-button">
-                  <span class="button-text">路演厅</span>
-                </div>
-                <div class="text6">
-                  <span class="span-text">茶歇时间，洽谈区交流</span>
-                </div>
-                <div class="span-button">
-                  <span class="button-text">洽谈区</span>
-                </div>
-                <div class="text6">
-                  <span class="span-text">双方洽谈</span>
-                </div>
-                <div class="span-button">
-                  <span class="button-text">路演厅</span>
-                </div>
-                <div class="text7">
-                  <span class="span-text">第三批合作项目演示</span>
-                  <span class="span-text">(20个)评委点评</span>
-                </div>
-                <div class="span-button">
-                  <span class="button-text">路演厅</span>
-                </div>
-                <div class="text8">
-                  <span class="span-text">交流酒会</span>
-                </div>
-                <div class="span-button">
-                  <span class="button-text">洽谈区</span>
-                </div>
-                <div class="text6">
-                  <span class="span-text">双方洽谈</span>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -233,6 +140,10 @@
           <div class="host-content"></div>
           <div class="host-right"></div>
         </div>
+        <div class="login-center">
+          <span class="login-color">PC端登录进入专区操作</span>
+          <span class="web-color">www.d3ingo.com</span>
+        </div>
         <div class="host-text">
           <span class="host-text-style">有疑问请致电如下，我们将协助您完成操作
 商务总监: 耿霆&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tel: 13031154842</span>
@@ -305,7 +216,7 @@
   }
   .text-style {
     font-family: PingFangSC-Regular;
-    font-size: 155%;
+    font-size: 145%;
     color: #FFFFFF;
     text-align: center;
     line-height: 30px;
@@ -313,7 +224,7 @@
   .features-process {
     position: relative;
     height: 406px;
-    margin-top: 30px;
+    margin: 30px 10px 0 10px;
     background: url('../../../../../assets/images/trade_fairs/ActivityCharacteristics02@2x.png') no-repeat center;
     background-size: contain;
   }
@@ -359,7 +270,7 @@
   }
   .text-after {
     font-family: PingFangSC-Regular;
-    font-size: 155%;
+    font-size: 145%;
     color: #FFFFFF;
     text-align: justify;
     line-height: 30px;
@@ -406,9 +317,9 @@
     text-align: left;
     padding: 20px 10px 0 10px;
   }
-  .content-text {
+  .contents-text {
     font-family: PingFangSC-Regular;
-    font-size: 12px;
+    font-size: 14px;
     color: #02EBA5;
     line-height: 24px;
   }
@@ -420,105 +331,24 @@
 
   /* 现场流程 */
   .scene {
-    height: 674px;
+    height: 845px;
     background: #3519B2;
     padding-top: 30px;
   }
   .scene-title {
     margin: 0 auto;
+    margin-bottom: 20px;
     width: 170px;
     height: 35px;
     background: url('../../../../../assets/images/trade_fairs/title/Title-03@2x.png') no-repeat center;
     background-size: contain;
   }
   .scene-background {
-    height: 600px;
+    height: 742px;
     margin-left: 10px;
     margin-right: 10px;
     background: url('../../../../../assets/images/trade_fairs/time-bg.png') no-repeat center;
-    background-size: cover;
-  }
-  .scene-cloud {
-    height: 500px;
-    padding-top: 30px;
-  }
-  .scene-left {
-    float: left;
-  }
-  .span-text {
-    font-family: PingFangSC-Regular;
-    font-size: 14px;
-    color: #FFFFFF;
-  }
-  /* .time1 {
-  }
-  .time2 {
-    padding-top: 18px;
-  }
-  .time3 {
-    padding-top: 40px;
-  }
-  .time4 {
-    padding-top: 80px;
-  }
-  .time5 {
-    padding-top: 62px;
-  }
-  .time6 {
-    padding-top: 63px;
-  }
-  .time7 {
-    padding-top: 40px;
-  }
-  .time8 {
-    padding-top: 65px;
-  }
-   */
-  .scene-right {
-    float: left;
-  }
-  .scene-right span {
-    display: block
-  }
-  .span-right-text {
-    margin-top: -3px;
-    height: 20px;
-    text-align: left;
-  }
-  .span-button {
-    float: left;
-    height: 15px;
-    width: 50px;
-    background: #02EBA5;
-    border-radius: 20px;
-    text-align: center;
-    line-height: 15px;
-    position: absolute;
-  }
-  .button-left {
-    float: left;
-    padding-top: 40px;
-    position: relative;
-  }
-  .text2 {
-    padding-top: 25px
-  }
-  .text3 {
-    padding-top: 43px
-  }
-  .text8 {
-    padding-top: 50px;
-  }
-  .text5-right {
-    padding-top: 120px;
-  }
-  .text6-right {
-    padding-top: 90px;
-  }
-  .button-text {
-    font-family: PingFangSC-Regular;
-    font-size: 10px;
-    color: #3519B2;
+    background-size: contain;
   }
 
   /* 在线操作流程 */
@@ -583,22 +413,21 @@
     background: url('../../../../../assets/images/trade_fairs/title/Title-05@2x.png') no-repeat center;
     background-size: contain;
   }
-  .cloud-count {
-    height: 74px;
-    margin: 0 auto;
-  }
   .one-margin {
     height: 98px;
-    margin: 0 auto;
-    padding: 30px
+  }
+  .cloud-count {
+    margin-top: 20px;
   }
   /* 参会人数 */
   .number-cloud {
+    width: 50%;
     float: left;
     text-align: center;
   }
   .number {
     margin: 0 auto;
+    margin-right: 5px;
     width: 150px;
     height: 74px;
     margin-bottom: 10px;
@@ -614,11 +443,13 @@
   }
   /* 参会企业 */
   .enterprise-cloud {
+    width: 50%;
     float: right;
     text-align: center;
   }
   .enterprise {
     margin: 0 auto;
+    margin-left: 5px;
     width: 150px;
     height: 74px;
     margin-bottom: 10px;
@@ -634,11 +465,13 @@
   }
   /* 设计公司 */
   .company-cloud {
+    width: 50%;
     float: left;
     text-align: center;
   }
   .company {
     margin: 0 auto;
+    margin-right: 5px;
     width: 150px;
     height: 74px;
     margin-bottom: 10px;
@@ -654,11 +487,13 @@
   }
   /* 展示项目 */
   .project-cloud {
+    width: 50%;
     float: right;
     text-align: center;
   }
   .project {
     margin: 0 auto;
+    margin-left: 5px;
     width: 150px;
     height: 74px;
     margin-bottom: 10px;
@@ -674,13 +509,13 @@
   }
   /* 总成交额 */
   .amount-cloud {
+    width: 50%;
     text-align: center;
-    padding-top: 20px;
-    padding-left:30px;
     float: left;
   }
   .amount {
     margin: 0 auto;
+    margin-right: 5px;
     width: 150px;
     height: 74px;
     margin-bottom: 10px;
@@ -712,7 +547,7 @@
     padding-top: 20px;
   }
   .woderful-content {
-    width: 335px;
+    width: 310px;
     margin: 0 auto;
     height: 94px;
     padding-top: 5px;
@@ -721,14 +556,18 @@
     margin-top: 5px;
   }
   .public-one {
-    width: 164px;
+    width: 150px;
     height: 94px;
     float: left;
+    border-radius: 4px;
+    border: 1px solid #02EBA5;
   }
   .public-rest {
-    width: 164px;
+    width: 150px;
     height: 94px;
     float: right;
+    border-radius: 4px;
+    border: 1px solid #02EBA5;
   }
   .one {
     background: url('../../../../../assets/images/trade_fairs/wonderful/1@2x.png') no-repeat center;
@@ -778,29 +617,30 @@
   }
   .background-height {
     height: 98px;
+    width: 290px;
     margin: 0 auto;
-    padding: 30px 18px 0 18px;
+    padding-top: 20px;
   }
   .host-left {
     height: 88px;
-    width: 99px;
+    width: 90px;
     float: left;
     background: url('../../../../../assets/images/trade_fairs/organizers/HostUnit01@2x.png') no-repeat center;
     background-size: contain;
   }
   .host-content {
     height: 88px;
-    width: 99px;
+    width: 90px;
     float: left;
-    margin-left: 20px;
+    margin-left: 10px;
     background: url('../../../../../assets/images/trade_fairs/organizers/HostUnit02@2x.png') no-repeat center;
     background-size: contain;
   }
   .host-right {
     height: 88px;
-    width: 99px;
+    width: 90px;
     float: left;
-    margin-left: 20px;
+    margin-left: 10px;
     background: url('../../../../../assets/images/trade_fairs/organizers/HostUnit03@2x.png') no-repeat center;
     background-size: contain;
   }
@@ -809,12 +649,28 @@
     width: 228px;
     text-align: center;
     margin: 0 auto;
-    margin-top: 60px;
   }
   .host-text-style {
     font-family: PingFangSC-Regular;
     font-size: 12px;
     color: #FFFFFF;
+    text-align: center;
+    line-height: 20px;
+  }
+  .login-center {
+    margin: 30px 0 10px 0;
+    text-align: center;
+  }
+  .login-color {
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    color: #FFFFFF;
+    text-align: center;
+  }
+  .web-color {
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    color: #02EBA5;
     text-align: center;
     line-height: 20px;
   }
