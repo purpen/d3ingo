@@ -108,5 +108,59 @@ module.exports = [
       hideFooter: true
     },
     component: require('@/components/pages/home/trade_fairs/paymentAmount')
+  },
+  // 登陆后移动端首页
+  {
+    path: '/shunde/trade_fairs/trade_fairs_mobile/mobileLogin',
+    name: 'mobile_login',
+    meta: {
+      title: '首页',
+      requireAuth: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/home/trade_fairs/trade_fairs_mobile/mobileLogin')
+  },
+  // 登陆后移动端内容页
+  {
+    path: '/shunde/trade_fairs/trade_fairs_mobile/mobileHomePage',
+    name: 'mobile_home_page',
+    meta: {
+      title: '内容页',
+      requireAuth: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/home/trade_fairs/trade_fairs_mobile/mobileHomePage')
+  },
+  // 移动端设计需求
+  {
+    path: '/shunde/trade_fairs/trade_fairs_mobile/demandDesign',
+    name: 'mobile_demand_design',
+    meta: {
+      title: '设计需求',
+      requireAuth: true
+    },
+    component: require('@/components/pages/home/trade_fairs/trade_fairs_mobile/demandDesign')
+  },
+  // 移动端代售成果
+  {
+    path: '/shunde/trade_fairs/trade_fairs_mobile/saleResult',
+    name: 'mobile_sale_result',
+    meta: {
+      title: '代售成果',
+      requireAuth: true
+    },
+    component: require('@/components/pages/home/trade_fairs/trade_fairs_mobile/saleResult')
+  },
+  // 移动端需求详情
+  {
+    path: '/shunde/trade_fairs/trade_fairs_mobile/mobileDemanDetails/:id',
+    name: 'mobile_demand_details',
+    meta: {
+      title: '移动端需求详情',
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/home/trade_fairs/trade_fairs_mobile/mobileDemanDetails')
   }
 ]

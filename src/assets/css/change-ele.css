@@ -652,7 +652,7 @@
     margin-right: 0;
   }
   .load-index .el-loading-mask {
-    z-index: 2009;
+    z-index: 2020;
   }
 @media screen and (max-width: 767px) {
   .el-dialog--large,

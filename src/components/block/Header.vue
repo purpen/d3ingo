@@ -16,8 +16,9 @@
               <el-menu-item index="commonly_sites" :route="menu.commonly_sites">设计工具</el-menu-item>
               <el-menu-item index="innovation_index" :route="menu.innovation_index"
                 v-if="isAdmin">创新指数</el-menu-item>
-              <el-menu-item index="trade_fairs" :route="menu.home_page" v-if="!token">交易会</el-menu-item>
-              <el-menu-item index="trade_fairs" :route="menu.demand_login" v-if="token">交易会</el-menu-item>
+              <!-- <el-menu-item index="trade_fairs" :route="menu.home_page" v-if="!token">交易会</el-menu-item>
+              <el-menu-item index="trade_fairs" :route="menu.demand_login" v-if="token">交易会</el-menu-item> -->
+              <el-menu-item index="trade_fairs" :route="menu.mobile_login">交易会</el-menu-item>
             </el-menu>
           </hgroup>
           <div class="nav-right nav-menu" v-if="isLogin">
@@ -277,6 +278,7 @@
           article: {path: '/article/list'},
           home_page: {path: '/shunde/trade_fairs/homePage'}, // 交易会未登录首页
           demand_login: {path: '/shunde/trade_fairs/demandLogin'}, // 交易会登陆后首页
+          mobile_login: {path: '/shunde/trade_fairs/trade_fairs_mobile/mobileLogin'}, // 交易会移动端首页
           // demand_login: {path: '/shunde/trade_fairs/saleResult/workDatails'},
           design_case: {path: '/design_case/general_list'},
           commonly_sites: {path: '/vcenter/commonly_sites'},
