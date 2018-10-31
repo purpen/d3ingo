@@ -107,14 +107,14 @@
                   <el-row :gutter="10">
                     <el-col :span="12">
                       <el-form-item label="联系人姓名" prop="contacts">
-                        <el-input v-model="form.share_ratio" >
+                        <el-input v-model="form.contacts" >
                           <template slot="append">%</template>
                         </el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
                       <el-form-item label="联系电话" prop="contact_number">
-                        <el-input v-model="form.price">
+                        <el-input v-model="form.contact_number">
                           <template slot="append">元</template>
                         </el-input>
                       </el-form-item>
@@ -329,6 +329,8 @@
               patent: [that.uploadParam2['x:random']] || [],
               images: [that.uploadParam['x:random']] || [],
               status: 2,
+              contacts: that.form.contacts,
+              contact_number: that.form.contact_number,
               id: that.form.id || ''
             }
             row.cover_id = that.coverId
