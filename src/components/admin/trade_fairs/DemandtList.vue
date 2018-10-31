@@ -158,7 +158,13 @@
               <el-button type="primary" @click="focusOn = false">关 闭</el-button>
             </span>
           </el-dialog>
-
+          <el-dialog title="收藏公司" :visible.sync="focusOn">
+            <el-table :data="formup">
+              <el-table-column property="design_company_name" label="公司名称" width="200"></el-table-column>
+              <el-table-column property="realname" label="联系人" width="150"></el-table-column>
+              <el-table-column property="phone" label="手机号"></el-table-column>
+            </el-table>
+          </el-dialog>
           <el-dialog title="请填写拒绝原因" :visible.sync="dialogVisible" size="tiny">
             <el-form v-model="verify" ref="verifyForm" :rules="verifyForm" @submit.native.prevent>
               <el-form-item prop="refuseRease">
@@ -205,7 +211,7 @@ export default {
       menuType: 0,
       itemList: [],
       tableData: [],
-      formup: {},
+      formup: [],
       count: 0,
       isLoading: false,
       focusOn: false,
@@ -237,14 +243,12 @@ export default {
   methods: {
     // 获取收藏的公司
     upDetails(id) {
-      this.formup = {}
+      this.formup = []
       this.focusOn = true
       this.$http.get(api.adminDesignDemandShowCollectList, {params: {demand_id: id}}).then(
         (response) => {
           if (response.data.meta.status_code === 200) {
-            setTimeout(() => {
-              this.formup = response.data.data
-            }, 1)
+            this.formup = response.data.data
           } else {
             this.$message.error(response.data.meta.message)
           }

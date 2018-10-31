@@ -35,7 +35,7 @@
                         <span>出让金额：&nbsp;&nbsp;<span class="money">￥{{achieve.price}}</span></span>
                       </div>
                     </div>
-                    <div class="list-right" @click="collect(achieve.id, achieve.follow_status)">
+                    <div class="list-right" @click="collect(achieve.id)">
                       <div class="list-button" v-if="achieve.is_follow === 0">
                         <span class="button-text">感兴趣</span>
                       </div>
@@ -104,7 +104,6 @@
       // 收藏需求
       collect(id) {
         this.isLoading = true
-        this.collectId = id
         this.$http.get(api.designResultsCollectionOperation, {params: {id: id}}).then((response) => {
           if (response.data.meta.status_code === 200) {
             this.isLoading = false
