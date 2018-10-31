@@ -5,16 +5,16 @@
       <router-link v-if="index !== 1" :to="{name: 'vcenterMatchCaseList'}" :class="['item', 
       {'is-active': $route.name === 'vcenterMatchCaseCreated'}]">提交产品</router-link>
       <router-link v-if="index === 1 || index === 2" to="" class="item2">编辑作品</router-link> -->
-      <a v-if="index === 1" :class="['item', {'is-active': $route.name === 'sdDesignCase_list'}]" @click="inlist()">设计成果</a>
-      <router-link v-if="$route.name !== 'sdDesignCase_submit'" :to="{name: 'sdDesign_collectList'}" :class="['item', 
+      <a :class="['item', {'is-active': $route.name === 'sdDesignCase_list'}]" @click="inlist()">设计成果</a>
+      <router-link v-if="index !== 1" :to="{name: 'sdDesign_collectList'}" :class="['item', 
       {'is-active': $route.name === 'sdDesign_collectList'}]">收藏列表</router-link>
-      <router-link v-if="$route.name !== 'sdDesignCase_submit'" :to="{name: 'sdDesign_order'}" :class="['item', 
+      <router-link v-if="index !== 1" :to="{name: 'sdDesign_order'}" :class="['item', 
       {'is-active': $route.name === 'sdDesign_order'}]">订单列表</router-link>
-      <router-link v-if="$route.name === 'sdDesignCase_submit'" to="" class="item2 item is-active">
+      <router-link v-if="index === 1" to="" class="item2 item is-active">
         <span v-if="$route.name === 'sdDesignCase_submit'">
           提交设计成果
         </span> 
-        <span v-if="$route.name === 'vcenterDesignCaseEdit'">
+        <span v-if="$route.name === 'sdDesignCase_update'">
           编辑设计成果
         </span>
       </router-link>
@@ -40,17 +40,15 @@
       inlist() {
         this.$router.push('/shunde/trade_fairs/design_case')
       }
+    },
+    created() {
+      let name = this.$route.name
+      if (name === 'sdDesignCase_submit' || name === 'sdDesignCase_update') {
+        this.index = 1
+      } else {
+        this.index = 2
+      }
     }
-    // created() {
-    //   let name = this.$route.name
-    //   if (name === 'vcenterDesignCaseEdit' || name === 'vcenterDesignCaseAdd') {
-    //     this.index = 1
-    //   } else if (name === 'vcenterMatchCaseEdit' || name === 'vcenterMatchCaseCreated') {
-    //     this.index = 2
-    //   } else if (name === 'vcenterMatchCaseEdit') {
-    //     this.index = 3
-    //   }
-    // }
   }
 
 </script>
