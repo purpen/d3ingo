@@ -9,13 +9,13 @@
 
           <div class="admin-menu-sub">
             <div class="admin-menu-sub-list">
-              <router-link :to="{name: 'adminAchievmentList'}" active-class="false" :class="{'item': true, 'is-active': menuType == ''}">全部</router-link>
+              <router-link :to="{name: 'adminAchievmentList', query: {type: 0}}" active-class="false" :class="{'item': true, 'is-active': menuType === 0}">全部</router-link>
             </div>
             <div class="admin-menu-sub-list">
-              <router-link :to="{name: 'adminAchievmentList', query: {type: 1}}" :class="{'item': true, 'is-active': menuType === 1}" active-class="false">待审核</router-link>
+              <router-link :to="{name: 'adminAchievmentList', query: {type: 2}}" :class="{'item': true, 'is-active': menuType === 2}" active-class="false">待审核</router-link>
             </div>
             <div class="admin-menu-sub-list">
-              <router-link :to="{name: 'adminAchievmentList', query: {type: 2}}" :class="{'item': true, 'is-active': menuType === 2}" active-class="false">已上架</router-link>
+              <router-link :to="{name: 'adminAchievmentList', query: {type: 3}}" :class="{'item': true, 'is-active': menuType === 3}" active-class="false">已上架</router-link>
             </div>
             <div class="admin-menu-sub-list">
               <router-link :to="{name: 'adminAchievmentList', query: {type: -1}}" :class="{'item': true, 'is-active': menuType === -1}" active-class="false">已下架</router-link>
@@ -92,8 +92,8 @@
               prop="status"
               label="状态">
                 <template slot-scope="scope">
-                  <p v-if="scope.row.status === 3"><el-tag type="success">已发布</el-tag></p>
-                  <p v-if="scope.row.status === -1"><el-tag type="danger">未通过</el-tag></p>
+                  <p v-if="scope.row.status === 3"><el-tag type="success">已上架</el-tag></p>
+                  <p v-if="scope.row.status === -1"><el-tag type="danger">已下架</el-tag></p>
                   <p v-if="scope.row.status === 2"><el-tag type="warning">待审核</el-tag></p>
                 </template>
             </el-table-column>
@@ -322,12 +322,12 @@ export default {
       // 查询条件
       self.query.page = parseInt(this.$route.query.page || 1)
       self.query.sort = this.$route.query.sort || 0
-      self.query.type = this.$route.query.type || ''
+      self.query.type = this.$route.query.type || 0
       self.query.evt = this.$route.query.evt || '2'
       self.query.val = this.$route.query.val || ''
-      this.menuType = 0
+      self.menuType = 0
       if (self.query.type) {
-        this.menuType = parseInt(self.query.type)
+        self.menuType = parseInt(self.query.type)
       }
       self.isLoading = true
       self.$http.get(api.adminDesignResultList, {params: {page: self.query.page, per_page: self.query.pageSize, sort: self.query.sort, status: self.query.type}})

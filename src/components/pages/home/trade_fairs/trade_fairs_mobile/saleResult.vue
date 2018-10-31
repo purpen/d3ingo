@@ -173,18 +173,19 @@
   }
   .list-text {
     padding-top: 10px;
-    padding-left: 10px;
     height: 70px;
     margin: 0 auto;
   }
   .list-title {
     font-family: PingFangSC-Regular;
+    padding-left: 10px;
     font-size: 14px;
     color: #222222;
     line-height: 17.04px;
   }
   .list-left {
     padding-top: 8px;
+    padding-left: 10px;
   }
   .list-way {
     font-family: PingFangSC-Regular;

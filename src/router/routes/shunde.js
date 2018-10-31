@@ -55,7 +55,6 @@ module.exports = [
   // 代售详情页
   {
     path: '/shunde/trade_fairs/saleResult/workDatails/:id',
-    // path: '/shunde/trade_fairs/saleResult/workDatails/',
     name: 'work_datails',
     meta: {
       title: '代售详情页',
