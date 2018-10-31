@@ -657,6 +657,13 @@
   .submit-form .el-dialog__body {
     padding: 0;
   }
+  .style-call .el-dialog__header {
+    background: #fff;
+  }
+  .style-call .el-dialog--tiny {
+    height: 250px;
+    top: 35% !important;
+  }
 @media screen and (max-width: 767px) {
   .el-dialog--large,
   .el-dialog--small,

@@ -16,9 +16,9 @@
               <el-menu-item index="commonly_sites" :route="menu.commonly_sites">设计工具</el-menu-item>
               <el-menu-item index="innovation_index" :route="menu.innovation_index"
                 v-if="isAdmin">创新指数</el-menu-item>
-              <!-- <el-menu-item index="trade_fairs" :route="menu.home_page" v-if="!token">交易会</el-menu-item>
-              <el-menu-item index="trade_fairs" :route="menu.demand_login" v-if="token">交易会</el-menu-item> -->
-              <el-menu-item index="trade_fairs" :route="menu.mobile_login">交易会</el-menu-item>
+              <el-menu-item index="trade_fairs" :route="menu.home_page" v-if="!token">交易会</el-menu-item>
+              <el-menu-item index="trade_fairs" :route="menu.demand_login" v-if="token">交易会</el-menu-item>
+              <!-- <el-menu-item index="trade_fairs" :route="menu.mobile_login">交易会</el-menu-item> -->
             </el-menu>
           </hgroup>
           <div class="nav-right nav-menu" v-if="isLogin">
@@ -106,15 +106,15 @@
             <li @click="closeMenu" v-if="isAdmin">
               <router-link :to="menu.innovation_index">创新指数</router-link>
             </li>
-            <!-- <li @click="closeMenu" v-if="isAdmin">
+            <li @click="closeMenu" v-if="isAdmin">
               <router-link :to="menu.home_page">交易会</router-link>
             </li>
             <li @click="closeMenu" v-if="isAdmin">
               <router-link :to="menu.demand_login">交易会</router-link>
-            </li> -->
-            <li @click="closeMenu">
-              <router-link :to="menu.mobile_login">交易会</router-link>
             </li>
+            <!-- <li @click="closeMenu">
+              <router-link :to="menu.mobile_login">交易会</router-link>
+            </li> -->
             <li @click="closeMenu" v-show="!isLogin">
               <router-link :to="menu.design">设计服务商入驻</router-link>
             </li>
@@ -237,11 +237,11 @@
             <li @click="closeMenu" v-if="isAdmin">
               <router-link :to="menu.innovation_index">创新指数</router-link>
             </li>
-            <!-- <li @click="closeMenu" :route="menu.home_page" v-if="!token">交易会</li>
-            <li @click="closeMenu" :route="menu.demand_login" v-if="token">交易会</li> -->
-            <li @click="closeMenu">
+            <li @click="closeMenu" :route="menu.home_page" v-if="!token">交易会</li>
+            <li @click="closeMenu" :route="menu.demand_login" v-if="token">交易会</li>
+            <!-- <li @click="closeMenu">
               <router-link :to="menu.mobile_login">交易会</router-link>
-            </li>
+            </li> -->
             <li @click="closeMenu" v-show="!isLogin">
               <router-link :to="menu.design">设计服务商入驻</router-link>
             </li>

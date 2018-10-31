@@ -38,22 +38,18 @@
         <div class="content-text">功能描述</div>
         <div class="content-height scroll-bar">{{formup.content}}</div>
       </div>
-      <div class="large-list">
-        <div class="list-center">
-          <div class="list-bottom bottom-style">
-            <div class="list-contain" @click="collect(formup.id, formup.follow_status)">
-              <div class="list-button" v-if="formup.follow_status === 2">
-                <span class="button-text">感兴趣</span>
-              </div>
-              <div class="list-button interest-border" v-if="formup.follow_status === 1">
-                <span class="button-interest">已感兴趣</span>
-              </div>
-            </div>
-            <div class="list-right">
-              <div class="list-button">
-                <span class="contact-text">联系他</span>
-              </div>
-            </div>
+      <div class="list-bottom bottom-style">
+        <div class="list-contain" @click="collect(formup.id, formup.follow_status)">
+          <div class="list-button" v-if="formup.follow_status === 2">
+            <span class="button-text">感兴趣</span>
+          </div>
+          <div class="list-button" v-if="formup.follow_status === 1">
+            <span class="button-interest">已感兴趣</span>
+          </div>
+        </div>
+        <div class="list-right" @click="callHer(formup)">
+          <div class="list-button">
+            <span class="contact-text">联系他</span>
           </div>
         </div>
       </div>
@@ -74,13 +70,19 @@
         isLoading: false,
         collectId: '',
         diaLoading: false,
-        setIndex: -1
+        setIndex: -1,
+        dialogCall: false
       }
     },
     created() {
       this.upDetails()
     },
     methods: {
+      // 弹出联系框
+      callHer(item) {
+        this.dialogCall = true
+        this.callDtails = item
+      },
       // 返回需求列表
       demandLists() {
         this.$router.push({name: 'mobile_login'})
@@ -91,9 +93,7 @@
           (response) => {
             if (response.data.meta.status_code === 200) {
               this.diaLoading = false
-              setTimeout(() => {
-                this.formup = response.data.data
-              }, 1)
+              this.formup = response.data.data
             } else {
               this.diaLoading = false
               this.$message.error(response.data.meta.message)
@@ -219,60 +219,73 @@
     color: #e6e6e6;
   }
   /* 感兴趣 */
-  .dia-contain {
-    cursor: pointer;
-    float: left;
+  .list-bottom {
+    margin: 0 auto;
+    padding-top: 20px;
+    width: 270px;
   }
-  .dia-right {
-    cursor: pointer;
-    float: left;
-    padding-left: 20px;
-  }
-  .dia-button {
-    height: 34px;
-    width: 120px;
-    border: 1px solid #E6E6E6;
-    text-align: center;
-    line-height: 32px;
-    border-radius: 4px;
-  }
-  .interest-dia {
-    border: 1px solid #FF5A5F;
-  }
-  .dia-interest {
+  .button-text {
     position: relative;
     font-family: PingFangSC-Regular;
-    font-size: 12px;
-    padding-left: 15px;
+    font-size: 16px;
+    padding-left: 10px;
     color: #FF5A5F;
   }
-  .dia-interest:before {
+  .button-text:before {
     content: '';
     position: absolute;
     height: 24px;
-    top: -4px;
+    top: -1px;
+    width: 24px;
+    left: -14px;
+    background: url('../../../../../assets/images/trade_fairs/list/BeInterested02@2x.png') no-repeat center;
+    background-size: contain;
+  }
+  .list-right {
+    float: right;
+  }
+  .list-contain {
+    float: left;
+  }
+  .list-button {
+    height: 40px;
+    width: 130px;
+    border: 1px solid #FF5A5F;
+    text-align: center;
+    line-height: 38px;
+    border-radius: 4px;
+  }
+  .button-interest {
+    position: relative;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    padding-left: 15px;
+    color: #FF5A5F;
+  }
+  .button-interest:before {
+    content: '';
+    position: absolute;
+    height: 24px;
+    top: -1px;
     width: 24px;
     left: -8px;
     background: url('../../../../../assets/images/trade_fairs/list/BeInterestedHover02@2x.png') no-repeat center;
     background-size: contain;
   }
-  .dia-button:hover {
-    height: 34px;
-    width: 120px;
-    border: 1px solid #FF5A5F;
-    border-radius: 4px;
-  }
-  .dia-button:hover .button-text {
+  .contact-text {
+    position: relative;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    padding-left: 10px;
     color: #FF5A5F;
   }
-  .dia-button:hover .button-text:before {
-    background: url('../../../../../assets/images/trade_fairs/list/BeInterested02@2x.png') no-repeat center;
-    background-size: contain;
-  }
-  .dia-button:hover .contact-text {
-    color: #FF5A5F;
-  }
-  .dia-button:hover .contact-text:before {
+  .contact-text::before {
+    content: '';
+    position: absolute;
+    height: 24px;
+    top: 0;
+    width: 24px;
+    left: -14px;
     background: url('../../../../../assets/images/trade_fairs/list/ContactHover@02x.png') no-repeat center;
     background-size: contain;
   }

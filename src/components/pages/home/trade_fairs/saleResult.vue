@@ -1,10 +1,10 @@
 <template>
-  <div class="content-box">
+  <div class="content-box" v-loading="isLoading">
     <div class="large-background">
       <div class="right-background"></div>
       <div class="left-background"></div>
       <!-- 代售成果 -->
-      <div class="empty" v-if="false">
+      <div class="empty" v-if="!designCases.length && !isLoading">
         <div class="empty-list">
           <span class="empty-img"></span>
           <p class="empty-content">暂无服务商上传代售成果，请耐心等待～</p>
@@ -35,11 +35,11 @@
                         <span>出让金额：&nbsp;&nbsp;<span class="money">￥{{achieve.price}}</span></span>
                       </div>
                     </div>
-                    <div class="list-right" @click="interesClick">
-                      <div class="list-button" v-if="!interestButton">
+                    <div class="list-right" @click="collect(achieve.id, achieve.follow_status)">
+                      <div class="list-button" v-if="!achieve.is_follow">
                         <span class="button-text">感兴趣</span>
                       </div>
-                      <div class="list-button interest-border" v-if="interestButton">
+                      <div class="list-button interest-border" v-if="achieve.is_follow">
                         <span class="button-interest">已感兴趣</span>
                       </div>
                     </div>
@@ -85,6 +85,7 @@
     data() {
       return {
         interestButton: false,
+        isLoading: false,
         designCases: '',
         query: {
           page: 1,
@@ -100,8 +101,30 @@
       this.getDesignCase()
     },
     methods: {
-      interesClick() {
-        this.interestButton = !this.interestButton
+      // 收藏需求
+      collect(id, status) {
+        this.isLoading = true
+        this.collectId = id
+        this.$http.get(api.designResultsCollectionOperation, {params: {id: id}}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.isLoading = false
+            for (let index in this.designCases) {
+              if (this.designCases[index].id === id) {
+                this.designCases[index].is_follow = !this.interestButton
+                this.interestButton = !this.interestButton
+              }
+            }
+          } else {
+            this.isLoading = false
+            this.$message.error(response.data.meta.message)
+            return
+          }
+        })
+        .catch(function (error) {
+          this.isLoading = false
+          this.$message.error(error.message)
+          return
+        })
       },
       // 跳转到发布需求
       demandBanner() {
@@ -165,6 +188,10 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .content-box {
+    min-height: 325px;
+    background: #3519B2;
+  }
   .large-background {
     position: relative;
   }
