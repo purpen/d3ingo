@@ -188,6 +188,10 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .content-box {
+    min-height: 325px;
+    background: #3519B2;
+  }
   .large-background {
     position: relative;
   }

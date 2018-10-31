@@ -368,7 +368,7 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .content-box {
-    min-height: 250px;
+    min-height: 260px;
     background: #3519B2;
   }
   .large-background {
