@@ -7,7 +7,7 @@
         <router-link to="/shunde/trade_fairs/demandLogin" v-if="false">我的订单</router-link>
       </div>
       <div class="navigate-text arrow-text">
-        <span>iPhone 7 Plus设计</span>
+        <span>{{formup.title}}</span>
       </div>
     </div>
     <el-row :gutter="20" class="anli-elrow">
@@ -15,10 +15,10 @@
       <el-col :xs="24" :sm="18" :md="18" :lg="18">
         <div class="edit-content">
           <div class="title">
-            <h1>iPhone 7 Plus设计</h1>
+            <h1>{{formup.title}}</h1>
           </div>
           <div class="summary">
-            <span>Colorware 是美国一家专门对电子产品进行涂装改造的设计公司，这款模仿第一代 Macintosh 的复古版 iPhone 7 Plus 就是它的最新产品。有了淡黄配色、两侧条纹以及彩虹 logo 的加持，让手机拥有了一种神奇的穿越感。这些复古版都是基于 256G 的黑色 iPhone 7 Plus 所改造的，你可以通过官方网站订购，售价为 1899 美元。
+            <span>{{formup.content}}
             </span>
           </div>
           <!-- <div class="des">
@@ -30,8 +30,8 @@
             </p>
           </div> -->
           <div class="des">
-            <div class="des-image">
-              <img class="image-size" src="../../../../assets/images/1.jpg"/>
+            <div class="des-image" v-for="(img, index) in formup.images_url" :key="index">
+              <img class="image-size" :src="img.big"/>
             </div>
           </div>
         </div>
@@ -170,12 +170,15 @@
               <img class="avatar" v-else src="../../../../assets/images/avatar_100.png" width="100"/>
             </router-link> -->
             <div class="title-center">
-              <img class="avatar" src="../../../../assets/images/avatar_100.png" width="60"/>
-              <div class="company-name">北京品物设计有限公司</div>
+              <img class="avatar" v-if="
+              imgUrl" :src="
+              imgUrl" width="60"/>
+              <img v-else class="avatar" src="../../../../assets/images/avatar_100.png" width="60"/>
+              <div class="company-name">{{companyName}}</div>
             </div>
             <div class="com-addr">
               <span class="right-word">联系方式</span>
-              <span class="right-number">13655139068</span>
+              <span class="right-number">{{formup.contact_number}}</span>
             </div>
           </div>
         </div>
@@ -183,11 +186,11 @@
         <div class="sell-stock">
           <div class="right-sell">
             <span class="right-word">出让方式</span>
-            <span class="right-pah">股权出让40%</span>
+            <span class="right-pah">{{formup.sell_type===1?'全款出售':'股权出让'+formup.share_ratio+'%'}}</span>
           </div>
           <div class="right-sell">
             <span class="right-word">股权价格</span>
-            <span class="right-money">￥50000.00</span>
+            <span class="right-money">￥{{formup.price}}</span>
           </div>
         </div>
         <!-- 已出售的中间部分 -->
@@ -247,7 +250,7 @@
                 <div class="slide" :style="{ background: 'url(' + require ('assets/images/home/banner/BG@2x.jpg') + ') no-repeat center', height: '100%'}">
                   <div style="height:100%;">
                     <div class="draw">
-                      <img :src="require('assets/images/home/banner/BG02@2x.png')" width="90%" height="auto" alt="">
+                      <img :src="formup.patent_url" width="90%" height="auto" alt="">
                     </div>
                   </div>
                 </div>
@@ -288,11 +291,13 @@ export default {
       interestButton: false,
       selectCompanyCollapse: ['1'],
       credential: ['1'],
-      formup: '',
+      formup: {},
       evaluate: {
         design_level: 0,
         content: ''
       },
+      imgUrl: '',
+      companyName: '',
       swiperOption: {
         pagination: '.swiper-pagination',
         paginationClickable: true,
@@ -361,11 +366,13 @@ export default {
     // 获取详情
     upDetails() {
       this.diaLoading = true
-      this.$http.get(api.designResultsShow, {id: this.$route.params.id}).then(
+      this.$http.get(api.sdDesignResultsShow, {params: {id: this.$route.params.id}}).then(
         (response) => {
           if (response.data.meta.status_code === 200) {
-            this.diaLoading = false
             this.formup = response.data.data
+            this.imgUrl = response.data.data.design_company.logo_image.logo
+            this.companyName = response.data.data.design_company.company_name
+            this.diaLoading = false
           } else {
             this.diaLoading = false
             this.$message.error(response.data.meta.message)
