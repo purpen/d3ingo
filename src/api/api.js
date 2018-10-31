@@ -493,6 +493,7 @@ export default {
   sdDesignResultsSaveStatus: '/designResults/saveStatus', // GET 设计成果状态修改
   sdDesignResultsDelete: '/designResults/delete', // POST 设计成果状态删除
   sdDesignResultsShow: '/designResults/show', // GET 设计成果详情
+  sdDesignResultsSavePrice: '/designResults/savePrice', // POST 设计成果价格修改
 
   // 顺德后台
   adminDesignDemandLists: '/admin/designDemand/lists', // GET 发布的设计需求列表

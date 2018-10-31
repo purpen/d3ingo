@@ -23,7 +23,9 @@
                       <i></i>
                       <ul v-if="d.status === 1">
                         <li class="edit" @click="updateStatus(d.id, 2)">提交</li>
-                        <li class="del">编辑</li>
+                        <li class="del" >
+                          <a class="toUpdate" @click="toUpdateUrl(d.id)">编辑</a>
+                        </li>
                         <li class="del" @click="updateBtn(d, 2)">删除</li>
                       </ul>
                       <ul v-if="d.status === 2">
@@ -134,7 +136,7 @@
       </el-form>
 
       <span slot="footer" class="dialog-footer">
-        <el-button class="is-custom" type="primary" size="small" @click="submit('ruleForm')">确定修改</el-button>
+        <el-button class="is-custom" type="primary" size="small" @click="updatePrice('ruleForm')">确定修改</el-button>
       </span>
     </el-dialog>
   </div>
@@ -192,6 +194,9 @@
       }
     },
     methods: {
+      toUpdateUrl(id) {
+        this.$router.push('/shunde/trade_fairs/design_case/submit/' + id)
+      },
       // 获取作品列表
       getDesignCase () {
         const that = this
@@ -251,6 +256,31 @@
               }
             })
             that.isLoading = false
+          }
+        })
+        .catch (function (error) {
+          that.$message.error (error.message)
+          that.isLoading = false
+        })
+      },
+      // 设计成果价格修改
+      updatePrice() {
+        let that = this
+        let uprow = {
+          id: that.formPrice.id,
+          sell_type: that.formPrice.sell_type,
+          share_ratio: that.formPrice.sell_type === 1 ? 100 : that.formPrice.share_ratio,
+          price: that.formPrice.price
+        }
+        that.$http.post (api.sdDesignResultsSavePrice, uprow)
+        .then (function (response) {
+          if (response.data.meta.status_code === 200) {
+            that.designCases.forEach((item, index) => {
+              if (item.id === response.data.data.id) {
+                that.$set(that.designCases, index, response.data.data)
+              }
+            })
+            that.dialogVisible = false
           }
         })
         .catch (function (error) {
@@ -442,7 +472,7 @@
   }
   .item-more ul li:hover {
     background: #f7f7f7;
-    color: #666;
+    color: #ff5a5f;
   }
   .item img {
     width: 100%;
@@ -481,6 +511,9 @@
   }
   .repeal {
     margin-top: 10px;
+  }
+  .toUpdate {
+    display: block;
   }
   @media screen and (max-width: 767px) {
     .opt a {

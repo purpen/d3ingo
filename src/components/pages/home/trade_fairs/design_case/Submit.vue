@@ -15,7 +15,7 @@
               <el-row>
                 <el-col :span="24">
                   <el-form-item label="上传图片" prop="">
-                    <el-upload
+                    <!-- <el-upload
                       class="upload-demo upload-design upload"
                       :action="uploadUrl"
                       :on-preview="handlePreview"
@@ -30,13 +30,25 @@
                       list-type="picture-card">
                       <i class="el-icon-plus"></i>
                       <div slot="tip" class="el-upload__tip" v-html="uploadMsg"></div>
-                      <!-- <button class="middle-button full-red-button">+上传图片</button>
-                      <span v-html="uploadMsg"></span> -->
-                      <!-- <el-button size="small" type="danger">点击上传</el-button>
-                      <div slot="tip" class="el-upload__tip">{{ uploadMsg }}</div> -->
+                    </el-upload> -->
+                    <el-upload 
+                      :action="uploadUrl"
+                      :on-preview="handlePreview"
+                      :on-remove="handleRemove"
+                      :file-list="fileList"
+                      :data="uploadParam"
+                      :on-progress="uploadProgress"
+                      :on-error="uploadError"
+                      :on-success="uploadSuccess"
+                      :before-upload="beforeUpload"
+                      :show-file-list="false"
+                      >
+                      <button class="middle-button full-red-button">+&nbsp;&nbsp;上传图片</button>
+                      <span class="uploadsMsg">{{uploadMsg}}</span>
+                      <!-- <span v-html="uploadMsg"></span> -->
+                      <!-- <div slot="tip" class="el-upload__tip">{{ uploadMsg }}</div> -->
                     </el-upload>
-
-                    <div class="file-list">
+                    <!-- <div class="file-list">
                       <el-row :gutter="20">
                         <el-col :span="isMob ? 24 : 6" v-for="(d, index) in fileList" :key="index">
                           <el-card :body-style="{ padding: '0px' }" class="item">
@@ -77,7 +89,7 @@
                           </el-card>
                         </el-col>
                       </el-row>
-                    </div>
+                    </div> -->
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -527,6 +539,21 @@
             console.log (error.message)
             return false
           })
+      },
+      // 获取详情
+      upDetails(id) {
+        this.$http.get(api.sdDesignResultsShow, {params: {id: id}}).then(
+          (response) => {
+            if (response.data.meta.status_code === 200) {
+              this.form = response.data.data
+            } else {
+              this.$message.error(response.data.meta.message)
+            }
+          }
+        )
+        .catch (function (error) {
+          this.$message.error (error.message)
+        })
       }
     },
     computed: {
@@ -646,76 +673,80 @@
     created: function () {
       const that = this
       let id = that.$route.params.id
-      that.getToken(1)
-      that.getToken(2)
-      that.getToken(3)
       if (id) {
-        that.itemId = id
-        that.uploadParam['x:target_id'] = id
-        that.$http.get (api.designCaseId.format (id), {})
-          .then (function (response) {
-            if (response.data.meta.status_code === 200) {
-              that.form = response.data.data
-              if (that.form.prizes) {
-                if (that.form.prizes.length) {
-                  that.$set(that, 'is_prize', true)
-                  that.$set(that.form, 'prize_time', that.form.prizes[0].time)
-                  that.$set(that.form, 'prize', that.form.prizes[0].type)
-                }
-              }
-              if (that.form.patent) {
-                if (that.form.patent.length) {
-                  that.$set(that, 'is_apply', true)
-                  that.$set(that.form, 'patent_time', that.form.patent[0].time)
-                  that.$set(that.form, 'patent_info', that.form.patent[0].type)
-                }
-              } else {
-                that.$set(that, 'is_apply', false)
-              }
-              if (that.form.cover_id) {
-                that.coverId = that.form.cover_id
-              }
-              if (response.data.data.sales_volume === 0) {
-                that.form.mass_production = 0
-              } else {
-                that.form.mass_production = 1
-              }
-              if (response.data.data.case_image) {
-                let files = []
-                for (let i = 0; i < response.data.data.case_image.length; i++) {
-                  let obj = response.data.data.case_image[i]
-                  let item = {}
-                  item['response'] = {}
-                  item['id'] = obj['id']
-                  item['name'] = obj['name']
-                  item['url'] = obj['middle']
-                  item['summary'] = obj['summary']
-                  item['response']['asset_id'] = obj['id']
-                  item['edit'] = false
-                  files.push (item)
-                }
-                that.fileList = files
-              }
-              if (response.data.data.prizes && response.data.data.prizes.length !== 0) {
-                that.prizes = response.data.data.prizes
-              }
-              if (response.data.data.patent && response.data.data.patent.length !== 0) {
-                that.patents = response.data.data.patent
-              }
-              that.form.design_types = response.data.data.design_types
-              console.log(response.data.data.design_types)
-              // if (des_types && des_types.length !== 0) {
-              //   that.form.design_types = des_types
-              // }
-            }
-          })
-          .catch (function (error) {
-            that.$message.error (error.message)
-            return false
-          })
+        this.upDetails(id)
       } else {
-        that.itemId = null
+        that.getToken(1)
+        that.getToken(2)
+        that.getToken(3)
       }
+      // if (id) {
+      //   that.itemId = id
+      //   that.uploadParam['x:target_id'] = id
+      //   that.$http.get (api.designCaseId.format (id), {})
+      //     .then (function (response) {
+      //       if (response.data.meta.status_code === 200) {
+      //         that.form = response.data.data
+      //         if (that.form.prizes) {
+      //           if (that.form.prizes.length) {
+      //             that.$set(that, 'is_prize', true)
+      //             that.$set(that.form, 'prize_time', that.form.prizes[0].time)
+      //             that.$set(that.form, 'prize', that.form.prizes[0].type)
+      //           }
+      //         }
+      //         if (that.form.patent) {
+      //           if (that.form.patent.length) {
+      //             that.$set(that, 'is_apply', true)
+      //             that.$set(that.form, 'patent_time', that.form.patent[0].time)
+      //             that.$set(that.form, 'patent_info', that.form.patent[0].type)
+      //           }
+      //         } else {
+      //           that.$set(that, 'is_apply', false)
+      //         }
+      //         if (that.form.cover_id) {
+      //           that.coverId = that.form.cover_id
+      //         }
+      //         if (response.data.data.sales_volume === 0) {
+      //           that.form.mass_production = 0
+      //         } else {
+      //           that.form.mass_production = 1
+      //         }
+      //         if (response.data.data.case_image) {
+      //           let files = []
+      //           for (let i = 0; i < response.data.data.case_image.length; i++) {
+      //             let obj = response.data.data.case_image[i]
+      //             let item = {}
+      //             item['response'] = {}
+      //             item['id'] = obj['id']
+      //             item['name'] = obj['name']
+      //             item['url'] = obj['middle']
+      //             item['summary'] = obj['summary']
+      //             item['response']['asset_id'] = obj['id']
+      //             item['edit'] = false
+      //             files.push (item)
+      //           }
+      //           that.fileList = files
+      //         }
+      //         if (response.data.data.prizes && response.data.data.prizes.length !== 0) {
+      //           that.prizes = response.data.data.prizes
+      //         }
+      //         if (response.data.data.patent && response.data.data.patent.length !== 0) {
+      //           that.patents = response.data.data.patent
+      //         }
+      //         that.form.design_types = response.data.data.design_types
+      //         console.log(response.data.data.design_types)
+      //         // if (des_types && des_types.length !== 0) {
+      //         //   that.form.design_types = des_types
+      //         // }
+      //       }
+      //     })
+      //     .catch (function (error) {
+      //       that.$message.error (error.message)
+      //       return false
+      //     })
+      // } else {
+      //   that.itemId = null
+      // }
     }
   }
 
@@ -832,6 +863,10 @@
   }
   .form-btn>.el-button + .el-button {
     margin-right: 0px;
+  }
+  .uploadsMsg {
+    padding-left: 20px;
+    color: #999;
   }
   @media screen and (max-width: 767px) {
     .right-content .content-box {

@@ -86,6 +86,18 @@ module.exports = [
     },
     component: require('@/components/pages/home/trade_fairs/design_case/list')
   },
+  // 个人中心设计方成果编辑页
+  {
+    path: '/shunde/trade_fairs/design_case/submit/:id',
+    name: 'sdDesignCase_update',
+    meta: {
+      title: '成果新建',
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/home/trade_fairs/design_case/submit')
+  },
   // 个人中心设计方成果新建页
   {
     path: '/shunde/trade_fairs/design_case/submit',
