@@ -3,7 +3,7 @@
     <div class="large-background">
       <!-- 列表 -->
       <div class="block-height">
-        <span class="arrow"></span>
+        <span class="arrow" @click="demandLists"></span>
         <span>设计需求</span>
       </div>
       <div class="inline-pad">
@@ -81,6 +81,10 @@
       this.upDetails()
     },
     methods: {
+      // 返回需求列表
+      demandLists() {
+        this.$router.push({name: 'mobile_login'})
+      },
       // 获取详情
       upDetails() {
         this.$http.get(api.sdDemandDesignDemandInfo, {params: {demand_id: this.$route.params.id}}).then(
@@ -163,6 +167,16 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .arrow {
+    margin-left: 20px;
+    margin-top: 12px;
+    height: 16px;
+    background: url('../../../../../assets/images/trade_fairs/list/back@2x.png') no-repeat center;
+    background-size: contain;
+  }
+  .main .alert-message {
+    margin-top: -60px;
+  }
   .block-height {
     height: 40px;
     text-align: center;
