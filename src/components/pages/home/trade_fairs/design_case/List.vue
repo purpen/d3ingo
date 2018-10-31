@@ -39,13 +39,13 @@
                       </ul>
                     </div>
                     <div class="image-box">
-                      <router-link :to="{name: 'work_datails', params: {id: d.id,type: 2}}"
+                      <router-link :to="{name: 'work_datails', params: {id: d.id}, query: {type: 2}}"
                         :target="isMob ? '_self' : '_blank'">
                         <img v-if="d.cover" :src="d.cover.middle">
                       </router-link>
                     </div>
                     <div class="content">
-                      <router-link :to="{name: 'work_datails', params: {id: d.id,type: 2}}"
+                      <router-link :to="{name: 'work_datails', params: {id: d.id}, query: {type: 2}}"
                         :target="isMob ? '_self' : '_blank'"
                         class="tc-2 protrude fz-18">{{ d.title }}
                       </router-link>

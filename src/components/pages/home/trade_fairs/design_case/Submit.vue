@@ -108,14 +108,12 @@
                     <el-col :span="12">
                       <el-form-item label="联系人姓名" prop="contacts">
                         <el-input v-model="form.contacts" >
-                          <template slot="append">%</template>
                         </el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
                       <el-form-item label="联系电话" prop="contact_number">
                         <el-input v-model="form.contact_number">
-                          <template slot="append">元</template>
                         </el-input>
                       </el-form-item>
                     </el-col>
