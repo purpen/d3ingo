@@ -664,6 +664,9 @@
     height: 250px;
     top: 35% !important;
   }
+  .phone-style .el-dialog--tiny {
+    top: 25% !important;
+  }
 @media screen and (max-width: 767px) {
   .el-dialog--large,
   .el-dialog--small,

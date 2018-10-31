@@ -177,6 +177,10 @@
               <div class="company-name">{{companyName}}</div>
             </div>
             <div class="com-addr">
+              <span class="right-word">联系人</span>
+              <span class="right-number">{{formup.contacts}}</span>
+            </div>
+            <div class="com-addr">
               <span class="right-word">联系方式</span>
               <span class="right-number">{{formup.contact_number}}</span>
             </div>
@@ -464,7 +468,7 @@ export default {
   margin-top: 105px;
   color: #222;
   background: #FAFAFA;
-  height: 160px;
+  height: 190px;
   width: 280px;
 }
 
