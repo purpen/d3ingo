@@ -110,7 +110,7 @@ module.exports = [
     },
     component: require('@/components/pages/home/trade_fairs/design_case/collectList')
   },
-  // 个人中心设计方收藏列表
+  // 个人中心设计方订单列表
   {
     path: '/shunde/trade_fairs/design_case/order',
     name: 'sdDesign_order',

@@ -28,11 +28,10 @@
                       </ul>
                       <ul v-if="d.status === 2">
                         <li class="edit" @click="updateBtn(d, 3)">撤回</li>
-                        <li @click="dialogVisible=true">修改</li>
                       </ul>
                       <ul v-if="d.status === 3">
                         <li class="edit" @click="updateBtn(d, 1)">下架</li>
-                        <li class="edit">修改价格</li>
+                        <li class="edit" @click="PriceBtn(d)">修改价格</li>
                       </ul>
                       <ul v-if="d.status === -1">
                         <li class="edit">修改</li>
@@ -87,7 +86,7 @@
         <p v-if="updateform.opt===3">确认要撤回
           <span class="tc-red">{{updateform.title}}</span>吗？
         </p>
-        <p class="tc-9" v-if="updateform.opt ==3">撤回后，设计成果状态将改为已下架</p>
+        <p class="tc-9 repeal" v-if="updateform.opt ==3">撤回后，设计成果状态将改为已下架</p>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogUpdateVisible=false">取消</el-button>
@@ -100,11 +99,11 @@
       :visible.sync="dialogVisible"
       size="tiny"
       >
-      <el-form v-model="form" :rules="ruleForm" ref="ruleForm" label-width="80px" label-position="top">
+      <el-form v-model="formPrice" :rules="ruleForm" ref="ruleForm" label-width="80px" label-position="top">
         <el-row>
           <el-col>
             <el-form-item label="出让方式" prop="sell_type">
-              <el-radio-group v-model.number="form.sell_type">
+              <el-radio-group v-model.number="formPrice.sell_type">
                 <el-radio class="radio" :label="1">全额出让</el-radio>
                 <el-radio class="radio" :label="2">股权合作</el-radio>
               </el-radio-group>
@@ -114,16 +113,16 @@
         <el-row>
           <el-col>
             <el-row :gutter="10">
-              <el-col :span="12" v-if="form.sell_type&&form.sell_type===2">
+              <el-col :span="12" v-if="formPrice.sell_type&&formPrice.sell_type===2">
                 <el-form-item label="出让比例" prop="share_ratio">
-                  <el-input v-model="form.share_ratio" >
+                  <el-input v-model="formPrice.share_ratio" >
                     <template slot="append">%</template>
                   </el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="(form.sell_type&&form.sell_type===2)?12:24">
+              <el-col :span="(formPrice.sell_type&&formPrice.sell_type===2)?12:24">
                 <el-form-item label="出让金额">
-                  <el-input v-model="form.price">
+                  <el-input v-model="formPrice.price">
                     <template slot="append">元</template>
                   </el-input>
                 </el-form-item>
@@ -160,7 +159,7 @@
         designId: '', // 修改状态id
         dialogUpdateVisible: false, // 更新状态弹窗
         dialogVisible: false, // 修改价格弹窗
-        form: {},// 修改价格
+        formPrice: {},// 修改价格
         updateform: { // 修改状态表单
           status: '',
           id: [],
@@ -213,6 +212,11 @@
           that.$message.error (error.message)
           that.isLoading = false
         })
+      },
+      // 修改样式
+      PriceBtn(ele) {
+        this.formPrice = ele
+        this.dialogVisible = true
       },
       // 修改状态按钮
       updateBtn(ele, opt) {
@@ -429,6 +433,7 @@
     padding-left: 20px;
     color: #999;
     width: 180px;
+    cursor: pointer;
   }
   li.edit a {
     display: block;
@@ -473,6 +478,9 @@
     }
   .align-c {
     text-align: center;
+  }
+  .repeal {
+    margin-top: 10px;
   }
   @media screen and (max-width: 767px) {
     .opt a {

@@ -1,8 +1,7 @@
 <template>
   <div class="blank30 vcenter">
     <el-row>
-      <v-menu :class="[isMob ? 'v-menu' : '']" currentName="sdDesign_collectList"></v-menu>
-
+      <v-menu :class="[isMob ? 'v-menu' : '']" currentName="sdDesignCase_list"></v-menu>
       <div :class="{'vcenter-right-plus': leftWidth === 4,
         'vcenter-right': leftWidth === 2,
         'vcenter-right-mob': isMob}">
@@ -10,60 +9,163 @@
           <v-menu-sub></v-menu-sub>
           <div :class="['content-box', isMob ? 'content-box-m' : '']">
             <div class="design-case-list" v-loading="isLoading">
-              <el-row :gutter="20">
-                <!-- <el-col :xs="12" :sm="6" :md="6" :lg="6">
-                  <router-link :to="{name: 'sdDesignCase_submit'}" class="item item-add el-card">
-                    <i class="add-icon"></i>
-                    <p class="tc-red fz-16">提交设计成果</p>
-                  </router-link>
-                </el-col> -->
-            <el-col :span="8" class="item-cloud" v-for="(item, index) in collectList" :key="index">
-              <div class="list-item">
-                <div class="list-text">
-                  <div class="list-title">
-                    <span>{{item.name}}</span>
-                  </div>
-                  <div class="list-data">
-                    <span>{{item.created_at| timeFormat}}</span>
-                  </div>
-                  <div class="list-word">
-                    <span>项目预算：&nbsp;{{item.design_cost_value}}</span>
-                  </div>
-                  <div class="list-word">
-                    <span>设计类别：&nbsp;{{item.design_types_value | typeJoin}}</span>
-                  </div>
-                  <div class="list-word">
-                    <span>项目周期：&nbsp;{{item.cycle_value}}</span>
-                  </div>
-                  <div class="list-bottom bottom-style">
-                    <div class="list-contain" @click="collect(item.id, item.follow_status)">
-                      <div class="list-button" v-if="item.follow_status === 2">
-                        <span class="button-text">感兴趣</span>
-                      </div>
-                      <div class="list-button interest-border" v-if="item.follow_status === 1">
-                        <span class="button-interest">已感兴趣</span>
-                      </div>
-                    </div>
-                    <div class="list-right">
-                      <div class="list-button">
-                        <span class="contact-text">联系他</span>
-                      </div>
-                    </div>
-                    <div class="list-left">
-                      <div class="list-button" @click.stop="upDetails(item.id)">
-                        <span class="details-text">查看详情</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div  v-if="!collectList||!collectList.length" class="no-list">
+                <img src="../../../../../assets/images/trade_fairs/default/NoDemand@2x.png" alt="无收藏">
+                <p>还没有收藏设计需求～</p>
+                <el-button class="red-button">查看设计需求</el-button>
               </div>
-            </el-col>
+              <el-row :gutter="20" v-if="collectList&&collectList.length">
+                
+                <el-col :span="8" class="item-cloud" v-for="(item, index) in collectList" :key="index">
+                  <div class="list-item">
+                    <div class="list-text">
+                      <div class="list-title">
+                        <span>{{item.name}}</span>
+                      </div>
+                      <div class="list-data">
+                        <span>{{item.created_at| timeFormat}}</span>
+                      </div>
+                      <div class="list-word">
+                        <span>项目预算：&nbsp;{{item.design_cost_value}}</span>
+                      </div>
+                      <div class="list-word">
+                        <span>设计类别：&nbsp;{{item.design_types_value | typeJoin}}</span>
+                      </div>
+                      <div class="list-word">
+                        <span>项目周期：&nbsp;{{item.cycle_value}}</span>
+                      </div>
+                      <div class="list-bottom bottom-style">
+                        <div class="list-contain">
+                          <div class="list-button interest-border">
+                            <span class="button-interest">已感兴趣</span>
+                          </div>
+                        </div>
+                        <div class="list-right">
+                          <div class="list-button">
+                            <span class="contact-text">联系他</span>
+                          </div>
+                        </div>
+                        <div class="list-left">
+                          <div class="list-button" @click.stop="upDetails(item.id)">
+                            <span class="details-text">查看详情</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </el-col>
               </el-row>
             </div>
           </div>
         </div>
       </div>
     </el-row>
+    <el-dialog
+      title="收藏详情"
+      :visible.sync="dialogUpdateVisible"
+      size="tiny"
+      class="submit2-form seen-deta"
+      >
+      <div >
+        <div class="details">
+          <el-row>
+            <el-col :span="6">
+              <span>项目名称</span>
+            </el-col>
+            <el-col :span="18">
+              {{formup.name}}
+            </el-col>
+          </el-row>
+        </div>
+        <div class="details">
+          <el-row>
+            <el-col :span="6">
+              <span>设计类别</span>
+            </el-col>
+            <el-col :span="18">
+              {{formup.design_types_value | typeJoin}}
+            </el-col>
+          </el-row>
+        </div>
+        <div class="details">
+          <el-row>
+            <el-col :span="6">
+              <span>项目周期</span>
+            </el-col>
+            <el-col :span="18">
+              {{formup.cycle_value}}
+            </el-col>
+          </el-row>
+        </div>
+        <div class="details">
+          <el-row>
+            <el-col :span="6">
+              <span>项目预算</span>
+            </el-col>
+            <el-col :span="18">
+              {{formup.design_cost_value}}
+            </el-col>
+          </el-row>
+        </div>
+        <div class="details">
+          <el-row>
+            <el-col :span="6">
+              <span>产品类别</span>
+            </el-col>
+            <el-col :span="18">
+              {{formup.type_value}}
+            </el-col>
+          </el-row>
+        </div>
+        <div class="details">
+          <el-row>
+            <el-col :span="6">
+              <span>所属行业</span>
+            </el-col>
+            <el-col :span="18">
+              {{formup.field_value}}
+            </el-col>
+          </el-row>
+        </div>
+        <div class="details">
+          <el-row>
+            <el-col :span="6">
+              <span>工作地点</span>
+            </el-col>
+            <el-col :span="18">
+              {{formup.item_province_value}}{{formup.item_city_value}}
+            </el-col>
+          </el-row>
+        </div>
+        <div class="details">
+          <el-row>
+            <el-col :span="6">
+              <span>功能描述</span>
+            </el-col>
+            <el-col :span="18" class="content-height">
+              {{formup.content}}
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <div class="dia-bottom dialog-bottom">
+          <div class="dia-contain" @click="collect(formup.id, formup.follow_status)">
+          <div class="dia-button" v-if="formup.follow_status === 2">
+            <span class="button-text">感兴趣</span>
+          </div>
+          <div class="dia-button interest-dia" v-if="formup.follow_status === 1">
+            <span class="dia-interest">已感兴趣</span>
+          </div>
+        </div>
+        <div class="dia-right">
+          <div class="dia-button">
+            <span class="contact-text">联系他</span>
+          </div>
+        </div>
+        </div>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -87,6 +189,7 @@
         dialogUpdateVisible: false, // 更新状态弹窗
         dialogVisible: false, // 修改价格弹窗
         form: {},// 修改价格
+        formup: {}, // 查看详情
         updateform: { // 修改状态表单
           status: '',
           id: [],
@@ -102,23 +205,38 @@
       }
     },
     filters: {
-      statusFormat(val) {
+      timeFormat(val) {
+        if (!isNaN(val)) {
+          return new Date(val * 1000).format('yyyy-MM-dd')
+        } else {
+          return
+        }
+      },
+      typeJoin(val) {
         if (val) {
-          if (val === 1) {
-            return '待提交'
-          } else if (val === 2) {
-            return '审核中'
-          } else if (val === 3) {
-            return '已上架'
-          } else if (val === -1) {
-            return '已下架'
-          } else {
-            return ''
-          }
+          return val.join('、')
+        } else {
+          return
         }
       }
     },
     methods: {
+      // 获取详情
+      upDetails(id) {
+        this.formup = {}
+        this.$http.get(api.sdDemandDesignDemandInfo, {params: {demand_id: id}}).then(
+          (response) => {
+            if (response.data.meta.status_code === 200) {
+              this.dialogUpdateVisible = true
+              setTimeout(() => {
+                this.formup = response.data.data
+              }, 1)
+            } else {
+              this.$message.error(response.data.meta.message)
+            }
+          }
+        )
+      },
       // 获取收藏列表
       getDesignCase () {
         const that = this
@@ -127,9 +245,9 @@
         .then (function (response) {
           that.isLoading = false
           if (response.data.meta.status_code === 200) {
-            if (response.data.data && response.data.data.length) {
-              that.collectList = response.data.data
-            }
+            // if (response.data.data && response.data.data.length) {
+            //   that.collectList = response.data.data
+            // }
           }
         })
         .catch (function (error) {
@@ -159,6 +277,17 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .no-list {
+    text-align: center;
+    margin-top: 150px;
+  }
+  .no-list img {
+    width: 120px;
+  }
+  .no-list p {
+    color: #999;
+    margin-bottom: 10px;
+  }
   .right-content .content-box {
     border: none;
     padding: 0
@@ -328,7 +457,7 @@
     margin: 0 auto;
     padding-top: 10px;
   }
-    .list-left {
+  .list-left {
     cursor: pointer;
     float: left;
   }
@@ -348,6 +477,185 @@
     border: 1px solid #E6E6E6;
     text-align: center;
     line-height: 28px;
+  }
+  .list-button:hover {
+    height: 30px;
+    width: 80px;
+    border: 1px solid #FF4696;
+  }
+  .list-button:hover .details-text {
+    color: #FF4696;
+  }
+  .list-button:hover .details-text::before {
+    background: url('../../../../../assets/images/trade_fairs/list/DetailsHover@2x.png') no-repeat center;
+    background-size: contain;
+  }
+  .list-button:hover .button-text {
+    color: #FF4696;
+  }
+  .list-button:hover .contact-text {
+    color: #FF4696;
+  }
+  .list-button:hover .contact-text::before {
+    background: url('../../../../../assets/images/trade_fairs/list/ContactHover@2x.png') no-repeat center;
+    background-size: contain;
+  }
+  .list-button:hover .button-text:before {
+    background: url('../../../../../assets/images/trade_fairs/list/BeInterestedHover@2x.png') no-repeat center;
+    background-size: contain;
+  }
+  .details-text {
+    position: relative;
+    font-family: PingFangSC-Regular;
+    font-size: 12px;
+    padding-left: 10px;
+    color: #999999;
+  }
+  .details-text:before {
+    content: '';
+    position: absolute;
+    height: 24px;
+    top: -5px;
+    width: 24px;
+    left: -11px;
+    background: url('../../../../../assets/images/trade_fairs/list/Details@2x.png') no-repeat center;
+    background-size: contain;
+  }
+  .bottom-style {
+    width: 260px;
+  }
+  .interest-border {
+    border: 1px solid #FF5A5F;
+  }
+  .interest-border:hover {
+    border: 1px solid #FF4696;
+  }
+  .interest-border:hover .button-interest {
+    color: #FF4696;
+  }
+  .interest-border:hover .button-interest:before {
+    background: url('../../../../../assets/images/trade_fairs/list/BeInterestedClick@2x.png') no-repeat center;
+    background-size: contain;
+  }
+  .button-interest {
+    position: relative;
+    font-family: PingFangSC-Regular;
+    font-size: 12px;
+    padding-left: 15px;
+    color: #FF5A5F;
+  }
+  .button-interest:before {
+    content: '';
+    position: absolute;
+    height: 24px;
+    top: -4px;
+    width: 24px;
+    left: -8px;
+    background: url('../../../../../assets/images/trade_fairs/list/BeInterestedHover02@2x.png') no-repeat center;
+    background-size: contain;
+  }
+    /* 感兴趣 */
+  .dia-contain {
+    cursor: pointer;
+    float: left;
+  }
+  .dia-right {
+    cursor: pointer;
+    float: left;
+    padding-left: 20px;
+  }
+  .dia-button {
+    height: 34px;
+    width: 120px;
+    border: 1px solid #E6E6E6;
+    text-align: center;
+    line-height: 32px;
+    border-radius: 4px;
+  }
+  .interest-dia {
+    border: 1px solid #FF5A5F;
+  }
+  .dia-interest {
+    position: relative;
+    font-family: PingFangSC-Regular;
+    font-size: 12px;
+    padding-left: 15px;
+    color: #FF5A5F;
+  }
+  .dia-interest:before {
+    content: '';
+    position: absolute;
+    height: 24px;
+    top: -4px;
+    width: 24px;
+    left: -8px;
+    background: url('../../../../../assets/images/trade_fairs/list/BeInterestedHover02@2x.png') no-repeat center;
+    background-size: contain;
+  }
+  .dia-button:hover {
+    height: 34px;
+    width: 120px;
+    border: 1px solid #FF5A5F;
+    border-radius: 4px;
+  }
+  .dia-button:hover .button-text {
+    color: #FF5A5F;
+  }
+  .dia-button:hover .button-text:before {
+    background: url('../../../../../assets/images/trade_fairs/list/BeInterested02@2x.png') no-repeat center;
+    background-size: contain;
+  }
+  .dia-button:hover .contact-text {
+    color: #FF5A5F;
+  }
+  .dia-button:hover .contact-text:before {
+    background: url('../../../../../assets/images/trade_fairs/list/ContactHover@02x.png') no-repeat center;
+    background-size: contain;
+  }
+  .contact-text {
+    position: relative;
+    font-family: PingFangSC-Regular;
+    font-size: 12px;
+    padding-left: 10px;
+    color: #999999;
+  }
+  .contact-text::before {
+    content: '';
+    position: absolute;
+    height: 24px;
+    top: -4px;
+    width: 24px;
+    left: -14px;
+    background: url('../../../../../assets/images/trade_fairs/list/Contact@2x.png') no-repeat center;
+    background-size: contain;
+  }
+  /* 需求弹出框样式 */
+  .details .el-row {
+    margin-bottom: 10px;
+  }
+  .details {
+    line-height: 20px;
+    color: #999;
+  }
+  .details span {
+    display: inline-block;
+    width: 80px;
+    font-size: 14px;
+    color: #666;
+  }
+  .dia-bottom {
+    width: 120px;
+    margin: 0 auto;
+  }
+  .dialog-bottom {
+    width: 260px;
+  }
+  .submit2-form {
+    overflow: hidden
+  }
+  .content-height {
+    overflow-x: hidden;
+    max-height: 180px;
   }
   @media screen and (max-width: 767px) {
     .opt a {

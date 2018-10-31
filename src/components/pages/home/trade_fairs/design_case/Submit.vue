@@ -104,6 +104,26 @@
               </el-row>
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
+                  <el-row :gutter="10">
+                    <el-col :span="12">
+                      <el-form-item label="联系人姓名" prop="contacts">
+                        <el-input v-model="form.share_ratio" >
+                          <template slot="append">%</template>
+                        </el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                      <el-form-item label="联系电话" prop="contact_number">
+                        <el-input v-model="form.price">
+                          <template slot="append">元</template>
+                        </el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="isMob ? 24 : 12">
                   <el-form-item label="出让方式" prop="sell_type">
                     <el-radio-group v-model.number="form.sell_type" @change="sell">
                       <el-radio class="radio" :label="1">全额出让</el-radio>
@@ -277,6 +297,12 @@
           ],
           price: [
             {required: true, type: 'number', message: '请填写合理的金额', trigger: 'blur'}
+          ],
+          contacts: [
+            {required: true, message: '请填写联系人', trigger: 'blur'}
+          ],
+          contact_number: [
+            {required: true, message: '请填写联系电话', trigger: 'blur'}
           ]
         }
       }
