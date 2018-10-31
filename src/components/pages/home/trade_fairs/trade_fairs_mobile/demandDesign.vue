@@ -39,7 +39,7 @@
                         <span class="button-interest">已感兴趣</span>
                       </div>
                     </div>
-                    <div class="list-right">
+                    <div class="list-right" @click="callHer(item)">
                       <div class="list-button">
                         <span class="contact-text">联系他</span>
                       </div>
@@ -56,6 +56,18 @@
           </el-row>
         </div>
       </div>
+      <el-dialog
+        :visible.sync="dialogCall"
+        size="tiny"
+        class="style-call">
+        <div class="title-center">
+          <!-- <img class="avatar" v-if="callDtails.design_company.logo_url" :src="item.design_company.logo_url" width="100"/>
+          <img class="avatar" v-else src="../../../../../assets/images/avatar_100.png" width="100"/> -->
+          <img class="avatar" src="../../../../../assets/images/avatar_100.png" width="100"/>
+          <div class="company-name">北京品物设计有限公司</div>
+          <div class="right-number">13655139068</div>
+        </div>
+      </el-dialog>
     </div>
 
     <!-- <el-dialog
@@ -178,9 +190,11 @@
         demandList: '',
         formup: {},
         isLoading: false,
+        dialogCall: false,
         collectId: '',
         diaLoading: false,
-        setIndex: -1
+        setIndex: -1,
+        callDtails: ''
       }
     },
     created() {
@@ -189,6 +203,11 @@
     mounted() {
     },
     methods: {
+      // 弹出联系框
+      callHer(item) {
+        this.dialogCall = true
+        this.callDtails = item
+      },
       // 获取列表
       getDemandList() {
         let that = this
@@ -218,19 +237,6 @@
       // 获取详情
       upDetails(id) {
         this.$router.push({name: 'mobile_demand_details', params: {id: id}})
-        // this.$http.get(api.sdDemandDesignDemandInfo, {params: {demand_id: id}}).then(
-        //   (response) => {
-        //     if (response.data.meta.status_code === 200) {
-        //       this.diaLoading = false
-        //       setTimeout(() => {
-        //         this.formup = response.data.data
-        //       }, 1)
-        //     } else {
-        //       this.diaLoading = false
-        //       this.$message.error(response.data.meta.message)
-        //     }
-        //   }
-        // )
       },
       // 收藏需求
       collect(id, status) {
@@ -409,7 +415,6 @@
     float: left;
   }
   .list-contain {
-    cursor: pointer;
     float: left;
     padding-right: 10px;
   }
@@ -498,34 +503,6 @@
     background-size: contain;
   }
 
-  /* 需求弹出框样式 */
-  .details .el-row {
-    margin-bottom: 10px;
-  }
-  .details {
-    line-height: 20px;
-    color: #999;
-  }
-  .details span {
-    display: inline-block;
-    width: 80px;
-    font-size: 14px;
-    color: #666;
-  }
-  .dia-bottom {
-    width: 120px;
-    margin: 0 auto;
-  }
-  .dialog-bottom {
-    width: 260px;
-  }
-  .submit-form {
-    overflow: hidden
-  }
-  .content-height {
-    overflow-x: hidden;
-    max-height: 180px;
-  }
   /* 感兴趣 */
   .dia-contain {
     cursor: pointer;
@@ -563,5 +540,26 @@
     left: -8px;
     background: url('../../../../../assets/images/trade_fairs/list/BeInterestedHover02@2x.png') no-repeat center;
     background-size: contain;
+  }
+  /* 详情弹出框 */
+  .title-center {
+    margin: 0 auto;
+    text-align: center;
+    width: 50%;
+    margin-top: -20px;
+  }
+  .company-name {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #222222;
+    letter-spacing: 0;
+    padding-top: 17px;
+  }
+  .right-number {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #FF5A5F;
+    letter-spacing: 0;
+    padding-top: 12px;
   }
 </style>

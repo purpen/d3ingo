@@ -361,7 +361,7 @@ export default {
     // 获取详情
     upDetails() {
       this.diaLoading = true
-      this.$http.post(api.designResultsShow, {id: this.$route.params.id}).then(
+      this.$http.get(api.designResultsShow, {id: this.$route.params.id}).then(
         (response) => {
           if (response.data.meta.status_code === 200) {
             this.diaLoading = false
