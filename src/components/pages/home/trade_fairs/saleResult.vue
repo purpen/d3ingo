@@ -36,10 +36,10 @@
                       </div>
                     </div>
                     <div class="list-right" @click="collect(achieve.id, achieve.follow_status)">
-                      <div class="list-button" v-if="!achieve.is_follow">
+                      <div class="list-button" v-if="achieve.is_follow === 0">
                         <span class="button-text">感兴趣</span>
                       </div>
-                      <div class="list-button interest-border" v-if="achieve.is_follow">
+                      <div class="list-button interest-border" v-if="achieve.is_follow === 1">
                         <span class="button-interest">已感兴趣</span>
                       </div>
                     </div>
@@ -102,7 +102,7 @@
     },
     methods: {
       // 收藏需求
-      collect(id, status) {
+      collect(id) {
         this.isLoading = true
         this.collectId = id
         this.$http.get(api.designResultsCollectionOperation, {params: {id: id}}).then((response) => {
@@ -110,8 +110,11 @@
             this.isLoading = false
             for (let index in this.designCases) {
               if (this.designCases[index].id === id) {
-                this.designCases[index].is_follow = !this.interestButton
-                this.interestButton = !this.interestButton
+                if (this.designCases[index].is_follow === 0) {
+                  this.designCases[index].is_follow = 1
+                } else {
+                  this.designCases[index].is_follow = 0
+                }
               }
             }
           } else {
