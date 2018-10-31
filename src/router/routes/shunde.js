@@ -99,6 +99,30 @@ module.exports = [
     },
     component: require('@/components/pages/home/trade_fairs/design_case/submit')
   },
+  // 个人中心设计方收藏列表
+  {
+    path: '/shunde/trade_fairs/design_case/collectList',
+    name: 'sdDesign_collectList',
+    meta: {
+      title: '收藏列表',
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/home/trade_fairs/design_case/collectList')
+  },
+  // 个人中心设计方收藏列表
+  {
+    path: '/shunde/trade_fairs/design_case/order',
+    name: 'sdDesign_order',
+    meta: {
+      title: '订单列表',
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/home/trade_fairs/design_case/order')
+  },
   // 付款-托管资金
   {
     path: '/shunde/trade_fairs/managedFunds/:id',

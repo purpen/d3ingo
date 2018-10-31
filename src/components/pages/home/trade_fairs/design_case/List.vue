@@ -28,6 +28,7 @@
                       </ul>
                       <ul v-if="d.status === 2">
                         <li class="edit" @click="updateBtn(d, 3)">撤回</li>
+                        <li @click="dialogVisible=true">修改</li>
                       </ul>
                       <ul v-if="d.status === 3">
                         <li class="edit" @click="updateBtn(d, 1)">下架</li>
@@ -39,17 +40,19 @@
                       </ul>
                     </div>
                     <div class="image-box">
-                      <router-link :to="{name: 'work_datails', params: {id: d.id}}"
+                      <router-link :to="{name: 'work_datails', params: {id: d.id,type: 2}}"
                         :target="isMob ? '_self' : '_blank'">
                         <img v-if="d.cover" :src="d.cover.middle">
                       </router-link>
                     </div>
                     <div class="content">
-                      <router-link :to="{name: 'work_datails', params: {id: d.id}}"
+                      <router-link :to="{name: 'work_datails', params: {id: d.id,type: 2}}"
                         :target="isMob ? '_self' : '_blank'"
                         class="tc-2 protrude fz-18">{{ d.title }}
                       </router-link>
-                      <span class="fz-14 tc-6">出让方式: {{d.sell_type===1?'全款出售':'股权出让'+d.share_ratio+'%'}}</span>
+                      <span class="fz-14 tc-6">出让方式: {{d.sell_type===1?'全款出售':'股权出让'}}
+                        <span v-if="d.sell_type===2" class="tc-red">{{d.share_ratio+'%'}}</span>
+                      </span>
                       <p class="tc-6 mg-top-5">
                         <span>
                           出让金额: 
@@ -69,7 +72,7 @@
       </div>
     </el-row>
     <el-dialog
-      title="项目详情"
+      :title="updateform.opt===1?'确认下架':(updateform.opt===2?'确认删除':'撤回')"
       :visible.sync="dialogUpdateVisible"
       size="tiny"
       >
@@ -90,6 +93,49 @@
         <el-button @click="dialogUpdateVisible=false">取消</el-button>
         <el-button class="is-custom" type="primary" size="small" @click="deleteResults" v-if="updateform.opt ===2">确定</el-button>
         <el-button class="is-custom" type="primary" size="small" @click="updateStatus" v-else>确定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="修改价格"
+      :visible.sync="dialogVisible"
+      size="tiny"
+      >
+      <el-form v-model="form" :rules="ruleForm" ref="ruleForm" label-width="80px" label-position="top">
+        <el-row>
+          <el-col>
+            <el-form-item label="出让方式" prop="sell_type">
+              <el-radio-group v-model.number="form.sell_type">
+                <el-radio class="radio" :label="1">全额出让</el-radio>
+                <el-radio class="radio" :label="2">股权合作</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col>
+            <el-row :gutter="10">
+              <el-col :span="12" v-if="form.sell_type&&form.sell_type===2">
+                <el-form-item label="出让比例" prop="share_ratio">
+                  <el-input v-model="form.share_ratio" >
+                    <template slot="append">%</template>
+                  </el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="(form.sell_type&&form.sell_type===2)?12:24">
+                <el-form-item label="出让金额">
+                  <el-input v-model="form.price">
+                    <template slot="append">元</template>
+                  </el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-col>
+        </el-row>
+        <p class="tc-9 align-c">确认修改后会拒绝当前所有待处理出价</p>
+      </el-form>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button class="is-custom" type="primary" size="small" @click="submit('ruleForm')">确定修改</el-button>
       </span>
     </el-dialog>
   </div>
@@ -113,11 +159,18 @@
         designCases: [], // 成果列表
         designId: '', // 修改状态id
         dialogUpdateVisible: false, // 更新状态弹窗
+        dialogVisible: false, // 修改价格弹窗
+        form: {},// 修改价格
         updateform: { // 修改状态表单
           status: '',
           id: [],
           title: '',
           opt: ''
+        },
+        ruleForm: {
+          price: [
+            {required: true, type: 'number', message: '请填写合理的金额', trigger: 'blur'}
+          ]
         },
         userId: this.$store.state.event.user.id
       }
@@ -223,6 +276,50 @@
         .catch (function (error) {
           that.$message.error (error.message)
           that.isLoading = false
+        })
+      },
+      // 编辑按钮
+      submit(formName) {
+        const that = this
+        that.$refs[formName].validate ((valid) => {
+          // 验证通过，提交
+          if (valid) {
+            let row = {
+              content: that.form.content,
+              title: that.form.title,
+              sell_type: that.form.sell_type,
+              price: that.form.price,
+              share_ratio: that.form.sell_type === 1 ? 100 : that.form.share_ratio,
+              design_company_id: that.$store.state.event.user.company_id,
+              // illustrate: [that.uploadParam3['x:random']] || [],
+              // patent: [that.uploadParam2['x:random']] || [],
+              // images: [that.uploadParam['x:random']] || [],
+              status: 2,
+              id: that.form.id || ''
+            }
+            row.cover_id = that.coverId
+            that.isLoadingBtn = true
+            that.$http({method: 'post', url: api.sdDesignResultsSave, data: row})
+              .then (function (response) {
+                if (response.data.meta.status_code === 200) {
+                  that.$message.success ('提交成功！')
+                  that.$router.push ({name: 'sdDesignCase_list'})
+                  return false
+                } else {
+                  that.$message.error (response.data.meta.message)
+                  that.isLoadingBtn = false
+                }
+              })
+              .catch (function (error) {
+                that.$message.error (error.message)
+                that.isLoadingBtn = false
+                console.log (error.message)
+                return false
+              })
+          } else {
+            console.log ('error submit!!')
+            return false
+          }
         })
       }
     },
