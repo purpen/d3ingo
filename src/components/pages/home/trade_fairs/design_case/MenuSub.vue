@@ -6,11 +6,11 @@
       {'is-active': $route.name === 'vcenterMatchCaseCreated'}]">提交产品</router-link>
       <router-link v-if="index === 1 || index === 2" to="" class="item2">编辑作品</router-link> -->
       <a v-if="index === 1" :class="['item', {'is-active': $route.name === 'sdDesignCase_list'}]" @click="inlist()">设计成果</a>
-      <router-link v-if="index === 2" :to="{name: 'vcenterMatchCaseList'}" :class="['item', 
-      {'is-active': $route.name === 'vcenterMatchCaseList'}]">收藏列表</router-link>
-      <router-link v-if="index===3" :to="{name: 'vcenterMatchCaseList'}" :class="['item', 
-      {'is-active': $route.name === 'vcenterMatchCaseList'}]">订单列表</router-link>
-      <router-link v-if="index === 1&&($route.name === 'sdDesignCase_submit'||$route.name === 'vcenterDesignCaseEdit')" to="" class="item2 item is-active">
+      <router-link v-if="$route.name !== 'sdDesignCase_submit'" :to="{name: 'sdDesign_collectList'}" :class="['item', 
+      {'is-active': $route.name === 'sdDesign_collectList'}]">收藏列表</router-link>
+      <router-link v-if="$route.name !== 'sdDesignCase_submit'" :to="{name: 'sdDesign_order'}" :class="['item', 
+      {'is-active': $route.name === 'sdDesign_order'}]">订单列表</router-link>
+      <router-link v-if="$route.name === 'sdDesignCase_submit'" to="" class="item2 item is-active">
         <span v-if="$route.name === 'sdDesignCase_submit'">
           提交设计成果
         </span> 
