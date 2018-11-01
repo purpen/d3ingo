@@ -343,15 +343,19 @@
   }
   .content-style {
     padding-top: 30px;
+    margin: 0px 15px;
   }
   .content-before {
     float: left;
     width: 280px;
     height: 290px;
+    border-radius: 8px;
     background: #5825FD;
     border: 1px solid #02EBA5;
     box-shadow: 0 0 10px 0 #2D37B2;
     text-align: center;
+    position: relative;
+    z-index: 3;
   }
   .text-before {
     position: relative;
@@ -397,6 +401,7 @@
     height: 290px;
     background: #5825FD;
     border: 1px solid #02EBA5;
+    border-radius: 8px;
     box-shadow: 0 0 10px 0 #2D37B2;
   }  
   .content-after {
@@ -406,13 +411,16 @@
     height: 290px;
     background: #5825FD;
     border: 1px solid #02EBA5;
+    border-radius: 8px;
     box-shadow: 0 0 10px 0 #2D37B2;
+    position: relative;
+    z-index: 3;
   }
   .content-texts {
     text-align: center;
     padding-top: 70px;
   }
-  .content-text {
+  .content-texts .content-text {
     font-family: PingFangSC-Regular;
     font-size: 12px;
     color: #02EBA5;
@@ -467,6 +475,7 @@
   .span-text {
     font-family: PingFangSC-Regular;
     font-size: 14px;
+    line-height: 18px;
     color: #FFFFFF;
   }
   .time1 {
@@ -566,7 +575,7 @@
     padding-top: 28px;
   }
   .text8 {
-    padding-top: 50px;
+    padding-top: 45px;
   }
   .text5-right {
     padding-top: 120px;

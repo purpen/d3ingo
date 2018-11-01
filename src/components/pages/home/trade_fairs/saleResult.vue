@@ -428,6 +428,7 @@
     height: 30px;
     width: 80px;
     border: 1px solid #E6E6E6;
+    border-radius: 4px;
     text-align: center;
     line-height: 28px;
   }
@@ -452,6 +453,7 @@
     height: 30px;
     width: 80px;
     border: 1px solid #FF4696;
+    border-radius: 4px;
   }
   .list-button:hover .button-text {
     color: #FF4696;
@@ -462,6 +464,7 @@
   }
   .interest-border {
     border: 1px solid #FF4696;
+    border-radius: 4px;
   }
   .button-interest {
     position: relative;
