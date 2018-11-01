@@ -224,7 +224,7 @@
   .features-process {
     position: relative;
     height: 406px;
-    margin: 30px 10px 0 10px;
+    margin: 30px 15px 0 15px;
     background: url('../../../../../assets/images/trade_fairs/ActivityCharacteristics02@2x.png') no-repeat center;
     background-size: contain;
   }
@@ -249,6 +249,7 @@
   }
   .content-style {
     padding-top: 30px;
+    margin: 0 15px;
   }
   .content-before {
     height: 560px;

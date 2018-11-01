@@ -259,7 +259,7 @@ export default {
       this.verify.evt = evt
     },
 
-    // 通过
+    // 通过拒绝
     setVerify(index, item, evt, refuseRease = '') {
       this.dialogVisible = false
       var id = item.id
@@ -283,29 +283,29 @@ export default {
         console.error(error.message)
       })
     },
-    setStatus(index, item, evt) {
-      var id = item.id
-      var url = ''
-      if (evt === 0) {
-        url = api.adminCompanyStatusDisable
-      } else {
-        url = api.adminCompanyStatusOk
-      }
-      var self = this
-      self.$http.put(url, {id: id})
-      .then (function(response) {
-        if (response.data.meta.status_code === 200) {
-          self.itemList[index].status = evt
-          self.$message.success('操作成功')
-        } else {
-          self.$message.error(response.data.meta.message)
-        }
-      })
-      .catch (function(error) {
-        self.$message.error(error.message)
-        console.error(error.message)
-      })
-    },
+    // setStatus(index, item, evt) {
+    //   var id = item.id
+    //   var url = ''
+    //   if (evt === 0) {
+    //     url = api.adminCompanyStatusDisable
+    //   } else {
+    //     url = api.adminCompanyStatusOk
+    //   }
+    //   var self = this
+    //   self.$http.put(url, {id: id})
+    //   .then (function(response) {
+    //     if (response.data.meta.status_code === 200) {
+    //       self.itemList[index].status = evt
+    //       self.$message.success('操作成功')
+    //     } else {
+    //       self.$message.error(response.data.meta.message)
+    //     }
+    //   })
+    //   .catch (function(error) {
+    //     self.$message.error(error.message)
+    //     console.error(error.message)
+    //   })
+    // },
     loadList() {
       const self = this
       // 查询条件
