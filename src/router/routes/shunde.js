@@ -55,7 +55,6 @@ module.exports = [
   // 代售详情页
   {
     path: '/shunde/trade_fairs/saleResult/workDatails/:id',
-    // path: '/shunde/trade_fairs/saleResult/workDatails/',
     name: 'work_datails',
     meta: {
       title: '代售详情页',
@@ -65,7 +64,7 @@ module.exports = [
   },
   // 个人中心需求列表页
   {
-    path: '/shunde/trade_fairs/demandList',
+    path: '/shunde/trade_fairs/demand/demandList',
     name: 'demand_list',
     meta: {
       title: '需求列表',
@@ -73,19 +72,78 @@ module.exports = [
       hideHeader: true,
       hideFooter: true
     },
-    component: require('@/components/pages/home/trade_fairs/demandList')
+    component: require('@/components/pages/home/trade_fairs/demand/demandList')
   },
-  // 个人中心成果列表页
+  // 个人中心设计方成果列表页
   {
-    path: '/shunde/trade_fairs/achieveList',
-    name: 'achieve_list',
+    path: '/shunde/trade_fairs/design_case',
+    name: 'sdDesignCase_list',
     meta: {
-      title: '需求列表',
+      title: '成果列表',
       requireAuth: true,
       hideHeader: true,
       hideFooter: true
     },
-    component: require('@/components/pages/home/trade_fairs/achieveList')
+    component: require('@/components/pages/home/trade_fairs/design_case/list')
+  },
+  // 个人中心设计方成果编辑页
+  {
+    path: '/shunde/trade_fairs/design_case/submit/:id',
+    name: 'sdDesignCase_update',
+    meta: {
+      title: '成果新建',
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/home/trade_fairs/design_case/submit')
+  },
+  // 个人中心设计方成果新建页
+  {
+    path: '/shunde/trade_fairs/design_case/submit',
+    name: 'sdDesignCase_submit',
+    meta: {
+      title: '成果详情',
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/home/trade_fairs/design_case/submit')
+  },
+  // 个人中心设计方收藏列表
+  {
+    path: '/shunde/trade_fairs/design_case/collectList',
+    name: 'sdDesign_collectList',
+    meta: {
+      title: '收藏列表',
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/home/trade_fairs/design_case/collectList')
+  },
+  // 个人中心设计方订单列表
+  {
+    path: '/shunde/trade_fairs/design_case/order',
+    name: 'sdDesign_order',
+    meta: {
+      title: '订单列表',
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/home/trade_fairs/design_case/order')
+  },
+  // 支付-确认订单
+  {
+    path: '/shunde/trade_fairs/sureOrder/:id',
+    name: 'sure_order',
+    meta: {
+      title: '确认订单',
+      requireAuth: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/home/trade_fairs/sureOrder')
   },
   // 付款-托管资金
   {
@@ -108,5 +166,58 @@ module.exports = [
       hideFooter: true
     },
     component: require('@/components/pages/home/trade_fairs/paymentAmount')
+  },
+  // 移动端首页
+  {
+    path: '/shunde/trade_fairs/trade_fairs_mobile/mobileLogin',
+    name: 'mobile_login',
+    meta: {
+      title: '首页',
+      requireAuth: false,
+      hideFooter: true
+    },
+    component: require('@/components/pages/home/trade_fairs/trade_fairs_mobile/mobileLogin')
+  },
+  // 登陆后移动端内容页
+  {
+    path: '/shunde/trade_fairs/trade_fairs_mobile/mobileHomePage',
+    name: 'mobile_home_page',
+    meta: {
+      title: '内容页',
+      requireAuth: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/home/trade_fairs/trade_fairs_mobile/mobileHomePage')
+  },
+  // 移动端设计需求
+  {
+    path: '/shunde/trade_fairs/trade_fairs_mobile/demandDesign',
+    name: 'mobile_demand_design',
+    meta: {
+      title: '设计需求',
+      requireAuth: true
+    },
+    component: require('@/components/pages/home/trade_fairs/trade_fairs_mobile/demandDesign')
+  },
+  // 移动端代售成果
+  {
+    path: '/shunde/trade_fairs/trade_fairs_mobile/saleResult',
+    name: 'mobile_sale_result',
+    meta: {
+      title: '代售成果',
+      requireAuth: true
+    },
+    component: require('@/components/pages/home/trade_fairs/trade_fairs_mobile/saleResult')
+  },
+  // 移动端需求详情
+  {
+    path: '/shunde/trade_fairs/trade_fairs_mobile/mobileDemanDetails/:id',
+    name: 'mobile_demand_details',
+    meta: {
+      title: '移动端需求详情',
+      requireAuth: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/home/trade_fairs/trade_fairs_mobile/mobileDemanDetails')
   }
 ]
