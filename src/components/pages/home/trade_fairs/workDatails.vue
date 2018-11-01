@@ -232,7 +232,7 @@
           </div>
           <div class="list-left">
             <div class="list-button buy-text">
-              <router-link :to="{name: 'managed_funds', params: {id: 1}}" class="details-text">立即购买</router-link>
+              <router-link :to="{name: 'sure_order', params: {id: 1}}" class="details-text">立即购买</router-link>
             </div>
           </div>
           <div class="list-left" v-if="false">
@@ -539,11 +539,14 @@ export default {
 }
 .com-addr {
   padding-top: 20px;
+  width: 80%;
+  margin: 0 auto;
 }
 .right-sell {
   height: 50px;
-  width: 280px;
+  width: 80%;
   line-height: 50px;
+  margin: 0 auto;
 }
 .sell-stock {
   margin-top: 10px;
@@ -555,28 +558,24 @@ export default {
   font-family: PingFangSC-Regular;
   font-size: 16px;
   color: #222222;
-  padding-left: 16px;
 }
 .right-number {
   font-family: PingFangSC-Regular;
   font-size: 16px;
   color: #999999;
-  text-align: right;
-  padding-left: 79px;
+  float: right
 }
 .right-pah {
   font-family: PingFangSC-Regular;
   font-size: 16px;
   color: #999999;
-  text-align: right;
-  padding-left: 84px;
+  float: right;
 }
 .right-money {
   font-family: PingFangSC-Semibold;
   font-size: 20px;
   color: #FF5A5F;
-  text-align: right;
-  padding-left: 74px;
+  float: right;
 }
 .edit-content {
   padding-top: 30px;
@@ -892,7 +891,6 @@ p.img-des {
   font-family: PingFangSC-Regular;
   font-size: 16px;
   color: #FF5A5F;
-  text-align: right;
-  padding-left: 102px;
+  float: right
 }
 </style>

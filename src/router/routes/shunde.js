@@ -134,6 +134,17 @@ module.exports = [
     },
     component: require('@/components/pages/home/trade_fairs/design_case/order')
   },
+  // 支付-确认订单
+  {
+    path: '/shunde/trade_fairs/sureOrder/:id',
+    name: 'sure_order',
+    meta: {
+      title: '确认订单',
+      requireAuth: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/home/trade_fairs/sureOrder')
+  },
   // 付款-托管资金
   {
     path: '/shunde/trade_fairs/managedFunds/:id',
