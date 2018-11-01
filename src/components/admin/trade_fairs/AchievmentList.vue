@@ -268,7 +268,7 @@ export default {
       .then (function(response) {
         self.verify.refuseRease = ''
         if (response.data.meta.status_code === 200) {
-          self.itemList[index].status = evt
+          self.itemList[index].status = 3
           self.$message.success('操作成功')
         } else {
           self.$message.error(response.data.meta.message)

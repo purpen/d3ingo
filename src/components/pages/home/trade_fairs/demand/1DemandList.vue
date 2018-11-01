@@ -297,7 +297,7 @@
 </template>
 <script>
   import vMenu from '@/components/pages/v_center/Menu'
-  import vMenuSub from '@/components/pages/home/trade_fairs/demand/MenuSub'
+  import vMenuSub from '@/components/pages/home/trade_fairs/demand/1MenuSub'
   import api from '@/api/api'
   import config from '@/config'
   import RegionPicker from '@/components/block/RegionPicker'

@@ -9,11 +9,13 @@
           <v-menu-sub></v-menu-sub>
           <div :class="['content-box', isMob ? 'content-box-m' : '']">
             <div class="design-case-list" v-loading="isLoading">
-              <div class="no-list">
-                <img src="../../../../../assets/images/trade_fairs/default/NoOrder@2x.png" alt="无收藏">
+              <div  v-if="!collectList||!collectList.length" class="no-list">
+                <img src="../../../../../assets/images/trade_fairs/default/NoDemand@2x.png" alt="无收藏">
                 <p>还没有收藏设计需求～</p>
+                <el-button class="red-button">查看设计需求</el-button>
               </div>
-              <el-row :gutter="20" v-if="false">
+              <el-row :gutter="20" v-if="collectList&&collectList.length">
+                
                 <el-col :span="8" class="item-cloud" v-for="(item, index) in collectList" :key="index">
                   <div class="list-item">
                     <div class="list-text">
@@ -169,12 +171,12 @@
 
 <script>
   import vMenu from '@/components/pages/v_center/Menu'
-  import vMenuSub from '@/components/pages/home/trade_fairs/design_case/MenuSub'
+  import vMenuSub from '@/components/pages/home/trade_fairs/design_case/1MenuSub'
   import api from '@/api/api'
   import '@/assets/js/format'
 
   export default {
-    name: 'sdDesign_order',
+    name: 'sdDesign_collectList',
     components: {
       vMenu,
       vMenuSub
@@ -243,9 +245,9 @@
         .then (function (response) {
           that.isLoading = false
           if (response.data.meta.status_code === 200) {
-            if (response.data.data && response.data.data.length) {
-              that.collectList = response.data.data
-            }
+            // if (response.data.data && response.data.data.length) {
+            //   that.collectList = response.data.data
+            // }
           }
         })
         .catch (function (error) {
