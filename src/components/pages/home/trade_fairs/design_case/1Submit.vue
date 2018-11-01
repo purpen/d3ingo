@@ -14,7 +14,7 @@
               <el-row>
                 <el-col :span="24">
                   <el-form-item label="上传图片" prop="">
-                    <el-upload
+                    <!-- <el-upload
                       class="upload-demo upload-design upload"
                       :action="uploadUrl"
                       :on-preview="handlePreview"
@@ -29,8 +29,8 @@
                       list-type="picture-card">
                       <i class="el-icon-plus"></i>
                       <div slot="tip" class="el-upload__tip" v-html="uploadMsg"></div>
-                    </el-upload>
-                    <!-- <el-upload 
+                    </el-upload> -->
+                    <el-upload 
                       :action="uploadUrl"
                       :on-preview="handlePreview"
                       :on-remove="handleRemove"
@@ -42,17 +42,10 @@
                       :before-upload="beforeUpload"
                       :show-file-list="false"
                       >
-<<<<<<< HEAD:src/components/pages/home/trade_fairs/design_case/Submit.vue
                       <el-button class="is-custom" type="primary" size="small">+&nbsp;上传图片</el-button>
                       <span class="uploadsMsg">{{uploadMsg}}</span>
-=======
-                      <button class="middle-button full-red-button">+&nbsp;&nbsp;上传图片</button>
-                      <span class="uploadsMsg">{{uploadMsg}}</span> -->
->>>>>>> origin/ding:src/components/pages/home/trade_fairs/design_case/1Submit.vue
-                      <!-- <span v-html="uploadMsg"></span> -->
-                      <!-- <div slot="tip" class="el-upload__tip">{{ uploadMsg }}</div> -->
-                    <!-- </el-upload> -->
-                    <div class="file-list">
+                   </el-upload>
+                    <!-- <div class="file-list">
                       <el-row :gutter="20">
                         <el-col :span="isMob ? 24 : 6" v-for="(d, index) in fileList" :key="index">
                           <el-card :body-style="{ padding: '0px' }" class="item">
@@ -93,7 +86,6 @@
                           </el-card>
                         </el-col>
                       </el-row>
-<<<<<<< HEAD:src/components/pages/home/trade_fairs/design_case/Submit.vue
                     </div> -->
                     <div class="img-files">
                       <el-row>
@@ -109,8 +101,6 @@
                           <span class="right-cover" v-if="d.asset_id === coverId"></span>
                         </el-col>
                       </el-row>
-=======
->>>>>>> origin/ding:src/components/pages/home/trade_fairs/design_case/1Submit.vue
                     </div>
                   </el-form-item>
                 </el-col>
@@ -539,6 +529,7 @@
       uploadSuccess(response, file, fileList) {
         this.uploadMsg = '只能上传jpg/png文件，且不超过5M'
         let add = fileList[fileList.length - 1]
+        console.log('add', add)
         let item = {
           name: add.name,
           url: add.url,
