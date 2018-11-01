@@ -119,7 +119,7 @@
                   <p class="operate">
                     <span class="clearfix">
                       <a href="javascript:void(0);"
-                        v-if="scope.row.status === 2" @click="setVerify(scope.$index, scope.row,1)" class="tag-pass">通过</a>
+                        v-if="scope.row.status === 2" @click="setVerify(scope.$index, scope.row, 1)" class="tag-pass">通过</a>
                       <a href="javascript:void(0);" v-if="scope.row.status === 3 || scope.row.status === 2" @click="setRefuseRease(scope.$index, scope.row, 2)"
                       class="tag-refuse">拒绝</a>
                     </span>
@@ -268,7 +268,11 @@ export default {
       .then (function(response) {
         self.verify.refuseRease = ''
         if (response.data.meta.status_code === 200) {
-          self.itemList[index].status = 3
+          if (evt === 1) {
+            self.itemList[index].status = 3
+          } else {
+            self.itemList[index].status = -1
+          }
           self.$message.success('操作成功')
         } else {
           self.$message.error(response.data.meta.message)
