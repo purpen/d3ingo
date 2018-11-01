@@ -108,7 +108,7 @@ module.exports = [
       hideHeader: true,
       hideFooter: true
     },
-    component: require('@/components/pages/home/trade_fairs/design_case/submit')
+    component: require('@/components/pages/home/trade_fairs/design_case/Submit')
   },
   // 个人中心设计方收藏列表
   {
