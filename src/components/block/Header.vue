@@ -105,8 +105,9 @@
             <li @click="closeMenu" v-if="isAdmin">
               <router-link :to="menu.innovation_index">创新指数</router-link>
             </li>
-            <li @click="closeMenu" :route="menu.home_page" v-if="!token">交易会</li>
-            <li @click="closeMenu" :route="menu.demand_login" v-if="token">交易会</li>
+            <li @click="closeMenu">
+              <router-link :to="menu.mobile_login">交易会</router-link>
+            </li>
             <li @click="closeMenu" v-show="!isLogin">
               <router-link :to="menu.design">设计服务商入驻</router-link>
             </li>
@@ -229,8 +230,9 @@
             <li @click="closeMenu" v-if="isAdmin">
               <router-link :to="menu.innovation_index">创新指数</router-link>
             </li>
-            <li @click="closeMenu" :route="menu.home_page" v-if="!token">交易会</li>
-            <li @click="closeMenu" :route="menu.demand_login" v-if="token">交易会</li>
+            <li>
+              <router-link :to="menu.mobile_login">交易会</router-link>
+            </li>
             <li @click="closeMenu" v-show="!isLogin">
               <router-link :to="menu.design">设计服务商入驻</router-link>
             </li>
@@ -277,6 +279,7 @@
           article: {path: '/article/list'},
           home_page: {path: '/shunde/trade_fairs/homePage'}, // 交易会未登录首页
           demand_login: {path: '/shunde/trade_fairs/demandLogin'}, // 交易会登陆后首页
+          mobile_login: {path: '/shunde/trade_fairs/trade_fairs_mobile/mobileLogin'}, // 交易会移动端首页
           // demand_login: {path: '/shunde/trade_fairs/saleResult/workDatails'},
           design_case: {path: '/design_case/general_list'},
           commonly_sites: {path: '/vcenter/commonly_sites'},

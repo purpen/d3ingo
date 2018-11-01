@@ -1,10 +1,10 @@
 <template>
-  <div class="content-box">
+  <div class="content-box" v-loading="isLoading">
     <div class="large-background">
       <div class="right-background"></div>
       <div class="left-background"></div>
       <!-- 代售成果 -->
-      <div class="empty">
+      <div class="empty" v-if="!designCases.length && !isLoading">
         <div class="empty-list">
           <span class="empty-img"></span>
           <p class="empty-content">暂无服务商上传代售成果，请耐心等待～</p>
@@ -12,32 +12,34 @@
       </div>
 
       <!-- 列表 -->
-      <div class="large-list" v-if="false">
+      <div class="large-list">
         <div class="list-center">
           <el-row :gutter="20" class="list-cloud">
-            <el-col :span="6" class="item-cloud">
+            <el-col :span="6" class="item-cloud" v-for="(achieve, index) in designCases" :key="index">
               <div class="list-item">
-                <div class="list-image" @click="listDatail">
-                  <div class="image-size"></div>
+                <div class="list-image" @click="listDatail(achieve.id)">
+                  <div class="image-size">
+                    <img :src="achieve.cover.small" alt="点击查看详情" class="img-size">
+                  </div>
                 </div>
                 <div class="list-text">
                   <div class="list-title">
-                    <span>作品案例标题</span>
+                    <span>{{achieve.title}}</span>
                   </div>
                   <div class="list-bottom">
                     <div class="list-left">
                       <div class="list-way">
-                        <span>出让方式：&nbsp;&nbsp;全款出售</span>
+                        <span>出让方式：&nbsp;&nbsp;{{achieve.sell_type === 1 ? '全款出售' : '股权合作'}}</span><span class="money">{{achieve.sell_type === 2 ?achieve.share_ratio+'%' : ''}}</span>
                       </div>
                       <div class="list-sum">
-                        <span>出让金额：&nbsp;&nbsp;<span class="money">￥500.00</span></span>
+                        <span>出让金额：&nbsp;&nbsp;<span class="money">￥{{achieve.price}}</span></span>
                       </div>
                     </div>
-                    <div class="list-right" @click="interesClick">
-                      <div class="list-button" v-if="!interestButton">
+                    <div class="list-right" @click="collect(achieve.id)">
+                      <div class="list-button" v-if="achieve.is_follow === 0">
                         <span class="button-text">感兴趣</span>
                       </div>
-                      <div class="list-button interest-border" v-if="interestButton">
+                      <div class="list-button interest-border" v-if="achieve.is_follow === 1">
                         <span class="button-interest">已感兴趣</span>
                       </div>
                     </div>
@@ -45,19 +47,16 @@
                 </div>
               </div>
             </el-col>
-            <el-col :span="6" class="item-cloud">
-              <div class="list-item"></div>
-            </el-col>
-            <el-col :span="6" class="item-cloud">
-              <div class="list-item"></div>
-            </el-col>
-            <el-col :span="6" class="item-cloud">
-              <div class="list-item"></div>
-            </el-col>
-            <el-col :span="6" class="item-cloud">
-              <div class="list-item"></div>
-            </el-col>
           </el-row>
+          <el-pagination
+            v-if="false"
+            class="pagination"
+            @current-change="handleCurrentChange"
+            :current-page="query.page"
+            :page-size="query.pageSize"
+            layout="prev, pager, next"
+            :total="query.totalCount">
+          </el-pagination>
         </div>
       </div>
       
@@ -80,28 +79,96 @@
 </template>
 
 <script>
-  // import api from '@/api/api'
+  import api from '@/api/api'
   export default {
     name: 'sale_result',
     data() {
       return {
-        interestButton: false
+        interestButton: false,
+        isLoading: false,
+        designCases: '',
+        query: {
+          page: 1,
+          pageSize: 20,
+          totalCount: 0,
+          sort: 1,
+          type: 0,
+          test: null
+        },
       }
     },
     created() {
-    },
-    mounted() {
+      this.getDesignCase()
     },
     methods: {
-      interesClick() {
-        this.interestButton = !this.interestButton
+      // 收藏需求
+      collect(id) {
+        this.isLoading = true
+        this.$http.get(api.designResultsCollectionOperation, {params: {id: id}}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.isLoading = false
+            for (let index in this.designCases) {
+              if (this.designCases[index].id === id) {
+                if (this.designCases[index].is_follow === 0) {
+                  this.designCases[index].is_follow = 1
+                } else {
+                  this.designCases[index].is_follow = 0
+                }
+              }
+            }
+          } else {
+            this.isLoading = false
+            this.$message.error(response.data.meta.message)
+            return
+          }
+        })
+        .catch(function (error) {
+          this.isLoading = false
+          this.$message.error(error.message)
+          return
+        })
       },
+      // 跳转到发布需求
       demandBanner() {
         this.$router.push({name: 'demand_list', query: {type: 1}})
       },
-      listDatail() {
-        // this.$router.push({path: '/shunde/trade_fairs/saleResult/workDatails', params: {id: 1}})
-        this.$router.push({name: 'work_datails', params: {id: 1}})
+      // 跳转到设计详情
+      listDatail(id) {
+        this.$router.push({name: 'work_datails', params: {id: id}})
+      },
+      // 获取成果列表
+      getDesignCase () {
+        const that = this
+        that.isLoading = true
+        that.$http.get (api.designResultsAlLists, {params: {sort: 1, page: this.query.page, per_page: this.query.pageSize}})
+        .then (function (response) {
+          that.isLoading = false
+          if (response.data.meta.status_code === 200) {
+            that.query.totalCount = response.data.meta.pagination.totals
+            that.designCases = response.data.data
+            for (let i of that.designCases) {
+              if (i.cover.created_at) {
+                i.date = i.cover.created_at.date_format().format('yy-MM-dd')
+              }
+            }
+          }
+        })
+        .catch (function (error) {
+          that.$message.error (error.message)
+          that.isLoading = false
+        })
+      },
+      // 分页
+      handleSelectionChange(val) {
+        this.multipleSelection = val
+      },
+      handleSizeChange(val) {
+        this.query.pageSize = val
+        this.loadList()
+      },
+      handleCurrentChange(val) {
+        this.query.page = val
+        this.$router.push({name: this.$route.name, query: {page: val}})
       }
     },
     computed: {
@@ -123,6 +190,10 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .content-box {
+    min-height: 325px;
+    background: #3519B2;
+  }
   .large-background {
     position: relative;
   }
@@ -293,7 +364,7 @@
     z-index: 4;
   }
   .list-item {
-    height: 280px;
+    height: 275px;
     background: #fff;
     border: 1px solid #E6E6E6;
     margin-bottom: 20px;
@@ -304,14 +375,15 @@
     background: #fff;
     border: 1px solid #E6E6E6;
   }
+  .img-size {
+    width: 100%;
+    height: 100%;
+  }
   .image-size {
     cursor: pointer;
     height: 184px;
-    background: url('../../../../assets/images/trade_fairs/title/Title-06@2x.png') no-repeat center;
-    background-size: contain;
   }
   .list-text {
-    padding-top: 10px;
     width: 240px;
     height: 70px;
     margin: 0 auto;
@@ -356,6 +428,7 @@
     height: 30px;
     width: 80px;
     border: 1px solid #E6E6E6;
+    border-radius: 4px;
     text-align: center;
     line-height: 28px;
   }
@@ -380,6 +453,7 @@
     height: 30px;
     width: 80px;
     border: 1px solid #FF4696;
+    border-radius: 4px;
   }
   .list-button:hover .button-text {
     color: #FF4696;
@@ -390,6 +464,7 @@
   }
   .interest-border {
     border: 1px solid #FF4696;
+    border-radius: 4px;
   }
   .button-interest {
     position: relative;

@@ -133,10 +133,10 @@
                 :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
                 我的钱包
               </a>
-              <!-- <a @click="alick" :to="'/shunde/trade_fairs/achieveList'"
-                :class="['item', 'demandList', {'is-active': currentName === 'achieveList'}]">
+              <a @click="alick" :to="'/shunde/trade_fairs/design_case'"
+                :class="['item', 'demandList', {'is-active': currentName === 'sdDesignCase_list'}]">
                 顺德交易会
-              </a> -->
+              </a>
               </el-tooltip>
               <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" 
                 v-if="isMob && eventUser.company">
@@ -165,7 +165,7 @@
               </a>
               </el-tooltip>
               <el-tooltip class="item" :effect="DarkorLight" content="顺德交易会" placement="right">
-              <a @click="alick" :to="'/shunde/trade_fairs/demandList'"
+              <a @click="alick" :to="'/shunde/trade_fairs/demand/demandList'"
                 :class="['item', 'demandList', {'is-active': currentName === 'demandList'}]">
                 顺德交易会
               </a>
@@ -218,10 +218,10 @@
                 v-if="isMob">
                 查看公司主页
               </a>
-              <!-- <a @click="alick" :to="'/shunde/trade_fairs/achieveList'"
-                :class="['item', 'demandList', {'is-active': currentName === 'achieveList'}]">
+              <a @click="alick" :to="'/shunde/trade_fairs/design_case'"
+                :class="['item', 'demandList', {'is-active': currentName === 'sdDesignCase_list'}]">
                 顺德交易会
-              </a> -->
+              </a>
             </div>
           </div>
           <!-- 默认需求方 -->
@@ -239,7 +239,7 @@
                 :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
                 我的钱包
               </a>
-              <a @click="alick" :to="'/shunde/trade_fairs/demandList'"
+              <a @click="alick" :to="'/shunde/trade_fairs/demand/demandList'"
                 :class="['item', 'demandList', {'is-active': currentName === 'demandList'}]">
                 顺德交易会
               </a>

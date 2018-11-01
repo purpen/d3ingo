@@ -81,10 +81,11 @@
             </div>
           </section>
         </el-col>
-        <el-col :xs="24" :sm="24" :md="24" :lg="24" v-if="uChild===0&&messageCount.quantity">
+        <!-- <el-col :xs="24" :sm="24" :md="24" :lg="24" v-if="uChild===0 && messageCount.quantity"> -->
+        <el-col :xs="24" :sm="24" :md="24" :lg="24" v-if="uChild===0">
           <section>
             <div class="control-childHeader">
-            <span class="base-title">待处理信息</span>
+              <span class="base-title">待处理信息</span>
             </div>
               <div class="content-box clearfix message-content">
                 <p class="message-title clearfix" v-if="messageCount.quantity">{{ messageCount.quantity }} 条消息</p>

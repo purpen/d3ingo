@@ -7,11 +7,11 @@
             <span class="banner-text">发布需求</span>
           </div>
         </div>
-        <!-- <div class="banner-button" v-if="user.type === 2">
+        <div class="banner-button" @click="achiveBanner" v-if="user.type === 2">
           <div class="text-width">
             <span class="banner-text">上传成果</span>
           </div>
-        </div> -->
+        </div>
       </div>
     </div>
     <div class="list-background">
@@ -70,6 +70,9 @@
       },
       demandBanner() {
         this.$router.push({name: 'demand_list', query: {type: 1}})
+      },
+      achiveBanner() {
+        this.$router.push({name: 'sdDesignCase_list'})
       }
     },
     computed: {
@@ -91,17 +94,20 @@
 <style scoped>
   .background-banner {
     /* position: absolute; */
+    background: #3519B2;
     height: 500px;
     background: url('../../../../assets/images/trade_fairs/banner/pc-banner.png') no-repeat center
   }
   .home_banner {
     height: 500px;
     position: relative;
+    background: #3519B2;
   }
   .banner-button {
     float: right;
     background: #02EBA5;
     border: 2px solid #02EBA5;
+    border-radius: 4px;
     height: 44px;
     width: 144px;
     line-height: 40px;
@@ -110,6 +116,7 @@
   .banner-button:hover {
     background: #00BE89;
     border: 2px solid #00BE89;
+    border-radius: 4px;
     cursor: pointer;
   }
   .text-width {
@@ -132,24 +139,22 @@
   }
   .list-background {
     background: #3519B2;
-    border-bottom: 1px solid rgba(2,235,165,.3)
   }
   .list-contant{
-    height: 40px;
+    height: 50px;
     width: 168px;
     margin: 0 auto;
-    line-height: 40px;
   }
   .list-text {
     cursor: pointer;
     float: left;
-    width:64px;
-    height:38px;
-    font-size:16px;
-    font-family:PingFangSC-Regular;
-    font-weight:400;
+    width: 64px;
+    height: 50px;
+    font-size: 16px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
     color: #fff;
-    line-height:38px;
+    line-height: 48px;
   }
   .list-left {
     margin-left: 40px;
