@@ -92,8 +92,6 @@
           <div class="right-number">{{callDtails.phone}}</div>
         </div>
       </el-dialog>
-      <div class="bottom-background">
-      </div>
     </div>
 
     <el-dialog

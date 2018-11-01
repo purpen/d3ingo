@@ -1,6 +1,6 @@
 <template>
   <div class="content-box" v-loading="isLoading">
-    <div class="large-background">
+    <div class="large-background2">
       <div class="right-background"></div>
       <div class="left-background"></div>
       <!-- 代售成果 -->
@@ -73,8 +73,6 @@
           </div>
         </div>
       </div>
-      <div class="bottom-background">
-      </div>
     </div>
 
   </div>
@@ -86,7 +84,6 @@
     name: 'sale_result',
     data() {
       return {
-        interestButton: false,
         isLoading: false,
         designCases: '',
         query: {
@@ -96,7 +93,7 @@
           sort: 1,
           type: 0,
           test: null
-        },
+        }
       }
     },
     created() {
@@ -196,7 +193,7 @@
     min-height: 325px;
     background: #3519B2;
   }
-  .large-background {
+  .large-background2 {
     position: relative;
   }
   .right-background {
@@ -482,11 +479,5 @@
     left: -8px;
     background: url('../../../../assets/images/trade_fairs/list/BeInterestedClick@2x.png') no-repeat center;
     background-size: contain;
-  }
-  .bottom-background {
-    margin-bottom: -50px;
-    height: 100px;
-    background: url('../../../../assets/images/trade_fairs/bottom.png') no-repeat center;
-    background-size: cover;
   }
 </style>

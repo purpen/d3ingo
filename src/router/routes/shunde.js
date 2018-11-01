@@ -219,5 +219,16 @@ module.exports = [
       hideFooter: true
     },
     component: require('@/components/pages/home/trade_fairs/trade_fairs_mobile/1MobileDemanDetails')
+  },
+  // 移动端代售成果详情
+  {
+    path: '/shunde/trade_fairs/trade_fairs_mobile/mobileWorkDetails/:id',
+    name: 'mobile_work_details',
+    meta: {
+      title: '移动端需求详情',
+      requireAuth: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/home/trade_fairs/trade_fairs_mobile/1MobileWorkDetails')
   }
 ]
