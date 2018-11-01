@@ -4,7 +4,7 @@
       <div class="background-banner">
         <div class="banner-button">
           <div class="text-width">
-            <router-link to="/shunde/trade_fairs/demandLogin" class="banner-text">立即参与</router-link>
+            <router-link to="/shunde/trade_fairs/1DemandLogin" class="banner-text">立即参与</router-link>
           </div>
         </div>
       </div>
@@ -16,7 +16,7 @@
 
 <script>
   // import api from '@/api/api'
-  import briefContent from '@/components/pages/home/trade_fairs/briefContent'
+  import briefContent from '@/components/pages/home/trade_fairs/1BriefContent'
   export default {
     name: 'home_page',
     components: {
