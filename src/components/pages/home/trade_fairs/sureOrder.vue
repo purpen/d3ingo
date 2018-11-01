@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-loading="isLoading">
     <div class="ordershow-span-color">
       <div class="dis-flex" style="margin-bottom: 10px">
         <div class="mar-r-10">
@@ -7,7 +7,7 @@
           <span class="border"></span>
         </div>
         <div class="mar-r-10">
-          <router-link :to="{name: 'work_datails', params: {id: 1}}" class="font-14">iPhone 7 Plus设计</router-link>
+          <router-link :to="{name: 'work_datails', params: {id: formup.id}}" class="font-14">{{formup.title}}</router-link>
           <span class="border"></span>
         </div>
         <div class="mar-r-10">
@@ -32,20 +32,20 @@
             <div class="left-text">作品简介：</div>
           </div>
           <div class="right-right">
-            <div class="right-text left-pad">iO笔记本</div>
-            <div class="right-text left-pad">太火鸟</div>
-            <div class="right-text left-pad">全款出让</div>
-            <div class="right-text left-pad color-red">¥5000.00</div>
-            <div class="right-text bot-over1">测测试测试测试测测测试测试测试测测测试测试测试测测测试测试测试测测测试测试测试测测测试测试测试测测测试测试测试测测测试测试测试测测测试测试测试测测测试测试测试测测测试测试测试测测试测试测试测测试测试测试测测试测测测试测试测试测测测试测试测试测测试测试测试测测试测试测试测测试测测测试测试测试测测测试测试测试测测试测试测试测测试测试测试测</div>
+            <div class="right-text left-pad">{{formup.title}}</div>
+            <div class="right-text left-pad">{{companyName}}</div>
+            <div class="right-text left-pad">{{formup.sell_type===1?'全款出售':'股权出让'+formup.share_ratio+'%'}}</div>
+            <div class="right-text left-pad color-red">￥{{formup.price}}</div>
+            <div class="right-text bot-over1">{{formup.content}}</div>
           </div>
         </div>
       </div>
     </div>
     <div class="pay-item">
       <div class="pay-box">
-        <div class="">实付金额：</div>
-        <div class="">¥5000.00</div>
         <div @click="submit" class="sub-button">提交订单</div>
+        <div class="pay-money">￥{{formup.price}}</div>
+        <div class="real-pay">实付金额：</div>
       </div>
     </div>
   </div>
@@ -57,16 +57,38 @@ export default {
   name: 'sure_order',
   data() {
     return {
-      item: ''
+      formup: '',
+      companyName: '',
+      isLoading: false
     }
   },
   methods: {
     submit() {
     this.$router.push({name: 'managed_funds', params: {id: 1}})
+    },
+    // 获取详情
+    upDetails() {
+      this.isLoading = true
+      this.$http.get(api.sdDesignResultsShow, {params: {id: this.$route.params.id}}).then(
+        (response) => {
+          if (response.data.meta.status_code === 200) {
+            this.formup = response.data.data
+            this.companyName = response.data.data.design_company.company_name
+            this.isLoading = false
+          } else {
+            this.isLoading = false
+            this.$message.error(response.data.meta.message)
+          }
+        }
+      )
+      .catch (function (error) {
+        this.$message.error (error.message)
+        this.isLoading = false
+      })
     }
   },
-  created: function() {
-    
+  created() {
+    this.upDetails()
   },
   computed: {
   }
@@ -75,18 +97,55 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.pay-box {
+  float: right;
+  padding-right: 30px;
+}
+.sub-button {
+  cursor: pointer;
+  float: right;
+  border: 1px solid #ccc;
+  height: 40px;
+  width: 120px;
+  background: #FF5A5F;
+  font-family: PingFangSC-Regular;
+  font-size: 14px;
+  color: #FFFFFF;
+  text-align: center;
+  line-height: 38px;
+  border-radius: 4px;
+  margin-top: 20px;
+}
+.sub-button:hover {
+  background: #D23C46
+}
+.real-pay {
+  float: right;
+  font-size: 16px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: #222222;
+}
+.pay-money {
+  float: right;
+  font-size: 24px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: #FF5A5F;
+  padding-right: 30px;
+}
 .bottom-size {
   padding-top: 20px;
   height: 270px;
 }
 .order-item {
   float: left;
-  width: calc(100% - 200px);
-  padding-left: 20px;
+  width: calc(100% - 220px);
+  padding-left: 30px;
 }
 .right-left {
   float: left;
-  width: 20%;
+  width: 15%;
 }
 .right-right {
   float: left;
@@ -120,8 +179,8 @@ export default {
   -webkit-box-orient: vertical;
 }
 .img-size {
-  height: 200px;
-  width: 200px;
+  height: 175px;
+  width: 220px;
   border: 1px solid #ccc;
   float: left;
 }
@@ -133,18 +192,20 @@ export default {
   padding-bottom: 10px;
 }
 .ordershow-span-color {
-  width:900px;
+  width: 70%;
   margin: 20px auto
 }
 .payment {
-  width: 900px;
+  width: 70%;
   border: 1px solid #ccc;
   margin: 0 auto;
   padding: 20px 20px 20px 20px;
 }
 
 .pay-item {
-  width: 900px;
+  width: 70%;
+  height: 80px;
+  line-height: 78px;
   margin: 0 auto;
   border-bottom: 1px solid #ccc;
   border-left: 1px solid #ccc;

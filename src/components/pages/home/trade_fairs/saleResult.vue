@@ -140,7 +140,7 @@
       getDesignCase () {
         const that = this
         that.isLoading = true
-        that.$http.get (api.designResultsAlLists, {params: {sort: 0, page: this.query.page, per_page: this.query.pageSize}})
+        that.$http.get (api.designResultsAlLists, {params: {sort: 1, page: this.query.page, per_page: this.query.pageSize}})
         .then (function (response) {
           that.isLoading = false
           if (response.data.meta.status_code === 200) {

@@ -54,6 +54,17 @@
         </div>
       </div>
     </div>
+    <el-dialog
+      :visible.sync="dialogCall"
+      size="tiny"
+      class="style-call">
+      <div class="title-center">
+        <img class="avatar" v-if="urlLogo" :src="urlLogo" width="100"/>
+        <img class="avatar" v-else src="../../../../../assets/images/avatar_100.png" width="100"/>
+        <div class="company-name">{{callDtails.company_name}}</div>
+        <div class="right-number">{{callDtails.phone}}</div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -71,7 +82,9 @@
         collectId: '',
         diaLoading: false,
         setIndex: -1,
-        dialogCall: false
+        dialogCall: false,
+        callDtails: '',
+        urlLogo: ''
       }
     },
     created() {
@@ -82,6 +95,8 @@
       callHer(item) {
         this.dialogCall = true
         this.callDtails = item
+        console.log('callDtails', this.callDtails)
+        // this.urlLogo = this.callDtails.logo_image.logo
       },
       // 返回需求列表
       demandLists() {
@@ -169,7 +184,7 @@
 <style scoped>
   .arrow {
     margin-left: 20px;
-    margin-top: 12px;
+    margin-top: 17px;
     height: 16px;
     background: url('../../../../../assets/images/trade_fairs/list/back@2x.png') no-repeat center;
     background-size: contain;
@@ -178,11 +193,13 @@
     margin-top: -60px;
   }
   .block-height {
-    height: 40px;
+    height: 49px;
     text-align: center;
     border-bottom: 1px solid #999;
-    line-height: 40px;
+    line-height: 48px;
     font-size: 17px;
+    margin: 15px 0;
+    color: #222;
   }
   .arrow {
     float:left;
@@ -198,11 +215,12 @@
   }
   .left-text {
     float: left;
-    font-size: 16px
+    font-size: 16px;
+    color: #222;
   }
   .right-text {
     float: right;
-    color: #e6e6e6;
+    color: #999;
     font-size: 16px
   }
   .content-text {
@@ -288,5 +306,26 @@
     left: -14px;
     background: url('../../../../../assets/images/trade_fairs/list/ContactHover@02x.png') no-repeat center;
     background-size: contain;
+  }
+  /* 详情弹出框 */
+  .title-center {
+    margin: 0 auto;
+    text-align: center;
+    width: 50%;
+    margin-top: -20px;
+  }
+  .company-name {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #222222;
+    letter-spacing: 0;
+    padding-top: 17px;
+  }
+  .right-number {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #FF5A5F;
+    letter-spacing: 0;
+    padding-top: 12px;
   }
 </style>

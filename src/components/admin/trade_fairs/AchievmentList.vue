@@ -68,7 +68,8 @@
               label="内容"
               min-width="160">
                 <template slot-scope="scope">
-                  <p>标题: {{ scope.row.title }}</p>
+                  <p>标题: 
+                  <router-link :to="{name: 'work_datails', params: {id: scope.row.id}, query: {type: '2'}}" target="_blank">{{ scope.row.title }}</router-link></p>
                   <p>出让方式: {{scope.row.sell_type === 1 ? '全款' : '股权合作'}}{{scope.row.share_ratio}}%</p>
                   <p>出让金额: {{ scope.row.price}}</p>
                   <!-- <el-tooltip class="item" effect="light" placement="bottom">
@@ -219,7 +220,7 @@ export default {
     upDetails(id) {
       this.formup = []
       this.focusOn = true
-      this.$http.get(api.adminDesignResultCollect, {params: {id: id, page: 1, per_page: 10, sort: 0}}).then(
+      this.$http.get(api.adminDesignResultCollect, {params: {id: id, page: 1, per_page: 10, sort: 1}}).then(
         (response) => {
           if (response.data.meta.status_code === 200) {
             this.formup = response.data.data
@@ -305,7 +306,7 @@ export default {
       const self = this
       // 查询条件
       self.query.page = parseInt(this.$route.query.page || 1)
-      self.query.sort = this.$route.query.sort || 0
+      self.query.sort = this.$route.query.sort || 1
       self.query.type = this.$route.query.type || 0
       self.query.evt = this.$route.query.evt || '2'
       self.query.val = this.$route.query.val || ''

@@ -167,13 +167,13 @@ module.exports = [
     },
     component: require('@/components/pages/home/trade_fairs/paymentAmount')
   },
-  // 登陆后移动端首页
+  // 移动端首页
   {
     path: '/shunde/trade_fairs/trade_fairs_mobile/mobileLogin',
     name: 'mobile_login',
     meta: {
       title: '首页',
-      requireAuth: true,
+      requireAuth: false,
       hideFooter: true
     },
     component: require('@/components/pages/home/trade_fairs/trade_fairs_mobile/mobileLogin')
@@ -216,7 +216,6 @@ module.exports = [
     meta: {
       title: '移动端需求详情',
       requireAuth: true,
-      hideHeader: true,
       hideFooter: true
     },
     component: require('@/components/pages/home/trade_fairs/trade_fairs_mobile/mobileDemanDetails')

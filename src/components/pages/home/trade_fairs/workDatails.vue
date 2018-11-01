@@ -232,7 +232,7 @@
           </div>
           <div class="list-left">
             <div class="list-button buy-text">
-              <router-link :to="{name: 'sure_order', params: {id: 1}}" class="details-text">立即购买</router-link>
+              <router-link :to="{name: 'sure_order', params: {id: formup.id}}" class="details-text">立即购买</router-link>
             </div>
           </div>
           <div class="list-left" v-if="false">
@@ -416,11 +416,10 @@ export default {
         this.$message.error (error.message)
         this.isLoading = false
       })
-    },
+    }
   },
   created() {
     this.upDetails()
-    console.log('this.$route.query.type', this.$route.query.type)
   },
   filters: {
     states(val) {

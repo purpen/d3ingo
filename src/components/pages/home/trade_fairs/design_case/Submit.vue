@@ -15,7 +15,7 @@
               <el-row>
                 <el-col :span="24">
                   <el-form-item label="上传图片" prop="">
-                    <!-- <el-upload
+                    <el-upload
                       class="upload-demo upload-design upload"
                       :action="uploadUrl"
                       :on-preview="handlePreview"
@@ -30,8 +30,8 @@
                       list-type="picture-card">
                       <i class="el-icon-plus"></i>
                       <div slot="tip" class="el-upload__tip" v-html="uploadMsg"></div>
-                    </el-upload> -->
-                    <el-upload 
+                    </el-upload>
+                    <!-- <el-upload 
                       :action="uploadUrl"
                       :on-preview="handlePreview"
                       :on-remove="handleRemove"
@@ -44,11 +44,11 @@
                       :show-file-list="false"
                       >
                       <button class="middle-button full-red-button">+&nbsp;&nbsp;上传图片</button>
-                      <span class="uploadsMsg">{{uploadMsg}}</span>
+                      <span class="uploadsMsg">{{uploadMsg}}</span> -->
                       <!-- <span v-html="uploadMsg"></span> -->
                       <!-- <div slot="tip" class="el-upload__tip">{{ uploadMsg }}</div> -->
-                    </el-upload>
-                    <!-- <div class="file-list">
+                    <!-- </el-upload> -->
+                    <div class="file-list">
                       <el-row :gutter="20">
                         <el-col :span="isMob ? 24 : 6" v-for="(d, index) in fileList" :key="index">
                           <el-card :body-style="{ padding: '0px' }" class="item">
@@ -89,7 +89,7 @@
                           </el-card>
                         </el-col>
                       </el-row>
-                    </div> -->
+                    </div>
                   </el-form-item>
                 </el-col>
               </el-row>

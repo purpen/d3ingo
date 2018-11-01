@@ -331,7 +331,7 @@ export default {
       const self = this
       // 查询条件
       self.query.page = parseInt(this.$route.query.page || 1)
-      self.query.sort = this.$route.query.sort || 0
+      self.query.sort = this.$route.query.sort || 1
       self.query.type = this.$route.query.type || ''
       self.query.evt = this.$route.query.evt || '2'
       self.query.val = this.$route.query.val || ''
