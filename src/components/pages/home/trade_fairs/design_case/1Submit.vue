@@ -90,7 +90,7 @@
                     <div class="img-files">
                       <el-row>
                         <el-col :span="6" v-for="(d, index) in fileList" :key="index" class="file-d">
-                          <img :src="d.url" alt="上传图片">
+                          <img :src="d.url" alt="上传图片" v-if="d.url">
                             <el-tooltip class="item" effect="dark" content="删除图片" placement="top">
                               <span class="delImg" @click="deleteImg(d.asset_id)">
                               </span>
@@ -98,7 +98,7 @@
                              <el-tooltip class="item2" effect="dark" content="设为封面" placement="top">
                               <span class="cover" @click="updateCover(d.asset_id)"></span>
                              </el-tooltip>
-                          <span class="right-cover" v-if="d.asset_id === coverId"></span>
+                          <span class="right-cover" v-if="d.asset_id === coverId "></span>
                         </el-col>
                       </el-row>
                     </div>
@@ -187,10 +187,10 @@
                       <el-button class="red-button">
                         +&nbsp;上传专利证书
                       </el-button>
-                    </el-upload>
                       <span class="tc-9 patent-msg">
                         &nbsp;格式：JPG／PNG 大小：小于5MB
                       </span>
+                    </el-upload>
                   </el-col>
                 </el-row>
               </el-form-item>
@@ -214,6 +214,9 @@
                   <div class="form-footer">
                     <div class="form-btn">
                       <el-button  @click.prevent="returnList" class="middle-button white-button">取消</el-button>
+                      <el-button @click.prevent="submit('ruleForm', 1)" class="middle-button white-button">
+                        保存
+                      </el-button>
                       <el-button type="danger" :loading="isLoadingBtn" @click="submit('ruleForm')">提交</el-button>
                     </div>
                     <div class="clear"></div>
@@ -336,10 +339,14 @@
     },
     methods: {
       // 提交按钮
-      submit(formName) {
+      submit(formName, type) {
         const that = this
         if (!that.coverId) {
           that.$message.error ('必须设置一张封面图!')
+          return false
+        }
+        if (!that.fileList.length || !that.filepatent.length || !that.fileillustrate.length) {
+          that.$message.error ('请完善信息!')
           return false
         }
         that.$refs[formName].validate ((valid) => {
@@ -373,7 +380,10 @@
             that.fileillustrate.forEach(i=> {
               row.illustrate.push(i.asset_id)
             })
-            console.log('3', that.fileillustrate, that.filepatent)
+            // 保存
+            if (type) {
+              row.status = 1
+            }
             row.cover_id = that.coverId
             that.isLoadingBtn = true
             that.$http({method: 'post', url: api.sdDesignResultsSave, data: row})
@@ -422,7 +432,7 @@
         })
       },
       returnList() {
-        this.$router.push ({name: 'vcenterDesignCaseList'})
+        this.$router.push ({name: 'sdDesignCase_list'})
       },
       typeChange(d) {
         if (d === 1) {
@@ -583,7 +593,7 @@
         console.log('22', this.filepatent)
       },
       // 获取图片token
-      getToken(type) {
+      getToken() {
         let that = this
         that.$http.get (api.upToken, {})
           .then (function (response) {
@@ -620,7 +630,16 @@
         this.$http.get(api.sdDesignResultsShow, {params: {id: id}}).then(
           (response) => {
             if (response.data.meta.status_code === 200) {
-              this.form = response.data.data
+              let res = response.data.data
+              if (res) {
+                this.form = res
+                this.fileList = res.images_url
+                res.images_url.forEach(item => {
+                  item.asset_id = item.id
+                  item.url = item.logo
+                })
+                this.coverId = res.cover_id
+              }
             } else {
               this.$message.error(response.data.meta.message)
             }
@@ -748,10 +767,9 @@
     created: function () {
       const that = this
       let id = that.$route.params.id
+      that.getToken()
       if (id) {
         this.upDetails(id)
-      } else {
-        that.getToken()
       }
       // if (id) {
       //   that.itemId = id

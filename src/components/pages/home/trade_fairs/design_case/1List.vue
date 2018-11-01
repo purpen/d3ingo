@@ -36,7 +36,7 @@
                         <li class="edit" @click="PriceBtn(d)">修改价格</li>
                       </ul>
                       <ul v-if="d.status === -1">
-                        <li class="edit">修改</li>
+                        <li class="edit" @click="toUpdateUrl(d.id)">修改</li>
                         <li class="edit" @click="updateBtn(d, 2)">删除</li>
                       </ul>
                     </div>
@@ -244,17 +244,18 @@
         let that = this
         that.isLoading = true
         if (id && status) {
-          this.updateform.id = id
-          this.updateform.status = status
+          that.updateform.id = id
+          that.updateform.status = status
         }
-        that.$http.get (api.sdDesignResultsSaveStatus, {params: {id: this.updateform.id, status: this.updateform.status}})
+        that.$http.get (api.sdDesignResultsSaveStatus, {params: {id: that.updateform.id, status: that.updateform.status}})
         .then (function (response) {
           if (response.data.meta.status_code === 200) {
             that.designCases.forEach(item => {
-              if (item.id === designId) {
-                that.$set(item, 'status', this.updateform.status)
+              if (item.id === that.updateform.id) {
+                that.$set(item, 'status', that.updateform.status)
               }
             })
+            that.dialogUpdateVisible = false
             that.isLoading = false
           }
         })
@@ -296,10 +297,11 @@
         .then (function (response) {
           if (response.data.meta.status_code === 200) {
             that.designCases.forEach((item, index) => {
-              if (item.id === id) {
+              if (item.id === that.updateform.id) {
                 that.designCases.splice(index, 1)
               }
             })
+            that.dialogUpdateVisible = false
             that.isLoading = false
           } else {
             that.$message.error(response.data.meta.message)
