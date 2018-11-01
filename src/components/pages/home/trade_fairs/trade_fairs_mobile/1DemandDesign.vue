@@ -408,7 +408,7 @@
   }
   .list-bottom {
     margin: 0 auto;
-    padding-top: 20px;
+    padding-top: 15px;
     width: 290px;
   }
   .list-left {
