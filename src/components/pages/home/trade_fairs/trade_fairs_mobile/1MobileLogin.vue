@@ -25,9 +25,9 @@
 </template>
 <script>
   // import api from '@/api/api'
-  import mobileHomePage from '@/components/pages/home/trade_fairs/trade_fairs_mobile/mobileHomePage'
-  import demandDesign from '@/components/pages/home/trade_fairs/trade_fairs_mobile/demandDesign'
-  import saleResult from '@/components/pages/home/trade_fairs/trade_fairs_mobile/saleResult'
+  import mobileHomePage from '@/components/pages/home/trade_fairs/trade_fairs_mobile/1MobileHomePage'
+  import demandDesign from '@/components/pages/home/trade_fairs/trade_fairs_mobile/1DemandDesign'
+  import saleResult from '@/components/pages/home/trade_fairs/trade_fairs_mobile/1SaleResult'
   export default {
     name: 'demand_login',
     components: {

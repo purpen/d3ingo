@@ -10,7 +10,7 @@ module.exports = [
       title: '交易会',
       requireAuth: false
     },
-    component: require('@/components/pages/home/trade_fairs/homePage')
+    component: require('@/components/pages/home/trade_fairs/1HomePage')
   },
    // 简介内容
   {
@@ -20,7 +20,7 @@ module.exports = [
       title: '简介内容',
       requireAuth: true
     },
-    component: require('@/components/pages/home/trade_fairs/briefContent')
+    component: require('@/components/pages/home/trade_fairs/1BriefContent')
   },
   // 需求方登陆简介
   {
@@ -30,7 +30,7 @@ module.exports = [
       title: '活动简介',
       requireAuth: true
     },
-    component: require('@/components/pages/home/trade_fairs/demandLogin')
+    component: require('@/components/pages/home/trade_fairs/1DemandLogin')
   },
   // 设计需求
   {
@@ -40,7 +40,7 @@ module.exports = [
       title: '设计需求',
       requireAuth: true
     },
-    component: require('@/components/pages/home/trade_fairs/demandDesign')
+    component: require('@/components/pages/home/trade_fairs/1DemandDesign')
   },
   // 代售成果
   {
@@ -50,7 +50,7 @@ module.exports = [
       title: '代售成果',
       requireAuth: true
     },
-    component: require('@/components/pages/home/trade_fairs/saleResult')
+    component: require('@/components/pages/home/trade_fairs/1SaleResult')
   },
   // 代售详情页
   {
@@ -60,7 +60,7 @@ module.exports = [
       title: '代售详情页',
       requireAuth: true
     },
-    component: require('@/components/pages/home/trade_fairs/workDatails')
+    component: require('@/components/pages/home/trade_fairs/1WorkDatails')
   },
   // 个人中心需求列表页
   {
@@ -72,7 +72,7 @@ module.exports = [
       hideHeader: true,
       hideFooter: true
     },
-    component: require('@/components/pages/home/trade_fairs/demand/demandList')
+    component: require('@/components/pages/home/trade_fairs/demand/1DemandList')
   },
   // 个人中心设计方成果列表页
   {
@@ -84,7 +84,7 @@ module.exports = [
       hideHeader: true,
       hideFooter: true
     },
-    component: require('@/components/pages/home/trade_fairs/design_case/list')
+    component: require('@/components/pages/home/trade_fairs/design_case/1List')
   },
   // 个人中心设计方成果编辑页
   {
@@ -96,7 +96,7 @@ module.exports = [
       hideHeader: true,
       hideFooter: true
     },
-    component: require('@/components/pages/home/trade_fairs/design_case/submit')
+    component: require('@/components/pages/home/trade_fairs/design_case/1Submit')
   },
   // 个人中心设计方成果新建页
   {
@@ -108,7 +108,7 @@ module.exports = [
       hideHeader: true,
       hideFooter: true
     },
-    component: require('@/components/pages/home/trade_fairs/design_case/submit')
+    component: require('@/components/pages/home/trade_fairs/design_case/1Submit')
   },
   // 个人中心设计方收藏列表
   {
@@ -120,7 +120,7 @@ module.exports = [
       hideHeader: true,
       hideFooter: true
     },
-    component: require('@/components/pages/home/trade_fairs/design_case/collectList')
+    component: require('@/components/pages/home/trade_fairs/design_case/1CollectList')
   },
   // 个人中心设计方订单列表
   {
@@ -132,7 +132,7 @@ module.exports = [
       hideHeader: true,
       hideFooter: true
     },
-    component: require('@/components/pages/home/trade_fairs/design_case/order')
+    component: require('@/components/pages/home/trade_fairs/design_case/1Order')
   },
   // 支付-确认订单
   {
@@ -143,7 +143,7 @@ module.exports = [
       requireAuth: true,
       hideFooter: true
     },
-    component: require('@/components/pages/home/trade_fairs/sureOrder')
+    component: require('@/components/pages/home/trade_fairs/1SureOrder')
   },
   // 付款-托管资金
   {
@@ -154,7 +154,7 @@ module.exports = [
       requireAuth: true,
       hideFooter: true
     },
-    component: require('@/components/pages/home/trade_fairs/managedFunds')
+    component: require('@/components/pages/home/trade_fairs/1ManagedFunds')
   },
   // 付款-支付
   {
@@ -165,7 +165,7 @@ module.exports = [
       requireAuth: true,
       hideFooter: true
     },
-    component: require('@/components/pages/home/trade_fairs/paymentAmount')
+    component: require('@/components/pages/home/trade_fairs/1PaymentAmount')
   },
   // 移动端首页
   {
@@ -176,7 +176,7 @@ module.exports = [
       requireAuth: false,
       hideFooter: true
     },
-    component: require('@/components/pages/home/trade_fairs/trade_fairs_mobile/mobileLogin')
+    component: require('@/components/pages/home/trade_fairs/trade_fairs_mobile/1MobileLogin')
   },
   // 登陆后移动端内容页
   {
@@ -187,7 +187,7 @@ module.exports = [
       requireAuth: true,
       hideFooter: true
     },
-    component: require('@/components/pages/home/trade_fairs/trade_fairs_mobile/mobileHomePage')
+    component: require('@/components/pages/home/trade_fairs/trade_fairs_mobile/1MobileHomePage')
   },
   // 移动端设计需求
   {
@@ -197,7 +197,7 @@ module.exports = [
       title: '设计需求',
       requireAuth: true
     },
-    component: require('@/components/pages/home/trade_fairs/trade_fairs_mobile/demandDesign')
+    component: require('@/components/pages/home/trade_fairs/trade_fairs_mobile/1DemandDesign')
   },
   // 移动端代售成果
   {
@@ -207,7 +207,7 @@ module.exports = [
       title: '代售成果',
       requireAuth: true
     },
-    component: require('@/components/pages/home/trade_fairs/trade_fairs_mobile/saleResult')
+    component: require('@/components/pages/home/trade_fairs/trade_fairs_mobile/1SaleResult')
   },
   // 移动端需求详情
   {
@@ -218,6 +218,6 @@ module.exports = [
       requireAuth: true,
       hideFooter: true
     },
-    component: require('@/components/pages/home/trade_fairs/trade_fairs_mobile/mobileDemanDetails')
+    component: require('@/components/pages/home/trade_fairs/trade_fairs_mobile/1MobileDemanDetails')
   }
 ]
