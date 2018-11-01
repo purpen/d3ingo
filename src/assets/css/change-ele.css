@@ -664,6 +664,10 @@
     height: 250px;
     top: 35% !important;
   }
+  .common .el-button--small {
+    min-width: 120px;
+    height: 34px;
+  }
   .phone-style .el-dialog--tiny {
     top: 25% !important;
   }

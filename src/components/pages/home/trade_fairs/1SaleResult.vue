@@ -73,6 +73,8 @@
           </div>
         </div>
       </div>
+      <div class="bottom-background">
+      </div>
     </div>
 
   </div>
@@ -222,7 +224,6 @@
     height: 500px;
     background: #3519B2;
     padding-top: 60px;
-    margin-bottom: -50px;
   }
   .empty-list {
     height: calc(100% - 50px);
@@ -353,7 +354,6 @@
     height: 100%;
     background: #3519B2;
     padding-top: 30px;
-    margin-bottom: -50px;
   }
   .list-center {
     width: 1200px;
@@ -482,5 +482,11 @@
     left: -8px;
     background: url('../../../../assets/images/trade_fairs/list/BeInterestedClick@2x.png') no-repeat center;
     background-size: contain;
+  }
+  .bottom-background {
+    margin-bottom: -50px;
+    height: 100px;
+    background: url('../../../../assets/images/trade_fairs/bottom.png') no-repeat center;
+    background-size: cover;
   }
 </style>

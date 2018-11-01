@@ -38,18 +38,20 @@
         <div class="content-text">功能描述</div>
         <div class="content-height scroll-bar">{{formup.content}}</div>
       </div>
-      <div class="list-bottom bottom-style">
-        <div class="list-contain" @click="collect(formup.id, formup.follow_status)">
-          <div class="list-button" v-if="formup.follow_status === 2">
-            <span class="button-text">感兴趣</span>
+      <div class="height-border">
+        <div class="list-bottom bottom-style">
+          <div class="list-contain" @click="collect(formup.id, formup.follow_status)">
+            <div class="list-button" v-if="formup.follow_status === 2">
+              <span class="button-text">感兴趣</span>
+            </div>
+            <div class="list-button" v-if="formup.follow_status === 1">
+              <span class="button-interest">已感兴趣</span>
+            </div>
           </div>
-          <div class="list-button" v-if="formup.follow_status === 1">
-            <span class="button-interest">已感兴趣</span>
-          </div>
-        </div>
-        <div class="list-right" @click="callHer(formup)">
-          <div class="list-button">
-            <span class="contact-text">联系他</span>
+          <div class="list-right" @click="callHer(formup)">
+            <div class="list-button">
+              <span class="contact-text">联系他</span>
+            </div>
           </div>
         </div>
       </div>
@@ -194,10 +196,10 @@
   .block-height {
     height: 49px;
     text-align: center;
-    border-bottom: 1px solid #999;
+    border: 1px solid #E6E6E6;
     line-height: 48px;
     font-size: 17px;
-    margin: 15px 0;
+    margin: 5px 0;
     color: #222;
   }
   .arrow {
@@ -208,7 +210,7 @@
   }
   .inline-pad {
     height: 40px;
-    border-bottom: 1px solid #999;
+    border-bottom: 1px solid #E6E6E6;
     margin: 15px;
     line-height: 30px;
   }
@@ -236,9 +238,12 @@
     color: #999;
   }
   /* 感兴趣 */
+  .height-border {
+    border-top: 1px solid #E6E6E6
+  }
   .list-bottom {
-    margin: 0 auto;
-    padding-top: 20px;
+    overflow: hidden;
+    margin: 20px auto;
     width: 270px;
   }
   .button-text {
