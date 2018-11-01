@@ -41,7 +41,7 @@
                         <span class="button-interest">已感兴趣</span>
                       </div>
                     </div>
-                    <div class="list-right">
+                    <div class="list-right" @click="contactWay(item)">
                       <div class="list-button">
                         <span class="contact-text">联系他</span>
                       </div>
@@ -80,6 +80,18 @@
           </div>
         </div>
       </div>
+      <el-dialog
+        title="联系电话"
+        :visible.sync="callPhone"
+        size="tiny"
+        class="phone-style">
+        <div class="title-center">
+          <img class="avatar" v-if="urlLogo" :src="urlLogo" width="100"/>
+          <img class="avatar" v-else src="../../../../assets/images/avatar_100.png" width="100"/>
+          <div class="company-name">{{callDtails.company_name}}</div>
+          <div class="right-number">{{callDtails.phone}}</div>
+        </div>
+      </el-dialog>
     </div>
 
     <el-dialog
@@ -180,11 +192,11 @@
             <span class="dia-interest">已感兴趣</span>
           </div>
         </div>
-        <div class="dia-right">
+        <!-- <div class="dia-right">
           <div class="dia-button">
             <span class="contact-text">联系他</span>
           </div>
-        </div>
+        </div> -->
         </div>
       </span>
     </el-dialog>
@@ -199,6 +211,7 @@
       return {
         interestButton: false,
         dialogUpdateVisible: false,
+        callPhone: false,
         demandList: '',
         formup: {},
         isLoading: false,
@@ -213,6 +226,8 @@
           type: 0,
           test: null
         },
+        callDtails: '',
+        urlLogo: ''
       }
     },
     created() {
@@ -221,6 +236,11 @@
     mounted() {
     },
     methods: {
+      contactWay(item) {
+        this.callPhone = true
+        this.callDtails = item
+        this.urlLogo = this.callDtails.logo_image.logo
+      },
       // 获取列表
       getDemandList() {
         let that = this
@@ -599,6 +619,7 @@
     height: 30px;
     width: 80px;
     border: 1px solid #E6E6E6;
+    border-radius: 4px;
     text-align: center;
     line-height: 28px;
   }
@@ -657,6 +678,7 @@
     height: 30px;
     width: 80px;
     border: 1px solid #FF4696;
+    border-radius: 4px;
   }
   .list-button:hover .details-text {
     color: #FF4696;
@@ -681,6 +703,7 @@
   }
   .interest-border {
     border: 1px solid #FF4696;
+    border-radius: 4px;
   }
   .button-interest {
     position: relative;
@@ -719,7 +742,7 @@
     margin: 0 auto;
   }
   .dialog-bottom {
-    width: 260px;
+    width: 120px;
   }
   .submit2-form {
     overflow: hidden
@@ -748,6 +771,7 @@
   }
   .interest-dia {
     border: 1px solid #FF5A5F;
+    border-radius: 4px;
   }
   .dia-interest {
     position: relative;
@@ -785,5 +809,26 @@
   .dia-button:hover .contact-text:before {
     background: url('../../../../assets/images/trade_fairs/list/ContactHover@02x.png') no-repeat center;
     background-size: contain;
+  }
+  /* 详情弹出框 */
+  .title-center {
+    margin: 0 auto;
+    text-align: center;
+    width: 50%;
+    margin-top: -20px;
+  }
+  .company-name {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #222222;
+    letter-spacing: 0;
+    padding-top: 17px;
+  }
+  .right-number {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #FF5A5F;
+    letter-spacing: 0;
+    padding-top: 12px;
   }
 </style>

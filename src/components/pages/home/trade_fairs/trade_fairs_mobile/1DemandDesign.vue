@@ -61,11 +61,10 @@
         size="tiny"
         class="style-call">
         <div class="title-center">
-          <!-- <img class="avatar" v-if="callDtails.design_company.logo_url" :src="item.design_company.logo_url" width="100"/>
-          <img class="avatar" v-else src="../../../../../assets/images/avatar_100.png" width="100"/> -->
-          <img class="avatar" src="../../../../../assets/images/avatar_100.png" width="100"/>
-          <div class="company-name">北京品物设计有限公司</div>
-          <div class="right-number">13655139068</div>
+          <img class="avatar" v-if="urlLogo" :src="urlLogo" width="100"/>
+          <img class="avatar" v-else src="../../../../../assets/images/avatar_100.png" width="100"/>
+          <div class="company-name">{{callDtails.company_name}}</div>
+          <div class="right-number">{{callDtails.phone}}</div>
         </div>
       </el-dialog>
     </div>
@@ -194,7 +193,8 @@
         collectId: '',
         diaLoading: false,
         setIndex: -1,
-        callDtails: ''
+        callDtails: '',
+        urlLogo: ''
       }
     },
     created() {
@@ -207,6 +207,7 @@
       callHer(item) {
         this.dialogCall = true
         this.callDtails = item
+        this.urlLogo = this.callDtails.logo_image.logo
       },
       // 获取列表
       getDemandList() {

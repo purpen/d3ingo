@@ -38,9 +38,9 @@
 
 <script>
   // import api from '@/api/api'
-  import briefContent from '@/components/pages/home/trade_fairs/briefContent'
-  import demandDesign from '@/components/pages/home/trade_fairs/demandDesign'
-  import saleResult from '@/components/pages/home/trade_fairs/saleResult'
+  import briefContent from '@/components/pages/home/trade_fairs/1BriefContent'
+  import demandDesign from '@/components/pages/home/trade_fairs/1DemandDesign'
+  import saleResult from '@/components/pages/home/trade_fairs/1SaleResult'
   export default {
     name: 'demand_login',
     components: {
@@ -107,6 +107,7 @@
     float: right;
     background: #02EBA5;
     border: 2px solid #02EBA5;
+    border-radius: 4px;
     height: 44px;
     width: 144px;
     line-height: 40px;
@@ -115,6 +116,7 @@
   .banner-button:hover {
     background: #00BE89;
     border: 2px solid #00BE89;
+    border-radius: 4px;
     cursor: pointer;
   }
   .text-width {
@@ -139,21 +141,20 @@
     background: #3519B2;
   }
   .list-contant{
-    height: 40px;
+    height: 50px;
     width: 168px;
     margin: 0 auto;
-    line-height: 40px;
   }
   .list-text {
     cursor: pointer;
     float: left;
-    width:64px;
-    height:38px;
-    font-size:16px;
-    font-family:PingFangSC-Regular;
-    font-weight:400;
+    width: 64px;
+    height: 50px;
+    font-size: 16px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
     color: #fff;
-    line-height:38px;
+    line-height: 48px;
   }
   .list-left {
     margin-left: 40px;

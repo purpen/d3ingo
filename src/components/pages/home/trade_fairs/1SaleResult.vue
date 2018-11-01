@@ -35,11 +35,11 @@
                         <span>出让金额：&nbsp;&nbsp;<span class="money">￥{{achieve.price}}</span></span>
                       </div>
                     </div>
-                    <div class="list-right" @click="collect(achieve.id, achieve.follow_status)">
-                      <div class="list-button" v-if="!achieve.is_follow">
+                    <div class="list-right" @click="collect(achieve.id)">
+                      <div class="list-button" v-if="achieve.is_follow === 0">
                         <span class="button-text">感兴趣</span>
                       </div>
-                      <div class="list-button interest-border" v-if="achieve.is_follow">
+                      <div class="list-button interest-border" v-if="achieve.is_follow === 1">
                         <span class="button-interest">已感兴趣</span>
                       </div>
                     </div>
@@ -102,16 +102,18 @@
     },
     methods: {
       // 收藏需求
-      collect(id, status) {
+      collect(id) {
         this.isLoading = true
-        this.collectId = id
         this.$http.get(api.designResultsCollectionOperation, {params: {id: id}}).then((response) => {
           if (response.data.meta.status_code === 200) {
             this.isLoading = false
             for (let index in this.designCases) {
               if (this.designCases[index].id === id) {
-                this.designCases[index].is_follow = !this.interestButton
-                this.interestButton = !this.interestButton
+                if (this.designCases[index].is_follow === 0) {
+                  this.designCases[index].is_follow = 1
+                } else {
+                  this.designCases[index].is_follow = 0
+                }
               }
             }
           } else {
@@ -138,7 +140,7 @@
       getDesignCase () {
         const that = this
         that.isLoading = true
-        that.$http.get (api.designResultsAlLists, {params: {sort: 0, page: this.query.page, per_page: this.query.pageSize}})
+        that.$http.get (api.designResultsAlLists, {params: {sort: 1, page: this.query.page, per_page: this.query.pageSize}})
         .then (function (response) {
           that.isLoading = false
           if (response.data.meta.status_code === 200) {
@@ -426,6 +428,7 @@
     height: 30px;
     width: 80px;
     border: 1px solid #E6E6E6;
+    border-radius: 4px;
     text-align: center;
     line-height: 28px;
   }
@@ -450,6 +453,7 @@
     height: 30px;
     width: 80px;
     border: 1px solid #FF4696;
+    border-radius: 4px;
   }
   .list-button:hover .button-text {
     color: #FF4696;
@@ -460,6 +464,7 @@
   }
   .interest-border {
     border: 1px solid #FF4696;
+    border-radius: 4px;
   }
   .button-interest {
     position: relative;

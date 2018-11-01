@@ -2,7 +2,7 @@
   <div>
     <div class="mobile-banner"></div>
     <div class="list-background">
-      <div class="list-contant">
+      <div class="list-contant" v-if="token">
         <div class="list-text" @click="briefShow" :class="{'active': briefShows}">
           <span>活动简介</span>
         </div>
@@ -25,9 +25,9 @@
 </template>
 <script>
   // import api from '@/api/api'
-  import mobileHomePage from '@/components/pages/home/trade_fairs/trade_fairs_mobile/mobileHomePage'
-  import demandDesign from '@/components/pages/home/trade_fairs/trade_fairs_mobile/demandDesign'
-  import saleResult from '@/components/pages/home/trade_fairs/trade_fairs_mobile/saleResult'
+  import mobileHomePage from '@/components/pages/home/trade_fairs/trade_fairs_mobile/1MobileHomePage'
+  import demandDesign from '@/components/pages/home/trade_fairs/trade_fairs_mobile/1DemandDesign'
+  import saleResult from '@/components/pages/home/trade_fairs/trade_fairs_mobile/1SaleResult'
   export default {
     name: 'demand_login',
     components: {
@@ -42,7 +42,11 @@
       }
     },
     created() {
-      this.demandShows = true
+      this.briefShows = true
+      if (this.token) {
+        this.demandShows = true
+        this.briefShows = false
+      }
     },
     mounted() {
     },
@@ -62,6 +66,9 @@
     computed: {
       isMob() {
         return this.$store.state.event.isMob
+      },
+      token() {
+        return this.$store.state.event.token
       },
       user() {
         let user = this.$store.state.event.user // role_id

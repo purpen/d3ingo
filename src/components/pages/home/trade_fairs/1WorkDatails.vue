@@ -1,9 +1,9 @@
 <template>
-  <div class="container" v-loading="diaLoading">
+  <div class="container" v-loading="isLoading">
     <div class="navigate-header">
       <div class="navigate-text">
-        <router-link to="/shunde/trade_fairs/demandLogin">代售成果</router-link>
-        <!-- <router-link to="/shunde/trade_fairs/demandLogin">设计成果</router-link> -->
+        <router-link to="/shunde/trade_fairs/design_case" v-if="$route.query.type === '2'">设计成果</router-link>
+        <router-link to="/shunde/trade_fairs/demandLogin" v-else>代售成果</router-link>
         <router-link to="/shunde/trade_fairs/demandLogin" v-if="false">我的订单</router-link>
       </div>
       <div class="navigate-text arrow-text">
@@ -177,6 +177,10 @@
               <div class="company-name">{{companyName}}</div>
             </div>
             <div class="com-addr">
+              <span class="right-word">联系人</span>
+              <span class="right-number">{{formup.contacts}}</span>
+            </div>
+            <div class="com-addr">
               <span class="right-word">联系方式</span>
               <span class="right-number">{{formup.contact_number}}</span>
             </div>
@@ -217,18 +221,18 @@
           </div>
         </div>
         <!-- 下面按钮 -->
-        <div class="right-interset">
-          <div class="list-contain" @click="interesClick">
-            <div class="list-button interset-hover" v-if="!interestButton">
+        <div class="right-interset" v-if="$route.query.type !== '2'">
+          <div class="list-contain" @click="collect()">
+            <div class="list-button interset-hover" v-if="formup.is_follow === 0">
               <span class="button-text">感兴趣</span>
             </div>
-            <div class="list-button interest-border" v-if="interestButton">
+            <div class="list-button interest-border" v-if="formup.is_follow === 1">
               <span class="button-interest">已感兴趣</span>
             </div>
           </div>
           <div class="list-left">
             <div class="list-button buy-text">
-              <router-link :to="{name: 'managed_funds', params: {id: 1}}" class="details-text">立即购买</router-link>
+              <router-link :to="{name: 'sure_order', params: {id: formup.id}}" class="details-text">立即购买</router-link>
             </div>
           </div>
           <div class="list-left" v-if="false">
@@ -242,7 +246,13 @@
             </div>
           </div>
         </div>
-        <el-collapse v-model="credential" class="patent">
+        <div class="state-style" v-else>
+          <div class="right-sell">
+            <span class="right-word">状态</span>
+            <span class="state-way">{{formup.status | states}}</span>
+          </div>
+        </div>
+        <el-collapse v-model="credential" class="patent" :class="{'pat-margin' : $route.query.type === '2'}">
           <el-collapse-item title="专利证书" name="1">
             <!-- <div class="patent-img"></div> -->
             <swiper :options="swiperOption" class="patent-img">
@@ -287,7 +297,7 @@ export default {
   name: 'work_datails', // 代售成果详情页
   data() {
     return {
-      diaLoading: false,
+      isLoading: false,
       interestButton: false,
       selectCompanyCollapse: ['1'],
       credential: ['1'],
@@ -321,6 +331,29 @@ export default {
     }
   },
   methods: {
+    // 收藏/取消收藏
+    collect() {
+      this.isLoading = true
+      this.$http.get(api.designResultsCollectionOperation, {params: {id: this.formup.id}}).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          this.isLoading = false
+          if (this.formup.is_follow === 0) {
+            this.formup.is_follow = 1
+          } else {
+            this.formup.is_follow = 0
+          }
+        } else {
+          this.isLoading = false
+          this.$message.error(response.data.meta.message)
+          return
+        }
+      })
+      .catch(function (error) {
+        this.isLoading = false
+        this.$message.error(error.message)
+        return
+      })
+    },
     interesClick() {
       this.interestButton = !this.interestButton
     },
@@ -365,28 +398,45 @@ export default {
     },
     // 获取详情
     upDetails() {
-      this.diaLoading = true
+      this.isLoading = true
       this.$http.get(api.sdDesignResultsShow, {params: {id: this.$route.params.id}}).then(
         (response) => {
           if (response.data.meta.status_code === 200) {
             this.formup = response.data.data
             this.imgUrl = response.data.data.design_company.logo_image.logo
             this.companyName = response.data.data.design_company.company_name
-            this.diaLoading = false
+            this.isLoading = false
           } else {
-            this.diaLoading = false
+            this.isLoading = false
             this.$message.error(response.data.meta.message)
           }
         }
       )
       .catch (function (error) {
         this.$message.error (error.message)
-        this.diaLoading = false
+        this.isLoading = false
       })
-    },
+    }
   },
   created() {
     this.upDetails()
+  },
+  filters: {
+    states(val) {
+      if (val) {
+        if (val === 1) {
+          return '待提交'
+        } else if (val === 2) {
+          return '审核中'
+        } else if (val === 3) {
+          return '已上架'
+        } else if (val === -1) {
+          return '已下架'
+        } else {
+          return ''
+        }
+      }
+    }
   }
 }
 </script>
@@ -464,7 +514,7 @@ export default {
   margin-top: 105px;
   color: #222;
   background: #FAFAFA;
-  height: 160px;
+  height: 190px;
   width: 280px;
 }
 
@@ -488,11 +538,14 @@ export default {
 }
 .com-addr {
   padding-top: 20px;
+  width: 80%;
+  margin: 0 auto;
 }
 .right-sell {
   height: 50px;
-  width: 280px;
+  width: 80%;
   line-height: 50px;
+  margin: 0 auto;
 }
 .sell-stock {
   margin-top: 10px;
@@ -504,28 +557,24 @@ export default {
   font-family: PingFangSC-Regular;
   font-size: 16px;
   color: #222222;
-  padding-left: 16px;
 }
 .right-number {
   font-family: PingFangSC-Regular;
   font-size: 16px;
   color: #999999;
-  text-align: right;
-  padding-left: 79px;
+  float: right
 }
 .right-pah {
   font-family: PingFangSC-Regular;
   font-size: 16px;
   color: #999999;
-  text-align: right;
-  padding-left: 84px;
+  float: right;
 }
 .right-money {
   font-family: PingFangSC-Semibold;
   font-size: 20px;
   color: #FF5A5F;
-  text-align: right;
-  padding-left: 74px;
+  float: right;
 }
 .edit-content {
   padding-top: 30px;
@@ -684,6 +733,9 @@ export default {
   margin-top: 60px;
   /* border-bottom: 1px solid black */
 }
+.pat-margin {
+  margin-top: 10px;
+}
 .patent-text {
   padding-top: 18px;
   width: 240px;
@@ -827,9 +879,17 @@ p.img-des {
   margin-bottom: 20px;
 }
 
-@media screen and ( max-width: 480px) {
-  .container {
-    overflow-x: hidden;
-  }
+/* 状态 */
+.state-style {
+  width: 280px;
+  height: 50px;
+  background: #FAFAFA;
+  margin-top: 10px;
+}
+.state-way {
+  font-family: PingFangSC-Regular;
+  font-size: 16px;
+  color: #FF5A5F;
+  float: right
 }
 </style>

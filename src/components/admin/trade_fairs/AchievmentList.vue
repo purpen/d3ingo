@@ -68,7 +68,8 @@
               label="内容"
               min-width="160">
                 <template slot-scope="scope">
-                  <p>标题: {{ scope.row.title }}</p>
+                  <p>标题: 
+                  <router-link :to="{name: 'work_datails', params: {id: scope.row.id}, query: {type: '2'}}" target="_blank">{{ scope.row.title }}</router-link></p>
                   <p>出让方式: {{scope.row.sell_type === 1 ? '全款' : '股权合作'}}{{scope.row.share_ratio}}%</p>
                   <p>出让金额: {{ scope.row.price}}</p>
                   <!-- <el-tooltip class="item" effect="light" placement="bottom">
@@ -131,25 +132,12 @@
                 </template>
             </el-table-column>
           </el-table>
-          <el-dialog
-            title="收藏数"
-            :visible.sync="focusOn"
-            size="tiny" class="background-style">
-            <el-row class="title-style">
-              <el-col :span="4"><div class="">序号</div></el-col>
-              <el-col :span="10"><div class="">公司名称</div></el-col>
-              <el-col :span="10"><div class="">联系电话</div></el-col>
-            </el-row>
-            <div class="row-height scroll-bar">
-              <el-row class="dialog-top" v-for="(company, index) in formup" :key="index">
-                <el-col :span="4"><div class="">{{index}}</div></el-col>
-                <el-col :span="10"><div class="">{{company.design_company_name || ''}}</div></el-col>
-                <el-col :span="10"><div class="">{{company.phone}}</div></el-col>
-              </el-row>
-            </div>
-            <span slot="footer" class="dialog-footer">
-              <el-button type="primary" @click="focusOn = false">关 闭</el-button>
-            </span>
+          <el-dialog title="收藏数" :visible.sync="focusOn">
+            <el-table :data="formup">
+              <el-table-column property="company_name" label="公司名称" width="200"></el-table-column>
+              <el-table-column property="contact_name" label="联系人" width="150"></el-table-column>
+              <el-table-column property="phone" label="电话"></el-table-column>
+            </el-table>
           </el-dialog>
 
           <el-dialog title="请填写拒绝原因" :visible.sync="dialogVisible" size="tiny">
@@ -198,7 +186,7 @@ export default {
       menuType: 0,
       itemList: [],
       tableData: [],
-      formup: {},
+      formup: [],
       count: 0,
       isLoading: false,
       focusOn: false,
@@ -230,14 +218,12 @@ export default {
   methods: {
     // 获取收藏的公司
     upDetails(id) {
-      this.formup = {}
+      this.formup = []
       this.focusOn = true
-      this.$http.get(api.adminDesignDemandShowCollectList, {params: {demand_id: id}}).then(
+      this.$http.get(api.adminDesignResultCollect, {params: {id: id, page: 1, per_page: 10, sort: 1}}).then(
         (response) => {
           if (response.data.meta.status_code === 200) {
-            setTimeout(() => {
-              this.formup = response.data.data
-            }, 1)
+            this.formup = response.data.data
           } else {
             this.$message.error(response.data.meta.message)
           }
@@ -282,7 +268,7 @@ export default {
       .then (function(response) {
         self.verify.refuseRease = ''
         if (response.data.meta.status_code === 200) {
-          self.itemList[index].status = evt
+          self.itemList[index].status = 3
           self.$message.success('操作成功')
         } else {
           self.$message.error(response.data.meta.message)
@@ -320,7 +306,7 @@ export default {
       const self = this
       // 查询条件
       self.query.page = parseInt(this.$route.query.page || 1)
-      self.query.sort = this.$route.query.sort || 0
+      self.query.sort = this.$route.query.sort || 1
       self.query.type = this.$route.query.type || 0
       self.query.evt = this.$route.query.evt || '2'
       self.query.val = this.$route.query.val || ''
