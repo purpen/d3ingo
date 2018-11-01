@@ -3,7 +3,6 @@
     <div v-if="!isMob"></div>
     <el-row>
       <v-menu :class="[isMob ? 'v-menu' : '']" currentName="sdDesignCase_list"></v-menu>
-      <v-menu currentName="design_case"></v-menu>
 
       <div :class="{'vcenter-right-plus': leftWidth === 4,
         'vcenter-right': leftWidth === 2,
@@ -11,7 +10,7 @@
         <div class="right-content vcenter-container">
           <v-menu-sub></v-menu-sub>
           <div class="content-box">
-            <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
+            <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px" class="common">
               <el-row>
                 <el-col :span="24">
                   <el-form-item label="上传图片" prop="">
@@ -43,7 +42,7 @@
                       :before-upload="beforeUpload"
                       :show-file-list="false"
                       >
-                      <button class="middle-button full-red-button">+&nbsp;&nbsp;上传图片</button>
+                      <el-button class="is-custom" type="primary" size="small">+&nbsp;上传图片</el-button>
                       <span class="uploadsMsg">{{uploadMsg}}</span>
                       <!-- <span v-html="uploadMsg"></span> -->
                       <!-- <div slot="tip" class="el-upload__tip">{{ uploadMsg }}</div> -->
@@ -90,6 +89,21 @@
                         </el-col>
                       </el-row>
                     </div> -->
+                    <div class="img-files">
+                      <el-row>
+                        <el-col :span="6" v-for="(d, index) in fileList" :key="index" class="file-d">
+                          <img :src="d.url" alt="上传图片">
+                            <el-tooltip class="item" effect="dark" content="删除图片" placement="top">
+                              <span class="delImg" @click="deleteImg(d.asset_id)">
+                              </span>
+                            </el-tooltip>
+                             <el-tooltip class="item2" effect="dark" content="设为封面" placement="top">
+                              <span class="cover" @click="updateCover(d.asset_id)"></span>
+                             </el-tooltip>
+                          <span class="right-cover" v-if="d.asset_id === coverId"></span>
+                        </el-col>
+                      </el-row>
+                    </div>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -169,12 +183,14 @@
                     <el-upload 
                       :action="uploadUrl"
                       :data="uploadParam2"
+                      :on-success="upload2Success"
+                      :before-upload="beforeUpload"
                       >
                       <el-button class="red-button">
                         +&nbsp;上传专利证书
                       </el-button>
                     </el-upload>
-                      <span class="tc-9">
+                      <span class="tc-9 patent-msg">
                         &nbsp;格式：JPG／PNG 大小：小于5MB
                       </span>
                   </el-col>
@@ -186,6 +202,7 @@
                     <el-upload
                       :action="uploadUrl"
                       :data="uploadParam3"
+                      :on-success="upload3Success"
                       >
                       <el-button class="red-button" >
                       +&nbsp;上传说明书
@@ -239,7 +256,10 @@
         itemId: null,
         isLoadingBtn: false,
         labelPosition: 'top',
-        fileList: [],
+        fileList: [], // img 全部图片
+        coverId: '', // 封面
+        filepatent: [], // 专利图片
+        fileillustrate: [], // 说明图片
         uploadUrl: '',
         isDisabledProduct: true,
         is_apply: false,
@@ -272,9 +292,8 @@
           'x:target_id': '',
           'x:type': 39
         },
-        uploadMsg: '只能上传jpg/png文件，且不超过5M',
+        uploadMsg: '格式：JPG／PNG 大小：小于5MB',
         imageUrl: '',
-        coverId: '',
         design_types: [],
         form: {
           type: '',
@@ -335,14 +354,28 @@
               price: that.form.price,
               share_ratio: that.form.sell_type === 1 ? 100 : that.form.share_ratio,
               design_company_id: that.$store.state.event.user.company_id,
-              illustrate: [that.uploadParam3['x:random']] || [],
-              patent: [that.uploadParam2['x:random']] || [],
-              images: [that.uploadParam['x:random']] || [],
+              illustrate: [],
+              patent: [],
+              images: [],
               status: 2,
+              cover_id: that.coverId,
               contacts: that.form.contacts,
               contact_number: that.form.contact_number,
               id: that.form.id || ''
             }
+            // 成果图所有id
+            that.fileList.forEach((item) => {
+              row.images.push(item.asset_id)
+            })
+            // 专利图片所有
+            that.filepatent.forEach(p => {
+              row.patent.push(p.asset_id)
+            })
+            // 说明书id
+            that.fileillustrate.forEach(i=> {
+              row.illustrate.push(i.asset_id)
+            })
+            console.log('3', that.fileillustrate, that.filepatent)
             row.cover_id = that.coverId
             that.isLoadingBtn = true
             that.$http({method: 'post', url: api.sdDesignResultsSave, data: row})
@@ -365,6 +398,28 @@
           } else {
             console.log ('error submit!!')
             return false
+          }
+        })
+      },
+      // 切换封面
+      updateCover(id) {
+        console.log(id)
+        this.coverId = id
+      },
+      // 删除图片
+      deleteImg(id) {
+        this.$http.delete(api.asset, {params: {id: id}}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            if (this.fileList.length) {
+              this.fileList.forEach((item, index) =>{
+                if (item.asset_id === id) {
+                  this.fileList.splice(index, 1)
+                }
+              })
+            }
+            this.$message.success ('删除成功')
+          } else {
+            this.$message.error (response.data.meta.message)
           }
         })
       },
@@ -481,9 +536,7 @@
           url: add.url,
           edit: false,
           summary: '',
-          response: {
-            asset_id: add.response.asset_id
-          }
+          asset_id: add.response.asset_id
         }
         this.fileList.push (item)
         console.log('上传结束的东西', item)
@@ -503,6 +556,33 @@
           return false
         }
       },
+      // 上传说明
+      upload3Success(response, file, fileList) {
+        let add = fileList[fileList.length - 1]
+        let item = {
+          name: add.name,
+          url: add.url,
+          edit: false,
+          summary: '',
+          asset_id: add.response.asset_id
+        }
+        this.fileillustrate.push(item)
+        console.log('55', this.fileillustrate)
+      },
+      // 上传专利
+      upload2Success(response, file, fileList) {
+        this.uploadMsg = '只能上传jpg/png文件，且不超过5M'
+        let add = fileList[fileList.length - 1]
+        let item = {
+          name: add.name,
+          url: add.url,
+          edit: false,
+          summary: '',
+          asset_id: add.response.asset_id
+        }
+        this.filepatent.push(item)
+        console.log('22', this.filepatent)
+      },
       // 获取图片token
       getToken(type) {
         let that = this
@@ -510,16 +590,12 @@
           .then (function (response) {
             if (response.data.meta.status_code === 200) {
               if (response.data.data) {
-                if (type === 1) {
-                  that.uploadParam['token'] = response.data.data.upToken
-                  that.uploadParam['x:random'] = response.data.data.random
-                } else if (type === 2) {
-                  that.uploadParam2['token'] = response.data.data.upToken
-                  that.uploadParam2['x:random'] = response.data.data.random
-                } else if (type === 3) {
-                  that.uploadParam3['token'] = response.data.data.upToken
-                  that.uploadParam3['x:random'] = response.data.data.random
-                }
+                that.uploadParam['token'] = response.data.data.upToken
+                that.uploadParam['x:random'] = response.data.data.random
+                that.uploadParam2['token'] = response.data.data.upToken
+                that.uploadParam2['x:random'] = response.data.data.random
+                that.uploadParam3['token'] = response.data.data.upToken
+                that.uploadParam3['x:random'] = response.data.data.random
                 that.uploadUrl = response.data.data.upload_url
               }
             } else {
@@ -676,9 +752,7 @@
       if (id) {
         this.upDetails(id)
       } else {
-        that.getToken(1)
-        that.getToken(2)
-        that.getToken(3)
+        that.getToken()
       }
       // if (id) {
       //   that.itemId = id
@@ -865,8 +939,74 @@
     margin-right: 0px;
   }
   .uploadsMsg {
-    padding-left: 20px;
+    padding-left: 10px;
     color: #999;
+  }
+  .img-files {
+    margin-top: 10px;
+  }
+  .file-d {
+    height: 180px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    position: relative;
+    border-radius: 4px;
+  }
+  .file-d img {
+    width: 100%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+  }
+  .file-d img:not(:last-child) {
+    padding-right: 10px;
+  }
+  .delImg {
+    position: absolute;
+    z-index: 1;
+    right: 20px;
+    top: 10px;
+    width: 24px;
+    height: 24px;
+    background: url('../../../../../assets/images/trade_fairs/default/delete@2x.png') no-repeat center / contain;
+    cursor: pointer;
+    border-radius: 50%;
+    background-color: #999;
+  }
+  .delImg:hover {
+    background: url('../../../../../assets/images/trade_fairs/default/DeleteHover@2x.png') no-repeat center / contain;
+  }
+  .cover {
+    position: absolute;
+    right: 53px;
+    top: 10px;
+    z-index: 1;
+    width: 24px;
+    height: 24px;
+    background: url('../../../../../assets/images/trade_fairs/default/cover@2x.png') no-repeat center / contain;
+    cursor: pointer;
+    border-radius: 50%;
+    background-color: #999;
+  }
+  .cover:hover {
+    background: url('../../../../../assets/images/trade_fairs/default/CoverClickHover@2x.png') no-repeat center / contain;
+  }
+  .right-cover {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 50px;
+    height: 50px;
+    background: url('../../../../../assets/images/trade_fairs/default/CornerMark@2x.png') no-repeat center / contain;
+  }
+  .item, .item2 {
+    display: none;
+  }
+  .file-d:hover .item, .file-d:hover .item2{
+    display: block;
+  }
+  .patent-msg {
+    
   }
   @media screen and (max-width: 767px) {
     .right-content .content-box {
