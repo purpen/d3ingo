@@ -449,7 +449,7 @@ export default {
   padding-top: 20px;
   height: 50px;
   width: 1180px;
-  border-bottom: 2px dashed #e6e6e6;
+  border-bottom: 1px solid #e6e6e6;
 }
 .navigate-text {
   z-index: 2;
@@ -489,17 +489,15 @@ export default {
   line-height:48px;
 }
 .summary{
-  padding-top: 22px;
+  padding-top: 20px;
   width:880px;
-  height:72px;
   font-size:16px;
   font-family:PingFangSC-Regular;
   font-weight:400;
   color:#666666;
-  line-height:24px;
 }
 .des {
-  padding-top: 40px;
+  padding-top: 20px;
   width:880px;
 }
 .des-image {
@@ -508,7 +506,7 @@ export default {
 .image-size {
   width: 100%;
   height: 100%;
-  border: 1px solid #979797;
+  border: 1px solid #e6e6e6;
 }
 .design-case-slide {
   margin-top: 105px;

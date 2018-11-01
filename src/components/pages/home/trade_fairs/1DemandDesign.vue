@@ -92,6 +92,8 @@
           <div class="right-number">{{callDtails.phone}}</div>
         </div>
       </el-dialog>
+      <div class="bottom-background">
+      </div>
     </div>
 
     <el-dialog
@@ -421,7 +423,6 @@
     height: 500px;
     background: #3519B2;
     padding-top: 60px;
-    margin-bottom: -50px;
   }
   .empty-list {
     height: calc(100% - 50px);
@@ -552,7 +553,6 @@
     height: 100%;
     background: #3519B2;
     padding-top: 30px;
-    margin-bottom: -50px;
   }
   .list-center {
     width: 1200px;
@@ -596,10 +596,11 @@
   .list-bottom {
     width: 170px;
     margin: 0 auto;
-    padding-top: 10px;
+    padding-top: 15px;
   }
   .bottom-style {
     width: 260px;
+    overflow: hidden;
   }
   .list-left {
     cursor: pointer;
@@ -830,5 +831,11 @@
     color: #FF5A5F;
     letter-spacing: 0;
     padding-top: 12px;
+  }
+  .bottom-background {
+    margin-bottom: -50px;
+    height: 100px;
+    background: url('../../../../assets/images/trade_fairs/bottom.png') no-repeat center;
+    background-size: cover;
   }
 </style>
