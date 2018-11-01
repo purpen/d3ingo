@@ -84,7 +84,7 @@ module.exports = [
       hideHeader: true,
       hideFooter: true
     },
-    component: require('@/components/pages/home/trade_fairs/design_case/list')
+    component: require('@/components/pages/home/trade_fairs/design_case/List')
   },
   // 个人中心设计方成果编辑页
   {
@@ -96,7 +96,7 @@ module.exports = [
       hideHeader: true,
       hideFooter: true
     },
-    component: require('@/components/pages/home/trade_fairs/design_case/submit')
+    component: require('@/components/pages/home/trade_fairs/design_case/Submit')
   },
   // 个人中心设计方成果新建页
   {
@@ -108,7 +108,7 @@ module.exports = [
       hideHeader: true,
       hideFooter: true
     },
-    component: require('@/components/pages/home/trade_fairs/design_case/submit')
+    component: require('@/components/pages/home/trade_fairs/design_case/Submit')
   },
   // 个人中心设计方收藏列表
   {
