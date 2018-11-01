@@ -61,7 +61,7 @@
       <div class="title-center">
         <img class="avatar" v-if="urlLogo" :src="urlLogo" width="100"/>
         <img class="avatar" v-else src="../../../../../assets/images/avatar_100.png" width="100"/>
-        <div class="company-name">{{callDtails.company_name}}</div>
+        <div class="company-name">{{callDtails.demand_company_name}}</div>
         <div class="right-number">{{callDtails.phone}}</div>
       </div>
     </el-dialog>
@@ -95,8 +95,7 @@
       callHer(item) {
         this.dialogCall = true
         this.callDtails = item
-        console.log('callDtails', this.callDtails)
-        // this.urlLogo = this.callDtails.logo_image.logo
+        this.urlLogo = this.callDtails.logo_image.logo
       },
       // 返回需求列表
       demandLists() {
@@ -234,7 +233,7 @@
     max-height: 240px;
     overflow-x: hidden;
     font-size: 16px;
-    color: #e6e6e6;
+    color: #999;
   }
   /* 感兴趣 */
   .list-bottom {

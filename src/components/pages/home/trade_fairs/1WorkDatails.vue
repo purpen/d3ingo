@@ -232,8 +232,7 @@
           </div>
           <div class="list-left">
             <div class="list-button buy-text">
-              <!-- <router-link :to="{name: 'sure_order', params: {id: formup.id}}" class="details-text">立即购买</router-link> -->
-              <span class="details-text">立即购买</span>
+              <router-link :to="{name: 'sure_order', params: {id: formup.id}}" class="details-text">立即购买</router-link>
             </div>
           </div>
           <div class="list-left" v-if="false">

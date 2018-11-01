@@ -215,7 +215,7 @@
 
 <script>
   import vMenu from '@/components/pages/v_center/Menu'
-  import vMenuSub from '@/components/pages/home/trade_fairs/design_case/MenuSub'
+  import vMenuSub from '@/components/pages/home/trade_fairs/design_case/1MenuSub'
   import api from '@/api/api'
   import '@/assets/js/format'
   import '@/assets/js/date_format'
