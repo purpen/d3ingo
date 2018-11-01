@@ -157,9 +157,9 @@
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
                   <el-row :gutter="10">
-                    <el-col :span="12" v-if="form.sell_type&&form.sell_type===2">
+                    <el-col :span="12" v-show="form.sell_type&&form.sell_type===2">
                       <el-form-item label="出让比例" prop="share_ratio">
-                        <el-input v-model="form.share_ratio" >
+                        <el-input v-model="form.share_ratio" placeholder="比例最大为100">
                           <template slot="append">%</template>
                         </el-input>
                       </el-form-item>
@@ -859,7 +859,7 @@
     width: 120px;
   }
 
-  .form-btn button:first-child {
+  .form-btn button:not(:last-child) {
     margin-right: 10px;
   }
 
@@ -952,9 +952,9 @@
     border-top: 1px solid #e6e6e6;
     padding-top: 20px;
   }
-  .form-btn>.el-button + .el-button {
-    margin-right: 0px;
-  }
+  /* .form-btn>.el-button + .el-button {
+    margin-right: 10px;
+  } */
   .uploadsMsg {
     padding-left: 10px;
     color: #999;
