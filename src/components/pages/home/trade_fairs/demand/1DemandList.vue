@@ -74,7 +74,7 @@
                         v-if="d.status === -1"
                         @click="upDetails(d.id, 2)"
                         >编辑</el-button>
-                        <el-button class="mg-t-10" @click="deleteVisible(d)" v-if="d.status === 2">
+                        <el-button class="mg-t-10" @click="deleteVisible(d)" v-if="d.status === 2 || d.status === -1">
                           关闭项目
                         </el-button>
                       </el-col>
@@ -271,7 +271,7 @@
                   </div>
                 </div>
                 <span slot="footer" class="dialog-footer">
-                  <el-button @click="upDetails(formup.id, 2)">编辑修改</el-button>
+                  <el-button @click="upDetails(formup.id, 2)">重新编辑</el-button>
                 </span>
               </el-dialog>
                <el-dialog
@@ -739,7 +739,7 @@
   }
   .submit-form .el-form {
     padding: 10px 20px;
-    max-height: 300px;
+    max-height: 450px;
     overflow-y: auto;
   }
   .details-list {

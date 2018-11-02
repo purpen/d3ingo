@@ -159,14 +159,14 @@
                   <el-row :gutter="10">
                     <el-col :span="12" v-show="form.sell_type&&form.sell_type===2">
                       <el-form-item label="出让比例" prop="share_ratio">
-                        <el-input v-model="form.share_ratio" placeholder="比例最大为100">
+                        <el-input v-model="form.share_ratio" :maxlength="3" placeholder="比例最大为100" @blur="shareRatioBlur(form.share_ratio)">
                           <template slot="append">%</template>
                         </el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="(form.sell_type&&form.sell_type===2)?12:24">
                       <el-form-item label="出让金额">
-                        <el-input v-model="form.price">
+                        <el-input v-model.number="form.price" :maxlength="12">
                           <template slot="append">元</template>
                         </el-input>
                       </el-form-item>
@@ -198,7 +198,7 @@
               </el-form-item>
               <div v-if="filepatent.length">
                 <el-row>
-                  <el-col :span="3" v-for="(f,indexf) in filepatent" :key="indexf" class="patent-list" :style="{background: 'url('+f.url+ ') center center no-repeat'}">
+                  <el-col :span="3" v-for="(f,indexf) in filepatent" :key="indexf" class="patent-list" :style="{background: 'url('+f.url+ ') no-repeat center/contain'}">
                     <!-- <img :src="f.url" alt=""> -->
                   </el-col>
                 </el-row>
@@ -388,6 +388,17 @@
       }
     },
     methods: {
+      // 按钮
+      shareRatioBlur(val) {
+        if (isNaN(val)) {
+          this.$message.error ('请输入1~100的比例!1')
+          return
+        }
+        if (val > 100 || val < 0) {
+          this.$message.error ('请输入1~100的比例!')
+          return
+        }
+      },
       // 提交按钮
       submit(formName, type) {
         const that = this
@@ -395,6 +406,16 @@
           that.$message.error ('必须设置一张封面图!')
           return false
         }
+        // 验证金额是否合理
+        if (isNaN(that.form.price)) {
+          that.$message.error ('请输入合理的金额!')
+          return false
+        }
+        if (Number(that.form.price) < 0) {
+          that.$message.error ('请输入合理的金额!')
+          return false
+        }
+
         if (!that.fileList.length || !that.filepatent.length || !that.fileillustrate.length) {
           that.$message.error ('请完善信息!')
           return false
@@ -733,6 +754,9 @@
       label() {
         return this.form.label
       },
+      sellType() {
+        return this.form.sell_type
+      },
       typeOptions() {
         let items = []
         for (let i = 0; i < typeData.COMPANY_TYPE.length; i++) {
@@ -841,6 +865,12 @@
             }
           }
         }
+      },
+      sellType(newValue, oldValue) {
+        if (newValue !== oldValue) {
+          this.form.price = null
+          return false
+        }
       }
     },
     created: function () {
@@ -848,7 +878,10 @@
       let id = that.$route.params.id
       that.getToken()
       if (id) {
-        this.upDetails(id)
+        that.upDetails(id)
+      } else {
+        console.log(that.$store.state.event.user)
+        that.form.contact_number = that.$store.state.event.user.phone
       }
       // if (id) {
       //   that.itemId = id
