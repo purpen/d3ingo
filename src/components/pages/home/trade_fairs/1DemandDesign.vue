@@ -252,6 +252,12 @@
         this.callPhone = true
         this.callDtails = item
         this.urlLogo = this.callDtails.logo_image.logo
+        // if (this.callPhone === true) {
+        //   setTimeout(() => {
+        //     console.log(document.body.style.paddingRight)
+        //     document.body.style.paddingRight = 6+'px'
+        //   }, 0.1)
+        // }
       },
       // 获取列表
       getDemandList() {
@@ -362,6 +368,11 @@
       handleCurrentChange(val) {
         this.query.page = val
         this.$router.push({name: this.$route.name, query: {page: val}})
+      },
+      bodyPad() {
+        if (this.clientPhone === true) {
+          document.body.style.paddingRight = 0
+        }
       }
     },
     filters: {
