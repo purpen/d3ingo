@@ -1,7 +1,7 @@
 <template>
   <div class="blank30 vcenter">
     <el-row>
-      <v-menu :class="[isMob ? 'v-menu' : '']" currentName="sdDesignCase_list"></v-menu>
+      <v-menu currentName="sdDesignCase_list"></v-menu>
 
       <div :class="{'vcenter-right-plus': leftWidth === 4,
         'vcenter-right': leftWidth === 2,
@@ -36,7 +36,7 @@
                         <li class="edit" @click="PriceBtn(d)">修改价格</li>
                       </ul>
                       <ul v-if="d.status === -1">
-                        <li class="edit" @click="toUpdateUrl(d.id)">修改</li>
+                        <li class="del" @click="toUpdateUrl(d.id)">修改</li>
                         <li class="edit" @click="updateBtn(d, 2)">删除</li>
                       </ul>
                     </div>
@@ -516,6 +516,13 @@
   }
   .toUpdate {
     display: block;
+    color: #999;
+  }
+  .del:hover .toUpdate {
+    color: #ff5a5f;
+  }
+  .protrude:hover {
+    color: #ff5a5f;
   }
   @media screen and (max-width: 767px) {
     .opt a {

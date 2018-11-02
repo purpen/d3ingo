@@ -2,7 +2,7 @@
   <div class="blank30 vcenter">
     <div v-if="!isMob"></div>
     <el-row>
-      <v-menu :class="[isMob ? 'v-menu' : '']" currentName="sdDesignCase_list"></v-menu>
+      <v-menu currentName="sdDesignCase_list"></v-menu>
 
       <div :class="{'vcenter-right-plus': leftWidth === 4,
         'vcenter-right': leftWidth === 2,
@@ -198,8 +198,8 @@
               </el-form-item>
               <div v-if="filepatent.length">
                 <el-row>
-                  <el-col :span="3" v-for="(f,indexf) in filepatent" :key="indexf" class="patent-list">
-                    <img :src="f.url" alt="">
+                  <el-col :span="3" v-for="(f,indexf) in filepatent" :key="indexf" class="patent-list" :style="{background: 'url('+f.url+ ') center center no-repeat'}">
+                    <!-- <img :src="f.url" alt=""> -->
                   </el-col>
                 </el-row>
               </div>
