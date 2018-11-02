@@ -51,7 +51,7 @@
                         :target="isMob ? '_self' : '_blank'"
                         class="tc-2 protrude fz-18">{{ d.title }}
                       </router-link>
-                      <span class="fz-14 tc-6">出让方式: {{d.sell_type===1?'全款出售':'股权出让'}}
+                      <span class="fz-14 tc-6">出让方式: {{d.sell_type===1?'全额出让':'股权出让'}}
                         <span v-if="d.sell_type===2" class="tc-red">{{d.share_ratio+'%'}}</span>
                       </span>
                       <p class="tc-6 mg-top-5">

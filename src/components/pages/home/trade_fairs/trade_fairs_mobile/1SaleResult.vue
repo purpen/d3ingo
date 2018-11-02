@@ -28,7 +28,7 @@
                   <div class="list-bottom">
                     <div class="list-left">
                       <div class="list-way">
-                        <span>出让方式：&nbsp;{{achieve.sell_type === 1 ? '全款出售' : '股权合作'}}</span><span class="money">{{achieve.sell_type === 2 ?achieve.share_ratio+'%' : ''}}</span>
+                        <span>出让方式：&nbsp;{{achieve.sell_type === 1 ? '全额出让' : '股权合作'}}</span><span class="money">{{achieve.sell_type === 2 ?achieve.share_ratio+'%' : ''}}</span>
                       </div>
                       <div class="list-sum">
                         <span>出让金额：&nbsp;<span class="money">￥{{achieve.price}}</span></span>

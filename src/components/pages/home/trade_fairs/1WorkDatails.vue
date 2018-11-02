@@ -190,7 +190,7 @@
         <div class="sell-stock">
           <div class="right-sell">
             <span class="right-word">出让方式</span>
-            <span class="right-pah">{{formup.sell_type===1?'全款出售':'股权出让'+formup.share_ratio+'%'}}</span>
+            <span class="right-pah">{{formup.sell_type===1?'全额出让':'股权出让'+formup.share_ratio+'%'}}</span>
           </div>
           <div class="right-sell">
             <span class="right-word">股权价格</span>

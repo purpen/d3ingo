@@ -19,7 +19,7 @@
           <div class="money-text">￥{{formup.price}}</div>
           <div class="money-style">
             <span>出让方式：</span>
-            <span class="way-pay">{{formup.sell_type===1?'全款出售':'股权出让'}}</span>
+            <span class="way-pay">{{formup.sell_type===1?'全额出让':'股权出让'}}</span>
             <span class="precentage">{{formup.sell_type===1?'':formup.share_ratio+'%'}}</span>
           </div>
         </div>
