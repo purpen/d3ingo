@@ -4,7 +4,7 @@
       <div class="background-banner">
         <div class="banner-button">
           <div class="text-width">
-            <router-link to="/shunde/trade_fairs/1DemandLogin" class="banner-text">立即参与</router-link>
+            <router-link to="/shunde/trade_fairs/demand_login" class="banner-text">立即参与</router-link>
           </div>
         </div>
       </div>

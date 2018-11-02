@@ -167,7 +167,7 @@
               </a>
               </el-tooltip>
               <el-tooltip class="item" :effect="DarkorLight" content="顺德交易会" placement="right">
-              <a @click="alick" :to="'/shunde/trade_fairs/demand/demandList'"
+              <a @click="alick" :to="'/shunde/trade_fairs/demand/demand_list'"
                 :class="['item', 'demandList', {'is-active': currentName === 'demandList'}]">
                 顺德交易会
               </a>
@@ -241,7 +241,7 @@
                 :class="['item', 'wallet', {'is-active': currentName === 'wallet'}]">
                 我的钱包
               </a>
-              <a @click="alick" :to="'/shunde/trade_fairs/demand/demandList'"
+              <a @click="alick" :to="'/shunde/trade_fairs/demand/demand_list'"
                 :class="['item', 'demandList', {'is-active': currentName === 'demandList'}]">
                 顺德交易会
               </a>

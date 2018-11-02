@@ -3,8 +3,8 @@
     <div class="navigate-header">
       <div class="navigate-text">
         <router-link to="/shunde/trade_fairs/design_case" v-if="$route.query.type === '2'">设计成果</router-link>
-        <router-link to="/shunde/trade_fairs/demandLogin" v-else>代售成果</router-link>
-        <router-link to="/shunde/trade_fairs/demandLogin" v-if="false">我的订单</router-link>
+        <router-link to="/shunde/trade_fairs/demand_login" v-else>代售成果</router-link>
+        <router-link to="/shunde/trade_fairs/demand_login" v-if="false">我的订单</router-link>
       </div>
       <div class="navigate-text arrow-text">
         <span>{{formup.title}}</span>
@@ -222,7 +222,7 @@
         </div>
         <!-- 下面按钮 -->
         <div class="right-interset" v-if="$route.query.type !== '2'">
-          <div class="list-contain" @click="collect()">
+          <div class="list-contain" @click="collect">
             <div class="list-button interset-hover" v-if="formup.is_follow === 0">
               <span class="button-text">感兴趣</span>
             </div>
