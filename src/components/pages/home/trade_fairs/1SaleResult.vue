@@ -1,5 +1,5 @@
 <template>
-  <div class="content-box" v-loading="isLoading">
+  <div class="content-box achieve-load" v-loading="isLoading">
     <div class="large-background2">
       <div class="right-background"></div>
       <div class="left-background"></div>
@@ -19,7 +19,7 @@
               <div class="list-item">
                 <div class="list-image" @click="listDatail(achieve.id)">
                   <div class="image-size">
-                    <img :src="achieve.cover.small" alt="点击查看详情" class="img-size">
+                    <img alt="点击查看详情" class="img-size" v-lazy="achieve.cover.small">
                   </div>
                 </div>
                 <div class="list-text">
@@ -373,12 +373,12 @@
     border: 1px solid #E6E6E6;
   }
   .img-size {
-    width: 100%;
     height: 100%;
   }
   .image-size {
     cursor: pointer;
     height: 184px;
+    text-align: center;
   }
   .list-text {
     width: 240px;

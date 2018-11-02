@@ -6,20 +6,71 @@
         <span class="arrow" @click="demandLists"></span>
         <span>代售成果</span>
       </div>
-      
+      <div class="block">
+        <el-carousel height="330px">
+          <el-carousel-item v-for="(img, index) in formup.images_url" :key="index" class="image-round">
+            <img :src="img.big" class="img-size"/>
+          </el-carousel-item>
+        </el-carousel>
+      </div>
+      <div class="title-style">
+        <div class="title-text">{{formup.title}}</div>
+        <div class="title-bottom">
+          <div class="money-text">￥{{formup.price}}</div>
+          <div class="money-style">
+            <span>出让方式：</span>
+            <span class="way-pay">{{formup.sell_type===1?'全款出售':'股权出让'}}</span>
+            <span class="precentage">{{formup.sell_type===1?'':formup.share_ratio+'%'}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="wide-line"></div>
+      <div class="product-the">
+        <div class="the-title">产品描述</div>
+        <!-- <div class="the-text">{{ formup.content}}</div> -->
+        <div class="the-text">测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试测试，试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试<div class="seen-more">查看更多</div></div>
+      </div>
+      <div class="wide-line"></div>
+      <div class="contact-company">
+        <div class="logo-height">
+          <div class="logo-style">
+            <img :src="imgUrl" width="50px" class="avatar"/>
+          </div>
+          <div class="logo-company">{{companyName}}</div>
+          <div class="list-right" @click="callHer">
+            <div class="list-button">
+              <span class="contact-text">联系他</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="wide-line"></div>
+      <div class="explain"></div>
+      <div class="letters-patant">
+        <div class="letters-text">专利证书</div>
+        <div class="let-round">
+          <div class="letters-img"></div>
+          <div class="letters-img"></div>
+          <div class="letters-img"></div>
+          <div class="letters-img"></div>
+          <div class="letters-img"></div>
+          <div class="letters-img"></div>
+        </div>
+      </div>
+      <div class="wide-line"></div>
       <div class="height-border">
         <div class="list-bottom bottom-style">
           <div class="list-contain" @click="collect(formup.id, formup.follow_status)">
-            <div class="list-button" v-if="formup.follow_status === 2">
+            <div class="list-button" v-if="formup.is_follow === 0">
               <span class="button-text">感兴趣</span>
             </div>
-            <div class="list-button" v-if="formup.follow_status === 1">
+            <div class="list-button" v-if="formup.is_follow === 1">
               <span class="button-interest">已感兴趣</span>
             </div>
           </div>
-          <div class="list-right" @click="callHer(formup)">
-            <div class="list-button">
-              <span class="contact-text">联系他</span>
+          <div class="list-left">
+            <div class="list-button buy-text">
+              <span class="details-text">立即购买</span>
             </div>
           </div>
         </div>
@@ -30,10 +81,10 @@
       size="tiny"
       class="style-call">
       <div class="title-center">
-        <img class="avatar" v-if="urlLogo" :src="urlLogo" width="100"/>
+        <img class="avatar" v-if="imgUrl" :src="imgUrl" width="100"/>
         <img class="avatar" v-else src="../../../../../assets/images/avatar_100.png" width="100"/>
-        <div class="company-name">{{callDtails.demand_company_name}}</div>
-        <div class="right-number">{{callDtails.phone}}</div>
+        <div class="company-name">{{formup.contacts}}</div>
+        <div class="right-number">{{formup.contact_number}}</div>
       </div>
     </el-dialog>
   </div>
@@ -45,8 +96,6 @@
     name: 'mobile_work_details', // 移动端设计需求详情
     data() {
       return {
-        interestButton: false,
-        dialogUpdateVisible: false,
         demandList: '',
         formup: {},
         isLoading: false,
@@ -54,8 +103,9 @@
         diaLoading: false,
         setIndex: -1,
         dialogCall: false,
-        callDtails: '',
-        urlLogo: ''
+        urlLogo: '',
+        companyName: '',
+        imgUrl: ''
       }
     },
     created() {
@@ -63,68 +113,57 @@
     },
     methods: {
       // 弹出联系框
-      callHer(item) {
+      callHer() {
         this.dialogCall = true
-        this.callDtails = item
-        this.urlLogo = this.callDtails.logo_image.logo
       },
-      // 返回需求列表
+      // 返回成果列表
       demandLists() {
         this.$router.push({name: 'mobile_login'})
       },
       // 获取详情
       upDetails() {
-        this.$http.get(api.sdDemandDesignDemandInfo, {params: {demand_id: this.$route.params.id}}).then(
+        this.isLoading = true
+        this.$http.get(api.sdDesignResultsShow, {params: {id: this.$route.params.id}}).then(
           (response) => {
             if (response.data.meta.status_code === 200) {
-              this.diaLoading = false
               this.formup = response.data.data
+              this.imgUrl = response.data.data.design_company.logo_image.logo
+              this.companyName = response.data.data.design_company.company_name
+              this.isLoading = false
             } else {
-              this.diaLoading = false
+              this.isLoading = false
               this.$message.error(response.data.meta.message)
             }
           }
         )
+        .catch (function (error) {
+          this.$message.error (error.message)
+          this.isLoading = false
+        })
       },
-      // 收藏需求
-      collect(id, status) {
+      // 收藏/取消收藏
+      collect() {
         this.isLoading = true
-        this.collectId = id
-        if (status === 2) {
-          this.$http.post(api.sdDesignCollectDemand, {design_demand_id: id}).then((response) => {
-            if (response.data.meta.status_code === 200) {
-              this.isLoading = false
-              this.formup.follow_status = 1
-            } else {
-              this.isLoading = false
-              this.$message.error(response.data.meta.message)
-              return
-            }
-          })
-          .catch(function (error) {
+        this.$http.get(api.designResultsCollectionOperation, {params: {id: this.formup.id}}).then((response) => {
+          if (response.data.meta.status_code === 200) {
             this.isLoading = false
-            this.$message.error(error.message)
-            return
-          })
-        } else {
-          this.isLoading = true
-          this.$http.post(api.sdDesignCancelCollectDemand, {design_demand_id: id}).then((response) => {
-            if (response.data.meta.status_code === 200) {
-              this.isLoading = false
-              this.formup.follow_status = 2
+            if (this.formup.is_follow === 0) {
+              this.formup.is_follow = 1
             } else {
-              this.isLoading = false
-              this.$message.error('点击过快，请稍后')
-              return
+              this.formup.is_follow = 0
             }
-          })
-          .catch(function (error) {
+          } else {
             this.isLoading = false
-            this.$message.error(error.message)
+            this.$message.error(response.data.meta.message)
             return
-          })
-        }
-      }
+          }
+        })
+        .catch(function (error) {
+          this.isLoading = false
+          this.$message.error(error.message)
+          return
+        })
+      },
     },
     filters: {
       timeFormat(val) {
@@ -152,6 +191,169 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .title-bottom {
+    padding-top: 10px;
+  }
+  .details-text:before {
+    content: '';
+    position: absolute;
+    height: 24px;
+    top: -1px;
+    width: 24px;
+    left: -20px;
+    background: url('../../../../../assets/images/trade_fairs/list/Purchase@2x.png') no-repeat center;
+    background-size: contain;
+  }
+  .list-left {
+    float: left;
+    padding-left: 10px;
+  }
+  .buy-text {
+    background: #FF5A5F;
+  }
+  .details-text {
+    position: relative;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    padding-left: 10px;
+    color: #fff;
+  }
+  .let-round {
+    display: -webkit-box;
+    overflow-x: scroll;
+    -webkit-overflow-scrolling:touch;
+  }
+  .letters-img {
+    height: 150px;
+    width: 110px;
+    background: #222;
+    margin-right: 7px;
+    border: 1px solid #E6E6E6;
+    box-shadow: 0 0 10px 0 rgba(0,0,0,0.02);
+  }
+  .letters-text {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #222222;
+    letter-spacing: -0.27px;
+    padding: 10px 0 12px 0;
+  }
+  .letters-patant {
+    height: 215px;
+    margin: 0 15px;
+  }
+  .explain {
+    height: 44px;
+    border-bottom: 1px solid #e6e6e6
+  }
+  .logo-company {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #222222;
+    letter-spacing: 0;
+    text-align: left;
+    float: left;
+    padding-left: 10px;
+  }
+  .logo-style {
+    float: left;
+  }
+  .logo-height {
+    margin: 0 15px;
+    overflow: hidden;
+    line-height: 75px;
+  }
+  .contact-company {
+    height: 77px;
+    border-top: 1px solid #e6e6e6;
+  }
+  .seen-more {
+    position: relative;
+    width: 20px;
+    right: 0;
+  }
+  .seen-more:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    /* background: url() */
+  }
+  .the-text {
+    height: 90px;
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    color: #999999;
+    letter-spacing: -0.22px;
+    text-align: justify;
+    padding-top: 10px;
+    line-height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    position: relative;
+  }
+  .the-title {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #222222;
+    letter-spacing: -0.27px;
+    padding-top: 10px;
+  }
+  .product-the {
+    height: 130px;
+    margin: 0 15px;
+  }
+  .wide-line {
+    background: #fcfcfc;
+    height: 10px;
+    border-top: 1px solid #E6E6E6;
+  }
+  .way-pay {
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    color: #666666;
+    text-align: right;
+  }
+  .precentage {
+    color: #FF5A5F;
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    text-align: right;
+  }
+  .money-style {
+    float: right;
+  }
+  .money-text {
+    float: left;
+    font-family: PingFangSC-Semibold;
+    font-size: 18px;
+    color: #FF5A5F;
+    letter-spacing: 0;
+    text-align: left;
+  }
+  .title-text {
+    font-family: PingFangSC-Medium;
+    font-size: 17px;
+    color: #222222;
+    letter-spacing: 0;
+    text-align: left;
+    padding-top: 10px;
+    padding-left: 2px;
+  }
+  .title-style {
+    height: 80px;
+    margin: 0 15px;
+  }
+  .image-round {
+    text-align: center;
+  }
+  .img-size {
+    height: 100%;
+  }
   .arrow {
     margin-left: 20px;
     margin-top: 17px;
@@ -182,7 +384,7 @@
   .list-bottom {
     overflow: hidden;
     margin: 20px auto;
-    width: 270px;
+    width: 280px;
   }
   .button-text {
     position: relative;
@@ -203,13 +405,14 @@
   }
   .list-right {
     float: right;
+    margin-top: 18px;
   }
   .list-contain {
     float: left;
   }
   .list-button {
     height: 40px;
-    width: 130px;
+    width: 135px;
     border: 1px solid #FF5A5F;
     text-align: center;
     line-height: 38px;

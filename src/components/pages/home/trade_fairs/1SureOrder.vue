@@ -21,7 +21,6 @@
       </div>
       <div class="bottom-size">
         <div class="img-size">
-
         </div>
         <div class="order-item">
           <div class="right-left">
@@ -59,7 +58,8 @@ export default {
     return {
       formup: '',
       companyName: '',
-      isLoading: false
+      isLoading: false,
+      coverUrl: ''
     }
   },
   methods: {

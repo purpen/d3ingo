@@ -1,5 +1,5 @@
 <template>
-  <div class="content-box load-index" v-loading="isLoading">
+  <div class="content-box load-index achieve-load" v-loading="isLoading">
     <div class="large-background">
       <div class="right-background"></div>
       <div class="left-background"></div>
