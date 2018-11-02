@@ -33,6 +33,8 @@
     </demandDesign>
     <saleResult v-if="demandShows && user.type === 1">
     </saleResult>
+    <div class="bottom-background">
+    </div>
   </div>
 </template>
 
@@ -166,6 +168,13 @@
   .active {
     color: #02EBA5;
     border-bottom: 2px solid #02EBA5
+  }
+  .bottom-background {
+    position: relative;
+    margin-bottom: -50px;
+    height: 100px;
+    background: url('../../../../assets/images/trade_fairs/bottom.png') no-repeat center;
+    background-size: cover;
   }
   @media screen and (max-width: 1980px) {
     .banner-button {

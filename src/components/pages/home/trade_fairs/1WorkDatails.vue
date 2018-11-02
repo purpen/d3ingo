@@ -190,7 +190,7 @@
         <div class="sell-stock">
           <div class="right-sell">
             <span class="right-word">出让方式</span>
-            <span class="right-pah">{{formup.sell_type===1?'全款出售':'股权出让'+formup.share_ratio+'%'}}</span>
+            <span class="right-pah">{{formup.sell_type===1?'全额出让':'股权出让'+formup.share_ratio+'%'}}</span>
           </div>
           <div class="right-sell">
             <span class="right-word">股权价格</span>
@@ -257,10 +257,10 @@
             <!-- <div class="patent-img"></div> -->
             <swiper :options="swiperOption" class="patent-img">
               <swiper-slide>
-                <div class="slide" :style="{ background: 'url(' + require ('assets/images/home/banner/BG@2x.jpg') + ') no-repeat center', height: '100%'}">
-                  <div style="height:100%;">
+                <div class="slide">
+                  <div style="height:100%;" v-for="(img, index) in formup.patent_url" :key="index">
                     <div class="draw">
-                      <img :src="formup.patent_url" width="90%" height="auto" alt="">
+                      <img :src="img.small" width="100%" height="100%" alt="">
                     </div>
                   </div>
                 </div>
@@ -280,9 +280,29 @@
           <div class="instruction-blook">
           <span class="blook-left">产品功能说明书</span>
           <div class="seen-button">
+            <!-- <span class="seen-text" @click="seenBook(formup.illustrate_url)">查看详情</span> -->
             <span class="seen-text">查看详情</span>
           </div>
           </div>
+        </div>
+        <!-- 图片预览 -->
+        <div>
+        <div class="image-preview" v-show="showType">
+          <swiper :options="swiperOption" :not-next-tick="notNextTick" ref="mySwiper">
+            <swiper-slide v-for="(ele, index) in formup.illustrate_url" :key="index">
+              <div v-lazy-container="{ selector: 'img' }">
+                <img :data-src="ele.big" :data-loading="ele.small"
+                :style="{width: ele.width + 'px', height: ele.height + 'px'}">
+              </div>
+            </swiper-slide>
+            <div @click="switchPrevPic" class="swiper-button-prev" slot="button-prev">
+              <i class="el-icon-arrow-left"></i>
+            </div>
+            <div @click="switchNextPic" class="swiper-button-next" slot="button-next">
+              <i class="el-icon-arrow-right"></i>
+            </div>
+          </swiper>
+        </div>
         </div>
       </el-col>
 
@@ -301,6 +321,7 @@ export default {
       interestButton: false,
       selectCompanyCollapse: ['1'],
       credential: ['1'],
+      showType: false,
       formup: {},
       evaluate: {
         design_level: 0,
@@ -318,7 +339,9 @@ export default {
         spaceBetween: 0,
         loop: true
       },
+      notNextTick: true, // 设置之后可以获取swiper对象
       evalu: {},
+      isLoad: false,
       evaluateLoadingBtn: false // 提交评价的loading
     }
   },
@@ -331,6 +354,35 @@ export default {
     }
   },
   methods: {
+    // 预览的方法
+    switchPrevPic() {
+      this.isLoad = false
+      this.previewObj.index --
+      if (this.previewObj.index < 0) {
+        this.previewObj.index = 0
+        this.$message.error('已经是第一张图片啦')
+      }
+      let img = new Image()
+      img.src = this.imgList[this.previewObj.index]['url_file']
+      img.onload = () => {
+        this.isLoad = true
+        console.log('加载完成')
+      }
+    },
+    switchNextPic() {
+      this.isLoad = false
+      this.previewObj.index ++
+      if (this.previewObj.index > this.imgList.length - 1) {
+        this.previewObj.index = this.imgList.length - 1
+        this.$message.error('已经是最后一张图片啦')
+      }
+      let img = new Image()
+      img.src = this.imgList[this.previewObj.index]['url_file']
+      img.onload = () => {
+        this.isLoad = true
+        console.log('加载完成')
+      }
+    },
     // 收藏/取消收藏
     collect() {
       this.isLoading = true
@@ -416,6 +468,32 @@ export default {
         this.$message.error (error.message)
         this.isLoading = false
       })
+    },
+    seenBook(ele) {
+      this.showType = true
+      if (this.$refs.mySwiper) {
+        this.ele.forEach((item, index) => {
+          let img = new Image()
+          img.src = ele.big
+          img.onload = () => {
+            this.isLoad = true
+            console.log('加载完成')
+          }
+          this.swiperObj.slideTo(index)
+          this.viewCover = true
+          this.previewObj.info = item
+          this.previewObj.index = index
+        })
+        let oldClass = document.getElementById('app').getAttribute('class')
+        if (oldClass) {
+          oldClass = oldClass.replace(/disableScroll\x20?/g, '')
+        }
+        document.body.setAttribute('class', 'disableScroll')
+        document.getElementById('app').setAttribute('class', 'disableScroll ' + oldClass)
+        document.childNodes[1].setAttribute('class', 'disableScroll')
+      } else {
+        this.$message.info('正在加载组件, 请稍后尝试...')
+      }
     }
   },
   created() {
@@ -505,7 +583,6 @@ export default {
 }
 .image-size {
   width: 100%;
-  height: 100%;
   border: 1px solid #e6e6e6;
 }
 .design-case-slide {
