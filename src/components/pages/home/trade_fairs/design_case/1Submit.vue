@@ -2,7 +2,7 @@
   <div class="blank30 vcenter">
     <div v-if="!isMob"></div>
     <el-row>
-      <v-menu :class="[isMob ? 'v-menu' : '']" currentName="sdDesignCase_list"></v-menu>
+      <v-menu currentName="sdDesignCase_list"></v-menu>
 
       <div :class="{'vcenter-right-plus': leftWidth === 4,
         'vcenter-right': leftWidth === 2,
@@ -157,9 +157,9 @@
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
                   <el-row :gutter="10">
-                    <el-col :span="12" v-if="form.sell_type&&form.sell_type===2">
+                    <el-col :span="12" v-show="form.sell_type&&form.sell_type===2">
                       <el-form-item label="出让比例" prop="share_ratio">
-                        <el-input v-model="form.share_ratio" >
+                        <el-input v-model="form.share_ratio" placeholder="比例最大为100">
                           <template slot="append">%</template>
                         </el-input>
                       </el-form-item>
@@ -183,17 +183,26 @@
                       :data="uploadParam2"
                       :on-success="upload2Success"
                       :before-upload="beforeUpload"
+                      :on-progress="uploadProgress2"
+                      :show-file-list="false"
                       >
                       <el-button class="red-button">
                         +&nbsp;上传专利证书
                       </el-button>
                       <span class="tc-9 patent-msg">
-                        &nbsp;格式：JPG／PNG 大小：小于5MB
+                        {{uploadMsg2}}
                       </span>
                     </el-upload>
                   </el-col>
                 </el-row>
               </el-form-item>
+              <div v-if="filepatent.length">
+                <el-row>
+                  <el-col :span="3" v-for="(f,indexf) in filepatent" :key="indexf" class="patent-list" :style="{background: 'url('+f.url+ ') center center no-repeat'}">
+                    <!-- <img :src="f.url" alt=""> -->
+                  </el-col>
+                </el-row>
+              </div>
                <el-form-item label="产品说明书" class="fullwidth">
                 <el-row>
                   <el-col :span="12">
@@ -201,14 +210,42 @@
                       :action="uploadUrl"
                       :data="uploadParam3"
                       :on-success="upload3Success"
+                      :show-file-list="false"
+                      :on-progress="uploadProgress3"
                       >
                       <el-button class="red-button" >
                       +&nbsp;上传说明书
                     </el-button>
+                    <span class="tc-9 patent-msg">{{uploadMsg3}}</span>
                     </el-upload>
                   </el-col>
                 </el-row>
               </el-form-item>
+              <el-row :gutter="10">
+                <el-col :span="6" v-for="(i,indexi) in fileillustrate" :key="indexi">
+                  <div class="illustrate-list">
+                    <i :class="['compress',{
+                      'folder': /.folder/.test(i.name),
+                      'artboard': /.pdf/.test(i.name),
+                      'audio': /.audio/.test(i.name),
+                      'compress': /(?:.zip|.rar|.7z)/.test(i.name),
+                      'document': /(?:.text|.msword|.txt)/.test(i.name),
+                      'image': /(?:.jpg|.jpeg|.png|.gif)/.test(i.name),
+                      'powerpoint': /.powerpoint/.test(i.name),
+                      'spreadsheet': /.excel/.test(i.name),
+                      'video': /.video/.test(i.name),
+                    }]" ></i>
+                    <span class="file-name">
+                      {{i.name}}
+                    </span>
+                    <div class="file-size">
+                      {{i.size | sizeFormat}}
+                    </div>
+                    <div class="cancel-icons" @click="deleteImg(i.asset_id, 1)">
+                    </div>
+                  </div>
+                </el-col>
+              </el-row>
               <el-row>
                 <el-col>
                   <div class="form-footer">
@@ -294,6 +331,8 @@
           'x:type': 39
         },
         uploadMsg: '格式：JPG／PNG 大小：小于5MB',
+        uploadMsg2: '格式：JPG／PNG 大小：小于5MB',
+        uploadMsg3: '',
         imageUrl: '',
         design_types: [],
         form: {
@@ -334,6 +373,17 @@
           contact_number: [
             {required: true, message: '请填写联系电话', trigger: 'blur'}
           ]
+        }
+      }
+    },
+    filters: {
+      sizeFormat(val) {
+        if (val > (1024 * 1024)) {
+          return (val / (1024 * 1024)).toFixed(2) + 'M'
+        } else if (val > 1024) {
+          return (val / 1024).toFixed(2) + 'KB'
+        } else {
+          return val.toFixed(2) + 'B'
         }
       }
     },
@@ -415,15 +465,25 @@
         this.coverId = id
       },
       // 删除图片
-      deleteImg(id) {
+      deleteImg(id, type) {
         this.$http.delete(api.asset, {params: {id: id}}).then((response) => {
           if (response.data.meta.status_code === 200) {
-            if (this.fileList.length) {
-              this.fileList.forEach((item, index) =>{
-                if (item.asset_id === id) {
-                  this.fileList.splice(index, 1)
-                }
-              })
+            if (type) {
+              if (this.fileillustrate) {
+                this.fileillustrate.forEach((p, ind) =>{
+                  if (p.asset_id === id) {
+                    this.fileillustrate.splice(ind, 1)
+                  }
+                })
+              }
+            } else {
+              if (this.fileList.length) {
+                this.fileList.forEach((item, index) =>{
+                  if (item.asset_id === id) {
+                    this.fileList.splice(index, 1)
+                  }
+                })
+              }
             }
             this.$message.success ('删除成功')
           } else {
@@ -533,7 +593,12 @@
       // 上传中
       uploadProgress(event, file, fileList) {
         this.uploadMsg = '上传中...'
-        console.log (event)
+      },
+      uploadProgress2(event, file, fileList) {
+        this.uploadMsg2 = '上传中...'
+      },
+      uploadProgress3(event, file, fileList) {
+        this.uploadMsg3 = '上传中...'
       },
       // 上传成功操作
       uploadSuccess(response, file, fileList) {
@@ -567,20 +632,24 @@
       },
       // 上传说明
       upload3Success(response, file, fileList) {
+        console.log('res', response)
+        console.log('file', file)
         let add = fileList[fileList.length - 1]
         let item = {
           name: add.name,
           url: add.url,
           edit: false,
+          size: file.size,
           summary: '',
           asset_id: add.response.asset_id
         }
         this.fileillustrate.push(item)
+        this.uploadMsg3 = ''
         console.log('55', this.fileillustrate)
       },
       // 上传专利
       upload2Success(response, file, fileList) {
-        this.uploadMsg = '只能上传jpg/png文件，且不超过5M'
+        this.uploadMsg2 = '只能上传jpg/png文件，且不超过5M'
         let add = fileList[fileList.length - 1]
         let item = {
           name: add.name,
@@ -633,11 +702,21 @@
               let res = response.data.data
               if (res) {
                 this.form = res
-                this.fileList = res.images_url
+                res.illustrate_url.forEach(i => {
+                  i.asset_id = i.id
+                  i.url = i.logo
+                })
                 res.images_url.forEach(item => {
                   item.asset_id = item.id
                   item.url = item.logo
                 })
+                res.patent_url.forEach(p => {
+                  p.asset_id = p.id
+                  p.url = p.logo
+                })
+                this.filepatent = res.patent_url
+                this.fileillustrate = res.illustrate_url
+                this.fileList = res.images_url
                 this.coverId = res.cover_id
               }
             } else {
@@ -859,7 +938,7 @@
     width: 120px;
   }
 
-  .form-btn button:first-child {
+  .form-btn button:not(:last-child) {
     margin-right: 10px;
   }
 
@@ -952,9 +1031,9 @@
     border-top: 1px solid #e6e6e6;
     padding-top: 20px;
   }
-  .form-btn>.el-button + .el-button {
-    margin-right: 0px;
-  }
+  /* .form-btn>.el-button + .el-button {
+    margin-right: 10px;
+  } */
   .uploadsMsg {
     padding-left: 10px;
     color: #999;
@@ -1022,8 +1101,97 @@
   .file-d:hover .item, .file-d:hover .item2{
     display: block;
   }
-  .patent-msg {
-    
+  /* .patent-msg {
+  } */
+  .patent-list {
+    height: 160px;
+    border: 1px solid #e6e6e6;
+    overflow: hidden;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    padding: 5px;
+  }
+  .patent-list img {
+    width: auto;
+    height: 100%;
+  }
+  .illustrate-list {
+    height: 42px;
+    margin-bottom: 10px;
+    background-color: #f7f7f7;
+    position: relative;
+  }
+  .illustrate-list i {
+    position: absolute;
+    left: 8px;
+    top: 7px;
+    width:30px;
+    height:30px;
+    margin-right: 10px;
+  }
+  .file-size {
+    position: absolute;
+    right: 30px;
+    top: 15px;
+  }
+  .file-name {
+    position: absolute;
+    left: 45px;
+    top: 6px;
+    max-width: 40%;
+    line-height: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .cancel-icons {
+    position: absolute;
+    right: 8px;
+    top: 15px;
+    width: 14px;
+    height: 14px;
+    background: url('../../../../../assets/images/tools/project_management/Close@2x.png') no-repeat center/contain;
+    cursor: pointer;
+  }
+  .document {
+    background: url('../../../../../assets/images/tools/cloud_drive/type/document@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .other {
+    background: url('../../../../../assets/images/tools/cloud_drive/type/other@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .artboard {
+    background: url('../../../../../assets/images/tools/cloud_drive/type/artboard@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .audio {
+    background: url('../../../../../assets/images/tools/cloud_drive/type/audio@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .compress {
+    background: url('../../../../../assets/images/tools/cloud_drive/type/compress@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .folder {
+    background: url('../../../../../assets/images/tools/cloud_drive/type/folder@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .image {
+    background: url('../../../../../assets/images/tools/cloud_drive/type/image@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .powerpoint {
+    background: url('../../../../../assets/images/tools/cloud_drive/type/powerpoint@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .spreadsheet {
+    background: url('../../../../../assets/images/tools/cloud_drive/type/spreadsheet@2x.png') 0 0 no-repeat;
+    background-size: contain;
+  }
+  .video {
+    background: url('../../../../../assets/images/tools/cloud_drive/type/video@2x.png') 0 0 no-repeat;
+    background-size: contain;
   }
   @media screen and (max-width: 767px) {
     .right-content .content-box {

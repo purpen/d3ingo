@@ -93,8 +93,8 @@
                   <el-form-item label="项目名称" prop="name" label-position="top">
                     <el-input v-model="form.name" placeholder="请输入项目名称"></el-input>
                   </el-form-item>
-                  <p class="mg-b-10">设计类型</p>
-                  <el-row class="des-type">
+                  <p class="mg-b-10 tc-6">设计类型</p>
+                  <el-row class="des-type mg-b-10">
                     <el-col :span="6">
                       <button  @click="addType(1)" 
                         :class="[{'red-btn': form.design_types.indexOf(1) !== -1 || form.design_types.indexOf('1') !== -1}]"> 产品策略</button>
@@ -188,7 +188,7 @@
                 size="tiny"
                 class="submit-form"
                 >
-                <div>
+                <div class="details-list">
                   <div class="details">
                     <el-row>
                       <el-col :span="6">
@@ -705,6 +705,7 @@
     background: #fff;
     border-radius: 4px;
     border: 1px solid #e6e6e6;
+    color: #999;
   }
   .no-demand {
     text-align: center;
@@ -740,5 +741,8 @@
     padding: 10px 20px;
     max-height: 300px;
     overflow-y: auto;
+  }
+  .details-list {
+    padding: 20px;
   }
 </style>
