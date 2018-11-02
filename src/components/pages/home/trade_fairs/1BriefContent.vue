@@ -223,8 +223,8 @@
       </div>
 
 
-      <div class="bottom-background">
-      </div>
+      <!-- <div class="bottom-background">
+      </div> -->
     </div>
 
   </div>

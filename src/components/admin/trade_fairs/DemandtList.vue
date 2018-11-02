@@ -126,7 +126,7 @@
                     <span class="clearfix">
                       <a href="javascript:void(0);"
                         v-if="scope.row.status === 1" @click="setVerify(scope.$index, scope.row,2)" class="tag-pass">通过</a>
-                      <a href="javascript:void(0);" v-if="scope.row.status === 1 || scope.row.status === 2" @click="setRefuseRease(scope.$index, scope.row, -1)"
+                      <a href="javascript:void(0);" v-if="scope.row.status === 1 || scope.row.status === 2" @click="setVerify(scope.$index, scope.row, -1)"
                       class="tag-refuse">拒绝</a>
                     </span>
                     <!-- <a href="javascript:void(0);" v-if="scope.row.status === 1" @click="setStatus(scope.$index, scope.row, 0)" class="tag-disable">禁用</a>

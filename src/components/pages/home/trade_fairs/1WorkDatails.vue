@@ -280,7 +280,8 @@
           <div class="instruction-blook">
           <span class="blook-left">产品功能说明书</span>
           <div class="seen-button">
-            <span class="seen-text" @click="seenBook(formup.illustrate_url)">查看详情</span>
+            <!-- <span class="seen-text" @click="seenBook(formup.illustrate_url)">查看详情</span> -->
+            <span class="seen-text">查看详情</span>
           </div>
           </div>
         </div>
