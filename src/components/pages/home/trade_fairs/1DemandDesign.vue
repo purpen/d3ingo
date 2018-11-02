@@ -69,7 +69,7 @@
       </div>
       <!-- 右下角图标 -->
       <div class="right">
-        <div class="right-top">
+        <div class="right-top" @click="clientPhone = true">
           <div class="pMassgae">
             联系客服
           </div>
@@ -90,6 +90,17 @@
           <img class="avatar" v-else src="../../../../assets/images/avatar_100.png" width="100"/>
           <div class="company-name">{{callDtails.company_name}}</div>
           <div class="right-number">{{callDtails.phone}}</div>
+        </div>
+      </el-dialog>
+      <el-dialog
+        title="客服电话"
+        :visible.sync="clientPhone"
+        size="tiny"
+        class="phone-style">
+        <div class="title-center">
+          <img class="avatt" src="../../../../assets/images/trade_fairs/list/clientPhone.png" width="100"/>
+          <div class="company-name">耿霆</div>
+          <div class="right-number">13031154842</div>
         </div>
       </el-dialog>
     </div>
@@ -212,6 +223,7 @@
         interestButton: false,
         dialogUpdateVisible: false,
         callPhone: false,
+        clientPhone: false,
         demandList: '',
         formup: {},
         isLoading: false,
@@ -390,6 +402,11 @@
   .content-box {
     min-height: 260px;
     background: #3519B2;
+  }
+  .avatt {
+    border-radius: 50%;
+    overflow: hidden;
+    vertical-align: middle;
   }
   .large-background {
     position: relative;
