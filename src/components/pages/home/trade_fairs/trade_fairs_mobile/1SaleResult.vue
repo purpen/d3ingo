@@ -1,5 +1,5 @@
 <template>
-  <div class="content-box" v-loading="isLoading">
+  <div class="content-box moblie-lod" v-loading="isLoading">
     <div class="large-background">
       <!-- 代售成果 -->
       <div class="empty" v-if="!designCases.length && !isLoading">
@@ -28,10 +28,10 @@
                   <div class="list-bottom">
                     <div class="list-left">
                       <div class="list-way">
-                        <span>出让方式：&nbsp;&nbsp;{{achieve.sell_type === 1 ? '全款出售' : '股权合作'}}</span><span class="money">{{achieve.sell_type === 2 ?achieve.share_ratio+'%' : ''}}</span>
+                        <span>出让方式：&nbsp;{{achieve.sell_type === 1 ? '全款出售' : '股权合作'}}</span><span class="money">{{achieve.sell_type === 2 ?achieve.share_ratio+'%' : ''}}</span>
                       </div>
                       <div class="list-sum">
-                        <span>出让金额：&nbsp;&nbsp;<span class="money">￥{{achieve.price}}</span></span>
+                        <span>出让金额：&nbsp;<span class="money">￥{{achieve.price}}</span></span>
                       </div>
                     </div>
                     <div class="list-right" @click="collect(achieve.id)">
@@ -240,7 +240,7 @@
   .list-text {
     padding-top: 10px;
     height: 70px;
-    margin: 0 auto;
+    margin: 0 5px;
   }
   .list-title {
     font-family: PingFangSC-Regular;
@@ -248,6 +248,8 @@
     font-size: 14px;
     color: #222222;
     line-height: 17.04px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .list-left {
     padding-top: 8px;

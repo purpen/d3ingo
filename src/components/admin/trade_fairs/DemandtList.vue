@@ -219,7 +219,7 @@ export default {
         page: 1,
         pageSize: 50,
         totalCount: 0,
-        sort: 1,
+        sort: 0,
         type: 0,
         evt: '',
         val: '',
@@ -331,7 +331,7 @@ export default {
       const self = this
       // 查询条件
       self.query.page = parseInt(this.$route.query.page || 1)
-      self.query.sort = this.$route.query.sort || 1
+      self.query.sort = this.$route.query.sort || 0
       self.query.type = this.$route.query.type || ''
       self.query.evt = this.$route.query.evt || '2'
       self.query.val = this.$route.query.val || ''
@@ -340,7 +340,7 @@ export default {
         this.menuType = parseInt(self.query.type)
       }
       self.isLoading = true
-      self.$http.get(api.adminDesignDemandLists, {params: {page: self.query.page, per_page: self.query.pageSize, sort: self.query.sort, status: self.query.type}})
+      self.$http.get(api.adminDesignDemandLists, {params: {page: self.query.page, per_page: self.query.pageSize, sort: 0, status: self.query.type}})
       .then (function(response) {
         self.isLoading = false
         self.tableData = []

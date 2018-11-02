@@ -1,5 +1,5 @@
 <template>
-  <div class="content-box load-index" v-loading="isLoading">
+  <div class="content-box load-index moblie-lod" v-loading="isLoading">
     <div class="large-background">
       <!-- 设计需求 -->
       <div class="empty" v-if="!demandList.length && !isLoading">

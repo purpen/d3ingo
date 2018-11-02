@@ -68,7 +68,7 @@
               <span class="button-interest">已感兴趣</span>
             </div>
           </div>
-          <div class="list-left">
+          <div class="list-left" @click="dialogBuy = true">
             <div class="list-button buy-text">
               <span class="details-text">立即购买</span>
             </div>
@@ -86,6 +86,14 @@
         <div class="company-name">{{formup.contacts}}</div>
         <div class="right-number">{{formup.contact_number}}</div>
       </div>
+    </el-dialog>
+    <el-dialog
+      :visible.sync="dialogBuy"
+      size="tiny" class="hint-text">
+      <span class="move-text">请移步PC端进行操作</span>
+      <span slot="footer" class="dialog-footer">
+        <p @click="dialogBuy = false" class="sure-text">确 定</p>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -105,7 +113,8 @@
         dialogCall: false,
         urlLogo: '',
         companyName: '',
-        imgUrl: ''
+        imgUrl: '',
+        dialogBuy: false
       }
     },
     created() {
@@ -193,6 +202,18 @@
 <style scoped>
   .title-bottom {
     padding-top: 10px;
+  }
+  .sure-text {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #FF6E73;
+    text-align: center;
+  }
+  .move-text {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #666666;
+    text-align: center;
   }
   .details-text:before {
     content: '';
