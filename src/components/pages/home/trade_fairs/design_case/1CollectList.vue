@@ -245,9 +245,9 @@
         .then (function (response) {
           that.isLoading = false
           if (response.data.meta.status_code === 200) {
-            // if (response.data.data && response.data.data.length) {
-            //   that.collectList = response.data.data
-            // }
+            if (response.data.data && response.data.data.length) {
+              that.collectList = response.data.data
+            }
           }
         })
         .catch (function (error) {

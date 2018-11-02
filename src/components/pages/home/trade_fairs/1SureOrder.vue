@@ -21,7 +21,7 @@
       </div>
       <div class="bottom-size">
         <div class="img-size">
-
+          <img :src="coverUrl" class="cover-img">
         </div>
         <div class="order-item">
           <div class="right-left">
@@ -34,7 +34,7 @@
           <div class="right-right">
             <div class="right-text left-pad">{{formup.title}}</div>
             <div class="right-text left-pad">{{companyName}}</div>
-            <div class="right-text left-pad">{{formup.sell_type===1?'全款出售':'股权出让'+formup.share_ratio+'%'}}</div>
+            <div class="right-text left-pad">{{formup.sell_type===1?'全额出让':'股权出让'+formup.share_ratio+'%'}}</div>
             <div class="right-text left-pad color-red">￥{{formup.price}}</div>
             <div class="right-text bot-over1">{{formup.content}}</div>
           </div>
@@ -59,7 +59,8 @@ export default {
     return {
       formup: '',
       companyName: '',
-      isLoading: false
+      isLoading: false,
+      coverUrl: ''
     }
   },
   methods: {
@@ -74,6 +75,7 @@ export default {
           if (response.data.meta.status_code === 200) {
             this.formup = response.data.data
             this.companyName = response.data.data.design_company.company_name
+            this.coverUrl = response.data.data.cover.small
             this.isLoading = false
           } else {
             this.isLoading = false
@@ -100,6 +102,12 @@ export default {
 .pay-box {
   float: right;
   padding-right: 30px;
+}
+.img-size {
+  text-align: center;
+}
+.cover-img {
+  height: 100%;
 }
 .sub-button {
   cursor: pointer;

@@ -264,7 +264,7 @@ export default {
       this.dialogVisible = false
       var id = item.id
       var self = this
-      self.$http.get(api.adminDesignResultSave, {params: {id: id, type: evt}})
+      self.$http.get(api.adminDesignResultSave, {params: {id: id, type: evt, content: self.verify.refuseRease}})
       .then (function(response) {
         self.verify.refuseRease = ''
         if (response.data.meta.status_code === 200) {

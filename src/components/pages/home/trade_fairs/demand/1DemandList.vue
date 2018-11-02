@@ -74,7 +74,7 @@
                         v-if="d.status === -1"
                         @click="upDetails(d.id, 2)"
                         >编辑</el-button>
-                        <el-button class="mg-t-10" @click="deleteVisible(d)" v-if="d.status === 2">
+                        <el-button class="mg-t-10" @click="deleteVisible(d)" v-if="d.status === 2 || d.status === -1">
                           关闭项目
                         </el-button>
                       </el-col>
@@ -93,8 +93,8 @@
                   <el-form-item label="项目名称" prop="name" label-position="top">
                     <el-input v-model="form.name" placeholder="请输入项目名称"></el-input>
                   </el-form-item>
-                  <p class="mg-b-10">设计类型</p>
-                  <el-row class="des-type">
+                  <p class="mg-b-10 tc-6">设计类型</p>
+                  <el-row class="des-type mg-b-10">
                     <el-col :span="6">
                       <button  @click="addType(1)" 
                         :class="[{'red-btn': form.design_types.indexOf(1) !== -1 || form.design_types.indexOf('1') !== -1}]"> 产品策略</button>
@@ -188,7 +188,7 @@
                 size="tiny"
                 class="submit-form"
                 >
-                <div>
+                <div class="details-list">
                   <div class="details">
                     <el-row>
                       <el-col :span="6">
@@ -271,7 +271,7 @@
                   </div>
                 </div>
                 <span slot="footer" class="dialog-footer">
-                  <el-button @click="upDetails(formup.id, 2)">编辑修改</el-button>
+                  <el-button @click="upDetails(formup.id, 2)">重新编辑</el-button>
                 </span>
               </el-dialog>
                <el-dialog
@@ -705,6 +705,7 @@
     background: #fff;
     border-radius: 4px;
     border: 1px solid #e6e6e6;
+    color: #999;
   }
   .no-demand {
     text-align: center;
@@ -738,7 +739,10 @@
   }
   .submit-form .el-form {
     padding: 10px 20px;
-    max-height: 300px;
+    max-height: 450px;
     overflow-y: auto;
+  }
+  .details-list {
+    padding: 20px;
   }
 </style>

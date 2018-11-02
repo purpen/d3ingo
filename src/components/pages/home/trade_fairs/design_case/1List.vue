@@ -1,7 +1,7 @@
 <template>
   <div class="blank30 vcenter">
     <el-row>
-      <v-menu :class="[isMob ? 'v-menu' : '']" currentName="sdDesignCase_list"></v-menu>
+      <v-menu currentName="sdDesignCase_list"></v-menu>
 
       <div :class="{'vcenter-right-plus': leftWidth === 4,
         'vcenter-right': leftWidth === 2,
@@ -24,7 +24,7 @@
                       <ul v-if="d.status === 1">
                         <li class="edit" @click="updateStatus(d.id, 2)">提交</li>
                         <li class="del" >
-                          <a class="toUpdate" @click="toUpdateUrl(d.id)">编辑</a>
+                          <a class="toUpdate" @click="toUpdateUrl(d.id)">修改</a>
                         </li>
                         <li class="del" @click="updateBtn(d, 2)">删除</li>
                       </ul>
@@ -36,7 +36,7 @@
                         <li class="edit" @click="PriceBtn(d)">修改价格</li>
                       </ul>
                       <ul v-if="d.status === -1">
-                        <li class="edit" @click="toUpdateUrl(d.id)">修改</li>
+                        <li class="del" @click="toUpdateUrl(d.id)">修改</li>
                         <li class="edit" @click="updateBtn(d, 2)">删除</li>
                       </ul>
                     </div>
@@ -51,7 +51,7 @@
                         :target="isMob ? '_self' : '_blank'"
                         class="tc-2 protrude fz-18">{{ d.title }}
                       </router-link>
-                      <span class="fz-14 tc-6">出让方式: {{d.sell_type===1?'全款出售':'股权出让'}}
+                      <span class="fz-14 tc-6">出让方式: {{d.sell_type===1?'全额出让':'股权出让'}}
                         <span v-if="d.sell_type===2" class="tc-red">{{d.share_ratio+'%'}}</span>
                       </span>
                       <p class="tc-6 mg-top-5">
@@ -117,7 +117,7 @@
             <el-row :gutter="10">
               <el-col :span="12" v-if="formPrice.sell_type&&formPrice.sell_type===2">
                 <el-form-item label="出让比例" prop="share_ratio">
-                  <el-input v-model="formPrice.share_ratio" >
+                  <el-input v-model="formPrice.share_ratio" @blur="shareRatioBlur(formPrice.share_ratio)">
                     <template slot="append">%</template>
                   </el-input>
                 </el-form-item>
@@ -220,7 +220,7 @@
       },
       // 修改样式
       PriceBtn(ele) {
-        this.formPrice = ele
+        this.formPrice = {...ele}
         this.dialogVisible = true
       },
       // 修改状态按钮
@@ -231,8 +231,11 @@
           title: ele.title,
           opt: opt
         }
-        if (opt === 1 || opt === 3) {
+        if (opt === 3) {
           this.updateform.status = 1
+        }
+        if (opt === 1) {
+          this.updateform.status = -1
         }
         if (opt === 2) {
           this.updateform.status = 2
@@ -264,21 +267,43 @@
           that.isLoading = false
         })
       },
+      // 比例按钮
+      shareRatioBlur(val) {
+        if (isNaN(val)) {
+          this.$message.error ('请输入1~100的比例!1')
+          return
+        }
+        if (val > 100 || val < 0) {
+          this.$message.error ('请输入1~100的比例!')
+          return
+        }
+      },
       // 设计成果价格修改
       updatePrice() {
         let that = this
+        // 验证金额是否合理
+        if (isNaN(that.formPrice.price)) {
+          that.$message.error ('请输入合理的金额!')
+          return false
+        }
+        if (Number(that.formPrice.price) < 0) {
+          that.$message.error ('请输入合理的金额!')
+          return false
+        }
+        that.formPrice.share_ratio = that.formPrice.sell_type === 1 ? 100 : that.formPrice.share_ratio
         let uprow = {
           id: that.formPrice.id,
           sell_type: that.formPrice.sell_type,
-          share_ratio: that.formPrice.sell_type === 1 ? 100 : that.formPrice.share_ratio,
+          share_ratio: that.formPrice.share_ratio,
           price: that.formPrice.price
         }
         that.$http.post (api.sdDesignResultsSavePrice, uprow)
         .then (function (response) {
           if (response.data.meta.status_code === 200) {
+            that.formPrice.price = Number(that.formPrice.price).toFixed(2)
             that.designCases.forEach((item, index) => {
               if (item.id === response.data.data.id) {
-                that.$set(that.designCases, index, response.data.data)
+                that.$set(that.designCases, index, that.formPrice)
               }
             })
             that.dialogVisible = false
@@ -516,7 +541,15 @@
   }
   .toUpdate {
     display: block;
+    color: #999;
   }
+  .del:hover .toUpdate {
+    color: #ff5a5f;
+  }
+  .protrude:hover {
+    color: #ff5a5f;
+  }
+
   @media screen and (max-width: 767px) {
     .opt a {
       font-size: 1.4rem;

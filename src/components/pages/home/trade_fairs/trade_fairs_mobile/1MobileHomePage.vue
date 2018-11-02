@@ -209,9 +209,7 @@
   }
   .features-text {
     padding-top: 20px;
-    margin: 0 auto;
-    padding-left: 10px;
-    padding-right: 10px;
+    margin: 0 15px;
     text-align: left;
   }
   .text-style {

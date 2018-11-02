@@ -1,6 +1,6 @@
 <template>
-  <div class="content-box" v-loading="isLoading">
-    <div class="large-background">
+  <div class="content-box achieve-load" v-loading="isLoading">
+    <div class="large-background2">
       <div class="right-background"></div>
       <div class="left-background"></div>
       <!-- 代售成果 -->
@@ -19,7 +19,7 @@
               <div class="list-item">
                 <div class="list-image" @click="listDatail(achieve.id)">
                   <div class="image-size">
-                    <img :src="achieve.cover.small" alt="点击查看详情" class="img-size">
+                    <img alt="点击查看详情" class="img-size" :src="achieve.cover.small">
                   </div>
                 </div>
                 <div class="list-text">
@@ -29,10 +29,10 @@
                   <div class="list-bottom">
                     <div class="list-left">
                       <div class="list-way">
-                        <span>出让方式：&nbsp;&nbsp;{{achieve.sell_type === 1 ? '全款出售' : '股权合作'}}</span><span class="money">{{achieve.sell_type === 2 ?achieve.share_ratio+'%' : ''}}</span>
+                        <span>出让方式：&nbsp;{{achieve.sell_type === 1 ? '全额出让' : '股权合作'}}</span><span class="money">{{achieve.sell_type === 2 ?achieve.share_ratio+'%' : ''}}</span>
                       </div>
                       <div class="list-sum">
-                        <span>出让金额：&nbsp;&nbsp;<span class="money">￥{{achieve.price}}</span></span>
+                        <span>出让金额：&nbsp;<span class="money">￥{{achieve.price}}</span></span>
                       </div>
                     </div>
                     <div class="list-right" @click="collect(achieve.id)">
@@ -62,7 +62,7 @@
       
       <!-- 右下角图标 -->
       <div class="right">
-        <div class="right-top">
+        <div class="right-top" @click="clientPhone = true">
           <div class="pMassgae">
             联系客服
           </div>
@@ -73,10 +73,18 @@
           </div>
         </div>
       </div>
-      <div class="bottom-background">
-      </div>
     </div>
-
+    <el-dialog
+        title="客服电话"
+        :visible.sync="clientPhone"
+        size="tiny"
+        class="phone-style">
+        <div class="title-center">
+          <img class="avatt" src="../../../../assets/images/trade_fairs/list/clientPhone.png" width="100"/>
+          <div class="company-name">耿霆</div>
+          <div class="right-number">13031154842</div>
+        </div>
+      </el-dialog>
   </div>
 </template>
 
@@ -86,9 +94,9 @@
     name: 'sale_result',
     data() {
       return {
-        interestButton: false,
         isLoading: false,
         designCases: '',
+        clientPhone: false,
         query: {
           page: 1,
           pageSize: 20,
@@ -96,7 +104,7 @@
           sort: 1,
           type: 0,
           test: null
-        },
+        }
       }
     },
     created() {
@@ -196,7 +204,33 @@
     min-height: 325px;
     background: #3519B2;
   }
-  .large-background {
+  /* 详情弹出框 */
+  .title-center {
+    margin: 0 auto;
+    text-align: center;
+    width: 50%;
+    margin-top: -20px;
+  }
+  .company-name {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #222222;
+    letter-spacing: 0;
+    padding-top: 17px;
+  }
+  .right-number {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #FF5A5F;
+    letter-spacing: 0;
+    padding-top: 12px;
+  }
+  .avatt {
+    border-radius: 50%;
+    overflow: hidden;
+    vertical-align: middle;
+  }
+  .large-background2 {
     position: relative;
   }
   .right-background {
@@ -376,17 +410,16 @@
     border: 1px solid #E6E6E6;
   }
   .img-size {
-    width: 100%;
     height: 100%;
   }
   .image-size {
     cursor: pointer;
     height: 184px;
+    text-align: center;
   }
   .list-text {
-    width: 240px;
     height: 70px;
-    margin: 0 auto;
+    margin: 0 10px;
     margin-top: 10px;
   }
   .list-title {
@@ -394,6 +427,8 @@
     font-size: 14px;
     color: #222222;
     line-height: 17.04px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .list-bottom {
     height: 34px;
@@ -482,11 +517,5 @@
     left: -8px;
     background: url('../../../../assets/images/trade_fairs/list/BeInterestedClick@2x.png') no-repeat center;
     background-size: contain;
-  }
-  .bottom-background {
-    margin-bottom: -50px;
-    height: 100px;
-    background: url('../../../../assets/images/trade_fairs/bottom.png') no-repeat center;
-    background-size: cover;
   }
 </style>
