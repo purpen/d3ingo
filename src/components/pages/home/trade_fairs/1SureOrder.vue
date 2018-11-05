@@ -3,7 +3,7 @@
     <div class="ordershow-span-color">
       <div class="dis-flex" style="margin-bottom: 10px">
         <div class="mar-r-10">
-          <router-link to="/shunde/trade_fairs/demandLogin" class="font-14">代售成果</router-link>
+          <router-link to="/shunde/trade_fairs/demand_login" class="font-14">代售成果</router-link>
           <span class="border"></span>
         </div>
         <div class="mar-r-10">
