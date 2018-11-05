@@ -117,7 +117,7 @@
             <el-row :gutter="10">
               <el-col :span="12" v-if="formPrice.sell_type&&formPrice.sell_type===2">
                 <el-form-item label="出让比例" prop="share_ratio">
-                  <el-input v-model="formPrice.share_ratio" @blur="shareRatioBlur(formPrice.share_ratio)">
+                  <el-input v-model="formPrice.share_ratio">
                     <template slot="append">%</template>
                   </el-input>
                 </el-form-item>
@@ -155,6 +155,22 @@
       vMenuSub
     },
     data() {
+      var ratio = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入比例'))
+        } else if (isNaN(value) || value > 100 || value < 0){
+          callback(new Error('请输入1~100的比例'))
+        } else {
+          callback()
+        }
+      }
+      var priceVerify = (rule, value, callback) => {
+        if (isNaN(value) || value < 0){
+          callback(new Error('请输入合理的金额'))
+        } else {
+          callback()
+        }
+      }
       return {
         isLoading: false,
         designCases: [], // 成果列表
@@ -170,7 +186,11 @@
         },
         ruleForm: {
           price: [
-            {required: true, type: 'number', message: '请填写合理的金额', trigger: 'blur'}
+            {required: true, type: 'number', message: '请填写合理的金额', trigger: 'blur'},
+            { validator: priceVerify, trigger: 'blur' }
+          ],
+          share_ratio: [
+            { validator: ratio, trigger: 'blur' }
           ]
         },
         userId: this.$store.state.event.user.id
@@ -267,29 +287,9 @@
           that.isLoading = false
         })
       },
-      // 比例按钮
-      shareRatioBlur(val) {
-        if (isNaN(val)) {
-          this.$message.error ('请输入1~100的比例!1')
-          return
-        }
-        if (val > 100 || val < 0) {
-          this.$message.error ('请输入1~100的比例!')
-          return
-        }
-      },
       // 设计成果价格修改
       updatePrice() {
         let that = this
-        // 验证金额是否合理
-        if (isNaN(that.formPrice.price)) {
-          that.$message.error ('请输入合理的金额!')
-          return false
-        }
-        if (Number(that.formPrice.price) < 0) {
-          that.$message.error ('请输入合理的金额!')
-          return false
-        }
         that.formPrice.share_ratio = that.formPrice.sell_type === 1 ? 100 : that.formPrice.share_ratio
         let uprow = {
           id: that.formPrice.id,

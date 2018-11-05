@@ -13,7 +13,7 @@
             <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px" class="common">
               <el-row>
                 <el-col :span="24">
-                  <el-form-item label="上传图片" prop="">
+                  <el-form-item label="上传图片">
                     <!-- <el-upload
                       class="upload-demo upload-design upload"
                       :action="uploadUrl"
@@ -45,48 +45,6 @@
                       <el-button class="is-custom" type="primary" size="small">+&nbsp;上传图片</el-button>
                       <span class="uploadsMsg">{{uploadMsg}}</span>
                    </el-upload>
-                    <!-- <div class="file-list">
-                      <el-row :gutter="20">
-                        <el-col :span="isMob ? 24 : 6" v-for="(d, index) in fileList" :key="index">
-                          <el-card :body-style="{ padding: '0px' }" class="item">
-                            <div class="image-box">
-                              <i v-if="parseInt(coverId) === d.response.asset_id"></i>
-                              <img :src="d.url">
-                            </div>
-                            <div class="content">
-                              <p>{{ d.name }}</p>
-                              <div class="summary-edit" v-if="d.edit">
-                                <textarea v-model="d.summary"></textarea>
-                              </div>
-                              <div class="summary" v-else>
-                                <p v-if="d.summary">{{ d.summary }}</p>
-                                <p class="image-no-summary" v-else>暂无描述信息</p>
-                              </div>
-                              <div class="opt" v-if="d.edit">
-                                <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"
-                                   @click="saveAssetSummary">保存</a>
-                              </div>
-                              <div class="opt" v-else>
-                                <el-tooltip class="item" effect="dark" content="删除图片" placement="top">
-                                  <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"
-                                     @click="delAsset"><i class="fa fa-times" aria-hidden="true"></i></a>
-                                </el-tooltip>
-                                <el-tooltip class="item" effect="dark" content="编辑文字" placement="top">
-                                  <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"
-                                     @click="editAssetBtn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                                </el-tooltip>
-                                <el-tooltip class="item" effect="dark" content="设为封面" placement="top">
-                                  <a href="javascript:void(0);" :item_id="d.response.asset_id" :index="index"
-                                     @click="setCoverBtn"><i
-                                    :class="{'fa': true, 'fa-flag': true, 'is-active': parseInt(coverId) === d.response.asset_id ? true : false }"
-                                    aria-hidden="true"></i></a>
-                                </el-tooltip>
-                              </div>
-                            </div>
-                          </el-card>
-                        </el-col>
-                      </el-row>
-                    </div> -->
                     <div class="img-files">
                       <el-row>
                         <el-col :span="6" v-for="(d, index) in fileList" :key="index" class="file-d">
@@ -157,15 +115,15 @@
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
                   <el-row :gutter="10">
-                    <el-col :span="12" v-show="form.sell_type&&form.sell_type===2">
+                    <el-col :span="12" v-if="form.sell_type&&form.sell_type===2">
                       <el-form-item label="出让比例" prop="share_ratio">
-                        <el-input v-model="form.share_ratio" :maxlength="3" placeholder="比例最大为100" @blur="shareRatioBlur(form.share_ratio)">
+                        <el-input v-model="form.share_ratio" :maxlength="3" placeholder="比例最大为100">
                           <template slot="append">%</template>
                         </el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="(form.sell_type&&form.sell_type===2)?12:24">
-                      <el-form-item label="出让金额">
+                      <el-form-item label="出让金额" prop="price">
                         <el-input v-model.number="form.price" :maxlength="12">
                           <template slot="append">元</template>
                         </el-input>
@@ -212,6 +170,7 @@
                       :on-success="upload3Success"
                       :show-file-list="false"
                       :on-progress="uploadProgress3"
+                      :before-upload="beforeUpload2"
                       >
                       <el-button class="red-button" >
                       +&nbsp;上传说明书
@@ -284,11 +243,22 @@
       vueInputTag
     },
     data () {
-      // var designTypeval = (rule, value, callback) => {
-      //   if (!this.form.design_types || this.form.design_types.length === 0) {
-      //     callback('请选择设计类别')
-      //   }
-      // }
+      var ratio = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入比例'))
+        } else if (isNaN(value) || value > 100 || value < 0){
+          callback(new Error('请输入1~100的比例'))
+        } else {
+          callback()
+        }
+      }
+      var priceVerify = (rule, value, callback) => {
+        if (isNaN(value) || value < 0){
+          callback(new Error('请输入合理的金额'))
+        } else {
+          callback()
+        }
+      }
       return {
         userId: this.$store.state.event.user.id,
         itemId: null,
@@ -321,18 +291,18 @@
           'x:random': '',
           'x:user_id': this.$store.state.event.user.id,
           'x:target_id': '',
-          'x:type': 38
+          'x:type': 39
         },
         uploadParam3: {
           'token': '',
           'x:random': '',
           'x:user_id': this.$store.state.event.user.id,
           'x:target_id': '',
-          'x:type': 39
+          'x:type': 38
         },
         uploadMsg: '格式：JPG／PNG 大小：小于5MB',
         uploadMsg2: '格式：JPG／PNG 大小：小于5MB',
-        uploadMsg3: '',
+        uploadMsg3: '格式：PDF 大小：小于5MB',
         imageUrl: '',
         design_types: [],
         form: {
@@ -340,17 +310,12 @@
           field: '',
           industry: '',
           title: '',
-          prize_time: '',
           prize: '',
-          patent_time: '',
-          patent_info: '',
-          customer: '',
-          mass_production: 0,
           sell_type: 1,
-          sales_volume: '',
           cover_id: '',
-          profile: '',
-          label: []
+          label: [],
+          share_ratio: 100,
+
         },
         ruleForm: {
           title: [
@@ -360,18 +325,18 @@
             {required: true, message: '请填写设计描述', trigger: 'blur'},
             {min: 10, max: 500, message: '长度在 10 到 500 个字符', trigger: 'blur'}
           ],
-          profile: [
-            {required: true, message: '请填写案例描述', trigger: 'blur'},
-            {min: 10, max: 500, message: '长度在 10 到 500 个字符', trigger: 'blur'}
-          ],
           price: [
-            {required: true, type: 'number', message: '请填写合理的金额', trigger: 'blur'}
+            {required: true, type: 'number', message: '请填写合理的金额', trigger: 'blur'},
+            { validator: priceVerify, trigger: 'blur' }
           ],
           contacts: [
             {required: true, message: '请填写联系人', trigger: 'blur'}
           ],
           contact_number: [
             {required: true, message: '请填写联系电话', trigger: 'blur'}
+          ],
+          share_ratio: [
+            { validator: ratio, trigger: 'blur' }
           ]
         }
       }
@@ -391,7 +356,7 @@
       // 按钮
       shareRatioBlur(val) {
         if (isNaN(val)) {
-          this.$message.error ('请输入1~100的比例!1')
+          this.$message.error ('请输入1~100的比例!')
           return
         }
         if (val > 100 || val < 0) {
@@ -406,17 +371,7 @@
           that.$message.error ('必须设置一张封面图!')
           return false
         }
-        // 验证金额是否合理
-        if (isNaN(that.form.price)) {
-          that.$message.error ('请输入合理的金额!')
-          return false
-        }
-        if (Number(that.form.price) < 0) {
-          that.$message.error ('请输入合理的金额!')
-          return false
-        }
-
-        if (!that.fileList.length || !that.filepatent.length || !that.fileillustrate.length) {
+        if (!that.fileList.length) {
           that.$message.error ('请完善信息!')
           return false
         }
@@ -651,6 +606,20 @@
           return false
         }
       },
+      // 说明书上传之前操作
+      beforeUpload2(file) {
+        const arr = ['application/pdf']
+        const isLt5M = file.size / 1024 / 1024 < 5
+
+        if (arr.indexOf (file.type) === -1) {
+          this.$message.error ('上传文件格式不正确!')
+          return false
+        }
+        if (!isLt5M) {
+          this.$message.error ('上传文件大小不能超过 5MB!')
+          return false
+        }
+      },
       // 上传说明
       upload3Success(response, file, fileList) {
         console.log('res', response)
@@ -867,6 +836,11 @@
         }
       },
       sellType(newValue, oldValue) {
+        if (newValue === 1) {
+           this.form.share_ratio = 100
+        } else {
+          this.form.share_ratio = ''
+        }
         if (newValue !== oldValue) {
           this.form.price = null
           return false
@@ -883,73 +857,6 @@
         console.log(that.$store.state.event.user)
         that.form.contact_number = that.$store.state.event.user.phone
       }
-      // if (id) {
-      //   that.itemId = id
-      //   that.uploadParam['x:target_id'] = id
-      //   that.$http.get (api.designCaseId.format (id), {})
-      //     .then (function (response) {
-      //       if (response.data.meta.status_code === 200) {
-      //         that.form = response.data.data
-      //         if (that.form.prizes) {
-      //           if (that.form.prizes.length) {
-      //             that.$set(that, 'is_prize', true)
-      //             that.$set(that.form, 'prize_time', that.form.prizes[0].time)
-      //             that.$set(that.form, 'prize', that.form.prizes[0].type)
-      //           }
-      //         }
-      //         if (that.form.patent) {
-      //           if (that.form.patent.length) {
-      //             that.$set(that, 'is_apply', true)
-      //             that.$set(that.form, 'patent_time', that.form.patent[0].time)
-      //             that.$set(that.form, 'patent_info', that.form.patent[0].type)
-      //           }
-      //         } else {
-      //           that.$set(that, 'is_apply', false)
-      //         }
-      //         if (that.form.cover_id) {
-      //           that.coverId = that.form.cover_id
-      //         }
-      //         if (response.data.data.sales_volume === 0) {
-      //           that.form.mass_production = 0
-      //         } else {
-      //           that.form.mass_production = 1
-      //         }
-      //         if (response.data.data.case_image) {
-      //           let files = []
-      //           for (let i = 0; i < response.data.data.case_image.length; i++) {
-      //             let obj = response.data.data.case_image[i]
-      //             let item = {}
-      //             item['response'] = {}
-      //             item['id'] = obj['id']
-      //             item['name'] = obj['name']
-      //             item['url'] = obj['middle']
-      //             item['summary'] = obj['summary']
-      //             item['response']['asset_id'] = obj['id']
-      //             item['edit'] = false
-      //             files.push (item)
-      //           }
-      //           that.fileList = files
-      //         }
-      //         if (response.data.data.prizes && response.data.data.prizes.length !== 0) {
-      //           that.prizes = response.data.data.prizes
-      //         }
-      //         if (response.data.data.patent && response.data.data.patent.length !== 0) {
-      //           that.patents = response.data.data.patent
-      //         }
-      //         that.form.design_types = response.data.data.design_types
-      //         console.log(response.data.data.design_types)
-      //         // if (des_types && des_types.length !== 0) {
-      //         //   that.form.design_types = des_types
-      //         // }
-      //       }
-      //     })
-      //     .catch (function (error) {
-      //       that.$message.error (error.message)
-      //       return false
-      //     })
-      // } else {
-      //   that.itemId = null
-      // }
     }
   }
 
