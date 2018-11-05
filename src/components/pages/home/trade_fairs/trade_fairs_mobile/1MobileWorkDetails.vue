@@ -7,11 +7,6 @@
         <span>代售成果</span>
       </div>
       <div class="block block-radius">
-        <!-- <el-carousel height="330px">
-          <el-carousel-item v-for="(img, index) in formup.images_url" :key="index" class="image-round">
-            <img :src="img.big" class="img-size"/>
-          </el-carousel-item>
-        </el-carousel> -->
         <swiper :options="swiperOption" class="patent-img">
           <swiper-slide v-for="(img, index) in formup.images_url" :key="index">
             <div style="height:100%;">
@@ -65,8 +60,8 @@
       <div class="letters-patant">
         <div class="letters-text">专利证书</div>
         <div class="let-round">
-          <div class="letters-img">
-            <img :src="formup.illustrate_url.small" alt="">
+          <div class="letters-img" v-for="(patent, index) in patentRound" :key="index">
+            <img :src="patent.small" width="100%" height="100%">
           </div>
         </div>
       </div>
@@ -127,6 +122,7 @@
         urlLogo: '',
         companyName: '',
         imgUrl: '',
+        patentRound: '',
         dialogBuy: false,
         swiperOption: {
           pagination: '.swiper-pagination',
@@ -170,6 +166,7 @@
               this.imgUrl = response.data.data.design_company.logo_image.logo
               this.companyName = response.data.data.design_company.company_name
               this.isLoading = false
+              this.patentRound = response.data.data.patent_url
             } else {
               this.isLoading = false
               this.$message.error(response.data.meta.message)
@@ -303,7 +300,7 @@
   }
   .let-round {
     display: -webkit-box;
-    overflow-x: scroll;
+    overflow-y: hidden;
     -webkit-overflow-scrolling:touch;
   }
   .letters-img {
@@ -322,7 +319,7 @@
     padding: 10px 0 12px 0;
   }
   .letters-patant {
-    height: 215px;
+    height: 205px;
     margin: 0 15px;
   }
   .explain-border {
