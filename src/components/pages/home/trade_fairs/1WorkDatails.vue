@@ -3,8 +3,8 @@
     <div class="navigate-header">
       <div class="navigate-text">
         <router-link to="/shunde/trade_fairs/design_case" v-if="$route.query.type === '2'">设计成果</router-link>
-        <router-link to="/shunde/trade_fairs/demandLogin" v-else>代售成果</router-link>
-        <router-link to="/shunde/trade_fairs/demandLogin" v-if="false">我的订单</router-link>
+        <router-link to="/shunde/trade_fairs/demand_login" v-else>代售成果</router-link>
+        <router-link to="/shunde/trade_fairs/demand_login" v-if="false">我的订单</router-link>
       </div>
       <div class="navigate-text arrow-text">
         <span>{{formup.title}}</span>
@@ -172,8 +172,8 @@
             <div class="title-center">
               <img class="avatar" v-if="
               imgUrl" :src="
-              imgUrl" width="60"/>
-              <img v-else class="avatar" src="../../../../assets/images/avatar_100.png" width="60"/>
+              imgUrl.logo" width="60"/>
+              <img v-else class="avatar" src="../../../../assets/images/df_100x100.png" width="60"/>
               <div class="company-name">{{companyName}}</div>
             </div>
             <div class="com-addr">
@@ -222,7 +222,15 @@
         </div>
         <!-- 下面按钮 -->
         <div class="right-interset" v-if="$route.query.type !== '2'">
-          <div class="list-contain" @click="collect()">
+          <div class="list-contain" v-if="intersClick" @click="collect">
+            <div class="list-button interset-hover" v-if="formup.is_follow === 0">
+              <span class="button-text">感兴趣</span>
+            </div>
+            <div class="list-button interest-border" v-if="formup.is_follow === 1">
+              <span class="button-interest">已感兴趣</span>
+            </div>
+          </div>
+          <div class="list-contain" v-else disabled>
             <div class="list-button interset-hover" v-if="formup.is_follow === 0">
               <span class="button-text">感兴趣</span>
             </div>
@@ -322,6 +330,7 @@ export default {
       selectCompanyCollapse: ['1'],
       credential: ['1'],
       showType: false,
+      intersClick: true,
       formup: {},
       evaluate: {
         design_level: 0,
@@ -385,29 +394,26 @@ export default {
     },
     // 收藏/取消收藏
     collect() {
-      this.isLoading = true
+      this.intersClick = false
       this.$http.get(api.designResultsCollectionOperation, {params: {id: this.formup.id}}).then((response) => {
         if (response.data.meta.status_code === 200) {
-          this.isLoading = false
+          this.intersClick = true
           if (this.formup.is_follow === 0) {
             this.formup.is_follow = 1
           } else {
             this.formup.is_follow = 0
           }
         } else {
-          this.isLoading = false
+          this.intersClick = true
           this.$message.error(response.data.meta.message)
           return
         }
       })
       .catch(function (error) {
-        this.isLoading = false
+        this.intersClick = true
         this.$message.error(error.message)
         return
       })
-    },
-    interesClick() {
-      this.interestButton = !this.interestButton
     },
     // 评价设计公司
     evaluateSubmit() {
@@ -455,7 +461,7 @@ export default {
         (response) => {
           if (response.data.meta.status_code === 200) {
             this.formup = response.data.data
-            this.imgUrl = response.data.data.design_company.logo_image.logo
+            this.imgUrl = response.data.data.design_company.logo_image
             this.companyName = response.data.data.design_company.company_name
             this.isLoading = false
           } else {

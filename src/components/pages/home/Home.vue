@@ -20,6 +20,19 @@
             </div>
           </div>
         </swiper-slide>
+        <swiper-slide v-if="!isMob">
+          <div class="slide" :style="{ background: 'url(' + require ('assets/images/trade_fairs/banner/pc-banner.png') + ') no-repeat center', height: calcHeight}">
+          <div class="banner-button">
+            <div class="text-width">
+              <router-link to="/shunde/trade_fairs/demand_login" class="banner-text">立即参与</router-link>
+            </div>
+          </div>
+          </div>
+        </swiper-slide>
+        <swiper-slide v-if="isMob">
+          <div class="slide" :style="{ background: 'url(' + require ('assets/images/trade_fairs/banner/mobile-banner.png') + ') no-repeat center', height: calcHeight}">
+          </div>
+        </swiper-slide>
         <swiper-slide v-if="isMob" v-for="(ele, index) in bannerListMob" :key="index">
           <router-link
             v-if="!ele.outSide"
@@ -496,6 +509,39 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .banner-button {
+    float: right;
+    background: #02EBA5;
+    border: 2px solid #02EBA5;
+    height: 44px;
+    width: 144px;
+    line-height: 40px;
+    margin-top: 19%;
+    margin-right: 20%;
+  }
+  .banner-button:hover {
+    background: #00BE89;
+    border: 2px solid #00BE89;
+    cursor: pointer;
+  }
+  .text-width {
+    margin: 0 auto;
+    height: 28px;
+    width: 100px;
+    text-align: justify;
+  }
+  .text-width:after {
+    display: inline-block;
+    width: 100%;
+    content: '';
+  }
+  .banner-text {
+    left: 20px;
+    right: 20px;
+    font-family: PingFangSC-Semibold;
+    font-size: 20px;
+    color: #3917C3;
+  }
   .home_banner {
     max-height: 500px;
     overflow: hidden;
@@ -884,7 +930,7 @@
 
   @media screen and (max-width: 767px) {
     .container {
-      padding: 0;
+      padding: 0 10px 0 10px;
     }
 
     .slide .container {

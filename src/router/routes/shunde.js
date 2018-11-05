@@ -4,7 +4,7 @@
 module.exports = [
   // 未登陆首页
   {
-    path: '/shunde/trade_fairs/homePage',
+    path: '/shunde/trade_fairs/home_page',
     name: 'trade_fairs',
     meta: {
       title: '交易会',
@@ -14,7 +14,7 @@ module.exports = [
   },
    // 简介内容
   {
-    path: '/shunde/trade_fairs/briefContent',
+    path: '/shunde/trade_fairs/brief_content',
     name: 'brief_content',
     meta: {
       title: '简介内容',
@@ -24,7 +24,7 @@ module.exports = [
   },
   // 需求方登陆简介
   {
-    path: '/shunde/trade_fairs/demandLogin',
+    path: '/shunde/trade_fairs/demand_login',
     name: 'demand_login',
     meta: {
       title: '活动简介',
@@ -34,7 +34,7 @@ module.exports = [
   },
   // 设计需求
   {
-    path: '/shunde/trade_fairs/demandDesign',
+    path: '/shunde/trade_fairs/demand_design',
     name: 'demand_design',
     meta: {
       title: '设计需求',
@@ -44,7 +44,7 @@ module.exports = [
   },
   // 代售成果
   {
-    path: '/shunde/trade_fairs/saleResult',
+    path: '/shunde/trade_fairs/sale_result',
     name: 'sale_result',
     meta: {
       title: '代售成果',
@@ -54,7 +54,7 @@ module.exports = [
   },
   // 代售详情页
   {
-    path: '/shunde/trade_fairs/saleResult/workDatails/:id',
+    path: '/shunde/trade_fairs/saleResult/work_datails/:id',
     name: 'work_datails',
     meta: {
       title: '代售详情页',
@@ -64,7 +64,7 @@ module.exports = [
   },
   // 个人中心需求列表页
   {
-    path: '/shunde/trade_fairs/demand/demandList',
+    path: '/shunde/trade_fairs/demand/demand_list',
     name: 'demand_list',
     meta: {
       title: '需求列表',
@@ -112,7 +112,7 @@ module.exports = [
   },
   // 个人中心设计方收藏列表
   {
-    path: '/shunde/trade_fairs/design_case/collectList',
+    path: '/shunde/trade_fairs/design_case/collect_list',
     name: 'sdDesign_collectList',
     meta: {
       title: '收藏列表',
@@ -136,7 +136,7 @@ module.exports = [
   },
   // 支付-确认订单
   {
-    path: '/shunde/trade_fairs/sureOrder/:id',
+    path: '/shunde/trade_fairs/sure_order/:id',
     name: 'sure_order',
     meta: {
       title: '确认订单',
@@ -147,7 +147,7 @@ module.exports = [
   },
   // 付款-托管资金
   {
-    path: '/shunde/trade_fairs/managedFunds/:id',
+    path: '/shunde/trade_fairs/managed_funds/:id',
     name: 'managed_funds',
     meta: {
       title: '托管资金',
@@ -158,7 +158,7 @@ module.exports = [
   },
   // 付款-支付
   {
-    path: '/shunde/trade_fairs/paymentAmount',
+    path: '/shunde/trade_fairs/payment_amount',
     name: 'payment_amount',
     meta: {
       title: '支付',
@@ -169,7 +169,7 @@ module.exports = [
   },
   // 移动端首页
   {
-    path: '/shunde/trade_fairs/trade_fairs_mobile/mobileLogin',
+    path: '/shunde/trade_fairs/trade_fairs_mobile/mobile_login',
     name: 'mobile_login',
     meta: {
       title: '首页',
@@ -180,7 +180,7 @@ module.exports = [
   },
   // 登陆后移动端内容页
   {
-    path: '/shunde/trade_fairs/trade_fairs_mobile/mobileHomePage',
+    path: '/shunde/trade_fairs/trade_fairs_mobile/mobile_home_page',
     name: 'mobile_home_page',
     meta: {
       title: '内容页',
@@ -191,7 +191,7 @@ module.exports = [
   },
   // 移动端设计需求
   {
-    path: '/shunde/trade_fairs/trade_fairs_mobile/demandDesign',
+    path: '/shunde/trade_fairs/trade_fairs_mobile/demand_design',
     name: 'mobile_demand_design',
     meta: {
       title: '设计需求',
@@ -201,7 +201,7 @@ module.exports = [
   },
   // 移动端代售成果
   {
-    path: '/shunde/trade_fairs/trade_fairs_mobile/saleResult',
+    path: '/shunde/trade_fairs/trade_fairs_mobile/sale_result',
     name: 'mobile_sale_result',
     meta: {
       title: '代售成果',
@@ -211,7 +211,7 @@ module.exports = [
   },
   // 移动端需求详情
   {
-    path: '/shunde/trade_fairs/trade_fairs_mobile/mobileDemanDetails/:id',
+    path: '/shunde/trade_fairs/trade_fairs_mobile/mobile_deman_details/:id',
     name: 'mobile_demand_details',
     meta: {
       title: '移动端需求详情',
@@ -222,7 +222,7 @@ module.exports = [
   },
   // 移动端代售成果详情
   {
-    path: '/shunde/trade_fairs/trade_fairs_mobile/mobileWorkDetails/:id',
+    path: '/shunde/trade_fairs/trade_fairs_mobile/mobile_work_details/:id',
     name: 'mobile_work_details',
     meta: {
       title: '移动端需求详情',
