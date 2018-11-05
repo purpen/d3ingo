@@ -19,23 +19,23 @@
                 </el-col>
                 <el-col :xs="12" :sm="6" :md="6" :lg="6" v-for="(d, index) in designCases" :key="index">
                   <el-card :body-style="{ padding: '0px' }" class="item">
-                    <div tabindex="-1" class="item-more" ref="itemMore">
+                    <div tabindex="-1" class="item-more" ref="itemMore" @click="upSelect(d.id)" @mouseleave="downSelect(d.id)">
                       <i></i>
-                      <ul v-if="d.status === 1">
+                      <ul v-if="d.status === 1&&d.up">
                         <li class="edit" @click="updateStatus(d.id, 2)">提交</li>
                         <li class="del" >
                           <a class="toUpdate" @click="toUpdateUrl(d.id)">修改</a>
                         </li>
                         <li class="del" @click="updateBtn(d, 2)">删除</li>
                       </ul>
-                      <ul v-if="d.status === 2">
+                      <ul v-if="d.status === 2&&d.up">
                         <li class="edit" @click="updateBtn(d, 3)">撤回</li>
                       </ul>
-                      <ul v-if="d.status === 3">
+                      <ul v-if="d.status === 3&&d.up">
                         <li class="edit" @click="updateBtn(d, 1)">下架</li>
                         <li class="edit" @click="PriceBtn(d)">修改价格</li>
                       </ul>
-                      <ul v-if="d.status === -1">
+                      <ul v-if="d.status === -1&&d.up">
                         <li class="del" @click="toUpdateUrl(d.id)">修改</li>
                         <li class="edit" @click="updateBtn(d, 2)">删除</li>
                       </ul>
@@ -92,8 +92,8 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogUpdateVisible=false">取消</el-button>
-        <el-button class="is-custom" type="primary" size="small" @click="deleteResults" v-if="updateform.opt ===2">确定</el-button>
-        <el-button class="is-custom" type="primary" size="small" @click="updateStatus" v-else>确定</el-button>
+        <el-button class="is-custom" type="primary" size="small" @click="deleteResults" v-if="updateform.opt ===2" :loading="isbtnLoading">确定</el-button>
+        <el-button class="is-custom" type="primary" size="small" @click="updateStatus" v-else :loading="isbtnLoading">确定</el-button>
       </span>
     </el-dialog>
     <el-dialog
@@ -117,7 +117,7 @@
             <el-row :gutter="10">
               <el-col :span="12" v-if="formPrice.sell_type&&formPrice.sell_type===2">
                 <el-form-item label="出让比例" prop="share_ratio">
-                  <el-input v-model="formPrice.share_ratio">
+                  <el-input v-model="formPrice.share_ratio" @blur="shareRatioBlur(formPrice.share_ratio)">
                     <template slot="append">%</template>
                   </el-input>
                 </el-form-item>
@@ -136,7 +136,7 @@
       </el-form>
 
       <span slot="footer" class="dialog-footer">
-        <el-button class="is-custom" type="primary" size="small" @click="updatePrice('ruleForm')">确定修改</el-button>
+        <el-button class="is-custom" type="primary" size="small" @click="updatePrice('ruleForm')" :loading="isbtnLoading">确定修改</el-button>
       </span>
     </el-dialog>
   </div>
@@ -155,26 +155,12 @@
       vMenuSub
     },
     data() {
-      var ratio = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入比例'))
-        } else if (isNaN(value) || value > 100 || value < 0){
-          callback(new Error('请输入1~100的比例'))
-        } else {
-          callback()
-        }
-      }
-      var priceVerify = (rule, value, callback) => {
-        if (isNaN(value) || value < 0){
-          callback(new Error('请输入合理的金额'))
-        } else {
-          callback()
-        }
-      }
       return {
         isLoading: false,
         designCases: [], // 成果列表
         designId: '', // 修改状态id
+        inCase: '', // 当前id
+        isbtnLoading: false, // 按钮加载效果
         dialogUpdateVisible: false, // 更新状态弹窗
         dialogVisible: false, // 修改价格弹窗
         formPrice: {},// 修改价格
@@ -186,11 +172,7 @@
         },
         ruleForm: {
           price: [
-            {required: true, type: 'number', message: '请填写合理的金额', trigger: 'blur'},
-            { validator: priceVerify, trigger: 'blur' }
-          ],
-          share_ratio: [
-            { validator: ratio, trigger: 'blur' }
+            {required: true, type: 'number', message: '请填写合理的金额', trigger: 'blur'}
           ]
         },
         userId: this.$store.state.event.user.id
@@ -230,12 +212,35 @@
               if (i.cover.created_at) {
                 i.date = i.cover.created_at.date_format().format('yy-MM-dd')
               }
+              if (!i.up) {
+                i.up = false
+              }
             }
           }
         })
         .catch (function (error) {
           that.$message.error (error.message)
           that.isLoading = false
+        })
+      },
+      // 点击打开下拉框
+      upSelect(id) {
+        this.designCases.forEach((item, index) => {
+          if (item.id === id) {
+            this.$set(item, 'up', true)
+            this.$set(this.designCases, index, item)
+            this.inCase = item
+          }
+        })
+      },
+      // 移除后
+      downSelect(id) {
+        this.designCases.forEach((item, index) => {
+          if (item.id === id) {
+            this.$set(item, 'up', false)
+            this.$set(this.designCases, index, item)
+            this.inCase = item
+          }
         })
       },
       // 修改样式
@@ -265,6 +270,7 @@
       // 修改作品状态
       updateStatus(id, status) {
         let that = this
+        that.isbtnLoading = true
         that.isLoading = true
         if (id && status) {
           that.updateform.id = id
@@ -279,17 +285,46 @@
               }
             })
             that.dialogUpdateVisible = false
+            that.isbtnLoading = true
             that.isLoading = false
+          } else {
+            that.isbtnLoading = false
+            that.isLoading = false
+            that.$message.error (response.data.meta.message)
+            return false
           }
         })
         .catch (function (error) {
           that.$message.error (error.message)
+          that.isbtnLoading = false
           that.isLoading = false
+          return false
         })
+      },
+      // 比例按钮
+      shareRatioBlur(val) {
+        if (isNaN(val)) {
+          this.$message.error ('请输入1~100的比例!1')
+          return
+        }
+        if (val > 100 || val < 0) {
+          this.$message.error ('请输入1~100的比例!')
+          return
+        }
       },
       // 设计成果价格修改
       updatePrice() {
         let that = this
+        // 验证金额是否合理
+        if (isNaN(that.formPrice.price)) {
+          that.$message.error ('请输入合理的金额!')
+          return false
+        }
+        if (Number(that.formPrice.price) < 0) {
+          that.$message.error ('请输入合理的金额!')
+          return false
+        }
+        that.isbtnLoading = true
         that.formPrice.share_ratio = that.formPrice.sell_type === 1 ? 100 : that.formPrice.share_ratio
         let uprow = {
           id: that.formPrice.id,
@@ -300,6 +335,7 @@
         that.$http.post (api.sdDesignResultsSavePrice, uprow)
         .then (function (response) {
           if (response.data.meta.status_code === 200) {
+            that.isbtnLoading = false
             that.formPrice.price = Number(that.formPrice.price).toFixed(2)
             that.designCases.forEach((item, index) => {
               if (item.id === response.data.data.id) {
@@ -307,16 +343,21 @@
               }
             })
             that.dialogVisible = false
+          } else {
+            that.isbtnLoading = false
+            that.$message.error (response.data.meta.message)
           }
         })
         .catch (function (error) {
+          that.isbtnLoading = false
           that.$message.error (error.message)
-          that.isLoading = false
+          return false
         })
       },
       // 删除成果
       deleteResults() {
         let that = this
+        that.isbtnLoading = true
         that.isLoading = true
         that.$http.post (api.sdDesignResultsDelete, {id: [that.updateform.id]})
         .then (function (response) {
@@ -327,9 +368,11 @@
               }
             })
             that.dialogUpdateVisible = false
+            that.isbtnLoading = false
             that.isLoading = false
           } else {
             that.$message.error(response.data.meta.message)
+            that.isbtnLoading = false
             that.isLoading = false
             return
           }
@@ -337,6 +380,7 @@
         .catch (function (error) {
           that.$message.error (error.message)
           that.isLoading = false
+          return
         })
       },
       // 编辑按钮
@@ -470,11 +514,11 @@
     background: url(../../../../../assets/images/icon/moreHover@2x.png) no-repeat center / contain;
   }
   /* .item-more:hover ul, */
-  .item-more:focus ul {
+  /* .item-more:focus ul {
     display: block;
-  }
+  } */
   .item-more ul {
-    display: none;
+    display: block;
     position: absolute;
     z-index: 1;
     right: 10px;

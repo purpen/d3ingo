@@ -78,6 +78,7 @@
                     <el-input
                       type="textarea"
                       :rows="10"
+                      :maxlength="500"
                       placeholder="请输入内容"
                       v-model="form.content">
                     </el-input>
@@ -124,7 +125,7 @@
                     </el-col>
                     <el-col :span="(form.sell_type&&form.sell_type===2)?12:24">
                       <el-form-item label="出让金额" prop="price">
-                        <el-input v-model.number="form.price" :maxlength="12">
+                        <el-input v-model="form.price" :maxlength="12">
                           <template slot="append">元</template>
                         </el-input>
                       </el-form-item>
@@ -172,7 +173,7 @@
                       :on-progress="uploadProgress3"
                       :before-upload="beforeUpload2"
                       >
-                      <el-button class="red-button" >
+                      <el-button class="red-button">
                       +&nbsp;上传说明书
                     </el-button>
                     <span class="tc-9 patent-msg">{{uploadMsg3}}</span>
@@ -244,7 +245,7 @@
     },
     data () {
       var ratio = (rule, value, callback) => {
-        if (value === '') {
+        if (!value) {
           callback(new Error('请输入比例'))
         } else if (isNaN(value) || value > 100 || value < 0){
           callback(new Error('请输入1~100的比例'))
@@ -253,7 +254,9 @@
         }
       }
       var priceVerify = (rule, value, callback) => {
-        if (isNaN(value) || value < 0){
+        if (!value) {
+          callback(new Error('请输入比例'))
+        } else if (isNaN(value) || value < 0){
           callback(new Error('请输入合理的金额'))
         } else {
           callback()
@@ -300,9 +303,9 @@
           'x:target_id': '',
           'x:type': 38
         },
-        uploadMsg: '格式：JPG／PNG 大小：小于5MB',
-        uploadMsg2: '格式：JPG／PNG 大小：小于5MB',
-        uploadMsg3: '格式：PDF 大小：小于5MB',
+        uploadMsg: '格式：JPG／PNG 大小：小于10MB',
+        uploadMsg2: '格式：JPG／PNG 大小：小于10MB',
+        uploadMsg3: '格式：PDF 大小：小于20MB',
         imageUrl: '',
         design_types: [],
         form: {
@@ -326,7 +329,6 @@
             {min: 10, max: 500, message: '长度在 10 到 500 个字符', trigger: 'blur'}
           ],
           price: [
-            {required: true, type: 'number', message: '请填写合理的金额', trigger: 'blur'},
             { validator: priceVerify, trigger: 'blur' }
           ],
           contacts: [
@@ -578,7 +580,7 @@
       },
       // 上传成功操作
       uploadSuccess(response, file, fileList) {
-        this.uploadMsg = '只能上传jpg/png文件，且不超过5M'
+        this.uploadMsg = '只能上传jpg/png文件，且不超过10M'
         let add = fileList[fileList.length - 1]
         console.log('add', add)
         let item = {
@@ -595,28 +597,28 @@
       // 上传之前操作
       beforeUpload(file) {
         const arr = ['image/jpeg', 'image/gif', 'image/png']
-        const isLt5M = file.size / 1024 / 1024 < 5
+        const isLt5M = file.size / 1024 / 1024 < 10
 
         if (arr.indexOf (file.type) === -1) {
           this.$message.error ('上传文件格式不正确!')
           return false
         }
         if (!isLt5M) {
-          this.$message.error ('上传文件大小不能超过 5MB!')
+          this.$message.error ('上传文件大小不能超过 10MB!')
           return false
         }
       },
       // 说明书上传之前操作
       beforeUpload2(file) {
         const arr = ['application/pdf']
-        const isLt5M = file.size / 1024 / 1024 < 5
+        const isLt5M = file.size / 1024 / 1024 < 10
 
         if (arr.indexOf (file.type) === -1) {
           this.$message.error ('上传文件格式不正确!')
           return false
         }
         if (!isLt5M) {
-          this.$message.error ('上传文件大小不能超过 5MB!')
+          this.$message.error ('上传文件大小不能超过 10MB!')
           return false
         }
       },
@@ -639,7 +641,7 @@
       },
       // 上传专利
       upload2Success(response, file, fileList) {
-        this.uploadMsg2 = '只能上传jpg/png文件，且不超过5M'
+        this.uploadMsg2 = '只能上传jpg/png文件，且不超过10M'
         let add = fileList[fileList.length - 1]
         let item = {
           name: add.name,
