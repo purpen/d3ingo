@@ -24,7 +24,7 @@
                       <ul v-if="d.status === 1">
                         <li class="edit" @click="updateStatus(d.id, 2)">提交</li>
                         <li class="del" >
-                          <a class="toUpdate" @click="toUpdateUrl(d.id)">编辑</a>
+                          <a class="toUpdate" @click="toUpdateUrl(d.id)">修改</a>
                         </li>
                         <li class="del" @click="updateBtn(d, 2)">删除</li>
                       </ul>
@@ -117,7 +117,7 @@
             <el-row :gutter="10">
               <el-col :span="12" v-if="formPrice.sell_type&&formPrice.sell_type===2">
                 <el-form-item label="出让比例" prop="share_ratio">
-                  <el-input v-model="formPrice.share_ratio" >
+                  <el-input v-model="formPrice.share_ratio">
                     <template slot="append">%</template>
                   </el-input>
                 </el-form-item>
@@ -155,6 +155,22 @@
       vMenuSub
     },
     data() {
+      var ratio = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入比例'))
+        } else if (isNaN(value) || value > 100 || value < 0){
+          callback(new Error('请输入1~100的比例'))
+        } else {
+          callback()
+        }
+      }
+      var priceVerify = (rule, value, callback) => {
+        if (isNaN(value) || value < 0){
+          callback(new Error('请输入合理的金额'))
+        } else {
+          callback()
+        }
+      }
       return {
         isLoading: false,
         designCases: [], // 成果列表
@@ -170,7 +186,11 @@
         },
         ruleForm: {
           price: [
-            {required: true, type: 'number', message: '请填写合理的金额', trigger: 'blur'}
+            {required: true, type: 'number', message: '请填写合理的金额', trigger: 'blur'},
+            { validator: priceVerify, trigger: 'blur' }
+          ],
+          share_ratio: [
+            { validator: ratio, trigger: 'blur' }
           ]
         },
         userId: this.$store.state.event.user.id
@@ -220,7 +240,7 @@
       },
       // 修改样式
       PriceBtn(ele) {
-        this.formPrice = ele
+        this.formPrice = {...ele}
         this.dialogVisible = true
       },
       // 修改状态按钮
@@ -231,8 +251,11 @@
           title: ele.title,
           opt: opt
         }
-        if (opt === 1 || opt === 3) {
+        if (opt === 3) {
           this.updateform.status = 1
+        }
+        if (opt === 1) {
+          this.updateform.status = -1
         }
         if (opt === 2) {
           this.updateform.status = 2
@@ -267,18 +290,20 @@
       // 设计成果价格修改
       updatePrice() {
         let that = this
+        that.formPrice.share_ratio = that.formPrice.sell_type === 1 ? 100 : that.formPrice.share_ratio
         let uprow = {
           id: that.formPrice.id,
           sell_type: that.formPrice.sell_type,
-          share_ratio: that.formPrice.sell_type === 1 ? 100 : that.formPrice.share_ratio,
+          share_ratio: that.formPrice.share_ratio,
           price: that.formPrice.price
         }
         that.$http.post (api.sdDesignResultsSavePrice, uprow)
         .then (function (response) {
           if (response.data.meta.status_code === 200) {
+            that.formPrice.price = Number(that.formPrice.price).toFixed(2)
             that.designCases.forEach((item, index) => {
               if (item.id === response.data.data.id) {
-                that.$set(that.designCases, index, response.data.data)
+                that.$set(that.designCases, index, that.formPrice)
               }
             })
             that.dialogVisible = false
@@ -524,6 +549,7 @@
   .protrude:hover {
     color: #ff5a5f;
   }
+
   @media screen and (max-width: 767px) {
     .opt a {
       font-size: 1.4rem;
