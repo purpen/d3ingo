@@ -40,7 +40,8 @@
       <div class="contact-company">
         <div class="logo-height">
           <div class="logo-style">
-            <img :src="imgUrl" width="50px" class="avatar"/>
+            <img class="avatar" v-if="imgUrl" :src="imgUrl.logo" width="50px"/>
+            <img class="avatar" v-else src="../../../../../assets/images/df_100x100.png" width="50px"/>
           </div>
           <div class="logo-company">{{companyName}}</div>
           <div class="list-right" @click="callHer">
@@ -68,7 +69,15 @@
       <div class="wide-line"></div>
       <div class="height-border">
         <div class="list-bottom bottom-style">
-          <div class="list-contain" @click="collect(formup.id, formup.follow_status)">
+          <div class="list-contain" v-if="intersClick" @click="collect(formup.id, formup.follow_status)">
+            <div class="list-button" v-if="formup.is_follow === 0">
+              <span class="button-text">感兴趣</span>
+            </div>
+            <div class="list-button" v-if="formup.is_follow === 1">
+              <span class="button-interest">已感兴趣</span>
+            </div>
+          </div>
+          <div class="list-contain" v-else disabled>
             <div class="list-button" v-if="formup.is_follow === 0">
               <span class="button-text">感兴趣</span>
             </div>
@@ -89,8 +98,8 @@
       size="tiny"
       class="style-call">
       <div class="title-center">
-        <img class="avatar" v-if="imgUrl" :src="imgUrl" width="100"/>
-        <img class="avatar" v-else src="../../../../../assets/images/avatar_100.png" width="100"/>
+        <img class="avatar" v-if="imgUrl" :src="imgUrl.logo" width="100"/>
+        <img class="avatar" v-else src="../../../../../assets/images/df_100x100.png" width="100"/>
         <div class="company-name">{{formup.contacts}}</div>
         <div class="right-number">{{formup.contact_number}}</div>
       </div>
@@ -115,6 +124,7 @@
         demandList: '',
         formup: {},
         isLoading: false,
+        intersClick: true,
         collectId: '',
         diaLoading: false,
         setIndex: -1,
@@ -163,7 +173,7 @@
           (response) => {
             if (response.data.meta.status_code === 200) {
               this.formup = response.data.data
-              this.imgUrl = response.data.data.design_company.logo_image.logo
+              this.imgUrl = response.data.data.design_company.logo_image
               this.companyName = response.data.data.design_company.company_name
               this.isLoading = false
               this.patentRound = response.data.data.patent_url
@@ -180,23 +190,23 @@
       },
       // 收藏/取消收藏
       collect() {
-        this.isLoading = true
+        this.intersClick = false
         this.$http.get(api.designResultsCollectionOperation, {params: {id: this.formup.id}}).then((response) => {
           if (response.data.meta.status_code === 200) {
-            this.isLoading = false
+            this.intersClick = true
             if (this.formup.is_follow === 0) {
               this.formup.is_follow = 1
             } else {
               this.formup.is_follow = 0
             }
           } else {
-            this.isLoading = false
+            this.intersClick = true
             this.$message.error(response.data.meta.message)
             return
           }
         })
         .catch(function (error) {
-          this.isLoading = false
+          this.intersClick = true
           this.$message.error(error.message)
           return
         })

@@ -36,7 +36,7 @@
       </div>
       <div class="content-pad">
         <div class="content-text">功能描述</div>
-        <div class="content-height scroll-bar">{{formup.content}}</div>
+        <div class="content-height">{{formup.content}}</div>
       </div>
       <div class="height-border">
         <div class="list-bottom bottom-style">
@@ -241,9 +241,10 @@
   }
   .content-height {
     max-height: 240px;
-    overflow-x: hidden;
     font-size: 16px;
     color: #999;
+    overflow:hidden;
+    overflow-y: scroll;
   }
   /* 感兴趣 */
   .height-border {
