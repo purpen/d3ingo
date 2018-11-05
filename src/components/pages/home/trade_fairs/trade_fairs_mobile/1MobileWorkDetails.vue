@@ -6,19 +6,30 @@
         <span class="arrow" @click="demandLists"></span>
         <span>代售成果</span>
       </div>
-      <div class="block">
-        <el-carousel height="330px">
+      <div class="block block-radius">
+        <!-- <el-carousel height="330px">
           <el-carousel-item v-for="(img, index) in formup.images_url" :key="index" class="image-round">
             <img :src="img.big" class="img-size"/>
           </el-carousel-item>
-        </el-carousel>
+        </el-carousel> -->
+        <swiper :options="swiperOption" class="patent-img">
+          <swiper-slide v-for="(img, index) in formup.images_url" :key="index">
+            <div style="height:100%;">
+              <div class="draw">
+                <img :src="img.big" height="100%" alt="" class="img-class">
+              </div>
+            </div>
+          </swiper-slide>
+          <div class="swiper-pagination" slot="pagination">
+          </div>
+        </swiper>
       </div>
       <div class="title-style">
         <div class="title-text">{{formup.title}}</div>
         <div class="title-bottom">
           <div class="money-text">￥{{formup.price}}</div>
           <div class="money-style">
-            <span>出让方式：</span>
+            <span class="land-use">出让方式：</span>
             <span class="way-pay">{{formup.sell_type===1?'全额出让':'股权出让'}}</span>
             <span class="precentage">{{formup.sell_type===1?'':formup.share_ratio+'%'}}</span>
           </div>
@@ -28,7 +39,7 @@
       <div class="product-the">
         <div class="the-title">产品描述</div>
         <!-- <div class="the-text">{{ formup.content}}</div> -->
-        <div class="the-text">测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试测试，试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试<div class="seen-more">查看更多</div></div>
+        <div class="por-text">测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试测试，试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试<div class="seen-more">查看更多</div></div>
       </div>
       <div class="wide-line"></div>
       <div class="contact-company">
@@ -45,16 +56,18 @@
         </div>
       </div>
       <div class="wide-line"></div>
-      <div class="explain"></div>
+      <div class="explain-border">
+        <div class="explain">
+          <div class="explain-left">产品功能说明书</div>
+          <div class="explain-right"></div>
+        </div>
+      </div>
       <div class="letters-patant">
         <div class="letters-text">专利证书</div>
         <div class="let-round">
-          <div class="letters-img"></div>
-          <div class="letters-img"></div>
-          <div class="letters-img"></div>
-          <div class="letters-img"></div>
-          <div class="letters-img"></div>
-          <div class="letters-img"></div>
+          <div class="letters-img">
+            <img :src="formup.illustrate_url.small" alt="">
+          </div>
         </div>
       </div>
       <div class="wide-line"></div>
@@ -114,7 +127,25 @@
         urlLogo: '',
         companyName: '',
         imgUrl: '',
-        dialogBuy: false
+        dialogBuy: false,
+        swiperOption: {
+          pagination: '.swiper-pagination',
+          paginationClickable: true,
+          lazyLoading: true,
+          autoplay: 5000,
+          prevButton: '.swiper-button-prev',
+          nextButton: '.swiper-button-next',
+          spaceBetween: 0,
+          loop: true
+        },
+      }
+    },
+    components: {
+      swiper: (resolve) => {
+        require(['vue-awesome-swiper/src/swiper'], resolve)
+      },
+      swiperSlide: (resolve) => {
+        require(['vue-awesome-swiper/src/slide'], resolve)
       }
     },
     created() {
@@ -203,6 +234,37 @@
   .title-bottom {
     padding-top: 10px;
   }
+  .patent-img {
+    height: 330px;
+    margin: 0 auto;
+    background: #fff
+  }
+  .img-class {
+    height: 330px;
+    width: 100%;
+  }
+  .draw {
+    text-align: center
+  }
+  .explain-left {
+    float: left;
+    font-size: 16px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: #222;
+  }
+  .explain-right {
+    float: right;
+    width: 25px;
+    height: 42px;
+    background: url('../../../../../assets/images/trade_fairs/list/right@2x.png') no-repeat center;
+    background-size: contain;
+  }
+  .land-use {
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    color: #666666;
+  }
   .sure-text {
     font-family: PingFangSC-Regular;
     font-size: 16px;
@@ -263,9 +325,14 @@
     height: 215px;
     margin: 0 15px;
   }
+  .explain-border {
+    border-bottom: 1px solid #e6e6e6;
+    border-top: 1px solid #e6e6e6;
+  }
   .explain {
     height: 44px;
-    border-bottom: 1px solid #e6e6e6
+    line-height:42px;
+    margin: 0 15px;
   }
   .logo-company {
     font-family: PingFangSC-Regular;
@@ -301,7 +368,7 @@
     right: 0;
     /* background: url() */
   }
-  .the-text {
+  .por-text {
     height: 90px;
     font-family: PingFangSC-Regular;
     font-size: 14px;
@@ -315,7 +382,6 @@
     display: -webkit-box;
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
-    position: relative;
   }
   .the-title {
     font-family: PingFangSC-Regular;
@@ -388,10 +454,9 @@
   .block-height {
     height: 49px;
     text-align: center;
-    border: 1px solid #E6E6E6;
+    border-bottom: 1px solid #E6E6E6;
     line-height: 48px;
     font-size: 17px;
-    margin: 5px 0;
     color: #222;
   }
   .arrow {
