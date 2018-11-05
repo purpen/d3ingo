@@ -31,7 +31,15 @@
                     <span>项目周期：&nbsp;{{item.cycle_value}}</span>
                   </div>
                   <div class="list-bottom bottom-style">
-                    <div class="list-contain" @click="collect(item.id, item.follow_status)">
+                    <div class="list-contain" v-if="intersClick" @click="collect(item.id, item.follow_status)">
+                      <div class="list-button" v-if="item.follow_status === 2">
+                        <span class="button-text">感兴趣</span>
+                      </div>
+                      <div class="list-button interest-border" v-if="item.follow_status === 1">
+                        <span class="button-interest">已感兴趣</span>
+                      </div>
+                    </div>
+                    <div class="list-contain" v-else disabled>
                       <div class="list-button" v-if="item.follow_status === 2">
                         <span class="button-text">感兴趣</span>
                       </div>
@@ -61,8 +69,8 @@
         size="tiny"
         class="style-call">
         <div class="title-center">
-          <img class="avatar" v-if="urlLogo" :src="urlLogo" width="100"/>
-          <img class="avatar" v-else src="../../../../../assets/images/avatar_100.png" width="100"/>
+          <img class="com-logo" v-if="urlLogo" :src="urlLogo.logo" width="100"/>
+          <img class="com-logo" v-else src="../../../../../assets/images/df_100x100.png" width="100"/>
           <div class="company-name">{{callDtails.company_name}}</div>
           <div class="right-number">{{callDtails.phone}}</div>
         </div>
@@ -192,6 +200,7 @@
         dialogCall: false,
         collectId: '',
         diaLoading: false,
+        intersClick: true,
         setIndex: -1,
         callDtails: '',
         urlLogo: ''
@@ -205,9 +214,10 @@
     methods: {
       // 弹出联系框
       callHer(item) {
+        this.callDtails = ''
         this.dialogCall = true
         this.callDtails = item
-        this.urlLogo = this.callDtails.logo_image.logo
+        this.urlLogo = this.callDtails.logo_image
       },
       // 获取列表
       getDemandList() {
@@ -241,12 +251,12 @@
       },
       // 收藏需求
       collect(id, status) {
-        this.isLoading = true
+        this.intersClick = false
         this.collectId = id
         if (status === 2) {
           this.$http.post(api.sdDesignCollectDemand, {design_demand_id: id}).then((response) => {
             if (response.data.meta.status_code === 200) {
-              this.isLoading = false
+              this.intersClick = true
               for (let index in this.demandList) {
                 if (this.demandList[index].id === id) {
                   this.demandList[index].follow_status = 1
@@ -254,21 +264,21 @@
               }
               this.formup.follow_status = 1
             } else {
-              this.isLoading = false
+              this.intersClick = true
               this.$message.error(response.data.meta.message)
               return
             }
           })
           .catch(function (error) {
-            this.isLoading = false
+            this.intersClick = true
             this.$message.error(error.message)
             return
           })
         } else {
-          this.isLoading = true
+          this.intersClick = false
           this.$http.post(api.sdDesignCancelCollectDemand, {design_demand_id: id}).then((response) => {
             if (response.data.meta.status_code === 200) {
-              this.isLoading = false
+              this.intersClick = true
               for (let index in this.demandList) {
                 if (this.demandList[index].id === id) {
                   this.demandList[index].follow_status = 2
@@ -276,13 +286,13 @@
               }
               this.formup.follow_status = 2
             } else {
-              this.isLoading = false
+              this.intersClick = true
               this.$message.error('点击过快，请稍后')
               return
             }
           })
           .catch(function (error) {
-            this.isLoading = false
+            this.intersClick = true
             this.$message.error(error.message)
             return
           })
@@ -324,6 +334,11 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .com-logo {
+    border-radius: 50%;
+    overflow: hidden;
+    vertical-align: middle;
+  }
   .content-box {
     min-height: 250px;
     background: #3519B2;
