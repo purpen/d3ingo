@@ -6,19 +6,25 @@
         <span class="arrow" @click="demandLists"></span>
         <span>代售成果</span>
       </div>
-      <div class="block">
-        <el-carousel height="330px">
-          <el-carousel-item v-for="(img, index) in formup.images_url" :key="index" class="image-round">
-            <img :src="img.big" class="img-size"/>
-          </el-carousel-item>
-        </el-carousel>
+      <div class="block block-radius">
+        <swiper :options="swiperOption" class="patent-img">
+          <swiper-slide v-for="(img, index) in formup.images_url" :key="index">
+            <div style="height:100%;">
+              <div class="draw">
+                <img :src="img.big" height="100%" alt="" class="img-class">
+              </div>
+            </div>
+          </swiper-slide>
+          <div class="swiper-pagination" slot="pagination">
+          </div>
+        </swiper>
       </div>
       <div class="title-style">
         <div class="title-text">{{formup.title}}</div>
         <div class="title-bottom">
           <div class="money-text">￥{{formup.price}}</div>
           <div class="money-style">
-            <span>出让方式：</span>
+            <span class="land-use">出让方式：</span>
             <span class="way-pay">{{formup.sell_type===1?'全额出让':'股权出让'}}</span>
             <span class="precentage">{{formup.sell_type===1?'':formup.share_ratio+'%'}}</span>
           </div>
@@ -28,13 +34,14 @@
       <div class="product-the">
         <div class="the-title">产品描述</div>
         <!-- <div class="the-text">{{ formup.content}}</div> -->
-        <div class="the-text">测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试测试，试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试<div class="seen-more">查看更多</div></div>
+        <div class="por-text">测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试测试，试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试<div class="seen-more">查看更多</div></div>
       </div>
       <div class="wide-line"></div>
       <div class="contact-company">
         <div class="logo-height">
           <div class="logo-style">
-            <img :src="imgUrl" width="50px" class="avatar"/>
+            <img class="avatar" v-if="imgUrl" :src="imgUrl.logo" width="50px"/>
+            <img class="avatar" v-else src="../../../../../assets/images/df_100x100.png" width="50px"/>
           </div>
           <div class="logo-company">{{companyName}}</div>
           <div class="list-right" @click="callHer">
@@ -45,22 +52,32 @@
         </div>
       </div>
       <div class="wide-line"></div>
-      <div class="explain"></div>
+      <div class="explain-border">
+        <div class="explain">
+          <div class="explain-left">产品功能说明书</div>
+          <div class="explain-right"></div>
+        </div>
+      </div>
       <div class="letters-patant">
         <div class="letters-text">专利证书</div>
         <div class="let-round">
-          <div class="letters-img"></div>
-          <div class="letters-img"></div>
-          <div class="letters-img"></div>
-          <div class="letters-img"></div>
-          <div class="letters-img"></div>
-          <div class="letters-img"></div>
+          <div class="letters-img" v-for="(patent, index) in patentRound" :key="index">
+            <img :src="patent.small" width="100%" height="100%">
+          </div>
         </div>
       </div>
       <div class="wide-line"></div>
       <div class="height-border">
         <div class="list-bottom bottom-style">
-          <div class="list-contain" @click="collect(formup.id, formup.follow_status)">
+          <div class="list-contain" v-if="intersClick" @click="collect(formup.id, formup.follow_status)">
+            <div class="list-button" v-if="formup.is_follow === 0">
+              <span class="button-text">感兴趣</span>
+            </div>
+            <div class="list-button" v-if="formup.is_follow === 1">
+              <span class="button-interest">已感兴趣</span>
+            </div>
+          </div>
+          <div class="list-contain" v-else disabled>
             <div class="list-button" v-if="formup.is_follow === 0">
               <span class="button-text">感兴趣</span>
             </div>
@@ -81,8 +98,8 @@
       size="tiny"
       class="style-call">
       <div class="title-center">
-        <img class="avatar" v-if="imgUrl" :src="imgUrl" width="100"/>
-        <img class="avatar" v-else src="../../../../../assets/images/avatar_100.png" width="100"/>
+        <img class="avatar" v-if="imgUrl" :src="imgUrl.logo" width="100"/>
+        <img class="avatar" v-else src="../../../../../assets/images/df_100x100.png" width="100"/>
         <div class="company-name">{{formup.contacts}}</div>
         <div class="right-number">{{formup.contact_number}}</div>
       </div>
@@ -107,6 +124,7 @@
         demandList: '',
         formup: {},
         isLoading: false,
+        intersClick: true,
         collectId: '',
         diaLoading: false,
         setIndex: -1,
@@ -114,7 +132,26 @@
         urlLogo: '',
         companyName: '',
         imgUrl: '',
-        dialogBuy: false
+        patentRound: '',
+        dialogBuy: false,
+        swiperOption: {
+          pagination: '.swiper-pagination',
+          paginationClickable: true,
+          lazyLoading: true,
+          autoplay: 5000,
+          prevButton: '.swiper-button-prev',
+          nextButton: '.swiper-button-next',
+          spaceBetween: 0,
+          loop: true
+        },
+      }
+    },
+    components: {
+      swiper: (resolve) => {
+        require(['vue-awesome-swiper/src/swiper'], resolve)
+      },
+      swiperSlide: (resolve) => {
+        require(['vue-awesome-swiper/src/slide'], resolve)
       }
     },
     created() {
@@ -136,9 +173,10 @@
           (response) => {
             if (response.data.meta.status_code === 200) {
               this.formup = response.data.data
-              this.imgUrl = response.data.data.design_company.logo_image.logo
+              this.imgUrl = response.data.data.design_company.logo_image
               this.companyName = response.data.data.design_company.company_name
               this.isLoading = false
+              this.patentRound = response.data.data.patent_url
             } else {
               this.isLoading = false
               this.$message.error(response.data.meta.message)
@@ -152,23 +190,23 @@
       },
       // 收藏/取消收藏
       collect() {
-        this.isLoading = true
+        this.intersClick = false
         this.$http.get(api.designResultsCollectionOperation, {params: {id: this.formup.id}}).then((response) => {
           if (response.data.meta.status_code === 200) {
-            this.isLoading = false
+            this.intersClick = true
             if (this.formup.is_follow === 0) {
               this.formup.is_follow = 1
             } else {
               this.formup.is_follow = 0
             }
           } else {
-            this.isLoading = false
+            this.intersClick = true
             this.$message.error(response.data.meta.message)
             return
           }
         })
         .catch(function (error) {
-          this.isLoading = false
+          this.intersClick = true
           this.$message.error(error.message)
           return
         })
@@ -202,6 +240,37 @@
 <style scoped>
   .title-bottom {
     padding-top: 10px;
+  }
+  .patent-img {
+    height: 330px;
+    margin: 0 auto;
+    background: #fff
+  }
+  .img-class {
+    height: 330px;
+    width: 100%;
+  }
+  .draw {
+    text-align: center
+  }
+  .explain-left {
+    float: left;
+    font-size: 16px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: #222;
+  }
+  .explain-right {
+    float: right;
+    width: 25px;
+    height: 42px;
+    background: url('../../../../../assets/images/trade_fairs/list/right@2x.png') no-repeat center;
+    background-size: contain;
+  }
+  .land-use {
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    color: #666666;
   }
   .sure-text {
     font-family: PingFangSC-Regular;
@@ -241,7 +310,7 @@
   }
   .let-round {
     display: -webkit-box;
-    overflow-x: scroll;
+    overflow-y: hidden;
     -webkit-overflow-scrolling:touch;
   }
   .letters-img {
@@ -260,12 +329,17 @@
     padding: 10px 0 12px 0;
   }
   .letters-patant {
-    height: 215px;
+    height: 205px;
     margin: 0 15px;
+  }
+  .explain-border {
+    border-bottom: 1px solid #e6e6e6;
+    border-top: 1px solid #e6e6e6;
   }
   .explain {
     height: 44px;
-    border-bottom: 1px solid #e6e6e6
+    line-height:42px;
+    margin: 0 15px;
   }
   .logo-company {
     font-family: PingFangSC-Regular;
@@ -301,7 +375,7 @@
     right: 0;
     /* background: url() */
   }
-  .the-text {
+  .por-text {
     height: 90px;
     font-family: PingFangSC-Regular;
     font-size: 14px;
@@ -315,7 +389,6 @@
     display: -webkit-box;
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
-    position: relative;
   }
   .the-title {
     font-family: PingFangSC-Regular;
@@ -388,10 +461,9 @@
   .block-height {
     height: 49px;
     text-align: center;
-    border: 1px solid #E6E6E6;
+    border-bottom: 1px solid #E6E6E6;
     line-height: 48px;
     font-size: 17px;
-    margin: 5px 0;
     color: #222;
   }
   .arrow {

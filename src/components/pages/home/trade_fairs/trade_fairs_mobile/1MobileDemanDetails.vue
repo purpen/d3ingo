@@ -36,11 +36,19 @@
       </div>
       <div class="content-pad">
         <div class="content-text">功能描述</div>
-        <div class="content-height scroll-bar">{{formup.content}}</div>
+        <div class="content-height">{{formup.content}}</div>
       </div>
       <div class="height-border">
         <div class="list-bottom bottom-style">
-          <div class="list-contain" @click="collect(formup.id, formup.follow_status)">
+          <div class="list-contain" v-if="intersClick" @click="collect(formup.id, formup.follow_status)">
+            <div class="list-button" v-if="formup.follow_status === 2">
+              <span class="button-text">感兴趣</span>
+            </div>
+            <div class="list-button" v-if="formup.follow_status === 1">
+              <span class="button-interest">已感兴趣</span>
+            </div>
+          </div>
+          <div class="list-contain" v-else disabled>
             <div class="list-button" v-if="formup.follow_status === 2">
               <span class="button-text">感兴趣</span>
             </div>
@@ -61,8 +69,8 @@
       size="tiny"
       class="style-call">
       <div class="title-center">
-        <img class="avatar" v-if="urlLogo" :src="urlLogo" width="100"/>
-        <img class="avatar" v-else src="../../../../../assets/images/avatar_100.png" width="100"/>
+        <img class="avatar" v-if="urlLogo" :src="urlLogo.logo" width="100"/>
+        <img class="avatar" v-else src="../../../../../assets/images/df_100x100.png" width="100"/>
         <div class="company-name">{{callDtails.demand_company_name}}</div>
         <div class="right-number">{{callDtails.phone}}</div>
       </div>
@@ -83,6 +91,7 @@
         isLoading: false,
         collectId: '',
         diaLoading: false,
+        intersClick: true,
         setIndex: -1,
         dialogCall: false,
         callDtails: '',
@@ -97,7 +106,7 @@
       callHer(item) {
         this.dialogCall = true
         this.callDtails = item
-        this.urlLogo = this.callDtails.logo_image.logo
+        this.urlLogo = this.callDtails.logo_image
       },
       // 返回需求列表
       demandLists() {
@@ -119,38 +128,37 @@
       },
       // 收藏需求
       collect(id, status) {
-        this.isLoading = true
+        this.intersClick = false
         this.collectId = id
         if (status === 2) {
           this.$http.post(api.sdDesignCollectDemand, {design_demand_id: id}).then((response) => {
             if (response.data.meta.status_code === 200) {
-              this.isLoading = false
+              this.intersClick = true
               this.formup.follow_status = 1
             } else {
-              this.isLoading = false
+              this.intersClick = true
               this.$message.error(response.data.meta.message)
               return
             }
           })
           .catch(function (error) {
-            this.isLoading = false
+            this.intersClick = true
             this.$message.error(error.message)
             return
           })
         } else {
-          this.isLoading = true
+          this.intersClick = false
           this.$http.post(api.sdDesignCancelCollectDemand, {design_demand_id: id}).then((response) => {
             if (response.data.meta.status_code === 200) {
-              this.isLoading = false
+              this.intersClick = true
               this.formup.follow_status = 2
             } else {
-              this.isLoading = false
-              this.$message.error('点击过快，请稍后')
+              this.intersClick = true
               return
             }
           })
           .catch(function (error) {
-            this.isLoading = false
+            this.intersClick = true
             this.$message.error(error.message)
             return
           })
@@ -233,9 +241,10 @@
   }
   .content-height {
     max-height: 240px;
-    overflow-x: hidden;
     font-size: 16px;
     color: #999;
+    overflow:hidden;
+    overflow-y: scroll;
   }
   /* 感兴趣 */
   .height-border {

@@ -3,7 +3,7 @@
     <div class="ordershow-span-color">
       <div class="dis-flex" style="margin-bottom: 10px">
         <div class="mar-r-10">
-          <router-link to="/shunde/trade_fairs/demandLogin" class="font-14">代售成果</router-link>
+          <router-link to="/shunde/trade_fairs/demand_login" class="font-14">代售成果</router-link>
           <span class="border"></span>
         </div>
         <div class="mar-r-10">
@@ -93,7 +93,8 @@
         <div class="pay-box clearfix">
           <p v-if="isMob" class="total-price-m">总计：<span>¥ {{ item.amount }}</span></p>
           <p :class="{'btn' : isMob}">
-            <el-button class="is-custom" @click="pay" type="primary">立即支付</el-button>
+            <!-- <el-button class="is-custom" @click="pay" type="primary">立即支付</el-button> -->
+            <el-button class="is-custom" @click="payPush" type="primary">立即支付</el-button>
           </p>
           <!-- <p v-if="!isMob" class="total-price">¥ {{ item.amount }}</p> -->
           <p v-if="!isMob" class="total-price">¥5000.00</p>
@@ -121,6 +122,9 @@ export default {
     }
   },
   methods: {
+    payPush() {
+      this.$router.push({name:'payment_amount', params: {id: 1}})
+    },
     pay() {
       let payType = this.payType
       if (!payType) {

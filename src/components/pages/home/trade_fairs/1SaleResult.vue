@@ -35,7 +35,15 @@
                         <span>出让金额：&nbsp;<span class="money">￥{{achieve.price}}</span></span>
                       </div>
                     </div>
-                    <div class="list-right" @click="collect(achieve.id)">
+                    <div class="list-right" v-if="intersClick" @click="collect(achieve.id)">
+                      <div class="list-button" v-if="achieve.is_follow === 0">
+                        <span class="button-text">感兴趣</span>
+                      </div>
+                      <div class="list-button interest-border" v-if="achieve.is_follow === 1">
+                        <span class="button-interest">已感兴趣</span>
+                      </div>
+                    </div>
+                    <div class="list-right" v-else disabled>
                       <div class="list-button" v-if="achieve.is_follow === 0">
                         <span class="button-text">感兴趣</span>
                       </div>
@@ -97,6 +105,7 @@
         isLoading: false,
         designCases: '',
         clientPhone: false,
+        intersClick: true,
         query: {
           page: 1,
           pageSize: 20,
@@ -113,10 +122,10 @@
     methods: {
       // 收藏需求
       collect(id) {
-        this.isLoading = true
+        this.intersClick = false
         this.$http.get(api.designResultsCollectionOperation, {params: {id: id}}).then((response) => {
           if (response.data.meta.status_code === 200) {
-            this.isLoading = false
+            this.intersClick = true
             for (let index in this.designCases) {
               if (this.designCases[index].id === id) {
                 if (this.designCases[index].is_follow === 0) {
@@ -127,13 +136,13 @@
               }
             }
           } else {
-            this.isLoading = false
+            this.intersClick = true
             this.$message.error(response.data.meta.message)
             return
           }
         })
         .catch(function (error) {
-          this.isLoading = false
+          this.intersClick = true
           this.$message.error(error.message)
           return
         })
