@@ -36,12 +36,15 @@
                       </div>
                       <div class="list-bottom bottom-style">
                         <div class="list-contain">
-                          <div class="list-button interest-border">
-                            <span class="button-interest">已感兴趣</span>
+                          <div :class="['list-button', {'interest-border':  item.follow_status === 1}]" @click="deleteCollect(item.id, item.follow_status)">
+                            <span :class="[
+                              {'button-interest': item.follow_status === 1},
+                              {'button-text': item.follow_status === 2}]"
+                            >{{item.follow_status === 1 ? '已感兴趣':'感兴趣'}}</span>
                           </div>
                         </div>
                         <div class="list-right">
-                          <div class="list-button">
+                          <div class="list-button" @click="contactWay(item)">
                             <span class="contact-text">联系他</span>
                           </div>
                         </div>
@@ -63,6 +66,7 @@
     <el-dialog
       title="收藏详情"
       :visible.sync="dialogUpdateVisible"
+      :lock-scroll="false"
       size="tiny"
       class="submit2-form seen-deta"
       >
@@ -150,12 +154,14 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <div class="dia-bottom dialog-bottom">
-          <div class="dia-contain" @click="collect(formup.id, formup.follow_status)">
-          <div class="dia-button" v-if="formup.follow_status === 2">
-            <span class="button-text">感兴趣</span>
-          </div>
-          <div class="dia-button interest-dia" v-if="formup.follow_status === 1">
-            <span class="dia-interest">已感兴趣</span>
+          <div class="dia-contain" >
+          <div :class="['dia-button', {'interest-dia':formup.follow_status === 1}]"  @click="deleteCollect(formup.id, formup.follow_status)">
+            <span :class="[
+              {'dia-interest': formup.follow_status === 1},
+              {'button-text': formup.follow_status === 2}
+            ]">
+            {{formup.follow_status === 1?'已感兴趣': '感兴趣'}}
+            </span>
           </div>
         </div>
         <div class="dia-right">
@@ -166,6 +172,19 @@
         </div>
       </span>
     </el-dialog>
+     <el-dialog
+        title="联系电话"
+        :visible.sync="callPhone"
+        :lock-scroll="false"
+        size="tiny"
+        class="phone-style">
+        <div class="title-center">
+          <img class="avatar" v-if="urlLogo" :src="urlLogo" width="100"/>
+          <img class="avatar" v-else src="../../../../../assets/images/avatar_100.png" width="100"/>
+          <div class="company-name">{{callDtails.company_name}}</div>
+          <div class="right-number">{{callDtails.phone}}</div>
+        </div>
+      </el-dialog>
   </div>
 </template>
 
@@ -190,6 +209,9 @@
         dialogVisible: false, // 修改价格弹窗
         form: {},// 修改价格
         formup: {}, // 查看详情
+        callPhone: false, // 联系他弹窗
+        callDtails: {},
+        urlLogo: '',
         updateform: { // 修改状态表单
           status: '',
           id: [],
@@ -221,9 +243,60 @@
       }
     },
     methods: {
+      // 联系他
+      contactWay(item) {
+        this.callDtails = item
+        this.urlLogo = this.callDtails.logo_image.logo
+        this.callPhone = true
+        // if (this.callPhone === true) {
+        //   setTimeout(() => {
+        //     console.log(document.body.style.paddingRight)
+        //     document.body.style.paddingRight = 6+'px'
+        //   }, 0.1)
+        // }
+      },
+      // 收藏需求
+      deleteCollect(id, status) {
+        if (status === 2) {
+          this.$http.post(api.sdDesignCollectDemand, {design_demand_id: id}).then((response) => {
+            if (response.data.meta.status_code === 200) {
+              this.collectList.forEach(item => {
+                if (item.id === id) {
+                  item.follow_status = 1
+                  this.formup.follow_status = 1
+                }
+              })
+            } else {
+              this.$message.error(response.data.meta.message)
+              return
+            }
+          })
+          .catch(function (error) {
+            this.$message.error(error.message)
+            return
+          })
+        } else {
+          this.$http.post(api.sdDesignCancelCollectDemand, {design_demand_id: id}).then((response) => {
+            if (response.data.meta.status_code === 200) {
+              this.collectList.forEach(item => {
+                if (item.id === id) {
+                  item.follow_status = 2
+                  this.formup.follow_status = 2
+                }
+              })
+            } else {
+              this.$message.error(response.data.meta.message)
+              return
+            }
+          })
+          .catch(function (error) {
+            this.$message.error(error.message)
+            return
+          })
+        }
+      },
       // 获取详情
       upDetails(id) {
-        this.formup = {}
         this.$http.get(api.sdDemandDesignDemandInfo, {params: {demand_id: id}}).then(
           (response) => {
             if (response.data.meta.status_code === 200) {
@@ -475,6 +548,7 @@
     height: 30px;
     width: 80px;
     border: 1px solid #E6E6E6;
+    border-radius: 4px;
     text-align: center;
     line-height: 28px;
   }
@@ -563,6 +637,23 @@
     cursor: pointer;
     float: left;
     padding-left: 20px;
+  }
+  .button-text {
+    position: relative;
+    font-family: PingFangSC-Regular;
+    font-size: 12px;
+    padding-left: 10px;
+    color: #999999;
+  }
+  .button-text:before {
+    content: '';
+    position: absolute;
+    height: 24px;
+    top: -4px;
+    width: 24px;
+    left: -14px;
+    background: url('../../../../../assets/images/trade_fairs/list/BeInterested@2x.png') no-repeat center;
+    background-size: contain;
   }
   .dia-button {
     height: 34px;
@@ -656,6 +747,33 @@
   .content-height {
     overflow-x: hidden;
     max-height: 180px;
+  }
+  /* 详情弹出框 */
+  .title-center {
+    margin: 0 auto;
+    text-align: center;
+    width: 50%;
+    margin-top: -20px;
+  }
+  .company-name {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #222222;
+    letter-spacing: 0;
+    padding-top: 17px;
+  }
+  .right-number {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #FF5A5F;
+    letter-spacing: 0;
+    padding-top: 12px;
+  }
+  .bottom-background {
+    margin-bottom: -50px;
+    height: 100px;
+    background: url('../../../../../assets/images/trade_fairs/bottom.png') no-repeat center;
+    background-size: cover;
   }
   @media screen and (max-width: 767px) {
     .opt a {

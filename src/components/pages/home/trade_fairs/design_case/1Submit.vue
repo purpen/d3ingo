@@ -67,7 +67,7 @@
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
                   <el-form-item label="设计作品名称" prop="title">
-                    <el-input v-model="form.title" placeholder=""></el-input>
+                    <el-input v-model="form.title" placeholder="输入作品名称"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -78,7 +78,8 @@
                     <el-input
                       type="textarea"
                       :rows="10"
-                      placeholder="请输入内容"
+                      :maxlength="500"
+                      placeholder="请输入10~500字的描述"
                       v-model="form.content">
                     </el-input>
                   </el-form-item>
@@ -104,7 +105,18 @@
               </el-row>
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="出让方式" prop="sell_type">
+                  <el-form-item label="出让方式" prop="sell_type" class="msg-box">
+                    <div class="msg-icon">
+
+                    </div>
+                    <div class="msg-size">
+                      <div class="mag-triangle">
+                      </div>
+                      <span>
+                        铟果平台收取成交价格10%服务费
+                      </span>
+                      
+                    </div>
                     <el-radio-group v-model.number="form.sell_type" @change="sell">
                       <el-radio class="radio" :label="1">全额出让</el-radio>
                       <el-radio class="radio" :label="2">股权合作</el-radio>
@@ -124,7 +136,7 @@
                     </el-col>
                     <el-col :span="(form.sell_type&&form.sell_type===2)?12:24">
                       <el-form-item label="出让金额" prop="price">
-                        <el-input v-model.number="form.price" :maxlength="12">
+                        <el-input v-model="form.price" :maxlength="12" placeholder="输入出让金额">
                           <template slot="append">元</template>
                         </el-input>
                       </el-form-item>
@@ -172,7 +184,7 @@
                       :on-progress="uploadProgress3"
                       :before-upload="beforeUpload2"
                       >
-                      <el-button class="red-button" >
+                      <el-button class="red-button">
                       +&nbsp;上传说明书
                     </el-button>
                     <span class="tc-9 patent-msg">{{uploadMsg3}}</span>
@@ -244,7 +256,7 @@
     },
     data () {
       var ratio = (rule, value, callback) => {
-        if (value === '') {
+        if (!value) {
           callback(new Error('请输入比例'))
         } else if (isNaN(value) || value > 100 || value < 0){
           callback(new Error('请输入1~100的比例'))
@@ -253,7 +265,9 @@
         }
       }
       var priceVerify = (rule, value, callback) => {
-        if (isNaN(value) || value < 0){
+        if (!value) {
+          callback(new Error('请输入比例'))
+        } else if (isNaN(value) || value < 0){
           callback(new Error('请输入合理的金额'))
         } else {
           callback()
@@ -300,9 +314,9 @@
           'x:target_id': '',
           'x:type': 38
         },
-        uploadMsg: '格式：JPG／PNG 大小：小于5MB',
-        uploadMsg2: '格式：JPG／PNG 大小：小于5MB',
-        uploadMsg3: '格式：PDF 大小：小于5MB',
+        uploadMsg: '格式：JPG／PNG 大小：小于10MB',
+        uploadMsg2: '格式：JPG／PNG 大小：小于10MB',
+        uploadMsg3: '格式：PDF 大小：小于20MB',
         imageUrl: '',
         design_types: [],
         form: {
@@ -319,14 +333,13 @@
         },
         ruleForm: {
           title: [
-            {required: true, message: '请填写标题', trigger: 'blur'}
+            {required: true, message: '请填写作品名称', trigger: 'blur'}
           ],
           content: [
             {required: true, message: '请填写设计描述', trigger: 'blur'},
             {min: 10, max: 500, message: '长度在 10 到 500 个字符', trigger: 'blur'}
           ],
           price: [
-            {required: true, type: 'number', message: '请填写合理的金额', trigger: 'blur'},
             { validator: priceVerify, trigger: 'blur' }
           ],
           contacts: [
@@ -578,7 +591,7 @@
       },
       // 上传成功操作
       uploadSuccess(response, file, fileList) {
-        this.uploadMsg = '只能上传jpg/png文件，且不超过5M'
+        this.uploadMsg = '只能上传jpg/png文件，且不超过10M'
         let add = fileList[fileList.length - 1]
         console.log('add', add)
         let item = {
@@ -595,28 +608,28 @@
       // 上传之前操作
       beforeUpload(file) {
         const arr = ['image/jpeg', 'image/gif', 'image/png']
-        const isLt5M = file.size / 1024 / 1024 < 5
+        const isLt5M = file.size / 1024 / 1024 < 10
 
         if (arr.indexOf (file.type) === -1) {
           this.$message.error ('上传文件格式不正确!')
           return false
         }
         if (!isLt5M) {
-          this.$message.error ('上传文件大小不能超过 5MB!')
+          this.$message.error ('上传文件大小不能超过 10MB!')
           return false
         }
       },
       // 说明书上传之前操作
       beforeUpload2(file) {
         const arr = ['application/pdf']
-        const isLt5M = file.size / 1024 / 1024 < 5
+        const isLt5M = file.size / 1024 / 1024 < 20
 
         if (arr.indexOf (file.type) === -1) {
           this.$message.error ('上传文件格式不正确!')
-          return false
+          return false0
         }
         if (!isLt5M) {
-          this.$message.error ('上传文件大小不能超过 5MB!')
+          this.$message.error ('上传文件大小不能超过 10MB!')
           return false
         }
       },
@@ -639,7 +652,7 @@
       },
       // 上传专利
       upload2Success(response, file, fileList) {
-        this.uploadMsg2 = '只能上传jpg/png文件，且不超过5M'
+        this.uploadMsg2 = '只能上传jpg/png文件，且不超过10M'
         let add = fileList[fileList.length - 1]
         let item = {
           name: add.name,
@@ -1083,6 +1096,48 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+  .msg-box {
+    position: relative;
+  }
+  .msg-size {
+    position: absolute;
+    width: 300px;
+    height: 40px;
+    line-height: 38px;
+    left: 105px;
+    top: -40px;
+    border: 1px solid #FF5A5F;
+    box-shadow: 0 0 4px 0 rgba(0,0,0,0.10);
+    border-radius: 4px;
+  }
+  .msg-size span {
+    margin-left: 8px;
+    color: #ff5a5f;
+  }
+  .msg-icon {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    left: 70px;
+    top: -28px;
+    background: url('../../../../../assets/images/item/Tips@2x.png') no-repeat center / contain;
+    border-radius: 4px;
+  }
+  /* .msg-icon:hover {
+    background: url('../../../../../assets/images/item/TipsHover@2x.png') no-repeat center / contain;
+  } */
+  .mag-triangle {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-bottom: 1px solid #ff5a5f;
+    border-left: 1px solid #ff5a5f;
+    transform: rotate(45deg);
+    left: -7px;
+    top: 13px;
+    z-index: 1;
+    background-color: #fff;
   }
   .cancel-icons {
     position: absolute;
