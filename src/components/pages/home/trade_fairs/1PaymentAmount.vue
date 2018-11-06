@@ -1,21 +1,18 @@
 <template>
-  <div class="blank30 vcenter">
+  <div class="blank30 vcenter" v-loading="isLoading">
     <el-row :gutter="24">
       <v-menu currentName="order"></v-menu>
       <div :class="{'vcenter-right-plus': leftWidth === 4,
         'vcenter-right': leftWidth === 2,
         'vcenter-right-mob': isMob}">
         <div class="right-content vcenter-container">
-          <!--
-          <v-menu-sub></v-menu-sub>
-          -->
           <div class="dis-flex" style="margin-bottom: 10px">
             <div class="mar-r-10">
               <router-link :to="{ path: '/shunde/trade_fairs/demand_login' }" class="font-14">代售成果</router-link>
               <span class="border"></span>
             </div>
             <div class="mar-r-10">
-              <router-link :to="{ name: 'vcenterItemShow', params: {id: this.$route.query.id}}" class="font-14">项目详情</router-link>
+              <router-link :to="{ name: 'work_datails', params: {id: this.$route.query.id}}" class="font-14">{{designTitle}}</router-link>
               <span class="border"></span>
             </div>
             <div class="mar-r-10">
@@ -28,7 +25,7 @@
             <div class="main clearfix min-height-0">
               <div class="status">
                 <div style="width: 100%">
-                  <p class="main-status" v-if="item.bank_transfer === 0">订单状态: <span>{{ item.status_value }}</span></p>
+                  <p class="main-status" v-if="item.bank_transfer === 0">订单状态: <span>{{ item.status | payStatus}}</span></p>
                   <div v-if="item.pay_type === 5 && item.status === 0">
                     <div v-if="item.bank_transfer === 0">
                       <p class="main-des">请于 {{ item.expire_at }} 前完成支付，逾期会关闭交易</p>
@@ -79,9 +76,9 @@
                       <el-button class="is-custom" @click="rePay">更改支付方式</el-button>
                     </p>
                   </div>
-                  <!--<div class="sure-pay-btn">-->
-                    <!--<p><el-button>取消订单</el-button></p>-->
-                  <!--</div>-->
+                  <div class="sure-pay-btn">
+                    <p><el-button>取消订单</el-button></p>
+                  </div>
                 </div>
               </div>
 
@@ -90,8 +87,8 @@
           <div class="content-box" style="margin-bottom: 0">
             <div class="clear detail">
               <p class="detail-banner">订单详情</p>
-              <p>项目名称: <span>{{ item.item_name }}</span></p>
-              <p>出让方式: <span>{{ item.item_name }}</span></p>
+              <p>项目名称: <span>{{ designTitle }}</span></p>
+              <p>出让方式: <span>{{sellType===1?'全额出让':'股权出让'+shareRatio+'%'}}</span></p>
               <p>支付方式: <span>{{ item.pay_type_value }}</span></p>
               <p>金&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;额: <span><i>¥ </i>{{ item.amount }}</span></p>
               <p>订单编号: <span>{{ item.uid }}</span></p>
@@ -146,7 +143,10 @@
       return {
         item: {},
         itemUid: '',
+        isLoading: false,
         upToken: null,
+        sellType: '',
+        shareRatio: '',
         uploadParam: {
           'url': '',
           'token': '',
@@ -158,7 +158,8 @@
         fileUrl: '',
         fileDesc: '格式：JPG／PNG   大小：小于2MB',
         surePay: false,
-        msg: ''
+        msg: '',
+        designTitle: ''
       }
     },
     methods: {
@@ -236,6 +237,23 @@
           })
       }
     },
+    filters: {
+      payStatus(val) {
+        if (val) {
+          if (val === 1) {
+            return '支付成功'
+          } else if (val === -1) {
+            return '关闭'
+          } else if (val === 0) {
+            return '未支付'
+          } else if (val === 2) {
+            return '退款'
+          } else {
+            return ''
+          }
+        }
+      }
+    },
     computed: {
       isMob() {
         return this.$store.state.event.isMob
@@ -248,53 +266,53 @@
       }
     },
     created: function () {
-      let itemUid = this.$route.params.id
-      // let itemUid2 = this.$route.query.id
-      // console.log(this.$route.query.id)
-      // if (itemUid) {
-      //   this.itemUid = itemUid
-      //   this.$http.get(api.orderId.format(itemUid), {})
-      //     .then((response) => {
-      //       if (response.data.meta.status_code === 200) {
-      //         this.item = response.data.data
-      //         console.log('1', this.item)
-      //         let createdAt = this.item.created_at
-      //         let createdFormat = createdAt.date_format()
-      //         this.item.created_at = createdFormat.format('yyyy-MM-dd hh:mm')
-      //         let expire = new Date((createdFormat / 1000 + 86400 * 3) * 1000)
-      //         this.item.expire_at = expire.format('yyyy-MM-dd hh:mm')
-      //         // 凭证
-      //         if (response.data.data.assets) {
-      //           this.surePay = true
-      //           this.fileUrl = response.data.data.assets.small
-      //         }
-      //         this.uploadParam['x:target_id'] = response.data.data.id
-      //       } else {
-      //         this.$message.error(response.data.meta.message)
-      //       }
-      //     })
-      //     .catch((error) => {
-      //       this.$message.error(error.message)
-      //     })
-      // } else {
-      //   this.$message.error('缺少请求参数!')
-      //   this.$router.push({name: 'home'})
-      // }
+      let itemUid = this.$route.query.id
+      if (itemUid) {
+        this.itemUid = itemUid
+        this.$http.get(api.payDesignResults.format(itemUid), {})
+          .then((response) => {
+            if (response.data.meta.status_code === 200) {
+              this.item = response.data.data
+              this.designTitle = this.item.design_result.title
+              this.sellType = this.item.design_result.sell_type
+              this.shareRatio = this.item.design_result.share_ratio
+              let createdAt = this.item.created_at
+              let createdFormat = createdAt.date_format()
+              this.item.created_at = createdFormat.format('yyyy-MM-dd hh:mm')
+              let expire = new Date((createdFormat / 1000 + 86400 * 3) * 1000)
+              this.item.expire_at = expire.format('yyyy-MM-dd hh:mm')
+              // 凭证
+              if (response.data.data.assets) {
+                this.surePay = true
+                this.fileUrl = response.data.data.assets.small
+              }
+              this.uploadParam['x:target_id'] = response.data.data.id
+            } else {
+              this.$message.error(response.data.meta.message)
+            }
+          })
+          .catch((error) => {
+            this.$message.error(error.message)
+          })
+      } else {
+        this.$message.error('缺少请求参数!')
+        this.$router.push({name: 'home'})
+      }
 
-      // this.$http.get(api.upToken, {})
-        // .then((response) => {
-        //   if (response.data.meta.status_code === 200) {
-        //     if (response.data.data) {
-        //       this.uploadParam['token'] = response.data.data.upToken
-        //       this.uploadParam['x:random'] = response.data.data.random
-        //       this.uploadParam.url = response.data.data.upload_url
-        //     }
-        //   }
-        // })
-        // .catch((error) => {
-        //   this.$message.error(error.message)
-        //   return false
-        // })
+      this.$http.get(api.upToken, {})
+        .then((response) => {
+          if (response.data.meta.status_code === 200) {
+            if (response.data.data) {
+              this.uploadParam['token'] = response.data.data.upToken
+              this.uploadParam['x:random'] = response.data.data.random
+              this.uploadParam.url = response.data.data.upload_url
+            }
+          }
+        })
+        .catch((error) => {
+          this.$message.error(error.message)
+          return false
+        })
     }
   }
 </script>

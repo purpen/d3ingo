@@ -7,7 +7,7 @@
           <span class="border"></span>
         </div>
         <div class="mar-r-10">
-          <router-link :to="{name: 'work_datails', params: {id: formup.id}}" class="font-14">{{formup.title}}</router-link>
+          <router-link :to="{name: 'work_datails', params: {id: itemId}}" class="font-14">{{formup.title}}</router-link>
           <span class="border"></span>
         </div>
         <div class="mar-r-10">
@@ -65,12 +65,12 @@ export default {
   },
   methods: {
     submit() {
-    this.$router.push({name: 'managed_funds', params: {id: 1}})
+      this.$router.push({name: 'managed_funds', params: {id: this.formup.id}})
     },
     // 获取详情
     upDetails() {
       this.isLoading = true
-      this.$http.get(api.sdDesignResultsShow, {params: {id: this.$route.params.id}}).then(
+      this.$http.get(api.sdDesignResultsShow, {params: {id: this.itemId}}).then(
         (response) => {
           if (response.data.meta.status_code === 200) {
             this.formup = response.data.data
@@ -90,6 +90,10 @@ export default {
     }
   },
   created() {
+    let itemId = this.$route.params.id
+    if (itemId) {
+      this.itemId = itemId
+    }
     this.upDetails()
   },
   computed: {
