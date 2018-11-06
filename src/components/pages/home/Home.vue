@@ -114,7 +114,7 @@
           <el-card class="card" :body-style="{ padding: '0px' }">
             <router-link :to="{name: 'articleShow', params: {id: d.id}}"
                         :target="isMob ? '_self' : '_blank'">
-              <div class="image-box" :style="{background: 'url('+ d.cover.middle + ') no-repeat center', backgroundSize: 'cover'}">
+              <div class="image-box" v-if="d.cover" :style="{background: 'url('+ d.cover.middle + ') no-repeat center', backgroundSize: 'cover'}">
                 <img v-lazy="d.cover.middle">
               </div>
               <div class="content">
@@ -152,7 +152,7 @@
       <el-col :xs="24" :sm="8" :md="8" :lg="8" v-for="(d, index) in designCaseList" :key="index">
         <el-card class="card" :body-style="{ padding: '0px' }">
           <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}" :target="isMob ? '_self' : '_blank'">
-            <div class="image-box" :style="{background: 'url('+ d.cover.middle + ') no-repeat center', backgroundSize: 'cover'}">
+            <div class="image-box" v-if="d.cover" :style="{background: 'url('+ d.cover.middle + ') no-repeat center', backgroundSize: 'cover'}">
                 <img v-lazy="d.middle">
             </div>
             <div class="content">
@@ -410,7 +410,9 @@
         .then((res) => {
           this.articleList = res.data.data
           for (let i = 0; i < res.data.data.length; i++) {
-            this.articleList[i].cover_url = res.data.data[i].cover.middle
+            if (res.data.data[i].cover) {
+              this.articleList[i].cover_url = res.data.data[i].cover.middle
+            }
           }
         }).catch((err) => {
           console.error(err)
@@ -424,7 +426,9 @@
             this.designCaseList = response.data.data
             if (this.designCaseList && this.designCaseList.length > 0) {
               for (let i = 0; i < response.data.data.length; i++) {
-                this.designCaseList[i].cover_url = response.data.data[i].cover.middle
+                if (response.data.data[i].cover) {
+                  this.designCaseList[i].cover_url = response.data.data[i].cover.middle
+                }
               }
             }
           }
