@@ -49,7 +49,11 @@ export default {
   created() {
     this.$http.get(api.getVersion)
     .then(res => {
-      console.log(res)
+      let version = localStorage.getItem('version')
+      if (version !== res.data.data.number) {
+        localStorage.setItem('version', res.data.data.number)
+        window.location.reload(true)
+      }
     }).catch(err => {
       console.log(err)
     })
