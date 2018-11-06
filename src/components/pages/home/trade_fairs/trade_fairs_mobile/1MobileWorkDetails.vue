@@ -62,7 +62,7 @@
         <div class="letters-text">专利证书</div>
         <div class="let-round">
           <div class="letters-img" v-for="(patent, index) in patentRound" :key="index">
-            <img :src="patent.small" width="100%" height="100%">
+            <img :src="patent.small" width="100%" height="100%" @click="imgaeShow(patent)">
           </div>
         </div>
       </div>
@@ -112,6 +112,24 @@
         <p @click="dialogBuy = false" class="sure-text">确 定</p>
       </span>
     </el-dialog>
+
+    <!-- 图片预览 -->
+     <div class="view-cover" v-show="viewCover">
+      <div class="view-picture">
+        <div class="view-content" @click.self="closeView">
+          <div class="image-preview">
+            <swiper :options="swiperOption" :not-next-tick="notNextTick" ref="mySwiper">
+              <swiper-slide v-for="(ele, index) in patentRound" :key="index">
+                <div v-lazy-container="ele.big" class="round-img">
+                  <img :data-src="ele.big" :data-loading="ele.small" class="swipe-img">
+                </div>
+              </swiper-slide>
+            </swiper>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -123,16 +141,23 @@
       return {
         demandList: '',
         formup: {},
+        isLoad: false,
         isLoading: false,
         intersClick: true,
         collectId: '',
+        previewObj: {
+          index: 0,
+          info: {}
+        },
         diaLoading: false,
         setIndex: -1,
         dialogCall: false,
         urlLogo: '',
         companyName: '',
         imgUrl: '',
+        notNextTick: true, // 设置之后可以获取swiper对象
         patentRound: '',
+        viewCover: false,
         dialogBuy: false,
         swiperOption: {
           pagination: '.swiper-pagination',
@@ -158,6 +183,44 @@
       this.upDetails()
     },
     methods: {
+      // 图片预览
+      imgaeShow(ele) {
+        if (this.$refs.mySwiper) {
+          this.patentRound.forEach((item, index) => {
+            if (ele.id === item.id) {
+              let img = new Image()
+              img.src = ele.big
+              img.onload = () => {
+                this.isLoad = true
+                console.log('加载完成')
+              }
+              this.swiperObj.slideTo(index)
+              this.viewCover = true
+              this.previewObj.info = item
+              this.previewObj.index = index
+            }
+          })
+          let oldClass = document.getElementById('app').getAttribute('class')
+          if (oldClass) {
+            oldClass = oldClass.replace(/disableScroll\x20?/g, '')
+          }
+          document.body.setAttribute('class', 'disableScroll')
+          document.getElementById('app').setAttribute('class', 'disableScroll ' + oldClass)
+          document.childNodes[1].setAttribute('class', 'disableScroll')
+        } else {
+          this.$message.info('正在加载组件, 请稍后尝试...')
+        }
+      },
+      closeView () {
+        this.viewCover = false
+        let oldClass = document.getElementById('app').getAttribute('class')
+        if (oldClass) {
+          oldClass = oldClass.replace('disableScroll ', '')
+        }
+        document.body.removeAttribute('class', 'disableScroll')
+        document.getElementById('app').setAttribute('class', oldClass)
+        document.childNodes[1].removeAttribute('class', 'disableScroll')
+      },
       // 弹出联系框
       callHer() {
         this.dialogCall = true
@@ -228,9 +291,14 @@
         }
       }
     },
+    watch: {
+    },
     computed: {
       isMob() {
         return this.$store.state.event.isMob
+      },
+      swiperObj() {
+        return this.$refs.mySwiper.swiper
       }
     }
   }
@@ -241,6 +309,37 @@
   .title-bottom {
     padding-top: 10px;
   }
+  /* swipe样式 */
+  .view-cover {
+    position: fixed;
+    z-index: 2999;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+  }
+  .round-img {
+    margin: 0 15px;
+    height: 465px;
+  }
+  .swipe-img {
+    height: 465px;
+    width: 100%;
+  }
+  .image-preview {
+    max-width: 767px;
+    margin: 0 auto;
+  }
+  .view-content {
+    height: calc(100vh - 70px);
+    padding-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+
   .patent-img {
     height: 330px;
     margin: 0 auto;
