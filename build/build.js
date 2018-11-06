@@ -9,6 +9,8 @@ var chalk = require('chalk')
 var webpack = require('webpack')
 var config = require('../config')
 var webpackConfig = require('./webpack.prod.conf')
+const axios = require('axios')
+const api = require('../config/prod.env')
 
 var spinner = ora('building for production...')
 spinner.start()
@@ -34,7 +36,16 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
       }
       console.log("The file was saved!", version)
     })
-
+    console.log(api.API_ROOT.split('"')[1] + '/setNewVersion')
+    axios({
+      method: 'post',
+      url: api.API_ROOT.split('"')[1] + '/setNewVersion',
+      data: {code: 'taihuoniao', number: version}})
+    .then(res => {
+      console.log(res.data.meta.message)
+    }).catch(err => {
+      console.log(err)
+    })
     console.log(chalk.cyan('  Build complete.\n'))
     console.log(chalk.yellow(
       '  Tip: built files are meant to be served over an HTTP server.\n' +

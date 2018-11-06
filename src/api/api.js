@@ -15,6 +15,8 @@
  **/
 
 export default {
+  getVersion: '/getVersion', // 获取版本号
+  setNewVersion: '/setNewVersion', // 设置版本号
   login: '/auth/login', // 登录
   setUserType: '/auth/setUserType', // POST 选择用户类型
   errCount: '/auth/errCount', // POST 检测错误次数
