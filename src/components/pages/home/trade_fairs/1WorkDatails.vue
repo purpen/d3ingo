@@ -240,7 +240,7 @@
           </div>
           <div class="list-left">
             <div class="list-button buy-text">
-              <router-link :to="{name: 'sure_order', params: {id: formup.id}}" class="details-text">立即购买</router-link>
+              <router-link :to="{name: 'sure_order', params: {id: itemId}}" class="details-text">立即购买</router-link>
             </div>
           </div>
           <div class="list-left" v-if="false">
@@ -337,6 +337,7 @@ export default {
         content: ''
       },
       imgUrl: '',
+      itemId: '',
       companyName: '',
       swiperOption: {
         pagination: '.swiper-pagination',
@@ -457,7 +458,7 @@ export default {
     // 获取详情
     upDetails() {
       this.isLoading = true
-      this.$http.get(api.sdDesignResultsShow, {params: {id: this.$route.params.id}}).then(
+      this.$http.get(api.sdDesignResultsShow, {params: {id: this.itemId}}).then(
         (response) => {
           if (response.data.meta.status_code === 200) {
             this.formup = response.data.data
@@ -503,6 +504,10 @@ export default {
     }
   },
   created() {
+    let itemId = this.$route.params.id
+    if (itemId) {
+      this.itemId = itemId
+    }
     this.upDetails()
   },
   filters: {

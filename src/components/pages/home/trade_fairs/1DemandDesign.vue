@@ -91,6 +91,7 @@
       <el-dialog
         title="联系电话"
         :visible.sync="callPhone"
+        :lock-scroll="false"
         size="tiny"
         class="phone-style">
         <div class="title-center">
@@ -103,6 +104,7 @@
       <el-dialog
         title="客服电话"
         :visible.sync="clientPhone"
+        :lock-scroll="false"
         size="tiny"
         class="phone-style">
         <div class="title-center">
@@ -116,6 +118,7 @@
     <el-dialog
       title="需求详情"
       :visible.sync="dialogUpdateVisible"
+      :lock-scroll="false"
       size="tiny"
       class="submit2-form seen-deta"
       >
