@@ -68,15 +68,15 @@
 
                 <div class="operation" v-if="(item.status === -1 || item.status === 0) && item.bank_transfer === 0">
                   <div class="sure-pay-btn" >
-                    <el-button v-if="surePay" class="is-custom" type="primary" @click.stop="surePaydBtn">确认打款</el-button>
-                    <el-button v-else  disabled type="primary">确认打款</el-button>
+                    <el-button v-if="surePay" class="is-custom" type="primary" @click.stop="surePaydBtn">确认支付</el-button>
+                    <el-button v-else  disabled type="primary">确认支付</el-button>
                   </div>
                   <div class="sure-pay-btn">
                     <p v-if="(item.status === -1 || item.status === 0) && item.bank_transfer === 0">
                       <el-button class="is-custom" @click="rePay">更改支付方式</el-button>
                     </p>
                   </div>
-                  <div class="sure-pay-btn">
+                  <div class="sure-pay-btn" @click="closeDialog">
                     <p><el-button>取消订单</el-button></p>
                   </div>
                 </div>
@@ -124,7 +124,17 @@
 
       </div>
     </el-row>
-
+    <el-dialog
+      title="确认关闭"
+      :visible.sync="closeShow"
+      :lock-scroll="false"
+      size="tiny">
+      <span>是否确定关闭订单</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="closeShow = false">取 消</el-button>
+        <el-button type="primary" @click="closeOrder">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -159,17 +169,32 @@
         fileDesc: '格式：JPG／PNG   大小：小于2MB',
         surePay: false,
         msg: '',
-        designTitle: ''
+        designTitle: '',
+        closeShow: false,
       }
     },
     methods: {
+      closeDialog() {
+        this.closeShow = true
+      },
+      closeOrder() {
+        this.$http.get(api.payCloseOrder, {params: {id: this.itemUid}}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.closeShow = false
+            this.$router.push({name: 'sale_result'})
+          } else {
+            this.$message.error(response.data.meta.message)
+            this.closeShow = false
+          }
+        })
+        .catch((error) => {
+          this.$message.error(error.message)
+          this.closeShow = false
+        })
+      },
       // 更改支付方式
       rePay() {
-        if (this.item.type === 4) {
-          this.$router.push({name: 'itemPayStageFund', params: {stage_id: this.item.item_stage_id}})
-        } else {
-          this.$router.push({name: 'itemPayFund', params: {item_id: this.item.item_id}})
-        }
+          this.$router.push({name: 'itemPayFund', params: {id: this.item.id}})
       },
       handlePreview(file) {
         console.log(file)

@@ -143,7 +143,10 @@
       <el-form label-position="top">
         <input type="hidden" v-model="orderForm.orderId" value="" />
         <input type="hidden" v-model.number="orderForm.index" value="" />
-        <el-form-item label="项目名称" label-width="200px">
+        <el-form-item label="设计成果名称" label-width="200px" v-if="orderForm.pay_type === 5">
+          <el-input v-model="orderForm.design_result_name" auto-complete="off" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="项目名称" label-width="200px" v-else>
           <el-input v-model="orderForm.itemName" auto-complete="off" disabled></el-input>
         </el-form-item>
         <el-form-item label="订单金额" label-width="200px">
@@ -206,7 +209,9 @@ export default {
         itemName: '',
         amount: '',
         bankId: '',
-        payNo: ''
+        payNo: '',
+        pay_type: '',
+        design_result_name: ''
       },
       query: {
         page: 1,
@@ -241,7 +246,9 @@ export default {
       this.orderForm.index = index
       this.orderForm.orderId = item.id
       this.orderForm.itemName = item.item_name
+      this.orderForm.design_result_name = item.design_result_name
       this.orderForm.amount = item.amount
+      this.orderForm.pay_type = item.pay_type
       this.sureTransferDialog = true
     },
     // 查看凭证弹层

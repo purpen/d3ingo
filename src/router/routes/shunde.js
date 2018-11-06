@@ -62,6 +62,16 @@ module.exports = [
     },
     component: require('@/components/pages/home/trade_fairs/1WorkDatails')
   },
+  // 订单详情页
+  {
+    path: '/shunde/trade_fairs/saleResult/pay_datails/:id',
+    name: 'pay_datails',
+    meta: {
+      title: '订单详情页',
+      requireAuth: true
+    },
+    component: require('@/components/pages/home/trade_fairs/1PayDatails')
+  },
   // 个人中心需求列表页
   {
     path: '/shunde/trade_fairs/demand/demand_list',
