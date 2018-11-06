@@ -34,7 +34,14 @@
       <div class="product-the">
         <div class="the-title">产品描述</div>
         <!-- <div class="the-text">{{ formup.content}}</div> -->
-        <div class="por-text">测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试测试，试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试<div class="seen-more">查看更多</div></div>
+        <div class="sec-div">
+          <div class="display-area">
+            <div class="placeholder"></div>
+            <span class="content">{{ formup.content}}</span>
+            <div class="ellipsis">…<p class="more-style">展开更多</p></div>
+          </div>
+          <span class="content-placeholder">{{ formup.content}}</span>
+        </div>
       </div>
       <div class="wide-line"></div>
       <div class="contact-company">
@@ -324,6 +331,82 @@
   .title-bottom {
     padding-top: 10px;
   }
+  /* 展开更多样式 */
+  .sec-div {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+    height: 90px;
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(153,153,153,1);
+    line-height: 20px;
+    padding-top: 10px;
+  }
+
+  .product-the span {
+    display: block;
+    margin: 0;
+    padding: 0;
+  }
+
+  .content-placeholder {
+    opacity: 0;
+    z-index: -1;
+    pointer-events: none;
+    max-height: 120px;
+  }
+
+  .display-area {
+    position: absolute;
+    height: 100%;
+  }
+
+  .display-area .placeholder {
+    float: left;
+    width: 5em;
+    content: '';
+    height: 100%;
+    max-height: 120px;
+  }
+
+  .display-area .content {
+    float: right;
+    margin-left: -7em;
+    width: 100%;
+  }
+
+  .display-area .ellipsis {
+    float: right;
+    height: 30px;
+    width: 7em;
+    position: relative;
+    left: 99%;
+    transform: translate(-100%, -100%);
+    text-align: left;
+    background: linear-gradient(125deg, rgba(255, 255, 255, 0), #fff 10%, #fff);
+  }
+  .display-area .ellipsis:after {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 19px;
+    top: 0;
+    bottom: 0;
+    right: 7px;
+    background: url('../../../../../assets/images/trade_fairs/list/Open@2x.png') no-repeat center;
+    background-size: contain;
+  }
+  .more-style {
+    font-size:12px;
+    font-family:PingFangSC-Regular;
+    font-weight:400;
+    color: #FF5A5F;
+    float: right;
+    right: 30px;
+    position: relative;
+  }
   /* swipe样式 */
   .view-cover {
     position: fixed;
@@ -527,7 +610,7 @@
     padding-top: 10px;
   }
   .product-the {
-    height: 130px;
+    height: 135px;
     margin: 0 15px;
   }
   .wide-line {
