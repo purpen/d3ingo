@@ -350,6 +350,78 @@
                 </div>
               </div>
             </div>
+            <div v-if="type === 3">
+              <div>
+                <!-- <div v-if="!collectList||!collectList.length" class="no-list">
+                  <img src="../../../../../assets/images/trade_fairs/default/NoDemand@2x.png" alt="无收藏">
+                  <p>还没有收藏设计需求～</p>
+                  <el-button class="red-button">查看设计需求</el-button>
+                </div> -->
+                <div class="demand-list">
+                  <div class="demand-header">
+                    <el-row>
+                      <el-col :span="10">
+                        项目名称
+                      </el-col>
+                      <el-col :span="4">
+                        交易金额
+                      </el-col>
+                      <el-col :span="6">
+                        项目状态
+                      </el-col>
+                      <el-col :span="4">
+                        操作
+                      </el-col>
+                    </el-row>
+                  </div>
+                  <div class="demand-subject" v-for="(d,indexd) in orderList" :key="indexd">
+                    <el-row class="demand-time">
+                      <el-col>
+                        <span>订单号: {{d.uid}}</span>
+                        下单时间: {{d.created_at | timeFormat}}
+                      </el-col>
+                    </el-row>
+                    <div class="demand-content">
+                      <el-row>
+                        <el-col :span="10" class="collect-all">
+                          <div class="collect-img">
+                            <!-- :style="{background:'url('+d.cover.logo +') no-repeat center / contain'}" -->
+                          </div>
+                          <div class="collect-centent">
+                            <p class="c-title">{{d.title}}</p>
+                            <p>出让形式: {{d.design_result.sell_type === 1?'全额出让':'股权合作'}}</p>
+                            <p>出让金额: ¥{{d.design_result.price}}</p>
+                          </div>
+                        </el-col>
+                        <el-col :span="4">
+                          {{d.amount}}
+                        </el-col>
+                        <el-col :span="6" :class="{'tc-red':d.status < 1 || (d.status === 1 && d.design_result.sell <2)}">
+                          {{d.status | payFormat(d.design_result.sell)}}
+                        </el-col>
+                        <el-col :span="4">
+                          <el-button class="is-custom" type="primary" size="small" v-if="d.status === 0">
+                            继续支付
+                          </el-button>
+                          <el-button class="mg-t-10" v-if="d.status === 0" @click="deleteOrder(d.id)">
+                            取消订单
+                          </el-button>
+                          <el-button class="is-custom" type="primary" size="small" v-if="d.status ===1 && d.design_result.sell < 2">
+                            确认文件
+                          </el-button>
+                          <el-button class="mg-t-10" v-if="d.status ===1 && d.design_result.sell < 2">
+                            仲裁电话
+                          </el-button>
+                          <!-- <el-button class="mg-t-10">
+                            评价
+                          </el-button> -->
+                        </el-col>
+                      </el-row>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -407,7 +479,8 @@
         }, // 查看详情表单
         demandList: [], // 需求列表
         deleteForm: '', // 删除项目id
-        collectList: [] // 收藏列表
+        collectList: [], // 收藏列表
+        orderList: [] // 订单列表
       }
     },
     computed: {
@@ -456,6 +529,23 @@
         } else {
           return ''
         }
+      },
+      payFormat(val, sell) {
+        if (val === 0) {
+          return '待支付'
+        } else if (val === 1) {
+          if (sell === 2) {
+            return '交易成功'
+          } else if (sell < 2){
+            return '待确认文件'
+          }
+        } else if (val === 2) {
+          return '退款'
+        } else if (val === -1) {
+          return '交易失败'
+        } else {
+          return val
+        }
       }
     },
     watch: {
@@ -468,10 +558,32 @@
           this.getDemandList()
         } else if (val === 2) {
           this.getCollectList()
+        } else if (val === 3) {
+          this.getOrderList()
+        } else {
+          this.getDemandList()
         }
       }
     },
     methods: {
+      // 取消订单
+      deleteOrder(id) {
+        this.$http.get(api.sdPayCloseOrder, {params: {id: id}}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.orderList.forEach(item => {
+              if (item.id === id) {
+                this.$set(item, 'status', -1)
+              }
+            })
+          } else {
+             this.$message.error(response.data.meta.message)
+             return
+          }
+        })
+        .catch(function (error) {
+          this.$message.error(error.message)
+        })
+      },
       // 改变城市组件值- 服务信息()
       changeServer: function(obj) {
         this.$set(this.form, 'item_province', obj.province)
@@ -630,6 +742,30 @@
         .catch(function (error) {
           self.$message.error(error.message)
           self.isLoading = false
+          return
+        })
+      },
+      // 订单列表
+      getOrderList() {
+        this.isLoading = true
+        this.$http.get(api.sdPayMyOrderList).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            if(response.data.data && response.data.data.length) {
+              this.orderList = response.data.data
+            } else {
+              this.orderList = []
+            }
+            this.isLoading = false
+          } else {
+            this.isLoading = false
+            this.$message.error(response.data.meta.message)
+            return
+          }
+        })
+        .catch(function (error) {
+          this.isLoading = false
+          this.$message.error(error.message)
+          console.error(error.message)
           return
         })
       },

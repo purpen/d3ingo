@@ -62,7 +62,8 @@
               label="项目信息"
               width="140">
                 <template slot-scope="scope">
-                  <p>名称: <router-link :to="{name: 'adminItemShow', params: {id: scope.row.item_id}}" target="_blank">{{ scope.row.item_name }}</router-link></p>
+                  <p v-if="scope.row.type === 5">名称: {{ scope.row.design_result_name }}</p>
+                  <p v-else>名称: <router-link :to="{name: 'adminItemShow', params: {id: scope.row.item_id}}" target="_blank">{{ scope.row.item_name }}</router-link></p>
                   <p>阶段: {{ scope.row.item_stage_id }}</p>
                 </template>
             </el-table-column>
@@ -259,7 +260,11 @@ export default {
     },
     // 确认对公打款
     sureTransferSubmit() {
-      if (!this.orderForm.orderId || !this.orderForm.itemName || !this.orderForm.bankId || !this.orderForm.payNo) {
+      // if (!this.orderForm.orderId || !this.orderForm.itemName || !this.orderForm.bankId || !this.orderForm.payNo) {
+      //   this.$message.error('缺少请求参数!')
+      //   return
+      // }
+      if (!this.orderForm.orderId || !this.orderForm.bankId || !this.orderForm.payNo) {
         this.$message.error('缺少请求参数!')
         return
       }

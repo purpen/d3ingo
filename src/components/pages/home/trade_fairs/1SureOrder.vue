@@ -112,6 +112,7 @@ export default {
 }
 .cover-img {
   height: 100%;
+  width: 100%
 }
 .sub-button {
   cursor: pointer;

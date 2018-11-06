@@ -54,6 +54,14 @@
 
                       </div>
                     </div>
+                    <div v-else-if="item.status === 1">
+                      <div class="wid-100 mar-auto">
+                        <img  src="../../../../assets/images/payconfirm@2x.png" alt="">
+                      </div>
+                      <div class="payconfirmTitle">
+                        <p class="font-18 text-center">支付成果</p>
+                      </div>
+                    </div>
                     <div v-else>
                       <div class="wid-100 mar-auto">
                         <img  src="../../../../assets/images/payconfirm@2x.png" alt="">
@@ -171,6 +179,7 @@
         msg: '',
         designTitle: '',
         closeShow: false,
+        payUid: ''
       }
     },
     methods: {
@@ -178,7 +187,7 @@
         this.closeShow = true
       },
       closeOrder() {
-        this.$http.get(api.payCloseOrder, {params: {id: this.itemUid}}).then((response) => {
+        this.$http.get(api.sdPayCloseOrder, {params: {id: this.payUid}}).then((response) => {
           if (response.data.meta.status_code === 200) {
             this.closeShow = false
             this.$router.push({name: 'sale_result'})
@@ -194,7 +203,7 @@
       },
       // 更改支付方式
       rePay() {
-          this.$router.push({name: 'itemPayFund', params: {id: this.item.id}})
+          this.$router.push({name: 'managed_funds', params: {id: this.itemUid}})
       },
       handlePreview(file) {
         console.log(file)
@@ -298,6 +307,7 @@
           .then((response) => {
             if (response.data.meta.status_code === 200) {
               this.item = response.data.data
+              this.payUid = this.item.id
               this.designTitle = this.item.design_result.title
               this.sellType = this.item.design_result.sell_type
               this.shareRatio = this.item.design_result.share_ratio

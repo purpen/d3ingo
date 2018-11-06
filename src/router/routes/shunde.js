@@ -155,23 +155,23 @@ module.exports = [
     },
     component: require('@/components/pages/home/trade_fairs/1SureOrder')
   },
-  // 付款-托管资金
+  // 付款-支付方式
   {
     path: '/shunde/trade_fairs/managed_funds/:id',
     name: 'managed_funds',
     meta: {
-      title: '托管资金',
+      title: '支付方式',
       requireAuth: true,
       hideFooter: true
     },
     component: require('@/components/pages/home/trade_fairs/1ManagedFunds')
   },
-  // 付款-支付
+  // 付款-对公转账
   {
     path: '/shunde/trade_fairs/payment_amount',
     name: 'payment_amount',
     meta: {
-      title: '支付',
+      title: '对公转账',
       requireAuth: true,
       hideFooter: true
     },
