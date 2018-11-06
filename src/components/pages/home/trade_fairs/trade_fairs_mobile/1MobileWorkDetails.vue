@@ -7,7 +7,7 @@
         <span>代售成果</span>
       </div>
       <div class="block block-radius">
-        <swiper :options="swiperOption" class="patent-img">
+        <swiper :options="swiperOption1" class="patent-img">
           <swiper-slide v-for="(img, index) in formup.images_url" :key="index">
             <div style="height:100%;">
               <div class="draw">
@@ -118,12 +118,14 @@
       <div class="view-picture">
         <div class="view-content" @click.self="closeView">
           <div class="image-preview">
-            <swiper :options="swiperOption" :not-next-tick="notNextTick" ref="mySwiper">
+            <swiper :options="swiperOption2" :not-next-tick="notNextTick" ref="mySwiper">
               <swiper-slide v-for="(ele, index) in patentRound" :key="index">
                 <div v-lazy-container="ele.big" class="round-img">
                   <img :data-src="ele.big" :data-loading="ele.small" class="swipe-img">
                 </div>
               </swiper-slide>
+              <div class="swiper-pagination" slot="pagination">
+              </div>
             </swiper>
           </div>
         </div>
@@ -159,7 +161,7 @@
         patentRound: '',
         viewCover: false,
         dialogBuy: false,
-        swiperOption: {
+        swiperOption1: {
           pagination: '.swiper-pagination',
           paginationClickable: true,
           lazyLoading: true,
@@ -167,8 +169,20 @@
           prevButton: '.swiper-button-prev',
           nextButton: '.swiper-button-next',
           spaceBetween: 0,
-          loop: true
+          loop: true,
+          // slidesPerView:'auto'
         },
+        swiperOption2: {
+          pagination: '.swiper-pagination',
+          paginationClickable: true,
+          lazyLoading: true,
+          autoplay: 5000,
+          prevButton: '.swiper-button-prev',
+          nextButton: '.swiper-button-next',
+          spaceBetween: 0,
+          loop: true,
+          // slidesPerView:'auto'
+        }
       }
     },
     components: {
@@ -320,23 +334,28 @@
     background: rgba(0, 0, 0, 0.7);
   }
   .round-img {
-    margin: 0 15px;
-    height: 465px;
+    /* margin: 0 px; */
   }
   .swipe-img {
-    height: 465px;
-    width: 100%;
+    height: calc(100vh - 200px);
+    width: 100vw;
   }
   .image-preview {
-    max-width: 767px;
+    max-width: 100vw;
     margin: 0 auto;
   }
   .view-content {
-    padding-top: 15%;
-    margin: 0 15px;
+    padding-top: 25%;
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  .view-cover .swiper-container {
+    margin: 0 15px;
+    padding-bottom: 40px;
+  }
+  .swiper-pagination-bullet {
+    background: #fff;
   }
 
 
