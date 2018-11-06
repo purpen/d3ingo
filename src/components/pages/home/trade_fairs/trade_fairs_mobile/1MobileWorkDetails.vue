@@ -194,7 +194,7 @@
                 this.isLoad = true
                 console.log('加载完成')
               }
-              this.swiperObj.slideTo(index)
+              this.swiperObj.slideTo(index + 1)
               this.viewCover = true
               this.previewObj.info = item
               this.previewObj.index = index
@@ -332,8 +332,8 @@
     margin: 0 auto;
   }
   .view-content {
-    height: calc(100vh - 70px);
-    padding-top: 30px;
+    padding-top: 15%;
+    margin: 0 15px;
     display: flex;
     justify-content: center;
     align-items: center;
