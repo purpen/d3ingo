@@ -115,6 +115,7 @@
 
     <!-- 图片预览 -->
      <div class="view-cover" v-show="viewCover">
+      <p class="swipe-close" @click.self="closeView"></p>
       <div class="view-picture">
         <div class="view-content" @click.self="closeView">
           <div class="image-preview">
@@ -333,8 +334,8 @@
     bottom: 0;
     background: rgba(0, 0, 0, 0.7);
   }
-  .round-img {
-    /* margin: 0 px; */
+  .view-picture {
+    float: left;
   }
   .swipe-img {
     height: calc(100vh - 200px);
@@ -356,6 +357,16 @@
   }
   .swiper-pagination-bullet {
     background: #fff;
+  }
+  .swipe-close {
+    float: right;
+    position: relative;
+    top: 5%;
+    right: 5%;
+    width: 30px;
+    height: 25px;
+    background: url('../../../../../assets/images/trade_fairs/list/close@2x.png') no-repeat center;
+    background-size: contain;
   }
 
 
