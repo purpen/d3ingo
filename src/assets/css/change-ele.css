@@ -253,7 +253,7 @@
   }
   .el-dialog__header {
     border-radius: 4px 4px 0 0;
-    padding: 20px;
+    padding: 16px 20px;
     background: #f7f7f7
   }
   .el-dialog__headerbtn .el-dialog__close {
@@ -365,7 +365,7 @@
     font-weight: 400;
     color: #222;
     font-size: 18px;
-    line-height: 22px;
+    line-height: 1;
   }
   .el-dialog {
     border-radius: 4px;
@@ -692,6 +692,18 @@
   }
   .hint-text .el-dialog__footer .dialog-footer .el-button:first-child {
     margin-right: 0;
+  }
+  /* 取消订单button */
+  .pay-button .el-button:focus {
+    background: #f5f5f5;
+    border: 1px solid #e6e6e6;
+    color: #999;
+  }
+  .close-orde .el-dialog__body {
+    text-align: center
+  }
+  .close-orde .el-dialog--tiny {
+    top: 30% !important;
   }
 @media screen and (max-width: 767px) {
   .el-dialog--large,

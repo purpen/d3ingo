@@ -43,7 +43,7 @@
                     <div class="image-box">
                       <router-link :to="{name: 'work_datails', params: {id: d.id}, query: {type: 2}}"
                         :target="isMob ? '_self' : '_blank'">
-                        <img v-if="d.cover" :src="d.cover.middle">
+                        <img v-if="d.cover" :src="d.cover.small">
                       </router-link>
                     </div>
                     <div class="content">
@@ -75,6 +75,7 @@
     <el-dialog
       :title="updateform.opt===1?'确认下架':(updateform.opt===2?'确认删除':'撤回')"
       :visible.sync="dialogUpdateVisible"
+      :lock-scroll="false"
       size="tiny"
       >
       <!-- <p v-if="updateform.opt ==1">确认要删除 {{updateform.title}} 吗？</p> -->
@@ -99,6 +100,7 @@
     <el-dialog
       title="修改价格"
       :visible.sync="dialogVisible"
+      :lock-scroll="false"
       size="tiny"
       >
       <el-form v-model="formPrice" :rules="ruleForm" ref="ruleForm" label-width="80px" label-position="top">
@@ -495,10 +497,11 @@
   }
   .item-more {
     position: absolute;
-    right: 0;
+    right: 0px;
     top: 10px;
-    width: 34px;
+    width: 64px;
     height: 30px;
+    padding-left: 30px;
   }
   .item-more i {
     display: block;

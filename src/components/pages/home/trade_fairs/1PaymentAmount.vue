@@ -1,21 +1,18 @@
 <template>
-  <div class="blank30 vcenter">
+  <div class="blank30 vcenter" v-loading="isLoading">
     <el-row :gutter="24">
       <v-menu currentName="order"></v-menu>
       <div :class="{'vcenter-right-plus': leftWidth === 4,
         'vcenter-right': leftWidth === 2,
         'vcenter-right-mob': isMob}">
         <div class="right-content vcenter-container">
-          <!--
-          <v-menu-sub></v-menu-sub>
-          -->
           <div class="dis-flex" style="margin-bottom: 10px">
             <div class="mar-r-10">
               <router-link :to="{ path: '/shunde/trade_fairs/demand_login' }" class="font-14">代售成果</router-link>
               <span class="border"></span>
             </div>
             <div class="mar-r-10">
-              <router-link :to="{ name: 'vcenterItemShow', params: {id: this.$route.query.id}}" class="font-14">项目详情</router-link>
+              <router-link :to="{ name: 'work_datails', params: {id: this.$route.params.id}}" class="font-14">{{designTitle}}</router-link>
               <span class="border"></span>
             </div>
             <div class="mar-r-10">
@@ -24,12 +21,12 @@
           </div>
 
           <!--v-if="item.status !== 1" 暂时的-->
-          <div class="content-box mar-b-20" v-if="item.status !== 1">
+          <div class="content-box mar-b-20">
             <div class="main clearfix min-height-0">
               <div class="status">
                 <div style="width: 100%">
-                  <p class="main-status" v-if="item.bank_transfer === 0">订单状态: <span>{{ item.status_value }}</span></p>
-                  <div v-if="item.pay_type === 5 && item.status === 0">
+                  <p class="main-status" v-if="item.bank_transfer === 0">订单状态: <span>{{ item.status | payStatus}}</span></p>
+                  <div>
                     <div v-if="item.bank_transfer === 0">
                       <p class="main-des">请于 {{ item.expire_at }} 前完成支付，逾期会关闭交易</p>
                       <p class="main-des" v-if="custom.id === 1">如果您已经完京东云市场支付，请上传凭证</p>
@@ -57,6 +54,18 @@
 
                       </div>
                     </div>
+                    <div v-else-if="item.status === 1">
+                      <div class="wid-100 mar-auto">
+                        <img  src="../../../../assets/images/paysuccess@2x.png" alt="">
+                      </div>
+                      <div class="payconfirmTitle">
+                        <p class="pay-success text-center">支付成功</p>
+                      </div>
+                      <div class="success-center">
+                         <el-button class="is-custom" @click="moreAchieve">更多设计成果</el-button>
+                        <el-button class="is-custom" type="primary" @click="Myorder">我的订单</el-button>
+                      </div>
+                    </div>
                     <div v-else>
                       <div class="wid-100 mar-auto">
                         <img  src="../../../../assets/images/payconfirm@2x.png" alt="">
@@ -71,17 +80,17 @@
 
                 <div class="operation" v-if="(item.status === -1 || item.status === 0) && item.bank_transfer === 0">
                   <div class="sure-pay-btn" >
-                    <el-button v-if="surePay" class="is-custom" type="primary" @click.stop="surePaydBtn">确认打款</el-button>
-                    <el-button v-else  disabled type="primary">确认打款</el-button>
+                    <el-button v-if="surePay" class="is-custom" type="primary" @click.stop="surePaydBtn">确认支付</el-button>
+                    <el-button v-else  disabled type="primary">确认支付</el-button>
                   </div>
                   <div class="sure-pay-btn">
                     <p v-if="(item.status === -1 || item.status === 0) && item.bank_transfer === 0">
                       <el-button class="is-custom" @click="rePay">更改支付方式</el-button>
                     </p>
                   </div>
-                  <!--<div class="sure-pay-btn">-->
-                    <!--<p><el-button>取消订单</el-button></p>-->
-                  <!--</div>-->
+                  <!-- <div class="sure-pay-btn" @click="closeDialog">
+                    <p><el-button>取消订单</el-button></p>
+                  </div> -->
                 </div>
               </div>
 
@@ -90,8 +99,8 @@
           <div class="content-box" style="margin-bottom: 0">
             <div class="clear detail">
               <p class="detail-banner">订单详情</p>
-              <p>项目名称: <span>{{ item.item_name }}</span></p>
-              <p>出让方式: <span>{{ item.item_name }}</span></p>
+              <p>项目名称: <span>{{ designTitle }}</span></p>
+              <p>出让方式: <span>{{sellType===1?'全额出让':'股权出让'+shareRatio+'%'}}</span></p>
               <p>支付方式: <span>{{ item.pay_type_value }}</span></p>
               <p>金&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;额: <span><i>¥ </i>{{ item.amount }}</span></p>
               <p>订单编号: <span>{{ item.uid }}</span></p>
@@ -127,7 +136,17 @@
 
       </div>
     </el-row>
-
+    <el-dialog
+      title="取消订单"
+      :visible.sync="closeShow"
+      :lock-scroll="false"
+      size="tiny">
+      <span>您是否确定取消{{designTitle}}订单</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="closeShow = false">取 消</el-button>
+        <el-button type="primary" @click="closeOrder">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -146,7 +165,11 @@
       return {
         item: {},
         itemUid: '',
+        payId: '',
+        isLoading: false,
         upToken: null,
+        sellType: '',
+        shareRatio: '',
         uploadParam: {
           'url': '',
           'token': '',
@@ -158,17 +181,41 @@
         fileUrl: '',
         fileDesc: '格式：JPG／PNG   大小：小于2MB',
         surePay: false,
-        msg: ''
+        msg: '',
+        designTitle: '',
+        closeShow: false,
+        payUid: ''
       }
     },
     methods: {
+      closeDialog() {
+        this.closeShow = true
+      },
+      // 我的订单
+      Myorder() {
+        this.$router.push({name: 'demand_list', query: {type: 3}})
+      },
+      moreAchieve() {
+        this.$router.push({name: 'demand_login'})
+      },
+      closeOrder() {
+        this.$http.get(api.sdPayCloseOrder, {params: {id: this.payUid}}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.closeShow = false
+            this.$router.push({name: 'sale_result'})
+          } else {
+            this.$message.error(response.data.meta.message)
+            this.closeShow = false
+          }
+        })
+        .catch((error) => {
+          this.$message.error(error.message)
+          this.closeShow = false
+        })
+      },
       // 更改支付方式
       rePay() {
-        if (this.item.type === 4) {
-          this.$router.push({name: 'itemPayStageFund', params: {stage_id: this.item.item_stage_id}})
-        } else {
-          this.$router.push({name: 'itemPayFund', params: {item_id: this.item.item_id}})
-        }
+          this.$router.push({name: 'managed_funds', params: {id: this.itemUid}})
       },
       handlePreview(file) {
         console.log(file)
@@ -236,6 +283,23 @@
           })
       }
     },
+    filters: {
+      payStatus(val) {
+        if (val) {
+          if (val === 1) {
+            return '支付成功'
+          } else if (val === -1) {
+            return '关闭'
+          } else if (val === 0) {
+            return '未支付'
+          } else if (val === 2) {
+            return '退款'
+          } else {
+            return ''
+          }
+        }
+      }
+    },
     computed: {
       isMob() {
         return this.$store.state.event.isMob
@@ -249,52 +313,50 @@
     },
     created: function () {
       let itemUid = this.$route.params.id
-      // let itemUid2 = this.$route.query.id
-      // console.log(this.$route.query.id)
-      // if (itemUid) {
-      //   this.itemUid = itemUid
-      //   this.$http.get(api.orderId.format(itemUid), {})
-      //     .then((response) => {
-      //       if (response.data.meta.status_code === 200) {
-      //         this.item = response.data.data
-      //         console.log('1', this.item)
-      //         let createdAt = this.item.created_at
-      //         let createdFormat = createdAt.date_format()
-      //         this.item.created_at = createdFormat.format('yyyy-MM-dd hh:mm')
-      //         let expire = new Date((createdFormat / 1000 + 86400 * 3) * 1000)
-      //         this.item.expire_at = expire.format('yyyy-MM-dd hh:mm')
-      //         // 凭证
-      //         if (response.data.data.assets) {
-      //           this.surePay = true
-      //           this.fileUrl = response.data.data.assets.small
-      //         }
-      //         this.uploadParam['x:target_id'] = response.data.data.id
-      //       } else {
-      //         this.$message.error(response.data.meta.message)
-      //       }
-      //     })
-      //     .catch((error) => {
-      //       this.$message.error(error.message)
-      //     })
-      // } else {
-      //   this.$message.error('缺少请求参数!')
-      //   this.$router.push({name: 'home'})
-      // }
+      let payId = this.$route.query.id
+        this.itemUid = itemUid
+        this.payId = payId
+        this.$http.get(api.payOrderShow, {params: {id: this.payId}})
+          .then((response) => {
+            if (response.data.meta.status_code === 200) {
+              this.item = response.data.data
+              this.payUid = this.item.id
+              this.designTitle = this.item.design_result.title
+              this.sellType = this.item.design_result.sell_type
+              this.shareRatio = this.item.design_result.share_ratio
+              let createdAt = this.item.created_at
+              let createdFormat = createdAt.date_format()
+              this.item.created_at = createdFormat.format('yyyy-MM-dd hh:mm')
+              let expire = new Date((createdFormat / 1000 + 86400 * 3) * 1000)
+              this.item.expire_at = expire.format('yyyy-MM-dd hh:mm')
+              // 凭证
+              if (response.data.data.assets) {
+                this.surePay = true
+                this.fileUrl = response.data.data.assets.small
+              }
+              this.uploadParam['x:target_id'] = response.data.data.id
+            } else {
+              this.$message.error(response.data.meta.message)
+            }
+          })
+          .catch((error) => {
+            this.$message.error(error.message)
+          })
 
-      // this.$http.get(api.upToken, {})
-        // .then((response) => {
-        //   if (response.data.meta.status_code === 200) {
-        //     if (response.data.data) {
-        //       this.uploadParam['token'] = response.data.data.upToken
-        //       this.uploadParam['x:random'] = response.data.data.random
-        //       this.uploadParam.url = response.data.data.upload_url
-        //     }
-        //   }
-        // })
-        // .catch((error) => {
-        //   this.$message.error(error.message)
-        //   return false
-        // })
+      this.$http.get(api.upToken, {})
+        .then((response) => {
+          if (response.data.meta.status_code === 200) {
+            if (response.data.data) {
+              this.uploadParam['token'] = response.data.data.upToken
+              this.uploadParam['x:random'] = response.data.data.random
+              this.uploadParam.url = response.data.data.upload_url
+            }
+          }
+        })
+        .catch((error) => {
+          this.$message.error(error.message)
+          return false
+        })
     }
   }
 </script>
@@ -418,7 +480,13 @@
     font-size: 18px;
     color: #FF5A5F;
   }
-
+  .pay-success {
+    font-size: 18px;
+    color: #00AC84;
+  }
+  .success-center {
+    text-align: center
+  }
   .mar-auto {
     margin: auto;
   }
