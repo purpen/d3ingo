@@ -10,7 +10,7 @@
             <v-menu-sub></v-menu-sub>
             <div v-if="type === 1">
               <div class="no-demand" v-if="!demandList.length&&!isLoading">
-                <img src="../../../../../assets/images/trade_fairs/default/NoDemand@2x.png" alt="">
+                <img src="../../../../../assets/images/trade_fairs/default/NoDesign@2x.png" alt="">
                 <p class="tc-9">还没有设计需求，立即发布一个吧～</p>
                 <div class="post-header">
                   <el-button class="is-custom mg-r-20" type="primary" size="small" @click="dialogFormVisible=true">
@@ -294,11 +294,11 @@
             </div>
             <div v-if="type === 2">
               <div>
-                <!-- <div v-if="!collectList||!collectList.length" class="no-list">
+                <div v-if="!collectList||!collectList.length" class="no-list">
                   <img src="../../../../../assets/images/trade_fairs/default/NoDemand@2x.png" alt="无收藏">
                   <p>还没有收藏设计需求～</p>
                   <el-button class="red-button">查看设计需求</el-button>
-                </div> -->
+                </div>
                 <div class="demand-list">
                   <div class="demand-header">
                     <el-row>
@@ -322,7 +322,7 @@
                     <div class="demand-content">
                       <el-row>
                         <el-col :span="10" class="collect-all">
-                          <div class="collect-img" :style="{background:'url('+d.cover.logo +') no-repeat center / contain'}">
+                          <div class="collect-img" :style="{background:'url('+d.cover.middle +') no-repeat center / contain'}">
                           </div>
                           <div class="collect-centent">
                             <p class="c-title">{{d.title}}</p>
@@ -352,12 +352,11 @@
             </div>
             <div v-if="type === 3">
               <div>
-                <!-- <div v-if="!collectList||!collectList.length" class="no-list">
-                  <img src="../../../../../assets/images/trade_fairs/default/NoDemand@2x.png" alt="无收藏">
-                  <p>还没有收藏设计需求～</p>
-                  <el-button class="red-button">查看设计需求</el-button>
-                </div> -->
-                <div class="demand-list">
+                <div v-if="!orderList||!orderList.length" class="no-list">
+                  <img src="../../../../../assets/images/trade_fairs/default/NoOrder@2x.png" alt="无收藏">
+                  <p>还没有订单～</p>
+                </div>
+                <div class="demand-list" v-if="orderList&&orderList.length">
                   <div class="demand-header">
                     <el-row>
                       <el-col :span="10">
@@ -384,7 +383,7 @@
                     <div class="demand-content">
                       <el-row>
                         <el-col :span="10" class="collect-all">
-                          <div class="collect-img" :style="{background:'url('+d.cover.logo +') no-repeat center / contain'}">
+                          <div class="collect-img" :style="{background:'url('+d.cover.middle +') no-repeat center / contain'}">
                           </div>
                           <div class="collect-centent">
                             <p class="c-title">{{d.design_result.title}}</p>
