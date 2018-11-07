@@ -91,6 +91,7 @@
       <el-dialog
         title="联系电话"
         :visible.sync="callPhone"
+        :lock-scroll="false"
         size="tiny"
         class="phone-style">
         <div class="title-center">
@@ -103,6 +104,7 @@
       <el-dialog
         title="客服电话"
         :visible.sync="clientPhone"
+        :lock-scroll="false"
         size="tiny"
         class="phone-style">
         <div class="title-center">
@@ -116,6 +118,7 @@
     <el-dialog
       title="需求详情"
       :visible.sync="dialogUpdateVisible"
+      :lock-scroll="false"
       size="tiny"
       class="submit2-form seen-deta"
       >
@@ -275,10 +278,10 @@
         that.isLoading = true
         that.$http.get(api.sdDemandDesignDemandList, {params: {per_page: this.query.pageSize, page: this.query.page}}).then((response) => {
           if (response.data.meta.status_code === 200) {
+            that.isLoading = false
             if (response.data.data && response.data.data.length) {
               that.demandList = response.data.data
               that.query.totalCount = response.data.meta.pagination.total
-              that.isLoading = false
               that.demandList.forEach(item => {
                 item.design_types = JSON.parse(item.design_types)
               })

@@ -66,6 +66,7 @@
     <el-dialog
       title="收藏详情"
       :visible.sync="dialogUpdateVisible"
+      :lock-scroll="false"
       size="tiny"
       class="submit2-form seen-deta"
       >
@@ -174,6 +175,7 @@
      <el-dialog
         title="联系电话"
         :visible.sync="callPhone"
+        :lock-scroll="false"
         size="tiny"
         class="phone-style">
         <div class="title-center">

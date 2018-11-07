@@ -9,161 +9,84 @@
           <v-menu-sub></v-menu-sub>
           <div :class="['content-box', isMob ? 'content-box-m' : '']">
             <div class="design-case-list" v-loading="isLoading">
-              <div class="no-list">
-                <img src="../../../../../assets/images/trade_fairs/default/NoOrder@2x.png" alt="无收藏">
-                <p>还没有收藏设计需求～</p>
+              <div class="no-list" v-if="!orderList||!orderList.length">
+                <img src="../../../../../assets/images/trade_fairs/default/NoOrder@2x.png" alt="无订单">
+                <p>还没有订单～</p>
               </div>
-              <el-row :gutter="20" v-if="false">
-                <el-col :span="8" class="item-cloud" v-for="(item, index) in collectList" :key="index">
-                  <div class="list-item">
-                    <div class="list-text">
-                      <div class="list-title">
-                        <span>{{item.name}}</span>
-                      </div>
-                      <div class="list-data">
-                        <span>{{item.created_at| timeFormat}}</span>
-                      </div>
-                      <div class="list-word">
-                        <span>项目预算：&nbsp;{{item.design_cost_value}}</span>
-                      </div>
-                      <div class="list-word">
-                        <span>设计类别：&nbsp;{{item.design_types_value | typeJoin}}</span>
-                      </div>
-                      <div class="list-word">
-                        <span>项目周期：&nbsp;{{item.cycle_value}}</span>
-                      </div>
-                      <div class="list-bottom bottom-style">
-                        <div class="list-contain">
-                          <div class="list-button interest-border">
-                            <span class="button-interest">已感兴趣</span>
-                          </div>
+              <div class="demand-list" v-if="orderList&&orderList.length">
+                <div class="demand-header">
+                  <el-row>
+                    <el-col :span="10">
+                      项目名称
+                    </el-col>
+                    <el-col :span="4">
+                      交易金额
+                    </el-col>
+                    <el-col :span="6">
+                      项目状态
+                    </el-col>
+                    <el-col :span="4">
+                      操作
+                    </el-col>
+                  </el-row>
+                </div>
+                <div class="demand-subject" v-for="(d,indexd) in orderList" :key="indexd">
+                  <el-row class="demand-time">
+                    <el-col>
+                      <span class="uid">订单号: {{d.uid}}</span>
+                      下单时间: {{d.created_at | timeFormat}}
+                    </el-col>
+                  </el-row>
+                  <div class="demand-content">
+                    <el-row>
+                      <el-col :span="10" class="collect-all">
+                        <div class="collect-img" :style="{background:'url('+d.cover.logo +') no-repeat center / contain'}">
                         </div>
-                        <div class="list-right">
-                          <div class="list-button">
-                            <span class="contact-text">联系他</span>
-                          </div>
+                        <div class="collect-centent">
+                          <p class="c-title">{{d.design_result.title}}</p>
+                          <p>出让形式: {{d.design_result.sell_type === 1?'全额出让':'股权合作'}}</p>
+                          <p>出让金额: ¥{{d.design_result.price}}</p>
                         </div>
-                        <div class="list-left">
-                          <div class="list-button" @click.stop="upDetails(item.id)">
-                            <span class="details-text">查看详情</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                      </el-col>
+                      <el-col :span="4">
+                        {{d.amount}}
+                      </el-col>
+                      <el-col :span="6" :class="{'tc-red':d.status < 1 || (d.status === 1 && d.design_result.sell <2)}">
+                        {{d.status | payFormat(d.design_result.sell)}}
+                      </el-col>
+                      <el-col :span="4">
+                        <el-button class="is-custom" type="primary" size="small" v-if="d.status === 0">
+                          <router-link :to="{name: 'managed_funds', params: {id: d.design_result.id}}"
+                            target="_blank" class="router-work">
+                            继续支付
+                          </router-link>
+                          
+                        </el-button>
+                        <el-button class="mg-t-10" v-if="d.status === 0" @click="upOrderBth(d.id, d.design_result.title, 1)">
+                          取消订单
+                        </el-button>
+                        <el-button class="is-custom" type="primary" size="small" v-if="d.status ===1 && d.design_result.sell < 2" @click="upOrderBth(d.id,d.design_result.title, 2)">
+                          确认文件
+                        </el-button>
+                        <el-button class="mg-t-10" v-if="d.status ===1 && d.design_result.sell < 2" @click="dialogAdmin=true">
+                          仲裁电话
+                        </el-button>
+                        <el-button v-if="d.status ===-1" @click="deleteOrder(d.id)">
+                          删除
+                        </el-button>
+                        <!-- <el-button class="mg-t-10">
+                          评价
+                        </el-button> -->
+                      </el-col>
+                    </el-row>
                   </div>
-                </el-col>
-              </el-row>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </el-row>
-    <el-dialog
-      title="收藏详情"
-      :visible.sync="dialogUpdateVisible"
-      size="tiny"
-      class="submit2-form seen-deta"
-      >
-      <div >
-        <div class="details">
-          <el-row>
-            <el-col :span="6">
-              <span>项目名称</span>
-            </el-col>
-            <el-col :span="18">
-              {{formup.name}}
-            </el-col>
-          </el-row>
-        </div>
-        <div class="details">
-          <el-row>
-            <el-col :span="6">
-              <span>设计类别</span>
-            </el-col>
-            <el-col :span="18">
-              {{formup.design_types_value | typeJoin}}
-            </el-col>
-          </el-row>
-        </div>
-        <div class="details">
-          <el-row>
-            <el-col :span="6">
-              <span>项目周期</span>
-            </el-col>
-            <el-col :span="18">
-              {{formup.cycle_value}}
-            </el-col>
-          </el-row>
-        </div>
-        <div class="details">
-          <el-row>
-            <el-col :span="6">
-              <span>项目预算</span>
-            </el-col>
-            <el-col :span="18">
-              {{formup.design_cost_value}}
-            </el-col>
-          </el-row>
-        </div>
-        <div class="details">
-          <el-row>
-            <el-col :span="6">
-              <span>产品类别</span>
-            </el-col>
-            <el-col :span="18">
-              {{formup.type_value}}
-            </el-col>
-          </el-row>
-        </div>
-        <div class="details">
-          <el-row>
-            <el-col :span="6">
-              <span>所属行业</span>
-            </el-col>
-            <el-col :span="18">
-              {{formup.field_value}}
-            </el-col>
-          </el-row>
-        </div>
-        <div class="details">
-          <el-row>
-            <el-col :span="6">
-              <span>工作地点</span>
-            </el-col>
-            <el-col :span="18">
-              {{formup.item_province_value}}{{formup.item_city_value}}
-            </el-col>
-          </el-row>
-        </div>
-        <div class="details">
-          <el-row>
-            <el-col :span="6">
-              <span>功能描述</span>
-            </el-col>
-            <el-col :span="18" class="content-height">
-              {{formup.content}}
-            </el-col>
-          </el-row>
-        </div>
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <div class="dia-bottom dialog-bottom">
-          <div class="dia-contain" @click="collect(formup.id, formup.follow_status)">
-          <div class="dia-button" v-if="formup.follow_status === 2">
-            <span class="button-text">感兴趣</span>
-          </div>
-          <div class="dia-button interest-dia" v-if="formup.follow_status === 1">
-            <span class="dia-interest">已感兴趣</span>
-          </div>
-        </div>
-        <div class="dia-right">
-          <div class="dia-button">
-            <span class="contact-text">联系他</span>
-          </div>
-        </div>
-        </div>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
@@ -182,6 +105,7 @@
     data() {
       return {
         isLoading: false,
+        orderList: [], // 订单列表
         collectList: [], // 收藏列表
         designId: '', // 修改状态id
         dialogUpdateVisible: false, // 更新状态弹窗

@@ -7,7 +7,7 @@
         <span>代售成果</span>
       </div>
       <div class="block block-radius">
-        <swiper :options="swiperOption" class="patent-img">
+        <swiper :options="swiperOption1" class="patent-img">
           <swiper-slide v-for="(img, index) in formup.images_url" :key="index">
             <div style="height:100%;">
               <div class="draw">
@@ -31,10 +31,17 @@
         </div>
       </div>
       <div class="wide-line"></div>
-      <div class="product-the">
+      <div class="product-the" :class="{'pro-more': unfoldShow}">
         <div class="the-title">产品描述</div>
         <!-- <div class="the-text">{{ formup.content}}</div> -->
-        <div class="por-text">测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试，试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试测试，试测试，测试测试测试，测试测试测试，测试测试测试，测试测试测试<div class="seen-more">查看更多</div></div>
+        <div class="sec-div">
+          <div class="display-area" :class="{'display-more': unfoldShow}">
+            <div class="placeholder"></div>
+            <span class="content">{{ formup.content}}</span>
+            <div class="ellipsis" @click="unfoldMore">…<p class="more-style">展开更多</p></div>
+          </div>
+          <span class="content-placeholder">{{ formup.content}}</span>
+        </div>
       </div>
       <div class="wide-line"></div>
       <div class="contact-company">
@@ -62,7 +69,7 @@
         <div class="letters-text">专利证书</div>
         <div class="let-round">
           <div class="letters-img" v-for="(patent, index) in patentRound" :key="index">
-            <img :src="patent.small" width="100%" height="100%">
+            <img :src="patent.small" width="100%" height="100%" @click="imgaeShow(patent)">
           </div>
         </div>
       </div>
@@ -112,6 +119,27 @@
         <p @click="dialogBuy = false" class="sure-text">确 定</p>
       </span>
     </el-dialog>
+
+    <!-- 图片预览 -->
+     <div class="view-cover" v-show="viewCover">
+      <p class="swipe-close" @click.self="closeView"></p>
+      <div class="view-picture">
+        <div class="view-content" @click.self="closeView">
+          <div class="image-preview">
+            <swiper :options="swiperOption2" :not-next-tick="notNextTick" ref="mySwiper">
+              <swiper-slide v-for="(ele, index) in patentRound" :key="index">
+                <div v-lazy-container="ele.big" class="round-img">
+                  <img :data-src="ele.big" :data-loading="ele.small" class="swipe-img">
+                </div>
+              </swiper-slide>
+              <div class="swiper-pagination" slot="pagination">
+              </div>
+            </swiper>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -123,18 +151,26 @@
       return {
         demandList: '',
         formup: {},
+        isLoad: false,
         isLoading: false,
         intersClick: true,
         collectId: '',
+        previewObj: {
+          index: 0,
+          info: {}
+        },
         diaLoading: false,
         setIndex: -1,
         dialogCall: false,
         urlLogo: '',
         companyName: '',
+        unfoldShow: false,
         imgUrl: '',
+        notNextTick: true, // 设置之后可以获取swiper对象
         patentRound: '',
+        viewCover: false,
         dialogBuy: false,
-        swiperOption: {
+        swiperOption1: {
           pagination: '.swiper-pagination',
           paginationClickable: true,
           lazyLoading: true,
@@ -142,8 +178,20 @@
           prevButton: '.swiper-button-prev',
           nextButton: '.swiper-button-next',
           spaceBetween: 0,
-          loop: true
+          loop: true,
+          // slidesPerView:'auto'
         },
+        swiperOption2: {
+          pagination: '.swiper-pagination',
+          paginationClickable: true,
+          lazyLoading: true,
+          autoplay: 5000,
+          prevButton: '.swiper-button-prev',
+          nextButton: '.swiper-button-next',
+          spaceBetween: 0,
+          loop: true,
+          // slidesPerView:'auto'
+        }
       }
     },
     components: {
@@ -158,6 +206,48 @@
       this.upDetails()
     },
     methods: {
+      // 展开更多
+      unfoldMore() {
+        this.unfoldShow = true
+      },
+      // 图片预览
+      imgaeShow(ele) {
+        if (this.$refs.mySwiper) {
+          this.patentRound.forEach((item, index) => {
+            if (ele.id === item.id) {
+              let img = new Image()
+              img.src = ele.big
+              img.onload = () => {
+                this.isLoad = true
+                console.log('加载完成')
+              }
+              this.swiperObj.slideTo(index + 1)
+              this.viewCover = true
+              this.previewObj.info = item
+              this.previewObj.index = index
+            }
+          })
+          let oldClass = document.getElementById('app').getAttribute('class')
+          if (oldClass) {
+            oldClass = oldClass.replace(/disableScroll\x20?/g, '')
+          }
+          document.body.setAttribute('class', 'disableScroll')
+          document.getElementById('app').setAttribute('class', 'disableScroll ' + oldClass)
+          document.childNodes[1].setAttribute('class', 'disableScroll')
+        } else {
+          this.$message.info('正在加载组件, 请稍后尝试...')
+        }
+      },
+      closeView () {
+        this.viewCover = false
+        let oldClass = document.getElementById('app').getAttribute('class')
+        if (oldClass) {
+          oldClass = oldClass.replace('disableScroll ', '')
+        }
+        document.body.removeAttribute('class', 'disableScroll')
+        document.getElementById('app').setAttribute('class', oldClass)
+        document.childNodes[1].removeAttribute('class', 'disableScroll')
+      },
       // 弹出联系框
       callHer() {
         this.dialogCall = true
@@ -228,9 +318,14 @@
         }
       }
     },
+    watch: {
+    },
     computed: {
       isMob() {
         return this.$store.state.event.isMob
+      },
+      swiperObj() {
+        return this.$refs.mySwiper.swiper
       }
     }
   }
@@ -241,6 +336,137 @@
   .title-bottom {
     padding-top: 10px;
   }
+  /* 展开更多样式 */
+  .sec-div {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+    height: 90px;
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(153,153,153,1);
+    line-height: 20px;
+    padding-top: 10px;
+  }
+
+  .product-the span {
+    display: block;
+    margin: 0;
+    padding: 0;
+  }
+
+  .content-placeholder {
+    opacity: 0;
+    z-index: -1;
+    pointer-events: none;
+    max-height: 120px;
+  }
+
+  .display-area {
+    position: absolute;
+    height: 100%;
+  }
+
+  .display-area .placeholder {
+    float: left;
+    width: 5em;
+    content: '';
+    height: 100%;
+    max-height: 120px;
+  }
+
+  .display-area .content {
+    float: right;
+    margin-left: -7em;
+    width: 100%;
+  }
+
+  .display-area .ellipsis {
+    float: right;
+    height: 30px;
+    width: 7em;
+    position: relative;
+    left: 99%;
+    transform: translate(-100%, -100%);
+    text-align: left;
+    background: linear-gradient(125deg, rgba(255, 255, 255, 0), #fff 10%, #fff);
+  }
+  .display-area .ellipsis:after {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 19px;
+    top: 0;
+    bottom: 0;
+    right: 7px;
+    background: url('../../../../../assets/images/trade_fairs/list/Open@2x.png') no-repeat center;
+    background-size: contain;
+  }
+  .more-style {
+    font-size:12px;
+    font-family:PingFangSC-Regular;
+    font-weight:400;
+    color: #FF5A5F;
+    float: right;
+    right: 30px;
+    position: relative;
+  }
+
+  /* 展开样式 */
+  .pro-more {
+    height: none
+  }
+  .display-more {
+    position: relative;
+    height: none
+  }
+  /* swipe样式 */
+  .view-cover {
+    position: fixed;
+    z-index: 2999;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+  }
+  .view-picture {
+    float: left;
+  }
+  .swipe-img {
+    height: calc(100vh - 200px);
+    width: 100vw;
+  }
+  .image-preview {
+    max-width: 100vw;
+    margin: 0 auto;
+  }
+  .view-content {
+    padding-top: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .view-cover .swiper-container {
+    margin: 0 15px;
+    padding-bottom: 40px;
+  }
+  .swiper-pagination-bullet {
+    background: #fff;
+  }
+  .swipe-close {
+    float: right;
+    position: relative;
+    top: 5%;
+    right: 5%;
+    width: 30px;
+    height: 25px;
+    background: url('../../../../../assets/images/trade_fairs/list/close@2x.png') no-repeat center;
+    background-size: contain;
+  }
+
+
   .patent-img {
     height: 330px;
     margin: 0 auto;
@@ -398,7 +624,7 @@
     padding-top: 10px;
   }
   .product-the {
-    height: 130px;
+    height: 135px;
     margin: 0 15px;
   }
   .wide-line {

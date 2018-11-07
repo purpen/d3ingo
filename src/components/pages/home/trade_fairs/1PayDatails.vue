@@ -2,8 +2,7 @@
   <div class="container" v-loading="isLoading">
     <div class="navigate-header">
       <div class="navigate-text">
-        <router-link to="/shunde/trade_fairs/design_case" v-if="$route.query.type === '2'">设计成果</router-link>
-        <router-link to="/shunde/trade_fairs/demand_login" v-else>代售成果</router-link>
+        <router-link to="/shunde/trade_fairs/design_case/order">我的订单</router-link>
       </div>
       <div class="navigate-text arrow-text">
         <span>{{formup.title}}</span>

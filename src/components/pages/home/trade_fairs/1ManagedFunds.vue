@@ -7,7 +7,7 @@
           <span class="border"></span>
         </div>
         <div class="mar-r-10">
-          <router-link :to="{name: 'work_datails', params: {id: 1}}" class="font-14">iPhone 7 Plus设计</router-link>
+          <router-link :to="{name: 'work_datails', params: {id: itemId}}" class="font-14">{{designTitle}}</router-link>
           <span class="border"></span>
         </div>
         <div class="mar-r-10">
@@ -20,14 +20,10 @@
         <p>订单详情</p>
       </div>
       <div class="order-item">
-        <!-- <p><span>订单内容:&nbsp;&nbsp; </span>{{ item.item_name }}</p>
-        <p><span>总&nbsp;金&nbsp;额:&nbsp;&nbsp; </span>¥ {{ item.total_price }}</p>
-        <p><span>首付款金额:&nbsp;&nbsp; </span>¥ {{ item.amount }}</p>
-        <p><span>订单编号:&nbsp;&nbsp; </span>{{ item.uid }}</p> -->
-        <p><span>项目内容:&nbsp;&nbsp; </span>iO笔记本</p>
-        <p><span>出让方式：</span>全款出让</p>
-        <p><span>购买价格：</span>¥5000.00</p>
-        <p><span>订单编号:&nbsp;&nbsp; </span>070122544000000341</p>
+        <p><span>项目名称:&nbsp;&nbsp; </span>{{designTitle}}</p>
+        <p><span>出让方式：</span>{{sellType===1?'全额出让':'股权出让'+shareRatio+'%'}}</p>
+        <p><span>购买价格：</span>￥{{item.amount}}</p>
+        <p><span>订单编号:&nbsp;&nbsp; </span>{{item.uid}}</p>
       </div>
       <div class="pay-item">
         <div class="clearfix payItem-m">
@@ -69,35 +65,16 @@
 
             <div class="clear"></div>
           </div>
-          <!-- <div class="pay-type" v-if="item.source === 1">
-            <ul v-if="!isMob">
-              <li>
-                <label>
-                  <div :class="{'item': true, active: payType === 5 ? true : false}"
-                       @click="checkedPayBtn(5)">
-                    <p>京东云市场支付</p>
-                    <img class="pay-active" src="../../../../assets/images/icon/pay_checked2.png"/>
-                  </div>
-                </label>
-              </li>
-            </ul>
-
-            <el-radio-group v-model="payType" class="choicePay" v-if="isMob">
-              <el-radio :label="5" class="choiceList clearfix dg">京东云市场支付</el-radio>
-            </el-radio-group>
-
-            <div class="clear"></div>
-          </div> -->
         </div>
 
         <div class="pay-box clearfix">
           <p v-if="isMob" class="total-price-m">总计：<span>¥ {{ item.amount }}</span></p>
-          <p :class="{'btn' : isMob}">
-            <!-- <el-button class="is-custom" @click="pay" type="primary">立即支付</el-button> -->
-            <el-button class="is-custom" @click="payPush" type="primary">立即支付</el-button>
+          <p :class="{'btn' : isMob}" class="pay-button">
+            <el-button @click="closeDialog">取消订单</el-button>
+            <el-button class="is-custom" @click="pay" type="primary">立即支付</el-button>
+            <!-- <el-button class="is-custom" @click="payPush" type="primary">立即支付</el-button> -->
           </p>
-          <!-- <p v-if="!isMob" class="total-price">¥ {{ item.amount }}</p> -->
-          <p v-if="!isMob" class="total-price">¥5000.00</p>
+          <p v-if="!isMob" class="total-price">¥ {{ item.amount }}</p>
           <p v-if="!isMob" class="total-txt">总计：</p>
         </div>
         <div class="clear"></div>
@@ -106,6 +83,18 @@
 
     </div>
     <div id="payBlock"></div>
+    <el-dialog
+      title="取消订单"
+      :visible.sync="closeShow"
+      :lock-scroll="false"
+      size="tiny"
+      class="close-orde">
+      <span>您是否确定取消&nbsp;<span class="red-text">{{designTitle}}</span>&nbsp;订单</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="closeShow = false">取 消</el-button>
+        <el-button type="primary" @click="closeOrder">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -118,13 +107,76 @@ export default {
       item: '',
       payType: '',
       toHtml: '',
-      msg: 'This is About!!!'
+      msg: 'This is About!!!',
+      designTitle: '',
+      sellType: '',
+      shareRatio: '',
+      closeShow: false
     }
   },
   methods: {
     payPush() {
       this.$router.push({name:'payment_amount', params: {id: 1}})
     },
+    closeDialog() {
+      this.closeShow = true
+    },
+    // 取消订单
+    closeOrder() {
+      this.$http.get(api.sdPayCloseOrder, {params: {id: this.item.id}}).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          this.closeShow = false
+          this.$router.push({name: 'sale_result'})
+        } else {
+          this.$message.error(response.data.meta.message)
+          this.closeShow = false
+        }
+      })
+      .catch((error) => {
+        this.$message.error(error.message)
+        this.closeShow = false
+      })
+    },
+    // 获取订单详情
+    // upDetails() {
+    //   this.isLoading = true
+    //   this.$http.get(api.payDesignResults.format(this.$route.params.id)).then(
+    //     (response) => {
+    //       if (response.data.meta.status_code === 200) {
+    //         this.item = response.data.data
+    //         this.designTitle = this.item.design_result.title
+    //         // 如果已支付完成,跳到项目页
+    //         if (self.item.status === 1) {
+    //           self.$message.error('已支付款项!')
+    //           self.$router.replace({
+    //             name: 'work_datails',
+    //             params: { id: self.itemId }
+    //           })
+    //           return
+    //         }
+    //         // 如果是对公转账，跳到相应页
+    //         if (self.$route.query.check_pay) {
+    //           if (self.item.pay_type === 5) {
+    //             self.$router.push({
+    //               name: 'payment_amount',
+    //               params: {id: self.item.uid},
+    //               query: {id: self.$route.params.id}
+    //             })
+    //             return
+    //           }
+    //         }
+    //         this.isLoading = false
+    //       } else {
+    //         this.isLoading = false
+    //         this.$message.error(response.data.meta.message)
+    //       }
+    //     }
+    //   )
+    //   .catch (function (error) {
+    //     this.$message.error (error.message)
+    //     this.isLoading = false
+    //   })
+    // },
     pay() {
       let payType = this.payType
       if (!payType) {
@@ -135,9 +187,6 @@ export default {
       switch (payType) {
         case 1:
           url = api.secondAlipayId.format(this.item.id)
-          break
-        case 2:
-          url = 'wxpay'
           break
         case 5:
           if (this.item.source === 1) {
@@ -170,9 +219,9 @@ export default {
             }
             if (payType === 5) {
               self.$router.push({
-                name: 'vcenterOrderShow',
-                params: { id: self.item.uid },
-                query: {id: self.$route.params.item_id}
+                name: 'payment_amount',
+                query: { id: self.item.id },
+                params: {id: self.$route.params.id}
               })
             }
           } else {
@@ -188,48 +237,51 @@ export default {
     }
   },
   created: function() {
-    // const self = this
-    // let itemId = this.$route.params.item_id
-    // console.log(this.$route)
-    // if (itemId) {
-    //   self.itemId = itemId
-    //   self.$http
-    //     .get(api.firstOrderItemId.format(itemId), {})
-    //     .then(function(response) {
-    //       if (response.data.meta.status_code === 200) {
-    //         self.item = response.data.data
-    //         // 如果已支付完成,跳到项目页
-    //         if (self.item.status === 1) {
-    //           self.$message.error('已支付款项!')
-    //           self.$router.replace({
-    //             name: 'vcenterItemShow',
-    //             params: { id: self.itemId }
-    //           })
-    //           return
-    //         }
-    //         // 如果是对公转账，跳到相应页
-    //         if (self.$route.query.check_pay) {
-    //           if (self.item.pay_type === 5) {
-    //             self.$router.push({
-    //               name: 'vcenterOrderShow',
-    //               params: {id: self.item.uid},
-    //               query: {id: self.$route.params.item_id}
-    //             })
-    //             return
-    //           }
-    //         }
-    //         console.log(response.data.data)
-    //       } else {
-    //         self.$message.error(response.data.meta.message)
-    //       }
-    //     })
-    //     .catch(function(error) {
-    //       self.$message.error(error.message)
-    //     })
-    // } else {
-    //   self.$message.error('缺少请求参数!')
-    //   self.$router.push({ name: 'home' })
-    // }
+    const self = this
+    let itemId = this.$route.params.id
+    if (itemId) {
+      self.itemId = itemId
+      self.$http
+        .get(api.payDesignResults.format(itemId), {})
+        .then(function(response) {
+          if (response.data.meta.status_code === 200) {
+            self.item = response.data.data
+            console.log('id', self.item.id)
+            self.sellType = self.item.design_result.sell_type
+            self.shareRatio = self.item.design_result.share_ratio
+            self.designTitle = self.item.design_result.title
+            // 如果已支付完成,跳到项目页
+            if (self.item.status === 1) {
+              self.$message.error('已支付款项!')
+              self.$router.replace({
+                name: 'work_datails',
+                params: { id: itemId }
+              })
+              return
+            }
+            // 如果是对公转账，跳到相应页
+            if (self.$route.query.check_pay) {
+              if (self.item.pay_type === 5) {
+                self.$router.push({
+                  name: 'payment_amount',
+                  params: {id: self.item.uid},
+                  query: {id: self.$route.params.id}
+                })
+                return
+              }
+            }
+            console.log(response.data.data)
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+        })
+        .catch(function(error) {
+          self.$message.error(error.message)
+        })
+    } else {
+      self.$message.error('缺少请求参数!')
+      self.$router.push({ name: 'home' })
+    }
   },
   computed: {
     isMob() {
@@ -244,6 +296,9 @@ export default {
 .ordershow-span-color {
   width:900px;
   margin: 20px auto
+}
+.red-text {
+  color: #ff5a5f;
 }
 .payment {
   width: 900px;

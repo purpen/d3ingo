@@ -482,6 +482,11 @@ export default {
   sdDemandDemandList: '/sd/demand/demandList', // GET 需求列表
   designResultsAlLists: '/designResults/alLists', // GET 所有上架设计成果列表
   designResultsCollectionOperation: '/designResults/collectionOperation', // GET 设计成果收藏与取消收藏
+  payDesignResults: '/pay/designResults/{0}', // GET 创建设计成果支付订单
+  sdPayMyOrderList: '/pay/myOrderList', // GET 设计成果支付列表
+  sdPayCloseOrder: '/pay/closeOrder', // GET 取消未支付订单
+  payOrderShow: '/pay/orderShow', // GET 设计成果订单详情
+  payDeleteOrder: '/pay/deleteOrder', // GET 删除设计成果已关闭订单
 
   // 顺德设计方
   sdDesignCancelCollectDemand: '/sd/design/cancelCollectDemand', // POST 取消收藏需求
