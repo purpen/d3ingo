@@ -69,7 +69,8 @@
 
         <div class="pay-box clearfix">
           <p v-if="isMob" class="total-price-m">总计：<span>¥ {{ item.amount }}</span></p>
-          <p :class="{'btn' : isMob}">
+          <p :class="{'btn' : isMob}" class="pay-button">
+            <el-button @click="closeDialog">取消订单</el-button>
             <el-button class="is-custom" @click="pay" type="primary">立即支付</el-button>
             <!-- <el-button class="is-custom" @click="payPush" type="primary">立即支付</el-button> -->
           </p>
@@ -82,6 +83,18 @@
 
     </div>
     <div id="payBlock"></div>
+    <el-dialog
+      title="取消订单"
+      :visible.sync="closeShow"
+      :lock-scroll="false"
+      size="tiny"
+      class="close-orde">
+      <span>您是否确定取消&nbsp;<span class="red-text">{{designTitle}}</span>&nbsp;订单</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="closeShow = false">取 消</el-button>
+        <el-button type="primary" @click="closeOrder">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -97,12 +110,32 @@ export default {
       msg: 'This is About!!!',
       designTitle: '',
       sellType: '',
-      shareRatio: ''
+      shareRatio: '',
+      closeShow: false
     }
   },
   methods: {
     payPush() {
       this.$router.push({name:'payment_amount', params: {id: 1}})
+    },
+    closeDialog() {
+      this.closeShow = true
+    },
+    // 取消订单
+    closeOrder() {
+      this.$http.get(api.sdPayCloseOrder, {params: {id: this.item.id}}).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          this.closeShow = false
+          this.$router.push({name: 'sale_result'})
+        } else {
+          this.$message.error(response.data.meta.message)
+          this.closeShow = false
+        }
+      })
+      .catch((error) => {
+        this.$message.error(error.message)
+        this.closeShow = false
+      })
     },
     // 获取订单详情
     // upDetails() {
@@ -187,8 +220,8 @@ export default {
             if (payType === 5) {
               self.$router.push({
                 name: 'payment_amount',
-                params: { id: self.item.id },
-                query: {id: self.$route.params.id}
+                query: { id: self.item.id },
+                params: {id: self.$route.params.id}
               })
             }
           } else {
@@ -263,6 +296,9 @@ export default {
 .ordershow-span-color {
   width:900px;
   margin: 20px auto
+}
+.red-text {
+  color: #ff5a5f;
 }
 .payment {
   width: 900px;
