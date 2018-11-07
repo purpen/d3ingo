@@ -34,7 +34,7 @@
       <div class="product-the" :class="{'pro-more': unfoldShow}">
         <div class="the-title">产品描述</div>
         <!-- <div class="the-text">{{ formup.content}}</div> -->
-        <div class="sec-div">
+        <div class="sec-div" :class="{'sec-more': unfoldShow}">
           <div class="display-area" :class="{'display-more': unfoldShow}">
             <div class="placeholder"></div>
             <span class="content">{{ formup.content}}</span>
@@ -42,6 +42,7 @@
           </div>
           <span class="content-placeholder">{{ formup.content}}</span>
         </div>
+        <div class="little-style" @click="unfoldShow = false" v-if="unfoldShow">收起</div>
       </div>
       <div class="wide-line"></div>
       <div class="contact-company">
@@ -408,22 +409,35 @@
     background-size: contain;
   }
   .more-style {
-    font-size:12px;
-    font-family:PingFangSC-Regular;
-    font-weight:400;
-    color: #FF5A5F;
+    font-size: 12px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color:  #FF5A5F;
     float: right;
     right: 30px;
     position: relative;
   }
 
-  /* 展开样式 */
-  .pro-more {
-    height: none
-  }
-  .display-more {
+  /* 收起更多样式 */
+  .little-style {
+    font-size: 12px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: #FF5A5F;
+    text-align: center;
+    margin-top: 8px;
+    height: 20px;
     position: relative;
-    height: none
+  }
+  .little-style:after {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 19px;
+    top: -2px;
+    bottom: 0;
+    background: url('../../../../../assets/images/trade_fairs/list/TakeUp@2x.png') no-repeat center;
+    background-size: contain;
   }
   /* swipe样式 */
   .view-cover {
@@ -795,5 +809,16 @@
     color: #FF5A5F;
     letter-spacing: 0;
     padding-top: 12px;
+  }
+  
+  /* 展开样式 */
+  .pro-more {
+    height: inherit
+  }
+  .display-more {
+    position: static;
+  }
+  .sec-more {
+    height: inherit;
   }
 </style>
