@@ -264,8 +264,7 @@
             <div class="instruction-blook">
             <span class="blook-left">产品功能说明书</span>
             <div class="seen-button">
-              <!-- <span class="seen-text" @click="seenBook(formup.illustrate_url)">查看详情</span> -->
-              <span class="seen-text">查看详情</span>
+              <span class="seen-text" @click="seenBook">查看详情</span>
             </div>
             </div>
           </div>
@@ -370,6 +369,10 @@ export default {
     }
   },
   methods: {
+    seenBook() {
+      let routeData = this.$router.resolve({name: 'achieve_preview', params: {id: this.formup.id}})
+      window.open(routeData.href, '_blank');
+    },
     // 图片预览
     imgaeShow(ele) {
       if (this.$refs.mySwiper) {
