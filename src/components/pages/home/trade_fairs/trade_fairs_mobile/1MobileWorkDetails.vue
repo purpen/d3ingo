@@ -60,7 +60,7 @@
       </div>
       <div class="wide-line"></div>
       <div class="explain-border">
-        <div class="explain">
+        <div class="explain" @click="seenBook">
           <div class="explain-left">产品功能说明书</div>
           <div class="explain-right"></div>
         </div>
@@ -206,6 +206,10 @@
       this.upDetails()
     },
     methods: {
+      seenBook() {
+        let routeData = this.$router.resolve({name: 'achieve_preview', params: {id: this.formup.id}})
+        window.open(routeData.href, '_blank');
+      },
       // 展开更多
       unfoldMore() {
         this.unfoldShow = true
