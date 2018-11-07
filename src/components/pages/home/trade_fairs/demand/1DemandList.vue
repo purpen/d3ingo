@@ -377,18 +377,17 @@
                   <div class="demand-subject" v-for="(d,indexd) in orderList" :key="indexd">
                     <el-row class="demand-time">
                       <el-col>
-                        <span>订单号: {{d.uid}}</span>
+                        <span class="uid">订单号: {{d.uid}}</span>
                         下单时间: {{d.created_at | timeFormat}}
                       </el-col>
                     </el-row>
                     <div class="demand-content">
                       <el-row>
                         <el-col :span="10" class="collect-all">
-                          <div class="collect-img">
-                            <!-- :style="{background:'url('+d.cover.logo +') no-repeat center / contain'}" -->
+                          <div class="collect-img" :style="{background:'url('+d.cover.logo +') no-repeat center / contain'}">
                           </div>
                           <div class="collect-centent">
-                            <p class="c-title">{{d.title}}</p>
+                            <p class="c-title">{{d.design_result.title}}</p>
                             <p>出让形式: {{d.design_result.sell_type === 1?'全额出让':'股权合作'}}</p>
                             <p>出让金额: ¥{{d.design_result.price}}</p>
                           </div>
@@ -401,16 +400,23 @@
                         </el-col>
                         <el-col :span="4">
                           <el-button class="is-custom" type="primary" size="small" v-if="d.status === 0">
-                            继续支付
+                            <router-link :to="{name: 'managed_funds', params: {id: d.design_result.id}}"
+                              target="_blank" class="router-work">
+                              继续支付
+                            </router-link>
+                            
                           </el-button>
-                          <el-button class="mg-t-10" v-if="d.status === 0" @click="deleteOrder(d.id)">
+                          <el-button class="mg-t-10" v-if="d.status === 0" @click="upOrderBth(d.id, d.design_result.title, 1)">
                             取消订单
                           </el-button>
-                          <el-button class="is-custom" type="primary" size="small" v-if="d.status ===1 && d.design_result.sell < 2">
+                          <el-button class="is-custom" type="primary" size="small" v-if="d.status ===1 && d.design_result.sell < 2" @click="upOrderBth(d.id,d.design_result.title, 2)">
                             确认文件
                           </el-button>
-                          <el-button class="mg-t-10" v-if="d.status ===1 && d.design_result.sell < 2">
+                          <el-button class="mg-t-10" v-if="d.status ===1 && d.design_result.sell < 2" @click="dialogAdmin=true">
                             仲裁电话
+                          </el-button>
+                          <el-button v-if="d.status ===-1" @click="deleteOrder(d.id)">
+                            删除
                           </el-button>
                           <!-- <el-button class="mg-t-10">
                             评价
@@ -421,6 +427,68 @@
                   </div>
                 </div>
               </div>
+              <el-dialog
+                title="取消订单"
+                :visible.sync="dialogCancelOrder"
+                :lock-scroll="false"
+                size="tiny"
+                class="delete-form"
+                >
+                <p class="text-align-c">确认取消
+                  <span class="tc-red">
+                    {{formOrder.title}}
+                  </span>
+                   订单吗？
+                </p>
+                <span slot="footer" class="dialog-footer">
+                  <el-button @click="dialogCancelOrder=false">取消</el-button>
+                  <el-button @click="cancelOrder(formOrder.id)" class="is-custom" type="primary" size="small">确定</el-button>
+                </span>
+              </el-dialog>
+              <el-dialog
+                title="仲裁联系方式"
+                :visible.sync="dialogAdmin"
+                :lock-scroll="false"
+                size="tiny"
+                >
+                <div class="arbitrate">
+                  <p class="fz-12 tc-9">有疑问请致电如下，我们将协助您完成操作</p>
+                  <p class="text-align-c">商务经理: &nbsp;&nbsp;耿霆</p>
+                  <p class="text-align-c">联系电话: &nbsp;&nbsp;13031154842</p>
+                </div>
+              </el-dialog>
+              <el-dialog
+                title="确认文件"
+                :visible.sync="dialogIsfile"
+                :lock-scroll="false"
+                size="tiny"
+                class="delete-form"
+                >
+                <div class="file-ok">
+                  <p>确认收到且满意 
+                    <span class="tc-red">{{formOrder.title}}</span>
+                  的文件吗？</p>
+                  <p>确认文件后交易成功，平台将放款设计服务商</p>
+                </div>
+                <span slot="footer" class="dialog-footer">
+                  <el-button @click="dialogIsfile=false">取消</el-button>
+                  <el-button class="is-custom" type="primary" size="small">确定</el-button>
+                </span>
+              </el-dialog>
+               <!-- <el-dialog
+                title="删除订单"
+                :visible.sync="dialogDeleteOrder"
+                :lock-scroll="false"
+                size="tiny"
+                class="delete-form"
+                >
+                <p class="text-align-c">确认删除订单吗？</p>
+                <p class="text-align-c">此订单将彻底从您的订单列表移除</p>
+                <span slot="footer" class="dialog-footer">
+                  <el-button @click="dialogDeleteOrder=false">取消</el-button>
+                  <el-button @click="deleteDemand()" class="is-custom" type="primary" size="small">确定</el-button>
+                </span>
+              </el-dialog> -->
             </div>
           </div>
         </div>
@@ -471,12 +539,17 @@
         dialogFormVisible: false, // 发布需求弹窗
         dialogUpdateVisible: false, // 查看详情弹窗
         dialogDeleteVisible: false, // 删除项目
+        dialogCancelOrder: false, // 取消订单
+        dialogDeleteOrder: false, // 删除订单
+        dialogAdmin: false, // 仲裁联系方式
+        dialogIsfile: false, // 确定文件
         addLoading: false, // 发布需求加载中
         form: {
           design_types: []
         }, // 发需求表单
         formup: {
         }, // 查看详情表单
+        formOrder: {},
         demandList: [], // 需求列表
         deleteForm: '', // 删除项目id
         collectList: [], // 收藏列表
@@ -507,6 +580,7 @@
       }
     },
     filters: {
+      // 需求状态
       statusFormat(val) {
         if (val === 1) {
           return '审核中'
@@ -516,6 +590,7 @@
           return '发布成功'
         }
       },
+      // 时间格式转换
       timeFormat(val) {
         if (!isNaN(val)) {
           return new Date(val * 1000).format('yyyy-MM-dd hh:mm:ss')
@@ -523,6 +598,7 @@
           return ''
         }
       },
+      // 选择小类型
       typeFormat(val) {
         if (val) {
           return val.join('、')
@@ -530,6 +606,7 @@
           return ''
         }
       },
+      // 支付状态
       payFormat(val, sell) {
         if (val === 0) {
           return '待支付'
@@ -566,8 +643,20 @@
       }
     },
     methods: {
+      // 取消订单按钮
+      upOrderBth(id, title, type) {
+        this.formOrder = {
+          id: id,
+          title: title
+        }
+        if (type === 1) {
+          this.dialogCancelOrder = true
+        } else if (type === 2) {
+          this.dialogIsfile = true
+        }
+      },
       // 取消订单
-      deleteOrder(id) {
+      cancelOrder(id) {
         this.$http.get(api.sdPayCloseOrder, {params: {id: id}}).then((response) => {
           if (response.data.meta.status_code === 200) {
             this.orderList.forEach(item => {
@@ -582,6 +671,26 @@
         })
         .catch(function (error) {
           this.$message.error(error.message)
+          return
+        })
+      },
+      // 删除订单
+      deleteOrder(id) {
+        this.$http.get(api.payDeleteOrder, {params: {id: id}}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.orderList.forEach((item, index) => {
+              if (item.id === id) {
+                this.orderList.splice(index, 1)
+              }
+            })
+          } else {
+             this.$message.error(response.data.meta.message)
+             return
+          }
+        })
+        .catch(function (error) {
+          this.$message.error(error.message)
+          return
         })
       },
       // 改变城市组件值- 服务信息()
@@ -905,6 +1014,7 @@
   }
   .demand-content {
     padding: 10px 0 10px 0;
+    min-height: 120px;
   }
   .demand-time {
     height: 40px;
@@ -1032,5 +1142,19 @@
   .router-work {
     display: block;
     color: #fff;
+  }
+  .uid {
+    padding-right: 10px;
+  }
+  .arbitrate p {
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  .file-ok {
+    text-align: center;
+  }
+  .file-ok p:last-child {
+    margin-top: 10px;
+    color: #999;
   }
 </style>
