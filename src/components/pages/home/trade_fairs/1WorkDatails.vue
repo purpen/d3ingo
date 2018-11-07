@@ -1,5 +1,5 @@
 <template>
-  <div class="cont" v-loading="isLoading">
+  <div class="cont" v-loading="isLoading" ref="cont" id="cont">
     <div class="container">
       <div class="navigate-header">
         <div class="navigate-text">
@@ -163,101 +163,103 @@
         
         <!-- 右半部分 -->
         <el-col :xs="24" :sm="6" :md="6" :lg="6">
-          <div class="design-case-slide">
-            <div class="info">
-              <!-- <router-link :to="{name: 'companyShow', params: {id: item.design_company.id}}" target="_blank">
-                <img class="avatar" v-if="item.design_company.logo_url" :src="item.design_company.logo_url" width="100"/>
-                <img class="avatar" v-else src="../../../../assets/images/avatar_100.png" width="100"/>
-              </router-link> -->
-              <div class="title-center">
-                <img class="avatar" v-if="
-                imgUrl" :src="
-                imgUrl.logo" width="60"/>
-                <img v-else class="avatar" src="../../../../assets/images/df_100x100.png" width="60"/>
-                <div class="company-name">{{companyName}}</div>
-              </div>
-              <div class="com-addr">
-                <span class="right-word">联系人</span>
-                <span class="right-number">{{formup.contacts}}</span>
-              </div>
-              <div class="com-addr">
-                <span class="right-word">联系方式</span>
-                <span class="right-number">{{formup.contact_number}}</span>
-              </div>
-            </div>
-          </div>
-          <!-- 出让的两行 -->
-          <div class="sell-stock">
-            <div class="right-sell">
-              <span class="right-word">出让方式</span>
-              <span class="right-pah">{{formup.sell_type===1?'全额出让':'股权出让'+formup.share_ratio+'%'}}</span>
-            </div>
-            <div class="right-sell">
-              <span class="right-word">股权价格</span>
-              <span class="right-money">￥{{formup.price}}</span>
-            </div>
-          </div>
-          <!-- 已出售的中间部分 -->
-          <div class="sell-bought" v-if="false">
-            <div class="right-sell">
-              <span class="right-word">订单编号：</span>
-              <span class="right-serial">070122544000000341</span>
-            </div>
-            <div class="right-sell">
-              <span class="right-word">创建时间：</span>
-              <span class="right-data">2018-07-01 22:54</span>
-            </div>
-            <div class="right-sell">
-              <span class="right-word">出让方式：</span>
-              <span class="right-way">全额出售</span>
-            </div>
-            <div class="right-sell">
-              <span class="right-word">支付方式：</span>
-              <span class="right-way">对公转账</span>
-            </div>
-            <div class="right-sell">
-              <span class="right-word">支付金额：</span>
-              <span class="bought-money">￥50000.00</span>
-            </div>
-          </div>
-          <!-- 下面按钮 -->
-          <div class="right-interset" v-if="$route.query.type !== '2'">
-            <div class="list-contain" v-if="intersClick" @click="collect">
-              <div class="list-button interset-hover" v-if="formup.is_follow === 0">
-                <span class="button-text">感兴趣</span>
-              </div>
-              <div class="list-button interest-border" v-if="formup.is_follow === 1">
-                <span class="button-interest">已感兴趣</span>
+          <div :class="[{'fixed-style': elementShow}, {'absolute-style': elementPosition}]">
+            <div class="design-case-slide">
+              <div class="info">
+                <!-- <router-link :to="{name: 'companyShow', params: {id: item.design_company.id}}" target="_blank">
+                  <img class="avatar" v-if="item.design_company.logo_url" :src="item.design_company.logo_url" width="100"/>
+                  <img class="avatar" v-else src="../../../../assets/images/avatar_100.png" width="100"/>
+                </router-link> -->
+                <div class="title-center">
+                  <img class="avatar" v-if="
+                  imgUrl" :src="
+                  imgUrl.logo" width="60"/>
+                  <img v-else class="avatar" src="../../../../assets/images/df_100x100.png" width="60"/>
+                  <div class="company-name">{{companyName}}</div>
+                </div>
+                <div class="com-addr">
+                  <span class="right-word">联系人</span>
+                  <span class="right-number">{{formup.contacts}}</span>
+                </div>
+                <div class="com-addr">
+                  <span class="right-word">联系方式</span>
+                  <span class="right-number">{{formup.contact_number}}</span>
+                </div>
               </div>
             </div>
-            <div class="list-contain" v-else disabled>
-              <div class="list-button interset-hover" v-if="formup.is_follow === 0">
-                <span class="button-text">感兴趣</span>
+            <!-- 出让的两行 -->
+            <div class="sell-stock">
+              <div class="right-sell">
+                <span class="right-word">出让方式</span>
+                <span class="right-pah">{{formup.sell_type===1?'全额出让':'股权出让'+formup.share_ratio+'%'}}</span>
               </div>
-              <div class="list-button interest-border" v-if="formup.is_follow === 1">
-                <span class="button-interest">已感兴趣</span>
-              </div>
-            </div>
-            <div class="list-left">
-              <div class="list-button buy-text">
-                <router-link :to="{name: 'sure_order', params: {id: itemId}}" class="details-text">立即购买</router-link>
+              <div class="right-sell">
+                <span class="right-word">股权价格</span>
+                <span class="right-money">￥{{formup.price}}</span>
               </div>
             </div>
-            <div class="list-left" v-if="false">
-              <div class="list-button buy-text">
-                <router-link :to="{name: 'managed_funds', params: {id: 1}}" class="to-pay">继续支付</router-link>
+            <!-- 已出售的中间部分 -->
+            <div class="sell-bought" v-if="false">
+              <div class="right-sell">
+                <span class="right-word">订单编号：</span>
+                <span class="right-serial">070122544000000341</span>
+              </div>
+              <div class="right-sell">
+                <span class="right-word">创建时间：</span>
+                <span class="right-data">2018-07-01 22:54</span>
+              </div>
+              <div class="right-sell">
+                <span class="right-word">出让方式：</span>
+                <span class="right-way">全额出售</span>
+              </div>
+              <div class="right-sell">
+                <span class="right-word">支付方式：</span>
+                <span class="right-way">对公转账</span>
+              </div>
+              <div class="right-sell">
+                <span class="right-word">支付金额：</span>
+                <span class="bought-money">￥50000.00</span>
               </div>
             </div>
-            <div class="list-left" v-if="false">
-              <div class="bought-bg">
-                <span class="bought-text">已购买</span>
+            <!-- 下面按钮 -->
+            <div class="right-interset" v-if="$route.query.type !== '2'">
+              <div class="list-contain" v-if="intersClick" @click="collect">
+                <div class="list-button interset-hover" v-if="formup.is_follow === 0">
+                  <span class="button-text">感兴趣</span>
+                </div>
+                <div class="list-button interest-border" v-if="formup.is_follow === 1">
+                  <span class="button-interest">已感兴趣</span>
+                </div>
+              </div>
+              <div class="list-contain" v-else disabled>
+                <div class="list-button interset-hover" v-if="formup.is_follow === 0">
+                  <span class="button-text">感兴趣</span>
+                </div>
+                <div class="list-button interest-border" v-if="formup.is_follow === 1">
+                  <span class="button-interest">已感兴趣</span>
+                </div>
+              </div>
+              <div class="list-left">
+                <div class="list-button buy-text">
+                  <router-link :to="{name: 'sure_order', params: {id: itemId}}" class="details-text">立即购买</router-link>
+                </div>
+              </div>
+              <div class="list-left" v-if="false">
+                <div class="list-button buy-text">
+                  <router-link :to="{name: 'managed_funds', params: {id: 1}}" class="to-pay">继续支付</router-link>
+                </div>
+              </div>
+              <div class="list-left" v-if="false">
+                <div class="bought-bg">
+                  <span class="bought-text">已购买</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="state-style" v-else>
-            <div class="right-sell">
-              <span class="right-word">状态</span>
-              <span class="state-way">{{formup.status | states}}</span>
+            <div class="state-style" v-else>
+              <div class="right-sell">
+                <span class="right-word">状态</span>
+                <span class="state-way">{{formup.status | states}}</span>
+              </div>
             </div>
           </div>
           <div class="patent-details">
@@ -316,6 +318,8 @@ export default {
   data() {
     return {
       isLoading: false,
+      elementShow: false,
+      elementPosition: false,
       imgSmall: '',
       interestButton: false,
       selectCompanyCollapse: ['1'],
@@ -494,7 +498,27 @@ export default {
         this.$message.error (error.message)
         this.isLoading = false
       })
-    }
+    },
+    handleScroll () {
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      var scrollHeigh = document.body.scrollHeight
+      if (scrollTop > (scrollHeigh - 677)) {
+        this.elementPosition = true
+      } else if (scrollTop > 960) {
+        this.elementShow = true
+        this.elementPosition = false
+      } else {
+        this.elementPosition = false
+        this.elementShow = false
+      }
+    },
+  },
+  
+  mounted() {
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  destroyed () {
+    window.removeEventListener('scroll', this.handleScroll)
   },
   created() {
     let itemId = this.$route.params.id
@@ -1039,5 +1063,15 @@ p.img-des {
   font-size: 16px;
   color: #FF5A5F;
   float: right
+}
+.fixed-style {
+  position:fixed;
+  top: 0;
+  z-index: 2
+}
+.absolute-style {
+  position: absolute;
+  bottom: 2px;
+  top: auto
 }
 </style>
