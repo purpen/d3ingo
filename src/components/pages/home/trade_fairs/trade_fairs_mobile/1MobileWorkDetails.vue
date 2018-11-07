@@ -7,7 +7,7 @@
         <span>代售成果</span>
       </div>
       <div class="block block-radius">
-        <swiper :options="swiperOption1" class="patent-img">
+        <swiper :options="swiperOption" class="patent-img">
           <swiper-slide v-for="(img, index) in formup.images_url" :key="index">
             <div style="height:100%;">
               <div class="draw">
@@ -170,7 +170,7 @@
         patentRound: '',
         viewCover: false,
         dialogBuy: false,
-        swiperOption1: {
+        swiperOption: {
           pagination: '.swiper-pagination',
           paginationClickable: true,
           lazyLoading: true,
