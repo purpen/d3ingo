@@ -502,14 +502,16 @@ export default {
     handleScroll () {
       var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
       var scrollHeigh = document.body.scrollHeight
-      if (scrollTop > (scrollHeigh - 677)) {
-        this.elementPosition = true
-      } else if (scrollTop > 960) {
-        this.elementShow = true
-        this.elementPosition = false
-      } else {
-        this.elementPosition = false
-        this.elementShow = false
+      if (!this.viewCover) {
+        if (scrollTop > (scrollHeigh - 677)) {
+          this.elementPosition = true
+        } else if (scrollTop > 960) {
+          this.elementShow = true
+          this.elementPosition = false
+        } else {
+          this.elementPosition = false
+          this.elementShow = false
+        }
       }
     },
   },
@@ -931,14 +933,13 @@ export default {
   margin-top: 60px;
 }
 .instruction-blook {
-  width: 236px;
   height: 30px;
   font-family: PingFangSC-Regular;
   font-size: 16px;
   color: #222222;
   line-height: 30px;
   padding-top: 15px;
-  margin: 0 auto;
+  margin: 0 15px;
 }
 .blook-left {
   float:left;
