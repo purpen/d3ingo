@@ -187,7 +187,7 @@ export default {
             if (payType === 5) {
               self.$router.push({
                 name: 'payment_amount',
-                params: { id: self.item.uid },
+                params: { id: self.item.id },
                 query: {id: self.$route.params.id}
               })
             }
@@ -213,6 +213,7 @@ export default {
         .then(function(response) {
           if (response.data.meta.status_code === 200) {
             self.item = response.data.data
+            console.log('id', self.item.id)
             self.sellType = self.item.design_result.sell_type
             self.shareRatio = self.item.design_result.share_ratio
             self.designTitle = self.item.design_result.title

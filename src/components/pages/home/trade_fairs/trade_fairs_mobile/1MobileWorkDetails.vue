@@ -31,14 +31,14 @@
         </div>
       </div>
       <div class="wide-line"></div>
-      <div class="product-the">
+      <div class="product-the" :class="{'pro-more': unfoldShow}">
         <div class="the-title">产品描述</div>
         <!-- <div class="the-text">{{ formup.content}}</div> -->
         <div class="sec-div">
-          <div class="display-area">
+          <div class="display-area" :class="{'display-more': unfoldShow}">
             <div class="placeholder"></div>
             <span class="content">{{ formup.content}}</span>
-            <div class="ellipsis">…<p class="more-style">展开更多</p></div>
+            <div class="ellipsis" @click="unfoldMore">…<p class="more-style">展开更多</p></div>
           </div>
           <span class="content-placeholder">{{ formup.content}}</span>
         </div>
@@ -164,6 +164,7 @@
         dialogCall: false,
         urlLogo: '',
         companyName: '',
+        unfoldShow: false,
         imgUrl: '',
         notNextTick: true, // 设置之后可以获取swiper对象
         patentRound: '',
@@ -205,6 +206,10 @@
       this.upDetails()
     },
     methods: {
+      // 展开更多
+      unfoldMore() {
+        this.unfoldShow = true
+      },
       // 图片预览
       imgaeShow(ele) {
         if (this.$refs.mySwiper) {
@@ -406,6 +411,15 @@
     float: right;
     right: 30px;
     position: relative;
+  }
+
+  /* 展开样式 */
+  .pro-more {
+    height: none
+  }
+  .display-more {
+    position: relative;
+    height: none
   }
   /* swipe样式 */
   .view-cover {
