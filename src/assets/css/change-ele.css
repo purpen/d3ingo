@@ -376,9 +376,9 @@
   .el-dialog--tiny {
     width: 380px
   }
-  .el-dialog--tiny .el-dialog__header {
+  /* .el-dialog--tiny .el-dialog__header {
     padding: 10px 20px;
-  }
+  } */
   .el-dialog--tiny .el-dialog__headerbtn {
     font-size: 14px;
   }

@@ -43,7 +43,7 @@
                     <div class="image-box">
                       <router-link :to="{name: 'work_datails', params: {id: d.id}, query: {type: 2}}"
                         :target="isMob ? '_self' : '_blank'">
-                        <img v-if="d.cover" :src="d.cover.middle">
+                        <img v-if="d.cover" :src="d.cover.small">
                       </router-link>
                     </div>
                     <div class="content">
@@ -287,7 +287,7 @@
               }
             })
             that.dialogUpdateVisible = false
-            that.isbtnLoading = true
+            that.isbtnLoading = false
             that.isLoading = false
           } else {
             that.isbtnLoading = false
@@ -497,10 +497,11 @@
   }
   .item-more {
     position: absolute;
-    right: 0;
+    right: 0px;
     top: 10px;
-    width: 34px;
+    width: 64px;
     height: 30px;
+    padding-left: 30px;
   }
   .item-more i {
     display: block;
