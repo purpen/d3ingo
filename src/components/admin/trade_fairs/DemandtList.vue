@@ -338,7 +338,7 @@ export default {
         this.menuType = parseInt(self.query.type)
       }
       self.isLoading = true
-      self.$http.get(api.adminDesignDemandLists, {params: {page: self.query.page, per_page: self.query.pageSize, sort: 0, status: self.query.type}})
+      self.$http.get(api.adminDesignDemandLists, {params: {page: self.query.page, per_page: self.query.pageSize, sort: 0, status: self.query.type, evt: self.query.evt, val: self.query.val}})
       .then (function(response) {
         self.isLoading = false
         self.tableData = []
