@@ -421,6 +421,7 @@
   }
   .img-size {
     height: 100%;
+    max-width: 281px;
   }
   .image-size {
     cursor: pointer;

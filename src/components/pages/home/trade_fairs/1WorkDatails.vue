@@ -510,6 +510,7 @@ export default {
 .anli-elrow {
   float: left;
   padding-top: 70px;
+  width: 1180px;
 }
 .title {
   text-align: center;
@@ -622,7 +623,7 @@ export default {
 .list-contain {
   cursor: pointer;
   float: left;
-  padding-right: 10px;
+  padding-right: 5px;
 }
 .list-button {
   height: 40px;
