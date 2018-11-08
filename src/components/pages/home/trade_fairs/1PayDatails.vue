@@ -7,7 +7,7 @@
           <router-link :to="{name: 'demand_list', query: {type: 3}}" v-if="user.type === 2">我的订单</router-link>
         </div>
         <div class="navigate-text arrow-text">
-          <span>{{formup.title}}</span>
+          <span>{{designAttr.title}}</span>
         </div>
       </div>
       <el-row :gutter="20" class="anli-elrow">
@@ -15,10 +15,10 @@
         <el-col :xs="24" :sm="18" :md="18" :lg="18">
           <div class="edit-content">
             <div class="title">
-              <h1>{{formup.title}}</h1>
+              <h1>{{designAttr.title}}</h1>
             </div>
             <div class="summary">
-              <span>{{formup.content}}
+              <span>{{designAttr.content}}
               </span>
             </div>
             <!-- <div class="des">
@@ -38,41 +38,30 @@
 
           <!-- 评价 -->
           <!-- <div class="select-item-box clearfix" v-if="statusLabel.evaluate"> -->
-          <div class="select-item-box clearfix" v-if="false">
-            <el-collapse v-model="selectCompanyCollapse">
-              <!-- <el-collapse-item title="评价" name="12" v-if="cooperateCompany">
-                <div class="evaluate-report clearfix" v-if="item.status === 18"> -->
-              <el-collapse-item title="评价" name="1">
-
+          <div class="select-item-box clearfix">
+            <div class="evaluation-style">
+              <div class="published-evaluation">发表评价</div>
+              <div v-if="false">客户评价</div>
                 <!-- 未提交的评价 -->
                 <div class="evaluate-report clearfix">
                   <p class="ev-c-ava">
-                    <!-- <img class="avatar" v-if="cooperateCompany.design_company.logo_url"
-                          :src="cooperateCompany.design_company.logo_url" width="60"/>
-                    <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="60"/> -->
-                    <img class="avatar" :src="require('assets/images/avatar_100.png')" width="60"/>
-                  </p>
-                  <p class="ev-c-name">
-                    <!-- {{ cooperateCompany.design_company.company_name }} -->
-                    北京品物设计有限公司
-                  </p>
                   <el-row class="grade">
                     <el-col :span="8">
-                      <p>设计水平</p>
+                      <p class="eva-text">设计水平</p>
                       <el-rate
                       v-model.number="evaluate.design_level"
                       show-text>
                     </el-rate>
                     </el-col>
                     <el-col :span="8">
-                      <p>响应速度</p>
+                      <p class="eva-text">响应速度</p>
                       <el-rate
                       v-model.number="evaluate.response_speed"
                       show-text>
                     </el-rate>
                     </el-col>
                     <el-col :span="8">
-                      <p>服务态度</p>
+                      <p class="eva-text">服务态度</p>
                       <el-rate
                       v-model.number="evaluate.service"
                       show-text>
@@ -94,31 +83,10 @@
                   </p>
                 </div>
 
-                <!-- 提交的评价展示 -->
-                <!-- <div class="evaluate-result clearfix" v-if="item.status === 22"> -->
                 <div class="evaluate-result clearfix" v-if="false">
                   <el-row>
-                    <el-col :span="2">
-                      <p class="ev-c-ava fl">
-                        <!-- <img class="avatar" v-if="cooperateCompany.design_company.logo_url"
-                            :src="cooperateCompany.design_company.logo_url" width="50"/>
-                        <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="50"/> -->
-                        <img class="avatar" :src="require('assets/images/avatar_100.png')" width="50"/>
-                      </p>
-                    </el-col>
                     <el-col :span="22">
                       <div class="eva-content">
-                        <p class="ev-c-name">
-
-                          <!-- <router-link :to="{name: 'companyShow', params: {id: cooperateCompany.design_company.id}}"
-                                      target="_blank">
-                            {{ cooperateCompany.design_company.company_name }}
-                          </router-link> -->
-                          <router-link :to="{name: 'companyShow', params: {id: 1}}"
-                                      target="_blank">
-                            测试
-                          </router-link>
-                        </p>
                         <!-- <p class="eva-score">
                           <el-rate
                             v-model.number="evaluate.design_level"
@@ -127,21 +95,21 @@
                         </p> -->
                         <el-row class="grade pl">
                           <el-col :span="8">
-                            <p>设计水平</p>
+                            <p class="eva-text">设计水平</p>
                             <el-rate
                             v-model.number="evalu.design_level"
                             disabled>
                           </el-rate>
                           </el-col>
                           <el-col :span="8">
-                            <p>响应速度</p>
+                            <p class="eva-text">响应速度</p>
                             <el-rate
                             v-model.number="evalu.response_speed"
                             disabled>
                           </el-rate>
                           </el-col>
                           <el-col :span="8">
-                            <p>服务态度</p>
+                            <p class="eva-text">服务态度</p>
                             <el-rate
                             v-model.number="evalu.service"
                             disabled>
@@ -156,8 +124,7 @@
                     </el-col>
                   </el-row>
                 </div>
-              </el-collapse-item>
-            </el-collapse>
+            </div>
           </div>
         </el-col>
         
@@ -175,50 +142,16 @@
                   imgUrl" :src="
                   imgUrl.logo" width="60"/>
                   <img v-else class="avatar" src="../../../../assets/images/df_100x100.png" width="60"/>
-                  <div class="company-name">{{companyName}}</div>
+                  <div class="company-name">{{formup.company_name}}</div>
                 </div>
                 <div class="com-addr">
                   <span class="right-word">联系人</span>
-                  <span class="right-number">{{formup.contacts}}</span>
+                  <span class="right-number">{{designAttr.contacts}}</span>
                 </div>
                 <div class="com-addr">
                   <span class="right-word">联系方式</span>
-                  <span class="right-number">{{formup.contact_number}}</span>
+                  <span class="right-number">{{designAttr.contact_number}}</span>
                 </div>
-              </div>
-            </div>
-            <!-- 出让的两行 -->
-            <div class="sell-stock">
-              <div class="right-sell">
-                <span class="right-word">出让方式</span>
-                <span class="right-pah">{{formup.sell_type===1?'全额出让':'股权出让'+formup.share_ratio+'%'}}</span>
-              </div>
-              <div class="right-sell">
-                <span class="right-word">股权价格</span>
-                <span class="right-money">￥{{formup.price}}</span>
-              </div>
-            </div>
-            <!-- 已出售的中间部分 -->
-            <div class="sell-bought" v-if="false">
-              <div class="right-sell">
-                <span class="right-word">订单编号：</span>
-                <span class="right-serial">070122544000000341</span>
-              </div>
-              <div class="right-sell">
-                <span class="right-word">创建时间：</span>
-                <span class="right-data">2018-07-01 22:54</span>
-              </div>
-              <div class="right-sell">
-                <span class="right-word">出让方式：</span>
-                <span class="right-way">全额出售</span>
-              </div>
-              <div class="right-sell">
-                <span class="right-word">支付方式：</span>
-                <span class="right-way">对公转账</span>
-              </div>
-              <div class="right-sell">
-                <span class="right-word">支付金额：</span>
-                <span class="bought-money">￥50000.00</span>
               </div>
             </div>
             <!-- 下面按钮 -->
@@ -253,7 +186,30 @@
             <div class="state-style" v-else>
               <div class="right-sell">
                 <span class="right-word">状态</span>
-                <span class="state-way">{{formup.status | states}}</span>
+                <span class="state-way">已出售</span>
+              </div>
+            </div>
+            <!-- 已出售的中间部分 -->
+            <div class="sell-bought">
+              <div class="right-sell">
+                <span class="right-word">订单编号：</span>
+                <span class="right-serial">{{formup.uid}}</span>
+              </div>
+              <div class="right-sell">
+                <span class="right-word">创建时间：</span>
+                <span class="right-data">2018-07-01 22:54</span>
+              </div>
+              <div class="right-sell">
+                <span class="right-word">出让方式：</span>
+                <span class="right-way">{{designAttr.sell_type===1?'全额出让':'股权出让'+designAttr.share_ratio+'%'}}</span>
+              </div>
+              <div class="right-sell">
+                <span class="right-word">支付方式：</span>
+                <span class="right-way">{{formup.pay_type_value}}</span>
+              </div>
+              <div class="right-sell">
+                <span class="right-word">支付金额：</span>
+                <span class="bought-money">￥{{designAttr.price}}</span>
               </div>
             </div>
           </div>
@@ -317,7 +273,6 @@ export default {
       elementPosition: false,
       imgSmall: '',
       interestButton: false,
-      selectCompanyCollapse: ['1'],
       credential: ['1'],
       showType: false,
       intersClick: true,
@@ -329,6 +284,7 @@ export default {
         content: ''
       },
       imgUrl: '',
+      designAttr: '',
       itemId: '',
       companyName: '',
       swiperOption: {
@@ -407,8 +363,8 @@ export default {
         oldClass = oldClass.replace('disableScroll ', '')
       }
       document.body.removeAttribute('class', 'disableScroll')
-      document.getElementById('app').setAttribute('class', oldClass)
-      document.childNodes[1].removeAttribute('class', 'disableScroll')
+      // document.getElementById('app').setAttribute('class', oldClass)
+      // document.childNodes[1].removeAttribute('class', 'disableScroll')
     },
     // 收藏/取消收藏
     collect() {
@@ -475,12 +431,16 @@ export default {
     // 获取详情
     upDetails() {
       this.isLoading = true
-      this.$http.get(api.sdDesignResultsShow, {params: {id: this.itemId}}).then(
+      this.$http.get(api.payOrderShow, {params: {id: this.itemId}}).then(
         (response) => {
           if (response.data.meta.status_code === 200) {
             this.formup = response.data.data
-            this.imgUrl = response.data.data.design_company.logo_image
-            this.companyName = response.data.data.design_company.company_name
+            let designAttr = response.data.data.design_result
+            if (designAttr) {
+              this. designAttr = designAttr
+            }
+            // this.imgUrl = response.data.data.design_company.logo_image
+            // this.companyName = response.data.data.design_company.company_name
             this.isLoading = false
             this.patentRound = response.data.data.patent_url
           } else {
@@ -498,9 +458,9 @@ export default {
       var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
       var scrollHeigh = document.body.scrollHeight
       if (!this.viewCover) {
-        if (scrollTop > (scrollHeigh - 677)) {
+        if (scrollTop > (scrollHeigh - 827)) {
           this.elementPosition = true
-        } else if (scrollTop > 960) {
+        } else if (scrollTop > 970) {
           this.elementShow = true
           this.elementPosition = false
         } else {
@@ -616,7 +576,9 @@ export default {
   width: 1180px;
 }
 .cont {
-  background: #f7f7f7
+  background: #f7f7f7;
+  margin-bottom: -50px;
+  padding-bottom: 10px;
 }
 .img-class {
   height: 270px;
@@ -707,12 +669,12 @@ export default {
 }
 .com-addr {
   padding-top: 20px;
-  width: 80%;
+  width: 91%;
   margin: 0 auto;
 }
 .right-sell {
   height: 50px;
-  width: 80%;
+  width: 91%;
   line-height: 50px;
   margin: 0 auto;
 }
@@ -753,7 +715,8 @@ export default {
 
 /* 右边button */
 .right-interset {
-  padding-top: 20px;
+  padding-top: 15px;
+  height: 60px;
 }
 .list-left {
   cursor: pointer;
@@ -929,7 +892,7 @@ export default {
   height: 60px;
   width: 280px;
   background: #fff;
-  margin-top: 60px;
+  margin-top: 15px;
 }
 .instruction-blook {
   height: 30px;
@@ -964,34 +927,35 @@ export default {
   margin-top: 10px;
   height: 250px;
   width: 280px;
-  background: #FAFAFA;
+  background: #fff;
 }
 .right-serial {
   font-family: PingFangSC-Regular;
   font-size: 16px;
   color: #999999;
   text-align: right;
+  float: right;
 }
 .right-data {
   font-family: PingFangSC-Regular;
   font-size: 16px;
   color: #999999;
   text-align: right;
-  padding-left: 30px;
+  float: right;
 }
 .right-way {
   font-family: PingFangSC-Regular;
   font-size: 16px;
   color: #999999;
   text-align: right;
-  padding-left: 102px;
+  float: right;
 }
 .bought-money {
   font-family: PingFangSC-Semibold;
   font-size: 20px;
   color: #FF5A5F;
   text-align: right;
-  padding-left: 60px;
+  float: right;
 }
 
 /* 评价 */
@@ -1000,6 +964,7 @@ export default {
 }
 .evaluate-report {
   text-align: center;
+  padding-top: 30px;
 }
 .evaluate-report .ev-c-name {
   line-height: 2;
@@ -1016,12 +981,13 @@ export default {
 }
 .grade>.el-col:not(:first-child) {
   border-left: 1px solid #e6e6e6;
+  height: 60px
 }
 .pl>.el-col:not(:first-child) {
   padding-left: 20px;
 }
 p.ev-c-content {
-  padding: 10px 50px;
+  padding: 40px 50px 10px 50px;
 }
 
 /* 轮播图 */
@@ -1073,5 +1039,32 @@ p.img-des {
   position: absolute;
   bottom: 2px;
   top: auto
+}
+
+/* 评价的样式 */
+.evaluation-style {
+  border: 1px solid #e6e6e6;
+  background: #fff
+}
+.published-evaluation {
+  height: 60px;
+  background: #fafafa;
+  font-family: PingFangSC-Light;
+  font-size: 18px;
+  color: #222222;
+  line-height: 60px;
+  padding-left: 30px
+}
+.eva-text {
+  font-family: PingFangSC-Light;
+  font-size: 16px;
+  color: #222222;
+}
+.el-rate {
+  padding-top: 20px
+}
+.ev-c-btn {
+  height: 50px;
+  line-height: 50px;
 }
 </style>
