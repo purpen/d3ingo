@@ -1,320 +1,313 @@
 <template>
-  <div class="container" v-loading="isLoading">
-    <div class="navigate-header">
-      <div class="navigate-text">
-        <router-link to="/shunde/trade_fairs/design_case" v-if="$route.query.type === '2'">设计成果</router-link>
-        <router-link to="/shunde/trade_fairs/demand_login" v-else>代售成果</router-link>
+  <div class="cont" v-loading="isLoading" ref="cont" id="cont">
+    <div class="container">
+      <div class="navigate-header">
+        <div class="navigate-text">
+          <router-link to="/shunde/trade_fairs/design_case" v-if="$route.query.type === '2'">设计成果</router-link>
+          <router-link to="/shunde/trade_fairs/demand_login" v-else>代售成果</router-link>
+        </div>
+        <div class="navigate-text arrow-text">
+          <span>{{formup.title}}</span>
+        </div>
       </div>
-      <div class="navigate-text arrow-text">
-        <span>{{formup.title}}</span>
-      </div>
-    </div>
-    <el-row :gutter="20" class="anli-elrow">
+      <el-row :gutter="20" class="anli-elrow">
 
-      <el-col :xs="24" :sm="18" :md="18" :lg="18">
-        <div class="edit-content">
-          <div class="title">
-            <h1>{{formup.title}}</h1>
-          </div>
-          <div class="summary">
-            <span>{{formup.content}}
-            </span>
-          </div>
-          <!-- <div class="des">
-            <p v-for="(d, index) in item.case_image" :key="index">
-              <img :src="d.big" :alt="d.name" :title="d.name"/>
-              <slot>
-              <p class="img-des">{{ d.summary }}</p>
-              </slot>
-            </p>
-          </div> -->
-          <div class="des">
-            <div class="des-image" v-for="(img, index) in formup.images_url" :key="index">
-              <img class="image-size" :src="img.big"/>
+        <el-col :xs="24" :sm="18" :md="18" :lg="18">
+          <div class="edit-content">
+            <div class="title">
+              <h1>{{formup.title}}</h1>
             </div>
-          </div>
-        </div>
-
-        <!-- 评价 -->
-        <!-- <div class="select-item-box clearfix" v-if="statusLabel.evaluate"> -->
-        <div class="select-item-box clearfix" v-if="false">
-          <el-collapse v-model="selectCompanyCollapse">
-            <!-- <el-collapse-item title="评价" name="12" v-if="cooperateCompany">
-              <div class="evaluate-report clearfix" v-if="item.status === 18"> -->
-            <el-collapse-item title="评价" name="1">
-
-              <!-- 未提交的评价 -->
-              <div class="evaluate-report clearfix">
-                <p class="ev-c-ava">
-                  <!-- <img class="avatar" v-if="cooperateCompany.design_company.logo_url"
-                        :src="cooperateCompany.design_company.logo_url" width="60"/>
-                  <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="60"/> -->
-                  <img class="avatar" :src="require('assets/images/avatar_100.png')" width="60"/>
-                </p>
-                <p class="ev-c-name">
-                  <!-- {{ cooperateCompany.design_company.company_name }} -->
-                  北京品物设计有限公司
-                </p>
-                <el-row class="grade">
-                  <el-col :span="8">
-                    <p>设计水平</p>
-                    <el-rate
-                    v-model.number="evaluate.design_level"
-                    show-text>
-                  </el-rate>
-                  </el-col>
-                  <el-col :span="8">
-                    <p>响应速度</p>
-                    <el-rate
-                    v-model.number="evaluate.response_speed"
-                    show-text>
-                  </el-rate>
-                  </el-col>
-                  <el-col :span="8">
-                    <p>服务态度</p>
-                    <el-rate
-                    v-model.number="evaluate.service"
-                    show-text>
-                  </el-rate>
-                  </el-col>
-                </el-row>
-                <p class="ev-c-content">
-                  <el-input
-                    type="textarea"
-                    :rows="5"
-                    placeholder="请输入内容"
-                    v-model="evaluate.content">
-                  </el-input>
-                </p>
-                <p class="ev-c-btn">
-                  <el-button class="is-custom" type="primary" :loading="evaluateLoadingBtn" @click="evaluateSubmit">
-                    提交
-                  </el-button>
-                </p>
+            <div class="summary">
+              <span>{{formup.content}}
+              </span>
+            </div>
+            <!-- <div class="des">
+              <p v-for="(d, index) in item.case_image" :key="index">
+                <img :src="d.big" :alt="d.name" :title="d.name"/>
+                <slot>
+                <p class="img-des">{{ d.summary }}</p>
+                </slot>
+              </p>
+            </div> -->
+            <div class="des">
+              <div class="des-image" v-for="(img, index) in formup.images_url" :key="index">
+                <img class="image-size" :src="img.big"/>
               </div>
+            </div>
+          </div>
 
-              <!-- 提交的评价展示 -->
-              <!-- <div class="evaluate-result clearfix" v-if="item.status === 22"> -->
-              <div class="evaluate-result clearfix" v-if="false">
-                <el-row>
-                  <el-col :span="2">
-                    <p class="ev-c-ava fl">
-                      <!-- <img class="avatar" v-if="cooperateCompany.design_company.logo_url"
-                          :src="cooperateCompany.design_company.logo_url" width="50"/>
-                      <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="50"/> -->
-                      <img class="avatar" :src="require('assets/images/avatar_100.png')" width="50"/>
-                    </p>
-                  </el-col>
-                  <el-col :span="22">
-                    <div class="eva-content">
-                      <p class="ev-c-name">
+          <!-- 评价 -->
+          <!-- <div class="select-item-box clearfix" v-if="statusLabel.evaluate"> -->
+          <div class="select-item-box clearfix" v-if="false">
+            <el-collapse v-model="selectCompanyCollapse">
+              <!-- <el-collapse-item title="评价" name="12" v-if="cooperateCompany">
+                <div class="evaluate-report clearfix" v-if="item.status === 18"> -->
+              <el-collapse-item title="评价" name="1">
 
-                        <!-- <router-link :to="{name: 'companyShow', params: {id: cooperateCompany.design_company.id}}"
-                                    target="_blank">
-                          {{ cooperateCompany.design_company.company_name }}
-                        </router-link> -->
-                        <router-link :to="{name: 'companyShow', params: {id: 1}}"
-                                    target="_blank">
-                          测试
-                        </router-link>
+                <!-- 未提交的评价 -->
+                <div class="evaluate-report clearfix">
+                  <p class="ev-c-ava">
+                    <!-- <img class="avatar" v-if="cooperateCompany.design_company.logo_url"
+                          :src="cooperateCompany.design_company.logo_url" width="60"/>
+                    <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="60"/> -->
+                    <img class="avatar" :src="require('assets/images/avatar_100.png')" width="60"/>
+                  </p>
+                  <p class="ev-c-name">
+                    <!-- {{ cooperateCompany.design_company.company_name }} -->
+                    北京品物设计有限公司
+                  </p>
+                  <el-row class="grade">
+                    <el-col :span="8">
+                      <p>设计水平</p>
+                      <el-rate
+                      v-model.number="evaluate.design_level"
+                      show-text>
+                    </el-rate>
+                    </el-col>
+                    <el-col :span="8">
+                      <p>响应速度</p>
+                      <el-rate
+                      v-model.number="evaluate.response_speed"
+                      show-text>
+                    </el-rate>
+                    </el-col>
+                    <el-col :span="8">
+                      <p>服务态度</p>
+                      <el-rate
+                      v-model.number="evaluate.service"
+                      show-text>
+                    </el-rate>
+                    </el-col>
+                  </el-row>
+                  <p class="ev-c-content">
+                    <el-input
+                      type="textarea"
+                      :rows="5"
+                      placeholder="请输入内容"
+                      v-model="evaluate.content">
+                    </el-input>
+                  </p>
+                  <p class="ev-c-btn">
+                    <el-button class="is-custom" type="primary" :loading="evaluateLoadingBtn" @click="evaluateSubmit">
+                      提交
+                    </el-button>
+                  </p>
+                </div>
+
+                <!-- 提交的评价展示 -->
+                <!-- <div class="evaluate-result clearfix" v-if="item.status === 22"> -->
+                <div class="evaluate-result clearfix" v-if="false">
+                  <el-row>
+                    <el-col :span="2">
+                      <p class="ev-c-ava fl">
+                        <!-- <img class="avatar" v-if="cooperateCompany.design_company.logo_url"
+                            :src="cooperateCompany.design_company.logo_url" width="50"/>
+                        <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="50"/> -->
+                        <img class="avatar" :src="require('assets/images/avatar_100.png')" width="50"/>
                       </p>
-                      <!-- <p class="eva-score">
-                        <el-rate
-                          v-model.number="evaluate.design_level"
-                          disabled>
-                        </el-rate>
-                      </p> -->
-                      <el-row class="grade pl">
-                        <el-col :span="8">
-                          <p>设计水平</p>
+                    </el-col>
+                    <el-col :span="22">
+                      <div class="eva-content">
+                        <p class="ev-c-name">
+
+                          <!-- <router-link :to="{name: 'companyShow', params: {id: cooperateCompany.design_company.id}}"
+                                      target="_blank">
+                            {{ cooperateCompany.design_company.company_name }}
+                          </router-link> -->
+                          <router-link :to="{name: 'companyShow', params: {id: 1}}"
+                                      target="_blank">
+                            测试
+                          </router-link>
+                        </p>
+                        <!-- <p class="eva-score">
                           <el-rate
-                          v-model.number="evalu.design_level"
-                          disabled>
-                        </el-rate>
-                        </el-col>
-                        <el-col :span="8">
-                          <p>响应速度</p>
-                          <el-rate
-                          v-model.number="evalu.response_speed"
-                          disabled>
-                        </el-rate>
-                        </el-col>
-                        <el-col :span="8">
-                          <p>服务态度</p>
-                          <el-rate
-                          v-model.number="evalu.service"
-                          disabled>
-                        </el-rate>
-                        </el-col>
-                      </el-row>
-                      <p class="ev-c-content">
-                        <!-- {{ evalu.content }} -->
-                        测试测试测试
-                      </p>
-                    </div>
-                  </el-col>
-                </el-row>
+                            v-model.number="evaluate.design_level"
+                            disabled>
+                          </el-rate>
+                        </p> -->
+                        <el-row class="grade pl">
+                          <el-col :span="8">
+                            <p>设计水平</p>
+                            <el-rate
+                            v-model.number="evalu.design_level"
+                            disabled>
+                          </el-rate>
+                          </el-col>
+                          <el-col :span="8">
+                            <p>响应速度</p>
+                            <el-rate
+                            v-model.number="evalu.response_speed"
+                            disabled>
+                          </el-rate>
+                          </el-col>
+                          <el-col :span="8">
+                            <p>服务态度</p>
+                            <el-rate
+                            v-model.number="evalu.service"
+                            disabled>
+                          </el-rate>
+                          </el-col>
+                        </el-row>
+                        <p class="ev-c-content">
+                          <!-- {{ evalu.content }} -->
+                          测试测试测试
+                        </p>
+                      </div>
+                    </el-col>
+                  </el-row>
+                </div>
+              </el-collapse-item>
+            </el-collapse>
+          </div>
+        </el-col>
+        
+        <!-- 右半部分 -->
+        <el-col :xs="24" :sm="6" :md="6" :lg="6">
+          <div :class="[{'fixed-style': elementShow}, {'absolute-style': elementPosition}]">
+            <div class="design-case-slide">
+              <div class="info">
+                <!-- <router-link :to="{name: 'companyShow', params: {id: item.design_company.id}}" target="_blank">
+                  <img class="avatar" v-if="item.design_company.logo_url" :src="item.design_company.logo_url" width="100"/>
+                  <img class="avatar" v-else src="../../../../assets/images/avatar_100.png" width="100"/>
+                </router-link> -->
+                <div class="title-center">
+                  <img class="avatar" v-if="
+                  imgUrl" :src="
+                  imgUrl.logo" width="60"/>
+                  <img v-else class="avatar" src="../../../../assets/images/df_100x100.png" width="60"/>
+                  <div class="company-name">{{companyName}}</div>
+                </div>
+                <div class="com-addr">
+                  <span class="right-word">联系人</span>
+                  <span class="right-number">{{formup.contacts}}</span>
+                </div>
+                <div class="com-addr">
+                  <span class="right-word">联系方式</span>
+                  <span class="right-number">{{formup.contact_number}}</span>
+                </div>
               </div>
-            </el-collapse-item>
-          </el-collapse>
-        </div>
-      </el-col>
-      
-      <!-- 右半部分 -->
-      <el-col :xs="24" :sm="6" :md="6" :lg="6">
-        <div class="design-case-slide">
-          <div class="info">
-            <!-- <router-link :to="{name: 'companyShow', params: {id: item.design_company.id}}" target="_blank">
-              <img class="avatar" v-if="item.design_company.logo_url" :src="item.design_company.logo_url" width="100"/>
-              <img class="avatar" v-else src="../../../../assets/images/avatar_100.png" width="100"/>
-            </router-link> -->
-            <div class="title-center">
-              <img class="avatar" v-if="
-              imgUrl" :src="
-              imgUrl.logo" width="60"/>
-              <img v-else class="avatar" src="../../../../assets/images/df_100x100.png" width="60"/>
-              <div class="company-name">{{companyName}}</div>
             </div>
-            <div class="com-addr">
-              <span class="right-word">联系人</span>
-              <span class="right-number">{{formup.contacts}}</span>
+            <!-- 出让的两行 -->
+            <div class="sell-stock">
+              <div class="right-sell">
+                <span class="right-word">出让方式</span>
+                <span class="right-pah">{{formup.sell_type===1?'全额出让':'股权出让'+formup.share_ratio+'%'}}</span>
+              </div>
+              <div class="right-sell">
+                <span class="right-word">股权价格</span>
+                <span class="right-money">￥{{formup.price}}</span>
+              </div>
             </div>
-            <div class="com-addr">
-              <span class="right-word">联系方式</span>
-              <span class="right-number">{{formup.contact_number}}</span>
+            <!-- 已出售的中间部分 -->
+            <div class="sell-bought" v-if="false">
+              <div class="right-sell">
+                <span class="right-word">订单编号：</span>
+                <span class="right-serial">070122544000000341</span>
+              </div>
+              <div class="right-sell">
+                <span class="right-word">创建时间：</span>
+                <span class="right-data">2018-07-01 22:54</span>
+              </div>
+              <div class="right-sell">
+                <span class="right-word">出让方式：</span>
+                <span class="right-way">全额出售</span>
+              </div>
+              <div class="right-sell">
+                <span class="right-word">支付方式：</span>
+                <span class="right-way">对公转账</span>
+              </div>
+              <div class="right-sell">
+                <span class="right-word">支付金额：</span>
+                <span class="bought-money">￥50000.00</span>
+              </div>
             </div>
-          </div>
-        </div>
-        <!-- 出让的两行 -->
-        <div class="sell-stock">
-          <div class="right-sell">
-            <span class="right-word">出让方式</span>
-            <span class="right-pah">{{formup.sell_type===1?'全额出让':'股权出让'+formup.share_ratio+'%'}}</span>
-          </div>
-          <div class="right-sell">
-            <span class="right-word">股权价格</span>
-            <span class="right-money">￥{{formup.price}}</span>
-          </div>
-        </div>
-        <!-- 已出售的中间部分 -->
-        <div class="sell-bought" v-if="false">
-          <div class="right-sell">
-            <span class="right-word">订单编号：</span>
-            <span class="right-serial">070122544000000341</span>
-          </div>
-          <div class="right-sell">
-            <span class="right-word">创建时间：</span>
-            <span class="right-data">2018-07-01 22:54</span>
-          </div>
-          <div class="right-sell">
-            <span class="right-word">出让方式：</span>
-            <span class="right-way">全额出售</span>
-          </div>
-          <div class="right-sell">
-            <span class="right-word">支付方式：</span>
-            <span class="right-way">对公转账</span>
-          </div>
-          <div class="right-sell">
-            <span class="right-word">支付金额：</span>
-            <span class="bought-money">￥50000.00</span>
-          </div>
-        </div>
-        <!-- 下面按钮 -->
-        <div class="right-interset" v-if="$route.query.type !== '2'">
-          <div class="list-contain" v-if="intersClick" @click="collect">
-            <div class="list-button interset-hover" v-if="formup.is_follow === 0">
-              <span class="button-text">感兴趣</span>
+            <!-- 下面按钮 -->
+            <div class="right-interset" v-if="$route.query.type !== '2'">
+              <div class="list-contain" v-if="intersClick" @click="collect">
+                <div class="list-button interset-hover" v-if="formup.is_follow === 0">
+                  <span class="button-text">感兴趣</span>
+                </div>
+                <div class="list-button interest-border" v-if="formup.is_follow === 1">
+                  <span class="button-interest">已感兴趣</span>
+                </div>
+              </div>
+              <div class="list-contain" v-else disabled>
+                <div class="list-button interset-hover" v-if="formup.is_follow === 0">
+                  <span class="button-text">感兴趣</span>
+                </div>
+                <div class="list-button interest-border" v-if="formup.is_follow === 1">
+                  <span class="button-interest">已感兴趣</span>
+                </div>
+              </div>
+              <div class="list-left">
+                <div class="list-button buy-text">
+                  <router-link :to="{name: 'sure_order', params: {id: itemId}}" class="details-text">立即购买</router-link>
+                </div>
+              </div>
+              <div class="list-left" v-if="false">
+                <div class="list-button buy-text">
+                  <router-link :to="{name: 'managed_funds', params: {id: 1}}" class="to-pay">继续支付</router-link>
+                </div>
+              </div>
+              <div class="list-left" v-if="false">
+                <div class="bought-bg">
+                  <span class="bought-text">已购买</span>
+                </div>
+              </div>
             </div>
-            <div class="list-button interest-border" v-if="formup.is_follow === 1">
-              <span class="button-interest">已感兴趣</span>
-            </div>
-          </div>
-          <div class="list-contain" v-else disabled>
-            <div class="list-button interset-hover" v-if="formup.is_follow === 0">
-              <span class="button-text">感兴趣</span>
-            </div>
-            <div class="list-button interest-border" v-if="formup.is_follow === 1">
-              <span class="button-interest">已感兴趣</span>
+            <div class="state-style" v-else>
+              <div class="right-sell">
+                <span class="right-word">状态</span>
+                <span class="state-way">{{formup.status | states}}</span>
+              </div>
             </div>
           </div>
-          <div class="list-left">
-            <div class="list-button buy-text">
-              <router-link :to="{name: 'sure_order', params: {id: itemId}}" class="details-text">立即购买</router-link>
+          <div class="patent-details">
+            <div class="instruction-blook">
+            <span class="blook-left">产品功能说明书</span>
+            <div class="seen-button">
+              <span class="seen-text" @click="seenBook">查看详情</span>
+            </div>
             </div>
           </div>
-          <div class="list-left" v-if="false">
-            <div class="list-button buy-text">
-              <router-link :to="{name: 'managed_funds', params: {id: 1}}" class="to-pay">继续支付</router-link>
-            </div>
-          </div>
-          <div class="list-left" v-if="false">
-            <div class="bought-bg">
-              <span class="bought-text">已购买</span>
-            </div>
-          </div>
-        </div>
-        <div class="state-style" v-else>
-          <div class="right-sell">
-            <span class="right-word">状态</span>
-            <span class="state-way">{{formup.status | states}}</span>
-          </div>
-        </div>
-        <el-collapse v-model="credential" class="patent" :class="{'pat-margin' : $route.query.type === '2'}">
-          <el-collapse-item title="专利证书" name="1">
-            <!-- <div class="patent-img"></div> -->
-            <swiper :options="swiperOption" class="patent-img">
-              <swiper-slide>
-                <div class="slide">
-                  <div style="height:100%;" v-for="(img, index) in formup.patent_url" :key="index">
+          <el-collapse v-model="credential" class="patent" :class="{'pat-margin' : $route.query.type === '2'}">
+            <el-collapse-item title="专利证书" name="1">
+              <swiper :options="swiperOption" class="patent-img">
+                <swiper-slide v-for="(img, index) in formup.patent_url" :key="index">
+                  <div style="height:100%;" @click.stop.prevent="imgaeShow(img)">
                     <div class="draw">
-                      <img :src="img.small" width="100%" height="100%" alt="">
+                      <img :src="img.big" class="img-class">
                     </div>
                   </div>
+                </swiper-slide>
+                <div class="swiper-pagination" slot="pagination">
+                </div>
+              </swiper>
+            </el-collapse-item>
+          </el-collapse>
+        </el-col>
+
+      </el-row>
+    </div>
+    <!-- 图片预览 -->
+    <div class="view-cover" v-show="viewCover">
+      <p class="swipe-close" @click.self="closeView"></p>
+      <div class="view-picture">
+        <div class="view-content" @click.self="closeView">
+          <div class="image-preview">
+            <swiper :options="swiperOption2" :not-next-tick="notNextTick" ref="mySwiper">
+              <swiper-slide v-for="(ele, index) in patentRound" :key="index">
+                <div v-lazy-container="ele.middle" class="round-img">
+                  <img :data-src="ele.middle" :data-loading="ele.small" class="swipe-img">
                 </div>
               </swiper-slide>
               <div class="swiper-pagination" slot="pagination">
               </div>
-              <!-- <div v-if="!isMob" class="swiper-button-prev" slot="button-prev">
-                <i class="el-icon-arrow-left"></i>
-              </div>
-              <div v-if="!isMob" class="swiper-button-next" slot="button-next">
-                <i class="el-icon-arrow-right"></i>
-              </div> -->
             </swiper>
-          </el-collapse-item>
-        </el-collapse>
-        <div class="patent-details">
-          <div class="instruction-blook">
-          <span class="blook-left">产品功能说明书</span>
-          <div class="seen-button">
-            <!-- <span class="seen-text" @click="seenBook(formup.illustrate_url)">查看详情</span> -->
-            <span class="seen-text">查看详情</span>
-          </div>
           </div>
         </div>
-        <!-- 图片预览 -->
-        <div>
-        <div class="image-preview" v-show="showType">
-          <swiper :options="swiperOption" :not-next-tick="notNextTick" ref="mySwiper">
-            <swiper-slide v-for="(ele, index) in formup.illustrate_url" :key="index">
-              <div v-lazy-container="{ selector: 'img' }">
-                <img :data-src="ele.big" :data-loading="ele.small"
-                :style="{width: ele.width + 'px', height: ele.height + 'px'}">
-              </div>
-            </swiper-slide>
-            <div @click="switchPrevPic" class="swiper-button-prev" slot="button-prev">
-              <i class="el-icon-arrow-left"></i>
-            </div>
-            <div @click="switchNextPic" class="swiper-button-next" slot="button-next">
-              <i class="el-icon-arrow-right"></i>
-            </div>
-          </swiper>
-        </div>
-        </div>
-      </el-col>
-
-    </el-row>
-
+      </div>
+    </div>
   </div>
 </template>
 
@@ -325,11 +318,16 @@ export default {
   data() {
     return {
       isLoading: false,
+      elementShow: false,
+      elementPosition: false,
+      imgSmall: '',
       interestButton: false,
       selectCompanyCollapse: ['1'],
       credential: ['1'],
       showType: false,
       intersClick: true,
+      patentRound: '',
+      viewCover: false,
       formup: {},
       evaluate: {
         design_level: 0,
@@ -346,10 +344,22 @@ export default {
         prevButton: '.swiper-button-prev',
         nextButton: '.swiper-button-next',
         spaceBetween: 0,
-        loop: true
+      },
+      swiperOption2: {
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        lazyLoading: true,
+        autoplay: 5000,
+        prevButton: '.swiper-button-prev',
+        nextButton: '.swiper-button-next',
+        spaceBetween: 0,
       },
       notNextTick: true, // 设置之后可以获取swiper对象
       evalu: {},
+      previewObj: {
+        index: 0,
+        info: {}
+      },
       isLoad: false,
       evaluateLoadingBtn: false // 提交评价的loading
     }
@@ -363,34 +373,47 @@ export default {
     }
   },
   methods: {
-    // 预览的方法
-    switchPrevPic() {
-      this.isLoad = false
-      this.previewObj.index --
-      if (this.previewObj.index < 0) {
-        this.previewObj.index = 0
-        this.$message.error('已经是第一张图片啦')
-      }
-      let img = new Image()
-      img.src = this.imgList[this.previewObj.index]['url_file']
-      img.onload = () => {
-        this.isLoad = true
-        console.log('加载完成')
+    seenBook() {
+      let routeData = this.$router.resolve({name: 'achieve_preview', params: {id: this.formup.id}})
+      window.open(routeData.href, '_blank');
+    },
+    // 图片预览
+    imgaeShow(ele) {
+      if (this.$refs.mySwiper) {
+        this.patentRound.forEach((item, index) => {
+          if (ele.id === item.id) {
+            let img = new Image()
+            img.src = ele.big
+            img.onload = () => {
+              this.isLoad = true
+              console.log('加载完成')
+            }
+            this.swiperObj.slideTo(index + 1)
+            this.viewCover = true
+            this.previewObj.info = item
+            this.previewObj.index = index
+          }
+        })
+        let oldClass = document.getElementById('app').getAttribute('class')
+        if (oldClass) {
+          oldClass = oldClass.replace(/disableScroll\x20?/g, '')
+        }
+        document.body.setAttribute('class', 'disableScroll')
+        document.getElementById('app').setAttribute('class', 'disableScroll ' + oldClass)
+        document.childNodes[1].setAttribute('class', 'disableScroll')
+      } else {
+        this.$message.info('正在加载组件, 请稍后尝试...')
       }
     },
-    switchNextPic() {
-      this.isLoad = false
-      this.previewObj.index ++
-      if (this.previewObj.index > this.imgList.length - 1) {
-        this.previewObj.index = this.imgList.length - 1
-        this.$message.error('已经是最后一张图片啦')
+    closeView () {
+      this.viewCover = false
+      let oldClass = document.getElementById('app').getAttribute('class')
+      if (oldClass) {
+        oldClass = oldClass.replace('disableScroll ', '')
       }
-      let img = new Image()
-      img.src = this.imgList[this.previewObj.index]['url_file']
-      img.onload = () => {
-        this.isLoad = true
-        console.log('加载完成')
-      }
+      document.body.removeAttribute('class', 'disableScroll')
+      document.getElementById('app').setAttribute('class', oldClass)
+      document.childNodes[1].removeAttribute('class', 'disableScroll')
     },
     // 收藏/取消收藏
     collect() {
@@ -464,6 +487,7 @@ export default {
             this.imgUrl = response.data.data.design_company.logo_image
             this.companyName = response.data.data.design_company.company_name
             this.isLoading = false
+            this.patentRound = response.data.data.patent_url
           } else {
             this.isLoading = false
             this.$message.error(response.data.meta.message)
@@ -475,32 +499,28 @@ export default {
         this.isLoading = false
       })
     },
-    seenBook(ele) {
-      this.showType = true
-      if (this.$refs.mySwiper) {
-        this.ele.forEach((item, index) => {
-          let img = new Image()
-          img.src = ele.big
-          img.onload = () => {
-            this.isLoad = true
-            console.log('加载完成')
-          }
-          this.swiperObj.slideTo(index)
-          this.viewCover = true
-          this.previewObj.info = item
-          this.previewObj.index = index
-        })
-        let oldClass = document.getElementById('app').getAttribute('class')
-        if (oldClass) {
-          oldClass = oldClass.replace(/disableScroll\x20?/g, '')
+    handleScroll () {
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      var scrollHeigh = document.body.scrollHeight
+      if (!this.viewCover) {
+        if (scrollTop > (scrollHeigh - 677)) {
+          this.elementPosition = true
+        } else if (scrollTop > 960) {
+          this.elementShow = true
+          this.elementPosition = false
+        } else {
+          this.elementPosition = false
+          this.elementShow = false
         }
-        document.body.setAttribute('class', 'disableScroll')
-        document.getElementById('app').setAttribute('class', 'disableScroll ' + oldClass)
-        document.childNodes[1].setAttribute('class', 'disableScroll')
-      } else {
-        this.$message.info('正在加载组件, 请稍后尝试...')
       }
-    }
+    },
+  },
+  
+  mounted() {
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  destroyed () {
+    window.removeEventListener('scroll', this.handleScroll)
   },
   created() {
     let itemId = this.$route.params.id
@@ -508,6 +528,11 @@ export default {
       this.itemId = itemId
     }
     this.upDetails()
+  },
+  computed: {
+    swiperObj() {
+      return this.$refs.mySwiper.swiper
+    }
   },
   filters: {
     states(val) {
@@ -531,13 +556,73 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+/* swipe样式 */
+.swiper-slide {
+  margin-top: 10%
+}
+.view-cover {
+  position: fixed;
+  z-index: 2999;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+}
+.view-picture {
+  float: left;
+  margin: 0 auto;
+  width: 100vw;
+}
+.round-img {
+  height: 450px;
+  width: 600px
+}
+.swipe-img {
+  height: 100%;
+  width: 100%;
+  /* margin-top: 10%; */
+}
+.image-preview {
+  max-width: 600px;
+  margin: 0 auto;
+}
+.view-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.view-cover .swiper-container {
+  margin: 0 15px;
+  padding-bottom: 40px;
+}
+.swiper-pagination-bullet {
+  background: #fff;
+}
+.swipe-close {
+  float: right;
+  position: relative;
+  top: 5%;
+  right: 5%;
+  width: 30px;
+  height: 25px;
+  background: url('../../../../assets/images/trade_fairs/list/close@2x.png') no-repeat center;
+  background-size: contain;
+}
 /* 头部导航 */
 .navigate-header {
   position: absolute;
-  padding-top: 20px;
+  padding-top: 30px;
   height: 50px;
   width: 1180px;
-  border-bottom: 1px solid #e6e6e6;
+}
+.cont {
+  background: #f7f7f7
+}
+.img-class {
+  height: 270px;
+  width: 100%;
+  cursor: pointer;
 }
 .navigate-text {
   z-index: 2;
@@ -565,7 +650,7 @@ export default {
 /* 内容部分 */
 .anli-elrow {
   float: left;
-  padding-top: 40px;
+  padding-top: 70px;
 }
 .title {
   text-align: center;
@@ -578,7 +663,8 @@ export default {
 }
 .summary{
   padding-top: 20px;
-  width:880px;
+  margin: 0 40px;
+  line-height: 24px;
   font-size:16px;
   font-family:PingFangSC-Regular;
   font-weight:400;
@@ -586,19 +672,18 @@ export default {
 }
 .des {
   padding-top: 20px;
-  width:880px;
+  margin: 0 40px;
 }
 .des-image {
-  height: 660px;
+  height: 610px;
 }
 .image-size {
   width: 100%;
   border: 1px solid #e6e6e6;
 }
 .design-case-slide {
-  margin-top: 105px;
   color: #222;
-  background: #FAFAFA;
+  background: #fff;
   height: 190px;
   width: 280px;
 }
@@ -636,7 +721,7 @@ export default {
   margin-top: 10px;
   height: 100px;
   width: 280px;
-  background: #FAFAFA;
+  background: #fff;
 }
 .right-word {
   font-family: PingFangSC-Regular;
@@ -663,6 +748,7 @@ export default {
 }
 .edit-content {
   padding-top: 30px;
+  background: #fff;
   overflow: hidden;
 }
 
@@ -685,6 +771,7 @@ export default {
   border: 1px solid #FF5A5F;
   text-align: center;
   line-height: 38px;
+  background: #fff;
   border-radius: 4px;
 }
 .buy-text {
@@ -814,9 +901,7 @@ export default {
 /* 专利证书 */
 .patent {
   width: 280px;
-  background: #FAFAFA;
-  margin-top: 60px;
-  /* border-bottom: 1px solid black */
+  background: #fff;
 }
 .pat-margin {
   margin-top: 10px;
@@ -830,28 +915,31 @@ export default {
   font-size: 16px;
   color: #222222;
 }
-.patent-img {
+.patent .patent-img {
   width: 200px;
-  height: 270px;
+  height: 290px;
   margin: 0 auto;
   margin-top: 15px;
   margin-bottom: 15px;
   background: #fff
 }
+.patent .draw {
+  text-align: center
+}
 .patent-details {
   height: 60px;
   width: 280px;
-  background: #FAFAFA;
+  background: #fff;
+  margin-top: 60px;
 }
 .instruction-blook {
-  width: 236px;
   height: 30px;
   font-family: PingFangSC-Regular;
   font-size: 16px;
   color: #222222;
   line-height: 30px;
   padding-top: 15px;
-  margin: 0 auto;
+  margin: 0 15px;
 }
 .blook-left {
   float:left;
@@ -976,5 +1064,15 @@ p.img-des {
   font-size: 16px;
   color: #FF5A5F;
   float: right
+}
+.fixed-style {
+  position:fixed;
+  top: 0;
+  z-index: 2
+}
+.absolute-style {
+  position: absolute;
+  bottom: 2px;
+  top: auto
 }
 </style>

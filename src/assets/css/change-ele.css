@@ -693,6 +693,37 @@
   .hint-text .el-dialog__footer .dialog-footer .el-button:first-child {
     margin-right: 0;
   }
+  /* 取消订单button */
+  .pay-button .el-button:focus {
+    background: #f5f5f5;
+    border: 1px solid #e6e6e6;
+    color: #999;
+  }
+  .close-orde .el-dialog__body {
+    text-align: center
+  }
+  .close-orde .el-dialog--tiny {
+    top: 30% !important;
+  }
+  /* 成果详情样式 */
+  .patent .el-collapse-item__wrap {
+    background-color: #fff
+  }
+  .patent .swiper-container-horizontal > .swiper-pagination-bullets {
+    bottom: -5px;
+  }
+  .patent .el-collapse-item__header {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #222222;
+  }
+  .patent .el-collapse-item__header__arrow {
+    float: right;
+    position: relative;
+    top: 15px;
+    right: 10px;
+    color: #999;
+  }
 @media screen and (max-width: 767px) {
   .el-dialog--large,
   .el-dialog--small,

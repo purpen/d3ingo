@@ -12,7 +12,7 @@
               <span class="border"></span>
             </div>
             <div class="mar-r-10">
-              <router-link :to="{ name: 'work_datails', params: {id: this.$route.query.id}}" class="font-14">{{designTitle}}</router-link>
+              <router-link :to="{ name: 'work_datails', params: {id: this.$route.params.id}}" class="font-14">{{designTitle}}</router-link>
               <span class="border"></span>
             </div>
             <div class="mar-r-10">
@@ -21,12 +21,12 @@
           </div>
 
           <!--v-if="item.status !== 1" 暂时的-->
-          <div class="content-box mar-b-20" v-if="item.status !== 1">
+          <div class="content-box mar-b-20">
             <div class="main clearfix min-height-0">
               <div class="status">
                 <div style="width: 100%">
                   <p class="main-status" v-if="item.bank_transfer === 0">订单状态: <span>{{ item.status | payStatus}}</span></p>
-                  <div v-if="item.pay_type === 5 && item.status === 0">
+                  <div>
                     <div v-if="item.bank_transfer === 0">
                       <p class="main-des">请于 {{ item.expire_at }} 前完成支付，逾期会关闭交易</p>
                       <p class="main-des" v-if="custom.id === 1">如果您已经完京东云市场支付，请上传凭证</p>
@@ -56,10 +56,14 @@
                     </div>
                     <div v-else-if="item.status === 1">
                       <div class="wid-100 mar-auto">
-                        <img  src="../../../../assets/images/payconfirm@2x.png" alt="">
+                        <img  src="../../../../assets/images/paysuccess@2x.png" alt="">
                       </div>
                       <div class="payconfirmTitle">
-                        <p class="font-18 text-center">支付成果</p>
+                        <p class="pay-success text-center">支付成功</p>
+                      </div>
+                      <div class="success-center">
+                         <el-button class="is-custom" @click="moreAchieve">更多设计成果</el-button>
+                        <el-button class="is-custom" type="primary" @click="Myorder">我的订单</el-button>
                       </div>
                     </div>
                     <div v-else>
@@ -84,9 +88,9 @@
                       <el-button class="is-custom" @click="rePay">更改支付方式</el-button>
                     </p>
                   </div>
-                  <div class="sure-pay-btn" @click="closeDialog">
+                  <!-- <div class="sure-pay-btn" @click="closeDialog">
                     <p><el-button>取消订单</el-button></p>
-                  </div>
+                  </div> -->
                 </div>
               </div>
 
@@ -133,11 +137,11 @@
       </div>
     </el-row>
     <el-dialog
-      title="确认关闭"
+      title="取消订单"
       :visible.sync="closeShow"
       :lock-scroll="false"
       size="tiny">
-      <span>是否确定关闭订单</span>
+      <span>您是否确定取消{{designTitle}}订单</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="closeShow = false">取 消</el-button>
         <el-button type="primary" @click="closeOrder">确 定</el-button>
@@ -161,6 +165,7 @@
       return {
         item: {},
         itemUid: '',
+        payId: '',
         isLoading: false,
         upToken: null,
         sellType: '',
@@ -185,6 +190,13 @@
     methods: {
       closeDialog() {
         this.closeShow = true
+      },
+      // 我的订单
+      Myorder() {
+        this.$router.push({name: 'demand_list', query: {type: 3}})
+      },
+      moreAchieve() {
+        this.$router.push({name: 'demand_login'})
       },
       closeOrder() {
         this.$http.get(api.sdPayCloseOrder, {params: {id: this.payUid}}).then((response) => {
@@ -300,10 +312,11 @@
       }
     },
     created: function () {
-      let itemUid = this.$route.query.id
-      if (itemUid) {
+      let itemUid = this.$route.params.id
+      let payId = this.$route.query.id
         this.itemUid = itemUid
-        this.$http.get(api.payDesignResults.format(itemUid), {})
+        this.payId = payId
+        this.$http.get(api.payOrderShow, {params: {id: this.payId}})
           .then((response) => {
             if (response.data.meta.status_code === 200) {
               this.item = response.data.data
@@ -329,10 +342,6 @@
           .catch((error) => {
             this.$message.error(error.message)
           })
-      } else {
-        this.$message.error('缺少请求参数!')
-        this.$router.push({name: 'home'})
-      }
 
       this.$http.get(api.upToken, {})
         .then((response) => {
@@ -471,7 +480,13 @@
     font-size: 18px;
     color: #FF5A5F;
   }
-
+  .pay-success {
+    font-size: 18px;
+    color: #00AC84;
+  }
+  .success-center {
+    text-align: center
+  }
   .mar-auto {
     margin: auto;
   }
