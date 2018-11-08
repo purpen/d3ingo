@@ -22,7 +22,7 @@ module.exports = [
     },
     component: require('@/components/pages/home/trade_fairs/1BriefContent')
   },
-  // 需求方登陆简介
+  // 登陆简介
   {
     path: '/shunde/trade_fairs/demand_login',
     name: 'demand_login',

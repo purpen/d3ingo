@@ -35,130 +35,6 @@
               </div>
             </div>
           </div>
-
-          <!-- 评价 -->
-          <!-- <div class="select-item-box clearfix" v-if="statusLabel.evaluate"> -->
-          <div class="select-item-box clearfix" v-if="false">
-            <el-collapse v-model="selectCompanyCollapse">
-              <!-- <el-collapse-item title="评价" name="12" v-if="cooperateCompany">
-                <div class="evaluate-report clearfix" v-if="item.status === 18"> -->
-              <el-collapse-item title="评价" name="1">
-
-                <!-- 未提交的评价 -->
-                <div class="evaluate-report clearfix">
-                  <p class="ev-c-ava">
-                    <!-- <img class="avatar" v-if="cooperateCompany.design_company.logo_url"
-                          :src="cooperateCompany.design_company.logo_url" width="60"/>
-                    <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="60"/> -->
-                    <img class="avatar" :src="require('assets/images/avatar_100.png')" width="60"/>
-                  </p>
-                  <p class="ev-c-name">
-                    <!-- {{ cooperateCompany.design_company.company_name }} -->
-                    北京品物设计有限公司
-                  </p>
-                  <el-row class="grade">
-                    <el-col :span="8">
-                      <p>设计水平</p>
-                      <el-rate
-                      v-model.number="evaluate.design_level"
-                      show-text>
-                    </el-rate>
-                    </el-col>
-                    <el-col :span="8">
-                      <p>响应速度</p>
-                      <el-rate
-                      v-model.number="evaluate.response_speed"
-                      show-text>
-                    </el-rate>
-                    </el-col>
-                    <el-col :span="8">
-                      <p>服务态度</p>
-                      <el-rate
-                      v-model.number="evaluate.service"
-                      show-text>
-                    </el-rate>
-                    </el-col>
-                  </el-row>
-                  <p class="ev-c-content">
-                    <el-input
-                      type="textarea"
-                      :rows="5"
-                      placeholder="请输入内容"
-                      v-model="evaluate.content">
-                    </el-input>
-                  </p>
-                  <p class="ev-c-btn">
-                    <el-button class="is-custom" type="primary" :loading="evaluateLoadingBtn" @click="evaluateSubmit">
-                      提交
-                    </el-button>
-                  </p>
-                </div>
-
-                <!-- 提交的评价展示 -->
-                <!-- <div class="evaluate-result clearfix" v-if="item.status === 22"> -->
-                <div class="evaluate-result clearfix" v-if="false">
-                  <el-row>
-                    <el-col :span="2">
-                      <p class="ev-c-ava fl">
-                        <!-- <img class="avatar" v-if="cooperateCompany.design_company.logo_url"
-                            :src="cooperateCompany.design_company.logo_url" width="50"/>
-                        <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="50"/> -->
-                        <img class="avatar" :src="require('assets/images/avatar_100.png')" width="50"/>
-                      </p>
-                    </el-col>
-                    <el-col :span="22">
-                      <div class="eva-content">
-                        <p class="ev-c-name">
-
-                          <!-- <router-link :to="{name: 'companyShow', params: {id: cooperateCompany.design_company.id}}"
-                                      target="_blank">
-                            {{ cooperateCompany.design_company.company_name }}
-                          </router-link> -->
-                          <router-link :to="{name: 'companyShow', params: {id: 1}}"
-                                      target="_blank">
-                            测试
-                          </router-link>
-                        </p>
-                        <!-- <p class="eva-score">
-                          <el-rate
-                            v-model.number="evaluate.design_level"
-                            disabled>
-                          </el-rate>
-                        </p> -->
-                        <el-row class="grade pl">
-                          <el-col :span="8">
-                            <p>设计水平</p>
-                            <el-rate
-                            v-model.number="evalu.design_level"
-                            disabled>
-                          </el-rate>
-                          </el-col>
-                          <el-col :span="8">
-                            <p>响应速度</p>
-                            <el-rate
-                            v-model.number="evalu.response_speed"
-                            disabled>
-                          </el-rate>
-                          </el-col>
-                          <el-col :span="8">
-                            <p>服务态度</p>
-                            <el-rate
-                            v-model.number="evalu.service"
-                            disabled>
-                          </el-rate>
-                          </el-col>
-                        </el-row>
-                        <p class="ev-c-content">
-                          <!-- {{ evalu.content }} -->
-                          测试测试测试
-                        </p>
-                      </div>
-                    </el-col>
-                  </el-row>
-                </div>
-              </el-collapse-item>
-            </el-collapse>
-          </div>
         </el-col>
         
         <!-- 右半部分 -->
@@ -198,29 +74,6 @@
                 <span class="right-money">￥{{formup.price}}</span>
               </div>
             </div>
-            <!-- 已出售的中间部分 -->
-            <div class="sell-bought" v-if="false">
-              <div class="right-sell">
-                <span class="right-word">订单编号：</span>
-                <span class="right-serial">070122544000000341</span>
-              </div>
-              <div class="right-sell">
-                <span class="right-word">创建时间：</span>
-                <span class="right-data">2018-07-01 22:54</span>
-              </div>
-              <div class="right-sell">
-                <span class="right-word">出让方式：</span>
-                <span class="right-way">全额出售</span>
-              </div>
-              <div class="right-sell">
-                <span class="right-word">支付方式：</span>
-                <span class="right-way">对公转账</span>
-              </div>
-              <div class="right-sell">
-                <span class="right-word">支付金额：</span>
-                <span class="bought-money">￥50000.00</span>
-              </div>
-            </div>
             <!-- 下面按钮 -->
             <div class="right-interset" v-if="$route.query.type !== '2'">
               <div class="list-contain" v-if="intersClick" @click="collect">
@@ -244,16 +97,6 @@
                   <router-link :to="{name: 'sure_order', params: {id: itemId}}" class="details-text">立即购买</router-link>
                 </div>
               </div>
-              <div class="list-left" v-if="false">
-                <div class="list-button buy-text">
-                  <router-link :to="{name: 'managed_funds', params: {id: 1}}" class="to-pay">继续支付</router-link>
-                </div>
-              </div>
-              <div class="list-left" v-if="false">
-                <div class="bought-bg">
-                  <span class="bought-text">已购买</span>
-                </div>
-              </div>
             </div>
             <div class="state-style" v-else>
               <div class="right-sell">
@@ -262,7 +105,7 @@
               </div>
             </div>
           </div>
-          <div class="patent-details">
+          <div class="patent-details" :class="{'pat-margin' : $route.query.type === '2'}">
             <div class="instruction-blook">
             <span class="blook-left">产品功能说明书</span>
             <div class="seen-button">
@@ -270,7 +113,7 @@
             </div>
             </div>
           </div>
-          <el-collapse v-model="credential" class="patent" :class="{'pat-margin' : $route.query.type === '2'}">
+          <el-collapse v-model="credential" class="patent">
             <el-collapse-item title="专利证书" name="1">
               <swiper :options="swiperOption" class="patent-img">
                 <swiper-slide v-for="(img, index) in formup.patent_url" :key="index">
@@ -399,8 +242,8 @@ export default {
           oldClass = oldClass.replace(/disableScroll\x20?/g, '')
         }
         document.body.setAttribute('class', 'disableScroll')
-        document.getElementById('app').setAttribute('class', 'disableScroll ' + oldClass)
-        document.childNodes[1].setAttribute('class', 'disableScroll')
+        // document.getElementById('app').setAttribute('class', 'disableScroll ' + oldClass)
+        // document.childNodes[1].setAttribute('class', 'disableScroll')
       } else {
         this.$message.info('正在加载组件, 请稍后尝试...')
       }
@@ -502,15 +345,29 @@ export default {
     handleScroll () {
       var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
       var scrollHeigh = document.body.scrollHeight
-      if (!this.viewCover) {
-        if (scrollTop > (scrollHeigh - 677)) {
-          this.elementPosition = true
-        } else if (scrollTop > 960) {
-          this.elementShow = true
-          this.elementPosition = false
-        } else {
-          this.elementPosition = false
-          this.elementShow = false
+      if (this.$route.query.type !== '2') {
+        if (!this.viewCover) {
+          if (scrollTop > (scrollHeigh - 677)) {
+            this.elementPosition = true
+          } else if (scrollTop > 960) {
+            this.elementShow = true
+            this.elementPosition = false
+          } else {
+            this.elementPosition = false
+            this.elementShow = false
+          }
+        }
+      } else {
+        if (!this.viewCover) {
+          if (scrollTop > (scrollHeigh - 687) && scrollTop > 960) {
+            this.elementPosition = true
+          } else if (scrollTop > 960) {
+            this.elementShow = true
+            this.elementPosition = false
+          } else {
+            this.elementPosition = false
+            this.elementShow = false
+          }
         }
       }
     },
@@ -557,8 +414,8 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 /* swipe样式 */
-.swiper-slide {
-  margin-top: 10%
+.view-cover .swiper-slide {
+  margin-top: 20%
 }
 .view-cover {
   position: fixed;
@@ -617,7 +474,9 @@ export default {
   width: 1180px;
 }
 .cont {
-  background: #f7f7f7
+  background: #f7f7f7;
+  margin-bottom: -50px;
+  padding-bottom: 10px;
 }
 .img-class {
   height: 270px;
@@ -675,7 +534,7 @@ export default {
   margin: 0 40px;
 }
 .des-image {
-  height: 610px;
+  margin-top: 10px;
 }
 .image-size {
   width: 100%;
@@ -903,9 +762,6 @@ export default {
   width: 280px;
   background: #fff;
 }
-.pat-margin {
-  margin-top: 10px;
-}
 .patent-text {
   padding-top: 18px;
   width: 240px;
@@ -1056,7 +912,7 @@ p.img-des {
 .state-style {
   width: 280px;
   height: 50px;
-  background: #FAFAFA;
+  background: #fff;
   margin-top: 10px;
 }
 .state-way {
@@ -1074,5 +930,8 @@ p.img-des {
   position: absolute;
   bottom: 2px;
   top: auto
+}
+.pat-margin {
+  margin-top: 10px;
 }
 </style>
