@@ -31,8 +31,6 @@
                 <el-select v-model="query.evt" placeholder="选择条件..." size="small">
                   <el-option label="项目ID" value="1"></el-option>
                   <el-option label="成果名称" value="2"></el-option>
-                  <el-option label="用户名称" value="3"></el-option>
-                  <el-option label="用户ID" value="4"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item>
