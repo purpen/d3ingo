@@ -62,6 +62,16 @@ module.exports = [
     },
     component: require('@/components/pages/home/trade_fairs/1WorkDatails')
   },
+  // PDF说明书预览页
+  {
+    path: '/shunde/trade_fairs/saleResult/achieve_preview/:id',
+    name: 'achieve_preview',
+    meta: {
+      title: 'PDF说明书预览页',
+      requireAuth: true
+    },
+    component: require('@/components/pages/home/trade_fairs/1AchievePreview')
+  },
   // 订单详情页
   {
     path: '/shunde/trade_fairs/saleResult/pay_datails/:id',
