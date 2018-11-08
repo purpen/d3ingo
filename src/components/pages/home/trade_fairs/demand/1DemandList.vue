@@ -13,7 +13,7 @@
                 <img src="../../../../../assets/images/trade_fairs/default/NoDesign@2x.png" alt="">
                 <p class="tc-9">还没有设计需求，立即发布一个吧～</p>
                 <div class="post-header">
-                  <el-button class="is-custom mg-r-20" type="primary" size="small" @click="dialogFormVisible=true">
+                  <el-button class="is-custom mg-r-20" type="primary" size="small" @click="upVisible()">
                     <i class="el-icon-plus"></i>
                     发布需求
                   </el-button>
@@ -89,7 +89,7 @@
                 size="small"
                 class="submit-form"
                 top="10%"
-                @close="closeBtn"
+                @close="closeBtn('form')"
                 >
                 <el-form :model="form" ref="form" :rules="rules" @submit.native.prevent class="scroll-bar">
                   <el-form-item label="项目名称" prop="name" label-position="top">
@@ -173,14 +173,15 @@
                   <region-picker :provinceProp="form.item_province" :cityProp="form.item_city" :isFirstProp="true" :twoSelect="true" :gutter="10"
                   titleProp='' @onchange="changeServer"></region-picker>
                   <el-form-item label="产品功能描述" prop="content">
-                    <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}"
+                    <el-input type="textarea" :autosize="{minRows: 4, maxRows: 4}"
+                      :maxlength="500"
                       v-model="form.content"
                       >
                     </el-input>
                   </el-form-item>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
-                  <el-button @click="closeBtn">取 消</el-button>
+                  <el-button @click="closeBtn('form')">取 消</el-button>
                   <el-button type="primary" :loading="addLoading" @click="createDemand('form')">发 布</el-button>
                 </span>
               </el-dialog>
@@ -189,7 +190,7 @@
                 :visible.sync="dialogUpdateVisible"
                 :lock-scroll="false"
                 size="tiny"
-                class="submit-form"
+                class="details-form"
                 >
                 <div class="details-list">
                   <div class="details">
@@ -284,8 +285,12 @@
                 size="tiny"
                 class="delete-form"
                 >
-                <p class="text-align-c">确认关闭 {{deleteForm.name}} 吗？</p>
-                <p class="text-align-c">关闭项目将彻底从您的项目列表移除</p>
+                <p class="text-align-c">确认关闭
+                  <span class="tc-red">
+                    {{deleteForm.name}}
+                  </span>
+                  吗？</p>
+                <p class="item-del">关闭项目将彻底从您的项目列表移除</p>
                 <span slot="footer" class="dialog-footer">
                   <el-button @click="dialogDeleteVisible=false">取消</el-button>
                   <el-button @click="deleteDemand()" class="is-custom" type="primary" size="small">确定</el-button>
@@ -325,20 +330,33 @@
                           <div class="collect-img" :style="{background:'url('+d.cover.middle +') no-repeat center / contain'}">
                           </div>
                           <div class="collect-centent">
-                            <p class="c-title">{{d.title}}</p>
-                            <p>出让形式: {{d.sell_type === 1?'全额出让':'股权合作'}}</p>
+                            <!-- <p>
+                              <router-link :to="{name: 'work_datails', params: {id: d.id}}"
+                              target="_blank" class="router-work c-title" >
+                              {{d.title}}
+                              </router-link>
+                            </p> -->
+                            <p class="c-title">
+                              {{d.title}}
+                            </p>
+                            <p>出让形式: {{d.sell_type === 1?'全额出让':'股权合作'}}
+                              <span v-if="d.sell_type === 2" class="tc-red">{{d.share_ratio}}%</span>
+                            </p>
                             <p>出让金额: ¥{{d.price}}</p>
                           </div>
                         </el-col>
                         <el-col :span="10">
-                          出售中
+                          {{d.status === -1?'下架': '出售中'}}
                         </el-col>
                         <el-col :span="4">
-                          <el-button class="is-custom" type="primary" size="small">
+                          <el-button class="is-custom" type="primary" size="small" v-if="d.status !== -1">
                             <router-link :to="{name: 'work_datails', params: {id: d.id}}"
-                            target="_blank" class="router-work">
+                            target="_blank" class="router-work" >
                             立即购买
                             </router-link>
+                          </el-button>
+                          <el-button class="is-custom" type="primary" size="small" :disabled="true" v-if="d.status === -1">
+                            立即购买
                           </el-button>
                           <el-button class="mg-t-10" @click="updateFollow(d.id)">
                             {{d.is_follow === 1 ?'取消收藏': '收藏'}}
@@ -386,7 +404,12 @@
                           <div class="collect-img" :style="{background:'url('+d.cover.middle +') no-repeat center / contain'}">
                           </div>
                           <div class="collect-centent">
-                            <p class="c-title">{{d.design_result.title}}</p>
+                            <p>
+                              <router-link :to="{name: 'pay_datails', params: {id: d.id}}"
+                                target="_blank" class="router-work c-title">
+                                {{d.design_result.title}}
+                              </router-link>
+                            </p>
                             <p>出让形式: {{d.design_result.sell_type === 1?'全额出让':'股权合作'}}</p>
                             <p>出让金额: ¥{{d.design_result.price}}</p>
                           </div>
@@ -417,9 +440,9 @@
                           <el-button v-if="d.status ===-1" @click="deleteOrder(d.id)">
                             删除
                           </el-button>
-                          <!-- <el-button class="mg-t-10">
+                          <el-button class="mg-t-10" v-if="d.status ===1 && d.design_result.sell === 2">
                             评价
-                          </el-button> -->
+                          </el-button>
                         </el-col>
                       </el-row>
                     </div>
@@ -471,7 +494,7 @@
                 </div>
                 <span slot="footer" class="dialog-footer">
                   <el-button @click="dialogIsfile=false">取消</el-button>
-                  <el-button class="is-custom" type="primary" size="small">确定</el-button>
+                  <el-button class="is-custom" type="primary" size="small" @click="isFile(formOrder.id)">确定</el-button>
                 </span>
               </el-dialog>
                <!-- <el-dialog
@@ -532,7 +555,8 @@
             {required: true, type: 'number', message: '请选择所属行业', trigger: 'blur'}
           ],
           content: [
-            {required: true, message: '请选择产品描述', trigger: 'blur'}
+            {required: true, message: '请选择产品描述', trigger: 'blur'},
+            {min: 10, max: 500, message: '长度在 10 到 500 个字符', trigger: 'blur'}
           ]
         },
         dialogFormVisible: false, // 发布需求弹窗
@@ -614,6 +638,8 @@
             return '交易成功'
           } else if (sell < 2){
             return '待确认文件'
+          } else if (sell === 2) {
+            return '待评价'
           }
         } else if (val === 2) {
           return '退款'
@@ -642,6 +668,17 @@
       }
     },
     methods: {
+      // 打开需求按钮
+      upVisible() {
+        this.dialogFormVisible = true
+        // let oldClass = document.getElementById('app').getAttribute('class')
+        // if (oldClass) {
+        //   oldClass = oldClass.replace(/disableScroll\x20?/g, '')
+        // }
+        // document.body.setAttribute('class', 'disableScroll')
+        // document.getElementById('app').setAttribute('class', 'disableScroll ' + oldClass)
+        // document.childNodes[1].setAttribute('class', 'disableScroll')
+      },
       // 取消订单按钮
       upOrderBth(id, title, type) {
         this.formOrder = {
@@ -751,6 +788,10 @@
           this.form.design_types.push(type)
         }
       },
+      // 清空表单
+      resetForm(formName) {
+        this.$refs[formName].resetFields()
+      },
       // 发布需求
       createDemand (formName) {
         let self = this
@@ -780,15 +821,16 @@
             }
             let url = api.sdDemandRelease
             let data = row
-            if (self.isUpdate) {
+            let isUpdate = false
+            if (self.form.id) {
+              isUpdate = true
               url = api.sdDemandDemandUpdate
-              if (!row.demand_id) {
-                row.demand_id = self.form.id
-              }
+              row.demand_id = self.form.id
             }
             self.$http.post(url, data).then((response) => {
               if (response.data.meta.status_code === 200) {
-                if (!self.isUpdate) {
+                self.$refs[formName].resetFields()
+                if (!isUpdate) {
                   self.demandList.unshift(response.data.data)
                 } else {
                   self.demandList.forEach((item, index) => {
@@ -800,7 +842,6 @@
                       self.$set(self.demandList, index, response.data.data)
                     }
                   })
-                  self.isUpdate = false
                 }
                 self.dialogFormVisible = false
                 self.form = {
@@ -930,14 +971,36 @@
           return
         })
       },
+      // 确认文件
+      isFile(id) {
+          this.$http.get(api.payConfirmFile,{params: {id: id}}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.collectList.forEach(item => {
+              if (item.id === id) {
+                item.design_result.sell = 2
+              }
+            })
+            this.dialogIsfile = false
+          } else {
+            this.$message.error(response.data.meta.message)
+            return
+          }
+        })
+        .catch(function (error) {
+          this.$message.error(error.message)
+          console.error(error.message)
+          return
+        })
+      },
       // 关闭弹窗按钮
-      closeBtn() {
+      closeBtn(formName) {
         this.form = {
           'design_types': []
         }
         this.dialogFormVisible = false
         this.dialogUpdateVisible = false
         this.dialogDeleteVisible = false
+        this.resetForm(formName)
       },
       // 关闭项目
       deleteDemand() {
@@ -1051,12 +1114,24 @@
   }
   .collect-centent .c-title {
     font-size: 1.6rem;
-    color: #ff5a5f;
+    color: #222;
     padding: 0 5px 10px 0;
     line-height: 1;
   }
+  .collect-centent .c-title:hover {
+    color: #ff5a5f;
+  }
   .details .el-col {
     max-height: 180px;
+    overflow: hidden;
+  }
+  .item-del {
+    margin-top: 10px;
+    font-size: 12px;
+    text-align: center;
+    color: #666;
+  }
+  .details-form {
     overflow: hidden;
   }
   /* .details .c-title:hover {
@@ -1078,6 +1153,10 @@
     border-radius: 4px;
     border: 1px solid #e6e6e6;
     color: #999;
+  }
+  .des-type button:hover {
+    border-color: #ff4949;
+    color: #ff4949;
   }
   .no-demand {
     text-align: center;

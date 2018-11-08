@@ -317,7 +317,7 @@
         },
         uploadMsg: '格式：JPG／PNG 大小：小于10MB',
         uploadMsg2: '格式：JPG／PNG 大小：小于10MB',
-        uploadMsg3: '格式：PDF 大小：小于20MB',
+        uploadMsg3: '个数: 1个 格式：PDF 大小：小于20MB',
         imageUrl: '',
         design_types: [],
         form: {
@@ -629,12 +629,15 @@
       },
       // 说明书上传之前操作
       beforeUpload2(file) {
+        if (this.fileillustrate && this.fileillustrate.length === 1) {
+          this.$message.error ('只能上传一个说明!')
+          return false
+        }
         const arr = ['application/pdf']
         const isLt5M = file.size / 1024 / 1024 < 20
-
         if (arr.indexOf (file.type) === -1) {
           this.$message.error ('上传文件格式不正确!')
-          return false0
+          return false
         }
         if (!isLt5M) {
           this.$message.error ('上传文件大小不能超过 10MB!')
@@ -655,7 +658,7 @@
           asset_id: add.response.asset_id
         }
         this.fileillustrate.push(item)
-        this.uploadMsg3 = ''
+        this.uploadMsg3 = '个数: 1个 格式：PDF 大小：小于20MB'
         console.log('55', this.fileillustrate)
       },
       // 上传专利
@@ -1110,11 +1113,11 @@
   }
   .msg-size {
     position: absolute;
-    width: 300px;
-    height: 40px;
-    line-height: 38px;
-    left: 105px;
-    top: -40px;
+    width: 204px;
+    height: 31px;
+    line-height: 28px;
+    left: 101px;
+    top: -35px;
     border: 1px solid #FF5A5F;
     box-shadow: 0 0 4px 0 rgba(0,0,0,0.10);
     border-radius: 4px;
@@ -1122,6 +1125,7 @@
   .msg-size span {
     margin-left: 8px;
     color: #ff5a5f;
+    font-size: 10px;
   }
   .msg-icon {
     position: absolute;
@@ -1137,13 +1141,13 @@
   } */
   .mag-triangle {
     position: absolute;
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
     border-bottom: 1px solid #ff5a5f;
     border-left: 1px solid #ff5a5f;
     transform: rotate(45deg);
-    left: -7px;
-    top: 13px;
+    left: -6px;
+    top: 9px;
     z-index: 1;
     background-color: #fff;
   }
