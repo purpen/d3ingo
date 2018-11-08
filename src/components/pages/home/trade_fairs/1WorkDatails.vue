@@ -92,9 +92,9 @@
                   <span class="button-interest">已感兴趣</span>
                 </div>
               </div>
-              <div class="list-left">
+              <div class="list-left" @click="buyclick">
                 <div class="list-button buy-text">
-                  <router-link :to="{name: 'sure_order', params: {id: itemId}}" class="details-text">立即购买</router-link>
+                  <span class="details-text">立即购买</span>
                 </div>
               </div>
             </div>
@@ -216,6 +216,9 @@ export default {
     }
   },
   methods: {
+    buyclick() {
+      this.$router.push({name: 'sure_order', params: {id: this.itemId}})
+    },
     seenBook() {
       let routeData = this.$router.resolve({name: 'achieve_preview', params: {id: this.formup.id}})
       window.open(routeData.href, '_blank');
