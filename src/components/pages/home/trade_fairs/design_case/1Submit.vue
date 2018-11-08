@@ -222,10 +222,10 @@
                   <div class="form-footer">
                     <div class="form-btn">
                       <el-button  @click.prevent="returnList" class="middle-button white-button">取消</el-button>
-                      <el-button @click.prevent="submit('ruleForm', 1)" class="middle-button white-button">
+                      <el-button :loading="isLoadingBtn" @click.prevent="submit('ruleForm', 1)" class="middle-button white-button">
                         保存
                       </el-button>
-                      <el-button type="danger" :loading="isLoadingBtn" @click="submit('ruleForm')">提交</el-button>
+                      <el-button type="danger" :loading="isLoadingBtn2" @click="submit('ruleForm')">提交</el-button>
                     </div>
                     <div class="clear"></div>
                   </div>
@@ -276,7 +276,8 @@
       return {
         userId: this.$store.state.event.user.id,
         itemId: null,
-        isLoadingBtn: false,
+        isLoadingBtn: false, // 保存按钮
+        isLoadingBtn2: false, // 提交按钮
         labelPosition: 'top',
         fileList: [], // img 全部图片
         coverId: '', // 封面
@@ -420,11 +421,14 @@
               row.illustrate.push(i.asset_id)
             })
             // 保存
-            if (type) {
+            if (type === 1) {
               row.status = 1
+              that.isLoadingBtn = true
+            } else {
+              that.isLoadingBtn2 = true
             }
+            console.log('res', row)
             row.cover_id = that.coverId
-            that.isLoadingBtn = true
             that.$http({method: 'post', url: api.sdDesignResultsSave, data: row})
               .then (function (response) {
                 if (response.data.meta.status_code === 200) {
@@ -433,16 +437,20 @@
                   return false
                 } else {
                   that.$message.error (response.data.meta.message)
+                  that.isLoadingBtn2 = false
                   that.isLoadingBtn = false
                 }
               })
               .catch (function (error) {
                 that.$message.error (error.message)
+                that.isLoadingBtn2 = false
                 that.isLoadingBtn = false
                 console.log (error.message)
                 return false
               })
           } else {
+            that.isLoadingBtn = false
+            that.isLoadingBtn2 = false
             console.log ('error submit!!')
             return false
           }
