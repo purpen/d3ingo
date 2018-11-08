@@ -166,7 +166,7 @@
         </div>
         <div class="dia-right">
           <div class="dia-button">
-            <span class="contact-text">联系他</span>
+            <span class="contact-text" @click="contactWay(formup, 1)">联系他</span>
           </div>
         </div>
         </div>
@@ -244,10 +244,17 @@
     },
     methods: {
       // 联系他
-      contactWay(item) {
+      contactWay(item, type) {
         this.callDtails = item
-        this.urlLogo = this.callDtails.logo_image.logo
+        if (!this.callDtails.logo_image) {
+          this.urlLogo = ''
+        } else {
+          this.urlLogo = this.callDtails.logo_image.logo
+        }
         this.callPhone = true
+        if (type === 1) {
+          this.dialogUpdateVisible = false
+        }
         // if (this.callPhone === true) {
         //   setTimeout(() => {
         //     console.log(document.body.style.paddingRight)

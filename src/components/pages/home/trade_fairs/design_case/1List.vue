@@ -287,7 +287,7 @@
               }
             })
             that.dialogUpdateVisible = false
-            that.isbtnLoading = true
+            that.isbtnLoading = false
             that.isLoading = false
           } else {
             that.isbtnLoading = false
