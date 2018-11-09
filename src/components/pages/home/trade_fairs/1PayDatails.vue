@@ -55,7 +55,7 @@
                     <el-col :span="8">
                       <p class="eva-text">服务态度</p>
                       <el-rate
-                      v-model.number="evaluate.service"
+                      v-model.number="evaluate.serve_attitude"
                       show-text>
                     </el-rate>
                     </el-col>
@@ -415,9 +415,7 @@ export default {
     // 获取评价详情
     evaluateDetails(id) {
       this.isLoading = true
-      let intId = parseInt(id)
-      this.intId = intId
-      this.$http.get(api.sdDemandEvaluateInfo, {params: {order_id: this.intId}}).then(
+      this.$http.get(api.sdDemandEvaluateInfo, {params: {order_id: id}}).then(
         (response) => {
           if (response.data.meta.status_code === 200) {
             this.evalu = response.data.data[0]
