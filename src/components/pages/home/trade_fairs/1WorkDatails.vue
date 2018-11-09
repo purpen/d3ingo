@@ -169,6 +169,7 @@ export default {
       credential: ['1'],
       showType: false,
       intersClick: true,
+      imagesUrl: '',
       patentRound: '',
       viewCover: false,
       formup: {},
@@ -334,6 +335,7 @@ export default {
             this.companyName = response.data.data.design_company.company_name
             this.isLoading = false
             this.patentRound = response.data.data.patent_url
+            this.imagesUrl = response.data.data.images_url
           } else {
             this.isLoading = false
             this.$message.error(response.data.meta.message)
@@ -348,9 +350,8 @@ export default {
     handleScroll () {
       var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
       var scrollHeigh = document.body.scrollHeight
-      console.log('this', this.formup.images_url.length)
       if (this.$route.query.type !== '2') {
-        if (!this.viewCover  && this.formup.images_url && this.formup.images_url.length > 1) {
+        if (!this.viewCover  && this.imagesUrl && this.imagesUrl.length > 1) {
           if (scrollTop > (scrollHeigh - 677)) {
             this.elementPosition = true
           } else if (scrollTop > 960) {
@@ -362,7 +363,7 @@ export default {
           }
         }
       } else {
-        if (!this.viewCover  && this.formup.images_url && this.formup.images_url.length > 1) {
+        if (!this.viewCover  && this.imagesUrl && this.imagesUrl.length > 1) {
           if (scrollTop > (scrollHeigh - 687) && scrollTop > 960) {
             this.elementPosition = true
           } else if (scrollTop > 960) {
