@@ -29,10 +29,7 @@
               </el-form-item>
               <el-form-item>
                 <el-select v-model="query.evt" placeholder="选择条件..." size="small">
-                  <el-option label="成果ID" value="1"></el-option>
-                  <el-option label="成果名称" value="2"></el-option>
-                  <el-option label="用户名称" value="3"></el-option>
-                  <el-option label="用户ID" value="4"></el-option>
+                  <el-option label="成果名称" value="1"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item>
@@ -312,14 +309,14 @@ export default {
       self.query.page = parseInt(this.$route.query.page || 1)
       self.query.sort = this.$route.query.sort || 1
       self.query.type = this.$route.query.type || 0
-      self.query.evt = this.$route.query.evt || '2'
+      self.query.evt = this.$route.query.evt || '1'
       self.query.val = this.$route.query.val || ''
       self.menuType = 0
       if (self.query.type) {
         self.menuType = parseInt(self.query.type)
       }
       self.isLoading = true
-      self.$http.get(api.adminDesignResultList, {params: {page: self.query.page, per_page: self.query.pageSize, sort: self.query.sort, status: self.query.type}})
+      self.$http.get(api.adminDesignResultList, {params: {page: self.query.page, per_page: self.query.pageSize, sort: self.query.sort, status: self.query.type, title: self.query.val}})
       .then (function(response) {
         self.isLoading = false
         self.tableData = []

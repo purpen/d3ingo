@@ -155,7 +155,7 @@
               </div>
               <div class="list-left" v-if="user.type === 1 && formup.status === 0">
                 <div class="list-button buy-text">
-                  <router-link :to="{name: 'managed_funds', params: {id: 1}}" class="to-pay">继续支付</router-link>
+                  <router-link :to="{name: 'managed_funds', params: {id: designAttr.id}}" class="to-pay">继续支付</router-link>
                 </div>
               </div>
               <div class="list-lefts" v-else-if="user.type === 1 && formup.status === 1">
@@ -194,7 +194,7 @@
               </div>
             </div>
           </div>
-          <div class="patent-details">
+          <div class="patent-details" v-if="formup.illustrate_url && formup.illustrate_url.length">
             <div class="instruction-blook">
             <span class="blook-left">产品功能说明书</span>
             <div class="seen-button">
@@ -202,7 +202,7 @@
             </div>
             </div>
           </div>
-          <el-collapse v-model="credential" class="patent" :class="{'pat-margin' : $route.query.type === '2'}">
+          <el-collapse v-model="credential" class="patent" :class="{'pat-margin' : $route.query.type === '2'}" v-if="formup.patent_url && formup.patent_url.length">
             <el-collapse-item title="专利证书" name="1">
               <swiper :options="swiperOption" class="patent-img">
                 <swiper-slide v-for="(img, index) in formup.patent_url" :key="index">
@@ -417,7 +417,7 @@ export default {
       this.isLoading = true
       let intId = parseInt(id)
       this.intId = intId
-      this.$http.get(api.sdDemandEvaluateInfo, {params: {order_id: 110711135800011570}}).then(
+      this.$http.get(api.sdDemandEvaluateInfo, {params: {order_id: this.intId}}).then(
         (response) => {
           if (response.data.meta.status_code === 200) {
             this.evalu = response.data.data[0]
@@ -444,7 +444,9 @@ export default {
             if (designAttr) {
               this. designAttr = designAttr
             }
-            this.evaluateDetails(this.formup.uid)
+            if (this.designAttr.sell === 2) {
+              this.evaluateDetails(this.formup.uid)
+            }
             this.imgUrl = response.data.data.design_company_logo
             this.patentRound = response.data.data.design_result.patent_url
             this.imagesUrl = response.data.data.design_result.images_url
@@ -463,7 +465,7 @@ export default {
     handleScroll () {
       var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
       var scrollHeigh = document.body.scrollHeight
-      if (!this.viewCover) {
+      if (!this.viewCover && this.imagesUrl && this.imagesUrl.length > 1) {
         if (scrollTop > (scrollHeigh - 827)) {
           this.elementPosition = true
         } else if (scrollTop > 970) {
@@ -618,6 +620,7 @@ export default {
 .anli-elrow {
   float: left;
   padding-top: 70px;
+  width: 1180px;
 }
 .title {
   text-align: center;
@@ -734,7 +737,7 @@ export default {
 .list-contain {
   cursor: pointer;
   float: left;
-  padding-right: 10px;
+  padding-right: 5px;
 }
 .list-button {
   height: 40px;
