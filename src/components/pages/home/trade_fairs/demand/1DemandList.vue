@@ -82,6 +82,17 @@
                   </div>
                 </div>
               </div>
+              <div class="text-align-c">
+                <el-pagination
+                  @size-change="handleSizeChange3"
+                  @current-change="handleCurrentChange3"
+                  :current-page.sync="jquery3.current_page"
+                  :page-sizes="[10, 20, 50, 100]"
+                  :page-size="jquery3.per_page"
+                  layout="sizes, prev, pager, next"
+                  :total="jquery3.total">
+                </el-pagination>
+              </div>
               <el-dialog
                 title="发布需求"
                 :visible.sync="dialogFormVisible"
@@ -366,17 +377,17 @@
                     </div>
                   </div>
                 </div>
-                <div class="text-align-c">
+                <!-- <div class="text-align-c">
                   <el-pagination
                     @size-change="handleSizeChange2"
                     @current-change="handleCurrentChange2"
                     :current-page.sync="jquery2.current_page"
-                    :page-sizes="[3, 20, 50, 100]"
+                    :page-sizes="[2, 20, 50, 100]"
                     :page-size="jquery2.per_page"
                     layout="sizes, prev, pager, next"
                     :total="jquery2.total">
                   </el-pagination>
-                </div>
+                </div> -->
               </div>
             </div>
             <div v-if="type === 3">
@@ -467,7 +478,7 @@
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     :current-page.sync="jquery.current_page"
-                    :page-sizes="[2, 20, 50, 100]"
+                    :page-sizes="[10, 20, 50, 100]"
                     :page-size="jquery.per_page"
                     layout="sizes, prev, pager, next"
                     :total="jquery.total">
@@ -588,13 +599,19 @@
           total: 1, // 总条数
           current_page: 1, // 当前页
           page: 1, // 页数
-          per_page: 2, // 每页数量
+          per_page: 10, // 每页数量
         },
         jquery2: {
           total: 1, // 总条数
           current_page: 1, // 当前页
           page: 1, // 页数
-          per_page: 3, // 每页数量
+          per_page: 10, // 每页数量
+        },
+        jquery3: {
+          total: 1, // 总条数
+          current_page: 1, // 当前页
+          page: 1, // 页数
+          per_page: 10, // 每页数量
         },
         dialogFormVisible: false, // 发布需求弹窗
         dialogUpdateVisible: false, // 查看详情弹窗
@@ -720,7 +737,12 @@
       handleCurrentChange2(val) {
         this.getCollectList(val)
       },
-
+      handleSizeChange3(val) {
+        this.getDemandList(1, val)
+      },
+      handleCurrentChange3(val) {
+        this.getDemandList(val)
+      },
       // 打开需求按钮
       upVisible() {
         this.dialogFormVisible = true
@@ -922,11 +944,22 @@
         })
       },
       // 需求列表
-      getDemandList() {
+      getDemandList(p, size) {
         let self = this
+        if (p) {
+          self.jquery3.current_page = p
+        }
+        if (size) {
+          self.jquery3.per_page = size
+        }
         self.isLoading = true
-        self.$http.get(api.sdDemandDemandList).then((response) => {
+        self.$http.get(api.sdDemandDemandList, {params: {
+          page: self.jquery3.current_page, per_page: self.jquery3.per_page
+        }}).then((response) => {
           if (response.data.meta.status_code === 200) {
+            let pages = response.data.meta.pagination
+            self.jquery3.total = pages.total
+            self.jquery3.page = pages.total_pages
             if (response.data.data && response.data.data.length) {
               self.demandList = response.data.data
               self.demandList.forEach(item => {
@@ -991,10 +1024,10 @@
         if (size) {
           this.jquery2.per_page = size
         }
-        // , page: this.jquery2.current_page, per_page: this.jquery2.per_page
         this.isLoading = true
         this.$http.get(api.sdDesignResultsMyCollectionList, {params: {
           type: 2
+          // type: 2, page: this.jquery2.current_page, per_page: this.jquery2.per_page
         }}).then((response) => {
           if (response.data.meta.status_code === 200) {
             let pages = response.data.meta.pagination

@@ -9,70 +9,76 @@
           <v-menu-sub></v-menu-sub>
           <div :class="['content-box', isMob ? 'content-box-m' : '']">
             <div class="design-case-list" v-loading="isLoading">
-              <div class="no-list" v-if="!orderList||!orderList.length">
+              <!-- <div class="no-list" v-if="!orderList||!orderList.length">
                 <img src="../../../../../assets/images/trade_fairs/default/NoOrder@2x.png" alt="无订单">
                 <p>还没有订单～</p>
-              </div>
-              <div class="demand-list" v-if="orderList&&orderList.length">
+              </div> -->
+              <!-- v-if="orderList&&orderList.length" -->
+              <div class="demand-list" >
                 <div class="demand-header">
                   <el-row>
                     <el-col :span="10">
                       项目名称
                     </el-col>
-                    <el-col :span="4">
+                    <el-col :span="5">
+                      购买方
+                    </el-col>
+                    <el-col :span="3">
                       交易金额
                     </el-col>
-                    <el-col :span="6">
+                    <el-col :span="3">
                       项目状态
                     </el-col>
-                    <el-col :span="4">
+                    <el-col :span="3">
                       操作
                     </el-col>
                   </el-row>
                 </div>
-                <div class="demand-subject" v-for="(d,indexd) in orderList" :key="indexd">
+                <!-- v-for="(d,indexd) in orderList" :key="indexd" -->
+                <div class="demand-subject">
                   <el-row class="demand-time">
                     <el-col>
-                      <span class="uid">订单号: {{d.uid}}</span>
-                      下单时间: {{d.created_at | timeFormat}}
+                      <span class="uid">订单号: 111111</span>
+                      下单时间: 121233112
                     </el-col>
                   </el-row>
                   <div class="demand-content">
                     <el-row>
                       <el-col :span="10" class="collect-all">
-                        <div class="collect-img" :style="{background:'url('+d.cover.logo +') no-repeat center / contain'}">
+                        <div class="collect-img" >
+                          <!-- :style="{background:'url('+d.cover.logo +') no-repeat center / contain'}" -->
                         </div>
                         <div class="collect-centent">
-                          <p class="c-title">{{d.design_result.title}}</p>
-                          <p>出让形式: {{d.design_result.sell_type === 1?'全额出让':'股权合作'}}</p>
-                          <p>出让金额: ¥{{d.design_result.price}}</p>
+                          <p class="c-title">这是一个标题</p>
+                          <p>出让形式: 全额出售吧</p>
+                          <p>出让金额: ¥10000.00</p>
                         </div>
                       </el-col>
-                      <el-col :span="4">
-                        {{d.amount}}
+                      <el-col :span="5" class="company">
+                        <!-- {{d.amount}} -->
+                        <p class="company-name">
+                          北京某某某公司
+                        </p>
+                        <p>
+                          <span class="tc-9">联系方式:</span>
+                          <span class="tc-6">123323123453</span>
+                        </p>
                       </el-col>
-                      <el-col :span="6" :class="{'tc-red':d.status < 1 || (d.status === 1 && d.design_result.sell <2)}">
-                        {{d.status | payFormat(d.design_result.sell)}}
+                      <el-col :span="3">
+                        <!-- {{d.amount}} -->
+                        对啊
                       </el-col>
-                      <el-col :span="4">
-                        <el-button class="is-custom" type="primary" size="small" v-if="d.status === 0">
-                          <router-link :to="{name: 'managed_funds', params: {id: d.design_result.id}}"
+                      <el-col :span="3">
+                        <!-- {{d.status | payFormat(d.design_result.sell)}} -->
+                        爱神的箭阿萨德
+                      </el-col>
+                      <el-col :span="3">
+                        <el-button class="is-custom" type="primary" size="small" >
+                          <!-- <router-link :to="{name: 'managed_funds', params: {id: d.design_result.id}}"
                             target="_blank" class="router-work">
                             继续支付
-                          </router-link>
-                          
-                        </el-button>
-                        <el-button class="mg-t-10" v-if="d.status === 0" @click="upOrderBth(d.id, d.design_result.title, 1)">
-                          取消订单
-                        </el-button>
-                        <el-button class="is-custom" type="primary" size="small" v-if="d.status ===1 && d.design_result.sell < 2" @click="upOrderBth(d.id,d.design_result.title, 2)">
-                          确认文件
-                        </el-button>
-                        <el-button class="mg-t-10" v-if="d.status ===1 && d.design_result.sell < 2" @click="dialogAdmin=true">
-                          仲裁电话
-                        </el-button>
-                        <el-button v-if="d.status ===-1" @click="deleteOrder(d.id)">
-                          删除
+                          </router-link> -->
+                          123132
                         </el-button>
                         <!-- <el-button class="mg-t-10">
                           评价
@@ -504,6 +510,9 @@
     padding-left: 15px;
     color: #FF5A5F;
   }
+  .company {
+    padding-top: 5px;
+  }
   .dia-interest:before {
     content: '';
     position: absolute;
@@ -578,6 +587,57 @@
   .content-height {
     overflow-x: hidden;
     max-height: 180px;
+  }
+  .demand-list {
+    font-size: 14px;
+  }
+  .demand-list .el-col {
+    padding: 10px 20px 10px 20px;
+  }
+  .demand-header {
+    background: #f7f7f7;
+    border: 1px solid #e6e6e6;
+    border-bottom: none;
+  }
+  .demand-subject {
+    border: 1px solid #e6e6e6;
+    margin: 0 0 20px 0;
+  }
+  .demand-content {
+    padding: 10px 0 10px 0;
+    min-height: 120px;
+  }
+  .demand-time {
+    height: 40px;
+    line-height: 20px;
+    border-bottom: 1px solid #e6e6e6;
+    background: #fafafa;
+  }
+  .details p {
+    line-height: 1.8;
+    font-size: 12px;
+  }
+  .details .c-title {
+    font-size: 1.6rem;
+    color: #222;
+    padding: 0 5px 10px 0;
+    line-height: 1;
+  }
+  .collect-centent .c-title {
+    font-size: 1.6rem;
+    color: #222;
+    padding: 0 5px 10px 0;
+    line-height: 1;
+  }
+  .collect-centent .c-title:hover {
+    color: #ff5a5f;
+  }
+  .demand-content .is-custom {
+    min-width: 120px;
+    height: 34px;
+  }
+  .company-name {
+    padding-bottom: 10px;
   }
   @media screen and (max-width: 767px) {
     .opt a {
