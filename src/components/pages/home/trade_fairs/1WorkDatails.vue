@@ -105,7 +105,7 @@
               </div>
             </div>
           </div>
-          <div class="patent-details" :class="{'pat-margin' : $route.query.type === '2'}">
+          <div class="patent-details" :class="{'pat-margin' : $route.query.type === '2'}" v-if="formup.illustrate_url && formup.illustrate_url.length">
             <div class="instruction-blook">
             <span class="blook-left">产品功能说明书</span>
             <div class="seen-button">
@@ -113,7 +113,7 @@
             </div>
             </div>
           </div>
-          <el-collapse v-model="credential" class="patent">
+          <el-collapse v-model="credential" class="patent" v-if="formup.patent_url && formup.patent_url.length">
             <el-collapse-item title="专利证书" name="1">
               <swiper :options="swiperOption" class="patent-img">
                 <swiper-slide v-for="(img, index) in formup.patent_url" :key="index">
@@ -348,8 +348,9 @@ export default {
     handleScroll () {
       var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
       var scrollHeigh = document.body.scrollHeight
+      console.log('this', this.formup.images_url.length)
       if (this.$route.query.type !== '2') {
-        if (!this.viewCover) {
+        if (!this.viewCover  && this.formup.images_url && this.formup.images_url.length > 1) {
           if (scrollTop > (scrollHeigh - 677)) {
             this.elementPosition = true
           } else if (scrollTop > 960) {
@@ -361,7 +362,7 @@ export default {
           }
         }
       } else {
-        if (!this.viewCover) {
+        if (!this.viewCover  && this.formup.images_url && this.formup.images_url.length > 1) {
           if (scrollTop > (scrollHeigh - 687) && scrollTop > 960) {
             this.elementPosition = true
           } else if (scrollTop > 960) {
