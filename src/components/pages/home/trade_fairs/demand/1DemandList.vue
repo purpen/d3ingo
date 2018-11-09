@@ -418,7 +418,7 @@
                           {{d.amount}}
                         </el-col>
                         <el-col :span="6" :class="{'tc-red':d.status < 1 || (d.status === 1 && d.design_result.sell <2)}">
-                          {{d.status | payFormat(d.design_result.sell)}}
+                          {{d.status | payFormat(d.design_result.sell,d.design_result.is_evaluate)}}
                         </el-col>
                         <el-col :span="4">
                           <el-button class="is-custom" type="primary" size="small" v-if="d.status === 0">
@@ -440,13 +440,27 @@
                           <el-button v-if="d.status ===-1" @click="deleteOrder(d.id)">
                             删除
                           </el-button>
-                          <el-button class="mg-t-10" v-if="d.status ===1 && d.design_result.sell === 2">
-                            评价
+                          <el-button class="mg-t-10" v-if="d.status ===1 && d.design_result.sell === 2&&!d.design_result.is_evaluate">
+                            <router-link :to="{name: 'pay_datails', params: {id: d.id}}"
+                              target="_blank" class="router-pay">
+                              评价
+                            </router-link>
                           </el-button>
                         </el-col>
                       </el-row>
                     </div>
                   </div>
+                </div>
+                <div class="text-align-c">
+                  <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="jquery.current_page"
+                    :page-sizes="[10, 20, 50, 100]"
+                    :page-size="jquery.per_page"
+                    layout="sizes, prev, pager, next"
+                    :total="jquery.total">
+                  </el-pagination>
                 </div>
               </div>
               <el-dialog
@@ -559,6 +573,12 @@
             {min: 10, max: 500, message: '长度在 10 到 500 个字符', trigger: 'blur'}
           ]
         },
+        jquery: {
+          total: 1,
+          current_page: 1,
+          page: 1,
+          per_page: 2,
+        },
         dialogFormVisible: false, // 发布需求弹窗
         dialogUpdateVisible: false, // 查看详情弹窗
         dialogDeleteVisible: false, // 删除项目
@@ -630,7 +650,7 @@
         }
       },
       // 支付状态
-      payFormat(val, sell) {
+      payFormat(val, sell, pl) {
         if (val === 0) {
           return '待支付'
         } else if (val === 1) {
@@ -638,8 +658,10 @@
             return '交易成功'
           } else if (sell < 2){
             return '待确认文件'
-          } else if (sell === 2) {
+          } else if (sell === 2 && !pl) {
             return '待评价'
+          } else if (sell === 2 && pl) {
+            return '已评价'
           }
         } else if (val === 2) {
           return '退款'
@@ -661,6 +683,7 @@
         } else if (val === 2) {
           this.getCollectList()
         } else if (val === 3) {
+          this.jquery.current_page = 1
           this.getOrderList()
         } else {
           this.getDemandList()
@@ -668,6 +691,13 @@
       }
     },
     methods: {
+      // 分页
+      handleSizeChange(val) {
+        console.log('每页1条')
+      },
+      handleCurrentChange(val) {
+        console.log('当前页:2')
+      },
       // 打开需求按钮
       upVisible() {
         this.dialogFormVisible = true
@@ -897,7 +927,9 @@
       // 订单列表
       getOrderList() {
         this.isLoading = true
-        this.$http.get(api.sdPayMyOrderList).then((response) => {
+        this.$http.get(api.sdPayMyOrderList, {
+          page: this.jquery.current_page, per_page: this.jquery.per_page
+        }).then((response) => {
           if (response.data.meta.status_code === 200) {
             if(response.data.data && response.data.data.length) {
               this.orderList = response.data.data
@@ -1220,6 +1252,10 @@
   .router-work {
     display: block;
     color: #fff;
+  }
+  .router-pay {
+    display: block;
+    color: #666;
   }
   .uid {
     padding-right: 10px;

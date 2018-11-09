@@ -127,7 +127,7 @@
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
                   <el-row :gutter="10">
-                    <el-col :span="12" v-if="form.sell_type&&form.sell_type===2">
+                    <el-col :span="12" v-show="form.sell_type&&form.sell_type===2">
                       <el-form-item label="出让比例" prop="share_ratio">
                         <el-input v-model="form.share_ratio" :maxlength="3" placeholder="比例最大为100">
                           <template slot="append">%</template>
@@ -136,7 +136,7 @@
                     </el-col>
                     <el-col :span="(form.sell_type&&form.sell_type===2)?12:24">
                       <el-form-item label="出让金额" prop="price">
-                        <el-input v-model="form.price" :maxlength="12" placeholder="输入出让金额">
+                        <el-input v-model="form.price" :maxlength="14" placeholder="输入出让金额">
                           <template slot="append">元</template>
                         </el-input>
                       </el-form-item>
@@ -325,7 +325,7 @@
           field: '',
           industry: '',
           title: '',
-          prize: '',
+          price: '',
           sell_type: 1,
           cover_id: '',
           label: [],
@@ -396,7 +396,7 @@
               content: that.form.content,
               title: that.form.title,
               sell_type: that.form.sell_type,
-              price: that.form.price,
+              price: Number(that.form.price),
               share_ratio: that.form.sell_type === 1 ? 100 : that.form.share_ratio,
               design_company_id: that.$store.state.event.user.company_id,
               illustrate: [],
@@ -710,12 +710,12 @@
       },
       // 获取详情
       upDetails(id) {
-        this.$http.get(api.sdDesignResultsShow, {params: {id: id}}).then(
+        let that = this
+        that.$http.get(api.sdDesignResultsShow, {params: {id: id}}).then(
           (response) => {
             if (response.data.meta.status_code === 200) {
               let res = response.data.data
               if (res) {
-                this.form = res
                 res.illustrate_url.forEach(i => {
                   i.asset_id = i.id
                   i.url = i.logo
@@ -728,18 +728,28 @@
                   p.asset_id = p.id
                   p.url = p.logo
                 })
-                this.filepatent = res.patent_url
-                this.fileillustrate = res.illustrate_url
-                this.fileList = res.images_url
-                this.coverId = res.cover_id
+                that.filepatent = res.patent_url
+                that.fileillustrate = res.illustrate_url
+                that.fileList = res.images_url
+                that.coverId = res.cover_id
+                that.form = {
+                  contact_number: res.contact_number,
+                  price: res.price,
+                  share_ratio: res.share_ratio,
+                  contacts: res.contacts,
+                  content: res.content,
+                  title: res.title,
+                  sell_type: res.sell_type,
+                  id: res.id
+                }
               }
             } else {
-              this.$message.error(response.data.meta.message)
+              that.$message.error(response.data.meta.message)
             }
           }
         )
         .catch (function (error) {
-          this.$message.error (error.message)
+          that.$message.error (error.message)
         })
       }
     },
@@ -860,6 +870,10 @@
         }
       },
       sellType(newValue, oldValue) {
+        if (that.isfrist) {
+          that.isfrist = false
+          return
+        }
         if (newValue === 1) {
            this.form.share_ratio = 100
         } else {
@@ -876,6 +890,7 @@
       let id = that.$route.params.id
       that.getToken()
       if (id) {
+        that.isfrist = true
         that.upDetails(id)
       } else {
         console.log(that.$store.state.event.user)
