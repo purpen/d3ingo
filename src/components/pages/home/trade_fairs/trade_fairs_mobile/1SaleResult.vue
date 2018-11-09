@@ -236,6 +236,7 @@
   }
   .img-size {
     height: 100%;
+    max-width: 100%;
   }
   .list-text {
     padding-top: 10px;

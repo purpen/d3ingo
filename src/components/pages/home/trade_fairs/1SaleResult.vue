@@ -17,7 +17,12 @@
           <el-row :gutter="20" class="list-cloud">
             <el-col :span="6" class="item-cloud" v-for="(achieve, index) in designCases" :key="index">
               <div class="list-item">
-                <div class="list-image" @click="listDatail(achieve.id)">
+                <div class="list-image" v-if="achieve.sell === 1 || achieve.sell === 2">
+                  <div class="image-size">
+                    <img alt="点击查看详情" class="img-size" :src="achieve.cover.small">
+                  </div>
+                </div>
+                <div class="list-image" @click="listDatail(achieve.id)" v-else>
                   <div class="image-size">
                     <img alt="点击查看详情" class="img-size" :src="achieve.cover.small">
                   </div>
@@ -35,20 +40,27 @@
                         <span>出让金额：&nbsp;<span class="money">￥{{achieve.price}}</span></span>
                       </div>
                     </div>
-                    <div class="list-right" v-if="intersClick" @click="collect(achieve.id)">
-                      <div class="list-button" v-if="achieve.is_follow === 0">
-                        <span class="button-text">感兴趣</span>
-                      </div>
-                      <div class="list-button interest-border" v-if="achieve.is_follow === 1">
-                        <span class="button-interest">已感兴趣</span>
+                    <div class="list-right" v-if="achieve.sell === 1 || achieve.sell === 2">
+                      <div class="list-button">
+                        <span class="button-text">已出售</span>
                       </div>
                     </div>
-                    <div class="list-right" v-else disabled>
-                      <div class="list-button" v-if="achieve.is_follow === 0">
-                        <span class="button-text">感兴趣</span>
+                    <div v-else>
+                      <div class="list-right" v-if="intersClick" @click="collect(achieve.id)">
+                        <div class="list-button" v-if="achieve.is_follow === 0">
+                          <span class="button-text">感兴趣</span>
+                        </div>
+                        <div class="list-button interest-border" v-if="achieve.is_follow === 1">
+                          <span class="button-interest">已感兴趣</span>
+                        </div>
                       </div>
-                      <div class="list-button interest-border" v-if="achieve.is_follow === 1">
-                        <span class="button-interest">已感兴趣</span>
+                      <div class="list-right" v-else disabled>
+                        <div class="list-button" v-if="achieve.is_follow === 0">
+                          <span class="button-text">感兴趣</span>
+                        </div>
+                        <div class="list-button interest-border" v-if="achieve.is_follow === 1">
+                          <span class="button-interest">已感兴趣</span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -421,6 +433,7 @@
   }
   .img-size {
     height: 100%;
+    max-width: 281px;
   }
   .image-size {
     cursor: pointer;
