@@ -415,9 +415,7 @@ export default {
     // 获取评价详情
     evaluateDetails(id) {
       this.isLoading = true
-      let intId = parseInt(id)
-      this.intId = intId
-      this.$http.get(api.sdDemandEvaluateInfo, {params: {order_id: this.intId}}).then(
+      this.$http.get(api.sdDemandEvaluateInfo, {params: {order_id: id}}).then(
         (response) => {
           if (response.data.meta.status_code === 200) {
             this.evalu = response.data.data[0]
