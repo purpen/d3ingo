@@ -321,7 +321,7 @@
       getDesignCase () {
         const that = this
         that.isLoading = true
-        that.$http.get (api.sdDesignDesignCollectList, {})
+        that.$http.get (api.sdDesignDesignCollectList, {params: {per_page: 50}})
         .then (function (response) {
           that.isLoading = false
           if (response.data.meta.status_code === 200) {

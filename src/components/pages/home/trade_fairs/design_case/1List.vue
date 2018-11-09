@@ -37,7 +37,8 @@
                       </ul>
                       <ul v-if="d.status === -1&&d.up">
                         <li class="del" @click="toUpdateUrl(d.id)">修改</li>
-                        <li class="edit" @click="updateBtn(d, 2)">删除</li>
+                        <li class="del-disabled" @click="updateBtn(d, 2)" v-if="d.sell === 1">删除</li>
+                        <li class="edit" @click="updateBtn(d, 2)" v-if="d.sell === 2">删除2</li>
                       </ul>
                     </div>
                     <div class="image-box">
@@ -61,7 +62,7 @@
                             ¥{{d.price}}
                           </span>
                         </span>
-                        <span class="fr">{{d.status | statusFormat}}</span>
+                        <span class="fr">{{d.status | statusFormat(d.sell)}}</span>
                       </p>
                     </div>
                   </el-card>
@@ -181,7 +182,7 @@
       }
     },
     filters: {
-      statusFormat(val) {
+      statusFormat(val, sell) {
         if (val) {
           if (val === 1) {
             return '待提交'
@@ -191,8 +192,8 @@
             return '已上架'
           } else if (val === -1) {
             return '已下架'
-          } else {
-            return ''
+          } else if (val === -1 && sell === 1){
+            return '已售出'
           }
         }
       }
@@ -205,7 +206,7 @@
       getDesignCase () {
         const that = this
         that.isLoading = true
-        that.$http.get (api.sdDesignResultsList, {})
+        that.$http.get (api.sdDesignResultsList, {params: {per_page: 50}})
         .then (function (response) {
           that.isLoading = false
           if (response.data.meta.status_code === 200) {
@@ -596,7 +597,11 @@
   .protrude:hover {
     color: #ff5a5f;
   }
-
+  .item-more ul li.del-disabled:hover {
+    cursor: not-allowed;
+    background-color: #fafafa;
+    color: #999;
+  }
   @media screen and (max-width: 767px) {
     .opt a {
       font-size: 1.4rem;

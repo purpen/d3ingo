@@ -82,7 +82,7 @@
                   </div>
                 </div>
               </div>
-              <div class="text-align-c">
+              <!-- <div class="text-align-c">
                 <el-pagination
                   @size-change="handleSizeChange3"
                   @current-change="handleCurrentChange3"
@@ -92,7 +92,7 @@
                   layout="sizes, prev, pager, next"
                   :total="jquery3.total">
                 </el-pagination>
-              </div>
+              </div> -->
               <el-dialog
                 title="发布需求"
                 :visible.sync="dialogFormVisible"
@@ -474,7 +474,7 @@
                   </div>
                 </div>
                 <div class="text-align-c">
-                  <el-pagination
+                  <!-- <el-pagination
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     :current-page.sync="jquery.current_page"
@@ -482,7 +482,7 @@
                     :page-size="jquery.per_page"
                     layout="sizes, prev, pager, next"
                     :total="jquery.total">
-                  </el-pagination>
+                  </el-pagination> -->
                 </div>
               </div>
               <el-dialog
@@ -713,36 +713,36 @@
       },
       type(val) {
         if (val === 1) {
-          this.getDemandList(1)
+          this.getDemandList()
         } else if (val === 2) {
-          this.getCollectList(1)
+          this.getCollectList()
         } else if (val === 3) {
-          this.getOrderList(1)
+          this.getOrderList()
         } else {
-          this.getDemandList(1)
+          this.getDemandList()
         }
       }
     },
     methods: {
       // 分页
-      handleSizeChange(val) {
-        this.getOrderList(1, val)
-      },
-      handleCurrentChange(val) {
-        this.getOrderList(val)
-      },
-      handleSizeChange2(val) {
-        this.getCollectList(1, val)
-      },
-      handleCurrentChange2(val) {
-        this.getCollectList(val)
-      },
-      handleSizeChange3(val) {
-        this.getDemandList(1, val)
-      },
-      handleCurrentChange3(val) {
-        this.getDemandList(val)
-      },
+      // handleSizeChange(val) {
+      //   this.getOrderList(1, val)
+      // },
+      // handleCurrentChange(val) {
+      //   this.getOrderList(val)
+      // },
+      // handleSizeChange2(val) {
+      //   this.getCollectList(1, val)
+      // },
+      // handleCurrentChange2(val) {
+      //   this.getCollectList(val)
+      // },
+      // handleSizeChange3(val) {
+      //   this.getDemandList(1, val)
+      // },
+      // handleCurrentChange3(val) {
+      //   this.getDemandList(val)
+      // },
       // 打开需求按钮
       upVisible() {
         this.dialogFormVisible = true
@@ -944,22 +944,22 @@
         })
       },
       // 需求列表
-      getDemandList(p, size) {
+      getDemandList() {
         let self = this
-        if (p) {
-          self.jquery3.current_page = p
-        }
-        if (size) {
-          self.jquery3.per_page = size
-        }
+        // if (p) {
+        //   self.jquery3.current_page = p
+        // }
+        // if (size) {
+        //   self.jquery3.per_page = size
+        // }
         self.isLoading = true
         self.$http.get(api.sdDemandDemandList, {params: {
-          page: self.jquery3.current_page, per_page: self.jquery3.per_page
+          per_page: 50
         }}).then((response) => {
           if (response.data.meta.status_code === 200) {
-            let pages = response.data.meta.pagination
-            self.jquery3.total = pages.total
-            self.jquery3.page = pages.total_pages
+            // let pages = response.data.meta.pagination
+            // self.jquery3.total = pages.total
+            // self.jquery3.page = pages.total_pages
             if (response.data.data && response.data.data.length) {
               self.demandList = response.data.data
               self.demandList.forEach(item => {
@@ -982,21 +982,21 @@
         })
       },
       // 订单列表
-      getOrderList(p, size) {
+      getOrderList() {
         this.isLoading = true
-        if (p) {
-          this.jquery.current_page = p
-        }
-        if (size) {
-          this.jquery.per_page = size
-        }
+        // if (p) {
+        //   this.jquery.current_page = p
+        // }
+        // if (size) {
+        //   this.jquery.per_page = size
+        // }
         this.$http.get(api.sdPayMyOrderList, {params: {
-          page: this.jquery.current_page, per_page: this.jquery.per_page
+          per_page: 50
         }}).then((response) => {
           if (response.data.meta.status_code === 200) {
-            let pages = response.data.meta.pagination
-            this.jquery.total = pages.total
-            this.jquery.page = pages.total_pages
+            // let pages = response.data.meta.pagination
+            // this.jquery.total = pages.total
+            // this.jquery.page = pages.total_pages
             if(response.data.data && response.data.data.length) {
               this.orderList = response.data.data
             } else {
@@ -1017,22 +1017,23 @@
         })
       },
       // 收藏列表
-      getCollectList(p, size) {
-        if (p) {
-          this.jquery2.current_page = p
-        }
-        if (size) {
-          this.jquery2.per_page = size
-        }
+      getCollectList() {
+        // if (p) {
+        //   this.jquery2.current_page = p
+        // }
+        // if (size) {
+        //   this.jquery2.per_page = size
+        // }
         this.isLoading = true
         this.$http.get(api.sdDesignResultsMyCollectionList, {params: {
-          type: 2
+          type: 2,
+          per_page: 50
           // type: 2, page: this.jquery2.current_page, per_page: this.jquery2.per_page
         }}).then((response) => {
           if (response.data.meta.status_code === 200) {
-            let pages = response.data.meta.pagination
-            this.jquery2.total = pages.total
-            this.jquery2.page = pages.total_pages
+            // let pages = response.data.meta.pagination
+            // this.jquery2.total = pages.total
+            // this.jquery2.page = pages.total_pages
             if(response.data.data && response.data.data.length) {
               this.collectList = response.data.data
               this.collectList.forEach(item => {
@@ -1180,6 +1181,7 @@
   }
   .demand-list .el-col {
     padding: 10px 20px 10px 20px;
+    overflow: hidden;
   }
   .demand-subject {
     border: 1px solid #e6e6e6;
@@ -1300,6 +1302,7 @@
   .demand-content .is-custom {
     min-width: 120px;
     height: 34px;
+    font-size: 14px;
   }
   .submit-form .el-form {
     padding: 10px 20px;
