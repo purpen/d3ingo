@@ -18,7 +18,7 @@
             <el-col :span="6" class="item-cloud" v-for="(achieve, index) in designCases" :key="index">
               <div class="list-item">
                 <div class="list-image" v-if="achieve.sell === 1 || achieve.sell === 2">
-                  <div class="image-size">
+                  <div class="images-size">
                     <img alt="点击查看详情" class="img-size" :src="achieve.cover.small">
                   </div>
                 </div>
@@ -37,15 +37,10 @@
                         <span>出让方式：&nbsp;{{achieve.sell_type === 1 ? '全额出让' : '股权合作'}}</span><span class="money">{{achieve.sell_type === 2 ?achieve.share_ratio+'%' : ''}}</span>
                       </div>
                       <div class="list-sum">
-                        <span>出让金额：&nbsp;<span class="money">￥{{achieve.price}}</span></span>
+                        <span>出让金额：&nbsp;<span class="money" :class="{'pay-yet' : achieve.sell === 1 || achieve.sell === 2}">￥{{achieve.price}}</span></span>
                       </div>
                     </div>
-                    <div class="list-right" v-if="achieve.sell === 1 || achieve.sell === 2">
-                      <div class="list-button">
-                        <span class="button-text">已出售</span>
-                      </div>
-                    </div>
-                    <div v-else>
+                    <div v-if="achieve.sell !== 1 && achieve.sell !== 2">
                       <div class="list-right" v-if="intersClick" @click="collect(achieve.id)">
                         <div class="list-button" v-if="achieve.is_follow === 0">
                           <span class="button-text">感兴趣</span>
@@ -435,6 +430,21 @@
     height: 100%;
     max-width: 281px;
   }
+  .images-size {
+    height: 184px;
+    text-align: center;
+    position: relative
+  }
+  .images-size:after {
+    content: '';
+    position: absolute;
+    left: -2px;
+    top: -2px;
+    width: 100px;
+    height: 100px;
+    background: url('../../../../assets/images/trade_fairs/list/AlreadySold@2x.png') no-repeat center;
+    background-size: contain;
+  }
   .image-size {
     cursor: pointer;
     height: 184px;
@@ -540,5 +550,8 @@
     left: -8px;
     background: url('../../../../assets/images/trade_fairs/list/BeInterestedClick@2x.png') no-repeat center;
     background-size: contain;
+  }
+  .pay-yet {
+    color: #999999
   }
 </style>
