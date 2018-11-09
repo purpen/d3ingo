@@ -38,7 +38,7 @@
 
           <!-- 评价 -->
           <!-- <div class="select-item-box clearfix" v-if="statusLabel.evaluate"> -->
-          <div class="select-item-box clearfix">
+          <div class="select-item-box clearfix" v-if="formup.sell === 2">
             <div class="evaluation-style">
               <div class="published-evaluation">发表评价</div>
               <div v-if="false">客户评价</div>
@@ -265,7 +265,7 @@
 <script>
 import api from '@/api/api'
 export default {
-  name: 'work_datails', // 代售成果详情页
+  name: 'pay_datails', // 订单详情页
   data() {
     return {
       isLoading: false,
