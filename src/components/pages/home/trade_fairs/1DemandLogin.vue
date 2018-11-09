@@ -16,22 +16,22 @@
     </div>
     <div class="list-background">
       <div class="list-contant">
-        <div class="list-text" @click="briefShow" :class="{'active': briefShows}">
+        <div class="list-text" @click="briefShow" :class="{'active': type === 1}">
           <span>活动简介</span>
         </div>
-        <div class="list-text list-left" @click="demandShow" :class="{'active': demandShows}" v-if="user.type === 2">
+        <div class="list-text list-left" @click="demandShow" :class="{'active': type === 2}" v-if="user.type === 2">
           <span>设计需求</span>
         </div>
-        <div class="list-text list-left" @click="demandShow" :class="{'active': demandShows}" v-if="user.type === 1">
+        <div class="list-text list-left" @click="demandShow" :class="{'active': type === 2}" v-if="user.type === 1">
           <span>代售成果</span>
         </div>
       </div>
     </div>
-    <briefContent v-if="briefShows">
+    <briefContent v-if="type === 1">
     </briefContent>
-    <demandDesign v-if="demandShows && user.type === 2">
+    <demandDesign v-if="type === 2 && user.type === 2">
     </demandDesign>
-    <saleResult v-if="demandShows && user.type === 1">
+    <saleResult v-if="type === 2 && user.type === 1">
     </saleResult>
     <div class="bottom-background">
     </div>
@@ -52,23 +52,25 @@
     },
     data() {
       return {
-        briefShows: false,
-        demandShows: false
+        type: 0
       }
     },
     created() {
-      this.demandShows = true
+      let type = this.$route.query.type
+      if (type) {
+        this.type = 1
+      } else {
+        this.type = 2
+      }
     },
     mounted() {
     },
     methods: {
       briefShow() {
-        this.briefShows = true
-        this.demandShows = false
+        this.type = 1
       },
       demandShow() {
-        this.demandShows = true
-        this.briefShows = false
+        this.type = 2
       },
       demandBanner() {
         this.$router.push({name: 'demand_list', query: {type: 1}})

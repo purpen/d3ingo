@@ -31,8 +31,6 @@
                 <el-select v-model="query.evt" placeholder="选择条件..." size="small">
                   <el-option label="项目ID" value="1"></el-option>
                   <el-option label="成果名称" value="2"></el-option>
-                  <el-option label="用户名称" value="3"></el-option>
-                  <el-option label="用户ID" value="4"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item>
@@ -340,7 +338,7 @@ export default {
         this.menuType = parseInt(self.query.type)
       }
       self.isLoading = true
-      self.$http.get(api.adminDesignDemandLists, {params: {page: self.query.page, per_page: self.query.pageSize, sort: 0, status: self.query.type}})
+      self.$http.get(api.adminDesignDemandLists, {params: {page: self.query.page, per_page: self.query.pageSize, sort: 0, status: self.query.type, evt: self.query.evt, val: self.query.val}})
       .then (function(response) {
         self.isLoading = false
         self.tableData = []
