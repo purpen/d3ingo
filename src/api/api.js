@@ -35,6 +35,7 @@ export default {
   fundLogList: '/fundLogList', // GET 交易记录
   withdrawCreate: '/withdraw/create', // POST 提现
   withdrawList: '/withdraw/lists', // GET 用户提现列表
+  jdCode: '/jd/code', // get // 获取京东code
 
   // 栏目
   columnList: '/column/lists', // GET 列表

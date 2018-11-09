@@ -29,11 +29,11 @@
       <article class="join">参与方需提交包括产品说明、图文介绍、产品模型、手板等在内、能够展示产品外观、结构、属性的产品相关资料。 </article>
       <div class="submit">
         <i>点击下方按钮提交相关资料</i>
-        <a class="no-select" href="mailto:mazhe@taihuoniao.com">产品资料提交</a>
+        <a class="no-select" href="mailto:zhangyunhao@taihuoniao.com">产品资料提交</a>
       </div>
     </section>
 
-    <p class="mail">咨询详情请联系 <a href="mailto:mazhe@taihuoniao.com">mazhe@taihuoniao.com</a></p>
+    <p class="mail">咨询详情请联系 <a href="mailto:zhangyunhao@taihuoniao.com">zhangyunhao@taihuoniao.com</a></p>
     <div class="recruitFoot" v-if="!isMob"></div>
     <div class="recruitFoot2" v-else></div>
   </div>
