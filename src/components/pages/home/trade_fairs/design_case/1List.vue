@@ -191,7 +191,7 @@
           } else if (val === 3) {
             return '已上架'
           } else if (val === -1) {
-            if (sell === 1) {
+            if (sell >= 1) {
               return '已售出'
             } else {
               return '已下架'

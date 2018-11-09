@@ -440,7 +440,6 @@
                           {{d.amount}}
                         </el-col>
                         <el-col :span="6" :class="{'tc-red':d.status < 1 || (d.status === 1 && d.design_result.sell <2)}">
-                          {{d.design_result.sell}}
                           {{d.status | payFormat(d.design_result.sell,d.design_result.is_evaluate)}}
                         </el-col>
                         <el-col :span="4">
@@ -1085,14 +1084,14 @@
       },
       // 确认文件
       isFile(id) {
-          this.$http.get(api.payConfirmFile,{params: {id: id}}).then((response) => {
+          this.$http.get(api.payConfirmFile, {params: {id: id}}).then((response) => {
           if (response.data.meta.status_code === 200) {
-            this.collectList.forEach((item, index) => {
+            console.log('id', id)
+            this.orderList.forEach((item, index) => {
               if (item.id === id) {
                 // item.design_result.sell = 2
                 this.$set(item.design_result, 'sell', 2)
-                this.$set(this.collectList, index, item)
-                console.log('item', item)
+                this.$set(this.orderList, index, item)
               }
             })
             this.dialogIsfile = false

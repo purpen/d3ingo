@@ -54,11 +54,11 @@
                       <el-col :span="5" class="company">
                         <!-- {{d.amount}} -->
                         <p class="company-name">
-                          {{d.company_name}}
+                          {{d.demand_company_name}}
                         </p>
                         <p>
                           <span class="tc-9">联系方式:</span>
-                          <span class="tc-6">{{d.design_result.contact_number}}</span>
+                          <span class="tc-6">{{d.demand_company_phone}}</span>
                         </p>
                       </el-col>
                       <el-col :span="3">
