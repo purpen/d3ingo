@@ -31,10 +31,11 @@
           <!-- 评价 -->
           <div class="select-item-box clearfix" v-if="designAttr.sell === 2">
             <div class="evaluation-style">
-              <div class="published-evaluation">发表评价</div>
-              <div v-if="false">客户评价</div>
+              <div class="published-evaluation" v-if="designAttr.is_evaluate === 0 && designAttr.sell === 2">发表评价</div>
+              <div class="published-evaluation" v-if="designAttr.is_evaluate === 1 && user.type === 1">评价</div>
+              <div  class="published-evaluation" v-if="designAttr.is_evaluate === 1 && user.type === 2">客户评价</div>
                 <!-- 未提交的评价 -->
-                <div class="evaluate-report clearfix">
+                <div class="evaluate-report clearfix" v-if="designAttr.is_evaluate === 0 && designAttr.sell === 2">
                   <p class="ev-c-ava">
                   <el-row class="grade">
                     <el-col :span="8">
@@ -73,17 +74,11 @@
                     </el-button>
                   </p>
                 </div>
-
-                <div class="evaluate-result clearfix" v-if="false">
+                <!-- 已提交的评价 -->
+                <div class="evaluate-result clearfix" v-if="designAttr.is_evaluate === 1">
                   <el-row>
                     <el-col :span="22">
                       <div class="eva-content">
-                        <!-- <p class="eva-score">
-                          <el-rate
-                            v-model.number="evaluate.design_level"
-                            disabled>
-                          </el-rate>
-                        </p> -->
                         <el-row class="grade pl">
                           <el-col :span="8">
                             <p class="eva-text">设计水平</p>
@@ -102,14 +97,13 @@
                           <el-col :span="8">
                             <p class="eva-text">服务态度</p>
                             <el-rate
-                            v-model.number="evalu.service"
+                            v-model.number="evalu.serve_attitude"
                             disabled>
                           </el-rate>
                           </el-col>
                         </el-row>
                         <p class="ev-c-content">
-                          <!-- {{ evalu.content }} -->
-                          测试测试测试
+                          {{ evalu.content }}
                         </p>
                       </div>
                     </el-col>
@@ -124,10 +118,6 @@
           <div :class="[{'fixed-style': elementShow}, {'absolute-style': elementPosition}]">
             <div class="design-case-slide">
               <div class="info">
-                <!-- <router-link :to="{name: 'companyShow', params: {id: item.design_company.id}}" target="_blank">
-                  <img class="avatar" v-if="item.design_company.logo_url" :src="item.design_company.logo_url" width="100"/>
-                  <img class="avatar" v-else src="../../../../assets/images/avatar_100.png" width="100"/>
-                </router-link> -->
                 <div class="title-center">
                   <img class="avatar" v-if="
                   imgUrl" :src="
@@ -163,12 +153,12 @@
                   <span class="button-interest">已感兴趣</span>
                 </div>
               </div>
-              <div class="list-left" v-if="user.type === 1">
+              <div class="list-left" v-if="user.type === 1 && formup.status === 0">
                 <div class="list-button buy-text">
                   <router-link :to="{name: 'managed_funds', params: {id: 1}}" class="to-pay">继续支付</router-link>
                 </div>
               </div>
-              <div class="list-left" v-if="false">
+              <div class="list-lefts" v-else-if="user.type === 1 && formup.status === 1">
                 <div class="bought-bg">
                   <span class="bought-text">已购买</span>
                 </div>
@@ -262,6 +252,7 @@ export default {
       isLoading: false,
       elementShow: false,
       elementPosition: false,
+      intId: '',
       isFullow: '',
       imgSmall: '',
       imagesUrl: '',
@@ -394,8 +385,8 @@ export default {
       }
 
       let row = {
-        item_id: this.item.id,
-        service: this.evaluate.service,
+        order_id: this.formup.uid,
+        serve_attitude: this.evaluate.service,
         content: this.evaluate.content,
         design_level: this.evaluate.design_level,
         response_speed: this.evaluate.response_speed
@@ -404,13 +395,13 @@ export default {
       let self = this
       self.evaluateLoadingBtn = true
       self.$http
-        .post(api.demandUsersEvaluate, row)
+        .post(api.sdDemandEvaluateResult, row)
         .then(function(response) {
           self.evaluateLoadingBtn = false
           if (response.data.meta.status_code === 200) {
             self.evalu = self.evaluate
-            self.item.status = 22
-            self.item.status_value = '已评价'
+            self.designAttr.is_evaluate = 1
+            // self.item.status_value = '已评价'
             self.$message.success('评价成功!')
           } else {
             self.$message.error(response.data.meta.message)
@@ -420,6 +411,27 @@ export default {
           self.$message.error(error.message)
           self.evaluateLoadingBtn = false
         })
+    },
+    // 获取评价详情
+    evaluateDetails(id) {
+      this.isLoading = true
+      let intId = parseInt(id)
+      this.intId = intId
+      this.$http.get(api.sdDemandEvaluateInfo, {params: {order_id: 110711135800011570}}).then(
+        (response) => {
+          if (response.data.meta.status_code === 200) {
+            this.evalu = response.data.data[0]
+            this.isLoading = false
+          } else {
+            this.isLoading = false
+            this.$message.error(response.data.meta.message)
+          }
+        }
+      )
+      .catch (function (error) {
+        this.$message.error (error.message)
+        this.isLoading = false
+      })
     },
     // 获取详情
     upDetails() {
@@ -432,6 +444,7 @@ export default {
             if (designAttr) {
               this. designAttr = designAttr
             }
+            this.evaluateDetails(this.formup.uid)
             this.imgUrl = response.data.data.design_company_logo
             this.patentRound = response.data.data.design_result.patent_url
             this.imagesUrl = response.data.data.design_result.images_url
@@ -715,6 +728,9 @@ export default {
   cursor: pointer;
   float: left;
 }
+.list-lefts {
+  float: left;
+}
 .list-contain {
   cursor: pointer;
   float: left;
@@ -959,6 +975,9 @@ export default {
   text-align: center;
   padding-top: 30px;
 }
+.evaluate-result {
+  text-align: center
+}
 .evaluate-report .ev-c-name {
   line-height: 2;
 }
@@ -970,7 +989,9 @@ export default {
   margin-bottom: 10px;
 }
 .eva-content .ev-c-content {
-  padding: 10px 0;
+  text-align: left;
+  padding: 20px 0 10px 13px;
+  font-size: 16px;
 }
 .grade>.el-col:not(:first-child) {
   border-left: 1px solid #e6e6e6;
