@@ -13,7 +13,7 @@
                 <img src="../../../../../assets/images/trade_fairs/default/NoDesign@2x.png" alt="">
                 <p class="tc-9">还没有设计需求，立即发布一个吧～</p>
                 <div class="post-header">
-                  <el-button class="is-custom mg-r-20" type="primary" size="small" @click="dialogFormVisible=true">
+                  <el-button class="is-custom mg-r-20" type="primary" size="small" @click="upVisible()">
                     <i class="el-icon-plus"></i>
                     发布需求
                   </el-button>
@@ -82,6 +82,17 @@
                   </div>
                 </div>
               </div>
+              <!-- <div class="text-align-c">
+                <el-pagination
+                  @size-change="handleSizeChange3"
+                  @current-change="handleCurrentChange3"
+                  :current-page.sync="jquery3.current_page"
+                  :page-sizes="[10, 20, 50, 100]"
+                  :page-size="jquery3.per_page"
+                  layout="sizes, prev, pager, next"
+                  :total="jquery3.total">
+                </el-pagination>
+              </div> -->
               <el-dialog
                 title="发布需求"
                 :visible.sync="dialogFormVisible"
@@ -89,7 +100,7 @@
                 size="small"
                 class="submit-form"
                 top="10%"
-                @close="closeBtn"
+                @close="closeBtn('form')"
                 >
                 <el-form :model="form" ref="form" :rules="rules" @submit.native.prevent class="scroll-bar">
                   <el-form-item label="项目名称" prop="name" label-position="top">
@@ -173,14 +184,15 @@
                   <region-picker :provinceProp="form.item_province" :cityProp="form.item_city" :isFirstProp="true" :twoSelect="true" :gutter="10"
                   titleProp='' @onchange="changeServer"></region-picker>
                   <el-form-item label="产品功能描述" prop="content">
-                    <el-input type="textarea" :autosize="{ minRows: 4, maxRows: 4}"
+                    <el-input type="textarea" :autosize="{minRows: 4, maxRows: 4}"
+                      :maxlength="500"
                       v-model="form.content"
                       >
                     </el-input>
                   </el-form-item>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
-                  <el-button @click="closeBtn">取 消</el-button>
+                  <el-button @click="closeBtn('form')">取 消</el-button>
                   <el-button type="primary" :loading="addLoading" @click="createDemand('form')">发 布</el-button>
                 </span>
               </el-dialog>
@@ -189,7 +201,7 @@
                 :visible.sync="dialogUpdateVisible"
                 :lock-scroll="false"
                 size="tiny"
-                class="submit-form"
+                class="details-form"
                 >
                 <div class="details-list">
                   <div class="details">
@@ -284,8 +296,12 @@
                 size="tiny"
                 class="delete-form"
                 >
-                <p class="text-align-c">确认关闭 {{deleteForm.name}} 吗？</p>
-                <p class="text-align-c">关闭项目将彻底从您的项目列表移除</p>
+                <p class="text-align-c">确认关闭
+                  <span class="tc-red">
+                    {{deleteForm.name}}
+                  </span>
+                  吗？</p>
+                <p class="item-del">关闭项目将彻底从您的项目列表移除</p>
                 <span slot="footer" class="dialog-footer">
                   <el-button @click="dialogDeleteVisible=false">取消</el-button>
                   <el-button @click="deleteDemand()" class="is-custom" type="primary" size="small">确定</el-button>
@@ -325,20 +341,33 @@
                           <div class="collect-img" :style="{background:'url('+d.cover.middle +') no-repeat center / contain'}">
                           </div>
                           <div class="collect-centent">
-                            <p class="c-title">{{d.title}}</p>
-                            <p>出让形式: {{d.sell_type === 1?'全额出让':'股权合作'}}</p>
+                            <!-- <p>
+                              <router-link :to="{name: 'work_datails', params: {id: d.id}}"
+                              target="_blank" class="router-work c-title" >
+                              {{d.title}}
+                              </router-link>
+                            </p> -->
+                            <p class="c-title">
+                              {{d.title}}
+                            </p>
+                            <p>出让形式: {{d.sell_type === 1?'全额出让':'股权合作'}}
+                              <span v-if="d.sell_type === 2" class="tc-red">{{d.share_ratio}}%</span>
+                            </p>
                             <p>出让金额: ¥{{d.price}}</p>
                           </div>
                         </el-col>
                         <el-col :span="10">
-                          出售中
+                          {{d.status === -1?'下架': '出售中'}}
                         </el-col>
                         <el-col :span="4">
-                          <el-button class="is-custom" type="primary" size="small">
+                          <el-button class="is-custom" type="primary" size="small" v-if="d.status !== -1">
                             <router-link :to="{name: 'work_datails', params: {id: d.id}}"
-                            target="_blank" class="router-work">
+                            target="_blank" class="router-work" >
                             立即购买
                             </router-link>
+                          </el-button>
+                          <el-button class="is-custom" type="primary" size="small" :disabled="true" v-if="d.status === -1">
+                            立即购买
                           </el-button>
                           <el-button class="mg-t-10" @click="updateFollow(d.id)">
                             {{d.is_follow === 1 ?'取消收藏': '收藏'}}
@@ -348,6 +377,17 @@
                     </div>
                   </div>
                 </div>
+                <!-- <div class="text-align-c">
+                  <el-pagination
+                    @size-change="handleSizeChange2"
+                    @current-change="handleCurrentChange2"
+                    :current-page.sync="jquery2.current_page"
+                    :page-sizes="[2, 20, 50, 100]"
+                    :page-size="jquery2.per_page"
+                    layout="sizes, prev, pager, next"
+                    :total="jquery2.total">
+                  </el-pagination>
+                </div> -->
               </div>
             </div>
             <div v-if="type === 3">
@@ -386,7 +426,12 @@
                           <div class="collect-img" :style="{background:'url('+d.cover.middle +') no-repeat center / contain'}">
                           </div>
                           <div class="collect-centent">
-                            <p class="c-title">{{d.design_result.title}}</p>
+                            <p>
+                              <router-link :to="{name: 'pay_datails', params: {id: d.id}}"
+                                target="_blank" class="router-work c-title">
+                                {{d.design_result.title}}
+                              </router-link>
+                            </p>
                             <p>出让形式: {{d.design_result.sell_type === 1?'全额出让':'股权合作'}}</p>
                             <p>出让金额: ¥{{d.design_result.price}}</p>
                           </div>
@@ -395,7 +440,7 @@
                           {{d.amount}}
                         </el-col>
                         <el-col :span="6" :class="{'tc-red':d.status < 1 || (d.status === 1 && d.design_result.sell <2)}">
-                          {{d.status | payFormat(d.design_result.sell)}}
+                          {{d.status | payFormat(d.design_result.sell,d.design_result.is_evaluate)}}
                         </el-col>
                         <el-col :span="4">
                           <el-button class="is-custom" type="primary" size="small" v-if="d.status === 0">
@@ -417,13 +462,27 @@
                           <el-button v-if="d.status ===-1" @click="deleteOrder(d.id)">
                             删除
                           </el-button>
-                          <!-- <el-button class="mg-t-10">
-                            评价
-                          </el-button> -->
+                          <el-button class="mg-t-10" v-if="d.status ===1 && d.design_result.sell === 2&&!d.design_result.is_evaluate">
+                            <router-link :to="{name: 'pay_datails', params: {id: d.id}}"
+                              target="_blank" class="router-pay">
+                              评价
+                            </router-link>
+                          </el-button>
                         </el-col>
                       </el-row>
                     </div>
                   </div>
+                </div>
+                <div class="text-align-c">
+                  <!-- <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="jquery.current_page"
+                    :page-sizes="[10, 20, 50, 100]"
+                    :page-size="jquery.per_page"
+                    layout="sizes, prev, pager, next"
+                    :total="jquery.total">
+                  </el-pagination> -->
                 </div>
               </div>
               <el-dialog
@@ -471,7 +530,7 @@
                 </div>
                 <span slot="footer" class="dialog-footer">
                   <el-button @click="dialogIsfile=false">取消</el-button>
-                  <el-button class="is-custom" type="primary" size="small">确定</el-button>
+                  <el-button class="is-custom" type="primary" size="small" @click="isFile(formOrder.id)">确定</el-button>
                 </span>
               </el-dialog>
                <!-- <el-dialog
@@ -532,8 +591,27 @@
             {required: true, type: 'number', message: '请选择所属行业', trigger: 'blur'}
           ],
           content: [
-            {required: true, message: '请选择产品描述', trigger: 'blur'}
+            {required: true, message: '请选择产品描述', trigger: 'blur'},
+            {min: 10, max: 500, message: '长度在 10 到 500 个字符', trigger: 'blur'}
           ]
+        },
+        jquery: {
+          total: 1, // 总条数
+          current_page: 1, // 当前页
+          page: 1, // 页数
+          per_page: 10, // 每页数量
+        },
+        jquery2: {
+          total: 1, // 总条数
+          current_page: 1, // 当前页
+          page: 1, // 页数
+          per_page: 10, // 每页数量
+        },
+        jquery3: {
+          total: 1, // 总条数
+          current_page: 1, // 当前页
+          page: 1, // 页数
+          per_page: 10, // 每页数量
         },
         dialogFormVisible: false, // 发布需求弹窗
         dialogUpdateVisible: false, // 查看详情弹窗
@@ -606,7 +684,7 @@
         }
       },
       // 支付状态
-      payFormat(val, sell) {
+      payFormat(val, sell, pl) {
         if (val === 0) {
           return '待支付'
         } else if (val === 1) {
@@ -614,6 +692,10 @@
             return '交易成功'
           } else if (sell < 2){
             return '待确认文件'
+          } else if (sell === 2 && !pl) {
+            return '待评价'
+          } else if (sell === 2 && pl) {
+            return '已评价'
           }
         } else if (val === 2) {
           return '退款'
@@ -642,6 +724,36 @@
       }
     },
     methods: {
+      // 分页
+      // handleSizeChange(val) {
+      //   this.getOrderList(1, val)
+      // },
+      // handleCurrentChange(val) {
+      //   this.getOrderList(val)
+      // },
+      // handleSizeChange2(val) {
+      //   this.getCollectList(1, val)
+      // },
+      // handleCurrentChange2(val) {
+      //   this.getCollectList(val)
+      // },
+      // handleSizeChange3(val) {
+      //   this.getDemandList(1, val)
+      // },
+      // handleCurrentChange3(val) {
+      //   this.getDemandList(val)
+      // },
+      // 打开需求按钮
+      upVisible() {
+        this.dialogFormVisible = true
+        // let oldClass = document.getElementById('app').getAttribute('class')
+        // if (oldClass) {
+        //   oldClass = oldClass.replace(/disableScroll\x20?/g, '')
+        // }
+        // document.body.setAttribute('class', 'disableScroll')
+        // document.getElementById('app').setAttribute('class', 'disableScroll ' + oldClass)
+        // document.childNodes[1].setAttribute('class', 'disableScroll')
+      },
       // 取消订单按钮
       upOrderBth(id, title, type) {
         this.formOrder = {
@@ -663,6 +775,7 @@
                 this.$set(item, 'status', -1)
               }
             })
+          this.dialogCancelOrder = false
           } else {
              this.$message.error(response.data.meta.message)
              return
@@ -751,6 +864,10 @@
           this.form.design_types.push(type)
         }
       },
+      // 清空表单
+      resetForm(formName) {
+        this.$refs[formName].resetFields()
+      },
       // 发布需求
       createDemand (formName) {
         let self = this
@@ -780,15 +897,16 @@
             }
             let url = api.sdDemandRelease
             let data = row
-            if (self.isUpdate) {
+            let isUpdate = false
+            if (self.form.id) {
+              isUpdate = true
               url = api.sdDemandDemandUpdate
-              if (!row.demand_id) {
-                row.demand_id = self.form.id
-              }
+              row.demand_id = self.form.id
             }
             self.$http.post(url, data).then((response) => {
               if (response.data.meta.status_code === 200) {
-                if (!self.isUpdate) {
+                self.$refs[formName].resetFields()
+                if (!isUpdate) {
                   self.demandList.unshift(response.data.data)
                 } else {
                   self.demandList.forEach((item, index) => {
@@ -800,7 +918,6 @@
                       self.$set(self.demandList, index, response.data.data)
                     }
                   })
-                  self.isUpdate = false
                 }
                 self.dialogFormVisible = false
                 self.form = {
@@ -829,9 +946,20 @@
       // 需求列表
       getDemandList() {
         let self = this
+        // if (p) {
+        //   self.jquery3.current_page = p
+        // }
+        // if (size) {
+        //   self.jquery3.per_page = size
+        // }
         self.isLoading = true
-        self.$http.get(api.sdDemandDemandList).then((response) => {
+        self.$http.get(api.sdDemandDemandList, {params: {
+          per_page: 50
+        }}).then((response) => {
           if (response.data.meta.status_code === 200) {
+            // let pages = response.data.meta.pagination
+            // self.jquery3.total = pages.total
+            // self.jquery3.page = pages.total_pages
             if (response.data.data && response.data.data.length) {
               self.demandList = response.data.data
               self.demandList.forEach(item => {
@@ -856,8 +984,19 @@
       // 订单列表
       getOrderList() {
         this.isLoading = true
-        this.$http.get(api.sdPayMyOrderList).then((response) => {
+        // if (p) {
+        //   this.jquery.current_page = p
+        // }
+        // if (size) {
+        //   this.jquery.per_page = size
+        // }
+        this.$http.get(api.sdPayMyOrderList, {params: {
+          per_page: 50
+        }}).then((response) => {
           if (response.data.meta.status_code === 200) {
+            // let pages = response.data.meta.pagination
+            // this.jquery.total = pages.total
+            // this.jquery.page = pages.total_pages
             if(response.data.data && response.data.data.length) {
               this.orderList = response.data.data
             } else {
@@ -879,9 +1018,22 @@
       },
       // 收藏列表
       getCollectList() {
+        // if (p) {
+        //   this.jquery2.current_page = p
+        // }
+        // if (size) {
+        //   this.jquery2.per_page = size
+        // }
         this.isLoading = true
-        this.$http.get(api.sdDesignResultsMyCollectionList,{params: {type: 2}}).then((response) => {
+        this.$http.get(api.sdDesignResultsMyCollectionList, {params: {
+          type: 2,
+          per_page: 50
+          // type: 2, page: this.jquery2.current_page, per_page: this.jquery2.per_page
+        }}).then((response) => {
           if (response.data.meta.status_code === 200) {
+            // let pages = response.data.meta.pagination
+            // this.jquery2.total = pages.total
+            // this.jquery2.page = pages.total_pages
             if(response.data.data && response.data.data.length) {
               this.collectList = response.data.data
               this.collectList.forEach(item => {
@@ -930,14 +1082,39 @@
           return
         })
       },
+      // 确认文件
+      isFile(id) {
+          this.$http.get(api.payConfirmFile, {params: {id: id}}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            console.log('id', id)
+            this.orderList.forEach((item, index) => {
+              if (item.id === id) {
+                // item.design_result.sell = 2
+                this.$set(item.design_result, 'sell', 2)
+                this.$set(this.orderList, index, item)
+              }
+            })
+            this.dialogIsfile = false
+          } else {
+            this.$message.error(response.data.meta.message)
+            return
+          }
+        })
+        .catch(function (error) {
+          this.$message.error(error.message)
+          console.error(error.message)
+          return
+        })
+      },
       // 关闭弹窗按钮
-      closeBtn() {
+      closeBtn(formName) {
         this.form = {
           'design_types': []
         }
         this.dialogFormVisible = false
         this.dialogUpdateVisible = false
         this.dialogDeleteVisible = false
+        this.resetForm(formName)
       },
       // 关闭项目
       deleteDemand() {
@@ -1006,6 +1183,7 @@
   }
   .demand-list .el-col {
     padding: 10px 20px 10px 20px;
+    overflow: hidden;
   }
   .demand-subject {
     border: 1px solid #e6e6e6;
@@ -1051,12 +1229,24 @@
   }
   .collect-centent .c-title {
     font-size: 1.6rem;
-    color: #ff5a5f;
+    color: #222;
     padding: 0 5px 10px 0;
     line-height: 1;
   }
+  .collect-centent .c-title:hover {
+    color: #ff5a5f;
+  }
   .details .el-col {
     max-height: 180px;
+    overflow: hidden;
+  }
+  .item-del {
+    margin-top: 10px;
+    font-size: 12px;
+    text-align: center;
+    color: #666;
+  }
+  .details-form {
     overflow: hidden;
   }
   /* .details .c-title:hover {
@@ -1078,6 +1268,10 @@
     border-radius: 4px;
     border: 1px solid #e6e6e6;
     color: #999;
+  }
+  .des-type button:hover {
+    border-color: #ff4949;
+    color: #ff4949;
   }
   .no-demand {
     text-align: center;
@@ -1110,6 +1304,7 @@
   .demand-content .is-custom {
     min-width: 120px;
     height: 34px;
+    font-size: 14px;
   }
   .submit-form .el-form {
     padding: 10px 20px;
@@ -1141,6 +1336,10 @@
   .router-work {
     display: block;
     color: #fff;
+  }
+  .router-pay {
+    display: block;
+    color: #666;
   }
   .uid {
     padding-right: 10px;

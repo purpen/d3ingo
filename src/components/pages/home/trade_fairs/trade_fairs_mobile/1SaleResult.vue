@@ -16,7 +16,12 @@
           <el-row :gutter="10" class="list-cloud">
             <el-col :span="12" class="item-cloud" v-for="(achieve, index) in designCases" :key="index">
               <div class="list-item">
-                <div class="list-image" @click="listDatail(achieve.id)">
+                <div class="list-image" v-if="achieve.sell === 1 || achieve.sell === 2">
+                  <div class="images-size">
+                    <img :src="achieve.cover.small" alt="点击查看详情" class="img-size">
+                  </div>
+                </div>
+                <div class="list-image" @click="listDatail(achieve.id)" v-else>
                   <div class="image-size">
                     <img :src="achieve.cover.small" alt="点击查看详情" class="img-size">
                   </div>
@@ -31,15 +36,33 @@
                         <span>出让方式：&nbsp;{{achieve.sell_type === 1 ? '全额出让' : '股权合作'}}</span><span class="money">{{achieve.sell_type === 2 ?achieve.share_ratio+'%' : ''}}</span>
                       </div>
                       <div class="list-sum">
-                        <span>出让金额：&nbsp;<span class="money">￥{{achieve.price}}</span></span>
+                        <span>出让金额：&nbsp;<span class="money" :class="{'pay-yet' : achieve.sell === 1 || achieve.sell === 2}">￥{{achieve.price}}</span></span>
                       </div>
                     </div>
-                    <div class="list-right" @click="collect(achieve.id)">
+                    <!-- <div class="list-right" @click="collect(achieve.id)">
                       <div class="list-button" v-if="achieve.is_follow === 0">
                         <span class="button-text">感兴趣</span>
                       </div>
                       <div class="list-button interest-border" v-if="achieve.is_follow === 1">
                         <span class="button-interest">已感兴趣</span>
+                      </div>
+                    </div> -->
+                    <div v-if="achieve.sell !== 1 && achieve.sell !== 2">
+                      <div class="list-right" v-if="intersClick" @click="collect(achieve.id)">
+                        <div class="list-button" v-if="achieve.is_follow === 0">
+                          <span class="button-text">感兴趣</span>
+                        </div>
+                        <div class="list-button interest-border" v-if="achieve.is_follow === 1">
+                          <span class="button-interest">已感兴趣</span>
+                        </div>
+                      </div>
+                      <div class="list-right" v-else disabled>
+                        <div class="list-button" v-if="achieve.is_follow === 0">
+                          <span class="button-text">感兴趣</span>
+                        </div>
+                        <div class="list-button interest-border" v-if="achieve.is_follow === 1">
+                          <span class="button-interest">已感兴趣</span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -63,6 +86,7 @@
     data() {
       return {
         isLoading: false,
+        intersClick: true,
         designCases: '',
         query: {
           page: 1,
@@ -82,10 +106,10 @@
     methods: {
       // 收藏需求
       collect(id) {
-        this.isLoading = true
+        this.intersClick = false
         this.$http.get(api.designResultsCollectionOperation, {params: {id: id}}).then((response) => {
           if (response.data.meta.status_code === 200) {
-            this.isLoading = false
+            this.intersClick = true
             for (let index in this.designCases) {
               if (this.designCases[index].id === id) {
                 if (this.designCases[index].is_follow === 0) {
@@ -96,13 +120,13 @@
               }
             }
           } else {
-            this.isLoading = false
+            this.intersClick = true
             this.$message.error(response.data.meta.message)
             return
           }
         })
         .catch(function (error) {
-          this.isLoading = false
+          this.intersClick = true
           this.$message.error(error.message)
           return
         })
@@ -236,6 +260,22 @@
   }
   .img-size {
     height: 100%;
+    max-width: 100%;
+  }
+  .images-size {
+    height: 100%;
+    max-width: 100%;
+    position: relative
+  }
+  .images-size:after {
+    content: '';
+    position: absolute;
+    left: -2px;
+    top: -2px;
+    width: 85px;
+    height: 85px;
+    background: url('../../../../../assets/images/trade_fairs/list/AlreadySold@2x.png') no-repeat center;
+    background-size: contain;
   }
   .list-text {
     padding-top: 10px;
@@ -250,6 +290,7 @@
     line-height: 17.04px;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .list-left {
     padding-top: 8px;
@@ -267,6 +308,8 @@
     color: #666666;
     line-height: 11.36px;
     padding-top: 10px;
+    overflow: hidden;
+    white-space: nowrap;
   }
   .money {
     color: #FF4696;
@@ -320,5 +363,8 @@
     left: -8px;
     background: url('../../../../../assets/images/trade_fairs/list/BeInterestedClick@2x.png') no-repeat center;
     background-size: contain;
+  }
+  .pay-yet {
+    color: #999999
   }
 </style>

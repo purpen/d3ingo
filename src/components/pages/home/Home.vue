@@ -21,12 +21,7 @@
           </div>
         </swiper-slide>
         <swiper-slide v-if="!isMob">
-          <div class="slide" :style="{ background: 'url(' + require ('assets/images/trade_fairs/banner/pc-banner.png') + ') no-repeat center', height: calcHeight}">
-          <div class="banner-button">
-            <div class="text-width">
-              <router-link to="/shunde/trade_fairs/demand_login" class="banner-text">立即参与</router-link>
-            </div>
-          </div>
+          <div class="slide" :style="{ background: 'url(' + require ('assets/images/trade_fairs/banner/pc-banner.png') + ') no-repeat center', height: calcHeight}" @click="routerTrading">
           </div>
         </swiper-slide>
         <swiper-slide v-if="isMob">
@@ -404,6 +399,13 @@
       }
     },
     methods: {
+      routerTrading() {
+        if (!this.token) {
+          this.$router.push({name: 'trade_fairs'})
+        } else {
+          this.$router.push({name: 'demand_login', query: {type: 1}})
+        }
+      },
       getArticleList() {
         this.$http.get(api.articleList,
         {params: {per_page: 3}})
@@ -492,6 +494,9 @@
       isMob() {
         return this.$store.state.event.isMob
       },
+      token() {
+        return this.$store.state.event.token
+      },
       user() {
         let user = this.$store.state.event.user // role_id
         return user
@@ -556,6 +561,7 @@
   }
 
   .slide {
+    cursor: pointer;
     position: relative;
     color: #475669;
     font-size: 18px;

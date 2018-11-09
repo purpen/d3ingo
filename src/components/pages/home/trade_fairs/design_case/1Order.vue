@@ -9,20 +9,23 @@
           <v-menu-sub></v-menu-sub>
           <div :class="['content-box', isMob ? 'content-box-m' : '']">
             <div class="design-case-list" v-loading="isLoading">
-              <div class="no-list" v-if="!orderList||!orderList.length">
+              <!-- <div class="no-list" v-if="!orderList||!orderList.length">
                 <img src="../../../../../assets/images/trade_fairs/default/NoOrder@2x.png" alt="无订单">
                 <p>还没有订单～</p>
-              </div>
-              <div class="demand-list" v-if="orderList&&orderList.length">
+              </div> -->
+              <div class="demand-list">
                 <div class="demand-header">
                   <el-row>
-                    <el-col :span="10">
+                    <el-col :span="8">
                       项目名称
                     </el-col>
-                    <el-col :span="4">
+                    <el-col :span="5">
+                      购买方
+                    </el-col>
+                    <el-col :span="3">
                       交易金额
                     </el-col>
-                    <el-col :span="6">
+                    <el-col :span="4">
                       项目状态
                     </el-col>
                     <el-col :span="4">
@@ -39,7 +42,7 @@
                   </el-row>
                   <div class="demand-content">
                     <el-row>
-                      <el-col :span="10" class="collect-all">
+                      <el-col :span="8" class="collect-all">
                         <div class="collect-img" :style="{background:'url('+d.cover.logo +') no-repeat center / contain'}">
                         </div>
                         <div class="collect-centent">
@@ -48,31 +51,29 @@
                           <p>出让金额: ¥{{d.design_result.price}}</p>
                         </div>
                       </el-col>
-                      <el-col :span="4">
+                      <el-col :span="5" class="company">
+                        <!-- {{d.amount}} -->
+                        <p class="company-name">
+                          {{d.demand_company_name}}
+                        </p>
+                        <p>
+                          <span class="tc-9">联系方式:</span>
+                          <span class="tc-6">{{d.demand_company_phone}}</span>
+                        </p>
+                      </el-col>
+                      <el-col :span="3">
                         {{d.amount}}
                       </el-col>
-                      <el-col :span="6" :class="{'tc-red':d.status < 1 || (d.status === 1 && d.design_result.sell <2)}">
-                        {{d.status | payFormat(d.design_result.sell)}}
+                      <el-col :span="4" class="hint">
+                        <p :class="{'tc-red': d.design_result.sell < 2}">{{d.status | payFormat(d.design_result.sell)}}</p>
+                        <p>请尽快联系需求方交付设计成果</p>
                       </el-col>
                       <el-col :span="4">
-                        <el-button class="is-custom" type="primary" size="small" v-if="d.status === 0">
-                          <router-link :to="{name: 'managed_funds', params: {id: d.design_result.id}}"
-                            target="_blank" class="router-work">
-                            继续支付
+                        <el-button class="is-custom" type="primary" size="small" v-if="d.design_result.sell === 2">
+                          <router-link :to="{name: 'pay_datails', params: {id: d.id}}"
+                            target="_blank" class="router-pay">
+                            查看评价
                           </router-link>
-                          
-                        </el-button>
-                        <el-button class="mg-t-10" v-if="d.status === 0" @click="upOrderBth(d.id, d.design_result.title, 1)">
-                          取消订单
-                        </el-button>
-                        <el-button class="is-custom" type="primary" size="small" v-if="d.status ===1 && d.design_result.sell < 2" @click="upOrderBth(d.id,d.design_result.title, 2)">
-                          确认文件
-                        </el-button>
-                        <el-button class="mg-t-10" v-if="d.status ===1 && d.design_result.sell < 2" @click="dialogAdmin=true">
-                          仲裁电话
-                        </el-button>
-                        <el-button v-if="d.status ===-1" @click="deleteOrder(d.id)">
-                          删除
                         </el-button>
                         <!-- <el-button class="mg-t-10">
                           评价
@@ -140,6 +141,28 @@
         } else {
           return
         }
+      },
+      // 支付状态
+      payFormat(val, sell, pl) {
+        if (val === 0) {
+          return '待支付'
+        } else if (val === 1) {
+          if (sell === 2) {
+            return '交易成功'
+          } else if (sell < 2){
+            return '待确认文件'
+          } else if (sell === 2 && !pl) {
+            return '待评价'
+          } else if (sell === 2 && pl) {
+            return '已评价'
+          }
+        } else if (val === 2) {
+          return '退款'
+        } else if (val === -1) {
+          return '交易失败'
+        } else {
+          return val
+        }
       }
     },
     methods: {
@@ -159,16 +182,16 @@
           }
         )
       },
-      // 获取收藏列表
+      // 获取订单列表
       getDesignCase () {
         const that = this
         that.isLoading = true
-        that.$http.get (api.sdDesignDesignCollectList, {})
+        that.$http.get (api.sdPayMyOrderList, {})
         .then (function (response) {
           that.isLoading = false
           if (response.data.meta.status_code === 200) {
             if (response.data.data && response.data.data.length) {
-              that.collectList = response.data.data
+              that.orderList = response.data.data
             }
           }
         })
@@ -504,6 +527,21 @@
     padding-left: 15px;
     color: #FF5A5F;
   }
+  .collect-centent {
+    padding-left: 150px;
+  }
+  .collect-centent p {
+    line-height: 24px;
+    color: #666;
+  }
+  .collect-img {
+    position: absolute;
+    width: 150px;
+    height: 90px;
+    left: 10px;
+    top: 5px;
+    border: 1px solid #e6e6e6;
+  }
   .dia-interest:before {
     content: '';
     position: absolute;
@@ -578,6 +616,75 @@
   .content-height {
     overflow-x: hidden;
     max-height: 180px;
+  }
+  .demand-list {
+    font-size: 14px;
+  }
+  .demand-list .el-col {
+    padding: 10px 20px 10px 20px;
+    overflow: hidden;
+  }
+  .demand-list .company {
+    padding-top: 5px;
+  }
+  .demand-header {
+    background: #f7f7f7;
+    border: 1px solid #e6e6e6;
+    border-bottom: none;
+  }
+  .demand-subject {
+    border: 1px solid #e6e6e6;
+    margin: 0 0 20px 0;
+  }
+  .demand-content {
+    padding: 10px 0 10px 0;
+    min-height: 120px;
+  }
+  .demand-time {
+    height: 40px;
+    line-height: 20px;
+    border-bottom: 1px solid #e6e6e6;
+    background: #fafafa;
+  }
+  .details p {
+    line-height: 1.8;
+    font-size: 12px;
+  }
+  .details .c-title {
+    font-size: 1.6rem;
+    color: #222;
+    padding: 0 5px 10px 0;
+    line-height: 1;
+  }
+  .collect-centent .c-title {
+    font-size: 1.6rem;
+    color: #222;
+    padding: 0 5px 10px 0;
+    line-height: 1;
+  }
+  .collect-centent .c-title:hover {
+    color: #ff5a5f;
+  }
+  .demand-content .is-custom {
+    min-width: 120px;
+    height: 34px;
+  }
+  .company-name {
+    padding-bottom: 10px;
+    font-size: 14px;
+    color: #222;
+  }
+  .hint p {
+    color: #999;
+    margin-bottom: 10px;
+    line-height: 1;
+  }
+  .hint .tc-red {
+    color: #ff5a5f;
+  }
+  .router-pay {
+    color: #FFF;
+    display: block;
   }
   @media screen and (max-width: 767px) {
     .opt a {

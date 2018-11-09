@@ -488,6 +488,9 @@ export default {
   sdPayCloseOrder: '/pay/closeOrder', // GET 取消未支付订单
   payOrderShow: '/pay/orderShow', // GET 设计成果订单详情
   payDeleteOrder: '/pay/deleteOrder', // GET 删除设计成果已关闭订单
+  payConfirmFile: '/pay/confirmFile', // GET 确认设计成果文件
+  sdDemandEvaluateResult: '/sd/demand/evaluateResult', // POST 需求公司评价设计成果
+  sdDemandEvaluateInfo: '/sd/demand/evaluateInfo', // GET 设计成果评价详情
 
   // 顺德设计方
   sdDesignCancelCollectDemand: '/sd/design/cancelCollectDemand', // POST 取消收藏需求
