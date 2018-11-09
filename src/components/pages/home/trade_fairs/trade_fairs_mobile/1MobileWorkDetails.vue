@@ -60,13 +60,13 @@
         </div>
       </div>
       <div class="wide-line"></div>
-      <div class="explain-border">
+      <div class="explain-border" v-if="formup.illustrate_url && formup.illustrate_url.length">
         <div class="explain" @click="seenBook">
           <div class="explain-left">产品功能说明书</div>
           <div class="explain-right"></div>
         </div>
       </div>
-      <div class="letters-patant">
+      <div class="letters-patant" v-if="formup.patent_url && formup.patent_url.length">
         <div class="letters-text">专利证书</div>
         <div class="let-round">
           <div class="letters-img" v-for="(patent, index) in patentRound" :key="index">
