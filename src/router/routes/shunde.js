@@ -22,7 +22,7 @@ module.exports = [
     },
     component: require('@/components/pages/home/trade_fairs/1BriefContent')
   },
-  // 需求方登陆简介
+  // 登陆简介
   {
     path: '/shunde/trade_fairs/demand_login',
     name: 'demand_login',
@@ -250,5 +250,15 @@ module.exports = [
       hideFooter: true
     },
     component: require('@/components/pages/home/trade_fairs/trade_fairs_mobile/1MobileWorkDetails')
+  },
+  // 移动端PDF说明书预览页
+  {
+    path: '/shunde/trade_fairs/trade_fairs_mobile/saleResult/moblie_preview/:id',
+    name: 'moblie_preview',
+    meta: {
+      title: '移动端PDF说明书预览页',
+      requireAuth: true
+    },
+    component: require('@/components/pages/home/trade_fairs/trade_fairs_mobile/1MobliePreview')
   }
 ]

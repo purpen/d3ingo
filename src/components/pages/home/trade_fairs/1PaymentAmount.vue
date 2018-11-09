@@ -12,7 +12,8 @@
               <span class="border"></span>
             </div>
             <div class="mar-r-10">
-              <router-link :to="{ name: 'work_datails', params: {id: this.$route.params.id}}" class="font-14">{{designTitle}}</router-link>
+              <router-link :to="{ name: 'work_datails', params: {id: this.$route.params.id}}" class="font-14" v-if="item.status === -1">{{designTitle}}</router-link>
+              <router-link :to="{ name: 'pay_datails', params: {id: payUid}}" class="font-14" v-else>{{designTitle}}</router-link>
               <span class="border"></span>
             </div>
             <div class="mar-r-10">
