@@ -37,8 +37,8 @@
                       </ul>
                       <ul v-if="d.status === -1&&d.up">
                         <li class="del" @click="toUpdateUrl(d.id)">修改</li>
-                        <li class="del-disabled" @click="updateBtn(d, 2)" v-if="d.sell === 1">删除</li>
-                        <li class="edit" @click="updateBtn(d, 2)" v-if="d.sell === 2">删除2</li>
+                        <li class="del-disabled" v-if="d.sell === 1">删除</li>
+                        <li class="edit" @click="updateBtn(d, 2)" v-if="d.sell === 2">删除</li>
                       </ul>
                     </div>
                     <div class="image-box">
@@ -62,7 +62,7 @@
                             ¥{{d.price}}
                           </span>
                         </span>
-                        <span :class="['fr', {'tc-red': d.sell === 1}]">{{d.status | statusFormat(d.sell)}}</span>
+                        <span :class="['fr', {'tc-red': d.sell>= 1}]">{{d.status | statusFormat(d.sell)}}</span>
                       </p>
                     </div>
                   </el-card>
