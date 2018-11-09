@@ -21,24 +21,15 @@
               <span>{{designAttr.content}}
               </span>
             </div>
-            <!-- <div class="des">
-              <p v-for="(d, index) in item.case_image" :key="index">
-                <img :src="d.big" :alt="d.name" :title="d.name"/>
-                <slot>
-                <p class="img-des">{{ d.summary }}</p>
-                </slot>
-              </p>
-            </div> -->
             <div class="des">
-              <div class="des-image" v-for="(img, index) in formup.images_url" :key="index">
+              <div class="des-image" v-for="(img, index) in imagesUrl" :key="index">
                 <img class="image-size" :src="img.big"/>
               </div>
             </div>
           </div>
 
           <!-- 评价 -->
-          <!-- <div class="select-item-box clearfix" v-if="statusLabel.evaluate"> -->
-          <div class="select-item-box clearfix" v-if="formup.sell === 2">
+          <div class="select-item-box clearfix" v-if="designAttr.sell === 2">
             <div class="evaluation-style">
               <div class="published-evaluation">发表评价</div>
               <div v-if="false">客户评价</div>
@@ -155,20 +146,20 @@
               </div>
             </div>
             <!-- 下面按钮 -->
-            <div class="right-interset" v-if="$route.query.type !== '2'">
+            <div class="right-interset" v-if="user.type === 1">
               <div class="list-contain" v-if="intersClick" @click="collect">
-                <div class="list-button interset-hover" v-if="formup.is_follow === 0">
+                <div class="list-button interset-hover" v-if="designAttr.is_follow === 0">
                   <span class="button-text">感兴趣</span>
                 </div>
-                <div class="list-button interest-border" v-if="formup.is_follow === 1">
+                <div class="list-button interest-border" v-if="designAttr.is_follow === 1">
                   <span class="button-interest">已感兴趣</span>
                 </div>
               </div>
               <div class="list-contain" v-else disabled>
-                <div class="list-button interset-hover" v-if="formup.is_follow === 0">
+                <div class="list-button interset-hover" v-if="designAttr.is_follow === 0">
                   <span class="button-text">感兴趣</span>
                 </div>
-                <div class="list-button interest-border" v-if="formup.is_follow === 1">
+                <div class="list-button interest-border" v-if="designAttr.is_follow === 1">
                   <span class="button-interest">已感兴趣</span>
                 </div>
               </div>
@@ -271,7 +262,9 @@ export default {
       isLoading: false,
       elementShow: false,
       elementPosition: false,
+      isFullow: '',
       imgSmall: '',
+      imagesUrl: '',
       interestButton: false,
       credential: ['1'],
       showType: false,
@@ -369,13 +362,13 @@ export default {
     // 收藏/取消收藏
     collect() {
       this.intersClick = false
-      this.$http.get(api.designResultsCollectionOperation, {params: {id: this.formup.id}}).then((response) => {
+      this.$http.get(api.designResultsCollectionOperation, {params: {id: this.designAttr.id}}).then((response) => {
         if (response.data.meta.status_code === 200) {
           this.intersClick = true
-          if (this.formup.is_follow === 0) {
-            this.formup.is_follow = 1
+          if (this.designAttr.is_follow === 0) {
+            this.designAttr.is_follow = 1
           } else {
-            this.formup.is_follow = 0
+            this.designAttr.is_follow = 0
           }
         } else {
           this.intersClick = true
@@ -391,42 +384,42 @@ export default {
     },
     // 评价设计公司
     evaluateSubmit() {
-      // if (this.evaluate.design_level === 0 || this.evaluate.response_speed === 0 || this.evaluate.service === 0) {
-      //   this.$message.error('每项分数至少为一星')
-      //   return
-      // }
-      // if (!this.evaluate.content) {
-      //   this.$message.error('请填写评价内容！')
-      //   return
-      // }
+      if (this.evaluate.design_level === 0 || this.evaluate.response_speed === 0 || this.evaluate.service === 0) {
+        this.$message.error('每项分数至少为一星')
+        return
+      }
+      if (!this.evaluate.content) {
+        this.$message.error('请填写评价内容！')
+        return
+      }
 
-      // let row = {
-      //   item_id: this.item.id,
-      //   service: this.evaluate.service,
-      //   content: this.evaluate.content,
-      //   design_level: this.evaluate.design_level,
-      //   response_speed: this.evaluate.response_speed
-      // }
+      let row = {
+        item_id: this.item.id,
+        service: this.evaluate.service,
+        content: this.evaluate.content,
+        design_level: this.evaluate.design_level,
+        response_speed: this.evaluate.response_speed
+      }
 
-      // let self = this
-      // self.evaluateLoadingBtn = true
-      // self.$http
-      //   .post(api.demandUsersEvaluate, row)
-      //   .then(function(response) {
-      //     self.evaluateLoadingBtn = false
-      //     if (response.data.meta.status_code === 200) {
-      //       self.evalu = self.evaluate
-      //       self.item.status = 22
-      //       self.item.status_value = '已评价'
-      //       self.$message.success('评价成功!')
-      //     } else {
-      //       self.$message.error(response.data.meta.message)
-      //     }
-      //   })
-      //   .catch(function(error) {
-      //     self.$message.error(error.message)
-      //     self.evaluateLoadingBtn = false
-      //   })
+      let self = this
+      self.evaluateLoadingBtn = true
+      self.$http
+        .post(api.demandUsersEvaluate, row)
+        .then(function(response) {
+          self.evaluateLoadingBtn = false
+          if (response.data.meta.status_code === 200) {
+            self.evalu = self.evaluate
+            self.item.status = 22
+            self.item.status_value = '已评价'
+            self.$message.success('评价成功!')
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+        })
+        .catch(function(error) {
+          self.$message.error(error.message)
+          self.evaluateLoadingBtn = false
+        })
     },
     // 获取详情
     upDetails() {
@@ -439,10 +432,10 @@ export default {
             if (designAttr) {
               this. designAttr = designAttr
             }
-            // this.imgUrl = response.data.data.design_company.logo_image
-            // this.companyName = response.data.data.design_company.company_name
+            this.imgUrl = response.data.data.design_company_logo
+            this.patentRound = response.data.data.design_result.patent_url
+            this.imagesUrl = response.data.data.design_result.images_url
             this.isLoading = false
-            this.patentRound = response.data.data.patent_url
           } else {
             this.isLoading = false
             this.$message.error(response.data.meta.message)

@@ -82,7 +82,7 @@
               label="所属公司"
               min-width="90">
                 <template slot-scope="scope">
-                  <div>{{scope.row.design_company.company_name }}</div>
+                  <div>{{scope.row.design_company_name }}</div>
                   <div>{{scope.row.contacts }}</div>
                   <div>{{scope.row.contact_number }}</div>
                 </template>
