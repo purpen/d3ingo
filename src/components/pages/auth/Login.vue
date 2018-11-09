@@ -38,6 +38,7 @@
           <el-button type="primary" :loading="isLoadingBtn" @keyup="submit('ruleForm')" @click="submit('ruleForm')" class="login-btn is-custom">登录
           </el-button>
         </el-form>
+        <p v-if="false" class="authorize" @click="getJDCode">京东授权登录:<span class="fx-4"><a href="http://oauth2.jdcloud.com/authorize?client_id=9651541661345895&redirect_uri=http://jdyun.taihuoniao.com&response_type=code&state=matrixapp">JD</a></span></p>
       </div>
     </div>
     <div class="reg">
@@ -145,10 +146,17 @@ export default {
     }
   },
   methods: {
+    getJDCode() {
+      this.$http.get(api.jdCode)
+      .then(res => {
+        console.log(res)
+      }).catch(err => {
+        console.log(err)
+      })
+    },
     checkAccount(number) {
       if (number && number.length === 11) {
         this.$http.post(api.errCount, {account: number}).then(res => {
-          console.log(res.data.data.err_count)
           if (res.data.meta.status_code === 200) {
             if (res.data.data.err_count && res.data.data.err_count >= 3) {
               this.showImgCode = true
@@ -702,6 +710,15 @@ form {
   height: 34px;
   background-size: cover;
   border-radius: 0 4px 4px 0;
+  cursor: pointer;
+}
+.authorize {
+  padding-top: 10px;
+  text-align: left;
+}
+.authorize span {
+  padding-left: 10px;
+  color: #0989C5;
   cursor: pointer;
 }
 @media screen and (max-width: 767px) {
