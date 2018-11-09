@@ -55,7 +55,7 @@
                     <el-col :span="8">
                       <p class="eva-text">服务态度</p>
                       <el-rate
-                      v-model.number="evaluate.service"
+                      v-model.number="evaluate.serve_attitude"
                       show-text>
                     </el-rate>
                     </el-col>
