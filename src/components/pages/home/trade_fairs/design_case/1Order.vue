@@ -43,8 +43,7 @@
                   <div class="demand-content">
                     <el-row>
                       <el-col :span="8" class="collect-all">
-                        <div class="collect-img" >
-                          <!-- :style="{background:'url('+d.cover.logo +') no-repeat center / contain'}" -->
+                        <div class="collect-img" :style="{background:'url('+d.cover.logo +') no-repeat center / contain'}">
                         </div>
                         <div class="collect-centent">
                           <p class="c-title">{{d.design_result.title}}</p>
@@ -672,7 +671,7 @@
   }
   .company-name {
     padding-bottom: 10px;
-    font-size: 16px;
+    font-size: 14px;
     color: #222;
   }
   .hint p {
@@ -685,6 +684,7 @@
   }
   .router-pay {
     color: #FFF;
+    display: block;
   }
   @media screen and (max-width: 767px) {
     .opt a {

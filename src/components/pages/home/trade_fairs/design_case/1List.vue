@@ -62,7 +62,7 @@
                             ¥{{d.price}}
                           </span>
                         </span>
-                        <span class="fr">{{d.status | statusFormat(d.sell)}}</span>
+                        <span :class="['fr', {'tc-red': d.sell === 1}]">{{d.status | statusFormat(d.sell)}}</span>
                       </p>
                     </div>
                   </el-card>
@@ -191,9 +191,11 @@
           } else if (val === 3) {
             return '已上架'
           } else if (val === -1) {
-            return '已下架'
-          } else if (val === -1 && sell === 1){
-            return '已售出'
+            if (sell === 1) {
+              return '已售出'
+            } else {
+              return '已下架'
+            }
           }
         }
       }
