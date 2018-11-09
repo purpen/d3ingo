@@ -366,6 +366,17 @@
                     </div>
                   </div>
                 </div>
+                <div class="text-align-c">
+                  <el-pagination
+                    @size-change="handleSizeChange2"
+                    @current-change="handleCurrentChange2"
+                    :current-page.sync="jquery2.current_page"
+                    :page-sizes="[3, 20, 50, 100]"
+                    :page-size="jquery2.per_page"
+                    layout="sizes, prev, pager, next"
+                    :total="jquery2.total">
+                  </el-pagination>
+                </div>
               </div>
             </div>
             <div v-if="type === 3">
@@ -456,7 +467,7 @@
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     :current-page.sync="jquery.current_page"
-                    :page-sizes="[10, 20, 50, 100]"
+                    :page-sizes="[2, 20, 50, 100]"
                     :page-size="jquery.per_page"
                     layout="sizes, prev, pager, next"
                     :total="jquery.total">
@@ -574,10 +585,16 @@
           ]
         },
         jquery: {
-          total: 1,
-          current_page: 1,
-          page: 1,
-          per_page: 2,
+          total: 1, // 总条数
+          current_page: 1, // 当前页
+          page: 1, // 页数
+          per_page: 2, // 每页数量
+        },
+        jquery2: {
+          total: 1, // 总条数
+          current_page: 1, // 当前页
+          page: 1, // 页数
+          per_page: 3, // 每页数量
         },
         dialogFormVisible: false, // 发布需求弹窗
         dialogUpdateVisible: false, // 查看详情弹窗
@@ -679,25 +696,31 @@
       },
       type(val) {
         if (val === 1) {
-          this.getDemandList()
+          this.getDemandList(1)
         } else if (val === 2) {
-          this.getCollectList()
+          this.getCollectList(1)
         } else if (val === 3) {
-          this.jquery.current_page = 1
-          this.getOrderList()
+          this.getOrderList(1)
         } else {
-          this.getDemandList()
+          this.getDemandList(1)
         }
       }
     },
     methods: {
       // 分页
       handleSizeChange(val) {
-        console.log('每页1条')
+        this.getOrderList(1, val)
       },
       handleCurrentChange(val) {
-        console.log('当前页:2')
+        this.getOrderList(val)
       },
+      handleSizeChange2(val) {
+        this.getCollectList(1, val)
+      },
+      handleCurrentChange2(val) {
+        this.getCollectList(val)
+      },
+
       // 打开需求按钮
       upVisible() {
         this.dialogFormVisible = true
@@ -730,6 +753,7 @@
                 this.$set(item, 'status', -1)
               }
             })
+          this.dialogCancelOrder = false
           } else {
              this.$message.error(response.data.meta.message)
              return
@@ -925,12 +949,21 @@
         })
       },
       // 订单列表
-      getOrderList() {
+      getOrderList(p, size) {
         this.isLoading = true
-        this.$http.get(api.sdPayMyOrderList, {
+        if (p) {
+          this.jquery.current_page = p
+        }
+        if (size) {
+          this.jquery.per_page = size
+        }
+        this.$http.get(api.sdPayMyOrderList, {params: {
           page: this.jquery.current_page, per_page: this.jquery.per_page
-        }).then((response) => {
+        }}).then((response) => {
           if (response.data.meta.status_code === 200) {
+            let pages = response.data.meta.pagination
+            this.jquery.total = pages.total
+            this.jquery.page = pages.total_pages
             if(response.data.data && response.data.data.length) {
               this.orderList = response.data.data
             } else {
@@ -951,10 +984,22 @@
         })
       },
       // 收藏列表
-      getCollectList() {
+      getCollectList(p, size) {
+        if (p) {
+          this.jquery2.current_page = p
+        }
+        if (size) {
+          this.jquery2.per_page = size
+        }
+        // , page: this.jquery2.current_page, per_page: this.jquery2.per_page
         this.isLoading = true
-        this.$http.get(api.sdDesignResultsMyCollectionList,{params: {type: 2}}).then((response) => {
+        this.$http.get(api.sdDesignResultsMyCollectionList, {params: {
+          type: 2
+        }}).then((response) => {
           if (response.data.meta.status_code === 200) {
+            let pages = response.data.meta.pagination
+            this.jquery2.total = pages.total
+            this.jquery2.page = pages.total_pages
             if(response.data.data && response.data.data.length) {
               this.collectList = response.data.data
               this.collectList.forEach(item => {
@@ -1010,6 +1055,7 @@
             this.collectList.forEach(item => {
               if (item.id === id) {
                 item.design_result.sell = 2
+                this.$set(item, 'design_result', item.design_result)
               }
             })
             this.dialogIsfile = false
