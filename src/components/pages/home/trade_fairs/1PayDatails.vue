@@ -3,8 +3,8 @@
     <div class="container">
       <div class="navigate-header">
         <div class="navigate-text">
-          <router-link :to="{name: 'sdDesign_order'}" v-if="user.type === 1">我的订单</router-link>
-          <router-link :to="{name: 'demand_list', query: {type: 3}}" v-if="user.type === 2">我的订单</router-link>
+          <router-link :to="{name: 'demand_list'}" v-if="user.type === 1">我的订单</router-link>
+          <router-link :to="{name: 'sdDesign_order', query: {type: 3}}" v-if="user.type === 2">我的订单</router-link>
         </div>
         <div class="navigate-text arrow-text">
           <span>{{designAttr.title}}</span>
@@ -31,11 +31,11 @@
           <!-- 评价 -->
           <div class="select-item-box clearfix" v-if="designAttr.sell === 2">
             <div class="evaluation-style">
-              <div class="published-evaluation" v-if="designAttr.is_evaluate === 0 && designAttr.sell === 2">发表评价</div>
+              <div class="published-evaluation" v-if="designAttr.is_evaluate === 0 && designAttr.sell === 2 && user.type !== 2">发表评价</div>
               <div class="published-evaluation" v-if="designAttr.is_evaluate === 1 && user.type === 1">评价</div>
               <div  class="published-evaluation" v-if="designAttr.is_evaluate === 1 && user.type === 2">客户评价</div>
                 <!-- 未提交的评价 -->
-                <div class="evaluate-report clearfix" v-if="designAttr.is_evaluate === 0 && designAttr.sell === 2">
+                <div class="evaluate-report clearfix" v-if="designAttr.is_evaluate === 0 && designAttr.sell === 2 && user.type !== 2">
                   <p class="ev-c-ava">
                   <el-row class="grade">
                     <el-col :span="8">
@@ -386,7 +386,7 @@ export default {
 
       let row = {
         order_id: this.formup.uid,
-        serve_attitude: this.evaluate.service,
+        serve_attitude: this.evaluate.serve_attitude,
         content: this.evaluate.content,
         design_level: this.evaluate.design_level,
         response_speed: this.evaluate.response_speed
@@ -1036,7 +1036,7 @@ p.img-des {
 .state-style {
   width: 280px;
   height: 50px;
-  background: #FAFAFA;
+  background: #fff;
   margin-top: 10px;
 }
 .state-way {
