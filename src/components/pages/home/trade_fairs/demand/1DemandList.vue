@@ -22,7 +22,7 @@
               </div>
               <div class="post-demand" v-if="demandList.length&&!isLoading">
                 <div class="post-header">
-                  <el-button class="is-custom mg-r-20" type="primary" size="small" @click="dialogFormVisible=true">
+                  <el-button class="is-custom mg-r-20" type="primary" size="small" @click="addDemand">
                     <i class="el-icon-plus"></i>
                     发布需求
                   </el-button>
@@ -102,95 +102,98 @@
                 top="10%"
                 @close="closeBtn('form')"
                 >
-                <el-form :model="form" ref="form" :rules="rules" @submit.native.prevent class="scroll-bar">
-                  <el-form-item label="项目名称" prop="name" label-position="top">
-                    <el-input v-model="form.name" placeholder="请输入项目名称"></el-input>
-                  </el-form-item>
-                  <p class="mg-b-10 tc-6">设计类型</p>
-                  <el-row class="des-type mg-b-10">
-                    <el-col :span="6">
-                      <button  @click="addType(1)" 
-                        :class="[{'red-btn': form.design_types.indexOf(1) !== -1}]"> 产品策略</button>
-                    </el-col>
-                    <el-col :span="6">
-                        <button  @click="addType(2)"
-                          :class="[{'red-btn': form.design_types.indexOf(2) !== -1}]">外观设计</button>
-                    </el-col>
-                    <el-col :span="6">
-                        <button  @click="addType(3)"
-                          :class="[{'red-btn': form.design_types.indexOf(3) !== -1}]">结构设计</button>
-                    </el-col>
-                    <el-col :span="6">
-                        <button  @click="addType(4)"
-                        :class="[{'red-btn': form.design_types.indexOf(4) !== -1}]">其他</button>
-                    </el-col>
-                  </el-row>
-                  <el-row :gutter="10">
-                    <el-col :span="12">
-                      <el-form-item label="项目周期" prop="cycle">
-                        <el-select v-model="form.cycle">
-                          <el-option
-                            v-for="cyc in cycleOpitons"
-                            :key="cyc.id"
-                            :label="cyc.name"
-                            :value="cyc.id">
-                          </el-option>
-                        </el-select>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                      <el-form-item label="项目预算" prop="design_cost">
-                        <el-select v-model="form.design_cost">
-                          <el-option 
-                            v-for="cost in design_costOpitons"
-                            :key="cost.id"
-                            :label="cost.name"
-                            :value="cost.id"
-                          >
-                          </el-option>
-                        </el-select>
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-                  <el-row :gutter="10">
-                    <el-col :span="12">
-                      <el-form-item label="产品类别" prop="field">
-                        <el-select v-model="form.field">
-                          <el-option 
-                            v-for="f in companyType.field"
-                            :key="f.id"
-                            :label="f.name"
-                            :value="f.id"
+                <div class="scroll-bar demands" ref="submitDemand">
+                  <el-form :model="form" ref="form" :rules="rules" @submit.native.prevent >
+                    <el-form-item label="项目名称" prop="name" label-position="top">
+                      <el-input v-model="form.name" placeholder="请输入项目名称"></el-input>
+                    </el-form-item>
+                    <p class="mg-b-10 tc-6">设计类型</p>
+                    <el-row class="des-type mg-b-10">
+                      <el-col :span="6">
+                        <button  @click="addType(1)" 
+                          :class="[{'red-btn': form.design_types.indexOf(1) !== -1}]"> 产品策略</button>
+                      </el-col>
+                      <el-col :span="6">
+                          <button  @click="addType(2)"
+                            :class="[{'red-btn': form.design_types.indexOf(2) !== -1}]">外观设计</button>
+                      </el-col>
+                      <el-col :span="6">
+                          <button  @click="addType(3)"
+                            :class="[{'red-btn': form.design_types.indexOf(3) !== -1}]">结构设计</button>
+                      </el-col>
+                      <el-col :span="6">
+                          <button  @click="addType(4)"
+                          :class="[{'red-btn': form.design_types.indexOf(4) !== -1}]">其他</button>
+                      </el-col>
+                    </el-row>
+                    <el-row :gutter="10">
+                      <el-col :span="12">
+                        <el-form-item label="项目周期" prop="cycle">
+                          <el-select v-model="form.cycle">
+                            <el-option
+                              v-for="cyc in cycleOpitons"
+                              :key="cyc.id"
+                              :label="cyc.name"
+                              :value="cyc.id">
+                            </el-option>
+                          </el-select>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="12">
+                        <el-form-item label="项目预算" prop="design_cost">
+                          <el-select v-model="form.design_cost">
+                            <el-option 
+                              v-for="cost in design_costOpitons"
+                              :key="cost.id"
+                              :label="cost.name"
+                              :value="cost.id"
                             >
-                          </el-option>
-                        </el-select>
-                      </el-form-item>
-                    </el-col>
-                    <el-col :span="12">
-                      <el-form-item label="所属行业" prop="industry">
-                        <el-select v-model="form.industry">
-                          <el-option 
-                            v-for="i in companyType.industry"
-                            :key="i.id"
-                            :label="i.name"
-                            :value="i.id"
-                            >
-                          </el-option>
-                        </el-select>
-                      </el-form-item>
-                    </el-col>
-                  </el-row>
-                  <p class="mg-b-10">工作地点</p>
-                  <region-picker :provinceProp="form.item_province" :cityProp="form.item_city" :isFirstProp="true" :twoSelect="true" :gutter="10"
-                  titleProp='' @onchange="changeServer"></region-picker>
-                  <el-form-item label="产品功能描述" prop="content">
-                    <el-input type="textarea" :autosize="{minRows: 4, maxRows: 4}"
-                      :maxlength="500"
-                      v-model="form.content"
-                      >
-                    </el-input>
-                  </el-form-item>
-                </el-form>
+                            </el-option>
+                          </el-select>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                    <el-row :gutter="10">
+                      <el-col :span="12">
+                        <el-form-item label="产品类别" prop="field">
+                          <el-select v-model="form.field">
+                            <el-option 
+                              v-for="f in companyType.field"
+                              :key="f.id"
+                              :label="f.name"
+                              :value="f.id"
+                              >
+                            </el-option>
+                          </el-select>
+                        </el-form-item>
+                      </el-col>
+                      <el-col :span="12">
+                        <el-form-item label="所属行业" prop="industry">
+                          <el-select v-model="form.industry">
+                            <el-option 
+                              v-for="i in companyType.industry"
+                              :key="i.id"
+                              :label="i.name"
+                              :value="i.id"
+                              >
+                            </el-option>
+                          </el-select>
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
+                    <p class="mg-b-10">工作地点</p>
+                    <region-picker :provinceProp="form.item_province" :cityProp="form.item_city" :isFirstProp="true" :twoSelect="true" :gutter="10"
+                    titleProp='' @onchange="changeServer"></region-picker>
+                    <el-form-item label="产品功能描述" prop="content">
+                      <el-input type="textarea" :autosize="{minRows: 4, maxRows: 4}"
+                        :maxlength="500"
+                        v-model="form.content"
+                        >
+                      </el-input>
+                    </el-form-item>
+                  </el-form>
+                </div>
+                
                 <span slot="footer" class="dialog-footer">
                   <el-button @click="closeBtn('form')">取 消</el-button>
                   <el-button type="primary" :loading="addLoading" @click="createDemand('form')">发 布</el-button>
@@ -338,17 +341,22 @@
                     <div class="demand-content">
                       <el-row>
                         <el-col :span="10" class="collect-all">
-                          <div class="collect-img" :style="{background:'url('+d.cover.middle +') no-repeat center / contain'}">
+                          <router-link :to="{name: 'work_datails', params: {id: d.id}}"
+                                target="_blank" class="datails-router" v-if="d.status !== -1">
+                            <div class="collect-img" :style="{background:'url('+d.cover.middle +') no-repeat center / contain'}">
+                            </div>
+                          </router-link>
+                          <div class="collect-img" :style="{background:'url('+d.cover.middle +') no-repeat center / contain'}" v-else>
                           </div>
                           <div class="collect-centent">
-                            <!-- <p>
-                              <router-link :to="{name: 'work_datails', params: {id: d.id}}"
-                              target="_blank" class="router-work c-title" >
-                              {{d.title}}
-                              </router-link>
-                            </p> -->
                             <p class="c-title">
-                              {{d.title}}
+                              <router-link :to="{name: 'work_datails', params: {id: d.id}}"
+                                target="_blank" class="datails-router" v-if="d.status !== -1">
+                                {{d.title}}
+                                </router-link>
+                                <span v-else>
+                                  {{d.title}}
+                                </span>
                             </p>
                             <p>出让形式: {{d.sell_type === 1?'全额出让':'股权合作'}}
                               <span v-if="d.sell_type === 2" class="tc-red">{{d.share_ratio}}%</span>
@@ -450,7 +458,7 @@
                             </router-link>
                             
                           </el-button>
-                          <el-button class="mg-t-10" v-if="d.status === 0" @click="upOrderBth(d.id, d.design_result.title, 1)">
+                          <el-button class="mg-t-10 white" v-if="d.status === 0" @click="upOrderBth(d.id, d.design_result.title, 1)">
                             取消订单
                           </el-button>
                           <el-button class="is-custom" type="primary" size="small" v-if="d.status ===1 && d.design_result.sell < 2" @click="upOrderBth(d.id,d.design_result.title, 2)">
@@ -744,8 +752,11 @@
       //   this.getDemandList(val)
       // },
       // 打开需求按钮
-      upVisible() {
+      addDemand() {
         this.dialogFormVisible = true
+        this.$nextTick(_ => {
+          this.$refs.submitDemand.scrollTop = 0
+        })
         // let oldClass = document.getElementById('app').getAttribute('class')
         // if (oldClass) {
         //   oldClass = oldClass.replace(/disableScroll\x20?/g, '')
@@ -832,6 +843,7 @@
                 this.dialogFormVisible = true
                 this.$nextTick(_ => {
                   this.isUpdate = true
+                  this.$refs.submitDemand.scrollTop = 0
                   this.form = res
                 })
               }
@@ -872,18 +884,20 @@
       createDemand (formName) {
         let self = this
         self.addLoading = true
+        if (!self.form.design_types || !self.form.design_types.length) {
+          self.$refs.submitDemand.scrollTop = 40
+          self.$message.error('设计类型未选择')
+          self.addLoading = false
+          return
+        }
+        if (!self.form.item_city || !self.form.item_province) {
+          self.$refs.submitDemand.scrollTop = 100
+          self.$message.error('请填写工作地点')
+          self.addLoading = false
+          return
+        }
         self.$refs[formName].validate((valid) => {
           if (valid) {
-            if (!self.form.design_types || !self.form.design_types.length) {
-              self.$message.error('设计类型未选择')
-              self.addLoading = false
-              return
-            }
-            if (!self.form.item_city || !self.form.item_province) {
-              self.$message.error('请填写工作地点')
-              self.addLoading = false
-              return
-            }
             let row = {
               'name': self.form.name,
               'cycle': self.form.cycle,
@@ -937,6 +951,19 @@
               return
             })
           } else {
+            if (!self.form.name) {
+              self.$refs.submitDemand.scrollTop = 0
+            } else if (!self.form.design_types || !self.form.design_types.length) {
+              self.$refs.submitDemand.scrollTop = 20
+            } else if (!self.form.cycle || !self.form.design_cost) {
+              self.$refs.submitDemand.scrollTop = 40
+            } else if (!self.form.field || !self.form.industry) {
+              self.$refs.submitDemand.scrollTop = 80
+            } else if (!self.form.item_city || !self.form.item_province) {
+              self.$refs.submitDemand.scrollTop = 120
+            } else if (!self.form.centent) {
+              self.$refs.submitDemand.scrollTop = 160
+            }
             self.$message.error('请完善信息')
             self.addLoading = false
             return false
@@ -1062,13 +1089,9 @@
       updateFollow(id) {
         this.$http.get(api.designResultsCollectionOperation,{params: {id: id}}).then((response) => {
           if (response.data.meta.status_code === 200) {
-            this.collectList.forEach(item => {
+            this.collectList.forEach((item, index) => {
               if (item.id === id) {
-                if (item.is_follow === 1) {
-                  item.is_follow = 0
-                } else {
-                  item.is_follow = 1
-                }
+                this.collectList.splice(index, 1)
               }
             })
           } else {
@@ -1086,10 +1109,8 @@
       isFile(id) {
           this.$http.get(api.payConfirmFile, {params: {id: id}}).then((response) => {
           if (response.data.meta.status_code === 200) {
-            console.log('id', id)
             this.orderList.forEach((item, index) => {
               if (item.id === id) {
-                // item.design_result.sell = 2
                 this.$set(item.design_result, 'sell', 2)
                 this.$set(this.orderList, index, item)
               }
@@ -1111,6 +1132,15 @@
         this.form = {
           'design_types': []
         }
+        // if (formName === 'form') {
+        //   let oldClass = document.getElementById('app').getAttribute('class')
+        //   if (oldClass) {
+        //   oldClass = oldClass.replace(/disableScroll\x20?/g, '')
+        //   }
+        //   document.body.removeAttribute('class', 'disableScroll')
+        //   document.getElementById('app').setAttribute('class', oldClass)
+        //   document.childNodes[1].removeAttribute('class', 'disableScroll')
+        // }
         this.dialogFormVisible = false
         this.dialogUpdateVisible = false
         this.dialogDeleteVisible = false
@@ -1233,9 +1263,9 @@
     padding: 0 5px 10px 0;
     line-height: 1;
   }
-  .collect-centent .c-title:hover {
+  /* .collect-centent .c-title:hover {
     color: #ff5a5f;
-  }
+  } */
   .details .el-col {
     max-height: 180px;
     overflow: hidden;
@@ -1308,8 +1338,6 @@
   }
   .submit-form .el-form {
     padding: 10px 20px;
-    max-height: 450px;
-    overflow-y: auto;
   }
   .submit-form {
     overflow: hidden;
@@ -1320,7 +1348,17 @@
   .delete-form {
     position: 20px;
   }
-
+  .datails-router {
+    display: block;
+    color: #222;
+  }
+  .datails-router:hover {
+    color: #ff5a5f;
+  }
+  .demands {
+    overflow-x: auto;
+    max-height: 450px;
+  }
   /* 收藏 */
   .no-list {
     text-align: center;

@@ -217,6 +217,14 @@
                   </div>
                 </el-col>
               </el-row>
+              <div class="protocol-reading">
+                <el-checkbox v-model="protocol">
+                </el-checkbox>
+                阅读并同意
+                <router-link :to="{name: 'sdDesign_protocol'}" target="_blank" class="is-reading">
+                  《委托推广项目及交易诚信协议》
+                </router-link>
+              </div>
               <el-row>
                 <el-col>
                   <div class="form-footer">
@@ -233,6 +241,16 @@
               </el-row>
             </el-form>
           </div>
+          <!-- <el-dialog
+            title="设计成果委托推广及交易协议"
+            :visible.sync="dialogProtocol"
+            :lock-scroll="false"
+            size="tiny">
+            <span>这是一段信息</span>
+            <span slot="footer" class="dialog-footer">
+              <el-button type="primary" @click="isProtocol">同意</el-button>
+            </span>
+          </el-dialog> -->
         </div>
       </div>
     </el-row>
@@ -284,11 +302,13 @@
         filepatent: [], // 专利图片
         fileillustrate: [], // 说明图片
         uploadUrl: '',
+        dialogProtocol: false, // 协议
         isDisabledProduct: true,
         is_apply: false,
         is_prize: false,
         typeSwitch1: false,
         typeSwitch2: false,
+        protocol: false, // 确定协议
         prizes: [],
         patents: [],
         options5: [],
@@ -367,6 +387,11 @@
       }
     },
     methods: {
+      // 打开协议
+      isProtocol() {
+        this.protocol = true
+        this.dialogProtocol = false
+      },
       // 按钮
       shareRatioBlur(val) {
         if (isNaN(val)) {
@@ -870,8 +895,8 @@
         }
       },
       sellType(newValue, oldValue) {
-        if (that.isfrist) {
-          that.isfrist = false
+        if (this.isfrist) {
+          this.isfrist = false
           return
         }
         if (newValue === 1) {
@@ -1009,6 +1034,14 @@
   .form-footer {
     border-top: 1px solid #e6e6e6;
     padding-top: 20px;
+  }
+  .protocol-reading {
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #999;
+  }
+  .isloading {
+    cursor: pointer;
   }
   /* .form-btn>.el-button + .el-button {
     margin-right: 10px;
@@ -1214,6 +1247,10 @@
   .video {
     background: url('../../../../../assets/images/tools/cloud_drive/type/video@2x.png') 0 0 no-repeat;
     background-size: contain;
+  }
+  .is-reading {
+    color: #FF5A5F;
+    cursor: pointer;
   }
   @media screen and (max-width: 767px) {
     .right-content .content-box {
