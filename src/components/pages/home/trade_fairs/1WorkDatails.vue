@@ -113,7 +113,7 @@
             </div>
             </div>
           </div>
-          <el-collapse v-model="credential" class="patent" v-if="formup.patent_url && formup.patent_url.length">
+          <el-collapse v-model="credential" class="patent" v-if="formup.patent_url && formup.patent_url.length" :class="{'pat-top': !formup.illustrate_url.length}">
             <el-collapse-item title="专利证书" name="1">
               <swiper :options="swiperOption" class="patent-img">
                 <swiper-slide v-for="(img, index) in formup.patent_url" :key="index">
@@ -350,23 +350,22 @@ export default {
     handleScroll () {
       var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
       var scrollHeigh = document.body.scrollHeight
-      if (this.$route.query.type !== '2') {
-        if (!this.viewCover  && this.imagesUrl && this.imagesUrl.length > 1) {
-          if (scrollTop > (scrollHeigh - 677)) {
+      console.log("scrollTop", scrollTop)
+      console.log('scrollHeigh', scrollHeigh)
+      if (this.user.type !== 2) {
+        if (!this.viewCover) {
+          if ((scrollHeigh - scrollTop) < 667) {
             this.elementPosition = true
           } else if (scrollTop > 960) {
             this.elementShow = true
             this.elementPosition = false
-          } else {
+          } else if (scrollTop > 884 && this.formup.patent_url && this.formup.patent_url.length && !this.formup.illustrate_url.length) {
+            this.elementShow = true
             this.elementPosition = false
-            this.elementShow = false
-          }
-        }
-      } else {
-        if (!this.viewCover  && this.imagesUrl && this.imagesUrl.length > 1) {
-          if (scrollTop > (scrollHeigh - 687) && scrollTop > 960) {
-            this.elementPosition = true
-          } else if (scrollTop > 960) {
+          } else if (scrollTop > 570 && this.formup.illustrate_url && this.formup.illustrate_url.length && !this.formup.patent_url.length) {
+            this.elementShow = true
+            this.elementPosition = false
+          } else if (scrollTop > 490 && !this.formup.illustrate_url.length && !this.formup.patent_url.length) {
             this.elementShow = true
             this.elementPosition = false
           } else {
@@ -394,6 +393,10 @@ export default {
   computed: {
     swiperObj() {
       return this.$refs.mySwiper.swiper
+    },
+    user() {
+      let user = this.$store.state.event.user // role_id
+      return user
     }
   },
   filters: {
@@ -939,5 +942,8 @@ p.img-des {
 }
 .pat-margin {
   margin-top: 10px;
+}
+.pat-top {
+  margin-top: 50px;
 }
 </style>
