@@ -533,10 +533,10 @@ export default {
   padding-top: 20px;
   margin: 0 40px;
   line-height: 24px;
-  font-size:16px;
-  font-family:PingFangSC-Regular;
-  font-weight:400;
-  color:#666666;
+  font-size: 16px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: #666666;
 }
 .des {
   padding-top: 20px;
