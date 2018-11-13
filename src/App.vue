@@ -67,6 +67,9 @@ export default {
     },
     showAlert() {
       let user = this.user
+      if (this.$route.name === 'sdDesign_protocol') {
+        return false
+      }
       if (user.type === 1) {
         if (user.demand_verify_status === 0) {
           console.log('没有认证')

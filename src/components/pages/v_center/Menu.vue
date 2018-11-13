@@ -134,7 +134,7 @@
                 我的钱包
               </a>
               </el-tooltip>
-              <el-tooltip class="item" :effect="DarkorLight" content="顺德交易会" placement="right">
+              <el-tooltip class="item" :effect="DarkorLight" content="顺德交易会" placement="right" v-if="prod.name === ''">
                 <a @click="alick" :to="'/shunde/trade_fairs/design_case'"
                   :class="['item', 'demandList', {'is-active': currentName === 'sdDesignCase_list'}]">
                   顺德交易会
@@ -166,7 +166,7 @@
                 我的钱包
               </a>
               </el-tooltip>
-              <el-tooltip class="item" :effect="DarkorLight" content="顺德交易会" placement="right">
+              <el-tooltip class="item" :effect="DarkorLight" content="顺德交易会" placement="right" v-if="prod.name === ''">
               <a @click="alick" :to="'/shunde/trade_fairs/demand/demand_list'"
                 :class="['item', 'demandList', {'is-active': currentName === 'demandList'}]">
                 顺德交易会
@@ -221,7 +221,9 @@
                 查看公司主页
               </a>
               <a @click="alick" :to="'/shunde/trade_fairs/design_case'"
-                :class="['item', 'demandList', {'is-active': currentName === 'sdDesignCase_list'}]">
+                :class="['item', 'demandList', {'is-active': currentName === 'sdDesignCase_list'}]" 
+                v-if="prod.name === ''"
+                >
                 顺德交易会
               </a>
             </div>
