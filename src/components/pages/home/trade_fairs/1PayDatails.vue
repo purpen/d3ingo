@@ -3,8 +3,8 @@
     <div class="container">
       <div class="navigate-header">
         <div class="navigate-text">
-          <router-link :to="{name: 'sdDesign_order'}" v-if="user.type === 1">我的订单</router-link>
-          <router-link :to="{name: 'demand_list', query: {type: 3}}" v-if="user.type === 2">我的订单</router-link>
+          <router-link :to="{name: 'demand_list', query: {type: 3}}" v-if="user.type === 1">我的订单</router-link>
+          <router-link :to="{name: 'sdDesign_order', query: {type: 3}}" v-if="user.type === 2">我的订单</router-link>
         </div>
         <div class="navigate-text arrow-text">
           <span>{{designAttr.title}}</span>
@@ -31,11 +31,11 @@
           <!-- 评价 -->
           <div class="select-item-box clearfix" v-if="designAttr.sell === 2">
             <div class="evaluation-style">
-              <div class="published-evaluation" v-if="designAttr.is_evaluate === 0 && designAttr.sell === 2">发表评价</div>
+              <div class="published-evaluation" v-if="designAttr.is_evaluate === 0 && designAttr.sell === 2 && user.type !== 2">发表评价</div>
               <div class="published-evaluation" v-if="designAttr.is_evaluate === 1 && user.type === 1">评价</div>
               <div  class="published-evaluation" v-if="designAttr.is_evaluate === 1 && user.type === 2">客户评价</div>
                 <!-- 未提交的评价 -->
-                <div class="evaluate-report clearfix" v-if="designAttr.is_evaluate === 0 && designAttr.sell === 2">
+                <div class="evaluate-report clearfix" v-if="designAttr.is_evaluate === 0 && designAttr.sell === 2 && user.type !== 2">
                   <p class="ev-c-ava">
                   <el-row class="grade">
                     <el-col :span="8">
@@ -194,7 +194,7 @@
               </div>
             </div>
           </div>
-          <div class="patent-details" v-if="formup.illustrate_url && formup.illustrate_url.length">
+          <div class="patent-details" v-if="designAttr.illustrate_url && designAttr.illustrate_url.length">
             <div class="instruction-blook">
             <span class="blook-left">产品功能说明书</span>
             <div class="seen-button">
@@ -202,10 +202,10 @@
             </div>
             </div>
           </div>
-          <el-collapse v-model="credential" class="patent" :class="{'pat-margin' : $route.query.type === '2'}" v-if="formup.patent_url && formup.patent_url.length">
+          <el-collapse v-model="credential" class="patent" :class="[{'pat-margin' : $route.query.type === '2'}, {'mar-top' : !designAttr.illustrate_url.length}]" v-if="designAttr.patent_url && designAttr.patent_url.length">
             <el-collapse-item title="专利证书" name="1">
               <swiper :options="swiperOption" class="patent-img">
-                <swiper-slide v-for="(img, index) in formup.patent_url" :key="index">
+                <swiper-slide v-for="(img, index) in designAttr.patent_url" :key="index">
                   <div style="height:100%;" @click.stop.prevent="imgaeShow(img)">
                     <div class="draw">
                       <img :src="img.big" class="img-class">
@@ -334,8 +334,8 @@ export default {
           oldClass = oldClass.replace(/disableScroll\x20?/g, '')
         }
         document.body.setAttribute('class', 'disableScroll')
-        document.getElementById('app').setAttribute('class', 'disableScroll ' + oldClass)
-        document.childNodes[1].setAttribute('class', 'disableScroll')
+        // document.getElementById('app').setAttribute('class', 'disableScroll ' + oldClass)
+        // document.childNodes[1].setAttribute('class', 'disableScroll')
       } else {
         this.$message.info('正在加载组件, 请稍后尝试...')
       }
@@ -386,7 +386,7 @@ export default {
 
       let row = {
         order_id: this.formup.uid,
-        serve_attitude: this.evaluate.service,
+        serve_attitude: this.evaluate.serve_attitude,
         content: this.evaluate.content,
         design_level: this.evaluate.design_level,
         response_speed: this.evaluate.response_speed
@@ -463,15 +463,28 @@ export default {
     handleScroll () {
       var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
       var scrollHeigh = document.body.scrollHeight
-      if (!this.viewCover && this.imagesUrl && this.imagesUrl.length > 1) {
-        if (scrollTop > (scrollHeigh - 827)) {
-          this.elementPosition = true
-        } else if (scrollTop > 970) {
-          this.elementShow = true
-          this.elementPosition = false
-        } else {
-          this.elementPosition = false
-          this.elementShow = false
+      console.log('scrollTop', scrollTop)
+      console.log('scrollHeight', scrollHeigh)
+      if (this.user.type !== 2) {
+        if (!this.viewCover) {
+          if ((scrollHeigh - scrollTop) < 782) {
+            this.elementPosition = true
+          } else if (scrollTop > 1100) {
+            this.elementShow = true
+            this.elementPosition = false
+          } else if (scrollTop > 1040 && this.designAttr.patent_url && this.designAttr.patent_url.length && !this.designAttr.illustrate_url.length) {
+            this.elementShow = true
+            this.elementPosition = false
+          } else if (scrollTop > 720 && this.designAttr.illustrate_url && this.designAttr.illustrate_url.length && !this.designAttr.patent_url.length) {
+            this.elementShow = true
+            this.elementPosition = false
+          } else if (scrollTop > 640 && !this.designAttr.illustrate_url.length && !this.designAttr.patent_url.length) {
+            this.elementShow = true
+            this.elementPosition = false
+          } else {
+            this.elementPosition = false
+            this.elementShow = false
+          }
         }
       }
     },
@@ -522,7 +535,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 /* swipe样式 */
-.swiper-slide {
+.view-cover .swiper-slide {
   margin-top: 10%
 }
 .view-cover {
@@ -633,17 +646,17 @@ export default {
   padding-top: 20px;
   margin: 0 40px;
   line-height: 24px;
-  font-size:16px;
-  font-family:PingFangSC-Regular;
-  font-weight:400;
-  color:#666666;
+  font-size: 16px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: #666666;
 }
 .des {
   padding-top: 20px;
   margin: 0 40px;
 }
 .des-image {
-  height: 610px;
+  margin-top: 10px;
 }
 .image-size {
   width: 100%;
@@ -1036,7 +1049,7 @@ p.img-des {
 .state-style {
   width: 280px;
   height: 50px;
-  background: #FAFAFA;
+  background: #fff;
   margin-top: 10px;
 }
 .state-way {
@@ -1081,5 +1094,8 @@ p.img-des {
 .ev-c-btn {
   height: 50px;
   line-height: 50px;
+}
+.mar-top {
+  margin-top: 15px
 }
 </style>
