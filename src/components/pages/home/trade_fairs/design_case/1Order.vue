@@ -111,7 +111,7 @@
         designId: '', // 修改状态id
         dialogUpdateVisible: false, // 更新状态弹窗
         dialogVisible: false, // 修改价格弹窗
-        form: {},// 修改价格
+        form: {}, // 修改价格
         formup: {}, // 查看详情
         updateform: { // 修改状态表单
           status: '',
@@ -149,7 +149,7 @@
         } else if (val === 1) {
           if (sell === 2) {
             return '交易成功'
-          } else if (sell < 2){
+          } else if (sell < 2) {
             return '待确认文件'
           } else if (sell === 2 && !pl) {
             return '待评价'

@@ -179,7 +179,7 @@
           prevButton: '.swiper-button-prev',
           nextButton: '.swiper-button-next',
           spaceBetween: 0,
-          loop: true,
+          loop: true
           // slidesPerView:'auto'
         },
         swiperOption2: {
@@ -190,7 +190,7 @@
           prevButton: '.swiper-button-prev',
           nextButton: '.swiper-button-next',
           spaceBetween: 0,
-          loop: true,
+          loop: true
           // slidesPerView:'auto'
         }
       }
@@ -209,7 +209,7 @@
     methods: {
       seenBook() {
         let routeData = this.$router.resolve({name: 'achieve_preview', params: {id: this.formup.id}})
-        window.open(routeData.href, '_blank');
+        window.open(routeData.href, '_blank')
         // this.$router.push({name: 'moblie_preview', params: {id: this.formup.id}})
       },
       // 展开更多
@@ -306,7 +306,7 @@
           this.$message.error(error.message)
           return
         })
-      },
+      }
     },
     filters: {
       timeFormat(val) {

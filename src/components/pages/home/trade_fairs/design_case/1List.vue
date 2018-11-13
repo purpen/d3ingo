@@ -166,7 +166,7 @@
         isbtnLoading: false, // 按钮加载效果
         dialogUpdateVisible: false, // 更新状态弹窗
         dialogVisible: false, // 修改价格弹窗
-        formPrice: {},// 修改价格
+        formPrice: {}, // 修改价格
         updateform: { // 修改状态表单
           status: '',
           id: [],

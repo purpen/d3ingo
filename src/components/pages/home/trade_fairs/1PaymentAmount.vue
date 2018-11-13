@@ -216,7 +216,7 @@
       },
       // 更改支付方式
       rePay() {
-          this.$router.push({name: 'managed_funds', params: {id: this.itemUid}})
+        this.$router.push({name: 'managed_funds', params: {id: this.itemUid}})
       },
       handlePreview(file) {
         console.log(file)
@@ -315,34 +315,34 @@
     created: function () {
       let itemUid = this.$route.params.id
       let payId = this.$route.query.id
-        this.itemUid = itemUid
-        this.payId = payId
-        this.$http.get(api.payOrderShow, {params: {id: this.payId}})
-          .then((response) => {
-            if (response.data.meta.status_code === 200) {
-              this.item = response.data.data
-              this.payUid = this.item.id
-              this.designTitle = this.item.design_result.title
-              this.sellType = this.item.design_result.sell_type
-              this.shareRatio = this.item.design_result.share_ratio
-              let createdAt = this.item.created_at
-              let createdFormat = createdAt.date_format()
-              this.item.created_at = createdFormat.format('yyyy-MM-dd hh:mm')
-              let expire = new Date((createdFormat / 1000 + 86400 * 3) * 1000)
-              this.item.expire_at = expire.format('yyyy-MM-dd hh:mm')
-              // 凭证
-              if (response.data.data.assets) {
-                this.surePay = true
-                this.fileUrl = response.data.data.assets.small
-              }
-              this.uploadParam['x:target_id'] = response.data.data.id
-            } else {
-              this.$message.error(response.data.meta.message)
+      this.itemUid = itemUid
+      this.payId = payId
+      this.$http.get(api.payOrderShow, {params: {id: this.payId}})
+        .then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.item = response.data.data
+            this.payUid = this.item.id
+            this.designTitle = this.item.design_result.title
+            this.sellType = this.item.design_result.sell_type
+            this.shareRatio = this.item.design_result.share_ratio
+            let createdAt = this.item.created_at
+            let createdFormat = createdAt.date_format()
+            this.item.created_at = createdFormat.format('yyyy-MM-dd hh:mm')
+            let expire = new Date((createdFormat / 1000 + 86400 * 3) * 1000)
+            this.item.expire_at = expire.format('yyyy-MM-dd hh:mm')
+            // 凭证
+            if (response.data.data.assets) {
+              this.surePay = true
+              this.fileUrl = response.data.data.assets.small
             }
-          })
-          .catch((error) => {
-            this.$message.error(error.message)
-          })
+            this.uploadParam['x:target_id'] = response.data.data.id
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        })
+        .catch((error) => {
+          this.$message.error(error.message)
+        })
 
       this.$http.get(api.upToken, {})
         .then((response) => {
