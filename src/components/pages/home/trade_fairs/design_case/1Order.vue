@@ -66,10 +66,10 @@
                       </el-col>
                       <el-col :span="4" class="hint">
                         <p :class="{'tc-red': d.design_result.sell < 2}">{{d.status | payFormat(d.design_result.sell)}}</p>
-                        <p>请尽快联系需求方交付设计成果</p>
+                        <p v-if="d.design_result.sell === 1">请尽快联系需求方交付设计成果</p>
                       </el-col>
                       <el-col :span="4">
-                        <el-button class="is-custom" type="primary" size="small" v-if="d.design_result.sell === 2">
+                        <el-button class="is-custom" type="primary" size="small" v-if="d.design_result.sell === 2&&d.design_result.is_evaluate===1">
                           <router-link :to="{name: 'pay_datails', params: {id: d.id}}"
                             target="_blank" class="router-pay">
                             查看评价
