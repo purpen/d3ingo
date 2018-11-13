@@ -278,7 +278,7 @@ export default {
         autoplay: 5000,
         prevButton: '.swiper-button-prev',
         nextButton: '.swiper-button-next',
-        spaceBetween: 0,
+        spaceBetween: 0
       },
       swiperOption2: {
         pagination: '.swiper-pagination',
@@ -287,7 +287,7 @@ export default {
         autoplay: 5000,
         prevButton: '.swiper-button-prev',
         nextButton: '.swiper-button-next',
-        spaceBetween: 0,
+        spaceBetween: 0
       },
       notNextTick: true, // 设置之后可以获取swiper对象
       evalu: {},
@@ -310,7 +310,7 @@ export default {
   methods: {
     seenBook() {
       let routeData = this.$router.resolve({name: 'achieve_preview', params: {id: this.formup.id}})
-      window.open(routeData.href, '_blank');
+      window.open(routeData.href, '_blank')
     },
     // 图片预览
     imgaeShow(ele) {
@@ -440,7 +440,7 @@ export default {
             this.formup = response.data.data
             let designAttr = response.data.data.design_result
             if (designAttr) {
-              this. designAttr = designAttr
+              this.designAttr = designAttr
             }
             if (this.designAttr.sell === 2) {
               this.evaluateDetails(this.formup.uid)
@@ -487,9 +487,8 @@ export default {
           }
         }
       }
-    },
+    }
   },
-  
   mounted() {
     window.addEventListener('scroll', this.handleScroll)
   },

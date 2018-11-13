@@ -117,7 +117,7 @@ export default {
   },
   methods: {
     payPush() {
-      this.$router.push({name:'payment_amount', params: {id: 1}})
+      this.$router.push({name: 'payment_amount', params: {id: 1}})
     },
     closeDialog() {
       this.closeShow = true

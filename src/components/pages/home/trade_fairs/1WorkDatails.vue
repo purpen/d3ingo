@@ -187,7 +187,7 @@ export default {
         autoplay: 5000,
         prevButton: '.swiper-button-prev',
         nextButton: '.swiper-button-next',
-        spaceBetween: 0,
+        spaceBetween: 0
       },
       swiperOption2: {
         pagination: '.swiper-pagination',
@@ -196,7 +196,7 @@ export default {
         autoplay: 5000,
         prevButton: '.swiper-button-prev',
         nextButton: '.swiper-button-next',
-        spaceBetween: 0,
+        spaceBetween: 0
       },
       notNextTick: true, // 设置之后可以获取swiper对象
       evalu: {},
@@ -222,7 +222,7 @@ export default {
     },
     seenBook() {
       let routeData = this.$router.resolve({name: 'achieve_preview', params: {id: this.formup.id}})
-      window.open(routeData.href, '_blank');
+      window.open(routeData.href, '_blank')
     },
     // 图片预览
     imgaeShow(ele) {
@@ -350,8 +350,6 @@ export default {
     handleScroll () {
       var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
       var scrollHeigh = document.body.scrollHeight
-      console.log("scrollTop", scrollTop)
-      console.log('scrollHeigh', scrollHeigh)
       if (this.user.type !== 2) {
         if (!this.viewCover) {
           if ((scrollHeigh - scrollTop) < 667) {
@@ -374,13 +372,12 @@ export default {
           }
         }
       }
-    },
+    }
   },
-  
   mounted() {
     window.addEventListener('scroll', this.handleScroll)
   },
-  destroyed () {
+  destroyed() {
     window.removeEventListener('scroll', this.handleScroll)
   },
   created() {

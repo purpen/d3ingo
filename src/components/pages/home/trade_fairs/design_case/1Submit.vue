@@ -288,7 +288,7 @@
       var ratio = (rule, value, callback) => {
         if (!value) {
           callback(new Error('请输入比例'))
-        } else if (isNaN(value) || value > 100 || value < 0){
+        } else if (isNaN(value) || value > 100 || value < 0) {
           callback(new Error('请输入1~100的比例'))
         } else {
           callback()
@@ -297,7 +297,7 @@
       var priceVerify = (rule, value, callback) => {
         if (!value) {
           callback(new Error('请输入比例'))
-        } else if (isNaN(value) || value < 0){
+        } else if (isNaN(value) || value < 0) {
           callback(new Error('请输入合理的金额'))
         } else {
           callback()
@@ -361,8 +361,7 @@
           sell_type: 1,
           cover_id: '',
           label: [],
-          share_ratio: 100,
-
+          share_ratio: 100
         },
         ruleForm: {
           title: [
@@ -454,7 +453,7 @@
               row.patent.push(p.asset_id)
             })
             // 说明书id
-            that.fileillustrate.forEach(i=> {
+            that.fileillustrate.forEach(i => {
               row.illustrate.push(i.asset_id)
             })
             // 保存
@@ -504,7 +503,7 @@
           if (response.data.meta.status_code === 200) {
             if (type) {
               if (this.fileillustrate) {
-                this.fileillustrate.forEach((p, ind) =>{
+                this.fileillustrate.forEach((p, ind) => {
                   if (p.asset_id === id) {
                     this.fileillustrate.splice(ind, 1)
                   }
@@ -512,7 +511,7 @@
               }
             } else {
               if (this.fileList.length) {
-                this.fileList.forEach((item, index) =>{
+                this.fileList.forEach((item, index) => {
                   if (item.asset_id === id) {
                     this.fileList.splice(index, 1)
                   }
@@ -912,7 +911,7 @@
           return
         }
         if (newValue === 1) {
-           this.form.share_ratio = 100
+          this.form.share_ratio = 100
         } else {
           this.form.share_ratio = ''
         }

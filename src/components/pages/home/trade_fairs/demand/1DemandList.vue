@@ -611,19 +611,19 @@
           total: 1, // 总条数
           current_page: 1, // 当前页
           page: 1, // 页数
-          per_page: 10, // 每页数量
+          per_page: 10 // 每页数量
         },
         jquery2: {
           total: 1, // 总条数
           current_page: 1, // 当前页
           page: 1, // 页数
-          per_page: 10, // 每页数量
+          per_page: 10 // 每页数量
         },
         jquery3: {
           total: 1, // 总条数
           current_page: 1, // 当前页
           page: 1, // 页数
-          per_page: 10, // 每页数量
+          per_page: 10 // 每页数量
         },
         dialogFormVisible: false, // 发布需求弹窗
         dialogUpdateVisible: false, // 查看详情弹窗
@@ -702,7 +702,7 @@
         } else if (val === 1) {
           if (sell === 2) {
             return '交易成功'
-          } else if (sell < 2){
+          } else if (sell < 2) {
             return '待确认文件'
           } else if (sell === 2 && !pl) {
             return '待评价'
@@ -790,10 +790,10 @@
                 this.$set(item, 'status', -1)
               }
             })
-          this.dialogCancelOrder = false
+            this.dialogCancelOrder = false
           } else {
-             this.$message.error(response.data.meta.message)
-             return
+            this.$message.error(response.data.meta.message)
+            return
           }
         })
         .catch(function (error) {
@@ -811,8 +811,8 @@
               }
             })
           } else {
-             this.$message.error(response.data.meta.message)
-             return
+            this.$message.error(response.data.meta.message)
+            return
           }
         })
         .catch(function (error) {
@@ -839,7 +839,7 @@
               if (type === 1) {
                 this.dialogUpdateVisible = true
                 this.$nextTick(_ => {
-                this.formup = res
+                  this.formup = res
                 })
               }
               if (type === 2) {
@@ -1028,7 +1028,7 @@
             // let pages = response.data.meta.pagination
             // this.jquery.total = pages.total
             // this.jquery.page = pages.total_pages
-            if(response.data.data && response.data.data.length) {
+            if (response.data.data && response.data.data.length) {
               this.orderList = response.data.data
             } else {
               this.orderList = []
@@ -1065,7 +1065,7 @@
             // let pages = response.data.meta.pagination
             // this.jquery2.total = pages.total
             // this.jquery2.page = pages.total_pages
-            if(response.data.data && response.data.data.length) {
+            if (response.data.data && response.data.data.length) {
               this.collectList = response.data.data
               this.collectList.forEach(item => {
                 if (!item.is_follow) {
@@ -1091,7 +1091,7 @@
       },
       // 取消收藏
       updateFollow(id) {
-        this.$http.get(api.designResultsCollectionOperation,{params: {id: id}}).then((response) => {
+        this.$http.get(api.designResultsCollectionOperation, {params: {id: id}}).then((response) => {
           if (response.data.meta.status_code === 200) {
             this.collectList.forEach((item, index) => {
               if (item.id === id) {
@@ -1111,7 +1111,7 @@
       },
       // 确认文件
       isFile(id) {
-          this.$http.get(api.payConfirmFile, {params: {id: id}}).then((response) => {
+        this.$http.get(api.payConfirmFile, {params: {id: id}}).then((response) => {
           if (response.data.meta.status_code === 200) {
             this.orderList.forEach((item, index) => {
               if (item.id === id) {

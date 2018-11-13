@@ -207,7 +207,7 @@
         designId: '', // 修改状态id
         dialogUpdateVisible: false, // 更新状态弹窗
         dialogVisible: false, // 修改价格弹窗
-        form: {},// 修改价格
+        form: {}, // 修改价格
         formup: {}, // 查看详情
         callPhone: false, // 联系他弹窗
         callDtails: {},
