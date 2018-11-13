@@ -42,7 +42,10 @@
                       :before-upload="beforeUpload"
                       :show-file-list="false"
                       >
-                      <el-button class="is-custom" type="primary" size="small">+&nbsp;上传图片</el-button>
+                      <!-- <el-button class="is-custom" type="primary" size="small"></el-button> -->
+                      <div class="full-red-button middle-button line-block">
+                        +&nbsp;上传图片
+                      </div>
                       <span class="uploadsMsg">{{uploadMsg}}</span>
                    </el-upload>
                     <div class="img-files">
@@ -156,9 +159,12 @@
                       :on-progress="uploadProgress2"
                       :show-file-list="false"
                       >
-                      <el-button class="red-button">
+                      <!-- <el-button class="red-button">
                         +&nbsp;上传专利证书
-                      </el-button>
+                      </el-button> -->
+                      <div class="red-button middle-button line-block">
+                        +&nbsp;上传专利证书
+                      </div>
                       <span class="tc-9 patent-msg">
                         {{uploadMsg2}}
                       </span>
@@ -184,10 +190,10 @@
                       :on-progress="uploadProgress3"
                       :before-upload="beforeUpload2"
                       >
-                      <el-button class="red-button">
-                      +&nbsp;上传说明书
-                    </el-button>
-                    <span class="tc-9 patent-msg">{{uploadMsg3}}</span>
+                      <div class="red-button middle-button line-block">
+                        +&nbsp;上传说明书
+                      </div>
+                      <span class="tc-9 patent-msg">{{uploadMsg3}}</span>
                     </el-upload>
                   </el-col>
                 </el-row>
@@ -217,15 +223,32 @@
                   </div>
                 </el-col>
               </el-row>
+              <div class="protocol-reading">
+                <el-checkbox v-model="protocol">
+                </el-checkbox>
+                阅读并同意
+                <!-- <router-link :to="{name: 'sdDesign_protocol'}" target="_blank" class="is-reading">
+                  《委托推广项目及交易诚信协议》
+                </router-link> -->
+                <a class="is-reading" @click="goProtocol">
+                  《委托推广项目及交易诚信协议》
+                </a>
+              </div>
               <el-row>
                 <el-col>
                   <div class="form-footer">
                     <div class="form-btn">
-                      <el-button  @click.prevent="returnList" class="middle-button white-button">取消</el-button>
-                      <el-button :loading="isLoadingBtn" @click.prevent="submit('ruleForm', 1)" class="middle-button white-button">
+                      <div @click.prevent="returnList" class="middle-button white-button line-block">
+                        取消
+                      </div>
+                      <div :loading="isLoadingBtn" @click.prevent="submit('ruleForm', 1)" class="middle-button white-button line-block">
                         保存
-                      </el-button>
-                      <el-button type="danger" :loading="isLoadingBtn2" @click="submit('ruleForm')">提交</el-button>
+                      </div>
+                      <div :loading="isLoadingBtn2" @click="submit('ruleForm')"
+                        class="full-red-button middle-button line-block"
+                        >
+                        提交
+                      </div>
                     </div>
                     <div class="clear"></div>
                   </div>
@@ -233,6 +256,16 @@
               </el-row>
             </el-form>
           </div>
+          <!-- <el-dialog
+            title="设计成果委托推广及交易协议"
+            :visible.sync="dialogProtocol"
+            :lock-scroll="false"
+            size="tiny">
+            <span>这是一段信息</span>
+            <span slot="footer" class="dialog-footer">
+              <el-button type="primary" @click="isProtocol">同意</el-button>
+            </span>
+          </el-dialog> -->
         </div>
       </div>
     </el-row>
@@ -258,7 +291,7 @@
       var ratio = (rule, value, callback) => {
         if (!value) {
           callback(new Error('请输入比例'))
-        } else if (isNaN(value) || value > 100 || value < 0){
+        } else if (isNaN(value) || value > 100 || value < 0) {
           callback(new Error('请输入1~100的比例'))
         } else {
           callback()
@@ -267,7 +300,7 @@
       var priceVerify = (rule, value, callback) => {
         if (!value) {
           callback(new Error('请输入比例'))
-        } else if (isNaN(value) || value < 0){
+        } else if (isNaN(value) || value < 0) {
           callback(new Error('请输入合理的金额'))
         } else {
           callback()
@@ -284,11 +317,13 @@
         filepatent: [], // 专利图片
         fileillustrate: [], // 说明图片
         uploadUrl: '',
+        dialogProtocol: false, // 协议
         isDisabledProduct: true,
         is_apply: false,
         is_prize: false,
         typeSwitch1: false,
         typeSwitch2: false,
+        protocol: false, // 确定协议
         prizes: [],
         patents: [],
         options5: [],
@@ -329,8 +364,7 @@
           sell_type: 1,
           cover_id: '',
           label: [],
-          share_ratio: 100,
-
+          share_ratio: 100
         },
         ruleForm: {
           title: [
@@ -367,6 +401,14 @@
       }
     },
     methods: {
+      // 打开协议
+      goProtocol() {
+        let routeData = this.$router.resolve({
+          name: 'sdDesign_protocol'
+        })
+        this.protocol = true
+        window.open(routeData.href, '_blank')
+      },
       // 按钮
       shareRatioBlur(val) {
         if (isNaN(val)) {
@@ -387,6 +429,10 @@
         }
         if (!that.fileList.length) {
           that.$message.error ('请完善信息!')
+          return false
+        }
+        if (!that.protocol) {
+          that.$message.error ('请阅读并同意《委托推广项目及交易诚信协议》!')
           return false
         }
         that.$refs[formName].validate ((valid) => {
@@ -417,7 +463,7 @@
               row.patent.push(p.asset_id)
             })
             // 说明书id
-            that.fileillustrate.forEach(i=> {
+            that.fileillustrate.forEach(i => {
               row.illustrate.push(i.asset_id)
             })
             // 保存
@@ -427,7 +473,6 @@
             } else {
               that.isLoadingBtn2 = true
             }
-            console.log('res', row)
             row.cover_id = that.coverId
             that.$http({method: 'post', url: api.sdDesignResultsSave, data: row})
               .then (function (response) {
@@ -458,7 +503,6 @@
       },
       // 切换封面
       updateCover(id) {
-        console.log(id)
         this.coverId = id
       },
       // 删除图片
@@ -467,7 +511,7 @@
           if (response.data.meta.status_code === 200) {
             if (type) {
               if (this.fileillustrate) {
-                this.fileillustrate.forEach((p, ind) =>{
+                this.fileillustrate.forEach((p, ind) => {
                   if (p.asset_id === id) {
                     this.fileillustrate.splice(ind, 1)
                   }
@@ -475,7 +519,7 @@
               }
             } else {
               if (this.fileList.length) {
-                this.fileList.forEach((item, index) =>{
+                this.fileList.forEach((item, index) => {
                   if (item.asset_id === id) {
                     this.fileList.splice(index, 1)
                   }
@@ -601,7 +645,6 @@
       uploadSuccess(response, file, fileList) {
         this.uploadMsg = '只能上传jpg/png文件，且不超过10M'
         let add = fileList[fileList.length - 1]
-        console.log('add', add)
         let item = {
           name: add.name,
           url: add.url,
@@ -610,8 +653,8 @@
           asset_id: add.response.asset_id
         }
         this.fileList.push (item)
-        console.log('上传结束的东西', item)
-        console.log('数组', this.fileList)
+        // console.log('上传结束的东西', item)
+        // console.log('数组', this.fileList)
       },
       // 上传之前操作
       beforeUpload(file) {
@@ -646,8 +689,6 @@
       },
       // 上传说明
       upload3Success(response, file, fileList) {
-        console.log('res', response)
-        console.log('file', file)
         let add = fileList[fileList.length - 1]
         let item = {
           name: add.name,
@@ -659,7 +700,6 @@
         }
         this.fileillustrate.push(item)
         this.uploadMsg3 = '个数: 1个 格式：PDF 大小：小于20MB'
-        console.log('55', this.fileillustrate)
       },
       // 上传专利
       upload2Success(response, file, fileList) {
@@ -673,7 +713,6 @@
           asset_id: add.response.asset_id
         }
         this.filepatent.push(item)
-        console.log('22', this.filepatent)
       },
       // 获取图片token
       getToken() {
@@ -870,12 +909,12 @@
         }
       },
       sellType(newValue, oldValue) {
-        if (that.isfrist) {
-          that.isfrist = false
+        if (this.isfrist) {
+          this.isfrist = false
           return
         }
         if (newValue === 1) {
-           this.form.share_ratio = 100
+          this.form.share_ratio = 100
         } else {
           this.form.share_ratio = ''
         }
@@ -893,7 +932,6 @@
         that.isfrist = true
         that.upDetails(id)
       } else {
-        console.log(that.$store.state.event.user)
         that.form.contact_number = that.$store.state.event.user.phone
       }
     }
@@ -911,14 +949,11 @@
     float: right;
     display: flex;
     align-items: center;
+    text-align: center;
   }
 
-  .form-btn button {
-    width: 120px;
-  }
-
-  .form-btn button:not(:last-child) {
-    margin-right: 10px;
+  .form-btn div{
+    margin-left: 10px;
   }
 
   .avatar-uploader .el-upload {
@@ -1009,6 +1044,14 @@
   .form-footer {
     border-top: 1px solid #e6e6e6;
     padding-top: 20px;
+  }
+  .protocol-reading {
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #999;
+  }
+  .isloading {
+    cursor: pointer;
   }
   /* .form-btn>.el-button + .el-button {
     margin-right: 10px;
@@ -1166,6 +1209,9 @@
     z-index: 1;
     background-color: #fff;
   }
+  .line-block {
+    display: inline-block;
+  }
   .cancel-icons {
     position: absolute;
     right: 8px;
@@ -1214,6 +1260,10 @@
   .video {
     background: url('../../../../../assets/images/tools/cloud_drive/type/video@2x.png') 0 0 no-repeat;
     background-size: contain;
+  }
+  .is-reading {
+    color: #FF5A5F;
+    cursor: pointer;
   }
   @media screen and (max-width: 767px) {
     .right-content .content-box {
