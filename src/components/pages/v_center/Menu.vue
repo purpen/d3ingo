@@ -105,7 +105,7 @@
                   :content="eventUser.company.company_name" placement="right">
                   <div class="computer-btn"
                     v-if="isCompany && !isMob && eventUser.design_company_logo_image"
-                    @click="redirectCompany">
+                    @click="redirectCompany"> 
                     <span :style="{background: `url(${eventUser.design_company_logo_image.logo}) no-repeat center / cover #222`}"></span>
                   </div>
               </el-tooltip>
@@ -140,7 +140,7 @@
                   顺德交易会
                 </a>
               </el-tooltip>
-              <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" 
+              <a :class="['item', {'is-active': currentName === 'company'    }]" @click="redirectCompany" 
                 v-if="isMob && eventUser.company">
                 {{eventUser.company.company_name}}
               </a>

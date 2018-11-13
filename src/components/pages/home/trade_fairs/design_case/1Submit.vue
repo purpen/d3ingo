@@ -227,9 +227,12 @@
                 <el-checkbox v-model="protocol">
                 </el-checkbox>
                 阅读并同意
-                <router-link :to="{name: 'sdDesign_protocol'}" target="_blank" class="is-reading">
+                <!-- <router-link :to="{name: 'sdDesign_protocol'}" target="_blank" class="is-reading">
                   《委托推广项目及交易诚信协议》
-                </router-link>
+                </router-link> -->
+                <a class="is-reading" @click="goProtocol">
+                  《委托推广项目及交易诚信协议》
+                </a>
               </div>
               <el-row>
                 <el-col>
@@ -399,9 +402,12 @@
     },
     methods: {
       // 打开协议
-      isProtocol() {
+      goProtocol() {
+        let routeData = this.$router.resolve({
+          name: 'sdDesign_protocol'
+        })
         this.protocol = true
-        this.dialogProtocol = false
+        window.open(routeData.href, '_blank')
       },
       // 按钮
       shareRatioBlur(val) {
@@ -423,6 +429,10 @@
         }
         if (!that.fileList.length) {
           that.$message.error ('请完善信息!')
+          return false
+        }
+        if (!that.protocol) {
+          that.$message.error ('请阅读并同意《委托推广项目及交易诚信协议》!')
           return false
         }
         that.$refs[formName].validate ((valid) => {
@@ -463,7 +473,6 @@
             } else {
               that.isLoadingBtn2 = true
             }
-            console.log('res', row)
             row.cover_id = that.coverId
             that.$http({method: 'post', url: api.sdDesignResultsSave, data: row})
               .then (function (response) {
@@ -494,7 +503,6 @@
       },
       // 切换封面
       updateCover(id) {
-        console.log(id)
         this.coverId = id
       },
       // 删除图片
@@ -637,7 +645,6 @@
       uploadSuccess(response, file, fileList) {
         this.uploadMsg = '只能上传jpg/png文件，且不超过10M'
         let add = fileList[fileList.length - 1]
-        console.log('add', add)
         let item = {
           name: add.name,
           url: add.url,
@@ -646,8 +653,8 @@
           asset_id: add.response.asset_id
         }
         this.fileList.push (item)
-        console.log('上传结束的东西', item)
-        console.log('数组', this.fileList)
+        // console.log('上传结束的东西', item)
+        // console.log('数组', this.fileList)
       },
       // 上传之前操作
       beforeUpload(file) {
@@ -682,8 +689,6 @@
       },
       // 上传说明
       upload3Success(response, file, fileList) {
-        console.log('res', response)
-        console.log('file', file)
         let add = fileList[fileList.length - 1]
         let item = {
           name: add.name,
@@ -695,7 +700,6 @@
         }
         this.fileillustrate.push(item)
         this.uploadMsg3 = '个数: 1个 格式：PDF 大小：小于20MB'
-        console.log('55', this.fileillustrate)
       },
       // 上传专利
       upload2Success(response, file, fileList) {
@@ -709,7 +713,6 @@
           asset_id: add.response.asset_id
         }
         this.filepatent.push(item)
-        console.log('22', this.filepatent)
       },
       // 获取图片token
       getToken() {
@@ -929,7 +932,6 @@
         that.isfrist = true
         that.upDetails(id)
       } else {
-        console.log(that.$store.state.event.user)
         that.form.contact_number = that.$store.state.event.user.phone
       }
     }
