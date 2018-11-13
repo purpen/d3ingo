@@ -26,6 +26,7 @@ export default {
   forget: '/auth/forgetPassword', // POST 找回密码
   modifyPwd: '/auth/changePassword', // POST 修改密码
   check_account: '/auth/phoneState/{0}', // 验证手机号是否存在
+  jdPhoneState: '/jd/phoneState', // 验证手机号是否存在
   fetch_msm_code: '/auth/sms', // 获取手机验证码
   fetch_img_captcha: '/captcha/getCaptcha', // 获取图片验证码
   user: '/auth/user', // 获取用户信息
@@ -446,7 +447,7 @@ export default {
   jdAccount: '/jd/jdAccount', // GET 获取京东account
   jdCheckAccount: '/jd/checkAccount', // GET 检查京东account是否存在
   jdBindingUser: '/jd/bindingUser', // POST 已注册铟果，绑定京东云账户
-  newBindingUser: '/jd/newBindingUser', // POST 新用户注册铟果，绑定京东云账户
+  jdNewBindingUser: '/jd/newBindingUser', // POST 新用户注册铟果，绑定京东云账户
   // jd用户信息
   jdUserLists: '/jd/user/lists', // GET 获取用户信息列表
   jdUserShow: '/jd/user/show', // GET 用户详情

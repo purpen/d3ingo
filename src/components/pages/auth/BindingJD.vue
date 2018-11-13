@@ -3,40 +3,22 @@
     <!-- <section class="cover-bgf7"></section> -->
     <div class="register-box">
       <div class="regisiter-title">
-        <h2>绑定艺火账号账号</h2>
+        <h2>绑定京东账号</h2>
       </div>
-
-      <div v-if="!isMob" class="register-tab clearfix">
-        <div :class="{'register-tab-user': true, active: user === 1}" @click="changeUser(1)">
-          <div class="tab-left customer"></div>
-          <div class="tab-right">
-            <h3>已有账号</h3>
-            <p class="des">绑定艺火</p>
-          </div>
-        </div>
-        <div :class="{'register-tab-user': true, active: user === 2}" @click="changeUser(2)">
-          <div class="tab-left"></div>
-          <div class="tab-right">
-            <h3>没有账号</h3>
-            <p class="des">注册艺火</p>
-          </div>
-        </div>
-      </div>
-
       <div class="register-content">
         <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px"
                  class="input">
           <el-form-item label="" prop="account">
             <el-input v-model="form.account" name="username" ref="account" placeholder="手机号" :maxlength="11"></el-input>
           </el-form-item>
-          <el-form-item v-if="form.account && form.account.length === 11" label="" prop="imgCode">
+          <el-form-item v-if="userType === 2 && form.account && form.account.length === 11" label="" prop="imgCode">
             <el-input class="imgCodeInput" v-model="form.imgCode" name="imgCode" ref="imgCode" placeholder="图形验证码">
               <template slot="append">
                 <div @click="fetchImgCaptcha" class="imgCode" :style="{'background': `url(${imgCaptchaUrl}) no-repeat`}"></div>
               </template>
             </el-input>
           </el-form-item>
-          <el-form-item label="" prop="smsCode">
+          <el-form-item label="" prop="smsCode" v-if="userType === 2">
             <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
               <template slot="append">
                 <el-button type="primary" class="code-btn" @click="fetchCode" :disabled="time > 0">{{ codeMsg }}
@@ -48,12 +30,12 @@
             <el-input v-model="form.password" type="password" name="password" ref="password"
                       placeholder="密码"></el-input>
           </el-form-item>
-          <el-form-item label="" prop="checkPassword">
+          <el-form-item label="" prop="checkPassword" v-if="userType === 2">
             <el-input v-model="form.checkPassword" type="password" name="checkPassword" ref="checkPassword"
                       placeholder="确认密码"></el-input>
           </el-form-item>
           <el-button type="primary" :loading="isLoadingBtn" @click="submit('ruleForm')" class="register-btn is-custom">
-            注册
+            绑定
           </el-button>
         </el-form>
       </div>
@@ -63,7 +45,7 @@
 
 <script>
 import api from '@/api/api'
-// import auth from '@/helper/auth'
+import auth from '@/helper/auth'
 export default {
   name: '',
   data() {
@@ -98,11 +80,10 @@ export default {
     }
     return {
       isLoadingBtn: false,
-      jdAccound: '',
+      jdAccount: '',
       time: 0,
       labelPosition: 'top',
       form: {
-        type: 1,
         account: '',
         smsCode: '',
         imgCode: '',
@@ -128,11 +109,13 @@ export default {
           {validator: checkPassword, trigger: 'blur'}
         ]
       },
-      user: 1,
+      userType: 2, // 已有账号 1, 没有账号 2
       imgCaptchaUrl: '',
       imgCaptchaStr: '',
       timeInterval: null, // 定时器
-      showImgCode: false
+      showImgCode: false,
+      bindUrl: '',
+      oldAccount: ''
     }
   },
   computed: {
@@ -144,8 +127,35 @@ export default {
     }
   },
   methods: {
+    checkJdAccount(account) {
+      this.$http.get(api.jdCheckAccount, {params: {account: account}})
+      .then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.bindUser(res.data.data.token)
+        } else {
+          console.log(res.data.meta.message)
+        }
+      })
+    },
+    getJdAccount() {
+      let code = this.$route.query.code
+      if (code) {
+        this.$http.get(api.jdAccount, {params: {code: code}})
+        .then(res => {
+          if (res.data.meta.status_code === 200) {
+            this.jdAccount = res.data.data
+            this.checkJdAccount(res.data.data.account)
+          } else {
+            this.$router.push({name: 'login'})
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(err => {
+          console.error(err.message)
+        })
+      }
+    },
     changeUser(type) {
-      this.user = type
+      this.userType = type
     },
     fetchCode() {
       if (!this.form.account) {
@@ -168,61 +178,36 @@ export default {
       })
       if (!full) {
         let account = this.form.account
-        let url = api.check_account.format(account)
-        // 检测手机号是否存在
         const that = this
-        that.$http.get(url, {})
-          .then(function (response) {
-            if (response.data.meta.status_code === 200) {
-              // 获取验证码
-              that.$http.post(api.fetch_msm_code, {
-                phone: account,
-                str: that.imgCaptchaStr,
-                captcha: that.form.imgCode
-              })
-                .then(function (response) {
-                  if (response.data.meta.status_code === 200) {
-                    that.time = that.second
-                    that.timer()
-                    that.$emit('send')
-                  } else {
-                    console.log('验证码错误')
-                    that.fetchImgCaptcha()
-                    that.$message({
-                      showClose: true,
-                      message: response.data.meta.message,
-                      type: 'error'
-                    })
-                  }
-                })
-                .catch(function (error) {
-                  that.$message({
-                    showClose: true,
-                    message: error.message,
-                    type: 'error'
-                  })
-                  console.error(error.message)
-                  return false
-                })
-            } else {
-              that.$message({
-                showClose: true,
-                message: response.data.meta.message,
-                type: 'error'
-              })
-              that.fetchImgCaptcha()
-              that.form.imgCode = ''
-              return false
-            }
-          })
-          .catch(function (error) {
+        // 获取验证码
+        that.$http.post(api.fetch_msm_code, {
+          phone: account,
+          str: that.imgCaptchaStr,
+          captcha: that.form.imgCode
+        })
+        .then(function (response) {
+          if (response.data.meta.status_code === 200) {
+            that.time = that.second
+            that.timer()
+          } else {
+            console.log('验证码错误')
+            that.fetchImgCaptcha()
             that.$message({
               showClose: true,
-              message: error.message,
+              message: response.data.meta.message,
               type: 'error'
             })
-            return false
+          }
+        })
+        .catch(function (error) {
+          that.$message({
+            showClose: true,
+            message: error.message,
+            type: 'error'
           })
+          console.error(error.message)
+          return false
+        })
       } else {
         return
       }
@@ -237,11 +222,132 @@ export default {
           console.log(res.data.meta.message)
         }
       })
+    },
+    timer() {
+      if (this.time > 0) {
+        this.time = this.time - 1
+        setTimeout(this.timer, 1000)
+      }
+    },
+    bindUser(token) {
+      let that = this
+      // 写入localStorage
+      auth.write_token(token)
+      // ajax拉取用户信息
+      this.$http.get(api.user, {})
+      .then(function (response) {
+        if (response.data.meta.status_code === 200) {
+          console.log(response)
+          auth.write_user(response.data.data)
+
+          that.$message({
+            showClose: true,
+            message: '绑定成功!',
+            type: 'success'
+          })
+
+          that.$router.replace({name: 'vcenterControl'})
+        } else {
+          auth.logout()
+          that.$message({
+            showClose: true,
+            message: response.data.meta.message,
+            type: 'error'
+          })
+          that.isLoadingBtn = false
+        }
+      })
+      .catch(function (error) {
+        auth.logout()
+        that.$message({
+          showClose: true,
+          message: error.message,
+          type: 'error'
+        })
+        that.isLoadingBtn = false
+      })
+    },
+    submit(formName) {
+      const that = this
+      that.$refs[formName].validate((valid) => {
+        if (valid) {
+          let row = {}
+          if (this.userType === 1) {
+            row = {
+              phone: this.form.account,
+              password: this.form.password,
+              jd_account: this.jdAccount.account
+            }
+          } else {
+            row = {
+              phone: this.form.account,
+              password: this.form.password,
+              sms_code: this.form.smsCode,
+              jd_account: this.jdAccount.account
+            }
+          }
+
+          that.isLoadingBtn = true
+          // 验证通过，注册
+          that.$http.post(that.bindUrl, row)
+            .then(function (response) {
+              if (response.data.meta.status_code === 200) {
+                that.bindUser(response.data.data.token)
+              } else {
+                that.$message({
+                  showClose: true,
+                  message: response.data.meta.message,
+                  type: 'error'
+                })
+                that.isLoadingBtn = false
+              }
+            })
+            .catch(function (error) {
+              that.$message({
+                showClose: true,
+                message: error.message,
+                type: 'error'
+              })
+              that.isLoadingBtn = false
+              console.error(error.message)
+              return false
+            })
+          return false
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    }
+  },
+  watch: {
+    form: {
+      handler(val, oldVal) {
+        if (val.account.length === 11) {
+          if (this.oldAccount !== val.account) {
+            this.oldAccount = val.account
+            this.showImgCode = true
+            this.$http.get(api.jdPhoneState, {params: {phone: val.account}})
+            .then(res => {
+              if (res.data && res.data.meta.status_code === 200) {
+                this.userType = 2
+                this.bindUrl = api.jdNewBindingUser
+              } else if (res.data && res.data.meta.status_code === 412) {
+                this.userType = 1
+                this.bindUrl = api.jdBindingUser
+              }
+            })
+          }
+        }
+      },
+      deep: true
     }
   },
   created() {
+    this.getJdAccount()
+  },
+  mounted() {
     this.fetchImgCaptcha()
-    this.jdAccound = this.$route.params.account
   }
 }
 </script>

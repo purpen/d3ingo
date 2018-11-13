@@ -148,7 +148,6 @@
 </template>
 
 <script>
-import api from '@/api/api'
 export default {
   name: 'JDCloud',
   data() {
@@ -406,7 +405,6 @@ export default {
     }
   },
   created() {
-    this.getJdAccount()
     if (this.$store.state.event.prod.id === 0) {
       this.$router.replace({name: 'home'})
     }
@@ -417,30 +415,6 @@ export default {
       if (this.user.type === 1) {
       } else {
         this.$message.error('请使用需求公司账号登录')
-      }
-    },
-    checkJdAccound(account) {
-      this.$http.get(api.jdCheckAccount, {params: {account: account}})
-      .then(res => {
-        if (res.data.meta.status_code === 200) {
-          console.log(res)
-        } else {}
-      })
-    },
-    getJdAccount() {
-      let code = this.$route.query.code
-      if (code) {
-        this.$http.get(api.jdAccount, {params: {code: code}})
-        .then(res => {
-          if (res.data.meta.status_code === 200) {
-            this.jdAccount = res.data.data
-            this.checkJdAccound(res.account)
-          } else {
-            this.$message.error(res.data.meta.message)
-          }
-        }).catch(err => {
-          console.error(err.message)
-        })
       }
     }
   },

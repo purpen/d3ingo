@@ -378,16 +378,8 @@ let routes = [
     component: require('@/components/pages/auth/Register')
   },
   {
-    path: '/binding_jd/:account',
-    name: 'bindJD',
-    meta: {
-      title: '绑定艺火账号'
-    },
-    component: require('@/components/pages/auth/BindingJD')
-  },
-  {
     path: '/binding_jd',
-    name: 'bindJD1',
+    name: 'bindJD',
     meta: {
       title: '绑定艺火账号'
     },
