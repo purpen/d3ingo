@@ -7,6 +7,7 @@
       </div>
 
       <div v-if="prod.name === '' && !isMob" class="register-tab clearfix">
+      <!-- <div v-if="!isMob" class="register-tab clearfix"> -->
         <div :class="{'register-tab-user': true, active: uActive}" @click="selectUser">
           <div class="tab-left customer"></div>
           <div class="tab-right">
@@ -241,6 +242,9 @@
         })
       },
       fetchCode() {
+        if (!this.form.account) {
+          return
+        }
         let full = 0
         this.$refs.ruleForm.validateField('account', (err) => {
           if (err) {

@@ -442,6 +442,11 @@ export default {
   designNoticeTrueRead: '/designNotice/trueRead', // PUT 确认阅读
   designNoticeDelete: '/designNotice/delete', // DELETE 删除
 
+  // jd账号
+  jdAccount: '/jd/jdAccount', // GET 获取京东account
+  jdCheckAccount: '/jd/checkAccount', // GET 检查京东account是否存在
+  jdBindingUser: '/jd/bindingUser', // POST 已注册铟果，绑定京东云账户
+  newBindingUser: '/jd/newBindingUser', // POST 新用户注册铟果，绑定京东云账户
   // jd用户信息
   jdUserLists: '/jd/user/lists', // GET 获取用户信息列表
   jdUserShow: '/jd/user/show', // GET 用户详情

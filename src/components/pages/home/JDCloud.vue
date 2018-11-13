@@ -148,6 +148,7 @@
 </template>
 
 <script>
+import api from '@/api/api'
 export default {
   name: 'JDCloud',
   data() {
@@ -388,7 +389,8 @@ export default {
           intro: '2015年10月15日，太火鸟协助国内电单车品牌云造科技正式发布云马 C1智能电单车，同步上线淘宝众筹，并助其拓展线上线下及海外营销渠道，不到一个月时间即完成众筹金额破千万的成绩。截止众筹结束，云马C1智行车共取得5879粉丝支持，筹得资金¥11597621，1159%完成众筹目标，渠道直采4万台。',
           image: require ('@/assets/images/home/yunma.jpg')
         }
-      ]
+      ],
+      jdAccount: {}
     }
   },
   computed: {
@@ -404,6 +406,7 @@ export default {
     }
   },
   created() {
+    this.getJdAccount()
     if (this.$store.state.event.prod.id === 0) {
       this.$router.replace({name: 'home'})
     }
@@ -414,6 +417,30 @@ export default {
       if (this.user.type === 1) {
       } else {
         this.$message.error('请使用需求公司账号登录')
+      }
+    },
+    checkJdAccound(account) {
+      this.$http.get(api.jdCheckAccount, {params: {account: account}})
+      .then(res => {
+        if (res.data.meta.status_code === 200) {
+          console.log(res)
+        } else {}
+      })
+    },
+    getJdAccount() {
+      let code = this.$route.query.code
+      if (code) {
+        this.$http.get(api.jdAccount, {params: {code: code}})
+        .then(res => {
+          if (res.data.meta.status_code === 200) {
+            this.jdAccount = res.data.data
+            this.checkJdAccound(res.account)
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(err => {
+          console.error(err.message)
+        })
       }
     }
   },

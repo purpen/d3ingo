@@ -94,14 +94,14 @@ module.exports = {
           resolve('node_modules/vue-resize-sensor')],
         exclude: [/node_modules/, /pdfmake.js$/]
       },
-      {
-        test: /\.(js|vue)$/,
-        loader: 'happypack/loader?id=eslint',
-        enforce: "pre",
-        include: [
-          resolve('src')],
-        exclude: [/node_modules/, /pdfmake.js$/]
-      },
+      // {
+      //   test: /\.(js|vue)$/,
+      //   loader: 'happypack/loader?id=eslint',
+      //   enforce: "pre",
+      //   include: [
+      //     resolve('src')],
+      //   exclude: [/node_modules/, /pdfmake.js$/]
+      // },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
