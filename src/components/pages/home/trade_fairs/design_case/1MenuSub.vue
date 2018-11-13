@@ -13,11 +13,16 @@
       <router-link v-if="index === 1" to="" class="item2 item is-active">
         <span v-if="$route.name === 'sdDesignCase_submit'">
           提交设计成果
-        </span> 
+        </span>
         <span v-if="$route.name === 'sdDesignCase_update'">
           编辑设计成果
         </span>
       </router-link>
+      <!-- <button class="red-button middle-button fr">
+        <router-link :to="{name: 'demand_login'}" >
+          查看设计需求
+        </router-link>
+      </button> -->
     </div>
   </div>
 </template>
@@ -75,5 +80,8 @@
     border: 1px solid #d2d2d2;
     border-left: none;
     border-bottom: none;
+  }
+  .mg-b-10 {
+    margin-bottom: 10px;
   }
 </style>

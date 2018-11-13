@@ -1014,14 +1014,15 @@
       },
       // 订单列表
       getOrderList() {
-        this.isLoading = true
+        let self = this
+        self.isLoading = true
         // if (p) {
         //   this.jquery.current_page = p
         // }
         // if (size) {
         //   this.jquery.per_page = size
         // }
-        this.$http.get(api.sdPayMyOrderList, {params: {
+        self.$http.get(api.sdPayMyOrderList, {params: {
           per_page: 50
         }}).then((response) => {
           if (response.data.meta.status_code === 200) {
@@ -1029,20 +1030,21 @@
             // this.jquery.total = pages.total
             // this.jquery.page = pages.total_pages
             if (response.data.data && response.data.data.length) {
-              this.orderList = response.data.data
+              self.orderList = response.data.data
             } else {
-              this.orderList = []
+              self.orderList = []
             }
-            this.isLoading = false
+            self.isLoading = false
           } else {
-            this.isLoading = false
-            this.$message.error(response.data.meta.message)
+            self.$message.error(response.data.meta.message)
+            self.isLoading = false
+            console.log(123, self.isLoading)
             return
           }
         })
         .catch(function (error) {
-          this.isLoading = false
-          this.$message.error(error.message)
+          self.isLoading = false
+          self.$message.error(error.message)
           console.error(error.message)
           return
         })

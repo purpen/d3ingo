@@ -254,6 +254,7 @@
         this.designCases.forEach((item, index) => {
           if (item.id === ele.id) {
             this.$set(item, 'up', false)
+            this.formPrice.up = false
           }
         })
         this.dialogVisible = true

@@ -9,11 +9,11 @@
           <v-menu-sub></v-menu-sub>
           <div :class="['content-box', isMob ? 'content-box-m' : '']">
             <div class="design-case-list" v-loading="isLoading">
-              <!-- <div class="no-list" v-if="!orderList||!orderList.length">
+              <div class="no-list" v-if="!orderList||!orderList.length">
                 <img src="../../../../../assets/images/trade_fairs/default/NoOrder@2x.png" alt="无订单">
                 <p>还没有订单～</p>
-              </div> -->
-              <div class="demand-list">
+              </div>
+              <div class="demand-list" v-if="orderList&&orderList.length">
                 <div class="demand-header">
                   <el-row>
                     <el-col :span="8">
