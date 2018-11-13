@@ -127,7 +127,7 @@ export default {
       this.$http.get(api.sdPayCloseOrder, {params: {id: this.item.id}}).then((response) => {
         if (response.data.meta.status_code === 200) {
           this.closeShow = false
-          this.$router.push({name: 'sale_result'})
+          this.$router.push({name: 'work_datails', params: {id: this.itemId}})
         } else {
           this.$message.error(response.data.meta.message)
           this.closeShow = false
