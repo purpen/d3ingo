@@ -9,11 +9,11 @@
           <v-menu-sub></v-menu-sub>
           <div :class="['content-box', isMob ? 'content-box-m' : '']">
             <div class="design-case-list" v-loading="isLoading">
-              <!-- <div class="no-list" v-if="!orderList||!orderList.length">
+              <div class="no-list" v-if="!orderList||!orderList.length">
                 <img src="../../../../../assets/images/trade_fairs/default/NoOrder@2x.png" alt="无订单">
                 <p>还没有订单～</p>
-              </div> -->
-              <div class="demand-list">
+              </div>
+              <div class="demand-list" v-if="orderList&&orderList.length">
                 <div class="demand-header">
                   <el-row>
                     <el-col :span="8">
@@ -66,10 +66,10 @@
                       </el-col>
                       <el-col :span="4" class="hint">
                         <p :class="{'tc-red': d.design_result.sell < 2}">{{d.status | payFormat(d.design_result.sell)}}</p>
-                        <p>请尽快联系需求方交付设计成果</p>
+                        <p v-if="d.design_result.sell === 1">请尽快联系需求方交付设计成果</p>
                       </el-col>
                       <el-col :span="4">
-                        <el-button class="is-custom" type="primary" size="small" v-if="d.design_result.sell === 2">
+                        <el-button class="is-custom" type="primary" size="small" v-if="d.design_result.sell === 2&&d.design_result.is_evaluate===1">
                           <router-link :to="{name: 'pay_datails', params: {id: d.id}}"
                             target="_blank" class="router-pay">
                             查看评价
@@ -111,7 +111,7 @@
         designId: '', // 修改状态id
         dialogUpdateVisible: false, // 更新状态弹窗
         dialogVisible: false, // 修改价格弹窗
-        form: {},// 修改价格
+        form: {}, // 修改价格
         formup: {}, // 查看详情
         updateform: { // 修改状态表单
           status: '',
@@ -149,7 +149,7 @@
         } else if (val === 1) {
           if (sell === 2) {
             return '交易成功'
-          } else if (sell < 2){
+          } else if (sell < 2) {
             return '待确认文件'
           } else if (sell === 2 && !pl) {
             return '待评价'

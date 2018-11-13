@@ -22,9 +22,9 @@
                     <div tabindex="-1" class="item-more" ref="itemMore" @click="upSelect(d.id)" @mouseleave="downSelect(d.id)">
                       <i></i>
                       <ul v-if="d.status === 1&&d.up">
-                        <li class="edit" @click="updateStatus(d.id, 2)">提交</li>
+                        <!-- <li class="edit" @click="updateStatus(d.id, 2)">提交</li> -->
                         <li class="del" >
-                          <a class="toUpdate" @click="toUpdateUrl(d.id)">修改</a>
+                          <a class="toUpdate" @click="toUpdateUrl(d.id)">编辑</a>1
                         </li>
                         <li class="del" @click="updateBtn(d, 2)">删除</li>
                       </ul>
@@ -36,7 +36,7 @@
                         <li class="edit" @click="PriceBtn(d)">修改价格</li>
                       </ul>
                       <ul v-if="d.status === -1&&d.up">
-                        <li class="del" @click="toUpdateUrl(d.id)">修改</li>
+                        <li class="del" @click="toUpdateUrl(d.id)">编辑</li>
                         <li class="del-disabled" v-if="d.sell === 1">删除</li>
                         <li class="edit" @click="updateBtn(d, 2)" v-if="d.sell === 2">删除</li>
                       </ul>
@@ -90,7 +90,7 @@
         <p v-if="updateform.opt===3">确认要撤回
           <span class="tc-red">{{updateform.title}}</span>吗？
         </p>
-        <p class="tc-9 repeal" v-if="updateform.opt ==3">撤回后，设计成果状态将改为已下架</p>
+        <!-- <p class="tc-9 repeal" v-if="updateform.opt ==3">撤回后，设计成果状态将改为已下架</p> -->
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogUpdateVisible=false">取消</el-button>
@@ -120,7 +120,7 @@
             <el-row :gutter="10">
               <el-col :span="12" v-if="formPrice.sell_type&&formPrice.sell_type===2">
                 <el-form-item label="出让比例" prop="share_ratio">
-                  <el-input v-model="formPrice.share_ratio" @blur="shareRatioBlur(formPrice.share_ratio)">
+                  <el-input v-model="formPrice.share_ratio">
                     <template slot="append">%</template>
                   </el-input>
                 </el-form-item>
@@ -166,7 +166,7 @@
         isbtnLoading: false, // 按钮加载效果
         dialogUpdateVisible: false, // 更新状态弹窗
         dialogVisible: false, // 修改价格弹窗
-        formPrice: {},// 修改价格
+        formPrice: {}, // 修改价格
         updateform: { // 修改状态表单
           status: '',
           id: [],
@@ -251,6 +251,12 @@
       // 修改样式
       PriceBtn(ele) {
         this.formPrice = {...ele}
+        this.designCases.forEach((item, index) => {
+          if (item.id === ele.id) {
+            this.$set(item, 'up', false)
+            this.formPrice.up = false
+          }
+        })
         this.dialogVisible = true
       },
       // 修改状态按钮
@@ -262,7 +268,7 @@
           opt: opt
         }
         if (opt === 3) {
-          this.updateform.status = 1
+          this.updateform.status = -1
         }
         if (opt === 1) {
           this.updateform.status = -1
@@ -328,6 +334,15 @@
         if (Number(that.formPrice.price) < 0) {
           that.$message.error ('请输入合理的金额!')
           return false
+        }
+        let ratio = that.formPrice.share_ratio
+        if (isNaN(ratio)) {
+          this.$message.error ('请输入1~100的比例!1')
+          return
+        }
+        if (ratio > 100 || ratio < 0) {
+          this.$message.error ('请输入1~100的比例!')
+          return
         }
         that.isbtnLoading = true
         that.formPrice.share_ratio = that.formPrice.sell_type === 1 ? 100 : that.formPrice.share_ratio
@@ -553,6 +568,7 @@
   }
   .item img {
     width: 100%;
+    height: 100%;
     }
 
   .image-box {

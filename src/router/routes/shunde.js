@@ -154,6 +154,18 @@ module.exports = [
     },
     component: require('@/components/pages/home/trade_fairs/design_case/1Order')
   },
+  // 个人中心协议页面
+  {
+    path: '/shunde/trade_fairs/design_case/Protocol',
+    name: 'sdDesign_protocol',
+    meta: {
+      title: '设计成果委托推广及交易协议',
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/home/trade_fairs/design_case/Protocol')
+  },
   // 支付-确认订单
   {
     path: '/shunde/trade_fairs/sure_order/:id',

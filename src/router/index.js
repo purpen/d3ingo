@@ -43,7 +43,7 @@ let routes = [
   },
   // 京东云首页
   {
-    path: '/SaaS_Index',
+    path: '/home',
     name: 'SaaSIndex',
     meta: {
       title: '京东云艺火'
@@ -52,7 +52,7 @@ let routes = [
   },
   {
     path: '/jd_cloud',
-    redirect: '/SaaS_Index'
+    redirect: '/home'
   },
   {
     path: '/test',
@@ -376,6 +376,14 @@ let routes = [
       title: '注册'
     },
     component: require('@/components/pages/auth/Register')
+  },
+  {
+    path: '/binding_jd',
+    name: 'bindJD',
+    meta: {
+      title: '绑定艺火账号'
+    },
+    component: require('@/components/pages/auth/BindingJD')
   },
   {
     path: '/invite/:code',

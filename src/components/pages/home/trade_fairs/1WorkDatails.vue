@@ -113,7 +113,7 @@
             </div>
             </div>
           </div>
-          <el-collapse v-model="credential" class="patent" v-if="formup.patent_url && formup.patent_url.length">
+          <el-collapse v-model="credential" class="patent" v-if="formup.patent_url && formup.patent_url.length" :class="{'pat-top': !formup.illustrate_url.length}">
             <el-collapse-item title="专利证书" name="1">
               <swiper :options="swiperOption" class="patent-img">
                 <swiper-slide v-for="(img, index) in formup.patent_url" :key="index">
@@ -187,7 +187,7 @@ export default {
         autoplay: 5000,
         prevButton: '.swiper-button-prev',
         nextButton: '.swiper-button-next',
-        spaceBetween: 0,
+        spaceBetween: 0
       },
       swiperOption2: {
         pagination: '.swiper-pagination',
@@ -196,7 +196,7 @@ export default {
         autoplay: 5000,
         prevButton: '.swiper-button-prev',
         nextButton: '.swiper-button-next',
-        spaceBetween: 0,
+        spaceBetween: 0
       },
       notNextTick: true, // 设置之后可以获取swiper对象
       evalu: {},
@@ -222,7 +222,7 @@ export default {
     },
     seenBook() {
       let routeData = this.$router.resolve({name: 'achieve_preview', params: {id: this.formup.id}})
-      window.open(routeData.href, '_blank');
+      window.open(routeData.href, '_blank')
     },
     // 图片预览
     imgaeShow(ele) {
@@ -350,23 +350,20 @@ export default {
     handleScroll () {
       var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
       var scrollHeigh = document.body.scrollHeight
-      if (this.$route.query.type !== '2') {
-        if (!this.viewCover  && this.imagesUrl && this.imagesUrl.length > 1) {
-          if (scrollTop > (scrollHeigh - 677)) {
+      if (this.user.type !== 2) {
+        if (!this.viewCover) {
+          if ((scrollHeigh - scrollTop) < 667) {
             this.elementPosition = true
           } else if (scrollTop > 960) {
             this.elementShow = true
             this.elementPosition = false
-          } else {
+          } else if (scrollTop > 884 && this.formup.patent_url && this.formup.patent_url.length && !this.formup.illustrate_url.length) {
+            this.elementShow = true
             this.elementPosition = false
-            this.elementShow = false
-          }
-        }
-      } else {
-        if (!this.viewCover  && this.imagesUrl && this.imagesUrl.length > 1) {
-          if (scrollTop > (scrollHeigh - 687) && scrollTop > 960) {
-            this.elementPosition = true
-          } else if (scrollTop > 960) {
+          } else if (scrollTop > 570 && this.formup.illustrate_url && this.formup.illustrate_url.length && !this.formup.patent_url.length) {
+            this.elementShow = true
+            this.elementPosition = false
+          } else if (scrollTop > 490 && !this.formup.illustrate_url.length && !this.formup.patent_url.length) {
             this.elementShow = true
             this.elementPosition = false
           } else {
@@ -375,13 +372,12 @@ export default {
           }
         }
       }
-    },
+    }
   },
-  
   mounted() {
     window.addEventListener('scroll', this.handleScroll)
   },
-  destroyed () {
+  destroyed() {
     window.removeEventListener('scroll', this.handleScroll)
   },
   created() {
@@ -394,6 +390,10 @@ export default {
   computed: {
     swiperObj() {
       return this.$refs.mySwiper.swiper
+    },
+    user() {
+      let user = this.$store.state.event.user // role_id
+      return user
     }
   },
   filters: {
@@ -530,10 +530,10 @@ export default {
   padding-top: 20px;
   margin: 0 40px;
   line-height: 24px;
-  font-size:16px;
-  font-family:PingFangSC-Regular;
-  font-weight:400;
-  color:#666666;
+  font-size: 16px;
+  font-family: PingFangSC-Regular;
+  font-weight: 400;
+  color: #666666;
 }
 .des {
   padding-top: 20px;
@@ -939,5 +939,8 @@ p.img-des {
 }
 .pat-margin {
   margin-top: 10px;
+}
+.pat-top {
+  margin-top: 50px;
 }
 </style>
