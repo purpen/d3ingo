@@ -13,19 +13,19 @@
                 <img src="../../../../../assets/images/trade_fairs/default/NoDesign@2x.png" alt="">
                 <p class="tc-9">还没有设计需求，立即发布一个吧～</p>
                 <div class="post-header">
-                  <el-button class="is-custom mg-r-20" type="primary" size="small" @click="upVisible()">
+                  <button class="full-red-button middle-button mg-r-20" @click="upVisible()">
                     <i class="el-icon-plus"></i>
                     发布需求
-                  </el-button>
+                  </button>
                   <!-- <el-button class="is-custom withdraw btn-phone" size="small">查看设计成果</el-button> -->
                 </div>
               </div>
               <div class="post-demand" v-if="demandList.length&&!isLoading">
                 <div class="post-header">
-                  <el-button class="is-custom mg-r-20" type="primary" size="small" @click="addDemand">
+                  <button class="full-red-button middle-button mg-r-20" type="primary" size="small" @click="addDemand">
                     <i class="el-icon-plus"></i>
                     发布需求
-                  </el-button>
+                  </button>
                   <!-- <el-button class="is-custom withdraw btn-phone" size="small">查看设计成果</el-button> -->
                 </div>
               </div>
@@ -67,16 +67,16 @@
                         {{d.status | statusFormat}}
                       </el-col>
                       <el-col :span="4">
-                        <el-button v-if="d.status>0" @click="upDetails(d.id, 1)">
+                        <button class="white-button middle-button" v-if="d.status>0" @click="upDetails(d.id, 1)">
                           查看详情
-                        </el-button>
-                        <el-button class="is-custom" type="primary" size="small"
-                        v-if="d.status === -1"
-                        @click="upDetails(d.id, 2)"
-                        >编辑</el-button>
-                        <el-button class="mg-t-10" @click="deleteVisible(d)" v-if="d.status === 2 || d.status === -1">
+                        </button>
+                        <button class="full-red-button middle-button" v-if="d.status === -1"
+                        @click="upDetails(d.id, 2)">
+                          编辑
+                        </button>
+                        <button class="white-button middle-button mg-t-10" @click="deleteVisible(d)" v-if="d.status === 2 || d.status === -1">
                           关闭项目
-                        </el-button>
+                        </button>
                       </el-col>
                     </el-row>
                   </div>
@@ -195,8 +195,12 @@
                 </div>
                 
                 <span slot="footer" class="dialog-footer">
-                  <el-button @click="closeBtn('form')">取 消</el-button>
-                  <el-button type="primary" :loading="addLoading" @click="createDemand('form')">发 布</el-button>
+                  <button @click="closeBtn('form')" class="white-button middle-button mg-r-20">
+                    取 消
+                  </button>
+                  <button :loading="addLoading" class="full-red-button middle-button" @click="createDemand('form')">
+                    发 布
+                  </button>
                 </span>
               </el-dialog>
               <el-dialog
@@ -289,7 +293,7 @@
                   </div>
                 </div>
                 <span slot="footer" class="dialog-footer">
-                  <el-button @click="upDetails(formup.id, 2)">重新编辑</el-button>
+                  <button class="white-button middle-button" @click="upDetails(formup.id, 2)">重新编辑</button>
                 </span>
               </el-dialog>
                <el-dialog
@@ -306,8 +310,8 @@
                   吗？</p>
                 <p class="item-del">关闭项目将彻底从您的项目列表移除</p>
                 <span slot="footer" class="dialog-footer">
-                  <el-button @click="dialogDeleteVisible=false">取消</el-button>
-                  <el-button @click="deleteDemand()" class="is-custom" type="primary" size="small">确定</el-button>
+                  <button class="white-button middle-button mg-r-20" @click="dialogDeleteVisible=false">取消</button>
+                  <button @click="deleteDemand()" class="full-red-button middle-button">确定</button>
                 </span>
                </el-dialog>
             </div>
@@ -315,10 +319,10 @@
               <div>
                 <div v-if="!collectList||!collectList.length" class="no-list">
                   <img src="../../../../../assets/images/trade_fairs/default/NoDemand@2x.png" alt="无收藏">
-                  <p>还没有收藏设计需求～</p>
-                  <el-button class="red-button">查看设计需求</el-button>
+                  <p>还没有收藏设计成果～</p>
+                  <button class="red-button middle-button">查看设计成果</button>
                 </div>
-                <div class="demand-list">
+                <div class="demand-list" v-if="collectList&&collectList.length">
                   <div class="demand-header">
                     <el-row>
                       <el-col :span="10">
@@ -368,18 +372,18 @@
                           {{d.status === -1?'下架': '出售中'}}
                         </el-col>
                         <el-col :span="4">
-                          <el-button class="is-custom" type="primary" size="small" v-if="d.status !== -1">
+                          <button class="full-red-button middle-button" v-if="d.status !== -1">
                             <router-link :to="{name: 'work_datails', params: {id: d.id}}"
                             target="_blank" class="router-work" >
                             立即购买
                             </router-link>
-                          </el-button>
-                          <el-button class="is-custom" type="primary" size="small" :disabled="true" v-if="d.status === -1">
+                          </button>
+                          <button class="full-red-button middle-button" :disabled="true" v-if="d.status === -1">
                             立即购买
-                          </el-button>
-                          <el-button class="mg-t-10" @click="updateFollow(d.id)">
+                          </button>
+                          <button class="mg-t-10 white-button middle-button" @click="updateFollow(d.id)">
                             {{d.is_follow === 1 ?'取消收藏': '收藏'}}
-                          </el-button>
+                          </button>
                         </el-col>
                       </el-row>
                     </div>
@@ -451,31 +455,31 @@
                           {{d.status | payFormat(d.design_result.sell,d.design_result.is_evaluate)}}
                         </el-col>
                         <el-col :span="4">
-                          <el-button class="is-custom" type="primary" size="small" v-if="d.status === 0">
+                          <button class="full-red-button middle-button" v-if="d.status === 0">
                             <router-link :to="{name: 'managed_funds', params: {id: d.design_result.id}}"
                               target="_blank" class="router-work">
                               继续支付
                             </router-link>
                             
-                          </el-button>
-                          <el-button class="mg-t-10 white" v-if="d.status === 0" @click="upOrderBth(d.id, d.design_result.title, 1)">
+                          </button>
+                          <button class="mg-t-10 white-button middle-button" v-if="d.status === 0" @click="upOrderBth(d.id, d.design_result.title, 1)">
                             取消订单
-                          </el-button>
-                          <el-button class="is-custom" type="primary" size="small" v-if="d.status ===1 && d.design_result.sell < 2" @click="upOrderBth(d.id,d.design_result.title, 2)">
+                          </button>
+                          <button class="full-red-button middle-button" v-if="d.status ===1 && d.design_result.sell < 2" @click="upOrderBth(d.id,d.design_result.title, 2)">
                             确认文件
-                          </el-button>
-                          <el-button class="mg-t-10" v-if="d.status ===1 && d.design_result.sell < 2" @click="dialogAdmin=true">
+                          </button>
+                          <button class="mg-t-10 white-button middle-button" v-if="d.status ===1 && d.design_result.sell < 2" @click="dialogAdmin=true">
                             仲裁电话
-                          </el-button>
-                          <el-button v-if="d.status ===-1" @click="deleteOrder(d.id)">
+                          </button>
+                          <button class="white-button middle-button" v-if="d.status ===-1" @click="deleteOrder(d.id)">
                             删除
-                          </el-button>
-                          <el-button class="mg-t-10" v-if="d.status ===1 && d.design_result.sell === 2&&!d.design_result.is_evaluate">
+                          </button>
+                          <button class="mg-t-10 white-button middle-button" v-if="d.status ===1 && d.design_result.sell === 2&&!d.design_result.is_evaluate">
                             <router-link :to="{name: 'pay_datails', params: {id: d.id}}"
                               target="_blank" class="router-pay">
                               评价
                             </router-link>
-                          </el-button>
+                          </button>
                         </el-col>
                       </el-row>
                     </div>
@@ -507,8 +511,8 @@
                    订单吗？
                 </p>
                 <span slot="footer" class="dialog-footer">
-                  <el-button @click="dialogCancelOrder=false">取消</el-button>
-                  <el-button @click="cancelOrder(formOrder.id)" class="is-custom" type="primary" size="small">确定</el-button>
+                  <button class="white-button middle-button mg-r-20" @click="dialogCancelOrder=false">取消</button>
+                  <button class="full-red-button middle-button" @click="cancelOrder(formOrder.id)">确定</button>
                 </span>
               </el-dialog>
               <el-dialog
@@ -537,8 +541,8 @@
                   <p>确认文件后交易成功，平台将放款设计服务商</p>
                 </div>
                 <span slot="footer" class="dialog-footer">
-                  <el-button @click="dialogIsfile=false">取消</el-button>
-                  <el-button class="is-custom" type="primary" size="small" @click="isFile(formOrder.id)">确定</el-button>
+                  <button class="white-button middle-button mg-r-20" @click="dialogIsfile=false">取消</button>
+                  <button class="full-red-button middle-button" @click="isFile(formOrder.id)">确定</button>
                 </span>
               </el-dialog>
                <!-- <el-dialog
@@ -1207,6 +1211,9 @@
     background: #f7f7f7;
     border: 1px solid #e6e6e6;
     border-bottom: none;
+  }
+  .line-block {
+    display: inline-block;
   }
   .demand-list {
     font-size: 14px;

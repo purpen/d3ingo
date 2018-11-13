@@ -42,7 +42,10 @@
                       :before-upload="beforeUpload"
                       :show-file-list="false"
                       >
-                      <el-button class="is-custom" type="primary" size="small">+&nbsp;上传图片</el-button>
+                      <!-- <el-button class="is-custom" type="primary" size="small"></el-button> -->
+                      <div class="full-red-button middle-button line-block">
+                        +&nbsp;上传图片
+                      </div>
                       <span class="uploadsMsg">{{uploadMsg}}</span>
                    </el-upload>
                     <div class="img-files">
@@ -156,9 +159,12 @@
                       :on-progress="uploadProgress2"
                       :show-file-list="false"
                       >
-                      <el-button class="red-button">
+                      <!-- <el-button class="red-button">
                         +&nbsp;上传专利证书
-                      </el-button>
+                      </el-button> -->
+                      <div class="red-button middle-button line-block">
+                        +&nbsp;上传专利证书
+                      </div>
                       <span class="tc-9 patent-msg">
                         {{uploadMsg2}}
                       </span>
@@ -184,10 +190,10 @@
                       :on-progress="uploadProgress3"
                       :before-upload="beforeUpload2"
                       >
-                      <el-button class="red-button">
-                      +&nbsp;上传说明书
-                    </el-button>
-                    <span class="tc-9 patent-msg">{{uploadMsg3}}</span>
+                      <div class="red-button middle-button line-block">
+                        +&nbsp;上传说明书
+                      </div>
+                      <span class="tc-9 patent-msg">{{uploadMsg3}}</span>
                     </el-upload>
                   </el-col>
                 </el-row>
@@ -229,11 +235,17 @@
                 <el-col>
                   <div class="form-footer">
                     <div class="form-btn">
-                      <el-button  @click.prevent="returnList" class="middle-button white-button">取消</el-button>
-                      <el-button :loading="isLoadingBtn" @click.prevent="submit('ruleForm', 1)" class="middle-button white-button">
+                      <div @click.prevent="returnList" class="middle-button white-button line-block">
+                        取消
+                      </div>
+                      <div :loading="isLoadingBtn" @click.prevent="submit('ruleForm', 1)" class="middle-button white-button line-block">
                         保存
-                      </el-button>
-                      <el-button type="danger" :loading="isLoadingBtn2" @click="submit('ruleForm')">提交</el-button>
+                      </div>
+                      <div :loading="isLoadingBtn2" @click="submit('ruleForm')"
+                        class="full-red-button middle-button line-block"
+                        >
+                        提交
+                      </div>
                     </div>
                     <div class="clear"></div>
                   </div>
@@ -936,14 +948,11 @@
     float: right;
     display: flex;
     align-items: center;
+    text-align: center;
   }
 
-  .form-btn button {
-    width: 120px;
-  }
-
-  .form-btn button:not(:last-child) {
-    margin-right: 10px;
+  .form-btn div{
+    margin-left: 10px;
   }
 
   .avatar-uploader .el-upload {
@@ -1198,6 +1207,9 @@
     top: 9px;
     z-index: 1;
     background-color: #fff;
+  }
+  .line-block {
+    display: inline-block;
   }
   .cancel-icons {
     position: absolute;
