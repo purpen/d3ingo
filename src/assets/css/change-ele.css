@@ -36,6 +36,15 @@
   .el-menu-info.el-menu--horizontal > .el-submenu .el-submenu__title {
     padding-right: 0
   }
+  .el-button:focus {
+    background: #f5f5f5;
+    border: 1px solid #e6e6e6;
+    color: #999;
+  }
+  .el-button:visited {
+    background-color: #ff5a5f;
+    color: #fff;
+  }
   /* control header */
   .el-menu-info .el-submenu > .el-menu {
     left: auto;
@@ -689,18 +698,13 @@
     content: ''
   }
   .hint-text .el-dialog__body {
-    text-align: center
+    text-align: center;
   }
   .hint-text .el-dialog__footer .dialog-footer .el-button:first-child {
     margin-right: 0;
   }
   /* 取消订单button */
   .pay-button .el-button:focus {
-    background: #f5f5f5;
-    border: 1px solid #e6e6e6;
-    color: #999;
-  }
-  .el-button:focus {
     background: #f5f5f5;
     border: 1px solid #e6e6e6;
     color: #999;
@@ -735,6 +739,19 @@
   }
   .details-form .el-dialog__body {
     padding: 0px 20px;
+  }
+  .el-checkbox__input.is-focus .el-checkbox__inner {
+    border-color: #e6e6e6;
+  }
+  .white.el-button--default:active {
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    color: #999;
+  }
+  .red.el-button--default:active {
+    background-color: #ff5a5f;
+    border-color: transparent;
+    color: #ffffff;
   }
 @media screen and (max-width: 767px) {
   .el-dialog--large,
