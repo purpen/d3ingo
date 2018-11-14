@@ -683,10 +683,10 @@
   }
   /* 交易会需求成果列表loading */
   .achieve-load .el-loading-mask {
-    background-color: rgba(255,255,255,.1);
+    background-color: rgba(255,255,255,.05);
   }
   .moblie-lod .el-loading-mask {
-    background-color: rgba(255,255,255,.1);
+    background-color: rgba(255,255,255,.05);
   }
   .hint-text .el-dialog--tiny {
     top: 30% !important;

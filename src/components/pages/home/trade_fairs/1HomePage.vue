@@ -11,6 +11,9 @@
     </div>
     <briefContent>
     </briefContent>
+    
+    <div class="bottom-background">
+    </div>
   </div>
 </template>
 
@@ -89,6 +92,13 @@
     font-family: PingFangSC-Semibold;
     font-size: 20px;
     color: #3917C3;
+  }
+  .bottom-background {
+    position: relative;
+    margin-bottom: -50px;
+    height: 100px;
+    background: url('../../../../assets/images/trade_fairs/bottom.png') no-repeat center;
+    background-size: cover;
   }
   @media screen and (max-width: 1980px) {
     .banner-button {

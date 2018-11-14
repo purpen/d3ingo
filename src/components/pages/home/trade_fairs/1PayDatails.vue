@@ -467,7 +467,7 @@ export default {
       console.log('scrollHeight', scrollHeigh)
       if (this.user.type !== 2) {
         if (!this.viewCover) {
-          if ((scrollHeigh - scrollTop) < 782) {
+          if ((scrollHeigh - scrollTop) < 782 && scrollHeigh > 1200) {
             this.elementPosition = true
           } else if (scrollTop > 1100) {
             this.elementShow = true
