@@ -77,7 +77,7 @@
       </div>
       <!-- 右下角图标 -->
       <div class="right">
-        <div class="right-top" @click="clientPhone = true">
+        <div class="right-top" @click="callCall">
           <div class="pMassgae">
             联系客服
           </div>
@@ -92,6 +92,7 @@
         title="联系电话"
         :visible.sync="callPhone"
         :lock-scroll="false"
+        @close="closePop"
         size="tiny"
         class="phone-style">
         <div class="title-center">
@@ -105,6 +106,7 @@
         title="客服电话"
         :visible.sync="clientPhone"
         :lock-scroll="false"
+        @close="closePop"
         size="tiny"
         class="phone-style">
         <div class="title-center">
@@ -119,6 +121,7 @@
       title="需求详情"
       :visible.sync="dialogUpdateVisible"
       :lock-scroll="false"
+      @close="closePop"
       size="tiny"
       class="submit2-form seen-deta"
       >
@@ -260,17 +263,35 @@
     mounted() {
     },
     methods: {
+      callCall() {
+        this.clientPhone = true
+        let oldClass = document.getElementById('app').getAttribute('class')
+        if (oldClass) {
+          oldClass = oldClass.replace(/disableScroll\x20?/g, '')
+        }
+        document.body.setAttribute('class', 'disableScroll')
+      },
       contactWay(item) {
         this.callDtails = ''
         this.callPhone = true
         this.callDtails = item
         this.urlLogo = this.callDtails.logo_image
-        // if (this.callPhone === true) {
-        //   setTimeout(() => {
-        //     console.log(document.body.style.paddingRight)
-        //     document.body.style.paddingRight = 6+'px'
-        //   }, 0.1)
-        // }
+        let oldClass = document.getElementById('app').getAttribute('class')
+        if (oldClass) {
+          oldClass = oldClass.replace(/disableScroll\x20?/g, '')
+        }
+        document.body.setAttribute('class', 'disableScroll')
+        // document.getElementById('app').setAttribute('class', 'disableScroll ' + oldClass)
+        // document.childNodes[1].setAttribute('class', 'disableScroll')
+      },
+      closePop() {
+        let oldClass = document.getElementById('app').getAttribute('class')
+        if (oldClass) {
+          oldClass = oldClass.replace('disableScroll ', '')
+        }
+        document.body.removeAttribute('class', 'disableScroll')
+        document.getElementById('app').setAttribute('class', oldClass)
+        document.childNodes[1].removeAttribute('class', 'disableScroll')
       },
       // 获取列表
       getDemandList() {
@@ -302,6 +323,11 @@
       // 获取详情
       upDetails(id) {
         this.diaLoading = true
+        let oldClass = document.getElementById('app').getAttribute('class')
+        if (oldClass) {
+          oldClass = oldClass.replace(/disableScroll\x20?/g, '')
+        }
+        document.body.setAttribute('class', 'disableScroll')
         this.formup = {}
         this.dialogUpdateVisible = true
         this.$http.get(api.sdDemandDesignDemandInfo, {params: {demand_id: id}}).then(

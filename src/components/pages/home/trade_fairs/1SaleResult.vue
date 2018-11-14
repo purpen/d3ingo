@@ -77,7 +77,7 @@
       
       <!-- 右下角图标 -->
       <div class="right">
-        <div class="right-top" @click="clientPhone = true">
+        <div class="right-top" @click="callPhone">
           <div class="pMassgae">
             联系客服
           </div>
@@ -93,6 +93,7 @@
         title="客服电话"
         :visible.sync="clientPhone"
         :lock-scroll="false"
+        @close="closePop"
         size="tiny"
         class="phone-style">
         <div class="title-center">
@@ -128,6 +129,26 @@
       this.getDesignCase()
     },
     methods: {
+      // 弹出客服框
+      callPhone() {
+        this.clientPhone = true
+        let oldClass = document.getElementById('app').getAttribute('class')
+        if (oldClass) {
+          oldClass = oldClass.replace(/disableScroll\x20?/g, '')
+        }
+        document.body.setAttribute('class', 'disableScroll')
+        // document.getElementById('app').setAttribute('class', 'disableScroll ' + oldClass)
+        // document.childNodes[1].setAttribute('class', 'disableScroll')
+      },
+      closePop() {
+        let oldClass = document.getElementById('app').getAttribute('class')
+        if (oldClass) {
+          oldClass = oldClass.replace('disableScroll ', '')
+        }
+        document.body.removeAttribute('class', 'disableScroll')
+        document.getElementById('app').setAttribute('class', oldClass)
+        document.childNodes[1].removeAttribute('class', 'disableScroll')
+      },
       // 收藏需求
       collect(id) {
         this.intersClick = false
