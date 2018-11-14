@@ -20,6 +20,14 @@
             </div>
           </div>
         </swiper-slide>
+        <swiper-slide v-if="!isMob">
+          <div class="slide" :style="{ background: 'url(' + require ('assets/images/trade_fairs/banner/pc-banner.png') + ') no-repeat center', height: calcHeight}" @click="routerTrading">
+          </div>
+        </swiper-slide>
+        <swiper-slide v-if="isMob">
+          <div class="slide" :style="{ background: 'url(' + require ('assets/images/trade_fairs/banner/mobile-banner.png') + ') no-repeat center', height: calcHeight}">
+          </div>
+        </swiper-slide>
         <swiper-slide v-if="isMob" v-for="(ele, index) in bannerListMob" :key="index">
           <router-link
             v-if="!ele.outSide"
@@ -101,7 +109,7 @@
           <el-card class="card" :body-style="{ padding: '0px' }">
             <router-link :to="{name: 'articleShow', params: {id: d.id}}"
                         :target="isMob ? '_self' : '_blank'">
-              <div class="image-box" :style="{background: 'url('+ d.cover.middle + ') no-repeat center', backgroundSize: 'cover'}">
+              <div class="image-box" v-if="d.cover" :style="{background: 'url('+ d.cover.middle + ') no-repeat center', backgroundSize: 'cover'}">
                 <img v-lazy="d.cover.middle">
               </div>
               <div class="content">
@@ -139,7 +147,7 @@
       <el-col :xs="24" :sm="8" :md="8" :lg="8" v-for="(d, index) in designCaseList" :key="index">
         <el-card class="card" :body-style="{ padding: '0px' }">
           <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}" :target="isMob ? '_self' : '_blank'">
-            <div class="image-box" :style="{background: 'url('+ d.cover.middle + ') no-repeat center', backgroundSize: 'cover'}">
+            <div class="image-box" v-if="d.cover" :style="{background: 'url('+ d.cover.middle + ') no-repeat center', backgroundSize: 'cover'}">
                 <img v-lazy="d.middle">
             </div>
             <div class="content">
@@ -391,13 +399,22 @@
       }
     },
     methods: {
+      routerTrading() {
+        if (!this.token) {
+          this.$router.push({name: 'trade_fairs'})
+        } else {
+          this.$router.push({name: 'demand_login', query: {type: 1}})
+        }
+      },
       getArticleList() {
         this.$http.get(api.articleList,
         {params: {per_page: 3}})
         .then((res) => {
           this.articleList = res.data.data
           for (let i = 0; i < res.data.data.length; i++) {
-            this.articleList[i].cover_url = res.data.data[i].cover.middle
+            if (res.data.data[i].cover) {
+              this.articleList[i].cover_url = res.data.data[i].cover.middle
+            }
           }
         }).catch((err) => {
           console.error(err)
@@ -411,7 +428,9 @@
             this.designCaseList = response.data.data
             if (this.designCaseList && this.designCaseList.length > 0) {
               for (let i = 0; i < response.data.data.length; i++) {
-                this.designCaseList[i].cover_url = response.data.data[i].cover.middle
+                if (response.data.data[i].cover) {
+                  this.designCaseList[i].cover_url = response.data.data[i].cover.middle
+                }
               }
             }
           }
@@ -475,6 +494,9 @@
       isMob() {
         return this.$store.state.event.isMob
       },
+      token() {
+        return this.$store.state.event.token
+      },
       user() {
         let user = this.$store.state.event.user // role_id
         return user
@@ -496,6 +518,39 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .banner-button {
+    float: right;
+    background: #02EBA5;
+    border: 2px solid #02EBA5;
+    height: 44px;
+    width: 144px;
+    line-height: 40px;
+    margin-top: 19%;
+    margin-right: 20%;
+  }
+  .banner-button:hover {
+    background: #00BE89;
+    border: 2px solid #00BE89;
+    cursor: pointer;
+  }
+  .text-width {
+    margin: 0 auto;
+    height: 28px;
+    width: 100px;
+    text-align: justify;
+  }
+  .text-width:after {
+    display: inline-block;
+    width: 100%;
+    content: '';
+  }
+  .banner-text {
+    left: 20px;
+    right: 20px;
+    font-family: PingFangSC-Semibold;
+    font-size: 20px;
+    color: #3917C3;
+  }
   .home_banner {
     max-height: 500px;
     overflow: hidden;
@@ -506,6 +561,7 @@
   }
 
   .slide {
+    cursor: pointer;
     position: relative;
     color: #475669;
     font-size: 18px;
@@ -884,7 +940,7 @@
 
   @media screen and (max-width: 767px) {
     .container {
-      padding: 0;
+      padding: 0 10px 0 10px;
     }
 
     .slide .container {

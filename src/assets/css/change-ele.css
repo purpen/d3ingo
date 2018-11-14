@@ -36,6 +36,15 @@
   .el-menu-info.el-menu--horizontal > .el-submenu .el-submenu__title {
     padding-right: 0
   }
+  .el-button:focus {
+    background: #f5f5f5;
+    border: 1px solid #e6e6e6;
+    color: #999;
+  }
+  .el-button:visited {
+    background-color: #ff5a5f;
+    color: #fff;
+  }
   /* control header */
   .el-menu-info .el-submenu > .el-menu {
     left: auto;
@@ -253,7 +262,7 @@
   }
   .el-dialog__header {
     border-radius: 4px 4px 0 0;
-    padding: 20px;
+    padding: 16px 20px;
     background: #f7f7f7
   }
   .el-dialog__headerbtn .el-dialog__close {
@@ -364,11 +373,12 @@
   .el-dialog__title {
     font-weight: 400;
     color: #222;
-    font-size: 18px;
-    line-height: 22px;
+    font-size: 16px;
+    line-height: 1;
   }
   .el-dialog {
     border-radius: 4px;
+    /* margin-bottom: 0px; */
   }
   .seen-deta .el-dialog--tiny {
     width: 480px
@@ -376,9 +386,9 @@
   .el-dialog--tiny {
     width: 380px
   }
-  .el-dialog--tiny .el-dialog__header {
+  /* .el-dialog--tiny .el-dialog__header {
     padding: 10px 20px;
-  }
+  } */
   .el-dialog--tiny .el-dialog__headerbtn {
     font-size: 14px;
   }
@@ -645,6 +655,104 @@
   .forget-content .el-form--label-top .disabled-hover .el-form-item__content .el-input-group--append .el-input-group__append:hover {
     background-color: #f7f7f7;
   }
+  .background-style .el-dialog--tiny {
+    width: 480px;
+  }
+  .background-style .el-dialog__footer .dialog-footer .el-button:first-child {
+    margin-right: 0;
+  }
+  .load-index .el-loading-mask {
+    z-index: 2020;
+  }
+  .submit-form .el-dialog__body {
+    padding: 0;
+  }
+  .style-call .el-dialog__header {
+    background: #fff;
+  }
+  .style-call .el-dialog--tiny {
+    height: 250px;
+    top: 35% !important;
+  }
+  .common .el-button--small {
+    min-width: 120px;
+    height: 34px;
+  }
+  .phone-style .el-dialog--tiny {
+    top: 25% !important;
+  }
+  /* 交易会需求成果列表loading */
+  .achieve-load .el-loading-mask {
+    background-color: rgba(255,255,255,.05);
+  }
+  .moblie-lod .el-loading-mask {
+    background-color: rgba(255,255,255,.05);
+  }
+  .hint-text .el-dialog--tiny {
+    top: 30% !important;
+  }
+  .hint-text .el-dialog__header {
+    background: #fff;
+  }
+  .hint-text .el-icon-close:before {
+    content: ''
+  }
+  .hint-text .el-dialog__body {
+    text-align: center;
+  }
+  .hint-text .el-dialog__footer .dialog-footer .el-button:first-child {
+    margin-right: 0;
+  }
+  /* 取消订单button */
+  .pay-button .el-button:focus {
+    background: #f5f5f5;
+    border: 1px solid #e6e6e6;
+    color: #999;
+  }
+  .close-orde .el-dialog__body {
+    text-align: center
+  }
+  .close-orde .el-dialog--tiny {
+    top: 30% !important;
+  }
+  /* 成果详情样式 */
+  .patent .el-collapse-item__wrap {
+    background-color: #fff
+  }
+  .patent .swiper-container-horizontal > .swiper-pagination-bullets {
+    bottom: -5px;
+  }
+  .patent .el-collapse-item__header {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #222222;
+  }
+  .patent .el-collapse-item__header__arrow {
+    float: right;
+    position: relative;
+    top: 15px;
+    right: 10px;
+    color: #999;
+  }
+  .details-form .el-dialog--tiny {
+    width: 480px;
+  }
+  .details-form .el-dialog__body {
+    padding: 0px 20px;
+  }
+  .el-checkbox__input.is-focus .el-checkbox__inner {
+    border-color: #e6e6e6;
+  }
+  .white.el-button--default:active {
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    color: #999;
+  }
+  .red.el-button--default:active {
+    background-color: #ff5a5f;
+    border-color: transparent;
+    color: #ffffff;
+  }
 @media screen and (max-width: 767px) {
   .el-dialog--large,
   .el-dialog--small,
@@ -656,7 +764,5 @@
   .el-form-item__content .el-radio-group {
     width: 100%;
   }
-  .submit-form>.el-dialog .el-dialog__body {
-    padding: 0 20px;
-  }
+
 }

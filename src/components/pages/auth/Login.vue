@@ -38,6 +38,7 @@
           <el-button type="primary" :loading="isLoadingBtn" @keyup="submit('ruleForm')" @click="submit('ruleForm')" class="login-btn is-custom">登录
           </el-button>
         </el-form>
+        <p v-if="prod.name === 'jdc'" class="authorize">京东授权登录:<span class="fx-4"><a :href="jdURL">JD</a></span></p>
       </div>
     </div>
     <div class="reg">
@@ -89,7 +90,7 @@
 import api from '@/api/api'
 import auth from '@/helper/auth'
 import { MENU_STATUS, MSG_COUNT, CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
-
+import { ENV } from 'conf/prod.env'
 export default {
   name: 'login',
   data() {
@@ -141,14 +142,14 @@ export default {
       typeError: false,
       imgCaptchaUrl: '',
       imgCaptchaStr: '',
-      showImgCode: false
+      showImgCode: false,
+      jdURL: 'http://oauth2.jdcloud.com/authorize?client_id=9651541661345895&redirect_uri=http://jdyun.taihuoniao.com/binding_jd&response_type=code&state=matrixapp'
     }
   },
   methods: {
     checkAccount(number) {
       if (number && number.length === 11) {
         this.$http.post(api.errCount, {account: number}).then(res => {
-          console.log(res.data.data.err_count)
           if (res.data.meta.status_code === 200) {
             if (res.data.data.err_count && res.data.data.err_count >= 3) {
               this.showImgCode = true
@@ -385,6 +386,9 @@ export default {
     })
   },
   created: function() {
+    if (ENV === 'dev') {
+      this.jdURL = 'http://oauth2.jdcloud.com/authorize?client_id=9741542107197570&redirect_uri=https://c.jdcloud.com/binding_jd&response_type=code&state=matrixapp'
+    }
     if (this.prod.name) {
       this.userType = 1
     }
@@ -702,6 +706,15 @@ form {
   height: 34px;
   background-size: cover;
   border-radius: 0 4px 4px 0;
+  cursor: pointer;
+}
+.authorize {
+  padding-top: 10px;
+  text-align: left;
+}
+.authorize span {
+  padding-left: 10px;
+  color: #0989C5;
   cursor: pointer;
 }
 @media screen and (max-width: 767px) {

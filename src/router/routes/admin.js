@@ -163,7 +163,7 @@ module.exports = [
   },
   // 顺德交易会成果列表
   {
-    path: '/admin/trade_fairs/AchievmentList',
+    path: '/admin/trade_fairs/achievment_list',
     name: 'adminAchievmentList',
     meta: {
       title: '成果列表',
@@ -173,7 +173,7 @@ module.exports = [
   },
   // 顺德交易会需求列表
   {
-    path: '/admin/trade_fairs/DemandtList',
+    path: '/admin/trade_fairs/demandt_list',
     name: 'adminDemandtList',
     meta: {
       title: '需求列表',
