@@ -433,7 +433,7 @@ form {
 .password-show {
   padding-left: 20px;
   position: relative;
-  
+
 }
 .password-show::before {
   content: "";
