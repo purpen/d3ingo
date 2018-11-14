@@ -8,7 +8,7 @@
       <p class="text-center">确认删除此项目阶段</p>
       <span slot="footer" class="dialog-footer">
         <button class="small-button white-button" @click="dialogVisible = false">取 消</button>
-        <button class="small-button full-red-button" type="primary" @click="deleteDes(formup.id)">确 定</button>
+        <el-button class="small-button full-red-button" type="primary" @click="deleteDes(formup.id)" :loading="isLoading">确 定</el-button>
       </span>
     </el-dialog>
     <el-dialog 
@@ -19,7 +19,7 @@
       <p class="text-center">确认删除此子阶段</p>
       <span slot="footer" class="dialog-footer">
         <button class="small-button white-button" @click="dialogTask = false">取 消</button>
-        <button class="small-button full-red-button" type="primary" @click="deleteTack(formTack.id)">确 定</button>
+        <el-button class="small-button full-red-button" type="primary" @click="deleteTack(formTack.id)" :loading="isLoading">确 定</el-button>
       </span>
     </el-dialog>
     <el-dialog 
@@ -30,7 +30,7 @@
       <p class="text-center">确认删除此里程碑</p>
       <span slot="footer" class="dialog-footer">
         <button class="small-button white-button" @click="dialogNode = false">取 消</button>
-        <button class="small-button full-red-button" type="primary" @click="deleteNode(formNode.id)">确 定</button>
+        <el-button class="small-button full-red-button" type="primary" @click="deleteNode(formNode.id)" :loading="isLoading">确 定</el-button>
       </span>
     </el-dialog>
     <section class="add-itemStage-bg" v-if="isItemStage">
@@ -86,7 +86,7 @@
               </el-input>
             </el-form-item>
             <el-form-item>
-              <button class="small-button full-red-button fr" @click="create('form')">保存</button>
+              <el-button class="small-button full-red-button fr" @click="create('form')" :loading="isLoading">保存</el-button>
               <button class="small-button white-button fr" @click="cancel()">取消</button>
             </el-form-item>
           </el-form>
@@ -108,7 +108,7 @@
       >
         已逾期
       </div>
-      <div class="statistical-pro" v-else>
+      <div class="statistical-pro" v-if="formup.status&&formup.statistical<100">
         <el-progress :percentage="formup.statistical"
         :stroke-width="20"
         :show-text="false"
@@ -535,22 +535,16 @@
               <div class="item-list-text">
 
                 <div class="item-text-Header">
-                  <el-row>
-
-                    <el-col>
-                      <div class="fr popover" tabindex="-1">
+                      <!-- <div class="fr popover" tabindex="-1">
                         <i class="fx-icon-search"
                         >
-                        <!-- <ul class="search-popover">
+                        <ul class="search-popover">
                           <li @click.stop="sort='isday'">按天查询</li>
                           <li @click.stop="sort='isweek'">按周查询</li>
                           <li @click.stop="sort='ismonth'">按月查询</li>
-                        </ul> -->
+                        </ul>
                         </i>
-                      </div>
-                    </el-col>
-
-                    <el-col>
+                      </div> -->
                       <el-row>
                         <el-col :span="11">
                           项目阶段
@@ -565,9 +559,6 @@
                           完成度
                         </el-col>
                       </el-row>
-                    </el-col>
-
-                  </el-row>
                 </div>
 
                 <div class="item-text-list" v-for="(des,indexdes) in designStageLists" :key="indexdes" @click="edit(des)">
@@ -842,6 +833,7 @@ export default {
     return {
       socket: null,
       item_id: '', // 项目id
+      isLoading: false, // 加载中
       option: [
         {
           value: 0,
@@ -872,7 +864,6 @@ export default {
         'start_time': '',
         'summary': ''
       }, // 新建子阶段
-      formNodeowner: false, // 甲方是否参与
       formupst: {}, // 是否完成项目
       formTackstatus: false, // 是否完成子阶段
       formTackduration: 0,
@@ -933,10 +924,6 @@ export default {
       ],
       pickerOptions0: {},
       rules: {
-        // duration: [
-        //   {required: true, type: 'number', message: '请填写阶段所需时间', trigger: 'blur'},
-        //   {min: 1, max: 500, message: '天数必须为大于0小于500的数', trigger: 'blur'}
-        // ],
         name: [
           {
             required: true, message: '请填写项目阶段名称', trigger: 'blur'
@@ -1005,7 +992,8 @@ export default {
         daying.push({
           'i': i,
           'week': week,
-          'time': time
+          'time': time,
+          'new': ''
         })
       }
       return daying
@@ -1064,7 +1052,12 @@ export default {
       let newDate = new Date()
       for (var n = 0; n < this.totaldays.length; n++) {
         if (this.totaldays[n].year === newDate.getFullYear() && this.totaldays[n].month === newDate.getMonth() + 1) {
-          this.totaldays[n].dayings[newDate.getDate() - 1].new = 'active'
+          let newday = this.totaldays[n].dayings
+          for (var c = 0; c < newday.length; c++) {
+            if (newday[c].i === newDate.getDate()) {
+              newday[c].new = 'active'
+            }
+          }
         }
       }
     },
@@ -1096,6 +1089,7 @@ export default {
     },
     // 今天到最早的一天的距离
     newtostart() {
+      console.log('new1', new Date())
       let date = Date.parse(new Date()) / 1000
       this.newleft = this.itemtostart(date)
     },
@@ -1221,6 +1215,7 @@ export default {
             that.form.design_project_id = this.$route.params.id
           }
           that.isItemStage = false
+          that.isLoading = true
           that.$http.post(api.designStageCreate, that.form).then((response) => {
             if (response.data.meta.status_code === 200) {
               that.form = {}
@@ -1228,12 +1223,15 @@ export default {
               that.designStageLists.push(res)
               that.cancel()
               that.addtack(res, 3)
+              that.isLoading = false
             } else {
               that.$message.error(response.data.meta.message)
             }
+            that.isLoading = false
           }).catch((error) => {
+            that.isLoading = false
             that.$message.error(error.messsage)
-            console.log(error.message)
+            console.error(error.message)
           })
         }
       })
@@ -1315,6 +1313,7 @@ export default {
     // 删除项目
     deleteDes(d) {
       let dthis = this
+      this.isLoading = true
       dthis.$http.delete(api.designStageDelete, {params: {id: d}})
       .then (function(response) {
         if (response.data.meta.status_code === 200) {
@@ -1325,16 +1324,23 @@ export default {
               dthis.isitemedit = false
             }
           }
+          dthis.isLoading = false
         } else {
+          dthis.isLoading = false
           dthis.$message.error(response.data.meta.message)
         }
       }).catch((error) => {
+        dthis.isLoading = false
         dthis.$message.error(error.message)
         console.error(error.message)
       })
     },
     // 创建子阶段
     addtack(des, type) {
+      if (des.status === 1) {
+        this.$message.error('本阶段已完成,如需添加子阶段请更改阶段状态')
+        return
+      }
       this.itemdesId = des.id
       this.itemdesname = des.name
       this.isitemedit = false
@@ -1353,6 +1359,8 @@ export default {
       this.indesignStage = des
       var time = []
       var durations = 0
+      console.log('des', des)
+      console.log('type', type)
       // 有子阶段时
       des.number = 0
       if (des.design_substage) {
@@ -1421,8 +1429,9 @@ export default {
     // },
     // 子阶段日期改变
     updateTime (date) {
-      if (Date.parse(new Date(date.replace(/-/g, "/"))) / 1000 !== this.formTack.start_time) {
-        let movet = (this.formTack.start_time - Date.parse(new Date(date.replace(/-/g, "/"))) / 1000)
+      if (Date.parse(new Date(date.replace(/-/g, '/'))) / 1000 !== this.formTack.start_time) {
+        let movet = (this.formTack.start_time - Date.parse(new Date(date.replace(/-/g, '/'))) / 1000)
+        movet
         let fts = Math.round(new Date(this.formTacktime).getTime() / 1000)
         let arr = []
         let ind = ''
@@ -1440,9 +1449,9 @@ export default {
             if (i > 0) {
               start[i - 1].duration = (start[i].start_time - start[i - 1].start_time) / 86400
               arr.push({
-              'id': start[i - 1].id,
-              'start_time': start[i - 1].start_time,
-              'duration': parseInt(start[i - 1].duration)
+                'id': start[i - 1].id,
+                'start_time': start[i - 1].start_time,
+                'duration': parseInt(start[i - 1].duration)
               })
             }
           }
@@ -1740,8 +1749,10 @@ export default {
     // 删除子阶段
     deleteTack(id) {
       let self = this
+      self.isLoading = true
       if (self.indesignStage.design_substage.length === 1) {
         this.$message('最少为一个阶段,无法继续删除')
+        self.isLoading = false
         return false
       }
       self.$http.delete(api.designSubstageDelete, {params: {design_substage_id: id}})
@@ -1758,11 +1769,14 @@ export default {
               self.istaskedit = false
             }
           }
+          self.isLoading = false
         } else {
-          this.$message.error(response.data.meta.message)
+          self.isLoading = false
+          self.$message.error(response.data.meta.message)
         }
       }).catch((error) => {
-        this.$message.error(error.message)
+        self.isLoading = false
+        self.$message.error(error.message)
         console.error(error.message)
       })
     },
@@ -1844,7 +1858,7 @@ export default {
           }
         }).catch((error) => {
           that.$message.error(error.message)
-          console.log(error.message)
+          console.error(error.message)
         })
     },
     // 编辑里程碑按钮
@@ -1883,12 +1897,13 @@ export default {
           }
         ).catch((error) => {
           self.$message.error(error.message)
-          console.log(error.message)
+          console.error(error.message)
         })
       }
     },
     // 删除里程碑
     deleteNode(id) {
+      this.isLoading = true
       this.$http.delete(api.milestoneDelete, {params: {milestone_id: id}}).then((response) => {
         if (response.data.meta.status_code === 200) {
           for (var i = 0; i < this.indesignStage.milestone.length; i++) {
@@ -1898,10 +1913,13 @@ export default {
             this.dialogNode = false
             this.isnodeedit = false
           }
+          this.isLoading = false
         } else {
+          this.isLoading = false
           this.$message.error(response.data.meta.message)
         }
       }).catch((error) => {
+        this.isLoading = false
         this.$message.error(error.message)
         console.error(error.message)
       })
@@ -2002,11 +2020,6 @@ export default {
         this.$message.error(error.message)
         console.error(error.message)
       })
-    },
-    // 当前用户是否为项目负责人和商务经理
-    permissions() {
-      let user = this.$store.state.task.projectObject
-      user
     }
   },
   created() {
@@ -2018,7 +2031,6 @@ export default {
     }
     this.itemId = itemId
     // 读取公司成员
-    this.permissions()
     this.readMembers()
     this.upTokens()
     this.statisticalItem()
@@ -2064,7 +2076,9 @@ export default {
         if (isenday < 180) {
           this.totaldays = this.dateDay(this.endTimes[0], this.endTimes[this.endTimes.length - 1] + 86400 * (180 - isenday))
         } else this.totaldays = this.dateDay(this.endTimes[0], this.endTimes[this.endTimes.length - 1])
+        console.log(222)
         this.newDay()
+        console.log(333)
         this.newtostart()
         // 子阶段
         this.tackleft(this.designStageLists)
@@ -2152,8 +2166,11 @@ export default {
     cursor: pointer;
   }
   .item-total {
-    margin:30px 50px;
+    margin: 20px 50px;
+    /* padding: 30px; */
     position: relative;
+    /* height: 100%;
+    overflow: auto; */
   }
   .cs {
     position: absolute;
@@ -2708,7 +2725,7 @@ export default {
   .item-text-Header {
     border-bottom: 1px solid #e6e6e6;
     border-right: 1px solid #e6e6e6;
-    padding: 10px 10px 0px 30px;
+    padding: 30px 10px 0px 30px;
     height: 55px;
   }
   .item-text-Header>.el-row>.el-col {

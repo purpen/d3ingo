@@ -8,6 +8,7 @@
               <div class="left">
                 <h3 :class="{'m-h3' : isMob}">铟果D³INGO产品创新SaaS平台</h3>
                 <p :class="{'m-p' : isMob}">用设计重塑品质生活</p>
+                <router-link v-if="uType !== 2" to="/item/submit_one">发布项目需求</router-link>
               </div>
               <div class="draw">
                 <img :src="require('assets/images/home/banner/BG02@2x.png')" width="90%" height="auto" alt="">
@@ -16,8 +17,15 @@
             <div class="head-cover">
               <!--<p :class="[{'need': uType !== 2}]"><span>{{tags[0]}}</span>专业设计服务商，<span>{{tags[1]}}</span>成交项目，<span>{{tags[2]}}</span>成交金额</p>-->
               <p :class="[{'need': uType !== 2}]"><span>{{tags[0]}}</span>专业设计服务商，<span>{{tags[1]}}</span>成交项目，<span>{{tags[2]}}</span>成交金额</p>
-              <router-link v-if="uType !== 2" to="/item/submit_one">发布项目需求</router-link>
             </div>
+          </div>
+        </swiper-slide>
+        <swiper-slide v-if="!isMob">
+          <div class="slide" :style="{ background: 'url(' + require ('assets/images/trade_fairs/banner/pc-banner.png') + ') no-repeat center', height: calcHeight}" @click="routerTrading">
+          </div>
+        </swiper-slide>
+        <swiper-slide v-if="isMob">
+          <div class="slide" :style="{ background: 'url(' + require ('assets/images/trade_fairs/banner/mobile-banner.png') + ') no-repeat center', height: calcHeight}">
           </div>
         </swiper-slide>
         <swiper-slide v-if="isMob" v-for="(ele, index) in bannerListMob" :key="index">
@@ -101,7 +109,7 @@
           <el-card class="card" :body-style="{ padding: '0px' }">
             <router-link :to="{name: 'articleShow', params: {id: d.id}}"
                         :target="isMob ? '_self' : '_blank'">
-              <div class="image-box" :style="{background: 'url('+ d.cover.middle + ') no-repeat center', backgroundSize: 'cover'}">
+              <div class="image-box" v-if="d.cover" :style="{background: 'url('+ d.cover.middle + ') no-repeat center', backgroundSize: 'cover'}">
                 <img v-lazy="d.cover.middle">
               </div>
               <div class="content">
@@ -139,7 +147,7 @@
       <el-col :xs="24" :sm="8" :md="8" :lg="8" v-for="(d, index) in designCaseList" :key="index">
         <el-card class="card" :body-style="{ padding: '0px' }">
           <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}" :target="isMob ? '_self' : '_blank'">
-            <div class="image-box" :style="{background: 'url('+ d.cover.middle + ') no-repeat center', backgroundSize: 'cover'}">
+            <div class="image-box" v-if="d.cover" :style="{background: 'url('+ d.cover.middle + ') no-repeat center', backgroundSize: 'cover'}">
                 <img v-lazy="d.middle">
             </div>
             <div class="content">
@@ -343,7 +351,7 @@
           prevButton: '.swiper-button-prev',
           nextButton: '.swiper-button-next',
           spaceBetween: 0,
-          loop:true
+          loop: true
         },
         articleList: [],
         designList: [
@@ -391,13 +399,22 @@
       }
     },
     methods: {
+      routerTrading() {
+        if (!this.token) {
+          this.$router.push({name: 'trade_fairs'})
+        } else {
+          this.$router.push({name: 'demand_login', query: {type: 1}})
+        }
+      },
       getArticleList() {
         this.$http.get(api.articleList,
         {params: {per_page: 3}})
         .then((res) => {
           this.articleList = res.data.data
           for (let i = 0; i < res.data.data.length; i++) {
-            this.articleList[i].cover_url = res.data.data[i].cover.middle
+            if (res.data.data[i].cover) {
+              this.articleList[i].cover_url = res.data.data[i].cover.middle
+            }
           }
         }).catch((err) => {
           console.error(err)
@@ -406,13 +423,17 @@
       getDesignCase() {
         this.$http.get(api.designCaseOpenLists,
         {params: {per_page: 6, sort: 5}})
-        .then((res) => {
-        	if (res.data && res.data.meta.status_code === 200){
-        		this.designCaseList = res.data.data
-	          for (let i = 0; i < res.data.data.length; i++) {
-	            this.designCaseList[i].cover_url = res.data.data[i].cover.middle
-	          }
-        	}
+        .then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.designCaseList = response.data.data
+            if (this.designCaseList && this.designCaseList.length > 0) {
+              for (let i = 0; i < response.data.data.length; i++) {
+                if (response.data.data[i].cover) {
+                  this.designCaseList[i].cover_url = response.data.data[i].cover.middle
+                }
+              }
+            }
+          }
         }).catch((err) => {
           console.error(err)
         })
@@ -473,6 +494,9 @@
       isMob() {
         return this.$store.state.event.isMob
       },
+      token() {
+        return this.$store.state.event.token
+      },
       user() {
         let user = this.$store.state.event.user // role_id
         return user
@@ -494,8 +518,42 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .banner-button {
+    float: right;
+    background: #02EBA5;
+    border: 2px solid #02EBA5;
+    height: 44px;
+    width: 144px;
+    line-height: 40px;
+    margin-top: 19%;
+    margin-right: 20%;
+  }
+  .banner-button:hover {
+    background: #00BE89;
+    border: 2px solid #00BE89;
+    cursor: pointer;
+  }
+  .text-width {
+    margin: 0 auto;
+    height: 28px;
+    width: 100px;
+    text-align: justify;
+  }
+  .text-width:after {
+    display: inline-block;
+    width: 100%;
+    content: '';
+  }
+  .banner-text {
+    left: 20px;
+    right: 20px;
+    font-family: PingFangSC-Semibold;
+    font-size: 20px;
+    color: #3917C3;
+  }
   .home_banner {
-    max-height: 500px
+    max-height: 500px;
+    overflow: hidden;
   }
 
   .banner-link {
@@ -503,6 +561,7 @@
   }
 
   .slide {
+    cursor: pointer;
     position: relative;
     color: #475669;
     font-size: 18px;
@@ -543,7 +602,18 @@
     flex-direction: column;
     justify-content: center
   }
-
+  .slide .left a {
+    border-radius: 30px;
+    background: #FF5A5F;
+    display: block;
+    width: 180px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    color: #fff;
+    font-size: 16px;
+    margin-top: 15px;
+  }
   .slide .draw {
     height: 100%;
     flex: 1;
@@ -624,7 +694,7 @@
   .title {
     color: #222;
     font-size: 24px;
-    padding: 40px 10px 0;
+    padding: 40px 10px 10px;
   }
 
   .title-center {
@@ -870,7 +940,7 @@
 
   @media screen and (max-width: 767px) {
     .container {
-      padding: 0;
+      padding: 0 10px 0 10px;
     }
 
     .slide .container {
@@ -1023,4 +1093,10 @@
       display: none
     }
   }
+  /* @media screen and ( max-width: 480px) {
+  .content-box {
+    width: 375px;
+    overflow-x: hidden;
+  }
+} */
 </style>

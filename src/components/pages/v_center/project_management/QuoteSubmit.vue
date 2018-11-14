@@ -483,7 +483,7 @@ export default {
           .catch((error) => {
             this.$message.error(error.message)
             this.isLoadingBtn = false
-            console.log(error.message)
+            console.error(error.message)
           })
       })
     },
@@ -519,7 +519,7 @@ export default {
             this.$set(this.form, 'company_name', item.company_name)
             this.$set(this.form, 'contact_name', item.contact_name)
             this.$set(this.form, 'position', item.position)
-            this.$set(this.form, 'phone', item.phone)
+            this.$set(this.form, 'phone', item.phone + '')
             this.$set(this.form, 'address', item.address)
             this.$set(this.form, 'province', item.province)
             this.$set(this.form, 'city', item.city)
@@ -748,6 +748,25 @@ export default {
     console.log(this.$store.state.task.projectObject)
     this.itemId = this.$route.params.id
     let id = this.$route.query.id
+    if (this.form.plan && this.form.plan.length > 0) {
+      this.$set(this.form, 'plan_format', this.form.plan)
+    } else {
+      this.$set(this.form, 'plan_format', [
+        {
+          content: '',
+          duration: '',
+          price: '',
+          summary: '',
+          arranged: [
+            {
+              name: '',
+              number: ''
+            }
+          ],
+          test: ''
+        }
+      ])
+    }
     if (id) {
       this.id = id
       // 获取报价详情
@@ -780,7 +799,7 @@ export default {
           this.$set(this.form, 'design_company_name', item.company_name)
           this.$set(this.form, 'design_contact_name', item.contact_name)
           this.$set(this.form, 'design_position', item.position)
-          this.$set(this.form, 'design_phone', item.phone)
+          this.$set(this.form, 'design_phone', item.phone + '')
           this.$set(this.form, 'design_address', item.address)
           this.$set(this.form, 'design_province', item.province)
           this.$set(this.form, 'design_city', item.city)

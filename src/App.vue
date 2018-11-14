@@ -22,6 +22,7 @@
 <script>
 import vHeader from '@/components/block/Header'
 import vFooter from '@/components/block/Footer'
+import api from '@/api/api'
 
 export default {
   name: 'app',
@@ -39,7 +40,23 @@ export default {
   },
   watch: {
   },
+  mounted() {
+    // console.log('app created')
+    let loading = document.getElementById('loading')
+    let classVal = 'animated fadeOutUp'
+    loading.setAttribute('class', classVal)
+  },
   created() {
+    this.$http.get(api.getVersion)
+    .then(res => {
+      let version = localStorage.getItem('version')
+      if (version !== res.data.data.number) {
+        localStorage.setItem('version', res.data.data.number)
+        window.location.reload(true)
+      }
+    }).catch(err => {
+      console.log(err)
+    })
   },
   computed: {
     hideHeader() {
@@ -50,6 +67,9 @@ export default {
     },
     showAlert() {
       let user = this.user
+      if (this.$route.name === 'sdDesign_protocol') {
+        return false
+      }
       if (user.type === 1) {
         if (user.demand_verify_status === 0) {
           console.log('没有认证')

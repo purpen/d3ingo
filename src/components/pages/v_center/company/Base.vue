@@ -292,9 +292,9 @@
               <el-col :span="contentSpan" class="content">
 
                 <div v-if="element.good_field" class="type-content">
-                  <el-button :class="{ 'tag': true, 'full-red-button': form.good_field.indexOf(d.value) !== -1 }" size="small" :key="index"
+                  <button :class="{ 'tag': true, 'is-active': form.good_field.indexOf(d.value) !== -1 }" class="small-button multi-button" size="small" :key="index"
                              @click="selectFieldBtn(d.value, d.label)" v-for="(d, index) in fieldOptions">{{ d.label }}
-                  </el-button>
+                  </button>
 
                   <!-- <div class="edit-field-tag field-box">
                     <el-tag
@@ -1301,10 +1301,48 @@
     margin-right: 0;
   }
   .field-box .el-tag {
-     border: 1px solid #e6e6e6;
+    border: 1px solid #e6e6e6;
     background: #fff;
     color: #666
   }
+
+  .multi-button {
+    margin-left: 10px;
+    border-radius: 4px;
+    border:1px solid #e6e6e6;
+    background-color: #fff;
+    color: #999
+  }
+  .multi-button:hover {
+    border-color: #ff5a5f;
+    color: #ff5a5f;
+    background: #fff;
+  }
+  .multi-button:active {
+    background-color: #ff5a5f;
+    color: #fff;
+  }
+  .is-active {
+    background: #ff5a5f;
+    border: 1px solid #ff5a5f;
+    border-radius: 4px;
+    color: #fff;
+  }
+  .is-active:hover {
+    border-color: #ff5a5f;
+    background-color: #ff5a5f;
+    color: #fff
+  }
+  .is-active:active {
+    border-color: #ff5a5f;
+    background-color: #ff5a5f;
+    color: #fff
+  }
+  /* .white-button:hover {
+    border-color: #ff5a5f;
+    color: #ff5a5f;
+    background: #fff;
+  } */
   @media screen and (max-width: 767px) {
     .item-m .content {
       border: none;

@@ -127,7 +127,6 @@
       },
       // 根据类型跳转
       redirect(d) {
-        console.log(d)
         this.showCover = false
         let oldClass = document.getElementById('app').getAttribute('class')
         if (oldClass) {
@@ -136,22 +135,66 @@
         document.body.removeAttribute('class', 'disableScroll')
         document.childNodes[1].removeAttribute('class', 'disableScroll')
         document.getElementById('app').setAttribute('class', oldClass)
-        if (d.type === 2 && this.user.type === 1) {
-          this.$http.get(api.demandId.format(d.target_id))
-          .then(res => {
-            if (res.data && res.data.meta.status_code === 200) {
-              let status = res.data.data.item.status
-              if (status < 4) {
-                this.$router.push({name: 'projectCompare', params: {id: d.target_id}})
+        if (d.type === 2) {
+          if (this.user.type === 1) {
+            this.$http.get(api.demandId.format(d.target_id))
+            .then(res => {
+              if (res.data && res.data.data && res.data.meta.status_code === 200) {
+                // console.log(res.data.data)
+                let status = res.data.data.item.status
+                if (status < 4) {
+                  if (status === -2) {
+                    this.$router.push({name: 'redirect', query: {id: d.target_id, name: 'projectCreate', type: 'query'}})
+                    this.$http.post(api.demandItemRestart, {item_id: d.target_id})
+                    .then(res => {
+                      if (res.data && res.data.meta) {
+                        if (res.data.meta.status_code === 200) {
+                          // console.log(res)
+                          // this.$router.push({name: 'redirect', query: {id: d.target_id, name: 'projectCreate', type: 'query'}})
+                        } else {
+                          this.$message.error(res.data.meta.message)
+                        }
+                      }
+                    }).catch(err => {
+                      console.error(err)
+                    })
+                  } else if (status === 3) {
+                    this.$router.push({name: 'redirect', query: {id: d.target_id, name: 'projectMatch'}})
+                  } else {
+                    // this.$router.push({name: 'projectInfo', params: {id: d.target_id}})
+                    this.$router.push({name: 'redirect', query: {id: d.target_id, name: 'projectType'}})
+                  }
+                } else {
+                  // this.$router.push({name: 'vcenterItemShow', params: {id: d.target_id}})
+                  this.$router.push({name: 'redirect', query: {id: d.target_id, name: 'vcenterItemShow'}})
+                }
               } else {
-                this.$router.push({name: 'vcenterItemShow', params: {id: d.target_id}})
+                this.$message.error(res.data.meta.message)
               }
-            } else {
-              this.$messgae.error(res.data.meta.message)
-            }
-          })
+            })
+          }
+          if (this.user.type === 2) {
+            this.$http.get(api.designItemId.format(d.target_id))
+            .then(res => {
+              if (res.data && res.data.meta.status_code === 200) {
+                let status = res.data.data.item.status
+                if (status < 4) {
+                  // this.$message.error(res.data.meta.message)
+                  // this.$message.error('当前项目已失效'))
+                  console.log('消息已过期')
+                } else {
+                  // this.$router.push({name: 'vcenterItemShow', params: {id: d.target_id}})
+                  this.$router.push({name: 'redirect', query: {id: d.target_id, name: 'vcenterItemShow'}})
+                }
+              } else {
+                this.$message.error(res.data.meta.message)
+              }
+            })
+          }
         } else if (d.type === 3) {
-          this.$router.push({name: 'vcenterWalletList'})
+          // this.$router.push({name: 'vcenterWalletList'})
+          this.$router.push({name: 'redirect', query: {name: 'vcenterWalletList'}})
+          // this.$message.warning('此消息已过期')
         }
       },
       // 请求消息数量

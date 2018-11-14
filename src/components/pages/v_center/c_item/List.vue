@@ -2,111 +2,228 @@
   <section>
     <div class="vcenter clearfix">
       <v-menu currentName="c_item"></v-menu>
-      <!-- <el-col :span="isMob ? 24 : rightWidth"> -->
-      <!-- <el-col class="vcenter-right-plus" :xs="24" :sm="24" :md="24" :lg="24"> -->
-      <div :class="{'vcenter-right-plus': leftWidth === 4,
-        'vcenter-right': leftWidth === 2,
-          'vcenter-right-mob': isMob}">
-        <div class="right-content vcenter-container" v-if="!isEmpty">
-          <div :class="['content-item-box', isMob ? 'content-item-box-m' : '' ]" v-loading="isLoading">
-            <h3>待确认</h3>
-            <el-row v-if="!isMob" class="item-title-box list-box" v-show="designItems.length">
-              <el-col :span="10">
-                <p>项目名称</p>
-              </el-col>
-              <el-col :span="3">
-                <p>交易金额</p>
-              </el-col>
-              <el-col :span="7">
-                <p>状态</p>
-              </el-col>
-              <el-col :span="4">
-                <p>操作</p>
-              </el-col>
-            </el-row>
+      <div :class="{ 'vcenter-right-plus': leftWidth === 4,
+          'vcenter-right': leftWidth === 2,
+          'vcenter-right-mob': isMob }">
+        <div class="right-content vcenter-container">
+          <div :class="['content-item-box', isMob ? 'content-item-box-m' : '' ]">
+            <v-menu-sub></v-menu-sub>
 
-            <div class="item" v-for="(d, index) in designItems" :key="index" v-show="designItems.length">
-
-              <el-row class="banner list-box">
-                <el-col :span="12">
-                  <p>{{ d.item.created_at }}</p>
+            <!-- 待确认 -->
+            <div v-if="value === 1" v-loading.body="isLoading">
+              <div v-if="isEmpty" class="empty-header">
+                <div class="empty-height">
+                  <div class="empty"></div>
+                  <p class="prompt">暂时没有待确认项目～</p>
+                </div>
+              </div>
+              <el-row v-if="!isMob" class="item-title-box list-box" v-show="designItems.length">
+                <el-col :span="10">
+                  <p>项目名称</p>
                 </el-col>
-                <el-col :span="12">
-                  <el-popover class="contact-popover" trigger="hover" placement="top-start">
-                    <p class="contact">联系人: {{ d.item.contact_name }}</p>
-                    <p class="contact">职位: {{ d.item.position }}</p>
-                    <p class="contact">电话: {{ d.item.phone }}</p>
-                    <p class="contact">邮箱: {{ d.item.email }}</p>
-                    <p slot="reference" class="fl name-wrapper contact-user"><i class="fa fa-phone" aria-hidden="true"></i>
-                      {{ d.item.company_name }}</p>
-                    <!-- <p>产品功能：{{d.item.product_features}}</p> -->
-                  </el-popover>
+                <el-col :span="3">
+                  <p>交易金额</p>
+                </el-col>
+                <el-col :span="7">
+                  <p>状态</p>
+                </el-col>
+                <el-col :span="4">
+                  <p>操作</p>
                 </el-col>
               </el-row>
+              <div class="item" v-for="(d, index) in designItems" :key="index" v-show="designItems.length">
 
-              <el-row :class="['item-content','list-box', isMob ? 'item-content-m' : '']">
-                <el-col :span="isMob ? 24 : 10" class="item-title">
-                  <p class="c-title">
-                    <router-link :to="{name: 'vcenterCItemShow', params: {id: d.item.id}}">{{ d.item.name }}
-                    </router-link>
-                  </p>
-                  <p>项目预算: {{ d.item.design_cost_value }}</p>
-                  <p>设计类型: {{ d.item.type_value }}</p>
-                  <p>设计类别: {{ d.item.design_types_value | formatEnd }}</p>
-                  <p>项目周期: {{ d.item.cycle_value }}</p>
-                </el-col>
-                <el-col :span="isMob ? 24 : 3">
-                  <p>
-                    <span v-if="d.item.price !== 0" class="money-str">¥ <b>{{ d.item.price }}</b></span>
-                  </p>
-                </el-col>
-                <el-col :span="isMob ? 24 : 7">
-                  <p :class="['status-str','clearfix', isMob ? 'status-str-m' : '']"><i
-                    v-if="isMob">状态：</i><span>{{ d.status_value }}</span></p>
-                </el-col>
-                <el-col :span="isMob ? 24 : 4" :class="[isMob ? 'btnGroup' : '']">
+                <el-row class="banner list-box">
+                  <el-col :span="12">
+                    <p>{{ d.item.created_at }}</p>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-popover class="contact-popover" trigger="hover" placement="top-start">
+                      <p class="contact">联系人: {{ d.item.contact_name }}</p>
+                      <p class="contact">职位: {{ d.item.position }}</p>
+                      <p class="contact">电话: {{ d.item.phone }}</p>
+                      <p class="contact">邮箱: {{ d.item.email }}</p>
+                      <p slot="reference" class="fl name-wrapper contact-user"><i class="fa fa-phone" aria-hidden="true"></i>
+                        {{ d.item.company_name }}</p>
+                      <!-- <p>产品功能：{{d.item.product_features}}</p> -->
+                    </el-popover>
+                  </el-col>
+                </el-row>
 
-                  <!--
-                  <div class="btn" v-if="d.design_company_status === 0">
+                <el-row :class="['item-content','list-box', isMob ? 'item-content-m' : '']">
+                  <el-col :span="isMob ? 24 : 10" class="item-title">
+                    <p class="c-title">
+                      <router-link :to="{name: 'vcenterCItemShow', params: {id: d.item.id}}">{{ d.item.name }}
+                      </router-link>
+                    </p>
+                    <p>项目预算: {{ d.item.design_cost_value }}</p>
+                    <p>设计类型: {{ d.item.type_value }}</p>
+                    <p>设计类别: {{ d.item.design_types_value | formatEnd }}</p>
+                    <p>项目周期: {{ d.item.cycle_value }}</p>
+                  </el-col>
+                  <el-col :span="isMob ? 24 : 3">
                     <p>
-                      <el-button class="is-custom" @click="takingBtn" size="small" :item_id="d.item.id" :index="index"
-                                :cost="d.item.design_cost_value" type="primary">提交报价单
+                      <span v-if="d.item.price !== 0" class="money-str">¥ <b>{{ d.item.price }}</b></span>
+                    </p>
+                  </el-col>
+                  <el-col :span="isMob ? 24 : 7">
+                    <p :class="['status-str','clearfix', isMob ? 'status-str-m' : '']"><i
+                      v-if="isMob">状态：</i><span>{{ d.status_value }}</span></p>
+                  </el-col>
+                  <el-col :span="isMob ? 24 : 4" :class="[isMob ? 'btnGroup' : '']">
+
+                    <!--
+                    <div class="btn" v-if="d.design_company_status === 0">
+                      <p>
+                        <el-button class="is-custom" @click="takingBtn" size="small" :item_id="d.item.id" :index="index"
+                                  :cost="d.item.design_cost_value" type="primary">提交报价单
+                        </el-button>
+                      </p>
+                      <p>
+                        <el-button class="is-custom" @click="companyRefuseBtn" size="small" :index="index"
+                                  :item_id="d.item.id">暂无兴趣
+                        </el-button>
+                      </p>
+
+                    </div>
+                    -->
+                    <p>
+                      <el-button class="is-custom" v-if="d.design_company_status === 0" @click="showView" size="small"
+                                :index="index" :item_id="d.item.id">提交报价单
                       </el-button>
                     </p>
                     <p>
-                      <el-button class="is-custom" @click="companyRefuseBtn" size="small" :index="index"
-                                :item_id="d.item.id">暂无兴趣
+                      <el-button class="is-custom" v-if="d.design_company_status === 2" @click="showView" size="small"
+                                :index="index" :item_id="d.item.id">查看报价
                       </el-button>
                     </p>
-
-                  </div>
-                  -->
-                  <p>
-                    <el-button class="is-custom" v-if="d.design_company_status === 0" @click="showView" size="small"
-                              :index="index" :item_id="d.item.id">提交报价单
-                    </el-button>
-                  </p>
-                  <p>
-                    <el-button class="is-custom" v-if="d.design_company_status === 2" @click="showView" size="small"
-                              :index="index" :item_id="d.item.id">查看报价
-                    </el-button>
-                  </p>
+                  </el-col>
+                </el-row>
+              </div>
+              <el-pagination
+                  v-if="query.total > query.pageSize"
+                  class="pagination"
+                  layout="prev, pager, next"
+                  :page-size="query.pageSize"
+                  @current-change="handleCurrentChange"
+                  :total="query.total">
+                </el-pagination>
+            </div>
+            <!-- 已合作 -->
+            <div v-else v-loading.body="isLoading">
+              <div v-if="isEmpty2" class="empty-header">
+                <div class="empty-height">
+                  <div class="empty"></div>
+                  <p class="prompt">暂时没有已合作项目～</p>
+                </div>
+              </div>
+              <el-row v-if="!isMob" class="item-title-box list-box" v-show="designItems2.length">
+                <el-col :span="10">
+                  <p>项目名称</p>
+                </el-col>
+                <el-col :span="3">
+                  <p>交易金额</p>
+                </el-col>
+                <el-col :span="7">
+                  <p>状态</p>
+                </el-col>
+                <el-col :span="4">
+                  <p>操作</p>
                 </el-col>
               </el-row>
+
+              <div class="item" v-for="(d, index) in designItems2" :key="index">
+                <el-row class="banner list-box">
+                  <el-col :span="12">
+                    <p>{{ d.item.created_at }}</p>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-popover class="contact-popover" trigger="hover" placement="top-start">
+                      <p class="contact">联系人: {{ d.item.contact_name }}</p>
+                      <p class="contact">职位: {{ d.item.position }}</p>
+                      <p class="contact">电话: {{ d.item.phone }}</p>
+                      <p class="contact">邮箱: {{ d.item.email }}</p>
+                      <p slot="reference" class="fl name-wrapper contact-user"><i class="fa fa-phone" aria-hidden="true"></i>
+                        {{ d.item.company_name }}</p>
+                    </el-popover>
+                  </el-col>
+                </el-row>
+                <el-row :class="['item-content','list-box', isMob ? 'item-content-m' : '']">
+                  <el-col :span="isMob ? 24 : 10" class="item-title">
+                    <p class="c-title">
+                      <router-link :to="{name: 'vcenterItemShow', params: {id: d.item.id}}">{{ d.item.name }}</router-link>
+                    </p>
+                    <p>项目预算: {{ d.item.design_cost_value }}</p>
+                    <p>设计类型: {{ d.item.type_value }}</p>
+                    <p>设计类别: {{ d.item.design_types_value | formatEnd }}</p>
+                    <p>项目周期: {{ d.item.cycle_value }}</p>
+                  </el-col>
+                  <el-col :span="isMob ? 24 : 3">
+                    <p style="white-space: nowrap">
+                      <span v-if="d.item.price !== 0" class="money-str"><i v-if="isMob">价格：</i>¥ <b>{{ d.item.price
+                        }}</b></span>
+                    </p>
+                  </el-col>
+                  <el-col :span="isMob ? 24 : 7">
+                    <p :class="['status-str','clearfix', isMob ? 'status-str-m' : '']"><i
+                      v-if="isMob">状态：</i><span>{{ d.item.design_status_value }}</span></p>
+                  </el-col>
+                  <el-col :span="isMob ? 24 : 4" :class="[isMob ? 'btnGroup' : '']">
+                    <div class="btn clearfix">
+                      <div v-if="d.is_contract === 0" class="clearfix">
+                        <p>
+                          <el-button class="is-custom" @click="contractBtn" :index="index" size="small" :item_id="d.item.id"
+                                    type="primary">编辑在线合同
+                          </el-button>
+                        </p>
+                      </div>
+                      <div v-else class="clearfix">
+                        <div v-if="d.item.status === 5" class="clearfix">
+                          <p>
+                            <el-button class="is-custom" size="small" @click="contractSendBtn" :index="index"
+                                      :item_id="d.item.id" type="primary">发送合同
+                            </el-button>
+                          </p>
+                          <p>
+                            <el-button class="is-custom" size="small" @click="contractBtn" :index="index"
+                                      :item_id="d.item.id" type="primary">修改合同
+                            </el-button>
+                          </p>
+                        </div>
+                        <div v-if="d.item.status === 6" class="clearfix">
+                          <p>
+                            <el-button class="is-custom" size="small" @click="contractBtn" :index="index"
+                                      :item_id="d.item.id" type="primary">修改合同
+                            </el-button>
+                          </p>
+                        </div>
+
+                      </div>
+                      <p v-if="d.item.is_show_view">
+                        <el-button class="is-custom" size="small" @click="showView2" :index="index" :item_id="d.item.id"
+                                  type="primary">查看详情
+                        </el-button>
+                      </p>
+                    </div>
+                  </el-col>
+                </el-row>
+              </div>
+
+              <el-pagination
+                v-if="query2.total > query2.pageSize"
+                class="pagination"
+                layout="prev, pager, next"
+                :page-size="query2.pageSize"
+                @current-change="handleCurrentChange2"
+                :total="query2.total">
+              </el-pagination>
             </div>
           </div>
-          <el-pagination
-            v-if="query.total > query.pageSize"
-            class="pagination"
-            layout="prev, pager, next"
-            :page-size="query.pageSize"
-            @current-change="handleCurrentChange"
-            :total="query.total">
-          </el-pagination>
         </div>
       </div>
 
-      <el-dialog title="提交项目报价" v-model="takingPriceDialog">
+      <el-dialog
+        title="提交项目报价" v-model="takingPriceDialog">
         <el-form label-position="top" :model="takingPriceForm" :rules="takingPriceRuleForm" ref="takingPriceRuleForm">
           <input type="hidden" v-model="takingPriceForm.itemId" value=""/>
           <el-form-item label="项目报价" prop="price" label-width="200px">
@@ -138,15 +255,27 @@
           <el-button type="primary" :loading="refuseItemLoadingBtn" @click="sureRefuseItemSubmit">确 定</el-button>
         </span>
       </el-dialog>
+
+      <el-dialog
+        title="提示"
+        v-model="sureDialog"
+        size="tiny">
+        <span>{{ sureDialogMessage }}</span>
+        <span slot="footer" class="dialog-footer">
+          <input type="hidden" ref="currentItemId"/>
+          <input type="hidden" ref="currentIndex"/>
+          <input type="hidden" ref="currentType"/>
+          <el-button @click="sureDialog = false">取 消</el-button>
+          <el-button type="primary" :loading="sureDialogLoadingBtn" @click="sureDialogSubmit">确 定</el-button>
+        </span>
+      </el-dialog>
     </div>
-    <div class="vcenter clearfix">
-      <!--<v-menu currentName="c_item" class="c_item"></v-menu>-->
+    <!-- <div class="vcenter clearfix">
       <div :class="{'vcenter-right-plus': leftWidth === 4,
         'vcenter-right': leftWidth === 2,
           'vcenter-right-mob': isMob}">
         <div class="right-content vcenter-container" v-if="!isEmpty2">
-          <div :class="['content-item-box', isMob ? 'content-item-box-m' : '' ]" v-loading="isLoading2">
-            <h3>已合作</h3>
+          <div :class="['content-item-box', isMob ? 'content-item-box-m' : '' ]">
             <el-row v-if="!isMob" class="item-title-box list-box" v-show="designItems2.length">
               <el-col :span="10">
                 <p>项目名称</p>
@@ -249,50 +378,33 @@
           </div>
         </div>
       </div>
+    </div> -->
 
-      <el-dialog
-        title="提示"
-        v-model="sureDialog"
-        size="tiny">
-        <span>{{ sureDialogMessage }}</span>
-        <span slot="footer" class="dialog-footer">
-          <input type="hidden" ref="currentItemId"/>
-          <input type="hidden" ref="currentIndex"/>
-          <input type="hidden" ref="currentType"/>
-          <el-button @click="sureDialog = false">取 消</el-button>
-          <el-button type="primary" :loading="sureDialogLoadingBtn" @click="sureDialogSubmit">确 定</el-button>
-        </span>
-      </el-dialog>
-    </div>
-
-    <div :class="{'vcenter-right-plus': leftWidth === 4,
-      'vcenter-right': leftWidth === 2,
-        'vcenter-right-mob': isMob}">
-      <div class="empty" v-if="isEmpty && isEmpty2"></div>
-      <p v-if="isEmpty && isEmpty2" class="noMsg">暂无已合作项目</p>
-    </div>
   </section>
 </template>
 
 <script>
   import vMenu from '@/components/pages/v_center/Menu'
+  import vMenuSub from '@/components/pages/v_center/c_item/MenuSub'
   import api from '@/api/api'
   import '@/assets/js/format'
 
   export default {
     name: 'vcenter_item_list',
     components: {
-      vMenu
+      vMenu,
+      vMenuSub
     },
     data () {
       return {
         designItems: [],
-        isLoading: true,
+        isLoading: false,
         takingPriceDialog: false,
         isTakingLoadingBtn: false,
         sureRefuseItemDialog: false,
         refuseItemLoadingBtn: false,
         currentIndex: '',
+        value: 1,
         currentCost: '',
         takingPriceForm: {
           itemId: '',
@@ -313,7 +425,7 @@
         sureDialog: false,
         sureDialogMessage: '确认执行此操作？',
         sureDialogLoadingBtn: false,
-        isLoading2: true,
+        isLoading2: false,
         designItems2: [],
         isEmpty2: '',
         query: {
@@ -335,6 +447,15 @@
       showView(event) {
         let itemId = parseInt(event.currentTarget.getAttribute('item_id'))
         this.$router.push({name: 'vcenterCItemShow', params: {id: itemId}})
+      },
+      // 切换列表
+      change(index) {
+        this.value = index
+        if (index === 1) {
+          this.getVcenterItemList()
+        } else {
+          this.getDesignCooperationLists()
+        }
       },
       // 项目报价弹出层
       takingBtn(event) {
@@ -485,19 +606,20 @@
         this.$router.push({name: 'vcenterCItemShow', params: {id: itemId}})
       },
       getDesignCooperationLists() {
+        this.isLoading = true
         let self = this
         self.$http.get(api.designCooperationLists, {params: {
           page: this.query2.page,
           per_page: this.query2.pageSize
         }})
         .then(function (response) {
-          self.isLoading2 = false
-          if (response.data.meta.status_code === 200) {
+          self.isLoading = false
+          if (response.data && response.data.meta.status_code === 200) {
+            self.designItems = []
+            self.designItems2 = []
             self.query2.totalPages = response.data.meta.pagination.total_pages
             self.query2.total = response.data.meta.pagination.total
-            if (!response.data.data.length) {
-              self.isEmpty2 = true
-            } else {
+            if (response.data.data && response.data.data.length) {
               let designItems2 = response.data.data
               for (let i = 0; i < designItems2.length; i++) {
                 let item = designItems2[i]
@@ -520,32 +642,33 @@
                 designItems2[i]['item']['created_at'] = item.item.created_at.date_format().format('yyyy-MM-dd')
               } // endfor
               self.designItems2 = designItems2
+            } else {
+              self.isEmpty2 = true
             }
           } else {
             self.$message.error(response.data.meta.message)
-            self.isLoading2 = false
           }
         })
         .catch(function (error) {
           self.$message.error(error.message)
-          self.isLoading2 = false
-          return false
+          self.isLoading = false
         })
       },
       getVcenterItemList() {
+        this.isLoading = true
         let self = this
         self.$http.get(api.designItemList, {params: {
           page: this.query.page,
           per_page: this.query.pageSize
         }})
         .then(function (response) {
+          self.isLoading = false
           if (response.data.meta.status_code === 200) {
+            self.designItems = []
+            self.designItems2 = []
             self.query.totalPages = response.data.meta.pagination.total_pages
             self.query.total = response.data.meta.pagination.total
-            self.isLoading = false
-            if (!response.data.data.length) {
-              self.isEmpty = true
-            } else {
+            if (response.data.data && response.data.data.length) {
               self.isEmpty = false
               let designItems = response.data.data
               for (let i = 0; i < designItems.length; i++) {
@@ -562,10 +685,11 @@
                 designItems[i]['item']['created_at'] = item.item.created_at.date_format().format('yyyy-MM-dd')
               } // endfor
               self.designItems = designItems
+            } else {
+              self.isEmpty = true
             }
           } else {
             self.$message.error(response.data.meta.message)
-            self.isLoading = false
           }
         })
         .catch(function (error) {
@@ -627,12 +751,24 @@
       // 如果是用户，跳到设计用户列表
       let uType = this.$store.state.event.user.type
       if (uType !== 2) {
-        this.isLoading = false
         this.$router.replace({name: 'vcenterItemList'})
         return
       }
-      this.getVcenterItemList()
-      this.getDesignCooperationLists()
+      let type = Number(this.$route.query.type) || 1
+      this.change(type)
+    },
+    watch: {
+      '$route' (to, from) {
+        // 对路由变化作出响应...
+        let type = Number(this.$route.query.type) || 1
+        this.query.total = 0
+        this.query.page = 0
+        this.query2.total = 0
+        this.query2.page = 0
+        this.isEmpty = false
+        this.isEmpty2 = false
+        this.change(type)
+      }
     }
   }
 
@@ -642,6 +778,7 @@
 <style scoped>
   .vcenter-container {
     overflow: hidden;
+    /* height: 100%; */
   }
 
   .content-item-box .item {
@@ -693,7 +830,10 @@
   .btnGroup p button {
     width: 100%;
   }
-
+  /* .is-active {
+    background-color: #FF5A5F;
+    color: #fff;
+  } */
   .btn {
     font-size: 1.2rem;
   }
@@ -740,7 +880,7 @@
     font-size: 1.4rem;
     line-height: 1.3;
   }
-
+  
   .status-str-m {
     font-size: 1.4rem;
     margin-top: 10px;
@@ -794,15 +934,38 @@
     font-size: 1.4rem;
     line-height: 1.4;
   }
-
+  /* 未填显示 */
+  .prompt {
+    text-align: center;
+    color: #969696;
+    line-height: 3;
+  }
   .empty {
     width: 122px;
     height: 113px;
-    margin: 220px auto 0;
-    background: url("../../../../assets/images/\tools/report/NoContent.png") no-repeat;
-    background-size: contain;
+    margin: 200px auto 0;
+    background: url("../../../../assets/images/icon/Projectdefaultstate@2x.png") no-repeat center / contain;
   }
-
+  .main-content {
+    height: 100%;
+  }
+  /* .vcenter-right-plus {
+    height: 100%;
+  } */
+  /* .content-item-box {
+    height: inherit;
+  }
+  .vcenter {
+    height: inherit;
+  }
+  .empty-header {
+    height: inherit;
+  }
+  .empty-height {
+    position: absolute;
+    top: 50%;
+    margin: 0 atuo;
+  } */
   .noMsg {
     text-align: center;
     color: #969696;

@@ -112,21 +112,31 @@
                 <span class="fz-14 tc-6 fl">项目</span>
                 <!-- <span class="edit fr pointer"></span> -->
               </div>
-              <h3 class="tc-2 fz-20">{{totalItem.item_counts}} 个</h3>
+              <h3 class="tc-2 fz-20">{{totalItem.total_item_counts}} 个</h3>
               <div class="number bb-e6">
                 <section class="lines">
                   <!-- <p class="yellow" :style="{width: '25%'}"></p> -->
-                  <el-tooltip class="item" effect="dark" :content="'已完成: ' +ratio.ok_count_percentage + '%'" placement="top">
+                  <el-tooltip class="item" effect="dark" placement="top">
+                    <div slot="content">
+                      状态: 已完成<br/>
+                      数量: {{totalItem.item_counts}}个<br/>
+                      占比: {{ratio.ok_count_percentage}}%
+                    </div>
                     <p class="green" :style="{width: ratio.ok_count_percentage + '%'}"></p>
                   </el-tooltip>
-                  <el-tooltip class="item" effect="dark" :content="'进行中: '+ratio.no_count_percentage + '%'" placement="top">
+                  <el-tooltip class="item" effect="dark" placement="top">
+                    <div slot="content">
+                      状态: 进行中<br/>
+                      数量: {{totalItem.no_item_counts}}个<br/>
+                      占比: {{ratio.no_count_percentage}}%
+                    </div>
                     <p class="blue" :style="{width: ratio.no_count_percentage + '%'}"></p>
                   </el-tooltip>
                  
                   <!-- <p class="red" :style="{width: '25%'}"></p> -->
                 </section>
               </div>
-              <p class="tc-9 fz-14">月均项目: <span class="tc-2">{{totalItem.m_item}}个</span></p>
+              <p class="tc-9 fz-14">月均完成项目: <span class="tc-2">{{totalItem.m_item}}个</span></p>
             </div>
           </el-col>
         </el-row>
@@ -149,7 +159,7 @@
               }]" @click="incomeYear()">全年</span>
             </p>
           </div>
-          <div class="line-body">
+          <div class="line-body" v-loading="itemLoading">
             <el-row>
               <el-col :xs="24" :sm="24" :md="24" :lg="18" :xl="18">
                 <!-- <h4 class="fz-14 tc-6 padding-t-15">收入趋势</h4> -->
@@ -225,13 +235,13 @@
                   </el-col>
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <ul>
-                      <li v-for="(s,indexs) in stage" :key="indexs" class="table-money">
+                      <li v-for="(s,indexs) in stage" :key="indexs" class="table-money oneline">
                         <el-row>
                           <el-col :span='2'><i :style="{backgroundColor:color[indexs]}"></i></el-col>
                           <el-col :span='10'>{{s.name}}</el-col>
                           <el-col :span='3'>{{s.count}}个</el-col>
-                          <el-col :span='7'>¥{{s.money}}</el-col>
-                          <el-col :span='2'>{{s.pre}}%</el-col>
+                          <el-col :span='6'>¥{{s.money}}</el-col>
+                          <el-col :span='3'>{{s.pre}}%</el-col>
                         </el-row>
                       </li>
                     </ul>
@@ -259,7 +269,7 @@
                 <el-col :span="12">
                   <ul class="p-t-20">
                     <li class="tc-2 fz-14 padding-b-15">全部排名</li>
-                    <li v-for="(r, indexr) in income20" :key="indexr" class="ranking-table">
+                    <li v-for="(r, indexr) in income20" :key="indexr" class="ranking-table oneline">
                       <el-row>
                         <el-col :span="3"><i>{{indexr+1}}</i></el-col>
                         <el-col :span="8">{{r.name}}</el-col>
@@ -285,7 +295,7 @@
               <div class="pie-header">
                 收入类别占比
               </div>
-              <div class="centent-class scroll-bar scroll-max" v-if="isclassify">
+              <div class="centent-class scroll-bar scroll-max" >
                 <el-row class="select-cl">
                   <el-col :span="8"
                     :class="{'bg-f7':category === '1'}">
@@ -301,7 +311,7 @@
                     </el-col>
                   <!-- <el-col :span="6">项目阶段</el-col> -->
                 </el-row>
-                <el-row v-if="isclassify">
+                <el-row  v-loading="desLoading">
                   <el-col :span="12">
                     <el-row class="p-t-20">
                       <el-col :span="12">
@@ -321,13 +331,13 @@
                     </div>
                   </el-col>
                   <el-col :span="12" class="p-t-20">
-                    <ul v-if="isclassify">
-                      <li v-for="(cl,indexcl) in classify" :key="indexcl" class="table-class">
+                    <ul>
+                      <li v-for="(cl,indexcl) in classify" :key="indexcl" class="table-class oneline">
                         <el-row>
                           <el-col :span="2"><i :style="{backgroundColor:color[indexcl]}"></i></el-col>
                           <el-col :span="9">{{cl.type}}</el-col>
-                          <el-col :span="9" v-if="radio === '1'">¥ {{cl.money}}</el-col>
-                          <el-col :span="9" v-if="radio === '2'">{{cl.count}} 个</el-col>
+                          <el-col :span="9" v-if="radio === '2'">¥ {{cl.money}}</el-col>
+                          <el-col :span="9" v-if="radio === '1'">{{cl.count}} 个</el-col>
                           <el-col :span="4">{{cl.pre}}%</el-col>
                         </el-row>
                       </li>
@@ -335,10 +345,10 @@
                   </el-col>
                 </el-row>
               </div>
-              <div class="noDate" v-if="!isclassify">
+              <!-- <div class="noDate" v-if="!isclassify && !desLoading">
                 <img src="../../../../assets/images/member/Nodata@2x.png"  alt="">
                 <p>您还没有相关数据</p>
-              </div>
+              </div> -->
             </div>
           </el-col>
         <el-col :xs="24" :sm="24" :md="12" :lg="12" class="mar-b-20">
@@ -347,7 +357,7 @@
               任务统计
                 <span class="tc-9 fz-14 fr">任务总数: {{task.total_count}}个</span>
             </div>
-            <el-row v-if="task.total_count>0">
+            <el-row v-if="task.total_count>0" v-loading="tackLoading">
               <el-col :span="12">
 
                 <div class="control-taskProgress">
@@ -438,16 +448,10 @@
                客户统计
               <span class="tc-9 fz-14 fr">客户总数: {{clients}}个</span>
           </div>
-          <el-row class="p-rl-30">
+          <el-row class="p-l-30" v-loading="cliLoading">
             <el-col  :xs="24" :sm="24" :md="24" :lg="18">
               <div class="content-header">
                 <el-row>
-                  <!-- <el-col :xs="24" :sm="24" :md="12" :lg="12">
-                    <div class="client-select">
-                      <div>地点</div>
-                      <div>评分</div>
-                    </div>
-                  </el-col> -->
                   <el-col :xs="24" :sm="24" :md="{span: 12, offset: 12}" :lg="{span: 12, offset: 12}">
                     <el-row class="radio-class fr">
                       <el-col :span="12">
@@ -466,19 +470,21 @@
                 </ECharts>
               </div>
             </el-col>
-            <el-col  :xs="24" :sm="12" :md="12" :lg="6" class="scroll-bar scroll-max">
+            <el-col  :xs="24" :sm="12" :md="12" :lg="6">
               <p class="title-table">城市客户数量排名</p>
-              <ul v-if="clients > 0">
-                <li v-for="(ci, indexci) in city" :key="indexci" class="city-table">
+              <ul v-if="clients > 0" class="scroll-bar scroll-min">
+                <li v-for="(ci, indexci) in city" :key="indexci" class="city-table oneline">
                   <el-row>
-                    <el-col :span="2"><i>{{indexci+1}}</i></el-col>
+                    <el-col :span="2"><i :class="indexci<3?'city-notopThree':'city-topThree'">{{indexci+1}}</i></el-col>
                     <el-col :span="9">{{ci.item_province_val === ''? '&nbsp;':ci.item_province_val}}</el-col>
-                    <el-col :span="9">{{ci.item_count}}位</el-col>
-                    <el-col :span="4">{{ci.item_count_percentage}}%</el-col>
+                    <el-col :span="9" v-if="radio1==='2'">{{ci.item_count}}位</el-col>
+                    <el-col :span="4" v-if="radio1==='2'">{{ci.item_count_percentage}}%</el-col>
+                    <el-col :span="9" v-if="radio1==='1'">¥ {{ci.city_cost}}</el-col>
+                    <el-col :span="4" v-if="radio1==='1'">{{ci.city_cost_percentage}}%</el-col>
                   </el-row>
                 </li>
               </ul>
-              <div class="noDate" v-if="clients === 0">
+              <div class="noDate scroll-bar scroll-min" v-if="clients === 0">
                 <img src="../../../../assets/images/member/Noclient.png"  alt="">
                 <p>没有相关客户信息</p>
               </div>
@@ -501,7 +507,7 @@
                 </el-col>
                 <el-col :span="12">
                   <ul class="p-t-20">
-                    <li v-for="(u, indexu) in positions" :key="indexu" class="table-class">
+                    <li v-for="(u, indexu) in positions" :key="indexu" class="table-class oneline">
                       <el-row>
                         <el-col :span="2" >
                           <i :style="{backgroundColor:color[indexu]}">
@@ -533,7 +539,7 @@
               <el-col :span="12">
                 <div class="admin-Echart">
                   <ul>
-                    <li class="table-class" v-for="(us, indexus) in userList" :key="indexus">
+                    <li class="table-class oneline" v-for="(us, indexus) in userList" :key="indexus">
                       <el-row>
                         <el-col :span="2" >
                           <i :style="{backgroundColor:color[indexus]}">
@@ -567,1155 +573,1104 @@
   </el-row>
 </template>
 <script>
-import vMenu from '@/components/pages/v_center/Menu'
-import ECharts from 'vue-echarts'
-import api from '@/api/api'
-export default {
-  name: 'console',
-  data() {
-    let colors = ['#FF686A', '#65A6FF', '#6CE1A8', '#FFE583', '#CD6DE0', '#82C8FF', '#73D13D', '#F8E71C', '#FF5AB0', '#4EE9DF', '#6CE1A8', '#FFBB96', '#FFADD2', '#00CBCB', '#D3F261', '#D53E53', '#413385', '#129C4F', '#FFC330', '#999999']
-    return {
-      isLoading: true,
-      radio1: '1',
-      radio: '1',
-      classify: [], // 分类
-      category: '1', // 收入类别
-      ecount: '', // 年度目标
-      eturnover: '', // 年度营业额
-      totalItem: {}, // 项目目标总对象
-      ratio: {
-        'no_count_percentage': 0,
-        'ok_count_percentage': 0,
-        'total_money': '0.00',
-        'total_no_count': 0,
-        'total_ok_count': 0,
-        'total_year_item _count': 0,
-        'average': 0
-      }, // 年月季收入饼图
-      target: false, // 编辑年度项目目标
-      Turnover: false, // 编辑年度营业额目标
-      isIncome: true, // 按收入金额与项目数分类
-      isItemYMQ: '0', //年?月?季?
-      income20: [], // 排名前20
-      positions: [], // 职位占比
-      userList: [], // 成员占比
-      stage: [], // 阶段占比
-      city: [], // 城市排名
-      clients: 0,
-      nostage: 0,
-      isclassify: false,
-      task: {}, // 所有项目的任务
-      lineType: '', // 收入金额:1, 项目数2
-      lineTypeDate: '', // 月:month, 季度: quarter, 全年: year
-      color: ['#FF686A', '#65A6FF', '#6CE1A8', '#FFE583', '#CD6DE0', '#82C8FF', '#73D13D', '#F8E71C', '#FF5AB0', '#4EE9DF', '#6CE1A8', '#FFBB96', '#FFADD2', '#00CBCB', '#D3F261', '#D53E53', '#413385', '#129C4F', '#FFC330', '#999999'],
-      polar: {
-        title: {
-          text: '收入趋势',
-          textStyle: {
-            color: '#222',
-            fontSize: 14
-          }
-        },
-        legend: {
-          data: ['line']
-        },
-        xAxis: {
-          // name: '月份',
-          type: 'category',
-          data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-          axisTick: {
-            inside: true,
-            show: false
-          }
-        },
-        yAxis: {
-          name: '单位: 元',
-          type: 'value',
-          axisTick: {
-            inside: true,
-            show: false
-          }
-        },
-        tooltip: {
-          trigger: 'axis',
-          formatter: '收入: ¥{c}',
-          axisPointer: {
-            type: 'cross'
-          }
-        },
-        series: [
-          {
-            data: ['0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00','0.00','0.00', '0.00', '0.00', '0.00'],
-            type: 'line'
-          }
-        ],
-        color: ['#FF686A'],
-        animationDuration: 2000
-      },
-      polar2: {
-        title: {
-          text: '完成的项目',
-          textStyle: {
-            color: '#222',
-            fontSize: 14
-          }
-        },
-        color: ['#FF686A'],
-        xAxis: {
-          type: 'category',
-          data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-          axisTick: {
-            show: false
-          },
-          axisLine: {
-            show: false
-          }
-        },
-        yAxis: {
-          name: '单位: 个',
-          type: 'value',
-          axisTick: {
-            show: false
-          },
-          axisLine: {
-            show: false
-          }
-        },
-        series: [{
-          data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          type: 'bar',
-          itemStyle: {
-            barBorderRadius: [4, 4, 0, 0],
-          },
-          barMaxWidth: 10
-        }]
-      },
-      pieRatio: {
-        color: ['#FFE583', '#6CE1A8'],
-        tooltip: {
-          trigger: 'item',
-          formatter: '状态: {b}<br/>数量: {c}个 <br/>占比: {d}%'
-        },
-        series: [
-          {
-            name:'状态',
-            type:'pie',
-            avoidLabelOverlap: false,
-            radius: ['60%', '80%'],
-            label: {
-              show: true,
-              position: 'center',
-              formatter: '\n总项目数量\n\n0个',
-              fontSize: 18,
-              color: '#222'
-            },
-            labelLine: {
-              normal: {
-                show: false
-              }
-            },
-            data:[
-              {value: '335.00', name: '启动'},
-              {value: '310.00', name: '已完成'},
-            ]
-          }
-        ]
-      },
-      incomeClassify: {
-        color: colors,
-        tooltip: {
-          trigger: 'item',
-          formatter: '价格阶段: {b}<br/>金额: ¥ {c} <br/>占比: {d}%'
-        },
-        series: [
-          {
-            name:'访问来源',
-            type:'pie',
-            radius: ['60%', '80%'],
-            avoidLabelOverlap: false,
-            label: {
-              show: true,
-              position: 'center',
-              formatter: '总金额\n \n0',
-              fontSize: 18,
-              color: '#222'
-            },
-            labelLine: {
-              normal: {
-                show: false
-              }
-            },
-            data:[]
-          }
-        ]
-      },
-      ranking: {
-        color: colors,
-        tooltip: {
-          trigger: 'item',
-          formatter: '项目名称: {b}<br/>金额: ¥ {c} <br/>占比: {d}%'
-        },
-        series: [
-          {
-            name:'访问来源',
-            type:'pie',
-            radius: ['60%', '80%'],
-            avoidLabelOverlap: false,
-            label: {
-              position: 'center',
-              show: true,
-              formatter: '总金额\n \n¥0.00',
-              fontSize: 18,
-              color: '#222'
-            },
-            labelLine: {
-              normal: {
-                show: false
-              }
-            },
-            data:[
-            ]
-          }
-        ]
-      },
-      baropt: {
-        color: ['#FF686A'],
-        xAxis: {
-          type: 'category',
-          data: [],
-          axisTick: {
-            show: false
-          },
-          axisLine: {
-            show: false
-          }
-        },
-        tooltip: {
-          trigger: 'item',
-          formatter: '地点: {b}<br/>数量: {c}人 '
-        },
-        yAxis: {
-          name: '单位: 位',
-          type: 'value',
-          axisTick: {
-            show: false
-          },
-          axisLine: {
-            show: false
-          }
-        },
-        series: [{
-          data: [],
-          type: 'bar',
-          itemStyle: {
-            barBorderRadius: [4, 4, 0, 0],
-          },
-          barMaxWidth: 10
-        }]
-      },
-      gauge : {
-        tooltip : {
-          formatter: "{a} <br/>{b} : {c}%"
-        },
-        series: [
-          {
-            name: '业务指标',
-            type: 'gauge',
-            detail: {
-              formatter:'{value}%',
-              fontSize:15
-            },
-            data: [{value: 50, name: ''}],
-            splitNumber: 3,
-            axisLine: {
-              lineStyle: {
-                width: 10
-              }
-            },
-            splitLine: {
-              length: 15,
-              lineStyle: {
-                color: '#65A6FF'
-              }
-            },
-            axisLabel: {
-              formatter: function (value) {
-                if (value <= 25) {
-                  return '差'
-                }
-                else if (value <= 50) {
-                  return '中'
-                }
-                else if (value <= 75) {
-                  return '良'
-                } else {
-                  return '优'
-                }
-              }
-            },
-            pointer: {
-              width: 4,
-              length: '80%'
-            }
-          }
-        ]
-      },
-      stages: {
-        color: colors,
-        tooltip: {
-          trigger: 'item',
-          formatter: '价格阶段: {b}<br/>项目总金额: ¥ {c} <br/>金额占比: {d}%'
-        },
-        // 项目数: 0个<br/>
-        series: [
-          {
-            name:'访问来源',
-            type:'pie',
-            radius: ['60%', '80%'],
-            avoidLabelOverlap: false,
-            label: {
-              show: true,
-              position: 'center',
-              formatter: '总金额\n \n¥0,00',
-              fontSize: 18,
-              color: '#222'
-            },
-            labelLine: {
-              normal: {
-                show: false
-              }
-            },
-            data:[
-              {value: '0.00', name: ''},
-              {value: '0.00', name: ''},
-              {value: '0.00', name: ''},
-              {value: '0.00', name: ''},
-              {value: '0.00', name: ''},
-              {value: '0.00', name: ''},
-            ]
-          },
-        ]
-      },
-      barUser: {
-        color: colors,
-        tooltip: {
-          trigger: 'item',
-          formatter: '职位: {b}<br/>人数: {c}人 <br/>占比: {d}%'
-        },
-        series: [
-          {
-            name:'访问来源',
-            type:'pie',
-            radius: ['60%', '80%'],
-            avoidLabelOverlap: false,
-            label: {
-              show: true,
-              position: 'center',
-              formatter: '总人数\n \n0人',
-              fontSize: 18,
-              color: '#222'
-            },
-            labelLine: {
-              normal: {
-                show: false
-              }
-            },
-            data:[]
-          }
-        ]
-      },
-      powerUser: {
-        color: colors,
-        tooltip: {
-          trigger: 'item',
-          formatter: '职位: {b}<br/>人数: {c}人 <br/>占比: {d}%'
-        },
-        series: [
-          {
-            name:'访问来源',
-            type:'pie',
-            radius: ['60%', '80%'],
-            avoidLabelOverlap: false,
-            label: {
-              show: true,
-              position: 'center',
-              formatter: '总人数\n \n0人',
-              fontSize: 18,
-              color: '#222'
-            },
-            labelLine: {
-              normal: {
-                show: false
-              }
-            },
-            data:[
-            ]
-          }
-        ]
-      }
-    }
-  },
-  components: {
-    vMenu,
-    ECharts
-  },
-  computed: {
-    isMob() {
-      return this.$store.state.event.isMob
+  import ECharts from 'vue-echarts'
+  import api from '@/api/api'
+  import con from '@/config'
+  import vMenu from '@/components/pages/v_center/Menu'
+  export default {
+    name: 'console',
+    components: {
+      ECharts,
+      con,
+      vMenu
     },
-    leftWidth() {
-      return this.$store.state.event.leftWidth
-    }
-  },
-  watch: {
-    radio1() {
+    data() {
+      let colors = ['#FF686A', '#65A6FF', '#6CE1A8', '#FFE583', '#CD6DE0', '#82C8FF', '#73D13D', '#F8E71C', '#FF5AB0', '#4EE9DF', '#6CE1A8', '#FFBB96', '#FFADD2', '#00CBCB', '#D3F261', '#D53E53', '#413385', '#129C4F', '#FFC330', '#999999']
+      return {
+        isLoading: true,
+        radio1: '1',
+        radio: '1',
+        classify: [], // 分类
+        category: '1', // 收入类别
+        ecount: '', // 年度目标
+        eturnover: '', // 年度营业额
+        totalItem: {}, // 项目目标总对象
+        ratio: {
+          'no_count_percentage': 0,
+          'ok_count_percentage': 0,
+          'total_money': '0.00',
+          'total_no_count': 0,
+          'total_ok_count': 0,
+          'total_year_item _count': 0,
+          'average': 0
+        }, // 年月季收入饼图
+        target: false, // 编辑年度项目目标
+        Turnover: false, // 编辑年度营业额目标
+        isIncome: true, // 按收入金额与项目数分类
+        isItemYMQ: '0', // 年?月?季?
+        income20: [], // 排名前20
+        positions: [], // 职位占比
+        userList: [], // 成员占比
+        stage: [], // 阶段占比
+        city: [], // 城市排名
+        clients: 0,
+        desLoading: true, // 加载不同类型.类别的数据
+        itemLoading: true, // 项目款加载
+        cliLoading: true, // 客户加载
+        nostage: 0,
+        isclassify: false,
+        tackLoading: true, // 任务加载中
+        task: {
+          total_count: 0,
+          no_get: 0,
+          no_get_percentage: 0,
+          no_stage_percentage: 0,
+          no_stage: 0,
+          ok_stage_percentage: 0,
+          ok_stage: 0,
+          overdue_percentage: 0,
+          overdue: 0
+        }, // 所有项目的任务
+        lineType: '', // 收入金额:1, 项目数2
+        lineTypeDate: '', // 月:month, 季度: quarter, 全年: year
+        color: ['#FF686A', '#65A6FF', '#6CE1A8', '#FFE583', '#CD6DE0', '#82C8FF', '#73D13D', '#F8E71C', '#FF5AB0', '#4EE9DF', '#6CE1A8', '#FFBB96', '#FFADD2', '#00CBCB', '#D3F261', '#D53E53', '#413385', '#129C4F', '#FFC330', '#999999'],
+        polar: {
+          title: {
+            text: '收入趋势',
+            textStyle: {
+              color: '#222',
+              fontSize: 14
+            }
+          },
+          legend: {
+            data: ['line']
+          },
+          xAxis: {
+            // name: '月份',
+            type: 'category',
+            data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+            axisTick: {
+              inside: true,
+              show: false
+            }
+          },
+          yAxis: {
+            name: '单位: 元',
+            type: 'value',
+            axisTick: {
+              inside: true,
+              show: false
+            }
+          },
+          tooltip: {
+            trigger: 'axis',
+            formatter: '收入: ¥{c}',
+            axisPointer: {
+              type: 'cross'
+            }
+          },
+          series: [
+            {
+              data: ['0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00'],
+              type: 'line'
+            }
+          ],
+          color: ['#FF686A'],
+          animationDuration: 2000
+        },
+        polar2: {
+          title: {
+            text: '完成的项目',
+            textStyle: {
+              color: '#222',
+              fontSize: 14
+            }
+          },
+          color: ['#FF686A'],
+          xAxis: {
+            type: 'category',
+            data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+            axisTick: {
+              show: false
+            },
+            axisLine: {
+              show: false
+            }
+          },
+          yAxis: {
+            name: '单位: 个',
+            type: 'value',
+            axisTick: {
+              show: false
+            },
+            axisLine: {
+              show: false
+            }
+          },
+          series: [{
+            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            type: 'bar',
+            itemStyle: {
+              barBorderRadius: [4, 4, 0, 0]
+            },
+            barMaxWidth: 10
+          }]
+        },
+        pieRatio: {
+          color: ['#FFE583', '#6CE1A8'],
+          tooltip: {
+            trigger: 'item',
+            formatter: '状态: {b}<br/>数量: {c}个 <br/>占比: {d}%'
+          },
+          series: [
+            {
+              name: '状态',
+              type: 'pie',
+              avoidLabelOverlap: false,
+              radius: ['60%', '80%'],
+              label: {
+                show: true,
+                position: 'center',
+                formatter: '\n总项目数量\n\n0个',
+                fontSize: 18,
+                color: '#222'
+              },
+              labelLine: {
+                normal: {
+                  show: false
+                }
+              },
+              data: [
+                {value: '335.00', name: '启动'},
+                {value: '310.00', name: '已完成'}
+              ]
+            }
+          ]
+        },
+        incomeClassify: {
+          color: colors,
+          tooltip: {
+            trigger: 'item',
+            formatter: '价格阶段: {b}<br/>金额: ¥ {c} <br/>占比: {d}%',
+            confine: true
+          },
+          series: [
+            {
+              name: '访问来源',
+              type: 'pie',
+              radius: ['60%', '80%'],
+              avoidLabelOverlap: false,
+              label: {
+                show: true,
+                position: 'center',
+                formatter: '总金额\n \n0',
+                fontSize: 18,
+                color: '#222'
+              },
+              labelLine: {
+                normal: {
+                  show: false
+                }
+              },
+              data: []
+            }
+          ]
+        },
+        ranking: {
+          color: colors,
+          tooltip: {
+            trigger: 'item',
+            formatter: '项目名称: {b}<br/>金额: ¥ {c} <br/>占比: {d}%',
+            confine: true
+          },
+          series: [
+            {
+              name: '访问来源',
+              type: 'pie',
+              radius: ['60%', '80%'],
+              avoidLabelOverlap: false,
+              label: {
+                position: 'center',
+                show: true,
+                formatter: '总金额\n \n¥0.00',
+                fontSize: 18,
+                color: '#222'
+              },
+              labelLine: {
+                normal: {
+                  show: false
+                }
+              },
+              data: []
+            }
+          ]
+        },
+        baropt: {
+          color: ['#FF686A'],
+          xAxis: {
+            type: 'category',
+            data: [],
+            axisTick: {
+              show: false
+            },
+            axisLine: {
+              show: false
+            }
+          },
+          tooltip: {
+            trigger: 'item',
+            formatter: '地点: {b}<br/>数量: {c}人 '
+          },
+          yAxis: {
+            name: '单位: 位',
+            type: 'value',
+            axisTick: {
+              show: false
+            },
+            axisLine: {
+              show: false
+            }
+          },
+          series: [
+            {
+              data: ['0.00', '0.00', '0.00', '0.00'],
+              type: 'bar',
+              itemStyle: {
+                barBorderRadius: [4, 4, 0, 0]
+              },
+              barMaxWidth: 10
+            }
+          ]
+        },
+        stages: {
+          color: colors,
+          tooltip: {
+            trigger: 'item',
+            formatter: '价格阶段: {b}<br/>项目总金额: ¥ {c} <br/>金额占比: {d}%'
+          },
+          // 项目数: 0个<br/>
+          series: [
+            {
+              name: '访问来源',
+              type: 'pie',
+              radius: ['60%', '80%'],
+              avoidLabelOverlap: false,
+              label: {
+                show: true,
+                position: 'center',
+                formatter: '总金额\n \n¥0,00',
+                fontSize: 18,
+                color: '#222'
+              },
+              labelLine: {
+                normal: {
+                  show: false
+                }
+              },
+              data: [
+                {value: '0.00', name: ''},
+                {value: '0.00', name: ''},
+                {value: '0.00', name: ''},
+                {value: '0.00', name: ''},
+                {value: '0.00', name: ''},
+                {value: '0.00', name: ''}
+              ]
+            }
+          ]
+        },
+        barUser: {
+          color: colors,
+          tooltip: {
+            trigger: 'item',
+            formatter: '职位: {b}<br/>人数: {c}人 <br/>占比: {d}%',
+            confine: true
+          },
+          series: [
+            {
+              name: '访问来源',
+              type: 'pie',
+              radius: ['60%', '80%'],
+              avoidLabelOverlap: false,
+              label: {
+                show: true,
+                position: 'center',
+                formatter: '总人数\n \n0人',
+                fontSize: 18,
+                color: '#222'
+              },
+              labelLine: {
+                normal: {
+                  show: false
+                }
+              },
+              data: []
+            }
+          ]
+        },
+        powerUser: {
+          color: colors,
+          tooltip: {
+            trigger: 'item',
+            formatter: '职位: {b}<br/>人数: {c}人 <br/>占比: {d}%',
+            confine: true
+          },
+          series: [
+            {
+              name: '访问来源',
+              type: 'pie',
+              radius: ['60%', '80%'],
+              avoidLabelOverlap: false,
+              label: {
+                show: true,
+                position: 'center',
+                formatter: '总人数\n \n0人',
+                fontSize: 18,
+                color: '#222'
+              },
+              labelLine: {
+                normal: {
+                  show: false
+                }
+              },
+              data: []
+            }
+          ]
+        }
+      }
+    },
+    computed: {
+      con_type() {
+        return con.COMPANY_TYPE3
+      },
+      isMob() {
+        return this.$store.state.event.isMob
+      },
+      leftWidth() {
+        return this.$store.state.event.leftWidth
+      }
+    },
+    watch: {
+      radio1() {
+        this.cityRanking()
+      },
+      radio() {
+        if (this.category === '1') {
+          this.incomeType()
+        }
+        if (this.category === '2') {
+          this.iscomeProduct()
+        }
+        if (this.category === '3') {
+          this.iscomeIndustry()
+        }
+      }
+    },
+    filters: {
+      // 项目总金额
+      formatNum(val) {
+        if (!val) {
+          return '0.00'
+        } else return val.toFixed(2)
+      },
+      // 项目单价
+      formatPrice(val, pre) {
+        if (!val) {
+          return '0.00'
+        } else return (val / pre).toFixed(2)
+      },
+      formatUnit(val) {
+        if (!val) {
+          return '0.00'
+        } else return (val / 10000).toFixed(2)
+      }
+    },
+    methods: {
+      getDay(d) {
+        let date = d || new Date()
+        let month = date.getMonth() + 1
+        let quarter = date.getQuarter(month)
+        let day = date.getMonthDay(month)
+        return {
+          quarter: quarter,
+          month: month,
+          day: day
+        }
+      },
+      // 判断年度目标数值
+      blurCount() {
+        if (!this.ecount || isNaN(this.ecount)) {
+          this.$message.error('请输入大于0的数量')
+          return
+        }
+      },
+      // 判断年度营业额数值
+      blurTurnover() {
+        if (!this.eturnover || isNaN(this.eturnover)) {
+          this.$message.error('请输入大于0的数量')
+          return
+        }
+      },
+      // 修改年度目标
+      updataCount(type) {
+        let form = {}
+        if (type === 1) {
+          form = {
+            'count': this.ecount
+          }
+        } else if (type === 2) {
+          form = {
+            'turnover': this.eturnover * 10000
+          }
+        } else return
+        this.$http.post(api.designTargetCreate, form).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.getTargetShow()
+            this.target = false
+            this.Turnover = false
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        })
+        .catch(function (error) {
+          this.$message.error(error.message)
+        })
+      },
+      // 编辑年度目标按钮
+      upcount() {
+        this.ecount = this.totalItem.count
+        this.target = true
+        this.Turnover = false
+      },
+      // 编辑年度营业额
+      upturnover() {
+        this.eturnover = this.totalItem.turnover / 10000
+        this.Turnover = true
+        this.target = false
+      },
+      // 收入年报表
+      incomeYear() {
+        if (this.isItemYMQ === '1') {
+          return
+        } else this.isItemYMQ = '1'
+        this.itemLoading = true
+        this.$http.get(api.designTargetIncomeYear).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.polar2.xAxis.data = this.polar.xAxis.data = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+            this.polar.series[0].data = ['0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00']
+            this.polar2.series[0].data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            if (!response.data.data.incomeYears || response.data.data.incomeYears.length === 0) {
+              this.itemLoading = false
+              // return response.data.data.incomeYears = []
+              return []
+            }
+            let res = response.data.data
+            let resi = response.data.data.incomeYears
+            for (var i = 0; i < resi.length; i++) {
+              if (!resi[i].cost) {
+                resi[i].cost = '0.00'
+              }
+              let data = Number(resi[i].year_m[resi[i].year_m.length - 1])
+              this.polar.series[0].data[data - 1] = resi[i].cost
+              this.polar2.series[0].data[data - 1] = resi[i].item_count
+              this.pieRatio.series[0].data[0].value = res.total_no_count
+              this.pieRatio.series[0].data[1].value = res.total_ok_count
+              this.pieRatio.series[0].label.formatter = '\n总项目数量\n\n' + res.total_year_item_count + '个'
+            }
+            this.ratio = {
+              'no_count_percentage': res.no_count_percentage,
+              'ok_count_percentage': res.ok_count_percentage,
+              'total_money': res.total_money,
+              'total_no_count': res.total_no_count,
+              'total_ok_count': res.total_ok_count,
+              'total_year_item _count': res.total_year_item_count,
+              'average': res.average
+            }
+            this.itemLoading = false
+          } else {
+            this.itemLoading = false
+            this.$message.error(response.data.meta.message)
+          }
+        })
+        .catch((error) => {
+          this.itemLoading = false
+          this.$message.error(error.message)
+        })
+      },
+      // 收入季度表
+      incomeQuarter() {
+        if (this.isItemYMQ === '2') {
+          return
+        } else this.isItemYMQ = '2'
+        this.itemLoading = true
+        this.$http.get(api.designTargetIncomeQuarter).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            let date = new Date()
+            let month = Number((date.format('yyyy/MM/dd').substring(5, 7)))
+            let xaxis = []
+            let jd = 0
+            if (month <= 3) {
+              xaxis = ['1月', '2月', '3月']
+            } else if (month <= 6) {
+              xaxis = ['4月', '5月', '6月']
+              jd = 1
+            } else if (month <= 9) {
+              xaxis = ['7月', '8月', '9月']
+              jd = 2
+            } else {
+              xaxis = ['10月', '11月', '12月']
+              jd = 3
+            }
+            this.polar2.xAxis.data = this.polar.xAxis.data = xaxis
+            this.polar.series[0].data = [0, 0, 0]
+            this.polar2.series[0].data = [0, 0, 0]
+            if (!response.data.data.incomeQuarters || response.data.data.incomeQuarters.length === 0) {
+              this.itemLoading = false
+              // return response.data.data.incomeQuarters = []
+              return []
+            }
+            let res = response.data.data
+            let resi = response.data.data.incomeQuarters
+            for (var i = 0; i < resi.length; i++) {
+              if (!resi[i].cost) {
+                resi[i].cost = 0
+              }
+              let data = Number(resi[i].quarter_month[resi[i].quarter_month.length - 1])
+              data = data - jd * 3 - 1
+              this.polar.series[0].data[data] += resi[i].cost
+              this.polar2.series[0].data[data] += resi[i].item_count
+              this.pieRatio.series[0].data[0].value = res.total_no_count
+              this.pieRatio.series[0].data[1].value = res.total_quarter_ok_count
+              this.pieRatio.series[0].label.formatter = '\n总项目数量\n\n' + res.total_quarter_item_count + '个'
+            }
+            for (var c = 0; c < this.polar.series[0].data.length; c++) {
+              if (Number(this.polar.series[0].data[c]) === 0) {
+                this.polar.series[0].data[c] = '0.00'
+              } else this.polar.series[0].data[c] = this.polar.series[0].data[c].toFixed(2)
+            }
+            this.ratio = {
+              'no_count_percentage': res.no_count_percentage,
+              'ok_count_percentage': res.ok_count_percentage,
+              'total_money': res.total_money,
+              'total_no_count': res.total_no_count,
+              'total_ok_count': res.total_quarter_ok_count,
+              'total_year_item _count': res.total_quarter_item_count,
+              'average': res.average
+            }
+            this.itemLoading = false
+          } else {
+            this.itemLoading = false
+            this.$message.error(response.data.meta.message)
+          }
+        })
+        .catch((error) => {
+          this.itemLoading = false
+          this.$message.error(error.message)
+        })
+      },
+      // 收入月报表
+      incomeMonth() {
+        if (this.isItemYMQ === '3') {
+          return
+        } else this.isItemYMQ = '3'
+        this.itemLoading = true
+        this.$http.get(api.designTargetIncomeMonth).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            if (!response.data.data.incomeMonths || response.data.data.incomeMonths.length === 0) {
+              let date = new Date()
+              let monthdays = date.getMonthDay(Number((date.format('yyyy/MM/dd').substring(5, 7))))
+              this.polar.xAxis.data = this.polar2.xAxis.data = this.monthDay(monthdays).days
+              this.polar.series[0].data = this.monthDay(monthdays).data
+              this.polar2.series[0].data = this.monthDay(monthdays).data
+              this.itemLoading = false
+              // return response.data.data.incomeMonths = []
+              return []
+            }
+            let res = response.data.data
+            let resi = response.data.data.incomeMonths
+            for (var i = 0; i < resi.length; i++) {
+              let day = Number(resi[i].month_day.substring(6, 8))
+              let year = Number(resi[i].month_day.substring(0, 4))
+              let month = Number(resi[i].month_day.substring(4, 6))
+              let date = new Date(day + '/' + month + '/' + year)
+              let monthdays = date.getMonthDay(month)
+              if (!resi[i].sum_day_cost) {
+                resi[i].sum_day_cost = 0
+              }
+              this.polar.xAxis.data = this.polar2.xAxis.data = this.monthDay(monthdays).days
+              this.polar.series[0].data = this.monthDay(monthdays).data
+              this.polar2.series[0].data = this.monthDay(monthdays).data
+              this.polar.series[0].data[day - 1] = resi[i].sum_day_cost
+              this.polar2.series[0].data[day - 1] = resi[i].item_day_count
+              this.pieRatio.series[0].data[0].value = res.total_no_count
+              this.pieRatio.series[0].data[1].value = res.total_quarter_ok_count
+              this.pieRatio.series[0].label.formatter = '\n总项目数量\n\n' + res.total_month_item_count + '个'
+            }
+            for (var c = 0; c < this.polar.series[0].data.length; c++) {
+              if (this.polar.series[0].data[c] === 0) {
+                this.polar.series[0].data[c] = '0.00'
+              } else this.polar.series[0].data[c] = this.polar.series[0].data[c].toFixed(2)
+            }
+            this.ratio = {
+              'no_count_percentage': res.no_count_percentage,
+              'ok_count_percentage': res.ok_count_percentage,
+              'total_money': res.total_money,
+              'total_no_count': res.total_no_count,
+              'total_ok_count': res.total_month_ok_count,
+              'total_year_item _count': res.total_month_item_count,
+              'average': res.average
+            }
+            this.itemLoading = false
+          } else {
+            this.itemLoading = false
+            this.$message.error(response.data.meta.message)
+          }
+        })
+        .catch((error) => {
+          this.itemLoading = false
+          this.$message.error(error.message)
+        })
+      },
+      // 某月天数数组
+      monthDay(n) {
+        let arr = []
+        let arr2 = []
+        for (var d = 1; d <= n; d++) {
+          arr.push(d)
+          arr2.push(0)
+        }
+        let data = {
+          'days': arr,
+          'data': arr2
+        }
+        return data
+      },
+      // 项目收入排名
+      incomeRanked() {
+        this.$http.get(api.designTargetIncomeRanked, {}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            if (!response.data.data.income20 || response.data.data.income20.length === 0) {
+              this.income20 = []
+            } else {
+              this.income20 = response.data.data.income20
+            }
+            let money = 0
+            if (this.income20.length > 0) {
+              let data = []
+              for (var i = 0; i < this.income20.length; i++) {
+                if (!this.income20[i].cost) {
+                  this.income20[i].cost = '0.00'
+                }
+                money += Number(this.income20[i].cost)
+                data.push(
+                  {
+                    'name': this.income20[i].name.length > 15 ? this.income20[i].name.slice(0, 15) + '...' : this.income20[i].name,
+                    'value': this.income20[i].cost
+                  }
+                )
+              }
+              this.ranking.series[0].data = data
+            }
+            if (this.income20.length === 0) {
+              this.ranking.series[0].data = {
+                'name': '',
+                'value': '0.00'
+              }
+            }
+            this.ranking.series[0].label.formatter = '总金额\n\n¥' + money.toFixed(2)
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          this.$message.error(error.message)
+        })
+      },
+      // 设计类别分类
+      incomeType() {
+        this.desLoading = true
+        this.$http.get(api.designTargetIncomeType, {}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.category = '1'
+            let res = response.data.data
+            let arr = []
+            let data = []
+            for (var t = 0; t < this.con_type.length; t++) {
+              arr.push({
+                'type': this.con_type[t].name,
+                'count': res['year_' + this.con_type[t].val + '_count'],
+                'money': res['year_' + this.con_type[t].val + '_money'].toFixed(2),
+                'pre': res['year_' + this.con_type[t].val + '_percentage'],
+                'color': this.color[t]
+              })
+              data.push({
+                'value': this.radio === '1' ? res['year_' + this.con_type[t].val + '_count'] : res['year_' + this.con_type[t].val + '_money'].toFixed(2),
+                'name': this.con_type[t].val
+              })
+            }
+            this.classify = arr
+            console.log('class', arr)
+            this.incomeClassify.series[0].data = data
+            if (this.radio === '1') {
+              this.incomeClassify.series[0].label.formatter = '总项目\n\n' + res.total_year_count + '个'
+              this.incomeClassify.tooltip.formatter = '价格阶段: {b}<br/>项目数: {c}个 <br/>占比: {d}%'
+            }
+            if (this.radio === '2') {
+              this.incomeClassify.series[0].label.formatter = '总金额\n\n¥' + res.total_year_money.toFixed(2)
+              this.incomeClassify.tooltip.formatter = '价格阶段: {b}<br/>金额: ¥ {c} <br/>占比: {d}%'
+            }
+            this.desLoading = false
+          } else {
+            this.desLoading = false
+            this.$message.error(response.data.meta.message)
+          }
+        })
+        .catch((error) => {
+          this.desLoading = false
+          this.$message.error(error.message)
+        })
+      },
+      // 产品类别分类
+      iscomeProduct() {
+        this.desLoading = true
+        this.$http.get(api.designTargetIncomeDesignTypes, {}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.category = '2'
+            let res = response.data.data
+            let clf = []
+            let colork = 0
+            let data = []
+            for (var y = 0; y < this.con_type.length; y++) {
+              for (let d = 0; d < this.con_type[y].designType.length; d++) {
+                let key = this.con_type[y].val + '_' + this.con_type[y].designType[d].val
+                clf.push({
+                  'type': this.con_type[y].designType[d].name,
+                  'count': res['year_' + key + '_count'],
+                  'money': res['year_' + key + '_money'].toFixed(2),
+                  'pre': res['year_' + key + '_percentage'],
+                  'color': this.color[colork]
+                })
+                data.push(
+                  {
+                    'value': this.radio === '1' ? res['year_' + key + '_count'] : res['year_' + key + '_money'].toFixed(2),
+                    'name': this.con_type[y].designType[d].name
+                  }
+                )
+                colork++
+              }
+            }
+            this.classify = clf
+            this.incomeClassify.series[0].data = data
+            if (this.radio === '1') {
+              this.incomeClassify.series[0].label.formatter = '总项目\n\n' + res.total_year_count + '个'
+            }
+            if (this.radio === '2') {
+              this.incomeClassify.series[0].label.formatter = '总金额\n\n¥' + res.total_year_money.toFixed(2)
+            }
+            this.desLoading = false
+          } else {
+            this.desLoading = false
+            this.$message.error(response.data.meta.message)
+          }
+        })
+        .catch((error) => {
+          this.desLoading = false
+          this.$message.error(error.message)
+        })
+      },
+      // 所属行业
+      iscomeIndustry() {
+        this.desLoading = true
+        this.$http.get(api.designTargetIncomeIndustry, {}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.category = '3'
+            let res = response.data.data
+            this.classify = [
+              {
+                'type': '制造业',
+                'count': res.year_industry_m_count,
+                'money': res.year_industry_m_money.toFixed(2),
+                'pre': res.year_industry_m_percentage,
+                'color': '#FF686A'
+              },
+              {
+                'type': '消费零售',
+                'count': res.year_industry_c_r_count,
+                'money': res.year_industry_c_r_money.toFixed(2),
+                'pre': res.year_industry_c_r_percentage,
+                'color': '#CD6DE0'
+              },
+              {
+                'type': '信息技术',
+                'count': res.year_industry_m_t_count,
+                'money': res.year_industry_m_t_money.toFixed(2),
+                'pre': res.year_industry_m_t_percentage,
+                'color': '#FF686A'
+              },
+              {
+                'type': '能源',
+                'count': res.year_industry_e_count,
+                'money': res.year_industry_e_money.toFixed(2),
+                'pre': res.year_industry_e_percentage,
+                'color': '#CD6DE0'
+              },
+              {
+                'type': '金融地产',
+                'count': res.year_industry_f_r_count,
+                'money': res.year_industry_f_r_money.toFixed(2),
+                'pre': res.year_industry_f_r_percentage,
+                'color': '#FF686A'
+              },
+              {
+                'type': '服务业',
+                'count': res.year_industry_s_count,
+                'money': res.year_industry_s_money.toFixed(2),
+                'pre': res.year_industry_s_percentage,
+                'color': '#CD6DE0'
+              },
+              {
+                'type': '医疗保健',
+                'count': res.year_industry_m_h_count,
+                'money': res.year_industry_m_h_money.toFixed(2),
+                'pre': res.year_industry_m_h_percentage,
+                'color': '#FF686A'
+              },
+              {
+                'type': '原材料',
+                'count': res.year_industry_r_count,
+                'money': res.year_industry_r_money.toFixed(2),
+                'pre': res.year_industry_r_percentage,
+                'color': '#CD6DE0'
+              },
+              {
+                'type': '工业制品',
+                'count': res.year_industry_i_p_count,
+                'money': res.year_industry_i_p_money.toFixed(2),
+                'pre': res.year_industry_i_p_percentage,
+                'color': '#FF686A'
+              },
+              {
+                'type': '军工',
+                'count': res.year_industry_w_i_count,
+                'money': res.year_industry_w_i_money.toFixed(2),
+                'pre': res.year_industry_w_i_percentage,
+                'color': '#CD6DE0'
+              },
+              {
+                'type': '公用事业',
+                'count': res.year_industry_p_c_count,
+                'money': res.year_industry_p_c_money.toFixed(2),
+                'pre': res.year_industry_p_c_percentage,
+                'color': '#FF686A'
+              }
+            ]
+            let data = []
+            for (var i = 0; i < this.classify.length; i++) {
+              data.push(
+                {
+                  'value': this.radio === '1' ? this.classify[i].count : this.classify[i].money,
+                  'name': this.classify[i].type
+                }
+              )
+            }
+            this.incomeClassify.series[0].data = data
+            if (this.radio === '1') {
+              this.incomeClassify.series[0].label.formatter = '总项目\n\n' + res.total_year_count + '个'
+            }
+            if (this.radio === '2') {
+              this.incomeClassify.series[0].label.formatter = '总金额\n\n¥' + res.total_year_money.toFixed(2)
+            }
+            this.desLoading = false
+          } else {
+            this.desLoading = false
+            this.$message.error(response.data.meta.message)
+          }
+        })
+        .catch((error) => {
+          this.desLoading = false
+          this.$message.error(error.message)
+        })
+      },
+      // 职位占比
+      positionsRatio() {
+        this.$http.get(api.designPositionPercentage, {}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            let res = response.data.data
+            if (!res.positions || res.positions.length === 0) {
+              return []
+            }
+            this.positions = res.positions
+            for (var i = 0; i < res.positions.length; i++) {
+              this.barUser.series[0].data.push(
+                {
+                  'name': res.positions[i].position,
+                  'value': res.positions[i].user_count
+                }
+              )
+            }
+            this.barUser.series[0].label.formatter = '总人数\n\n' + res.total_user_count + '人'
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        })
+        .catch((error) => {
+          this.$message.error(error.message)
+        })
+      },
+      // 权限
+      userRatio() {
+        this.$http.get(api.designUserPercentage, {}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            let res = response.data.data
+            this.userList = [
+              {
+                'name': '管理员',
+                'pre': res.admin_users_percentage,
+                'value': res.admin_users
+              },
+              {
+                'name': '超级管理员',
+                'pre': res.super_admin_users_percentage,
+                'value': res.super_admin_users
+              },
+              {
+                'name': '成员',
+                'pre': res.users_percentage,
+                'value': res.users
+              }
+            ]
+            for (var i = 0; i < this.userList.length; i++) {
+              this.powerUser.series[0].data.push(
+                {
+                  'name': this.userList[i].name,
+                  'value': this.userList[i].value
+                }
+              )
+            }
+            this.powerUser.series[0].label.formatter = '总人数\n \n' + res.total_users + '人'
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        })
+        .catch((error) => {
+          this.$message.error(error.message)
+        })
+      },
+      // 收入阶段占比
+      incomeStage() {
+        this.$http.get(api.designTargetIncomeStage, {}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            let res = response.data.data
+            let arr = ['0-50000', '50000-100000', '100000-200000', '200000-300000', '300000-500000', '500000以上']
+            let moneys = 0
+            for (var i = 0; i < 6; i++) {
+              this.nostage += res['year_stage' + (i + 1) + '_money'] + res['year_stage' + (i + 1) + '_count']
+              moneys += res['year_stage' + (i + 1) + '_money']
+              this.stage.push(
+                {
+                  'name': arr[i],
+                  'money': res['year_stage' + (i + 1) + '_money'].toFixed(2),
+                  'count': res['year_stage' + (i + 1) + '_count'],
+                  'pre': res['year_stage' + (i + 1) + '_percentage']
+                },
+              )
+              this.stages.series[0].data[i] = {
+                'value': res['year_stage' + (i + 1) + '_money'].toFixed(2),
+                'name': arr[i]
+              }
+            }
+            this.stages.series[0].label.formatter = '总金额\n\n¥' + moneys.toFixed(2)
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        })
+        .catch((error) => {
+          this.$message.error(error.message)
+        })
+      },
+      // 所有项目任务统计
+      getTaskList() {
+        this.$http.get(api.designItemTasks, {}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.task = response.data.data
+            this.tackLoading = false
+          } else {
+            this.tackLoading = false
+            this.$message.error(response.data.meta.message)
+          }
+        })
+        .catch((error) => {
+          this.tackLoading = false
+          this.$message.error(error.message)
+        })
+      },
+      // 城市排名
+      cityRanking() {
+        this.cliLoading = true
+        this.$http.get(api.designTargetIncomeCity, {params: {sort: this.radio1}}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.city = response.data.data
+            let data = []
+            let val = []
+            this.clients = 0
+            for (var i = 0; i < this.city.length; i++) {
+              val.push(this.city[i].item_province_val)
+              if (!this.city[i].city_cost) {
+                this.city[i].city_cost = '0.00'
+              }
+              this.clients += this.city[i].item_count
+              if (this.radio1 === '2') {
+                data.push(this.city[i].item_count)
+                this.baropt.yAxis.name = '单位: 位'
+                this.baropt.tooltip.formatter = '地点: {b}<br/>数量: {c}人 '
+              }
+              if (this.radio1 === '1') {
+                data.push(this.city[i].city_cost)
+                this.baropt.yAxis.name = '单位: 元'
+                this.baropt.tooltip.formatter = '地点: {b}<br/>金额: {c}元 '
+              }
+            }
+            if (val.length > 0) {
+              this.baropt.xAxis.data = val
+              this.baropt.series[0].data = data
+            }
+            this.cliLoading = false
+          } else {
+            this.cliLoading = false
+            this.$message.error(response.data.meta.message)
+          }
+        })
+        .catch((error) => {
+          this.cliLoading = false
+          this.$message.error(error.message)
+        })
+      },
+      // 获取所有排名
+      getTargetShow() {
+        this.$http.get(api.designTargetShow, {}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.totalItem = response.data.data
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        }).catch((error) => {
+          this.$message.error(error.message)
+        })
+      }
+    },
+    created() {
+      this.getTargetShow()
+      this.incomeYear()
+      this.incomeRanked()
+      this.incomeType()
+      this.positionsRatio()
+      this.userRatio()
+      this.incomeStage()
+      this.getTaskList()
       this.cityRanking()
     },
-    radio() {
-      if(this.category === '1') {
-        this.incomeType()
-      }
-      if(this.category === '2') {
-        this.iscomeProduct()
-      }
-      if(this.category === '3') {
-        this.iscomeIndustry()
-      }
+    beforeMount() {
+      this.isLoading = false
     }
-  },
-  filters: {
-    // 项目总金额
-    formatNum(val) {
-      if (!Boolean(val)) {
-       return '0.00'
-      } else return val.toFixed(2)
-    },
-    // 项目单价
-    formatPrice(val, pre) {
-      if (!Boolean(val)) {
-       return '0.00'
-      } else return (val / pre).toFixed(2)
-    },
-    formatUnit(val) {
-      if (!Boolean(val)) {
-        return '0.00'
-      } else return (val / 10000).toFixed(2)
-    }
-  },
-  methods: {
-    getDay(d) {
-      let date = d || new Date()
-      let month = date.getMonth() + 1
-      let quarter = date.getQuarter(month)
-      let day = date.getMonthDay(month)
-      return {
-        quarter: quarter,
-        month: month,
-        day: day
-      }
-    },
-    // 判断年度目标数值
-    blurCount() {
-      if (!this.ecount || isNaN(this.ecount)) {
-        this.$message.error('请输入大于0的数量')
-        return
-      }
-    },
-    // 判断年度营业额数值
-    blurTurnover() {
-      if (!this.eturnover || isNaN(this.eturnover)) {
-        this.$message.error('请输入大于0的数量')
-        return
-      }
-    },
-    // 修改年度目标
-    updataCount(type) {
-      let form = {}
-      if (type === 1) {
-        form = {
-          'count': this.ecount,
-        }
-      } else if (type === 2) {
-        form = {
-          'turnover': this.eturnover * 10000,
-        }
-      } else return
-      this.$http.post(api.designTargetCreate, form).then((response) => {
-        if (response.data.meta.status_code === 200) {
-          this.getTargetShow()
-          // if (type === 1) {
-          //   this.totalItem.count = this.ecount
-          this.target = false
-          this.Turnover = false
-          // }
-          // if (type === 2) {
-          //   this.totalItem.turnover = this.eturnover * 10000
-          //   this.Turnover = false
-          //   this.target = false
-          // }
-        } else {
-          this.$message.error(response.data.meta.message)
-        }
-      })
-      .catch(function (error) {
-        this.$message.error(error.message)
-      })
-    },
-    // 编辑年度目标按钮
-    upcount() {
-      this.ecount = this.totalItem.count
-      this.target = true
-      this.Turnover = false
-    },
-    // 编辑年度营业额
-    upturnover() {
-      this.eturnover = this.totalItem.turnover / 10000
-      this.Turnover = true
-      this.target = false
-    },
-    // 收入年报表
-    incomeYear() {
-      if (this.isItemYMQ === '1') {
-        return
-      } else this.isItemYMQ = '1'
-      this.$http.get(api.designTargetIncomeYear).then((response) => {
-        if (response.data.meta.status_code === 200) {
-          this.polar2.xAxis.data = this.polar.xAxis.data = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
-          this.polar.series[0].data = ['0.00', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00','0.00','0.00', '0.00', '0.00', '0.00']
-          this.polar2.series[0].data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-          if (!response.data.data.incomeYears || response.data.data.incomeYears.length === 0) {
-            return response.data.data.incomeYears = []
-          }
-          let res = response.data.data
-          let resi = response.data.data.incomeYears
-          for (var i = 0; i < resi.length; i++) {
-            if (!resi[i].cost || !Boolean(resi[i].cost)) {
-              resi[i].cost = '0.00'
-            }
-            let data = Number(resi[i].year_m[resi[i].year_m.length - 1])
-            this.polar.series[0].data[data - 1] = resi[i].cost
-            this.polar2.series[0].data[data - 1] = resi[i].item_count
-            this.pieRatio.series[0].data[0].value = res.total_no_count
-            this.pieRatio.series[0].data[1].value = res.total_ok_count
-            this.pieRatio.series[0].label.formatter = '\n总项目数量\n\n' + res.total_year_item_count + '个'
-          }
-          this.ratio = {
-            'no_count_percentage': res.no_count_percentage,
-            'ok_count_percentage': res.ok_count_percentage,
-            'total_money': res.total_money,
-            'total_no_count': res.total_no_count,
-            'total_ok_count': res.total_ok_count,
-            'total_year_item _count': res.total_year_item_count,
-            'average': res.average
-          }
-        } else {
-          this.$message.error(response.data.meta.message)
-        }
-      })
-      .catch((error) => {
-        this.$message.error(error.message)
-      })
-    },
-    // 收入季度表
-    incomeQuarter() {
-      if (this.isItemYMQ === '2') {
-        return
-      } else this.isItemYMQ = '2'
-      this.$http.get(api.designTargetIncomeQuarter).then((response) => {
-        if (response.data.meta.status_code === 200) {
-          console.log('res', response.data.data)
-          let date = new Date()
-          let month = Number((date.format('yyyy/MM/dd').substring(5,7)))
-          let xaxis = []
-          let jd = 0
-          if (month <= 3) {
-            xaxis = ['1月', '2月', '3月']
-          } else if (month <= 6) {
-            xaxis = ['4月', '5月', '6月']
-            jd = 1
-          } else if (month <= 9) {
-            xaxis = ['7月', '8月', '9月']
-            jd = 2
-          } else {
-            xaxis = ['10月', '11月', '12月']
-            jd = 3
-          }
-          this.polar2.xAxis.data = this.polar.xAxis.data = xaxis
-          this.polar.series[0].data = [0, 0, 0]
-          this.polar2.series[0].data = [0, 0, 0]
-          if (!response.data.data.incomeQuarters || response.data.data.incomeQuarters.length === 0) {
-            return response.data.data.incomeQuarters = []
-          }
-          let res = response.data.data
-          let resi = response.data.data.incomeQuarters
-          for (var i = 0; i < resi.length; i++) {
-            if (!resi[i].cost || !Boolean(resi[i].cost)) {
-              resi[i].cost = 0
-            }
-            let data = Number(resi[i].quarter_month[resi[i].quarter_month.length - 1])
-            data = data - jd * 3 - 1
-            this.polar.series[0].data[data] += resi[i].cost
-            this.polar2.series[0].data[data] += resi[i].item_count
-            this.pieRatio.series[0].data[0].value = res.total_no_count
-            this.pieRatio.series[0].data[1].value = res.total_quarter_ok_count
-            this.pieRatio.series[0].label.formatter = '\n总项目数量\n\n' + res.total_quarter_item_count + '个'
-          }
-          for (var c = 0; c < this.polar.series[0].data.length; c++) {
-            if (this.polar.series[0].data[c] === 0) {
-              this.polar.series[0].data[c] = '0.00'
-            } else this.polar.series[0].data[c] = this.polar.series[0].data[c].toFixed(2)
-          }
-          this.ratio = {
-            'no_count_percentage': res.no_count_percentage,
-            'ok_count_percentage': res.ok_count_percentage,
-            'total_money': res.total_money,
-            'total_no_count': res.total_no_count,
-            'total_ok_count': res.total_quarter_ok_count,
-            'total_year_item _count': res.total_quarter_item_count,
-            'average': res.average
-          }
-        } else {
-          this.$message.error(response.data.meta.message)
-        }
-      })
-      .catch((error) => {
-        this.$message.error(error.message)
-      })
-    },
-    // 收入月报表
-    incomeMonth() {
-      if (this.isItemYMQ === '3') {
-        return
-      } else this.isItemYMQ = '3'
-      this.$http.get(api.designTargetIncomeMonth).then((response) => {
-        if (response.data.meta.status_code === 200) {
-          if (!response.data.data.incomeMonths || response.data.data.incomeMonths.length === 0) {
-            let date = new Date()
-            let monthdays = date.getMonthDay(Number((date.format('yyyy/MM/dd').substring(5,7))))
-            this.polar.xAxis.data = this.polar2.xAxis.data = this.monthDay(monthdays).days
-            this.polar.series[0].data = this.monthDay(monthdays).data
-            this.polar2.series[0].data = this.monthDay(monthdays).data
-            return response.data.data.incomeMonths = []
-          }
-          let res = response.data.data
-          let resi = response.data.data.incomeMonths
-          for (var i = 0; i < resi.length; i++) {
-            let day = Number(resi[i].month_day.substring(6,8))
-            let year = Number(resi[i].month_day.substring(0,4))
-            let month = Number(resi[i].month_day.substring(4,6))
-            let date = new Date(day + '/' + month + '/' + year)
-            let monthdays = date.getMonthDay(month)
-            if (!resi[i].sum_day_cost || !Boolean(resi[i].sum_day_cost)) {
-              resi[i].sum_day_cost = 0
-            }
-            this.polar.xAxis.data = this.polar2.xAxis.data = this.monthDay(monthdays).days
-            this.polar.series[0].data = this.monthDay(monthdays).data
-            this.polar2.series[0].data = this.monthDay(monthdays).data
-            this.polar.series[0].data[day - 1] = resi[i].sum_day_cost
-            this.polar2.series[0].data[day - 1] = resi[i].item_day_count
-            this.pieRatio.series[0].data[0].value = res.total_no_count
-            this.pieRatio.series[0].data[1].value = res.total_quarter_ok_count
-            this.pieRatio.series[0].label.formatter = '\n总项目数量\n\n' + res.total_month_item_count + '个'
-          }
-          for (var c = 0; c < this.polar.series[0].data.length; c++) {
-            if (this.polar.series[0].data[c] === 0) {
-              this.polar.series[0].data[c] = '0.00'
-            } else this.polar.series[0].data[c] = this.polar.series[0].data[c].toFixed(2)
-          }
-          this.ratio = {
-            'no_count_percentage': res.no_count_percentage,
-            'ok_count_percentage': res.ok_count_percentage,
-            'total_money': res.total_money,
-            'total_no_count': res.total_no_count,
-            'total_ok_count': res.total_month_ok_count,
-            'total_year_item _count': res.total_month_item_count,
-            'average': res.average
-          }
-        } else {
-          this.$message.error(response.data.meta.message)
-        }
-      })
-      .catch((error) => {
-        this.$message.error(error.message)
-      })
-    },
-    // 某月天数数组
-    monthDay(n) {
-      let arr = []
-      let arr2 = []
-      for (var d = 1; d <= n; d++) {
-        arr.push(d)
-        arr2.push(0)
-      }
-      let data = {
-        'days': arr,
-        'data': arr2
-      }
-      return data
-    },
-    // 项目收入排名
-    incomeRanked() {
-      this.$http.get(api.designTargetIncomeRanked, {}).then((response) => {
-      if (response.data.meta.status_code === 200) {
-        if (!response.data.data.income20 || response.data.data.income20.length === 0) {
-          this.income20 = []
-        } else {
-          this.income20 = response.data.data.income20
-        }
-        let money = 0
-        if (this.income20.length > 0) {
-          let data = []
-          for (var i = 0; i < this.income20.length; i++) {
-            if (!this.income20[i].cost || !Boolean(this.income20[i].cost)) {
-              this.income20[i].cost = '0.00'
-            }
-            money += Number(this.income20[i].cost)
-            data.push(
-              {
-                'name': this.income20[i].name,
-                'value': this.income20[i].cost
-              }
-            )
-          }
-          this.ranking.series[0].data = data
-        }
-        if (this.income20.length === 0) {
-          this.ranking.series[0].data = {
-            'name': '',
-            'value': '0.00'
-          }
-        }
-        this.ranking.series[0].label.formatter = '总金额\n\n¥' + money.toFixed(2)
-      } else {
-        this.$message.error(response.data.meta.message)
-      }
-    }).catch((error) => {
-      this.$message.error(error.message)
-    })
-    },
-    // 设计类别分类
-    incomeType() {
-      this.$http.get(api.designTargetIncomeType, {}).then((response) => {
-        if (response.data.meta.status_code === 200) {
-          this.category = '1'
-          let res = response.data.data
-          if (res.year_p_money + res.year_u_money === 0 || res.year_p_count + res.year_u_count === 0) {
-            this.isclassify = false
-          } else this.isclassify = true
-          this.classify = [
-            {
-              'type': '产品设计',
-              'count': res.year_p_count,
-              'money': res.year_p_money.toFixed(2),
-              'pre': res.year_p_percentage,
-              'color': '#FF686A'
-            },
-            {
-              'type': 'ui设计',
-              'count': res.year_u_count,
-              'money': res.year_u_money.toFixed(2),
-              'pre': res.year_u_percentage,
-              'color': '#CD6DE0'
-            }
-          ]
-          this.incomeClassify.series[0].data = [
-            {
-              'value': this.radio === '1'? res.year_p_count:res.year_p_money.toFixed(2),
-              'name': '产品设计'
-            },
-            {
-              'value': this.radio === '1'? res.year_u_count:res.year_u_money.toFixed(2),
-              'name': 'ui设计'
-            }
-          ]
-          if (this.radio === '1') {
-            this.incomeClassify.series[0].label.formatter = '总人数\n\n' + res.total_year_count + '人'
-          }
-          if (this.radio === '2') {
-            this.incomeClassify.series[0].label.formatter = '总金额\n\n¥' + res.total_year_money.toFixed(2)
-          }
-        } else {
-          this.$message.error(response.data.meta.message)
-        }
-      })
-      .catch((error) => {
-      this.$message.error(error.message)
-      })
-    },
-    // 产品类别分类
-    iscomeProduct() {
-      this.$http.get(api.designTargetIncomeDesignTypes, {}).then((response) => {
-        if (response.data.meta.status_code === 200) {
-          this.category = '2'
-          let res = response.data.data
-          this.classify = [
-            {
-              'type': '产品策略',
-              'count': res.year_p_s_count,
-              'money': res.year_p_s_money.toFixed(2),
-              'pre': res.year_p_s_percentage,
-              'color': '#FF686A'
-            },
-            {
-              'type': '产品设计',
-              'count': res.year_p_p_count,
-              'money': res.year_p_p_money.toFixed(2),
-              'pre': res.year_p_p_percentage,
-              'color': '#CD6DE0'
-            },
-            {
-              'type': '结构设计',
-              'count': res.year_p_c_count,
-              'money': res.year_p_c_money.toFixed(2),
-              'pre': res.year_p_c_percentage,
-              'color': '#CD6DE0'
-            },
-            {
-              'type': 'app设计',
-              'count': res.year_u_a_count,
-              'money': res.year_u_a_money.toFixed(2),
-              'pre': res.year_u_a_percentage,
-              'color': '#CD6DE0'
-            },
-            {
-              'type': '网页设计',
-              'count': res.year_u_w_count,
-              'money': res.year_u_w_money.toFixed(2),
-              'pre': res.year_u_w_percentage,
-              'color': '#CD6DE0'
-            },
-            {
-              'type': '界面设计',
-              'count': res.year_u_i_count,
-              'money': res.year_u_i_money.toFixed(2),
-              'pre': res.year_u_i_percentage,
-              'color': '#CD6DE0'
-            },
-            {
-              'type': '服务设计',
-              'count': res.year_u_s_count,
-              'money': res.year_u_s_money.toFixed(2),
-              'pre': res.year_u_s_percentage,
-              'color': '#CD6DE0'
-            },
-            {
-              'type': '用户体验咨询',
-              'count': res.year_u_u_count,
-              'money': res.year_u_u_money.toFixed(2),
-              'pre': res.year_u_u_percentage,
-              'color': '#CD6DE0'
-            }
-          ]
-          let data = []
-          for (var i = 0; i < this.classify.length; i++) {
-            data.push(
-              {
-                'value': this.radio === '1'?this.classify[i].count:this.classify[i].money,
-                'name': this.classify[i].type
-              }
-            )
-          }
-          this.incomeClassify.series[0].data = data
-          if (this.radio === '1') {
-            this.incomeClassify.series[0].label.formatter = '总人数\n\n' + res.total_year_count + '人'
-          }
-          if (this.radio === '2') {
-            this.incomeClassify.series[0].label.formatter = '总金额\n\n¥' + res.total_year_money.toFixed(2)
-          }
-        } else {
-          this.$message.error(response.data.meta.message)
-        }
-      })
-      .catch((error) => {
-        this.$message.error(error.message)
-      })
-    },
-    // 所属行业
-    iscomeIndustry() {
-      this.$http.get(api.designTargetIncomeIndustry, {}).then((response) => {
-        if (response.data.meta.status_code === 200) {
-          this.category = '3'
-          let res = response.data.data
-          this.classify = [
-            {
-              'type': '制造业',
-              'count': res.year_industry_m_count,
-              'money': res.year_industry_m_money.toFixed(2),
-              'pre': res.year_industry_m_percentage,
-              'color': '#FF686A'
-            },
-            {
-              'type': '消费零售',
-              'count': res.year_industry_c_r_count,
-              'money': res.year_industry_c_r_money.toFixed(2),
-              'pre': res.year_industry_c_r_percentage,
-              'color': '#CD6DE0'
-            },
-           {
-              'type': '信息技术',
-              'count': res.year_industry_m_t_count,
-              'money': res.year_industry_m_t_money.toFixed(2),
-              'pre': res.year_industry_m_t_percentage,
-              'color': '#FF686A'
-            },
-            {
-              'type': '能源',
-              'count': res.year_industry_e_count,
-              'money': res.year_industry_e_money.toFixed(2),
-              'pre': res.year_industry_e_percentage,
-              'color': '#CD6DE0'
-            },
-            {
-              'type': '金融地产',
-              'count': res.year_industry_f_r_count,
-              'money': res.year_industry_f_r_money.toFixed(2),
-              'pre': res.year_industry_f_r_percentage,
-              'color': '#FF686A'
-            },
-            {
-              'type': '服务业',
-              'count': res.year_industry_s_count,
-              'money': res.year_industry_s_money.toFixed(2),
-              'pre': res.year_industry_s_percentage,
-              'color': '#CD6DE0'
-            },
-            {
-              'type': '医疗保健',
-              'count': res.year_industry_m_h_count,
-              'money': res.year_industry_m_h_money.toFixed(2),
-              'pre': res.year_industry_m_h_percentage,
-              'color': '#FF686A'
-            },
-            {
-              'type': '原材料',
-              'count': res.year_industry_r_count,
-              'money': res.year_industry_r_money.toFixed(2),
-              'pre': res.year_industry_r_percentage,
-              'color': '#CD6DE0'
-            },
-            {
-              'type': '工业制品',
-              'count': res.year_industry_i_p_count,
-              'money': res.year_industry_i_p_money.toFixed(2),
-              'pre': res.year_industry_i_p_percentage,
-              'color': '#FF686A'
-            },
-            {
-              'type': '军工',
-              'count': res.year_industry_w_i_count,
-              'money': res.year_industry_w_i_money.toFixed(2),
-              'pre': res.year_industry_w_i_percentage,
-              'color': '#CD6DE0'
-            },
-            {
-              'type': '公用事业',
-              'count': res.year_industry_p_c_count,
-              'money': res.year_industry_p_c_money.toFixed(2),
-              'pre': res.year_industry_p_c_percentage,
-              'color': '#FF686A'
-            }
-          ]
-          let data = []
-          for (var i = 0; i < this.classify.length; i++) {
-            data.push(
-              {
-                'value': this.radio === '1'?this.classify[i].count:this.classify[i].money,
-                'name': this.classify[i].type
-              }
-            )
-          }
-          this.incomeClassify.series[0].data = data
-          if (this.radio === '1') {
-            this.incomeClassify.series[0].label.formatter = '总人数\n\n' + res.total_year_count + '人'
-          }
-          if (this.radio === '2') {
-            this.incomeClassify.series[0].label.formatter = '总金额\n\n¥' + res.total_year_money.toFixed(2)
-          }
-        } else {
-          this.$message.error(response.data.meta.message)
-        }
-      })
-      .catch((error) => {
-        this.$message.error(error.message)
-      })
-    },
-    // 职位占比
-    positionsRatio() {
-      this.$http.get(api.designPositionPercentage, {}).then((response) => {
-        if (response.data.meta.status_code === 200) {
-          let res = response.data.data
-          if (!res.positions || res.positions.length === 0) {
-            return res.positions = []
-          }
-          this.positions = res.positions
-          for (var i = 0; i < res.positions.length; i++) {
-            this.barUser.series[0].data.push(
-              {
-                'name': res.positions[i].position,
-                'value': res.positions[i].user_count
-              }
-            )
-          }
-          this.barUser.series[0].label.formatter = '总人数\n\n' + res.total_user_count + '人'
-        } else {
-          this.$message.error(response.data.meta.message)
-        }
-      })
-      .catch((error) => {
-        this.$message.error(error.message)
-      })
-    },
-    // 权限
-    userRatio() {
-      this.$http.get(api.designUserPercentage, {}).then((response) => {
-        if (response.data.meta.status_code === 200) {
-          let res = response.data.data
-          this.userList = [
-            {
-              'name': '管理员',
-              'pre': res.admin_users_percentage,
-              'value': res.admin_users
-            },
-            {
-              'name': '超级管理员',
-              'pre': res.super_admin_users_percentage,
-              'value': res.super_admin_users
-            },
-            {
-              'name': '成员',
-              'pre': res.users_percentage,
-              'value': res.users
-            }
-          ]
-          for (var i = 0; i < this.userList.length; i++) {
-            this.powerUser.series[0].data.push(
-              {
-                'name': this.userList[i].name,
-                'value': this.userList[i].value
-              }
-            )
-          }
-          this.powerUser.series[0].label.formatter = '总人数\n \n' + res.total_users + '人'
-        } else {
-          this.$message.error(response.data.meta.message)
-        }
-      })
-      .catch((error) => {
-        this.$message.error(error.message)
-      })
-    },
-    // 收入阶段占比
-    incomeStage() {
-      this.$http.get(api.designTargetIncomeStage, {}).then((response) => {
-        if (response.data.meta.status_code === 200) {
-          let res = response.data.data
-          let arr = ['0-50000', '50000-100000', '100000-200000', '200000-300000', '300000-500000', '500000以上']
-          let moneys = 0
-          for (var i = 0; i < 6; i++) {
-            this.nostage += res['year_stage' + (i + 1) + '_money'] + res['year_stage' + (i + 1) + '_count']
-            moneys += res['year_stage' + (i + 1) + '_money']
-            this.stage.push(
-              {
-                'name': arr[i],
-                'money': res['year_stage' + (i + 1) + '_money'].toFixed(2),
-                'count': res['year_stage' + (i + 1) + '_count'],
-                'pre': res['year_stage' + (i + 1) + '_percentage']
-              },
-            )
-            this.stages.series[0].data[i] = {
-              'value': res['year_stage' + (i + 1) + '_money'],
-              'name': arr[i],
-            }
-          }
-          this.stages.series[0].label.formatter = '总金额\n\n¥' + moneys.toFixed(2)
-        } else {
-          this.$message.error(response.data.meta.message)
-        }
-      })
-      .catch((error) => {
-        this.$message.error(error.message)
-      })
-    },
-    // 所有项目任务统计
-    getTaskList() {
-      this.$http.get(api.designItemTasks, {}).then((response) => {
-        if (response.data.meta.status_code === 200) {
-          this.task = response.data.data
-        } else {
-          this.$message.error(response.data.meta.message)
-        }
-      })
-      .catch((error) => {
-        this.$message.error(error.message)
-      })
-    },
-    // 城市排名
-    cityRanking() {
-      this.$http.get(api.designTargetIncomeCity, {params: {sort: this.radio1}}).then((response) => {
-        if (response.data.meta.status_code === 200) {
-          this.city = response.data.data
-          let data = []
-          let val = []
-          this.clients = 0
-          for (var i = 0; i < this.city.length; i++) {
-            val.push(this.city[i].item_province_val)
-            if (!this.city[i].city_cost || !Boolean(this.city[i].city_cost)) {
-              this.city[i].city_cost = '0.00'
-            }
-            this.clients += this.city[i].item_count
-            if (this.radio1 === '2') {
-              data.push(this.city[i].item_count)
-              this.baropt.yAxis.name = '单位: 位'
-              this.baropt.tooltip.formatter = '地点: {b}<br/>数量: {c}人 '
-            }
-             if (this.radio1 === '1') {
-              data.push(this.city[i].city_cost)
-              this.baropt.yAxis.name = '单位: 元'
-              this.baropt.tooltip.formatter = '地点: {b}<br/>金额: {c}元 '
-            }
-          }
-          if (val.length > 0) {
-            this.baropt.xAxis.data = val
-            this.baropt.series[0].data = data
-          } else {
-            this.baropt.xAxis.data = ['']
-            this.baropt.series[0].data = ['0']
-          }
-        } else {
-          this.$message.error(response.data.meta.message)
-        }
-      })
-      .catch((error) => {
-        this.$message.error(error.message)
-      })
-    },
-    // 获取所有排名
-    getTargetShow() {
-      this.$http.get(api.designTargetShow, {}).then((response) => {
-        if (response.data.meta.status_code === 200) {
-          this.isLoading = false
-          this.totalItem = response.data.data
-        } else {
-          this.$message.error(response.data.meta.message)
-        }
-      }).catch((error) => {
-        this.isLoading = false
-        this.$message.error(error.message)
-      })
-    }
-  },
-  created() {
-    this.getTargetShow()
-    this.incomeYear()
-    this.incomeRanked()
-    this.incomeType()
-    this.positionsRatio()
-    this.userRatio()
-    this.incomeStage()
-    this.getTaskList()
-    this.cityRanking()
   }
-}
 </script>
 <style scoped>
   .head-item {
@@ -1835,7 +1790,7 @@ export default {
     font-size: 12px;
     padding-bottom: 20px;
   }
-  .ranking-table>.el-row>.el-col {
+  .oneline>.el-row>.el-col {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap
@@ -1930,8 +1885,13 @@ export default {
     height: 20px;
     text-align: center;
     border-radius: 50%;
-    background: #FF686A;
     color: #fff;
+  }
+  .city-notopThree {
+    background: #FF686A;
+  }
+  .city-topThree {
+    background: #D2D2D2;
   }
   .user-sele {
     margin: 0 30px 0 20px;
@@ -1977,6 +1937,7 @@ export default {
     justify-content: center;
     align-items: center;
     height: 310px;
+    color: #999;
   }
   .noDate>img {
     height: 120px;
@@ -1985,6 +1946,10 @@ export default {
   .scroll-max {
     max-height: 310px;
     overflow-y: auto;
+  }
+  .scroll-min {
+    max-height: 250px;
+    overflow-y: auto; 
   }
   .head,
   .line-body {
@@ -2028,8 +1993,8 @@ export default {
   .padding-tb-15 {
     padding: 15px 0;
   }
-  .p-rl-30 {
-    padding: 0 30px;
+  .p-l-30 {
+    padding-left: 30px;
   }
   .padding-b-15 {
     padding-bottom: 15px;

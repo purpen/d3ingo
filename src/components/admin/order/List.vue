@@ -62,14 +62,15 @@
               label="项目信息"
               width="140">
                 <template slot-scope="scope">
-                  <p>名称: <router-link :to="{name: 'adminItemShow', params: {id: scope.row.item_id}}" target="_blank">{{ scope.row.item_name }}</router-link></p>
+                  <p v-if="scope.row.type === 5">名称: {{ scope.row.design_result_name }}</p>
+                  <p v-else>名称: <router-link :to="{name: 'adminItemShow', params: {id: scope.row.item_id}}" target="_blank">{{ scope.row.item_name }}</router-link></p>
                   <p>阶段: {{ scope.row.item_stage_id }}</p>
                 </template>
             </el-table-column>
             <el-table-column
               label="创建信息">
                 <template slot-scope="scope">
-                  <p>用户: {{ scope.row.user.account }}[{{ scope.row.user_id }}]</p>
+                  <p>用户: {{ scope.row.user?(scope.row.user.account? scope.row.user.account: ''):'' }}[{{ scope.row.user_id }}]</p>
                   <p>公司: {{ scope.row.company_name }}</p>
                 </template>
             </el-table-column>
@@ -143,7 +144,10 @@
       <el-form label-position="top">
         <input type="hidden" v-model="orderForm.orderId" value="" />
         <input type="hidden" v-model.number="orderForm.index" value="" />
-        <el-form-item label="项目名称" label-width="200px">
+        <el-form-item label="设计成果名称" label-width="200px" v-if="orderForm.pay_type === 5">
+          <el-input v-model="orderForm.design_result_name" auto-complete="off" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="项目名称" label-width="200px" v-else>
           <el-input v-model="orderForm.itemName" auto-complete="off" disabled></el-input>
         </el-form-item>
         <el-form-item label="订单金额" label-width="200px">
@@ -206,7 +210,9 @@ export default {
         itemName: '',
         amount: '',
         bankId: '',
-        payNo: ''
+        payNo: '',
+        pay_type: '',
+        design_result_name: ''
       },
       query: {
         page: 1,
@@ -241,7 +247,9 @@ export default {
       this.orderForm.index = index
       this.orderForm.orderId = item.id
       this.orderForm.itemName = item.item_name
+      this.orderForm.design_result_name = item.design_result_name
       this.orderForm.amount = item.amount
+      this.orderForm.pay_type = item.pay_type
       this.sureTransferDialog = true
     },
     // 查看凭证弹层
@@ -252,7 +260,11 @@ export default {
     },
     // 确认对公打款
     sureTransferSubmit() {
-      if (!this.orderForm.orderId || !this.orderForm.itemName || !this.orderForm.bankId || !this.orderForm.payNo) {
+      // if (!this.orderForm.orderId || !this.orderForm.itemName || !this.orderForm.bankId || !this.orderForm.payNo) {
+      //   this.$message.error('缺少请求参数!')
+      //   return
+      // }
+      if (!this.orderForm.orderId || !this.orderForm.bankId || !this.orderForm.payNo) {
         this.$message.error('缺少请求参数!')
         return
       }
@@ -275,7 +287,7 @@ export default {
       .catch (function(error) {
         self.$message.error(error.message)
         self.sureTransferLoading = false
-        console.log(error.message)
+        console.error(error.message)
       })
     },
     handleSizeChange(val) {
@@ -336,7 +348,6 @@ export default {
               sureOutlineTransfer = true
             }
             item['sure_outline_transfer'] = sureOutlineTransfer
-
             self.tableData.push(item)
           } // endfor
 

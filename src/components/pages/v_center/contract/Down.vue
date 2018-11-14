@@ -105,7 +105,19 @@
             {text: '1、项目名称：', style: 'p'},
             {text: this.form.title, style: 'p'},
             {text: '', style: 'p'},
-            {text: '2、费用：', style: 'p'},
+            // {text: '2、设计类型：', style: 'p'},
+            // {text: this.form.type_value, style: 'p'},
+            // {text: '', style: 'p'},
+            // {text: '3、项目类别：', style: 'p'},
+            // {text: this.form.design_types_value, style: 'p'},
+            // {text: '', style: 'p'},
+            // {text: '4、产品功能描述：', style: 'p'},
+            // {text: this.form.product_features, style: 'p'},
+            // {text: '', style: 'p'},
+            {text: '2、项目内容：', style: 'p'},
+            {text: this.form.item_content, style: 'p'},
+            {text: '', style: 'p'},
+            {text: '3、费用：', style: 'p'},
             {
               text: [
                 {text: '本合同设计费用总额为人民币'},
@@ -345,6 +357,7 @@
                 // 重新渲染
                 that.$nextTick(function () {
                   that.itemName = item.title + '项目合同'
+                  console.log('item', item)
                   that.form = item
                   // 生成pdf插件太大，实现懒加载
                   require.ensure([], function (require) {

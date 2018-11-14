@@ -4,7 +4,7 @@
       <v-menu currentName="wallet"></v-menu>
       <div :class="{'vcenter-right-plus': leftWidth === 4,
         'vcenter-right': leftWidth === 2,
-        'vcenter-right-mob': isMob}">
+        'vcenter-right-mob': isMob}" class="vcenter-phone">
         <div class="right-content vcenter-container">
           <div :class="['my-wallet', isMob ? 'my-wallet-m' : '' ]">
             <div class="wallet-box">
@@ -15,7 +15,7 @@
               </div>
               <div :class="['amount-btn', isMob ? 'amount-show-m amount-btn-m' : '']">
                 <p>
-                  <el-button class="is-custom withdraw" @click="withdraw" size="small">提现</el-button>
+                  <el-button class="is-custom withdraw btn-phone" @click="withdraw" size="small">提现</el-button>
                   <!--<el-button class="is-custom" type="primary" size="small">充值</el-button>-->
                 </p>
               </div>
@@ -242,10 +242,9 @@
         .then(res => {
           if (res.data.meta.status_code === 200) {
             this.$store.commit(CHANGE_USER_VERIFY_STATUS, res.data.data)
-            console.log(res.data.data)
             this.demandVerifyStatus = res.data.data.demand_verify_status
           } else {
-            console.log(res)
+            this.$message.error(res.data.meta.message)
           }
         }).catch(err => {
           console.error(err.message)
@@ -260,10 +259,11 @@
         }
       },
       loadList() {
+        this.query.page = parseInt (this.$route.query.page || 1)
+        this.query.sort = this.$route.query.sort || 1
+        this.query.totalCount = 0
+        this.isLoading = true
         const self = this
-        self.query.page = parseInt (this.$route.query.page || 1)
-        self.query.sort = this.$route.query.sort || 1
-        self.isLoading = true
         self.$http.get (api.fundLogList, {
           params: {
             page: self.query.page,
@@ -277,6 +277,7 @@
             if (response.data.meta.status_code === 200) {
               self.itemList = response.data.data
               self.query.totalCount = response.data.meta.pagination.total
+              console.log('selfq', self.query)
 
               for (let i = 0; i < self.itemList.length; i++) {
                 let item = self.itemList[i]
@@ -298,7 +299,7 @@
         this.query.page = parseInt (this.$route.query.page || 1)
         this.query.sort = this.$route.query.sort || 1
         this.query.type = this.$route.query.type || 0
-
+        this.query.totalCount = 0
         this.isLoading = true
         this.$http.get(api.withdrawList, {params: {
           per_page: this.query.pageSize,
@@ -400,7 +401,6 @@
             self.$message.success ('操作成功,等待财务打款！')
           } else {
             self.$message.error(response.data.meta.message)
-            console.log(response.data.meta.message)
           }
         })
         .catch (function (error) {
@@ -416,13 +416,13 @@
       },
       showTransaction() {
         this.record = 'transaction'
-        this.loadList()
+        // this.loadList()
         this.query.page = 1
         this.$router.push ({name: this.$route.name, query: {page: 1}})
       },
       showWithdraw() {
         this.record = 'withdraw'
-        this.getWithdrawList()
+        // this.getWithdrawList()
         this.query.page = 1
         this.$router.push ({name: this.$route.name, query: {page: 1}})
       }
@@ -493,7 +493,6 @@
             if (wallet) {
               self.wallet = wallet
             }
-            // console.log(self.wallet)
           }
         })
         .catch (function (error) {
@@ -504,11 +503,18 @@
 
       // 交易记录
       this.loadList ()
-      this.getStatus ()
+      // this.getStatus ()
     },
     watch: {
       '$route' (to, from) {
         // 对路由变化作出响应...
+        if (this.record === 'transaction') {
+          this.loadList()
+        } else {
+          this.getWithdrawList()
+        }
+      },
+      record() {
         if (this.record === 'transaction') {
           this.loadList()
         } else {
@@ -773,6 +779,12 @@
     }
     .vcenter{
       margin-top: 0;
+    }
+    .vcenter-phone {
+      padding-top: 50px;
+    }
+    .btn-phone {
+      margin-bottom: 10px;
     }
   }
 </style>

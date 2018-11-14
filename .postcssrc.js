@@ -2,6 +2,8 @@
 
 module.exports = {
   plugins: {
-    "autoprefixer": {}
+    "autoprefixer": {
+      remove: false
+    }
   }
 }

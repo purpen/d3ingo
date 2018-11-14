@@ -188,7 +188,11 @@ export default {
 <style scoped>
   .project-item-box {
     max-width: 640px;
-    text-align: center
+    text-align: center;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%)
   }
   .pic {
     position: relative;

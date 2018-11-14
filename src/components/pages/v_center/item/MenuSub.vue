@@ -2,8 +2,11 @@
   <div class="vcenter-menu-sub" v-if="!isMob">
 
     <div class="vcenter-menu-sub-list">
-      <router-link :to="{name: 'vcenterItemList', query: {type: 0}}" active-class="false"
-                   :class="{'item': true, 'is-active': menuType === 0}">全部
+      <router-link :to="{name: 'vcenterItemList', query: {type: 1}}"
+        active-class="false" :class="{'item': true, 'is-active': menuType === 1}">项目待完善
+      </router-link>
+      <router-link :to="{name: 'vcenterItemList', query: {type: 2}}"
+        active-class="false" :class="['item', {'is-active': menuType === 2}]">项目对接中
       </router-link>
     </div>
   </div>
@@ -14,26 +17,17 @@
     name: 'vcenter_item_menu',
     data () {
       return {
-        menuType: 0,
+        menuType: 1,
         msg: 'This is Home'
       }
     },
     methods: {},
     created: function () {
-      let type = this.$route.query.type
-      this.menuType = 0
-      if (type) {
-        this.menuType = parseInt(type)
-      }
+      this.menuType = Number(this.$route.query.type) || 1
     },
     watch: {
       '$route' (to, from) {
-        // 对路由变化作出响应...
-        let type = this.$route.query.type
-        this.menuType = 0
-        if (type) {
-          this.menuType = parseInt(type)
-        }
+        this.menuType = Number(this.$route.query.type) || 1
       }
     },
     computed: {

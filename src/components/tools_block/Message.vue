@@ -3,17 +3,17 @@
   {'bounceInDown': showCover === 'show', 'slideOutUp': showCover === 'hide'}]">
     <div class="cover-header">
       <span v-if="(user.type === 2 && user.company_role > 0) || user.type === 1" :class="{'is-active': myView === 'order'}" @click="changeView('order')">消息提醒</span>
-      <span v-if="user.type === 2" :class="{'is-active': myView === 'task'}" @click="changeView('task')">项目通知</span>
+      <!-- <span v-if="user.type === 2" :class="{'is-active': myView === 'task'}" @click="changeView('task')">项目通知</span> -->
       <span :class="{'is-active': myView === 'system'}" @click="changeView('system')">系统通知</span>
       <i class="fx fx-icon-nothing-close-error" @click="showCover = 'hide', myView = false"></i>
     </div>
-    <div v-if="myView === 'order'" class="cover-content">
+    <div v-if="myView === 'order'" class="cover-content scroll-bar">
       <order-message></order-message>
     </div>
-    <div v-else-if="myView === 'task'" class="cover-content">
+    <div v-else-if="myView === 'task'" class="cover-content scroll-bar">
       <task-message></task-message>
     </div>
-    <div v-if="myView === 'system'" class="cover-content">
+    <div v-if="myView === 'system'" class="cover-content scroll-bar">
       <system-message></system-message>
     </div>
   </div>
@@ -90,7 +90,7 @@
     left: 0;
     top: 60px;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 60px);
     background: #fff;
     transform: translateY(-150%);
     -vendor-animation-duration: 500ms;
@@ -126,7 +126,7 @@
   }
   .cover-content {
     overflow: auto;
-    height: 100%;
-    padding-bottom: 50px;
+    height: calc(100% - 50px);
+    /* padding-bottom: 50px; */
   }
 </style>

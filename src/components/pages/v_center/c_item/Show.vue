@@ -125,8 +125,8 @@
 
               </el-collapse-item>
             </el-collapse>
-          </div>
-
+          </div>   
+          <div ref="anchor" id="anchor"></div>
           <div class="select-item-box" v-if="statusLabel.contract">
             <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
               <el-collapse-item title="合同管理" name="6">
@@ -140,7 +140,7 @@
                   </div>
                   <div class="contract-right">
                     <p v-if="item.status === 5">
-                      <el-button @click="contractSendBtn" class="is-custom" type="primary" size="small"><i
+                      <el-button @click="contractSendBtn" class="is-custom" type="primary"><i
                         class="fa fa-share-square-o" aria-hidden="true"></i> 发送
                       </el-button>
                     </p>
@@ -153,15 +153,18 @@
                     </p>
                     <p>
                       <router-link :to="{name: 'vcenterContractView', params: {unique_id: contract.unique_id}}"
-                                   target="_blank">
-                                   <!-- <i class="fa fa-eye" aria-hidden="true"></i> 预览 -->
-                                    <el-button type="primary" class="contract-right-preview">预览</el-button>
+                        target="_blank">
+                        <!-- <i class="fa fa-eye" aria-hidden="true"></i> 预览 -->
+                        <!-- <el-button type="danger" class="contract-right-preview" :class="{'view-button': item.status > 4}">预览</el-button> -->
+                        <button class="look-button">
+                          预览
+                        </button>
                       </router-link>
                     </p>
                     <p v-if="item.status < 7">
                       <router-link :to="{name: 'vcenterContractSubmit', params: {item_id: item.id}}">
                         <!-- <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 修改 -->
-                         <el-button type="primary" class="contract-right-preview">修改</el-button>
+                         <button class="look-button">修改</button>
                       </router-link>
                     </p>
 
@@ -369,16 +372,33 @@
 
               <div class="evaluate-result" v-if="item.status === 22">
 
-                <div class="eva-content fl">
+                <div class="eva-content">
                   <p class="ev-c-name">
                     {{ item.company_name }}
                   </p>
-                  <p class="eva-score">
-                    <el-rate
-                      v-model.number="evaluate.score"
+                  <el-row class="grade pl">
+                    <el-col :span="8">
+                      <p>设计水平</p>
+                      <el-rate
+                      v-model.number="evaluate.design_level"
                       disabled>
                     </el-rate>
-                  </p>
+                    </el-col>
+                    <el-col :span="8">
+                      <p>响应速度</p>
+                      <el-rate
+                      v-model.number="evaluate.response_speed"
+                      disabled>
+                    </el-rate>
+                    </el-col>
+                    <el-col :span="8">
+                      <p>服务态度</p>
+                      <el-rate
+                      v-model.number="evaluate.service"
+                      disabled>
+                    </el-rate>
+                    </el-col>
+                  </el-row>
                   <p class="ev-c-content">
                     {{ evaluate.content }}
                   </p>
@@ -828,7 +848,7 @@
       },
       // 提交拒单说明
       commitExplain() {
-        let currentIndex = this.$refs.currentIndex.value
+        // let currentIndex = this.$refs.currentIndex.value
         let form = {
           'item_id': this.item.id,
           'summary': this.summary,
@@ -1207,6 +1227,18 @@
       },
       custom() {
         return this.$store.state.event.prod
+      },
+      anchor() {
+        let that = this
+        var yscr = document.documentElement.scrollTop
+        var interval = setInterval (() => {
+          if (that.$refs.anchor.offsetTop > yscr && that.$refs.anchor && document.documentElement.scrollTo) {
+            yscr += 50
+            document.documentElement.scrollTo(0, yscr)
+          } else {
+            clearInterval(interval)
+          }
+        }, 17)
       }
     },
     watch: {
@@ -1254,6 +1286,18 @@
             // self.info = response.data.data.info
             if (response.data.data.evaluate) {
               self.evaluate = response.data.data.evaluate
+              if (self.evaluate.user_score) {
+                self.evaluate.user_score = JSON.parse(self.evaluate.user_score)
+              } else {
+                self.evaluate.user_score = {
+                  'design_level': 5,
+                  'response_speed': 5,
+                  'service': 5
+                }
+              }
+              self.evaluate.design_level = self.evaluate.user_score.design_level ? self.evaluate.user_score.design_level : 5
+              self.evaluate.response_speed = self.evaluate.user_score.response_speed ? self.evaluate.user_score.response_speed : 5
+              self.evaluate.service = self.evaluate.user_score.service ? self.evaluate.user_score.service : 5
             }
             if (response.data.data.invoice && response.data.data.invoice.length > 0) {
               self.invoice = response.data.data.invoice
@@ -1270,7 +1314,7 @@
               self.takingPriceForm.summary = self.quotation.summary
             }
             // 是否显示提交报价单按钮
-            if (self.quotation === null && (self.item.status === 3 || self.item.status === 4)) {
+            if (self.quotation === null && (self.item.status === 3 || self.item.status === 4 || self.item.status === 45)) {
               self.waitTakePrice = true
             }
             switch (self.item.status) {
@@ -1580,7 +1624,7 @@
         })
         .catch(function (error) {
           self.$message.error(error.message)
-          console.log(error.message)
+          console.error(error.message)
         })
 
       // 获取图片token
@@ -1599,6 +1643,14 @@
         .catch(function (error) {
           self.$message.error(error.message)
         })
+    },
+    mounted: function () {
+      this.$nextTick(() => {
+        this.$refs.anchor.offsetTop
+      })
+    },
+    updated: function () {
+      this.anchor
     }
   }
 </script>
@@ -1607,6 +1659,25 @@
 <style scoped>
   .red {
     color: red;
+  }
+  .look-button {
+    width: 120px;
+    height:34px;
+    background: #fff;
+    border: 1px solid #ff5a5f;
+    border-radius: 4px;
+    color: #ff5a5f;
+  }
+  .contract-right .look-button:hover {
+    background: #ff5a5f;
+    border: 1px solid #ff5a5f;
+    border-radius: 4px;
+    color: #fff;
+  }
+  .contract-right .look-button:active {
+    color: #ff5a5f;
+    border: 1px solid #ff5a5f;
+    background: #fff;
   }
   .alert-line-height {
     text-align: center
@@ -1726,7 +1797,12 @@
     float: left;
     padding-top: 45px;
   }
-
+  .grade>.el-col:not(:first-child) {
+    border-left: 1px solid #e6e6e6;
+  }
+  .pl>.el-col:not(:first-child) {
+    padding-left: 20px;
+  }
   .pub-btn {
     text-align: center;
   }

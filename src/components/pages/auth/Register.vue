@@ -3,10 +3,11 @@
     <!-- <section class="cover-bgf7"></section> -->
     <div class="register-box">
       <div class="regisiter-title">
-        <h2>注册{{prod.info}}{{identity}}账号</h2>
+        <h2>注册{{prod.login}}{{identity}}账号</h2>
       </div>
 
-      <div class="register-tab clearfix" v-if="!isMob">
+      <div v-if="prod.name === '' && !isMob" class="register-tab clearfix">
+      <!-- <div v-if="!isMob" class="register-tab clearfix"> -->
         <div :class="{'register-tab-user': true, active: uActive}" @click="selectUser">
           <div class="tab-left customer"></div>
           <div class="tab-right">
@@ -15,7 +16,7 @@
             <p class="des">找到设计服务商</p>
           </div>
         </div>
-        <div v-if="prod.name === ''" :class="{'register-tab-user': true, active: cActive}" @click="selectComputer">
+        <div :class="{'register-tab-user': true, active: cActive}" @click="selectComputer">
           <div class="tab-left"></div>
           <div class="tab-right">
             <h3>我是设计公司</h3>
@@ -31,7 +32,7 @@
           <el-form-item label="" prop="account">
             <el-input v-model="form.account" name="username" ref="account" placeholder="手机号" :maxlength="11"></el-input>
           </el-form-item>
-          <el-form-item v-if="showImgCode" label="" prop="imgCode">
+          <el-form-item v-if="form.account && form.account.length === 11" label="" prop="imgCode">
             <el-input class="imgCodeInput" v-model="form.imgCode" name="imgCode" ref="imgCode" placeholder="图形验证码">
               <template slot="append">
                 <div @click="fetchImgCaptcha" class="imgCode" :style="{'background': `url(${imgCaptchaUrl}) no-repeat`}"></div>
@@ -61,7 +62,7 @@
       </div>
     </div>
     <div class="reg">
-      <p>已有{{prod.info}}账户，您可以
+      <p>已有{{prod.login}}账户，您可以
         <router-link :to="{name: 'login'}">立即登录</router-link>
       </p>
     </div>
@@ -136,7 +137,7 @@
             {min: 6, max: 6, message: '验证码格式不正确！', trigger: 'blur'}
           ],
           password: [
-            {required: true, message: '请输入密码', trigger: 'change'},
+            {required: true, message: '请输入密码', trigger: 'blur'},
             {min: 6, max: 18, message: '密码长度在6-18字符之间！', trigger: 'blur'}
           ],
           checkPassword: [
@@ -230,7 +231,7 @@
                   type: 'error'
                 })
                 that.isLoadingBtn = false
-                console.log(error.message)
+                console.error(error.message)
                 return false
               })
             return false
@@ -241,6 +242,9 @@
         })
       },
       fetchCode() {
+        if (!this.form.account) {
+          return
+        }
         let full = 0
         this.$refs.ruleForm.validateField('account', (err) => {
           if (err) {
@@ -291,7 +295,7 @@
                       message: error.message,
                       type: 'error'
                     })
-                    console.log(error.message)
+                    console.error(error.message)
                     return false
                   })
               } else {
@@ -366,6 +370,9 @@
       })
     },
     created() {
+      if (this.prod.name) {
+        this.selectUser()
+      }
       this.form.type = this.$route.params.type
       if (this.form.type === 2) {
         this.cActive = true
@@ -385,21 +392,6 @@
           this.$message.error('没有选择用户类型!')
           this.$router.replace({name: 'identity'})
         }
-      }
-    },
-    watch: {
-      form: {
-        handler(val) {
-          if (val.account.length === 11) {
-            this.showImgCode = true
-            let url = api.check_account.format(val.account)
-            this.$http.get(url)
-            .then( res => {
-              console.log(res)
-            })
-          }
-        },
-        deep: true
       }
     }
   }

@@ -208,7 +208,7 @@ export default {
       colList2: [
         {
           img: require('assets/images/home/jd/7.png'),
-          title: '聚合100+领先设计服务供应商',
+          title: '聚合1000+领先设计服务供应商',
           title2: '兼顾成果原创性、创新性与可行性'
         },
         {
@@ -229,7 +229,7 @@ export default {
       colList2_yw: [
         {
           img: require('assets/images/home/jd/7-yw.png'),
-          title: '聚合100+领先设计服务供应商',
+          title: '聚合1000+领先设计服务供应商',
           title2: '兼顾成果原创性、创新性与可行性',
           title0: '100+国内顶尖设计机构'
         },
@@ -388,7 +388,8 @@ export default {
           intro: '2015年10月15日，太火鸟协助国内电单车品牌云造科技正式发布云马 C1智能电单车，同步上线淘宝众筹，并助其拓展线上线下及海外营销渠道，不到一个月时间即完成众筹金额破千万的成绩。截止众筹结束，云马C1智行车共取得5879粉丝支持，筹得资金¥11597621，1159%完成众筹目标，渠道直采4万台。',
           image: require ('@/assets/images/home/yunma.jpg')
         }
-      ]
+      ],
+      jdAccount: {}
     }
   },
   computed: {

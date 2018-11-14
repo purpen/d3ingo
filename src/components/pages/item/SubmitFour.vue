@@ -218,7 +218,7 @@ export default {
             })
             .catch(function(error) {
               that.$message.error(error.message)
-              console.log(error.message)
+              console.error(error.message)
               return false
             })
 
@@ -285,7 +285,7 @@ export default {
             that.form.company_web = web
             that.form.address = row.address
             that.form.contact_name = row.contact_name
-            that.form.phone = row.phone
+            that.form.phone = row.phone + ''
             that.form.email = row.email
             that.form.position = row.position
             that.form.stage_status = row.stage_status
@@ -316,7 +316,7 @@ export default {
                     that.form.company_web = bWeb
                     that.form.address = bRow.address
                     that.form.contact_name = bRow.contact_name
-                    that.form.phone = bRow.phone
+                    that.form.phone = bRow.phone + ''
                     that.form.email = bRow.email
                     that.form.position = bRow.position
 

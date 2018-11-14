@@ -120,7 +120,7 @@
                   <p class="p-val">{{ item.email }}</p>
                 </div>
                 <div class="sub-title">
-                  <span>银行卡信息</span>
+                  <span>公司银行账户信息</span>
                 </div>
                 <div class="item">
                   <p class="p-key">开户名</p>
@@ -328,6 +328,12 @@
 
     .verify img {
       width: 80px;
+    }
+  }
+  @media screen and ( max-width: 480px) {
+    .main-content {
+      width: 375px;
+      overflow-x: hidden;
     }
   }
 </style>

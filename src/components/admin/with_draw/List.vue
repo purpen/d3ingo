@@ -31,7 +31,7 @@
               width="60">
             </el-table-column>
             <el-table-column
-              label="银行卡信息"
+              label="公司银行账户信息"
               min-width="200">
                 <template slot-scope="scope">
                   <p>
@@ -178,6 +178,7 @@ export default {
       this.withDrawForm.bankName = item.branch_name
       this.withDrawForm.bankNumber = item.account_number
       this.withDrawForm.bankUser = item.account_name
+      this.withDrawForm.summary = ''
       this.sureTransferDialog = true
     },
     // 确认对公打款
@@ -204,7 +205,7 @@ export default {
       .catch (function(error) {
         self.$message.error(error.message)
         self.sureTransferLoading = false
-        console.log(error.message)
+        console.error(error.message)
       })
     },
     handleSizeChange(val) {

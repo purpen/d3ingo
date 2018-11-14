@@ -81,6 +81,18 @@
 .is-exception {
   color: #ff5a5f
 }
+.line-height {
+  line-height: 1px;
+}
+.line-height16 {
+  line-height: 16px;
+}
+.line-height24 {
+  line-height: 24px;
+}
+.line-height32 {
+  line-height: 32px;
+}
 .main .border-b-no {
   border-bottom: none;
 }
@@ -216,7 +228,7 @@
   padding: 0;
   height: 34px;
 }
-.el-button:focus,
+/* .el-button:focus, */
 .el-button:hover {
   color: #fff;
 }
@@ -295,7 +307,7 @@
   color: #999;
 }
 .white-button:active,
-.el-button--default:focus,
+/* .el-button--default:focus, */
 .el-button--default:active {
   background: #ccc;
   border: 1px solid #ccc;
@@ -373,7 +385,8 @@ button.el-button.is-custom.is-disabled,
 /* vcenter */
 
 .vcenter-right {
-  padding-left: 60px
+  padding-left: 60px;
+  transition: all 268ms ease;
 }
 .vcenter-right-mob {
   padding-left: 0
@@ -403,7 +416,8 @@ button.el-button.is-custom.is-disabled,
 }
 @media screen and (min-width: 1200px) {
   .vcenter-right-plus {
-    padding-left: 200px
+    padding-left: 200px;
+    transition: all 268ms ease;
   }
   .vcenter-right-mob {
     padding-left: 0

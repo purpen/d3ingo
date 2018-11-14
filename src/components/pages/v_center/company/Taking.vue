@@ -20,9 +20,9 @@
             <div>
               <div class="fz-16 ct-2 check-title">选择接单类型</div>
               <el-row :gutter="20">
-                <el-col :span="8" class="m-b-20"
+                <el-col :xs="24" :sm="12" :md="8" :lg="8" :xl="8" class="m-b-20"
                   v-for="(t, indext) in typeData" :key="indext"
-                >
+                  >
                   <div :class="['check-types',{'opttype':t.isopt}]"
                     @click="deletetype(t, indext)"
                   >
@@ -60,16 +60,21 @@
                   paddingTop:indexc === 0?20 + 'px':40+'px',
                   borderTop:indexc === 0?'none':'1px solid #e6e6e6'
                   }">{{c.name}}</div>
-                <el-form :model="form" :rules="rules" ref="ruleForm">
+                <el-form :model="form" :ref="'ruleForm' + indexc">
                   <el-row class="edit-designType" v-for="(dt,indexdt) in c.designType" :key="indexdt">
-                    <el-col :span="4">
+                    <el-col :span="typePhone = isMob ? 7 : 4">
                       {{dt.name}}
                     </el-col>
-                    <el-col :span="4">
+                    <el-col :span="typePhone = isMob ? 7 : 4">
                       项目平均周期
                     </el-col>
-                    <el-col :span="12">
-                        <el-form-item prop="project_cycle" v-if="isedit.index === indexc&&isedit.indexd ===indexdt">
+                    <el-col :span="typePhone = isMob ? 7 : 12">
+                        <el-form-item :prop="'project_cycle'" 
+                          v-if="isedit.index === indexc&&isedit.indexd ===indexdt"
+                          :rules="{
+                              required: true, type: 'number', message: '请选择项目平均周期', trigger: 'change'
+                            }"
+                          >
                           <el-select v-model.number="form.project_cycle" placeholder="请选择平均周期">
                             <el-option
                               v-for="item in projectCycleOptions"
@@ -83,18 +88,23 @@
                           {{ items['item_'+ (indexc+1) +'_'+ (indexdt+1)] | cycleval}}
                         </span>
                     </el-col>
-                    <el-col :span="4">
+                    <el-col :span="typePhone = isMob ? 3 : 4">
                       <div class="editbt">
                         <span v-if="isedit.index === indexc&&isedit.indexd ===indexdt" 
-                          @click="submit('ruleForm',indexdt)">保存</span>
+                          @click="submit('ruleForm' + indexc)">保存</span>
                         <span v-else @click="editType(items['item_'+ (indexc+1) +'_'+ (indexdt+1)],indexdt,indexc)">编辑</span>
                       </div>
                     </el-col>
-                    <el-col :span="4" :offset="4" class="m-t-20">
+                    <el-col :span="typePhone = isMob ? 10 : 4" :offset="4" class="m-t-20">
                       项目最低接单价格
                     </el-col>
-                    <el-col :span="12" class="m-t-20">
-                      <el-form-item prop="min_price" v-if="isedit.index === indexc&&isedit.indexd ===indexdt">
+                    <el-col :span="10" class="m-t-20">
+                      <el-form-item :prop="'min_price'" 
+                        v-if="isedit.index === indexc&&isedit.indexd ===indexdt"
+                        :rules="{
+                          required: true, type: 'number', message: '请选择最低接单价格', trigger: 'change'
+                        }"
+                        >
                         <el-select v-model.number="form.min_price" placeholder="请选择最低接单价格">
                           <el-option
                             v-for="item in minPriceOptions"
@@ -207,6 +217,8 @@
         itemModelPid: '',
         isedit: {},
         itemId: '',
+        isPhone: 8,
+        typePhone: '',
         isLoading: false,
         pid: '',
         sid: '',
@@ -240,14 +252,14 @@
           itemId: '',
           sid: ''
         },
-        rules: {
-          project_cycle: [
-            {type: 'number', message: '请选择项目平均周期', trigger: 'change'}
-          ],
-          min_price: [
-            {type: 'number', message: '请选择最低接单价格', trigger: 'change'}
-          ]
-        },
+        // rules: {
+        //   project_cycle: [
+        //     {type: 'number', message: '请选择项目平均周期', trigger: 'change'}
+        //   ],
+        //   min_price: [
+        //     {type: 'number', message: '请选择最低接单价格', trigger: 'change'}
+        //   ]
+        // },
         formLabelWidth: '150px'
       }
     },
@@ -415,7 +427,7 @@
               message: error.message,
               type: 'error'
             })
-            console.log(error.message)
+            console.error(error.message)
             return false
           })
       },
@@ -454,16 +466,28 @@
               message: error.message,
               type: 'error'
             })
-            console.log(error.message)
+            console.error(error.message)
             return false
           })
       },
       cancelFormVisible() {
         this.itemModel = false
       },
-      submit(formName, index) {
+      submit(formName) {
         const that = this
-        that.$refs[formName][index].validate((valid) => {
+        // let index = 0
+        // for (var cc = 0; cc < that.typeData.length; cc++) {
+        //   if (that.typeData[cc].isopt) {
+        //     index++
+        //   }
+        //   if (that.typeData[cc].id === c.id) {
+        //     break
+        //   }
+        // }
+        // if (index < 0) {
+        //   index = 0
+        // }
+        that.$refs[formName][0].validate((valid) => {
           // 验证通过，提交
           if (valid) {
             let row = {
@@ -489,7 +513,6 @@
               return false
             }
             that.isedit = {}
-            console.log(row)
             let apiUrl = null
             let method = null
 
@@ -577,7 +600,7 @@
         .catch(function (error) {
           that.$message.error(error.message)
           that.isLoading = false
-          console.log(error.message)
+          console.error(error.message)
           return false
         })
     }
@@ -674,7 +697,7 @@
   .types-radio {
     position: absolute;
     right: 20px;
-    bottom: 20px;
+    bottom: 10px;
     border-radius: 50%;
     width: 18px;
     height: 18px;
@@ -715,8 +738,11 @@
     font-size: 14px;
     color: #666;
   }
-  .edit-designType .el-col{
+  .edit-designType .el-col {
     line-height: 36px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
   .mg-t-30 {
     margin-top: 20px;
@@ -767,5 +793,16 @@
   }
   .ProductDesign {
     background: url('../../../../assets/images/project/ProductDesign.png') 0 0 no-repeat / 100px 100px
+  }
+  @media screen and ( max-width: 480px) {
+    .vcenter {
+      width: 375px;
+      overflow-x: hidden;
+      margin: 0 auto;
+    }
+    .check-types i {
+      width: 50px;
+      margin: auto 10px;
+    }
   }
 </style>

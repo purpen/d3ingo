@@ -8,7 +8,8 @@
           <el-card :body-style="{ padding: '0px' }" class="card">
               <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
                             :target="isMob ? '_self' : '_blank'">
-              <div class="image-box" :style="{background: 'url('+ d.cover.middle + ') no-repeat center', backgroundSize: 'cover'}">
+
+              <div v-if="d.cover && d.cover.middle" class="image-box" :style="{background: 'url('+ d.cover.middle + ') no-repeat center', backgroundSize: 'cover'}">
                   <img v-lazy="d.cover.middle">
               </div>
               <div class="content">
@@ -188,6 +189,12 @@ a {
   .image-box img {
     display: block;
     width: 100%;
+  }
+}
+@media screen and ( max-width: 480px) {
+  .container {
+    width: 375px;
+    overflow-x: hidden;
   }
 }
 </style>

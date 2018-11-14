@@ -52,6 +52,16 @@ module.exports = [
     },
     component: require('@/components/admin/item/List')
   },
+  // 小程序列表
+  {
+    path: '/admin/item/Sltem',
+    name: 'adminItemSltem',
+    meta: {
+      title: '小程序列表',
+      requireAuth: true
+    },
+    component: require('@/components/admin/item/Sltem')
+  },
   // 项目详情
   {
     path: '/admin/item/show/:id',
@@ -81,6 +91,26 @@ module.exports = [
       requireAuth: true
     },
     component: require('@/components/admin/order/List')
+  },
+  // 推荐配置公司列表
+  {
+    path: '/admin/recommend/list',
+    name: 'adminRecommendList',
+    meta: {
+      title: '推荐公司列表',
+      requireAuth: true
+    },
+    component: require('@/components/admin/recommend/list')
+  },
+  // 推荐权重配置
+  {
+    path: '/admin/recommend/Submit',
+    name: 'adminRecommendSubmit',
+    meta: {
+      title: '权重配置',
+      requireAuth: true
+    },
+    component: require('@/components/admin/recommend/Submit')
   },
   // 提现列表
   {
@@ -130,6 +160,26 @@ module.exports = [
       requireAuth: true
     },
     component: require('@/components/admin/company/Show')
+  },
+  // 顺德交易会成果列表
+  {
+    path: '/admin/trade_fairs/achievment_list',
+    name: 'adminAchievmentList',
+    meta: {
+      title: '成果列表',
+      requireAuth: true
+    },
+    component: require('@/components/admin/trade_fairs/AchievmentList')
+  },
+  // 顺德交易会需求列表
+  {
+    path: '/admin/trade_fairs/demandt_list',
+    name: 'adminDemandtList',
+    meta: {
+      title: '需求列表',
+      requireAuth: true
+    },
+    component: require('@/components/admin/trade_fairs/DemandtList')
   },
   // 需求公司列表
   {

@@ -6,6 +6,7 @@ import baseRoute from './routes/base.js'
 import adminRoute from './routes/admin.js'
 import bAdminRoute from './routes/b_admin.js'
 import centerRoute from './routes/center.js'
+import shundeRoute from './routes/shunde.js'
 import toolsRoute from './routes/tools.js'
 import { Message } from 'element-ui'
 import {
@@ -42,7 +43,7 @@ let routes = [
   },
   // 京东云首页
   {
-    path: '/SaaS_Index',
+    path: '/home',
     name: 'SaaSIndex',
     meta: {
       title: '京东云艺火'
@@ -51,7 +52,7 @@ let routes = [
   },
   {
     path: '/jd_cloud',
-    redirect: '/SaaS_Index'
+    redirect: '/home'
   },
   {
     path: '/test',
@@ -377,6 +378,14 @@ let routes = [
     component: require('@/components/pages/auth/Register')
   },
   {
+    path: '/binding_jd',
+    name: 'bindJD',
+    meta: {
+      title: '绑定艺火账号'
+    },
+    component: require('@/components/pages/auth/BindingJD')
+  },
+  {
     path: '/invite/:code',
     name: 'invite',
     meta: {
@@ -663,17 +672,17 @@ let routes = [
     component: require('@/components/pages/v_center/common/Control')
   },
   // 统计
-  {
-    path: '/vcenter/console',
-    name: 'vcenterConsole',
-    meta: {
-      title: '统计',
-      requireAuth: true,
-      hideHeader: true,
-      hideFooter: true
-    },
-    component: require('@/components/pages/v_center/console/Console')
-  },
+  // {
+  //   path: '/vcenter/console',
+  //   name: 'vcenterConsole',
+  //   meta: {
+  //     title: '统计',
+  //     requireAuth: true,
+  //     hideHeader: true,
+  //     hideFooter: true
+  //   },
+  //   component: require('@/components/pages/v_center/console/Console')
+  // },
   // 控制面板--子账户
   {
     path: '/vcenter/child_control',
@@ -724,6 +733,11 @@ let routes = [
       requireAuth: true
     },
     component: require('@/components/pages/home/Apply')
+  },
+  {
+    path: '/redirect',
+    name: 'redirect',
+    component: require('@/components/block/Redirect')
   }
 ]
 
@@ -732,25 +746,27 @@ routes = routes.concat(adminRoute)
 routes = routes.concat(bAdminRoute)
 routes = routes.concat(centerRoute)
 routes = routes.concat(toolsRoute)
+routes = routes.concat(shundeRoute)
 
 const router = new VueRouter({
   mode: 'history',
   linkActiveClass: 'is-active', // 这是链接激活时的class
   routes,
   scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) {
-      return savedPosition
-    } else {
-      const position = {}
-      if (to.hash) {
-        if (to.hash === '#innovation') {
-          return { x: 100, y: 0 }
-        } else {
-          position.selector = to.hash
-          return position
-        }
-      }
-    }
+    return savedPosition || { x: 0, y: 0 }
+    // if (savedPosition) {
+    //   return savedPosition
+    // } else {
+    //   const position = {}
+    //   if (to.hash) {
+    //     if (to.hash === '#innovation') {
+    //       return { x: 100, y: 0 }
+    //     } else {
+    //       position.selector = to.hash
+    //       return position
+    //     }
+    //   }
+    // }
   }
 })
 router.beforeEach((to, from, next) => {

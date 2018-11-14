@@ -11,7 +11,7 @@
             <el-form :model="form" :rules="ruleForm" ref="ruleForm">
 
               <!--<p class="title">基本信息</p>-->
-              <p class="sub-title mar-b-10">甲方（客户）</p>
+              <p class="sub-title mar-b-10">甲方（客户） </p>
               <el-row :gutter="10">
                 <el-col :span="isMob ? 24 : 12">
                   <el-form-item style="margin: 0" label="" prop="demand_company_name">
@@ -108,7 +108,34 @@
                   <el-input :value="form.title" disabled></el-input>
                 </el-col>
               </el-form-item>
-              <p class="font-size-16 mar-b-10">2、费用</p>
+              <p class="font-size-16" ref="anchor" id="anchor">2、项目内容</p>
+              <el-col :span="24" style="padding: 0">
+                <el-form-item prop="item_content">
+                  <el-input 
+                    type="textarea"
+                    :rows="5"
+                    placeholder="请填写项目包含的主要内容"
+                    v-model="form.item_content"
+                    ></el-input>
+                </el-form-item>
+              </el-col>
+              <!-- <p class="font-size-16">2、设计类型</p>
+              <el-form-item>
+                <el-col :span="12" style="padding: 0">
+                  <el-input :value="form.type_value" disabled></el-input>
+                </el-col>
+              </el-form-item>
+              <p class="font-size-16">3、项目类型</p>
+              <el-form-item>
+                <el-col :span="12" style="padding: 0">
+                  <el-input :value="form.design_types_value" disabled></el-input>
+                </el-col>
+              </el-form-item>
+              <p class="font-size-16 mar-b-10">4、产品功能描述:</p>
+              <p class="mar-b-10">
+                <span v-if="form.product_features">&nbsp;&nbsp;</span>{{form.product_features}}
+              </p> -->
+              <p class="font-size-16 mar-b-10">3、费用</p>
               <p class="mar-b-10">本合同设计费用总额为人民币<span class="bottom-border" type="text" disabled v-html="form.total"></span> 元，丙方作为平台收取全部项目费的<span class="bottom-border" type="text" disabled v-html="form.commission_rate"></span>%，也就是人民币<span class="bottom-border" type="text" disabled v-html="form.commission"></span>元作为佣金。</p>
               <p style="color: #FF5A5F">注：本合同中所有涉及费用金额均为含税。</p>
 
@@ -211,11 +238,10 @@
                   </el-col>
 
                 </el-row>
-
                 <el-row :gutter="10" v-for="(s, i) in d.content" :key="i">
                   <el-col :span="isMob ? 24 : 12">
                     <el-form-item
-                      :prop="s"
+                      :prop="'stages.' + index + '.content.' + i + ''"
                       :rules="{
                       required: true, message: '请填写内容', trigger: 'blur'
                     }"
@@ -228,14 +254,14 @@
                     </el-form-item>
                   </el-col>
                 </el-row>
-
-                <div class="add-substage" @click="addSubStage" :index="index"><i class="fa fa-plus-circle"
-                                                                                 aria-hidden="true"></i> 添加交付内容
+                <div class="add-substage" @click="addSubStage" :index="index">
+                  <i class="fa fa-plus-circle" aria-hidden="true"></i> 
+                  添加交付内容
                 </div>
                 <div class="blank20"></div>
               </div>
 
-              <p class="title mar-t-40 font-size-18">三、付款方式</p>
+              <p class="title mar-t-40 font-size-18" ref="anchor2" id="anchor2">三、付款方式</p>
               <p>甲方应将每个阶段的项目费用在对应阶段确认完成后支付给丙方，丙方按以下约定向乙方支付设计费，如果甲乙双方合作中出现争议，将由平台冻结当前资金，待纠纷解决后再按照法律法规相应规定执行。</p>
               <p>&nbsp;</p>
               <p>设计过程中需开具的发票，按三方实际资金往来的具体金额，依中华人民共和国税务法操作执行，明细为设计费。丙方为一般纳税人，若乙方为小规模纳税人，则乙方给丙方开票涉及的差额税费由丙方从设计费用中扣除并代缴。</p>
@@ -327,7 +353,7 @@
               <div class="sept"></div>
 
               <div class="form-btn">
-                <el-button type="primary" :loading="isLoadingBtn" class="is-custom" @click="submit('ruleForm')">保存
+                <el-button type="primary" :loading="isLoadingBtn" class="is-custom" @click="submit('ruleForm')">{{contractText}}
                 </el-button>
               </div>
               <div class="clear"></div>
@@ -363,6 +389,7 @@
         item: '',
         itemName: '',
         companyId: '',
+        contractText: '保存',
         isLoadingBtn: false,
         contractId: '',
         // stateMsg: '生成阶段',
@@ -431,7 +458,12 @@
           design_company_legal_person: [
             {required: true, message: '请填写联系人姓名', trigger: 'blur'}
           ],
-
+          // stages: {
+          //    content: [{required: true, message: '不能为空', trigger: 'blur'}],
+          // },
+          item_content: [
+            {required: true, message: '请填写项目包含的主要内容', trigger: 'blur'}
+          ],
           total: [
             {type: 'number', required: true, message: '请填写项目总金额', trigger: 'blur'}
           ]
@@ -449,11 +481,22 @@
             row.item_demand_id = that.itemId
             row.title = that.itemName
             if (!row.sort) {
-              that.$message.error('请至少添加一项项目阶段!')
+            // 未填锚点跳转
+              var tysc2 = document.documentElement.scrollTop
+              var setInter = setInterval (() => {
+                if (tysc2 > that.$refs.anchor2.offsetTop && document.documentElement.scrollTo) {
+                  tysc2 -= 60
+                  document.documentElement.scrollTo(0, tysc2)
+                } else {
+                  clearInterval(setInter)
+                  that.$message.error('请至少添加一项项目阶段!')
+                }
+              }, 17)
               return false
             }
             if (!row.stages || row.stages.length === 0) {
               that.$message.error('请至少添加一项项目阶段!')
+              console.log(1)
               return false
             }
             for (let j = 0; j < row.stages.length; j++) {
@@ -484,8 +527,6 @@
             }
             let stagePrice = that.form.stage_money
             if (totalAmount - stagePrice) {
-              console.log('totalAmount', totalAmount)
-              console.log('stagePrice', stagePrice)
               that.$message.error('阶段金额总和不正确！')
               return false
             }
@@ -502,7 +543,6 @@
             that.isLoadingBtn = true
             that.$http({method: method, url: apiUrl, data: row})
               .then(function (response) {
-                console.log(response)
                 if (response.data.meta.status_code === 200) {
                   that.$message.success('提交成功！')
                   that.isLoadingBtn = false
@@ -519,6 +559,17 @@
                 return false
               })
           } else {
+            // 未填锚点跳转
+            var tysc = document.documentElement.scrollTop
+            var interval = setInterval (() => {
+              if (tysc > that.$refs.anchor.offsetTop && document.documentElement.scrollTo) {
+                tysc -= 60
+                document.documentElement.scrollTo(0, tysc)
+              } else {
+                clearInterval(interval)
+                that.$message.error('有内容未填，请填写')
+              }
+            }, 17)
           }
         })
       },
@@ -563,7 +614,7 @@
             let per = self.form.stages[index].percentage.mul(0.01)
             let amount = 0
             let money = 0
-            for (var i = 0; i < stages.length;i++) {
+            for (var i = 0; i < stages.length; i++) {
               if (stages[i].amount && stages[i].amount !== '') {
                 amount += 1
                 money += Number(stages[i].amount)
@@ -572,9 +623,6 @@
             if (amount === stages.length - 1) {
               self.form.stages[index].amount = (Number((total * 0.6).toFixed(2)) - money).toFixed(2)
             } else self.form.stages[index].amount = total.mul(per).toFixed(2)
-
-
-            // self.$set(self.form.stages[index], 'amount', total.mul(per))
           }
         })
       }
@@ -627,10 +675,14 @@
             if (response.data.meta.status_code === 200) {
               var item = that.item = response.data.data
               that.itemName = that.item.item.name
+              if (that.itemName && that.item.item.status === 6) {
+                that.contractText = '发送'
+              }
               that.companyId = item.quotation.design_company_id
-
+              that.item.item.phone = Number(that.item.item.phone)
+              that.item.quotation.phone = Number(that.item.quotation.phone)
               if (item.contract) {
-                // 如果是京东，跳转
+                // // 如果是京东，跳转
                 if (item.contract.source === 1) {
                   that.$router.replace({name: 'vcenterContractJdSubmit', params: {item_id: id}})
                   return
@@ -641,22 +693,27 @@
                     if (response.data.meta.status_code === 200) {
                       let contract = response.data.data
                       if (contract) {
+                        contract.demand_company_phone = contract.demand_company_phone + ''
+                        contract.design_company_phone = contract.design_company_phone + ''
                         if (!contract.demand_pay_limit) {
                           contract.demand_pay_limit = that.contractScale.demand_pay_limit
                         }
                         contract.stages = []
                         contract.sort = contract.item_stage.length
                         contract.total = parseFloat(contract.total)
-                        contract.warranty_money = parseFloat(contract.commission)
+                        contract.warranty_money = contract.commission ? parseFloat(contract.commission) : 0
                         contract.first_payment = parseFloat(contract.first_payment)
                         contract.stage_money = parseFloat(contract.total.sub(contract.first_payment))
-                        contract.tax_price = parseFloat(contract.tax_price)
+                        contract.tax_price = contract.tax_price ? parseFloat(contract.tax_price) : 0
                         contract.first_rest_payment = parseFloat(contract.first_payment.sub(contract.warranty_money.add(contract.tax_price)))
                         that.form = contract
+                        that.form.type_value = item.item.type_value ? item.item.type_value : ''
+                        that.form.design_types_value = item.item.design_types_value ? item.item.design_types_value.join('、') : ''
+                        that.form.product_features = item.item.product_features
                         if (!that.form.thn_company_name) {
                           that.form.thn_company_name = that.companyThn.company_name
                           that.form.thn_company_address = that.companyThn.address
-                          that.form.thn_company_phone = that.companyThn.contact_phone
+                          that.form.thn_company_phone = that.companyThn.contact_phone + ''
                           that.form.thn_company_legal_person = that.companyThn.contact_name
                         }
                         if (!that.form.commission_rate) {
@@ -681,7 +738,6 @@
                           })
                         }
                       }
-//                      console.log(response.data.data)
                     }
                   })
               } else {  // 合同首次创建，从项目表调用基础信息
@@ -690,11 +746,11 @@
                   that.$router.replace({name: 'vcenterContractJdSubmit', params: {item_id: id}})
                   return
                 }
-                that.form.item_content = that.itemName
+                that.form.item_content = that.item.item.item_content ? that.item.item.item_content : ''
                 that.form.title = that.itemName
                 that.form.thn_company_name = that.companyThn.company_name
                 that.form.thn_company_address = that.companyThn.address
-                that.form.thn_company_phone = that.companyThn.contact_phone
+                that.form.thn_company_phone = that.companyThn.contact_phone + ''
                 that.form.thn_company_legal_person = that.companyThn.contact_name
                 that.form.demand_pay_limit = that.contractScale.demand_pay_limit
                 that.form.commission_rate = item.item.commission_rate
@@ -703,24 +759,27 @@
                 that.form.demand_company_name = item.item.company_name
                 that.form.demand_company_address = item.item.company_province_value + item.item.company_city_value + item.item.address
                 that.form.demand_company_legal_person = item.item.contact_name
-                that.form.demand_company_phone = item.item.phone
-                that.form.tax_price = parseFloat(item.item.tax)
+                that.form.demand_company_phone = item.item.phone + ''
+                that.form.tax_price = item.item.tax ? parseFloat(item.item.tax) : 0
                 that.form.total = parseFloat(item.item.price)
-                that.form.warranty_money = parseFloat(item.item.commission)
+                that.form.warranty_money = item.item.commission ? parseFloat(item.item.commission) : 0
                 that.form.first_payment = parseFloat(item.item.first_payment)
                 that.form.stage_money = parseFloat(that.form.total.sub(that.form.first_payment))
                 that.form.first_rest_payment = parseFloat(that.form.first_payment.sub(that.form.warranty_money.add(that.form.tax_price)))
-
+                that.form.type_value = item.item.type_value ? item.item.type_value : ''
+                that.form.design_types_value = item.item.design_types_value ? item.item.design_types_value.join('、') : ''
+                that.form.product_features = item.item.product_features
                 // 获取当前公司基本信息
                 that.$http.get(api.designCompany, {})
                   .then(function (response) {
                     if (response.data.meta.status_code === 200) {
                       let company = response.data.data
+                      console.log('ccc', company)
                       if (company) {
                         that.form.design_company_name = company.company_name
                         that.form.design_company_address = company.province_value + company.city_value + company.address
                         that.form.design_company_legal_person = company.contact_name
-                        that.form.design_company_phone = company.phone
+                        that.form.design_company_phone = company.phone + ''
                       }
                     }
                   })
@@ -730,7 +789,6 @@
                   })
               }
             }
-            console.log(that.form)
           })
           .catch(function (error) {
             that.$message.error(error.message)

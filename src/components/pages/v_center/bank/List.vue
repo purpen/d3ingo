@@ -302,7 +302,7 @@
               .catch(function (error) {
                 that.$message.error(error.message)
                 that.isLoadingBtn = false
-                console.log(error.message)
+                console.error(error.message)
               })
           } else {
           }

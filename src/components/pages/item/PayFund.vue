@@ -21,7 +21,8 @@
       </div>
       <div class="order-item">
         <p><span>订单内容:&nbsp;&nbsp; </span>{{ item.item_name }}</p>
-        <p><span>金&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;额:&nbsp;&nbsp; </span>¥ {{ item.amount }}</p>
+        <p><span>总&nbsp;金&nbsp;额:&nbsp;&nbsp; </span>¥ {{ item.total_price }}</p>
+        <p><span>首付款金额:&nbsp;&nbsp; </span>¥ {{ item.amount }}</p>
         <p><span>订单编号:&nbsp;&nbsp; </span>{{ item.uid }}</p>
       </div>
       <div class="pay-item">
@@ -33,7 +34,7 @@
                 <label>
                   <div :class="{'item': true, active: payType === 1 ? true : false}" @click="checkedPayBtn(1)">
                     <img src="../../../assets/images/icon/alipay.png"/>
-                    <img class="pay-active" src="../../../assets/images/icon/pay_checked.png"/>
+                    <img class="pay-active" src="../../../assets/images/icon/pay_checked2.png"/>
                   </div>
                 </label>
               </li>
@@ -50,7 +51,7 @@
                   <div :class="{'item': true, active: payType === 5 ? true : false}"
                        @click="checkedPayBtn(5)">
                     <p>对公转账</p>
-                    <img class="pay-active" src="../../../assets/images/icon/pay_checked.png"/>
+                    <img class="pay-active" src="../../../assets/images/icon/pay_checked2.png"/>
                   </div>
                 </label>
               </li>
@@ -70,7 +71,7 @@
                   <div :class="{'item': true, active: payType === 5 ? true : false}"
                        @click="checkedPayBtn(5)">
                     <p>京东云市场支付</p>
-                    <img class="pay-active" src="../../../assets/images/icon/pay_checked.png"/>
+                    <img class="pay-active" src="../../../assets/images/icon/pay_checked2.png"/>
                   </div>
                 </label>
               </li>
@@ -305,14 +306,17 @@ export default {
 }
 
 .pay-type .item.active {
-  background: #f2fbff;
-  border: 1px solid #00a7f7;
+  background: rgba(255,90,95,0.05);
+  border: 1px solid #ff5a5f;
 }
 
 .pay-type .item.active .pay-active {
   display: block;
+  width: 30px;
 }
-
+.item p {
+  color: #222;
+}
 .pay-type .item p {
   line-height: 35px;
   font-size: 2.5rem;

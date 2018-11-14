@@ -71,21 +71,6 @@ module.exports = {
   ],
   module: {
     rules: [
-      // {
-      //   test: /\.(js|vue)$/,
-      //   loader: 'happypack/loader?id=eslint',
-      //   enforce: "pre",
-      //   include: [
-      //     resolve('src'),
-      //     resolve('test'),
-      //     resolve('node_modules/element-ui'),
-      //     resolve('node_modules/vue-echarts'),
-      //     resolve('node_modules/echarts'),
-      //     resolve('node_modules/resize-detector'),
-      //     resolve('node_modules/vue-pdf'),
-      //     resolve('node_modules/vue-resize-sensor')]
-      // },
-
       {
         test: /\.vue$/,
         loader: 'vue-loader',
@@ -110,19 +95,27 @@ module.exports = {
         exclude: [/node_modules/, /pdfmake.js$/]
       },
       {
+        test: /\.(js|vue)$/,
+        loader: 'happypack/loader?id=eslint',
+        enforce: "pre",
+        include: [
+          resolve('src')],
+        exclude: [/node_modules/, /pdfmake.js$/]
+      },
+      {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
-        options: {
-          limit: 2048,
-          name: utils.assetsPath('img/[name].[hash:5].[ext]')
+        query: {
+          limit: 10000,
+          name: utils.assetsPath('img/[name].[hash:7].[ext]')
         }
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
         loader: 'url-loader',
-        options: {
+        query: {
           limit: 10000,
-          name: utils.assetsPath('fonts/[name].[hash:5].[ext]')
+          name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
       }
     ],

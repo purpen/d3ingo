@@ -7,8 +7,8 @@
       <div class="forget-content">
 
         <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px" class="input">
-          <el-form-item label="" prop="account">
-            <el-input v-model="form.account" name="account" ref="account" auto-complete="on"
+          <el-form-item label="" prop="username">
+            <el-input v-model="form.username" name="username" ref="username" auto-complete="on"
                       placeholder="手机号"></el-input>
           </el-form-item>
           <el-form-item label="" prop="imgCode">
@@ -18,7 +18,7 @@
               </template>
             </el-input>
           </el-form-item>
-          <el-form-item label="" prop="smsCode">
+          <el-form-item label="" prop="smsCode" :class="[{'disabled-hover': time >0}]">
             <el-input v-model="form.smsCode" auto-complete="off" name="smsCode" ref="smsCode" placeholder="验证码">
               <template slot="append">
                 <el-button type="primary" class="code-btn" @click="fetchCode" :disabled="time > 0">{{ codeMsg }}
@@ -67,17 +67,18 @@
         }
       }
       return {
+        isReady: true,
         isLoadingBtn: false,
         time: 0,
         form: {
-          account: '',
+          username: '',
           smsCode: '',
           password: '',
           checkPassword: '',
           imgCode: ''
         },
         ruleForm: {
-          account: [
+          username: [
             {required: true, message: '请输入手机号码', trigger: 'blur'},
             {min: 11, max: 11, message: '手机号码位数不正确！', trigger: 'blur'}
           ],
@@ -105,20 +106,23 @@
         const that = this
         that.$refs[formName].validate((valid) => {
           if (valid) {
-            var account = this.$refs.account.value
-            var password = this.$refs.password.value
-            var smsCode = this.$refs.smsCode.value
+            var username = this.form.username
+            var password = this.form.password
+            var smsCode = this.form.smsCode
 
             that.isLoadingBtn = true
             // 验证通过，重置
-            that.$http.post(api.forget, {phone: account, password: password, sms_code: smsCode})
+            that.$http.post(api.forget, {phone: username, password: password, sms_code: smsCode})
               .then(function (response) {
                 if (response.data.meta.status_code === 200) {
                   that.$message.success('重置密码成功!')
                   that.$router.replace('/login')
                   return
-                } else {
+                } else if (response.data.meta.status_code === 412) {
                   that.$message.error(response.data.meta.message)
+                  that.isLoadingBtn = false
+                } else {
+                  that.fetchImgCaptcha()
                   that.isLoadingBtn = false
                 }
               })
@@ -129,7 +133,7 @@
                   type: 'error'
                 })
                 that.isLoadingBtn = false
-                console.log(error.message)
+                console.error(error.message)
                 return false
               })
             return false
@@ -140,56 +144,73 @@
         })
       },
       fetchCode() {
-        var account = this.$refs.account.value
-        if (account === '') {
-          this.$message({
-            message: '请输入手机号码!',
-            type: 'error',
-            duration: 1000
-          })
-          return
-        }
-
-        if (account.length !== 11 || !/^((13|14|15|17|18)[0-9]{1}\d{8})$/.test(account)) {
-          this.$message({
-            message: '手机号格式不正确!',
-            type: 'error',
-            duration: 1000
-          })
-          return
-        }
-
-        var url = api.check_account.format(account)
-        // 检测手机号是否存在
-        const that = this
-        that.$http.get(url, {})
+        if (this.isReady) {
+          var username = this.form.username
+          if (username === '') {
+            this.$message({
+              message: '请输入手机号码!',
+              type: 'error',
+              duration: 1000
+            })
+            return
+          }
+          if (username.length !== 11 || !/^((13|14|15|17|18)[0-9]{1}\d{8})$/.test(username)) {
+            this.$message({
+              message: '手机号格式不正确!',
+              type: 'error',
+              duration: 1000
+            })
+            return
+          }
+          if (!this.form.imgCode) {
+            this.$message({
+              message: '请输入验证码!',
+              type: 'error',
+              duration: 1000
+            })
+            return
+          }
+          this.isReady = false
+          var url = api.check_account.format(username)
+          // 检测手机号是否存在
+          const that = this
+          that.$http.get(url, {})
           .then(function (response) {
             if (response.data.meta.status_code === 412) {
               // 获取验证码
               that.$http.post(api.fetch_msm_code, {
-                phone: account,
+                phone: username,
                 str: that.imgCaptchaStr,
                 captcha: that.form.imgCode
               })
-                .then(function (response) {
-                  if (response.data.meta.status_code === 200) {
-                    that.time = that.second
-                    that.timer()
-                    that.$emit('send')
-                  } else {
-                    that.$message.error('获取验证码失败')
-                  }
-                })
-                .catch(function (error) {
-                  that.$message.error(error.message)
-                })
+              .then(function (res) {
+                that.isReady = true
+                if (res.data.meta.status_code === 200) {
+                  that.time = that.second
+                  that.timer()
+                  that.$emit('send')
+                } else {
+                  that.$message.error(res.data.meta.message)
+                  that.fetchImgCaptcha()
+                }
+              })
+              .catch(function (error) {
+                that.isReady = true
+                that.$message.error(error.message)
+                that.fetchImgCaptcha()
+              })
             } else {
+              that.isReady = true
               that.$message.error('该手机号尚未注册')
+              that.fetchImgCaptcha()
             }
           })
           .catch(function (error) {
+            that.isReady = true
             that.$message.error(error.message)
+            that.fetchImgCaptcha()
           })
+        }
       },
       fetchImgCaptcha() {
         this.$http.get(api.fetch_img_captcha)
@@ -197,6 +218,7 @@
           if (res.data.meta.status_code === 200) {
             this.imgCaptchaUrl = res.data.data.url
             this.imgCaptchaStr = res.data.data.str
+            this.form.imgCode = ''
           } else {
             console.log(res.data.meta.message)
           }

@@ -1,4 +1,4 @@
-<template>
+     <template>
   <div class="container" style="width: 880px;">
     <div class="blank20"></div>
     <el-row :gutter="24">
@@ -109,18 +109,15 @@
               <el-row>
                 <el-col :span="isMob ? 16 : 8">
                   <el-form-item prop="sort" style="margin: 0">
-                    <el-select v-model.number="form.sort" placeholder="设置项目阶段">
-                      <el-option
+                    <el-radio-group  v-model.number="form.sort" @change="genStageInput">
+                      <el-radio-button 
+                        class="el-radio-button__phase"
                         v-for="item in stageOptions"
-                        :label="item.label"
                         :key="item.index"
-                        :value="item.value">
-                      </el-option>
-                    </el-select>
+                        :label="item.label"
+                      >{{item.label}}个阶段</el-radio-button>
+                    </el-radio-group>
                   </el-form-item>
-                </el-col>
-                <el-col :span="isMob ? 6 : 4" :offset="1" style="">
-                  <el-button class="is-custom" @click="genStageInput">{{ stateMsg }}</el-button>
                 </el-col>
               </el-row>
 
@@ -307,7 +304,7 @@
               <div class="sept"></div>
 
               <div class="form-btn">
-                <el-button type="primary" :loading="isLoadingBtn" class="is-custom" @click="submit('ruleForm')">保存
+                <el-button type="primary" :loading="isLoadingBtn" class="is-custom" @click="submit('ruleForm')">{{contractText}}
                 </el-button>
               </div>
               <div class="clear"></div>
@@ -343,6 +340,7 @@
         item: '',
         itemName: '',
         companyId: '',
+        contractText: '保存',
         isLoadingBtn: false,
         contractId: '',
         stateMsg: '生成阶段',
@@ -383,6 +381,7 @@
           stages: [],
           sort: ''
         },
+        sort: '2个阶段',
         ruleForm: {
           demand_company_name: [
             {required: true, message: '请填写公司名称', trigger: 'blur'}
@@ -503,10 +502,10 @@
       // 生成阶段
       genStageInput() {
         let count = this.form.sort
-        if (!count) {
-          this.$message.error('请选择阶段')
-          return false
-        }
+        // if (!count) {
+        //   this.$message.error('请选择阶段')
+        //   return false
+        // }
         this.form.stages = []
         for (let i = 0; i < count; i++) {
           let row = {
@@ -515,7 +514,7 @@
             amount: '',
             title: '',
             time: '',
-            content: []
+            content: ['']
           }
           this.form.stages.push(row)
         }
@@ -549,8 +548,7 @@
         let items = []
         for (let i = 2; i < 4; i++) {
           let item = {
-            value: i,
-            label: '共' + i + '阶段'
+            label: i
           }
           items.push(item)
         }
@@ -575,18 +573,18 @@
         return CONTRACT_SCALE
       }
     },
-    watch: {
-      form: {
-        deep: true,
-        handler: function (val, oldVal) {
-          if (val.stages && val.stages.length > 0) {
-            this.stateMsg = '重置阶段'
-          } else {
-            this.stateMsg = '生成阶段'
-          }
-        }
-      }
-    },
+    // watch: {
+    //   form: {
+    //     deep: true,
+    //     handler: function (val, oldVal) {
+    //       if (val.stages && val.stages.length > 0) {
+    //         this.stateMsg = '重置阶段'
+    //       } else {
+    //         this.stateMsg = '生成阶段'
+    //       }
+    //     }
+    //   }
+    // },
     created () {
       var that = this
       var id = this.$route.params.item_id
@@ -597,8 +595,10 @@
             if (response.data.meta.status_code === 200) {
               let item = that.item = response.data.data
               that.itemName = that.item.item.name
+              if (that.itemName && that.item.item.status === 6) {
+                that.contractText = '发送'
+              }
               that.companyId = item.quotation.design_company_id
-
               if (item.contract) {
                 // 如果是铟果，跳转
                 if (item.contract.source === 0) {
@@ -625,13 +625,14 @@
                         that.form = contract
                         that.form.thn_company_name = that.companyThn.company_name
                         that.form.thn_company_address = that.companyThn.address
-                        that.form.thn_company_phone = that.companyThn.contact_phone
+                        that.form.thn_company_phone = that.companyThn.contact_phone + ''
                         that.form.thn_company_legal_person = that.companyThn.contact_name
                         if (!that.form.commission_rate) {
                           that.form.commission_rate = item.item.commission_rate
                           that.form.commission = item.item.commission
                         }
                         if (that.form.item_stage && that.form.item_stage.length > 0) {
+                          let stageList = []
                           for (let i = 0; i < that.form.item_stage.length; i++) {
                             let stageRow = that.form.item_stage[i]
                             let newStageRow = {}
@@ -641,8 +642,11 @@
                             newStageRow.amount = parseFloat(stageRow.amount)
                             newStageRow.time = parseInt(stageRow.time)
                             newStageRow.content = stageRow.content
-                            that.form.stages.push(newStageRow)
+                            stageList.push(newStageRow)
                           }
+                          that.$nextTick(_ => {
+                            that.form.stages = stageList
+                          })
                         }
                       }
 //                      console.log(response.data.data)
@@ -659,7 +663,7 @@
                 // 太火鸟信息
                 that.form.thn_company_name = that.companyThn.company_name
                 that.form.thn_company_address = that.companyThn.address
-                that.form.thn_company_phone = that.companyThn.contact_phone
+                that.form.thn_company_phone = that.companyThn.contact_phone + ''
                 that.form.thn_company_legal_person = that.companyThn.contact_name
                 that.form.demand_pay_limit = that.contractScale.demand_pay_limit
                 that.form.commission_rate = item.item.commission_rate
@@ -668,13 +672,13 @@
                 // 京东信息
                 that.form.other_company_name = that.companyJd.company_name
                 that.form.other_company_address = that.companyJd.address
-                that.form.other_company_phone = that.companyJd.contact_phone
+                that.form.other_company_phone = that.companyJd.contact_phone + ''
                 that.form.other_company_legal_person = that.companyJd.contact_name
 
                 that.form.demand_company_name = item.item.company_name
                 that.form.demand_company_address = item.item.company_province_value + item.item.company_city_value + item.item.address
                 that.form.demand_company_legal_person = item.item.contact_name
-                that.form.demand_company_phone = item.item.phone
+                that.form.demand_company_phone = item.item.phone + ''
                 that.form.tax_price = parseFloat(item.item.tax)
                 that.form.total = parseFloat(item.item.price)
                 that.form.warranty_money = parseFloat(item.item.commission)
@@ -691,7 +695,7 @@
                         that.form.design_company_name = company.company_name
                         that.form.design_company_address = company.province_value + company.city_value + company.address
                         that.form.design_company_legal_person = company.contact_name
-                        that.form.design_company_phone = company.phone
+                        that.form.design_company_phone = company.phone + ''
                       }
                     }
                   })
@@ -738,6 +742,9 @@
     color: #666;
   }
 
+  .el-radio-button__phase {
+    width: 21rem;
+  }
   .content-box p.title {
     font-size: 1.4rem;
     font-family: PingFangSC-Medium;

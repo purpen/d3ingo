@@ -120,7 +120,7 @@ export default {
       })
       .catch(error => {
         this.$message.error(error.message)
-        console.log(error.message)
+        console.error(error.message)
         return false
       })
     },
@@ -147,11 +147,11 @@ export default {
           this.$message.error(res.data.meta.message)
         }
       }).catch(err => {
-        console.log(err)
+        console.error(err)
       })
     },
     uploadError(err, file, fileList) {
-      console.log(err, file, fileList)
+      console.error(err, file, fileList)
     },
     uploadSuccess(response, file, fileList) {
       console.log(response, file, fileList)
@@ -175,7 +175,7 @@ export default {
         .then(res => {
           if (res.data.meta.status_code === 200) {
             this.form = res.data.data.item
-            console.log(this.form)
+            // console.log(this.form)
             if (!this.form.cycle) {
               this.form.cycle = ''
             }

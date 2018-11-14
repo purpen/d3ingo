@@ -615,9 +615,10 @@ export default {
   watch: {
     '$route' (to, from) {
       this.type = this.$route.query.type || 'member'
-      this.creatGetList()
       // this.changeMemberLeft()
       this.liActive = 0
+      this.firstGroupId = -1
+      this.creatGetList()
     }
   },
   computed: {

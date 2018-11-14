@@ -204,14 +204,15 @@
     .nav-list {
       margin-top: 16px;
       height: 18px;
-      overflow: hidden;
+      padding-left: 25px;
+      overflow-y: hidden;
       }
 
     .category-list {
       margin: 0 auto 16px;
-      padding: 2px 0 18px 16px;
+      /* padding: 2px 0 18px 16px; */
       white-space: nowrap;
-      overflow-x: auto;
+      /* overflow-x: auto; */
       }
 
     .category-list a {
@@ -220,6 +221,10 @@
 
     .content {
       padding: 15px;
+      }
+    .container {
+      width: 375px;
+      overflow-x: hidden;
       }
     }
 </style>

@@ -9,6 +9,7 @@
         <el-submenu index="2">
           <template slot="title"><i class="fa fa-file-text"></i> 项目管理</template>
             <el-menu-item index="itemList" :route="{name:'adminItemList'}">列表</el-menu-item>
+            <el-menu-item index="itemSltem" :route="{name:'adminItemSltem'}">小程序</el-menu-item>
         </el-submenu>
 
         <el-submenu index="3">
@@ -19,9 +20,19 @@
           <template slot="title"><i class="fa fa-product-hunt"></i> 需求公司管理</template>
             <el-menu-item index="demandCompanyList" :route="{name:'adminDemandCompanyList'}">列表</el-menu-item>
         </el-submenu>
+        <el-submenu index="30">
+          <template slot="title"><i class="fa fa-product-hunt"></i> 顺德交易会</template>
+            <el-menu-item index="achievmentList" :route="{name:'adminAchievmentList'}">成果列表</el-menu-item>
+            <el-menu-item index="demandtList" :route="{name:'adminDemandtList'}">需求列表</el-menu-item>
+        </el-submenu>
         <el-submenu index="5">
           <template slot="title"><i class="fa fa-file-text"></i> 订单管理</template>
             <el-menu-item index="orderList" :route="{name:'adminOrderList'}">列表</el-menu-item>
+        </el-submenu>
+        <el-submenu index="21">
+          <template slot="title"><i class="fa fa-file-text"></i> 推荐配置</template>
+            <el-menu-item index="recommendList" :route="{name:'adminRecommendList'}">列表</el-menu-item>
+            <el-menu-item index="recommendSubmit" :route="{name:'adminRecommendSubmit'}">权重配置</el-menu-item>
         </el-submenu>
         <el-submenu index="6">
           <template slot="title"><i class="fa fa-money"></i> 提现管理</template>

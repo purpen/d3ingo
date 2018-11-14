@@ -36,6 +36,15 @@
   .el-menu-info.el-menu--horizontal > .el-submenu .el-submenu__title {
     padding-right: 0
   }
+  .el-button:focus {
+    background: #f5f5f5;
+    border: 1px solid #e6e6e6;
+    color: #999;
+  }
+  .el-button:visited {
+    background-color: #ff5a5f;
+    color: #fff;
+  }
   /* control header */
   .el-menu-info .el-submenu > .el-menu {
     left: auto;
@@ -156,6 +165,12 @@
   .el-pagination button:hover {
     color: #ff5a5f
   }
+  .view-button {
+    background: #fff;
+    border: 1px solid #ff5a5f;
+    border-radius: 4px;
+    color: #ff5a5f;
+  }
   ul.el-pager li.number.active:hover {
     color: #fff
   }
@@ -247,7 +262,7 @@
   }
   .el-dialog__header {
     border-radius: 4px 4px 0 0;
-    padding: 20px;
+    padding: 16px 20px;
     background: #f7f7f7
   }
   .el-dialog__headerbtn .el-dialog__close {
@@ -292,7 +307,7 @@
     background-color: #fafafa;
     border-color: #e6e6e6
   }
-  .el-checkbox__input.is-checked .el-checkbox__inner {
+  .el-checkbox .el-checkbox__input.is-checked .el-checkbox__inner {
     background-color: #ff5a5f;
     border-color: #ff5a5f;
   }
@@ -358,18 +373,22 @@
   .el-dialog__title {
     font-weight: 400;
     color: #222;
-    font-size: 18px;
-    line-height: 22px;
+    font-size: 16px;
+    line-height: 1;
   }
   .el-dialog {
     border-radius: 4px;
+    /* margin-bottom: 0px; */
+  }
+  .seen-deta .el-dialog--tiny {
+    width: 480px
   }
   .el-dialog--tiny {
-      width: 380px
+    width: 380px
   }
-  .el-dialog--tiny .el-dialog__header {
+  /* .el-dialog--tiny .el-dialog__header {
     padding: 10px 20px;
-  }
+  } */
   .el-dialog--tiny .el-dialog__headerbtn {
     font-size: 14px;
   }
@@ -382,6 +401,13 @@
 
   .el-dialog--large {
     width: 1240px;
+  }
+  .patent .el-carousel__container {
+    width: 200px;
+    height: 270px;
+    margin: 0 auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
   }
   .el-alert {
     border-radius: 0;
@@ -556,11 +582,23 @@
     stroke: transparent;
     animation: none
   }
-
+  .right-content .content-box .el-loading-mask .el-loading-spinner {
+    top: 0;
+  }
   #quote-dialog .el-dialog--large {
     width: 100%;
   }
+  .blank20 .right-content .content-box {
+    margin-bottom: 0;
+  }
 
+  /* 验证码按钮样式 */
+  .register-content .el-form--label-top .is-required .el-form-item__content .el-input-group .el-input-group__append:hover {
+    background: #e6e6e6;
+  }
+  .forget-content .el-form--label-top .is-required .el-form-item__content .el-input-group--append .el-input-group__append:hover {
+    background: #e6e6e6;
+  }
   .order-show .el-upload {
     width: 100px;
     height: 100px;
@@ -579,7 +617,6 @@
   .ordershow-span-color .el-breadcrumb__item:last-child .el-breadcrumb__item__inner {
     color: #222222;
   }
-
   .font-wei .el-step__title.is-process {
     font-weight: 500;
   }
@@ -607,3 +644,125 @@
   .stages-day .el-form-item__error {
     position: relative
   }
+  .region .el-col:not(:last-child) {
+    padding-right: 10px;
+  }
+  .disabled-hover .is-disabled, .disabled-hover .is-disabled:focus, .disabled-hover .is-disabled:hover{
+    border-color: transparent;
+    background-color: transparent;
+    color: inherit;
+  }
+  .forget-content .el-form--label-top .disabled-hover .el-form-item__content .el-input-group--append .el-input-group__append:hover {
+    background-color: #f7f7f7;
+  }
+  .background-style .el-dialog--tiny {
+    width: 480px;
+  }
+  .background-style .el-dialog__footer .dialog-footer .el-button:first-child {
+    margin-right: 0;
+  }
+  .load-index .el-loading-mask {
+    z-index: 2020;
+  }
+  .submit-form .el-dialog__body {
+    padding: 0;
+  }
+  .style-call .el-dialog__header {
+    background: #fff;
+  }
+  .style-call .el-dialog--tiny {
+    height: 250px;
+    top: 35% !important;
+  }
+  .common .el-button--small {
+    min-width: 120px;
+    height: 34px;
+  }
+  .phone-style .el-dialog--tiny {
+    top: 25% !important;
+  }
+  /* 交易会需求成果列表loading */
+  .achieve-load .el-loading-mask {
+    background-color: rgba(255,255,255,.05);
+  }
+  .moblie-lod .el-loading-mask {
+    background-color: rgba(255,255,255,.05);
+  }
+  .hint-text .el-dialog--tiny {
+    top: 30% !important;
+  }
+  .hint-text .el-dialog__header {
+    background: #fff;
+  }
+  .hint-text .el-icon-close:before {
+    content: ''
+  }
+  .hint-text .el-dialog__body {
+    text-align: center;
+  }
+  .hint-text .el-dialog__footer .dialog-footer .el-button:first-child {
+    margin-right: 0;
+  }
+  /* 取消订单button */
+  .pay-button .el-button:focus {
+    background: #f5f5f5;
+    border: 1px solid #e6e6e6;
+    color: #999;
+  }
+  .close-orde .el-dialog__body {
+    text-align: center
+  }
+  .close-orde .el-dialog--tiny {
+    top: 30% !important;
+  }
+  /* 成果详情样式 */
+  .patent .el-collapse-item__wrap {
+    background-color: #fff
+  }
+  .patent .swiper-container-horizontal > .swiper-pagination-bullets {
+    bottom: -5px;
+  }
+  .patent .el-collapse-item__header {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #222222;
+  }
+  .patent .el-collapse-item__header__arrow {
+    float: right;
+    position: relative;
+    top: 15px;
+    right: 10px;
+    color: #999;
+  }
+  .details-form .el-dialog--tiny {
+    width: 480px;
+  }
+  .details-form .el-dialog__body {
+    padding: 0px 20px;
+  }
+  .el-checkbox__input.is-focus .el-checkbox__inner {
+    border-color: #e6e6e6;
+  }
+  .white.el-button--default:active {
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    color: #999;
+  }
+  .red.el-button--default:active {
+    background-color: #ff5a5f;
+    border-color: transparent;
+    color: #ffffff;
+  }
+@media screen and (max-width: 767px) {
+  .el-dialog--large,
+  .el-dialog--small,
+  .el-dialog--tiny {
+    width: 90%
+  }
+
+  /* 合同阶段选择按钮 */
+  .el-form-item__content .el-radio-group {
+    width: 100%;
+  }
+
+}

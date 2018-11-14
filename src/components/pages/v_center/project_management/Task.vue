@@ -12,9 +12,9 @@
             <div tabindex="-1" class="filter" ref="filter">
               <p>筛选</p>
               <ul>
-                <li @click="changeTaskStatus(0)" :class="{'active': taskStatus === 0}">全部任务</li>
-                <li @click="changeTaskStatus(2)" :class="{'active': taskStatus === 2}">已完成</li>
                 <li @click="changeTaskStatus(-1)" :class="{'active': taskStatus === -1}">未完成</li>
+                <li @click="changeTaskStatus(2)" :class="{'active': taskStatus === 2}">已完成</li>
+                <li @click="changeTaskStatus(0)" :class="{'active': taskStatus === 0}">全部任务</li>
               </ul>
             </div>
           </div>
@@ -49,7 +49,7 @@
                 </el-tooltip>
                 <div class="fr task-item-div">
                   <img v-if="ele.logo_image" :src="ele.logo_image.logo" alt="">
-                  <img v-else v-lazy="require('assets/images/avatar_100.png')">
+                  <img v-else :src="require('assets/images/avatar_100.png')">
                 </div>
               </div>
             </section>
@@ -91,7 +91,7 @@
                   </el-tooltip>
                   <div class="fr task-item-div">
                     <img v-if="e.logo_image" :src="e.logo_image.logo" alt="">
-                    <img v-else v-lazy="require('assets/images/avatar_100.png')">
+                    <img v-else :src="require('assets/images/avatar_100.png')">
                   </div>
                 </div>
               </section>
@@ -107,7 +107,8 @@
            :currentTaskForm="currentTaskForm"
            :isMyTask="isMyTask"
            :projectObject="projectObject"
-           :completeState="completeState"></v-task>
+           :completeState="completeState"
+           :taskStatus="taskStatus"></v-task>
            <!-- <div v-if="taskState.power">
             <section class="animated task-detail fadeIn">
               <div class="task-detail-header">
@@ -480,7 +481,7 @@
           if (res.data.meta.status_code === 200) {
             this.$store.commit('setTaskList', {data: res.data.data, showChild: true})
           } else {
-            this.$messgae.error(res.data.meta.message)
+            this.$message.error(res.data.meta.message)
           }
         })
       },

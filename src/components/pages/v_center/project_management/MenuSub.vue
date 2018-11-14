@@ -456,18 +456,18 @@
         <span>全部项目动态</span>
         <i class="fx fx-icon-nothing-close-error" @click="cover2 = false"></i>
       </div>
-      <div class="cover2-content">
-        <ul class="cover2-list">
-          <li v-for="(ele, index) in projectMoments" :key="index">
-            <img v-if="ele.logo_image" class="br50 b-e6" :src="ele.logo_image.logo" alt="">
-            <div class="list-con clearfix">
-              <!-- <p class="tc-2 fl"><span>{{ele.user_name}}</span>{{ele.action}}</p> -->
-              <p class="tc-2"><span>{{ele.title}}</span></p>
-              <p class="fz-12 tc-6 min-width150">{{ele.date}}</p>
-            </div>
-          </li>
-        </ul>
-      </div>
+        <div class="cover2-content">
+          <ul class="cover2-list container">
+            <li v-for="(ele, index) in projectMoments" :key="index">
+              <img v-if="ele.logo_image" class="br50 b-e6" :src="ele.logo_image.logo" alt="">
+              <div class="list-con clearfix">
+                <!-- <p class="tc-2 fl"><span>{{ele.user_name}}</span>{{ele.action}}</p> -->
+                <p class="tc-2"><span>{{ele.title}}</span></p>
+                <p class="fz-12 tc-6 min-width150">{{ele.date}}</p>
+              </div>
+            </li>
+          </ul>
+        </div>
     </section>
   </header>
 </template>
@@ -585,34 +585,27 @@ export default {
       return memberList
     },
     typeOptions() {
-      return typeData.COMPANY_TYPE2
+      return typeData.COMPANY_TYPE
     },
     typeDesignOptions: {
       get() {
         var index = 0
-        if (this.baseForm.type === 1) {
-          index = 0
-        } else if (this.baseForm.type === 2) {
-          index = 1
-        } else {
-          return []
-        }
-        return typeData.COMPANY_TYPE2[index].designType
+        if (this.baseForm && this.baseForm.type) {
+          index = this.baseForm.type - 1
+        } else return []
+        return typeData.COMPANY_TYPE[index].designType
       },
       set() {
       }
     },
     fieldOptions() {
       var index
-      if (this.baseForm.type === 1) {
-        index = 0
-      } else if (this.baseForm.type === 2) {
-        index = 1
+      if (this.baseForm && this.baseForm.type) {
+        index = this.baseForm.type - 1
       } else {
         return []
       }
-
-      return typeData.COMPANY_TYPE2[index].field
+      return typeData.COMPANY_TYPE[index].field
     },
     // 所属行业下拉选项
     industryOptions() {
@@ -645,7 +638,6 @@ export default {
     },
     controlMemberShow() {
       this.showMember = !this.showMember
-      console.log(this.showMember)
     },
     closeMember() {
       this.showMember = false
@@ -812,7 +804,7 @@ export default {
           this.$message.error(res.data.meta.message)
         }
       }).catch(err => {
-        console.log(err)
+        console.error(err)
       })
     },
     showDynamic() {
@@ -915,7 +907,7 @@ export default {
           company_name: this.projectObject.company_name,
           contact_name: this.projectObject.contact_name,
           position: this.projectObject.position,
-          phone: this.projectObject.phone,
+          phone: this.projectObject.phone + '',
           province: this.projectObject.province === 0 ? '' : this.projectObject.province,
           city: this.projectObject.city === 0 ? '' : this.projectObject.city,
           area: this.projectObject.area === 0 ? '' : this.projectObject.area,
@@ -926,7 +918,7 @@ export default {
           design_company_name: this.projectObject.design_company_name,
           design_contact_name: this.projectObject.design_contact_name,
           design_position: this.projectObject.design_position,
-          design_phone: this.projectObject.design_phone,
+          design_phone: this.projectObject.design_phone + '',
           design_province: this.projectObject.design_province === 0 ? '' : this.projectObject.design_province,
           design_city: this.projectObject.design_city === 0 ? '' : this.projectObject.design_city,
           design_area: this.projectObject.design_area === 0 ? '' : this.projectObject.design_area,
@@ -1003,6 +995,15 @@ header {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  line-height: 60px;
+}
+
+/* 项目动态样式 */
+.tc-2 {
+  line-height: 16px;
+}
+.tc-6 {
+  line-height: 10px;
 }
 
 .pm-left a,
@@ -1139,13 +1140,19 @@ header {
   transform: translateY(-150%);
 }
 .cover2-content {
-  max-width: 1000px;
+  /* max-width: 1000px; */
   margin: 0 auto;
+  height: calc(100% - 110px);
+  overflow-y: auto;
+  padding-bottom: 50px;
 }
 .cover2-content h3 {
   padding: 20px 0 10px;
   font-size: 16px;
   color: #222
+}
+.cover2-list {
+  padding-left: 100px;
 }
 .cover2-list li {
   min-height: 60px;

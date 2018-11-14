@@ -9,7 +9,7 @@
             <el-col :xs="24" :sm="6" :md="6" :lg="6" v-for="(ele, index) in companyDetails" :key="index">
               <section :class="['company-info', {'active': selectList.indexOf(ele.id) !== -1}]">
                 <div class="logo" @click="clickSelf(ele.id)">
-                  <i :class="['radio', {'active': selectList.indexOf(ele.id) !== -1}]" @click="changeList(ele.id)"></i>
+                  <i :class="['radio', {'active': selectList.indexOf(ele.id) !== -1}]" @click.stop="changeList(ele.id)"></i>
                   <router-link target="_blank" :to="{name: 'companyShow', params: {id: ele.id}}">
                     <img v-if="ele.logo_image" :src="ele.logo_image.logo" :alt="ele.company_name">
                     <img v-else :src="require('assets/images/avatar_100.png')"/>
@@ -36,7 +36,9 @@
                 <el-row v-if="ele.design_case.length">
                   <el-col class="case" v-for="(e, i) in ele.design_case" :key="i">
                     <router-link target="_blank" :to="{name: 'vcenterDesignCaseShow', params: {id: e.id}}">
-                      <div v-if="e.case_image" class="img-box" :style="{background: `url(${e.case_image[0].middle}) no-repeat center / cover`}">
+                      <div v-if="e.case_image && e.case_image.length" class="img-box" :style="{background: `url(${e.case_image[0].middle}) no-repeat center / cover`}">
+                      </div>
+                      <div v-else class="img-box" >
                       </div>
                       <div class="case-content">
                         <p class="title fz-14 tc-2">
@@ -254,8 +256,8 @@ export default {
         this.selectList.splice(index, 1)
       }
     },
-    //点击推荐公司上半部分选中
-    clickSelf(id){
+    // 点击推荐公司上半部分选中
+    clickSelf(id) {
       let index = this.selectList.indexOf(id)
       if (index === -1) {
         this.selectList.push(id)
@@ -413,6 +415,7 @@ export default {
   .img-box {
     height: 180px;
     border-radius: 4px 4px 0 0;
+    background: url(../../../assets/images/Bitmap.png) no-repeat center
   }
   .tags {
     padding: 4px 0;
