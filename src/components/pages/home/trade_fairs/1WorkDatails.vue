@@ -352,7 +352,7 @@ export default {
       var scrollHeigh = document.body.scrollHeight
       if (this.user.type !== 2) {
         if (!this.viewCover) {
-          if ((scrollHeigh - scrollTop) < 667) {
+          if ((scrollHeigh - scrollTop) < 667 && scrollHeigh > 1200) {
             this.elementPosition = true
           } else if (scrollTop > 960) {
             this.elementShow = true
@@ -481,7 +481,7 @@ export default {
 .cont {
   background: #f7f7f7;
   margin-bottom: -50px;
-  padding-bottom: 10px;
+  padding-bottom: 30px;
 }
 .img-class {
   height: 270px;
