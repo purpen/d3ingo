@@ -13,7 +13,7 @@
                 <img src="../../../../../assets/images/trade_fairs/default/NoDesign@2x.png" alt="">
                 <p class="tc-9">还没有设计需求，立即发布一个吧～</p>
                 <div class="post-header">
-                  <button class="full-red-button middle-button mg-r-20" @click="upVisible()">
+                  <button class="full-red-button middle-button mg-r-20" @click="addDemand">
                     <i class="el-icon-plus"></i>
                     发布需求
                   </button>
@@ -22,7 +22,7 @@
               </div>
               <div class="post-demand" v-if="demandList.length&&!isLoading">
                 <div class="post-header">
-                  <button class="full-red-button middle-button mg-r-20" type="primary" size="small" @click="upVisible()">
+                  <button class="full-red-button middle-button mg-r-20" type="primary" size="small" @click="addDemand">
                     <i class="el-icon-plus"></i>
                     发布需求
                   </button>

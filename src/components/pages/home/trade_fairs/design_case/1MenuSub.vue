@@ -18,11 +18,10 @@
           编辑设计成果
         </span>
       </router-link>
-      <!-- <button class="red-button middle-button fr">
-        <router-link :to="{name: 'demand_login'}" >
-          查看设计需求
-        </router-link>
-      </button> -->
+      <router-link v-if="index !== 1" :to="{name: 'demand_login'}" class="fr more">
+        <span class="more-text">查看设计需求</span>
+        <i class="more-icon"></i>
+      </router-link>
     </div>
   </div>
 </template>
@@ -83,5 +82,20 @@
   }
   .mg-b-10 {
     margin-bottom: 10px;
+  }
+  .more-icon {
+    position: absolute;
+    right: 0px;
+    top: -1px;
+    width: 16px;
+    height: 16px;
+    background: url('../../../../../assets/images/trade_fairs/default/More@2x.png') no-repeat center/contain;
+  }
+  .more-text {
+    font-size: 14px;
+    padding-right: 20px;
+  }
+  .more:hover .more-icon {
+    background: url('../../../../../assets/images/trade_fairs/default/MoreHover @2x.png') no-repeat center/contain;
   }
 </style>
