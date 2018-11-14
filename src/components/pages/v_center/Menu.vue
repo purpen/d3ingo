@@ -244,7 +244,8 @@
                 我的钱包
               </a>
               <a @click="alick" :to="'/shunde/trade_fairs/demand/demand_list'"
-                :class="['item', 'demandList', {'is-active': currentName === 'demandList'}]">
+                :class="['item', 'demandList', {'is-active': currentName === 'demandList'}]"
+                v-if="prod.name === ''">
                 顺德交易会
               </a>
             </div>
