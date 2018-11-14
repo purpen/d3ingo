@@ -113,7 +113,7 @@
             </div>
             </div>
           </div>
-          <el-collapse v-model="credential" class="patent" v-if="formup.patent_url && formup.patent_url.length" :class="{'pat-top': !formup.illustrate_url.length}">
+          <el-collapse v-model="credential" class="patent" v-if="formup.patent_url && formup.patent_url.length" :class="[{'pat-top': !formup.illustrate_url.length && user.type === 1}, {'pat-top2': !formup.illustrate_url.length && user.type === 2}]">
             <el-collapse-item title="专利证书" name="1">
               <swiper :options="swiperOption" class="patent-img">
                 <swiper-slide v-for="(img, index) in formup.patent_url" :key="index">
@@ -350,6 +350,7 @@ export default {
     handleScroll () {
       var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
       var scrollHeigh = document.body.scrollHeight
+      console.log('scrollTop', scrollTop)
       if (this.user.type !== 2) {
         if (!this.viewCover) {
           if ((scrollHeigh - scrollTop) < 657 && scrollHeigh > 1200) {
@@ -364,6 +365,27 @@ export default {
             this.elementShow = true
             this.elementPosition = false
           } else if (scrollTop > 490 && !this.formup.illustrate_url.length && !this.formup.patent_url.length) {
+            this.elementShow = true
+            this.elementPosition = false
+          } else {
+            this.elementPosition = false
+            this.elementShow = false
+          }
+        }
+      } else {
+        if (!this.viewCover) {
+          if ((scrollHeigh - scrollTop) < 657 && scrollHeigh > 1200) {
+            this.elementPosition = true
+          } else if (scrollTop > 970) {
+            this.elementShow = true
+            this.elementPosition = false
+          } else if (scrollTop > 914 && this.formup.patent_url && this.formup.patent_url.length && !this.formup.illustrate_url.length) {
+            this.elementShow = true
+            this.elementPosition = false
+          } else if (scrollTop > 580 && this.formup.illustrate_url && this.formup.illustrate_url.length && !this.formup.patent_url.length) {
+            this.elementShow = true
+            this.elementPosition = false
+          } else if (scrollTop > 500 && !this.formup.illustrate_url.length && !this.formup.patent_url.length) {
             this.elementShow = true
             this.elementPosition = false
           } else {
@@ -942,5 +964,8 @@ p.img-des {
 }
 .pat-top {
   margin-top: 50px;
+}
+.pat-top2 {
+  margin-top: 10px;
 }
 </style>
