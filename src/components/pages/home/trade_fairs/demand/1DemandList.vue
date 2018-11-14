@@ -22,7 +22,7 @@
               </div>
               <div class="post-demand" v-if="demandList.length&&!isLoading">
                 <div class="post-header">
-                  <button class="full-red-button middle-button mg-r-20" type="primary" size="small" @click="addDemand">
+                  <button class="full-red-button middle-button mg-r-20" type="primary" size="small" @click="upVisible()">
                     <i class="el-icon-plus"></i>
                     发布需求
                   </button>
