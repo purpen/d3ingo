@@ -617,6 +617,7 @@
     height: 100%;
     background: #3519B2;
     padding-top: 30px;
+    padding-bottom: 20px;
   }
   .list-center {
     width: 1200px;
@@ -692,7 +693,7 @@
     position: relative;
     font-family: PingFangSC-Regular;
     font-size: 12px;
-    padding-left: 10px;
+    padding-left: 15px;
     color: #999999;
   }
   .details-text:before {
@@ -701,7 +702,7 @@
     height: 24px;
     top: -5px;
     width: 24px;
-    left: -11px;
+    left: -7px;
     background: url('../../../../assets/images/trade_fairs/list/Details@2x.png') no-repeat center;
     background-size: contain;
   }
