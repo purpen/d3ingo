@@ -386,7 +386,7 @@ export default {
     })
   },
   created: function() {
-    if (ENV === 'dev') {
+    if (ENV === 'prod') {
       this.jdURL = 'http://oauth2.jdcloud.com/authorize?client_id=9741542107197570&redirect_uri=https://c.jdcloud.com/binding_jd&response_type=code&state=matrixapp'
     }
     if (this.prod.name) {
