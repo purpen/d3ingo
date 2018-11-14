@@ -10,6 +10,10 @@
       <router-link :to="{name: 'demand_list', query: {type: 3}}"
         active-class="false" :class="['item', {'is-active': menuType === 3}]">我的订单
       </router-link>
+      <!-- <router-link :to="{name: 'demand_login'}" class="fr">
+        查看设计成果
+        <i class=""></i>
+      </router-link> -->
     </div>
   </div>
 </template>

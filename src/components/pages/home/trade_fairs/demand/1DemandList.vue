@@ -22,11 +22,16 @@
               </div>
               <div class="post-demand" v-if="demandList.length&&!isLoading">
                 <div class="post-header">
-                  <button class="full-red-button middle-button mg-r-20" type="primary" size="small" @click="addDemand">
+                  <button class="full-red-button middle-button mg-r-20" type="primary" size="small" @click="upVisible()">
                     <i class="el-icon-plus"></i>
                     发布需求
                   </button>
-                  <!-- <el-button class="is-custom withdraw btn-phone" size="small">查看设计成果</el-button> -->
+                   <router-link :to="{name: 'demand_login'}"
+                    target="_blank">
+                  <button class="withdraw btn-phone red-button middle-button">
+                    查看设计成果
+                  </button>
+                  </router-link>
                 </div>
               </div>
               <div class="demand-list" v-if="demandList.length&&!isLoading">
@@ -102,7 +107,7 @@
                 top="10%"
                 @close="closeBtn('form')"
                 >
-                <div class="scroll-bar demands" ref="submitDemand">
+                <div class="scroll-bar demands" ref="submitDemand" v-loading="formLoading">
                   <el-form :model="form" ref="form" :rules="rules" @submit.native.prevent >
                     <el-form-item label="项目名称" prop="name" label-position="top">
                       <el-input v-model="form.name" placeholder="请输入项目名称"></el-input>
@@ -210,7 +215,7 @@
                 size="tiny"
                 class="details-form"
                 >
-                <div class="details-list">
+                <div class="details-list" v-loading="updateLoading">
                   <div class="details">
                     <el-row>
                       <el-col :span="6">
@@ -588,7 +593,9 @@
       return {
         type: 1,
         isLoading: false, // 加载中
-        isUpdate: false,
+        isUpdate: false, // 是编辑
+        updateLoading: false, // 详情详情加载中
+        formLoading: false, // 发布或编辑加载中
         rules: { // 发布需求验证
           name: [
             {required: true, message: '请填写项目名称', trigger: 'blur'}
@@ -830,6 +837,14 @@
       },
       // 获取详情
       upDetails(id, type) {
+        if (type === 1) {
+          this.dialogUpdateVisible = true
+          this.updateLoading = true
+        } else if (type === 2) {
+          this.dialogUpdateVisible = false
+          this.dialogFormVisible = true
+          this.formLoading = true
+        }
         this.$http.get(api.sdDemandDemandInfo, {params: {demand_id: id}}).then(
           (response) => {
             if (response.data.meta.status_code === 200) {
@@ -840,26 +855,29 @@
                 this.$set(res.design_types, index, item)
               })
               if (type === 1) {
-                this.dialogUpdateVisible = true
                 this.$nextTick(_ => {
                   this.formup = res
+                  this.updateLoading = false
                 })
               }
               if (type === 2) {
-                this.dialogUpdateVisible = false
-                this.dialogFormVisible = true
                 this.$nextTick(_ => {
                   this.isUpdate = true
                   this.$refs.submitDemand.scrollTop = 0
                   this.form = res
+                  this.formLoading = false
                 })
               }
             } else {
+              this.updateLoading = false
+              this.formLoading = false
               this.$message.error(response.data.meta.message)
             }
           }
         )
-        .catch(function (error) {
+        .catch((error) => {
+          this.updateLoading = false
+          this.formLoading = false
           this.$message.error(error.message)
           this.isLoading = false
         })
