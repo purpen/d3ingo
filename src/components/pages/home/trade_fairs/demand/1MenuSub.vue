@@ -10,10 +10,10 @@
       <router-link :to="{name: 'demand_list', query: {type: 3}}"
         active-class="false" :class="['item', {'is-active': menuType === 3}]">我的订单
       </router-link>
-      <!-- <router-link :to="{name: 'demand_login'}" class="fr">
-        查看设计成果
-        <i class=""></i>
-      </router-link> -->
+      <router-link :to="{name: 'demand_login'}" class="fr more">
+        <span class="more-text">查看设计成果</span>
+        <i class="more-icon"></i>
+      </router-link>
     </div>
   </div>
 </template>
@@ -47,5 +47,19 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+  .more-icon {
+    position: absolute;
+    right: 0px;
+    top: -1px;
+    width: 16px;
+    height: 16px;
+    background: url('../../../../../assets/images/trade_fairs/default/More@2x.png') no-repeat center/contain;
+  }
+  .more-text {
+    font-size: 14px;
+    padding-right: 20px;
+  }
+  .more:hover .more-icon {
+    background: url('../../../../../assets/images/trade_fairs/default/MoreHover @2x.png') no-repeat center/contain;
+  }
 </style>
