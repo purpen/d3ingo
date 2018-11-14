@@ -320,7 +320,10 @@
                 <div v-if="!collectList||!collectList.length" class="no-list">
                   <img src="../../../../../assets/images/trade_fairs/default/NoDemand@2x.png" alt="无收藏">
                   <p>还没有收藏设计成果～</p>
-                  <button class="red-button middle-button">查看设计成果</button>
+                  <router-link :to="{name: 'demand_login'}"
+                    target="_blank" class="datails-router">
+                    <button class="red-button middle-button">查看设计成果</button>
+                  </router-link>
                 </div>
                 <div class="demand-list" v-if="collectList&&collectList.length">
                   <div class="demand-header">
