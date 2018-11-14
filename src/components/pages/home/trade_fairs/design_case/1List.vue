@@ -22,7 +22,7 @@
                     <div tabindex="-1" class="item-more" ref="itemMore" @click="upSelect(d.id)" @mouseleave="downSelect(d.id)">
                       <i></i>
                       <ul v-if="d.status === 1&&d.up">
-                        <!-- <li class="edit" @click="updateStatus(d.id, 2)">提交</li> -->
+                        <li class="edit" @click="updateStatus(d.id, 2)">提交</li>
                         <li class="del">
                           <a class="toUpdate" @click="toUpdateUrl(d.id)">编辑</a>1
                         </li>
@@ -36,7 +36,7 @@
                         <li class="edit" @click="PriceBtn(d)">修改价格</li>
                       </ul>
                       <ul v-if="d.status === -1&&d.up">
-                        <!-- <li class="del" @click="toUpdateUrl(d.id)">编辑</li> -->
+                        <li class="del" @click="toUpdateUrl(d.id)" v-if="d.sell===0">编辑</li>
                         <li class="del-disabled" v-if="d.sell === 1">删除</li>
                         <li class="edit" @click="updateBtn(d, 2)" v-else>删除</li>
                       </ul>
