@@ -354,7 +354,7 @@
                       <el-row>
                         <el-col :span="10" class="collect-all">
                           <router-link :to="{name: 'work_datails', params: {id: d.id}}"
-                                target="_blank" class="datails-router" v-if="d.status !== -1">
+                                target="_blank" class="datails-router" v-if="d.status === 3">
                             <div class="collect-img" :style="{background:'url('+d.cover.middle +') no-repeat center / contain'}">
                             </div>
                           </router-link>
@@ -363,7 +363,7 @@
                           <div class="collect-centent">
                             <p class="c-title">
                               <router-link :to="{name: 'work_datails', params: {id: d.id}}"
-                                target="_blank" class="datails-router" v-if="d.status !== -1">
+                                target="_blank" class="datails-router" v-if="d.status === 3">
                                 {{d.title}}
                                 </router-link>
                                 <span v-else>
@@ -377,18 +377,18 @@
                           </div>
                         </el-col>
                         <el-col :span="10">
-                          {{d.status === -1?'下架': '出售中'}}
+                          {{d.status === 3?'出售中': '下架'}}
                         </el-col>
                         <el-col :span="4">
-                          <button class="full-red-button middle-button" v-if="d.status !== -1">
+                          <button class="full-red-button middle-button" v-if="d.status === 3">
                             <router-link :to="{name: 'work_datails', params: {id: d.id}}"
                             target="_blank" class="router-work" >
                             立即购买
                             </router-link>
                           </button>
-                          <button class="full-red-button middle-button" :disabled="true" v-if="d.status === -1">
+                          <el-button class="full-red-button middle-button" :disabled="true" v-else>
                             立即购买
-                          </button>
+                          </el-button>
                           <button class="mg-t-10 white-button middle-button" @click="updateFollow(d.id)">
                             {{d.is_follow === 1 ?'取消收藏': '收藏'}}
                           </button>
