@@ -12,7 +12,12 @@
               <div  v-if="!collectList||!collectList.length" class="no-list">
                 <img src="../../../../../assets/images/trade_fairs/default/NoDemand@2x.png" alt="无收藏">
                 <p>还没有收藏设计需求～</p>
-                <el-button class="red-button">查看设计需求</el-button>
+                <router-link :to="{name: 'demand_login'}"
+                    target="_blank" class="datails-router">
+                  <button class="red-button middle-button">
+                    查看设计需求
+                  </button>
+                </router-link>
               </div>
               <el-row :gutter="20" v-if="collectList&&collectList.length">
                 
@@ -70,7 +75,7 @@
       size="tiny"
       class="submit2-form seen-deta"
       >
-      <div >
+      <div v-loading="detailsLoading">
         <div class="details">
           <el-row>
             <el-col :span="6">
@@ -154,8 +159,7 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <div class="dia-bottom dialog-bottom">
-          <div class="dia-contain" >
-          <div :class="['dia-button', {'interest-dia':formup.follow_status === 1}]"  @click="deleteCollect(formup.id, formup.follow_status)">
+          <div :class="['dia-button', {'interest-dia':formup.follow_status === 1}]" @click="deleteCollect (formup.id, formup.follow_status)">
             <span :class="[
               {'dia-interest': formup.follow_status === 1},
               {'button-text': formup.follow_status === 2}
@@ -163,12 +167,11 @@
             {{formup.follow_status === 1?'已感兴趣': '感兴趣'}}
             </span>
           </div>
-        </div>
-        <div class="dia-right">
+        <!-- <div class="dia-right">
           <div class="dia-button">
             <span class="contact-text" @click="contactWay(formup, 1)">联系他</span>
           </div>
-        </div>
+        </div> -->
         </div>
       </span>
     </el-dialog>
@@ -206,6 +209,7 @@
         collectList: [], // 收藏列表
         designId: '', // 修改状态id
         dialogUpdateVisible: false, // 更新状态弹窗
+        detailsLoading: false, // 收藏详情加载中
         dialogVisible: false, // 修改价格弹窗
         form: {}, // 修改价格
         formup: {}, // 查看详情
@@ -278,7 +282,7 @@
               return
             }
           })
-          .catch(function (error) {
+          .catch((error) => {
             this.$message.error(error.message)
             return
           })
@@ -296,7 +300,7 @@
               return
             }
           })
-          .catch(function (error) {
+          .catch((error) => {
             this.$message.error(error.message)
             return
           })
@@ -304,18 +308,25 @@
       },
       // 获取详情
       upDetails(id) {
+        this.formup = {}
+        this.dialogUpdateVisible = true
+        this.detailsLoading = true
         this.$http.get(api.sdDemandDesignDemandInfo, {params: {demand_id: id}}).then(
           (response) => {
             if (response.data.meta.status_code === 200) {
-              this.dialogUpdateVisible = true
-              setTimeout(() => {
-                this.formup = response.data.data
-              }, 1)
+              this.formup = response.data.data
+              this.detailsLoading = false
+              // this.$nextTick(_ => {
+              // })
             } else {
+              this.detailsLoading = false
               this.$message.error(response.data.meta.message)
             }
           }
-        )
+        ).catch ((error) => {
+          this.$message.error (error.message)
+          this.isLoading = false
+        })
       },
       // 获取收藏列表
       getDesignCase () {
@@ -330,7 +341,7 @@
             }
           }
         })
-        .catch (function (error) {
+        .catch ((error) => {
           that.$message.error (error.message)
           that.isLoading = false
         })
@@ -744,9 +755,7 @@
   .dia-bottom {
     width: 120px;
     margin: 0 auto;
-  }
-  .dialog-bottom {
-    width: 260px;
+    text-align: center;
   }
   .submit2-form {
     overflow: hidden

@@ -218,7 +218,7 @@
                     <div class="file-size">
                       {{i.size | sizeFormat}}
                     </div>
-                    <div class="cancel-icons" @click="deleteImg(i.asset_id, 1)">
+                    <div class="cancel-icons" @click="deleteImg(i.asset_id, 3)">
                     </div>
                   </div>
                 </el-col>
@@ -509,11 +509,19 @@
       deleteImg(id, type) {
         this.$http.delete(api.asset, {params: {id: id}}).then((response) => {
           if (response.data.meta.status_code === 200) {
-            if (type) {
+            if (type === 3) {
               if (this.fileillustrate) {
                 this.fileillustrate.forEach((p, ind) => {
                   if (p.asset_id === id) {
                     this.fileillustrate.splice(ind, 1)
+                  }
+                })
+              }
+            } else if (type === 2) {
+              if (this.filepatent) {
+                this.filepatent.forEach((f, indf) => {
+                  if (f.asset_id === id) {
+                    this.filepatent.splice(indf, 1)
                   }
                 })
               }
