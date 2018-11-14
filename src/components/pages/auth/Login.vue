@@ -38,7 +38,7 @@
           <el-button type="primary" :loading="isLoadingBtn" @keyup="submit('ruleForm')" @click="submit('ruleForm')" class="login-btn is-custom">登录
           </el-button>
         </el-form>
-        <p v-if="false" class="authorize" @click="getJDCode">京东授权登录:<span class="fx-4"><a href="http://oauth2.jdcloud.com/authorize?client_id=9651541661345895&redirect_uri=http://jdyun.taihuoniao.com&response_type=code&state=matrixapp">JD</a></span></p>
+        <p v-if="prod.name === 'jdc'" class="authorize">京东授权登录:<span class="fx-4"><a target="_blank" href="http://oauth2.jdcloud.com/authorize?client_id=9651541661345895&redirect_uri=http://jdyun.taihuoniao.com/binding_jd&response_type=code&state=matrixapp">JD</a></span></p>
       </div>
     </div>
     <div class="reg">
@@ -146,14 +146,6 @@ export default {
     }
   },
   methods: {
-    getJDCode() {
-      this.$http.get(api.jdCode)
-      .then(res => {
-        console.log(res)
-      }).catch(err => {
-        console.log(err)
-      })
-    },
     checkAccount(number) {
       if (number && number.length === 11) {
         this.$http.post(api.errCount, {account: number}).then(res => {

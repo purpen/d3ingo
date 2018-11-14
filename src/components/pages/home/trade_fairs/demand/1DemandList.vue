@@ -13,7 +13,7 @@
                 <img src="../../../../../assets/images/trade_fairs/default/NoDesign@2x.png" alt="">
                 <p class="tc-9">还没有设计需求，立即发布一个吧～</p>
                 <div class="post-header">
-                  <button class="full-red-button middle-button mg-r-20" @click="upVisible()">
+                  <button class="full-red-button middle-button mg-r-20" @click="addDemand">
                     <i class="el-icon-plus"></i>
                     发布需求
                   </button>
@@ -26,7 +26,12 @@
                     <i class="el-icon-plus"></i>
                     发布需求
                   </button>
-                  <!-- <el-button class="is-custom withdraw btn-phone" size="small">查看设计成果</el-button> -->
+                   <router-link :to="{name: 'demand_login'}"
+                    >
+                  <button class="withdraw btn-phone red-button middle-button">
+                    查看设计成果
+                  </button>
+                  </router-link>
                 </div>
               </div>
               <div class="demand-list" v-if="demandList.length&&!isLoading">
@@ -101,8 +106,9 @@
                 class="submit-form"
                 top="10%"
                 @close="closeBtn('form')"
+                @open="clearDialog"
                 >
-                <div class="scroll-bar demands" ref="submitDemand">
+                <div class="scroll-bar demands" ref="submitDemand" v-loading="formLoading">
                   <el-form :model="form" ref="form" :rules="rules" @submit.native.prevent >
                     <el-form-item label="项目名称" prop="name" label-position="top">
                       <el-input v-model="form.name" placeholder="请输入项目名称"></el-input>
@@ -209,8 +215,10 @@
                 :lock-scroll="false"
                 size="tiny"
                 class="details-form"
+                @close="renewDialog"
+                @open="clearDialog"
                 >
-                <div class="details-list">
+                <div class="details-list" v-loading="updateLoading">
                   <div class="details">
                     <el-row>
                       <el-col :span="6">
@@ -286,7 +294,7 @@
                       <el-col :span="6">
                         <span>功能描述</span>
                       </el-col>
-                      <el-col :span="18">
+                      <el-col :span="18" class="details-content scroll-bar">
                         {{formup.content}}
                       </el-col>
                     </el-row>
@@ -320,7 +328,10 @@
                 <div v-if="!collectList||!collectList.length" class="no-list">
                   <img src="../../../../../assets/images/trade_fairs/default/NoDemand@2x.png" alt="无收藏">
                   <p>还没有收藏设计成果～</p>
-                  <button class="red-button middle-button">查看设计成果</button>
+                  <router-link :to="{name: 'demand_login'}"
+                    class="datails-router">
+                    <button class="red-button middle-button">查看设计成果</button>
+                  </router-link>
                 </div>
                 <div class="demand-list" v-if="collectList&&collectList.length">
                   <div class="demand-header">
@@ -346,7 +357,7 @@
                       <el-row>
                         <el-col :span="10" class="collect-all">
                           <router-link :to="{name: 'work_datails', params: {id: d.id}}"
-                                target="_blank" class="datails-router" v-if="d.status !== -1">
+                                target="_blank" class="datails-router" v-if="d.status === 3">
                             <div class="collect-img" :style="{background:'url('+d.cover.middle +') no-repeat center / contain'}">
                             </div>
                           </router-link>
@@ -355,7 +366,7 @@
                           <div class="collect-centent">
                             <p class="c-title">
                               <router-link :to="{name: 'work_datails', params: {id: d.id}}"
-                                target="_blank" class="datails-router" v-if="d.status !== -1">
+                                target="_blank" class="datails-router" v-if="d.status === 3">
                                 {{d.title}}
                                 </router-link>
                                 <span v-else>
@@ -369,18 +380,18 @@
                           </div>
                         </el-col>
                         <el-col :span="10">
-                          {{d.status === -1?'下架': '出售中'}}
+                          {{d.status === 3?'出售中': '下架'}}
                         </el-col>
                         <el-col :span="4">
-                          <button class="full-red-button middle-button" v-if="d.status !== -1">
+                          <button class="full-red-button middle-button" v-if="d.status === 3">
                             <router-link :to="{name: 'work_datails', params: {id: d.id}}"
-                            target="_blank" class="router-work" >
+                            class="router-work">
                             立即购买
                             </router-link>
                           </button>
-                          <button class="full-red-button middle-button" :disabled="true" v-if="d.status === -1">
+                          <el-button class="full-red-button middle-button" :disabled="true" v-else>
                             立即购买
-                          </button>
+                          </el-button>
                           <button class="mg-t-10 white-button middle-button" @click="updateFollow(d.id)">
                             {{d.is_follow === 1 ?'取消收藏': '收藏'}}
                           </button>
@@ -585,7 +596,9 @@
       return {
         type: 1,
         isLoading: false, // 加载中
-        isUpdate: false,
+        isUpdate: false, // 是编辑
+        updateLoading: false, // 详情详情加载中
+        formLoading: false, // 发布或编辑加载中
         rules: { // 发布需求验证
           name: [
             {required: true, message: '请填写项目名称', trigger: 'blur'}
@@ -761,13 +774,6 @@
         this.$nextTick(_ => {
           this.$refs.submitDemand.scrollTop = 0
         })
-        // let oldClass = document.getElementById('app').getAttribute('class')
-        // if (oldClass) {
-        //   oldClass = oldClass.replace(/disableScroll\x20?/g, '')
-        // }
-        // document.body.setAttribute('class', 'disableScroll')
-        // document.getElementById('app').setAttribute('class', 'disableScroll ' + oldClass)
-        // document.childNodes[1].setAttribute('class', 'disableScroll')
       },
       // 取消订单按钮
       upOrderBth(id, title, type) {
@@ -827,6 +833,20 @@
       },
       // 获取详情
       upDetails(id, type) {
+        if (type === 1) {
+          this.formup = {
+            design_types: []
+          }
+          this.dialogUpdateVisible = true
+          this.updateLoading = true
+        } else if (type === 2) {
+          this.form = {
+            design_types: []
+          }
+          this.dialogUpdateVisible = false
+          this.dialogFormVisible = true
+          this.formLoading = true
+        }
         this.$http.get(api.sdDemandDemandInfo, {params: {demand_id: id}}).then(
           (response) => {
             if (response.data.meta.status_code === 200) {
@@ -837,26 +857,29 @@
                 this.$set(res.design_types, index, item)
               })
               if (type === 1) {
-                this.dialogUpdateVisible = true
                 this.$nextTick(_ => {
                   this.formup = res
+                  this.updateLoading = false
                 })
               }
               if (type === 2) {
-                this.dialogUpdateVisible = false
-                this.dialogFormVisible = true
                 this.$nextTick(_ => {
                   this.isUpdate = true
-                  this.$refs.submitDemand.scrollTop = 0
+                  // this.$refs.submitDemand.scrollTop = 0
                   this.form = res
+                  this.formLoading = false
                 })
               }
             } else {
+              this.updateLoading = false
+              this.formLoading = false
               this.$message.error(response.data.meta.message)
             }
           }
         )
-        .catch(function (error) {
+        .catch((error) => {
+          this.updateLoading = false
+          this.formLoading = false
           this.$message.error(error.message)
           this.isLoading = false
         })
@@ -1014,14 +1037,15 @@
       },
       // 订单列表
       getOrderList() {
-        this.isLoading = true
+        let self = this
+        self.isLoading = true
         // if (p) {
         //   this.jquery.current_page = p
         // }
         // if (size) {
         //   this.jquery.per_page = size
         // }
-        this.$http.get(api.sdPayMyOrderList, {params: {
+        self.$http.get(api.sdPayMyOrderList, {params: {
           per_page: 50
         }}).then((response) => {
           if (response.data.meta.status_code === 200) {
@@ -1029,20 +1053,21 @@
             // this.jquery.total = pages.total
             // this.jquery.page = pages.total_pages
             if (response.data.data && response.data.data.length) {
-              this.orderList = response.data.data
+              self.orderList = response.data.data
             } else {
-              this.orderList = []
+              self.orderList = []
             }
-            this.isLoading = false
+            self.isLoading = false
           } else {
-            this.isLoading = false
-            this.$message.error(response.data.meta.message)
+            self.$message.error(response.data.meta.message)
+            self.isLoading = false
+            console.log(123, self.isLoading)
             return
           }
         })
         .catch(function (error) {
-          this.isLoading = false
-          this.$message.error(error.message)
+          self.isLoading = false
+          self.$message.error(error.message)
           console.error(error.message)
           return
         })
@@ -1131,20 +1156,34 @@
           return
         })
       },
+      // 恢复右侧滚轴
+      renewDialog() {
+        let oldClass = document.getElementById('app').getAttribute('class')
+        if (oldClass) {
+          oldClass = oldClass.replace(/disableScroll\x20?/g, '')
+        }
+        document.body.removeAttribute('class', 'disableScroll')
+        document.getElementById('app').setAttribute('class', oldClass)
+        document.childNodes[1].removeAttribute('class', 'disableScroll')
+      },
+      // 清除右侧滚轴
+      clearDialog() {
+        let oldClass = document.getElementById('app').getAttribute('class')
+        if (oldClass) {
+          oldClass = oldClass.replace(/disableScroll\x20?/g, '')
+        }
+        document.body.setAttribute('class', 'disableScroll')
+        document.getElementById('app').setAttribute('class', 'disableScroll ' + oldClass)
+        document.childNodes[1].setAttribute('class', 'disableScroll')
+      },
       // 关闭弹窗按钮
       closeBtn(formName) {
         this.form = {
           'design_types': []
         }
-        // if (formName === 'form') {
-        //   let oldClass = document.getElementById('app').getAttribute('class')
-        //   if (oldClass) {
-        //   oldClass = oldClass.replace(/disableScroll\x20?/g, '')
-        //   }
-        //   document.body.removeAttribute('class', 'disableScroll')
-        //   document.getElementById('app').setAttribute('class', oldClass)
-        //   document.childNodes[1].removeAttribute('class', 'disableScroll')
-        // }
+        if (formName === 'form') {
+          this.renewDialog()
+        }
         this.dialogFormVisible = false
         this.dialogUpdateVisible = false
         this.dialogDeleteVisible = false
@@ -1325,6 +1364,10 @@
     line-height: 20px;
     color: #999;
   }
+  .details .details-content {
+    max-height: 180px;
+    overflow-y: auto;
+  }
   .details span{
     display: inline-block;
     width: 80px;
@@ -1381,6 +1424,9 @@
   .router-work {
     display: block;
     color: #fff;
+  }
+  .router-work:hover {
+    color: #ff5a5f;
   }
   .router-pay {
     display: block;
