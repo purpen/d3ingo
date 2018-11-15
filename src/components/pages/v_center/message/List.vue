@@ -152,8 +152,6 @@
           this.$router.push({name: 'vcenterItemShow', params: {id: d.target_id}})
         } else if (d.type === 3) {
           this.$router.push({name: 'vcenterWalletList'})
-        } else if (d.type === 4) {
-          this.$router.push({name: 'sdDesignCase_list'})
         }
       },
       // 请求消息数量

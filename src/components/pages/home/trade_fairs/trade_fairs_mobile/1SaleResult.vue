@@ -21,6 +21,11 @@
                     <img :src="achieve.cover.small" alt="点击查看详情" class="img-size">
                   </div>
                 </div>
+                <div class="list-image" v-else-if="achieve.is_trade_fair === 0">
+                  <div class="image-size">
+                    <img alt="点击查看详情" class="img-size" :src="achieve.cover.small">
+                  </div>
+                </div>
                 <div class="list-image" @click="listDatail(achieve.id)" v-else>
                   <div class="image-size">
                     <img :src="achieve.cover.small" alt="点击查看详情" class="img-size">
@@ -99,7 +104,15 @@
       }
     },
     created() {
-      this.getDesignCase()
+      var types = this.$route.query.types
+      if (types) {
+        if (types === '1' && this.user.type === 1) {
+          this.getTradeFair()
+        }
+      }
+      setTimeout(() => {
+        this.getDesignCase()
+      }, 1)
     },
     mounted() {
     },
@@ -161,6 +174,18 @@
         .catch (function (error) {
           that.$message.error (error.message)
           that.isLoading = false
+        })
+      },
+      // 获取查看权限
+      getTradeFair() {
+        const that = this
+        that.$http.get (api.demandCompanySaveTradeFair)
+        .then (function (response) {
+          if (response.data.meta.status_code === 200) {
+          }
+        })
+        .catch (function (error) {
+          console.log(error.message)
         })
       },
       // 分页

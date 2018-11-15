@@ -491,6 +491,7 @@ export default {
   payConfirmFile: '/pay/confirmFile', // GET 确认设计成果文件
   sdDemandEvaluateResult: '/sd/demand/evaluateResult', // POST 需求公司评价设计成果
   sdDemandEvaluateInfo: '/sd/demand/evaluateInfo', // GET 设计成果评价详情
+  demandCompanySaveTradeFair: '/demandCompany/saveTradeFair', // GET 修改交易会权限
 
   // 顺德设计方
   sdDesignCancelCollectDemand: '/sd/design/cancelCollectDemand', // POST 取消收藏需求
@@ -512,6 +513,7 @@ export default {
   adminDesignDemandShowCollectList: '/admin/designDemand/showCollectList', // GET 查看设计需求被那些设计公司收藏
   adminDesignResultList: '/admin/designResult/list', // GET 设计成果待审核列表
   adminDesignResultSave: '/admin/designResult/save', // GET 设计成果审核
-  adminDesignResultCollect: '/admin/designResult/collect' // GET 设计成果收藏列表
+  adminDesignResultCollect: '/admin/designResult/collect', // GET 设计成果收藏列表
+  adminDemandCompanySaveTradeFair: '/admin/demandCompany/saveTradeFair' // GET 修改交易会权限
 
 }
