@@ -151,13 +151,13 @@
             <el-col :span="6">
               <span>功能描述</span>
             </el-col>
-            <el-col :span="18" class="content-height">
+            <el-col :span="18" class="content-height scroll-bar">
               {{formup.content}}
             </el-col>
           </el-row>
         </div>
       </div>
-      <span slot="footer" class="dialog-footer">
+      <!-- <span slot="footer" class="dialog-footer">
         <div class="dia-bottom dialog-bottom">
           <div :class="['dia-button', {'interest-dia':formup.follow_status === 1}]" @click="deleteCollect (formup.id, formup.follow_status)">
             <span :class="[
@@ -167,13 +167,13 @@
             {{formup.follow_status === 1?'已感兴趣': '感兴趣'}}
             </span>
           </div>
-        <!-- <div class="dia-right">
+        <div class="dia-right">
           <div class="dia-button">
             <span class="contact-text" @click="contactWay(formup, 1)">联系他</span>
           </div>
-        </div> -->
         </div>
-      </span>
+        </div>
+      </span> -->
     </el-dialog>
      <el-dialog
         title="联系电话"
@@ -271,10 +271,11 @@
         if (status === 2) {
           this.$http.post(api.sdDesignCollectDemand, {design_demand_id: id}).then((response) => {
             if (response.data.meta.status_code === 200) {
-              this.collectList.forEach(item => {
+              this.collectList.forEach((item, index) => {
                 if (item.id === id) {
-                  item.follow_status = 1
-                  this.formup.follow_status = 1
+                  this.collectList.splice(index, 1)
+                  // item.follow_status = 1
+                  // this.formup.follow_status = 1
                 }
               })
             } else {
@@ -761,7 +762,7 @@
     overflow: hidden
   }
   .content-height {
-    overflow-x: hidden;
+    overflow-y: auto;
     max-height: 180px;
   }
   /* 详情弹出框 */
