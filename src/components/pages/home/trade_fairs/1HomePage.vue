@@ -2,9 +2,9 @@
   <div class="content-box">
     <div class="home_banner">
       <div class="background-banner">
-        <div class="banner-button">
+        <div class="banner-button" @click="routerClick">
           <div class="text-width">
-            <router-link to="/shunde/trade_fairs/demand_login" class="banner-text">立即参与</router-link>
+            <span class="banner-text">立即参与</span>
           </div>
         </div>
       </div>
@@ -30,10 +30,16 @@
       }
     },
     created() {
+      if (this.isMob) {
+        this.$router.push({name: 'mobile_login'})
+      }
     },
     mounted() {
     },
     methods: {
+      routerClick() {
+        this.$router.push({name: 'demand_login'})
+      }
     },
     computed: {
       isMob() {
