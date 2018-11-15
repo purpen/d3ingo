@@ -56,6 +56,9 @@
       }
     },
     created() {
+      if (this.isMob) {
+        this.$router.push({name: 'mobile_login'})
+      }
       let type = this.$route.query.type
       if (type) {
         this.type = 1
