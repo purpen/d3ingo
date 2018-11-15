@@ -25,7 +25,7 @@
           </div>
         </swiper-slide>
         <swiper-slide v-if="isMob">
-          <div class="slide" :style="{ background: 'url(' + require ('assets/images/trade_fairs/banner/mobile-banner.png') + ') no-repeat center', height: calcHeight}">
+          <div class="slide" :style="{ background: 'url(' + require ('assets/images/trade_fairs/banner/phone2.png') + ') no-repeat center', height: calcHeight}" @click="routerTrading">
           </div>
         </swiper-slide>
         <swiper-slide v-if="isMob" v-for="(ele, index) in bannerListMob" :key="index">
