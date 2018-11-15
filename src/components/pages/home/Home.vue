@@ -940,21 +940,28 @@
 
   @media screen and (max-width: 767px) {
     .container {
-      padding: 0 10px 0 10px;
+      padding: 0 5px
     }
 
     .slide .container {
       display: block;
       position: relative;
+      padding: 0
     }
 
     .slide .left {
       text-align: center;
       position: relative;
       z-index: 2;
-      justify-content: flex-start
+      justify-content: flex-start;
+      align-items: center
     }
-
+    .slide .left a {
+      width: 120px;
+      height: 34px;
+      line-height: 34px;
+      font-size: 12px;
+    }
     .slide .draw {
       position: absolute;
       top: 100px;
