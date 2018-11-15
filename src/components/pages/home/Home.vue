@@ -8,7 +8,7 @@
               <div class="left">
                 <h3 :class="{'m-h3' : isMob}">铟果D³INGO产品创新SaaS平台</h3>
                 <p :class="{'m-p' : isMob}">用设计重塑品质生活</p>
-                <router-link v-if="uType !== 2" to="/item/submit_one">发布项目需求</router-link>
+                <router-link v-if="uType !== 2 && !isMob" to="/item/submit_one">发布项目需求</router-link>
               </div>
               <div class="draw">
                 <img :src="require('assets/images/home/banner/BG02@2x.png')" width="90%" height="auto" alt="">
@@ -25,7 +25,7 @@
           </div>
         </swiper-slide>
         <swiper-slide v-if="isMob">
-          <div class="slide" :style="{ background: 'url(' + require ('assets/images/trade_fairs/banner/mobile-banner.png') + ') no-repeat center', height: calcHeight}">
+          <div class="slide" :style="{ background: 'url(' + require ('assets/images/trade_fairs/banner/phone2.png') + ') no-repeat center', height: calcHeight}" @click="routerTrading">
           </div>
         </swiper-slide>
         <swiper-slide v-if="isMob" v-for="(ele, index) in bannerListMob" :key="index">
@@ -940,21 +940,28 @@
 
   @media screen and (max-width: 767px) {
     .container {
-      padding: 0 10px 0 10px;
+      padding: 0 10px
     }
 
     .slide .container {
       display: block;
       position: relative;
+      padding: 0
     }
 
     .slide .left {
       text-align: center;
       position: relative;
       z-index: 2;
-      justify-content: flex-start
+      justify-content: flex-start;
+      align-items: center
     }
-
+    .slide .left a {
+      width: 120px;
+      height: 34px;
+      line-height: 34px;
+      font-size: 12px;
+    }
     .slide .draw {
       position: absolute;
       top: 100px;

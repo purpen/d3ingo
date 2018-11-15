@@ -681,6 +681,9 @@
   .phone-style .el-dialog--tiny {
     top: 25% !important;
   }
+  .power .el-dialog__body {
+    height: 135px;
+  }
   /* 交易会需求成果列表loading */
   .achieve-load .el-loading-mask {
     background-color: rgba(255,255,255,.05);
@@ -692,16 +695,33 @@
     top: 30% !important;
   }
   .hint-text .el-dialog__header {
-    background: #fff;
+    display: none;
   }
   .hint-text .el-icon-close:before {
     content: ''
   }
   .hint-text .el-dialog__body {
     text-align: center;
+    height: 100px;
+    line-height: 40px;
+  }
+  .hint-text .el-dialog__body {
+    text-align: center;
+    height: 100px;
+    line-height: 40px;
+  }
+  .hint-text .el-dialog__footer {
+    border-top: 1px solid #e6e6e6;
   }
   .hint-text .el-dialog__footer .dialog-footer .el-button:first-child {
     margin-right: 0;
+  }
+  .calls .el-dialog__body {
+    height: 140px;
+  }
+  .calls .el-dialog__header {
+    display: block;
+    background: #fff;
   }
   /* 取消订单button */
   .pay-button .el-button:focus {
