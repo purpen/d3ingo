@@ -100,7 +100,7 @@
               <el-tooltip class="item" :effect="DarkorLight" content="顺德交易会" placement="right" v-if="prod.name === ''">
                 <a @click="alick" :to="'/shunde/trade_fairs/design_case'"
                   :class="['item', 'demandList', {'is-active': currentName === 'sdDesignCase_list'}]">
-                  顺德交易会
+                  顺德交易会1
                 </a>
               </el-tooltip>
             </div>
@@ -143,7 +143,7 @@
               <el-tooltip class="item" :effect="DarkorLight" content="顺德交易会" placement="right" v-if="prod.name === ''">
                 <a @click="alick" :to="'/shunde/trade_fairs/design_case'"
                   :class="['item', 'demandList', {'is-active': currentName === 'sdDesignCase_list'}]">
-                  顺德交易会
+                  顺德交易会2
                 </a>
               </el-tooltip>
               <a :class="['item', {'is-active': currentName === 'company'    }]" @click="redirectCompany" 
@@ -175,7 +175,7 @@
               <el-tooltip class="item" :effect="DarkorLight" content="顺德交易会" placement="right" v-if="prod.name === ''">
               <a @click="alick" :to="'/shunde/trade_fairs/demand/demand_list'"
                 :class="['item', 'demandList', {'is-active': currentName === 'demandList'}]">
-                顺德交易会
+                顺德交易会3
               </a>
               </el-tooltip>
             </div>
@@ -230,7 +230,7 @@
                 :class="['item', 'demandList', {'is-active': currentName === 'sdDesignCase_list'}]" 
                 v-if="prod.name === ''"
                 >
-                顺德交易会
+                顺德交易会4
               </a>
             </div>
           </div>
@@ -251,7 +251,7 @@
               </a>
               <a @click="alick" :to="'/shunde/trade_fairs/demand/demand_list'"
                 :class="['item', 'demandList', {'is-active': currentName === 'demandList'}]"
-                v-if="prod.name === ''">
+                v-if="prod.name === '' && !isMob">
                 顺德交易会
               </a>
             </div>
