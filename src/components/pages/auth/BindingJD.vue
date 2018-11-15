@@ -1,9 +1,9 @@
 <template>
-  <div :class="['container', 'jdc']">
+  <div :class="['container', 'jdc']" v-loading="isLoading">
     <!-- <section class="cover-bgf7"></section> -->
     <div class="register-box">
       <div class="regisiter-title">
-        <h2>绑定京东账号</h2>
+        <h2>绑定艺火账号</h2>
       </div>
       <div class="register-content">
         <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px"
@@ -79,6 +79,7 @@ export default {
       }
     }
     return {
+      isLoading: false,
       isLoadingBtn: false,
       jdAccount: '',
       time: 0,
@@ -140,8 +141,10 @@ export default {
     getJdAccount() {
       let code = this.$route.query.code
       if (code) {
+        this.isLoading = true
         this.$http.get(api.jdAccount, {params: {code: code}})
         .then(res => {
+          this.isLoading = false
           if (res.data.meta.status_code === 200) {
             this.jdAccount = res.data.data
             this.checkJdAccount(res.data.data.account)
@@ -150,6 +153,7 @@ export default {
             this.$message.error(res.data.meta.message)
           }
         }).catch(err => {
+          this.isLoading = false
           console.error(err.message)
         })
       }
