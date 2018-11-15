@@ -27,7 +27,7 @@
                     发布需求
                   </button>
                    <router-link :to="{name: 'demand_login'}"
-                    target="_blank">
+                    >
                   <button class="withdraw btn-phone red-button middle-button">
                     查看设计成果
                   </button>
@@ -106,6 +106,7 @@
                 class="submit-form"
                 top="10%"
                 @close="closeBtn('form')"
+                @open="clearDialog"
                 >
                 <div class="scroll-bar demands" ref="submitDemand" v-loading="formLoading">
                   <el-form :model="form" ref="form" :rules="rules" @submit.native.prevent >
@@ -214,6 +215,8 @@
                 :lock-scroll="false"
                 size="tiny"
                 class="details-form"
+                @close="renewDialog"
+                @open="clearDialog"
                 >
                 <div class="details-list" v-loading="updateLoading">
                   <div class="details">
@@ -291,7 +294,7 @@
                       <el-col :span="6">
                         <span>功能描述</span>
                       </el-col>
-                      <el-col :span="18">
+                      <el-col :span="18" class="details-content scroll-bar">
                         {{formup.content}}
                       </el-col>
                     </el-row>
@@ -326,7 +329,7 @@
                   <img src="../../../../../assets/images/trade_fairs/default/NoDemand@2x.png" alt="无收藏">
                   <p>还没有收藏设计成果～</p>
                   <router-link :to="{name: 'demand_login'}"
-                    target="_blank" class="datails-router">
+                    class="datails-router">
                     <button class="red-button middle-button">查看设计成果</button>
                   </router-link>
                 </div>
@@ -382,7 +385,7 @@
                         <el-col :span="4">
                           <button class="full-red-button middle-button" v-if="d.status === 3">
                             <router-link :to="{name: 'work_datails', params: {id: d.id}}"
-                            target="_blank" class="router-work" >
+                            class="router-work">
                             立即购买
                             </router-link>
                           </button>
@@ -771,13 +774,6 @@
         this.$nextTick(_ => {
           this.$refs.submitDemand.scrollTop = 0
         })
-        // let oldClass = document.getElementById('app').getAttribute('class')
-        // if (oldClass) {
-        //   oldClass = oldClass.replace(/disableScroll\x20?/g, '')
-        // }
-        // document.body.setAttribute('class', 'disableScroll')
-        // document.getElementById('app').setAttribute('class', 'disableScroll ' + oldClass)
-        // document.childNodes[1].setAttribute('class', 'disableScroll')
       },
       // 取消订单按钮
       upOrderBth(id, title, type) {
@@ -838,9 +834,15 @@
       // 获取详情
       upDetails(id, type) {
         if (type === 1) {
+          this.formup = {
+            design_types: []
+          }
           this.dialogUpdateVisible = true
           this.updateLoading = true
         } else if (type === 2) {
+          this.form = {
+            design_types: []
+          }
           this.dialogUpdateVisible = false
           this.dialogFormVisible = true
           this.formLoading = true
@@ -863,7 +865,7 @@
               if (type === 2) {
                 this.$nextTick(_ => {
                   this.isUpdate = true
-                  this.$refs.submitDemand.scrollTop = 0
+                  // this.$refs.submitDemand.scrollTop = 0
                   this.form = res
                   this.formLoading = false
                 })
@@ -1154,20 +1156,34 @@
           return
         })
       },
+      // 恢复右侧滚轴
+      renewDialog() {
+        let oldClass = document.getElementById('app').getAttribute('class')
+        if (oldClass) {
+          oldClass = oldClass.replace(/disableScroll\x20?/g, '')
+        }
+        document.body.removeAttribute('class', 'disableScroll')
+        document.getElementById('app').setAttribute('class', oldClass)
+        document.childNodes[1].removeAttribute('class', 'disableScroll')
+      },
+      // 清除右侧滚轴
+      clearDialog() {
+        let oldClass = document.getElementById('app').getAttribute('class')
+        if (oldClass) {
+          oldClass = oldClass.replace(/disableScroll\x20?/g, '')
+        }
+        document.body.setAttribute('class', 'disableScroll')
+        document.getElementById('app').setAttribute('class', 'disableScroll ' + oldClass)
+        document.childNodes[1].setAttribute('class', 'disableScroll')
+      },
       // 关闭弹窗按钮
       closeBtn(formName) {
         this.form = {
           'design_types': []
         }
-        // if (formName === 'form') {
-        //   let oldClass = document.getElementById('app').getAttribute('class')
-        //   if (oldClass) {
-        //   oldClass = oldClass.replace(/disableScroll\x20?/g, '')
-        //   }
-        //   document.body.removeAttribute('class', 'disableScroll')
-        //   document.getElementById('app').setAttribute('class', oldClass)
-        //   document.childNodes[1].removeAttribute('class', 'disableScroll')
-        // }
+        if (formName === 'form') {
+          this.renewDialog()
+        }
         this.dialogFormVisible = false
         this.dialogUpdateVisible = false
         this.dialogDeleteVisible = false
@@ -1348,6 +1364,10 @@
     line-height: 20px;
     color: #999;
   }
+  .details .details-content {
+    max-height: 180px;
+    overflow-y: auto;
+  }
   .details span{
     display: inline-block;
     width: 80px;
@@ -1404,6 +1424,9 @@
   .router-work {
     display: block;
     color: #fff;
+  }
+  .router-work:hover {
+    color: #ff5a5f;
   }
   .router-pay {
     display: block;

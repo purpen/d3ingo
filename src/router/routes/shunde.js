@@ -2,6 +2,11 @@
  ** ###### 顺德交易会 ##########
  */
 module.exports = [
+  // 跳转到
+  {
+    path: '/shunde/trade_fairs/homePage',
+    redirect: '/shunde/trade_fairs/home_page'
+  },
   // 未登陆首页
   {
     path: '/shunde/trade_fairs/home_page',
