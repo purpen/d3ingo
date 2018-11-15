@@ -95,18 +95,18 @@
       </div>
     </div>
     <el-dialog
-        title="客服电话"
-        :visible.sync="clientPhone"
-        :lock-scroll="false"
-        @close="closePop"
-        size="tiny"
-        class="phone-style">
-        <div class="title-center">
-          <img class="avatt" src="../../../../assets/images/trade_fairs/list/clientPhone.png" width="100"/>
-          <div class="company-name">耿霆</div>
-          <div class="right-number">13031154842</div>
-        </div>
-      </el-dialog>
+      title="客服电话"
+      :visible.sync="clientPhone"
+      :lock-scroll="false"
+      @close="closePop"
+      size="tiny"
+      class="phone-style">
+      <div class="title-center">
+        <img class="avatt" src="../../../../assets/images/trade_fairs/list/clientPhone.png" width="100"/>
+        <div class="company-name">耿霆</div>
+        <div class="right-number">13031154842</div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
