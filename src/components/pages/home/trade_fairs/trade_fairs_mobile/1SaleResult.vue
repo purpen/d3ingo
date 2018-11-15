@@ -81,13 +81,30 @@
     <div>
 
     </div>
+    <!-- 右下角图标 -->
+    <div class="right">
+      <div class="right-top" @click="clientPhone = true">
+      </div>
+    </div>
     <el-dialog
       :visible.sync="dialogPermiss"
       size="tiny" class="hint-text">
       <span class="move-text">暂无权限</span>
+      <div class="move-div">交易会期间扫码或联系平台客服开通权限</div>
       <span slot="footer" class="dialog-footer" @click="dialogPermiss = false">
         <p class="sure-text">确 定</p>
       </span>
+    </el-dialog>
+    <el-dialog
+      :visible.sync="clientPhone"
+      top="30%"
+      size="tiny"
+      class="calls">
+      <div class="title-center">
+        <img class="avatt" src="../../../../../assets/images/trade_fairs/list/clientPhone.png" width="100"/>
+        <div class="company-name">客服电话</div>
+        <div class="right-number">13031154842</div>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -101,6 +118,7 @@
         isLoading: false,
         intersClick: true,
         dialogPermiss: false,
+        clientPhone: false,
         designCases: '',
         query: {
           page: 1,
@@ -229,6 +247,43 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .company-name {
+    margin-top: 16px;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+  }
+  .right-number {
+    margin-top: 12px;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #FF5A5F;
+  }
+  .title-center {
+    margin: 0 auto;
+    text-align: center;
+    margin-top: -60px;
+  }
+  /* 右侧屏幕浮动 */
+  .right {
+    z-index: 99;
+    height: 140px;
+    width: 60px;
+    position:fixed;
+    right: 0px;
+    bottom: -40px;
+  }
+  .right-top {
+    cursor: pointer;
+    height: 40px;
+    width: 40px;
+    background: url('../../../../../assets/images/trade_fairs/list/CustomerService@2x.png') no-repeat center;
+    background-size: contain;
+  }
+  .move-div {
+    color: #999;
+    font-size: 13px;
+    margin-top: -15px;
+  }
   .sure-text {
     font-family: PingFangSC-Regular;
     font-size: 16px;
