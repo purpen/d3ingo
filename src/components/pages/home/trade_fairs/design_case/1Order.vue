@@ -9,11 +9,11 @@
           <v-menu-sub></v-menu-sub>
           <div :class="['content-box', isMob ? 'content-box-m' : '']">
             <div class="design-case-list" v-loading="isLoading">
-              <!-- <div class="no-list" v-if="!orderList||!orderList.length">
+              <div class="no-list" v-if="!orderList||!orderList.length">
                 <img src="../../../../../assets/images/trade_fairs/default/NoOrder@2x.png" alt="无订单">
                 <p>还没有订单～</p>
-              </div> -->
-              <div class="demand-list">
+              </div>
+              <div class="demand-list" v-if="orderList&&orderList.length">
                 <div class="demand-header">
                   <el-row>
                     <el-col :span="8">
@@ -43,11 +43,17 @@
                   <div class="demand-content">
                     <el-row>
                       <el-col :span="8" class="collect-all">
-                        <div class="collect-img" :style="{background:'url('+d.cover.logo +') no-repeat center / contain'}">
-                        </div>
+                        <router-link :to="{name: 'pay_datails', params: {id: d.id}}"
+                            target="_blank" class="router-work">
+                          <div class="collect-img" :style="{background:'url('+d.cover.logo +') no-repeat center / contain'}">
+                          </div>
+                        </router-link>
                         <div class="collect-centent">
-                          <p class="c-title">{{d.design_result.title}}</p>
-                          <p>出让形式: {{d.design_result.sell_type === 1?'全额出让':'股权合作'}}</p>
+                          <router-link :to="{name: 'pay_datails', params: {id: d.id}}"
+                            target="_blank" class="router-work c-title">
+                            {{d.design_result.title}}
+                          </router-link>
+                          <p class="mg-t-10">出让形式: {{d.design_result.sell_type === 1?'全额出让':'股权合作'}}</p>
                           <p>出让金额: ¥{{d.design_result.price}}</p>
                         </div>
                       </el-col>
@@ -685,6 +691,9 @@
   .router-pay {
     color: #FFF;
     display: block;
+  }
+  .mg-t-10 {
+    margin-top: 10px;
   }
   @media screen and (max-width: 767px) {
     .opt a {

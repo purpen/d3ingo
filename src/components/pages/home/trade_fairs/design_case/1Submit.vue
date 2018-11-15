@@ -14,22 +14,6 @@
               <el-row>
                 <el-col :span="24">
                   <el-form-item label="上传图片">
-                    <!-- <el-upload
-                      class="upload-demo upload-design upload"
-                      :action="uploadUrl"
-                      :on-preview="handlePreview"
-                      :on-remove="handleRemove"
-                      :file-list="fileList"
-                      :data="uploadParam"
-                      :on-progress="uploadProgress"
-                      :on-error="uploadError"
-                      :on-success="uploadSuccess"
-                      :before-upload="beforeUpload"
-                      :show-file-list="false"
-                      list-type="picture-card">
-                      <i class="el-icon-plus"></i>
-                      <div slot="tip" class="el-upload__tip" v-html="uploadMsg"></div>
-                    </el-upload> -->
                     <el-upload 
                       :action="uploadUrl"
                       :on-preview="handlePreview"
@@ -42,7 +26,6 @@
                       :before-upload="beforeUpload"
                       :show-file-list="false"
                       >
-                      <!-- <el-button class="is-custom" type="primary" size="small"></el-button> -->
                       <div class="full-red-button middle-button line-block">
                         +&nbsp;上传图片
                       </div>
@@ -52,13 +35,23 @@
                       <el-row>
                         <el-col :span="6" v-for="(d, index) in fileList" :key="index" class="file-d">
                           <img :src="d.url" alt="上传图片" v-if="d.url">
-                            <el-tooltip class="item" effect="dark" content="删除图片" placement="top">
-                              <span class="delImg" @click="deleteImg(d.asset_id)">
-                              </span>
-                            </el-tooltip>
-                             <el-tooltip class="item2" effect="dark" content="设为封面" placement="top">
-                              <span class="cover" @click="updateCover(d.asset_id)"></span>
-                             </el-tooltip>
+                          <div class="file-icons">
+                            <el-row>
+                            <el-col :span="12" class="del-btn">
+                              <div class="delImg" @click="deleteImg(d.asset_id)">
+                                <i>
+                                </i>
+                                <span class="delText">删除图片</span>
+                              </div>
+                            </el-col>
+                            <el-col :span="12" class="cover-btn">
+                              <div class="cover" @click="updateCover(d.asset_id)">
+                                <i></i>
+                                <span class="cover-text">设为封面</span>
+                              </div>
+                            </el-col>
+                            </el-row>
+                          </div>
                           <span class="right-cover" v-if="d.asset_id === coverId "></span>
                         </el-col>
                       </el-row>
@@ -175,6 +168,12 @@
               <div v-if="filepatent.length">
                 <el-row>
                   <el-col :span="3" v-for="(f,indexf) in filepatent" :key="indexf" class="patent-list" :style="{background: 'url('+f.url+ ') no-repeat center/contain'}">
+                    <div class="patent-icons">
+                      <div class="patent-btn" @click="deleteImg(f.id, 2)">
+                        <i></i>
+                        <span class="patent-text">删除图片</span>
+                      </div>
+                    </div>
                     <!-- <img :src="f.url" alt=""> -->
                   </el-col>
                 </el-row>
@@ -218,7 +217,7 @@
                     <div class="file-size">
                       {{i.size | sizeFormat}}
                     </div>
-                    <div class="cancel-icons" @click="deleteImg(i.asset_id, 1)">
+                    <div class="cancel-icons" @click="deleteImg(i.asset_id, 3)">
                     </div>
                   </div>
                 </el-col>
@@ -227,9 +226,12 @@
                 <el-checkbox v-model="protocol">
                 </el-checkbox>
                 阅读并同意
-                <router-link :to="{name: 'sdDesign_protocol'}" target="_blank" class="is-reading">
+                <!-- <router-link :to="{name: 'sdDesign_protocol'}" target="_blank" class="is-reading">
                   《委托推广项目及交易诚信协议》
-                </router-link>
+                </router-link> -->
+                <a class="is-reading" @click="goProtocol">
+                  《委托推广项目及交易诚信协议》
+                </a>
               </div>
               <el-row>
                 <el-col>
@@ -399,9 +401,12 @@
     },
     methods: {
       // 打开协议
-      isProtocol() {
+      goProtocol() {
+        let routeData = this.$router.resolve({
+          name: 'sdDesign_protocol'
+        })
         this.protocol = true
-        this.dialogProtocol = false
+        window.open(routeData.href, '_blank')
       },
       // 按钮
       shareRatioBlur(val) {
@@ -423,6 +428,10 @@
         }
         if (!that.fileList.length) {
           that.$message.error ('请完善信息!')
+          return false
+        }
+        if (!that.protocol) {
+          that.$message.error ('请阅读并同意《委托推广项目及交易诚信协议》!')
           return false
         }
         that.$refs[formName].validate ((valid) => {
@@ -463,7 +472,6 @@
             } else {
               that.isLoadingBtn2 = true
             }
-            console.log('res', row)
             row.cover_id = that.coverId
             that.$http({method: 'post', url: api.sdDesignResultsSave, data: row})
               .then (function (response) {
@@ -494,18 +502,25 @@
       },
       // 切换封面
       updateCover(id) {
-        console.log(id)
         this.coverId = id
       },
       // 删除图片
       deleteImg(id, type) {
         this.$http.delete(api.asset, {params: {id: id}}).then((response) => {
           if (response.data.meta.status_code === 200) {
-            if (type) {
+            if (type === 3) {
               if (this.fileillustrate) {
                 this.fileillustrate.forEach((p, ind) => {
                   if (p.asset_id === id) {
                     this.fileillustrate.splice(ind, 1)
+                  }
+                })
+              }
+            } else if (type === 2) {
+              if (this.filepatent) {
+                this.filepatent.forEach((f, indf) => {
+                  if (f.asset_id === id) {
+                    this.filepatent.splice(indf, 1)
                   }
                 })
               }
@@ -637,7 +652,6 @@
       uploadSuccess(response, file, fileList) {
         this.uploadMsg = '只能上传jpg/png文件，且不超过10M'
         let add = fileList[fileList.length - 1]
-        console.log('add', add)
         let item = {
           name: add.name,
           url: add.url,
@@ -646,8 +660,8 @@
           asset_id: add.response.asset_id
         }
         this.fileList.push (item)
-        console.log('上传结束的东西', item)
-        console.log('数组', this.fileList)
+        // console.log('上传结束的东西', item)
+        // console.log('数组', this.fileList)
       },
       // 上传之前操作
       beforeUpload(file) {
@@ -682,8 +696,6 @@
       },
       // 上传说明
       upload3Success(response, file, fileList) {
-        console.log('res', response)
-        console.log('file', file)
         let add = fileList[fileList.length - 1]
         let item = {
           name: add.name,
@@ -695,7 +707,6 @@
         }
         this.fileillustrate.push(item)
         this.uploadMsg3 = '个数: 1个 格式：PDF 大小：小于20MB'
-        console.log('55', this.fileillustrate)
       },
       // 上传专利
       upload2Success(response, file, fileList) {
@@ -709,7 +720,6 @@
           asset_id: add.response.asset_id
         }
         this.filepatent.push(item)
-        console.log('22', this.filepatent)
       },
       // 获取图片token
       getToken() {
@@ -929,7 +939,6 @@
         that.isfrist = true
         that.upDetails(id)
       } else {
-        console.log(that.$store.state.event.user)
         that.form.contact_number = that.$store.state.event.user.phone
       }
     }
@@ -1077,35 +1086,118 @@
   .file-d img:not(:last-child) {
     padding-right: 10px;
   }
-  .delImg {
+  .file-d:hover .file-icons {
+    display: block;
+  }
+  .file-icons {
+    display: none;
     position: absolute;
     z-index: 1;
-    right: 20px;
-    top: 10px;
-    width: 24px;
-    height: 24px;
-    background: url('../../../../../assets/images/trade_fairs/default/delete@2x.png') no-repeat center / contain;
-    cursor: pointer;
-    border-radius: 50%;
-    background-color: #999;
+    right: 10px;
+    bottom: 0px;
+    width: calc(100% - 10px);
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    background-color:rgba(0,0,0,0.5);
+    color: #fff;
   }
-  .delImg:hover {
+  .del-btn {
+    text-align: center;
+  }
+  .delText {
+    padding-left: 35px;
+  }
+  .delImg {
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+  }
+  .patent-btn:hover .patent-text {
+    color: #FF5A5F;
+  }
+  .patent-btn:hover i {
     background: url('../../../../../assets/images/trade_fairs/default/DeleteHover@2x.png') no-repeat center / contain;
   }
-  .cover {
+  .patent-icons i {
     position: absolute;
-    right: 53px;
-    top: 10px;
-    z-index: 1;
+    top: 13px;
+    left: 0px;
+    content: '';
     width: 24px;
     height: 24px;
+    border-radius: 50%;
+    background: url('../../../../../assets/images/trade_fairs/default/delete@2x.png') no-repeat center / contain;
+    background-color: #999;
+  }
+  .patent-text {
+    padding-left: 29px;
+  }
+  .delImg i {
+    position: absolute;
+    top: 8px;
+    left: 0px;
+    content: '';
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: url('../../../../../assets/images/trade_fairs/default/delete@2x.png') no-repeat center / contain;
+    background-color: #999;
+  }
+  .delImg:hover i {
+    background: url('../../../../../assets/images/trade_fairs/default/DeleteHover@2x.png') no-repeat center / contain;
+  }
+  .delImg:hover .delText{
+    color: #FF5A5F;
+  }
+  .cover-btn {
+    text-align: center;
+  }
+  .cover {
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+  }
+  .cover i {
+    position: absolute;
+    top: 8px;
+    left: 0px;
+    width: 30px;
+    height: 30px;
     background: url('../../../../../assets/images/trade_fairs/default/cover@2x.png') no-repeat center / contain;
     cursor: pointer;
     border-radius: 50%;
     background-color: #999;
   }
-  .cover:hover {
+  .cover:hover i {
     background: url('../../../../../assets/images/trade_fairs/default/CoverClickHover@2x.png') no-repeat center / contain;
+  }
+  .cover-text {
+    padding-left: 35px;
+  }
+  .cover:hover .cover-text {
+    color: #FF5A5F;
+  }
+  .patent-btn {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+  }
+  .patent-list:hover .patent-icons {
+    display: block;
+  }
+  .patent-icons {
+    display: none;
+    position: absolute;
+    z-index: 1;
+    right: 0px;
+    bottom: 0px;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    background-color:rgba(0,0,0,0.5);
+    color: #fff;
   }
   .right-cover {
     position: absolute;
@@ -1114,12 +1206,6 @@
     width: 50px;
     height: 50px;
     background: url('../../../../../assets/images/trade_fairs/default/CornerMark@2x.png') no-repeat center / contain;
-  }
-  .item, .item2 {
-    display: none;
-  }
-  .file-d:hover .item, .file-d:hover .item2{
-    display: block;
   }
   /* .patent-msg {
   } */
@@ -1130,6 +1216,8 @@
     margin-bottom: 10px;
     margin-right: 10px;
     padding: 5px;
+    position: relative;
+    text-align: center;
   }
   .patent-list img {
     width: auto;
