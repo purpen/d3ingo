@@ -197,6 +197,20 @@
     color: #666666;
     text-align: center;
   }
+  @media screen and (min-width: 568px) {
+    .banner-button {
+      height: 30px;
+      width: 130px;
+      line-height: 28px;
+      margin-right: 89px;
+    }
+    .text-width {
+      width: 80px;
+    }
+    .banner-text[data-v-58a89dbe] {
+      font-size: 16px;
+    }
+  }
   @media screen and (max-width: 414px) {
     .banner-button {
       margin-right: 68px;
