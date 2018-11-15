@@ -31,7 +31,7 @@
                     <img :src="achieve.cover.small" alt="点击查看详情" class="img-size">
                   </div>
                 </div>
-                <div class="list-text">
+                <div class="list-text" v-if="achieve.sell === 1 || achieve.sell === 2 || achieve.is_trade_fair === 0" @click="diaPermiss(achieve.sell, achieve.is_trade_fair)">
                   <div class="list-title">
                     <span>{{achieve.title}}</span>
                   </div>
@@ -44,16 +44,41 @@
                         <span>出让金额：&nbsp;<span class="money" :class="{'pay-yet' : achieve.sell === 1 || achieve.sell === 2}">￥{{achieve.price}}</span></span>
                       </div>
                     </div>
-                    <!-- <div class="list-right" @click="collect(achieve.id)">
-                      <div class="list-button" v-if="achieve.is_follow === 0">
-                        <span class="button-text">感兴趣</span>
+                    <div v-if="achieve.sell !== 1 && achieve.sell !== 2" class="padding-di">
+                      <div class="list-right" v-if="intersClick" @click.stop="collect(achieve.id)">
+                        <div class="list-button" v-if="achieve.is_follow === 0">
+                          <span class="button-text">感兴趣</span>
+                        </div>
+                        <div class="list-button interest-border" v-if="achieve.is_follow === 1">
+                          <span class="button-interest">已感兴趣</span>
+                        </div>
                       </div>
-                      <div class="list-button interest-border" v-if="achieve.is_follow === 1">
-                        <span class="button-interest">已感兴趣</span>
+                      <div class="list-right" v-else disabled>
+                        <div class="list-button" v-if="achieve.is_follow === 0">
+                          <span class="button-text">感兴趣</span>
+                        </div>
+                        <div class="list-button interest-border" v-if="achieve.is_follow === 1">
+                          <span class="button-interest">已感兴趣</span>
+                        </div>
                       </div>
-                    </div> -->
+                    </div>
+                  </div>
+                </div>
+                <div class="list-text" @click="listDatail(achieve.id)" v-else>
+                  <div class="list-title">
+                    <span>{{achieve.title}}</span>
+                  </div>
+                  <div class="list-bottom">
+                    <div class="list-left">
+                      <div class="list-way">
+                        <span>出让方式：&nbsp;{{achieve.sell_type === 1 ? '全额出让' : '股权合作'}}</span><span class="money">{{achieve.sell_type === 2 ?achieve.share_ratio+'%' : ''}}</span>
+                      </div>
+                      <div class="list-sum">
+                        <span>出让金额：&nbsp;<span class="money" :class="{'pay-yet' : achieve.sell === 1 || achieve.sell === 2}">￥{{achieve.price}}</span></span>
+                      </div>
+                    </div>
                     <div v-if="achieve.sell !== 1 && achieve.sell !== 2">
-                      <div class="list-right" v-if="intersClick" @click="collect(achieve.id)">
+                      <div class="list-right" v-if="intersClick" @click.stop="collect(achieve.id)">
                         <div class="list-button" v-if="achieve.is_follow === 0">
                           <span class="button-text">感兴趣</span>
                         </div>
@@ -144,6 +169,14 @@
     mounted() {
     },
     methods: {
+      // 点击权限提示
+      diaPermiss(sell, fair) {
+        if (sell === 1 || sell === 2) {
+
+        } else if (fair === 0) {
+          this.dialogPermiss = true
+        }
+      },
       // 收藏需求
       collect(id) {
         this.intersClick = false
@@ -412,12 +445,14 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+  .padding-di {
+    padding-top: 10px;
+  }
   .money {
     color: #FF4696;
   }
   .list-right {
     cursor: pointer;
-    padding-top: 10px;
     width: 80px;
     margin: 0 auto;
   }
