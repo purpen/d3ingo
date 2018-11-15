@@ -437,7 +437,7 @@ export default {
   border: 1px solid #E6E6E6;
   box-shadow: 0 0 6px 2px rgba(0,0,0,0.10);
   border-radius: 6px;
-  padding-bottom: 20px;
+  padding-bottom: 30px;
 }
 
 .login-title {
@@ -711,6 +711,7 @@ form {
 .authorize {
   line-height: 30px;
   margin-top: 10px;
+  margin-bottom: -10px;
   text-align: left;
   padding-left: 40px;
   background: url(../../../assets/images/logo-yh2.png) no-repeat left / 30px;
