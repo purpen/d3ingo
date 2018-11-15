@@ -49,7 +49,7 @@
       <div v-if="!code">
         <p v-if="!isMob">还没有{{prod.login}}账户？
           <router-link v-if="type" :to="{name: 'register',params:{type: type}}">立即注册</router-link>
-          <router-link v-else :to="{name: 'register'}">立即注册</router-link>
+          <router-link v-else :to="{name: 'register'}" :class="{'shake-reg': isShake}">立即注册</router-link>
         </p>
         <p v-else>还没有{{prod.login}}账户？
           <router-link :to="{name: 'identity'}">立即注册</router-link>
@@ -115,6 +115,7 @@ export default {
       }
     }
     return {
+      isShake: false,
       isLoadingBtn: false,
       labelPosition: 'top',
       form: {
@@ -185,6 +186,7 @@ export default {
               .post(api.login, { account: account, password: password, str: that.imgCaptchaStr, captcha: that.form.imgCode })
               .then(function(response) {
                 that.isLoadingBtn = false
+                console.log(response)
                 if (response.data.meta.status_code === 200) {
                   let token = response.data.data.token
                   that.token = token
@@ -233,9 +235,13 @@ export default {
                       that.$message.error(error.message)
                     })
                 } else {
-                  console.log(response.data.data.err_count)
                   that.$message.error(response.data.meta.message)
-                  if (response.data.meta.status_code === 403 && response.data.data.err_count >= 3) {
+                  if (response.data.meta.status_code === 401) {
+                    that.isShake = true
+                    setTimeout(function() {
+                      that.isShake = false
+                    }, 500)
+                  } else if (response.data.meta.status_code === 403 && response.data.data.err_count >= 3) {
                     that.fetchImgCaptcha()
                     that.showImgCode = true
                   }
@@ -428,6 +434,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.shake-reg {
+  display: inline-block;
+  animation-name: shake-hard;
+  animation-duration: 100ms;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 4;
+}
 .login-box {
   background: #fff;
   width: 530px;

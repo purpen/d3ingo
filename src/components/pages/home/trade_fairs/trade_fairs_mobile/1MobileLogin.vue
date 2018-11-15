@@ -41,8 +41,8 @@
       :visible.sync="dialogBuy"
       size="tiny" class="hint-text">
       <span class="move-text">请移步PC端进行操作</span>
-      <span slot="footer" class="dialog-footer">
-        <p @click="dialogBuy = false" class="sure-text">确 定</p>
+      <span slot="footer" class="dialog-footer" @click="dialogBuy = false">
+        <p class="sure-text">确 定</p>
       </span>
     </el-dialog>
   </div>

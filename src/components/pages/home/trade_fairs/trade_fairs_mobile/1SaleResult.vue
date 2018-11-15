@@ -21,7 +21,7 @@
                     <img :src="achieve.cover.small" alt="点击查看详情" class="img-size">
                   </div>
                 </div>
-                <div class="list-image" v-else-if="achieve.is_trade_fair === 0">
+                <div class="list-image" v-else-if="achieve.is_trade_fair === 0" @click="dialogPermiss = true">
                   <div class="image-size">
                     <img alt="点击查看详情" class="img-size" :src="achieve.cover.small">
                   </div>
@@ -81,6 +81,14 @@
     <div>
 
     </div>
+    <el-dialog
+      :visible.sync="dialogPermiss"
+      size="tiny" class="hint-text">
+      <span class="move-text">暂无权限</span>
+      <span slot="footer" class="dialog-footer" @click="dialogPermiss = false">
+        <p class="sure-text">确 定</p>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -92,6 +100,7 @@
       return {
         isLoading: false,
         intersClick: true,
+        dialogPermiss: false,
         designCases: '',
         query: {
           page: 1,
@@ -220,6 +229,18 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .sure-text {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #FF6E73;
+    text-align: center;
+  }
+  .move-text {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #666666;
+    text-align: center;
+  }
   .content-box {
     min-height: 325px;
     background: #3519B2;
