@@ -8,7 +8,7 @@
               <div class="left">
                 <h3 :class="{'m-h3' : isMob}">铟果D³INGO产品创新SaaS平台</h3>
                 <p :class="{'m-p' : isMob}">用设计重塑品质生活</p>
-                <router-link v-if="uType !== 2" to="/item/submit_one">发布项目需求</router-link>
+                <router-link v-if="uType !== 2 && !isMob" to="/item/submit_one">发布项目需求</router-link>
               </div>
               <div class="draw">
                 <img :src="require('assets/images/home/banner/BG02@2x.png')" width="90%" height="auto" alt="">
@@ -940,7 +940,7 @@
 
   @media screen and (max-width: 767px) {
     .container {
-      padding: 0 5px
+      padding: 0 10px
     }
 
     .slide .container {
