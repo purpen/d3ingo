@@ -134,8 +134,12 @@ export default {
         if (res.data.meta.status_code === 200) {
           this.bindUser(res.data.data.token)
         } else {
+          this.isLoading = false
           console.log(res.data.meta.message)
         }
+      }).catch(err => {
+        this.isLoading = false
+        console.error(err.message)
       })
     },
     getJdAccount() {
@@ -144,12 +148,12 @@ export default {
         this.isLoading = true
         this.$http.get(api.jdAccount, {params: {code: code}})
         .then(res => {
-          this.isLoading = false
           if (res.data.meta.status_code === 200) {
             this.jdAccount = res.data.data
             this.checkJdAccount(res.data.data.account)
           } else {
             this.$router.push({name: 'login'})
+            this.isLoading = false
             this.$message.error(res.data.meta.message)
           }
         }).catch(err => {
@@ -238,7 +242,7 @@ export default {
       // 写入localStorage
       auth.write_token(token)
       // ajax拉取用户信息
-      this.$http.get(api.user, {})
+      that.$http.get(api.user, {})
       .then(function (response) {
         if (response.data.meta.status_code === 200) {
           console.log(response)
@@ -249,7 +253,7 @@ export default {
             message: '绑定成功!',
             type: 'success'
           })
-
+          that.isLoading = false
           that.$router.replace({name: 'vcenterControl'})
         } else {
           auth.logout()
@@ -259,9 +263,11 @@ export default {
             type: 'error'
           })
           that.isLoadingBtn = false
+          that.isLoading = false
         }
       })
       .catch(function (error) {
+        that.isLoading = false
         auth.logout()
         that.$message({
           showClose: true,
