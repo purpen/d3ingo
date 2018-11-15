@@ -22,6 +22,11 @@
                     <img alt="点击查看详情" class="img-size" :src="achieve.cover.small">
                   </div>
                 </div>
+                <div class="list-image" v-else-if="achieve.is_trade_fair === 0">
+                  <div class="image-size">
+                    <img alt="点击查看详情" class="img-size" :src="achieve.cover.small">
+                  </div>
+                </div>
                 <div class="list-image" @click="listDatail(achieve.id)" v-else>
                   <div class="image-size">
                     <img alt="点击查看详情" class="img-size" :src="achieve.cover.small">
@@ -113,6 +118,7 @@
       return {
         isLoading: false,
         designCases: '',
+        permissions: '',
         clientPhone: false,
         intersClick: true,
         query: {
