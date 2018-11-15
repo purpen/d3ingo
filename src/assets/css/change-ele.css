@@ -702,6 +702,14 @@
     height: 100px;
     line-height: 40px;
   }
+  .hint-text .el-dialog__body {
+    text-align: center;
+    height: 100px;
+    line-height: 40px;
+  }
+  .hint-text .el-dialog__footer {
+    border-top: 1px solid #e6e6e6;
+  }
   .hint-text .el-dialog__footer .dialog-footer .el-button:first-child {
     margin-right: 0;
   }
