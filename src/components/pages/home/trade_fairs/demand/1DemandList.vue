@@ -1065,7 +1065,7 @@
             return
           }
         })
-        .catch(function (error) {
+        .catch((error) => {
           self.isLoading = false
           self.$message.error(error.message)
           console.error(error.message)

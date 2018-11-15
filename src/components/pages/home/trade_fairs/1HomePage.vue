@@ -4,7 +4,10 @@
       <div class="background-banner">
         <div class="banner-button">
           <div class="text-width">
-            <router-link to="/shunde/trade_fairs/demand_login" class="banner-text">立即参与</router-link>
+            <a class="banner-text" @click="goLogin">
+              立即参与
+            </a>
+            <!-- <router-link to="/shunde/trade_fairs/demand_login" class="banner-text">立即参与</router-link> -->
           </div>
         </div>
       </div>
@@ -18,7 +21,7 @@
 </template>
 
 <script>
-  // import api from '@/api/api'
+  import api from '@/api/api'
   import briefContent from '@/components/pages/home/trade_fairs/1BriefContent'
   export default {
     name: 'home_page',
@@ -30,10 +33,31 @@
       }
     },
     created() {
+      this.getTrade(1)
     },
     mounted() {
     },
     methods: {
+      // 立即参与
+      goLogin() {
+        this.getTrade(2)
+        this.$router.push({path: '/shunde/trade_fairs/demand_login'})
+      },
+      // 监控流量
+      getTrade(type) {
+        this.$http.get(api.sdTouristWilling, {params: {type: type}}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            console.log('type', type)
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        })
+        .catch((error) => {
+          this.$message.error(error.message)
+          console.error(error.message)
+          return
+        })
+      }
     },
     computed: {
       isMob() {
