@@ -22,7 +22,7 @@
                     <img alt="点击查看详情" class="img-size" :src="achieve.cover.small">
                   </div>
                 </div>
-                <div class="list-image" v-else-if="achieve.is_trade_fair === 0">
+                <div class="list-image" v-else-if="achieve.is_trade_fair === 0" @click="dialogPermisses">
                   <div class="image-size">
                     <img alt="点击查看详情" class="img-size" :src="achieve.cover.small">
                   </div>
@@ -107,6 +107,19 @@
         <div class="right-number">13031154842</div>
       </div>
     </el-dialog>
+    <el-dialog
+      title="权限提醒"
+      :visible.sync="dialogPermiss"
+      :lock-scroll="false"
+      top="25%"
+      @close="closePop"
+      size="tiny"
+      class="power">
+      <div class="titles-center">
+        <div class="move-text">暂无权限</div>
+        <div class="move-div">交易会期间扫码或联系平台客服开通权限</div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -119,6 +132,7 @@
         isLoading: false,
         designCases: '',
         permissions: '',
+        dialogPermiss: false,
         clientPhone: false,
         intersClick: true,
         query: {
@@ -135,6 +149,15 @@
       this.getDesignCase()
     },
     methods: {
+      // 弹出权限框
+      dialogPermisses() {
+        this.dialogPermiss = true
+        let oldClass = document.getElementById('app').getAttribute('class')
+        if (oldClass) {
+          oldClass = oldClass.replace(/disableScroll\x20?/g, '')
+        }
+        document.body.setAttribute('class', 'disableScroll')
+      },
       // 弹出客服框
       callPhone() {
         this.clientPhone = true
@@ -244,6 +267,22 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .move-div {
+    color: #999;
+    font-size: 13px;
+    margin-top: 20px;
+  }
+  .titles-center {
+    margin: 0 auto;
+    text-align: center;
+  }
+  .move-text {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #666666;
+    text-align: center;
+    margin-top: 5px;
+  }
   .content-box {
     min-height: 325px;
     background: #3519B2;
