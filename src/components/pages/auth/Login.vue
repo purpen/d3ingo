@@ -38,7 +38,7 @@
           <el-button type="primary" :loading="isLoadingBtn" @keyup="submit('ruleForm')" @click="submit('ruleForm')" class="login-btn is-custom">登录
           </el-button>
         </el-form>
-        <p v-if="prod.name === 'jdc'" class="authorize">京东授权登录:<span class="fx-4"><a :href="jdURL">JD</a></span></p>
+        <a :href="jdURL"><p v-if="prod.name === 'jdc'" class="authorize">京东云授权登录<span class="fx-4 jd-icon">JD</span></p></a>
       </div>
     </div>
     <div class="reg">
@@ -709,13 +709,22 @@ form {
   cursor: pointer;
 }
 .authorize {
+  line-height: 30px;
   padding-top: 10px;
   text-align: left;
 }
+.authorize:hover {
+  color: #222
+}
 .authorize span {
-  padding-left: 10px;
   color: #0989C5;
   cursor: pointer;
+  margin-left: 10px;
+  width: 103px;
+  height: 30px;
+  display: inline-block;
+  text-indent: -999px;
+  background: url(../../../assets/images/logo-jdyun.jpg) no-repeat center / contain;
 }
 @media screen and (max-width: 767px) {
   .container {
