@@ -44,7 +44,7 @@
                         <span>出让金额：&nbsp;<span class="money" :class="{'pay-yet' : achieve.sell === 1 || achieve.sell === 2}">￥{{achieve.price}}</span></span>
                       </div>
                     </div>
-                    <div v-if="achieve.sell !== 1 && achieve.sell !== 2" class="padding-di">
+                    <div v-if="achieve.sell !== 1 && achieve.sell !== 2">
                       <div class="list-right" v-if="intersClick" @click.stop="collect(achieve.id)">
                         <div class="list-button" v-if="achieve.is_follow === 0">
                           <span class="button-text">感兴趣</span>
@@ -77,7 +77,7 @@
                         <span>出让金额：&nbsp;<span class="money" :class="{'pay-yet' : achieve.sell === 1 || achieve.sell === 2}">￥{{achieve.price}}</span></span>
                       </div>
                     </div>
-                    <div v-if="achieve.sell !== 1 && achieve.sell !== 2">
+                    <div v-if="achieve.sell !== 1 && achieve.sell !== 2" class="padding-di">
                       <div class="list-right" v-if="intersClick" @click.stop="collect(achieve.id)">
                         <div class="list-button" v-if="achieve.is_follow === 0">
                           <span class="button-text">感兴趣</span>
