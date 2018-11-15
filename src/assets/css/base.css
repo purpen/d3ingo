@@ -34,6 +34,7 @@ html {
   /* 10÷16=62.5% */
   box-sizing: border-box;
   height: 100%;
+  background: #fff;
 }
 
 html::-webkit-scrollbar,
@@ -91,7 +92,8 @@ body {
   height: 100%;
   width: 100%;
   /* overflow: hidden; */
-  overflow-x: hidden
+  overflow-x: hidden;
+  background: #fff;
 }
 
 .disableScroll {
