@@ -739,12 +739,12 @@
     color: #ff5a5f;
     background: none;
   }
- .jdc .nav-header .el-menu--horizontal > .el-menu-item:hover,
+ /* .jdc .nav-header .el-menu--horizontal > .el-menu-item:hover,
  .jdc .el-menu--horizontal > .el-submenu.is-active .el-submenu__title,
  .jdc .el-menu--horizontal > .el-submenu:hover .el-submenu__title,
  .jdc .el-menu--horizontal > .el-menu-item.is-active {
     border-bottom: 3px solid transparent;
- }
+ } */
   .nav-header .el-menu-item, .el-submenu__title {
     padding: 0 14px;
   }
