@@ -189,7 +189,7 @@ module.exports = [
       title: '订单列表',
       requireAuth: true
     },
-    component: require('@/components/admin/trade_fairs/SdOrderList')
+    component: require('@/components/admin/trade_fairs/1SdorderList')
   },
   // 需求公司列表
   {
