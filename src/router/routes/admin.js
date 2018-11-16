@@ -181,6 +181,16 @@ module.exports = [
     },
     component: require('@/components/admin/trade_fairs/DemandtList')
   },
+  // 顺德交易会订单列表
+  {
+    path: '/admin/trade_fairs/sd_order_list',
+    name: 'adminSdOrderList',
+    meta: {
+      title: '订单列表',
+      requireAuth: true
+    },
+    component: require('@/components/admin/trade_fairs/sdOrderList')
+  },
   // 需求公司列表
   {
     path: '/admin/demand_company/list',
