@@ -467,12 +467,33 @@ export default {
       console.log('scrollHeight', scrollHeigh)
       if (this.user.type !== 2) {
         if (!this.viewCover) {
-          if ((scrollHeigh - scrollTop) < 782 && scrollHeigh > 1200) {
+          if ((scrollHeigh - scrollTop) < 782) {
             this.elementPosition = true
           } else if (scrollTop > 1100) {
             this.elementShow = true
             this.elementPosition = false
           } else if (scrollTop > 1040 && this.designAttr.patent_url && this.designAttr.patent_url.length && !this.designAttr.illustrate_url.length) {
+            this.elementShow = true
+            this.elementPosition = false
+          } else if (scrollTop > 720 && this.designAttr.illustrate_url && this.designAttr.illustrate_url.length && !this.designAttr.patent_url.length) {
+            this.elementShow = true
+            this.elementPosition = false
+          } else if (scrollTop > 640 && !this.designAttr.illustrate_url.length && !this.designAttr.patent_url.length) {
+            this.elementShow = true
+            this.elementPosition = false
+          } else {
+            this.elementPosition = false
+            this.elementShow = false
+          }
+        }
+      } else {
+        if (!this.viewCover) {
+          if ((scrollHeigh - scrollTop) < 782) {
+            this.elementPosition = true
+          } else if (scrollTop > 1110) {
+            this.elementShow = true
+            this.elementPosition = false
+          } else if (scrollTop > 1070 && this.designAttr.patent_url && this.designAttr.patent_url.length && !this.designAttr.illustrate_url.length) {
             this.elementShow = true
             this.elementPosition = false
           } else if (scrollTop > 720 && this.designAttr.illustrate_url && this.designAttr.illustrate_url.length && !this.designAttr.patent_url.length) {

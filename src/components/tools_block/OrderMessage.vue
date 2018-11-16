@@ -195,6 +195,8 @@
           // this.$router.push({name: 'vcenterWalletList'})
           this.$router.push({name: 'redirect', query: {name: 'vcenterWalletList'}})
           // this.$message.warning('此消息已过期')
+        } else if (d.type === 4) {
+          this.$router.push({name: 'sdDesignCase_list'})
         }
       },
       // 请求消息数量

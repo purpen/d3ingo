@@ -116,8 +116,8 @@
       :visible.sync="dialogBuy"
       size="tiny" class="hint-text">
       <span class="move-text">请移步PC端进行操作</span>
-      <span slot="footer" class="dialog-footer">
-        <p @click="dialogBuy = false" class="sure-text">确 定</p>
+      <span slot="footer" class="dialog-footer" @click="dialogBuy = false">
+        <p class="sure-text">确 定</p>
       </span>
     </el-dialog>
 
@@ -371,6 +371,7 @@
 
   .display-area {
     position: absolute;
+    width: 100%;
     height: 100%;
   }
 
@@ -594,6 +595,10 @@
     text-align: left;
     float: left;
     padding-left: 10px;
+    max-width: 130px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .logo-style {
     float: left;

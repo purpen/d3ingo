@@ -21,12 +21,17 @@
                     <img :src="achieve.cover.small" alt="点击查看详情" class="img-size">
                   </div>
                 </div>
+                <div class="list-image" v-else-if="achieve.is_trade_fair === 0" @click="dialogPermiss = true">
+                  <div class="image-size">
+                    <img alt="点击查看详情" class="img-size" :src="achieve.cover.small">
+                  </div>
+                </div>
                 <div class="list-image" @click="listDatail(achieve.id)" v-else>
                   <div class="image-size">
                     <img :src="achieve.cover.small" alt="点击查看详情" class="img-size">
                   </div>
                 </div>
-                <div class="list-text">
+                <div class="list-text" v-if="achieve.sell === 1 || achieve.sell === 2 || achieve.is_trade_fair === 0" @click="diaPermiss(achieve.sell, achieve.is_trade_fair)">
                   <div class="list-title">
                     <span>{{achieve.title}}</span>
                   </div>
@@ -39,16 +44,41 @@
                         <span>出让金额：&nbsp;<span class="money" :class="{'pay-yet' : achieve.sell === 1 || achieve.sell === 2}">￥{{achieve.price}}</span></span>
                       </div>
                     </div>
-                    <!-- <div class="list-right" @click="collect(achieve.id)">
-                      <div class="list-button" v-if="achieve.is_follow === 0">
-                        <span class="button-text">感兴趣</span>
-                      </div>
-                      <div class="list-button interest-border" v-if="achieve.is_follow === 1">
-                        <span class="button-interest">已感兴趣</span>
-                      </div>
-                    </div> -->
                     <div v-if="achieve.sell !== 1 && achieve.sell !== 2">
-                      <div class="list-right" v-if="intersClick" @click="collect(achieve.id)">
+                      <div class="list-right" v-if="intersClick" @click.stop="collect(achieve.id)">
+                        <div class="list-button" v-if="achieve.is_follow === 0">
+                          <span class="button-text">感兴趣</span>
+                        </div>
+                        <div class="list-button interest-border" v-if="achieve.is_follow === 1">
+                          <span class="button-interest">已感兴趣</span>
+                        </div>
+                      </div>
+                      <div class="list-right" v-else disabled>
+                        <div class="list-button" v-if="achieve.is_follow === 0">
+                          <span class="button-text">感兴趣</span>
+                        </div>
+                        <div class="list-button interest-border" v-if="achieve.is_follow === 1">
+                          <span class="button-interest">已感兴趣</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="list-text" @click="listDatail(achieve.id)" v-else>
+                  <div class="list-title">
+                    <span>{{achieve.title}}</span>
+                  </div>
+                  <div class="list-bottom">
+                    <div class="list-left">
+                      <div class="list-way">
+                        <span>出让方式：&nbsp;{{achieve.sell_type === 1 ? '全额出让' : '股权合作'}}</span><span class="money">{{achieve.sell_type === 2 ?achieve.share_ratio+'%' : ''}}</span>
+                      </div>
+                      <div class="list-sum">
+                        <span>出让金额：&nbsp;<span class="money" :class="{'pay-yet' : achieve.sell === 1 || achieve.sell === 2}">￥{{achieve.price}}</span></span>
+                      </div>
+                    </div>
+                    <div v-if="achieve.sell !== 1 && achieve.sell !== 2" class="padding-di">
+                      <div class="list-right" v-if="intersClick" @click.stop="collect(achieve.id)">
                         <div class="list-button" v-if="achieve.is_follow === 0">
                           <span class="button-text">感兴趣</span>
                         </div>
@@ -76,6 +106,31 @@
     <div>
 
     </div>
+    <!-- 右下角图标 -->
+    <div class="right">
+      <div class="right-top" @click="clientPhone = true">
+      </div>
+    </div>
+    <el-dialog
+      :visible.sync="dialogPermiss"
+      size="tiny" class="hint-text">
+      <span class="move-text">暂无权限</span>
+      <div class="move-div">交易会期间扫码或联系平台客服开通权限</div>
+      <span slot="footer" class="dialog-footer" @click="dialogPermiss = false">
+        <p class="sure-text">确 定</p>
+      </span>
+    </el-dialog>
+    <el-dialog
+      :visible.sync="clientPhone"
+      top="30%"
+      size="tiny"
+      class="calls">
+      <div class="title-center">
+        <img class="avatt" src="../../../../../assets/images/trade_fairs/list/clientPhone.png" width="100"/>
+        <div class="company-name">客服电话</div>
+        <div class="right-number"><a href="tel:13031154842" class="number-red">13031154842</a></div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -87,6 +142,8 @@
       return {
         isLoading: false,
         intersClick: true,
+        dialogPermiss: false,
+        clientPhone: false,
         designCases: '',
         query: {
           page: 1,
@@ -99,11 +156,27 @@
       }
     },
     created() {
-      this.getDesignCase()
+      var types = this.$route.query.types
+      if (types) {
+        if (types === '1' && this.user.type === 1) {
+          this.getTradeFair()
+        }
+      }
+      setTimeout(() => {
+        this.getDesignCase()
+      }, 1)
     },
     mounted() {
     },
     methods: {
+      // 点击权限提示
+      diaPermiss(sell, fair) {
+        if (sell === 1 || sell === 2) {
+
+        } else if (fair === 0) {
+          this.dialogPermiss = true
+        }
+      },
       // 收藏需求
       collect(id) {
         this.intersClick = false
@@ -163,6 +236,18 @@
           that.isLoading = false
         })
       },
+      // 获取查看权限
+      getTradeFair() {
+        const that = this
+        that.$http.get (api.demandCompanySaveTradeFair)
+        .then (function (response) {
+          if (response.data.meta.status_code === 200) {
+          }
+        })
+        .catch (function (error) {
+          console.log(error.message)
+        })
+      },
       // 分页
       handleSelectionChange(val) {
         this.multipleSelection = val
@@ -195,6 +280,57 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .company-name {
+    margin-top: 16px;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+  }
+  .right-number {
+    margin-top: 12px;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+  }
+  .number-red {
+    color: #FF5A5F;
+  }
+  .title-center {
+    margin: 0 auto;
+    text-align: center;
+    margin-top: -60px;
+  }
+  /* 右侧屏幕浮动 */
+  .right {
+    z-index: 99;
+    height: 140px;
+    width: 60px;
+    position:fixed;
+    right: 0px;
+    bottom: -40px;
+  }
+  .right-top {
+    cursor: pointer;
+    height: 40px;
+    width: 40px;
+    background: url('../../../../../assets/images/trade_fairs/list/CustomerService@2x.png') no-repeat center;
+    background-size: contain;
+  }
+  .move-div {
+    color: #999;
+    font-size: 13px;
+    margin-top: -15px;
+  }
+  .sure-text {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #FF6E73;
+    text-align: center;
+  }
+  .move-text {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #666666;
+    text-align: center;
+  }
   .content-box {
     min-height: 325px;
     background: #3519B2;
@@ -280,11 +416,10 @@
   .list-text {
     padding-top: 10px;
     height: 70px;
-    margin: 0 5px;
   }
   .list-title {
     font-family: PingFangSC-Regular;
-    padding-left: 10px;
+    padding-left: 5px;
     font-size: 14px;
     color: #222222;
     line-height: 17.04px;
@@ -294,13 +429,16 @@
   }
   .list-left {
     padding-top: 8px;
-    padding-left: 10px;
+    padding-left: 5px;
   }
   .list-way {
     font-family: PingFangSC-Regular;
     font-size: 12px;
     color: #666666;
     line-height: 11.36px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .list-sum {
     font-family: PingFangSC-Regular;
@@ -309,14 +447,17 @@
     line-height: 11.36px;
     padding-top: 10px;
     overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
+  }
+  .padding-di {
+    padding-top: 10px;
   }
   .money {
     color: #FF4696;
   }
   .list-right {
     cursor: pointer;
-    padding-top: 10px;
     width: 80px;
     margin: 0 auto;
   }
