@@ -497,7 +497,7 @@
                           <button class="mg-t-10 white-button middle-button" v-if="d.status ===1 && d.design_result.sell < 2" @click="dialogAdmin=true">
                             仲裁电话
                           </button>
-                          <button class="white-button middle-button" v-if="d.status ===-1" @click="deleteOrder(d.id)">
+                          <button class="white-button middle-button" v-if="d.status ===-1||d.status ===-2" @click="deleteOrder(d.id)">
                             删除
                           </button>
                           <button class="mg-t-10 white-button middle-button" v-if="d.status ===1 && d.design_result.sell === 2&&!d.design_result.is_evaluate">
@@ -740,10 +740,8 @@
           }
         } else if (val === 2) {
           return '退款'
-        } else if (val === -1) {
+        } else if (val === -1 || val === -2) {
           return '交易失败'
-        } else if (val === -2) {
-          return '交易已关闭'
         }
       }
     },
