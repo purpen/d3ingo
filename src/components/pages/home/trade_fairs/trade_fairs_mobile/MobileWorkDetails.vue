@@ -371,6 +371,7 @@
 
   .display-area {
     position: absolute;
+    width: 100%;
     height: 100%;
   }
 
@@ -594,6 +595,10 @@
     text-align: left;
     float: left;
     padding-left: 10px;
+    max-width: 130px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .logo-style {
     float: left;

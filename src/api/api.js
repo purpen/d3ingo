@@ -481,6 +481,10 @@ export default {
   designItemTasks: '/design/itemTasks', // GET 所有项目任务统计
   designTargetIncomeCity: '/designTarget/incomeCity', // GET 城市排名
 
+  // 顺德交易会监控流量
+  sdTouristWilling: '/sd/touristWilling', // GET 游客,有意向数量
+  sdStatistics: '/sd/statistics', // GET 展示
+
   // 顺德需求方
   sdDemandRelease: '/sd/demand/release', // POST 发布需求
   sdDemandDemandShut: '/sd/demand/demandShut', // POST 关闭需求
@@ -519,6 +523,7 @@ export default {
   adminDesignDemandShowCollectList: '/admin/designDemand/showCollectList', // GET 查看设计需求被那些设计公司收藏
   adminDesignResultList: '/admin/designResult/list', // GET 设计成果待审核列表
   adminDesignResultSave: '/admin/designResult/save', // GET 设计成果审核
+  adminPayOrderDissolution: '/admin/payOrder/dissolution', // POST 解散支付订单
   adminDesignResultCollect: '/admin/designResult/collect', // GET 设计成果收藏列表
   adminDemandCompanySaveTradeFair: '/admin/demandCompany/saveTradeFair' // GET 修改交易会权限
 

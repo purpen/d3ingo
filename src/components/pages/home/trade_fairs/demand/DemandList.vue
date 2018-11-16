@@ -357,7 +357,7 @@
                       <el-row>
                         <el-col :span="10" class="collect-all">
                           <router-link :to="{name: 'work_datails', params: {id: d.id}}"
-                                target="_blank" class="datails-router" v-if="d.status === 3">
+                                target="_blank" class="datails-router" v-if="d.status === 3&&d.is_trade_fair === 1">
                             <div class="collect-img" :style="{background:'url('+d.cover.middle +') no-repeat center / contain'}">
                             </div>
                           </router-link>
@@ -366,7 +366,7 @@
                           <div class="collect-centent">
                             <p class="c-title">
                               <router-link :to="{name: 'work_datails', params: {id: d.id}}"
-                                target="_blank" class="datails-router" v-if="d.status === 3">
+                                target="_blank" class="datails-router" v-if="d.status === 3&&d.is_trade_fair === 1">
                                 {{d.title}}
                                 </router-link>
                                 <span v-else>
@@ -383,7 +383,7 @@
                           {{d.status === 3?'出售中': '下架'}}
                         </el-col>
                         <el-col :span="4">
-                          <button class="full-red-button middle-button" v-if="d.status === 3">
+                          <button class="full-red-button middle-button" v-if="d.status === 3&&d.is_trade_fair === 1">
                             <router-link :to="{name: 'work_datails', params: {id: d.id}}"
                             class="router-work">
                             立即购买
@@ -579,7 +579,7 @@
 </template>
 <script>
   import vMenu from '@/components/pages/v_center/Menu'
-  import vMenuSub from '@/components/pages/home/trade_fairs/demand/1MenuSub'
+  import vMenuSub from '@/components/pages/home/trade_fairs/demand/MenuSub'
   import api from '@/api/api'
   import config from '@/config'
   import RegionPicker from '@/components/block/RegionPicker'
@@ -726,8 +726,8 @@
           return '退款'
         } else if (val === -1) {
           return '交易失败'
-        } else {
-          return val
+        } else if (val === -2) {
+          return '交易已关闭'
         }
       }
     },
@@ -1065,7 +1065,7 @@
             return
           }
         })
-        .catch(function (error) {
+        .catch((error) => {
           self.isLoading = false
           self.$message.error(error.message)
           console.error(error.message)

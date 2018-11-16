@@ -128,7 +128,7 @@
       <div class="title-center">
         <img class="avatt" src="../../../../../assets/images/trade_fairs/list/clientPhone.png" width="100"/>
         <div class="company-name">客服电话</div>
-        <div class="right-number">13031154842</div>
+        <div class="right-number"><a href="tel:13031154842" class="number-red">13031154842</a></div>
       </div>
     </el-dialog>
   </div>
@@ -289,6 +289,8 @@
     margin-top: 12px;
     font-family: PingFangSC-Regular;
     font-size: 16px;
+  }
+  .number-red {
     color: #FF5A5F;
   }
   .title-center {
@@ -434,6 +436,9 @@
     font-size: 12px;
     color: #666666;
     line-height: 11.36px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .list-sum {
     font-family: PingFangSC-Regular;

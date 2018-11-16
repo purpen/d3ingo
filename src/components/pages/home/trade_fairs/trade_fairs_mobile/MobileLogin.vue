@@ -48,10 +48,10 @@
   </div>
 </template>
 <script>
-  // import api from '@/api/api'
-  import mobileHomePage from '@/components/pages/home/trade_fairs/trade_fairs_mobile/1MobileHomePage'
-  import demandDesign from '@/components/pages/home/trade_fairs/trade_fairs_mobile/1DemandDesign'
-  import saleResult from '@/components/pages/home/trade_fairs/trade_fairs_mobile/1SaleResult'
+  import api from '@/api/api'
+  import mobileHomePage from '@/components/pages/home/trade_fairs/trade_fairs_mobile/MobileHomePage'
+  import demandDesign from '@/components/pages/home/trade_fairs/trade_fairs_mobile/DemandDesign'
+  import saleResult from '@/components/pages/home/trade_fairs/trade_fairs_mobile/SaleResult'
   export default {
     name: 'demand_login',
     components: {
@@ -67,6 +67,7 @@
       }
     },
     created() {
+      this.getTrade(1)
       this.briefShows = true
       if (this.token) {
         this.demandShows = true
@@ -76,8 +77,23 @@
     mounted() {
     },
     methods: {
+      // 监控流量
+      getTrade(type) {
+        this.$http.get(api.sdTouristWilling, {params: {type: type}}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        })
+        .catch((error) => {
+          this.$message.error(error.message)
+          console.error(error.message)
+          return
+        })
+      },
       // 立即参与
       routerClick() {
+        this.getTrade(2)
         this.$router.push({name: 'demand_login'})
       },
       // 发布需求
