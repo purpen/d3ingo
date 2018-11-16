@@ -81,7 +81,7 @@ export default {
     return {
       isLoading: false,
       isLoadingBtn: false,
-      jdAccount: '',
+      jdToken: '',
       time: 0,
       labelPosition: 'top',
       form: {
@@ -128,8 +128,8 @@ export default {
     }
   },
   methods: {
-    checkJdAccount(account) {
-      this.$http.get(api.jdCheckAccount, {params: {account: account}})
+    checkJdToken(token) {
+      this.$http.get(api.jdCheckAccount, {params: {access_token: token}})
       .then(res => {
         if (res.data.meta.status_code === 200) {
           this.bindUser(res.data.data.token)
@@ -142,15 +142,15 @@ export default {
         console.error(err.message)
       })
     },
-    getJdAccount() {
+    getJdToken() {
       let code = this.$route.query.code
       if (code) {
         this.isLoading = true
-        this.$http.get(api.jdAccount, {params: {code: code}})
+        this.$http.get(api.jdToken, {params: {code: code}})
         .then(res => {
           if (res.data.meta.status_code === 200) {
-            this.jdAccount = res.data.data
-            this.checkJdAccount(res.data.data.account)
+            this.jdToken = res.data.data
+            this.checkJdToken(res.data.data)
           } else {
             this.$router.push({name: 'login'})
             this.isLoading = false
@@ -287,14 +287,14 @@ export default {
             row = {
               phone: this.form.account,
               password: this.form.password,
-              jd_account: this.jdAccount.account
+              access_token: this.jdToken
             }
           } else {
             row = {
               phone: this.form.account,
               password: this.form.password,
               sms_code: this.form.smsCode,
-              jd_account: this.jdAccount.account
+              access_token: this.jdToken
             }
           }
 
@@ -355,7 +355,7 @@ export default {
     }
   },
   created() {
-    this.getJdAccount()
+    this.getJdToken()
   },
   mounted() {
     this.fetchImgCaptcha()
