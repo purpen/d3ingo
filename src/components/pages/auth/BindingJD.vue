@@ -154,11 +154,12 @@ export default {
           } else {
             this.$router.push({name: 'login'})
             this.isLoading = false
-            this.$message.error(res.data.meta.message)
+            // this.$message.error(res.data.meta.message)
           }
         }).catch(err => {
           this.isLoading = false
           console.error(err.message)
+          this.$router.push({name: 'login'})
         })
       }
     },
