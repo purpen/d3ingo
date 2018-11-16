@@ -1057,7 +1057,6 @@
 
     .inline-flex {
       display: block;
-      width: 322px;
       margin: 0 auto;
       overflow: hidden;
     }
@@ -1094,16 +1093,15 @@
 
   @media screen and (max-width: 330px) {
     .logo-list img {
-      width: 40%;
+      width: 45%;
     }
     .home-banner .swiper-pagination {
       display: none
     }
   }
-  /* @media screen and ( max-width: 480px) {
-  .content-box {
-    width: 375px;
-    overflow-x: hidden;
+  @media screen and ( max-width: 480px) {
+    .logo-list img {
+      width: 45%;
+    }
   }
-} */
 </style>

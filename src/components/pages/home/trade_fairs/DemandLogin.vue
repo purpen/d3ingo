@@ -40,9 +40,9 @@
 
 <script>
   // import api from '@/api/api'
-  import briefContent from '@/components/pages/home/trade_fairs/1BriefContent'
-  import demandDesign from '@/components/pages/home/trade_fairs/1DemandDesign'
-  import saleResult from '@/components/pages/home/trade_fairs/1SaleResult'
+  import briefContent from '@/components/pages/home/trade_fairs/BriefContent'
+  import demandDesign from '@/components/pages/home/trade_fairs/DemandDesign'
+  import saleResult from '@/components/pages/home/trade_fairs/SaleResult'
   export default {
     name: 'demand_login',
     components: {
