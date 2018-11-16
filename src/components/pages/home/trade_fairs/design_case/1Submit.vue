@@ -169,7 +169,7 @@
                 <el-row>
                   <el-col :span="3" v-for="(f,indexf) in filepatent" :key="indexf" class="patent-list" :style="{background: 'url('+f.url+ ') no-repeat center/contain'}">
                     <div class="patent-icons">
-                      <div class="patent-btn" @click="deleteImg(f.id, 2)">
+                      <div class="patent-btn" @click="deleteImg(f.asset_id, 2)">
                         <i></i>
                         <span class="patent-text">删除图片</span>
                       </div>
@@ -508,6 +508,7 @@
       deleteImg(id, type) {
         this.$http.delete(api.asset, {params: {id: id}}).then((response) => {
           if (response.data.meta.status_code === 200) {
+            console.log('type', type)
             if (type === 3) {
               if (this.fileillustrate) {
                 this.fileillustrate.forEach((p, ind) => {

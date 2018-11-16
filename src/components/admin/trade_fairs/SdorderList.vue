@@ -195,7 +195,7 @@
         <el-button class="is-custom" type="primary" size="small" @click="upClose">确定</el-button>
       </span>
     </el-dialog>
-    <el-dialog title="关闭项目并返款"
+    <el-dialog title="关闭交易并返款"
       :visible.sync="dialogCloseVisible"
       @close="resetForm('delForm')"
       >
@@ -323,13 +323,10 @@ export default {
           }
           that.$http.post(api.adminPayOrderDissolution, row).then((response) => {
             if (response.data.meta.status_code === 200) {
-              that.itemList.forEach((item, index) => {
-                if (item.id === that.delForm.id) {
-                  item.status = -2
-                  item.design_result.sell = -1
-                  this.$set(that.itemList, index, item)
-                }
-              })
+              that.tableData[that.delForm.index]['status'] = -1
+              that.tableData[that.delForm.index]['design_result']['sell'] = 0
+              that.tableData[that.delForm.index]['status_value'] = '已关闭'
+              that.dialogCloseVisible = false
               that.orderLoading = false
             } else {
               that.orderLoading = false
@@ -362,7 +359,7 @@ export default {
     },
     // 解散订单弹窗
     delOrderBtn(index, id, amount) {
-      console.log('amount', amount)
+      this.delForm.index = index
       this.delForm.id = id
       this.delForm.amount = amount
       this.dialogDelVisible = true
@@ -414,6 +411,7 @@ export default {
           self.$message.success('操作成功！')
           self.sureTransferDialog = false
           self.tableData[self.orderForm.index]['status'] = 1
+          self.tableData[self.orderForm.index]['design_result']['sell'] = 1
           self.tableData[self.orderForm.index]['status_value'] = '支付完成'
           self.tableData[self.orderForm.index]['sure_outline_transfer'] = false
         } else {
