@@ -49,9 +49,9 @@
 </template>
 <script>
   // import api from '@/api/api'
-  import mobileHomePage from '@/components/pages/home/trade_fairs/trade_fairs_mobile/1MobileHomePage'
-  import demandDesign from '@/components/pages/home/trade_fairs/trade_fairs_mobile/1DemandDesign'
-  import saleResult from '@/components/pages/home/trade_fairs/trade_fairs_mobile/1SaleResult'
+  import mobileHomePage from '@/components/pages/home/trade_fairs/trade_fairs_mobile/MobileHomePage'
+  import demandDesign from '@/components/pages/home/trade_fairs/trade_fairs_mobile/DemandDesign'
+  import saleResult from '@/components/pages/home/trade_fairs/trade_fairs_mobile/SaleResult'
   export default {
     name: 'demand_login',
     components: {
