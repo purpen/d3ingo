@@ -21,7 +21,7 @@
 
 <script>
   import api from '@/api/api'
-  import briefContent from '@/components/pages/home/trade_fairs/1BriefContent'
+  import briefContent from '@/components/pages/home/trade_fairs/BriefContent'
   export default {
     name: 'home_page',
     components: {

@@ -1,9 +1,9 @@
 <template>
-  <div :class="['container', 'jdc']">
+  <div :class="['container', 'jdc']" v-loading="isLoading">
     <!-- <section class="cover-bgf7"></section> -->
     <div class="register-box">
       <div class="regisiter-title">
-        <h2>绑定京东账号</h2>
+        <h2>绑定艺火账号</h2>
       </div>
       <div class="register-content">
         <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px"
@@ -79,6 +79,7 @@ export default {
       }
     }
     return {
+      isLoading: false,
       isLoadingBtn: false,
       jdAccount: '',
       time: 0,
@@ -133,13 +134,18 @@ export default {
         if (res.data.meta.status_code === 200) {
           this.bindUser(res.data.data.token)
         } else {
+          this.isLoading = false
           console.log(res.data.meta.message)
         }
+      }).catch(err => {
+        this.isLoading = false
+        console.error(err.message)
       })
     },
     getJdAccount() {
       let code = this.$route.query.code
       if (code) {
+        this.isLoading = true
         this.$http.get(api.jdAccount, {params: {code: code}})
         .then(res => {
           if (res.data.meta.status_code === 200) {
@@ -147,9 +153,11 @@ export default {
             this.checkJdAccount(res.data.data.account)
           } else {
             this.$router.push({name: 'login'})
+            this.isLoading = false
             this.$message.error(res.data.meta.message)
           }
         }).catch(err => {
+          this.isLoading = false
           console.error(err.message)
         })
       }
@@ -234,7 +242,7 @@ export default {
       // 写入localStorage
       auth.write_token(token)
       // ajax拉取用户信息
-      this.$http.get(api.user, {})
+      that.$http.get(api.user, {})
       .then(function (response) {
         if (response.data.meta.status_code === 200) {
           console.log(response)
@@ -245,7 +253,7 @@ export default {
             message: '绑定成功!',
             type: 'success'
           })
-
+          that.isLoading = false
           that.$router.replace({name: 'vcenterControl'})
         } else {
           auth.logout()
@@ -255,9 +263,11 @@ export default {
             type: 'error'
           })
           that.isLoadingBtn = false
+          that.isLoading = false
         }
       })
       .catch(function (error) {
+        that.isLoading = false
         auth.logout()
         that.$message({
           showClose: true,

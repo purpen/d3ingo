@@ -173,7 +173,7 @@
               </a>
               </el-tooltip>
               <el-tooltip class="item" :effect="DarkorLight" content="顺德交易会" placement="right" v-if="prod.name === ''">
-              <a @click="alick" :to="'/shunde/trade_fairs/demand/demand_list'"
+              <a v-if="!isMob" @click="alick" :to="'/shunde/trade_fairs/demand/demand_list'"
                 :class="['item', 'demandList', {'is-active': currentName === 'demandList'}]">
                 顺德交易会
               </a>
@@ -250,7 +250,8 @@
                 我的钱包
               </a>
               <a @click="alick" :to="'/shunde/trade_fairs/demand/demand_list'"
-                :class="['item', 'demandList', {'is-active': currentName === 'demandList'}]">
+                :class="['item', 'demandList', {'is-active': currentName === 'demandList'}]"
+                v-if="prod.name === '' && !isMob">
                 顺德交易会
               </a>
             </div>

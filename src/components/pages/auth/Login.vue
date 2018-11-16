@@ -38,7 +38,7 @@
           <el-button type="primary" :loading="isLoadingBtn" @keyup="submit('ruleForm')" @click="submit('ruleForm')" class="login-btn is-custom">登录
           </el-button>
         </el-form>
-        <p v-if="prod.name === 'jdc'" class="authorize">京东授权登录:<span class="fx-4"><a target="_blank" href="http://oauth2.jdcloud.com/authorize?client_id=9651541661345895&redirect_uri=http://jdyun.taihuoniao.com/binding_jd&response_type=code&state=matrixapp">JD</a></span></p>
+        <a :href="jdURL"><p v-if="prod.name === 'jdc'" class="authorize"><span class="fx-2 jd-icon">京东云登录</span></p></a>
       </div>
     </div>
     <div class="reg">
@@ -49,7 +49,7 @@
       <div v-if="!code">
         <p v-if="!isMob">还没有{{prod.login}}账户？
           <router-link v-if="type" :to="{name: 'register',params:{type: type}}">立即注册</router-link>
-          <router-link v-else :to="{name: 'register'}">立即注册</router-link>
+          <router-link v-else :to="{name: 'register'}" :class="{'shake-reg': isShake}">立即注册</router-link>
         </p>
         <p v-else>还没有{{prod.login}}账户？
           <router-link :to="{name: 'identity'}">立即注册</router-link>
@@ -90,7 +90,7 @@
 import api from '@/api/api'
 import auth from '@/helper/auth'
 import { MENU_STATUS, MSG_COUNT, CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
-
+import { ENV } from 'conf/prod.env'
 export default {
   name: 'login',
   data() {
@@ -115,6 +115,7 @@ export default {
       }
     }
     return {
+      isShake: false,
       isLoadingBtn: false,
       labelPosition: 'top',
       form: {
@@ -142,7 +143,8 @@ export default {
       typeError: false,
       imgCaptchaUrl: '',
       imgCaptchaStr: '',
-      showImgCode: false
+      showImgCode: false,
+      jdURL: 'http://oauth2.jdcloud.com/authorize?client_id=9651541661345895&redirect_uri=http://jdyun.taihuoniao.com/binding_jd&response_type=code&state=matrixapp'
     }
   },
   methods: {
@@ -184,6 +186,7 @@ export default {
               .post(api.login, { account: account, password: password, str: that.imgCaptchaStr, captcha: that.form.imgCode })
               .then(function(response) {
                 that.isLoadingBtn = false
+                console.log(response)
                 if (response.data.meta.status_code === 200) {
                   let token = response.data.data.token
                   that.token = token
@@ -232,9 +235,13 @@ export default {
                       that.$message.error(error.message)
                     })
                 } else {
-                  console.log(response.data.data.err_count)
                   that.$message.error(response.data.meta.message)
-                  if (response.data.meta.status_code === 403 && response.data.data.err_count >= 3) {
+                  if (response.data.meta.status_code === 401) {
+                    that.isShake = true
+                    setTimeout(function() {
+                      that.isShake = false
+                    }, 500)
+                  } else if (response.data.meta.status_code === 403 && response.data.data.err_count >= 3) {
                     that.fetchImgCaptcha()
                     that.showImgCode = true
                   }
@@ -385,6 +392,9 @@ export default {
     })
   },
   created: function() {
+    if (ENV === 'prod') {
+      this.jdURL = 'http://oauth2.jdcloud.com/authorize?client_id=9741542107197570&redirect_uri=https://c.jdcloud.com/binding_jd&response_type=code&state=matrixapp'
+    }
     if (this.prod.name) {
       this.userType = 1
     }
@@ -424,6 +434,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.shake-reg {
+  display: inline-block;
+  animation-name: shake-hard;
+  animation-duration: 100ms;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 4;
+}
 .login-box {
   background: #fff;
   width: 530px;
@@ -705,13 +722,17 @@ form {
   cursor: pointer;
 }
 .authorize {
-  padding-top: 10px;
+  line-height: 30px;
+  margin-top: 10px;
+  margin-bottom: -10px;
   text-align: left;
+  padding-left: 40px;
+  background: url(../../../assets/images/logo-yh2.png) no-repeat left / 30px;
 }
 .authorize span {
-  padding-left: 10px;
-  color: #0989C5;
+  color: #222;
   cursor: pointer;
+  display: inline-block;
 }
 @media screen and (max-width: 767px) {
   .container {
