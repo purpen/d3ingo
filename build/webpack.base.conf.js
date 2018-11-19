@@ -97,7 +97,16 @@ plugins: [
       {
         test: /\.js$/,
         loader: ['happypack/loader?id=js'],
-        include: [resolve('src')],
+        include: [
+          resolve('src'),
+          resolve('test'),
+          resolve('node_modules/vue-pdf'),
+          resolve('node_modules/vue-full-calendar'),
+          resolve('node_modules/element-ui'),
+          resolve('node_modules/vue-echarts/node_modules/echarts'),
+          resolve('node_modules/echarts'),
+          resolve('node_modules/resize-detector'),
+          resolve('node_modules/vue-resize-sensor')],
         exclude: [/node_modules/, /vfs_fonts\.js/, /pdfmake.*js/]
       },
       {
