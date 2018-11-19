@@ -248,12 +248,6 @@ export default {
         if (response.data.meta.status_code === 200) {
           console.log(response)
           auth.write_user(response.data.data)
-
-          that.$message({
-            showClose: true,
-            message: '绑定成功!',
-            type: 'success'
-          })
           that.isLoading = false
           that.$router.replace({name: 'vcenterControl'})
         } else {
