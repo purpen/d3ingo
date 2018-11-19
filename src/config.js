@@ -1409,7 +1409,11 @@ const COLUMN_TYPE = [
   },
   {
     id: 2,
-    name: '其它'
+    name: '轮播'
+  },
+  {
+    id: 10,
+    name: '其他'
   }
 ]
 
