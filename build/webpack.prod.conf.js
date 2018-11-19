@@ -66,9 +66,7 @@ var webpackConfig = merge(baseWebpackConfig, {
       uglifyOptions: {
         ecma: 8,
         ie8: true,
-        mangle: {
-          screw_ie8: false
-        },
+        mangle: true,
         output: { comments: false, beautify: false },
         compress: {
           drop_console: true,
