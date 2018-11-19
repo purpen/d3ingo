@@ -41,7 +41,7 @@ module.exports = {
     }
   },
   // 增加一个plugins
-  plugins: [
+plugins: [
     // ignoreFiles,
     new HappyPack({
       id: 'js',
@@ -69,8 +69,7 @@ module.exports = {
     })
   ],
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.(js|vue)$/,
         loader: 'happypack/loader?id=eslint',
         enforce: "pre",
@@ -78,11 +77,9 @@ module.exports = {
           resolve('src'),
           resolve('test'),
           resolve('node_modules/element-ui'),
-          resolve('node_modules/vue-echarts'),
+          resolve('node_modules/vue-echarts/node_modules/echarts'),
           resolve('node_modules/echarts'),
           resolve('node_modules/resize-detector'),
-          resolve('node_modules/vue-pdf'),
-          resolve('node_modules/echarts'),
           resolve('node_modules/vue-resize-sensor')],
         exclude: [/node_modules/, /vfs_fonts\.js/, /pdfmake.*js/]
       },
@@ -98,14 +95,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: ['happypack/loader?id=js'],
-        include: [
-          resolve('src'),
-          resolve('test'),
-          resolve('node_modules/vue-echarts'),
-          resolve('node_modules/echarts'),
-          resolve('node_modules/resize-detector'),
-          resolve('node_modules/vue-pdf'),
-          resolve('node_modules/vue-resize-sensor')],
+        include: [resolve('src')],
         exclude: [/node_modules/, /vfs_fonts\.js/, /pdfmake.*js/]
       },
       {
