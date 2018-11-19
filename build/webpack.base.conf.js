@@ -7,11 +7,6 @@ var HappyPack = require('happypack')
 var happThreadPool = HappyPack.ThreadPool({ size: os.cpus().length })
 // var nodeExternals = require('webpack-node-externals')
 process.noDeprecation = true
-var webpack = require('webpack')
-// var ignoreFiles = new webpack.IgnorePlugin(/\.\.dll.js$/)
-// var ignoreFiles = new webpack.IgnorePlugin(/\.\/pdfmake.dll.js$/)
-// var ignoreFiles = new webpack.IgnorePlugin(/\.\/vfs_fonts.dll.js$/)
-// var ignoreFiles = new webpack.IgnorePlugin(/pdfmake.min$/, /vfs_fonts$/)
 function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
@@ -89,7 +84,7 @@ module.exports = {
           resolve('node_modules/vue-pdf'),
           resolve('node_modules/echarts'),
           resolve('node_modules/vue-resize-sensor')],
-          exclude: [/node_modules/, /pdfmake.js$/]
+        exclude: [/node_modules/, /vfs_fonts\.js/, /pdfmake.*js/]
       },
       {
         test: /\.vue$/,
@@ -103,13 +98,15 @@ module.exports = {
       {
         test: /\.js$/,
         loader: ['happypack/loader?id=js'],
-        exclude: [
+        include: [
+          resolve('src'),
+          resolve('test'),
           resolve('node_modules/vue-echarts'),
-          resolve('node_modules/vue-echarts/node_modules/echarts'),
           resolve('node_modules/echarts'),
           resolve('node_modules/resize-detector'),
-          /pdfmake.js$/]
-        // exclude: [/node_modules/, /pdfmake.js$/]
+          resolve('node_modules/vue-pdf'),
+          resolve('node_modules/vue-resize-sensor')],
+        exclude: [/node_modules/, /vfs_fonts\.js/, /pdfmake.*js/]
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
