@@ -85,14 +85,16 @@ module.exports = {
         loader: ['happypack/loader?id=babel'],
         include: [
           resolve('src'),
-          resolve('test'),
-          resolve('node_modules/element-ui'),
-          resolve('node_modules/vue-echarts'),
-          resolve('node_modules/echarts'),
-          resolve('node_modules/resize-detector'),
-          resolve('node_modules/vue-pdf'),
-          resolve('node_modules/vue-resize-sensor')],
-        exclude: [/node_modules/, /pdfmake.js$/]
+          resolve('node_modules'),
+          // resolve('test'),
+          // resolve('node_modules/element-ui'),
+          // resolve('node_modules/vue-echarts'),
+          // resolve('node_modules/echarts'),
+          // resolve('node_modules/resize-detector'),
+          // resolve('node_modules/vue-pdf'),
+          // resolve('node_modules/vue-resize-sensor')
+        ],
+        exclude: [/pdfmake.js$/]
       },
       {
         test: /\.(js|vue)$/,
