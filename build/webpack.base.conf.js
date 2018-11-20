@@ -73,26 +73,13 @@ plugins: [
         test: /\.(js|vue)$/,
         loader: 'happypack/loader?id=eslint',
         enforce: "pre",
-        include: [
-          resolve('src'),
-          resolve('test'),
-          resolve('node_modules/vue-pdf'),
-          resolve('node_modules/vue-full-calendar'),
-          resolve('node_modules/element-ui'),
-          resolve('node_modules/vue-echarts/node_modules/echarts'),
-          resolve('node_modules/echarts'),
-          resolve('node_modules/resize-detector'),
-          resolve('node_modules/vue-resize-sensor')],
-        exclude: [/node_modules/, /vfs_fonts\.js/, /pdfmake.*js/]
+        include: [resolve('src')],
+        exclude: [/node_modules/]
       },
       {
         test: /\.vue$/,
         loader: 'vue-loader',
-        options: {
-          loaders: {
-            js: 'happypack/loader?id=babel' // 将loader换成happypack
-          }
-        }
+        options: vueLoaderConfig
       },
       {
         test: /\.js$/,
