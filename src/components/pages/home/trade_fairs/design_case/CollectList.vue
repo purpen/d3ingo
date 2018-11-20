@@ -527,19 +527,19 @@
     margin: 0 auto;
   }
   .list-title {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 16px;
     color: #222222;
     line-height: 17.04px;
   }
   .list-data {
     padding-top: 10px;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     color: #999999;
   }
   .list-word {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 14px;
     color: #666666;
     padding-top: 10px;
@@ -599,7 +599,7 @@
   }
   .details-text {
     position: relative;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     padding-left: 10px;
     color: #999999;
@@ -632,7 +632,7 @@
   }
   .button-interest {
     position: relative;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     padding-left: 15px;
     color: #FF5A5F;
@@ -659,7 +659,7 @@
   }
   .button-text {
     position: relative;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     padding-left: 10px;
     color: #999999;
@@ -687,7 +687,7 @@
   }
   .dia-interest {
     position: relative;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     padding-left: 15px;
     color: #FF5A5F;
@@ -724,7 +724,7 @@
   }
   .contact-text {
     position: relative;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     padding-left: 10px;
     color: #999999;
@@ -773,14 +773,14 @@
     margin-top: -20px;
   }
   .company-name {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 16px;
     color: #222222;
     letter-spacing: 0;
     padding-top: 17px;
   }
   .right-number {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 16px;
     color: #FF5A5F;
     letter-spacing: 0;

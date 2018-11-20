@@ -1091,7 +1091,7 @@ export default {
     margin-right: 10px;
   }
   .side span {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 14px;
     color: #999;
   }

@@ -703,7 +703,7 @@
   .content-box p.title {
     margin: 10px 0;
     font-size: 1.4rem;
-    font-family: PingFangSC-Medium;
+    font-family: PingFangSC-Medium, "Microsoft Yahei";
     color: #333;
   }
 
