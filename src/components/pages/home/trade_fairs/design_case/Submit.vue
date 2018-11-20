@@ -306,6 +306,16 @@
         }
       }
       return {
+        facilitys: [
+          {
+            value: 1,
+            label: 'PC'
+          },
+          {
+            value: 2,
+            label: '手机'
+          }
+        ],
         userId: this.$store.state.event.user.id,
         itemId: null,
         isLoadingBtn: false, // 保存按钮
