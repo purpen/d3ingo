@@ -99,5 +99,7 @@
     "node": ">= 4.0.0",
     "npm": ">= 3.0.0"
   },
-  "browserslist": ["ie >=9"]
+  "browserslist": [
+    "ie >=9"
+  ]
 }

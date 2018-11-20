@@ -939,6 +939,9 @@ export default {
       console.error(error.message)
     })
   }
+  // mounted() {
+  //   this.$refs['ruleForm'].resetFields()
+  // }
 }
 </script>
 
