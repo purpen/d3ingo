@@ -463,8 +463,6 @@ export default {
     handleScroll () {
       var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
       var scrollHeigh = document.body.scrollHeight
-      console.log('scrollTop', scrollTop)
-      console.log('scrollHeight', scrollHeigh)
       if (this.user.type !== 2) {
         if (!this.viewCover) {
           if ((scrollHeigh - scrollTop) < 782) {
