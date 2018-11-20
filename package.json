@@ -25,7 +25,7 @@
     "markdown-it": "^8.4.0",
     "markdown-it-container": "^2.0.0",
     "mavon-editor": "^2.2.7",
-    "pdfjs-dist": "=2.0.303",
+    "pdfjs-dist": "^2.0.303",
     "qrcanvas": "^1.1.2",
     "qs": "^6.5.0",
     "stylus": "^0.54.5",
