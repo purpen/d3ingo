@@ -164,7 +164,7 @@
           }
         } else if (val === 2) {
           return '退款'
-        } else if (val === -1) {
+        } else if (val === -1 || val === -2) {
           return '交易失败'
         } else {
           return val
