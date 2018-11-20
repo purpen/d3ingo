@@ -210,7 +210,7 @@
       seenBook() {
         let routeData = this.$router.resolve({name: 'achieve_preview', params: {id: this.formup.id}})
         window.open(routeData.href, '_blank')
-        // this.$router.push({name: 'moblie_preview', params: {id: this.formup.id}})
+        // this.$router.push({name: 'achieve_preview', params: {id: this.formup.id}})
       },
       // 展开更多
       unfoldMore() {
