@@ -44,7 +44,7 @@ module.exports = {
 plugins: [
     // ignoreFiles,
     new HappyPack({
-      id: 'js',
+      id: 'babel',
       threads: 4,
       loaders: [
         {
@@ -90,13 +90,13 @@ plugins: [
         loader: 'vue-loader',
         options: {
           loaders: {
-            js: 'happypack/loader?id=js' // 将loader换成happypack
+            js: 'happypack/loader?id=babel' // 将loader换成happypack
           }
         }
       },
       {
         test: /\.js$/,
-        loader: ['happypack/loader?id=js'],
+        loader: ['happypack/loader?id=babel'],
         include: [
           resolve('src'),
           resolve('test'),
