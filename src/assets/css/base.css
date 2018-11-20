@@ -1147,7 +1147,7 @@ input:-webkit-autofill {
 .item.is-active {
   background-color: #ffffff;
   color: #222222;
-  font-family: PingFangSC-Medium;
+  font-family: PingFangSC-Medium, "Microsoft Yahei";
 }
 
 .MmenuHide {
@@ -1380,7 +1380,7 @@ button {
 }
 
 .fc-head {
-  font-family: PingFangSC-Medium;
+  font-family: PingFangSC-Medium, "Microsoft Yahei";
   font-size: 14px;
   background: rgba(255, 90, 96, 0.6);
   height: 40px;

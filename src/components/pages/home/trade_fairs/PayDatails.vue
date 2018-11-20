@@ -657,7 +657,7 @@ export default {
   text-align: center;
   height:48px;
   font-size:34px;
-  font-family:PingFangSC-Medium;
+  font-family:PingFangSC-Medium, "Microsoft Yahei";
   font-weight:500;
   color:rgba(34,34,34,1);
   line-height:48px;
@@ -667,7 +667,7 @@ export default {
   margin: 0 40px;
   line-height: 24px;
   font-size: 16px;
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-weight: 400;
   color: #666666;
 }
@@ -698,7 +698,7 @@ export default {
 
 .company-name {
   padding-top: 10px;
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   color: #222222;
   letter-spacing: 0;
@@ -725,24 +725,24 @@ export default {
   background: #fff;
 }
 .right-word {
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   color: #222222;
 }
 .right-number {
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   color: #999999;
   float: right
 }
 .right-pah {
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   color: #999999;
   float: right;
 }
 .right-money {
-  font-family: PingFangSC-Semibold;
+  font-family: PingFangSC-Semibold, "Microsoft Yahei";
   font-size: 20px;
   color: #FF5A5F;
   float: right;
@@ -796,7 +796,7 @@ export default {
 }
 .bought-text {
   position: relative;
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   padding-left: 10px;
   color: #fff;
@@ -813,7 +813,7 @@ export default {
 }
 .details-text {
   position: relative;
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   padding-left: 10px;
   color: #fff;
@@ -830,7 +830,7 @@ export default {
 }
 .to-pay {
   position: relative;
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   padding-left: 10px;
   color: #fff;
@@ -847,7 +847,7 @@ export default {
 }
 .button-text {
   position: relative;
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   padding-left: 10px;
   color: #ff5a5f;
@@ -887,7 +887,7 @@ export default {
 }
 .button-interest {
   position: relative;
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   padding-left: 15px;
   color: #999;
@@ -916,7 +916,7 @@ export default {
   width: 240px;
   margin: 0 auto;
   height: 22px;
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   color: #222222;
 }
@@ -939,7 +939,7 @@ export default {
 }
 .instruction-blook {
   height: 30px;
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   color: #222222;
   line-height: 30px;
@@ -957,7 +957,7 @@ export default {
   line-height: 28px;
   text-align: center;
   border: 1px solid #FF5A5F;
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 14px;
   color: #FF5A5F;
   border-radius: 4px;
@@ -973,28 +973,28 @@ export default {
   background: #fff;
 }
 .right-serial {
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   color: #999999;
   text-align: right;
   float: right;
 }
 .right-data {
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   color: #999999;
   text-align: right;
   float: right;
 }
 .right-way {
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   color: #999999;
   text-align: right;
   float: right;
 }
 .bought-money {
-  font-family: PingFangSC-Semibold;
+  font-family: PingFangSC-Semibold, "Microsoft Yahei";
   font-size: 20px;
   color: #FF5A5F;
   text-align: right;
@@ -1073,7 +1073,7 @@ p.img-des {
   margin-top: 10px;
 }
 .state-way {
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   color: #FF5A5F;
   float: right
@@ -1097,14 +1097,14 @@ p.img-des {
 .published-evaluation {
   height: 60px;
   background: #fafafa;
-  font-family: PingFangSC-Light;
+  font-family: PingFangSC-Light, "Microsoft Yahei";
   font-size: 18px;
   color: #222222;
   line-height: 60px;
   padding-left: 30px
 }
 .eva-text {
-  font-family: PingFangSC-Light;
+  font-family: PingFangSC-Light, "Microsoft Yahei";
   font-size: 16px;
   color: #222222;
 }

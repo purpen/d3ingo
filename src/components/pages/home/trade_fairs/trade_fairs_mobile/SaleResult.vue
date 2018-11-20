@@ -282,12 +282,12 @@
 <style scoped>
   .company-name {
     margin-top: 16px;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 16px;
   }
   .right-number {
     margin-top: 12px;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 16px;
   }
   .number-red {
@@ -320,13 +320,13 @@
     margin-top: -15px;
   }
   .sure-text {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 16px;
     color: #FF6E73;
     text-align: center;
   }
   .move-text {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 16px;
     color: #666666;
     text-align: center;
@@ -360,7 +360,7 @@
   .empty-content {
     font-size: 14px;
     color: #fff;
-    font-family:PingFangSC-Regular;
+    font-family:PingFangSC-Regular, "Microsoft Yahei";
     font-weight:400;
   }
 
@@ -418,7 +418,7 @@
     height: 70px;
   }
   .list-title {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     padding-left: 5px;
     font-size: 14px;
     color: #222222;
@@ -432,7 +432,7 @@
     padding-left: 5px;
   }
   .list-way {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     color: #666666;
     line-height: 11.36px;
@@ -441,7 +441,7 @@
     white-space: nowrap;
   }
   .list-sum {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     color: #666666;
     line-height: 11.36px;
@@ -470,7 +470,7 @@
   }
   .button-text {
     position: relative;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     padding-left: 10px;
     color: #999999;
@@ -490,7 +490,7 @@
   }
   .button-interest {
     position: relative;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     padding-left: 15px;
     color: #FF4696;

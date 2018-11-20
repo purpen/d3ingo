@@ -504,7 +504,7 @@
   .empty-content {
     font-size: 14px;
     color: #fff;
-    font-family:PingFangSC-Regular;
+    font-family:PingFangSC-Regular, "Microsoft Yahei";
     font-weight:400;
   }
 
@@ -559,7 +559,7 @@
     top: 13px;
     padding: 0 20px;
     color: #fff;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 14px;
   }
   .pMassgae:after {
@@ -588,7 +588,7 @@
     top: 94px;
     padding: 0 20px;
     color: #fff;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 14px;
   }
   .pMassgae-bottom:after {
@@ -641,19 +641,19 @@
     margin: 0 auto;
   }
   .list-title {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 16px;
     color: #222222;
     line-height: 17.04px;
   }
   .list-data {
     padding-top: 10px;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     color: #999999;
   }
   .list-word {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 14px;
     color: #666666;
     padding-top: 10px;
@@ -691,7 +691,7 @@
   }
   .details-text {
     position: relative;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     padding-left: 15px;
     color: #999999;
@@ -708,7 +708,7 @@
   }
   .contact-text {
     position: relative;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     padding-left: 10px;
     color: #999999;
@@ -725,7 +725,7 @@
   }
   .button-text {
     position: relative;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     padding-left: 10px;
     color: #999999;
@@ -773,7 +773,7 @@
   }
   .button-interest {
     position: relative;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     padding-left: 15px;
     color: #FF4696;
@@ -841,7 +841,7 @@
   }
   .dia-interest {
     position: relative;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     padding-left: 15px;
     color: #FF5A5F;
@@ -884,14 +884,14 @@
     margin-top: -20px;
   }
   .company-name {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 16px;
     color: #222222;
     letter-spacing: 0;
     padding-top: 17px;
   }
   .right-number {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 16px;
     color: #FF5A5F;
     letter-spacing: 0;

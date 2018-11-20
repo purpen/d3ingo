@@ -241,7 +241,7 @@
 .el-button--primary,
 .el-button--default,
 .el-button--large {
-  font-family: PingFangSC-Light;
+  font-family: PingFangSC-Light, "Microsoft Yahei";
   padding: 0;
   margin: 0;
   font-size: 14px;

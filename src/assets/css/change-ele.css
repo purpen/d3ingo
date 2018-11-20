@@ -743,7 +743,7 @@
     bottom: -5px;
   }
   .patent .el-collapse-item__header {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 16px;
     color: #222222;
   }
