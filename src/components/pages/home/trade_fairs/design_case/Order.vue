@@ -45,7 +45,7 @@
                       <el-col :span="8" class="collect-all">
                         <router-link :to="{name: 'pay_datails', params: {id: d.id}}"
                             target="_blank" class="router-work">
-                          <div class="collect-img" :style="{background:'url('+d.cover.logo +') no-repeat center / contain'}">
+                          <div class="collect-img" :style="{background:'url('+d.cover.middle +') no-repeat center / contain'}">
                           </div>
                         </router-link>
                         <div class="collect-centent">
