@@ -184,12 +184,14 @@
               }
             }
             scale = bs
-            var viewport = page.getViewport(scale)
+            var viewport = page.getViewport(scale * 3)
             var canvas = _this.$refs.the_canvas
             var canvasAppend = document.createElement('canvas')
             canvasAppend.style.position = 'relative'
             canvasAppend.style.left = '50%'
             canvasAppend.style.transform = 'translate(-50%)'
+            canvasAppend.style.width = viewport.width / 3 + 'px'
+            canvasAppend.style.height = viewport.height / 3 + 'px'
             var canvasLi = document.createElement('div')
             canvasAppend.height = viewport.height
             canvasAppend.width = viewport.width
