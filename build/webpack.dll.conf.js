@@ -14,7 +14,7 @@ let cleanOptions = {
 }
 module.exports = {
   entry: {
-    core: ['vue/dist/vue.esm.js', 'vue-router', 'axios', 'vuex', 'vue-echarts', 'pdfjs-dist', 'vue-pdf', 'mavon-editor', 'fullcalendar', 'moment']
+    core: ['vue/dist/vue.esm.js', 'vue-router', 'axios', 'vuex', 'vue-echarts', 'mavon-editor', 'fullcalendar', 'moment']
     // 需要打包起来的依赖
   },
   output: {
