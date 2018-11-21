@@ -75,12 +75,15 @@
                         <p v-if="d.design_result.sell === 1">请尽快联系需求方交付设计成果</p>
                       </el-col>
                       <el-col :span="4">
-                        <el-button class="is-custom" type="primary" size="small" v-if="d.design_result.sell === 2&&d.design_result.is_evaluate===1">
+                        <button class="full-red-button middle-button" v-if="d.design_result.sell === 2&&d.design_result.is_evaluate===1">
                           <router-link :to="{name: 'pay_datails', params: {id: d.id}}"
                             target="_blank" class="router-pay">
                             查看评价
                           </router-link>
-                        </el-button>
+                        </button>
+                        <button class="white-button middle-button" v-if="d.status ===-1||d.status ===-2" @click="deleteOrder(d.id)">
+                            删除
+                        </button>
                         <!-- <el-button class="mg-t-10">
                           评价
                         </el-button> -->
@@ -172,6 +175,25 @@
       }
     },
     methods: {
+      // 删除订单
+      deleteOrder(id) {
+        this.$http.get(api.payDeleteOrder, {params: {id: id}}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.orderList.forEach((item, index) => {
+              if (item.id === id) {
+                this.orderList.splice(index, 1)
+              }
+            })
+          } else {
+            this.$message.error(response.data.meta.message)
+            return
+          }
+        })
+        .catch(function (error) {
+          this.$message.error(error.message)
+          return
+        })
+      },
       // 获取详情
       upDetails(id) {
         this.formup = {}
