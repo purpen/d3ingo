@@ -41,13 +41,11 @@
                       </div>
                       <div class="list-bottom bottom-style">
                         <div class="list-contain">
-                          <div :class="['list-button', {'interest-border':  item.follow_status === 1}]" @click="deleteCollect(item.id, item.follow_status)">
-                            <span :class="[
-                              {'button-interest': item.follow_status === 1},
-                              {'button-text': item.follow_status === 2}]"
-                            >{{item.follow_status === 1 ? '已感兴趣':'感兴趣'}}</span>
+                          <div class="list-button interest-border" @click="deleteCollect(item.id)">
+                            <span class="button-interest">已感兴趣</span>
                           </div>
                         </div>
+                        <!-- {'button-text': item.follow_status === 2} -->
                         <div class="list-right">
                           <div class="list-button" @click="contactWay(item)">
                             <span class="contact-text">联系他</span>
@@ -268,44 +266,22 @@
       },
       // 收藏需求
       deleteCollect(id, status) {
-        if (status === 2) {
-          this.$http.post(api.sdDesignCollectDemand, {design_demand_id: id}).then((response) => {
-            if (response.data.meta.status_code === 200) {
-              this.collectList.forEach((item, index) => {
-                if (item.id === id) {
-                  this.collectList.splice(index, 1)
-                  // item.follow_status = 1
-                  // this.formup.follow_status = 1
-                }
-              })
-            } else {
-              this.$message.error(response.data.meta.message)
-              return
-            }
-          })
-          .catch((error) => {
-            this.$message.error(error.message)
+        this.$http.post(api.sdDesignCancelCollectDemand, {design_demand_id: id}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.collectList.forEach((item, index) => {
+              if (item.id === id) {
+                this.collectList.splice(index, 1)
+              }
+            })
+          } else {
+            this.$message.error(response.data.meta.message)
             return
-          })
-        } else {
-          this.$http.post(api.sdDesignCancelCollectDemand, {design_demand_id: id}).then((response) => {
-            if (response.data.meta.status_code === 200) {
-              this.collectList.forEach(item => {
-                if (item.id === id) {
-                  item.follow_status = 2
-                  this.formup.follow_status = 2
-                }
-              })
-            } else {
-              this.$message.error(response.data.meta.message)
-              return
-            }
-          })
-          .catch((error) => {
-            this.$message.error(error.message)
-            return
-          })
-        }
+          }
+        })
+        .catch((error) => {
+          this.$message.error(error.message)
+          return
+        })
       },
       // 获取详情
       upDetails(id) {
