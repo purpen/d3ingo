@@ -108,7 +108,7 @@
               label="操作">
                 <template slot-scope="scope">
                   <p>
-                    <a href="javascript:void(0);" v-show="(scope.row.status !== -1)&&(scope.row.design_result.sell === 1?true:false)" @click="delOrderBtn(scope.$index, scope.row.id, scope.row.amount)">解散订单</a>
+                    <a href="javascript:void(0);" v-show="(scope.row.status >= 0)&&(scope.row.design_result.sell === 1?true:false)" @click="delOrderBtn(scope.$index, scope.row.id, scope.row.amount)">解散订单</a>
                   </p>
                   <p>
                     <a href="javascript:void(0);" v-show="scope.row.sure_outline_transfer" @click="showTransfer(scope.$index, scope.row)">查看凭证</a>
@@ -277,21 +277,23 @@ export default {
   methods: {
     // 金额变化
     updateMoney(value, sum, type) {
-      if (isNaN(value)) {
-        this.$message.error('请输入正确的金额')
-        return
-      }
-      let val = parseFloat(value)
-      let sums = parseFloat(sum)
-      if (val > sums) {
-        this.$message.error('金额超过总金额')
-        return
-      }
-      console.log('sums - val', sums, val)
-      if (type === 'demand') {
-        this.$set(this.delForm, 'design', sums - val)
-      } else {
-        this.$set(this.delForm, 'demand', sums - val)
+      console.log(111, value)
+      if (value) {
+        if (isNaN(value)) {
+          this.$message.error('请输入正确的金额')
+          return
+        }
+        let val = parseFloat(value)
+        let sums = parseFloat(sum)
+        if (val > sums) {
+          this.$message.error('金额超过总金额')
+          return
+        }
+        if (type === 'demand') {
+          this.$set(this.delForm, 'design', sums - val)
+        } else {
+          this.$set(this.delForm, 'demand', sums - val)
+        }
       }
     },
     downOrder(formName) {
@@ -301,6 +303,7 @@ export default {
     // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields()
+      this.delForm = {}
     },
     // 解散订单
     delectOrder(formName) {
@@ -323,9 +326,10 @@ export default {
           }
           that.$http.post(api.adminPayOrderDissolution, row).then((response) => {
             if (response.data.meta.status_code === 200) {
-              that.tableData[that.delForm.index]['status'] = -1
+              that.tableData[that.delForm.index]['status'] = -2
               that.tableData[that.delForm.index]['design_result']['sell'] = 0
-              that.tableData[that.delForm.index]['status_value'] = '已关闭'
+              that.tableData[that.delForm.index]['status_value'] = '已解散'
+              that.delForm = {}
               that.dialogCloseVisible = false
               that.orderLoading = false
             } else {
@@ -360,6 +364,7 @@ export default {
     // 解散订单弹窗
     delOrderBtn(index, id, amount) {
       this.delForm.index = index
+      console.log(this.delForm.index)
       this.delForm.id = id
       this.delForm.amount = amount
       this.dialogDelVisible = true
@@ -485,8 +490,6 @@ export default {
             item['sure_outline_transfer'] = sureOutlineTransfer
             self.tableData.push(item)
           } // endfor
-
-          console.log(self.itemList)
         } else {
           self.$message.error(response.data.meta.message)
         }
