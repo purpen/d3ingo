@@ -493,6 +493,7 @@
                   that.$message.error (response.data.meta.message)
                   that.isLoadingBtn2 = false
                   that.isLoadingBtn = false
+                  return false
                 }
               })
               .catch (function (error) {
@@ -950,8 +951,8 @@
         that.isfrist = true
         that.upDetails(id)
       } else {
-        that.form.contact_number = that.$store.state.event.user.phone || ''
-        that.form.contacts = that.$store.state.event.user.realname || ''
+        that.form.contact_number = that.$store.state.event.user.design_user_phone || that.$store.state.event.user.phone || ''
+        that.form.contacts = that.$store.state.event.user.design_user_name || that.$store.state.event.user.realname || ''
       }
     }
   }
@@ -1078,6 +1079,8 @@
   .uploadsMsg {
     padding-left: 10px;
     color: #999;
+    vertical-align: bottom;
+    font-size: 12px;
   }
   .img-files {
     margin-top: 10px;
@@ -1221,6 +1224,8 @@
   }
   .patent-msg {
     padding-left: 10px;
+    font-size: 12px;
+    vertical-align: bottom;
   }
   .patent-list {
     height: 160px;
