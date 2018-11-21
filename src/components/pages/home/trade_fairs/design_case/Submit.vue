@@ -86,7 +86,7 @@
                   <el-row :gutter="10">
                     <el-col :span="12">
                       <el-form-item label="联系人姓名" prop="contacts">
-                        <el-input v-model="form.contacts" >
+                        <el-input v-model="form.contacts">
                         </el-input>
                       </el-form-item>
                     </el-col>
@@ -298,14 +298,24 @@
       }
       var priceVerify = (rule, value, callback) => {
         if (!value) {
-          callback(new Error('请输入比例'))
-        } else if (isNaN(value) || value < 0) {
+          callback(new Error('请输入金额'))
+        } else if (isNaN(value) || value <= 0) {
           callback(new Error('请输入合理的金额'))
         } else {
           callback()
         }
       }
       return {
+        facilitys: [
+          {
+            value: 1,
+            label: 'PC'
+          },
+          {
+            value: 2,
+            label: '手机'
+          }
+        ],
         userId: this.$store.state.event.user.id,
         itemId: null,
         isLoadingBtn: false, // 保存按钮
@@ -422,12 +432,12 @@
       // 提交按钮
       submit(formName, type) {
         const that = this
-        if (!that.coverId) {
-          that.$message.error ('必须设置一张封面图!')
+        if (!that.fileList.length) {
+          that.$message.error ('请上传图片!')
           return false
         }
-        if (!that.fileList.length) {
-          that.$message.error ('请完善信息!')
+        if (!that.coverId) {
+          that.$message.error ('必须设置一张封面图!')
           return false
         }
         if (!that.protocol) {
@@ -483,6 +493,7 @@
                   that.$message.error (response.data.meta.message)
                   that.isLoadingBtn2 = false
                   that.isLoadingBtn = false
+                  return false
                 }
               })
               .catch (function (error) {
@@ -940,7 +951,8 @@
         that.isfrist = true
         that.upDetails(id)
       } else {
-        that.form.contact_number = that.$store.state.event.user.phone
+        that.form.contact_number = that.$store.state.event.user.design_user_phone || that.$store.state.event.user.phone || ''
+        that.form.contacts = that.$store.state.event.user.design_user_name || that.$store.state.event.user.realname || ''
       }
     }
   }
@@ -1067,6 +1079,8 @@
   .uploadsMsg {
     padding-left: 10px;
     color: #999;
+    vertical-align: bottom;
+    font-size: 12px;
   }
   .img-files {
     margin-top: 10px;
@@ -1208,8 +1222,11 @@
     height: 50px;
     background: url('../../../../../assets/images/trade_fairs/default/CornerMark@2x.png') no-repeat center / contain;
   }
-  /* .patent-msg {
-  } */
+  .patent-msg {
+    padding-left: 10px;
+    font-size: 12px;
+    vertical-align: bottom;
+  }
   .patent-list {
     height: 160px;
     border: 1px solid #e6e6e6;

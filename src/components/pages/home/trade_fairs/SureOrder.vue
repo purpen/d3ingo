@@ -121,7 +121,7 @@ export default {
   height: 40px;
   width: 120px;
   background: #FF5A5F;
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 14px;
   color: #FFFFFF;
   text-align: center;
@@ -135,14 +135,14 @@ export default {
 .real-pay {
   float: right;
   font-size: 16px;
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-weight: 400;
   color: #222222;
 }
 .pay-money {
   float: right;
   font-size: 24px;
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-weight: 400;
   color: #FF5A5F;
   padding-right: 30px;
@@ -169,13 +169,13 @@ export default {
 }
 .left-text {
   font-size: 14px;
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-weight: 400;
   color: #666;
 }
 .right-text {
   font-size: 14px;
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-weight: 400;
   color: #222;
 }
@@ -199,7 +199,7 @@ export default {
 }
 .title-item {
   font-size: 16px;
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-weight: 400;
   color:  #222;
   padding-bottom: 10px;

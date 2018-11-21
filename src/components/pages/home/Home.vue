@@ -20,15 +20,15 @@
             </div>
           </div>
         </swiper-slide>
-        <swiper-slide v-if="!isMob">
+        <!-- <swiper-slide v-if="!isMob">
           <div class="slide" :style="{ background: 'url(' + require ('assets/images/trade_fairs/banner/pc-banner.png') + ') no-repeat center', height: calcHeight}" @click="routerTrading">
           </div>
-        </swiper-slide>
-        <swiper-slide v-if="isMob">
+        </swiper-slide> -->
+        <!-- <swiper-slide v-if="isMob">
           <div class="slide" :style="{ background: 'url(' + require ('assets/images/trade_fairs/banner/phone2.png') + ') no-repeat center', height: calcHeight}" @click="routerTrading">
           </div>
-        </swiper-slide>
-        <swiper-slide v-if="isMob" v-for="(ele, index) in bannerListMob" :key="index">
+        </swiper-slide> -->
+        <!-- <swiper-slide v-if="isMob" v-for="(ele, index) in bannerListMob" :key="index">
           <router-link
             v-if="!ele.outSide"
             class="banner-link slide"
@@ -45,14 +45,34 @@
                 height: calcHeight
               }">
             </a>
-        </swiper-slide>
-        <swiper-slide v-if="!isMob" v-for="(ele, index) in bannerList" :key="index">
+        </swiper-slide> -->
+        <!-- <swiper-slide v-if="!isMob" v-for="(ele, index) in bannerList" :key="index">
           <router-link
             v-if="!ele.outSide"
             class="banner-link slide"
             :to="ele.url"
             :style="{
               background: 'url(' + ele.img + ') no-repeat center',
+              backgroundSize: 'cover',
+              height: calcHeight
+            }"></router-link>
+            <a v-else
+              :href="ele.url"
+              class="banner-link slide"
+              :style="{
+                background: 'url(' + ele.img + ') no-repeat center',
+                backgroundSize: 'contain',
+                height: calcHeight
+              }">
+            </a>
+        </swiper-slide> -->
+        <swiper-slide v-for="(ele, index) in bannerList" :key="index">
+          <router-link
+            v-if="!ele.outSide"
+            class="banner-link slide"
+            :to="ele.url"
+            :style="{
+              background: 'url(' + ele.img + ') no-repeat center / contain',
               backgroundSize: 'cover',
               height: calcHeight
             }"></router-link>
@@ -213,6 +233,7 @@
           <img v-lazy="require('assets/images/home/7logo.jpg')" />
           <img v-lazy="require('assets/images/home/8logo.jpg')" />
           <img v-lazy="require('assets/images/home/9logo.jpg')" />
+          <img v-lazy="require('assets/images/home/10logo.jpg')" />
         </span>
       </div>
     </div>
@@ -248,16 +269,16 @@
           //   img: require ('assets/images/subject/innovation/innovationIndex.jpg'),
           //   url: this.$store.state.event.user.role_id > 0 ? 'innovation_index' : 'home'
           // },
-          {
-            img: require ('assets/images/home/banner/home_xiaomi.jpg'),
-            url: '/subject/xiaomiInterview',
-            outSide: false
-          },
-          {
-            img: require ('assets/images/home/qsyd4.jpg'),
-            url: 'https://www.taihuoniao.com/contest/qsyd4',
-            outSide: true
-          }
+          // {
+          //   img: require ('assets/images/home/banner/home_xiaomi.jpg'),
+          //   url: '/subject/xiaomiInterview',
+          //   outSide: false
+          // },
+          // {
+          //   img: require ('assets/images/home/qsyd4.jpg'),
+          //   url: 'https://www.taihuoniao.com/contest/qsyd4',
+          //   outSide: true
+          // }
         ],
         caseSlideList: [
           {
@@ -382,6 +403,7 @@
       this.getArticleList()
       this.getDesignCase()
       this.getBlock()
+      this.getColumnList()
     },
     mounted() {
       let that = this
@@ -488,6 +510,41 @@
           this.isLoading = false
           console.error(err)
         })
+      },
+      // 栏目文章轮播
+      getColumnList() {
+        let facility = 1
+        if (this.isMob) {
+          facility = 2
+        } else {
+          facility = 1
+        }
+        this.$http.get(api.columnList, {params: {type: 2, facility: facility}}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            let res = response.data.data
+            let bnlist = []
+            if (res && res.length) {
+              res.forEach(ele => {
+                bnlist.push({
+                  'img': ele.cover.file,
+                  'url': ele.url,
+                  'outSide': (ele.cover.name === 'qsyd4.jpg' || ele.cover.name === 'qsyd4-m.jpg') ? 1 : 0
+                })
+              })
+            }
+            this.bannerList = bnlist
+          } else {
+            console.log(response.data.meta.message)
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+      }
+    },
+    watch: {
+      isMob(val) {
+        this.getColumnList()
       }
     },
     computed: {
@@ -547,7 +604,7 @@
   .banner-text {
     left: 20px;
     right: 20px;
-    font-family: PingFangSC-Semibold;
+    font-family: PingFangSC-Semibold, "Microsoft Yahei";
     font-size: 20px;
     color: #3917C3;
   }

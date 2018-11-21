@@ -140,7 +140,7 @@
   .banner-text {
     left: 20px;
     right: 20px;
-    font-family: PingFangSC-Semibold;
+    font-family: PingFangSC-Semibold, "Microsoft Yahei";
     font-size: 20px;
     color: #3917C3;
   }
@@ -158,7 +158,7 @@
     width: 64px;
     height: 50px;
     font-size: 16px;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-weight: 400;
     color: #fff;
     line-height: 48px;
