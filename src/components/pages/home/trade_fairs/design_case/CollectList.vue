@@ -9,17 +9,17 @@
           <v-menu-sub></v-menu-sub>
           <div :class="['content-box', isMob ? 'content-box-m' : '']">
             <div class="design-case-list" v-loading="isLoading">
-              <div  v-if="!collectList||!collectList.length" class="no-list">
+              <div  v-if="!isLoading&&(!collectList||!collectList.length)" class="no-list">
                 <img src="../../../../../assets/images/trade_fairs/default/NoDemand@2x.png" alt="无收藏">
                 <p>还没有收藏设计需求～</p>
-                <router-link :to="{name: 'demand_login'}"
+                <!-- <router-link :to="{name: 'demand_login'}"
                     target="_blank" class="datails-router">
                   <button class="red-button middle-button">
                     查看设计需求
                   </button>
-                </router-link>
+                </router-link> -->
               </div>
-              <el-row :gutter="20" v-if="collectList&&collectList.length">
+              <el-row :gutter="20" v-if="!isLoading&&(collectList&&collectList.length)">
                 
                 <el-col :span="8" class="item-cloud" v-for="(item, index) in collectList" :key="index">
                   <div class="list-item">
@@ -265,7 +265,7 @@
         // }
       },
       // 收藏需求
-      deleteCollect(id, status) {
+      deleteCollect(id) {
         this.$http.post(api.sdDesignCancelCollectDemand, {design_demand_id: id}).then((response) => {
           if (response.data.meta.status_code === 200) {
             this.collectList.forEach((item, index) => {
