@@ -108,7 +108,7 @@
               label="操作">
                 <template slot-scope="scope">
                   <p>
-                    <a href="javascript:void(0);" v-show="scope.row.design_result.sell === 1?true:false" @click="delOrderBtn(scope.$index, scope.row.id, scope.row.amount)">解散订单</a>
+                    <a href="javascript:void(0);" v-show="(scope.row.status !== -1)&&(scope.row.design_result.sell === 1?true:false)" @click="delOrderBtn(scope.$index, scope.row.id, scope.row.amount)">解散订单</a>
                   </p>
                   <p>
                     <a href="javascript:void(0);" v-show="scope.row.sure_outline_transfer" @click="showTransfer(scope.$index, scope.row)">查看凭证</a>
