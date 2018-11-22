@@ -12,10 +12,15 @@
             <div class="design-case-list" v-loading="isLoading">
               <el-row :gutter="20">
                 <el-col :xs="12" :sm="6" :md="6" :lg="6">
-                  <router-link :to="{name: 'sdDesignCase_submit'}" class="item item-add el-card">
+                  <div v-show="false">{{verify}}</div>
+                  <router-link :to="{name: 'sdDesignCase_submit'}" class="item item-add el-card" v-if="verify === 1">
                     <i class="add-icon"></i>
                     <p class="tc-red fz-16">提交设计成果</p>
                   </router-link>
+                  <div class="item item-add el-card" v-else @click="notverify()">
+                    <i class="add-icon"></i>
+                    <p class="tc-red fz-16">提交设计成果</p>
+                  </div>
                 </el-col>
                 <el-col :xs="12" :sm="6" :md="6" :lg="6" v-for="(d, index) in designCases" :key="index">
                   <el-card :body-style="{ padding: '0px' }" class="item">
@@ -147,6 +152,8 @@
 
 <script>
   import vMenu from '@/components/pages/v_center/Menu'
+  import auth from '@/helper/auth'
+  import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
   import vMenuSub from '@/components/pages/home/trade_fairs/design_case/MenuSub'
   import api from '@/api/api'
   import '@/assets/js/format'
@@ -155,7 +162,8 @@
     name: 'sdDesignCase_list',
     components: {
       vMenu,
-      vMenuSub
+      vMenuSub,
+      auth
     },
     data() {
       return {
@@ -201,6 +209,11 @@
       }
     },
     methods: {
+      // 未认证
+      notverify() {
+        this.$message.error('请先去认证 入驻铟果')
+      },
+      // 编辑成果
       toUpdateUrl(id) {
         this.$router.push('/shunde/trade_fairs/design_case/submit/' + id)
       },
@@ -403,6 +416,17 @@
           return
         })
       },
+      // 重新获取用户信息
+      getUser() {
+        this.$http.get(api.surveyDesignCompanySurvey, {})
+        .then(res => {
+          if (res.data.meta.status_code === 200) {
+            this.$store.commit(CHANGE_USER_VERIFY_STATUS, res.data.data)
+          }
+        }).catch(err => {
+          console.error(err.message)
+        })
+      },
       // 编辑按钮
       submit(formName) {
         const that = this
@@ -449,6 +473,9 @@
       }
     },
     computed: {
+      verify() {
+        return this.$store.state.event.user.design_verify_status
+      },
       isMob() {
         return this.$store.state.event.isMob
       },
@@ -461,6 +488,7 @@
     },
     watch: {},
     created: function () {
+      this.getUser()
       this.getDesignCase ()
     }
   }
