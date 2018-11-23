@@ -11,7 +11,6 @@ var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 var UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 var CleanWebpackPlugin = require('clean-webpack-plugin')
 var AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
-// var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 var os = require('os')
 var costum = require('../config/prod.env')
 var favicon = ''
@@ -48,7 +47,6 @@ var webpackConfig = merge(baseWebpackConfig, {
   },
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
-    // new BundleAnalyzerPlugin(),
     new webpack.DefinePlugin({
       'process.env': env
     }),
@@ -64,8 +62,9 @@ var webpackConfig = merge(baseWebpackConfig, {
         workers: os.cpus().length
       },
       uglifyOptions: {
-        ecma: 5,
+        ecma: 8,
         ie8: true,
+        mangle: true,
         output: { comments: false, beautify: false },
         compress: {
           drop_console: true,
