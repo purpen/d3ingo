@@ -47,9 +47,11 @@
                       </ul>
                     </div>
                     <div class="image-box">
-                      <router-link :to="{name: 'work_datails', params: {id: d.id}, query: {type: 2}}"
-                        :target="isMob ? '_self' : '_blank'">
-                        <img v-if="d.cover" :src="d.cover.small">
+                      <router-link :to="{name: 'work_datails',
+                        params: {id: d.id}, query: {type: 2}}"
+                        :target="isMob ? '_self' : '_blank'"
+                        :style="{background: 'url('+ d.cover.small +') no-repeat center / cover'}"
+                        >
                       </router-link>
                     </div>
                     <div class="content">
@@ -605,6 +607,10 @@
     overflow: hidden;
     }
 
+  .image-box a {
+    display: block;
+    height: 100%;
+  }
   .content {
     padding: 8px 20px;
     height: 80px;
