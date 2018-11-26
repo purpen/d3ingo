@@ -34,7 +34,7 @@
           <span>我的</span>
         </div> -->
         <el-menu class="el-menu-info" mode="horizontal" router v-if="prod.name === ''">
-          <el-submenu index="2">
+          <el-submenu index="2" :popper-append-to-body="false">
             <template slot="title">
               <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
               <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
@@ -51,7 +51,7 @@
           </el-submenu>
         </el-menu>
         <el-menu class="el-menu-info" mode="horizontal" router v-if="prod.name !== ''">
-          <el-submenu index="2">
+          <el-submenu index="2" :popper-append-to-body="false">
             <template slot="title">
               <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
               <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>

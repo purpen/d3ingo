@@ -47,7 +47,7 @@
               </div>
             </a>
             <el-menu class="el-menu-info" mode="horizontal" router>
-              <el-submenu index="2">
+              <el-submenu index="2" :popper-append-to-body="false" text-color="#999">
                 <template slot="title">
                   <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
                   <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
@@ -172,7 +172,7 @@
               </div>
             </a>
             <el-menu class="el-menu-info" mode="horizontal" router>
-              <el-submenu index="2">
+              <el-submenu index="2" :popper-append-to-body="false" text-color="#999">
                 <template slot="title">
                   <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
                   <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
