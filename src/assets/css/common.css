@@ -13,6 +13,10 @@
 .flex {
   display: flex;
 }
+.flex-wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
 .clearfix::after {
   content: '';
   display: block;
