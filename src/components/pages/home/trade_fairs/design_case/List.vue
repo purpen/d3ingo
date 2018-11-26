@@ -10,7 +10,7 @@
           <v-menu-sub></v-menu-sub>
           <div :class="['content-box', isMob ? 'content-box-m' : '']">
             <div class="design-case-list" v-loading="isLoading">
-              <el-row :gutter="20">
+              <el-row :gutter="20" class="flex-wrap">
                 <el-col :xs="12" :sm="6" :md="6" :lg="6">
                   <div v-show="false">{{verify}}</div>
                   <router-link :to="{name: 'sdDesignCase_submit'}" class="item item-add el-card" v-if="verify === 1">
@@ -47,12 +47,16 @@
                       </ul>
                     </div>
                     <div class="image-box">
-                      <router-link :to="{name: 'work_datails',
+                      <router-link v-if="d.cover" :to="{name: 'work_datails',
                         params: {id: d.id}, query: {type: 2}}"
                         :target="isMob ? '_self' : '_blank'"
                         :style="{background: 'url('+ d.cover.small +') no-repeat center / cover'}"
                         >
                       </router-link>
+                      <router-link v-else 
+                        :to="{name: 'work_datails',
+                        params: {id: d.id}, query: {type: 2}}"
+                        :target="isMob ? '_self' : '_blank'"></router-link>
                     </div>
                     <div class="content">
                       <router-link :to="{name: 'work_datails', params: {id: d.id}, query: {type: 2}}"
@@ -513,9 +517,9 @@
     margin: 10px 0 6px;
     }
 
-  .design-case-list .item {
+  /* .design-case-list .item {
     min-height: 240px;
-    }
+    } */
 
   .item {
     position: relative;
@@ -528,6 +532,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    height: calc(100% - 20px);
   }
   .item-add p {
     font-size: 16px;
@@ -603,13 +608,13 @@
 
   .image-box {
     border-radius: 4px 4px 0 0;
-    height: 160px;
     overflow: hidden;
     }
 
   .image-box a {
     display: block;
-    height: 100%;
+    padding-top: 75%;
+    background-color: #f7f7f7
   }
   .content {
     padding: 8px 20px;
