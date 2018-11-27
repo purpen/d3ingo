@@ -232,10 +232,12 @@ textarea {
 }
 .markdown-body h1 {
   font-weight: bold;
-  font-size: 22px
+  font-size: 22px;
+  line-height: 30px;
 }
 .markdown-body h2 {
   font-weight: bold;
+  line-height: 28px;
   font-size: 20px
 }
 .markdown-body h3 {
@@ -245,6 +247,14 @@ textarea {
 .markdown-body h4 {
   font-weight: bold;
   font-size: 16px
+}
+.markdown-body h5 {
+  font-weight: bold;
+  font-size: 14px
+}
+.markdown-body h6 {
+  font-weight: bold;
+  font-size: 12px
 }
 
 .markdown-body em {
@@ -279,6 +289,7 @@ textarea {
 .markdown-body img {
   display: block;
   margin: 20px auto;
+  max-width: 800px;
 }
 
 a {
