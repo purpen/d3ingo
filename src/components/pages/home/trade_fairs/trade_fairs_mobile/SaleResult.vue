@@ -162,10 +162,7 @@
       //     this.getTradeFair()
       //   }
       // }
-      this.getTradeFair()
-      setTimeout(() => {
-        this.getDesignCase()
-      }, 1)
+      this.getDesignCase()
     },
     mounted() {
     },
