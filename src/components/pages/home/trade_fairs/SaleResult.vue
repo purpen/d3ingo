@@ -22,11 +22,11 @@
                     <img alt="点击查看详情" class="img-size" :src="achieve.cover.small">
                   </div>
                 </div>
-                <div class="list-image" v-else-if="achieve.is_trade_fair === 0" @click="dialogPermisses">
+                <!-- <div class="list-image" v-else-if="achieve.is_trade_fair === 0" @click="dialogPermisses">
                   <div class="image-size">
                     <img alt="点击查看详情" class="img-size" :src="achieve.cover.small">
                   </div>
-                </div>
+                </div> -->
                 <div class="list-image" @click="listDatail(achieve.id)" v-else>
                   <div class="image-size">
                     <img alt="点击查看详情" class="img-size" :src="achieve.cover.small">
@@ -107,7 +107,7 @@
         <div class="right-number">13031154842</div>
       </div>
     </el-dialog>
-    <el-dialog
+    <!-- <el-dialog
       title="权限提醒"
       :visible.sync="dialogPermiss"
       :lock-scroll="false"
@@ -119,7 +119,7 @@
         <div class="move-text">暂无权限</div>
         <div class="move-div">交易会期间扫码或联系平台客服开通权限</div>
       </div>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 
@@ -146,9 +146,24 @@
       }
     },
     created() {
-      this.getDesignCase()
+      this.getTradeFair()
+      setTimeout(() => {
+        this.getDesignCase()
+      }, 1)
     },
     methods: {
+      // 获取查看权限
+      getTradeFair() {
+        const that = this
+        that.$http.get (api.demandCompanySaveTradeFair)
+        .then (function (response) {
+          if (response.data.meta.status_code === 200) {
+          }
+        })
+        .catch (function (error) {
+          console.log(error.message)
+        })
+      },
       // 弹出权限框
       dialogPermisses() {
         this.dialogPermiss = true
