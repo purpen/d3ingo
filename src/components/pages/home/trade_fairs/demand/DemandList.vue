@@ -87,12 +87,12 @@
                   </div>
                 </div>
               </div>
-              <div class="text-align-c" v-if="jquery3.page>1">
+              <div class="text-align-c mg-b-20" v-if="jquery3.page>1">
                 <el-pagination
                   @size-change="handleSizeChange3"
                   @current-change="handleCurrentChange3"
                   :current-page.sync="jquery3.current_page"
-                  :page-sizes="[10, 100, 200]"
+                  :page-sizes="[50, 100, 200]"
                   :page-size="jquery3.per_page"
                   layout="sizes, prev, pager, next"
                   :total="jquery3.total">
@@ -405,7 +405,7 @@
                     @size-change="handleSizeChange2"
                     @current-change="handleCurrentChange2"
                     :current-page.sync="jquery2.current_page"
-                    :page-sizes="[10, 100, 200]"
+                    :page-sizes="[50, 100, 200]"
                     :page-size="jquery2.per_page"
                     layout="sizes, prev, pager, next"
                     :total="jquery2.total">
@@ -513,7 +513,7 @@
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     :current-page.sync="jquery.current_page"
-                    :page-sizes="[10, 100, 200]"
+                    :page-sizes="[50, 100, 200]"
                     :page-size="jquery.per_page"
                     layout="sizes, prev, pager, next"
                     :total="jquery.total">
@@ -637,19 +637,19 @@
           total: 1, // 总条数
           current_page: 1, // 当前页
           page: 1, // 页数
-          per_page: 10 // 每页数量
+          per_page: 50 // 每页数量
         },
         jquery2: {
           total: 1, // 总条数
           current_page: 1, // 当前页
           page: 1, // 页数
-          per_page: 10 // 每页数量
+          per_page: 50 // 每页数量
         },
         jquery3: {
           total: 1, // 总条数
           current_page: 1, // 当前页
           page: 1, // 页数
-          per_page: 10 // 每页数量
+          per_page: 50 // 每页数量
         },
         dialogFormVisible: false, // 发布需求弹窗
         dialogUpdateVisible: false, // 查看详情弹窗
@@ -1391,6 +1391,9 @@
   .text-align-c {
     text-align: center;
     line-height: 20px;
+  }
+  .mg-b-20 {
+    margin: 20px;
   }
   .demand-content .is-custom {
     min-width: 120px;

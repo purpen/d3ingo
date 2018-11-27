@@ -89,7 +89,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page.sync="jquery.current_page"
-        :page-sizes="[10, 100, 200]"
+        :page-sizes="[50, 100, 200]"
         :page-size="jquery.per_page"
         layout="sizes, prev, pager, next"
         :total="jquery.total">
@@ -188,7 +188,7 @@
           total: 1, // 总条数
           current_page: 1, // 当前页
           page: 1, // 页数
-          per_page: 10 // 每页数量
+          per_page: 50 // 每页数量
         },
         isLoading: false,
         designCases: [], // 成果列表
@@ -697,6 +697,7 @@
   .text-align-c {
     text-align: center;
     line-height: 20px;
+    margin-bottom: 20px;
   }
   @media screen and (max-width: 767px) {
     .opt a {
