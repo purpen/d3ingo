@@ -363,7 +363,7 @@
       size="tiny">
       <span>{{ sureDialogMessage }}</span>
       <span slot="footer" class="dialog-footer">
-        <el-button size="small" @click="sureDialog = false">取 消</el-button>
+        <el-button size="small" @click="sureDialogOngo = false">取 消</el-button>
         <el-button size="small" type="primary" :loading="sureDialogLoadingBtn" @click="sureDialogSubmitOngo">确 定</el-button>
         <input type="hidden" ref="currentItemId"/>
         <input type="hidden" ref="currentIndex"/>
@@ -377,27 +377,13 @@
       size="tiny">
       <span>{{ sureDialogMessage }}</span>
       <span slot="footer" class="dialog-footer">
-        <el-button size="small" @click="sureDialog = false">取 消</el-button>
+        <el-button size="small" @click="sureDialogDock = false">取 消</el-button>
         <el-button size="small" type="primary" :loading="sureDialogLoadingBtn" @click="sureDialogSubmitDock">确 定</el-button>
         <input type="hidden" ref="currentItemId"/>
         <input type="hidden" ref="currentIndex"/>
         <input type="hidden" ref="currentType"/>
       </span>
     </el-dialog>
-       <!-- 删除按钮提示 -->
-    <!-- <el-dialog
-      title="提示"
-      :visible.sync="sureDialogDelete"
-      size="tiny">
-      <span>{{ sureDialogMessage }}</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button size="small" @click="sureDialog = false">取 消</el-button>
-        <el-button size="small" type="primary" :loading="sureDialogLoadingBtn" @click="sureDialogSubmitDelete(list)">确 定</el-button>
-        <input type="hidden" ref="currentItemId"/>
-        <input type="hidden" ref="currentIndex"/>
-        <input type="hidden" ref="currentType"/>
-      </span>
-    </el-dialog> -->
 
   </div>
 </template>
@@ -419,6 +405,7 @@
       return {
         type: 1,
         isEmpty: false,
+        index: '',
         isEmpty2: false,
         sureDialog: false,
         sureDialogOngo: false,
