@@ -21,11 +21,11 @@
                     <img :src="achieve.cover.small" alt="点击查看详情" class="img-size">
                   </div>
                 </div>
-                <div class="list-image" v-else-if="achieve.is_trade_fair === 0" @click="dialogPermiss = true">
+                <!-- <div class="list-image" v-else-if="achieve.is_trade_fair === 0" @click="dialogPermiss = true">
                   <div class="image-size">
                     <img alt="点击查看详情" class="img-size" :src="achieve.cover.small">
                   </div>
-                </div>
+                </div> -->
                 <div class="list-image" @click="listDatail(achieve.id)" v-else>
                   <div class="image-size">
                     <img :src="achieve.cover.small" alt="点击查看详情" class="img-size">
@@ -111,7 +111,7 @@
       <div class="right-top" @click="clientPhone = true">
       </div>
     </div>
-    <el-dialog
+    <!-- <el-dialog
       :visible.sync="dialogPermiss"
       size="tiny" class="hint-text">
       <span class="move-text">暂无权限</span>
@@ -119,7 +119,7 @@
       <span slot="footer" class="dialog-footer" @click="dialogPermiss = false">
         <p class="sure-text">确 定</p>
       </span>
-    </el-dialog>
+    </el-dialog> -->
     <el-dialog
       :visible.sync="clientPhone"
       top="30%"
@@ -156,12 +156,13 @@
       }
     },
     created() {
-      var types = this.$route.query.types
-      if (types) {
-        if (types === '1' && this.user.type === 1) {
-          this.getTradeFair()
-        }
-      }
+      // var types = this.$route.query.types
+      // if (types) {
+      //   if (types === '1' && this.user.type === 1) {
+      //     this.getTradeFair()
+      //   }
+      // }
+      this.getTradeFair()
       setTimeout(() => {
         this.getDesignCase()
       }, 1)
@@ -170,13 +171,13 @@
     },
     methods: {
       // 点击权限提示
-      diaPermiss(sell, fair) {
-        if (sell === 1 || sell === 2) {
+      // diaPermiss(sell, fair) {
+      //   if (sell === 1 || sell === 2) {
 
-        } else if (fair === 0) {
-          this.dialogPermiss = true
-        }
-      },
+      //   } else if (fair === 0) {
+      //     this.dialogPermiss = true
+      //   }
+      // },
       // 收藏需求
       collect(id) {
         this.intersClick = false
