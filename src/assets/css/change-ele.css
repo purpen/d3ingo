@@ -389,7 +389,7 @@
   .seen-deta .el-dialog--tiny {
     width: 480px
   }
-  .el-dialog--tiny {
+  .el-dialog {
     width: 380px
   }
   /* .el-dialog--tiny .el-dialog__header {
