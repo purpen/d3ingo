@@ -44,6 +44,13 @@
                   </el-form-item>
                 </el-col>
               </el-row>
+              <el-row :gutter="24" v-if="form.type === 2">
+                <el-col :span="12">
+                  <el-form-item label="权重" prop="sort">
+                    <el-input v-model="form.sort" type="number" placeholder="权重越大排名越前"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
               <el-row :gutter="24">
                 <el-col :span="12">
                   <el-form-item label="标题" prop="title">
@@ -232,7 +239,8 @@ export default {
             title: that.form.title,
             content: that.form.content,
             url: that.form.url,
-            facility: that.form.facility
+            facility: that.form.facility || 1,
+            sort: that.form.sort || 0
           }
           row.cover_id = that.coverId
           var method = null

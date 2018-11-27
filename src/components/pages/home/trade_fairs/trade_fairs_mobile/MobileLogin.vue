@@ -154,7 +154,7 @@
     content: '';
   }
   .banner-text {
-    font-family: PingFangSC-Semibold;
+    font-family: PingFangSC-Semibold, "Microsoft Yahei";
     font-size: 11px;
     color: #3917C3;
   }
@@ -173,7 +173,7 @@
     width:64px;
     height:38px;
     font-size:16px;
-    font-family:PingFangSC-Regular;
+    font-family:PingFangSC-Regular, "Microsoft Yahei";
     font-weight:400;
     color: #fff;
     line-height:38px;
@@ -202,13 +202,13 @@
     background-size: cover
   }
   .sure-text {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 16px;
     color: #FF6E73;
     text-align: center;
   }
   .move-text {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 16px;
     color: #666666;
     text-align: center;

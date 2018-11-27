@@ -827,7 +827,7 @@
 
   .content-box p.title {
     font-size: 1.4rem;
-    font-family: PingFangSC-Medium;
+    font-family: PingFangSC-Medium, "Microsoft Yahei";
     color: #333;
   }
 

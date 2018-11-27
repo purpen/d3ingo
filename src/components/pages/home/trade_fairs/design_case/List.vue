@@ -10,12 +10,17 @@
           <v-menu-sub></v-menu-sub>
           <div :class="['content-box', isMob ? 'content-box-m' : '']">
             <div class="design-case-list" v-loading="isLoading">
-              <el-row :gutter="20">
+              <el-row :gutter="20" class="flex-wrap">
                 <el-col :xs="12" :sm="6" :md="6" :lg="6">
-                  <router-link :to="{name: 'sdDesignCase_submit'}" class="item item-add el-card">
+                  <div v-show="false">{{verify}}</div>
+                  <router-link :to="{name: 'sdDesignCase_submit'}" class="item item-add el-card" v-if="verify === 1">
                     <i class="add-icon"></i>
                     <p class="tc-red fz-16">提交设计成果</p>
                   </router-link>
+                  <div class="item item-add el-card" v-else @click="notverify()">
+                    <i class="add-icon"></i>
+                    <p class="tc-red fz-16">提交设计成果</p>
+                  </div>
                 </el-col>
                 <el-col :xs="12" :sm="6" :md="6" :lg="6" v-for="(d, index) in designCases" :key="index">
                   <el-card :body-style="{ padding: '0px' }" class="item">
@@ -42,10 +47,16 @@
                       </ul>
                     </div>
                     <div class="image-box">
-                      <router-link :to="{name: 'work_datails', params: {id: d.id}, query: {type: 2}}"
-                        :target="isMob ? '_self' : '_blank'">
-                        <img v-if="d.cover" :src="d.cover.small">
+                      <router-link v-if="d.cover" :to="{name: 'work_datails',
+                        params: {id: d.id}, query: {type: 2}}"
+                        :target="isMob ? '_self' : '_blank'"
+                        :style="{background: 'url('+ d.cover.small +') no-repeat center / cover'}"
+                        >
                       </router-link>
+                      <router-link v-else 
+                        :to="{name: 'work_datails',
+                        params: {id: d.id}, query: {type: 2}}"
+                        :target="isMob ? '_self' : '_blank'"></router-link>
                     </div>
                     <div class="content">
                       <router-link :to="{name: 'work_datails', params: {id: d.id}, query: {type: 2}}"
@@ -147,6 +158,8 @@
 
 <script>
   import vMenu from '@/components/pages/v_center/Menu'
+  import auth from '@/helper/auth'
+  import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
   import vMenuSub from '@/components/pages/home/trade_fairs/design_case/MenuSub'
   import api from '@/api/api'
   import '@/assets/js/format'
@@ -155,7 +168,8 @@
     name: 'sdDesignCase_list',
     components: {
       vMenu,
-      vMenuSub
+      vMenuSub,
+      auth
     },
     data() {
       return {
@@ -201,6 +215,11 @@
       }
     },
     methods: {
+      // 未认证
+      notverify() {
+        this.$message.error('请先去认证 入驻铟果')
+      },
+      // 编辑成果
       toUpdateUrl(id) {
         this.$router.push('/shunde/trade_fairs/design_case/submit/' + id)
       },
@@ -403,6 +422,17 @@
           return
         })
       },
+      // 重新获取用户信息
+      getUser() {
+        this.$http.get(api.surveyDesignCompanySurvey, {})
+        .then(res => {
+          if (res.data.meta.status_code === 200) {
+            this.$store.commit(CHANGE_USER_VERIFY_STATUS, res.data.data)
+          }
+        }).catch(err => {
+          console.error(err.message)
+        })
+      },
       // 编辑按钮
       submit(formName) {
         const that = this
@@ -449,6 +479,9 @@
       }
     },
     computed: {
+      verify() {
+        return this.$store.state.event.user.design_verify_status
+      },
       isMob() {
         return this.$store.state.event.isMob
       },
@@ -461,6 +494,7 @@
     },
     watch: {},
     created: function () {
+      this.getUser()
       this.getDesignCase ()
     }
   }
@@ -483,9 +517,9 @@
     margin: 10px 0 6px;
     }
 
-  .design-case-list .item {
+  /* .design-case-list .item {
     min-height: 240px;
-    }
+    } */
 
   .item {
     position: relative;
@@ -498,6 +532,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    height: calc(100% - 20px);
   }
   .item-add p {
     font-size: 16px;
@@ -573,10 +608,14 @@
 
   .image-box {
     border-radius: 4px 4px 0 0;
-    height: 160px;
     overflow: hidden;
     }
 
+  .image-box a {
+    display: block;
+    padding-top: 75%;
+    background-color: #f7f7f7
+  }
   .content {
     padding: 8px 20px;
     height: 80px;

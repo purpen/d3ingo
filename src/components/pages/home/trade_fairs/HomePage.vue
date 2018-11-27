@@ -114,7 +114,7 @@
   .banner-text {
     left: 20px;
     right: 20px;
-    font-family: PingFangSC-Semibold;
+    font-family: PingFangSC-Semibold, "Microsoft Yahei";
     font-size: 20px;
     color: #3917C3;
   }
