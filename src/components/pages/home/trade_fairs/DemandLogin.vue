@@ -40,9 +40,9 @@
 
 <script>
   // import api from '@/api/api'
-  import briefContent from '@/components/pages/home/trade_fairs/1BriefContent'
-  import demandDesign from '@/components/pages/home/trade_fairs/1DemandDesign'
-  import saleResult from '@/components/pages/home/trade_fairs/1SaleResult'
+  import briefContent from '@/components/pages/home/trade_fairs/BriefContent'
+  import demandDesign from '@/components/pages/home/trade_fairs/DemandDesign'
+  import saleResult from '@/components/pages/home/trade_fairs/SaleResult'
   export default {
     name: 'demand_login',
     components: {
@@ -56,6 +56,9 @@
       }
     },
     created() {
+      if (this.isMob) {
+        this.$router.push({name: 'mobile_login'})
+      }
       let type = this.$route.query.type
       if (type) {
         this.type = 1
@@ -137,7 +140,7 @@
   .banner-text {
     left: 20px;
     right: 20px;
-    font-family: PingFangSC-Semibold;
+    font-family: PingFangSC-Semibold, "Microsoft Yahei";
     font-size: 20px;
     color: #3917C3;
   }
@@ -155,7 +158,7 @@
     width: 64px;
     height: 50px;
     font-size: 16px;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-weight: 400;
     color: #fff;
     line-height: 48px;

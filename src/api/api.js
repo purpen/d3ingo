@@ -36,7 +36,8 @@ export default {
   fundLogList: '/fundLogList', // GET 交易记录
   withdrawCreate: '/withdraw/create', // POST 提现
   withdrawList: '/withdraw/lists', // GET 用户提现列表
-  jdCode: '/jd/code', // get // 获取京东code
+  jdCode: '/jd/code', // GET 获取京东code
+  jdToken: '/jd/jdAccount', // GET 获取京东云access_token
 
   // 栏目
   columnList: '/column/lists', // GET 列表
@@ -481,6 +482,10 @@ export default {
   designItemTasks: '/design/itemTasks', // GET 所有项目任务统计
   designTargetIncomeCity: '/designTarget/incomeCity', // GET 城市排名
 
+  // 顺德交易会监控流量
+  sdTouristWilling: '/sd/touristWilling', // GET 游客,有意向数量
+  sdStatistics: '/sd/statistics', // GET 展示
+
   // 顺德需求方
   sdDemandRelease: '/sd/demand/release', // POST 发布需求
   sdDemandDemandShut: '/sd/demand/demandShut', // POST 关闭需求
@@ -497,6 +502,7 @@ export default {
   payConfirmFile: '/pay/confirmFile', // GET 确认设计成果文件
   sdDemandEvaluateResult: '/sd/demand/evaluateResult', // POST 需求公司评价设计成果
   sdDemandEvaluateInfo: '/sd/demand/evaluateInfo', // GET 设计成果评价详情
+  demandCompanySaveTradeFair: '/demandCompany/saveTradeFair', // GET 修改交易会权限
 
   // 顺德设计方
   sdDesignCancelCollectDemand: '/sd/design/cancelCollectDemand', // POST 取消收藏需求
@@ -518,6 +524,8 @@ export default {
   adminDesignDemandShowCollectList: '/admin/designDemand/showCollectList', // GET 查看设计需求被那些设计公司收藏
   adminDesignResultList: '/admin/designResult/list', // GET 设计成果待审核列表
   adminDesignResultSave: '/admin/designResult/save', // GET 设计成果审核
-  adminDesignResultCollect: '/admin/designResult/collect' // GET 设计成果收藏列表
+  adminPayOrderDissolution: '/admin/payOrder/dissolution', // POST 解散支付订单
+  adminDesignResultCollect: '/admin/designResult/collect', // GET 设计成果收藏列表
+  adminDemandCompanySaveTradeFair: '/admin/demandCompany/saveTradeFair' // GET 修改交易会权限
 
 }

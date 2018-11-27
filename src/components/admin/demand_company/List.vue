@@ -131,6 +131,8 @@
                   <a @click="setRefuseRease(scope.$index, scope.row, 2)" v-if="scope.row.verify_status === 1 || scope.row.verify_status === 3" class="tag-refuse">拒绝</a>
                   <a v-if="scope.row.verify_status === 2 || scope.row.verify_status === 3" @click="setVerify(scope.$index, scope.row, 1)" class="tag-pass">通过</a>
                   <router-link :to="{name: 'adminDemandCompanyShow', params: {id: scope.row.id}}" target="_blank" class="tag-view">查看</router-link>
+                  <a v-if="scope.row.is_trade_fair === 0" @click="getTradeFair(scope.row.id)" class="tag-pass">开通顺德</a>
+                  <a v-if="scope.row.is_trade_fair === 1" @click="getTradeFair(scope.row.id)" class="tag-refuse">关闭顺德</a>
                   </p>
                   <!--
                   <p>
@@ -213,6 +215,27 @@ export default {
     }
   },
   methods: {
+    // 获取查看权限
+    getTradeFair(id) {
+      const that = this
+      that.$http.get (api.adminDemandCompanySaveTradeFair, {params: {id: id}})
+      .then (function (response) {
+        if (response.data.meta.status_code === 200) {
+          for (let index in that.itemList) {
+            if (that.itemList[index].id === id) {
+              if (that.itemList[index].is_trade_fair === 0) {
+                that.itemList[index].is_trade_fair = 1
+              } else {
+                that.itemList[index].is_trade_fair = 0
+              }
+            }
+          }
+        }
+      })
+      .catch (function (error) {
+        console.log(error.message)
+      })
+    },
     // 查询
     onSearch() {
       this.query.page = 1

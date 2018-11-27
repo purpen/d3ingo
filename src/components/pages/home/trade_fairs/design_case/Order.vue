@@ -45,7 +45,7 @@
                       <el-col :span="8" class="collect-all">
                         <router-link :to="{name: 'pay_datails', params: {id: d.id}}"
                             target="_blank" class="router-work">
-                          <div class="collect-img" :style="{background:'url('+d.cover.logo +') no-repeat center / contain'}">
+                          <div class="collect-img" :style="{background:'url('+d.cover.middle +') no-repeat center / contain'}">
                           </div>
                         </router-link>
                         <div class="collect-centent">
@@ -75,12 +75,15 @@
                         <p v-if="d.design_result.sell === 1">请尽快联系需求方交付设计成果</p>
                       </el-col>
                       <el-col :span="4">
-                        <el-button class="is-custom" type="primary" size="small" v-if="d.design_result.sell === 2&&d.design_result.is_evaluate===1">
+                        <button class="full-red-button middle-button" v-if="d.design_result.sell === 2&&d.design_result.is_evaluate===1">
                           <router-link :to="{name: 'pay_datails', params: {id: d.id}}"
                             target="_blank" class="router-pay">
                             查看评价
                           </router-link>
-                        </el-button>
+                        </button>
+                        <button class="white-button middle-button" v-if="d.status ===-1||d.status ===-2" @click="deleteOrder(d.id)">
+                            删除
+                        </button>
                         <!-- <el-button class="mg-t-10">
                           评价
                         </el-button> -->
@@ -99,7 +102,7 @@
 
 <script>
   import vMenu from '@/components/pages/v_center/Menu'
-  import vMenuSub from '@/components/pages/home/trade_fairs/design_case/1MenuSub'
+  import vMenuSub from '@/components/pages/home/trade_fairs/design_case/MenuSub'
   import api from '@/api/api'
   import '@/assets/js/format'
 
@@ -164,7 +167,7 @@
           }
         } else if (val === 2) {
           return '退款'
-        } else if (val === -1) {
+        } else if (val === -1 || val === -2) {
           return '交易失败'
         } else {
           return val
@@ -172,6 +175,25 @@
       }
     },
     methods: {
+      // 删除订单
+      deleteOrder(id) {
+        this.$http.get(api.payDeleteOrder, {params: {id: id}}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.orderList.forEach((item, index) => {
+              if (item.id === id) {
+                this.orderList.splice(index, 1)
+              }
+            })
+          } else {
+            this.$message.error(response.data.meta.message)
+            return
+          }
+        })
+        .catch(function (error) {
+          this.$message.error(error.message)
+          return
+        })
+      },
       // 获取详情
       upDetails(id) {
         this.formup = {}
@@ -386,19 +408,19 @@
     margin: 0 auto;
   }
   .list-title {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 16px;
     color: #222222;
     line-height: 17.04px;
   }
   .list-data {
     padding-top: 10px;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     color: #999999;
   }
   .list-word {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 14px;
     color: #666666;
     padding-top: 10px;
@@ -457,7 +479,7 @@
   }
   .details-text {
     position: relative;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     padding-left: 10px;
     color: #999999;
@@ -490,7 +512,7 @@
   }
   .button-interest {
     position: relative;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     padding-left: 15px;
     color: #FF5A5F;
@@ -528,7 +550,7 @@
   }
   .dia-interest {
     position: relative;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     padding-left: 15px;
     color: #FF5A5F;
@@ -580,7 +602,7 @@
   }
   .contact-text {
     position: relative;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     padding-left: 10px;
     color: #999999;

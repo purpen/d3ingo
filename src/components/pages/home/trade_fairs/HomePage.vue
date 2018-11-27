@@ -2,9 +2,11 @@
   <div class="content-box">
     <div class="home_banner">
       <div class="background-banner">
-        <div class="banner-button">
+        <div class="banner-button" @click="goLogin">
           <div class="text-width">
-            <router-link to="/shunde/trade_fairs/demand_login" class="banner-text">立即参与</router-link>
+            <a class="banner-text">
+              立即参与
+            </a>
           </div>
         </div>
       </div>
@@ -18,8 +20,8 @@
 </template>
 
 <script>
-  // import api from '@/api/api'
-  import briefContent from '@/components/pages/home/trade_fairs/1BriefContent'
+  import api from '@/api/api'
+  import briefContent from '@/components/pages/home/trade_fairs/BriefContent'
   export default {
     name: 'home_page',
     components: {
@@ -30,10 +32,33 @@
       }
     },
     created() {
+      this.getTrade(1)
+      if (this.isMob) {
+        this.$router.push({name: 'mobile_login'})
+      }
     },
     mounted() {
     },
     methods: {
+      // 立即参与
+      goLogin() {
+        this.getTrade(2)
+        this.$router.push({path: '/shunde/trade_fairs/demand_login'})
+      },
+      // 监控流量
+      getTrade(type) {
+        this.$http.get(api.sdTouristWilling, {params: {type: type}}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        })
+        .catch((error) => {
+          this.$message.error(error.message)
+          console.error(error.message)
+          return
+        })
+      }
     },
     computed: {
       isMob() {
@@ -89,7 +114,7 @@
   .banner-text {
     left: 20px;
     right: 20px;
-    font-family: PingFangSC-Semibold;
+    font-family: PingFangSC-Semibold, "Microsoft Yahei";
     font-size: 20px;
     color: #3917C3;
   }

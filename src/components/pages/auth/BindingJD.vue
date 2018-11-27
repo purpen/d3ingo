@@ -1,9 +1,9 @@
 <template>
-  <div :class="['container', 'jdc']">
+  <div :class="['container', 'jdc']" v-loading="isLoading">
     <!-- <section class="cover-bgf7"></section> -->
     <div class="register-box">
       <div class="regisiter-title">
-        <h2>绑定京东账号</h2>
+        <h2>绑定艺火账号</h2>
       </div>
       <div class="register-content">
         <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px"
@@ -79,8 +79,9 @@ export default {
       }
     }
     return {
+      isLoading: false,
       isLoadingBtn: false,
-      jdAccount: '',
+      jdToken: '',
       time: 0,
       labelPosition: 'top',
       form: {
@@ -127,30 +128,38 @@ export default {
     }
   },
   methods: {
-    checkJdAccount(account) {
-      this.$http.get(api.jdCheckAccount, {params: {account: account}})
+    checkJdToken(token) {
+      this.$http.get(api.jdCheckAccount, {params: {access_token: token}})
       .then(res => {
         if (res.data.meta.status_code === 200) {
           this.bindUser(res.data.data.token)
         } else {
+          this.isLoading = false
           console.log(res.data.meta.message)
         }
+      }).catch(err => {
+        this.isLoading = false
+        console.error(err.message)
       })
     },
-    getJdAccount() {
+    getJdToken() {
       let code = this.$route.query.code
       if (code) {
-        this.$http.get(api.jdAccount, {params: {code: code}})
+        this.isLoading = true
+        this.$http.get(api.jdToken, {params: {code: code}})
         .then(res => {
           if (res.data.meta.status_code === 200) {
-            this.jdAccount = res.data.data
-            this.checkJdAccount(res.data.data.account)
+            this.jdToken = res.data.data
+            this.checkJdToken(res.data.data)
           } else {
             this.$router.push({name: 'login'})
-            this.$message.error(res.data.meta.message)
+            this.isLoading = false
+            // this.$message.error(res.data.meta.message)
           }
         }).catch(err => {
+          this.isLoading = false
           console.error(err.message)
+          this.$router.push({name: 'login'})
         })
       }
     },
@@ -234,18 +243,12 @@ export default {
       // 写入localStorage
       auth.write_token(token)
       // ajax拉取用户信息
-      this.$http.get(api.user, {})
+      that.$http.get(api.user, {})
       .then(function (response) {
         if (response.data.meta.status_code === 200) {
           console.log(response)
           auth.write_user(response.data.data)
-
-          that.$message({
-            showClose: true,
-            message: '绑定成功!',
-            type: 'success'
-          })
-
+          that.isLoading = false
           that.$router.replace({name: 'vcenterControl'})
         } else {
           auth.logout()
@@ -255,9 +258,11 @@ export default {
             type: 'error'
           })
           that.isLoadingBtn = false
+          that.isLoading = false
         }
       })
       .catch(function (error) {
+        that.isLoading = false
         auth.logout()
         that.$message({
           showClose: true,
@@ -276,14 +281,14 @@ export default {
             row = {
               phone: this.form.account,
               password: this.form.password,
-              jd_account: this.jdAccount.account
+              access_token: this.jdToken
             }
           } else {
             row = {
               phone: this.form.account,
               password: this.form.password,
               sms_code: this.form.smsCode,
-              jd_account: this.jdAccount.account
+              access_token: this.jdToken
             }
           }
 
@@ -344,7 +349,7 @@ export default {
     }
   },
   created() {
-    this.getJdAccount()
+    this.getJdToken()
   },
   mounted() {
     this.fetchImgCaptcha()

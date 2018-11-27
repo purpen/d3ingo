@@ -28,9 +28,9 @@
                   </button>
                    <router-link :to="{name: 'demand_login'}"
                     >
-                  <button class="withdraw btn-phone red-button middle-button">
+                  <!-- <button class="withdraw btn-phone red-button middle-button">
                     查看设计成果
-                  </button>
+                  </button> -->
                   </router-link>
                 </div>
               </div>
@@ -330,7 +330,7 @@
                   <p>还没有收藏设计成果～</p>
                   <router-link :to="{name: 'demand_login'}"
                     class="datails-router">
-                    <button class="red-button middle-button">查看设计成果</button>
+                    <!-- <button class="red-button middle-button">查看设计成果</button> -->
                   </router-link>
                 </div>
                 <div class="demand-list" v-if="collectList&&collectList.length">
@@ -357,7 +357,7 @@
                       <el-row>
                         <el-col :span="10" class="collect-all">
                           <router-link :to="{name: 'work_datails', params: {id: d.id}}"
-                                target="_blank" class="datails-router" v-if="d.status === 3">
+                                target="_blank" class="datails-router" v-if="d.status === 3&&d.is_trade_fair === 1">
                             <div class="collect-img" :style="{background:'url('+d.cover.middle +') no-repeat center / contain'}">
                             </div>
                           </router-link>
@@ -366,7 +366,7 @@
                           <div class="collect-centent">
                             <p class="c-title">
                               <router-link :to="{name: 'work_datails', params: {id: d.id}}"
-                                target="_blank" class="datails-router" v-if="d.status === 3">
+                                target="_blank" class="datails-router" v-if="d.status === 3&&d.is_trade_fair === 1">
                                 {{d.title}}
                                 </router-link>
                                 <span v-else>
@@ -383,12 +383,15 @@
                           {{d.status === 3?'出售中': '下架'}}
                         </el-col>
                         <el-col :span="4">
-                          <button class="full-red-button middle-button" v-if="d.status === 3">
+                          <button class="full-red-button middle-button" v-if="d.status === 3&&d.is_trade_fair === 1">
                             <router-link :to="{name: 'work_datails', params: {id: d.id}}"
                             class="router-work">
                             立即购买
                             </router-link>
                           </button>
+                          <el-button class="full-red-button middle-button"  v-else-if="d.status === 3&&d.is_trade_fair === 0" @click="dialogPermiss=true">
+                            立即购买
+                          </el-button>
                           <el-button class="full-red-button middle-button" :disabled="true" v-else>
                             立即购买
                           </el-button>
@@ -412,6 +415,18 @@
                   </el-pagination>
                 </div> -->
               </div>
+              <el-dialog
+                title="权限提醒"
+                :visible.sync="dialogPermiss"
+                :lock-scroll="false"
+                top="25%"
+                size="tiny"
+                class="power">
+                <div class="titles-center">
+                  <div class="move-text">暂无权限</div>
+                  <div class="move-div">交易会期间扫码或联系平台客服开通权限</div>
+                </div>
+              </el-dialog>
             </div>
             <div v-if="type === 3">
               <div>
@@ -482,7 +497,7 @@
                           <button class="mg-t-10 white-button middle-button" v-if="d.status ===1 && d.design_result.sell < 2" @click="dialogAdmin=true">
                             仲裁电话
                           </button>
-                          <button class="white-button middle-button" v-if="d.status ===-1" @click="deleteOrder(d.id)">
+                          <button class="white-button middle-button" v-if="d.status ===-1||d.status ===-2" @click="deleteOrder(d.id)">
                             删除
                           </button>
                           <button class="mg-t-10 white-button middle-button" v-if="d.status ===1 && d.design_result.sell === 2&&!d.design_result.is_evaluate">
@@ -579,7 +594,7 @@
 </template>
 <script>
   import vMenu from '@/components/pages/v_center/Menu'
-  import vMenuSub from '@/components/pages/home/trade_fairs/demand/1MenuSub'
+  import vMenuSub from '@/components/pages/home/trade_fairs/demand/MenuSub'
   import api from '@/api/api'
   import config from '@/config'
   import RegionPicker from '@/components/block/RegionPicker'
@@ -594,6 +609,7 @@
     },
     data() {
       return {
+        dialogPermiss: false,
         type: 1,
         isLoading: false, // 加载中
         isUpdate: false, // 是编辑
@@ -724,10 +740,8 @@
           }
         } else if (val === 2) {
           return '退款'
-        } else if (val === -1) {
+        } else if (val === -1 || val === -2) {
           return '交易失败'
-        } else {
-          return val
         }
       }
     },
@@ -1065,7 +1079,7 @@
             return
           }
         })
-        .catch(function (error) {
+        .catch((error) => {
           self.isLoading = false
           self.$message.error(error.message)
           console.error(error.message)
@@ -1445,5 +1459,21 @@
   .file-ok p:last-child {
     margin-top: 10px;
     color: #999;
+  }
+  .titles-center {
+    margin: 0 auto;
+    text-align: center;
+  }
+  .move-text {
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
+    font-size: 16px;
+    color: #666666;
+    text-align: center;
+    margin-top: 5px;
+  }
+  .move-div {
+    color: #999;
+    font-size: 13px;
+    margin-top: 20px;
   }
 </style>

@@ -6,55 +6,57 @@
         <span class="date fl"><i class="fx-2 fx-icon-time-orange-sm"></i>{{pdf.created_at}}</span>
         </p>
       <div v-if="already" :class="['pdf', 'swiper-container', {'fullscreen-pdf' : isFullscreen}]" ref="pdf">
-        <pdf :src="pdf.illustrate_url[0].file"
-          v-loading="isLoading"
-          @progress="loadedRatio = $event"
-          @loaded ="load = $event"
-          @num-pages="numPages = $event"
-          @error="error"
-          :rotate="rotate"
-          :page="page">
-        </pdf>
-        <p :class="['flip', {'flip-fullscreen' : isFullscreen}]" v-if="numPages">
-          <span :class="['swiper-button-prev','fl', {'not-allow' : prevNotAllow}]" @click="prev">
-            <i class="el-icon-arrow-left"></i>
-          </span>
-          <span :class="['swiper-button-next','fr', {'not-allow' : nextNotAllow}]" @click="next">
-            <i class="el-icon-arrow-right"></i>
-          </span>
-        </p>
+        <!--<pdf :src="pdf.illustrate_url[0].file"-->
+          <!--@progress="loadedRatio = $event"-->
+          <!--@loaded ="load = $event"-->
+          <!--@num-pages="numPages = $event"-->
+          <!--@error="error"-->
+          <!--:rotate="rotate"-->
+          <!--:page="page">-->
+        <div v-loading="isLoading" id="the-canvas" class="the-canvas-div" ref="the_canvas"></div>
+        <!--</pdf>-->
+        <!--<p :class="['flip', {'flip-fullscreen' : isFullscreen}]" v-if="numPages">-->
+          <!--<span :class="['swiper-button-prev','fl', {'not-allow' : prevNotAllow}]" @click="prev">-->
+            <!--<i class="el-icon-arrow-left"></i>-->
+          <!--</span>-->
+          <!--<span :class="['swiper-button-next','fr', {'not-allow' : nextNotAllow}]" @click="next">-->
+            <!--<i class="el-icon-arrow-right"></i>-->
+          <!--</span>-->
+        <!--</p>-->
         <div class="fullscreen-tools" v-if="isFullscreen">
           <span class="exit-fullscreen" @click="exitFullscreen">
             <span class="fx-4 fx-icon-exitFull-screen"></span>
           </span>
-          <span class="fx-icon-nothing-left" @click="prev"></span>
-          <span class="fx-icon-nothing-right" @click="next"></span>
+          <!--<span class="fx-icon-nothing-left" @click="prev"></span>-->
+          <!--<span class="fx-icon-nothing-right" @click="next"></span>-->
           <p class="total-page">
-            <i>共{{numPages}}页</i>前往
-            <input type="text" class="page-input" v-model.number="page" @blur="gotoPage(page)">
-            页
+            <i>共{{numPages}}页</i>
+            <!--前往-->
+            <!--<input type="text" class="page-input" v-model.number="page" @blur="gotoPage(page)">-->
+            <!--页-->
           </p>
         </div>
         <menu class="clearfix" v-if="!isFullscreen">
           <div class="menuitem fullscreen" @click="fullscreen">
             <span class="fx-4 fx-icon-full-screen"></span>
           </div>
-          <div class="menuitem add" @click="prev">
-            <span class="fx-icon-nothing-left"></span>
-          </div>
-          <div class="menuitem subtract" @click="next">
-            <span class="fx-icon-nothing-right"></span>
-          </div>
-          <!-- <div class="menuitem rotate" @click="rotate += 90" v-if="isMob">
-            <span class="fx-icon-rotate"></span>
-          </div> -->
+          <!--<div class="menuitem add" @click="prev">-->
+            <!--<span class="fx-icon-nothing-left"></span>-->
+          <!--</div>-->
+          <!--<div class="menuitem subtract" @click="next">-->
+            <!--<span class="fx-icon-nothing-right"></span>-->
+          <!--</div>-->
+          <!--<div class="menuitem rotate" @click="rotate += 90" v-if="isMob">-->
+            <!--<span class="fx-icon-rotate"></span>-->
+          <!--</div>-->
           <div class="menuitem" v-if="false">
             <span @click="download" class="fx-icon-download"></span>
           </div>
           <p class="total-page">
-            <i>共{{numPages}}页</i>前往
-            <input type="text" class="page-input" v-model.number="page" @blur="gotoPage(page)">
-            页
+            <i>共{{numPages}}页</i>
+            <!--前往-->
+            <!--<input type="text" class="page-input" v-model.number="page" @blur="gotoPage(page)">-->
+            <!--页-->
           </p>
         </menu>
       </div>
@@ -63,12 +65,13 @@
 </template>
 <script>
   import api from '@/api/api'
-  import pdf from 'vue-pdf'
+  import PDFJS from 'pdfjs-dist'
+  // import pdf from 'vue-pdf'
   import downFile from 'downloadjs'
   export default {
     name: 'trendReport',
     components: {
-      pdf
+      // pdf
     },
     data () {
       return {
@@ -148,12 +151,60 @@
             .format('yyyy年MM月dd日')
             // .format('yyyy年MM月dd日 hh:mm')
             this.pdf = res.data.data
+            this.showPDF(this.pdf.illustrate_url[0].file)
           } else {
             this.$message.error(res.data.meta.message)
           }
         }).catch((err) => {
           console.error(err)
         })
+      },
+      showPDF (url) { // pdf初始化
+        let PdfUrl = url
+        let _this = this
+        PDFJS.getDocument(PdfUrl).then(function (pdf) {
+          _this.pdfDoc = pdf
+          let pdfNumbers = pdf.numPages
+          _this.numPages = pdfNumbers
+          _this.pdfForShow(pdfNumbers, pdf)
+        })
+      },
+      pdfForShow (pdfNumbers, pdf) { // 循环展示pdf
+        let _this = this
+        let scrollWidth = Math.ceil(((document.getElementById('the-canvas').offsetWidth * 10) * (0.9 * 10)) / 100)
+        for (let i = 1; i <= pdfNumbers; i++) {
+          pdf.getPage(i).then(function getPageHelloWorld (page) {
+            var scale
+            let bs
+            for (let a = 0; a < 10000; a++) {
+              let viewportWidth = page.getViewport(a).width / 100
+              if (scrollWidth <= viewportWidth && viewportWidth <= 1180) {
+                bs = a / 100
+                break
+              }
+            }
+            scale = bs
+            var viewport = page.getViewport(scale * 3)
+            var canvas = _this.$refs.the_canvas
+            var canvasAppend = document.createElement('canvas')
+            canvasAppend.style.position = 'relative'
+            canvasAppend.style.left = '50%'
+            canvasAppend.style.transform = 'translate(-50%)'
+            canvasAppend.style.width = viewport.width / 3 + 'px'
+            canvasAppend.style.height = viewport.height / 3 + 'px'
+            var canvasLi = document.createElement('div')
+            canvasAppend.height = viewport.height
+            canvasAppend.width = viewport.width
+            var renderContext = {
+              canvasContext: canvasAppend.getContext('2d'),
+              viewport: viewport
+            }
+            canvasLi.appendChild(canvasAppend)
+            canvas.appendChild(canvasLi)
+            page.render(renderContext)
+          })
+        }
+        // this.select_proportion_inital = this.select_proportion_option[0].texts
       },
       next() {
         if (this.numPages) {
@@ -222,12 +273,6 @@
   }
 </script>
 <style scoped>
-  /* .container {
-    margin: 0 15px;
-  } */
-  .clearfix {
-    padding: 0
-  }
   .trend-report {
     padding-top: 40px;
   }
@@ -236,13 +281,22 @@
     position: relative;
     padding-top: 50px;
     background: #fff;
+    min-height: 150px;
   }
-
+  #the-canvas{
+    width: auto;
+  }
+  .the-canvas-div div{
+    margin: 0 auto;
+  }
+  .the-canvas-div div canvas{
+    margin: 0 auto;
+  }
   p.title {
     font-size: 24px;
     font-weight: 600;
     text-indent: 30px;
-    background: url("../../../../../assets/images/tools/report/PDF@2x.png") no-repeat;
+    background: url("../../../../assets/images/tools/report/PDF@2x.png") no-repeat;
     background-size: 24px;
     padding-bottom: 10px;
   }
@@ -368,18 +422,18 @@
 
   .total-page i {
     position: relative;
-    margin-right: 20px;
+    margin-right: 7px;
   }
 
-  .total-page i::after {
-    content: "";
-    position: absolute;
-    right: -10px;
-    top: 2px;
-    height: 16px;
-    width: 2px;
-    background: #999
-  }
+  /*.total-page i::after {*/
+    /*content: "";*/
+    /*position: absolute;*/
+    /*right: -10px;*/
+    /*top: 2px;*/
+    /*height: 16px;*/
+    /*width: 2px;*/
+    /*background: #999*/
+  /*}*/
 
   .page-input {
     color: #999;
@@ -485,6 +539,11 @@
     right: 18px;
     bottom: 0;
     margin:auto;
+  }
+  @media screen and (max-width:800px) {
+    .container{
+      margin: 0;
+    }
   }
   @media screen and (max-width:330px) {
     .menuitem.rotate {

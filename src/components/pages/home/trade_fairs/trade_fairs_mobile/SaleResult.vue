@@ -1,8 +1,6 @@
 <template>
-  <div class="content-box achieve-load" v-loading="isLoading">
-    <div class="large-background2">
-      <div class="right-background"></div>
-      <div class="left-background"></div>
+  <div class="content-box moblie-lod" v-loading="isLoading">
+    <div class="large-background">
       <!-- 代售成果 -->
       <div class="empty" v-if="!designCases.length && !isLoading">
         <div class="empty-list">
@@ -14,20 +12,26 @@
       <!-- 列表 -->
       <div class="large-list">
         <div class="list-center">
-          <el-row :gutter="20" class="list-cloud">
-            <el-col :span="6" class="item-cloud" v-for="(achieve, index) in designCases" :key="index">
+
+          <el-row :gutter="10" class="list-cloud">
+            <el-col :span="12" class="item-cloud" v-for="(achieve, index) in designCases" :key="index">
               <div class="list-item">
                 <div class="list-image" v-if="achieve.sell === 1 || achieve.sell === 2">
                   <div class="images-size">
-                    <img alt="点击查看详情" class="img-size" :src="achieve.cover.small">
+                    <img :src="achieve.cover.small" alt="点击查看详情" class="img-size">
                   </div>
                 </div>
-                <div class="list-image" @click="listDatail(achieve.id)" v-else>
+                <!-- <div class="list-image" v-else-if="achieve.is_trade_fair === 0" @click="dialogPermiss = true">
                   <div class="image-size">
                     <img alt="点击查看详情" class="img-size" :src="achieve.cover.small">
                   </div>
+                </div> -->
+                <div class="list-image" @click="listDatail(achieve.id)" v-else>
+                  <div class="image-size">
+                    <img :src="achieve.cover.small" alt="点击查看详情" class="img-size">
+                  </div>
                 </div>
-                <div class="list-text">
+                <div class="list-text" v-if="achieve.sell === 1 || achieve.sell === 2 || achieve.is_trade_fair === 0" @click="diaPermiss(achieve.sell, achieve.is_trade_fair)">
                   <div class="list-title">
                     <span>{{achieve.title}}</span>
                   </div>
@@ -41,7 +45,40 @@
                       </div>
                     </div>
                     <div v-if="achieve.sell !== 1 && achieve.sell !== 2">
-                      <div class="list-right" v-if="intersClick" @click="collect(achieve.id)">
+                      <div class="list-right" v-if="intersClick" @click.stop="collect(achieve.id)">
+                        <div class="list-button" v-if="achieve.is_follow === 0">
+                          <span class="button-text">感兴趣</span>
+                        </div>
+                        <div class="list-button interest-border" v-if="achieve.is_follow === 1">
+                          <span class="button-interest">已感兴趣</span>
+                        </div>
+                      </div>
+                      <div class="list-right" v-else disabled>
+                        <div class="list-button" v-if="achieve.is_follow === 0">
+                          <span class="button-text">感兴趣</span>
+                        </div>
+                        <div class="list-button interest-border" v-if="achieve.is_follow === 1">
+                          <span class="button-interest">已感兴趣</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="list-text" @click="listDatail(achieve.id)" v-else>
+                  <div class="list-title">
+                    <span>{{achieve.title}}</span>
+                  </div>
+                  <div class="list-bottom">
+                    <div class="list-left">
+                      <div class="list-way">
+                        <span>出让方式：&nbsp;{{achieve.sell_type === 1 ? '全额出让' : '股权合作'}}</span><span class="money">{{achieve.sell_type === 2 ?achieve.share_ratio+'%' : ''}}</span>
+                      </div>
+                      <div class="list-sum">
+                        <span>出让金额：&nbsp;<span class="money" :class="{'pay-yet' : achieve.sell === 1 || achieve.sell === 2}">￥{{achieve.price}}</span></span>
+                      </div>
+                    </div>
+                    <div v-if="achieve.sell !== 1 && achieve.sell !== 2" class="padding-di">
+                      <div class="list-right" v-if="intersClick" @click.stop="collect(achieve.id)">
                         <div class="list-button" v-if="achieve.is_follow === 0">
                           <span class="button-text">感兴趣</span>
                         </div>
@@ -63,58 +100,51 @@
               </div>
             </el-col>
           </el-row>
-          <el-pagination
-            v-if="false"
-            class="pagination"
-            @current-change="handleCurrentChange"
-            :current-page="query.page"
-            :page-size="query.pageSize"
-            layout="prev, pager, next"
-            :total="query.totalCount">
-          </el-pagination>
-        </div>
-      </div>
-      
-      <!-- 右下角图标 -->
-      <div class="right">
-        <div class="right-top" @click="callPhone">
-          <div class="pMassgae">
-            联系客服
-          </div>
-        </div>
-        <div class="right-bottom" @click="demandBanner">
-          <div class="pMassgae-bottom">
-            发布设计需求
-          </div>
         </div>
       </div>
     </div>
+    <div>
+
+    </div>
+    <!-- 右下角图标 -->
+    <div class="right">
+      <div class="right-top" @click="clientPhone = true">
+      </div>
+    </div>
+    <!-- <el-dialog
+      :visible.sync="dialogPermiss"
+      size="tiny" class="hint-text">
+      <span class="move-text">暂无权限</span>
+      <div class="move-div">交易会期间扫码或联系平台客服开通权限</div>
+      <span slot="footer" class="dialog-footer" @click="dialogPermiss = false">
+        <p class="sure-text">确 定</p>
+      </span>
+    </el-dialog> -->
     <el-dialog
-        title="客服电话"
-        :visible.sync="clientPhone"
-        :lock-scroll="false"
-        @close="closePop"
-        size="tiny"
-        class="phone-style">
-        <div class="title-center">
-          <img class="avatt" src="../../../../assets/images/trade_fairs/list/clientPhone.png" width="100"/>
-          <div class="company-name">耿霆</div>
-          <div class="right-number">13031154842</div>
-        </div>
-      </el-dialog>
+      :visible.sync="clientPhone"
+      top="30%"
+      size="tiny"
+      class="calls">
+      <div class="title-center">
+        <img class="avatt" src="../../../../../assets/images/trade_fairs/list/clientPhone.png" width="100"/>
+        <div class="company-name">客服电话</div>
+        <div class="right-number"><a href="tel:13031154842" class="number-red">13031154842</a></div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
   import api from '@/api/api'
   export default {
-    name: 'sale_result',
+    name: 'mobile_sale_result',
     data() {
       return {
         isLoading: false,
-        designCases: '',
-        clientPhone: false,
         intersClick: true,
+        dialogPermiss: false,
+        clientPhone: false,
+        designCases: '',
         query: {
           page: 1,
           pageSize: 20,
@@ -126,29 +156,28 @@
       }
     },
     created() {
-      this.getDesignCase()
+      // var types = this.$route.query.types
+      // if (types) {
+      //   if (types === '1' && this.user.type === 1) {
+      //     this.getTradeFair()
+      //   }
+      // }
+      this.getTradeFair()
+      setTimeout(() => {
+        this.getDesignCase()
+      }, 1)
+    },
+    mounted() {
     },
     methods: {
-      // 弹出客服框
-      callPhone() {
-        this.clientPhone = true
-        let oldClass = document.getElementById('app').getAttribute('class')
-        if (oldClass) {
-          oldClass = oldClass.replace(/disableScroll\x20?/g, '')
-        }
-        document.body.setAttribute('class', 'disableScroll')
-        // document.getElementById('app').setAttribute('class', 'disableScroll ' + oldClass)
-        // document.childNodes[1].setAttribute('class', 'disableScroll')
-      },
-      closePop() {
-        let oldClass = document.getElementById('app').getAttribute('class')
-        if (oldClass) {
-          oldClass = oldClass.replace('disableScroll ', '')
-        }
-        document.body.removeAttribute('class', 'disableScroll')
-        document.getElementById('app').setAttribute('class', oldClass)
-        document.childNodes[1].removeAttribute('class', 'disableScroll')
-      },
+      // 点击权限提示
+      // diaPermiss(sell, fair) {
+      //   if (sell === 1 || sell === 2) {
+
+      //   } else if (fair === 0) {
+      //     this.dialogPermiss = true
+      //   }
+      // },
       // 收藏需求
       collect(id) {
         this.intersClick = false
@@ -176,13 +205,15 @@
           return
         })
       },
-      // 跳转到发布需求
-      demandBanner() {
-        this.$router.push({name: 'demand_list', query: {type: 1}})
-      },
       // 跳转到设计详情
       listDatail(id) {
-        this.$router.push({name: 'work_datails', params: {id: id}})
+        this.$router.push({name: 'mobile_work_details', params: {id: id}})
+      },
+      interesClick() {
+        this.interestButton = !this.interestButton
+      },
+      demandBanner() {
+        this.$router.push({name: 'demand_list', query: {type: 1}})
       },
       // 获取成果列表
       getDesignCase () {
@@ -204,6 +235,18 @@
         .catch (function (error) {
           that.$message.error (error.message)
           that.isLoading = false
+        })
+      },
+      // 获取查看权限
+      getTradeFair() {
+        const that = this
+        that.$http.get (api.demandCompanySaveTradeFair)
+        .then (function (response) {
+          if (response.data.meta.status_code === 200) {
+          }
+        })
+        .catch (function (error) {
+          console.log(error.message)
         })
       },
       // 分页
@@ -238,64 +281,69 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .company-name {
+    margin-top: 16px;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
+    font-size: 16px;
+  }
+  .right-number {
+    margin-top: 12px;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
+    font-size: 16px;
+  }
+  .number-red {
+    color: #FF5A5F;
+  }
+  .title-center {
+    margin: 0 auto;
+    text-align: center;
+    margin-top: -60px;
+  }
+  /* 右侧屏幕浮动 */
+  .right {
+    z-index: 99;
+    height: 140px;
+    width: 60px;
+    position:fixed;
+    right: 0px;
+    bottom: -40px;
+  }
+  .right-top {
+    cursor: pointer;
+    height: 40px;
+    width: 40px;
+    background: url('../../../../../assets/images/trade_fairs/list/CustomerService@2x.png') no-repeat center;
+    background-size: contain;
+  }
+  .move-div {
+    color: #999;
+    font-size: 13px;
+    margin-top: -15px;
+  }
+  .sure-text {
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
+    font-size: 16px;
+    color: #FF6E73;
+    text-align: center;
+  }
+  .move-text {
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
+    font-size: 16px;
+    color: #666666;
+    text-align: center;
+  }
   .content-box {
     min-height: 325px;
     background: #3519B2;
   }
-  /* 详情弹出框 */
-  .title-center {
-    margin: 0 auto;
-    text-align: center;
-    width: 50%;
-    margin-top: -20px;
-  }
-  .company-name {
-    font-family: PingFangSC-Regular;
-    font-size: 16px;
-    color: #222222;
-    letter-spacing: 0;
-    padding-top: 17px;
-  }
-  .right-number {
-    font-family: PingFangSC-Regular;
-    font-size: 16px;
-    color: #FF5A5F;
-    letter-spacing: 0;
-    padding-top: 12px;
-  }
-  .avatt {
-    border-radius: 50%;
-    overflow: hidden;
-    vertical-align: middle;
-  }
-  .large-background2 {
+  .large-background {
     position: relative;
-  }
-  .right-background {
-    position: absolute;
-    height: 100%;
-    width: 390px;
-    z-index: 2;
-    top: 0;
-    right: -50px;
-    bottom: 0;
-    background: url('../../../../assets/images/trade_fairs/large-background/BG02@2x.png') no-repeat right top / cover
-  }
-  .left-background {
-    position: absolute;
-    width: 390px;
-    height: calc(100% - 50px);
-    z-index: 2;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    background: url('../../../../assets/images/trade_fairs/large-background/BG01@2x.png') no-repeat -40px 0 / cover
   }
   /* 列表为空的时候 */
   .empty {
     height: 500px;
     background: #3519B2;
-    padding-top: 60px;
+    padding-top: 30px;
   }
   .empty-list {
     height: calc(100% - 50px);
@@ -307,118 +355,14 @@
   .empty-img {
     width: 140px;
     height: 140px;
-    background: url('../../../../assets/images/trade_fairs/list/Achievements@2x.png') no-repeat center;
+    background: url('../../../../../assets/images/trade_fairs/list/Achievements@2x.png') no-repeat center;
     background-size: contain;
   }
   .empty-content {
     font-size: 14px;
     color: #fff;
-    font-family:PingFangSC-Regular;
+    font-family:PingFangSC-Regular, "Microsoft Yahei";
     font-weight:400;
-  }
-
-  /* 右侧屏幕浮动 */
-  .right {
-    z-index: 99;
-    height: 140px;
-    width: 60px;
-    position:fixed;
-    right: 40px;
-    bottom: 100px;
-  }
-  .right-top {
-    cursor: pointer;
-    height: 60px;
-    width: 60px;
-    background: url('../../../../assets/images/trade_fairs/list/CustomerService@2x.png') no-repeat center;
-    background-size: contain;
-  }
-  .right-top:hover {
-    position: relative;
-    height: 60px;
-    width: 60px;
-    background: url('../../../../assets/images/trade_fairs/list/CustomerServiceHover@2x.png') no-repeat center;
-    background-size: contain;
-  }
-  .right-bottom {
-    cursor: pointer;
-    margin-top: 20px;
-    height: 60px;
-    width: 60px;
-    background: url('../../../../assets/images/trade_fairs/list/SendOut@2x.png') no-repeat center;
-    background-size: contain;
-  }
-  .right-bottom:hover {
-    cursor: pointer;
-    margin-top: 20px;
-    height: 60px;
-    width: 60px;
-    background: url('../../../../assets/images/trade_fairs/list/SendOutHover@2x.png') no-repeat center;
-    background-size: contain;
-  }
-  .pMassgae {
-    display: none;
-    opacity: 0.9;
-    position: absolute;
-    line-height: 30px;
-    background: #3519B2;
-    border: 2px solid #02EBA5;
-    border-radius: 4px;
-    left: -120px;
-    top: 13px;
-    padding: 0 20px;
-    color: #fff;
-    font-family: PingFangSC-Regular;
-    font-size: 14px;
-  }
-  .pMassgae:after {
-    content: '';
-    display: inline-block;
-    width: 14px;
-    height: 14px;
-    position: absolute;
-    left: 90px;
-    top: 7px;
-    transform: rotate(-45deg) scaleY(1);
-    border-bottom: 2px solid #02EBA5;
-    border-right: 2px solid #02EBA5;
-    z-index: 3;
-    background: #3519B2
-  }
-  .pMassgae-bottom {
-    display: none;
-    opacity: 0.9;
-    position: absolute;
-    line-height: 30px;
-    background: #3519B2;
-    border: 2px solid #02EBA5;
-    border-radius: 4px;
-    left: -148px;
-    top: 94px;
-    padding: 0 20px;
-    color: #fff;
-    font-family: PingFangSC-Regular;
-    font-size: 14px;
-  }
-  .pMassgae-bottom:after {
-    content: '';
-    display: inline-block;
-    width: 14px;
-    height: 14px;
-    position: absolute;
-    left: 118px;
-    top: 7px;
-    transform: rotate(-45deg) scaleY(1);
-    border-bottom: 2px solid #02EBA5;
-    border-right: 2px solid #02EBA5;
-    z-index: 3;
-    background: #3519B2
-  }
-  .right-top:hover .pMassgae{
-    display: block;
-  }
-  .right-bottom:hover .pMassgae-bottom{
-    display: block;
   }
 
   /* 列表样式 */
@@ -428,32 +372,36 @@
     padding-top: 30px;
   }
   .list-center {
-    width: 1200px;
     height: 100%;
-    margin: 0 auto;
+    margin: 0px 5px;
+    padding-bottom: 20px;
   }
   .list-cloud {
     z-index: 4;
   }
   .list-item {
-    height: 275px;
+    height: 250px;
     background: #fff;
     border: 1px solid #E6E6E6;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     border-radius: 4px;
   }
   .list-image {
-    height: 186px;
+    height: 130px;
     background: #fff;
     border: 1px solid #E6E6E6;
   }
+  .image-size {
+    height: 130px;
+    text-align: center
+  }
   .img-size {
     height: 100%;
-    max-width: 281px;
+    max-width: 100%;
   }
   .images-size {
-    height: 184px;
-    text-align: center;
+    height: 100%;
+    max-width: 100%;
     position: relative
   }
   .images-size:after {
@@ -461,47 +409,49 @@
     position: absolute;
     left: -2px;
     top: -2px;
-    width: 100px;
-    height: 100px;
-    background: url('../../../../assets/images/trade_fairs/list/AlreadySold@2x.png') no-repeat center;
+    width: 85px;
+    height: 85px;
+    background: url('../../../../../assets/images/trade_fairs/list/AlreadySold@2x.png') no-repeat center;
     background-size: contain;
   }
-  .image-size {
-    cursor: pointer;
-    height: 184px;
-    text-align: center;
-  }
   .list-text {
+    padding-top: 10px;
     height: 70px;
-    margin: 0 10px;
-    margin-top: 10px;
   }
   .list-title {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
+    padding-left: 5px;
     font-size: 14px;
     color: #222222;
     line-height: 17.04px;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-  .list-bottom {
-    height: 34px;
+    white-space: nowrap;
   }
   .list-left {
-    float: left;
     padding-top: 8px;
+    padding-left: 5px;
   }
   .list-way {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     color: #666666;
     line-height: 11.36px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .list-sum {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     color: #666666;
     line-height: 11.36px;
+    padding-top: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .padding-di {
     padding-top: 10px;
   }
   .money {
@@ -509,21 +459,19 @@
   }
   .list-right {
     cursor: pointer;
-    float: left;
-    padding-left: 20px;
-    padding-top: 10px;
+    width: 80px;
+    margin: 0 auto;
   }
   .list-button {
     height: 30px;
     width: 80px;
     border: 1px solid #E6E6E6;
-    border-radius: 4px;
     text-align: center;
     line-height: 28px;
   }
   .button-text {
     position: relative;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     padding-left: 10px;
     color: #999999;
@@ -535,29 +483,15 @@
     top: -4px;
     width: 24px;
     left: -14px;
-    background: url('../../../../assets/images/trade_fairs/list/BeInterested@2x.png') no-repeat center;
-    background-size: contain;
-  }
-  .list-button:hover {
-    height: 30px;
-    width: 80px;
-    border: 1px solid #FF4696;
-    border-radius: 4px;
-  }
-  .list-button:hover .button-text {
-    color: #FF4696;
-  }
-  .list-button:hover .button-text:before {
-    background: url('../../../../assets/images/trade_fairs/list/BeInterestedHover@2x.png') no-repeat center;
+    background: url('../../../../../assets/images/trade_fairs/list/BeInterested@2x.png') no-repeat center;
     background-size: contain;
   }
   .interest-border {
     border: 1px solid #FF4696;
-    border-radius: 4px;
   }
   .button-interest {
     position: relative;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     padding-left: 15px;
     color: #FF4696;
@@ -569,7 +503,7 @@
     top: -4px;
     width: 24px;
     left: -8px;
-    background: url('../../../../assets/images/trade_fairs/list/BeInterestedClick@2x.png') no-repeat center;
+    background: url('../../../../../assets/images/trade_fairs/list/BeInterestedClick@2x.png') no-repeat center;
     background-size: contain;
   }
   .pay-yet {

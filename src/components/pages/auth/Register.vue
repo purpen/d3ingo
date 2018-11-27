@@ -166,6 +166,9 @@
         const that = this
         that.$refs[formName].validate((valid) => {
           if (valid) {
+            if (this.prod.name) {
+              this.selectUser()
+            }
             let account = this.form.account
             let password = this.form.password
             let smsCode = this.form.smsCode
@@ -174,7 +177,6 @@
               that.$message.error('请选择客户或设计公司')
               return false
             }
-
             that.isLoadingBtn = true
             // 验证通过，注册
             that.$http.post(api.register, {account: account, password: password, type: type, sms_code: smsCode})
@@ -370,9 +372,6 @@
       })
     },
     created() {
-      if (this.prod.name) {
-        this.selectUser()
-      }
       this.form.type = this.$route.params.type
       if (this.form.type === 2) {
         this.cActive = true

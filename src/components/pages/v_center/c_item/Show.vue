@@ -409,12 +409,14 @@
           </el-collapse>
         </div>
 
-
+   
       </el-col>
     </el-row>
 
-    <el-dialog title="提交项目报价" v-model="takingPriceDialog" size="large" top="2%">
-      <v-quote-submit :paramProp="quoteProp" :formProp="takingPriceForm" @form="quoteFormProp" @param="quoteProp"></v-quote-submit>
+    <el-dialog title="提交项目报价" v-model="takingPriceDialog" size="large" top="2%"   @close="isClose = false"
+    @open="isClose = true"
+    >
+      <v-quote-submit :paramProp="quoteProp" :formProp="takingPriceForm" @form="quoteFormProp" @param="quoteProp" v-if="isClose"></v-quote-submit>
     </el-dialog>
 
     <el-dialog title="发票信息" v-model="invoiceDialog">
@@ -624,6 +626,7 @@
     },
     data () {
       return {
+        isClose: false,
         showStickCompanyBtn: true,
         comfirmLoadingBtn: false,
         comfirmDialog: false,
