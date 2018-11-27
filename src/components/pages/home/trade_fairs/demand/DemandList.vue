@@ -366,7 +366,7 @@
                           <div class="collect-centent">
                             <p class="c-title">
                               <router-link :to="{name: 'work_datails', params: {id: d.id}}"
-                                target="_blank" class="datails-router" v-if="d.status === 3&&d.is_trade_fair === 1">
+                                target="_blank" class="datails-router" v-if="d.status === 3">
                                 {{d.title}}
                                 </router-link>
                                 <span v-else>
@@ -383,15 +383,12 @@
                           {{d.status === 3?'出售中': '下架'}}
                         </el-col>
                         <el-col :span="4">
-                          <button class="full-red-button middle-button" v-if="d.status === 3&&d.is_trade_fair === 1">
+                          <button class="full-red-button middle-button" v-if="d.status === 3">
                             <router-link :to="{name: 'work_datails', params: {id: d.id}}"
                             class="router-work">
                             立即购买
                             </router-link>
                           </button>
-                          <el-button class="full-red-button middle-button"  v-else-if="d.status === 3&&d.is_trade_fair === 0" @click="dialogPermiss=true">
-                            立即购买
-                          </el-button>
                           <el-button class="full-red-button middle-button" :disabled="true" v-else>
                             立即购买
                           </el-button>
