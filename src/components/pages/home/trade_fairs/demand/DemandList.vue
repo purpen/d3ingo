@@ -357,7 +357,7 @@
                       <el-row>
                         <el-col :span="10" class="collect-all">
                           <router-link :to="{name: 'work_datails', params: {id: d.id}}"
-                                target="_blank" class="datails-router" v-if="d.status === 3&&d.is_trade_fair === 1">
+                                target="_blank" class="datails-router" v-if="d.status === 3">
                             <div class="collect-img" :style="{background:'url('+d.cover.middle +') no-repeat center / contain'}">
                             </div>
                           </router-link>
