@@ -35,8 +35,9 @@
                     </div>
                     <div class="image-box">
                       <router-link :to="{name: 'vcenterMatchCaseShow', params: {id: d.id}}"
-                                   :target="isMob ? '_self' : '_blank'">
-                        <img v-lazy="d.cover.middle">
+                                   :target="isMob ? '_self' : '_blank'"
+                        :style="{background: 'url('+ d.cover.small +') no-repeat center / cover'}">
+                        <!-- <img v-lazy="d.cover.small"> -->
                       </router-link>
                     </div>
                     <div class="content">
@@ -194,6 +195,7 @@
     align-items: center;
     flex-direction: column;
     height: calc(100% - 20px);
+    min-height: 340px
   }
   .item-add p {
     font-size: 16px;

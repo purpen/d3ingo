@@ -567,6 +567,7 @@
     align-items: center;
     flex-direction: column;
     height: calc(100% - 20px);
+    min-height: 290px;
   }
   .item-add p {
     font-size: 16px;

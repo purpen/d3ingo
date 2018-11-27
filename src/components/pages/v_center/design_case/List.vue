@@ -35,7 +35,7 @@
                     <div class="image-box">
                       <router-link v-if="d.cover" :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
                         :target="isMob ? '_self' : '_blank'"
-                        :style="{background: 'url('+ d.cover.middle +') no-repeat center / cover'}">
+                        :style="{background: 'url('+ d.cover.small +') no-repeat center / cover'}">
                       </router-link>
                       <router-link v-else 
                         :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
@@ -195,6 +195,7 @@
     align-items: center;
     flex-direction: column;
     height: calc(100% - 20px);
+    min-height: 340px;
   }
   .item-add p {
     font-size: 16px;
