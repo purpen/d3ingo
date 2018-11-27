@@ -62,10 +62,22 @@
                 </el-col>
               </el-row>
             </div>
+            
           </div>
         </div>
       </div>
     </el-row>
+    <div class="text-align-c" v-if="jquery.page>1">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="jquery.current_page"
+        :page-sizes="[10, 100, 200]"
+        :page-size="jquery.per_page"
+        layout="sizes, prev, pager, next"
+        :total="jquery.total">
+      </el-pagination>
+    </div>
     <el-dialog
       title="收藏详情"
       :visible.sync="dialogUpdateVisible"
@@ -203,6 +215,12 @@
     },
     data() {
       return {
+        jquery: {
+          total: 1, // 总条数
+          current_page: 1, // 当前页
+          page: 1, // 页数
+          per_page: 10 // 每页数量
+        },
         isLoading: false,
         collectList: [], // 收藏列表
         designId: '', // 修改状态id
@@ -245,6 +263,12 @@
       }
     },
     methods: {
+      handleSizeChange(val) {
+        this.getDesignCase(1, val)
+      },
+      handleCurrentChange(val) {
+        this.getDesignCase(val)
+      },
       // 联系他
       contactWay(item, type) {
         this.callDtails = item
@@ -306,12 +330,23 @@
         })
       },
       // 获取收藏列表
-      getDesignCase () {
+      getDesignCase (p, size) {
         const that = this
         that.isLoading = true
-        that.$http.get (api.sdDesignDesignCollectList, {params: {per_page: 50}})
+        if (p) {
+          that.jquery.current_page = p
+        }
+        if (size) {
+          that.jquery.per_page = size
+        }
+        that.$http.get (api.sdDesignDesignCollectList, {params: {
+          page: that.jquery.current_page, per_page: that.jquery.per_page
+        }})
         .then (function (response) {
           that.isLoading = false
+          let pages = response.data.meta.pagination
+          that.jquery.total = pages.total
+          that.jquery.page = pages.total_pages
           if (response.data.meta.status_code === 200) {
             if (response.data.data && response.data.data.length) {
               that.collectList = response.data.data
@@ -337,7 +372,7 @@
     },
     watch: {},
     created: function () {
-      this.getDesignCase ()
+      this.getDesignCase (1)
     }
   }
 
@@ -767,6 +802,13 @@
     height: 100px;
     background: url('../../../../../assets/images/trade_fairs/bottom.png') no-repeat center;
     background-size: cover;
+  }
+  .text-align-c {
+    text-align: center;
+    line-height: 20px;
+  }
+  .vcenter>.el-row {
+    min-height: 300px;
   }
   @media screen and (max-width: 767px) {
     .opt a {
