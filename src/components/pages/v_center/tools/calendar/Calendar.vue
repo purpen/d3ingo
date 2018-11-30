@@ -133,7 +133,8 @@
             let maxdocHeight = $(window).height() + $(document).scrollTop()
             let infoWidth = $(self.$refs.info).width()
             let infoHeight = $(self.$refs.info).height()
-            let top = jq.pageY + 25
+            // let top = jq.pageY + 25
+            let top = jq.pageY - 25
             let left = jq.pageX
 
             if (jq.pageX - 100 < 0) {
@@ -429,19 +430,19 @@
   .info .title {
     font-size: 14px;
     color: #FFFFFF;
-    height: 60px;
     background: rgba(103, 212, 150, 0.8);
     border-radius: 4px 4px 0 0;
     position: relative;
     overflow: hidden;
+    padding: 10px;
   }
 
   .title p {
-    margin-top: 24px;
     margin-left: 10px;
-    text-indent: 30px;
-    height: 24px;
+    min-height: 24px;
     line-height: 24px;
+    padding-right: 30px;
+    padding-left: 30px;
     background: url("../../../../../assets/images/tools/calendar/festival@2x.png") no-repeat left;
     background-size: 24px;
   }

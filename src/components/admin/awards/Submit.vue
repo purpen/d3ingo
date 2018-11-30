@@ -33,7 +33,7 @@
               <el-row :gutter="24">
                 <el-col :span="12">
                   <el-form-item label="名称" prop="name">
-                    <el-input :maxlength="30" v-model="form.name" placeholder=""></el-input>
+                    <el-input :maxlength="50" v-model="form.name" placeholder=""></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -126,7 +126,7 @@ export default {
         ],
         name: [
           { required: true, message: '请填写名称', trigger: 'blur' },
-          { max: 30, message: '不能超过30个字符', trigger: 'change' }
+          { max: 50, message: '不能超过50个字符', trigger: 'change' }
         ],
         summary: [
           { required: true, message: '请填写简介', trigger: 'blur' }
