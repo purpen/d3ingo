@@ -7,15 +7,14 @@
       <el-col :span="20">
         <div class="content">
 
-        <div class="admin-menu-sub">
+        <!-- <div class="admin-menu-sub">
           <div class="admin-menu-sub-list">
             <router-link :to="{name: 'adminAwardsList'}" active-class="false" :class="{'item': true, 'is-active': menuType == 0}">全部</router-link>
           </div>
           <div class="fr">
             <router-link :to="{name: 'adminAwardsSubmit'}" class="item add"><i class="el-icon-plus"></i> 添加</router-link>
           </div>
-        </div>
-
+        </div> -->
           <div class="content-box">
             <div class="form-title">
               <span>{{ itemMode }}</span>
@@ -34,8 +33,8 @@
               <el-row :gutter="24">
                 <el-col :span="12">
                   <el-form-item label="名称" prop="name">
-                    <el-input v-model="form.name" placeholder=""></el-input>
-                  </el-form-item>           
+                    <el-input :maxlength="30" v-model="form.name" placeholder=""></el-input>
+                  </el-form-item>
                 </el-col>
               </el-row>
 
@@ -126,7 +125,8 @@ export default {
           { type: 'number', message: '请选择类型', trigger: 'change' }
         ],
         name: [
-          { required: true, message: '请填写名称', trigger: 'blur' }
+          { required: true, message: '请填写名称', trigger: 'blur' },
+          { max: 30, message: '不能超过30个字符', trigger: 'change' }
         ],
         summary: [
           { required: true, message: '请填写简介', trigger: 'blur' }
