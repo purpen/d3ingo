@@ -12,6 +12,16 @@ module.exports = [
     },
     component: require('@/components/admin/DashBoard')
   },
+  // 潜在用户列表
+  {
+    path: '/admin/potential_user/list',
+    name: 'adminPotentialUserList',
+    meta: {
+      title: '潜在用户列表',
+      requireAuth: true
+    },
+    component: require('@/components/admin/potential_user/List')
+  },
   // 添加栏目
   {
     path: '/admin/column/add',
