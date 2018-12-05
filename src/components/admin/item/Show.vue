@@ -309,10 +309,10 @@
                         <h3>第{{ d.no }}阶段: {{ d.title }}</h3>
 
                         <p v-if="d.confirm === 0">
-                          <span>已确认</span>
+                          <span>未确认</span>
                         </p>
                         <p v-else>
-                          <span v-if="d.confirm === 1">已确认</span>
+                          <span>已确认</span>
                         </p>
                       </div>
                       <div class="stage-asset-box clearfix" v-for="(asset, asset_index) in d.item_stage_image" :key="asset_index">
