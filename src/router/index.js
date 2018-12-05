@@ -224,16 +224,6 @@ let routes = [
     },
     component: require('@/components/pages/subject/Rcip')
   },
-  // 羽泉的礼物
-  {
-    path: '/subject/YuQuanGifts',
-    name: 'YuQuanGifts',
-    meta: {
-      requireAuth: false,
-      title: '羽泉的礼物'
-    },
-    component: require('@/components/pages/subject/YuQuanGifts')
-  },
   // 小米众生相
   {
     path: '/subject/xiaomiInterview',

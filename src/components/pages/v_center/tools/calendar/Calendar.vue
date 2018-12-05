@@ -164,22 +164,22 @@
             switch (event.type) {
               case 1:
                 self.$refs.title_ico.style.background = 'url(' +
-                  require(`@/assets/images/tools/calendar/Contest@2x.png`) + ') no-repeat left 5px'
+                  require(`@/assets/images/tools/calendar/Contest@2x.png`) + ') no-repeat left 0px'
                 self.changeColor(event.backgroundColor, 'blue')
                 break
               case 2:
                 self.$refs.title_ico.style.background = 'url(' +
-                  require(`@/assets/images/tools/calendar/festival@2x.png`) + ') no-repeat left 5px'
+                  require(`@/assets/images/tools/calendar/festival@2x.png`) + ') no-repeat left 0px'
                 self.changeColor(event.backgroundColor, 'green')
                 break
               case 3:
                 self.$refs.title_ico.style.background = 'url(' +
-                  require(`@/assets/images/tools/calendar/exhibition@2x.png`) + ') no-repeat left 5px'
+                  require(`@/assets/images/tools/calendar/exhibition@2x.png`) + ') no-repeat left 0px'
                 self.changeColor(event.backgroundColor, 'orange')
                 break
               case 4:
                 self.$refs.title_ico.style.background = 'url(' +
-                  require(`@/assets/images/tools/calendar/Event@2x.png`) + ') no-repeat left 5px'
+                  require(`@/assets/images/tools/calendar/Event@2x.png`) + ') no-repeat left 0px'
                 self.changeColor(event.backgroundColor, 'red')
                 break
             }
