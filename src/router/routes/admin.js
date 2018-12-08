@@ -22,6 +22,16 @@ module.exports = [
     },
     component: require('@/components/admin/potential_user/List')
   },
+  // 编辑潜在用户信息
+  {
+    path: '/admin/potential_user/userinfo',
+    name: 'adminPotentialUserInfo',
+    meta: {
+      title: '潜在用户编辑',
+      requireAuth: true
+    },
+    component: require('@/components/admin/potential_user/UserInfo')
+  },
   // 添加栏目
   {
     path: '/admin/column/add',
