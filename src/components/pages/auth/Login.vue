@@ -83,6 +83,14 @@
         </el-button>
       </div>
     </div>
+    <iframe
+      v-show="false"
+      ref="iframe"
+      frameborder="0"
+      name="sso-collaboration"
+      @load="loadFrame"
+      src="http://dev.taihuoniao.com/getmessage"></iframe>
+      <!-- src="http://localhost:8086/iframe"></iframe> -->
   </div>
 </template>
 
@@ -140,6 +148,8 @@ export default {
       isLoading: false,
       user: {},
       token: '',
+      ticket: '',
+      iframeLoad: false,
       typeError: false,
       imgCaptchaUrl: '',
       imgCaptchaStr: '',
@@ -148,6 +158,20 @@ export default {
     }
   },
   methods: {
+    loadFrame() {
+      this.iframeLoad = true
+    },
+    postMessage() {
+      if (this.iframeLoad) {
+        this.$refs.iframe.contentWindow.postMessage(JSON.stringify({
+          account: this.form.account,
+          password: this.form.password,
+          ticket: this.ticket
+        }), 'http://dev.taihuoniao.com/getmessage')
+        // }), 'http://localhost:8086/iframe')
+        console.log('iframe')
+      }
+    },
     checkAccount(number) {
       if (number && number.length === 11) {
         this.$http.post(api.errCount, {account: number}).then(res => {
@@ -186,17 +210,16 @@ export default {
               .post(api.login, { account: account, password: password, str: that.imgCaptchaStr, captcha: that.form.imgCode })
               .then(function(response) {
                 that.isLoadingBtn = false
-                console.log(response)
                 if (response.data.meta.status_code === 200) {
-                  let token = response.data.data.token
-                  that.token = token
+                  that.token = response.data.data.token
+                  that.ticket = response.data.data.ticket
+                  that.postMessage()
                   // 写入localStorage
-                  auth.write_token(token)
+                  auth.write_token(that.token)
                   // ajax拉取用户信息
                   that.$http
                     .get(api.user, {})
                     .then(function(response) {
-                      console.log(response.data.data)
                       if (response.data.meta.status_code === 200) {
                         if (response.data.data.type === 0) {
                           that.chooseType = true
