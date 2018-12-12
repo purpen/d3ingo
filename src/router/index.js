@@ -753,7 +753,10 @@ const router = new VueRouter({
   linkActiveClass: 'is-active', // 这是链接激活时的class
   routes,
   scrollBehavior(to, from, savedPosition) {
-    return savedPosition || { x: 0, y: 0 }
+    if (to.name !== 'InnovateList') {
+      return savedPosition || { x: 0, y: 0 }
+    }
+    // return savedPosition
     // if (savedPosition) {
     //   return savedPosition
     // } else {
