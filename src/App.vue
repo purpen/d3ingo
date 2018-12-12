@@ -23,6 +23,8 @@
 import vHeader from '@/components/block/Header'
 import vFooter from '@/components/block/Footer'
 import api from '@/api/api'
+import auth from '@/helper/auth'
+import { MENU_STATUS, CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
 
 export default {
   name: 'app',
@@ -46,14 +48,47 @@ export default {
         if (res.source !== window.parent) return false
         console.log(res.data, typeof res.data)
         if (typeof res.data === 'string') {
-          var data = JSON.parse(res.data)
-          document.cookie = 'ticket=' + data.ticket
-          this.$http.post(api.iframeLogin)
-          .then(res => {
-            console.log(res)
-          }).catch(err => {
-            console.error(err)
-          })
+          let data = JSON.parse(res.data)
+          if (data.ticket) {
+            document.cookie = 'ticket=' + data.ticket
+            this.$http.post(api.iframeLogin)
+            .then(res => {
+              console.log(res)
+              if (res.data.meta.status_code === 200) {
+                let token = res.data.data.token
+                auth.write_token(token)
+                // ajax拉取用户信息
+                this.$http
+                  .get(api.user, {})
+                  .then(response => {
+                    if (response.data.meta.status_code === 200) {
+                      if (response.data.data.type === 0) {
+                        this.chooseType = true
+                        this.user = response.data.data
+                      } else {
+                        this.$message({
+                          message: '登陆成功',
+                          type: 'success',
+                          duration: 800
+                        })
+                        this.$store.commit(MENU_STATUS, '')
+                        auth.write_user(response.data.data)
+                        this.getStatus(this.$store.state.event.user.type)
+                      }
+                    } else {
+                      auth.logout()
+                      this.$message.error(response.data.meta.message)
+                    }
+                  })
+                  .catch(function(error) {
+                    auth.logout()
+                    this.$message.error(error.message)
+                  })
+              }
+            }).catch(err => {
+              console.error(err)
+            })
+          }
         }
       }
     })
@@ -75,6 +110,24 @@ export default {
     }).catch(err => {
       console.log(err)
     })
+  },
+  methods: {
+    getStatus(type) {
+      let url = ''
+      if (type === 2) {
+        url = api.surveyDesignCompanySurvey
+      } else {
+        url = api.surveyDemandCompanySurvey
+      }
+      this.$http.get(url, {})
+      .then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.$store.commit(CHANGE_USER_VERIFY_STATUS, res.data.data)
+        }
+      }).catch(err => {
+        console.error(err.message)
+      })
+    }
   },
   computed: {
     hideHeader() {
