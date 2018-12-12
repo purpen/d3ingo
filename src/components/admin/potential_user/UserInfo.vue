@@ -7,7 +7,7 @@
         <div class="content">
           <el-breadcrumb separator=">">
             <el-breadcrumb-item :to="{ name: 'adminPotentialUserList' }">潜在客户</el-breadcrumb-item>
-            <el-breadcrumb-item>新建客户</el-breadcrumb-item>
+            <el-breadcrumb-item>{{currentUser}}</el-breadcrumb-item>
           </el-breadcrumb>
 
         </div>
@@ -26,26 +26,32 @@
               </div>
               <div class="user-rank fl">
                   <div ref="selectParent" :class="['select-parent']" tabindex="-1">
-                    <span :class="['select-level', {'select-level2': userForm.rankValue === 2,
-                    'select-level3': userForm.rankValue === 3}]">{{rankLabel}}</span>
+                    <span :class="['select-level', {'select-level2': userForm.rank === 2,
+                    'select-level3': userForm.rank === 3}]">{{rankLabel}}</span>
                     <ul class="stage-list">
                       <li @click="changeLevel(item)"
-                        v-for="(item, index) in rank"
+                        v-for="(item, index) in rankArr"
                         :key="index"
                         >
-                        <span :style="{
-                        float: 'left',
-                        width: '10px',
-                        height: '10px',
-                        borderRadius: '50%',
-                        margin: '13px 10px 0 0',
-                        background: item.color}"></span>{{item.label}}</li>
+                        <img :src="item.img" alt="" :style="{
+                          float: 'left',
+                          width: '24px',
+                          height: '20px',
+                          'margin-top': '8px',
+                          'margin-right': '10px'
+                        }">{{item.label}}
+                      </li>
                     </ul>
                   </div>
               </div>
               
-              <div class="user-status fr">
-                <el-select v-model="userForm.userStatusValue">
+              <div :class="['user-status', 'fr', {
+                  'status1': userForm.userStatusValue === 1,
+                  'status2': userForm.userStatusValue === 2,
+                  'status3': userForm.userStatusValue === 3,
+                  'status4': userForm.userStatusValue === 4
+                  }]">
+                <el-select v-model="userForm.call_status">
                   <el-option
                     v-for="(item, index) in userStatus"
                     :key="index"
@@ -66,9 +72,9 @@
             <div class="user-info-center clearfix">
               <div class="source fl">
                 <span>用户来源 :</span>
-                <el-select v-model="userForm.sourceValue"  size="small">
+                <el-select v-model="userForm.source"  size="small">
                   <el-option
-                    v-for="(item, index) in source"
+                    v-for="(item, index) in sourceArr"
                     :key="index"
                     :label="item.label"
                     :value="item.value">
@@ -85,7 +91,7 @@
               </div>
               <div class="belong fl">
                 <span>所属人 :</span>
-                <el-select v-model="userForm.executeId" size="small">
+                <el-select v-model="userForm.execute_user_id" size="small">
                   <el-option
                     v-for="(item, index) in userForm.execute"
                     :key="index"
@@ -105,7 +111,7 @@
               <div class="call-status fl">
                 <span>通话状态 :</span>
                 <div class="call-status-select">
-                  <el-select v-model="userForm.callStatusValue" size="small">
+                  <el-select v-model="userForm.status" size="small">
                     <el-option
                       v-for="(item, index) in callStatus"
                       :key="index"
@@ -150,7 +156,7 @@
             </p>
           </div>
           <div class="card-body">
-              <div class="card-body-header">
+              <div class="card-body-header" v-if="currentId !== ''">
                 <span @click="changeOption('user')" :class="{'active': option === 'user'}">用户档案</span>
                 <span @click="changeOption('project')" :class="{'active': option === 'project'}">项目档案</span>
                 <span @click="changeOption('follow')" :class="{'active': option === 'follow'}">跟进记录</span>
@@ -159,11 +165,11 @@
 
 
               <div class="card-body-center" v-show="option === 'user'">
-                <el-form v-if="false" label-position="top" :model="clientForm" :rules="ruleClientForm" ref="ruleClientForm" label-width="80px">
+                <el-form v-if="true" label-position="top" :model="clientForm" :rules="ruleClientForm" ref="ruleClientForm" label-width="80px">
                   <el-row :gutter="20">
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                      <el-form-item label="企业名称" prop="company_name" style="margin-top: 10px">
-                          <el-input v-model.trim="clientForm.company_name" placeholder="企业名称" :maxlength="40"></el-input>
+                      <el-form-item label="企业名称" prop="company" style="margin-top: 10px">
+                          <el-input v-model.trim="clientForm.company" placeholder="企业名称" :maxlength="40"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -176,9 +182,9 @@
                   </region-picker>
                   <el-row :gutter="20">
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                      <el-form-item label="联系人" prop="name">
+                      <!-- <el-form-item label="联系人" prop="name">
                         <el-input v-model.trim="clientForm.name" placeholder="请填写联系人姓名" :maxlength="20"></el-input>
-                      </el-form-item>
+                      </el-form-item> -->
                     </el-col>
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <el-form-item label="职位" prop="position">
@@ -186,9 +192,9 @@
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                      <el-form-item label="联系电话" prop="phone">
+                      <!-- <el-form-item label="联系电话" prop="phone">
                         <el-input v-model.trim="clientForm.phone" placeholder="请填写联系电话" :maxlength="11"></el-input>
-                      </el-form-item>
+                      </el-form-item> -->
                     </el-col>
                   </el-row>
                   <el-row :gutter="20">
@@ -205,6 +211,17 @@
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <el-form-item label="邮箱" prop="email">
                         <el-input v-model.trim="clientForm.email" placeholder="邮箱" :maxlength="20"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row :gutter="20">
+                    <el-col :xs="24" :sm="24" :md="24" :lg="24">
+                      <el-form-item label="邮箱" prop="summary">
+                        <el-input v-model.trim="clientForm.summary" 
+                                  type="textarea"
+                                  :autosize="{ minRows: 2, maxRows: 4}"
+                                  placeholder="备注">
+                        </el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -268,7 +285,7 @@
                   </el-row>
                 </div>
                 <p class="user-btn clearfix" v-show="option === 'user'">
-                  <el-button type="primary" class="fr" @click="submitForm">生成用户
+                  <el-button type="primary" class="fr" @click="submitUserForm">生成用户
                   </el-button>
                   <el-button class="fr">取消</el-button>
                 </p>
@@ -279,7 +296,7 @@
 
               <div class="card-body-center" v-show="option === 'project'">
                 <p class="add-project clearfix">
-                  <el-button type="primary" class="fr" @click="boolAddProject = true">添加项目</el-button>
+                  <el-button type="primary" size="small" class="fr" @click="boolAddProject = true">添加项目</el-button>
                 </p>
 
                 <div class="project-form" v-if="boolAddProject">
@@ -376,7 +393,7 @@
                   </el-form>
 
                   <p class="add-design clearfix">
-                    <el-button type="primary" class="fr" @click="boolDesignCompany = true">添加设计公司</el-button>
+                    <el-button type="primary" class="fr" @click="addDesignCompany">添加设计公司</el-button>
                   </p>
                 </div>
 
@@ -438,7 +455,8 @@
 
                 <div class="design-company" v-if="boolDesignCompany">
                   <p class="margin-b22">对接设计公司</p>
-                  <el-form  label-position="top" :model="designCompanyForm" :rules="ruleDesignCompanyForm" ref="ruleDesignCompanyForm" label-width="80px">
+                  <el-form  label-position="top" :model="designCompanyForm" :rules="ruleDesignCompanyForm" ref="ruleDesignCompanyForm"
+                              label-width="80px">
                     <el-row :gutter="20">
                       <el-col :xs="24" :sm="20" :md="8" :lg="8">
                         <el-form-item label="设计公司名称" prop="name">
@@ -516,6 +534,7 @@
 </template>
 
 <script>
+import api from '@/api/api'
 import vMenu from '@/components/admin/Menu'
 import typeData from '@/config'
 import '@/assets/js/format'
@@ -529,12 +548,14 @@ export default {
   },
   data() {
     return {
+      currentUser: '新建客户',
+      currentId: '',
       option: 'user',
       focusHeight: false,
       clientForm: {},
       ruleClientForm: {
-        company_name: [{ required: true, message: '请填写企业名称', trigger: 'blur' }],
-        contact_name: [{ required: true, message: '请添写联系人姓名', trigger: 'blur' }],
+        company: [{ required: true, message: '请填写企业名称', trigger: 'blur' }],
+        name: [{ required: true, message: '请添写联系人姓名', trigger: 'blur' }],
         phone: [{ required: true, message: '请填写联系人电话', trigger: 'blur' }],
         position: [{ required: true, message: '请填写联系人职位', trigger: 'blur' }],
         address: [{ required: true, message: '请填写企业详细地址', trigger: 'blur' }]
@@ -550,28 +571,28 @@ export default {
         phone: [{ required: true, message: '请填写联系人电话', trigger: 'blur' }]
       },
       userForm: {
-        rankValue: 1,
-        userStatusValue: '',
+        rank: 1,
+        call_status: '',
         sourceValue: '', // 用户来源
-        callStatusValue: '',
+        status: '',
         execute: []
       },
-      source: [],
-      rank: [
+      sourceArr: [],
+      rankArr: [
         {
           value: 1,
           label: '一般',
-          color: '#999'
+          img: require('@/assets/images/icon/Ordinary02@2x.png')
         },
         {
           value: 2,
           label: '重要',
-          color: '#ffd330'
+          img: require('@/assets/images/icon/Urgent02@2x.png')
         },
         {
           value: 3,
           label: '非常重要',
-          color: '#ff5a5f'
+          img: require('@/assets/images/icon/VeryUrgent02@2x.png')
         }
       ],
       rankLabel: '一般',
@@ -637,9 +658,23 @@ export default {
       this.option = e
     },
     changeLevel(e) {
-      this.userForm.rankValue = e.value
+      this.userForm.rank = e.value
       this.rankLabel = e.label
       this.$refs.selectParent.blur()
+    },
+    getUserInfo() { // 查看用户档案
+      let row = {
+        clue_id: this.currentId
+      }
+      this.$http.get(api.adminClueCreate, {params: row}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          console.log(res.data.data)
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+      })
     },
     changeClient: function(obj) { // 改变城市组件值- 客户信息()
       this.$set(this.clientForm, 'province', obj.province)
@@ -666,12 +701,26 @@ export default {
       this.inputValue = ''
     },
     quick() {},
-    submitForm() {
-      console.log(this.userForm)
-      console.log(this.clientForm)
+    submitUserForm() {
+      let row = Object.assign(this.clientForm, this.userForm)
+      row.execute_user_id = 9
+      row.source = 'ssss'
+      row.tag = this.dynamicTags
+      this.$http.post(api.adminClueCreate, row).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.$message.success(res.data.meta.message)
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+      })
     },
-    // 选择需求类别分类事件
-    selectTypeChange(val) {
+    addDesignCompany() {
+      this.boolDesignCompany = true
+    },
+
+    selectTypeChange(val) { // 选择需求类别分类事件
       // this.projectForm.design_types = []
     },
     focusInput() {
@@ -705,6 +754,13 @@ export default {
         return {}
       }
     }
+  },
+  created() {
+    if (this.$route.params && this.$route.params.name) {
+      this.currentUser = this.$route.params.name
+      this.currentId = this.$route.params.id
+      this.getUserInfo()
+    }
   }
 }
 </script>
@@ -722,6 +778,7 @@ export default {
   border: 1px solid #e6e6e6;
   border-radius: 50%;
 }
+/* card-box  */
 .card-box {
   margin-top: 20px;
   padding-top: 20px;
@@ -776,6 +833,8 @@ export default {
 .select-parent {
   position: relative;
   top: 5px;
+  left: 0px;
+  cursor: pointer;
 }
 .select-level {
   display: block;
@@ -783,9 +842,9 @@ export default {
   height: 24px;
   line-height: 22px;
   border-radius: 11px;
-  padding-left: 26px;
+  padding-left: 30px;
   border: 1px solid #e6e6e6;
-  /* color: #ffffff; */
+  color: #ffffff;
 }
 .select-parent:focus .stage-list {
   display: block;
@@ -801,33 +860,45 @@ export default {
   z-index: 2;
 }
 .stage-list li {
+  position: relative;
   height: 36px;
   line-height: 36px;
-  padding: 0 30px 0 10px;
-  position: relative;
+  padding: 0 10px 0 10px;
+  cursor: pointer;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .select-parent .select-level {
-  background: url(../../../assets/images/icon/Ordinary02@2x.png) no-repeat left / contain;
-  /* background-color: #d2d2d2; */
-  border: 1px solid #d2d2d2;
+  background: url(../../../assets/images/icon/commonly01@2x.png) no-repeat 6px / 16px 16px;
+  background-color: #d2d2d2;
 }
 .select-parent .select-level2 {
-  background: url(../../../assets/images/icon/Urgent02@2x.png) no-repeat left / contain;
-  /* background-color: #FFA64B; */
-  border: 1px solid #FFA64B;
+  background: url(../../../assets/images/icon/important01@2x.png) no-repeat 6px / 16px 16px;
+  background-color: #FFA64B;
 }
 .select-parent .select-level3 {
-  background: url(../../../assets/images/icon/VeryUrgent02@2x.png) no-repeat left / contain;
-  /* background-color: #FF5A5F; */
-  border: 1px solid #FF5A5F;
+  background: url(../../../assets/images/icon/VeryImportant01@2x.png) no-repeat 6px / 16px 16px;
+  background-color: #FF5A5F;
 }
 /* user-rank end */
 
 .user-status {
-  width: 150px;
+  width: 130px;
+  padding-left: 38px;
+  border: 1px solid #e6e6e6;
+  border-radius: 18px;
+}
+/* .user-status-bg {
+  position: absolute;
+  left: 12px;
+  top: 8px;
+  z-index: 99;
+  width: 20px;
+  height: 20px;
+} */
+.user-status.status1 {
+  background: url(../../../assets/images/icon/Fail@2x.png) no-repeat left / 20px 20px;
 }
 .user-info-center {
   margin-top: 12px;
@@ -865,6 +936,18 @@ export default {
 }
 /* 标签end */
 
+/* card-body */
+.add-project {
+  height: 40px;
+  margin: -20px -20px 20px -20px;
+  padding: 5px 20px;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+
+
+
+
 .user-base-table p, 
 .project-form-table p {
   margin-bottom: 22px;
@@ -882,6 +965,7 @@ export default {
   border-top: 1px solid #e6e6e6;
   padding: 10px 20px;
 }
+
 </style>
 <style>
 .card-header .el-input__inner {
@@ -892,8 +976,16 @@ export default {
   width: 100px;
   /* max-width: 150px; */
 }
-
-
+.user-status .el-select .el-input__inner {
+  border: none;
+  padding-left: 0px;
+}
+.user-status .el-select:hover .el-input__inner,
+.el-select .el-input__inner:focus {
+  border: none;
+  border-color: transparent;
+  box-shadow: none;
+}
 .user-info-center .call-status-select .el-select {
   width: 136px;
 }

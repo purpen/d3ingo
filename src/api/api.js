@@ -172,6 +172,24 @@ export default {
   adminUserSetRole: '/admin/user/changeRole', // POST 修改用户角色
   adminUserChangeSourceAdmin: '/admin/user/changeSourceAdmin', // POST 修改来源管理员
 
+  // 潜在客户
+  adminClueClueList: 'admin/clue/clueList', // GET 潜在客户列表
+  adminClueRandomAllot: 'admin/clue/randomAllot', // POST 随机分配
+  adminClueTypeList: 'admin/clue/typeList', // GET 类别列表
+  adminClueCreate: 'admin/clue/create', // POST 添加用户档案
+  adminClueShow: 'admin/clue/show', // GET 查看用户档案
+  adminClueSlueUpdate: 'admin/clue/clueUpdate', // POST 更改用户档案
+  adminClueShowCrmItem: 'admin/clue/showCrmItem', // GET 查看项目
+  adminClueAddCrmItem: 'admin/clue/addCrmItem', // POST 添加项目
+  adminClueUpdateCrmItem: 'admin/clue/updateCrmItem', // POST 更改项目
+  adminClueSelCrmItem: 'admin/clue/delCrmItem', // DELETE 删除项目
+  adminClueCrmItemLoser: 'admin/clue/crmItemLoser', // POST 项目标记失败
+  adminClueCrmDesignList: 'admin/clue/crmDesignList', // GET 对接设计公司列表
+  adminClueAddTrackLog: 'admin/clue/addTrackLog', // POST 添加跟进记录
+  adminClueShowTrackLog: 'admin/clue/showTrackLog', // GET 查看跟进记录
+  adminClueUpdateTrackLog: 'admin/clue/updateTrackLog', // POST 更改跟进记录
+  adminClueDelTrackLog: 'admin/clue/delTrackLog', // DELETE 删除跟进记录
+
   // 项目管理
   adminItemList: '/admin/item/lists', // 项目列表
   adminItemShow: '/admin/item/show', // GET 项目详情

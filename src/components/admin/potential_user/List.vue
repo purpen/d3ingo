@@ -5,14 +5,6 @@
       <v-menu selectedName="potentialUserList"></v-menu>
       <el-col :span="20">
         <div class="content">
-          <!-- <div class="admin-menu-sub clearfix">
-            <div class="admin-menu-sub-list fr">
-              <a href="javascript:void(0);">
-                导出查询结果
-              </a>
-            </div>
-          </div> -->
-
           <div class="admin-header clearfix">
             <el-form :inline="true" :model="query" class="select-query fl">
               <el-form-item>
@@ -54,102 +46,89 @@
           </div>
 
 
-          <!-- <el-table
+          <el-table
             :data="tableData"
             border
-            v-loading="isLoading"
             class="admin-table"
-            @selection-change="handleSelectionChange"
             style="width: 100%">
             <el-table-column
               type="selection"
               width="55">
             </el-table-column>
             <el-table-column
-              prop="item.id"
               label="姓名"
-              width="60">
+              width="60" >
+            <template slot-scope="scope">
+              <p @click="editUserInfo(scope.row.id, scope.row.name)">{{scope.row.name}}</p>
+            </template>
             </el-table-column>
             <el-table-column
               label="项目名称"
-              min-width="140">
-              <template slot-scope="scope">
-                <p>标题: {{ scope.row.item.name }}
-                <el-tag v-if="scope.row.item.test_status === 1" class="" type="danger">内测</el-tag>
-                <el-tag v-else-if="scope.row.item.test_status === 2" class="" type="warning">公测</el-tag>
-                </p>
-                <p>类型: {{ scope.row.item.type_label }}</p>
-                <p>预算: {{ scope.row.item.design_cost_value }}</p>
-                <p>周期: {{ scope.row.item.cycle_value }}</p>
-              </template>
+              min-width="50">
             </el-table-column>
             <el-table-column
-              width="120"
+              prop="phone"
+              width="80"
               label="电话">
-              <template slot-scope="scope">
-                <p>
-                  {{ scope.row.item.user.account }}[{{ scope.row.item.user_id }}]
-                </p>
-              </template>
             </el-table-column>
             <el-table-column
-              prop="item.locale"
+              width="60"
+              prop="execute_user_name"
               label="所属人">
             </el-table-column>
             <el-table-column
               width="80"
               label="通话状态">
                 <template slot-scope="scope">
-                  <p v-if="scope.row.item.source === 0">铟果</p>
-                  <p v-else-if="scope.row.item.source === 1">艺火</p>
-                  <p v-else-if="scope.row.item.source === 2">义乌</p>
-                  <p v-else-if="scope.row.item.source === 3">--</p>
+                  <p v-if="scope.row.call_status === 1">待联系</p>
+                  <p v-else-if="scope.row.call_status === 2">未接通 </p>
+                  <p v-else-if="scope.row.call_status === 3">接通未响应 </p>
+                  <p v-else-if="scope.row.call_status === 4">已回应</p>
                   <p v-else>--</p>
                 </template>
             </el-table-column>
             <el-table-column
-              prop="item.status_label"
-              width="120"
-              label="标签">
+              width="60"
+              label="客户级别">
+                 <template slot-scope="scope">
+                  <p v-if="scope.row.call_status === 1">一般客户 </p>
+                  <p v-else-if="scope.row.call_status === 2">重要客户</p>
+                  <p v-else-if="scope.row.call_status === 3">非常重要</p>
+                  <p v-else-if="scope.row.call_status === 4">四级客户</p>
+                  <p v-else>五级</p>
+                </template>
             </el-table-column>
             <el-table-column
-              prop="item.created_at"
+              prop="source"
               width="80"
               label="用户来源">
             </el-table-column>
             <el-table-column
-              prop="item.created_at"
-              width="30"
+              prop="design_company_count"
+              width="50"
               label="对接公司">
             </el-table-column>
             <el-table-column
-              prop="item.created_at"
-              width="30"
+              prop="logs"
+              width="50"
               label="根进次数">
+            </el-table-column>[]
             <el-table-column
-              prop="item.created_at"
-              width="30"
+              prop="next_time"
+              width="50"
               label="次回根进">
-            <el-table-column
-              prop="item.created_at"
-              width="30"
-              label="综述">
-            </el-table-column>        
-            <el-table-column
-              width="100"
-              label="操作">
-              <template slot-scope="scope">
-                <p>
-                  <a href="javascript:void(0);" v-show="scope.row.item.status === 2 || scope.row.item.status === 3"
-                     @click="handleMatch(scope.$index, scope.row)">匹配公司</a>
-                </p>
-                <p>
-                  <router-link :to="{name: 'adminItemShow', params: {id: scope.row.item.id}}" target="_blank">查看
-                  </router-link>
-                </p>
-              </template>
             </el-table-column>
-          </el-table> -->
+            <el-table-column
+              width="50"
+              label="综述">
+                <template slot-scope="scope">
+                  <p v-if="scope.row.status === 1">待沟通</p>
+                  <p v-else-if="scope.row.status === 2">沟通中</p>
+                  <p v-else-if="scope.row.status === 3">成功</p>
+                  <p v-else>失败</p>
+                </template>
+            </el-table-column>
+          </el-table>
 
           <!-- <el-pagination
             class="pagination"
@@ -181,6 +160,7 @@
 </template>
 
 <script>
+import api from '@/api/api'
 import Clickoutside from 'assets/js/clickoutside'
 import vMenu from '@/components/admin/Menu'
 export default {
@@ -218,7 +198,7 @@ export default {
     addAssignUser(data) {
       console.log(data)
       if (data.id === 2) {
-        this.$router.push({name: 'adminPotentialUserInfo'})
+        this.$router.push({name: 'adminPotentialUserCreated'})
       }
     },
     getDate(val) {
@@ -229,9 +209,27 @@ export default {
     },
     closePanel() { // 关闭潜在用户面板
       this.isAddPanel = false
+    },
+    getClueList() {
+      this.$http.get(api.adminClueClueList, {}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          console.log(res.data)
+          this.tableData = res.data.data
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+      })
+    },
+    editUserInfo(id, name) {
+      console.log(id)
+      this.$router.push({name: 'adminPotentialUserInfo', params: {id: id, name: name}})
     }
   },
-  created() {},
+  created() {
+    this.getClueList()
+  },
   directives: {Clickoutside}
 }
 </script>

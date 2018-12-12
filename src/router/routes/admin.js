@@ -24,8 +24,18 @@ module.exports = [
   },
   // 编辑潜在用户信息
   {
-    path: '/admin/potential_user/userinfo',
+    path: '/admin/potential_user/userinfo/:id',
     name: 'adminPotentialUserInfo',
+    meta: {
+      title: '潜在用户编辑',
+      requireAuth: true
+    },
+    component: require('@/components/admin/potential_user/UserInfo')
+  },
+  // 编辑潜在用户信息
+  {
+    path: '/admin/potential_user/userinfo',
+    name: 'adminPotentialUserCreated',
     meta: {
       title: '潜在用户编辑',
       requireAuth: true

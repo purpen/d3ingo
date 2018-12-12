@@ -7,7 +7,7 @@
             <el-menu-item index="dashBoard" :route="{name: 'adminDashBoard'}">概览</el-menu-item>
         </el-submenu>
         <el-submenu index="9">
-          <template slot="title"><i>潜在用户</i></template>
+          <template slot="title"><i class="">潜在用户</i></template>
           <el-menu-item index="potentialUserList" :route="{name: 'adminPotentialUserList'}">列表</el-menu-item>
         </el-submenu>
         <el-submenu index="2">
