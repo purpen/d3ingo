@@ -46,14 +46,12 @@ export default {
     window.addEventListener('message', res => {
       if (res.data) {
         if (res.source !== window.parent) return false
-        console.log(res.data, typeof res.data)
         if (typeof res.data === 'string') {
           let data = JSON.parse(res.data)
           if (data.ticket) {
             document.cookie = 'ticket=' + data.ticket
             this.$http.post(api.iframeLogin)
             .then(res => {
-              console.log(res)
               if (res.data.meta.status_code === 200) {
                 let token = res.data.data.token
                 auth.write_token(token)
