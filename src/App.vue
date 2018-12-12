@@ -66,11 +66,6 @@ export default {
                         this.chooseType = true
                         this.user = response.data.data
                       } else {
-                        this.$message({
-                          message: '登陆成功',
-                          type: 'success',
-                          duration: 800
-                        })
                         this.$store.commit(MENU_STATUS, '')
                         auth.write_user(response.data.data)
                         this.getStatus(this.$store.state.event.user.type)

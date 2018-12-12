@@ -1,5 +1,5 @@
 import store from '@/store/index'
-// import axios from '../http'
+import axios from '@/http'
 // import api from '@/api/api'
 import { USER_SIGNIN, USER_SIGNOUT, USER_INFO, CLEAR_PREV_URL_NAME } from '@/store/mutation-types'
 
@@ -67,6 +67,11 @@ mallache.write_user = function (user) {
 
 mallache.logout = function () {
   store.commit(USER_SIGNOUT)
+  axios.post('http://dev.taihuoniao.com/api/auth/iframe_logout').then(res => {
+    console.log(res)
+  }).catch(err => {
+    console.error(err)
+  })
 }
 
 mallache.clear_prev_url_name = function () {
