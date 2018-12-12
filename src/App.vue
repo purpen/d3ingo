@@ -41,6 +41,22 @@ export default {
   watch: {
   },
   mounted() {
+    window.addEventListener('message', res => {
+      if (res.data) {
+        if (res.source !== window.parent) return false
+        console.log(res.data, typeof res.data)
+        if (typeof res.data === 'string') {
+          var data = JSON.parse(res.data)
+          document.cookie = 'ticket=' + data.ticket
+          this.$http.post(api.iframeLogin)
+          .then(res => {
+            console.log(res)
+          }).catch(err => {
+            console.error(err)
+          })
+        }
+      }
+    })
     // console.log('app created')
     let loading = document.getElementById('loading')
     let classVal = 'animated fadeOutUp'

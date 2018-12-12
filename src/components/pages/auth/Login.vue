@@ -164,12 +164,9 @@ export default {
     postMessage() {
       if (this.iframeLoad) {
         this.$refs.iframe.contentWindow.postMessage(JSON.stringify({
-          account: this.form.account,
-          password: this.form.password,
           ticket: this.ticket
         }), 'http://dev.taihuoniao.com/getmessage')
         // }), 'http://localhost:8086/iframe')
-        console.log('iframe')
       }
     },
     checkAccount(number) {

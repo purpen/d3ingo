@@ -637,6 +637,16 @@ let routes = [
     },
     component: require('@/components/block/Blank')
   },
+  // 自定义输出页面
+  {
+    path: '/iframe',
+    name: 'iframe',
+    meta: {
+      title: '',
+      requireAuth: false
+    },
+    component: require('@/components/block/Iframe')
+  },
   // 成员
   {
     path: '/user/user_management',
