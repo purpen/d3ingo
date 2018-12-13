@@ -104,7 +104,6 @@
           }
         }
       }
-      // 写入localStorage
       if (JSON.stringify(userInfo) !== '{}') {
         localStorage.setItem('user', JSON.stringify(userInfo))
       }
@@ -130,35 +129,39 @@
         }
       })
     }
-  </script>
-  <script>
     window.addEventListener('message', function (res) {
       if (res.data) {
         if (res.source !== window.parent) return false
         if (typeof res.data === 'string') {
           let data = JSON.parse(res.data)
-          if (data.ticket) {
-            document.cookie = 'ticket=' + data.ticket
-            Ajax.post(url + '/auth/ilogin', {}, function (res) {
-              res = JSON.parse(res)
-              if (res.meta.status_code === 200) {
-                token = res.data.token
-                localStorage.setItem('token', JSON.stringify(token))
-                Ajax.get(url + '/auth/user', {
-                  token: token
-                }, function (response) {
-                  response = JSON.parse(response)
-                  if (response.meta.status_code === 200) {
-                    localStorage.setItem('menuStatus', '')
-                    if (response.data) {
-                      write_user(response.data)
-                      getStatus(response.data.type)
-                      window.parent.postMessage(JSON.stringify({ticket: ticket}))
+          if (res.type === 'login') { // login | loginout
+            if (data.ticket) {
+              document.cookie = 'ticket=' + data.ticket
+              Ajax.post(url + '/auth/ilogin', {}, function (res) {
+                res = JSON.parse(res)
+                if (res.meta.status_code === 200) {
+                  token = res.data.token
+                  localStorage.setItem('token', JSON.stringify(token))
+                  Ajax.get(url + '/auth/user', {
+                    token: token
+                  }, function (response) {
+                    response = JSON.parse(response)
+                    if (response.meta.status_code === 200) {
+                      localStorage.setItem('menuStatus', '')
+                      if (response.data) {
+                        write_user(response.data)
+                        getStatus(response.data.type)
+                        window.parent.postMessage(JSON.stringify({ticket: ticket}), '*')
+                      }
                     }
-                  }
-                })
-              }
-            })
+                  })
+                }
+              })
+            }
+          } else if (res.type === 'loginout') {
+            document.cookie = ''
+            localStorage.removeItem('user')
+            localStorage.removeItem('token')
           }
         }
       }
