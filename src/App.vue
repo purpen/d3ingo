@@ -50,10 +50,10 @@ export default {
   },
   watch: {
     token(val, oldVal) {
-      if (val && !oldVal) {
+      if (val) {
         this.postMessage()
       }
-      if (oldVal && val) {
+      if (oldVal && !val) {
         this.postMessage2()
       }
     }
@@ -210,9 +210,6 @@ export default {
 </script>
 
 <style scoped>
-  iframe {
-    display: none
-  }
   .padding-t-34 {
     padding-top: 34px;
   }
