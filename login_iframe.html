@@ -146,8 +146,10 @@
                   response = JSON.parse(response)
                   if (response.meta.status_code === 200) {
                     localStorage.setItem('menuStatus', '')
-                    write_user(response.data)
-                    getStatus(response.data.type)
+                    if (response.data) {
+                      write_user(response.data)
+                      getStatus(response.data.type)
+                    }
                   }
                 })
               }

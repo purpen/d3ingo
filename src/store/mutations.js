@@ -28,7 +28,11 @@ let userInfo = function () {
   // TODO 用户从Store获取
   let user = localStorage.getItem('user')
   if (user) {
-    return JSON.parse(user)
+    if (user !== 'undefined') {
+      return JSON.parse(user)
+    } else {
+      return false
+    }
   } else {
     return false
   }
