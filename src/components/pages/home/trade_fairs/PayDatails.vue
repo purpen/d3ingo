@@ -3,11 +3,11 @@
     <div class="container">
       <div class="navigate-header">
         <div class="navigate-text">
-          <router-link to="/shunde/trade_fairs/design_case" v-if="$route.query.type === '2'">设计成果</router-link>
-          <router-link to="/shunde/trade_fairs/demand_login" v-else>代售成果</router-link>
+          <router-link :to="{name: 'demand_list', query: {type: 3}}" v-if="user.type === 1">我的订单</router-link>
+          <router-link :to="{name: 'sdDesign_order', query: {type: 3}}" v-if="user.type === 2">我的订单</router-link>
         </div>
         <div class="navigate-text arrow-text">
-          <span>{{formup.title}}</span>
+          <span>{{designAttr.title}}</span>
         </div>
       </div>
       <el-row :gutter="20" class="anli-elrow">
@@ -15,24 +15,100 @@
         <el-col :xs="24" :sm="18" :md="18" :lg="18">
           <div class="edit-content">
             <div class="title">
-              <h1>{{formup.title}}</h1>
+              <h1>{{designAttr.title}}</h1>
             </div>
             <div class="summary">
-              <span>{{formup.content}}
+              <span>{{designAttr.content}}
               </span>
             </div>
-            <!-- <div class="des">
-              <p v-for="(d, index) in item.case_image" :key="index">
-                <img :src="d.big" :alt="d.name" :title="d.name"/>
-                <slot>
-                <p class="img-des">{{ d.summary }}</p>
-                </slot>
-              </p>
-            </div> -->
             <div class="des">
-              <div class="des-image" v-for="(img, index) in formup.images_url" :key="index">
+              <div class="des-image" v-for="(img, index) in imagesUrl" :key="index">
                 <img class="image-size" :src="img.big"/>
               </div>
+            </div>
+          </div>
+
+          <!-- 评价 -->
+          <div class="select-item-box clearfix" v-if="designAttr.sell === 2">
+            <div class="evaluation-style">
+              <div class="published-evaluation" v-if="designAttr.is_evaluate === 0 && designAttr.sell === 2 && user.type !== 2">发表评价</div>
+              <div class="published-evaluation" v-if="designAttr.is_evaluate === 1 && user.type === 1">评价</div>
+              <div  class="published-evaluation" v-if="designAttr.is_evaluate === 1 && user.type === 2">客户评价</div>
+                <!-- 未提交的评价 -->
+                <div class="evaluate-report clearfix" v-if="designAttr.is_evaluate === 0 && designAttr.sell === 2 && user.type !== 2">
+                  <p class="ev-c-ava">
+                  <el-row class="grade">
+                    <el-col :span="8">
+                      <p class="eva-text">设计水平</p>
+                      <el-rate
+                      v-model.number="evaluate.design_level"
+                      show-text>
+                    </el-rate>
+                    </el-col>
+                    <el-col :span="8">
+                      <p class="eva-text">响应速度</p>
+                      <el-rate
+                      v-model.number="evaluate.response_speed"
+                      show-text>
+                    </el-rate>
+                    </el-col>
+                    <el-col :span="8">
+                      <p class="eva-text">服务态度</p>
+                      <el-rate
+                      v-model.number="evaluate.serve_attitude"
+                      show-text>
+                    </el-rate>
+                    </el-col>
+                  </el-row>
+                  <p class="ev-c-content">
+                    <el-input
+                      type="textarea"
+                      :rows="5"
+                      placeholder="请输入内容"
+                      v-model="evaluate.content">
+                    </el-input>
+                  </p>
+                  <p class="ev-c-btn">
+                    <el-button class="is-custom" type="primary" :loading="evaluateLoadingBtn" @click="evaluateSubmit">
+                      提交
+                    </el-button>
+                  </p>
+                </div>
+                <!-- 已提交的评价 -->
+                <div class="evaluate-result clearfix" v-if="designAttr.is_evaluate === 1">
+                  <el-row>
+                    <el-col :span="22">
+                      <div class="eva-content">
+                        <el-row class="grade pl">
+                          <el-col :span="8">
+                            <p class="eva-text">设计水平</p>
+                            <el-rate
+                            v-model.number="evalu.design_level"
+                            disabled>
+                          </el-rate>
+                          </el-col>
+                          <el-col :span="8">
+                            <p class="eva-text">响应速度</p>
+                            <el-rate
+                            v-model.number="evalu.response_speed"
+                            disabled>
+                          </el-rate>
+                          </el-col>
+                          <el-col :span="8">
+                            <p class="eva-text">服务态度</p>
+                            <el-rate
+                            v-model.number="evalu.serve_attitude"
+                            disabled>
+                          </el-rate>
+                          </el-col>
+                        </el-row>
+                        <p class="ev-c-content">
+                          {{ evalu.content }}
+                        </p>
+                      </div>
+                    </el-col>
+                  </el-row>
+                </div>
             </div>
           </div>
         </el-col>
@@ -42,70 +118,83 @@
           <div :class="[{'fixed-style': elementShow}, {'absolute-style': elementPosition}]">
             <div class="design-case-slide">
               <div class="info">
-                <!-- <router-link :to="{name: 'companyShow', params: {id: item.design_company.id}}" target="_blank">
-                  <img class="avatar" v-if="item.design_company.logo_url" :src="item.design_company.logo_url" width="100"/>
-                  <img class="avatar" v-else src="../../../../assets/images/avatar_100.png" width="100"/>
-                </router-link> -->
                 <div class="title-center">
                   <img class="avatar" v-if="
                   imgUrl" :src="
                   imgUrl.logo" width="60"/>
                   <img v-else class="avatar" src="../../../../assets/images/df_100x100.png" width="60"/>
-                  <div class="company-name">{{companyName}}</div>
+                  <div class="company-name">{{formup.company_name}}</div>
                 </div>
                 <div class="com-addr">
                   <span class="right-word">联系人</span>
-                  <span class="right-number">{{formup.contacts}}</span>
+                  <span class="right-number">{{designAttr.contacts}}</span>
                 </div>
                 <div class="com-addr">
                   <span class="right-word">联系方式</span>
-                  <span class="right-number">{{formup.contact_number}}</span>
+                  <span class="right-number">{{designAttr.contact_number}}</span>
                 </div>
-              </div>
-            </div>
-            <!-- 出让的两行 -->
-            <div class="sell-stock">
-              <div class="right-sell">
-                <span class="right-word">出让方式</span>
-                <span class="right-pah">{{formup.sell_type===1?'全额出让':'股权出让'+formup.share_ratio+'%'}}</span>
-              </div>
-              <div class="right-sell">
-                <span class="right-word">股权价格</span>
-                <span class="right-money">￥{{formup.price}}</span>
               </div>
             </div>
             <!-- 下面按钮 -->
-            <div class="right-interset" v-if="$route.query.type !== '2'">
+            <div class="right-interset" v-if="user.type === 1">
               <div class="list-contain" v-if="intersClick" @click="collect">
-                <div class="list-button interset-hover" v-if="formup.is_follow === 0">
+                <div class="list-button interset-hover" v-if="designAttr.is_follow === 0">
                   <span class="button-text">感兴趣</span>
                 </div>
-                <div class="list-button interest-border" v-if="formup.is_follow === 1">
+                <div class="list-button interest-border" v-if="designAttr.is_follow === 1">
                   <span class="button-interest">已感兴趣</span>
                 </div>
               </div>
               <div class="list-contain" v-else disabled>
-                <div class="list-button interset-hover" v-if="formup.is_follow === 0">
+                <div class="list-button interset-hover" v-if="designAttr.is_follow === 0">
                   <span class="button-text">感兴趣</span>
                 </div>
-                <div class="list-button interest-border" v-if="formup.is_follow === 1">
+                <div class="list-button interest-border" v-if="designAttr.is_follow === 1">
                   <span class="button-interest">已感兴趣</span>
                 </div>
               </div>
-              <div class="list-left" @click="buyclick">
+              <div class="list-left" v-if="user.type === 1 && formup.status === 0">
                 <div class="list-button buy-text">
-                  <span class="details-text">立即购买</span>
+                  <router-link :to="{name: 'managed_funds', params: {id: designAttr.id}}" class="to-pay">继续支付</router-link>
+                </div>
+              </div>
+              <div class="list-lefts" v-else-if="user.type === 1 && formup.status === 1">
+                <div class="bought-bg">
+                  <span class="bought-text">已购买</span>
                 </div>
               </div>
             </div>
             <div class="state-style" v-else>
               <div class="right-sell">
                 <span class="right-word">状态</span>
-                <span class="state-way">{{formup.status | states}}</span>
+                <span class="state-way">已出售</span>
+              </div>
+            </div>
+            <!-- 已出售的中间部分 -->
+            <div class="sell-bought">
+              <div class="right-sell">
+                <span class="right-word">订单编号：</span>
+                <span class="right-serial">{{formup.uid}}</span>
+              </div>
+              <div class="right-sell">
+                <span class="right-word">创建时间：</span>
+                <span class="right-data">2018-07-01 22:54</span>
+              </div>
+              <div class="right-sell">
+                <span class="right-word">出让方式：</span>
+                <span class="right-way">{{designAttr.sell_type===1?'全额出让':'股权出让'+designAttr.share_ratio+'%'}}</span>
+              </div>
+              <div class="right-sell">
+                <span class="right-word">支付方式：</span>
+                <span class="right-way">{{formup.pay_type_value}}</span>
+              </div>
+              <div class="right-sell">
+                <span class="right-word">支付金额：</span>
+                <span class="bought-money">￥{{designAttr.price}}</span>
               </div>
             </div>
           </div>
-          <div class="patent-details" :class="{'pat-margin' : $route.query.type === '2'}" v-if="formup.illustrate_url && formup.illustrate_url.length">
+          <div class="patent-details" v-if="designAttr.illustrate_url && designAttr.illustrate_url.length">
             <div class="instruction-blook">
             <span class="blook-left">产品功能说明书</span>
             <div class="seen-button">
@@ -113,10 +202,10 @@
             </div>
             </div>
           </div>
-          <el-collapse v-model="credential" class="patent" v-if="formup.patent_url && formup.patent_url.length" :class="{'pat-top': !formup.illustrate_url.length}">
+          <el-collapse v-model="credential" class="patent" :class="[{'pat-margin' : $route.query.type === '2'}, {'mar-top' : !designAttr.illustrate_url.length}]" v-if="designAttr.patent_url && designAttr.patent_url.length">
             <el-collapse-item title="专利证书" name="1">
               <swiper :options="swiperOption" class="patent-img">
-                <swiper-slide v-for="(img, index) in formup.patent_url" :key="index">
+                <swiper-slide v-for="(img, index) in designAttr.patent_url" :key="index">
                   <div style="height:100%;" @click.stop.prevent="imgaeShow(img)">
                     <div class="draw">
                       <img :src="img.big" class="img-class">
@@ -157,19 +246,20 @@
 <script>
 import api from '@/api/api'
 export default {
-  name: 'work_datails', // 代售成果详情页
+  name: 'pay_datails', // 订单详情页
   data() {
     return {
       isLoading: false,
       elementShow: false,
       elementPosition: false,
+      intId: '',
+      isFullow: '',
       imgSmall: '',
+      imagesUrl: '',
       interestButton: false,
-      selectCompanyCollapse: ['1'],
       credential: ['1'],
       showType: false,
       intersClick: true,
-      imagesUrl: '',
       patentRound: '',
       viewCover: false,
       formup: {},
@@ -178,6 +268,7 @@ export default {
         content: ''
       },
       imgUrl: '',
+      designAttr: '',
       itemId: '',
       companyName: '',
       swiperOption: {
@@ -217,9 +308,6 @@ export default {
     }
   },
   methods: {
-    buyclick() {
-      this.$router.push({name: 'sure_order', params: {id: this.itemId}})
-    },
     seenBook() {
       let routeData = this.$router.resolve({name: 'achieve_preview', params: {id: this.formup.id}})
       window.open(routeData.href, '_blank')
@@ -259,19 +347,19 @@ export default {
         oldClass = oldClass.replace('disableScroll ', '')
       }
       document.body.removeAttribute('class', 'disableScroll')
-      document.getElementById('app').setAttribute('class', oldClass)
-      document.childNodes[1].removeAttribute('class', 'disableScroll')
+      // document.getElementById('app').setAttribute('class', oldClass)
+      // document.childNodes[1].removeAttribute('class', 'disableScroll')
     },
     // 收藏/取消收藏
     collect() {
       this.intersClick = false
-      this.$http.get(api.designResultsCollectionOperation, {params: {id: this.formup.id}}).then((response) => {
+      this.$http.get(api.designResultsCollectionOperation, {params: {id: this.designAttr.id}}).then((response) => {
         if (response.data.meta.status_code === 200) {
           this.intersClick = true
-          if (this.formup.is_follow === 0) {
-            this.formup.is_follow = 1
+          if (this.designAttr.is_follow === 0) {
+            this.designAttr.is_follow = 1
           } else {
-            this.formup.is_follow = 0
+            this.designAttr.is_follow = 0
           }
         } else {
           this.intersClick = true
@@ -287,55 +375,80 @@ export default {
     },
     // 评价设计公司
     evaluateSubmit() {
-      // if (this.evaluate.design_level === 0 || this.evaluate.response_speed === 0 || this.evaluate.service === 0) {
-      //   this.$message.error('每项分数至少为一星')
-      //   return
-      // }
-      // if (!this.evaluate.content) {
-      //   this.$message.error('请填写评价内容！')
-      //   return
-      // }
+      if (this.evaluate.design_level === 0 || this.evaluate.response_speed === 0 || this.evaluate.service === 0) {
+        this.$message.error('每项分数至少为一星')
+        return
+      }
+      if (!this.evaluate.content) {
+        this.$message.error('请填写评价内容！')
+        return
+      }
 
-      // let row = {
-      //   item_id: this.item.id,
-      //   service: this.evaluate.service,
-      //   content: this.evaluate.content,
-      //   design_level: this.evaluate.design_level,
-      //   response_speed: this.evaluate.response_speed
-      // }
+      let row = {
+        order_id: this.formup.uid,
+        serve_attitude: this.evaluate.serve_attitude,
+        content: this.evaluate.content,
+        design_level: this.evaluate.design_level,
+        response_speed: this.evaluate.response_speed
+      }
 
-      // let self = this
-      // self.evaluateLoadingBtn = true
-      // self.$http
-      //   .post(api.demandUsersEvaluate, row)
-      //   .then(function(response) {
-      //     self.evaluateLoadingBtn = false
-      //     if (response.data.meta.status_code === 200) {
-      //       self.evalu = self.evaluate
-      //       self.item.status = 22
-      //       self.item.status_value = '已评价'
-      //       self.$message.success('评价成功!')
-      //     } else {
-      //       self.$message.error(response.data.meta.message)
-      //     }
-      //   })
-      //   .catch(function(error) {
-      //     self.$message.error(error.message)
-      //     self.evaluateLoadingBtn = false
-      //   })
+      let self = this
+      self.evaluateLoadingBtn = true
+      self.$http
+        .post(api.sdDemandEvaluateResult, row)
+        .then(function(response) {
+          self.evaluateLoadingBtn = false
+          if (response.data.meta.status_code === 200) {
+            self.evalu = self.evaluate
+            self.designAttr.is_evaluate = 1
+            // self.item.status_value = '已评价'
+            self.$message.success('评价成功!')
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+        })
+        .catch(function(error) {
+          self.$message.error(error.message)
+          self.evaluateLoadingBtn = false
+        })
+    },
+    // 获取评价详情
+    evaluateDetails(id) {
+      this.isLoading = true
+      this.$http.get(api.sdDemandEvaluateInfo, {params: {order_id: id}}).then(
+        (response) => {
+          if (response.data.meta.status_code === 200) {
+            this.evalu = response.data.data[0]
+            this.isLoading = false
+          } else {
+            this.isLoading = false
+            this.$message.error(response.data.meta.message)
+          }
+        }
+      )
+      .catch (function (error) {
+        this.$message.error (error.message)
+        this.isLoading = false
+      })
     },
     // 获取详情
     upDetails() {
       this.isLoading = true
-      this.$http.get(api.sdDesignResultsShow, {params: {id: this.itemId}}).then(
+      this.$http.get(api.payOrderShow, {params: {id: this.itemId}}).then(
         (response) => {
           if (response.data.meta.status_code === 200) {
             this.formup = response.data.data
-            this.imgUrl = response.data.data.design_company.logo_image
-            this.companyName = response.data.data.design_company.company_name
+            let designAttr = response.data.data.design_result
+            if (designAttr) {
+              this.designAttr = designAttr
+            }
+            if (this.designAttr.sell === 2) {
+              this.evaluateDetails(this.formup.uid)
+            }
+            this.imgUrl = response.data.data.design_company_logo
+            this.patentRound = response.data.data.design_result.patent_url
+            this.imagesUrl = response.data.data.design_result.images_url
             this.isLoading = false
-            this.patentRound = response.data.data.patent_url
-            this.imagesUrl = response.data.data.images_url
           } else {
             this.isLoading = false
             this.$message.error(response.data.meta.message)
@@ -352,18 +465,39 @@ export default {
       var scrollHeigh = document.body.scrollHeight
       if (this.user.type !== 2) {
         if (!this.viewCover) {
-          if ((scrollHeigh - scrollTop) < 657 && scrollHeigh > 1200) {
+          if ((scrollHeigh - scrollTop) < 782) {
             this.elementPosition = true
-          } else if (scrollTop > 960) {
+          } else if (scrollTop > 1100) {
             this.elementShow = true
             this.elementPosition = false
-          } else if (scrollTop > 884 && this.formup.patent_url && this.formup.patent_url.length && !this.formup.illustrate_url.length) {
+          } else if (scrollTop > 1040 && this.designAttr.patent_url && this.designAttr.patent_url.length && !this.designAttr.illustrate_url.length) {
             this.elementShow = true
             this.elementPosition = false
-          } else if (scrollTop > 570 && this.formup.illustrate_url && this.formup.illustrate_url.length && !this.formup.patent_url.length) {
+          } else if (scrollTop > 720 && this.designAttr.illustrate_url && this.designAttr.illustrate_url.length && !this.designAttr.patent_url.length) {
             this.elementShow = true
             this.elementPosition = false
-          } else if (scrollTop > 490 && !this.formup.illustrate_url.length && !this.formup.patent_url.length) {
+          } else if (scrollTop > 640 && !this.designAttr.illustrate_url.length && !this.designAttr.patent_url.length) {
+            this.elementShow = true
+            this.elementPosition = false
+          } else {
+            this.elementPosition = false
+            this.elementShow = false
+          }
+        }
+      } else {
+        if (!this.viewCover) {
+          if ((scrollHeigh - scrollTop) < 782) {
+            this.elementPosition = true
+          } else if (scrollTop > 1110) {
+            this.elementShow = true
+            this.elementPosition = false
+          } else if (scrollTop > 1070 && this.designAttr.patent_url && this.designAttr.patent_url.length && !this.designAttr.illustrate_url.length) {
+            this.elementShow = true
+            this.elementPosition = false
+          } else if (scrollTop > 720 && this.designAttr.illustrate_url && this.designAttr.illustrate_url.length && !this.designAttr.patent_url.length) {
+            this.elementShow = true
+            this.elementPosition = false
+          } else if (scrollTop > 640 && !this.designAttr.illustrate_url.length && !this.designAttr.patent_url.length) {
             this.elementShow = true
             this.elementPosition = false
           } else {
@@ -377,7 +511,7 @@ export default {
   mounted() {
     window.addEventListener('scroll', this.handleScroll)
   },
-  destroyed() {
+  destroyed () {
     window.removeEventListener('scroll', this.handleScroll)
   },
   created() {
@@ -420,7 +554,7 @@ export default {
 <style scoped>
 /* swipe样式 */
 .view-cover .swiper-slide {
-  margin-top: 20%
+  margin-top: 10%
 }
 .view-cover {
   position: fixed;
@@ -481,7 +615,7 @@ export default {
 .cont {
   background: #f7f7f7;
   margin-bottom: -50px;
-  padding-bottom: 30px;
+  padding-bottom: 10px;
 }
 .img-class {
   height: 270px;
@@ -521,7 +655,7 @@ export default {
   text-align: center;
   height:48px;
   font-size:34px;
-  font-family:PingFangSC-Medium;
+  font-family:PingFangSC-Medium, "Microsoft Yahei";
   font-weight:500;
   color:rgba(34,34,34,1);
   line-height:48px;
@@ -531,7 +665,7 @@ export default {
   margin: 0 40px;
   line-height: 24px;
   font-size: 16px;
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-weight: 400;
   color: #666666;
 }
@@ -562,7 +696,7 @@ export default {
 
 .company-name {
   padding-top: 10px;
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   color: #222222;
   letter-spacing: 0;
@@ -573,12 +707,12 @@ export default {
 }
 .com-addr {
   padding-top: 20px;
-  width: 80%;
+  width: 91%;
   margin: 0 auto;
 }
 .right-sell {
   height: 50px;
-  width: 80%;
+  width: 91%;
   line-height: 50px;
   margin: 0 auto;
 }
@@ -589,24 +723,24 @@ export default {
   background: #fff;
 }
 .right-word {
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   color: #222222;
 }
 .right-number {
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   color: #999999;
   float: right
 }
 .right-pah {
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   color: #999999;
   float: right;
 }
 .right-money {
-  font-family: PingFangSC-Semibold;
+  font-family: PingFangSC-Semibold, "Microsoft Yahei";
   font-size: 20px;
   color: #FF5A5F;
   float: right;
@@ -619,10 +753,14 @@ export default {
 
 /* 右边button */
 .right-interset {
-  padding-top: 20px;
+  padding-top: 15px;
+  height: 60px;
 }
 .list-left {
   cursor: pointer;
+  float: left;
+}
+.list-lefts {
   float: left;
 }
 .list-contain {
@@ -656,7 +794,7 @@ export default {
 }
 .bought-text {
   position: relative;
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   padding-left: 10px;
   color: #fff;
@@ -673,7 +811,7 @@ export default {
 }
 .details-text {
   position: relative;
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   padding-left: 10px;
   color: #fff;
@@ -690,7 +828,7 @@ export default {
 }
 .to-pay {
   position: relative;
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   padding-left: 10px;
   color: #fff;
@@ -707,7 +845,7 @@ export default {
 }
 .button-text {
   position: relative;
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   padding-left: 10px;
   color: #ff5a5f;
@@ -747,7 +885,7 @@ export default {
 }
 .button-interest {
   position: relative;
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   padding-left: 15px;
   color: #999;
@@ -768,12 +906,15 @@ export default {
   width: 280px;
   background: #fff;
 }
+.pat-margin {
+  margin-top: 10px;
+}
 .patent-text {
   padding-top: 18px;
   width: 240px;
   margin: 0 auto;
   height: 22px;
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   color: #222222;
 }
@@ -792,11 +933,11 @@ export default {
   height: 60px;
   width: 280px;
   background: #fff;
-  margin-top: 60px;
+  margin-top: 15px;
 }
 .instruction-blook {
   height: 30px;
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   color: #222222;
   line-height: 30px;
@@ -814,7 +955,7 @@ export default {
   line-height: 28px;
   text-align: center;
   border: 1px solid #FF5A5F;
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 14px;
   color: #FF5A5F;
   border-radius: 4px;
@@ -827,34 +968,35 @@ export default {
   margin-top: 10px;
   height: 250px;
   width: 280px;
-  background: #FAFAFA;
+  background: #fff;
 }
 .right-serial {
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   color: #999999;
   text-align: right;
+  float: right;
 }
 .right-data {
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   color: #999999;
   text-align: right;
-  padding-left: 30px;
+  float: right;
 }
 .right-way {
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   color: #999999;
   text-align: right;
-  padding-left: 102px;
+  float: right;
 }
 .bought-money {
-  font-family: PingFangSC-Semibold;
+  font-family: PingFangSC-Semibold, "Microsoft Yahei";
   font-size: 20px;
   color: #FF5A5F;
   text-align: right;
-  padding-left: 60px;
+  float: right;
 }
 
 /* 评价 */
@@ -863,6 +1005,10 @@ export default {
 }
 .evaluate-report {
   text-align: center;
+  padding-top: 30px;
+}
+.evaluate-result {
+  text-align: center
 }
 .evaluate-report .ev-c-name {
   line-height: 2;
@@ -875,16 +1021,19 @@ export default {
   margin-bottom: 10px;
 }
 .eva-content .ev-c-content {
-  padding: 10px 0;
+  text-align: left;
+  padding: 20px 0 10px 13px;
+  font-size: 16px;
 }
 .grade>.el-col:not(:first-child) {
   border-left: 1px solid #e6e6e6;
+  height: 60px
 }
 .pl>.el-col:not(:first-child) {
   padding-left: 20px;
 }
 p.ev-c-content {
-  padding: 10px 50px;
+  padding: 40px 50px 10px 50px;
 }
 
 /* 轮播图 */
@@ -922,7 +1071,7 @@ p.img-des {
   margin-top: 10px;
 }
 .state-way {
-  font-family: PingFangSC-Regular;
+  font-family: PingFangSC-Regular, "Microsoft Yahei";
   font-size: 16px;
   color: #FF5A5F;
   float: right
@@ -937,10 +1086,34 @@ p.img-des {
   bottom: 2px;
   top: auto
 }
-.pat-margin {
-  margin-top: 10px;
+
+/* 评价的样式 */
+.evaluation-style {
+  border: 1px solid #e6e6e6;
+  background: #fff
 }
-.pat-top {
-  margin-top: 50px;
+.published-evaluation {
+  height: 60px;
+  background: #fafafa;
+  font-family: PingFangSC-Light, "Microsoft Yahei";
+  font-size: 18px;
+  color: #222222;
+  line-height: 60px;
+  padding-left: 30px
+}
+.eva-text {
+  font-family: PingFangSC-Light, "Microsoft Yahei";
+  font-size: 16px;
+  color: #222222;
+}
+.el-rate {
+  padding-top: 20px
+}
+.ev-c-btn {
+  height: 50px;
+  line-height: 50px;
+}
+.mar-top {
+  margin-top: 15px
 }
 </style>

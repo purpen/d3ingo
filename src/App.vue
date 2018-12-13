@@ -23,6 +23,7 @@
 import vHeader from '@/components/block/Header'
 import vFooter from '@/components/block/Footer'
 import api from '@/api/api'
+import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
 
 export default {
   name: 'app',
@@ -50,13 +51,33 @@ export default {
     this.$http.get(api.getVersion)
     .then(res => {
       let version = localStorage.getItem('version')
-      if (version !== res.data.data.number) {
-        localStorage.setItem('version', res.data.data.number)
-        window.location.reload(true)
+      if (res.data.data.number) {
+        if (version !== res.data.data.number) {
+          localStorage.setItem('version', res.data.data.number)
+          window.location.reload(true)
+        }
       }
     }).catch(err => {
       console.log(err)
     })
+  },
+  methods: {
+    getStatus(type) {
+      let url = ''
+      if (type === 2) {
+        url = api.surveyDesignCompanySurvey
+      } else {
+        url = api.surveyDemandCompanySurvey
+      }
+      this.$http.get(url, {})
+      .then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.$store.commit(CHANGE_USER_VERIFY_STATUS, res.data.data)
+        }
+      }).catch(err => {
+        console.error(err.message)
+      })
+    }
   },
   computed: {
     hideHeader() {

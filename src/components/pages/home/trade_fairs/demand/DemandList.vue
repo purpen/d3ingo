@@ -27,10 +27,10 @@
                     发布需求
                   </button>
                    <router-link :to="{name: 'demand_login'}"
-                    target="_blank">
-                  <button class="withdraw btn-phone red-button middle-button">
+                    >
+                  <!-- <button class="withdraw btn-phone red-button middle-button">
                     查看设计成果
-                  </button>
+                  </button> -->
                   </router-link>
                 </div>
               </div>
@@ -87,17 +87,17 @@
                   </div>
                 </div>
               </div>
-              <!-- <div class="text-align-c">
+              <div class="text-align-c mg-b-20" v-if="jquery3.page>1">
                 <el-pagination
                   @size-change="handleSizeChange3"
                   @current-change="handleCurrentChange3"
                   :current-page.sync="jquery3.current_page"
-                  :page-sizes="[10, 20, 50, 100]"
+                  :page-sizes="[50, 100, 200]"
                   :page-size="jquery3.per_page"
                   layout="sizes, prev, pager, next"
                   :total="jquery3.total">
                 </el-pagination>
-              </div> -->
+              </div>
               <el-dialog
                 title="发布需求"
                 :visible.sync="dialogFormVisible"
@@ -106,6 +106,7 @@
                 class="submit-form"
                 top="10%"
                 @close="closeBtn('form')"
+                @open="clearDialog"
                 >
                 <div class="scroll-bar demands" ref="submitDemand" v-loading="formLoading">
                   <el-form :model="form" ref="form" :rules="rules" @submit.native.prevent >
@@ -214,6 +215,8 @@
                 :lock-scroll="false"
                 size="tiny"
                 class="details-form"
+                @close="renewDialog"
+                @open="clearDialog"
                 >
                 <div class="details-list" v-loading="updateLoading">
                   <div class="details">
@@ -291,7 +294,7 @@
                       <el-col :span="6">
                         <span>功能描述</span>
                       </el-col>
-                      <el-col :span="18">
+                      <el-col :span="18" class="details-content scroll-bar">
                         {{formup.content}}
                       </el-col>
                     </el-row>
@@ -326,8 +329,8 @@
                   <img src="../../../../../assets/images/trade_fairs/default/NoDemand@2x.png" alt="无收藏">
                   <p>还没有收藏设计成果～</p>
                   <router-link :to="{name: 'demand_login'}"
-                    target="_blank" class="datails-router">
-                    <button class="red-button middle-button">查看设计成果</button>
+                    class="datails-router">
+                    <!-- <button class="red-button middle-button">查看设计成果</button> -->
                   </router-link>
                 </div>
                 <div class="demand-list" v-if="collectList&&collectList.length">
@@ -382,7 +385,7 @@
                         <el-col :span="4">
                           <button class="full-red-button middle-button" v-if="d.status === 3">
                             <router-link :to="{name: 'work_datails', params: {id: d.id}}"
-                            target="_blank" class="router-work" >
+                            class="router-work">
                             立即购买
                             </router-link>
                           </button>
@@ -397,18 +400,30 @@
                     </div>
                   </div>
                 </div>
-                <!-- <div class="text-align-c">
+                <div class="text-align-c" v-if="jquery2.page>1">
                   <el-pagination
                     @size-change="handleSizeChange2"
                     @current-change="handleCurrentChange2"
                     :current-page.sync="jquery2.current_page"
-                    :page-sizes="[2, 20, 50, 100]"
+                    :page-sizes="[50, 100, 200]"
                     :page-size="jquery2.per_page"
                     layout="sizes, prev, pager, next"
                     :total="jquery2.total">
                   </el-pagination>
-                </div> -->
+                </div>
               </div>
+              <el-dialog
+                title="权限提醒"
+                :visible.sync="dialogPermiss"
+                :lock-scroll="false"
+                top="25%"
+                size="tiny"
+                class="power">
+                <div class="titles-center">
+                  <div class="move-text">暂无权限</div>
+                  <div class="move-div">交易会期间扫码或联系平台客服开通权限</div>
+                </div>
+              </el-dialog>
             </div>
             <div v-if="type === 3">
               <div>
@@ -479,7 +494,7 @@
                           <button class="mg-t-10 white-button middle-button" v-if="d.status ===1 && d.design_result.sell < 2" @click="dialogAdmin=true">
                             仲裁电话
                           </button>
-                          <button class="white-button middle-button" v-if="d.status ===-1" @click="deleteOrder(d.id)">
+                          <button class="white-button middle-button" v-if="d.status ===-1||d.status ===-2" @click="deleteOrder(d.id)">
                             删除
                           </button>
                           <button class="mg-t-10 white-button middle-button" v-if="d.status ===1 && d.design_result.sell === 2&&!d.design_result.is_evaluate">
@@ -493,16 +508,16 @@
                     </div>
                   </div>
                 </div>
-                <div class="text-align-c">
-                  <!-- <el-pagination
+                <div class="text-align-c" v-if="jquery.page>1">
+                  <el-pagination
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     :current-page.sync="jquery.current_page"
-                    :page-sizes="[10, 20, 50, 100]"
+                    :page-sizes="[50, 100, 200]"
                     :page-size="jquery.per_page"
                     layout="sizes, prev, pager, next"
                     :total="jquery.total">
-                  </el-pagination> -->
+                  </el-pagination>
                 </div>
               </div>
               <el-dialog
@@ -576,7 +591,7 @@
 </template>
 <script>
   import vMenu from '@/components/pages/v_center/Menu'
-  import vMenuSub from '@/components/pages/home/trade_fairs/demand/1MenuSub'
+  import vMenuSub from '@/components/pages/home/trade_fairs/demand/MenuSub'
   import api from '@/api/api'
   import config from '@/config'
   import RegionPicker from '@/components/block/RegionPicker'
@@ -591,6 +606,7 @@
     },
     data() {
       return {
+        dialogPermiss: false,
         type: 1,
         isLoading: false, // 加载中
         isUpdate: false, // 是编辑
@@ -621,19 +637,19 @@
           total: 1, // 总条数
           current_page: 1, // 当前页
           page: 1, // 页数
-          per_page: 10 // 每页数量
+          per_page: 50 // 每页数量
         },
         jquery2: {
           total: 1, // 总条数
           current_page: 1, // 当前页
           page: 1, // 页数
-          per_page: 10 // 每页数量
+          per_page: 50 // 每页数量
         },
         jquery3: {
           total: 1, // 总条数
           current_page: 1, // 当前页
           page: 1, // 页数
-          per_page: 10 // 每页数量
+          per_page: 50 // 每页数量
         },
         dialogFormVisible: false, // 发布需求弹窗
         dialogUpdateVisible: false, // 查看详情弹窗
@@ -721,10 +737,8 @@
           }
         } else if (val === 2) {
           return '退款'
-        } else if (val === -1) {
+        } else if (val === -1 || val === -2) {
           return '交易失败'
-        } else {
-          return val
         }
       }
     },
@@ -735,49 +749,42 @@
       },
       type(val) {
         if (val === 1) {
-          this.getDemandList()
+          this.getDemandList(1)
         } else if (val === 2) {
-          this.getCollectList()
+          this.getCollectList(1)
         } else if (val === 3) {
-          this.getOrderList()
+          this.getOrderList(1)
         } else {
-          this.getDemandList()
+          this.getDemandList(1)
         }
       }
     },
     methods: {
       // 分页
-      // handleSizeChange(val) {
-      //   this.getOrderList(1, val)
-      // },
-      // handleCurrentChange(val) {
-      //   this.getOrderList(val)
-      // },
-      // handleSizeChange2(val) {
-      //   this.getCollectList(1, val)
-      // },
-      // handleCurrentChange2(val) {
-      //   this.getCollectList(val)
-      // },
-      // handleSizeChange3(val) {
-      //   this.getDemandList(1, val)
-      // },
-      // handleCurrentChange3(val) {
-      //   this.getDemandList(val)
-      // },
+      handleSizeChange(val) {
+        this.getOrderList(1, val)
+      },
+      handleCurrentChange(val) {
+        this.getOrderList(val)
+      },
+      handleSizeChange2(val) {
+        this.getCollectList(1, val)
+      },
+      handleCurrentChange2(val) {
+        this.getCollectList(val)
+      },
+      handleSizeChange3(val) {
+        this.getDemandList(1, val)
+      },
+      handleCurrentChange3(val) {
+        this.getDemandList(val)
+      },
       // 打开需求按钮
       addDemand() {
         this.dialogFormVisible = true
         this.$nextTick(_ => {
           this.$refs.submitDemand.scrollTop = 0
         })
-        // let oldClass = document.getElementById('app').getAttribute('class')
-        // if (oldClass) {
-        //   oldClass = oldClass.replace(/disableScroll\x20?/g, '')
-        // }
-        // document.body.setAttribute('class', 'disableScroll')
-        // document.getElementById('app').setAttribute('class', 'disableScroll ' + oldClass)
-        // document.childNodes[1].setAttribute('class', 'disableScroll')
       },
       // 取消订单按钮
       upOrderBth(id, title, type) {
@@ -838,9 +845,15 @@
       // 获取详情
       upDetails(id, type) {
         if (type === 1) {
+          this.formup = {
+            design_types: []
+          }
           this.dialogUpdateVisible = true
           this.updateLoading = true
         } else if (type === 2) {
+          this.form = {
+            design_types: []
+          }
           this.dialogUpdateVisible = false
           this.dialogFormVisible = true
           this.formLoading = true
@@ -863,7 +876,7 @@
               if (type === 2) {
                 this.$nextTick(_ => {
                   this.isUpdate = true
-                  this.$refs.submitDemand.scrollTop = 0
+                  // this.$refs.submitDemand.scrollTop = 0
                   this.form = res
                   this.formLoading = false
                 })
@@ -996,22 +1009,22 @@
         })
       },
       // 需求列表
-      getDemandList() {
+      getDemandList(p, size) {
         let self = this
-        // if (p) {
-        //   self.jquery3.current_page = p
-        // }
-        // if (size) {
-        //   self.jquery3.per_page = size
-        // }
+        if (p) {
+          self.jquery3.current_page = p
+        }
+        if (size) {
+          self.jquery3.per_page = size
+        }
         self.isLoading = true
         self.$http.get(api.sdDemandDemandList, {params: {
-          per_page: 50
+          page: this.jquery3.current_page, per_page: this.jquery3.per_page
         }}).then((response) => {
           if (response.data.meta.status_code === 200) {
-            // let pages = response.data.meta.pagination
-            // self.jquery3.total = pages.total
-            // self.jquery3.page = pages.total_pages
+            let pages = response.data.meta.pagination
+            self.jquery3.total = pages.total
+            self.jquery3.page = pages.total_pages
             if (response.data.data && response.data.data.length) {
               self.demandList = response.data.data
               self.demandList.forEach(item => {
@@ -1034,22 +1047,22 @@
         })
       },
       // 订单列表
-      getOrderList() {
+      getOrderList(p, size) {
         let self = this
         self.isLoading = true
-        // if (p) {
-        //   this.jquery.current_page = p
-        // }
-        // if (size) {
-        //   this.jquery.per_page = size
-        // }
+        if (p) {
+          this.jquery.current_page = p
+        }
+        if (size) {
+          this.jquery.per_page = size
+        }
         self.$http.get(api.sdPayMyOrderList, {params: {
-          per_page: 50
+          page: self.jquery.current_page, per_page: self.jquery.per_page
         }}).then((response) => {
           if (response.data.meta.status_code === 200) {
-            // let pages = response.data.meta.pagination
-            // this.jquery.total = pages.total
-            // this.jquery.page = pages.total_pages
+            let pages = response.data.meta.pagination
+            this.jquery.total = pages.total
+            this.jquery.page = pages.total_pages
             if (response.data.data && response.data.data.length) {
               self.orderList = response.data.data
             } else {
@@ -1063,7 +1076,7 @@
             return
           }
         })
-        .catch(function (error) {
+        .catch((error) => {
           self.isLoading = false
           self.$message.error(error.message)
           console.error(error.message)
@@ -1071,23 +1084,23 @@
         })
       },
       // 收藏列表
-      getCollectList() {
-        // if (p) {
-        //   this.jquery2.current_page = p
-        // }
-        // if (size) {
-        //   this.jquery2.per_page = size
-        // }
+      getCollectList(p, size) {
+        if (p) {
+          this.jquery2.current_page = p
+        }
+        if (size) {
+          this.jquery2.per_page = size
+        }
         this.isLoading = true
         this.$http.get(api.sdDesignResultsMyCollectionList, {params: {
-          type: 2,
-          per_page: 50
-          // type: 2, page: this.jquery2.current_page, per_page: this.jquery2.per_page
+          // type: 2,
+          // per_page: 50
+          type: 2, page: this.jquery2.current_page, per_page: this.jquery2.per_page
         }}).then((response) => {
           if (response.data.meta.status_code === 200) {
-            // let pages = response.data.meta.pagination
-            // this.jquery2.total = pages.total
-            // this.jquery2.page = pages.total_pages
+            let pages = response.data.meta.pagination
+            this.jquery2.total = pages.total
+            this.jquery2.page = pages.total_pages
             if (response.data.data && response.data.data.length) {
               this.collectList = response.data.data
               this.collectList.forEach(item => {
@@ -1154,20 +1167,34 @@
           return
         })
       },
+      // 恢复右侧滚轴
+      renewDialog() {
+        let oldClass = document.getElementById('app').getAttribute('class')
+        if (oldClass) {
+          oldClass = oldClass.replace(/disableScroll\x20?/g, '')
+        }
+        document.body.removeAttribute('class', 'disableScroll')
+        document.getElementById('app').setAttribute('class', oldClass)
+        document.childNodes[1].removeAttribute('class', 'disableScroll')
+      },
+      // 清除右侧滚轴
+      clearDialog() {
+        let oldClass = document.getElementById('app').getAttribute('class')
+        if (oldClass) {
+          oldClass = oldClass.replace(/disableScroll\x20?/g, '')
+        }
+        document.body.setAttribute('class', 'disableScroll')
+        document.getElementById('app').setAttribute('class', 'disableScroll ' + oldClass)
+        document.childNodes[1].setAttribute('class', 'disableScroll')
+      },
       // 关闭弹窗按钮
       closeBtn(formName) {
         this.form = {
           'design_types': []
         }
-        // if (formName === 'form') {
-        //   let oldClass = document.getElementById('app').getAttribute('class')
-        //   if (oldClass) {
-        //   oldClass = oldClass.replace(/disableScroll\x20?/g, '')
-        //   }
-        //   document.body.removeAttribute('class', 'disableScroll')
-        //   document.getElementById('app').setAttribute('class', oldClass)
-        //   document.childNodes[1].removeAttribute('class', 'disableScroll')
-        // }
+        if (formName === 'form') {
+          this.renewDialog()
+        }
         this.dialogFormVisible = false
         this.dialogUpdateVisible = false
         this.dialogDeleteVisible = false
@@ -1201,7 +1228,7 @@
     created () {
       this.type = Number(this.$route.query.type) || 1
       if (this.type === 1) {
-        this.getDemandList()
+        this.getDemandList(1)
       }
     }
   }
@@ -1348,6 +1375,10 @@
     line-height: 20px;
     color: #999;
   }
+  .details .details-content {
+    max-height: 180px;
+    overflow-y: auto;
+  }
   .details span{
     display: inline-block;
     width: 80px;
@@ -1360,6 +1391,9 @@
   .text-align-c {
     text-align: center;
     line-height: 20px;
+  }
+  .mg-b-20 {
+    margin: 20px;
   }
   .demand-content .is-custom {
     min-width: 120px;
@@ -1405,6 +1439,9 @@
     display: block;
     color: #fff;
   }
+  .router-work:hover {
+    color: #ff5a5f;
+  }
   .router-pay {
     display: block;
     color: #666;
@@ -1422,5 +1459,21 @@
   .file-ok p:last-child {
     margin-top: 10px;
     color: #999;
+  }
+  .titles-center {
+    margin: 0 auto;
+    text-align: center;
+  }
+  .move-text {
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
+    font-size: 16px;
+    color: #666666;
+    text-align: center;
+    margin-top: 5px;
+  }
+  .move-div {
+    color: #999;
+    font-size: 13px;
+    margin-top: 20px;
   }
 </style>

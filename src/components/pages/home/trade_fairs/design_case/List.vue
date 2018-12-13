@@ -10,12 +10,17 @@
           <v-menu-sub></v-menu-sub>
           <div :class="['content-box', isMob ? 'content-box-m' : '']">
             <div class="design-case-list" v-loading="isLoading">
-              <el-row :gutter="20">
+              <el-row :gutter="20" class="flex-wrap">
                 <el-col :xs="12" :sm="6" :md="6" :lg="6">
-                  <router-link :to="{name: 'sdDesignCase_submit'}" class="item item-add el-card">
+                  <div v-show="false">{{verify}}</div>
+                  <router-link :to="{name: 'sdDesignCase_submit'}" class="item item-add el-card" v-if="verify === 1">
                     <i class="add-icon"></i>
                     <p class="tc-red fz-16">提交设计成果</p>
                   </router-link>
+                  <div class="item item-add el-card" v-else @click="notverify()">
+                    <i class="add-icon"></i>
+                    <p class="tc-red fz-16">提交设计成果</p>
+                  </div>
                 </el-col>
                 <el-col :xs="12" :sm="6" :md="6" :lg="6" v-for="(d, index) in designCases" :key="index">
                   <el-card :body-style="{ padding: '0px' }" class="item">
@@ -42,10 +47,16 @@
                       </ul>
                     </div>
                     <div class="image-box">
-                      <router-link :to="{name: 'work_datails', params: {id: d.id}, query: {type: 2}}"
-                        :target="isMob ? '_self' : '_blank'">
-                        <img v-if="d.cover" :src="d.cover.small">
+                      <router-link v-if="d.cover" :to="{name: 'work_datails',
+                        params: {id: d.id}, query: {type: 2}}"
+                        :target="isMob ? '_self' : '_blank'"
+                        :style="{background: 'url('+ d.cover.small +') no-repeat center / cover'}"
+                        >
                       </router-link>
+                      <router-link v-else 
+                        :to="{name: 'work_datails',
+                        params: {id: d.id}, query: {type: 2}}"
+                        :target="isMob ? '_self' : '_blank'"></router-link>
                     </div>
                     <div class="content">
                       <router-link :to="{name: 'work_datails', params: {id: d.id}, query: {type: 2}}"
@@ -73,6 +84,17 @@
         </div>
       </div>
     </el-row>
+    <div class="text-align-c" v-if="jquery.page>1">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="jquery.current_page"
+        :page-sizes="[50, 100, 200]"
+        :page-size="jquery.per_page"
+        layout="sizes, prev, pager, next"
+        :total="jquery.total">
+      </el-pagination>
+    </div>
     <el-dialog
       :title="updateform.opt===1?'确认下架':(updateform.opt===2?'确认删除':'撤回')"
       :visible.sync="dialogUpdateVisible"
@@ -147,7 +169,9 @@
 
 <script>
   import vMenu from '@/components/pages/v_center/Menu'
-  import vMenuSub from '@/components/pages/home/trade_fairs/design_case/1MenuSub'
+  import auth from '@/helper/auth'
+  import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
+  import vMenuSub from '@/components/pages/home/trade_fairs/design_case/MenuSub'
   import api from '@/api/api'
   import '@/assets/js/format'
 
@@ -155,10 +179,17 @@
     name: 'sdDesignCase_list',
     components: {
       vMenu,
-      vMenuSub
+      vMenuSub,
+      auth
     },
     data() {
       return {
+        jquery: {
+          total: 1, // 总条数
+          current_page: 1, // 当前页
+          page: 1, // 页数
+          per_page: 50 // 每页数量
+        },
         isLoading: false,
         designCases: [], // 成果列表
         designId: '', // 修改状态id
@@ -201,17 +232,39 @@
       }
     },
     methods: {
+      handleSizeChange(val) {
+        this.getDesignCase(1, val)
+      },
+      handleCurrentChange(val) {
+        this.getDesignCase(val)
+      },
+      // 未认证
+      notverify() {
+        this.$message.error('请先去认证 入驻铟果')
+      },
+      // 编辑成果
       toUpdateUrl(id) {
         this.$router.push('/shunde/trade_fairs/design_case/submit/' + id)
       },
       // 获取作品列表
-      getDesignCase () {
+      getDesignCase (p, size) {
         const that = this
         that.isLoading = true
-        that.$http.get (api.sdDesignResultsList, {params: {per_page: 50}})
+        if (p) {
+          that.jquery.current_page = p
+        }
+        if (size) {
+          that.jquery.per_page = size
+        }
+        that.$http.get (api.sdDesignResultsList, {params: {
+          page: that.jquery.current_page, per_page: that.jquery.per_page
+        }})
         .then (function (response) {
           that.isLoading = false
           if (response.data.meta.status_code === 200) {
+            let pages = response.data.meta.pagination
+            that.jquery.total = pages.total
+            that.jquery.page = pages.total_pages
             that.designCases = response.data.data
             for (let i of that.designCases) {
               if (i.cover.created_at) {
@@ -403,6 +456,17 @@
           return
         })
       },
+      // 重新获取用户信息
+      getUser() {
+        this.$http.get(api.surveyDesignCompanySurvey, {})
+        .then(res => {
+          if (res.data.meta.status_code === 200) {
+            this.$store.commit(CHANGE_USER_VERIFY_STATUS, res.data.data)
+          }
+        }).catch(err => {
+          console.error(err.message)
+        })
+      },
       // 编辑按钮
       submit(formName) {
         const that = this
@@ -449,6 +513,9 @@
       }
     },
     computed: {
+      verify() {
+        return this.$store.state.event.user.design_verify_status
+      },
       isMob() {
         return this.$store.state.event.isMob
       },
@@ -461,6 +528,7 @@
     },
     watch: {},
     created: function () {
+      this.getUser()
       this.getDesignCase ()
     }
   }
@@ -483,9 +551,9 @@
     margin: 10px 0 6px;
     }
 
-  .design-case-list .item {
+  /* .design-case-list .item {
     min-height: 240px;
-    }
+    } */
 
   .item {
     position: relative;
@@ -498,6 +566,8 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    height: calc(100% - 20px);
+    min-height: 290px;
   }
   .item-add p {
     font-size: 16px;
@@ -573,10 +643,14 @@
 
   .image-box {
     border-radius: 4px 4px 0 0;
-    height: 160px;
     overflow: hidden;
     }
 
+  .image-box a {
+    display: block;
+    padding-top: 75%;
+    background-color: #f7f7f7
+  }
   .content {
     padding: 8px 20px;
     height: 80px;
@@ -619,6 +693,11 @@
     cursor: not-allowed;
     background-color: #fafafa;
     color: #999;
+  }
+  .text-align-c {
+    text-align: center;
+    line-height: 20px;
+    margin-bottom: 20px;
   }
   @media screen and (max-width: 767px) {
     .opt a {

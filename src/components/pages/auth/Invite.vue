@@ -417,7 +417,7 @@
     width: 100%;
   }
   .style {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 16px;
     color: #666666;
   }

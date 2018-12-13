@@ -14,8 +14,7 @@
               <el-menu-item index="article" :route="menu.article">铟果说</el-menu-item>
               <el-menu-item index="design_case" :route="menu.design_case">灵感</el-menu-item>
               <el-menu-item index="commonly_sites" :route="menu.commonly_sites">设计工具</el-menu-item>
-              <el-menu-item index="innovation_index" :route="menu.innovation_index"
-                v-if="isAdmin">创新指数</el-menu-item>
+              <el-menu-item index="innovation_index" :route="menu.innovation_index">创新指数</el-menu-item>
               <el-menu-item index="trade_fairs" :route="menu.home_page" v-if="!token">交易会</el-menu-item>
               <el-menu-item index="trade_fairs" :route="menu.demand_login" v-if="token">交易会</el-menu-item>
             </el-menu>
@@ -739,12 +738,12 @@
     color: #ff5a5f;
     background: none;
   }
- .jdc .nav-header .el-menu--horizontal > .el-menu-item:hover,
+ /* .jdc .nav-header .el-menu--horizontal > .el-menu-item:hover,
  .jdc .el-menu--horizontal > .el-submenu.is-active .el-submenu__title,
  .jdc .el-menu--horizontal > .el-submenu:hover .el-submenu__title,
  .jdc .el-menu--horizontal > .el-menu-item.is-active {
     border-bottom: 3px solid transparent;
- }
+ } */
   .nav-header .el-menu-item, .el-submenu__title {
     padding: 0 14px;
   }

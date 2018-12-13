@@ -43,11 +43,17 @@
                   <div class="demand-content">
                     <el-row>
                       <el-col :span="8" class="collect-all">
-                        <div class="collect-img" :style="{background:'url('+d.cover.logo +') no-repeat center / contain'}">
-                        </div>
+                        <router-link :to="{name: 'pay_datails', params: {id: d.id}}"
+                            target="_blank" class="router-work">
+                          <div class="collect-img" :style="{background:'url('+d.cover.middle +') no-repeat center / contain'}">
+                          </div>
+                        </router-link>
                         <div class="collect-centent">
-                          <p class="c-title">{{d.design_result.title}}</p>
-                          <p>出让形式: {{d.design_result.sell_type === 1?'全额出让':'股权合作'}}</p>
+                          <router-link :to="{name: 'pay_datails', params: {id: d.id}}"
+                            target="_blank" class="router-work c-title">
+                            {{d.design_result.title}}
+                          </router-link>
+                          <p class="mg-t-10">出让形式: {{d.design_result.sell_type === 1?'全额出让':'股权合作'}}</p>
                           <p>出让金额: ¥{{d.design_result.price}}</p>
                         </div>
                       </el-col>
@@ -69,12 +75,15 @@
                         <p v-if="d.design_result.sell === 1">请尽快联系需求方交付设计成果</p>
                       </el-col>
                       <el-col :span="4">
-                        <el-button class="is-custom" type="primary" size="small" v-if="d.design_result.sell === 2&&d.design_result.is_evaluate===1">
+                        <button class="full-red-button middle-button" v-if="d.design_result.sell === 2&&d.design_result.is_evaluate===1">
                           <router-link :to="{name: 'pay_datails', params: {id: d.id}}"
                             target="_blank" class="router-pay">
                             查看评价
                           </router-link>
-                        </el-button>
+                        </button>
+                        <button class="white-button middle-button" v-if="d.status ===-1||d.status ===-2" @click="deleteOrder(d.id)">
+                            删除
+                        </button>
                         <!-- <el-button class="mg-t-10">
                           评价
                         </el-button> -->
@@ -82,6 +91,17 @@
                     </el-row>
                   </div>
                 </div>
+              </div>
+              <div class="text-align-c" v-if="jquery.page>1">
+                <el-pagination
+                  @size-change="handleSizeChange"
+                  @current-change="handleCurrentChange"
+                  :current-page.sync="jquery.current_page"
+                  :page-sizes="[50, 100, 200]"
+                  :page-size="jquery.per_page"
+                  layout="sizes, prev, pager, next"
+                  :total="jquery.total">
+                </el-pagination>
               </div>
             </div>
           </div>
@@ -93,7 +113,7 @@
 
 <script>
   import vMenu from '@/components/pages/v_center/Menu'
-  import vMenuSub from '@/components/pages/home/trade_fairs/design_case/1MenuSub'
+  import vMenuSub from '@/components/pages/home/trade_fairs/design_case/MenuSub'
   import api from '@/api/api'
   import '@/assets/js/format'
 
@@ -105,6 +125,12 @@
     },
     data() {
       return {
+        jquery: {
+          total: 1, // 总条数
+          current_page: 1, // 当前页
+          page: 1, // 页数
+          per_page: 50 // 每页数量
+        },
         isLoading: false,
         orderList: [], // 订单列表
         collectList: [], // 收藏列表
@@ -158,7 +184,7 @@
           }
         } else if (val === 2) {
           return '退款'
-        } else if (val === -1) {
+        } else if (val === -1 || val === -2) {
           return '交易失败'
         } else {
           return val
@@ -166,6 +192,31 @@
       }
     },
     methods: {
+      handleSizeChange(val) {
+        this.getDesignCase(1, val)
+      },
+      handleCurrentChange(val) {
+        this.getDesignCase(val)
+      },
+      // 删除订单
+      deleteOrder(id) {
+        this.$http.get(api.payDeleteOrder, {params: {id: id}}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.orderList.forEach((item, index) => {
+              if (item.id === id) {
+                this.orderList.splice(index, 1)
+              }
+            })
+          } else {
+            this.$message.error(response.data.meta.message)
+            return
+          }
+        })
+        .catch(function (error) {
+          this.$message.error(error.message)
+          return
+        })
+      },
       // 获取详情
       upDetails(id) {
         this.formup = {}
@@ -183,13 +234,24 @@
         )
       },
       // 获取订单列表
-      getDesignCase () {
+      getDesignCase (p, size) {
         const that = this
         that.isLoading = true
-        that.$http.get (api.sdPayMyOrderList, {})
+        if (p) {
+          that.jquery.current_page = p
+        }
+        if (size) {
+          that.jquery.per_page = size
+        }
+        that.$http.get (api.sdPayMyOrderList, {params: {
+          page: that.jquery.current_page, per_page: that.jquery.per_page}
+        })
         .then (function (response) {
           that.isLoading = false
           if (response.data.meta.status_code === 200) {
+            let pages = response.data.meta.pagination
+            that.jquery.total = pages.total
+            that.jquery.page = pages.total_pages
             if (response.data.data && response.data.data.length) {
               that.orderList = response.data.data
             }
@@ -214,7 +276,7 @@
     },
     watch: {},
     created: function () {
-      this.getDesignCase ()
+      this.getDesignCase (1)
     }
   }
 
@@ -380,19 +442,19 @@
     margin: 0 auto;
   }
   .list-title {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 16px;
     color: #222222;
     line-height: 17.04px;
   }
   .list-data {
     padding-top: 10px;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     color: #999999;
   }
   .list-word {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 14px;
     color: #666666;
     padding-top: 10px;
@@ -451,7 +513,7 @@
   }
   .details-text {
     position: relative;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     padding-left: 10px;
     color: #999999;
@@ -484,7 +546,7 @@
   }
   .button-interest {
     position: relative;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     padding-left: 15px;
     color: #FF5A5F;
@@ -522,7 +584,7 @@
   }
   .dia-interest {
     position: relative;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     padding-left: 15px;
     color: #FF5A5F;
@@ -574,7 +636,7 @@
   }
   .contact-text {
     position: relative;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     padding-left: 10px;
     color: #999999;
@@ -685,6 +747,14 @@
   .router-pay {
     color: #FFF;
     display: block;
+  }
+  .mg-t-10 {
+    margin-top: 10px;
+  }
+  .text-align-c {
+    text-align: center;
+    line-height: 20px;
+    margin-bottom: 20px;
   }
   @media screen and (max-width: 767px) {
     .opt a {

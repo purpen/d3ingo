@@ -213,7 +213,7 @@
     text-align: left;
   }
   .text-style {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 145%;
     color: #FFFFFF;
     text-align: center;
@@ -259,7 +259,7 @@
   }
   .text-before {
     position: relative;
-    font-family: PingFangSC-Semibold;
+    font-family: PingFangSC-Semibold, "Microsoft Yahei";
     font-size: 170%;
     color: #02EBA5;
   }
@@ -268,7 +268,7 @@
     text-align: left;
   }
   .text-after {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 145%;
     color: #FFFFFF;
     text-align: justify;
@@ -317,7 +317,7 @@
     padding: 20px 10px 0 10px;
   }
   .contents-text {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 14px;
     color: #02EBA5;
     line-height: 24px;
@@ -369,7 +369,7 @@
     text-align: center;
   }
   .content-text {
-    font-family: PingFangSC-Semibold;
+    font-family: PingFangSC-Semibold, "Microsoft Yahei";
     font-size: 18px;
     color: #02EBA5;
   }
@@ -435,7 +435,7 @@
   }
   .number-text {
     padding-top: 10px;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 14px;
     color: #FFFFFF;
     text-align: center;
@@ -457,7 +457,7 @@
   }
   .enterprise-text {
     padding-top: 10px;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 14px;
     color: #FFFFFF;
     text-align: center;
@@ -479,7 +479,7 @@
   }
   .company-text {
     padding-top: 10px;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 14px;
     color: #FFFFFF;
     text-align: center;
@@ -501,7 +501,7 @@
   }
   .project-text {
     padding-top: 10px;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 14px;
     color: #FFFFFF;
     text-align: center;
@@ -523,7 +523,7 @@
   }
   .amount-text {
     padding-top: 10px;
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 14px;
     color: #FFFFFF;
     text-align: center;
@@ -650,7 +650,7 @@
     margin: 0 auto;
   }
   .host-text-style {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 12px;
     color: #FFFFFF;
     text-align: center;
@@ -661,13 +661,13 @@
     text-align: center;
   }
   .login-color {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 14px;
     color: #FFFFFF;
     text-align: center;
   }
   .web-color {
-    font-family: PingFangSC-Regular;
+    font-family: PingFangSC-Regular, "Microsoft Yahei";
     font-size: 14px;
     color: #02EBA5;
     text-align: center;

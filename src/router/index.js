@@ -224,16 +224,6 @@ let routes = [
     },
     component: require('@/components/pages/subject/Rcip')
   },
-  // 羽泉的礼物
-  {
-    path: '/subject/YuQuanGifts',
-    name: 'YuQuanGifts',
-    meta: {
-      requireAuth: false,
-      title: '羽泉的礼物'
-    },
-    component: require('@/components/pages/subject/YuQuanGifts')
-  },
   // 小米众生相
   {
     path: '/subject/xiaomiInterview',
@@ -647,6 +637,16 @@ let routes = [
     },
     component: require('@/components/block/Blank')
   },
+  // 自定义输出页面
+  {
+    path: '/iframe',
+    name: 'iframe',
+    meta: {
+      title: '',
+      requireAuth: false
+    },
+    component: require('@/components/block/Iframe')
+  },
   // 成员
   {
     path: '/user/user_management',
@@ -753,7 +753,10 @@ const router = new VueRouter({
   linkActiveClass: 'is-active', // 这是链接激活时的class
   routes,
   scrollBehavior(to, from, savedPosition) {
-    return savedPosition || { x: 0, y: 0 }
+    if (to.name !== 'InnovateList') {
+      return savedPosition || { x: 0, y: 0 }
+    }
+    // return savedPosition
     // if (savedPosition) {
     //   return savedPosition
     // } else {

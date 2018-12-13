@@ -24,6 +24,7 @@
           <template slot="title"><i class="fa fa-product-hunt"></i> 顺德交易会</template>
             <el-menu-item index="achievmentList" :route="{name:'adminAchievmentList'}">成果列表</el-menu-item>
             <el-menu-item index="demandtList" :route="{name:'adminDemandtList'}">需求列表</el-menu-item>
+            <el-menu-item index="sdOrderList" :route="{name:'adminSdOrderList'}">订单列表</el-menu-item>
         </el-submenu>
         <el-submenu index="5">
           <template slot="title"><i class="fa fa-file-text"></i> 订单管理</template>

@@ -340,13 +340,30 @@ export default {
     }
   },
   created() {
-    for (let i = 0; i <= 6; i++) {
-      this.getBoard(i)
-    }
+    // for (let i = 0; i <= 6; i++) {
+    //   this.getBoard(i)
+    // }
   },
   mounted() {
-    // window.addEventListener('scroll', this.handleScroll)
-    // this.handleScroll()
+    let hash = this.$route.hash
+    if (hash === '#innovation') {
+      window.pageYOffset = this.$refs.innovation.offsetTop
+      document.documentElement.scrollTop = this.$refs.innovation.offsetTop
+    }
+    if (hash === '#power' || hash === '#innovation2') {
+      window.pageYOffset = this.$refs.power.offsetTop
+      document.documentElement.scrollTop = this.$refs.power.offsetTop
+    }
+    if (hash === '#business' || hash === '#brand') {
+      window.pageYOffset = this.$refs.business.offsetTop
+      document.documentElement.scrollTop = this.$refs.business.offsetTop
+    }
+    if (hash === '#credibility' || hash === '#risk') {
+      window.pageYOffset = this.$refs.credibility.offsetTop
+      document.documentElement.scrollTop = this.$refs.credibility.offsetTop
+    }
+    window.addEventListener('scroll', this.handleScroll)
+    this.handleScroll()
   },
   methods: {
     addCompare(id) {

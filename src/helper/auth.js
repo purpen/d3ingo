@@ -1,5 +1,4 @@
 import store from '@/store/index'
-// import axios from '../http'
 // import api from '@/api/api'
 import { USER_SIGNIN, USER_SIGNOUT, USER_INFO, CLEAR_PREV_URL_NAME } from '@/store/mutation-types'
 
@@ -28,6 +27,8 @@ mallache.write_user = function (user) {
       verify_status: user.verify_status,
       source: user.source,
       source_admin: user.source_admin,
+      design_user_name: user.design_user_name,
+      design_user_phone: user.design_user_phone,
       company: {
         company_name: user.demand_company_name,
         company_abbreviation: user.demand_company_abbreviation
@@ -51,6 +52,8 @@ mallache.write_user = function (user) {
       source: user.source,
       source_admin: user.source_admin,
       design_company_logo_image: user.design_company_logo_image,
+      design_user_name: user.design_user_name,
+      design_user_phone: user.design_user_phone,
       company: {
         company_name: user.design_company_name,
         company_abbreviation: user.design_company_abbreviation

@@ -31,7 +31,26 @@
                     :label="item.value">{{ item.label }}</el-radio-button>
                 </el-radio-group>
               </el-form-item>
-
+              <el-row :gutter="24" v-if="form.type === 2">
+                <el-col :span="12">
+                  <el-form-item label="设备" prop="facility">
+                    <el-radio-group v-model.number="form.facility">
+                      <el-radio-button
+                        v-for="f in facilitys"
+                        :key="f.index"
+                        :label="f.value">{{ f.label }}
+                      </el-radio-button>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="24" v-if="form.type === 2">
+                <el-col :span="12">
+                  <el-form-item label="权重" prop="sort">
+                    <el-input v-model="form.sort" type="number" placeholder="权重越大排名越前"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
               <el-row :gutter="24">
                 <el-col :span="12">
                   <el-form-item label="标题" prop="title">
@@ -145,6 +164,16 @@ export default {
   },
   data () {
     return {
+      facilitys: [
+        {
+          value: 1,
+          label: 'PC'
+        },
+        {
+          value: 2,
+          label: '手机'
+        }
+      ],
       menuType: 0,
       itemMode: '添加栏目',
       isLoading: false,
@@ -167,11 +196,15 @@ export default {
         type: '',
         title: '',
         content: '',
-        url: ''
+        url: '',
+        facility: 1
       },
       ruleForm: {
         type: [
           { type: 'number', message: '请选择类型', trigger: 'change' }
+        ],
+        facility: [
+          { type: 'number', message: '请选择图片显示设备', trigger: 'change' }
         ],
         title: [
           { required: true, message: '请填写标题', trigger: 'blur' }
@@ -205,7 +238,9 @@ export default {
             type: that.form.type,
             title: that.form.title,
             content: that.form.content,
-            url: that.form.url
+            url: that.form.url,
+            facility: that.form.facility || 1,
+            sort: that.form.sort || 0
           }
           row.cover_id = that.coverId
           var method = null

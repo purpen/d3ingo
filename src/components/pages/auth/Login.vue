@@ -38,7 +38,7 @@
           <el-button type="primary" :loading="isLoadingBtn" @keyup="submit('ruleForm')" @click="submit('ruleForm')" class="login-btn is-custom">登录
           </el-button>
         </el-form>
-        <p v-if="prod.name === 'jdc'" class="authorize">京东授权登录:<span class="fx-4"><a :href="jdURL">JD</a></span></p>
+        <a :href="jdURL"><p v-if="prod.name === 'jdc'" class="authorize"><span class="fx-2 jd-icon">京东云登录</span></p></a>
       </div>
     </div>
     <div class="reg">
@@ -49,7 +49,7 @@
       <div v-if="!code">
         <p v-if="!isMob">还没有{{prod.login}}账户？
           <router-link v-if="type" :to="{name: 'register',params:{type: type}}">立即注册</router-link>
-          <router-link v-else :to="{name: 'register'}">立即注册</router-link>
+          <router-link v-else :to="{name: 'register'}" :class="{'shake-reg': isShake}">立即注册</router-link>
         </p>
         <p v-else>还没有{{prod.login}}账户？
           <router-link :to="{name: 'identity'}">立即注册</router-link>
@@ -83,6 +83,14 @@
         </el-button>
       </div>
     </div>
+    <iframe
+      v-show="false"
+      ref="iframe"
+      frameborder="0"
+      name="sso-collaboration"
+      @load="loadFrame"
+      src="http://dev.taihuoniao.com/getmessage"></iframe>
+      <!-- src="http://localhost:8086/iframe"></iframe> -->
   </div>
 </template>
 
@@ -115,6 +123,7 @@ export default {
       }
     }
     return {
+      isShake: false,
       isLoadingBtn: false,
       labelPosition: 'top',
       form: {
@@ -139,6 +148,8 @@ export default {
       isLoading: false,
       user: {},
       token: '',
+      ticket: '',
+      iframeLoad: false,
       typeError: false,
       imgCaptchaUrl: '',
       imgCaptchaStr: '',
@@ -147,6 +158,17 @@ export default {
     }
   },
   methods: {
+    loadFrame() {
+      this.iframeLoad = true
+    },
+    postMessage() {
+      if (this.iframeLoad) {
+        this.$refs.iframe.contentWindow.postMessage(JSON.stringify({
+          ticket: this.ticket
+        }), 'http://dev.taihuoniao.com/getmessage')
+        // }), 'http://localhost:8086/iframe')
+      }
+    },
     checkAccount(number) {
       if (number && number.length === 11) {
         this.$http.post(api.errCount, {account: number}).then(res => {
@@ -186,15 +208,15 @@ export default {
               .then(function(response) {
                 that.isLoadingBtn = false
                 if (response.data.meta.status_code === 200) {
-                  let token = response.data.data.token
-                  that.token = token
+                  that.token = response.data.data.token
+                  that.ticket = response.data.data.ticket
+                  that.postMessage()
                   // 写入localStorage
-                  auth.write_token(token)
+                  auth.write_token(that.token)
                   // ajax拉取用户信息
                   that.$http
                     .get(api.user, {})
                     .then(function(response) {
-                      console.log(response.data.data)
                       if (response.data.meta.status_code === 200) {
                         if (response.data.data.type === 0) {
                           that.chooseType = true
@@ -233,9 +255,13 @@ export default {
                       that.$message.error(error.message)
                     })
                 } else {
-                  console.log(response.data.data.err_count)
                   that.$message.error(response.data.meta.message)
-                  if (response.data.meta.status_code === 403 && response.data.data.err_count >= 3) {
+                  if (response.data.meta.status_code === 401) {
+                    that.isShake = true
+                    setTimeout(function() {
+                      that.isShake = false
+                    }, 500)
+                  } else if (response.data.meta.status_code === 403 && response.data.data.err_count >= 3) {
                     that.fetchImgCaptcha()
                     that.showImgCode = true
                   }
@@ -428,6 +454,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.shake-reg {
+  display: inline-block;
+  animation-name: shake-hard;
+  animation-duration: 100ms;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 4;
+}
 .login-box {
   background: #fff;
   width: 530px;
@@ -709,13 +742,17 @@ form {
   cursor: pointer;
 }
 .authorize {
-  padding-top: 10px;
+  line-height: 30px;
+  margin-top: 10px;
+  margin-bottom: -10px;
   text-align: left;
+  padding-left: 40px;
+  background: url(../../../assets/images/logo-yh2.png) no-repeat left / 30px;
 }
 .authorize span {
-  padding-left: 10px;
-  color: #0989C5;
+  color: #222;
   cursor: pointer;
+  display: inline-block;
 }
 @media screen and (max-width: 767px) {
   .container {

@@ -14,7 +14,6 @@
               <!-- <h2>上传作品</h2> -->
               <p class="match-type">类型</p>
               <el-radio-group class="match" v-model="match" fill="#FF5A5F">
-                <el-radio-button label="羽泉的礼物"></el-radio-button>
                 <el-radio-button label="敬请期待.." disabled></el-radio-button>
               </el-radio-group>
 
@@ -205,7 +204,6 @@
         })
       },
       returnGifts() {
-        // this.$router.push ({name: 'YuQuanGifts'})
         this.$router.go(-1)
       },
       beforeUpload (file) {
@@ -408,14 +406,14 @@
       match_id(val) {
         switch (val) {
           case 1:
-            this.match = '羽泉的礼物'
+            this.match = ''
             console.log('id')
             break
         }
       },
       match(val) {
         switch (val) {
-          case '羽泉的礼物':
+          case '':
             this.match_id = 1
             console.log(val)
             break

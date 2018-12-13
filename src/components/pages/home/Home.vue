@@ -8,7 +8,7 @@
               <div class="left">
                 <h3 :class="{'m-h3' : isMob}">铟果D³INGO产品创新SaaS平台</h3>
                 <p :class="{'m-p' : isMob}">用设计重塑品质生活</p>
-                <router-link v-if="uType !== 2" to="/item/submit_one">发布项目需求</router-link>
+                <router-link v-if="uType !== 2 && !isMob" to="/item/submit_one">发布项目需求</router-link>
               </div>
               <div class="draw">
                 <img :src="require('assets/images/home/banner/BG02@2x.png')" width="90%" height="auto" alt="">
@@ -20,15 +20,15 @@
             </div>
           </div>
         </swiper-slide>
-        <swiper-slide v-if="!isMob">
+        <!-- <swiper-slide v-if="!isMob">
           <div class="slide" :style="{ background: 'url(' + require ('assets/images/trade_fairs/banner/pc-banner.png') + ') no-repeat center', height: calcHeight}" @click="routerTrading">
           </div>
-        </swiper-slide>
-        <swiper-slide v-if="isMob">
-          <div class="slide" :style="{ background: 'url(' + require ('assets/images/trade_fairs/banner/mobile-banner.png') + ') no-repeat center', height: calcHeight}">
+        </swiper-slide> -->
+        <!-- <swiper-slide v-if="isMob">
+          <div class="slide" :style="{ background: 'url(' + require ('assets/images/trade_fairs/banner/phone2.png') + ') no-repeat center', height: calcHeight}" @click="routerTrading">
           </div>
-        </swiper-slide>
-        <swiper-slide v-if="isMob" v-for="(ele, index) in bannerListMob" :key="index">
+        </swiper-slide> -->
+        <!-- <swiper-slide v-if="isMob" v-for="(ele, index) in bannerListMob" :key="index">
           <router-link
             v-if="!ele.outSide"
             class="banner-link slide"
@@ -45,14 +45,34 @@
                 height: calcHeight
               }">
             </a>
-        </swiper-slide>
-        <swiper-slide v-if="!isMob" v-for="(ele, index) in bannerList" :key="index">
+        </swiper-slide> -->
+        <!-- <swiper-slide v-if="!isMob" v-for="(ele, index) in bannerList" :key="index">
           <router-link
             v-if="!ele.outSide"
             class="banner-link slide"
             :to="ele.url"
             :style="{
               background: 'url(' + ele.img + ') no-repeat center',
+              backgroundSize: 'cover',
+              height: calcHeight
+            }"></router-link>
+            <a v-else
+              :href="ele.url"
+              class="banner-link slide"
+              :style="{
+                background: 'url(' + ele.img + ') no-repeat center',
+                backgroundSize: 'contain',
+                height: calcHeight
+              }">
+            </a>
+        </swiper-slide> -->
+        <swiper-slide v-for="(ele, index) in bannerList" :key="index">
+          <router-link
+            v-if="!ele.outSide"
+            class="banner-link slide"
+            :to="ele.url"
+            :style="{
+              background: 'url(' + ele.img + ') no-repeat center / contain',
               backgroundSize: 'cover',
               height: calcHeight
             }"></router-link>
@@ -213,6 +233,7 @@
           <img v-lazy="require('assets/images/home/7logo.jpg')" />
           <img v-lazy="require('assets/images/home/8logo.jpg')" />
           <img v-lazy="require('assets/images/home/9logo.jpg')" />
+          <img v-lazy="require('assets/images/home/10logo.jpg')" />
         </span>
       </div>
     </div>
@@ -248,16 +269,16 @@
           //   img: require ('assets/images/subject/innovation/innovationIndex.jpg'),
           //   url: this.$store.state.event.user.role_id > 0 ? 'innovation_index' : 'home'
           // },
-          {
-            img: require ('assets/images/home/banner/home_xiaomi.jpg'),
-            url: '/subject/xiaomiInterview',
-            outSide: false
-          },
-          {
-            img: require ('assets/images/home/qsyd4.jpg'),
-            url: 'https://www.taihuoniao.com/contest/qsyd4',
-            outSide: true
-          }
+          // {
+          //   img: require ('assets/images/home/banner/home_xiaomi.jpg'),
+          //   url: '/subject/xiaomiInterview',
+          //   outSide: false
+          // },
+          // {
+          //   img: require ('assets/images/home/qsyd4.jpg'),
+          //   url: 'https://www.taihuoniao.com/contest/qsyd4',
+          //   outSide: true
+          // }
         ],
         caseSlideList: [
           {
@@ -356,19 +377,20 @@
         articleList: [],
         designList: [
           {
-            id: 7,
-            title: '羽泉二十周年巡回演唱会-IP衍生品招募',
-            cover_url: require ('@/assets/images/subject/list_05.jpg'),
-            url: '/subject/YuQuanGifts',
-            content: '2017年底，内地知名唱作组合羽泉与京东金融结成战略合作伙伴，双方在组合成立20周年巡回演唱会期间，将以羽泉组合这一明星IP为核心，衍生系列创意创新活动，内容涵盖广泛产品，活动名称为“羽泉的礼物”。'
-          },
-          {
             id: 5,
             title: '轻创新⋅设计造物-再设计⋅消费升级创新产品征集',
             cover_url: require ('@/assets/images/subject/list_03.jpg'),
             url: '/subject/ProductRecruit',
             content: '2017年初，太火鸟与投资方罗莱生活、海泉基金、京东金融、麦顿资本、泰德资本以及创新工场、真格基金等战略合作方共同发起了名为 “智见未来-太火鸟AesTech联合加速计划”，希望能够将太火鸟在产品孵化方面的前瞻性与各资本方及平台、渠道方在创新产品研发、孵化、营销环节的势能最大限度发挥出来，促进设计相关产业发展，改善设计生态，惠及大众。'
-          }],
+          },
+          {
+            id: 6,
+            title: '轻创新⋅设计造物-邀请加入铟果D³INGO活动招募',
+            cover_url: require ('@/assets/images/subject/list_04.jpg'),
+            url: '/subject/EnterpriseRecruit',
+            content: '铟果D³INGO是太火鸟旗下的创新产品交易与SaaS分发平台，是高效线上设计交易服务平台及中国领先的创新产品策源地，围绕创新产品与设计交易，为相关参与方提供包括创新产品孵化、资金保障、流量支持、运营维护等相关服务与帮助。'
+          }
+        ],
         designCaseList: [],
         tags: [],
         number: []
@@ -382,6 +404,7 @@
       this.getArticleList()
       this.getDesignCase()
       this.getBlock()
+      this.getColumnList()
     },
     mounted() {
       let that = this
@@ -488,6 +511,41 @@
           this.isLoading = false
           console.error(err)
         })
+      },
+      // 栏目文章轮播
+      getColumnList() {
+        let facility = 1
+        if (this.isMob) {
+          facility = 2
+        } else {
+          facility = 1
+        }
+        this.$http.get(api.columnList, {params: {type: 2, facility: facility}}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            let res = response.data.data
+            let bnlist = []
+            if (res && res.length) {
+              res.forEach(ele => {
+                bnlist.push({
+                  'img': ele.cover.file,
+                  'url': ele.url,
+                  'outSide': (ele.cover.name === 'qsyd4.jpg' || ele.cover.name === 'qsyd4-m.jpg') ? 1 : 0
+                })
+              })
+            }
+            this.bannerList = bnlist
+          } else {
+            console.log(response.data.meta.message)
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+      }
+    },
+    watch: {
+      isMob(val) {
+        this.getColumnList()
       }
     },
     computed: {
@@ -547,7 +605,7 @@
   .banner-text {
     left: 20px;
     right: 20px;
-    font-family: PingFangSC-Semibold;
+    font-family: PingFangSC-Semibold, "Microsoft Yahei";
     font-size: 20px;
     color: #3917C3;
   }
@@ -831,8 +889,14 @@
     border-bottom: 1px solid #e6e6e6;
     /* border-radius: 4px 4px 0 0; */
   }
-
+  .image-box {
+    padding-top: 60%;
+    position: relative;
+  }
   .image-box img {
+    position: absolute;
+    left: 0;
+    top: 0;
     width: 100%;
   }
 
@@ -940,21 +1004,28 @@
 
   @media screen and (max-width: 767px) {
     .container {
-      padding: 0 10px 0 10px;
+      padding: 0 10px
     }
 
     .slide .container {
       display: block;
       position: relative;
+      padding: 0
     }
 
     .slide .left {
       text-align: center;
       position: relative;
       z-index: 2;
-      justify-content: flex-start
+      justify-content: flex-start;
+      align-items: center
     }
-
+    .slide .left a {
+      width: 120px;
+      height: 34px;
+      line-height: 34px;
+      font-size: 12px;
+    }
     .slide .draw {
       position: absolute;
       top: 100px;
@@ -1050,7 +1121,6 @@
 
     .inline-flex {
       display: block;
-      width: 322px;
       margin: 0 auto;
       overflow: hidden;
     }
@@ -1087,16 +1157,15 @@
 
   @media screen and (max-width: 330px) {
     .logo-list img {
-      width: 40%;
+      width: 45%;
     }
     .home-banner .swiper-pagination {
       display: none
     }
   }
-  /* @media screen and ( max-width: 480px) {
-  .content-box {
-    width: 375px;
-    overflow-x: hidden;
+  @media screen and ( max-width: 480px) {
+    .logo-list img {
+      width: 45%;
+    }
   }
-} */
 </style>

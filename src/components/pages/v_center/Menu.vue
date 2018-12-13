@@ -97,6 +97,12 @@
                 {{eventUser.company.company_name}}
               </a>
               </el-tooltip>
+              <el-tooltip class="item" :effect="DarkorLight" content="交易会" placement="right" v-if="prod.name === ''">
+                <a @click="alick" :to="'/shunde/trade_fairs/design_case'"
+                  :class="['item', 'demandList', {'is-active': currentName === 'sdDesignCase_list'}]">
+                  交易会
+                </a>
+              </el-tooltip>
             </div>
             <!-- mini 设计方账号 -->
             <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist" v-else>
@@ -134,10 +140,10 @@
                 我的钱包
               </a>
               </el-tooltip>
-              <el-tooltip class="item" :effect="DarkorLight" content="顺德交易会" placement="right" v-if="prod.name === ''">
+              <el-tooltip class="item" :effect="DarkorLight" content="交易会" placement="right" v-if="prod.name === ''">
                 <a @click="alick" :to="'/shunde/trade_fairs/design_case'"
                   :class="['item', 'demandList', {'is-active': currentName === 'sdDesignCase_list'}]">
-                  顺德交易会
+                  交易会
                 </a>
               </el-tooltip>
               <a :class="['item', {'is-active': currentName === 'company'    }]" @click="redirectCompany" 
@@ -166,10 +172,10 @@
                 我的钱包
               </a>
               </el-tooltip>
-              <el-tooltip class="item" :effect="DarkorLight" content="顺德交易会" placement="right" v-if="prod.name === ''">
-              <a @click="alick" :to="'/shunde/trade_fairs/demand/demand_list'"
+              <el-tooltip class="item" :effect="DarkorLight" content="交易会" placement="right" v-if="prod.name === ''">
+              <a v-if="!isMob" @click="alick" :to="'/shunde/trade_fairs/demand/demand_list'"
                 :class="['item', 'demandList', {'is-active': currentName === 'demandList'}]">
-                顺德交易会
+                交易会
               </a>
               </el-tooltip>
             </div>
@@ -224,7 +230,7 @@
                 :class="['item', 'demandList', {'is-active': currentName === 'sdDesignCase_list'}]" 
                 v-if="prod.name === ''"
                 >
-                顺德交易会
+                交易会
               </a>
             </div>
           </div>
@@ -245,8 +251,8 @@
               </a>
               <a @click="alick" :to="'/shunde/trade_fairs/demand/demand_list'"
                 :class="['item', 'demandList', {'is-active': currentName === 'demandList'}]"
-                v-if="prod.name === ''">
-                顺德交易会
+                v-if="prod.name === '' && !isMob">
+                交易会
               </a>
             </div>
           </div>

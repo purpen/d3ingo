@@ -14,7 +14,7 @@
             </div> -->
 
             <div class="design-case-list" v-loading="isLoading">
-              <el-row :gutter="20">
+              <el-row :gutter="20" class="flex-wrap">
                 <el-col :xs="24" :sm="8" :md="8" :lg="8">
                   <router-link :to="{name: 'vcenterDesignCaseAdd'}" class="item item-add el-card">
                     <i class="add-icon"></i>
@@ -33,9 +33,13 @@
                       </ul>
                     </div>
                     <div class="image-box">
-                      <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
+                      <router-link v-if="d.cover" :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
+                        :target="isMob ? '_self' : '_blank'"
+                        :style="{background: 'url('+ d.cover.small +') no-repeat center / cover'}">
+                      </router-link>
+                      <router-link v-else 
+                        :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
                         :target="isMob ? '_self' : '_blank'">
-                        <img v-if="d.cover" :src="d.cover.middle">
                       </router-link>
                     </div>
                     <div class="content">
@@ -175,9 +179,9 @@
     margin: 10px 0 6px;
     }
 
-  .design-case-list .item {
+  /* .design-case-list .item {
     min-height: 240px;
-    }
+    } */
 
   .item {
     position: relative;
@@ -190,6 +194,8 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    height: calc(100% - 20px);
+    min-height: 340px;
   }
   .item-add p {
     font-size: 16px;
@@ -262,10 +268,14 @@
 
   .image-box {
     border-radius: 4px 4px 0 0;
-    height: 180px;
     overflow: hidden;
     }
 
+  .image-box a {
+    display: block;
+    padding-top: 75%;
+    background-color: #f7f7f7
+  }
   .content {
     padding: 10px 20px;
     }
