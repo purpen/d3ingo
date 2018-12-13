@@ -787,6 +787,7 @@
     border-radius: 0px 30px 30px 0;
     background-image: linear-gradient(-133deg, #6983F9 0%, #9D61DB 100%);
     box-shadow: 0 10px 20px 0 rgba(0,0,0,0.05);
+    cursor: pointer;
   }
 
   .smsCode-style .el-button.is-disabled {
@@ -794,6 +795,14 @@
     border: none;
     background-color: #eef1f6;
     color: #bfcbd9;
+  }
+
+  .design-product-list .el-card {
+    border: none;
+  }
+
+  .design-product-list .el-card__body {
+    padding: 0;
   }
 @media screen and (max-width: 767px) {
   .el-dialog--large,

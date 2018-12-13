@@ -1,6 +1,6 @@
 <template>
     <div class="is-show">
-      <div class="promote-banner" :style="{ background: 'url(' + require ('assets/images/promote/BG.jpg') + ') no-repeat center', height: calcHeight}">
+      <div class="promote-banner" :style="{ background: 'url(' + require ('assets/images/promote/BG.jpg') + ') no-repeat center'}">
         <p class="banner-title">铟果 | 专注于工业设计和产品创新的全流程B2B服务平台</p>
         <div class="promote-form">
           <p class="promote-form-title"><span class="form-bold">免费</span>发布项目需求</p>
@@ -27,7 +27,7 @@
               </div>
               <div class="d-f-j">
                 <el-button :loading="isLoadingBtn" @click="submit('ruleForm')" class="form-btn2">
-                  发布项目需求
+                  免费发布项目需求
                 </el-button>
               </div>
             </el-form>
@@ -282,42 +282,54 @@
           <div class="design-product-list">
             <el-row :gutter="20" class="m-b-20">
               <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                <div class="design-product-img">
-                  <img src="../../../assets/images/promote/design-product/case01@2x.png" alt="飞行鱼-亚特兰蒂斯号FiFish Atlantis">
-                  <p>飞行鱼-亚特兰蒂斯号FiFish Atlantis</p>
-                </div>
+                <el-card>
+                  <div class="design-product-img">
+                    <img src="../../../assets/images/promote/design-product/case01@2x.png" alt="飞行鱼-亚特兰蒂斯号FiFish Atlantis">
+                    <p>飞行鱼-亚特兰蒂斯号FiFish Atlantis</p>
+                  </div>
+                </el-card>
               </el-col>
               <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                <div class="design-product-img">
-                  <img src="../../../assets/images/promote/design-product/case02@2x.png" alt="素士声波电动牙刷">
-                  <p>素士声波电动牙刷</p>
-                </div>
+                <el-card>
+                  <div class="design-product-img">
+                    <img src="../../../assets/images/promote/design-product/case02@2x.png" alt="素士声波电动牙刷">
+                    <p>素士声波电动牙刷</p>
+                  </div>
+                </el-card>
               </el-col>
               <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                <div class="design-product-img">
-                  <img src="../../../assets/images/promote/design-product/case03@2x.png" alt="美妆镜 Amiro">
-                  <p>美妆镜 Amiro</p>
-                </div>
+                <el-card>
+                  <div class="design-product-img">
+                    <img src="../../../assets/images/promote/design-product/case03@2x.png" alt="美妆镜 Amiro">
+                    <p>美妆镜 Amiro</p>
+                  </div>
+                </el-card>
               </el-col>
             </el-row>
             <el-row :gutter="20">
               <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                <div class="design-product-img">
-                  <img src="../../../assets/images/promote/design-product/case04@2x.png" alt="美妆镜 Amiro">
-                  <p>飞美妆镜 Amiro</p>
-                </div>
+                <el-card>
+                  <div class="design-product-img">
+                    <img src="../../../assets/images/promote/design-product/case04@2x.png" alt="美妆镜 Amiro">
+                    <p>飞美妆镜 Amiro</p>
+                  </div>
+                </el-card>
               </el-col>
               <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                <div class="design-product-img">
-                  <img src="../../../assets/images/promote/design-product/case05@2x.png" alt="凡曦 | 御蜜粒卫生巾包装">
-                  <p>凡曦 | 御蜜粒卫生巾包装</p>
-                </div>
+                <el-card>
+                  <div class="design-product-img">
+                    <img src="../../../assets/images/promote/design-product/case05@2x.png" alt="凡曦 | 御蜜粒卫生巾包装">
+                    <p>凡曦 | 御蜜粒卫生巾包装</p>
+                  </div>
+                </el-card>
               </el-col>
               <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                <div class="design-product-img">
-                  <img src="../../../assets/images/promote/design-product/case06@2x.png" alt="插画设计">
-                  <p>插画设计</p>
-                </div>
+                <el-card>
+                  <div class="design-product-img">
+                    <img src="../../../assets/images/promote/design-product/case06@2x.png" alt="插画设计">
+                    <p>插画设计</p>
+                  </div>
+                </el-card>
               </el-col>
             </el-row>
           </div>
@@ -332,15 +344,15 @@
               <p class="desigb-about-p">立即发布需求</p>
               <span class="desigb-about-span">注册并发布项目需求</span>
               <div>
-                <router-link :to="{name: 'abc'}"><button class="design-btn">免费发布项目需求</button></router-link>
+                <router-link :to="{name: 'projectCreate'}"><button class="design-btn">免费发布项目需求</button></router-link>
               </div>
             </el-col>
             <el-col :xs="24" :sm="8" :md="8" :lg="8">
               <img src="../../../assets/images/promote/about/ContactUs@2x.png" alt="">
               <p class="desigb-about-p">联系我们</p>
-              <span class="desigb-about-span" style="color: #7F75EC">13031154842</span>
+              <span class="desigb-about-span" style="color: #7F75EC;font-size: 24px">13031154842</span>
               <div>
-                <router-link :to="{name: 'abc'}"><button class="design-btn">发送邮件</button></router-link>
+                <a href="mailto:gengting@taihuoniao.com"><button class="design-btn">发送邮件</button></a>
               </div>
             </el-col>
             <el-col :xs="24" :sm="8" :md="8" :lg="8">
@@ -424,18 +436,8 @@
           this.$message.error('请输入手机号')
           return
         }
-        let account = this.form.account
-        console.log(account)
-        // let row = {
-        //   user_name: this.form.contact,   // 联系人
-        //   phone: this.form.account,        // 手机号
-        //   item_name: this.form.demand,   // 需求
-        //   from: 2,   // 小程序or网页
-        //   sms_code: this.form.sms_code   // 小程序or网页
-        // }
         this.$http.post(api.fetch_wx_code, {phone: this.form.account})
           .then(res => {
-            console.log(res)
             this.time = this.second
             this.timer()
           })
@@ -454,20 +456,21 @@
               phone: this.form.account,        // 手机号
               item_name: this.form.demand,   // 需求
               from: 2,   // 小程序or网页
-              sms_code: this.form.sms_code   // 小程序or网页
+              sms_code: this.form.smsCode   // 小程序or网页
             }
             this.$http.post(api.pcAdd, row)
               .then(res => {
                 if (res.data.meta.status_code === 200) {
-                  console.log(res.data)
-                  this.$message.success('成功')
+                  this.$message.success('发布成功')
+                } else {
+                  this.$message.error(res.data.meta.message)
                 }
               })
               .catch(error => {
                 this.$message.error(error)
               })
           } else {
-            this.$message.error('错误')
+            this.$message.error('请填写信息')
           }
         })
       }
@@ -534,6 +537,7 @@
 
   .form-bold {
     color: #7F75EC;
+    font-family: PingFangSC-Semibold;
   }
 
   .form-btn2, .form-btn2:focus {
@@ -730,6 +734,7 @@
   }
 
   .efficiency-details p {
+    font-family: PingFangSC-Regular;
     margin-bottom: 15px;
     color: #222222;
     text-align: center;
@@ -793,6 +798,7 @@
   }
 
   .desigb-about-p {
+    font-family: PingFangSC-Regular;
     margin: 20px 0 12px 0;
     font-size: 22px;
     color: #222222;
@@ -800,6 +806,7 @@
   }
 
   .desigb-about-span {
+    font-family: PingFangSC-Regular;
     font-size: 16px;
     color: #666666;
     line-height: 36px;
@@ -844,6 +851,7 @@
   }
 
   .m-t-15 {
+    font-family: PingFangSC-Regular;
     margin-top: 15px;
   }
 
