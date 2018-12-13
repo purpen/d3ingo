@@ -103,12 +103,10 @@
           }
         }
       }
-      console.log(userInfo)
       // 写入localStorage
       if (JSON.stringify(userInfo) !== '{}') {
         localStorage.setItem('user', JSON.stringify(userInfo))
       }
-      console.log(localStorage.getItem('user'))
     }
     var getStatus = function (type) {
       var u = ''
@@ -122,7 +120,12 @@
       }, function (res) {
         res = JSON.parse(res)
         if (res.meta.status_code === 200) {
-          localStorage.setItem('user', JSON.stringify(res.data.user))
+          var user = localStorage.getItem('user')
+          if (user && user != 'undefined') {
+            user = JSON.parse(user)
+          }
+          Object.assign(user, res.data)
+          localStorage.setItem('user', JSON.stringify(user))
         }
       })
     }
