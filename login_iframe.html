@@ -153,7 +153,7 @@
                     if (response.data) {
                       write_user(response.data)
                       getStatus(response.data.type)
-                      window.parent.postMessage(JSON.stringify{ticket: ticket})
+                      window.parent.postMessage(JSON.stringify({ticket: ticket}))
                     }
                   }
                 })
