@@ -134,7 +134,7 @@
         if (res.source !== window.parent) return false
         if (typeof res.data === 'string') {
           let data = JSON.parse(res.data)
-          if (res.type === 'login') { // login | loginout
+          if (data.type === 'login') { // login | loginout
             if (data.ticket) {
               document.cookie = 'ticket=' + data.ticket
               Ajax.post(url + '/auth/ilogin', {}, function (res) {
@@ -158,7 +158,7 @@
                 }
               })
             }
-          } else if (res.type === 'loginout') {
+          } else if (data.type === 'loginout') {
             document.cookie = ''
             localStorage.removeItem('user')
             localStorage.removeItem('token')
