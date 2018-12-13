@@ -134,6 +134,7 @@
             document.cookie = 'ticket=' + data.ticket
             Ajax.post(url + '/auth/ilogin', {}, function (res) {
               console.log(res, 1)
+              res = JSON.parse(res)
               if (res.data.meta.status_code === 200) {
                 token = res.data.data.token
                 localStorage.setItem('token', JSON.stringify(token))
@@ -142,6 +143,7 @@
                   token: token
                 }, function (response) {
                   console.log('getUser', response, 2)
+                  response = JSON.parse(response)
                   if (response.data.meta.status_code === 200) {
                     localStorage.setItem('menuStatus', '')
                     write_user(response.data.data)
