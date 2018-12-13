@@ -210,6 +210,9 @@ export default {
 </script>
 
 <style scoped>
+  iframe {
+    display: none
+  }
   .padding-t-34 {
     padding-top: 34px;
   }
