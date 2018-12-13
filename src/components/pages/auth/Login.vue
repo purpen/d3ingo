@@ -164,7 +164,8 @@ export default {
     postMessage() {
       if (this.iframeLoad) {
         this.$refs.iframe.contentWindow.postMessage(JSON.stringify({
-          ticket: this.ticket
+          ticket: this.ticket,
+          type: 'login'
         }), 'http://dev.taihuoniao.com/getmessage')
         // }), 'http://localhost:8086/iframe')
       }
