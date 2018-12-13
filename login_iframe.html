@@ -53,7 +53,7 @@
       url = window.location.protocol + '//' + window.location.hostname + '/api'
     }
     var write_user = function (user) {
-      let userInfo = {}
+      var userInfo = {}
       if (user.type === 1) {
         userInfo = {
           id: user.id,
@@ -133,7 +133,8 @@
       if (res.data) {
         if (res.source !== window.parent) return false
         if (typeof res.data === 'string') {
-          let data = JSON.parse(res.data)
+          var data = JSON.parse(res.data)
+          var from = data.from
           if (data.type === 'login') { // login | loginout
             if (data.ticket) {
               document.cookie = 'ticket=' + data.ticket
@@ -151,7 +152,11 @@
                       if (response.data) {
                         write_user(response.data)
                         getStatus(response.data.type)
-                        window.parent.postMessage(JSON.stringify({type: 'login', ticket: ticket}), '*')
+                        window.parent.postMessage(JSON.stringify({
+                          type: 'login',
+                          ticket: ticket,
+                          from: from
+                        }), '*')
                       }
                     }
                   })
@@ -162,7 +167,11 @@
             document.cookie = ''
             localStorage.removeItem('user')
             localStorage.removeItem('token')
-            window.parent.postMessage(JSON.stringify({type: 'loginout', ticket: ticket}), '*')
+            window.parent.postMessage(JSON.stringify({
+              type: 'loginout',
+              ticket: ticket,
+              from: from
+            }), '*')
           }
         }
       }
