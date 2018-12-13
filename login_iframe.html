@@ -118,6 +118,7 @@
       Ajax.get(url + u, {
         token: token
       }, function (res) {
+        res = JSON.parse(res)
         if (res.meta.status_code === 200) {
           localStorage.setItem('user', JSON.stringify(res.data.user))
         }
