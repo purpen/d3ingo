@@ -118,8 +118,8 @@
       Ajax.get(url + u, {
         token: token
       }, function () {
-        if (res.data.meta.status_code === 200) {
-          localStorage.setItem('user', JSON.stringify(res.data.data.user))
+        if (res.meta.status_code === 200) {
+          localStorage.setItem('user', JSON.stringify(res.data.user))
         }
       })
     }
@@ -135,8 +135,8 @@
             Ajax.post(url + '/auth/ilogin', {}, function (res) {
               console.log(res, 1)
               res = JSON.parse(res)
-              if (res.data.meta.status_code === 200) {
-                token = res.data.data.token
+              if (res.meta.status_code === 200) {
+                token = res.data.token
                 localStorage.setItem('token', JSON.stringify(token))
                 console.log('create getUser', 2)
                 Ajax.get(url + '/auth/user', {
@@ -144,10 +144,10 @@
                 }, function (response) {
                   console.log('getUser', response, 2)
                   response = JSON.parse(response)
-                  if (response.data.meta.status_code === 200) {
+                  if (response.meta.status_code === 200) {
                     localStorage.setItem('menuStatus', '')
-                    write_user(response.data.data)
-                    getStatus(response.data.data.type)
+                    write_user(response.data)
+                    getStatus(response.data.type)
                   }
                 })
               }
