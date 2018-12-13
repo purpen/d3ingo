@@ -151,7 +151,7 @@
                       if (response.data) {
                         write_user(response.data)
                         getStatus(response.data.type)
-                        window.parent.postMessage(JSON.stringify({type: data.type, ticket: ticket}), '*')
+                        window.parent.postMessage(JSON.stringify({type: 'login', ticket: ticket}), '*')
                       }
                     }
                   })
@@ -162,6 +162,7 @@
             document.cookie = ''
             localStorage.removeItem('user')
             localStorage.removeItem('token')
+            window.parent.postMessage(JSON.stringify({type: 'loginout', ticket: ticket}), '*')
           }
         }
       }
