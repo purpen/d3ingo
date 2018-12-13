@@ -16,6 +16,14 @@
       <router-view class="main-content"></router-view>
       <v-footer></v-footer>
     </div>
+    <iframe
+      v-show="false"
+      ref="iframe"
+      frameborder="0"
+      name="sso-collaboration"
+      @load="loadFrame"
+      src="http://dev.taihuoniao.com/getmessage"></iframe>
+      <!-- src="http://localhost:8086/iframe"></iframe> -->
   </div>
 </template>
 
@@ -33,6 +41,7 @@ export default {
   },
   data() {
     return {
+      iframeLoad: false,
       alertTitle: {
         title: '',
         path: ''
@@ -40,6 +49,14 @@ export default {
     }
   },
   watch: {
+    token(val, oldVal) {
+      if (val && !oldVal) {
+        this.postMessage()
+      }
+      if (oldVal && val) {
+        this.postMessage2()
+      }
+    }
   },
   mounted() {
     // console.log('app created')
@@ -62,6 +79,27 @@ export default {
     })
   },
   methods: {
+    loadFrame() {
+      this.iframeLoad = true
+    },
+    postMessage() {
+      if (this.iframeLoad) {
+        this.$refs.iframe.contentWindow.postMessage(JSON.stringify({
+          ticket: this.ticket,
+          type: 'login'
+        }), 'http://dev.taihuoniao.com/getmessage')
+        // }), 'http://localhost:8086/iframe')
+      }
+    },
+    postMessage2() {
+      if (this.iframeLoad) {
+        this.$refs.iframe.contentWindow.postMessage(JSON.stringify({
+          ticket: this.ticket,
+          type: 'loginout'
+        }), 'http://dev.taihuoniao.com/getmessage')
+        // }), 'http://localhost:8086/iframe')
+      }
+    },
     getStatus(type) {
       let url = ''
       if (type === 2) {
@@ -160,6 +198,12 @@ export default {
           return false
         }
       }
+    },
+    token() {
+      return this.$store.state.event.token
+    },
+    ticket() {
+      return this.$store.state.event.ticket
     }
   }
 }

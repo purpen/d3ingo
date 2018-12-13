@@ -1,11 +1,14 @@
 import store from '@/store/index'
 // import api from '@/api/api'
-import { USER_SIGNIN, USER_SIGNOUT, USER_INFO, CLEAR_PREV_URL_NAME } from '@/store/mutation-types'
+import { USER_SIGNIN, USER_TICKET, USER_SIGNOUT, USER_INFO, CLEAR_PREV_URL_NAME } from '@/store/mutation-types'
 
 var mallache = {}
-mallache.write_token = function (token) {
+mallache.write_token = function (token, ticket) {
   // 写入localStorage
   store.commit(USER_SIGNIN, token)
+  if (ticket) {
+    store.commit(USER_TICKET, ticket)
+  }
 }
 
 mallache.write_user = function (user) {

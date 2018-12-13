@@ -1,5 +1,6 @@
 import {
   USER_SIGNIN,
+  USER_TICKET,
   USER_SIGNOUT,
   USER_INFO,
   CHANGE_USER_VERIFY_STATUS,
@@ -19,6 +20,16 @@ let isLoggedIn = function () {
   let token = localStorage.getItem('token')
   if (token) {
     return JSON.parse(token)
+  } else {
+    return false
+  }
+}
+// 获取ticket
+let getTicket = function () {
+  // TODO 此处可以写异步请求，到后台一直比较Token
+  let ticket = localStorage.getItem('ticket')
+  if (ticket) {
+    return JSON.parse(ticket)
   } else {
     return false
   }
@@ -135,6 +146,7 @@ function showProd() {
   }
 }
 const state = {
+  state: getTicket() || '',
   token: isLoggedIn() || null,
   user: userInfo() || {},
   loading: false, // 是否显示loading
@@ -182,6 +194,11 @@ const mutations = {
     localStorage.setItem('token', null)
     localStorage.setItem('token', JSON.stringify(token))
     state.token = token
+  },
+  [USER_TICKET](state, ticket) {
+    localStorage.setItem('ticket', null)
+    localStorage.setItem('ticket', JSON.stringify(ticket))
+    state.ticket = ticket
   },
   [USER_SIGNOUT](state) {
     localStorage.removeItem('token')

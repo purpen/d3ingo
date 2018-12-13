@@ -83,14 +83,6 @@
         </el-button>
       </div>
     </div>
-    <iframe
-      v-show="false"
-      ref="iframe"
-      frameborder="0"
-      name="sso-collaboration"
-      @load="loadFrame"
-      src="http://dev.taihuoniao.com/getmessage"></iframe>
-      <!-- src="http://localhost:8086/iframe"></iframe> -->
   </div>
 </template>
 
@@ -149,7 +141,6 @@ export default {
       user: {},
       token: '',
       ticket: '',
-      iframeLoad: false,
       typeError: false,
       imgCaptchaUrl: '',
       imgCaptchaStr: '',
@@ -158,18 +149,6 @@ export default {
     }
   },
   methods: {
-    loadFrame() {
-      this.iframeLoad = true
-    },
-    postMessage() {
-      if (this.iframeLoad) {
-        this.$refs.iframe.contentWindow.postMessage(JSON.stringify({
-          ticket: this.ticket,
-          type: 'login'
-        }), 'http://dev.taihuoniao.com/getmessage')
-        // }), 'http://localhost:8086/iframe')
-      }
-    },
     checkAccount(number) {
       if (number && number.length === 11) {
         this.$http.post(api.errCount, {account: number}).then(res => {
@@ -211,9 +190,8 @@ export default {
                 if (response.data.meta.status_code === 200) {
                   that.token = response.data.data.token
                   that.ticket = response.data.data.ticket
-                  that.postMessage()
                   // 写入localStorage
-                  auth.write_token(that.token)
+                  auth.write_token(that.token, that.ticket)
                   // ajax拉取用户信息
                   that.$http
                     .get(api.user, {})
