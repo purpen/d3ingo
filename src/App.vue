@@ -43,48 +43,6 @@ export default {
   watch: {
   },
   mounted() {
-    window.addEventListener('message', res => {
-      if (res.data) {
-        if (res.source !== window.parent) return false
-        if (typeof res.data === 'string') {
-          let data = JSON.parse(res.data)
-          if (data.ticket) {
-            document.cookie = 'ticket=' + data.ticket
-            this.$http.post(api.iframeLogin)
-            .then(res => {
-              if (res.data.meta.status_code === 200) {
-                let token = res.data.data.token
-                auth.write_token(token)
-                // ajax拉取用户信息
-                this.$http
-                  .get(api.user, {})
-                  .then(response => {
-                    if (response.data.meta.status_code === 200) {
-                      if (response.data.data.type === 0) {
-                        this.chooseType = true
-                        this.user = response.data.data
-                      } else {
-                        this.$store.commit(MENU_STATUS, '')
-                        auth.write_user(response.data.data)
-                        this.getStatus(this.$store.state.event.user.type)
-                      }
-                    } else {
-                      auth.logout()
-                      this.$message.error(response.data.meta.message)
-                    }
-                  })
-                  .catch(function(error) {
-                    auth.logout()
-                    this.$message.error(error.message)
-                  })
-              }
-            }).catch(err => {
-              console.error(err)
-            })
-          }
-        }
-      }
-    })
     // console.log('app created')
     let loading = document.getElementById('loading')
     let classVal = 'animated fadeOutUp'
