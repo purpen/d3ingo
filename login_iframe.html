@@ -106,6 +106,7 @@
       }
       // 写入localStorage
       localStorage.setItem('user', JSON.stringify(userInfo))
+      console.log('write_userwrite_userwrite_user')
     }
     var getStatus = function (type) {
       var u = ''
@@ -132,12 +133,15 @@
           if (data.ticket) {
             document.cookie = 'ticket=' + data.ticket
             Ajax.post(url + '/auth/ilogin', {}, function (res) {
+              console.log(res, 1)
               if (res.data.meta.status_code === 200) {
                 token = res.data.data.token
                 localStorage.setItem('token', JSON.stringify(token))
+                console.log('create getUser', 2)
                 Ajax.get(url + '/auth/user', {
                   token: token
                 }, function (response) {
+                  console.log('getUser', response, 2)
                   if (response.data.meta.status_code === 200) {
                     localStorage.setItem('menuStatus', '')
                     write_user(response.data.data)
