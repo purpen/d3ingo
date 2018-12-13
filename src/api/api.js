@@ -174,6 +174,8 @@ export default {
 
   // 潜在客户
   adminClueClueList: 'admin/clue/clueList', // GET 潜在客户列表
+  adminClueVoIpList: 'admin/clue/voIpList', // GET 业务人员列表
+  adminClueAddVoIpUser: 'admin/clue/addVoIpUser', // 添加业务人员
   adminClueRandomAllot: 'admin/clue/randomAllot', // POST 随机分配
   adminClueTypeList: 'admin/clue/typeList', // GET 类别列表
   adminClueCreate: 'admin/clue/create', // POST 添加用户档案
@@ -184,6 +186,7 @@ export default {
   adminClueUpdateCrmItem: 'admin/clue/updateCrmItem', // POST 更改项目
   adminClueSelCrmItem: 'admin/clue/delCrmItem', // DELETE 删除项目
   adminClueCrmItemLoser: 'admin/clue/crmItemLoser', // POST 项目标记失败
+  adminClueAddCrmDesign: 'admin/clue/addCrmDesign', // POST 添加对接公司
   adminClueCrmDesignList: 'admin/clue/crmDesignList', // GET 对接设计公司列表
   adminClueAddTrackLog: 'admin/clue/addTrackLog', // POST 添加跟进记录
   adminClueShowTrackLog: 'admin/clue/showTrackLog', // GET 查看跟进记录

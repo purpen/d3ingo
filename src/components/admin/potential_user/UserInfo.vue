@@ -17,12 +17,14 @@
             <div class="user-info-top clearfix">
               <div class="user-name fl margin-r20">
                 <i class="fx-icon-people"></i>
-                <el-input v-model.trim="userForm.name" placeholder="请填写用户名称" size="small"></el-input>
+                <el-input v-if="!currentId" v-model.trim="userForm.name" placeholder="请填写用户名称" size="small" max-length="20"></el-input>
+                <span v-else>{{userForm.name}}</span>
               </div>
               
               <div class="user-phone fl margin-r20">
                 <i class="fx-icon-telephone"></i>
-                <el-input v-model="userForm.phone" placeholder="请填写用户手机号" size="small"></el-input>
+                <el-input v-if="!currentId" v-model.number="userForm.phone" placeholder="请填写用户手机号" size="small"></el-input>
+                <span v-else>{{userForm.phone}}</span>
               </div>
               <div class="user-rank fl">
                   <div ref="selectParent" :class="['select-parent']" tabindex="-1">
@@ -51,7 +53,7 @@
                   'status3': userForm.userStatusValue === 3,
                   'status4': userForm.userStatusValue === 4
                   }]">
-                <el-select v-model="userForm.call_status">
+                <el-select v-model.number="userForm.call_status">
                   <el-option
                     v-for="(item, index) in userStatus"
                     :key="index"
@@ -72,12 +74,18 @@
             <div class="user-info-center clearfix">
               <div class="source fl">
                 <span>用户来源 :</span>
-                <el-select v-model="userForm.source"  size="small">
+                <el-select 
+                    v-model.trim="userForm.source" 
+                    size="small"
+                    filterable 
+                    allow-create
+                    default-first-option 
+                    placeholder="请选择用户来源">
                   <el-option
                     v-for="(item, index) in sourceArr"
                     :key="index"
                     :label="item.label"
-                    :value="item.value">
+                    :value="item.id">
                     <span :style="{
                       float: 'left',
                       width: '10px',
@@ -159,13 +167,14 @@
               <div class="card-body-header" v-if="currentId !== ''">
                 <span @click="changeOption('user')" :class="{'active': option === 'user'}">用户档案</span>
                 <span @click="changeOption('project')" :class="{'active': option === 'project'}">项目档案</span>
-                <span @click="changeOption('follow')" :class="{'active': option === 'follow'}">跟进记录</span>
+                <span @click="changeOption('followLog')" :class="{'active': option === 'followLog'}">跟进记录</span>
               </div>
 
 
 
               <div class="card-body-center" v-show="option === 'user'">
-                <el-form v-if="true" label-position="top" :model="clientForm" :rules="ruleClientForm" ref="ruleClientForm" label-width="80px">
+                <el-form v-show="!currentId || BoolEditUserInfo" label-position="top" :model="clientForm" :rules="ruleClientForm"
+                              ref="ruleClientForm" label-width="80px">
                   <el-row :gutter="20">
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <el-form-item label="企业名称" prop="company" style="margin-top: 10px">
@@ -173,13 +182,18 @@
                       </el-form-item>
                     </el-col>
                   </el-row>
-                  <region-picker :provinceProp="clientForm.province" 
-                                :cityProp="clientForm.city"
-                                propStyle="margin:0;"
-                                :districtProp="clientForm.area" :gutter="20"
-                                :isFirstProp="isFirstRegion" titleProp="企业地址"
-                                @onchange="changeClient" class="margin-b22">
-                  </region-picker>
+                  <el-row :gutter="20">
+                    <el-col l :xs="24" :sm="16" :md="16" :lg="16">
+                      <region-picker :provinceProp="clientForm.province" 
+                                    :cityProp="clientForm.city"
+                                    propStyle="margin:0;"
+                                    :twoSelect="true"
+                                    :gutter="20"
+                                    :isFirstProp="isFirstRegion" titleProp="企业地址"
+                                    @onchange="changeClient" class="margin-b22">
+                      </region-picker>
+                    </el-col>
+                  </el-row>
                   <el-row :gutter="20">
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <!-- <el-form-item label="联系人" prop="name">
@@ -200,7 +214,7 @@
                   <el-row :gutter="20">
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <el-form-item label="微信号" prop="wx">
-                        <el-input v-model.trim="clientForm.wx" placeholder="微信号" :maxlength="40"></el-input>  
+                        <el-input v-model.trim="clientForm.wx" placeholder="微信号" :maxlength="40"></el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
@@ -216,7 +230,7 @@
                   </el-row>
                   <el-row :gutter="20">
                     <el-col :xs="24" :sm="24" :md="24" :lg="24">
-                      <el-form-item label="邮箱" prop="summary">
+                      <el-form-item label="备注" prop="summary">
                         <el-input v-model.trim="clientForm.summary" 
                                   type="textarea"
                                   :autosize="{ minRows: 2, maxRows: 4}"
@@ -227,11 +241,11 @@
                   </el-row>
                 </el-form>
 
-                <div class="user-base-table" v-else>
+                <div class="user-base-table" v-if="currentId && !BoolEditUserInfo">
                   <el-row :gutter="20">
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <p>
-                        <span>企业名称: </span>{{clientForm.company_name}}
+                        <span>企业名称: </span>{{clientForm.company}}
                       </p>
                     </el-col>
                   </el-row>
@@ -245,7 +259,7 @@
                     
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <p>
-                        <span>职位: </span>{{clientForm.postion}}
+                        <span>职位: </span>{{clientForm.position}}
                       </p>
                     </el-col>
                     
@@ -279,15 +293,17 @@
                   <el-row :gutter="20">
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <p>
-                        <span>所在城市: </span>{{clientForm.province}}
+                        <span>所在城市: </span>{{clientForm.province_value}}{{clientForm.city_value}}
                       </p>
                     </el-col>
                   </el-row>
                 </div>
                 <p class="user-btn clearfix" v-show="option === 'user'">
-                  <el-button type="primary" class="fr" @click="submitUserForm">生成用户
+                  <el-button v-if="!currentId || BoolEditUserInfo" type="primary" class="fr" @click="submitUserForm">生成用户
                   </el-button>
-                  <el-button class="fr">取消</el-button>
+                  <el-button v-else type="primary" class="fr" @click="editUserInfo">编辑
+                  </el-button>
+                  <el-button v-if="!currentId || BoolEditUserInfo" class="fr" @click="BoolEditUserInfo = false">取消</el-button>
                 </p>
               </div>
 
@@ -296,11 +312,174 @@
 
               <div class="card-body-center" v-show="option === 'project'">
                 <p class="add-project clearfix">
+                  <span class="fl margin-t8">共合作{{projectList.length}}个项目</span>
                   <el-button type="primary" size="small" class="fr" @click="boolAddProject = true">添加项目</el-button>
                 </p>
 
+                <div class="project-form-table">
+                  <ul>
+                    <li v-for="(item, index) in projectList" :key="index">
+                      <el-row :gutter="20">
+                        <el-col :xs="24" :sm="20" :md="8" :lg="8">
+                          <p>
+                            <span>项目名称: </span>{{item.name}}
+                          </p>
+                        </el-col>
+                        <el-col :xs="24" :sm="20" :md="8" :lg="8">
+                          <p>
+                            <span>项目紧急度: </span>
+                            <span v-if="item.grate === 1">未知</span>
+                            <span v-else-if="item.grate === 2">普通</span>
+                            <span v-else-if="item.grate === 3">紧急</span>
+                            <span v-else>紧急</span>
+                          </p>
+                        </el-col>
+                        <el-col :xs="24" :sm="20" :md="8" :lg="8">
+                          <span class="edit-project"></span>
+                        </el-col>
+                      </el-row>
+                      <el-row :gutter="20">
+                        <el-col :xs="24" :sm="20" :md="8" :lg="8">
+                          <p>
+                            <span>需求类别: </span>{{item.type_value}}
+                          </p>
+                        </el-col>
+                        <el-col :xs="24" :sm="20" :md="8" :lg="8">
+                          <p>
+                            <span>所属行业: </span>{{item.industry_value}}
+                          </p>
+                        </el-col>
+                        <el-col :xs="24" :sm="20" :md="8" :lg="8">
+                          <p>
+                            <span>项目周期: </span>{{item.cycle_value}}
+                          </p>
+                        </el-col>
+                      </el-row>
+                      <el-row :gutter="20">
+                        <el-col :xs="24" :sm="20" :md="8" :lg="8">
+                          <p>
+                            <span>项目预算: </span>{{item.design_cost_value}}
+                          </p>
+                        </el-col>
+                        <el-col :xs="24" :sm="20" :md="8" :lg="8">
+                          <p>
+                            <span>工作地点: </span>{{item.item_province_value}}{{item.item_city_value}}
+                          </p>
+                        </el-col>
+                      </el-row>
+                      <el-row :gutter="20">
+                        <el-col :xs="24" :sm="24" :md="24" :lg="24">
+                          <p>
+                            <span>项目描述: </span>{{item.summary}}
+                          </p>
+                        </el-col>
+                      </el-row>
+                      <ul>
+                        <li v-for="(d, i) in item.crm_design_company" :key="i" class="margin-b22">
+                          <el-row :gutter="20">
+                            <el-col :xs="24" :sm="24" :md="24" :lg="24">
+                              <p>
+                                <span>对接设计公司 </span>{{i + 1}}
+                              </p>
+                            </el-col>
+                          </el-row>
+                          
+                          <el-row :gutter="20">
+                            <el-col :xs="24" :sm="24" :md="24" :lg="24">
+                              <p>
+                                <span>设计公司 </span>{{d.company_name}}
+                              </p>
+                            </el-col>
+                            <el-col :xs="24" :sm="24" :md="12" :lg="12">
+                              <p>
+                                <span>联系人: </span>{{d.contact_name}}
+                              </p>
+                            </el-col>
+                          </el-row>
+                          <el-row :gutter="20">
+                            <el-col :xs="24" :sm="24" :md="12" :lg="12">
+                              <p>
+                                <span>联系电话: </span>{{d.phone}}
+                              </p>
+                            </el-col>
+                            <el-col :xs="24" :sm="24" :md="12" :lg="12">
+                              <p>
+                                <span>微信号: </span>{{d.wx}}
+                              </p>
+                            </el-col>
+                          </el-row>
+                          <el-row>
+                            <el-col :xs="24" :sm="24" :md="24" :lg="24">
+                              <p>
+                                <span>对接设计公司 </span>{{d.summary}}
+                              </p>
+                            </el-col>
+                          </el-row>
+                        </li>
+                      </ul>
+                      <p class="add-design clearfix">
+                        <el-button size="small" type="primary" class="fl" @click="addDesignCompany(item.item_id)">添加设计公司</el-button>
+                      </p>
+                      <div class="design-company" v-if="boolDesignCompany && currentDesignId ===item.item_id">
+                        <p class="margin-b22">对接设计公司</p>
+                        <el-form  label-position="top" :model="designCompanyForm" :rules="ruleDesignCompanyForm" ref="ruleDesignCompanyForm"
+                                    label-width="80px">
+                          <el-row :gutter="20">
+                            <el-col :xs="24" :sm="24" :md="8" :lg="8">
+                              <el-form-item label="设计公司名称" prop="design_company_id">
+                                <el-select v-model="designCompanyForm.design_company_id" placeholder="请选择设计公司" @change="selectdesignCompany">
+                                  <el-option
+                                    v-for="(d, index) in designCompanyList"
+                                    :key="index"
+                                    :label="d.company_name"
+                                    :value="d.id">
+                                  </el-option>
+                                </el-select>
+                              </el-form-item>
+                            </el-col>
+                          </el-row>
+
+                          <el-row :gutter="20">
+                            <el-col :xs="24" :sm="24" :md="8" :lg="8">
+                              <el-form-item label="联系人名称" prop="contact_name">
+                                <el-input v-model="designCompanyForm.contact_name" :maxlength="40" placeholder="请填写项目名称"></el-input>
+                              </el-form-item>
+                            </el-col>
+                            
+                            <el-col :xs="24" :sm="24" :md="8" :lg="8">
+                              <el-form-item label="联系人电话" prop="phone">
+                                <el-input v-model="designCompanyForm.phone" :maxlength="40" placeholder="请填写项目名称"></el-input>
+                              </el-form-item>
+                            </el-col>
+                            
+                            <el-col :xs="24" :sm="24" :md="8" :lg="8">
+                              <el-form-item label="微信号" prop="wx">
+                                <el-input v-model="designCompanyForm.wx" :maxlength="40" placeholder="请填写项目名称"></el-input>
+                              </el-form-item>
+                            </el-col>
+                          </el-row>
+
+                          <el-row :gutter="20">
+                            <el-col  :xs="24" :sm="24" :md="24" :lg="24">
+                              <el-form-item label="备注" prop="summary">
+                                <el-input type="textarea" :maxlength="500" :rows="4" v-model="designCompanyForm.summary" placeholder="请填写备注"></el-input>
+                              </el-form-item>
+                            </el-col>
+                          </el-row>
+
+                          <p class="design-btn clearfix margin-b22">
+                            <el-button type="primary" class="fr" @click="submitdesignCompanyForm('ruleDesignCompanyForm')">保存
+                            </el-button>
+                            <el-button class="fr" @click="boolDesignCompany = false">取消</el-button>
+                          </p>
+                        </el-form>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
                 <div class="project-form" v-if="boolAddProject">
                   <p class="margin-b22">基本信息</p>
+
                   <el-form label-position="top" :model="projectForm" :rules="ruleProjectForm" ref="ruleProjectForm" label-width="80px">
                       <el-row :gutter="20">
                         <el-col :xs="24" :sm="20" :md="8" :lg="8">
@@ -310,12 +489,12 @@
                         </el-col>
                         <el-col :xs="24" :sm="20" :md="8" :lg="8">
                           <el-form-item label="项目紧急度" prop="grate">
-                            <el-select v-model.number="projectForm.grate" placeholder="请选择">
+                            <el-select v-model="projectForm.grate" placeholder="请选择">
                               <el-option
-                                v-for="(d, index) in grateOptions"
+                                v-for="(d, index) in grateArr"
                                 :key="index"
-                                :label="d.name"
-                                :value="d.id">
+                                :label="d.label"
+                                :value="d.value">
                               </el-option>
                             </el-select>
                           </el-form-item>
@@ -324,7 +503,7 @@
                       <el-row :gutter="20">
                         <el-col :xs="24" :sm="24" :md="8" :lg="8">
                           <el-form-item label="需求类别" prop="type">
-                            <el-select v-model.number="projectForm.type" @change="selectTypeChange" placeholder="请选择">
+                            <el-select v-model="projectForm.type" placeholder="请选择需求类别">
                               <el-option
                                 v-for="(d, index) in typeOptions"
                                 :key="index"
@@ -348,10 +527,10 @@
                         </el-col>
                         
                         <el-col :xs="24" :sm="24" :md="8" :lg="8">
-                          <el-form-item label="项目周期" prop="cycle">
-                            <el-select v-model="projectForm.cycle" placeholder="请选择">
+                          <el-form-item label="项目预算" prop="design_cost">
+                            <el-select v-model="projectForm.design_cost" placeholder="请选择">
                               <el-option
-                                v-for="(d, index) in cycleOptions"
+                                v-for="(d, index) in designCostOptions"
                                 :key="index"
                                 :label="d.name"
                                 :value="d.id">
@@ -363,14 +542,22 @@
 
                       <el-row :gutter="20">
                         <el-col :xs="24" :sm="12" :md="8" :lg="8">
-                          <el-form-item label="项目预算" prop="cost">
-                            <el-input v-model="projectForm.cost" placeholder="请填写项目费用"></el-input>
+                          <el-form-item label="项目周期" prop="cycle">
+                            <el-select v-model="projectForm.cycle" placeholder="请选择">
+                              <el-option
+                                v-for="(d, index) in cycleOptions"
+                                :key="index"
+                                :label="d.name"
+                                :value="d.id">
+                              </el-option>
+                            </el-select>
                           </el-form-item>
                         </el-col>
                         <el-col :xs="24" :sm="16" :md="16" :lg="16">
-                          <region-picker :provinceProp="clientForm.province" :cityProp="clientForm.city" propStyle="margin:0;"
+                          <region-picker :provinceProp="clientForm.province" 
+                                :cityProp="clientForm.city" propStyle="margin:0;"
                                 :isFirstProp="isFirstRegion" titleProp="工作地址"
-                                @onchange="changeClient" class="margin-b22"
+                                @onchange="changeProject" class="margin-b22"
                                 :twoSelect="true"
                                 >
                           </region-picker>
@@ -379,131 +566,49 @@
                       
                       <el-row :gutter="20">
                         <el-col :xs="24" :sm="24" :md="24" :lg="24">
-                        <el-form-item label="项目描述" prop="description">
-                          <el-input type="textarea" :maxlength="500" :rows="4" v-model="projectForm.description" placeholder="请填写项目描述"></el-input>
+                        <el-form-item label="项目描述" prop="summary">
+                          <el-input type="textarea" :maxlength="500" :rows="4" v-model="projectForm.summary" placeholder="请填写项目描述"></el-input>
                         </el-form-item>
                         </el-col>
                       </el-row>
 
                     <p class="add-project-btn clearfix margin-b22">
-                      <el-button type="primary" class="fr" @click="submitForm">保存
+                      <el-button type="primary" class="fr" @click="submitProjectForm('ruleProjectForm')">保存
                       </el-button>
-                      <el-button class="fr">取消</el-button>
+                      <el-button class="fr" @click="boolAddProject = false">取消</el-button>
                     </p>
                   </el-form>
 
-                  <p class="add-design clearfix">
-                    <el-button type="primary" class="fr" @click="addDesignCompany">添加设计公司</el-button>
-                  </p>
+
                 </div>
 
 
-                <div class="project-form-table" v-else>
-                  <el-row :gutter="20">
-                    <el-col :xs="24" :sm="20" :md="8" :lg="8">
-                      <p>
-                        <span>项目名称: </span>{{projectForm.name}}
-                      </p>
-                    </el-col>
-                    <el-col :xs="24" :sm="20" :md="8" :lg="8">
-                      <p>
-                        <span>项目紧急度: </span>{{projectForm.grate}}
-                      </p>
-                    </el-col>
-                  </el-row>
-                  
-                  <el-row :gutter="20">
-                    <el-col :xs="24" :sm="20" :md="8" :lg="8">
-                      <p>
-                        <span>需求类别: </span>{{projectForm.type}}
-                      </p>
-                    </el-col>
-                    <el-col :xs="24" :sm="20" :md="8" :lg="8">
-                      <p>
-                        <span>所属行业: </span>{{projectForm.industry}}
-                      </p>
-                    </el-col>
-                    <el-col :xs="24" :sm="20" :md="8" :lg="8">
-                      <p>
-                        <span>项目周期: </span>{{projectForm.cycle}}
-                      </p>
-                    </el-col>
-                  </el-row>
-                  
-                  <el-row :gutter="20">
-                    <el-col :xs="24" :sm="20" :md="8" :lg="8">
-                      <p>
-                        <span>项目预算: </span>{{projectForm.cost}}
-                      </p>
-                    </el-col>
-                    <el-col :xs="24" :sm="20" :md="8" :lg="8">
-                      <p>
-                        <span>工作地点: </span>{{projectForm.province}}
-                      </p>
-                    </el-col>
-                  </el-row>
-
-                  <el-row :gutter="20">
-                    <el-col :xs="24" :sm="24" :md="24" :lg="24">
-                      <p>
-                        <span>项目描述: </span>{{projectForm.description}}
-                      </p>
-                    </el-col>
-                  </el-row>
-                </div>
 
 
-                <div class="design-company" v-if="boolDesignCompany">
-                  <p class="margin-b22">对接设计公司</p>
-                  <el-form  label-position="top" :model="designCompanyForm" :rules="ruleDesignCompanyForm" ref="ruleDesignCompanyForm"
-                              label-width="80px">
-                    <el-row :gutter="20">
-                      <el-col :xs="24" :sm="20" :md="8" :lg="8">
-                        <el-form-item label="设计公司名称" prop="name">
-                          <el-input v-model="designCompanyForm.name" :maxlength="40" placeholder="请填写项目名称"></el-input>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-
-                    <el-row :gutter="20">
-                      <el-col :xs="24" :sm="20" :md="8" :lg="8">
-                        <el-form-item label="联系人名称" prop="name">
-                          <el-input v-model="designCompanyForm.userName" :maxlength="40" placeholder="请填写项目名称"></el-input>
-                        </el-form-item>
-                      </el-col>
-                      
-                      <el-col :xs="24" :sm="20" :md="8" :lg="8">
-                        <el-form-item label="联系人电话" prop="phone">
-                          <el-input v-model="designCompanyForm.phone" :maxlength="40" placeholder="请填写项目名称"></el-input>
-                        </el-form-item>
-                      </el-col>
-                      
-                      <el-col :xs="24" :sm="20" :md="8" :lg="8">
-                        <el-form-item label="微信号" prop="wx">
-                          <el-input v-model="designCompanyForm.wx" :maxlength="40" placeholder="请填写项目名称"></el-input>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-
-                    <el-row :gutter="20">
-                      <el-col  :xs="24" :sm="24" :md="24" :lg="24">
-                        <el-form-item label="备注" prop="description">
-                          <el-input type="textarea" :maxlength="500" :rows="4" v-model="designCompanyForm.description" placeholder="请填写备注"></el-input>
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
-
-                    <p class="design-btn clearfix margin-b22">
-                      <el-button type="primary" class="fr" @click="submitForm">保存
-                      </el-button>
-                      <el-button class="fr">取消</el-button>
-                    </p>
-                  </el-form>
-                </div>
               </div>
 
 
-              <div class="card-body-center" v-show="option === 'follow'">
+              <div class="card-body-center" v-show="option === 'followLog'">
+                <ul>
+                  <li v-for="(item, i) in followLogList" :key="i" class="log-li">
+                   <el-row :gutter="20">
+                     <el-col :xs="24" :sm="16" :md="12" :lg="12">
+                       <div class="log-li-top">
+                        <p>创建时间 :<span> {{item.created_at}}</span></p>
+                        <p>次回跟进时间 :<span>{{item.next_time}}</span></p>
+                       </div>
+                     </el-col>
+                   </el-row>
+                   
+                   <el-row :gutter="20">
+                     <el-col :xs="24" :sm="16" :md="24" :lg="24">
+                       <p class="log-contant">
+                       <span>{{item.log}}</span>
+                       </p>
+                     </el-col>
+                   </el-row>
+                  </li>
+                </ul>
                 <div class="progress">
                   <el-input type="textarea"
                     placeholder="添加跟进内容"
@@ -551,6 +656,7 @@ export default {
       currentUser: '新建客户',
       currentId: '',
       option: 'user',
+      BoolEditUserInfo: false,
       focusHeight: false,
       clientForm: {},
       ruleClientForm: {
@@ -562,12 +668,12 @@ export default {
       },
       ruleProjectForm: {
         name: [{ required: true, message: '请填写企业名称', trigger: 'blur' }],
-        grate: [{ required: true, message: '请添写联系人姓名', trigger: 'blur' }],
-        type: [{ required: true, message: '请填写联系人电话', trigger: 'blur' }]
+        grate: [{ type: 'number', required: true, message: '请选择项目紧急度', trigger: 'blur' }],
+        type: [{ type: 'number', required: true, message: '请选择需求类别', trigger: 'blur' }]
       },
       ruleDesignCompanyForm: {
-        name: [{ required: true, message: '请填写企业名称', trigger: 'blur' }],
-        userName: [{ required: true, message: '请添写联系人姓名', trigger: 'blur' }],
+        company_name: [{ required: true, message: '请填写设计公司名称', trigger: 'blur' }],
+        contact_name: [{ required: true, message: '请添写联系人姓名', trigger: 'blur' }],
         phone: [{ required: true, message: '请填写联系人电话', trigger: 'blur' }]
       },
       userForm: {
@@ -636,24 +742,55 @@ export default {
           label: '已回应'
         }
       ],
+      grateArr: [
+        {
+          value: 1,
+          label: '未知'
+        },
+        {
+          value: 2,
+          label: '普通'
+        },
+        {
+          value: 3,
+          label: '紧急'
+        },
+        {
+          value: 4,
+          label: '非常紧急'
+        }
+      ],
       dynamicTags: [],
       inputVisible: false,
       inputValue: '',
       isFirstRegion: true,
 
+      projectList: [],
       boolAddProject: false,
       projectForm: {},
 
       designCompanyForm: {},
+      designCompanyList: [],
+      currentDesignId: '',
       boolDesignCompany: false,
 
-      grateOptions: [],
-
       followVal: '',
-      followTime: ''
+      followTime: '',
+      followLogList: []
     }
   },
   methods: {
+    getTypeList() { // 类别列表: 来源; 通话状态; 标签
+      this.$http.get(api.adminClueTypeList, {}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          console.log(res.data.data)
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+      })
+    },
     changeOption(e) {
       this.option = e
     },
@@ -666,9 +803,35 @@ export default {
       let row = {
         clue_id: this.currentId
       }
-      this.$http.get(api.adminClueCreate, {params: row}).then(res => {
+      this.$http.get(api.adminClueShow, {params: row}).then(res => {
         if (res.data.meta.status_code === 200) {
           console.log(res.data.data)
+          const data = res.data.data
+          console.log(this.userForm)
+          this.userForm = {
+            name: data.name,
+            phone: data.phone,
+            rank: data.rank,
+            source: data.source,
+            status: data.status,
+            call_status: parseInt(data.call_status)
+          }
+          this.dynamicTags = data.tag
+          this.clientForm = {
+            company: data.company,
+            name: data.name,
+            phone: data.phone,
+            email: data.email,
+            province: data.province,
+            province_value: data.province_value,
+            city: data.city,
+            city_value: data.city_value,
+            qq: data.qq,
+            wx: data.wx,
+            summary: data.summary,
+            position: data.position
+          }
+          console.log(this.clientForm)
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -676,10 +839,16 @@ export default {
         this.$message.error(error.message)
       })
     },
-    changeClient: function(obj) { // 改变城市组件值- 客户信息()
+    editUserInfo() {
+      this.BoolEditUserInfo = true
+    },
+    changeClient(obj) { // 改变城市组件值- 客户信息()
       this.$set(this.clientForm, 'province', obj.province)
       this.$set(this.clientForm, 'city', obj.city)
-      this.$set(this.clientForm, 'area', obj.district)
+    },
+    changeProject(obj) {
+      this.$set(this.projectForm, 'item_province', obj.province)
+      this.$set(this.projectForm, 'item_city', obj.city)
     },
     handleClose(tag) { // 关闭标签是触发事件
       this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
@@ -700,15 +869,14 @@ export default {
       this.inputVisible = false
       this.inputValue = ''
     },
-    quick() {},
     submitUserForm() {
       let row = Object.assign(this.clientForm, this.userForm)
       row.execute_user_id = 9
-      row.source = 'ssss'
       row.tag = this.dynamicTags
       this.$http.post(api.adminClueCreate, row).then(res => {
         if (res.data.meta.status_code === 200) {
           this.$message.success(res.data.meta.message)
+          this.$router.push({name: 'adminPotentialUserList'})
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -716,20 +884,142 @@ export default {
         this.$message.error(error.message)
       })
     },
-    addDesignCompany() {
-      this.boolDesignCompany = true
+    submitProjectForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          if (!this.projectForm.name) {
+            this.$message.error('请填写项目名称')
+            return
+          }
+          if (!this.projectForm.grate) {
+            this.$message.error('请选择项目紧急度')
+            return
+          }
+          if (!this.projectForm.type) {
+            this.$message.error('请选择项目需求类边')
+            return
+          }
+          let row = {}
+          Object.assign(row, this.projectForm)
+          console.log(row)
+          row.clue_id = this.currentId
+          this.$http.post(api.adminClueAddCrmItem, row).then(res => {
+            if (res.data.meta.status_code === 200) {
+              console.log(res.data.data)
+              this.getUserProject()
+              this.boolAddProject = false
+            } else {
+              this.$message.error(res.data.meta.message)
+            }
+          }).catch(error => {
+            this.$message.error(error.message)
+            console.log(error.message)
+          })
+        }
+      })
     },
-
-    selectTypeChange(val) { // 选择需求类别分类事件
-      // this.projectForm.design_types = []
+    submitdesignCompanyForm(formName) {
+      this.$refs[formName][0].validate(valid => {
+        if (valid) {
+          if (!this.designCompanyForm.design_company_id) {
+            this.$message.error('请选择设计公司')
+          }
+          if (!this.designCompanyForm.contact_name) {
+            this.$message.error('请填写设计公司联系人')
+          }
+          if (!this.designCompanyForm.phone) {
+            this.$message.error('请填写设计公司联系人电话')
+          }
+          let row = {}
+          Object.assign(row, this.designCompanyForm)
+          row.clue_id = this.currentId
+          row.crm_item_id = this.currentDesignId
+          this.$http.post(api.adminClueAddCrmDesign, row).then(res => {
+            if (res.data.meta.status_code === 200) {
+              this.boolDesignCompany = false
+              this.getUserProject()
+            } else {
+              this.$message.error(res.data.meta.message)
+            }
+          }).catch(error => {
+            this.$message.error(error.message)
+            console.log(error.message)
+          })
+        }
+      })
+    },
+    getUserProject() {
+      this.$http.get(api.adminClueShowCrmItem, {params: {clue_id: this.currentId}}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          console.log(res.data.data)
+          this.projectList = res.data.data
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+      })
+    },
+    addDesignCompany(id) {
+      if (id) {
+        this.currentDesignId = id
+      }
+      this.boolDesignCompany = true
+      this.getDesignCompanyList()
+    },
+    getDesignCompanyList() {
+      this.$http.get(api.adminClueCrmDesignList).then(res => {
+        if (res.data.meta.status_code === 200) {
+          console.log(res.data.data)
+          this.designCompanyList = res.data.data
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+      })
+    },
+    selectdesignCompany(val) { // 选择设计公司
+      this.designCompanyList.forEach((item, i) => {
+        if (item.id === val) {
+          this.$set(this.designCompanyForm, 'contact_name', item.contact_name)
+          this.$set(this.designCompanyForm, 'phone', item.phone)
+          this.$set(this.designCompanyForm, 'company_name', item.company_name)
+        }
+      })
     },
     focusInput() {
       this.focusHeight = true
     },
     sendProgressVal() { // 发送跟进记录
-      console.log(this.followVal)
-      // let dataVal = (new Date(this.followTime)).format('yyyy-MM-dd')
-      console.log((new Date(this.followTime)).format('yyyy-MM-dd'))
+      const nextTime = (new Date(this.followTime)).format('yyyy-MM-dd')
+      let row = {
+        clue_id: this.currentId,
+        log: this.followVal,
+        next_time: nextTime
+      }
+      this.$http.post(api.adminClueAddTrackLog, row).then(res => {
+        if (res.data.meta.status_code === 200) {
+          console.log(res.data.data)
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+        console.log(error.message)
+      })
+    },
+    getLogList() { // 跟进记录列表
+      this.$http.get(api.adminClueShowTrackLog, {params: {clue_id: this.currentId}}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          console.log(res.data.data)
+          this.followLogList = res.data.data
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+      })
     }
   },
   computed: {
@@ -753,6 +1043,23 @@ export default {
       } else {
         return {}
       }
+    },
+    designCostOptions() {
+      if (typeData) {
+        return typeData.DESIGN_COST_OPTIONS
+      } else {
+        return {}
+      }
+    }
+  },
+  watch: {
+    option(val) {
+      console.log(val)
+      if (val === 'project') {
+        this.getUserProject()
+      } else if (val === 'followLog') {
+        this.getLogList()
+      }
     }
   },
   created() {
@@ -761,6 +1068,7 @@ export default {
       this.currentId = this.$route.params.id
       this.getUserInfo()
     }
+    this.getTypeList()
   }
 }
 </script>
@@ -773,6 +1081,9 @@ export default {
 }
 .margin-t5 {
   margin-top: 5px;
+}
+.margin-t8 {
+  margin-top: 8px;
 }
 .border-radius {
   border: 1px solid #e6e6e6;
@@ -943,8 +1254,12 @@ export default {
   padding: 5px 20px;
   border-bottom: 1px solid #e6e6e6;
 }
-
-
+.edit-project {
+  background: url(../../../assets/images/icon/MoreHover.png) no-repeat left;
+}
+.edit-project:hover {
+  background: url(../../../assets/images/icon/MoreHover@2xx.png) no-repeat left;
+}
 
 
 
@@ -960,12 +1275,35 @@ export default {
 .progress {
   border: 1px solid #e6e6e6;
   border-radius: 4px;
+  margin-top: 20px;
 }
 .send {
   border-top: 1px solid #e6e6e6;
   padding: 10px 20px;
 }
 
+.log-li {
+  /* height: 100px; */
+  background-color: #FAFAFA;
+  margin-top: 10px;
+}
+.log-li-top {
+  display: flex;
+  align-items: center;
+  height: 50px;
+}
+.log-li-top p {
+  margin-left: 20px;
+  color: #666666;
+}
+.log-li-top > p > span {
+  color: #9E9E9E;
+}
+.log-contant {
+  border-top: 1px solid #e6e6e6;
+  min-height: 80px;
+  padding: 15px 20px;
+}
 </style>
 <style>
 .card-header .el-input__inner {

@@ -156,6 +156,18 @@
         <el-button type="primary" @click="randomAssign = false">确 定</el-button>
       </span>
     </el-dialog>
+
+    <el-dialog
+      title="添加商务成员"
+      :visible.sync="BoolAddVoIpUser"
+      width="30%"
+      center>
+      <span>需要注意的是内容是默认不居中的</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="BoolAddVoIpUser = false">取 消</el-button>
+        <el-button type="primary" @click="BoolAddVoIpUser = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -171,6 +183,7 @@ export default {
   data() {
     return {
       randomAssign: false,
+      BoolAddVoIpUser: false,
       query: {
         page: 1,
         pageSize: 20,
@@ -184,7 +197,8 @@ export default {
         label: '添加用户',
         children: [
           {label: '手动添加', id: 2},
-          {label: '导入文件', id: 3}
+          {label: '导入文件', id: 3},
+          {label: '添加商务成员', id: 4}
         ]
       }],
       defaultProps: {
@@ -199,6 +213,10 @@ export default {
       console.log(data)
       if (data.id === 2) {
         this.$router.push({name: 'adminPotentialUserCreated'})
+      }
+      if (data.id === 4) {
+        this.BoolAddVoIpUser = true
+        this.getAdminList()
       }
     },
     getDate(val) {
@@ -225,6 +243,42 @@ export default {
     editUserInfo(id, name) {
       console.log(id)
       this.$router.push({name: 'adminPotentialUserInfo', params: {id: id, name: name}})
+    },
+    getAdminList() { // 后台人员列表
+      this.$http.get(api.adminClueVoIpList, {}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          console.log(res.data.data)
+        } else {
+          this.$message.error(res.data.data)
+        }
+      }).catch(error => {
+        console.log(error.message)
+        this.$message.error(error.message)
+      })
+    },
+    addVoIpUser() { // 添加业务人员
+      this.$http.post(api.adminClueAddVoIpUser, {user_id: ''}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          console.log(res.data.data)
+        } else {
+          this.$message.error(res.data.data)
+        }
+      }).catch(error => {
+        console.log(error.message)
+        this.$message.error(error.message)
+      })
+    },
+    randomAllot() { // 随机分配
+      this.$http.post(api.adminClueRandomAllot).then(res => {
+        if (res.data.meta.status_code === 200) {
+          console.log(res.data.data)
+        } else {
+          this.$message.error(res.data.data)
+        }
+      }).catch(error => {
+        console.log(error.message)
+        this.$message.error(error.message)
+      })
     }
   },
   created() {
