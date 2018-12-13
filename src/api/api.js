@@ -29,6 +29,7 @@ export default {
   check_account: '/auth/phoneState/{0}', // 验证手机号是否存在
   jdPhoneState: '/jd/phoneState', // 验证手机号是否存在
   fetch_msm_code: '/auth/sms', // 获取手机验证码
+  fetch_wx_code: '/wechat/sms', // 获取微信手机验证码
   fetch_img_captcha: '/captcha/getCaptcha', // 获取图片验证码
   user: '/auth/user', // 获取用户信息
   userInfo: '/auth/userId', // 根据用户id获取用户信息
@@ -527,6 +528,8 @@ export default {
   adminDesignResultSave: '/admin/designResult/save', // GET 设计成果审核
   adminPayOrderDissolution: '/admin/payOrder/dissolution', // POST 解散支付订单
   adminDesignResultCollect: '/admin/designResult/collect', // GET 设计成果收藏列表
-  adminDemandCompanySaveTradeFair: '/admin/demandCompany/saveTradeFair' // GET 修改交易会权限
+  adminDemandCompanySaveTradeFair: '/admin/demandCompany/saveTradeFair', // GET 修改交易会权限
 
+  // 推广
+  pcAdd: '/wechat/demand/pcAdd'   // POST 手机验证码
 }

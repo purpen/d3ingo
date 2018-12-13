@@ -287,7 +287,7 @@
   .el-month-table td .cell:hover {
     background-color: #f7f7f7
   }
-  
+
   .el-table th .cell {
     font-size: 12px;
   }
@@ -772,6 +772,28 @@
     background-color: #ff5a5f;
     border-color: transparent;
     color: #ffffff;
+  }
+
+  /*推广页*/
+  .input-phone input {
+    height: 50px;
+  }
+
+  .input-phone .el-input__inner {
+    border-radius: 30px 0px 0 30px;
+  }
+  .input-phone .el-input-group__append {
+    color: #ffffff;
+    border-radius: 0px 30px 30px 0;
+    background-image: linear-gradient(-133deg, #6983F9 0%, #9D61DB 100%);
+    box-shadow: 0 10px 20px 0 rgba(0,0,0,0.05);
+  }
+
+  .smsCode-style .el-button.is-disabled {
+    border-radius: 0;
+    border: none;
+    background-color: #eef1f6;
+    color: #bfcbd9;
   }
 @media screen and (max-width: 767px) {
   .el-dialog--large,
