@@ -23,8 +23,7 @@
 import vHeader from '@/components/block/Header'
 import vFooter from '@/components/block/Footer'
 import api from '@/api/api'
-import auth from '@/helper/auth'
-import { MENU_STATUS, CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
+import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
 
 export default {
   name: 'app',
