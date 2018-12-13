@@ -108,6 +108,7 @@
       if (JSON.stringify(userInfo) !== '{}') {
         localStorage.setItem('user', JSON.stringify(userInfo))
       }
+      console.log(localStorage.getItem('user'))
     }
     var getStatus = function (type) {
       var u = ''
