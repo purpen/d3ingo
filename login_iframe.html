@@ -48,7 +48,6 @@
         xhr.send(JSON.stringify(data))
       }
     }
-    console.log(window.location)
     if (window.location.hostname !== 'localhost') {
       url = window.location.protocol + '//' + window.location.hostname + '/api'
     }
@@ -104,9 +103,11 @@
           }
         }
       }
+      console.log(userInfo)
       // 写入localStorage
-      localStorage.setItem('user', JSON.stringify(userInfo))
-      console.log('write_userwrite_userwrite_user')
+      if (JSON.stringify(userInfo) !== '{}') {
+        localStorage.setItem('user', JSON.stringify(userInfo))
+      }
     }
     var getStatus = function (type) {
       var u = ''
@@ -134,16 +135,13 @@
           if (data.ticket) {
             document.cookie = 'ticket=' + data.ticket
             Ajax.post(url + '/auth/ilogin', {}, function (res) {
-              console.log(res, 1)
               res = JSON.parse(res)
               if (res.meta.status_code === 200) {
                 token = res.data.token
                 localStorage.setItem('token', JSON.stringify(token))
-                console.log('create getUser', 2)
                 Ajax.get(url + '/auth/user', {
                   token: token
                 }, function (response) {
-                  console.log('getUser', response, 2)
                   response = JSON.parse(response)
                   if (response.meta.status_code === 200) {
                     localStorage.setItem('menuStatus', '')
