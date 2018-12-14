@@ -109,8 +109,10 @@
         <div class="design-details">
           <div class="container">
             <div class="design-company">
-              <span class="number">1000+ </span>
-              <p class="design-title">顶级设计公司</p>
+              <div class="line-height28">
+                <span class="number">1000+ </span>
+                <p class="design-title">顶级设计公司</p>
+              </div>
               <ul class="d-w">
                 <li>
                   <img src="../../../assets/images/promote/design-company/01@2x.png" alt="">
@@ -377,7 +379,7 @@
             <img src="../../../assets/images/promote/app/BG01.png"/>
             <img src="../../../assets/images/promote/app/11551541487314_.pic@2x.png" class="logo"/>
           </div>
-          <div class="title mtop_20">
+          <div class="title mtop_20 line-height20">
             <div class="fs_13">铟果 | 专注于工业设计和产品创新的全流程B2B服务平台</div>
             <div class="fc_red fs_25 mtop_15">1000+ 顶级设计公司<br/>免费提供设计对接服务</div>
             <div class="fs_14 mtop_15">现在发布设计需求<br/>有机会获得投资孵化并进驻京东、小米商城！</div>
@@ -410,7 +412,7 @@
             </div>
           </div>
         </div>
-        <div class="concent">
+        <div class="concent line-height20">
           <div class="fc_red fs_24 mtop_20">铟果D3INGO的 背景和实力</div>
           <div class="fs_16 mtop_15">知名投资机构战略投资</div>
           <div class="fs_16 mtop_20">真格基金、创新工场、京东金融、海泉基金<br>麦顿资本、罗莱生活、小米、顺为资本</div>
@@ -1360,8 +1362,15 @@
     text-align: center;
     text-align: left;
   }
+  .line-height20 {
+    line-height: 2rem
+  }
+  .line-height28 {
+    line-height: 2.8rem
+  }
   .project_title{
     width: 47%;
+    line-height: 2rem;
   }
   .project_img{
     width: 47%;
@@ -1422,6 +1431,7 @@
     background: url("../../../assets/images/promote/app/5@2x.png");
     background-size:100% 100% ;
     margin-top: -15rem;
+    margin-bottom: -50px;
   }
 
   .phone-style {
