@@ -583,7 +583,7 @@
           </div>
           <div class="list mtop_20">
             <div class="list_flex fs_14">
-              <swiper :options="swiperOption2">
+              <swiper class="swiper-con" :options="swiperOption2">
                 <swiper-slide v-for="(item, index) of userList" :key="index">
                   <div class="list_flex fs_14">
                     <div v-text="item.user_name"></div>
@@ -1440,5 +1440,11 @@
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+  }
+  .swiper-con {
+    height: 18rem
+  }
+  .swiper-container {
+    padding: 0
   }
 </style>
