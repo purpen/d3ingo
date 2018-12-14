@@ -6,12 +6,15 @@
           <template slot="title"><i class="fa fa-tachometer"></i> 控制台</template>
             <el-menu-item index="dashBoard" :route="{name: 'adminDashBoard'}">概览</el-menu-item>
         </el-submenu>
+        <el-submenu index="9">
+          <template slot="title"><i class="fa fa-file-text">潜在用户</i></template>
+          <el-menu-item index="potentialUserList" :route="{name: 'adminPotentialUserList'}">列表</el-menu-item>
+        </el-submenu>
         <el-submenu index="2">
           <template slot="title"><i class="fa fa-file-text"></i> 项目管理</template>
             <el-menu-item index="itemList" :route="{name:'adminItemList'}">列表</el-menu-item>
             <el-menu-item index="itemSltem" :route="{name:'adminItemSltem'}">小程序</el-menu-item>
         </el-submenu>
-
         <el-submenu index="3">
           <template slot="title"><i class="fa fa-product-hunt"></i> 设计公司管理</template>
             <el-menu-item index="companyList" :route="{name: 'adminCompanyList'}">列表</el-menu-item>
