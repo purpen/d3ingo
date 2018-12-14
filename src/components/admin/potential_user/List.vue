@@ -162,7 +162,13 @@
       :visible.sync="BoolAddVoIpUser"
       width="30%"
       center>
-      <span>需要注意的是内容是默认不居中的</span>
+      <ul>
+        <li v-for="(d, i) in adminUserList" :key="i" @click="addVoIpUser(d.id)" class="user-list">
+          <img v-if="d.logo_image" :src="d.logo_image.log" alt="">
+          <!-- <span class="no-head" v-else>{{d.realname || d.username || d.account | formatName}}</span> -->
+          <span class="name">{{d.realname || d.username || d.account}}</span>
+        </li>
+      </ul>
       <span slot="footer" class="dialog-footer">
         <el-button @click="BoolAddVoIpUser = false">取 消</el-button>
         <el-button type="primary" @click="BoolAddVoIpUser = false">确 定</el-button>
@@ -175,6 +181,7 @@
 import api from '@/api/api'
 import Clickoutside from 'assets/js/clickoutside'
 import vMenu from '@/components/admin/Menu'
+// import {nameToAvatar} from '@/assets/js/common'
 export default {
   name: 'admin_potential_list',
   components: {
@@ -205,7 +212,9 @@ export default {
         children: 'children',
         label: 'label'
       },
-      tableData: []
+      tableData: [],
+      adminUserList: [],
+      adminVoIpList: [] // 业务人员列表
     }
   },
   methods: {
@@ -245,7 +254,20 @@ export default {
       this.$router.push({name: 'adminPotentialUserInfo', params: {id: id, name: name}})
     },
     getAdminList() { // 后台人员列表
-      this.$http.get(api.adminClueVoIpList, {}).then(res => {
+      this.$http.get(api.adminClueAdminUser, {}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          console.log(res.data.data)
+          this.adminUserList = res.data.data
+        } else {
+          this.$message.error(res.data.data)
+        }
+      }).catch(error => {
+        console.log(error.message)
+        this.$message.error(error.message)
+      })
+    },
+    addVoIpUser(id) { // 添加业务人员
+      this.$http.post(api.adminClueAddVoIpUser, {user_id: id}).then(res => {
         if (res.data.meta.status_code === 200) {
           console.log(res.data.data)
         } else {
@@ -256,10 +278,11 @@ export default {
         this.$message.error(error.message)
       })
     },
-    addVoIpUser() { // 添加业务人员
-      this.$http.post(api.adminClueAddVoIpUser, {user_id: ''}).then(res => {
+    getAdminVoIpList() { // 业务人员列表
+      this.$http.get(api.adminClueVoIpList, {}).then(res => {
         if (res.data.meta.status_code === 200) {
           console.log(res.data.data)
+          this.adminVoIpList = res.data.data
         } else {
           this.$message.error(res.data.data)
         }
@@ -285,6 +308,11 @@ export default {
     this.getClueList()
   },
   directives: {Clickoutside}
+  // filters: {
+  //   formatName(val) {
+  //     return nameToAvatar(val)
+  //   }
+  // }
 }
 </script>
 
@@ -313,7 +341,14 @@ export default {
 .admin-header-right {
   width: 36%;
 }
-
+.user-list {
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+.user-list:hover {
+  background: #F3F3F3;
+}
 
 </style>
 
