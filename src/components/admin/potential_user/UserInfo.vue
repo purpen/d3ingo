@@ -77,42 +77,29 @@
                 <el-select 
                     v-model.trim="userForm.source" 
                     size="small"
-                    filterable 
+                    filterable
                     allow-create
-                    default-first-option 
-                    placeholder="请选择用户来源">
+                    default-first-option
+                    placeholder="请选择用户来源"
+                    @change="updatedBaseInfo">
                   <el-option
                     v-for="(item, index) in sourceArr"
                     :key="index"
-                    :label="item.label"
-                    :value="item.id">
-                    <span :style="{
-                      float: 'left',
-                      width: '10px',
-                      height: '10px',
-                      borderRadius: '50%',
-                      margin: '6px 10px 0 0',
-                      background: item.color}"></span>
-                    <span style="float: left">{{ item.label }}</span>
+                    :label="item"
+                    :value="item">
+                    <span style="float: left">{{ item }}</span>
                   </el-option>
                 </el-select>
               </div>
               <div class="belong fl">
                 <span>所属人 :</span>
-                <el-select v-model="userForm.execute_user_id" size="small">
+                <el-select v-model="userForm.execute_user_id" size="small" @change="updatedBaseInfo">
                   <el-option
-                    v-for="(item, index) in userForm.execute"
+                    v-for="(item, index) in adminVoIpList"
                     :key="index"
-                    :label="item.label"
-                    :value="item.value">
-                    <span :style="{
-                      float: 'left',
-                      width: '10px',
-                      height: '10px',
-                      borderRadius: '50%',
-                      margin: '6px 10px 0 0',
-                      background: item.color}"></span>
-                    <span style="float: left">{{ item.label }}</span>
+                    :label="item.user_name"
+                    :value="item.user_id">
+                    <span style="float: left">{{ item.user_name }}</span>
                   </el-option>
                 </el-select>
               </div>
@@ -319,7 +306,9 @@
                 <div class="project-form-table">
                   <ul>
                     <li v-for="(item, index) in projectList" :key="index">
-                      <el-form label-position="top" :model="projectForm" :rules="ruleProjectForm" :ref="'ruleProjectForm'+ index" label-width="80px">
+                      <el-form label-position="top" :model="projectForm" 
+                          :rules="ruleProjectForm" 
+                          :ref="'ruleProjectForm'+ index" label-width="80px">
                         <el-row :gutter="20">
                           <el-col :xs="24" :sm="20" :md="8" :lg="8">
                             <p v-if="!boolEditProject || currentProjectId !== item.item_id"><span>项目名称: </span>{{item.name}}</p>
@@ -447,10 +436,10 @@
                             </el-form-item>
                           </el-col>
                         </el-row>
-                        <p class="edit-project-btn clearfix margin-b22">
-                          <el-button type="primary" class="fr" @click="submitProjectForm('ruleProjectForm' + index, item.item_id)">保存
+                        <p class="edit-project-btn clearfix margin-b22" v-if="boolEditProject && currentProjectId === item.item_id">
+                          <el-button type="primary" class="fr" @click="updateProjectForm('ruleProjectForm' + index, item.item_id)">保存
                           </el-button>
-                          <el-button class="fr" @click="boolAddProject = false">取消</el-button>
+                          <el-button class="fr" @click="boolEditProject = false">取消</el-button>
                         </p>
                         <ul>
                           <li v-for="(d, i) in item.crm_design_company" :key="i" class="margin-b22">
@@ -653,7 +642,7 @@
                       </el-row>
 
                     <p class="add-project-btn clearfix margin-b22">
-                      <el-button type="primary" class="fr" @click="submitProjectForm('ruleProjectForm')">保存
+                      <el-button type="primary" class="fr" @click="createProjectForm('ruleProjectForm')">保存
                       </el-button>
                       <el-button class="fr" @click="boolAddProject = false">取消</el-button>
                     </p>
@@ -709,6 +698,19 @@
               </div>
           </div>
         </div>
+
+        <el-dialog
+          title="标记失败"
+          :visible.sync="BoolmarkFailure"
+          width="20%">
+          <span>是否缺项目对接失败？</span>
+          <el-input></el-input>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="BoolmarkFailure = false">取 消</el-button>
+            <el-button type="primary" @click="BoolmarkFailure = false">确 定</el-button>
+          </span>
+        </el-dialog>
+
       </el-col>
     </el-row>
   </div>
@@ -734,6 +736,8 @@ export default {
       option: 'user',
       BoolEditUserInfo: false,
       focusHeight: false,
+      BoolmarkFailure: false,
+      adminVoIpList: [], // 业务人员列表
       clientForm: {},
       ruleClientForm: {
         company: [{ required: true, message: '请填写企业名称', trigger: 'blur' }],
@@ -755,7 +759,6 @@ export default {
       userForm: {
         rank: 1,
         call_status: '',
-        sourceValue: '', // 用户来源
         status: '',
         execute: []
       },
@@ -862,11 +865,44 @@ export default {
       this.$http.get(api.adminClueTypeList, {}).then(res => {
         if (res.data.meta.status_code === 200) {
           console.log(res.data.data)
+          const data = res.data.data
+          this.sourceArr = data.source
         } else {
           this.$message.error(res.data.meta.message)
         }
       }).catch(error => {
         this.$message.error(error.message)
+      })
+    },
+    getAdminVoIpList() { // 业务人员列表
+      this.$http.get(api.adminClueVoIpList, {}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          console.log(res.data.data)
+          this.adminVoIpList = res.data.data
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        console.log(error.message)
+        this.$message.error(error.message)
+      })
+    },
+    updatedBaseInfo() { // 更新基本信息
+      console.log(this.userForm.source)
+      let row = {}
+      Object.assign(row, this.userForm)
+      row.tag = this.dynamicTags
+      row.clue_id = this.currentId
+      this.$http.post(api.adminClueUpdate, row).then(res => {
+        if (res.data.meta.status_code === 200) {
+          console.log(res.data)
+        } else {
+          // this.$message.error(res.data.meta.message)
+          console.log(res.data.meta.message)
+        }
+      }).catch(error => {
+        // this.$message.error(error.message)
+        console.log(error.message)
       })
     },
     changeOption(e) {
@@ -876,6 +912,7 @@ export default {
       this.userForm.rank = e.value
       this.rankLabel = e.label
       this.$refs.selectParent.blur()
+      this.updatedBaseInfo()
     },
     getUserInfo() { // 查看用户档案
       let row = {
@@ -949,7 +986,6 @@ export default {
     },
     submitUserForm() {
       let row = Object.assign(this.clientForm, this.userForm)
-      row.execute_user_id = 9
       row.tag = this.dynamicTags
       this.$http.post(api.adminClueCreate, row).then(res => {
         if (res.data.meta.status_code === 200) {
@@ -962,8 +998,7 @@ export default {
         this.$message.error(error.message)
       })
     },
-    submitProjectForm(formName, itemId) {
-      console.log(this.$refs)
+    createProjectForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           if (!this.projectForm.name) {
@@ -982,22 +1017,50 @@ export default {
           Object.assign(row, this.projectForm)
           console.log(row)
           row.clue_id = this.currentId
-          if (itemId) {
-            row.crm_item_id = itemId
-          }
-          this.$http.post(api.adminClueAddCrmItem, row).then(res => {
-            if (res.data.meta.status_code === 200) {
-              console.log(res.data.data)
-              this.getUserProject()
-              this.boolAddProject = false
-            } else {
-              this.$message.error(res.data.meta.message)
-            }
-          }).catch(error => {
-            this.$message.error(error.message)
-            console.log(error.message)
-          })
+          const apiRequest = api.adminClueAddCrmItem
+          this.saveProject(row, apiRequest)
         }
+      })
+    },
+    updateProjectForm(formName, itemId) {
+      if (itemId) {
+        this.$refs[formName][0].validate(valid => {
+          if (valid) {
+            if (!this.projectForm.name) {
+              this.$message.error('请填写项目名称')
+              return
+            }
+            if (!this.projectForm.grate) {
+              this.$message.error('请选择项目紧急度')
+              return
+            }
+            if (!this.projectForm.type) {
+              this.$message.error('请选择项目需求类边')
+              return
+            }
+            let row = {}
+            Object.assign(row, this.projectForm)
+            row.clue_id = this.currentId
+            row.crm_item_id = itemId
+            const apiRequest = api.adminClueUpdateCrmItem
+            this.saveProject(row, apiRequest)
+            this.boolEditProject = false
+          }
+        })
+      }
+    },
+    saveProject(row, request) {
+      this.$http.post(request, row).then(res => {
+        if (res.data.meta.status_code === 200) {
+          console.log(res.data.data)
+          this.getUserProject()
+          this.boolAddProject = false
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+        console.log(error.message)
       })
     },
     submitdesignCompanyForm(formName) {
@@ -1082,7 +1145,8 @@ export default {
       }
       this.$http.post(api.adminClueAddTrackLog, row).then(res => {
         if (res.data.meta.status_code === 200) {
-          console.log(res.data.data)
+          this.getLogList()
+          this.followVal = ''
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -1103,21 +1167,23 @@ export default {
         this.$message.error(error.message)
       })
     },
-    deleteProject() {
-      let row = {
-        clue_id: this.currentId
-        // crm_item_id:
-      }
-      this.$http.delete(api.adminClueSelCrmItem, {params: row}).then(res => {
-        if (res.data.meta.status_code === 200) {
-          console.log(res.data.data)
-          this.followLogList = res.data.data
-        } else {
-          this.$message.error(res.data.meta.message)
+    deleteProject(itemId) {
+      if (itemId) {
+        let row = {
+          clue_id: this.currentId,
+          crm_item_id: itemId
         }
-      }).catch(error => {
-        this.$message.error(error.message)
-      })
+        this.$http.delete(api.adminClueSelCrmItem, {params: row}).then(res => {
+          if (res.data.meta.status_code === 200) {
+            console.log(res.data)
+            this.getUserProject()
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(error => {
+          this.$message.error(error.message)
+        })
+      }
     },
     editProject(d) { // 编辑项目
       console.log(d)
@@ -1157,6 +1223,7 @@ export default {
     },
     markProjectFailure(id) { // 标记项目失败
       console.log(id)
+      this.BoolmarkFailure = true
     }
   },
   computed: {
@@ -1206,6 +1273,7 @@ export default {
       this.getUserInfo()
     }
     this.getTypeList()
+    this.getAdminVoIpList()
   }
 }
 </script>
@@ -1398,17 +1466,23 @@ export default {
   cursor: pointer;
   background: url(../../../assets/images/icon/MoreHover.png) no-repeat left;
 }
+.edit-project:hover .edit-project-tag {
+  display: block;
+}
 .edit-project:hover {
   /* width: 48px;
   height: 48px; */
   /* background: url(../../../assets/images/icon/MoreHover@2xx.png) no-repeat left; */
 }
 .edit-project-tag {
+  display: none;
   position: absolute;
   top: 26px;
   left: -70px;
   width: 150px;
   z-index: 99;
+  border: 1px solid #e6e6e6;
+  background: #ffffff;
 }
 .edit-project .edit-project-tag> p {
   height: 40px;
@@ -1416,6 +1490,8 @@ export default {
   color: #AAAAAA;
   margin-bottom: 0px;
   text-align: center;
+  font-size: 12px;
+  border-bottom: 1px solid #e6e6e6;
 }
 .edit-project-tag> p:hover {
   color: #484848;

@@ -179,6 +179,7 @@ export default {
   adminClueAddVoIpUser: 'admin/clue/addVoIpUser', // 添加业务人员
   adminClueRandomAllot: 'admin/clue/randomAllot', // POST 随机分配
   adminClueTypeList: 'admin/clue/typeList', // GET 类别列表
+  adminClueUpdate: 'admin/clue/update', // POST 更新基本信息
   adminClueCreate: 'admin/clue/create', // POST 添加用户档案
   adminClueShow: 'admin/clue/show', // GET 查看用户档案
   adminClueSlueUpdate: 'admin/clue/clueUpdate', // POST 更改用户档案

@@ -53,26 +53,31 @@
             style="width: 100%">
             <el-table-column
               type="selection"
-              width="55">
+              width="54">
             </el-table-column>
             <el-table-column
               label="姓名"
-              width="60" >
+              width="63">
             <template slot-scope="scope">
               <p @click="editUserInfo(scope.row.id, scope.row.name)">{{scope.row.name}}</p>
             </template>
             </el-table-column>
             <el-table-column
               label="项目名称"
-              min-width="50">
+              width="100">
+              <template slot-scope="scope">
+                <div v-for="(item, i) in scope.row.design_company_name" :key="i">
+                  <p>{{item}}</p>
+                </div>
+              </template>
             </el-table-column>
             <el-table-column
               prop="phone"
-              width="80"
+              width="100"
               label="电话">
             </el-table-column>
             <el-table-column
-              width="60"
+              width="120"
               prop="execute_user_name"
               label="所属人">
             </el-table-column>
@@ -88,13 +93,13 @@
                 </template>
             </el-table-column>
             <el-table-column
-              width="60"
+              width="80"
               label="客户级别">
                  <template slot-scope="scope">
-                  <p v-if="scope.row.call_status === 1">一般客户 </p>
-                  <p v-else-if="scope.row.call_status === 2">重要客户</p>
-                  <p v-else-if="scope.row.call_status === 3">非常重要</p>
-                  <p v-else-if="scope.row.call_status === 4">四级客户</p>
+                  <p v-if="scope.row.call_status === '1'">一般客户 </p>
+                  <p v-else-if="scope.row.call_status === '2'">二级客户</p>
+                  <p v-else-if="scope.row.call_status === '3'">三级重要</p>
+                  <p v-else-if="scope.row.call_status === '4'">四级客户</p>
                   <p v-else>五级</p>
                 </template>
             </el-table-column>
@@ -105,7 +110,7 @@
             </el-table-column>
             <el-table-column
               prop="design_company_count"
-              width="50"
+              width="80"
               label="对接公司">
             </el-table-column>
             <el-table-column
@@ -115,11 +120,11 @@
             </el-table-column>[]
             <el-table-column
               prop="next_time"
-              width="50"
+              width="100"
               label="次回根进">
             </el-table-column>
             <el-table-column
-              width="50"
+              width="70"
               label="综述">
                 <template slot-scope="scope">
                   <p v-if="scope.row.status === 1">待沟通</p>
@@ -213,8 +218,8 @@ export default {
         label: 'label'
       },
       tableData: [],
-      adminUserList: [],
-      adminVoIpList: [] // 业务人员列表
+      adminUserList: []
+      // adminVoIpList: [] // 业务人员列表
     }
   },
   methods: {
@@ -259,7 +264,7 @@ export default {
           console.log(res.data.data)
           this.adminUserList = res.data.data
         } else {
-          this.$message.error(res.data.data)
+          this.$message.error(res.data.message)
         }
       }).catch(error => {
         console.log(error.message)
@@ -269,22 +274,9 @@ export default {
     addVoIpUser(id) { // 添加业务人员
       this.$http.post(api.adminClueAddVoIpUser, {user_id: id}).then(res => {
         if (res.data.meta.status_code === 200) {
-          console.log(res.data.data)
+          console.log(res.data)
         } else {
-          this.$message.error(res.data.data)
-        }
-      }).catch(error => {
-        console.log(error.message)
-        this.$message.error(error.message)
-      })
-    },
-    getAdminVoIpList() { // 业务人员列表
-      this.$http.get(api.adminClueVoIpList, {}).then(res => {
-        if (res.data.meta.status_code === 200) {
-          console.log(res.data.data)
-          this.adminVoIpList = res.data.data
-        } else {
-          this.$message.error(res.data.data)
+          this.$message.error(res.data.meta.message)
         }
       }).catch(error => {
         console.log(error.message)
@@ -296,13 +288,21 @@ export default {
         if (res.data.meta.status_code === 200) {
           console.log(res.data.data)
         } else {
-          this.$message.error(res.data.data)
+          this.$message.error(res.data.meta.message)
         }
       }).catch(error => {
         console.log(error.message)
         this.$message.error(error.message)
       })
     }
+    // handleSizeChange(val) {
+    //   this.query.pageSize = parseInt(val)
+    //   this.loadList()
+    // },
+    // handleCurrentChange(val) {
+    //   this.query.page = parseInt(val)
+    //   this.$router.push({name: this.$route.name, query: this.query})
+    // },
   },
   created() {
     this.getClueList()
