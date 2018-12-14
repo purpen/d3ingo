@@ -649,9 +649,7 @@
           pagination: '.swiper-pagination',
           paginationClickable: true,
           lazyLoading: true,
-          autoplay: 5000,
-          prevButton: '.swiper-button-prev',
-          nextButton: '.swiper-button-next',
+          // autoplay: 5000,
           spaceBetween: 0,
           loop: true
         },
@@ -661,8 +659,7 @@
           direction: 'vertical',
           autoplay: 500,
           slidesPerView: 8,
-          observer: true,
-          // slidesPerColumn: 2,
+          // observer: true,
           paginationClickable: true,
           loop: true
         },
@@ -801,16 +798,6 @@
       }
     },
     created () {
-      let date = Math.round(new Date() / 1000)
-      this.$http.get(api.userMessage)
-        .then(res => {
-          if (res.data.meta.status_code === 200) {
-            this.userList = res.data.data
-            this.userList.forEach(item => {
-              item.created_at = parseInt((date - item.created_at) / 60)
-            })
-          }
-        })
     },
     mounted () {
       let that = this
@@ -826,6 +813,16 @@
       } else {
         this.calcHeight = calcImgSize (500, 1440)
       }
+      let date = Math.round(new Date() / 1000)
+      this.$http.get(api.userMessage)
+        .then(res => {
+          if (res.data.meta.status_code === 200) {
+            this.userList = res.data.data
+            this.userList.forEach(item => {
+              item.created_at = parseInt((date - item.created_at) / 60)
+            })
+          }
+        })
     },
     components: {
       swiper: (resolve) => {
@@ -1277,8 +1274,7 @@
     overflow: auto;
   }
   .swiper img{
-    width: 10rem;
-    height: 10rem;
+    width: 32%;
   }
   .swiper_bottom{
     height: 15rem;
@@ -1427,5 +1423,12 @@
   .phone-style {
     width: 10.5rem;
     margin: 0 1rem;
+  }
+
+  .slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
   }
 </style>
