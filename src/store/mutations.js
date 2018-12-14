@@ -146,7 +146,7 @@ function showProd() {
   }
 }
 const state = {
-  state: getTicket() || '',
+  state: getTicket() || null,
   token: isLoggedIn() || null,
   user: userInfo() || {},
   loading: false, // 是否显示loading
@@ -202,6 +202,7 @@ const mutations = {
   },
   [USER_SIGNOUT](state) {
     localStorage.removeItem('token')
+    localStorage.removeItem('ticket')
     localStorage.removeItem('user')
     localStorage.setItem('msgCount', JSON.stringify({ message: 0, notice: 0, quantity: 0 }))
     state.token = false

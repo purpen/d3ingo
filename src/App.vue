@@ -52,18 +52,12 @@ export default {
   },
   watch: {
     token(val, oldVal) {
-      this.$nextTick(_ => {
-        console.log(this.token, this.ticket)
-        if (val) {
-          this.postMessage()
-        }
-        if (oldVal && !val) {
-          this.postMessage2()
-        }
-      })
-    },
-    ticket(val) {
-      console.log('==========', val)
+      if (val && !oldVal) {
+        this.postMessage()
+      }
+      if (oldVal && !val) {
+        this.postMessage2()
+      }
     }
   },
   mounted() {
@@ -93,7 +87,7 @@ export default {
     postMessage() {
       if (this.iframeLoad) {
         this.$refs.iframe.contentWindow.postMessage(JSON.stringify({
-          ticket: this.ticket,
+          ticket: this.$store.state.event.ticket,
           type: 'login'
         }), 'http://dev.taihuoniao.com/getmessage')
         // }), 'http://localhost:8086/iframe')
@@ -102,7 +96,7 @@ export default {
     postMessage2() {
       if (this.iframeLoad) {
         this.$refs.iframe.contentWindow.postMessage(JSON.stringify({
-          ticket: this.ticket,
+          ticket: this.$store.state.event.ticket,
           type: 'loginout'
         }), 'http://dev.taihuoniao.com/getmessage')
         // }), 'http://localhost:8086/iframe')
