@@ -804,6 +804,10 @@
   .design-product-list .el-card__body {
     padding: 0;
   }
+
+  .form .el-form-item {
+    margin-bottom: 0;
+  }
 @media screen and (max-width: 767px) {
   .el-dialog--large,
   .el-dialog--small,

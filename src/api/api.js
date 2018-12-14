@@ -531,5 +531,7 @@ export default {
   adminDemandCompanySaveTradeFair: '/admin/demandCompany/saveTradeFair', // GET 修改交易会权限
 
   // 推广
-  pcAdd: '/wechat/demand/pcAdd'   // POST 手机验证码
+  pcAdd: '/wechat/demand/pcAdd',   // POST PC
+  appAdd: '/wechat/demand/userAdd',   // POST APP
+  userMessage: 'wechat/demand/users'   // POST APP消息滚动
 }

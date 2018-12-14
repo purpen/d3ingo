@@ -86,8 +86,7 @@
               }">
             </a>
         </swiper-slide>
-        <div class="swiper-pagination" slot="pagination">
-        </div>
+        <div class="swiper-pagination" slot="pagination"></div>
         <div v-if="!isMob" class="swiper-button-prev" slot="button-prev">
           <i class="el-icon-arrow-left"></i>
         </div>
