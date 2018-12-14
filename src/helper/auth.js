@@ -5,10 +5,10 @@ import { USER_SIGNIN, USER_TICKET, USER_SIGNOUT, USER_INFO, CLEAR_PREV_URL_NAME 
 var mallache = {}
 mallache.write_token = function (token, ticket) {
   // 写入localStorage
-  store.commit(USER_SIGNIN, token)
   if (ticket) {
     store.commit(USER_TICKET, ticket)
   }
+  store.commit(USER_SIGNIN, token)
 }
 
 mallache.write_user = function (user) {

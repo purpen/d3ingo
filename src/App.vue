@@ -50,7 +50,9 @@ export default {
   },
   watch: {
     token(val, oldVal) {
+      console.log(this.ticket)
       if (val) {
+        console.log('aaa', val)
         this.postMessage()
       }
       if (oldVal && !val) {
