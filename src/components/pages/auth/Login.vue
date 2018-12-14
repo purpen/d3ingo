@@ -190,6 +190,7 @@ export default {
                 if (response.data.meta.status_code === 200) {
                   that.token = response.data.data.token
                   that.ticket = response.data.data.ticket
+                  console.log(response.data.data.ticket)
                   // 写入localStorage
                   auth.write_token(that.token, that.ticket)
                   // ajax拉取用户信息

@@ -16,6 +16,8 @@
       <router-view class="main-content"></router-view>
       <v-footer></v-footer>
     </div>
+    <p v-show="false">{{ticket}}</p>
+    <p v-show="false">{{token}}</p>
     <iframe
       v-show="false"
       ref="iframe"
@@ -50,14 +52,18 @@ export default {
   },
   watch: {
     token(val, oldVal) {
-      console.log(this.ticket)
-      if (val) {
-        console.log('aaa', val)
-        this.postMessage()
-      }
-      if (oldVal && !val) {
-        this.postMessage2()
-      }
+      this.$nextTick(_ => {
+        console.log(this.token, this.ticket)
+        if (val) {
+          this.postMessage()
+        }
+        if (oldVal && !val) {
+          this.postMessage2()
+        }
+      })
+    },
+    ticket(val) {
+      console.log('==========', val)
     }
   },
   mounted() {
