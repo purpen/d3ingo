@@ -48,10 +48,10 @@
               </div>
               
               <div :class="['user-status', 'fr', {
-                  'status1': userForm.userStatusValue === 1,
-                  'status2': userForm.userStatusValue === 2,
-                  'status3': userForm.userStatusValue === 3,
-                  'status4': userForm.userStatusValue === 4
+                  'status1': userForm.call_status === 1,
+                  'status2': userForm.call_status === 2,
+                  'status3': userForm.call_status === 3,
+                  'status4': userForm.call_status === 4
                   }]">
                 <el-select v-model.number="userForm.call_status">
                   <el-option
@@ -75,19 +75,17 @@
               <div class="source fl">
                 <span>用户来源 :</span>
                 <el-select 
-                    v-model.trim="userForm.source" 
+                    v-model="userForm.source" 
                     size="small"
                     filterable
-                    allow-create
-                    default-first-option
                     placeholder="请选择用户来源"
-                    @change="updatedBaseInfo">
+                    @change="updatedBaseInfo"
+                    allow-create>
                   <el-option
                     v-for="(item, index) in sourceArr"
                     :key="index"
                     :label="item"
                     :value="item">
-                    <span style="float: left">{{ item }}</span>
                   </el-option>
                 </el-select>
               </div>
@@ -766,17 +764,27 @@ export default {
       rankArr: [
         {
           value: 1,
-          label: '一般',
+          label: '一级',
           img: require('@/assets/images/icon/Ordinary02@2x.png')
         },
         {
           value: 2,
-          label: '重要',
+          label: '二级',
           img: require('@/assets/images/icon/Urgent02@2x.png')
         },
         {
           value: 3,
-          label: '非常重要',
+          label: '三级',
+          img: require('@/assets/images/icon/VeryUrgent02@2x.png')
+        },
+        {
+          value: 4,
+          label: '四级',
+          img: require('@/assets/images/icon/VeryUrgent02@2x.png')
+        },
+        {
+          value: 5,
+          label: '五级',
           img: require('@/assets/images/icon/VeryUrgent02@2x.png')
         }
       ],
@@ -785,22 +793,22 @@ export default {
         {
           value: 1,
           label: '待沟通',
-          color: '#999'
+          color: '#FFA64B'
         },
         {
           value: 2,
-          label: '接通中',
-          color: '#ffd330'
+          label: '沟通中',
+          color: '#65A6FF'
         },
         {
           value: 3,
           label: '成功',
-          color: '#ff5a5f'
+          color: '#00AC84'
         },
         {
           value: 4,
           label: '失败',
-          color: '#dddddd'
+          color: '#FF5A5F'
         }
       ],
       callStatus: [
@@ -866,7 +874,9 @@ export default {
         if (res.data.meta.status_code === 200) {
           console.log(res.data.data)
           const data = res.data.data
-          this.sourceArr = data.source
+          console.log(data.source)
+          this.sourceArr = [...data.source]
+          console.log(this.sourceArr)
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -888,7 +898,6 @@ export default {
       })
     },
     updatedBaseInfo() { // 更新基本信息
-      console.log(this.userForm.source)
       let row = {}
       Object.assign(row, this.userForm)
       row.tag = this.dynamicTags
@@ -922,7 +931,7 @@ export default {
         if (res.data.meta.status_code === 200) {
           console.log(res.data.data)
           const data = res.data.data
-          console.log(this.userForm)
+          this.currentUser = data.name
           this.userForm = {
             name: data.name,
             phone: data.phone,
@@ -1052,7 +1061,6 @@ export default {
     saveProject(row, request) {
       this.$http.post(request, row).then(res => {
         if (res.data.meta.status_code === 200) {
-          console.log(res.data.data)
           this.getUserProject()
           this.boolAddProject = false
         } else {
@@ -1267,8 +1275,7 @@ export default {
     }
   },
   created() {
-    if (this.$route.params && this.$route.params.name) {
-      this.currentUser = this.$route.params.name
+    if (this.$route.params && this.$route.params.id) {
       this.currentId = this.$route.params.id
       this.getUserInfo()
     }
@@ -1400,8 +1407,8 @@ export default {
 /* user-rank end */
 
 .user-status {
-  width: 130px;
-  padding-left: 38px;
+  width: 120px;
+  padding-left: 40px;
   border: 1px solid #e6e6e6;
   border-radius: 18px;
 }
@@ -1414,7 +1421,16 @@ export default {
   height: 20px;
 } */
 .user-status.status1 {
-  background: url(../../../assets/images/icon/Fail@2x.png) no-repeat left / 20px 20px;
+  background: url(../../../assets/images/icon/WaitingForCommunication@2x.png) no-repeat 12px / 24px 24px;
+}
+.user-status.status2 {
+  background: url(../../../assets/images/icon/InCommunication@2x.png) no-repeat 12px / 24px 24px;
+}
+.user-status.status3 {
+  background: url(../../../assets/images/icon/Success@2x.png) no-repeat 12px / 24px 24px;
+}
+.user-status.status4 {
+  background: url(../../../assets/images/icon/Fail@2x.png) no-repeat 12px / 24px 24px;
 }
 .user-info-center {
   margin-top: 12px;
@@ -1546,7 +1562,7 @@ export default {
   padding-left: 18px;
 }
 .user-info-center .el-select {
-  width: 100px;
+  width: 150px;
   /* max-width: 150px; */
 }
 .user-status .el-select .el-input__inner {
