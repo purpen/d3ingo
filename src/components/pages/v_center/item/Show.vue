@@ -493,7 +493,7 @@
             <span>价格高</span>
           </div>
         </el-col>
-        <el-col :span="8" 
+        <el-col :span="8"
           :class="[{
             'iscause': refuse_types.indexOf('需求变动') !== -1
           }]"
