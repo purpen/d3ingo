@@ -556,13 +556,13 @@
               <el-form-item prop="name" label="姓名">
                 <el-input v-model="form.name" name="username" placeholder="请输入您的姓名"></el-input>
               </el-form-item>
-              <el-form-item prop="account" label="联系方式">
-                <el-input v-model="form.account" ref="account" placeholder="请输入联系方式"></el-input>
-              </el-form-item>
               <el-form-item prop="appCompany" label="公司名称">
                 <el-input v-model="form.appCompany" ref="appCompany" placeholder="公司名称"></el-input>
               </el-form-item>
-              <el-form-item prop="smsCode" label="验证码">
+              <el-form-item prop="account" label="联系方式">
+                <el-input v-model="form.account" ref="account" placeholder="请输入联系方式"></el-input>
+              </el-form-item>
+              <el-form-item prop="smsCode" label="验证码" class="wap-disabled-btn">
                 <el-input class="" v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
                   <template slot="append">
                     <el-button  @click="fetchCode" :disabled="time > 0">{{ codeMsg }}
@@ -659,7 +659,7 @@
         swiperOption2: {
           lazyLoading: true,
           direction: 'vertical',
-          // autoplay: 500,
+          autoplay: 500,
           slidesPerView: 8,
           observer: true,
           // slidesPerColumn: 2,
@@ -759,6 +759,7 @@
               .then(res => {
                 if (res.data.meta.status_code === 200) {
                   this.$message.success('提交成功')
+                  this.form = {}
                 } else {
                   this.$message.error(res.data.meta.message)
                 }
@@ -783,6 +784,7 @@
               .then(res => {
                 if (res.data.meta.status_code === 200) {
                   this.$message.success('发布成功')
+                  this.form = {}
                 } else {
                   this.$message.error(res.data.meta.message)
                 }

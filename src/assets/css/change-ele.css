@@ -808,6 +808,14 @@
   .form .el-form-item {
     margin-bottom: 0;
   }
+
+  .wap-disabled-btn .el-button.is-disabled {
+    color: #bfcbd9;
+    cursor: not-allowed;
+    background-image: none;
+    background-color: #eef1f6;
+    border: none;
+  }
 @media screen and (max-width: 767px) {
   .el-dialog--large,
   .el-dialog--small,
