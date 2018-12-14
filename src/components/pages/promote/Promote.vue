@@ -760,6 +760,7 @@
                 if (res.data.meta.status_code === 200) {
                   this.$message.success('提交成功')
                   this.form = {}
+                  this.time = 0
                 } else {
                   this.$message.error(res.data.meta.message)
                 }
@@ -785,6 +786,7 @@
                 if (res.data.meta.status_code === 200) {
                   this.$message.success('发布成功')
                   this.form = {}
+                  this.time = 0
                 } else {
                   this.$message.error(res.data.meta.message)
                 }
