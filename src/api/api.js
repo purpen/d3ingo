@@ -182,6 +182,7 @@ export default {
   // 潜在客户
   adminClueClueList: 'admin/clue/clueList', // GET 潜在客户列表
   adminClueAdminUser: 'admin/clue/adminUser', // 后台人员列表
+  adminClueDelete: 'admin/clue/delete', // 删除潜在客户
   adminClueVoIpList: 'admin/clue/voIpList', // GET 业务人员列表
   adminClueAddVoIpUser: 'admin/clue/addVoIpUser', // 添加业务人员
   adminClueRandomAllot: 'admin/clue/randomAllot', // POST 随机分配
