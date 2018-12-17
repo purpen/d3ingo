@@ -659,7 +659,7 @@
         swiperOption2: {
           lazyLoading: true,
           direction: 'vertical',
-          autoplay: 500,
+          autoplay: 800,
           slidesPerView: 8,
           // observer: true,
           paginationClickable: true,
@@ -1317,7 +1317,7 @@
   }
   .four{
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
   }
   .four .img_for{
     width: 7rem;
@@ -1330,8 +1330,6 @@
     width: 6.5rem;
   }
   .img_down{
-    width: 70%;
-    margin-left: 18%;
     text-align: right;
     height: 10rem;
     margin-top: -4rem;
@@ -1339,7 +1337,7 @@
   .img_down img{
     height: 6rem;
     margin-top: 4rem;
-    margin-right: 0.2rem;
+    margin-right: 2.2rem;
   }
   .img_left{
     transform: rotateY(180deg);
