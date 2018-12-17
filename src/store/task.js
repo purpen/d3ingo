@@ -237,12 +237,6 @@ let mutations = {
   changeMineView(state, str) {
     state.mineView = str
   }
-  // savePotentialUser(state, obj) { // 保存当前的用户
-  //   sessionStorage.setItem('potentialUser', obj)
-  // },
-  // getPotentialUser(state) {
-  //   sessionStorage.getItem('potentialUser')
-  // }
 }
 export default {
   state,
