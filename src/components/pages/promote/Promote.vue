@@ -347,7 +347,7 @@
                 <p class="desigb-about-p">立即发布需求</p>
                 <span class="desigb-about-span">注册并发布项目需求</span>
                 <div>
-                  <router-link :to="{name: 'projectCreate'}"><button class="design-btn">免费发布项目需求</button></router-link>
+                  <a @click="direct('projectCreate')"><button class="design-btn">免费发布项目需求</button></a>
                 </div>
               </el-col>
               <el-col :xs="24" :sm="8" :md="8" :lg="8">
@@ -381,8 +381,8 @@
           </div>
           <div class="title mtop_20 line-height20">
             <div class="fs_13">铟果 | 专注于工业设计和产品创新的全流程B2B服务平台</div>
-            <div class="fc_red fs_25 mtop_15">1000+ 顶级设计公司<br/>免费提供设计对接服务</div>
-            <div class="fs_14 mtop_15">现在发布设计需求<br/>有机会获得投资孵化并进驻京东、小米商城！</div>
+            <div class="fc_red fs_25 mtop_15 line-height28">1000+ 顶级设计公司<br/>免费提供设计对接服务</div>
+            <div class="fs_14 mtop_15 line-height28">现在发布设计需求<br/>有机会获得投资孵化并进驻京东、小米商城！</div>
           </div>
           <div class="swiper">
             <div>
@@ -689,6 +689,13 @@
       }
     },
     methods: {
+      direct(path) {
+        if (!this.user || this.user.type === 1) {
+          this.$router.push({name: path})
+        } else {
+          this.$message.error('请使用需求公司账号登录')
+        }
+      },
       // 底部联系
       footerContact () {
         if (!this.phone) {
@@ -835,6 +842,10 @@
       }
     },
     computed: {
+      user() {
+        let user = this.$store.state.event.user
+        return user
+      },
       codeMsg() {
         return this.time > 0 ? '重新发送' + this.time + 's' : '发送验证码'
       },
@@ -1268,7 +1279,7 @@
     background-size:100% 150% ;
     background-position-y:-10rem;
     overflow: hidden;
-    height: 20rem;
+    /* height: 20rem; */
   }
   .swiper_top{
     width:100%;
@@ -1277,11 +1288,6 @@
   }
   .swiper img{
     width: 32%;
-  }
-  .swiper_bottom{
-    height: 15rem;
-    width:100%;
-    overflow: auto;
   }
   .concent{
     padding: 2rem 2rem;
@@ -1440,6 +1446,7 @@
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+    min-height: 24rem
   }
   .swiper-con {
     height: 18rem

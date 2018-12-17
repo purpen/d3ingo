@@ -148,7 +148,7 @@ function showProd() {
 const state = {
   state: getTicket() || null,
   token: isLoggedIn() || null,
-  user: userInfo() || {},
+  user: userInfo() || false,
   loading: false, // 是否显示loading
   apiUrl: 'http://sa.taihuoniao.com', // 接口base url
   imgUrl: 'http://sa.taihuoniao.com', // 图片base url
