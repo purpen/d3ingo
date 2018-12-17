@@ -28,20 +28,26 @@
               </div>
               <div class="user-rank fl">
                   <div ref="selectParent" :class="['select-parent']" tabindex="-1">
-                    <span :class="['select-level', {'select-level2': userForm.rank === 2,
-                    'select-level3': userForm.rank === 3}]">{{rankLabel}}</span>
+                    <span :class="['select-level', 
+                    {'select-level2': userForm.rank === 2,
+                    'select-level3': userForm.rank === 3,
+                    'select-level4': userForm.rank === 4,
+                    'select-level5': userForm.rank === 5
+                      }]">
+                        {{rankLabel}}</span>
                     <ul class="stage-list">
                       <li @click="changeLevel(item)"
                         v-for="(item, index) in rankArr"
                         :key="index"
                         >
-                        <img :src="item.img" alt="" :style="{
+                        <!-- <img :src="item.img" alt="" :style="{
                           float: 'left',
                           width: '24px',
                           height: '20px',
                           'margin-top': '8px',
                           'margin-right': '10px'
-                        }">{{item.label}}
+                        }"> -->
+                        {{item.label}}
                       </li>
                     </ul>
                   </div>
@@ -441,45 +447,109 @@
                         </p>
                         <ul>
                           <li v-for="(d, i) in item.crm_design_company" :key="i" class="margin-b22">
-                            <el-row :gutter="20">
-                              <el-col :xs="24" :sm="24" :md="24" :lg="24">
-                                <p>
-                                  <span>对接设计公司 </span>{{i + 1}}
+                            <div v-if="!boolEditDesignCompany || d.id !== editDesignParams.design_id">
+                              <el-row :gutter="20">
+                                <el-col :xs="24" :sm="24" :md="16" :lg="16">
+                                  <p>
+                                    <span>对接设计公司 </span>{{i + 1}}
+                                  </p>
+                                </el-col>
+                                <el-col :xs="24" :sm="20" :md="8" :lg="8">
+                                  <div class="edit-project fr">
+                                    <div class="edit-project-tag">
+                                      <p @click="deleteDesignProject(d.id)">删除</p>
+                                      <p @click="showEditDesignForm(d)">编辑</p>
+                                    </div>
+                                  </div>
+                                </el-col>
+                              </el-row>
+                              <el-row :gutter="20">
+                                <el-col :xs="24" :sm="24" :md="24" :lg="24">
+                                  <p>
+                                    <span>设计公司 </span>{{d.company_name}}
+                                  </p>
+                                </el-col>
+                                <el-col :xs="24" :sm="24" :md="12" :lg="12">
+                                  <p>
+                                    <span>联系人: </span>{{d.contact_name}}
+                                  </p>
+                                </el-col>
+                              </el-row>
+                              <el-row :gutter="20">
+                                <el-col :xs="24" :sm="24" :md="12" :lg="12">
+                                  <p>
+                                    <span>联系电话: </span>{{d.phone}}
+                                  </p>
+                                </el-col>
+                                <el-col :xs="24" :sm="24" :md="12" :lg="12">
+                                  <p>
+                                    <span>微信号: </span>{{d.wx}}
+                                  </p>
+                                </el-col>
+                              </el-row>
+                              <el-row :gutter="20">
+                                <el-col :xs="24" :sm="24" :md="24" :lg="24">
+                                  <p>
+                                    <span>对接设计公司 </span>{{d.summary}}
+                                  </p>
+                                </el-col>
+                              </el-row>
+                            </div>
+                            <div class="design-company" 
+                              v-if="boolEditDesignCompany && d.id === editDesignParams.design_id">
+                              <p class="margin-b22">对接设计公司</p>
+                              <el-form  label-position="top" :model="designCompanyForm" :rules="ruleDesignCompanyForm" ref="EditRuleDesignCompanyForm"
+                                          label-width="80px">
+                                <el-row :gutter="20">
+                                  <el-col :xs="24" :sm="24" :md="8" :lg="8">
+                                    <el-form-item label="设计公司名称" prop="design_company_id">
+                                      <el-select v-model="designCompanyForm.design_company_id" placeholder="请选择设计公司" @change="selectdesignCompany" filterable>
+                                        <el-option
+                                          v-for="(d, index) in designCompanyList"
+                                          :key="index"
+                                          :label="d.company_name"
+                                          :value="d.id">
+                                        </el-option>
+                                      </el-select>
+                                    </el-form-item>
+                                  </el-col>
+                                </el-row>
+
+                                <el-row :gutter="20">
+                                  <el-col :xs="24" :sm="24" :md="8" :lg="8">
+                                    <el-form-item label="联系人名称" prop="contact_name">
+                                      <el-input v-model="designCompanyForm.contact_name" :maxlength="40" placeholder="请填写项目名称"></el-input>
+                                    </el-form-item>
+                                  </el-col>
+                                  
+                                  <el-col :xs="24" :sm="24" :md="8" :lg="8">
+                                    <el-form-item label="联系人电话" prop="phone">
+                                      <el-input v-model="designCompanyForm.phone" :maxlength="40" placeholder="请填写项目名称"></el-input>
+                                    </el-form-item>
+                                  </el-col>
+                                  
+                                  <el-col :xs="24" :sm="24" :md="8" :lg="8">
+                                    <el-form-item label="微信号" prop="wx">
+                                      <el-input v-model="designCompanyForm.wx" :maxlength="40" placeholder="请填写项目名称"></el-input>
+                                    </el-form-item>
+                                  </el-col>
+                                </el-row>
+
+                                <el-row :gutter="20">
+                                  <el-col  :xs="24" :sm="24" :md="24" :lg="24">
+                                    <el-form-item label="备注" prop="summary">
+                                      <el-input type="textarea" :maxlength="500" :rows="4" v-model="designCompanyForm.summary" placeholder="请填写备注"></el-input>
+                                    </el-form-item>
+                                  </el-col>
+                                </el-row>
+
+                                <p class="edit-design-btn clearfix margin-b22">
+                                  <el-button type="primary" class="fr" @click="submitEditDesignCompanyForm('EditRuleDesignCompanyForm')">保存
+                                  </el-button>
+                                  <el-button class="fr" @click="boolEditDesignCompany = false">取消</el-button>
                                 </p>
-                              </el-col>
-                            </el-row>
-                            
-                            <el-row :gutter="20">
-                              <el-col :xs="24" :sm="24" :md="24" :lg="24">
-                                <p>
-                                  <span>设计公司 </span>{{d.company_name}}
-                                </p>
-                              </el-col>
-                              <el-col :xs="24" :sm="24" :md="12" :lg="12">
-                                <p>
-                                  <span>联系人: </span>{{d.contact_name}}
-                                </p>
-                              </el-col>
-                            </el-row>
-                            <el-row :gutter="20">
-                              <el-col :xs="24" :sm="24" :md="12" :lg="12">
-                                <p>
-                                  <span>联系电话: </span>{{d.phone}}
-                                </p>
-                              </el-col>
-                              <el-col :xs="24" :sm="24" :md="12" :lg="12">
-                                <p>
-                                  <span>微信号: </span>{{d.wx}}
-                                </p>
-                              </el-col>
-                            </el-row>
-                            <el-row>
-                              <el-col :xs="24" :sm="24" :md="24" :lg="24">
-                                <p>
-                                  <span>对接设计公司 </span>{{d.summary}}
-                                </p>
-                              </el-col>
-                            </el-row>
+                              </el-form>
+                            </div>
                           </li>
                         </ul>
                         <p class="add-design clearfix">
@@ -533,7 +603,7 @@
                             </el-row>
 
                             <p class="design-btn clearfix margin-b22">
-                              <el-button type="primary" class="fr" @click="submitdesignCompanyForm('ruleDesignCompanyForm')">保存
+                              <el-button type="primary" class="fr" @click="submitDesignCompanyForm('ruleDesignCompanyForm')">保存
                               </el-button>
                               <el-button class="fr" @click="boolDesignCompany = false">取消</el-button>
                             </p>
@@ -657,7 +727,7 @@
                    <el-row :gutter="20">
                      <el-col :xs="24" :sm="16" :md="12" :lg="12">
                        <div class="log-li-top">
-                        <p>创建时间 :<span> {{item.created_at}}</span></p>
+                        <p>创建时间 :<span> {{item.date}}</span></p>
                         <p>次回跟进时间 :<span>{{item.next_time}}</span></p>
                        </div>
                      </el-col>
@@ -687,7 +757,8 @@
                         <el-date-picker
                           v-model="followTime"
                           type="date"
-                          placeholder="选择日期">
+                          placeholder="选择日期"
+                          :picker-options="pickerOptions1">
                         </el-date-picker>
                     </div>
                     <el-button class="fr" type="primary" @click="sendProgressVal">发布</el-button>
@@ -719,6 +790,7 @@ import api from '@/api/api'
 import vMenu from '@/components/admin/Menu'
 import typeData from '@/config'
 import '@/assets/js/format'
+import '@/assets/js/date_format'
 // 城市联动
 import RegionPicker from '@/components/block/RegionPicker'
 export default {
@@ -772,28 +844,28 @@ export default {
       rankArr: [
         {
           value: 1,
-          label: '一级',
-          img: require('@/assets/images/icon/Ordinary02@2x.png')
+          label: '一级'
+          // img: require('@/assets/images/icon/Ordinary02@2x.png')
         },
         {
           value: 2,
-          label: '二级',
-          img: require('@/assets/images/icon/Urgent02@2x.png')
+          label: '二级'
+          // img: require('@/assets/images/icon/Urgent02@2x.png')
         },
         {
           value: 3,
-          label: '三级',
-          img: require('@/assets/images/icon/VeryUrgent02@2x.png')
+          label: '三级'
+          // img: require('@/assets/images/icon/VeryUrgent02@2x.png')
         },
         {
           value: 4,
-          label: '四级',
-          img: require('@/assets/images/icon/VeryUrgent02@2x.png')
+          label: '四级'
+          // img: require('@/assets/images/icon/VeryUrgent02@2x.png')
         },
         {
           value: 5,
-          label: '五级',
-          img: require('@/assets/images/icon/VeryUrgent02@2x.png')
+          label: '五级'
+          // img: require('@/assets/images/icon/VeryUrgent02@2x.png')
         }
       ],
       rankLabel: '一般',
@@ -858,17 +930,23 @@ export default {
       designCompanyList: [],
       currentDesignId: '',
       boolDesignCompany: false,
+      boolEditDesignCompany: false,
+      editDesignParams: {},
 
       followVal: '',
       followTime: '',
-      followLogList: []
+      followLogList: [],
+      pickerOptions1: {
+        disabledDate(time) {
+          return time.getTime() < Date.now()
+        }
+      }
     }
   },
   methods: {
     getTypeList() { // 类别列表: 来源; 通话状态; 标签
       this.$http.get(api.adminClueTypeList, {}).then(res => {
         if (res.data.meta.status_code === 200) {
-          console.log(res.data.data)
           const data = res.data.data
           this.sourceArr = [...data.source]
           this.callStatus = data.call_status
@@ -883,7 +961,6 @@ export default {
     getAdminVoIpList() { // 业务人员列表
       this.$http.get(api.adminClueVoIpList, {}).then(res => {
         if (res.data.meta.status_code === 200) {
-          console.log(res.data.data)
           this.adminVoIpList = res.data.data
         } else {
           this.$message.error(res.data.meta.message)
@@ -970,7 +1047,6 @@ export default {
     },
     handleClose(tag) { // 关闭标签是触发事件
       this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
-      console.log(this.dynamicTags)
     },
     showInput() {
       this.inputVisible = true
@@ -997,7 +1073,6 @@ export default {
       }
       let row = Object.assign(this.clientForm, this.userForm)
       row.tag = this.dynamicTags.length ? this.dynamicTags : ''
-      console.log(this.dynamicTags)
       this.$http.post(api.adminClueCreate, row).then(res => {
         if (res.data.meta.status_code === 200) {
           this.$message.success(res.data.meta.message)
@@ -1112,7 +1187,7 @@ export default {
         console.log(error.message)
       })
     },
-    submitdesignCompanyForm(formName) {
+    submitDesignCompanyForm(formName) {
       this.$refs[formName][0].validate(valid => {
         if (valid) {
           if (!this.designCompanyForm.design_company_id) {
@@ -1187,6 +1262,10 @@ export default {
       this.focusHeight = true
     },
     sendProgressVal() { // 发送跟进记录
+      if (!this.followVal) {
+        this.$message.error('请输入跟进记录')
+        return
+      }
       let row = {
         clue_id: this.currentId,
         log: this.followVal,
@@ -1212,6 +1291,9 @@ export default {
       this.$http.get(api.adminClueShowTrackLog, {params: {clue_id: this.currentId}}).then(res => {
         if (res.data.meta.status_code === 200) {
           this.followLogList = res.data.data
+          this.followLogList.forEach(item => {
+            item['date'] = item.created_at.date_format().format('yyyy年MM月dd日 hh:mm')
+          })
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -1227,7 +1309,6 @@ export default {
         }
         this.$http.delete(api.adminClueSelCrmItem, {params: row}).then(res => {
           if (res.data.meta.status_code === 200) {
-            console.log(res.data)
             this.getUserProject()
           } else {
             this.$message.error(res.data.meta.message)
@@ -1238,7 +1319,6 @@ export default {
       }
     },
     editProject(d) { // 编辑项目
-      console.log(d)
       const id = d.item_id
       if (d && id) {
         this.boolEditProject = true
@@ -1256,21 +1336,6 @@ export default {
             this.$set(this.projectForm, 'industry', d.industry)
           }
         })
-
-        // let row = {
-        //   clue_id: this.currentId,
-        //   crm_item_id: id
-        // }
-        // Object.assign(row, this.projectForm)
-        // this.$http.post(api.adminClueUpdateCrmItem, row).then(res => {
-        //   if (res.data.meta.status_code === 200) {
-        //     console.log(res.data)
-        //   } else {
-        //     this.$message.error(res.data.meta.message)
-        //   }
-        // }).catch(error => {
-        //   this.$message.error(error.message)
-        // })
       }
     },
     markProjectFailure(id) { // 标记项目失败
@@ -1294,6 +1359,68 @@ export default {
         }
       }).catch(error => {
         this.$message.error(error.message)
+      })
+    },
+    deleteDesignProject(id) {
+      if (!id) return
+      let row = {
+        design_id: id
+      }
+      this.$http.delete(api.adminClueDelCrmDesign, {params: row}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.$message.success('删除成功')
+          this.getUserProject()
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+      })
+    },
+    showEditDesignForm(d) {
+      if (!d) return
+      this.boolEditDesignCompany = true
+      this.getDesignCompanyList()
+      this.$set(this.designCompanyForm, 'contact_name', d.contact_name)
+      this.$set(this.designCompanyForm, 'phone', d.phone)
+      this.$set(this.designCompanyForm, 'design_company_id', d.design_company_id)
+      this.$set(this.designCompanyForm, 'wx', d.wx)
+      this.$set(this.designCompanyForm, 'summary', d.summary)
+      this.$set(this.designCompanyForm, 'company_name', d.company_name)
+      this.editDesignParams = {
+        design_id: d.id,
+        clue_id: d.crm_clue_id,
+        crm_item_id: d.crm_item_id
+      }
+    },
+    submitEditDesignCompanyForm(formName) {
+      this.$refs[formName][0].validate(valid => {
+        if (valid) {
+          if (!this.designCompanyForm.design_company_id) {
+            this.$message.error('请选择设计公司')
+            return
+          }
+          if (!this.designCompanyForm.contact_name) {
+            this.$message.error('请填写设计公司联系人')
+            return
+          }
+          if (!this.designCompanyForm.phone) {
+            this.$message.error('请填写设计公司联系人电话')
+            return
+          }
+          let row = Object.assign(this.editDesignParams, this.designCompanyForm)
+          this.$http.post(api.adminClueUpdateCrmDesign, row).then(res => {
+            if (res.data.meta.status_code === 200) {
+              this.boolEditDesignCompany = false
+              this.$message.success('更新成功')
+              this.getUserProject()
+            } else {
+              this.$message.error(res.data.meta.message)
+            }
+          }).catch(error => {
+            this.$message.error(error.message)
+          })
+        }
       })
     }
   },
@@ -1460,11 +1587,17 @@ export default {
 }
 .select-parent .select-level2 {
   background: url(../../../assets/images/icon/important01@2x.png) no-repeat 6px / 16px 16px;
-  background-color: #FFA64B;
+  background-color: #FF9999;
 }
 .select-parent .select-level3 {
   background: url(../../../assets/images/icon/VeryImportant01@2x.png) no-repeat 6px / 16px 16px;
-  background-color: #FF5A5F;
+  background-color: #ff6600;
+}
+.select-parent .select-level4 {
+  background-color: #FF0066;
+}
+.select-parent .select-level5 {
+  background-color: #FF0000;
 }
 /* user-rank end */
 

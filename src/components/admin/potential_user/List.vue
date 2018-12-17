@@ -108,7 +108,7 @@
               width="138"
               label="对接公司">
               <template slot-scope="scope">
-                <div v-for="(item, i) in scope.row.design_company_name" :key="i">
+                <div v-if="scope.row.item_name && scope.row.item_name.length" v-for="(item, i) in scope.row.design_company_name" :key="i">
                   <p>{{item}}</p>
                 </div>
               </template>
@@ -258,7 +258,6 @@ export default {
         })
     },
     addAssignUser(data) {
-      console.log(data)
       if (data.id === 2) {
         this.$router.push({name: 'adminPotentialUserCreated'})
       }
@@ -271,7 +270,6 @@ export default {
       console.log(val)
     },
     onSearch() {
-      console.log(this.query)
       this.getClueList()
     },
     closePanel() { // 关闭潜在用户面板
@@ -282,7 +280,6 @@ export default {
       Object.assign(row, this.query)
       this.$http.get(api.adminClueClueList, {params: row}).then(res => {
         if (res.data.meta.status_code === 200) {
-          console.log(res.data)
           this.tableData = res.data.data
           this.query.totalCount = parseInt(res.data.meta.pagination.total)
         } else {
@@ -293,13 +290,11 @@ export default {
       })
     },
     editUserInfo(id, name) {
-      console.log(id)
       this.$router.push({name: 'adminPotentialUserInfo', params: {id: id, name: name}})
     },
     getAdminList() { // 后台人员列表
       this.$http.get(api.adminClueAdminUser, {}).then(res => {
         if (res.data.meta.status_code === 200) {
-          console.log(res.data.data)
           this.adminUserList = res.data.data
         } else {
           this.$message.error(res.data.message)
@@ -312,7 +307,6 @@ export default {
     addVoIpUser(id) { // 添加业务人员
       this.$http.post(api.adminClueAddVoIpUser, {user_id: id}).then(res => {
         if (res.data.meta.status_code === 200) {
-          console.log(res.data)
         } else {
           this.$message.error(res.data.meta.message)
         }
