@@ -24,8 +24,7 @@
       frameborder="0"
       name="sso-collaboration"
       @load="loadFrame"
-      src="http://dev.taihuoniao.com/getmessage"></iframe>
-      <!-- src="http://localhost:8086/iframe"></iframe> -->
+      :src="path"></iframe>
   </div>
 </template>
 
@@ -34,7 +33,7 @@ import vHeader from '@/components/block/Header'
 import vFooter from '@/components/block/Footer'
 import api from '@/api/api'
 import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
-
+import {ENV} from 'conf/prod.env.js'
 export default {
   name: 'app',
   components: {
@@ -47,7 +46,8 @@ export default {
       alertTitle: {
         title: '',
         path: ''
-      }
+      },
+      path: 'http://dev.taihuoniao.com/getmessage'
     }
   },
   watch: {
@@ -61,6 +61,9 @@ export default {
     }
   },
   mounted() {
+    if (ENV === 'prod' && this.prod.name === '') {
+      this.path === 'https://www.taihuoniao.com/getmessage'
+    }
     // console.log('app created')
     let loading = document.getElementById('loading')
     let classVal = 'animated fadeOutUp'
@@ -206,6 +209,9 @@ export default {
     },
     ticket() {
       return this.$store.state.event.ticket
+    },
+    prod() {
+      return this.$store.state.event.prod
     }
   }
 }

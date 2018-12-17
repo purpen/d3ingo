@@ -549,7 +549,7 @@
           </div>
           <div class="people_num">
             <div class="line"></div>
-            <span class="fs_14">目前已有 <span class="fc_red"> 200 </span> 人参与活动</span>
+            <span class="fs_14">目前已有 <span class="fc_red" v-text="quantity"></span> 人参与活动</span>
             <div class="line"></div>
           </div>
 
@@ -594,7 +594,7 @@
               </swiper>
             </div>
           </div>
-          <a href="tel:+13031154842"><button class="btn_class mtop_40 fs_20">拨打电话</button></a>
+          <a href="tel:13031154842"><button class="btn_class mtop_40 fs_20">拨打电话</button></a>
         </div>
         <div class="foot"></div>
       </div>
@@ -633,6 +633,7 @@
         }
       }
       return {
+        quantity: 200, // 数量
         phone: '',    // 底部联系电话
         time: 0,
         calcHeight: '',
@@ -659,7 +660,7 @@
         swiperOption2: {
           lazyLoading: true,
           direction: 'vertical',
-          autoplay: 500,
+          autoplay: 800,
           slidesPerView: 8,
           // observer: true,
           paginationClickable: true,
@@ -826,7 +827,9 @@
       this.$http.get(api.userMessage)
         .then(res => {
           if (res.data.meta.status_code === 200) {
-            this.userList = res.data.data
+            let resData = res.data.data
+            this.userList = resData
+            this.quantity = resData.length + 200
             this.userList.forEach(item => {
               item.created_at = parseInt((date - item.created_at) / 60)
             })
@@ -1317,7 +1320,7 @@
   }
   .four{
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
   }
   .four .img_for{
     width: 7rem;
@@ -1330,8 +1333,6 @@
     width: 6.5rem;
   }
   .img_down{
-    width: 70%;
-    margin-left: 18%;
     text-align: right;
     height: 10rem;
     margin-top: -4rem;
@@ -1339,7 +1340,7 @@
   .img_down img{
     height: 6rem;
     margin-top: 4rem;
-    margin-right: 0.2rem;
+    margin-right: 2.2rem;
   }
   .img_left{
     transform: rotateY(180deg);
