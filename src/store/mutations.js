@@ -137,8 +137,8 @@ function showProd() {
         login: '太火鸟',
         info: '铟果',
         title: '铟果-中国领先的产品创新SaaS平台',
-        url: 'www.d3ingo.com',
-        fullurl: 'https://www.d3ingo.com',
+        url: 'saas.d3ingo.com',
+        fullurl: 'https://saas.d3ingo.com',
         license: '太火鸟【京ICP备14025430号-2】',
         copyright: 'Copyright © 2018',
         business: '经营许可证:【京ICP证150139号】'
