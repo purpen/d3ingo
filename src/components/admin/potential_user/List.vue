@@ -40,7 +40,7 @@
             </el-form>
             <div class="admin-header-right fr clearfix">
               <el-tree class="fl" :data="treeData" :props="defaultProps" @node-click="addAssignUser" node-key="id"></el-tree>
-              <a href="javascript:void(0);" class="fr line-height30 height30"><i class="fx fx-icon-delete2"></i></a>
+              <a href="javascript:void(0);"  @click="multipleDelItem" class="fr line-height30 height30"><i class="fx fx-icon-delete2"></i></a>
               <el-button size="small" class="fl margin-l-10" @click="randomAssign = true">随机分配</el-button>
               <a href="javascript:void(0);" class="line-height30 height30 margin-l-10">导出表格</a>
             </div>
@@ -51,6 +51,7 @@
             :data="tableData"
             border
             class="admin-table"
+            @selection-change="handleSelectionChange"
             style="width: 100%">
             <el-table-column
               type="selection"
@@ -84,14 +85,8 @@
             </el-table-column>
             <el-table-column
               width="70"
-              label="通话状态">
-                <template slot-scope="scope">
-                  <p v-if="scope.row.call_status === 1">待联系</p>
-                  <p v-else-if="scope.row.call_status === 2">未接通 </p>
-                  <p v-else-if="scope.row.call_status === 3">接通未响应 </p>
-                  <p v-else-if="scope.row.call_status === 4">已回应</p>
-                  <p v-else>--</p>
-                </template>
+              label="通话状态"
+              prop="call_status">
             </el-table-column>
             <el-table-column
               width="80"
@@ -201,6 +196,7 @@ export default {
     return {
       randomAssign: false,
       BoolAddVoIpUser: false,
+      multipleSelection: [],
       query: {
         page: 1,
         per_page: 10,
@@ -227,6 +223,40 @@ export default {
     }
   },
   methods: {
+    // 多选
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+    },
+    // 删除项目
+    multipleDelItem() {
+      if (this.multipleSelection.length === 0) {
+        this.$message.error('至少选择一个要删除的项目')
+        return false
+      }
+      var idArr = []
+      for (var i = 0; i < this.multipleSelection.length; i++) {
+        idArr.push(this.multipleSelection[i].id)
+      }
+      this.$http.delete(api.adminClueDelete, {params: {clue_id: idArr}})
+        .then((response) => {
+          if (response.data.meta.status_code === 200) {
+            for (let i = 0; i < idArr.length; i++) {
+              for (let j = 0; j < this.tableData.length; j++) {
+                if (idArr[i] === this.tableData[j].id) {
+                  this.tableData.splice(j, 1)
+                }
+              }
+            }
+            this.$message.success('删除成功!')
+          } else {
+            this.$message.error(response.data.meta.message)
+            return
+          }
+        })
+        .catch((error) => {
+          this.$message.error(error.message)
+        })
+    },
     addAssignUser(data) {
       console.log(data)
       if (data.id === 2) {
