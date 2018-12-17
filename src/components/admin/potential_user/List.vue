@@ -24,10 +24,11 @@
               <el-form-item class="select-info">
                 <el-select v-model="query.evt" placeholder="选择条件..." size="small">
                   <el-option label="按姓名" value="1"></el-option>
-                  <el-option label="按电话" value="4"></el-option>
-                  <el-option label="按所属人" value="2"></el-option>
-                  <el-option label="按标签" value="3"></el-option>
-                  <el-option label="按微信号" value="8"></el-option>
+                  <el-option label="按电话" value="2"></el-option>
+                  <el-option label="按所属人" value="3"></el-option>
+                  <el-option label="客户级别" value="4"></el-option>
+                  <el-option label="项目名称 " value="5"></el-option>
+                  <el-option label="对接公司 " value="6"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item style="width: 20%;">
@@ -39,7 +40,7 @@
             </el-form>
             <div class="admin-header-right fr clearfix">
               <el-tree class="fl" :data="treeData" :props="defaultProps" @node-click="addAssignUser" node-key="id"></el-tree>
-              <a href="javascript:void(0);" class="fr line-height30 height30"><i class="fx fx-icon-delete2"></i></a>
+              <a href="javascript:void(0);"  @click="multipleDelItem" class="fr line-height30 height30"><i class="fx fx-icon-delete2"></i></a>
               <el-button size="small" class="fl margin-l-10" @click="randomAssign = true">随机分配</el-button>
               <a href="javascript:void(0);" class="line-height30 height30 margin-l-10">导出表格</a>
             </div>
@@ -50,14 +51,15 @@
             :data="tableData"
             border
             class="admin-table"
+            @selection-change="handleSelectionChange"
             style="width: 100%">
             <el-table-column
               type="selection"
-              width="54">
+              width="40">
             </el-table-column>
             <el-table-column
               label="姓名"
-              width="63">
+              width="60">
             <template slot-scope="scope">
               <p @click="editUserInfo(scope.row.id, scope.row.name)">{{scope.row.name}}</p>
             </template>
@@ -66,40 +68,34 @@
               label="项目名称"
               width="100">
               <template slot-scope="scope">
-                <div v-for="(item, i) in scope.row.design_company_name" :key="i">
+                <div v-for="(item, i) in scope.row.item_name" :key="i">
                   <p>{{item}}</p>
                 </div>
               </template>
             </el-table-column>
             <el-table-column
               prop="phone"
-              width="100"
+              width="90"
               label="电话">
             </el-table-column>
             <el-table-column
-              width="120"
+              width="100"
               prop="execute_user_name"
               label="所属人">
             </el-table-column>
             <el-table-column
-              width="80"
-              label="通话状态">
-                <template slot-scope="scope">
-                  <p v-if="scope.row.call_status === 1">待联系</p>
-                  <p v-else-if="scope.row.call_status === 2">未接通 </p>
-                  <p v-else-if="scope.row.call_status === 3">接通未响应 </p>
-                  <p v-else-if="scope.row.call_status === 4">已回应</p>
-                  <p v-else>--</p>
-                </template>
+              width="70"
+              label="通话状态"
+              prop="call_status">
             </el-table-column>
             <el-table-column
               width="80"
               label="客户级别">
                  <template slot-scope="scope">
-                  <p v-if="scope.row.call_status === '1'">一般客户 </p>
-                  <p v-else-if="scope.row.call_status === '2'">二级客户</p>
-                  <p v-else-if="scope.row.call_status === '3'">三级重要</p>
-                  <p v-else-if="scope.row.call_status === '4'">四级客户</p>
+                  <p v-if="scope.row.rank === 1">一级客户</p>
+                  <p v-else-if="scope.row.rank === 2">二级客户</p>
+                  <p v-else-if="scope.row.rank === 3">三级客户</p>
+                  <p v-else-if="scope.row.rank === 4">四级客户</p>
                   <p v-else>五级</p>
                 </template>
             </el-table-column>
@@ -109,9 +105,13 @@
               label="用户来源">
             </el-table-column>
             <el-table-column
-              prop="design_company_count"
-              width="80"
+              width="138"
               label="对接公司">
+              <template slot-scope="scope">
+                <div v-for="(item, i) in scope.row.design_company_name" :key="i">
+                  <p>{{item}}</p>
+                </div>
+              </template>
             </el-table-column>
             <el-table-column
               prop="logs"
@@ -135,16 +135,16 @@
             </el-table-column>
           </el-table>
 
-          <!-- <el-pagination
+          <el-pagination
             class="pagination"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="query.page"
-            :page-sizes="[20, 50, 100, 500]"
-            :page-size="query.pageSize"
+            :page-sizes="[10, 20, 50, 100]"
+            :page-size="query.per_page"
             layout="total, sizes, prev, pager, next, jumper"
             :total="query.totalCount">
-          </el-pagination> -->
+          </el-pagination>
 
         </div>
       </el-col>
@@ -196,13 +196,14 @@ export default {
     return {
       randomAssign: false,
       BoolAddVoIpUser: false,
+      multipleSelection: [],
       query: {
         page: 1,
-        pageSize: 20,
-        sort: 1,
+        per_page: 10,
         evt: '',
-        valueDate: '',
-        val: ''
+        val: '',
+        totalCount: 0,
+        valueDate: []
       },
       treeData: [{
         id: 1,
@@ -219,10 +220,43 @@ export default {
       },
       tableData: [],
       adminUserList: []
-      // adminVoIpList: [] // 业务人员列表
     }
   },
   methods: {
+    // 多选
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+    },
+    // 删除项目
+    multipleDelItem() {
+      if (this.multipleSelection.length === 0) {
+        this.$message.error('至少选择一个要删除的项目')
+        return false
+      }
+      var idArr = []
+      for (var i = 0; i < this.multipleSelection.length; i++) {
+        idArr.push(this.multipleSelection[i].id)
+      }
+      this.$http.delete(api.adminClueDelete, {params: {clue_id: idArr}})
+        .then((response) => {
+          if (response.data.meta.status_code === 200) {
+            for (let i = 0; i < idArr.length; i++) {
+              for (let j = 0; j < this.tableData.length; j++) {
+                if (idArr[i] === this.tableData[j].id) {
+                  this.tableData.splice(j, 1)
+                }
+              }
+            }
+            this.$message.success('删除成功!')
+          } else {
+            this.$message.error(response.data.meta.message)
+            return
+          }
+        })
+        .catch((error) => {
+          this.$message.error(error.message)
+        })
+    },
     addAssignUser(data) {
       console.log(data)
       if (data.id === 2) {
@@ -238,15 +272,19 @@ export default {
     },
     onSearch() {
       console.log(this.query)
+      this.getClueList()
     },
     closePanel() { // 关闭潜在用户面板
       this.isAddPanel = false
     },
     getClueList() {
-      this.$http.get(api.adminClueClueList, {}).then(res => {
+      let row = {}
+      Object.assign(row, this.query)
+      this.$http.get(api.adminClueClueList, {params: row}).then(res => {
         if (res.data.meta.status_code === 200) {
           console.log(res.data)
           this.tableData = res.data.data
+          this.query.totalCount = parseInt(res.data.meta.pagination.total)
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -294,15 +332,15 @@ export default {
         console.log(error.message)
         this.$message.error(error.message)
       })
+    },
+    handleSizeChange(val) {
+      this.query.per_page = parseInt(val)
+      this.getClueList()
+    },
+    handleCurrentChange(val) {
+      this.query.page = parseInt(val)
+      this.getClueList()
     }
-    // handleSizeChange(val) {
-    //   this.query.pageSize = parseInt(val)
-    //   this.loadList()
-    // },
-    // handleCurrentChange(val) {
-    //   this.query.page = parseInt(val)
-    //   this.$router.push({name: this.$route.name, query: this.query})
-    // },
   },
   created() {
     this.getClueList()
