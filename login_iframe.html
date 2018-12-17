@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    var ticket = ''
+    var token = ''
+    var url = ''
+    var Ajax = {
+      get: function (url, data, fn) {
+        var d = '?'
+        if (data) {
+          for (var i in data) {
+            if (data[i]) {
+              d = d + i + '=' + data[i] + '&'
+            }
+          }
+          if (d === '?') {
+            d = ''
+          }
+        }
+        var xhr = new XMLHttpRequest()
+        xhr.open('GET', url + d, true)
+        xhr.onreadystatechange = function () {
+          // readyState == 4说明请求已完成
+          if (xhr.readyState == 4 && xhr.status == 200 || xhr.status == 304) {
+            // 从服务器获得数据 
+            fn.call(this, xhr.responseText)
+          }
+        }
+        xhr.send()
+      },
+      post: function (url, data, fn) {
+        var xhr = new XMLHttpRequest()
+        xhr.open("POST", url, true)
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 304)) {
+            fn.call(this, xhr.responseText)
+          }
+        }
+        xhr.send(JSON.stringify(data))
+      }
+    }
+    if (window.location.hostname !== 'localhost') {
+      url = window.location.protocol + '//' + window.location.hostname + '/api'
+    }
+    var write_user = function (user) {
+      var userInfo = {}
+      if (user.type === 1) {
+        userInfo = {
+          id: user.id,
+          account: user.account,
+          email: user.email,
+          phone: user.phone,
+          avatar: user.logo_image,
+          type: user.type,
+          company_id: user.design_company_id,
+          role_id: user.role_id,
+          realname: user.realname,
+          company_role: user.company_role,
+          child_account: user.child_account,
+          status: user.status,
+          verify_status: user.verify_status,
+          source: user.source,
+          source_admin: user.source_admin,
+          design_user_name: user.design_user_name,
+          design_user_phone: user.design_user_phone,
+          company: {
+            company_name: user.demand_company_name,
+            company_abbreviation: user.demand_company_abbreviation
+          }
+        }
+      } else {
+        userInfo = {
+          id: user.id,
+          account: user.account,
+          email: user.email,
+          phone: user.phone,
+          avatar: user.logo_image,
+          type: user.type,
+          company_id: user.design_company_id,
+          role_id: user.role_id,
+          realname: user.realname,
+          company_role: user.company_role,
+          child_account: user.child_account,
+          status: user.status,
+          verify_status: user.verify_status,
+          source: user.source,
+          source_admin: user.source_admin,
+          design_company_logo_image: user.design_company_logo_image,
+          design_user_name: user.design_user_name,
+          design_user_phone: user.design_user_phone,
+          company: {
+            company_name: user.design_company_name,
+            company_abbreviation: user.design_company_abbreviation
+          }
+        }
+      }
+      if (JSON.stringify(userInfo) !== '{}') {
+        localStorage.setItem('user', JSON.stringify(userInfo))
+      }
+    }
+    var getStatus = function (type) {
+      var u = ''
+      if (type === 2) {
+        u = '/survey/designCompanySurvey'
+      } else {
+        u = '/survey/demandCompanySurvey'
+      }
+      Ajax.get(url + u, {
+        token: token
+      }, function (res) {
+        res = JSON.parse(res)
+        if (res.meta.status_code === 200) {
+          var user = localStorage.getItem('user')
+          if (user && user != 'undefined') {
+            user = JSON.parse(user)
+          }
+          Object.assign(user, res.data)
+          localStorage.setItem('user', JSON.stringify(user))
+        }
+      })
+    }
+    window.addEventListener('message', function (res) {
+      if (res.data) {
+        if (res.source !== window.parent) return false
+        if (typeof res.data === 'string') {
+          var data = JSON.parse(res.data)
+          var from = data.from
+          if (data.type === 'login') { // login | loginout
+            if (data.ticket) {
+              document.cookie = 'ticket=' + data.ticket
+              Ajax.post(url + '/auth/ilogin', {}, function (res) {
+                res = JSON.parse(res)
+                if (res.meta.status_code === 200) {
+                  token = res.data.token
+                  localStorage.setItem('token', JSON.stringify(token))
+                  Ajax.get(url + '/auth/user', {
+                    token: token
+                  }, function (response) {
+                    response = JSON.parse(response)
+                    if (response.meta.status_code === 200) {
+                      localStorage.setItem('menuStatus', '')
+                      if (response.data) {
+                        write_user(response.data)
+                        getStatus(response.data.type)
+                        window.parent.postMessage(JSON.stringify({
+                          type: 'login',
+                          ticket: ticket,
+                          from: from
+                        }), '*')
+                      }
+                    }
+                  })
+                }
+              })
+            }
+          } else if (data.type === 'loginout') {
+            document.cookie = ''
+            localStorage.removeItem('user')
+            localStorage.removeItem('token')
+            window.parent.postMessage(JSON.stringify({
+              type: 'loginout',
+              ticket: ticket,
+              from: from
+            }), '*')
+          }
+        }
+      }
+    })
+
+  </script>
+</body>
+
+</html>

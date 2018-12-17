@@ -1,5 +1,6 @@
 import {
   USER_SIGNIN,
+  USER_TICKET,
   USER_SIGNOUT,
   USER_INFO,
   CHANGE_USER_VERIFY_STATUS,
@@ -23,12 +24,26 @@ let isLoggedIn = function () {
     return false
   }
 }
+// 获取ticket
+let getTicket = function () {
+  // TODO 此处可以写异步请求，到后台一直比较Token
+  let ticket = localStorage.getItem('ticket')
+  if (ticket) {
+    return JSON.parse(ticket)
+  } else {
+    return false
+  }
+}
 
 let userInfo = function () {
   // TODO 用户从Store获取
   let user = localStorage.getItem('user')
   if (user) {
-    return JSON.parse(user)
+    if (user !== 'undefined') {
+      return JSON.parse(user)
+    } else {
+      return false
+    }
   } else {
     return false
   }
@@ -131,8 +146,9 @@ function showProd() {
   }
 }
 const state = {
+  state: getTicket() || null,
   token: isLoggedIn() || null,
-  user: userInfo() || {},
+  user: userInfo() || false,
   loading: false, // 是否显示loading
   apiUrl: 'http://sa.taihuoniao.com', // 接口base url
   imgUrl: 'http://sa.taihuoniao.com', // 图片base url
@@ -179,8 +195,14 @@ const mutations = {
     localStorage.setItem('token', JSON.stringify(token))
     state.token = token
   },
+  [USER_TICKET](state, ticket) {
+    localStorage.setItem('ticket', null)
+    localStorage.setItem('ticket', JSON.stringify(ticket))
+    state.ticket = ticket
+  },
   [USER_SIGNOUT](state) {
     localStorage.removeItem('token')
+    localStorage.removeItem('ticket')
     localStorage.removeItem('user')
     localStorage.setItem('msgCount', JSON.stringify({ message: 0, notice: 0, quantity: 0 }))
     state.token = false

@@ -91,6 +91,9 @@
 .line-height16 {
   line-height: 16px;
 }
+.line-height30 {
+  line-height: 30px;
+}
 .line-height24 {
   line-height: 24px;
 }
@@ -111,6 +114,9 @@
 }
 .fw-normal {
   font-family: PingFangSC-Light
+}
+.blank5 {
+  margin-top: 5px;
 }
 .blank10 {
   margin-top: 10px;

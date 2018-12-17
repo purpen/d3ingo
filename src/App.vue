@@ -16,6 +16,16 @@
       <router-view class="main-content"></router-view>
       <v-footer></v-footer>
     </div>
+    <p v-show="false">{{ticket}}</p>
+    <p v-show="false">{{token}}</p>
+    <iframe
+      v-show="false"
+      ref="iframe"
+      frameborder="0"
+      name="sso-collaboration"
+      @load="loadFrame"
+      src="http://dev.taihuoniao.com/getmessage"></iframe>
+      <!-- src="http://localhost:8086/iframe"></iframe> -->
   </div>
 </template>
 
@@ -23,6 +33,7 @@
 import vHeader from '@/components/block/Header'
 import vFooter from '@/components/block/Footer'
 import api from '@/api/api'
+import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
 
 export default {
   name: 'app',
@@ -32,6 +43,7 @@ export default {
   },
   data() {
     return {
+      iframeLoad: false,
       alertTitle: {
         title: '',
         path: ''
@@ -39,6 +51,14 @@ export default {
     }
   },
   watch: {
+    token(val, oldVal) {
+      if (val && !oldVal) {
+        this.postMessage()
+      }
+      if (oldVal && !val) {
+        this.postMessage2()
+      }
+    }
   },
   mounted() {
     // console.log('app created')
@@ -59,6 +79,45 @@ export default {
     }).catch(err => {
       console.log(err)
     })
+  },
+  methods: {
+    loadFrame() {
+      this.iframeLoad = true
+    },
+    postMessage() {
+      if (this.iframeLoad) {
+        this.$refs.iframe.contentWindow.postMessage(JSON.stringify({
+          ticket: this.$store.state.event.ticket,
+          type: 'login'
+        }), 'http://dev.taihuoniao.com/getmessage')
+        // }), 'http://localhost:8086/iframe')
+      }
+    },
+    postMessage2() {
+      if (this.iframeLoad) {
+        this.$refs.iframe.contentWindow.postMessage(JSON.stringify({
+          ticket: this.$store.state.event.ticket,
+          type: 'loginout'
+        }), 'http://dev.taihuoniao.com/getmessage')
+        // }), 'http://localhost:8086/iframe')
+      }
+    },
+    getStatus(type) {
+      let url = ''
+      if (type === 2) {
+        url = api.surveyDesignCompanySurvey
+      } else {
+        url = api.surveyDemandCompanySurvey
+      }
+      this.$http.get(url, {})
+      .then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.$store.commit(CHANGE_USER_VERIFY_STATUS, res.data.data)
+        }
+      }).catch(err => {
+        console.error(err.message)
+      })
+    }
   },
   computed: {
     hideHeader() {
@@ -141,6 +200,12 @@ export default {
           return false
         }
       }
+    },
+    token() {
+      return this.$store.state.event.token
+    },
+    ticket() {
+      return this.$store.state.event.ticket
     }
   }
 }

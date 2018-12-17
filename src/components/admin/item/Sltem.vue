@@ -81,7 +81,13 @@
                 </p>
               </template>
             </el-table-column>
-            <el-table-column width="100" label="备注" prop="summary">
+            <el-table-column width="100" label="来源" prop="from">
+              <template slot-scope="scope">
+                <p v-if="scope.row.from === 1">小程序</p>
+                <p v-else-if="scope.row.from === 2">PC端推广</p>
+                <p v-else-if="scope.row.from === 3">PC端推广右下角</p>
+                <p v-else-if="scope.row.from === 4">wap推广</p>
+              </template>
             </el-table-column>
             <el-table-column width="100" label="操作">
               <template slot-scope="scope">
@@ -123,7 +129,7 @@
 import api from '@/api/api'
 import vMenu from '@/components/admin/Menu'
 export default {
-  name: 'admin_item_list',
+  name: 'admin_item_sltem',
   components: {
     vMenu
   },
