@@ -61,15 +61,15 @@ export default {
     }
   },
   mounted() {
-    if (ENV === 'prod' && this.prod.name === '') {
-      this.path === 'https://www.taihuoniao.com/getmessage'
-    }
     // console.log('app created')
     let loading = document.getElementById('loading')
     let classVal = 'animated fadeOutUp'
     loading.setAttribute('class', classVal)
   },
   created() {
+    if (ENV === 'prod' && this.prod.name === '') {
+      this.path = 'https://www.taihuoniao.com/getmessage'
+    }
     this.$http.get(api.getVersion)
     .then(res => {
       let version = localStorage.getItem('version')
