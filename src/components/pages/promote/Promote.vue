@@ -594,7 +594,7 @@
               </swiper>
             </div>
           </div>
-          <a href="tel:+13031154842"><button class="btn_class mtop_40 fs_20">拨打电话</button></a>
+          <a href="tel:13031154842"><button class="btn_class mtop_40 fs_20">拨打电话</button></a>
         </div>
         <div class="foot"></div>
       </div>
