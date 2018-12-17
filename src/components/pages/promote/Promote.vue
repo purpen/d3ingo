@@ -446,7 +446,7 @@
             </div>
           </div>
           <div class="img_down">
-            <img src="../../../assets/images/promote/app/bjt@2x.png"/>
+            <img src="../../../assets/images/promote/app/rjt2.png"/>
           </div>
           <div class="four">
             <div>
@@ -1337,7 +1337,9 @@
     margin-top: -4rem;
   }
   .img_down img{
-    margin-top: 4.5rem;
+    height: 6rem;
+    margin-top: 4rem;
+    margin-right: 0.2rem;
   }
   .img_left{
     transform: rotateY(180deg);
