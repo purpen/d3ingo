@@ -23,7 +23,7 @@
               
               <div class="user-phone fl margin-r20">
                 <i class="fx-icon-telephone"></i>
-                <el-input v-if="!currentId" v-model.number="userForm.phone" placeholder="请填写用户手机号" size="small"></el-input>
+                <el-input v-if="!currentId" v-model.number.trim="userForm.phone" placeholder="请填写用户手机号" size="small"></el-input>
                 <span v-else>{{userForm.phone}}</span>
               </div>
               <div class="user-rank fl">
@@ -78,7 +78,7 @@
                     v-model.trim="userForm.source"
                     size="small"
                     filterable
-                    placeholder="请选择用户来源"
+                    placeholder="请选择或者新建用户来源"
                     @change="updatedBaseInfo"
                     allow-create>
                   <el-option
@@ -179,9 +179,9 @@
                   </el-row>
                   <el-row :gutter="20">
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                      <!-- <el-form-item label="联系人" prop="name">
+                      <el-form-item label="联系人" prop="name" v-if="BoolEditUserInfo">
                         <el-input v-model.trim="clientForm.name" placeholder="请填写联系人姓名" :maxlength="20"></el-input>
-                      </el-form-item> -->
+                      </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <el-form-item label="职位" prop="position">
@@ -189,9 +189,9 @@
                       </el-form-item>
                     </el-col>
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                      <!-- <el-form-item label="联系电话" prop="phone">
+                      <el-form-item label="联系电话" prop="phone"  v-if="BoolEditUserInfo">
                         <el-input v-model.trim="clientForm.phone" placeholder="请填写联系电话" :maxlength="11"></el-input>
-                      </el-form-item> -->
+                      </el-form-item>
                     </el-col>
                   </el-row>
                   <el-row :gutter="20">
@@ -282,11 +282,11 @@
                   </el-row>
                 </div>
                 <p class="user-btn clearfix" v-show="option === 'user'">
-                  <el-button v-if="!currentId" type="primary" class="fr" @click="submitUserForm">生成用户
+                  <el-button v-if="!currentId" type="primary" class="fr" @click="submitUserForm('ruleClientForm')">生成用户
                   </el-button>
                   <el-button v-if="currentId && !BoolEditUserInfo" type="primary" class="fr" @click="editUserInfo">编辑
                   </el-button>
-                  <el-button v-if="!currentId || BoolEditUserInfo" class="fr" type="primary" @click="updateUserinfo">保存</el-button>
+                  <el-button v-if="currentId && BoolEditUserInfo" class="fr" type="primary" @click="updateUserinfo('ruleClientForm')">保存</el-button>
                   <el-button v-if="!currentId || BoolEditUserInfo" class="fr" @click="BoolEditUserInfo = false">取消</el-button>
                 </p>
               </div>
@@ -738,11 +738,8 @@ export default {
       adminVoIpList: [], // 业务人员列表
       clientForm: {},
       ruleClientForm: {
-        company: [{ required: true, message: '请填写企业名称', trigger: 'blur' }],
         name: [{ required: true, message: '请添写联系人姓名', trigger: 'blur' }],
-        phone: [{ required: true, message: '请填写联系人电话', trigger: 'blur' }],
-        position: [{ required: true, message: '请填写联系人职位', trigger: 'blur' }],
-        address: [{ required: true, message: '请填写企业详细地址', trigger: 'blur' }]
+        phone: [{ required: true, message: '请填写联系人电话', trigger: 'blur' }]
       },
       ruleProjectForm: {
         name: [{ required: true, message: '请填写企业名称', trigger: 'blur' }],
@@ -758,6 +755,17 @@ export default {
         rank: 1,
         call_status: '',
         status: '',
+        source: '',
+        tag: '',
+        execute_user_id: '',
+        company: '',
+        position: '',
+        wx: '',
+        qq: '',
+        email: '',
+        summary: '',
+        province: '',
+        city: '',
         execute: []
       },
       sourceArr: [],
@@ -843,7 +851,10 @@ export default {
       failureCause: '', // 项目失败原因
       itemId: '',
 
-      designCompanyForm: {},
+      designCompanyForm: {
+        wx: '',
+        summary: ''
+      },
       designCompanyList: [],
       currentDesignId: '',
       boolDesignCompany: false,
@@ -883,8 +894,8 @@ export default {
       })
     },
     updatedBaseInfo(val) { // 更新基本信息
-      console.log(val)
       if (!val) return
+      if (!this.currentId) return
       let row = {}
       Object.assign(row, this.userForm)
       row.tag = this.dynamicTags
@@ -968,7 +979,6 @@ export default {
       })
     },
     handleInputConfirm() {
-      console.log(this.dynamicTags)
       let inputValue = this.inputValue
       if (inputValue) {
         this.dynamicTags.push(inputValue)
@@ -977,8 +987,17 @@ export default {
       this.inputValue = ''
     },
     submitUserForm() {
+      if (!this.userForm.name) {
+        this.$message.error('请填写联系人姓名')
+        return
+      }
+      if (!this.userForm.phone) {
+        this.$message.error('请填写联系人电话')
+        return
+      }
       let row = Object.assign(this.clientForm, this.userForm)
-      row.tag = this.dynamicTags
+      row.tag = this.dynamicTags.length ? this.dynamicTags : ''
+      console.log(this.dynamicTags)
       this.$http.post(api.adminClueCreate, row).then(res => {
         if (res.data.meta.status_code === 200) {
           this.$message.success(res.data.meta.message)
@@ -990,19 +1009,32 @@ export default {
         this.$message.error(error.message)
       })
     },
-    updateUserinfo() {
-      let row = {}
-      Object.assign(row, this.clientForm)
-      row.clue_id = this.currentId
-      this.$http.post(api.adminClueSlueUpdate, row).then(res => {
-        if (res.data.meta.status_code === 200) {
-          this.$message.success('更新成功')
-          this.BoolEditUserInfo = false
-        } else {
-          this.$message.error(res.data.meta.message)
+    updateUserinfo(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          if (!this.clientForm.name) {
+            this.$message.error('请填写联系人')
+            return
+          }
+          if (!this.clientForm.phone) {
+            this.$message.error('请填写联系人电话')
+            return
+          }
+          let row = {}
+          Object.assign(row, this.clientForm)
+          row.clue_id = this.currentId
+          this.$http.post(api.adminClueSlueUpdate, row).then(res => {
+            if (res.data.meta.status_code === 200) {
+              this.$message.success('更新成功')
+              this.BoolEditUserInfo = false
+              this.getUserInfo()
+            } else {
+              this.$message.error(res.data.meta.message)
+            }
+          }).catch(error => {
+            this.$message.error(error.message)
+          })
         }
-      }).catch(error => {
-        this.$message.error(error.message)
       })
     },
     createdProject() { // 点击添加按钮
@@ -1085,12 +1117,15 @@ export default {
         if (valid) {
           if (!this.designCompanyForm.design_company_id) {
             this.$message.error('请选择设计公司')
+            return
           }
           if (!this.designCompanyForm.contact_name) {
             this.$message.error('请填写设计公司联系人')
+            return
           }
           if (!this.designCompanyForm.phone) {
             this.$message.error('请填写设计公司联系人电话')
+            return
           }
           let row = {}
           Object.assign(row, this.designCompanyForm)
@@ -1113,7 +1148,6 @@ export default {
     getUserProject() { // 项目列表
       this.$http.get(api.adminClueShowCrmItem, {params: {clue_id: this.currentId}}).then(res => {
         if (res.data.meta.status_code === 200) {
-          console.log(res.data.data)
           this.projectList = res.data.data
         } else {
           this.$message.error(res.data.meta.message)
@@ -1383,7 +1417,7 @@ export default {
 }
 .select-parent {
   position: relative;
-  top: 5px;
+  top: 0px;
   left: 0px;
   cursor: pointer;
 }
@@ -1577,6 +1611,7 @@ export default {
   /* height: 100px; */
   background-color: #FAFAFA;
   margin-top: 10px;
+  border: 1px solid #e6e6e6;
 }
 .log-li-top {
   display: flex;
