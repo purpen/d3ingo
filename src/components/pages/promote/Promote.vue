@@ -549,7 +549,7 @@
           </div>
           <div class="people_num">
             <div class="line"></div>
-            <span class="fs_14">目前已有 <span class="fc_red"> 200 </span> 人参与活动</span>
+            <span class="fs_14">目前已有 <span class="fc_red" v-text="quantity"></span> 人参与活动</span>
             <div class="line"></div>
           </div>
 
@@ -633,6 +633,7 @@
         }
       }
       return {
+        quantity: 200, // 数量
         phone: '',    // 底部联系电话
         time: 0,
         calcHeight: '',
@@ -826,7 +827,9 @@
       this.$http.get(api.userMessage)
         .then(res => {
           if (res.data.meta.status_code === 200) {
-            this.userList = res.data.data
+            let resData = res.data.data
+            this.userList = resData
+            this.quantity = resData.length + 200
             this.userList.forEach(item => {
               item.created_at = parseInt((date - item.created_at) / 60)
             })
