@@ -39,7 +39,20 @@
               </el-form-item>
             </el-form>
             <div class="admin-header-right fr clearfix">
-              <el-tree class="fl" :data="treeData" :props="defaultProps" @node-click="addAssignUser" node-key="id"></el-tree>
+              <!-- <el-tree class="fl" :data="treeData" :props="defaultProps" @node-click="addAssignUser" node-key="id"></el-tree> -->
+              <div class="fl">
+                <div tabindex="-1" class="add-user">
+                  <span class="add-voip-user">
+                    <i class="fx fx-icon-plus"></i>添加用户
+                  </span>
+                  <div class="drop-down">
+                    <span @click="$router.push({name: 'adminPotentialUserCreated'})">添加潜在用户</span>
+                    <span>导入文件</span>
+                    <span @click="showDialogVoIpUser">添加商务成员</span>
+                  </div>
+                </div>
+
+              </div>
               <a href="javascript:void(0);"  @click="multipleDelItem" class="fr line-height30 height30"><i class="fx fx-icon-delete2"></i></a>
               <el-button size="small" class="fl margin-l-10" @click="randomAssign = true">随机分配</el-button>
               <a href="javascript:void(0);" class="line-height30 height30 margin-l-10">导出表格</a>
@@ -108,7 +121,7 @@
               width="138"
               label="对接公司">
               <template slot-scope="scope">
-                <div v-for="(item, i) in scope.row.design_company_name" :key="i">
+                <div v-if="scope.row.item_name && scope.row.item_name.length" v-for="(item, i) in scope.row.design_company_name" :key="i">
                   <p>{{item}}</p>
                 </div>
               </template>
@@ -158,7 +171,7 @@
       <span>有30个潜在用户等待分配所属人，是否确认随机分配？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="randomAssign = false">取 消</el-button>
-        <el-button type="primary" @click="randomAssign = false">确 定</el-button>
+        <el-button type="primary" @click="randomAllot">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -167,10 +180,10 @@
       :visible.sync="BoolAddVoIpUser"
       width="30%"
       center>
-      <ul>
-        <li v-for="(d, i) in adminUserList" :key="i" @click="addVoIpUser(d.id)" class="user-list">
-          <img v-if="d.logo_image" :src="d.logo_image.log" alt="">
-          <!-- <span class="no-head" v-else>{{d.realname || d.username || d.account | formatName}}</span> -->
+      <ul class="user-list-father">
+        <li v-for="(d, i) in adminUserList" :key="i" @click="addVoIpUser(d.id)" :class="['user-list' ,{'active': d.status === 1 }]">
+          <img v-if="d.logo_image" :src="d.logo_image.logo" alt="">
+          <span class="no-head" v-else>{{d.realname || d.username || d.account | formatName}}</span>
           <span class="name">{{d.realname || d.username || d.account}}</span>
         </li>
       </ul>
@@ -184,9 +197,8 @@
 
 <script>
 import api from '@/api/api'
-import Clickoutside from 'assets/js/clickoutside'
 import vMenu from '@/components/admin/Menu'
-// import {nameToAvatar} from '@/assets/js/common'
+import {nameToAvatar} from '@/assets/js/common'
 export default {
   name: 'admin_potential_list',
   components: {
@@ -205,15 +217,6 @@ export default {
         totalCount: 0,
         valueDate: []
       },
-      treeData: [{
-        id: 1,
-        label: '添加用户',
-        children: [
-          {label: '手动添加', id: 2},
-          {label: '导入文件', id: 3},
-          {label: '添加商务成员', id: 4}
-        ]
-      }],
       defaultProps: {
         children: 'children',
         label: 'label'
@@ -257,21 +260,17 @@ export default {
           this.$message.error(error.message)
         })
     },
-    addAssignUser(data) {
-      console.log(data)
-      if (data.id === 2) {
-        this.$router.push({name: 'adminPotentialUserCreated'})
-      }
-      if (data.id === 4) {
-        this.BoolAddVoIpUser = true
-        this.getAdminList()
-      }
+    showDialogVoIpUser() {
+      this.BoolAddVoIpUser = true
+      this.getAdminList()
+    },
+    handleCommand(command) { // 点击菜单项的回掉
+      console.log(command)
     },
     getDate(val) {
       console.log(val)
     },
     onSearch() {
-      console.log(this.query)
       this.getClueList()
     },
     closePanel() { // 关闭潜在用户面板
@@ -282,7 +281,6 @@ export default {
       Object.assign(row, this.query)
       this.$http.get(api.adminClueClueList, {params: row}).then(res => {
         if (res.data.meta.status_code === 200) {
-          console.log(res.data)
           this.tableData = res.data.data
           this.query.totalCount = parseInt(res.data.meta.pagination.total)
         } else {
@@ -293,13 +291,11 @@ export default {
       })
     },
     editUserInfo(id, name) {
-      console.log(id)
       this.$router.push({name: 'adminPotentialUserInfo', params: {id: id, name: name}})
     },
     getAdminList() { // 后台人员列表
       this.$http.get(api.adminClueAdminUser, {}).then(res => {
         if (res.data.meta.status_code === 200) {
-          console.log(res.data.data)
           this.adminUserList = res.data.data
         } else {
           this.$message.error(res.data.message)
@@ -312,7 +308,6 @@ export default {
     addVoIpUser(id) { // 添加业务人员
       this.$http.post(api.adminClueAddVoIpUser, {user_id: id}).then(res => {
         if (res.data.meta.status_code === 200) {
-          console.log(res.data)
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -322,9 +317,11 @@ export default {
       })
     },
     randomAllot() { // 随机分配
+      this.randomAssign = false
       this.$http.post(api.adminClueRandomAllot).then(res => {
         if (res.data.meta.status_code === 200) {
-          console.log(res.data.data)
+          this.$message.success('随机分配成功')
+          this.getClueList()
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -345,12 +342,12 @@ export default {
   created() {
     this.getClueList()
   },
-  directives: {Clickoutside}
-  // filters: {
-  //   formatName(val) {
-  //     return nameToAvatar(val)
-  //   }
-  // }
+  // directives: {Clickoutside},
+  filters: {
+    formatName(val) {
+      return nameToAvatar(val)
+    }
+  }
 }
 </script>
 
@@ -383,11 +380,60 @@ export default {
   height: 50px;
   display: flex;
   align-items: center;
+  position: relative;
+}
+.user-list img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+.no-head {
+  width: 30px;
+  height: 30px;
+  font-size: 12px;
+  line-height: 30px;
+  display: inline-block;
+  background: #3DA8F5;
+  text-align: center;
+  color: #fff;
+  border-radius: 50%;
+  margin-right: 10px;
 }
 .user-list:hover {
   background: #F3F3F3;
 }
-
+.drop-down {
+  display: none;
+}
+.drop-down > span {
+  display: block;
+  height: 30px;
+  line-height: 30px;
+  font-size: 12px;
+}
+.add-user:focus .drop-down {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.add-voip-user {
+  height: 30px;
+  line-height: 30px;
+  font-size: 12px;
+}
+.user-list-father .active::after {
+  content: "";
+  position: absolute;
+  right: 20px;
+  top: 14px;
+  width: 8px;
+  height: 14px;
+  border: 2px solid #d2d2d2;
+  border-left: none;
+  border-top: none;
+  transform: rotate(45deg);
+}
 </style>
 
 <style>

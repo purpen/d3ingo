@@ -198,6 +198,8 @@ export default {
   adminClueCrmItemLoser: 'admin/clue/crmItemLoser', // POST 项目标记失败
   adminClueAddCrmDesign: 'admin/clue/addCrmDesign', // POST 添加对接公司
   adminClueCrmDesignList: 'admin/clue/crmDesignList', // GET 对接设计公司列表
+  adminClueDelCrmDesign: 'admin/clue/delCrmDesign', // DELETE 删除对接公司
+  adminClueUpdateCrmDesign: 'admin/clue/updateCrmDesign', // POST 更改对接公司
   adminClueAddTrackLog: 'admin/clue/addTrackLog', // POST 添加跟进记录
   adminClueShowTrackLog: 'admin/clue/showTrackLog', // GET 查看跟进记录
   adminClueUpdateTrackLog: 'admin/clue/updateTrackLog', // POST 更改跟进记录
@@ -557,5 +559,6 @@ export default {
   // 推广
   pcAdd: '/wechat/demand/pcAdd',   // POST PC
   appAdd: '/wechat/demand/userAdd',   // POST APP
-  userMessage: 'wechat/demand/users'   // POST APP消息滚动
+  userMessage: '/wechat/demand/users',   // POST APP消息滚动
+  usersCount: '/wechat/demand/usersCount'   // GET 人员数量
 }
