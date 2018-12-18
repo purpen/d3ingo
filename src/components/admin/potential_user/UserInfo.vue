@@ -161,7 +161,7 @@
 
 
 
-              <div class="card-body-center" v-show="option === 'user'">
+              <div class="card-body-center padding20" v-show="option === 'user'">
                 <el-form v-show="!currentId || BoolEditUserInfo" label-position="top" :model="clientForm" :rules="ruleClientForm"
                               ref="ruleClientForm" label-width="80px">
                   <el-row :gutter="20">
@@ -287,7 +287,7 @@
                     </el-col>
                   </el-row>
                 </div>
-                <p class="user-btn clearfix" v-show="option === 'user'">
+                <p class="user-btn clearfix padding20" v-show="option === 'user'">
                   <el-button v-if="!currentId" type="primary" class="fr" @click="submitUserForm('ruleClientForm')">生成用户
                   </el-button>
                   <el-button v-if="currentId && !BoolEditUserInfo" type="primary" class="fr" @click="editUserInfo">编辑
@@ -308,7 +308,7 @@
 
                 <div class="project-form-table">
                   <ul>
-                    <li v-for="(item, index) in projectList" :key="index">
+                    <li v-for="(item, index) in projectList" :key="index" class="project-li">
                       <el-form label-position="top" :model="projectForm" 
                           :rules="ruleProjectForm" 
                           :ref="'ruleProjectForm'+ index" label-width="80px">
@@ -344,7 +344,7 @@
                               <div class="edit-project-tag">
                                 <p @click="markProjectFailure(item.item_id)">标记为失败</p>
                                 <p @click="deleteProject(item.item_id)">删除项目</p>
-                                <p @click="editProject(item)">编辑</p>
+                                <p @click="editProject(item)">编辑项目</p>
                               </div>
                             </div>
                           </el-col>
@@ -615,7 +615,7 @@
                 </div>
 
 
-                <div class="project-form" v-if="boolAddProject">
+                <div class="project-form padding20" v-if="boolAddProject">
                   <p class="margin-b22">基本信息</p>
                   <el-form label-position="top" :model="projectForm" :rules="ruleProjectForm" ref="ruleProjectForm" label-width="80px">
                       <el-row :gutter="20">
@@ -721,15 +721,15 @@
               </div>
 
 
-              <div class="card-body-center" v-show="option === 'followLog'">
+              <div class="card-body-center padding20" v-show="option === 'followLog'">
                 <ul>
                   <li v-for="(item, i) in followLogList" :key="i" class="log-li">
                    <el-row :gutter="20">
-                     <el-col :xs="24" :sm="16" :md="16" :lg="16">
+                     <el-col :xs="24" :sm="24" :md="24" :lg="24">
                        <div class="log-li-top">
                          <p class="execute-user-info">
                           <img v-if="item.logo_image" :src="item.logo_image.logo" alt="">
-                          <span class="no-head" v-else>{{item.realname || item.username || item.account | formatName}}</span>
+                          <span class="no-head" v-else>{{item.execute_user_name | formatName}}</span>
                           <span class="name">{{item.execute_user_name || ''}}</span>
                          </p>
                         <p>创建时间 :<span> {{item.date}}</span></p>
@@ -794,7 +794,6 @@
 import api from '@/api/api'
 import vMenu from '@/components/admin/Menu'
 import typeData from '@/config'
-// import '@/assets/js/format'
 import '@/assets/js/date_format'
 import {nameToAvatar} from '@/assets/js/common'
 // 城市联动
@@ -1513,6 +1512,9 @@ export default {
 .margin-t8 {
   margin-top: 8px;
 }
+.padding20 {
+  padding: 20px;
+}
 .border-radius {
   border: 1px solid #e6e6e6;
   border-radius: 50%;
@@ -1554,7 +1556,7 @@ export default {
   border-bottom: 2px solid #FF5A5F;
 }
 .card-body-center {
-  padding: 20px;
+  /* padding: 20px; */
 }
 
 .user-name, .user-phone, .source, .belong, .call-status {
@@ -1695,9 +1697,16 @@ export default {
 /* card-body */
 .add-project {
   height: 40px;
-  margin: -20px -20px 20px -20px;
+  /* margin: -20px -20px 20px -20px; */
   padding: 5px 20px;
   border-bottom: 1px solid #e6e6e6;
+}
+.project-li {
+  border-bottom: 1px solid #e6e6e6;
+  padding: 40px 20px 20px 20px;
+}
+.project-li:nth-child(even) {
+  background-color: #FAFAFA;
 }
 .edit-project {
   position: relative;
@@ -1812,7 +1821,7 @@ export default {
   display: inline-block;
   background: #3DA8F5;
   text-align: center;
-  color: #fff;
+  color: #fff !important;
   border-radius: 50%;
   margin-right: 10px;
 }
