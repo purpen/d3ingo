@@ -340,30 +340,36 @@ export default {
     }
   },
   created() {
-    // for (let i = 0; i <= 6; i++) {
-    //   this.getBoard(i)
-    // }
+    for (let i = 0; i <= 6; i++) {
+      this.getBoard(i)
+    }
   },
   mounted() {
     let hash = this.$route.hash
     if (hash === '#innovation') {
-      window.pageYOffset = this.$refs.innovation.offsetTop
-      document.documentElement.scrollTop = this.$refs.innovation.offsetTop
+      if (this.$refs.innovation) {
+        window.pageYOffset = this.$refs.innovation.offsetTop
+        document.documentElement.scrollTop = this.$refs.innovation.offsetTop
+      }
     }
     if (hash === '#power' || hash === '#innovation2') {
-      window.pageYOffset = this.$refs.power.offsetTop
-      document.documentElement.scrollTop = this.$refs.power.offsetTop
+      if (this.$refs.power) {
+        window.pageYOffset = this.$refs.power.offsetTop
+        document.documentElement.scrollTop = this.$refs.power.offsetTop
+      }
     }
     if (hash === '#business' || hash === '#brand') {
-      window.pageYOffset = this.$refs.business.offsetTop
-      document.documentElement.scrollTop = this.$refs.business.offsetTop
+      if (this.$refs.business) {
+        window.pageYOffset = this.$refs.business.offsetTop
+        document.documentElement.scrollTop = this.$refs.business.offsetTop
+      }
     }
     if (hash === '#credibility' || hash === '#risk') {
-      window.pageYOffset = this.$refs.credibility.offsetTop
-      document.documentElement.scrollTop = this.$refs.credibility.offsetTop
+      if (this.$refs.credibility) {
+        window.pageYOffset = this.$refs.credibility.offsetTop
+        document.documentElement.scrollTop = this.$refs.credibility.offsetTop
+      }
     }
-    window.addEventListener('scroll', this.handleScroll)
-    this.handleScroll()
   },
   methods: {
     addCompare(id) {
@@ -389,6 +395,7 @@ export default {
     handleScroll() {
       let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
       let clentHeight = document.body.clientHeight + scrollTop
+      console.log('scroll', scrollTop, clentHeight)
       if (((scrollTop <= this.$refs.power.offsetTop) &&
         (this.$refs.power.offsetTop <= clentHeight)) ||
         ((scrollTop <= this.$refs.power.offsetTop + this.$refs.power.offsetHeight) &&
@@ -481,7 +488,6 @@ export default {
     }
   },
   destroyed() {
-    // window.removeEventListener('scroll', this.handleScroll)
   }
 }
 </script>
