@@ -181,16 +181,16 @@
       width="30%"
       center>
       <ul class="user-list-father">
-        <li v-for="(d, i) in adminUserList" :key="i" @click="addVoIpUser(d.id)" :class="['user-list' ,{'active': d.status === 1 }]">
+        <li v-for="(d, i) in adminUserList" :key="i" @click="askVoIpUser(d)" :class="['user-list' ,{'active': d.status === 1 }]">
           <img v-if="d.logo_image" :src="d.logo_image.logo" alt="">
           <span class="no-head" v-else>{{d.realname || d.username || d.account | formatName}}</span>
           <span class="name">{{d.realname || d.username || d.account}}</span>
         </li>
       </ul>
-      <span slot="footer" class="dialog-footer">
+      <!-- <span slot="footer" class="dialog-footer">
         <el-button @click="BoolAddVoIpUser = false">取 消</el-button>
         <el-button type="primary" @click="BoolAddVoIpUser = false">确 定</el-button>
-      </span>
+      </span> -->
     </el-dialog>
   </div>
 </template>
@@ -305,9 +305,33 @@ export default {
         this.$message.error(error.message)
       })
     },
+    askVoIpUser(d) {
+      if (d && d.id) {
+        if (d.status === 1) {
+          this.deleteVoIpUser(d.id)
+        } else {
+          this.addVoIpUser(d.id)
+        }
+      }
+    },
     addVoIpUser(id) { // 添加业务人员
+      if (!id) return
       this.$http.post(api.adminClueAddVoIpUser, {user_id: id}).then(res => {
         if (res.data.meta.status_code === 200) {
+          this.getAdminList()
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        console.log(error.message)
+        this.$message.error(error.message)
+      })
+    },
+    deleteVoIpUser(id) { // 移除业务人员
+      if (!id) return
+      this.$http.post(api.adminClueDelVoIpUser, {user_id: id}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.getAdminList()
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -411,16 +435,32 @@ export default {
   height: 30px;
   line-height: 30px;
   font-size: 12px;
+  cursor: pointer;
+}
+.add-user {
+  position: relative;
 }
 .add-user:focus .drop-down {
+  position: absolute;
+  top: 30px;
+  left: -8px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
+  z-index: 99;
+  width: 100px;
+  padding: 10px 0px;
+  background-color: #fff;
 }
 .add-voip-user {
   height: 30px;
   line-height: 30px;
   font-size: 12px;
+  cursor: pointer;
+}
+.add-voip-user:hover {
+  color: #FF5A5F;
 }
 .user-list-father .active::after {
   content: "";
