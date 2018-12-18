@@ -40,13 +40,13 @@
                         v-for="(item, index) in rankArr"
                         :key="index"
                         >
-                        <!-- <img :src="item.img" alt="" :style="{
+                        <img :src="item.img" alt="" :style="{
                           float: 'left',
                           width: '24px',
                           height: '20px',
                           'margin-top': '8px',
                           'margin-right': '10px'
-                        }"> -->
+                        }">
                         {{item.label}}
                       </li>
                     </ul>
@@ -86,7 +86,7 @@
                     filterable
                     placeholder="请选择或者新建用户来源"
                     @change="updatedBaseInfo"
-                    allow-create>
+                    :allow-create="isAdmin>=15">
                   <el-option
                     v-for="(item, index) in sourceArr"
                     :key="index"
@@ -98,7 +98,7 @@
               </div>
               <div class="belong fl">
                 <span>所属人 :</span>
-                <el-select v-model="userForm.execute_user_id" size="small" @change="updatedBaseInfo">
+                <el-select v-model="userForm.execute_user_id" size="small" @change="updatedBaseInfo" :disabled="isAdmin<=10">
                   <el-option
                     v-for="(item, index) in adminVoIpList"
                     :key="index"
@@ -114,7 +114,7 @@
                   <el-select v-model="userForm.call_status" 
                               size="small"
                               filterable
-                              allow-create
+                              :allow-create="isAdmin>=15"
                               default-first-option
                               @change="updatedBaseInfo">
                     <el-option
@@ -725,8 +725,13 @@
                 <ul>
                   <li v-for="(item, i) in followLogList" :key="i" class="log-li">
                    <el-row :gutter="20">
-                     <el-col :xs="24" :sm="16" :md="12" :lg="12">
+                     <el-col :xs="24" :sm="16" :md="16" :lg="16">
                        <div class="log-li-top">
+                         <p class="execute-user-info">
+                          <img v-if="item.logo_image" :src="item.logo_image.logo" alt="">
+                          <span class="no-head" v-else>{{item.realname || item.username || item.account | formatName}}</span>
+                          <span class="name">{{item.execute_user_name || ''}}</span>
+                         </p>
                         <p>创建时间 :<span> {{item.date}}</span></p>
                         <p>次回跟进时间 :<span>{{item.next_time}}</span></p>
                        </div>
@@ -789,8 +794,9 @@
 import api from '@/api/api'
 import vMenu from '@/components/admin/Menu'
 import typeData from '@/config'
-import '@/assets/js/format'
+// import '@/assets/js/format'
 import '@/assets/js/date_format'
+import {nameToAvatar} from '@/assets/js/common'
 // 城市联动
 import RegionPicker from '@/components/block/RegionPicker'
 export default {
@@ -828,7 +834,7 @@ export default {
         call_status: '',
         status: '',
         source: '',
-        tag: '',
+        tag: [],
         execute_user_id: '',
         company: '',
         position: '',
@@ -840,35 +846,35 @@ export default {
         city: '',
         execute: []
       },
+      rankLabel: '一级',
       sourceArr: [],
       rankArr: [
         {
           value: 1,
-          label: '一级'
-          // img: require('@/assets/images/icon/Ordinary02@2x.png')
+          label: '一级',
+          img: require('@/assets/images/icon/Ordinary02@2x.png')
         },
         {
           value: 2,
-          label: '二级'
-          // img: require('@/assets/images/icon/Urgent02@2x.png')
+          label: '二级',
+          img: require('@/assets/images/icon/Urgent02@2x.png')
         },
         {
           value: 3,
-          label: '三级'
-          // img: require('@/assets/images/icon/VeryUrgent02@2x.png')
+          label: '三级',
+          img: require('@/assets/images/icon/Urgent02@2x.png')
         },
         {
           value: 4,
-          label: '四级'
-          // img: require('@/assets/images/icon/VeryUrgent02@2x.png')
+          label: '四级',
+          img: require('@/assets/images/icon/VeryUrgent02@2x.png')
         },
         {
           value: 5,
-          label: '五级'
-          // img: require('@/assets/images/icon/VeryUrgent02@2x.png')
+          label: '五级',
+          img: require('@/assets/images/icon/VeryUrgent02@2x.png')
         }
       ],
-      rankLabel: '一般',
       userStatus: [ // 客户状态
         {
           value: 1,
@@ -971,11 +977,11 @@ export default {
       })
     },
     updatedBaseInfo(val) { // 更新基本信息
-      if (!val) return
+      // if (!val) return
       if (!this.currentId) return
       let row = {}
       Object.assign(row, this.userForm)
-      row.tag = this.dynamicTags
+      row.tag = this.dynamicTags.length ? this.dynamicTags : ''
       row.clue_id = this.currentId
       this.$http.post(api.adminClueUpdate, row).then(res => {
         if (res.data.meta.status_code === 200) {
@@ -1010,9 +1016,19 @@ export default {
             rank: data.rank,
             source: data.source || '',
             status: data.status,
+            execute_user_id: data.execute_user_id,
             call_status: data.call_status || ''
           }
-          this.dynamicTags = data.tag
+          this.rankArr.forEach(item => {
+            if (item.value === this.userForm.rank) {
+              this.rankLabel = item.label
+            }
+          })
+          if (data.tag.length === 1 && data.tag[0] === '') {
+            this.dynamicTags.length = 0
+          } else {
+            this.dynamicTags = data.tag
+          }
           this.clientForm = {
             company: data.company,
             name: data.name,
@@ -1047,6 +1063,7 @@ export default {
     },
     handleClose(tag) { // 关闭标签是触发事件
       this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
+      this.updatedBaseInfo()
     },
     showInput() {
       this.inputVisible = true
@@ -1058,6 +1075,7 @@ export default {
       let inputValue = this.inputValue
       if (inputValue) {
         this.dynamicTags.push(inputValue)
+        this.updatedBaseInfo()
       }
       this.inputVisible = false
       this.inputValue = ''
@@ -1354,6 +1372,7 @@ export default {
       this.$http.post(api.adminClueCrmItemLoser, row).then(res => {
         if (res.data.meta.status_code === 200) {
           this.BoolmarkFailure = false
+          this.getUserProject()
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -1452,6 +1471,9 @@ export default {
       } else {
         return {}
       }
+    },
+    isAdmin() {
+      return this.$store.state.event.user.role_id
     }
   },
   watch: {
@@ -1461,6 +1483,11 @@ export default {
       } else if (val === 'followLog') {
         this.getLogList()
       }
+    }
+  },
+  filters: {
+    formatName(val) {
+      return nameToAvatar(val)
     }
   },
   created() {
@@ -1587,17 +1614,19 @@ export default {
 }
 .select-parent .select-level2 {
   background: url(../../../assets/images/icon/important01@2x.png) no-repeat 6px / 16px 16px;
-  background-color: #FF9999;
+  background-color: #999999;
 }
 .select-parent .select-level3 {
-  background: url(../../../assets/images/icon/VeryImportant01@2x.png) no-repeat 6px / 16px 16px;
-  background-color: #ff6600;
+  background: url(../../../assets/images/icon/important01@2x.png) no-repeat 6px / 16px 16px;
+  background-color: #f9d718;
 }
 .select-parent .select-level4 {
-  background-color: #FF0066;
+  background: url(../../../assets/images/icon/VeryImportant01@2x.png) no-repeat 6px / 16px 16px;
+  background-color: #ffa748;
 }
 .select-parent .select-level5 {
-  background-color: #FF0000;
+  background: url(../../../assets/images/icon/VeryImportant01@2x.png) no-repeat 6px / 16px 16px;
+  background-color: #fe5b5f;
 }
 /* user-rank end */
 
@@ -1762,6 +1791,30 @@ export default {
   border-top: 1px solid #e6e6e6;
   min-height: 80px;
   padding: 15px 20px;
+}
+
+.execute-user-info {
+  display: flex;
+  align-items: center;
+}
+.execute-user-info img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.no-head {
+  width: 30px;
+  height: 30px;
+  font-size: 12px;
+  line-height: 30px;
+  display: inline-block;
+  background: #3DA8F5;
+  text-align: center;
+  color: #fff;
+  border-radius: 50%;
+  margin-right: 10px;
 }
 </style>
 <style>
