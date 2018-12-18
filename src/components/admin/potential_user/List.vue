@@ -140,10 +140,10 @@
               width="70"
               label="综述">
                 <template slot-scope="scope">
-                  <p v-if="scope.row.status === 1">待沟通</p>
-                  <p v-else-if="scope.row.status === 2">沟通中</p>
-                  <p v-else-if="scope.row.status === 3">成功</p>
-                  <p v-else>失败</p>
+                  <p class="status1 status" v-if="scope.row.status === 1">待沟通</p>
+                  <p class="status2 status"  v-else-if="scope.row.status === 2">沟通中</p>
+                  <p class="status3 status"  v-else-if="scope.row.status === 3">成功</p>
+                  <p class="status4 status"  v-else>失败</p>
                 </template>
             </el-table-column>
           </el-table>
@@ -434,6 +434,21 @@ export default {
   border-top: none;
   transform: rotate(45deg);
 }
+.status1 {
+  color: #FFA64B;
+}
+.status2 {
+  color: #65A6FF;
+}
+.status3 {
+  color: #00AC84;
+}
+.status4 {
+  color: #FF5A5F;
+}
+.status {
+  font-weight: 600;
+} 
 </style>
 
 <style>
