@@ -130,7 +130,7 @@
               prop="logs"
               width="50"
               label="根进次数">
-            </el-table-column>[]
+            </el-table-column>
             <el-table-column
               prop="next_time"
               width="100"
@@ -167,11 +167,12 @@
     <el-dialog
       title="随机分配"
       :visible.sync="randomAssign"
-      width="20%">
-      <span>有30个潜在用户等待分配所属人，是否确认随机分配？</span>
+      size="tiny">
+      <span v-if="hasExecuteList.length">有{{hasExecuteList.length}}个潜在用户等待分配所属人，是否确认随机分配？</span>
+      <span v-else>没有所属人待分配</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="randomAssign = false">取 消</el-button>
-        <el-button type="primary" @click="randomAllot">确 定</el-button>
+        <el-button type="primary" @click="randomAllot" :disabled="!hasExecuteList.length">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -222,7 +223,8 @@ export default {
         label: 'label'
       },
       tableData: [],
-      adminUserList: []
+      adminUserList: [],
+      hasExecuteList: [] // 没有所属人的数组
     }
   },
   methods: {
@@ -283,6 +285,13 @@ export default {
         if (res.data.meta.status_code === 200) {
           this.tableData = res.data.data
           this.query.totalCount = parseInt(res.data.meta.pagination.total)
+          let hasExecuteUser = []
+          this.tableData.forEach(item => {
+            if (!item.execute_user_id) {
+              hasExecuteUser.push(item)
+            }
+          })
+          this.hasExecuteList = hasExecuteUser
         } else {
           this.$message.error(res.data.meta.message)
         }

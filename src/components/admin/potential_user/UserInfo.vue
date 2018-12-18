@@ -23,7 +23,7 @@
               
               <div class="user-phone fl margin-r20">
                 <i class="fx-icon-telephone"></i>
-                <el-input v-if="!currentId" v-model.number.trim="userForm.phone" placeholder="请填写用户手机号" size="small"></el-input>
+                <el-input v-if="!currentId" v-model.trim="userForm.phone" placeholder="请填写用户手机号" size="small"></el-input>
                 <span v-else>{{userForm.phone}}</span>
               </div>
               <div class="user-rank fl">
@@ -293,7 +293,7 @@
                   <el-button v-if="currentId && !BoolEditUserInfo" type="primary" class="fr" @click="editUserInfo">编辑
                   </el-button>
                   <el-button v-if="currentId && BoolEditUserInfo" class="fr" type="primary" @click="updateUserinfo('ruleClientForm')">保存</el-button>
-                  <el-button v-if="!currentId || BoolEditUserInfo" class="fr" @click="BoolEditUserInfo = false">取消</el-button>
+                  <el-button v-if="!currentId || BoolEditUserInfo" class="fr" @click="comeBack">取消</el-button>
                 </p>
               </div>
 
@@ -733,7 +733,11 @@
                           <span class="name">{{item.execute_user_name || ''}}</span>
                          </p>
                         <p>创建时间 :<span> {{item.date}}</span></p>
-                        <p>次回跟进时间 :<span>{{item.next_time}}</span></p>
+                        <p v-if="item.next_time">次回跟进时间 :
+                          <span>{{item.next_time}}</span>
+                          <!-- <a @click="">取消</a>
+                          <a @click="">完成</a> -->
+                        </p>
                        </div>
                      </el-col>
                    </el-row>
@@ -975,6 +979,13 @@ export default {
         this.$message.error(error.message)
       })
     },
+    comeBack() {
+      if (this.currentId) {
+        this.BoolEditUserInfo = false
+      } else {
+        this.$router.go(-1)
+      }
+    },
     updatedBaseInfo(val) { // 更新基本信息
       // if (!val) return
       if (!this.currentId) return
@@ -1086,6 +1097,10 @@ export default {
       }
       if (!this.userForm.phone) {
         this.$message.error('请填写联系人电话')
+        return
+      }
+      if (!(/^\d{6,11}$/.test(this.userForm.phone))) {
+        this.$message.error('请输入有效的手机号')
         return
       }
       let row = Object.assign(this.clientForm, this.userForm)
