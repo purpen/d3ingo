@@ -24,8 +24,7 @@
       frameborder="0"
       name="sso-collaboration"
       @load="loadFrame"
-      src="http://dev.taihuoniao.com/getmessage"></iframe>
-      <!-- src="http://localhost:8086/iframe"></iframe> -->
+      :src="path"></iframe>
   </div>
 </template>
 
@@ -34,7 +33,7 @@ import vHeader from '@/components/block/Header'
 import vFooter from '@/components/block/Footer'
 import api from '@/api/api'
 import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
-
+import {ENV} from 'conf/prod.env.js'
 export default {
   name: 'app',
   components: {
@@ -47,7 +46,8 @@ export default {
       alertTitle: {
         title: '',
         path: ''
-      }
+      },
+      path: 'http://dev.taihuoniao.com/getmessage'
     }
   },
   watch: {
@@ -67,6 +67,9 @@ export default {
     loading.setAttribute('class', classVal)
   },
   created() {
+    if (ENV === 'prod' && this.prod.name === '') {
+      this.path = 'https://www.taihuoniao.com/getmessage'
+    }
     this.$http.get(api.getVersion)
     .then(res => {
       let version = localStorage.getItem('version')
@@ -89,8 +92,7 @@ export default {
         this.$refs.iframe.contentWindow.postMessage(JSON.stringify({
           ticket: this.$store.state.event.ticket,
           type: 'login'
-        }), 'http://dev.taihuoniao.com/getmessage')
-        // }), 'http://localhost:8086/iframe')
+        }), this.path)
       }
     },
     postMessage2() {
@@ -98,8 +100,7 @@ export default {
         this.$refs.iframe.contentWindow.postMessage(JSON.stringify({
           ticket: this.$store.state.event.ticket,
           type: 'loginout'
-        }), 'http://dev.taihuoniao.com/getmessage')
-        // }), 'http://localhost:8086/iframe')
+        }), this.path)
       }
     },
     getStatus(type) {
@@ -206,6 +207,9 @@ export default {
     },
     ticket() {
       return this.$store.state.event.ticket
+    },
+    prod() {
+      return this.$store.state.event.prod
     }
   }
 }

@@ -557,5 +557,6 @@ export default {
   // 推广
   pcAdd: '/wechat/demand/pcAdd',   // POST PC
   appAdd: '/wechat/demand/userAdd',   // POST APP
-  userMessage: 'wechat/demand/users'   // POST APP消息滚动
+  userMessage: '/wechat/demand/users',   // POST APP消息滚动
+  usersCount: '/wechat/demand/usersCount'   // GET 人员数量
 }
