@@ -1835,6 +1835,9 @@ export default {
   width: 150px;
   /* max-width: 150px; */
 }
+.source .el-select {
+  width: 200px;
+}
 .user-status .el-select .el-input__inner {
   border: none;
   padding-left: 0px;
