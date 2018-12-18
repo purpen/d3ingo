@@ -178,6 +178,7 @@ export default {
   adminClueDelete: 'admin/clue/delete', // 删除潜在客户
   adminClueVoIpList: 'admin/clue/voIpList', // GET 业务人员列表
   adminClueAddVoIpUser: 'admin/clue/addVoIpUser', // 添加业务人员
+  adminClueDelVoIpUser: 'admin/clue/delVoIpUser', // 移除业务人员
   adminClueRandomAllot: 'admin/clue/randomAllot', // POST 随机分配
   adminClueTypeList: 'admin/clue/typeList', // GET 类别列表
   adminClueUpdate: 'admin/clue/update', // POST 更新基本信息
