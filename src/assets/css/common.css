@@ -13,6 +13,12 @@
 .flex {
   display: flex;
 }
+.flex1 {
+  flex: 1 1 auto
+}
+.flex0 {
+  flex: 0 0 auto
+}
 .flex-wrap {
   display: flex;
   flex-wrap: wrap;
@@ -50,6 +56,9 @@
   color: #fff
 }
 .tc-red {
+  color: #ff5a5f
+}
+.tc-hover-red:hover {
   color: #ff5a5f
 }
 .tc-blue {
@@ -240,7 +249,6 @@
   padding: 0;
   height: 34px;
 }
-/* .el-button:focus, */
 .el-button:hover {
   color: #fff;
 }
@@ -312,6 +320,7 @@
   border-radius: 4px;
   color: #999;
 }
+.el-button:focus,
 .white-button:hover,
 .el-button--default:hover{
   background: #f5f5f5;
@@ -335,7 +344,9 @@
   color: #ff5a5f;
 }
 .red-button:hover,
-.red-button:hover a {
+.red-button:hover a,
+.red-button:focus,
+.red-button:focus a {
   background-color: #ffacaf;
   color: #fff;
 }
@@ -356,19 +367,25 @@
 .full-red-button:hover,
 .el-button--primary:hover,
 .el-button--danger:hover {
+  color: #fff;
   border-color: #D23C46;
   background-color: #D23C46;
 }
 .full-red-button:active,
 .el-button--primary:active,
-.el-button--danger:active {
+.el-button--danger:active,
+.full-red-button:focus,
+.el-button--primary:focus,
+.el-button--danger:focus {
+  color: #fff;
   border-color: #a02832;
   background-color: #a02832;
 }
 
 .disabled-button,
 .disabled-button:hover,
-.disabled-button:active {
+.disabled-button:active,
+.disabled-button:focus {
   font-size: 14px;
   cursor: not-allowed;
   background: #ccc;

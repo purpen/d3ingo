@@ -40,6 +40,7 @@ export default {
   withdrawList: '/withdraw/lists', // GET 用户提现列表
   jdCode: '/jd/code', // GET 获取京东code
   jdToken: '/jd/jdAccount', // GET 获取京东云access_token
+  deleteJdYun: '/auth/deleteJdYun', // POST 解绑京东云
 
   // 栏目
   columnList: '/column/lists', // GET 列表

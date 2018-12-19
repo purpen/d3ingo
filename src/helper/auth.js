@@ -35,7 +35,8 @@ mallache.write_user = function (user) {
       company: {
         company_name: user.demand_company_name,
         company_abbreviation: user.demand_company_abbreviation
-      }
+      },
+      jd_account: user.jd_account
     }
   } else {
     userInfo = {
