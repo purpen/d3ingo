@@ -183,8 +183,9 @@
               .then(function (response) {
                 if (response.data.meta.status_code === 200) {
                   let token = response.data.data.token
+                  let ticket = response.data.data.ticket
                   // 写入localStorage
-                  auth.write_token(token)
+                  auth.write_token(token, ticket)
                   // ajax拉取用户信息
                   that.$http.get(api.user, {})
                     .then(function (response) {

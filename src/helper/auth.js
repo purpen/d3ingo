@@ -1,11 +1,13 @@
 import store from '@/store/index'
-// import axios from '../http'
 // import api from '@/api/api'
-import { USER_SIGNIN, USER_SIGNOUT, USER_INFO, CLEAR_PREV_URL_NAME } from '@/store/mutation-types'
+import { USER_SIGNIN, USER_TICKET, USER_SIGNOUT, USER_INFO, CLEAR_PREV_URL_NAME } from '@/store/mutation-types'
 
 var mallache = {}
-mallache.write_token = function (token) {
+mallache.write_token = function (token, ticket) {
   // 写入localStorage
+  if (ticket) {
+    store.commit(USER_TICKET, ticket)
+  }
   store.commit(USER_SIGNIN, token)
 }
 
@@ -33,7 +35,8 @@ mallache.write_user = function (user) {
       company: {
         company_name: user.demand_company_name,
         company_abbreviation: user.demand_company_abbreviation
-      }
+      },
+      jd_account: user.jd_account
     }
   } else {
     userInfo = {

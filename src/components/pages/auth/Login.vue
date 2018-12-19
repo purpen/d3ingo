@@ -140,6 +140,7 @@ export default {
       isLoading: false,
       user: {},
       token: '',
+      ticket: '',
       typeError: false,
       imgCaptchaUrl: '',
       imgCaptchaStr: '',
@@ -186,17 +187,15 @@ export default {
               .post(api.login, { account: account, password: password, str: that.imgCaptchaStr, captcha: that.form.imgCode })
               .then(function(response) {
                 that.isLoadingBtn = false
-                console.log(response)
                 if (response.data.meta.status_code === 200) {
-                  let token = response.data.data.token
-                  that.token = token
+                  that.token = response.data.data.token
+                  that.ticket = response.data.data.ticket
                   // 写入localStorage
-                  auth.write_token(token)
+                  auth.write_token(that.token, that.ticket)
                   // ajax拉取用户信息
                   that.$http
                     .get(api.user, {})
                     .then(function(response) {
-                      console.log(response.data.data)
                       if (response.data.meta.status_code === 200) {
                         if (response.data.data.type === 0) {
                           that.chooseType = true
@@ -580,7 +579,7 @@ form {
 .password-show {
   padding-left: 20px;
   position: relative;
-  
+
 }
 .password-show::before {
   content: "";
