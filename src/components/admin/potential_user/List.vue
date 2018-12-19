@@ -65,7 +65,8 @@
             border
             class="admin-table"
             @selection-change="handleSelectionChange"
-            style="width: 100%">
+            style="width: 100%"
+            :row-class-name="tableRowClassName">
             <el-table-column
               type="selection"
               width="40">
@@ -179,19 +180,30 @@
     <el-dialog
       title="添加商务成员"
       :visible.sync="BoolAddVoIpUser"
-      width="30%"
       center>
       <ul class="user-list-father">
         <li v-for="(d, i) in adminUserList" :key="i" @click="askVoIpUser(d)" :class="['user-list' ,{'active': d.status === 1 }]">
-          <img v-if="d.logo_image" :src="d.logo_image.logo" alt="">
-          <span class="no-head" v-else>{{d.realname || d.username || d.account | formatName}}</span>
-          <span class="name">{{d.realname || d.username || d.account}}</span>
+            <img v-if="d.logo_image" :src="d.logo_image.logo" alt="">
+            <span class="no-head" v-else>{{d.realname || d.username || d.account | formatName}}</span>
+            <span class="name">{{d.realname || d.username || d.account}}</span>
         </li>
       </ul>
       <!-- <span slot="footer" class="dialog-footer">
         <el-button @click="BoolAddVoIpUser = false">取 消</el-button>
         <el-button type="primary" @click="BoolAddVoIpUser = false">确 定</el-button>
       </span> -->
+    </el-dialog>
+
+    <el-dialog
+      size="tiny"
+      title="移除业务人员"
+      :visible.sync="deleteDialogVoIpUser"
+      center>
+      <span class="d-d-content">改商务成员负责{{belongIdLength}}个潜在用户, 删除商务成员后,将清空潜在客户所属人?</span>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="deleteDialogVoIpUser = false">取 消</el-button>
+        <el-button type="primary" @click="deleteVoIpUser">确 定</el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -200,6 +212,7 @@
 import api from '@/api/api'
 import vMenu from '@/components/admin/Menu'
 import {nameToAvatar} from '@/assets/js/common'
+import '@/assets/js/date_format'
 export default {
   name: 'admin_potential_list',
   components: {
@@ -224,10 +237,34 @@ export default {
       },
       tableData: [],
       adminUserList: [],
-      hasExecuteList: [] // 没有所属人的数组
+      hasExecuteList: [], // 没有所属人的数组
+      deleteDialogVoIpUser: false,
+      currentVoIpUserId: '',
+      belongIdLength: ''
     }
   },
   methods: {
+    tableRowClassName(row, index) {
+      if (row.next_time) {
+        if (this.dateCompare(row.next_time) === false) { // 没到期
+          console.log(1)
+          return 'has-date'
+        }
+        if (this.dateCompare(row.next_time)) { // 到期
+          console.log(2)
+          return 'over-date'
+        }
+      }
+    },
+    dateCompare(next) {
+      let nowDate = new Date()
+      let old = next.date_format()
+      if (nowDate < old) {
+        return false
+      } else {
+        return true
+      }
+    },
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val
@@ -317,8 +354,15 @@ export default {
     askVoIpUser(d) {
       if (d && d.id) {
         if (d.status === 1) {
-          this.deleteVoIpUser(d.id)
-        } else {
+          this.belongIdLength = this.belongIdNumber(d.id)
+          this.currentVoIpUserId = d.id
+          if (!this.belongIdLength) {
+            this.deleteVoIpUser()
+            return
+          }
+          this.deleteDialogVoIpUser = true
+        }
+        if (d.status === 2) {
           this.addVoIpUser(d.id)
         }
       }
@@ -327,6 +371,7 @@ export default {
       if (!id) return
       this.$http.post(api.adminClueAddVoIpUser, {user_id: id}).then(res => {
         if (res.data.meta.status_code === 200) {
+          this.$message.success('添加成功')
           this.getAdminList()
         } else {
           this.$message.error(res.data.meta.message)
@@ -336,10 +381,12 @@ export default {
         this.$message.error(error.message)
       })
     },
-    deleteVoIpUser(id) { // 移除业务人员
-      if (!id) return
-      this.$http.post(api.adminClueDelVoIpUser, {user_id: id}).then(res => {
+    deleteVoIpUser() { // 移除业务人员
+      if (!this.currentVoIpUserId) return
+      this.$http.post(api.adminClueDelVoIpUser, {user_id: this.currentVoIpUserId}).then(res => {
         if (res.data.meta.status_code === 200) {
+          this.deleteDialogVoIpUser = false
+          this.$message.success('移除成功')
           this.getAdminList()
         } else {
           this.$message.error(res.data.meta.message)
@@ -370,6 +417,15 @@ export default {
     handleCurrentChange(val) {
       this.query.page = parseInt(val)
       this.getClueList()
+    },
+    belongIdNumber(id) {
+      let belongIdArr = []
+      this.tableData.forEach(item => {
+        if (item.execute_user_id && item.execute_user_id === id) {
+          belongIdArr.push(item)
+        }
+      })
+      return belongIdArr.length
     }
   },
   created() {
@@ -498,6 +554,12 @@ export default {
 .status {
   font-weight: 600;
 } 
+.d-d-content {
+  line-height: 20px;
+}
+
+
+
 </style>
 
 <style>
@@ -513,5 +575,12 @@ export default {
 }
 .admin-header-right .el-tree {
   border: none;
+}
+
+.el-table .has-date {
+  border-left: 3px solid #FFA64B;
+}
+.el-table .over-date {
+  border-left: 3px solid #FF5A5F;
 }
 </style>
