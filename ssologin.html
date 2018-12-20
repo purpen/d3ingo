@@ -22,7 +22,7 @@
           if (data.type === 'login') { // login | loginout
             if (data.ticket) {
               document.cookie = 'ticket=' + data.ticket
-              localStorage.setItem('ticket', data.ticket)
+              localStorage.setItem('ticket', JSON.stringify(data.ticket))
               window.parent.postMessage(JSON.stringify({
                 type: 'login',
                 ticket: data.ticket,
