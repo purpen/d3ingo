@@ -86,6 +86,7 @@
                     filterable
                     placeholder="请选择或者新建用户来源"
                     @change="updatedBaseInfo"
+                    default-first-option
                     :allow-create="isAdmin>=15">
                   <el-option
                     v-for="(item, index) in sourceArr"
@@ -312,6 +313,7 @@
                       <el-form label-position="top" :model="projectForm" 
                           :rules="ruleProjectForm" 
                           :ref="'ruleProjectForm'+ index" label-width="80px">
+                        <span class="project-i">项目&nbsp;&nbsp;({{index + 1}})</span>
                         <p v-if="item.failure === 1" class="project-failure"><span>失败项目</span>{{item.failure_cause}}</p>
                         <el-row :gutter="20">
                           <el-col :xs="24" :sm="20" :md="8" :lg="8">
@@ -445,7 +447,7 @@
                           </el-button>
                           <el-button class="fr" @click="boolEditProject = false">取消</el-button>
                         </p>
-                        <ul>
+                        <ul class="margin-t10">
                           <li v-for="(d, i) in item.crm_design_company" :key="i" class="margin-b22">
                             <div v-if="!boolEditDesignCompany || d.id !== editDesignParams.design_id">
                               <el-row :gutter="20">
@@ -489,8 +491,9 @@
                               </el-row>
                               <el-row :gutter="20">
                                 <el-col :xs="24" :sm="24" :md="24" :lg="24">
-                                  <p>
-                                    <span>对接设计公司 </span>{{d.summary}}
+                                  <p class="p-table-summary">
+                                    <span>备注: </span>
+                                    <span>{{d.summary}}</span>
                                   </p>
                                 </el-col>
                               </el-row>
@@ -780,9 +783,9 @@
         <el-dialog
           title="标记失败"
           :visible.sync="BoolmarkFailure"
-          width="20%">
-          <span>是否缺项目对接失败？</span>
-          <el-input v-model="failureCause"></el-input>
+          size="tiny">
+          <p class="dialog-c-p">是否缺项目对接失败？</p>
+          <el-input v-model="failureCause" type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请填写项目失败原因"></el-input>
           <span slot="footer" class="dialog-footer">
             <el-button @click="BoolmarkFailure = false">取 消</el-button>
             <el-button type="primary" @click="goProjectFailure">确 定</el-button>
@@ -1594,6 +1597,9 @@ export default {
 .margin-t8 {
   margin-top: 8px;
 }
+.margin-t10 {
+  margin-top: 10px;
+}
 .padding20 {
   padding: 20px;
 }
@@ -1785,7 +1791,7 @@ export default {
 }
 .project-li {
   border-bottom: 1px solid #e6e6e6;
-  padding: 40px 20px 20px 20px;
+  padding: 20px;
 }
 .project-li:nth-child(even) {
   background-color: #FAFAFA;
@@ -1841,6 +1847,11 @@ export default {
   border-radius: 11px;
   color: #fff;
 }
+.project-i {
+  display: inline-block;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
 .user-base-table p, 
 .project-form-table p {
   margin-bottom: 22px;
@@ -1848,6 +1859,13 @@ export default {
 .user-base-table span,
 .project-form-table span {
   margin-right: 16px;
+}
+.p-table-summary {
+  display: flex;
+  line-height: 1.5;
+}
+.p-table-summary span:first-child {
+  flex-basis: 60px;
 }
 
 .progress {
