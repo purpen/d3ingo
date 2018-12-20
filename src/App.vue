@@ -34,6 +34,7 @@ import vFooter from '@/components/block/Footer'
 import api from '@/api/api'
 import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
 import {ENV} from 'conf/prod.env.js'
+import auth from '@/helper/auth'
 export default {
   name: 'app',
   components: {
@@ -47,7 +48,7 @@ export default {
         title: '',
         path: ''
       },
-      path: 'http://dev.taihuoniao.com/getmessage'
+      path: 'http://dev.taihuoniao.com/ssologin.html'
     }
   },
   watch: {
@@ -68,22 +69,79 @@ export default {
   },
   created() {
     if (ENV === 'prod' && this.prod.name === '') {
-      this.path = 'https://www.taihuoniao.com/getmessage'
+      this.path = 'https://www.taihuoniao.com/ssologin.html'
     }
-    this.$http.get(api.getVersion)
-    .then(res => {
-      let version = localStorage.getItem('version')
-      if (res.data.data.number) {
-        if (version !== res.data.data.number) {
-          localStorage.setItem('version', res.data.data.number)
-          window.location.reload(true)
-        }
-      }
-    }).catch(err => {
-      console.log(err)
-    })
+    this.getVersion()
+    this.fetchUser()
   },
   methods: {
+    getStatus(type) {
+      let url = ''
+      if (type === 2) {
+        url = api.surveyDesignCompanySurvey
+      } else {
+        url = api.surveyDemandCompanySurvey
+      }
+      this.$http.get(url, {})
+      .then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.$store.commit(CHANGE_USER_VERIFY_STATUS, res.data.data)
+        }
+      }).catch(err => {
+        console.error(err.message)
+      })
+    },
+    fetchUser() {
+      let ticket = localStorage.getItem('ticket')
+      if (ticket) {
+        if (!this.token) {
+          this.$http.post(api.iframeLogin) // cookie: ticket
+          .then(res => {
+            res = JSON.parse(res)
+            if (res.meta.status_code === 200) {
+              auth.write_token(res.data.token)
+              that.$http.get(api.user)
+              .then(function(response) {
+                if (response.data.meta.status_code === 200) {
+                  auth.write_user(response.data.data)
+                  that.getStatus(that.$store.state.event.user.type)
+                } else {
+                  auth.logout()
+                  that.$message.error(response.data.meta.message)
+                }
+              }).catch(err => {
+                auth.logout()
+                that.$message.error(error.message)
+              })
+            } else {
+              that.$message.error(res.data.meta.message)
+            }
+          }).catch(err => {
+            auth.logout()
+            console.log(err)
+          })
+        } else {
+          console.log('已登录')
+        }
+      } else {
+          console.log('没有ticket,退出登录')
+        auth.logout()
+      }
+    },
+    getVersion() {
+      this.$http.get(api.getVersion)
+      .then(res => {
+        let version = localStorage.getItem('version')
+        if (res.data.data.number) {
+          if (version !== res.data.data.number) {
+            localStorage.setItem('version', res.data.data.number)
+            window.location.reload(true)
+          }
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
     loadFrame() {
       this.iframeLoad = true
     },

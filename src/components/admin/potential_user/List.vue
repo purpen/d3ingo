@@ -55,7 +55,7 @@
               </div>
               <a href="javascript:void(0);"  @click="multipleDelItem" class="fr line-height30 height30"><i class="fx fx-icon-delete2"></i></a>
               <el-button size="small" class="fl margin-l-10" @click="randomAssign = true">随机分配</el-button>
-              <a href="javascript:void(0);" class="line-height30 height30 margin-l-10">导出表格</a>
+              <a href="javascript:void(0);" class="line-height30 height30 margin-l-10" @click="exportForm">导出表格</a>
             </div>
           </div>
 
@@ -89,7 +89,7 @@
             </el-table-column>
             <el-table-column
               prop="phone"
-              width="90"
+              width="126"
               label="电话">
             </el-table-column>
             <el-table-column
@@ -110,7 +110,7 @@
                   <p v-else-if="scope.row.rank === 2">二级客户</p>
                   <p v-else-if="scope.row.rank === 3">三级客户</p>
                   <p v-else-if="scope.row.rank === 4">四级客户</p>
-                  <p v-else>五级</p>
+                  <p v-else>五级客户</p>
                 </template>
             </el-table-column>
             <el-table-column
@@ -119,13 +119,14 @@
               label="用户来源">
             </el-table-column>
             <el-table-column
-              width="138"
-              label="对接公司">
-              <template slot-scope="scope">
+              width="100"
+              label="对接公司数量"
+              prop="design_company_count">
+              <!-- <template slot-scope="scope">
                 <div v-if="scope.row.item_name && scope.row.item_name.length" v-for="(item, i) in scope.row.design_company_name" :key="i">
                   <p>{{item}}</p>
                 </div>
-              </template>
+              </template> -->
             </el-table-column>
             <el-table-column
               prop="logs"
@@ -139,7 +140,7 @@
             </el-table-column>
             <el-table-column
               width="70"
-              label="综述">
+              label="状态">
                 <template slot-scope="scope">
                   <p class="status1 status" v-if="scope.row.status === 1">待沟通</p>
                   <p class="status2 status"  v-else-if="scope.row.status === 2">沟通中</p>
@@ -247,11 +248,9 @@ export default {
     tableRowClassName(row, index) {
       if (row.next_time) {
         if (this.dateCompare(row.next_time) === false) { // 没到期
-          console.log(1)
           return 'has-date'
         }
         if (this.dateCompare(row.next_time)) { // 到期
-          console.log(2)
           return 'over-date'
         }
       }
@@ -269,16 +268,13 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
-    // 删除项目
+    // 删除用户
     multipleDelItem() {
       if (this.multipleSelection.length === 0) {
-        this.$message.error('至少选择一个要删除的项目')
+        this.$message.error('至少选择一个要删除的潜在用户')
         return false
       }
-      var idArr = []
-      for (var i = 0; i < this.multipleSelection.length; i++) {
-        idArr.push(this.multipleSelection[i].id)
-      }
+      let idArr = this.arrayExportIds()
       this.$http.delete(api.adminClueDelete, {params: {clue_id: idArr}})
         .then((response) => {
           if (response.data.meta.status_code === 200) {
@@ -292,7 +288,6 @@ export default {
             this.$message.success('删除成功!')
           } else {
             this.$message.error(response.data.meta.message)
-            return
           }
         })
         .catch((error) => {
@@ -303,11 +298,10 @@ export default {
       this.BoolAddVoIpUser = true
       this.getAdminList()
     },
-    handleCommand(command) { // 点击菜单项的回掉
-      console.log(command)
-    },
     getDate(val) {
       console.log(val)
+      // let a = (new Date(val)).format('yyyy-MM-dd hh:mm:ss')
+      // console.log(a)
     },
     onSearch() {
       this.getClueList()
@@ -426,6 +420,30 @@ export default {
         }
       })
       return belongIdArr.length
+    },
+    exportForm() { // 导出
+      if (this.multipleSelection.length === 0) {
+        this.$message.error('至少选择一个要导出的潜在用户')
+        return false
+      }
+      let idArr = this.arrayExportIds()
+      this.$http.post(api.adminClueExportExcel, {clue_id: idArr})
+        .then((response) => {
+          if (response.data.meta.status_code === 200) {
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        })
+        .catch((error) => {
+          this.$message.error(error.message)
+        })
+    },
+    arrayExportIds() {
+      var idArr = []
+      for (var i = 0; i < this.multipleSelection.length; i++) {
+        idArr.push(this.multipleSelection[i].id)
+      }
+      return idArr
     }
   },
   created() {
@@ -577,10 +595,16 @@ export default {
   border: none;
 }
 
-.el-table .has-date {
-  border-left: 3px solid #FFA64B;
+.admin-table .has-date {
+  border-left: 4px solid #FFA64B;
 }
-.el-table .over-date {
-  border-left: 3px solid #FF5A5F;
+.admin-table .over-date {
+  border-left: 4px solid #FF5A5F;
+}
+.admin-table tr {
+  border-left: 4px solid transparent;
+}
+.admin-table thead tr {
+  border-left: 4px solid #f7f7f7;
 }
 </style>
