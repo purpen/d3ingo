@@ -77,13 +77,14 @@ export default {
   methods: {
     fetchUser() {
       let that = this
-      console.error(this.ticket, this.token)
-      if (this.ticket) {
-        if (!this.token) {
+      let ticket = localStorage.getItem('ticket')
+      let token = localStorage.getItem('token')
+      console.error(ticket, token)
+      if (ticket) {
+        if (!token) {
           this.$http.post(api.iframeLogin) // cookie: ticket
           .then(res => {
-            res = JSON.parse(res)
-            if (res.meta.status_code === 200) {
+            if (res.data.meta.status_code === 200) {
               auth.write_token(res.data.token)
               that.$http.get(api.user)
               .then(function(response) {
