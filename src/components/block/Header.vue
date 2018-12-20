@@ -343,6 +343,7 @@
               }
             }
           }).catch((error) => {
+            this.$message.error(error.msg)
             console.error(error)
             clearInterval(this.requestMessageTask)
           })

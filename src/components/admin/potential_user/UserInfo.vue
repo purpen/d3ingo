@@ -23,7 +23,7 @@
               
               <div class="user-phone fl margin-r20">
                 <i class="fx-icon-telephone"></i>
-                <el-input v-if="!currentId" v-model.number.trim="userForm.phone" placeholder="请填写用户手机号" size="small"></el-input>
+                <el-input v-if="!currentId" v-model.trim="userForm.phone" placeholder="请填写用户手机号" size="small"></el-input>
                 <span v-else>{{userForm.phone}}</span>
               </div>
               <div class="user-rank fl">
@@ -293,7 +293,7 @@
                   <el-button v-if="currentId && !BoolEditUserInfo" type="primary" class="fr" @click="editUserInfo">编辑
                   </el-button>
                   <el-button v-if="currentId && BoolEditUserInfo" class="fr" type="primary" @click="updateUserinfo('ruleClientForm')">保存</el-button>
-                  <el-button v-if="!currentId || BoolEditUserInfo" class="fr" @click="BoolEditUserInfo = false">取消</el-button>
+                  <el-button v-if="!currentId || BoolEditUserInfo" class="fr" @click="comeBack">取消</el-button>
                 </p>
               </div>
 
@@ -733,7 +733,11 @@
                           <span class="name">{{item.execute_user_name || ''}}</span>
                          </p>
                         <p>创建时间 :<span> {{item.date}}</span></p>
-                        <p>次回跟进时间 :<span>{{item.next_time}}</span></p>
+                        <p v-if="item.next_time && item.status !== 3" :class="['log-next-time', {'carry-out': item.status === 2 }]">次回跟进时间 :
+                          <span>{{item.next_time}}</span>
+                          <a v-if="item.status === 1" @click="showLogStatusDialog(item.id, 3)">取消</a>
+                          <a v-if="item.status === 1" @click="showLogStatusDialog(item.id, 2)">完成</a>
+                        </p>
                        </div>
                      </el-col>
                    </el-row>
@@ -782,6 +786,30 @@
           <span slot="footer" class="dialog-footer">
             <el-button @click="BoolmarkFailure = false">取 消</el-button>
             <el-button type="primary" @click="goProjectFailure">确 定</el-button>
+          </span>
+        </el-dialog>
+        <el-dialog
+          size="tiny"
+          title="完成确认"
+          :visible.sync="BoolLogComplete"
+          width="20%">
+          <p class="dialog-c-p">是否确认完成次回跟进时间？</p>
+          <el-input v-model="logStatusCause" type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请填写次回完成的相关内容"></el-input>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="BoolLogComplete = false">取 消</el-button>
+            <el-button type="primary" @click="changeLogStatus">确 定</el-button>
+          </span>
+        </el-dialog>
+        <el-dialog
+          size="tiny"
+          title="取消确认"
+          :visible.sync="BoolLogCancel"
+          width="20%">
+          <p class="dialog-c-p">是否取消次回跟进？</p>
+          <el-input v-model="logStatusCause" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"  placeholder="请填写次回取消的原因"></el-input>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="BoolLogCancel = false">取 消</el-button>
+            <el-button type="primary" @click="changeLogStatus">确 定</el-button>
           </span>
         </el-dialog>
 
@@ -940,7 +968,12 @@ export default {
 
       followVal: '',
       followTime: '',
+      logStatusCause: '',
       followLogList: [],
+      logStstus: '',
+      logId: '',
+      BoolLogComplete: false,
+      BoolLogCancel: false,
       pickerOptions1: {
         disabledDate(time) {
           return time.getTime() < Date.now()
@@ -974,6 +1007,13 @@ export default {
         console.log(error.message)
         this.$message.error(error.message)
       })
+    },
+    comeBack() {
+      if (this.currentId) {
+        this.BoolEditUserInfo = false
+      } else {
+        this.$router.go(-1)
+      }
     },
     updatedBaseInfo(val) { // 更新基本信息
       // if (!val) return
@@ -1086,6 +1126,10 @@ export default {
       }
       if (!this.userForm.phone) {
         this.$message.error('请填写联系人电话')
+        return
+      }
+      if (!(/^\d{6,11}$/.test(this.userForm.phone))) {
+        this.$message.error('请输入有效的手机号')
         return
       }
       let row = Object.assign(this.clientForm, this.userForm)
@@ -1440,6 +1484,44 @@ export default {
           })
         }
       })
+    },
+    showLogStatusDialog(id, status) {
+      if (id && status) {
+        this.logStatusCause = ''
+        this.logId = id
+        this.logStstus = status
+        if (status === 2) {
+          this.BoolLogComplete = true
+        }
+        if (status === 3) {
+          this.BoolLogCancel = true
+        }
+      }
+    },
+    changeLogStatus() {
+      if (!this.logId) return
+      if (!this.logStstus) return
+      if (!this.logStatusCause) {
+        this.$message.error('请输入更改跟进记录的内容')
+        return
+      }
+      let row = {
+        clue_id: this.currentId,
+        track_log_id: this.logId,
+        status: parseInt(this.logStstus),
+        comment: this.logStatusCause
+      }
+      this.$http.post(api.adminClueSetTrackLog, row).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.BoolLogCancel = false
+          this.BoolLogComplete = false
+          this.getLogList()
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+      })
     }
   },
   computed: {
@@ -1793,8 +1875,24 @@ export default {
   margin-left: 20px;
   color: #666666;
 }
+.log-li-top .log-next-time {
+  padding: 0px 10px;
+  height: 30px;
+  line-height: 30px;
+  background-color: #EFEFEF;
+}
+.log-next-time span {
+  margin-right: 20px;
+}
+.log-next-time a {
+  padding: 0px 5px;
+  cursor: pointer;
+}
 .log-li-top > p > span {
   color: #9E9E9E;
+}
+.log-li-top .carry-out {
+  background: url(../../../assets/images/icon/Success@2x.png) no-repeat right / 18px 18px;
 }
 .log-contant {
   border-top: 1px solid #e6e6e6;
@@ -1825,6 +1923,13 @@ export default {
   border-radius: 50%;
   margin-right: 10px;
 }
+
+.dialog-c-p {
+  text-align: center;
+  line-height: 20px;
+  margin-bottom: 20px;
+  margin-top: -10px;
+}
 </style>
 <style>
 .card-header .el-input__inner {
@@ -1834,6 +1939,9 @@ export default {
 .user-info-center .el-select {
   width: 150px;
   /* max-width: 150px; */
+}
+.source .el-select {
+  width: 200px;
 }
 .user-status .el-select .el-input__inner {
   border: none;

@@ -40,6 +40,7 @@ export default {
   withdrawList: '/withdraw/lists', // GET 用户提现列表
   jdCode: '/jd/code', // GET 获取京东code
   jdToken: '/jd/jdAccount', // GET 获取京东云access_token
+  deleteJdYun: '/auth/deleteJdYun', // POST 解绑京东云
 
   // 栏目
   columnList: '/column/lists', // GET 列表
@@ -185,6 +186,7 @@ export default {
   adminClueDelete: 'admin/clue/delete', // 删除潜在客户
   adminClueVoIpList: 'admin/clue/voIpList', // GET 业务人员列表
   adminClueAddVoIpUser: 'admin/clue/addVoIpUser', // 添加业务人员
+  adminClueDelVoIpUser: 'admin/clue/delVoIpUser', // 移除业务人员
   adminClueRandomAllot: 'admin/clue/randomAllot', // POST 随机分配
   adminClueTypeList: 'admin/clue/typeList', // GET 类别列表
   adminClueUpdate: 'admin/clue/update', // POST 更新基本信息
@@ -202,6 +204,7 @@ export default {
   adminClueUpdateCrmDesign: 'admin/clue/updateCrmDesign', // POST 更改对接公司
   adminClueAddTrackLog: 'admin/clue/addTrackLog', // POST 添加跟进记录
   adminClueShowTrackLog: 'admin/clue/showTrackLog', // GET 查看跟进记录
+  adminClueSetTrackLog: 'admin/clue/setTrackLog', // POST -完成/取消跟进记录
   adminClueUpdateTrackLog: 'admin/clue/updateTrackLog', // POST 更改跟进记录
   adminClueDelTrackLog: 'admin/clue/delTrackLog', // DELETE 删除跟进记录
 

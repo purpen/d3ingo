@@ -36,11 +36,6 @@
   .el-menu-info.el-menu--horizontal > .el-submenu .el-submenu__title {
     padding-right: 0
   }
-  .el-button:focus {
-    background: #f5f5f5;
-    border: 1px solid #e6e6e6;
-    color: #999;
-  }
   .el-button:visited {
     background-color: #ff5a5f;
     color: #fff;
@@ -380,6 +375,9 @@
     border-radius: 4px;
     /* margin-bottom: 0px; */
   }
+  .el-dialog--380px {
+    width: 380px
+  }
   .seen-deta .el-dialog--tiny {
     width: 480px
   }
@@ -391,6 +389,9 @@
   } */
   .el-dialog--tiny .el-dialog__headerbtn {
     font-size: 14px;
+  }
+  .el-dialog__headerbtn:focus .el-dialog__close, .el-dialog__headerbtn:hover .el-dialog__close {
+    color: #ff5a5f
   }
   .el-dialog--tiny .el-dialog__title {
     font-size: 16px;
