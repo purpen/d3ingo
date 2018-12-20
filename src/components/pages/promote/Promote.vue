@@ -1438,7 +1438,7 @@
   }
   .foot{
     height: 30rem;
-    background: url("../../../assets/images/promote/app/5@2x.png");
+    background: url("../../../assets/images/promote/app/footer.png");
     background-size:100% 100% ;
     margin-top: -15rem;
     margin-bottom: -50px;
