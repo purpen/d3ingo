@@ -204,6 +204,7 @@ export default {
   adminClueUpdateCrmDesign: 'admin/clue/updateCrmDesign', // POST 更改对接公司
   adminClueAddTrackLog: 'admin/clue/addTrackLog', // POST 添加跟进记录
   adminClueShowTrackLog: 'admin/clue/showTrackLog', // GET 查看跟进记录
+  adminClueSetTrackLog: 'admin/clue/setTrackLog', // POST -完成/取消跟进记录
   adminClueUpdateTrackLog: 'admin/clue/updateTrackLog', // POST 更改跟进记录
   adminClueDelTrackLog: 'admin/clue/delTrackLog', // DELETE 删除跟进记录
 

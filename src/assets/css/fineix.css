@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('../fonts/icomoon.eot?r3k0d4');
-  src:  url('../fonts/icomoon.eot?r3k0d4#iefix') format('embedded-opentype'),
-    url('../fonts/icomoon.ttf?r3k0d4') format('truetype'),
-    url('../fonts/icomoon.woff?r3k0d4') format('woff'),
-    url('../fonts/icomoon.svg?r3k0d4#icomoon') format('svg');
+  src:  url('../fonts/icomoon.eot?r3k0da');
+  src:  url('../fonts/icomoon.eot?r3k0da#iefix') format('embedded-opentype'),
+    url('../fonts/icomoon.ttf?r3k0da') format('truetype'),
+    url('../fonts/icomoon.woff?r3k0da') format('woff'),
+    url('../fonts/icomoon.svg?r3k0da#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -38,9 +38,6 @@
 }
 .fx-icon-sound-loudly:before {
   content: "\e904";
-}
-.fx-icon-sound-mute:before {
-  content: "\e905";
 }
 .fx-icon-suspend:before {
   content: "\e906";
@@ -109,9 +106,6 @@
   content: "\e919";
   margin-left: -1em;
   color: rgb(53, 54, 53);
-}
-.fx-icon-rotate:before {
-  content: "\e91a";
 }
 .fx-icon-red-packets:before {
   content: "\e91b";
@@ -239,9 +233,6 @@
 .fx-icon-paypal:before {
   content: "\e93e";
 }
-.fx-icon-nothing-plus:before {
-  content: "\e93f";
-}
 .fx-icon-nothing-right:before {
   content: "\e940";
 }
@@ -364,6 +355,25 @@
 .fx-icon-full-screen:before {
   content: "\e966";
 }
+.fx-icon-coupon .path1:before {
+  content: "\e98a";
+  color: rgb(60, 60, 60);
+}
+.fx-icon-coupon .path2:before {
+  content: "\e98b";
+  margin-left: -1em;
+  color: rgb(53, 54, 53);
+}
+.fx-icon-coupon .path3:before {
+  content: "\e98c";
+  margin-left: -1em;
+  color: rgb(53, 54, 53);
+}
+.fx-icon-coupon .path4:before {
+  content: "\e98d";
+  margin-left: -1em;
+  color: rgb(53, 54, 53);
+}
 .fx-icon-general-expression:before {
   content: "\e967";
 }
@@ -479,25 +489,6 @@
 }
 .fx-icon-copyright:before {
   content: "\e989";
-}
-.fx-icon-coupon .path1:before {
-  content: "\e98a";
-  color: rgb(60, 60, 60);
-}
-.fx-icon-coupon .path2:before {
-  content: "\e98b";
-  margin-left: -1em;
-  color: rgb(53, 54, 53);
-}
-.fx-icon-coupon .path3:before {
-  content: "\e98c";
-  margin-left: -1em;
-  color: rgb(53, 54, 53);
-}
-.fx-icon-coupon .path4:before {
-  content: "\e98d";
-  margin-left: -1em;
-  color: rgb(53, 54, 53);
 }
 .fx-icon-cover:before {
   content: "\e98e";
@@ -957,7 +948,7 @@
   color: #ff5a5f;
 }
 .fx-icon-orderReminding:before {
-  content: "\ea05";
+  content: "\1f3f2";
   color: #999;
 }
 .fx-icon-orderRemindingClick:before {
@@ -970,6 +961,7 @@
 }
 .fx-icon-account-hover:before {
   content: "\ea08";
+  color: #ff5a5f;
 }
 .fx-icon-company:before {
   content: "\ea09";
@@ -977,4 +969,13 @@
 }
 .fx-icon-company-hover:before {
   content: "\ea0a";
+  color: #ff5a5f;
+}
+.fx-icon-selection-box-click:before {
+  content: "\ea05";
+  color: #999;
+}
+.fx-icon-red-packets1:before {
+  content: "\e905";
+  color: #666;
 }
