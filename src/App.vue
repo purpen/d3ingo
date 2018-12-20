@@ -85,7 +85,7 @@ export default {
           this.$http.post(api.iframeLogin) // cookie: ticket
           .then(res => {
             if (res.data.meta.status_code === 200) {
-              conosle.error('没有Token')
+              console.error('没有Token')
               auth.write_token(res.data.token)
               that.getUser(token)
             } else {
@@ -98,7 +98,7 @@ export default {
         } else {
           let user = localStorage.getItem('user')
           if (!user) {
-            conosle.error('没有user')
+            console.error('没有user')
             this.getUser(token)
           }
           console.log('已登录')
