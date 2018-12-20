@@ -86,19 +86,7 @@ export default {
           .then(res => {
             if (res.data.meta.status_code === 200) {
               auth.write_token(res.data.token)
-              that.$http.get(api.user)
-              .then(function(response) {
-                if (response.data.meta.status_code === 200) {
-                  auth.write_user(response.data.data)
-                  that.getStatus(that.$store.state.event.user.type)
-                } else {
-                  auth.logout()
-                  that.$message.error(response.data.meta.message)
-                }
-              }).catch(err => {
-                auth.logout()
-                that.$message.error(err.message)
-              })
+              that.getUser(token)
             } else {
               that.$message.error(res.data.meta.message)
             }
@@ -107,12 +95,32 @@ export default {
             console.log(err)
           })
         } else {
+          let user = localStorage.getItem('user')
+          if (!user) {
+            this.getUser()
+          }
           console.log('已登录')
         }
       } else {
         console.log('没有ticket,退出登录')
         auth.logout()
       }
+    },
+    getUser(token) {
+      const that = this
+      that.$http.get(api.user, {params: {token: token}})
+      .then(function(response) {
+        if (response.data.meta.status_code === 200) {
+          auth.write_user(response.data.data)
+          that.getStatus(that.$store.state.event.user.type)
+        } else {
+          auth.logout()
+          that.$message.error(response.data.meta.message)
+        }
+      }).catch(err => {
+        auth.logout()
+        that.$message.error(err.message)
+      })
     },
     getVersion() {
       this.$http.get(api.getVersion)
