@@ -77,8 +77,8 @@ export default {
   methods: {
     fetchUser() {
       let that = this
-      let ticket = localStorage.getItem('ticket')
-      if (ticket) {
+      console.error(this.ticket, this.token)
+      if (this.ticket) {
         if (!this.token) {
           this.$http.post(api.iframeLogin) // cookie: ticket
           .then(res => {
