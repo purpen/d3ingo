@@ -75,23 +75,8 @@ export default {
     this.fetchUser()
   },
   methods: {
-    getStatus(type) {
-      let url = ''
-      if (type === 2) {
-        url = api.surveyDesignCompanySurvey
-      } else {
-        url = api.surveyDemandCompanySurvey
-      }
-      this.$http.get(url, {})
-      .then(res => {
-        if (res.data.meta.status_code === 200) {
-          this.$store.commit(CHANGE_USER_VERIFY_STATUS, res.data.data)
-        }
-      }).catch(err => {
-        console.error(err.message)
-      })
-    },
     fetchUser() {
+      let that = this
       let ticket = localStorage.getItem('ticket')
       if (ticket) {
         if (!this.token) {
@@ -111,7 +96,7 @@ export default {
                 }
               }).catch(err => {
                 auth.logout()
-                that.$message.error(error.message)
+                that.$message.error(err.message)
               })
             } else {
               that.$message.error(res.data.meta.message)
@@ -124,7 +109,7 @@ export default {
           console.log('已登录')
         }
       } else {
-          console.log('没有ticket,退出登录')
+        console.log('没有ticket,退出登录')
         auth.logout()
       }
     },
