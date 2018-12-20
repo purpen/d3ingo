@@ -87,7 +87,7 @@ export default {
             if (res.data.meta.status_code === 200) {
               console.error('没有Token')
               auth.write_token(res.data.token)
-              that.getUser(token)
+              that.getUser(res.data.token)
             } else {
               that.$message.error(res.data.meta.message)
             }
