@@ -29,7 +29,7 @@ let getTicket = function () {
   // TODO 此处可以写异步请求，到后台一直比较Token
   let ticket = localStorage.getItem('ticket')
   if (ticket) {
-    return JSON.parse(ticket)
+    return ticket
   } else {
     return false
   }
