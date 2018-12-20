@@ -85,9 +85,9 @@ export default {
           this.$http.post(api.iframeLogin) // cookie: ticket
           .then(res => {
             if (res.data.meta.status_code === 200) {
-              console.error('没有Token')
-              auth.write_token(res.data.token)
-              that.getUser(res.data.token)
+              console.error('没有Token', )
+              auth.write_token(res.data.data.token)
+              that.getUser(res.data.data.token)
             } else {
               that.$message.error(res.data.meta.message)
             }

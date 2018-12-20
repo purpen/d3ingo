@@ -21,7 +21,7 @@ export default {
   iframeLogin: '/auth/ilogin', // POST iframe登陆
   setUserType: '/auth/setUserType', // POST 选择用户类型
   errCount: '/auth/errCount', // POST 检测错误次数
-  logout: '/auth/logout', // 退出登录
+  logout: '/auth/logout', // POST 退出登录
   register: '/auth/register', // 注册
   inviteRegister: '/auth/childRegister', // POST 邀请注册
   forget: '/auth/forgetPassword', // POST 找回密码
