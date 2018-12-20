@@ -34,6 +34,7 @@ import vFooter from '@/components/block/Footer'
 import api from '@/api/api'
 import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
 import {ENV} from 'conf/prod.env.js'
+import auth from '@/helper/auth'
 export default {
   name: 'app',
   components: {
@@ -70,20 +71,38 @@ export default {
     if (ENV === 'prod' && this.prod.name === '') {
       this.path = 'https://www.taihuoniao.com/getmessage'
     }
-    this.$http.get(api.getVersion)
-    .then(res => {
-      let version = localStorage.getItem('version')
-      if (res.data.data.number) {
-        if (version !== res.data.data.number) {
-          localStorage.setItem('version', res.data.data.number)
-          window.location.reload(true)
-        }
-      }
-    }).catch(err => {
-      console.log(err)
-    })
+    this.getVersion()
   },
   methods: {
+    fetchUser() {
+      let ticket = localStorage.getItem('ticket')
+      if (ticket) {
+        if (!this.token) {
+          this.$http.post(api.iframeLogin, res => {
+            res = JSON.parse(res)
+            if (res.meta.status_code === 200) {
+              auth.write_token(res.data.token)
+            }
+          })
+        }
+      } else {
+        auth.logout()
+      }
+    },
+    getVersion() {
+      this.$http.get(api.getVersion)
+      .then(res => {
+        let version = localStorage.getItem('version')
+        if (res.data.data.number) {
+          if (version !== res.data.data.number) {
+            localStorage.setItem('version', res.data.data.number)
+            window.location.reload(true)
+          }
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
     loadFrame() {
       this.iframeLoad = true
     },
