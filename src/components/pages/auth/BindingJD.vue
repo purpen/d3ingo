@@ -386,6 +386,9 @@ export default {
 }
 </script>
 <style scoped>
+  .padding-l-10 {
+    padding-left: 10px
+  }
   .register-box {
     border-radius: 6px;
     width: 530px;

@@ -9,15 +9,16 @@
           <v-menu-sub></v-menu-sub>
           <v-menu-sub v-if="false" currentSubName="identification"></v-menu-sub>
           <div :class="['content-box', 'clearfix' , isMob ? 'content-box-m' : '']" v-loading="isLoading">
-            <ul>
-              <!-- <li class="flex" v-if="user.jd_account"> -->
-              <li class="flex">
+            <ul class="line-height20 fz-14">
+              <li class="flex" v-if="jdAccount">
+              <!-- <li class="flex"> -->
                 <span class="flex0">
                   京东账号:
                 </span>
-                <p class="flex1">{{user.jd_account}}</p>
+                <p class="flex1">{{jdAccount}}</p>
                 <span class="flex0 tc-hover-red pointer" @click="showForm = true">解绑</span>
               </li>
+              <li v-else>暂无绑定京东账号</li>
             </ul>
             <el-form v-if="showForm" class="clearfix form" label-position="top" :model="form" :rules="ruleForm"
               ref="ruleForm" label-width="80px">
@@ -61,6 +62,7 @@
   import vMenu from '@/components/pages/v_center/Menu'
   import vMenuSub from '@/components/pages/v_center/account/MenuSub'
   import api from '@/api/api'
+  import auth from '@/helper/auth'
 
   export default {
     name: 'vcenter_account_modify_pwd',
@@ -104,6 +106,7 @@
         }
       }
       return {
+        jdAccount: '',
         imgCaptchaUrl: '',
         isLoading: false,
         isLoadingBtn: false,
@@ -240,6 +243,8 @@
             sms_code: this.form.code
           }).then(res => {
             if (res.data.meta.status_code === 200) {
+              this.jdAccount = ''
+              this.setUser()
               console.log('解绑成功')
             } else {
               this.$message.error(res.data.meta.message)
@@ -248,6 +253,17 @@
         } else {
           return
         }
+      },
+      setUser() {
+        this.$http.get(api.user)
+          .then(function(res) {
+            if (res.data.meta.status_code === 200) {
+              auth.write_user(res.data.data)
+            }
+          })
+          .catch(err => {
+            this.$message.error(err.massage)
+          })
       }
     },
     computed: {
@@ -269,6 +285,7 @@
     },
     watch: {},
     created() {
+      this.jdAccount = this.user.jd_account
       this.$set(this.form, 'phone', this.user.account)
       this.fetchImgCaptcha()
     }
