@@ -21,7 +21,7 @@ export default {
   iframeLogin: '/auth/ilogin', // POST iframe登陆
   setUserType: '/auth/setUserType', // POST 选择用户类型
   errCount: '/auth/errCount', // POST 检测错误次数
-  logout: '/auth/logout', // 退出登录
+  logout: '/auth/logout', // POST 退出登录
   register: '/auth/register', // 注册
   inviteRegister: '/auth/childRegister', // POST 邀请注册
   forget: '/auth/forgetPassword', // POST 找回密码
@@ -184,6 +184,8 @@ export default {
   adminClueClueList: 'admin/clue/clueList', // GET 潜在客户列表
   adminClueAdminUser: 'admin/clue/adminUser', // 后台人员列表
   adminClueDelete: 'admin/clue/delete', // 删除潜在客户
+  adminClueExportExcel: 'admin/clue/exportExcel', // 导出表格
+  adminClueImportExcel: 'admin/clue/importExcel', // 导入表格
   adminClueVoIpList: 'admin/clue/voIpList', // GET 业务人员列表
   adminClueAddVoIpUser: 'admin/clue/addVoIpUser', // 添加业务人员
   adminClueDelVoIpUser: 'admin/clue/delVoIpUser', // 移除业务人员
@@ -204,6 +206,7 @@ export default {
   adminClueUpdateCrmDesign: 'admin/clue/updateCrmDesign', // POST 更改对接公司
   adminClueAddTrackLog: 'admin/clue/addTrackLog', // POST 添加跟进记录
   adminClueShowTrackLog: 'admin/clue/showTrackLog', // GET 查看跟进记录
+  adminClueSetTrackLog: 'admin/clue/setTrackLog', // POST -完成/取消跟进记录
   adminClueUpdateTrackLog: 'admin/clue/updateTrackLog', // POST 更改跟进记录
   adminClueDelTrackLog: 'admin/clue/delTrackLog', // DELETE 删除跟进记录
 
