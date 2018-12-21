@@ -220,7 +220,7 @@
       <div class="logo-list clearfix">
         <span class="inline-flex">
           <img v-lazy="require('assets/images/home/logo_md.jpg')" />
-          <img v-lazy="require('assets/images/home/jdjr_logo.jpg')" />
+          <img v-lazy="require('assets/images/home/jdjr_logo.png')" />
           <img v-lazy="require('assets/images/home/logo_cxgc.jpg')" />
           <img v-lazy="require('assets/images/home/logo_hqjj.jpg')" />
           <img v-lazy="require('assets/images/home/1logo.jpg')" />
