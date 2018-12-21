@@ -446,8 +446,17 @@ export default {
       if (conf.ENV === 'prod') {
         url = 'https://d3in-admin.taihuoniao.com/admin/clue/exportExcel'
       }
-      let downloadUrl = url + '?clue_id' + '[' + idArr + ']'
-      window.open(encodeURI(downloadUrl))
+      let downloadUrl = url + '?'
+      let urlStr = ''
+      idArr.forEach((item, i) => {
+        if (i === 1) {
+          urlStr = 'clue_id[' + i + ']=' + idArr[i]
+        } else {
+          urlStr += '&clue_id[' + i + ']=' + idArr[i]
+        }
+      })
+      downloadUrl = url + '?' + urlStr
+      window.open(decodeURI(downloadUrl))
     },
     arrayExportIds() {
       var idArr = []
