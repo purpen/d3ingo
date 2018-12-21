@@ -150,7 +150,7 @@
                 >
               </el-input>
               <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 添加标签</el-button>
-              <span class="fr">创建时间:&nbsp;&nbsp;{{createdTime}}</span>
+              <span class="fr u-c-time">创建时间:&nbsp;&nbsp;{{createdTime}}</span>
             </p>
           </div>
           <div class="card-body">
@@ -1733,6 +1733,10 @@ export default {
 }
 .padding20 {
   padding: 20px;
+}
+.u-c-time {
+  font-size: 12px;
+  color: #666666;
 }
 .border-radius {
   border: 1px solid #e6e6e6;
