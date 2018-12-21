@@ -19,7 +19,7 @@
 
     <div class="logo-list">
       <img v-lazy="require('assets/images/home/logo_md.jpg')"/>
-      <img v-lazy="require('assets/images/home/jdjr_logo.jpg')"/>
+      <img v-lazy="require('assets/images/home/jdjr_logo.png')"/>
       <img v-lazy="require('assets/images/home/logo_cxgc.jpg')"/>
       <img v-lazy="require('assets/images/home/logo_hqjj.jpg')"/>
     </div>
