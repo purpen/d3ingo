@@ -313,7 +313,39 @@
                       <el-form label-position="top" :model="projectForm" 
                           :rules="ruleProjectForm" 
                           :ref="'ruleProjectForm'+ index" label-width="80px">
-                        <span class="project-i">项目&nbsp;&nbsp;({{index + 1}})</span>
+                        <el-row :gutter="20">
+                          <el-col :xs="8" :sm="4" :md="4" :lg="4">
+                            <span class="project-i">项目&nbsp;&nbsp;({{index + 1}})</span>
+                          </el-col>
+                          <el-col :xs="14" :sm="10" :md="8" :lg="8">
+                            
+                            <span v-if="item.item">{{item.item_name}}</span>
+                            <div v-else>
+                              <el-button v-if="boolLinkItem || linkProjectId !== item.item_id" size="small" @click="showLinkItem(item.item_id)">关联项目</el-button>
+                              <div class="margin-b15" v-if="!boolLinkItem && linkProjectId === item.item_id">
+                                <el-select
+                                    v-model="linkProjectValue"
+                                    filterable
+                                    remote
+                                    reserve-keyword
+                                    placeholder="请输入关键词"
+                                    :remote-method="remoteMethod"
+                                    :loading="loading"
+                                    default-first-option
+                                    @blur="hiddenInput(e)"
+                                    @change="goLinkProject(item.item_id)">
+                                  <el-option
+                                    v-for="item in options4"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id">
+                                  </el-option>
+                                </el-select>
+                              </div>
+                            </div>
+                          </el-col>
+                        </el-row>
+
                         <p v-if="item.failure === 1" class="project-failure"><span>失败项目</span>{{item.failure_cause}}</p>
                         <el-row :gutter="20">
                           <el-col :xs="24" :sm="20" :md="8" :lg="8">
@@ -908,22 +940,27 @@ export default {
       userStatus: [ // 客户状态
         {
           value: 1,
-          label: '待沟通',
+          label: '潜在客户',
           color: '#FFA64B'
         },
         {
           value: 2,
-          label: '沟通中',
+          label: '真实需求',
           color: '#65A6FF'
         },
         {
           value: 3,
-          label: '成功',
+          label: '签订合作',
           color: '#00AC84'
         },
         {
           value: 4,
-          label: '失败',
+          label: '对接失败',
+          color: '#FF5A5F'
+        },
+        {
+          value: 5,
+          label: '对接设计',
           color: '#FF5A5F'
         }
       ],
@@ -981,7 +1018,14 @@ export default {
         disabledDate(time) {
           return time.getTime() < Date.now()
         }
-      }
+      },
+
+      boolLinkItem: true,
+      linkProjectId: '',
+      options4: [],
+      linkProjectValue: '',
+      loading: false,
+      states: []
     }
   },
   methods: {
@@ -1027,6 +1071,7 @@ export default {
       row.clue_id = this.currentId
       this.$http.post(api.adminClueUpdate, row).then(res => {
         if (res.data.meta.status_code === 200) {
+          this.getTypeList()
         } else {
           this.$message.error(res.data.meta.message)
           console.log(res.data.meta.message)
@@ -1322,6 +1367,11 @@ export default {
         }
       })
     },
+    hiddenInput(e) {
+      console.log('aaaaa')
+      console.log(e)
+      this.boolLinkItem = true
+    },
     focusInput() {
       this.focusHeight = true
     },
@@ -1525,6 +1575,75 @@ export default {
       }).catch(error => {
         this.$message.error(error.message)
       })
+    },
+    showLinkItem(id) {
+      if (!id) return
+      this.boolLinkItem = false
+      this.linkProjectId = id
+      this.associationItemList()
+    },
+    associationItemList() {
+      this.$http.get(api.adminClueLtemList).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.states = res.data.data
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+      })
+    },
+    remoteMethod(query) {
+      if (query !== '') {
+        this.loading = true
+        let arr = query.split('')
+        let reg = ''
+        arr.forEach(ele => {
+          reg += '.*?' + ele
+        })
+        let regg = new RegExp(reg, 'i')
+        setTimeout(() => {
+          this.loading = false
+          this.options4 = this.states.filter(item => {
+            return regg.test(item.name)
+          })
+        }, 200)
+      } else {
+        this.options4 = []
+      }
+    },
+    goLinkProject(id) { // 关联线上项目
+      if (!id) return
+      let row = {
+        clue_id: this.currentId,
+        crm_item_id: id,
+        item_id: this.linkProjectValue
+      }
+      this.$http.post(api.adminClueRelateItem, row).then(res => {
+        if (res.data.meta.status_code === 200) {
+
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+      })
+    },
+    deleteLinkProject() { // 删除关联项目
+      let row = {
+        // clue_id: this.currentId,
+        // crm_item_id: id,
+        // item_id: this.linkProjectValue
+      }
+      this.$http.post(api.adminClueDelRelateItem, row).then(res => {
+        if (res.data.meta.status_code === 200) {
+
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+      })
     }
   },
   computed: {
@@ -1581,12 +1700,16 @@ export default {
     }
     this.getTypeList()
     this.getAdminVoIpList()
-  }
+  },
+  mounted() {}
 }
 </script>
 <style scoped>
 .margin-b22 {
   margin-bottom: 22px !important;
+}
+.margin-b15 {
+  margin-bottom: 15px;
 }
 .margin-r20 {
   margin-right: 20px;
@@ -1850,6 +1973,7 @@ export default {
 .project-i {
   display: inline-block;
   font-size: 16px;
+  line-height: 36px;
   margin-bottom: 20px;
 }
 .user-base-table p, 

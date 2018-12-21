@@ -47,14 +47,25 @@
                   </span>
                   <div class="drop-down">
                     <span @click="$router.push({name: 'adminPotentialUserCreated'})">添加潜在用户</span>
-                    <span>导入文件</span>
                     <span @click="showDialogVoIpUser">添加商务成员</span>
+                    <!-- <span>导入文件</span> -->
+                    <el-upload
+                      class="upload-demo"
+                      :action="uploadUrl"
+                      :on-preview="handlePreview"
+                      :before-upload="beforeAvatarUpload"
+                      :data="{'token': token}"
+                      accept=".xlsx"
+                      :show-file-list="false"
+                      :file-list="file">
+                      <span class="upload-file">导入文件</span>
+                    </el-upload>
                   </div>
                 </div>
 
               </div>
               <a href="javascript:void(0);"  @click="multipleDelItem" class="fr line-height30 height30"><i class="fx fx-icon-delete2"></i></a>
-              <el-button size="small" class="fl margin-l-10" @click="randomAssign = true">随机分配</el-button>
+              <el-button size="small" class="fl margin-l-10" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button>
               <a href="javascript:void(0);" class="line-height30 height30 margin-l-10" @click="exportForm">导出表格</a>
             </div>
           </div>
@@ -221,6 +232,8 @@ export default {
   },
   data() {
     return {
+      uploadUrl: '',
+      file: [],
       randomAssign: false,
       BoolAddVoIpUser: false,
       multipleSelection: [],
@@ -427,16 +440,20 @@ export default {
         return false
       }
       let idArr = this.arrayExportIds()
-      this.$http.post(api.adminClueExportExcel, {clue_id: idArr})
-        .then((response) => {
-          if (response.data.meta.status_code === 200) {
-          } else {
-            this.$message.error(response.data.meta.message)
-          }
-        })
-        .catch((error) => {
-          this.$message.error(error.message)
-        })
+      this.$http.post(api.adminClueExportExcelUrl, {
+        clue_id: idArr,
+        token: this.token
+      }).then((res) => {
+        if (res.data.meta.status_code === 200) {
+          console.log(res.data.data)
+          // window.location.href = res.data.data
+          // window.location.assign(res.data.data)
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch((error) => {
+        this.$message.error(error.message)
+      })
     },
     arrayExportIds() {
       var idArr = []
@@ -444,7 +461,28 @@ export default {
         idArr.push(this.multipleSelection[i].id)
       }
       return idArr
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList)
+    },
+    handlePreview(file) {
+      console.log(file)
+    },
+    beforeAvatarUpload(file) {
+      // const isXLSX = file.type === 'xlsx'
+      console.log(file)
+      // const isLt2M = file.size / 1024 / 1024 < 2
+      // if (!isXLSX) {
+      //   this.$message.error('上传头像图片只能是 XLSX 格式!')
+      // }
+      // if (!isLt2M) {
+      //   this.$message.error('上传头像图片大小不能超过 2MB!')
+      // }
+      // return isXLSX && isLt2M
     }
+  },
+  mounted() {
+    this.uploadUrl = api.adminClueImportExcel
   },
   created() {
     this.getClueList()
@@ -453,6 +491,14 @@ export default {
   filters: {
     formatName(val) {
       return nameToAvatar(val)
+    }
+  },
+  computed: {
+    isAdmin() {
+      return this.$store.state.event.user.role_id
+    },
+    token() {
+      return this.$store.state.event.token
     }
   }
 }
@@ -514,6 +560,13 @@ export default {
   display: none;
 }
 .drop-down > span {
+  display: block;
+  height: 30px;
+  line-height: 30px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.upload-file {
   display: block;
   height: 30px;
   line-height: 30px;
