@@ -29,7 +29,7 @@ let getTicket = function () {
   // TODO 此处可以写异步请求，到后台一直比较Token
   let ticket = localStorage.getItem('ticket')
   if (ticket) {
-    return JSON.parse(ticket)
+    return ticket
   } else {
     return false
   }
@@ -148,7 +148,7 @@ function showProd() {
 const state = {
   state: getTicket() || null,
   token: isLoggedIn() || null,
-  user: userInfo() || false,
+  user: userInfo() || {},
   loading: false, // 是否显示loading
   apiUrl: 'http://sa.taihuoniao.com', // 接口base url
   imgUrl: 'http://sa.taihuoniao.com', // 图片base url

@@ -55,7 +55,7 @@
               </div>
               <a href="javascript:void(0);"  @click="multipleDelItem" class="fr line-height30 height30"><i class="fx fx-icon-delete2"></i></a>
               <el-button size="small" class="fl margin-l-10" @click="randomAssign = true">随机分配</el-button>
-              <a href="javascript:void(0);" class="line-height30 height30 margin-l-10">导出表格</a>
+              <a href="javascript:void(0);" class="line-height30 height30 margin-l-10" @click="exportForm">导出表格</a>
             </div>
           </div>
 
@@ -65,7 +65,8 @@
             border
             class="admin-table"
             @selection-change="handleSelectionChange"
-            style="width: 100%">
+            style="width: 100%"
+            :row-class-name="tableRowClassName">
             <el-table-column
               type="selection"
               width="40">
@@ -88,7 +89,7 @@
             </el-table-column>
             <el-table-column
               prop="phone"
-              width="90"
+              width="126"
               label="电话">
             </el-table-column>
             <el-table-column
@@ -109,7 +110,7 @@
                   <p v-else-if="scope.row.rank === 2">二级客户</p>
                   <p v-else-if="scope.row.rank === 3">三级客户</p>
                   <p v-else-if="scope.row.rank === 4">四级客户</p>
-                  <p v-else>五级</p>
+                  <p v-else>五级客户</p>
                 </template>
             </el-table-column>
             <el-table-column
@@ -118,19 +119,20 @@
               label="用户来源">
             </el-table-column>
             <el-table-column
-              width="138"
-              label="对接公司">
-              <template slot-scope="scope">
+              width="100"
+              label="对接公司数量"
+              prop="design_company_count">
+              <!-- <template slot-scope="scope">
                 <div v-if="scope.row.item_name && scope.row.item_name.length" v-for="(item, i) in scope.row.design_company_name" :key="i">
                   <p>{{item}}</p>
                 </div>
-              </template>
+              </template> -->
             </el-table-column>
             <el-table-column
               prop="logs"
               width="50"
               label="根进次数">
-            </el-table-column>[]
+            </el-table-column>
             <el-table-column
               prop="next_time"
               width="100"
@@ -138,7 +140,7 @@
             </el-table-column>
             <el-table-column
               width="70"
-              label="综述">
+              label="状态">
                 <template slot-scope="scope">
                   <p class="status1 status" v-if="scope.row.status === 1">待沟通</p>
                   <p class="status2 status"  v-else-if="scope.row.status === 2">沟通中</p>
@@ -167,30 +169,42 @@
     <el-dialog
       title="随机分配"
       :visible.sync="randomAssign"
-      width="20%">
-      <span>有30个潜在用户等待分配所属人，是否确认随机分配？</span>
+      size="tiny">
+      <span v-if="hasExecuteList.length">有{{hasExecuteList.length}}个潜在用户等待分配所属人，是否确认随机分配？</span>
+      <span v-else>没有所属人待分配</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="randomAssign = false">取 消</el-button>
-        <el-button type="primary" @click="randomAllot">确 定</el-button>
+        <el-button type="primary" @click="randomAllot" :disabled="!hasExecuteList.length">确 定</el-button>
       </span>
     </el-dialog>
 
     <el-dialog
       title="添加商务成员"
       :visible.sync="BoolAddVoIpUser"
-      width="30%"
       center>
       <ul class="user-list-father">
         <li v-for="(d, i) in adminUserList" :key="i" @click="askVoIpUser(d)" :class="['user-list' ,{'active': d.status === 1 }]">
-          <img v-if="d.logo_image" :src="d.logo_image.logo" alt="">
-          <span class="no-head" v-else>{{d.realname || d.username || d.account | formatName}}</span>
-          <span class="name">{{d.realname || d.username || d.account}}</span>
+            <img v-if="d.logo_image" :src="d.logo_image.logo" alt="">
+            <span class="no-head" v-else>{{d.realname || d.username || d.account | formatName}}</span>
+            <span class="name">{{d.realname || d.username || d.account}}</span>
         </li>
       </ul>
       <!-- <span slot="footer" class="dialog-footer">
         <el-button @click="BoolAddVoIpUser = false">取 消</el-button>
         <el-button type="primary" @click="BoolAddVoIpUser = false">确 定</el-button>
       </span> -->
+    </el-dialog>
+
+    <el-dialog
+      size="tiny"
+      title="移除业务人员"
+      :visible.sync="deleteDialogVoIpUser"
+      center>
+      <span class="d-d-content">改商务成员负责{{belongIdLength}}个潜在用户, 删除商务成员后,将清空潜在客户所属人?</span>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="deleteDialogVoIpUser = false">取 消</el-button>
+        <el-button type="primary" @click="deleteVoIpUser">确 定</el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -199,6 +213,7 @@
 import api from '@/api/api'
 import vMenu from '@/components/admin/Menu'
 import {nameToAvatar} from '@/assets/js/common'
+import '@/assets/js/date_format'
 export default {
   name: 'admin_potential_list',
   components: {
@@ -222,24 +237,44 @@ export default {
         label: 'label'
       },
       tableData: [],
-      adminUserList: []
+      adminUserList: [],
+      hasExecuteList: [], // 没有所属人的数组
+      deleteDialogVoIpUser: false,
+      currentVoIpUserId: '',
+      belongIdLength: ''
     }
   },
   methods: {
+    tableRowClassName(row, index) {
+      if (row.next_time) {
+        if (this.dateCompare(row.next_time) === false) { // 没到期
+          return 'has-date'
+        }
+        if (this.dateCompare(row.next_time)) { // 到期
+          return 'over-date'
+        }
+      }
+    },
+    dateCompare(next) {
+      let nowDate = new Date()
+      let old = next.date_format()
+      if (nowDate < old) {
+        return false
+      } else {
+        return true
+      }
+    },
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
-    // 删除项目
+    // 删除用户
     multipleDelItem() {
       if (this.multipleSelection.length === 0) {
-        this.$message.error('至少选择一个要删除的项目')
+        this.$message.error('至少选择一个要删除的潜在用户')
         return false
       }
-      var idArr = []
-      for (var i = 0; i < this.multipleSelection.length; i++) {
-        idArr.push(this.multipleSelection[i].id)
-      }
+      let idArr = this.arrayExportIds()
       this.$http.delete(api.adminClueDelete, {params: {clue_id: idArr}})
         .then((response) => {
           if (response.data.meta.status_code === 200) {
@@ -253,7 +288,6 @@ export default {
             this.$message.success('删除成功!')
           } else {
             this.$message.error(response.data.meta.message)
-            return
           }
         })
         .catch((error) => {
@@ -264,11 +298,10 @@ export default {
       this.BoolAddVoIpUser = true
       this.getAdminList()
     },
-    handleCommand(command) { // 点击菜单项的回掉
-      console.log(command)
-    },
     getDate(val) {
       console.log(val)
+      // let a = (new Date(val)).format('yyyy-MM-dd hh:mm:ss')
+      // console.log(a)
     },
     onSearch() {
       this.getClueList()
@@ -283,6 +316,13 @@ export default {
         if (res.data.meta.status_code === 200) {
           this.tableData = res.data.data
           this.query.totalCount = parseInt(res.data.meta.pagination.total)
+          let hasExecuteUser = []
+          this.tableData.forEach(item => {
+            if (!item.execute_user_id) {
+              hasExecuteUser.push(item)
+            }
+          })
+          this.hasExecuteList = hasExecuteUser
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -308,8 +348,15 @@ export default {
     askVoIpUser(d) {
       if (d && d.id) {
         if (d.status === 1) {
-          this.deleteVoIpUser(d.id)
-        } else {
+          this.belongIdLength = this.belongIdNumber(d.id)
+          this.currentVoIpUserId = d.id
+          if (!this.belongIdLength) {
+            this.deleteVoIpUser()
+            return
+          }
+          this.deleteDialogVoIpUser = true
+        }
+        if (d.status === 2) {
           this.addVoIpUser(d.id)
         }
       }
@@ -318,6 +365,7 @@ export default {
       if (!id) return
       this.$http.post(api.adminClueAddVoIpUser, {user_id: id}).then(res => {
         if (res.data.meta.status_code === 200) {
+          this.$message.success('添加成功')
           this.getAdminList()
         } else {
           this.$message.error(res.data.meta.message)
@@ -327,10 +375,12 @@ export default {
         this.$message.error(error.message)
       })
     },
-    deleteVoIpUser(id) { // 移除业务人员
-      if (!id) return
-      this.$http.post(api.adminClueDelVoIpUser, {user_id: id}).then(res => {
+    deleteVoIpUser() { // 移除业务人员
+      if (!this.currentVoIpUserId) return
+      this.$http.post(api.adminClueDelVoIpUser, {user_id: this.currentVoIpUserId}).then(res => {
         if (res.data.meta.status_code === 200) {
+          this.deleteDialogVoIpUser = false
+          this.$message.success('移除成功')
           this.getAdminList()
         } else {
           this.$message.error(res.data.meta.message)
@@ -361,6 +411,39 @@ export default {
     handleCurrentChange(val) {
       this.query.page = parseInt(val)
       this.getClueList()
+    },
+    belongIdNumber(id) {
+      let belongIdArr = []
+      this.tableData.forEach(item => {
+        if (item.execute_user_id && item.execute_user_id === id) {
+          belongIdArr.push(item)
+        }
+      })
+      return belongIdArr.length
+    },
+    exportForm() { // 导出
+      if (this.multipleSelection.length === 0) {
+        this.$message.error('至少选择一个要导出的潜在用户')
+        return false
+      }
+      let idArr = this.arrayExportIds()
+      this.$http.post(api.adminClueExportExcel, {clue_id: idArr})
+        .then((response) => {
+          if (response.data.meta.status_code === 200) {
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        })
+        .catch((error) => {
+          this.$message.error(error.message)
+        })
+    },
+    arrayExportIds() {
+      var idArr = []
+      for (var i = 0; i < this.multipleSelection.length; i++) {
+        idArr.push(this.multipleSelection[i].id)
+      }
+      return idArr
     }
   },
   created() {
@@ -489,6 +572,12 @@ export default {
 .status {
   font-weight: 600;
 } 
+.d-d-content {
+  line-height: 20px;
+}
+
+
+
 </style>
 
 <style>
@@ -504,5 +593,18 @@ export default {
 }
 .admin-header-right .el-tree {
   border: none;
+}
+
+.admin-table .has-date {
+  border-left: 4px solid #FFA64B;
+}
+.admin-table .over-date {
+  border-left: 4px solid #FF5A5F;
+}
+.admin-table tr {
+  border-left: 4px solid transparent;
+}
+.admin-table thead tr {
+  border-left: 4px solid #f7f7f7;
 }
 </style>

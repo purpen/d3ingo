@@ -106,8 +106,14 @@
 .line-height24 {
   line-height: 24px;
 }
+.line-height20 {
+  line-height: 20px;
+}
 .line-height32 {
   line-height: 32px;
+}
+.line-height1_5 {
+  line-height: 1.5
 }
 .main .border-b-no {
   border-bottom: none;
