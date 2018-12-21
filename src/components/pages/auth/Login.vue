@@ -178,7 +178,7 @@ export default {
       if (that.$refs[formName]) {
         that.$refs[formName].validate(valid => {
           if (valid) {
-            auth.logout()
+            auth.logout(true)
             let account = this.$refs.account.value
             let password = this.$refs.password.value
             that.isLoadingBtn = true
