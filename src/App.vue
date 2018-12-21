@@ -141,16 +141,18 @@ export default {
     },
     postMessage() {
       if (this.iframeLoad) {
+        let ticket = this.$store.state.event.ticket || localStorage.getItem('ticket')
         this.$refs.iframe.contentWindow.postMessage(JSON.stringify({
-          ticket: this.$store.state.event.ticket,
+          ticket: ticket,
           type: 'login'
         }), this.path)
       }
     },
     postMessage2() {
       if (this.iframeLoad) {
+        let ticket = this.$store.state.event.ticket || localStorage.getItem('ticket')
         this.$refs.iframe.contentWindow.postMessage(JSON.stringify({
-          ticket: this.$store.state.event.ticket,
+          ticket: ticket,
           type: 'loginout'
         }), this.path)
       }
