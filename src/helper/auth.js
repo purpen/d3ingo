@@ -1,5 +1,6 @@
 import store from '@/store/index'
-// import api from '@/api/api'
+import api from '@/api/api'
+import axios from '../http'
 import { USER_SIGNIN, USER_TICKET, USER_SIGNOUT, USER_INFO, CLEAR_PREV_URL_NAME } from '@/store/mutation-types'
 
 var mallache = {}
@@ -68,8 +69,16 @@ mallache.write_user = function (user) {
   store.commit(USER_INFO, userInfo)
 }
 
-mallache.logout = function () {
-  store.commit(USER_SIGNOUT)
+mallache.logout = function (bool) {
+  if (!bool) {
+    axios.post(api.logout).then(res => {
+      console.log('退出')
+    }).catch(_ => {
+    })
+  }
+  setTimeout(_ => {
+    store.commit(USER_SIGNOUT)
+  })
 }
 
 mallache.clear_prev_url_name = function () {

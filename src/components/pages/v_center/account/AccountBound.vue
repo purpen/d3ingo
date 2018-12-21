@@ -244,6 +244,7 @@
           }).then(res => {
             if (res.data.meta.status_code === 200) {
               this.jdAccount = ''
+              this.showForm = false
               this.setUser()
               console.log('解绑成功')
             } else {
