@@ -275,7 +275,7 @@ export default {
           that.isLoading = false
           that.$router.replace({name: 'vcenterControl'})
         } else {
-          auth.logout()
+          auth.logout(true)
           that.$message({
             showClose: true,
             message: response.data.meta.message,

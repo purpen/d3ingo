@@ -225,12 +225,12 @@ export default {
                           }
                         }
                       } else {
-                        auth.logout()
+                        auth.logout(true)
                         that.$message.error(response.data.meta.message)
                       }
                     })
                     .catch(function(error) {
-                      auth.logout()
+                      auth.logout(true)
                       that.$message.error(error.message)
                     })
                 } else {
