@@ -315,11 +315,6 @@
         this.menuactive = this.$route.path.split('/')[1]
       },
       logout() {
-        this.$http.post(api.logout).then(res => {
-          console.log('退出登录')
-        }).catch(err => {
-          this.$message.error(err.message)
-        })
         auth.logout()
         this.$message({
           message: '已退出',

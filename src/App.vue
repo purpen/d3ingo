@@ -79,7 +79,6 @@ export default {
       let that = this
       let ticket = localStorage.getItem('ticket')
       let token = localStorage.getItem('token')
-      console.error(ticket, token)
       if (ticket) {
         if (!token) {
           this.$http.post(api.iframeLogin) // cookie: ticket
@@ -104,7 +103,7 @@ export default {
         }
       } else {
         console.log('没有ticket,退出登录')
-        auth.logout()
+        auth.logout(true)
       }
     },
     getUser(token) {
