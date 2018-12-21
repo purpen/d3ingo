@@ -267,7 +267,7 @@ export default {
       // 写入localStorage
       auth.write_token(token)
       // ajax拉取用户信息
-      that.$http.get(api.user, {params:{token: token}})
+      that.$http.get(api.user, {params: {token: token}})
       .then(function (response) {
         if (response.data.meta.status_code === 200) {
           console.log(response)
