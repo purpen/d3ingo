@@ -277,7 +277,7 @@
           design: {path: '/server_design'},
           article: {path: '/article/list'},
           home_page: {path: '/shunde/trade_fairs/home_page'}, // 交易会未登录首页
-          demand_login: {path: '/shunde/trade_fairs/demand_login'}, // 交易会登陆后首页
+          demand_login: {path: '/shunde/trade_fairs/demand_login'}, // 交易会登录后首页
           mobile_login: {path: '/shunde/trade_fairs/trade_fairs_mobile/mobile_login'}, // 交易会移动端首页
           // demand_login: {path: '/shunde/trade_fairs/saleResult/workDatails'},
           design_case: {path: '/design_case/general_list'},

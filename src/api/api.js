@@ -18,7 +18,7 @@ export default {
   getVersion: '/getVersion', // 获取版本号
   setNewVersion: '/setNewVersion', // 设置版本号
   login: '/auth/login', // 登录
-  iframeLogin: '/auth/ilogin', // POST iframe登陆
+  iframeLogin: '/auth/ilogin', // POST iframe登录
   setUserType: '/auth/setUserType', // POST 选择用户类型
   errCount: '/auth/errCount', // POST 检测错误次数
   logout: '/auth/logout', // POST 退出登录
