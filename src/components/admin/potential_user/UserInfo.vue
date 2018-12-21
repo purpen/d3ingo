@@ -150,7 +150,7 @@
                 >
               </el-input>
               <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 添加标签</el-button>
-
+              <span class="fr">创建时间:&nbsp;&nbsp;{{createdTime}}</span>
             </p>
           </div>
           <div class="card-body">
@@ -233,7 +233,7 @@
 
                 <div class="user-base-table" v-if="currentId && !BoolEditUserInfo">
                   <el-row :gutter="20">
-                    <el-col :xs="24" :sm="8" :md="8" :lg="8">
+                    <el-col :xs="24" :sm="24" :md="24" :lg="24">
                       <p>
                         <span>企业名称: </span>{{clientForm.company}}
                       </p>
@@ -319,7 +319,12 @@
                           </el-col>
                           <el-col :xs="14" :sm="10" :md="8" :lg="8">
                             
-                            <span v-if="item.item">{{item.item_name}}</span>
+                            <p v-if="item.item" class="link-item">
+                              关联项目 : 
+                              <span class="link-item-name">{{item.item_name}}
+                                <i class="fx fx-icon-nothing-close-error" @click="deleteLinkProject(item)"></i>
+                              </span>
+                            </p>
                             <div v-else>
                               <el-button v-if="boolLinkItem || linkProjectId !== item.item_id" size="small" @click="showLinkItem(item.item_id)">关联项目</el-button>
                               <div class="margin-b15" v-if="!boolLinkItem && linkProjectId === item.item_id">
@@ -908,6 +913,7 @@ export default {
         city: '',
         execute: []
       },
+      createdTime: '',
       rankLabel: '一级',
       sourceArr: [],
       rankArr: [
@@ -1106,6 +1112,7 @@ export default {
             execute_user_id: data.execute_user_id,
             call_status: data.call_status || ''
           }
+          this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm:ss')
           this.rankArr.forEach(item => {
             if (item.value === this.userForm.rank) {
               this.rankLabel = item.label
@@ -1621,7 +1628,7 @@ export default {
       }
       this.$http.post(api.adminClueRelateItem, row).then(res => {
         if (res.data.meta.status_code === 200) {
-
+          this.getUserProject()
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -1629,15 +1636,16 @@ export default {
         this.$message.error(error.message)
       })
     },
-    deleteLinkProject() { // 删除关联项目
+    deleteLinkProject(d) { // 删除关联项目
+      if (!d) return
       let row = {
-        // clue_id: this.currentId,
-        // crm_item_id: id,
-        // item_id: this.linkProjectValue
+        clue_id: this.currentId,
+        item_id: d.item,
+        crm_item_id: d.item_id
       }
-      this.$http.post(api.adminClueDelRelateItem, row).then(res => {
+      this.$http.delete(api.adminClueDelRelateItem, {params: row}).then(res => {
         if (res.data.meta.status_code === 200) {
-
+          this.getUserProject()
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -1844,7 +1852,7 @@ export default {
 /* user-rank end */
 
 .user-status {
-  width: 120px;
+  width: 150px;
   padding-left: 40px;
   border: 1px solid #e6e6e6;
   border-radius: 18px;
@@ -1973,7 +1981,7 @@ export default {
 .project-i {
   display: inline-block;
   font-size: 16px;
-  line-height: 36px;
+  /* line-height: 36px; */
   margin-bottom: 20px;
 }
 .user-base-table p, 
@@ -1984,6 +1992,44 @@ export default {
 .project-form-table span {
   margin-right: 16px;
 }
+.link-item {
+  /* position: relative; */
+}
+.link-item-name i {
+	/* border-radius: 0;
+	opacity: 0;
+	right: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	background: rgba(0,0,0,.6); */
+}
+.link-item-name {
+  border: 1px solid #FF5A5F;
+  position: relative;
+	max-width: 200px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	padding: 2px 10px;
+	text-align: center;
+	line-height: 30px;
+	height: 30px;
+	border-radius: 18px;
+	margin-right: 8px;
+	margin-top: 4px;
+}
+.link-item-name:hover {
+  /* background: rgb(255, 90, 95); */
+  /* color: #ffffff; */
+}
+.link-item-name:hover .link-item-name i {
+  opacity: 1;
+  color: #ffffff;
+}
+
+
 .p-table-summary {
   display: flex;
   line-height: 1.5;

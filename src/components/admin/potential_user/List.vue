@@ -153,10 +153,11 @@
               width="70"
               label="状态">
                 <template slot-scope="scope">
-                  <p class="status1 status" v-if="scope.row.status === 1">待沟通</p>
-                  <p class="status2 status"  v-else-if="scope.row.status === 2">沟通中</p>
-                  <p class="status3 status"  v-else-if="scope.row.status === 3">成功</p>
-                  <p class="status4 status"  v-else>失败</p>
+                  <p class="status1 status" v-if="scope.row.status === 1">潜在客户</p>
+                  <p class="status2 status"  v-else-if="scope.row.status === 2">真实需求</p>
+                  <p class="status3 status"  v-else-if="scope.row.status === 3">签订合作</p>
+                  <p class="status3 status"  v-else-if="scope.row.status === 4">对接失败</p>
+                  <p class="status4 status"  v-else>对接设计</p>
                 </template>
             </el-table-column>
           </el-table>
@@ -222,6 +223,7 @@
 
 <script>
 import api from '@/api/api'
+import conf from 'conf/prod.env'
 import vMenu from '@/components/admin/Menu'
 import {nameToAvatar} from '@/assets/js/common'
 import '@/assets/js/date_format'
@@ -440,20 +442,12 @@ export default {
         return false
       }
       let idArr = this.arrayExportIds()
-      this.$http.post(api.adminClueExportExcelUrl, {
-        clue_id: idArr,
-        token: this.token
-      }).then((res) => {
-        if (res.data.meta.status_code === 200) {
-          console.log(res.data.data)
-          // window.location.href = res.data.data
-          // window.location.assign(res.data.data)
-        } else {
-          this.$message.error(res.data.meta.message)
-        }
-      }).catch((error) => {
-        this.$message.error(error.message)
-      })
+      let url = 'https://sa.taihuoniao.com/admin/clue/exportExcel'
+      if (conf.ENV === 'prod') {
+        url = 'https://d3in-admin.taihuoniao.com/admin/clue/exportExcel'
+      }
+      let downloadUrl = url + '?clue_id' + '[' + idArr + ']'
+      window.open(encodeURI(downloadUrl))
     },
     arrayExportIds() {
       var idArr = []
