@@ -90,7 +90,7 @@ export default {
               that.$message.error(res.data.meta.message)
             }
           }).catch(err => {
-            auth.logout()
+            auth.logout(true)
             console.log(err)
           })
         } else {
@@ -114,11 +114,11 @@ export default {
           auth.write_user(response.data.data)
           that.getStatus(that.$store.state.event.user.type)
         } else {
-          auth.logout()
+          auth.logout(true)
           that.$message.error(response.data.meta.message)
         }
       }).catch(err => {
-        auth.logout()
+        auth.logout(true)
         that.$message.error(err.message)
       })
     },
