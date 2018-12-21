@@ -7,7 +7,7 @@ module.exports = [
     path: '/shunde/trade_fairs/homePage',
     redirect: '/shunde/trade_fairs/home_page'
   },
-  // 未登陆首页
+  // 未登录首页
   {
     path: '/shunde/trade_fairs/home_page',
     name: 'trade_fairs',
@@ -27,7 +27,7 @@ module.exports = [
     },
     component: require('@/components/pages/home/trade_fairs/BriefContent')
   },
-  // 登陆简介
+  // 登录简介
   {
     path: '/shunde/trade_fairs/demand_login',
     name: 'demand_login',
@@ -215,7 +215,7 @@ module.exports = [
     },
     component: require('@/components/pages/home/trade_fairs/trade_fairs_mobile/MobileLogin')
   },
-  // 登陆后移动端内容页
+  // 登录后移动端内容页
   {
     path: '/shunde/trade_fairs/trade_fairs_mobile/mobile_home_page',
     name: 'mobile_home_page',
