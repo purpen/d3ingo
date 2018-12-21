@@ -47,7 +47,7 @@
       title="提示"
       size="380px"
       class="clearfix">
-      <p class="line-height1_5">艺火账号"{{form.account}}"已与京东账号"{{jdAccount}}"绑定, 点击取消操作更换手机号绑定, 点击去登陆使用账号直接登录</p>
+      <p class="line-height1_5">艺火账号"{{form.account}}"已与京东账号"{{jdAccount}}"绑定, 点击取消操作更换手机号绑定, 点击去登录使用账号直接登录</p>
       <div class="buttons blank20">
         <el-button class="red-button middle-button" @click="showAlert = false">取消操作</el-button>
         <el-button class="full-red-button middle-button" @click="redirect">去登录</el-button>
@@ -92,7 +92,7 @@ export default {
       }
     }
     return {
-      showAlert: true,
+      showAlert: false,
       jdAccount: '',
       isLoading: false,
       isLoadingBtn: false,
@@ -267,7 +267,7 @@ export default {
       // 写入localStorage
       auth.write_token(token)
       // ajax拉取用户信息
-      that.$http.get(api.user, {})
+      that.$http.get(api.user, {params: {token: token}})
       .then(function (response) {
         if (response.data.meta.status_code === 200) {
           console.log(response)
@@ -275,7 +275,7 @@ export default {
           that.isLoading = false
           that.$router.replace({name: 'vcenterControl'})
         } else {
-          auth.logout()
+          auth.logout(true)
           that.$message({
             showClose: true,
             message: response.data.meta.message,
@@ -287,7 +287,7 @@ export default {
       })
       .catch(function (error) {
         that.isLoading = false
-        auth.logout()
+        auth.logout(true)
         that.$message({
           showClose: true,
           message: error.message,

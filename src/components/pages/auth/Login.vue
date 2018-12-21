@@ -42,7 +42,7 @@
       </div>
     </div>
     <div class="reg">
-      <p class="join-company" v-if="code">登陆并加入 <span>{{item.design_company_name}}</span></p>
+      <p class="join-company" v-if="code">登录并加入 <span>{{item.design_company_name}}</span></p>
       <p v-if="code">没有{{prod.login}}账户？
         <router-link :to="{name: 'invite', params: {code: code}}">立即注册</router-link>
       </p>
@@ -202,7 +202,7 @@ export default {
                           that.user = response.data.data
                         } else {
                           that.$message({
-                            message: '登陆成功',
+                            message: '登录成功',
                             type: 'success',
                             duration: 800
                           })
@@ -225,12 +225,12 @@ export default {
                           }
                         }
                       } else {
-                        auth.logout()
+                        auth.logout(true)
                         that.$message.error(response.data.meta.message)
                       }
                     })
                     .catch(function(error) {
-                      auth.logout()
+                      auth.logout(true)
                       that.$message.error(error.message)
                     })
                 } else {
@@ -347,7 +347,7 @@ export default {
           this.isLoading = false
           if (res.data && res.data.meta.status_code === 200) {
             this.$message({
-              message: '登陆成功',
+              message: '登录成功',
               type: 'success',
               duration: 800
             })
