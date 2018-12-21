@@ -1569,7 +1569,7 @@
     font-size: 14px;
   }
   .task-member-execute li.margin-none {
-    /* font-family: PingFangSC-Medium; */
+    /* font-family: PingFangSC-Medium, "Microsoft Yahei"; */
     margin: 0;
     color: #666
   }

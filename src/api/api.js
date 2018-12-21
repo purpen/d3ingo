@@ -15,6 +15,8 @@
  **/
 
 export default {
+  getVersion: '/getVersion', // 获取版本号
+  setNewVersion: '/setNewVersion', // 设置版本号
   login: '/auth/login', // 登录
   setUserType: '/auth/setUserType', // POST 选择用户类型
   errCount: '/auth/errCount', // POST 检测错误次数
@@ -24,6 +26,7 @@ export default {
   forget: '/auth/forgetPassword', // POST 找回密码
   modifyPwd: '/auth/changePassword', // POST 修改密码
   check_account: '/auth/phoneState/{0}', // 验证手机号是否存在
+  jdPhoneState: '/jd/phoneState', // 验证手机号是否存在
   fetch_msm_code: '/auth/sms', // 获取手机验证码
   fetch_img_captcha: '/captcha/getCaptcha', // 获取图片验证码
   user: '/auth/user', // 获取用户信息
@@ -33,6 +36,8 @@ export default {
   fundLogList: '/fundLogList', // GET 交易记录
   withdrawCreate: '/withdraw/create', // POST 提现
   withdrawList: '/withdraw/lists', // GET 用户提现列表
+  jdCode: '/jd/code', // GET 获取京东code
+  jdToken: '/jd/jdAccount', // GET 获取京东云access_token
 
   // 栏目
   columnList: '/column/lists', // GET 列表
@@ -473,6 +478,11 @@ export default {
   designNoticeTrueRead: '/designNotice/trueRead', // PUT 确认阅读
   designNoticeDelete: '/designNotice/delete', // DELETE 删除
 
+  // jd账号
+  jdAccount: '/jd/jdAccount', // GET 获取京东account
+  jdCheckAccount: '/jd/checkAccount', // GET 检查京东account是否存在
+  jdBindingUser: '/jd/bindingUser', // POST 已注册铟果，绑定京东云账户
+  jdNewBindingUser: '/jd/newBindingUser', // POST 新用户注册铟果，绑定京东云账户
   // jd用户信息
   jdUserLists: '/jd/user/lists', // GET 获取用户信息列表
   jdUserShow: '/jd/user/show', // GET 用户详情
@@ -504,6 +514,52 @@ export default {
   designUserPercentage: '/design/userPercentage', // GET 成员占比
   designTargetIncomeStage: '/designTarget/incomeStage', // GET 收入阶段
   designItemTasks: '/design/itemTasks', // GET 所有项目任务统计
-  designTargetIncomeCity: '/designTarget/incomeCity' // GET 城市排名
+  designTargetIncomeCity: '/designTarget/incomeCity', // GET 城市排名
+
+  // 顺德交易会监控流量
+  sdTouristWilling: '/sd/touristWilling', // GET 游客,有意向数量
+  sdStatistics: '/sd/statistics', // GET 展示
+
+  // 顺德需求方
+  sdDemandRelease: '/sd/demand/release', // POST 发布需求
+  sdDemandDemandShut: '/sd/demand/demandShut', // POST 关闭需求
+  sdDemandDemandUpdate: '/sd/demand/demandUpdate', // POST 更新需求
+  sdDemandDemandInfo: '/sd/demand/demandInfo', // GET 需求详情
+  sdDemandDemandList: '/sd/demand/demandList', // GET 需求列表
+  designResultsAlLists: '/designResults/alLists', // GET 所有上架设计成果列表
+  designResultsCollectionOperation: '/designResults/collectionOperation', // GET 设计成果收藏与取消收藏
+  payDesignResults: '/pay/designResults/{0}', // GET 创建设计成果支付订单
+  sdPayMyOrderList: '/pay/myOrderList', // GET 设计成果支付列表
+  sdPayCloseOrder: '/pay/closeOrder', // GET 取消未支付订单
+  payOrderShow: '/pay/orderShow', // GET 设计成果订单详情
+  payDeleteOrder: '/pay/deleteOrder', // GET 删除设计成果已关闭订单
+  payConfirmFile: '/pay/confirmFile', // GET 确认设计成果文件
+  sdDemandEvaluateResult: '/sd/demand/evaluateResult', // POST 需求公司评价设计成果
+  sdDemandEvaluateInfo: '/sd/demand/evaluateInfo', // GET 设计成果评价详情
+  demandCompanySaveTradeFair: '/demandCompany/saveTradeFair', // GET 修改交易会权限
+
+  // 顺德设计方
+  sdDesignCancelCollectDemand: '/sd/design/cancelCollectDemand', // POST 取消收藏需求
+  sdDesignDesignCollectList: '/sd/design/designCollectList', // GET 收藏列表
+  sdDesignCollectDemand: '/sd/design/collectDemand', // POST 收藏需求
+  sdDemandDesignDemandInfo: '/sd/demand/designDemandInfo', // GET 设计公司查看某个需求详情
+  sdDemandDesignDemandList: '/sd/demand/designDemandList', // GET 设计公司查看需求列表
+  sdDesignResultsSave: '/designResults/save', // POST 保存设计成果
+  sdDesignResultsMyCollectionList: '/designResults/myCollectionList', // GET 我的设计成果收藏列表
+  sdDesignResultsList: '/designResults/list', // GET 设计成果列表
+  sdDesignResultsSaveStatus: '/designResults/saveStatus', // GET 设计成果状态修改
+  sdDesignResultsDelete: '/designResults/delete', // POST 设计成果状态删除
+  sdDesignResultsShow: '/designResults/show', // GET 设计成果详情
+  sdDesignResultsSavePrice: '/designResults/savePrice', // POST 设计成果价格修改
+
+  // 顺德后台
+  adminDesignDemandLists: '/admin/designDemand/lists', // GET 发布的设计需求列表
+  adminDesignDemandAuditStatus: '/admin/designDemand/auditStatus', // PUT 设计需求信息审核
+  adminDesignDemandShowCollectList: '/admin/designDemand/showCollectList', // GET 查看设计需求被那些设计公司收藏
+  adminDesignResultList: '/admin/designResult/list', // GET 设计成果待审核列表
+  adminDesignResultSave: '/admin/designResult/save', // GET 设计成果审核
+  adminPayOrderDissolution: '/admin/payOrder/dissolution', // POST 解散支付订单
+  adminDesignResultCollect: '/admin/designResult/collect', // GET 设计成果收藏列表
+  adminDemandCompanySaveTradeFair: '/admin/demandCompany/saveTradeFair' // GET 修改交易会权限
 
 }

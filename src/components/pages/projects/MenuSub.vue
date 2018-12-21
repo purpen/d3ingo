@@ -13,7 +13,7 @@
 
     <div class="nav-right nav-menu" v-if="token">
       <el-menu class="el-menu-info" mode="horizontal" router v-if="custom.id === 0">
-        <el-submenu index="2">
+        <el-submenu index="2" :popper-append-to-body="false">
           <template slot="title">
             <img class="avatar2" v-if="user.logo_url" :src="user.logo_url"/>
             <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
@@ -23,7 +23,6 @@
           <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
           <el-menu-item index="/vcenter/account/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>账号设置 </el-menu-item>
           <el-menu-item index="/vcenter/account/modify_pwd" v-else><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>账号设置 </el-menu-item>
-          <el-menu-item index="/vcenter/account/modify_pwd"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>账号设置 </el-menu-item>
           <el-menu-item index="/admin" v-if="isSysAdmin">
             <i class="fx-4 fx-icon-control-center"></i>
             <i class="fx-4 fx-icon-console-hover"></i>后台管理

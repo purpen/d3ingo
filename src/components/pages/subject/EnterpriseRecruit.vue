@@ -43,7 +43,7 @@
           </el-col>
         </el-row>
       </article>
-      <p class="mail">咨询详情请联系 <a href="mailto:mazhe@taihuoniao.com">mazhe@taihuoniao.com</a></p>
+      <p class="mail">咨询详情请联系 <a href="mailto:zhangyunhao@taihuoniao.com">zhangyunhao@taihuoniao.com</a></p>
       <div class="submit">
         <a class="no-select" @click="intoReg">立即入驻</a>
       </div>

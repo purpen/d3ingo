@@ -8,7 +8,7 @@
               <div class="left">
                 <h3 :class="{'m-h3' : isMob}">铟果D³INGO产品创新SaaS平台</h3>
                 <p :class="{'m-p' : isMob}">用设计重塑品质生活</p>
-                <router-link v-if="uType !== 2" to="/item/submit_one">发布项目需求</router-link>
+                <router-link v-if="uType !== 2 && !isMob" to="/item/submit_one">发布项目需求</router-link>
               </div>
               <div class="draw">
                 <img :src="require('assets/images/home/banner/BG02@2x.png')" width="90%" height="auto" alt="">
@@ -20,7 +20,15 @@
             </div>
           </div>
         </swiper-slide>
-        <swiper-slide v-if="isMob" v-for="(ele, index) in bannerListMob" :key="index">
+        <!-- <swiper-slide v-if="!isMob">
+          <div class="slide" :style="{ background: 'url(' + require ('assets/images/trade_fairs/banner/pc-banner.png') + ') no-repeat center', height: calcHeight}" @click="routerTrading">
+          </div>
+        </swiper-slide> -->
+        <!-- <swiper-slide v-if="isMob">
+          <div class="slide" :style="{ background: 'url(' + require ('assets/images/trade_fairs/banner/phone2.png') + ') no-repeat center', height: calcHeight}" @click="routerTrading">
+          </div>
+        </swiper-slide> -->
+        <!-- <swiper-slide v-if="isMob" v-for="(ele, index) in bannerListMob" :key="index">
           <router-link
             v-if="!ele.outSide"
             class="banner-link slide"
@@ -37,14 +45,34 @@
                 height: calcHeight
               }">
             </a>
-        </swiper-slide>
-        <swiper-slide v-if="!isMob" v-for="(ele, index) in bannerList" :key="index">
+        </swiper-slide> -->
+        <!-- <swiper-slide v-if="!isMob" v-for="(ele, index) in bannerList" :key="index">
           <router-link
             v-if="!ele.outSide"
             class="banner-link slide"
             :to="ele.url"
             :style="{
               background: 'url(' + ele.img + ') no-repeat center',
+              backgroundSize: 'cover',
+              height: calcHeight
+            }"></router-link>
+            <a v-else
+              :href="ele.url"
+              class="banner-link slide"
+              :style="{
+                background: 'url(' + ele.img + ') no-repeat center',
+                backgroundSize: 'contain',
+                height: calcHeight
+              }">
+            </a>
+        </swiper-slide> -->
+        <swiper-slide v-for="(ele, index) in bannerList" :key="index">
+          <router-link
+            v-if="!ele.outSide"
+            class="banner-link slide"
+            :to="ele.url"
+            :style="{
+              background: 'url(' + ele.img + ') no-repeat center / contain',
               backgroundSize: 'cover',
               height: calcHeight
             }"></router-link>
@@ -101,7 +129,7 @@
           <el-card class="card" :body-style="{ padding: '0px' }">
             <router-link :to="{name: 'articleShow', params: {id: d.id}}"
                         :target="isMob ? '_self' : '_blank'">
-              <div class="image-box" :style="{background: 'url('+ d.cover.middle + ') no-repeat center', backgroundSize: 'cover'}">
+              <div class="image-box" v-if="d.cover" :style="{background: 'url('+ d.cover.middle + ') no-repeat center', backgroundSize: 'cover'}">
                 <img v-lazy="d.cover.middle">
               </div>
               <div class="content">
@@ -139,7 +167,7 @@
       <el-col :xs="24" :sm="8" :md="8" :lg="8" v-for="(d, index) in designCaseList" :key="index">
         <el-card class="card" :body-style="{ padding: '0px' }">
           <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}" :target="isMob ? '_self' : '_blank'">
-            <div class="image-box" :style="{background: 'url('+ d.cover.middle + ') no-repeat center', backgroundSize: 'cover'}">
+            <div class="image-box" v-if="d.cover" :style="{background: 'url('+ d.cover.middle + ') no-repeat center', backgroundSize: 'cover'}">
                 <img v-lazy="d.middle">
             </div>
             <div class="content">
@@ -205,6 +233,7 @@
           <img v-lazy="require('assets/images/home/7logo.jpg')" />
           <img v-lazy="require('assets/images/home/8logo.jpg')" />
           <img v-lazy="require('assets/images/home/9logo.jpg')" />
+          <img v-lazy="require('assets/images/home/10logo.jpg')" />
         </span>
       </div>
     </div>
@@ -240,16 +269,16 @@
           //   img: require ('assets/images/subject/innovation/innovationIndex.jpg'),
           //   url: this.$store.state.event.user.role_id > 0 ? 'innovation_index' : 'home'
           // },
-          {
-            img: require ('assets/images/home/banner/home_xiaomi.jpg'),
-            url: '/subject/xiaomiInterview',
-            outSide: false
-          },
-          {
-            img: require ('assets/images/home/qsyd4.jpg'),
-            url: 'https://www.taihuoniao.com/contest/qsyd4',
-            outSide: true
-          }
+          // {
+          //   img: require ('assets/images/home/banner/home_xiaomi.jpg'),
+          //   url: '/subject/xiaomiInterview',
+          //   outSide: false
+          // },
+          // {
+          //   img: require ('assets/images/home/qsyd4.jpg'),
+          //   url: 'https://www.taihuoniao.com/contest/qsyd4',
+          //   outSide: true
+          // }
         ],
         caseSlideList: [
           {
@@ -374,6 +403,7 @@
       this.getArticleList()
       this.getDesignCase()
       this.getBlock()
+      this.getColumnList()
     },
     mounted() {
       let that = this
@@ -391,13 +421,22 @@
       }
     },
     methods: {
+      routerTrading() {
+        if (!this.token) {
+          this.$router.push({name: 'trade_fairs'})
+        } else {
+          this.$router.push({name: 'demand_login', query: {type: 1}})
+        }
+      },
       getArticleList() {
         this.$http.get(api.articleList,
         {params: {per_page: 3}})
         .then((res) => {
           this.articleList = res.data.data
           for (let i = 0; i < res.data.data.length; i++) {
-            this.articleList[i].cover_url = res.data.data[i].cover.middle
+            if (res.data.data[i].cover) {
+              this.articleList[i].cover_url = res.data.data[i].cover.middle
+            }
           }
         }).catch((err) => {
           console.error(err)
@@ -411,7 +450,9 @@
             this.designCaseList = response.data.data
             if (this.designCaseList && this.designCaseList.length > 0) {
               for (let i = 0; i < response.data.data.length; i++) {
-                this.designCaseList[i].cover_url = response.data.data[i].cover.middle
+                if (response.data.data[i].cover) {
+                  this.designCaseList[i].cover_url = response.data.data[i].cover.middle
+                }
               }
             }
           }
@@ -469,11 +510,49 @@
           this.isLoading = false
           console.error(err)
         })
+      },
+      // 栏目文章轮播
+      getColumnList() {
+        let facility = 1
+        if (this.isMob) {
+          facility = 2
+        } else {
+          facility = 1
+        }
+        this.$http.get(api.columnList, {params: {type: 2, facility: facility}}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            let res = response.data.data
+            let bnlist = []
+            if (res && res.length) {
+              res.forEach(ele => {
+                bnlist.push({
+                  'img': ele.cover.file,
+                  'url': ele.url,
+                  'outSide': (ele.cover.name === 'qsyd4.jpg' || ele.cover.name === 'qsyd4-m.jpg') ? 1 : 0
+                })
+              })
+            }
+            this.bannerList = bnlist
+          } else {
+            console.log(response.data.meta.message)
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+      }
+    },
+    watch: {
+      isMob(val) {
+        this.getColumnList()
       }
     },
     computed: {
       isMob() {
         return this.$store.state.event.isMob
+      },
+      token() {
+        return this.$store.state.event.token
       },
       user() {
         let user = this.$store.state.event.user // role_id
@@ -496,6 +575,39 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .banner-button {
+    float: right;
+    background: #02EBA5;
+    border: 2px solid #02EBA5;
+    height: 44px;
+    width: 144px;
+    line-height: 40px;
+    margin-top: 19%;
+    margin-right: 20%;
+  }
+  .banner-button:hover {
+    background: #00BE89;
+    border: 2px solid #00BE89;
+    cursor: pointer;
+  }
+  .text-width {
+    margin: 0 auto;
+    height: 28px;
+    width: 100px;
+    text-align: justify;
+  }
+  .text-width:after {
+    display: inline-block;
+    width: 100%;
+    content: '';
+  }
+  .banner-text {
+    left: 20px;
+    right: 20px;
+    font-family: PingFangSC-Semibold, "Microsoft Yahei";
+    font-size: 20px;
+    color: #3917C3;
+  }
   .home_banner {
     max-height: 500px;
     overflow: hidden;
@@ -506,6 +618,7 @@
   }
 
   .slide {
+    cursor: pointer;
     position: relative;
     color: #475669;
     font-size: 18px;
@@ -884,21 +997,28 @@
 
   @media screen and (max-width: 767px) {
     .container {
-      padding: 0;
+      padding: 0 10px
     }
 
     .slide .container {
       display: block;
       position: relative;
+      padding: 0
     }
 
     .slide .left {
       text-align: center;
       position: relative;
       z-index: 2;
-      justify-content: flex-start
+      justify-content: flex-start;
+      align-items: center
     }
-
+    .slide .left a {
+      width: 120px;
+      height: 34px;
+      line-height: 34px;
+      font-size: 12px;
+    }
     .slide .draw {
       position: absolute;
       top: 100px;
@@ -994,7 +1114,6 @@
 
     .inline-flex {
       display: block;
-      width: 322px;
       margin: 0 auto;
       overflow: hidden;
     }
@@ -1031,16 +1150,15 @@
 
   @media screen and (max-width: 330px) {
     .logo-list img {
-      width: 40%;
+      width: 45%;
     }
     .home-banner .swiper-pagination {
       display: none
     }
   }
-  /* @media screen and ( max-width: 480px) {
-  .content-box {
-    width: 375px;
-    overflow-x: hidden;
+  @media screen and ( max-width: 480px) {
+    .logo-list img {
+      width: 45%;
+    }
   }
-} */
 </style>

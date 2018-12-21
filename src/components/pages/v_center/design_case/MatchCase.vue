@@ -13,7 +13,7 @@
             </div> -->
 
             <div class="design-case-list" v-loading="isLoading">
-              <el-row :gutter="20">
+              <el-row :gutter="20" class="flex-wrap">
                 <el-col :xs="24" :sm="8" :md="8" :lg="8">
                   <router-link :to="{name: 'vcenterMatchCaseCreated'}" class="item item-add el-card">
                     <i class="add-icon"></i>
@@ -178,9 +178,9 @@
     margin: 10px 0 6px;
   }
 
-  .design-case-list .item {
+  /* .design-case-list .item {
     min-height: 240px;
-  }
+  } */
 
   .item {
     position: relative;
@@ -193,6 +193,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    height: calc(100% - 20px);
   }
   .item-add p {
     font-size: 16px;
@@ -265,9 +266,15 @@
 
   .image-box {
     border-radius: 4px 4px 0 0;
-    height: 180px;
+    /* height: 180px; */
     overflow: hidden;
     }
+
+  .image-box a {
+    display: block;
+    padding-top: 75%;
+    background-color: #f7f7f7
+  }
 
   .content {
     padding: 10px 20px;

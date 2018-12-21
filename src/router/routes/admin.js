@@ -191,6 +191,36 @@ module.exports = [
     },
     component: require('@/components/admin/company/Show')
   },
+  // 顺德交易会成果列表
+  {
+    path: '/admin/trade_fairs/achievment_list',
+    name: 'adminAchievmentList',
+    meta: {
+      title: '成果列表',
+      requireAuth: true
+    },
+    component: require('@/components/admin/trade_fairs/AchievmentList')
+  },
+  // 顺德交易会需求列表
+  {
+    path: '/admin/trade_fairs/demandt_list',
+    name: 'adminDemandtList',
+    meta: {
+      title: '需求列表',
+      requireAuth: true
+    },
+    component: require('@/components/admin/trade_fairs/DemandtList')
+  },
+  // 顺德交易会订单列表
+  {
+    path: '/admin/trade_fairs/sd_order_list',
+    name: 'adminSdOrderList',
+    meta: {
+      title: '订单列表',
+      requireAuth: true
+    },
+    component: require('@/components/admin/trade_fairs/1SdorderList')
+  },
   // 需求公司列表
   {
     path: '/admin/demand_company/list',

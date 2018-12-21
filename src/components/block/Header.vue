@@ -16,7 +16,8 @@
               <el-menu-item index="commonly_sites" :route="menu.commonly_sites">设计工具</el-menu-item>
               <el-menu-item index="innovation_index" :route="menu.innovation_index"
                 v-if="isAdmin">创新指数</el-menu-item>
-              <el-menu-item index="trade_fairs" :route="menu.home_page">交易会</el-menu-item>
+              <el-menu-item index="trade_fairs" :route="menu.home_page" v-if="!token">交易会</el-menu-item>
+              <el-menu-item index="trade_fairs" :route="menu.demand_login" v-if="token">交易会</el-menu-item>
             </el-menu>
           </hgroup>
           <div class="nav-right nav-menu" v-if="isLogin">
@@ -46,7 +47,7 @@
               </div>
             </a>
             <el-menu class="el-menu-info" mode="horizontal" router>
-              <el-submenu index="2">
+              <el-submenu index="2" :popper-append-to-body="false" text-color="#999">
                 <template slot="title">
                   <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
                   <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
@@ -104,9 +105,9 @@
             <li @click="closeMenu" v-if="isAdmin">
               <router-link :to="menu.innovation_index">创新指数</router-link>
             </li>
-            <!-- <li @click="closeMenu">
-              <router-link :to="menu.home_page">交易会</router-link>
-            </li> -->
+            <li @click="closeMenu">
+              <router-link :to="menu.mobile_login">交易会</router-link>
+            </li>
             <li @click="closeMenu" v-show="!isLogin">
               <router-link :to="menu.design">设计服务商入驻</router-link>
             </li>
@@ -171,7 +172,7 @@
               </div>
             </a>
             <el-menu class="el-menu-info" mode="horizontal" router>
-              <el-submenu index="2">
+              <el-submenu index="2" :popper-append-to-body="false" text-color="#999">
                 <template slot="title">
                   <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
                   <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
@@ -229,6 +230,9 @@
             <li @click="closeMenu" v-if="isAdmin">
               <router-link :to="menu.innovation_index">创新指数</router-link>
             </li>
+            <li>
+              <router-link :to="menu.mobile_login">交易会</router-link>
+            </li>
             <li @click="closeMenu" v-show="!isLogin">
               <router-link :to="menu.design">设计服务商入驻</router-link>
             </li>
@@ -273,7 +277,10 @@
           server: {path: '/server'},
           design: {path: '/server_design'},
           article: {path: '/article/list'},
-          home_page: {path: '/shunde/trade_fairs/demand_login'},
+          home_page: {path: '/shunde/trade_fairs/home_page'}, // 交易会未登录首页
+          demand_login: {path: '/shunde/trade_fairs/demand_login'}, // 交易会登陆后首页
+          mobile_login: {path: '/shunde/trade_fairs/trade_fairs_mobile/mobile_login'}, // 交易会移动端首页
+          // demand_login: {path: '/shunde/trade_fairs/saleResult/workDatails'},
           design_case: {path: '/design_case/general_list'},
           commonly_sites: {path: '/vcenter/commonly_sites'},
           innovation_index: {path: '/innovation_index/home'},
@@ -412,6 +419,9 @@
       isMob() {
         return this.$store.state.event.isMob
       },
+      token() {
+        return this.$store.state.event.token
+      },
       isLogin: {
         get() {
           return this.$store.state.event.token
@@ -430,6 +440,7 @@
       isAdmin() {
         return this.$store.state.event.user.role_id >= 10
       },
+      // is-active下划线添加
       menuactive() {
         let menu = this.$route.path.split('/')[1]
         let menu2 = this.$route.path.split('/')[2]
@@ -437,6 +448,8 @@
           return 'article'
         } else if (menu2 === 'commonly_sites' || menu2 === 'veer_image' || menu2 === 'trend_report' || menu2 === 'exhibition') {
           return 'commonly_sites'
+        } else if (menu === 'shunde') {
+          return 'trade_fairs'
         }
         return menu
       },
@@ -694,7 +707,7 @@
     width: auto;
     height: 30px;
   }
-  .nav-header .el-menu--horizontal > .el-menu-item.logo:hover, .el-menu--horizontal > .el-menu-item.logo.is-active {
+  .nav-header .el-menu--horizontal > .el-menu-item.logo:hover, .nav-header .el-menu--horizontal > .el-menu-item.logo.is-active {
     border-color: transparent
   }
 
@@ -721,17 +734,17 @@
   .nav-header .el-menu--horizontal > .el-menu-item:hover,
   .el-menu--horizontal > .el-submenu.is-active .el-submenu__title,
   .el-menu--horizontal > .el-submenu:hover .el-submenu__title,
-  .el-menu--horizontal > .el-menu-item.is-active {
+  .nav-header .el-menu--horizontal > .el-menu-item.is-active {
     border-bottom: 3px solid #ff5a5f;
     color: #ff5a5f;
     background: none;
   }
- .jdc .nav-header .el-menu--horizontal > .el-menu-item:hover,
+ /* .jdc .nav-header .el-menu--horizontal > .el-menu-item:hover,
  .jdc .el-menu--horizontal > .el-submenu.is-active .el-submenu__title,
  .jdc .el-menu--horizontal > .el-submenu:hover .el-submenu__title,
  .jdc .el-menu--horizontal > .el-menu-item.is-active {
     border-bottom: 3px solid transparent;
- }
+ } */
   .nav-header .el-menu-item, .el-submenu__title {
     padding: 0 14px;
   }
@@ -769,9 +782,9 @@
     justify-content: flex-end;
   }
 
-  .nav-header .nav-right .el-menu-item {
+  /* .nav-header .nav-right .el-menu-item {
     margin: 0 10px;
-  }
+  } */
 
   .nav-header .nav-item {
     width: 80px;

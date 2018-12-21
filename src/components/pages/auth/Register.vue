@@ -6,7 +6,8 @@
         <h2>注册{{prod.login}}{{identity}}账号</h2>
       </div>
 
-      <div class="register-tab clearfix" v-if="!isMob">
+      <div v-if="prod.name === '' && !isMob" class="register-tab clearfix">
+      <!-- <div v-if="!isMob" class="register-tab clearfix"> -->
         <div :class="{'register-tab-user': true, active: uActive}" @click="selectUser">
           <div class="tab-left customer"></div>
           <div class="tab-right">
@@ -15,7 +16,7 @@
             <p class="des">找到设计服务商</p>
           </div>
         </div>
-        <div v-if="prod.name === ''" :class="{'register-tab-user': true, active: cActive}" @click="selectComputer">
+        <div :class="{'register-tab-user': true, active: cActive}" @click="selectComputer">
           <div class="tab-left"></div>
           <div class="tab-right">
             <h3>我是设计公司</h3>
@@ -31,7 +32,7 @@
           <el-form-item label="" prop="account">
             <el-input v-model="form.account" name="username" ref="account" placeholder="手机号" :maxlength="11"></el-input>
           </el-form-item>
-          <el-form-item v-if="showImgCode" label="" prop="imgCode">
+          <el-form-item v-if="form.account && form.account.length === 11" label="" prop="imgCode">
             <el-input class="imgCodeInput" v-model="form.imgCode" name="imgCode" ref="imgCode" placeholder="图形验证码">
               <template slot="append">
                 <div @click="fetchImgCaptcha" class="imgCode" :style="{'background': `url(${imgCaptchaUrl}) no-repeat`}"></div>
@@ -165,6 +166,9 @@
         const that = this
         that.$refs[formName].validate((valid) => {
           if (valid) {
+            if (this.prod.name) {
+              this.selectUser()
+            }
             let account = this.form.account
             let password = this.form.password
             let smsCode = this.form.smsCode
@@ -173,7 +177,6 @@
               that.$message.error('请选择客户或设计公司')
               return false
             }
-
             that.isLoadingBtn = true
             // 验证通过，注册
             that.$http.post(api.register, {account: account, password: password, type: type, sms_code: smsCode})
@@ -241,6 +244,9 @@
         })
       },
       fetchCode() {
+        if (!this.form.account) {
+          return
+        }
         let full = 0
         this.$refs.ruleForm.validateField('account', (err) => {
           if (err) {
@@ -385,21 +391,6 @@
           this.$message.error('没有选择用户类型!')
           this.$router.replace({name: 'identity'})
         }
-      }
-    },
-    watch: {
-      form: {
-        handler(val) {
-          if (val.account.length === 11) {
-            this.showImgCode = true
-            let url = api.check_account.format(val.account)
-            this.$http.get(url)
-            .then(res => {
-              console.log(res)
-            })
-          }
-        },
-        deep: true
       }
     }
   }
