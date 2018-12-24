@@ -150,7 +150,7 @@
                 >
               </el-input>
               <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 添加标签</el-button>
-
+              <span v-if="currentId" class="fr u-c-time">创建时间:&nbsp;&nbsp;{{createdTime}}</span>
             </p>
           </div>
           <div class="card-body">
@@ -233,7 +233,7 @@
 
                 <div class="user-base-table" v-if="currentId && !BoolEditUserInfo">
                   <el-row :gutter="20">
-                    <el-col :xs="24" :sm="8" :md="8" :lg="8">
+                    <el-col :xs="24" :sm="24" :md="24" :lg="24">
                       <p>
                         <span>企业名称: </span>{{clientForm.company}}
                       </p>
@@ -313,8 +313,51 @@
                       <el-form label-position="top" :model="projectForm" 
                           :rules="ruleProjectForm" 
                           :ref="'ruleProjectForm'+ index" label-width="80px">
-                        <span class="project-i">项目&nbsp;&nbsp;({{index + 1}})</span>
-                        <p v-if="item.failure === 1" class="project-failure"><span>失败项目</span>{{item.failure_cause}}</p>
+                        <div class="project-header clearfix">
+                            <span class="project-i fl">项目&nbsp;&nbsp;({{index + 1}})</span>
+                            <p v-if="item.failure === 1" class="project-failure fl"><span>失败项目</span>{{item.failure_cause}}</p>
+
+                            <div v-else class="fl">
+                              <p v-if="item.item" class="link-item">
+                                关联项目 : 
+                                <span class="link-item-name">{{item.item_name}}
+                                  <i class="close-icon-solid" @click="deleteLinkProject(item)"></i>
+                                </span>
+                              </p>
+                              <div v-else>
+                                <el-button v-if="boolLinkItem || linkProjectId !== item.item_id" size="small" @click="showLinkItem(item.item_id)">关联项目</el-button>
+                                <div class="" v-if="!boolLinkItem && linkProjectId === item.item_id">
+                                  <el-select
+                                      v-model="linkProjectValue"
+                                      filterable
+                                      remote
+                                      reserve-keyword
+                                      placeholder="请输入关键词"
+                                      :remote-method="remoteMethod"
+                                      :loading="loading"
+                                      default-first-option
+                                      @blur="hiddenInput(e)"
+                                      @change="goLinkProject(item.item_id)">
+                                    <el-option
+                                      v-for="item in options4"
+                                      :key="item.id"
+                                      :label="item.name"
+                                      :value="item.id">
+                                    </el-option>
+                                  </el-select>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="edit-project fr" v-if="!boolEditProject || currentProjectId !== item.item_id">
+                              <div class="edit-project-tag">
+                                <p @click="markProjectFailure(item.item_id)">标记为失败</p>
+                                <p @click="deleteProject(item.item_id)">删除项目</p>
+                                <p @click="editProject(item)">编辑项目</p>
+                              </div>
+                            </div>
+                        </div>
+
                         <el-row :gutter="20">
                           <el-col :xs="24" :sm="20" :md="8" :lg="8">
                             <p v-if="!boolEditProject || currentProjectId !== item.item_id"><span>项目名称: </span>{{item.name}}</p>
@@ -340,15 +383,6 @@
                                 </el-option>
                               </el-select>
                             </el-form-item> 
-                          </el-col>
-                          <el-col :xs="24" :sm="20" :md="8" :lg="8">
-                            <div class="edit-project fr" v-if="!boolEditProject || currentProjectId !== item.item_id">
-                              <div class="edit-project-tag">
-                                <p @click="markProjectFailure(item.item_id)">标记为失败</p>
-                                <p @click="deleteProject(item.item_id)">删除项目</p>
-                                <p @click="editProject(item)">编辑项目</p>
-                              </div>
-                            </div>
                           </el-col>
                         </el-row>
                         <el-row :gutter="20">
@@ -876,6 +910,7 @@ export default {
         city: '',
         execute: []
       },
+      createdTime: '',
       rankLabel: '一级',
       sourceArr: [],
       rankArr: [
@@ -908,22 +943,27 @@ export default {
       userStatus: [ // 客户状态
         {
           value: 1,
-          label: '待沟通',
+          label: '潜在客户',
           color: '#FFA64B'
         },
         {
           value: 2,
-          label: '沟通中',
+          label: '真实需求',
           color: '#65A6FF'
         },
         {
           value: 3,
-          label: '成功',
+          label: '签订合作',
           color: '#00AC84'
         },
         {
           value: 4,
-          label: '失败',
+          label: '对接失败',
+          color: '#FF5A5F'
+        },
+        {
+          value: 5,
+          label: '对接设计',
           color: '#FF5A5F'
         }
       ],
@@ -981,7 +1021,14 @@ export default {
         disabledDate(time) {
           return time.getTime() < Date.now()
         }
-      }
+      },
+
+      boolLinkItem: true,
+      linkProjectId: '',
+      options4: [],
+      linkProjectValue: '',
+      loading: false,
+      states: []
     }
   },
   methods: {
@@ -1027,6 +1074,7 @@ export default {
       row.clue_id = this.currentId
       this.$http.post(api.adminClueUpdate, row).then(res => {
         if (res.data.meta.status_code === 200) {
+          this.getTypeList()
         } else {
           this.$message.error(res.data.meta.message)
           console.log(res.data.meta.message)
@@ -1061,6 +1109,7 @@ export default {
             execute_user_id: data.execute_user_id,
             call_status: data.call_status || ''
           }
+          this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm:ss')
           this.rankArr.forEach(item => {
             if (item.value === this.userForm.rank) {
               this.rankLabel = item.label
@@ -1322,6 +1371,11 @@ export default {
         }
       })
     },
+    hiddenInput(e) {
+      console.log('aaaaa')
+      console.log(e)
+      this.boolLinkItem = true
+    },
     focusInput() {
       this.focusHeight = true
     },
@@ -1525,6 +1579,77 @@ export default {
       }).catch(error => {
         this.$message.error(error.message)
       })
+    },
+    showLinkItem(id) {
+      if (!id) return
+      this.boolLinkItem = false
+      this.linkProjectId = id
+      this.linkProjectValue = ''
+      this.associationItemList()
+    },
+    associationItemList() {
+      this.$http.get(api.adminClueLtemList).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.states = res.data.data
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+      })
+    },
+    remoteMethod(query) {
+      if (query !== '') {
+        this.loading = true
+        let arr = query.split('')
+        let reg = ''
+        arr.forEach(ele => {
+          reg += '.*?' + ele
+        })
+        let regg = new RegExp(reg, 'i')
+        setTimeout(() => {
+          this.loading = false
+          this.options4 = this.states.filter(item => {
+            return regg.test(item.name)
+          })
+        }, 200)
+      } else {
+        this.options4 = []
+      }
+    },
+    goLinkProject(id) { // 关联线上项目
+      if (!id) return
+      let row = {
+        clue_id: this.currentId,
+        crm_item_id: id,
+        item_id: this.linkProjectValue
+      }
+      this.$http.post(api.adminClueRelateItem, row).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.getUserProject()
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+      })
+    },
+    deleteLinkProject(d) { // 删除关联项目
+      if (!d) return
+      let row = {
+        clue_id: this.currentId,
+        item_id: d.item,
+        crm_item_id: d.item_id
+      }
+      this.$http.delete(api.adminClueDelRelateItem, {params: row}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.getUserProject()
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+      })
     }
   },
   computed: {
@@ -1581,12 +1706,16 @@ export default {
     }
     this.getTypeList()
     this.getAdminVoIpList()
-  }
+  },
+  mounted() {}
 }
 </script>
 <style scoped>
 .margin-b22 {
   margin-bottom: 22px !important;
+}
+.margin-b15 {
+  margin-bottom: 15px;
 }
 .margin-r20 {
   margin-right: 20px;
@@ -1602,6 +1731,10 @@ export default {
 }
 .padding20 {
   padding: 20px;
+}
+.u-c-time {
+  font-size: 12px;
+  color: #666666;
 }
 .border-radius {
   border: 1px solid #e6e6e6;
@@ -1721,7 +1854,7 @@ export default {
 /* user-rank end */
 
 .user-status {
-  width: 120px;
+  width: 150px;
   padding-left: 40px;
   border: 1px solid #e6e6e6;
   border-radius: 18px;
@@ -1850,7 +1983,7 @@ export default {
 .project-i {
   display: inline-block;
   font-size: 16px;
-  margin-bottom: 20px;
+  margin-right: 0px;
 }
 .user-base-table p, 
 .project-form-table p {
@@ -1860,6 +1993,58 @@ export default {
 .project-form-table span {
   margin-right: 16px;
 }
+.project-header {
+  margin-bottom: 20px;
+  height: 36px;
+  line-height: 36px;
+}
+.project-header > p {
+  margin-bottom: 0px;
+}
+
+
+
+.project-header .link-item {
+  color: #FF5A5F;
+  margin-bottom: 0px;
+}
+.link-item-name i {
+  position: absolute;
+  /* top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%); */
+  width: 100%;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  border-radius: 18px;
+}
+.link-item-name {
+  border: 1px solid #FF5A5F;
+  background: rgb(255, 90, 95);
+  position: relative;
+	max-width: 200px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	padding: 2px 10px;
+	text-align: center;
+	border-radius: 18px;
+  color: #ffffff;
+}
+.link-item-name:hover {
+
+}
+.link-item-name:hover i {
+  background: rgba(0,0,0,.6);
+  color: #ffffff;
+  opacity: 1;
+}
+
+
 .p-table-summary {
   display: flex;
   line-height: 1.5;
