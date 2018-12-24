@@ -72,7 +72,7 @@ export default {
       this.path = 'https://www.taihuoniao.com/ssologin.html'
     }
     this.getVersion()
-    if (!prod.name) {
+    if (!this.prod.name) {
       this.fetchUser()
     }
   },
