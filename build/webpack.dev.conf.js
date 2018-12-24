@@ -8,7 +8,7 @@ var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 var costum = require('../config/prod.env')
 var favicon = ''
 if (costum.CUSTOM === 'jdc') {
-  favicon = ' https://p4.taihuoniao.com/asset/181116/5bee8b723ffca222638b681d-2-hu.jpg'
+  favicon = 'https://p4.taihuoniao.com/asset/181116/5bee8b723ffca222638b681d-2-hu.jpg'
 } else if (costum.CUSTOM === 'yw') {
   favicon = 'https://p4.taihuoniao.com/asset/181116/5bee8b723ffca222638b681d-1-hu.jpg'
 } else {

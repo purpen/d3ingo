@@ -47,14 +47,25 @@
                   </span>
                   <div class="drop-down">
                     <span @click="$router.push({name: 'adminPotentialUserCreated'})">添加潜在用户</span>
-                    <span>导入文件</span>
                     <span @click="showDialogVoIpUser">添加商务成员</span>
+                    <!-- <span>导入文件</span> -->
+                    <el-upload
+                      class="upload-demo"
+                      :action="uploadUrl"
+                      :on-preview="handlePreview"
+                      :before-upload="beforeAvatarUpload"
+                      :data="{'token': token}"
+                      accept=".xlsx"
+                      :show-file-list="false"
+                      :file-list="file">
+                      <span class="upload-file">导入文件</span>
+                    </el-upload>
                   </div>
                 </div>
 
               </div>
               <a href="javascript:void(0);"  @click="multipleDelItem" class="fr line-height30 height30"><i class="fx fx-icon-delete2"></i></a>
-              <el-button size="small" class="fl margin-l-10" @click="randomAssign = true">随机分配</el-button>
+              <el-button size="small" class="fl margin-l-10" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button>
               <a href="javascript:void(0);" class="line-height30 height30 margin-l-10" @click="exportForm">导出表格</a>
             </div>
           </div>
@@ -142,10 +153,11 @@
               width="70"
               label="状态">
                 <template slot-scope="scope">
-                  <p class="status1 status" v-if="scope.row.status === 1">待沟通</p>
-                  <p class="status2 status"  v-else-if="scope.row.status === 2">沟通中</p>
-                  <p class="status3 status"  v-else-if="scope.row.status === 3">成功</p>
-                  <p class="status4 status"  v-else>失败</p>
+                  <p class="status1 status" v-if="scope.row.status === 1">潜在客户</p>
+                  <p class="status2 status"  v-else-if="scope.row.status === 2">真实需求</p>
+                  <p class="status3 status"  v-else-if="scope.row.status === 3">签订合作</p>
+                  <p class="status3 status"  v-else-if="scope.row.status === 4">对接失败</p>
+                  <p class="status4 status"  v-else>对接设计</p>
                 </template>
             </el-table-column>
           </el-table>
@@ -211,6 +223,7 @@
 
 <script>
 import api from '@/api/api'
+import conf from 'conf/prod.env'
 import vMenu from '@/components/admin/Menu'
 import {nameToAvatar} from '@/assets/js/common'
 import '@/assets/js/date_format'
@@ -221,6 +234,8 @@ export default {
   },
   data() {
     return {
+      uploadUrl: '',
+      file: [],
       randomAssign: false,
       BoolAddVoIpUser: false,
       multipleSelection: [],
@@ -427,16 +442,21 @@ export default {
         return false
       }
       let idArr = this.arrayExportIds()
-      this.$http.post(api.adminClueExportExcel, {clue_id: idArr})
-        .then((response) => {
-          if (response.data.meta.status_code === 200) {
-          } else {
-            this.$message.error(response.data.meta.message)
-          }
-        })
-        .catch((error) => {
-          this.$message.error(error.message)
-        })
+      let url = 'https://sa.taihuoniao.com/admin/clue/exportExcel'
+      if (conf.ENV === 'prod') {
+        url = 'https://d3in-admin.taihuoniao.com/admin/clue/exportExcel'
+      }
+      let downloadUrl = url + '?'
+      let urlStr = ''
+      idArr.forEach((item, i) => {
+        if (i === 1) {
+          urlStr = 'clue_id[' + i + ']=' + idArr[i]
+        } else {
+          urlStr += '&clue_id[' + i + ']=' + idArr[i]
+        }
+      })
+      downloadUrl = url + '?' + urlStr
+      window.open(decodeURI(downloadUrl))
     },
     arrayExportIds() {
       var idArr = []
@@ -444,7 +464,28 @@ export default {
         idArr.push(this.multipleSelection[i].id)
       }
       return idArr
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList)
+    },
+    handlePreview(file) {
+      console.log(file)
+    },
+    beforeAvatarUpload(file) {
+      // const isXLSX = file.type === 'xlsx'
+      console.log(file)
+      // const isLt2M = file.size / 1024 / 1024 < 2
+      // if (!isXLSX) {
+      //   this.$message.error('上传头像图片只能是 XLSX 格式!')
+      // }
+      // if (!isLt2M) {
+      //   this.$message.error('上传头像图片大小不能超过 2MB!')
+      // }
+      // return isXLSX && isLt2M
     }
+  },
+  mounted() {
+    this.uploadUrl = api.adminClueImportExcel
   },
   created() {
     this.getClueList()
@@ -453,6 +494,14 @@ export default {
   filters: {
     formatName(val) {
       return nameToAvatar(val)
+    }
+  },
+  computed: {
+    isAdmin() {
+      return this.$store.state.event.user.role_id
+    },
+    token() {
+      return this.$store.state.event.token
     }
   }
 }
@@ -514,6 +563,13 @@ export default {
   display: none;
 }
 .drop-down > span {
+  display: block;
+  height: 30px;
+  line-height: 30px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.upload-file {
   display: block;
   height: 30px;
   line-height: 30px;
