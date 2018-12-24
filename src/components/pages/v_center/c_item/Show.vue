@@ -1322,33 +1322,33 @@
             }
             switch (self.item.status) {
               case 4: // 查看已提交报价的设计公司
-                self.progressButt = 2
-                self.progressContract = -1
-                self.progressItem = -1
-                self.statusIconUrl = require('@/assets/images/item/wait_taking.png')
-                self.statusLabel.trueCompany = true
-                self.$http.get(api.demandItemDesignListItemId.format(self.item.id), {})
-                  .then(function (response) {
-                    if (response.data.meta.status_code === 200) {
-                      let offerCompany = response.data.data
-                      for (let i = 0; i < offerCompany.length; i++) {
-                        let item = offerCompany[i]
-                        // 是否存在已提交报价的公司
-                        if (item.design_company_status === 2) {
-                          self.hasOfferCompany = true
-                        }
-                        if (item.design_company.logo_image && item.design_company.logo_image.length !== 0) {
-                          offerCompany[i].design_company.logo_url = item.design_company.logo_image.logo
-                        } else {
-                          offerCompany[i].design_company.logo_url = false
-                        }
-                      } // endfor
-                      self.offerCompany = offerCompany
-                    }
-                  })
-                  .catch(function (error) {
-                    self.$message.error(error.message)
-                  })
+                // self.progressButt = 2
+                // self.progressContract = -1
+                // self.progressItem = -1
+                // self.statusIconUrl = require('@/assets/images/item/wait_taking.png')
+                // self.statusLabel.trueCompany = true
+                // self.$http.get(api.demandItemDesignListItemId.format(self.item.id), {})
+                //   .then(function (response) {
+                //     if (response.data.meta.status_code === 200) {
+                //       let offerCompany = response.data.data
+                //       for (let i = 0; i < offerCompany.length; i++) {
+                //         let item = offerCompany[i]
+                //         // 是否存在已提交报价的公司
+                //         if (item.design_company_status === 2) {
+                //           self.hasOfferCompany = true
+                //         }
+                //         if (item.design_company.logo_image && item.design_company.logo_image.length !== 0) {
+                //           offerCompany[i].design_company.logo_url = item.design_company.logo_image.logo
+                //         } else {
+                //           offerCompany[i].design_company.logo_url = false
+                //         }
+                //       } // endfor
+                //       self.offerCompany = offerCompany
+                //     }
+                //   })
+                //   .catch(function (error) {
+                //     self.$message.error(error.message)
+                //   })
                 break
               case 45: // 已有设计公司报价
                 self.progressButt = 3

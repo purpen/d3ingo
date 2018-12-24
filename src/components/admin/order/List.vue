@@ -144,10 +144,10 @@
       <el-form label-position="top">
         <input type="hidden" v-model="orderForm.orderId" value="" />
         <input type="hidden" v-model.number="orderForm.index" value="" />
-        <el-form-item label="设计成果名称" label-width="200px" v-if="orderForm.pay_type === 5">
+        <!-- <el-form-item label="设计成果名称" label-width="200px" v-if="orderForm.pay_type === 5">
           <el-input v-model="orderForm.design_result_name" auto-complete="off" disabled></el-input>
-        </el-form-item>
-        <el-form-item label="项目名称" label-width="200px" v-else>
+        </el-form-item> -->
+        <el-form-item label="项目名称" label-width="200px">
           <el-input v-model="orderForm.itemName" auto-complete="off" disabled></el-input>
         </el-form-item>
         <el-form-item label="订单金额" label-width="200px">
