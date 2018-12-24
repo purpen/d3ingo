@@ -150,7 +150,7 @@
                 >
               </el-input>
               <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 添加标签</el-button>
-              <span class="fr u-c-time">创建时间:&nbsp;&nbsp;{{createdTime}}</span>
+              <span v-if="currentId" class="fr u-c-time">创建时间:&nbsp;&nbsp;{{createdTime}}</span>
             </p>
           </div>
           <div class="card-body">
@@ -313,45 +313,51 @@
                       <el-form label-position="top" :model="projectForm" 
                           :rules="ruleProjectForm" 
                           :ref="'ruleProjectForm'+ index" label-width="80px">
-                        <el-row :gutter="20">
-                          <el-col :xs="8" :sm="4" :md="4" :lg="4">
-                            <span class="project-i">项目&nbsp;&nbsp;({{index + 1}})</span>
-                          </el-col>
-                          <el-col :xs="14" :sm="10" :md="8" :lg="8">
-                            
-                            <p v-if="item.item" class="link-item">
-                              关联项目 : 
-                              <span class="link-item-name">{{item.item_name}}
-                                <i class="fx fx-icon-nothing-close-error" @click="deleteLinkProject(item)"></i>
-                              </span>
-                            </p>
-                            <div v-else>
-                              <el-button v-if="boolLinkItem || linkProjectId !== item.item_id" size="small" @click="showLinkItem(item.item_id)">关联项目</el-button>
-                              <div class="margin-b15" v-if="!boolLinkItem && linkProjectId === item.item_id">
-                                <el-select
-                                    v-model="linkProjectValue"
-                                    filterable
-                                    remote
-                                    reserve-keyword
-                                    placeholder="请输入关键词"
-                                    :remote-method="remoteMethod"
-                                    :loading="loading"
-                                    default-first-option
-                                    @blur="hiddenInput(e)"
-                                    @change="goLinkProject(item.item_id)">
-                                  <el-option
-                                    v-for="item in options4"
-                                    :key="item.id"
-                                    :label="item.name"
-                                    :value="item.id">
-                                  </el-option>
-                                </el-select>
+                        <div class="project-header clearfix">
+                            <span class="project-i fl">项目&nbsp;&nbsp;({{index + 1}})</span>
+                            <p v-if="item.failure === 1" class="project-failure fl"><span>失败项目</span>{{item.failure_cause}}</p>
+
+                            <div v-else class="fl">
+                              <p v-if="item.item" class="link-item">
+                                关联项目 : 
+                                <span class="link-item-name">{{item.item_name}}
+                                  <i class="close-icon-solid" @click="deleteLinkProject(item)"></i>
+                                </span>
+                              </p>
+                              <div v-else>
+                                <el-button v-if="boolLinkItem || linkProjectId !== item.item_id" size="small" @click="showLinkItem(item.item_id)">关联项目</el-button>
+                                <div class="" v-if="!boolLinkItem && linkProjectId === item.item_id">
+                                  <el-select
+                                      v-model="linkProjectValue"
+                                      filterable
+                                      remote
+                                      reserve-keyword
+                                      placeholder="请输入关键词"
+                                      :remote-method="remoteMethod"
+                                      :loading="loading"
+                                      default-first-option
+                                      @blur="hiddenInput(e)"
+                                      @change="goLinkProject(item.item_id)">
+                                    <el-option
+                                      v-for="item in options4"
+                                      :key="item.id"
+                                      :label="item.name"
+                                      :value="item.id">
+                                    </el-option>
+                                  </el-select>
+                                </div>
                               </div>
                             </div>
-                          </el-col>
-                        </el-row>
 
-                        <p v-if="item.failure === 1" class="project-failure"><span>失败项目</span>{{item.failure_cause}}</p>
+                            <div class="edit-project fr" v-if="!boolEditProject || currentProjectId !== item.item_id">
+                              <div class="edit-project-tag">
+                                <p @click="markProjectFailure(item.item_id)">标记为失败</p>
+                                <p @click="deleteProject(item.item_id)">删除项目</p>
+                                <p @click="editProject(item)">编辑项目</p>
+                              </div>
+                            </div>
+                        </div>
+
                         <el-row :gutter="20">
                           <el-col :xs="24" :sm="20" :md="8" :lg="8">
                             <p v-if="!boolEditProject || currentProjectId !== item.item_id"><span>项目名称: </span>{{item.name}}</p>
@@ -377,15 +383,6 @@
                                 </el-option>
                               </el-select>
                             </el-form-item> 
-                          </el-col>
-                          <el-col :xs="24" :sm="20" :md="8" :lg="8">
-                            <div class="edit-project fr" v-if="!boolEditProject || currentProjectId !== item.item_id">
-                              <div class="edit-project-tag">
-                                <p @click="markProjectFailure(item.item_id)">标记为失败</p>
-                                <p @click="deleteProject(item.item_id)">删除项目</p>
-                                <p @click="editProject(item)">编辑项目</p>
-                              </div>
-                            </div>
                           </el-col>
                         </el-row>
                         <el-row :gutter="20">
@@ -1587,6 +1584,7 @@ export default {
       if (!id) return
       this.boolLinkItem = false
       this.linkProjectId = id
+      this.linkProjectValue = ''
       this.associationItemList()
     },
     associationItemList() {
@@ -1985,8 +1983,7 @@ export default {
 .project-i {
   display: inline-block;
   font-size: 16px;
-  /* line-height: 36px; */
-  margin-bottom: 20px;
+  margin-right: 0px;
 }
 .user-base-table p, 
 .project-form-table p {
@@ -1996,21 +1993,38 @@ export default {
 .project-form-table span {
   margin-right: 16px;
 }
-.link-item {
-  /* position: relative; */
+.project-header {
+  margin-bottom: 20px;
+  height: 36px;
+  line-height: 36px;
+}
+.project-header > p {
+  margin-bottom: 0px;
+}
+
+
+
+.project-header .link-item {
+  color: #FF5A5F;
+  margin-bottom: 0px;
 }
 .link-item-name i {
-	/* border-radius: 0;
-	opacity: 0;
-	right: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	background: rgba(0,0,0,.6); */
+  position: absolute;
+  /* top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%); */
+  width: 100%;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  border-radius: 18px;
 }
 .link-item-name {
   border: 1px solid #FF5A5F;
+  background: rgb(255, 90, 95);
   position: relative;
 	max-width: 200px;
 	overflow: hidden;
@@ -2018,19 +2032,16 @@ export default {
 	white-space: nowrap;
 	padding: 2px 10px;
 	text-align: center;
-	line-height: 30px;
-	height: 30px;
 	border-radius: 18px;
-	margin-right: 8px;
-	margin-top: 4px;
+  color: #ffffff;
 }
 .link-item-name:hover {
-  /* background: rgb(255, 90, 95); */
-  /* color: #ffffff; */
+
 }
-.link-item-name:hover .link-item-name i {
-  opacity: 1;
+.link-item-name:hover i {
+  background: rgba(0,0,0,.6);
   color: #ffffff;
+  opacity: 1;
 }
 
 
