@@ -362,7 +362,7 @@
   }
 
   .detail p {
-    margin-top: 20px;
+    /* margin-top: 20px; */
     line-height: 2.5;
   }
 

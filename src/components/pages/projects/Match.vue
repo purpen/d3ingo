@@ -103,6 +103,7 @@ export default {
           this.isMatching = false
           this.matchComplete = true
         } else {
+          this.$router.push({name: 'vcenterItemList'})
           this.$message.error(res.data.meta.message)
         }
       }).catch(err => {
