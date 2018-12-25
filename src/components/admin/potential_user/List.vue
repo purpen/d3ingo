@@ -14,6 +14,7 @@
                     v-model="query.valueDate"
                     type="daterange"
                     size="small"
+                    range-separator="--"
                     start-placeholder="开始日期"
                     end-placeholder="结束日期"
                     :default-time="['00:00:00', '23:59:59']"
@@ -79,8 +80,7 @@
             class="admin-table"
             @selection-change="handleSelectionChange"
             style="width: 100%"
-            :row-class-name="tableRowClassName"
-            @row-click="handleClickRow">
+            :row-class-name="tableRowClassName">
             <el-table-column
               type="selection"
               width="50">
@@ -89,7 +89,7 @@
               label="姓名"
               width="60">
             <template slot-scope="scope">
-              <p @click="editUserInfo(scope.row.id, scope.row.name)">{{scope.row.name}}</p>
+              <p class="cursor-p" @click="editUserInfo(scope.row.id, scope.row.name)">{{scope.row.name}}</p>
             </template>
             </el-table-column>
             <el-table-column
@@ -103,11 +103,11 @@
             </el-table-column>
             <el-table-column
               prop="phone"
-              width="146"
+              width="116"
               label="电话">
             </el-table-column>
             <el-table-column
-              width="120"
+              width="110"
               prop="execute_user_name"
               label="所属人">
             </el-table-column>
@@ -129,11 +129,11 @@
             </el-table-column>
             <el-table-column
               prop="source"
-              width="80"
+              width="75"
               label="用户来源">
             </el-table-column>
             <el-table-column
-              width="60"
+              width="95"
               label="对接公司数量"
               prop="design_company_count">
               <!-- <template slot-scope="scope">
@@ -144,12 +144,12 @@
             </el-table-column>
             <el-table-column
               prop="logs"
-              width="50"
+              width="70"
               label="根进次数">
             </el-table-column>
             <el-table-column
               prop="next_time"
-              width="100"
+              width="90"
               label="次回根进">
             </el-table-column>
             <el-table-column
@@ -250,6 +250,7 @@ export default {
         totalCount: 0,
         valueDate: []
       },
+      dateArr: [], // 格式化
       defaultProps: {
         children: 'children',
         label: 'label'
@@ -282,9 +283,9 @@ export default {
         return true
       }
     },
-    handleClickRow({id, name}) {
-      this.editUserInfo(id, name)
-    },
+    // handleClickRow({id, name}) {
+    //   this.editUserInfo(id, name)
+    // },
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val
@@ -323,7 +324,10 @@ export default {
     getDate(val) {
       console.log(val)
       // let a = (new Date(val)).format('yyyy-MM-dd hh:mm:ss')
-      // console.log(a)
+      let arr = val.split('--')
+      arr[0] = arr[0] + ' 00:00:00'
+      arr[1] = arr[1] + ' 23:59:59'
+      this.dateArr = [...arr]
     },
     onSearch() {
       this.getClueList()
@@ -334,6 +338,7 @@ export default {
     getClueList() {
       let row = {}
       Object.assign(row, this.query)
+      row.valueDate = [...this.dateArr]
       this.$http.get(api.adminClueClueList, {params: row}).then(res => {
         if (res.data.meta.status_code === 200) {
           this.tableData = res.data.data
@@ -526,6 +531,10 @@ export default {
 </script>
 
 <style scoped>
+.cursor-p {
+  cursor: pointer;
+}
+
 .margin-l-10 {
   margin-left: 10px;
 }
@@ -685,6 +694,6 @@ export default {
   border-left: 4px solid #f7f7f7;
 }
 .admin-table .el-table__row {
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 </style>
