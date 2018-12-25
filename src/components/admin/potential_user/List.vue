@@ -10,15 +10,15 @@
               <el-form-item>
                 <span class="fl line-height30 fz-12">选择日期</span>
                 <div class="fr select-data">
-                <el-date-picker
-                  v-model="query.valueDate"
-                  type="daterange"
-                  size="small"
-                  start-placeholder="开始日期"
-                  end-placeholder="结束日期"
-                  :default-time="['00:00:00', '23:59:59']"
-                  @change="getDate">
-                </el-date-picker>
+                  <el-date-picker
+                    v-model="query.valueDate"
+                    type="daterange"
+                    size="small"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                    :default-time="['00:00:00', '23:59:59']"
+                    @change="getDate">
+                  </el-date-picker>
                 </div>
               </el-form-item>
               <el-form-item class="select-info">
@@ -53,7 +53,9 @@
                       class="upload-demo"
                       :action="uploadUrl"
                       :on-preview="handlePreview"
+                      :on-success="handleAvatarSuccess"
                       :before-upload="beforeAvatarUpload"
+                      :on-error="uploadError"
                       :data="{'token': token}"
                       accept=".xlsx"
                       :show-file-list="false"
@@ -156,8 +158,8 @@
                   <p class="status1 status" v-if="scope.row.status === 1">潜在客户</p>
                   <p class="status2 status"  v-else-if="scope.row.status === 2">真实需求</p>
                   <p class="status3 status"  v-else-if="scope.row.status === 3">签订合作</p>
-                  <p class="status3 status"  v-else-if="scope.row.status === 4">对接失败</p>
-                  <p class="status4 status"  v-else>对接设计</p>
+                  <p class="status4 status"  v-else-if="scope.row.status === 4">对接失败</p>
+                  <p class="status5 status"  v-else>对接设计</p>
                 </template>
             </el-table-column>
           </el-table>
@@ -167,7 +169,7 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="query.page"
-            :page-sizes="[10, 20, 50, 100]"
+            :page-sizes="[10, 20, 50]"
             :page-size="query.per_page"
             layout="total, sizes, prev, pager, next, jumper"
             :total="query.totalCount">
@@ -182,11 +184,11 @@
       title="随机分配"
       :visible.sync="randomAssign"
       size="tiny">
-      <span v-if="hasExecuteList.length">有{{hasExecuteList.length}}个潜在用户等待分配所属人，是否确认随机分配？</span>
+      <span v-if="noAllot">有{{noAllot}}个潜在用户等待分配所属人，是否确认随机分配？</span>
       <span v-else>没有所属人待分配</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="randomAssign = false">取 消</el-button>
-        <el-button type="primary" @click="randomAllot" :disabled="!hasExecuteList.length">确 定</el-button>
+        <el-button type="primary" @click="randomAllot" :disabled="!noAllot">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -212,7 +214,7 @@
       title="移除业务人员"
       :visible.sync="deleteDialogVoIpUser"
       center>
-      <span class="d-d-content">改商务成员负责{{belongIdLength}}个潜在用户, 删除商务成员后,将清空潜在客户所属人?</span>
+      <span class="d-d-content">改商务成员负责{{noAllot}}个潜在用户, 删除商务成员后,将清空潜在客户所属人?</span>
       <div slot="footer" class="dialog-footer">
         <el-button @click="deleteDialogVoIpUser = false">取 消</el-button>
         <el-button type="primary" @click="deleteVoIpUser">确 定</el-button>
@@ -253,7 +255,7 @@ export default {
       },
       tableData: [],
       adminUserList: [],
-      hasExecuteList: [], // 没有所属人的数组
+      noAllot: 0, // 没有所属人的个数
       deleteDialogVoIpUser: false,
       currentVoIpUserId: '',
       belongIdLength: ''
@@ -301,6 +303,7 @@ export default {
               }
             }
             this.$message.success('删除成功!')
+            this.getClueList()
           } else {
             this.$message.error(response.data.meta.message)
           }
@@ -331,13 +334,7 @@ export default {
         if (res.data.meta.status_code === 200) {
           this.tableData = res.data.data
           this.query.totalCount = parseInt(res.data.meta.pagination.total)
-          let hasExecuteUser = []
-          this.tableData.forEach(item => {
-            if (!item.execute_user_id) {
-              hasExecuteUser.push(item)
-            }
-          })
-          this.hasExecuteList = hasExecuteUser
+          this.noAllot = res.data.data[0].no_allot
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -363,7 +360,6 @@ export default {
     askVoIpUser(d) {
       if (d && d.id) {
         if (d.status === 1) {
-          this.belongIdLength = this.belongIdNumber(d.id)
           this.currentVoIpUserId = d.id
           if (!this.belongIdLength) {
             this.deleteVoIpUser()
@@ -427,20 +423,11 @@ export default {
       this.query.page = parseInt(val)
       this.getClueList()
     },
-    belongIdNumber(id) {
-      let belongIdArr = []
-      this.tableData.forEach(item => {
-        if (item.execute_user_id && item.execute_user_id === id) {
-          belongIdArr.push(item)
-        }
-      })
-      return belongIdArr.length
-    },
     exportForm() { // 导出
-      if (this.multipleSelection.length === 0) {
-        this.$message.error('至少选择一个要导出的潜在用户')
-        return false
-      }
+      // if (this.multipleSelection.length === 0) {
+      //   this.$message.error('至少选择一个要导出的潜在用户')
+      //   return false
+      // }
       let idArr = this.arrayExportIds()
       let url = 'https://sa.taihuoniao.com/admin/clue/exportExcel'
       if (conf.ENV === 'prod') {
@@ -449,7 +436,7 @@ export default {
       let downloadUrl = url + '?'
       let urlStr = ''
       idArr.forEach((item, i) => {
-        if (i === 1) {
+        if (i === 0) {
           urlStr = 'clue_id[' + i + ']=' + idArr[i]
         } else {
           urlStr += '&clue_id[' + i + ']=' + idArr[i]
@@ -457,6 +444,10 @@ export default {
       })
       downloadUrl = url + '?' + urlStr
       window.open(decodeURI(downloadUrl))
+      // this.$http.post(api.adminClueExportExcel, {clue_id: idArr}).then(res => {
+      //   if (res.data.meta.status_code === 200) {
+      //   }
+      // })
     },
     arrayExportIds() {
       var idArr = []
@@ -482,6 +473,16 @@ export default {
       //   this.$message.error('上传头像图片大小不能超过 2MB!')
       // }
       // return isXLSX && isLt2M
+    },
+    handleAvatarSuccess(res, file, fileList) {
+      if (res.meta.status_code === 200) {
+        this.$message.success('导入成功')
+        this.getClueList()
+      }
+    },
+    uploadError(err, file, fileList) {
+      console.error(err)
+      this.$message.error(err.message)
     }
   },
   mounted() {
@@ -528,6 +529,7 @@ export default {
 }
 .select-data {
   width: 192px;
+  margin-left: 10px;
 }
 .admin-header-right {
   width: 36%;
@@ -625,13 +627,15 @@ export default {
 .status4 {
   color: #FF5A5F;
 }
+.status5 {
+  color: #65A6FF;
+}
 .status {
   font-weight: 600;
 } 
 .d-d-content {
   line-height: 20px;
 }
-
 
 
 </style>
@@ -662,5 +666,8 @@ export default {
 }
 .admin-table thead tr {
   border-left: 4px solid #f7f7f7;
+}
+.admin-table .el-table__row {
+  cursor: pointer;
 }
 </style>
