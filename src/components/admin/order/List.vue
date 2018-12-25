@@ -251,6 +251,8 @@ export default {
       this.orderForm.amount = item.amount
       this.orderForm.pay_type = item.pay_type
       this.sureTransferDialog = true
+      this.orderForm.bankId = ''
+      this.orderForm.payNo = ''
     },
     // 查看凭证弹层
     showTransfer(index, item) {
@@ -265,7 +267,7 @@ export default {
       //   return
       // }
       if (!this.orderForm.orderId || !this.orderForm.bankId || !this.orderForm.payNo) {
-        this.$message.error('缺少请求参数!')
+        this.$message.error('需完善打款信息!')
         return
       }
       var self = this
