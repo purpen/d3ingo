@@ -413,7 +413,8 @@ export default {
     transform: translateY(-6px);
   }
   .img-box {
-    height: 180px;
+    /* height: 180px; */
+    padding-top: 57%;
     border-radius: 4px 4px 0 0;
     background: url(../../../assets/images/Bitmap.png) no-repeat center
   }
