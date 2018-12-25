@@ -156,6 +156,10 @@
 .blank60 {
   margin-top: 60px;
 }
+
+.margin-r-15 {
+  margin-right: 15px!important;
+}
 .margin-r-20 {
   margin-right: 20px;
 }

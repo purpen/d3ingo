@@ -10,15 +10,15 @@
               <el-form-item>
                 <span class="fl line-height30 fz-12">选择日期</span>
                 <div class="fr select-data">
-                <el-date-picker
-                  v-model="query.valueDate"
-                  type="daterange"
-                  size="small"
-                  start-placeholder="开始日期"
-                  end-placeholder="结束日期"
-                  :default-time="['00:00:00', '23:59:59']"
-                  @change="getDate">
-                </el-date-picker>
+                  <el-date-picker
+                    v-model="query.valueDate"
+                    type="daterange"
+                    size="small"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                    :default-time="['00:00:00', '23:59:59']"
+                    @change="getDate">
+                  </el-date-picker>
                 </div>
               </el-form-item>
               <el-form-item class="select-info">
@@ -53,7 +53,9 @@
                       class="upload-demo"
                       :action="uploadUrl"
                       :on-preview="handlePreview"
+                      :on-success="handleAvatarSuccess"
                       :before-upload="beforeAvatarUpload"
+                      :on-error="uploadError"
                       :data="{'token': token}"
                       accept=".xlsx"
                       :show-file-list="false"
@@ -77,10 +79,11 @@
             class="admin-table"
             @selection-change="handleSelectionChange"
             style="width: 100%"
-            :row-class-name="tableRowClassName">
+            :row-class-name="tableRowClassName"
+            @row-click="handleClickRow">
             <el-table-column
               type="selection"
-              width="40">
+              width="50">
             </el-table-column>
             <el-table-column
               label="姓名"
@@ -100,11 +103,11 @@
             </el-table-column>
             <el-table-column
               prop="phone"
-              width="126"
+              width="146"
               label="电话">
             </el-table-column>
             <el-table-column
-              width="100"
+              width="120"
               prop="execute_user_name"
               label="所属人">
             </el-table-column>
@@ -114,7 +117,7 @@
               prop="call_status">
             </el-table-column>
             <el-table-column
-              width="80"
+              width="70"
               label="客户级别">
                  <template slot-scope="scope">
                   <p v-if="scope.row.rank === 1">一级客户</p>
@@ -130,7 +133,7 @@
               label="用户来源">
             </el-table-column>
             <el-table-column
-              width="100"
+              width="60"
               label="对接公司数量"
               prop="design_company_count">
               <!-- <template slot-scope="scope">
@@ -156,8 +159,8 @@
                   <p class="status1 status" v-if="scope.row.status === 1">潜在客户</p>
                   <p class="status2 status"  v-else-if="scope.row.status === 2">真实需求</p>
                   <p class="status3 status"  v-else-if="scope.row.status === 3">签订合作</p>
-                  <p class="status3 status"  v-else-if="scope.row.status === 4">对接失败</p>
-                  <p class="status4 status"  v-else>对接设计</p>
+                  <p class="status4 status"  v-else-if="scope.row.status === 4">对接失败</p>
+                  <p class="status5 status"  v-else>对接设计</p>
                 </template>
             </el-table-column>
           </el-table>
@@ -167,7 +170,7 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="query.page"
-            :page-sizes="[10, 20, 50, 100]"
+            :page-sizes="[10, 20, 50]"
             :page-size="query.per_page"
             layout="total, sizes, prev, pager, next, jumper"
             :total="query.totalCount">
@@ -182,11 +185,11 @@
       title="随机分配"
       :visible.sync="randomAssign"
       size="tiny">
-      <span v-if="hasExecuteList.length">有{{hasExecuteList.length}}个潜在用户等待分配所属人，是否确认随机分配？</span>
+      <span v-if="noAllot">有{{noAllot}}个潜在用户等待分配所属人，是否确认随机分配？</span>
       <span v-else>没有所属人待分配</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="randomAssign = false">取 消</el-button>
-        <el-button type="primary" @click="randomAllot" :disabled="!hasExecuteList.length">确 定</el-button>
+        <el-button type="primary" @click="randomAllot" :disabled="!noAllot">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -253,7 +256,7 @@ export default {
       },
       tableData: [],
       adminUserList: [],
-      hasExecuteList: [], // 没有所属人的数组
+      noAllot: 0, // 没有所属人的个数
       deleteDialogVoIpUser: false,
       currentVoIpUserId: '',
       belongIdLength: ''
@@ -279,6 +282,9 @@ export default {
         return true
       }
     },
+    handleClickRow({id, name}) {
+      this.editUserInfo(id, name)
+    },
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val
@@ -301,6 +307,7 @@ export default {
               }
             }
             this.$message.success('删除成功!')
+            this.getClueList()
           } else {
             this.$message.error(response.data.meta.message)
           }
@@ -331,13 +338,9 @@ export default {
         if (res.data.meta.status_code === 200) {
           this.tableData = res.data.data
           this.query.totalCount = parseInt(res.data.meta.pagination.total)
-          let hasExecuteUser = []
-          this.tableData.forEach(item => {
-            if (!item.execute_user_id) {
-              hasExecuteUser.push(item)
-            }
-          })
-          this.hasExecuteList = hasExecuteUser
+          if (res.data.data.length) {
+            this.noAllot = res.data.data[0].no_allot
+          }
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -363,9 +366,9 @@ export default {
     askVoIpUser(d) {
       if (d && d.id) {
         if (d.status === 1) {
-          this.belongIdLength = this.belongIdNumber(d.id)
           this.currentVoIpUserId = d.id
-          if (!this.belongIdLength) {
+          this.belongIdLength = d.clue_count
+          if (!d.clue_count) {
             this.deleteVoIpUser()
             return
           }
@@ -380,8 +383,13 @@ export default {
       if (!id) return
       this.$http.post(api.adminClueAddVoIpUser, {user_id: id}).then(res => {
         if (res.data.meta.status_code === 200) {
+          this.adminUserList.forEach((item, i, array) => {
+            if (item.id === id) {
+              this.$set(array[i], 'status', 1)
+            }
+          })
           this.$message.success('添加成功')
-          this.getAdminList()
+          // this.getAdminList()
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -395,8 +403,13 @@ export default {
       this.$http.post(api.adminClueDelVoIpUser, {user_id: this.currentVoIpUserId}).then(res => {
         if (res.data.meta.status_code === 200) {
           this.deleteDialogVoIpUser = false
+          this.adminUserList.forEach((item, i, array) => {
+            if (item.id === this.currentVoIpUserId) {
+              this.$set(array[i], 'status', 2)
+            }
+          })
           this.$message.success('移除成功')
-          this.getAdminList()
+          // this.getAdminList()
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -427,20 +440,11 @@ export default {
       this.query.page = parseInt(val)
       this.getClueList()
     },
-    belongIdNumber(id) {
-      let belongIdArr = []
-      this.tableData.forEach(item => {
-        if (item.execute_user_id && item.execute_user_id === id) {
-          belongIdArr.push(item)
-        }
-      })
-      return belongIdArr.length
-    },
     exportForm() { // 导出
-      if (this.multipleSelection.length === 0) {
-        this.$message.error('至少选择一个要导出的潜在用户')
-        return false
-      }
+      // if (this.multipleSelection.length === 0) {
+      //   this.$message.error('至少选择一个要导出的潜在用户')
+      //   return false
+      // }
       let idArr = this.arrayExportIds()
       let url = 'https://sa.taihuoniao.com/admin/clue/exportExcel'
       if (conf.ENV === 'prod') {
@@ -449,7 +453,7 @@ export default {
       let downloadUrl = url + '?'
       let urlStr = ''
       idArr.forEach((item, i) => {
-        if (i === 1) {
+        if (i === 0) {
           urlStr = 'clue_id[' + i + ']=' + idArr[i]
         } else {
           urlStr += '&clue_id[' + i + ']=' + idArr[i]
@@ -457,6 +461,10 @@ export default {
       })
       downloadUrl = url + '?' + urlStr
       window.open(decodeURI(downloadUrl))
+      // this.$http.post(api.adminClueExportExcel, {clue_id: idArr}).then(res => {
+      //   if (res.data.meta.status_code === 200) {
+      //   }
+      // })
     },
     arrayExportIds() {
       var idArr = []
@@ -482,6 +490,16 @@ export default {
       //   this.$message.error('上传头像图片大小不能超过 2MB!')
       // }
       // return isXLSX && isLt2M
+    },
+    handleAvatarSuccess(res, file, fileList) {
+      if (res.meta.status_code === 200) {
+        this.$message.success('导入成功')
+        this.getClueList()
+      }
+    },
+    uploadError(err, file, fileList) {
+      console.error(err)
+      this.$message.error(err.message)
     }
   },
   mounted() {
@@ -528,6 +546,7 @@ export default {
 }
 .select-data {
   width: 192px;
+  margin-left: 10px;
 }
 .admin-header-right {
   width: 36%;
@@ -625,13 +644,15 @@ export default {
 .status4 {
   color: #FF5A5F;
 }
+.status5 {
+  color: #65A6FF;
+}
 .status {
   font-weight: 600;
 } 
 .d-d-content {
   line-height: 20px;
 }
-
 
 
 </style>
@@ -662,5 +683,8 @@ export default {
 }
 .admin-table thead tr {
   border-left: 4px solid #f7f7f7;
+}
+.admin-table .el-table__row {
+  cursor: pointer;
 }
 </style>

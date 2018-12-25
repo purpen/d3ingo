@@ -89,7 +89,7 @@
     align-items: center;
   }
   .el-dialog__footer .dialog-footer .el-button:first-child {
-    margin-right: 20px;
+    margin-right: 15px;
   }
   .aside .el-progress .el-progress-bar__outer, .aside .el-progress .el-progress-bar__outer .el-progress-bar__inner {
     border-radius: 0px
