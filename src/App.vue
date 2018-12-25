@@ -48,7 +48,7 @@ export default {
         title: '',
         path: ''
       },
-      path: 'http://dev.taihuoniao.com/ssologin.html'
+      path: ''
     }
   },
   watch: {
@@ -70,6 +70,9 @@ export default {
   created() {
     if (ENV === 'prod' && this.prod.name === '') {
       this.path = 'https://www.taihuoniao.com/ssologin.html'
+    }
+    if (ENV === 'dev' && this.prod.name === '') {
+      this.path = 'http://dev.taihuoniao.com/ssologin.html'
     }
     this.getVersion()
     if (!this.prod.name) {
