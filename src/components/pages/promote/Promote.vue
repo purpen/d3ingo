@@ -415,7 +415,7 @@
         <div class="concent line-height20">
           <div class="fc_red fs_24 mtop_20">铟果D3INGO的 背景和实力</div>
           <div class="fs_16 mtop_15">知名投资机构战略投资</div>
-          <div class="fs_16 mtop_20">真格基金、创新工场、京东金融、海泉基金<br>麦顿资本、罗莱生活、小米、顺为资本</div>
+          <div class="fs_16 mtop_20">真格基金、创新工场、海泉基金<br>麦顿资本、罗莱生活、小米、顺为资本</div>
           <div class="circe mtop_20">
             <div class="small_circe fs_20 fc_red">1000+</div>
             <div class="fs_15 fc_white" style="margin-left: 5px;">入驻全球顶级设计公司</div>
