@@ -64,7 +64,8 @@
                     v-for="(item, index) in userStatus"
                     :key="index"
                     :label="item.label"
-                    :value="item.value">
+                    :value="item.value"
+                    :disabled="item.value === 3">
                     <span :style="{
                       float: 'left',
                       width: '10px',
@@ -330,11 +331,13 @@
                                       filterable
                                       remote
                                       reserve-keyword
+                                      clearable
                                       placeholder="请输入关键词"
                                       :remote-method="remoteMethod"
                                       :loading="loading"
                                       default-first-option
                                       @blur="hiddenInput(e)"
+                                      @clear="hiddenInput()"
                                       @change="goLinkProject(item.item_id)">
                                     <el-option
                                       v-for="item in options4"
@@ -347,7 +350,8 @@
                               </div>
                             </div>
 
-                            <div class="edit-project fr" v-if="item.failure === null && (!boolEditProject || currentProjectId !== item.item_id)">
+                            <div class="edit-project fr" v-if="item.failure === null && (!boolEditProject || currentProjectId !== 
+                                 item.item_id)">
                               <div class="edit-project-tag">
                                 <p @click="markProjectFailure(item.item_id)">标记为失败</p>
                                 <p @click="deleteProject(item.item_id)">删除项目</p>
@@ -759,36 +763,68 @@
               <div class="card-body-center padding20" v-show="option === 'followLog'">
                 <ul>
                   <li v-for="(item, i) in followLogList" :key="i" class="log-li">
-                   <el-row :gutter="20">
-                     <el-col :xs="24" :sm="24" :md="24" :lg="24">
-                       <div class="log-li-top">
-                         <p class="execute-user-info">
-                          <img v-if="item.logo_image" :src="item.logo_image.logo" alt="">
-                          <span class="no-head" v-else>{{item.execute_user_name | formatName}}</span>
-                          <span class="name">{{item.execute_user_name || ''}}</span>
-                         </p>
-                        <p>创建时间 :<span> {{item.date}}</span></p>
-                        <p v-if="item.next_time && item.status !== 3" :class="['log-next-time', {'carry-out': item.status === 2 }]">次回跟进时间 :
-                          <span>{{item.next_time}}</span>
-                          <a v-if="item.status === 1" @click="showLogStatusDialog(item.id, 3)">取消</a>
-                          <a v-if="item.status === 1" @click="showLogStatusDialog(item.id, 2)">完成</a>
-                        </p>
-                       </div>
-                     </el-col>
-                   </el-row>
-                   
-                   <el-row :gutter="20">
-                     <el-col :xs="24" :sm="16" :md="24" :lg="24">
-                       <p class="log-contant">
-                        <span>{{item.log}}</span>
-                       </p>
-                       <p class="log-comment" v-if="item.comment">
-                         <span class="log-comment-title" v-if="item.status === 2">次回跟进完成内容: </span>
-                         <span class="log-comment-title" v-if="item.status === 3">次回跟进取消的原因: </span>
-                        <span>{{item.comment}}</span>
-                       </p>
-                     </el-col>
-                   </el-row>
+                    <div>
+                      <el-row :gutter="20">
+                        <el-col :xs="24" :sm="24" :md="24" :lg="24">
+                          <div class="log-li-top">
+                            <p class="execute-user-info">
+                              <img v-if="item.logo_image" :src="item.logo_image.logo" alt="">
+                              <span class="no-head" v-else>{{item.execute_user_name | formatName}}</span>
+                              <span class="name">{{item.execute_user_name || ''}}</span>
+                            </p>
+                              <p>创建时间 :<span> {{item.date}}</span></p>
+                              <p v-if="item.next_time && item.status !== 3" 
+                                  :class="['log-next-time', {'carry-out': item.status === 2 }]">
+                                  次回跟进时间 :
+                                <span>{{item.next_time}}</span>
+                                <a v-if="item.status === 1 && (!boolEditLog || item.id !== currrentLogId)" @click="showLogStatusDialog(item.id, 3)">取消</a>
+                                <a v-if="item.status === 1 && (!boolEditLog || item.id !== currrentLogId)" @click="showLogStatusDialog(item.id, 2)">完成</a>
+                              </p>
+                              <div class="edit-log fr" v-if="isAdmin>=15 &&(item.status === 0 || item.status === 1)">
+                                <div class="edit-log-tag">
+                                  <p @click="showlogInput(item)">编辑</p>
+                                  <p @click="deletelog(item.id)">删除</p>
+                                </div>
+                              </div>
+                          </div>
+                        </el-col>
+                      </el-row>
+                      <el-row :gutter="20">
+                        <el-col :xs="24" :sm="16" :md="24" :lg="24">
+                          <p class="log-contant" v-if="!boolEditLog || item.id !== currrentLogId">
+                            <span>{{item.log}}</span>
+                          </p>
+                          <p class="log-comment" v-if="item.comment">
+                            <span class="log-comment-title" v-if="item.status === 2">取消原因: </span>
+                            <span class="log-comment-title" v-if="item.status === 3">完成内容: </span>
+                            <span>{{item.comment}}</span>
+                          </p>
+                        </el-col>
+                      </el-row>
+                    </div>
+
+                    <div class="edit-progress" v-if="boolEditLog && item.id === currrentLogId">
+                      <el-input type="textarea"
+                        placeholder="添加跟进内容"
+                        v-model="editFollowVal"
+                        @keydown.native.enter.shift="quick"
+                        :autosize="{ minRows: 3, maxRows: 10}"
+                        :maxlength="500"
+                        @focus="focusInput1"
+                        autofocus>
+                      </el-input>
+                      <div class="send clearfix">
+                        <div class="date-picker fl" style="width: 180px;">
+                            <el-date-picker
+                              v-model="editFollowTime"
+                              type="date"
+                              placeholder="选择日期"
+                              :picker-options="pickerOptions2">
+                            </el-date-picker>
+                        </div>
+                        <el-button class="fr" type="primary" @click="updateTrackLog">发布</el-button>
+                      </div>
+                    </div>
                   </li>
                 </ul>
                 <div class="progress">
@@ -866,6 +902,7 @@ import '@/assets/js/date_format'
 import {nameToAvatar} from '@/assets/js/common'
 // 城市联动
 import RegionPicker from '@/components/block/RegionPicker'
+import Clickoutside from 'assets/js/clickoutside'
 export default {
   name: 'admin_potential_userinfo',
   components: {
@@ -1013,19 +1050,27 @@ export default {
       editDesignParams: {},
 
       followVal: '',
+      editFollowVal: '',
       followTime: '',
+      editFollowTime: '',
       logStatusCause: '',
       followLogList: [],
       logStstus: '',
       logId: '',
       BoolLogComplete: false,
       BoolLogCancel: false,
+      boolEditLog: false,
+      currrentLogId: '',
       pickerOptions1: {
         disabledDate(time) {
           return time.getTime() < Date.now()
         }
       },
-
+      pickerOptions2: {
+        disabledDate(time) {
+          return time.getTime() < Date.now()
+        }
+      },
       boolLinkItem: true,
       linkProjectId: '',
       options4: [],
@@ -1387,6 +1432,10 @@ export default {
       if (id) {
         this.currentDesignId = id
       }
+      this.designCompanyForm = {
+        wx: '',
+        summary: ''
+      }
       this.boolDesignCompany = true
       this.getDesignCompanyList()
     },
@@ -1410,13 +1459,12 @@ export default {
         }
       })
     },
-    hiddenInput(e) {
-      console.log('aaaaa')
-      console.log(e)
-      this.boolLinkItem = true
-    },
     focusInput() {
       this.focusHeight = true
+      this.boolEditLog = false
+    },
+    focusInput1() {
+      // this.boolEditLog = false
     },
     sendProgressVal() { // 发送跟进记录
       if (!this.followVal) {
@@ -1432,6 +1480,7 @@ export default {
         const nextTime = (new Date(this.followTime)).format('yyyy-MM-dd')
         row.next_time = nextTime
       }
+      this.focusHeight = false
       this.$http.post(api.adminClueAddTrackLog, row).then(res => {
         if (res.data.meta.status_code === 200) {
           this.getLogList()
@@ -1656,6 +1705,10 @@ export default {
         this.options4 = []
       }
     },
+    hiddenInput(e) {
+      console.log('aaa')
+      this.boolLinkItem = true
+    },
     goLinkProject(id) { // 关联线上项目
       if (!id) return
       let row = {
@@ -1688,6 +1741,60 @@ export default {
         }
       }).catch(error => {
         this.$message.error(error.message)
+      })
+    },
+    deletelog(id) { // 删除跟进记录
+      if (!id) return
+      let row = {
+        clue_id: this.currentId,
+        track_log_id: id
+      }
+      this.$http.delete(api.adminClueDelTrackLog, {params: row}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.$message.success(res.data.meta.message)
+          this.getLogList()
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+      })
+    },
+    showlogInput(d) { // 编辑跟进记录
+      this.focusHeight = false
+      this.boolEditLog = true
+      this.currrentLogId = d.id
+      this.editFollowVal = d.log
+      this.editFollowTime = d.next_time
+      // this.$refs['logInput'].focus()
+    },
+    updateTrackLog() {
+      if (!this.editFollowVal) {
+        this.$message.error('请输入跟进记录')
+        return
+      }
+      let row = {
+        track_log_id: this.currrentLogId,
+        clue_id: this.currentId,
+        log: this.editFollowVal,
+        next_time: ''
+      }
+      if (this.editFollowTime) {
+        const nextTime = (new Date(this.editFollowTime)).format('yyyy-MM-dd')
+        row.next_time = nextTime
+      }
+      this.$http.post(api.adminClueUpdateTrackLog, row).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.getLogList()
+          this.boolEditLog = false
+          this.editFollowTime = ''
+          this.currrentLogId = ''
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+        console.log(error.message)
       })
     }
   },
@@ -1746,6 +1853,7 @@ export default {
     this.getTypeList()
     this.getAdminVoIpList()
   },
+  directives: {Clickoutside},
   mounted() {}
 }
 </script>
@@ -1992,6 +2100,7 @@ export default {
   cursor: pointer;
   background: url(../../../assets/images/icon/MoreHover.png) no-repeat left;
 }
+
 .edit-project:hover .edit-project-tag {
   display: block;
 }
@@ -2022,7 +2131,6 @@ export default {
 .edit-project-tag> p:hover {
   color: #484848;
 }
-
 .project-failure {
   color: #FF5A5F;
 }
@@ -2135,6 +2243,9 @@ export default {
   border-radius: 4px;
   margin-top: 20px;
 }
+.edit-progress {
+
+}
 .send {
   border-top: 1px solid #e6e6e6;
   padding: 10px 20px;
@@ -2145,14 +2256,17 @@ export default {
   background-color: #FAFAFA;
   margin-top: 10px;
   border: 1px solid #e6e6e6;
-  padding-bottom: 20px;
+}
+.log-li:blur {
+
 }
 .log-li-top {
+  position: relative;
   display: flex;
   align-items: center;
   height: 50px;
 }
-.log-li-top p {
+.log-li-top > p {
   margin-left: 20px;
   color: #666666;
 }
@@ -2178,12 +2292,12 @@ export default {
 .log-contant {
   border-top: 1px solid #e6e6e6;
   min-height: 40px;
-  padding: 15px 20px 5px 20px;
+  padding: 15px 20px 15px 20px;
   line-height: 1.5;
   color: #666666;
 }
 .log-comment {
-  padding: 5px 20px 0px 20px;
+  padding: 0px 20px 15px 20px;
   line-height: 1.5;
   color: #666666;
 }
@@ -2200,7 +2314,40 @@ export default {
   border-radius: 50%;
   margin-right: 10px;
 }
-
+.edit-log {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  background: url(../../../assets/images/icon/MoreHover.png) no-repeat left;
+}
+.edit-log:hover .edit-log-tag {
+  display: block;
+}
+.edit-log-tag {
+  display: none;
+  position: absolute;
+  top: 26px;
+  left: -40px;
+  width: 90px;
+  z-index: 99;
+  border: 1px solid #e6e6e6;
+  background: #ffffff;
+}
+.edit-log .edit-log-tag> p {
+  height: 40px;
+  line-height: 40px;
+  color: #AAAAAA;
+  margin-bottom: 0px;
+  text-align: center;
+  font-size: 12px;
+  border-bottom: 1px solid #e6e6e6;
+}
+.edit-log-tag> p:hover {
+  color: #484848;
+}
 .no-head {
   width: 30px;
   height: 30px;
@@ -2247,7 +2394,7 @@ export default {
 }
 
 .card-body-center .active .el-textarea__inner {
-  min-height: 80px !important;
+  min-height: 70px !important;
   border: none;
 }
 </style>
