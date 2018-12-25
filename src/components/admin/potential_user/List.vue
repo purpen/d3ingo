@@ -79,10 +79,11 @@
             class="admin-table"
             @selection-change="handleSelectionChange"
             style="width: 100%"
-            :row-class-name="tableRowClassName">
+            :row-class-name="tableRowClassName"
+            @row-click="handleClickRow">
             <el-table-column
               type="selection"
-              width="40">
+              width="50">
             </el-table-column>
             <el-table-column
               label="姓名"
@@ -102,11 +103,11 @@
             </el-table-column>
             <el-table-column
               prop="phone"
-              width="126"
+              width="146"
               label="电话">
             </el-table-column>
             <el-table-column
-              width="100"
+              width="120"
               prop="execute_user_name"
               label="所属人">
             </el-table-column>
@@ -116,7 +117,7 @@
               prop="call_status">
             </el-table-column>
             <el-table-column
-              width="80"
+              width="70"
               label="客户级别">
                  <template slot-scope="scope">
                   <p v-if="scope.row.rank === 1">一级客户</p>
@@ -132,7 +133,7 @@
               label="用户来源">
             </el-table-column>
             <el-table-column
-              width="100"
+              width="60"
               label="对接公司数量"
               prop="design_company_count">
               <!-- <template slot-scope="scope">
@@ -214,7 +215,7 @@
       title="移除业务人员"
       :visible.sync="deleteDialogVoIpUser"
       center>
-      <span class="d-d-content">改商务成员负责{{noAllot}}个潜在用户, 删除商务成员后,将清空潜在客户所属人?</span>
+      <span class="d-d-content">改商务成员负责{{belongIdLength}}个潜在用户, 删除商务成员后,将清空潜在客户所属人?</span>
       <div slot="footer" class="dialog-footer">
         <el-button @click="deleteDialogVoIpUser = false">取 消</el-button>
         <el-button type="primary" @click="deleteVoIpUser">确 定</el-button>
@@ -281,6 +282,9 @@ export default {
         return true
       }
     },
+    handleClickRow({id, name}) {
+      this.editUserInfo(id, name)
+    },
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val
@@ -334,7 +338,9 @@ export default {
         if (res.data.meta.status_code === 200) {
           this.tableData = res.data.data
           this.query.totalCount = parseInt(res.data.meta.pagination.total)
-          this.noAllot = res.data.data[0].no_allot
+          if (res.data.data.length) {
+            this.noAllot = res.data.data[0].no_allot
+          }
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -361,7 +367,8 @@ export default {
       if (d && d.id) {
         if (d.status === 1) {
           this.currentVoIpUserId = d.id
-          if (!this.belongIdLength) {
+          this.belongIdLength = d.clue_count
+          if (!d.clue_count) {
             this.deleteVoIpUser()
             return
           }
@@ -376,8 +383,13 @@ export default {
       if (!id) return
       this.$http.post(api.adminClueAddVoIpUser, {user_id: id}).then(res => {
         if (res.data.meta.status_code === 200) {
+          this.adminUserList.forEach((item, i, array) => {
+            if (item.id === id) {
+              this.$set(array[i], 'status', 1)
+            }
+          })
           this.$message.success('添加成功')
-          this.getAdminList()
+          // this.getAdminList()
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -391,8 +403,13 @@ export default {
       this.$http.post(api.adminClueDelVoIpUser, {user_id: this.currentVoIpUserId}).then(res => {
         if (res.data.meta.status_code === 200) {
           this.deleteDialogVoIpUser = false
+          this.adminUserList.forEach((item, i, array) => {
+            if (item.id === this.currentVoIpUserId) {
+              this.$set(array[i], 'status', 2)
+            }
+          })
           this.$message.success('移除成功')
-          this.getAdminList()
+          // this.getAdminList()
         } else {
           this.$message.error(res.data.meta.message)
         }

@@ -1071,6 +1071,9 @@ export default {
     isUpdatedSource(val) {
       if (val !== this.baseInfo.source) {
         this.updatedBaseInfo()
+        if (!this.isExistArray(val, this.sourceArr)) {
+          this.getTypeList()
+        }
       }
     },
     isUpdatedStatus(val) {
@@ -1086,6 +1089,9 @@ export default {
     isUpdatedCallStatus(val) {
       if (val !== this.baseInfo.call_status) {
         this.updatedBaseInfo()
+        if (!this.isExistArray(val, this.callStatus)) {
+          this.getTypeList()
+        }
       }
     },
     updatedBaseInfo(val) { // 更新基本信息
@@ -1097,7 +1103,6 @@ export default {
       row.clue_id = this.currentId
       this.$http.post(api.adminClueUpdate, row).then(res => {
         if (res.data.meta.status_code === 200) {
-          this.getTypeList()
         } else {
           this.$message.error(res.data.meta.message)
           console.log(res.data.meta.message)
@@ -1105,6 +1110,9 @@ export default {
       }).catch(error => {
         this.$message.error(error.message)
       })
+    },
+    isExistArray(string, array) {
+      return array.includes(string)
     },
     changeOption(e) {
       this.option = e
@@ -2137,6 +2145,7 @@ export default {
   background-color: #FAFAFA;
   margin-top: 10px;
   border: 1px solid #e6e6e6;
+  padding-bottom: 20px;
 }
 .log-li-top {
   display: flex;
@@ -2174,7 +2183,7 @@ export default {
   color: #666666;
 }
 .log-comment {
-  padding: 5px 20px 15px 20px;
+  padding: 5px 20px 0px 20px;
   line-height: 1.5;
   color: #666666;
 }
