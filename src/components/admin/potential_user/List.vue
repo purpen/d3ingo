@@ -94,7 +94,7 @@
             </el-table-column>
             <el-table-column
               label="项目名称"
-              width="100">
+              width="110">
               <template slot-scope="scope">
                 <div v-for="(item, i) in scope.row.item_name" :key="i">
                   <p>{{item}}</p>
@@ -133,8 +133,8 @@
               label="用户来源">
             </el-table-column>
             <el-table-column
-              width="95"
-              label="对接公司数量"
+              width="85"
+              label="设计服务商"
               prop="design_company_count">
               <!-- <template slot-scope="scope">
                 <div v-if="scope.row.item_name && scope.row.item_name.length" v-for="(item, i) in scope.row.design_company_name" :key="i">
