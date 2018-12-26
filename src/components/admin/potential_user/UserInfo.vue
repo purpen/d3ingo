@@ -24,7 +24,7 @@
                   <el-input v-if="!currentId" v-model.trim="userForm.phone" placeholder="请填写用户手机号" size="small"></el-input>
                   <span v-else>{{userForm.phone}}</span>
                 </div>
-                <div class="user-rank fl">
+                <!-- <div class="user-rank fl">
                     <div ref="selectParent" :class="['select-parent']" tabindex="-1">
                       <span :class="['select-level', 
                       {'select-level2': userForm.rank === 2,
@@ -49,6 +49,9 @@
                         </li>
                       </ul>
                     </div>
+                </div> -->
+                <div class="">
+                  <el-rate v-model="userForm.rank" @change="changeLevel()"></el-rate>
                 </div>
               </div>
               
@@ -290,7 +293,7 @@
                 <p class="user-btn clearfix padding20" v-show="option === 'user'">
                   <el-button v-if="!currentId" type="primary" class="fr" @click="submitUserForm('ruleClientForm')">生成用户
                   </el-button>
-                  <el-button v-if="currentId && !BoolEditUserInfo" type="primary" class="fr" @click="editUserInfo">编辑
+                  <el-button v-if="currentId && !BoolEditUserInfo" type="primary" class="fr" :disabled="!isHasPower" @click="editUserInfo">编辑
                   </el-button>
                   <el-button v-if="currentId && BoolEditUserInfo" class="fr" type="primary" @click="updateUserinfo('ruleClientForm')">保存</el-button>
                   <el-button v-if="!currentId || BoolEditUserInfo" class="fr" @click="comeBack">取消</el-button>
@@ -303,7 +306,7 @@
               <div class="card-body-center" v-show="option === 'project'">
                 <p class="add-project clearfix">
                   <span class="fl margin-t8">共合作{{projectList.length}}个项目</span>
-                  <el-button type="primary" size="small" class="fr" @click="createdProject">添加项目</el-button>
+                  <el-button type="primary" :disabled="!isHasPower" size="small" class="fr" @click="createdProject">添加项目</el-button>
                 </p>
 
                 <div class="project-form-table">
@@ -324,7 +327,7 @@
                                 </span>
                               </p>
                               <div v-else>
-                                <el-button v-if="boolLinkItem || linkProjectId !== item.item_id" size="small" @click="showLinkItem(item.item_id)">关联项目</el-button>
+                                <el-button v-if="boolLinkItem || linkProjectId !== item.item_id" size="small" :disabled="!isHasPower" @click="showLinkItem(item.item_id)">关联项目</el-button>
                                 <div class="" v-if="!boolLinkItem && linkProjectId === item.item_id">
                                   <el-select
                                       v-model="linkProjectValue"
@@ -351,10 +354,10 @@
                             </div>
 
                             <div class="edit-project fr" v-if="item.failure === null && (!boolEditProject || currentProjectId !== 
-                                 item.item_id)">
+                                 item.item_id) && isHasPower">
                               <div class="edit-project-tag">
                                 <p @click="markProjectFailure(item.item_id)">标记为失败</p>
-                                <p @click="deleteProject(item.item_id)">删除项目</p>
+                                <p v-if="item.item_status < 7" @click="deleteProject(item.item_id)">删除项目</p>
                                 <p @click="editProject(item)">编辑项目</p>
                               </div>
                             </div>
@@ -493,7 +496,7 @@
                                   </p>
                                 </el-col>
                                 <el-col :xs="24" :sm="20" :md="8" :lg="8">
-                                  <div v-if="item.failure === null" class="edit-project fr">
+                                  <div v-if="item.failure === null && isHasPower" class="edit-project fr">
                                     <div class="edit-project-tag">
                                       <p @click="deleteDesignProject(d)">删除</p>
                                       <p @click="showEditDesignForm(d)">编辑</p>
@@ -592,7 +595,7 @@
                           </li>
                         </ul>
                         <p class="add-design clearfix" v-if="item.failure === null">
-                          <el-button size="small" type="primary" class="fl" @click="addDesignCompany(item.item_id)">添加设计公司</el-button>
+                          <el-button size="small" type="primary" class="fl" :disabled="!isHasPower" @click="addDesignCompany(item.item_id)">添加设计公司</el-button>
                         </p>
                         <div class="design-company" v-if="boolDesignCompany && currentDesignId ===item.item_id">
                           <p class="margin-b22">对接设计公司</p>
@@ -780,7 +783,7 @@
                                 <a v-if="item.status === 1 && (!boolEditLog || item.id !== currrentLogId)" @click="showLogStatusDialog(item.id, 3)">取消</a>
                                 <a v-if="item.status === 1 && (!boolEditLog || item.id !== currrentLogId)" @click="showLogStatusDialog(item.id, 2)">完成</a>
                               </p>
-                              <div class="edit-log fr" v-if="isAdmin>=15 &&(item.status === 0 || item.status === 1)">
+                              <div class="edit-log fr" v-if="isHasPower &&(item.status === 0 || item.status === 1)">
                                 <div class="edit-log-tag">
                                   <p @click="showlogInput(item)">编辑</p>
                                   <p @click="deletelog(item.id)">删除</p>
@@ -846,7 +849,7 @@
                           :picker-options="pickerOptions1">
                         </el-date-picker>
                     </div>
-                    <el-button class="fr" type="primary" @click="sendProgressVal">发布</el-button>
+                    <el-button class="fr" :disabled="!isHasPower" type="primary" @click="sendProgressVal">发布</el-button>
                   </div>
                 </div>
               </div>
@@ -950,36 +953,37 @@ export default {
         city: '',
         execute: []
       },
+      baseInfo: {}, // 第一次加载时头部的基本信息
       createdTime: '',
-      rankLabel: '一级',
       sourceArr: [],
-      rankArr: [
-        {
-          value: 1,
-          label: '一级',
-          img: require('@/assets/images/icon/Ordinary02@2x.png')
-        },
-        {
-          value: 2,
-          label: '二级',
-          img: require('@/assets/images/icon/Urgent02@2x.png')
-        },
-        {
-          value: 3,
-          label: '三级',
-          img: require('@/assets/images/icon/Urgent02@2x.png')
-        },
-        {
-          value: 4,
-          label: '四级',
-          img: require('@/assets/images/icon/VeryUrgent02@2x.png')
-        },
-        {
-          value: 5,
-          label: '五级',
-          img: require('@/assets/images/icon/VeryUrgent02@2x.png')
-        }
-      ],
+      // rankLabel: '一级',
+      // rankArr: [
+      //   {
+      //     value: 1,
+      //     label: '一级',
+      //     img: require('@/assets/images/icon/Ordinary02@2x.png')
+      //   },
+      //   {
+      //     value: 2,
+      //     label: '二级',
+      //     img: require('@/assets/images/icon/Urgent02@2x.png')
+      //   },
+      //   {
+      //     value: 3,
+      //     label: '三级',
+      //     img: require('@/assets/images/icon/Urgent02@2x.png')
+      //   },
+      //   {
+      //     value: 4,
+      //     label: '四级',
+      //     img: require('@/assets/images/icon/VeryUrgent02@2x.png')
+      //   },
+      //   {
+      //     value: 5,
+      //     label: '五级',
+      //     img: require('@/assets/images/icon/VeryUrgent02@2x.png')
+      //   }
+      // ],
       userStatus: [ // 客户状态
         {
           value: 1,
@@ -1106,7 +1110,7 @@ export default {
         this.$message.error(error.message)
       })
     },
-    comeBack() {
+    comeBack() { // 返回上一步
       if (this.currentId) {
         this.BoolEditUserInfo = false
       } else {
@@ -1114,6 +1118,7 @@ export default {
       }
     },
     isUpdatedSource(val) {
+      if (!this.currentId) return
       if (val !== this.baseInfo.source) {
         this.updatedBaseInfo()
         if (!this.isExistArray(val, this.sourceArr)) {
@@ -1122,16 +1127,19 @@ export default {
       }
     },
     isUpdatedStatus(val) {
+      if (!this.currentId) return
       if (val !== this.baseInfo.status) {
         this.updatedBaseInfo()
       }
     },
     isUpdatedExecute(val) {
+      if (!this.currentId) return
       if (val !== this.baseInfo.execute_user_id) {
         this.updatedBaseInfo()
       }
     },
     isUpdatedCallStatus(val) {
+      if (!this.currentId) return
       if (val !== this.baseInfo.call_status) {
         this.updatedBaseInfo()
         if (!this.isExistArray(val, this.callStatus)) {
@@ -1162,11 +1170,15 @@ export default {
     changeOption(e) {
       this.option = e
     },
-    changeLevel(e) {
-      this.userForm.rank = e.value
-      this.rankLabel = e.label
-      this.$refs.selectParent.blur()
-      this.updatedBaseInfo()
+    changeLevel() {
+      // this.userForm.rank = e.value
+      // this.rankLabel = e.label
+      // this.$refs.selectParent.blur()
+      // this.userForm.rank = this.rankValue
+      if (!this.currentId) return
+      if (this.userForm.rank !== this.baseInfo.rank) {
+        this.updatedBaseInfo()
+      }
     },
     getUserInfo() { // 查看用户档案
       let row = {
@@ -1175,8 +1187,9 @@ export default {
       this.$http.get(api.adminClueShow, {params: row}).then(res => {
         if (res.data.meta.status_code === 200) {
           const data = res.data.data
-          const {source, status, execute_user_id, call_status} = res.data.data
+          const {source, rank, status, execute_user_id, call_status} = res.data.data
           this.baseInfo = {
+            rank,
             source,
             status,
             execute_user_id,
@@ -1194,11 +1207,6 @@ export default {
             call_status: data.call_status || ''
           }
           this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm:ss')
-          this.rankArr.forEach(item => {
-            if (item.value === this.userForm.rank) {
-              this.rankLabel = item.label
-            }
-          })
           if (data.tag.length === 1 && data.tag[0] === '') {
             this.dynamicTags.length = 0
           } else {
@@ -1552,6 +1560,10 @@ export default {
       }
     },
     goProjectFailure() {
+      if (!this.failureCause) {
+        this.$message.error('请填写失败原因')
+        return
+      }
       let row = {
         crm_item_id: this.itemId,
         clue_id: this.currentId,
@@ -1832,6 +1844,14 @@ export default {
     },
     isAdmin() {
       return this.$store.state.event.user.role_id
+    },
+    userId() {
+      return this.$store.state.event.user.id
+    },
+    isHasPower() { // 是否有权限编辑
+      if (this.userId === this.userForm.execute_user_id || this.isAdmin >= 15) {
+        return true
+      }
     }
   },
   watch: {
@@ -1953,7 +1973,7 @@ export default {
 }
 
 /* user-rank */
-.user-rank {
+/* .user-rank {
   max-width: 110px;
 }
 .select-parent {
@@ -2014,7 +2034,7 @@ export default {
 .select-parent .select-level5 {
   background: url(../../../assets/images/icon/VeryImportant01@2x.png) no-repeat 6px / 16px 16px;
   background-color: #fe5b5f;
-}
+} */
 /* user-rank end */
 
 .user-status {
