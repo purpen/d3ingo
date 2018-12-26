@@ -202,10 +202,10 @@
                 <el-col :xs="20" :sm="4" :md="4" :lg="4" class="qouteSubmit mar-r-15">
                   <el-form-item
                     :prop="'plan_format.' + index + '.price'"
-                    :rules="[{
-                    required: true, type: 'number', message: '请填写正确的金额', trigger: 'blur'},
-                    {min: 1, type: 'number', message: '请填写正确的金额', trigger: 'blur'}]">
-                    <el-input type="number"  min="1" autosize v-model.number="form.plan_format[index].price" @blur="statPrice" placeholder="请填写费用" size="small">
+                    :rules="ruleForm.price">
+                    <el-input type="number"
+                      :maxlength="8"
+                      min="1" autosize v-model.number="form.plan_format[index].price" @blur="statPrice" placeholder="请填写费用" size="small">
                       <template slot="append">元</template>
                     </el-input>
                   </el-form-item>
@@ -430,6 +430,20 @@ export default {
     }
   },
   data() {
+    let checkNumber = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('请填写正确金额'))
+      } else {
+        if (typeof Number(value) !== 'number') {
+          return callback(new Error('手机号只能为数字！'))
+        } else {
+          let len = (value + '')
+          if (len.split('.')[0].length > 8) {
+            return callback(new Error('金额不能大于千万'))
+          }
+        }
+      }
+    }
     return {
       id: 0,
       itemId: 0,
@@ -444,6 +458,7 @@ export default {
         plan_format: []
       },
       ruleForm: {
+        price: [{validator: checkNumber, trigger: 'blur'}],
         company_name: [{ required: true, message: '请填写客户名称', trigger: 'blur' }],
         contact_name: [{ required: true, message: '请填写客户联系姓名', trigger: 'blur' }],
         position: [{ required: true, message: '请填写联系人职位', trigger: 'blur' }],
