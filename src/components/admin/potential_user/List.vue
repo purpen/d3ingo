@@ -192,7 +192,8 @@
     <el-dialog
       title="添加商务成员"
       :visible.sync="BoolAddVoIpUser"
-      center>
+      center
+      width="400px">
       <ul class="user-list-father">
         <li v-for="(d, i) in adminUserList" :key="i" @click="askVoIpUser(d)" :class="['user-list' ,{'active': d.status === 1 }]">
             <img v-if="d.logo_image" :src="d.logo_image.logo" alt="">
@@ -207,7 +208,7 @@
     </el-dialog>
 
     <el-dialog
-      size="tiny"
+      width="350px"
       title="移除业务人员"
       :visible.sync="deleteDialogVoIpUser"
       center>
@@ -524,7 +525,7 @@ export default {
   width: 16%;
 }
 .select-data {
-  width: 192px;
+  width: 206px;
 }
 .admin-header-right {
   width: 36%;
@@ -634,6 +635,9 @@ export default {
 </style>
 
 <style>
+.select-data .el-date-editor {
+  width: 100% !important;
+}
 .admin-header-right .el-tree-node__content {
   height: 30px;
   line-height: 30px;

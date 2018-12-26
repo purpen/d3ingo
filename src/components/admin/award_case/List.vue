@@ -120,7 +120,7 @@
     <el-dialog
       title="提示"
       v-model="sureDialog"
-      size="tiny">
+      width="40%">
       <span>确认执行此操作?</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="sureDialog = false">取 消</el-button>
