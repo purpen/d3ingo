@@ -783,7 +783,7 @@
                                 <a v-if="item.status === 1 && (!boolEditLog || item.id !== currrentLogId)" @click="showLogStatusDialog(item.id, 3)">取消</a>
                                 <a v-if="item.status === 1 && (!boolEditLog || item.id !== currrentLogId)" @click="showLogStatusDialog(item.id, 2)">完成</a>
                               </p>
-                              <div class="edit-log fr" v-if="isAdmin>=15 &&(item.status === 0 || item.status === 1)">
+                              <div class="edit-log fr" v-if="isHasPower &&(item.status === 0 || item.status === 1)">
                                 <div class="edit-log-tag">
                                   <p @click="showlogInput(item)">编辑</p>
                                   <p @click="deletelog(item.id)">删除</p>
@@ -849,7 +849,7 @@
                           :picker-options="pickerOptions1">
                         </el-date-picker>
                     </div>
-                    <el-button class="fr" type="primary" @click="sendProgressVal">发布</el-button>
+                    <el-button class="fr" :disabled="!isHasPower" type="primary" @click="sendProgressVal">发布</el-button>
                   </div>
                 </div>
               </div>
