@@ -1106,7 +1106,7 @@ export default {
         this.$message.error(error.message)
       })
     },
-    comeBack() {
+    comeBack() { // 返回上一步
       if (this.currentId) {
         this.BoolEditUserInfo = false
       } else {
@@ -1114,6 +1114,7 @@ export default {
       }
     },
     isUpdatedSource(val) {
+      if (!this.currentId) return
       if (val !== this.baseInfo.source) {
         this.updatedBaseInfo()
         if (!this.isExistArray(val, this.sourceArr)) {
@@ -1122,16 +1123,19 @@ export default {
       }
     },
     isUpdatedStatus(val) {
+      if (!this.currentId) return
       if (val !== this.baseInfo.status) {
         this.updatedBaseInfo()
       }
     },
     isUpdatedExecute(val) {
+      if (!this.currentId) return
       if (val !== this.baseInfo.execute_user_id) {
         this.updatedBaseInfo()
       }
     },
     isUpdatedCallStatus(val) {
+      if (!this.currentId) return
       if (val !== this.baseInfo.call_status) {
         this.updatedBaseInfo()
         if (!this.isExistArray(val, this.callStatus)) {
@@ -1552,6 +1556,10 @@ export default {
       }
     },
     goProjectFailure() {
+      if (!this.failureCause) {
+        this.$message.error('请填写失败原因')
+        return
+      }
       let row = {
         crm_item_id: this.itemId,
         clue_id: this.currentId,
