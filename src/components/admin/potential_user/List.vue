@@ -103,11 +103,11 @@
             </el-table-column>
             <el-table-column
               prop="phone"
-              width="116"
+              width="100"
               label="电话">
             </el-table-column>
             <el-table-column
-              width="110"
+              width="101"
               prop="execute_user_name"
               label="所属人">
             </el-table-column>
@@ -117,14 +117,14 @@
               prop="call_status">
             </el-table-column>
             <el-table-column
-              width="70"
+              width="95"
               label="客户级别">
                  <template slot-scope="scope">
-                  <p v-if="scope.row.rank === 1">一级客户</p>
-                  <p v-else-if="scope.row.rank === 2">二级客户</p>
-                  <p v-else-if="scope.row.rank === 3">三级客户</p>
-                  <p v-else-if="scope.row.rank === 4">四级客户</p>
-                  <p v-else>五级客户</p>
+                  <el-rate
+                    v-model="scope.row.rank"
+                    disabled
+                    text-color="#ff9900">
+                  </el-rate>
                 </template>
             </el-table-column>
             <el-table-column
@@ -283,9 +283,6 @@ export default {
         return true
       }
     },
-    // handleClickRow({id, name}) {
-    //   this.editUserInfo(id, name)
-    // },
     // 多选
     handleSelectionChange(val) {
       this.multipleSelection = val
@@ -449,6 +446,10 @@ export default {
       // if (this.multipleSelection.length === 0) {
       //   this.$message.error('至少选择一个要导出的潜在用户')
       //   return false
+      // }
+      // if (this.isAdmin <= 15) {
+      //   this.$message.error('请联系管理员导出')
+      //   return
       // }
       let idArr = this.arrayExportIds()
       let url = 'https://sa.taihuoniao.com/admin/clue/exportExcel'
@@ -695,5 +696,9 @@ export default {
 }
 .admin-table .el-table__row {
   /* cursor: pointer; */
+}
+.admin-table .el-rate__icon {
+  font-size: 12px;
+  margin-right: 2px;
 }
 </style>
