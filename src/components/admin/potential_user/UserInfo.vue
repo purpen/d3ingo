@@ -493,9 +493,9 @@
                                   </p>
                                 </el-col>
                                 <el-col :xs="24" :sm="20" :md="8" :lg="8">
-                                  <div class="edit-project fr">
+                                  <div v-if="item.failure === null" class="edit-project fr">
                                     <div class="edit-project-tag">
-                                      <p @click="deleteDesignProject(d.id)">删除</p>
+                                      <p @click="deleteDesignProject(d)">删除</p>
                                       <p @click="showEditDesignForm(d)">编辑</p>
                                     </div>
                                   </div>
@@ -591,7 +591,7 @@
                             </div>
                           </li>
                         </ul>
-                        <p class="add-design clearfix">
+                        <p class="add-design clearfix" v-if="item.failure === null">
                           <el-button size="small" type="primary" class="fl" @click="addDesignCompany(item.item_id)">添加设计公司</el-button>
                         </p>
                         <div class="design-company" v-if="boolDesignCompany && currentDesignId ===item.item_id">
@@ -795,8 +795,8 @@
                             <span>{{item.log}}</span>
                           </p>
                           <p class="log-comment" v-if="item.comment">
-                            <span class="log-comment-title" v-if="item.status === 2">取消原因: </span>
-                            <span class="log-comment-title" v-if="item.status === 3">完成内容: </span>
+                            <span class="log-comment-title" v-if="item.status === 2">完成内容: </span>
+                            <span class="log-comment-title" v-if="item.status === 3">取消原因: </span>
                             <span>{{item.comment}}</span>
                           </p>
                         </el-col>
@@ -1485,6 +1485,7 @@ export default {
         if (res.data.meta.status_code === 200) {
           this.getLogList()
           this.followVal = ''
+          this.followTime = ''
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -1568,10 +1569,12 @@ export default {
         this.$message.error(error.message)
       })
     },
-    deleteDesignProject(id) {
-      if (!id) return
+    deleteDesignProject(d) {
+      if (!d && d.id) return
       let row = {
-        design_id: id
+        design_id: d.id,
+        clue_id: this.currentId,
+        crm_item_id: d.crm_item_id
       }
       this.$http.delete(api.adminClueDelCrmDesign, {params: row}).then(res => {
         if (res.data.meta.status_code === 200) {
