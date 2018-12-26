@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    var ticket = ''
+    var token = ''
+    var url = ''
+    window.addEventListener('message', function (res) {
+      if (res.data) {
+        if (res.source !== window.parent) return false
+        if (typeof res.data === 'string') {
+          var data = JSON.parse(res.data)
+          var from = data.from
+          if (data.type === 'login') { // login | loginout
+            if (data.ticket) {
+              document.cookie = 'ticket=' + data.ticket
+              localStorage.setItem('ticket', data.ticket)
+              window.parent.postMessage(JSON.stringify({
+                type: 'login',
+                ticket: data.ticket,
+                from: from
+              }), '*')
+            }
+          } else if (data.type === 'loginout') {
+            document.cookie = ''
+            localStorage.removeItem('user')
+            localStorage.removeItem('ticket')
+            localStorage.removeItem('token')
+            window.parent.postMessage(JSON.stringify({
+              type: 'loginout',
+              ticket: data.ticket,
+              from: from
+            }), '*')
+          }
+        }
+      }
+    })
+
+  </script>
+</body>
+
+</html>

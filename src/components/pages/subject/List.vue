@@ -52,13 +52,6 @@
             content: '2018年，iF设计大奖公布，小米生态链众多产品获奖，铟果作为太火鸟旗下专注设计驱动创新力的SaaS平台，借此契机，采访了小米生态链负责人刘德和生态链内数位企业家，希望从他们的故事中，找到获奖产品背后不为人知的细节。'
           },
           {
-            id: 7,
-            title: '羽泉二十周年巡回演唱会-IP衍生品招募',
-            cover_url: require ('@/assets/images/subject/list_05.jpg'),
-            url: '/subject/YuQuanGifts',
-            content: '2017年底，内地知名唱作组合羽泉与京东金融结成战略合作伙伴，双方在组合成立20周年巡回演唱会期间，将以羽泉组合这一明星IP为核心，衍生系列创意创新活动，内容涵盖广泛产品，活动名称为“羽泉的礼物”。'
-          },
-          {
             id: 5,
             title: '轻创新⋅设计造物-再设计⋅消费升级创新产品征集',
             cover_url: require ('@/assets/images/subject/list_03.jpg'),

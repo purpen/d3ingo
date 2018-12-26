@@ -148,6 +148,7 @@
   }
 
   .foot-main {
+    padding-bottom: 20px;
     max-width: 1180px;
     margin: 0 auto;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1)

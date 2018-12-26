@@ -16,6 +16,15 @@
       <router-view class="main-content"></router-view>
       <v-footer></v-footer>
     </div>
+    <p v-show="false">{{ticket}}</p>
+    <p v-show="false">{{token}}</p>
+    <iframe
+      v-show="false"
+      ref="iframe"
+      frameborder="0"
+      name="sso-collaboration"
+      @load="loadFrame"
+      :src="path"></iframe>
   </div>
 </template>
 
@@ -23,7 +32,9 @@
 import vHeader from '@/components/block/Header'
 import vFooter from '@/components/block/Footer'
 import api from '@/api/api'
-
+import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
+import {ENV} from 'conf/prod.env.js'
+import auth from '@/helper/auth'
 export default {
   name: 'app',
   components: {
@@ -32,13 +43,23 @@ export default {
   },
   data() {
     return {
+      iframeLoad: false,
       alertTitle: {
         title: '',
         path: ''
-      }
+      },
+      path: ''
     }
   },
   watch: {
+    token(val, oldVal) {
+      if (val && !oldVal) {
+        this.postMessage()
+      }
+      if (oldVal && !val) {
+        this.postMessage2()
+      }
+    }
   },
   mounted() {
     // console.log('app created')
@@ -47,18 +68,116 @@ export default {
     loading.setAttribute('class', classVal)
   },
   created() {
-    this.$http.get(api.getVersion)
-    .then(res => {
-      let version = localStorage.getItem('version')
-      if (res.data.data.number) {
-        if (version !== res.data.data.number) {
-          localStorage.setItem('version', res.data.data.number)
-          window.location.reload(true)
+    if (ENV === 'prod' && this.prod.name === '') {
+      this.path = 'https://www.taihuoniao.com/ssologin.html'
+    }
+    if (ENV === 'dev' && this.prod.name === '') {
+      this.path = 'http://dev.taihuoniao.com/ssologin.html'
+    }
+    this.getVersion()
+    if (!this.prod.name) {
+      this.fetchUser()
+    }
+  },
+  methods: {
+    fetchUser() {
+      let that = this
+      let ticket = localStorage.getItem('ticket')
+      let token = localStorage.getItem('token')
+      if (ticket) {
+        if (!token) {
+          this.$http.post(api.iframeLogin) // cookie: ticket
+          .then(res => {
+            if (res.data.meta.status_code === 200) {
+              auth.write_token(res.data.data.token)
+              that.getUser(res.data.data.token)
+            } else {
+              that.$message.error(res.data.meta.message)
+            }
+          }).catch(err => {
+            auth.logout(true)
+            console.log(err)
+          })
+        } else {
+          let user = localStorage.getItem('user')
+          if (!user) {
+            console.error('没有user')
+            this.getUser(token)
+          }
+          console.log('已登录')
         }
+      } else {
+        console.log('没有ticket,退出登录')
+        auth.logout(true)
       }
-    }).catch(err => {
-      console.log(err)
-    })
+    },
+    getUser(token) {
+      const that = this
+      that.$http.get(api.user, {params: {token: token}})
+      .then(function(response) {
+        if (response.data.meta.status_code === 200) {
+          auth.write_user(response.data.data)
+          that.getStatus(that.$store.state.event.user.type)
+        } else {
+          auth.logout(true)
+          that.$message.error(response.data.meta.message)
+        }
+      }).catch(err => {
+        auth.logout(true)
+        that.$message.error(err.message)
+      })
+    },
+    getVersion() {
+      this.$http.get(api.getVersion)
+      .then(res => {
+        let version = localStorage.getItem('version')
+        if (res.data.data.number) {
+          if (version !== res.data.data.number) {
+            localStorage.setItem('version', res.data.data.number)
+            window.location.reload(true)
+          }
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    loadFrame() {
+      this.iframeLoad = true
+    },
+    postMessage() {
+      if (this.iframeLoad) {
+        let ticket = this.$store.state.event.ticket || localStorage.getItem('ticket')
+        this.$refs.iframe.contentWindow.postMessage(JSON.stringify({
+          ticket: ticket,
+          type: 'login'
+        }), this.path)
+      }
+    },
+    postMessage2() {
+      if (this.iframeLoad) {
+        let ticket = this.$store.state.event.ticket || localStorage.getItem('ticket')
+        this.$refs.iframe.contentWindow.postMessage(JSON.stringify({
+          ticket: ticket,
+          type: 'loginout'
+        }), this.path)
+      }
+    },
+    getStatus(type) {
+      let url = ''
+      if (type === 2) {
+        url = api.surveyDesignCompanySurvey
+      } else {
+        url = api.surveyDemandCompanySurvey
+      }
+      this.$http.get(url, {})
+      .then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.$store.commit(CHANGE_USER_VERIFY_STATUS, res.data.data)
+        }
+      }).catch(err => {
+        console.error(err.message)
+      })
+    }
   },
   computed: {
     hideHeader() {
@@ -141,6 +260,15 @@ export default {
           return false
         }
       }
+    },
+    token() {
+      return this.$store.state.event.token
+    },
+    ticket() {
+      return this.$store.state.event.ticket
+    },
+    prod() {
+      return this.$store.state.event.prod
     }
   }
 }

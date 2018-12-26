@@ -140,7 +140,7 @@
                   <el-col :span="4">
                     <div class="btn" v-show="d.item.status === -2">
                       <p>
-                        <el-button class="is-custom" @click="restartBtn" :item_id="d.item.id" size="small"
+                        <el-button class="is-custom margin-b-10" @click="restartBtn(d.item.id)" :item_id="d.item.id" size="small"
                                     type="primary">重新编辑
                         </el-button>
                       </p>
@@ -257,7 +257,7 @@
                     <section class="btns">
                       <div class="btn" v-show="d.item.status === -2">
                         <p>
-                          <el-button class="is-custom" @click="restartBtn" :item_id="d.item.id" size="small"
+                          <el-button class="is-custom margin-b-10" @click="restartBtn(d.item.id)" :item_id="d.item.id" size="small"
                                       type="primary">重新编辑
                           </el-button>
                         </p>
@@ -414,6 +414,7 @@
         sureDialogMessage: '确定要关闭项目？',
         sureDialogLoadingBtn: false,
         isLoading: false,
+        index: '',
         contentShowIndex: 0,
         itemList: [],
         itemIngList: [],
@@ -661,13 +662,12 @@
         this.$router.push({name: name, params: {id: itemId}})
       },
       // 匹配失败后重新编辑项目
-      restartBtn(event) {
-        let itemId = event.currentTarget.getAttribute('item_id')
+      restartBtn(itemId) {
         let self = this
         self.$http.post(api.demandItemRestart, {item_id: itemId})
           .then(function (response) {
             if (response.data.meta.status_code === 200) {
-              self.$router.push({name: 'itemSubmitTwo', params: {id: itemId}})
+              self.$router.push({name: 'projectCreate', query: {id: itemId}})
             } else {
               self.$message.error(response.data.meta.message)
             }

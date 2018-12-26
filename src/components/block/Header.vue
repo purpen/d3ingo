@@ -14,8 +14,7 @@
               <el-menu-item index="article" :route="menu.article">铟果说</el-menu-item>
               <el-menu-item index="design_case" :route="menu.design_case">灵感</el-menu-item>
               <el-menu-item index="commonly_sites" :route="menu.commonly_sites">设计工具</el-menu-item>
-              <el-menu-item index="innovation_index" :route="menu.innovation_index"
-                v-if="isAdmin">创新指数</el-menu-item>
+              <el-menu-item index="innovation_index" :route="menu.innovation_index">创新指数</el-menu-item>
               <el-menu-item index="trade_fairs" :route="menu.home_page" v-if="!token">交易会</el-menu-item>
               <el-menu-item index="trade_fairs" :route="menu.demand_login" v-if="token">交易会</el-menu-item>
             </el-menu>
@@ -278,7 +277,7 @@
           design: {path: '/server_design'},
           article: {path: '/article/list'},
           home_page: {path: '/shunde/trade_fairs/home_page'}, // 交易会未登录首页
-          demand_login: {path: '/shunde/trade_fairs/demand_login'}, // 交易会登陆后首页
+          demand_login: {path: '/shunde/trade_fairs/demand_login'}, // 交易会登录后首页
           mobile_login: {path: '/shunde/trade_fairs/trade_fairs_mobile/mobile_login'}, // 交易会移动端首页
           // demand_login: {path: '/shunde/trade_fairs/saleResult/workDatails'},
           design_case: {path: '/design_case/general_list'},
@@ -344,6 +343,7 @@
               }
             }
           }).catch((error) => {
+            this.$message.error(error.msg)
             console.error(error)
             clearInterval(this.requestMessageTask)
           })

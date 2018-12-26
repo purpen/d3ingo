@@ -18,9 +18,10 @@ export default {
   getVersion: '/getVersion', // 获取版本号
   setNewVersion: '/setNewVersion', // 设置版本号
   login: '/auth/login', // 登录
+  iframeLogin: '/auth/ilogin', // POST iframe登录
   setUserType: '/auth/setUserType', // POST 选择用户类型
   errCount: '/auth/errCount', // POST 检测错误次数
-  logout: '/auth/logout', // 退出登录
+  logout: '/auth/logout', // POST 退出登录
   register: '/auth/register', // 注册
   inviteRegister: '/auth/childRegister', // POST 邀请注册
   forget: '/auth/forgetPassword', // POST 找回密码
@@ -28,6 +29,7 @@ export default {
   check_account: '/auth/phoneState/{0}', // 验证手机号是否存在
   jdPhoneState: '/jd/phoneState', // 验证手机号是否存在
   fetch_msm_code: '/auth/sms', // 获取手机验证码
+  fetch_wx_code: '/wechat/sms', // 获取微信手机验证码
   fetch_img_captcha: '/captcha/getCaptcha', // 获取图片验证码
   user: '/auth/user', // 获取用户信息
   userInfo: '/auth/userId', // 根据用户id获取用户信息
@@ -38,6 +40,7 @@ export default {
   withdrawList: '/withdraw/lists', // GET 用户提现列表
   jdCode: '/jd/code', // GET 获取京东code
   jdToken: '/jd/jdAccount', // GET 获取京东云access_token
+  deleteJdYun: '/auth/deleteJdYun', // POST 解绑京东云
 
   // 栏目
   columnList: '/column/lists', // GET 列表
@@ -177,6 +180,40 @@ export default {
   adminUserSetRole: '/admin/user/changeRole', // POST 修改用户角色
   adminUserChangeSourceAdmin: '/admin/user/changeSourceAdmin', // POST 修改来源管理员
 
+  // 潜在客户
+  adminClueClueList: '/admin/clue/clueList', // GET 潜在客户列表
+  adminClueAdminUser: '/admin/clue/adminUser', // 后台人员列表
+  adminClueDelete: '/admin/clue/delete', // 删除潜在客户
+  adminClueExportExcel: '/admin/clue/exportExcel', // 导出表格
+  adminClueImportExcel: '/api/admin/clue/importExcel', // 导入表格
+  adminClueExportExcelUrl: '/admin/clue/ExportExcelUrl', // 生成导出潜在客户URL
+  adminClueVoIpList: '/admin/clue/voIpList', // GET 业务人员列表
+  adminClueAddVoIpUser: '/admin/clue/addVoIpUser', // 添加业务人员
+  adminClueDelVoIpUser: '/admin/clue/delVoIpUser', // 移除业务人员
+  adminClueRandomAllot: '/admin/clue/randomAllot', // POST 随机分配
+  adminClueTypeList: '/admin/clue/typeList', // GET 类别列表
+  adminClueUpdate: '/admin/clue/update', // POST 更新基本信息
+  adminClueCreate: '/admin/clue/create', // POST 添加用户档案
+  adminClueShow: '/admin/clue/show', // GET 查看用户档案
+  adminClueSlueUpdate: '/admin/clue/clueUpdate', // POST 更改用户档案
+  adminClueShowCrmItem: '/admin/clue/showCrmItem', // GET 查看项目
+  adminClueAddCrmItem: '/admin/clue/addCrmItem', // POST 添加项目
+  adminClueUpdateCrmItem: '/admin/clue/updateCrmItem', // POST 更改项目
+  adminClueSelCrmItem: '/admin/clue/delCrmItem', // DELETE 删除项目
+  adminClueCrmItemLoser: '/admin/clue/crmItemLoser', // POST 项目标记失败
+  adminClueAddCrmDesign: '/admin/clue/addCrmDesign', // POST 添加对接公司
+  adminClueCrmDesignList: '/admin/clue/crmDesignList', // GET 对接设计公司列表
+  adminClueDelCrmDesign: '/admin/clue/delCrmDesign', // DELETE 删除对接公司
+  adminClueUpdateCrmDesign: '/admin/clue/updateCrmDesign', // POST 更改对接公司
+  adminClueAddTrackLog: '/admin/clue/addTrackLog', // POST 添加跟进记录
+  adminClueShowTrackLog: '/admin/clue/showTrackLog', // GET 查看跟进记录
+  adminClueSetTrackLog: '/admin/clue/setTrackLog', // POST -完成/取消跟进记录
+  adminClueUpdateTrackLog: '/admin/clue/updateTrackLog', // POST 更改跟进记录
+  adminClueDelTrackLog: '/admin/clue/delTrackLog', // DELETE 删除跟进记录
+  adminClueLtemList: '/admin/clue/itemList', // GET 线上项目列表
+  adminClueRelateItem: '/admin/clue/relateItem', // POST 关联线上项目
+  adminClueDelRelateItem: '/admin/clue/delRelateItem', // DELETE 删除关联项目
+
   // 项目管理
   adminItemList: '/admin/item/lists', // 项目列表
   adminItemShow: '/admin/item/show', // GET 项目详情
@@ -186,9 +223,9 @@ export default {
   adminItemTestStatus: '/admin/item/testStatus', // PUT 更改项目类型：内测、公测
   adminItemDeleteIds: '/admin/item/deleteIds', // DELETED 批量删除项目
   deleteItem: 'demand/{0}', // DELETE 删除项目
-  adminSmallItemLists: 'admin/smallItem/lists', // 小程序项目列表
-  AdminSmallItemUpdate: 'admin/smallItem/update', // 小程序项目编辑
-  AdminSmallItemDelete: 'admin/smallItem/delete', // 小程序项目删除
+  adminSmallItemLists: '/admin/smallItem/lists', // 小程序项目列表
+  AdminSmallItemUpdate: '/admin/smallItem/update', // 小程序项目编辑
+  AdminSmallItemDelete: '/admin/smallItem/delete', // 小程序项目删除
 
   // 需求公司管理
   adminDemandCompanyList: '/admin/demandCompany/lists', // GET 需求公司列表
@@ -526,6 +563,11 @@ export default {
   adminDesignResultSave: '/admin/designResult/save', // GET 设计成果审核
   adminPayOrderDissolution: '/admin/payOrder/dissolution', // POST 解散支付订单
   adminDesignResultCollect: '/admin/designResult/collect', // GET 设计成果收藏列表
-  adminDemandCompanySaveTradeFair: '/admin/demandCompany/saveTradeFair' // GET 修改交易会权限
+  adminDemandCompanySaveTradeFair: '/admin/demandCompany/saveTradeFair', // GET 修改交易会权限
 
+  // 推广
+  pcAdd: '/wechat/demand/pcAdd',   // POST PC
+  appAdd: '/wechat/demand/userAdd',   // POST APP
+  userMessage: '/wechat/demand/users',   // POST APP消息滚动
+  usersCount: '/wechat/demand/usersCount'   // GET 人员数量
 }

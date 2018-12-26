@@ -179,7 +179,7 @@
 
                         that.$router.replace({name: 'vcenterControl'})
                       } else {
-                        auth.logout()
+                        auth.logout(true)
                         that.$message({
                           showClose: true,
                           message: response.data.meta.message,
@@ -189,7 +189,7 @@
                       }
                     })
                     .catch(function (error) {
-                      auth.logout()
+                      auth.logout(true)
                       that.$message({
                         showClose: true,
                         message: error.message,

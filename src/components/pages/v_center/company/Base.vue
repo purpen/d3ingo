@@ -289,13 +289,27 @@
               <el-col :span="titleSpan" class="title">
                 <p>擅长领域</p>
               </el-col>
-              <el-col :span="contentSpan" class="content">
-
-                <div v-if="element.good_field" class="type-content">
-                  <button :class="{ 'tag': true, 'is-active': form.good_field.indexOf(d.value) !== -1 }" class="small-button multi-button" size="small" :key="index"
+              <el-col :span="contentSpan" class="content" >
+                <div v-if="element.good_field" class="type-content label-tag" tabindex="-1"  @focus="editTag = true" @mouseenter="enterTag()" @mouseleave="overTag()">
+                  <!-- <button :class="{ 'tag': true, 'is-active': form.good_field.indexOf(d.value) !== -1 }" class="small-button multi-button" size="small" :key="index"
                              @click="selectFieldBtn(d.value, d.label)" v-for="(d, index) in fieldOptions">{{ d.label }}
-                  </button>
-
+                  </button> -->
+                  
+                   <vue-input-tag
+                      placeholder="选择或输入擅长领域,上限10个"
+                      :tags.sync="form.good_field"
+                      :limit="10"
+                      :add-tag-on-blur="true"
+                      ref="tag-input"
+                      >
+                    </vue-input-tag>
+                    <div class="tags-list" v-show="editTag">
+                      <el-row>
+                        <el-col :span="6" v-for="(d, indexd) in fieldOptions" :key="indexd">
+                          <div class="tags-fixation"  @click ="updateTag(d.label)">{{d.label}}</div>
+                        </el-col>
+                      </el-row>
+                    </div>
                   <!-- <div class="edit-field-tag field-box">
                     <el-tag
                       v-for="(d, index) in form.good_field_value"
@@ -309,7 +323,7 @@
                 </div>
                 <p class="field-box" v-else>
                   <el-tag
-                    v-for="(d, index) in form.good_field_value"
+                    v-for="(d, index) in form.good_field"
                     :key="index"
                     :closable="false">
                     {{ d }}
@@ -526,16 +540,20 @@
   import '@/assets/js/format'
   import typeData from '@/config'
   import auth from '@/helper/auth'
-
+  import vueInputTag from 'vue-input-tag'
+  import Clickoutside from 'assets/js/clickoutside'
   export default {
     name: 'vcenter_company_base',
     components: {
       vMenu,
       vMenuSub,
+      vueInputTag,
+      Clickoutside,
       RegionPicker
     },
     data () {
       return {
+        editTag: false, // input标签
         oldVal: {},
         gutter: 0,
         titleSpan: this.$store.state.event.isMob === true ? 16 : 3,
@@ -616,7 +634,14 @@
         userId: this.$store.state.event.user.id
       }
     },
+    directives: {
+      Clickoutside
+    },
     computed: {
+      // 监听擅长领域
+      goodField() {
+        return this.form.good_field
+      },
       // 擅长领域下拉选项
       fieldOptions() {
         let items = []
@@ -691,6 +716,24 @@
       }
     },
     methods: {
+      enterTag() {
+        this.editTag = true
+      },
+      overTag() {
+        this.editTag = false
+      },
+      tag() {
+        console.log(this.$refs['tag-input'])
+      },
+      outTag() {
+        this.editTag = false
+      },
+      // 修改擅长领域
+      updateTag(value) {
+        if (this.form.good_field.indexOf(value) === -1) {
+          this.form.good_field.push(value)
+        }
+      },
       // 删除领域标签
       delFieldBtn(index) {
         this.form.good_field_value.splice(index, 1)
@@ -952,6 +995,18 @@
       }
     },
     watch: {
+      goodField(newValue, oldValue) {
+        if (newValue && newValue.length > 0) {
+          for (let n = 0; n < newValue.length; n++) {
+            console.log(newValue[n].length)
+            if (newValue[n].length > 7) {
+              newValue.splice(n, 1)
+              this.$message ('每个标签最多7个字!')
+              return false
+            }
+          }
+        }
+      }
     },
     created: function () {
       let uType = this.$store.state.event.user.type
@@ -1082,6 +1137,31 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .tags-fixation {
+    text-align: center;
+    margin: 10px 0px;
+    cursor: pointer;
+    color: #666;
+  }
+  .tags-fixation:hover {
+    color: #ff5a5f;
+  }
+  .label-tag .vue-input-tag-wrapper {
+    border-radius: 4px;
+    border: 1px solid #e6e6e6;
+    padding: 0px 10px;
+    min-height: 36px;
+    position: relative;
+  }
+  .tags-list {
+    position: absolute;
+    /* display: none; */
+    padding-bottom: 10px;
+    border: 1px solid #e6e6e6;
+    width: 50%;
+    background: #fff;
+    z-index: 1;
+  }
   .right-content .content-box {
     padding-bottom: 0;
   }

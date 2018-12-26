@@ -101,9 +101,8 @@
 <style scoped>
   .background-banner {
     /* position: absolute; */
-    background: #3519B2;
     height: 500px;
-    background: url('../../../../assets/images/trade_fairs/banner/pc-banner.png') no-repeat center
+    background: url('../../../../assets/images/trade_fairs/banner/pc-banner3.jpg') no-repeat center #3519B2
   }
   .home_banner {
     height: 500px;

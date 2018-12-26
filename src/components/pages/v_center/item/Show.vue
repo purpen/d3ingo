@@ -281,53 +281,58 @@
                         <h3>第{{ d.no }}阶段: {{ d.title }}</h3>
 
                       </div>
-                      <div class="stage-asset-box clearfix" v-for="(asset, asset_index) in d.item_stage_image" :key="asset_index">
-                        <div class="contract-left">
-                          <img :src="require('assets/images/icon/pdf2x.png')" width="30"/>
-                          <div class="contract-content">
-                            <p>{{ asset.name }}</p>
-                            <p class="contract-des">{{ asset.created_at.date_format().format('yyyy-MM-dd') }}</p>
+                      <div v-if="d.item_stage_image && d.item_stage_image.length">
+                        <div class="stage-asset-box clearfix" v-for="(asset, asset_index) in d.item_stage_image" :key="asset_index">
+                          <div class="contract-left">
+                            <img :src="require('assets/images/icon/pdf2x.png')" width="30"/>
+                            <div class="contract-content">
+                              <p>{{ asset.name }}</p>
+                              <p class="contract-des">{{ asset.created_at.date_format().format('yyyy-MM-dd') }}</p>
+                            </div>
                           </div>
+                          <div class="contract-right">
+                            <p>
+                              <!-- <router-link :to="{name: 'vcenterContractView', params: {unique_id: contract.unique_id}}"
+                                        target="_blank"><i class="fa fa-eye" aria-hidden="true"></i> 预览
+                              </router-link> -->
+                            </p>
+                            <p><a :href="asset.file + '?attname=' + asset.name"><i class="fa fa-download" aria-hidden="true"></i> 下载</a>
+                            </p>
+                          </div>
+                          <div class="clear"></div>
                         </div>
-                        <div class="contract-right">
+                        <div class="capital-item clearfix" v-if="d.confirm === 0">
                           <p>
-                            <!-- <router-link :to="{name: 'vcenterContractView', params: {unique_id: contract.unique_id}}"
-                                      target="_blank"><i class="fa fa-eye" aria-hidden="true"></i> 预览
-                            </router-link> -->
-                          </p>
-                          <p><a :href="asset.file + '?attname=' + asset.name"><i class="fa fa-download" aria-hidden="true"></i> 下载</a>
-                          </p>
-                        </div>
-                        <div class="clear"></div>
-                      </div>
-                      <div class="capital-item clearfix" v-if="d.confirm === 0">
-                        <p>
-                          <el-button type="primary" @click="passStageBtn" size="small" :stage_id="d.id" :index="index"
-                                     class="is-custom"> 确认完成
-                          </el-button>
-                        </p>
-                      </div>
-                      <div class="capital-item clearfix" v-else>
-                        <div v-if="d.pay_status === 0">
-                          <p>阶段项目资金</p>
-                          <p class="capital-money">¥ {{ d.amount }}</p>
-                          <p class="pay-btn">
-                            <el-button type="primary" @click="payStageRedierct(d.id)" size="small"
-                                       class="is-custom"> 立即支付
+                            <el-button type="primary" @click="passStageBtn" size="small" :stage_id="d.id" :index="index"
+                                      class="is-custom"> 确认完成
                             </el-button>
                           </p>
-                          <p class="capital-des">项目第{{ d.no }}阶段确认，客户需要在三个工作日内向铟果SaaS支付阶段设计费用款项。</p>
-                          <!--<p class="capital-des">铟果SaaS收到款项后在三个工作日内一次性全额支付给乙方。</p>-->
                         </div>
-                        <div v-else>
-                          <p>阶段项目资金</p>
-                          <p class="capital-money">¥ {{ d.amount }}</p>
-                          <p class="pay-btn">
-                            <span class="pay-ok">支付成功</span>
-                          </p>
-                          <p class="capital-des"></p>
-                        </div>
+                        <div class="capital-item clearfix" v-else>
+                          <div v-if="d.pay_status === 0">
+                            <p>阶段项目资金</p>
+                            <p class="capital-money">¥ {{ d.amount }}</p>
+                            <p class="pay-btn">
+                              <el-button type="primary" @click="payStageRedierct(d.id)" size="small"
+                                        class="is-custom"> 立即支付
+                              </el-button>
+                            </p>
+                            <p class="capital-des">项目第{{ d.no }}阶段确认，客户需要在三个工作日内向铟果SaaS支付阶段设计费用款项。</p>
+                            <!--<p class="capital-des">铟果SaaS收到款项后在三个工作日内一次性全额支付给乙方。</p>-->
+                          </div>
+                          <div v-else>
+                            <p>阶段项目资金</p>
+                            <p class="capital-money">¥ {{ d.amount }}</p>
+                            <p class="pay-btn">
+                              <span class="pay-ok">支付成功</span>
+                            </p>
+                            <p class="capital-des"></p>
+                          </div>
 
+                        </div>
+                      </div>
+                      <div v-else>
+                        <p>等待设计方提交阶段文件</p>
                       </div>
                       <div class="blank20"></div>
                       <div class="border-t">
@@ -388,7 +393,7 @@
                     <el-input
                       type="textarea"
                       :rows="5"
-                      placeholder="请输入内容"
+                      placeholder="请评价该设计公司"
                       v-model="evaluate.content">
                     </el-input>
                   </p>
@@ -456,8 +461,6 @@
               </el-collapse-item>
             </el-collapse>
           </div>
-
-
         </div>
 
       </el-col>
@@ -493,7 +496,7 @@
             <span>价格高</span>
           </div>
         </el-col>
-        <el-col :span="8" 
+        <el-col :span="8"
           :class="[{
             'iscause': refuse_types.indexOf('需求变动') !== -1
           }]"
@@ -710,6 +713,7 @@ export default {
       this.$refs.comfirmType.value = 2
       this.comfirmMessage = '与该公司合作后将不可修改，确认执行此操作？'
       this.comfirmDialog = true
+      this.comfirmLoadingBtn = false
     },
     sureComfirmSubmit() {
       let comfirmType = parseInt(this.$refs.comfirmType.value)
@@ -798,6 +802,7 @@ export default {
       this.$refs.comfirmType.value = 3
       this.comfirmMessage = '确认项目已完成？'
       this.comfirmDialog = true
+      this.comfirmLoadingBtn = false
     },
     // 确认项目完成
     sureItemSubmit() {
@@ -890,6 +895,7 @@ export default {
       this.$refs.currentIndex.value = index
       this.comfirmMessage = '确认验收阶段成果？'
       this.comfirmDialog = true
+      this.comfirmLoadingBtn = false
     },
     // 阶段确认通过
     passStage() {
@@ -928,7 +934,7 @@ export default {
         return
       }
       if (!this.evaluate.content) {
-        this.$message.error('请填写评价内容！')
+        this.$message.error('请填写评价内容')
         return
       }
 
@@ -1761,7 +1767,7 @@ export default {
   position: absolute;
   top: 2px;
   right: 15px;
-  border: 1px solid #d2d2d2;
+  border: 1px solid #e6e6e6;
   border-radius: 4px;
   line-height: 20px;
   float: right;
@@ -1779,8 +1785,8 @@ p.contact {
 }
 
 .stage-title {
-  /* height: 40px; */
-  border-bottom: 1px solid #D2D2D2;
+  height: 40px;
+  border-bottom: 1px solid #e6e6e6;
   padding-bottom: 20px;
 }
 
@@ -1790,7 +1796,7 @@ p.contact {
   color: #222;
 }
 .border-t {
-  border-top: 1px solid #d2d2d2;
+  border-top: 1px solid #e6e6e6;
 }
 .stage-title p {
   margin: 0 0 0 10px;
@@ -1799,7 +1805,7 @@ p.contact {
 
 .stage-asset-box {
   padding: 10px;
-  border-bottom: 1px solid #D2D2D2;
+  border-bottom: 1px solid #e6e6e6;
 }
 
 .send-company-des {
@@ -1983,7 +1989,7 @@ section ul li a {
     /*position: absolute;*/
     right: 13px;
     top: 16px;
-    color: #d2d2d2;
+    color: #e6e6e6;
     font-size: 14px;
   }
   .content .start-money {
@@ -1992,6 +1998,7 @@ section ul li a {
   .content .start-money:after {
     content: '首付款支付成功';
     padding-left: 20px;
+    padding-right: 4px;
     position: absolute;
     top: 15px;
     right:50px;
