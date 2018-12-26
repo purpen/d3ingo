@@ -327,7 +327,7 @@
                                 </span>
                               </p>
                               <div v-else>
-                                <el-button v-if="boolLinkItem || linkProjectId !== item.item_id" size="small" @click="showLinkItem(item.item_id)">关联项目</el-button>
+                                <el-button v-if="boolLinkItem || linkProjectId !== item.item_id" size="small" :disabled="!isHasPower" @click="showLinkItem(item.item_id)">关联项目</el-button>
                                 <div class="" v-if="!boolLinkItem && linkProjectId === item.item_id">
                                   <el-select
                                       v-model="linkProjectValue"
@@ -955,8 +955,8 @@ export default {
       },
       baseInfo: {}, // 第一次加载时头部的基本信息
       createdTime: '',
-      rankLabel: '一级',
       sourceArr: [],
+      // rankLabel: '一级',
       // rankArr: [
       //   {
       //     value: 1,
@@ -1175,7 +1175,8 @@ export default {
       // this.rankLabel = e.label
       // this.$refs.selectParent.blur()
       // this.userForm.rank = this.rankValue
-      if (this.currentId) {
+      if (!this.currentId) return
+      if (this.userForm.rank !== this.baseInfo.rank) {
         this.updatedBaseInfo()
       }
     },
@@ -1186,8 +1187,9 @@ export default {
       this.$http.get(api.adminClueShow, {params: row}).then(res => {
         if (res.data.meta.status_code === 200) {
           const data = res.data.data
-          const {source, status, execute_user_id, call_status} = res.data.data
+          const {source, rank, status, execute_user_id, call_status} = res.data.data
           this.baseInfo = {
+            rank,
             source,
             status,
             execute_user_id,
@@ -1971,7 +1973,7 @@ export default {
 }
 
 /* user-rank */
-.user-rank {
+/* .user-rank {
   max-width: 110px;
 }
 .select-parent {
@@ -2032,7 +2034,7 @@ export default {
 .select-parent .select-level5 {
   background: url(../../../assets/images/icon/VeryImportant01@2x.png) no-repeat 6px / 16px 16px;
   background-color: #fe5b5f;
-}
+} */
 /* user-rank end */
 
 .user-status {
