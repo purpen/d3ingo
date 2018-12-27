@@ -128,7 +128,7 @@
               </el-col>
               <el-col :span="contentSpan" class="content">
 
-                <el-select v-model.number="form.company_size" placeholder="请选择" v-if="element.company_size">
+                <el-select v-model.number="form.company_size" placeholder="请选择" v-if="element.company_size" class="option-bord">
                   <el-option
                     v-for="(item, index) in sizeOptions"
                     :label="item.label"
@@ -152,7 +152,7 @@
               </el-col>
               <el-col :span="contentSpan" class="content">
 
-                <el-select v-model.number="form.revenue" placeholder="请选择" v-if="element.revenue">
+                <el-select v-model.number="form.revenue" placeholder="请选择" v-if="element.revenue" class="option-bord">
                   <el-option
                     v-for="item in revenueOptions"
                     :label="item.label"

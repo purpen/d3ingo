@@ -887,6 +887,10 @@
   }
   .option-bord .el-input .el-input__inner:focus {
     border: 1px solid #e6e6e6;
+    box-shadow: none;
+  }
+  .el-radio__input.is-checked+.el-radio__label {
+    color: inherit
   }
   /*推广页*/
   .input-phone input {
