@@ -233,20 +233,56 @@
               </el-col>
               <el-col :span="contentSpan" class="content">
 
-                <el-input
+                <!-- <el-input
                   type="textarea"
                   :rows="3"
                   v-if="element.awards"
                   placeholder="请输入内容"
                   v-model="form.awards">
-                </el-input>
-
-                <p v-else>{{ form.awards }}</p>
+                </el-input> -->
+              <div  class="prizes-look">
+                <div v-for="(p, indexp) in prizeArr" :key="indexp" class="prizes-img">
+                  <i :style="{background: `url(${require('@/assets/images/prize_logo/'+p.type+'.jpg')}) no-repeat center/ contain`}"></i>
+                  <span>X{{p.count}}</span>
+                </div>
+              </div>
+             <div v-if="element.prizes">
+                <el-row class="flex prize" :gutter="10" v-for="(p,indexp) in form.prizes" :key="indexp" v-if="form.prizes&&form.prizes.length>0">
+                  <el-col :xs="24" :sm="12" :md="12" :lg="12">
+                      <el-date-picker
+                        key="p.time"
+                        class="fullwidth"
+                        v-model="p.time"
+                        type="month"
+                        placeholder="获奖日期">
+                      </el-date-picker>
+                  </el-col>
+                  <el-col :xs="24" :sm="12" :md="12" :lg="12">
+                      <el-select v-model.number="p.type" @change="updatePerze" placeholder="所属奖项">
+                        <el-option
+                          v-for="item in prizeOptions"
+                          :label="item.label"
+                          :key="item.index"
+                          :value="item.value">
+                        </el-option>
+                      </el-select>
+                  </el-col>
+                  <div class="p-after" @click="deletePrize(indexp)">
+                  </div>
+                </el-row>
+                <el-row>
+                  <el-col :xs="4" :sm="4" :md="4" :lg="4">
+                    <el-button class="red-button" @click="getPrize()">
+                      +&nbsp;&nbsp;添加奖项
+                    </el-button>
+                  </el-col>
+                </el-row>
+              </div>
               </el-col>
               <el-col :span="editSpan" :offset="7" class="edit">
-                <a v-if="element.awards" title="保存" href="javascript:void(0)"
-                   @click="saveBtn('awards', ['awards'])">保存</a>
-                <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('awards')">编辑</a>
+                <a v-if="element.prizes" title="保存" href="javascript:void(0)"
+                   @click="saveBtn('prizes', ['prizes'], true)">保存</a>
+                <a v-else href="javascript:void(0)" title="编辑" @click="editBtn('prizes')">编辑</a>
               </el-col>
             </el-row>
 
@@ -549,10 +585,12 @@
       vMenuSub,
       vueInputTag,
       Clickoutside,
-      RegionPicker
+      RegionPicker,
+      typeData
     },
     data () {
       return {
+        prizeArr: [], // 奖项
         editTag: false, // input标签
         oldVal: {},
         gutter: 0,
@@ -638,6 +676,17 @@
       Clickoutside
     },
     computed: {
+      prizeOptions() {
+        let items = []
+        for (let i = 0; i < typeData.DESIGN_CASE_PRICE_OPTIONS.length; i++) {
+          let item = {
+            value: typeData.DESIGN_CASE_PRICE_OPTIONS[i]['id'],
+            label: typeData.DESIGN_CASE_PRICE_OPTIONS[i]['name']
+          }
+          items.push (item)
+        }
+        return items
+      },
       // 监听擅长领域
       goodField() {
         return this.form.good_field
@@ -716,6 +765,28 @@
       }
     },
     methods: {
+      // 删除奖项
+      deletePrize(index) {
+        if (this.form.prizes && this.form.prizes.length > 0) {
+          this.form.prizes.splice(index, 1)
+          this.updatePerze()
+        }
+      },
+      // 获得奖项
+      getPrize() {
+        if (this.form.prizes && this.form.prizes.length > 0) {
+          for (var i = 0; i < this.form.prizes.length; i++) {
+            if (this.form.prizes[i].time === '' || this.form.prizes[i].type === '') {
+              this.$message ('请填写完整后再填写新的奖项')
+              return false
+            }
+          }
+        }
+        this.form.prizes.push({
+          'type': '',
+          'time': ''
+        })
+      },
       enterTag() {
         this.editTag = true
       },
@@ -754,7 +825,7 @@
         if (!mark) {
           return false
         }
-        this.element[mark] = true
+        this.$set(this.element, mark, true)
       },
       isBranch(val) {
         if (val === true) {
@@ -764,6 +835,27 @@
           this.is_branch = false
           this.form.branch_office = 0
         }
+      },
+      updatePerze() {
+        let arrIds = []
+        let arr = []
+        let that = this
+        if (that.form.prizes && that.form.prizes.length) {
+          that.form.prizes.forEach(item => {
+            let index = arrIds.indexOf(item.type)
+            if (index === -1) {
+              arrIds.push(item.type)
+              arr.push({
+                type: item.type,
+                count: 1,
+                name: item.name
+              })
+            } else {
+              arr[index].count++
+            }
+          })
+        }
+        that.prizeArr = arr
       },
       saveBtn(mark, nameArr, multi = false) {
         let that = this
@@ -807,6 +899,8 @@
               }
             }
             row = {'own_brand': JSON.stringify(row)}
+          } else if (mark === 'prizes') {
+            row = {'prizes': JSON.stringify(row)}
           }
         } else {
           for (let i = 0; i < nameArr.length; i++) {
@@ -923,6 +1017,9 @@
                 } else {
                   that.hasProduct = '无'
                 }
+              } else if (mark === 'prizes') {
+                that.form.prizes = item.prizes
+                that.updatePerze()
               }
             } else {
               that.$message.error(response.data.meta.message)
@@ -1032,6 +1129,7 @@
               // 重新渲染
               that.$nextTick(function () {
                 that.form = response.data.data
+                that.updatePerze()
                 that.form.company_size = that.form.company_size === 0 ? '' : that.form.company_size
                 that.companyId = response.data.data.id
                 that.uploadParam['x:target_id'] = response.data.data.id
@@ -1137,6 +1235,30 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .prizes-look img {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
+  .prizes-img {
+    position: relative;
+    padding-right: 15px;
+  }
+  .prizes-img span {
+    position: absolute;
+    top: 13px;
+    right: -8px;
+    font-size: 14px;
+    color: #999;
+  }
+  .prizes-look i {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+  }
   .tags-fixation {
     text-align: center;
     margin: 10px 0px;
@@ -1300,7 +1422,10 @@
     height: 40px;
     line-height: 40px;
   }
-
+  .prizes-img {
+    display: inline-block;
+    margin-right: 15px;
+  }
   .avatar {
     /* border: 1px solid #e6e6e6; */
     border-radius: 50%;
@@ -1423,6 +1548,25 @@
     color: #ff5a5f;
     background: #fff;
   } */
+  .flex {
+    display: flex;
+    align-items: center;
+  }
+  .prize {
+    /* width: 50%; */
+    padding-right: 30px;
+    position: relative;
+    margin-bottom:10px;
+  }
+  .prize .p-after {
+    position: absolute;
+    right:-5px;
+    width:30px;
+    height:30px;
+    border-radius: 4px;
+    background:url('../../../../assets/images/works/Delete.png') 0 0 no-repeat;
+    background-size: 30px 30px;
+  }
   @media screen and (max-width: 767px) {
     .item-m .content {
       border: none;
