@@ -46,7 +46,7 @@
                 <p>姓名</p>
               </el-col>
               <el-col :span="contentSpan" class="content">
-                <el-input v-if="element.realname" v-model.trim="form.realname" style="width: 200px;"
+                <el-input v-if="element.realname" v-model.trim="form.realname" style="width: 300px;"
                           placeholder=""></el-input>
                 <p v-else>{{ form.realname }}</p>
               </el-col>

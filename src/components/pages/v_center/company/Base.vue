@@ -341,16 +341,16 @@
               <el-col :span="titleSpan" class="title">
                 <p>分公司</p>
               </el-col>
-              <el-col :span="contentSpan" class="content subsidiary">
+              <el-col :span="contentSpan" class="content subsidiary cont-class">
 
                 <div v-if="element.branch">
                   <el-col :span="12">
-                    <el-col :span="6" class="flex" style="height:28px; align-items: center">
+                    <el-col :span="6" class="flex pad-top" style="height:28px; align-items: center">
                       <el-switch
                         @change="isBranch"
                         v-model="is_branch"
-                        on-text="有"
-                        off-text="无">
+                        active-text="有"
+                        inactive-text="无">
                       </el-switch>
                     </el-col>
                     <el-col :span="6">
@@ -432,7 +432,7 @@
                         </el-date-picker>
                       </el-col>
                       <el-col :xs="20" :sm="10" :md="10" :lg="10">
-                      <el-select v-model.number="ele.type" placeholder="认定级别" v-if="element.industrial_design_center">
+                      <el-select v-model.number="ele.type" placeholder="认定级别" v-if="element.industrial_design_center" class="option-bord">
                         <el-option
                           v-for="(item, index) in companyIndustrialDesignGradeOptions"
                           :label="item.label"
@@ -447,7 +447,7 @@
                     </el-row>
                   </el-col>
                   <el-col :xs="24" :sm="4" :md="4" :lg="4">
-                    <el-button  type="primary" size="small" @click="addType('industrial_design_center')">添加</el-button>
+                    <el-button type="primary" size="small" @click="addType('industrial_design_center')">添加</el-button>
                   </el-col>
                 </el-row>
                 <p v-if="!element.industrial_design_center && form.industrial_design_center.length" v-for="(e, index) in form.industrial_design_center" :key="e.time + index">{{ e.time}}{{ e.val }}</p>
@@ -470,8 +470,8 @@
                 <el-switch
                   v-if="element.investment_product"
                   v-model="form.investment_product"
-                  on-text="有"
-                  off-text="无">
+                  active-text="有"
+                  inactive-text="无">
                 </el-switch>
               <p v-else>{{ hasProduct }}</p>
               </el-col>
@@ -492,11 +492,11 @@
                       <el-switch
                         @change="changeBrand"
                         v-model="hasBrand"
-                        on-text="有"
-                        off-text="无">
+                        active-text="有"
+                        inactive-text="无">
                       </el-switch>
                     </el-col>
-                    <el-col :xs="24" :sm="3" :md="3" :lg="3" class="margin-bottom10" v-if="hasBrand">
+                    <el-col :xs="24" :sm="3" :md="3" :lg="3" class="brand-style" v-if="hasBrand">
                       <p>品牌名称:</p>
                     </el-col>
                     <el-col class="input-brand margin-bottom10" v-if="hasBrand" v-for="(ele, index) in form.own_brand" :key="index" :xs="12" :sm="5" :md="5" :lg="5">
@@ -506,8 +506,8 @@
                         </template>
                       </el-input>
                     </el-col>
-                    <el-col v-if="ownBrand" :xs="24" :sm="3" :md="3" :lg="3">
-                      <el-button type="primary" size="mini" @click="addOwnBrand">添加</el-button>
+                    <el-col v-if="ownBrand" :xs="24" :sm="3" :md="3" :lg="3" style="padding-top: 5px;">
+                      <el-button type="primary" size="small" @click="addOwnBrand">添加</el-button>
                     </el-col>
                   </el-row>
                 </div>
@@ -757,6 +757,7 @@
         this.element[mark] = true
       },
       isBranch(val) {
+        console.log('val', val)
         if (val === true) {
           this.is_branch = true
           this.form.branch_office = 1
@@ -1032,6 +1033,9 @@
               // 重新渲染
               that.$nextTick(function () {
                 that.form = response.data.data
+                if (!that.form.good_field) {
+                  that.form.good_field = []
+                }
                 that.form.company_size = that.form.company_size === 0 ? '' : that.form.company_size
                 that.companyId = response.data.data.id
                 that.uploadParam['x:target_id'] = response.data.data.id
@@ -1145,6 +1149,9 @@
   }
   .tags-fixation:hover {
     color: #ff5a5f;
+  }
+  .pad-top {
+    padding-top: 14px;
   }
   .label-tag .vue-input-tag-wrapper {
     border-radius: 4px;
@@ -1417,6 +1424,10 @@
     border-color: #ff5a5f;
     background-color: #ff5a5f;
     color: #fff
+  }
+  .brand-style {
+    margin-bottom: 10px;
+    margin-left: 35px;
   }
   /* .white-button:hover {
     border-color: #ff5a5f;

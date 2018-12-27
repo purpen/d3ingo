@@ -113,7 +113,7 @@
                       </span>
                       
                     </div>
-                    <el-radio-group v-model.number="form.sell_type" @change="sell">
+                    <el-radio-group v-model.number="form.sell_type" @change="sell" class="rad-font">
                       <el-radio class="radio" :label="1">全额出让</el-radio>
                       <el-radio class="radio" :label="2">股权合作</el-radio>
                     </el-radio-group>
@@ -1294,7 +1294,7 @@
     width: 20px;
     height: 20px;
     left: 70px;
-    top: -28px;
+    top: -30px;
     background: url('../../../../../assets/images/item/Tips@2x.png') no-repeat center / contain;
     border-radius: 4px;
   }

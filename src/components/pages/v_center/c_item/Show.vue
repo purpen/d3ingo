@@ -21,7 +21,7 @@
           </div>
 
           <div class="select-item-box">
-            <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
+            <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange" class="select-bord">
               <el-collapse-item title="项目详情" name="1">
 
                 <div class="base_info">

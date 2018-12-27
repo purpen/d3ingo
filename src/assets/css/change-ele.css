@@ -820,6 +820,74 @@
     font-size: 14px;
     display: inline-block;
   }
+  .hover-color .el-month-table td .cell:hover {
+    color: inherit
+  }
+  .hover-color .el-month-table td.current:not(.disabled) .cell {
+    color: #fff;
+  }
+  .radio-hover .el-radio__input.is-checked+.el-radio__label {
+    color: inherit
+  }
+  .option-fontwe .el-select-dropdown__item.selected{
+    font-weight: normal
+  }
+  .el-scrollbar__view .el-select-dropdown__item.selected {
+    font-weight: normal
+  }
+  .select-item-box .el-collapse {
+    border: 1px solid #ebeef5;
+  }
+  .content .el-collapse-item__header {
+    padding-left: 20px;
+  }
+  .content .el-icon-arrow-right {
+    font-size: 25px;
+  }
+  .content .el-collapse-item__content {
+    padding: 10px 15px;
+  }
+  .content .el-collapse-item__header.is-active {
+    border-bottom-color: #e6e6e6;
+  }
+  .select-item-box .el-collapse-item__header.is-active {
+    border-bottom-color: #e6e6e6;
+  }
+  .select-item-box .el-collapse-item__header {
+    padding-left: 20px;
+    font-size: 16px;
+  }
+  .select-item-box .el-icon-arrow-right {
+    font-size: 25px;
+  }
+  .select-item-box .el-collapse-item__content {
+    padding-left: 20px
+  }
+  .select-item-box .el-rate__icon {
+    font-size: 22px
+  }
+  .content-box .el-form--label-top .el-form-item__label {
+    padding: 0;
+  }
+  .rad-font .el-radio__input.is-checked+.el-radio__label {
+    color: inherit;
+  }
+  .cont-class .el-input-group--append {
+    min-width: 160px;
+    padding-left: 40px;
+  }
+  .el-date-table td.current:not(.disabled) span {
+    background-color: inherit;
+  }
+  .el-date-table td.today span {
+    color: #ff5a5f;
+  }
+  .el-date-table td.available:hover {
+    color: inherit
+  }
+  .option-bord .el-input .el-input__inner:focus {
+    border: 1px solid #e6e6e6;
+  }
   /*推广页*/
   .input-phone input {
     height: 50px;

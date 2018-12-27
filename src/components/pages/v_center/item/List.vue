@@ -405,7 +405,6 @@
       return {
         type: 1,
         isEmpty: false,
-        index: '',
         isEmpty2: false,
         sureDialog: false,
         sureDialogOngo: false,
