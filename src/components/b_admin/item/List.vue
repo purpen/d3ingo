@@ -124,7 +124,7 @@
       </el-col>
     </el-row>
 
-    <el-dialog title="匹配公司" v-model="matchCompanyDialog">
+    <el-dialog title="匹配公司" :visible.sync="matchCompanyDialog">
       <el-form label-position="top">
         <input type="hidden" v-model="matchCompanyForm.itemId" value=""/>
         <input type="hidden" v-model="matchCompanyForm.itemStatus" value=""/>

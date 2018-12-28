@@ -113,7 +113,7 @@
                       </span>
                       
                     </div>
-                    <el-radio-group v-model.number="form.sell_type" @change="sell">
+                    <el-radio-group v-model.number="form.sell_type" @change="sell" class="rad-font">
                       <el-radio class="radio" :label="1">全额出让</el-radio>
                       <el-radio class="radio" :label="2">股权合作</el-radio>
                     </el-radio-group>
@@ -259,7 +259,7 @@
             title="设计成果委托推广及交易协议"
             :visible.sync="dialogProtocol"
             :lock-scroll="false"
-            size="tiny">
+            width="380px">
             <span>这是一段信息</span>
             <span slot="footer" class="dialog-footer">
               <el-button type="primary" @click="isProtocol">同意</el-button>
@@ -1294,7 +1294,7 @@
     width: 20px;
     height: 20px;
     left: 70px;
-    top: -28px;
+    top: -30px;
     background: url('../../../../../assets/images/item/Tips@2x.png') no-repeat center / contain;
     border-radius: 4px;
   }
