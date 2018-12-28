@@ -285,6 +285,7 @@
 }
 .fx-icon-logout:before {
   content: "\e94f";
+  color: #999
 }
 .fx-icon-lower:before {
   content: "\e950";

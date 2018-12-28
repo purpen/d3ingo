@@ -134,7 +134,7 @@
     <el-dialog
       title="提示"
       v-model="sureDialog"
-      size="tiny">
+      width="380px">
       <input type="hidden" ref="currentType" value="1"/>
       <p class="alert-line-height">{{ sureDialogMessage }}</p>
       <span slot="footer" class="dialog-footer">

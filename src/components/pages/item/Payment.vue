@@ -49,7 +49,7 @@
     </div>
     <div id="payBlock" style="display:none;"></div>
 
-    <el-dialog title="使用微信支付" v-model="wxPayDialog" :close-on-press-escape="false" :close-on-click-modal="false"
+    <el-dialog title="使用微信支付" :visible.sync="wxPayDialog" :close-on-press-escape="false" :close-on-click-modal="false"
                @close="closeWxPay()">
       <div class="wx-pay-box">
         <img :src="wxBase64" width="180"/>

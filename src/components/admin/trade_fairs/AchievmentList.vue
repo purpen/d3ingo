@@ -137,7 +137,7 @@
             </el-table>
           </el-dialog>
 
-          <el-dialog title="请填写拒绝原因" :visible.sync="dialogVisible" size="tiny">
+          <el-dialog title="请填写拒绝原因" :visible.sync="dialogVisible" width="380px">
             <el-form v-model="verify" ref="verifyForm" :rules="verifyForm" @submit.native.prevent>
               <el-form-item prop="refuseRease">
                 <el-input v-model="verify.refuseRease" placeholder="请填写拒绝原因"></el-input>

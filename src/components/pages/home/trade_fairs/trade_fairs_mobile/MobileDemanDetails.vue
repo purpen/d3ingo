@@ -66,7 +66,7 @@
     </div>
     <el-dialog
       :visible.sync="dialogCall"
-      size="tiny"
+      width="380px"
       class="style-call">
       <div class="title-center">
         <img class="avatar" v-if="urlLogo" :src="urlLogo.logo" width="100"/>

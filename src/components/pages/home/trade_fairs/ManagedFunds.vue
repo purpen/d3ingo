@@ -88,7 +88,7 @@
       title="取消订单"
       :visible.sync="closeShow"
       :lock-scroll="false"
-      size="tiny"
+      width="380px"
       class="close-orde">
       <span>您是否确定取消&nbsp;<span class="red-text">{{designTitle}}</span>&nbsp;订单</span>
       <span slot="footer" class="dialog-footer">
