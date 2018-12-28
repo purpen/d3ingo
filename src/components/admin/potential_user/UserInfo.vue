@@ -24,32 +24,6 @@
                   <el-input v-if="!currentId" v-model.trim="userForm.phone" placeholder="请填写用户手机号" size="small"></el-input>
                   <span v-else>{{userForm.phone}}</span>
                 </div>
-                <!-- <div class="user-rank fl">
-                    <div ref="selectParent" :class="['select-parent']" tabindex="-1">
-                      <span :class="['select-level', 
-                      {'select-level2': userForm.rank === 2,
-                      'select-level3': userForm.rank === 3,
-                      'select-level4': userForm.rank === 4,
-                      'select-level5': userForm.rank === 5
-                        }]">
-                          {{rankLabel}}</span>
-                      <ul class="stage-list">
-                        <li @click="changeLevel(item)"
-                          v-for="(item, index) in rankArr"
-                          :key="index"
-                          >
-                          <img :src="item.img" alt="" :style="{
-                            float: 'left',
-                            width: '24px',
-                            height: '20px',
-                            'margin-top': '8px',
-                            'margin-right': '10px'
-                          }">
-                          {{item.label}}
-                        </li>
-                      </ul>
-                    </div>
-                </div> -->
                 <div class="">
                   <el-rate v-model="userForm.rank" @change="changeLevel()"></el-rate>
                 </div>
@@ -74,7 +48,7 @@
                       width: '10px',
                       height: '10px',
                       borderRadius: '50%',
-                      margin: '6px 10px 0 0',
+                      margin: '12px 10px 0 0',
                       background: item.color}"></span>
                     <span style="float: left">{{ item.label }}</span>
                   </el-option>
@@ -103,7 +77,7 @@
               </div>
               <div class="belong fl">
                 <span>所属人 :</span>
-                <el-select v-model="userForm.execute_user_id" size="small" @change="isUpdatedExecute" :disabled="isAdmin<=10">
+                <el-select v-model="userForm.execute_user_id" size="small" @change="isUpdatedExecute" :disabled="isAdmin<15">
                   <el-option
                     v-for="(item, index) in adminVoIpList"
                     :key="index"
@@ -138,7 +112,6 @@
                   :key="tag"
                   v-for="tag in dynamicTags"
                   closable
-                  color="#ff5a5f"
                   :disable-transitions="false"
                   @close="handleClose(tag)">
                   {{tag}}
@@ -168,7 +141,7 @@
 
               <div class="card-body-center padding20" v-show="option === 'user'">
                 <el-form v-show="!currentId || BoolEditUserInfo" label-position="top" :model="clientForm" :rules="ruleClientForm"
-                              ref="ruleClientForm" label-width="80px">
+                              ref="ruleClientForm" label-width="80px" size="small">
                   <el-row :gutter="20"  style="margin-top: 10px">
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <el-form-item label="企业名称" prop="company">
@@ -182,7 +155,7 @@
                                     :twoSelect="true"
                                     :gutter="20"
                                     :isFirstProp="isFirstRegion" titleProp="企业地址"
-                                    @onchange="changeClient" class="margin-b22">
+                                    @onchange="changeClient">
                       </region-picker>
                     </el-col>
                   </el-row>
@@ -281,11 +254,17 @@
                       </p>
                     </el-col>
                   </el-row>
-                  
                   <el-row :gutter="20">
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <p>
                         <span class="inline-width70">所在城市: </span>{{clientForm.province_value}}{{clientForm.city_value}}
+                      </p>
+                    </el-col>
+                  </el-row>
+                  <el-row :gutter="20">
+                    <el-col :xs="24" :sm="8" :md="8" :lg="8">
+                      <p>
+                        <span class="inline-width70">备注: </span>{{clientForm.summary}}
                       </p>
                     </el-col>
                   </el-row>
@@ -306,15 +285,16 @@
               <div class="card-body-center" v-show="option === 'project'">
                 <p class="add-project clearfix">
                   <span class="fl margin-t8">共合作{{projectList.length}}个项目</span>
-                  <el-button type="primary" :disabled="!isHasPower" size="small" class="fr" @click="createdProject">添加项目</el-button>
+                  <el-button type="primary" :disabled="!isHasPower || (boolEditProject || boolAddProject)" size="small" class="fr" @click="createdProject">添加项目</el-button>
                 </p>
 
                 <div class="project-form-table">
                   <ul>
                     <li v-for="(item, index) in projectList" :key="index" class="project-li">
                       <el-form label-position="top" :model="projectForm" 
-                          :rules="ruleProjectForm" 
-                          :ref="'ruleProjectForm'+ index" label-width="80px">
+                          :rules="ruleProjectForm"
+                          :ref="'ruleProjectForm'+ index" 
+                          label-width="80px">
                         <div class="project-header clearfix">
                             <span class="project-i fl">项目&nbsp;&nbsp;({{index + 1}})</span>
                             <p v-if="item.failure === 1" class="project-failure fl"><span>失败项目</span>{{item.failure_cause}}</p>
@@ -330,6 +310,7 @@
                                 <el-button v-if="boolLinkItem || linkProjectId !== item.item_id" size="small" :disabled="!isHasPower" @click="showLinkItem(item.item_id)">关联项目</el-button>
                                 <div class="" v-if="!boolLinkItem && linkProjectId === item.item_id">
                                   <el-select
+                                      :ref="'linkItemSelect' + item.item_id"
                                       v-model="linkProjectValue"
                                       filterable
                                       remote
@@ -339,7 +320,6 @@
                                       :remote-method="remoteMethod"
                                       :loading="loading"
                                       default-first-option
-                                      @blur="hiddenInput(e)"
                                       @clear="hiddenInput()"
                                       @change="goLinkProject(item.item_id)">
                                     <el-option
@@ -461,7 +441,7 @@
                               <region-picker  :provinceProp="projectForm.item_province"
                                   :cityProp="projectForm.item_city" propStyle="margin:0;"
                                   :isFirstProp="isFirstRegion" titleProp="工作地址"
-                                  @onchange="changeProject" class="margin-b22"
+                                  @onchange="changeProject"
                                   :twoSelect="true"
                                   >
                               </region-picker>
@@ -595,12 +575,12 @@
                           </li>
                         </ul>
                         <p class="add-design clearfix" v-if="item.failure === null">
-                          <el-button size="small" type="primary" class="fl" :disabled="!isHasPower" @click="addDesignCompany(item.item_id)">添加设计公司</el-button>
+                          <el-button size="small" type="primary" class="fl" :disabled="!isHasPower || (boolDesignCompany || boolEditDesignCompany)" @click="addDesignCompany(item.item_id)">添加设计公司</el-button>
                         </p>
                         <div class="design-company" v-if="boolDesignCompany && currentDesignId ===item.item_id">
                           <p class="margin-b22">对接设计公司</p>
                           <el-form  label-position="top" :model="designCompanyForm" :rules="ruleDesignCompanyForm" ref="ruleDesignCompanyForm"
-                                      label-width="80px">
+                                    label-width="80px">
                             <el-row :gutter="20">
                               <el-col :xs="24" :sm="24" :md="8" :lg="8">
                                 <el-form-item label="设计公司名称" prop="design_company_id">
@@ -772,8 +752,9 @@
                           <div class="log-li-top">
                             <p class="execute-user-info">
                               <img v-if="item.logo_image" :src="item.logo_image.logo" alt="">
-                              <span class="no-head" v-else>{{item.execute_user_name | formatName}}</span>
+                              <span class="no-head" v-if="item.execute_user_name">{{item.execute_user_name | formatName}}</span>
                               <span class="name">{{item.execute_user_name || ''}}</span>
+                              <img v-if="item.execute_user_id === null" src="../../../assets/images/avatar_100.png" alt="">
                             </p>
                               <p>创建时间 :<span> {{item.date}}</span></p>
                               <p v-if="item.next_time && item.status !== 3" 
@@ -859,7 +840,7 @@
         <el-dialog
           title="标记失败"
           :visible.sync="BoolmarkFailure"
-          size="tiny">
+          width="380px">
           <p class="dialog-c-p">是否缺项目对接失败？</p>
           <el-input v-model="failureCause" type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请填写项目失败原因"></el-input>
           <span slot="footer" class="dialog-footer">
@@ -868,10 +849,9 @@
           </span>
         </el-dialog>
         <el-dialog
-          size="tiny"
           title="完成确认"
           :visible.sync="BoolLogComplete"
-          width="20%">
+          width="380px">
           <p class="dialog-c-p">是否确认完成次回跟进时间？</p>
           <el-input v-model="logStatusCause" type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请填写次回完成的相关内容"></el-input>
           <span slot="footer" class="dialog-footer">
@@ -880,10 +860,9 @@
           </span>
         </el-dialog>
         <el-dialog
-          size="tiny"
+          width="380px"
           title="取消确认"
-          :visible.sync="BoolLogCancel"
-          width="20%">
+          :visible.sync="BoolLogCancel">
           <p class="dialog-c-p">是否取消次回跟进？</p>
           <el-input v-model="logStatusCause" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"  placeholder="请填写次回取消的原因"></el-input>
           <span slot="footer" class="dialog-footer">
@@ -921,7 +900,16 @@ export default {
       focusHeight: false,
       BoolmarkFailure: false,
       adminVoIpList: [], // 业务人员列表
-      clientForm: {},
+      clientForm: {
+        company: '',
+        position: '',
+        wx: '',
+        qq: '',
+        email: '',
+        summary: '',
+        province: '',
+        city: ''
+      },
       ruleClientForm: {
         name: [{ required: true, message: '请添写联系人姓名', trigger: 'blur' }],
         phone: [{ required: true, message: '请填写联系人电话', trigger: 'blur' }]
@@ -943,47 +931,11 @@ export default {
         source: '',
         tag: [],
         execute_user_id: '',
-        company: '',
-        position: '',
-        wx: '',
-        qq: '',
-        email: '',
-        summary: '',
-        province: '',
-        city: '',
         execute: []
       },
       baseInfo: {}, // 第一次加载时头部的基本信息
       createdTime: '',
       sourceArr: [],
-      // rankLabel: '一级',
-      // rankArr: [
-      //   {
-      //     value: 1,
-      //     label: '一级',
-      //     img: require('@/assets/images/icon/Ordinary02@2x.png')
-      //   },
-      //   {
-      //     value: 2,
-      //     label: '二级',
-      //     img: require('@/assets/images/icon/Urgent02@2x.png')
-      //   },
-      //   {
-      //     value: 3,
-      //     label: '三级',
-      //     img: require('@/assets/images/icon/Urgent02@2x.png')
-      //   },
-      //   {
-      //     value: 4,
-      //     label: '四级',
-      //     img: require('@/assets/images/icon/VeryUrgent02@2x.png')
-      //   },
-      //   {
-      //     value: 5,
-      //     label: '五级',
-      //     img: require('@/assets/images/icon/VeryUrgent02@2x.png')
-      //   }
-      // ],
       userStatus: [ // 客户状态
         {
           value: 1,
@@ -1171,10 +1123,6 @@ export default {
       this.option = e
     },
     changeLevel() {
-      // this.userForm.rank = e.value
-      // this.rankLabel = e.label
-      // this.$refs.selectParent.blur()
-      // this.userForm.rank = this.rankValue
       if (!this.currentId) return
       if (this.userForm.rank !== this.baseInfo.rank) {
         this.updatedBaseInfo()
@@ -1195,7 +1143,6 @@ export default {
             execute_user_id,
             call_status
           }
-          console.log(this.baseInfo)
           this.currentUser = data.name
           this.userForm = {
             name: data.name,
@@ -1276,7 +1223,7 @@ export default {
         this.$message.error('请输入有效的手机号')
         return
       }
-      let row = Object.assign(this.clientForm, this.userForm)
+      let row = Object.assign({}, this.clientForm, this.userForm)
       row.tag = this.dynamicTags.length ? this.dynamicTags : ''
       this.$http.post(api.adminClueCreate, row).then(res => {
         if (res.data.meta.status_code === 200) {
@@ -1600,6 +1547,10 @@ export default {
       })
     },
     showEditDesignForm(d) {
+      if (this.boolDesignCompany) {
+        this.$message.error('请保存设计公司')
+        return
+      }
       if (!d) return
       this.boolEditDesignCompany = true
       this.getDesignCompanyList()
@@ -1688,6 +1639,9 @@ export default {
       this.boolLinkItem = false
       this.linkProjectId = id
       this.linkProjectValue = ''
+      this.$nextTick(() => {
+        this.$refs['linkItemSelect' + id][0].$children[0].focus()
+      })
       this.associationItemList()
     },
     associationItemList() {
@@ -1720,12 +1674,12 @@ export default {
         this.options4 = []
       }
     },
-    hiddenInput(e) {
-      console.log('aaa')
+    hiddenInput() {
       this.boolLinkItem = true
     },
     goLinkProject(id) { // 关联线上项目
       if (!id) return
+      if (!this.linkProjectValue) return
       let row = {
         clue_id: this.currentId,
         crm_item_id: id,
@@ -1860,6 +1814,9 @@ export default {
         this.getUserProject()
       } else if (val === 'followLog') {
         this.getLogList()
+        this.boolLinkItem = true
+      } else {
+        this.boolLinkItem = true
       }
     }
   },
@@ -1881,6 +1838,9 @@ export default {
 }
 </script>
 <style scoped>
+.el-form-item {
+  /* margin-bottom: 0px; */
+}
 .margin-b22 {
   margin-bottom: 22px !important;
 }
@@ -1917,7 +1877,6 @@ export default {
 /* card-box  */
 .card-box {
   margin-top: 20px;
-  padding-top: 20px;
   border: 1px solid #e6e6e6;
 }
 .card-header {
@@ -2396,11 +2355,14 @@ export default {
   border-radius: 18px;
   padding-left: 18px;
 }
+.card-header .el-input .el-input__inner:hover {
+  border-radius: 18px;
+}
 .user-info-center .el-select {
   width: 150px;
 }
 .source .el-select {
-  width: 160px;
+  width: 194px;
 }
 .user-status .el-select .el-input__inner {
   border: none;

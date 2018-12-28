@@ -114,7 +114,7 @@
             </el-table-column>
           </el-table>
 
-          <el-dialog title="发票备注" :visible.sync="dialogVisible" size="tiny">
+          <el-dialog title="发票备注" :visible.sync="dialogVisible" width="380px">
             <el-input type="textarea" v-model="verify.refuseRease"></el-input>
             <span slot="footer" class="dialog-footer">
               <el-button size="small" @click="dialogVisible = false">取 消</el-button>

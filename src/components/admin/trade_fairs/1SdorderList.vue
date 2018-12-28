@@ -143,7 +143,7 @@
       </el-col>
     </el-row>
 
-    <el-dialog title="确认线下打款" v-model="sureTransferDialog">
+    <el-dialog title="确认线下打款" :visible.sync="sureTransferDialog">
       <el-form label-position="top">
         <input type="hidden" v-model="orderForm.orderId" value="" />
         <input type="hidden" v-model.number="orderForm.index" value="" />
@@ -177,7 +177,7 @@
         <el-button type="primary" :load="sureTransferLoading" @click="sureTransferSubmit">确 定</el-button>
       </div>
     </el-dialog>
-    <el-dialog title="打款凭证" v-model="transferDialog">
+    <el-dialog title="打款凭证" :visible.sync="transferDialog">
       <img :src="imgUrl" width="100%" />
       <div slot="footer" class="dialog-footer">
         <el-button @click="transferDialog = false">取 消</el-button>
@@ -187,7 +187,7 @@
       title="提示"
       :visible.sync="dialogDelVisible"
       :lock-scroll="false"
-      size="tiny"
+      width="380px"
       >
       <p class="text-center">确认与双方达成一致,关闭交易并退款</p>
       <span slot="footer" class="dialog-footer">

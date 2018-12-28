@@ -88,7 +88,7 @@
     <el-dialog
       title="提示"
       v-model="comfirmDialog"
-      size="tiny">
+      width="380px">
       <span>{{ comfirmMessage }}</span>
       <span slot="footer" class="dialog-footer">
         <input type="hidden" ref="comfirmType" value="1"/>

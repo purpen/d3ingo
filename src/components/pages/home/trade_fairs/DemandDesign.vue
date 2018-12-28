@@ -93,7 +93,7 @@
         :visible.sync="callPhone"
         :lock-scroll="false"
         @close="closePop"
-        size="tiny"
+        width="380px"
         class="phone-style">
         <div class="title-center">
           <img class="avatar" v-if="urlLogo" :src="urlLogo.logo" width="100"/>
@@ -107,7 +107,7 @@
         :visible.sync="clientPhone"
         :lock-scroll="false"
         @close="closePop"
-        size="tiny"
+        width="380px"
         class="phone-style">
         <div class="title-center">
           <img class="avatt" src="../../../../assets/images/trade_fairs/list/clientPhone.png" width="100"/>
@@ -122,7 +122,7 @@
       :visible.sync="dialogUpdateVisible"
       :lock-scroll="false"
       @close="closePop"
-      size="tiny"
+      width="380px"
       class="submit2-form seen-deta"
       >
       <div v-loading="diaLoading">

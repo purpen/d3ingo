@@ -44,7 +44,7 @@
       </div>
     </div>
     <!--弹框模板-->
-    <el-dialog :title="itemModelTitle" v-model="itemModel" class="bank-dialog">
+    <el-dialog :title="itemModelTitle" :visible.sync="itemModel" class="bank-dialog">
 
       <el-form :model="form" label-position="top" :rules="ruleForm" ref="ruleForm">
         <el-form-item label="开户人姓名" prop="account_name" label-width="200px">
@@ -90,7 +90,7 @@
     <el-dialog
       title="提示"
       v-model="sureDialog"
-      size="tiny">
+      width="380px">
       <span>{{ sureDialogMessage }}</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="sureDialog = false">取 消</el-button>
