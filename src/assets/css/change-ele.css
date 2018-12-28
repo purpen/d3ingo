@@ -166,7 +166,7 @@
   }
   .el-pager li:hover,
   .el-pagination button:hover {
-    color: #ff5a5f
+    /* color: #ff5a5f */
   }
   .view-button {
     background: #fff;
@@ -175,7 +175,7 @@
     color: #ff5a5f;
   }
   ul.el-pager li.number.active:hover {
-    color: #fff
+    /* color: #fff */
   }
   .el-radio-button__orig-radio:checked+.el-radio-button__inner {
     background-color: #ff5a5f;

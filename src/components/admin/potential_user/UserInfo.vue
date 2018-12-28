@@ -15,56 +15,60 @@
           <div class="card-header">
 
             <div class="user-info-top clearfix">
-              <div class="user-name fl margin-r20">
-                <i class="fx-icon-people"></i>
-                <el-input v-if="!currentId" v-model.trim="userForm.name" placeholder="请填写用户名称" size="small" max-length="20"></el-input>
-                <span v-else>{{userForm.name}}</span>
-              </div>
-              
-              <div class="user-phone fl margin-r20">
-                <i class="fx-icon-telephone"></i>
-                <el-input v-if="!currentId" v-model.trim="userForm.phone" placeholder="请填写用户手机号" size="small"></el-input>
-                <span v-else>{{userForm.phone}}</span>
-              </div>
-              <div class="user-rank fl">
-                  <div ref="selectParent" :class="['select-parent']" tabindex="-1">
-                    <span :class="['select-level', 
-                    {'select-level2': userForm.rank === 2,
-                    'select-level3': userForm.rank === 3,
-                    'select-level4': userForm.rank === 4,
-                    'select-level5': userForm.rank === 5
-                      }]">
-                        {{rankLabel}}</span>
-                    <ul class="stage-list">
-                      <li @click="changeLevel(item)"
-                        v-for="(item, index) in rankArr"
-                        :key="index"
-                        >
-                        <img :src="item.img" alt="" :style="{
-                          float: 'left',
-                          width: '24px',
-                          height: '20px',
-                          'margin-top': '8px',
-                          'margin-right': '10px'
-                        }">
-                        {{item.label}}
-                      </li>
-                    </ul>
-                  </div>
+              <div class="fl clearfix flex-a-c">
+                <div class="user-name fl margin-r20">
+                  <el-input v-if="!currentId" v-model.trim="userForm.name" placeholder="请填写用户名称" size="small" max-length="20"></el-input>
+                  <span v-else>{{userForm.name}}</span>
+                </div>
+                <div class="user-phone fl margin-r20">
+                  <el-input v-if="!currentId" v-model.trim="userForm.phone" placeholder="请填写用户手机号" size="small"></el-input>
+                  <span v-else>{{userForm.phone}}</span>
+                </div>
+                <!-- <div class="user-rank fl">
+                    <div ref="selectParent" :class="['select-parent']" tabindex="-1">
+                      <span :class="['select-level', 
+                      {'select-level2': userForm.rank === 2,
+                      'select-level3': userForm.rank === 3,
+                      'select-level4': userForm.rank === 4,
+                      'select-level5': userForm.rank === 5
+                        }]">
+                          {{rankLabel}}</span>
+                      <ul class="stage-list">
+                        <li @click="changeLevel(item)"
+                          v-for="(item, index) in rankArr"
+                          :key="index"
+                          >
+                          <img :src="item.img" alt="" :style="{
+                            float: 'left',
+                            width: '24px',
+                            height: '20px',
+                            'margin-top': '8px',
+                            'margin-right': '10px'
+                          }">
+                          {{item.label}}
+                        </li>
+                      </ul>
+                    </div>
+                </div> -->
+                <div class="">
+                  <el-rate v-model="userForm.rank" @change="changeLevel()"></el-rate>
+                </div>
               </div>
               
               <div :class="['user-status', 'fr', {
                   'status1': userForm.status === 1,
                   'status2': userForm.status === 2,
                   'status3': userForm.status === 3,
-                  'status4': userForm.status === 4
+                  'status4': userForm.status === 4,
+                  'status5': userForm.status === 5
                   }]">
-                <el-select v-model.number="userForm.status" @change="updatedBaseInfo">
+                <el-select v-model.number="userForm.status" @change="isUpdatedStatus">
                   <el-option
                     v-for="(item, index) in userStatus"
                     :key="index"
                     :label="item.label"
-                    :value="item.value">
+                    :value="item.value"
+                    :disabled="item.value === 3">
                     <span :style="{
                       float: 'left',
                       width: '10px',
@@ -85,7 +89,7 @@
                     size="small"
                     filterable
                     placeholder="请选择或者新建用户来源"
-                    @change="updatedBaseInfo"
+                    @change="isUpdatedSource"
                     default-first-option
                     :allow-create="isAdmin>=15">
                   <el-option
@@ -99,7 +103,7 @@
               </div>
               <div class="belong fl">
                 <span>所属人 :</span>
-                <el-select v-model="userForm.execute_user_id" size="small" @change="updatedBaseInfo" :disabled="isAdmin<=10">
+                <el-select v-model="userForm.execute_user_id" size="small" @change="isUpdatedExecute" :disabled="isAdmin<=10">
                   <el-option
                     v-for="(item, index) in adminVoIpList"
                     :key="index"
@@ -117,7 +121,7 @@
                               filterable
                               :allow-create="isAdmin>=15"
                               default-first-option
-                              @change="updatedBaseInfo">
+                              @change="isUpdatedCallStatus">
                     <el-option
                       v-for="(item, index) in callStatus"
                       :key="index"
@@ -150,7 +154,7 @@
                 >
               </el-input>
               <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 添加标签</el-button>
-
+              <span v-if="currentId" class="fr u-c-time">创建时间:&nbsp;&nbsp;{{createdTime}}</span>
             </p>
           </div>
           <div class="card-body">
@@ -165,14 +169,12 @@
               <div class="card-body-center padding20" v-show="option === 'user'">
                 <el-form v-show="!currentId || BoolEditUserInfo" label-position="top" :model="clientForm" :rules="ruleClientForm"
                               ref="ruleClientForm" label-width="80px">
-                  <el-row :gutter="20">
+                  <el-row :gutter="20"  style="margin-top: 10px">
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                      <el-form-item label="企业名称" prop="company" style="margin-top: 10px">
+                      <el-form-item label="企业名称" prop="company">
                           <el-input v-model.trim="clientForm.company" placeholder="企业名称" :maxlength="40"></el-input>
                       </el-form-item>
                     </el-col>
-                  </el-row>
-                  <el-row :gutter="20">
                     <el-col l :xs="24" :sm="16" :md="16" :lg="16">
                       <region-picker :provinceProp="clientForm.province" 
                                     :cityProp="clientForm.city"
@@ -233,9 +235,9 @@
 
                 <div class="user-base-table" v-if="currentId && !BoolEditUserInfo">
                   <el-row :gutter="20">
-                    <el-col :xs="24" :sm="8" :md="8" :lg="8">
+                    <el-col :xs="24" :sm="24" :md="24" :lg="24">
                       <p>
-                        <span>企业名称: </span>{{clientForm.company}}
+                        <span class="inline-width70">企业名称: </span>{{clientForm.company}}
                       </p>
                     </el-col>
                   </el-row>
@@ -243,19 +245,19 @@
                   <el-row :gutter="20">
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <p>
-                        <span>联系人: </span>{{clientForm.name}}
+                        <span class="inline-width70">联系人: </span>{{clientForm.name}}
                       </p>
                     </el-col>
                     
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <p>
-                        <span>职位: </span>{{clientForm.position}}
+                        <span class="inline-width50">职位: </span>{{clientForm.position}}
                       </p>
                     </el-col>
                     
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <p>
-                        <span>电话: </span>{{clientForm.phone}}
+                        <span class="inline-width50">电话: </span>{{clientForm.phone}}
                       </p>
                     </el-col>
                   </el-row>
@@ -263,19 +265,19 @@
                   <el-row :gutter="20">
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <p>
-                        <span>微信号: </span>{{clientForm.wx}}
+                        <span class="inline-width70">微信号: </span>{{clientForm.wx}}
                       </p>
                     </el-col>
                     
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <p>
-                        <span> QQ号: </span>{{clientForm.qq}}
+                        <span class="inline-width50"> QQ号: </span>{{clientForm.qq}}
                       </p>
                     </el-col>
                     
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <p>
-                        <span>邮箱: </span>{{clientForm.email}}
+                        <span class="inline-width50">邮箱: </span>{{clientForm.email}}
                       </p>
                     </el-col>
                   </el-row>
@@ -283,7 +285,7 @@
                   <el-row :gutter="20">
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <p>
-                        <span>所在城市: </span>{{clientForm.province_value}}{{clientForm.city_value}}
+                        <span class="inline-width70">所在城市: </span>{{clientForm.province_value}}{{clientForm.city_value}}
                       </p>
                     </el-col>
                   </el-row>
@@ -291,7 +293,7 @@
                 <p class="user-btn clearfix padding20" v-show="option === 'user'">
                   <el-button v-if="!currentId" type="primary" class="fr" @click="submitUserForm('ruleClientForm')">生成用户
                   </el-button>
-                  <el-button v-if="currentId && !BoolEditUserInfo" type="primary" class="fr" @click="editUserInfo">编辑
+                  <el-button v-if="currentId && !BoolEditUserInfo" type="primary" class="fr" :disabled="!isHasPower" @click="editUserInfo">编辑
                   </el-button>
                   <el-button v-if="currentId && BoolEditUserInfo" class="fr" type="primary" @click="updateUserinfo('ruleClientForm')">保存</el-button>
                   <el-button v-if="!currentId || BoolEditUserInfo" class="fr" @click="comeBack">取消</el-button>
@@ -304,7 +306,7 @@
               <div class="card-body-center" v-show="option === 'project'">
                 <p class="add-project clearfix">
                   <span class="fl margin-t8">共合作{{projectList.length}}个项目</span>
-                  <el-button type="primary" size="small" class="fr" @click="createdProject">添加项目</el-button>
+                  <el-button type="primary" :disabled="!isHasPower" size="small" class="fr" @click="createdProject">添加项目</el-button>
                 </p>
 
                 <div class="project-form-table">
@@ -313,50 +315,64 @@
                       <el-form label-position="top" :model="projectForm" 
                           :rules="ruleProjectForm" 
                           :ref="'ruleProjectForm'+ index" label-width="80px">
-                        <el-row :gutter="20">
-                          <el-col :xs="8" :sm="4" :md="4" :lg="4">
-                            <span class="project-i">项目&nbsp;&nbsp;({{index + 1}})</span>
-                          </el-col>
-                          <el-col :xs="14" :sm="10" :md="8" :lg="8">
-                            
-                            <span v-if="item.item">{{item.item_name}}</span>
-                            <div v-else>
-                              <el-button v-if="boolLinkItem || linkProjectId !== item.item_id" size="small" @click="showLinkItem(item.item_id)">关联项目</el-button>
-                              <div class="margin-b15" v-if="!boolLinkItem && linkProjectId === item.item_id">
-                                <el-select
-                                    v-model="linkProjectValue"
-                                    filterable
-                                    remote
-                                    reserve-keyword
-                                    placeholder="请输入关键词"
-                                    :remote-method="remoteMethod"
-                                    :loading="loading"
-                                    default-first-option
-                                    @blur="hiddenInput(e)"
-                                    @change="goLinkProject(item.item_id)">
-                                  <el-option
-                                    v-for="item in options4"
-                                    :key="item.id"
-                                    :label="item.name"
-                                    :value="item.id">
-                                  </el-option>
-                                </el-select>
+                        <div class="project-header clearfix">
+                            <span class="project-i fl">项目&nbsp;&nbsp;({{index + 1}})</span>
+                            <p v-if="item.failure === 1" class="project-failure fl"><span>失败项目</span>{{item.failure_cause}}</p>
+
+                            <div v-else class="fl">
+                              <p v-if="item.item" class="link-item">
+                                关联项目 : 
+                                <span class="link-item-name">{{item.item_name}}
+                                  <i class="close-icon-solid" @click="deleteLinkProject(item)"></i>
+                                </span>
+                              </p>
+                              <div v-else>
+                                <el-button v-if="boolLinkItem || linkProjectId !== item.item_id" size="small" :disabled="!isHasPower" @click="showLinkItem(item.item_id)">关联项目</el-button>
+                                <div class="" v-if="!boolLinkItem && linkProjectId === item.item_id">
+                                  <el-select
+                                      v-model="linkProjectValue"
+                                      filterable
+                                      remote
+                                      reserve-keyword
+                                      clearable
+                                      placeholder="请输入关键词"
+                                      :remote-method="remoteMethod"
+                                      :loading="loading"
+                                      default-first-option
+                                      @blur="hiddenInput()"
+                                      @clear="hiddenInput()"
+                                      @change="goLinkProject(item.item_id)">
+                                    <el-option
+                                      v-for="item in options4"
+                                      :key="item.id"
+                                      :label="item.name"
+                                      :value="item.id">
+                                    </el-option>
+                                  </el-select>
+                                </div>
                               </div>
                             </div>
-                          </el-col>
-                        </el-row>
 
-                        <p v-if="item.failure === 1" class="project-failure"><span>失败项目</span>{{item.failure_cause}}</p>
+                            <div class="edit-project fr" v-if="item.failure === null && (!boolEditProject || currentProjectId !== 
+                                 item.item_id) && isHasPower">
+                              <div class="edit-project-tag">
+                                <p @click="markProjectFailure(item.item_id)">标记为失败</p>
+                                <p v-if="item.item_status < 7" @click="deleteProject(item.item_id)">删除项目</p>
+                                <p @click="editProject(item)">编辑项目</p>
+                              </div>
+                            </div>
+                        </div>
+
                         <el-row :gutter="20">
                           <el-col :xs="24" :sm="20" :md="8" :lg="8">
-                            <p v-if="!boolEditProject || currentProjectId !== item.item_id"><span>项目名称: </span>{{item.name}}</p>
+                            <p v-if="!boolEditProject || currentProjectId !== item.item_id"><span class="inline">项目名称: </span>{{item.name}}</p>
                             <el-form-item v-if="boolEditProject && currentProjectId === item.item_id" label="项目名称" prop="name">
                               <el-input v-model="projectForm.name" :maxlength="40" placeholder="请填写项目名称"></el-input>
                             </el-form-item>
                           </el-col>
                           <el-col :xs="24" :sm="20" :md="8" :lg="8">
                             <p v-if="!boolEditProject || currentProjectId !== item.item_id">
-                              <span>项目紧急度: </span>
+                              <span class="margin-r2">项目紧急度: </span>
                               <span v-if="item.grate === 1">未知</span>
                               <span v-else-if="item.grate === 2">普通</span>
                               <span v-else-if="item.grate === 3">紧急</span>
@@ -372,15 +388,6 @@
                                 </el-option>
                               </el-select>
                             </el-form-item> 
-                          </el-col>
-                          <el-col :xs="24" :sm="20" :md="8" :lg="8">
-                            <div class="edit-project fr" v-if="!boolEditProject || currentProjectId !== item.item_id">
-                              <div class="edit-project-tag">
-                                <p @click="markProjectFailure(item.item_id)">标记为失败</p>
-                                <p @click="deleteProject(item.item_id)">删除项目</p>
-                                <p @click="editProject(item)">编辑项目</p>
-                              </div>
-                            </div>
                           </el-col>
                         </el-row>
                         <el-row :gutter="20">
@@ -464,9 +471,9 @@
                         </el-row>
                         <el-row :gutter="20">
                           <el-col :xs="24" :sm="24" :md="24" :lg="24">
-                            <p v-if="!boolEditProject || currentProjectId !== item.item_id">
-                              <span>项目描述: </span>{{item.summary}}
-                            </p>
+                            <div v-if="!boolEditProject || currentProjectId !== item.item_id">
+                              <p class="fl margin-r20">项目描述: </p><span class="p-t-summary">{{item.summary}}</span>
+                            </div>
                             <el-form-item label="项目描述" prop="summary" v-if="boolEditProject && currentProjectId === item.item_id">
                               <el-input type="textarea" :maxlength="500" :rows="4" 
                                   v-model="projectForm.summary" 
@@ -489,18 +496,18 @@
                                   </p>
                                 </el-col>
                                 <el-col :xs="24" :sm="20" :md="8" :lg="8">
-                                  <div class="edit-project fr">
+                                  <div v-if="item.failure === null && isHasPower" class="edit-project fr">
                                     <div class="edit-project-tag">
-                                      <p @click="deleteDesignProject(d.id)">删除</p>
+                                      <p @click="deleteDesignProject(d)">删除</p>
                                       <p @click="showEditDesignForm(d)">编辑</p>
                                     </div>
                                   </div>
                                 </el-col>
                               </el-row>
                               <el-row :gutter="20">
-                                <el-col :xs="24" :sm="24" :md="24" :lg="24">
+                                <el-col :xs="24" :sm="24" :md="12" :lg="12">
                                   <p>
-                                    <span>设计公司 </span>{{d.company_name}}
+                                    <span>设计公司: </span>{{d.company_name}}
                                   </p>
                                 </el-col>
                                 <el-col :xs="24" :sm="24" :md="12" :lg="12">
@@ -587,8 +594,8 @@
                             </div>
                           </li>
                         </ul>
-                        <p class="add-design clearfix">
-                          <el-button size="small" type="primary" class="fl" @click="addDesignCompany(item.item_id)">添加设计公司</el-button>
+                        <p class="add-design clearfix" v-if="item.failure === null">
+                          <el-button size="small" type="primary" class="fl" :disabled="!isHasPower" @click="addDesignCompany(item.item_id)">添加设计公司</el-button>
                         </p>
                         <div class="design-company" v-if="boolDesignCompany && currentDesignId ===item.item_id">
                           <p class="margin-b22">对接设计公司</p>
@@ -759,31 +766,68 @@
               <div class="card-body-center padding20" v-show="option === 'followLog'">
                 <ul>
                   <li v-for="(item, i) in followLogList" :key="i" class="log-li">
-                   <el-row :gutter="20">
-                     <el-col :xs="24" :sm="24" :md="24" :lg="24">
-                       <div class="log-li-top">
-                         <p class="execute-user-info">
-                          <img v-if="item.logo_image" :src="item.logo_image.logo" alt="">
-                          <span class="no-head" v-else>{{item.execute_user_name | formatName}}</span>
-                          <span class="name">{{item.execute_user_name || ''}}</span>
-                         </p>
-                        <p>创建时间 :<span> {{item.date}}</span></p>
-                        <p v-if="item.next_time && item.status !== 3" :class="['log-next-time', {'carry-out': item.status === 2 }]">次回跟进时间 :
-                          <span>{{item.next_time}}</span>
-                          <a v-if="item.status === 1" @click="showLogStatusDialog(item.id, 3)">取消</a>
-                          <a v-if="item.status === 1" @click="showLogStatusDialog(item.id, 2)">完成</a>
-                        </p>
-                       </div>
-                     </el-col>
-                   </el-row>
-                   
-                   <el-row :gutter="20">
-                     <el-col :xs="24" :sm="16" :md="24" :lg="24">
-                       <p class="log-contant">
-                       <span>{{item.log}}</span>
-                       </p>
-                     </el-col>
-                   </el-row>
+                    <div>
+                      <el-row :gutter="20">
+                        <el-col :xs="24" :sm="24" :md="24" :lg="24">
+                          <div class="log-li-top">
+                            <p class="execute-user-info">
+                              <img v-if="item.logo_image" :src="item.logo_image.logo" alt="">
+                              <span class="no-head" v-else>{{item.execute_user_name | formatName}}</span>
+                              <span class="name">{{item.execute_user_name || ''}}</span>
+                            </p>
+                              <p>创建时间 :<span> {{item.date}}</span></p>
+                              <p v-if="item.next_time && item.status !== 3" 
+                                  :class="['log-next-time', {'carry-out': item.status === 2 }]">
+                                  次回跟进时间 :
+                                <span>{{item.next_time}}</span>
+                                <a v-if="item.status === 1 && (!boolEditLog || item.id !== currrentLogId)" @click="showLogStatusDialog(item.id, 3)">取消</a>
+                                <a v-if="item.status === 1 && (!boolEditLog || item.id !== currrentLogId)" @click="showLogStatusDialog(item.id, 2)">完成</a>
+                              </p>
+                              <div class="edit-log fr" v-if="isHasPower &&(item.status === 0 || item.status === 1)">
+                                <div class="edit-log-tag">
+                                  <p @click="showlogInput(item)">编辑</p>
+                                  <p @click="deletelog(item.id)">删除</p>
+                                </div>
+                              </div>
+                          </div>
+                        </el-col>
+                      </el-row>
+                      <el-row :gutter="20">
+                        <el-col :xs="24" :sm="16" :md="24" :lg="24">
+                          <p class="log-contant" v-if="!boolEditLog || item.id !== currrentLogId">
+                            <span>{{item.log}}</span>
+                          </p>
+                          <p class="log-comment" v-if="item.comment">
+                            <span class="log-comment-title" v-if="item.status === 2">完成内容: </span>
+                            <span class="log-comment-title" v-if="item.status === 3">取消原因: </span>
+                            <span>{{item.comment}}</span>
+                          </p>
+                        </el-col>
+                      </el-row>
+                    </div>
+
+                    <div class="edit-progress" v-if="boolEditLog && item.id === currrentLogId">
+                      <el-input type="textarea"
+                        placeholder="添加跟进内容"
+                        v-model="editFollowVal"
+                        @keydown.native.enter.shift="quick"
+                        :autosize="{ minRows: 3, maxRows: 10}"
+                        :maxlength="500"
+                        @focus="focusInput1"
+                        autofocus>
+                      </el-input>
+                      <div class="send clearfix">
+                        <div class="date-picker fl" style="width: 180px;">
+                            <el-date-picker
+                              v-model="editFollowTime"
+                              type="date"
+                              placeholder="选择日期"
+                              :picker-options="pickerOptions2">
+                            </el-date-picker>
+                        </div>
+                        <el-button class="fr" type="primary" @click="updateTrackLog">发布</el-button>
+                      </div>
+                    </div>
                   </li>
                 </ul>
                 <div class="progress">
@@ -805,7 +849,7 @@
                           :picker-options="pickerOptions1">
                         </el-date-picker>
                     </div>
-                    <el-button class="fr" type="primary" @click="sendProgressVal">发布</el-button>
+                    <el-button class="fr" :disabled="!isHasPower" type="primary" @click="sendProgressVal">发布</el-button>
                   </div>
                 </div>
               </div>
@@ -815,7 +859,7 @@
         <el-dialog
           title="标记失败"
           :visible.sync="BoolmarkFailure"
-          size="tiny">
+          width="380px">
           <p class="dialog-c-p">是否缺项目对接失败？</p>
           <el-input v-model="failureCause" type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请填写项目失败原因"></el-input>
           <span slot="footer" class="dialog-footer">
@@ -824,10 +868,9 @@
           </span>
         </el-dialog>
         <el-dialog
-          size="tiny"
           title="完成确认"
           :visible.sync="BoolLogComplete"
-          width="20%">
+          width="380px">
           <p class="dialog-c-p">是否确认完成次回跟进时间？</p>
           <el-input v-model="logStatusCause" type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请填写次回完成的相关内容"></el-input>
           <span slot="footer" class="dialog-footer">
@@ -836,10 +879,9 @@
           </span>
         </el-dialog>
         <el-dialog
-          size="tiny"
+          width="380px"
           title="取消确认"
-          :visible.sync="BoolLogCancel"
-          width="20%">
+          :visible.sync="BoolLogCancel">
           <p class="dialog-c-p">是否取消次回跟进？</p>
           <el-input v-model="logStatusCause" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"  placeholder="请填写次回取消的原因"></el-input>
           <span slot="footer" class="dialog-footer">
@@ -861,6 +903,7 @@ import '@/assets/js/date_format'
 import {nameToAvatar} from '@/assets/js/common'
 // 城市联动
 import RegionPicker from '@/components/block/RegionPicker'
+import Clickoutside from 'assets/js/clickoutside'
 export default {
   name: 'admin_potential_userinfo',
   components: {
@@ -908,35 +951,37 @@ export default {
         city: '',
         execute: []
       },
-      rankLabel: '一级',
+      baseInfo: {}, // 第一次加载时头部的基本信息
+      createdTime: '',
       sourceArr: [],
-      rankArr: [
-        {
-          value: 1,
-          label: '一级',
-          img: require('@/assets/images/icon/Ordinary02@2x.png')
-        },
-        {
-          value: 2,
-          label: '二级',
-          img: require('@/assets/images/icon/Urgent02@2x.png')
-        },
-        {
-          value: 3,
-          label: '三级',
-          img: require('@/assets/images/icon/Urgent02@2x.png')
-        },
-        {
-          value: 4,
-          label: '四级',
-          img: require('@/assets/images/icon/VeryUrgent02@2x.png')
-        },
-        {
-          value: 5,
-          label: '五级',
-          img: require('@/assets/images/icon/VeryUrgent02@2x.png')
-        }
-      ],
+      // rankLabel: '一级',
+      // rankArr: [
+      //   {
+      //     value: 1,
+      //     label: '一级',
+      //     img: require('@/assets/images/icon/Ordinary02@2x.png')
+      //   },
+      //   {
+      //     value: 2,
+      //     label: '二级',
+      //     img: require('@/assets/images/icon/Urgent02@2x.png')
+      //   },
+      //   {
+      //     value: 3,
+      //     label: '三级',
+      //     img: require('@/assets/images/icon/Urgent02@2x.png')
+      //   },
+      //   {
+      //     value: 4,
+      //     label: '四级',
+      //     img: require('@/assets/images/icon/VeryUrgent02@2x.png')
+      //   },
+      //   {
+      //     value: 5,
+      //     label: '五级',
+      //     img: require('@/assets/images/icon/VeryUrgent02@2x.png')
+      //   }
+      // ],
       userStatus: [ // 客户状态
         {
           value: 1,
@@ -949,6 +994,11 @@ export default {
           color: '#65A6FF'
         },
         {
+          value: 5,
+          label: '对接设计',
+          color: '#65a6ff'
+        },
+        {
           value: 3,
           label: '签订合作',
           color: '#00AC84'
@@ -956,11 +1006,6 @@ export default {
         {
           value: 4,
           label: '对接失败',
-          color: '#FF5A5F'
-        },
-        {
-          value: 5,
-          label: '对接设计',
           color: '#FF5A5F'
         }
       ],
@@ -1007,19 +1052,27 @@ export default {
       editDesignParams: {},
 
       followVal: '',
+      editFollowVal: '',
       followTime: '',
+      editFollowTime: '',
       logStatusCause: '',
       followLogList: [],
       logStstus: '',
       logId: '',
       BoolLogComplete: false,
       BoolLogCancel: false,
+      boolEditLog: false,
+      currrentLogId: '',
       pickerOptions1: {
         disabledDate(time) {
           return time.getTime() < Date.now()
         }
       },
-
+      pickerOptions2: {
+        disabledDate(time) {
+          return time.getTime() < Date.now()
+        }
+      },
       boolLinkItem: true,
       linkProjectId: '',
       options4: [],
@@ -1055,11 +1108,41 @@ export default {
         this.$message.error(error.message)
       })
     },
-    comeBack() {
+    comeBack() { // 返回上一步
       if (this.currentId) {
         this.BoolEditUserInfo = false
       } else {
         this.$router.go(-1)
+      }
+    },
+    isUpdatedSource(val) {
+      if (!this.currentId) return
+      if (val !== this.baseInfo.source) {
+        this.updatedBaseInfo()
+        if (!this.isExistArray(val, this.sourceArr)) {
+          this.getTypeList()
+        }
+      }
+    },
+    isUpdatedStatus(val) {
+      if (!this.currentId) return
+      if (val !== this.baseInfo.status) {
+        this.updatedBaseInfo()
+      }
+    },
+    isUpdatedExecute(val) {
+      if (!this.currentId) return
+      if (val !== this.baseInfo.execute_user_id) {
+        this.updatedBaseInfo()
+      }
+    },
+    isUpdatedCallStatus(val) {
+      if (!this.currentId) return
+      if (val !== this.baseInfo.call_status) {
+        this.updatedBaseInfo()
+        if (!this.isExistArray(val, this.callStatus)) {
+          this.getTypeList()
+        }
       }
     },
     updatedBaseInfo(val) { // 更新基本信息
@@ -1071,7 +1154,6 @@ export default {
       row.clue_id = this.currentId
       this.$http.post(api.adminClueUpdate, row).then(res => {
         if (res.data.meta.status_code === 200) {
-          this.getTypeList()
         } else {
           this.$message.error(res.data.meta.message)
           console.log(res.data.meta.message)
@@ -1080,14 +1162,21 @@ export default {
         this.$message.error(error.message)
       })
     },
+    isExistArray(string, array) {
+      return array.includes(string)
+    },
     changeOption(e) {
       this.option = e
     },
-    changeLevel(e) {
-      this.userForm.rank = e.value
-      this.rankLabel = e.label
-      this.$refs.selectParent.blur()
-      this.updatedBaseInfo()
+    changeLevel() {
+      // this.userForm.rank = e.value
+      // this.rankLabel = e.label
+      // this.$refs.selectParent.blur()
+      // this.userForm.rank = this.rankValue
+      if (!this.currentId) return
+      if (this.userForm.rank !== this.baseInfo.rank) {
+        this.updatedBaseInfo()
+      }
     },
     getUserInfo() { // 查看用户档案
       let row = {
@@ -1096,6 +1185,15 @@ export default {
       this.$http.get(api.adminClueShow, {params: row}).then(res => {
         if (res.data.meta.status_code === 200) {
           const data = res.data.data
+          const {source, rank, status, execute_user_id, call_status} = res.data.data
+          this.baseInfo = {
+            rank,
+            source,
+            status,
+            execute_user_id,
+            call_status
+          }
+          console.log(this.baseInfo)
           this.currentUser = data.name
           this.userForm = {
             name: data.name,
@@ -1106,11 +1204,7 @@ export default {
             execute_user_id: data.execute_user_id,
             call_status: data.call_status || ''
           }
-          this.rankArr.forEach(item => {
-            if (item.value === this.userForm.rank) {
-              this.rankLabel = item.label
-            }
-          })
+          this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm:ss')
           if (data.tag.length === 1 && data.tag[0] === '') {
             this.dynamicTags.length = 0
           } else {
@@ -1344,6 +1438,10 @@ export default {
       if (id) {
         this.currentDesignId = id
       }
+      this.designCompanyForm = {
+        wx: '',
+        summary: ''
+      }
       this.boolDesignCompany = true
       this.getDesignCompanyList()
     },
@@ -1367,13 +1465,12 @@ export default {
         }
       })
     },
-    hiddenInput(e) {
-      console.log('aaaaa')
-      console.log(e)
-      this.boolLinkItem = true
-    },
     focusInput() {
       this.focusHeight = true
+      this.boolEditLog = false
+    },
+    focusInput1() {
+      // this.boolEditLog = false
     },
     sendProgressVal() { // 发送跟进记录
       if (!this.followVal) {
@@ -1389,10 +1486,12 @@ export default {
         const nextTime = (new Date(this.followTime)).format('yyyy-MM-dd')
         row.next_time = nextTime
       }
+      this.focusHeight = false
       this.$http.post(api.adminClueAddTrackLog, row).then(res => {
         if (res.data.meta.status_code === 200) {
           this.getLogList()
           this.followVal = ''
+          this.followTime = ''
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -1459,6 +1558,10 @@ export default {
       }
     },
     goProjectFailure() {
+      if (!this.failureCause) {
+        this.$message.error('请填写失败原因')
+        return
+      }
       let row = {
         crm_item_id: this.itemId,
         clue_id: this.currentId,
@@ -1476,10 +1579,12 @@ export default {
         this.$message.error(error.message)
       })
     },
-    deleteDesignProject(id) {
-      if (!id) return
+    deleteDesignProject(d) {
+      if (!d && d.id) return
       let row = {
-        design_id: id
+        design_id: d.id,
+        clue_id: this.currentId,
+        crm_item_id: d.crm_item_id
       }
       this.$http.delete(api.adminClueDelCrmDesign, {params: row}).then(res => {
         if (res.data.meta.status_code === 200) {
@@ -1580,6 +1685,7 @@ export default {
       if (!id) return
       this.boolLinkItem = false
       this.linkProjectId = id
+      this.linkProjectValue = ''
       this.associationItemList()
     },
     associationItemList() {
@@ -1612,6 +1718,9 @@ export default {
         this.options4 = []
       }
     },
+    hiddenInput() {
+      this.boolLinkItem = true
+    },
     goLinkProject(id) { // 关联线上项目
       if (!id) return
       let row = {
@@ -1621,7 +1730,7 @@ export default {
       }
       this.$http.post(api.adminClueRelateItem, row).then(res => {
         if (res.data.meta.status_code === 200) {
-
+          this.getUserProject()
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -1629,20 +1738,75 @@ export default {
         this.$message.error(error.message)
       })
     },
-    deleteLinkProject() { // 删除关联项目
+    deleteLinkProject(d) { // 删除关联项目
+      if (!d) return
       let row = {
-        // clue_id: this.currentId,
-        // crm_item_id: id,
-        // item_id: this.linkProjectValue
+        clue_id: this.currentId,
+        item_id: d.item,
+        crm_item_id: d.item_id
       }
-      this.$http.post(api.adminClueDelRelateItem, row).then(res => {
+      this.$http.delete(api.adminClueDelRelateItem, {params: row}).then(res => {
         if (res.data.meta.status_code === 200) {
-
+          this.getUserProject()
         } else {
           this.$message.error(res.data.meta.message)
         }
       }).catch(error => {
         this.$message.error(error.message)
+      })
+    },
+    deletelog(id) { // 删除跟进记录
+      if (!id) return
+      let row = {
+        clue_id: this.currentId,
+        track_log_id: id
+      }
+      this.$http.delete(api.adminClueDelTrackLog, {params: row}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.$message.success(res.data.meta.message)
+          this.getLogList()
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+      })
+    },
+    showlogInput(d) { // 编辑跟进记录
+      this.focusHeight = false
+      this.boolEditLog = true
+      this.currrentLogId = d.id
+      this.editFollowVal = d.log
+      this.editFollowTime = d.next_time
+      // this.$refs['logInput'].focus()
+    },
+    updateTrackLog() {
+      if (!this.editFollowVal) {
+        this.$message.error('请输入跟进记录')
+        return
+      }
+      let row = {
+        track_log_id: this.currrentLogId,
+        clue_id: this.currentId,
+        log: this.editFollowVal,
+        next_time: ''
+      }
+      if (this.editFollowTime) {
+        const nextTime = (new Date(this.editFollowTime)).format('yyyy-MM-dd')
+        row.next_time = nextTime
+      }
+      this.$http.post(api.adminClueUpdateTrackLog, row).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.getLogList()
+          this.boolEditLog = false
+          this.editFollowTime = ''
+          this.currrentLogId = ''
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+        console.log(error.message)
       })
     }
   },
@@ -1677,6 +1841,14 @@ export default {
     },
     isAdmin() {
       return this.$store.state.event.user.role_id
+    },
+    userId() {
+      return this.$store.state.event.user.id
+    },
+    isHasPower() { // 是否有权限编辑
+      if (this.userId === this.userForm.execute_user_id || this.isAdmin >= 15) {
+        return true
+      }
     }
   },
   watch: {
@@ -1701,6 +1873,7 @@ export default {
     this.getTypeList()
     this.getAdminVoIpList()
   },
+  directives: {Clickoutside},
   mounted() {}
 }
 </script>
@@ -1726,6 +1899,14 @@ export default {
 .padding20 {
   padding: 20px;
 }
+.flex-a-c {
+  display: flex;
+  align-items: center;
+}
+.u-c-time {
+  font-size: 12px;
+  color: #666666;
+}
 .border-radius {
   border: 1px solid #e6e6e6;
   border-radius: 50%;
@@ -1733,11 +1914,12 @@ export default {
 /* card-box  */
 .card-box {
   margin-top: 20px;
-  padding-top: 20px;
   border: 1px solid #e6e6e6;
 }
 .card-header {
   padding: 20px;
+  border-bottom: 1px solid #e6e6e6;
+	background: #FAFAFA;
 }
 .card-body-header {
   display: flex;
@@ -1745,7 +1927,7 @@ export default {
   height: 40px;
   align-items: center;
   background: #fafafa;
-  border-top: 1px solid #e6e6ee;
+  /* border-top: 1px solid #e6e6ee; */
   border-bottom: 1px solid #e6e6ee;
   /* margin-bottom: 20px; */
   font-size: 14px;
@@ -1774,12 +1956,20 @@ export default {
   display: flex;
   align-items: center;
 }
-.card-header i {
-  font-size: 20px;
-  margin-right: 10px;
+.user-name, .user-phone {
+  height: 30px;
+  padding-left: 30px;
+  font-size: 16px;
 }
+.user-name {
+  background: url(../../../assets/images/member/Customer@2x.png) no-repeat left / 24px 24px;
+}
+.user-phone {
+  background: url(../../../assets/images/member/phone@2x.png) no-repeat left / 24px 24px;
+}
+
 /* user-rank */
-.user-rank {
+/* .user-rank {
   max-width: 110px;
 }
 .select-parent {
@@ -1840,11 +2030,11 @@ export default {
 .select-parent .select-level5 {
   background: url(../../../assets/images/icon/VeryImportant01@2x.png) no-repeat 6px / 16px 16px;
   background-color: #fe5b5f;
-}
+} */
 /* user-rank end */
 
 .user-status {
-  width: 120px;
+  width: 150px;
   padding-left: 40px;
   border: 1px solid #e6e6e6;
   border-radius: 18px;
@@ -1858,13 +2048,16 @@ export default {
   height: 20px;
 } */
 .user-status.status1 {
-  background: url(../../../assets/images/icon/WaitingForCommunication@2x.png) no-repeat 12px / 24px 24px;
+  background: url(../../../assets/images/icon/PotentialCustomers@2x.png) no-repeat 12px / 24px 24px;
 }
 .user-status.status2 {
-  background: url(../../../assets/images/icon/InCommunication@2x.png) no-repeat 12px / 24px 24px;
+  background: url(../../../assets/images/icon/demand@2x.png) no-repeat 12px / 24px 24px;
+}
+.user-status.status5 {
+  background: url(../../../assets/images/icon/Design@2x.png) no-repeat 12px / 24px 24px;
 }
 .user-status.status3 {
-  background: url(../../../assets/images/icon/Success@2x.png) no-repeat 12px / 24px 24px;
+  background: url(../../../assets/images/icon/Sign@2x.png) no-repeat 12px / 24px 24px;
 }
 .user-status.status4 {
   background: url(../../../assets/images/icon/Fail@2x.png) no-repeat 12px / 24px 24px;
@@ -1926,6 +2119,7 @@ export default {
   cursor: pointer;
   background: url(../../../assets/images/icon/MoreHover.png) no-repeat left;
 }
+
 .edit-project:hover .edit-project-tag {
   display: block;
 }
@@ -1956,7 +2150,6 @@ export default {
 .edit-project-tag> p:hover {
   color: #484848;
 }
-
 .project-failure {
   color: #FF5A5F;
 }
@@ -1973,29 +2166,104 @@ export default {
 .project-i {
   display: inline-block;
   font-size: 16px;
-  line-height: 36px;
-  margin-bottom: 20px;
+  margin-right: 0px;
 }
 .user-base-table p, 
 .project-form-table p {
   margin-bottom: 22px;
 }
-.user-base-table span,
+.user-base-table span {
+  /* display: inline-block; */
+}
 .project-form-table span {
-  margin-right: 16px;
+  margin-right: 15px;
+}
+.project-form-table span.margin-r2 {
+  margin-right: 2px;
+}
+.inline-width50 {
+  display: inline-block;
+  width: 50px;
+}
+.inline-width70 {
+  display: inline-block;
+  width: 70px;
+}
+.inline-width80 {
+  display: inline-block;
+  width: 80px;
+}
+
+.project-header {
+  margin-bottom: 20px;
+  height: 36px;
+  line-height: 36px;
+}
+.project-header > p {
+  margin-bottom: 0px;
+}
+
+
+
+.project-header .link-item {
+  color: #FF5A5F;
+  margin-bottom: 0px;
+}
+.link-item-name i {
+  position: absolute;
+  /* top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%); */
+  width: 100%;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  border-radius: 18px;
+}
+.link-item-name {
+  border: 1px solid #FF5A5F;
+  background: rgb(255, 90, 95);
+  position: relative;
+	max-width: 200px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	padding: 2px 10px;
+	text-align: center;
+	border-radius: 18px;
+  color: #ffffff;
+}
+.link-item-name:hover {
+
+}
+.link-item-name:hover i {
+  background: rgba(0,0,0,.6);
+  color: #ffffff;
+  opacity: 1;
+}
+
+.p-t-summary {
+  line-height: 1.5;
+  font-size: 14px;
 }
 .p-table-summary {
   display: flex;
   line-height: 1.5;
 }
 .p-table-summary span:first-child {
-  flex-basis: 60px;
+  flex: 63px 0 0;
 }
 
 .progress {
   border: 1px solid #e6e6e6;
   border-radius: 4px;
   margin-top: 20px;
+}
+.edit-progress {
+
 }
 .send {
   border-top: 1px solid #e6e6e6;
@@ -2008,12 +2276,16 @@ export default {
   margin-top: 10px;
   border: 1px solid #e6e6e6;
 }
+.log-li:blur {
+
+}
 .log-li-top {
+  position: relative;
   display: flex;
   align-items: center;
   height: 50px;
 }
-.log-li-top p {
+.log-li-top > p {
   margin-left: 20px;
   color: #666666;
 }
@@ -2038,10 +2310,19 @@ export default {
 }
 .log-contant {
   border-top: 1px solid #e6e6e6;
-  min-height: 80px;
-  padding: 15px 20px;
+  min-height: 40px;
+  padding: 15px 20px 15px 20px;
+  line-height: 1.5;
+  color: #666666;
 }
-
+.log-comment {
+  padding: 0px 20px 15px 20px;
+  line-height: 1.5;
+  color: #666666;
+}
+.log-comment-title {
+  color: #FF5A5F;
+}
 .execute-user-info {
   display: flex;
   align-items: center;
@@ -2052,7 +2333,40 @@ export default {
   border-radius: 50%;
   margin-right: 10px;
 }
-
+.edit-log {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  background: url(../../../assets/images/icon/MoreHover.png) no-repeat left;
+}
+.edit-log:hover .edit-log-tag {
+  display: block;
+}
+.edit-log-tag {
+  display: none;
+  position: absolute;
+  top: 26px;
+  left: -40px;
+  width: 90px;
+  z-index: 99;
+  border: 1px solid #e6e6e6;
+  background: #ffffff;
+}
+.edit-log .edit-log-tag> p {
+  height: 40px;
+  line-height: 40px;
+  color: #AAAAAA;
+  margin-bottom: 0px;
+  text-align: center;
+  font-size: 12px;
+  border-bottom: 1px solid #e6e6e6;
+}
+.edit-log-tag> p:hover {
+  color: #484848;
+}
 .no-head {
   width: 30px;
   height: 30px;
@@ -2080,10 +2394,9 @@ export default {
 }
 .user-info-center .el-select {
   width: 150px;
-  /* max-width: 150px; */
 }
 .source .el-select {
-  width: 200px;
+  width: 160px;
 }
 .user-status .el-select .el-input__inner {
   border: none;
@@ -2100,7 +2413,7 @@ export default {
 }
 
 .card-body-center .active .el-textarea__inner {
-  min-height: 80px !important;
+  min-height: 70px !important;
   border: none;
 }
 </style>

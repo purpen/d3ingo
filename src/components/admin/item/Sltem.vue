@@ -99,7 +99,7 @@
         </div>
       </el-col>
     </el-row>
-    <el-dialog title="编辑小程序" v-model="matchCompanyDialog">
+    <el-dialog title="编辑小程序" :visible.sync="matchCompanyDialog">
       <el-form label-position="top" :model="sItem">
         <el-form-item label="项目状态" label-width="200px">
           <el-radio-group v-model="sItem.is_ok">
@@ -280,5 +280,8 @@ export default {
 }
 .el-form-item__content {
   margin-top: 10px;
+}
+.admin-table .el-tag {
+  color: #fff;
 }
 </style>

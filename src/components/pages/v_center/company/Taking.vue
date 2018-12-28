@@ -157,7 +157,7 @@
     </el-row>
 
     <!--弹框模板-->
-    <!-- <el-dialog :title="itemModelTitle" v-model="itemModel">
+    <!-- <el-dialog :title="itemModelTitle" :visible.sync="itemModel">
       <div class="model-title">
         <span>{{ pName }}</span>-><span>{{ itemName }}</span>
       </div>

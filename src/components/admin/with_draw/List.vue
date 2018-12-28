@@ -110,7 +110,7 @@
       </el-col>
     </el-row>
 
-    <el-dialog title="确认线下已打款" v-model="sureTransferDialog">
+    <el-dialog title="确认线下已打款" :visible.sync="sureTransferDialog">
       <el-form label-position="top">
         <el-form-item label="户名" label-width="200px">
           <el-input v-model="withDrawForm.bankUser" auto-complete="off" disabled></el-input>

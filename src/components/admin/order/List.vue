@@ -140,7 +140,7 @@
       </el-col>
     </el-row>
 
-    <el-dialog title="确认线下打款" v-model="sureTransferDialog">
+    <el-dialog title="确认线下打款" :visible.sync="sureTransferDialog">
       <el-form label-position="top">
         <input type="hidden" v-model="orderForm.orderId" value="" />
         <input type="hidden" v-model.number="orderForm.index" value="" />
@@ -175,7 +175,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="打款凭证" v-model="transferDialog">
+    <el-dialog title="打款凭证" :visible.sync="transferDialog">
       <img :src="imgUrl" width="100%" />
       <div slot="footer" class="dialog-footer">
         <el-button @click="transferDialog = false">取 消</el-button>

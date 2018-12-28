@@ -213,7 +213,7 @@
                 title="项目详情"
                 :visible.sync="dialogUpdateVisible"
                 :lock-scroll="false"
-                size="tiny"
+                width="380px"
                 class="details-form"
                 @close="renewDialog"
                 @open="clearDialog"
@@ -308,7 +308,7 @@
                 title="关闭项目"
                 :visible.sync="dialogDeleteVisible"
                 :lock-scroll="false"
-                size="tiny"
+                width="380px"
                 class="delete-form"
                 >
                 <p class="text-align-c">确认关闭
@@ -420,7 +420,7 @@
                 :visible.sync="dialogPermiss"
                 :lock-scroll="false"
                 top="25%"
-                size="tiny"
+                width="380px"
                 class="power">
                 <div class="titles-center">
                   <div class="move-text">暂无权限</div>
@@ -527,7 +527,7 @@
                 title="取消订单"
                 :visible.sync="dialogCancelOrder"
                 :lock-scroll="false"
-                size="tiny"
+                width="380px"
                 class="delete-form"
                 >
                 <p class="text-align-c">确认取消
@@ -545,7 +545,7 @@
                 title="仲裁联系方式"
                 :visible.sync="dialogAdmin"
                 :lock-scroll="false"
-                size="tiny"
+                width="380px"
                 >
                 <div class="arbitrate">
                   <p class="fz-12 tc-9">有疑问请致电如下，我们将协助您完成操作</p>
@@ -557,7 +557,7 @@
                 title="确认文件"
                 :visible.sync="dialogIsfile"
                 :lock-scroll="false"
-                size="tiny"
+                width="380px"
                 class="delete-form"
                 >
                 <div class="file-ok">
@@ -575,7 +575,7 @@
                 title="删除订单"
                 :visible.sync="dialogDeleteOrder"
                 :lock-scroll="false"
-                size="tiny"
+                width="380px"
                 class="delete-form"
                 >
                 <p class="text-align-c">确认删除订单吗？</p>

@@ -119,7 +119,7 @@
 
     <el-dialog
       title="提示"
-      v-model="sureDialog"
+      :visible.sync="sureDialog"
       width="40%">
       <span>确认执行此操作?</span>
       <span slot="footer" class="dialog-footer">

@@ -413,13 +413,13 @@
       </el-col>
     </el-row>
 
-    <el-dialog title="提交项目报价" v-model="takingPriceDialog" size="large" top="2%"   @close="isClose = false"
+    <el-dialog title="提交项目报价" :visible.sync="takingPriceDialog" width="580px" top="2%"   @close="isClose = false"
     @open="isClose = true"
     >
       <v-quote-submit :paramProp="quoteProp" :formProp="takingPriceForm" @form="quoteFormProp" @param="quoteProp" v-if="isClose"></v-quote-submit>
     </el-dialog>
 
-    <el-dialog title="发票信息" v-model="invoiceDialog">
+    <el-dialog title="发票信息" :visible.sync="invoiceDialog">
       <div class="corp-info">
         <div class="fz-16 tc-2 sub-title">
           {{custom.info}}平台发票信息
@@ -536,7 +536,7 @@
     <el-dialog
       title="提示"
       v-model="comfirmDialog"
-      size="tiny">
+      width="380px">
       <p class="alert-line-height">{{ comfirmMessage }}</p>
       <span slot="footer" class="dialog-footer">
         <el-button @click="comfirmDialog = false">取 消</el-button>
@@ -549,7 +549,7 @@
         <el-dialog
       title="拒单说明"
       v-model="noOfferDialog"
-      size="tiny">
+      width="380px">
       <p class="alert-line-height">您确定要拒绝此单么?</p>
       <p class="alert-line-height">如果确定请告诉我们拒绝原因:</p>
       <el-row class="cause">
@@ -599,7 +599,7 @@
         <input type="hidden" ref="currentIndex"/>
       </span>
     </el-dialog>
-    <el-dialog title="报价单详情" v-model="quotaDialog" id="quote-dialog" style="width: 880px;margin: auto" size="large" top="2%">
+    <el-dialog title="报价单详情" :visible.sync="quotaDialog" id="quote-dialog" style="width: 880px;margin: auto" width="580px" top="2%">
       
       <v-quote-view :formProp="quota"></v-quote-view>
 

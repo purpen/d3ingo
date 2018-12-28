@@ -466,7 +466,7 @@
     <el-dialog
       title="提示"
       v-model="comfirmDialog"
-      size="tiny">
+      width="380px">
       <p class="alert-line-height">{{ comfirmMessage }}</p>
       <span slot="footer" class="dialog-footer">
         <el-button class="is-custom" @click="comfirmDialog = false">取 消</el-button>
@@ -481,7 +481,7 @@
     <el-dialog
       title="拒单说明"
       v-model="noOfferDialog"
-      size="tiny">
+      width="380px">
       <p class="alert-line-height">您确定要拒绝此单么?</p>
       <p class="alert-line-height">如果确定请告诉我们拒绝原因:</p>
       <el-row class="cause">
@@ -532,7 +532,7 @@
       </span>
     </el-dialog>
 
-    <el-dialog title="报价单详情" id="quote-dialog" v-model="quotaDialog" style="width: 880px;margin: auto" size="large" top="2%">
+    <el-dialog title="报价单详情" id="quote-dialog" :visible.sync="quotaDialog" style="width: 880px;margin: auto" width="580px" top="2%">
       <v-quote-view :formProp="quota"></v-quote-view>
 
       <!--<div slot="footer" class="dialog-footer btn">-->

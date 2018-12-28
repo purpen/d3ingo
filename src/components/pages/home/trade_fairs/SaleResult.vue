@@ -99,7 +99,7 @@
       :visible.sync="clientPhone"
       :lock-scroll="false"
       @close="closePop"
-      size="tiny"
+      width="380px"
       class="phone-style">
       <div class="title-center">
         <img class="avatt" src="../../../../assets/images/trade_fairs/list/clientPhone.png" width="100"/>
@@ -113,7 +113,7 @@
       :lock-scroll="false"
       top="25%"
       @close="closePop"
-      size="tiny"
+      width="380px"
       class="power">
       <div class="titles-center">
         <div class="move-text">暂无权限</div>

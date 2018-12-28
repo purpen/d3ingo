@@ -70,7 +70,7 @@
       title="收藏详情"
       :visible.sync="dialogUpdateVisible"
       :lock-scroll="false"
-      size="tiny"
+      width="380px"
       class="submit2-form seen-deta"
       >
       <div v-loading="detailsLoading">
@@ -177,7 +177,7 @@
         title="联系电话"
         :visible.sync="callPhone"
         :lock-scroll="false"
-        size="tiny"
+        width="380px"
         class="phone-style">
         <div class="title-center">
           <img class="avatar" v-if="urlLogo" :src="urlLogo" width="100"/>

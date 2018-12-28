@@ -247,7 +247,7 @@
       <el-dialog
         title="提示"
         v-model="sureRefuseItemDialog"
-        size="tiny">
+        width="380px">
         <span>确认执行此操作?</span>
         <span slot="footer" class="dialog-footer">
           <input type="hidden" ref="refuseItemId"/>
@@ -259,7 +259,7 @@
       <el-dialog
         title="提示"
         v-model="sureDialog"
-        size="tiny">
+        width="380px">
         <span>{{ sureDialogMessage }}</span>
         <span slot="footer" class="dialog-footer">
           <input type="hidden" ref="currentItemId"/>

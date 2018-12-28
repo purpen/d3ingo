@@ -203,7 +203,7 @@ p {
 }
 
 input {
-  vertical-align: top;
+  /* vertical-align: top; */
   font-size: 14px;
 }
 textarea {
@@ -319,8 +319,8 @@ a.is_active {
  */
 
 ul.el-pager li.number.active {
-  background-color: #ff5a5f;
-  border-color: #ff5a5f;
+  /* background-color: #ff5a5f;
+  border-color: #ff5a5f; */
 }
 .list-shadow {
   box-shadow: 0 0 10px 0 rgba(10, 10, 10, 0.1);

@@ -100,7 +100,7 @@
     <el-dialog
       title="设置分值"
       :visible.sync="dialogVisible"
-      size="tiny"
+      width="380px"
       >
       <el-row>
         <el-col :span="6">公司名称:</el-col>

@@ -49,7 +49,7 @@
                   <i class="el-icon-plus"></i>
                   <div slot="tip" class="el-upload__tip" v-html="uploadMsg"></div>
                 </el-upload>
-                <el-dialog size="tiny">
+                <el-dialog width="380px">
                   <img width="100%" alt="">
                 </el-dialog>
 
