@@ -233,9 +233,9 @@
                 <li>
                   <img src="../../../assets/images/promote/design-investment/Investment03@2x.png" alt="">
                 </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-investment/Investment04@2x.png" alt="">
-                </li>
+                <!--<li>-->
+                  <!--<img src="../../../assets/images/promote/design-investment/Investment04@2x.png" alt="">-->
+                <!--</li>-->
                 <li>
                   <img src="../../../assets/images/promote/design-investment/Investment05@2x.png" alt="">
                 </li>
@@ -269,7 +269,7 @@
                 <el-col :xs="24" :sm="24" :md="12" :lg="12">
                   <div class="">
                     <p>实时沟通协作 | 协同项目管理系统</p>
-                    <p class="h-50">AI-T设计生产里促进工具</p>
+                    <p class="h-50">AI-T设计生产力促进工具</p>
                     <p>虚拟团队/远程协作/创新资源/供应链/资本/渠道</p>
                     <p>提升 <span class="span-bold">60%</span> 效率：研发设计服务效率</p>
                   </div>
@@ -382,7 +382,7 @@
           <div class="title mtop_20 line-height20">
             <div class="fs_13">铟果 | 专注于工业设计和产品创新的全流程B2B服务平台</div>
             <div class="fc_red fs_25 mtop_15 line-height28">1000+ 顶级设计公司<br/>免费提供设计对接服务</div>
-            <div class="fs_14 mtop_15 line-height28">现在发布设计需求<br/>有机会获得投资孵化并进驻京东、小米商城！</div>
+            <div class="fs_14 mtop_15 line-height28">现在发布设计需求<br/>有机会获得投资孵化和营销推广扶持</div>
           </div>
           <div class="swiper">
             <div>
@@ -415,7 +415,7 @@
         <div class="concent line-height20">
           <div class="fc_red fs_24 mtop_20">铟果D3INGO的 背景和实力</div>
           <div class="fs_16 mtop_15">知名投资机构战略投资</div>
-          <div class="fs_16 mtop_20">真格基金、创新工场、京东金融、海泉基金<br>麦顿资本、罗莱生活、小米、顺为资本</div>
+          <div class="fs_16 mtop_20">真格基金、创新工场、海泉基金<br>麦顿资本、罗莱生活、小米、顺为资本</div>
           <div class="circe mtop_20">
             <div class="small_circe fs_20 fc_red">1000+</div>
             <div class="fs_15 fc_white" style="margin-left: 5px;">入驻全球顶级设计公司</div>
@@ -469,11 +469,11 @@
           <div class="fs_14 mtop_20">素材/案例/数据/趋势/日历/创意云盘<br>降低90% 成本：专职设计人员招聘</div>
           <div class="fs_14 mtop_40">实时沟通协作 | 协同项目管理系统</div>
           <div class="red_circe mtop_20 fs_16">
-            AI-T设计生产里促进工具
+            AI-T设计生产力促进工具
           </div>
           <div class="fs_14 mtop_20">虚拟团队/远程协作/创新资源/供应链/资本/渠道<br>提升60% 效率：研发设计服务效率</div>
           <div class="fc_red fs_24 mtop_40">铟果D³INGO设计 服务的客户</div>
-          <div class="fs_16  mtop_20">京东金融、京东云、京东京造、小米有品、网易严选、小米、海尔、美的、联想、英特尔
+          <div class="fs_16  mtop_20">小米有品、网易严选、小米、海尔、美的、联想、英特尔
             三星、飞利浦…</div>
           <div class="fc_red fs_24 mtop_40">铟果D³INGO设计 服务的项目</div>
           <div class="project mtop_40">

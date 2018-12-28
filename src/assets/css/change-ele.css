@@ -472,10 +472,13 @@
     background: #f7f7f7;
     border: 1px solid #e6e6e6;
     color: #000;
-    margin-bottom: 0px;
+    margin: 3px;
     height: 28px;
     padding: 0 5px;
     border-radius: 4px;
+  }
+  .label-tag .vue-input-tag-wrapper--active + .tags-list {
+    display: block;
   }
   .label-tag .vue-input-tag-wrapper .new-tag {
     margin-bottom: 0px;

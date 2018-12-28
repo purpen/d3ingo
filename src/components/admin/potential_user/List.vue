@@ -14,6 +14,7 @@
                     v-model="query.valueDate"
                     type="daterange"
                     size="small"
+                    range-separator="--"
                     start-placeholder="开始日期"
                     end-placeholder="结束日期"
                     :default-time="['00:00:00', '23:59:59']"
@@ -79,8 +80,7 @@
             class="admin-table"
             @selection-change="handleSelectionChange"
             style="width: 100%"
-            :row-class-name="tableRowClassName"
-            @row-click="handleClickRow">
+            :row-class-name="tableRowClassName">
             <el-table-column
               type="selection"
               width="50">
@@ -89,12 +89,12 @@
               label="姓名"
               width="60">
             <template slot-scope="scope">
-              <p @click="editUserInfo(scope.row.id, scope.row.name)">{{scope.row.name}}</p>
+              <p class="cursor-p" @click="editUserInfo(scope.row.id, scope.row.name)">{{scope.row.name}}</p>
             </template>
             </el-table-column>
             <el-table-column
               label="项目名称"
-              width="100">
+              width="110">
               <template slot-scope="scope">
                 <div v-for="(item, i) in scope.row.item_name" :key="i">
                   <p>{{item}}</p>
@@ -103,11 +103,11 @@
             </el-table-column>
             <el-table-column
               prop="phone"
-              width="146"
+              width="100"
               label="电话">
             </el-table-column>
             <el-table-column
-              width="120"
+              width="101"
               prop="execute_user_name"
               label="所属人">
             </el-table-column>
@@ -117,24 +117,24 @@
               prop="call_status">
             </el-table-column>
             <el-table-column
-              width="70"
+              width="95"
               label="客户级别">
                  <template slot-scope="scope">
-                  <p v-if="scope.row.rank === 1">一级客户</p>
-                  <p v-else-if="scope.row.rank === 2">二级客户</p>
-                  <p v-else-if="scope.row.rank === 3">三级客户</p>
-                  <p v-else-if="scope.row.rank === 4">四级客户</p>
-                  <p v-else>五级客户</p>
+                  <el-rate
+                    v-model="scope.row.rank"
+                    disabled
+                    text-color="#ff9900">
+                  </el-rate>
                 </template>
             </el-table-column>
             <el-table-column
               prop="source"
-              width="80"
+              width="75"
               label="用户来源">
             </el-table-column>
             <el-table-column
-              width="60"
-              label="对接公司数量"
+              width="85"
+              label="设计服务商"
               prop="design_company_count">
               <!-- <template slot-scope="scope">
                 <div v-if="scope.row.item_name && scope.row.item_name.length" v-for="(item, i) in scope.row.design_company_name" :key="i">
@@ -144,12 +144,12 @@
             </el-table-column>
             <el-table-column
               prop="logs"
-              width="50"
+              width="70"
               label="根进次数">
             </el-table-column>
             <el-table-column
               prop="next_time"
-              width="100"
+              width="90"
               label="次回根进">
             </el-table-column>
             <el-table-column
@@ -250,6 +250,7 @@ export default {
         totalCount: 0,
         valueDate: []
       },
+      dateArr: [], // 格式化
       defaultProps: {
         children: 'children',
         label: 'label'
@@ -281,9 +282,6 @@ export default {
       } else {
         return true
       }
-    },
-    handleClickRow({id, name}) {
-      this.editUserInfo(id, name)
     },
     // 多选
     handleSelectionChange(val) {
@@ -323,7 +321,10 @@ export default {
     getDate(val) {
       console.log(val)
       // let a = (new Date(val)).format('yyyy-MM-dd hh:mm:ss')
-      // console.log(a)
+      let arr = val.split('--')
+      arr[0] = arr[0] + ' 00:00:00'
+      arr[1] = arr[1] + ' 23:59:59'
+      this.dateArr = [...arr]
     },
     onSearch() {
       this.getClueList()
@@ -334,6 +335,7 @@ export default {
     getClueList() {
       let row = {}
       Object.assign(row, this.query)
+      row.valueDate = [...this.dateArr]
       this.$http.get(api.adminClueClueList, {params: row}).then(res => {
         if (res.data.meta.status_code === 200) {
           this.tableData = res.data.data
@@ -445,6 +447,10 @@ export default {
       //   this.$message.error('至少选择一个要导出的潜在用户')
       //   return false
       // }
+      // if (this.isAdmin <= 15) {
+      //   this.$message.error('请联系管理员导出')
+      //   return
+      // }
       let idArr = this.arrayExportIds()
       let url = 'https://sa.taihuoniao.com/admin/clue/exportExcel'
       if (conf.ENV === 'prod') {
@@ -526,6 +532,10 @@ export default {
 </script>
 
 <style scoped>
+.cursor-p {
+  cursor: pointer;
+}
+
 .margin-l-10 {
   margin-left: 10px;
 }
@@ -685,6 +695,10 @@ export default {
   border-left: 4px solid #f7f7f7;
 }
 .admin-table .el-table__row {
-  cursor: pointer;
+  /* cursor: pointer; */
+}
+.admin-table .el-rate__icon {
+  font-size: 12px;
+  margin-right: 2px;
 }
 </style>
