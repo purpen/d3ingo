@@ -929,10 +929,6 @@ const DESIGN_CASE_PRICE_OPTIONS = [
     name: '丹麦设计奖'
   },
   {
-    id: 20,
-    name: '其他'
-  },
-  {
     id: 21,
     name: '西班牙国家设计奖'
   },
@@ -955,6 +951,10 @@ const DESIGN_CASE_PRICE_OPTIONS = [
   {
     id: 26,
     name: '意大利A`Design Award设计奖'
+  },
+  {
+    id: 20,
+    name: '其他'
   }
 ]
 
