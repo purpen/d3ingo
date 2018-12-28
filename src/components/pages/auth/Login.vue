@@ -400,6 +400,11 @@ export default {
     this.getItem()
     let prevUrlName = this.$store.state.event.prevUrlName
     this.type = this.$route.params.type
+    if (this.$store.state.event.token) {
+      this.$message.error('已经登录!')
+      this.$router.replace({ name: 'home' })
+      return
+    }
     if (this.$route.params.url === 'yq') {
       this.$message({
         message: '请使用设计服务商的账号登录',
@@ -410,10 +415,6 @@ export default {
       if (prevUrlName) {
         this.$message.error('请先登录！')
       }
-    }
-    if (this.$store.state.event.token) {
-      this.$message.error('已经登录!')
-      this.$router.replace({ name: 'home' })
     }
     this.fetchImgCaptcha()
   },

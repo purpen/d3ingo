@@ -146,7 +146,7 @@ function showProd() {
   }
 }
 const state = {
-  state: getTicket() || null,
+  ticket: getTicket() || null,
   token: isLoggedIn() || null,
   user: userInfo() || {},
   loading: false, // 是否显示loading
