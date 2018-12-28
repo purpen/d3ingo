@@ -119,6 +119,18 @@ module.exports = [
     },
     component: require('@/components/pages/v_center/account/ModifyPwd')
   },
+  // 账号绑定
+  {
+    path: '/vcenter/account/account_bound',
+    name: 'accountBound',
+    meta: {
+      title: '账号绑定',
+      requireAuth: true,
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/v_center/account/AccountBound')
+  },
   // 公司工具 => 图片素材
   {
     path: '/vcenter/veer_image',

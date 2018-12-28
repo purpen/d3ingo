@@ -265,7 +265,7 @@
           <input type="hidden" ref="currentItemId"/>
           <input type="hidden" ref="currentIndex"/>
           <input type="hidden" ref="currentType"/>
-          <el-button @click="sureDialog = false">取 消</el-button>
+          <el-button class="margin-r-15" @click="sureDialog = false">取 消</el-button>
           <el-button type="primary" :loading="sureDialogLoadingBtn" @click="sureDialogSubmit">确 定</el-button>
         </span>
       </el-dialog>

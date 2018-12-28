@@ -42,7 +42,7 @@
       </div>
     </div>
     <div class="reg">
-      <p class="join-company" v-if="code">登陆并加入 <span>{{item.design_company_name}}</span></p>
+      <p class="join-company" v-if="code">登录并加入 <span>{{item.design_company_name}}</span></p>
       <p v-if="code">没有{{prod.login}}账户？
         <router-link :to="{name: 'invite', params: {code: code}}">立即注册</router-link>
       </p>
@@ -140,6 +140,7 @@ export default {
       isLoading: false,
       user: {},
       token: '',
+      ticket: '',
       typeError: false,
       imgCaptchaUrl: '',
       imgCaptchaStr: '',
@@ -177,7 +178,7 @@ export default {
       if (that.$refs[formName]) {
         that.$refs[formName].validate(valid => {
           if (valid) {
-            auth.logout()
+            auth.logout(true)
             let account = this.$refs.account.value
             let password = this.$refs.password.value
             that.isLoadingBtn = true
@@ -186,24 +187,22 @@ export default {
               .post(api.login, { account: account, password: password, str: that.imgCaptchaStr, captcha: that.form.imgCode })
               .then(function(response) {
                 that.isLoadingBtn = false
-                console.log(response)
                 if (response.data.meta.status_code === 200) {
-                  let token = response.data.data.token
-                  that.token = token
+                  that.token = response.data.data.token
+                  that.ticket = response.data.data.ticket
                   // 写入localStorage
-                  auth.write_token(token)
+                  auth.write_token(that.token, that.ticket)
                   // ajax拉取用户信息
                   that.$http
                     .get(api.user, {})
                     .then(function(response) {
-                      console.log(response.data.data)
                       if (response.data.meta.status_code === 200) {
                         if (response.data.data.type === 0) {
                           that.chooseType = true
                           that.user = response.data.data
                         } else {
                           that.$message({
-                            message: '登陆成功',
+                            message: '登录成功',
                             type: 'success',
                             duration: 800
                           })
@@ -226,12 +225,12 @@ export default {
                           }
                         }
                       } else {
-                        auth.logout()
+                        auth.logout(true)
                         that.$message.error(response.data.meta.message)
                       }
                     })
                     .catch(function(error) {
-                      auth.logout()
+                      auth.logout(true)
                       that.$message.error(error.message)
                     })
                 } else {
@@ -348,7 +347,7 @@ export default {
           this.isLoading = false
           if (res.data && res.data.meta.status_code === 200) {
             this.$message({
-              message: '登陆成功',
+              message: '登录成功',
               type: 'success',
               duration: 800
             })
@@ -580,7 +579,7 @@ form {
 .password-show {
   padding-left: 20px;
   position: relative;
-  
+
 }
 .password-show::before {
   content: "";

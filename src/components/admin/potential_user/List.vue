@@ -14,7 +14,7 @@
                     v-model="query.valueDate"
                     type="daterange"
                     size="small"
-                    range-separator="--"
+                    range-separator="-"
                     start-placeholder="开始日期"
                     end-placeholder="结束日期"
                     :default-time="['00:00:00', '23:59:59']"
@@ -40,16 +40,14 @@
               </el-form-item>
             </el-form>
             <div class="admin-header-right fr clearfix">
-              <!-- <el-tree class="fl" :data="treeData" :props="defaultProps" @node-click="addAssignUser" node-key="id"></el-tree> -->
               <div class="fl">
-                <div tabindex="-1" class="add-user">
+                <div class="add-user">
                   <span class="add-voip-user">
                     <i class="fx fx-icon-plus"></i>添加用户
                   </span>
                   <div class="drop-down">
                     <span @click="$router.push({name: 'adminPotentialUserCreated'})">添加潜在用户</span>
                     <span @click="showDialogVoIpUser">添加商务成员</span>
-                    <!-- <span>导入文件</span> -->
                     <el-upload
                       class="upload-demo"
                       :action="uploadUrl"
@@ -266,7 +264,6 @@ export default {
   },
   methods: {
     tableRowClassName({row, index}) {
-      console.log(row)
       if (row.next_time) {
         if (this.dateCompare(row.next_time) === false) { // 没到期
           return 'has-date'
@@ -321,12 +318,11 @@ export default {
       this.getAdminList()
     },
     getDate(val) {
-      console.log(val)
-      // let a = (new Date(val)).format('yyyy-MM-dd hh:mm:ss')
-      // let arr = val.split('--')
-      // arr[0] = arr[0] + ' 00:00:00'
-      // arr[1] = arr[1] + ' 23:59:59'
-      // this.dateArr = [...arr]
+      if (val) {
+        const startDate = val[0].format('yyyy-MM-dd hh:mm:ss')
+        const endDate = val[1].format('yyyy-MM-dd hh:mm:ss')
+        this.dateArr = [startDate, endDate]
+      }
     },
     onSearch() {
       this.getClueList()
@@ -600,6 +596,9 @@ export default {
   font-size: 12px;
   cursor: pointer;
 }
+.drop-down > span:hover {
+  color: #FF5A5F;
+}
 .upload-file {
   display: block;
   height: 30px;
@@ -607,10 +606,13 @@ export default {
   font-size: 12px;
   cursor: pointer;
 }
+.upload-file:hover {
+  color: #FF5A5F;
+}
 .add-user {
   position: relative;
 }
-.add-user:focus .drop-down {
+.add-user:hover .drop-down {
   position: absolute;
   top: 30px;
   left: -8px;
@@ -693,15 +695,17 @@ export default {
 .admin-table .over-date .el-table-column--selection {
   border-left: 4px solid #FF5A5F;
 }
-/* .admin-table tr {
+.admin-table .el-table-column--selection {
   border-left: 4px solid transparent;
-} */
+}
+.admin-table thead .el-table-column--selection {
+  border-left: 4px solid #f7f7f7;
+  border-left-color: #f7f7f7 !important;
+}
 /* .admin-table thead tr {
   border-left: 4px solid #f7f7f7;
 } */
-.admin-table .el-table__row {
-  /* cursor: pointer; */
-}
+
 .admin-table .el-rate__icon {
   font-size: 12px;
   margin-right: 2px;

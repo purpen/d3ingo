@@ -25,7 +25,7 @@
   right: 0;
   bottom: 0;
   margin: auto;
-  background: url(../images/logo.gif) no-repeat center / contain;
+  background: url(../../../../d3ingo/src/assets/images/logo.gif) no-repeat center / contain;
   /* animation: rotate 1s linear infinite */
 }
 
@@ -710,12 +710,12 @@ button.is-custom.is-outlined.is-loading:after {
   display: block;
   width: 36px;
   height: 36px;
-  background: url('../../assets/images/icon/WeChat@2x.png');
+  background: url('../../../../d3ingo/src/assets/images/icon/WeChat@2x.png');
   background-size: contain;
 }
 
 .wechat:hover {
-  background: url('../../assets/images/icon/WeChathover@2x.png');
+  background: url('../../../../d3ingo/src/assets/images/icon/WeChathover@2x.png');
   background-size: contain;
 }
 
@@ -723,12 +723,12 @@ button.is-custom.is-outlined.is-loading:after {
   display: block;
   width: 36px;
   height: 36px;
-  background: url('../../assets/images/icon/Weibo@2x.png');
+  background: url('../../../../d3ingo/src/assets/images/icon/Weibo@2x.png');
   background-size: contain;
 }
 
 .weibo:hover {
-  background: url('../../assets/images/icon/Weibohover@2x.png');
+  background: url('../../../../d3ingo/src/assets/images/icon/Weibohover@2x.png');
   background-size: contain;
 }
 
@@ -958,7 +958,7 @@ input:-webkit-autofill {
     padding: 0;
     padding-right: 14px;
   }
-  .blue-header 
+  .blue-header
   .el-menu-info.el-menu--horizontal > .el-submenu .el-submenu__title {
     background: #0A2052
   }
@@ -1672,43 +1672,43 @@ td.fc-day.fc-widget-content.fc-today::before {
   }
 
   p.file-icon.other {
-    background: url('../images/tools/cloud_drive/type/other@2x.png') 0 0 no-repeat;
+    background: url('../../../../d3ingo/src/assets/images/tools/cloud_drive/type/other@2x.png') 0 0 no-repeat;
     background-size: contain;
   }
   p.file-icon.artboard {
-    background: url('../images/tools/cloud_drive/type/artboard@2x.png') 0 0 no-repeat;
+    background: url('../../../../d3ingo/src/assets/images/tools/cloud_drive/type/artboard@2x.png') 0 0 no-repeat;
     background-size: contain;
   }
   p.file-icon.audio {
-    background: url('../images/tools/cloud_drive/type/audio@2x.png') 0 0 no-repeat;
+    background: url('../../../../d3ingo/src/assets/images/tools/cloud_drive/type/audio@2x.png') 0 0 no-repeat;
     background-size: contain;
   }
   p.file-icon.compress {
-    background: url('../images/tools/cloud_drive/type/compress@2x.png') 0 0 no-repeat;
+    background: url('../../../../d3ingo/src/assets/images/tools/cloud_drive/type/compress@2x.png') 0 0 no-repeat;
     background-size: contain;
   }
   p.file-icon.document {
-    background: url('../images/tools/cloud_drive/type/document@2x.png') 0 0 no-repeat;
+    background: url('../../../../d3ingo/src/assets/images/tools/cloud_drive/type/document@2x.png') 0 0 no-repeat;
     background-size: contain;
   }
   p.file-icon.folder {
-    background: url('../images/tools/cloud_drive/type/folder@2x.png') 0 0 no-repeat;
+    background: url('../../../../d3ingo/src/assets/images/tools/cloud_drive/type/folder@2x.png') 0 0 no-repeat;
     background-size: contain;
   }
   p.file-icon.image {
-    background: url('../images/tools/cloud_drive/type/image@2x.png') 0 0 no-repeat;
+    background: url('../../../../d3ingo/src/assets/images/tools/cloud_drive/type/image@2x.png') 0 0 no-repeat;
     background-size: contain;
   }
   p.file-icon.powerpoint {
-    background: url('../images/tools/cloud_drive/type/powerpoint@2x.png') 0 0 no-repeat;
+    background: url('../../../../d3ingo/src/assets/images/tools/cloud_drive/type/powerpoint@2x.png') 0 0 no-repeat;
     background-size: contain;
   }
   p.file-icon.spreadsheet {
-    background: url('../images/tools/cloud_drive/type/spreadsheet@2x.png') 0 0 no-repeat;
+    background: url('../../../../d3ingo/src/assets/images/tools/cloud_drive/type/spreadsheet@2x.png') 0 0 no-repeat;
     background-size: contain;
   }
   p.file-icon.video {
-    background: url('../images/tools/cloud_drive/type/video@2x.png') 0 0 no-repeat;
+    background: url('../../../../d3ingo/src/assets/images/tools/cloud_drive/type/video@2x.png') 0 0 no-repeat;
     background-size: contain;
   }
 

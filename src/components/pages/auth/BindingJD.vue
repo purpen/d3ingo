@@ -40,6 +40,19 @@
         </el-form>
       </div>
     </div>
+    <el-dialog
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+      :visible.sync="showAlert"
+      title="提示"
+      size="380px"
+      class="clearfix">
+      <p class="line-height1_5">艺火账号"{{form.account}}"已与京东账号"{{jdAccount}}"绑定, 点击取消操作更换手机号绑定, 点击去登录使用账号直接登录</p>
+      <div class="buttons blank20">
+        <el-button class="red-button middle-button" @click="showAlert = false">取消操作</el-button>
+        <el-button class="full-red-button middle-button" @click="redirect">去登录</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -79,6 +92,8 @@ export default {
       }
     }
     return {
+      showAlert: false,
+      jdAccount: '',
       isLoading: false,
       isLoadingBtn: false,
       jdToken: '',
@@ -128,6 +143,15 @@ export default {
     }
   },
   methods: {
+    redirect() {
+      console.log(this.$route.fullPath)
+      this.$router.push({
+        path: '/login',
+        query: {
+          redirect: '/vcenter/account/account_bound'
+        }
+      })
+    },
     checkJdToken(token) {
       this.$http.get(api.jdCheckAccount, {params: {access_token: token}})
       .then(res => {
@@ -243,7 +267,8 @@ export default {
       // 写入localStorage
       auth.write_token(token)
       // ajax拉取用户信息
-      that.$http.get(api.user, {})
+      // that.$http.get(api.user, {params: {token: token}})
+      that.$http.get(api.user)
       .then(function (response) {
         if (response.data.meta.status_code === 200) {
           console.log(response)
@@ -251,7 +276,7 @@ export default {
           that.isLoading = false
           that.$router.replace({name: 'vcenterControl'})
         } else {
-          auth.logout()
+          auth.logout(true)
           that.$message({
             showClose: true,
             message: response.data.meta.message,
@@ -263,7 +288,7 @@ export default {
       })
       .catch(function (error) {
         that.isLoading = false
-        auth.logout()
+        auth.logout(true)
         that.$message({
           showClose: true,
           message: error.message,
@@ -340,7 +365,12 @@ export default {
               } else if (res.data && res.data.meta.status_code === 412) {
                 this.userType = 1
                 this.bindUrl = api.jdBindingUser
+              } else if (res.data && res.data.meta.status_code === 202) {
+                this.showAlert = true
+                this.jdAccount = res.data.data
               }
+            }).catch(err => {
+              this.$message.error(err.massage)
             })
           }
         }
@@ -357,6 +387,9 @@ export default {
 }
 </script>
 <style scoped>
+  .padding-l-10 {
+    padding-left: 10px
+  }
   .register-box {
     border-radius: 6px;
     width: 530px;
@@ -545,5 +578,13 @@ export default {
       padding-top: 0;
       padding-bottom: 20px;
     }
+  }
+  .buttons {
+    text-align: center;
+    font-size: 0
+  }
+
+  .buttons button:nth-child(1) {
+    margin-right: 15px;
   }
 </style>

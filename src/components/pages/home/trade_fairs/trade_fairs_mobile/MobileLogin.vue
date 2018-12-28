@@ -192,7 +192,7 @@
   .mobile-banner {
     height: 212px;
     background: #3519B2;
-    background: url('../../../../../assets/images/trade_fairs/banner/mobile-banner.png') no-repeat center;
+    background: url('../../../../../assets/images/trade_fairs/banner/mobile-banner3.jpg') no-repeat center;
     background-size: cover
   }
   .bottom-bg {

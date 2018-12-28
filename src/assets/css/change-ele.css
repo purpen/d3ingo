@@ -36,11 +36,6 @@
   .el-menu-info.el-menu--horizontal > .el-submenu .el-submenu__title {
     padding-right: 0
   }
-  .el-button:focus {
-    background: #f5f5f5;
-    border: 1px solid #e6e6e6;
-    color: #999;
-  }
   .el-button:visited {
     background-color: #ff5a5f;
     color: #fff;
@@ -97,7 +92,7 @@
     align-items: center;
   }
   .el-dialog__footer .dialog-footer .el-button:first-child {
-    margin-right: 20px;
+    margin-right: 15px;
   }
   .aside .el-progress .el-progress-bar__outer, .aside .el-progress .el-progress-bar__outer .el-progress-bar__inner {
     border-radius: 0px
@@ -293,7 +288,7 @@
   .el-month-table td .cell:hover {
     background-color: #f7f7f7
   }
-  
+
   .el-table th .cell {
     font-size: 12px;
   }
@@ -386,6 +381,9 @@
     border-radius: 4px;
     /* margin-bottom: 0px; */
   }
+  .el-dialog--380px {
+    width: 380px
+  }
   .seen-deta .el-dialog--tiny {
     width: 480px
   }
@@ -397,6 +395,9 @@
   } */
   .el-dialog--tiny .el-dialog__headerbtn {
     font-size: 14px;
+  }
+  .el-dialog__headerbtn:focus .el-dialog__close, .el-dialog__headerbtn:hover .el-dialog__close {
+    color: #ff5a5f
   }
   .el-dialog--tiny .el-dialog__title {
     font-size: 16px;
@@ -477,10 +478,13 @@
     background: #f7f7f7;
     border: 1px solid #e6e6e6;
     color: #000;
-    margin-bottom: 0px;
+    margin: 3px;
     height: 28px;
     padding: 0 5px;
     border-radius: 4px;
+  }
+  .label-tag .vue-input-tag-wrapper--active + .tags-list {
+    display: block;
   }
   .label-tag .vue-input-tag-wrapper .new-tag {
     margin-bottom: 0px;
@@ -816,6 +820,48 @@
   .el-step__title {
     font-size: 14px;
     display: inline-block;
+  }
+  /*推广页*/
+  .input-phone input {
+    height: 50px;
+  }
+
+  .input-phone .el-input__inner {
+    border-radius: 30px 0px 0 30px;
+  }
+  .input-phone .el-input-group__append {
+    color: #ffffff;
+    border-radius: 0px 30px 30px 0;
+    background-image: linear-gradient(-133deg, #6983F9 0%, #9D61DB 100%);
+    box-shadow: 0 10px 20px 0 rgba(0,0,0,0.05);
+    cursor: pointer;
+  }
+
+  .smsCode-style .el-button.is-disabled {
+    border-radius: 0;
+    border: none;
+    background-color: #eef1f6;
+    color: #bfcbd9;
+  }
+
+  .design-product-list .el-card {
+    border: none;
+  }
+
+  .design-product-list .el-card__body {
+    padding: 0;
+  }
+
+  .form .el-form-item {
+    margin-bottom: 0;
+  }
+
+  .wap-disabled-btn .el-button.is-disabled {
+    color: #bfcbd9;
+    cursor: not-allowed;
+    background-image: none;
+    background-color: #eef1f6;
+    border: none;
   }
 @media screen and (max-width: 767px) {
   .el-dialog--large,

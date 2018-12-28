@@ -132,7 +132,7 @@
                 <p>相关附件</p>
               </el-col>
               <el-col :span="spanVal">
-                <p v-for="(d, index) in info.image"><a :href="d.file" target="_blank">{{ d.name }}</a></p>
+                <p v-for="(d, index) in info.image" :key="index"><a :href="d.file" target="_blank">{{ d.name }}</a></p>
               </el-col>
               <el-col :span="spanOpt">
               </el-col>
@@ -309,10 +309,10 @@
                         <h3>第{{ d.no }}阶段: {{ d.title }}</h3>
 
                         <p v-if="d.confirm === 0">
-                          <span>已确认</span>
+                          <span>未确认</span>
                         </p>
                         <p v-else>
-                          <span v-if="d.confirm === 1">已确认</span>
+                          <span>已确认</span>
                         </p>
                       </div>
                       <div class="stage-asset-box clearfix" v-for="(asset, asset_index) in d.item_stage_image" :key="asset_index">
@@ -347,7 +347,7 @@
                 <p>系统推荐</p>
               </el-col>
               <el-col :span="spanVal">
-                <p v-for="(d, index) in stickCompany" :key="index"><router-link :to="{name: 'companyShow', params: {id: d.id}}" target="_blank">{{ d.company_name }}</router-link>&nbsp;&nbsp;&nbsp;</p>
+                <p class="fl tc-2" v-for="(d, index) in stickCompany" :key="index"><router-link :to="{name: 'companyShow', params: {id: d.id}}" target="_blank">{{ d.company_name }}</router-link>;&nbsp;&nbsp;&nbsp;</p>
               </el-col>
               <el-col :span="spanOpt">
               </el-col>
@@ -383,7 +383,7 @@
 
           </div>
           <div class="company-show">
-            <el-row class="item" :gutter="gutter">
+            <el-row class="item line-height30" :gutter="gutter">
               <el-col :span="spanKey">
                 <p>是否测试数据</p>
               </el-col>
@@ -402,7 +402,6 @@
           <div class="form-title">
             <span>状态</span>
           </div>
-
           <div class="company-show">
             <el-row class="item" :gutter="gutter">
               <el-col :span="spanKey">
@@ -412,7 +411,7 @@
                 <p>{{ item.status_value }}</p>
               </el-col>
               <el-col :span="spanOpt">
-                <p><el-button class="is-custom" size="small" @click="forceCloseBtn">关闭并退款</el-button></p>
+                <p v-if="superAdmin"><el-button class="margin-r-20 is-custom" size="small" @click="forceCloseBtn">关闭并退款</el-button></p>
               </el-col>
             </el-row>
 
@@ -430,9 +429,9 @@
       width="380px">
       <span>{{ comfirmMessage }}</span>
       <span slot="footer" class="dialog-footer">
-        <input type="hidden" ref="comfirmType" value="1" />
         <el-button @click="comfirmDialog = false">取 消</el-button>
         <el-button type="primary" @click="sureDialogSubmit">确 定</el-button>
+        <input type="hidden" ref="comfirmType" value="1" />
       </span>
     </el-dialog>
 
@@ -461,10 +460,10 @@
     <el-dialog title="关闭项目并返款" :visible.sync="forceCloseDialog">
       <el-form label-position="left">
         <el-form-item label="需求公司返款金额">
-          <el-input v-model="matchCompanyForm.demandAmount" placeholder="" auto-complete="off"></el-input>
+          <el-input v-model="matchCompanyForm.demandAmount" :placeholder="'￥' + item.rest_fund" auto-complete="off"></el-input>
         </el-form-item>
         <el-form-item label="设计公司返款金额">
-          <el-input v-model="matchCompanyForm.designAmount" placeholder="" auto-complete="off"></el-input>
+          <el-input v-model="matchCompanyForm.designAmount" placeholder="￥0.00" auto-complete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -641,9 +640,25 @@ export default {
     // 强制关闭项目提交
     forceCloseSubmit() {
       const self = this
-      self.isForceCloseLoadingBtn = true
-      var demandAmount = parseFloat(self.matchCompanyForm.demandAmount).toFixed(2)
-      var designAmount = parseFloat(self.matchCompanyForm.designAmount).toFixed(2)
+      this.isForceCloseLoadingBtn = true
+      if (!this.matchCompanyForm.demandAmount && !this.matchCompanyForm.designAmount) {
+        this.$message.error('请输入金额')
+        this.isForceCloseLoadingBtn = false
+        return
+      }
+      if ((this.matchCompanyForm.demandAmount - 0).toString() === 'NaN' || (this.matchCompanyForm.designAmount - 0).toString() === 'NaN') {
+        this.$message.error('金额必须是数字')
+        this.isForceCloseLoadingBtn = false
+        return
+      }
+      if (this.matchCompanyForm.demandAmount + this.matchCompanyForm.designAmount > this.item.rest_fund) {
+        this.$message.error('金额不能超过剩余金额')
+        this.isForceCloseLoadingBtn = false
+        return
+      }
+      console.log('success')
+      var demandAmount = parseFloat(this.matchCompanyForm.demandAmount).toFixed(2)
+      var designAmount = parseFloat(this.matchCompanyForm.designAmount).toFixed(2)
       self.$http.post(api.forceCloseSubmit, { item_id: self.itemId, demand_amount: demandAmount, design_amount: designAmount })
       .then (function(response) {
         self.isForceCloseLoadingBtn = false
@@ -843,6 +858,13 @@ export default {
         return true
       }
       return false
+    },
+    superAdmin() {
+      var user = this.$store.state.event.user
+      if (user.role_id === 20) {
+        return true
+      }
+      return false
     }
   },
   watch: {
@@ -864,12 +886,21 @@ export default {
     padding: 0px 20px 20px 20px;
     min-height: 350px;
   }
-
+  .content-box p.tc-2,
+  .content-box p.tc-2 a {
+    color: #222
+  }
+  .content-box p.tc-2 a:hover {
+    color: #ff5a5f
+  }
   .item {
     padding: 5px;
     border-bottom: solid 1px #ccc;
   }
-
+  .line-height30,
+  .line-height30 p {
+    line-height: 30px
+  }
   .stage-item {
     margin: 10px 0 10px 0;
   }

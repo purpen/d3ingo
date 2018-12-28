@@ -146,10 +146,7 @@
       }
     },
     created() {
-      this.getTradeFair()
-      setTimeout(() => {
-        this.getDesignCase()
-      }, 1)
+      this.getDesignCase()
     },
     methods: {
       // 获取查看权限

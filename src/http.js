@@ -49,7 +49,7 @@ axiosInstance.interceptors.response.use(
     return response
   },
   error => {
-    console.log(error)
+    var msg = ''
     if (error.response) {
       switch (error.response.status) {
         case 401:
@@ -61,6 +61,7 @@ axiosInstance.interceptors.response.use(
               redirect: router.currentRoute.fullPath
             }
           })
+          msg = '登录已失效, 请重新登录'
           break
         case 403:
           // 无访问权限
@@ -69,6 +70,7 @@ axiosInstance.interceptors.response.use(
           })
       }
       // console.log(JSON.stringify(error));//console : Error: Request failed with status code 402
+      error.response.data.message = msg || error.response.data.message
       return Promise.reject(error.response.data)
     } else {
       return Promise.reject(error)
