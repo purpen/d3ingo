@@ -242,8 +242,16 @@
                 </el-input> -->
               <div  class="prizes-look">
                 <div v-for="(p, indexp) in prizeArr" :key="indexp" class="prizes-img">
-                  <i :style="{background: `url(${require('@/assets/images/prize_logo/'+p.type+'.jpg')}) no-repeat center/ contain`}"></i>
-                  <span>X{{p.count}}</span>
+                <el-tooltip class="item" effect="dark" placement="top">
+                  <div slot="content">
+                    <p >{{p.name}}</p>
+                    <p v-for="(t, indext) in p.times" :key="indext" class="logo.name">{{t|timeFormat}}</p>
+                  </div>
+                  <div>
+                    <i :style="{background: `url(${require('@/assets/images/prize_logo/'+p.type+'.jpg')}) no-repeat center/ contain`}" v-if="p.type"></i>
+                    <span v-if="p.type">X{{p.count}}</span>
+                  </div>
+                </el-tooltip>
                 </div>
               </div>
              <div v-if="element.prizes">
@@ -253,6 +261,7 @@
                         key="p.time"
                         class="fullwidth"
                         v-model="p.time"
+                        @change="updatePerze"
                         type="month"
                         placeholder="获奖日期">
                       </el-date-picker>
@@ -764,6 +773,13 @@
         return 24 - this.$store.state.event.leftWidth
       }
     },
+    filters: {
+      timeFormat(val) {
+        if (val) {
+          return new Date(val).format('yyyy-MM-dd')
+        }
+      }
+    },
     methods: {
       // 删除奖项
       deletePrize(index) {
@@ -843,15 +859,29 @@
         if (that.form.prizes && that.form.prizes.length) {
           that.form.prizes.forEach(item => {
             let index = arrIds.indexOf(item.type)
-            if (index === -1) {
+            if (index === -1 || !item.type) {
               arrIds.push(item.type)
-              arr.push({
+              let i = {}
+              i = {
                 type: item.type,
                 count: 1,
-                name: item.name
+                name: '',
+                times: []
+              }
+              this.prizeOptions.find(p => {
+                if (p.value === item.type) {
+                  i.name = p.label
+                }
               })
+              if (item.time) {
+                i.times.push(item.time)
+              }
+              arr.push(i)
             } else {
               arr[index].count++
+              if (item.time) {
+                arr[index].tiems.push(item.time)
+              }
             }
           })
         }
@@ -1235,6 +1265,12 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .logo-name {
+    margin-top: 5px;
+  }
+  .prizes-look {
+    margin-bottom: -15px;
+  }
   .prizes-look img {
     display: inline-block;
     width: 30px;
@@ -1247,7 +1283,7 @@
   }
   .prizes-img span {
     position: absolute;
-    top: 13px;
+    top: 28px;
     right: -8px;
     font-size: 14px;
     color: #999;
@@ -1557,6 +1593,7 @@
     padding-right: 30px;
     position: relative;
     margin-bottom:10px;
+    margin-top: 15px;
   }
   .prize .p-after {
     position: absolute;
