@@ -194,7 +194,7 @@
                     :rules="[{
                     required: true, type: 'number', message: '请填写正确天数', trigger: 'blur'},
                     {min: 1, type: 'number', message: '请填写正确天数', trigger: 'blur'}]">
-                    <el-input type="number" min="1" autosize v-model.number="form.plan_format[index].duration" placeholder="天数" size="small">
+                    <el-input type="number" min="1" autosize v-model.number="form.plan_format[index].duration" placeholder="天数" size="small" class="work-sty">
                       <template slot="append">工作日</template>
                     </el-input>
                   </el-form-item>
@@ -516,6 +516,7 @@ export default {
     // 提交
     submit(formName) {
       this.$refs[formName].validate((valid) => {
+        console.log(111)
         // 验证通过，提交
         if (!valid) {
           console.log('error submit!!')
