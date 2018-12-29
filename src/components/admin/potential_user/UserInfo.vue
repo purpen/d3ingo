@@ -752,9 +752,8 @@
                           <div class="log-li-top">
                             <p class="execute-user-info">
                               <img v-if="item.logo_image" :src="item.logo_image.logo" alt="">
-                              <span class="no-head" v-if="item.execute_user_name">{{item.execute_user_name | formatName}}</span>
+                              <span class="no-head" v-else>{{item.execute_user_name | formatName}}</span>
                               <span class="name">{{item.execute_user_name || ''}}</span>
-                              <img v-if="item.execute_user_id === null" src="../../../assets/images/avatar_100.png" alt="">
                             </p>
                               <p>创建时间 :<span> {{item.date}}</span></p>
                               <p v-if="item.next_time && item.status !== 3" 
