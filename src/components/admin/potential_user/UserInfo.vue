@@ -1481,6 +1481,10 @@ export default {
       }
     },
     editProject(d) { // 编辑项目
+      if (this.boolAddProject) {
+        this.$message.error('请先保存项目')
+        return
+      }
       const id = d.item_id
       if (d && id) {
         this.boolEditProject = true

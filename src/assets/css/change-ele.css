@@ -388,7 +388,7 @@
     width: 480px
   }
   .el-dialog {
-    width: 380px
+    /* width: 380px */
   }
   /* .el-dialog--tiny .el-dialog__header {
     padding: 10px 20px;
