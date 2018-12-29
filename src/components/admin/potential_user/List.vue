@@ -30,6 +30,7 @@
                   <el-option label="客户级别" value="4"></el-option>
                   <el-option label="项目名称 " value="5"></el-option>
                   <el-option label="对接公司 " value="6"></el-option>
+                  <el-option label="用户来源" value="7"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item style="width: 20%;">
