@@ -66,7 +66,7 @@
       </div>
       <el-dialog
         :visible.sync="dialogCall"
-        size="tiny"
+        width="380px"
         class="style-call">
         <div class="title-center">
           <img class="com-logo" v-if="urlLogo" :src="urlLogo.logo" width="100"/>
@@ -80,7 +80,7 @@
     <!-- <el-dialog
       title="需求详情"
       :visible.sync="dialogUpdateVisible"
-      size="tiny"
+      width="380px"
       class="submit-form seen-deta"
       >
       <div v-loading="diaLoading">

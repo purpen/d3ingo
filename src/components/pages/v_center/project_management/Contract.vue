@@ -67,7 +67,7 @@
     <el-dialog
       title="确认删除"
       :visible.sync="dialogVisible"
-      size="tiny"
+      width="380px"
       >
       <p class="text-center">确认删除此合同</p>
       <span slot="footer" class="dialog-footer">

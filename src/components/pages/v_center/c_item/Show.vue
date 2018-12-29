@@ -21,7 +21,7 @@
           </div>
 
           <div class="select-item-box">
-            <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
+            <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange" class="select-bord">
               <el-collapse-item title="项目详情" name="1">
 
                 <div class="base_info">
@@ -296,57 +296,63 @@
                         </el-button>
                       </p>
                     </div>
-                    <div class="capital-item clearfix" v-if="d.status === 1 && d.confirm === 0">
-                      <div v-if="d.pay_status === 0">
-                        <p>等待甲方确认</p>
+                    <div v-if="d.item_stage_image && d.item_stage_image.length">
+                      <div class="capital-item clearfix" v-if="d.status === 1 && d.confirm === 0">
+                        <div v-if="d.pay_status === 0">
+                          <p>等待甲方确认</p>
+                        </div>
+                      </div>
+                      <div class="capital-item clearfix" v-if="d.status === 1 && d.confirm === 1">
+                        <div v-if="d.pay_status === 0">
+                          <p>等待甲方打款</p>
+                        </div>
+
+                        <div v-else>
+                          <div v-if="invoceStat(2, d.id) === 0">
+                            <p>阶段项目资金</p>
+                            <p class="capital-money">¥ {{ d.amount }}</p>
+                            <p class="pay-btn">
+                              <span>收款成功</span>
+                            </p>
+                            <p class="capital-des">该阶段款已转入您的账户中</p>
+                          </div>
+                          <div v-if="invoceStat(2, d.id) === 1">
+                            <p>阶段款已转到{{custom.info}}平台托管</p>
+                            <p class="capital-money">¥ {{ d.amount }}</p>
+                            <p class="pay-btn">
+                              <el-button class="is-custom" @click="sendInvoiceBtn(2, d.id)"
+                                        type="primary">开发票
+                              </el-button>
+                            </p>
+                            <p class="capital-des">需求方已将该阶段款转到{{custom.info}}平台托管，</p>
+                            <p class="capital-des">您需要给{{custom.info}}平台提供相关发票，平台收到发票后会将相关款项转入您的账户中。</p>
+                          </div>
+                          <div v-if="invoceStat(2, d.id) === 2">
+                            <p>阶段款已转到{{custom.info}}平台托管</p>
+                            <p class="capital-money">¥ {{ d.amount }}</p>
+                            <p class="pay-btn">
+                              <span class="pay-await">发票确认中</span>
+                            </p>
+                            <p class="capital-des">发票确认收取中，请您耐心等待…</p>
+                            <p class="capital-des">{{custom.info}}平台收到发票后会将相关款项转入您的账户中。</p>
+                          </div>
+                          <div v-if="invoceStat(2, d.id) === 3">
+                            <p>阶段项目资金</p>
+                            <p class="capital-money">¥ {{ d.amount }}</p>
+                            <p class="pay-btn">
+                              <span>收款成功</span>
+                            </p>
+                            <p class="capital-des">该阶段款已转入您的账户中</p>
+                          </div>
+                        </div>
+
                       </div>
                     </div>
-                    <div class="capital-item clearfix" v-if="d.status === 1 && d.confirm === 1">
-                      <div v-if="d.pay_status === 0">
-                        <p>等待甲方打款</p>
+                    <div v-else>
+                      <div class="capital-item">
+                        <p>请上传设计成果</p>
                       </div>
-
-                      <div v-else>
-                        <div v-if="invoceStat(2, d.id) === 0">
-                          <p>阶段项目资金</p>
-                          <p class="capital-money">¥ {{ d.amount }}</p>
-                          <p class="pay-btn">
-                            <span>收款成功</span>
-                          </p>
-                          <p class="capital-des">该阶段款已转入您的账户中</p>
-                        </div>
-                        <div v-if="invoceStat(2, d.id) === 1">
-                          <p>阶段款已转到{{custom.info}}平台托管</p>
-                          <p class="capital-money">¥ {{ d.amount }}</p>
-                          <p class="pay-btn">
-                            <el-button class="is-custom" @click="sendInvoiceBtn(2, d.id)"
-                                       type="primary">开发票
-                            </el-button>
-                          </p>
-                          <p class="capital-des">需求方已将该阶段款转到{{custom.info}}平台托管，</p>
-                          <p class="capital-des">您需要给{{custom.info}}平台提供相关发票，平台收到发票后会将相关款项转入您的账户中。</p>
-                        </div>
-                        <div v-if="invoceStat(2, d.id) === 2">
-                          <p>阶段款已转到{{custom.info}}平台托管</p>
-                          <p class="capital-money">¥ {{ d.amount }}</p>
-                          <p class="pay-btn">
-                            <span class="pay-await">发票确认中</span>
-                          </p>
-                          <p class="capital-des">发票确认收取中，请您耐心等待…</p>
-                          <p class="capital-des">{{custom.info}}平台收到发票后会将相关款项转入您的账户中。</p>
-                        </div>
-                        <div v-if="invoceStat(2, d.id) === 3">
-                          <p>阶段项目资金</p>
-                          <p class="capital-money">¥ {{ d.amount }}</p>
-                          <p class="pay-btn">
-                            <span>收款成功</span>
-                          </p>
-                          <p class="capital-des">该阶段款已转入您的账户中</p>
-                        </div>
-                      </div>
-
                     </div>
-                    <div class="blank20"></div>
                     <div class="border-t" v-if="d.item_stage_image&&d.item_stage_image.length>0">
                     </div>
                   </div>
@@ -413,13 +419,13 @@
       </el-col>
     </el-row>
 
-    <el-dialog title="提交项目报价" v-model="takingPriceDialog" size="large" top="2%"   @close="isClose = false"
+    <el-dialog title="提交项目报价" :visible.sync="takingPriceDialog" width="1150px" top="2%"   @close="isClose = false"
     @open="isClose = true"
     >
       <v-quote-submit :paramProp="quoteProp" :formProp="takingPriceForm" @form="quoteFormProp" @param="quoteProp" v-if="isClose"></v-quote-submit>
     </el-dialog>
 
-    <el-dialog title="发票信息" v-model="invoiceDialog">
+    <el-dialog title="发票信息" :visible.sync="invoiceDialog">
       <div class="corp-info">
         <div class="fz-16 tc-2 sub-title">
           {{custom.info}}平台发票信息
@@ -519,7 +525,7 @@
             </el-col>
             <el-col :span="20">
               <el-form-item prop="logistics_number">
-                <el-input v-model.number="invoiceForm.logistics_number"></el-input>
+                <el-input v-model="invoiceForm.logistics_number"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -536,7 +542,7 @@
     <el-dialog
       title="提示"
       v-model="comfirmDialog"
-      size="tiny">
+      width="380px">
       <p class="alert-line-height">{{ comfirmMessage }}</p>
       <span slot="footer" class="dialog-footer">
         <el-button @click="comfirmDialog = false">取 消</el-button>
@@ -548,8 +554,8 @@
     </el-dialog>
         <el-dialog
       title="拒单说明"
-      v-model="noOfferDialog"
-      size="tiny">
+      :visible.sync="noOfferDialog"
+      width="380px">
       <p class="alert-line-height">您确定要拒绝此单么?</p>
       <p class="alert-line-height">如果确定请告诉我们拒绝原因:</p>
       <el-row class="cause">
@@ -599,7 +605,7 @@
         <input type="hidden" ref="currentIndex"/>
       </span>
     </el-dialog>
-    <el-dialog title="报价单详情" v-model="quotaDialog" id="quote-dialog" style="width: 880px;margin: auto" size="large" top="2%">
+    <el-dialog title="报价单详情" :visible.sync="quotaDialog" id="quote-dialog" style="width: 880px;margin: auto" width="580px" top="2%">
       
       <v-quote-view :formProp="quota"></v-quote-view>
 
@@ -702,8 +708,7 @@
             {type: 'number', required: true, message: '请选择快递公司', trigger: 'change'}
           ],
           logistics_number: [
-            {type: 'number', required: true, message: '请填写快递单号', trigger: 'blur'},
-            {type: 'number', message: '请填写正确的快递单号', trigger: 'blur'}
+            {required: true, message: '请填写快递单号', trigger: 'blur'}
           ]
         },
         sendInvoiceLoadingBtn: false,
@@ -946,6 +951,7 @@
         this.$refs.comfirmType.value = 3
         this.comfirmMessage = '确认把合同发送给需求方？'
         this.comfirmDialog = true
+        this.comfirmLoadingBtn = false
       },
       // 发送合同执行
       contractSendDo() {
@@ -975,6 +981,8 @@
         }
         this.invoiceForm.id = item.id
         this.invoiceDialog = true
+        this.invoiceForm.logistics_number = ''
+        this.invoiceForm.logistics_id = ''
       },
       // 确认发票发送
       sendInvoiceSubmit(formName) {
@@ -1099,6 +1107,7 @@
         this.$refs.comfirmType.value = 4
         this.comfirmMessage = '确认把阶段信息发送给需求方？'
         this.comfirmDialog = true
+        this.comfirmLoadingBtn = false
       },
       // 项目阶段发送
       stageSend(id, index) {
@@ -1124,6 +1133,7 @@
         this.$refs.comfirmType.value = 1
         this.comfirmMessage = '确认项目已完成？'
         this.comfirmDialog = true
+        this.comfirmLoadingBtn = false
       },
       // 删除阶段附件
       removeStageAsset(event) {
@@ -1931,7 +1941,7 @@
   .contract-right {
     float: right;
     margin-right: 10px;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
   }
 
   .contract-right p {
@@ -2004,7 +2014,7 @@
     background: url('../../../../assets/images/item/Waiting@2x.png') no-repeat center center / contain
   }
   .border-t {
-    border-top: 1px solid #d2d2d2;
+    border-top: 1px solid #e6e6e6;
   }
   .capital-item .capital-btn {
     padding: 10px 30px 10px 30px;
@@ -2050,7 +2060,7 @@
     position: absolute;
     top: 2px;
     right: 15px;
-    border: 1px solid #D2D2D2;
+    border: 1px solid #e6e6e6;
     border-radius: 4px;
     line-height: 20px;
     float: right;
@@ -2072,7 +2082,7 @@
   }
 
   .stage-title {
-    border-bottom: 1px solid #D2D2D2;
+    border-bottom: 1px solid #e6e6e6;
     padding-bottom: 20px;
   }
 
@@ -2089,7 +2099,7 @@
 
   .stage-asset-box {
     padding: 10px 0;
-    border-bottom: 1px solid #D2D2D2;
+    border-bottom: 1px solid #e6e6e6;
   }
 
   .taking-price-btn {

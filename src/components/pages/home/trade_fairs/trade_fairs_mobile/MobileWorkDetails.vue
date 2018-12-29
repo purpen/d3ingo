@@ -103,7 +103,7 @@
     </div>
     <el-dialog
       :visible.sync="dialogCall"
-      size="tiny"
+      width="380px"
       class="style-call">
       <div class="title-center">
         <img class="avatar" v-if="imgUrl" :src="imgUrl.logo" width="100"/>
@@ -114,7 +114,7 @@
     </el-dialog>
     <el-dialog
       :visible.sync="dialogBuy"
-      size="tiny" class="hint-text">
+      width="380px" class="hint-text">
       <span class="move-text">请移步PC端进行操作</span>
       <span slot="footer" class="dialog-footer" @click="dialogBuy = false">
         <p class="sure-text">确 定</p>

@@ -346,7 +346,7 @@
     <el-dialog
       title="提示"
       :visible.sync="sureDialog"
-      size="tiny">
+      width="380px">
       <span>{{ sureDialogMessage }}</span>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="sureDialog = false">取 消</el-button>
@@ -360,7 +360,7 @@
     <el-dialog
       title="提示"
       :visible.sync="sureDialogOngo"
-      size="tiny">
+      width="380px">
       <span>{{ sureDialogMessage }}</span>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="sureDialogOngo = false">取 消</el-button>
@@ -374,7 +374,7 @@
      <el-dialog
       title="提示"
       :visible.sync="sureDialogDock"
-      size="tiny">
+      width="380px">
       <span>{{ sureDialogMessage }}</span>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="sureDialogDock = false">取 消</el-button>
@@ -413,7 +413,6 @@
         sureDialogMessage: '确定要关闭项目？',
         sureDialogLoadingBtn: false,
         isLoading: false,
-        index: '',
         contentShowIndex: 0,
         itemList: [],
         itemIngList: [],

@@ -10,15 +10,16 @@
               <el-form-item>
                 <span class="fl line-height30 fz-12">选择日期</span>
                 <div class="fr select-data">
-                <el-date-picker
-                  v-model="query.valueDate"
-                  type="daterange"
-                  size="small"
-                  start-placeholder="开始日期"
-                  end-placeholder="结束日期"
-                  :default-time="['00:00:00', '23:59:59']"
-                  @change="getDate">
-                </el-date-picker>
+                  <el-date-picker
+                    v-model="query.valueDate"
+                    type="daterange"
+                    size="small"
+                    range-separator="-"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期"
+                    :default-time="['00:00:00', '23:59:59']"
+                    @change="getDate">
+                  </el-date-picker>
                 </div>
               </el-form-item>
               <el-form-item class="select-info">
@@ -39,21 +40,21 @@
               </el-form-item>
             </el-form>
             <div class="admin-header-right fr clearfix">
-              <!-- <el-tree class="fl" :data="treeData" :props="defaultProps" @node-click="addAssignUser" node-key="id"></el-tree> -->
               <div class="fl">
-                <div tabindex="-1" class="add-user">
+                <div class="add-user">
                   <span class="add-voip-user">
                     <i class="fx fx-icon-plus"></i>添加用户
                   </span>
                   <div class="drop-down">
                     <span @click="$router.push({name: 'adminPotentialUserCreated'})">添加潜在用户</span>
                     <span @click="showDialogVoIpUser">添加商务成员</span>
-                    <!-- <span>导入文件</span> -->
                     <el-upload
                       class="upload-demo"
                       :action="uploadUrl"
                       :on-preview="handlePreview"
+                      :on-success="handleAvatarSuccess"
                       :before-upload="beforeAvatarUpload"
+                      :on-error="uploadError"
                       :data="{'token': token}"
                       accept=".xlsx"
                       :show-file-list="false"
@@ -86,12 +87,12 @@
               label="姓名"
               width="60">
             <template slot-scope="scope">
-              <p @click="editUserInfo(scope.row.id, scope.row.name)">{{scope.row.name}}</p>
+              <p class="cursor-p" @click="editUserInfo(scope.row.id, scope.row.name)">{{scope.row.name}}</p>
             </template>
             </el-table-column>
             <el-table-column
               label="项目名称"
-              width="100">
+              width="122">
               <template slot-scope="scope">
                 <div v-for="(item, i) in scope.row.item_name" :key="i">
                   <p>{{item}}</p>
@@ -100,11 +101,11 @@
             </el-table-column>
             <el-table-column
               prop="phone"
-              width="126"
+              width="100"
               label="电话">
             </el-table-column>
             <el-table-column
-              width="100"
+              width="101"
               prop="execute_user_name"
               label="所属人">
             </el-table-column>
@@ -114,24 +115,24 @@
               prop="call_status">
             </el-table-column>
             <el-table-column
-              width="80"
+              width="95"
               label="客户级别">
                  <template slot-scope="scope">
-                  <p v-if="scope.row.rank === 1">一级客户</p>
-                  <p v-else-if="scope.row.rank === 2">二级客户</p>
-                  <p v-else-if="scope.row.rank === 3">三级客户</p>
-                  <p v-else-if="scope.row.rank === 4">四级客户</p>
-                  <p v-else>五级客户</p>
+                  <el-rate
+                    v-model="scope.row.rank"
+                    disabled
+                    text-color="#ff9900">
+                  </el-rate>
                 </template>
             </el-table-column>
             <el-table-column
               prop="source"
-              width="80"
+              width="75"
               label="用户来源">
             </el-table-column>
             <el-table-column
-              width="100"
-              label="对接公司数量"
+              width="85"
+              label="设计服务商"
               prop="design_company_count">
               <!-- <template slot-scope="scope">
                 <div v-if="scope.row.item_name && scope.row.item_name.length" v-for="(item, i) in scope.row.design_company_name" :key="i">
@@ -141,12 +142,12 @@
             </el-table-column>
             <el-table-column
               prop="logs"
-              width="50"
+              width="70"
               label="根进次数">
             </el-table-column>
             <el-table-column
               prop="next_time"
-              width="100"
+              width="90"
               label="次回根进">
             </el-table-column>
             <el-table-column
@@ -156,8 +157,8 @@
                   <p class="status1 status" v-if="scope.row.status === 1">潜在客户</p>
                   <p class="status2 status"  v-else-if="scope.row.status === 2">真实需求</p>
                   <p class="status3 status"  v-else-if="scope.row.status === 3">签订合作</p>
-                  <p class="status3 status"  v-else-if="scope.row.status === 4">对接失败</p>
-                  <p class="status4 status"  v-else>对接设计</p>
+                  <p class="status4 status"  v-else-if="scope.row.status === 4">对接失败</p>
+                  <p class="status5 status"  v-else>对接设计</p>
                 </template>
             </el-table-column>
           </el-table>
@@ -167,7 +168,7 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="query.page"
-            :page-sizes="[10, 20, 50, 100]"
+            :page-sizes="[10, 20, 50]"
             :page-size="query.per_page"
             layout="total, sizes, prev, pager, next, jumper"
             :total="query.totalCount">
@@ -181,19 +182,20 @@
     <el-dialog
       title="随机分配"
       :visible.sync="randomAssign"
-      size="tiny">
-      <span v-if="hasExecuteList.length">有{{hasExecuteList.length}}个潜在用户等待分配所属人，是否确认随机分配？</span>
+      width="300px">
+      <span v-if="noAllot">有{{noAllot}}个潜在用户等待分配所属人，是否确认随机分配？</span>
       <span v-else>没有所属人待分配</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="randomAssign = false">取 消</el-button>
-        <el-button type="primary" @click="randomAllot" :disabled="!hasExecuteList.length">确 定</el-button>
+        <el-button type="primary" @click="randomAllot" :disabled="!noAllot">确 定</el-button>
       </span>
     </el-dialog>
 
     <el-dialog
       title="添加商务成员"
       :visible.sync="BoolAddVoIpUser"
-      center>
+      center
+      width="400px">
       <ul class="user-list-father">
         <li v-for="(d, i) in adminUserList" :key="i" @click="askVoIpUser(d)" :class="['user-list' ,{'active': d.status === 1 }]">
             <img v-if="d.logo_image" :src="d.logo_image.logo" alt="">
@@ -208,7 +210,7 @@
     </el-dialog>
 
     <el-dialog
-      size="tiny"
+      width="350px"
       title="移除业务人员"
       :visible.sync="deleteDialogVoIpUser"
       center>
@@ -247,20 +249,21 @@ export default {
         totalCount: 0,
         valueDate: []
       },
+      dateArr: [], // 格式化
       defaultProps: {
         children: 'children',
         label: 'label'
       },
       tableData: [],
       adminUserList: [],
-      hasExecuteList: [], // 没有所属人的数组
+      noAllot: 0, // 没有所属人的个数
       deleteDialogVoIpUser: false,
       currentVoIpUserId: '',
       belongIdLength: ''
     }
   },
   methods: {
-    tableRowClassName(row, index) {
+    tableRowClassName({row, index}) {
       if (row.next_time) {
         if (this.dateCompare(row.next_time) === false) { // 没到期
           return 'has-date'
@@ -301,6 +304,7 @@ export default {
               }
             }
             this.$message.success('删除成功!')
+            this.getClueList()
           } else {
             this.$message.error(response.data.meta.message)
           }
@@ -314,9 +318,11 @@ export default {
       this.getAdminList()
     },
     getDate(val) {
-      console.log(val)
-      // let a = (new Date(val)).format('yyyy-MM-dd hh:mm:ss')
-      // console.log(a)
+      if (val) {
+        const startDate = val[0].format('yyyy-MM-dd hh:mm:ss')
+        const endDate = val[1].format('yyyy-MM-dd hh:mm:ss')
+        this.dateArr = [startDate, endDate]
+      }
     },
     onSearch() {
       this.getClueList()
@@ -327,17 +333,14 @@ export default {
     getClueList() {
       let row = {}
       Object.assign(row, this.query)
+      row.valueDate = [...this.dateArr]
       this.$http.get(api.adminClueClueList, {params: row}).then(res => {
         if (res.data.meta.status_code === 200) {
           this.tableData = res.data.data
           this.query.totalCount = parseInt(res.data.meta.pagination.total)
-          let hasExecuteUser = []
-          this.tableData.forEach(item => {
-            if (!item.execute_user_id) {
-              hasExecuteUser.push(item)
-            }
-          })
-          this.hasExecuteList = hasExecuteUser
+          if (res.data.data.length) {
+            this.noAllot = res.data.data[0].no_allot
+          }
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -363,9 +366,9 @@ export default {
     askVoIpUser(d) {
       if (d && d.id) {
         if (d.status === 1) {
-          this.belongIdLength = this.belongIdNumber(d.id)
           this.currentVoIpUserId = d.id
-          if (!this.belongIdLength) {
+          this.belongIdLength = d.clue_count
+          if (!d.clue_count) {
             this.deleteVoIpUser()
             return
           }
@@ -380,8 +383,13 @@ export default {
       if (!id) return
       this.$http.post(api.adminClueAddVoIpUser, {user_id: id}).then(res => {
         if (res.data.meta.status_code === 200) {
+          this.adminUserList.forEach((item, i, array) => {
+            if (item.id === id) {
+              this.$set(array[i], 'status', 1)
+            }
+          })
           this.$message.success('添加成功')
-          this.getAdminList()
+          // this.getAdminList()
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -395,8 +403,13 @@ export default {
       this.$http.post(api.adminClueDelVoIpUser, {user_id: this.currentVoIpUserId}).then(res => {
         if (res.data.meta.status_code === 200) {
           this.deleteDialogVoIpUser = false
+          this.adminUserList.forEach((item, i, array) => {
+            if (item.id === this.currentVoIpUserId) {
+              this.$set(array[i], 'status', 2)
+            }
+          })
           this.$message.success('移除成功')
-          this.getAdminList()
+          // this.getAdminList()
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -427,20 +440,15 @@ export default {
       this.query.page = parseInt(val)
       this.getClueList()
     },
-    belongIdNumber(id) {
-      let belongIdArr = []
-      this.tableData.forEach(item => {
-        if (item.execute_user_id && item.execute_user_id === id) {
-          belongIdArr.push(item)
-        }
-      })
-      return belongIdArr.length
-    },
     exportForm() { // 导出
-      if (this.multipleSelection.length === 0) {
-        this.$message.error('至少选择一个要导出的潜在用户')
-        return false
-      }
+      // if (this.multipleSelection.length === 0) {
+      //   this.$message.error('至少选择一个要导出的潜在用户')
+      //   return false
+      // }
+      // if (this.isAdmin <= 15) {
+      //   this.$message.error('请联系管理员导出')
+      //   return
+      // }
       let idArr = this.arrayExportIds()
       let url = 'https://sa.taihuoniao.com/admin/clue/exportExcel'
       if (conf.ENV === 'prod') {
@@ -449,7 +457,7 @@ export default {
       let downloadUrl = url + '?'
       let urlStr = ''
       idArr.forEach((item, i) => {
-        if (i === 1) {
+        if (i === 0) {
           urlStr = 'clue_id[' + i + ']=' + idArr[i]
         } else {
           urlStr += '&clue_id[' + i + ']=' + idArr[i]
@@ -457,6 +465,10 @@ export default {
       })
       downloadUrl = url + '?' + urlStr
       window.open(decodeURI(downloadUrl))
+      // this.$http.post(api.adminClueExportExcel, {clue_id: idArr}).then(res => {
+      //   if (res.data.meta.status_code === 200) {
+      //   }
+      // })
     },
     arrayExportIds() {
       var idArr = []
@@ -482,6 +494,16 @@ export default {
       //   this.$message.error('上传头像图片大小不能超过 2MB!')
       // }
       // return isXLSX && isLt2M
+    },
+    handleAvatarSuccess(res, file, fileList) {
+      if (res.meta.status_code === 200) {
+        this.$message.success('导入成功')
+        this.getClueList()
+      }
+    },
+    uploadError(err, file, fileList) {
+      console.error(err)
+      this.$message.error(err.message)
     }
   },
   mounted() {
@@ -508,6 +530,10 @@ export default {
 </script>
 
 <style scoped>
+.cursor-p {
+  cursor: pointer;
+}
+
 .margin-l-10 {
   margin-left: 10px;
 }
@@ -527,7 +553,8 @@ export default {
   width: 16%;
 }
 .select-data {
-  width: 192px;
+  width: 206px;
+  margin-left: 10px;
 }
 .admin-header-right {
   width: 36%;
@@ -569,6 +596,9 @@ export default {
   font-size: 12px;
   cursor: pointer;
 }
+.drop-down > span:hover {
+  color: #FF5A5F;
+}
 .upload-file {
   display: block;
   height: 30px;
@@ -576,10 +606,13 @@ export default {
   font-size: 12px;
   cursor: pointer;
 }
+.upload-file:hover {
+  color: #FF5A5F;
+}
 .add-user {
   position: relative;
 }
-.add-user:focus .drop-down {
+.add-user:hover .drop-down {
   position: absolute;
   top: 30px;
   left: -8px;
@@ -625,6 +658,9 @@ export default {
 .status4 {
   color: #FF5A5F;
 }
+.status5 {
+  color: #65A6FF;
+}
 .status {
   font-weight: 600;
 } 
@@ -633,10 +669,12 @@ export default {
 }
 
 
-
 </style>
 
 <style>
+.select-data .el-date-editor {
+  width: 100% !important;
+}
 .admin-header-right .el-tree-node__content {
   height: 30px;
   line-height: 30px;
@@ -651,16 +689,25 @@ export default {
   border: none;
 }
 
-.admin-table .has-date {
+.admin-table .has-date .el-table-column--selection {
   border-left: 4px solid #FFA64B;
 }
-.admin-table .over-date {
+.admin-table .over-date .el-table-column--selection {
   border-left: 4px solid #FF5A5F;
 }
-.admin-table tr {
+.admin-table .el-table-column--selection {
   border-left: 4px solid transparent;
 }
-.admin-table thead tr {
+.admin-table thead .el-table-column--selection {
   border-left: 4px solid #f7f7f7;
+  border-left-color: #f7f7f7 !important;
+}
+/* .admin-table thead tr {
+  border-left: 4px solid #f7f7f7;
+} */
+
+.admin-table .el-rate__icon {
+  font-size: 12px;
+  margin-right: 2px;
 }
 </style>

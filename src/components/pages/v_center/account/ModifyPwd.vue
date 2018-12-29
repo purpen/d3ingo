@@ -17,7 +17,7 @@
               <el-row :gutter="24">
                 <el-col :xs="24" :sm="8" :md="8" :lg="8">
                   <el-form-item label="旧密码" prop="old_password">
-                    <el-input v-model="form.old_password" type="password" placeholder="请输入您的密码"></el-input>
+                    <el-input v-model="form.old_password" type="password" placeholder="请输入您的密码" autocomplete name="password"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -25,7 +25,7 @@
               <el-row :gutter="24">
                 <el-col :xs="24" :sm="8" :md="8" :lg="8">
                   <el-form-item label="新密码" prop="password">
-                    <el-input v-model="form.password" type="password" placeholder="请输入您的新密码"></el-input>
+                    <el-input v-model="form.password" type="password" placeholder="请输入您的新密码" autocomplete name="password"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -33,7 +33,7 @@
               <el-row :gutter="24">
                 <el-col :xs="24" :sm="8" :md="8" :lg="8">
                   <el-form-item label="确认密码" prop="checkPassword">
-                    <el-input v-model="form.checkPassword" type="password" placeholder="请确认您的密码"></el-input>
+                    <el-input v-model="form.checkPassword" type="password" placeholder="请确认您的密码" autocomplete name="confirm"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>

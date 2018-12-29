@@ -404,7 +404,7 @@
         </div>
       </el-col>
     </el-row>
-    <el-dialog title="请填写拒绝原因" :visible.sync="dialogVisible" size="tiny">
+    <el-dialog title="请填写拒绝原因" :visible.sync="dialogVisible" width="380px">
       <el-input v-model="refuseRease"></el-input>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogVisible = false">取 消</el-button>

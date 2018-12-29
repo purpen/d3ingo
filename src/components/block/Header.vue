@@ -46,7 +46,7 @@
               </div>
             </a>
             <el-menu class="el-menu-info" mode="horizontal" router>
-              <el-submenu index="2">
+              <el-submenu index="2" :popper-append-to-body="false" text-color="#999">
                 <template slot="title">
                   <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
                   <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
@@ -171,7 +171,7 @@
               </div>
             </a>
             <el-menu class="el-menu-info" mode="horizontal" router>
-              <el-submenu index="2">
+              <el-submenu index="2" :popper-append-to-body="false" text-color="#999">
                 <template slot="title">
                   <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
                   <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
@@ -707,7 +707,7 @@
     width: auto;
     height: 30px;
   }
-  .nav-header .el-menu--horizontal > .el-menu-item.logo:hover, .el-menu--horizontal > .el-menu-item.logo.is-active {
+  .nav-header .el-menu--horizontal > .el-menu-item.logo:hover, .nav-header .el-menu--horizontal > .el-menu-item.logo.is-active {
     border-color: transparent
   }
 
@@ -734,7 +734,7 @@
   .nav-header .el-menu--horizontal > .el-menu-item:hover,
   .el-menu--horizontal > .el-submenu.is-active .el-submenu__title,
   .el-menu--horizontal > .el-submenu:hover .el-submenu__title,
-  .el-menu--horizontal > .el-menu-item.is-active {
+  .nav-header .el-menu--horizontal > .el-menu-item.is-active {
     border-bottom: 3px solid #ff5a5f;
     color: #ff5a5f;
     background: none;

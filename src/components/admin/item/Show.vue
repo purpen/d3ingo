@@ -132,7 +132,7 @@
                 <p>相关附件</p>
               </el-col>
               <el-col :span="spanVal">
-                <p v-for="(d, index) in info.image"><a :href="d.file" target="_blank">{{ d.name }}</a></p>
+                <p v-for="(d, index) in info.image" :key="index"><a :href="d.file" target="_blank">{{ d.name }}</a></p>
               </el-col>
               <el-col :span="spanOpt">
               </el-col>
@@ -425,8 +425,8 @@
 
     <el-dialog
       title="提示"
-      v-model="comfirmDialog"
-      size="tiny">
+      :visible.sync="comfirmDialog"
+      width="380px">
       <span>{{ comfirmMessage }}</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="comfirmDialog = false">取 消</el-button>
@@ -436,7 +436,7 @@
     </el-dialog>
 
 
-    <el-dialog title="匹配公司" v-model="matchCompanyDialog">
+    <el-dialog title="匹配公司" :visible.sync="matchCompanyDialog">
       <el-form label-position="top">
         <input type="hidden" v-model="matchCompanyForm.itemId" value="" />
         <input type="hidden" v-model="matchCompanyForm.itemStatus" value="" />
@@ -457,7 +457,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="关闭项目并返款" v-model="forceCloseDialog">
+    <el-dialog title="关闭项目并返款" :visible.sync="forceCloseDialog">
       <el-form label-position="left">
         <el-form-item label="需求公司返款金额">
           <el-input v-model="matchCompanyForm.demandAmount" :placeholder="'￥' + item.rest_fund" auto-complete="off"></el-input>
@@ -472,7 +472,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="报价单详情" v-model="quotaDialog" size="large" top="2%">
+    <el-dialog title="报价单详情" :visible.sync="quotaDialog" width="580px" top="2%">
       <v-quote-view :formProp="quotation"></v-quote-view>
       <div slot="footer" class="dialog-footer btn">
         <el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>
@@ -481,9 +481,9 @@
 
     <el-dialog
       title="合同浏览"
-      v-model="contractDialog"
+      :visible.sync="contractDialog"
       top="2%"
-      size="large">
+      width="580px">
       <div v-if="contractEvt === 1">
         <v-jd-demand-contract-view :propForm="contract"></v-jd-demand-contract-view>
       </div>
@@ -498,7 +498,7 @@
       </span>
     </el-dialog>
 
-    <el-dialog title="设置测试数据" v-model="setTestDataDialog" width="380px">
+    <el-dialog title="设置测试数据" :visible.sync="setTestDataDialog">
       <el-form label-position="top">
         <el-form-item label="属性" label-width="200px">
           <el-radio-group v-model.number="testStatus">

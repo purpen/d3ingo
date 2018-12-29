@@ -223,7 +223,7 @@
       </div>
 
       <el-dialog
-        title="提交项目报价" v-model="takingPriceDialog">
+        title="提交项目报价" :visible.sync="takingPriceDialog" width="80%">
         <el-form label-position="top" :model="takingPriceForm" :rules="takingPriceRuleForm" ref="takingPriceRuleForm">
           <input type="hidden" v-model="takingPriceForm.itemId" value=""/>
           <el-form-item label="项目报价" prop="price" label-width="200px">
@@ -246,8 +246,8 @@
 
       <el-dialog
         title="提示"
-        v-model="sureRefuseItemDialog"
-        size="tiny">
+        :visible.sync="sureRefuseItemDialog"
+        width="380px">
         <span>确认执行此操作?</span>
         <span slot="footer" class="dialog-footer">
           <input type="hidden" ref="refuseItemId"/>
@@ -258,14 +258,14 @@
 
       <el-dialog
         title="提示"
-        v-model="sureDialog"
-        size="tiny">
+        :visible.sync="sureDialog"
+        width="380px">
         <span>{{ sureDialogMessage }}</span>
         <span slot="footer" class="dialog-footer">
           <input type="hidden" ref="currentItemId"/>
           <input type="hidden" ref="currentIndex"/>
           <input type="hidden" ref="currentType"/>
-          <el-button @click="sureDialog = false">取 消</el-button>
+          <el-button class="margin-r-15" @click="sureDialog = false">取 消</el-button>
           <el-button type="primary" :loading="sureDialogLoadingBtn" @click="sureDialogSubmit">确 定</el-button>
         </span>
       </el-dialog>
