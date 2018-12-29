@@ -10,7 +10,7 @@
 
     <el-row :gutter="20" class="blank30 vcenter">
       <v-item-progress :progressButt="progressButt" :progressContract="progressContract"
-                       :progressItem="progressItem"></v-item-progress>
+      :progressItem="progressItem"></v-item-progress>
 
       <el-col :span="isMob ? 24 : 18" class="margin-auto">
         <div class="content">
@@ -483,7 +483,7 @@
 
     <el-dialog
       title="拒单说明"
-      v-model="noOfferDialog"
+      :visible.sync="noOfferDialog"
       width="380px">
       <p class="alert-line-height">您确定要拒绝此单么?</p>
       <p class="alert-line-height">如果确定请告诉我们拒绝原因:</p>
