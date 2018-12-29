@@ -541,7 +541,7 @@
 
     <el-dialog
       title="提示"
-      v-model="comfirmDialog"
+      :visible.sync="comfirmDialog"
       width="380px">
       <p class="alert-line-height">{{ comfirmMessage }}</p>
       <span slot="footer" class="dialog-footer">
