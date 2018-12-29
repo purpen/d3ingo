@@ -13,7 +13,7 @@
           <el-input  type="textarea" :rows="5" v-model="form.summary"
                     placeholder="请详细描述项目的主要目标和主要重点"></el-input>
         </el-form-item>
-        <el-form-item prop="">
+        <el-form-item>
           <div v-show="form.plan_format.length">
             <p class="laber-title-font">项目工作计划及费用</p>
             <el-row style="padding: 20px 25px">
@@ -367,6 +367,8 @@ export default {
           let len = (value + '')
           if (len.split('.')[0].length > 8) {
             return callback(new Error('金额不能大于千万'))
+          } else {
+            callback()
           }
         }
       }
@@ -443,7 +445,6 @@ export default {
     // 提交
     submit(formName) {
       this.$refs[formName].validate((valid) => {
-        console.log(111)
         // 验证通过，提交
         if (!valid) {
           console.log('error submit!!')
