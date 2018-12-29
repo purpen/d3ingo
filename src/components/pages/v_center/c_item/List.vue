@@ -223,7 +223,7 @@
       </div>
 
       <el-dialog
-        title="提交项目报价" :visible.sync="takingPriceDialog" width="80%">
+        title="提交项目报价" :visible.sync="takingPriceDialog" width="1150px">
         <el-form label-position="top" :model="takingPriceForm" :rules="takingPriceRuleForm" ref="takingPriceRuleForm">
           <input type="hidden" v-model="takingPriceForm.itemId" value=""/>
           <el-form-item label="项目报价" prop="price" label-width="200px">
