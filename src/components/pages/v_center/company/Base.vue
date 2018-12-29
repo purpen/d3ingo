@@ -1160,9 +1160,7 @@
               // 重新渲染
               that.$nextTick(function () {
                 that.form = response.data.data
-                if (!that.form.good_field) {
-                  that.form.good_field = []
-                }
+                that.updatePerze()
                 that.form.company_size = that.form.company_size === 0 ? '' : that.form.company_size
                 that.companyId = response.data.data.id
                 that.uploadParam['x:target_id'] = response.data.data.id
