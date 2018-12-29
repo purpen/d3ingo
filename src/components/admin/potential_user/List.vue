@@ -14,7 +14,7 @@
                     v-model="query.valueDate"
                     type="daterange"
                     size="small"
-                    range-separator="--"
+                    range-separator="-"
                     start-placeholder="开始日期"
                     end-placeholder="结束日期"
                     :default-time="['00:00:00', '23:59:59']"
@@ -40,16 +40,14 @@
               </el-form-item>
             </el-form>
             <div class="admin-header-right fr clearfix">
-              <!-- <el-tree class="fl" :data="treeData" :props="defaultProps" @node-click="addAssignUser" node-key="id"></el-tree> -->
               <div class="fl">
-                <div tabindex="-1" class="add-user">
+                <div class="add-user">
                   <span class="add-voip-user">
                     <i class="fx fx-icon-plus"></i>添加用户
                   </span>
                   <div class="drop-down">
                     <span @click="$router.push({name: 'adminPotentialUserCreated'})">添加潜在用户</span>
                     <span @click="showDialogVoIpUser">添加商务成员</span>
-                    <!-- <span>导入文件</span> -->
                     <el-upload
                       class="upload-demo"
                       :action="uploadUrl"
@@ -83,7 +81,7 @@
             :row-class-name="tableRowClassName">
             <el-table-column
               type="selection"
-              width="50">
+              width="40">
             </el-table-column>
             <el-table-column
               label="姓名"
@@ -94,7 +92,7 @@
             </el-table-column>
             <el-table-column
               label="项目名称"
-              width="110">
+              width="122">
               <template slot-scope="scope">
                 <div v-for="(item, i) in scope.row.item_name" :key="i">
                   <p>{{item}}</p>
@@ -184,7 +182,7 @@
     <el-dialog
       title="随机分配"
       :visible.sync="randomAssign"
-      size="tiny">
+      width="300px">
       <span v-if="noAllot">有{{noAllot}}个潜在用户等待分配所属人，是否确认随机分配？</span>
       <span v-else>没有所属人待分配</span>
       <span slot="footer" class="dialog-footer">
@@ -196,7 +194,8 @@
     <el-dialog
       title="添加商务成员"
       :visible.sync="BoolAddVoIpUser"
-      center>
+      center
+      width="400px">
       <ul class="user-list-father">
         <li v-for="(d, i) in adminUserList" :key="i" @click="askVoIpUser(d)" :class="['user-list' ,{'active': d.status === 1 }]">
             <img v-if="d.logo_image" :src="d.logo_image.logo" alt="">
@@ -211,7 +210,7 @@
     </el-dialog>
 
     <el-dialog
-      size="tiny"
+      width="350px"
       title="移除业务人员"
       :visible.sync="deleteDialogVoIpUser"
       center>
@@ -264,7 +263,7 @@ export default {
     }
   },
   methods: {
-    tableRowClassName(row, index) {
+    tableRowClassName({row, index}) {
       if (row.next_time) {
         if (this.dateCompare(row.next_time) === false) { // 没到期
           return 'has-date'
@@ -319,12 +318,11 @@ export default {
       this.getAdminList()
     },
     getDate(val) {
-      console.log(val)
-      // let a = (new Date(val)).format('yyyy-MM-dd hh:mm:ss')
-      let arr = val.split('--')
-      arr[0] = arr[0] + ' 00:00:00'
-      arr[1] = arr[1] + ' 23:59:59'
-      this.dateArr = [...arr]
+      if (val) {
+        const startDate = val[0].format('yyyy-MM-dd hh:mm:ss')
+        const endDate = val[1].format('yyyy-MM-dd hh:mm:ss')
+        this.dateArr = [startDate, endDate]
+      }
     },
     onSearch() {
       this.getClueList()
@@ -555,7 +553,7 @@ export default {
   width: 16%;
 }
 .select-data {
-  width: 192px;
+  width: 206px;
   margin-left: 10px;
 }
 .admin-header-right {
@@ -598,6 +596,9 @@ export default {
   font-size: 12px;
   cursor: pointer;
 }
+.drop-down > span:hover {
+  color: #FF5A5F;
+}
 .upload-file {
   display: block;
   height: 30px;
@@ -605,10 +606,13 @@ export default {
   font-size: 12px;
   cursor: pointer;
 }
+.upload-file:hover {
+  color: #FF5A5F;
+}
 .add-user {
   position: relative;
 }
-.add-user:focus .drop-down {
+.add-user:hover .drop-down {
   position: absolute;
   top: 30px;
   left: -8px;
@@ -668,6 +672,9 @@ export default {
 </style>
 
 <style>
+.select-data .el-date-editor {
+  width: 100% !important;
+}
 .admin-header-right .el-tree-node__content {
   height: 30px;
   line-height: 30px;
@@ -682,21 +689,23 @@ export default {
   border: none;
 }
 
-.admin-table .has-date {
+.admin-table .has-date .el-table-column--selection {
   border-left: 4px solid #FFA64B;
 }
-.admin-table .over-date {
+.admin-table .over-date .el-table-column--selection {
   border-left: 4px solid #FF5A5F;
 }
-.admin-table tr {
+.admin-table .el-table-column--selection {
   border-left: 4px solid transparent;
 }
-.admin-table thead tr {
+.admin-table thead .el-table-column--selection {
   border-left: 4px solid #f7f7f7;
+  border-left-color: #f7f7f7 !important;
 }
-.admin-table .el-table__row {
-  /* cursor: pointer; */
-}
+/* .admin-table thead tr {
+  border-left: 4px solid #f7f7f7;
+} */
+
 .admin-table .el-rate__icon {
   font-size: 12px;
   margin-right: 2px;

@@ -424,7 +424,7 @@
     <el-dialog
       title="提示"
       v-model="comfirmDialog"
-      size="tiny">
+      width="380px">
       <p class="alert-line-height">{{ comfirmMessage }}</p>
       <span slot="footer" class="dialog-footer">
         <el-button class="is-custom" @click="comfirmDialog = false">取 消</el-button>
@@ -436,7 +436,7 @@
       </span>
     </el-dialog>
 
-    <el-dialog title="报价单详情" v-model="quotaDialog" size="large" top="2%">
+    <el-dialog title="报价单详情" :visible.sync="quotaDialog" width="580px" top="2%">
       <v-quote-view :formProp="quota"></v-quote-view>
 
       <div slot="footer" class="dialog-footer btn">

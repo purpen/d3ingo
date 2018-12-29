@@ -139,7 +139,7 @@
           <el-dialog
             title="收藏数"
             :visible.sync="focusOn"
-            size="tiny" class="background-style">
+            width="380px" class="background-style">
             <el-row class="title-style">
               <el-col :span="4"><div class="">序号</div></el-col>
               <el-col :span="10"><div class="">公司名称</div></el-col>
@@ -163,7 +163,7 @@
               <el-table-column property="phone" label="手机号"></el-table-column>
             </el-table>
           </el-dialog>
-          <el-dialog title="请填写拒绝原因" :visible.sync="dialogVisible" size="tiny">
+          <el-dialog title="请填写拒绝原因" :visible.sync="dialogVisible" width="380px">
             <el-form v-model="verify" ref="verifyForm" :rules="verifyForm" @submit.native.prevent>
               <el-form-item prop="refuseRease">
                 <el-input v-model="verify.refuseRease" placeholder="请填写拒绝原因"></el-input>

@@ -259,7 +259,7 @@
             title="设计成果委托推广及交易协议"
             :visible.sync="dialogProtocol"
             :lock-scroll="false"
-            size="tiny">
+            width="380px">
             <span>这是一段信息</span>
             <span slot="footer" class="dialog-footer">
               <el-button type="primary" @click="isProtocol">同意</el-button>

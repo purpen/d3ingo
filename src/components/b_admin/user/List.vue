@@ -145,7 +145,7 @@
 
     <input type="hidden" ref="roleUserId" />
     <input type="hidden" ref="roleIndex" />
-    <el-dialog title="设置权限" v-model="setRoleDialog">
+    <el-dialog title="设置权限" :visible.sync="setRoleDialog">
       <div class="set-role-name">
         <p>账户：{{ currentAccount }}</p>
       </div>
