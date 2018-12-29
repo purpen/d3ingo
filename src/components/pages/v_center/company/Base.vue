@@ -128,7 +128,7 @@
               </el-col>
               <el-col :span="contentSpan" class="content">
 
-                <el-select v-model.number="form.company_size" placeholder="请选择" v-if="element.company_size">
+                <el-select v-model.number="form.company_size" placeholder="请选择" v-if="element.company_size" class="option-bord">
                   <el-option
                     v-for="(item, index) in sizeOptions"
                     :label="item.label"
@@ -152,7 +152,7 @@
               </el-col>
               <el-col :span="contentSpan" class="content">
 
-                <el-select v-model.number="form.revenue" placeholder="请选择" v-if="element.revenue">
+                <el-select v-model.number="form.revenue" placeholder="请选择" v-if="element.revenue" class="option-bord">
                   <el-option
                     v-for="item in revenueOptions"
                     :label="item.label"
@@ -242,8 +242,16 @@
                 </el-input> -->
               <div  class="prizes-look">
                 <div v-for="(p, indexp) in prizeArr" :key="indexp" class="prizes-img">
-                  <i :style="{background: `url(${require('@/assets/images/prize_logo/'+p.type+'.jpg')}) no-repeat center/ contain`}"></i>
-                  <span>X{{p.count}}</span>
+                <el-tooltip class="item" effect="dark" placement="top">
+                  <div slot="content">
+                    <p >{{p.name}}</p>
+                    <p v-for="(t, indext) in p.times" :key="indext" class="logo.name">{{t|timeFormat}}</p>
+                  </div>
+                  <div>
+                    <i :style="{background: `url(${require('@/assets/images/prize_logo/'+p.type+'.jpg')}) no-repeat center/ contain`}" v-if="p.type"></i>
+                    <span v-if="p.type">X{{p.count}}</span>
+                  </div>
+                </el-tooltip>
                 </div>
               </div>
              <div v-if="element.prizes">
@@ -253,6 +261,7 @@
                         key="p.time"
                         class="fullwidth"
                         v-model="p.time"
+                        @change="updatePerze"
                         type="month"
                         placeholder="获奖日期">
                       </el-date-picker>
@@ -377,16 +386,16 @@
               <el-col :span="titleSpan" class="title">
                 <p>分公司</p>
               </el-col>
-              <el-col :span="contentSpan" class="content subsidiary">
+              <el-col :span="contentSpan" class="content subsidiary cont-class">
 
                 <div v-if="element.branch">
                   <el-col :span="12">
-                    <el-col :span="6" class="flex" style="height:28px; align-items: center">
+                    <el-col :span="6" class="flex pad-top" style="height:28px; align-items: center">
                       <el-switch
                         @change="isBranch"
                         v-model="is_branch"
-                        on-text="有"
-                        off-text="无">
+                        active-text="有"
+                        inactive-text="无">
                       </el-switch>
                     </el-col>
                     <el-col :span="6">
@@ -468,7 +477,7 @@
                         </el-date-picker>
                       </el-col>
                       <el-col :xs="20" :sm="10" :md="10" :lg="10">
-                      <el-select v-model.number="ele.type" placeholder="认定级别" v-if="element.industrial_design_center">
+                      <el-select v-model.number="ele.type" placeholder="认定级别" v-if="element.industrial_design_center" class="option-bord">
                         <el-option
                           v-for="(item, index) in companyIndustrialDesignGradeOptions"
                           :label="item.label"
@@ -483,7 +492,7 @@
                     </el-row>
                   </el-col>
                   <el-col :xs="24" :sm="4" :md="4" :lg="4">
-                    <el-button  type="primary" size="small" @click="addType('industrial_design_center')">添加</el-button>
+                    <el-button type="primary" size="small" @click="addType('industrial_design_center')">添加</el-button>
                   </el-col>
                 </el-row>
                 <p v-if="!element.industrial_design_center && form.industrial_design_center.length" v-for="(e, index) in form.industrial_design_center" :key="e.time + index">{{ e.time}}{{ e.val }}</p>
@@ -506,8 +515,8 @@
                 <el-switch
                   v-if="element.investment_product"
                   v-model="form.investment_product"
-                  on-text="有"
-                  off-text="无">
+                  active-text="有"
+                  inactive-text="无">
                 </el-switch>
               <p v-else>{{ hasProduct }}</p>
               </el-col>
@@ -528,11 +537,11 @@
                       <el-switch
                         @change="changeBrand"
                         v-model="hasBrand"
-                        on-text="有"
-                        off-text="无">
+                        active-text="有"
+                        inactive-text="无">
                       </el-switch>
                     </el-col>
-                    <el-col :xs="24" :sm="3" :md="3" :lg="3" class="margin-bottom10" v-if="hasBrand">
+                    <el-col :xs="24" :sm="3" :md="3" :lg="3" class="brand-style" v-if="hasBrand">
                       <p>品牌名称:</p>
                     </el-col>
                     <el-col class="input-brand margin-bottom10" v-if="hasBrand" v-for="(ele, index) in form.own_brand" :key="index" :xs="12" :sm="5" :md="5" :lg="5">
@@ -542,8 +551,8 @@
                         </template>
                       </el-input>
                     </el-col>
-                    <el-col v-if="ownBrand" :xs="24" :sm="3" :md="3" :lg="3">
-                      <el-button type="primary" size="mini" @click="addOwnBrand">添加</el-button>
+                    <el-col v-if="ownBrand" :xs="24" :sm="3" :md="3" :lg="3" style="padding-top: 5px;">
+                      <el-button type="primary" size="small" @click="addOwnBrand">添加</el-button>
                     </el-col>
                   </el-row>
                 </div>
@@ -764,6 +773,13 @@
         return 24 - this.$store.state.event.leftWidth
       }
     },
+    filters: {
+      timeFormat(val) {
+        if (val) {
+          return new Date(val).format('yyyy-MM-dd')
+        }
+      }
+    },
     methods: {
       // 删除奖项
       deletePrize(index) {
@@ -828,6 +844,7 @@
         this.$set(this.element, mark, true)
       },
       isBranch(val) {
+        console.log('val', val)
         if (val === true) {
           this.is_branch = true
           this.form.branch_office = 1
@@ -843,15 +860,29 @@
         if (that.form.prizes && that.form.prizes.length) {
           that.form.prizes.forEach(item => {
             let index = arrIds.indexOf(item.type)
-            if (index === -1) {
+            if (index === -1 || !item.type) {
               arrIds.push(item.type)
-              arr.push({
+              let i = {}
+              i = {
                 type: item.type,
                 count: 1,
-                name: item.name
+                name: '',
+                times: []
+              }
+              this.prizeOptions.find(p => {
+                if (p.value === item.type) {
+                  i.name = p.label
+                }
               })
+              if (item.time) {
+                i.times.push(item.time)
+              }
+              arr.push(i)
             } else {
               arr[index].count++
+              if (item.time) {
+                arr[index].tiems.push(item.time)
+              }
             }
           })
         }
@@ -1235,6 +1266,12 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .logo-name {
+    margin-top: 5px;
+  }
+  .prizes-look {
+    margin-bottom: -15px;
+  }
   .prizes-look img {
     display: inline-block;
     width: 30px;
@@ -1247,7 +1284,7 @@
   }
   .prizes-img span {
     position: absolute;
-    top: 13px;
+    top: 28px;
     right: -8px;
     font-size: 14px;
     color: #999;
@@ -1267,6 +1304,9 @@
   }
   .tags-fixation:hover {
     color: #ff5a5f;
+  }
+  .pad-top {
+    padding-top: 14px;
   }
   .label-tag .vue-input-tag-wrapper {
     border-radius: 4px;
@@ -1543,6 +1583,10 @@
     background-color: #ff5a5f;
     color: #fff
   }
+  .brand-style {
+    margin-bottom: 10px;
+    margin-left: 35px;
+  }
   /* .white-button:hover {
     border-color: #ff5a5f;
     color: #ff5a5f;
@@ -1557,6 +1601,7 @@
     padding-right: 30px;
     position: relative;
     margin-bottom:10px;
+    margin-top: 15px;
   }
   .prize .p-after {
     position: absolute;

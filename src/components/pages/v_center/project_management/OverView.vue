@@ -3,7 +3,7 @@
     <el-dialog
       title="确认删除"
       :visible.sync="dialogVisible"
-      size="tiny"
+      width="380px"
       >
       <p class="text-center">确认删除此项目阶段</p>
       <span slot="footer" class="dialog-footer">
@@ -14,7 +14,7 @@
     <el-dialog 
       title="确认删除"
       :visible.sync="dialogTask"
-      size="tiny"
+      width="380px"
       >
       <p class="text-center">确认删除此子阶段</p>
       <span slot="footer" class="dialog-footer">
@@ -25,7 +25,7 @@
     <el-dialog 
       title="确认删除"
       :visible.sync="dialogNode"
-      size="tiny"
+      width="380px"
       >
       <p class="text-center">确认删除此里程碑</p>
       <span slot="footer" class="dialog-footer">

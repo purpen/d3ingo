@@ -141,7 +141,7 @@
       title="取消订单"
       :visible.sync="closeShow"
       :lock-scroll="false"
-      size="tiny">
+      width="380px">
       <span>您是否确定取消{{designTitle}}订单</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="closeShow = false">取 消</el-button>

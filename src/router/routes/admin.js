@@ -102,6 +102,16 @@ module.exports = [
     },
     component: require('@/components/admin/item/Show')
   },
+  // 项目详情0
+  {
+    path: '/admin/item/show0/:id',
+    name: 'adminItemShow0',
+    meta: {
+      title: '项目详情',
+      requireAuth: true
+    },
+    component: require('@/components/admin/item/show0')
+  },
   // 项目匹配公司
   {
     path: '/admin/item/match/:id',

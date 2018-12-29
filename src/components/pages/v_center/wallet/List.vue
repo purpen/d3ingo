@@ -153,7 +153,7 @@
     </el-row>
 
     <!--弹框模板-->
-    <el-dialog :title="itemModelTitle" v-model="itemModel" class="withdraw text-center">
+    <el-dialog :title="itemModelTitle" :visible.sync="itemModel" class="withdraw text-center">
       <div class="withdraw-input display-fl" v-if="corporationInfo.account_name !== '' || corporationInfo.bank_name !== '' || corporationInfo.account_number !== ''">
         <div class="withdraw-title margin-t-b-20 dis-ju"><p>开户名称:</p><span>{{corporationInfo.account_name}}</span></div>
         <div class="withdraw-title margin-t-b-20 dis-ju"><p>开户银行：</p><span>{{corporationInfo.bank_name}}</span></div>
@@ -180,7 +180,7 @@
       </div>
     </el-dialog>
     <!--<transition name="fade">-->
-      <!--<el-dialog :title="itemPointTitle" v-model="itemPointTitleInfo" class="withdraw">-->
+      <!--<el-dialog :title="itemPointTitle" :visible.sync="itemPointTitleInfo" class="withdraw">-->
         <!--<div class="withdraw-input">-->
           <!--<p class="withdraw-title margin-t-b-10 text-center font-16">您还没有认证</p>-->
         <!--</div>-->

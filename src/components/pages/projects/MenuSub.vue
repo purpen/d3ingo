@@ -13,7 +13,7 @@
 
     <div class="nav-right nav-menu" v-if="token">
       <el-menu class="el-menu-info" mode="horizontal" router v-if="custom.id === 0">
-        <el-submenu index="2">
+        <el-submenu index="2" :popper-append-to-body="false">
           <template slot="title">
             <img class="avatar2" v-if="user.logo_url" :src="user.logo_url"/>
             <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>

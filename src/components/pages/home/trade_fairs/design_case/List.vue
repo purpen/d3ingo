@@ -99,7 +99,7 @@
       :title="updateform.opt===1?'确认下架':(updateform.opt===2?'确认删除':'撤回')"
       :visible.sync="dialogUpdateVisible"
       :lock-scroll="false"
-      size="tiny"
+      width="380px"
       >
       <!-- <p v-if="updateform.opt ==1">确认要删除 {{updateform.title}} 吗？</p> -->
       <div class="align-c">
@@ -124,7 +124,7 @@
       title="修改价格"
       :visible.sync="dialogVisible"
       :lock-scroll="false"
-      size="tiny"
+      width="380px"
       >
       <el-form v-model="formPrice" :rules="ruleForm" ref="ruleForm" label-width="80px" label-position="top">
         <el-row>

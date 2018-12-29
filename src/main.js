@@ -13,7 +13,7 @@ import VueLazyload from 'vue-lazyload'
 import 'babel-polyfill'
 
 // 样式表导入
-import 'element-ui/lib/theme-default/index.css'
+import 'element-ui/lib/theme-chalk/index.css'
 import 'animate.css/animate.css'
 import 'swiper/dist/css/swiper.css'
 import './assets/css/reset.css'
