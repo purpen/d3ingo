@@ -107,11 +107,25 @@
                   备注
                 </el-col>
               </el-row>
-              <div>
-                <el-steps direction="vertical" :active="1">
-                  <el-step title="步骤 1"></el-step>
-                  <el-step title="步骤 2"></el-step>
-                  <el-step title="步骤 3" description="这是一段很长很长很长的描述性文字"></el-step>
+              <div class="step-list">
+                <el-steps direction="vertical" :active="2">
+                  <el-step title="项目创建" class="step-left" description="创建时间: 2018/12/12"></el-step>
+                  <el-step title="项目发布" class="step-right" description="发布时间：2018/10/12"> </el-step>
+                  <el-step title="项目已邀约" description="这是一段很长很长很长的描述性文字"></el-step>
+                  <el-step title="项目报价" class="step-right"> </el-step>
+                  <el-step title="确定合作" class="step-right"> </el-step>
+                  <el-step title="设计方提交合同" class="step-right"> </el-step>
+                  <el-step title="需求方确认合同" class="step-right"> </el-step>
+                  <el-step title="项目开始" class="step-right"> </el-step>
+                  <el-step title="第一阶段文件提交" class="step-right"> </el-step>
+                  <el-step title="第一阶段文件确认" class="step-right"> </el-step>
+                  <el-step title="第二阶段文件提交" class="step-right"> </el-step>
+                  <el-step title="第二阶段文件确认" class="step-right"> </el-step>
+                  <el-step title="第三阶段文件提交" class="step-right"> </el-step>
+                  <el-step title="第三阶段文件确认" class="step-right"> </el-step>
+                  <el-step title="设计方项目确认完成" class="step-right"> </el-step>
+                  <el-step title="需求方项目验收完成" class="step-right"> </el-step>
+                  <el-step title="评价" class="step-right"> </el-step>
                 </el-steps>
               </div>
             </div>
@@ -498,6 +512,15 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .step-list {
+
+  }
+  .step-left {
+
+  }
+  .step-right {
+
+  }
   .content-header {
   }
   .header-box {
