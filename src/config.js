@@ -917,6 +917,42 @@ const DESIGN_CASE_PRICE_OPTIONS = [
     name: '澳大利亚国际设计奖'
   },
   {
+    id: 17,
+    name: '奥地利ADOLF LOOS国家设计奖'
+  },
+  {
+    id: 18,
+    name: '法国Janus奖'
+  },
+  {
+    id: 19,
+    name: '丹麦设计奖'
+  },
+  {
+    id: 21,
+    name: '西班牙国家设计奖'
+  },
+  {
+    id: 22,
+    name: '法国Observeur设计奖'
+  },
+  {
+    id: 23,
+    name: '比利时Henry van de Velde设计奖'
+  },
+  {
+    id: 24,
+    name: '荷兰设计奖'
+  },
+  {
+    id: 25,
+    name: '芬兰设计奖'
+  },
+  {
+    id: 26,
+    name: '意大利A`Design Award设计奖'
+  },
+  {
     id: 20,
     name: '其他'
   }
