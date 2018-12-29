@@ -110,7 +110,7 @@ module.exports = [
       title: '项目详情',
       requireAuth: true
     },
-    component: require('@/components/admin/item/Show0')
+    component: require('@/components/admin/item/show0')
   },
   // 项目匹配公司
   {
