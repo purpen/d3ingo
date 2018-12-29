@@ -419,7 +419,7 @@
       </el-col>
     </el-row>
 
-    <el-dialog title="提交项目报价" :visible.sync="takingPriceDialog" width="580px" top="2%"   @close="isClose = false"
+    <el-dialog title="提交项目报价" :visible.sync="takingPriceDialog" width="1150px" top="2%"   @close="isClose = false"
     @open="isClose = true"
     >
       <v-quote-submit :paramProp="quoteProp" :formProp="takingPriceForm" @form="quoteFormProp" @param="quoteProp" v-if="isClose"></v-quote-submit>
@@ -554,7 +554,7 @@
     </el-dialog>
         <el-dialog
       title="拒单说明"
-      v-model="noOfferDialog"
+      :visible.sync="noOfferDialog"
       width="380px">
       <p class="alert-line-height">您确定要拒绝此单么?</p>
       <p class="alert-line-height">如果确定请告诉我们拒绝原因:</p>
