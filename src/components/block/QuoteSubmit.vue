@@ -55,7 +55,7 @@
                     <el-input autosize v-model="form.plan_format[index].content" placeholder="请填写工作内容"></el-input>
                   </el-form-item>
                 </el-col>
-                <el-col :xs="24" :sm="6" :md="6" :lg="6">
+                <el-col :xs="24" :sm="7" :md="7" :lg="7">
                   <div v-for="(c, c_index) in d.arranged" :key="c_index" class="mar-r-15">
                     <el-row>
                       <el-col :xs="24" :sm="12" :md="12" :lg="12" class="qouteSubmit">
