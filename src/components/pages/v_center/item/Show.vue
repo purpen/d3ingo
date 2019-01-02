@@ -10,7 +10,7 @@
 
     <el-row :gutter="20" class="blank30 vcenter">
       <v-item-progress :progressButt="progressButt" :progressContract="progressContract"
-                       :progressItem="progressItem"></v-item-progress>
+      :progressItem="progressItem"></v-item-progress>
 
       <el-col :span="isMob ? 24 : 18" class="margin-auto">
         <div class="content">
@@ -468,7 +468,7 @@
 
     <el-dialog
       title="提示"
-      v-model="comfirmDialog"
+      :visible.sync="comfirmDialog"
       width="380px">
       <p class="alert-line-height">{{ comfirmMessage }}</p>
       <span slot="footer" class="dialog-footer">

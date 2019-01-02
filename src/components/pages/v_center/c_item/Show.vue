@@ -419,7 +419,7 @@
       </el-col>
     </el-row>
 
-    <el-dialog title="提交项目报价" :visible.sync="takingPriceDialog" width="1150px" top="2%"   @close="isClose = false"
+    <el-dialog title="提交项目报价" :visible.sync="takingPriceDialog" width="1150px" top="2%" @close="isClose = false"
     @open="isClose = true"
     >
       <v-quote-submit :paramProp="quoteProp" :formProp="takingPriceForm" @form="quoteFormProp" @param="quoteProp" v-if="isClose"></v-quote-submit>
@@ -529,19 +529,21 @@
               </el-form-item>
             </el-col>
           </el-row>
-        <div class="taking-price-btn">
-          <el-button @click="invoiceDialog = false">取 消</el-button>
-          <el-button type="primary" :loading="sendInvoiceLoadingBtn" class="is-custom"
-                     @click="sendInvoiceSubmit('invoiceRuleForm')">确 定
-          </el-button>
-        </div>
+          <el-row>
+            <div class="taking-price-btn">
+              <el-button @click="invoiceDialog = false">取 消</el-button>
+              <el-button type="primary" :loading="sendInvoiceLoadingBtn" class="is-custom"
+                        @click="sendInvoiceSubmit('invoiceRuleForm')">确 定
+              </el-button>
+            </div>
+          </el-row>
 
       </el-form>
     </el-dialog>
 
     <el-dialog
       title="提示"
-      v-model="comfirmDialog"
+      :visible.sync="comfirmDialog"
       width="380px">
       <p class="alert-line-height">{{ comfirmMessage }}</p>
       <span slot="footer" class="dialog-footer">
@@ -702,7 +704,10 @@
         quota: {},
         quotaDialog: false,
         invoiceDialog: false,
-        invoiceForm: {},
+        invoiceForm: {
+          logistics_id: '',
+          logistics_number: ''
+        },
         invoiceRuleForm: {
           logistics_id: [
             {type: 'number', required: true, message: '请选择快递公司', trigger: 'change'}
@@ -2104,7 +2109,7 @@
 
   .taking-price-btn {
     float: right;
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
   }
 
   .eva-content {
