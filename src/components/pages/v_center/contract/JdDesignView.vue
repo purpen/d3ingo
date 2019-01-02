@@ -168,7 +168,7 @@
 
     <el-dialog
       title="提示"
-      v-model="sureDialog"
+      :visible.sync="sureDialog"
       width="380px">
       <input type="hidden" ref="currentType" value="1"/>
       <p class="alert-line-height">{{ sureDialogMessage }}</p>
