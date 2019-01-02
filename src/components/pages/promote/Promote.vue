@@ -664,9 +664,9 @@
         }
       }
       return {
-        isShowBounced: true,  // 弹窗
+        isShowBounced: false, // 弹窗
         quantity: '', // 数量
-        phone: '',    // 底部联系电话
+        phone: '', // 底部联系电话
         time: 0,
         calcHeight: '',
         isLoadingBtn: false,
