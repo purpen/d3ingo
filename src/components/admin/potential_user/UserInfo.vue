@@ -25,7 +25,7 @@
                   <span v-else>{{userForm.phone}}</span>
                 </div>
                 <div class="">
-                  <el-rate v-model="userForm.rank" @change="changeLevel()"></el-rate>
+                  <el-rate v-model="userForm.rank" :disabled="!isHasPower" @change="changeLevel()"></el-rate>
                 </div>
               </div>
               
@@ -36,7 +36,7 @@
                   'status4': userForm.status === 4,
                   'status5': userForm.status === 5
                   }]">
-                <el-select v-model.number="userForm.status" @change="isUpdatedStatus">
+                <el-select v-model.number="userForm.status" :disabled="!isHasPower" @change="isUpdatedStatus">
                   <el-option
                     v-for="(item, index) in userStatus"
                     :key="index"
@@ -62,6 +62,7 @@
                     v-model.trim="userForm.source"
                     size="small"
                     filterable
+                    :disabled="!isHasPower"
                     placeholder="请选择或者新建用户来源"
                     @change="isUpdatedSource"
                     default-first-option
@@ -95,6 +96,7 @@
                               filterable
                               :allow-create="isAdmin>=15"
                               default-first-option
+                              :disabled="!isHasPower"
                               @change="isUpdatedCallStatus">
                     <el-option
                       v-for="(item, index) in callStatus"
@@ -303,7 +305,7 @@
                               <p v-if="item.item" class="link-item">
                                 关联项目 : 
                                 <span class="link-item-name">{{item.item_name}}
-                                  <i class="close-icon-solid" @click="deleteLinkProject(item)"></i>
+                                  <i v-if="isHasPower" class="close-icon-solid" @click="deleteLinkProject(item)"></i>
                                 </span>
                               </p>
                               <div v-else>
