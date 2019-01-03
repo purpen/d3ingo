@@ -241,7 +241,7 @@
                 </div>
                 <div class="manage-item add-stage" v-else>
 
-                  <div class="stage-item" v-for="(d, index) in stages" :key="d.title + index">
+                  <div class="stage-item" v-if="index <= ispayStatus" v-for="(d, index) in stages" :key="d.title + index">
                     <div class="stage-title clearfix">
                       <h3 class="clearfix">第{{ d.no }}阶段: {{ d.title }}</h3>
                       <span style="color: #999" v-if="isMob && d.confirm !== 1">附件格式只限上传JPG／PNG／PDF文件</span>
@@ -261,7 +261,7 @@
                             :on-success="uploadStageSuccess"
                             :before-upload="beforeStageUpload"
                             list-type="text">
-                            <el-button v-if="boolLock || currentStageIndex === index"
+                            <el-button
                                 size="small"
                                 class="is-custom upload_btn"
                                 :id="'upload_btn_' + index"
@@ -722,7 +722,7 @@
         sendInvoiceLoadingBtn: false,
         currentInvoiceId: 0,
         msg: '',
-        boolLock: true
+        ispayStatus: ''
       }
     },
     methods: {
@@ -1113,7 +1113,7 @@
         }
         if (index > 0) {
           if (this.stages.length && this.stages[index - 1].pay_status !== 1) {
-            this.$message.error('请等待之前的阶段付款之后,再发送')
+            this.$message.error('请等待需求方托管阶段款后，发送文件')
             return
           }
         }
@@ -1155,11 +1155,12 @@
         let assetId = parseInt(event.currentTarget.getAttribute('asset_id'))
         let stageIndex = parseInt(event.currentTarget.getAttribute('stage_index'))
         let assetIndex = parseInt(event.currentTarget.getAttribute('asset_index'))
+        this.stages[stageIndex].item_stage_image.splice(assetIndex, 1)
         const that = this
         that.$http.delete(api.asset.format(assetId), {})
           .then(function (response) {
             if (response.data.meta.status_code === 200) {
-              that.stages[stageIndex].item_stage_image.splice(assetIndex, 1)
+              that.$message.success(response.data.meta.message)
             } else {
               that.$message.error(response.data.meta.message)
             }
@@ -1171,15 +1172,12 @@
       },
       // 上传阶段附件
       uplaodStageBtn(event) {
-        if (this.boolLock) {
-          this.boolLock = false
-          let stageId = parseInt(event.currentTarget.getAttribute('stage_id'))
-          let index = parseInt(event.currentTarget.getAttribute('index'))
-          this.currentStageIndex = index
-          this.uploadParam['x:type'] = 8
-          this.uploadParam['x:target_id'] = stageId
-          // document.getElementById('upload_btn_' + index).innerText = '上传中...'
-        }
+        let stageId = parseInt(event.currentTarget.getAttribute('stage_id'))
+        let index = parseInt(event.currentTarget.getAttribute('index'))
+        this.currentStageIndex = index
+        this.uploadParam['x:type'] = 8
+        this.uploadParam['x:target_id'] = stageId
+        // document.getElementById('upload_btn_' + index).innerText = '上传中...'
       },
       stageUploadProgress(event, file, fileList) {
       },
@@ -1208,19 +1206,17 @@
           created_at: response.created_at
         }
         this.stages[index].item_stage_image.push(row)
-        this.boolLock = true
       },
       uploadStageError(err, file, fileList) {
         let index = this.currentStageIndex
         if (this.isMob) {
           document.getElementById('upload_btn_' + index).innerText = '上传附件'
         }
-        this.boolLock = true
         this.$message.error(err)
       },
       handlePreview(file) {
       },
-      handleChange(value) {
+      handleChange(file) {
       }
     },
     computed: {
@@ -1580,6 +1576,13 @@
                       self.sureFinishBtn = true
                     }
                     self.stages = items
+                    let numIndex = 0
+                    self.stages.forEach(ele => {
+                      if (ele.pay_status === 1) {
+                        numIndex += 1
+                      }
+                    })
+                    self.ispayStatus = numIndex
                   }
                 })
                 .catch(function (error) {
