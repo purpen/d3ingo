@@ -817,7 +817,7 @@
                     placeholder="添加跟进内容"
                     v-model="followVal"
                     @focus="focusInput"
-                    @keydown.native.enter.shift="quick"
+                    @keydown.native.enter.shift="quickSubmit"
                     :autosize="{ minRows: 1, maxRows: 10}"
                     :class="{'active': focusHeight}"
                     :maxlength="500">
@@ -1421,6 +1421,9 @@ export default {
     },
     focusInput1() {
       // this.boolEditLog = false
+    },
+    quickSubmit() {
+      this.sendProgressVal()
     },
     sendProgressVal() { // 发送跟进记录
       if (!this.followVal) {
