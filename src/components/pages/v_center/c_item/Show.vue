@@ -261,9 +261,12 @@
                             :on-success="uploadStageSuccess"
                             :before-upload="beforeStageUpload"
                             list-type="text">
-                            <el-button size="small" class="is-custom upload_btn" :id="'upload_btn_' + index"
-                                       @click="uplaodStageBtn"
-                                       :stage_id="d.id" :index="index" type="primary">{{ stageUploadBtnMsg }}
+                            <el-button v-if="boolLock || currentStageIndex === index"
+                                size="small"
+                                class="is-custom upload_btn"
+                                :id="'upload_btn_' + index"
+                                @click="uplaodStageBtn"
+                                :stage_id="d.id" :index="index" type="primary">{{ stageUploadBtnMsg }}
                             </el-button>
                           </el-upload>
                         </p>
@@ -718,7 +721,8 @@
         },
         sendInvoiceLoadingBtn: false,
         currentInvoiceId: 0,
-        msg: ''
+        msg: '',
+        boolLock: true
       }
     },
     methods: {
@@ -1107,6 +1111,12 @@
           this.$message.error('请上传当前阶段附件!')
           return false
         }
+        if (index > 0) {
+          if (this.stages.length && this.stages[index - 1].pay_status !== 1) {
+            this.$message.error('请等待之前的阶段付款之后,再发送')
+            return
+          }
+        }
         this.$refs.confirmTargetId.value = stageId
         this.$refs.confirmIndex.value = index
         this.$refs.comfirmType.value = 4
@@ -1161,12 +1171,15 @@
       },
       // 上传阶段附件
       uplaodStageBtn(event) {
-        let stageId = parseInt(event.currentTarget.getAttribute('stage_id'))
-        let index = parseInt(event.currentTarget.getAttribute('index'))
-        this.currentStageIndex = index
-        this.uploadParam['x:type'] = 8
-        this.uploadParam['x:target_id'] = stageId
-        // document.getElementById('upload_btn_' + index).innerText = '上传中...'
+        if (this.boolLock) {
+          this.boolLock = false
+          let stageId = parseInt(event.currentTarget.getAttribute('stage_id'))
+          let index = parseInt(event.currentTarget.getAttribute('index'))
+          this.currentStageIndex = index
+          this.uploadParam['x:type'] = 8
+          this.uploadParam['x:target_id'] = stageId
+          // document.getElementById('upload_btn_' + index).innerText = '上传中...'
+        }
       },
       stageUploadProgress(event, file, fileList) {
       },
@@ -1195,12 +1208,14 @@
           created_at: response.created_at
         }
         this.stages[index].item_stage_image.push(row)
+        this.boolLock = true
       },
       uploadStageError(err, file, fileList) {
         let index = this.currentStageIndex
         if (this.isMob) {
           document.getElementById('upload_btn_' + index).innerText = '上传附件'
         }
+        this.boolLock = true
         this.$message.error(err)
       },
       handlePreview(file) {
