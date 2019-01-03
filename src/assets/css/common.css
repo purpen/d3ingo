@@ -184,6 +184,12 @@
 .full-height {
   height: 100%;
 }
+.full-width {
+  width: 100%;
+}
+.helf-width {
+  width: 50%;
+}
 /* 发布需求 */
 .project-cover {
   position: relative;
