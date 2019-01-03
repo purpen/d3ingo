@@ -881,7 +881,7 @@
             } else {
               arr[index].count++
               if (item.time) {
-                arr[index].tiems.push(item.time)
+                arr[index].times.push(item.time)
               }
             }
           })
