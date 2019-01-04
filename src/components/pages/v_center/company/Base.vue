@@ -546,7 +546,7 @@
                       <p>品牌名称:</p>
                     </el-col>
                     <el-col class="input-brand margin-bottom10" v-if="hasBrand" v-for="(ele, index) in form.own_brand" :key="index" :xs="12" :sm="5" :md="5" :lg="5">
-                      <el-input v-model="form.own_brand[index]">
+                      <el-input v-model.trim="form.own_brand[index]">
                         <template slot="append">
                           <i class="fx-icon-nothing-close-error" @click="delType(index, 'own_brand')"></i>
                         </template>
