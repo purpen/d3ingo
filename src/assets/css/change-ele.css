@@ -937,6 +937,9 @@
     background-color: #eef1f6;
     border: none;
   }
+  .el-switch__label.is-active {
+    color: #ff5a5f;
+  }
 @media screen and (max-width: 767px) {
   .el-dialog--large,
   .el-dialog--small,
