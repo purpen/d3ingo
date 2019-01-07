@@ -937,6 +937,13 @@
     background-color: #eef1f6;
     border: none;
   }
+  .test-select .el-input__inner {
+    line-height: 30px;
+    height: 30px;
+  }
+  .test-select .el-input__inner:focus {
+    border: 1px solid #e6e6e6;
+  }
 @media screen and (max-width: 767px) {
   .el-dialog--large,
   .el-dialog--small,
