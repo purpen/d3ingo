@@ -6,6 +6,8 @@
       'vcenter-right': leftWidth === 2,
         'vcenter-right-mob': isMob}">
         <div class="right-content modify-content vcenter-container">
+          <c-menu-sub v-if="isCompany"></c-menu-sub>
+          <d-menu-sub v-else></d-menu-sub>
           <v-menu-sub></v-menu-sub>
           <v-menu-sub v-if="false" currentSubName="identification"></v-menu-sub>
           <div :class="['content-box', 'clearfix' , isMob ? 'content-box-m' : '']" v-loading="isLoading">
@@ -55,7 +57,9 @@
 
 <script>
   import vMenu from '@/components/pages/v_center/Menu'
+  import dMenuSub from '@/components/pages/v_center/d_company/MenuSub'
   import vMenuSub from '@/components/pages/v_center/account/MenuSub'
+  import cMenuSub from '@/components/pages/v_center/company/MenuSub'
   import api from '@/api/api'
   import auth from '@/helper/auth'
 
@@ -65,6 +69,8 @@
     name: 'vcenter_account_modify_pwd',
     components: {
       vMenu,
+      dMenuSub,
+      cMenuSub,
       vMenuSub
     },
     data () {
@@ -156,6 +162,9 @@
       },
       rightWidth() {
         return 24 - this.$store.state.event.leftWidth
+      },
+      isCompany() {
+        return this.$store.state.event.user.type === 2
       }
     },
     watch: {},

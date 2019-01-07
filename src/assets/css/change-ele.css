@@ -263,7 +263,7 @@
   }
   .el-dialog__header {
     border-radius: 4px 4px 0 0;
-    padding: 16px 20px;
+    padding: 25px 20px;
     background: #f7f7f7
   }
   .el-dialog__headerbtn .el-dialog__close {
