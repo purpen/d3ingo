@@ -257,6 +257,11 @@
   border-top: none;
   border-right: none;
 }
+/* el-form */
+.fullwidth .el-form-item__content {
+  display: flex;
+  flex-wrap: wrap;
+}
 /* 基本按钮 button >>>>>>>*/
 .el-button,
 .el-button--primary,
