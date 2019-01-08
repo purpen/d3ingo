@@ -8,7 +8,7 @@
         <div class="content">
           <div class="content-header fz-14">
             <div>
-              <router-link :to="{name: 'adminItemList'}" active-class="false" :class="{'is-active': menuType === 1}">返回上一页</router-link>
+              <router-link :to="{name: 'adminItemList'}" active-class="false" :class="{'is-active': menuType === 1}">返回项目列表</router-link>
               <span>&gt;</span>
               <span>{{item.name}}</span>
             </div>
@@ -19,9 +19,10 @@
               <span v-else-if="item.source === 1">京东</span>
               <span>项目状态 : </span>
               <span>{{item.status_value}}</span>
+              <div class="fixe-header">
               <span class="fr delBtn" @click="forceCloseBtn">关闭并退款</span>
               <div class="test-select">
-                <el-select v-model="item.test_status" placeholder="请选择">
+                <el-select v-model="testStatus" @change="setTestDataSubmit" placeholder="请选择">
                   <el-option
                     v-for="item in options"
                     :key="item.value"
@@ -29,6 +30,7 @@
                     :value="item.value">
                   </el-option>
                 </el-select>
+              </div>
               </div>
             </div>
             <div>
@@ -39,20 +41,23 @@
                     <div>
                       <p>合同费用: {{contract.total}} 元</p>
                       <p>确认时间：{{item.contract.true_time|timeFormat}}</p>
-                      <p class="tc-red" v-if="item.source === 1">
+                      <p class="tc-red mg-t-10" v-if="item.source === 1">
                         <el-row>
                           <el-col :span="12" class="t-center" >
-                            查看甲方>>
+                            <a href="javascript:void(0);" @click="viewContractBtn(1)">查看甲方>></a>
                           </el-col>
                           <el-col :span="12" class="t-center">
-                            查看乙方>>
+                            <a href="javascript:void(0);" @click="viewContractBtn(2)">查看乙方>></a>
                           </el-col>
                         </el-row>
                       </p>
-                      <p class="t-center tc-red" v-else>
-                        查看合同
+                      <p class="t-center tc-red mg-t-10" v-else>
+                        <a href="javascript:void(0);" @click="viewContractBtn(0)">查看合同>></a>
                       </p>
                     </div>
+                  </div>
+                  <div v-else>
+                    暂无合同
                   </div>
                 </el-col>
                 <el-col :span="8">
@@ -74,6 +79,9 @@
                       <p>电话：{{contract.design_company_phone}}</p>
                     </div>
                   </div>
+                  <div>
+                    暂无信息
+                  </div>
                 </el-col>
               </el-row>
             </div>
@@ -82,22 +90,22 @@
                 <el-col :span="6">
                   <button :class="['white-button','middle-button', {
                     'full-red-button': childType === 0
-                  }]" @click="updateType(0)">项目进度</button>
+                  }]" @click="updateType(0)" ref="type0">项目进度</button>
                 </el-col>
                 <el-col :span="6">
                   <button :class="['white-button','middle-button', {
                     'full-red-button': childType === 1
-                  }]" @click="updateType(1)">基本信息</button>
+                  }]" @click="updateType(1)" ref="type1">基本信息</button>
                 </el-col>
                 <el-col :span="6">
                   <button :class="['white-button','middle-button', {
                     'full-red-button': childType === 2
-                  }]" @click="updateType(2)">订单进度</button>
+                  }]" @click="updateType(2)" ref="type2">订单进度</button>
                 </el-col>
                 <el-col :span="6">
                   <button :class="['white-button','middle-button', {
                     'full-red-button': childType === 3
-                  }]" @click="updateType(3)">金额及协议</button>
+                  }]" @click="updateType(3)" ref="type3">金额及协议</button>
                 </el-col>
               </el-row>
             </div>
@@ -285,19 +293,25 @@
                     <p><span>{{i.name}}</span></p>
                     <div class="is-money">
                       <p>
-                        <a href="javascript:void(0);" v-show="i.type === 1" @click="showTransfer(index, i)">查看凭证</a>
+                        <a href="javascript:void(0);" v-show="i.sureOutlineTransfer" @click="showTransfer(indexi, i)">查看凭证</a>
                       </p>
                       <p>
-                        <a href="javascript:void(0);" v-show="i.type === 1" @click="sureTransfer(index, i)">确认收款</a>
+                        <a href="javascript:void(0);" v-show="i.sureOutlineTransfer" @click="sureTransfer(indexi, i)">确认收款</a>
                       </p>
                     </div>
-                    <p class="created-date" v-if="i.price">应付金额: {{i.price}} 元</p>
+                    <p class="created-date" v-if="i.amount">应付金额: {{i.amount}} 元</p>
                     <p class="created-date" v-if="i.created_at">支付时间: {{i.created_at|timeFormat}}</p>
                   </div>
                 </el-col>
                 <el-col :span="8">
                   <div class="step_invoice">
                     <p>{{i.newName}}</p>
+                    <p  v-if="i.design_type === 1 && i.design_status===2 && i.design_company_type===2">
+                      <a href="javascript:void(0);" @click="confirmReceipt(i, 2)">确认收到发票</a>
+                    </p>
+                    <p v-if="i.demand_type === 2 && i.demand_status===1 && i.demand_company_type===1">
+                       <a href="javascript:void(0);" @click="confirmReceipt(i, 1)">确认开出发票</a>
+                    </p>
                   </div>
                 </el-col>
                 <el-col :span="8">
@@ -305,18 +319,70 @@
                   </div>
                 </el-col>
               </el-row>
-              <!-- <el-row v-for="(d,indexd) in defaultList" :key="indexd + 'd'" :class="{'last-step':d.type === 13}" v-if="defaultList.length">
+              <el-row v-for="(d,indexd) in defaultOrder" :key="indexd+ 'd'" :class="{'last-step':d.is_last}" v-if="defaultOrder.length">
                 <el-col :span="8" :offset="d.both === 'left'?8:0">
                   <div :class="{
                     'step-left': d.both === 'left',
                     'step-right': d.both === 'right',
                   }">
-                    <p><span>{{d.name}}</span><span v-if="d.type === 7" class="addition">查看合同</span></p>
-                    <p class="created-date">{{d.created}}</p>
+                    <p><span>{{d.name}}</span></p>
+                    <div class="is-money">
+                    </div>
+                    <p class="created-date" v-if="!d.is_last">应付金额: 暂未付款</p>
+                    <p class="created-date" v-if="!d.is_last">支付时间: 暂未付款</p>
                   </div>
                 </el-col>
-              </el-row> -->
+                <el-col :span="8">
+                  <div class="step_invoice">
+                    <p>{{d.newName}}</p>
+                  </div>
+                </el-col>
+                <el-col :span="8">
+                  <div class="remarks">
+                  </div>
+                </el-col>
+              </el-row>
             </div>
+            <el-dialog title="打款凭证" :visible.sync="transferDialog">
+              <img :src="imgUrl" width="100%" />
+              <div slot="footer" class="dialog-footer">
+                <el-button @click="transferDialog = false">取 消</el-button>
+              </div>
+            </el-dialog>
+            <el-dialog title="确认线下打款" :visible.sync="sureTransferDialog">
+              <el-form label-position="top">
+                <input type="hidden" v-model="orderForm.orderId" value="" />
+                <input type="hidden" v-model.number="orderForm.index" value="" />
+                <!-- <el-form-item label="设计成果名称" label-width="200px" v-if="orderForm.pay_type === 5">
+                  <el-input v-model="orderForm.design_result_name" auto-complete="off" disabled></el-input>
+                </el-form-item> -->
+                <el-form-item label="项目名称" label-width="200px">
+                  <el-input v-model="orderForm.itemName" auto-complete="off" disabled></el-input>
+                </el-form-item>
+                <el-form-item label="订单金额" label-width="200px">
+                  <el-input v-model="orderForm.amount" auto-complete="off" disabled></el-input>
+                </el-form-item>
+                <el-form-item label="所属银行" prop="bandId">
+                  <el-select v-model.number="orderForm.bankId" placeholder="请选择银行">
+                    <el-option label="京东云支付" :value="-1"></el-option>
+                    <el-option
+                      v-for="(item, index) in bankOptions"
+                      :label="item.label"
+                      :key="index"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+
+                <el-form-item label="交易单号" label-width="80px">
+                  <el-input v-model="orderForm.payNo" placeholder="交易单号" auto-complete="off"></el-input>
+                </el-form-item>
+              </el-form>
+              <div slot="footer" class="dialog-footer">
+                <el-button @click="sureTransferDialog = false">取 消</el-button>
+                <el-button type="primary" :load="sureTransferLoading" @click="sureTransferSubmit">确 定</el-button>
+              </div>
+            </el-dialog>
           </div>
           <div v-if="childType === 3">
             <div class="company-show">
@@ -403,6 +469,37 @@
               </el-row>
             </div>
           </div>
+          <el-dialog
+            title="合同浏览"
+            :visible.sync="contractDialog"
+            top="2%"
+            width="580px">
+            <div v-if="contractEvt === 1">
+              <v-jd-demand-contract-view :propForm="contract"></v-jd-demand-contract-view>
+            </div>
+            <div v-else-if="contractEvt === 2">
+              <v-jd-design-contract-view :propForm="contract"></v-jd-design-contract-view>
+            </div>
+            <div v-else>
+              <v-contract-view :propForm="contract"></v-contract-view>
+            </div>
+            <span slot="footer" class="dialog-footer">
+              <el-button type="primary" class="is-custom" @click="contractDialog = false">确 定</el-button>
+            </span>
+          </el-dialog>
+          <el-dialog title="发票备注" :visible.sync="dialogVisible0" width="380px">
+            <el-input type="textarea" v-model="verify.refuseRease"></el-input>
+            <span slot="footer" class="dialog-footer">
+              <el-button size="small" @click="dialogVisible0 = false">取 消</el-button>
+              <el-button size="small" type="primary" @click="setVerify(verify.id,verify.refuseRease)">确 定</el-button>
+            </span>
+          </el-dialog>
+          <el-dialog title="报价单详情" :visible.sync="quotaDialog" width="580px" top="2%">
+            <v-quote-view :formProp="quotation"></v-quote-view>
+            <div slot="footer" class="dialog-footer btn">
+              <el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>
+            </div>
+          </el-dialog>
         </div>
       </el-col>
     </el-row>
@@ -414,6 +511,7 @@
 <script>
 import api from '@/api/api'
 import vMenu from '@/components/admin/Menu'
+import typeData from '@/config'
 const vQuoteView = () => import('@/components/block/QuoteView')
 const vContractView = () => import('@/components/block/ContractView')
 const vJdDemandContractView = () => import('@/components/block/JdDemandContractView')
@@ -429,10 +527,20 @@ export default {
   },
   data () {
     return {
+      imgUrl: '', // 凭证地址
+      transferDialog: false, // 查看凭证弹窗
+      sureTransferDialog: false, // 确定打款按钮
+      sureTransferLoading: false, // 确定打款loading
       menuType: 0,
       childType: 0,
+      verify: {
+        id: '',
+        refuseRease: '',
+        companytype: ''
+      }, // 确认收到发票
       leftTypes: [1, 2, 3, 5, 7, 10, 12, 13],
       dialogVisible: false,
+      dialogVisible0: false, // 确认发票弹窗
       itemSchedule: [],
       form: {
         summary: '',
@@ -481,6 +589,16 @@ export default {
       comfirmDialog: false,
       comfirmMessage: '确认执行此操作?',
       offerCompany: [],
+      orderForm: {
+        index: '',
+        orderId: '',
+        itemName: '',
+        amount: '',
+        bankId: '',
+        payNo: '',
+        pay_type: '',
+        design_result_name: ''
+      }, // 确认打款表单
       stickCompany: [],
       cooperateCompany: '',
       gutter: 5,
@@ -493,9 +611,33 @@ export default {
       setTestDataDialog: false,
       isTestDataLoadingBtn: false,
       msg: '',
-      itemOrder: [],
+      pay_orders: [], // 订单进度
+      itemOrder: [], // 发票列表
+      defaultOrder: [
+        {
+          name: '等待付款',
+          both: 'right'
+        },
+        {
+          name: '首付款付款',
+          newName: '首付款发票管理',
+          both: 'right'
+        },
+        {
+          name: '阶段付款',
+          newName: '阶段付款发票管理',
+          both: 'right'
+        },
+        {
+          name: '订单管理完成',
+          newName: '发票管理完成',
+          both: 'right',
+          is_last: true
+        }
+      ],
       itemInvoice: [],
-      invoice: [],
+      designInvoice: [],
+      demandInvoice: [],
       defaultList: [
         {
           name: '项目创建',
@@ -587,6 +729,58 @@ export default {
     }
   },
   methods: {
+    // 判断需求方还是设计公司收到发票/发出发票
+    setVerify (id, refuseRease) {
+      this.test = id
+      this.dialogVisible0 = false
+      const self = this
+      var confirmInvoice = ''
+      if (self.verify.companytype === 2) {
+        // 设计公司
+        confirmInvoice = api.adminCompanyConfirmInvoice
+      } else {
+        confirmInvoice = api.adminDemandCompanyConfirmSendInvoice
+      }
+      // adminCompanyConfirmInvoice   //确认收到
+      // adminDemandCompanyConfirmSendInvoice  确认发出
+      self.$http.put(confirmInvoice, {id: id, summary: refuseRease})
+      .then (function (response) {
+        console.log(response.data)
+        if (response.data.meta.status_code === 200) {
+          self.verify.refuseRease = ''
+          self.$message.success('操作成功')
+          self.itemOrder.forEach((ele, index) => {
+            if (self.verify.companytype === 2 && self.verify.id === ele.design_id) {
+              self.$set(ele, 'design_status', 2)
+            } else if (self.verify.companytype === 1 && self.verify.id === ele.demand_id) {
+              self.$set(ele, 'demand_status', 3)
+            }
+          })
+          // for (let i in self.tableData) {
+          //   if (self.tableData[i].id === self.test) {
+          //     self.$nextTick(_ => {
+          //       self.tableData.splice(i, 1)
+          //       console.log(self.tableData)
+          //     })
+          //   }
+          // }
+        } else {
+          self.$message.error(response.data.meta.message)
+        }
+      })
+    },
+    // 确认发票
+    confirmReceipt (item, companytype) {
+      console.log(item)
+      this.verify.id = item.order_id
+      if (companytype === 2) {
+        this.verify.id = item.design_id
+      } else if (companytype === 1) {
+        this.verify.id = item.demand_id
+      }
+      this.verify.companytype = companytype
+      this.dialogVisible0 = !this.dialogVisible0
+    },
     // 设置测试数据提交
     setTestDataSubmit() {
       this.$http.put(api.adminItemTestStatus, {item_id: this.itemId, test_status: this.testStatus})
@@ -641,6 +835,7 @@ export default {
         return
       }
       this.childType = type
+      this.$refs['type' + type].blur()
     },
     // 获取订单进度
     // getAdminPayOrderList(itemId) {
@@ -867,6 +1062,49 @@ export default {
       this.imgUrl = item.assets.big
       this.transferDialog = true
     },
+    // 对公打款弹层
+    sureTransfer(index, item) {
+      console.log(item)
+      this.orderForm.index = index
+      this.orderForm.orderId = item.id
+      this.orderForm.itemName = this.item.name
+      this.orderForm.design_result_name = item.design_result_name
+      this.orderForm.amount = item.amount
+      this.orderForm.pay_type = item.pay_type
+      this.sureTransferDialog = true
+      this.orderForm.bankId = ''
+      this.orderForm.payNo = ''
+    },
+    // 确认对公打款
+    sureTransferSubmit() {
+      // if (!this.orderForm.orderId || !this.orderForm.itemName || !this.orderForm.bankId || !this.orderForm.payNo) {
+      //   this.$message.error('缺少请求参数!')
+      //   return
+      // }
+      if (!this.orderForm.orderId || !this.orderForm.bankId || !this.orderForm.payNo) {
+        this.$message.error('需完善打款信息!')
+        return
+      }
+      var self = this
+      self.sureTransferLoading = true
+      this.$http.post(api.adminPayOrderTruePay, {pay_order_id: this.orderForm.orderId, bank_id: this.orderForm.bankId, pay_no: this.orderForm.payNo})
+      .then (function(response) {
+        self.sureTransferLoading = false
+        if (response.data.meta.status_code === 200) {
+          self.$message.success('操作成功！')
+          self.sureTransferDialog = false
+          self.itemOrder[self.orderForm.index].sureOutlineTransfer = false
+        } else {
+          self.$message.error(response.data.meta.message)
+          return
+        }
+      })
+      .catch (function(error) {
+        self.$message.error(error.message)
+        self.sureTransferLoading = false
+        console.error(error.message)
+      })
+    },
     handleMatch(index, item) {
       if (item.item.status !== 2) {
         // this.$message.error('项目状态不允许推荐公司')
@@ -1028,7 +1266,9 @@ export default {
         self.item = response.data.data.item
         self.testStatus = self.item.test_status
         self.info = response.data.data.info
-        self.invoice = response.data.data.invoice || []
+        self.designInvoice = response.data.data.design_invoice || []
+        self.demandInvoice = response.data.data.demand_invoice || []
+        self.pay_orders = response.data.data.pay_orders || []
         self.quotation = response.data.data.quotation
         self.contract = response.data.data.contract
         if (response.data.data.item_stage && response.data.data.item_stage.length > 0) {
@@ -1075,14 +1315,40 @@ export default {
         if (response.data.data.recommend) {
           self.offerCompany = response.data.data.recommend
         }
-        if (self.invoice.length) {
+        if (self.pay_orders.length) {
+          self.pay_orders.forEach(pay => {
+            if (self.designInvoice.length) {
+              for (var v = 0; v < self.designInvoice.length; v++) {
+                if (pay.item_stage_id === self.designInvoice[v].item_stage_id) {
+                  pay.design_status = self.designInvoice[v].status
+                  pay.design_id = self.designInvoice[v].id
+                  pay.design_type = self.designInvoice[v].type
+                  pay.design_company_type = self.designInvoice[v].company_type
+                  break
+                }
+              }
+            }
+          })
+          self.pay_orders.forEach(p => {
+            if (self.demandInvoice.length) {
+              for (var dem = 0; dem < self.demandInvoice.length; dem++) {
+                if (p.item_stage_id === self.demandInvoice[dem].item_stage_id) {
+                  p.demand_status = self.demandInvoice[dem].status
+                  p.demand_id = self.demandInvoice[dem].id
+                  p.demand_type = self.demandInvoice[dem].type
+                  p.demand_company_type = self.demandInvoice[dem].company_type
+                  break
+                }
+              }
+            }
+          })
           let stage = 1
           let orderList = []
-          self.invoice.forEach(item => {
-            if (item.pay_type === 1) {
-              item.name = '首付款'
+          self.pay_orders.forEach(item => {
+            if (item.type === 3) {
+              item.name = '首付款付款'
               item.newName = '首付款发票管理'
-            } else if (item.pay_type === 2) {
+            } else if (item.type === 4) {
               if (stage === 1) {
                 item.name = '第一阶段款'
                 item.newName = '一阶段发票管理'
@@ -1096,11 +1362,14 @@ export default {
                 item.newName = '三阶段发票管理'
               }
             }
-            item.newName = item.name
             item.both = 'right'
+            if (item.pay_type === 5 && item.status === 0 && item.bank_transfer === 1) {
+              item.sureOutlineTransfer = true
+            }
             orderList.push(item)
           })
           self.itemOrder = orderList
+          console.log(self.itemOrder)
           if (self.itemOrder.length === self.item_stage.length + 1) {
             self.itemOrder.push({
               name: '订单完成',
@@ -1113,6 +1382,59 @@ export default {
               newName: '',
               both: 'right'
             })
+            self.defaultOrder = []
+          } else {
+            console.log(2222)
+            if (self.item_stage.length) {
+              self.defaultOrder.splice(2)
+              let def = []
+              if (self.item_stage.length === 2) {
+                def = [
+                  {
+                    name: '一阶段付款',
+                    newName: '一阶段付款发票管理',
+                    both: 'right'
+                  },
+                  {
+                    name: '二阶段付款',
+                    newName: '二阶段付款发票管理',
+                    both: 'right'
+                  },
+                  {
+                    name: '订单完成',
+                    newName: '发票管理完成',
+                    is_last: true,
+                    both: 'right'
+                  }
+                ]
+              } else if (self.item_stage.length === 3) {
+                def = [
+                  {
+                    name: '一阶段付款',
+                    newName: '一阶段付款发票管理',
+                    both: 'right'
+                  },
+                  {
+                    name: '二阶段付款',
+                    newName: '二阶段付款发票管理',
+                    both: 'right'
+                  },
+                  {
+                    name: '三阶段付款',
+                    newName: '三阶段付款发票管理',
+                    both: 'right'
+                  },
+                  {
+                    name: '订单完成',
+                    newName: '发票管理完成',
+                    is_last: true,
+                    both: 'right'
+                  }
+                ]
+              }
+              self.defaultOrder.push(...def)
+              self.defaultOrder.splice(0, self.itemOrder.length + 1)
+            }
           }
         }
         switch (self.item.status) {
@@ -1161,6 +1483,17 @@ export default {
     })
   },
   computed: {
+    bankOptions() {
+      var items = []
+      for (var i = 0; i < typeData.BANK_OPTIONS.length; i++) {
+        var item = {
+          value: typeData.BANK_OPTIONS[i]['id'],
+          label: typeData.BANK_OPTIONS[i]['name']
+        }
+        items.push(item)
+      }
+      return items
+    },
     isAdmin() {
       var user = this.$store.state.event.user
       if (user.role_id === 15 || user.role_id === 20) {
@@ -1187,6 +1520,14 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .step_invoice a {
+    display: inline-block;
+    padding: 3px 5px;
+    border: 1px solid #e6e6e6;
+    border-radius: 4px;
+    margin-top: 5px;
+    font-size: 12px;
+  }
   .step_invoice {
     position: relative;
     min-height: 65px;
@@ -1195,6 +1536,14 @@ export default {
   }
   .is-money {
     height: 50px;
+  }
+  .is-money a {
+    font-size: 12px;
+    display: inline-block;
+    padding: 3px 5px;
+    margin-top: 5px;
+    border: 1px solid #e6e6e6;
+    border-radius: 4px;
   }
   .remarks p {
     line-height: 20px;
@@ -1372,18 +1721,30 @@ export default {
     font-size: 12px;
     margin-top: 3px;
   }
+  .mg-t-10 {
+    margin-top: 10px;
+  }
   .t-center {
     text-align: center;
   }
   .content-header {
   }
+  .fixe-header {
+    position: absolute;
+    right: 30px;
+    top: 0px;
+  }
   .header-box {
-    padding: 0 30px;
+    padding: 0 200px 0 30px;
     height: 40px;
     line-height: 38px;
     background: #f7f7f7;
     overflow: hidden;
     border: 1px solid #e6e6e6;
+    position: relative;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
   }
   .header-box span {
     margin-right: 5px;

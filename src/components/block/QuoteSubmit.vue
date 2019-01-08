@@ -17,7 +17,7 @@
           <div v-show="form.plan_format.length">
             <p class="laber-title-font">项目工作计划及费用</p>
             <el-row style="padding: 20px 25px">
-              <el-col :xs="24" :sm="7" :md="7" :lg="7">
+              <el-col :xs="24" :sm="6" :md="6" :lg="6">
                 <p class="font-14">工作内容</p>
               </el-col>
               <el-col :xs="24" :sm="7" :md="7" :lg="7">
@@ -29,7 +29,7 @@
                   <el-col :xs="4" :sm="2" :md="2" :lg="2"></el-col>
                 </el-row>
               </el-col>
-              <el-col :xs="24" :sm="3" :md="3" :lg="3">
+              <el-col :xs="24" :sm="4" :md="4" :lg="4">
                 <p class="padd-l-10 font-14">持续时间</p>
               </el-col>
               <el-col :xs="20" :sm="4" :md="4" :lg="4">
@@ -44,7 +44,10 @@
           <div class="plan-list" v-for="(d, index) in form.plan_format" :key="index">
             <div class="plan-row">
               <el-row :gutter="10">
-                <el-col :xs="24" :sm="7" :md="7" :lg="7" class="qouteSubmit">
+                <!--<el-col :xs="24" :sm="1" :md="1" :lg="1" style="width:12px;margin-top:5px;padding:0;">-->
+                    <!--<img :src="require('assets/images/tools/project_management/quote_row@2x.png')" class="plan-icon" />-->
+                <!--</el-col>-->
+                <el-col :xs="24" :sm="6" :md="6" :lg="6" class="qouteSubmit">
                   <el-form-item
                     :prop="'plan_format.' + index + '.content'"
                     :rules="{
@@ -52,7 +55,7 @@
                     <el-input autosize v-model="form.plan_format[index].content" placeholder="请填写工作内容"></el-input>
                   </el-form-item>
                 </el-col>
-                <el-col :xs="24" :sm="6" :md="6" :lg="6">
+                <el-col :xs="24" :sm="7" :md="7" :lg="7">
                   <div v-for="(c, c_index) in d.arranged" :key="c_index" class="mar-r-15">
                     <el-row>
                       <el-col :xs="24" :sm="12" :md="12" :lg="12" class="qouteSubmit">

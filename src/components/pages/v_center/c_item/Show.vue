@@ -241,7 +241,7 @@
                 </div>
                 <div class="manage-item add-stage" v-else>
 
-                  <div class="stage-item" v-for="(d, index) in stages" :key="d.title + index">
+                  <div class="stage-item" v-if="index <= ispayStatus" v-for="(d, index) in stages" :key="d.title + index">
                     <div class="stage-title clearfix">
                       <h3 class="clearfix">第{{ d.no }}阶段: {{ d.title }}</h3>
                       <span style="color: #999" v-if="isMob && d.confirm !== 1">附件格式只限上传JPG／PNG／PDF文件</span>
@@ -261,9 +261,12 @@
                             :on-success="uploadStageSuccess"
                             :before-upload="beforeStageUpload"
                             list-type="text">
-                            <el-button size="small" class="is-custom upload_btn" :id="'upload_btn_' + index"
-                                       @click="uplaodStageBtn"
-                                       :stage_id="d.id" :index="index" type="primary">{{ stageUploadBtnMsg }}
+                            <el-button
+                                size="small"
+                                class="is-custom upload_btn"
+                                :id="'upload_btn_' + index"
+                                @click="uplaodStageBtn"
+                                :stage_id="d.id" :index="index" type="primary">{{ stageUploadBtnMsg }}
                             </el-button>
                           </el-upload>
                         </p>
@@ -529,19 +532,21 @@
               </el-form-item>
             </el-col>
           </el-row>
-        <div class="taking-price-btn">
-          <el-button @click="invoiceDialog = false">取 消</el-button>
-          <el-button type="primary" :loading="sendInvoiceLoadingBtn" class="is-custom"
-                     @click="sendInvoiceSubmit('invoiceRuleForm')">确 定
-          </el-button>
-        </div>
+          <el-row>
+            <div class="taking-price-btn">
+              <el-button @click="invoiceDialog = false">取 消</el-button>
+              <el-button type="primary" :loading="sendInvoiceLoadingBtn" class="is-custom"
+                        @click="sendInvoiceSubmit('invoiceRuleForm')">确 定
+              </el-button>
+            </div>
+          </el-row>
 
       </el-form>
     </el-dialog>
 
     <el-dialog
       title="提示"
-      v-model="comfirmDialog"
+      :visible.sync="comfirmDialog"
       width="380px">
       <p class="alert-line-height">{{ comfirmMessage }}</p>
       <span slot="footer" class="dialog-footer">
@@ -702,7 +707,10 @@
         quota: {},
         quotaDialog: false,
         invoiceDialog: false,
-        invoiceForm: {},
+        invoiceForm: {
+          logistics_id: '',
+          logistics_number: ''
+        },
         invoiceRuleForm: {
           logistics_id: [
             {type: 'number', required: true, message: '请选择快递公司', trigger: 'change'}
@@ -713,7 +721,8 @@
         },
         sendInvoiceLoadingBtn: false,
         currentInvoiceId: 0,
-        msg: ''
+        msg: '',
+        ispayStatus: ''
       }
     },
     methods: {
@@ -1102,6 +1111,12 @@
           this.$message.error('请上传当前阶段附件!')
           return false
         }
+        if (index > 0) {
+          if (this.stages.length && this.stages[index - 1].pay_status !== 1) {
+            this.$message.error('请等待需求方托管阶段款后，发送文件')
+            return
+          }
+        }
         this.$refs.confirmTargetId.value = stageId
         this.$refs.confirmIndex.value = index
         this.$refs.comfirmType.value = 4
@@ -1140,11 +1155,12 @@
         let assetId = parseInt(event.currentTarget.getAttribute('asset_id'))
         let stageIndex = parseInt(event.currentTarget.getAttribute('stage_index'))
         let assetIndex = parseInt(event.currentTarget.getAttribute('asset_index'))
+        this.stages[stageIndex].item_stage_image.splice(assetIndex, 1)
         const that = this
         that.$http.delete(api.asset.format(assetId), {})
           .then(function (response) {
             if (response.data.meta.status_code === 200) {
-              that.stages[stageIndex].item_stage_image.splice(assetIndex, 1)
+              that.$message.success(response.data.meta.message)
             } else {
               that.$message.error(response.data.meta.message)
             }
@@ -1200,7 +1216,7 @@
       },
       handlePreview(file) {
       },
-      handleChange(value) {
+      handleChange(file) {
       }
     },
     computed: {
@@ -1560,6 +1576,13 @@
                       self.sureFinishBtn = true
                     }
                     self.stages = items
+                    let numIndex = 0
+                    self.stages.forEach(ele => {
+                      if (ele.pay_status === 1) {
+                        numIndex += 1
+                      }
+                    })
+                    self.ispayStatus = numIndex
                   }
                 })
                 .catch(function (error) {
@@ -2104,7 +2127,7 @@
 
   .taking-price-btn {
     float: right;
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
   }
 
   .eva-content {

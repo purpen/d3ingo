@@ -302,7 +302,7 @@
               <el-col :span="contentSpan" class="content">
 
                 <el-input v-model="form.web" placeholder="" v-if="element.web">
-                  <template slot="prepend">http://</template>
+                  <!-- <template slot="prepend">http://</template> -->
                 </el-input>
 
                 <p v-else><a :href="form.web_p" target="_blank">{{ form.web_p }}</a></p>
@@ -344,6 +344,7 @@
                       placeholder="选择或输入擅长领域,上限10个"
                       :tags.sync="form.good_field"
                       :limit="10"
+                      v-model="tags"
                       :add-tag-on-blur="true"
                       ref="tag-input"
                       >
@@ -545,7 +546,7 @@
                       <p>品牌名称:</p>
                     </el-col>
                     <el-col class="input-brand margin-bottom10" v-if="hasBrand" v-for="(ele, index) in form.own_brand" :key="index" :xs="12" :sm="5" :md="5" :lg="5">
-                      <el-input v-model="form.own_brand[index]">
+                      <el-input v-model.trim="form.own_brand[index]">
                         <template slot="append">
                           <i class="fx-icon-nothing-close-error" @click="delType(index, 'own_brand')"></i>
                         </template>
@@ -678,7 +679,8 @@
           'x:type': 0
         },
         imageUrl: '',
-        userId: this.$store.state.event.user.id
+        userId: this.$store.state.event.user.id,
+        tags: []
       }
     },
     directives: {
@@ -776,7 +778,7 @@
     filters: {
       timeFormat(val) {
         if (val) {
-          return new Date(val).format('yyyy-MM-dd')
+          return new Date(val).format('yyyy-MM')
         }
       }
     },
@@ -881,7 +883,7 @@
             } else {
               arr[index].count++
               if (item.time) {
-                arr[index].tiems.push(item.time)
+                arr[index].times.push(item.time)
               }
             }
           })
