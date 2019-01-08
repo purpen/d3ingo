@@ -8,7 +8,7 @@
       <router-link :to="{name: 'vcenterComputerTaking'}" class="item">公司接单设置</router-link> -->
       <router-link :to="{name: 'modifyPwd'}" class="item">账户设置</router-link>
       <router-link :to="{name: 'vcenterComputerBase'}" class="item">公司设置</router-link>
-      <router-link :to="{name: 'vcenterComputerTaking'}" class="item">公司接单设置</router-link>
+      <router-link :to="{name: 'vcenterComputerTaking'}" class="item">接单设置</router-link>
     </div>
   </div>
 </template>
