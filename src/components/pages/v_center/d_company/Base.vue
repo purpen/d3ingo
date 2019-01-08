@@ -160,7 +160,7 @@
               </el-col>
             </el-row>
 
-            <el-row :gutter="gutter" :class="['item', 'border-b-no', isMob ? 'item-m no-border' : '']">
+            <el-row :gutter="gutter" :class="['item', 'border-b-no', isMob ? 'item-m' : '']">
               <el-col :span="titleSpan" class="title">
                 <p>网址</p>
               </el-col>
@@ -188,11 +188,11 @@
                   <a class="a-default" @click="showLegalizeDialog">去认证</a>
                 </div>
                 <div v-if="form.verify_status === 3">
-                  <a class="a-default">认证中</a>
+                  <a class="a-message">认证中</a>
                   <el-button @click="showLegalizeDialog" size="mini">重新修改</el-button> 
                 </div>
                 <div v-if="form.verify_status === 1">
-                  <a class="a-default">认证通过</a>
+                  <a class="a-success">认证成功</a>
                   <el-button @click="showLegalizeDialog" size="mini">修改认证</el-button> 
                 </div>
                 <div v-if="form.verify_status === 2">
@@ -238,10 +238,11 @@
               </el-row>
 
               <el-row :gutter="24">
-                <el-col :span="isMob ? 24 : 14">
+                <el-col :span="isMob ? 24 : 18">
                   <el-form-item label="公司法人营业执照" prop="">
                     <el-upload
                       class=""
+                      ref="upload"
                       :action="uploadParam.url"
                       :on-preview="handlePreview"
                       :on-remove="handleRemove"
@@ -250,7 +251,7 @@
                       :on-error="uploadError"
                       :on-success="uploadSuccess"
                       :before-upload="beforeUpload"
-                      list-type="text">
+                      list-type="picture-card">
                       <el-button size="small" type="primary">点击上传</el-button>
                       <div slot="tip" class="el-upload__tip">只能上传jpg/pdf文件，且不超过5M</div>
                     </el-upload>
@@ -366,7 +367,7 @@
   import '@/assets/js/format'
   import typeData from '@/config'
   import auth from '@/helper/auth'
-  import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
+  import { CHANGE_USER_VERIFY_STATUS, USER_INFO } from '@/store/mutation-types'
 
   export default {
     name: 'vcenter_company_base',
@@ -590,6 +591,11 @@
                 that.form.province_value = item.province_value
                 that.form.city_value = item.city_value
                 that.form.area_value = item.area_value
+              } else if (mark === 'company_abbreviation') {
+                let currentUser = JSON.parse(JSON.stringify(that.user))
+                let company = that.form.company_abbreviation
+                currentUser.company.company_abbreviation = company
+                that.$store.commit(USER_INFO, currentUser)
               } else if (mark === 'company_size') {
                 that.form.company_size_value = item.company_size_value
               } else if (mark === 'company_property') {
@@ -668,7 +674,10 @@
               that.$message.error('请选择所在城市')
               return false
             }
-
+            if (!that.fileList.length) {
+              that.$message.error('请上传营业执照')
+              return false
+            }
             let row = {
               registration_number: that.form.registration_number,
               company_name: that.form.company_name,
@@ -723,7 +732,18 @@
         if (file === null) {
           return false
         }
-        let assetId = file.response.asset_id
+        console.log(file)
+        if (file.status === 'uploading') {
+          this.clearUpload(file)
+          return
+        }
+        let assetId = file.asset_id || file.response.asset_id
+        this.fileList.forEach((item, i, array) => {
+          let id = item.asset_id || item.response.asset_id
+          if (id === assetId) {
+            array.splice(i, 1)
+          }
+        })
         const that = this
         that.$http.delete(api.asset.format(assetId), {})
           .then(function (response) {
@@ -739,6 +759,14 @@
             return false
           })
       },
+      clearUpload(files) {
+        this.fileList.forEach((item, index, array) => {
+          if (item.name === files.name) {
+            this.$refs.upload.abort(item)
+            array.splice(index, 1)
+          }
+        })
+      },
       handlePreview(file) {
         console.log(file)
       },
@@ -749,6 +777,8 @@
         this.$message.error(err + '附件上传失败!')
       },
       uploadSuccess(response, file, fileList) {
+        let arr = [...this.fileList, ...fileList]
+        this.fileList = [...new Set(arr)]
       },
       uploadSuccessPerson(response, file, fileList) {
       },
@@ -821,6 +851,12 @@
                   this.form.area = ''
                   this.district = ''
                   this.form.web = this.form.company_web
+
+                  this.form.license_image.forEach((d, i, array) => {
+                    this.$set(d, 'asset_id', d.id)
+                    this.$set(d, 'url', d.small)
+                  })
+                  this.fileList = this.form.license_image
                   // 处理网址前缀
                   if (this.form.company_web) {
                     let urlRegex = /http:\/\/|https:\/\//
@@ -882,6 +918,12 @@
   .a-default {
     color: #666;
     cursor: pointer;
+  }
+  .a-success {
+    color: #00AC84 !important;
+  }
+  .a-message {
+    color: #FFA64B !important;
   }
   .right-content .content-box {
     padding-bottom: 0;

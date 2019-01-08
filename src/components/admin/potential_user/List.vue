@@ -78,6 +78,7 @@
             border
             class="admin-table"
             @selection-change="handleSelectionChange"
+            @filter-change="filterList"
             style="width: 100%"
             :row-class-name="tableRowClassName">
             <el-table-column
@@ -152,8 +153,18 @@
               label="次回根进">
             </el-table-column>
             <el-table-column
+              prop="status"
               width="70"
-              label="状态">
+              label="状态"
+              :filters="[
+                {text: '潜在客户', value: '1' },
+                { text: '真实需求', value: '2' },
+                { text: '签订合作', value: '3' },
+                { text: '对接设计', value: '4' },
+                { text: '对接失败', value: '5' }
+              ]"
+              :filter-multiple="false"
+              filter-placement="bottom-end">
                 <template slot-scope="scope">
                   <p class="status1 status" v-if="scope.row.status === 1">潜在客户</p>
                   <p class="status2 status"  v-else-if="scope.row.status === 2">真实需求</p>
@@ -282,6 +293,9 @@ export default {
       } else {
         return true
       }
+    },
+    filterList(row) {
+      console.log(row)
     },
     // 多选
     handleSelectionChange(val) {
