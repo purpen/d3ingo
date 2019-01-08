@@ -131,7 +131,7 @@
                      @click="handleMatch(scope.$index, scope.row)">匹配公司</a>
                 </p>
                 <p>
-                  <router-link :to="{name: 'adminItemShow', params: {id: scope.row.item.id}}" target="_blank">查看
+                  <router-link :to="{name: 'adminItemShow0', params: {id: scope.row.item.id}}" target="_blank">查看
                   </router-link>
                 </p>
               </template>
