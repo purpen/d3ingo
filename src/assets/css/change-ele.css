@@ -807,7 +807,7 @@
   }
   .el-form-item__content .el-input .el-input__inner:focus {
     border: 1px solid #d2d2d2;
-    box-shadow: inset 1000px 20px 20px #fff;
+    /* box-shadow: inset 1000px 20px 20px #fff; */
   }
   .el-breadcrumb__inner a, .el-breadcrumb__inner.is-link {
     font-weight: normal;
