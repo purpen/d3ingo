@@ -28,6 +28,9 @@
   display: block;
   clear: both;
 }
+.fz-0 {
+  font-size: 0
+}
 .fz-12 {
   font-size: 12px;
 }
