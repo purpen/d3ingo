@@ -807,7 +807,7 @@
   }
   .el-form-item__content .el-input .el-input__inner:focus {
     border: 1px solid #d2d2d2;
-    box-shadow: inset 1000px 20px 20px #fff;
+    /* box-shadow: inset 1000px 20px 20px #fff; */
   }
   .el-breadcrumb__inner a, .el-breadcrumb__inner.is-link {
     font-weight: normal;
@@ -939,6 +939,13 @@
     background-image: none;
     background-color: #eef1f6;
     border: none;
+  }
+  .test-select .el-input__inner {
+    line-height: 30px;
+    height: 30px;
+  }
+  .test-select .el-input__inner:focus {
+    border: 1px solid #e6e6e6;
   }
   .el-switch__label.is-active {
     color: #ff5a5f;
