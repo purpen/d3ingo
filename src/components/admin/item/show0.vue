@@ -56,8 +56,8 @@
                       </p>
                     </div>
                   </div>
-                  <div v-else>
-                    暂无合同
+                  <div v-else class="no-contract">
+                    <span>暂无合同</span>
                   </div>
                 </el-col>
                 <el-col :span="8">
@@ -79,8 +79,8 @@
                       <p>电话：{{contract.design_company_phone}}</p>
                     </div>
                   </div>
-                  <div>
-                    暂无信息
+                  <div v-else class="no-contract">
+                    <span>暂无信息</span>
                   </div>
                 </el-col>
               </el-row>
@@ -1723,6 +1723,12 @@ export default {
   }
   .mg-t-10 {
     margin-top: 10px;
+  }
+  .no-contract {
+    display: flex;
+    justify-content:center;
+    align-items:Center;
+    height: 100%;
   }
   .t-center {
     text-align: center;
