@@ -21,7 +21,6 @@
 <script>
   import orderMessage from '@/components/tools_block/OrderMessage'
   import systemMessage from '@/components/tools_block/SystemMessage'
-  import taskMessage from '@/components/tools_block/TaskMessage'
   export default {
     name: 'messageComponents',
     data() {
@@ -77,8 +76,7 @@
     },
     components: {
       orderMessage: orderMessage,
-      systemMessage: systemMessage,
-      taskMessage: taskMessage
+      systemMessage: systemMessage
     }
   }
 </script>
@@ -102,6 +100,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    border-top: 1px solid #E6E6E6;
     border-bottom: 1px solid #E6E6E6
   }
   .cover-header span {

@@ -4,9 +4,6 @@
       <router-link :to="{name: 'vcenterMessageList'}"
         active-class="false" :class="{'item': true, 'is-active': menuType === 'vcenterMessageList'}">
         消息提醒</router-link>
-        <router-link :to="{name: 'taskMessageList'}"
-        active-class="false" :class="{'item': true, 'is-active': menuType === 'taskMessageList'}">
-        项目通知</router-link>
       <router-link :to="{name: 'systemMessageList'}"
         active-class="false" :class="{'item': true, 'is-active': menuType === 'systemMessageList'}">
         系统通知</router-link>

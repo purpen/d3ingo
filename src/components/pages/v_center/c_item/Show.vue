@@ -533,8 +533,8 @@
             </el-col>
           </el-row>
           <el-row>
-            <div class="taking-price-btn">
-              <el-button @click="invoiceDialog = false">取 消</el-button>
+            <div class="taking-price-btn fz-0">
+              <el-button class="margin-r-15" @click="invoiceDialog = false">取 消</el-button>
               <el-button type="primary" :loading="sendInvoiceLoadingBtn" class="is-custom"
                         @click="sendInvoiceSubmit('invoiceRuleForm')">确 定
               </el-button>
