@@ -189,7 +189,7 @@
                 </div>
                 <div v-if="form.verify_status === 3">
                   <a class="a-message">认证中</a>
-                  <el-button @click="showLegalizeDialog" size="mini">重新修改</el-button> 
+                  <el-button @click="showLegalizeDialog" size="mini">修改认证</el-button> 
                 </div>
                 <div v-if="form.verify_status === 1">
                   <a class="a-success">认证成功</a>

@@ -160,8 +160,8 @@
                 {text: '潜在客户', value: '1' },
                 { text: '真实需求', value: '2' },
                 { text: '签订合作', value: '3' },
-                { text: '对接设计', value: '4' },
-                { text: '对接失败', value: '5' }
+                { text: '对接设计', value: '5' },
+                { text: '对接失败', value: '4' }
               ]"
               :filter-multiple="false"
               filter-placement="bottom-end">
@@ -258,6 +258,7 @@ export default {
         per_page: 10,
         evt: '',
         val: '',
+        status: 6,
         totalCount: 0,
         valueDate: []
       },
@@ -295,7 +296,27 @@ export default {
       }
     },
     filterList(row) {
-      console.log(row)
+      let value = Object.values(row).toString()
+      switch (value) {
+        case '1':
+          this.query.status = 1
+          break
+        case '2':
+          this.query.status = 2
+          break
+        case '3':
+          this.query.status = 3
+          break
+        case '4':
+          this.query.status = 4
+          break
+        case '5':
+          this.query.status = 5
+          break
+        default:
+          this.query.status = 6
+      }
+      this.getClueList()
     },
     // 多选
     handleSelectionChange(val) {
