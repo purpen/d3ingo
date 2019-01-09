@@ -365,13 +365,17 @@ export default {
         return callback(new Error('请填写正确金额'))
       } else {
         if (typeof Number(value) !== 'number') {
-          return callback(new Error('手机号只能为数字！'))
+          return callback(new Error('金额只能为数字！'))
         } else {
-          let len = (value + '')
-          if (len.split('.')[0].length > 8) {
-            return callback(new Error('金额不能大于千万'))
+          if (value <= 0) {
+            return callback(new Error('金额必须大于0元！'))
           } else {
-            callback()
+            let len = (value + '')
+            if (len.split('.')[0].length > 8) {
+              return callback(new Error('金额不能大于千万'))
+            } else {
+              return callback()
+            }
           }
         }
       }
