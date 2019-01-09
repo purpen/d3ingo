@@ -431,10 +431,10 @@
       },
       eventUser() {
         let user = this.$store.state.event.user
-        if (user.avatar) {
-          user.logo_url = user.avatar.logo
+        if (user.design_company_logo_image) {
+          user.logo_url = user.design_company_logo_image.logo
         } else {
-          user.logo_url = null
+          user.logo_url = user.avatar.logo
         }
         return user
       },
