@@ -27,14 +27,14 @@
                 </el-col>
               </el-row>
               <el-row>
-                <el-col :span="12" :offset="2">
+                <el-col :span="10" :offset="2">
                   <el-form-item prop="account">
                     <el-input v-model="form.account" ref="account" placeholder="手机号码"></el-input>
                   </el-form-item>
                 </el-col>
-                <el-col :span="8">
+                <el-col :span="10">
                   <el-form-item prop="smsCode">
-                    <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
+                    <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码" class="send-bt">
                       <template slot="append">
                         <el-button @click="fetchCode" :disabled="time > 0" class="get-btn">{{ codeMsg }}
                         </el-button>
@@ -53,37 +53,55 @@
         </el-col>
       </el-row>
       <el-row :gutter="10" class="six-img">
-        <el-col :span="3" :offset="3" class="six-col">
-          <img src="../../../assets/images/promote/design-type/productdesign@2x.png" alt="">
-          <p>产品外观设计</p>
+        <el-col :span="3" :offset="3">
+          <div class="six-col">
+            <img src="../../../assets/images/promote/design-type/productdesign@2x.png" alt="">
+            <p>产品外观设计</p>
+          </div>
         </el-col>
-        <el-col :span="3" class="six-col">
+        <el-col :span="3">
+         <div class="six-col">
           <img src="../../../assets/images/promote/design-type/structure.png" alt="">
           <p>产品结构设计</p>
+          </div>
         </el-col>
-        <el-col :span="3" class="six-col">
-          <img src="../../../assets/images/promote/design-type/Packing.png" alt="">
-          <p>包装设计</p>
+        <el-col :span="3">
+          <div class="six-col">
+            <img src="../../../assets/images/promote/design-type/Packing.png" alt="">
+            <p>包装设计</p>
+          </div>
         </el-col>
-        <el-col :span="3" class="six-col">
-          <img src="../../../assets/images/promote/design-type/Graphic.png" alt="">
-          <p>平面设计</p>
+        <el-col :span="3">
+          <div class="six-col">
+            <img src="../../../assets/images/promote/design-type/Graphic.png" alt="">
+            <p>平面设计</p>
+          </div>
         </el-col>
-        <el-col :span="3" class="six-col">
-          <img src="../../../assets/images/promote/design-type/brand.png" alt="">
-          <p>品牌设计</p>
+        <el-col :span="3">
+          <div class="six-col">
+            <img src="../../../assets/images/promote/design-type/brand.png" alt="">
+            <p>品牌设计</p>
+          </div>
         </el-col>
-        <el-col :span="3" class="six-col">
-          <img src="../../../assets/images/promote/design-type/VI.png" alt="">
-          <p>VI设计</p>
+        <el-col :span="3">
+          <div class="six-col">
+            <img src="../../../assets/images/promote/design-type/VI.png" alt="">
+            <p>VI设计</p>
+          </div>
         </el-col>
       </el-row>
       <el-row class="pad-top-50">
         <el-col :span="18" :offset="3" class="four-img"></el-col>
       </el-row>
       <el-row :gutter="10" class="pad-top-50">
-        <el-col :offset="3" :span="9" class="two-img1"></el-col>
-        <el-col :span="9" class="two-img2"></el-col>
+        <div>
+          <el-col :offset="3" :span="9">
+            <div class="two-img1"></div>
+          </el-col>
+          <el-col :span="9">
+            <div class="two-img2"></div>
+          </el-col>
+        </div>
       </el-row>
       <el-row class="one pad-top-50" type="flex" align="middle">
         <el-col :span="5" :offset="3" class="thousand"></el-col>
@@ -158,11 +176,21 @@
       </div>
       <div>
         <el-row :gutter="7" type="flex" justify="center">
-          <el-col :span="3" class="photo1"></el-col>
-          <el-col :span="3" class="photo2"></el-col>
-          <el-col :span="3" class="photo3"></el-col>
-          <el-col :span="3" class="photo4"></el-col>
-          <el-col :span="3" class="photo5"></el-col>
+          <el-col :span="4">
+            <div class="photo1"></div>
+          </el-col>
+          <el-col :span="4">
+            <div class="photo2"></div>
+          </el-col>
+          <el-col :span="4">
+            <div class="photo3"></div>
+          </el-col>
+          <el-col :span="4">
+            <div class="photo4"></div>
+          </el-col>
+          <el-col :span="4">
+            <div class="photo5"></div>
+          </el-col>
         </el-row>
       </div>
       <div class="desigb-about">
@@ -238,29 +266,29 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-col>
+        <el-row>
           <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt height-40 mar-20-30">
             免费发布项目需求
           </button>
-        </el-col>
+        </el-row>
       </el-form>
-      <el-row :gutter="10" class="phone-six pad-bot-6">
+      <el-row :gutter="10" class="phone-six mar-bot-6">
         <el-col :span="8">
           <div class="pho-six-col">
-          <img src="../../../assets/images/promote/design-type/productdesign@2x.png" alt="">
-          <p>产品外观设计</p>
+            <img src="../../../assets/images/promote/design-type/productdesign@2x.png" alt="">
+            <p>产品外观设计</p>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="pho-six-col">
-          <img src="../../../assets/images/promote/design-type/structure.png" alt="">
-          <p>产品结构设计</p>
+            <img src="../../../assets/images/promote/design-type/structure.png" alt="">
+            <p>产品结构设计</p>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="pho-six-col">
-          <img src="../../../assets/images/promote/design-type/Packing.png" alt="">
-          <p>包装设计</p>
+            <img src="../../../assets/images/promote/design-type/Packing.png" alt="">
+            <p>包装设计</p>
           </div>
         </el-col>
       </el-row>
@@ -285,7 +313,7 @@
         </el-col>
       </el-row>
       <div class="finish-des">4步完成设计</div>
-      <el-row :gutter="10" class="pad-bot-8">
+      <el-row :gutter="10" class="margin-bot-8">
         <el-col :span="12">
           <div class="four-one">
             <el-col :span="10" class="phone-four-one"></el-col>
@@ -445,18 +473,16 @@
       <div class="with-pho">
         合照
       </div>
-      <el-row :gutter="3" class="pad-bot-6">
-        <div>
-          <el-col :span="8">
-            <div class="pho-photo-one"></div>
-          </el-col>
-          <el-col :span="8">
-            <div class="pho-photo-two"></div>
-          </el-col>
-          <el-col :span="8">
-            <div class="pho-photo-three"></div>
-          </el-col>
-        </div>
+      <el-row :gutter="10" class="mar-bot-6">
+        <el-col :span="8">
+          <div class="pho-photo-one"></div>
+        </el-col>
+        <el-col :span="8">
+          <div class="pho-photo-two"></div>
+        </el-col>
+        <el-col :span="8">
+          <div class="pho-photo-three"></div>
+        </el-col>
       </el-row>
       <el-row :gutter="3">
         <div>
@@ -481,10 +507,10 @@
       <div class="form mtop_40">
         <el-form :model="form" :rules="ruleForm" ref="ruleForm" class="pad-20">
           <el-form-item prop="name" class="pad-bot-15">
-            <el-input v-model="form.name" name="username" placeholder="请输入您的姓名"></el-input>
+            <el-input v-model="form.name" name="username" placeholder="请输入联系人"></el-input>
           </el-form-item>
           <el-form-item prop="account" class="pad-bot-15">
-            <el-input v-model="form.account" ref="account" placeholder="请输入联系方式"></el-input>
+            <el-input v-model="form.account" ref="account" placeholder="手机号码"></el-input>
           </el-form-item>
           <el-form-item prop="smsCode" class="wap-disabled-btn pad-bot-20">
             <el-input class="" v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
@@ -833,8 +859,8 @@
   }
   .six-img .six-col{
     text-align: center;
-    opacity: 0.75;
-    background-image: linear-gradient(-180deg, #8C27CD 4%, #3A11B9 100%);
+    /* opacity: 0.75; */
+    background-image: linear-gradient(-180deg, rgba(140,39,205, 0.5) 4%, rgba(58,17,185, 0.5) 100%);
     height: 180px;
   }
   .six-col img {
@@ -844,7 +870,7 @@
   .four-img {
     height: 130px;
     background: url("../../../assets/images/promote2/pc/four/FourSteps@2x.png") no-repeat;
-    background-size: cover;
+    background-size: 100% 100%;
   }
   .two-img1 {
     height: 155px;
@@ -954,27 +980,27 @@
   .photo1 {
     height: 160px;
     background: url("../../../assets/images/promote2/pc/photo/01.png") no-repeat;
-    background-size: contain;
+    background-size: 100% 100%;
   }
   .photo2 {
     height: 160px;
     background: url("../../../assets/images/promote2/pc/photo/02.png") no-repeat;
-    background-size: contain;
+    background-size: 100% 100%;
   }
   .photo3 {
     height: 160px;
     background: url("../../../assets/images/promote2/pc/photo/03.png") no-repeat;
-    background-size: contain;
+    background-size: 100% 100%;
   }
   .photo4 {
     height: 160px;
     background: url("../../../assets/images/promote2/pc/photo/04.png") no-repeat;
-    background-size: contain;
+    background-size: 100% 100%;
   }
   .photo5 {
     height: 160px;
     background: url("../../../assets/images/promote2/pc/photo/05.png") no-repeat;
-    background-size: contain;
+    background-size: 100% 100%;
   }
   .pad-top-50 {
     padding-top: 50px;
@@ -994,6 +1020,7 @@
     background: url("../../../assets/images/promote2/phone/bg/BG@2x.jpg") no-repeat;
     background-size: cover;
     margin-bottom: -50px;
+    overflow-x: hidden;
   }
   .phead-text {
     padding-top: 78px;
@@ -1044,8 +1071,8 @@
     height: 74px;
     margin: 10px 0 5px 0;
   }
-  .pad-bot-6 {
-    padding-bottom: 6px;
+  .mar-bot-6 {
+    margin-bottom: 6px;
   }
   .finish-des {
     font-family: PingFangSC-Medium;
@@ -1093,8 +1120,8 @@
     letter-spacing: 0;
     line-height: 18px;
   }
-  .pad-bot-8 {
-    padding-bottom: 8px;
+  .margin-bot-8 {
+    margin-bottom: 8px;
   }
   .phone-two {
     padding: 40px 0 30px 0;
