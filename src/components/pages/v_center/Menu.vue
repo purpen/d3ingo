@@ -38,8 +38,8 @@
             <template slot="title">
               <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
               <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
-              <span v-if="eventUser.company" class="b-nickname">{{ eventUser.company.company_abbreviation }}</span>
-              <span v-else class="b-nickname">{{ eventUser.account }}</span>
+              <span v-if="eventUser.company && eventUser.company.company_abbreviation" class="b-nickname">{{ eventUser.company.company_abbreviation }}</span>
+              <span v-else class="b-nickname">{{ eventUser.account | eventUser.phone | eventUser.realname }}</span>
             </template>
             <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
             <!-- <el-menu-item index="/vcenter/company/base" v-if="!isOrdinaryCompanyAdmin"><i class="fx-4 fx-icon-company"></i><i class="fx-4 fx-icon-company-hover"></i>公司设置 </el-menu-item>
@@ -72,7 +72,7 @@
 
       <div v-if="isMob" class="menu-right">
         <router-link :to="{name: 'vcenterControl'}">
-          <span v-if="eventUser.logo_url" class="avatar" :style="{background: `url(${eventUser.avatar.logo}) no-repeat center / contain`}"></span>
+          <span v-if="eventUser.avatar" class="avatar" :style="{background: `url(${eventUser.avatar.logo}) no-repeat center / contain`}"></span>
           <span v-else class="avatar" :style="{background: `url(${require('@/assets/images/avatar_100.png')}) no-repeat center / contain`}"></span>
         </router-link>
       </div>
@@ -463,7 +463,11 @@
         if (user.design_company_logo_image) {
           user.logo_url = user.design_company_logo_image.logo
         } else {
-          user.logo_url = user.avatar.logo
+          if (user.avatar) {
+            user.logo_url = user.avatar.logo
+          } else {
+            user.logo_url = null
+          }
         }
         return user
       },
