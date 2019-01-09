@@ -8,7 +8,7 @@
         <div class="content">
           <div class="content-header fz-14">
             <div>
-              <router-link :to="{name: 'adminItemList'}" active-class="false" :class="{'is-active': menuType === 1}">返回项目列表</router-link>
+              <router-link :to="{name: 'adminItemList'}" active-class="false" :class="{'is-active': menuType === 1}">项目列表</router-link>
               <span>&gt;</span>
               <span>{{item.name}}</span>
             </div>
@@ -152,7 +152,7 @@
                     'step-right': d.both === 'right',
                   }">
                     <p><span>{{d.name}}</span></p>
-                    <p class="created-date">{{d.created}}</p>
+                    <!-- <p class="created-date">{{d.created}}</p> -->
                   </div>
                 </el-col>
                 <el-col :span="8" :offset="d.both === 'left'?0:8">
@@ -328,8 +328,8 @@
                     <p><span>{{d.name}}</span></p>
                     <div class="is-money">
                     </div>
-                    <p class="created-date" v-if="!d.is_last">应付金额: 暂未付款</p>
-                    <p class="created-date" v-if="!d.is_last">支付时间: 暂未付款</p>
+                    <!-- <p class="created-date" v-if="!d.is_last">应付金额: 暂未付款</p>
+                    <p class="created-date" v-if="!d.is_last">支付时间: 暂未付款</p> -->
                   </div>
                 </el-col>
                 <el-col :span="8">
