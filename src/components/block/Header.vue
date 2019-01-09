@@ -434,7 +434,9 @@
         if (user.design_company_logo_image) {
           user.logo_url = user.design_company_logo_image.logo
         } else {
-          user.logo_url = user.avatar.logo
+          if (user.logo_url) {
+            user.logo_url = user.avatar.logo
+          }
         }
         return user
       },
