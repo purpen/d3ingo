@@ -731,7 +731,7 @@
           this.takingPriceForm.price = this.takingPriceForm.o_price
         } else if (evt === 2) {
           this.takingPriceForm.o_price = this.takingPriceForm.price
-          this.takingPriceForm.price = parseInt(this.takingPriceForm.price).toLocaleString('en-US')
+          this.takingPriceForm.price = parseFloat(this.takingPriceForm.price).toLocaleString('en-US')
         }
       },
       selectCompanyboxChange() {
@@ -1337,7 +1337,7 @@
             self.quotation = response.data.data.quotation
             if (self.quotation) {
               self.takingPriceForm.id = self.quotation.id
-              self.takingPriceForm.price = parseInt(self.quotation.price).toLocaleString('en-US')
+              self.takingPriceForm.price = parseFloat(self.quotation.price).toLocaleString('en-US')
               self.takingPriceForm.o_price = self.quotation.price
               self.takingPriceForm.summary = self.quotation.summary
             }

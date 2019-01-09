@@ -42,11 +42,11 @@
         <p v-show="!form.is_tax && form.is_invoince" class="tax-total-money">税率:<span class="font-size-16"> {{ form.tax_rate }}%</span> &nbsp;&nbsp;&nbsp;&nbsp;总计(含税): <span class="font-size-16">¥{{ taxTotalMoneyFormat }}</span> 元</p>
       </div>
     </div>
-    <div class="sum-box" v-else>
-      <div class="tax-box">
+    <div class="sum-box clearfix" v-else>
+      <div class="tax-box clearfix">
         <p class="total-money">费用: <span class="font-size-16">¥{{ totalMoneyFormat }}</span> 元</p>
       </div>
-      <div class="tax-total-box">
+      <div class="tax-total-box clearfix">
         <p class="tax-total-money">税率:  <span class="font-size-16"> {{ form.tax_rate }}%</span> &nbsp;&nbsp;&nbsp;&nbsp;总计(含税):  <span class="font-size-16">¥{{ taxTotalMoneyFormat }}</span> 元</p>
       </div>
     </div>
@@ -148,7 +148,7 @@ export default {
   }
 
   .sum-box {
-    margin: 20px 0 50px;
+    margin: 20px 0 0;
   }
   .sum-box .tax-box {
 
