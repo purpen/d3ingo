@@ -28,6 +28,9 @@
   display: block;
   clear: both;
 }
+.fz-0 {
+  font-size: 0
+}
 .fz-12 {
   font-size: 12px;
 }
@@ -184,6 +187,12 @@
 .full-height {
   height: 100%;
 }
+.full-width {
+  width: 100%;
+}
+.helf-width {
+  width: 50%;
+}
 /* 发布需求 */
 .project-cover {
   position: relative;
@@ -250,6 +259,11 @@
   border: 1px solid #fff;
   border-top: none;
   border-right: none;
+}
+/* el-form */
+.fullwidth .el-form-item__content {
+  display: flex;
+  flex-wrap: wrap;
 }
 /* 基本按钮 button >>>>>>>*/
 .el-button,

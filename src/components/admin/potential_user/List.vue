@@ -78,6 +78,7 @@
             border
             class="admin-table"
             @selection-change="handleSelectionChange"
+            @filter-change="filterList"
             style="width: 100%"
             :row-class-name="tableRowClassName">
             <el-table-column
@@ -152,8 +153,18 @@
               label="次回根进">
             </el-table-column>
             <el-table-column
+              prop="status"
               width="70"
-              label="状态">
+              label="状态"
+              :filters="[
+                {text: '潜在客户', value: '1' },
+                { text: '真实需求', value: '2' },
+                { text: '签订合作', value: '3' },
+                { text: '对接设计', value: '5' },
+                { text: '对接失败', value: '4' }
+              ]"
+              :filter-multiple="false"
+              filter-placement="bottom-end">
                 <template slot-scope="scope">
                   <p class="status1 status" v-if="scope.row.status === 1">潜在客户</p>
                   <p class="status2 status"  v-else-if="scope.row.status === 2">真实需求</p>
@@ -247,6 +258,7 @@ export default {
         per_page: 10,
         evt: '',
         val: '',
+        status: '',
         totalCount: 0,
         valueDate: []
       },
@@ -282,6 +294,29 @@ export default {
       } else {
         return true
       }
+    },
+    filterList(row) {
+      let value = Object.values(row).toString()
+      switch (value) {
+        case '1':
+          this.query.status = 1
+          break
+        case '2':
+          this.query.status = 2
+          break
+        case '3':
+          this.query.status = 3
+          break
+        case '4':
+          this.query.status = 4
+          break
+        case '5':
+          this.query.status = 5
+          break
+        default:
+          this.query.status = 6
+      }
+      this.getClueList()
     },
     // 多选
     handleSelectionChange(val) {

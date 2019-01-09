@@ -533,8 +533,8 @@
             </el-col>
           </el-row>
           <el-row>
-            <div class="taking-price-btn">
-              <el-button @click="invoiceDialog = false">取 消</el-button>
+            <div class="taking-price-btn fz-0">
+              <el-button class="margin-r-15" @click="invoiceDialog = false">取 消</el-button>
               <el-button type="primary" :loading="sendInvoiceLoadingBtn" class="is-custom"
                         @click="sendInvoiceSubmit('invoiceRuleForm')">确 定
               </el-button>
@@ -2267,34 +2267,34 @@
 
 <style>
   /*改变步骤线的大小*/
-  .el-step__head{
+  .el-step__head .el-step__icon-inner {
+    display: none;
+  }
+  .el-step__head .el-step__icon{
     width: 12px !important;
     height: 12px !important;
-    /*line-height:12px !important;*/
     vertical-align: baseline !important;
+  }
+  .is-process .el-step__line {
+    border-color: #00ac84!important;
+    background-color: #00ac84 !important;
+  }
+  .el-step__head .el-step__line {
+    position: absolute;
+    top: 4px !important;
+    left: 5px !important;
+  }
+  .is-process .el-step__icon{
+    background-color: #00ac84 !important;
+    border-color: #00ac84!important;
   }
   .el-step__head.is-text.is-process {
     color: #FFF;
     background-color: #00ac84!important;
     border-color: #00ac84!important;
   }
-
-  .el-step__head .el-step__line.is-vertical  {
-    position: absolute;
-    top: 12px;
-    left: 5px;
-  }
-
-  .is-process .el-step__line.is-vertical  {
-    background-color: #00ac84 !important;
-  }
-
-  .el-step__head .el-step__icon {
-    line-height: 12px;
-    display: none;
-  }
   /*三个行高 start*/
-  .el-step__title is-success{
+  /* .el-step__title is-success{
     line-height: 15px !important;
   }
   .el-step__main .el-step__title.is-process {
@@ -2304,7 +2304,7 @@
   .el-step__main .el-step__title.is-wait {
     line-height: 15px !important;
     color: #999;
-  }
+  } */
   /*end*/
   /*小屏的定位 start*/
   @media screen and (max-width: 767px){

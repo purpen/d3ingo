@@ -13,11 +13,13 @@
               <el-row :gutter="20" class="flex-wrap">
                 <el-col :xs="12" :sm="6" :md="6" :lg="6">
                   <div v-show="false">{{verify}}</div>
-                  <router-link :to="{name: 'sdDesignCase_submit'}" class="item item-add el-card" v-if="verify === 1">
+                  <router-link :to="{name: 'sdDesignCase_submit'}" class="item item-add el-card"
+                  :class="{'min-height290': !designCases.length}" v-if="verify === 1">
                     <i class="add-icon"></i>
                     <p class="tc-red fz-16">提交设计成果</p>
                   </router-link>
-                  <div class="item item-add el-card" v-else @click="notverify()">
+                  <div class="item item-add el-card"
+                  :class="{'min-height290': !designCases.length}" v-else @click="notverify()">
                     <i class="add-icon"></i>
                     <p class="tc-red fz-16">提交设计成果</p>
                   </div>
@@ -567,6 +569,8 @@
     align-items: center;
     flex-direction: column;
     height: calc(100% - 20px);
+  }
+  .min-height290 {
     min-height: 290px;
   }
   .item-add p {

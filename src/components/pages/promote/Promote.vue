@@ -370,6 +370,24 @@
               </el-col>
             </el-row>
           </div>
+          <div class="bounced" v-if="isShowBounced">
+            <div class="bounced_title">
+              <h2>放假通知</h2>
+              <img src="../../../assets/images/promote/close@2x.png" @click="closeBounced" alt="">
+            </div>
+            <div class="d_content">
+              <div class="d_content_box">
+                <p style="margin-bottom: 10px">尊敬的客户您好：</p>
+                <p>本公司定于12月30日到1月1日休息，2日上班。对此为您带来不便请谅解。
+                </p>
+                <p>谨代表公司祝广大客户元旦快乐！</p>
+              </div>
+            </div>
+            <div class="bounced_footer">
+              <p>太火鸟科技有限公司</p>
+              <p>2018年12月29日</p>
+            </div>
+          </div>
         </div>
       </div>
       <!--app-->
@@ -378,6 +396,19 @@
           <div class="bgimg">
             <img src="../../../assets/images/promote/app/BG01.png"/>
             <img src="../../../assets/images/promote/app/11551541487314_.pic@2x.png" class="logo"/>
+            <div class="app-bounced" v-if="isShowBounced">
+              <div class="app-bounced-box">
+                <img @click="closeBounced" src="../../../assets/images/promote/appclose@2x.png" alt="">
+                <div class="app-d-content">
+                  <p style="margin-bottom: 5px">尊敬的客户您好：</p>
+                  <p>本公司定于12月30日到1月1日休息，2日上班。对此为您带来不便请谅解。谨代表公司祝广大客户元旦快乐！
+                  </p>
+                </div>
+                <div class="app-d-footer">
+                  <p>太火鸟科技有限公司  2018年12月29日 </p>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="title mtop_20 line-height20">
             <div class="fs_13">铟果 | 专注于工业设计和产品创新的全流程B2B服务平台</div>
@@ -633,8 +664,9 @@
         }
       }
       return {
+        isShowBounced: false, // 弹窗
         quantity: '', // 数量
-        phone: '',    // 底部联系电话
+        phone: '', // 底部联系电话
         time: 0,
         calcHeight: '',
         isLoadingBtn: false,
@@ -690,6 +722,10 @@
       }
     },
     methods: {
+      // 关闭弹窗
+      closeBounced () {
+        this.isShowBounced = false
+      },
       direct(path) {
         if (!this.user || this.user.type === 1) {
           this.$router.push({name: path})
@@ -1153,6 +1189,7 @@
     background: #f7f7f7;
     padding: 50px 0 60px 0;
     text-align: center;
+    position: relative;
   }
 
   .desigb-about img {
@@ -1461,5 +1498,101 @@
   }
   .swiper-container {
     padding: 0
+  }
+
+  .bounced {
+    width: 380px;
+    height: 240px;
+    opacity: 0.95;
+    background-image: linear-gradient(-133deg, #6983F9 0%, #9D61DB 100%);
+    border-radius: 6px;
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+  }
+
+  .bounced_title {
+    height: 50px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 20px;
+  }
+
+  .bounced_title img {
+    width: 14px;
+    height: 14px;
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+  }
+  .bounced_title h2{
+    color: #ffffff;
+    font-size: 20px;
+  }
+
+  .d_content_box {
+    margin-top: 14px;
+    padding: 0 20px;
+  }
+
+  .d_content {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    border-top: 1px solid rgba(255, 255, 255, .3);
+  }
+
+  .d_content p {
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  .bounced_footer {
+    padding: 0 20px;
+    text-align: right;
+    margin-top: 15px;
+  }
+
+  .bounced_footer p {
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 24px;
+  }
+
+  /*app放假通知*/
+  .app-bounced {
+    position: absolute;
+    top: 20px;
+  }
+
+  .app-bounced-box {
+    width: 90%;
+    height: 90px;
+    margin:  0 auto;
+    opacity: 0.9;
+    background-image: linear-gradient(-204deg, #FB968B 0%, #F65366 100%);
+    border-radius: 4px;
+    padding: 12px 10px;
+    position: relative;
+  }
+  .app-bounced img {
+    width: 2.6rem;
+    height: 2.6rem;
+    position: absolute;
+    top: 0;
+    right: 10px;
+  }
+
+  .app-d-content p, .app-d-footer p {
+    color: #ffffff;
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  .app-d-footer {
+    text-align: right;
   }
 </style>

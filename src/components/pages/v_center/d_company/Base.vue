@@ -160,7 +160,7 @@
               </el-col>
             </el-row>
 
-            <el-row :gutter="gutter" :class="['item', 'border-b-no', isMob ? 'item-m no-border' : '']">
+            <el-row :gutter="gutter" :class="['item', 'border-b-no', isMob ? 'item-m' : '']">
               <el-col :span="titleSpan" class="title">
                 <p>网址</p>
               </el-col>
@@ -179,7 +179,177 @@
               </el-col>
             </el-row>
             
+            <el-row :gutter="gutter" :class="['item', isMob ? 'item-m no-border' : '']">
+              <el-col :span="titleSpan" class="title">
+                <p>公司实名认证</p>
+              </el-col>
+              <el-col :span="contentSpan" class="content">
+                <div v-if="form.verify_status === 0">点此
+                  <a class="a-default" @click="showLegalizeDialog">去认证</a>
+                </div>
+                <div v-if="form.verify_status === 3">
+                  <a class="a-message">认证中</a>
+                  <el-button @click="showLegalizeDialog" size="mini">修改认证</el-button> 
+                </div>
+                <div v-if="form.verify_status === 1">
+                  <a class="a-success">认证成功</a>
+                  <el-button @click="showLegalizeDialog" size="mini">修改认证</el-button> 
+                </div>
+                <div v-if="form.verify_status === 2">
+                  <a class="a-default">认证失败</a>
+                  <el-button @click="showLegalizeDialog" size="mini">重新认证</el-button>
+                </div>
+              </el-col>
+            </el-row>
           </div>
+          <el-dialog :visible.sync="dialogVisible" width="880px">
+            <el-form label-position="left" :model="form" :rules="ruleForm" ref="ruleForm" label-width="150px">
+
+              <el-row :gutter="24">
+                <el-col :span="isMob ? 24 : 14">
+                  <el-form-item label="企业名称" prop="company_name">
+                    <el-input v-model="form.company_name"
+                              placeholder="请输入完整的公司名称"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-row :gutter="24">
+                <el-col :span="isMob ? 24 : 14">
+                  <el-form-item label="证件类型" prop="company_type" class="fullwidth">
+                    <el-select v-model.number="form.company_type" placeholder="请选择证件类型">
+                      <el-option
+                        v-for="(d, index) in certificateTypeOptions"
+                        :label="d.label"
+                        :key="index"
+                        :value="d.value">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-row :gutter="24">
+                <el-col :span="isMob ? 24 : 14">
+                  <el-form-item label="统一社会信用代码" prop="registration_number">
+                    <el-input v-model="form.registration_number" placeholder="请输入统一社会信用代码"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-row :gutter="24">
+                <el-col :span="isMob ? 24 : 18">
+                  <el-form-item label="公司法人营业执照" prop="">
+                    <el-upload
+                      class=""
+                      ref="upload"
+                      :action="uploadParam.url"
+                      :on-preview="handlePreview"
+                      :on-remove="handleRemove"
+                      :file-list="fileList"
+                      :data="uploadParam"
+                      :on-error="uploadError"
+                      :on-success="uploadSuccess"
+                      :before-upload="beforeUpload"
+                      list-type="picture-card">
+                      <el-button size="small" type="primary">点击上传</el-button>
+                      <div slot="tip" class="el-upload__tip">只能上传jpg/pdf文件，且不超过5M</div>
+                    </el-upload>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+
+              <region-picker 
+                :provinceProp="form.province" 
+                :cityProp="form.city"  
+                :isFirstProp="true" 
+                :districtProp="form.area" 
+                titleProp="公司地址" 
+                @onchange="changeServer"  
+                class="fullwidth" 
+                propStyle="margin:0;">
+              </region-picker>
+              <el-form-item label="" prop="address" style="margin-top: 10px">
+                <el-input v-model="form.address" placeholder="街道地址"></el-input>
+              </el-form-item>
+
+              <div class="sub-title">
+                <span>联系人信息&nbsp;</span>
+              </div>
+              <el-row :gutter="24">
+                <el-col :span="isMob ? 24 : 14">
+                  <el-form-item label="联系人" prop="contact_name">
+                    <el-input v-model="form.contact_name" placeholder="请输入联系人"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="24">
+                <el-col :span="isMob ? 24 : 14">
+                  <el-form-item label="联系人职位" prop="position">
+                    <el-input v-model="form.position" placeholder="请输入职位"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="24">
+                <el-col :span="isMob ? 24 : 14">
+                  <el-form-item label="联系人手机" prop="phone" class="phone">
+                    <div class="phoneExplain">
+                      <div class="pMassgae">
+                        该手机号将会被默认作为消息通知接收号码
+                      </div>
+                    </div>
+                    <el-input v-model="form.phone" placeholder="请输入手机号"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="24">
+                <el-col :span="isMob ? 24 : 14">
+                  <el-form-item label="联系人邮箱" prop="email">
+                    <el-input v-model="form.email" placeholder="请输入邮箱"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <div class="sub-title">
+                <span>公司银行账户信息&nbsp;</span>
+                <!-- <i class="hint"></i> -->
+              </div>
+              <el-row :gutter="24">
+                <el-col :span="isMob ? 24 : 14">
+                  <el-form-item label="开户名称" prop="account_name">
+                    <el-input v-model="form.account_name" placeholder="请输入开户名称"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="24">
+                <el-col :span="isMob ? 24 : 14">
+                  <el-form-item label="开户银行" prop="bank_name">
+                    <el-input v-model="form.bank_name" placeholder="请输入开户行"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="24">
+                <el-col :span="isMob ? 24 : 14">
+                  <el-form-item label="对公银行账号" prop="account_number">
+                    <el-input v-model.trim="form.account_number" placeholder="请输入银行账号"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-row>
+                <el-col>
+                  <div class="form-footer">
+                    <div class="form-btn">
+                      <el-button @click="returnBase">返回</el-button>
+                      <el-button :loading="isLoadingBtn" class="is-custom" type="primary" @click="submit('ruleForm')">提交审核
+                      </el-button>
+                    </div>
+                    <div class="clear"></div>
+                  </div>
+                </el-col>
+              </el-row>
+            </el-form>
+          </el-dialog>
         </div>
       </div>
     </el-row>
@@ -197,7 +367,7 @@
   import '@/assets/js/format'
   import typeData from '@/config'
   import auth from '@/helper/auth'
-  import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
+  import { CHANGE_USER_VERIFY_STATUS, USER_INFO } from '@/store/mutation-types'
 
   export default {
     name: 'vcenter_company_base',
@@ -207,6 +377,19 @@
       RegionPicker
     },
     data () {
+      let checkNumber = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('请填写公司注册号!'))
+        }
+        setTimeout(() => {
+          let len = value.toString().length
+          if (len === 15 || len === 18) {
+            callback()
+          } else {
+            callback(new Error('注册号长度应为15或18位'))
+          }
+        }, 1000)
+      }
       return {
         gutter: 0,
         titleSpan: this.$store.state.event.isMob === true ? 12 : 3,
@@ -221,19 +404,6 @@
         city: '',
         district: '',
         items: {},
-        form: {
-          company_abbreviation: '',
-          company_type: '',
-          company_property: '',
-          registration_number: '',
-          company_web: '',
-          company_size: '',
-          contact_name: '',
-          email: '',
-          phone: '',
-          position: ''
-
-        },
         element: {
           company_abbreviation: false,
           contact: false,
@@ -254,7 +424,72 @@
           'x:type': 0
         },
         imageUrl: '',
-        userId: this.$store.state.event.user.id
+        userId: this.$store.state.event.user.id,
+        ruleForm: {
+          company_name: [
+            {required: true, message: '请填写公司全称', trigger: 'blur'}
+          ],
+          company_type: [
+            {type: 'number', required: true, message: '请选择证件类型', trigger: 'change'}
+          ],
+          registration_number: [
+            {validator: checkNumber, trigger: 'blur'}
+          ],
+          legal_person: [
+            {required: true, message: '请填写法人真实姓名', trigger: 'blur'}
+          ],
+          contact_name: [
+            {required: true, message: '请填写联系人姓名', trigger: 'blur'}
+          ],
+          position: [
+            {required: true, message: '请填写联系人职位', trigger: 'blur'}
+          ],
+          phone: [
+            {required: true, message: '请填写联系人电话', trigger: 'blur'}
+          ],
+          email: [
+            {required: true, message: '请填写联系人邮箱', trigger: 'blur'},
+            {type: 'email', message: '请输入正确的邮箱格式', trigger: 'blur'}
+          ],
+          address: [
+            {required: true, message: '请填写公司地址', trigger: 'blur'}
+          ],
+          account_name: [
+            {required: true, message: '请填写开户名称', trigger: 'blur'}
+          ],
+          bank_name: [
+            {required: true, message: '请填写开户银行', trigger: 'blur'}
+          ],
+          account_number: [
+            {required: true, message: '请填写对公银行账号', trigger: 'blur'}
+          ]
+        },
+        form: {
+          company_name: '',
+          company_type: '',
+          registration_number: '',
+          address: '',
+          contact_name: '',
+          account_name: '',
+          bank_name: '',
+          account_number: '',
+          position: '',
+          phone: '',
+          email: '',
+          province: '',
+          city: '',
+          area: '',
+          test: ''
+        },
+        fileList: [],
+        filePersonList: [],
+        isLoadingBtn: false,
+        dialogVisible: false,
+        currentAddress: {
+          province: '',
+          city: '',
+          area: ''
+        }
       }
     },
     computed: {
@@ -291,6 +526,28 @@
       },
       rightWidth() {
         return 24 - this.$store.state.event.leftWidth
+      },
+      certificateTypeOptions() {
+        let items = []
+        for (let i = 0; i < typeData.COMPANY_CERTIFICATE_TYPE.length; i++) {
+          let item = {
+            value: typeData.COMPANY_CERTIFICATE_TYPE[i]['id'],
+            label: typeData.COMPANY_CERTIFICATE_TYPE[i]['name']
+          }
+          items.push(item)
+        }
+        return items
+      },
+      documentTypeOptions() {
+        let items = []
+        for (let i = 0; i < typeData.DOCUMENT_TYPE.length; i++) {
+          let item = {
+            value: typeData.DOCUMENT_TYPE[i]['id'],
+            label: typeData.DOCUMENT_TYPE[i]['name']
+          }
+          items.push(item)
+        }
+        return items
       }
     },
     methods: {
@@ -334,6 +591,11 @@
                 that.form.province_value = item.province_value
                 that.form.city_value = item.city_value
                 that.form.area_value = item.area_value
+              } else if (mark === 'company_abbreviation') {
+                let currentUser = JSON.parse(JSON.stringify(that.user))
+                let company = that.form.company_abbreviation
+                currentUser.company.company_abbreviation = company
+                that.$store.commit(USER_INFO, currentUser)
               } else if (mark === 'company_size') {
                 that.form.company_size_value = item.company_size_value
               } else if (mark === 'company_property') {
@@ -392,9 +654,235 @@
           return false
         }
       },
-      // 去认证
-      goVerify() {
-        this.$router.push({name: 'vcenterDCompanyIdentification'})
+
+      // 改变城市组件值- 服务信息()
+      changeServer: function(obj) {
+        this.$set(this.form, 'province', obj.province)
+        this.$set(this.form, 'city', obj.city)
+        this.$set(this.form, 'area', obj.district)
+      },
+      submit(formName) {
+        const that = this
+        that.$refs[formName].validate((valid) => {
+          // 验证通过，提交
+          if (valid) {
+            if (!that.form.province) {
+              that.$message.error('请选择所在省份')
+              return false
+            }
+            if (!that.form.city) {
+              that.$message.error('请选择所在城市')
+              return false
+            }
+            if (!that.fileList.length) {
+              that.$message.error('请上传营业执照')
+              return false
+            }
+            let row = {
+              registration_number: that.form.registration_number,
+              company_name: that.form.company_name,
+              company_type: that.form.company_type,
+              contact_name: that.form.contact_name,
+              position: that.form.position,
+              phone: that.form.phone + '',
+              email: that.form.email,
+              address: that.form.address,
+              province: that.form.province,
+              area: that.form.area,
+              city: that.form.city,
+              account_name: that.form.account_name,
+              bank_name: that.form.bank_name,
+              account_number: that.form.account_number
+            }
+
+            if (that.companyId) {
+            } else {
+              if (that.uploadParam['x:random']) {
+                row.random = that.uploadParam['x:random']
+              }
+            }
+            that.isLoadingBtn = true
+            that.$http({method: 'PUT', url: api.demandCompany, data: row})
+              .then(function (response) {
+                that.isLoadingBtn = false
+                if (response.data.meta.status_code === 200) {
+                  that.$store.commit(CHANGE_USER_VERIFY_STATUS, {demand_verify_status: 3})
+                  that.$set(that.form, 'verify_status', 3)
+                  that.$message.success('提交成功,等待审核')
+                  that.dialogVisible = false
+                } else {
+                  that.$message.error(response.data.meta.message)
+                }
+              })
+              .catch(function (error) {
+                that.$message.error(error.message)
+                return false
+              })
+          } else {
+            that.$message.error('验证失败，请检查信息')
+            return false
+          }
+        })
+      },
+      // 返回基本信息页
+      returnBase() {
+        this.$router.push({name: 'vcenterComputerBase'})
+      },
+      handleRemove(file, fileList) {
+        if (file === null) {
+          return false
+        }
+        console.log(file)
+        if (file.status === 'uploading') {
+          this.clearUpload(file)
+          return
+        }
+        let assetId = file.asset_id || file.response.asset_id
+        this.fileList.forEach((item, i, array) => {
+          let id = item.asset_id || item.response.asset_id
+          if (id === assetId) {
+            array.splice(i, 1)
+          }
+        })
+        const that = this
+        that.$http.delete(api.asset.format(assetId), {})
+          .then(function (response) {
+            if (response.data.meta.status_code === 200) {
+            } else {
+              that.$message.error(response.data.meta.message)
+              return false
+            }
+          })
+          .catch(function (error) {
+            that.$message.error(error.message)
+            console.error(error.message)
+            return false
+          })
+      },
+      clearUpload(files) {
+        this.fileList.forEach((item, index, array) => {
+          if (item.name === files.name) {
+            this.$refs.upload.abort(item)
+            array.splice(index, 1)
+          }
+        })
+      },
+      handlePreview(file) {
+        console.log(file)
+      },
+      handleChange(value) {
+        console.log(value)
+      },
+      uploadError(err, file, fileList) {
+        this.$message.error(err + '附件上传失败!')
+      },
+      uploadSuccess(response, file, fileList) {
+        let arr = [...this.fileList, ...fileList]
+        this.fileList = [...new Set(arr)]
+      },
+      uploadSuccessPerson(response, file, fileList) {
+      },
+      beforeUpload(file) {
+        const arr = ['image/jpeg', 'image/gif', 'image/png', 'application/pdf']
+        const isLt5M = file.size / 1024 / 1024 < 5
+
+        this.uploadParam['x:type'] = 9
+
+        console.log(file)
+        if (arr.indexOf(file.type) === -1) {
+          this.$message.error('上传文件格式不正确!')
+          return false
+        }
+        if (!isLt5M) {
+          this.$message.error('上传文件大小不能超过 5MB!')
+          return false
+        }
+      },
+      beforeUploadPerson(file) {
+        const arr = ['image/jpeg', 'image/gif', 'image/png', 'application/pdf']
+        const isLt5M = file.size / 1024 / 1024 < 5
+
+        this.uploadParam['x:type'] = 11
+
+        console.log(file)
+        if (arr.indexOf(file.type) === -1) {
+          this.$message.error('上传文件格式不正确!')
+          return false
+        }
+        if (!isLt5M) {
+          this.$message.error('上传文件大小不能超过 5MB!')
+          return false
+        }
+      },
+      showLegalizeDialog() {
+        let d = this.currentAddress
+        this.dialogVisible = true
+        this.$nextTick(_ => {
+          this.$set(this.form, 'province', d.province === 0 ? '' : d.province)
+          this.$set(this.form, 'city', d.city === 0 ? '' : d.city)
+          this.$set(this.form, 'area', d.area === 0 ? '' : d.area)
+        })
+      },
+      getDemandCompany() {
+        this.$http.get(api.surveyDemandCompanySurvey, {}).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            this.$store.commit(CHANGE_USER_VERIFY_STATUS, response.data.data)
+          }
+        })
+        this.isLoading = true
+        this.$http.get(api.demandCompany, {})
+          .then((response) => {
+            this.isLoading = false
+            this.isFirst = true
+            if (response.data.meta.status_code === 200) {
+              if (response.data.data) {
+                const dataDemand = response.data.data
+                let {province, city, area} = dataDemand
+                this.currentAddress = {province, city, area}
+                // 重新渲染
+                this.$nextTick(() => {
+                  this.form = response.data.data
+                  this.form.company_size = this.form.company_size === 0 ? '' : this.form.company_size
+                  this.form.company_property = this.form.company_property === 0 ? '' : this.form.company_property
+                  this.companyId = response.data.data.id
+                  this.uploadParam['x:target_id'] = response.data.data.id
+                  this.form.province = ''
+                  this.form.city = ''
+                  this.form.area = ''
+                  this.district = ''
+                  this.form.web = this.form.company_web
+
+                  this.form.license_image.forEach((d, i, array) => {
+                    this.$set(d, 'asset_id', d.id)
+                    this.$set(d, 'url', d.small)
+                  })
+                  this.fileList = this.form.license_image
+                  // 处理网址前缀
+                  if (this.form.company_web) {
+                    let urlRegex = /http:\/\/|https:\/\//
+                    if (urlRegex.test(this.form.company_web)) {
+                      this.form.company_web = this.form.company_web.replace(urlRegex, '')
+                    }
+                  }
+                  if (response.data.data.logo_image) {
+                    this.imageUrl = response.data.data.logo_image.logo
+                  }
+                  this.form.verify_status_label = ''
+                  if (this.form.verify_status === 0) {
+                    this.form.verify_status_label = '待认证'
+                  } else if (this.form.verify_status === 1) {
+                    this.form.verify_status_label = '认证通过'
+                  } else if (this.form.verify_status === 2) {
+                    this.form.verify_status_label = '认证失败'
+                  }
+                })
+              }
+            }
+          })
+        .catch((error) => {
+          this.isLoading = false
+          this.$message.error(error.message)
+        })
       }
     },
     watch: {},
@@ -405,72 +893,20 @@
         this.$router.replace({name: 'vcenterComputerBase'})
         return
       }
-      const that = this
-      that.$http.get(api.surveyDemandCompanySurvey, {})
-      .then(function (response) {
-        if (response.data.meta.status_code === 200) {
-          that.$store.commit(CHANGE_USER_VERIFY_STATUS, response.data.data)
-        }
-      })
-      that.isLoading = true
-      that.$http.get(api.demandCompany, {})
-        .then(function (response) {
-          that.isLoading = false
-          that.isFirst = true
-          if (response.data.meta.status_code === 200) {
-            if (response.data.data) {
-              console.log
-              // 重新渲染
-              that.$nextTick(function () {
-                that.form = response.data.data
-                that.form.company_size = that.form.company_size === 0 ? '' : that.form.company_size
-                that.form.company_property = that.form.company_property === 0 ? '' : that.form.company_property
-                that.companyId = response.data.data.id
-                that.uploadParam['x:target_id'] = response.data.data.id
-                that.province = response.data.data.province === 0 ? '' : response.data.data.province
-                that.city = response.data.data.city === 0 ? '' : response.data.data.city
-                that.district = response.data.data.area === 0 ? '' : response.data.data.area
-                that.form.web = that.form.company_web
-                // 处理网址前缀
-                if (that.form.company_web) {
-                  let urlRegex = /http:\/\/|https:\/\//
-                  if (urlRegex.test(that.form.company_web)) {
-                    that.form.company_web = that.form.company_web.replace(urlRegex, '')
-                  }
-                }
-                if (response.data.data.logo_image) {
-                  that.imageUrl = response.data.data.logo_image.logo
-                }
-                that.form.verify_status_label = ''
-                if (that.form.verify_status === 0) {
-                  that.form.verify_status_label = '待认证'
-                } else if (that.form.verify_status === 1) {
-                  that.form.verify_status_label = '认证通过'
-                } else if (that.form.verify_status === 2) {
-                  that.form.verify_status_label = '认证失败'
-                }
-              })
-            }
-          }
-        })
-        .catch(function (error) {
-          that.isLoading = false
-          that.$message.error(error.message)
-        })
-
+      this.getDemandCompany()
       // 加载图片token
-      that.$http.get(api.upToken, {})
-        .then(function (response) {
+      this.$http.get(api.upToken, {})
+        .then((response) => {
           if (response.data.meta.status_code === 200) {
             if (response.data.data) {
-              that.uploadParam['token'] = response.data.data.upToken
-              that.uploadParam['x:random'] = response.data.data.random
-              that.uploadParam.url = response.data.data.upload_url
+              this.uploadParam['token'] = response.data.data.upToken
+              this.uploadParam['x:random'] = response.data.data.random
+              this.uploadParam.url = response.data.data.upload_url
             }
           }
         })
-        .catch(function (error) {
-          that.$message.error(error.message)
+        .catch((error) => {
+          this.$message.error(error.message)
         })
     }
   }
@@ -479,6 +915,16 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .a-default {
+    color: #666;
+    cursor: pointer;
+  }
+  .a-success {
+    color: #00AC84 !important;
+  }
+  .a-message {
+    color: #FFA64B !important;
+  }
   .right-content .content-box {
     padding-bottom: 0;
   }
@@ -711,5 +1157,94 @@
       font-size: 1.3rem;
       color: #FF5A5F;
     }
+  }
+
+  .right-content .content-box-m {
+    margin: 0;
+    padding: 0;
+  }
+  .sub-title {
+    font-size: 16px;
+    color: #222;
+    margin: 20px 0;
+  }
+  .hint:after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    background: url('../../../../assets/images/item/Hint@2x.png') 0 0 no-repeat/16px 16px;
+  }
+  .hint:hover:after {
+    background: url('../../../../assets/images/item/HintHover02@2x.png') 0 0 no-repeat/16px 16px;
+  }
+  .form-btn {
+    float: right;
+    font-size: 0;
+  }
+  .el-radio-group {
+    width: 100%;
+  }
+  .el-radio-group>:first-child {
+    width: 50%;
+  }
+  .form-footer {
+    border-top: 1px solid #e6e6e6;
+    padding-top: 20px;
+  }
+  .form-btn button {
+    width: 120px;
+    margin-left: 15px;
+  }
+  .phone {
+    position: relative;
+  }
+  .phoneExplain:hover:before {
+    background: url('../../../../assets/images/item/TipsHover@2x.png') 0 0 no-repeat/18px 18px;
+  }
+  .phoneExplain:hover .pMassgae {
+    display: block;
+  }
+  .phoneExplain:before {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background: url('../../../../assets/images/item/Tips@2x.png') 0 0 no-repeat/18px 18px;
+    cursor: pointer;
+  }
+  .phoneExplain {
+    height: 18px;
+    width: 75%;
+    position: absolute;
+    left: -70px;
+    top: 10px;
+    z-index: 1;
+  }
+  .pMassgae {
+    display: none;
+    position: absolute;
+    line-height: 30px;
+    background: #fff;
+    border: 2px solid #FF5A5F;
+    border-radius: 4px;
+    left: 35px;
+    top: -100%;
+    padding: 10px 20px;
+    color: #ff5a5f;
+  }
+  .pMassgae:before {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    left: -10px;
+    top: 15px;
+    transform: rotate(45deg) scaleY(1);
+    border-bottom: 2px solid #FF5A5F;
+    border-left: 2px solid #FF5A5F;
+    z-index: 3;
+    background: #fff
   }
 </style>
