@@ -1723,7 +1723,10 @@ td.fc-day.fc-widget-content.fc-today::before {
   #app {
     /* padding-bottom: 450px; */
   }
-
+  .el-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
   .footer .item {
     text-align: left
   }

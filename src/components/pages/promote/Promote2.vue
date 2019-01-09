@@ -272,143 +272,159 @@
           </button>
         </el-row>
       </el-form>
-      <el-row :gutter="10" class="phone-six mar-bot-6">
-        <el-col :span="8">
-          <div class="pho-six-col">
-            <img src="../../../assets/images/promote/design-type/productdesign@2x.png" alt="">
-            <p>产品外观设计</p>
-          </div>
-        </el-col>
-        <el-col :span="8">
-          <div class="pho-six-col">
-            <img src="../../../assets/images/promote/design-type/structure.png" alt="">
-            <p>产品结构设计</p>
-          </div>
-        </el-col>
-        <el-col :span="8">
-          <div class="pho-six-col">
-            <img src="../../../assets/images/promote/design-type/Packing.png" alt="">
-            <p>包装设计</p>
-          </div>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10" class="phone-six">
-        <el-col :span="8">
-          <div class="pho-six-col">
-            <img src="../../../assets/images/promote/design-type/Graphic.png" alt="">
-            <p>平面设计</p>
-          </div>
-        </el-col>
-        <el-col :span="8">
-          <div class="pho-six-col">
-            <img src="../../../assets/images/promote/design-type/brand.png" alt="">
-            <p>品牌设计</p>
-          </div>
-        </el-col>
-        <el-col :span="8">
-          <div class="pho-six-col">
-            <img src="../../../assets/images/promote/design-type/VI.png" alt="">
-            <p>VI设计</p>
-          </div>
-        </el-col>
-      </el-row>
+      <div class="pad-10">
+        <el-row :gutter="10" class="phone-six mar-bot-6">
+          <el-col :span="8">
+            <div class="pho-six-col">
+              <img src="../../../assets/images/promote/design-type/productdesign@2x.png" alt="">
+              <p>产品外观设计</p>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="pho-six-col">
+              <img src="../../../assets/images/promote/design-type/structure.png" alt="">
+              <p>产品结构设计</p>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="pho-six-col">
+              <img src="../../../assets/images/promote/design-type/Packing.png" alt="">
+              <p>包装设计</p>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+      <div class="pad-10">
+        <el-row :gutter="10" class="phone-six">
+          <el-col :span="8">
+            <div class="pho-six-col">
+              <img src="../../../assets/images/promote/design-type/Graphic.png" alt="">
+              <p>平面设计</p>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="pho-six-col">
+              <img src="../../../assets/images/promote/design-type/brand.png" alt="">
+              <p>品牌设计</p>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="pho-six-col">
+              <img src="../../../assets/images/promote/design-type/VI.png" alt="">
+              <p>VI设计</p>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
       <div class="finish-des">4步完成设计</div>
-      <el-row :gutter="10" class="margin-bot-8">
-        <el-col :span="12">
-          <div class="four-one">
-            <el-col :span="10" class="phone-four-one"></el-col>
-            <el-col :span="14" class="phone-four-text">
-              <div class="text-text">
-                提交设计需求
-                设计顾问跟进
-              </div>
-            </el-col>
-          </div>
-        </el-col>
-        <el-col :span="12">
-          <div class="four-one">
-            <el-col :span="10" class="phone-four-two"></el-col>
-            <el-col :span="14" class="phone-four-text">
-              <div class="text-text">
-                敲定设计细节
-                匹配设计公司
-              </div>
-            </el-col>
-          </div>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :span="12">
-          <div class="four-one">
-            <el-col :span="10" class="phone-four-three"></el-col>
-            <el-col :span="14" class="phone-four-text">
-              <div class="text-text">
-                设计项目启动
-                客户分段验收
-              </div>
-            </el-col>
-          </div>
-        </el-col>
-        <el-col :span="12">
-          <div class="four-one">
-            <el-col :span="10" class="phone-four-four"></el-col>
-            <el-col :span="14" class="phone-four-text">
-              <div class="text-text">
-                交付设计方案
-                项目评价打分
-              </div>
-            </el-col>
-          </div>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :span="24">
-        <div class="two-one"></div>
-        <div class="two-two"></div>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10" class="pad-top-50">
-        <div>
-          <el-col :span="10">
-            <div class="three-one-left"></div>
-          </el-col>
-          <el-col :span="14">
-            <el-row type="flex" align="middle" class="mid-hei">
-              <el-col>
-                <div class="three-one-right"></div>
+      <div class="pad-10">
+        <el-row :gutter="10" class="margin-bot-8">
+          <el-col :span="12">
+            <div class="four-one">
+              <el-col :span="9" class="phone-four-one"></el-col>
+              <el-col :span="15" class="phone-four-text">
+                <div class="text-text">
+                  提交设计需求
+                  设计顾问跟进
+                </div>
               </el-col>
-            </el-row>
+            </div>
           </el-col>
-        </div>
-      </el-row>
-      <el-row :gutter="10" class="pad-top-20">
-        <div>
-          <el-col :span="13" :offset="1">
-            <el-row type="flex" align="middle" class="mid-hei">
-              <el-col>
-                <div class="three-two-left"></div>
+          <el-col :span="12">
+            <div class="four-one">
+              <el-col :span="9" class="phone-four-two"></el-col>
+              <el-col :span="15" class="phone-four-text">
+                <div class="text-text">
+                  敲定设计细节
+                  匹配设计公司
+                </div>
               </el-col>
-            </el-row>
+            </div>
           </el-col>
-          <el-col :span="10">
-            <div class="three-two-right"></div>
-          </el-col>
-        </div>
-      </el-row>
-      <el-row :gutter="10" class="pad-top-20">
-        <div>
-          <el-col :span="10">
-            <div class="three-three-left"></div>
-          </el-col>
-          <el-col :span="14">
-            <el-row type="flex" align="middle" class="mid-hei">
-              <el-col>
-                <div class="three-three-right"></div>
+        </el-row>
+      </div>
+      <div class="pad-10">
+        <el-row :gutter="10">
+          <el-col :span="12">
+            <div class="four-one">
+              <el-col :span="9" class="phone-four-three"></el-col>
+              <el-col :span="15" class="phone-four-text">
+                <div class="text-text">
+                  设计项目启动
+                  客户分段验收
+                </div>
               </el-col>
-            </el-row>
+            </div>
           </el-col>
-        </div>
-      </el-row>
+          <el-col :span="12">
+            <div class="four-one">
+              <el-col :span="9" class="phone-four-four"></el-col>
+              <el-col :span="15" class="phone-four-text">
+                <div class="text-text">
+                  交付设计方案
+                  项目评价打分
+                </div>
+              </el-col>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+      <div class="pad-10">
+        <el-row :gutter="10">
+          <el-col :span="24">
+          <div class="two-one"></div>
+          <div class="two-two"></div>
+          </el-col>
+        </el-row>
+      </div>
+      <div class="pad-10">
+        <el-row :gutter="10" class="pad-top-50">
+          <div>
+            <el-col :span="10">
+              <div class="three-one-left"></div>
+            </el-col>
+            <el-col :span="14">
+              <el-row type="flex" align="middle" class="mid-hei">
+                <el-col>
+                  <div class="three-one-right"></div>
+                </el-col>
+              </el-row>
+            </el-col>
+          </div>
+        </el-row>
+      </div>
+      <div class="pad-10">
+        <el-row :gutter="10" class="pad-top-20">
+          <div>
+            <el-col :span="13" :offset="1">
+              <el-row type="flex" align="middle" class="mid-hei">
+                <el-col>
+                  <div class="three-two-left"></div>
+                </el-col>
+              </el-row>
+            </el-col>
+            <el-col :span="10">
+              <div class="three-two-right"></div>
+            </el-col>
+          </div>
+        </el-row>
+      </div>
+      <div class="pad-10">
+        <el-row :gutter="10" class="pad-top-20">
+          <div>
+            <el-col :span="10">
+              <div class="three-three-left"></div>
+            </el-col>
+            <el-col :span="14">
+              <el-row type="flex" align="middle" class="mid-hei">
+                <el-col>
+                  <div class="three-three-right"></div>
+                </el-col>
+              </el-row>
+            </el-col>
+          </div>
+        </el-row>
+      </div>
       <div class="design-product-pho">
         <div class="container">
           <h2 class="public-h2 font-size-20">铟果D³INGO设计服务的项目</h2>
@@ -418,7 +434,7 @@
                 <el-card>
                   <div class="design-product-p">
                     <img src="../../../assets/images/promote/design-product/case01@2x.png" alt="飞行鱼-亚特兰蒂斯号FiFish Atlantis">
-                    <p>FiFish飞行鱼-亚特兰蒂斯号</p>
+                    <p>FiFish飞行鱼</p>
                   </div>
                 </el-card>
               </el-col>
@@ -473,30 +489,34 @@
       <div class="with-pho">
         合照
       </div>
-      <el-row :gutter="10" class="mar-bot-6">
-        <el-col :span="8">
-          <div class="pho-photo-one"></div>
-        </el-col>
-        <el-col :span="8">
-          <div class="pho-photo-two"></div>
-        </el-col>
-        <el-col :span="8">
-          <div class="pho-photo-three"></div>
-        </el-col>
-      </el-row>
-      <el-row :gutter="3">
-        <div>
+      <div class="pad-10">
+        <el-row :gutter="5" class="mar-bot-6">
           <el-col :span="8">
-            <div class="pho-photo-four"></div>
+            <div class="pho-photo-one"></div>
           </el-col>
           <el-col :span="8">
-            <div class="pho-photo-five"></div>
+            <div class="pho-photo-two"></div>
           </el-col>
           <el-col :span="8">
             <div class="pho-photo-three"></div>
           </el-col>
-        </div>
-      </el-row>
+        </el-row>
+      </div>
+      <div class="pad-10">
+        <el-row :gutter="5">
+          <div>
+            <el-col :span="8">
+              <div class="pho-photo-four"></div>
+            </el-col>
+            <el-col :span="8">
+              <div class="pho-photo-five"></div>
+            </el-col>
+            <el-col :span="8">
+              <div class="pho-photo-three"></div>
+            </el-col>
+          </div>
+        </el-row>
+      </div>
       <div class="call-we">联系我们</div>
       <div class="call-phone">客服电话：13031154842</div>
       <div class="btn-center">
@@ -1091,22 +1111,22 @@
   .phone-four-one {
     height: 80px;
     background: url("../../../assets/images/promote2/phone/four/01.png") no-repeat;
-    background-size: contain;
+    background-size: 100% 100%;
   }
   .phone-four-two {
     height: 80px;
     background: url("../../../assets/images/promote2/phone/four/02.png") no-repeat;
-    background-size: contain;
+    background-size: 100% 100%;
   }
   .phone-four-three {
     height: 80px;
     background: url("../../../assets/images/promote2/phone/four/03.png") no-repeat;
-    background-size: contain;
+    background-size: 100% 100%;
   }
   .phone-four-four {
     height: 80px;
     background: url("../../../assets/images/promote2/phone/four/04.png") no-repeat;
-    background-size: contain;
+    background-size: 100% 100%;
   }
   .phone-four-text {
     height: 80px;
@@ -1140,32 +1160,32 @@
   .three-one-left {
     height: 96px;
     background: url("../../../assets/images/promote2/pc/logo/1000+DesignCompany.png") no-repeat;
-    background-size: cover;
+    background-size: 100% 100%;
   }
   .three-one-right {
     height: 70px;
     background: url("../../../assets/images/promote2/phone/logo/DesignCompanyLogos.png") no-repeat;
-    background-size: contain;
+    background-size: 100% 100%;
   }
   .three-two-left {
     height: 70px;
     background: url("../../../assets/images/promote2/phone/logo/PrizeLogos.png") no-repeat;
-    background-size: contain;
+    background-size: 100% 100%;
   }
   .three-two-right {
     height: 96px;
     background: url("../../../assets/images/promote2/pc/logo/300+prize.png") no-repeat;
-    background-size: contain;
+    background-size: 100% 100%;
   }
   .three-three-left {
     height: 96px;
     background: url("../../../assets/images/promote2/pc/logo/1000+Customer.png") no-repeat;
-    background-size: contain;
+    background-size: 100% 100%;
   }
   .three-three-right {
     height: 70px;
     background: url("../../../assets/images/promote2/phone/logo/CustomerLogos.png") no-repeat;
-    background-size: contain;
+    background-size: 100% 100%;
   }
   .mid-hei {
     height: 96px;
@@ -1177,7 +1197,7 @@
     height: 30px;
     padding-left: 9px;
     border-top: none;
-    font-size: 1rem;
+    font-size: 10px;
     color: #222222;
     line-height: 30px;
   }
@@ -1193,7 +1213,7 @@
     padding-top: 20px;
   }
   .design-product-pho {
-    padding: 30px 0 20px 0;
+    padding: 30px 10px 20px 10px;
     text-align: left;
   }
   .pho-photo-one {
@@ -1271,6 +1291,9 @@
   .bt-center {
     text-align: center;
     padding-bottom: 30px;
+  }
+  .pad-10 {
+    padding: 0 10px;
   }
 </style>
 
