@@ -131,7 +131,7 @@
                     'step-left': i.both === 'left',
                     'step-right': i.both === 'right',
                   }">
-                    <p><span>{{i.name}}</span><span v-if="i.type === 7" class="addition">查看合同</span></p>
+                    <p><span>{{i.name}}</span><span v-if="i.type === 7" class="addition"><a href="javascript:void(0);" @click="viewContractBtn(0)">查看合同>></a></span></p>
                     <p class="created-date">{{i.created}}</p>
                     <div class="company-list">
                       <p v-for="(d, indexd) in i.designCompany" :key="indexd" v-if="i.designCompany&&i.designCompany.length">{{d.company_name}}</p>
@@ -151,7 +151,7 @@
                     'step-left': d.both === 'left',
                     'step-right': d.both === 'right',
                   }">
-                    <p><span>{{d.name}}</span><span v-if="d.type === 7" class="addition">查看合同</span></p>
+                    <p><span>{{d.name}}</span></p>
                     <p class="created-date">{{d.created}}</p>
                   </div>
                 </el-col>
@@ -168,7 +168,7 @@
               >
               <el-form :model="form" :rules="rules" ref="ruleForm">
                 <el-form-item prop="summary">
-                  <el-input placeholder="请填写100字以内的备注" v-model="form.summary" type="textarea" :autosize="{ minRows: 4, maxRows: 8}"></el-input>
+                  <el-input placeholder="请填写100字以内的备注" v-model.trim="form.summary" type="textarea" :autosize="{ minRows: 4, maxRows: 8}"></el-input>
                 </el-form-item>
               </el-form>
               <span slot="footer" class="dialog-footer">
@@ -548,7 +548,8 @@ export default {
       },
       rules: {
         summary: [
-          {required: true, message: '请输入备注内容', trigger: 'blur'}
+          {required: true, message: '请输入备注内容', trigger: 'blur'},
+          {min: 1, max: 100, message: '备注内容在100字以内！', trigger: 'blur'}
         ]
       },
       matchCompanyDialog: false,
