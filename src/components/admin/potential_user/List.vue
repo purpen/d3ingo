@@ -258,7 +258,7 @@ export default {
         per_page: 10,
         evt: '',
         val: '',
-        status: 6,
+        status: '',
         totalCount: 0,
         valueDate: []
       },
