@@ -1034,11 +1034,11 @@
     text-align: center;
   }
   .phone-six .pho-six-col {
-    opacity: 0.6;
-    background-image: linear-gradient(-180deg, #8C27CD 4%, #3A11B9 100%);
     border-radius: 6px;
     height: 122px;
     text-align: center;
+    /* opacity: 0.6; */
+    background-image: linear-gradient(-180deg, rgba(140,39,205, 0.6) 4%, rgba(58,17,185, 0.6) 100%);
   }
   .pho-six-col img {
     height: 74px;
@@ -1057,8 +1057,8 @@
   .four-one {
     height: 80px;
     text-align: center;
-    opacity: 0.5;
-    background-image: linear-gradient(-180deg, #8C27CD 4%, #3A11B9 100%);
+    /* opacity: 0.5; */
+    background-image: linear-gradient(-180deg, rgba(140,39,205, 0.5) 4%, rgba(58,17,185, 0.5) 100%);
     border-radius: 6px;
   }
   .phone-four-one {
@@ -1086,11 +1086,12 @@
   }
   .text-text {
     max-width: 87px;
-    padding-top: 27px;
+    padding-top: 20px;
     font-family: PingFangSC-Regular;
     font-size: 13px;
     color: #FFFFFF;
     letter-spacing: 0;
+    line-height: 18px;
   }
   .pad-bot-8 {
     padding-bottom: 8px;
