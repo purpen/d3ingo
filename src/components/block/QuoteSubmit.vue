@@ -52,7 +52,8 @@
                     :prop="'plan_format.' + index + '.content'"
                     :rules="{
                     required: true, message: '请填写工作内容', trigger: 'blur'}">
-                    <el-input autosize v-model="form.plan_format[index].content" placeholder="请填写工作内容"></el-input>
+                    <el-input
+                    type="textarea" autosize v-model="form.plan_format[index].content" placeholder="请填写工作内容"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="7" :md="7" :lg="7">
@@ -70,6 +71,7 @@
                             allow-create
                             default-first-option
                             size="small"
+                            no-match-text="Enter添加新数据"
                             @change="positionChange"
                             placeholder="添加或选择职位">
                             <el-option
@@ -365,13 +367,17 @@ export default {
         return callback(new Error('请填写正确金额'))
       } else {
         if (typeof Number(value) !== 'number') {
-          return callback(new Error('手机号只能为数字！'))
+          return callback(new Error('金额只能为数字！'))
         } else {
-          let len = (value + '')
-          if (len.split('.')[0].length > 8) {
-            return callback(new Error('金额不能大于千万'))
+          if (value <= 0) {
+            return callback(new Error('金额必须大于0元！'))
           } else {
-            callback()
+            let len = (value + '')
+            if (len.split('.')[0].length > 8) {
+              return callback(new Error('金额不能大于千万'))
+            } else {
+              return callback()
+            }
           }
         }
       }

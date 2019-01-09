@@ -178,11 +178,14 @@
     box-shadow: -1px 0 0 0 #ff5a5f;
   }
   /* 合同阶段选择按钮 */
-  .el-form-item__content .el-radio-group{
+  /* .el-form-item__content .el-radio-group{
     width: 44rem;
+  } */
+  .el-radio-button__phase .el-radio-button__inner {
+    width: 100%;
   }
   .el-form-item__content .el-radio-button__inner{
-    width: 20rem;
+    /* width: 20rem; */
     border:1px solid rgba(210,210,210,1);
     border-radius:4px;
   }
@@ -804,7 +807,7 @@
   }
   .el-form-item__content .el-input .el-input__inner:focus {
     border: 1px solid #d2d2d2;
-    box-shadow: inset 1000px 20px 20px #fff;
+    /* box-shadow: inset 1000px 20px 20px #fff; */
   }
   .el-breadcrumb__inner a, .el-breadcrumb__inner.is-link {
     font-weight: normal;
@@ -937,6 +940,13 @@
     background-color: #eef1f6;
     border: none;
   }
+  .test-select .el-input__inner {
+    line-height: 30px;
+    height: 30px;
+  }
+  .test-select .el-input__inner:focus {
+    border: 1px solid #e6e6e6;
+  }
   .el-switch__label.is-active {
     color: #ff5a5f;
   }
@@ -952,4 +962,8 @@
     width: 100%;
   }
 
+}
+.el-pager li:hover,
+.el-pager li.active {
+  color: #ff5a5f
 }

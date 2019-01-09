@@ -158,12 +158,12 @@
               <p class="mar-b-10">经甲乙双方协商，本项目共分 <span class="bottom-border" type="text" disabled v-html="form.sort"></span> 个阶段进行，细节流程与时间节点如下：</p>
 
               <el-row>
-                <el-col :span="isMob ? 16 : 8">
-                  <el-form-item prop="sort" style="margin: 0">
+                <el-col :span="isMob ? 24 : 18">
+                  <el-form-item class="contract-radio" prop="sort" style="margin: 0">
                     <!-- 阶段选择 -->
-                    <el-radio-group  v-model.number="form.sort" @change="genStageInput">
+                    <el-radio-group class="full-width" v-model.number="form.sort" @change="genStageInput">
                         <el-radio-button 
-                        class="el-radio-button__phase"
+                        class="el-radio-button__phase helf-width"
                         v-for="item in stageOptions"
                         :key="item.index"
                         :label="item.label"
@@ -185,7 +185,7 @@
                 <p class="title font-size-16 mar-t-b-20">第{{ d.sort }}阶段</p>
                 <input type="hidden" v-model.number="d.sort"/>
                 <el-row :gutter="6">
-                  <el-col :span="isMob ? 24 : 12">
+                  <el-col :span="isMob ? 24 : 18">
                     <el-form-item
                       style="margin: 0"
                       :prop="'stages.' + index + '.title'"
@@ -199,7 +199,7 @@
                 </el-row>
 
                 <el-row :gutter="10">
-                  <el-col :span="isMob ? 12 : 4">
+                  <el-col :span="isMob ? 12 : 6">
                     <el-form-item
                       :prop="'stages.' + index + '.time'"
                       :rules="{
@@ -211,12 +211,12 @@
                       </el-input>
                     </el-form-item>
                   </el-col>
-                  <el-col :span="isMob ? 12 : 4">
+                  <el-col :span="isMob ? 12 : 6">
                     <el-form-item
                       :prop="'stages.' + index + '.percentage'"
                       :rules="{
-                      type: 'number', required: true, message: '请填写阶段支付百分比', trigger: 'blur',
-                      min: 10, max: 50, message: '比例在10-50之间', trigger: 'blur'
+                      type: 'integer', required: true, message: '请填写阶段支付百分比且为整数', trigger: 'blur',
+                      min: 10, max: 50, message: '比例在10-50之间的整数', trigger: 'blur'
                     }"
                     >
                       <el-input v-model.number="d.percentage" placeholder="阶段百分比"
@@ -225,7 +225,7 @@
                       </el-input>
                     </el-form-item>
                   </el-col>
-                  <el-col :span="isMob ? 12 : 4">
+                  <el-col :span="isMob ? 12 : 6">
                     <el-form-item
                       :prop="'stages.' + index + '.amount'"
                     >
@@ -239,7 +239,7 @@
 
                 </el-row>
                 <el-row :gutter="10" v-for="(s, i) in d.content" :key="i">
-                  <el-col :span="isMob ? 24 : 12">
+                  <el-col :span="isMob ? 24 : 18">
                     <el-form-item
                       :prop="'stages.' + index + '.content.' + i + ''"
                       :rules="{
@@ -526,6 +526,8 @@
               return false
             }
             let stagePrice = that.form.stage_money
+            console.log(totalAmount)
+            console.log(stagePrice)
             if (totalAmount - stagePrice) {
               that.$message.error('阶段金额总和不正确！')
               return false
@@ -622,7 +624,9 @@
             }
             if (amount === stages.length - 1) {
               self.form.stages[index].amount = (Number((total * 0.6).toFixed(2)) - money).toFixed(2)
-            } else self.form.stages[index].amount = total.mul(per).toFixed(2)
+            } else {
+              self.form.stages[index].amount = total.mul(per).toFixed(2)
+            }
           }
         })
       }
@@ -901,7 +905,7 @@
   }
 
   .el-radio-button__phase{
-    width: 21rem;
+    width: 50%;
   }
 
   #line-hei-30 {
