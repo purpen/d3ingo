@@ -50,7 +50,7 @@
                 <template slot="title">
                   <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
                   <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
-                  <span v-if="eventUser.realname" class="b-nickname">{{ eventUser.realname }}</span>
+                  <span v-if="eventUser.company" class="b-nickname">{{ eventUser.company.company_abbreviation }}</span>
                   <span v-else class="b-nickname">{{ eventUser.account }}</span>
                 </template>
                 <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
@@ -431,10 +431,10 @@
       },
       eventUser() {
         let user = this.$store.state.event.user
-        if (user.avatar) {
-          user.logo_url = user.avatar.logo
+        if (user.design_company_logo_image) {
+          user.logo_url = user.design_company_logo_image.logo
         } else {
-          user.logo_url = null
+          user.logo_url = user.avatar.logo
         }
         return user
       },
