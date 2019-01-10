@@ -721,8 +721,8 @@
             </el-row>
             <el-row :gutter="24">
               <el-col :span="isMob ? 24 : 14">
-                <el-checkbox v-model="agreement" disabled class="red">
-                  阅读并同意<a href="javascript:void(0);" class="terms" @click="agreementBtn">《{{custom.info}}平台协议》</a>
+                <el-checkbox v-model="agreement" disabled>
+                  请点击<a href="javascript:void(0);" class="terms" @click="agreementBtn">《{{custom.info}}平台协议》</a>阅读并同意
                 </el-checkbox>
               </el-col>
             </el-row>
@@ -2192,10 +2192,10 @@
   .des i {
     color: #ff5a5f;
   }
-</style>
-
-<style>
-.red .el-checkbox__input.is-disabled+span.el-checkbox__label {
-  color: #ff5a5f !important;
-}
+  .terms {
+    color: #ff5a5f;
+  }
+  .terms:hover {
+    text-decoration: underline #ff5a5f;
+  }
 </style>

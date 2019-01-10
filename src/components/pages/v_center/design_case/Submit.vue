@@ -224,7 +224,7 @@
                 </el-col>
               </el-row>
 
-              <el-form-item label="获得奖项" class="fullwidth">
+              <el-form-item label="获得奖项">
                 <el-row class="flex prize" :gutter="10" v-for="(p,indexp) in prizes" :key="indexp" v-if="prizes&&prizes.length>0">
                   <!-- <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3">
                     <el-radio-group v-model="is_prize" @change="isPrize">
@@ -270,7 +270,7 @@
                 </el-row>
               </el-form-item>
 
-              <el-form-item label="申请专利" class="fullwidth">
+              <el-form-item label="申请专利" >
                 <el-row class="flex prize" :gutter="10" v-for="(t,indext) in patents" :key="indext" v-if="patents&&patents.length>0">
                   <!-- <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3">
                     <el-radio-group v-model="is_apply" @change="isApplication">
