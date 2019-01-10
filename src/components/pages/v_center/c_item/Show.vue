@@ -1160,7 +1160,7 @@
         that.$http.delete(api.asset.format(assetId), {})
           .then(function (response) {
             if (response.data.meta.status_code === 200) {
-              that.$message.success(response.data.meta.message)
+              that.$message.success('删除成功')
             } else {
               that.$message.error(response.data.meta.message)
             }
