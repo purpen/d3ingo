@@ -819,7 +819,7 @@
     z-index: 999;
     top: 56px;
     right: 0;
-    width: 200px;
+    width: 220px;
     background: #fff;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .12),
     0 0 6px 0 rgba(0, 0, 0, .04);

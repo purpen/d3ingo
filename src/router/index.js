@@ -743,6 +743,14 @@ let routes = [
     component: require('@/components/pages/promote/Promote')
   },
   {
+    path: '/promote2',
+    name: 'promote2',
+    meta: {
+      title: '铟果推广'
+    },
+    component: require('@/components/pages/promote/Promote2')
+  },
+  {
     path: '/redirect',
     name: 'redirect',
     component: require('@/components/block/Redirect')

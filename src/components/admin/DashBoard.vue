@@ -204,7 +204,7 @@
           for (var i = 0; i < itemList.length; i++) {
             var item = itemList[i]
             item['item']['status_label'] = '[{0}]{1}'.format(item.item.status, item.item.status_value)
-            item['item']['created_at'] = item.item.created_at.date_format().format('yy-MM-dd')
+            item['item']['created_at'] = item.item.created_at.date_format().format('yyyy-MM-dd')
             self.tableItemData.push(item)
           } // endfor
         } else {

@@ -273,8 +273,8 @@
 
                       </div>
                     </div>
-                    <div class="stage-asset-box clearfix" v-for="(asset, asset_index) in d.item_stage_image" :key="asset.name + asset_index">
-                      <div class="contract-left">
+                    <div class="stage-asset-box flex clearfix" v-for="(asset, asset_index) in d.item_stage_image" :key="asset.name + asset_index">
+                      <div class="contract-left flex1">
                         <img src="../../../../assets/images/icon/pdf2x.png" width="30"/>
                         <div class="contract-content">
                           <p>{{ asset.name }}</p>
@@ -612,7 +612,7 @@
     </el-dialog>
     <el-dialog title="报价单详情" :visible.sync="quotaDialog" id="quote-dialog" style="width: 880px;margin: auto" width="580px" top="2%">
       
-      <v-quote-view :formProp="quota"></v-quote-view>
+      <v-quote-view v-if="quotaDialog" :formProp="quota"></v-quote-view>
 
       <!--<div slot="footer" class="dialog-footer btn">-->
         <!--<el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>-->
@@ -1702,6 +1702,7 @@
     border: 1px solid #ff5a5f;
     border-radius: 4px;
     color: #ff5a5f;
+    cursor: pointer;
   }
   .contract-right .look-button:hover {
     background: #ff5a5f;
@@ -1710,9 +1711,9 @@
     color: #fff;
   }
   .contract-right .look-button:active {
-    color: #ff5a5f;
+    color: #fff;
     border: 1px solid #ff5a5f;
-    background: #fff;
+    background: #ff5a5f;
   }
   .alert-line-height {
     text-align: center
@@ -1947,13 +1948,13 @@
   }
 
   .contract-content p {
-    max-width: 300px;
     font-size: 1.2rem;
     color: #666;
     line-height: 1.5;
-    white-space: nowrap;
+    /* max-width: 600px; */
+    /* white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
+    text-overflow: ellipsis; */
   }
 
   .contract-des {

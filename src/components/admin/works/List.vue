@@ -261,7 +261,7 @@ export default {
               item.cover_url = item.cover.small
             }
 
-            item['created_at'] = item.created_at.date_format().format('yy-MM-dd')
+            item['created_at'] = item.created_at.date_format().format('yyyy-MM-dd')
             self.tableData.push(item)
           } // endfor
         } else {
