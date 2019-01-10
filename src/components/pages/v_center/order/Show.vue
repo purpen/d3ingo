@@ -34,7 +34,6 @@
                       <p class="main-des">请于 {{ item.expire_at }} 前完成支付，逾期会关闭交易</p>
                       <p class="main-des" v-if="custom.id === 1">如果您已经完京东云市场支付，请上传凭证</p>
                       <p class="main-des" v-else>如果您已经完成打款，请上传打款凭证</p>
-
                       <div class="order-show">
                         <el-upload
                           class=""
@@ -56,6 +55,7 @@
 
 
                       </div>
+                      <p class="main-des">如需更换图片, 请点击图片重新上传</p>
                     </div>
                     <div v-else>
                       <div class="wid-100 mar-auto">
@@ -71,7 +71,7 @@
 
                 <div class="operation" v-if="(item.status === -1 || item.status === 0) && item.bank_transfer === 0">
                   <div class="sure-pay-btn" >
-                    <el-button v-if="surePay" class="is-custom" type="primary" @click.stop="surePaydBtn">确认打款</el-button>
+                    <el-button v-if="surePay && isReady" class="is-custom" type="primary" @click.stop="surePaydBtn">确认打款</el-button>
                     <el-button v-else  disabled type="primary">确认打款</el-button>
                   </div>
                   <div class="sure-pay-btn">
@@ -157,6 +157,7 @@
         fileUrl: '',
         fileDesc: '格式：JPG／PNG   大小：小于2MB',
         surePay: false,
+        isReady: true,
         msg: ''
       }
     },
@@ -179,6 +180,7 @@
         this.$message.error(err + '附件上传失败!')
       },
       uploadSuccess(response, file, fileList) {
+        this.isReady = true
         this.surePay = true
         this.fileDesc = '格式：JPG／PNG   大小：小于2MB'
         this.fileUrl = URL.createObjectURL(file.raw)
@@ -198,6 +200,7 @@
           this.$message.error('上传文件大小不能超过 5MB!')
           return false
         }
+        this.isReady = false
       },
       handleRemove(file, fileList) {
         if (file === null) {
