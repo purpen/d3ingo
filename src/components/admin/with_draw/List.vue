@@ -183,8 +183,8 @@ export default {
     },
     // 确认对公打款
     sureTransferSubmit() {
-      if (!this.withDrawForm.id || !this.withDrawForm.summary) {
-        this.$message.error('缺少请求参数!')
+      if (!this.withDrawForm.summary) {
+        this.$message.error('请填写交易单号')
         return
       }
       var self = this
