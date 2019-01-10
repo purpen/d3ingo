@@ -134,7 +134,13 @@
                     <p><span>{{i.name}}</span><span v-if="i.type === 7" class="addition"><a href="javascript:void(0);" @click="viewContractBtn(0)">查看合同>></a></span></p>
                     <p class="created-date">{{i.created}}</p>
                     <div class="company-list">
-                      <p v-for="(d, indexd) in i.designCompany" :key="indexd" v-if="i.designCompany&&i.designCompany.length">{{d.company_name}}</p>
+                      <p><span v-if="i.type === 13 && i.evaluate">
+                          <a href="javascript:void(0);" @click="evaluateup(i.evaluate)">查看评价</a>
+                        </span></p>
+                      <p v-for="(d, indexd) in i.designCompany" :key="indexd" v-if="i.designCompany&&i.designCompany.length">
+                        <span v-if="i.type === 4"><a href="javascript:void(0);" @click="showQuotaBtn(d.quotation)">查看报价单>></a></span> 
+                        <router-link :to="{name: 'companyShow', params: {id: d.id}}" target="_blank" :class="{'tc-green':i.type === 2}">{{ d.company_name }}</router-link>
+                      </p>
                     </div>
                   </div>
                 </el-col>
@@ -293,10 +299,11 @@
                     <p><span>{{i.name}}</span></p>
                     <div class="is-money">
                       <p>
-                        <a href="javascript:void(0);" v-show="i.sureOutlineTransfer" @click="showTransfer(indexi, i)">查看凭证</a>
+                        <a href="javascript:void(0);" v-if="i.assets&&!i.assets.length&&(typeof i.assets === 'object')" @click="showTransfer(indexi, i)">查看凭证</a>
                       </p>
                       <p>
                         <a href="javascript:void(0);" v-show="i.sureOutlineTransfer" @click="sureTransfer(indexi, i)">确认收款</a>
+                        <span v-show="i.pay_type === 5 && i.status === 1 && i.bank_transfer === 1" class="pay-money">已收款</span>
                       </p>
                     </div>
                     <p class="created-date" v-if="i.amount">应付金额: {{i.amount}} 元</p>
@@ -309,8 +316,14 @@
                     <p  v-if="i.design_type === 1 && i.design_status===2 && i.design_company_type===2">
                       <a href="javascript:void(0);" @click="confirmReceipt(i, 2)">确认收到发票</a>
                     </p>
+                    <p v-if="i.design_type === 1 && i.design_status===3 && i.design_company_type===2">
+                      <span class="invoice-btn">已收发票</span>
+                    </p>
                     <p v-if="i.demand_type === 2 && i.demand_status===1 && i.demand_company_type===1">
                        <a href="javascript:void(0);" @click="confirmReceipt(i, 1)">确认开出发票</a>
+                    </p>
+                    <p v-if="i.demand_type === 2 && i.demand_status===2 && i.demand_company_type===1">
+                      <span class="invoice-btn">已开发票</span>
                     </p>
                   </div>
                 </el-col>
@@ -391,7 +404,7 @@
                   <p>项目报价</p>
                 </el-col>
                 <el-col :span="spanVal">
-                  <p>¥ {{ item.price }} <a v-if="quotation" href="javascript:void(0);" @click="showQuotaBtn">查看报价单>></a></p>
+                  <p>¥ {{ item.price }} <a v-if="quotation1" href="javascript:void(0);" @click="showQuotaBtn(quotation1)">查看报价单>></a></p>
                 </el-col>
                 <el-col :span="spanOpt">
                 </el-col>
@@ -494,6 +507,51 @@
               <el-button size="small" type="primary" @click="setVerify(verify.id,verify.refuseRease)">确 定</el-button>
             </span>
           </el-dialog>
+          <el-dialog title="评价详情" :visible.sync="evaluateDialog" width="580px">
+            <div class="evaluate-result clearfix">
+              <el-row>
+                <el-col :span="22" :offset="2">
+                  <div class="eva-content">
+                    <p class="ev-c-name">
+                      <router-link :to="{name: 'companyShow', params: {id: item.design_company_id}}"
+                       target="_blank">
+                        设计公司: {{quotation1.design_company_name}}
+                      </router-link>
+                    </p>
+                    <el-row class="grade pl">
+                      <el-col :span="8">
+                        <p>设计水平</p>
+                        <el-rate
+                        v-model.number="score.design_level"
+                        disabled class="mg-t-10">
+                      </el-rate>
+                      </el-col>
+                      <el-col :span="8">
+                        <p>响应速度</p>
+                        <el-rate
+                        v-model.number="score.response_speed"
+                        disabled class="mg-t-10">
+                      </el-rate>
+                      </el-col>
+                      <el-col :span="8">
+                        <p>服务态度</p>
+                        <el-rate
+                        v-model.number="score.service"
+                        disabled class="mg-t-10">
+                      </el-rate>
+                      </el-col>
+                    </el-row>
+                    <p class="ev-c-content">
+                      {{ score.content }}
+                    </p>
+                  </div>
+                </el-col>
+              </el-row>
+            </div>
+            <span slot="footer" class="dialog-footer">
+              <el-button size="small" @click="evaluateDialog = false">关闭</el-button>
+            </span>
+          </el-dialog>
           <el-dialog title="报价单详情" :visible.sync="quotaDialog" width="580px" top="2%">
             <v-quote-view :formProp="quotation"></v-quote-view>
             <div slot="footer" class="dialog-footer btn">
@@ -559,6 +617,7 @@ export default {
       info: '',
       itemId: '',
       quotation: null,
+      quotation1: null,
       contract: null,
       item_stage: [],
       currentMatchCompany: [],
@@ -602,6 +661,7 @@ export default {
       }, // 确认打款表单
       stickCompany: [],
       cooperateCompany: '',
+      evaluateDialog: false, // 查看评价
       gutter: 5,
       spanKey: 3,
       spanVal: 18,
@@ -614,6 +674,7 @@ export default {
       msg: '',
       pay_orders: [], // 订单进度
       itemOrder: [], // 发票列表
+      score: {}, // 评价详情
       defaultOrder: [
         {
           name: '等待付款',
@@ -730,6 +791,13 @@ export default {
     }
   },
   methods: {
+    // 打开评价弹窗
+    evaluateup(ele) {
+      if (ele.user_score) {
+        this.score = JSON.parse(ele.user_score)
+        this.evaluateDialog = true
+      }
+    },
     // 判断需求方还是设计公司收到发票/发出发票
     setVerify (id, refuseRease) {
       this.test = id
@@ -752,9 +820,9 @@ export default {
           self.$message.success('操作成功')
           self.itemOrder.forEach((ele, index) => {
             if (self.verify.companytype === 2 && self.verify.id === ele.design_id) {
-              self.$set(ele, 'design_status', 2)
+              self.$set(ele, 'design_status', 3)
             } else if (self.verify.companytype === 1 && self.verify.id === ele.demand_id) {
-              self.$set(ele, 'demand_status', 3)
+              self.$set(ele, 'demand_status', 2)
             }
           })
           // for (let i in self.tableData) {
@@ -922,11 +990,11 @@ export default {
                   break
                 case 10: // 阶段文件确认
                   item.name = item.small_type === 1 ? '第一阶段文件确认' : (item.small_type === 2 ? '第二阶段文件确认' : '第三阶段文件确认')
-                  item.created = '提交时间：' + item.created_at.date_format().format('yyyy/MM/dd')
+                  item.created = '确认时间：' + item.created_at.date_format().format('yyyy/MM/dd')
                   break
                 case 11: // 设计方项目确认完成
                   item.name = '设计方项目确认完成'
-                  item.created = '提交时间：' + item.created_at.date_format().format('yyyy/MM/dd')
+                  item.created = '确认时间：' + item.created_at.date_format().format('yyyy/MM/dd')
                   break
                 case 12: // 需求方项目验收完成
                   item.name = '需求方项目验收完成'
@@ -1094,7 +1162,8 @@ export default {
         if (response.data.meta.status_code === 200) {
           self.$message.success('操作成功！')
           self.sureTransferDialog = false
-          self.itemOrder[self.orderForm.index].sureOutlineTransfer = false
+          self.getall()
+          // self.itemOrder[self.orderForm.index].sureOutlineTransfer = false
         } else {
           self.$message.error(response.data.meta.message)
           return
@@ -1241,247 +1310,252 @@ export default {
         })
     },
     // 点击报价详情事件
-    showQuotaBtn() {
-      this.quotaDialog = true
+    showQuotaBtn(form) {
+      if (form) {
+        this.quotation = form
+        this.quotaDialog = true
+      }
     },
     // 查看合同点击事件
     viewContractBtn(evt) {
       this.contractEvt = evt
       this.contractDialog = true
-    }
-  },
-  created: function() {
-    var id = this.$route.params.id
-    if (!id) {
-      this.$message.error('缺少请求参数!')
-      this.$router.replace({name: 'home'})
-      return false
-    }
-    const self = this
-    self.itemId = id
-    self.isLoading = true
-    self.$http.get(api.adminItemShow, {params: {id: id}})
-    .then (function(response) {
-      self.isLoading = false
-      if (response.data.meta.status_code === 200) {
-        self.item = response.data.data.item
-        self.testStatus = self.item.test_status
-        self.info = response.data.data.info
-        self.designInvoice = response.data.data.design_invoice || []
-        self.demandInvoice = response.data.data.demand_invoice || []
-        self.pay_orders = response.data.data.pay_orders || []
-        self.quotation = response.data.data.quotation
-        self.contract = response.data.data.contract
-        if (response.data.data.item_stage && response.data.data.item_stage.length > 0) {
-          for (let i = 0; i < response.data.data.item_stage.length; i++) {
-            let stage = response.data.data.item_stage[i]
-            if (stage.sort) {
-              switch (stage.sort) {
-                case 1:
-                  response.data.data.item_stage[i].no = '一'
-                  break
-                case 2:
-                  response.data.data.item_stage[i].no = '二'
-                  break
-                case 3:
-                  response.data.data.item_stage[i].no = '三'
-                  break
-                case 4:
-                  response.data.data.item_stage[i].no = '四'
-                  break
-                case 5:
-                  response.data.data.item_stage[i].no = '五'
-                  break
-                default:
-                  response.data.data.item_stage[i].no = ''
+    },
+    // 重新加载
+    getall() {
+      var id = this.$route.params.id
+      if (!id) {
+        this.$message.error('缺少请求参数!')
+        this.$router.replace({name: 'home'})
+        return false
+      }
+      const self = this
+      self.itemId = id
+      self.isLoading = true
+      self.$http.get(api.adminItemShow, {params: {id: id}})
+      .then (function(response) {
+        self.isLoading = false
+        if (response.data.meta.status_code === 200) {
+          self.item = response.data.data.item
+          self.testStatus = self.item.test_status
+          self.info = response.data.data.info
+          self.designInvoice = response.data.data.design_invoice || []
+          self.demandInvoice = response.data.data.demand_invoice || []
+          self.pay_orders = response.data.data.pay_orders || []
+          self.quotation1 = response.data.data.quotation
+          self.contract = response.data.data.contract
+          if (response.data.data.item_stage && response.data.data.item_stage.length > 0) {
+            for (let i = 0; i < response.data.data.item_stage.length; i++) {
+              let stage = response.data.data.item_stage[i]
+              if (stage.sort) {
+                switch (stage.sort) {
+                  case 1:
+                    response.data.data.item_stage[i].no = '一'
+                    break
+                  case 2:
+                    response.data.data.item_stage[i].no = '二'
+                    break
+                  case 3:
+                    response.data.data.item_stage[i].no = '三'
+                    break
+                  case 4:
+                    response.data.data.item_stage[i].no = '四'
+                    break
+                  case 5:
+                    response.data.data.item_stage[i].no = '五'
+                    break
+                  default:
+                    response.data.data.item_stage[i].no = ''
+                }
+              } else {
+                response.data.data.item_stage[i].no = ''
               }
-            } else {
-              response.data.data.item_stage[i].no = ''
-            }
-            response.data.data.item_stage[i].created_at = stage.created_at
-              .date_format()
-              .format('yyyy-MM-dd')
-          } // endfor
-        }
+              response.data.data.item_stage[i].created_at = stage.created_at
+                .date_format()
+                .format('yyyy-MM-dd')
+            } // endfor
+          }
 
-        self.item_stage = response.data.data.item_stage
-        self.getSchedule(id)
-        // self.getAdminPayOrderList(id)
-        if (self.contract) {
-          self.contract.item_stage = response.data.data.item_stage
-        }
-        if (response.data.data.designCompany) {
-          self.stickCompany = response.data.data.designCompany
-        }
-        if (response.data.data.recommend) {
-          self.offerCompany = response.data.data.recommend
-        }
-        if (self.pay_orders.length) {
-          self.pay_orders.forEach(pay => {
-            if (self.designInvoice.length) {
-              for (var v = 0; v < self.designInvoice.length; v++) {
-                if (pay.item_stage_id === self.designInvoice[v].item_stage_id) {
-                  pay.design_status = self.designInvoice[v].status
-                  pay.design_id = self.designInvoice[v].id
-                  pay.design_type = self.designInvoice[v].type
-                  pay.design_company_type = self.designInvoice[v].company_type
-                  break
+          self.item_stage = response.data.data.item_stage
+          self.getSchedule(id)
+          // self.getAdminPayOrderList(id)
+          if (self.contract) {
+            self.contract.item_stage = response.data.data.item_stage
+          }
+          if (response.data.data.designCompany) {
+            self.stickCompany = response.data.data.designCompany
+          }
+          if (response.data.data.recommend) {
+            self.offerCompany = response.data.data.recommend
+          }
+          if (self.pay_orders.length) {
+            self.pay_orders.forEach(pay => {
+              if (self.designInvoice.length) {
+                for (var v = 0; v < self.designInvoice.length; v++) {
+                  if (pay.item_stage_id === self.designInvoice[v].item_stage_id) {
+                    pay.design_status = self.designInvoice[v].status
+                    pay.design_id = self.designInvoice[v].id
+                    pay.design_type = self.designInvoice[v].type
+                    pay.design_company_type = self.designInvoice[v].company_type
+                    break
+                  }
                 }
               }
-            }
-          })
-          self.pay_orders.forEach(p => {
-            if (self.demandInvoice.length) {
-              for (var dem = 0; dem < self.demandInvoice.length; dem++) {
-                if (p.item_stage_id === self.demandInvoice[dem].item_stage_id) {
-                  p.demand_status = self.demandInvoice[dem].status
-                  p.demand_id = self.demandInvoice[dem].id
-                  p.demand_type = self.demandInvoice[dem].type
-                  p.demand_company_type = self.demandInvoice[dem].company_type
-                  break
-                }
-              }
-            }
-          })
-          let stage = 1
-          let orderList = []
-          self.pay_orders.forEach(item => {
-            if (item.type === 3) {
-              item.name = '首付款付款'
-              item.newName = '首付款发票管理'
-            } else if (item.type === 4) {
-              if (stage === 1) {
-                item.name = '第一阶段款'
-                item.newName = '一阶段发票管理'
-                stage++
-              } else if (stage === 2) {
-                item.name = '第二阶段款'
-                item.newName = '二阶段发票管理'
-                stage++
-              } else if (stage === 3) {
-                item.name = '第三阶段款'
-                item.newName = '三阶段发票管理'
-              }
-            }
-            item.both = 'right'
-            if (item.pay_type === 5 && item.status === 0 && item.bank_transfer === 1) {
-              item.sureOutlineTransfer = true
-            }
-            orderList.push(item)
-          })
-          self.itemOrder = orderList
-          console.log(self.itemOrder)
-          if (self.itemOrder.length === self.item_stage.length + 1) {
-            self.itemOrder.push({
-              name: '订单完成',
-              newName: '发票管理完成',
-              both: 'right',
-              is_last: true
             })
+            self.pay_orders.forEach(p => {
+              if (self.demandInvoice.length) {
+                for (var dem = 0; dem < self.demandInvoice.length; dem++) {
+                  if (p.item_stage_id === self.demandInvoice[dem].item_stage_id) {
+                    p.demand_status = self.demandInvoice[dem].status
+                    p.demand_id = self.demandInvoice[dem].id
+                    p.demand_type = self.demandInvoice[dem].type
+                    p.demand_company_type = self.demandInvoice[dem].company_type
+                    break
+                  }
+                }
+              }
+            })
+            let stage = 1
+            let orderList = []
+            self.pay_orders.forEach(item => {
+              if (item.type === 3) {
+                item.name = '首付款付款'
+                item.newName = '首付款发票管理'
+              } else if (item.type === 4) {
+                if (stage === 1) {
+                  item.name = '第一阶段款'
+                  item.newName = '一阶段发票管理'
+                  stage++
+                } else if (stage === 2) {
+                  item.name = '第二阶段款'
+                  item.newName = '二阶段发票管理'
+                  stage++
+                } else if (stage === 3) {
+                  item.name = '第三阶段款'
+                  item.newName = '三阶段发票管理'
+                }
+              }
+              item.both = 'right'
+              if (item.pay_type === 5 && item.status === 0 && item.bank_transfer === 1) {
+                item.sureOutlineTransfer = true
+              }
+              orderList.push(item)
+            })
+            self.itemOrder = orderList
+            if (self.itemOrder.length === self.item_stage.length + 1) {
+              self.itemOrder.push({
+                name: '订单完成',
+                newName: '发票管理完成',
+                both: 'right',
+                is_last: true
+              })
+              self.defaultOrder = []
+            } else {
+              if (self.item_stage.length) {
+                self.defaultOrder.splice(2)
+                let def = []
+                if (self.item_stage.length === 2) {
+                  def = [
+                    {
+                      name: '一阶段付款',
+                      newName: '一阶段付款发票管理',
+                      both: 'right'
+                    },
+                    {
+                      name: '二阶段付款',
+                      newName: '二阶段付款发票管理',
+                      both: 'right'
+                    },
+                    {
+                      name: '订单完成',
+                      newName: '发票管理完成',
+                      is_last: true,
+                      both: 'right'
+                    }
+                  ]
+                } else if (self.item_stage.length === 3) {
+                  def = [
+                    {
+                      name: '一阶段付款',
+                      newName: '一阶段付款发票管理',
+                      both: 'right'
+                    },
+                    {
+                      name: '二阶段付款',
+                      newName: '二阶段付款发票管理',
+                      both: 'right'
+                    },
+                    {
+                      name: '三阶段付款',
+                      newName: '三阶段付款发票管理',
+                      both: 'right'
+                    },
+                    {
+                      name: '订单完成',
+                      newName: '发票管理完成',
+                      is_last: true,
+                      both: 'right'
+                    }
+                  ]
+                }
+                self.defaultOrder.push(...def)
+                self.defaultOrder.splice(0, self.itemOrder.length + 1)
+              }
+            }
             self.itemOrder.unshift({
               name: '等待付款',
               newName: '',
               both: 'right'
             })
-            self.defaultOrder = []
-          } else {
-            console.log(2222)
-            if (self.item_stage.length) {
-              self.defaultOrder.splice(2)
-              let def = []
-              if (self.item_stage.length === 2) {
-                def = [
-                  {
-                    name: '一阶段付款',
-                    newName: '一阶段付款发票管理',
-                    both: 'right'
-                  },
-                  {
-                    name: '二阶段付款',
-                    newName: '二阶段付款发票管理',
-                    both: 'right'
-                  },
-                  {
-                    name: '订单完成',
-                    newName: '发票管理完成',
-                    is_last: true,
-                    both: 'right'
-                  }
-                ]
-              } else if (self.item_stage.length === 3) {
-                def = [
-                  {
-                    name: '一阶段付款',
-                    newName: '一阶段付款发票管理',
-                    both: 'right'
-                  },
-                  {
-                    name: '二阶段付款',
-                    newName: '二阶段付款发票管理',
-                    both: 'right'
-                  },
-                  {
-                    name: '三阶段付款',
-                    newName: '三阶段付款发票管理',
-                    both: 'right'
-                  },
-                  {
-                    name: '订单完成',
-                    newName: '发票管理完成',
-                    is_last: true,
-                    both: 'right'
-                  }
-                ]
-              }
-              self.defaultOrder.push(...def)
-              self.defaultOrder.splice(0, self.itemOrder.length + 1)
-            }
           }
+          switch (self.item.status) {
+            case -1: // 关闭项目
+              break
+            case -2: // 匹配失败
+              break
+            case 1:
+              break
+            case 2: // 等待系统匹配公司
+              break
+            case 3: // 获取系统推荐的设计公司,选择设计公司
+              // self.fetchStickCompany()
+              break
+            case 4: // 查看已提交报价的设计公司, 提交报价单
+              break
+            case 5: // 等待提交合同
+              break
+            case 6: // 等待确认合同
+              break
+            case 7: // 已确认合同
+              break
+            case 8: // 等待托管资金
+              break
+            case 9: // 项目资金已托管
+              break
+            case 11: // 项目进行中
+              break
+            case 15: // 项目完成
+              break
+            case 18:
+              break
+            case 20:
+              break
+            case 22:
+              break
+            default:
+          }
+        } else {
+          self.$message.error(response.data.meta.message)
         }
-        switch (self.item.status) {
-          case -1: // 关闭项目
-            break
-          case -2: // 匹配失败
-            break
-          case 1:
-            break
-          case 2: // 等待系统匹配公司
-            break
-          case 3: // 获取系统推荐的设计公司,选择设计公司
-            // self.fetchStickCompany()
-            break
-          case 4: // 查看已提交报价的设计公司, 提交报价单
-            break
-          case 5: // 等待提交合同
-            break
-          case 6: // 等待确认合同
-            break
-          case 7: // 已确认合同
-            break
-          case 8: // 等待托管资金
-            break
-          case 9: // 项目资金已托管
-            break
-          case 11: // 项目进行中
-            break
-          case 15: // 项目完成
-            break
-          case 18:
-            break
-          case 20:
-            break
-          case 22:
-            break
-          default:
-        }
-      } else {
-        self.$message.error(response.data.meta.message)
-      }
-    })
-    .catch (function(error) {
-      self.$message.error(error.message)
-      self.isLoading = false
-    })
+      })
+      .catch (function(error) {
+        self.$message.error(error.message)
+        self.isLoading = false
+      })
+    }
+  },
+  created: function() {
+    this.getall()
   },
   computed: {
     bankOptions() {
@@ -1521,6 +1595,15 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .ev-c-name {
+    margin-bottom: 10px;
+  }
+  .tc-green {
+    color: #00ac84;
+  }
+  .tc-green:hover {
+    color: #ff5a5f;
+  }
   .step_invoice a {
     display: inline-block;
     padding: 3px 5px;
@@ -1538,7 +1621,15 @@ export default {
   .is-money {
     height: 50px;
   }
-  .is-money a {
+  .invoice-btn {
+    display: inline-block;
+    padding: 3px 5px;
+    border: 1px solid #e6e6e6;
+    border-radius: 4px;
+    margin-top: 5px;
+    font-size: 12px;
+  }
+  .is-money a, .is-money .pay-money {
     font-size: 12px;
     display: inline-block;
     padding: 3px 5px;
