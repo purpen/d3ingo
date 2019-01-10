@@ -600,8 +600,7 @@
           demand: '',   // 需求
           account: '',  // 手机号
           contact: '',   // 联系人
-          name: '',      // app 联系人
-          appCompany: '' // app 公司
+          name: ''      // app 联系人
         },
         // swiper
         swiperOption: {
@@ -1115,38 +1114,38 @@
     padding: 30px 0 20px 0;
   }
   .four-one {
-    height: 70px;
+    height: 64px;
     text-align: center;
     /* opacity: 0.5; */
     background-image: linear-gradient(-180deg, rgba(140,39,205, 0.5) 4%, rgba(58,17,185, 0.5) 100%);
     border-radius: 6px;
   }
   .phone-four-one {
-    height: 70px;
+    height: 64px;
     background: url("../../../assets/images/promote2/phone/four/01.png") no-repeat;
     background-size: 100% 100%;
   }
   .phone-four-two {
-    height: 70px;
+    height: 64px;
     background: url("../../../assets/images/promote2/phone/four/02.png") no-repeat;
     background-size: 100% 100%;
   }
   .phone-four-three {
-    height: 70px;
+    height: 64px;
     background: url("../../../assets/images/promote2/phone/four/03.png") no-repeat;
     background-size: 100% 100%;
   }
   .phone-four-four {
-    height: 70px;
+    height: 64px;
     background: url("../../../assets/images/promote2/phone/four/04.png") no-repeat;
     background-size: 100% 100%;
   }
   .phone-four-text {
-    height: 70px;
+    height: 64px;
   }
   .text-text {
     max-width: 87px;
-    padding-top: 15px;
+    padding-top: 12px;
     font-family: PingFangSC-Regular;
     font-size: 13px;
     color: #FFFFFF;
