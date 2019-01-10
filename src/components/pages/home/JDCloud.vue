@@ -177,22 +177,23 @@
             </el-col>
           </div>
         </el-row>
-        <el-row class="one pad-top-50 z-index-111" type="flex" align="middle">
-          <div class="bg2"></div>
-          <el-col :span="5" :offset="3" class="thousand z-index-111"></el-col>
-          <el-col :span="12" :offset="1" class="thousand-img z-index-111"></el-col>
-        </el-row>
-        <el-row class="two z-index-111" type="flex" align="middle">
-          <el-col :span="12" :offset="3" class="prize-img"></el-col>
-          <el-col :span="5" :offset="1" class="prize"></el-col>
-        </el-row>
-        <el-row class="three z-index-111" type="flex" align="middle">
-          <el-col :span="5" :offset="3" class="customer"></el-col>
-          <el-col :span="12" :offset="1" class="customer-img"></el-col>
+        <el-row :gutter="20">
+          <div class="one pad-top-50 z-index-111">
+            <div class="bg2"></div>
+              <el-col :span="6" :offset="3">
+                <div class="design-company z-index-111"></div>
+              </el-col>
+            <el-col :span="6">
+              <div class="design-award z-index-111"></div>
+            </el-col>
+            <el-col :span="6">
+              <div class="customer z-index-111"></div>
+            </el-col>
+          </div>
         </el-row>
         <div class="design-product">
           <div class="container">
-            <h2 class="public-h2">铟果D³INGO设计服务的项目</h2>
+            <h2 class="public-h2">艺火设计服务的项目</h2>
             <div class="design-product-list">
               <el-row :gutter="20" class="m-b-20">
                 <el-col :xs="24" :sm="8" :md="8" :lg="8">
@@ -225,8 +226,8 @@
                 <el-col :xs="24" :sm="8" :md="8" :lg="8">
                   <el-card class="z-index-111">
                     <div class="design-product-img z-index-111">
-                      <img src="../../../assets/images/promote/design-product/case04@2x.png" alt="美妆镜 Amiro">
-                      <p>麋鹿庄园品牌设计</p>
+                      <img src="../../../assets/images/promote2/phone/yihuo/case04@2x.png" alt="婴萌智能冲奶机">
+                      <p>婴萌智能冲奶机</p>
                     </div>
                   </el-card>
                 </el-col>
@@ -241,8 +242,8 @@
                 <el-col :xs="24" :sm="8" :md="8" :lg="8">
                   <el-card class="z-index-111">
                     <div class="design-product-img z-index-111">
-                      <img src="../../../assets/images/promote/design-product/case06@2x.png" alt="插画设计">
-                      <p>插画设计</p>
+                      <img src="../../../assets/images/promote2/phone/yihuo/case06@2x.png" alt="云马C1智能电单车" class="border-bot">
+                      <p>云马C1智能电单车</p>
                     </div>
                   </el-card>
                 </el-col>
@@ -502,7 +503,7 @@
                 <el-col :span="12">
                   <el-card>
                     <div class="design-product-p">
-                      <img src="../../../assets/images/promote2/phone/yihuo/case06@2x.png" alt="插画设计">
+                      <img src="../../../assets/images/promote2/phone/yihuo/case06@2x.png" alt="插画设计" class="border-bot">
                       <p>云马C1智能电单车</p>
                     </div>
                   </el-card>
@@ -1221,34 +1222,19 @@ export default {
     background: url("../../../assets/images/promote2/pc/two/proMan.png") no-repeat;
     background-size: 100% 100%;
   }
-  .thousand {
+  .design-company {
     height: 200px;
-    background: url("../../../assets/images/promote2/pc/logo/1000+DesignCompany.png") no-repeat;
+    background: url("../../../assets/images/promote2/pc/yihuo/DesignCompany@2x.png") no-repeat;
     background-size: 100% 100%;
   }
-  .thousand-img {
-    height: 90px;
-    background: url("../../../assets/images/promote2/pc/logo/DesignCompanyLogos.png") no-repeat;
-    background-size: 100% 100%;
-  }
-  .prize-img {
-    height: 90px;
-    background: url("../../../assets/images/promote2/pc/logo/PrizeLogos.png") no-repeat;
-    background-size: 100% 100%;
-  }
-  .prize {
+  .design-award {
     height: 200px;
-    background: url("../../../assets/images/promote2/pc/logo/300+prize.png") no-repeat;
+    background: url("../../../assets/images/promote2/pc/yihuo/DesignAward@2x.png") no-repeat;
     background-size: 100% 100%;
   }
   .customer {
     height: 200px;
-    background: url("../../../assets/images/promote2/pc/logo/1000+Customer.png") no-repeat;
-    background-size: 100% 100%;
-  }
-  .customer-img {
-    height: 90px;
-    background: url("../../../assets/images/promote2/pc/logo/CustomerLogos.png") no-repeat;
+    background: url("../../../assets/images/promote2/pc/yihuo/Customer@2x.png") no-repeat;
     background-size: 100% 100%;
   }
   .design-product {
@@ -1293,6 +1279,9 @@ export default {
     font-size: 16px;
     color: #fff;
     line-height: 36px;
+  }
+  .border-bot {
+    border: 1px solid #E6E6E6;
   }
   .design-btn {
     width: 180px;
