@@ -20,7 +20,7 @@
               <span>项目状态 : </span>
               <span>{{item.status_value}}</span>
               <div class="fixe-header">
-              <span class="fr delBtn" @click="forceCloseBtn" v-if="item.status !== -3">关闭并退款</span>
+              <span class="fr delBtn" @click="forceCloseBtn" v-if="item.status !== -3 &&superAdmin">关闭并退款</span>
               <div class="test-select">
                 <el-select v-model="testStatus" @change="setTestDataSubmit" placeholder="请选择">
                   <el-option
