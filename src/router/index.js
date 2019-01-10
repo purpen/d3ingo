@@ -51,6 +51,14 @@ let routes = [
     component: require('@/components/pages/home/JDCloud')
   },
   {
+    path: '/bind',
+    name: 'clientFeedback',
+    meta: {
+      title: '绑定确认'
+    },
+    component: require('@/components/pages/home/client_progress_feedback/bind')
+  },
+  {
     path: '/jd_cloud',
     redirect: '/home'
   },

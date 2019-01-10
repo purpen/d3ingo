@@ -136,6 +136,7 @@
               <div class="card-body-header" v-if="currentId !== ''">
                 <span @click="changeOption('user')" :class="{'active': option === 'user'}">用户档案</span>
                 <span @click="changeOption('project')" :class="{'active': option === 'project'}">项目档案</span>
+                <span @click="changeOption('progress')" :class="{'active': option === 'progress'}">项目进度</span>
                 <span @click="changeOption('followLog')" :class="{'active': option === 'followLog'}">跟进记录</span>
               </div>
 
@@ -743,7 +744,10 @@
                 </div>
 
               </div>
-
+              
+              <div class="card-body-center" v-if="option === 'progress'">
+                <p>共合作几个项目</p>
+              </div>
 
               <div class="card-body-center padding20" v-show="option === 'followLog'">
                 <ul>
@@ -1033,7 +1037,32 @@ export default {
       options4: [],
       linkProjectValue: '',
       loading: false,
-      states: []
+      states: [],
+
+      demandFeedback: [
+        {value: 1, label: '了解公司详情'},
+        {value: 2, label: '提供需求梳理'},
+        {value: 3, label: '提供设计案例'},
+        {value: 4, label: '提供设计方案'},
+        {value: 5, label: '提供设计周期'},
+        {value: 6, label: '周期合理'},
+        {value: 7, label: '提供设计报价'},
+        {value: 8, label: '报价合理'},
+        {value: 9, label: '感觉一般'},
+        {value: 10, label: '十分满意'}
+      ],
+      designFeedback: [
+        {value: 1, label: '了解公司详情'},
+        {value: 2, label: '提供需求梳理'},
+        {value: 3, label: '提供设计案例'},
+        {value: 4, label: '提供设计方案'},
+        {value: 5, label: '提供设计周期'},
+        {value: 6, label: '有能力承接'},
+        {value: 7, label: '提供设计报价'},
+        {value: 8, label: '以是最低报价'},
+        {value: 9, label: '感觉一般'},
+        {value: 10, label: '十分满意'}
+      ]
     }
   },
   methods: {
@@ -1822,6 +1851,9 @@ export default {
         this.getUserProject()
       } else if (val === 'followLog') {
         this.getLogList()
+        this.boolLinkItem = true
+      } else if (val === 'progress') {
+        console.log('进度')
         this.boolLinkItem = true
       } else {
         this.boolLinkItem = true
