@@ -485,7 +485,7 @@
                 <el-col :span="12">
                   <el-card>
                     <div class="design-product-p">
-                      <img src="../../../assets/images/promote2/phone/yihuo/case04@2x.png" alt="美妆镜 Amiro">
+                      <img src="../../../assets/images/promote2/phone/yihuo/case04@2x.png" alt="婴萌智能冲奶机">
                       <p>婴萌智能冲奶机</p>
                     </div>
                   </el-card>
@@ -503,7 +503,7 @@
                 <el-col :span="12">
                   <el-card>
                     <div class="design-product-p">
-                      <img src="../../../assets/images/promote2/phone/yihuo/case06@2x.png" alt="插画设计" class="border-bot">
+                      <img src="../../../assets/images/promote2/phone/yihuo/case06@2x.png" alt="云马C1智能电单车" class="border-bot">
                       <p>云马C1智能电单车</p>
                     </div>
                   </el-card>

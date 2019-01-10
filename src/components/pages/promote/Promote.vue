@@ -441,7 +441,7 @@
               <el-col :span="12">
                 <el-card>
                   <div class="design-product-p">
-                    <img src="../../../assets/images/promote/design-product/case01@2x.png" alt="飞行鱼-亚特兰蒂斯号FiFish Atlantis">
+                    <img src="../../../assets/images/promote/design-product/case01@2x.png" alt="FiFish飞行鱼">
                     <p>FiFish飞行鱼</p>
                   </div>
                 </el-card>
@@ -459,7 +459,7 @@
               <el-col :span="12">
                 <el-card>
                   <div class="design-product-p">
-                    <img src="../../../assets/images/promote/design-product/case04@2x.png" alt="美妆镜 Amiro">
+                    <img src="../../../assets/images/promote/design-product/case04@2x.png" alt="麋鹿庄园品牌设计">
                     <p>麋鹿庄园品牌设计</p>
                   </div>
                 </el-card>
