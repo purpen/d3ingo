@@ -722,7 +722,8 @@
         sendInvoiceLoadingBtn: false,
         currentInvoiceId: 0,
         msg: '',
-        ispayStatus: ''
+        ispayStatus: '',
+        isReady: true
       }
     },
     methods: {
@@ -1105,6 +1106,10 @@
       },
       // 发送阶段确认框
       stageSendBtn(event) {
+        if (!this.isReady) {
+          this.$message.error('请等待文件上传成功')
+          return
+        }
         let stageId = parseInt(event.currentTarget.getAttribute('stage_id'))
         let index = parseInt(event.currentTarget.getAttribute('index'))
         if (this.stages[index].item_stage_image.length <= 0) {
@@ -1195,6 +1200,7 @@
           return false
         }
         document.getElementById('upload_btn_' + this.currentStageIndex).innerText = '上传中...'
+        this.isReady = false
       },
       uploadStageSuccess(response, file, fileList) {
         let index = this.currentStageIndex
@@ -1206,6 +1212,7 @@
           created_at: response.created_at
         }
         this.stages[index].item_stage_image.push(row)
+        this.isReady = true
       },
       uploadStageError(err, file, fileList) {
         let index = this.currentStageIndex
@@ -1213,6 +1220,7 @@
           document.getElementById('upload_btn_' + index).innerText = '上传附件'
         }
         this.$message.error(err)
+        this.isReady = true
       },
       handlePreview(file) {
       },
@@ -1232,9 +1240,9 @@
       // 应打首付款金额（首付款 - 佣金 - 税点）
       firstRestPayment() {
         if (this.contract) {
-          return parseFloat(this.contract.first_payment).sub(parseFloat(this.contract.commission).add(parseFloat(this.contract.tax_price)))
+          return parseFloat((parseFloat(this.contract.first_payment).sub(parseFloat(this.contract.commission).add(parseFloat(this.contract.tax_price))))).toFixed(2)
         }
-        return 0
+        return 0.00
       },
       isMob() {
         return this.$store.state.event.isMob
