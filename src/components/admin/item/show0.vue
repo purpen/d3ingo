@@ -299,15 +299,15 @@
                     <p><span>{{i.name}}</span></p>
                     <div class="is-money">
                       <p>
-                        <a href="javascript:void(0);" v-if="i.assets&&!i.assets.length&&(typeof i.assets === 'object')" @click="showTransfer(indexi, i)">查看凭证</a>
+                        <a href="javascript:void(0);" v-if="i.assets&&!(i.assets instanceof Array)" @click="showTransfer(indexi, i)">查看凭证</a>
                       </p>
                       <p>
                         <a href="javascript:void(0);" v-show="i.sureOutlineTransfer" @click="sureTransfer(indexi, i)">确认收款</a>
                         <span v-show="i.pay_type === 5 && i.status === 1 && i.bank_transfer === 1" class="pay-money">已收款</span>
                       </p>
                     </div>
-                    <p class="created-date" v-if="i.amount">应付金额: {{i.amount}} 元</p>
-                    <p class="created-date" v-if="i.created_at">支付时间: {{i.created_at|timeFormat}}</p>
+                    <p class="created-date" v-if="i.amount&&i.assets&&!(i.assets instanceof Array)">应付金额: {{i.amount}} 元</p>
+                    <p class="created-date" v-if="i.updated_at&&i.assets&&!(i.assets instanceof Array)">支付时间: {{i.updated_at|timeFormat}}</p>
                   </div>
                 </el-col>
                 <el-col :span="8">
