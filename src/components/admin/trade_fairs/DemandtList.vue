@@ -357,7 +357,7 @@ export default {
             if (item.logo_image) {
               item.logo_url = item.logo_image.logo
             }
-            item['created_at'] = item.created_at.date_format().format('yy-MM-dd')
+            item['created_at'] = item.created_at.date_format().format('yyyy-MM-dd')
             self.tableData.push(item)
           } // endfor
 

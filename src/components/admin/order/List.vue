@@ -344,7 +344,7 @@ export default {
             }
             item['type_value'] = typeValue
             item['source_value'] = sourceVal
-            item['created_at'] = item.created_at.date_format().format('yy-MM-dd')
+            item['created_at'] = item.created_at.date_format().format('yyyy-MM-dd')
             var sureOutlineTransfer = false
             if (item.pay_type === 5 && item.status === 0 && item.bank_transfer === 1) {
               sureOutlineTransfer = true
