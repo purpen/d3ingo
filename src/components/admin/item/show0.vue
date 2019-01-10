@@ -20,7 +20,7 @@
               <span>项目状态 : </span>
               <span>{{item.status_value}}</span>
               <div class="fixe-header">
-              <span class="fr delBtn" @click="forceCloseBtn">关闭并退款</span>
+              <span class="fr delBtn" @click="forceCloseBtn" v-if="item.status !== -3">关闭并退款</span>
               <div class="test-select">
                 <el-select v-model="testStatus" @change="setTestDataSubmit" placeholder="请选择">
                   <el-option
@@ -139,7 +139,10 @@
                         </span></p>
                       <p v-for="(d, indexd) in i.designCompany" :key="indexd" v-if="i.designCompany&&i.designCompany.length">
                         <span v-if="i.type === 4"><a href="javascript:void(0);" @click="showQuotaBtn(d.quotation)">查看报价单>></a></span> 
-                        <router-link :to="{name: 'companyShow', params: {id: d.id}}" target="_blank" :class="{'tc-green':i.type === 2}">{{ d.company_name }}</router-link>
+                        <router-link :to="{name: 'companyShow', params: {id: d.id}}" target="_blank" :class="{'tc-green':i.type === 2}">{{ d.company_name}}</router-link>
+                      </p>
+                      <p v-if="i.type === 5&&i.designCompany">
+                        <router-link :to="{name: 'companyShow', params: {id: i.designCompany.id}}" target="_blank" :class="{'tc-green':i.type === 2}">{{ i.designCompany.company_name}}</router-link>
                       </p>
                     </div>
                   </div>
@@ -180,17 +183,6 @@
               <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogVisible = false">取 消</el-button>
                 <el-button type="primary" @click="updateRemarks('ruleForm')">确 定</el-button>
-              </span>
-            </el-dialog>
-            <el-dialog
-              title="提示"
-              :visible.sync="comfirmDialog"
-              width="380px">
-              <span>{{ comfirmMessage }}</span>
-              <span slot="footer" class="dialog-footer">
-                <el-button @click="comfirmDialog = false">取 消</el-button>
-                <el-button type="primary" @click="sureDialogSubmit">确 定</el-button>
-                <input type="hidden" ref="comfirmType" value="1" />
               </span>
             </el-dialog>
           </div>
@@ -483,6 +475,17 @@
             </div>
           </div>
           <el-dialog
+            title="提示"
+            :visible.sync="comfirmDialog"
+            width="380px">
+            <span>{{ comfirmMessage }}</span>
+            <span slot="footer" class="dialog-footer">
+              <el-button @click="comfirmDialog = false">取 消</el-button>
+              <el-button type="primary" @click="sureDialogSubmit">确 定</el-button>
+              <input type="hidden" ref="comfirmType" value="1" />
+            </span>
+          </el-dialog>
+          <el-dialog
             title="合同浏览"
             :visible.sync="contractDialog"
             top="2%"
@@ -542,7 +545,7 @@
                       </el-col>
                     </el-row>
                     <p class="ev-c-content">
-                      {{ score.content }}
+                      评价内容: {{ score.content }}
                     </p>
                   </div>
                 </el-col>
@@ -556,6 +559,20 @@
             <v-quote-view :formProp="quotation"></v-quote-view>
             <div slot="footer" class="dialog-footer btn">
               <el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>
+            </div>
+          </el-dialog>
+          <el-dialog title="关闭项目并返款" :visible.sync="forceCloseDialog">
+            <el-form label-position="left">
+              <el-form-item label="需求公司返款金额">
+                <el-input v-model="matchCompanyForm.demandAmount" :placeholder="'￥' + item.rest_fund" auto-complete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="设计公司返款金额">
+                <el-input v-model="matchCompanyForm.designAmount" placeholder="￥0.00" auto-complete="off"></el-input>
+              </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="forceCloseDialog = false">取 消</el-button>
+              <el-button type="primary" :loading="isForceCloseLoadingBtn" @click="forceCloseSubmit">确 定</el-button>
             </div>
           </el-dialog>
         </div>
@@ -795,6 +812,7 @@ export default {
     evaluateup(ele) {
       if (ele.user_score) {
         this.score = JSON.parse(ele.user_score)
+        this.score.content = ele.content
         this.evaluateDialog = true
       }
     },
@@ -1250,7 +1268,7 @@ export default {
         this.isForceCloseLoadingBtn = false
         return
       }
-      if (this.matchCompanyForm.demandAmount + this.matchCompanyForm.designAmount > this.item.rest_fund) {
+      if ((this.matchCompanyForm.demandAmount * 100 + this.matchCompanyForm.designAmount * 100) / 100 > this.item.rest_fund) {
         this.$message.error('金额不能超过剩余金额')
         this.isForceCloseLoadingBtn = false
         return
@@ -1264,6 +1282,8 @@ export default {
         if (response.data.meta.status_code === 200) {
           self.forceCloseDialog = false
           var rs = response.data.data
+          self.item.status = -3
+          self.item.status_value = '项目已强制关闭'
           console.log(rs)
           self.$message.error('操作成功！')
         } else {
@@ -1595,8 +1615,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .ev-c-content {
+    margin-top: 20px;
+  }
   .ev-c-name {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
   .tc-green {
     color: #00ac84;
