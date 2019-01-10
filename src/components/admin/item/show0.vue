@@ -36,7 +36,7 @@
             <div>
               <el-row class="header-basics">
                 <el-col :span="8">
-                  <div class="header-pact" v-if="contract">
+                  <div class="header-pact" v-if="item.contract &&item.contract.true_time">
                     <p class="t-center">合同</p>
                     <div>
                       <p>合同费用: {{contract.total}} 元</p>
@@ -429,7 +429,7 @@
                   <p>合同</p>
                 </el-col>
                 <el-col :span="spanVal">
-                  <p v-if="quotation"><span v-if="item.source === 1"><a href="javascript:void(0);" @click="viewContractBtn(1)">查看甲方>></a> &nbsp;&nbsp; <a href="javascript:void(0);" @click="viewContractBtn(2)">查看乙方>></a></span><span v-else><a href="javascript:void(0);" @click="viewContractBtn(0)">点击查看>></a></span> <span style="color: red;">*仅供参考，实际模板显示以用户端查看为准</span></p>
+                  <p v-if="item.contract"><span v-if="item.source === 1"><a href="javascript:void(0);" @click="viewContractBtn(1)">查看甲方>></a> &nbsp;&nbsp; <a href="javascript:void(0);" @click="viewContractBtn(2)">查看乙方>></a></span><span v-else><a href="javascript:void(0);" @click="viewContractBtn(0)">点击查看>></a></span> <span style="color: red;">*仅供参考，实际模板显示以用户端查看为准</span></p>
                   <p v-else>无</p>
                 </el-col>
                 <el-col :span="spanOpt">
