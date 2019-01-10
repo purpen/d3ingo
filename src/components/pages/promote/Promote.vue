@@ -13,7 +13,7 @@
             <el-col :span="24" class="ius-round">
               <span class="free-color">免费</span>发布项目需求
             </el-col>
-            <el-form :model="form" :rules="ruleForm" ref="ruleForm" class="text-center">
+            <el-form @submit.native.prevent :model="form" :rules="ruleForm" ref="ruleForm" class="text-center">
               <el-row>
                 <el-col :span="20" :offset="2">
                   <el-form-item prop="demand">
@@ -28,7 +28,7 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row>
+              <el-row :gutter="10">
                 <el-col :span="10" :offset="2">
                   <el-form-item prop="account">
                     <el-input v-model="form.account" ref="account" placeholder="手机号码"></el-input>
@@ -45,11 +45,11 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-col>
+              <el-row>
                 <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt">
                   免费发布项目需求
                 </button>
-              </el-col>
+              </el-row>
             </el-form>
           </el-col>
         </el-col>
@@ -225,7 +225,7 @@
               <span class="desigb-about-span">我们会尽快给您回电</span>
               <div class="input-phone">
                 <el-input placeholder="请输入您的电话号" v-model="phone">
-                  <template slot="append"><span class="footer-contact" @click="footerContact">快速沟通</span></template>
+                  <template slot="append"><span  @click="footerContact" class="footer-contact">快速沟通</span></template>
                 </el-input>
               </div>
             </el-col>
@@ -240,7 +240,7 @@
         <div class="phone-des">设计从未如此简单</div>
         <div class="phone-isu"><span class="phone-free">免费</span>发布需求，全程管家服务</div>
       </div>
-      <el-form :model="form" :rules="ruleForm" ref="ruleForm" class="text-center pad-top-28">
+      <el-form @submit.native.prevent :model="form" :rules="ruleForm" ref="ruleForm" class="text-center pad-top-28">
         <el-row>
           <el-col :span="20" :offset="2">
             <el-form-item prop="demand">
@@ -533,7 +533,7 @@
       <div class="or-text">或者</div>
       <div class="or-text pad-bot-15">输入您的电话，我们会尽快给您回电</div>
       <div class="form mtop_40">
-        <el-form :model="form" :rules="ruleForm" ref="ruleForm" class="pad-20">
+        <el-form :model="form" :rules="ruleForm" ref="ruleForm" class="pad-20" @submit.native.prevent>
           <el-form-item prop="name" class="pad-bot-15">
             <el-input v-model="form.name" name="username" placeholder="请输入联系人"></el-input>
           </el-form-item>
@@ -896,7 +896,7 @@
     margin-bottom: 16px;
   }
   .four-img {
-    height: 130px;
+    height: 120px;
     background: url("../../../assets/images/promote2/pc/four/FourSteps@2x.png") no-repeat;
     background-size: 100% 100%;
   }
@@ -1006,32 +1006,32 @@
     height: 50px;
   }
   .photo1 {
-    height: 160px;
+    height: 140px;
     background: url("../../../assets/images/promote2/pc/photo/01.png") no-repeat;
     background-size: 100% 100%;
   }
   .photo2 {
-    height: 160px;
+    height: 140px;
     background: url("../../../assets/images/promote2/pc/photo/02.png") no-repeat;
     background-size: 100% 100%;
   }
   .photo3 {
-    height: 160px;
+    height: 140px;
     background: url("../../../assets/images/promote2/pc/photo/03.png") no-repeat;
     background-size: 100% 100%;
   }
   .photo4 {
-    height: 160px;
+    height: 140px;
     background: url("../../../assets/images/promote2/pc/photo/04.png") no-repeat;
     background-size: 100% 100%;
   }
   .photo5 {
-    height: 160px;
+    height: 140px;
     background: url("../../../assets/images/promote2/pc/photo/05.png") no-repeat;
     background-size: 100% 100%;
   }
   .photo6 {
-    height: 160px;
+    height: 140px;
     background: url("../../../assets/images/promote2/pc/photo/06.png") no-repeat;
     background-size: 100% 100%;
   }
@@ -1115,38 +1115,38 @@
     padding: 30px 0 20px 0;
   }
   .four-one {
-    height: 80px;
+    height: 70px;
     text-align: center;
     /* opacity: 0.5; */
     background-image: linear-gradient(-180deg, rgba(140,39,205, 0.5) 4%, rgba(58,17,185, 0.5) 100%);
     border-radius: 6px;
   }
   .phone-four-one {
-    height: 80px;
+    height: 70px;
     background: url("../../../assets/images/promote2/phone/four/01.png") no-repeat;
     background-size: 100% 100%;
   }
   .phone-four-two {
-    height: 80px;
+    height: 70px;
     background: url("../../../assets/images/promote2/phone/four/02.png") no-repeat;
     background-size: 100% 100%;
   }
   .phone-four-three {
-    height: 80px;
+    height: 70px;
     background: url("../../../assets/images/promote2/phone/four/03.png") no-repeat;
     background-size: 100% 100%;
   }
   .phone-four-four {
-    height: 80px;
+    height: 70px;
     background: url("../../../assets/images/promote2/phone/four/04.png") no-repeat;
     background-size: 100% 100%;
   }
   .phone-four-text {
-    height: 80px;
+    height: 70px;
   }
   .text-text {
     max-width: 87px;
-    padding-top: 20px;
+    padding-top: 15px;
     font-family: PingFangSC-Regular;
     font-size: 13px;
     color: #FFFFFF;
@@ -1171,7 +1171,7 @@
     background-size: 100% 100%;
   }
   .three-one-left {
-    height: 96px;
+    height: 90px;
     background: url("../../../assets/images/promote2/pc/logo/1000+DesignCompany.png") no-repeat;
     background-size: 100% 100%;
   }
@@ -1186,12 +1186,12 @@
     background-size: 100% 100%;
   }
   .three-two-right {
-    height: 96px;
+    height: 90px;
     background: url("../../../assets/images/promote2/pc/logo/300+prize.png") no-repeat;
     background-size: 100% 100%;
   }
   .three-three-left {
-    height: 96px;
+    height: 90px;
     background: url("../../../assets/images/promote2/pc/logo/1000+Customer.png") no-repeat;
     background-size: 100% 100%;
   }
@@ -1201,7 +1201,7 @@
     background-size: 100% 100%;
   }
   .mid-hei {
-    height: 96px;
+    height: 90px;
   }
   .pad-top-20 {
     padding-top: 20px;
