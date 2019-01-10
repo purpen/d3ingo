@@ -282,7 +282,7 @@
               </el-row>
             </div>
             <div class="step-list">
-              <el-row v-for="(i,indexi) in itemOrder" :key="indexi" :class="['is-succeed',{'last-step':i.is_last}]" v-if="itemOrder.length">
+              <el-row v-for="(i,indexi) in itemOrder" :key="indexi" :class="[{'last-step':i.is_last,'is-succeed': i.status > 0}]" v-if="itemOrder.length">
                 <el-col :span="8" :offset="i.both === 'left'?8:0">
                   <div :class="{
                     'step-left': i.both === 'left',
@@ -1525,7 +1525,8 @@ export default {
             self.itemOrder.unshift({
               name: '等待付款',
               newName: '',
-              both: 'right'
+              both: 'right',
+              status: 1
             })
           }
           switch (self.item.status) {
