@@ -1,12 +1,14 @@
 <template>
   <section>
     <div class="round-backgound" v-if="!isMob">
+      <div class="bg1">
+      </div>
       <el-row :gutter="10" type="flex" align="middle" class="head-round">
-        <el-col :span="12">
-          <el-col :offset="8" class="design-font">设计从未如此简单</el-col>
-          <el-col :offset="8" class="free-round"><span class="free-font">免费</span>发布需求，全程管家服务</el-col>
+        <el-col :span="13">
+            <el-col :span="17" :offset="7" class="design-font">设计从未如此简单</el-col>
+            <el-col :span="17" :offset="7" class="free-round"><span class="free-font">免费</span>发布需求，全程管家服务</el-col>
         </el-col>
-        <el-col :span="12">
+        <el-col :span="11">
           <el-col :span="15" class="header-style">
             <el-col :span="24" class="ius-round">
               <span class="free-color">免费</span>发布项目需求
@@ -103,15 +105,16 @@
           </el-col>
         </div>
       </el-row>
-      <el-row class="one pad-top-50" type="flex" align="middle">
-        <el-col :span="5" :offset="3" class="thousand"></el-col>
-        <el-col :span="12" :offset="1" class="thousand-img"></el-col>
+      <el-row class="one pad-top-50 z-index-111" type="flex" align="middle">
+        <div class="bg2"></div>
+        <el-col :span="5" :offset="3" class="thousand z-index-111"></el-col>
+        <el-col :span="12" :offset="1" class="thousand-img z-index-111"></el-col>
       </el-row>
-      <el-row class="two" type="flex" align="middle">
+      <el-row class="two z-index-111" type="flex" align="middle">
         <el-col :span="12" :offset="3" class="prize-img"></el-col>
         <el-col :span="5" :offset="1" class="prize"></el-col>
       </el-row>
-      <el-row class="three" type="flex" align="middle">
+      <el-row class="three z-index-111" type="flex" align="middle">
         <el-col :span="5" :offset="3" class="customer"></el-col>
         <el-col :span="12" :offset="1" class="customer-img"></el-col>
       </el-row>
@@ -146,25 +149,26 @@
               </el-col>
             </el-row>
             <el-row :gutter="20">
+              <div class="bg2"></div>
               <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                <el-card>
-                  <div class="design-product-img">
+                <el-card class="z-index-111">
+                  <div class="design-product-img z-index-111">
                     <img src="../../../assets/images/promote/design-product/case04@2x.png" alt="美妆镜 Amiro">
                     <p>麋鹿庄园品牌设计</p>
                   </div>
                 </el-card>
               </el-col>
               <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                <el-card>
-                  <div class="design-product-img">
+                <el-card class="z-index-111">
+                  <div class="design-product-img z-index-111">
                     <img src="../../../assets/images/promote/design-product/case05@2x.png" alt="凡曦 | 御蜜粒卫生巾包装">
                     <p>凡曦 | 御蜜粒卫生巾包装</p>
                   </div>
                 </el-card>
               </el-col>
               <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                <el-card>
-                  <div class="design-product-img">
+                <el-card class="z-index-111">
+                  <div class="design-product-img z-index-111">
                     <img src="../../../assets/images/promote/design-product/case06@2x.png" alt="插画设计">
                     <p>插画设计</p>
                   </div>
@@ -175,7 +179,7 @@
         </div>
       </div>
       <div>
-        <el-row :gutter="7" type="flex" justify="center">
+        <el-row :gutter="15" type="flex" justify="center">
           <el-col :span="4">
             <div class="photo1"></div>
           </el-col>
@@ -224,6 +228,7 @@
             </el-col>
           </el-row>
         </div>
+        <div class="bg3"></div>
       </div>
     </div>
     <!-- phone -->
@@ -256,7 +261,7 @@
         </el-row>
         <el-row>
           <el-col :span="20" :offset="2">
-            <el-form-item prop="smsCode">
+            <el-form-item prop="smsCode" class="call-ele">
               <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
                 <template slot="append">
                   <el-button @click="fetchCode" :disabled="time > 0" class="get-btn">{{ codeMsg }}
@@ -532,7 +537,7 @@
           <el-form-item prop="account" class="pad-bot-15">
             <el-input v-model="form.account" ref="account" placeholder="手机号码"></el-input>
           </el-form-item>
-          <el-form-item prop="smsCode" class="wap-disabled-btn pad-bot-20">
+          <el-form-item prop="smsCode" class="wap-disabled-btn pad-bot-20 call-ele">
             <el-input class="" v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
               <template slot="append">
                 <el-button  @click="fetchCode" :disabled="time > 0">{{ codeMsg }}
@@ -895,42 +900,42 @@
   .two-img1 {
     height: 155px;
     background: url("../../../assets/images/promote2/pc/two/IntelligentMatching.png") no-repeat;
-    background-size: cover;
+    background-size: 100% 100%;
   }
   .two-img2 {
     height: 155px;
     background: url("../../../assets/images/promote2/pc/two/proMan.png") no-repeat;
-    background-size: cover;
+    background-size: 100% 100%;
   }
   .thousand {
     height: 200px;
     background: url("../../../assets/images/promote2/pc/logo/1000+DesignCompany.png") no-repeat;
-    background-size: contain;
+    background-size: 100% 100%;
   }
   .thousand-img {
     height: 90px;
     background: url("../../../assets/images/promote2/pc/logo/DesignCompanyLogos.png") no-repeat;
-    background-size: contain;
+    background-size: 100% 100%;
   }
   .prize-img {
     height: 90px;
     background: url("../../../assets/images/promote2/pc/logo/PrizeLogos.png") no-repeat;
-    background-size: contain;
+    background-size: 100% 100%;
   }
   .prize {
     height: 200px;
     background: url("../../../assets/images/promote2/pc/logo/300+prize.png") no-repeat;
-    background-size: contain;
+    background-size: 100% 100%;
   }
   .customer {
     height: 200px;
     background: url("../../../assets/images/promote2/pc/logo/1000+Customer.png") no-repeat;
-    background-size: contain;
+    background-size: 100% 100%;
   }
   .customer-img {
     height: 90px;
     background: url("../../../assets/images/promote2/pc/logo/CustomerLogos.png") no-repeat;
-    background-size: contain;
+    background-size: 100% 100%;
   }
   .design-product {
     padding: 50px 0 60px 0;
@@ -1294,6 +1299,34 @@
   }
   .pad-10 {
     padding: 0 10px;
+  }
+  .bg1 {
+    width: 588px;
+    height: 355px;
+    background: url("../../../assets/images/promote2/pc/bg/element01.png") no-repeat center/contain;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .bg2 {
+    width: 884px;
+    height: 562px;
+    background: url("../../../assets/images/promote2/pc/bg/element02.png") no-repeat center/contain;
+    position: absolute;
+    left: -400px;
+    top: 0;
+  }
+  .z-index-111 {
+    z-index: 1;
+    position: relative;
+  }
+  .bg3 {
+    height: 250px;
+    width: 100%;
+    background: url("../../../assets/images/promote2/pc/bg/bottom.png") no-repeat center/cover;
+    position: absolute;
+    left: 0;
+    bottom: 0;
   }
 </style>
 

@@ -826,6 +826,9 @@
   .send-bt .el-button--default {
     min-width: 80px;
   }
+  .call-ele .el-input-group--append {
+    padding-left: 0;
+  }
 @media screen and (max-width: 767px) {
   .el-dialog--large,
   .el-dialog--small,
