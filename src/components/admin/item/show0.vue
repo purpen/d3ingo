@@ -514,7 +514,7 @@
                   <div class="eva-content">
                     <p class="ev-c-name">
                       <router-link :to="{name: 'companyShow', params: {id: item.design_company_id}}"
-                       target="_blank">
+                       target="_blank" v-if="quotation1">
                         设计公司: {{quotation1.design_company_name}}
                       </router-link>
                     </p>
