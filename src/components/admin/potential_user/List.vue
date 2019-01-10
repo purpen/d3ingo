@@ -13,7 +13,7 @@
                   <el-date-picker
                     v-model="query.valueDate"
                     type="daterange"
-                    size="small"
+                    size="mini"
                     range-separator="-"
                     start-placeholder="开始日期"
                     end-placeholder="结束日期"
@@ -23,7 +23,7 @@
                 </div>
               </el-form-item>
               <el-form-item class="select-info">
-                <el-select v-model="query.evt" placeholder="选择条件..." size="small">
+                <el-select v-model="query.evt" placeholder="选择条件..." size="mini">
                   <el-option label="按姓名" value="1"></el-option>
                   <el-option label="按电话" value="2"></el-option>
                   <el-option label="按所属人" value="3"></el-option>
@@ -34,7 +34,7 @@
                 </el-select>
               </el-form-item>
               <el-form-item style="width: 20%;">
-                <el-input v-model="query.val" placeholder="Search..." size="small"></el-input>
+                <el-input v-model="query.val" placeholder="Search..." size="mini"></el-input>
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="onSearch" size="mini">搜索</el-button>
@@ -258,7 +258,7 @@ export default {
         per_page: 10,
         evt: '',
         val: '',
-        status: 6,
+        status: '',
         totalCount: 0,
         valueDate: []
       },

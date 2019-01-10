@@ -731,7 +731,7 @@
           this.takingPriceForm.price = this.takingPriceForm.o_price
         } else if (evt === 2) {
           this.takingPriceForm.o_price = this.takingPriceForm.price
-          this.takingPriceForm.price = parseInt(this.takingPriceForm.price).toLocaleString('en-US')
+          this.takingPriceForm.price = parseFloat(this.takingPriceForm.price).toLocaleString('en-US')
         }
       },
       selectCompanyboxChange() {
@@ -1300,7 +1300,6 @@
         return
       }
       let uType = this.$store.state.event.user.type
-      console.log('user', this.$store.state.event.user)
       // 如果是设计公司，跳到设计公司项目详情
       if (uType !== 2) {
         this.$router.replace({name: 'vcenterItemShow'})
@@ -1338,7 +1337,7 @@
             self.quotation = response.data.data.quotation
             if (self.quotation) {
               self.takingPriceForm.id = self.quotation.id
-              self.takingPriceForm.price = parseInt(self.quotation.price).toLocaleString('en-US')
+              self.takingPriceForm.price = parseFloat(self.quotation.price).toLocaleString('en-US')
               self.takingPriceForm.o_price = self.quotation.price
               self.takingPriceForm.summary = self.quotation.summary
             }
@@ -1348,33 +1347,33 @@
             }
             switch (self.item.status) {
               case 4: // 查看已提交报价的设计公司
-                // self.progressButt = 2
-                // self.progressContract = -1
-                // self.progressItem = -1
-                // self.statusIconUrl = require('@/assets/images/item/wait_taking.png')
-                // self.statusLabel.trueCompany = true
-                // self.$http.get(api.demandItemDesignListItemId.format(self.item.id), {})
-                //   .then(function (response) {
-                //     if (response.data.meta.status_code === 200) {
-                //       let offerCompany = response.data.data
-                //       for (let i = 0; i < offerCompany.length; i++) {
-                //         let item = offerCompany[i]
-                //         // 是否存在已提交报价的公司
-                //         if (item.design_company_status === 2) {
-                //           self.hasOfferCompany = true
-                //         }
-                //         if (item.design_company.logo_image && item.design_company.logo_image.length !== 0) {
-                //           offerCompany[i].design_company.logo_url = item.design_company.logo_image.logo
-                //         } else {
-                //           offerCompany[i].design_company.logo_url = false
-                //         }
-                //       } // endfor
-                //       self.offerCompany = offerCompany
-                //     }
-                //   })
-                //   .catch(function (error) {
-                //     self.$message.error(error.message)
-                //   })
+                self.progressButt = 2
+                self.progressContract = -1
+                self.progressItem = -1
+                self.statusIconUrl = require('@/assets/images/item/wait_taking.png')
+                self.statusLabel.trueCompany = true
+                self.$http.get(api.demandItemDesignListItemId.format(self.item.id), {})
+                  .then(function (response) {
+                    if (response.data.meta.status_code === 200) {
+                      let offerCompany = response.data.data
+                      for (let i = 0; i < offerCompany.length; i++) {
+                        let item = offerCompany[i]
+                        // 是否存在已提交报价的公司
+                        if (item.design_company_status === 2) {
+                          self.hasOfferCompany = true
+                        }
+                        if (item.design_company.logo_image && item.design_company.logo_image.length !== 0) {
+                          offerCompany[i].design_company.logo_url = item.design_company.logo_image.logo
+                        } else {
+                          offerCompany[i].design_company.logo_url = false
+                        }
+                      } // endfor
+                      self.offerCompany = offerCompany
+                    }
+                  })
+                  .catch(function (error) {
+                    self.$message.error(error.message)
+                  })
                 break
               case 45: // 已有设计公司报价
                 self.progressButt = 3
@@ -2267,34 +2266,34 @@
 
 <style>
   /*改变步骤线的大小*/
-  .el-step__head{
+  .el-step__head .el-step__icon-inner {
+    display: none;
+  }
+  .el-step__head .el-step__icon{
     width: 12px !important;
     height: 12px !important;
-    /*line-height:12px !important;*/
     vertical-align: baseline !important;
+  }
+  .is-process .el-step__line {
+    border-color: #00ac84!important;
+    background-color: #00ac84 !important;
+  }
+  .el-step__head .el-step__line {
+    position: absolute;
+    top: 4px !important;
+    left: 5px !important;
+  }
+  .is-process .el-step__icon{
+    background-color: #00ac84 !important;
+    border-color: #00ac84!important;
   }
   .el-step__head.is-text.is-process {
     color: #FFF;
     background-color: #00ac84!important;
     border-color: #00ac84!important;
   }
-
-  .el-step__head .el-step__line.is-vertical  {
-    position: absolute;
-    top: 12px;
-    left: 5px;
-  }
-
-  .is-process .el-step__line.is-vertical  {
-    background-color: #00ac84 !important;
-  }
-
-  .el-step__head .el-step__icon {
-    line-height: 12px;
-    display: none;
-  }
   /*三个行高 start*/
-  .el-step__title is-success{
+  /* .el-step__title is-success{
     line-height: 15px !important;
   }
   .el-step__main .el-step__title.is-process {
@@ -2304,7 +2303,7 @@
   .el-step__main .el-step__title.is-wait {
     line-height: 15px !important;
     color: #999;
-  }
+  } */
   /*end*/
   /*小屏的定位 start*/
   @media screen and (max-width: 767px){

@@ -8,7 +8,7 @@
         <div class="content">
           <div class="content-header fz-14">
             <div>
-              <router-link :to="{name: 'adminItemList'}" active-class="false" :class="{'is-active': menuType === 1}">返回项目列表</router-link>
+              <router-link :to="{name: 'adminItemList'}" active-class="false" :class="{'is-active': menuType === 1}">项目列表</router-link>
               <span>&gt;</span>
               <span>{{item.name}}</span>
             </div>
@@ -131,7 +131,7 @@
                     'step-left': i.both === 'left',
                     'step-right': i.both === 'right',
                   }">
-                    <p><span>{{i.name}}</span><span v-if="i.type === 7" class="addition">查看合同</span></p>
+                    <p><span>{{i.name}}</span><span v-if="i.type === 7" class="addition"><a href="javascript:void(0);" @click="viewContractBtn(0)">查看合同>></a></span></p>
                     <p class="created-date">{{i.created}}</p>
                     <div class="company-list">
                       <p v-for="(d, indexd) in i.designCompany" :key="indexd" v-if="i.designCompany&&i.designCompany.length">{{d.company_name}}</p>
@@ -151,8 +151,8 @@
                     'step-left': d.both === 'left',
                     'step-right': d.both === 'right',
                   }">
-                    <p><span>{{d.name}}</span><span v-if="d.type === 7" class="addition">查看合同</span></p>
-                    <p class="created-date">{{d.created}}</p>
+                    <p><span>{{d.name}}</span></p>
+                    <!-- <p class="created-date">{{d.created}}</p> -->
                   </div>
                 </el-col>
                 <el-col :span="8" :offset="d.both === 'left'?0:8">
@@ -168,7 +168,7 @@
               >
               <el-form :model="form" :rules="rules" ref="ruleForm">
                 <el-form-item prop="summary">
-                  <el-input placeholder="请填写100字以内的备注" v-model="form.summary" type="textarea" :autosize="{ minRows: 4, maxRows: 8}"></el-input>
+                  <el-input placeholder="请填写100字以内的备注" v-model.trim="form.summary" type="textarea" :autosize="{ minRows: 4, maxRows: 8}"></el-input>
                 </el-form-item>
               </el-form>
               <span slot="footer" class="dialog-footer">
@@ -328,8 +328,8 @@
                     <p><span>{{d.name}}</span></p>
                     <div class="is-money">
                     </div>
-                    <p class="created-date" v-if="!d.is_last">应付金额: 暂未付款</p>
-                    <p class="created-date" v-if="!d.is_last">支付时间: 暂未付款</p>
+                    <!-- <p class="created-date" v-if="!d.is_last">应付金额: 暂未付款</p>
+                    <p class="created-date" v-if="!d.is_last">支付时间: 暂未付款</p> -->
                   </div>
                 </el-col>
                 <el-col :span="8">
@@ -548,7 +548,8 @@ export default {
       },
       rules: {
         summary: [
-          {required: true, message: '请输入备注内容', trigger: 'blur'}
+          {required: true, message: '请输入备注内容', trigger: 'blur'},
+          {min: 1, max: 100, message: '备注内容在100字以内！', trigger: 'blur'}
         ]
       },
       matchCompanyDialog: false,
