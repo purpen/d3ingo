@@ -950,6 +950,12 @@
   .el-switch__label.is-active {
     color: #ff5a5f;
   }
+  .send-bt .el-button--default {
+    min-width: 80px;
+  }
+  .call-ele .el-input-group--append {
+    padding-left: 0;
+  }
 @media screen and (max-width: 767px) {
   .el-dialog--large,
   .el-dialog--small,
@@ -966,4 +972,7 @@
 .el-pager li:hover,
 .el-pager li.active {
   color: #ff5a5f
+}
+.el-form-item.is-success .el-input__inner, .el-form-item.is-success .el-input__inner:focus, .el-form-item.is-success .el-textarea__inner, .el-form-item.is-success .el-textarea__inner:focus {
+  border-color: #e6e6e6
 }

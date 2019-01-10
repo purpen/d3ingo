@@ -1360,7 +1360,7 @@ const vQuoteView = () => import('@/components/block/QuoteView')
   }
 
   .contract-content p {
-    max-width: 300px;
+    max-width: 600px;
     font-size: 1.2rem;
     color: #666;
     line-height: 1.5;

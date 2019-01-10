@@ -53,7 +53,7 @@
                     :rules="{
                     required: true, message: '请填写工作内容', trigger: 'blur'}">
                     <el-input
-                    type="textarea" autosize v-model="form.plan_format[index].content" placeholder="请填写工作内容"></el-input>
+                    type="textarea" :maxlength="50" autosize v-model="form.plan_format[index].content" placeholder="请填写工作内容"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="7" :md="7" :lg="7">
@@ -319,7 +319,7 @@
         <div>
         <el-form class="clearfix" label-position="top" label-width="80px">
           <el-form-item label="" prop="currentPlanTxt">
-            <el-input type="textarea" :rows="5" placeholder="请填写工作内容备注" v-model="currentPlanTxt"></el-input>
+            <el-input :maxlength="1000" type="textarea" :rows="5" placeholder="请填写工作内容备注" v-model="currentPlanTxt"></el-input>
           </el-form-item>
 
           <p class="form-btn">
@@ -680,8 +680,8 @@ export default {
     },
     // 保存计划任务备注
     submitPlanTxt() {
-      if (this.currentPlanTxt.length > 150) {
-        this.$message.error('不能超过150个字符!')
+      if (this.currentPlanTxt.length > 1000) {
+        this.$message.error('不能超过1000个字符!')
         return false
       }
       this.$set(this.form.plan_format[this.currentPlanTxtIndex], 'summary', this.currentPlanTxt)
@@ -1166,7 +1166,9 @@ export default {
   .el-input--small .el-input__inner {
     height: 40px;
   }
-
+  .qouteSubmit .el-textarea__inner {
+    min-height: 40px!important
+  }
   .mar-r-15 {
     margin-right: 15px;
   }
