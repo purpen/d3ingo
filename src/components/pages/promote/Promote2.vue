@@ -179,26 +179,29 @@
         </div>
       </div>
       <div>
-        <el-row :gutter="15" type="flex" justify="center">
-          <el-col :span="4">
+        <el-row :gutter="15">
+          <el-col :span="3" :offset="3">
             <div class="photo1"></div>
           </el-col>
-          <el-col :span="4">
+          <el-col :span="3">
             <div class="photo2"></div>
           </el-col>
-          <el-col :span="4">
+          <el-col :span="3">
             <div class="photo3"></div>
           </el-col>
-          <el-col :span="4">
+          <el-col :span="3">
             <div class="photo4"></div>
           </el-col>
-          <el-col :span="4">
+          <el-col :span="3">
             <div class="photo5"></div>
+          </el-col>
+          <el-col :span="3">
+            <div class="photo6"></div>
           </el-col>
         </el-row>
       </div>
       <div class="desigb-about">
-        <div class="container">
+        <div class="container z-index-111">
           <el-row :gutter="145">
             <el-col :xs="24" :sm="8" :md="8" :lg="8">
               <img src="../../../assets/images/promote2/pc/call/Release.png" alt="">
@@ -517,7 +520,7 @@
               <div class="pho-photo-five"></div>
             </el-col>
             <el-col :span="8">
-              <div class="pho-photo-three"></div>
+              <div class="pho-photo-six"></div>
             </el-col>
           </div>
         </el-row>
@@ -1027,6 +1030,11 @@
     background: url("../../../assets/images/promote2/pc/photo/05.png") no-repeat;
     background-size: 100% 100%;
   }
+  .photo6 {
+    height: 160px;
+    background: url("../../../assets/images/promote2/pc/photo/06.png") no-repeat;
+    background-size: 100% 100%;
+  }
   .pad-top-50 {
     padding-top: 50px;
   }
@@ -1244,6 +1252,11 @@
   .pho-photo-five {
     height: 80px;
     background: url("../../../assets/images/promote2/pc/photo/01.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .pho-photo-six {
+    height: 80px;
+    background: url("../../../assets/images/promote2/pc/photo/06.png") no-repeat;
     background-size: 100% 100%;
   }
   .call-we {
