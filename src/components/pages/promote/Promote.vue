@@ -601,7 +601,6 @@
           account: '',  // 手机号
           contact: '',   // 联系人
           name: '',      // app 联系人
-          appCompany: '' // app 公司
         },
         // swiper
         swiperOption: {
