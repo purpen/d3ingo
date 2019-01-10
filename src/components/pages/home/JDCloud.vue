@@ -85,7 +85,7 @@
               <el-col :span="24" class="ius-round">
                 <span class="free-color">免费</span>发布项目需求
               </el-col>
-              <el-form :model="form" :rules="ruleForm" ref="ruleForm" class="text-center">
+              <el-form @submit.native.prevent :model="form" :rules="ruleForm" ref="ruleForm" class="text-center">
                 <el-row>
                   <el-col :span="20" :offset="2">
                     <el-form-item prop="demand">
@@ -100,7 +100,7 @@
                     </el-form-item>
                   </el-col>
                 </el-row>
-                <el-row>
+                <el-row :gutter="10">
                   <el-col :span="10" :offset="2">
                     <el-form-item prop="account">
                       <el-input v-model="form.account" ref="account" placeholder="手机号码"></el-input>
@@ -195,7 +195,7 @@
           <div class="container">
             <h2 class="public-h2">艺火设计服务的项目</h2>
             <div class="design-product-list">
-              <el-row :gutter="20" class="m-b-20">
+              <el-row :gutter="20" class="m-b-20 z-index-111">
                 <el-col :xs="24" :sm="8" :md="8" :lg="8">
                   <el-card>
                     <div class="design-product-img">
@@ -267,7 +267,7 @@
                 <p class="desigb-about-p">联系我们</p>
                 <span class="desigb-about-span" style="font-size: 24px">13031154842</span>
                 <div>
-                  <a href="mailto:gengting@taihuoniao.com"><button class="design-btn">发送邮件</button></a>
+                  <a href="mailto:wanghao80@jd.com"><button class="design-btn">发送邮件</button></a>
                 </div>
               </el-col>
               <el-col :xs="24" :sm="8" :md="8" :lg="8">
@@ -291,7 +291,7 @@
           <div class="phone-des">设计从未如此简单</div>
           <div class="phone-isu"><span class="phone-free">免费</span>发布需求，全程管家服务</div>
         </div>
-        <el-form :model="form" :rules="ruleForm" ref="ruleForm" class="text-center pad-top-28">
+        <el-form :model="form" :rules="ruleForm" ref="ruleForm" class="text-center pad-top-28" @submit.native.prevent>
           <el-row>
             <el-col :span="20" :offset="2">
               <el-form-item prop="demand">
@@ -520,7 +520,7 @@
         <div class="or-text">或者</div>
         <div class="or-text pad-bot-15">输入您的电话，我们会尽快给您回电</div>
         <div class="form mtop_40">
-          <el-form :model="form" :rules="ruleForm" ref="ruleForm" class="pad-20">
+          <el-form @submit.native.prevent :model="form" :rules="ruleForm" ref="ruleForm" class="pad-20">
             <el-form-item prop="name" class="pad-bot-15">
               <el-input v-model="form.name" name="username" placeholder="请输入联系人"></el-input>
             </el-form-item>
@@ -1385,38 +1385,38 @@ export default {
     padding: 30px 0 20px 0;
   }
   .four-one {
-    height: 80px;
+    height: 70px;
     text-align: center;
     /* opacity: 0.5; */
     background-image: linear-gradient(-180deg, rgba(140,39,205, 0.5) 4%, rgba(58,17,185, 0.5) 100%);
     border-radius: 6px;
   }
   .phone-four-one {
-    height: 80px;
+    height: 70px;
     background: url("../../../assets/images/promote2/phone/four/01.png") no-repeat;
     background-size: 100% 100%;
   }
   .phone-four-two {
-    height: 80px;
+    height: 70px;
     background: url("../../../assets/images/promote2/phone/four/02.png") no-repeat;
     background-size: 100% 100%;
   }
   .phone-four-three {
-    height: 80px;
+    height: 70px;
     background: url("../../../assets/images/promote2/phone/four/03.png") no-repeat;
     background-size: 100% 100%;
   }
   .phone-four-four {
-    height: 80px;
+    height: 70px;
     background: url("../../../assets/images/promote2/phone/four/04.png") no-repeat;
     background-size: 100% 100%;
   }
   .phone-four-text {
-    height: 80px;
+    height: 70px;
   }
   .text-text {
     max-width: 87px;
-    padding-top: 20px;
+    padding-top: 15px;
     font-family: PingFangSC-Regular;
     font-size: 13px;
     color: #FFFFFF;
@@ -1441,17 +1441,17 @@ export default {
     background-size: 100% 100%;
   }
   .three-one-left {
-    height: 190px;
+    height: 160px;
     background: url("../../../assets/images/promote2/phone/yihuo/DesignCompany@2x.png") no-repeat;
     background-size: 100% 100%;
   }
   .three-two-left {
-    height: 190px;
+    height: 160px;
     background: url("../../../assets/images/promote2/phone/yihuo/DesignAward@2x.png") no-repeat;
     background-size: 100% 100%;
   }
   .three-three-left {
-    height: 190px;
+    height: 160px;
     background: url("../../../assets/images/promote2/phone/yihuo/Customer@2x.png") no-repeat;
     background-size: 100% 100%;
   }
