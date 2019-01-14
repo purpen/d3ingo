@@ -49,6 +49,7 @@
                 <!--</el-col>-->
                 <el-col :xs="24" :sm="6" :md="6" :lg="6" class="qouteSubmit">
                   <el-form-item
+                    class="work-content"
                     :prop="'plan_format.' + index + '.content'"
                     :rules="{
                     required: true, message: '请填写工作内容', trigger: 'blur'}">
@@ -80,7 +81,7 @@
                               :label="p.name"
                               :value="p.name">
                                 <span style="float: left">{{ p.name }}</span>
-                                <span style="float: right; color: #666; font-size: 13px" @click.stop="delPosition(p.id, p_index)"><i class="fx fx-icon-close-sm"></i></span>
+                                <span style="float: right; color: #666; font-size: 13px;margin-right: -15px" @click.stop="delPosition(p.id, p_index)"><i class="fx fx-icon-close-sm"></i></span>
                             </el-option>
                           </el-select>
                         </el-form-item>
@@ -93,8 +94,6 @@
                           <el-select
                             class="no-border_radius"
                             v-model="form.plan_format[index].arranged[c_index].number"
-                            filterable
-                            allow-create
                             size="small"
                             default-first-option
                             placeholder="数量">
@@ -125,10 +124,12 @@
                 <el-col :xs="24" :sm="4" :md="4" :lg="4" class="qouteSubmit mar-r-15">
                   <el-form-item
                     :prop="'plan_format.' + index + '.duration'"
-                    :rules="[{
-                    required: true, type: 'number', message: '请填写正确天数', trigger: 'blur'},
-                    {min: 1, type: 'number', message: '请填写正确天数', trigger: 'blur'}]">
-                    <el-input type="number" min="1" autosize v-model.number="form.plan_format[index].duration" placeholder="天数" size="small" class="work-sty">
+                    :rules="ruleForm.count">
+                    <el-input type="number"
+                      autosize
+                      :maxlength="8"
+                      v-model.number="form.plan_format[index].duration"
+                      placeholder="天数" size="small" class="work-sty">
                       <template slot="append">工作日</template>
                     </el-input>
                   </el-form-item>
@@ -139,7 +140,7 @@
                     :rules="ruleForm.price">
                     <el-input type="number"
                       :maxlength="8"
-                      min="1" autosize v-model.number="form.plan_format[index].price" @blur="statPrice" placeholder="请填写费用" size="small">
+                      autosize v-model.number="form.plan_format[index].price" @blur="statPrice" placeholder="请填写费用" size="small">
                       <template slot="append">元</template>
                     </el-input>
                   </el-form-item>
@@ -382,6 +383,26 @@ export default {
         }
       }
     }
+    let checkCount = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('请填写正确天数'))
+      } else {
+        if (typeof Number(value) !== 'number') {
+          return callback(new Error('天数只能为数字！'))
+        } else {
+          if (value <= 0) {
+            return callback(new Error('数字必须大于0！'))
+          } else {
+            let len = (value + '')
+            if (len.split('.')[0].length > 8) {
+              return callback(new Error('设置天数过大'))
+            } else {
+              return callback()
+            }
+          }
+        }
+      }
+    }
     return {
       id: 0,
       itemId: 0,
@@ -396,6 +417,7 @@ export default {
         plan_format: []
       },
       ruleForm: {
+        count: [{validator: checkCount, trigger: 'blur'}],
         price: [{validator: checkNumber, trigger: 'blur'}],
         company_name: [{ required: true, message: '请填写客户名称', trigger: 'blur' }],
         contact_name: [{ required: true, message: '请填写客户联系姓名', trigger: 'blur' }],
@@ -1203,5 +1225,8 @@ export default {
 
   .padd-l-25 {
     padding-left: 25px;
+  }
+  .work-content .el-form-item__content .el-textarea__inner {
+    padding: 8px 15px;
   }
 </style>
