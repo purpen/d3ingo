@@ -54,7 +54,9 @@ let routes = [
     path: '/bind',
     name: 'clientFeedback',
     meta: {
-      title: '绑定确认'
+      title: '绑定确认',
+      hideHeader: true,
+      hideFooter: true
     },
     component: require('@/components/pages/home/client_progress_feedback/bind')
   },
