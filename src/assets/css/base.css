@@ -1723,7 +1723,10 @@ td.fc-day.fc-widget-content.fc-today::before {
   #app {
     /* padding-bottom: 450px; */
   }
-
+  .el-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
   .footer .item {
     text-align: left
   }
@@ -1894,7 +1897,7 @@ td.fc-day.fc-widget-content.fc-today::before {
     font-size: 15px;
   }
 
-  .el-step__head {
+  /* .el-step__head {
     width: 20px;
     height: 20px;
   }
@@ -1910,7 +1913,7 @@ td.fc-day.fc-widget-content.fc-today::before {
 
   .el-step__icon i {
     display: none;
-  }
+  } */
 
   .withdraw {
     font-size: 15px;

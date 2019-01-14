@@ -655,6 +655,7 @@
         })
       },
       getVcenterItemList() {
+        console.log(this.query.page)
         this.isLoading = true
         let self = this
         self.$http.get(api.designItemList, {params: {
@@ -762,9 +763,9 @@
         // 对路由变化作出响应...
         let type = Number(this.$route.query.type) || 1
         this.query.total = 0
-        this.query.page = 0
+        this.query.page = 1
         this.query2.total = 0
-        this.query2.page = 0
+        this.query2.page = 1
         this.isEmpty = false
         this.isEmpty2 = false
         this.change(type)

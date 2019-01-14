@@ -178,11 +178,14 @@
     box-shadow: -1px 0 0 0 #ff5a5f;
   }
   /* 合同阶段选择按钮 */
-  .el-form-item__content .el-radio-group{
+  /* .el-form-item__content .el-radio-group{
     width: 44rem;
+  } */
+  .el-radio-button__phase .el-radio-button__inner {
+    width: 100%;
   }
   .el-form-item__content .el-radio-button__inner{
-    width: 20rem;
+    /* width: 20rem; */
     border:1px solid rgba(210,210,210,1);
     border-radius:4px;
   }
@@ -263,7 +266,7 @@
   }
   .el-dialog__header {
     border-radius: 4px 4px 0 0;
-    padding: 16px 20px;
+    padding: 25px 20px;
     background: #f7f7f7
   }
   .el-dialog__headerbtn .el-dialog__close {
@@ -592,9 +595,9 @@
     stroke: transparent;
     animation: none
   }
-  .right-content .content-box .el-loading-mask .el-loading-spinner {
+  /* .right-content .content-box .el-loading-mask .el-loading-spinner {
     top: 0;
-  }
+  } */
   #quote-dialog .el-dialog--large {
     width: 100%;
   }
@@ -804,7 +807,7 @@
   }
   .el-form-item__content .el-input .el-input__inner:focus {
     border: 1px solid #d2d2d2;
-    box-shadow: inset 1000px 20px 20px #fff;
+    /* box-shadow: inset 1000px 20px 20px #fff; */
   }
   .el-breadcrumb__inner a, .el-breadcrumb__inner.is-link {
     font-weight: normal;
@@ -937,6 +940,25 @@
     background-color: #eef1f6;
     border: none;
   }
+  .test-select .el-input__inner {
+    line-height: 30px;
+    height: 30px;
+  }
+  .test-select .el-input__inner:focus {
+    border: 1px solid #e6e6e6;
+  }
+  .el-switch__label.is-active {
+    color: #ff5a5f;
+  }
+  .send-bt .el-button--default {
+    min-width: 80px;
+  }
+  .call-ele .el-input-group--append {
+    padding-left: 0;
+  }
+  .input-phone .el-input .el-input__inner:hover{
+    border-radius: 30px 0 0 30px;
+  }
 @media screen and (max-width: 767px) {
   .el-dialog--large,
   .el-dialog--small,
@@ -949,4 +971,11 @@
     width: 100%;
   }
 
+}
+.el-pager li:hover,
+.el-pager li.active {
+  color: #ff5a5f
+}
+.el-form-item.is-success .el-input__inner, .el-form-item.is-success .el-input__inner:focus, .el-form-item.is-success .el-textarea__inner, .el-form-item.is-success .el-textarea__inner:focus {
+  border-color: #e6e6e6
 }

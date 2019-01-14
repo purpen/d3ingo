@@ -6,12 +6,16 @@
       'vcenter-right': leftWidth === 2,
         'vcenter-right-mob': isMob}">
         <div class="right-content modify-content vcenter-container">
-          <v-menu-sub></v-menu-sub>
+          <c-menu-sub v-if="isCompany"></c-menu-sub>
+          <d-menu-sub v-else></d-menu-sub>
+          <!-- <v-menu-sub></v-menu-sub> -->
           <v-menu-sub v-if="false" currentSubName="identification"></v-menu-sub>
+          <h3 class="top-password">修改密码</h3>
           <div :class="['content-box', 'clearfix' , isMob ? 'content-box-m' : '']" v-loading="isLoading">
             <!-- <div :class="['form-title', isMob ? 'form-title-m' : '']">
               <span v-if="!isMob">修改密码</span>
             </div> -->
+
             <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
 
               <el-row :gutter="24">
@@ -55,7 +59,9 @@
 
 <script>
   import vMenu from '@/components/pages/v_center/Menu'
-  import vMenuSub from '@/components/pages/v_center/account/MenuSub'
+  import dMenuSub from '@/components/pages/v_center/d_company/MenuSub'
+  // import vMenuSub from '@/components/pages/v_center/account/MenuSub'
+  import cMenuSub from '@/components/pages/v_center/company/MenuSub'
   import api from '@/api/api'
   import auth from '@/helper/auth'
 
@@ -65,7 +71,8 @@
     name: 'vcenter_account_modify_pwd',
     components: {
       vMenu,
-      vMenuSub
+      dMenuSub,
+      cMenuSub
     },
     data () {
       let checkPassword = (rule, value, callback) => {
@@ -156,6 +163,9 @@
       },
       rightWidth() {
         return 24 - this.$store.state.event.leftWidth
+      },
+      isCompany() {
+        return this.$store.state.event.user.type === 2
       }
     },
     watch: {},
@@ -189,5 +199,9 @@
   }
   .right-content .content-box-m {
     padding: 0;
+  }
+  .top-password {
+    font-size: 16px;
+    margin-bottom: 10px;
   }
 </style>
