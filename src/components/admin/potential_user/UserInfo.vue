@@ -1811,7 +1811,11 @@ export default {
       return this.$store.state.event.user.id
     },
     isHasPower() { // 是否有权限编辑
-      if (this.userId === this.userForm.execute_user_id || this.isAdmin >= 15) {
+      if (this.currentId) {
+        if (this.userId === this.userForm.execute_user_id || this.isAdmin >= 15) {
+          return true
+        }
+      } else {
         return true
       }
     }
