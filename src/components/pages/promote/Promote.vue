@@ -533,17 +533,17 @@
       <div class="or-text">或者</div>
       <div class="or-text pad-bot-15">输入您的电话，我们会尽快给您回电</div>
       <div class="form mtop_40">
-        <el-form :model="form" :rules="ruleForm" ref="ruleForm" class="pad-20" @submit.native.prevent>
+        <el-form :model="form1" :rules="ruleForm" ref="ruleForm1" class="pad-20" @submit.native.prevent>
           <el-form-item prop="name" class="pad-bot-15">
-            <el-input v-model="form.name" name="username" placeholder="请输入联系人"></el-input>
+            <el-input v-model="form1.name" name="username" placeholder="请输入联系人"></el-input>
           </el-form-item>
           <el-form-item prop="account" class="pad-bot-15">
-            <el-input v-model="form.account" ref="account" placeholder="手机号码"></el-input>
+            <el-input v-model="form1.account" ref="account" placeholder="手机号码"></el-input>
           </el-form-item>
           <el-form-item prop="smsCode" class="wap-disabled-btn pad-bot-20 call-ele">
-            <el-input class="" v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
+            <el-input class="" v-model="form1.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
               <template slot="append">
-                <el-button  @click="fetchCode" :disabled="time > 0">{{ codeMsg }}
+                <el-button  @click="fetchCode1" :disabled="time > 0">{{ codeMsg }}
                 </el-button>
               </template>
             </el-input>
@@ -551,7 +551,7 @@
         </el-form>
       </div>
       <div class="bt-center">
-        <button class="btn-style" @click="submit_app('ruleForm')">快速沟通</button>
+        <button class="btn-style" @click="submit_app('ruleForm1')">快速沟通</button>
       </div>
     </div>
   </section>
@@ -599,7 +599,11 @@
           smsCode: '',  // 验证码
           demand: '',   // 需求
           account: '',  // 手机号
-          contact: '',   // 联系人
+          contact: ''  // 联系人
+        },
+        form1: {
+          account: '',  // 手机号
+          smsCode: '',  // 验证码
           name: ''      // app 联系人
         },
         // swiper
@@ -702,6 +706,17 @@
             this.timer()
           })
       },
+      fetchCode1() {
+        if (!this.form1.account) {
+          this.$message.error('请输入手机号')
+          return
+        }
+        this.$http.post(api.fetch_wx_code, {phone: this.form1.account})
+          .then(res => {
+            this.time = this.second
+            this.timer()
+          })
+      },
       timer() {
         if (this.time > 0) {
           this.time = this.time - 1
@@ -712,9 +727,9 @@
         this.$refs[form].validate(valid => {
           if (valid) {
             let row = {
-              user_name: this.form.name,
-              phone: this.form.account,
-              sms_code: this.form.smsCode,
+              user_name: this.form1.name,
+              phone: this.form1.account,
+              sms_code: this.form1.smsCode,
               from: 4
             }
             this.$http.post(api.pcAdd, row)
