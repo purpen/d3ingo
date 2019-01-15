@@ -42,6 +42,16 @@ module.exports = {
         cache: true,
         workers: os.cpus().length
       },
+      // uglifyOptions: {
+      //   ecma: 5,
+      //   ie8: true,
+      //   output: { comments: false, beautify: false },
+      //   compress: {
+      //     drop_console: true,
+      //     dead_code: true
+      //   },
+      //   warnings: false
+      // },
       uglifyOptions: {
         ecma: 5,
         ie8: true,
