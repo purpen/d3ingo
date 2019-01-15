@@ -224,7 +224,7 @@
                 </el-col>
               </el-row>
 
-              <el-form-item label="获得奖项" class="fullwidth">
+              <el-form-item label="获得奖项">
                 <el-row class="flex prize" :gutter="10" v-for="(p,indexp) in prizes" :key="indexp" v-if="prizes&&prizes.length>0">
                   <!-- <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3">
                     <el-radio-group v-model="is_prize" @change="isPrize">
@@ -238,6 +238,7 @@
                         key="p.time"
                         class="fullwidth"
                         v-model="p.time"
+                        popper-class="hover-color"
                         type="month"
                         placeholder="获奖日期">
                       </el-date-picker>
@@ -269,7 +270,7 @@
                 </el-row>
               </el-form-item>
 
-              <el-form-item label="申请专利" class="fullwidth">
+              <el-form-item label="申请专利" >
                 <el-row class="flex prize" :gutter="10" v-for="(t,indext) in patents" :key="indext" v-if="patents&&patents.length>0">
                   <!-- <el-col class="margin-b-10" :xs="24" :sm="3" :md="3" :lg="3">
                     <el-radio-group v-model="is_apply" @change="isApplication">
@@ -283,6 +284,7 @@
                         key="t.time"
                         class="fullwidth"
                         v-model="t.time"
+                        popper-class="hover-color"
                         type="month"
                         placeholder="选择日期">
                       </el-date-picker>
@@ -316,13 +318,13 @@
               <el-form-item label="产品量产">
                 <el-row class="flex">
                   <el-col  :xs="24" :sm="3" :md="3" :lg="3">
-                    <el-radio-group v-model.number="form.mass_production" @change="isProduction">
+                    <el-radio-group v-model.number="form.mass_production" @change="isProduction" class="radio-hover">
                       <el-radio class="radio" :label="0">否</el-radio>
                       <el-radio class="radio" :label="1">是</el-radio>
                     </el-radio-group>
                   </el-col>
                   <el-col :xs="24" :sm="9" :md="9" :lg="9">
-                    <el-select v-model.number="form.sales_volume" v-if="!isDisabledProduct" placeholder="销售额">
+                    <el-select v-model.number="form.sales_volume" v-if="!isDisabledProduct" placeholder="销售额" popper-class="option-fontwe">
                       <el-option
                         v-for="item in saleOptions"
                         :label="item.label"
@@ -919,6 +921,7 @@
                 that.coverId = that.form.cover_id
               }
               if (response.data.data.sales_volume === 0) {
+                that.form.sales_volume = ''
                 that.form.mass_production = 0
               } else {
                 that.form.mass_production = 1

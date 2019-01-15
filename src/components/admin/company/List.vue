@@ -137,7 +137,7 @@
             </el-table-column>
           </el-table>
 
-          <el-dialog title="请填写拒绝原因" :visible.sync="dialogVisible" size="tiny">
+          <el-dialog title="请填写拒绝原因" :visible.sync="dialogVisible" width="380px">
             <el-form v-model="verify" ref="verifyForm" :rules="verifyForm" @submit.native.prevent>
               <el-form-item prop="refuseRease">
                 <el-input v-model="verify.refuseRease" placeholder="请填写拒绝原因"></el-input>
@@ -306,7 +306,7 @@ export default {
             if (item.logo_image) {
               item.logo_url = item.logo_image.logo
             }
-            item['created_at'] = item.created_at.date_format().format('yy-MM-dd')
+            item['created_at'] = item.created_at.date_format().format('yyyy-MM-dd')
             self.tableData.push(item)
           } // endfor
 

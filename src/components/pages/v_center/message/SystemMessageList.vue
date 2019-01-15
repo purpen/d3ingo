@@ -89,7 +89,7 @@
               self.query.totalCount = response.data.meta.pagination.total
               for (let i = 0; i < data.length; i++) {
                 let item = data[i]
-                data[i]['created_at'] = item.created_at.date_format().format('yy-MM-dd hh:mm')
+                data[i]['created_at'] = item.created_at.date_format().format('yyyy-MM-dd hh:mm')
                 data[i]['not_read'] = false
               }
               self.itemList = data
@@ -181,7 +181,7 @@
   .content-box .item {
     border: 1px solid #E6E6E6;
     margin-bottom: -1px;
-    padding: 30px 50px 30px 20px;
+    padding: 20px;
     min-height: 30px;
     line-height: 30px;
     cursor: default;

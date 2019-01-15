@@ -223,7 +223,7 @@
       </div>
 
       <el-dialog
-        title="提交项目报价" v-model="takingPriceDialog">
+        title="提交项目报价" :visible.sync="takingPriceDialog" width="1150px">
         <el-form label-position="top" :model="takingPriceForm" :rules="takingPriceRuleForm" ref="takingPriceRuleForm">
           <input type="hidden" v-model="takingPriceForm.itemId" value=""/>
           <el-form-item label="项目报价" prop="price" label-width="200px">
@@ -246,8 +246,8 @@
 
       <el-dialog
         title="提示"
-        v-model="sureRefuseItemDialog"
-        size="tiny">
+        :visible.sync="sureRefuseItemDialog"
+        width="380px">
         <span>确认执行此操作?</span>
         <span slot="footer" class="dialog-footer">
           <input type="hidden" ref="refuseItemId"/>
@@ -258,8 +258,8 @@
 
       <el-dialog
         title="提示"
-        v-model="sureDialog"
-        size="tiny">
+        :visible.sync="sureDialog"
+        width="380px">
         <span>{{ sureDialogMessage }}</span>
         <span slot="footer" class="dialog-footer">
           <input type="hidden" ref="currentItemId"/>
@@ -655,6 +655,7 @@
         })
       },
       getVcenterItemList() {
+        console.log(this.query.page)
         this.isLoading = true
         let self = this
         self.$http.get(api.designItemList, {params: {
@@ -762,9 +763,9 @@
         // 对路由变化作出响应...
         let type = Number(this.$route.query.type) || 1
         this.query.total = 0
-        this.query.page = 0
+        this.query.page = 1
         this.query2.total = 0
-        this.query2.page = 0
+        this.query2.page = 1
         this.isEmpty = false
         this.isEmpty2 = false
         this.change(type)

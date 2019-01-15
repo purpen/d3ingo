@@ -113,7 +113,7 @@
     </div>
     <!-- <el-dialog
       :visible.sync="dialogPermiss"
-      size="tiny" class="hint-text">
+      width="380px" class="hint-text">
       <span class="move-text">暂无权限</span>
       <div class="move-div">交易会期间扫码或联系平台客服开通权限</div>
       <span slot="footer" class="dialog-footer" @click="dialogPermiss = false">
@@ -123,7 +123,7 @@
     <el-dialog
       :visible.sync="clientPhone"
       top="30%"
-      size="tiny"
+      width="380px"
       class="calls">
       <div class="title-center">
         <img class="avatt" src="../../../../../assets/images/trade_fairs/list/clientPhone.png" width="100"/>
@@ -224,7 +224,7 @@
             that.designCases = response.data.data
             for (let i of that.designCases) {
               if (i.cover.created_at) {
-                i.date = i.cover.created_at.date_format().format('yy-MM-dd')
+                i.date = i.cover.created_at.date_format().format('yyyy-MM-dd')
               }
             }
           }

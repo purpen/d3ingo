@@ -126,7 +126,7 @@
         铟果D³INGO是太火鸟旗下基于大数据和智能匹配的产品创新SaaS平台，链接庞大智能硬件创业群体，吸引100万注册用户，1000+家专业设计企业，覆盖2000万创新设计群体。利用大数据和智能匹配技术连接制造企业和设计服务商，以设计驱动创新，挖掘消费需求，加速消费升级，用创新改变世界。</p>
     </div>
 
-    <el-dialog title="视频播放" :visible.sync="dialogVisible" top="5%" :close-on-click-modal="false" size="large">
+    <el-dialog title="视频播放" :visible.sync="dialogVisible" top="5%" :close-on-click-modal="false" width="580px">
       <div style="text-align: center;">
         <video :src="videoUrl" controls="controls" width="960">
           您的浏览器不支持 video 标签。

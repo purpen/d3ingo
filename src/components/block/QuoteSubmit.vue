@@ -2,90 +2,22 @@
   <div>
 
     <div class="form-box">
-      <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
-        <!--
-        <el-row :gutter="20">
-          <el-col :xs="24" :sm="8" :md="8" :lg="8">
-            <el-form-item label="客户" prop="company_name">
-              <el-input autosize v-model="form.company_name" placeholder="请填写公司名称"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
+      <el-form class="clearfix"
+        :model="form"
+        label-width="80px"
+        label-position="top"
+        :rules="ruleForm"
+        ref="ruleForm">
 
-        <el-row :gutter="20">
-          <el-col :xs="24" :sm="8" :md="8" :lg="8">
-            <el-form-item label="联系人" prop="contact_name">
-              <el-input autosize v-model="form.contact_name" placeholder=""></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="8" :md="8" :lg="8">
-            <el-form-item label="职位" prop="position">
-              <el-input autosize v-model="form.position" placeholder=""></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="8" :md="8" :lg="8">
-            <el-form-item label="手机" prop="phone">
-              <el-input autosize v-model="form.phone" placeholder=""></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <region-picker :provinceProp="form.province" :cityProp="form.city" propStyle="margin:0;" :districtProp="form.area"
-                       :isFirstProp="isFirst" titleProp="企业地址"
-                       @onchange="change" class="fullwidth"></region-picker>
-
-        <el-form-item label="" prop="address">
-          <el-input autosize v-model="form.address" placeholder="街道地址"></el-input>
-        </el-form-item>
-
-        <div class="line"></div>
-
-        <el-row :gutter="20">
-          <el-col :xs="24" :sm="8" :md="8" :lg="8">
-            <el-form-item label="服务方" prop="design_company_name">
-              <el-input autosize v-model="form.design_company_name" placeholder=""></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row :gutter="20">
-          <el-col :xs="24" :sm="8" :md="8" :lg="8">
-            <el-form-item label="联系人" prop="design_contact_name">
-              <el-input autosize v-model="form.design_contact_name" placeholder=""></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="8" :md="8" :lg="8">
-            <el-form-item label="职位" prop="design_position	">
-              <el-input autosize v-model="form.design_position	" placeholder=""></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="8" :md="8" :lg="8">
-            <el-form-item label="手机" prop="design_phone">
-              <el-input autosize v-model="form.design_phone" placeholder=""></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <region-picker :provinceProp="form.design_province" :cityProp="form.design_city" propStyle="margin:0;" :districtProp="form.design_area"
-                       :isFirstProp="isFirst" titleProp="地址"
-                       @onchange="changeServer" class="fullwidth"></region-picker>
-
-        <el-form-item label="" prop="design_address">
-          <el-input autosize v-model="form.design_address" placeholder="街道地址"></el-input>
-        </el-form-item>
-
-        <div class="line"></div>
-        -->
-
-        <el-form-item label="项目目标" prop="summary">
+        <el-form-item label="项目目标" :prop="form.summary">
           <el-input  type="textarea" :rows="5" v-model="form.summary"
                     placeholder="请详细描述项目的主要目标和主要重点"></el-input>
         </el-form-item>
-        <el-form-item  prop="">
+        <el-form-item>
           <div v-show="form.plan_format.length">
             <p class="laber-title-font">项目工作计划及费用</p>
             <el-row style="padding: 20px 25px">
-              <el-col :xs="24" :sm="7" :md="7" :lg="7">
+              <el-col :xs="24" :sm="6" :md="6" :lg="6">
                 <p class="font-14">工作内容</p>
               </el-col>
               <el-col :xs="24" :sm="7" :md="7" :lg="7">
@@ -97,7 +29,7 @@
                   <el-col :xs="4" :sm="2" :md="2" :lg="2"></el-col>
                 </el-row>
               </el-col>
-              <el-col :xs="24" :sm="3" :md="3" :lg="3">
+              <el-col :xs="24" :sm="4" :md="4" :lg="4">
                 <p class="padd-l-10 font-14">持续时间</p>
               </el-col>
               <el-col :xs="20" :sm="4" :md="4" :lg="4">
@@ -115,12 +47,14 @@
                 <!--<el-col :xs="24" :sm="1" :md="1" :lg="1" style="width:12px;margin-top:5px;padding:0;">-->
                     <!--<img :src="require('assets/images/tools/project_management/quote_row@2x.png')" class="plan-icon" />-->
                 <!--</el-col>-->
-                <el-col :xs="24" :sm="7" :md="7" :lg="7" class="qouteSubmit">
+                <el-col :xs="24" :sm="6" :md="6" :lg="6" class="qouteSubmit">
                   <el-form-item
+                    class="work-content"
                     :prop="'plan_format.' + index + '.content'"
                     :rules="{
                     required: true, message: '请填写工作内容', trigger: 'blur'}">
-                    <el-input autosize v-model="form.plan_format[index].content" placeholder="请填写工作内容"></el-input>
+                    <el-input
+                    type="textarea" :maxlength="50" autosize v-model="form.plan_format[index].content" placeholder="请填写工作内容"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="7" :md="7" :lg="7">
@@ -138,6 +72,7 @@
                             allow-create
                             default-first-option
                             size="small"
+                            no-match-text="Enter添加新数据"
                             @change="positionChange"
                             placeholder="添加或选择职位">
                             <el-option
@@ -146,7 +81,7 @@
                               :label="p.name"
                               :value="p.name">
                                 <span style="float: left">{{ p.name }}</span>
-                                <span style="float: right; color: #666; font-size: 13px" @click.stop="delPosition(p.id, p_index)"><i class="fx fx-icon-close-sm"></i></span>
+                                <span style="float: right; color: #666; font-size: 13px;margin-right: -15px" @click.stop="delPosition(p.id, p_index)"><i class="fx fx-icon-close-sm"></i></span>
                             </el-option>
                           </el-select>
                         </el-form-item>
@@ -159,8 +94,6 @@
                           <el-select
                             class="no-border_radius"
                             v-model="form.plan_format[index].arranged[c_index].number"
-                            filterable
-                            allow-create
                             size="small"
                             default-first-option
                             placeholder="数量">
@@ -188,13 +121,15 @@
                   </el-row>
                   </div>
                 </el-col>
-                <el-col :xs="24" :sm="3" :md="3" :lg="3" class="qouteSubmit mar-r-15">
+                <el-col :xs="24" :sm="4" :md="4" :lg="4" class="qouteSubmit mar-r-15">
                   <el-form-item
                     :prop="'plan_format.' + index + '.duration'"
-                    :rules="[{
-                    required: true, type: 'number', message: '请填写正确天数', trigger: 'blur'},
-                    {min: 1, type: 'number', message: '请填写正确天数', trigger: 'blur'}]">
-                    <el-input type="number" min="1" autosize v-model.number="form.plan_format[index].duration" placeholder="天数" size="small">
+                    :rules="ruleForm.count">
+                    <el-input type="number"
+                      autosize
+                      :maxlength="8"
+                      v-model.number="form.plan_format[index].duration"
+                      placeholder="天数" size="small" class="work-sty">
                       <template slot="append">工作日</template>
                     </el-input>
                   </el-form-item>
@@ -205,7 +140,7 @@
                     :rules="ruleForm.price">
                     <el-input type="number"
                       :maxlength="8"
-                      min="1" autosize v-model.number="form.plan_format[index].price" @blur="statPrice" placeholder="请填写费用" size="small">
+                      autosize v-model.number="form.plan_format[index].price" @blur="statPrice" placeholder="请填写费用" size="small">
                       <template slot="append">元</template>
                     </el-input>
                   </el-form-item>
@@ -228,91 +163,89 @@
           </div>
         </el-form-item>
 
-        <div class="sum-box" v-if="!param.checkTaxer">
-          <div class="tax-box">
-            <p class="total-money">合计： <span>¥{{ totalMoneyFormat }}</span> 元</p>
-            <p class="select-importance">
-              <span @click="radioChangeBtn(1, 0)" :class="{'active': taxRate.isTax === 0}">不含税</span>
-              <span @click="radioChangeBtn(1, 1)" :class="{'active': taxRate.isTax === 1}">含税</span>
-            </p>
-          </div>
-          <div v-if="showRate.invoice">
-            <div class="invoice-box">
+        <el-form-item>
+          <div class="sum-box" v-if="!param.checkTaxer">
+            <div class="tax-box">
+              <p class="total-money">合计： <span>¥{{ totalMoneyFormat }}</span> 元</p>
               <p class="select-importance">
-                <span @click="radioChangeBtn(2, 0)" :class="{'active': taxRate.isInvoice === 0}">不开发票</span>
-                <span @click="radioChangeBtn(2, 1)" :class="{'active': taxRate.isInvoice === 1}">开发票</span>
+                <span @click="radioChangeBtn(1, 0)" :class="{'active': taxRate.isTax === 0}">不含税</span>
+                <span @click="radioChangeBtn(1, 1)" :class="{'active': taxRate.isTax === 1}">含税</span>
               </p>
             </div>
-            <div class="tax-total-box" v-if="showRate.rate">
-              <p class="tax-total-money">税率:  <span class="tax-span">
-                <i class="before" @click="increaseRate"></i>
-                <i class="after"  @click="reduceRate"></i>
-                <input placeholder="" v-model.number="rate" class="tax-input" @blur="checkRate" /> %</span> &nbsp;&nbsp;&nbsp;&nbsp;总计（含税）： <span>¥{{ taxTotalMoneyFormat }}</span> 元</p>
+            <div v-if="showRate.invoice">
+              <div class="invoice-box">
+                <p class="select-importance">
+                  <span @click="radioChangeBtn(2, 0)" :class="{'active': taxRate.isInvoice === 0}">不开发票</span>
+                  <span @click="radioChangeBtn(2, 1)" :class="{'active': taxRate.isInvoice === 1}">开发票</span>
+                </p>
+              </div>
+              <div class="tax-total-box" v-if="showRate.rate">
+                <p class="tax-total-money">税率:  <span class="tax-span">
+                  <i class="before" @click="increaseRate"></i>
+                  <i class="after"  @click="reduceRate"></i>
+                  <input placeholder="" v-model.number="rate" class="tax-input" @blur="checkRate" /> %</span> &nbsp;&nbsp;&nbsp;&nbsp;总计（含税）： <span>¥{{ taxTotalMoneyFormat }}</span> 元</p>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="sum-box" v-else>
-          <div class="tax-box">
-            <p class="total-money">合计： <span>¥{{ totalMoneyFormat }}</span> 元</p>
-          </div>
-          <div class="invoice-box">
-            <p class="select-importance">
-              <span @click="taxChangeBtn(1, 1)" :class="{'active': taxRate.taxableType === 1}">一般纳税人</span>
-              <span @click="taxChangeBtn(1, 2)" :class="{'active': taxRate.taxableType === 2}">小额纳税人</span>
-            </p>
-          </div>
-          <div class="invoice-box" v-if="showRate.invoice">
-            <p class="select-importance">
-              <span @click="taxChangeBtn(2, 1)" :class="{'active': taxRate.invoiceType === 1}">专用发票</span>
-              <span @click="taxChangeBtn(2, 2)" :class="{'active': taxRate.invoiceType === 2}">普通发票</span>
-            </p>
-          </div>
-          <div class="tax-total-box">
+          <div class="sum-box" v-else>
+            <div class="tax-box">
+              <p class="total-money">合计： <span>¥{{ totalMoneyFormat }}</span> 元</p>
+            </div>
+            <div class="invoice-box">
+              <p class="select-importance">
+                <span @click="taxChangeBtn(1, 1)" :class="{'active': taxRate.taxableType === 1}">一般纳税人</span>
+                <span @click="taxChangeBtn(1, 2)" :class="{'active': taxRate.taxableType === 2}">小额纳税人</span>
+              </p>
+            </div>
+            <div class="invoice-box" v-if="showRate.invoice">
+              <p class="select-importance">
+                <span @click="taxChangeBtn(2, 1)" :class="{'active': taxRate.invoiceType === 1}">专用发票</span>
+                <span @click="taxChangeBtn(2, 2)" :class="{'active': taxRate.invoiceType === 2}">普通发票</span>
+              </p>
+            </div>
+            <div class="tax-total-box">
 
-            <p class="tax-total-money">税率:  <span class="tax-span">
-              {{ rate }} %</span> &nbsp;&nbsp;&nbsp;&nbsp;总计（含税）： <span>¥{{ taxTotalMoneyFormat }}</span> 元</p>
-            <p class="question-prop" v-show="taxRate.taxableType === 2">
-              <el-popover class="contact-popover" trigger="hover" placement="left" v-if="taxRate.invoiceType === 1">
-                <p class="contact">税率详情：</p>
-                <p class="contact">3%服务费发票，增值税专用发票</p>
-                <p class="contact">甲方税率3%发票，去税务代开发票</p>
-                <p class="contact">&nbsp;</p>
-                <p class="contact">详细案例如下：</p>
-                <p class="contact">乙方开具3%专用发票给太火鸟，太火鸟开具6%专用发票给甲方</p>
-                <p class="contact">乙方需要承担差额部分4%部分的税赋，计算方法如下：</p>
-                <p class="contact">乙方给太火鸟开具90万发票，太火鸟给甲方开具100万发票。</p>
-                <p class="contact">乙方需要承担90万的税赋差额部分费用，合计费用4%，乙方收到款项为90-4=86万</p>
-                <p slot="reference" class="question-icon question">
-                  <i></i>
-                </p>
-              </el-popover>
+              <p class="tax-total-money">税率:  <span class="tax-span">
+                {{ rate }} %</span> &nbsp;&nbsp;&nbsp;&nbsp;总计（含税）： <span>¥{{ taxTotalMoneyFormat }}</span> 元</p>
+              <p class="question-prop" v-show="taxRate.taxableType === 2">
+                <el-popover class="contact-popover" trigger="hover" placement="left" v-if="taxRate.invoiceType === 1">
+                  <p class="contact">税率详情：</p>
+                  <p class="contact">3%服务费发票，增值税专用发票</p>
+                  <p class="contact">甲方税率3%发票，去税务代开发票</p>
+                  <p class="contact">&nbsp;</p>
+                  <p class="contact">详细案例如下：</p>
+                  <p class="contact">乙方开具3%专用发票给太火鸟，太火鸟开具6%专用发票给甲方</p>
+                  <p class="contact">乙方需要承担差额部分4%部分的税赋，计算方法如下：</p>
+                  <p class="contact">乙方给太火鸟开具90万发票，太火鸟给甲方开具100万发票。</p>
+                  <p class="contact">乙方需要承担90万的税赋差额部分费用，合计费用4%，乙方收到款项为90-4=86万</p>
+                  <p slot="reference" class="question-icon question">
+                    <i></i>
+                  </p>
+                </el-popover>
 
-              <el-popover class="contact-popover" trigger="hover" placement="left" v-if="taxRate.invoiceType === 2">
-                <p class="contact">税率详情：</p>
-                <p class="contact">3%服务费发票，增值税普通发票</p>
-                <p class="contact">乙方税率3%发票，自开发票</p>
-                <p class="contact">&nbsp;</p>
-                <p class="contact">详细案例如下：</p>
-                <p class="contact">乙方开具3%普通发票给太火鸟，太火鸟开具6%普通发票给甲方</p>
-                <p class="contact">乙方需要承担其中7%部分的税赋，计算方法如下：</p>
-                <p class="contact">乙方给太火鸟开具90万发票，太火鸟给甲方开具100万发票。</p>
-                <p class="contact">乙方需要承担90万的税赋差额部分费用，合计费用7%，乙方收到款项为90-7=83万</p>
-                <p slot="reference" class="question-icon question">
-                  <i></i>
-                </p>
-              </el-popover>
-            </p>
+                <el-popover class="contact-popover" trigger="hover" placement="left" v-if="taxRate.invoiceType === 2">
+                  <p class="contact">税率详情：</p>
+                  <p class="contact">3%服务费发票，增值税普通发票</p>
+                  <p class="contact">乙方税率3%发票，自开发票</p>
+                  <p class="contact">&nbsp;</p>
+                  <p class="contact">详细案例如下：</p>
+                  <p class="contact">乙方开具3%普通发票给太火鸟，太火鸟开具6%普通发票给甲方</p>
+                  <p class="contact">乙方需要承担其中7%部分的税赋，计算方法如下：</p>
+                  <p class="contact">乙方给太火鸟开具90万发票，太火鸟给甲方开具100万发票。</p>
+                  <p class="contact">乙方需要承担90万的税赋差额部分费用，合计费用7%，乙方收到款项为90-7=83万</p>
+                  <p slot="reference" class="question-icon question">
+                    <i></i>
+                  </p>
+                </el-popover>
+              </p>
+            </div>
           </div>
-        </div>
-
+        </el-form-item>
         <div class="form-btn">
-          <el-button type="primary" size="large" :loading="isLoadingBtn" class="is-custom"
-                     @click="submit('ruleForm')">保存
+          <el-button type="primary" size="large" :loading="isLoadingBtn" class="is-custom" @click="submit('ruleForm')">保存
           </el-button>
         </div>
-        <div class="clear"></div>
-
       </el-form>
     </div>
 
@@ -387,7 +320,7 @@
         <div>
         <el-form class="clearfix" label-position="top" label-width="80px">
           <el-form-item label="" prop="currentPlanTxt">
-            <el-input type="textarea" :rows="5" placeholder="请填写工作内容备注" v-model="currentPlanTxt"></el-input>
+            <el-input :maxlength="1000" type="textarea" :rows="5" placeholder="请填写工作内容备注" v-model="currentPlanTxt"></el-input>
           </el-form-item>
 
           <p class="form-btn">
@@ -435,11 +368,37 @@ export default {
         return callback(new Error('请填写正确金额'))
       } else {
         if (typeof Number(value) !== 'number') {
-          return callback(new Error('手机号只能为数字！'))
+          return callback(new Error('金额只能为数字！'))
         } else {
-          let len = (value + '')
-          if (len.split('.')[0].length > 8) {
-            return callback(new Error('金额不能大于千万'))
+          if (value <= 0) {
+            return callback(new Error('金额必须大于0元！'))
+          } else {
+            let len = (value + '')
+            if (len.split('.')[0].length > 8) {
+              return callback(new Error('金额不能大于千万'))
+            } else {
+              return callback()
+            }
+          }
+        }
+      }
+    }
+    let checkCount = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('请填写正确天数'))
+      } else {
+        if (typeof Number(value) !== 'number') {
+          return callback(new Error('天数只能为数字！'))
+        } else {
+          if (value <= 0) {
+            return callback(new Error('数字必须大于0！'))
+          } else {
+            let len = (value + '')
+            if (len.split('.')[0].length > 8) {
+              return callback(new Error('设置天数过大'))
+            } else {
+              return callback()
+            }
           }
         }
       }
@@ -458,6 +417,7 @@ export default {
         plan_format: []
       },
       ruleForm: {
+        count: [{validator: checkCount, trigger: 'blur'}],
         price: [{validator: checkNumber, trigger: 'blur'}],
         company_name: [{ required: true, message: '请填写客户名称', trigger: 'blur' }],
         contact_name: [{ required: true, message: '请填写客户联系姓名', trigger: 'blur' }],
@@ -742,8 +702,8 @@ export default {
     },
     // 保存计划任务备注
     submitPlanTxt() {
-      if (this.currentPlanTxt.length > 150) {
-        this.$message.error('不能超过150个字符!')
+      if (this.currentPlanTxt.length > 1000) {
+        this.$message.error('不能超过1000个字符!')
         return false
       }
       this.$set(this.form.plan_format[this.currentPlanTxtIndex], 'summary', this.currentPlanTxt)
@@ -1228,7 +1188,9 @@ export default {
   .el-input--small .el-input__inner {
     height: 40px;
   }
-
+  .qouteSubmit .el-textarea__inner {
+    min-height: 40px!important
+  }
   .mar-r-15 {
     margin-right: 15px;
   }
@@ -1263,5 +1225,8 @@ export default {
 
   .padd-l-25 {
     padding-left: 25px;
+  }
+  .work-content .el-form-item__content .el-textarea__inner {
+    padding: 8px 15px;
   }
 </style>

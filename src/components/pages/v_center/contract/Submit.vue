@@ -111,7 +111,8 @@
               <p class="font-size-16" ref="anchor" id="anchor">2、项目内容</p>
               <el-col :span="24" style="padding: 0">
                 <el-form-item prop="item_content">
-                  <el-input 
+                  <el-input
+                    :maxlength="500"
                     type="textarea"
                     :rows="5"
                     placeholder="请填写项目包含的主要内容"
@@ -215,8 +216,8 @@
                     <el-form-item
                       :prop="'stages.' + index + '.percentage'"
                       :rules="{
-                      type: 'number', required: true, message: '请填写阶段支付百分比', trigger: 'blur',
-                      min: 10, max: 50, message: '比例在10-50之间', trigger: 'blur'
+                      type: 'integer', required: true, message: '请填写阶段支付百分比且为整数', trigger: 'blur',
+                      min: 10, max: 50, message: '比例在10-50之间的整数', trigger: 'blur'
                     }"
                     >
                       <el-input v-model.number="d.percentage" placeholder="阶段百分比"
@@ -526,6 +527,8 @@
               return false
             }
             let stagePrice = that.form.stage_money
+            console.log(totalAmount)
+            console.log(stagePrice)
             if (totalAmount - stagePrice) {
               that.$message.error('阶段金额总和不正确！')
               return false
@@ -622,7 +625,9 @@
             }
             if (amount === stages.length - 1) {
               self.form.stages[index].amount = (Number((total * 0.6).toFixed(2)) - money).toFixed(2)
-            } else self.form.stages[index].amount = total.mul(per).toFixed(2)
+            } else {
+              self.form.stages[index].amount = total.mul(per).toFixed(2)
+            }
           }
         })
       }

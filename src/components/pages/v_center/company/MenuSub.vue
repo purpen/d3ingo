@@ -1,11 +1,14 @@
 <template>
   <div :class="['vcenter-menu-sub', 'clearfix']">
     <div :class="['vcenter-menu-sub-list', {'vcenter-menu-sub-list-m': isMob}]">
-      <router-link :to="{name: 'vcenterComputerBase'}" class="item">基本信息</router-link>
+      <!-- <router-link :to="{name: 'vcenterComputerBase'}" class="item">基本信息</router-link>
       <router-link :to="{name: 'vcenterComputerAccreditation'}"
                    :class="{'item': true, 'is-active': currentSubName === 'identification' ? true : false}">实名认证
       </router-link>
-      <router-link :to="{name: 'vcenterComputerTaking'}" class="item">公司接单设置</router-link>
+      <router-link :to="{name: 'vcenterComputerTaking'}" class="item">公司接单设置</router-link> -->
+      <router-link :to="{name: 'modifyPwd'}" class="item">账户设置</router-link>
+      <router-link :to="{name: 'vcenterComputerBase'}" class="item">公司设置</router-link>
+      <router-link :to="{name: 'vcenterComputerTaking'}" class="item">接单设置</router-link>
     </div>
   </div>
 </template>

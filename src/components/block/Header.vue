@@ -46,17 +46,18 @@
               </div>
             </a>
             <el-menu class="el-menu-info" mode="horizontal" router>
-              <el-submenu index="2">
+              <el-submenu index="2" :popper-append-to-body="false" text-color="#999">
                 <template slot="title">
                   <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
                   <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
-                  <span v-if="eventUser.realname" class="b-nickname">{{ eventUser.realname }}</span>
-                  <span v-else class="b-nickname">{{ eventUser.account }}</span>
+                  <span v-if="eventUser.company && eventUser.company.company_abbreviation" class="b-nickname">{{ eventUser.company.company_abbreviation }}</span>
+                  <span v-else class="b-nickname">{{ eventUser.realname || eventUser.account }}</span>
                 </template>
                 <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
-                <el-menu-item index="/vcenter/company/base" v-if="!isOrdinaryCompanyAdmin"><i class="fx-4 fx-icon-company"></i><i class="fx-4 fx-icon-company-hover"></i>公司设置 </el-menu-item>
-                <el-menu-item index="/vcenter/account/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>账号设置 </el-menu-item>
-                <el-menu-item index="/vcenter/account/modify_pwd" v-else><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>账号设置 </el-menu-item>
+                <!-- <el-menu-item index="/vcenter/company/base" v-if="!isOrdinaryCompanyAdmin"><i class="fx-4 fx-icon-company"></i><i class="fx-4 fx-icon-company-hover"></i>公司设置 </el-menu-item> -->
+                <!-- <el-menu-item index="/vcenter/account/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>账号设置 </el-menu-item> -->
+                <el-menu-item index="/vcenter/company/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心</el-menu-item>
+                <el-menu-item index="/vcenter/company/base" v-else><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心 </el-menu-item>
                 <el-menu-item index="/admin" v-if="isAdmin"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
                 <el-menu-item index="" @click="logout">
                   <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
@@ -171,7 +172,7 @@
               </div>
             </a>
             <el-menu class="el-menu-info" mode="horizontal" router>
-              <el-submenu index="2">
+              <el-submenu index="2" :popper-append-to-body="false" text-color="#999">
                 <template slot="title">
                   <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
                   <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
@@ -430,10 +431,12 @@
       },
       eventUser() {
         let user = this.$store.state.event.user
-        if (user.avatar) {
-          user.logo_url = user.avatar.logo
+        if (user.design_company_logo_image) {
+          user.logo_url = user.design_company_logo_image.logo
         } else {
-          user.logo_url = null
+          if (user.logo_url) {
+            user.logo_url = user.avatar.logo
+          }
         }
         return user
       },
@@ -707,7 +710,7 @@
     width: auto;
     height: 30px;
   }
-  .nav-header .el-menu--horizontal > .el-menu-item.logo:hover, .el-menu--horizontal > .el-menu-item.logo.is-active {
+  .nav-header .el-menu--horizontal > .el-menu-item.logo:hover, .nav-header .el-menu--horizontal > .el-menu-item.logo.is-active {
     border-color: transparent
   }
 
@@ -734,7 +737,7 @@
   .nav-header .el-menu--horizontal > .el-menu-item:hover,
   .el-menu--horizontal > .el-submenu.is-active .el-submenu__title,
   .el-menu--horizontal > .el-submenu:hover .el-submenu__title,
-  .el-menu--horizontal > .el-menu-item.is-active {
+  .nav-header .el-menu--horizontal > .el-menu-item.is-active {
     border-bottom: 3px solid #ff5a5f;
     color: #ff5a5f;
     background: none;
@@ -816,7 +819,7 @@
     z-index: 999;
     top: 56px;
     right: 0;
-    width: 200px;
+    width: 220px;
     background: #fff;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .12),
     0 0 6px 0 rgba(0, 0, 0, .04);

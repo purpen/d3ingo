@@ -153,7 +153,7 @@
     </el-row>
 
     <!--弹框模板-->
-    <el-dialog :title="itemModelTitle" v-model="itemModel" class="withdraw text-center">
+    <el-dialog :title="itemModelTitle" :visible.sync="itemModel" class="withdraw text-center">
       <div class="withdraw-input display-fl" v-if="corporationInfo.account_name !== '' || corporationInfo.bank_name !== '' || corporationInfo.account_number !== ''">
         <div class="withdraw-title margin-t-b-20 dis-ju"><p>开户名称:</p><span>{{corporationInfo.account_name}}</span></div>
         <div class="withdraw-title margin-t-b-20 dis-ju"><p>开户银行：</p><span>{{corporationInfo.bank_name}}</span></div>
@@ -180,7 +180,7 @@
       </div>
     </el-dialog>
     <!--<transition name="fade">-->
-      <!--<el-dialog :title="itemPointTitle" v-model="itemPointTitleInfo" class="withdraw">-->
+      <!--<el-dialog :title="itemPointTitle" :visible.sync="itemPointTitleInfo" class="withdraw">-->
         <!--<div class="withdraw-input">-->
           <!--<p class="withdraw-title margin-t-b-10 text-center font-16">您还没有认证</p>-->
         <!--</div>-->
@@ -277,8 +277,6 @@
             if (response.data.meta.status_code === 200) {
               self.itemList = response.data.data
               self.query.totalCount = response.data.meta.pagination.total
-              console.log('selfq', self.query)
-
               for (let i = 0; i < self.itemList.length; i++) {
                 let item = self.itemList[i]
                 item['created_at'] = item.created_at.date_format().format('yyyy-MM-dd hh:mm')
@@ -397,7 +395,7 @@
           self.isLoadingBtn = false
           if (response.data.meta.status_code === 200) {
             self.itemModel = false
-            self.wallet.price_frozen = parseFloat (self.wallet.price_frozen) + self.withdrawPrice
+            self.wallet.price_frozen = (parseFloat (self.wallet.price_frozen) + self.withdrawPrice).toFixed(2)
             self.$message.success ('操作成功,等待财务打款！')
           } else {
             self.$message.error(response.data.meta.message)

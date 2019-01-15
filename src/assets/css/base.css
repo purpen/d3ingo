@@ -203,7 +203,7 @@ p {
 }
 
 input {
-  vertical-align: top;
+  /* vertical-align: top; */
   font-size: 14px;
 }
 textarea {
@@ -319,8 +319,8 @@ a.is_active {
  */
 
 ul.el-pager li.number.active {
-  background-color: #ff5a5f;
-  border-color: #ff5a5f;
+  /* background-color: #ff5a5f;
+  border-color: #ff5a5f; */
 }
 .list-shadow {
   box-shadow: 0 0 10px 0 rgba(10, 10, 10, 0.1);
@@ -1897,7 +1897,7 @@ td.fc-day.fc-widget-content.fc-today::before {
     font-size: 15px;
   }
 
-  .el-step__head {
+  /* .el-step__head {
     width: 20px;
     height: 20px;
   }
@@ -1913,7 +1913,7 @@ td.fc-day.fc-widget-content.fc-today::before {
 
   .el-step__icon i {
     display: none;
-  }
+  } */
 
   .withdraw {
     font-size: 15px;
@@ -2200,8 +2200,8 @@ td.fc-day.fc-widget-content.fc-today::before {
   padding: 0;
 }
 .el-date-table td.current:not(.disabled), .el-date-table td.end-date, .el-date-table td.start-date {
-  background-color: #ff5a5f!important;
-    color: #fff;
+  /* background-color: #ff5a5f!important; */
+    /* color: #fff; */
 }
 .el-date-table td.today:before {
   border-top-color: #ff5a5f

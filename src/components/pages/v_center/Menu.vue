@@ -34,24 +34,26 @@
           <span>我的</span>
         </div> -->
         <el-menu class="el-menu-info" mode="horizontal" router v-if="prod.name === ''">
-          <el-submenu index="2">
+          <el-submenu index="2" :popper-append-to-body="false">
             <template slot="title">
               <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
               <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
-              <span v-if="eventUser.realname" class="b-nickname">{{ eventUser.realname }}</span>
-              <span v-else class="b-nickname">{{ eventUser.account }}</span>
+              <span v-if="eventUser.company && eventUser.company.company_abbreviation" class="b-nickname">{{ eventUser.company.company_abbreviation }}</span>
+              <span v-else class="b-nickname">{{ eventUser.realname || eventUser.account }}</span>
             </template>
             <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
-            <el-menu-item index="/vcenter/company/base" v-if="!isOrdinaryCompanyAdmin"><i class="fx-4 fx-icon-company"></i><i class="fx-4 fx-icon-company-hover"></i>公司设置 </el-menu-item>
-            <el-menu-item index="/vcenter/account/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>账号设置 </el-menu-item>
-            <el-menu-item index="/vcenter/account/modify_pwd" v-else><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>账号设置 </el-menu-item>
+            <!-- <el-menu-item index="/vcenter/company/base" v-if="!isOrdinaryCompanyAdmin"><i class="fx-4 fx-icon-company"></i><i class="fx-4 fx-icon-company-hover"></i>公司设置 </el-menu-item>
+            <el-menu-item index="/vcenter/account/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>账号设置 </el-menu-item> -->
+            <!-- <el-menu-item index="/vcenter/account/modify_pwd" v-else><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>账号设置 </el-menu-item> -->
+            <el-menu-item  index="/vcenter/company/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心 </el-menu-item>
+            <el-menu-item index="/vcenter/account/modify_pwd" v-else><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心 </el-menu-item>
             <el-menu-item index="/admin" v-if="isAdmin"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
             <el-menu-item index="" @click="logout">
               <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
           </el-submenu>
         </el-menu>
         <el-menu class="el-menu-info" mode="horizontal" router v-if="prod.name !== ''">
-          <el-submenu index="2">
+          <el-submenu index="2" :popper-append-to-body="false">
             <template slot="title">
               <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
               <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
@@ -70,7 +72,7 @@
 
       <div v-if="isMob" class="menu-right">
         <router-link :to="{name: 'vcenterControl'}">
-          <span v-if="eventUser.logo_url" class="avatar" :style="{background: `url(${eventUser.avatar.logo}) no-repeat center / contain`}"></span>
+          <span v-if="eventUser.avatar" class="avatar" :style="{background: `url(${eventUser.avatar.logo}) no-repeat center / contain`}"></span>
           <span v-else class="avatar" :style="{background: `url(${require('@/assets/images/avatar_100.png')}) no-repeat center / contain`}"></span>
         </router-link>
       </div>
@@ -458,10 +460,12 @@
       },
       eventUser() {
         let user = this.$store.state.event.user
-        if (user.avatar) {
-          user.logo_url = user.avatar.logo
+        if (user.design_company_logo_image) {
+          user.logo_url = user.design_company_logo_image.logo
         } else {
-          user.logo_url = null
+          if (user.avatar) {
+            user.logo_url = user.avatar.logo
+          }
         }
         return user
       },

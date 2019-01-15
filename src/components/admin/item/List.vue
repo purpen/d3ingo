@@ -131,7 +131,7 @@
                      @click="handleMatch(scope.$index, scope.row)">匹配公司</a>
                 </p>
                 <p>
-                  <router-link :to="{name: 'adminItemShow', params: {id: scope.row.item.id}}" target="_blank">查看
+                  <router-link :to="{name: 'adminItemShow0', params: {id: scope.row.item.id}}" target="_blank">查看
                   </router-link>
                 </p>
               </template>
@@ -153,7 +153,7 @@
       </el-col>
     </el-row>
 
-    <el-dialog title="匹配公司" v-model="matchCompanyDialog">
+    <el-dialog title="匹配公司" :visible.sync="matchCompanyDialog">
       <el-form label-position="top">
         <input type="hidden" v-model="matchCompanyForm.itemId" value=""/>
         <input type="hidden" v-model="matchCompanyForm.itemStatus" value=""/>
@@ -370,7 +370,7 @@
                 if (item.info) {
                   item['item']['locale'] = '{0}/{1}'.format(item.item.province_value, item.item.city_value)
                 }
-                item['item']['created_at'] = item.item.created_at.date_format().format('yy-MM-dd')
+                item['item']['created_at'] = item.item.created_at.date_format().format('yyyy-MM-dd')
                 self.tableData.push(item)
               } // endfor
             } else {

@@ -107,8 +107,8 @@
 
     <el-dialog
       title="提示"
-      v-model="sureDialog"
-      size="tiny">
+      :visible.sync="sureDialog"
+      width="380px">
       <span>确认执行此操作?</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="sureDialog = false">取 消</el-button>
@@ -233,7 +233,7 @@ export default {
             if (item.cover) {
               item.cover_url = item.cover.logo
             }
-            item['created_at'] = item.created_at.date_format().format('yy-MM-dd')
+            item['created_at'] = item.created_at.date_format().format('yyyy-MM-dd')
             self.tableData.push(item)
           } // endfor
           console.log(self.tableData)

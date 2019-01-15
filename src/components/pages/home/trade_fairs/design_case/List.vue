@@ -13,11 +13,13 @@
               <el-row :gutter="20" class="flex-wrap">
                 <el-col :xs="12" :sm="6" :md="6" :lg="6">
                   <div v-show="false">{{verify}}</div>
-                  <router-link :to="{name: 'sdDesignCase_submit'}" class="item item-add el-card" v-if="verify === 1">
+                  <router-link :to="{name: 'sdDesignCase_submit'}" class="item item-add el-card"
+                  :class="{'min-height290': !designCases.length}" v-if="verify === 1">
                     <i class="add-icon"></i>
                     <p class="tc-red fz-16">提交设计成果</p>
                   </router-link>
-                  <div class="item item-add el-card" v-else @click="notverify()">
+                  <div class="item item-add el-card"
+                  :class="{'min-height290': !designCases.length}" v-else @click="notverify()">
                     <i class="add-icon"></i>
                     <p class="tc-red fz-16">提交设计成果</p>
                   </div>
@@ -99,7 +101,7 @@
       :title="updateform.opt===1?'确认下架':(updateform.opt===2?'确认删除':'撤回')"
       :visible.sync="dialogUpdateVisible"
       :lock-scroll="false"
-      size="tiny"
+      width="380px"
       >
       <!-- <p v-if="updateform.opt ==1">确认要删除 {{updateform.title}} 吗？</p> -->
       <div class="align-c">
@@ -124,7 +126,7 @@
       title="修改价格"
       :visible.sync="dialogVisible"
       :lock-scroll="false"
-      size="tiny"
+      width="380px"
       >
       <el-form v-model="formPrice" :rules="ruleForm" ref="ruleForm" label-width="80px" label-position="top">
         <el-row>
@@ -268,7 +270,7 @@
             that.designCases = response.data.data
             for (let i of that.designCases) {
               if (i.cover.created_at) {
-                i.date = i.cover.created_at.date_format().format('yy-MM-dd')
+                i.date = i.cover.created_at.date_format().format('yyyy-MM-dd')
               }
               if (!i.up) {
                 i.up = false
@@ -567,6 +569,8 @@
     align-items: center;
     flex-direction: column;
     height: calc(100% - 20px);
+  }
+  .min-height290 {
     min-height: 290px;
   }
   .item-add p {

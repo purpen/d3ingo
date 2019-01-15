@@ -226,6 +226,8 @@ export default {
   adminSmallItemLists: '/admin/smallItem/lists', // 小程序项目列表
   AdminSmallItemUpdate: '/admin/smallItem/update', // 小程序项目编辑
   AdminSmallItemDelete: '/admin/smallItem/delete', // 小程序项目删除
+  adminItemScheduleLists: '/admin/ItemSchedule/lists', // GET 项目进度列表
+  adminItemScheduleUpdate: '/admin/ItemSchedule/update', // POST 项目进度更改
 
   // 需求公司管理
   adminDemandCompanyList: '/admin/demandCompany/lists', // GET 需求公司列表

@@ -311,7 +311,7 @@
       </el-col>
     </el-row>
 
-    <el-dialog title="提交项目报价" v-model="takingPriceDialog" size="large" top="2%">
+    <el-dialog title="提交项目报价" :visible.sync="takingPriceDialog" width="1150px" top="2%">
       <v-quote-submit :paramProp="quoteProp" :formProp="takingPriceForm" @form="quoteFormProp" @param="quoteProp"></v-quote-submit>
       <!--
       <el-form label-position="top" :model="takingPriceForm" :rules="takingPriceRuleForm" ref="takingPriceRuleForm">
@@ -339,7 +339,7 @@
     <el-dialog
       title="提示"
       v-model="comfirmDialog"
-      size="tiny">
+      width="380px">
       <p class="alert-line-height">{{ comfirmMessage }}</p>
       <span slot="footer" class="dialog-footer">
         <el-button @click="comfirmDialog = false">取 消</el-button>
@@ -349,7 +349,7 @@
         <input type="hidden" ref="confirmIndex"/>
       </span>
     </el-dialog>
-    <el-dialog title="报价单详情" v-model="quotaDialog" size="large" top="2%">
+    <el-dialog title="报价单详情" :visible.sync="quotaDialog" width="580px" top="2%">
       <v-quote-view :formProp="quota"></v-quote-view>
 
       <div slot="footer" class="dialog-footer btn">
@@ -1360,7 +1360,7 @@ const vQuoteView = () => import('@/components/block/QuoteView')
   }
 
   .contract-content p {
-    max-width: 300px;
+    max-width: 600px;
     font-size: 1.2rem;
     color: #666;
     line-height: 1.5;
