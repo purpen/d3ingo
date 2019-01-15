@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import axios from 'axios'
-const redirectUri = encodeURI('https://mc.taihuoniao.com/service_account/bind')
+// import axios from 'axios'
+const redirectUri = 'https://mc.taihuoniao.com/service_account/bind'
 export default {
   name: 'service-account',
   data() {
@@ -35,12 +35,14 @@ export default {
   },
   methods: {
     getCode() {
-      axios.get('https://open.weixin.qq.com/connect/oauth2/authorize?' + `appid=${this.APPID}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_base&state=${this.state}#wechat_redirect`).then(res => {
-        console.log(res)
-      }).catch(error => {
-        console.log(error.message)
-        console.log('11111111')
-      })
+      // axios.get('https://open.weixin.qq.com/connect/oauth2/authorize?' + `appid=${this.APPID}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_base&state=${this.state}#wechat_redirect`).then(res => {
+      //   console.log(res)
+      // }).catch(error => {
+      //   console.log(error.message)
+      //   console.log('11111111')
+      // })
+      window.open('https://open.weixin.qq.com/connect/oauth2/authorize?' + `appid=${this.APPID}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_base&state=${this.state}#wechat_redirect`)
+      console.error('2222')
     }
   },
   created() {
