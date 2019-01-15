@@ -71,7 +71,7 @@
             </div>
             <el-menu class="el-menu-header" :default-active="menuactive" mode="horizontal" router>
               <el-menu-item index="register" :route="menu.register" class="fc-red">注册</el-menu-item>
-              <el-menu-item index="login" :route="menu.login">登录</el-menu-item>
+              <el-menu-item index="login" :route="menu.login" style="margin: 0">登录</el-menu-item>
             </el-menu>
           </div>
 
@@ -176,8 +176,7 @@
                 <template slot="title">
                   <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
                   <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
-                  <span v-if="eventUser.realname" class="b-nickname">{{ eventUser.realname }}</span>
-                  <span v-else class="b-nickname">{{ eventUser.account }}</span>
+                  <span class="b-nickname">{{ eventUser.realname || eventUser.account }}</span>
                 </template>
                 <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心 
                 </el-menu-item>

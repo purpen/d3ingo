@@ -15,8 +15,8 @@
 
 #loading:before {
   content: '';
-  width: 100px;
-  height: 100px;
+  width: 200px;
+  height: 200px;
   /* border: 2px solid #d2d2d2; */
   /* border-radius: 50%; */
   position: absolute;
@@ -25,7 +25,7 @@
   right: 0;
   bottom: 0;
   margin: auto;
-  background: url(../../../../d3ingo/src/assets/images/logo.gif) no-repeat center / contain;
+  background: url(../../../../d3ingo/src/assets/images/tools/cloud_drive/status/loading.gif) no-repeat center / contain;
   /* animation: rotate 1s linear infinite */
 }
 

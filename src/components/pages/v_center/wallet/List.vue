@@ -277,8 +277,6 @@
             if (response.data.meta.status_code === 200) {
               self.itemList = response.data.data
               self.query.totalCount = response.data.meta.pagination.total
-              console.log('selfq', self.query)
-
               for (let i = 0; i < self.itemList.length; i++) {
                 let item = self.itemList[i]
                 item['created_at'] = item.created_at.date_format().format('yyyy-MM-dd hh:mm')
@@ -397,7 +395,7 @@
           self.isLoadingBtn = false
           if (response.data.meta.status_code === 200) {
             self.itemModel = false
-            self.wallet.price_frozen = parseFloat (self.wallet.price_frozen) + self.withdrawPrice
+            self.wallet.price_frozen = (parseFloat (self.wallet.price_frozen) + self.withdrawPrice).toFixed(2)
             self.$message.success ('操作成功,等待财务打款！')
           } else {
             self.$message.error(response.data.meta.message)

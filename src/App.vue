@@ -16,8 +16,6 @@
       <router-view class="main-content"></router-view>
       <v-footer></v-footer>
     </div>
-    <p v-show="false">{{ticket}}</p>
-    <p v-show="false">{{token}}</p>
     <iframe
       v-for="(ele, index) in path"
       :key="index"
