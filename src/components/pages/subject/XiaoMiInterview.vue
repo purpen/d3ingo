@@ -162,7 +162,7 @@ export default {
     background-size: contain;
     display: flex;
     align-items: center;
-    margin-bottom: 50px;
+    /* margin-bottom: 50px; */
   }
 
   .liude-bg1 {
