@@ -21,20 +21,21 @@
 
 <script>
 // import axios from 'axios'
-const redirectUri = 'https://mc.taihuoniao.com/service_account/bind'
+const redirectUri = encodeURI('http://mc.taihuoniao.com/service_account/bind')
 export default {
   name: 'service-account',
   data() {
     return {
       token: '',
       APPID: 'wx75a9ffb78f202fb3',
-      // redirectUri: 'https://mc.taihuoniao.com/service_account/bind',
+      // redirectUri: 'http://mc.taihuoniao.com/service_account/bind',
       code: '',
       state: ''
     }
   },
   methods: {
     getCode() {
+      console.error('2222')
       // axios.get('https://open.weixin.qq.com/connect/oauth2/authorize?' + `appid=${this.APPID}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_base&state=${this.state}#wechat_redirect`).then(res => {
       //   console.log(res)
       // }).catch(error => {
@@ -42,7 +43,6 @@ export default {
       //   console.log('11111111')
       // })
       window.open('https://open.weixin.qq.com/connect/oauth2/authorize?' + `appid=${this.APPID}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_base&state=${this.state}#wechat_redirect`)
-      console.error('2222')
     }
   },
   created() {
