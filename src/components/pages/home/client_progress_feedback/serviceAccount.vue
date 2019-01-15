@@ -49,6 +49,7 @@ export default {
     if (this.token) {
     } else {
       this.getCode()
+      console.error(this.$route, this.$route.path)
     }
   }
 }
