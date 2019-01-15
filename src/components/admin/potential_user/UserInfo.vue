@@ -136,7 +136,7 @@
               <div class="card-body-header" v-if="currentId !== ''">
                 <span @click="changeOption('user')" :class="{'active': option === 'user'}">用户档案</span>
                 <span @click="changeOption('project')" :class="{'active': option === 'project'}">项目档案</span>
-                <span @click="changeOption('progress')" :class="{'active': option === 'progress'}">项目进度</span>
+                <span @click="changeOption('progress')" :class="{'active': option === 'progress'}">合作意向</span>
                 <span @click="changeOption('followLog')" :class="{'active': option === 'followLog'}">跟进记录</span>
               </div>
 
