@@ -179,23 +179,23 @@
         </div>
       </div>
       <div>
-        <el-row :gutter="15">
-          <el-col :span="3" :offset="3">
+        <el-row :gutter="15" class="pad-right-left">
+          <el-col :span="4">
             <div class="photo1"></div>
           </el-col>
-          <el-col :span="3">
+          <el-col :span="4">
             <div class="photo2"></div>
           </el-col>
-          <el-col :span="3">
+          <el-col :span="4">
             <div class="photo3"></div>
           </el-col>
-          <el-col :span="3">
+          <el-col :span="4">
             <div class="photo4"></div>
           </el-col>
-          <el-col :span="3">
+          <el-col :span="4">
             <div class="photo5"></div>
           </el-col>
-          <el-col :span="3">
+          <el-col :span="4">
             <div class="photo6"></div>
           </el-col>
         </el-row>
@@ -1354,6 +1354,26 @@
     position: absolute;
     left: 0;
     bottom: 0;
+  }
+  @media screen and (min-width: 1081px) {
+    .pad-right-left {
+      padding: 0 40px;
+    }
+  }
+  @media screen and (min-width: 1440px) {
+    .pad-right-left {
+      padding: 0 100px;
+    }
+  }
+  @media screen and (min-width: 1660px) {
+    .pad-right-left {
+      padding: 0 150px;
+    }
+  }
+  @media screen and (max-width: 1080px) {
+    .pad-right-left {
+      padding: 0 20px;
+    }
   }
 </style>
 
