@@ -21,6 +21,8 @@
 
 <script>
 // import axios from 'axios'
+import api from '@/api/api'
+import auth from '@/helper/auth'
 const redirectUri = encodeURI('http://mc.taihuoniao.com/service_account/bind')
 export default {
   name: 'service-account',
@@ -30,24 +32,48 @@ export default {
       APPID: 'wx75a9ffb78f202fb3',
       // redirectUri: 'http://mc.taihuoniao.com/service_account/bind',
       code: '',
-      state: ''
+      state: '',
+      ticket: '22222'
     }
   },
   methods: {
     getCode() {
-      console.error('2222')
-      // axios.get('https://open.weixin.qq.com/connect/oauth2/authorize?' + `appid=${this.APPID}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_base&state=${this.state}#wechat_redirect`).then(res => {
-      //   console.log(res)
-      // }).catch(error => {
-      //   console.log(error.message)
-      //   console.log('11111111')
-      // })
-      window.open('https://open.weixin.qq.com/connect/oauth2/authorize?' + `appid=${this.APPID}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_base&state=${this.state}#wechat_redirect`)
+      // window.open('https://open.weixin.qq.com/connect/oauth2/authorize?' + `appid=${this.APPID}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_base&state=${this.state}#wechat_redirect`)
+      location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?' + `appid=${this.APPID}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_base&state=${this.state}#wechat_redirect`
+    },
+    getQueryVariable() {
+      let query = window.location.search.substring(1)
+      let arr = query.split('&')
+      let obj = {}
+      arr.forEach(item => {
+        let itemArr = item.split('=')
+        obj[itemArr[0]] = itemArr[1]
+      })
+      return obj
+    },
+    getToken() {
+      this.$http.get(api.fwhUser, {params: {code: this.code}}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          console.error('res', res)
+          this.token = res.data.data.token
+          auth.write_token(this.token, this.ticket)
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
     }
   },
   created() {
     if (this.token) {
     } else {
+      let queryObj = this.getQueryVariable()
+      if (queryObj.code) {
+        this.code = queryObj.code
+        this.getToken()
+        return
+      }
       this.getCode()
       console.error(this.$route, this.$route.path)
     }
