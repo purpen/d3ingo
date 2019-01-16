@@ -9,10 +9,10 @@
         <p>设计类型: <span></span></p>
       </div>
     </div>
-    <footer>
+    <!-- <footer>
       <p>请确认当前微信号为项目负责人，我们将根据后续的状态更新帮助您快速的对接合作</p>
       <el-button type="danger" class="btn-bind" @click="binding">确认绑定</el-button>
-    </footer>
+    </footer> -->
   </div>
 </template>
 
@@ -77,7 +77,7 @@ export default {
 <style scoped>
 .dialog {
   position: relative;
-  top: -140px;
+  top: -160px;
   left: 50%;
   transform: translateX(-50%);
   width: 92%;
@@ -101,7 +101,7 @@ export default {
   margin-bottom: 10px;
 }
 footer {
-  margin-top: -100px;
+  margin-top: -130px;
 }
 footer > p {
   text-align: center;
