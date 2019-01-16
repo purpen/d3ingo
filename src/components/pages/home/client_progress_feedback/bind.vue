@@ -17,15 +17,59 @@
 </template>
 
 <script>
+import api from '@/api/api'
+import auth from '@/helper/auth'
+const redirectUri = encodeURI('http://mc.taihuoniao.com/service_account/bind')
 export default {
   name: 'progress_feedback_bind',
   data() {
     return {
+      token: '',
+      APPID: 'wx75a9ffb78f202fb3',
+      code: '',
+      state: '',
+      ticket: '22222'
     }
   },
   methods: {
+    getCode() {
+      location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?' + `appid=${this.APPID}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_base&state=${this.state}#wechat_redirect`
+    },
+    getQueryVariable() {
+      let query = window.location.search.substring(1)
+      let arr = query.split('&')
+      let obj = {}
+      arr.forEach(item => {
+        let itemArr = item.split('=')
+        obj[itemArr[0]] = itemArr[1]
+      })
+      return obj
+    },
+    getToken() {
+      this.$http.get(api.fwhUser, {params: {code: this.code}}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          console.error('res', res)
+          this.token = res.data.data.token
+          auth.write_token(this.token, this.ticket)
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        console.log(error)
+      })
+    },
     binding() {
       this.$router.push({name: 'bindFailure'})
+    }
+  },
+  created() {
+    let queryObj = this.getQueryVariable()
+    console.error('url', queryObj)
+    if (queryObj.code) {
+      this.code = queryObj.code
+      this.getToken()
+    } else {
+      this.getCode()
     }
   }
 }
