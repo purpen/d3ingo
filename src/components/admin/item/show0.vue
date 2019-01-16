@@ -17,11 +17,11 @@
               <span>{{item.name}}</span>
             </div>
             <div class="header-box">
-              <span class="fz-16">{{item.name}}</span>
-              <span>来源:</span>
-              <span v-if="item.source === 0" >铟果</span>
-              <span v-else-if="item.source === 1">京东</span>
-              <span>项目状态 : </span>
+              <span class="fz-18 tc-2">{{item.name}}</span>
+              <span class="tc-6">来源:</span>
+              <span v-if="item.source === 0" class="tc-9 header-source">铟果</span>
+              <span v-else-if="item.source === 1" class="header-source">京东</span>
+              <span class="tc-6">项目状态 : </span>
               <span v-if="itemSchedule&&itemSchedule.length" class="tc-red">{{itemSchedule[itemSchedule.length - 1].name}}</span>
               <div class="fixe-header">
               <span class="fr delBtn" @click="forceCloseBtn" v-if="item.status !== -3 &&superAdmin">关闭并退款</span>
@@ -514,7 +514,7 @@
             <el-input type="textarea" v-model="verify.refuseRease"></el-input>
             <span slot="footer" class="dialog-footer">
               <el-button size="small" @click="dialogVisible0 = false">取 消</el-button>
-              <el-button size="small" type="primary" @click="setVerify(verify.id,verify.refuseRease)">确 定</el-button>
+              <el-button size="small" type="primary" :loading="sureTransferLoading" @click="setVerify(verify.id,verify.refuseRease)">确 定</el-button>
             </span>
           </el-dialog>
           <el-dialog title="评价详情" :visible.sync="evaluateDialog" width="580px">
@@ -684,7 +684,7 @@
             </div>
           </el-dialog>
 
-         <el-dialog title="发票信息" :visible.sync="invoiceOneDialog" width="580px" top="2%" class="receipt-form">
+         <el-dialog title="发票详情" :visible.sync="invoiceOneDialog" width="580px" top="2%" class="receipt-form">
             <div class="invoice-one">
               <p class="tc-2 fz-16">需求公司发票信息</p>
               <el-row>
@@ -692,31 +692,36 @@
                   名称
                 </el-col>
                 <el-col :span="20">
-                  <p>{{item.company_name}}</p>
+                  <p v-if="item.company_name">{{item.company_name}}</p>
+                  <p v-else>&nbsp;</p>
                 </el-col>
                 <el-col :span="4">
                   注册地址
                 </el-col>
                 <el-col :span="20">
-                  <p>{{item.address}}</p>
+                  <p v-if="item.address">{{item.address}}</p>
+                  <p v-else>&nbsp;</p>
                 </el-col>
                 <el-col :span="4">
                   税号
                 </el-col>
                 <el-col :span="20">
-                  <p>{{invoiceOne.duty_number}}</p>
+                  <p v-if="invoiceOne.duty_number">{{invoiceOne.duty_number}}</p>
+                  <p v-else>&nbsp;</p>
                 </el-col>
                 <el-col :span="4">
                   开户银行
                 </el-col>
                 <el-col :span="20">
-                  <p>{{invoiceOne.bank_name}}</p>
+                  <p v-if="invoiceOne.bank_name">{{invoiceOne.bank_name}}</p>
+                  <p v-else>&nbsp;</p>
                 </el-col>
                 <el-col :span="4">
                   银行账户
                 </el-col>
                 <el-col :span="20">
-                  <p>{{invoiceOne.account_number}}</p>
+                  <p v-if="invoiceOne.account_number">{{invoiceOne.account_number}}</p>
+                  <p v-else>&nbsp;</p>
                 </el-col>
               </el-row>
               <p class="tc-2 fz-16">
@@ -727,19 +732,22 @@
                   收件人姓名
                 </el-col>
                 <el-col :span="20">
-                  <p>{{invoiceOne.contact_name}}</p>
+                  <p v-if="invoiceOne.contact_name">{{invoiceOne.contact_name}}</p>
+                  <p v-else>&nbsp;</p>
                 </el-col>
                 <el-col :span="4">
                   收件人电话
                 </el-col>
                 <el-col :span="20">
-                  <p>{{invoiceOne.phone}}</p>
+                  <p v-if="invoiceOne.phone">{{invoiceOne.phone}}</p>
+                  <p v-else>&nbsp;</p>
                 </el-col>
                 <el-col :span="4">
                   收件人地址
                 </el-col>
                 <el-col :span="20">
-                  <p>{{invoiceOne.address}}</p>
+                  <p v-if="invoiceOne.address">{{invoiceOne.address}}</p>
+                  <p v-else>&nbsp;</p>
                 </el-col>
               </el-row>
               <p class="tc-2 fz-16">
@@ -810,7 +818,7 @@ export default {
   data () {
     let checkNumber = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error('请填写手机号'))
+        return callback()
       } else {
         if (!Number.isInteger(Number(value))) {
           callback(new Error('手机号只能为数字！'))
@@ -832,27 +840,6 @@ export default {
       invoiceRuleForm: {
         phone: [
           {validator: checkNumber, trigger: 'blur'}
-        ],
-        logistics_id: [
-          {type: 'number', required: true, message: '请选择快递公司', trigger: 'change'}
-        ],
-        logistics_number: [
-          {required: true, message: '请填写快递单号', trigger: 'blur'}
-        ],
-        duty_number: [
-          {required: true, message: '请填写税号', trigger: 'blur'}
-        ],
-        bank_name: [
-          {required: true, message: '请填写开户银行', trigger: 'blur'}
-        ],
-        account_number: [
-          {required: true, message: '请输入银行账户', trigger: 'blur'}
-        ],
-        address: [
-          {required: true, message: '请输入收件地址', trigger: 'blur'}
-        ],
-        contact_name: [
-          {required: true, message: '请输入收件人姓名', trigger: 'blur'}
         ]
       }, // 快递信息验证
       invoiceOne: {}, // 发票详情表单
@@ -1125,6 +1112,7 @@ export default {
     },
     // 保存确认收到发票
     receiptSubmit(formName) {
+      this.isForceCloseLoadingBtn = true
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let url = ''
@@ -1152,6 +1140,7 @@ export default {
             data: data
           }).then((response) => {
             if (response.data.meta.status_code === 200) {
+              this.isForceCloseLoadingBtn = false
               this.receiptDialog = false
             }
           })
@@ -1159,6 +1148,7 @@ export default {
             this.$message.error(error.message)
           })
         } else {
+          this.isForceCloseLoadingBtn = false
           console.log('error form')
         }
       })
@@ -1174,7 +1164,7 @@ export default {
     // 判断需求方还是设计公司收到发票/发出发票
     setVerify (id, refuseRease) {
       this.test = id
-      this.dialogVisible0 = false
+      this.sureTransferLoading = true
       const self = this
       var confirmInvoice = ''
       if (self.verify.companytype === 2) {
@@ -1188,6 +1178,8 @@ export default {
       self.$http.put(confirmInvoice, {id: id, summary: refuseRease})
       .then (function (response) {
         if (response.data.meta.status_code === 200) {
+          this.sureTransferLoading = false
+          this.dialogVisible0 = false
           self.verify.refuseRease = ''
           self.$message.success('操作成功')
           self.itemOrder.forEach((ele, index) => {
@@ -1555,15 +1547,15 @@ export default {
       //   this.$message.error('缺少请求参数!')
       //   return
       // }
+      this.sureTransferLoading = true
       if (!this.orderForm.orderId || !this.orderForm.bankId || !this.orderForm.payNo) {
         this.$message.error('需完善打款信息!')
+        this.sureTransferLoading = false
         return
       }
       var self = this
-      self.sureTransferLoading = true
       this.$http.post(api.adminPayOrderTruePay, {pay_order_id: this.orderForm.orderId, bank_id: this.orderForm.bankId, pay_no: this.orderForm.payNo})
       .then (function(response) {
-        self.sureTransferLoading = false
         if (response.data.meta.status_code === 200) {
           self.$message.success('操作成功！')
           self.sureTransferDialog = false
@@ -2029,6 +2021,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .header-box .header-source {
+    margin-right: 30px;
+  }
   .first-loading {
     height: 100vh;
   }
