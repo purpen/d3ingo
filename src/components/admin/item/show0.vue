@@ -17,7 +17,7 @@
               <span>{{item.name}}</span>
             </div>
             <div class="header-box">
-              <span class="fz-18 tc-2">{{item.name}}</span>
+              <span class="fz-18 tc-2 header-source">{{item.name}}</span>
               <span class="tc-6">来源:</span>
               <span v-if="item.source === 0" class="tc-9 header-source">铟果</span>
               <span v-else-if="item.source === 1" class="header-source">京东</span>
@@ -679,7 +679,7 @@
             </div>
             
             <div slot="footer" class="dialog-footer">
-              <el-button type="primary" class="is-custom" @click="receiptDialog = false">取消</el-button>
+              <el-button @click="receiptDialog = false">取消</el-button>
               <el-button type="primary" :loading="isForceCloseLoadingBtn" @click="receiptSubmit('invoiceRuleForm')">确 定</el-button>
             </div>
           </el-dialog>
@@ -840,6 +840,12 @@ export default {
       invoiceRuleForm: {
         phone: [
           {validator: checkNumber, trigger: 'blur'}
+        ],
+        logistics_number: [
+          {required: true, message: '请输入快递单号', trigger: 'blur'}
+        ],
+        logistics_id: [
+          {required: true, message: '请选择快递公司', trigger: 'blur'}
         ]
       }, // 快递信息验证
       invoiceOne: {}, // 发票详情表单
@@ -1096,12 +1102,16 @@ export default {
         logistics_id: this.invoiceForm.logistics_id,
         logistics_number: this.invoiceForm.logistics_number
       }
+      if (!this.invoiceForm.phone) {
+        delete data.phone
+      }
       this.$http.put(api.adminDemandCompanyConfirmSendInvoice, data).then((response) => {
         if (response.data.meta.status_code === 200) {
           this.itemOrder.forEach((kk, val) => {
             if (kk.demand_id === data.id) {
               this.$set(kk, 'demand_status', 2)
               this.$set(this.itemOrder, val, kk)
+              Object.assign(kk, data)
             }
           })
         }
@@ -1163,9 +1173,9 @@ export default {
     },
     // 判断需求方还是设计公司收到发票/发出发票
     setVerify (id, refuseRease) {
-      this.test = id
-      this.sureTransferLoading = true
       const self = this
+      self.test = id
+      self.sureTransferLoading = true
       var confirmInvoice = ''
       if (self.verify.companytype === 2) {
         // 设计公司
@@ -1178,8 +1188,8 @@ export default {
       self.$http.put(confirmInvoice, {id: id, summary: refuseRease})
       .then (function (response) {
         if (response.data.meta.status_code === 200) {
-          this.sureTransferLoading = false
-          this.dialogVisible0 = false
+          self.sureTransferLoading = false
+          self.dialogVisible0 = false
           self.verify.refuseRease = ''
           self.$message.success('操作成功')
           self.itemOrder.forEach((ele, index) => {
