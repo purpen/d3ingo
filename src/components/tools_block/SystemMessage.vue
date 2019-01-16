@@ -1,7 +1,7 @@
 <template>
-  <div class="blank20">
-    <div class="right-content vcenter-container">
-      <div class="content-box" v-loading="isLoading">
+  <div class="blank20 full-height">
+    <div class="right-content vcenter-container full-height">
+      <div class="content-box full-height" v-loading="isLoading">
         <div class="item clearfix" v-for="(d, index) in itemList" :key="index"
           @click="removeRedDot(index)">
           <div class="left">
