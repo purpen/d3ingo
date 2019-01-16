@@ -137,7 +137,7 @@
                 <span v-if="form.product_features">&nbsp;&nbsp;</span>{{form.product_features}}
               </p> -->
               <p class="font-size-16 mar-b-10">3、费用</p>
-              <p class="mar-b-10">本合同设计费用总额为人民币<span class="bottom-border" type="text" disabled v-html="form.total" ></span> 元，丙方作为平台收取全部项目费的<span class="bottom-border" type="text" disabled v-html="form.commission_rate"></span>%，也就是人民币<span class="bottom-border" type="text" disabled v-html="form.commission"></span>元作为佣金。</p>
+              <p class="mar-b-10">本合同设计费用总额为人民币<span class="bottom-border" type="text" disabled v-html="form.total"></span> 元，丙方作为平台收取全部项目费的<span class="bottom-border" type="text" disabled v-html="form.commission_rate"></span>%，也就是人民币<span class="bottom-border" type="text" disabled v-html="form.commission"></span>元作为佣金。</p>
               <p style="color: #FF5A5F">注：本合同中所有涉及费用金额均为含税。</p>
 
               <div class="blank20"></div>
