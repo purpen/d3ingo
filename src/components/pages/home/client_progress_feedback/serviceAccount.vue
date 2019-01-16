@@ -21,36 +21,16 @@
 
 <script>
 // import axios from 'axios'
-const redirectUri = encodeURI('http://mc.taihuoniao.com/service_account/bind')
+// import api from '@/api/api'
 export default {
   name: 'service-account',
   data() {
     return {
-      token: '',
-      APPID: 'wx75a9ffb78f202fb3',
-      // redirectUri: 'http://mc.taihuoniao.com/service_account/bind',
-      code: '',
-      state: ''
     }
   },
   methods: {
-    getCode() {
-      console.error('2222')
-      // axios.get('https://open.weixin.qq.com/connect/oauth2/authorize?' + `appid=${this.APPID}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_base&state=${this.state}#wechat_redirect`).then(res => {
-      //   console.log(res)
-      // }).catch(error => {
-      //   console.log(error.message)
-      //   console.log('11111111')
-      // })
-      window.open('https://open.weixin.qq.com/connect/oauth2/authorize?' + `appid=${this.APPID}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_base&state=${this.state}#wechat_redirect`)
-    }
   },
   created() {
-    if (this.token) {
-    } else {
-      this.getCode()
-      console.error(this.$route, this.$route.path)
-    }
   }
 }
 </script>
@@ -94,9 +74,9 @@ h2 {
   height: 218px;
   background:  url('../../../../assets/images/home/progress_feedback_bind/BG02@1x.png') no-repeat top/cover;
 }
-.dialog {
+/* .dialog {
   position: relative;
-  top: -130px;
+  top: -140px;
   left: 50%;
   transform: translateX(-50%);
   width: 92%;
@@ -137,5 +117,5 @@ footer > p {
   font-size: 1.8rem;
   border-radius: 5px;
   margin-bottom: 20px;
-}
+} */
 </style>
