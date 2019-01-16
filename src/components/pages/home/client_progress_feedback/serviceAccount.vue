@@ -66,16 +66,13 @@ export default {
     }
   },
   created() {
-    if (this.token) {
+    let queryObj = this.getQueryVariable()
+    console.error('url', queryObj)
+    if (queryObj.code) {
+      this.code = queryObj.code
+      this.getToken()
     } else {
-      let queryObj = this.getQueryVariable()
-      if (queryObj.code) {
-        this.code = queryObj.code
-        this.getToken()
-        return
-      }
       this.getCode()
-      console.error(this.$route, this.$route.path)
     }
   }
 }
@@ -120,9 +117,9 @@ h2 {
   height: 218px;
   background:  url('../../../../assets/images/home/progress_feedback_bind/BG02@1x.png') no-repeat top/cover;
 }
-.dialog {
+/* .dialog {
   position: relative;
-  top: -130px;
+  top: -140px;
   left: 50%;
   transform: translateX(-50%);
   width: 92%;
@@ -163,5 +160,5 @@ footer > p {
   font-size: 1.8rem;
   border-radius: 5px;
   margin-bottom: 20px;
-}
+} */
 </style>

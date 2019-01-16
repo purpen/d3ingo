@@ -807,7 +807,16 @@ let routes = [
         component: require('@/components/pages/home/client_progress_feedback/ProgressDetails')
       }
     ]
-
+  },
+  {
+    path: '/attention',
+    name: 'attention',
+    meta: {
+      title: '关注公众号',
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/home/client_progress_feedback/attention')
   }
 ]
 

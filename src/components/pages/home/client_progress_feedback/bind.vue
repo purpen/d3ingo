@@ -33,7 +33,7 @@ export default {
 <style scoped>
 .dialog {
   position: relative;
-  top: -130px;
+  top: -140px;
   left: 50%;
   transform: translateX(-50%);
   width: 92%;
@@ -69,7 +69,7 @@ footer > p {
   height: 55px;
   width: 92%;
   margin-left: 4%;
-  margin-top: 15px;
+  margin-top: 30px;
   color: #fff;
   font-size: 1.8rem;
   border-radius: 5px;
