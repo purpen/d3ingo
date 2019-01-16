@@ -310,13 +310,13 @@
                   <div class="step_invoice">
                     <p>{{i.newName}}</p>
                     <p  v-if="i.design_type === 1 && i.design_status===2 && i.design_company_type===2">
-                      <a href="javascript:void(0);" @click="confirmReceipt(i, 1)">确认收到发票</a>
+                      <a href="javascript:void(0);" @click="confirmReceipt(i,2)">确认收到发票</a>
                     </p>
                     <p v-if="i.design_type === 1 && i.design_status===3 && i.design_company_type===2">
                       <span class="invoice-btn">已收发票</span>
                     </p>
                     <p v-if="i.demand_type === 2 && i.demand_status===1 && i.demand_company_type===1">
-                       <a href="javascript:void(0);"  @click="OpenReceipt(i, 2)">确认开出发票</a>
+                       <a href="javascript:void(0);"  @click="OpenReceipt(i)">确认开出发票</a>
                     </p>
                     <p v-if="i.demand_type === 2 && i.demand_status===2 && i.demand_company_type===1">
                       <span class="invoice-btn">已开发票</span>
@@ -632,7 +632,7 @@
                   </el-col>
                   <el-col :span="20">
                     <el-form-item prop="phone" class="fullwidth">
-                      <el-input v-model="invoiceForm.phone"></el-input>
+                      <el-input v-model.number="invoiceForm.phone" :maxlength="11"></el-input>
                     </el-form-item>
                   </el-col>
                   <el-col :span="4">
@@ -680,7 +680,7 @@
             
             <div slot="footer" class="dialog-footer">
               <el-button type="primary" class="is-custom" @click="receiptDialog = false">取消</el-button>
-              <el-button type="primary" :loading="isForceCloseLoadingBtn" @click="receiptSubmit">确 定</el-button>
+              <el-button type="primary" :loading="isForceCloseLoadingBtn" @click="receiptSubmit('invoiceRuleForm')">确 定</el-button>
             </div>
           </el-dialog>
 
@@ -808,13 +808,51 @@ export default {
     vJdDesignContractView
   },
   data () {
+    let checkNumber = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('请填写手机号'))
+      } else {
+        if (!Number.isInteger(Number(value))) {
+          callback(new Error('手机号只能为数字！'))
+        } else {
+          let len = value.toString().length
+          if (len === 11) {
+            if (/^((13|14|15|17|18)[0-9]{1}\d{8})$/.test(value)) {
+              callback()
+            } else {
+              callback(new Error('手机号格式不正确'))
+            }
+          } else {
+            callback(new Error('手机号长度应为11位'))
+          }
+        }
+      }
+    }
     return {
       invoiceRuleForm: {
+        phone: [
+          {validator: checkNumber, trigger: 'blur'}
+        ],
         logistics_id: [
           {type: 'number', required: true, message: '请选择快递公司', trigger: 'change'}
         ],
         logistics_number: [
           {required: true, message: '请填写快递单号', trigger: 'blur'}
+        ],
+        duty_number: [
+          {required: true, message: '请填写税号', trigger: 'blur'}
+        ],
+        bank_name: [
+          {required: true, message: '请填写开户银行', trigger: 'blur'}
+        ],
+        account_number: [
+          {required: true, message: '请输入银行账户', trigger: 'blur'}
+        ],
+        address: [
+          {required: true, message: '请输入收件地址', trigger: 'blur'}
+        ],
+        contact_name: [
+          {required: true, message: '请输入收件人姓名', trigger: 'blur'}
         ]
       }, // 快递信息验证
       invoiceOne: {}, // 发票详情表单
@@ -1073,7 +1111,12 @@ export default {
       }
       this.$http.put(api.adminDemandCompanyConfirmSendInvoice, data).then((response) => {
         if (response.data.meta.status_code === 200) {
-
+          this.itemOrder.forEach((kk, val) => {
+            if (kk.demand_id === data.id) {
+              this.$set(kk, 'demand_status', 2)
+              this.$set(this.itemOrder, val, kk)
+            }
+          })
         }
       })
       .catch ((error) => {
@@ -1081,37 +1124,43 @@ export default {
       })
     },
     // 保存确认收到发票
-    receiptSubmit() {
-      let url = ''
-      let meth = ''
-      let data = {
-        duty_number: this.invoiceForm.duty_number,
-        demand_company_id: this.invoiceForm.demand_company_id,
-        bank_name: this.invoiceForm.bank_name,
-        account_number: this.invoiceForm.account_number,
-        address: this.invoiceForm.address,
-        contact_name: this.invoiceForm.contact_name,
-        phone: Number(this.invoiceForm.phone)
-      }
-      this.saveLogistics()
-      if (this.invoiceForm.type) {
-        url = api.adminDemandInvoiceUpdate
-        meth = 'PUT'
-      } else {
-        url = api.adminDemandInvoiceCreate
-        meth = 'POST'
-      }
-      this.$http({
-        method: meth,
-        url: url,
-        data: data
-      }).then((response) => {
-        if (response.data.meta.status_code === 200) {
-          this.receiptDialog = false
+    receiptSubmit(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          let url = ''
+          let meth = ''
+          let data = {
+            duty_number: this.invoiceForm.duty_number,
+            demand_company_id: this.invoiceForm.demand_company_id,
+            bank_name: this.invoiceForm.bank_name,
+            account_number: this.invoiceForm.account_number,
+            address: this.invoiceForm.address,
+            contact_name: this.invoiceForm.contact_name,
+            phone: Number(this.invoiceForm.phone)
+          }
+          this.saveLogistics()
+          if (this.invoiceForm.type) {
+            url = api.adminDemandInvoiceUpdate
+            meth = 'PUT'
+          } else {
+            url = api.adminDemandInvoiceCreate
+            meth = 'POST'
+          }
+          this.$http({
+            method: meth,
+            url: url,
+            data: data
+          }).then((response) => {
+            if (response.data.meta.status_code === 200) {
+              this.receiptDialog = false
+            }
+          })
+          .catch ((error) => {
+            this.$message.error(error.message)
+          })
+        } else {
+          console.log('error form')
         }
-      })
-      .catch ((error) => {
-        this.$message.error(error.message)
       })
     },
     // 打开评价弹窗
@@ -1171,6 +1220,7 @@ export default {
         if (response.data.meta.status_code === 200) {
           if (response.data.data) {
             this.invoiceForm = response.data.data
+            this.invoiceForm.phone = Number(this.invoiceForm.phone)
             this.invoiceForm.type = 1
           } else {
             this.invoiceForm = {
@@ -1185,6 +1235,7 @@ export default {
             }
           }
           this.invoiceForm.demand_id = item.demand_id
+          this.$set(this.invoiceForm, 'logistics_id', '')
         } else {
           this.$message.error(response.data.meta.message)
         }
@@ -1202,7 +1253,6 @@ export default {
         this.verify.id = item.demand_id
       }
       this.verify.companytype = companytype
-      console.log(this.verify, companytype)
       this.dialogVisible0 = !this.dialogVisible0
     },
     // 设置测试数据提交
