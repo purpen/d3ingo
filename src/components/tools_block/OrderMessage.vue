@@ -1,7 +1,7 @@
 <template>
-  <div class="blank20">
-    <div class="right-content vcenter-container">
-      <div class="content-box" v-loading="isLoading">
+  <div class="blank20 full-height">
+    <div class="right-content vcenter-container full-height">
+      <div class="content-box full-height" v-loading="isLoading">
         <div class="item" v-for="(d, index) in itemList" @click="showDes(d, index)" :key="index">
           <div class="banner2">
             <p class="read" v-if="d.status === 0"><i class="alert"></i></p>
