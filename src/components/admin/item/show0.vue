@@ -310,13 +310,13 @@
                   <div class="step_invoice">
                     <p>{{i.newName}}</p>
                     <p  v-if="i.design_type === 1 && i.design_status===2 && i.design_company_type===2">
-                      <a href="javascript:void(0);" @click="confirmReceipt(i, 1)">确认收到发票</a>
+                      <a href="javascript:void(0);" @click="confirmReceipt(i,2)">确认收到发票</a>
                     </p>
                     <p v-if="i.design_type === 1 && i.design_status===3 && i.design_company_type===2">
                       <span class="invoice-btn">已收发票</span>
                     </p>
                     <p v-if="i.demand_type === 2 && i.demand_status===1 && i.demand_company_type===1">
-                       <a href="javascript:void(0);"  @click="OpenReceipt(i, 2)">确认开出发票</a>
+                       <a href="javascript:void(0);"  @click="OpenReceipt(i)">确认开出发票</a>
                     </p>
                     <p v-if="i.demand_type === 2 && i.demand_status===2 && i.demand_company_type===1">
                       <span class="invoice-btn">已开发票</span>
@@ -1253,7 +1253,6 @@ export default {
         this.verify.id = item.demand_id
       }
       this.verify.companytype = companytype
-      console.log(this.verify, companytype)
       this.dialogVisible0 = !this.dialogVisible0
     },
     // 设置测试数据提交
