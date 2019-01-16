@@ -57,7 +57,6 @@ module.exports = {
         ie8: true,
         output: { comments: false, beautify: false },
         compress: {
-          drop_console: true,
           dead_code: true
         },
         warnings: false
