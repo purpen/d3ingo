@@ -10,7 +10,7 @@
 
     <el-row :gutter="20" class="blank30 vcenter">
       <v-item-progress :progressButt="progressButt" :progressContract="progressContract"
-                       :progressItem="progressItem"></v-item-progress>
+      :progressItem="progressItem"></v-item-progress>
 
       <el-col :span="isMob ? 24 : 18" class="margin-auto">
         <div class="content">
@@ -258,8 +258,8 @@
                                type="primary"><i class="fa fa-money" aria-hidden="true"></i> 立即支付
                     </el-button>
                   </p>
-                  <!--<p class="capital-des">客户需要将项目首付款资金托管至铟果SaaS，</p>-->
-                  <!--<p class="capital-des">铟果SaaS收到款项后会抽取全额佣金并在三个工作日内将剩余款项一次性全额支付给设计方。</p>-->
+                  <!--<p class="capital-des">客户需要将项目首付款资金托管至太火鸟，</p>-->
+                  <!--<p class="capital-des">太火鸟收到款项后会抽取全额佣金并在三个工作日内将剩余款项一次性全额支付给设计方。</p>-->
                 </div>
               </el-collapse-item>
             </el-collapse>
@@ -317,8 +317,8 @@
                                         class="is-custom"> 立即支付
                               </el-button>
                             </p>
-                            <p class="capital-des">项目第{{ d.no }}阶段确认，客户需要在三个工作日内向铟果SaaS支付阶段设计费用款项。</p>
-                            <!--<p class="capital-des">铟果SaaS收到款项后在三个工作日内一次性全额支付给乙方。</p>-->
+                            <p class="capital-des">项目第{{ d.no }}阶段确认，客户需要在三个工作日内向太火鸟支付阶段设计费用款项。</p>
+                            <!--<p class="capital-des">太火鸟收到款项后在三个工作日内一次性全额支付给乙方。</p>-->
                           </div>
                           <div v-else>
                             <p>阶段项目资金</p>
@@ -1070,7 +1070,7 @@ export default {
           if (self.contract) {
             self.contract.created_at = self.contract.created_at
               .date_format()
-              .format('yy-MM-dd')
+              .format('yyyy-MM-dd')
           }
           self.quotation = response.data.data.quotation
           switch (self.item.status) {

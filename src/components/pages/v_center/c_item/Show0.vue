@@ -311,7 +311,7 @@
       </el-col>
     </el-row>
 
-    <el-dialog title="提交项目报价" :visible.sync="takingPriceDialog" width="580px" top="2%">
+    <el-dialog title="提交项目报价" :visible.sync="takingPriceDialog" width="1150px" top="2%">
       <v-quote-submit :paramProp="quoteProp" :formProp="takingPriceForm" @form="quoteFormProp" @param="quoteProp"></v-quote-submit>
       <!--
       <el-form label-position="top" :model="takingPriceForm" :rules="takingPriceRuleForm" ref="takingPriceRuleForm">
@@ -1360,7 +1360,7 @@ const vQuoteView = () => import('@/components/block/QuoteView')
   }
 
   .contract-content p {
-    max-width: 300px;
+    max-width: 600px;
     font-size: 1.2rem;
     color: #666;
     line-height: 1.5;

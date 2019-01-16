@@ -1,7 +1,7 @@
 <template>
-  <div class="blank20">
-    <div class="right-content vcenter-container">
-      <div class="content-box" v-loading="isLoading">
+  <div class="blank20 full-height">
+    <div class="right-content vcenter-container full-height">
+      <div class="content-box full-height" v-loading="isLoading">
         <div class="item" v-for="(d, index) in itemList" @click="showDes(d, index)" :key="index">
           <div class="banner2">
             <p class="read" v-if="d.status === 0"><i class="alert"></i></p>
@@ -75,7 +75,7 @@
               self.query.totalCount = response.data.meta.pagination.total
               for (let i = 0; i < data.length; i++) {
                 let item = data[i]
-                data[i]['created_at'] = item.created_at.date_format().format('yy-MM-dd hh:mm')
+                data[i]['created_at'] = item.created_at.date_format().format('yyyy-MM-dd hh:mm')
                 data[i]['is_show'] = false
               }
               self.itemList = data
@@ -268,7 +268,7 @@
     position: relative;
     border: 1px solid #E6E6E6;
     margin-bottom: -1px;
-    padding: 30px 20px;
+    padding: 20px;
     cursor: pointer;
     min-height: 30px;
     line-height: 30px;

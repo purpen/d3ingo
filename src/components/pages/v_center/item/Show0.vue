@@ -423,7 +423,7 @@
 
     <el-dialog
       title="提示"
-      v-model="comfirmDialog"
+      :visible.sync="comfirmDialog"
       width="380px">
       <p class="alert-line-height">{{ comfirmMessage }}</p>
       <span slot="footer" class="dialog-footer">
@@ -877,7 +877,7 @@ export default {
           if (self.contract) {
             self.contract.created_at = self.contract.created_at
               .date_format()
-              .format('yy-MM-dd')
+              .format('yyyy-MM-dd')
           }
           self.quotation = response.data.data.quotation
           switch (self.item.status) {

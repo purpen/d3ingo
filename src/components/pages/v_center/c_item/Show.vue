@@ -241,7 +241,7 @@
                 </div>
                 <div class="manage-item add-stage" v-else>
 
-                  <div class="stage-item" v-for="(d, index) in stages" :key="d.title + index">
+                  <div class="stage-item" v-if="index <= ispayStatus" v-for="(d, index) in stages" :key="d.title + index">
                     <div class="stage-title clearfix">
                       <h3 class="clearfix">第{{ d.no }}阶段: {{ d.title }}</h3>
                       <span style="color: #999" v-if="isMob && d.confirm !== 1">附件格式只限上传JPG／PNG／PDF文件</span>
@@ -261,17 +261,20 @@
                             :on-success="uploadStageSuccess"
                             :before-upload="beforeStageUpload"
                             list-type="text">
-                            <el-button size="small" class="is-custom upload_btn" :id="'upload_btn_' + index"
-                                       @click="uplaodStageBtn"
-                                       :stage_id="d.id" :index="index" type="primary">{{ stageUploadBtnMsg }}
+                            <el-button
+                                size="small"
+                                class="is-custom upload_btn"
+                                :id="'upload_btn_' + index"
+                                @click="uplaodStageBtn"
+                                :stage_id="d.id" :index="index" type="primary">{{ stageUploadBtnMsg }}
                             </el-button>
                           </el-upload>
                         </p>
 
                       </div>
                     </div>
-                    <div class="stage-asset-box clearfix" v-for="(asset, asset_index) in d.item_stage_image" :key="asset.name + asset_index">
-                      <div class="contract-left">
+                    <div class="stage-asset-box flex clearfix" v-for="(asset, asset_index) in d.item_stage_image" :key="asset.name + asset_index">
+                      <div class="contract-left flex1">
                         <img src="../../../../assets/images/icon/pdf2x.png" width="30"/>
                         <div class="contract-content">
                           <p>{{ asset.name }}</p>
@@ -419,7 +422,7 @@
       </el-col>
     </el-row>
 
-    <el-dialog title="提交项目报价" :visible.sync="takingPriceDialog" width="1150px" top="2%"   @close="isClose = false"
+    <el-dialog title="提交项目报价" :visible.sync="takingPriceDialog" width="1150px" top="2%" @close="isClose = false"
     @open="isClose = true"
     >
       <v-quote-submit :paramProp="quoteProp" :formProp="takingPriceForm" @form="quoteFormProp" @param="quoteProp" v-if="isClose"></v-quote-submit>
@@ -529,12 +532,14 @@
               </el-form-item>
             </el-col>
           </el-row>
-        <div class="taking-price-btn">
-          <el-button @click="invoiceDialog = false">取 消</el-button>
-          <el-button type="primary" :loading="sendInvoiceLoadingBtn" class="is-custom"
-                     @click="sendInvoiceSubmit('invoiceRuleForm')">确 定
-          </el-button>
-        </div>
+          <el-row>
+            <div class="taking-price-btn fz-0">
+              <el-button class="margin-r-15" @click="invoiceDialog = false">取 消</el-button>
+              <el-button type="primary" :loading="sendInvoiceLoadingBtn" class="is-custom"
+                        @click="sendInvoiceSubmit('invoiceRuleForm')">确 定
+              </el-button>
+            </div>
+          </el-row>
 
       </el-form>
     </el-dialog>
@@ -607,7 +612,7 @@
     </el-dialog>
     <el-dialog title="报价单详情" :visible.sync="quotaDialog" id="quote-dialog" style="width: 880px;margin: auto" width="580px" top="2%">
       
-      <v-quote-view :formProp="quota"></v-quote-view>
+      <v-quote-view v-if="quotaDialog" :formProp="quota"></v-quote-view>
 
       <!--<div slot="footer" class="dialog-footer btn">-->
         <!--<el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>-->
@@ -702,7 +707,10 @@
         quota: {},
         quotaDialog: false,
         invoiceDialog: false,
-        invoiceForm: {},
+        invoiceForm: {
+          logistics_id: '',
+          logistics_number: ''
+        },
         invoiceRuleForm: {
           logistics_id: [
             {type: 'number', required: true, message: '请选择快递公司', trigger: 'change'}
@@ -713,7 +721,9 @@
         },
         sendInvoiceLoadingBtn: false,
         currentInvoiceId: 0,
-        msg: ''
+        msg: '',
+        ispayStatus: '',
+        isReady: true
       }
     },
     methods: {
@@ -722,7 +732,7 @@
           this.takingPriceForm.price = this.takingPriceForm.o_price
         } else if (evt === 2) {
           this.takingPriceForm.o_price = this.takingPriceForm.price
-          this.takingPriceForm.price = parseInt(this.takingPriceForm.price).toLocaleString('en-US')
+          this.takingPriceForm.price = parseFloat(this.takingPriceForm.price).toLocaleString('en-US')
         }
       },
       selectCompanyboxChange() {
@@ -1096,11 +1106,21 @@
       },
       // 发送阶段确认框
       stageSendBtn(event) {
+        if (!this.isReady) {
+          this.$message.error('请等待文件上传成功')
+          return
+        }
         let stageId = parseInt(event.currentTarget.getAttribute('stage_id'))
         let index = parseInt(event.currentTarget.getAttribute('index'))
         if (this.stages[index].item_stage_image.length <= 0) {
           this.$message.error('请上传当前阶段附件!')
           return false
+        }
+        if (index > 0) {
+          if (this.stages.length && this.stages[index - 1].pay_status !== 1) {
+            this.$message.error('请等待需求方托管阶段款后，发送文件')
+            return
+          }
         }
         this.$refs.confirmTargetId.value = stageId
         this.$refs.confirmIndex.value = index
@@ -1140,11 +1160,12 @@
         let assetId = parseInt(event.currentTarget.getAttribute('asset_id'))
         let stageIndex = parseInt(event.currentTarget.getAttribute('stage_index'))
         let assetIndex = parseInt(event.currentTarget.getAttribute('asset_index'))
+        this.stages[stageIndex].item_stage_image.splice(assetIndex, 1)
         const that = this
         that.$http.delete(api.asset.format(assetId), {})
           .then(function (response) {
             if (response.data.meta.status_code === 200) {
-              that.stages[stageIndex].item_stage_image.splice(assetIndex, 1)
+              that.$message.success('删除成功')
             } else {
               that.$message.error(response.data.meta.message)
             }
@@ -1179,6 +1200,7 @@
           return false
         }
         document.getElementById('upload_btn_' + this.currentStageIndex).innerText = '上传中...'
+        this.isReady = false
       },
       uploadStageSuccess(response, file, fileList) {
         let index = this.currentStageIndex
@@ -1190,6 +1212,7 @@
           created_at: response.created_at
         }
         this.stages[index].item_stage_image.push(row)
+        this.isReady = true
       },
       uploadStageError(err, file, fileList) {
         let index = this.currentStageIndex
@@ -1197,10 +1220,11 @@
           document.getElementById('upload_btn_' + index).innerText = '上传附件'
         }
         this.$message.error(err)
+        this.isReady = true
       },
       handlePreview(file) {
       },
-      handleChange(value) {
+      handleChange(file) {
       }
     },
     computed: {
@@ -1216,9 +1240,9 @@
       // 应打首付款金额（首付款 - 佣金 - 税点）
       firstRestPayment() {
         if (this.contract) {
-          return parseFloat(this.contract.first_payment).sub(parseFloat(this.contract.commission).add(parseFloat(this.contract.tax_price)))
+          return parseFloat((parseFloat(this.contract.first_payment).sub(parseFloat(this.contract.commission).add(parseFloat(this.contract.tax_price))))).toFixed(2)
         }
-        return 0
+        return 0.00
       },
       isMob() {
         return this.$store.state.event.isMob
@@ -1284,7 +1308,6 @@
         return
       }
       let uType = this.$store.state.event.user.type
-      console.log('user', this.$store.state.event.user)
       // 如果是设计公司，跳到设计公司项目详情
       if (uType !== 2) {
         this.$router.replace({name: 'vcenterItemShow'})
@@ -1322,7 +1345,7 @@
             self.quotation = response.data.data.quotation
             if (self.quotation) {
               self.takingPriceForm.id = self.quotation.id
-              self.takingPriceForm.price = parseInt(self.quotation.price).toLocaleString('en-US')
+              self.takingPriceForm.price = parseFloat(self.quotation.price).toLocaleString('en-US')
               self.takingPriceForm.o_price = self.quotation.price
               self.takingPriceForm.summary = self.quotation.summary
             }
@@ -1332,33 +1355,33 @@
             }
             switch (self.item.status) {
               case 4: // 查看已提交报价的设计公司
-                // self.progressButt = 2
-                // self.progressContract = -1
-                // self.progressItem = -1
-                // self.statusIconUrl = require('@/assets/images/item/wait_taking.png')
-                // self.statusLabel.trueCompany = true
-                // self.$http.get(api.demandItemDesignListItemId.format(self.item.id), {})
-                //   .then(function (response) {
-                //     if (response.data.meta.status_code === 200) {
-                //       let offerCompany = response.data.data
-                //       for (let i = 0; i < offerCompany.length; i++) {
-                //         let item = offerCompany[i]
-                //         // 是否存在已提交报价的公司
-                //         if (item.design_company_status === 2) {
-                //           self.hasOfferCompany = true
-                //         }
-                //         if (item.design_company.logo_image && item.design_company.logo_image.length !== 0) {
-                //           offerCompany[i].design_company.logo_url = item.design_company.logo_image.logo
-                //         } else {
-                //           offerCompany[i].design_company.logo_url = false
-                //         }
-                //       } // endfor
-                //       self.offerCompany = offerCompany
-                //     }
-                //   })
-                //   .catch(function (error) {
-                //     self.$message.error(error.message)
-                //   })
+                self.progressButt = 2
+                self.progressContract = -1
+                self.progressItem = -1
+                self.statusIconUrl = require('@/assets/images/item/wait_taking.png')
+                self.statusLabel.trueCompany = true
+                self.$http.get(api.demandItemDesignListItemId.format(self.item.id), {})
+                  .then(function (response) {
+                    if (response.data.meta.status_code === 200) {
+                      let offerCompany = response.data.data
+                      for (let i = 0; i < offerCompany.length; i++) {
+                        let item = offerCompany[i]
+                        // 是否存在已提交报价的公司
+                        if (item.design_company_status === 2) {
+                          self.hasOfferCompany = true
+                        }
+                        if (item.design_company.logo_image && item.design_company.logo_image.length !== 0) {
+                          offerCompany[i].design_company.logo_url = item.design_company.logo_image.logo
+                        } else {
+                          offerCompany[i].design_company.logo_url = false
+                        }
+                      } // endfor
+                      self.offerCompany = offerCompany
+                    }
+                  })
+                  .catch(function (error) {
+                    self.$message.error(error.message)
+                  })
                 break
               case 45: // 已有设计公司报价
                 self.progressButt = 3
@@ -1560,6 +1583,13 @@
                       self.sureFinishBtn = true
                     }
                     self.stages = items
+                    let numIndex = 0
+                    self.stages.forEach(ele => {
+                      if (ele.pay_status === 1) {
+                        numIndex += 1
+                      }
+                    })
+                    self.ispayStatus = numIndex
                   }
                 })
                 .catch(function (error) {
@@ -1680,6 +1710,7 @@
     border: 1px solid #ff5a5f;
     border-radius: 4px;
     color: #ff5a5f;
+    cursor: pointer;
   }
   .contract-right .look-button:hover {
     background: #ff5a5f;
@@ -1688,9 +1719,9 @@
     color: #fff;
   }
   .contract-right .look-button:active {
-    color: #ff5a5f;
+    color: #fff;
     border: 1px solid #ff5a5f;
-    background: #fff;
+    background: #ff5a5f;
   }
   .alert-line-height {
     text-align: center
@@ -1925,13 +1956,13 @@
   }
 
   .contract-content p {
-    max-width: 300px;
     font-size: 1.2rem;
     color: #666;
     line-height: 1.5;
-    white-space: nowrap;
+    /* max-width: 600px; */
+    /* white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
+    text-overflow: ellipsis; */
   }
 
   .contract-des {
@@ -2104,7 +2135,7 @@
 
   .taking-price-btn {
     float: right;
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
   }
 
   .eva-content {
@@ -2244,34 +2275,34 @@
 
 <style>
   /*改变步骤线的大小*/
-  .el-step__head{
+  .el-step__head .el-step__icon-inner {
+    display: none;
+  }
+  .el-step__head .el-step__icon{
     width: 12px !important;
     height: 12px !important;
-    /*line-height:12px !important;*/
     vertical-align: baseline !important;
+  }
+  .is-process .el-step__line {
+    border-color: #00ac84!important;
+    background-color: #00ac84 !important;
+  }
+  .el-step__head .el-step__line {
+    position: absolute;
+    top: 4px !important;
+    left: 5px !important;
+  }
+  .is-process .el-step__icon{
+    background-color: #00ac84 !important;
+    border-color: #00ac84!important;
   }
   .el-step__head.is-text.is-process {
     color: #FFF;
     background-color: #00ac84!important;
     border-color: #00ac84!important;
   }
-
-  .el-step__head .el-step__line.is-vertical  {
-    position: absolute;
-    top: 12px;
-    left: 5px;
-  }
-
-  .is-process .el-step__line.is-vertical  {
-    background-color: #00ac84 !important;
-  }
-
-  .el-step__head .el-step__icon {
-    line-height: 12px;
-    display: none;
-  }
   /*三个行高 start*/
-  .el-step__title is-success{
+  /* .el-step__title is-success{
     line-height: 15px !important;
   }
   .el-step__main .el-step__title.is-process {
@@ -2281,7 +2312,7 @@
   .el-step__main .el-step__title.is-wait {
     line-height: 15px !important;
     color: #999;
-  }
+  } */
   /*end*/
   /*小屏的定位 start*/
   @media screen and (max-width: 767px){

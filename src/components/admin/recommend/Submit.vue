@@ -401,7 +401,7 @@ export default {
                   }
                 }
                 if (res[i].design_statistic.recommend_time && res[i].design_statistic.recommend_time !== 0) {
-                  res[i].design_statistic.recommend_time = res[i].design_statistic.recommend_time.date_format().format('yy-MM-dd')
+                  res[i].design_statistic.recommend_time = res[i].design_statistic.recommend_time.date_format().format('yyyy-MM-dd')
                 }
                 res[i].dz = res[i].province_value + res[i].city_value || ''
               }

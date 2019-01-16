@@ -25,7 +25,7 @@
                   <span v-else>{{userForm.phone}}</span>
                 </div>
                 <div class="">
-                  <el-rate v-model="userForm.rank" @change="changeLevel()"></el-rate>
+                  <el-rate v-model="userForm.rank" :disabled="!isHasPower" @change="changeLevel()"></el-rate>
                 </div>
               </div>
               
@@ -36,7 +36,7 @@
                   'status4': userForm.status === 4,
                   'status5': userForm.status === 5
                   }]">
-                <el-select v-model.number="userForm.status" @change="isUpdatedStatus">
+                <el-select v-model.number="userForm.status" :disabled="!isHasPower" @change="isUpdatedStatus">
                   <el-option
                     v-for="(item, index) in userStatus"
                     :key="index"
@@ -62,6 +62,7 @@
                     v-model.trim="userForm.source"
                     size="small"
                     filterable
+                    :disabled="!isHasPower"
                     placeholder="请选择或者新建用户来源"
                     @change="isUpdatedSource"
                     default-first-option
@@ -95,6 +96,7 @@
                               filterable
                               :allow-create="isAdmin>=15"
                               default-first-option
+                              :disabled="!isHasPower"
                               @change="isUpdatedCallStatus">
                     <el-option
                       v-for="(item, index) in callStatus"
@@ -134,6 +136,7 @@
               <div class="card-body-header" v-if="currentId !== ''">
                 <span @click="changeOption('user')" :class="{'active': option === 'user'}">用户档案</span>
                 <span @click="changeOption('project')" :class="{'active': option === 'project'}">项目档案</span>
+                <span @click="changeOption('progress')" :class="{'active': option === 'progress'}">合作意向</span>
                 <span @click="changeOption('followLog')" :class="{'active': option === 'followLog'}">跟进记录</span>
               </div>
 
@@ -303,7 +306,7 @@
                               <p v-if="item.item" class="link-item">
                                 关联项目 : 
                                 <span class="link-item-name">{{item.item_name}}
-                                  <i class="close-icon-solid" @click="deleteLinkProject(item)"></i>
+                                  <i v-if="isHasPower" class="close-icon-solid" @click="deleteLinkProject(item)"></i>
                                 </span>
                               </p>
                               <div v-else>
@@ -741,7 +744,10 @@
                 </div>
 
               </div>
-
+              
+              <div class="card-body-center" v-if="option === 'progress'">
+                <p>共合作几个项目</p>
+              </div>
 
               <div class="card-body-center padding20" v-show="option === 'followLog'">
                 <ul>
@@ -752,9 +758,8 @@
                           <div class="log-li-top">
                             <p class="execute-user-info">
                               <img v-if="item.logo_image" :src="item.logo_image.logo" alt="">
-                              <span class="no-head" v-if="item.execute_user_name">{{item.execute_user_name | formatName}}</span>
+                              <span class="no-head" v-else>{{item.execute_user_name | formatName}}</span>
                               <span class="name">{{item.execute_user_name || ''}}</span>
-                              <img v-if="item.execute_user_id === null" src="../../../assets/images/avatar_100.png" alt="">
                             </p>
                               <p>创建时间 :<span> {{item.date}}</span></p>
                               <p v-if="item.next_time && item.status !== 3" 
@@ -816,7 +821,7 @@
                     placeholder="添加跟进内容"
                     v-model="followVal"
                     @focus="focusInput"
-                    @keydown.native.enter.shift="quick"
+                    @keydown.native.enter.shift="quickSubmit"
                     :autosize="{ minRows: 1, maxRows: 10}"
                     :class="{'active': focusHeight}"
                     :maxlength="500">
@@ -1032,7 +1037,32 @@ export default {
       options4: [],
       linkProjectValue: '',
       loading: false,
-      states: []
+      states: [],
+
+      demandFeedback: [
+        {value: 1, label: '了解公司详情'},
+        {value: 2, label: '提供需求梳理'},
+        {value: 3, label: '提供设计案例'},
+        {value: 4, label: '提供设计方案'},
+        {value: 5, label: '提供设计周期'},
+        {value: 6, label: '周期合理'},
+        {value: 7, label: '提供设计报价'},
+        {value: 8, label: '报价合理'},
+        {value: 9, label: '感觉一般'},
+        {value: 10, label: '十分满意'}
+      ],
+      designFeedback: [
+        {value: 1, label: '了解公司详情'},
+        {value: 2, label: '提供需求梳理'},
+        {value: 3, label: '提供设计案例'},
+        {value: 4, label: '提供设计方案'},
+        {value: 5, label: '提供设计周期'},
+        {value: 6, label: '有能力承接'},
+        {value: 7, label: '提供设计报价'},
+        {value: 8, label: '以是最低报价'},
+        {value: 9, label: '感觉一般'},
+        {value: 10, label: '十分满意'}
+      ]
     }
   },
   methods: {
@@ -1421,6 +1451,9 @@ export default {
     focusInput1() {
       // this.boolEditLog = false
     },
+    quickSubmit() {
+      this.sendProgressVal()
+    },
     sendProgressVal() { // 发送跟进记录
       if (!this.followVal) {
         this.$message.error('请输入跟进记录')
@@ -1807,7 +1840,11 @@ export default {
       return this.$store.state.event.user.id
     },
     isHasPower() { // 是否有权限编辑
-      if (this.userId === this.userForm.execute_user_id || this.isAdmin >= 15) {
+      if (this.currentId) {
+        if (this.userId === this.userForm.execute_user_id || this.isAdmin >= 15) {
+          return true
+        }
+      } else {
         return true
       }
     }
@@ -1818,6 +1855,9 @@ export default {
         this.getUserProject()
       } else if (val === 'followLog') {
         this.getLogList()
+        this.boolLinkItem = true
+      } else if (val === 'progress') {
+        console.log('进度')
         this.boolLinkItem = true
       } else {
         this.boolLinkItem = true

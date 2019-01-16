@@ -47,6 +47,7 @@
         <div class="item">
           <el-upload
             multiple
+            ref="upload"
             class="upload-demo clearfix"
             :action="uploadUrl"
             :on-preview="handlePreview"
@@ -56,6 +57,7 @@
             :on-error="uploadError"
             :on-success="uploadSuccess"
             :before-upload="beforeUpload"
+            :on-progress="uploadProgress"
             list-type="text">
             <el-button type="danger">点击上传</el-button>
             <span slot="tip" class="el-upload__tip">只能上传jpg/png/gif文件，且不超过5M</span>
@@ -88,7 +90,8 @@ export default {
       form: {
         cycle: '',
         design_cost: '',
-        industry: ''
+        industry: '',
+        image: []
       },
       province: 0,
       city: 0,
@@ -100,7 +103,8 @@ export default {
         'x:target_id': '',
         'x:user_id': this.$store.state.event.user.id,
         'x:type': 4
-      }
+      },
+      uploadAnnex: 0 // 0 没有附件, 1 有附件, 2 附件上传成功
     }
   },
   methods: {
@@ -133,6 +137,14 @@ export default {
       console.log(file)
     },
     handleRemove(file, fileList) {
+      if (file === null) {
+        return false
+      }
+      console.log(file)
+      if (file.status === 'uploading') {
+        this.clearUpload(file, fileList)
+        return
+      }
       let id = 0
       if (file.response) {
         id = file.response.asset_id
@@ -150,13 +162,21 @@ export default {
         console.error(err)
       })
     },
+    clearUpload(file) {
+      this.form.image.forEach((item, index, array) => {
+        if (item.name === file.name) {
+          this.$refs.upload.abort(item)
+          array.splice(index, 1)
+        }
+      })
+    },
     uploadError(err, file, fileList) {
       console.error(err, file, fileList)
     },
     uploadSuccess(response, file, fileList) {
-      console.log(response, file, fileList)
     },
     beforeUpload(file) {
+      this.isUploadAnnex = 1
       const arr = ['image/jpeg', 'image/gif', 'image/png']
       const isLt5M = file.size / 1024 / 1024 < 5
 
@@ -168,6 +188,10 @@ export default {
         this.$message.error('上传文件大小不能超过 5MB!')
         return false
       }
+    },
+    uploadProgress(event, file, fileList) {
+      this.uploadAnnex = 1
+      this.form.image = fileList
     },
     getDemandObj() {
       if (this.id) {
@@ -208,27 +232,38 @@ export default {
         this.$message.error('请完善内容')
         return false
       }
-      let row = {
-        id: this.id,
-        cycle: this.form.cycle,
-        design_cost: this.form.design_cost,
-        industry: this.form.industry,
-        item_province: this.province,
-        item_city: this.city,
-        random: this.uploadParam['x:random']
+      this.uploadAnnex = 2
+      if (this.form.image.length) {
+        this.form.image.forEach(item => {
+          if (item.status !== 'success') {
+            this.isUploadAnnex = 1
+            this.$message.error('请等待附件上传')
+          }
+        })
       }
-      let url = api.release
-      this.$http({method: 'post', url: url, data: row})
-      .then(res => {
-        if (res.data.meta.status_code === 200) {
-          console.log(res)
-          this.$router.push({name: 'projectMatch', params: {id: this.id}})
-        } else {
-          this.$message.error(res.data.meta.message)
+      if (this.uploadAnnex === 0 || this.uploadAnnex === 2) {
+        let row = {
+          id: this.id,
+          cycle: this.form.cycle,
+          design_cost: this.form.design_cost,
+          industry: this.form.industry,
+          item_province: this.province,
+          item_city: this.city,
+          random: this.uploadParam['x:random']
         }
-      }).catch(err => {
-        console.error(err)
-      })
+        let url = api.release
+        this.$http({method: 'post', url: url, data: row})
+        .then(res => {
+          if (res.data.meta.status_code === 200) {
+            console.log(res)
+            this.$router.push({name: 'projectMatch', params: {id: this.id}})
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        }).catch(err => {
+          console.error(err)
+        })
+      }
     }
   },
   computed: {
@@ -333,4 +368,3 @@ export default {
     color: #ff5a5f;
   }
 </style>
-

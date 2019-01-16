@@ -743,9 +743,79 @@ let routes = [
     component: require('@/components/pages/promote/Promote')
   },
   {
+    path: '/promote2',
+    name: 'promote2',
+    meta: {
+      title: '铟果推广'
+    },
+    component: require('@/components/pages/promote/Promote2')
+  },
+  {
     path: '/redirect',
     name: 'redirect',
     component: require('@/components/block/Redirect')
+  },
+  {
+    path: '/service_account',
+    name: 'serviceAccount',
+    meta: {
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/home/client_progress_feedback/serviceAccount'),
+    children: [
+      {
+        path: '/service_account/bind',
+        name: 'clientFeedback',
+        meta: {
+          title: '绑定确认',
+          hideHeader: true,
+          hideFooter: true
+        },
+        component: require('@/components/pages/home/client_progress_feedback/bind')
+      },
+      {
+        path: '/service_account/failure',
+        name: 'bindFailure',
+        meta: {
+          title: '绑定失败',
+          hideHeader: true,
+          hideFooter: true
+        },
+        component: require('@/components/pages/home/client_progress_feedback/bindStatus')
+      },
+      {
+        path: '/service_account/success',
+        name: 'bindSuccess',
+        meta: {
+          title: '绑定成功',
+          hideHeader: true,
+          hideFooter: true
+        },
+        component: require('@/components/pages/home/client_progress_feedback/bindStatus')
+      },
+      {
+        path: '/service_account/design',
+        name: 'design',
+        meta: {
+          title: '设计方',
+          hideHeader: true,
+          hideFooter: true
+        },
+        component: require('@/components/pages/home/client_progress_feedback/ProgressDetails')
+      },
+      {
+        path: '/service_account/service',
+        name: 'service',
+        meta: {
+          title: '需求方',
+          hideHeader: true,
+          hideFooter: true
+        },
+        component: require('@/components/pages/home/client_progress_feedback/ProgressDetails')
+      }
+    ]
+
   }
 ]
 

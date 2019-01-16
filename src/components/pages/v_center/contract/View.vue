@@ -41,10 +41,10 @@
               <span v-if="form.product_features">&nbsp;&nbsp;</span>{{form.product_features}}
             </p> -->
             <p>&nbsp;</p>
-            <p class="font-size-16">2、项目内容：<span class="bottom-border">{{form.item_content}}</span></p>
+            <p class="font-size-16">2、项目内容：<span class="fz-14 bottom-border">{{form.item_content}}</span></p>
             <p>&nbsp;</p>
             <p class="font-size-16 mar-b-10">3、费用：</p>
-            <p class="mar-b-10">本合同设计费用总额为人民币(￥)<span class="bottom-border">{{form.total_han}}</span> 整（小写：<span class="bottom-border">{{form.total}}</span>元），丙方作为平台收取全部项目费的<span class="bottom-border">{{form.commission_rate}}</span>%，也就是人民币(￥)<span class="bottom-border">{{form.commission}}</span> 元作为佣金。</p>
+            <p class="mar-b-10">本合同设计费用总额为人民币(￥)<span class="bottom-border">{{form.total_han}}</span>（小写：<span class="bottom-border">{{form.total}}</span>元），丙方作为平台收取全部项目费的<span class="bottom-border">{{form.commission_rate}}</span>%，也就是人民币(￥)<span class="bottom-border">{{form.commission}}</span> 元作为佣金。</p>
             <p style="color: #FF5A5F">注：本合同中所有涉及费用金额均为含税。</p>
 
             <p class="title mar-t-40 font-size-18">二、项目交付内容及工作周期</p>
@@ -171,7 +171,7 @@
 
     <el-dialog
       title="提示"
-      v-model="sureDialog"
+      :visible.sync="sureDialog"
       width="380px">
       <input type="hidden" ref="currentType" value="1"/>
       <p class="alert-line-height">{{ sureDialogMessage }}</p>

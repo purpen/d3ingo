@@ -48,7 +48,7 @@
                           {{e.design_types_val | formatType}}
                         </p>
                         <p class="fz-12 tc-9">
-                          {{e.created_at}}
+                          {{e.created_at.date_format().format('yyyy-MM-dd')}}
                         </p>
                       </div>
                     </router-link>

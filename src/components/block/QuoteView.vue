@@ -1,19 +1,19 @@
 <template>
-  <div class="vcenter-container">
+  <div>
     <div>
       <p class="font-size-16 color-222">项目目标</p>
       <p class="font-size-14 color-666">{{ form.summary }}</p>
     </div>
-    <div class="blank40"></div>
+    <div class="blank20"></div>
     <div>
       <p class="font-size-16 color-222">项目工作计划及费用</p>
-      <div class="line"></div>
+      <!-- <div class="line"></div> -->
       <div class="" v-for="(d, index) in form.plan" :key="index">
-        <el-row :gutter="1">
-          <el-col :xs="24" :sm="6" :md="6" :lg="6">
-            <p>{{ d.content }}</p>
+        <el-row :gutter="10" class="bb-e6">
+          <el-col>
+            <p class="fz-12 tc-6">{{ d.content }}</p>
           </el-col>
-          <el-col :xs="24" :sm="18" :md="18" :lg="18">
+          <el-col>
             <div class="item-box">
               <div class="item-content">
                 <p>
@@ -22,7 +22,7 @@
                   </span>
                 </p>
                 <p>{{ d.duration }}个 工作日</p>
-                <p class="font-size-14 color-666">{{ d.summary }}</p>
+                <p class="font-size-14 color-666"><span class="tc-2">备注: </span>{{ d.summary }}</p>
               </div>
               <div class="item-money">¥ {{ formatPrice(d.price) }}</div>
             </div>
@@ -32,22 +32,22 @@
 
       </div>
     </div>
-    <div class="line"></div>
+    <!-- <div class="line"></div> -->
     <div class="sum-box" v-if="false">
       <div class="tax-box" v-if="!form.is_tax && form.is_invoince">
-        <p class="total-money">费用： <span class="font-size-16">¥{{ totalMoneyFormat }}</span> 元</p>
+        <p class="total-money">费用: <span class="font-size-16">¥{{ totalMoneyFormat }}</span> 元</p>
       </div>
       <div class="tax-total-box">
-        <p v-show="form.is_tax" class="tax-total-money">总计（含税）： <span class="font-size-16">¥{{ taxTotalMoneyFormat }}</span> 元</p>
-        <p v-show="!form.is_tax && form.is_invoince" class="tax-total-money">税率:  <span class="font-size-16"> {{ form.tax_rate }}%</span> &nbsp;&nbsp;&nbsp;&nbsp;总计（含税）： <span class="font-size-16">¥{{ taxTotalMoneyFormat }}</span> 元</p>
+        <p v-show="form.is_tax" class="tax-total-money">总计(含税): <span class="font-size-16">¥{{ taxTotalMoneyFormat }}</span> 元</p>
+        <p v-show="!form.is_tax && form.is_invoince" class="tax-total-money">税率:<span class="font-size-16"> {{ form.tax_rate }}%</span> &nbsp;&nbsp;&nbsp;&nbsp;总计(含税): <span class="font-size-16">¥{{ taxTotalMoneyFormat }}</span> 元</p>
       </div>
     </div>
-    <div class="sum-box" v-else>
-      <div class="tax-box">
-        <p class="total-money">费用： <span class="font-size-16">¥{{ totalMoneyFormat }}</span> 元</p>
+    <div class="sum-box clearfix" v-else>
+      <div class="tax-box clearfix">
+        <p class="total-money">费用: <span class="font-size-16">¥{{ totalMoneyFormat }}</span> 元</p>
       </div>
-      <div class="tax-total-box">
-        <p class="tax-total-money">税率:  <span class="font-size-16"> {{ form.tax_rate }}%</span> &nbsp;&nbsp;&nbsp;&nbsp;总计（含税）： <span class="font-size-16">¥{{ taxTotalMoneyFormat }}</span> 元</p>
+      <div class="tax-total-box clearfix">
+        <p class="tax-total-money">税率:  <span class="font-size-16"> {{ form.tax_rate }}%</span> &nbsp;&nbsp;&nbsp;&nbsp;总计(含税):  <span class="font-size-16">¥{{ taxTotalMoneyFormat }}</span> 元</p>
       </div>
     </div>
 
@@ -80,7 +80,7 @@ export default {
   },
   methods: {
     formatPrice(price) {
-      return parseFloat(price).toLocaleString('en-US')
+      return parseFloat(price).toFixed(2).toLocaleString('en-US')
     }
   },
   computed: {
@@ -90,11 +90,12 @@ export default {
     },
     // 格式化价格
     taxTotalMoneyFormat() {
-      return parseFloat(this.form.price).toLocaleString('en-US')
+      // return parseFloat(this.form.price).toLocaleString('en-US')
+      return parseFloat(this.form.price).toFixed(2).toLocaleString('en-US')
     },
     // 格式化价格2
     totalMoneyFormat() {
-      return parseFloat(this.form.total_price).toLocaleString('en-US')
+      return parseFloat(this.form.total_price).toFixed(2).toLocaleString('en-US')
     }
   },
   watch: {
@@ -148,7 +149,7 @@ export default {
   }
 
   .sum-box {
-    margin: 0 20px 50px 0;
+    margin: 20px 0 0;
   }
   .sum-box .tax-box {
 
@@ -186,12 +187,12 @@ export default {
   }
   .item-content {
     flex-grow: 1;
-    margin: 0 0 20px 0;
+    /* margin: 0 0 20px 0; */
   }
   .item-money {
     color: #FF5A5F;
     white-space: nowrap;
-    margin: 10px 0 0 20px;
+    /* margin: 10px 0 0 20px; */
     font-size: 16px;
   }
 

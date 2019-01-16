@@ -384,7 +384,20 @@
         <input type="hidden" ref="currentType"/>
       </span>
     </el-dialog>
-
+      <!-- 删除项目提示 -->
+     <el-dialog
+      title="提示"
+      :visible.sync="sureDialogDelete"
+      width="380px">
+      <span>确定要删除此项目?</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" @click="sureDialogDelete = false">取 消</el-button>
+        <el-button size="small" type="primary" :loading="sureDialogLoadingBtn" @click="sureDialogDeleteProject">确 定</el-button>
+        <input type="hidden" ref="currentItemId"/>
+        <input type="hidden" ref="currentIndex"/>
+        <input type="hidden" ref="currentType"/>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -410,6 +423,7 @@
         sureDialogOngo: false,
         sureDialogDock: false,
         sureDialogDelete: false,
+        deleteId: 0,
         sureDialogMessage: '确定要关闭项目？',
         sureDialogLoadingBtn: false,
         isLoading: false,
@@ -597,6 +611,9 @@
           self.sureDialogLoadingBtn = false
           self.sureDialogOngo = false
           self.itemIngList.splice(index, 1)
+          if (!self.itemIngList.length) {
+            self.isEmpty = true
+          }
         }
       },
       // 对接中关闭确认执行对话框
@@ -619,6 +636,9 @@
                   self.itemList[index].item.is_close = false
                   self.itemList[index].is_view_show = false
                   self.itemList.splice(index, 1)
+                  if (!self.itemList.length) {
+                    self.isEmpty2 = true
+                  }
                   self.loadList(2)
                 }
               } else {
@@ -695,20 +715,41 @@
         this.$refs.currentType.value = 1
         this.sureDialogDock = true
       },
+      sureDialogDeleteProject() {
+        let self = this
+        this.sureDialogLoadingBtn = true
+        self.$http.delete(api.deleteItem.format(this.deleteId))
+        .then(function (response) {
+          self.sureDialogLoadingBtn = false
+          self.sureDialogDelete = false
+          if (response.data.meta.status_code === 200) {
+            self.loadList(2)
+          } else {
+            self.$message.error(response.data.meta.message)
+          }
+        })
+        .catch(function (error) {
+          self.sureDialogLoadingBtn = false
+          self.sureDialogDelete = false
+          self.$message.error(error.message)
+        })
+      },
       // 关闭项目后删除项目
       delItemBtnPhase(id) {
-        let self = this
-        self.$http.delete(api.deleteItem.format(id))
-          .then(function (response) {
-            if (response.data.meta.status_code === 200) {
-              self.loadList(2)
-            } else {
-              self.$message.error(response.data.meta.message)
-            }
-          })
-          .catch(function (error) {
-            self.$message.error(error.message)
-          })
+        this.sureDialogDelete = true
+        this.deleteId = id
+        // let self = this
+        // self.$http.delete(api.deleteItem.format(id))
+        //   .then(function (response) {
+        //     if (response.data.meta.status_code === 200) {
+        //       self.loadList(2)
+        //     } else {
+        //       self.$message.error(response.data.meta.message)
+        //     }
+        //   })
+        //   .catch(function (error) {
+        //     self.$message.error(error.message)
+        //   })
       },
       // 支付项目资金
       secondPay(event) {

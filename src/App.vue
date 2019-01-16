@@ -16,15 +16,15 @@
       <router-view class="main-content"></router-view>
       <v-footer></v-footer>
     </div>
-    <p v-show="false">{{ticket}}</p>
-    <p v-show="false">{{token}}</p>
     <iframe
+      v-for="(ele, index) in path"
+      :key="index"
       v-show="false"
-      ref="iframe"
+      :ref="ele.ref"
       frameborder="0"
       name="sso-collaboration"
-      @load="loadFrame"
-      :src="path"></iframe>
+      @load="loadFrame(index)"
+      :src="ele.src"></iframe>
   </div>
 </template>
 
@@ -48,7 +48,15 @@ export default {
         title: '',
         path: ''
       },
-      path: ''
+      path: [],
+      srcListProd: [
+        'https://saas.d3ingo.com/ssologin.html',
+        'https://www.taihuoniao.com/ssologin.html'
+      ],
+      srcListDev: [
+        'http://saas-dev.taihuoniao.com/ssologin.html',
+        'http://dev.taihuoniao.com/ssologin.html'
+      ]
     }
   },
   watch: {
@@ -68,11 +76,22 @@ export default {
     loading.setAttribute('class', classVal)
   },
   created() {
-    if (ENV === 'prod' && this.prod.name === '') {
-      this.path = 'https://www.taihuoniao.com/ssologin.html'
-    }
-    if (ENV === 'dev' && this.prod.name === '') {
-      this.path = 'http://dev.taihuoniao.com/ssologin.html'
+    if (this.prod.name === '') {
+      if (ENV === 'prod') {
+        let list = []
+        this.srcListProd.forEach((item, index) => {
+          let obj = {src: item, ref: 'iframe' + index, iframeLoad: false}
+          list.push(obj)
+        })
+        this.path = list
+      } else {
+        let list = []
+        this.srcListDev.forEach((item, index) => {
+          let obj = {src: item, ref: 'iframe' + index, iframeLoad: false}
+          list.push(obj)
+        })
+        this.path = list
+      }
     }
     this.getVersion()
     if (!this.prod.name) {
@@ -141,26 +160,30 @@ export default {
         console.log(err)
       })
     },
-    loadFrame() {
-      this.iframeLoad = true
+    loadFrame(index) {
+      this.path[index].iframeLoad = true
     },
     postMessage() {
-      if (this.iframeLoad) {
-        let ticket = this.$store.state.event.ticket || localStorage.getItem('ticket')
-        this.$refs.iframe.contentWindow.postMessage(JSON.stringify({
-          ticket: ticket,
-          type: 'login'
-        }), this.path)
-      }
+      this.path.forEach(item => {
+        if (item.iframeLoad) {
+          let ticket = this.$store.state.event.ticket || localStorage.getItem('ticket')
+          this.$refs[item.ref][0].contentWindow.postMessage(JSON.stringify({
+            ticket: ticket,
+            type: 'login'
+          }), item.src)
+        }
+      })
     },
     postMessage2() {
-      if (this.iframeLoad) {
-        let ticket = this.$store.state.event.ticket || localStorage.getItem('ticket')
-        this.$refs.iframe.contentWindow.postMessage(JSON.stringify({
-          ticket: ticket,
-          type: 'loginout'
-        }), this.path)
-      }
+      this.path.forEach(item => {
+        if (item.iframeLoad) {
+          let ticket = this.$store.state.event.ticket || localStorage.getItem('ticket')
+          this.$refs[item.ref][0].contentWindow.postMessage(JSON.stringify({
+            ticket: ticket,
+            type: 'loginout'
+          }), item.src)
+        }
+      })
     },
     getStatus(type) {
       let url = ''

@@ -777,22 +777,22 @@
     border-bottom: 1px solid #e6e6e6;
   }
   .Ui {
-    background: url('../../../../assets/images/project/UI.png') 0 0 no-repeat / 100px 100px
+    background: url('../../../../assets/images/project/UI.png') no-repeat 0 / 100px 100px
   }
   .H5 {
-    background: url('../../../../assets/images/project/H5.png') 0 0 no-repeat / 100px 100px
+    background: url('../../../../assets/images/project/H5.png') no-repeat 0 / 100px 100px
   }
   .Illustrations {
-    background: url('../../../../assets/images/project/Illustrations.png') 0 0 no-repeat / 100px 100px
+    background: url('../../../../assets/images/project/Illustrations.png') no-repeat 0 / 100px 100px
   }
   .Graphic {
-    background: url('../../../../assets/images/project/Graphic.png') 0 0 no-repeat / 100px 100px
+    background: url('../../../../assets/images/project/Graphic.png') no-repeat 0 / 100px 100px
   }
   .Packing {
-    background: url('../../../../assets/images/project/Packing.png') 0 0 no-repeat / 100px 100px
+    background: url('../../../../assets/images/project/Packing.png') no-repeat 0 / 100px 100px
   }
   .ProductDesign {
-    background: url('../../../../assets/images/project/ProductDesign.png') 0 0 no-repeat / 100px 100px
+    background: url('../../../../assets/images/project/ProductDesign.png') no-repeat 0 / 100px 100px
   }
   @media screen and ( max-width: 480px) {
     .vcenter {

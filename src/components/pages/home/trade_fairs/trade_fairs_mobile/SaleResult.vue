@@ -224,7 +224,7 @@
             that.designCases = response.data.data
             for (let i of that.designCases) {
               if (i.cover.created_at) {
-                i.date = i.cover.created_at.date_format().format('yy-MM-dd')
+                i.date = i.cover.created_at.date_format().format('yyyy-MM-dd')
               }
             }
           }
