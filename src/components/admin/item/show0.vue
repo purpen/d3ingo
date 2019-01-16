@@ -310,19 +310,16 @@
                   <div class="step_invoice">
                     <p>{{i.newName}}</p>
                     <p  v-if="i.design_type === 1 && i.design_status===2 && i.design_company_type===2">
-                      <a href="javascript:void(0);" @click="confirmReceipt(i,2)">确认收到发票</a>
+                      <a href="javascript:void(0);" class="tab-green" @click="confirmReceipt(i,2)">确认收到发票</a>
                     </p>
                     <p v-if="i.design_type === 1 && i.design_status===3 && i.design_company_type===2">
-                      <span class="invoice-btn">已收发票</span>
+                      <span class="invoice-btn2">已收发票</span>
                     </p>
                     <p v-if="i.demand_type === 2 && i.demand_status===1 && i.demand_company_type===1">
-                       <a href="javascript:void(0);"  @click="OpenReceipt(i)">确认开出发票</a>
+                       <a href="javascript:void(0);" @click="OpenReceipt(i)" class="tab-green">确认开出发票</a>
                     </p>
                     <p v-if="i.demand_type === 2 && i.demand_status===2 && i.demand_company_type===1">
-                      <span class="invoice-btn">已开发票</span>
-                    </p>
-                    <p v-if="i.demand_type === 2 && i.demand_status===2 && i.demand_company_type===1">
-                      <span class="invoice-btn delBtn" @click="invoiceDetails(i)">查看发票信息</span>
+                      <span class="invoice-btn2">已开发票</span><span class="invoice-btn delBtn" @click="invoiceDetails(i)">查看发票信息>></span>
                     </p>
                   </div>
                 </el-col>
@@ -496,7 +493,7 @@
             title="合同浏览"
             :visible.sync="contractDialog"
             top="2%"
-            width="580px">
+            width="75%">
             <div v-if="contractEvt === 1">
               <v-jd-demand-contract-view :propForm="contract"></v-jd-demand-contract-view>
             </div>
@@ -964,7 +961,7 @@ export default {
         },
         {
           name: '订单管理完成',
-          newName: '发票管理完成',
+          newName: '',
           both: 'right',
           is_last: true,
           status: 0
@@ -1416,6 +1413,86 @@ export default {
             })
             if (this.item_stage && this.item_stage.length) {
               let arr = []
+              this.defaultList = [
+                {
+                  name: '项目创建',
+                  type: 1,
+                  both: 'left',
+                  created: '暂未创建'
+                },
+                {
+                  name: '项目发布',
+                  type: 2,
+                  both: 'left',
+                  created: '暂未发布'
+                },
+                {
+                  name: '项目已邀约',
+                  type: 3,
+                  both: 'left',
+                  created: '暂未邀约'
+                },
+                {
+                  name: '项目报价',
+                  type: 4,
+                  both: 'right',
+                  created: '暂未报价'
+                },
+                {
+                  name: '确认合作',
+                  type: 5,
+                  both: 'left',
+                  created: '暂未确认'
+                },
+                {
+                  name: '设计方提交合同',
+                  type: 6,
+                  both: 'right',
+                  created: '暂未提交'
+                },
+                {
+                  name: '需求方确认合同',
+                  type: 7,
+                  both: 'left',
+                  created: '暂未确认'
+                },
+                {
+                  name: '项目开始',
+                  type: 8,
+                  both: 'left',
+                  created: '暂未开始'
+                },
+                {
+                  name: '阶段文件提交',
+                  type: 9,
+                  both: 'right',
+                  created: '暂未提交'
+                },
+                {
+                  name: '阶段文件确认',
+                  type: 10,
+                  both: 'left',
+                  created: '暂未确认'
+                },
+                {
+                  name: '设计方项目确认完成',
+                  type: 11,
+                  both: 'right',
+                  created: '暂未提交'
+                },
+                {
+                  name: '需求方项目验收完成',
+                  type: 12,
+                  both: 'left',
+                  created: '暂未验收'
+                },
+                {
+                  name: '评价',
+                  type: 13,
+                  both: 'left',
+                  created: '暂未评价'
+                }
+              ]
               this.defaultList.splice(8)
               if (this.item_stage.length === 2) {
                 arr = [
@@ -1525,6 +1602,7 @@ export default {
             if (this.itemSchedule.length) {
               this.defaultList.splice(0, this.itemSchedule.length)
             }
+            console.log(this.itemSchedule)
           }
         }
       })
@@ -1834,7 +1912,6 @@ export default {
                 }
               }
             })
-            console.log('....', self.pay_orders)
             let stage = 1
             let orderList = []
             self.pay_orders.forEach(item => {
@@ -1865,7 +1942,7 @@ export default {
             if (self.itemOrder.length === self.item_stage.length + 1) {
               self.itemOrder.push({
                 name: '订单完成',
-                newName: '发票管理完成',
+                newName: '',
                 both: 'right',
                 is_last: true
               })
@@ -1888,7 +1965,7 @@ export default {
                     },
                     {
                       name: '订单完成',
-                      newName: '发票管理完成',
+                      newName: '',
                       is_last: true,
                       both: 'right'
                     }
@@ -1912,7 +1989,7 @@ export default {
                     },
                     {
                       name: '订单完成',
-                      newName: '发票管理完成',
+                      newName: '',
                       is_last: true,
                       both: 'right'
                     }
@@ -2031,6 +2108,18 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .tab-green {
+    background-color: #67c23a;
+    border-color: #67c23a;
+    color: #FFF;
+  }
+  .tab-green:hover {
+    background: #85ce61;
+    border-color: #85ce61;
+  }
+  .delBtn:hover {
+    color: #ff5a5f;
+  }
   .header-box .header-source {
     margin-right: 30px;
   }
@@ -2065,7 +2154,7 @@ export default {
   }
   .step_invoice a {
     display: inline-block;
-    padding: 3px 5px;
+    padding: 5px 5px;
     border: 1px solid #e6e6e6;
     border-radius: 4px;
     margin-top: 5px;
@@ -2085,6 +2174,12 @@ export default {
     padding: 3px 5px;
     border: 1px solid #e6e6e6;
     border-radius: 4px;
+    margin-top: 5px;
+    font-size: 12px;
+  }
+  .invoice-btn2 {
+    display: inline-block;
+    padding: 3px 5px;
     margin-top: 5px;
     font-size: 12px;
   }
