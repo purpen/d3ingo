@@ -970,6 +970,9 @@
   .el-message-box__input input.invalid:focus {
     border-color: #ff5a5f
   }
+  .receipt-form .el-dialog__body {
+    padding: 0;
+  }
 @media screen and (max-width: 767px) {
   .el-dialog--large,
   .el-dialog--small,

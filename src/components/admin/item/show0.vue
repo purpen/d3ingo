@@ -5,7 +5,11 @@
       <v-menu selectedName="itemList"></v-menu>
 
       <el-col :span="20">
-        <div class="content">
+        <!-- <div class="content" > -->
+        <div v-loading="firstLoading" class="first-loading" v-if="firstLoading">
+
+        </div>
+        <div class="content" v-else>
           <div class="content-header fz-14">
             <div>
               <router-link :to="{name: 'adminItemList'}" active-class="false" :class="{'is-active': menuType === 1}">项目列表</router-link>
@@ -15,10 +19,10 @@
             <div class="header-box">
               <span class="fz-16">{{item.name}}</span>
               <span>来源:</span>
-              <span v-if="item.source === 0">铟果</span>
+              <span v-if="item.source === 0" >铟果</span>
               <span v-else-if="item.source === 1">京东</span>
               <span>项目状态 : </span>
-              <span>{{item.status_value}}</span>
+              <span v-if="itemSchedule&&itemSchedule.length" class="tc-red">{{itemSchedule[itemSchedule.length - 1].name}}</span>
               <div class="fixe-header">
               <span class="fr delBtn" @click="forceCloseBtn" v-if="item.status !== -3 &&superAdmin">关闭并退款</span>
               <div class="test-select">
@@ -38,7 +42,7 @@
                 <el-col :span="8">
                   <div class="header-pact" v-if="item.contract &&item.contract.true_time">
                     <p class="t-center">合同</p>
-                    <div>
+                    <div class="mg-t-10">
                       <p>合同费用: {{contract.total}} 元</p>
                       <p>确认时间：{{item.contract.true_time|timeFormat}}</p>
                       <p class="tc-red mg-t-10" v-if="item.source === 1">
@@ -265,7 +269,7 @@
                   <span class="basic-title">相关附件</span>
                 </el-col>
                 <el-col :span="18">
-                  <span class="basic-content" v-for="(d, index) in info.image" :key="index"><a :href="d.file" target="_blank">{{ d.name }}</a></span>
+                  <p class="basic-content" v-for="(d, index) in info.image" :key="index"><a :href="d.file" target="_blank">{{ d.name }}</a></p>
                 </el-col>
               </el-row>
             </div>
@@ -282,7 +286,7 @@
               </el-row>
             </div>
             <div class="step-list">
-              <el-row v-for="(i,indexi) in itemOrder" :key="indexi" :class="['is-succeed',{'last-step':i.is_last}]" v-if="itemOrder.length">
+              <el-row v-for="(i,indexi) in itemOrder" :key="indexi" :class="[{'last-step':i.is_last,'is-succeed': i.status > 0 || (i.is_last && itemOrder[indexi - 1].status > 0)}]" v-if="itemOrder.length">
                 <el-col :span="8" :offset="i.both === 'left'?8:0">
                   <div :class="{
                     'step-left': i.both === 'left',
@@ -306,16 +310,19 @@
                   <div class="step_invoice">
                     <p>{{i.newName}}</p>
                     <p  v-if="i.design_type === 1 && i.design_status===2 && i.design_company_type===2">
-                      <a href="javascript:void(0);" @click="confirmReceipt(i, 2)">确认收到发票</a>
+                      <a href="javascript:void(0);" @click="confirmReceipt(i, 1)">确认收到发票</a>
                     </p>
                     <p v-if="i.design_type === 1 && i.design_status===3 && i.design_company_type===2">
                       <span class="invoice-btn">已收发票</span>
                     </p>
                     <p v-if="i.demand_type === 2 && i.demand_status===1 && i.demand_company_type===1">
-                       <a href="javascript:void(0);" @click="confirmReceipt(i, 1)">确认开出发票</a>
+                       <a href="javascript:void(0);"  @click="OpenReceipt(i, 2)">确认开出发票</a>
                     </p>
                     <p v-if="i.demand_type === 2 && i.demand_status===2 && i.demand_company_type===1">
                       <span class="invoice-btn">已开发票</span>
+                    </p>
+                    <p v-if="i.demand_type === 2 && i.demand_status===2 && i.demand_company_type===1">
+                      <span class="invoice-btn delBtn" @click="invoiceDetails(i)">查看发票信息</span>
                     </p>
                   </div>
                 </el-col>
@@ -561,6 +568,206 @@
               <el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>
             </div>
           </el-dialog>
+
+          <el-dialog title="发票信息" :visible.sync="receiptDialog" width="580px" top="2%" class="receipt-form">
+            <div>
+              <el-form label-position="top" :model="invoiceForm" class="form-line scroll-bar" :rules="invoiceRuleForm" ref="invoiceRuleForm">
+                <h3>需求公司发票信息</h3>
+                <el-row>
+                  <el-col :span="4">
+                    名称
+                  </el-col>
+                  <el-col :span="20">
+                    <el-form-item class="fullwidth">
+                      <el-input v-model="item.company_name" :disabled="true"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="4">
+                    注册地址
+                  </el-col>
+                  <el-col :span="20">
+                    <el-form-item class="fullwidth">
+                      <el-input v-model="item.address" :disabled="true"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="4">
+                    税号
+                  </el-col>
+                  <el-col :span="20">
+                    <el-form-item prop="duty_number" class="fullwidth">
+                      <el-input v-model="invoiceForm.duty_number"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="4">
+                    开户银行
+                  </el-col>
+                  <el-col :span="20">
+                    <el-form-item prop="bank_name" class="fullwidth">
+                      <el-input v-model="invoiceForm.bank_name"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="4">
+                    银行账户
+                  </el-col>
+                  <el-col :span="20">
+                    <el-form-item prop="account_number" class="fullwidth">
+                      <el-input v-model="invoiceForm.account_number"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <h3>
+                  发票快递地址
+                </h3>
+                <el-row>
+                  <el-col :span="4">
+                    收件人姓名
+                  </el-col>
+                  <el-col :span="20">
+                    <el-form-item prop="contact_name" class="fullwidth">
+                      <el-input v-model="invoiceForm.contact_name"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="4">
+                    收件人电话
+                  </el-col>
+                  <el-col :span="20">
+                    <el-form-item prop="phone" class="fullwidth">
+                      <el-input v-model.number="invoiceForm.phone" :maxlength="11"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="4">
+                    收件人地址
+                  </el-col>
+                  <el-col :span="20">
+                    <el-form-item prop="address" class="fullwidth">
+                      <el-input  v-model="invoiceForm.address"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <h3>
+                  邮寄信息
+                </h3>
+                <el-row>
+                  <el-col :span="4">
+                    快递公司
+                  </el-col>
+                  <el-col :span="20">
+                    <el-form-item prop="logistics_id" class="fullwidth">
+                      <el-select v-model.number="invoiceForm.logistics_id" placeholder="请选择快递公司">
+                        <el-option
+                          v-for="(d, index) in logisticsOptions"
+                          :label="d.label"
+                          :key="index"
+                          :value="d.value">
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4">
+                    快递单号
+                  </el-col>
+                  <el-col :span="20">
+                    <el-form-item prop="logistics_number">
+                      <el-input v-model="invoiceForm.logistics_number"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+
+              </el-form>
+            </div>
+            
+            <div slot="footer" class="dialog-footer">
+              <el-button type="primary" class="is-custom" @click="receiptDialog = false">取消</el-button>
+              <el-button type="primary" :loading="isForceCloseLoadingBtn" @click="receiptSubmit('invoiceRuleForm')">确 定</el-button>
+            </div>
+          </el-dialog>
+
+         <el-dialog title="发票信息" :visible.sync="invoiceOneDialog" width="580px" top="2%" class="receipt-form">
+            <div class="invoice-one">
+              <p class="tc-2 fz-16">需求公司发票信息</p>
+              <el-row>
+                <el-col :span="4">
+                  名称
+                </el-col>
+                <el-col :span="20">
+                  <p>{{item.company_name}}</p>
+                </el-col>
+                <el-col :span="4">
+                  注册地址
+                </el-col>
+                <el-col :span="20">
+                  <p>{{item.address}}</p>
+                </el-col>
+                <el-col :span="4">
+                  税号
+                </el-col>
+                <el-col :span="20">
+                  <p>{{invoiceOne.duty_number}}</p>
+                </el-col>
+                <el-col :span="4">
+                  开户银行
+                </el-col>
+                <el-col :span="20">
+                  <p>{{invoiceOne.bank_name}}</p>
+                </el-col>
+                <el-col :span="4">
+                  银行账户
+                </el-col>
+                <el-col :span="20">
+                  <p>{{invoiceOne.account_number}}</p>
+                </el-col>
+              </el-row>
+              <p class="tc-2 fz-16">
+                发票快递地址
+              </p>
+              <el-row>
+                <el-col :span="4">
+                  收件人姓名
+                </el-col>
+                <el-col :span="20">
+                  <p>{{invoiceOne.contact_name}}</p>
+                </el-col>
+                <el-col :span="4">
+                  收件人电话
+                </el-col>
+                <el-col :span="20">
+                  <p>{{invoiceOne.phone}}</p>
+                </el-col>
+                <el-col :span="4">
+                  收件人地址
+                </el-col>
+                <el-col :span="20">
+                  <p>{{invoiceOne.address}}</p>
+                </el-col>
+              </el-row>
+              <p class="tc-2 fz-16">
+                邮寄信息
+              </p>
+              <el-row>
+                <el-col :span="4">
+                  快递公司
+                </el-col>
+                <el-col :span="20">
+                  <p>{{invoiceOne.logistics_label}}</p>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="4">
+                  快递单号
+                </el-col>
+                <el-col :span="20">
+                  <p>{{invoiceOne.logistics_number}}</p>
+                </el-col>
+              </el-row>
+            </div>
+            
+            <div slot="footer" class="dialog-footer">
+              <el-button type="primary" class="is-custom" @click="invoiceOneDialog = false">关闭</el-button>
+            </div>
+          </el-dialog>
+
           <el-dialog title="关闭项目并返款" :visible.sync="forceCloseDialog">
             <el-form label-position="left">
               <el-form-item label="需求公司返款金额">
@@ -601,7 +808,59 @@ export default {
     vJdDesignContractView
   },
   data () {
+    let checkNumber = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('请填写手机号'))
+      } else {
+        if (!Number.isInteger(Number(value))) {
+          callback(new Error('手机号只能为数字！'))
+        } else {
+          let len = value.toString().length
+          if (len === 11) {
+            if (/^((13|14|15|17|18)[0-9]{1}\d{8})$/.test(value)) {
+              callback()
+            } else {
+              callback(new Error('手机号格式不正确'))
+            }
+          } else {
+            callback(new Error('手机号长度应为11位'))
+          }
+        }
+      }
+    }
     return {
+      invoiceRuleForm: {
+        phone: [
+          {validator: checkNumber, trigger: 'blur'}
+        ],
+        logistics_id: [
+          {type: 'number', required: true, message: '请选择快递公司', trigger: 'change'}
+        ],
+        logistics_number: [
+          {required: true, message: '请填写快递单号', trigger: 'blur'}
+        ],
+        duty_number: [
+          {required: true, message: '请填写税号', trigger: 'blur'}
+        ],
+        bank_name: [
+          {required: true, message: '请填写开户银行', trigger: 'blur'}
+        ],
+        account_number: [
+          {required: true, message: '请输入银行账户', trigger: 'blur'}
+        ],
+        address: [
+          {required: true, message: '请输入收件地址', trigger: 'blur'}
+        ],
+        contact_name: [
+          {required: true, message: '请输入收件人姓名', trigger: 'blur'}
+        ]
+      }, // 快递信息验证
+      invoiceOne: {}, // 发票详情表单
+      invoiceOneDialog: false, // 发票详情弹窗
+      invoiceForm: {
+        logistics_id: '',
+        logistics_number: ''
+      },
       imgUrl: '', // 凭证地址
       transferDialog: false, // 查看凭证弹窗
       sureTransferDialog: false, // 确定打款按钮
@@ -639,6 +898,7 @@ export default {
       item_stage: [],
       currentMatchCompany: [],
       isLoading: false,
+      firstLoading: true,
       matchCompanyForm: {
         itemId: '',
         itemName: '',
@@ -677,6 +937,7 @@ export default {
         design_result_name: ''
       }, // 确认打款表单
       stickCompany: [],
+      demandId: 0,
       cooperateCompany: '',
       evaluateDialog: false, // 查看评价
       gutter: 5,
@@ -689,6 +950,7 @@ export default {
       setTestDataDialog: false,
       isTestDataLoadingBtn: false,
       msg: '',
+      receiptDialog: false, // 确认收到发票
       pay_orders: [], // 订单进度
       itemOrder: [], // 发票列表
       score: {}, // 评价详情
@@ -711,7 +973,8 @@ export default {
           name: '订单管理完成',
           newName: '发票管理完成',
           both: 'right',
-          is_last: true
+          is_last: true,
+          status: 0
         }
       ],
       itemInvoice: [],
@@ -808,6 +1071,98 @@ export default {
     }
   },
   methods: {
+    // 打开发票详情
+    invoiceDetails(i) {
+      this.invoiceOne = {
+        id: i.demand_id,
+        duty_number: i.duty_number,
+        bank_name: i.bank_name,
+        account_number: i.account_number,
+        address: i.address,
+        contact_name: i.contact_name,
+        phone: i.phone,
+        company_address: this.item.address,
+        company_name: this.item.company_name,
+        logistics_id: i.logistics_id,
+        logistics_number: i.logistics_number
+      }
+      this.logisticsOptions.forEach(val => {
+        if (this.invoiceOne.logistics_id === val.value) {
+          this.invoiceOne.logistics_label = val.label
+        }
+      })
+      this.invoiceOneDialog = true
+    },
+    // 记录发票
+    saveLogistics() {
+      let data = {
+        id: this.invoiceForm.demand_id,
+        duty_number: this.invoiceForm.duty_number,
+        demand_company_id: this.invoiceForm.demand_company_id,
+        bank_name: this.invoiceForm.bank_name,
+        account_number: this.invoiceForm.account_number,
+        address: this.invoiceForm.address,
+        contact_name: this.invoiceForm.contact_name,
+        phone: Number(this.invoiceForm.phone),
+        company_address: this.item.address,
+        company_name: this.item.company_name,
+        logistics_id: this.invoiceForm.logistics_id,
+        logistics_number: this.invoiceForm.logistics_number
+      }
+      this.$http.put(api.adminDemandCompanyConfirmSendInvoice, data).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          this.itemOrder.forEach((kk, val) => {
+            if (kk.demand_id === data.id) {
+              this.$set(kk, 'demand_status', 2)
+              this.$set(this.itemOrder, val, kk)
+            }
+          })
+        }
+      })
+      .catch ((error) => {
+        this.$message.error(error.message)
+      })
+    },
+    // 保存确认收到发票
+    receiptSubmit(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          let url = ''
+          let meth = ''
+          let data = {
+            duty_number: this.invoiceForm.duty_number,
+            demand_company_id: this.invoiceForm.demand_company_id,
+            bank_name: this.invoiceForm.bank_name,
+            account_number: this.invoiceForm.account_number,
+            address: this.invoiceForm.address,
+            contact_name: this.invoiceForm.contact_name,
+            phone: Number(this.invoiceForm.phone)
+          }
+          this.saveLogistics()
+          if (this.invoiceForm.type) {
+            url = api.adminDemandInvoiceUpdate
+            meth = 'PUT'
+          } else {
+            url = api.adminDemandInvoiceCreate
+            meth = 'POST'
+          }
+          this.$http({
+            method: meth,
+            url: url,
+            data: data
+          }).then((response) => {
+            if (response.data.meta.status_code === 200) {
+              this.receiptDialog = false
+            }
+          })
+          .catch ((error) => {
+            this.$message.error(error.message)
+          })
+        } else {
+          console.log('error form')
+        }
+      })
+    },
     // 打开评价弹窗
     evaluateup(ele) {
       if (ele.user_score) {
@@ -832,15 +1187,16 @@ export default {
       // adminDemandCompanyConfirmSendInvoice  确认发出
       self.$http.put(confirmInvoice, {id: id, summary: refuseRease})
       .then (function (response) {
-        console.log(response.data)
         if (response.data.meta.status_code === 200) {
           self.verify.refuseRease = ''
           self.$message.success('操作成功')
           self.itemOrder.forEach((ele, index) => {
             if (self.verify.companytype === 2 && self.verify.id === ele.design_id) {
               self.$set(ele, 'design_status', 3)
+              self.$set(self.itemOrder, index, ele)
             } else if (self.verify.companytype === 1 && self.verify.id === ele.demand_id) {
               self.$set(ele, 'demand_status', 2)
+              self.$set(self.itemOrder, index, ele)
             }
           })
           // for (let i in self.tableData) {
@@ -856,9 +1212,40 @@ export default {
         }
       })
     },
-    // 确认发票
+    // 确认开出发票
+    OpenReceipt(item) {
+      this.receiptDialog = true
+      this.$http.get(api.adminDemandInvoiceShow, {params: {demand_company_id: this.demandId}})
+      .then ((response) => {
+        if (response.data.meta.status_code === 200) {
+          if (response.data.data) {
+            this.invoiceForm = response.data.data
+            this.invoiceForm.phone = Number(this.invoiceForm.phone)
+            this.invoiceForm.type = 1
+          } else {
+            this.invoiceForm = {
+              duty_number: '',
+              demand_company_id: this.demandId,
+              bank_name: '',
+              account_number: '',
+              address: '',
+              contact_name: '',
+              phone: '',
+              type: 0
+            }
+          }
+          this.invoiceForm.demand_id = item.demand_id
+          this.$set(this.invoiceForm, 'logistics_id', '')
+        } else {
+          this.$message.error(response.data.meta.message)
+        }
+      })
+      .catch ((error) => {
+        this.$message.error(error.message)
+      })
+    },
+    // 确认收到发票
     confirmReceipt (item, companytype) {
-      console.log(item)
       this.verify.id = item.order_id
       if (companytype === 2) {
         this.verify.id = item.design_id
@@ -866,6 +1253,7 @@ export default {
         this.verify.id = item.demand_id
       }
       this.verify.companytype = companytype
+      console.log(this.verify, companytype)
       this.dialogVisible0 = !this.dialogVisible0
     },
     // 设置测试数据提交
@@ -1352,6 +1740,7 @@ export default {
       const self = this
       self.itemId = id
       self.isLoading = true
+      self.firstLoading = true
       self.$http.get(api.adminItemShow, {params: {id: id}})
       .then (function(response) {
         self.isLoading = false
@@ -1359,6 +1748,7 @@ export default {
           self.item = response.data.data.item
           self.testStatus = self.item.test_status
           self.info = response.data.data.info
+          self.demandId = response.data.data.demand_company_id
           self.designInvoice = response.data.data.design_invoice || []
           self.demandInvoice = response.data.data.demand_invoice || []
           self.pay_orders = response.data.data.pay_orders || []
@@ -1430,11 +1820,20 @@ export default {
                     p.demand_id = self.demandInvoice[dem].id
                     p.demand_type = self.demandInvoice[dem].type
                     p.demand_company_type = self.demandInvoice[dem].company_type
+                    p.duty_number = self.demandInvoice[dem].duty_number
+                    p.bank_name = self.demandInvoice[dem].bank_name
+                    p.account_number = self.demandInvoice[dem].account_number
+                    p.address = self.demandInvoice[dem].address
+                    p.contact_name = self.demandInvoice[dem].contact_name
+                    p.phone = self.demandInvoice[dem].phone
+                    p.logistics_number = self.demandInvoice[dem].logistics_number
+                    p.logistics_id = self.demandInvoice[dem].logistics_id
                     break
                   }
                 }
               }
             })
+            console.log('....', self.pay_orders)
             let stage = 1
             let orderList = []
             self.pay_orders.forEach(item => {
@@ -1525,7 +1924,8 @@ export default {
             self.itemOrder.unshift({
               name: '等待付款',
               newName: '',
-              both: 'right'
+              both: 'right',
+              status: 1
             })
           }
           switch (self.item.status) {
@@ -1564,13 +1964,16 @@ export default {
               break
             default:
           }
+          self.firstLoading = false
         } else {
           self.$message.error(response.data.meta.message)
+          self.firstLoading = false
         }
       })
       .catch (function(error) {
         self.$message.error(error.message)
         self.isLoading = false
+        self.firstLoading = false
       })
     }
   },
@@ -1578,6 +1981,18 @@ export default {
     this.getall()
   },
   computed: {
+    // 快递信息
+    logisticsOptions() {
+      let items = []
+      for (let i = 0; i < typeData.LOGISTICS_OPTIONS.length; i++) {
+        let item = {
+          value: typeData.LOGISTICS_OPTIONS[i]['id'],
+          label: typeData.LOGISTICS_OPTIONS[i]['name']
+        }
+        items.push(item)
+      }
+      return items
+    },
     bankOptions() {
       var items = []
       for (var i = 0; i < typeData.BANK_OPTIONS.length; i++) {
@@ -1615,6 +2030,23 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .first-loading {
+    height: 100vh;
+  }
+  .invoice-one {
+    line-height: 30px;
+    padding: 20px;
+  }
+  h3 {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #222;
+  }
+  .form-line {
+    padding: 20px 20px 10px 20px;
+    height: 60vh;
+    overflow-y: auto;
+  }
   .ev-c-content {
     margin-top: 20px;
   }
@@ -1858,6 +2290,7 @@ export default {
   .header-box {
     padding: 0 200px 0 30px;
     height: 40px;
+    margin-top: 10px;
     line-height: 38px;
     background: #f7f7f7;
     overflow: hidden;
@@ -1897,16 +2330,20 @@ export default {
   }
   .header-company p {
     line-height: 25px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .header-pact p {
     line-height: 25px;
+    text-align: center;
   }
   .t-center {
     text-align: center;
   }
   .tab-btn {
     text-align: center;
-    margin: 20px 0 10px 0;
+    margin: 20px 0;
   }
   .content-box {
     font-size: 16px;
