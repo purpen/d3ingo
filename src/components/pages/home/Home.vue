@@ -152,7 +152,9 @@
             </div>
             <div class="content">
               <p class="title">{{ d.title }}</p>
-              <p class="des">{{ d.content }}</p>
+              <el-tooltip :content="d.content" placement="right">
+                <p class="des">{{ d.content }}</p>
+              </el-tooltip>
             </div>
           </a>
         </el-card>

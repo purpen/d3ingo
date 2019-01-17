@@ -56,11 +56,13 @@
                         <img v-if="d.cover" :src="d.cover.file">
                       </router-link>
                     </div>
-                    <div class="content">
-                      <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
-                                   :target="isMob ? '_self' : '_blank'">{{ d.title }}
-                      </router-link>
-                    </div>
+                    <el-tooltip :content="d.title" placement="bottom">
+                      <div class="content">
+                        <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
+                                    :target="isMob ? '_self' : '_blank'">{{ d.title }}
+                        </router-link>
+                      </div>
+                    </el-tooltip>
                   </el-card>
                 </el-col>
               </el-row>
@@ -280,6 +282,9 @@ p.web {
 
 .content {
   padding: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .content a {
