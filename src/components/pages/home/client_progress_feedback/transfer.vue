@@ -19,7 +19,23 @@ export default {
     }
   },
   created() {
+    let {code = ''} = this.getQueryVariable()
+    if (code) {
+      this.state = code
+    }
     location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?' + `appid=${this.APPID}&redirect_uri=${this.redirectUri}&response_type=code&scope=snsapi_base&state=${this.state}#wechat_redirect`
+  },
+  methods: {
+    getQueryVariable() {
+      let query = window.location.search.substring(1)
+      let arr = query.split('&')
+      let obj = {}
+      arr.forEach(item => {
+        let itemArr = item.split('=')
+        obj[itemArr[0]] = itemArr[1]
+      })
+      return obj
+    }
   }
 }
 </script>

@@ -213,6 +213,10 @@ export default {
   adminClueLtemList: '/admin/clue/itemList', // GET 线上项目列表
   adminClueRelateItem: '/admin/clue/relateItem', // POST 关联线上项目
   adminClueDelRelateItem: '/admin/clue/delRelateItem', // DELETE 删除关联项目
+  AdminCueGetUrl: '/admin/clue/getUrl', // GET 潜在客户-根据客户/项目id生成url
+
+  // WxClue - 微信潜在客户
+  'wxClueUrlValue': '/wxClue/urlValue', // 微信潜在客户 根据string查看客户/项目id
 
   // 项目管理
   adminItemList: '/admin/item/lists', // 项目列表

@@ -107,6 +107,7 @@
                   </el-select>
                 </div>
               </div>
+              <el-button type="danger" class="btn-link" @click="getLink">生成二维码</el-button>
             </div>
             <p class="p-label">
               <span>标签</span>
@@ -887,6 +888,7 @@ import vMenu from '@/components/admin/Menu'
 import typeData from '@/config'
 import '@/assets/js/date_format'
 import {nameToAvatar} from '@/assets/js/common'
+import Clipboard from 'clipboard'
 // 城市联动
 import RegionPicker from '@/components/block/RegionPicker'
 import Clickoutside from 'assets/js/clickoutside'
@@ -900,6 +902,7 @@ export default {
     return {
       currentUser: '新建客户',
       currentId: '',
+      QRCode: '', // 二维码链接
       option: 'user',
       BoolEditUserInfo: false,
       focusHeight: false,
@@ -1066,6 +1069,33 @@ export default {
     }
   },
   methods: {
+    getLink() {
+      let row = {
+        type: 1,
+        clue_id: this.currentId
+      }
+      this.$http.get(api.AdminCueGetUrl, {params: row}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.QRCode = res.data.data.url
+          this.setClipboardText()
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+        console.log(error.message)
+      })
+    },
+    setClipboardText() {
+      let clipboard = null
+      if (this.QRCode) {
+        clipboard = new Clipboard('.btn-link', {
+          text: () => this.QRCode
+        })
+        this.$message.success('复制成功')
+      }
+      console.log(clipboard)
+    },
     getTypeList() { // 类别列表: 来源; 通话状态; 标签
       this.$http.get(api.adminClueTypeList, {}).then(res => {
         if (res.data.meta.status_code === 200) {
