@@ -3,23 +3,32 @@
     <div class="dialog">
       <h4>绑定确认</h4>
       <div class="dialog-b">
-        <p>公司名称: <span></span></p>
-        <p>项目名称: <span></span></p>
-        <p>设计类型: <span></span></p>
-        <p>设计类型: <span></span></p>
+        <div>
+          <p>客户名称: <span>{{projectInfo.clue_name}}</span></p>
+          <ul>
+            <li v-for="(item, i) in projectInfo.item_data" :key="i">
+              <p>项目名称: <span>{{item.item_nmae}}</span></p>
+              <p>设计类型: <span>{{item.type_value}}</span></p>
+            </li>
+          </ul>
+        </div>
+        <div v-if="projectInfo.data_type === 2">
+          <p>公司名称: <span></span></p>
+          <p>项目名称: <span></span></p>
+          <p>设计类型: <span></span></p>
+        </div>
       </div>
     </div>
-    <footer>
+    <!-- <footer>
       <p>请确认当前微信号为项目负责人，我们将根据后续的状态更新帮助您快速的对接合作</p>
       <el-button type="danger" class="btn-bind" @click="binding">确认绑定</el-button>
-    </footer>
+    </footer> -->
   </div>
 </template>
 
 <script>
 import api from '@/api/api'
 import auth from '@/helper/auth'
-const redirectUri = encodeURI('http://mc.taihuoniao.com/service_account/bind')
 export default {
   name: 'progress_feedback_bind',
   data() {
@@ -28,13 +37,11 @@ export default {
       APPID: 'wx75a9ffb78f202fb3',
       code: '',
       state: '',
-      ticket: '22222'
+      ticket: '22222',
+      projectInfo: {}
     }
   },
   methods: {
-    getCode() {
-      location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?' + `appid=${this.APPID}&redirect_uri=${redirectUri}&response_type=code&scope=snsapi_base&state=${this.state}#wechat_redirect`
-    },
     getQueryVariable() {
       let query = window.location.search.substring(1)
       let arr = query.split('&')
@@ -50,26 +57,40 @@ export default {
         if (res.data.meta.status_code === 200) {
           console.error('res', res)
           this.token = res.data.data.token
+          this.getProjectInfo()
           auth.write_token(this.token, this.ticket)
         } else {
           this.$message.error(res.data.meta.message)
         }
       }).catch(error => {
-        console.log(error)
+        console.error(error.message)
       })
     },
     binding() {
       this.$router.push({name: 'bindFailure'})
+    },
+    getProjectInfo() {
+      let row = {
+        token: this.token,
+        rand_string: this.state
+      }
+      this.$http.get(api.wxClueUrlValue, {params: row}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.projectInfo = res.data.data
+        } else {
+          console.log(res.data.meta.message)
+        }
+      }).catch(error => {
+        console.error(error.message)
+      })
     }
   },
   created() {
-    let queryObj = this.getQueryVariable()
-    console.error('url', queryObj)
-    if (queryObj.code) {
-      this.code = queryObj.code
-      this.getToken()
-    } else {
-      this.getCode()
+    let {code, state} = this.getQueryVariable()
+    if (code) {
+      this.code = code
+      this.state = state
+      // this.getToken()
     }
   }
 }
@@ -77,7 +98,7 @@ export default {
 <style scoped>
 .dialog {
   position: relative;
-  top: -140px;
+  top: -160px;
   left: 50%;
   transform: translateX(-50%);
   width: 92%;
@@ -101,7 +122,7 @@ export default {
   margin-bottom: 10px;
 }
 footer {
-  margin-top: -100px;
+  margin-top: -130px;
 }
 footer > p {
   text-align: center;

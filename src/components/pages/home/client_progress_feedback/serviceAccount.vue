@@ -7,13 +7,14 @@
             <h2>用设计塑造品质生活</h2>
           </header>
           <div class="bg"></div>
-          
           <router-view></router-view>
         </section>
-        <!-- <footer>
+        <footer>
           <p>请确认当前微信号为项目负责人，我们将根据后续的状态更新帮助您快速的对接合作</p>
-          <el-button type="danger" class="btn-bind">确认绑定</el-button>
-        </footer> -->
+          <el-button type="danger" class="btn-bind" @click="binding">确认绑定</el-button>
+          <!-- <el-button type="danger" class="btn-bind" @click="">提交</el-button> -->
+          <!-- <el-button type="danger" class="btn-bind" @click="">关闭</el-button> -->
+        </footer>
       </div>
     </div>
   </div>
@@ -22,6 +23,7 @@
 <script>
 // import axios from 'axios'
 // import api from '@/api/api'
+// import vHeader from '@/components/pages/home/client_progress_feedback/header'
 export default {
   name: 'service-account',
   data() {
@@ -29,6 +31,9 @@ export default {
     }
   },
   methods: {
+    binding() {
+      this.$router.push({name: 'bindFailure'})
+    }
   },
   created() {
   }
@@ -55,7 +60,8 @@ export default {
   background: url('../../../../assets/images/home/progress_feedback_bind/BG03@2x.png') no-repeat top/cover;
 }
 .content > section > header {
-  height: 41%;
+  /* height: 41%; */
+  height: 174px;
   padding-top: 27%;
   text-align: center;
   background: url('../../../../assets/images/home/progress_feedback_bind/logo@2x.png') no-repeat center 16px/110px;
@@ -98,9 +104,9 @@ h2 {
   line-height: 40px;
   height: 40px;
   margin-bottom: 10px;
-}
+}*/
 footer {
-  margin-top: -100px;
+  /* margin-top: -100px; */
 }
 footer > p {
   text-align: center;
@@ -116,6 +122,6 @@ footer > p {
   color: #fff;
   font-size: 1.8rem;
   border-radius: 5px;
-  margin-bottom: 20px;
-} */
+  margin-bottom: 50px;
+}
 </style>

@@ -419,7 +419,7 @@
 
               <el-row class="item" :gutter="gutter">
                 <el-col :span="spanKey">
-                  <p>剩余金额</p>
+                  <p>平台监管金额</p>
                 </el-col>
                 <el-col :span="spanVal">
                   <p>¥ {{ item.rest_fund }}</p>
@@ -905,11 +905,11 @@ export default {
           'label': '正常'
         },
         {
-          'value': 1,
+          'value': 2,
           'label': '公测'
         },
         {
-          'value': 2,
+          'value': 1,
           'label': '内测'
         }
       ],

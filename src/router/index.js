@@ -825,6 +825,15 @@ let routes = [
       hideFooter: true
     },
     component: require('@/components/pages/home/client_progress_feedback/attention')
+  },
+  {
+    path: '/service_account/transfer',
+    name: 'transfer',
+    meta: {
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/home/client_progress_feedback/transfer')
   }
 ]
 
