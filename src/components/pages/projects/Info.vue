@@ -34,7 +34,7 @@
           </el-select>
         </div>
         <h3>项目工作地点</h3>
-        <el-form class="item">
+        <el-form class="item input-item">
           <region-picker
             :twoSelect="true"
             :provinceProp="province"

@@ -896,6 +896,14 @@
   .el-radio__input.is-checked+.el-radio__label {
     color: inherit
   }
+  .input-item .el-form-item__content .el-input .el-input__inner:focus {
+    box-shadow: none;
+    border: 1px solid #d2d2d2;
+  }
+  .el-input .el-input__inner:focus {
+    box-shadow: none;
+    border: 1px solid #d2d2d2;
+  }
   /*推广页*/
   .input-phone input {
     height: 50px;

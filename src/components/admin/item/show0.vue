@@ -17,11 +17,11 @@
               <span>{{item.name}}</span>
             </div>
             <div class="header-box">
-              <span class="fz-16">{{item.name}}</span>
-              <span>来源:</span>
-              <span v-if="item.source === 0" >铟果</span>
-              <span v-else-if="item.source === 1">京东</span>
-              <span>项目状态 : </span>
+              <span class="fz-18 tc-2 header-source">{{item.name}}</span>
+              <span class="tc-6">来源:</span>
+              <span v-if="item.source === 0" class="tc-9 header-source">铟果</span>
+              <span v-else-if="item.source === 1" class="header-source">京东</span>
+              <span class="tc-6">项目状态 : </span>
               <span v-if="itemSchedule&&itemSchedule.length" class="tc-red">{{itemSchedule[itemSchedule.length - 1].name}}</span>
               <div class="fixe-header">
               <span class="fr delBtn" @click="forceCloseBtn" v-if="item.status !== -3 &&superAdmin">关闭并退款</span>
@@ -310,19 +310,16 @@
                   <div class="step_invoice">
                     <p>{{i.newName}}</p>
                     <p  v-if="i.design_type === 1 && i.design_status===2 && i.design_company_type===2">
-                      <a href="javascript:void(0);" @click="confirmReceipt(i, 1)">确认收到发票</a>
+                      <a href="javascript:void(0);" class="tab-green" @click="confirmReceipt(i,2)">确认收到发票</a>
                     </p>
                     <p v-if="i.design_type === 1 && i.design_status===3 && i.design_company_type===2">
-                      <span class="invoice-btn">已收发票</span>
+                      <span class="invoice-btn2">已收发票</span>
                     </p>
                     <p v-if="i.demand_type === 2 && i.demand_status===1 && i.demand_company_type===1">
-                       <a href="javascript:void(0);"  @click="OpenReceipt(i, 2)">确认开出发票</a>
+                       <a href="javascript:void(0);" @click="OpenReceipt(i)" class="tab-green">确认开出发票</a>
                     </p>
                     <p v-if="i.demand_type === 2 && i.demand_status===2 && i.demand_company_type===1">
-                      <span class="invoice-btn">已开发票</span>
-                    </p>
-                    <p v-if="i.demand_type === 2 && i.demand_status===2 && i.demand_company_type===1">
-                      <span class="invoice-btn delBtn" @click="invoiceDetails(i)">查看发票信息</span>
+                      <span class="invoice-btn2">已开发票</span><span class="invoice-btn delBtn" @click="invoiceDetails(i)">查看发票信息>></span>
                     </p>
                   </div>
                 </el-col>
@@ -496,7 +493,7 @@
             title="合同浏览"
             :visible.sync="contractDialog"
             top="2%"
-            width="580px">
+            width="75%">
             <div v-if="contractEvt === 1">
               <v-jd-demand-contract-view :propForm="contract"></v-jd-demand-contract-view>
             </div>
@@ -514,7 +511,7 @@
             <el-input type="textarea" v-model="verify.refuseRease"></el-input>
             <span slot="footer" class="dialog-footer">
               <el-button size="small" @click="dialogVisible0 = false">取 消</el-button>
-              <el-button size="small" type="primary" @click="setVerify(verify.id,verify.refuseRease)">确 定</el-button>
+              <el-button size="small" type="primary" :loading="sureTransferLoading" @click="setVerify(verify.id,verify.refuseRease)">确 定</el-button>
             </span>
           </el-dialog>
           <el-dialog title="评价详情" :visible.sync="evaluateDialog" width="580px">
@@ -632,7 +629,7 @@
                   </el-col>
                   <el-col :span="20">
                     <el-form-item prop="phone" class="fullwidth">
-                      <el-input v-model="invoiceForm.phone"></el-input>
+                      <el-input v-model.number="invoiceForm.phone" :maxlength="11"></el-input>
                     </el-form-item>
                   </el-col>
                   <el-col :span="4">
@@ -679,12 +676,12 @@
             </div>
             
             <div slot="footer" class="dialog-footer">
-              <el-button type="primary" class="is-custom" @click="receiptDialog = false">取消</el-button>
-              <el-button type="primary" :loading="isForceCloseLoadingBtn" @click="receiptSubmit">确 定</el-button>
+              <el-button @click="receiptDialog = false">取消</el-button>
+              <el-button type="primary" :loading="isForceCloseLoadingBtn" @click="receiptSubmit('invoiceRuleForm')">确 定</el-button>
             </div>
           </el-dialog>
 
-         <el-dialog title="发票信息" :visible.sync="invoiceOneDialog" width="580px" top="2%" class="receipt-form">
+         <el-dialog title="发票详情" :visible.sync="invoiceOneDialog" width="580px" top="2%" class="receipt-form">
             <div class="invoice-one">
               <p class="tc-2 fz-16">需求公司发票信息</p>
               <el-row>
@@ -692,31 +689,36 @@
                   名称
                 </el-col>
                 <el-col :span="20">
-                  <p>{{item.company_name}}</p>
+                  <p v-if="item.company_name">{{item.company_name}}</p>
+                  <p v-else>&nbsp;</p>
                 </el-col>
                 <el-col :span="4">
                   注册地址
                 </el-col>
                 <el-col :span="20">
-                  <p>{{item.address}}</p>
+                  <p v-if="item.address">{{item.address}}</p>
+                  <p v-else>&nbsp;</p>
                 </el-col>
                 <el-col :span="4">
                   税号
                 </el-col>
                 <el-col :span="20">
-                  <p>{{invoiceOne.duty_number}}</p>
+                  <p v-if="invoiceOne.duty_number">{{invoiceOne.duty_number}}</p>
+                  <p v-else>&nbsp;</p>
                 </el-col>
                 <el-col :span="4">
                   开户银行
                 </el-col>
                 <el-col :span="20">
-                  <p>{{invoiceOne.bank_name}}</p>
+                  <p v-if="invoiceOne.bank_name">{{invoiceOne.bank_name}}</p>
+                  <p v-else>&nbsp;</p>
                 </el-col>
                 <el-col :span="4">
                   银行账户
                 </el-col>
                 <el-col :span="20">
-                  <p>{{invoiceOne.account_number}}</p>
+                  <p v-if="invoiceOne.account_number">{{invoiceOne.account_number}}</p>
+                  <p v-else>&nbsp;</p>
                 </el-col>
               </el-row>
               <p class="tc-2 fz-16">
@@ -727,19 +729,22 @@
                   收件人姓名
                 </el-col>
                 <el-col :span="20">
-                  <p>{{invoiceOne.contact_name}}</p>
+                  <p v-if="invoiceOne.contact_name">{{invoiceOne.contact_name}}</p>
+                  <p v-else>&nbsp;</p>
                 </el-col>
                 <el-col :span="4">
                   收件人电话
                 </el-col>
                 <el-col :span="20">
-                  <p>{{invoiceOne.phone}}</p>
+                  <p v-if="invoiceOne.phone">{{invoiceOne.phone}}</p>
+                  <p v-else>&nbsp;</p>
                 </el-col>
                 <el-col :span="4">
                   收件人地址
                 </el-col>
                 <el-col :span="20">
-                  <p>{{invoiceOne.address}}</p>
+                  <p v-if="invoiceOne.address">{{invoiceOne.address}}</p>
+                  <p v-else>&nbsp;</p>
                 </el-col>
               </el-row>
               <p class="tc-2 fz-16">
@@ -808,13 +813,36 @@ export default {
     vJdDesignContractView
   },
   data () {
+    let checkNumber = (rule, value, callback) => {
+      if (!value) {
+        return callback()
+      } else {
+        if (!Number.isInteger(Number(value))) {
+          callback(new Error('手机号只能为数字！'))
+        } else {
+          let len = value.toString().length
+          if (len === 11) {
+            if (/^((13|14|15|17|18)[0-9]{1}\d{8})$/.test(value)) {
+              callback()
+            } else {
+              callback(new Error('手机号格式不正确'))
+            }
+          } else {
+            callback(new Error('手机号长度应为11位'))
+          }
+        }
+      }
+    }
     return {
       invoiceRuleForm: {
-        logistics_id: [
-          {type: 'number', required: true, message: '请选择快递公司', trigger: 'change'}
+        phone: [
+          {validator: checkNumber, trigger: 'blur'}
         ],
         logistics_number: [
-          {required: true, message: '请填写快递单号', trigger: 'blur'}
+          {required: true, message: '请输入快递单号', trigger: 'blur'}
+        ],
+        logistics_id: [
+          {required: true, message: '请选择快递公司', trigger: 'blur'}
         ]
       }, // 快递信息验证
       invoiceOne: {}, // 发票详情表单
@@ -882,7 +910,7 @@ export default {
         },
         {
           'value': 2,
-          'label': '内侧'
+          'label': '内测'
         }
       ],
       comfirmDialog: false,
@@ -933,7 +961,7 @@ export default {
         },
         {
           name: '订单管理完成',
-          newName: '发票管理完成',
+          newName: '',
           both: 'right',
           is_last: true,
           status: 0
@@ -1071,9 +1099,18 @@ export default {
         logistics_id: this.invoiceForm.logistics_id,
         logistics_number: this.invoiceForm.logistics_number
       }
+      if (!this.invoiceForm.phone) {
+        delete data.phone
+      }
       this.$http.put(api.adminDemandCompanyConfirmSendInvoice, data).then((response) => {
         if (response.data.meta.status_code === 200) {
-
+          this.itemOrder.forEach((kk, val) => {
+            if (kk.demand_id === data.id) {
+              this.$set(kk, 'demand_status', 2)
+              this.$set(this.itemOrder, val, kk)
+              Object.assign(kk, data)
+            }
+          })
         }
       })
       .catch ((error) => {
@@ -1081,37 +1118,46 @@ export default {
       })
     },
     // 保存确认收到发票
-    receiptSubmit() {
-      let url = ''
-      let meth = ''
-      let data = {
-        duty_number: this.invoiceForm.duty_number,
-        demand_company_id: this.invoiceForm.demand_company_id,
-        bank_name: this.invoiceForm.bank_name,
-        account_number: this.invoiceForm.account_number,
-        address: this.invoiceForm.address,
-        contact_name: this.invoiceForm.contact_name,
-        phone: Number(this.invoiceForm.phone)
-      }
-      this.saveLogistics()
-      if (this.invoiceForm.type) {
-        url = api.adminDemandInvoiceUpdate
-        meth = 'PUT'
-      } else {
-        url = api.adminDemandInvoiceCreate
-        meth = 'POST'
-      }
-      this.$http({
-        method: meth,
-        url: url,
-        data: data
-      }).then((response) => {
-        if (response.data.meta.status_code === 200) {
-          this.receiptDialog = false
+    receiptSubmit(formName) {
+      this.isForceCloseLoadingBtn = true
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          let url = ''
+          let meth = ''
+          let data = {
+            duty_number: this.invoiceForm.duty_number,
+            demand_company_id: this.invoiceForm.demand_company_id,
+            bank_name: this.invoiceForm.bank_name,
+            account_number: this.invoiceForm.account_number,
+            address: this.invoiceForm.address,
+            contact_name: this.invoiceForm.contact_name,
+            phone: Number(this.invoiceForm.phone)
+          }
+          this.saveLogistics()
+          if (this.invoiceForm.type) {
+            url = api.adminDemandInvoiceUpdate
+            meth = 'PUT'
+          } else {
+            url = api.adminDemandInvoiceCreate
+            meth = 'POST'
+          }
+          this.$http({
+            method: meth,
+            url: url,
+            data: data
+          }).then((response) => {
+            if (response.data.meta.status_code === 200) {
+              this.isForceCloseLoadingBtn = false
+              this.receiptDialog = false
+            }
+          })
+          .catch ((error) => {
+            this.$message.error(error.message)
+          })
+        } else {
+          this.isForceCloseLoadingBtn = false
+          console.log('error form')
         }
-      })
-      .catch ((error) => {
-        this.$message.error(error.message)
       })
     },
     // 打开评价弹窗
@@ -1124,9 +1170,9 @@ export default {
     },
     // 判断需求方还是设计公司收到发票/发出发票
     setVerify (id, refuseRease) {
-      this.test = id
-      this.dialogVisible0 = false
       const self = this
+      self.test = id
+      self.sureTransferLoading = true
       var confirmInvoice = ''
       if (self.verify.companytype === 2) {
         // 设计公司
@@ -1139,6 +1185,8 @@ export default {
       self.$http.put(confirmInvoice, {id: id, summary: refuseRease})
       .then (function (response) {
         if (response.data.meta.status_code === 200) {
+          self.sureTransferLoading = false
+          self.dialogVisible0 = false
           self.verify.refuseRease = ''
           self.$message.success('操作成功')
           self.itemOrder.forEach((ele, index) => {
@@ -1171,6 +1219,7 @@ export default {
         if (response.data.meta.status_code === 200) {
           if (response.data.data) {
             this.invoiceForm = response.data.data
+            this.invoiceForm.phone = Number(this.invoiceForm.phone)
             this.invoiceForm.type = 1
           } else {
             this.invoiceForm = {
@@ -1185,6 +1234,7 @@ export default {
             }
           }
           this.invoiceForm.demand_id = item.demand_id
+          this.$set(this.invoiceForm, 'logistics_id', '')
         } else {
           this.$message.error(response.data.meta.message)
         }
@@ -1202,7 +1252,6 @@ export default {
         this.verify.id = item.demand_id
       }
       this.verify.companytype = companytype
-      console.log(this.verify, companytype)
       this.dialogVisible0 = !this.dialogVisible0
     },
     // 设置测试数据提交
@@ -1364,6 +1413,86 @@ export default {
             })
             if (this.item_stage && this.item_stage.length) {
               let arr = []
+              this.defaultList = [
+                {
+                  name: '项目创建',
+                  type: 1,
+                  both: 'left',
+                  created: '暂未创建'
+                },
+                {
+                  name: '项目发布',
+                  type: 2,
+                  both: 'left',
+                  created: '暂未发布'
+                },
+                {
+                  name: '项目已邀约',
+                  type: 3,
+                  both: 'left',
+                  created: '暂未邀约'
+                },
+                {
+                  name: '项目报价',
+                  type: 4,
+                  both: 'right',
+                  created: '暂未报价'
+                },
+                {
+                  name: '确认合作',
+                  type: 5,
+                  both: 'left',
+                  created: '暂未确认'
+                },
+                {
+                  name: '设计方提交合同',
+                  type: 6,
+                  both: 'right',
+                  created: '暂未提交'
+                },
+                {
+                  name: '需求方确认合同',
+                  type: 7,
+                  both: 'left',
+                  created: '暂未确认'
+                },
+                {
+                  name: '项目开始',
+                  type: 8,
+                  both: 'left',
+                  created: '暂未开始'
+                },
+                {
+                  name: '阶段文件提交',
+                  type: 9,
+                  both: 'right',
+                  created: '暂未提交'
+                },
+                {
+                  name: '阶段文件确认',
+                  type: 10,
+                  both: 'left',
+                  created: '暂未确认'
+                },
+                {
+                  name: '设计方项目确认完成',
+                  type: 11,
+                  both: 'right',
+                  created: '暂未提交'
+                },
+                {
+                  name: '需求方项目验收完成',
+                  type: 12,
+                  both: 'left',
+                  created: '暂未验收'
+                },
+                {
+                  name: '评价',
+                  type: 13,
+                  both: 'left',
+                  created: '暂未评价'
+                }
+              ]
               this.defaultList.splice(8)
               if (this.item_stage.length === 2) {
                 arr = [
@@ -1473,6 +1602,7 @@ export default {
             if (this.itemSchedule.length) {
               this.defaultList.splice(0, this.itemSchedule.length)
             }
+            console.log(this.itemSchedule)
           }
         }
       })
@@ -1505,15 +1635,15 @@ export default {
       //   this.$message.error('缺少请求参数!')
       //   return
       // }
+      this.sureTransferLoading = true
       if (!this.orderForm.orderId || !this.orderForm.bankId || !this.orderForm.payNo) {
         this.$message.error('需完善打款信息!')
+        this.sureTransferLoading = false
         return
       }
       var self = this
-      self.sureTransferLoading = true
       this.$http.post(api.adminPayOrderTruePay, {pay_order_id: this.orderForm.orderId, bank_id: this.orderForm.bankId, pay_no: this.orderForm.payNo})
       .then (function(response) {
-        self.sureTransferLoading = false
         if (response.data.meta.status_code === 200) {
           self.$message.success('操作成功！')
           self.sureTransferDialog = false
@@ -1782,7 +1912,6 @@ export default {
                 }
               }
             })
-            console.log('....', self.pay_orders)
             let stage = 1
             let orderList = []
             self.pay_orders.forEach(item => {
@@ -1813,7 +1942,7 @@ export default {
             if (self.itemOrder.length === self.item_stage.length + 1) {
               self.itemOrder.push({
                 name: '订单完成',
-                newName: '发票管理完成',
+                newName: '',
                 both: 'right',
                 is_last: true
               })
@@ -1836,7 +1965,7 @@ export default {
                     },
                     {
                       name: '订单完成',
-                      newName: '发票管理完成',
+                      newName: '',
                       is_last: true,
                       both: 'right'
                     }
@@ -1860,7 +1989,7 @@ export default {
                     },
                     {
                       name: '订单完成',
-                      newName: '发票管理完成',
+                      newName: '',
                       is_last: true,
                       both: 'right'
                     }
@@ -1979,6 +2108,21 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .tab-green {
+    background-color: #67c23a;
+    border-color: #67c23a;
+    color: #FFF;
+  }
+  .tab-green:hover {
+    background: #85ce61;
+    border-color: #85ce61;
+  }
+  .delBtn:hover {
+    color: #ff5a5f;
+  }
+  .header-box .header-source {
+    margin-right: 30px;
+  }
   .first-loading {
     height: 100vh;
   }
@@ -2010,7 +2154,7 @@ export default {
   }
   .step_invoice a {
     display: inline-block;
-    padding: 3px 5px;
+    padding: 5px 5px;
     border: 1px solid #e6e6e6;
     border-radius: 4px;
     margin-top: 5px;
@@ -2030,6 +2174,12 @@ export default {
     padding: 3px 5px;
     border: 1px solid #e6e6e6;
     border-radius: 4px;
+    margin-top: 5px;
+    font-size: 12px;
+  }
+  .invoice-btn2 {
+    display: inline-block;
+    padding: 3px 5px;
     margin-top: 5px;
     font-size: 12px;
   }
