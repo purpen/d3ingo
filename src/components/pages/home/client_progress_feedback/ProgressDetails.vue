@@ -44,7 +44,6 @@ export default {
   border-radius: 5px; */
 }
 .project-item {
-  background-color: skyblue;
   border-radius: 5px;
 }
 .bewrite {
@@ -58,7 +57,7 @@ export default {
   box-shadow:0px 0px 5px 0px rgba(0,0,0,0.1);
   margin-top: 16px;
 }
-.bewrite:hover {
+.bewrite:active {
   color: #ffffff;
   background:rgba(255,148,148,1);
   box-shadow:0px 0px 10px 0px rgba(0,0,0,0.05);
