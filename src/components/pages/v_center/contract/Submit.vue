@@ -202,11 +202,13 @@
                   <el-col :span="isMob ? 12 : 6">
                     <el-form-item
                       :prop="'stages.' + index + '.time'"
-                      :rules="{
-                      type: 'number', required: true, message: '请填写工作日', trigger: 'blur'
-                    }"
+                      :rules="[{
+                      type: 'number', required: true, message: '请填写工作日', trigger: 'blur'}
+                    ,{
+                      type: 'number', min: 1,required: true, message: '请填写最少一个工作日', trigger: 'blur'
+                    }]"
                     >
-                      <el-input v-model.number="d.time" placeholder="">
+                      <el-input v-model.number="d.time" placeholder="" :maxlength="4">
                         <template slot="append">工作日</template>
                       </el-input>
                     </el-form-item>
