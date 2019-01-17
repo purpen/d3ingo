@@ -910,7 +910,7 @@ export default {
         },
         {
           'value': 2,
-          'label': '内侧'
+          'label': '内测'
         }
       ],
       comfirmDialog: false,
