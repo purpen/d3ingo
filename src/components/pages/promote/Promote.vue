@@ -875,6 +875,7 @@
     letter-spacing: 1px;
     text-align: center;
     margin: 22px 0;
+    border: 1px solid #fff;
   }
   .ius-round {
     font-family: PingFangSC-Light;
@@ -1008,6 +1009,7 @@
     margin-top: 13px;
     font-size: 16px;
     cursor: pointer;
+    border: 1px solid #fff;
   }
   .input-phone {
     height: 50px;

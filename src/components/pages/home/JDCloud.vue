@@ -1187,6 +1187,7 @@ export default {
     letter-spacing: 1px;
     text-align: center;
     margin: 22px 0;
+    border: 1px solid #fff;
   }
   .ius-round {
     font-family: PingFangSC-Light;
@@ -1307,6 +1308,7 @@ export default {
     box-shadow: 0 10px 20px 0 rgba(0,0,0,0.05);
     margin-top: 13px;
     font-size: 16px;
+    border: 1px solid #fff;
     cursor: pointer;
   }
   .input-phone {
