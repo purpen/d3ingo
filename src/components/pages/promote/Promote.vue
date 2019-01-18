@@ -37,7 +37,7 @@
                     </el-col>
                     <el-col :span="10">
                       <el-form-item prop="smsCode">
-                        <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码" class="send-bt">
+                        <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码" class="send-bt bt-chage-ele">
                           <template slot="append">
                             <el-button @click="fetchCode" :disabled="time > 0" class="get-btn">{{ codeMsg }}
                             </el-button>
@@ -96,11 +96,12 @@
           </el-col>
         </div>
       </el-row>
-      <el-row class="pad-top-50">
-        <div class="container">
+      <div class="container">
+        <el-row class="pad-top-50" style="margin-left: 5px;
+    margin-right: 5px;">
           <el-col :span="24" class="four-img"></el-col>
-        </div>
-      </el-row>
+        </el-row>
+      </div>
       <el-row :gutter="10" class="pad-top-50">
         <div class="container">
           <el-col :span="12">
@@ -114,19 +115,19 @@
       <div class="container">
         <el-row class="one pad-top-50 z-index-111" type="flex" align="middle">
           <div class="bg2"></div>
-          <el-col :span="8" class="thousand z-index-111"></el-col>
+          <el-col :span="6" :offset="1" class="thousand z-index-111"></el-col>
           <el-col :span="14" :offset="2" class="thousand-img z-index-111"></el-col>
         </el-row>
       </div>
       <div class="container">
         <el-row class="two z-index-111" type="flex" align="middle">
-          <el-col :span="14" class="prize-img"></el-col>
-          <el-col :span="8" :offset="2" class="prize prize-hei"></el-col>
+          <el-col :span="14" :offset="1" class="prize-img"></el-col>
+          <el-col :span="6" :offset="2" class="prize prize-hei"></el-col>
         </el-row>
       </div>
       <div class="container">
         <el-row class="three z-index-111" type="flex" align="middle">
-          <el-col :span="8" class="customer"></el-col>
+          <el-col :span="6" :offset="1" class="customer"></el-col>
           <el-col :span="14" :offset="2" class="customer-img"></el-col>
         </el-row>
       </div>
