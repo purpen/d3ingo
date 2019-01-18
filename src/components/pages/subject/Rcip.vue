@@ -145,7 +145,7 @@
 
     <div class="bottom">
       <p class="content">
-        太火鸟作为擅长孵化与运营的品牌，2017年已经推出全新太火鸟平台，促进线上设计交易与创新产品的发现、孵化，提供针对消费升级趋势的品牌化、产品化咨询及解决方案。如有关设计交易及创新产品业务或相关想法与建议，欢迎邮件联系</p>
+        太火鸟作为擅长孵化与运营的品牌，2017年已经推出全新太火鸟创新产品交易与SaaS分发平台，促进线上设计交易与创新产品的发现、孵化，提供针对消费升级趋势的品牌化、产品化咨询及解决方案。如有关设计交易及创新产品业务或相关想法与建议，欢迎邮件联系</p>
       <p class="content"><img :src="require('assets/images/subject/rcip/Email@2x.png')"
                               style="width: 30px; vertical-align:middle; color:#FE4548"/> zhangyunhao@taihuoniao.com</p>
       <p class="content">让我们一起，以设计为发力点，打造优质创意价值链，让好设计发声，塑造全新产业升级的明天。</p>

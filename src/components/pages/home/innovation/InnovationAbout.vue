@@ -1,6 +1,6 @@
 <template>
     <div class="giftbody">
-      <a v-if="!isLogin" @click="upload" class="add-work">加入铟果</a>
+      <a v-if="!isLogin" @click="upload" class="add-work">加入太火鸟</a>
       <h2><span class="icon">综述</span></h2>
       <p class="padding26">太火鸟 “中国设计企业创新指数”是全球首个基于人工智能的设计创新企业综合实力评价体系，由太火鸟科技于2018年初正式推出。</p>
 

@@ -2,7 +2,7 @@
     <div class="wrap">
       <div class="isMob" v-if="!isMob">
         <div class="promote-banner" :style="{ background: 'url(' + require ('assets/images/promote/BG.jpg') + ') no-repeat center'}">
-          <p class="banner-title">铟果 | 专注于工业设计和产品创新的全流程B2B服务平台</p>
+          <p class="banner-title">太火鸟 | 专注于工业设计和产品创新的全流程B2B服务平台</p>
           <div class="promote-form">
             <p class="promote-form-title"><span class="form-bold">免费</span>发布项目需求</p>
             <div class="form-width">
@@ -411,7 +411,7 @@
             </div>
           </div>
           <div class="title mtop_20 line-height20">
-            <div class="fs_13">铟果 | 专注于工业设计和产品创新的全流程B2B服务平台</div>
+            <div class="fs_13">太火鸟 | 专注于工业设计和产品创新的全流程B2B服务平台</div>
             <div class="fc_red fs_25 mtop_15 line-height28">1000+ 顶级设计公司<br/>免费提供设计对接服务</div>
             <div class="fs_14 mtop_15 line-height28">现在发布设计需求<br/>有机会获得投资孵化和营销推广扶持</div>
           </div>

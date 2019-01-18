@@ -3,7 +3,7 @@
     <div class="banner" :style="{height : calcHeight}" v-if="isMob"></div>
     <div class="banner2" :style="{height : calcHeight}" v-else></div>
     <div class="main">
-      <h3 class="D3title"><i class="D3iLeft"></i><b>关于铟果</b>D³INGO<i class="D3iRight"></i></h3>
+      <h3 class="D3title"><i class="D3iLeft"></i><b>关于太火鸟</b><i class="D3iRight"></i></h3>
       <article>
         {{about}}
         <ul>
