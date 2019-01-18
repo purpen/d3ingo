@@ -71,7 +71,7 @@
       <div class="process" v-if="!isMob">
         <div class="item-process">
           <img src="../../../assets/images/item/d_item_join.png"/>
-          <p>1.加入铟果</p>
+          <p>1.加入太火鸟</p>
         </div>
         <div class="item-process line"></div>
         <div class="item-process">
@@ -103,7 +103,7 @@
       <el-row class="m-process" v-if="isMob">
         <div class="item-process">
           <img src="../../../assets/images/item/d_item_join.png"/>
-          <p>1.加入铟果</p>
+          <p>1.加入太火鸟</p>
         </div>
         <div class="item-process">
           <img src="../../../assets/images/item/d_item_ws.png"/>

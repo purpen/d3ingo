@@ -3,124 +3,136 @@
     <div class="round-backgound" v-if="!isMob">
       <div class="bg1">
       </div>
-      <el-row :gutter="10" type="flex" align="middle" class="head-round">
-        <el-col :span="13">
-            <el-col :span="17" :offset="7" class="design-font">设计从未如此简单</el-col>
-            <el-col :span="17" :offset="7" class="free-round"><span class="free-font">免费</span>发布需求，全程管家服务</el-col>
-        </el-col>
-        <el-col :span="11">
-          <el-col :span="15" class="header-style">
-            <el-col :span="24" class="ius-round">
-              <span class="free-color">免费</span>发布项目需求
+      <div class="container">
+        <el-row :gutter="10" type="flex" align="middle" class="head-round">
+            <el-col :span="13">
+                <el-col :span="20" class="design-font">设计从未如此简单</el-col>
+                <el-col :span="20" class="free-round"><span class="free-font">免费</span>发布需求，全程管家服务</el-col>
             </el-col>
-            <el-form @submit.native.prevent :model="form" :rules="ruleForm" ref="ruleForm" class="text-center">
-              <el-row>
-                <el-col :span="20" :offset="2">
-                  <el-form-item prop="demand">
-                    <el-input v-model="form.demand" name="username" placeholder="请输入您的需求"></el-input>
-                  </el-form-item>
+            <el-col :span="11">
+              <el-col :span="24" class="header-style">
+                <el-col :span="24" class="ius-round">
+                  <span class="free-color">免费</span>发布项目需求
                 </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="20" :offset="2">
-                  <el-form-item prop="contact">
-                    <el-input v-model="form.contact" ref="contact" placeholder="请输入联系人"></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row :gutter="10">
-                <el-col :span="10" :offset="2">
-                  <el-form-item prop="account">
-                    <el-input v-model="form.account" ref="account" placeholder="手机号码"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="10">
-                  <el-form-item prop="smsCode">
-                    <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码" class="send-bt">
-                      <template slot="append">
-                        <el-button @click="fetchCode" :disabled="time > 0" class="get-btn">{{ codeMsg }}
-                        </el-button>
-                      </template>
-                    </el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt">
-                  免费发布项目需求
-                </button>
-              </el-row>
-            </el-form>
-          </el-col>
-        </el-col>
-      </el-row>
+                <el-form @submit.native.prevent :model="form" :rules="ruleForm" ref="ruleForm" class="text-center">
+                  <el-row>
+                    <el-col :span="20" :offset="2">
+                      <el-form-item prop="demand">
+                        <el-input v-model="form.demand" name="username" placeholder="请输入您的需求"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="20" :offset="2">
+                      <el-form-item prop="contact">
+                        <el-input v-model="form.contact" ref="contact" placeholder="请输入联系人"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row :gutter="10">
+                    <el-col :span="10" :offset="2">
+                      <el-form-item prop="account">
+                        <el-input v-model="form.account" ref="account" placeholder="手机号码"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="10">
+                      <el-form-item prop="smsCode">
+                        <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码" class="send-bt">
+                          <template slot="append">
+                            <el-button @click="fetchCode" :disabled="time > 0" class="get-btn">{{ codeMsg }}
+                            </el-button>
+                          </template>
+                        </el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt">
+                      免费发布项目需求
+                    </button>
+                  </el-row>
+                </el-form>
+              </el-col>
+            </el-col>
+        </el-row>
+      </div>
       <el-row :gutter="10" class="six-img">
-        <el-col :span="3" :offset="3">
+        <div class="container">
+          <el-col :span="4">
+            <div class="six-col">
+              <img src="../../../assets/images/promote/design-type/productdesign@2x.png" alt="">
+              <p>产品外观设计</p>
+            </div>
+          </el-col>
+          <el-col :span="4">
           <div class="six-col">
-            <img src="../../../assets/images/promote/design-type/productdesign@2x.png" alt="">
-            <p>产品外观设计</p>
-          </div>
-        </el-col>
-        <el-col :span="3">
-         <div class="six-col">
-          <img src="../../../assets/images/promote/design-type/structure.png" alt="">
-          <p>产品结构设计</p>
-          </div>
-        </el-col>
-        <el-col :span="3">
-          <div class="six-col">
-            <img src="../../../assets/images/promote/design-type/Packing.png" alt="">
-            <p>包装设计</p>
-          </div>
-        </el-col>
-        <el-col :span="3">
-          <div class="six-col">
-            <img src="../../../assets/images/promote/design-type/Graphic.png" alt="">
-            <p>平面设计</p>
-          </div>
-        </el-col>
-        <el-col :span="3">
-          <div class="six-col">
-            <img src="../../../assets/images/promote/design-type/brand.png" alt="">
-            <p>品牌设计</p>
-          </div>
-        </el-col>
-        <el-col :span="3">
-          <div class="six-col">
-            <img src="../../../assets/images/promote/design-type/VI.png" alt="">
-            <p>VI设计</p>
-          </div>
-        </el-col>
+            <img src="../../../assets/images/promote/design-type/structure.png" alt="">
+            <p>产品结构设计</p>
+            </div>
+          </el-col>
+          <el-col :span="4">
+            <div class="six-col">
+              <img src="../../../assets/images/promote/design-type/Packing.png" alt="">
+              <p>包装设计</p>
+            </div>
+          </el-col>
+          <el-col :span="4">
+            <div class="six-col">
+              <img src="../../../assets/images/promote/design-type/Graphic.png" alt="">
+              <p>平面设计</p>
+            </div>
+          </el-col>
+          <el-col :span="4">
+            <div class="six-col">
+              <img src="../../../assets/images/promote/design-type/brand.png" alt="">
+              <p>品牌设计</p>
+            </div>
+          </el-col>
+          <el-col :span="4">
+            <div class="six-col">
+              <img src="../../../assets/images/promote/design-type/VI.png" alt="">
+              <p>VI设计</p>
+            </div>
+          </el-col>
+        </div>
       </el-row>
       <el-row class="pad-top-50">
-        <el-col :span="18" :offset="3" class="four-img"></el-col>
+        <div class="container">
+          <el-col :span="24" class="four-img"></el-col>
+        </div>
       </el-row>
       <el-row :gutter="10" class="pad-top-50">
-        <div>
-          <el-col :offset="3" :span="9">
+        <div class="container">
+          <el-col :span="12">
             <div class="two-img1"></div>
           </el-col>
-          <el-col :span="9">
+          <el-col :span="12">
             <div class="two-img2"></div>
           </el-col>
         </div>
       </el-row>
-      <el-row class="one pad-top-50 z-index-111" type="flex" align="middle">
-        <div class="bg2"></div>
-        <el-col :span="5" :offset="3" class="thousand z-index-111"></el-col>
-        <el-col :span="12" :offset="1" class="thousand-img z-index-111"></el-col>
-      </el-row>
-      <el-row class="two z-index-111" type="flex" align="middle">
-        <el-col :span="12" :offset="3" class="prize-img"></el-col>
-        <el-col :span="5" :offset="1" class="prize prize-hei"></el-col>
-      </el-row>
-      <el-row class="three z-index-111" type="flex" align="middle">
-        <el-col :span="5" :offset="3" class="customer"></el-col>
-        <el-col :span="12" :offset="1" class="customer-img"></el-col>
-      </el-row>
+      <div class="container">
+        <el-row class="one pad-top-50 z-index-111" type="flex" align="middle">
+          <div class="bg2"></div>
+          <el-col :span="8" class="thousand z-index-111"></el-col>
+          <el-col :span="14" :offset="2" class="thousand-img z-index-111"></el-col>
+        </el-row>
+      </div>
+      <div class="container">
+        <el-row class="two z-index-111" type="flex" align="middle">
+          <el-col :span="14" class="prize-img"></el-col>
+          <el-col :span="8" :offset="2" class="prize prize-hei"></el-col>
+        </el-row>
+      </div>
+      <div class="container">
+        <el-row class="three z-index-111" type="flex" align="middle">
+          <el-col :span="8" class="customer"></el-col>
+          <el-col :span="14" :offset="2" class="customer-img"></el-col>
+        </el-row>
+      </div>
       <div class="design-product">
         <div class="container">
-          <h2 class="public-h2">铟果D³INGO设计服务的项目</h2>
+          <h2 class="public-h2">太火鸟设计服务的项目</h2>
           <div class="design-product-list">
             <el-row :gutter="20" class="m-b-20">
               <el-col :xs="24" :sm="8" :md="8" :lg="8">
@@ -180,24 +192,26 @@
       </div>
       <div>
         <el-row :gutter="15" class="pad-right-left">
-          <el-col :span="4">
-            <div class="photo1"></div>
-          </el-col>
-          <el-col :span="4">
-            <div class="photo2"></div>
-          </el-col>
-          <el-col :span="4">
-            <div class="photo3"></div>
-          </el-col>
-          <el-col :span="4">
-            <div class="photo4"></div>
-          </el-col>
-          <el-col :span="4">
-            <div class="photo5"></div>
-          </el-col>
-          <el-col :span="4">
-            <div class="photo6"></div>
-          </el-col>
+          <div class="container">
+            <el-col :span="4">
+              <div class="photo1"></div>
+            </el-col>
+            <el-col :span="4">
+              <div class="photo2"></div>
+            </el-col>
+            <el-col :span="4">
+              <div class="photo3"></div>
+            </el-col>
+            <el-col :span="4">
+              <div class="photo4"></div>
+            </el-col>
+            <el-col :span="4">
+              <div class="photo5"></div>
+            </el-col>
+            <el-col :span="4">
+              <div class="photo6"></div>
+            </el-col>
+          </div>
         </el-row>
       </div>
       <div class="desigb-about">
@@ -435,7 +449,7 @@
       </div>
       <div class="design-product-pho">
         <div class="container">
-          <h2 class="public-h2 font-size-20">铟果D³INGO设计服务的项目</h2>
+          <h2 class="public-h2 font-size-20">太火鸟设计服务的项目</h2>
           <div class="design-product-list">
             <el-row :gutter="10" class="m-b-20">
               <el-col :span="12">
@@ -1357,7 +1371,7 @@
     left: 0;
     bottom: 0;
   }
-  @media screen and (min-width: 1081px) {
+  /* @media screen and (min-width: 1081px) {
     .pad-right-left {
       padding: 0 40px;
     }
@@ -1371,7 +1385,7 @@
     .pad-right-left {
       padding: 0 150px;
     }
-  }
+  } */
   @media screen and (max-width: 1440px) {
     .two-img1 {
       height: 140px;
@@ -1383,10 +1397,10 @@
       height: 110px;
     }
   }
-  @media screen and (max-width: 1080px) {
+  /* @media screen and (max-width: 1080px) {
     .pad-right-left {
       padding: 0 20px;
     }
-  }
+  } */
 </style>
 
