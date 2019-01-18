@@ -109,7 +109,7 @@
                     </el-col>
                     <el-col :span="10">
                       <el-form-item prop="smsCode">
-                        <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码" class="send-bt">
+                        <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码" class="send-bt bt-chage-ele">
                           <template slot="append">
                             <el-button @click="fetchCode" :disabled="time > 0" class="get-btn">{{ codeMsg }}
                             </el-button>
