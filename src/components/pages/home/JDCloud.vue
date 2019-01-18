@@ -1187,6 +1187,7 @@ export default {
     letter-spacing: 1px;
     text-align: center;
     margin: 22px 0;
+    border: 1px solid #fff;
   }
   .ius-round {
     font-family: PingFangSC-Light;
@@ -1222,7 +1223,7 @@ export default {
     margin-bottom: 16px;
   }
   .four-img {
-    height: 130px;
+    height: 120px;
     background: url("../../../assets/images/promote2/pc/four/FourSteps@2x.png") no-repeat;
     background-size: 100% 100%;
   }
@@ -1307,6 +1308,7 @@ export default {
     box-shadow: 0 10px 20px 0 rgba(0,0,0,0.05);
     margin-top: 13px;
     font-size: 16px;
+    border: 1px solid #fff;
     cursor: pointer;
   }
   .input-phone {
@@ -1810,6 +1812,26 @@ export default {
       left: 125px;
     }
   }
+  @media screen and (max-width: 1440px) {
+    .two-img1 {
+      height: 140px;
+    }
+    .two-img2 {
+      height: 140px;
+    }
+    .design-company {
+      height: 180px;
+    }
+    .design-award {
+      height: 180px;
+    }
+    .customer {
+      height: 180px;
+    }
+    .four-img {
+      height: 110px;
+    }
+  }
   @media screen and (max-width: 767px) {
     .col {
       flex-direction: column;
@@ -1891,4 +1913,5 @@ export default {
       margin-top: 10px;
     }
   }
+  
 </style>

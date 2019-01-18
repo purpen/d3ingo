@@ -112,7 +112,7 @@
       </el-row>
       <el-row class="two z-index-111" type="flex" align="middle">
         <el-col :span="12" :offset="3" class="prize-img"></el-col>
-        <el-col :span="5" :offset="1" class="prize"></el-col>
+        <el-col :span="5" :offset="1" class="prize prize-hei"></el-col>
       </el-row>
       <el-row class="three z-index-111" type="flex" align="middle">
         <el-col :span="5" :offset="3" class="customer"></el-col>
@@ -179,23 +179,23 @@
         </div>
       </div>
       <div>
-        <el-row :gutter="15">
-          <el-col :span="3" :offset="3">
+        <el-row :gutter="15" class="pad-right-left">
+          <el-col :span="4">
             <div class="photo1"></div>
           </el-col>
-          <el-col :span="3">
+          <el-col :span="4">
             <div class="photo2"></div>
           </el-col>
-          <el-col :span="3">
+          <el-col :span="4">
             <div class="photo3"></div>
           </el-col>
-          <el-col :span="3">
+          <el-col :span="4">
             <div class="photo4"></div>
           </el-col>
-          <el-col :span="3">
+          <el-col :span="4">
             <div class="photo5"></div>
           </el-col>
-          <el-col :span="3">
+          <el-col :span="4">
             <div class="photo6"></div>
           </el-col>
         </el-row>
@@ -875,6 +875,7 @@
     letter-spacing: 1px;
     text-align: center;
     margin: 22px 0;
+    border: 1px solid #fff;
   }
   .ius-round {
     font-family: PingFangSC-Light;
@@ -925,32 +926,32 @@
     background-size: 100% 100%;
   }
   .thousand {
-    height: 200px;
+    height: 170px;
     background: url("../../../assets/images/promote2/pc/logo/1000+DesignCompany.png") no-repeat;
     background-size: 100% 100%;
   }
   .thousand-img {
-    height: 90px;
+    height: 80px;
     background: url("../../../assets/images/promote2/pc/logo/DesignCompanyLogos.png") no-repeat;
     background-size: 100% 100%;
   }
   .prize-img {
-    height: 90px;
+    height: 80px;
     background: url("../../../assets/images/promote2/pc/logo/PrizeLogos.png") no-repeat;
     background-size: 100% 100%;
   }
   .prize {
-    height: 200px;
+    height: 170px;
     background: url("../../../assets/images/promote2/pc/logo/300+prize.png") no-repeat;
     background-size: 100% 100%;
   }
   .customer {
-    height: 200px;
+    height: 170px;
     background: url("../../../assets/images/promote2/pc/logo/1000+Customer.png") no-repeat;
     background-size: 100% 100%;
   }
   .customer-img {
-    height: 90px;
+    height: 80px;
     background: url("../../../assets/images/promote2/pc/logo/CustomerLogos.png") no-repeat;
     background-size: 100% 100%;
   }
@@ -1008,6 +1009,7 @@
     margin-top: 13px;
     font-size: 16px;
     cursor: pointer;
+    border: 1px solid #fff;
   }
   .input-phone {
     height: 50px;
@@ -1354,6 +1356,37 @@
     position: absolute;
     left: 0;
     bottom: 0;
+  }
+  @media screen and (min-width: 1081px) {
+    .pad-right-left {
+      padding: 0 40px;
+    }
+  }
+  @media screen and (min-width: 1440px) {
+    .pad-right-left {
+      padding: 0 100px;
+    }
+  }
+  @media screen and (min-width: 1660px) {
+    .pad-right-left {
+      padding: 0 150px;
+    }
+  }
+  @media screen and (max-width: 1440px) {
+    .two-img1 {
+      height: 140px;
+    }
+    .two-img2 {
+      height: 140px;
+    }
+    .four-img {
+      height: 110px;
+    }
+  }
+  @media screen and (max-width: 1080px) {
+    .pad-right-left {
+      padding: 0 20px;
+    }
   }
 </style>
 
