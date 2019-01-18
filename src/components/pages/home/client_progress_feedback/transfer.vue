@@ -19,7 +19,7 @@ export default {
     }
   },
   created() {
-    let {code = ''} = this.getQueryVariable()
+    let {code} = this.getQueryVariable()
     if (code) {
       this.state = code
     }
