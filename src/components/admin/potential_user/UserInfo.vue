@@ -107,7 +107,7 @@
                   </el-select>
                 </div>
               </div>
-              <el-button type="danger" class="btn-link" @click="getLink">生成二维码</el-button>
+              <el-button type="danger" class="btn-link fr" @click="getLink">生成二维码</el-button>
             </div>
             <p class="p-label">
               <span>标签</span>
@@ -477,6 +477,7 @@
                                 <el-col :xs="24" :sm="24" :md="16" :lg="16">
                                   <p>
                                     <span>对接设计公司 </span>{{i + 1}}
+                                    <el-button type="danger" class="btn-link margin-l20" size="small" @click="getLink(item.item_id, d.design_company_id)">生成二维码</el-button>
                                   </p>
                                 </el-col>
                                 <el-col :xs="24" :sm="20" :md="8" :lg="8">
@@ -747,7 +748,32 @@
               </div>
               
               <div class="card-body-center" v-if="option === 'progress'">
-                <p>共合作几个项目</p>
+                <el-row>
+                  <p>共合作{{this.projectSchedule.length}}个项目</p>
+                </el-row>
+                <ul>
+                  <li v-for="(item, i) in this.projectSchedule" :key="i">
+                    <el-row>
+                      <p>{{item.item_name}}</p>
+                    </el-row>
+                    <div>
+                      <el-row>
+                        <el-col :span="12">
+                          <p>客户: <span>{{currentUser}}</span></p>
+                          <el-row>
+                            <el-col>
+                              <span></span>
+                            </el-col>
+                          </el-row>
+                        </el-col>
+                        
+                        <el-col :span="12">
+
+                        </el-col>
+                      </el-row>
+                    </div>
+                  </li>
+                </ul>
               </div>
 
               <div class="card-body-center padding20" v-show="option === 'followLog'">
@@ -1042,6 +1068,8 @@ export default {
       loading: false,
       states: [],
 
+      projectSchedule: [],
+
       demandFeedback: [
         {value: 1, label: '了解公司详情'},
         {value: 2, label: '提供需求梳理'},
@@ -1069,10 +1097,15 @@ export default {
     }
   },
   methods: {
-    getLink() {
+    getLink(projectId, designId) {
       let row = {
         type: 1,
         clue_id: this.currentId
+      }
+      if (projectId && designId) {
+        row.type = 2
+        row.crm_item_id = projectId
+        row.design_company_id = designId
       }
       this.$http.get(api.AdminCueGetUrl, {params: row}).then(res => {
         if (res.data.meta.status_code === 200) {
@@ -1084,6 +1117,21 @@ export default {
       }).catch(error => {
         this.$message.error(error.message)
         console.log(error.message)
+      })
+    },
+    getProjectSchedule() {
+      let row = {
+        clue_id: this.currentId
+      }
+      this.$http.get(api.adminClueShowFeedback, {params: row}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.projectSchedule = res.data.data
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        console.log(error.message)
+        this.$message.error(error.message)
       })
     },
     setClipboardText() {
@@ -1884,6 +1932,7 @@ export default {
         this.boolLinkItem = true
       } else if (val === 'progress') {
         console.log('进度')
+        this.getProjectSchedule()
         this.boolLinkItem = true
       } else {
         this.boolLinkItem = true
@@ -1919,6 +1968,9 @@ export default {
 }
 .margin-r20 {
   margin-right: 20px;
+}
+.margin-l20 {
+  margin-left: 20px;
 }
 .margin-t5 {
   margin-top: 5px;
@@ -2418,6 +2470,16 @@ export default {
   line-height: 20px;
   margin-bottom: 20px;
   margin-top: -10px;
+}
+
+.btn-link {
+  border-radius: 20px;
+  background-color: #fff !important;
+  color: #FF5A5F !important;
+}
+.btn-link:hover {
+  background-color: #FF5A5F !important;
+  color: #fff !important;
 }
 </style>
 <style>
