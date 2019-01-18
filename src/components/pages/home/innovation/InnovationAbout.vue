@@ -72,7 +72,7 @@
       </li>
     </ul>
 
-    <h2><span v-if="!isMob" class="icon">太火鸟•铟果D³INGO中国设计企业创新指数算法说明</span>
+    <h2><span v-if="!isMob" class="icon">太火鸟中国设计企业创新指数算法说明</span>
     <span class="icon" v-else>算法说明</span></h2>
     <h3 class="first-icon-dot"><span class="icon-dot">数据来源</span></h3>
 
@@ -82,9 +82,9 @@
           <img :src="require('assets/images/subject/innovation/d3ingo@2x.png')" alt="">
         </div>
         <div class="dimension-title">
-          <p>铟果D³INGO平台数据</p>
+          <p太火鸟平台数据</p>
         </div>
-        <div class="dimension-content">设计机构在铟果D³INGO产品创新SaaS平台提交和产生的真实有效数据；</div>
+        <div class="dimension-content">设计机构在太火鸟产品创新SaaS平台提交和产生的真实有效数据；</div>
       </li>
       <li class="dimension-resolve">
         <div class="img-box">
