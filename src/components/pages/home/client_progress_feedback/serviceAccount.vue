@@ -9,12 +9,12 @@
           <div class="bg"></div>
           <router-view></router-view>
         </section>
-        <footer>
+        <!-- <footer>
           <p>请确认当前微信号为项目负责人，我们将根据后续的状态更新帮助您快速的对接合作</p>
           <el-button type="danger" class="btn-bind" @click="binding">确认绑定</el-button>
-          <!-- <el-button type="danger" class="btn-bind" @click="">提交</el-button> -->
-          <!-- <el-button type="danger" class="btn-bind" @click="">关闭</el-button> -->
-        </footer>
+          <el-button type="danger" class="btn-bind" @click="">提交</el-button>
+          <el-button type="danger" class="btn-bind" @click="">关闭</el-button>
+        </footer> -->
       </div>
     </div>
   </div>
@@ -106,7 +106,7 @@ h2 {
   margin-bottom: 10px;
 }*/
 footer {
-  /* margin-top: -100px; */
+  margin-top: -110px;
 }
 footer > p {
   text-align: center;
