@@ -125,8 +125,8 @@
             '11月',
             '12月'
           ],
-          dayNames: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
-          dayNamesShort: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+          dayNames: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+          dayNamesShort: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
           eventClick (event, jq, mouth) {
             console.log(jq)
             let docWidth = $(window).width()
