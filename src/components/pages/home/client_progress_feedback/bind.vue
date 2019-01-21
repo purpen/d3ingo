@@ -78,7 +78,8 @@ export default {
         if (res.data.meta.status_code === 200) {
           this.projectInfo = res.data.data
         } else {
-          console.log(res.data.meta.message)
+          console.error(res.data.meta.message)
+          this.$message.error(res.data.meta.message)
         }
       }).catch(error => {
         console.error(error.message)
@@ -106,7 +107,7 @@ export default {
     if (code) {
       this.code = code
       this.state = state
-      this.getToken()
+      // this.getToken()
     }
   }
 }
