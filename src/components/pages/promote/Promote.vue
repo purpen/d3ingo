@@ -669,7 +669,8 @@
         if (!this.user || this.user.type === 1) {
           this.$router.push({name: path})
         } else {
-          this.$message.error('请使用需求公司账号登录')
+          this.$router.push({name: 'register'})
+          // this.$message.error('请使用需求公司账号登录')
         }
       },
       // 底部联系
