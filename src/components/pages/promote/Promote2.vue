@@ -2,7 +2,7 @@
     <div class="wrap">
       <div class="isMob" v-if="!isMob">
         <div class="promote-banner" :style="{ background: 'url(' + require ('assets/images/promote/BG.jpg') + ') no-repeat center'}">
-          <p class="banner-title">铟果 | 专注于工业设计和产品创新的全流程B2B服务平台</p>
+          <p class="banner-title">太火鸟 | 专注于工业设计和产品创新的全流程B2B服务平台</p>
           <div class="promote-form">
             <p class="promote-form-title"><span class="form-bold">免费</span>发布项目需求</p>
             <div class="form-width">
@@ -281,7 +281,7 @@
 
         <div class="design-product">
           <div class="container">
-            <h2 class="public-h2">铟果D³INGO设计服务的项目</h2>
+            <h2 class="public-h2">太火鸟设计服务的项目</h2>
             <div class="design-product-list">
               <el-row :gutter="20" class="m-b-20">
                 <el-col :xs="24" :sm="8" :md="8" :lg="8">
@@ -411,7 +411,7 @@
             </div>
           </div>
           <div class="title mtop_20 line-height20">
-            <div class="fs_13">铟果 | 专注于工业设计和产品创新的全流程B2B服务平台</div>
+            <div class="fs_13">太火鸟 | 专注于工业设计和产品创新的全流程B2B服务平台</div>
             <div class="fc_red fs_25 mtop_15 line-height28">1000+ 顶级设计公司<br/>免费提供设计对接服务</div>
             <div class="fs_14 mtop_15 line-height28">现在发布设计需求<br/>有机会获得投资孵化和营销推广扶持</div>
           </div>
@@ -444,7 +444,7 @@
           </div>
         </div>
         <div class="concent line-height20">
-          <div class="fc_red fs_24 mtop_20">铟果D3INGO的 背景和实力</div>
+          <div class="fc_red fs_24 mtop_20">太火鸟的 背景和实力</div>
           <div class="fs_16 mtop_15">知名投资机构战略投资</div>
           <div class="fs_16 mtop_20">真格基金、创新工场、海泉基金<br>麦顿资本、罗莱生活、小米、顺为资本</div>
           <div class="circe mtop_20">
@@ -457,9 +457,9 @@
           </div>
           <div class="circe mtop_15">
             <div class="small_circe fs_20 fc_red">30亿+</div>
-            <div class="fs_15 fc_white" style="margin-left: 5px;">铟果设计孵化项目估值</div>
+            <div class="fs_15 fc_white" style="margin-left: 5px;">太火鸟设计孵化项目估值</div>
           </div>
-          <div class="fs_18 mtop_20">铟果全球范围荣誉</div>
+          <div class="fs_18 mtop_20">太火鸟全球范围荣誉</div>
           <div class="cotimg mtop_20"><img src="../../../assets/images/promote/app/design_bg@2x.png"/></div>
           <div class="fs_14 mtop_10">WIDC2018世界工业设计大会TIA设计服务平台大奖</div>
           <div class="fc_red fs_24 mtop_40">四步完成设计 设计服务流程</div>
@@ -503,10 +503,10 @@
             AI-T设计生产力促进工具
           </div>
           <div class="fs_14 mtop_20">虚拟团队/远程协作/创新资源/供应链/资本/渠道<br>提升60% 效率：研发设计服务效率</div>
-          <div class="fc_red fs_24 mtop_40">铟果D³INGO设计 服务的客户</div>
+          <div class="fc_red fs_24 mtop_40">太火鸟设计 服务的客户</div>
           <div class="fs_16  mtop_20">小米有品、网易严选、小米、海尔、美的、联想、英特尔
             三星、飞利浦…</div>
-          <div class="fc_red fs_24 mtop_40">铟果D³INGO设计 服务的项目</div>
+          <div class="fc_red fs_24 mtop_40">太火鸟设计 服务的项目</div>
           <div class="project mtop_40">
             <div class="project_title">
 					<span class="fc_red fs_16">
