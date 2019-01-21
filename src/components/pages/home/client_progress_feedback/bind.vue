@@ -34,7 +34,6 @@ export default {
   data() {
     return {
       token: '',
-      APPID: 'wx75a9ffb78f202fb3',
       code: '',
       state: '',
       ticket: '22222',
@@ -95,6 +94,7 @@ export default {
           this.$router.push({name: 'bindSuccess', query: {type: this.projectInfo.data_type, status: 1}})
         } else {
           console.log(res.data.meta.message)
+          this.$message.error(res.data.meta.message)
           this.$router.push({name: 'bindFailure', query: {type: this.projectInfo.data_type, status: 0}})
         }
       }).catch(error => {
@@ -107,7 +107,7 @@ export default {
     if (code) {
       this.code = code
       this.state = state
-      // this.getToken()
+      this.getToken()
     }
   }
 }

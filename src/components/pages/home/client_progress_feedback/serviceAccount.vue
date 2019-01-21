@@ -21,9 +21,6 @@
 </template>
 
 <script>
-// import axios from 'axios'
-// import api from '@/api/api'
-// import vHeader from '@/components/pages/home/client_progress_feedback/header'
 export default {
   name: 'service-account',
   data() {
@@ -56,11 +53,9 @@ export default {
   overflow-y: auto;
 }
 .content > section {
-  /* height: 70%; */
   background: url('../../../../assets/images/home/progress_feedback_bind/BG03@2x.png') no-repeat top/cover;
 }
 .content > section > header {
-  /* height: 41%; */
   height: 174px;
   padding-top: 27%;
   text-align: center;
