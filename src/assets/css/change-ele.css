@@ -961,6 +961,12 @@
   .send-bt .el-button--default {
     min-width: 80px;
   }
+  .bt-chage-ele .el-input__inner {
+    padding: 0 10px;
+  }
+  .bt-chage-ele .el-input-group__append {
+    min-width: 100px;
+  }
   .call-ele .el-input-group--append {
     padding-left: 0;
   }
