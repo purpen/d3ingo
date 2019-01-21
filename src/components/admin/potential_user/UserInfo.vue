@@ -748,27 +748,33 @@
               </div>
               
               <div class="card-body-center" v-if="option === 'progress'">
-                <el-row>
-                  <p>共合作{{this.projectSchedule.length}}个项目</p>
-                </el-row>
-                <ul>
+                <p class="p-number">共合作{{this.projectSchedule.length}}个项目</p>
+                <ul class="padding20">
                   <li v-for="(item, i) in this.projectSchedule" :key="i">
                     <el-row>
-                      <p>{{item.item_name}}</p>
+                      <div>
+                        <span class="progress-p-name">{{item.item_name}}</span>
+                        <p class="design-number margin-l20">对接<span>{{item.feedback.length}}</span>家设计公司</p>
+                      </div>
                     </el-row>
-                    <div>
+                    <div  class="progress-p-item" v-for="(d, index) in item.feedback" :key="index">
                       <el-row>
                         <el-col :span="12">
-                          <p>客户: <span>{{currentUser}}</span></p>
-                          <el-row>
-                            <el-col>
-                              <span></span>
-                            </el-col>
-                          </el-row>
+                          <div v-if="d.clue">
+                            <p class="padding-l10">客户: <span>{{d.clue.clue_name}}</span></p>
+                            <div class="feedback-p">
+                              <span :class="['feedback-item', d2.is ? 'active' : '']" v-for="(d2, indexd2) in d.clue.content" :key="indexd2">{{d2.name}}</span>
+                            </div>
+                          </div>
                         </el-col>
                         
-                        <el-col :span="12">
-
+                        <el-col :span="12" class="design-content fr">
+                          <div v-if="d.design">
+                            <p class="padding-l10">服务商： <span>{{d.design.design_name}}</span></p>
+                            <div class="feedback-p">
+                              <span :class="['feedback-item', d3.is ? 'active' : '']" v-for="(d3, indexd3) in d.design.content" :key="indexd3">{{d3.name}}</span>
+                            </div>
+                          </div>
                         </el-col>
                       </el-row>
                     </div>
@@ -1068,32 +1074,7 @@ export default {
       loading: false,
       states: [],
 
-      projectSchedule: [],
-
-      demandFeedback: [
-        {value: 1, label: '了解公司详情'},
-        {value: 2, label: '提供需求梳理'},
-        {value: 3, label: '提供设计案例'},
-        {value: 4, label: '提供设计方案'},
-        {value: 5, label: '提供设计周期'},
-        {value: 6, label: '周期合理'},
-        {value: 7, label: '提供设计报价'},
-        {value: 8, label: '报价合理'},
-        {value: 9, label: '感觉一般'},
-        {value: 10, label: '十分满意'}
-      ],
-      designFeedback: [
-        {value: 1, label: '了解公司详情'},
-        {value: 2, label: '提供需求梳理'},
-        {value: 3, label: '提供设计案例'},
-        {value: 4, label: '提供设计方案'},
-        {value: 5, label: '提供设计周期'},
-        {value: 6, label: '有能力承接'},
-        {value: 7, label: '提供设计报价'},
-        {value: 8, label: '以是最低报价'},
-        {value: 9, label: '感觉一般'},
-        {value: 10, label: '十分满意'}
-      ]
+      projectSchedule: []
     }
   },
   methods: {
@@ -1125,12 +1106,19 @@ export default {
       }
       this.$http.get(api.adminClueShowFeedback, {params: row}).then(res => {
         if (res.data.meta.status_code === 200) {
-          this.projectSchedule = res.data.data
+          const dataArr = res.data.data
+          dataArr.forEach(item => {
+            console.log(item)
+            let {feedback} = item
+            let arr = Object.values(feedback)
+            item.feedback = arr
+          })
+          this.projectSchedule = dataArr
         } else {
           this.$message.error(res.data.meta.message)
         }
       }).catch(error => {
-        console.log(error.message)
+        console.error(error.message)
         this.$message.error(error.message)
       })
     },
@@ -1964,6 +1952,9 @@ export default {
 .el-form-item {
   /* margin-bottom: 0px; */
 }
+.padding-l10 {
+  padding-left: 10px;
+}
 .margin-b22 {
   margin-bottom: 22px !important;
 }
@@ -2056,6 +2047,66 @@ export default {
 .user-phone {
   background: url(../../../assets/images/member/phone@2x.png) no-repeat left / 24px 24px;
 }
+/* feedback start */
+.p-number {
+  height: 40px;
+  line-height: 40px;
+  padding-left: 20px;
+  border-bottom: 1px solid #e6e6e6;
+}
+.design-number {
+  float: left;
+  font-size: 12px;
+  color: #6F6F6F;
+}
+.design-number > span {
+  color: #FF5A5F;
+}
+.progress-p-name {
+  float: left;
+  font-size: 14px;
+  font-weight: 500;
+}
+.feedback-p {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+.feedback-item {
+  display: inline-block;
+  width: 100px;
+  height: 30px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  line-height: 30px;
+  border-radius: 15px;
+  text-align: center;
+  background:rgba(250,250,250,1);
+  box-shadow:0px 0px 5px 0px rgba(0,0,0,0.1);
+}
+.feedback-item.active {
+  line-height: 28px;
+  color: #ffffff;
+  background:rgba(255,148,148,1);
+  box-shadow:0px 0px 10px 0px rgba(0,0,0,0.05);
+  border:1px solid rgba(255,90,95,1);
+}
+.progress-p-item {
+  padding: 20px 10px;
+  background-color: #fafafa;
+  border: 1px solid #e6e6e6;
+  margin-top: 10px;
+}
+
+.design-content {
+  padding-left: 10px;
+  border-left: 1px solid #e6e6e6;
+}
+
+
+
+
+/* feedback end */
 
 /* user-rank */
 /* .user-rank {

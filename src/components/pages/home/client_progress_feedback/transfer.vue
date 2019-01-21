@@ -8,14 +8,14 @@
   </div>
 </template>
 <script>
+const APPID = 'wx75a9ffb78f202fb3'
+const REDIRECTURI = encodeURI('http://mc.taihuoniao.com/service_account/bind')
 export default {
   name: 'serviceAccountTransfer',
   data() {
     return {
-      APPID: 'wx75a9ffb78f202fb3',
       code: '',
-      state: '',
-      redirectUri: encodeURI('http://mc.taihuoniao.com/service_account/bind')
+      state: ''
     }
   },
   created() {
@@ -23,7 +23,7 @@ export default {
     if (code) {
       this.state = code
     }
-    location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?' + `appid=${this.APPID}&redirect_uri=${this.redirectUri}&response_type=code&scope=snsapi_base&state=${this.state}#wechat_redirect`
+    location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?' + `appid=${APPID}&redirect_uri=${REDIRECTURI}&response_type=code&scope=snsapi_base&state=${this.state}#wechat_redirect`
   },
   methods: {
     getQueryVariable() {
