@@ -266,9 +266,10 @@
                     </el-col>
                   </el-row>
                   <el-row :gutter="20">
-                    <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                      <p>
-                        <span class="inline-width70">备注: </span>{{clientForm.summary}}
+                    <el-col :xs="24" :sm="24" :md="24" :lg="24">
+                      <p class="p-user-summary">
+                        <span>备注: </span>
+                        <span>{{clientForm.summary}}</span>
                       </p>
                     </el-col>
                   </el-row>
@@ -749,10 +750,10 @@
               
               <div class="card-body-center" v-if="option === 'progress'">
                 <p class="p-number">共合作{{this.projectSchedule.length}}个项目</p>
-                <ul class="padding20">
+                <ul class="progress-p-content">
                   <li v-for="(item, i) in this.projectSchedule" :key="i">
                     <el-row>
-                      <div>
+                      <div class="margin-t20">
                         <span class="progress-p-name">{{item.item_name}}</span>
                         <p class="design-number margin-l20">对接<span>{{item.feedback.length}}</span>家设计公司</p>
                       </div>
@@ -761,7 +762,10 @@
                       <el-row>
                         <el-col :span="12">
                           <div v-if="d.clue">
-                            <p class="padding-l10">客户: <span>{{d.clue.clue_name}}</span></p>
+                            <p class="padding-l10">客户: 
+                              <span v-if="d.clue">{{d.clue.clue_name}}</span>
+                              <span v-else>{{currentUser}}</span>
+                            </p>
                             <div class="feedback-p">
                               <span :class="['feedback-item', d2.is ? 'active' : '']" v-for="(d2, indexd2) in d.clue.content" :key="indexd2">{{d2.name}}</span>
                             </div>
@@ -769,9 +773,12 @@
                         </el-col>
                         
                         <el-col :span="12" class="design-content fr">
-                          <div v-if="d.design">
-                            <p class="padding-l10">服务商： <span>{{d.design.design_name}}</span></p>
-                            <div class="feedback-p">
+                          <div>
+                            <p class="padding-l10">服务商： 
+                              <span v-if="d.design">{{d.design.design_name}}</span>
+                              <span v-else>{{d.clue.crm_design}}</span>
+                            </p>
+                            <div class="feedback-p" v-if="d.design">
                               <span :class="['feedback-item', d3.is ? 'active' : '']" v-for="(d3, indexd3) in d.design.content" :key="indexd3">{{d3.name}}</span>
                             </div>
                           </div>
@@ -1948,6 +1955,9 @@ export default {
 .el-form-item {
   /* margin-bottom: 0px; */
 }
+.margin-t20 {
+  margin-top: 20px;
+}
 .padding-l10 {
   padding-left: 10px;
 }
@@ -2044,6 +2054,9 @@ export default {
   background: url(../../../assets/images/member/phone@2x.png) no-repeat left / 24px 24px;
 }
 /* feedback start */
+.progress-p-content {
+  padding: 0 20px 20px 20px;
+}
 .p-number {
   height: 40px;
   line-height: 40px;
@@ -2095,6 +2108,7 @@ export default {
 }
 
 .design-content {
+  min-height: 148px;
   padding-left: 10px;
   border-left: 1px solid #e6e6e6;
 }
@@ -2385,14 +2399,16 @@ export default {
   line-height: 1.5;
   font-size: 14px;
 }
-.p-table-summary {
+.p-table-summary, .p-user-summary {
   display: flex;
   line-height: 1.5;
 }
 .p-table-summary span:first-child {
   flex: 63px 0 0;
 }
-
+.p-user-summary span:first-child {
+  flex: 70px 0 0;
+}
 .progress {
   border: 1px solid #e6e6e6;
   border-radius: 4px;
