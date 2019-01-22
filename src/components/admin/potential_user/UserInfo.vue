@@ -107,7 +107,14 @@
                   </el-select>
                 </div>
               </div>
-              <el-button type="danger" class="btn-link fr" @click="getLink">生成二维码</el-button>
+              <el-popover
+                placement="bottom"
+                width="100"
+                trigger="click">
+                <img :src="QRCode" alt="正在生成二维码" class="qrcode">
+                <el-button v-if="currentId" type="danger" class="btn-link fr" @click="getLink" slot="reference">生成二维码</el-button>
+              </el-popover>
+
             </div>
             <p class="p-label">
               <span>标签</span>
@@ -475,11 +482,19 @@
                           <li v-for="(d, i) in item.crm_design_company" :key="i" class="margin-b22">
                             <div v-if="!boolEditDesignCompany || d.id !== editDesignParams.design_id">
                               <el-row :gutter="20">
-                                <el-col :xs="24" :sm="24" :md="16" :lg="16">
-                                  <p>
-                                    <span>对接设计公司 </span>{{i + 1}}
-                                    <el-button type="danger" class="btn-link margin-l20" size="small" @click="getLink(item.item_id, d.design_company_id)">生成二维码</el-button>
-                                  </p>
+                                <el-col :xs="24" :sm="20" :md="16" :lg="16">
+                                  <div class="flex-a-c margin-b22">
+                                      <span class="font14">对接设计公司 </span>{{i + 1}}
+                                    <div>
+                                      <el-popover
+                                        placement="right"
+                                        width="100"
+                                        trigger="click">
+                                      <img :src="QRCode2" alt="正在生成二维码" class="qrcode">
+                                      <el-button slot="reference" v-if="item.failure !== 1" type="danger" class="btn-link margin-l20" size="small" @click="getLink(item.item_id, d.design_company_id)">生成二维码</el-button>
+                                      </el-popover>
+                                    </div>
+                                  </div>
                                 </el-col>
                                 <el-col :xs="24" :sm="20" :md="8" :lg="8">
                                   <div v-if="item.failure === null && isHasPower" class="edit-project fr">
@@ -941,7 +956,8 @@ export default {
     return {
       currentUser: '新建客户',
       currentId: '',
-      QRCode: '', // 二维码链接
+      QRCode: '', // 需求方二维码链接
+      QRCode2: '', // 设计公司二维码链接
       option: 'user',
       BoolEditUserInfo: false,
       focusHeight: false,
@@ -1097,8 +1113,12 @@ export default {
       }
       this.$http.get(api.AdminCueGetUrl, {params: row}).then(res => {
         if (res.data.meta.status_code === 200) {
-          this.QRCode = res.data.data.url
-          this.setClipboardText()
+          if (row.type === 1) {
+            this.QRCode = res.data.data.url
+          } else {
+            this.QRCode2 = res.data.data.url
+          }
+          // this.setClipboardText()
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -1135,7 +1155,7 @@ export default {
         clipboard = new Clipboard('.btn-link', {
           text: () => this.QRCode
         })
-        this.$message.success('复制成功')
+        // this.$message.success('复制成功')
       }
       console.log(clipboard)
     },
@@ -1955,6 +1975,9 @@ export default {
 .el-form-item {
   /* margin-bottom: 0px; */
 }
+.font14 {
+  font-size: 14px;
+}
 .margin-t20 {
   margin-top: 20px;
 }
@@ -2112,7 +2135,10 @@ export default {
   padding-left: 10px;
   border-left: 1px solid #e6e6e6;
 }
-
+.qrcode {
+  width: 120px;
+  height: 110px;
+}
 
 
 

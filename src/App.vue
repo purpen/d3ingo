@@ -37,6 +37,7 @@ import api from '@/api/api'
 import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
 import {ENV} from 'conf/prod.env.js'
 import auth from '@/helper/auth'
+import {FWH} from '../config/prod.env.js'
 export default {
   name: 'app',
   components: {
@@ -153,7 +154,8 @@ export default {
       .then(res => {
         let version = localStorage.getItem('version')
         if (res.data.data.number) {
-          if (version !== res.data.data.number) {
+          if (FWH) {
+          } else if (version !== res.data.data.number) {
             localStorage.setItem('version', res.data.data.number)
             window.location.reload(true)
           }
