@@ -8,11 +8,11 @@
     </div>
     <div class="failure" v-else>
       <img src="../../../../assets/images/home/progress_feedback_bind/fail@2x.png" alt="">
-      <p>链接失败</p>
+      <p>链接失效</p>
       <span>如有疑问，请联系商务人员，重新绑定</span>
     </div>
   </div>
-  <footer v-if="this.status === '0'">
+  <footer v-if="this.status === 0">
     <el-button type="danger" class="btn-bind" @click="">关闭</el-button>
   </footer>
 </div>
