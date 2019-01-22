@@ -20,7 +20,8 @@ export default {
   },
   created() {
     if (this.$store.state.event.token) {
-      this.$router.push({name: 'projectProgress'})
+      // this.$router.push({name: 'projectProgress'})
+      console.log('已经绑定啦一次')
     } else {
       let {code} = this.getQueryVariable()
       if (code) {

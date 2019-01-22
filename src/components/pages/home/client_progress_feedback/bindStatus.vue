@@ -13,7 +13,7 @@
     </div>
   </div>
   <footer v-if="this.status === '0'">
-    <!-- <el-button type="danger" class="btn-bind" @click="">关闭</el-button> -->
+    <el-button type="danger" class="btn-bind" @click="">关闭</el-button>
   </footer>
 </div>
 </template>
@@ -37,11 +37,11 @@ export default {
     if (this.status) {
       let timer = setInterval(() => {
         this.countdown = this.countdown - 1
+        if (this.countdown === 0) {
+          clearInterval(timer)
+          this.$router.push({name: 'projectProgress'})
+        }
       }, 1000)
-      if (this.countdown === 0) {
-        clearInterval(timer)
-        this.$router.push({name: 'projectProgress'})
-      }
     }
   }
 }

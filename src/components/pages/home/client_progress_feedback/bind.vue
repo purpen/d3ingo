@@ -78,6 +78,7 @@ export default {
           this.projectInfo = res.data.data
         } else {
           console.error(res.data.meta.message)
+          this.$router.push({name: 'bindFailure', query: {type: this.projectInfo.data_type, status: 0}})
           this.$message.error(res.data.meta.message)
         }
       }).catch(error => {
