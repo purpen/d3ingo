@@ -4,7 +4,7 @@
     <div class="success" v-if="status === 1">
       <img src="../../../../assets/images/home/progress_feedback_bind/Success@2x.png" alt="">
       <p>绑定成功</p>
-      <span>3秒后自动跳转项目进度状态表</span>
+      <span>{{countdown}}秒后自动跳转项目进度状态表</span>
     </div>
     <div class="failure" v-else>
       <img src="../../../../assets/images/home/progress_feedback_bind/fail@2x.png" alt="">
@@ -24,7 +24,8 @@ export default {
   data() {
     return {
       type: '',
-      status: ''
+      status: '',
+      countdown: 3
     }
   },
   created() {
@@ -34,9 +35,13 @@ export default {
       this.type = type
     }
     if (this.status) {
-      setTimeout(() => {
-        this.$router.push({name: 'service'})
-      }, 3000)
+      let timer = setInterval(() => {
+        this.countdown = this.countdown - 1
+      }, 1000)
+      if (this.countdown === 0) {
+        clearInterval(timer)
+        this.$router.push({name: 'projectProgress'})
+      }
     }
   }
 }
