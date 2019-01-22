@@ -22,13 +22,13 @@ export default {
     if (this.$store.state.event.token) {
       // this.$router.push({name: 'projectProgress'})
       console.log('已经绑定啦一次')
-    } else {
-      let {code} = this.getQueryVariable()
-      if (code) {
-        this.state = code
-      }
-      location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?' + `appid=${APPID}&redirect_uri=${REDIRECTURI}&response_type=code&scope=snsapi_base&state=${this.state}#wechat_redirect`
     }
+    let {code} = this.getQueryVariable()
+    if (code) {
+      this.state = code
+    }
+    location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?' + `appid=${APPID}&redirect_uri=${REDIRECTURI}&response_type=code&scope=snsapi_base&state=${this.state}#wechat_redirect`
+    
   },
   methods: {
     getQueryVariable() {
