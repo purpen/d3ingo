@@ -13,7 +13,7 @@
     </div>
   </div>
   <footer v-if="this.status === '0'">
-    <el-button type="danger" class="btn-bind" @click="">关闭</el-button>
+    <!-- <el-button type="danger" class="btn-bind" @click="">关闭</el-button> -->
   </footer>
 </div>
 </template>
