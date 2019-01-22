@@ -23,14 +23,16 @@
                     </div>
                   </template>
                 </div>
-                <div v-if="item.data_type === 2">
+                <div v-if="item.data_type === 2" class="service-item">
                   <div class="user-info">
                     <p>
-                      <span>{{item.crm_clue_name}}</span>
-                      <span>{{item.crm_clue_phone}}</span>
+                      <span class="service-name">{{item.crm_clue_name}}</span>
+                      <span class="service-adress">{{item.crm_clue_phone}}</span>
                     </p>
                   </div>
-                  <span :class="['bewrite', f.is? 'active' : '']" v-for="(f, id) in item.content" :key="id" @click="changeStatusD(item.feedback_id, id)">{{f.name}}</span>
+                  <div class="bewrite-parent">
+                    <span :class="['bewrite', f.is? 'active' : '']" v-for="(f, id) in item.content" :key="id" @click="changeStatusD(item.feedback_id, id)">{{f.name}}</span>
+                  </div>
                 </div>
           </el-collapse-item>
         </el-collapse>
@@ -157,7 +159,10 @@ export default {
   padding: 20px 0 30px 0;
   border-bottom: 1px solid #e6e6e6;
 }
-.user-info {
+.service-item {
+  padding: 20px 0 30px 0;
+}
+.user-info, .user-info2 {
   /* display: flex;
   justify-content: space-between; */
   margin-left: 15px;
@@ -166,7 +171,18 @@ export default {
   margin-bottom: 20px;
   background: url('../../../../assets/images/home/progress_feedback_bind/Customer@2x2.png') no-repeat left/36px;
 }
-
+.user-info2 > p {
+  display: flex;
+  justify-content: space-between;
+}
+.service-name {
+  color: #222222;
+  font-size: 14px;
+}
+.service-adress {
+  font-size: 12px;
+  color: #999999;
+}
 .user-info > p {
   display: flex;
   flex-direction: column;
@@ -259,5 +275,6 @@ footer > p {
 }
 .el-collapse {
   border-top: none !important;
+  border-bottom: none !important;
 }
 </style>

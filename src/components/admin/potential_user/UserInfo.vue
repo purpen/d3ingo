@@ -761,12 +761,12 @@
                     <div  class="progress-p-item" v-for="(d, index) in item.feedback" :key="index">
                       <el-row>
                         <el-col :span="12">
-                          <div v-if="d.clue">
+                          <div>
                             <p class="padding-l10">客户: 
                               <span v-if="d.clue">{{d.clue.clue_name}}</span>
                               <span v-else>{{currentUser}}</span>
                             </p>
-                            <div class="feedback-p">
+                            <div class="feedback-p" v-if="d.clue">
                               <span :class="['feedback-item', d2.is ? 'active' : '']" v-for="(d2, indexd2) in d.clue.content" :key="indexd2">{{d2.name}}</span>
                             </div>
                           </div>

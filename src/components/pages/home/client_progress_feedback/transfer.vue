@@ -19,11 +19,15 @@ export default {
     }
   },
   created() {
-    let {code} = this.getQueryVariable()
-    if (code) {
-      this.state = code
+    if (this.$store.state.event.token) {
+      this.$router.push({name: 'projectProgress'})
+    } else {
+      let {code} = this.getQueryVariable()
+      if (code) {
+        this.state = code
+      }
+      location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?' + `appid=${APPID}&redirect_uri=${REDIRECTURI}&response_type=code&scope=snsapi_base&state=${this.state}#wechat_redirect`
     }
-    location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?' + `appid=${APPID}&redirect_uri=${REDIRECTURI}&response_type=code&scope=snsapi_base&state=${this.state}#wechat_redirect`
   },
   methods: {
     getQueryVariable() {
