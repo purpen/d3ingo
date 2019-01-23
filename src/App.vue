@@ -104,7 +104,10 @@ export default {
         this.path = list
       }
     }
-    this.getVersion()
+    if (FWH) {
+    } else {
+      this.getVersion()
+    }
     if (!this.prod.name) {
       this.fetchUser()
     }
@@ -158,9 +161,7 @@ export default {
       })
     },
     getVersion() {
-      if (FWH) {
-        return
-      }
+      console.error(FWH)
       this.$http.get(api.getVersion)
       .then(res => {
         let version = localStorage.getItem('version')

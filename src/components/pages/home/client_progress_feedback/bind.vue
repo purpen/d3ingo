@@ -86,7 +86,6 @@ export default {
       })
     },
     goWxClueBinding() {
-      this.$message.error('点啦')
       let row = {
         token: this.token,
         rand_string: this.state
@@ -97,7 +96,6 @@ export default {
         } else {
           console.log(res.data.meta.message)
           this.$message.error(res.data.meta.message)
-          this.$message.error('没有返回200')
           // this.$router.push({name: 'bindFailure', query: {type: this.projectInfo.data_type, status: 0}})
         }
       }).catch(error => {
@@ -111,7 +109,7 @@ export default {
     if (code) {
       this.code = code
       this.state = state
-      this.getToken()
+      // this.getToken()
     }
   }
 }
