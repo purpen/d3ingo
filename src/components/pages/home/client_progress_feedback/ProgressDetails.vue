@@ -57,12 +57,16 @@ export default {
       this.$http.get(api.wxClueGetFeedback, {}).then(res => {
         if (res.data.meta.status_code === 200) {
           this.feedBack = res.data.data
+          if (this.feedBack.length === 0) {
+            this.$message.error('您名下还没有项目')
+          }
         } else {
-          this.$message.error('获取失败')
+          this.$message.error(res.data.meta.message)
           console.log(res.data.meta.message)
         }
       }).catch(error => {
         console.error(error.message)
+        this.$message.error(error.message)
       })
     },
     changeStatus(itemId, designId, index) {
@@ -120,6 +124,7 @@ export default {
           this.$message.success('提交成功')
         } else {
           console.error(res.data.meta.message)
+          this.$message.error(res.data.meta.message)
         }
       }).catch(error => {
         console.error(error.message)

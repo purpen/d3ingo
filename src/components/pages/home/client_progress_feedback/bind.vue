@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="boolProjectInfo">
     <div class="dialog">
       <h4>绑定确认</h4>
       <div class="dialog-b">
@@ -37,7 +37,8 @@ export default {
       code: '',
       state: '',
       ticket: '22222',
-      projectInfo: {}
+      projectInfo: {},
+      boolProjectInfo: false
     }
   },
   methods: {
@@ -72,6 +73,7 @@ export default {
       }
       this.$http.get(api.wxClueUrlValue, {params: row}).then(res => {
         if (res.data.meta.status_code === 200) {
+          this.boolProjectInfo = true
           this.projectInfo = res.data.data
         } else {
           console.error(res.data.meta.message)
@@ -80,9 +82,11 @@ export default {
         }
       }).catch(error => {
         console.error(error.message)
+        this.$message.error(error.message)
       })
     },
     goWxClueBinding() {
+      this.$message.error('点啦')
       let row = {
         token: this.token,
         rand_string: this.state
@@ -93,10 +97,12 @@ export default {
         } else {
           console.log(res.data.meta.message)
           this.$message.error(res.data.meta.message)
+          this.$message.error('没有返回200')
           // this.$router.push({name: 'bindFailure', query: {type: this.projectInfo.data_type, status: 0}})
         }
       }).catch(error => {
         console.error(error.message)
+        this.$message.error(error.message)
       })
     }
   },

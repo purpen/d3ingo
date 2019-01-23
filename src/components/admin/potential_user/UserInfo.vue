@@ -901,7 +901,7 @@
           title="标记失败"
           :visible.sync="BoolmarkFailure"
           width="380px">
-          <p class="dialog-c-p">是否缺项目对接失败？</p>
+          <p class="dialog-c-p">是否确认项目对接失败？</p>
           <el-input v-model="failureCause" type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请填写项目失败原因"></el-input>
           <span slot="footer" class="dialog-footer">
             <el-button @click="BoolmarkFailure = false">取 消</el-button>
