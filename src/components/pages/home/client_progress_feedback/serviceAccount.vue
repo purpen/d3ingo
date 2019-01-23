@@ -48,8 +48,8 @@ export default {
   bottom: 0;
   height: 100vh;
   width: 100vw;
-  background: url('../../../../assets/images/home/progress_feedback_bind/BG@2x.png') no-repeat ;
-  background-size: cover;
+  background: linear-gradient(312deg,rgba(255,167,145,1) 0%,rgba(246,83,102,1) 100%);
+  /* background-size: cover; */
   overflow-y: auto;
 }
 .content > section {
@@ -71,8 +71,8 @@ h2 {
   line-height: 40px;
 }
 .bg {
-  margin-top: 15px;
   height: 218px;
+  margin-top: 15px;
   background:  url('../../../../assets/images/home/progress_feedback_bind/BG02@1x.png') no-repeat top/cover;
 }
 /* .dialog {

@@ -65,9 +65,6 @@ export default {
         console.error(error.message)
       })
     },
-    binding() {
-      this.$router.push({name: 'bindFailure'})
-    },
     getProjectInfo() {
       let row = {
         token: this.token,

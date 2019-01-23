@@ -55,6 +55,6 @@ export default {
   bottom: 0;
   height: 100vh;
   width: 100vw;
-  background: linear-gradient(#FFA791, #F65366);
+  background: linear-gradient(312deg,rgba(255,167,145,1) 0%,rgba(246,83,102,1) 100%);
 }
 </style>

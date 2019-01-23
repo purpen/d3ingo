@@ -18,15 +18,17 @@
     </div>
     <p v-show="false">{{ticket}}</p>
     <p v-show="false">{{token}}</p>
-    <iframe
-      v-for="(ele, index) in path"
-      :key="index"
-      v-show="false"
-      :ref="ele.ref"
-      frameborder="0"
-      name="sso-collaboration"
-      @load="loadFrame(index)"
-      :src="ele.src"></iframe>
+    <div v-if="fwh">
+      <iframe
+        v-for="(ele, index) in path"
+        :key="index"
+        v-show="false"
+        :ref="ele.ref"
+        frameborder="0"
+        name="sso-collaboration"
+        @load="loadFrame(index)"
+        :src="ele.src"></iframe>
+      </div>
   </div>
 </template>
 
@@ -59,7 +61,8 @@ export default {
       srcListDev: [
         'http://saas-dev.taihuoniao.com/ssologin.html',
         'http://dev.taihuoniao.com/ssologin.html'
-      ]
+      ],
+      fwh: FWH
     }
   },
   watch: {
