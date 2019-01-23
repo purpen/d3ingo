@@ -1,34 +1,39 @@
 <template>
   <div id="app" :class="[hideHeader ? 'app2' : 'app']">
-    <v-header></v-header>
-    <div :class="['main',{'padding-t-34': showAlert}]">
-      <el-alert
-        v-if="showAlert"
-        class="alert-message"
-        :title="alertTitle.title"
-        type="warning"
-        :closable="false"
-        show-icon>
-        <template slot-scope="scope">
-          <router-link style="margin-left: 10px;" class="tc-red fz-12" :to="alertTitle.path">去完善</router-link>
-        </template>
-      </el-alert>
+    <template v-if="fwh">
       <router-view class="main-content"></router-view>
-      <v-footer></v-footer>
-    </div>
-    <p v-show="false">{{ticket}}</p>
-    <p v-show="false">{{token}}</p>
-    <div v-if="fwh">
-      <iframe
-        v-for="(ele, index) in path"
-        :key="index"
-        v-show="false"
-        :ref="ele.ref"
-        frameborder="0"
-        name="sso-collaboration"
-        @load="loadFrame(index)"
-        :src="ele.src"></iframe>
+    </template>
+    <template v-else>
+      <v-header></v-header>
+      <div :class="['main',{'padding-t-34': showAlert}]">
+        <el-alert
+          v-if="showAlert"
+          class="alert-message"
+          :title="alertTitle.title"
+          type="warning"
+          :closable="false"
+          show-icon>
+          <template slot-scope="scope">
+            <router-link style="margin-left: 10px;" class="tc-red fz-12" :to="alertTitle.path">去完善</router-link>
+          </template>
+        </el-alert>
+        <router-view class="main-content"></router-view>
+        <v-footer></v-footer>
       </div>
+      <p v-show="false">{{ticket}}</p>
+      <p v-show="false">{{token}}</p>
+      <div>
+        <iframe
+          v-for="(ele, index) in path"
+          :key="index"
+          v-show="false"
+          :ref="ele.ref"
+          frameborder="0"
+          name="sso-collaboration"
+          @load="loadFrame(index)"
+          :src="ele.src"></iframe>
+        </div>
+    </template>
   </div>
 </template>
 
