@@ -16,15 +16,19 @@
       <router-view class="main-content"></router-view>
       <v-footer></v-footer>
     </div>
-    <iframe
-      v-for="(ele, index) in path"
-      :key="index"
-      v-show="false"
-      :ref="ele.ref"
-      frameborder="0"
-      name="sso-collaboration"
-      @load="loadFrame(index)"
-      :src="ele.src"></iframe>
+    <p v-show="false">{{ticket}}</p>
+    <p v-show="false">{{token}}</p>
+    <div v-if="fwh">
+      <iframe
+        v-for="(ele, index) in path"
+        :key="index"
+        v-show="false"
+        :ref="ele.ref"
+        frameborder="0"
+        name="sso-collaboration"
+        @load="loadFrame(index)"
+        :src="ele.src"></iframe>
+      </div>
   </div>
 </template>
 
@@ -57,7 +61,8 @@ export default {
       srcListDev: [
         'http://saas-dev.taihuoniao.com/ssologin.html',
         'http://dev.taihuoniao.com/ssologin.html'
-      ]
+      ],
+      fwh: FWH
     }
   },
   watch: {
@@ -148,12 +153,14 @@ export default {
       })
     },
     getVersion() {
+      if (FWH) {
+        return
+      }
       this.$http.get(api.getVersion)
       .then(res => {
         let version = localStorage.getItem('version')
         if (res.data.data.number) {
-          if (FWH) {
-          } else if (version !== res.data.data.number) {
+          if (version !== res.data.data.number) {
             localStorage.setItem('version', res.data.data.number)
             window.location.reload(true)
           }
