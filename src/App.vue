@@ -158,7 +158,9 @@ export default {
         let version = localStorage.getItem('version')
         if (res.data.data.number) {
           if (FWH) {
-          } else if (version !== res.data.data.number) {
+            return
+          }
+          if (version !== res.data.data.number) {
             localStorage.setItem('version', res.data.data.number)
             window.location.reload(true)
           }
