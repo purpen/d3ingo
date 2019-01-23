@@ -153,13 +153,13 @@ export default {
       })
     },
     getVersion() {
+      if (FWH) {
+        return
+      }
       this.$http.get(api.getVersion)
       .then(res => {
         let version = localStorage.getItem('version')
         if (res.data.data.number) {
-          if (FWH) {
-            return
-          }
           if (version !== res.data.data.number) {
             localStorage.setItem('version', res.data.data.number)
             window.location.reload(true)
