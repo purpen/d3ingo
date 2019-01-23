@@ -2215,10 +2215,10 @@ export default {
 
 .user-status {
   width: 150px;
-  padding-left: 40px;
   border: 1px solid #e6e6e6;
   border-radius: 18px;
 }
+
 /* .user-status-bg {
   position: absolute;
   left: 12px;
@@ -2227,21 +2227,6 @@ export default {
   width: 20px;
   height: 20px;
 } */
-.user-status.status1 {
-  background: url(../../../assets/images/icon/PotentialCustomers@2x.png) no-repeat 12px / 24px 24px;
-}
-.user-status.status2 {
-  background: url(../../../assets/images/icon/demand@2x.png) no-repeat 12px / 24px 24px;
-}
-.user-status.status5 {
-  background: url(../../../assets/images/icon/Design@2x.png) no-repeat 12px / 24px 24px;
-}
-.user-status.status3 {
-  background: url(../../../assets/images/icon/Sign@2x.png) no-repeat 12px / 24px 24px;
-}
-.user-status.status4 {
-  background: url(../../../assets/images/icon/Fail@2x.png) no-repeat 12px / 24px 24px;
-}
 .user-info-center {
   margin-top: 12px;
 }
@@ -2593,6 +2578,9 @@ export default {
 .source .el-select {
   width: 194px;
 }
+.user-status > .el-select > .el-input > input {
+  padding-left: 40px;
+}
 .user-status .el-select .el-input__inner {
   border: none;
   padding-left: 0px;
@@ -2602,6 +2590,21 @@ export default {
   border: none;
   border-color: transparent;
   box-shadow: none;
+}
+.user-status.status1 input {
+  background: url(../../../assets/images/icon/PotentialCustomers@2x.png) no-repeat 12px / 24px 24px;
+}
+.user-status.status2 input {
+  background: url(../../../assets/images/icon/demand@2x.png) no-repeat 12px / 24px 24px;
+}
+.user-status.status5 input {
+  background: url(../../../assets/images/icon/Design@2x.png) no-repeat 12px / 24px 24px;
+}
+.user-status.status3 input {
+  background: url(../../../assets/images/icon/Sign@2x.png) no-repeat 12px / 24px 24px;
+}
+.user-status.status4 input {
+  background: url(../../../assets/images/icon/Fail@2x.png) no-repeat 12px / 24px 24px;
 }
 .user-info-center .call-status-select .el-select {
   width: 136px;

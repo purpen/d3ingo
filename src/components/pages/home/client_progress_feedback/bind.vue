@@ -150,6 +150,9 @@ export default {
 .design-p {
   line-height: 30px;
 }
+.project-info .p-item:last-child {
+  border-bottom: none;
+}
 .p-item {
   padding: 15px 0px;
   border-bottom: 1px solid #E6E6E6;
