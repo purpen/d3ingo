@@ -595,9 +595,9 @@
     stroke: transparent;
     animation: none
   }
-  .right-content .content-box .el-loading-mask .el-loading-spinner {
+  /* .right-content .content-box .el-loading-mask .el-loading-spinner {
     top: 0;
-  }
+  } */
   #quote-dialog .el-dialog--large {
     width: 100%;
   }
@@ -646,7 +646,7 @@
   .project-menu-sub .el-menu,
   .nav-header .el-menu,
   .menu-header .el-menu {
-    background: transparent
+    background: #fff
   }
   .el-message__group p {
     color: #666
@@ -896,6 +896,14 @@
   .el-radio__input.is-checked+.el-radio__label {
     color: inherit
   }
+  .input-item .el-form-item__content .el-input .el-input__inner:focus {
+    box-shadow: none;
+    border: 1px solid #d2d2d2;
+  }
+  .el-input .el-input__inner:focus {
+    box-shadow: none;
+    border: 1px solid #d2d2d2;
+  }
   /*推广页*/
   .input-phone input {
     height: 50px;
@@ -950,6 +958,29 @@
   .el-switch__label.is-active {
     color: #ff5a5f;
   }
+  .send-bt .el-button--default {
+    min-width: 80px;
+  }
+  .call-ele .el-input-group--append {
+    padding-left: 0;
+  }
+  .input-phone .el-input .el-input__inner:hover{
+    border-radius: 30px 0 0 30px;
+  }
+  .el-form-item.is-error .el-input__inner,
+  .el-form-item.is-error .el-input__inner:hover,
+  .el-form-item.is-error .el-input__inner:focus,
+  .el-form-item.is-error .el-textarea__inner,
+  .el-form-item.is-error .el-textarea__inner:hover,
+  .el-form-item.is-error .el-textarea__inner:focus,
+  .el-message-box__input input.invalid,
+  .el-message-box__input input.invalid:hover,
+  .el-message-box__input input.invalid:focus {
+    border-color: #ff5a5f
+  }
+  .receipt-form .el-dialog__body {
+    padding: 0;
+  }
 @media screen and (max-width: 767px) {
   .el-dialog--large,
   .el-dialog--small,
@@ -966,4 +997,7 @@
 .el-pager li:hover,
 .el-pager li.active {
   color: #ff5a5f
+}
+.el-form-item.is-success .el-input__inner, .el-form-item.is-success .el-input__inner:focus, .el-form-item.is-success .el-textarea__inner, .el-form-item.is-success .el-textarea__inner:focus {
+  border-color: #e6e6e6
 }

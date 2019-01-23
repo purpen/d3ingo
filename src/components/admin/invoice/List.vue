@@ -109,7 +109,7 @@
               <template slot-scope="scope">
                 <!--是设计设计公司&&已开发票&&是收发票-->
                 <el-button v-if="scope.row.type === 1 && scope.row.status===2 && scope.row.company_type===2" type="success" size="mini" @click="confirmReceipt(scope.row, 2)">确认收到发票</el-button>
-                <el-button v-if="scope.row.type === 2 && scope.row.status===1 && scope.row.company_type===1" type="success" size="mini" @click="confirmReceipt(scope.row, 1)">确认开出发票</el-button>
+                <el-button v-if="scope.row.type === 2 && scope.row.status===1 && scope.row.company_type===1" type="success" size="mini" @click="OpenReceipt(scope.row, scope.$index)">确认开出发票</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -121,7 +121,120 @@
               <el-button size="small" type="primary" @click="setVerify(verify.id,verify.refuseRease)">确 定</el-button>
             </span>
           </el-dialog>
+          <el-dialog title="发票信息" :visible.sync="receiptDialog" width="580px" top="2%" class="receipt-form">
+            <div>
+              <el-form label-position="top" :model="invoiceForm" class="form-line scroll-bar" :rules="invoiceRuleForm" ref="invoiceRuleForm">
+                <h3>需求公司发票信息</h3>
+                <el-row>
+                  <el-col :span="4">
+                    名称
+                  </el-col>
+                  <el-col :span="20">
+                    <el-form-item class="fullwidth">
+                      <el-input v-model="invoiceForm.company_name" :disabled="true"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="4">
+                    注册地址
+                  </el-col>
+                  <el-col :span="20">
+                    <el-form-item class="fullwidth">
+                      <el-input v-model="invoiceForm.company_address" :disabled="true"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="4">
+                    税号
+                  </el-col>
+                  <el-col :span="20">
+                    <el-form-item prop="duty_number" class="fullwidth">
+                      <el-input v-model="invoiceForm.duty_number"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="4">
+                    开户银行
+                  </el-col>
+                  <el-col :span="20">
+                    <el-form-item prop="bank_name" class="fullwidth">
+                      <el-input v-model="invoiceForm.bank_name"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="4">
+                    银行账户
+                  </el-col>
+                  <el-col :span="20">
+                    <el-form-item prop="account_number" class="fullwidth">
+                      <el-input v-model="invoiceForm.account_number"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <h3>
+                  发票快递地址
+                </h3>
+                <el-row>
+                  <el-col :span="4">
+                    收件人姓名
+                  </el-col>
+                  <el-col :span="20">
+                    <el-form-item prop="contact_name" class="fullwidth">
+                      <el-input v-model="invoiceForm.contact_name"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="4">
+                    收件人电话
+                  </el-col>
+                  <el-col :span="20">
+                    <el-form-item prop="phone" class="fullwidth">
+                      <el-input v-model.number="invoiceForm.phone" :maxlength="11"></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="4">
+                    收件人地址
+                  </el-col>
+                  <el-col :span="20">
+                    <el-form-item prop="address" class="fullwidth">
+                      <el-input  v-model="invoiceForm.address"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <h3>
+                  邮寄信息
+                </h3>
+                <el-row>
+                  <el-col :span="4">
+                    快递公司
+                  </el-col>
+                  <el-col :span="20">
+                    <el-form-item prop="logistics_id" class="fullwidth">
+                      <el-select v-model.number="invoiceForm.logistics_id" placeholder="请选择快递公司">
+                        <el-option
+                          v-for="(d, index) in logisticsOptions"
+                          :label="d.label"
+                          :key="index"
+                          :value="d.value">
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="4">
+                    快递单号
+                  </el-col>
+                  <el-col :span="20">
+                    <el-form-item prop="logistics_number">
+                      <el-input v-model="invoiceForm.logistics_number"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
 
+              </el-form>
+            </div>
+            
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="receiptDialog = false">取消</el-button>
+              <el-button type="primary" :loading="isForceCloseLoadingBtn" @click="receiptSubmit('invoiceRuleForm')">确 定</el-button>
+            </div>
+          </el-dialog>
           <el-pagination
             class="pagination"
             @size-change="handleSizeChange"
@@ -144,13 +257,51 @@
 <script>
   import api from '@/api/api'
   import vMenu from '@/components/admin/Menu'
+  import typeData from '@/config'
   export default {
     name: 'admin_invoice_list',
     components: {
       vMenu
     },
     data () {
+      let checkNumber = (rule, value, callback) => {
+        if (!value) {
+          return callback()
+        } else {
+          if (!Number.isInteger(Number(value))) {
+            callback(new Error('手机号只能为数字！'))
+          } else {
+            let len = value.toString().length
+            if (len === 11) {
+              if (/^((13|14|15|17|18)[0-9]{1}\d{8})$/.test(value)) {
+                callback()
+              } else {
+                callback(new Error('手机号格式不正确'))
+              }
+            } else {
+              callback(new Error('手机号长度应为11位'))
+            }
+          }
+        }
+      }
       return {
+        invoiceForm: {
+          logistics_id: '',
+          logistics_number: ''
+        }, // 发票开出
+        invoiceRuleForm: {
+          phone: [
+            {validator: checkNumber, trigger: 'blur'}
+          ],
+          logistics_number: [
+            {required: true, message: '请输入快递单号', trigger: 'blur'}
+          ],
+          logistics_id: [
+            {required: true, message: '请选择快递公司', trigger: 'blur'}
+          ]
+        }, // 快递信息验证
+        receiptDialog: false, // 发票弹窗
+        isForceCloseLoadingBtn: false, // 提交表单加载中
         menuType: 0,
         itemList: [],
         tableData: [],
@@ -175,7 +326,127 @@
         msg: ''
       }
     },
+    computed: {
+      // 快递信息
+      logisticsOptions() {
+        let items = []
+        for (let i = 0; i < typeData.LOGISTICS_OPTIONS.length; i++) {
+          let item = {
+            value: typeData.LOGISTICS_OPTIONS[i]['id'],
+            label: typeData.LOGISTICS_OPTIONS[i]['name']
+          }
+          items.push(item)
+        }
+        return items
+      }
+    },
     methods: {
+      // 记录发票
+      saveLogistics() {
+        let self = this
+        let data = {
+          id: self.invoiceForm.invoice_id,
+          duty_number: self.invoiceForm.duty_number,
+          demand_company_id: self.invoiceForm.demand_company_id,
+          bank_name: self.invoiceForm.bank_name,
+          account_number: self.invoiceForm.account_number,
+          address: self.invoiceForm.address,
+          contact_name: self.invoiceForm.contact_name,
+          phone: Number(self.invoiceForm.phone),
+          company_address: self.invoiceForm.company_address,
+          company_name: self.invoiceForm.company_name,
+          logistics_id: self.invoiceForm.logistics_id,
+          logistics_number: self.invoiceForm.logistics_number
+        }
+        self.$http.put(api.adminDemandCompanyConfirmSendInvoice, data).then((response) => {
+          if (response.data.meta.status_code === 200) {
+            self.tableData.splice(self.invoiceForm.index, 1)
+          }
+        })
+        .catch ((error) => {
+          this.$message.error(error.message)
+        })
+      },
+      // 保存确认收到发票
+      receiptSubmit(formName) {
+        this.isForceCloseLoadingBtn = true
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            let url = ''
+            let meth = ''
+            let data = {
+              duty_number: this.invoiceForm.duty_number,
+              demand_company_id: this.invoiceForm.demand_company_id,
+              bank_name: this.invoiceForm.bank_name,
+              account_number: this.invoiceForm.account_number,
+              address: this.invoiceForm.address,
+              contact_name: this.invoiceForm.contact_name,
+              phone: Number(this.invoiceForm.phone)
+            }
+            this.saveLogistics()
+            if (this.invoiceForm.type) {
+              url = api.adminDemandInvoiceUpdate
+              meth = 'PUT'
+            } else {
+              url = api.adminDemandInvoiceCreate
+              meth = 'POST'
+            }
+            this.$http({
+              method: meth,
+              url: url,
+              data: data
+            }).then((response) => {
+              if (response.data.meta.status_code === 200) {
+                this.isForceCloseLoadingBtn = false
+                this.receiptDialog = false
+              }
+            })
+            .catch ((error) => {
+              this.$message.error(error.message)
+            })
+          } else {
+            this.isForceCloseLoadingBtn = false
+            console.log('error form')
+          }
+        })
+      },
+      // 确认开出发票
+      OpenReceipt(item, index) {
+        console.log(index)
+        this.receiptDialog = true
+        this.$http.get(api.adminDemandInvoiceShow, {params: {demand_company_id: item.target_id}})
+        .then ((response) => {
+          if (response.data.meta.status_code === 200) {
+            if (response.data.data) {
+              this.invoiceForm = response.data.data
+              this.invoiceForm.phone = Number(this.invoiceForm.phone)
+              this.invoiceForm.type = 1
+            } else {
+              this.invoiceForm = {
+                duty_number: '',
+                demand_company_id: item.target_id,
+                bank_name: '',
+                account_number: '',
+                address: '',
+                contact_name: '',
+                phone: '',
+                type: 0
+              }
+            }
+            this.$set(this.invoiceForm, 'company_name', item.company_name)
+            this.$set(this.invoiceForm, 'company_address', item.address)
+            this.$set(this.invoiceForm, 'invoice_id', item.id)
+            this.invoiceForm.demand_id = item.target_id
+            this.invoiceForm.index = index
+            this.$set(this.invoiceForm, 'logistics_id', '')
+          } else {
+            this.$message.error(response.data.meta.message)
+          }
+        })
+        .catch ((error) => {
+          this.$message.error(error.message)
+        })
+      },
       handleSelectionChange(val) {
         this.multipleSelection = val
       },
@@ -293,7 +564,7 @@
                 item.invoice_type = '普票'
               }
               self.tableData.push(item)
-              item['created_at'] = item.created_at.date_format().format('yy-MM-dd')
+              item['created_at'] = item.created_at.date_format().format('yyyy-MM-dd')
             } // endfor
           } else {
             self.$message.error(response.data.meta.message)
@@ -328,5 +599,14 @@
     margin-bottom: 8px;
     border-radius: 4px;
   }
-
+  .form-line {
+    padding: 20px 20px 10px 20px;
+    height: 60vh;
+    overflow-y: auto;
+  }
+  h3 {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #222;
+  }
 </style>

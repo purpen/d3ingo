@@ -241,123 +241,125 @@
                 </div>
                 <div class="manage-item add-stage" v-else>
 
-                  <div class="stage-item" v-if="index <= ispayStatus" v-for="(d, index) in stages" :key="d.title + index">
-                    <div class="stage-title clearfix">
-                      <h3 class="clearfix">第{{ d.no }}阶段: {{ d.title }}</h3>
-                      <span style="color: #999" v-if="isMob && d.confirm !== 1">附件格式只限上传JPG／PNG／PDF文件</span>
-                      <div class="btnGroup clearfix">
+                  <div class="stage-item" v-for="(d, index) in stages" :key="d.title + index">
+                    <template v-if="index <= ispayStatus">
+                      <div class="stage-title clearfix">
+                        <h3 class="clearfix">第{{ d.no }}阶段: {{ d.title }}</h3>
+                        <span style="color: #999" v-if="isMob && d.confirm !== 1">附件格式只限上传JPG／PNG／PDF文件</span>
+                        <div class="btnGroup clearfix">
 
-                        <p v-if="d.confirm === 0" class="flex-1">
-                          <el-upload
-                            class=""
-                            :action="uploadUrl"
-                            :on-change="handleChange"
-                            :on-progress="stageUploadProgress"
-                            :on-preview="handlePreview"
-                            :file-list="[]"
-                            :data="uploadParam"
-                            :show-file-list="false"
-                            :on-error="uploadStageError"
-                            :on-success="uploadStageSuccess"
-                            :before-upload="beforeStageUpload"
-                            list-type="text">
-                            <el-button
-                                size="small"
-                                class="is-custom upload_btn"
-                                :id="'upload_btn_' + index"
-                                @click="uplaodStageBtn"
-                                :stage_id="d.id" :index="index" type="primary">{{ stageUploadBtnMsg }}
-                            </el-button>
-                          </el-upload>
-                        </p>
-
-                      </div>
-                    </div>
-                    <div class="stage-asset-box clearfix" v-for="(asset, asset_index) in d.item_stage_image" :key="asset.name + asset_index">
-                      <div class="contract-left">
-                        <img src="../../../../assets/images/icon/pdf2x.png" width="30"/>
-                        <div class="contract-content">
-                          <p>{{ asset.name }}</p>
-                          <p class="contract-des">{{ asset.created_at.date_format().format('yyyy-MM-dd') }}</p>
-                        </div>
-                      </div>
-                      <div class="contract-right">
-                        <p><a href="javascript:void(0);" @click="removeStageAsset" :asset_id="asset.id"
-                              :stage_index="index" :asset_index="asset_index" v-if="d.confirm === 0"><i
-                          class="fa fa-times" aria-hidden="true"></i> 删除</a></p>
-                        <p><a :href="asset.file + '?attname=' + asset.name" target="_blank"><i class="fa fa-download" aria-hidden="true"></i>
-                          下载</a></p>
-
-                      </div>
-                      <div class="clear"></div>
-                    </div>
-
-                    <div class="capital-item clearfix" v-if="d.status === 0 && d.item_stage_image.length > 0">
-                      <p>
-                        <el-button type="primary" @click="stageSendBtn" size="small" :stage_id="d.id" :index="index"
-                                   class="is-custom">发送
-                        </el-button>
-                      </p>
-                    </div>
-                    <div v-if="d.item_stage_image && d.item_stage_image.length">
-                      <div class="capital-item clearfix" v-if="d.status === 1 && d.confirm === 0">
-                        <div v-if="d.pay_status === 0">
-                          <p>等待甲方确认</p>
-                        </div>
-                      </div>
-                      <div class="capital-item clearfix" v-if="d.status === 1 && d.confirm === 1">
-                        <div v-if="d.pay_status === 0">
-                          <p>等待甲方打款</p>
-                        </div>
-
-                        <div v-else>
-                          <div v-if="invoceStat(2, d.id) === 0">
-                            <p>阶段项目资金</p>
-                            <p class="capital-money">¥ {{ d.amount }}</p>
-                            <p class="pay-btn">
-                              <span>收款成功</span>
-                            </p>
-                            <p class="capital-des">该阶段款已转入您的账户中</p>
-                          </div>
-                          <div v-if="invoceStat(2, d.id) === 1">
-                            <p>阶段款已转到{{custom.info}}平台托管</p>
-                            <p class="capital-money">¥ {{ d.amount }}</p>
-                            <p class="pay-btn">
-                              <el-button class="is-custom" @click="sendInvoiceBtn(2, d.id)"
-                                        type="primary">开发票
+                          <p v-if="d.confirm === 0" class="flex-1">
+                            <el-upload
+                              class=""
+                              :action="uploadUrl"
+                              :on-change="handleChange"
+                              :on-progress="stageUploadProgress"
+                              :on-preview="handlePreview"
+                              :file-list="[]"
+                              :data="uploadParam"
+                              :show-file-list="false"
+                              :on-error="uploadStageError"
+                              :on-success="uploadStageSuccess"
+                              :before-upload="beforeStageUpload"
+                              list-type="text">
+                              <el-button
+                                  size="small"
+                                  class="is-custom upload_btn"
+                                  :id="'upload_btn_' + index"
+                                  @click="uplaodStageBtn"
+                                  :stage_id="d.id" :index="index" type="primary">{{ stageUploadBtnMsg }}
                               </el-button>
-                            </p>
-                            <p class="capital-des">需求方已将该阶段款转到{{custom.info}}平台托管，</p>
-                            <p class="capital-des">您需要给{{custom.info}}平台提供相关发票，平台收到发票后会将相关款项转入您的账户中。</p>
-                          </div>
-                          <div v-if="invoceStat(2, d.id) === 2">
-                            <p>阶段款已转到{{custom.info}}平台托管</p>
-                            <p class="capital-money">¥ {{ d.amount }}</p>
-                            <p class="pay-btn">
-                              <span class="pay-await">发票确认中</span>
-                            </p>
-                            <p class="capital-des">发票确认收取中，请您耐心等待…</p>
-                            <p class="capital-des">{{custom.info}}平台收到发票后会将相关款项转入您的账户中。</p>
-                          </div>
-                          <div v-if="invoceStat(2, d.id) === 3">
-                            <p>阶段项目资金</p>
-                            <p class="capital-money">¥ {{ d.amount }}</p>
-                            <p class="pay-btn">
-                              <span>收款成功</span>
-                            </p>
-                            <p class="capital-des">该阶段款已转入您的账户中</p>
+                            </el-upload>
+                          </p>
+
+                        </div>
+                      </div>
+                      <div class="stage-asset-box flex clearfix" v-for="(asset, asset_index) in d.item_stage_image" :key="asset.name + asset_index">
+                        <div class="contract-left flex1">
+                          <img src="../../../../assets/images/icon/pdf2x.png" width="30"/>
+                          <div class="contract-content">
+                            <p>{{ asset.name }}</p>
+                            <p class="contract-des">{{ asset.created_at.date_format().format('yyyy-MM-dd') }}</p>
                           </div>
                         </div>
+                        <div class="contract-right">
+                          <p><a href="javascript:void(0);" @click="removeStageAsset" :asset_id="asset.id"
+                                :stage_index="index" :asset_index="asset_index" v-if="d.confirm === 0"><i
+                            class="fa fa-times" aria-hidden="true"></i> 删除</a></p>
+                          <p><a :href="asset.file + '?attname=' + asset.name" target="_blank"><i class="fa fa-download" aria-hidden="true"></i>
+                            下载</a></p>
 
+                        </div>
+                        <div class="clear"></div>
                       </div>
-                    </div>
-                    <div v-else>
-                      <div class="capital-item">
-                        <p>请上传设计成果</p>
+
+                      <div class="capital-item clearfix" v-if="d.status === 0 && d.item_stage_image.length > 0">
+                        <p>
+                          <el-button type="primary" @click="stageSendBtn" size="small" :stage_id="d.id" :index="index"
+                                    class="is-custom">发送
+                          </el-button>
+                        </p>
                       </div>
-                    </div>
-                    <div class="border-t" v-if="d.item_stage_image&&d.item_stage_image.length>0">
-                    </div>
+                      <div v-if="d.item_stage_image && d.item_stage_image.length">
+                        <div class="capital-item clearfix" v-if="d.status === 1 && d.confirm === 0">
+                          <div v-if="d.pay_status === 0">
+                            <p>等待甲方确认</p>
+                          </div>
+                        </div>
+                        <div class="capital-item clearfix" v-if="d.status === 1 && d.confirm === 1">
+                          <div v-if="d.pay_status === 0">
+                            <p>等待甲方打款</p>
+                          </div>
+
+                          <div v-else>
+                            <div v-if="invoceStat(2, d.id) === 0">
+                              <p>阶段项目资金</p>
+                              <p class="capital-money">¥ {{ d.amount }}</p>
+                              <p class="pay-btn">
+                                <span>收款成功</span>
+                              </p>
+                              <p class="capital-des">该阶段款已转入您的账户中</p>
+                            </div>
+                            <div v-if="invoceStat(2, d.id) === 1">
+                              <p>阶段款已转到{{custom.info}}平台托管</p>
+                              <p class="capital-money">¥ {{ d.amount }}</p>
+                              <p class="pay-btn">
+                                <el-button class="is-custom" @click="sendInvoiceBtn(2, d.id)"
+                                          type="primary">开发票
+                                </el-button>
+                              </p>
+                              <p class="capital-des">需求方已将该阶段款转到{{custom.info}}平台托管，</p>
+                              <p class="capital-des">您需要给{{custom.info}}平台提供相关发票，平台收到发票后会将相关款项转入您的账户中。</p>
+                            </div>
+                            <div v-if="invoceStat(2, d.id) === 2">
+                              <p>阶段款已转到{{custom.info}}平台托管</p>
+                              <p class="capital-money">¥ {{ d.amount }}</p>
+                              <p class="pay-btn">
+                                <span class="pay-await">发票确认中</span>
+                              </p>
+                              <p class="capital-des">发票确认收取中，请您耐心等待…</p>
+                              <p class="capital-des">{{custom.info}}平台收到发票后会将相关款项转入您的账户中。</p>
+                            </div>
+                            <div v-if="invoceStat(2, d.id) === 3">
+                              <p>阶段项目资金</p>
+                              <p class="capital-money">¥ {{ d.amount }}</p>
+                              <p class="pay-btn">
+                                <span>收款成功</span>
+                              </p>
+                              <p class="capital-des">该阶段款已转入您的账户中</p>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                      <div v-else>
+                        <div class="capital-item">
+                          <p>请上传设计成果</p>
+                        </div>
+                      </div>
+                      <div class="border-t" v-if="d.item_stage_image&&d.item_stage_image.length>0">
+                      </div>
+                    </template>
                   </div>
 
                   <p class="finish-item-btn" v-if="sureFinishBtn">
@@ -612,7 +614,7 @@
     </el-dialog>
     <el-dialog title="报价单详情" :visible.sync="quotaDialog" id="quote-dialog" style="width: 880px;margin: auto" width="580px" top="2%">
       
-      <v-quote-view :formProp="quota"></v-quote-view>
+      <v-quote-view v-if="quotaDialog" :formProp="quota"></v-quote-view>
 
       <!--<div slot="footer" class="dialog-footer btn">-->
         <!--<el-button type="primary" class="is-custom" @click="quotaDialog = false">关 闭</el-button>-->
@@ -722,7 +724,8 @@
         sendInvoiceLoadingBtn: false,
         currentInvoiceId: 0,
         msg: '',
-        ispayStatus: ''
+        ispayStatus: '',
+        isReady: true
       }
     },
     methods: {
@@ -1105,6 +1108,10 @@
       },
       // 发送阶段确认框
       stageSendBtn(event) {
+        if (!this.isReady) {
+          this.$message.error('请等待文件上传成功')
+          return
+        }
         let stageId = parseInt(event.currentTarget.getAttribute('stage_id'))
         let index = parseInt(event.currentTarget.getAttribute('index'))
         if (this.stages[index].item_stage_image.length <= 0) {
@@ -1195,6 +1202,7 @@
           return false
         }
         document.getElementById('upload_btn_' + this.currentStageIndex).innerText = '上传中...'
+        this.isReady = false
       },
       uploadStageSuccess(response, file, fileList) {
         let index = this.currentStageIndex
@@ -1206,6 +1214,7 @@
           created_at: response.created_at
         }
         this.stages[index].item_stage_image.push(row)
+        this.isReady = true
       },
       uploadStageError(err, file, fileList) {
         let index = this.currentStageIndex
@@ -1213,6 +1222,7 @@
           document.getElementById('upload_btn_' + index).innerText = '上传附件'
         }
         this.$message.error(err)
+        this.isReady = true
       },
       handlePreview(file) {
       },
@@ -1232,9 +1242,9 @@
       // 应打首付款金额（首付款 - 佣金 - 税点）
       firstRestPayment() {
         if (this.contract) {
-          return parseFloat(this.contract.first_payment).sub(parseFloat(this.contract.commission).add(parseFloat(this.contract.tax_price)))
+          return parseFloat((parseFloat(this.contract.first_payment).sub(parseFloat(this.contract.commission).add(parseFloat(this.contract.tax_price))))).toFixed(2)
         }
-        return 0
+        return 0.00
       },
       isMob() {
         return this.$store.state.event.isMob
@@ -1702,6 +1712,7 @@
     border: 1px solid #ff5a5f;
     border-radius: 4px;
     color: #ff5a5f;
+    cursor: pointer;
   }
   .contract-right .look-button:hover {
     background: #ff5a5f;
@@ -1710,9 +1721,9 @@
     color: #fff;
   }
   .contract-right .look-button:active {
-    color: #ff5a5f;
+    color: #fff;
     border: 1px solid #ff5a5f;
-    background: #fff;
+    background: #ff5a5f;
   }
   .alert-line-height {
     text-align: center
@@ -1947,13 +1958,13 @@
   }
 
   .contract-content p {
-    max-width: 300px;
     font-size: 1.2rem;
     color: #666;
     line-height: 1.5;
-    white-space: nowrap;
+    /* max-width: 600px; */
+    /* white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
+    text-overflow: ellipsis; */
   }
 
   .contract-des {

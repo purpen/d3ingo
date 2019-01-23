@@ -22,7 +22,7 @@
                   </span>
                 </p>
                 <p>{{ d.duration }}个 工作日</p>
-                <p class="font-size-14 color-666">{{ d.summary }}</p>
+                <p class="font-size-14 color-666"><span class="tc-2">备注: </span>{{ d.summary }}</p>
               </div>
               <div class="item-money">¥ {{ formatPrice(d.price) }}</div>
             </div>

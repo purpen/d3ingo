@@ -181,25 +181,22 @@
               <el-col :span="titleSpan" class="title">
                 <p class="des"><i>*</i>实名认证</p>
               </el-col>
-              <el-col :span="contentSpan" class="content">
-                <div v-if="form.verify_status === 0">点此
+              <el-col :span="21" class="content fz-14">
+                <div class="clearfix line-height30" v-if="form.verify_status === 0">点此
                   <a class="a-default" @click="showLegalizeDialog">去认证</a>
                 </div>
-                <div v-if="form.verify_status === 3">
+                <div class="clearfix line-height30" v-if="form.verify_status === 3">
                   <a class="a-message">认证中</a>
-                  <el-button @click="showLegalizeDialog" size="mini">修改认证</el-button> 
+                  <el-button class="fr" @click="showLegalizeDialog" size="mini">修改认证</el-button> 
                 </div>
-                <div v-if="form.verify_status === 1">
+                <div class="clearfix line-height30" v-if="form.verify_status === 1">
                   <a class="a-success">认证成功</a>
-                  <el-button @click="showLegalizeDialog" size="mini">修改认证</el-button> 
+                  <el-button class="fr" @click="showLegalizeDialog" size="mini">修改认证</el-button> 
                 </div>
-                <div v-if="form.verify_status === 2">
+                <div class="clearfix line-height30" v-if="form.verify_status === 2">
                   <a class="a-default">认证失败</a>
-                  <el-button @click="showLegalizeDialog" size="mini">重新认证</el-button>
+                  <el-button class="fr" @click="showLegalizeDialog" size="mini">重新认证</el-button>
                 </div>
-              </el-col>
-              <el-col :span="editSpan" :offset="7" class="edit">
-                <!-- <router-link v-if="form.verify_status === 0 || form.verify_status === 2" to="/vcenter/company/accreditation">去认证</router-link> -->
               </el-col>
             </el-row>
 
@@ -1810,12 +1807,6 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .a-success {
-    color: #00AC84 !important;
-  }
-  .a-message {
-    color: #FFA64B !important;
-  }
   .logo-name {
     margin-top: 5px;
   }
@@ -1947,7 +1938,15 @@
   .item .content a {
     color: #ff5a5f
   }
-
+  .line-height30 {
+    line-height: 30px
+  }
+  .item .content .a-success {
+    color: #00AC84;
+  }
+  .item .content .a-message {
+    color: #FFA64B;
+  }
   .item-m .content {
     color: #666;
     border: 1px solid #E6E6E6;

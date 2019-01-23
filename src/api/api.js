@@ -236,6 +236,11 @@ export default {
   AdminSmallItemDelete: '/admin/smallItem/delete', // 小程序项目删除
   adminItemScheduleLists: '/admin/ItemSchedule/lists', // GET 项目进度列表
   adminItemScheduleUpdate: '/admin/ItemSchedule/update', // POST 项目进度更改
+  adminDemandInvoiceLists: '/admin/demandInvoice/lists', // GET 发票信息列表
+  adminDemandInvoiceUpdate: '/admin/demandInvoice/update', // PUT 更改发票信息
+  adminDemandInvoiceCreate: '/admin/demandInvoice/create', // POST 添加发票信息
+  adminDemandInvoiceShow: '/admin/demandInvoice/show', // GET 发票详情
+  adminInvoiceTrueDemandInvoice: '/admin/invoice/trueDemandInvoice', // PUT 确认给需求公司的发票已开
 
   // 需求公司管理
   adminDemandCompanyList: '/admin/demandCompany/lists', // GET 需求公司列表

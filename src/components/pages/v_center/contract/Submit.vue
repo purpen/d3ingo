@@ -111,7 +111,8 @@
               <p class="font-size-16" ref="anchor" id="anchor">2、项目内容</p>
               <el-col :span="24" style="padding: 0">
                 <el-form-item prop="item_content">
-                  <el-input 
+                  <el-input
+                    :maxlength="500"
                     type="textarea"
                     :rows="5"
                     placeholder="请填写项目包含的主要内容"
@@ -202,11 +203,13 @@
                   <el-col :span="isMob ? 12 : 6">
                     <el-form-item
                       :prop="'stages.' + index + '.time'"
-                      :rules="{
-                      type: 'number', required: true, message: '请填写工作日', trigger: 'blur'
-                    }"
+                      :rules="[{
+                      type: 'number', required: true, message: '请填写工作日', trigger: 'blur'}
+                    ,{
+                      type: 'number', min: 1,required: true, message: '请填写最少一个工作日', trigger: 'blur'
+                    }]"
                     >
-                      <el-input v-model.number="d.time" placeholder="">
+                      <el-input v-model.number="d.time" placeholder="" :maxlength="4">
                         <template slot="append">工作日</template>
                       </el-input>
                     </el-form-item>

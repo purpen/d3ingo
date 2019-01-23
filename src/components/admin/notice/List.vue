@@ -233,7 +233,7 @@ export default {
             if (item.cover) {
               item.cover_url = item.cover.logo
             }
-            item['created_at'] = item.created_at.date_format().format('yy-MM-dd')
+            item['created_at'] = item.created_at.date_format().format('yyyy-MM-dd')
             self.tableData.push(item)
           } // endfor
           console.log(self.tableData)
