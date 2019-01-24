@@ -104,6 +104,7 @@ export default {
         this.path = list
       }
     }
+    console.error('FWH', FWH)
     if (FWH) {
     } else {
       this.getVersion()

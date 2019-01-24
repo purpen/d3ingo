@@ -107,7 +107,8 @@ export default {
           obj.id = item.feedback_id
           obj.content = item.content
           data.push(obj)
-        } else {
+        }
+        if (item.data_type === 1) {
           item.crm_design.forEach(d => {
             let {feedback_id: id, content} = d
             obj.id = id
