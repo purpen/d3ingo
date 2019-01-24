@@ -104,7 +104,8 @@ export default {
         this.path = list
       }
     }
-    console.error('FWH', FWH)
+    console.warn('FWH107', FWH)
+    console.log('首----页')
     if (FWH) {
     } else {
       this.getVersion()
@@ -162,7 +163,7 @@ export default {
       })
     },
     getVersion() {
-      console.error(FWH)
+      console.error('getVersion166', FWH)
       this.$http.get(api.getVersion)
       .then(res => {
         let version = localStorage.getItem('version')
