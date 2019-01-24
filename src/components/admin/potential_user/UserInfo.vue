@@ -1327,8 +1327,12 @@ export default {
     handleInputConfirm() {
       let inputValue = this.inputValue
       if (inputValue) {
-        this.dynamicTags.push(inputValue)
-        this.updatedBaseInfo()
+        if (this.dynamicTags.length === 10) {
+          this.$message.warning('最多只能添加10个标签')
+        } else {
+          this.dynamicTags.push(inputValue)
+          this.updatedBaseInfo()
+        }
       }
       this.inputVisible = false
       this.inputValue = ''
