@@ -110,10 +110,11 @@ export default {
         }
         if (item.data_type === 1) {
           item.crm_design.forEach(d => {
+            let objD = {}
             let {feedback_id: id, content} = d
-            obj.id = id
-            obj.content = content
-            data.push(obj)
+            objD.id = id
+            objD.content = content
+            data.push(objD)
           })
         }
       })
