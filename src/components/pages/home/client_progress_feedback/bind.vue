@@ -108,7 +108,7 @@ export default {
     if (code) {
       this.code = code
       this.state = state
-      // this.getToken()
+      this.getToken()
     }
   }
 }
