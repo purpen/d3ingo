@@ -777,7 +777,7 @@
                       <el-row>
                         <el-col :span="12">
                           <div>
-                            <p class="padding-l10">客户: 
+                            <p class="padding-l10">客户:  
                               <span v-if="d.clue">{{d.clue.clue_name}}</span>
                               <span v-else>{{currentUser}}</span>
                             </p>
@@ -789,7 +789,7 @@
                         
                         <el-col :span="12" class="design-content fr">
                           <div>
-                            <p class="padding-l10">服务商： 
+                            <p class="padding-l10">服务商:  
                               <span v-if="d.design">{{d.design.design_name}}</span>
                               <span v-else>{{d.clue.crm_design}}</span>
                             </p>

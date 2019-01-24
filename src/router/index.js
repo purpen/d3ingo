@@ -873,6 +873,7 @@ router.beforeEach((to, from, next) => {
     if (store.state.event.token) {
       next()
     } else {
+      console.error('indexFWH', FWH)
       if (FWH) {
         next()
       } else {
