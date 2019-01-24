@@ -61,12 +61,15 @@ export default {
             this.$message.error('您名下还没有项目')
           }
         } else {
+          this.$message.error(res.data)
+          this.$message.error(res)
           this.$message.error(res.data.meta.message)
           console.log(res.data.meta.message)
         }
       }).catch(error => {
         console.error(error.message)
         this.$message.error(error.message)
+        this.$message.error(error)
       })
     },
     changeStatus(itemId, designId, index) {
