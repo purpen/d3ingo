@@ -119,8 +119,8 @@
             <p class="p-label">
               <span>标签</span>
               <el-tag
-                  :key="tag"
-                  v-for="tag in dynamicTags"
+                  :key="i"
+                  v-for="(tag, i) in dynamicTags"
                   closable
                   :disable-transitions="false"
                   @close="handleClose(tag)">
@@ -1327,8 +1327,12 @@ export default {
     handleInputConfirm() {
       let inputValue = this.inputValue
       if (inputValue) {
-        this.dynamicTags.push(inputValue)
-        this.updatedBaseInfo()
+        if (this.dynamicTags.length >= 5) {
+          this.$message.warning('最多只能添加5个标签')
+        } else {
+          this.dynamicTags.push(inputValue)
+          this.updatedBaseInfo()
+        }
       }
       this.inputVisible = false
       this.inputValue = ''

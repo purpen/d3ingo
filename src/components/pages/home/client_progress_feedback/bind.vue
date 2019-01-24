@@ -96,7 +96,6 @@ export default {
         } else {
           console.log(res.data.meta.message)
           this.$message.error(res.data.meta.message)
-          // this.$router.push({name: 'bindFailure', query: {type: this.projectInfo.data_type, status: 0}})
         }
       }).catch(error => {
         console.error(error.message)
@@ -109,7 +108,7 @@ export default {
     if (code) {
       this.code = code
       this.state = state
-      // this.getToken()
+      this.getToken()
     }
   }
 }
