@@ -384,7 +384,7 @@
                 </el-form-item>
 
                 <el-form-item label="交易单号" label-width="80px">
-                  <el-input v-model="orderForm.payNo" placeholder="交易单号" auto-complete="off"></el-input>
+                  <el-input v-model.trim="orderForm.payNo" placeholder="交易单号" auto-complete="off"></el-input>
                 </el-form-item>
               </el-form>
               <div slot="footer" class="dialog-footer">
@@ -419,7 +419,7 @@
 
               <el-row class="item" :gutter="gutter">
                 <el-col :span="spanKey">
-                  <p>剩余金额</p>
+                  <p>平台监管金额</p>
                 </el-col>
                 <el-col :span="spanVal">
                   <p>¥ {{ item.rest_fund }}</p>
@@ -905,11 +905,11 @@ export default {
           'label': '正常'
         },
         {
-          'value': 1,
+          'value': 2,
           'label': '公测'
         },
         {
-          'value': 2,
+          'value': 1,
           'label': '内测'
         }
       ],
