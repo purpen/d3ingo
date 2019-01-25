@@ -963,6 +963,7 @@
   }
   .jdc .nav-header .nav-right .register:hover {
     background-image: linear-gradient(90deg, #0989C5 0%, #5D6FBC 45%, #995CB6 100%);
+    color: #fff;
   }
 
 </style>
