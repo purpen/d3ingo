@@ -4,43 +4,45 @@
       <div class="project">
         <el-collapse accordion>
           <el-collapse-item :name="index" v-for="(item, index) in feedBack" :key="index" class="margin-b24 project-item">
-                <template slot="title">
-                  <p class="project-item-title">项目: &nbsp;
-                    <span>{{item.crm_item_name}}</span>
+            <template slot="title">
+              <p class="project-item-title">项目: &nbsp;
+                <span>{{item.crm_item_name}}</span>
+              </p>
+            </template>
+            <div v-for="(d, i) in item.crm_design" :key="i" class="design-item">
+              <template v-if="item.data_type === 1">
+                <div :class="['user-info']">
+                  <p class="design-info">
+                    <span class="design-name">{{d.design_name}}</span>
+                    <span class="design-adress"><i class="fx fx-icon-location"></i>{{d.province_value}}{{d.city_value}}</span>
                   </p>
-                </template>
-                <div v-for="(d, i) in item.crm_design" :key="i" class="design-item">
-                  <template v-if="item.data_type === 1">
-                    <div :class="['user-info']">
-                      <!-- <img class="fl" src="../../../../assets/images/home/progress_feedback_bind/Customer@2x2.png" alt=""> -->
-                      <p class="design-info">
-                        <span class="design-name">{{d.design_name}}</span>
-                        <span class="design-adress"><i class="fx fx-icon-location"></i>{{d.province_value}}{{d.city_value}}</span>
-                      </p>
-                    </div>
-                    <div class="bewrite-parent">
-                      <span :class="['bewrite', ele.is? 'active' : '']" v-for="(ele, j) in d.content" :key="j" @click="changeStatus(item.crm_item_id,d.design_id, j)">{{ele.name}}</span>
-                    </div>
-                  </template>
                 </div>
-                <div v-if="item.data_type === 2" class="service-item">
-                  <div class="user-info">
-                    <p>
-                      <span class="service-name">{{item.crm_clue_name}}</span>
-                      <span class="service-adress">{{item.crm_clue_phone}}</span>
-                    </p>
-                  </div>
-                  <div class="bewrite-parent">
-                    <span :class="['bewrite', f.is? 'active' : '']" v-for="(f, id) in item.content" :key="id" @click="changeStatusD(item.feedback_id, id)">{{f.name}}</span>
-                  </div>
+                <div class="bewrite-parent">
+                  <span :class="['bewrite', ele.is? 'active' : '']" v-for="(ele, j) in d.content" :key="j" @click="changeStatus(item.crm_item_id,d.design_id, j)">{{ele.name}}</span>
                 </div>
+              </template>
+            </div>
+            <div v-if="item.data_type === 2" class="service-item">
+              <div class="user-info">
+                <p>
+                  <span class="service-name">{{item.crm_clue_name}}</span>
+                  <span class="service-adress">{{item.crm_clue_phone}}</span>
+                </p>
+              </div>
+              <div class="bewrite-parent">
+                <span :class="['bewrite', f.is? 'active' : '']" v-for="(f, id) in item.content" :key="id" @click="changeStatusD(item.feedback_id, id)">{{f.name}}</span>
+              </div>
+            </div>
+            <p class="project-item-submit">
+              <el-button type="danger" size="small" class="project-item-btn" @click="submitFeedback(item.crm_item_id)">提交</el-button>
+            </p>
           </el-collapse-item>
         </el-collapse>
       </div>
     </div>
-    <footer>
+    <!-- <footer>
       <el-button type="danger" class="btn-bind progress-btn" @click="submitFeedback">提交</el-button>
-    </footer>
+    </footer> -->
   </div>
 </template>
 <script>
@@ -100,23 +102,25 @@ export default {
         }
       })
     },
-    submitFeedback() {
+    submitFeedback(itemId) {
       let data = []
       this.feedBack.forEach(item => {
-        let obj = {}
-        if (item.data_type === 2) {
-          obj.id = item.feedback_id
-          obj.content = item.content
-          data.push(obj)
-        }
-        if (item.data_type === 1) {
-          item.crm_design.forEach(d => {
-            let objD = {}
-            let {feedback_id: id, content} = d
-            objD.id = id
-            objD.content = content
-            data.push(objD)
-          })
+        if (item.crm_item_id === itemId) {
+          let obj = {}
+          if (item.data_type === 2) {
+            obj.id = item.feedback_id
+            obj.content = item.content
+            data.push(obj)
+          }
+          if (item.data_type === 1) {
+            item.crm_design.forEach(d => {
+              let objD = {}
+              let {feedback_id: id, content} = d
+              objD.id = id
+              objD.content = content
+              data.push(objD)
+            })
+          }
         }
       })
       let row = {
@@ -272,6 +276,14 @@ footer > p {
   box-shadow:0px 0px 10px 0px rgba(0,0,0,0.05);
   border:1px solid rgba(255,90,95,1);
 }
+.project-item-submit {
+  margin: 0 -16px -10px -16px;
+}
+.project-item-btn {
+  width: 100%;
+  height: 46px !important;
+  font-size: 16px !important;
+}
 </style>
 <style>
 .project-item .el-collapse-item__header {
@@ -287,5 +299,8 @@ footer > p {
 .el-collapse {
   border-top: none !important;
   border-bottom: none !important;
+}
+.project-item .el-collapse-item__wrap {
+  border-bottom: none;
 }
 </style>
