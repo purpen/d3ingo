@@ -384,7 +384,7 @@
                 </el-form-item>
 
                 <el-form-item label="交易单号" label-width="80px">
-                  <el-input v-model="orderForm.payNo" placeholder="交易单号" auto-complete="off"></el-input>
+                  <el-input v-model.trim="orderForm.payNo" placeholder="交易单号" auto-complete="off"></el-input>
                 </el-form-item>
               </el-form>
               <div slot="footer" class="dialog-footer">
