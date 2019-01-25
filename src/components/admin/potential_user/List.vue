@@ -388,7 +388,12 @@ export default {
       // this.$router.push({name: 'adminPotentialUserInfo', params: {id: id, name: name}})
       this.query.id = id
       this.query.name = name
-      this.$router.push({path: `/admin/potential_user/userinfo/${id}`, query: this.query})
+      // this.$router.push({path: `/admin/potential_user/userinfo/${id}`, query: {page: this.query.page}})
+      const {href} = this.$router.resolve({
+        path: `/admin/potential_user/userinfo/${id}`,
+        query: {page: this.query.page}
+      })
+      window.open(href, '_blank')
     },
     getAdminList() { // 后台人员列表
       this.$http.get(api.adminClueAdminUser, {}).then(res => {
@@ -477,7 +482,7 @@ export default {
     },
     handleCurrentChange(val) {
       this.query.page = parseInt(val)
-      this.$router.push({ name: this.$route.name, query: this.query })
+      this.$router.push({ name: this.$route.name, query: {page: this.query.page} })
     },
     exportForm() { // 导出
       // if (this.multipleSelection.length === 0) {
@@ -549,7 +554,7 @@ export default {
     this.uploadUrl = api.adminClueImportExcel
   },
   created() {
-    this.query.page = parseInt(this.$route.query.page || 100)
+    this.query.page = parseInt(this.$route.query.page || 1)
     this.getClueList()
   },
   // directives: {Clickoutside},
