@@ -873,7 +873,7 @@ router.beforeEach((to, from, next) => {
     if (store.state.event.token) {
       next()
     } else {
-      console.warn('index====FWH登录876', FWH)
+      console.warn('登录876', FWH)
       if (FWH) {
         next()
       } else {
