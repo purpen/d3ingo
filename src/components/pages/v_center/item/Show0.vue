@@ -375,7 +375,7 @@
                       type="textarea"
                       :rows="5"
                       placeholder="请输入内容"
-                      v-model="evaluate.content">
+                      v-model.trim="evaluate.content">
                     </el-input>
                   </p>
                   <p class="ev-c-btn">

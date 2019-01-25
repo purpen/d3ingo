@@ -394,7 +394,7 @@
                       type="textarea"
                       :rows="5"
                       placeholder="请评价该设计公司"
-                      v-model="evaluate.content">
+                      v-model.trim="evaluate.content">
                     </el-input>
                   </p>
                   <p class="ev-c-btn">

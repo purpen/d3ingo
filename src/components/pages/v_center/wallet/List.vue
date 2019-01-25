@@ -311,6 +311,9 @@
             this.query.totalCount = res.data.meta.pagination.total
             this.WithdrawList = res.data.data
             for (let i of this.WithdrawList) {
+              if (!i.account_bank_value) {
+                this.$set(i, 'account_bank_value', i.branch_name)
+              }
               i.created_at = i.created_at.date_format().format('yyyy-MM-dd hh:mm')
               i.account_number = i.account_number.substring(i.account_number.length - 4)
               switch (i.type) {
