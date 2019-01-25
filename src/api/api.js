@@ -279,6 +279,7 @@ export default {
 
   // 案例管理
   adminDesignCaseLists: '/admin/designCase/lists', // GET 案例列表
+  adminDesignCaseSearch: '/admin/designCase/search', // GET 设计公司案例搜索
   adminDesignCaseOpenInfo: '/admin/designCase/openInfo', // GUT 案例是否公开
 
   // 栏目管理

@@ -6,7 +6,7 @@
       <el-col :span="20">
         <div class="content">
           <el-breadcrumb separator=">">
-            <el-breadcrumb-item :to="{ name: 'adminPotentialUserList' }">潜在客户</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ name: 'adminPotentialUserList', query: query }">潜在客户</el-breadcrumb-item>
             <el-breadcrumb-item>{{currentUser}}</el-breadcrumb-item>
           </el-breadcrumb>
 
@@ -954,6 +954,7 @@ export default {
   },
   data() {
     return {
+      query: {},
       currentUser: '新建客户',
       currentId: '',
       QRCode: '', // 需求方二维码链接
@@ -1968,6 +1969,10 @@ export default {
     }
   },
   created() {
+    let {query = {}} = this.$route
+    if (query.page) {
+      this.query = this.$route.query
+    }
     if (this.$route.params && this.$route.params.id) {
       this.currentId = this.$route.params.id
       this.getUserInfo()
