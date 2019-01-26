@@ -221,7 +221,7 @@
                   <el-row :gutter="20">
                     <el-col :xs="24" :sm="24" :md="24" :lg="24">
                       <p>
-                        <span class="inline-width70">企业名称: </span>{{clientForm.company}}
+                        <span class="inline-width70">企业名称: </span>{{clientList.company}}
                       </p>
                     </el-col>
                   </el-row>
@@ -229,19 +229,19 @@
                   <el-row :gutter="20">
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <p>
-                        <span class="inline-width70">联系人: </span>{{clientForm.name}}
+                        <span class="inline-width70">联系人: </span>{{clientList.name}}
                       </p>
                     </el-col>
                     
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <p>
-                        <span class="inline-width50">职位: </span>{{clientForm.position}}
+                        <span class="inline-width50">职位: </span>{{clientList.position}}
                       </p>
                     </el-col>
                     
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <p>
-                        <span class="inline-width50">电话: </span>{{clientForm.phone}}
+                        <span class="inline-width50">电话: </span>{{clientList.phone}}
                       </p>
                     </el-col>
                   </el-row>
@@ -249,26 +249,26 @@
                   <el-row :gutter="20">
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <p>
-                        <span class="inline-width70">微信号: </span>{{clientForm.wx}}
+                        <span class="inline-width70">微信号: </span>{{clientList.wx}}
                       </p>
                     </el-col>
                     
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <p>
-                        <span class="inline-width50"> QQ号: </span>{{clientForm.qq}}
+                        <span class="inline-width50"> QQ号: </span>{{clientList.qq}}
                       </p>
                     </el-col>
                     
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <p>
-                        <span class="inline-width50">邮箱: </span>{{clientForm.email}}
+                        <span class="inline-width50">邮箱: </span>{{clientList.email}}
                       </p>
                     </el-col>
                   </el-row>
                   <el-row :gutter="20">
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <p>
-                        <span class="inline-width70">所在城市: </span>{{clientForm.province_value}}{{clientForm.city_value}}
+                        <span class="inline-width70">所在城市: </span>{{clientList.province_value}}{{clientList.city_value}}
                       </p>
                     </el-col>
                   </el-row>
@@ -276,7 +276,7 @@
                     <el-col :xs="24" :sm="24" :md="24" :lg="24">
                       <p class="p-user-summary">
                         <span>备注: </span>
-                        <span>{{clientForm.summary}}</span>
+                        <span>{{clientList.summary}}</span>
                       </p>
                     </el-col>
                   </el-row>
@@ -546,7 +546,7 @@
                                 <el-row :gutter="20">
                                   <el-col :xs="24" :sm="24" :md="8" :lg="8">
                                     <el-form-item label="设计公司名称" prop="design_company_id">
-                                      <el-select v-model="designCompanyForm.design_company_id" placeholder="请选择设计公司" @change="selectdesignCompany" filterable>
+                                      <el-select v-model="designCompanyForm.design_company_id" placeholder="请选择设计公司" @change="selectdesignCompany" filterable disabled>
                                         <el-option
                                           v-for="(d, index) in designCompanyList"
                                           :key="index"
@@ -964,6 +964,7 @@ export default {
       focusHeight: false,
       BoolmarkFailure: false,
       adminVoIpList: [], // 业务人员列表
+      clientList: {},
       clientForm: {
         company: '',
         position: '',
@@ -1297,6 +1298,7 @@ export default {
             summary: data.summary,
             position: data.position
           }
+          this.clientList = JSON.parse(JSON.stringify(this.clientForm))
         } else {
           this.$message.error(res.data.meta.message)
         }
