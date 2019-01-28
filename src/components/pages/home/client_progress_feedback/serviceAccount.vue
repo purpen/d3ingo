@@ -74,6 +74,7 @@ h2 {
   color:rgba(255,255,255,1);
   padding-top: 12px;
   line-height: 40px;
+  letter-spacing: 1px;
 }
 h3.inform {
   height:20px;

@@ -64,7 +64,7 @@ export default {
           }
         } else {
           this.$message.error(res)
-          // this.$message.error(res.data.meta.message)
+          this.$message.error(res.data.meta.message)
           console.log(res.data.meta.message)
         }
       }).catch(error => {
