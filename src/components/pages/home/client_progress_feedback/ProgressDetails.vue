@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="m-dialog">
+    <div class="dialog">
       <div class="project">
         <el-collapse accordion>
           <el-collapse-item :name="index" v-for="(item, index) in feedBack" :key="index" class="margin-b24 project-item">
@@ -151,15 +151,14 @@ export default {
   font-size: 18px;
   color: #222222;
 }
-.m-dialog {
+.dialog {
   position: relative;
-  top: -160px;
+  top: 90px;
   left: 50%;
   transform: translateX(-50%);
   width: 92%;
+  padding-bottom: 50px;
   background-color: rgba(0,0,0,0);
-  /* background-color: #fff;
-  border-radius: 5px; */
 }
 .project {
   border-radius: 5px;
