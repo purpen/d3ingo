@@ -176,13 +176,14 @@
           </el-table>
 
           <el-pagination
+            v-if="tableData.length && query.totalCount > query.per_page"
             class="pagination"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="query.page"
             :page-sizes="[10, 20, 50]"
             :page-size="query.per_page"
-            layout="total, sizes, prev, pager, next, jumper"
+            layout="total, prev, pager, next, jumper"
             :total="query.totalCount">
           </el-pagination>
 
