@@ -883,7 +883,7 @@
   .bgimg .logo{
     position: absolute;
     top: 25%;
-    transform: translate(0, 50%);
+    transform: translate(0, 40%);
     width: 100%;
     text-align: center
   }
