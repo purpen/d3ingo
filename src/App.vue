@@ -35,6 +35,7 @@ import api from '@/api/api'
 import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
 import {ENV} from 'conf/prod.env.js'
 import auth from '@/helper/auth'
+import phenix from 'assets/js/base.js'
 export default {
   name: 'app',
   components: {
@@ -101,7 +102,7 @@ export default {
   methods: {
     fetchUser() {
       let that = this
-      let ticket = localStorage.getItem('ticket')
+      let ticket = phenix.getCookie('ticket')
       let token = localStorage.getItem('token')
       if (ticket) {
         if (!token) {
