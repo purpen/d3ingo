@@ -87,6 +87,9 @@
                 <p v-else-if="scope.row.from === 2">PC端推广</p>
                 <p v-else-if="scope.row.from === 3">PC端推广右下角</p>
                 <p v-else-if="scope.row.from === 4">wap推广</p>
+                <p v-else-if="scope.row.from === 5">艺火推广</p>
+                <p v-else-if="scope.row.from === 6">艺火推广</p>
+                <p v-else-if="scope.row.from === 7">优客</p>
               </template>
             </el-table-column>
             <el-table-column width="100" label="操作">
