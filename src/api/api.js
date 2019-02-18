@@ -213,6 +213,14 @@ export default {
   adminClueLtemList: '/admin/clue/itemList', // GET 线上项目列表
   adminClueRelateItem: '/admin/clue/relateItem', // POST 关联线上项目
   adminClueDelRelateItem: '/admin/clue/delRelateItem', // DELETE 删除关联项目
+  AdminCueGetUrl: '/admin/clue/getUrl', // GET 潜在客户-根据客户/项目id生成url
+  adminClueShowFeedback: '/admin/clue/showFeedback', // 潜在客户-查看项目进度
+
+  // WxClue - 微信潜在客户
+  wxClueUrlValue: '/wxClue/urlValue', // GET 微信潜在客户 根据string查看客户/项目id
+  wxClueWxClueBinding: 'wxClue/wxClueBinding', // POST 微信潜在客户绑定
+  wxClueGetFeedback: '/wxClue/getFeedback', // GET 微信潜在客户获取反馈
+  wxClueSubmitFeedback: '/wxClue/submitFeedback', // POST 微信潜在客户-提交反馈
 
   // 项目管理
   adminItemList: '/admin/item/lists', // 项目列表
@@ -271,6 +279,7 @@ export default {
 
   // 案例管理
   adminDesignCaseLists: '/admin/designCase/lists', // GET 案例列表
+  adminDesignCaseSearch: '/admin/designCase/search', // GET 设计公司案例搜索
   adminDesignCaseOpenInfo: '/admin/designCase/openInfo', // GUT 案例是否公开
 
   // 栏目管理
@@ -576,5 +585,7 @@ export default {
   pcAdd: '/wechat/demand/pcAdd',   // POST PC
   appAdd: '/wechat/demand/userAdd',   // POST APP
   userMessage: '/wechat/demand/users',   // POST APP消息滚动
-  usersCount: '/wechat/demand/usersCount'   // GET 人员数量
+  usersCount: '/wechat/demand/usersCount',   // GET 人员数量
+  // 服务号
+  fwhUser: '/fwh/user' // GET 获取服务号用户信息
 }

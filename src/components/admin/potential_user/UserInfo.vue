@@ -6,7 +6,7 @@
       <el-col :span="20">
         <div class="content">
           <el-breadcrumb separator=">">
-            <el-breadcrumb-item :to="{ name: 'adminPotentialUserList' }">潜在客户</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ name: 'adminPotentialUserList', query: query }">潜在客户</el-breadcrumb-item>
             <el-breadcrumb-item>{{currentUser}}</el-breadcrumb-item>
           </el-breadcrumb>
 
@@ -107,12 +107,20 @@
                   </el-select>
                 </div>
               </div>
+              <el-popover
+                placement="bottom"
+                width="100"
+                trigger="click">
+                <img :src="QRCode" alt="正在生成二维码" class="qrcode">
+                <el-button v-if="currentId" type="danger" class="btn-link fr" @click="getLink" slot="reference">生成二维码</el-button>
+              </el-popover>
+
             </div>
             <p class="p-label">
               <span>标签</span>
               <el-tag
-                  :key="tag"
-                  v-for="tag in dynamicTags"
+                  :key="i"
+                  v-for="(tag, i) in dynamicTags"
                   closable
                   :disable-transitions="false"
                   @close="handleClose(tag)">
@@ -213,7 +221,7 @@
                   <el-row :gutter="20">
                     <el-col :xs="24" :sm="24" :md="24" :lg="24">
                       <p>
-                        <span class="inline-width70">企业名称: </span>{{clientForm.company}}
+                        <span class="inline-width70">企业名称: </span>{{clientList.company}}
                       </p>
                     </el-col>
                   </el-row>
@@ -221,19 +229,19 @@
                   <el-row :gutter="20">
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <p>
-                        <span class="inline-width70">联系人: </span>{{clientForm.name}}
+                        <span class="inline-width70">联系人: </span>{{clientList.name}}
                       </p>
                     </el-col>
                     
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <p>
-                        <span class="inline-width50">职位: </span>{{clientForm.position}}
+                        <span class="inline-width50">职位: </span>{{clientList.position}}
                       </p>
                     </el-col>
                     
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <p>
-                        <span class="inline-width50">电话: </span>{{clientForm.phone}}
+                        <span class="inline-width50">电话: </span>{{clientList.phone}}
                       </p>
                     </el-col>
                   </el-row>
@@ -241,33 +249,34 @@
                   <el-row :gutter="20">
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <p>
-                        <span class="inline-width70">微信号: </span>{{clientForm.wx}}
+                        <span class="inline-width70">微信号: </span>{{clientList.wx}}
                       </p>
                     </el-col>
                     
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <p>
-                        <span class="inline-width50"> QQ号: </span>{{clientForm.qq}}
+                        <span class="inline-width50"> QQ号: </span>{{clientList.qq}}
                       </p>
                     </el-col>
                     
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <p>
-                        <span class="inline-width50">邮箱: </span>{{clientForm.email}}
+                        <span class="inline-width50">邮箱: </span>{{clientList.email}}
                       </p>
                     </el-col>
                   </el-row>
                   <el-row :gutter="20">
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <p>
-                        <span class="inline-width70">所在城市: </span>{{clientForm.province_value}}{{clientForm.city_value}}
+                        <span class="inline-width70">所在城市: </span>{{clientList.province_value}}{{clientList.city_value}}
                       </p>
                     </el-col>
                   </el-row>
                   <el-row :gutter="20">
-                    <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                      <p>
-                        <span class="inline-width70">备注: </span>{{clientForm.summary}}
+                    <el-col :xs="24" :sm="24" :md="24" :lg="24">
+                      <p class="p-user-summary">
+                        <span>备注: </span>
+                        <span>{{clientList.summary}}</span>
                       </p>
                     </el-col>
                   </el-row>
@@ -473,10 +482,19 @@
                           <li v-for="(d, i) in item.crm_design_company" :key="i" class="margin-b22">
                             <div v-if="!boolEditDesignCompany || d.id !== editDesignParams.design_id">
                               <el-row :gutter="20">
-                                <el-col :xs="24" :sm="24" :md="16" :lg="16">
-                                  <p>
-                                    <span>对接设计公司 </span>{{i + 1}}
-                                  </p>
+                                <el-col :xs="24" :sm="20" :md="16" :lg="16">
+                                  <div class="flex-a-c margin-b22">
+                                      <span class="font14">对接设计公司 </span>{{i + 1}}
+                                    <div>
+                                      <el-popover
+                                        placement="right"
+                                        width="100"
+                                        trigger="click">
+                                      <img :src="QRCode2" alt="正在生成二维码" class="qrcode">
+                                      <el-button slot="reference" v-if="item.failure !== 1" type="danger" class="btn-link margin-l20" size="small" @click="getLink(item.item_id, d.design_company_id)">生成二维码</el-button>
+                                      </el-popover>
+                                    </div>
+                                  </div>
                                 </el-col>
                                 <el-col :xs="24" :sm="20" :md="8" :lg="8">
                                   <div v-if="item.failure === null && isHasPower" class="edit-project fr">
@@ -528,7 +546,7 @@
                                 <el-row :gutter="20">
                                   <el-col :xs="24" :sm="24" :md="8" :lg="8">
                                     <el-form-item label="设计公司名称" prop="design_company_id">
-                                      <el-select v-model="designCompanyForm.design_company_id" placeholder="请选择设计公司" @change="selectdesignCompany" filterable>
+                                      <el-select v-model="designCompanyForm.design_company_id" placeholder="请选择设计公司" @change="selectdesignCompany" filterable disabled>
                                         <el-option
                                           v-for="(d, index) in designCompanyList"
                                           :key="index"
@@ -746,7 +764,44 @@
               </div>
               
               <div class="card-body-center" v-if="option === 'progress'">
-                <p>共合作几个项目</p>
+                <p class="p-number">共合作{{this.projectSchedule.length}}个项目</p>
+                <ul class="progress-p-content">
+                  <li v-for="(item, i) in this.projectSchedule" :key="i">
+                    <el-row>
+                      <div class="margin-t20">
+                        <span class="progress-p-name">{{item.item_name}}</span>
+                        <p class="design-number margin-l20">对接<span>{{item.feedback.length}}</span>家设计公司</p>
+                      </div>
+                    </el-row>
+                    <div  class="progress-p-item" v-for="(d, index) in item.feedback" :key="index">
+                      <el-row>
+                        <el-col :span="12">
+                          <div>
+                            <p class="padding-l10">客户:  
+                              <span v-if="d.clue">{{d.clue.clue_name}}</span>
+                              <span v-else>{{currentUser}}</span>
+                            </p>
+                            <div class="feedback-p" v-if="d.clue">
+                              <span :class="['feedback-item', d2.is ? 'active' : '']" v-for="(d2, indexd2) in d.clue.content" :key="indexd2">{{d2.name}}</span>
+                            </div>
+                          </div>
+                        </el-col>
+                        
+                        <el-col :span="12" class="design-content fr">
+                          <div>
+                            <p class="padding-l10">服务商:  
+                              <span v-if="d.design">{{d.design.design_name}}</span>
+                              <span v-else>{{d.clue.crm_design}}</span>
+                            </p>
+                            <div class="feedback-p" v-if="d.design">
+                              <span :class="['feedback-item', d3.is ? 'active' : '']" v-for="(d3, indexd3) in d.design.content" :key="indexd3">{{d3.name}}</span>
+                            </div>
+                          </div>
+                        </el-col>
+                      </el-row>
+                    </div>
+                  </li>
+                </ul>
               </div>
 
               <div class="card-body-center padding20" v-show="option === 'followLog'">
@@ -846,7 +901,7 @@
           title="标记失败"
           :visible.sync="BoolmarkFailure"
           width="380px">
-          <p class="dialog-c-p">是否缺项目对接失败？</p>
+          <p class="dialog-c-p">是否确认项目对接失败？</p>
           <el-input v-model="failureCause" type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="请填写项目失败原因"></el-input>
           <span slot="footer" class="dialog-footer">
             <el-button @click="BoolmarkFailure = false">取 消</el-button>
@@ -887,6 +942,7 @@ import vMenu from '@/components/admin/Menu'
 import typeData from '@/config'
 import '@/assets/js/date_format'
 import {nameToAvatar} from '@/assets/js/common'
+import Clipboard from 'clipboard'
 // 城市联动
 import RegionPicker from '@/components/block/RegionPicker'
 import Clickoutside from 'assets/js/clickoutside'
@@ -898,13 +954,17 @@ export default {
   },
   data() {
     return {
+      query: {},
       currentUser: '新建客户',
       currentId: '',
+      QRCode: '', // 需求方二维码链接
+      QRCode2: '', // 设计公司二维码链接
       option: 'user',
       BoolEditUserInfo: false,
       focusHeight: false,
       BoolmarkFailure: false,
       adminVoIpList: [], // 业务人员列表
+      clientList: {},
       clientForm: {
         company: '',
         position: '',
@@ -1039,33 +1099,68 @@ export default {
       loading: false,
       states: [],
 
-      demandFeedback: [
-        {value: 1, label: '了解公司详情'},
-        {value: 2, label: '提供需求梳理'},
-        {value: 3, label: '提供设计案例'},
-        {value: 4, label: '提供设计方案'},
-        {value: 5, label: '提供设计周期'},
-        {value: 6, label: '周期合理'},
-        {value: 7, label: '提供设计报价'},
-        {value: 8, label: '报价合理'},
-        {value: 9, label: '感觉一般'},
-        {value: 10, label: '十分满意'}
-      ],
-      designFeedback: [
-        {value: 1, label: '了解公司详情'},
-        {value: 2, label: '提供需求梳理'},
-        {value: 3, label: '提供设计案例'},
-        {value: 4, label: '提供设计方案'},
-        {value: 5, label: '提供设计周期'},
-        {value: 6, label: '有能力承接'},
-        {value: 7, label: '提供设计报价'},
-        {value: 8, label: '以是最低报价'},
-        {value: 9, label: '感觉一般'},
-        {value: 10, label: '十分满意'}
-      ]
+      projectSchedule: []
     }
   },
   methods: {
+    getLink(projectId, designId) {
+      let row = {
+        type: 1,
+        clue_id: this.currentId
+      }
+      if (projectId && designId) {
+        row.type = 2
+        row.crm_item_id = projectId
+        row.design_company_id = designId
+      }
+      this.$http.get(api.AdminCueGetUrl, {params: row}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          if (row.type === 1) {
+            this.QRCode = res.data.data.url
+          } else {
+            this.QRCode2 = res.data.data.url
+          }
+          // this.setClipboardText()
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+        console.log(error.message)
+      })
+    },
+    getProjectSchedule() {
+      let row = {
+        clue_id: this.currentId
+      }
+      this.$http.get(api.adminClueShowFeedback, {params: row}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          const dataArr = res.data.data
+          dataArr.forEach(item => {
+            console.log(item)
+            let {feedback} = item
+            let arr = Object.values(feedback)
+            item.feedback = arr
+          })
+          this.projectSchedule = dataArr
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        console.error(error.message)
+        this.$message.error(error.message)
+      })
+    },
+    setClipboardText() {
+      let clipboard = null
+      if (this.QRCode) {
+        clipboard = new Clipboard('.btn-link', {
+          text: () => this.QRCode
+        })
+        // this.$message.success('复制成功')
+      }
+      console.log(clipboard)
+    },
     getTypeList() { // 类别列表: 来源; 通话状态; 标签
       this.$http.get(api.adminClueTypeList, {}).then(res => {
         if (res.data.meta.status_code === 200) {
@@ -1203,6 +1298,7 @@ export default {
             summary: data.summary,
             position: data.position
           }
+          this.clientList = JSON.parse(JSON.stringify(this.clientForm))
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -1234,8 +1330,12 @@ export default {
     handleInputConfirm() {
       let inputValue = this.inputValue
       if (inputValue) {
-        this.dynamicTags.push(inputValue)
-        this.updatedBaseInfo()
+        if (this.dynamicTags.length >= 5) {
+          this.$message.warning('最多只能添加5个标签')
+        } else {
+          this.dynamicTags.push(inputValue)
+          this.updatedBaseInfo()
+        }
       }
       this.inputVisible = false
       this.inputValue = ''
@@ -1858,6 +1958,7 @@ export default {
         this.boolLinkItem = true
       } else if (val === 'progress') {
         console.log('进度')
+        this.getProjectSchedule()
         this.boolLinkItem = true
       } else {
         this.boolLinkItem = true
@@ -1870,6 +1971,10 @@ export default {
     }
   },
   created() {
+    let {query = {}} = this.$route
+    if (query.page) {
+      this.query = this.$route.query
+    }
     if (this.$route.params && this.$route.params.id) {
       this.currentId = this.$route.params.id
       this.getUserInfo()
@@ -1885,6 +1990,15 @@ export default {
 .el-form-item {
   /* margin-bottom: 0px; */
 }
+.font14 {
+  font-size: 14px;
+}
+.margin-t20 {
+  margin-top: 20px;
+}
+.padding-l10 {
+  padding-left: 10px;
+}
 .margin-b22 {
   margin-bottom: 22px !important;
 }
@@ -1893,6 +2007,9 @@ export default {
 }
 .margin-r20 {
   margin-right: 20px;
+}
+.margin-l20 {
+  margin-left: 20px;
 }
 .margin-t5 {
   margin-top: 5px;
@@ -1974,6 +2091,73 @@ export default {
 .user-phone {
   background: url(../../../assets/images/member/phone@2x.png) no-repeat left / 24px 24px;
 }
+/* feedback start */
+.progress-p-content {
+  padding: 0 20px 20px 20px;
+}
+.p-number {
+  height: 40px;
+  line-height: 40px;
+  padding-left: 20px;
+  border-bottom: 1px solid #e6e6e6;
+}
+.design-number {
+  float: left;
+  font-size: 12px;
+  color: #6F6F6F;
+}
+.design-number > span {
+  color: #FF5A5F;
+}
+.progress-p-name {
+  float: left;
+  font-size: 14px;
+  font-weight: 500;
+}
+.feedback-p {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+.feedback-item {
+  display: inline-block;
+  width: 100px;
+  height: 30px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  line-height: 30px;
+  border-radius: 15px;
+  text-align: center;
+  background:rgba(250,250,250,1);
+  box-shadow:0px 0px 5px 0px rgba(0,0,0,0.1);
+}
+.feedback-item.active {
+  line-height: 28px;
+  color: #ffffff;
+  background:rgba(255,148,148,1);
+  box-shadow:0px 0px 10px 0px rgba(0,0,0,0.05);
+  border:1px solid rgba(255,90,95,1);
+}
+.progress-p-item {
+  padding: 20px 10px;
+  background-color: #fafafa;
+  border: 1px solid #e6e6e6;
+  margin-top: 10px;
+}
+
+.design-content {
+  min-height: 148px;
+  padding-left: 10px;
+  border-left: 1px solid #e6e6e6;
+}
+.qrcode {
+  width: 120px;
+  height: 110px;
+}
+
+
+
+/* feedback end */
 
 /* user-rank */
 /* .user-rank {
@@ -2042,10 +2226,10 @@ export default {
 
 .user-status {
   width: 150px;
-  padding-left: 40px;
   border: 1px solid #e6e6e6;
   border-radius: 18px;
 }
+
 /* .user-status-bg {
   position: absolute;
   left: 12px;
@@ -2054,21 +2238,6 @@ export default {
   width: 20px;
   height: 20px;
 } */
-.user-status.status1 {
-  background: url(../../../assets/images/icon/PotentialCustomers@2x.png) no-repeat 12px / 24px 24px;
-}
-.user-status.status2 {
-  background: url(../../../assets/images/icon/demand@2x.png) no-repeat 12px / 24px 24px;
-}
-.user-status.status5 {
-  background: url(../../../assets/images/icon/Design@2x.png) no-repeat 12px / 24px 24px;
-}
-.user-status.status3 {
-  background: url(../../../assets/images/icon/Sign@2x.png) no-repeat 12px / 24px 24px;
-}
-.user-status.status4 {
-  background: url(../../../assets/images/icon/Fail@2x.png) no-repeat 12px / 24px 24px;
-}
 .user-info-center {
   margin-top: 12px;
 }
@@ -2256,14 +2425,16 @@ export default {
   line-height: 1.5;
   font-size: 14px;
 }
-.p-table-summary {
+.p-table-summary, .p-user-summary {
   display: flex;
   line-height: 1.5;
 }
 .p-table-summary span:first-child {
   flex: 63px 0 0;
 }
-
+.p-user-summary span:first-child {
+  flex: 70px 0 0;
+}
 .progress {
   border: 1px solid #e6e6e6;
   border-radius: 4px;
@@ -2393,6 +2564,16 @@ export default {
   margin-bottom: 20px;
   margin-top: -10px;
 }
+
+.btn-link {
+  border-radius: 20px;
+  background-color: #fff !important;
+  color: #FF5A5F !important;
+}
+.btn-link:hover {
+  background-color: #FF5A5F !important;
+  color: #fff !important;
+}
 </style>
 <style>
 .card-header .el-input__inner {
@@ -2408,6 +2589,9 @@ export default {
 .source .el-select {
   width: 194px;
 }
+.user-status > .el-select > .el-input > input {
+  padding-left: 40px;
+}
 .user-status .el-select .el-input__inner {
   border: none;
   padding-left: 0px;
@@ -2417,6 +2601,21 @@ export default {
   border: none;
   border-color: transparent;
   box-shadow: none;
+}
+.user-status.status1 input {
+  background: url(../../../assets/images/icon/PotentialCustomers@2x.png) no-repeat 12px / 24px 24px;
+}
+.user-status.status2 input {
+  background: url(../../../assets/images/icon/demand@2x.png) no-repeat 12px / 24px 24px;
+}
+.user-status.status5 input {
+  background: url(../../../assets/images/icon/Design@2x.png) no-repeat 12px / 24px 24px;
+}
+.user-status.status3 input {
+  background: url(../../../assets/images/icon/Sign@2x.png) no-repeat 12px / 24px 24px;
+}
+.user-status.status4 input {
+  background: url(../../../assets/images/icon/Fail@2x.png) no-repeat 12px / 24px 24px;
 }
 .user-info-center .call-status-select .el-select {
   width: 136px;
