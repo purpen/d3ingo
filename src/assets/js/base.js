@@ -79,5 +79,17 @@ phenix.arr_sort_reverse = function (name, minor) {
     }
   }
 }
-
+// cookie
+phenix.getCookie = function(name) {
+  //获取name在Cookie中起止位置
+  var start = document.cookie.indexOf(name + '=')
+  if (start != -1) {
+    start = start + name.length + 1
+    var end = document.cookie.indexOf(";", start)
+    if (end == -1)
+        end = document.cookie.length
+    return unescape(document.cookie.substring(start,end))
+  }
+  return null
+}
 export default phenix;
