@@ -17,6 +17,15 @@
           <div class="admin-menu-sub-list">
             <router-link :to="{name: 'adminDesignCaseList', query: {type: 3}}" :class="{'item': true, 'is-active': menuType === 3}" active-class="false">通过</router-link>
           </div>
+          <div class="fr admin-menu-sub-list">
+            <el-input
+              placeholder="请输入内容按Enter搜索"
+              size="mini"
+              prefix-icon="el-icon-search"
+              v-model="query.value"
+              @change="searchDesignCase">
+            </el-input>
+          </div>
         </div>
 
           <el-table
@@ -149,7 +158,7 @@ export default {
         open: 0,
         sort: 1,
         type: 0,
-
+        value: '',
         test: null
       },
       msg: ''
@@ -257,6 +266,48 @@ export default {
         self.$message.error(error.message)
         self.isLoading = false
       })
+    },
+    searchDesignCase() {
+      console.log(this.query.value)
+      this.isLoading = true
+      this.$http.get(api.adminDesignCaseSearch, {params: this.query}).then(res => {
+        this.isLoading = false
+        this.tableData = []
+        if (res.data.meta.status_code === 200) {
+          this.itemList = res.data.data
+          console.log(this.itemList)
+          this.query.totalCount = parseInt(res.data.meta.pagination.total)
+
+          for (var i = 0; i < this.itemList.length; i++) {
+            var item = this.itemList[i]
+            item.cover_url = require ('@/assets/images/df_100x100.png')
+            if (item.cover) {
+              item.cover_url = item.cover.small
+            }
+            var typeLabel = ''
+            if (item.type === 1) {
+              typeLabel = item.type_val + '|' + item.design_types_val + '/' + item.field_val + '/' + item.industry_val
+            } else {
+              typeLabel = item.type_val + '|' + item.design_types_val
+            }
+
+            var tags = ''
+            if (item.label) {
+              tags = item.label.join(',')
+            }
+
+            item.tags = tags
+            item.type_label = typeLabel
+            item['created_at'] = item.created_at.date_format().format('yyyy-MM-dd')
+            this.tableData.push(item)
+          } // endfor
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+        this.isLoading = false
+      })
     }
   },
   created: function() {
@@ -273,6 +324,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+.admin-menu-sub {
+  height: 36px;
+}
+.admin-menu-sub-list {
+  line-height: 34px;
+}
 
 </style>

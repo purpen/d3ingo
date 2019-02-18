@@ -9,6 +9,7 @@ import centerRoute from './routes/center.js'
 import shundeRoute from './routes/shunde.js'
 import toolsRoute from './routes/tools.js'
 import { Message } from 'element-ui'
+import {FWH} from '../../config/prod.env.js'
 import {
   calcImgSize
 } from 'assets/js/common'
@@ -803,20 +804,10 @@ let routes = [
         component: require('@/components/pages/home/client_progress_feedback/bindStatus')
       },
       {
-        path: '/service_account/design',
-        name: 'design',
+        path: '/service_account/progress',
+        name: 'projectProgress',
         meta: {
-          title: '设计方',
-          hideHeader: true,
-          hideFooter: true
-        },
-        component: require('@/components/pages/home/client_progress_feedback/ProgressDetails')
-      },
-      {
-        path: '/service_account/service',
-        name: 'service',
-        meta: {
-          title: '需求方',
+          title: '项目进度反馈',
           hideHeader: true,
           hideFooter: true
         },
@@ -890,11 +881,16 @@ router.beforeEach((to, from, next) => {
     if (store.state.event.token) {
       next()
     } else {
-      store.commit(types.PREV_URL_NAME, to.fullPath)
-      next({
-        name: 'login'
-      })
-      return false
+      console.warn('登录876', FWH)
+      if (FWH) {
+        next()
+      } else {
+        store.commit(types.PREV_URL_NAME, to.fullPath)
+        next({
+          name: 'login'
+        })
+        return false
+      }
     }
   } else {
     next()
