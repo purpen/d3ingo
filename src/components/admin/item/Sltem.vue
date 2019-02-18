@@ -67,14 +67,14 @@
             </el-table-column>
             <el-table-column width="120" label="联系电话" prop="phone">
             </el-table-column>
-            <el-table-column width="120" label="状态">
+            <el-table-column width="80" label="状态">
               <template slot-scope="scope">
                 <!-- <p>{{scope.row.is_ok === 0 ? '未解决' : '已解决'}}</p> -->
                 <el-tag v-if="scope.row.is_ok === 0" color="#FF5A5F">未解决</el-tag>
                 <el-tag v-else color="#999999">已解决</el-tag>
               </template>
             </el-table-column>
-            <el-table-column width="80" label="创建时间">
+            <el-table-column width="100" label="创建时间">
               <template slot-scope="scope">
                 <p>
                   {{ scope.row.created_at }}
@@ -89,7 +89,7 @@
                 <p v-else-if="scope.row.from === 4">wap推广</p>
                 <p v-else-if="scope.row.from === 5">艺火推广</p>
                 <p v-else-if="scope.row.from === 6">艺火推广</p>
-                <p v-else-if="scope.row.from === 7">优客</p>
+                <p v-else-if="scope.row.from === 7">优客推广</p>
               </template>
             </el-table-column>
             <el-table-column width="100" label="操作">
