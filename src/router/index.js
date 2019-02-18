@@ -752,8 +752,8 @@ let routes = [
     component: require('@/components/pages/promote/Promote2')
   },
   {
-    path: '/promote3',
-    name: 'promote3',
+    path: '/youke',
+    name: 'youke',
     meta: {
       title: '优鲜集'
     },

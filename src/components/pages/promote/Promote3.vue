@@ -208,7 +208,7 @@
                 <el-input v-model="form.appCompany" ref="appCompany" placeholder="公司名称"></el-input>
               </el-form-item>
               <el-form-item prop="account" label="联系方式">
-                <el-input v-model="form.account" ref="account" placeholder="请输入联系方式"></el-input>
+                <el-input :maxlength="11" v-model="form.account" ref="account" placeholder="请输入联系方式"></el-input>
               </el-form-item>
               <el-form-item prop="smsCode" label="验证码" class="wap-disabled-btn">
                 <el-input class="" v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
@@ -882,16 +882,15 @@
   }
   .bgimg .logo{
     position: absolute;
-    left: 50%;
     top: 25%;
-    transform: translate(-50%, 50%);
+    transform: translate(0, 50%);
+    width: 100%;
+    text-align: center
   }
   .bgimg .logo img{
     width: 9rem;
     height: 7rem;
     display: inline-block;
-    margin: 0 auto;
-    float: left;
   }
   /* .bgimg .otherlogo{
     width: 9rem;
