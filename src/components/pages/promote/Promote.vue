@@ -697,10 +697,11 @@
       // pc 右下角
       contact () {
         if (this.phone) {
-          this.$http.post(api.pcAdd, {phone: this.phone, from: 3})
+          this.$http.post(api.pcAdd, {phone: this.phone, from: 3, new_form: this.$route.query.from, device: this.isMob ? 2 : 1})
             .then(res => {
               if (res.data.meta.status_code === 200) {
                 this.$message.success('提交成功')
+                this.phone = ''
               } else {
                 this.$message.error(res.data.meta.message)
               }
@@ -754,7 +755,7 @@
               .then(res => {
                 if (res.data.meta.status_code === 200) {
                   this.$message.success('提交成功')
-                  this.form = {}
+                  this.form1 = {}
                   this.time = 0
                 } else {
                   this.$message.error(res.data.meta.message)
