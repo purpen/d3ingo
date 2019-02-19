@@ -8,18 +8,18 @@
 
         <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px" class="input">
           <el-form-item label="" prop="username">
-            <el-input v-model="form.username" name="username" ref="username" auto-complete="on"
+            <el-input v-model="form.username" ref="username" auto-complete="on"
                       placeholder="手机号"></el-input>
           </el-form-item>
           <el-form-item label="" prop="imgCode">
-            <el-input class="imgCodeInput" v-model="form.imgCode" name="imgCode" ref="imgCode" placeholder="图形验证码">
+            <el-input class="imgCodeInput" v-model="form.imgCode" ref="imgCode" placeholder="图形验证码">
               <template slot="append">
                 <div @click="fetchImgCaptcha" class="imgCode" :style="{'background': `url(${imgCaptchaUrl}) no-repeat`}"></div>
               </template>
             </el-input>
           </el-form-item>
           <el-form-item label="" prop="smsCode" :class="[{'disabled-hover': time >0}]">
-            <el-input v-model="form.smsCode" auto-complete="off" name="smsCode" ref="smsCode" placeholder="验证码">
+            <el-input v-model="form.smsCode" auto-complete="off" ref="smsCode" placeholder="验证码">
               <template slot="append">
                 <el-button type="primary" class="code-btn" @click="fetchCode" :disabled="time > 0">{{ codeMsg }}
                 </el-button>
@@ -27,11 +27,11 @@
             </el-input>
           </el-form-item>
           <el-form-item label="" prop="password">
-            <el-input v-model="form.password" type="password" name="password" ref="password" auto-complete="off"
+            <el-input v-model="form.password" type="password" ref="password" auto-complete="off"
                       placeholder="重置密码"></el-input>
           </el-form-item>
           <el-form-item label="" prop="checkPassword">
-            <el-input v-model="form.checkPassword" type="password" name="checkPassword" ref="checkPassword"
+            <el-input v-model="form.checkPassword" type="password" ref="checkPassword"
                       auto-complete="off" placeholder="确认密码"></el-input>
           </el-form-item>
           <el-button type="primary" :loading="isLoadingBtn" @click="submit('ruleForm')" class="forget-btn is-custom">

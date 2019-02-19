@@ -564,7 +564,7 @@
                 item.invoice_type = '普票'
               }
               self.tableData.push(item)
-              item['created_at'] = item.created_at.date_format().format('yy-MM-dd')
+              item['created_at'] = item.created_at.date_format().format('yyyy-MM-dd')
             } // endfor
           } else {
             self.$message.error(response.data.meta.message)

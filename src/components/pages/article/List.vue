@@ -115,7 +115,7 @@
               if (item.cover) {
                 self.itemList[i].cover_url = item.cover.middle
               }
-              // self.itemList[i]['created_at'] = item.created_at.date_format().format('yy-MM-dd')
+              // self.itemList[i]['created_at'] = item.created_at.date_format().format('yyyy-MM-dd')
             } // endfor
           } else {
             self.$message.error(response.data.meta.message)

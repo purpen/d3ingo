@@ -127,7 +127,7 @@
             that.designCases = res.data.data
             for (let i of that.designCases) {
               if (i.created_at) {
-                i.date = i.created_at.date_format().format('yy-MM-dd')
+                i.date = i.created_at.date_format().format('yyyy-MM-dd')
               }
             }
           } else {

@@ -134,30 +134,30 @@
   font-family: PingFangSC-Light
 }
 .blank5 {
-  margin-top: 5px;
+  padding-top: 5px;
 }
 .blank10 {
-  margin-top: 10px;
+  padding-top: 10px;
 }
 
 .blank20 {
-  margin-top: 20px;
+  padding-top: 20px;
 }
 
 .blank30 {
-  margin-top: 30px;
+  padding-top: 30px;
 }
 
 .blank40 {
-  margin-top: 40px;
+  padding-top: 40px;
 }
 
 .blank50 {
-  margin-top: 50px;
+  padding-top: 50px;
 }
 
 .blank60 {
-  margin-top: 60px;
+  padding-top: 60px;
 }
 
 .margin-r-15 {
@@ -358,6 +358,23 @@
   border: 1px solid #ccc;
   color: #fff;
 }
+.white-to-red-button {
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid #D2D2D2;
+  background: #fff;
+  color: #666;
+}
+.white-to-red-button:hover {
+  border: 1px solid #ff5a5f;
+  background: #ff5a5f;
+  color: #fff;
+}
+.white-to-red-button:active {
+  border: 1px solid #D23C46;
+  background: #D23C46;
+  color: #fff;
+}
 .red-button {
   background: #fff;
   border: 1px solid #ff5a5f;
@@ -402,19 +419,21 @@
 .el-button--primary:focus,
 .el-button--danger:focus {
   color: #fff;
-  border-color: #a02832;
-  background-color: #a02832;
+  border-color: #ff5a5f;
+  background-color: #ff5a5f;
 }
 
+.el-button--primary.is-disabled,
+.el-button--primary.is-disabled:active, .el-button--primary.is-disabled:focus, .el-button--primary.is-disabled:hover,
 .disabled-button,
 .disabled-button:hover,
 .disabled-button:active,
 .disabled-button:focus {
   font-size: 14px;
   cursor: not-allowed;
-  background: #ccc;
+  background: #e6e6e6;
   color: #fff;
-  border: 1px solid #ccc;
+  border: 1px solid #c8c8c8;
   border-radius: 4px;
 }
 
@@ -486,6 +505,7 @@ button.el-button.is-custom.is-disabled,
 }
 @media screen and (max-width: 767px) {
   .vcenter {
-    margin: 0
+    margin: 0;
+    padding-top: 0
   }
 }

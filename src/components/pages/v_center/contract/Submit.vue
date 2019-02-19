@@ -111,7 +111,8 @@
               <p class="font-size-16" ref="anchor" id="anchor">2、项目内容</p>
               <el-col :span="24" style="padding: 0">
                 <el-form-item prop="item_content">
-                  <el-input 
+                  <el-input
+                    :maxlength="500"
                     type="textarea"
                     :rows="5"
                     placeholder="请填写项目包含的主要内容"

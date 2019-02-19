@@ -6,7 +6,7 @@
           <div class="slide" :style="{ background: 'url(' + require ('assets/images/home/banner/BG@2x.jpg') + ') no-repeat center', height: calcHeight}">
             <div class="container clearfix" style="height:100%;">
               <div class="left">
-                <h3 :class="{'m-h3' : isMob}">铟果D³INGO产品创新SaaS平台</h3>
+                <h3 :class="{'m-h3' : isMob}">太火鸟产品创新SaaS平台</h3>
                 <p :class="{'m-p' : isMob}">用设计重塑品质生活</p>
                 <router-link v-if="uType !== 2 && !isMob" to="/item/submit_one">发布项目需求</router-link>
               </div>

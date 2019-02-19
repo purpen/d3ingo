@@ -107,6 +107,7 @@
                   </el-select>
                 </div>
               </div>
+              <el-button type="danger" class="btn-link fr" @click="getLink">生成二维码</el-button>
             </div>
             <p class="p-label">
               <span>标签</span>
@@ -136,6 +137,7 @@
               <div class="card-body-header" v-if="currentId !== ''">
                 <span @click="changeOption('user')" :class="{'active': option === 'user'}">用户档案</span>
                 <span @click="changeOption('project')" :class="{'active': option === 'project'}">项目档案</span>
+                <span @click="changeOption('progress')" :class="{'active': option === 'progress'}">合作意向</span>
                 <span @click="changeOption('followLog')" :class="{'active': option === 'followLog'}">跟进记录</span>
               </div>
 
@@ -475,6 +477,7 @@
                                 <el-col :xs="24" :sm="24" :md="16" :lg="16">
                                   <p>
                                     <span>对接设计公司 </span>{{i + 1}}
+                                    <el-button type="danger" class="btn-link margin-l20" size="small" @click="getLink(item.item_id, d.design_company_id)">生成二维码</el-button>
                                   </p>
                                 </el-col>
                                 <el-col :xs="24" :sm="20" :md="8" :lg="8">
@@ -743,7 +746,41 @@
                 </div>
 
               </div>
-
+              
+              <div class="card-body-center" v-if="option === 'progress'">
+                <p class="p-number">共合作{{this.projectSchedule.length}}个项目</p>
+                <ul class="padding20">
+                  <li v-for="(item, i) in this.projectSchedule" :key="i">
+                    <el-row>
+                      <div>
+                        <span class="progress-p-name">{{item.item_name}}</span>
+                        <p class="design-number margin-l20">对接<span>{{item.feedback.length}}</span>家设计公司</p>
+                      </div>
+                    </el-row>
+                    <div  class="progress-p-item" v-for="(d, index) in item.feedback" :key="index">
+                      <el-row>
+                        <el-col :span="12">
+                          <div v-if="d.clue">
+                            <p class="padding-l10">客户: <span>{{d.clue.clue_name}}</span></p>
+                            <div class="feedback-p">
+                              <span :class="['feedback-item', d2.is ? 'active' : '']" v-for="(d2, indexd2) in d.clue.content" :key="indexd2">{{d2.name}}</span>
+                            </div>
+                          </div>
+                        </el-col>
+                        
+                        <el-col :span="12" class="design-content fr">
+                          <div v-if="d.design">
+                            <p class="padding-l10">服务商： <span>{{d.design.design_name}}</span></p>
+                            <div class="feedback-p">
+                              <span :class="['feedback-item', d3.is ? 'active' : '']" v-for="(d3, indexd3) in d.design.content" :key="indexd3">{{d3.name}}</span>
+                            </div>
+                          </div>
+                        </el-col>
+                      </el-row>
+                    </div>
+                  </li>
+                </ul>
+              </div>
 
               <div class="card-body-center padding20" v-show="option === 'followLog'">
                 <ul>
@@ -883,6 +920,7 @@ import vMenu from '@/components/admin/Menu'
 import typeData from '@/config'
 import '@/assets/js/date_format'
 import {nameToAvatar} from '@/assets/js/common'
+import Clipboard from 'clipboard'
 // 城市联动
 import RegionPicker from '@/components/block/RegionPicker'
 import Clickoutside from 'assets/js/clickoutside'
@@ -896,6 +934,7 @@ export default {
     return {
       currentUser: '新建客户',
       currentId: '',
+      QRCode: '', // 二维码链接
       option: 'user',
       BoolEditUserInfo: false,
       focusHeight: false,
@@ -1033,10 +1072,66 @@ export default {
       options4: [],
       linkProjectValue: '',
       loading: false,
-      states: []
+      states: [],
+
+      projectSchedule: []
     }
   },
   methods: {
+    getLink(projectId, designId) {
+      let row = {
+        type: 1,
+        clue_id: this.currentId
+      }
+      if (projectId && designId) {
+        row.type = 2
+        row.crm_item_id = projectId
+        row.design_company_id = designId
+      }
+      this.$http.get(api.AdminCueGetUrl, {params: row}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.QRCode = res.data.data.url
+          this.setClipboardText()
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+        console.log(error.message)
+      })
+    },
+    getProjectSchedule() {
+      let row = {
+        clue_id: this.currentId
+      }
+      this.$http.get(api.adminClueShowFeedback, {params: row}).then(res => {
+        if (res.data.meta.status_code === 200) {
+          const dataArr = res.data.data
+          dataArr.forEach(item => {
+            console.log(item)
+            let {feedback} = item
+            let arr = Object.values(feedback)
+            item.feedback = arr
+          })
+          this.projectSchedule = dataArr
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        console.error(error.message)
+        this.$message.error(error.message)
+      })
+    },
+    setClipboardText() {
+      let clipboard = null
+      if (this.QRCode) {
+        clipboard = new Clipboard('.btn-link', {
+          text: () => this.QRCode
+        })
+        this.$message.success('复制成功')
+      }
+      console.log(clipboard)
+    },
     getTypeList() { // 类别列表: 来源; 通话状态; 标签
       this.$http.get(api.adminClueTypeList, {}).then(res => {
         if (res.data.meta.status_code === 200) {
@@ -1811,7 +1906,11 @@ export default {
       return this.$store.state.event.user.id
     },
     isHasPower() { // 是否有权限编辑
-      if (this.userId === this.userForm.execute_user_id || this.isAdmin >= 15) {
+      if (this.currentId) {
+        if (this.userId === this.userForm.execute_user_id || this.isAdmin >= 15) {
+          return true
+        }
+      } else {
         return true
       }
     }
@@ -1822,6 +1921,10 @@ export default {
         this.getUserProject()
       } else if (val === 'followLog') {
         this.getLogList()
+        this.boolLinkItem = true
+      } else if (val === 'progress') {
+        console.log('进度')
+        this.getProjectSchedule()
         this.boolLinkItem = true
       } else {
         this.boolLinkItem = true
@@ -1849,6 +1952,9 @@ export default {
 .el-form-item {
   /* margin-bottom: 0px; */
 }
+.padding-l10 {
+  padding-left: 10px;
+}
 .margin-b22 {
   margin-bottom: 22px !important;
 }
@@ -1857,6 +1963,9 @@ export default {
 }
 .margin-r20 {
   margin-right: 20px;
+}
+.margin-l20 {
+  margin-left: 20px;
 }
 .margin-t5 {
   margin-top: 5px;
@@ -1938,6 +2047,66 @@ export default {
 .user-phone {
   background: url(../../../assets/images/member/phone@2x.png) no-repeat left / 24px 24px;
 }
+/* feedback start */
+.p-number {
+  height: 40px;
+  line-height: 40px;
+  padding-left: 20px;
+  border-bottom: 1px solid #e6e6e6;
+}
+.design-number {
+  float: left;
+  font-size: 12px;
+  color: #6F6F6F;
+}
+.design-number > span {
+  color: #FF5A5F;
+}
+.progress-p-name {
+  float: left;
+  font-size: 14px;
+  font-weight: 500;
+}
+.feedback-p {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+.feedback-item {
+  display: inline-block;
+  width: 100px;
+  height: 30px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  line-height: 30px;
+  border-radius: 15px;
+  text-align: center;
+  background:rgba(250,250,250,1);
+  box-shadow:0px 0px 5px 0px rgba(0,0,0,0.1);
+}
+.feedback-item.active {
+  line-height: 28px;
+  color: #ffffff;
+  background:rgba(255,148,148,1);
+  box-shadow:0px 0px 10px 0px rgba(0,0,0,0.05);
+  border:1px solid rgba(255,90,95,1);
+}
+.progress-p-item {
+  padding: 20px 10px;
+  background-color: #fafafa;
+  border: 1px solid #e6e6e6;
+  margin-top: 10px;
+}
+
+.design-content {
+  padding-left: 10px;
+  border-left: 1px solid #e6e6e6;
+}
+
+
+
+
+/* feedback end */
 
 /* user-rank */
 /* .user-rank {
@@ -2356,6 +2525,16 @@ export default {
   line-height: 20px;
   margin-bottom: 20px;
   margin-top: -10px;
+}
+
+.btn-link {
+  border-radius: 20px;
+  background-color: #fff !important;
+  color: #FF5A5F !important;
+}
+.btn-link:hover {
+  background-color: #FF5A5F !important;
+  color: #fff !important;
 }
 </style>
 <style>
