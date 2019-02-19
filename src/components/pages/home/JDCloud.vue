@@ -969,8 +969,12 @@ export default {
     }
   },
   created() {
-    if (this.$store.state.event.prod.id === 0) {
-      this.$router.replace({name: 'home'})
+    let that = this
+    if (that.$store.state.event.prod.id === 0) {
+      that.$router.replace({name: 'home'})
+    }
+    if (!that.$route.query || !that.$route.query.from) {
+      that.$router.push({name: 'SaaSIndex', query: {from: 2}})
     }
   },
   mounted () {
@@ -1091,6 +1095,8 @@ export default {
             user_name: this.form1.name,
             phone: this.form1.account,
             sms_code: this.form1.smsCode,
+            new_form: this.$route.query.from, // 1. 小程序 2. 默认/铟果 3. 艺火 4. 360 5. 头条号 6. 优客
+            device: this.isMob ? 2 : 1, // 1.PC 2.Phone
             from: 4
           }
           this.$http.post(api.pcAdd, row)
@@ -1116,6 +1122,8 @@ export default {
             user_name: this.form.contact,   // 联系人
             phone: this.form.account,        // 手机号
             item_name: this.form.demand,   // 需求
+            new_form: this.$route.query.from, // 1. 小程序 2. 默认/铟果 3. 艺火 4. 360 5. 头条号 6. 优客
+            device: this.isMob ? 2 : 1, // 1.PC 2.Phone
             from: 2,   // 小程序or网页
             sms_code: this.form.smsCode   // 小程序or网页
           }

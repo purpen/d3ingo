@@ -746,6 +746,8 @@
               user_name: this.form1.name,
               phone: this.form1.account,
               sms_code: this.form1.smsCode,
+              new_form: this.$route.query.from, // 1. 小程序 2. 默认/铟果 3. 艺火 4. 360 5. 头条号 6. 优客
+              device: this.isMob ? 2 : 1, // 1.PC 2.Phone
               from: 4
             }
             this.$http.post(api.pcAdd, row)
@@ -768,11 +770,13 @@
         this.$refs[form].validate(valid => {
           if (valid) {
             let row = {
-              user_name: this.form.contact,   // 联系人
-              phone: this.form.account,        // 手机号
-              item_name: this.form.demand,   // 需求
+              user_name: this.form.contact, // 联系人
+              phone: this.form.account, // 手机号
+              item_name: this.form.demand, // 需求
+              new_form: this.$route.query.from, // 1. 小程序 2. 默认/铟果 3. 艺火 4. 360 5. 头条号 6. 优客
+              device: this.isMob ? 2 : 1, // 1.PC 2.Phone
               from: 2,   // 小程序or网页
-              sms_code: this.form.smsCode   // 小程序or网页
+              sms_code: this.form.smsCode // 小程序or网页
             }
             this.$http.post(api.pcAdd, row)
               .then(res => {
@@ -794,6 +798,10 @@
       }
     },
     created () {
+      let that = this
+      if (!that.$route.query || !that.$route.query.from) {
+        that.$router.push({name: 'promote', query: {from: 2}})
+      }
     },
     mounted () {
       let that = this
