@@ -411,6 +411,8 @@
               phone: this.form.account,
               company_name: this.form.appCompany,
               sms_code: this.form.smsCode,
+              new_form: this.$route.query.from, // 1. 小程序 2. 默认/铟果 3. 艺火 4. 360 5. 头条号 6. 优客
+              device: this.isMob ? 2 : 1, // 1.PC 2.Phone
               from: 7
             }
             this.$http.post(api.pcAdd, row)
@@ -459,6 +461,10 @@
       }
     },
     created () {
+      let that = this
+      if (!that.$route.query || !that.$route.query.from) {
+        that.$router.push({name: 'youke', query: {from: 2}})
+      }
     },
     mounted () {
       let that = this

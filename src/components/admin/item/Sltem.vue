@@ -74,7 +74,7 @@
                 <el-tag v-else color="#999999">已解决</el-tag>
               </template>
             </el-table-column>
-            <el-table-column width="100" label="创建时间">
+            <el-table-column width="140" label="创建时间">
               <template slot-scope="scope">
                 <p>
                   {{ scope.row.created_at }}
@@ -84,8 +84,8 @@
             <el-table-column width="100" label="来源" prop="from">
               <template slot-scope="scope">
                 <p v-if="scope.row.from === 1">小程序</p>
-                <p v-else-if="scope.row.from === 2">PC端推广</p>
-                <p v-else-if="scope.row.from === 3">PC端推广右下角</p>
+                <p v-else-if="scope.row.from === 2">铟果PC端推广</p>
+                <p v-else-if="scope.row.from === 3">铟果PC端推广</p>
                 <p v-else-if="scope.row.from === 4">wap推广</p>
                 <p v-else-if="scope.row.from === 5">艺火推广</p>
                 <p v-else-if="scope.row.from === 6">艺火推广</p>
@@ -206,7 +206,7 @@ export default {
             self.query.totalCount = parseInt(response.data.meta.pagination.total)
             for (var i = 0; i < self.itemList.length; i++) {
               var item = self.itemList[i]
-              item['created_at'] = item.created_at.date_format().format('yyyy-MM-dd')
+              item['created_at'] = item.created_at.date_format().format('yyyy-MM-dd hh:mm')
               self.tableData.push(item)
               // console.log(self.tableData)
             }
