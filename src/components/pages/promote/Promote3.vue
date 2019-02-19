@@ -372,7 +372,7 @@
       // pc 右下角
       contact () {
         if (this.phone) {
-          this.$http.post(api.pcAdd, {phone: this.phone, from: 3})
+          this.$http.post(api.pcAdd, {phone: this.phone, from: 3, new_form: this.$route.query.from, device: this.isMob ? 2 : 1, url: window.location.href})
             .then(res => {
               if (res.data.meta.status_code === 200) {
                 this.$message.success('提交成功')
@@ -413,7 +413,8 @@
               sms_code: this.form.smsCode,
               new_form: this.$route.query.from, // 1. 小程序 2. 默认/铟果 3. 艺火 4. 360 5. 头条号 6. 优客
               device: this.isMob ? 2 : 1, // 1.PC 2.Phone
-              from: 7
+              from: 7,
+              url: window.location.href
             }
             this.$http.post(api.pcAdd, row)
               .then(res => {
@@ -439,7 +440,10 @@
               phone: this.form.account,        // 手机号
               item_name: this.form.demand,   // 需求
               from: 2,   // 小程序or网页
-              sms_code: this.form.smsCode   // 小程序or网页
+              sms_code: this.form.smsCode,   // 小程序or网页
+              url: window.location.href,
+              new_form: this.$route.query.from, // 1. 小程序 2. 默认/铟果 3. 艺火 4. 360 5. 头条号 6. 优客
+              device: this.isMob ? 2 : 1 // 1.PC 2.Phone
             }
             this.$http.post(api.pcAdd, row)
               .then(res => {
