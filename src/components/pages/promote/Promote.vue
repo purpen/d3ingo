@@ -697,10 +697,11 @@
       // pc 右下角
       contact () {
         if (this.phone) {
-          this.$http.post(api.pcAdd, {phone: this.phone, from: 3})
+          this.$http.post(api.pcAdd, {phone: this.phone, from: 3, new_form: this.$route.query.from, device: this.isMob ? 2 : 1})
             .then(res => {
               if (res.data.meta.status_code === 200) {
                 this.$message.success('提交成功')
+                this.phone = ''
               } else {
                 this.$message.error(res.data.meta.message)
               }
@@ -746,13 +747,15 @@
               user_name: this.form1.name,
               phone: this.form1.account,
               sms_code: this.form1.smsCode,
+              new_form: this.$route.query.from, // 1. 小程序 2. 默认/铟果 3. 艺火 4. 360 5. 头条号 6. 优客
+              device: this.isMob ? 2 : 1, // 1.PC 2.Phone
               from: 4
             }
             this.$http.post(api.pcAdd, row)
               .then(res => {
                 if (res.data.meta.status_code === 200) {
                   this.$message.success('提交成功')
-                  this.form = {}
+                  this.form1 = {}
                   this.time = 0
                 } else {
                   this.$message.error(res.data.meta.message)
@@ -768,11 +771,13 @@
         this.$refs[form].validate(valid => {
           if (valid) {
             let row = {
-              user_name: this.form.contact,   // 联系人
-              phone: this.form.account,        // 手机号
-              item_name: this.form.demand,   // 需求
+              user_name: this.form.contact, // 联系人
+              phone: this.form.account, // 手机号
+              item_name: this.form.demand, // 需求
+              new_form: this.$route.query.from, // 1. 小程序 2. 默认/铟果 3. 艺火 4. 360 5. 头条号 6. 优客
+              device: this.isMob ? 2 : 1, // 1.PC 2.Phone
               from: 2,   // 小程序or网页
-              sms_code: this.form.smsCode   // 小程序or网页
+              sms_code: this.form.smsCode // 小程序or网页
             }
             this.$http.post(api.pcAdd, row)
               .then(res => {
@@ -797,6 +802,10 @@
       /* eslint-disable */
       (function(b,a,e,h,f,c,g,s){b[h]=b[h]||function(){(b[h].c=b[h].c||[]).push(arguments)};b[h].s=!!c;g=a.getElementsByTagName(e)[0];s=a.createElement(e);s.src="//s.union.360.cn/"+f+".js";s.defer=!0;s.async=!0;g.parentNode.insertBefore(s,g)})(window,document,"script","_qha",290883,false);
       /* eslint-disable */
+      let that = this
+      if (!that.$route.query || !that.$route.query.from) {
+        that.$router.push({name: 'promote', query: {from: 2}})
+      }
     },
     mounted () {
       let that = this
