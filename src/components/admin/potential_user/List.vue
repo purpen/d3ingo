@@ -183,7 +183,7 @@
             :current-page="query.page"
             :page-sizes="[10, 20, 50]"
             :page-size="query.per_page"
-            layout="total, prev, pager, next, jumper"
+            layout="total, sizes, prev, pager, next, jumper"
             :total="query.totalCount">
           </el-pagination>
 
