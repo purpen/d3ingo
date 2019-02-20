@@ -114,7 +114,7 @@
         </div>
       </el-col>
     </el-row>
-    <el-dialog title="编辑小程序" :visible.sync="matchCompanyDialog">
+    <el-dialog title="编辑小程序" :visible.sync="matchCompanyDialog" width="580px">
       <el-form label-position="top" :model="sItem">
         <el-form-item label="项目状态" label-width="200px">
           <el-radio-group v-model="sItem.is_ok">
