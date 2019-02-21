@@ -16,7 +16,6 @@
       <router-view class="main-content"></router-view>
       <v-footer></v-footer>
     </div>
-    <p v-show="false">{{ticket}}</p>
     <p v-show="false">{{token}}</p>
     <div v-if="!fwh">
       <iframe
@@ -39,6 +38,7 @@ import api from '@/api/api'
 import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
 import {ENV} from 'conf/prod.env.js'
 import auth from '@/helper/auth'
+import phenix from 'assets/js/base.js'
 import {FWH} from '../config/prod.env.js'
 export default {
   name: 'app',
@@ -111,7 +111,7 @@ export default {
   methods: {
     fetchUser() {
       let that = this
-      let ticket = localStorage.getItem('ticket')
+      let ticket = phenix.getCookie('ticket')
       let token = localStorage.getItem('token')
       if (ticket) {
         if (!token) {
@@ -177,7 +177,7 @@ export default {
     postMessage() {
       this.path.forEach(item => {
         if (item.iframeLoad) {
-          let ticket = this.$store.state.event.ticket || localStorage.getItem('ticket')
+          let ticket = this.$store.state.event.ticket || phenix.getCookie('ticket')
           this.$refs[item.ref][0].contentWindow.postMessage(JSON.stringify({
             ticket: ticket,
             type: 'login'
@@ -188,7 +188,7 @@ export default {
     postMessage2() {
       this.path.forEach(item => {
         if (item.iframeLoad) {
-          let ticket = this.$store.state.event.ticket || localStorage.getItem('ticket')
+          let ticket = this.$store.state.event.ticket || phenix.getCookie('ticket')
           this.$refs[item.ref][0].contentWindow.postMessage(JSON.stringify({
             ticket: ticket,
             type: 'loginout'
