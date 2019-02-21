@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="dialog">
+  <div class="dialog">
+    <div class="dialog-content" v-if="boolProjectInfo">
       <h4>绑定确认</h4>
       <div class="dialog-b">
         <div class="project-info" v-if="projectInfo.data_type === 1">
@@ -34,11 +34,11 @@ export default {
   data() {
     return {
       token: '',
-      APPID: 'wx75a9ffb78f202fb3',
       code: '',
       state: '',
       ticket: '22222',
-      projectInfo: {}
+      projectInfo: {},
+      boolProjectInfo: false
     }
   },
   methods: {
@@ -66,9 +66,6 @@ export default {
         console.error(error.message)
       })
     },
-    binding() {
-      this.$router.push({name: 'bindFailure'})
-    },
     getProjectInfo() {
       let row = {
         token: this.token,
@@ -76,13 +73,16 @@ export default {
       }
       this.$http.get(api.wxClueUrlValue, {params: row}).then(res => {
         if (res.data.meta.status_code === 200) {
+          this.boolProjectInfo = true
           this.projectInfo = res.data.data
         } else {
           console.error(res.data.meta.message)
-          this.$message.error(res.data.meta.message)
+          this.$router.push({name: 'bindFailure', query: {type: this.projectInfo.data_type, status: 0}})
+          // this.$message.error(res.data.meta.message)
         }
       }).catch(error => {
         console.error(error.message)
+        this.$message.error(error.message)
       })
     },
     goWxClueBinding() {
@@ -95,10 +95,11 @@ export default {
           this.$router.push({name: 'bindSuccess', query: {type: this.projectInfo.data_type, status: 1}})
         } else {
           console.log(res.data.meta.message)
-          this.$router.push({name: 'bindFailure', query: {type: this.projectInfo.data_type, status: 0}})
+          this.$message.error(res.data.meta.message)
         }
       }).catch(error => {
         console.error(error.message)
+        this.$message.error(error.message)
       })
     }
   },
@@ -107,22 +108,22 @@ export default {
     if (code) {
       this.code = code
       this.state = state
-      // this.getToken()
+      this.getToken()
     }
   }
 }
 </script>
 <style scoped>
-.dialog {
-  position: relative;
+.dialog-content {
+  /* position: relative;
   top: -160px;
   left: 50%;
-  transform: translateX(-50%);
-  width: 92%;
+  transform: translateX(-50%); */
+  /* width: 92%; */
   background-color: #fff;
   border-radius: 5px;
 }
-.dialog > h4 {
+.dialog-content > h4 {
   height: 60px;
   line-height: 60px;
   text-align: center;
@@ -152,6 +153,9 @@ export default {
 .design-p {
   line-height: 30px;
 }
+.project-info .p-item:last-child {
+  border-bottom: none;
+}
 .p-item {
   padding: 15px 0px;
   border-bottom: 1px solid #E6E6E6;
@@ -164,7 +168,7 @@ export default {
   border-bottom: 1px solid #E6E6E6;
 }
 footer {
-  margin-top: -130px;
+  margin-top: 15px;
 }
 footer > p {
   text-align: center;
@@ -176,7 +180,7 @@ footer > p {
   height: 55px;
   width: 92%;
   margin-left: 4%;
-  margin-top: 30px;
+  margin-top: 15px;
   color: #fff;
   font-size: 1.8rem;
   border-radius: 5px;

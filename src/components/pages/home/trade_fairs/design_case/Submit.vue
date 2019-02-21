@@ -109,7 +109,7 @@
                       <div class="mag-triangle">
                       </div>
                       <span>
-                        铟果平台收取成交价格10%服务费
+                        太火鸟平台收取成交价格10%服务费
                       </span>
                       
                     </div>

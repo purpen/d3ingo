@@ -341,7 +341,9 @@ export default {
   },
   created() {
     for (let i = 0; i <= 6; i++) {
-      this.getBoard(i)
+      setTimeout(() => {
+        this.getBoard(i)
+      }, 100)
     }
   },
   mounted() {

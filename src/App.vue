@@ -16,15 +16,19 @@
       <router-view class="main-content"></router-view>
       <v-footer></v-footer>
     </div>
-    <iframe
-      v-for="(ele, index) in path"
-      :key="index"
-      v-show="false"
-      :ref="ele.ref"
-      frameborder="0"
-      name="sso-collaboration"
-      @load="loadFrame(index)"
-      :src="ele.src"></iframe>
+    <p v-show="false">{{ticket}}</p>
+    <p v-show="false">{{token}}</p>
+    <div v-if="!fwh">
+      <iframe
+        v-for="(ele, index) in path"
+        :key="index"
+        v-show="false"
+        :ref="ele.ref"
+        frameborder="0"
+        name="sso-collaboration"
+        @load="loadFrame(index)"
+        :src="ele.src"></iframe>
+      </div>
   </div>
 </template>
 
@@ -35,6 +39,7 @@ import api from '@/api/api'
 import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
 import {ENV} from 'conf/prod.env.js'
 import auth from '@/helper/auth'
+import {FWH} from '../config/prod.env.js'
 export default {
   name: 'app',
   components: {
@@ -56,7 +61,8 @@ export default {
       srcListDev: [
         'http://saas-dev.taihuoniao.com/ssologin.html',
         'http://dev.taihuoniao.com/ssologin.html'
-      ]
+      ],
+      fwh: FWH
     }
   },
   watch: {
@@ -93,7 +99,11 @@ export default {
         this.path = list
       }
     }
-    this.getVersion()
+    console.warn('FWH107', FWH)
+    if (FWH) {
+    } else {
+      this.getVersion()
+    }
     if (!this.prod.name) {
       this.fetchUser()
     }
@@ -147,6 +157,7 @@ export default {
       })
     },
     getVersion() {
+      console.warn('getVersion160', FWH)
       this.$http.get(api.getVersion)
       .then(res => {
         let version = localStorage.getItem('version')

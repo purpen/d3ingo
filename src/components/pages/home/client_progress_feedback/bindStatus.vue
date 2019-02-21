@@ -1,18 +1,18 @@
 <template>
-<div>
-  <div class="dialog">
+<div class="dialog">
+  <div class="dialog-content">
     <div class="success" v-if="status === 1">
       <img src="../../../../assets/images/home/progress_feedback_bind/Success@2x.png" alt="">
       <p>绑定成功</p>
-      <span>3秒后自动跳转项目进度状态表</span>
+      <span>{{countdown}}秒后自动跳转项目进度状态表</span>
     </div>
     <div class="failure" v-else>
       <img src="../../../../assets/images/home/progress_feedback_bind/fail@2x.png" alt="">
-      <p>链接失败</p>
+      <p>链接失效</p>
       <span>如有疑问，请联系商务人员，重新绑定</span>
     </div>
   </div>
-  <footer v-if="this.status === '0'">
+  <footer v-if="this.status === 0">
     <el-button type="danger" class="btn-bind" @click="">关闭</el-button>
   </footer>
 </div>
@@ -24,7 +24,8 @@ export default {
   data() {
     return {
       type: '',
-      status: ''
+      status: '',
+      countdown: 3
     }
   },
   created() {
@@ -34,31 +35,35 @@ export default {
       this.type = type
     }
     if (this.status) {
-      setTimeout(() => {
-        this.$router.push({name: 'service'})
-      }, 3000)
+      let timer = setInterval(() => {
+        this.countdown = this.countdown - 1
+        if (this.countdown === 0) {
+          clearInterval(timer)
+          this.$router.push({name: 'projectProgress'})
+        }
+      }, 1000)
     }
   }
 }
 </script>
 <style scoped>
-.dialog {
-  position: relative;
+.dialog-content {
+  /* position: relative;
   top: -180px;
   left: 50%;
   transform: translateX(-50%);
-  width: 92%;
+  width: 92%; */
   height: 270px;
   background-color: #fff;
   border-radius: 5px;
   text-align: center;
 }
-.dialog img {
+.dialog-content img {
   width: 80px;
   height: 80px;
   margin-top: 50px;
 }
-.dialog p {
+.dialog-content p {
   font-size: 1.8rem;
   padding: 10px 0;
 }

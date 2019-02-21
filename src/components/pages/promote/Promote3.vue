@@ -1,402 +1,16 @@
 <template>
     <div class="wrap">
-      <div class="isMob" v-if="!isMob">
-        <div class="promote-banner" :style="{ background: 'url(' + require ('assets/images/promote/BG.jpg') + ') no-repeat center'}">
-          <p class="banner-title">太火鸟 | 专注于工业设计和产品创新的全流程B2B服务平台</p>
-          <div class="promote-form">
-            <p class="promote-form-title"><span class="form-bold">免费</span>发布项目需求</p>
-            <div class="form-width">
-              <el-form :model="form" :rules="ruleForm" ref="ruleForm">
-                <el-form-item prop="demand">
-                  <el-input v-model="form.demand" name="username" placeholder="请输入您的需求"></el-input>
-                </el-form-item>
-                <div class="d-f-s">
-                  <el-form-item prop="contact" class="contact-style">
-                    <el-input v-model="form.contact" ref="contact" placeholder="请输入联系人"></el-input>
-                  </el-form-item>
-                  <el-form-item prop="account" class="account-style">
-                    <el-input v-model="form.account" ref="account" placeholder="手机号码"></el-input>
-                  </el-form-item>
-                  <el-form-item prop="smsCode">
-                    <el-input class="smsCode-style" v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
-                      <template slot="append">
-                        <el-button  @click="fetchCode" :disabled="time > 0">{{ codeMsg }}
-                        </el-button>
-                      </template>
-                    </el-input>
-                  </el-form-item>
-                </div>
-                <div class="d-f-j">
-                  <el-button :loading="isLoadingBtn" @click="submit('ruleForm')" class="form-btn2">
-                    免费发布项目需求
-                  </el-button>
-                </div>
-              </el-form>
-            </div>
-          </div>
-        </div>
-        <div class="container">
-          <div class="design-server">
-            <h2 class="public-h2">我们提供的设计服务</h2>
-            <div class="design-type">
-              <ul class="design-type-ul">
-                <li>
-                  <img src="../../../assets/images/promote/design-type/productdesign@2x.png" alt="">
-                  <p>产品外观设计</p>
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-type/structure.png" alt="">
-                  <p>产品结构设计</p>
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-type/Packing.png" alt="">
-                  <p>包装设计</p>
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-type/Graphic.png" alt="">
-                  <p>平面设计</p>
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-type/brand.png" alt="">
-                  <p>品牌设计</p>
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-type/VI.png" alt="">
-                  <p>VI设计</p>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="step">
-          <div class="container">
-            <h2 class="public-h2">只需<span>4</span>步完成设计</h2>
-            <div class="step-img">
-              <ul class="step-ul">
-                <li>
-                  <img src="../../../assets/images/promote/four/SubmitDemand@2x.png" alt="">
-                  <div class="m-t-15">
-                    <p>提交设计需求</p>
-                    <p>设计顾问跟进</p>
-                  </div>
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/four/Matching@2x.png" alt="">
-                  <div class="m-t-15">
-                    <p>敲定设计细节</p>
-                    <p>匹配设计公司</p>
-                  </div>
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/four/StartUp@2x.png" alt="">
-                  <div class="m-t-15">
-                    <p>设计项目启动</p>
-                    <p>客户分段验收</p>
-                  </div>
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/four/Evaluate@2x.png" alt="">
-                  <div class="m-t-15">
-                    <p>交付设计方案</p>
-                    <p>项目评价打分</p>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div class="design-details">
-          <div class="container">
-            <div class="design-company">
-              <div class="line-height28">
-                <span class="number">1000+ </span>
-                <p class="design-title">顶级设计公司</p>
-              </div>
-              <ul class="d-w">
-                <li>
-                  <img src="../../../assets/images/promote/design-company/01@2x.png" alt="">
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-company/02@2x.png" alt="">
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-company/03@2x.png" alt="">
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-company/04@2x.png" alt="">
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-company/05@2x.png" alt="">
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-company/06@2x.png" alt="">
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-company/07@2x.png" alt="">
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-company/08@2x.png" alt="">
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-company/09@2x.png" alt="">
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-company/10@2x.png" alt="">
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-company/11@2x.png" alt="">
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-company/12@2x.png" alt="">
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-company/13@2x.png" alt="">
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-company/14@2x.png" alt="">
-                </li><li>
-                <img src="../../../assets/images/promote/design-company/15@2x.png" alt="">
-              </li><li>
-                <img src="../../../assets/images/promote/design-company/16@2x.png" alt="">
-              </li><li>
-                <img src="../../../assets/images/promote/design-company/17@2x.png" alt="">
-              </li><li>
-                <img src="../../../assets/images/promote/design-company/18@2x.png" alt="">
-              </li><li>
-                <img src="../../../assets/images/promote/design-company/19@2x.png" alt="">
-              </li><li>
-                <img src="../../../assets/images/promote/design-company/20@2x.png" alt="">
-              </li><li>
-                <img src="../../../assets/images/promote/design-company/21@2x.png" alt="">
-              </li><li>
-                <img src="../../../assets/images/promote/design-company/22@2x.png" alt="">
-              </li><li>
-                <img src="../../../assets/images/promote/design-company/23@2x.png" alt="">
-              </li><li>
-                <img src="../../../assets/images/promote/design-company/24@2x.png" alt="">
-              </li><li>
-                <img src="../../../assets/images/promote/design-company/25@2x.png" alt="">
-              </li><li>
-                <img src="../../../assets/images/promote/design-company/26@2x.png" alt="">
-              </li>
-
-              </ul>
-            </div>
-
-            <div class="design-award">
-              <span class="number">300+ </span>
-              <p class="design-title">全球顶级设计大奖</p>
-              <img src="../../../assets/images/promote/design-award.png" alt="">
-            </div>
-
-            <div class="design-customer">
-              <span class="number">1000+ </span>
-              <p class="design-title">服务过的客户</p>
-              <ul class="design-customer-ul">
-                <li>
-                  <img src="../../../assets/images/promote/design-customer/Customer01@2x.png" alt="">
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-customer/Customer02@2x.png" alt="">
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-customer/Customer03@2x.png" alt="">
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-customer/Customer04@2x.png" alt="">
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-customer/Customer05@2x.png" alt="">
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-customer/Customer06@2x.png" alt="">
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-customer/Customer07@2x.png" alt="">
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-customer/Customer08@2x.png" alt="">
-                </li>
-              </ul>
-            </div>
-
-            <div class="design-investment">
-              <p class="design-title">知名投资机构战略投资</p>
-              <ul class="design-investment-ul">
-                <li>
-                  <img src="../../../assets/images/promote/design-investment/Investment01@2x.png" alt="">
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-investment/Investment02@2x.png" alt="">
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-investment/Investment03@2x.png" alt="">
-                </li>
-                <!--<li>-->
-                  <!--<img src="../../../assets/images/promote/design-investment/Investment04@2x.png" alt="">-->
-                <!--</li>-->
-                <li>
-                  <img src="../../../assets/images/promote/design-investment/Investment05@2x.png" alt="">
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-investment/Investment06@2x.png" alt="">
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-investment/Investment07@2x.png" alt="">
-                </li>
-                <li>
-                  <img src="../../../assets/images/promote/design-investment/Investment08@2x.png" alt="">
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div class="efficiency">
-          <div class="container">
-            <h2 class="public-h2"><span>2</span>种工具提高设计效率</h2>
-            <div class="efficiency-details">
-              <el-row>
-                <el-col :xs="24" :sm="24" :md="12" :lg="12">
-                  <div class="">
-                    <p>供需智能匹配 | 高效产品模型</p>
-                    <p class="h-50">AI-D产品设计创新引擎</p>
-                    <p>素材/案例/数据/趋势/日历/创意云盘</p>
-                    <p>降低 <span class="span-bold">90%</span> 成本：专职设计人员招聘</p>
-                  </div>
-                </el-col>
-                <el-col :xs="24" :sm="24" :md="12" :lg="12">
-                  <div class="">
-                    <p>实时沟通协作 | 协同项目管理系统</p>
-                    <p class="h-50">AI-T设计生产力促进工具</p>
-                    <p>虚拟团队/远程协作/创新资源/供应链/资本/渠道</p>
-                    <p>提升 <span class="span-bold">60%</span> 效率：研发设计服务效率</p>
-                  </div>
-                </el-col>
-              </el-row>
-            </div>
-          </div>
-        </div>
-
-        <div class="design-product">
-          <div class="container">
-            <h2 class="public-h2">太火鸟设计服务的项目</h2>
-            <div class="design-product-list">
-              <el-row :gutter="20" class="m-b-20">
-                <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                  <el-card>
-                    <div class="design-product-img">
-                      <img src="../../../assets/images/promote/design-product/case01@2x.png" alt="飞行鱼-亚特兰蒂斯号FiFish Atlantis">
-                      <p>飞行鱼-亚特兰蒂斯号FiFish Atlantis</p>
-                    </div>
-                  </el-card>
-                </el-col>
-                <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                  <el-card>
-                    <div class="design-product-img">
-                      <img src="../../../assets/images/promote/design-product/case02@2x.png" alt="素士声波电动牙刷">
-                      <p>素士声波电动牙刷</p>
-                    </div>
-                  </el-card>
-                </el-col>
-                <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                  <el-card>
-                    <div class="design-product-img">
-                      <img src="../../../assets/images/promote/design-product/case03@2x.png" alt="美妆镜 Amiro">
-                      <p>美妆镜 Amiro</p>
-                    </div>
-                  </el-card>
-                </el-col>
-              </el-row>
-              <el-row :gutter="20">
-                <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                  <el-card>
-                    <div class="design-product-img">
-                      <img src="../../../assets/images/promote/design-product/case04@2x.png" alt="美妆镜 Amiro">
-                      <p>飞美妆镜 Amiro</p>
-                    </div>
-                  </el-card>
-                </el-col>
-                <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                  <el-card>
-                    <div class="design-product-img">
-                      <img src="../../../assets/images/promote/design-product/case05@2x.png" alt="凡曦 | 御蜜粒卫生巾包装">
-                      <p>凡曦 | 御蜜粒卫生巾包装</p>
-                    </div>
-                  </el-card>
-                </el-col>
-                <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                  <el-card>
-                    <div class="design-product-img">
-                      <img src="../../../assets/images/promote/design-product/case06@2x.png" alt="插画设计">
-                      <p>插画设计</p>
-                    </div>
-                  </el-card>
-                </el-col>
-              </el-row>
-            </div>
-          </div>
-        </div>
-
-        <div class="desigb-about">
-          <div class="container">
-            <el-row :gutter="145">
-              <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                <img src="../../../assets/images/promote/about/ReleaseDemand@2x.png" alt="">
-                <p class="desigb-about-p">立即发布需求</p>
-                <span class="desigb-about-span">注册并发布项目需求</span>
-                <div>
-                  <a @click="direct('projectCreate')"><button class="design-btn">免费发布项目需求</button></a>
-                </div>
-              </el-col>
-              <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                <img src="../../../assets/images/promote/about/ContactUs@2x.png" alt="">
-                <p class="desigb-about-p">联系我们</p>
-                <span class="desigb-about-span" style="color: #7F75EC;font-size: 24px">13031154842</span>
-                <div>
-                  <a href="mailto:gengting@taihuoniao.com"><button class="design-btn">发送邮件</button></a>
-                </div>
-              </el-col>
-              <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                <img src="../../../assets/images/promote/about/EnterNumber@2x.png" alt="">
-                <p class="desigb-about-p">输入您的电话</p>
-                <span class="desigb-about-span">我们会尽快给您回电</span>
-                <div class="input-phone">
-                  <el-input placeholder="请输入您的电话号" v-model="phone">
-                    <template slot="append"><span class="footer-contact" @click="footerContact">快速沟通</span></template>
-                  </el-input>
-                </div>
-              </el-col>
-            </el-row>
-          </div>
-          <div class="bounced" v-if="isShowBounced">
-            <div class="bounced_title">
-              <h2>放假通知</h2>
-              <img src="../../../assets/images/promote/close@2x.png" @click="closeBounced" alt="">
-            </div>
-            <div class="d_content">
-              <div class="d_content_box">
-                <p style="margin-bottom: 10px">尊敬的客户您好：</p>
-                <p>本公司定于12月30日到1月1日休息，2日上班。对此为您带来不便请谅解。
-                </p>
-                <p>谨代表公司祝广大客户元旦快乐！</p>
-              </div>
-            </div>
-            <div class="bounced_footer">
-              <p>太火鸟科技有限公司</p>
-              <p>2018年12月29日</p>
-            </div>
-          </div>
-        </div>
-      </div>
       <!--app-->
-      <div class="show-app" v-else>
+      <div class="show-app">
         <div class="head">
           <div class="bgimg">
             <img src="../../../assets/images/promote/app/BG01.png"/>
-            <img src="../../../assets/images/promote/app/11551541487314_.pic@2x.png" class="logo"/>
-            <div class="app-bounced" v-if="isShowBounced">
+            <div class="logo">
+              <img src="../../../assets/images/taihuoniaologo.png" />
+              <img src="../../../assets/images/youkegongchang.png" />
+            </div>
+
+            <!-- <div class="app-bounced" v-if="isShowBounced">
               <div class="app-bounced-box">
                 <img @click="closeBounced" src="../../../assets/images/promote/appclose@2x.png" alt="">
                 <div class="app-d-content">
@@ -408,12 +22,12 @@
                   <p>太火鸟科技有限公司  2018年12月29日 </p>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
           <div class="title mtop_20 line-height20">
-            <div class="fs_13">太火鸟 | 专注于工业设计和产品创新的全流程B2B服务平台</div>
+            <div class="fs_13">优客工场联合太火鸟，首推B2B设计对接服务</div>
             <div class="fc_red fs_25 mtop_15 line-height28">1000+ 顶级设计公司<br/>免费提供设计对接服务</div>
-            <div class="fs_14 mtop_15 line-height28">现在发布设计需求<br/>有机会获得投资孵化和营销推广扶持</div>
+            <div class="fs_14 mtop_15 line-height28">现在发布设计需求，尊享全单6折优惠</div>
           </div>
           <div class="swiper">
             <div>
@@ -446,7 +60,7 @@
         <div class="concent line-height20">
           <div class="fc_red fs_24 mtop_20">太火鸟的 背景和实力</div>
           <div class="fs_16 mtop_15">知名投资机构战略投资</div>
-          <div class="fs_16 mtop_20">真格基金、创新工场、海泉基金<br>麦顿资本、罗莱生活、小米、顺为资本</div>
+          <div class="fs_16 mtop_20">真格基金、创新工场、麦顿资本、罗莱生活、<br>小米、顺为资本</div>
           <div class="circe mtop_20">
             <div class="small_circe fs_20 fc_red">1000+</div>
             <div class="fs_15 fc_white" style="margin-left: 5px;">入驻全球顶级设计公司</div>
@@ -462,7 +76,7 @@
           <div class="fs_18 mtop_20">太火鸟全球范围荣誉</div>
           <div class="cotimg mtop_20"><img src="../../../assets/images/promote/app/design_bg@2x.png"/></div>
           <div class="fs_14 mtop_10">WIDC2018世界工业设计大会TIA设计服务平台大奖</div>
-          <div class="fc_red fs_24 mtop_40">四步完成设计 设计服务流程</div>
+          <!-- <div class="fc_red fs_24 mtop_40">四步完成设计 设计服务流程</div>
           <div class="four mtop_40">
             <div>
               <img src="../../../assets/images/promote/app/01.png" class="img_for"/>
@@ -491,8 +105,9 @@
               <img src="../../../assets/images/promote/app/03.png" class="img_for"/>
               <div class="fs_14 mtop_15">设计项目启动<br>客户分段验收</div>
             </div>
-          </div>
-          <div class="fc_red fs_24  mtop_15">双擎创新模式 提升设计效率</div>
+          </div> -->
+          <!-- <div class="fc_red fs_24  mtop_15">双擎创新模式 提升设计效率</div> -->
+          <div class="fc_red fs_24 mtop_40">太火鸟 提升设计效率</div>
           <div class="fs_14 mtop_40">供需智能匹配 | 高效产品模型</div>
           <div class="red_circe mtop_20 fs_16">
             AI-D产品设计创新引擎
@@ -593,7 +208,7 @@
                 <el-input v-model="form.appCompany" ref="appCompany" placeholder="公司名称"></el-input>
               </el-form-item>
               <el-form-item prop="account" label="联系方式">
-                <el-input v-model="form.account" ref="account" placeholder="请输入联系方式"></el-input>
+                <el-input :maxlength="11" v-model="form.account" ref="account" placeholder="请输入联系方式"></el-input>
               </el-form-item>
               <el-form-item prop="smsCode" label="验证码" class="wap-disabled-btn">
                 <el-input class="" v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
@@ -796,7 +411,7 @@
               phone: this.form.account,
               company_name: this.form.appCompany,
               sms_code: this.form.smsCode,
-              from: 4
+              from: 7
             }
             this.$http.post(api.pcAdd, row)
               .then(res => {
@@ -1266,12 +881,24 @@
     width: 100%;
   }
   .bgimg .logo{
-    width: 3.8rem;
-    height: 6rem;
     position: absolute;
-    left: 45%;
-    top: 50%;
+    top: 25%;
+    transform: translate(0, 40%);
+    width: 100%;
+    text-align: center
   }
+  .bgimg .logo img{
+    width: 9rem;
+    height: 7rem;
+    display: inline-block;
+  }
+  /* .bgimg .otherlogo{
+    width: 9rem;
+    height: 7rem;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+  } */
   .title{
     display: flex;
     flex-direction: column;
