@@ -26,7 +26,7 @@
         </div>
       </div>
 
-      <div class="register-content">
+      <div class="register-content pass-place">
         <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px"
                  class="input">
           <el-form-item label="" prop="account">

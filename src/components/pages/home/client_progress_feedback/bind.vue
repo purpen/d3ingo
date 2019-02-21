@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="boolProjectInfo">
     <div class="dialog">
       <h4>绑定确认</h4>
       <div class="dialog-b">
@@ -34,11 +34,11 @@ export default {
   data() {
     return {
       token: '',
-      APPID: 'wx75a9ffb78f202fb3',
       code: '',
       state: '',
       ticket: '22222',
-      projectInfo: {}
+      projectInfo: {},
+      boolProjectInfo: false
     }
   },
   methods: {
@@ -66,9 +66,6 @@ export default {
         console.error(error.message)
       })
     },
-    binding() {
-      this.$router.push({name: 'bindFailure'})
-    },
     getProjectInfo() {
       let row = {
         token: this.token,
@@ -76,13 +73,16 @@ export default {
       }
       this.$http.get(api.wxClueUrlValue, {params: row}).then(res => {
         if (res.data.meta.status_code === 200) {
+          this.boolProjectInfo = true
           this.projectInfo = res.data.data
         } else {
           console.error(res.data.meta.message)
-          this.$message.error(res.data.meta.message)
+          this.$router.push({name: 'bindFailure', query: {type: this.projectInfo.data_type, status: 0}})
+          // this.$message.error(res.data.meta.message)
         }
       }).catch(error => {
         console.error(error.message)
+        this.$message.error(error.message)
       })
     },
     goWxClueBinding() {
@@ -95,10 +95,11 @@ export default {
           this.$router.push({name: 'bindSuccess', query: {type: this.projectInfo.data_type, status: 1}})
         } else {
           console.log(res.data.meta.message)
-          this.$router.push({name: 'bindFailure', query: {type: this.projectInfo.data_type, status: 0}})
+          this.$message.error(res.data.meta.message)
         }
       }).catch(error => {
         console.error(error.message)
+        this.$message.error(error.message)
       })
     }
   },
@@ -107,7 +108,7 @@ export default {
     if (code) {
       this.code = code
       this.state = state
-      // this.getToken()
+      this.getToken()
     }
   }
 }
@@ -151,6 +152,9 @@ export default {
 }
 .design-p {
   line-height: 30px;
+}
+.project-info .p-item:last-child {
+  border-bottom: none;
 }
 .p-item {
   padding: 15px 0px;

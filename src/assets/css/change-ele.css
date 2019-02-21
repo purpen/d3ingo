@@ -904,6 +904,18 @@
     box-shadow: none;
     border: 1px solid #d2d2d2;
   }
+
+  .inner-place .el-input__inner {
+    line-height: 0;
+    padding: 15px;
+  }
+  .pass-place .el-input__inner {
+    line-height: 20px;
+    padding: 15px;
+  }
+  .line-hei-20 .el-input__inner {
+    line-height: 20px
+  }
   /*推广页*/
   .input-phone input {
     height: 50px;
@@ -960,6 +972,12 @@
   }
   .send-bt .el-button--default {
     min-width: 80px;
+  }
+  .bt-chage-ele .el-input__inner {
+    padding: 0 10px;
+  }
+  .bt-chage-ele .el-input-group__append {
+    min-width: 100px;
   }
   .call-ele .el-input-group--append {
     padding-left: 0;

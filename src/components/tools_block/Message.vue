@@ -7,13 +7,13 @@
       <span :class="{'is-active': myView === 'system'}" @click="changeView('system')">系统通知</span>
       <i class="fx fx-icon-nothing-close-error" @click="showCover = 'hide', myView = false"></i>
     </div>
-    <div v-if="myView === 'order'" class="cover-content scroll-bar">
+    <div v-if="myView === 'order'" class="cover-content">
       <order-message></order-message>
     </div>
-    <div v-else-if="myView === 'task'" class="cover-content scroll-bar">
+    <div v-else-if="myView === 'task'" class="cover-content">
       <task-message></task-message>
     </div>
-    <div v-if="myView === 'system'" class="cover-content scroll-bar">
+    <div v-if="myView === 'system'" class="cover-content">
       <system-message></system-message>
     </div>
   </div>

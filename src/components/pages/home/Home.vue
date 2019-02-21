@@ -152,7 +152,9 @@
             </div>
             <div class="content">
               <p class="title">{{ d.title }}</p>
-              <p class="des">{{ d.content }}</p>
+              <el-tooltip :content="d.content" placement="right">
+                <p class="des">{{ d.content }}</p>
+              </el-tooltip>
             </div>
           </a>
         </el-card>
@@ -384,10 +386,10 @@
           },
           {
             id: 6,
-            title: '轻创新⋅设计造物-邀请加入铟果D³INGO活动招募',
+            title: '轻创新⋅设计造物-邀请加入太火鸟活动招募',
             cover_url: require ('@/assets/images/subject/list_04.jpg'),
             url: '/subject/EnterpriseRecruit',
-            content: '铟果D³INGO是太火鸟旗下的创新产品交易与SaaS分发平台，是高效线上设计交易服务平台及中国领先的创新产品策源地，围绕创新产品与设计交易，为相关参与方提供包括创新产品孵化、资金保障、流量支持、运营维护等相关服务与帮助。'
+            content: '太火鸟创新产品交易与SaaS分发平台，是高效线上设计交易服务平台及中国领先的创新产品策源地，围绕创新产品与设计交易，为相关参与方提供包括创新产品孵化、资金保障、流量支持、运营维护等相关服务与帮助。'
           }
         ],
         designCaseList: [],

@@ -165,7 +165,7 @@
 
       <div class="withdraw-input">
         <p class="withdraw-title margin-t-b-20">提现金额</p>
-        <div class="flex">
+        <div class="flex line-hei-20">
           <el-input placeholder="请输入提现额度" v-model.number.trim="withdrawPrice">
             <template slot="prepend">¥</template>
           </el-input>

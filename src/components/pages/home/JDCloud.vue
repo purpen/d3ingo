@@ -75,122 +75,131 @@
       <div class="round-backgound" v-if="!isMob">
         <div class="bg1">
         </div>
-        <el-row :gutter="10" type="flex" align="middle" class="head-round">
-          <el-col :span="13">
-              <el-col :span="17" :offset="7" class="design-font">设计从未如此简单</el-col>
-              <el-col :span="17" :offset="7" class="free-round"><span class="free-font">免费</span>发布需求，全程管家服务</el-col>
-          </el-col>
-          <el-col :span="11">
-            <el-col :span="15" class="header-style">
-              <el-col :span="24" class="ius-round">
-                <span class="free-color">免费</span>发布项目需求
-              </el-col>
-              <el-form @submit.native.prevent :model="form" :rules="ruleForm" ref="ruleForm" class="text-center">
-                <el-row>
-                  <el-col :span="20" :offset="2">
-                    <el-form-item prop="demand">
-                      <el-input v-model="form.demand" name="username" placeholder="请输入您的需求"></el-input>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="20" :offset="2">
-                    <el-form-item prop="contact">
-                      <el-input v-model="form.contact" ref="contact" placeholder="请输入联系人"></el-input>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-                <el-row :gutter="10">
-                  <el-col :span="10" :offset="2">
-                    <el-form-item prop="account">
-                      <el-input v-model="form.account" ref="account" placeholder="手机号码"></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="10">
-                    <el-form-item prop="smsCode">
-                      <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码" class="send-bt">
-                        <template slot="append">
-                          <el-button @click="fetchCode" :disabled="time > 0" class="get-btn">{{ codeMsg }}
-                          </el-button>
-                        </template>
-                      </el-input>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-                <el-col>
-                  <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt">
-                    免费发布项目需求
-                  </button>
-                </el-col>
-              </el-form>
+        <div class="container">
+          <el-row :gutter="10" type="flex" align="middle" class="head-round">
+            <el-col :span="13">
+                <el-col :span="20" class="design-font">设计从未如此简单</el-col>
+                <el-col :span="20" class="free-round"><span class="free-font">免费</span>发布需求，全程管家服务</el-col>
             </el-col>
-          </el-col>
-        </el-row>
+            <el-col :span="11">
+              <el-col :span="24" class="header-style">
+                <el-col :span="24" class="ius-round">
+                  <span class="free-color">免费</span>发布项目需求
+                </el-col>
+                <el-form @submit.native.prevent :model="form" :rules="ruleForm" ref="ruleForm" class="text-center">
+                  <el-row>
+                    <el-col :span="20" :offset="2">
+                      <el-form-item prop="demand">
+                        <el-input v-model="form.demand" name="username" placeholder="请输入您的需求"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="20" :offset="2">
+                      <el-form-item prop="contact">
+                        <el-input v-model="form.contact" ref="contact" placeholder="请输入联系人"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row :gutter="10">
+                    <el-col :span="10" :offset="2">
+                      <el-form-item prop="account">
+                        <el-input v-model="form.account" ref="account" placeholder="手机号码"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="10">
+                      <el-form-item prop="smsCode">
+                        <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码" class="send-bt bt-chage-ele">
+                          <template slot="append">
+                            <el-button @click="fetchCode" :disabled="time > 0" class="get-btn">{{ codeMsg }}
+                            </el-button>
+                          </template>
+                        </el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-col>
+                    <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt">
+                      免费发布项目需求
+                    </button>
+                  </el-col>
+                </el-form>
+              </el-col>
+            </el-col>
+          </el-row>
+        </div>
         <el-row :gutter="10" class="six-img">
-          <el-col :span="3" :offset="3">
+          <div class="container">
+            <el-col :span="4">
+              <div class="six-col">
+                <img src="../../../assets/images/promote/design-type/productdesign@2x.png" alt="">
+                <p>产品外观设计</p>
+              </div>
+            </el-col>
+            <el-col :span="4">
             <div class="six-col">
-              <img src="../../../assets/images/promote/design-type/productdesign@2x.png" alt="">
-              <p>产品外观设计</p>
-            </div>
-          </el-col>
-          <el-col :span="3">
-          <div class="six-col">
-            <img src="../../../assets/images/promote/design-type/structure.png" alt="">
-            <p>产品结构设计</p>
-            </div>
-          </el-col>
-          <el-col :span="3">
-            <div class="six-col">
-              <img src="../../../assets/images/promote/design-type/Packing.png" alt="">
-              <p>包装设计</p>
-            </div>
-          </el-col>
-          <el-col :span="3">
-            <div class="six-col">
-              <img src="../../../assets/images/promote/design-type/Graphic.png" alt="">
-              <p>平面设计</p>
-            </div>
-          </el-col>
-          <el-col :span="3">
-            <div class="six-col">
-              <img src="../../../assets/images/promote/design-type/brand.png" alt="">
-              <p>品牌设计</p>
-            </div>
-          </el-col>
-          <el-col :span="3">
-            <div class="six-col">
-              <img src="../../../assets/images/promote/design-type/VI.png" alt="">
-              <p>VI设计</p>
-            </div>
-          </el-col>
+              <img src="../../../assets/images/promote/design-type/structure.png" alt="">
+              <p>产品结构设计</p>
+              </div>
+            </el-col>
+            <el-col :span="4">
+              <div class="six-col">
+                <img src="../../../assets/images/promote/design-type/Packing.png" alt="">
+                <p>包装设计</p>
+              </div>
+            </el-col>
+            <el-col :span="4">
+              <div class="six-col">
+                <img src="../../../assets/images/promote/design-type/Graphic.png" alt="">
+                <p>平面设计</p>
+              </div>
+            </el-col>
+            <el-col :span="4">
+              <div class="six-col">
+                <img src="../../../assets/images/promote/design-type/brand.png" alt="">
+                <p>品牌设计</p>
+              </div>
+            </el-col>
+            <el-col :span="4">
+              <div class="six-col">
+                <img src="../../../assets/images/promote/design-type/VI.png" alt="">
+                <p>VI设计</p>
+              </div>
+            </el-col>
+          </div>
         </el-row>
-        <el-row class="pad-top-50">
-          <el-col :span="18" :offset="3" class="four-img"></el-col>
-        </el-row>
+        <div class="container">
+          <el-row class="pad-top-50" style="margin-left: 5px;
+    margin-right: 5px;">
+            <el-col :span="24" class="four-img"></el-col>
+          </el-row>
+        </div>
         <el-row :gutter="10" class="pad-top-50">
-          <div>
-            <el-col :offset="3" :span="9">
+          <div class="container">
+            <el-col :span="12">
               <div class="two-img1"></div>
             </el-col>
-            <el-col :span="9">
+            <el-col :span="12">
               <div class="two-img2"></div>
             </el-col>
           </div>
         </el-row>
-        <el-row :gutter="20">
-          <div class="one pad-top-50 z-index-111">
-            <div class="bg2"></div>
-              <el-col :span="6" :offset="3">
-                <div class="design-company z-index-111"></div>
+        <div class="container">
+          <el-row :gutter="20">
+            <div class="one pad-top-50 z-index-111">
+              <div class="bg2"></div>
+                <el-col :span="8">
+                  <div class="design-company z-index-111"></div>
+                </el-col>
+              <el-col :span="8">
+                <div class="design-award z-index-111"></div>
               </el-col>
-            <el-col :span="6">
-              <div class="design-award z-index-111"></div>
-            </el-col>
-            <el-col :span="6">
-              <div class="customer z-index-111"></div>
-            </el-col>
-          </div>
-        </el-row>
+              <el-col :span="8">
+                <div class="customer z-index-111"></div>
+              </el-col>
+            </div>
+          </el-row>
+        </div>
         <div class="design-product">
           <div class="container">
             <h2 class="public-h2">艺火设计服务的项目</h2>
@@ -960,8 +969,12 @@ export default {
     }
   },
   created() {
-    if (this.$store.state.event.prod.id === 0) {
-      this.$router.replace({name: 'home'})
+    let that = this
+    if (that.$store.state.event.prod.id === 0) {
+      that.$router.replace({name: 'home'})
+    }
+    if (!that.$route.query || !that.$route.query.from) {
+      that.$router.push({name: 'SaaSIndex', query: {from: 2}})
     }
   },
   mounted () {
@@ -1005,7 +1018,8 @@ export default {
       if (!this.user || this.user.type === 1) {
         this.$router.push({name: path})
       } else {
-        this.$message.error('请使用需求公司账号登录')
+        this.$router.push({name: 'register'})
+        // this.$message.error('请使用需求公司账号登录')
       }
     },
     // 底部联系
@@ -1032,10 +1046,11 @@ export default {
     // pc 右下角
     contact () {
       if (this.phone) {
-        this.$http.post(api.pcAdd, {phone: this.phone, from: 3})
+        this.$http.post(api.pcAdd, {phone: this.phone, from: 3, new_from: this.$route.query.from, device: this.isMob ? 2 : 1, url: window.location.href})
           .then(res => {
             if (res.data.meta.status_code === 200) {
               this.$message.success('提交成功')
+              this.phone = ''
             } else {
               this.$message.error(res.data.meta.message)
             }
@@ -1081,13 +1096,16 @@ export default {
             user_name: this.form1.name,
             phone: this.form1.account,
             sms_code: this.form1.smsCode,
-            from: 4
+            new_from: this.$route.query.from, // 1. 小程序 2. 默认/铟果 3. 艺火 4. 360 5. 头条号 6. 优客
+            device: this.isMob ? 2 : 1, // 1.PC 2.Phone
+            from: 4,
+            url: window.location.href
           }
           this.$http.post(api.pcAdd, row)
             .then(res => {
               if (res.data.meta.status_code === 200) {
                 this.$message.success('提交成功')
-                this.form = {}
+                this.form1 = {}
                 this.time = 0
               } else {
                 this.$message.error(res.data.meta.message)
@@ -1106,8 +1124,11 @@ export default {
             user_name: this.form.contact,   // 联系人
             phone: this.form.account,        // 手机号
             item_name: this.form.demand,   // 需求
+            new_from: this.$route.query.from, // 1. 小程序 2. 默认/铟果 3. 艺火 4. 360 5. 头条号 6. 优客
+            device: this.isMob ? 2 : 1, // 1.PC 2.Phone
             from: 2,   // 小程序or网页
-            sms_code: this.form.smsCode   // 小程序or网页
+            sms_code: this.form.smsCode,   // 小程序or网页
+            url: window.location.href
           }
           this.$http.post(api.pcAdd, row)
             .then(res => {
