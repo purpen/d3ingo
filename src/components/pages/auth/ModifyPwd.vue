@@ -1,4 +1,5 @@
 <template>
+<!--  此页面废 -->
   <div class="container">
     <div class="blank20"></div>
     <el-row :gutter="20">
@@ -152,7 +153,7 @@ import vMenu from '@/components/pages/v_center/Menu'
 import vMenuSub from '@/components/pages/v_center/account/MenuSub'
 import api from '@/api/api'
 import typeData from '@/config'
-
+// 此页面废
 import '@/assets/js/format'
 
 export default {

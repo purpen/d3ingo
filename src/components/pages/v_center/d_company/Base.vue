@@ -885,7 +885,13 @@
         })
       }
     },
-    watch: {},
+    watch: {
+      '$route'(to, form) {
+        if ('legalize' in to.query) {
+          this.dialogVisible = true
+        }
+      }
+    },
     created: function () {
       let uType = this.$store.state.event.user.type
       // 如果是设计公司，跳到设计公司
@@ -894,6 +900,10 @@
         return
       }
       this.getDemandCompany()
+      let {query = {}} = this.$route
+      if ('legalize' in query) {
+        this.dialogVisible = true
+      }
       // 加载图片token
       this.$http.get(api.upToken, {})
         .then((response) => {
