@@ -146,7 +146,7 @@
             :current-page="query.page"
             :page-sizes="[20, 50, 100, 500]"
             :page-size="query.pageSize"
-            layout="total, prev, pager, next, jumper"
+            layout="total, sizes, prev, pager, next, jumper"
             :total="query.totalCount">
           </el-pagination>
 
@@ -398,7 +398,12 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+  .admin-search-form > form {
+    font-size: 0;
+  }
+  .admin-search-form  .el-form-item {
+    margin-left: 15px;
+  }
   .match-company-box {
     margin: 10px;
   }

@@ -114,11 +114,11 @@
                   <el-table-column
                     prop="item.id"
                     label="ID"
-                    width="40">
+                    width="50">
                   </el-table-column>
                   <el-table-column
                     label="项目名称"
-                    min-width="140">
+                    min-width="120">
                     <template slot-scope="scope">
                       <p>
                         <a href="#">{{ scope.row.info.name }}</a>
@@ -132,7 +132,7 @@
                   </el-table-column>
                   <el-table-column
                     prop="item.created_at"
-                    width="80"
+                    width="90"
                     label="创建时间">
                   </el-table-column>
                 </el-table>
