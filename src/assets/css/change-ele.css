@@ -999,6 +999,9 @@
   .receipt-form .el-dialog__body {
     padding: 0;
   }
+  .select-opt2 .el-select .el-input__inner {
+    padding-left: 5px;
+  }
 @media screen and (max-width: 767px) {
   .el-dialog--large,
   .el-dialog--small,
