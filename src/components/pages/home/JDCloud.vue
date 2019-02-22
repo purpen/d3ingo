@@ -1049,7 +1049,7 @@ export default {
     // pc 右下角
     contact () {
       if (this.phone) {
-        this.$http.post(api.pcAdd, {phone: this.phone, from: 3, new_from: this.$route.query.from, device: this.isMob ? 2 : 1, url: window.location.href})
+        this.$http.post(api.pcAdd, {phone: this.phone, from: 5})
           .then(res => {
             if (res.data.meta.status_code === 200) {
               this.$message.success('提交成功')
@@ -1123,7 +1123,7 @@ export default {
             user_name: this.form.contact,   // 联系人
             phone: this.form.account,        // 手机号
             item_name: this.form.demand,   // 需求
-            from: 2   // 小程序or网页
+            from: 5   // 小程序or网页
           }
           if (this.isMob) {
             row.from = 4
