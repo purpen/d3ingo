@@ -894,6 +894,10 @@
         return
       }
       this.getDemandCompany()
+      let {params = {}} = this.$route
+      if (params.id === 1) {
+        this.dialogVisible = true
+      }
       // 加载图片token
       this.$http.get(api.upToken, {})
         .then((response) => {

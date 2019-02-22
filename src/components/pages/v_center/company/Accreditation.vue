@@ -1,4 +1,5 @@
 <template>
+<!-- 以前的页面, 废除 -->
   <div class="blank30 vcenter">
     <el-row :gutter="24">
       <v-menu currentName="company" :class="[isMob ? 'v-menu' : '']"></v-menu>
@@ -185,7 +186,7 @@
       var uType = this.$store.state.event.user.type
       // 如果是需求公司，跳到设计公司
       if (uType !== 2) {
-        this.$router.replace({name: 'vcenterDCompanyAccreditation'})
+        this.$router.replace({name: 'vcenterDComputerBase', query: {legalize: 1}})
         return
       }
       const that = this

@@ -742,7 +742,7 @@
           :title= "`${custom.info}平台协议`"
           :visible.sync="dialogAgreement"
           top="5%"
-          width="580px">
+          width="880px">
           <div>
             <div class="agree-content">
               <p>本协议由缔约双方在自愿、平等、公平及诚实信用原则的基础上，根据《中华人民共和国合同法》等相关法律、法规的规定，经友好协商缔结。</p>
@@ -1463,10 +1463,6 @@
           return false
         }
       },
-      // 去认证
-      goVerify() {
-        this.$router.push({name: 'vcenterComputerIdentification'})
-      },
       handlePreview(file) {
         console.log(file)
       },
@@ -1788,6 +1784,10 @@
         return
       }
       this.getdesignCompanyInfo()
+      let {params = {}} = this.$route
+      if (params.id === 2) {
+        this.dialogVisible = true
+      }
       // 加载图片token
       this.$http.get(api.upToken, {}).then(response => {
         if (response.data.meta.status_code === 200) {

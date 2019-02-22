@@ -46,29 +46,29 @@ module.exports = [
     component: require('@/components/pages/v_center/d_company/Base')
   },
   // 公司认证
-  {
-    path: '/vcenter/d_company/accreditation',
-    name: 'vcenterDCompanyAccreditation',
-    meta: {
-      title: '公司认证',
-      requireAuth: true,
-      hideHeader: true,
-      hideFooter: true
-    },
-    component: require('@/components/pages/v_center/d_company/Accreditation')
-  },
+  // {
+  //   path: '/vcenter/d_company/accreditation',
+  //   name: 'vcenterDCompanyAccreditation',
+  //   meta: {
+  //     title: '公司认证',
+  //     requireAuth: true,
+  //     hideHeader: true,
+  //     hideFooter: true
+  //   },
+  //   component: require('@/components/pages/v_center/d_company/Accreditation')
+  // },
   // 公司认证 -- 编辑
-  {
-    path: '/vcenter/d_company/identification',
-    name: 'vcenterDCompanyIdentification',
-    meta: {
-      title: '公司认证',
-      requireAuth: true,
-      hideHeader: true,
-      hideFooter: true
-    },
-    component: require('@/components/pages/v_center/d_company/Identification')
-  },
+  // {
+  //   path: '/vcenter/d_company/identification',
+  //   name: 'vcenterDCompanyIdentification',
+  //   meta: {
+  //     title: '公司认证',
+  //     requireAuth: true,
+  //     hideHeader: true,
+  //     hideFooter: true
+  //   },
+  //   component: require('@/components/pages/v_center/d_company/Identification')
+  // },
   // 我的钱包列表
   {
     path: '/vcenter/wallet/list',
@@ -426,29 +426,29 @@ module.exports = [
     component: require('@/components/pages/v_center/company/Taking')
   },
   // 公司认证
-  {
-    path: '/vcenter/company/accreditation',
-    name: 'vcenterComputerAccreditation',
-    meta: {
-      title: '公司认证',
-      requireAuth: true,
-      hideHeader: true,
-      hideFooter: true
-    },
-    component: require('@/components/pages/v_center/company/Accreditation')
-  },
+  // {
+  //   path: '/vcenter/company/accreditation',
+  //   name: 'vcenterComputerAccreditation',
+  //   meta: {
+  //     title: '公司认证',
+  //     requireAuth: true,
+  //     hideHeader: true,
+  //     hideFooter: true
+  //   },
+  //   component: require('@/components/pages/v_center/company/Accreditation')
+  // },
   // 公司认证-编辑
-  {
-    path: '/vcenter/company/identification',
-    name: 'vcenterComputerIdentification',
-    meta: {
-      title: '公司认证',
-      requireAuth: true,
-      hideHeader: true,
-      hideFooter: true
-    },
-    component: require('@/components/pages/v_center/company/Identification')
-  },
+  // {
+  //   path: '/vcenter/company/identification',
+  //   name: 'vcenterComputerIdentification',
+  //   meta: {
+  //     title: '公司认证',
+  //     requireAuth: true,
+  //     hideHeader: true,
+  //     hideFooter: true
+  //   },
+  //   component: require('@/components/pages/v_center/company/Identification')
+  // },
   // 项目动态
   {
     path: '/vcenter/remind/list',
