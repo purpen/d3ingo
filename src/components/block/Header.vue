@@ -9,14 +9,14 @@
               <router-link :to="{name: 'home'}" class="el-menu-item logo">
                 <img :src="custom.logo" :alt="custom.info">
               </router-link>
-              <el-menu-item index="home" :route="menu.home">首页</el-menu-item>
-              <el-menu-item index="server" :route="menu.server">服务</el-menu-item>
-              <el-menu-item index="article" :route="menu.article">铟果说</el-menu-item>
-              <el-menu-item index="design_case" :route="menu.design_case">灵感</el-menu-item>
-              <el-menu-item index="commonly_sites" :route="menu.commonly_sites">设计工具</el-menu-item>
-              <el-menu-item index="innovation_index" :route="menu.innovation_index">创新指数</el-menu-item>
-              <el-menu-item index="trade_fairs" :route="menu.home_page" v-if="!token">交易会</el-menu-item>
-              <el-menu-item index="trade_fairs" :route="menu.demand_login" v-if="token">交易会</el-menu-item>
+              <el-menu-item index="/home" :route="menu.home">首页</el-menu-item>
+              <el-menu-item index="/server" :route="menu.server">服务</el-menu-item>
+              <el-menu-item index="/article" :route="menu.article">铟果说</el-menu-item>
+              <el-menu-item index="/design_case" :route="menu.design_case">灵感</el-menu-item>
+              <el-menu-item index="/commonly_sites" :route="menu.commonly_sites">设计工具</el-menu-item>
+              <el-menu-item index="/innovation_index" :route="menu.innovation_index">创新指数</el-menu-item>
+              <el-menu-item index="/trade_fairs" :route="menu.home_page" v-if="!token">交易会</el-menu-item>
+              <el-menu-item index="/trade_fairs" :route="menu.demand_login" v-if="token">交易会</el-menu-item>
             </el-menu>
           </hgroup>
           <div class="nav-right nav-menu" v-if="isLogin">
@@ -193,8 +193,8 @@
 
           <div class="nav-right" v-else>
             <el-menu class="el-menu-header" :default-active="menuactive" mode="horizontal" router>
-              <el-menu-item index="login" :route="menu.login">登录</el-menu-item>
-              <el-menu-item index="register" :route="menu.register" class="register">免费注册</el-menu-item>
+              <el-menu-item index="/login" :route="menu.login">登录</el-menu-item>
+              <el-menu-item index="/register" :route="menu.register" class="register">免费注册</el-menu-item>
             </el-menu>
           </div>
 
