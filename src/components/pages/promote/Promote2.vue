@@ -17,14 +17,14 @@
                   <el-form-item prop="account" class="account-style">
                     <el-input v-model="form.account" ref="account" placeholder="手机号码"></el-input>
                   </el-form-item>
-                  <el-form-item prop="smsCode">
+                  <!-- <el-form-item prop="smsCode">
                     <el-input class="smsCode-style" v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
                       <template slot="append">
                         <el-button  @click="fetchCode" :disabled="time > 0">{{ codeMsg }}
                         </el-button>
                       </template>
                     </el-input>
-                  </el-form-item>
+                  </el-form-item> -->
                 </div>
                 <div class="d-f-j">
                   <el-button :loading="isLoadingBtn" @click="submit('ruleForm')" class="form-btn2">
@@ -595,14 +595,14 @@
               <el-form-item prop="account" label="联系方式">
                 <el-input v-model="form.account" ref="account" placeholder="请输入联系方式"></el-input>
               </el-form-item>
-              <el-form-item prop="smsCode" label="验证码" class="wap-disabled-btn">
+              <!-- <el-form-item prop="smsCode" label="验证码" class="wap-disabled-btn">
                 <el-input class="" v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
                   <template slot="append">
                     <el-button  @click="fetchCode" :disabled="time > 0">{{ codeMsg }}
                     </el-button>
                   </template>
                 </el-input>
-              </el-form-item>
+              </el-form-item> -->
             </el-form>
           </div>
           <button class="btn_class mtop_40 fs_20" @click="submit_app('ruleForm')">立即提交</button>
@@ -672,7 +672,6 @@
         isLoadingBtn: false,
         userList: [],   // 消息列表
         form: {
-          smsCode: '',  // 验证码
           demand: '',   // 需求
           account: '',  // 手机号
           contact: '',   // 联系人
@@ -795,7 +794,6 @@
               user_name: this.form.name,
               phone: this.form.account,
               company_name: this.form.appCompany,
-              sms_code: this.form.smsCode,
               from: 4
             }
             this.$http.post(api.pcAdd, row)
@@ -821,8 +819,7 @@
               user_name: this.form.contact,   // 联系人
               phone: this.form.account,        // 手机号
               item_name: this.form.demand,   // 需求
-              from: 2,   // 小程序or网页
-              sms_code: this.form.smsCode   // 小程序or网页
+              from: 2   // 小程序or网页
             }
             this.$http.post(api.pcAdd, row)
               .then(res => {
@@ -838,7 +835,7 @@
                 this.$message.error(error)
               })
           } else {
-            this.$message.error('请填写信息')
+            // this.$message.error('请填写信息')
           }
         })
       }
@@ -969,11 +966,11 @@
   }
 
   .contact-style {
-    width: 200px;
+    width: 300px;
   }
 
   .account-style {
-    width: 160px;
+    width: 280px;
   }
 
   .smsCode-style {

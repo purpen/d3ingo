@@ -742,7 +742,7 @@
           :title= "`${custom.info}平台协议`"
           :visible.sync="dialogAgreement"
           top="5%"
-          width="580px">
+          width="880px">
           <div>
             <div class="agree-content">
               <p>本协议由缔约双方在自愿、平等、公平及诚实信用原则的基础上，根据《中华人民共和国合同法》等相关法律、法规的规定，经友好协商缔结。</p>
@@ -1462,10 +1462,6 @@
           this.$message.error('上传头像图片大小不能超过 2MB!')
           return false
         }
-      },
-      // 去认证
-      goVerify() {
-        this.$router.push({name: 'vcenterComputerIdentification'})
       },
       handlePreview(file) {
         console.log(file)

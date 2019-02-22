@@ -29,7 +29,7 @@
       'vcenter-right': leftWidth === 2,
         'vcenter-right-mob': isMob}">
       <div class="vcenter-container" v-loading="isLoading">
-        <div :class="['content-item-box', isMob ? 'content-item-box-m' : '']">
+        <div :class="['content-item-box', isMob ? 'content-item-box-m blank50' : '']">
           <div class="item ing" v-for="(d, index) in itemIngList" :key="index">
             <div class="banner">
               <p>
@@ -497,6 +497,7 @@
   }
 
   .banner {
+    width: 100%;
     height: 40px;
     line-height: 20px;
     border-bottom: 1px solid #ccc;

@@ -171,9 +171,8 @@
           </el-input>
           <button class="red-button middle-button" @click="allPrice">全部提现</button>
         </div>
-        <p class="withdraw-des">可提现金额: <span class="color_ff5a">¥ {{ wallet.price }}</span></p>
+        <p class="withdraw-des">可提现金额: <span class="tc-red fz-16">¥ {{ wallet.price }}</span></p>
       </div>
-`
       <div slot="footer" class="dialog-footer">
         <el-button @click="itemModel = false">取 消</el-button>
         <el-button type="primary" :loading="isLoadingBtn" @click="withdrawSubmit">确 定</el-button>
@@ -710,7 +709,6 @@
     border-top: 1px solid #ccc;
     line-height: 2;
     margin-top: 20px;
-    font-size: 1.3rem;
     color: #666;
 
   }
@@ -758,7 +756,7 @@
     align-items: center;
   }
   .flex button:last-child {
-    margin-left: 10px;
+    margin-left: 15px;
   }
   .mar-l-10 {
     margin-left: 10px;

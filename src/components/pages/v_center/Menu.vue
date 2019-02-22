@@ -36,7 +36,7 @@
         <el-menu class="el-menu-info" mode="horizontal" router v-if="prod.name === ''">
           <el-submenu index="2" :popper-append-to-body="false">
             <template slot="title">
-              <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
+              <img class="avatar2" v-if="eventUser.avatar" :src="eventUser.avatar.logo"/>
               <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
               <span v-if="eventUser.company && eventUser.company.company_abbreviation" class="b-nickname">{{ eventUser.company.company_abbreviation }}</span>
               <span v-else class="b-nickname">{{ eventUser.realname || eventUser.account }}</span>
@@ -55,7 +55,7 @@
         <el-menu class="el-menu-info" mode="horizontal" router v-if="prod.name !== ''">
           <el-submenu index="2" :popper-append-to-body="false">
             <template slot="title">
-              <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
+              <img class="avatar2" v-if="eventUser.avatar" :src="eventUser.avatar.logo"/>
               <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
               <span v-if="eventUser.realname" class="b-nickname">{{ eventUser.realname }}</span>
               <span v-else class="b-nickname">{{ eventUser.account }}</span>
@@ -460,13 +460,13 @@
       },
       eventUser() {
         let user = this.$store.state.event.user
-        if (user.design_company_logo_image) {
-          user.logo_url = user.design_company_logo_image.logo
-        } else {
-          if (user.avatar) {
-            user.logo_url = user.avatar.logo
-          }
-        }
+        // if (user.design_company_logo_image) {
+        //   user.logo_url = user.design_company_logo_image.logo
+        // } else {
+        //   if (user.avatar) {
+        //     user.logo_url = user.avatar.logo
+        //   }
+        // }
         return user
       },
       isthirdParty() {
