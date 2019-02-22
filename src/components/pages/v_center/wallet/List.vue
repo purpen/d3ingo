@@ -254,9 +254,9 @@
       // 去完善信息
       goAttestation() {
         if (this.userType === 1) {
-          this.$router.push({name: 'vcenterDComputerBase', query: {legalize: 1}})
+          this.$router.push({name: 'vcenterDComputerBase', params: {id: 1}})
         } else {
-          this.$router.push({name: 'vcenterComputerBase', query: {legalize: 2}})
+          this.$router.push({name: 'vcenterComputerBase', params: {id: 2}})
         }
       },
       loadList() {
