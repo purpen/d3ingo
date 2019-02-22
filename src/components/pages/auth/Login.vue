@@ -8,7 +8,7 @@
 
       <div class="login-content">
 
-        <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
+        <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px" class="inner-place">
           <el-form-item label="" prop="account" class="input">
             <el-input v-model="form.account" name="username"
               :maxlength="11"

@@ -162,7 +162,7 @@
         </div>
         <div class="withdraw-input">
           <p class="withdraw-title margin-t-b-20">提现金额</p>
-          <div class="flex">
+          <div class="flex line-hei-20">
             <el-input placeholder="请输入提现额度" v-model.number.trim="withdrawPrice">
               <template slot="prepend">¥</template>
             </el-input>
@@ -178,7 +178,6 @@
       <div class="withdraw-input" v-else>
         <p class="withdraw-title margin-t-b-20">请完善您的银行卡信息：<el-button @click="goAttestation" size="small" type="warning" class="mar-l-10">去完善</el-button> </p>
       </div>
-
     </el-dialog>
     <!--<transition name="fade">-->
       <!--<el-dialog :title="itemPointTitle" :visible.sync="itemPointTitleInfo" class="withdraw">-->
