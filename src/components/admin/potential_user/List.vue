@@ -159,8 +159,8 @@
               :filters="[
                 {text: '潜在客户', value: '1' },
                 { text: '真实需求', value: '2' },
-                { text: '签订合作', value: '3' },
                 { text: '对接设计', value: '5' },
+                { text: '签订合作', value: '3' },
                 { text: '对接失败', value: '4' }
               ]"
               :filter-multiple="false"
@@ -176,6 +176,7 @@
           </el-table>
 
           <el-pagination
+            v-if="tableData.length && query.totalCount > query.per_page"
             class="pagination"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
