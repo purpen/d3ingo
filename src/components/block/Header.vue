@@ -70,8 +70,8 @@
               <el-button size="small" class="is-custom" @click="toServer">设计服务商入驻</el-button>
             </div>
             <el-menu class="el-menu-header" :default-active="menuactive" mode="horizontal" router>
-              <el-menu-item index="register" :route="menu.register" class="fc-red">注册</el-menu-item>
-              <el-menu-item index="login" :route="menu.login" style="margin: 0">登录</el-menu-item>
+              <el-menu-item index="/register" :route="menu.register" class="fc-red">注册</el-menu-item>
+              <el-menu-item index="/login" :route="menu.login" style="margin: 0">登录</el-menu-item>
             </el-menu>
           </div>
 
@@ -301,7 +301,7 @@
     watch: {
       $route (to, from) {
         // 对路由变化作出响应...
-        // this.navdefact()
+        this.navdefact()
         this.showCover = ''
         this.showCover2 = ''
       }
@@ -312,7 +312,8 @@
       },
       navdefact() {
         // 设置router函数跳转
-        this.menuactive = this.$route.path.split('/')[1]
+        // this.menuactive = this.$route.path.split('/')[1]
+        console.log(this.menuactive)
       },
       logout() {
         auth.logout()
@@ -443,17 +444,21 @@
         return this.$store.state.event.user.role_id >= 10
       },
       // is-active下划线添加
-      menuactive() {
-        let menu = this.$route.path.split('/')[1]
-        let menu2 = this.$route.path.split('/')[2]
-        if (menu === 'article' || menu === 'subject') {
-          return 'article'
-        } else if (menu2 === 'commonly_sites' || menu2 === 'veer_image' || menu2 === 'trend_report' || menu2 === 'exhibition') {
-          return 'commonly_sites'
-        } else if (menu === 'shunde') {
-          return 'trade_fairs'
+      menuactive: {
+        get() {
+          let menu = this.$route.path.split('/')[1]
+          let menu2 = this.$route.path.split('/')[2]
+          if (menu === 'article' || menu === 'subject') {
+            return 'article'
+          } else if (menu2 === 'commonly_sites' || menu2 === 'veer_image' || menu2 === 'trend_report' || menu2 === 'exhibition') {
+            return 'commonly_sites'
+          } else if (menu === 'shunde') {
+            return 'trade_fairs'
+          }
+          return menu
+        },
+        set(val) {
         }
-        return menu
       },
       msgCount() {
         return this.$store.state.event.msgCount
