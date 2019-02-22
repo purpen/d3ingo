@@ -1125,6 +1125,9 @@ export default {
             item_name: this.form.demand,   // 需求
             from: 2   // 小程序or网页
           }
+          if (this.isMob) {
+            row.from = 4
+          }
           this.$http.post(api.pcAdd, row)
             .then(res => {
               if (res.data.meta.status_code === 200) {
