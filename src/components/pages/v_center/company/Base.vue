@@ -1784,6 +1784,10 @@
         return
       }
       this.getdesignCompanyInfo()
+      let {params = {}} = this.$route
+      if (params.id === 2) {
+        this.dialogVisible = true
+      }
       // 加载图片token
       this.$http.get(api.upToken, {}).then(response => {
         if (response.data.meta.status_code === 200) {

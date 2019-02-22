@@ -387,7 +387,7 @@
                 if (response.data.meta.status_code === 200) {
                   that.$store.commit(CHANGE_USER_VERIFY_STATUS, {demand_verify_status: 3})
                   that.$message.success('提交成功,等待审核')
-                  that.$router.push({name: 'vcenterDCompanyAccreditation'})
+                  that.$router.push({name: 'vcenterDComputerBase', query: {legalize: 1}})
                   return false
                 } else {
                   that.$message.error(response.data.meta.message)
@@ -511,7 +511,7 @@
       let uType = this.$store.state.event.user.type
       // 如果非设计公司，跳到相应页面
       if (uType === 2) {
-        this.$router.replace({name: 'vcenterComputerIdentification'})
+        this.$router.replace({name: 'vcenterComputerBase', query: {legalize: 2}})
         return
       }
       const that = this

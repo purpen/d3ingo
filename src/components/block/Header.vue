@@ -741,6 +741,10 @@
     color: #ff5a5f;
     background: none;
   }
+  .nav-header .el-menu--horizontal .el-menu-item:not(.is-disabled):focus, 
+  .nav-header .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
+    color: #ff5a5f !important;
+  }
  /* .jdc .nav-header .el-menu--horizontal > .el-menu-item:hover,
  .jdc .el-menu--horizontal > .el-submenu.is-active .el-submenu__title,
  .jdc .el-menu--horizontal > .el-submenu:hover .el-submenu__title,
