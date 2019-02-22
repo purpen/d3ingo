@@ -6,7 +6,7 @@
       </div>
       <div class="forget-content">
 
-        <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px" class="input">
+        <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px" class="input pass-place">
           <el-form-item label="" prop="username">
             <el-input v-model="form.username" ref="username" auto-complete="on"
                       placeholder="手机号"></el-input>
