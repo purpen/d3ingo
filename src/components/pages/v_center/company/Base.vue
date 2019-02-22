@@ -1768,11 +1768,6 @@
             }
           }
         }
-      },
-      '$route'(to, form) {
-        if (to.query && to.query.legalize) {
-          this.dialogVisible = true
-        }
       }
     },
     created: function () {
@@ -1789,11 +1784,11 @@
         return
       }
       this.getdesignCompanyInfo()
-      // 加载图片token
-      let {query = {}} = this.$route
-      if ('legalize' in query) {
+      let {params = {}} = this.$route
+      if (params.id === 2) {
         this.dialogVisible = true
       }
+      // 加载图片token
       this.$http.get(api.upToken, {}).then(response => {
         if (response.data.meta.status_code === 200) {
           if (response.data.data) {

@@ -229,13 +229,13 @@ export default {
           console.log('没有认证')
           this.alertTitle.title = '您还没有申请企业实名认证'
           // this.alertTitle.path = '/vcenter/d_company/base'
-          this.alertTitle.path = {name: 'vcenterDComputerBase', query: {legalize: 1}}
+          this.alertTitle.path = {name: 'redirect', query: {name: 'vcenterDComputerBase', id: 1}}
           return true
         } else if (user.demand_verify_status === 2) {
           console.log('没有认证')
           this.alertTitle.title = '您申请企业实名认证失败了'
           // this.alertTitle.path = '/vcenter/d_company/base'
-          this.alertTitle.path = {name: 'vcenterDComputerBase', query: {legalize: 1}}
+          this.alertTitle.path = {name: 'redirect', query: {name: 'vcenterDComputerBase', id: 1}}
           return true
         } else if (user.demand_verify_status === 1 || user.demand_verify_status === 3) {
           if (user.demand_info_status === 1) {
@@ -256,13 +256,13 @@ export default {
             console.log('没有认证')
             this.alertTitle.title = '您还没有申请企业实名认证'
             // this.alertTitle.path = '/vcenter/company/base'
-            this.alertTitle.path = {name: 'vcenterComputerBase', query: {legalize: 2}}
+            this.alertTitle.path = {name: 'redirect', query: {name: 'vcenterComputerBase', id: 2}}
             return true
           } else if (user.design_verify_status === 2) {
             console.log('公司认证失败')
             this.alertTitle.title = '您申请企业实名认证失败了'
             // this.alertTitle.path = '/vcenter/company/base'
-            this.alertTitle.path = {name: 'vcenterComputerBase', query: {legalize: 2}}
+            this.alertTitle.path = {name: 'redirect', query: {name: 'vcenterComputerBase', id: 2}}
             return true
           } else if (user.design_verify_status === 1 || user.design_verify_status === 3) {
             if (user.design_info_status === 1) {
