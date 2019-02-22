@@ -15,7 +15,7 @@
                 <div v-if="demand_verify_status !== 1">
                   <p v-if="demand_verify_status === 3" class="verify fz-14">您的实名认证正在审核中，审核通过后可查看匹配结果</p>
                   <p v-else class="verify fz-14">您还没有认证，请先认证后才能查看匹配结果</p>
-                  <router-link v-if="demand_verify_status !== 3" :to="{name: 'vcenterDCompanyAccreditation'}">
+                  <router-link v-if="demand_verify_status !== 3" :to="{name: 'vcenterDComputerBase', query: {legalize: 1}}">
                     <button class="middle-button full-red-button">马上去认证</button>
                   </router-link>
                 </div>

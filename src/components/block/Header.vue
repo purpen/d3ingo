@@ -9,14 +9,14 @@
               <router-link :to="{name: 'home'}" class="el-menu-item logo">
                 <img :src="custom.logo" :alt="custom.info">
               </router-link>
-              <el-menu-item index="home" :route="menu.home">首页</el-menu-item>
-              <el-menu-item index="server" :route="menu.server">服务</el-menu-item>
-              <el-menu-item index="article" :route="menu.article">铟果说</el-menu-item>
-              <el-menu-item index="design_case" :route="menu.design_case">灵感</el-menu-item>
-              <el-menu-item index="commonly_sites" :route="menu.commonly_sites">设计工具</el-menu-item>
-              <el-menu-item index="innovation_index" :route="menu.innovation_index">创新指数</el-menu-item>
-              <el-menu-item index="trade_fairs" :route="menu.home_page" v-if="!token">交易会</el-menu-item>
-              <el-menu-item index="trade_fairs" :route="menu.demand_login" v-if="token">交易会</el-menu-item>
+              <el-menu-item index="/home" :route="menu.home">首页</el-menu-item>
+              <el-menu-item index="/server" :route="menu.server">服务</el-menu-item>
+              <el-menu-item index="/article" :route="menu.article">铟果说</el-menu-item>
+              <el-menu-item index="/design_case" :route="menu.design_case">灵感</el-menu-item>
+              <el-menu-item index="/commonly_sites" :route="menu.commonly_sites">设计工具</el-menu-item>
+              <el-menu-item index="/innovation_index" :route="menu.innovation_index">创新指数</el-menu-item>
+              <el-menu-item index="/trade_fairs" :route="menu.home_page" v-if="!token">交易会</el-menu-item>
+              <el-menu-item index="/trade_fairs" :route="menu.demand_login" v-if="token">交易会</el-menu-item>
             </el-menu>
           </hgroup>
           <div class="nav-right nav-menu" v-if="isLogin">
@@ -70,8 +70,8 @@
               <el-button size="small" class="is-custom" @click="toServer">设计服务商入驻</el-button>
             </div>
             <el-menu class="el-menu-header" :default-active="menuactive" mode="horizontal" router>
-              <el-menu-item index="register" :route="menu.register" class="fc-red">注册</el-menu-item>
-              <el-menu-item index="login" :route="menu.login" style="margin: 0">登录</el-menu-item>
+              <el-menu-item index="/register" :route="menu.register" class="fc-red">注册</el-menu-item>
+              <el-menu-item index="/login" :route="menu.login" style="margin: 0">登录</el-menu-item>
             </el-menu>
           </div>
 
@@ -193,8 +193,8 @@
 
           <div class="nav-right" v-else>
             <el-menu class="el-menu-header" :default-active="menuactive" mode="horizontal" router>
-              <el-menu-item index="login" :route="menu.login">登录</el-menu-item>
-              <el-menu-item index="register" :route="menu.register" class="register">免费注册</el-menu-item>
+              <el-menu-item index="/login" :route="menu.login">登录</el-menu-item>
+              <el-menu-item index="/register" :route="menu.register" class="register">免费注册</el-menu-item>
             </el-menu>
           </div>
 
@@ -301,7 +301,7 @@
     watch: {
       $route (to, from) {
         // 对路由变化作出响应...
-        // this.navdefact()
+        this.navdefact()
         this.showCover = ''
         this.showCover2 = ''
       }
@@ -312,7 +312,8 @@
       },
       navdefact() {
         // 设置router函数跳转
-        this.menuactive = this.$route.path.split('/')[1]
+        // this.menuactive = this.$route.path.split('/')[1]
+        console.log(this.menuactive)
       },
       logout() {
         auth.logout()
@@ -443,17 +444,21 @@
         return this.$store.state.event.user.role_id >= 10
       },
       // is-active下划线添加
-      menuactive() {
-        let menu = this.$route.path.split('/')[1]
-        let menu2 = this.$route.path.split('/')[2]
-        if (menu === 'article' || menu === 'subject') {
-          return 'article'
-        } else if (menu2 === 'commonly_sites' || menu2 === 'veer_image' || menu2 === 'trend_report' || menu2 === 'exhibition') {
-          return 'commonly_sites'
-        } else if (menu === 'shunde') {
-          return 'trade_fairs'
+      menuactive: {
+        get() {
+          let menu = this.$route.path.split('/')[1]
+          let menu2 = this.$route.path.split('/')[2]
+          if (menu === 'article' || menu === 'subject') {
+            return 'article'
+          } else if (menu2 === 'commonly_sites' || menu2 === 'veer_image' || menu2 === 'trend_report' || menu2 === 'exhibition') {
+            return 'commonly_sites'
+          } else if (menu === 'shunde') {
+            return 'trade_fairs'
+          }
+          return menu
+        },
+        set(val) {
         }
-        return menu
       },
       msgCount() {
         return this.$store.state.event.msgCount
@@ -740,6 +745,10 @@
     border-bottom: 3px solid #ff5a5f;
     color: #ff5a5f;
     background: none;
+  }
+  .nav-header .el-menu--horizontal .el-menu-item:not(.is-disabled):focus, 
+  .nav-header .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
+    color: #ff5a5f !important;
   }
  /* .jdc .nav-header .el-menu--horizontal > .el-menu-item:hover,
  .jdc .el-menu--horizontal > .el-submenu.is-active .el-submenu__title,

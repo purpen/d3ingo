@@ -102,13 +102,22 @@
             </el-table-column>
           </el-table>
 
-          <el-pagination class="pagination" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="query.page" :page-sizes="[20, 50, 100, 500]" :page-size="query.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="query.totalCount">
+          <el-pagination
+              v-if="tableData.length && query.totalCount > query.pageSize"
+              class="pagination"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="query.page"
+              :page-sizes="[20, 50, 100, 500]"
+              :page-size="query.pageSize"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="query.totalCount">
           </el-pagination>
 
         </div>
       </el-col>
     </el-row>
-    <el-dialog title="编辑小程序" :visible.sync="matchCompanyDialog">
+    <el-dialog title="编辑小程序" :visible.sync="matchCompanyDialog" width="580px">
       <el-form label-position="top" :model="sItem">
         <el-form-item label="项目状态" label-width="200px">
           <el-radio-group v-model="sItem.is_ok">

@@ -1,6 +1,6 @@
 <template>
-<div>
-  <div class="dialog">
+<div class="dialog">
+  <div class="dialog-content">
     <div class="success" v-if="status === 1">
       <img src="../../../../assets/images/home/progress_feedback_bind/Success@2x.png" alt="">
       <p>绑定成功</p>
@@ -47,23 +47,23 @@ export default {
 }
 </script>
 <style scoped>
-.dialog {
-  position: relative;
+.dialog-content {
+  /* position: relative;
   top: -180px;
   left: 50%;
   transform: translateX(-50%);
-  width: 92%;
+  width: 92%; */
   height: 270px;
   background-color: #fff;
   border-radius: 5px;
   text-align: center;
 }
-.dialog img {
+.dialog-content img {
   width: 80px;
   height: 80px;
   margin-top: 50px;
 }
-.dialog p {
+.dialog-content p {
   font-size: 1.8rem;
   padding: 10px 0;
 }
