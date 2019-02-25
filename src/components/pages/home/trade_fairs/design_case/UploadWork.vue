@@ -322,7 +322,7 @@
         this.$router.push ({name: 'home'})
         this.$message ({
           showClose: true,
-          message: '此活动只允许设计公司参与',
+          message: '此活动只允许设计服务商参与',
           type: 'warning'
         })
         return

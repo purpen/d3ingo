@@ -338,7 +338,7 @@
           </div>
 
           <div class="form-title">
-            <span>设计公司</span>
+            <span>设计服务商</span>
           </div>
 
           <div class="company-show">
@@ -447,7 +447,7 @@
         <el-form-item label="需求公司返款金额">
           <el-input v-model="matchCompanyForm.demandAmount" placeholder="" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="设计公司返款金额">
+        <el-form-item label="设计服务商返款金额">
           <el-input v-model="matchCompanyForm.designAmount" placeholder="" auto-complete="off"></el-input>
         </el-form-item>
       </el-form>
@@ -741,10 +741,10 @@ export default {
             break
           case 2: // 等待系统匹配公司
             break
-          case 3: // 获取系统推荐的设计公司,选择设计公司
+          case 3: // 获取系统推荐的设计服务商,选择设计服务商
             // self.fetchStickCompany()
             break
-          case 4: // 查看已提交报价的设计公司, 提交报价单
+          case 4: // 查看已提交报价的设计服务商, 提交报价单
             break
           case 5: // 等待提交合同
             break

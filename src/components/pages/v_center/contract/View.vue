@@ -13,7 +13,7 @@
             <p>联系人: <span class="no-border">{{form.demand_company_legal_person}}</span></p>
             <p>电话: <span class="no-border">{{form.demand_company_phone}}</span></p>
             <p>&nbsp;</p>
-            <p>乙方(设计方):</p>
+            <p>乙方(设计服务商):</p>
             <p>公司名称: <span class="no-border">{{form.design_company_name}}</span></p>
             <p>地址: <span class="no-border">{{form.design_company_address}}</span></p>
             <p>电话: <span class="no-border">{{form.design_company_phone}}</span></p>
@@ -52,7 +52,7 @@
               <span class="bottom-border">{{form.sort}}</span>
               个阶段进行，细节流程与时间节点如下：</p>
             <p v-for="(d, index) in form.item_stage" :key="index + 'd'">
-              第 <span class="bottom-border">{{d.sort}}</span> 阶段：设计方在 <span
+              第 <span class="bottom-border">{{d.sort}}</span> 阶段：设计服务商在 <span
               class="bottom-border">{{d.time}}</span> 个工作日内提交 <span
               class="bottom-border">{{d.title}}</span>;
               <span if="d.content">包含:
@@ -276,7 +276,7 @@
                 if (item.source === 1) {
                   console.log(1)
                   let uType = that.$store.state.event.user.type
-                  // 如果是设计公司
+                  // 如果是设计服务商
                   if (uType === 2) {
                     that.$router.replace({name: 'vcenterContractJdDesignView', params: {unique_id: uniqueId}})
                   } else {

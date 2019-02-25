@@ -80,7 +80,7 @@
           <div class="cover-body-left">
             <span @click="changeOption('project')" :class="{'active': option === 'project'}">项目信息</span>
             <span @click="changeOption('customer')" :class="{'active': option === 'customer'}">客户信息</span>
-            <span @click="changeOption('server')" :class="{'active': option === 'server'}">设计公司信息</span>
+            <span @click="changeOption('server')" :class="{'active': option === 'server'}">设计服务商信息</span>
             <span @click="changeOption('permission')" :class="{'active': option === 'permission'}" v-show="false">权限信息</span>
           </div>
           <div class="cover-body-right scroll-bar" v-show="option === 'project'">

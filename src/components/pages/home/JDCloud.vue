@@ -404,7 +404,7 @@
                 <el-col :span="15" class="phone-four-text">
                   <div class="text-text">
                     敲定设计细节
-                    匹配设计公司
+                    匹配设计服务商
                   </div>
                 </el-col>
               </div>

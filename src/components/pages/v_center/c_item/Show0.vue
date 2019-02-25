@@ -510,9 +510,9 @@ const vQuoteView = () => import('@/components/block/QuoteView')
           .then(function (response) {
             self.isLoadingBtn = false
             if (response.data.meta.status_code === 200) {
-              self.$message.success('操作成功，等待设计公司接单!')
+              self.$message.success('操作成功，等待设计服务商接单!')
               self.item.status = 4
-              self.item.status_value = '等待设计公司接单'
+              self.item.status_value = '等待设计服务商接单'
               self.statusLabel.selectCompany = false
               self.statusLabel.trueCompany = true
             } else {
@@ -547,7 +547,7 @@ const vQuoteView = () => import('@/components/block/QuoteView')
           this.$set(this.takingPriceForm, 'city', this.item.company_city)
           this.$set(this.takingPriceForm, 'area', this.item.company_area)
 
-          // 获取设计公司详情
+          // 获取设计服务商详情
           this.$http.get(api.designCompanyChild, {}).then((response) => {
             if (response.data.meta.status_code === 200) {
               let item = response.data.data
@@ -847,7 +847,7 @@ const vQuoteView = () => import('@/components/block/QuoteView')
         return
       }
       let uType = this.$store.state.event.user.type
-      // 如果是设计公司，跳到设计公司项目详情
+      // 如果是设计服务商，跳到设计服务商项目详情
       if (uType !== 2) {
         this.$router.replace({name: 'vcenterItemShow'})
         return
@@ -880,7 +880,7 @@ const vQuoteView = () => import('@/components/block/QuoteView')
               self.waitTakePrice = true
             }
             switch (self.item.status) {
-              case 4: // 查看已提交报价的设计公司
+              case 4: // 查看已提交报价的设计服务商
                 self.progressButt = 2
                 self.progressContract = -1
                 self.progressItem = -1

@@ -118,7 +118,7 @@
                 <p class="slide-des error">可能出现的原因：</p>
                 <p class="slide-des error">当前项目设计周期太短，无法匹配有效的设计服务供应商，请重新设置项目周期。</p>
                 <p class="slide-des error">当前项目设计项目设计服务费预算过低，无法匹配有效的设计服务供应商，请重新设置项目设计服务费。</p>
-                <p class="slide-des error">选择当前的城市没有对应的设计公司。</p>
+                <p class="slide-des error">选择当前的城市没有对应的设计服务商。</p>
               </div>
               <div v-else-if="matchCount > 0">
                 <p class="slide-str success"><img src="../../../assets/images/icon/item_stick.png" width="25"/>
@@ -139,7 +139,7 @@
               <div class="blank20"></div>
               <p>项目预算设置</p>
               <p class="slide-des">
-                产品研发费用通常是由产品设计、结构设计、硬件开发、样机、模具等费用构成，以普通消费电子产品为例设计费用占到产品研发费用10-20%，设置有竞争力的项目预算，能吸引到实力强的设计公司参与到项目中，建议预算设置到产品研发费用的20-30%。</p>
+                产品研发费用通常是由产品设计、结构设计、硬件开发、样机、模具等费用构成，以普通消费电子产品为例设计费用占到产品研发费用10-20%，设置有竞争力的项目预算，能吸引到实力强的设计服务商参与到项目中，建议预算设置到产品研发费用的20-30%。</p>
             </div>
           </div>
         </el-col>
