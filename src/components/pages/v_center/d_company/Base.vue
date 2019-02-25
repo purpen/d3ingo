@@ -481,6 +481,7 @@
           area: '',
           test: ''
         },
+        formDCompanyAttest: {},
         fileList: [],
         filePersonList: [],
         isLoadingBtn: false,
@@ -674,6 +675,10 @@
               that.$message.error('请选择所在城市')
               return false
             }
+            if (!that.form.area) {
+              that.$message.error('请选择所在区县')
+              return false
+            }
             if (!that.fileList.length) {
               that.$message.error('请上传营业执照')
               return false
@@ -702,6 +707,11 @@
               }
             }
             that.isLoadingBtn = true
+            if (that.form.license_image === that.fileList && JSON.stringify(row) === JSON.stringify(that.formDCompanyAttest)) {
+              that.isLoadingBtn = false
+              that.dialogVisible = false
+              return
+            }
             that.$http({method: 'PUT', url: api.demandCompany, data: row})
               .then(function (response) {
                 that.isLoadingBtn = false
@@ -876,6 +886,22 @@
                     this.form.verify_status_label = '认证失败'
                   }
                 })
+                this.formDCompanyAttest = {
+                  registration_number: dataDemand.registration_number,
+                  company_name: dataDemand.company_name,
+                  company_type: dataDemand.company_type,
+                  contact_name: dataDemand.contact_name,
+                  position: dataDemand.position,
+                  phone: dataDemand.phone + '',
+                  email: dataDemand.email,
+                  address: dataDemand.address,
+                  province: dataDemand.province,
+                  area: dataDemand.area,
+                  city: dataDemand.city,
+                  account_name: dataDemand.account_name,
+                  bank_name: dataDemand.bank_name,
+                  account_number: dataDemand.account_number
+                }
               }
             }
           })

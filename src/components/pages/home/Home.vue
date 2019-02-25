@@ -248,7 +248,6 @@
     name: 'index',
     data() {
       return {
-        uType: this.$store.state.event.user.type || 1,
         bannerListMob: [
           // {
           //   img: require ('assets/images/subject/innovation/home_banner.jpg'),
@@ -550,6 +549,9 @@
       }
     },
     computed: {
+      uType() {
+        return this.$store.state.event.user.type || 1
+      },
       isMob() {
         return this.$store.state.event.isMob
       },

@@ -15,7 +15,7 @@
                 <div v-if="demand_verify_status !== 1">
                   <p v-if="demand_verify_status === 3" class="verify fz-14">您的实名认证正在审核中，审核通过后可查看匹配结果</p>
                   <p v-else class="verify fz-14">您还没有认证，请先认证后才能查看匹配结果</p>
-                  <router-link v-if="demand_verify_status !== 3" :to="{name: 'vcenterDComputerBase', query: {legalize: 1}}">
+                  <router-link v-if="demand_verify_status !== 3" :to="{name: 'vcenterDComputerBase', params: {id: 1}}">
                     <button class="middle-button full-red-button">马上去认证</button>
                   </router-link>
                 </div>
@@ -38,7 +38,7 @@
             <p class="num">您还没有认证，请先认证后才能查看匹配结果</p>
             <div class="blank20">
               <button class="middle-button full-red-button">
-                <router-link class="tc-f" to="/vcenter/d_company/accreditation">马上去认证</router-link>
+                <router-link class="tc-f" :to="{name: 'vcenterDComputerBase', params: {id: 1}}">马上去认证</router-link>
               </button>
             </div>
           </section>
@@ -46,7 +46,7 @@
             <p class="num">您认证失败了，请修改并重新认证后查看匹配结果</p>
             <div class="blank20">
               <button class="middle-button full-red-button">
-                <router-link class="tc-f" to="/vcenter/d_company/accreditation">重新认证</router-link>
+                <router-link class="tc-f" :to="{name: 'vcenterDComputerBase', params: {id: 1}}">重新认证</router-link>
               </button>
             </div>
           </section>
