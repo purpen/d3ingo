@@ -859,6 +859,10 @@
           </div>
 
         </el-dialog>
+
+        <el-dialog :visible.sync="dialogLicense">
+          <img width="100%" :src="dialogLicenseImageUrl" alt="">
+        </el-dialog>
       </div>
     </el-row>
   </div>
@@ -1028,7 +1032,9 @@
           province: '',
           city: '',
           area: ''
-        }
+        },
+        dialogLicense: false,
+        dialogLicenseImageUrl: ''
       }
     },
     directives: {
@@ -1492,6 +1498,8 @@
       },
       handlePreview(file) {
         console.log(file)
+        this.dialogLicenseImageUrl = file.url
+        this.dialogLicense = true
       },
       handleRemove(file, fileList) {
         if (file === null) {
@@ -1656,6 +1664,7 @@
             that.isLoadingBtn = true
             let isSame = JSON.stringify(row) === JSON.stringify(this.formCompanyAttest)
             if (that.fileList === that.form.license_image && isSame) {
+              console.log('数据相同')
               that.isLoadingBtn = false
               that.dialogVisible = false
               return
@@ -1795,7 +1804,7 @@
                 bank_name: data.bank_name,
                 account_number: data.account_number,
                 taxable_type: data.taxable_type,
-                invoice_type: data.invoice_type
+                invoice_type: data.invoice_type === 0 ? null : data.invoice_type
               }
             } else {
               this.$message.error(response.data.meta.message)

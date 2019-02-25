@@ -350,6 +350,10 @@
               </el-row>
             </el-form>
           </el-dialog>
+
+          <el-dialog :visible.sync="dialogLicense">
+            <img width="100%" :src="dialogLicenseImageUrl" alt="">
+          </el-dialog>
         </div>
       </div>
     </el-row>
@@ -481,7 +485,7 @@
           area: '',
           test: ''
         },
-        formDCompanyAttest: {},
+        formDCompanyAttest: {}, // 服务器返回的实名认证信息
         fileList: [],
         filePersonList: [],
         isLoadingBtn: false,
@@ -490,7 +494,9 @@
           province: '',
           city: '',
           area: ''
-        }
+        },
+        dialogLicense: false,
+        dialogLicenseImageUrl: ''
       }
     },
     computed: {
@@ -779,6 +785,8 @@
       },
       handlePreview(file) {
         console.log(file)
+        this.dialogLicenseImageUrl = file.url
+        this.dialogLicense = true
       },
       handleChange(value) {
         console.log(value)
