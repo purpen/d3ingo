@@ -92,7 +92,7 @@
               <p class="cursor-p" @click="editUserInfo(scope.row.id, scope.row.name)">{{scope.row.name}}</p>
             </template>
             </el-table-column>
-            <!-- <el-table-column
+            <el-table-column
               label="项目名称"
               width="122">
               <template slot-scope="scope">
@@ -100,7 +100,12 @@
                   <p>{{item}}</p>
                 </div>
               </template>
-            </el-table-column> -->
+            </el-table-column>
+            <el-table-column
+              prop="phone"
+              width="100"
+              label="电话">
+            </el-table-column>
             <el-table-column
               width="101"
               prop="execute_user_name"
@@ -126,6 +131,21 @@
               prop="source"
               width="75"
               label="用户来源">
+            </el-table-column>
+            <el-table-column
+              width="85"
+              label="设计服务商"
+              prop="design_company_count">
+              <!-- <template slot-scope="scope">
+                <div v-if="scope.row.item_name && scope.row.item_name.length" v-for="(item, i) in scope.row.design_company_name" :key="i">
+                  <p>{{item}}</p>
+                </div>
+              </template> -->
+            </el-table-column>
+            <el-table-column
+              prop="logs"
+              width="70"
+              label="根进次数">
             </el-table-column>
             <el-table-column
               prop="next_time"
