@@ -181,7 +181,7 @@
     methods: {},
     created: function () {
       let uType = this.$store.state.event.user.type
-      // 如果是设计公司，跳到设计公司
+      // 如果是设计服务商，跳到设计服务商
       if (uType === 2) {
         this.$router.replace({name: 'vcenterComputerBase', query: {legalize: 2}})
         return

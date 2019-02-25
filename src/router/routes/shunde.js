@@ -99,7 +99,7 @@ module.exports = [
     },
     component: require('@/components/pages/home/trade_fairs/demand/DemandList')
   },
-  // 个人中心设计方成果列表页
+  // 个人中心设计服务商成果列表页
   {
     path: '/shunde/trade_fairs/design_case',
     name: 'sdDesignCase_list',
@@ -111,7 +111,7 @@ module.exports = [
     },
     component: require('@/components/pages/home/trade_fairs/design_case/List')
   },
-  // 个人中心设计方成果编辑页
+  // 个人中心设计服务商成果编辑页
   {
     path: '/shunde/trade_fairs/design_case/submit/:id',
     name: 'sdDesignCase_update',
@@ -123,7 +123,7 @@ module.exports = [
     },
     component: require('@/components/pages/home/trade_fairs/design_case/Submit')
   },
-  // 个人中心设计方成果新建页
+  // 个人中心设计服务商成果新建页
   {
     path: '/shunde/trade_fairs/design_case/submit',
     name: 'sdDesignCase_submit',
@@ -135,7 +135,7 @@ module.exports = [
     },
     component: require('@/components/pages/home/trade_fairs/design_case/Submit')
   },
-  // 个人中心设计方收藏列表
+  // 个人中心设计服务商收藏列表
   {
     path: '/shunde/trade_fairs/design_case/collect_list',
     name: 'sdDesign_collectList',
@@ -147,7 +147,7 @@ module.exports = [
     },
     component: require('@/components/pages/home/trade_fairs/design_case/CollectList')
   },
-  // 个人中心设计方订单列表
+  // 个人中心设计服务商订单列表
   {
     path: '/shunde/trade_fairs/design_case/order',
     name: 'sdDesign_order',

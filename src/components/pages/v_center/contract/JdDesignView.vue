@@ -13,7 +13,7 @@
             <p>联系人: <span class="no-border">{{form.thn_company_legal_person}}</span></p>
             <p>电话: <span class="no-border">{{form.thn_company_phone}}</span></p>
             <p>&nbsp;</p>
-            <p>乙方(设计公司):</p>
+            <p>乙方(设计服务商):</p>
             <p>公司名称: <span class="no-border">{{form.design_company_name}}</span></p>
             <p>地址: <span class="no-border">{{form.design_company_address}}</span></p>
             <p>联系人: <span class="no-border">{{form.design_company_legal_person}}</span></p>
@@ -36,7 +36,7 @@
               <span class="bottom-border">{{form.sort}}</span>
               个阶段进行，细节流程与时间节点如下：</p>
             <p v-for="(d, index) in form.item_stage" :key="index + 'd'">
-              第 <span class="bottom-border">{{d.sort}}</span> 阶段：设计方在 <span
+              第 <span class="bottom-border">{{d.sort}}</span> 阶段：设计服务商在 <span
               class="bottom-border">{{d.time}}</span> 个工作日内提交 <span
               class="bottom-border">{{d.title}}</span>;
               <span if="d.content">包含:
@@ -104,7 +104,7 @@
             <p>4、任何一方如遇政府法令或法律程序要求向第三方提供上述资料，可按规定提供，但应尽快将此项事实通知对方。</p>
 
             <p class="title mar-t-40 font-size-18">七、违约责任</p>
-            <p>1、如乙方未按本合同约定提交相应的设计内容，甲方有权中止本合同，不再继续支付剩余款项，乙方亦不退还已付项目执行设计公司的款项；</p>
+            <p>1、如乙方未按本合同约定提交相应的设计内容，甲方有权中止本合同，不再继续支付剩余款项，乙方亦不退还已付项目执行设计服务商的款项；</p>
             <p>&nbsp;</p>
             <p>2、如设计过程中甲方不能积极配合乙方工作，严重影响乙方的工作安排，在收到乙方书面通知后仍不能积极配合，则乙方有权中止合同，甲方已支付款项不予退还；</p>
             <p>&nbsp;</p>

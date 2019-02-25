@@ -184,7 +184,7 @@
     created: function () {
       this.isLoading = true
       var uType = this.$store.state.event.user.type
-      // 如果是需求公司，跳到设计公司
+      // 如果是需求公司，跳到设计服务商
       if (uType !== 2) {
         this.$router.replace({name: 'vcenterDComputerBase', query: {legalize: 1}})
         return

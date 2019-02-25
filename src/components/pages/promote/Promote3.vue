@@ -26,7 +26,7 @@
           </div>
           <div class="title mtop_20 line-height20">
             <div class="fs_13">优客工场联合太火鸟，首推B2B设计对接服务</div>
-            <div class="fc_red fs_25 mtop_15 line-height28">1000+ 顶级设计公司<br/>免费提供设计对接服务</div>
+            <div class="fc_red fs_25 mtop_15 line-height28">1000+ 顶级设计服务商<br/>免费提供设计对接服务</div>
             <div class="fs_14 mtop_15 line-height28">现在发布设计需求，尊享全单6折优惠</div>
           </div>
           <div class="swiper">
@@ -63,7 +63,7 @@
           <div class="fs_16 mtop_20">真格基金、创新工场、麦顿资本、罗莱生活、<br>小米、顺为资本</div>
           <div class="circe mtop_20">
             <div class="small_circe fs_20 fc_red">1000+</div>
-            <div class="fs_15 fc_white" style="margin-left: 5px;">入驻全球顶级设计公司</div>
+            <div class="fs_15 fc_white" style="margin-left: 5px;">入驻全球顶级设计服务商</div>
           </div>
           <div class="circe mtop_15">
             <div class="small_circe fs_20 fc_red">300+</div>
@@ -87,7 +87,7 @@
             </div>
             <div>
               <img src="../../../assets/images/promote/app/02.png" class="img_for"/>
-              <div class="fs_14  mtop_15">敲定设计细节<br>匹配设计公司</div>
+              <div class="fs_14  mtop_15">敲定设计细节<br>匹配设计服务商</div>
             </div>
           </div>
           <div class="img_down">
