@@ -916,6 +916,10 @@
   .line-hei-20 .el-input__inner {
     line-height: 20px
   }
+  .input-text .el-input__inner {
+    line-height: 20px;
+    padding: 15px;
+  }
   /*推广页*/
   .input-phone input {
     height: 50px;
