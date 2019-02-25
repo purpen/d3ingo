@@ -952,6 +952,7 @@
           investment_product: false,
           own_brand: []
         },
+        formCompanyAttest: {}, // 实名认证原始信息
         ruleForm: {
           company_name: [
             {required: true, message: '请填写公司全称', trigger: 'blur'}
@@ -1617,7 +1618,10 @@
               that.$message.error('请选择所在城市')
               return false
             }
-            console.log(that.fileList)
+            if (!that.form.area) {
+              that.$message.error('请选择所在区县')
+              return false
+            }
             if (!that.fileList.length) {
               that.$message.error('请上传公司营业执照')
               return false
@@ -1650,6 +1654,12 @@
               }
             }
             that.isLoadingBtn = true
+            let isSame = JSON.stringify(row) === JSON.stringify(this.formCompanyAttest)
+            if (that.fileList === that.form.license_image && isSame) {
+              that.isLoadingBtn = false
+              that.dialogVisible = false
+              return
+            }
             that.$http({method: 'PUT', url: api.designCompany, data: row})
               .then(function (response) {
                 that.isLoadingBtn = false
@@ -1768,6 +1778,24 @@
                     this.ownBrand = true
                   }
                 })
+              }
+              this.formCompanyAttest = {
+                registration_number: data.registration_number,
+                company_name: data.company_name,
+                company_type: data.company_type,
+                contact_name: data.contact_name,
+                position: data.position,
+                email: data.email,
+                phone: data.phone + '',
+                province: data.province,
+                area: data.area,
+                city: data.city,
+                address: data.address,
+                account_name: data.account_name,
+                bank_name: data.bank_name,
+                account_number: data.account_number,
+                taxable_type: data.taxable_type,
+                invoice_type: data.invoice_type
               }
             } else {
               this.$message.error(response.data.meta.message)
