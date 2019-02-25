@@ -129,6 +129,7 @@
           </el-table>
 
           <el-pagination
+            v-if="tableData.length && query.totalCount > query.pageSize"
             class="pagination"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
@@ -203,7 +204,7 @@
         <el-form-item label="需求公司返款金额">
           <el-input v-model="delForm.demand" placeholder="请填写金额" auto-complete="off" @blur="updateMoney(delForm.demand, delForm.amount, 'demand')"></el-input>
         </el-form-item>
-        <el-form-item label="设计公司返款金额">
+        <el-form-item label="设计服务商返款金额">
           <el-input v-model="delForm.design" placeholder="请填写金额" auto-complete="off" @blur="updateMoney(delForm.design, delForm.amount, '')"></el-input>
         </el-form-item>
       </el-form>
@@ -242,7 +243,7 @@ export default {
           {required: true, message: '请填写需求公司返款金额', trigger: 'blur'}
         ],
         design: [
-          {required: true, message: '请填写设计公司返款金额', trigger: 'blur'}
+          {required: true, message: '请填写设计服务商返款金额', trigger: 'blur'}
         ]
       },
       dialogDelVisible: false, // 关闭交易弹窗

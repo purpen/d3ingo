@@ -17,14 +17,14 @@
                   <el-form-item prop="account" class="account-style">
                     <el-input v-model="form.account" ref="account" placeholder="手机号码"></el-input>
                   </el-form-item>
-                  <el-form-item prop="smsCode">
+                  <!-- <el-form-item prop="smsCode">
                     <el-input class="smsCode-style" v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
                       <template slot="append">
                         <el-button  @click="fetchCode" :disabled="time > 0">{{ codeMsg }}
                         </el-button>
                       </template>
                     </el-input>
-                  </el-form-item>
+                  </el-form-item> -->
                 </div>
                 <div class="d-f-j">
                   <el-button :loading="isLoadingBtn" @click="submit('ruleForm')" class="form-btn2">
@@ -84,7 +84,7 @@
                   <img src="../../../assets/images/promote/four/Matching@2x.png" alt="">
                   <div class="m-t-15">
                     <p>敲定设计细节</p>
-                    <p>匹配设计公司</p>
+                    <p>匹配设计服务商</p>
                   </div>
                 </li>
                 <li>
@@ -111,7 +111,7 @@
             <div class="design-company">
               <div class="line-height28">
                 <span class="number">1000+ </span>
-                <p class="design-title">顶级设计公司</p>
+                <p class="design-title">顶级设计服务商</p>
               </div>
               <ul class="d-w">
                 <li>
@@ -412,7 +412,7 @@
           </div>
           <div class="title mtop_20 line-height20">
             <div class="fs_13">太火鸟 | 专注于工业设计和产品创新的全流程B2B服务平台</div>
-            <div class="fc_red fs_25 mtop_15 line-height28">1000+ 顶级设计公司<br/>免费提供设计对接服务</div>
+            <div class="fc_red fs_25 mtop_15 line-height28">1000+ 顶级设计服务商<br/>免费提供设计对接服务</div>
             <div class="fs_14 mtop_15 line-height28">现在发布设计需求<br/>有机会获得投资孵化和营销推广扶持</div>
           </div>
           <div class="swiper">
@@ -449,7 +449,7 @@
           <div class="fs_16 mtop_20">真格基金、创新工场、海泉基金<br>麦顿资本、罗莱生活、小米、顺为资本</div>
           <div class="circe mtop_20">
             <div class="small_circe fs_20 fc_red">1000+</div>
-            <div class="fs_15 fc_white" style="margin-left: 5px;">入驻全球顶级设计公司</div>
+            <div class="fs_15 fc_white" style="margin-left: 5px;">入驻全球顶级设计服务商</div>
           </div>
           <div class="circe mtop_15">
             <div class="small_circe fs_20 fc_red">300+</div>
@@ -473,7 +473,7 @@
             </div>
             <div>
               <img src="../../../assets/images/promote/app/02.png" class="img_for"/>
-              <div class="fs_14  mtop_15">敲定设计细节<br>匹配设计公司</div>
+              <div class="fs_14  mtop_15">敲定设计细节<br>匹配设计服务商</div>
             </div>
           </div>
           <div class="img_down">
@@ -595,14 +595,14 @@
               <el-form-item prop="account" label="联系方式">
                 <el-input v-model="form.account" ref="account" placeholder="请输入联系方式"></el-input>
               </el-form-item>
-              <el-form-item prop="smsCode" label="验证码" class="wap-disabled-btn">
+              <!-- <el-form-item prop="smsCode" label="验证码" class="wap-disabled-btn">
                 <el-input class="" v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
                   <template slot="append">
                     <el-button  @click="fetchCode" :disabled="time > 0">{{ codeMsg }}
                     </el-button>
                   </template>
                 </el-input>
-              </el-form-item>
+              </el-form-item> -->
             </el-form>
           </div>
           <button class="btn_class mtop_40 fs_20" @click="submit_app('ruleForm')">立即提交</button>
@@ -672,7 +672,6 @@
         isLoadingBtn: false,
         userList: [],   // 消息列表
         form: {
-          smsCode: '',  // 验证码
           demand: '',   // 需求
           account: '',  // 手机号
           contact: '',   // 联系人
@@ -795,7 +794,6 @@
               user_name: this.form.name,
               phone: this.form.account,
               company_name: this.form.appCompany,
-              sms_code: this.form.smsCode,
               from: 4
             }
             this.$http.post(api.pcAdd, row)
@@ -821,8 +819,7 @@
               user_name: this.form.contact,   // 联系人
               phone: this.form.account,        // 手机号
               item_name: this.form.demand,   // 需求
-              from: 2,   // 小程序or网页
-              sms_code: this.form.smsCode   // 小程序or网页
+              from: 2   // 小程序or网页
             }
             this.$http.post(api.pcAdd, row)
               .then(res => {
@@ -838,7 +835,7 @@
                 this.$message.error(error)
               })
           } else {
-            this.$message.error('请填写信息')
+            // this.$message.error('请填写信息')
           }
         })
       }
@@ -969,11 +966,11 @@
   }
 
   .contact-style {
-    width: 200px;
+    width: 300px;
   }
 
   .account-style {
-    width: 160px;
+    width: 280px;
   }
 
   .smsCode-style {

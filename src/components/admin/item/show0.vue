@@ -75,7 +75,7 @@
                 </el-col>
                 <el-col :span="8">
                   <div class="header-company" v-if="contract">
-                    <p>乙方（设计方）：</p>
+                    <p>乙方（设计服务商）：</p>
                     <div>
                       <p>公司名称：{{contract.design_company_name}}</p>
                       <p>地址：{{contract.design_company_address}}</p>
@@ -118,7 +118,7 @@
             <div class="content-box">
               <el-row class="t-center">
                 <el-col :span="8">
-                  设计方
+                  设计服务商
                 </el-col>
                 <el-col :span="8">
                   需求方
@@ -522,7 +522,7 @@
                     <p class="ev-c-name">
                       <router-link :to="{name: 'companyShow', params: {id: item.design_company_id}}"
                        target="_blank" v-if="quotation1">
-                        设计公司: {{quotation1.design_company_name}}
+                        设计服务商: {{quotation1.design_company_name}}
                       </router-link>
                     </p>
                     <el-row class="grade pl">
@@ -778,7 +778,7 @@
               <el-form-item label="需求公司返款金额">
                 <el-input v-model="matchCompanyForm.demandAmount" :placeholder="'￥' + item.rest_fund" auto-complete="off"></el-input>
               </el-form-item>
-              <el-form-item label="设计公司返款金额">
+              <el-form-item label="设计服务商返款金额">
                 <el-input v-model="matchCompanyForm.designAmount" placeholder="￥0.00" auto-complete="off"></el-input>
               </el-form-item>
             </el-form>
@@ -1002,7 +1002,7 @@ export default {
           created: '暂未确认'
         },
         {
-          name: '设计方提交合同',
+          name: '设计服务商提交合同',
           type: 6,
           both: 'right',
           created: '暂未提交'
@@ -1032,7 +1032,7 @@ export default {
           created: '暂未确认'
         },
         {
-          name: '设计方项目确认完成',
+          name: '设计服务商项目确认完成',
           type: 11,
           both: 'right',
           created: '暂未提交'
@@ -1168,14 +1168,14 @@ export default {
         this.evaluateDialog = true
       }
     },
-    // 判断需求方还是设计公司收到发票/发出发票
+    // 判断需求方还是设计服务商收到发票/发出发票
     setVerify (id, refuseRease) {
       const self = this
       self.test = id
       self.sureTransferLoading = true
       var confirmInvoice = ''
       if (self.verify.companytype === 2) {
-        // 设计公司
+        // 设计服务商
         confirmInvoice = api.adminCompanyConfirmInvoice
       } else {
         confirmInvoice = api.adminDemandCompanyConfirmSendInvoice
@@ -1376,8 +1376,8 @@ export default {
                   item.created = '确认时间：' + item.created_at.date_format().format('yyyy/MM/dd')
                   // self.fetchStickCompany()
                   break
-                case 6: // 设计方提交合同
-                  item.name = '设计方提交合同'
+                case 6: // 设计服务商提交合同
+                  item.name = '设计服务商提交合同'
                   item.created = '提交时间：' + item.created_at.date_format().format('yyyy/MM/dd')
                   break
                 case 7: // 需求方确认合同
@@ -1396,8 +1396,8 @@ export default {
                   item.name = item.small_type === 1 ? '第一阶段文件确认' : (item.small_type === 2 ? '第二阶段文件确认' : '第三阶段文件确认')
                   item.created = '确认时间：' + item.created_at.date_format().format('yyyy/MM/dd')
                   break
-                case 11: // 设计方项目确认完成
-                  item.name = '设计方项目确认完成'
+                case 11: // 设计服务商项目确认完成
+                  item.name = '设计服务商项目确认完成'
                   item.created = '确认时间：' + item.created_at.date_format().format('yyyy/MM/dd')
                   break
                 case 12: // 需求方项目验收完成
@@ -1445,7 +1445,7 @@ export default {
                   created: '暂未确认'
                 },
                 {
-                  name: '设计方提交合同',
+                  name: '设计服务商提交合同',
                   type: 6,
                   both: 'right',
                   created: '暂未提交'
@@ -1475,7 +1475,7 @@ export default {
                   created: '暂未确认'
                 },
                 {
-                  name: '设计方项目确认完成',
+                  name: '设计服务商项目确认完成',
                   type: 11,
                   both: 'right',
                   created: '暂未提交'
@@ -1521,7 +1521,7 @@ export default {
                     created: '暂未确认'
                   },
                   {
-                    name: '设计方项目确认完成',
+                    name: '设计服务商项目确认完成',
                     type: 11,
                     both: 'right',
                     created: '暂未提交'
@@ -1578,7 +1578,7 @@ export default {
                     created: '暂未确认'
                   },
                   {
-                    name: '设计方项目确认完成',
+                    name: '设计服务商项目确认完成',
                     type: 11,
                     both: 'right',
                     created: '暂未提交'
@@ -2015,10 +2015,10 @@ export default {
               break
             case 2: // 等待系统匹配公司
               break
-            case 3: // 获取系统推荐的设计公司,选择设计公司
+            case 3: // 获取系统推荐的设计服务商,选择设计服务商
               // self.fetchStickCompany()
               break
-            case 4: // 查看已提交报价的设计公司, 提交报价单
+            case 4: // 查看已提交报价的设计服务商, 提交报价单
               break
             case 5: // 等待提交合同
               break

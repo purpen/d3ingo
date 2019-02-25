@@ -1598,7 +1598,7 @@ const NOTICE_EVT = [
   },
   {
     id: 2,
-    name: '设计公司'
+    name: '设计服务商'
   }
 ]
 

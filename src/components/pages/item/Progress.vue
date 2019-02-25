@@ -15,7 +15,7 @@
           <p id="p3" class="base" @click="redirect" step="4">4.项目需求预览</p>
         </el-col>
         <el-col :span="5">
-          <p id="p4" class="over" @click="redirect" step="5">5.推荐设计公司</p>
+          <p id="p4" class="over" @click="redirect" step="5">5.推荐设计服务商</p>
         </el-col>
       </el-row>
     </section>

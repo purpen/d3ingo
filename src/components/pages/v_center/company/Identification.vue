@@ -3,7 +3,7 @@
     <div class="blank30 vcenter"></div>
     <el-row>
       <v-menu currentName="company"></v-menu>
-
+<!-- 之前的页面, 以废 -->
       <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
         <div class="right-content vcenter-container">
           <!-- <v-menu-sub currentSubName="identification"></v-menu-sub> -->
@@ -476,7 +476,7 @@
                 if (response.data.meta.status_code === 200) {
                   that.$store.commit(CHANGE_USER_VERIFY_STATUS, {verify_status: 3})
                   that.$message.success('提交成功,等待审核')
-                  that.$router.push({name: 'vcenterComputerAccreditation'})
+                  that.$router.push({name: 'vcenterComputerBase', query: {legalize: 2}})
                   return false
                 } else {
                   that.$message.error(response.data.meta.message)
@@ -616,9 +616,9 @@
     watch: {},
     created: function () {
       let uType = this.$store.state.event.user.type
-      // 如果非设计公司，跳到相应页面
+      // 如果非设计服务商，跳到相应页面
       if (uType !== 2) {
-        this.$router.replace({name: 'vcenterDComputerIdentification'})
+        this.$router.replace({name: 'vcenterDComputerBase', query: {legalize: 1}})
         return
       }
       const that = this

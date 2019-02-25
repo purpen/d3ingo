@@ -36,7 +36,7 @@
         <el-menu class="el-menu-info" mode="horizontal" router v-if="prod.name === ''">
           <el-submenu index="2" :popper-append-to-body="false">
             <template slot="title">
-              <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
+              <img class="avatar2" v-if="eventUser.avatar" :src="eventUser.avatar.logo"/>
               <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
               <span v-if="eventUser.company && eventUser.company.company_abbreviation" class="b-nickname">{{ eventUser.company.company_abbreviation }}</span>
               <span v-else class="b-nickname">{{ eventUser.realname || eventUser.account }}</span>
@@ -55,7 +55,7 @@
         <el-menu class="el-menu-info" mode="horizontal" router v-if="prod.name !== ''">
           <el-submenu index="2" :popper-append-to-body="false">
             <template slot="title">
-              <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
+              <img class="avatar2" v-if="eventUser.avatar" :src="eventUser.avatar.logo"/>
               <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
               <span v-if="eventUser.realname" class="b-nickname">{{ eventUser.realname }}</span>
               <span v-else class="b-nickname">{{ eventUser.account }}</span>
@@ -81,7 +81,7 @@
       <section :class="['menuHide', 'scroll-bar2', {'MmenuHide': isMob, 'menuHide-mini': leftWidth === 2}]">
         <div v-if="leftWidth === 2">
           <div v-if="isCompany">
-            <!-- mini 设计方(子账号) -->
+            <!-- mini 设计服务商(子账号) -->
             <div :class="['menu-list', 'clearfix', {'Mmenulist': isMob, }]" ref="Mmenulist" v-if="isChild">
               <el-tooltip class="item" :effect="DarkorLight" content="控制面板" placement="right">
                 <a @click="alick" :to="'/vcenter/child_control'"
@@ -106,7 +106,7 @@
                 </a>
               </el-tooltip>
             </div>
-            <!-- mini 设计方账号 -->
+            <!-- mini 设计服务商账号 -->
             <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist" v-else>
                 <el-tooltip :effect="DarkorLight"
                   v-if="eventUser.company"
@@ -185,7 +185,7 @@
         </div>
         <div v-if="leftWidth === 4">
           <div v-if="isCompany">
-            <!-- 默认设计方(子账号) -->
+            <!-- 默认设计服务商(子账号) -->
             <div :class="['menu-list', 'clearfix', {'Mmenulist': isMob, }]" ref="Mmenulist" v-if="isChild">
               <a @click="alick" :to="'/vcenter/child_control'"
                 :class="['item', 'dashboard', {'is-active': currentName === 'control'}]">
@@ -196,7 +196,7 @@
                 {{eventUser.company.company_name}}
               </a>
             </div>
-            <!-- 默认设计方 -->
+            <!-- 默认设计服务商 -->
             <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist" v-else>
               <el-tooltip :effect="DarkorLight"
                 v-if="eventUser.company"
@@ -460,13 +460,13 @@
       },
       eventUser() {
         let user = this.$store.state.event.user
-        if (user.design_company_logo_image) {
-          user.logo_url = user.design_company_logo_image.logo
-        } else {
-          if (user.avatar) {
-            user.logo_url = user.avatar.logo
-          }
-        }
+        // if (user.design_company_logo_image) {
+        //   user.logo_url = user.design_company_logo_image.logo
+        // } else {
+        //   if (user.avatar) {
+        //     user.logo_url = user.avatar.logo
+        //   }
+        // }
         return user
       },
       isthirdParty() {

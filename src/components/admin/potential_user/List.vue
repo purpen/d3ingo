@@ -13,7 +13,7 @@
                   <el-date-picker
                     v-model="query.valueDate"
                     type="daterange"
-                    size="mini"
+                    size="small"
                     range-separator="-"
                     start-placeholder="开始日期"
                     end-placeholder="结束日期"
@@ -23,7 +23,7 @@
                 </div>
               </el-form-item>
               <el-form-item class="select-info">
-                <el-select v-model="query.evt" placeholder="选择条件..." size="mini">
+                <el-select v-model="query.evt" placeholder="选择条件..." size="small">
                   <el-option label="按姓名" value="1"></el-option>
                   <el-option label="按电话" value="2"></el-option>
                   <el-option label="按所属人" value="3"></el-option>
@@ -34,7 +34,7 @@
                 </el-select>
               </el-form-item>
               <el-form-item style="width: 20%;">
-                <el-input v-model="query.val" placeholder="Search..." size="mini"></el-input>
+                <el-input v-model="query.val" placeholder="Search..." size="small"></el-input>
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="onSearch" size="mini">搜索</el-button>
@@ -159,8 +159,8 @@
               :filters="[
                 {text: '潜在客户', value: '1' },
                 { text: '真实需求', value: '2' },
-                { text: '签订合作', value: '3' },
                 { text: '对接设计', value: '5' },
+                { text: '签订合作', value: '3' },
                 { text: '对接失败', value: '4' }
               ]"
               :filter-multiple="false"
@@ -176,6 +176,7 @@
           </el-table>
 
           <el-pagination
+            v-if="tableData.length && query.totalCount > query.per_page"
             class="pagination"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
@@ -760,5 +761,11 @@ export default {
 .admin-table .el-rate__icon {
   font-size: 12px;
   margin-right: 2px;
+}
+.select-query .el-form-item {
+  margin-bottom: 0 !important;
+}
+.select-data .el-range-editor--small.el-input__inner {
+  height: 30px;
 }
 </style>

@@ -716,6 +716,32 @@
                 </el-form-item>
               </el-col>
             </el-row>
+            <div class="sub-title">
+              <span>开票信息&nbsp;</span>
+              <!-- <i class="hint">
+              </i> -->
+            </div>
+            <el-row>
+              <el-col class="margin-b-10" :xs="24" :sm="5" :md="5" :lg="5">
+                <el-form-item label="纳税人类型" class="taxable-type">
+                <el-radio-group v-model.number="form.taxable_type">
+                  <el-radio class="radio" :label="1">一般纳税人</el-radio>
+                  <el-radio class="radio" :label="2">小额纳税人</el-radio>
+                </el-radio-group>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row v-if="form.taxable_type === 2">
+              <el-col class="margin-b-10" :xs="24" :sm="5" :md="5" :lg="5">
+                <el-form-item label="发票类型" class="invoice-type">
+                <el-radio-group v-model.number="form.invoice_type">
+                  <el-radio class="radio" :label="1">专用发票</el-radio>
+                  <el-radio class="radio" :label="2">普通发票</el-radio>
+                </el-radio-group>
+                </el-form-item>
+              </el-col>
+            </el-row>
+
             <el-row :gutter="24">
               <el-col :span="isMob ? 24 : 14">
                 <el-checkbox v-model="agreement" disabled>
@@ -742,7 +768,7 @@
           :title= "`${custom.info}平台协议`"
           :visible.sync="dialogAgreement"
           top="5%"
-          width="580px">
+          width="880px">
           <div>
             <div class="agree-content">
               <p>本协议由缔约双方在自愿、平等、公平及诚实信用原则的基础上，根据《中华人民共和国合同法》等相关法律、法规的规定，经友好协商缔结。</p>
@@ -1463,10 +1489,6 @@
           return false
         }
       },
-      // 去认证
-      goVerify() {
-        this.$router.push({name: 'vcenterComputerIdentification'})
-      },
       handlePreview(file) {
         console.log(file)
       },
@@ -1576,6 +1598,12 @@
         if (that.form.taxable_type === 0) {
           that.$message.error('请选择纳税人类型!')
           return false
+        }
+        if (that.form.taxable_type === 2) {
+          if (that.form.invoice_type === 0) {
+            that.$message.error('请选择纳税人发票类型!')
+            return false
+          }
         }
         console.log('that.form', that.form)
         that.$refs[formName].validate((valid) => {
@@ -1788,6 +1816,10 @@
         return
       }
       this.getdesignCompanyInfo()
+      let {params = {}} = this.$route
+      if (params.id === 2) {
+        this.dialogVisible = true
+      }
       // 加载图片token
       this.$http.get(api.upToken, {}).then(response => {
         if (response.data.meta.status_code === 200) {
@@ -1889,7 +1921,19 @@
     margin: 0;
     position: relative;
   }
-
+  .el-radio+.el-radio {
+    margin-left: 0;
+  }
+  .taxable-type .el-radio+.el-radio {
+    margin-top: 6px;
+  }
+  .invoice-type .el-radio-group {
+    display: flex;
+    margin-top: 12px;
+  }
+  .invoice-type .el-radio+.el-radio  {
+    margin-left: 30px;
+  }
   /* .item .el-col {
     padding: 10px 0 10px 0;
   }

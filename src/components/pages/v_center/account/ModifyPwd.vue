@@ -10,7 +10,7 @@
           <d-menu-sub v-else></d-menu-sub>
           <!-- <v-menu-sub></v-menu-sub> -->
           <v-menu-sub v-if="false" currentSubName="identification"></v-menu-sub>
-          <h3 class="top-password">修改密码</h3>
+          <h3 :class="['top-password', {'blank20' : isMob}]">修改密码</h3>
           <div :class="['content-box', 'clearfix' , isMob ? 'content-box-m' : '']" v-loading="isLoading">
             <!-- <div :class="['form-title', isMob ? 'form-title-m' : '']">
               <span v-if="!isMob">修改密码</span>

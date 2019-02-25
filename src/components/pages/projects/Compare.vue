@@ -3,7 +3,7 @@
     <menu-sub status="select"></menu-sub>
     <div class="project-cover clearfix">
       <div class="project-item-box">
-        <h3>选择设计方，发送项目需求</h3>
+        <h3>选择设计服务商，发送项目需求</h3>
         <div class="item">
           <el-row :gutter="20">
             <el-col :xs="24" :sm="6" :md="6" :lg="6" v-for="(ele, index) in companyDetails" :key="index">
@@ -61,7 +61,7 @@
       </div>
       <div class="project-foot">
         <div class="buttons">
-          <span class="select-num" v-if="selectList.length">已选中<i>{{selectList.length}}家</i>设计方</span>
+          <span class="select-num" v-if="selectList.length">已选中<i>{{selectList.length}}家</i>设计服务商</span>
           <button @click="stickCompanySubmit" :class="['middle-button', 'full-red-button', {'disabled-button': !selectList.length}]">发送</button>
         </div>
       </div>
@@ -277,7 +277,7 @@ export default {
       })
       .then((response) => {
         if (response.data.meta.status_code === 200) {
-          this.$message.success('操作成功，等待设计公司接单!')
+          this.$message.success('操作成功，等待设计服务商接单!')
           this.$router.push({name: 'vcenterItemShow', params: {id: this.id}})
         } else {
           this.$message.error(response.data.meta.message)

@@ -16,7 +16,6 @@
       <router-view class="main-content"></router-view>
       <v-footer></v-footer>
     </div>
-    <p v-show="false">{{ticket}}</p>
     <p v-show="false">{{token}}</p>
     <div v-if="!fwh">
       <iframe
@@ -100,7 +99,6 @@ export default {
         this.path = list
       }
     }
-    console.warn('FWH107', FWH)
     if (FWH) {
     } else {
       this.getVersion()
@@ -178,7 +176,7 @@ export default {
     postMessage() {
       this.path.forEach(item => {
         if (item.iframeLoad) {
-          let ticket = this.$store.state.event.ticket || localStorage.getItem('ticket')
+          let ticket = this.$store.state.event.ticket || phenix.getCookie('ticket')
           this.$refs[item.ref][0].contentWindow.postMessage(JSON.stringify({
             ticket: ticket,
             type: 'login'
@@ -189,7 +187,7 @@ export default {
     postMessage2() {
       this.path.forEach(item => {
         if (item.iframeLoad) {
-          let ticket = this.$store.state.event.ticket || localStorage.getItem('ticket')
+          let ticket = this.$store.state.event.ticket || phenix.getCookie('ticket')
           this.$refs[item.ref][0].contentWindow.postMessage(JSON.stringify({
             ticket: ticket,
             type: 'loginout'
@@ -230,12 +228,14 @@ export default {
         if (user.demand_verify_status === 0) {
           console.log('没有认证')
           this.alertTitle.title = '您还没有申请企业实名认证'
-          this.alertTitle.path = '/vcenter/d_company/accreditation'
+          // this.alertTitle.path = '/vcenter/d_company/base'
+          this.alertTitle.path = {name: 'redirect', query: {name: 'vcenterDComputerBase', id: 1}}
           return true
         } else if (user.demand_verify_status === 2) {
           console.log('没有认证')
           this.alertTitle.title = '您申请企业实名认证失败了'
-          this.alertTitle.path = '/vcenter/d_company/accreditation'
+          // this.alertTitle.path = '/vcenter/d_company/base'
+          this.alertTitle.path = {name: 'redirect', query: {name: 'vcenterDComputerBase', id: 1}}
           return true
         } else if (user.demand_verify_status === 1 || user.demand_verify_status === 3) {
           if (user.demand_info_status === 1) {
@@ -255,18 +255,20 @@ export default {
           if (user.design_verify_status === 0) {
             console.log('没有认证')
             this.alertTitle.title = '您还没有申请企业实名认证'
-            this.alertTitle.path = '/vcenter/company/accreditation'
+            // this.alertTitle.path = '/vcenter/company/base'
+            this.alertTitle.path = {name: 'redirect', query: {name: 'vcenterComputerBase', id: 2}}
             return true
           } else if (user.design_verify_status === 2) {
             console.log('公司认证失败')
             this.alertTitle.title = '您申请企业实名认证失败了'
-            this.alertTitle.path = '/vcenter/company/accreditation'
+            // this.alertTitle.path = '/vcenter/company/base'
+            this.alertTitle.path = {name: 'redirect', query: {name: 'vcenterComputerBase', id: 2}}
             return true
           } else if (user.design_verify_status === 1 || user.design_verify_status === 3) {
             if (user.design_info_status === 1) {
-              // console.log('设计公司基础信息：已完善')
+              // console.log('设计服务商基础信息：已完善')
               if (user.design_item_status === 1) {
-                // console.log('设计公司接单设置：已完善')
+                // console.log('设计服务商接单设置：已完善')
                 if (user.design_case_status === 1) {
                   // console.log('设计案例是否添加：已完善')
                   return false
@@ -279,13 +281,13 @@ export default {
               } else {
                 this.alertTitle.title = '设计项目接单价格'
                 this.alertTitle.path = '/vcenter/company/taking'
-                // console.log('设计公司接单设置：未完善')
+                // console.log('设计服务商接单设置：未完善')
                 return true
               }
             } else {
               this.alertTitle.title = '填写公司基本信息、公司简介、荣誉奖励'
               this.alertTitle.path = '/vcenter/company/base'
-              // console.log('设计公司基础信息：未完善')
+              // console.log('设计服务商基础信息：未完善')
               return true
             }
           } else {

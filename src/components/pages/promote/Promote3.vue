@@ -26,7 +26,7 @@
           </div>
           <div class="title mtop_20 line-height20">
             <div class="fs_13">优客工场联合太火鸟，首推B2B设计对接服务</div>
-            <div class="fc_red fs_25 mtop_15 line-height28">1000+ 顶级设计公司<br/>免费提供设计对接服务</div>
+            <div class="fc_red fs_25 mtop_15 line-height28">1000+ 顶级设计服务商<br/>免费提供设计对接服务</div>
             <div class="fs_14 mtop_15 line-height28">现在发布设计需求，尊享全单6折优惠</div>
           </div>
           <div class="swiper">
@@ -63,7 +63,7 @@
           <div class="fs_16 mtop_20">真格基金、创新工场、麦顿资本、罗莱生活、<br>小米、顺为资本</div>
           <div class="circe mtop_20">
             <div class="small_circe fs_20 fc_red">1000+</div>
-            <div class="fs_15 fc_white" style="margin-left: 5px;">入驻全球顶级设计公司</div>
+            <div class="fs_15 fc_white" style="margin-left: 5px;">入驻全球顶级设计服务商</div>
           </div>
           <div class="circe mtop_15">
             <div class="small_circe fs_20 fc_red">300+</div>
@@ -87,7 +87,7 @@
             </div>
             <div>
               <img src="../../../assets/images/promote/app/02.png" class="img_for"/>
-              <div class="fs_14  mtop_15">敲定设计细节<br>匹配设计公司</div>
+              <div class="fs_14  mtop_15">敲定设计细节<br>匹配设计服务商</div>
             </div>
           </div>
           <div class="img_down">
@@ -210,14 +210,14 @@
               <el-form-item prop="account" label="联系方式">
                 <el-input :maxlength="11" v-model="form.account" ref="account" placeholder="请输入联系方式"></el-input>
               </el-form-item>
-              <el-form-item prop="smsCode" label="验证码" class="wap-disabled-btn">
+              <!-- <el-form-item prop="smsCode" label="验证码" class="wap-disabled-btn">
                 <el-input class="" v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
                   <template slot="append">
                     <el-button  @click="fetchCode" :disabled="time > 0">{{ codeMsg }}
                     </el-button>
                   </template>
                 </el-input>
-              </el-form-item>
+              </el-form-item> -->
             </el-form>
           </div>
           <button class="btn_class mtop_40 fs_20" @click="submit_app('ruleForm')">立即提交</button>
@@ -287,7 +287,6 @@
         isLoadingBtn: false,
         userList: [],   // 消息列表
         form: {
-          smsCode: '',  // 验证码
           demand: '',   // 需求
           account: '',  // 手机号
           contact: '',   // 联系人
@@ -333,6 +332,10 @@
           appCompany: [
             { required: true, message: '请输入公司名称', trigger: 'blur' }
           ]
+        },
+        query: {
+          from: 2,
+          mark: ''
         }
       }
     },
@@ -410,11 +413,9 @@
               user_name: this.form.name,
               phone: this.form.account,
               company_name: this.form.appCompany,
-              sms_code: this.form.smsCode,
-              new_from: this.$route.query.from, // 1. 小程序 2. 默认/铟果 3. 艺火 4. 360 5. 头条号 6. 优客
-              device: this.isMob ? 2 : 1, // 1.PC 2.Phone
-              from: 7,
-              url: window.location.href
+              // new_form: this.$route.query.from, // 1. 小程序 2. 默认/铟果 3. 艺火 4. 360 5. 头条号 6. 优客
+              // device: this.isMob ? 2 : 1, // 1.PC 2.Phone
+              from: 7
             }
             this.$http.post(api.pcAdd, row)
               .then(res => {
@@ -431,44 +432,14 @@
               })
           }
         })
-      },
-      submit (form) {
-        this.$refs[form].validate(valid => {
-          if (valid) {
-            let row = {
-              user_name: this.form.contact,   // 联系人
-              phone: this.form.account,        // 手机号
-              item_name: this.form.demand,   // 需求
-              from: 2,   // 小程序or网页
-              sms_code: this.form.smsCode,   // 小程序or网页
-              url: window.location.href,
-              new_from: this.$route.query.from, // 1. 小程序 2. 默认/铟果 3. 艺火 4. 360 5. 头条号 6. 优客
-              device: this.isMob ? 2 : 1 // 1.PC 2.Phone
-            }
-            this.$http.post(api.pcAdd, row)
-              .then(res => {
-                if (res.data.meta.status_code === 200) {
-                  this.$message.success('发布成功')
-                  this.form = {}
-                  this.time = 0
-                } else {
-                  this.$message.error(res.data.meta.message)
-                }
-              })
-              .catch(error => {
-                this.$message.error(error)
-              })
-          } else {
-            this.$message.error('请填写信息')
-          }
-        })
       }
     },
     created () {
-      let that = this
-      if (!that.$route.query || !that.$route.query.from) {
-        that.$router.push({name: 'youke', query: {from: 2}})
-      }
+      // let that = this
+      // if (!that.$route.query || !that.$route.query.from) {
+      //   that.$router.push({name: 'youke', query: {from: 2}})
+      // }
+      Object.assign(this.query, this.$route.query)
     },
     mounted () {
       let that = this

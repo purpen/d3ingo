@@ -26,7 +26,7 @@
         <div class="order-item">
           <div class="right-left">
             <div class="left-text left-pad">项目名称：</div>
-            <div class="left-text left-pad">设计公司：</div>
+            <div class="left-text left-pad">设计服务商：</div>
             <div class="left-text left-pad">出让方式：</div>
             <div class="left-text left-pad">出让价格：</div>
             <div class="left-text">作品简介：</div>

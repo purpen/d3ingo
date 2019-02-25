@@ -133,7 +133,7 @@
     methods: {
       publish() {
         if (this.matchCount === 0) {
-          this.comfirmMessage = '您填写的信息没有匹配到合适的设计公司，确认发布？'
+          this.comfirmMessage = '您填写的信息没有匹配到合适的设计服务商，确认发布？'
           this.comfirmDialog = true
         } else {
           this.publishSubmit()

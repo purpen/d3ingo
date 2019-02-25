@@ -792,7 +792,7 @@ export default {
         console.error(error.message)
       })
     } else {
-      // 获取设计公司详情
+      // 获取设计服务商详情
       this.$http.get(api.designCompanyChild, {}).then((response) => {
         if (response.data.meta.status_code === 200) {
           let item = response.data.data
