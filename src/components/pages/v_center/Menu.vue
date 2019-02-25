@@ -695,7 +695,8 @@
   } */
   .logo-icon img {
     width: auto;
-    height: 50px;
+    height: 74px;
+    margin-top: -7px;
   }
   .other .logo-icon img {
     width: auto;

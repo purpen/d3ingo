@@ -708,7 +708,8 @@
   } */
   .el-menu-item.logo img {
     width: auto;
-    height: 50px;
+    height: 74px;
+    margin-top: -7px;
   }
   .jdc .el-menu-item.logo img {
     width: auto;
