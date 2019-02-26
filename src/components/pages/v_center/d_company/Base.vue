@@ -189,15 +189,15 @@
                 </div>
                 <div v-if="form.verify_status === 3">
                   <a class="a-message">认证中</a>
-                  <el-button @click="showLegalizeDialog" size="mini">修改认证</el-button> 
+                  <el-button class="white-to-red-button" @click="showLegalizeDialog" size="mini">修改认证</el-button> 
                 </div>
                 <div v-if="form.verify_status === 1">
                   <a class="a-success">认证成功</a>
-                  <el-button @click="showLegalizeDialog" size="mini">修改认证</el-button> 
+                  <el-button class="white-to-red-button" @click="showLegalizeDialog" size="mini">修改认证</el-button> 
                 </div>
                 <div v-if="form.verify_status === 2">
                   <a class="a-default">认证失败</a>
-                  <el-button @click="showLegalizeDialog" size="mini">重新认证</el-button>
+                  <el-button class="white-to-red-button" @click="showLegalizeDialog" size="mini">重新认证</el-button>
                 </div>
               </el-col>
             </el-row>

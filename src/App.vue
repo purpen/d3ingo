@@ -156,7 +156,6 @@ export default {
       })
     },
     getVersion() {
-      console.warn('getVersion160', FWH)
       this.$http.get(api.getVersion)
       .then(res => {
         let version = localStorage.getItem('version')
