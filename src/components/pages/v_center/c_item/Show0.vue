@@ -1126,7 +1126,7 @@ const vQuoteView = () => import('@/components/block/QuoteView')
               name: '项目预算',
               title: self.item.design_cost_value
             }, {
-              name: '项目周期',
+              name: '交付时间',
               title: self.item.cycle_value
             }, {
               name: '工作地点',

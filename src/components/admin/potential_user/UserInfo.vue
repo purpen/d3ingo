@@ -415,9 +415,9 @@
                           </el-col>
                           <el-col :xs="24" :sm="20" :md="8" :lg="8">
                             <p v-if="!boolEditProject || currentProjectId !== item.item_id">
-                              <span>项目周期: </span>{{item.cycle_value}}
+                              <span>交付时间: </span>{{item.cycle_value}}
                             </p>
-                            <el-form-item v-if="boolEditProject && currentProjectId === item.item_id" label="项目周期" prop="cycle">
+                            <el-form-item v-if="boolEditProject && currentProjectId === item.item_id" label="交付时间" prop="cycle">
                               <el-select v-model="projectForm.cycle" placeholder="请选择">
                                 <el-option
                                   v-for="(d, index) in cycleOptions"
@@ -722,7 +722,7 @@
 
                       <el-row :gutter="20">
                         <el-col :xs="24" :sm="12" :md="8" :lg="8">
-                          <el-form-item label="项目周期" prop="cycle">
+                          <el-form-item label="交付时间" prop="cycle">
                             <el-select v-model="projectForm.cycle" placeholder="请选择">
                               <el-option
                                 v-for="(d, index) in cycleOptions"

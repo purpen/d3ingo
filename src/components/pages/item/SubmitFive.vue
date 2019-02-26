@@ -255,7 +255,7 @@
                 },
                 {
                   name: '',
-                  key: '项目周期',
+                  key: '交付时间',
                   value: row.cycle_value
                 },
                 {

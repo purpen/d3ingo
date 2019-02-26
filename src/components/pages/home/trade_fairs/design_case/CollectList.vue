@@ -37,7 +37,7 @@
                         <span>设计类别：&nbsp;{{item.design_types_value | typeJoin}}</span>
                       </div>
                       <div class="list-word">
-                        <span>项目周期：&nbsp;{{item.cycle_value}}</span>
+                        <span>交付时间：&nbsp;{{item.cycle_value}}</span>
                       </div>
                       <div class="list-bottom bottom-style">
                         <div class="list-contain">
@@ -109,7 +109,7 @@
         <div class="details">
           <el-row>
             <el-col :span="6">
-              <span>项目周期</span>
+              <span>交付时间</span>
             </el-col>
             <el-col :span="18">
               {{formup.cycle_value}}
