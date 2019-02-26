@@ -1217,12 +1217,11 @@
         this.isReady = true
       },
       uploadStageError(err, file, fileList) {
-        let index = this.currentStageIndex
-        if (this.isMob) {
-          document.getElementById('upload_btn_' + index).innerText = '上传附件'
-        }
         this.$message.error(err)
+        this.$message.error('上传失败, 请重新上传')
         this.isReady = true
+        let index = this.currentStageIndex
+        document.getElementById('upload_btn_' + index).innerText = '上传附件'
       },
       handlePreview(file) {
       },
