@@ -153,7 +153,7 @@
     </el-row>
 
     <!--弹框模板-->
-    <el-dialog :title="itemModelTitle" :visible.sync="itemModel" class="withdraw text-center" width="580px">
+    <el-dialog :title="itemModelTitle" :visible.sync="itemModel" class="withdraw text-center" :width="isMob ? '90%' : '580px'">
       <div v-if="corporationInfo.account_name !== '' || corporationInfo.bank_name !== '' || corporationInfo.account_number !== ''">
         <div class="withdraw-input display-fl">
           <div class="withdraw-title margin-t-b-20 dis-ju"><p>开户名称:</p><span>{{corporationInfo.account_name}}</span></div>
@@ -162,7 +162,7 @@
         </div>
         <div class="withdraw-input">
           <p class="withdraw-title margin-t-b-20">提现金额</p>
-          <div class="flex line-hei-20">
+          <div class="flex flex-wrap line-hei-20">
             <el-input placeholder="请输入提现额度" v-model.number.trim="withdrawPrice">
               <template slot="prepend">¥</template>
             </el-input>
@@ -170,8 +170,8 @@
           </div>
           <p class="withdraw-des">可提现金额: <span class="tc-red fz-16">¥ {{ wallet.price }}</span></p>
         </div>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="itemModel = false">取 消</el-button>
+        <div slot="footer" class="dialog-footer fz-0">
+          <el-button class="margin-r-15" @click="itemModel = false">取 消</el-button>
           <el-button type="primary" :loading="isLoadingBtn" @click="withdrawSubmit">确 定</el-button>
         </div>
       </div>
@@ -786,5 +786,15 @@
     .btn-phone {
       margin-bottom: 10px;
     }
+    .withdraw-input .el-input {
+      width: 100%;
+    }
+    .flex-wrap {
+      flex-wrap: wrap
+    }
+  .flex button:last-child {
+    margin-left: 0;
+    margin-top: 15px
+  }
   }
 </style>

@@ -1987,9 +1987,6 @@ export default {
 }
 </script>
 <style scoped>
-.el-form-item {
-  /* margin-bottom: 0px; */
-}
 .font14 {
   font-size: 14px;
 }
@@ -2072,10 +2069,6 @@ export default {
   color: #FF5A5F;
   border-bottom: 2px solid #FF5A5F;
 }
-.card-body-center {
-  /* padding: 20px; */
-}
-
 .user-name, .user-phone, .source, .belong, .call-status {
   display: flex;
   align-items: center;
@@ -2299,11 +2292,6 @@ export default {
 .edit-project:hover .edit-project-tag {
   display: block;
 }
-.edit-project:hover {
-  /* width: 48px;
-  height: 48px; */
-  /* background: url(../../../assets/images/icon/MoreHover@2xx.png) no-repeat left; */
-}
 .edit-project-tag {
   display: none;
   position: absolute;
@@ -2347,9 +2335,6 @@ export default {
 .user-base-table p, 
 .project-form-table p {
   margin-bottom: 22px;
-}
-.user-base-table span {
-  /* display: inline-block; */
 }
 .project-form-table span {
   margin-right: 15px;
@@ -2412,9 +2397,6 @@ export default {
 	border-radius: 18px;
   color: #ffffff;
 }
-.link-item-name:hover {
-
-}
 .link-item-name:hover i {
   background: rgba(0,0,0,.6);
   color: #ffffff;
@@ -2440,9 +2422,6 @@ export default {
   border-radius: 4px;
   margin-top: 20px;
 }
-.edit-progress {
-
-}
 .send {
   border-top: 1px solid #e6e6e6;
   padding: 10px 20px;
@@ -2453,9 +2432,6 @@ export default {
   background-color: #FAFAFA;
   margin-top: 10px;
   border: 1px solid #e6e6e6;
-}
-.log-li:blur {
-
 }
 .log-li-top {
   position: relative;

@@ -160,7 +160,7 @@
               </el-col>
             </el-row>
 
-            <el-row :gutter="gutter" :class="['item', 'border-b-no', isMob ? 'item-m' : '']">
+            <el-row :gutter="gutter" :class="['item', isMob ? 'item-m' : '']">
               <el-col :span="titleSpan" class="title">
                 <p>网址</p>
               </el-col>
@@ -179,7 +179,7 @@
               </el-col>
             </el-row>
             
-            <el-row :gutter="gutter" :class="['item', isMob ? 'item-m no-border' : '']">
+            <el-row :gutter="gutter" :class="['item', 'border-b-no', isMob ? 'item-m no-border' : '']">
               <el-col :span="titleSpan" class="title">
                 <p>公司实名认证</p>
               </el-col>
@@ -189,15 +189,15 @@
                 </div>
                 <div v-if="form.verify_status === 3">
                   <a class="a-message">认证中</a>
-                  <el-button @click="showLegalizeDialog" size="mini">修改认证</el-button> 
+                  <el-button class="white-to-red-button" @click="showLegalizeDialog" size="mini">修改认证</el-button> 
                 </div>
                 <div v-if="form.verify_status === 1">
                   <a class="a-success">认证成功</a>
-                  <el-button @click="showLegalizeDialog" size="mini">修改认证</el-button> 
+                  <el-button class="white-to-red-button" @click="showLegalizeDialog" size="mini">修改认证</el-button> 
                 </div>
                 <div v-if="form.verify_status === 2">
                   <a class="a-default">认证失败</a>
-                  <el-button @click="showLegalizeDialog" size="mini">重新认证</el-button>
+                  <el-button class="white-to-red-button" @click="showLegalizeDialog" size="mini">重新认证</el-button>
                 </div>
               </el-col>
             </el-row>
@@ -997,17 +997,8 @@
     padding: 0;
   }
 
-  .item .content {
-  }
-
   .item .edit {
     text-align: right;
-  }
-
-  .item-m .edit {
-  }
-
-  .item p {
   }
 
   .title {

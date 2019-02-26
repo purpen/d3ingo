@@ -144,12 +144,7 @@
 
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-  .content-item-box {
-  
-  }
   .pub {
     background: #FAFAFA;
     height: 150px;
