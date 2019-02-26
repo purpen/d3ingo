@@ -326,7 +326,6 @@
     watch: {
       $route (to, from) {
         // 对路由变化作出响应...
-        this.navdefact()
         this.showCover = ''
         this.showCover2 = ''
       }
@@ -334,11 +333,6 @@
     methods: {
       initPage() {
         this.$store.commit('INIT_PAGE')
-      },
-      navdefact() {
-        // 设置router函数跳转
-        // this.menuactive = this.$route.path.split('/')[1]
-        console.log(this.menuactive)
       },
       logout() {
         auth.logout()
