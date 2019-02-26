@@ -160,7 +160,7 @@
               </el-col>
             </el-row>
 
-            <el-row :gutter="gutter" :class="['item', 'border-b-no', isMob ? 'item-m' : '']">
+            <el-row :gutter="gutter" :class="['item', isMob ? 'item-m' : '']">
               <el-col :span="titleSpan" class="title">
                 <p>网址</p>
               </el-col>
@@ -179,7 +179,7 @@
               </el-col>
             </el-row>
             
-            <el-row :gutter="gutter" :class="['item', isMob ? 'item-m no-border' : '']">
+            <el-row :gutter="gutter" :class="['item', 'border-b-no', isMob ? 'item-m no-border' : '']">
               <el-col :span="titleSpan" class="title">
                 <p>公司实名认证</p>
               </el-col>
