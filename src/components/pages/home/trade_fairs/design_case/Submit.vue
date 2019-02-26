@@ -666,7 +666,7 @@
         let add = fileList[fileList.length - 1]
         let item = {
           name: add.name,
-          url: add.url,
+          url: add.response.file,
           edit: false,
           summary: '',
           asset_id: add.response.asset_id
@@ -711,7 +711,7 @@
         let add = fileList[fileList.length - 1]
         let item = {
           name: add.name,
-          url: add.url,
+          url: add.response.file,
           edit: false,
           size: file.size,
           summary: '',
@@ -726,7 +726,7 @@
         let add = fileList[fileList.length - 1]
         let item = {
           name: add.name,
-          url: add.url,
+          url: add.response.file,
           edit: false,
           summary: '',
           asset_id: add.response.asset_id

@@ -240,7 +240,7 @@
           label: '3-4个月'
         }, {
           value: 5,
-          label: '5个月以上'
+          label: '4个月以上'
         }],
         userId: this.$store.state.event.user.id,
         form: {
@@ -279,7 +279,7 @@
           if (!val.min_price || val.min_price === '') {
             return '未设置'
           }
-          return val.min_price
+          return val.min_price + ' 元'
         } else {
           return '未设置'
         }
