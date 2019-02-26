@@ -8,9 +8,9 @@
                     :finish-status="isMob ? 'success' : 'process'"
                     :active="progressButt">
             <el-step title="项目创建" description=""></el-step>
-            <el-step title="推荐设计公司"></el-step>
-            <el-step title="等待设计公司接单(报价)"></el-step>
-            <el-step title="已有设计公司报价"></el-step>
+            <el-step title="推荐设计服务商"></el-step>
+            <el-step title="等待设计服务商接单(报价)"></el-step>
+            <el-step title="已有设计服务商报价"></el-step>
           </el-steps>
         </div>
 
@@ -18,7 +18,7 @@
           <p class="margin-50">合同管理</p>
           <el-steps :space="isMob ? 80 : 50" :direction="isMob ? 'horizontal' : 'vertical'"
                     :finish-status="isMob ? 'success' : 'process'" :active="progressContract">
-            <el-step title="等待设计公司提交合同" description=""></el-step>
+            <el-step title="等待设计服务商提交合同" description=""></el-step>
             <el-step title="确认合同"></el-step>
             <el-step title="合同已确认"></el-step>
             <el-step title="托管项目资金"></el-step>

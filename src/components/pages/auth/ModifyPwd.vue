@@ -392,7 +392,7 @@ export default {
   watch: {},
   created: function() {
     var uType = this.$store.state.event.user.type
-    // 如果非设计公司，跳到相应页面
+    // 如果非设计服务商，跳到相应页面
     if (uType !== 2) {
       this.$router.replace({ name: 'vcenterDComputerIdentification' })
       return

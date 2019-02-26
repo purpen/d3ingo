@@ -245,7 +245,7 @@ module.exports = [
     component: require('@/components/pages/v_center/c_item/Show')
   },
 
-  // 我的项目列表(设计公司) -- 待合作
+  // 我的项目列表(设计服务商) -- 待合作
   {
     path: '/vcenter/citem/list',
     name: 'vcenterCItemList',
@@ -283,7 +283,7 @@ module.exports = [
       require(['@/components/pages/v_center/contract/JdDemandView'], resolve)
     }
   },
-  // 在线合同预览--京东云-设计公司
+  // 在线合同预览--京东云-设计服务商
   {
     path: '/vcenter/contract/jd_design_show/:unique_id',
     name: 'vcenterContractJdDesignView',
@@ -368,7 +368,7 @@ module.exports = [
       require(['@/components/pages/v_center/contract/JdDemandDown'], resolve)
     }
   },
-  // 合同下载--京东（设计方）
+  // 合同下载--京东（设计服务商）
   {
     path: '/vcenter/contract/jd_design_download/:unique_id',
     name: 'vcenterContractJdDesignDown',

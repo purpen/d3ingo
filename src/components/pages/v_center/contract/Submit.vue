@@ -38,7 +38,7 @@
                 </el-col>
               </el-row>
 
-              <p class="sub-title mar-b-10">乙方（设计方）</p>
+              <p class="sub-title mar-b-10">乙方（设计服务商）</p>
               <el-row :gutter="10">
                 <el-col :span="isMob ? 24 : 12">
                   <el-form-item style="margin: 0" label="" prop="design_company_name">

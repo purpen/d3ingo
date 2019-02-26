@@ -7,7 +7,7 @@
       <div class="flex">
         <p :class="['info', {'active': status === 'info'}]">项目需求信息</p>
         <p :class="['match', {'active': status === 'match'}]">分析匹配</p>
-        <p :class="['select', {'active': status === 'select'}]">选择设计方</p>
+        <p :class="['select', {'active': status === 'select'}]">选择设计服务商</p>
       </div>
     </div>
 

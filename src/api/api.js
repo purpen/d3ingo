@@ -75,24 +75,24 @@ export default {
   PackId: '/PackDesign/{0}', // 更改 包装设计详细信息
   IllustrationId: '/IllustrationDesign/{0}', // 更改 插画详细信息
   release: '/demand/release', // 发布项目
-  recommendListId: '/demand/recommendList/{0}', // 项目获取推荐的设计公司
-  demandPush: '/demand/push', // 选定系统推荐的设计公司
-  demandItemDesignListItemId: '/demand/itemDesignList/{0}', // 选择已报价的设计公司
-  demandFalseDesign: '/demand/falseDesign', // 拒绝设计公司报价
-  agreeDesignCompany: '/demand/trueDesign', // 同意合作的设计公司
+  recommendListId: '/demand/recommendList/{0}', // 项目获取推荐的设计服务商
+  demandPush: '/demand/push', // 选定系统推荐的设计服务商
+  demandItemDesignListItemId: '/demand/itemDesignList/{0}', // 选择已报价的设计服务商
+  demandFalseDesign: '/demand/falseDesign', // 拒绝设计服务商报价
+  agreeDesignCompany: '/demand/trueDesign', // 同意合作的设计服务商
   demandItemRestart: '/demand/itemRestart', // POST 修改项目，重新匹配
   demandCloseItem: '/demand/closeItem', // POST 用户关闭项目
   demandTrueItemDoneId: '/demand/trueItemDone/{0}', // POST 确认项目完成
   demandMatchingCount: '/demand/matchingCount', // POST 获取已匹配公司数量
-  demandEvaluate: '/demand/evaluate', // POST 评价设计公司
-  demandUsersEvaluate: '/demand/users/evaluate', // POST 评价设计公司
+  demandEvaluate: '/demand/evaluate', // POST 评价设计服务商
+  demandUsersEvaluate: '/demand/users/evaluate', // POST 评价设计服务商
 
   // 需求方公司管理
   demandCompany: '/demandCompany', // POST 保存需求方公司信息;  GET 获取信息
 
   // 公司项目接口
-  // 设计公司获取项目订单
-  designItemList: '/design/itemList', // 设计公司获取项目列表
+  // 设计服务商获取项目订单
+  designItemList: '/design/itemList', // 设计服务商获取项目列表
   addQuotation: '/quotation', // 填写报价单
   updateQuotation: '/quotation/{0}', // PUT 更新报价单
   companyRefuseItemId: '/design/refuseItem/{0}', // get 拒绝推送的项目报价
@@ -110,7 +110,7 @@ export default {
 
   // 阶段查看
   itemStageDemandLists: '/itemStage/demand/lists', // GET 需求方阶段查看
-  itemStageDesignCompanyLists: '/itemStage/designCompany/lists', // GET 设计公司阶段查看
+  itemStageDesignCompanyLists: '/itemStage/designCompany/lists', // GET 设计服务商阶段查看
   itemStageId: '/itemStage/{0}', // GET 阶段详情 PUT 编辑
   itemStage: '/itemStage', // POST 保存
   demandFirmItemStage: '/itemStage/demandFirmItemStage', // POST 需求方确认阶段完成
@@ -134,13 +134,13 @@ export default {
   work: 'works',
   workid: 'works/{0}',
 
-  // 设计公司
+  // 设计服务商
   designCompanyId: 'designCompany/otherIndex/{0}', // 根据标识查看公司详情
-  designCompany: '/designCompany', // POST 保存 /PUT 更新 / GET 设计公司基本资料
-  designCompanyChild: '/designCompany/child',   // GET 查看设计公司信息
+  designCompany: '/designCompany', // POST 保存 /PUT 更新 / GET 设计服务商基本资料
+  designCompanyChild: '/designCompany/child',   // GET 查看设计服务商信息
 
   surveyDemandCompanySurvey: '/survey/demandCompanySurvey', // GET 需求方控制面板
-  surveyDesignCompanySurvey: '/survey/designCompanySurvey', // GET 设计公司控制面板
+  surveyDesignCompanySurvey: '/survey/designCompanySurvey', // GET 设计服务商控制面板
 
   // 项目提醒
   messageGetMessageQuantity: '/message/getMessageQuantity', // GET 获取数量
@@ -159,7 +159,7 @@ export default {
   categoryList: '/classification/list', // GET 分类列表
 
   // 发票信息
-  invoiceDesignTrueSend: '/invoice/designTrueSend', // PUT  设计公司确认发票已开出
+  invoiceDesignTrueSend: '/invoice/designTrueSend', // PUT  设计服务商确认发票已开出
   invoiceDemandTrueGet: '/invoice/demandTrueGet',   // PUT 需求公司确认收到发票
 
   // 附件操作
@@ -202,7 +202,7 @@ export default {
   adminClueSelCrmItem: '/admin/clue/delCrmItem', // DELETE 删除项目
   adminClueCrmItemLoser: '/admin/clue/crmItemLoser', // POST 项目标记失败
   adminClueAddCrmDesign: '/admin/clue/addCrmDesign', // POST 添加对接公司
-  adminClueCrmDesignList: '/admin/clue/crmDesignList', // GET 对接设计公司列表
+  adminClueCrmDesignList: '/admin/clue/crmDesignList', // GET 对接设计服务商列表
   adminClueDelCrmDesign: '/admin/clue/delCrmDesign', // DELETE 删除对接公司
   adminClueUpdateCrmDesign: '/admin/clue/updateCrmDesign', // POST 更改对接公司
   adminClueAddTrackLog: '/admin/clue/addTrackLog', // POST 添加跟进记录
@@ -251,16 +251,16 @@ export default {
   adminDemandCompanyInvoice: '/admin/invoice/pushLists', // GET 需要平台给需求公司开具发票列表
   adminDemandCompanyConfirmSendInvoice: '/admin/invoice/trueDemandInvoice', // PUT 确认给需求公司的发票已开
 
-  // 设计公司管理
-  adminCompanyList: '/admin/designCompany/lists', // GET 设计公司列表
-  adminCompanyShow: '/admin/designCompany/show', // GET 设计公司详情
+  // 设计服务商管理
+  adminCompanyList: '/admin/designCompany/lists', // GET 设计服务商列表
+  adminCompanyShow: '/admin/designCompany/show', // GET 设计服务商详情
   adminCompanyStatusOk: '/admin/designCompany/okStatus', // PUT 启用
   adminCompanyStatusDisable: '/admin/designCompany/unStatus', // PUT 禁用
   adminCompanyVerifyOk: '/admin/designCompany/verifyStatus', // PUT 通过审核
   adminCompanyVerifyCancel: '/admin/designCompany/unVerifyStatus', // PUT 取消审核 (停用)
   adminCompanySetTest: '/admin/designCompany/isTest',  // PUT 设置为测试账号（不会系统推荐）
-  adminCompanyInvoice: '/admin/invoice/pullLists', // GET 设计公司给平台开具发票
-  adminCompanyConfirmInvoice: '/admin/invoice/trueInvoice', // GET 确认收到设计公司发票
+  adminCompanyInvoice: '/admin/invoice/pullLists', // GET 设计服务商给平台开具发票
+  adminCompanyConfirmInvoice: '/admin/invoice/trueInvoice', // GET 确认收到设计服务商发票
 
   // 订单管理
   adminPayOrderLists: '/admin/payOrder/lists', // GET 订单列表
@@ -270,8 +270,8 @@ export default {
   adminWeightSave: '/admin/weight/save', // POST 保存更新权重配置
   adminWeightShow: '/admin/weight/show', // GET 权重详情
   adminSaveIntervene: '/admin/saveIntervene', // POST 人工干预分值修改
-  adminTesMatching: '/admin/test/matching', // GET 测试设计公司匹配
-  adminStatisticsList: '/admin/statistics/list', // GET 设计公司信息列表
+  adminTesMatching: '/admin/test/matching', // GET 测试设计服务商匹配
+  adminStatisticsList: '/admin/statistics/list', // GET 设计服务商信息列表
 
   // 提现管理
   adminWithDrawLists: '/admin/withdrawOrder/lists', // GET 订单列表
@@ -279,7 +279,7 @@ export default {
 
   // 案例管理
   adminDesignCaseLists: '/admin/designCase/lists', // GET 案例列表
-  adminDesignCaseSearch: '/admin/designCase/search', // GET 设计公司案例搜索
+  adminDesignCaseSearch: '/admin/designCase/search', // GET 设计服务商案例搜索
   adminDesignCaseOpenInfo: '/admin/designCase/openInfo', // GUT 案例是否公开
 
   // 栏目管理
@@ -379,15 +379,15 @@ export default {
   designMemberList: '/design/members', // GET 获取成员列表
   designMemberSetRole: '/design/isAdmin', // PUT 设计成员权限
   designDeleteMember: '/design/deleteMember', // PUT 移除成员
-  designSearch: '/design/members/search', // GET 设计公司搜索
+  designSearch: '/design/members/search', // GET 设计服务商搜索
   // 群组
   designgroupUserLists: '/group/groupUserLists', // GET 获取一个群组的成员信息
-  designgroupLists: '/group/lists', // GET 获取公司所有自己创建的群组列表(设计公司管理员)
+  designgroupLists: '/group/lists', // GET 获取公司所有自己创建的群组列表(设计服务商管理员)
   deleteGroup: '/group/delete', // delete 删除群组
   renameGroup: '/group/updateName', // PUT 修改群组名称
-  addGroup: '/group/addUser', // PUT 向群组添加用户（设计公司管理员)
+  addGroup: '/group/addUser', // PUT 向群组添加用户（设计服务商管理员)
   removeGroupMember: '/group/removeUser', // PUT 群组移除用户
-  createGroup: '/group/create', // POST 创建群组 设计公司管理员
+  createGroup: '/group/create', // POST 创建群组 设计服务商管理员
 
   // 邀请码
   inviteKey: '/urlKey', // 生成邀请字符串
@@ -557,12 +557,12 @@ export default {
   sdDemandEvaluateInfo: '/sd/demand/evaluateInfo', // GET 设计成果评价详情
   demandCompanySaveTradeFair: '/demandCompany/saveTradeFair', // GET 修改交易会权限
 
-  // 顺德设计方
+  // 顺德设计服务商
   sdDesignCancelCollectDemand: '/sd/design/cancelCollectDemand', // POST 取消收藏需求
   sdDesignDesignCollectList: '/sd/design/designCollectList', // GET 收藏列表
   sdDesignCollectDemand: '/sd/design/collectDemand', // POST 收藏需求
-  sdDemandDesignDemandInfo: '/sd/demand/designDemandInfo', // GET 设计公司查看某个需求详情
-  sdDemandDesignDemandList: '/sd/demand/designDemandList', // GET 设计公司查看需求列表
+  sdDemandDesignDemandInfo: '/sd/demand/designDemandInfo', // GET 设计服务商查看某个需求详情
+  sdDemandDesignDemandList: '/sd/demand/designDemandList', // GET 设计服务商查看需求列表
   sdDesignResultsSave: '/designResults/save', // POST 保存设计成果
   sdDesignResultsMyCollectionList: '/designResults/myCollectionList', // GET 我的设计成果收藏列表
   sdDesignResultsList: '/designResults/list', // GET 设计成果列表
@@ -574,7 +574,7 @@ export default {
   // 顺德后台
   adminDesignDemandLists: '/admin/designDemand/lists', // GET 发布的设计需求列表
   adminDesignDemandAuditStatus: '/admin/designDemand/auditStatus', // PUT 设计需求信息审核
-  adminDesignDemandShowCollectList: '/admin/designDemand/showCollectList', // GET 查看设计需求被那些设计公司收藏
+  adminDesignDemandShowCollectList: '/admin/designDemand/showCollectList', // GET 查看设计需求被那些设计服务商收藏
   adminDesignResultList: '/admin/designResult/list', // GET 设计成果待审核列表
   adminDesignResultSave: '/admin/designResult/save', // GET 设计成果审核
   adminPayOrderDissolution: '/admin/payOrder/dissolution', // POST 解散支付订单
