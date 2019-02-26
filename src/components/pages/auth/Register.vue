@@ -490,7 +490,7 @@
     border-left: none;
     border-top: none;
     transform: rotate(45deg);
-    border-radius: 0 0 1px 0
+    border-radius: 0 0 0 0
   }
   .register-tab-user.active h3 {
     color: #FF5A5F;

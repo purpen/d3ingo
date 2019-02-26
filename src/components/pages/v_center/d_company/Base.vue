@@ -1,5 +1,5 @@
 <template>
-  <div class="blank30 vcenter">
+  <div class="blank30 vcenter input-text">
     <el-row>
       <v-menu currentName="company" :class="[isMob ? 'v-menu' : '']"></v-menu>
       <div :class="{'vcenter-right-plus': leftWidth === 4,
@@ -184,7 +184,7 @@
                 <p>公司实名认证</p>
               </el-col>
               <el-col :span="contentSpan" class="content">
-                <div v-if="form.verify_status === 0">点此
+                <div v-if="form.verify_status === 0" class="font14">点此
                   <a class="a-default" @click="showLegalizeDialog">去认证</a>
                 </div>
                 <div v-if="form.verify_status === 3">
@@ -1099,6 +1099,10 @@
     margin: 5px 0;
   }
 
+  .font14 {
+    font-size: 14px;
+    line-height: 1.5;
+  }
   .tag:hover {
     border: 1px solid #FF5A5F;
     color: #FF5A5F;

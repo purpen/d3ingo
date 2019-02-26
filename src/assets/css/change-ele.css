@@ -920,6 +920,26 @@
     line-height: 20px;
     padding: 15px;
   }
+  .border-rad-input .el-input__inner:hover {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .border-rad-input .el-input__inner:hover {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border: none;
+    border-left: 1px solid #e6e6e6;
+    border-top: 1px solid #e6e6e6;
+    border-bottom: 1px solid #e6e6e6;
+  }
+  .border-rad-input .el-input__inner:focus {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border: none;
+    border-left: 1px solid #d2d2d2;
+    border-top: 1px solid #d2d2d2;
+    border-bottom: 1px solid #d2d2d2;
+  }
   /*推广页*/
   .input-phone input {
     height: 50px;

@@ -457,7 +457,7 @@
         userInfo = api.demandCompany
       } else {
         this.userType = 2
-        requestMethod = 'put'
+        requestMethod = 'get'
         userInfo = api.designCompany
       }
       const self = this
