@@ -110,7 +110,7 @@
                 >
                 <div class="scroll-bar demands" ref="submitDemand" v-loading="formLoading">
                   <el-form :model="form" ref="form" :rules="rules" @submit.native.prevent >
-                    <el-form-item label="项目名称" prop="name" label-position="top">
+                    <el-form-item label="项目名称" prop="name" label-position="top" class="line-hei-20">
                       <el-input v-model="form.name" placeholder="请输入项目名称"></el-input>
                     </el-form-item>
                     <p class="mg-b-10 tc-6">设计类型</p>
@@ -1350,6 +1350,7 @@
     cursor: pointer;
     min-width: 120px;
     height: 34px;
+    font-size: 12px;
     line-height: 32px;
     background: #fff;
     border-radius: 4px;
