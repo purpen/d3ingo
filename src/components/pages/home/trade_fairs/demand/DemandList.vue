@@ -1351,7 +1351,7 @@
     min-width: 120px;
     height: 34px;
     font-size: 12px;
-    line-height: 32px;
+    line-height: 30px;
     background: #fff;
     border-radius: 4px;
     border: 1px solid #e6e6e6;
