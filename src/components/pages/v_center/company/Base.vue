@@ -859,6 +859,10 @@
           </div>
 
         </el-dialog>
+
+        <el-dialog :visible.sync="dialogLicense">
+          <img width="100%" :src="dialogLicenseImageUrl" alt="">
+        </el-dialog>
       </div>
     </el-row>
   </div>
@@ -1028,7 +1032,9 @@
           province: '',
           city: '',
           area: ''
-        }
+        },
+        dialogLicense: false,
+        dialogLicenseImageUrl: ''
       }
     },
     directives: {
@@ -1495,6 +1501,8 @@
       },
       handlePreview(file) {
         console.log(file)
+        this.dialogLicenseImageUrl = file.url
+        this.dialogLicense = true
       },
       handleRemove(file, fileList) {
         if (file === null) {
@@ -1659,6 +1667,7 @@
             that.isLoadingBtn = true
             let isSame = JSON.stringify(row) === JSON.stringify(this.formCompanyAttest)
             if (that.fileList === that.form.license_image && isSame) {
+              console.log('数据相同')
               that.isLoadingBtn = false
               that.dialogVisible = false
               return
@@ -1702,6 +1711,8 @@
                   this.form = data
                   this.updatePerze()
                   this.form.company_size = this.form.company_size === 0 ? '' : this.form.company_size
+                  this.form.company_type = this.form.company_type === 0 ? '' : this.form.company_type
+                  this.form.phone = this.form.phone === 0 ? '' : this.form.phone
                   this.companyId = response.data.data.id
                   this.uploadParam['x:target_id'] = response.data.data.id
                   this.form.province = ''
@@ -1785,7 +1796,7 @@
               this.formCompanyAttest = {
                 registration_number: data.registration_number,
                 company_name: data.company_name,
-                company_type: data.company_type,
+                company_type: data.company_type === 0 ? '' : data.company_type,
                 contact_name: data.contact_name,
                 position: data.position,
                 email: data.email,
@@ -1798,7 +1809,7 @@
                 bank_name: data.bank_name,
                 account_number: data.account_number,
                 taxable_type: data.taxable_type,
-                invoice_type: data.invoice_type
+                invoice_type: data.invoice_type === 0 ? null : data.invoice_type
               }
             } else {
               this.$message.error(response.data.meta.message)
@@ -1813,9 +1824,9 @@
         const d = this.currentAddress
         this.dialogVisible = true
         this.$nextTick(_ => {
-          this.$set(this.form, 'province', d.province)
-          this.$set(this.form, 'city', d.city)
-          this.$set(this.form, 'area', d.area)
+          this.$set(this.form, 'province', d.province === 0 ? '' : d.province)
+          this.$set(this.form, 'city', d.city === 0 ? '' : d.city)
+          this.$set(this.form, 'area', d.area === 0 ? '' : d.area)
         })
       }
     },
