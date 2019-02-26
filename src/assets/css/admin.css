@@ -32,7 +32,7 @@
   background: #f7f7f7
 }
 .admin-menu-sub {
-  height: 24px;
+  height: 28px;
   line-height: 10px;
   border-bottom: 1px solid #e6e6e6;
   margin: 0 0 10px 0;
@@ -42,10 +42,10 @@
   line-height: 20px;
 }
 .admin-menu-sub-list .item {
-  font-size: 1.2rem;
-  display: block;
+  font-size: 14px;
   margin: 0 16px 0 0;
   float: left;
+  line-height: 25px;
 }
 .admin-menu-sub-list .item.is-active {
   color: #ff5a5f;

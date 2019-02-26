@@ -36,7 +36,7 @@
             <el-table-column
               prop="id"
               label="ID"
-              width="60">
+              width="50">
             </el-table-column>
             <el-table-column
               label="公司信息"
@@ -53,7 +53,7 @@
             </el-table-column>
             <el-table-column
               label="项目信息"
-              min-width="100">
+              min-width="105">
               <template slot-scope="scope">
                 <router-link :to="{name: 'adminItemShow', params: {id: scope.row.item_id}}"><p>项目名称：{{ scope.row.item_name }}</p></router-link>
                 <p>项目阶段：{{ scope.row.item_stage_name }}</p>
@@ -80,7 +80,8 @@
             <el-table-column
               align="center"
               prop="user_id"
-              label="操作用户">
+              label="操作用户"
+              width="50">
             </el-table-column>
             <el-table-column
               align="center"
@@ -99,7 +100,7 @@
             <el-table-column
               align="center"
               prop="created_at"
-              width="80"
+              width="100"
               label="创建时间">
             </el-table-column>
             <el-table-column

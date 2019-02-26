@@ -1221,7 +1221,6 @@
         this.$set(this.element, mark, true)
       },
       isBranch(val) {
-        console.log('val', val)
         if (val === true) {
           this.is_branch = true
           this.form.branch_office = 1
@@ -1392,6 +1391,7 @@
                 if (that.form.branch_office > 0) {
                   that.form.branch = that.form.branch_office + '家'
                 } else {
+                  that.isBranch(false)
                   that.form.branch = '无'
                 }
               } else if (mark === 'high_tech_enterprises') {
@@ -1433,6 +1433,11 @@
               } else if (mark === 'prizes') {
                 that.form.prizes = item.prizes
                 that.updatePerze()
+              } else if (mark === 'own_brand') {
+                if (!that.form.own_brand.length) {
+                  that.hasBrand = false
+                  that.changeBrand()
+                }
               }
             } else {
               that.$message.error(response.data.meta.message)
