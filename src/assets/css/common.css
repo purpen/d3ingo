@@ -10,6 +10,9 @@
 .clear {
   clear: both;
 }
+.block {
+  display: block
+}
 .flex {
   display: flex;
 }
