@@ -38,7 +38,7 @@
             <template slot="title">
               <img class="avatar2" v-if="eventUser.avatar" :src="eventUser.avatar.logo"/>
               <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
-              <span v-if="eventUser.company && eventUser.company.company_abbreviation" class="b-nickname">{{ eventUser.company.company_abbreviation }}</span>
+              <span v-if="eventUser.company.company_name" class="b-nickname">{{ eventUser.company.company_name }}</span>
               <span v-else class="b-nickname">{{ eventUser.realname || eventUser.account }}</span>
             </template>
             <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
