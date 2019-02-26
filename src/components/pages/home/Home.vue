@@ -178,7 +178,7 @@
                 <img class="avatar" v-if="d.design_company.logo_image" :src="d.design_company.logo_image.logo"
                     width="30"/>
                 <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="30"/>
-                <span>{{d.design_company.company_abbreviation}}</span>
+                <span>{{d.design_company.company_name}}</span>
               </p>
             </div>
           </router-link>

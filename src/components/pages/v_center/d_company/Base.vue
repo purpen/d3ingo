@@ -631,10 +631,9 @@
         let that = this
         that.$http.get(api.user, {})
           .then(function (response) {
-            if (response.data.meta.status_code === 200) {
-              if (response.data.data) {
-                auth.write_user(response.data.data)
-              }
+            if (response.data && response.data.meta.status_code === 200) {
+              console.log(response.data.data)
+              auth.write_user(response.data.data)
             }
           })
           .catch(function (error) {
