@@ -439,9 +439,6 @@
           registration_number: [
             {validator: checkNumber, trigger: 'blur'}
           ],
-          legal_person: [
-            {required: true, message: '请填写法人真实姓名', trigger: 'blur'}
-          ],
           contact_name: [
             {required: true, message: '请填写联系人姓名', trigger: 'blur'}
           ],
@@ -862,6 +859,7 @@
                   this.form = response.data.data
                   this.form.company_size = this.form.company_size === 0 ? '' : this.form.company_size
                   this.form.company_property = this.form.company_property === 0 ? '' : this.form.company_property
+                  this.form.company_type = this.form.company_type === 0 ? '' : this.form.company_type
                   this.companyId = response.data.data.id
                   this.uploadParam['x:target_id'] = response.data.data.id
                   this.form.province = ''
