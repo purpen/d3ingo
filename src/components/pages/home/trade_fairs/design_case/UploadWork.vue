@@ -430,11 +430,6 @@
   .uploads {
     margin-bottom: 50px;
   }
-  .upload {
-    /* background: #FFFFFF;
-    border: 1px solid #D2D2D2;
-    padding: 0 30px; */
-  }
 
   h2 {
     font-size: 24px;

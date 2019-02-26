@@ -1988,17 +1988,8 @@
     padding: 0;
   }
 
-  .item .content {
-  }
-
   .item .edit {
     text-align: right;
-  }
-
-  .item-m .edit {
-  }
-
-  .item p {
   }
 
   .title {

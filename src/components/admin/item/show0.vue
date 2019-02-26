@@ -2379,8 +2379,7 @@ export default {
   .t-center {
     text-align: center;
   }
-  .content-header {
-  }
+
   .fixe-header {
     position: absolute;
     right: 30px;
@@ -2403,9 +2402,8 @@ export default {
     margin-right: 5px;
   }
   .test-select {
-    display: inline-block;
-    width: 75px;
     float: right;
+    width: 75px;
     margin-top: 1px;
     margin-right: 15px;
     line-height: 36px;
