@@ -660,7 +660,7 @@
 
   p.alert-title {
     line-height: 30px;
-    font-size: 12px;
+    font-size: 1.4rem;
     margin:0 -20px 20px;
     color: #666;
     /* background:#f7f7f7; */
