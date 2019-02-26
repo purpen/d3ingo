@@ -86,38 +86,19 @@
               width="40">
             </el-table-column>
             <el-table-column
+              label="编号"
+              prop="id"
+              width="80">
+            </el-table-column>
+            <el-table-column
               label="姓名"
-              width="60">
+              width="100">
             <template slot-scope="scope">
               <p class="cursor-p" @click="editUserInfo(scope.row.id, scope.row.name)">{{scope.row.name}}</p>
             </template>
             </el-table-column>
             <el-table-column
-              label="项目名称"
-              width="122">
-              <template slot-scope="scope">
-                <div v-for="(item, i) in scope.row.item_name" :key="i">
-                  <p>{{item}}</p>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="phone"
-              width="100"
-              label="电话">
-            </el-table-column>
-            <el-table-column
-              width="101"
-              prop="execute_user_name"
-              label="所属人">
-            </el-table-column>
-            <el-table-column
-              width="70"
-              label="通话状态"
-              prop="call_status">
-            </el-table-column>
-            <el-table-column
-              width="95"
+              width="105"
               label="客户级别">
                  <template slot-scope="scope">
                   <el-rate
@@ -128,33 +109,45 @@
                 </template>
             </el-table-column>
             <el-table-column
+              prop="created_at"
+              width="120"
+              label="创建时间">
+            </el-table-column>
+            
+            <el-table-column
               prop="source"
-              width="75"
+              width="90"
               label="用户来源">
             </el-table-column>
+            
             <el-table-column
-              width="85"
-              label="设计服务商"
-              prop="design_company_count">
-              <!-- <template slot-scope="scope">
-                <div v-if="scope.row.item_name && scope.row.item_name.length" v-for="(item, i) in scope.row.design_company_name" :key="i">
+              width="123"
+              prop="execute_user_name"
+              label="负责人">
+            </el-table-column>
+            
+            <el-table-column
+              width="120"
+              label="通话状态"
+              prop="call_status">
+            </el-table-column>
+            <!-- <el-table-column
+              label="项目名称"
+              width="122">
+              <template slot-scope="scope">
+                <div v-for="(item, i) in scope.row.item_name" :key="i">
                   <p>{{item}}</p>
                 </div>
-              </template> -->
-            </el-table-column>
+              </template>
+            </el-table-column> -->
             <el-table-column
-              prop="logs"
-              width="70"
-              label="根进次数">
-            </el-table-column>
-            <el-table-column
-              prop="next_time"
-              width="90"
-              label="次回根进">
+              width="110"
+              label="最后跟进日"
+              prop="next_time">
             </el-table-column>
             <el-table-column
               prop="status"
-              width="70"
+              width="90"
               label="状态"
               :filters="[
                 {text: '潜在客户', value: '1' },
@@ -378,6 +371,9 @@ export default {
           if (res.data.data.length) {
             this.noAllot = res.data.data[0].no_allot
           }
+          this.tableData.forEach(item => {
+            item.created_at = item.created_at.date_format().format('yyyy-MM-dd')
+          })
         } else {
           this.$message.error(res.data.meta.message)
         }
