@@ -49,7 +49,7 @@
                 <!--</el-col>-->
                 <el-col :xs="24" :sm="6" :md="6" :lg="6" class="qouteSubmit">
                   <el-form-item
-                    class="work-content"
+                    class="work-content line-hei-20"
                     :prop="'plan_format.' + index + '.content'"
                     :rules="{
                     required: true, message: '请填写工作内容', trigger: 'blur'}">
@@ -66,7 +66,7 @@
                           :rules="{
                           required: true, message: '请选择职位', trigger: 'change'}">
                           <el-select
-                            class="left-border_radius"
+                            class="left-border_radius line-hei-20"
                             v-model="form.plan_format[index].arranged[c_index].name"
                             filterable
                             allow-create
@@ -124,7 +124,8 @@
                 <el-col :xs="24" :sm="4" :md="4" :lg="4" class="qouteSubmit mar-r-15">
                   <el-form-item
                     :prop="'plan_format.' + index + '.duration'"
-                    :rules="ruleForm.count">
+                    :rules="ruleForm.count"
+                    class="line-hei-20">
                     <el-input type="number"
                       autosize
                       :maxlength="8"
@@ -137,7 +138,8 @@
                 <el-col :xs="20" :sm="4" :md="4" :lg="4" class="qouteSubmit mar-r-15">
                   <el-form-item
                     :prop="'plan_format.' + index + '.price'"
-                    :rules="ruleForm.price">
+                    :rules="ruleForm.price"
+                    class="line-hei-20">
                     <el-input type="number"
                       :maxlength="8"
                       autosize v-model.number="form.plan_format[index].price" @blur="statPrice" placeholder="请填写费用" size="small">

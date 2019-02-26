@@ -529,7 +529,7 @@
               快递单号
             </el-col>
             <el-col :span="20">
-              <el-form-item prop="logistics_number">
+              <el-form-item prop="logistics_number" class="line-hei-20">
                 <el-input v-model="invoiceForm.logistics_number"></el-input>
               </el-form-item>
             </el-col>

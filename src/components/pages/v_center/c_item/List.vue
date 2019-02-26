@@ -943,7 +943,7 @@
   }
   .empty {
     width: 122px;
-    height: 113px;
+    height: 114px;
     margin: 200px auto 0;
     background: url("../../../../assets/images/icon/Projectdefaultstate@2x.png") no-repeat center / contain;
   }
