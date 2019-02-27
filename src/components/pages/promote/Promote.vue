@@ -25,17 +25,17 @@
                   <el-row>
                     <el-col :span="20" :offset="2">
                       <el-form-item prop="contact">
-                        <el-input v-model="form.contact" ref="contact" placeholder="请输入联系人"></el-input>
+                        <el-input v-model="form.contact" ref="contact" placeholder="请输入姓名"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
                   <el-row :gutter="10">
-                    <el-col :span="20" :offset="2">
+                    <el-col :span="10" :offset="2">
                       <el-form-item prop="account">
                         <el-input v-model="form.account" ref="account" placeholder="手机号码"></el-input>
                       </el-form-item>
                     </el-col>
-                    <!-- <el-col :span="10">
+                    <el-col :span="10">
                       <el-form-item prop="smsCode">
                         <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码" class="send-bt bt-chage-ele">
                           <template slot="append">
@@ -44,7 +44,7 @@
                           </template>
                         </el-input>
                       </el-form-item>
-                    </el-col> -->
+                    </el-col>
                   </el-row>
                   <el-row>
                     <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt">
@@ -266,7 +266,7 @@
         <el-row>
           <el-col :span="20" :offset="2">
             <el-form-item prop="contact">
-              <el-input v-model="form.contact" ref="contact" placeholder="请输入联系人"></el-input>
+              <el-input v-model="form.contact" ref="contact" placeholder="请输入姓名"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -277,7 +277,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <!-- <el-row>
+        <el-row>
           <el-col :span="20" :offset="2">
             <el-form-item prop="smsCode" class="call-ele">
               <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
@@ -288,7 +288,7 @@
               </el-input>
             </el-form-item>
           </el-col>
-        </el-row> -->
+        </el-row>
         <el-row>
           <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt height-40 mar-20-30">
             免费发布项目需求
@@ -550,19 +550,19 @@
       <div class="form mtop_40">
         <el-form :model="form1" :rules="ruleForm" ref="ruleForm1" class="pad-20" @submit.native.prevent>
           <el-form-item prop="name" class="pad-bot-15">
-            <el-input v-model="form1.name" name="username" placeholder="请输入联系人"></el-input>
+            <el-input v-model="form1.name" name="username" placeholder="请输入姓名"></el-input>
           </el-form-item>
           <el-form-item prop="account" class="pad-bot-15">
             <el-input v-model="form1.account" ref="account" placeholder="手机号码"></el-input>
           </el-form-item>
-          <!-- <el-form-item prop="smsCode" class="wap-disabled-btn pad-bot-20 call-ele">
+          <el-form-item prop="smsCode" class="wap-disabled-btn pad-bot-20 call-ele">
             <el-input class="" v-model="form1.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
               <template slot="append">
                 <el-button  @click="fetchCode1" :disabled="time > 0">{{ codeMsg }}
                 </el-button>
               </template>
             </el-input>
-          </el-form-item> -->
+          </el-form-item>
         </el-form>
       </div>
       <div class="bt-center">
@@ -611,13 +611,15 @@
         isLoadingBtn: false,
         userList: [],   // 消息列表
         form: {
-          demand: '',   // 需求
-          account: '',  // 手机号
-          contact: ''  // 联系人
+          demand: '', // 需求
+          account: '', // 手机号
+          contact: '', // 姓名
+          smsCode: ''
         },
         form1: {
-          account: '',  // 手机号
-          name: ''      // app 联系人
+          account: '', // 手机号
+          name: '', // app 姓名
+          smsCode: ''
         },
         // swiper
         swiperOption: {
@@ -646,7 +648,7 @@
             { required: true, message: '请输入您的需求', trigger: 'blur' }
           ],
           contact: [
-            {required: true, message: '请输入联系人', trigger: 'blur'}
+            {required: true, message: '请输入姓名', trigger: 'blur'}
           ],
           smsCode: [
             {required: true, message: '请输入验证码', trigger: 'blur'}
@@ -657,7 +659,7 @@
           ]
         },
         query: {
-          from: 2,
+          from: 5,
           mark: ''
         }
       }
@@ -748,10 +750,9 @@
             let row = {
               user_name: this.form1.name,
               phone: this.form1.account,
-              new_form: this.$route.query.from, // 1. 小程序 2. 默认/铟果 3. 艺火 4. 360 5. 头条号 6. 优客
-              device: this.isMob ? 2 : 1, // 1.PC 2.Phone
-              from: 4,
-              url: window.location.href
+              sms_code: this.form1.smsCode,
+              source: this.query.from,
+              son_source: this.query.mark
             }
             this.$http.post(api.pcAdd, row)
               .then(res => {
@@ -773,10 +774,12 @@
         this.$refs[form].validate(valid => {
           if (valid) {
             let row = {
-              user_name: this.form.contact, // 联系人
+              user_name: this.form.contact, // 姓名
               phone: this.form.account, // 手机号
               item_name: this.form.demand, // 需求
-              from: 2   // 小程序or网页
+              source: this.query.from,
+              son_source: this.query.mark,
+              sms_code: this.form.smsCode
             }
             if (this.isMob) {
               row.from = 4
@@ -798,13 +801,35 @@
             // this.$message.error('请填写信息')
           }
         })
+      },
+      generalize(query) {
+        this.$http.post(api.generalize, {
+          url: location.href,
+          son_source: query.mark,
+          device: this.isMob ? 2 : 1,
+          new_from: query.from
+        }).then(res => {
+          console.log(res)
+        }).catch(err => {
+          console.error(err)
+        })
+      },
+      formatQuery(query) {
+        Object.assign(this.query, query)
+        if (typeof this.query.from !== 'number') {
+          this.query.from = 5
+        }
+        if (this.query.from < 1) {
+          this.query.from = 5
+        }
       }
     },
     created () {
       /* eslint-disable */
       (function(b,a,e,h,f,c,g,s){b[h]=b[h]||function(){(b[h].c=b[h].c||[]).push(arguments)};b[h].s=!!c;g=a.getElementsByTagName(e)[0];s=a.createElement(e);s.src="//s.union.360.cn/"+f+".js";s.defer=!0;s.async=!0;g.parentNode.insertBefore(s,g)})(window,document,"script","_qha",290883,false);
       /* eslint-disable */
-      Object.assign(this.query, this.$route.query)
+      this.formatQuery(this.$route.query)
+      this.generalize(this.query)
     },
     mounted () {
       let that = this
