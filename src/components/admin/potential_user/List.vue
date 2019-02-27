@@ -5,8 +5,86 @@
       <v-menu selectedName="potentialUserList"></v-menu>
       <el-col :span="20">
         <div class="content">
-          <div class="admin-header clearfix">
-            <el-form :inline="true" :model="query" class="select-query fl">
+          <div class="">
+            <el-form :inline="true" :model="query" class="search-form" label-position="left" size="mini">
+              <el-row :gutter="10">
+                <el-col :xs="24" :sm="10" :md="6" :lg="6">
+                    <el-form-item label="编号" prop="number">
+                        <el-input v-model.trim="query.number" size="mini" :maxlength="40"></el-input>
+                    </el-form-item>
+                </el-col>
+                
+                <el-col :xs="24" :sm="10" :md="6" :lg="6">
+                    <el-form-item label="姓名" prop="name">
+                        <el-input v-model.trim="query.name" size="mini" :maxlength="40"></el-input>
+                    </el-form-item>
+                </el-col>
+                
+                <el-col :xs="24" :sm="10" :md="6" :lg="6">
+                    <el-form-item label="联系电话" prop="phone">
+                        <el-input v-model.trim="query.phone" size="mini" :maxlength="40"></el-input>
+                    </el-form-item>
+                </el-col>
+                
+                <el-col :xs="24" :sm="10" :md="6" :lg="6">
+                    <el-form-item label="负责人" prop="execute_user">
+                        <el-input v-model.trim="query.execute_user" size="mini" :maxlength="40"></el-input>
+                    </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="10">
+                <el-col :xs="24" :sm="10" :md="6" :lg="6">
+                    <el-form-item label="项目名称" prop="name">
+                        <el-input v-model.trim="query.name" size="mini" :maxlength="40"></el-input>
+                    </el-form-item>
+                </el-col>
+                
+                <el-col :xs="24" :sm="10" :md="6" :lg="6">
+                    <el-form-item label="对接公司" prop="name">
+                        <el-input v-model.trim="query.name" size="mini" :maxlength="40"></el-input>
+                    </el-form-item>
+                </el-col>
+                
+                <el-col :xs="24" :sm="10" :md="6" :lg="6">
+                    <el-form-item label="创建时间" prop="phone">
+                        <el-input v-model.trim="query.phone" size="mini" :maxlength="40"></el-input>
+                    </el-form-item>
+                </el-col>
+                
+                <el-col :xs="24" :sm="10" :md="6" :lg="6">
+                    <el-form-item label="客户级别" prop="execute_user">
+                        <el-input v-model.trim="query.execute_user" size="mini" :maxlength="40"></el-input>
+                    </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row :gutter="10">
+                
+                <el-col :xs="24" :sm="10" :md="6" :lg="6">
+                    <el-form-item label="沟通状态" prop="name">
+                        <el-input v-model.trim="query.name" size="mini" :maxlength="40"></el-input>
+                    </el-form-item>
+                </el-col>
+                
+                <el-col :xs="24" :sm="10" :md="6" :lg="6">
+                    <el-form-item label="来源渠道" prop="phone">
+                        <el-input v-model.trim="query.phone" size="mini" :maxlength="40"></el-input>
+                    </el-form-item>
+                </el-col>
+                
+                <el-col :xs="24" :sm="10" :md="6" :lg="6">
+                    <el-form-item label="状态" prop="execute_user">
+                        <el-input v-model.trim="query.execute_user" size="mini" :maxlength="40"></el-input>
+                    </el-form-item>
+                </el-col>
+              </el-row>
+              
+              <div class="flex">
+                  <el-button type="danger">搜索</el-button>
+                  <el-button>清空</el-button>
+              </div>
+              <!-- <el-form-item style="width: 20%;">
+                <el-input v-model="query.val" placeholder="Search..." size="small"></el-input>
+              </el-form-item>
               <el-form-item>
                 <span class="fl line-height30 fz-12">选择日期</span>
                 <div class="fr select-data">
@@ -38,9 +116,9 @@
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="onSearch" size="mini">搜索</el-button>
-              </el-form-item>
+              </el-form-item> -->
             </el-form>
-            <div class="admin-header-right fr clearfix">
+            <!-- <div class="admin-header-right fr clearfix">
               <div class="fl">
                 <div class="add-user">
                   <span class="add-voip-user">
@@ -49,19 +127,6 @@
                   <div class="drop-down">
                     <span @click="$router.push({name: 'adminPotentialUserCreated'})">添加潜在用户</span>
                     <span @click="showDialogVoIpUser">添加商务成员</span>
-                    <el-upload
-                      class="upload-demo"
-                      :action="uploadUrl"
-                      :on-preview="handlePreview"
-                      :on-success="handleAvatarSuccess"
-                      :before-upload="beforeAvatarUpload"
-                      :on-error="uploadError"
-                      :data="{'token': token}"
-                      accept=".xlsx"
-                      :show-file-list="false"
-                      :file-list="file">
-                      <span class="upload-file">导入文件</span>
-                    </el-upload>
                   </div>
                 </div>
 
@@ -69,9 +134,29 @@
               <a href="javascript:void(0);"  @click="multipleDelItem" class="fr line-height30 height30"><i class="fx fx-icon-delete2"></i></a>
               <el-button size="small" class="fl margin-l-10" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button>
               <a href="javascript:void(0);" class="line-height30 height30 margin-l-10" @click="exportForm">导出表格</a>
-            </div>
+            </div> -->
           </div>
-
+          
+          <div class="btn-list">
+            <button size="small" type="danger" class="is-custom red-button small-button">添加客户</button>
+            <el-upload
+              class="upload-demo"
+              :action="uploadUrl"
+              :on-preview="handlePreview"
+              :on-success="handleAvatarSuccess"
+              :before-upload="beforeAvatarUpload"
+              :on-error="uploadError"
+              :data="{'token': token}"
+              accept=".xlsx"
+              :show-file-list="false"
+              :file-list="file">
+              <!-- <span class="upload-file">批量导入</span> -->
+              <el-button size="small" type="primary">批量导入</el-button>
+            </el-upload>
+            <!-- <el-button size="small" type="primary">批量导入</el-button> -->
+            <el-button size="small" type="primary"  @click="exportForm">导出</el-button>
+            <el-button size="small" type="primary">分配</el-button>
+          </div>
 
           <el-table
             :data="tableData"
@@ -129,17 +214,23 @@
             <el-table-column
               width="120"
               label="通话状态"
-              prop="call_status">
-            </el-table-column>
-            <!-- <el-table-column
-              label="项目名称"
-              width="122">
+              prop="new_call_status">
               <template slot-scope="scope">
-                <div v-for="(item, i) in scope.row.item_name" :key="i">
-                  <p>{{item}}</p>
-                </div>
+                <p v-if="scope.new_call_status === 1">待初次沟通</p>
+                <p v-else-if="scope.new_call_status === 2">待匹配设计公司</p>
+                <p v-else-if="scope.new_call_status === 3">待回访</p>
+                <p v-else-if="scope.new_call_status === 4">预约回访</p>
+                <p v-else-if="scope.new_call_status === 5">推送未响应</p>
+                <p v-else-if="scope.new_call_status === 6">拒绝合作</p>
+                <p v-else-if="scope.new_call_status === 7">拒绝合作</p>
+                <p v-else-if="scope.new_call_status === 8">确认合作意向</p>
+                <p v-else-if="scope.new_call_status === 9">对接成功</p>
+                <p v-else-if="scope.new_call_status === 10">对接失败</p>
+                <p v-else-if="scope.new_call_status === 11">项目沟通中</p>
+                <p v-else-if="scope.new_call_status === 12">项目进行中</p>
+                <p v-else-if="scope.new_call_status === 13">项目已关闭</p>
               </template>
-            </el-table-column> -->
+            </el-table-column>
             <el-table-column
               width="110"
               label="最后跟进日"
@@ -151,19 +242,19 @@
               label="状态"
               :filters="[
                 {text: '潜在客户', value: '1' },
-                { text: '真实需求', value: '2' },
-                { text: '对接设计', value: '5' },
-                { text: '签订合作', value: '3' },
-                { text: '对接失败', value: '4' }
+                { text: '对接设计', value: '2' },
+                { text: '签约合作', value: '5' },
+                { text: '无效客户', value: '3' },
+                { text: '流失客户', value: '4' }
               ]"
               :filter-multiple="false"
               filter-placement="bottom-end">
                 <template slot-scope="scope">
                   <p class="status1 status" v-if="scope.row.status === 1">潜在客户</p>
-                  <p class="status2 status"  v-else-if="scope.row.status === 2">真实需求</p>
-                  <p class="status3 status"  v-else-if="scope.row.status === 3">签订合作</p>
-                  <p class="status4 status"  v-else-if="scope.row.status === 4">对接失败</p>
-                  <p class="status5 status"  v-else>对接设计</p>
+                  <p class="status2 status"  v-else-if="scope.row.status === 2">对接设计</p>
+                  <p class="status3 status"  v-else-if="scope.row.status === 3">无效客户</p>
+                  <p class="status4 status"  v-else-if="scope.row.status === 4">流失客户</p>
+                  <p class="status5 status"  v-else>签约合作</p>
                 </template>
             </el-table-column>
           </el-table>
@@ -591,10 +682,10 @@ export default {
 }
 .admin-header {
   width: 100%;
-  float: left;
+  /* float: left; */
   margin: 0 0 10px 0;
 }
-.select-query {
+. {
   width: 64%;
 }
 .select-info {
@@ -606,6 +697,12 @@ export default {
 }
 .admin-header-right {
   width: 36%;
+}
+.btn-list {
+  padding: 15px 0 20px 0;
+}
+.upload-demo {
+  display: inline-block;
 }
 .user-list {
   height: 50px;
@@ -715,7 +812,10 @@ export default {
 .d-d-content {
   line-height: 20px;
 }
-
+.flex {
+  display: flex;
+  justify-content: center;
+}
 
 </style>
 
@@ -758,10 +858,19 @@ export default {
   font-size: 12px;
   margin-right: 2px;
 }
-.select-query .el-form-item {
+.el-form-item {
   margin-bottom: 0 !important;
 }
 .select-data .el-range-editor--small.el-input__inner {
   height: 30px;
+}
+.search-form .el-form-item__content .el-input .el-input__inner {
+  width: 150px;
+}
+.search-form .el-form-item__label {
+  width: 68px;
+}
+.search-form .el-row {
+  margin-bottom: 10px;
 }
 </style>
