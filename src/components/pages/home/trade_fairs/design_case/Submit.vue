@@ -62,7 +62,7 @@
 
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="设计作品名称" prop="title">
+                  <el-form-item label="设计作品名称" prop="title" class="line-hei-20">
                     <el-input v-model="form.title" placeholder="输入作品名称"></el-input>
                   </el-form-item>
                 </el-col>
@@ -85,13 +85,13 @@
                 <el-col :span="isMob ? 24 : 12">
                   <el-row :gutter="10">
                     <el-col :span="12">
-                      <el-form-item label="联系人姓名" prop="contacts">
+                      <el-form-item label="联系人姓名" prop="contacts" class="line-hei-20">
                         <el-input v-model="form.contacts">
                         </el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="12">
-                      <el-form-item label="联系电话" prop="contact_number">
+                      <el-form-item label="联系电话" prop="contact_number" class="line-hei-20">
                         <el-input v-model="form.contact_number">
                         </el-input>
                       </el-form-item>
@@ -124,14 +124,14 @@
                 <el-col :span="isMob ? 24 : 12">
                   <el-row :gutter="10">
                     <el-col :span="12" v-show="form.sell_type&&form.sell_type===2">
-                      <el-form-item label="出让比例" prop="share_ratio">
+                      <el-form-item label="出让比例" prop="share_ratio" class="line-hei-20">
                         <el-input v-model="form.share_ratio" :maxlength="3" placeholder="比例最大为100">
                           <template slot="append">%</template>
                         </el-input>
                       </el-form-item>
                     </el-col>
                     <el-col :span="(form.sell_type&&form.sell_type===2)?12:24">
-                      <el-form-item label="出让金额" prop="price">
+                      <el-form-item label="出让金额" prop="price" class="line-hei-20">
                         <el-input v-model="form.price" :maxlength="14" placeholder="输入出让金额">
                           <template slot="append">元</template>
                         </el-input>
@@ -143,7 +143,7 @@
 
               <el-form-item label="专利证书" class="fullwidth">
                 <el-row>
-                  <el-col :span="12">
+                  <el-col :span="24">
                     <el-upload 
                       :action="uploadUrl"
                       :data="uploadParam2"
@@ -180,7 +180,7 @@
               </div>
                <el-form-item label="产品说明书" class="fullwidth">
                 <el-row>
-                  <el-col :span="12">
+                  <el-col :span="24">
                     <el-upload
                       :action="uploadUrl"
                       :data="uploadParam3"
@@ -666,7 +666,7 @@
         let add = fileList[fileList.length - 1]
         let item = {
           name: add.name,
-          url: add.url,
+          url: add.response.file,
           edit: false,
           summary: '',
           asset_id: add.response.asset_id
@@ -711,7 +711,7 @@
         let add = fileList[fileList.length - 1]
         let item = {
           name: add.name,
-          url: add.url,
+          url: add.response.file,
           edit: false,
           size: file.size,
           summary: '',
@@ -726,7 +726,7 @@
         let add = fileList[fileList.length - 1]
         let item = {
           name: add.name,
-          url: add.url,
+          url: add.response.file,
           edit: false,
           summary: '',
           asset_id: add.response.asset_id

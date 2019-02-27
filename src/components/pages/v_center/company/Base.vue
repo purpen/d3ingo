@@ -43,7 +43,7 @@
               <el-col :span="titleSpan" class="title">
                 <p>公司简称</p>
               </el-col>
-              <el-col :span="contentSpan" class="content">
+              <el-col :span="contentSpan" class="content input-text">
                 <el-input v-if="element.company_abbreviation" v-model="form.company_abbreviation"
                           placeholder="如: 太火鸟"></el-input>
                 <p v-else>{{ form.company_abbreviation }}</p>
@@ -59,7 +59,7 @@
               <el-col :span="titleSpan" class="title">
                 <p>公司英文名称</p>
               </el-col>
-              <el-col :span="contentSpan" class="content">
+              <el-col :span="contentSpan" class="content input-text">
                 <el-input v-if="element.company_english" v-model="form.company_english"
                           placeholder="如: thn"></el-input>
                 <p v-else>{{ form.company_english }}</p>
@@ -182,20 +182,20 @@
                 <p class="des"><i>*</i>实名认证</p>
               </el-col>
               <el-col :span="21" class="content fz-14">
-                <div class="clearfix line-height30" v-if="form.verify_status === 0">点此
-                  <a class="a-default" @click="showLegalizeDialog">去认证</a>
+                <div class="clearfix line-height21" v-if="form.verify_status === 0">点此
+                  <a class="a-default cursor-poi" @click="showLegalizeDialog">去认证</a>
                 </div>
                 <div class="clearfix line-height30" v-if="form.verify_status === 3">
                   <a class="a-message">认证中</a>
-                  <el-button class="fr" @click="showLegalizeDialog" size="mini">修改认证</el-button> 
+                  <el-button class="fr white-to-red-button" @click="showLegalizeDialog" size="mini">修改认证</el-button> 
                 </div>
                 <div class="clearfix line-height30" v-if="form.verify_status === 1">
                   <a class="a-success">认证成功</a>
-                  <el-button class="fr" @click="showLegalizeDialog" size="mini">修改认证</el-button> 
+                  <el-button class="fr white-to-red-button" @click="showLegalizeDialog" size="mini">修改认证</el-button> 
                 </div>
                 <div class="clearfix line-height30" v-if="form.verify_status === 2">
                   <a class="a-default">认证失败</a>
-                  <el-button class="fr" @click="showLegalizeDialog" size="mini">重新认证</el-button>
+                  <el-button class="fr white-to-red-button" @click="showLegalizeDialog" size="mini">重新认证</el-button>
                 </div>
               </el-col>
             </el-row>
@@ -299,7 +299,7 @@
                   </div>
                 </el-row>
                 <el-row>
-                  <el-col :xs="4" :sm="4" :md="4" :lg="4">
+                  <el-col :xs="4" :sm="4" :md="4" :lg="4" class="pad-top-14">
                     <el-button class="red-button" @click="getPrize()">
                       +&nbsp;&nbsp;添加奖项
                     </el-button>
@@ -318,7 +318,7 @@
               <el-col :span="titleSpan" class="title">
                 <p>网址</p>
               </el-col>
-              <el-col :span="contentSpan" class="content">
+              <el-col :span="contentSpan" class="content input-text">
 
                 <el-input v-model="form.web" placeholder="" v-if="element.web">
                   <!-- <template slot="prepend">http://</template> -->
@@ -336,7 +336,7 @@
               <el-col :span="titleSpan" class="title">
                 <p>微信公众号</p>
               </el-col>
-              <el-col :span="contentSpan" class="content">
+              <el-col :span="contentSpan" class="content input-text">
 
               <el-input v-model="form.weixin_id" placeholder="请输入微信公众号" v-if="element.weixin_id">
               </el-input>
@@ -405,7 +405,7 @@
               <el-col :span="titleSpan" class="title">
                 <p>分公司</p>
               </el-col>
-              <el-col :span="contentSpan" class="content subsidiary cont-class">
+              <el-col :span="contentSpan" class="content cont-class">
 
                 <div v-if="element.branch">
                   <el-col :span="12">
@@ -417,7 +417,7 @@
                         inactive-text="无">
                       </el-switch>
                     </el-col>
-                    <el-col :span="6">
+                    <el-col :span="6" class="line-hei-20 border-rad-input">
                       <el-input v-model.number="form.branch_office" :disabled="!is_branch" placeholder="">
                         <template slot="append">家</template>
                       </el-input>
@@ -549,10 +549,10 @@
               <el-col :span="titleSpan" class="title">
                 <p>自有产品品牌</p>
               </el-col>
-              <el-col :span="isMob ? 24 : 19" class="content subsidiary">
+              <el-col :span="isMob ? 24 : 19" class="content">
                 <div v-if="element.own_brand">
                   <el-row :gutter="10">
-                    <el-col :xs="4" :sm="2" :md="2" :lg="2" class="margin-bottom10">
+                    <el-col :xs="4" :sm="2" :md="2" :lg="2" class="margin-bottom10 line-hei-42">
                       <el-switch
                         @change="changeBrand"
                         v-model="hasBrand"
@@ -561,9 +561,9 @@
                       </el-switch>
                     </el-col>
                     <el-col :xs="24" :sm="3" :md="3" :lg="3" class="brand-style" v-if="hasBrand">
-                      <p>品牌名称:</p>
+                      <p class="line-hei-42">品牌名称:</p>
                     </el-col>
-                    <el-col class="input-brand margin-bottom10" v-if="hasBrand" v-for="(ele, index) in form.own_brand" :key="index" :xs="12" :sm="5" :md="5" :lg="5">
+                    <el-col class="input-brand margin-bottom10 line-hei-20 border-rad-input" v-if="hasBrand" v-for="(ele, index) in form.own_brand" :key="index" :xs="12" :sm="5" :md="5" :lg="5">
                       <el-input v-model.trim="form.own_brand[index]">
                         <template slot="append">
                           <i class="fx-icon-nothing-close-error" @click="delType(index, 'own_brand')"></i>
@@ -596,7 +596,7 @@
 
             <el-row :gutter="24">
               <el-col :span="isMob ? 24 : 14">
-                <el-form-item label="企业名称" prop="company_name">
+                <el-form-item label="企业名称" prop="company_name" class="line-hei-20">
                   <el-input v-model="form.company_name"
                             placeholder="请输入完整的公司名称"></el-input>
                 </el-form-item>
@@ -620,7 +620,7 @@
 
             <el-row :gutter="24">
               <el-col :span="isMob ? 24 : 14">
-                <el-form-item label="统一社会信用代码" prop="registration_number">
+                <el-form-item label="统一社会信用代码" prop="registration_number" class="line-hei-20">
                   <el-input v-model="form.registration_number" placeholder="请输入统一社会信用代码"></el-input>
                 </el-form-item>
               </el-col>
@@ -656,7 +656,7 @@
               titleProp="公司地址"
               @onchange="changeServer"  class="fullwidth">
             </region-picker>
-            <el-form-item label="" prop="address" style="margin-top: 10px">
+            <el-form-item label="" prop="address" style="margin-top: 10px" class="line-hei-20">
               <el-input v-model="form.address" placeholder="街道地址"></el-input>
             </el-form-item>
 
@@ -665,28 +665,28 @@
             </div>
             <el-row :gutter="24">
               <el-col :span="isMob ? 24 : 14">
-                <el-form-item label="联系人" prop="contact_name">
+                <el-form-item label="联系人" prop="contact_name" class="line-hei-20">
                   <el-input v-model="form.contact_name" placeholder="请输入联系人"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row :gutter="24">
               <el-col :span="isMob ? 24 : 14">
-                <el-form-item label="联系人职位" prop="position">
+                <el-form-item label="联系人职位" prop="position" class="line-hei-20">
                   <el-input v-model="form.position" placeholder="请输入职位"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row :gutter="24">
               <el-col :span="isMob ? 24 : 14">
-                <el-form-item label="联系人手机" prop="phone" class="phone">
+                <el-form-item label="联系人手机" prop="phone" class="phone line-hei-20">
                   <el-input v-model="form.phone" placeholder="请输入手机号"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row :gutter="24">
               <el-col :span="isMob ? 24 : 14">
-                <el-form-item label="联系人邮箱" prop="email">
+                <el-form-item label="联系人邮箱" prop="email" class="line-hei-20">
                   <el-input v-model="form.email" placeholder="请输入邮箱"></el-input>
                 </el-form-item>
               </el-col>
@@ -697,21 +697,21 @@
             </div>
             <el-row :gutter="24">
               <el-col :span="isMob ? 24 : 14">
-                <el-form-item label="开户名称" prop="account_name">
+                <el-form-item label="开户名称" prop="account_name" class="line-hei-20">
                   <el-input v-model="form.account_name" placeholder="请输入开户名称"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row :gutter="24">
               <el-col :span="isMob ? 24 : 14">
-                <el-form-item label="开户银行" prop="bank_name">
+                <el-form-item label="开户银行" prop="bank_name" class="line-hei-20">
                   <el-input v-model="form.bank_name" placeholder="请输入开户行"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row :gutter="24">
               <el-col :span="isMob ? 24 : 14">
-                <el-form-item label="对公银行账号" prop="account_number">
+                <el-form-item label="对公银行账号" prop="account_number" class="line-hei-20">
                   <el-input v-model.trim="form.account_number" placeholder="请输入银行账号"></el-input>
                 </el-form-item>
               </el-col>
@@ -859,6 +859,10 @@
           </div>
 
         </el-dialog>
+
+        <el-dialog :visible.sync="dialogLicense">
+          <img width="100%" :src="dialogLicenseImageUrl" alt="">
+        </el-dialog>
       </div>
     </el-row>
   </div>
@@ -952,6 +956,7 @@
           investment_product: false,
           own_brand: []
         },
+        formCompanyAttest: {}, // 实名认证原始信息
         ruleForm: {
           company_name: [
             {required: true, message: '请填写公司全称', trigger: 'blur'}
@@ -1027,7 +1032,9 @@
           province: '',
           city: '',
           area: ''
-        }
+        },
+        dialogLicense: false,
+        dialogLicenseImageUrl: ''
       }
     },
     directives: {
@@ -1161,6 +1168,9 @@
             }
           }
         }
+        if (!this.form.prizes) {
+          this.form.prizes = []
+        }
         this.form.prizes.push({
           'type': '',
           'time': ''
@@ -1211,7 +1221,6 @@
         this.$set(this.element, mark, true)
       },
       isBranch(val) {
-        console.log('val', val)
         if (val === true) {
           this.is_branch = true
           this.form.branch_office = 1
@@ -1382,6 +1391,7 @@
                 if (that.form.branch_office > 0) {
                   that.form.branch = that.form.branch_office + '家'
                 } else {
+                  that.isBranch(false)
                   that.form.branch = '无'
                 }
               } else if (mark === 'high_tech_enterprises') {
@@ -1423,6 +1433,11 @@
               } else if (mark === 'prizes') {
                 that.form.prizes = item.prizes
                 that.updatePerze()
+              } else if (mark === 'own_brand') {
+                if (!that.form.own_brand.length) {
+                  that.hasBrand = false
+                  that.changeBrand()
+                }
               }
             } else {
               that.$message.error(response.data.meta.message)
@@ -1491,6 +1506,8 @@
       },
       handlePreview(file) {
         console.log(file)
+        this.dialogLicenseImageUrl = file.url
+        this.dialogLicense = true
       },
       handleRemove(file, fileList) {
         if (file === null) {
@@ -1617,7 +1634,10 @@
               that.$message.error('请选择所在城市')
               return false
             }
-            console.log(that.fileList)
+            if (!that.form.area) {
+              that.$message.error('请选择所在区县')
+              return false
+            }
             if (!that.fileList.length) {
               that.$message.error('请上传公司营业执照')
               return false
@@ -1650,6 +1670,13 @@
               }
             }
             that.isLoadingBtn = true
+            let isSame = JSON.stringify(row) === JSON.stringify(this.formCompanyAttest)
+            if (that.fileList === that.form.license_image && isSame) {
+              console.log('数据相同')
+              that.isLoadingBtn = false
+              that.dialogVisible = false
+              return
+            }
             that.$http({method: 'PUT', url: api.designCompany, data: row})
               .then(function (response) {
                 that.isLoadingBtn = false
@@ -1689,6 +1716,8 @@
                   this.form = data
                   this.updatePerze()
                   this.form.company_size = this.form.company_size === 0 ? '' : this.form.company_size
+                  this.form.company_type = this.form.company_type === 0 ? '' : this.form.company_type
+                  this.form.phone = this.form.phone === 0 ? '' : this.form.phone
                   this.companyId = response.data.data.id
                   this.uploadParam['x:target_id'] = response.data.data.id
                   this.form.province = ''
@@ -1769,6 +1798,24 @@
                   }
                 })
               }
+              this.formCompanyAttest = {
+                registration_number: data.registration_number,
+                company_name: data.company_name,
+                company_type: data.company_type === 0 ? '' : data.company_type,
+                contact_name: data.contact_name,
+                position: data.position,
+                email: data.email,
+                phone: data.phone + '',
+                province: data.province,
+                area: data.area,
+                city: data.city,
+                address: data.address,
+                account_name: data.account_name,
+                bank_name: data.bank_name,
+                account_number: data.account_number,
+                taxable_type: data.taxable_type,
+                invoice_type: data.invoice_type === 0 ? null : data.invoice_type
+              }
             } else {
               this.$message.error(response.data.meta.message)
             }
@@ -1782,9 +1829,9 @@
         const d = this.currentAddress
         this.dialogVisible = true
         this.$nextTick(_ => {
-          this.$set(this.form, 'province', d.province)
-          this.$set(this.form, 'city', d.city)
-          this.$set(this.form, 'area', d.area)
+          this.$set(this.form, 'province', d.province === 0 ? '' : d.province)
+          this.$set(this.form, 'city', d.city === 0 ? '' : d.city)
+          this.$set(this.form, 'area', d.area === 0 ? '' : d.area)
         })
       }
     },
@@ -1887,12 +1934,16 @@
     padding: 0px 10px;
     min-height: 36px;
     position: relative;
+    /* border: none;
+    background: none; */
+    appearance: normal;
   }
   .tags-list {
     position: absolute;
     /* display: none; */
     padding-bottom: 10px;
     border: 1px solid #e6e6e6;
+    font-size: 12px;
     width: 50%;
     background: #fff;
     z-index: 1;
@@ -1946,17 +1997,8 @@
     padding: 0;
   }
 
-  .item .content {
-  }
-
   .item .edit {
     text-align: right;
-  }
-
-  .item-m .edit {
-  }
-
-  .item p {
   }
 
   .title {
@@ -2107,6 +2149,9 @@
     display: inline-block;
     /* padding-top: 7px; */
   }
+  .pad-top-14 {
+    padding-top: 14px;
+  }
   .del-btn, .add-btn {
     margin-top: 4px;
   }
@@ -2143,7 +2188,9 @@
     background: #fff;
     color: #666
   }
-
+  .line-hei-42 {
+    line-height: 42px;
+  }
   .multi-button {
     margin-left: 10px;
     border-radius: 4px;
@@ -2204,6 +2251,12 @@
     border-radius: 4px;
     background:url('../../../../assets/images/works/Delete.png') 0 0 no-repeat;
     background-size: 30px 30px;
+  }
+  .line-height21 {
+    line-height: 21px;
+  }
+  .cursor-poi {
+    cursor: pointer;
   }
   @media screen and (max-width: 767px) {
     .item-m .content {

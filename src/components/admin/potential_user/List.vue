@@ -7,7 +7,7 @@
         <div class="content">
           <div class="admin-header clearfix">
             <el-form :inline="true" :model="query" class="select-query fl">
-              <el-form-item>
+              <el-form-item class="margin0">
                 <span class="fl line-height30 fz-12">选择日期</span>
                 <div class="fr select-data">
                   <el-date-picker
@@ -22,7 +22,7 @@
                   </el-date-picker>
                 </div>
               </el-form-item>
-              <el-form-item class="select-info">
+              <el-form-item class="margin0 select-info">
                 <el-select v-model="query.evt" placeholder="选择条件..." size="small">
                   <el-option label="按姓名" value="1"></el-option>
                   <el-option label="按电话" value="2"></el-option>
@@ -33,10 +33,10 @@
                   <el-option label="用户来源" value="7"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item style="width: 20%;">
+              <el-form-item class="margin0" style="width: 20%;">
                 <el-input v-model="query.val" placeholder="Search..." size="small"></el-input>
               </el-form-item>
-              <el-form-item>
+              <el-form-item class="margin0">
                 <el-button type="primary" @click="onSearch" size="mini">搜索</el-button>
               </el-form-item>
             </el-form>
@@ -66,9 +66,9 @@
                 </div>
 
               </div>
-              <a href="javascript:void(0);"  @click="multipleDelItem" class="fr line-height30 height30"><i class="fx fx-icon-delete2"></i></a>
-              <el-button size="small" class="fl margin-l-10" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button>
+              <el-button size="mini" class="fl margin-l-10" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button>
               <a href="javascript:void(0);" class="line-height30 height30 margin-l-10" @click="exportForm">导出表格</a>
+              <a href="javascript:void(0);"  @click="multipleDelItem" class="fr line-height30 height30"><i class="fx fx-icon-delete2"></i></a>
             </div>
           </div>
 
@@ -610,6 +610,11 @@ export default {
 }
 .admin-header-right {
   width: 36%;
+  display: flex;
+  justify-content: space-between;
+}
+.line-height30 {
+  line-height: 30px
 }
 .user-list {
   height: 50px;

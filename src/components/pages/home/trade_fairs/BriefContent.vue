@@ -8,7 +8,7 @@
         <div class="features-title">
         </div>
         <div class="features-text">
-          <span class="text-style">顺德工业设计协会官方指定唯一线上合作伙伴, “太火鸟+京东”联合打造的在线设计服务平台，是专为设计公司与制造企业实现需求和成果对接的专业B2B网站，帮助双方破除沟通鸿沟和壁垒，完成信息的对称和同步，是快速将需求产品化、成果商业化的有效工具。</span>
+          <span class="text-style">顺德工业设计协会官方指定唯一线上合作伙伴, “太火鸟+京东”联合打造的在线设计服务平台，是专为设计服务商与制造企业实现需求和成果对接的专业B2B网站，帮助双方破除沟通鸿沟和壁垒，完成信息的对称和同步，是快速将需求产品化、成果商业化的有效工具。</span>
         </div>
         <div class="features-process">
         </div>
@@ -24,7 +24,7 @@
               <span class="text-before">活动前夕</span>
               <div class="content-text-after">
                 <span class="text-after">征集优秀设计企业的成熟设计方案/项目，在顺德专区展示并邀请对口的优质制造企业登录平台进行采购交易。<br/>
-                制造企业亦可将需求在平台进行发布，由与会设计公司承揽设计服务，平台会执行全程管家式服务。
+                制造企业亦可将需求在平台进行发布，由与会设计服务商承揽设计服务，平台会执行全程管家式服务。
                 </span>
               </div>
             </div>
@@ -145,7 +145,7 @@
         <div class="online-title">
         </div>
         <div class="online-content">
-          <span class="content-text">设计公司</span>
+          <span class="content-text">设计服务商</span>
         </div>
         <div class="content-company"></div>
         <div class="online-side">
@@ -174,7 +174,7 @@
           <div class="company-cloud">
             <div class="company">
             </div>
-            <span class="company-text">设计公司</span>
+            <span class="company-text">设计服务商</span>
           </div>
           <div class="project-cloud">
             <div class="project">
@@ -701,7 +701,7 @@
     color: #FFFFFF;
     text-align: center;
   }
-  /* 设计公司 */
+  /* 设计服务商 */
   .company-cloud {
     margin-left: 95px;
     float: left;

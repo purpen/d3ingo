@@ -156,7 +156,6 @@ export default {
       })
     },
     getVersion() {
-      console.warn('getVersion160', FWH)
       this.$http.get(api.getVersion)
       .then(res => {
         let version = localStorage.getItem('version')
@@ -266,9 +265,9 @@ export default {
             return true
           } else if (user.design_verify_status === 1 || user.design_verify_status === 3) {
             if (user.design_info_status === 1) {
-              // console.log('设计公司基础信息：已完善')
+              // console.log('设计服务商基础信息：已完善')
               if (user.design_item_status === 1) {
-                // console.log('设计公司接单设置：已完善')
+                // console.log('设计服务商接单设置：已完善')
                 if (user.design_case_status === 1) {
                   // console.log('设计案例是否添加：已完善')
                   return false
@@ -281,13 +280,13 @@ export default {
               } else {
                 this.alertTitle.title = '设计项目接单价格'
                 this.alertTitle.path = '/vcenter/company/taking'
-                // console.log('设计公司接单设置：未完善')
+                // console.log('设计服务商接单设置：未完善')
                 return true
               }
             } else {
-              this.alertTitle.title = '填写公司基本信息、公司简介、荣誉奖励'
+              this.alertTitle.title = '填写公司基本信息、公司简介'
               this.alertTitle.path = '/vcenter/company/base'
-              // console.log('设计公司基础信息：未完善')
+              // console.log('设计服务商基础信息：未完善')
               return true
             }
           } else {

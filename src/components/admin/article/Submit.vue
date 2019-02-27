@@ -67,8 +67,25 @@
               <el-row :gutter="24">
                 <el-col :span="12">
                   <el-form-item label="标签" prop="label_str">
-                    <el-input v-model="form.label_str" placeholder="多个标签用','分隔"></el-input>
-                    <div class="description">*多个标签用','分隔,每个标签不超过7个字符，尽量避免使用特殊字符。</div>
+                    <el-tag
+                      :key="tag"
+                      v-for="tag in dynamicTags"
+                      closable
+                      :disable-transitions="false"
+                      @close="handleClose(tag)">
+                      {{tag}}
+                    </el-tag>
+                    <el-input 
+                      v-model="form.label_str"
+                        class="input-new-tag"
+                        v-if="inputVisible"
+                        ref="saveTagInput"
+                        size="small"
+                        @keyup.enter.native="handleInputConfirm"
+                        @blur="handleInputConfirm">
+                      </el-input>
+                      <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
+                    <!-- <div class="description">*多个标签用','分隔,每个标签不超过7个字符，尽量避免使用特殊字符。</div> -->
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -198,6 +215,8 @@ export default {
         label_str: '',
         content: ''
       },
+      dynamicTags: [],
+      inputVisible: false,
       ruleForm: {
         classification_id: [
           { type: 'number', message: '请选择分类', trigger: 'change' }
@@ -231,12 +250,11 @@ export default {
             source_from: that.form.source_from,
             topic_url: that.form.topic_url,
             short_content: that.form.short_content,
-            label_str: that.form.label_str,
             content: that.form.content,
             is_synchro: that.isSynchro === true ? 1 : 0
           }
-          if (row.label_str) {
-            row.label = row.label_str.split(',')
+          if (this.dynamicTags.length) {
+            row.label = this.dynamicTags
           }
           row.cover_id = that.coverId
           var method = null
@@ -453,6 +471,31 @@ export default {
         .catch(function(error) {
           console.error(error)
         })
+    },
+    handleClose(tag) {
+      this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
+    },
+    showInput() {
+      this.inputVisible = true
+      this.$nextTick(_ => {
+        this.$refs.saveTagInput.$refs.input.focus()
+      })
+    },
+    handleInputConfirm() {
+      let inputValue = this.form.label_str.trim()
+      if (inputValue.length > 7) {
+        this.$message.warning('每个标签不超过7个字符')
+        return
+      }
+      if (inputValue) {
+        if (this.dynamicTags.includes(inputValue)) {
+          this.$message.warning('请勿添加重复标签')
+          return
+        }
+        this.dynamicTags.push(inputValue)
+      }
+      this.inputVisible = false
+      this.form.label_str = ''
     }
   },
   computed: {
@@ -483,10 +526,7 @@ export default {
             if (that.form.cover_id) {
               that.coverId = that.form.cover_id
             }
-            that.form.label_str = ''
-            if (that.form.label) {
-              that.form.label_str = that.form.label.join(',')
-            }
+            that.dynamicTags = that.form.label
             console.log(that.form)
 
             if (response.data.data.cover) {
@@ -580,5 +620,20 @@ export default {
   margin: auto;
   width: 100%;
   height: 580px;
+}
+.el-tag  {
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.button-new-tag {
+  height: 32px;
+  line-height: 30px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.input-new-tag {
+  width: 90px;
+  margin-left: 10px;
+  vertical-align: middle;
 }
 </style>

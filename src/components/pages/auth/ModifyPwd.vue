@@ -281,7 +281,7 @@ export default {
               that.isLoadingBtn = false
               if (response.data.meta.status_code === 200) {
                 that.$message.success('提交成功,等待审核')
-                that.$router.push({ name: 'vcenterComputerAccreditation' })
+                that.$router.push({ name: 'vcenterComputerBase'})
                 return false
               } else {
                 that.$message.error(response.data.meta.message)
@@ -392,7 +392,7 @@ export default {
   watch: {},
   created: function() {
     var uType = this.$store.state.event.user.type
-    // 如果非设计公司，跳到相应页面
+    // 如果非设计服务商，跳到相应页面
     if (uType !== 2) {
       this.$router.replace({ name: 'vcenterDComputerIdentification' })
       return

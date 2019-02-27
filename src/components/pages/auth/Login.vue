@@ -73,7 +73,7 @@
           <div v-if="prod.name === ''" :class="{'fl register-tab-user': true, active: userType === 2}" @click="userType = 2, typeError = false">
             <div class="tab-left"></div>
             <div class="tab-right">
-              <h3>我是设计公司</h3>
+              <h3>我是设计服务商</h3>
               <p class="des">为客户提供</p>
               <p class="des">专业设计服务</p>
             </div>
@@ -682,7 +682,7 @@ form {
   border-left: none;
   border-top: none;
   transform: rotate(45deg);
-  border-radius: 0 0 1px 0
+    border-radius: 0 0 0 0
 }
 .register-tab-user.active h3 {
   color: #FF5A5F;

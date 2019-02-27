@@ -529,7 +529,7 @@
               快递单号
             </el-col>
             <el-col :span="20">
-              <el-form-item prop="logistics_number">
+              <el-form-item prop="logistics_number" class="line-hei-20">
                 <el-input v-model="invoiceForm.logistics_number"></el-input>
               </el-form-item>
             </el-col>
@@ -797,9 +797,9 @@
           .then(function (response) {
             self.isLoadingBtn = false
             if (response.data.meta.status_code === 200) {
-              self.$message.success('操作成功，等待设计公司接单!')
+              self.$message.success('操作成功，等待设计服务商接单!')
               self.item.status = 4
-              self.item.status_value = '等待设计公司接单'
+              self.item.status_value = '等待设计服务商接单'
               self.statusLabel.selectCompany = false
               self.statusLabel.trueCompany = true
             } else {
@@ -833,7 +833,7 @@
           this.$set(this.takingPriceForm, 'city', this.item.company_city)
           this.$set(this.takingPriceForm, 'area', this.item.company_area)
 
-          // 获取设计公司详情
+          // 获取设计服务商详情
           this.$http.get(api.designCompanyChild, {}).then((response) => {
             if (response.data.meta.status_code === 200) {
               let item = response.data.data
@@ -1217,12 +1217,11 @@
         this.isReady = true
       },
       uploadStageError(err, file, fileList) {
-        let index = this.currentStageIndex
-        if (this.isMob) {
-          document.getElementById('upload_btn_' + index).innerText = '上传附件'
-        }
         this.$message.error(err)
+        this.$message.error('上传失败, 请重新上传')
         this.isReady = true
+        let index = this.currentStageIndex
+        document.getElementById('upload_btn_' + index).innerText = '上传附件'
       },
       handlePreview(file) {
       },
@@ -1310,7 +1309,7 @@
         return
       }
       let uType = this.$store.state.event.user.type
-      // 如果是设计公司，跳到设计公司项目详情
+      // 如果是设计服务商，跳到设计服务商项目详情
       if (uType !== 2) {
         this.$router.replace({name: 'vcenterItemShow'})
         return
@@ -1356,7 +1355,7 @@
               self.waitTakePrice = true
             }
             switch (self.item.status) {
-              case 4: // 查看已提交报价的设计公司
+              case 4: // 查看已提交报价的设计服务商
                 self.progressButt = 2
                 self.progressContract = -1
                 self.progressItem = -1
@@ -1385,7 +1384,7 @@
                     self.$message.error(error.message)
                   })
                 break
-              case 45: // 已有设计公司报价
+              case 45: // 已有设计服务商报价
                 self.progressButt = 3
                 self.progressContract = -1
                 self.progressItem = -1
@@ -1651,7 +1650,7 @@
               name: '项目预算',
               title: self.item.design_cost_value
             }, {
-              name: '项目周期',
+              name: '交付时间',
               title: self.item.cycle_value
             }, {
               name: '工作地点',

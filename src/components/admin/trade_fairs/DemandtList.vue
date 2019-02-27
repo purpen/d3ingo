@@ -68,7 +68,7 @@
                 <template slot-scope="scope">
                   <p>项目名称: {{ scope.row.name }}</p>
                   <p>设计类别: {{ scope.row.design_types_value | typeJoin}}</p>
-                  <p>项目周期: {{ scope.row.cycle_value }}</p>
+                  <p>交付时间: {{ scope.row.cycle_value }}</p>
                   <p>项目预算: {{ scope.row.design_cost_value }}</p>
                   <p>产品类别: {{ scope.row.type_value }}</p>
                   <p>所属行业: {{ scope.row.field_value }}</p>
@@ -112,7 +112,7 @@
             <el-table-column
               align="center"
               prop="created_at"
-              width="80"
+              width="100"
               label="创建时间">
             </el-table-column>
             <el-table-column

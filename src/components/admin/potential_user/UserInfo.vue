@@ -415,9 +415,9 @@
                           </el-col>
                           <el-col :xs="24" :sm="20" :md="8" :lg="8">
                             <p v-if="!boolEditProject || currentProjectId !== item.item_id">
-                              <span>项目周期: </span>{{item.cycle_value}}
+                              <span>交付时间: </span>{{item.cycle_value}}
                             </p>
-                            <el-form-item v-if="boolEditProject && currentProjectId === item.item_id" label="项目周期" prop="cycle">
+                            <el-form-item v-if="boolEditProject && currentProjectId === item.item_id" label="交付时间" prop="cycle">
                               <el-select v-model="projectForm.cycle" placeholder="请选择">
                                 <el-option
                                   v-for="(d, index) in cycleOptions"
@@ -484,7 +484,7 @@
                               <el-row :gutter="20">
                                 <el-col :xs="24" :sm="20" :md="16" :lg="16">
                                   <div class="flex-a-c margin-b22">
-                                      <span class="font14">对接设计公司 </span>{{i + 1}}
+                                      <span class="font14">对接设计服务商 </span>{{i + 1}}
                                     <div>
                                       <el-popover
                                         placement="right"
@@ -508,7 +508,7 @@
                               <el-row :gutter="20">
                                 <el-col :xs="24" :sm="24" :md="12" :lg="12">
                                   <p>
-                                    <span>设计公司: </span>{{d.company_name}}
+                                    <span>设计服务商: </span>{{d.company_name}}
                                   </p>
                                 </el-col>
                                 <el-col :xs="24" :sm="24" :md="12" :lg="12">
@@ -540,13 +540,13 @@
                             </div>
                             <div class="design-company" 
                               v-if="boolEditDesignCompany && d.id === editDesignParams.design_id">
-                              <p class="margin-b22">对接设计公司</p>
+                              <p class="margin-b22">对接设计服务商</p>
                               <el-form  label-position="top" :model="designCompanyForm" :rules="ruleDesignCompanyForm" ref="EditRuleDesignCompanyForm"
                                           label-width="80px">
                                 <el-row :gutter="20">
                                   <el-col :xs="24" :sm="24" :md="8" :lg="8">
-                                    <el-form-item label="设计公司名称" prop="design_company_id">
-                                      <el-select v-model="designCompanyForm.design_company_id" placeholder="请选择设计公司" @change="selectdesignCompany" filterable disabled>
+                                    <el-form-item label="设计服务商名称" prop="design_company_id">
+                                      <el-select v-model="designCompanyForm.design_company_id" placeholder="请选择设计服务商" @change="selectdesignCompany" filterable disabled>
                                         <el-option
                                           v-for="(d, index) in designCompanyList"
                                           :key="index"
@@ -596,16 +596,16 @@
                           </li>
                         </ul>
                         <p class="add-design clearfix" v-if="item.failure === null">
-                          <el-button size="small" type="primary" class="fl" :disabled="!isHasPower || (boolDesignCompany || boolEditDesignCompany)" @click="addDesignCompany(item.item_id)">添加设计公司</el-button>
+                          <el-button size="small" type="primary" class="fl" :disabled="!isHasPower || (boolDesignCompany || boolEditDesignCompany)" @click="addDesignCompany(item.item_id)">添加设计服务商</el-button>
                         </p>
                         <div class="design-company" v-if="boolDesignCompany && currentDesignId ===item.item_id">
-                          <p class="margin-b22">对接设计公司</p>
+                          <p class="margin-b22">对接设计服务商</p>
                           <el-form  label-position="top" :model="designCompanyForm" :rules="ruleDesignCompanyForm" ref="ruleDesignCompanyForm"
                                     label-width="80px">
                             <el-row :gutter="20">
                               <el-col :xs="24" :sm="24" :md="8" :lg="8">
-                                <el-form-item label="设计公司名称" prop="design_company_id">
-                                  <el-select v-model="designCompanyForm.design_company_id" placeholder="请选择设计公司" @change="selectdesignCompany" filterable>
+                                <el-form-item label="设计服务商名称" prop="design_company_id">
+                                  <el-select v-model="designCompanyForm.design_company_id" placeholder="请选择设计服务商" @change="selectdesignCompany" filterable>
                                     <el-option
                                       v-for="(d, index) in designCompanyList"
                                       :key="index"
@@ -722,7 +722,7 @@
 
                       <el-row :gutter="20">
                         <el-col :xs="24" :sm="12" :md="8" :lg="8">
-                          <el-form-item label="项目周期" prop="cycle">
+                          <el-form-item label="交付时间" prop="cycle">
                             <el-select v-model="projectForm.cycle" placeholder="请选择">
                               <el-option
                                 v-for="(d, index) in cycleOptions"
@@ -770,7 +770,7 @@
                     <el-row>
                       <div class="margin-t20">
                         <span class="progress-p-name">{{item.item_name}}</span>
-                        <p class="design-number margin-l20">对接<span>{{item.feedback.length}}</span>家设计公司</p>
+                        <p class="design-number margin-l20">对接<span>{{item.feedback.length}}</span>家设计服务商</p>
                       </div>
                     </el-row>
                     <div  class="progress-p-item" v-for="(d, index) in item.feedback" :key="index">
@@ -958,7 +958,7 @@ export default {
       currentUser: '新建客户',
       currentId: '',
       QRCode: '', // 需求方二维码链接
-      QRCode2: '', // 设计公司二维码链接
+      QRCode2: '', // 设计服务商二维码链接
       option: 'user',
       BoolEditUserInfo: false,
       focusHeight: false,
@@ -985,7 +985,7 @@ export default {
         type: [{ type: 'number', required: true, message: '请选择需求类别', trigger: 'blur' }]
       },
       ruleDesignCompanyForm: {
-        company_name: [{ required: true, message: '请填写设计公司名称', trigger: 'blur' }],
+        company_name: [{ required: true, message: '请填写设计服务商名称', trigger: 'blur' }],
         contact_name: [{ required: true, message: '请添写联系人姓名', trigger: 'blur' }],
         phone: [{ required: true, message: '请填写联系人电话', trigger: 'blur' }]
       },
@@ -1473,15 +1473,15 @@ export default {
       this.$refs[formName][0].validate(valid => {
         if (valid) {
           if (!this.designCompanyForm.design_company_id) {
-            this.$message.error('请选择设计公司')
+            this.$message.error('请选择设计服务商')
             return
           }
           if (!this.designCompanyForm.contact_name) {
-            this.$message.error('请填写设计公司联系人')
+            this.$message.error('请填写设计服务商联系人')
             return
           }
           if (!this.designCompanyForm.phone) {
-            this.$message.error('请填写设计公司联系人电话')
+            this.$message.error('请填写设计服务商联系人电话')
             return
           }
           let row = {}
@@ -1535,7 +1535,7 @@ export default {
         this.$message.error(error.message)
       })
     },
-    selectdesignCompany(val) { // 选择设计公司
+    selectdesignCompany(val) { // 选择设计服务商
       this.designCompanyList.forEach((item, i) => {
         if (item.id === val) {
           this.$set(this.designCompanyForm, 'contact_name', item.contact_name)
@@ -1685,7 +1685,7 @@ export default {
     },
     showEditDesignForm(d) {
       if (this.boolDesignCompany) {
-        this.$message.error('请保存设计公司')
+        this.$message.error('请保存设计服务商')
         return
       }
       if (!d) return
@@ -1707,15 +1707,15 @@ export default {
       this.$refs[formName][0].validate(valid => {
         if (valid) {
           if (!this.designCompanyForm.design_company_id) {
-            this.$message.error('请选择设计公司')
+            this.$message.error('请选择设计服务商')
             return
           }
           if (!this.designCompanyForm.contact_name) {
-            this.$message.error('请填写设计公司联系人')
+            this.$message.error('请填写设计服务商联系人')
             return
           }
           if (!this.designCompanyForm.phone) {
-            this.$message.error('请填写设计公司联系人电话')
+            this.$message.error('请填写设计服务商联系人电话')
             return
           }
           let row = Object.assign(this.editDesignParams, this.designCompanyForm)
@@ -1987,9 +1987,6 @@ export default {
 }
 </script>
 <style scoped>
-.el-form-item {
-  /* margin-bottom: 0px; */
-}
 .font14 {
   font-size: 14px;
 }
@@ -2072,10 +2069,6 @@ export default {
   color: #FF5A5F;
   border-bottom: 2px solid #FF5A5F;
 }
-.card-body-center {
-  /* padding: 20px; */
-}
-
 .user-name, .user-phone, .source, .belong, .call-status {
   display: flex;
   align-items: center;
@@ -2299,11 +2292,6 @@ export default {
 .edit-project:hover .edit-project-tag {
   display: block;
 }
-.edit-project:hover {
-  /* width: 48px;
-  height: 48px; */
-  /* background: url(../../../assets/images/icon/MoreHover@2xx.png) no-repeat left; */
-}
 .edit-project-tag {
   display: none;
   position: absolute;
@@ -2347,9 +2335,6 @@ export default {
 .user-base-table p, 
 .project-form-table p {
   margin-bottom: 22px;
-}
-.user-base-table span {
-  /* display: inline-block; */
 }
 .project-form-table span {
   margin-right: 15px;
@@ -2412,9 +2397,6 @@ export default {
 	border-radius: 18px;
   color: #ffffff;
 }
-.link-item-name:hover {
-
-}
 .link-item-name:hover i {
   background: rgba(0,0,0,.6);
   color: #ffffff;
@@ -2440,9 +2422,6 @@ export default {
   border-radius: 4px;
   margin-top: 20px;
 }
-.edit-progress {
-
-}
 .send {
   border-top: 1px solid #e6e6e6;
   padding: 10px 20px;
@@ -2453,9 +2432,6 @@ export default {
   background-color: #FAFAFA;
   margin-top: 10px;
   border: 1px solid #e6e6e6;
-}
-.log-li:blur {
-
 }
 .log-li-top {
   position: relative;

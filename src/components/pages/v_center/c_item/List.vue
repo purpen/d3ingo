@@ -59,7 +59,7 @@
                     <p>项目预算: {{ d.item.design_cost_value }}</p>
                     <p>设计类型: {{ d.item.type_value }}</p>
                     <p>设计类别: {{ d.item.design_types_value | formatEnd }}</p>
-                    <p>项目周期: {{ d.item.cycle_value }}</p>
+                    <p>交付时间: {{ d.item.cycle_value }}</p>
                   </el-col>
                   <el-col :span="isMob ? 24 : 3">
                     <p>
@@ -156,7 +156,7 @@
                     <p>项目预算: {{ d.item.design_cost_value }}</p>
                     <p>设计类型: {{ d.item.type_value }}</p>
                     <p>设计类别: {{ d.item.design_types_value | formatEnd }}</p>
-                    <p>项目周期: {{ d.item.cycle_value }}</p>
+                    <p>交付时间: {{ d.item.cycle_value }}</p>
                   </el-col>
                   <el-col :span="isMob ? 24 : 3">
                     <p style="white-space: nowrap">
@@ -315,7 +315,7 @@
                   <p>项目预算: {{ d.item.design_cost_value }}</p>
                   <p>设计类型: {{ d.item.type_value }}</p>
                   <p>设计类别: {{ d.item.design_types_value | formatEnd }}</p>
-                  <p>项目周期: {{ d.item.cycle_value }}</p>
+                  <p>交付时间: {{ d.item.cycle_value }}</p>
                 </el-col>
                 <el-col :span="isMob ? 24 : 3">
                   <p style="white-space: nowrap">
@@ -943,7 +943,7 @@
   }
   .empty {
     width: 122px;
-    height: 113px;
+    height: 114px;
     margin: 200px auto 0;
     background: url("../../../../assets/images/icon/Projectdefaultstate@2x.png") no-repeat center / contain;
   }

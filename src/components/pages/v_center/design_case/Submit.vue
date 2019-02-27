@@ -137,7 +137,7 @@
               </div> -->
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="作品案例标题" prop="title">
+                  <el-form-item label="作品案例标题" prop="title" class="line-hei-20">
                     <el-input v-model="form.title" placeholder=""></el-input>
                   </el-form-item>
                 </el-col>
@@ -158,7 +158,7 @@
 
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="服务客户" prop="customer">
+                  <el-form-item label="服务客户" prop="customer" class="line-hei-20">
                     <el-input v-model="form.customer" placeholder=""></el-input>
                   </el-form-item>
                 </el-col>
@@ -212,7 +212,7 @@
               <el-row>
                 <el-col :span="isMob ? 24 : 12">
                   <el-form-item label="所属行业" prop="industry">
-                    <el-select v-model.number="form.industry" placeholder="设计类别">
+                    <el-select v-model.number="form.industry" placeholder="所属行业">
                       <el-option
                         v-for="item in industryOptions"
                         :label="item.label"
@@ -233,7 +233,7 @@
                     </el-radio-group>
                   </el-col> -->
                   <el-col :xs="24" :sm="12" :md="12" :lg="12">
-                    <el-form-item prop="">
+                    <el-form-item prop="" class="line-hei-20">
                       <el-date-picker
                         key="p.time"
                         class="fullwidth"
@@ -279,7 +279,7 @@
                     </el-radio-group>
                   </el-col> -->
                   <el-col :xs="24" :sm="12" :md="12" :lg="12">
-                    <el-form-item>
+                    <el-form-item class="line-hei-20">
                       <el-date-picker
                         key="t.time"
                         class="fullwidth"

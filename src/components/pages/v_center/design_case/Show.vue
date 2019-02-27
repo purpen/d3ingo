@@ -29,7 +29,7 @@
               <img class="avatar" v-if="item.company.logo_url" :src="item.company.logo_url" width="100" />
               <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="100" />
             </router-link>
-            <h3>{{ item.company.company_abbreviation }}</h3>
+            <h3>{{ item.company.company_name }}</h3>
             <p class="com-addr">
               <span>{{ item.company.province_value }}</span>&nbsp;&nbsp;&nbsp;
               <span>{{ item.company.city_value }}</span>

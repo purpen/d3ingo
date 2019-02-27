@@ -7,7 +7,7 @@
       <div class="flex">
         <p :class="['info', {'active': status === 'info'}]">项目需求信息</p>
         <p :class="['match', {'active': status === 'match'}]">分析匹配</p>
-        <p :class="['select', {'active': status === 'select'}]">选择设计方</p>
+        <p :class="['select', {'active': status === 'select'}]">选择设计服务商</p>
       </div>
     </div>
 
@@ -17,8 +17,8 @@
           <template slot="title">
             <img class="avatar2" v-if="user.logo_url" :src="user.logo_url"/>
             <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
-            <span v-if="user.company && user.company.company_abbreviation" class="b-nickname">{{ user.company.company_abbreviation }}</span>
-            <span v-else class="b-nickname">{{ user.realname || user.account }}</span>
+            <span v-if="user.company.company_name" class="b-nickname">{{ user.company.company_name }}</span>
+            <span v-else class="b-nickname">{{ user.account }}</span>
           </template>
           <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
           <el-menu-item index="/vcenter/account/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>账号设置 </el-menu-item>
@@ -36,7 +36,7 @@
           <template slot="title">
             <img class="avatar2" v-if="user.logo_url" :src="user.logo_url"/>
             <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
-            <span v-if="user.company && user.company.company_abbreviation" class="b-nickname">{{ user.company.company_abbreviation }}</span>
+            <span v-if="user.company.company_name" class="b-nickname">{{ user.company.company_name }}</span>
             <span v-else class="b-nickname">{{ user.realname || user.account }}</span>
           </template>
           <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>

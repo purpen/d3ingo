@@ -123,8 +123,8 @@
                     -->
                     <p>设计类型: {{ d.item.type_value }}</p>
                     <p>设计类别: {{ d.item.design_types_value | formatEnd }}</p>
-                    <p>项目周期: {{ d.item.cycle_value }}</p>
-                    <p class="fc-content">产品功能：{{d.item.product_features}}</p>
+                    <p>交付时间: {{ d.item.cycle_value }}</p>
+                    <p class="fc-content">产品功能: {{d.item.product_features }}</p>
                   </el-col>
                   <el-col :span="3">
                     <p>
@@ -154,7 +154,7 @@
                     <div class="btn" v-show="d.item.status === 3">
                       <p class="margin-b-10">
                         <el-button class="is-custom" @click="viewShow2(d.item.id)" size="small" type="primary">
-                          选择设计公司
+                          选择设计服务商
                         </el-button>
                       </p>
                     </div>
@@ -241,7 +241,7 @@
                   <div class="list-content">
                     <section class="c-body">
                       <p>项目预算：{{ d.item.design_cost_value }}</p>
-                      <p>项目周期：{{ d.item.cycle_value }}</p>
+                      <p>交付时间：{{ d.item.cycle_value }}</p>
                       <p>设计类型: {{ d.item.type_value }}</p>
                       <p>设计类别: {{ d.item.design_types_value | formatEnd }}</p>
                       <p class="fc-content">产品功能：{{ d.item.product_features }}</p>
@@ -272,7 +272,7 @@
                       <div class="btn" v-show="d.item.status === 3">
                         <p class="margin-b-10">
                           <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary">
-                            选择设计公司
+                            选择设计服务商
                           </el-button>
                         </p>
                       </div>
@@ -281,7 +281,7 @@
                                     v-if="d.item.show_offer">查看报价
                         </el-button>
                         <el-button class="is-custom" @click="viewShow" :item_id="d.item.id" size="small" type="primary"
-                                    v-else>查看设计公司
+                                    v-else>查看设计服务商
                         </el-button>
                       </p>
 
@@ -770,7 +770,7 @@
     },
     created: function () {
       let uType = this.$store.state.event.user.type
-      // 如果是设计公司，跳到设计公司列表
+      // 如果是设计服务商，跳到设计服务商列表
       if (uType === 2) {
         this.$router.replace({name: 'vcenterCItemList'})
         return

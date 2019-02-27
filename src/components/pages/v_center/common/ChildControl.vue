@@ -84,7 +84,7 @@
               <h3>公司认证</h3>
               <p class="item-title">提交公司认证信息</p>
               <p class="item-btn">
-                <router-link :to="{name: 'vcenterComputerBase', query: {legalize: 2}}">{{ item.verify_label }}</router-link>
+                <router-link :to="{name: 'vcenterComputerBase', params: {id: 2}}">{{ item.verify_label }}</router-link>
               </p>
             </div>
 
@@ -117,7 +117,7 @@
               <h3>完善公司信息</h3>
               <p class="item-title">填写公司基本信息</p>
               <p class="item-btn">
-                <router-link :to="{name: 'vcenterComputerBase'}">编辑</router-link>
+                <router-link :to="{name: 'vcenterDComputerBase'}">编辑</router-link>
               </p>
             </div>
 
@@ -125,7 +125,7 @@
               <h3>公司认证</h3>
               <p class="item-title">提交公司认证信息</p>
               <p class="item-btn">
-                <router-link :to="{name: 'vcenterComputerBase', query: {legalize: 2}}">去认证</router-link>
+                <router-link :to="{name: 'vcenterDComputerBase', params: {id: 1}}">去认证</router-link>
               </p>
             </div>
 
