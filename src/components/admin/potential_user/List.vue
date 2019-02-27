@@ -72,7 +72,6 @@
             </div>
           </div>
 
-
           <el-table
             :data="tableData"
             border
