@@ -1324,11 +1324,11 @@ export default {
                 title: self.item.name
               },
               {
-                name: '项目类型',
+                name: '设计类型',
                 title: self.item.type_value
               },
               {
-                name: '设计类别',
+                name: '设计项目类型',
                 title: self.item.design_types_value.join(', ')
               },
               {
@@ -1336,11 +1336,11 @@ export default {
                 title: self.item.product_features
               },
               {
-                name: '产品领域',
+                name: '产品类别',
                 title: self.item.field_value
               },
               {
-                name: '所属行业',
+                name: '行业领域',
                 title: self.item.industry_value
               }
             ]
@@ -1351,11 +1351,11 @@ export default {
                 title: self.item.name
               },
               {
-                name: '项目类型',
+                name: '设计类型',
                 title: self.item.type_value
               },
               {
-                name: '设计类别',
+                name: '设计项目类型',
                 title: self.item.design_types_value.join(', ')
               },
               {
@@ -1374,7 +1374,7 @@ export default {
               title: self.item.cycle_value
             },
             {
-              name: '工作地点',
+              name: '项目工作地点',
               title: self.item.province_value + ', ' + self.item.city_value
             },
             {
