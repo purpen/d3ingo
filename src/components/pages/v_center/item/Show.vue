@@ -1370,7 +1370,7 @@ export default {
               title: self.item.design_cost_value
             },
             {
-              name: '项目周期',
+              name: '交付时间',
               title: self.item.cycle_value
             },
             {

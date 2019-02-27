@@ -4,8 +4,12 @@
     <div class="project-cover">
       <div class="content">
         <h2>您需要设计什么？</h2>
-        <input :maxlength="100" class="name" v-model="name" placeholder="请输入您要设计的项目名称">
-        <button class="full-red-button big-button" @click="submit">{{val}}</button>
+        <div style="float:left">
+          <input :maxlength="100" class="name" v-model="name" placeholder="请输入您要设计的项目名称">
+        </div>
+        <div>
+          <button class="full-red-button big-button" @click="submit">{{val}}</button>
+        </div>
       </div>
     </div>
   </div>
@@ -116,7 +120,7 @@ export default {
   .big-button {
     margin: 0;
     border-radius: 0 4px 4px 0;
-    height: 50px;
+    height: 51px;
     font-size: 16px;
     transition: 268ms all ease;
   }

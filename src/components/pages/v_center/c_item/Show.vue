@@ -1217,12 +1217,11 @@
         this.isReady = true
       },
       uploadStageError(err, file, fileList) {
-        let index = this.currentStageIndex
-        if (this.isMob) {
-          document.getElementById('upload_btn_' + index).innerText = '上传附件'
-        }
         this.$message.error(err)
+        this.$message.error('上传失败, 请重新上传')
         this.isReady = true
+        let index = this.currentStageIndex
+        document.getElementById('upload_btn_' + index).innerText = '上传附件'
       },
       handlePreview(file) {
       },
@@ -1651,7 +1650,7 @@
               name: '项目预算',
               title: self.item.design_cost_value
             }, {
-              name: '项目周期',
+              name: '交付时间',
               title: self.item.cycle_value
             }, {
               name: '工作地点',

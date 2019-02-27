@@ -20,7 +20,7 @@
                 </el-option>
               </el-select>
             </div>
-            <!-- <h3>产品功能描述</h3>
+            <!-- <h3>项目需求描述</h3>
             <div class="item">
               <el-form :model="form">
                 <el-form-item

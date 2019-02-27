@@ -3,9 +3,9 @@
     <menu-sub status="info"></menu-sub>
     <div class="project-cover clearfix">
       <div class="project-item-box">
-        <h3>项目周期</h3>
+        <h3>交付时间</h3>
         <div class="item">
-          <el-select placeholder="请选择项目周期" v-model="form.cycle">
+          <el-select placeholder="请选择交付时间" v-model="form.cycle">
             <el-option v-for="(e, i) in CYCLE_OPTIONS"
               :key="i"
               :label="e.name"

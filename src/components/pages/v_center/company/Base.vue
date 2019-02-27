@@ -1934,12 +1934,16 @@
     padding: 0px 10px;
     min-height: 36px;
     position: relative;
+    /* border: none;
+    background: none; */
+    appearance: normal;
   }
   .tags-list {
     position: absolute;
     /* display: none; */
     padding-bottom: 10px;
     border: 1px solid #e6e6e6;
+    font-size: 12px;
     width: 50%;
     background: #fff;
     z-index: 1;
