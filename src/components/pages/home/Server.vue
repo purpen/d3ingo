@@ -3,7 +3,7 @@
     <div class="banner" :style="{height : calcHeight}">
       <div class="banner-contant">
         <h3 :class="{'m-h3' : isMob}">把需求交给太火鸟来解决</h3>
-        <p :class="{'m-p' : isMob}">太火鸟聚集100+专业设计服务商，依托海量消费大数据，帮助客户洞察先机。 </p>
+        <p :class="{'m-p' : isMob}">太火鸟聚集1000+专业设计服务商，依托海量消费大数据，帮助客户洞察先机。 </p>
           <div class="pub" v-if="!isCompany">
             <router-link :to="{name: 'itemCreate'}">
               <el-button class="pub-btn is-custom" type="primary" :size="isMob? 'small' : 'large'"> 发布项目需求

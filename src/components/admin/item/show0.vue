@@ -194,7 +194,7 @@
             <div class="basic-box">
               <el-row class="basic">
                 <el-col :span="5" :offset="1">
-                  <span class="basic-title">名称</span>
+                  <span class="basic-title">项目名称</span>
                 </el-col>
                 <el-col :span="18">
                   <span class="basic-content">{{item.name}}</span>
@@ -202,7 +202,7 @@
               </el-row>
               <el-row class="basic">
                 <el-col :span="5" :offset="1">
-                  <span class="basic-title">类型</span>
+                  <span class="basic-title">设计类型</span>
                 </el-col>
                 <el-col :span="18">
                   <span class="basic-content">{{item.type_value}}</span>
@@ -210,7 +210,7 @@
               </el-row>
               <el-row class="basic">
                 <el-col :span="5" :offset="1">
-                  <span class="basic-title">类别</span>
+                  <span class="basic-title">设计项目类型</span>
                 </el-col>
                 <el-col :span="18">
                   <span class="basic-content" v-if="item.design_types_value">{{ item.design_types_value.join(', ') }}</span>
@@ -218,7 +218,7 @@
               </el-row>
               <el-row class="basic">
                 <el-col :span="5" :offset="1">
-                  <span class="basic-title">领域</span>
+                  <span class="basic-title">产品类别</span>
                 </el-col>
                 <el-col :span="18">
                   <span class="basic-content">{{info.field_value}}</span>
@@ -226,7 +226,7 @@
               </el-row>
               <el-row class="basic">
                 <el-col :span="5" :offset="1">
-                  <span class="basic-title">行业</span>
+                  <span class="basic-title">行业领域</span>
                 </el-col>
                 <el-col :span="18">
                   <span class="basic-content">{{ item.industry_value }}</span>
@@ -234,7 +234,7 @@
               </el-row>
               <el-row class="basic">
                 <el-col :span="5" :offset="1">
-                  <span class="basic-title">预算</span>
+                  <span class="basic-title">项目预算</span>
                 </el-col>
                 <el-col :span="18">
                   <span class="basic-content">{{ item.design_cost_value }}</span>
@@ -242,7 +242,7 @@
               </el-row>
               <el-row class="basic">
                 <el-col :span="5" :offset="1">
-                  <span class="basic-title">周期</span>
+                  <span class="basic-title">交付时间</span>
                 </el-col>
                 <el-col :span="18">
                   <span class="basic-content">{{ item.cycle_value }}</span>
@@ -250,7 +250,7 @@
               </el-row>
               <el-row class="basic">
                 <el-col :span="5" :offset="1">
-                  <span class="basic-title">工作地点</span>
+                  <span class="basic-title">项目工作地点</span>
                 </el-col>
                 <el-col :span="18">
                   <span class="basic-content">{{ item.province_value }} {{ item.city_value }}</span>
@@ -258,7 +258,7 @@
               </el-row>
               <el-row class="basic">
                 <el-col :span="5" :offset="1">
-                  <span class="basic-title">功能或卖点</span>
+                  <span class="basic-title">产品功能描述</span>
                 </el-col>
                 <el-col :span="18">
                   <span class="basic-content">{{ info.product_features }}</span>
@@ -1405,7 +1405,7 @@ export default {
                   item.created = '验收时间：' + item.created_at.date_format().format('yyyy/MM/dd')
                   break
                 case 13: // 评价
-                  item.name = '评价'
+                  item.name = '已评价'
                   item.created = ''
                   break
                 default:
@@ -1921,11 +1921,11 @@ export default {
               } else if (item.type === 4) {
                 if (stage === 1) {
                   item.name = '第一阶段款'
-                  item.newName = '一阶段发票管理'
+                  item.newName = '第一阶段发票管理'
                   stage++
                 } else if (stage === 2) {
                   item.name = '第二阶段款'
-                  item.newName = '二阶段发票管理'
+                  item.newName = '第二阶段发票管理'
                   stage++
                 } else if (stage === 3) {
                   item.name = '第三阶段款'
