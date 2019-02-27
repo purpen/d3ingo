@@ -659,7 +659,7 @@ export default {
         },
         {
           img: require('assets/images/home/jd/2.png'),
-          title: '集成零售流量需求方与设计服务供应商，以及背后的制造业生态链'
+          title: '集成零售流量需求方与设计服务商，以及背后的制造业生态链'
         },
         {
           img: require('assets/images/home/jd/3.png'),
@@ -708,7 +708,7 @@ export default {
       colList2: [
         {
           img: require('assets/images/home/jd/7.png'),
-          title: '聚合1000+领先设计服务供应商',
+          title: '聚合1000+领先设计服务商',
           title2: '兼顾成果原创性、创新性与可行性'
         },
         {
@@ -729,7 +729,7 @@ export default {
       colList2_yw: [
         {
           img: require('assets/images/home/jd/7-yw.png'),
-          title: '聚合1000+领先设计服务供应商',
+          title: '聚合1000+领先设计服务商',
           title2: '兼顾成果原创性、创新性与可行性',
           title0: '100+国内顶尖设计机构'
         },
@@ -771,7 +771,7 @@ export default {
         },
         {
           img: require('assets/images/home/jd/15.png'),
-          title: '匹配设计服务供应商'
+          title: '匹配设计服务商'
         },
         {
           img: require('assets/images/home/jd/16.png'),
@@ -799,7 +799,7 @@ export default {
         },
         {
           img: require('assets/images/home/jd/15-yw.png'),
-          title: '匹配设计服务供应商'
+          title: '匹配设计服务商'
         },
         {
           img: require('assets/images/home/jd/16-yw.png'),
