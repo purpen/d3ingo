@@ -974,11 +974,10 @@ export default {
     let that = this
     if (that.$store.state.event.prod.id === 0) {
       that.$router.replace({name: 'home'})
+      return
     }
-    Object.assign(this.query, this.$route.query)
-    // if (!that.$route.query || !that.$route.query.from) {
-    //   that.$router.push({name: 'SaaSIndex', query: {from: 2}})
-    // }
+    this.formatQuery(this.$route.query)
+    this.generalize(this.query)
   },
   mounted () {
     let that = this
@@ -1151,6 +1150,27 @@ export default {
       if (this.user.type === 1) {
       } else {
         this.$message.error('请使用需求公司账号登录')
+      }
+    },
+    generalize(query) {
+      this.$http.post(api.generalize, {
+        url: location.href,
+        son_source: query.mark,
+        device: this.isMob ? 2 : 1,
+        new_from: query.from
+      }).then(res => {
+        console.log(res)
+      }).catch(err => {
+        console.error(err)
+      })
+    },
+    formatQuery(query) {
+      Object.assign(this.query, query)
+      if (typeof this.query.from !== 'number') {
+        this.query.from = 2
+      }
+      if (this.query.from < 1) {
+        this.query.from = 2
       }
     }
   },
