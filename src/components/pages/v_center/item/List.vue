@@ -133,7 +133,7 @@
                   </el-col>
 
                   <el-col :span="7">
-                    <p class="status-str" v-if="d.item.show_offer">有设计服务供应商报价</p>
+                    <p class="status-str" v-if="d.item.show_offer">有设计服务商报价</p>
                     <p class="status-str" v-else>{{ d.item.status_value }}</p>
                   </el-col>
 
@@ -251,7 +251,7 @@
                       <span v-else>暂无</span>
                     </p>
                     <p class="price-m Bborder">状态
-                      <span class="status-str" v-if="d.item.show_offer">有设计服务供应商报价</span>
+                      <span class="status-str" v-if="d.item.show_offer">有设计服务商报价</span>
                       <span class="status-str" v-else>{{ d.item.status_value }}</span>
                     </p>
                     <section class="btns">
@@ -346,7 +346,9 @@
     <el-dialog
       title="提示"
       :visible.sync="sureDialog"
-      width="380px">
+      width="380px"
+      top="30vh"
+      class="dl-body-center">
       <span>{{ sureDialogMessage }}</span>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="sureDialog = false">取 消</el-button>
@@ -360,7 +362,9 @@
     <el-dialog
       title="提示"
       :visible.sync="sureDialogOngo"
-      width="380px">
+      width="380px"
+      top="30vh"
+      class="dl-body-center">
       <span>{{ sureDialogMessage }}</span>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="sureDialogOngo = false">取 消</el-button>
@@ -374,7 +378,9 @@
      <el-dialog
       title="提示"
       :visible.sync="sureDialogDock"
-      width="380px">
+      width="380px"
+      top="30vh"
+      class="dl-body-center">
       <span>{{ sureDialogMessage }}</span>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="sureDialogDock = false">取 消</el-button>
@@ -388,7 +394,9 @@
      <el-dialog
       title="提示"
       :visible.sync="sureDialogDelete"
-      width="380px">
+      width="380px"
+      top="30vh"
+      class="dl-body-center">
       <span>确定要删除此项目?</span>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="sureDialogDelete = false">取 消</el-button>

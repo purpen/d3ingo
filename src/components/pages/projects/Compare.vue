@@ -3,7 +3,7 @@
     <menu-sub status="select"></menu-sub>
     <div class="project-cover clearfix">
       <div class="project-item-box">
-        <h3>选择设计服务商，发送项目需求</h3>
+        <h3>选择设计服务商，发送项目邀约</h3>
         <div class="item">
           <el-row :gutter="20">
             <el-col :xs="24" :sm="6" :md="6" :lg="6" v-for="(ele, index) in companyDetails" :key="index">
