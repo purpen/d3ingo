@@ -516,7 +516,7 @@
     },
     computed: {
       verify() {
-        return this.$store.state.event.user.design_verify_status
+        return this.$store.state.event.user.verify_status
       },
       isMob() {
         return this.$store.state.event.isMob

@@ -63,7 +63,7 @@
                         <p class="c-title">{{d.name}}</p>
                         <p>项目预算: {{d.design_cost_value}}</p>
                         <p>设计类型: {{d.design_types_value | typeFormat}}</p>
-                        <p>项目周期: {{d.cycle_value}}</p>
+                        <p>交付时间: {{d.cycle_value}}</p>
                       </el-col>
                       <el-col :span="3">
                         {{d.follow_count?d.follow_count:0}}人关注
@@ -134,7 +134,7 @@
                     </el-row>
                     <el-row :gutter="10">
                       <el-col :span="12">
-                        <el-form-item label="项目周期" prop="cycle">
+                        <el-form-item label="交付时间" prop="cycle">
                           <el-select v-model="form.cycle">
                             <el-option
                               v-for="cyc in cycleOpitons"
@@ -242,7 +242,7 @@
                   <div class="details">
                     <el-row>
                       <el-col :span="6">
-                        <span>项目周期</span>
+                        <span>交付时间</span>
                       </el-col>
                       <el-col :span="18">
                         {{formup.cycle_value}}
@@ -617,7 +617,7 @@
             {required: true, message: '请填写项目名称', trigger: 'blur'}
           ],
           cycle: [
-            {required: true, type: 'number', message: '请选择项目周期', trigger: 'blur'}
+            {required: true, type: 'number', message: '请选择交付时间', trigger: 'blur'}
           ],
           design_cost: [
             {required: true, type: 'number', message: '请选择项目预算', trigger: 'blur'}

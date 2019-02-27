@@ -19,8 +19,8 @@
                           placeholder="详细描述下产品的主要功能，以便于设计服务商了解项目的产品需求。"></el-input>
               </el-form-item>
 
-              <el-form-item label="项目周期" prop="cycle" class="fullwidth">
-                <el-select v-model.number="form.cycle" placeholder="请选择项目周期">
+              <el-form-item label="交付时间" prop="cycle" class="fullwidth">
+                <el-select v-model.number="form.cycle" placeholder="请选择交付时间">
                   <el-option
                     v-for="item in cycleOptions"
                     :label="item.label"
@@ -100,7 +100,7 @@
                 <p class="slide-str error"><img src="../../../assets/images/icon/item_stick_fail.png" width="25"/> 匹配失败
                 </p>
                 <p class="slide-des error">可能出现的原因：</p>
-                <p class="slide-des error">1.当前项目设计周期太短，无法匹配有效的设计服务供应商，请重新设置项目周期。</p>
+                <p class="slide-des error">1.当前项目设计周期太短，无法匹配有效的设计服务供应商，请重新设置交付时间。</p>
                 <p class="slide-des error">2.当前项目设计项目设计服务费预算过低，无法匹配有效的设计服务供应商，请重新设置项目设计服务费。</p>
                 <p class="slide-des error">3.选择当前的城市没有对应的设计服务商。</p>
               </div>
@@ -195,7 +195,7 @@ export default {
           {
             type: 'number',
             required: true,
-            message: '请选择项目周期',
+            message: '请选择交付时间',
             trigger: 'change'
           }
         ],
