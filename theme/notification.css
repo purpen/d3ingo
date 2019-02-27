@@ -280,11 +280,11 @@
     .el-notification__closeBtn:hover {
       color: #606266; }
   .el-notification .el-icon-success {
-    color: #67c23a; }
+    color: #00AC84; }
   .el-notification .el-icon-error {
-    color: #f56c6c; }
+    color: #FF5A5F; }
   .el-notification .el-icon-info {
-    color: #909399; }
+    color: #65A6FF; }
   .el-notification .el-icon-warning {
     color: #e6a23c; }
 

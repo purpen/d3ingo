@@ -254,11 +254,11 @@
       color: #c0c4cc;
       border-color: #c0c4cc; }
     .el-step__head.is-success {
-      color: #67c23a;
-      border-color: #67c23a; }
+      color: #00AC84;
+      border-color: #00AC84; }
     .el-step__head.is-error {
-      color: #f56c6c;
-      border-color: #f56c6c; }
+      color: #FF5A5F;
+      border-color: #FF5A5F; }
     .el-step__head.is-finish {
       color: #FF5A5F;
       border-color: #FF5A5F; }
@@ -331,9 +331,9 @@
     .el-step__title.is-wait {
       color: #c0c4cc; }
     .el-step__title.is-success {
-      color: #67c23a; }
+      color: #00AC84; }
     .el-step__title.is-error {
-      color: #f56c6c; }
+      color: #FF5A5F; }
     .el-step__title.is-finish {
       color: #FF5A5F; }
   .el-step__description {
@@ -347,9 +347,9 @@
     .el-step__description.is-wait {
       color: #c0c4cc; }
     .el-step__description.is-success {
-      color: #67c23a; }
+      color: #00AC84; }
     .el-step__description.is-error {
-      color: #f56c6c; }
+      color: #FF5A5F; }
     .el-step__description.is-finish {
       color: #FF5A5F; }
   .el-step.is-horizontal {

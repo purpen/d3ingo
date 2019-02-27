@@ -650,7 +650,7 @@
     display: table-cell; }
   .el-input-group__append, .el-input-group__prepend {
     background-color: #f5f7fa;
-    color: #909399;
+    color: #65A6FF;
     vertical-align: middle;
     display: table-cell;
     position: relative;
@@ -1115,6 +1115,8 @@
     box-sizing: border-box;
     cursor: pointer;
     outline: none; }
+    .el-cascader-menu__item span {
+      padding-right: 10px; }
     .el-cascader-menu__item--extensible:after {
       font-family: 'element-icons';
       content: "\e604";

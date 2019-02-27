@@ -470,7 +470,8 @@
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  user-select: none; }
+  user-select: none;
+  margin-right: 30px; }
   .el-checkbox.is-bordered {
     padding: 9px 20px 9px 10px;
     border-radius: 4px;
@@ -629,8 +630,8 @@
     padding-left: 10px;
     line-height: 19px;
     font-size: 14px; }
-  .el-checkbox + .el-checkbox {
-    margin-left: 30px; }
+  .el-checkbox:last-child {
+    margin-right: 0; }
 
 .el-checkbox-button {
   position: relative;
@@ -986,26 +987,26 @@
       background-color: #FF5A5F;
       color: #fff; }
   .el-tag--info {
-    background-color: rgba(144, 147, 153, 0.1);
-    border-color: rgba(144, 147, 153, 0.2);
-    color: #909399; }
+    background-color: rgba(101, 166, 255, 0.1);
+    border-color: rgba(101, 166, 255, 0.2);
+    color: #65A6FF; }
     .el-tag--info.is-hit {
-      border-color: #909399; }
+      border-color: #65A6FF; }
     .el-tag--info .el-tag__close {
-      color: #909399; }
+      color: #65A6FF; }
     .el-tag--info .el-tag__close:hover {
-      background-color: #909399;
+      background-color: #65A6FF;
       color: #fff; }
   .el-tag--success {
-    background-color: rgba(103, 194, 58, 0.1);
-    border-color: rgba(103, 194, 58, 0.2);
-    color: #67c23a; }
+    background-color: rgba(0, 172, 132, 0.1);
+    border-color: rgba(0, 172, 132, 0.2);
+    color: #00AC84; }
     .el-tag--success.is-hit {
-      border-color: #67c23a; }
+      border-color: #00AC84; }
     .el-tag--success .el-tag__close {
-      color: #67c23a; }
+      color: #00AC84; }
     .el-tag--success .el-tag__close:hover {
-      background-color: #67c23a;
+      background-color: #00AC84;
       color: #fff; }
   .el-tag--warning {
     background-color: rgba(230, 162, 60, 0.1);
@@ -1019,15 +1020,15 @@
       background-color: #e6a23c;
       color: #fff; }
   .el-tag--danger {
-    background-color: rgba(245, 108, 108, 0.1);
-    border-color: rgba(245, 108, 108, 0.2);
-    color: #f56c6c; }
+    background-color: rgba(255, 90, 95, 0.1);
+    border-color: rgba(255, 90, 95, 0.2);
+    color: #FF5A5F; }
     .el-tag--danger.is-hit {
-      border-color: #f56c6c; }
+      border-color: #FF5A5F; }
     .el-tag--danger .el-tag__close {
-      color: #f56c6c; }
+      color: #FF5A5F; }
     .el-tag--danger .el-tag__close:hover {
-      background-color: #f56c6c;
+      background-color: #FF5A5F;
       color: #fff; }
   .el-tag--medium {
     height: 28px;
@@ -1512,6 +1513,7 @@
     -ms-flex-align: center;
     align-items: center; }
   .el-table__empty-text {
+    line-height: 60px;
     width: 50%;
     color: #909399; }
   .el-table__expand-column .cell {
@@ -1824,7 +1826,7 @@
     line-height: 34px;
     cursor: pointer; }
     .el-table__column-filter-trigger i {
-      color: #909399;
+      color: #65A6FF;
       font-size: 12px;
       -webkit-transform: scale(0.75);
       transform: scale(0.75); }
