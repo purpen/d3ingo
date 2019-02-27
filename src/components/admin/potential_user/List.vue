@@ -71,11 +71,6 @@
               <a href="javascript:void(0);"  @click="multipleDelItem" class="fr line-height30 height30"><i class="fx fx-icon-delete2"></i></a>
             </div>
           </div>
-          <div>
-            <el-button type="success">搜索</el-button>
-            <el-button type="warning">搜索</el-button>
-            <el-button type="info">搜索</el-button>
-          </div>
 
           <el-table
             :data="tableData"
