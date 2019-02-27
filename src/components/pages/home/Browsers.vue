@@ -2,7 +2,7 @@
     <div class="Browsers">
       <div class="wrapper">
         <p class="wrapper-title">请使用更先进的浏览器</p>
-        <p class="wrapper-purpose">铟果使用最新技术为您更流畅的体验</p>
+        <p class="wrapper-purpose">太火鸟使用最新技术为您更流畅的体验</p>
       </div>
       <div class="choose-browsers">
         <div class="click-browsers" v-for="(item,index) of browsersList" :key="index">

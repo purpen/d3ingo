@@ -7,13 +7,13 @@
       <span :class="{'is-active': myView === 'system'}" @click="changeView('system')">系统通知</span>
       <i class="fx fx-icon-nothing-close-error" @click="showCover = 'hide', myView = false"></i>
     </div>
-    <div v-if="myView === 'order'" class="cover-content scroll-bar">
+    <div v-if="myView === 'order'" class="cover-content">
       <order-message></order-message>
     </div>
-    <div v-else-if="myView === 'task'" class="cover-content scroll-bar">
+    <div v-else-if="myView === 'task'" class="cover-content">
       <task-message></task-message>
     </div>
-    <div v-if="myView === 'system'" class="cover-content scroll-bar">
+    <div v-if="myView === 'system'" class="cover-content">
       <system-message></system-message>
     </div>
   </div>
@@ -21,7 +21,6 @@
 <script>
   import orderMessage from '@/components/tools_block/OrderMessage'
   import systemMessage from '@/components/tools_block/SystemMessage'
-  import taskMessage from '@/components/tools_block/TaskMessage'
   export default {
     name: 'messageComponents',
     data() {
@@ -77,8 +76,7 @@
     },
     components: {
       orderMessage: orderMessage,
-      systemMessage: systemMessage,
-      taskMessage: taskMessage
+      systemMessage: systemMessage
     }
   }
 </script>
@@ -102,6 +100,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    border-top: 1px solid #E6E6E6;
     border-bottom: 1px solid #E6E6E6
   }
   .cover-header span {

@@ -81,6 +81,7 @@
           </el-table>
 
           <el-pagination
+            v-if="tableData.length && query.totalCount > query.pageSize"
             class="pagination"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
@@ -214,7 +215,7 @@ export default {
 
           for (var i = 0; i < self.itemList.length; i++) {
             var item = self.itemList[i]
-            // item['created_at'] = item.created_at.date_format().format('yy-MM-dd')
+            // item['created_at'] = item.created_at.date_format().format('yyyy-MM-dd')
             self.tableData.push(item)
           } // endfor
 

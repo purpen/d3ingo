@@ -16,7 +16,8 @@
             <div class="design-case-list" v-loading="isLoading">
               <el-row :gutter="20" class="flex-wrap">
                 <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                  <router-link :to="{name: 'vcenterDesignCaseAdd'}" class="item item-add el-card">
+                  <router-link :to="{name: 'vcenterDesignCaseAdd'}" class="item item-add el-card"
+                  :class="{'min-height340': !designCases.length}">
                     <i class="add-icon"></i>
                     <p class="tc-red fz-16">添加作品案例</p>
                   </router-link>
@@ -129,7 +130,7 @@
             that.designCases = response.data.data
             for (let i of that.designCases) {
               if (i.cover.created_at) {
-                i.date = i.cover.created_at.date_format().format('yy-MM-dd')
+                i.date = i.cover.created_at.date_format().format('yyyy-MM-dd')
               }
             }
           }
@@ -195,6 +196,8 @@
     align-items: center;
     flex-direction: column;
     height: calc(100% - 20px);
+  }
+  .min-height340 {
     min-height: 340px;
   }
   .item-add p {

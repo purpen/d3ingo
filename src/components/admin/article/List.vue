@@ -64,7 +64,9 @@
             </el-table-column>
           </el-table>
 
-          <el-pagination class="pagination" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="query.page" :page-sizes="[50, 100, 500]" :page-size="query.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="query.totalCount">
+          <el-pagination
+            v-if="tableData.length && query.totalCount > query.pageSize"
+           class="pagination" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="query.page" :page-sizes="[50, 100, 500]" :page-size="query.pageSize" layout="total, sizes, prev, pager, next, jumper" :total="query.totalCount">
           </el-pagination>
 
         </div>
@@ -154,7 +156,7 @@ export default {
               if (item.cover) {
                 item.cover_url = item.cover.small
               }
-              item['created_at'] = item.created_at.date_format().format('yy-MM-dd')
+              item['created_at'] = item.created_at.date_format().format('yyyy-MM-dd')
               self.tableData.push(item)
             } // endfor
 

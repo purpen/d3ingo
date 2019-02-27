@@ -16,15 +16,18 @@
       <router-view class="main-content"></router-view>
       <v-footer></v-footer>
     </div>
-    <p v-show="false">{{ticket}}</p>
     <p v-show="false">{{token}}</p>
-    <iframe
-      v-show="false"
-      ref="iframe"
-      frameborder="0"
-      name="sso-collaboration"
-      @load="loadFrame"
-      :src="path"></iframe>
+    <div v-if="!fwh">
+      <iframe
+        v-for="(ele, index) in path"
+        :key="index"
+        v-show="false"
+        :ref="ele.ref"
+        frameborder="0"
+        name="sso-collaboration"
+        @load="loadFrame(index)"
+        :src="ele.src"></iframe>
+      </div>
   </div>
 </template>
 
@@ -35,6 +38,8 @@ import api from '@/api/api'
 import { CHANGE_USER_VERIFY_STATUS } from '@/store/mutation-types'
 import {ENV} from 'conf/prod.env.js'
 import auth from '@/helper/auth'
+import phenix from 'assets/js/base.js'
+import {FWH} from '../config/prod.env.js'
 export default {
   name: 'app',
   components: {
@@ -48,7 +53,16 @@ export default {
         title: '',
         path: ''
       },
-      path: ''
+      path: [],
+      srcListProd: [
+        'https://saas.d3ingo.com/ssologin.html',
+        'https://www.taihuoniao.com/ssologin.html'
+      ],
+      srcListDev: [
+        'http://saas-dev.taihuoniao.com/ssologin.html',
+        'http://dev.taihuoniao.com/ssologin.html'
+      ],
+      fwh: FWH
     }
   },
   watch: {
@@ -68,13 +82,27 @@ export default {
     loading.setAttribute('class', classVal)
   },
   created() {
-    if (ENV === 'prod' && this.prod.name === '') {
-      this.path = 'https://www.taihuoniao.com/ssologin.html'
+    if (this.prod.name === '') {
+      if (ENV === 'prod') {
+        let list = []
+        this.srcListProd.forEach((item, index) => {
+          let obj = {src: item, ref: 'iframe' + index, iframeLoad: false}
+          list.push(obj)
+        })
+        this.path = list
+      } else {
+        let list = []
+        this.srcListDev.forEach((item, index) => {
+          let obj = {src: item, ref: 'iframe' + index, iframeLoad: false}
+          list.push(obj)
+        })
+        this.path = list
+      }
     }
-    if (ENV === 'dev' && this.prod.name === '') {
-      this.path = 'http://dev.taihuoniao.com/ssologin.html'
+    if (FWH) {
+    } else {
+      this.getVersion()
     }
-    this.getVersion()
     if (!this.prod.name) {
       this.fetchUser()
     }
@@ -82,7 +110,7 @@ export default {
   methods: {
     fetchUser() {
       let that = this
-      let ticket = localStorage.getItem('ticket')
+      let ticket = phenix.getCookie('ticket')
       let token = localStorage.getItem('token')
       if (ticket) {
         if (!token) {
@@ -141,26 +169,30 @@ export default {
         console.log(err)
       })
     },
-    loadFrame() {
-      this.iframeLoad = true
+    loadFrame(index) {
+      this.path[index].iframeLoad = true
     },
     postMessage() {
-      if (this.iframeLoad) {
-        let ticket = this.$store.state.event.ticket || localStorage.getItem('ticket')
-        this.$refs.iframe.contentWindow.postMessage(JSON.stringify({
-          ticket: ticket,
-          type: 'login'
-        }), this.path)
-      }
+      this.path.forEach(item => {
+        if (item.iframeLoad) {
+          let ticket = this.$store.state.event.ticket || phenix.getCookie('ticket')
+          this.$refs[item.ref][0].contentWindow.postMessage(JSON.stringify({
+            ticket: ticket,
+            type: 'login'
+          }), item.src)
+        }
+      })
     },
     postMessage2() {
-      if (this.iframeLoad) {
-        let ticket = this.$store.state.event.ticket || localStorage.getItem('ticket')
-        this.$refs.iframe.contentWindow.postMessage(JSON.stringify({
-          ticket: ticket,
-          type: 'loginout'
-        }), this.path)
-      }
+      this.path.forEach(item => {
+        if (item.iframeLoad) {
+          let ticket = this.$store.state.event.ticket || phenix.getCookie('ticket')
+          this.$refs[item.ref][0].contentWindow.postMessage(JSON.stringify({
+            ticket: ticket,
+            type: 'loginout'
+          }), item.src)
+        }
+      })
     },
     getStatus(type) {
       let url = ''
@@ -195,12 +227,14 @@ export default {
         if (user.demand_verify_status === 0) {
           console.log('没有认证')
           this.alertTitle.title = '您还没有申请企业实名认证'
-          this.alertTitle.path = '/vcenter/d_company/accreditation'
+          // this.alertTitle.path = '/vcenter/d_company/base'
+          this.alertTitle.path = {name: 'redirect', query: {name: 'vcenterDComputerBase', id: 1}}
           return true
         } else if (user.demand_verify_status === 2) {
           console.log('没有认证')
           this.alertTitle.title = '您申请企业实名认证失败了'
-          this.alertTitle.path = '/vcenter/d_company/accreditation'
+          // this.alertTitle.path = '/vcenter/d_company/base'
+          this.alertTitle.path = {name: 'redirect', query: {name: 'vcenterDComputerBase', id: 1}}
           return true
         } else if (user.demand_verify_status === 1 || user.demand_verify_status === 3) {
           if (user.demand_info_status === 1) {
@@ -220,18 +254,20 @@ export default {
           if (user.design_verify_status === 0) {
             console.log('没有认证')
             this.alertTitle.title = '您还没有申请企业实名认证'
-            this.alertTitle.path = '/vcenter/company/accreditation'
+            // this.alertTitle.path = '/vcenter/company/base'
+            this.alertTitle.path = {name: 'redirect', query: {name: 'vcenterComputerBase', id: 2}}
             return true
           } else if (user.design_verify_status === 2) {
             console.log('公司认证失败')
             this.alertTitle.title = '您申请企业实名认证失败了'
-            this.alertTitle.path = '/vcenter/company/accreditation'
+            // this.alertTitle.path = '/vcenter/company/base'
+            this.alertTitle.path = {name: 'redirect', query: {name: 'vcenterComputerBase', id: 2}}
             return true
           } else if (user.design_verify_status === 1 || user.design_verify_status === 3) {
             if (user.design_info_status === 1) {
-              // console.log('设计公司基础信息：已完善')
+              // console.log('设计服务商基础信息：已完善')
               if (user.design_item_status === 1) {
-                // console.log('设计公司接单设置：已完善')
+                // console.log('设计服务商接单设置：已完善')
                 if (user.design_case_status === 1) {
                   // console.log('设计案例是否添加：已完善')
                   return false
@@ -244,13 +280,13 @@ export default {
               } else {
                 this.alertTitle.title = '设计项目接单价格'
                 this.alertTitle.path = '/vcenter/company/taking'
-                // console.log('设计公司接单设置：未完善')
+                // console.log('设计服务商接单设置：未完善')
                 return true
               }
             } else {
-              this.alertTitle.title = '填写公司基本信息、公司简介、荣誉奖励'
+              this.alertTitle.title = '填写公司基本信息、公司简介'
               this.alertTitle.path = '/vcenter/company/base'
-              // console.log('设计公司基础信息：未完善')
+              // console.log('设计服务商基础信息：未完善')
               return true
             }
           } else {

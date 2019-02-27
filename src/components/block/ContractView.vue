@@ -12,7 +12,7 @@
             <p>联系人: <span class="no-border">{{form.demand_company_legal_person}}</span></p>
             <p>电话: <span class="no-border">{{form.demand_company_phone}}</span></p>
             <p>&nbsp;</p>
-            <p>乙方(设计方):</p>
+            <p>乙方(设计服务商):</p>
             <p>公司名称: <span class="no-border">{{form.design_company_name}}</span></p>
             <p>地址: <span class="no-border">{{form.design_company_address}}</span></p>
             <p>电话: <span class="no-border">{{form.design_company_phone}}</span></p>
@@ -31,7 +31,7 @@
             <p class="font-size-16">1、项目名称：<span class="bottom-border">{{form.title}}</span></p>
             <p>&nbsp;</p>
             <p class="font-size-16 mar-b-10">2、费用：</p>
-            <p class="mar-b-10">本合同设计费用总额为人民币(￥)<span class="bottom-border">{{form.total_han}}</span> 整（小写：<span class="bottom-border">{{form.total}}</span>元），丙方作为平台收取全部项目费的<span class="bottom-border">{{form.commission_rate}}</span>%，也就是人民币(￥)<span class="bottom-border">{{form.commission}}</span> 元作为佣金。</p>
+            <p class="mar-b-10">本合同设计费用总额为人民币(￥)<span class="bottom-border">{{form.total_han}}</span>（小写：<span class="bottom-border">{{form.total}}</span>元），丙方作为平台收取全部项目费的<span class="bottom-border">{{form.commission_rate}}</span>%，也就是人民币(￥)<span class="bottom-border">{{form.commission}}</span> 元作为佣金。</p>
             <p style="color: #FF5A5F">注：本合同中所有涉及费用金额均为含税。</p>
 
             <p class="title mar-t-40 font-size-18">二、项目交付内容及工作周期</p>
@@ -39,7 +39,7 @@
               <span class="bottom-border">{{form.sort}}</span>
               个阶段进行，细节流程与时间节点如下：</p>
             <p v-for="(d, index) in form.item_stage" :key="index + 'd'">
-              第 <span class="bottom-border">{{d.sort}}</span> 阶段：设计方在 <span
+              第 <span class="bottom-border">{{d.sort}}</span> 阶段：设计服务商在 <span
               class="bottom-border">{{d.time}}</span> 个工作日内提交 <span
               class="bottom-border">{{d.title}}</span>;
               <span if="d.content">包含:
@@ -191,7 +191,7 @@
             text: [
               {text: '第'},
               {text: '    ' + d.sort + '   ', style: 'write'},
-              {text: '阶段：设计方在'},
+              {text: '阶段：设计服务商在'},
               {text: '    ' + d.time + '   ', style: 'write'},
               {text: '个工作日内提交'},
               {text: '    ' + d.title + '   ', style: 'write'},
@@ -235,7 +235,7 @@
             {text: '电话: ' + this.form.demand_company_phone, style: 'p'},
 
             {text: ' ', style: 'p'},
-            {text: '乙方（设计方）：', style: 'p'},
+            {text: '乙方（设计服务商）：', style: 'p'},
             {text: '公司名称: ' + this.form.design_company_name, style: 'p'},
             {text: '地址: ' + this.form.design_company_address, style: 'p'},
             {text: '联系人: ' + this.form.design_company_legal_person, style: 'p'},

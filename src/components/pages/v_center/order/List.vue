@@ -74,7 +74,7 @@
                   data[i]['item']['status_label'] = '等待系统自动匹配'
                   break
                 case 3:
-                  data[i]['item']['status_label'] = '等待设计公司接单…'
+                  data[i]['item']['status_label'] = '等待设计服务商接单…'
                   break
                 default:
                   data[i]['item']['status_label'] = '待补充'
@@ -144,12 +144,7 @@
 
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-  .content-item-box {
-  
-  }
   .pub {
     background: #FAFAFA;
     height: 150px;

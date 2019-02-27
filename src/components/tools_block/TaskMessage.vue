@@ -74,7 +74,7 @@
                 self.query.total_pages = response.data.meta.pagination.total_pages
                 for (let i = 0; i < data.length; i++) {
                   let item = data[i].operation_log
-                  data[i]['created_at'] = item.created_at.date_format().format('yy-MM-dd hh:mm')
+                  data[i]['created_at'] = item.created_at.date_format().format('yyyy-MM-dd hh:mm')
                   data[i]['is_show'] = false
                 }
                 self.itemList = data

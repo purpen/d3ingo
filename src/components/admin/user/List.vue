@@ -48,7 +48,7 @@
                   <el-select v-model="query.type" placeholder="目标人群..." size="small">
                     <el-option label="全部" value="0"></el-option>
                     <el-option label="需求方" value="1"></el-option>
-                    <el-option label="设计公司" value="2"></el-option>
+                    <el-option label="设计服务商" value="2"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -115,7 +115,7 @@
               width="80"
               label="类型">
                 <template slot-scope="scope">
-                  <p v-if="scope.row.type === 2">设计方</p>
+                  <p v-if="scope.row.type === 2">设计服务商</p>
                   <p v-else>需求方</p>
                 </template>
             </el-table-column>
@@ -152,7 +152,7 @@
             </el-table-column>
             <el-table-column
               prop="created_at"
-              width="80"
+              width="100"
               label="创建时间">
             </el-table-column>
             <el-table-column
@@ -403,7 +403,7 @@ export default {
             if (item.logo_image) {
               item.logo_url = item.logo_image.logo
             }
-            item['created_at'] = item.created_at.date_format().format('yy-MM-dd')
+            item['created_at'] = item.created_at.date_format().format('yyyy-MM-dd')
             self.tableData.push(item)
           } // endfor
         } else {

@@ -3,10 +3,11 @@
     <div class="blank30 vcenter"></div>
     <el-row>
       <v-menu currentName="company"></v-menu>
-
+<!-- 之前的页面, 以废 -->
       <el-col :span="isMob ? 24 : rightWidth" :offset="!isMob? leftWidth : 0">
         <div class="right-content vcenter-container">
-          <v-menu-sub currentSubName="identification"></v-menu-sub>
+          <!-- <v-menu-sub currentSubName="identification"></v-menu-sub> -->
+          <v-menu-sub></v-menu-sub>
           <div :class="['content-box', isMob ? 'content-box-m' : '']" v-loading="isLoading">
 
             <div class="sub-title">
@@ -67,57 +68,6 @@
                 </el-col>
               </el-row>
 
-              <el-row :gutter="24">
-                <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="法人姓名" prop="legal_person">
-                    <el-input v-model="form.legal_person" placeholder="请输入法人姓名"></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-
-              <el-row :gutter="24">
-                <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="证件类型" prop="document_type" class="fullwidth">
-                    <el-select v-model.number="form.document_type" placeholder="请选择证件类型">
-                      <el-option
-                        v-for="(d, index) in documentTypeOptions"
-                        :label="d.label"
-                        :key="index"
-                        :value="d.value">
-                      </el-option>
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-
-              <el-row :gutter="24">
-                <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="证件号码" prop="document_number">
-                    <el-input v-model="form.document_number" placeholder="请输入证件号码"></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-
-              <el-row :gutter="24">
-                <el-col :span="isMob ? 24 : 12">
-                  <el-form-item label="法人证件" prop="">
-                    <el-upload
-                      class=""
-                      :action="uploadParam.url"
-                      :on-preview="handlePreview"
-                      :on-remove="handleRemove"
-                      :file-list="filePersonList"
-                      :data="uploadParam"
-                      :on-error="uploadError"
-                      :on-success="uploadSuccessPerson"
-                      :before-upload="beforeUploadPerson"
-                      list-type="picture">
-                      <el-button size="small" type="primary">点击上传</el-button>
-                      <div slot="tip" class="el-upload__tip">只能上传jpg/png/pdf文件，且不超过5M</div>
-                    </el-upload>
-                  </el-form-item>
-                </el-col>
-              </el-row>
               <el-row :gutter="24">
                 <el-col :span="12" class="content">
                     <region-picker :provinceProp="form.province" :cityProp="form.city"  :isFirstProp="true" :districtProp="form.area" titleProp="公司地址" @onchange="changeServer"></region-picker>
@@ -242,7 +192,7 @@
       :title= "`${custom.info}平台协议`"
       :visible.sync="dialogAgreement"
       top="5%"
-      size="large">
+      width="880px">
       <div>
         <div class="agree-content">
           <p>本协议由缔约双方在自愿、平等、公平及诚实信用原则的基础上，根据《中华人民共和国合同法》等相关法律、法规的规定，经友好协商缔结。</p>
@@ -373,7 +323,7 @@
         companyId: '',
         labelPosition: 'top',
         fileList: [],
-        filePersonList: [],
+        // filePersonList: [],
         upToken: null,
         uploadParam: {
           'url': '',
@@ -526,7 +476,7 @@
                 if (response.data.meta.status_code === 200) {
                   that.$store.commit(CHANGE_USER_VERIFY_STATUS, {verify_status: 3})
                   that.$message.success('提交成功,等待审核')
-                  that.$router.push({name: 'vcenterComputerAccreditation'})
+                  that.$router.push({name: 'vcenterComputerBase'})
                   return false
                 } else {
                   that.$message.error(response.data.meta.message)
@@ -666,9 +616,9 @@
     watch: {},
     created: function () {
       let uType = this.$store.state.event.user.type
-      // 如果非设计公司，跳到相应页面
+      // 如果非设计服务商，跳到相应页面
       if (uType !== 2) {
-        this.$router.replace({name: 'vcenterDComputerIdentification'})
+        this.$router.replace({name: 'vcenterDComputerBase'})
         return
       }
       const that = this
@@ -718,23 +668,6 @@
                     files.push(item)
                   }
                   that.fileList = files
-                }
-                // 法人证件
-                if (response.data.data.document_image) {
-                  let personFiles = []
-                  for (let j = 0; j < response.data.data.document_image.length; j++) {
-                    if (j > 5) {
-                      break
-                    }
-                    let pObj = response.data.data.document_image[j]
-                    let personItem = {}
-                    personItem['response'] = {}
-                    personItem['name'] = pObj['name']
-                    personItem['url'] = pObj['small']
-                    personItem['response']['asset_id'] = pObj['id']
-                    personFiles.push(personItem)
-                  }
-                  that.filePersonList = personFiles
                 }
               })
             }

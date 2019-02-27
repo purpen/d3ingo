@@ -90,7 +90,7 @@
             </el-table-column>
             <el-table-column
               prop="item.created_at"
-              width="80"
+              width="100"
               label="创建时间">
             </el-table-column>
             <el-table-column
@@ -301,7 +301,7 @@
                 if (item.info) {
                   item['item']['locale'] = '{0}/{1}'.format(item.item.province_value, item.item.city_value)
                 }
-                item['item']['created_at'] = item.item.created_at.date_format().format('yy-MM-dd')
+                item['item']['created_at'] = item.item.created_at.date_format().format('yyyy-MM-dd')
                 self.tableData.push(item)
               } // endfor
             } else {

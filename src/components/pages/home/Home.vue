@@ -6,7 +6,7 @@
           <div class="slide" :style="{ background: 'url(' + require ('assets/images/home/banner/BG@2x.jpg') + ') no-repeat center', height: calcHeight}">
             <div class="container clearfix" style="height:100%;">
               <div class="left">
-                <h3 :class="{'m-h3' : isMob}">铟果D³INGO产品创新SaaS平台</h3>
+                <h3 :class="{'m-h3' : isMob}">太火鸟产品创新SaaS平台</h3>
                 <p :class="{'m-p' : isMob}">用设计重塑品质生活</p>
                 <router-link v-if="uType !== 2 && !isMob" to="/item/submit_one">发布项目需求</router-link>
               </div>
@@ -152,7 +152,9 @@
             </div>
             <div class="content">
               <p class="title">{{ d.title }}</p>
-              <p class="des">{{ d.content }}</p>
+              <el-tooltip :content="d.content" placement="right">
+                <p class="des">{{ d.content }}</p>
+              </el-tooltip>
             </div>
           </a>
         </el-card>
@@ -176,7 +178,7 @@
                 <img class="avatar" v-if="d.design_company.logo_image" :src="d.design_company.logo_image.logo"
                     width="30"/>
                 <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="30"/>
-                <span>{{d.design_company.company_abbreviation}}</span>
+                <span>{{d.design_company.company_name}}</span>
               </p>
             </div>
           </router-link>
@@ -246,7 +248,6 @@
     name: 'index',
     data() {
       return {
-        uType: this.$store.state.event.user.type || 1,
         bannerListMob: [
           // {
           //   img: require ('assets/images/subject/innovation/home_banner.jpg'),
@@ -384,10 +385,10 @@
           },
           {
             id: 6,
-            title: '轻创新⋅设计造物-邀请加入铟果D³INGO活动招募',
+            title: '轻创新⋅设计造物-邀请加入太火鸟活动招募',
             cover_url: require ('@/assets/images/subject/list_04.jpg'),
             url: '/subject/EnterpriseRecruit',
-            content: '铟果D³INGO是太火鸟旗下的创新产品交易与SaaS分发平台，是高效线上设计交易服务平台及中国领先的创新产品策源地，围绕创新产品与设计交易，为相关参与方提供包括创新产品孵化、资金保障、流量支持、运营维护等相关服务与帮助。'
+            content: '太火鸟创新产品交易与SaaS分发平台，是高效线上设计交易服务平台及中国领先的创新产品策源地，围绕创新产品与设计交易，为相关参与方提供包括创新产品孵化、资金保障、流量支持、运营维护等相关服务与帮助。'
           }
         ],
         designCaseList: [],
@@ -548,6 +549,9 @@
       }
     },
     computed: {
+      uType() {
+        return this.$store.state.event.user.type || 1
+      },
       isMob() {
         return this.$store.state.event.isMob
       },

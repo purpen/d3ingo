@@ -15,7 +15,7 @@
         <div class="right-text">{{formup.design_types_value | typeJoin}}</div>
       </div>
       <div class="inline-pad">
-        <div class="left-text">项目周期</div>
+        <div class="left-text">交付时间</div>
         <div class="right-text">{{formup.cycle_value}}</div>
       </div>
       <div class="inline-pad">

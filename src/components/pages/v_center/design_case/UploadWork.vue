@@ -322,7 +322,7 @@
         this.$router.push ({name: 'home'})
         this.$message ({
           showClose: true,
-          message: '此活动只允许设计公司参与',
+          message: '此活动只允许设计服务商参与',
           type: 'warning'
         })
         return
@@ -429,11 +429,6 @@
 <style scoped>
   .uploads {
     margin-bottom: 50px;
-  }
-  .upload {
-    /* background: #FFFFFF;
-    border: 1px solid #D2D2D2;
-    padding: 0 30px; */
   }
 
   h2 {

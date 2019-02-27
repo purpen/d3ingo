@@ -100,7 +100,7 @@
             </el-table-column>
             <el-table-column
               prop="created_at"
-              width="80"
+              width="100"
               label="创建时间">
             </el-table-column>
             <el-table-column
@@ -126,6 +126,7 @@
           </el-table>
 
           <el-pagination
+            v-if="tableData.length && query.totalCount > query.pageSize"
             class="pagination"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
@@ -344,7 +345,7 @@ export default {
             }
             item['type_value'] = typeValue
             item['source_value'] = sourceVal
-            item['created_at'] = item.created_at.date_format().format('yy-MM-dd')
+            item['created_at'] = item.created_at.date_format().format('yyyy-MM-dd')
             var sureOutlineTransfer = false
             if (item.pay_type === 5 && item.status === 0 && item.bank_transfer === 1) {
               sureOutlineTransfer = true

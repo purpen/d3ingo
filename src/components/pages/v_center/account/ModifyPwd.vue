@@ -6,17 +6,21 @@
       'vcenter-right': leftWidth === 2,
         'vcenter-right-mob': isMob}">
         <div class="right-content modify-content vcenter-container">
-          <v-menu-sub></v-menu-sub>
+          <c-menu-sub v-if="isCompany"></c-menu-sub>
+          <d-menu-sub v-else></d-menu-sub>
+          <!-- <v-menu-sub></v-menu-sub> -->
           <v-menu-sub v-if="false" currentSubName="identification"></v-menu-sub>
+          <h3 :class="['top-password', {'blank20' : isMob}]">修改密码</h3>
           <div :class="['content-box', 'clearfix' , isMob ? 'content-box-m' : '']" v-loading="isLoading">
             <!-- <div :class="['form-title', isMob ? 'form-title-m' : '']">
               <span v-if="!isMob">修改密码</span>
             </div> -->
+
             <el-form label-position="top" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
 
               <el-row :gutter="24">
                 <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                  <el-form-item label="旧密码" prop="old_password">
+                  <el-form-item label="旧密码" prop="old_password" class="line-hei-20">
                     <el-input v-model="form.old_password" type="password" placeholder="请输入您的密码" autocomplete name="password"></el-input>
                   </el-form-item>
                 </el-col>
@@ -24,7 +28,7 @@
 
               <el-row :gutter="24">
                 <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                  <el-form-item label="新密码" prop="password">
+                  <el-form-item label="新密码" prop="password" class="line-hei-20">
                     <el-input v-model="form.password" type="password" placeholder="请输入您的新密码" autocomplete name="password"></el-input>
                   </el-form-item>
                 </el-col>
@@ -32,7 +36,7 @@
 
               <el-row :gutter="24">
                 <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                  <el-form-item label="确认密码" prop="checkPassword">
+                  <el-form-item label="确认密码" prop="checkPassword" class="line-hei-20">
                     <el-input v-model="form.checkPassword" type="password" placeholder="请确认您的密码" autocomplete name="confirm"></el-input>
                   </el-form-item>
                 </el-col>
@@ -55,7 +59,9 @@
 
 <script>
   import vMenu from '@/components/pages/v_center/Menu'
-  import vMenuSub from '@/components/pages/v_center/account/MenuSub'
+  import dMenuSub from '@/components/pages/v_center/d_company/MenuSub'
+  // import vMenuSub from '@/components/pages/v_center/account/MenuSub'
+  import cMenuSub from '@/components/pages/v_center/company/MenuSub'
   import api from '@/api/api'
   import auth from '@/helper/auth'
 
@@ -65,7 +71,8 @@
     name: 'vcenter_account_modify_pwd',
     components: {
       vMenu,
-      vMenuSub
+      dMenuSub,
+      cMenuSub
     },
     data () {
       let checkPassword = (rule, value, callback) => {
@@ -112,10 +119,6 @@
         that.$refs[formName].validate((valid) => {
           // 验证通过，提交
           if (valid) {
-            if (that.form.old_password === that.form.password) {
-              that.$message.error('新密码与旧密码一致！')
-              return
-            }
             let row = {
               old_password: that.form.old_password,
               password: that.form.password
@@ -128,10 +131,8 @@
                 if (response.data.meta.status_code === 200) {
                   that.$message.success('操作成功！')
                   that.$refs[formName].resetFields()
-                  // 更新token
-                  let token = response.data.data.token
                   // 写入localStorage
-                  auth.write_token(token)
+                  auth.logout(true)
                   // that.$router.push({name: 'home'})
                 } else {
                   that.$message.error(response.data.meta.message)
@@ -156,6 +157,9 @@
       },
       rightWidth() {
         return 24 - this.$store.state.event.leftWidth
+      },
+      isCompany() {
+        return this.$store.state.event.user.type === 2
       }
     },
     watch: {},
@@ -189,5 +193,9 @@
   }
   .right-content .content-box-m {
     padding: 0;
+  }
+  .top-password {
+    font-size: 16px;
+    margin-bottom: 10px;
   }
 </style>

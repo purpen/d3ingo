@@ -12,7 +12,7 @@
               <div class="count-item red">
                 <p class="count">{{ item.user_count }}</p>
                 <p class="title">注册用户</p>
-                <p class="des">需求方: <span class="red">{{ item.demand_user }}</span> | 设计方: <span class="red">{{ item.design_user }}</span></p>
+                <p class="des">需求方: <span class="red">{{ item.demand_user }}</span> | 设计服务商: <span class="red">{{ item.design_user }}</span></p>
               </div>
             </el-col>
 
@@ -58,8 +58,8 @@
                   <p class="alert-title"><span>*</span> 请您尽快解决如下问题，不要让用户等太久哦〜</p>
 
                   <div class="item" v-show="item.not_design > 0">
-                    <h3>设计公司</h3>
-                    <p class="item-title">有 <span class="green">{{ item.not_design }}</span> 家设计公司等待认证</p>
+                    <h3>设计服务商</h3>
+                    <p class="item-title">有 <span class="green">{{ item.not_design }}</span> 家设计服务商等待认证</p>
                     <p class="item-btn">
                       <router-link :to="{name: 'adminCompanyList'}">查看</router-link>
                     </p>
@@ -114,11 +114,11 @@
                   <el-table-column
                     prop="item.id"
                     label="ID"
-                    width="40">
+                    width="50">
                   </el-table-column>
                   <el-table-column
                     label="项目名称"
-                    min-width="140">
+                    min-width="120">
                     <template slot-scope="scope">
                       <p>
                         <a href="#">{{ scope.row.info.name }}</a>
@@ -132,7 +132,7 @@
                   </el-table-column>
                   <el-table-column
                     prop="item.created_at"
-                    width="80"
+                    width="100"
                     label="创建时间">
                   </el-table-column>
                 </el-table>
@@ -204,7 +204,7 @@
           for (var i = 0; i < itemList.length; i++) {
             var item = itemList[i]
             item['item']['status_label'] = '[{0}]{1}'.format(item.item.status, item.item.status_value)
-            item['item']['created_at'] = item.item.created_at.date_format().format('yy-MM-dd')
+            item['item']['created_at'] = item.item.created_at.date_format().format('yyyy-MM-dd')
             self.tableItemData.push(item)
           } // endfor
         } else {

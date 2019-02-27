@@ -14,7 +14,7 @@
             <p>联系人: <span class="no-border">{{form.demand_company_legal_person}}</span></p>
             <p>电话: <span class="no-border">{{form.demand_company_phone}}</span></p>
             <p>&nbsp;</p>
-            <p>乙方(设计方):</p>
+            <p>乙方(设计服务商):</p>
             <p>公司名称: <span class="no-border">{{form.design_company_name}}</span></p>
             <p>地址: <span class="no-border">{{form.design_company_address}}</span></p>
             <p>电话: <span class="no-border">{{form.design_company_phone}}</span></p>
@@ -33,7 +33,7 @@
               依照中华人民共和国法律及本行业相关法规条例之规定，甲乙丙三方本着平等自愿和互惠互利的原则，就乙方通过丙方平台接受委托为甲方提供
               <span class="bottom-border">{{form.title}}</span>
               设计。本合同设计费用总额为人民币(￥)
-              <span class="bottom-border">{{form.total}}</span> 整，丙方作为平台收取全部项目费的<span class="bottom-border">{{form.commission_rate}}</span>%，也就是人民币(￥)<span class="bottom-border">{{form.commission}}</span> 整作为佣金。三方共同签署此项设计委托合同（以下简称合同），甲方、乙方和丙方合称为合同三方（以下简称三方）。
+              <span class="bottom-border">{{form.total}}</span>，丙方作为平台收取全部项目费的<span class="bottom-border">{{form.commission_rate}}</span>%，也就是人民币(￥)<span class="bottom-border">{{form.commission}}</span>作为佣金。三方共同签署此项设计委托合同（以下简称合同），甲方、乙方和丙方合称为合同三方（以下简称三方）。
             </p>
 
             <p class="title">3、项目交付内容及工作周期</p>
@@ -41,7 +41,7 @@
               <span class="bottom-border">{{form.sort}}</span>
               个阶段进行，细节流程与时间节点如下：</p>
             <p v-for="(d, index) in form.item_stage" :key="index + 'd'">
-              第 <span class="bottom-border">{{d.sort}}</span> 阶段：设计方在 <span
+              第 <span class="bottom-border">{{d.sort}}</span> 阶段：设计服务商在 <span
               class="bottom-border">{{d.time}}</span> 个工作日内提交 <span
               class="bottom-border">{{d.title}}</span>;
               <span if="d.content">包含:
@@ -133,7 +133,7 @@
 
     <el-dialog
       title="提示"
-      v-model="sureDialog"
+      :visible.sync="sureDialog"
       width="380px">
       <input type="hidden" ref="currentType" value="1"/>
       <p class="alert-line-height">{{ sureDialogMessage }}</p>

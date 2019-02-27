@@ -9,6 +9,7 @@ import centerRoute from './routes/center.js'
 import shundeRoute from './routes/shunde.js'
 import toolsRoute from './routes/tools.js'
 import { Message } from 'element-ui'
+import {FWH} from '../../config/prod.env.js'
 import {
   calcImgSize
 } from 'assets/js/common'
@@ -90,7 +91,7 @@ let routes = [
     path: '/server_design',
     name: 'serverDesign',
     meta: {
-      title: '服务-设计公司'
+      title: '服务-设计服务商'
     },
     component: require('@/components/pages/home/ServerDesign')
   },
@@ -484,7 +485,7 @@ let routes = [
     path: '/projects/compare/:id',
     name: 'projectCompare',
     meta: {
-      title: '设计公司比较',
+      title: '设计服务商比较',
       requireAuth: true,
       hideHeader: true,
       hideFooter: true,
@@ -743,9 +744,95 @@ let routes = [
     component: require('@/components/pages/promote/Promote')
   },
   {
+    path: '/promote2',
+    name: 'promote2',
+    meta: {
+      title: '铟果推广'
+    },
+    component: require('@/components/pages/promote/Promote2')
+  },
+  {
+    path: '/promote/youke',
+    name: 'youke',
+    meta: {
+      title: '优鲜集'
+    },
+    component: require('@/components/pages/promote/Promote3')
+  },
+  {
     path: '/redirect',
     name: 'redirect',
     component: require('@/components/block/Redirect')
+  },
+  {
+    path: '/service_account',
+    name: 'serviceAccount',
+    meta: {
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/home/client_progress_feedback/serviceAccount'),
+    children: [
+      {
+        path: '/service_account/bind',
+        name: 'clientFeedback',
+        meta: {
+          title: '绑定确认',
+          hideHeader: true,
+          hideFooter: true
+        },
+        component: require('@/components/pages/home/client_progress_feedback/bind')
+      },
+      {
+        path: '/service_account/failure',
+        name: 'bindFailure',
+        meta: {
+          title: '绑定失败',
+          hideHeader: true,
+          hideFooter: true
+        },
+        component: require('@/components/pages/home/client_progress_feedback/bindStatus')
+      },
+      {
+        path: '/service_account/success',
+        name: 'bindSuccess',
+        meta: {
+          title: '绑定成功',
+          hideHeader: true,
+          hideFooter: true
+        },
+        component: require('@/components/pages/home/client_progress_feedback/bindStatus')
+      },
+      {
+        path: '/service_account/progress',
+        name: 'projectProgress',
+        meta: {
+          title: '项目进度反馈',
+          hideHeader: true,
+          hideFooter: true
+        },
+        component: require('@/components/pages/home/client_progress_feedback/ProgressDetails')
+      }
+    ]
+  },
+  {
+    path: '/attention',
+    name: 'attention',
+    meta: {
+      title: '关注公众号',
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/home/client_progress_feedback/attention')
+  },
+  {
+    path: '/service_account/transfer',
+    name: 'transfer',
+    meta: {
+      hideHeader: true,
+      hideFooter: true
+    },
+    component: require('@/components/pages/home/client_progress_feedback/transfer')
   }
 ]
 
@@ -794,11 +881,16 @@ router.beforeEach((to, from, next) => {
     if (store.state.event.token) {
       next()
     } else {
-      store.commit(types.PREV_URL_NAME, to.fullPath)
-      next({
-        name: 'login'
-      })
-      return false
+      console.warn('登录876', FWH)
+      if (FWH) {
+        next()
+      } else {
+        store.commit(types.PREV_URL_NAME, to.fullPath)
+        next({
+          name: 'login'
+        })
+        return false
+      }
     }
   } else {
     next()

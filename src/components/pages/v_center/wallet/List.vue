@@ -153,30 +153,30 @@
     </el-row>
 
     <!--弹框模板-->
-    <el-dialog :title="itemModelTitle" :visible.sync="itemModel" class="withdraw text-center">
-      <div class="withdraw-input display-fl" v-if="corporationInfo.account_name !== '' || corporationInfo.bank_name !== '' || corporationInfo.account_number !== ''">
-        <div class="withdraw-title margin-t-b-20 dis-ju"><p>开户名称:</p><span>{{corporationInfo.account_name}}</span></div>
-        <div class="withdraw-title margin-t-b-20 dis-ju"><p>开户银行：</p><span>{{corporationInfo.bank_name}}</span></div>
-        <div class="withdraw-title margin-t-b-20 dis-ju"><p>对公银行账号：</p><span>{{corporationInfo.account_number}}</span></div>
+    <el-dialog :title="itemModelTitle" :visible.sync="itemModel" class="withdraw text-center" :width="isMob ? '90%' : '580px'">
+      <div v-if="corporationInfo.account_name !== '' || corporationInfo.bank_name !== '' || corporationInfo.account_number !== ''">
+        <div class="withdraw-input display-fl">
+          <div class="withdraw-title margin-t-b-20 dis-ju"><p>开户名称:</p><span>{{corporationInfo.account_name}}</span></div>
+          <div class="withdraw-title margin-t-b-20 dis-ju"><p>开户银行：</p><span>{{corporationInfo.bank_name}}</span></div>
+          <div class="withdraw-title margin-t-b-20 dis-ju"><p>对公银行账号：</p><span>{{corporationInfo.account_number}}</span></div>
+        </div>
+        <div class="withdraw-input">
+          <p class="withdraw-title margin-t-b-20">提现金额</p>
+          <div class="flex flex-wrap line-hei-20">
+            <el-input placeholder="请输入提现额度" v-model.number.trim="withdrawPrice">
+              <template slot="prepend">¥</template>
+            </el-input>
+            <button class="red-button middle-button" @click="allPrice">全部提现</button>
+          </div>
+          <p class="withdraw-des">可提现金额: <span class="tc-red fz-16">¥ {{ wallet.price }}</span></p>
+        </div>
+        <div slot="footer" class="dialog-footer fz-0">
+          <el-button class="margin-r-15" @click="itemModel = false">取 消</el-button>
+          <el-button type="primary" :loading="isLoadingBtn" @click="withdrawSubmit">确 定</el-button>
+        </div>
       </div>
       <div class="withdraw-input" v-else>
         <p class="withdraw-title margin-t-b-20">请完善您的银行卡信息：<el-button @click="goAttestation" size="small" type="warning" class="mar-l-10">去完善</el-button> </p>
-      </div>
-
-      <div class="withdraw-input">
-        <p class="withdraw-title margin-t-b-20">提现金额</p>
-        <div class="flex">
-          <el-input placeholder="请输入提现额度" v-model.number.trim="withdrawPrice">
-            <template slot="prepend">¥</template>
-          </el-input>
-          <button class="red-button middle-button" @click="allPrice">全部提现</button>
-        </div>
-        <p class="withdraw-des">可提现金额: <span class="color_ff5a">¥ {{ wallet.price }}</span></p>
-      </div>
-`
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="itemModel = false">取 消</el-button>
-        <el-button type="primary" :loading="isLoadingBtn" @click="withdrawSubmit">确 定</el-button>
       </div>
     </el-dialog>
     <!--<transition name="fade">-->
@@ -253,9 +253,9 @@
       // 去完善信息
       goAttestation() {
         if (this.userType === 1) {
-          this.$router.push({name: 'vcenterDCompanyIdentification'})
+          this.$router.push({name: 'vcenterDComputerBase', params: {id: 1}})
         } else {
-          this.$router.push({name: 'vcenterComputerIdentification'})
+          this.$router.push({name: 'vcenterComputerBase', params: {id: 2}})
         }
       },
       loadList() {
@@ -277,8 +277,6 @@
             if (response.data.meta.status_code === 200) {
               self.itemList = response.data.data
               self.query.totalCount = response.data.meta.pagination.total
-              console.log('selfq', self.query)
-
               for (let i = 0; i < self.itemList.length; i++) {
                 let item = self.itemList[i]
                 item['created_at'] = item.created_at.date_format().format('yyyy-MM-dd hh:mm')
@@ -311,6 +309,9 @@
             this.query.totalCount = res.data.meta.pagination.total
             this.WithdrawList = res.data.data
             for (let i of this.WithdrawList) {
+              if (!i.account_bank_value) {
+                this.$set(i, 'account_bank_value', i.branch_name)
+              }
               i.created_at = i.created_at.date_format().format('yyyy-MM-dd hh:mm')
               i.account_number = i.account_number.substring(i.account_number.length - 4)
               switch (i.type) {
@@ -397,7 +398,7 @@
           self.isLoadingBtn = false
           if (response.data.meta.status_code === 200) {
             self.itemModel = false
-            self.wallet.price_frozen = parseFloat (self.wallet.price_frozen) + self.withdrawPrice
+            self.wallet.price_frozen = (parseFloat (self.wallet.price_frozen) + self.withdrawPrice).toFixed(2)
             self.$message.success ('操作成功,等待财务打款！')
           } else {
             self.$message.error(response.data.meta.message)
@@ -456,7 +457,7 @@
         userInfo = api.demandCompany
       } else {
         this.userType = 2
-        requestMethod = 'put'
+        requestMethod = 'get'
         userInfo = api.designCompany
       }
       const self = this
@@ -709,7 +710,6 @@
     border-top: 1px solid #ccc;
     line-height: 2;
     margin-top: 20px;
-    font-size: 1.3rem;
     color: #666;
 
   }
@@ -757,7 +757,7 @@
     align-items: center;
   }
   .flex button:last-child {
-    margin-left: 10px;
+    margin-left: 15px;
   }
   .mar-l-10 {
     margin-left: 10px;
@@ -786,5 +786,15 @@
     .btn-phone {
       margin-bottom: 10px;
     }
+    .withdraw-input .el-input {
+      width: 100%;
+    }
+    .flex-wrap {
+      flex-wrap: wrap
+    }
+  .flex button:last-child {
+    margin-left: 0;
+    margin-top: 15px
+  }
   }
 </style>

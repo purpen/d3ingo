@@ -15,7 +15,7 @@
 
     <div class="banner" :style="{height : calcHeight}">
       <div class="banner-contant">
-        <h3 :class="{'m-h3' : isMob}">成为铟果设计服务商</h3>
+        <h3 :class="{'m-h3' : isMob}">成为太火鸟设计服务商</h3>
         <p :class="{'m-p' : isMob}">洞察市场需求，运用专业设计与技术，提供更好的产品和服务，助力客户成长，帮助企业赢得挑战。</p>
       </div>
     </div>
@@ -71,7 +71,7 @@
       <div class="process" v-if="!isMob">
         <div class="item-process">
           <img src="../../../assets/images/item/d_item_join.png"/>
-          <p>1.加入铟果</p>
+          <p>1.加入太火鸟</p>
         </div>
         <div class="item-process line"></div>
         <div class="item-process">
@@ -103,7 +103,7 @@
       <el-row class="m-process" v-if="isMob">
         <div class="item-process">
           <img src="../../../assets/images/item/d_item_join.png"/>
-          <p>1.加入铟果</p>
+          <p>1.加入太火鸟</p>
         </div>
         <div class="item-process">
           <img src="../../../assets/images/item/d_item_ws.png"/>

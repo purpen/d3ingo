@@ -11,34 +11,34 @@
           <section v-if="demand_verify_status === 1">
             <section v-if="matchComplete">
               <div v-if="projectStatus !== -2 && projectStatus !== 2">
-                <p class="num">根据您的需求筛选出<i>{{IncNumber}}家</i>设计方</p>
+                <p class="num">根据您的需求筛选出<i>{{IncNumber}}家</i>设计服务商</p>
                 <div v-if="demand_verify_status !== 1">
                   <p v-if="demand_verify_status === 3" class="verify fz-14">您的实名认证正在审核中，审核通过后可查看匹配结果</p>
                   <p v-else class="verify fz-14">您还没有认证，请先认证后才能查看匹配结果</p>
-                  <router-link v-if="demand_verify_status !== 3" :to="{name: 'vcenterDCompanyAccreditation'}">
+                  <router-link v-if="demand_verify_status !== 3" :to="{name: 'vcenterDComputerBase', params: {id: 1}}">
                     <button class="middle-button full-red-button">马上去认证</button>
                   </router-link>
                 </div>
               </div>
               <div v-if="projectStatus === 2">
-                <p class="num">智能匹配未筛选到合适的设计方</p>
+                <p class="num">智能匹配未筛选到合适的设计服务商</p>
                 <p class="verify fz-14">{{custom.info}}将对您发布的需求进行人工匹配，请耐心等待...</p>
               </div>
               <div v-if="projectStatus === -2">
-                <p class="num">根据您的需求筛选出未匹配到合适的设计方</p>
+                <p class="num">根据您的需求筛选出未匹配到合适的设计服务商</p>
                 <p class="verify fz-14">请您调整需求后重新匹配</p>
               </div>
             </section>
             <section v-else>
-              <p class="find">{{custom.info}} 正在从 1000+ 设计方为您寻找</p>
-              <p class="num">根据您的<i>设计类型</i>需求筛选出<i>1000+家</i>设计方</p>
+              <p class="find">{{custom.info}} 正在从 1000+ 设计服务商为您寻找</p>
+              <p class="num">根据您的<i>设计类型</i>需求筛选出<i>1000+家</i>设计服务商</p>
             </section>
           </section>
           <section v-if="demand_verify_status === 0">
             <p class="num">您还没有认证，请先认证后才能查看匹配结果</p>
             <div class="blank20">
               <button class="middle-button full-red-button">
-                <router-link class="tc-f" to="/vcenter/d_company/accreditation">马上去认证</router-link>
+                <router-link class="tc-f" :to="{name: 'vcenterDComputerBase', params: {id: 1}}">马上去认证</router-link>
               </button>
             </div>
           </section>
@@ -46,7 +46,7 @@
             <p class="num">您认证失败了，请修改并重新认证后查看匹配结果</p>
             <div class="blank20">
               <button class="middle-button full-red-button">
-                <router-link class="tc-f" to="/vcenter/d_company/accreditation">重新认证</router-link>
+                <router-link class="tc-f" :to="{name: 'vcenterDComputerBase', params: {id: 1}}">重新认证</router-link>
               </button>
             </div>
           </section>

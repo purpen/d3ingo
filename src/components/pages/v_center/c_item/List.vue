@@ -59,7 +59,7 @@
                     <p>项目预算: {{ d.item.design_cost_value }}</p>
                     <p>设计类型: {{ d.item.type_value }}</p>
                     <p>设计类别: {{ d.item.design_types_value | formatEnd }}</p>
-                    <p>项目周期: {{ d.item.cycle_value }}</p>
+                    <p>交付时间: {{ d.item.cycle_value }}</p>
                   </el-col>
                   <el-col :span="isMob ? 24 : 3">
                     <p>
@@ -156,7 +156,7 @@
                     <p>项目预算: {{ d.item.design_cost_value }}</p>
                     <p>设计类型: {{ d.item.type_value }}</p>
                     <p>设计类别: {{ d.item.design_types_value | formatEnd }}</p>
-                    <p>项目周期: {{ d.item.cycle_value }}</p>
+                    <p>交付时间: {{ d.item.cycle_value }}</p>
                   </el-col>
                   <el-col :span="isMob ? 24 : 3">
                     <p style="white-space: nowrap">
@@ -223,7 +223,7 @@
       </div>
 
       <el-dialog
-        title="提交项目报价" v-model="takingPriceDialog">
+        title="提交项目报价" :visible.sync="takingPriceDialog" width="1150px">
         <el-form label-position="top" :model="takingPriceForm" :rules="takingPriceRuleForm" ref="takingPriceRuleForm">
           <input type="hidden" v-model="takingPriceForm.itemId" value=""/>
           <el-form-item label="项目报价" prop="price" label-width="200px">
@@ -246,7 +246,7 @@
 
       <el-dialog
         title="提示"
-        v-model="sureRefuseItemDialog"
+        :visible.sync="sureRefuseItemDialog"
         width="380px">
         <span>确认执行此操作?</span>
         <span slot="footer" class="dialog-footer">
@@ -258,7 +258,7 @@
 
       <el-dialog
         title="提示"
-        v-model="sureDialog"
+        :visible.sync="sureDialog"
         width="380px">
         <span>{{ sureDialogMessage }}</span>
         <span slot="footer" class="dialog-footer">
@@ -315,7 +315,7 @@
                   <p>项目预算: {{ d.item.design_cost_value }}</p>
                   <p>设计类型: {{ d.item.type_value }}</p>
                   <p>设计类别: {{ d.item.design_types_value | formatEnd }}</p>
-                  <p>项目周期: {{ d.item.cycle_value }}</p>
+                  <p>交付时间: {{ d.item.cycle_value }}</p>
                 </el-col>
                 <el-col :span="isMob ? 24 : 3">
                   <p style="white-space: nowrap">
@@ -655,6 +655,7 @@
         })
       },
       getVcenterItemList() {
+        console.log(this.query.page)
         this.isLoading = true
         let self = this
         self.$http.get(api.designItemList, {params: {
@@ -762,9 +763,9 @@
         // 对路由变化作出响应...
         let type = Number(this.$route.query.type) || 1
         this.query.total = 0
-        this.query.page = 0
+        this.query.page = 1
         this.query2.total = 0
-        this.query2.page = 0
+        this.query2.page = 1
         this.isEmpty = false
         this.isEmpty2 = false
         this.change(type)
@@ -942,7 +943,7 @@
   }
   .empty {
     width: 122px;
-    height: 113px;
+    height: 114px;
     margin: 200px auto 0;
     background: url("../../../../assets/images/icon/Projectdefaultstate@2x.png") no-repeat center / contain;
   }
@@ -986,6 +987,7 @@
     }
     .vcenter {
       margin: 0;
+      padding-top: 0
     }
   }
 </style>

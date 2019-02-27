@@ -79,7 +79,7 @@
             </el-table-column>
             <el-table-column
               prop="created_at"
-              width="80"
+              width="100"
               label="创建时间">
             </el-table-column>
             <el-table-column
@@ -183,8 +183,8 @@ export default {
     },
     // 确认对公打款
     sureTransferSubmit() {
-      if (!this.withDrawForm.id || !this.withDrawForm.summary) {
-        this.$message.error('缺少请求参数!')
+      if (!this.withDrawForm.summary) {
+        this.$message.error('请填写交易单号')
         return
       }
       var self = this
@@ -251,7 +251,7 @@ export default {
             }
             item['type_label'] = typeVal
             item['status_label'] = statusVal
-            item['created_at'] = item.created_at.date_format().format('yy-MM-dd')
+            item['created_at'] = item.created_at.date_format().format('yyyy-MM-dd')
 
             self.tableData.push(item)
           } // endfor

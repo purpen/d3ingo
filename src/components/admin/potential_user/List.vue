@@ -7,7 +7,7 @@
         <div class="content">
           <div class="admin-header clearfix">
             <el-form :inline="true" :model="query" class="select-query fl">
-              <el-form-item>
+              <el-form-item class="margin0">
                 <span class="fl line-height30 fz-12">选择日期</span>
                 <div class="fr select-data">
                   <el-date-picker
@@ -22,7 +22,7 @@
                   </el-date-picker>
                 </div>
               </el-form-item>
-              <el-form-item class="select-info">
+              <el-form-item class="margin0 select-info">
                 <el-select v-model="query.evt" placeholder="选择条件..." size="small">
                   <el-option label="按姓名" value="1"></el-option>
                   <el-option label="按电话" value="2"></el-option>
@@ -30,12 +30,13 @@
                   <el-option label="客户级别" value="4"></el-option>
                   <el-option label="项目名称 " value="5"></el-option>
                   <el-option label="对接公司 " value="6"></el-option>
+                  <el-option label="用户来源" value="7"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item style="width: 20%;">
+              <el-form-item class="margin0" style="width: 20%;">
                 <el-input v-model="query.val" placeholder="Search..." size="small"></el-input>
               </el-form-item>
-              <el-form-item>
+              <el-form-item class="margin0">
                 <el-button type="primary" @click="onSearch" size="mini">搜索</el-button>
               </el-form-item>
             </el-form>
@@ -65,9 +66,9 @@
                 </div>
 
               </div>
-              <a href="javascript:void(0);"  @click="multipleDelItem" class="fr line-height30 height30"><i class="fx fx-icon-delete2"></i></a>
-              <el-button size="small" class="fl margin-l-10" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button>
+              <el-button size="mini" class="fl margin-l-10" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button>
               <a href="javascript:void(0);" class="line-height30 height30 margin-l-10" @click="exportForm">导出表格</a>
+              <a href="javascript:void(0);"  @click="multipleDelItem" class="fr line-height30 height30"><i class="fx fx-icon-delete2"></i></a>
             </div>
           </div>
 
@@ -77,6 +78,7 @@
             border
             class="admin-table"
             @selection-change="handleSelectionChange"
+            @filter-change="filterList"
             style="width: 100%"
             :row-class-name="tableRowClassName">
             <el-table-column
@@ -151,8 +153,18 @@
               label="次回根进">
             </el-table-column>
             <el-table-column
+              prop="status"
               width="70"
-              label="状态">
+              label="状态"
+              :filters="[
+                {text: '潜在客户', value: '1' },
+                { text: '真实需求', value: '2' },
+                { text: '对接设计', value: '5' },
+                { text: '签订合作', value: '3' },
+                { text: '对接失败', value: '4' }
+              ]"
+              :filter-multiple="false"
+              filter-placement="bottom-end">
                 <template slot-scope="scope">
                   <p class="status1 status" v-if="scope.row.status === 1">潜在客户</p>
                   <p class="status2 status"  v-else-if="scope.row.status === 2">真实需求</p>
@@ -164,6 +176,7 @@
           </el-table>
 
           <el-pagination
+            v-if="tableData.length && query.totalCount > query.per_page"
             class="pagination"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
@@ -246,6 +259,7 @@ export default {
         per_page: 10,
         evt: '',
         val: '',
+        status: '',
         totalCount: 0,
         valueDate: []
       },
@@ -281,6 +295,29 @@ export default {
       } else {
         return true
       }
+    },
+    filterList(row) {
+      let value = Object.values(row).toString()
+      switch (value) {
+        case '1':
+          this.query.status = 1
+          break
+        case '2':
+          this.query.status = 2
+          break
+        case '3':
+          this.query.status = 3
+          break
+        case '4':
+          this.query.status = 4
+          break
+        case '5':
+          this.query.status = 5
+          break
+        default:
+          this.query.status = 6
+      }
+      this.getClueList()
     },
     // 多选
     handleSelectionChange(val) {
@@ -349,7 +386,15 @@ export default {
       })
     },
     editUserInfo(id, name) {
-      this.$router.push({name: 'adminPotentialUserInfo', params: {id: id, name: name}})
+      // this.$router.push({name: 'adminPotentialUserInfo', params: {id: id, name: name}})
+      this.query.id = id
+      this.query.name = name
+      // this.$router.push({path: `/admin/potential_user/userinfo/${id}`, query: {page: this.query.page}})
+      const {href} = this.$router.resolve({
+        path: `/admin/potential_user/userinfo/${id}`,
+        query: {page: this.query.page}
+      })
+      window.open(href, '_blank')
     },
     getAdminList() { // 后台人员列表
       this.$http.get(api.adminClueAdminUser, {}).then(res => {
@@ -438,7 +483,7 @@ export default {
     },
     handleCurrentChange(val) {
       this.query.page = parseInt(val)
-      this.getClueList()
+      this.$router.push({ name: this.$route.name, query: {page: this.query.page} })
     },
     exportForm() { // 导出
       // if (this.multipleSelection.length === 0) {
@@ -510,6 +555,7 @@ export default {
     this.uploadUrl = api.adminClueImportExcel
   },
   created() {
+    this.query.page = parseInt(this.$route.query.page || 1)
     this.getClueList()
   },
   // directives: {Clickoutside},
@@ -524,6 +570,12 @@ export default {
     },
     token() {
       return this.$store.state.event.token
+    }
+  },
+  watch: {
+    $route(to, form) {
+      // 对路由变化做出相应...
+      this.getClueList()
     }
   }
 }
@@ -558,6 +610,11 @@ export default {
 }
 .admin-header-right {
   width: 36%;
+  display: flex;
+  justify-content: space-between;
+}
+.line-height30 {
+  line-height: 30px
 }
 .user-list {
   height: 50px;
@@ -709,5 +766,11 @@ export default {
 .admin-table .el-rate__icon {
   font-size: 12px;
   margin-right: 2px;
+}
+.select-query .el-form-item {
+  margin-bottom: 0 !important;
+}
+.select-data .el-range-editor--small.el-input__inner {
+  height: 30px;
 }
 </style>

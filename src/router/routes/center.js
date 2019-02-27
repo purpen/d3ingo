@@ -46,29 +46,29 @@ module.exports = [
     component: require('@/components/pages/v_center/d_company/Base')
   },
   // 公司认证
-  {
-    path: '/vcenter/d_company/accreditation',
-    name: 'vcenterDCompanyAccreditation',
-    meta: {
-      title: '公司认证',
-      requireAuth: true,
-      hideHeader: true,
-      hideFooter: true
-    },
-    component: require('@/components/pages/v_center/d_company/Accreditation')
-  },
+  // {
+  //   path: '/vcenter/d_company/accreditation',
+  //   name: 'vcenterDCompanyAccreditation',
+  //   meta: {
+  //     title: '公司认证',
+  //     requireAuth: true,
+  //     hideHeader: true,
+  //     hideFooter: true
+  //   },
+  //   component: require('@/components/pages/v_center/d_company/Accreditation')
+  // },
   // 公司认证 -- 编辑
-  {
-    path: '/vcenter/d_company/identification',
-    name: 'vcenterDCompanyIdentification',
-    meta: {
-      title: '公司认证',
-      requireAuth: true,
-      hideHeader: true,
-      hideFooter: true
-    },
-    component: require('@/components/pages/v_center/d_company/Identification')
-  },
+  // {
+  //   path: '/vcenter/d_company/identification',
+  //   name: 'vcenterDCompanyIdentification',
+  //   meta: {
+  //     title: '公司认证',
+  //     requireAuth: true,
+  //     hideHeader: true,
+  //     hideFooter: true
+  //   },
+  //   component: require('@/components/pages/v_center/d_company/Identification')
+  // },
   // 我的钱包列表
   {
     path: '/vcenter/wallet/list',
@@ -245,7 +245,7 @@ module.exports = [
     component: require('@/components/pages/v_center/c_item/Show')
   },
 
-  // 我的项目列表(设计公司) -- 待合作
+  // 我的项目列表(设计服务商) -- 待合作
   {
     path: '/vcenter/citem/list',
     name: 'vcenterCItemList',
@@ -283,7 +283,7 @@ module.exports = [
       require(['@/components/pages/v_center/contract/JdDemandView'], resolve)
     }
   },
-  // 在线合同预览--京东云-设计公司
+  // 在线合同预览--京东云-设计服务商
   {
     path: '/vcenter/contract/jd_design_show/:unique_id',
     name: 'vcenterContractJdDesignView',
@@ -368,7 +368,7 @@ module.exports = [
       require(['@/components/pages/v_center/contract/JdDemandDown'], resolve)
     }
   },
-  // 合同下载--京东（设计方）
+  // 合同下载--京东（设计服务商）
   {
     path: '/vcenter/contract/jd_design_download/:unique_id',
     name: 'vcenterContractJdDesignDown',
@@ -426,29 +426,29 @@ module.exports = [
     component: require('@/components/pages/v_center/company/Taking')
   },
   // 公司认证
-  {
-    path: '/vcenter/company/accreditation',
-    name: 'vcenterComputerAccreditation',
-    meta: {
-      title: '公司认证',
-      requireAuth: true,
-      hideHeader: true,
-      hideFooter: true
-    },
-    component: require('@/components/pages/v_center/company/Accreditation')
-  },
+  // {
+  //   path: '/vcenter/company/accreditation',
+  //   name: 'vcenterComputerAccreditation',
+  //   meta: {
+  //     title: '公司认证',
+  //     requireAuth: true,
+  //     hideHeader: true,
+  //     hideFooter: true
+  //   },
+  //   component: require('@/components/pages/v_center/company/Accreditation')
+  // },
   // 公司认证-编辑
-  {
-    path: '/vcenter/company/identification',
-    name: 'vcenterComputerIdentification',
-    meta: {
-      title: '公司认证',
-      requireAuth: true,
-      hideHeader: true,
-      hideFooter: true
-    },
-    component: require('@/components/pages/v_center/company/Identification')
-  },
+  // {
+  //   path: '/vcenter/company/identification',
+  //   name: 'vcenterComputerIdentification',
+  //   meta: {
+  //     title: '公司认证',
+  //     requireAuth: true,
+  //     hideHeader: true,
+  //     hideFooter: true
+  //   },
+  //   component: require('@/components/pages/v_center/company/Identification')
+  // },
   // 项目动态
   {
     path: '/vcenter/remind/list',
@@ -492,18 +492,6 @@ module.exports = [
       hideFooter: true
     },
     component: require('@/components/pages/v_center/message/List')
-  },
-  // 任务消息列表
-  {
-    path: '/vcenter/taskmessage',
-    name: 'taskMessageList',
-    meta: {
-      title: '任务消息列表',
-      requireAuth: true,
-      hideHeader: true,
-      hideFooter: true
-    },
-    component: require('@/components/pages/v_center/message/taskMessageList')
   },
   // 系统通知
   {

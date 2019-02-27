@@ -1,4 +1,5 @@
 <template>
+<!--  此页面废 -->
   <div class="container">
     <div class="blank20"></div>
     <el-row :gutter="20">
@@ -152,7 +153,7 @@ import vMenu from '@/components/pages/v_center/Menu'
 import vMenuSub from '@/components/pages/v_center/account/MenuSub'
 import api from '@/api/api'
 import typeData from '@/config'
-
+// 此页面废
 import '@/assets/js/format'
 
 export default {
@@ -280,7 +281,7 @@ export default {
               that.isLoadingBtn = false
               if (response.data.meta.status_code === 200) {
                 that.$message.success('提交成功,等待审核')
-                that.$router.push({ name: 'vcenterComputerAccreditation' })
+                that.$router.push({ name: 'vcenterComputerBase'})
                 return false
               } else {
                 that.$message.error(response.data.meta.message)
@@ -391,7 +392,7 @@ export default {
   watch: {},
   created: function() {
     var uType = this.$store.state.event.user.type
-    // 如果非设计公司，跳到相应页面
+    // 如果非设计服务商，跳到相应页面
     if (uType !== 2) {
       this.$router.replace({ name: 'vcenterDComputerIdentification' })
       return

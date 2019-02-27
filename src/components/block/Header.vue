@@ -9,14 +9,14 @@
               <router-link :to="{name: 'home'}" class="el-menu-item logo">
                 <img :src="custom.logo" :alt="custom.info">
               </router-link>
-              <el-menu-item index="home" :route="menu.home">首页</el-menu-item>
-              <el-menu-item index="server" :route="menu.server">服务</el-menu-item>
-              <el-menu-item index="article" :route="menu.article">铟果说</el-menu-item>
-              <el-menu-item index="design_case" :route="menu.design_case">灵感</el-menu-item>
-              <el-menu-item index="commonly_sites" :route="menu.commonly_sites">设计工具</el-menu-item>
-              <el-menu-item index="innovation_index" :route="menu.innovation_index">创新指数</el-menu-item>
-              <el-menu-item index="trade_fairs" :route="menu.home_page" v-if="!token">交易会</el-menu-item>
-              <el-menu-item index="trade_fairs" :route="menu.demand_login" v-if="token">交易会</el-menu-item>
+              <el-menu-item index="/home" :route="menu.home">首页</el-menu-item>
+              <el-menu-item index="/server" :route="menu.server">服务</el-menu-item>
+              <el-menu-item index="/article" :route="menu.article">铟果说</el-menu-item>
+              <el-menu-item index="/design_case" :route="menu.design_case">灵感</el-menu-item>
+              <el-menu-item index="/commonly_sites" :route="menu.commonly_sites">设计工具</el-menu-item>
+              <el-menu-item index="/innovation_index" :route="menu.innovation_index">创新指数</el-menu-item>
+              <el-menu-item index="/trade_fairs" :route="menu.home_page" v-if="!token">交易会</el-menu-item>
+              <el-menu-item index="/trade_fairs" :route="menu.demand_login" v-if="token">交易会</el-menu-item>
             </el-menu>
           </hgroup>
           <div class="nav-right nav-menu" v-if="isLogin">
@@ -48,15 +48,23 @@
             <el-menu class="el-menu-info" mode="horizontal" router>
               <el-submenu index="2" :popper-append-to-body="false" text-color="#999">
                 <template slot="title">
-                  <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
-                  <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
-                  <span v-if="eventUser.realname" class="b-nickname">{{ eventUser.realname }}</span>
+                  <template v-if="eventUser.type === 1">
+                    <img class="avatar" v-if="eventUser.avatar" :src="eventUser.avatar.logo"/>
+                    <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
+                  </template>
+                  <template v-else>
+                    <img class="avatar" v-if="eventUser.design_company_logo_image" :src="eventUser.design_company_logo_image.logo"/>
+                    <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
+                  </template>
+                  <span v-if="eventUser.company && eventUser.company.company_name" class="b-nickname">{{ eventUser.company.company_name }}</span>
+                  <!-- <span v-else class="b-nickname">{{ eventUser.realname || eventUser.account }}</span> -->
                   <span v-else class="b-nickname">{{ eventUser.account }}</span>
                 </template>
                 <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
-                <el-menu-item index="/vcenter/company/base" v-if="!isOrdinaryCompanyAdmin"><i class="fx-4 fx-icon-company"></i><i class="fx-4 fx-icon-company-hover"></i>公司设置 </el-menu-item>
-                <el-menu-item index="/vcenter/account/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>账号设置 </el-menu-item>
-                <el-menu-item index="/vcenter/account/modify_pwd" v-else><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>账号设置 </el-menu-item>
+                <!-- <el-menu-item index="/vcenter/company/base" v-if="!isOrdinaryCompanyAdmin"><i class="fx-4 fx-icon-company"></i><i class="fx-4 fx-icon-company-hover"></i>公司设置 </el-menu-item> -->
+                <!-- <el-menu-item index="/vcenter/account/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>账号设置 </el-menu-item> -->
+                <el-menu-item index="/vcenter/company/base" v-if="isCompany"><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心</el-menu-item>
+                <el-menu-item index="/vcenter/company/base" v-else><i class="fx-4 fx-icon-account"></i><i class="fx-4 fx-icon-account-hover"></i>设置中心 </el-menu-item>
                 <el-menu-item index="/admin" v-if="isAdmin"><i class="fx-4 fx-icon-control-center"></i><i class="fx-4 fx-icon-console-hover"></i>后台管理</el-menu-item>
                 <el-menu-item index="" @click="logout">
                   <i class="fx-4 fx-icon-logout"></i><i class="fx-4 fx-icon-logout-hover"></i>安全退出</el-menu-item>
@@ -69,8 +77,8 @@
               <el-button size="small" class="is-custom" @click="toServer">设计服务商入驻</el-button>
             </div>
             <el-menu class="el-menu-header" :default-active="menuactive" mode="horizontal" router>
-              <el-menu-item index="register" :route="menu.register" class="fc-red">注册</el-menu-item>
-              <el-menu-item index="login" :route="menu.login">登录</el-menu-item>
+              <el-menu-item index="/register" :route="menu.register" class="fc-red">注册</el-menu-item>
+              <el-menu-item index="/login" :route="menu.login" style="margin: 0">登录</el-menu-item>
             </el-menu>
           </div>
 
@@ -125,8 +133,14 @@
         </div>
         <div class="m-Nav-right" v-if="isLogin">
           <router-link to="/vcenter/control">
-            <img class="avatar" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
-            <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
+            <template v-if="eventUser.type === 1">
+              <img class="avatar" v-if="eventUser.avatar" :src="eventUser.avatar.logo"/>
+              <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
+            </template>
+            <template v-else>
+              <img class="avatar" v-if="eventUser.design_company_logo_image" :src="eventUser.design_company_logo_image.logo"/>
+              <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
+            </template>
           </router-link>
         </div>
       </div>
@@ -173,10 +187,15 @@
             <el-menu class="el-menu-info" mode="horizontal" router>
               <el-submenu index="2" :popper-append-to-body="false" text-color="#999">
                 <template slot="title">
-                  <img class="avatar2" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
-                  <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
-                  <span v-if="eventUser.realname" class="b-nickname">{{ eventUser.realname }}</span>
-                  <span v-else class="b-nickname">{{ eventUser.account }}</span>
+                  <template v-if="eventUser.type === 1">
+                    <img class="avatar" v-if="eventUser.avatar" :src="eventUser.avatar.logo"/>
+                    <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
+                  </template>
+                  <template v-else>
+                    <img class="avatar" v-if="eventUser.design_company_logo_image" :src="eventUser.design_company_logo_image.logo"/>
+                    <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
+                  </template>
+                  <span class="b-nickname">{{ eventUser.account }}</span>
                 </template>
                 <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心 
                 </el-menu-item>
@@ -193,8 +212,8 @@
 
           <div class="nav-right" v-else>
             <el-menu class="el-menu-header" :default-active="menuactive" mode="horizontal" router>
-              <el-menu-item index="login" :route="menu.login">登录</el-menu-item>
-              <el-menu-item index="register" :route="menu.register" class="register">免费注册</el-menu-item>
+              <el-menu-item index="/login" :route="menu.login">登录</el-menu-item>
+              <el-menu-item index="/register" :route="menu.register" class="register">免费注册</el-menu-item>
             </el-menu>
           </div>
 
@@ -250,8 +269,14 @@
         </div>
         <div class="m-Nav-right" v-if="isLogin">
           <router-link to="/vcenter/control">
-            <img class="avatar" v-if="eventUser.logo_url" :src="eventUser.logo_url"/>
-            <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
+            <template v-if="eventUser.type === 1">
+              <img class="avatar" v-if="eventUser.avatar" :src="eventUser.avatar.logo"/>
+              <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
+            </template>
+            <template v-else>
+              <img class="avatar" v-if="eventUser.design_company_logo_image" :src="eventUser.design_company_logo_image.logo"/>
+              <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
+            </template>
           </router-link>
         </div>
       </div>
@@ -301,7 +326,6 @@
     watch: {
       $route (to, from) {
         // 对路由变化作出响应...
-        // this.navdefact()
         this.showCover = ''
         this.showCover2 = ''
       }
@@ -309,10 +333,6 @@
     methods: {
       initPage() {
         this.$store.commit('INIT_PAGE')
-      },
-      navdefact() {
-        // 设置router函数跳转
-        this.menuactive = this.$route.path.split('/')[1]
       },
       logout() {
         auth.logout()
@@ -430,28 +450,34 @@
       },
       eventUser() {
         let user = this.$store.state.event.user
-        if (user.avatar) {
-          user.logo_url = user.avatar.logo
-        } else {
-          user.logo_url = null
-        }
+        // if (user.design_company_logo_image) {
+        //   user.logo_url = user.design_company_logo_image.logo
+        // } else {
+        //   if (user.logo_url) {
+        //     user.logo_url = user.avatar.logo
+        //   }
+        // }
         return user
       },
       isAdmin() {
         return this.$store.state.event.user.role_id >= 10
       },
       // is-active下划线添加
-      menuactive() {
-        let menu = this.$route.path.split('/')[1]
-        let menu2 = this.$route.path.split('/')[2]
-        if (menu === 'article' || menu === 'subject') {
-          return 'article'
-        } else if (menu2 === 'commonly_sites' || menu2 === 'veer_image' || menu2 === 'trend_report' || menu2 === 'exhibition') {
-          return 'commonly_sites'
-        } else if (menu === 'shunde') {
-          return 'trade_fairs'
+      menuactive: {
+        get() {
+          let menu = this.$route.path.split('/')[1]
+          let menu2 = this.$route.path.split('/')[2]
+          if (menu === 'article' || menu === 'subject') {
+            return 'article'
+          } else if (menu2 === 'commonly_sites' || menu2 === 'veer_image' || menu2 === 'trend_report' || menu2 === 'exhibition') {
+            return 'commonly_sites'
+          } else if (menu === 'shunde') {
+            return 'trade_fairs'
+          }
+          return menu
+        },
+        set(val) {
         }
-        return menu
       },
       msgCount() {
         return this.$store.state.event.msgCount
@@ -586,13 +612,14 @@
 
   .m-Nav-right {
     position: absolute;
-    top: 15px;
-    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 15px;
   }
 
   .m-Nav-right .avatar {
-    width: 30px;
-    height: 30px;
+    width: 36px;
+    height: 36px;
   }
 
   .container {
@@ -701,7 +728,8 @@
   } */
   .el-menu-item.logo img {
     width: auto;
-    height: 50px;
+    height: 74px;
+    margin-top: -7px;
   }
   .jdc .el-menu-item.logo img {
     width: auto;
@@ -738,6 +766,10 @@
     border-bottom: 3px solid #ff5a5f;
     color: #ff5a5f;
     background: none;
+  }
+  .nav-header .el-menu--horizontal .el-menu-item:not(.is-disabled):focus, 
+  .nav-header .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
+    color: #ff5a5f !important;
   }
  /* .jdc .nav-header .el-menu--horizontal > .el-menu-item:hover,
  .jdc .el-menu--horizontal > .el-submenu.is-active .el-submenu__title,
@@ -816,7 +848,7 @@
     z-index: 999;
     top: 56px;
     right: 0;
-    width: 200px;
+    width: 220px;
     background: #fff;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .12),
     0 0 6px 0 rgba(0, 0, 0, .04);
@@ -961,6 +993,7 @@
   }
   .jdc .nav-header .nav-right .register:hover {
     background-image: linear-gradient(90deg, #0989C5 0%, #5D6FBC 45%, #995CB6 100%);
+    color: #fff;
   }
 
 </style>

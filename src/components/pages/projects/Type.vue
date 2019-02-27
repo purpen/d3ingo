@@ -20,7 +20,7 @@
                 </el-option>
               </el-select>
             </div>
-            <!-- <h3>产品功能描述</h3>
+            <!-- <h3>项目需求描述</h3>
             <div class="item">
               <el-form :model="form">
                 <el-form-item
@@ -31,7 +31,7 @@
                 <el-input
                   type="textarea"
                   :autosize="{ minRows: 4}"
-                  placeholder="请详细描述该产品的主要功能，以帮助设计公司进一步了解项目的实际功能与诉求。"
+                  placeholder="请详细描述该产品的主要功能，以帮助设计服务商进一步了解项目的实际功能与诉求。"
                   v-model="form.product_features"
                 ></el-input>
                 </el-form-item>
@@ -153,7 +153,7 @@
               type="textarea"
               :maxlength="500"
               :autosize="{ minRows: 4}"
-              placeholder="请详细描述该产品的主要功能，以帮助设计公司进一步了解项目的实际功能与诉求。"
+              placeholder="请详细描述该产品的主要功能，以帮助设计服务商进一步了解项目的实际功能与诉求。"
               v-model="form.product_features"
             ></el-input>
             </el-form-item>

@@ -929,10 +929,6 @@ const DESIGN_CASE_PRICE_OPTIONS = [
     name: '丹麦设计奖'
   },
   {
-    id: 20,
-    name: '其他'
-  },
-  {
     id: 21,
     name: '西班牙国家设计奖'
   },
@@ -955,6 +951,10 @@ const DESIGN_CASE_PRICE_OPTIONS = [
   {
     id: 26,
     name: '意大利A`Design Award设计奖'
+  },
+  {
+    id: 20,
+    name: '其他'
   }
 ]
 
@@ -1288,6 +1288,10 @@ const COMPANY_REVENUE = [
     name: '1000万-2000万'
   },
   {
+    id: 7,
+    name: '2000万-3000万'
+  },
+  {
     id: 5,
     name: '3000万-5000万'
   },
@@ -1598,7 +1602,7 @@ const NOTICE_EVT = [
   },
   {
     id: 2,
-    name: '设计公司'
+    name: '设计服务商'
   }
 ]
 

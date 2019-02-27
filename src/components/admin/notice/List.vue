@@ -70,7 +70,7 @@
             </el-table-column>
             <el-table-column
               prop="created_at"
-              width="80"
+              width="100"
               label="创建时间">
             </el-table-column>
             <el-table-column
@@ -91,6 +91,7 @@
           </el-table>
 
           <el-pagination
+            v-if="tableData.length && query.totalCount > query.pageSize"
             class="pagination"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
@@ -233,7 +234,7 @@ export default {
             if (item.cover) {
               item.cover_url = item.cover.logo
             }
-            item['created_at'] = item.created_at.date_format().format('yy-MM-dd')
+            item['created_at'] = item.created_at.date_format().format('yyyy-MM-dd')
             self.tableData.push(item)
           } // endfor
           console.log(self.tableData)

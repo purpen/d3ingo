@@ -8,7 +8,7 @@
 
       <div class="login-content">
 
-        <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px">
+        <el-form :label-position="labelPosition" :model="form" :rules="ruleForm" ref="ruleForm" label-width="80px" class="inner-place">
           <el-form-item label="" prop="account" class="input">
             <el-input v-model="form.account" name="username"
               :maxlength="11"
@@ -73,7 +73,7 @@
           <div v-if="prod.name === ''" :class="{'fl register-tab-user': true, active: userType === 2}" @click="userType = 2, typeError = false">
             <div class="tab-left"></div>
             <div class="tab-right">
-              <h3>我是设计公司</h3>
+              <h3>我是设计服务商</h3>
               <p class="des">为客户提供</p>
               <p class="des">专业设计服务</p>
             </div>
@@ -400,6 +400,11 @@ export default {
     this.getItem()
     let prevUrlName = this.$store.state.event.prevUrlName
     this.type = this.$route.params.type
+    if (this.$store.state.event.token) {
+      this.$message.error('已经登录!')
+      this.$router.replace({ name: 'home' })
+      return
+    }
     if (this.$route.params.url === 'yq') {
       this.$message({
         message: '请使用设计服务商的账号登录',
@@ -410,10 +415,6 @@ export default {
       if (prevUrlName) {
         this.$message.error('请先登录！')
       }
-    }
-    if (this.$store.state.event.token) {
-      this.$message.error('已经登录!')
-      this.$router.replace({ name: 'home' })
     }
     this.fetchImgCaptcha()
   },
@@ -681,7 +682,7 @@ form {
   border-left: none;
   border-top: none;
   transform: rotate(45deg);
-  border-radius: 0 0 1px 0
+    border-radius: 0 0 0 0
 }
 .register-tab-user.active h3 {
   color: #FF5A5F;

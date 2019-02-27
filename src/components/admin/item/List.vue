@@ -119,7 +119,7 @@
             </el-table-column>
             <el-table-column
               prop="item.created_at"
-              width="80"
+              width="100"
               label="创建时间">
             </el-table-column>
             <el-table-column
@@ -131,7 +131,7 @@
                      @click="handleMatch(scope.$index, scope.row)">匹配公司</a>
                 </p>
                 <p>
-                  <router-link :to="{name: 'adminItemShow', params: {id: scope.row.item.id}}" target="_blank">查看
+                  <router-link :to="{name: 'adminItemShow0', params: {id: scope.row.item.id}}" target="_blank">查看
                   </router-link>
                 </p>
               </template>
@@ -139,6 +139,7 @@
           </el-table>
 
           <el-pagination
+            v-if="tableData.length && query.totalCount > query.pageSize"
             class="pagination"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
@@ -370,7 +371,7 @@
                 if (item.info) {
                   item['item']['locale'] = '{0}/{1}'.format(item.item.province_value, item.item.city_value)
                 }
-                item['item']['created_at'] = item.item.created_at.date_format().format('yy-MM-dd')
+                item['item']['created_at'] = item.item.created_at.date_format().format('yyyy-MM-dd')
                 self.tableData.push(item)
               } // endfor
             } else {
@@ -397,7 +398,12 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+  .admin-search-form > form {
+    font-size: 0;
+  }
+  .admin-search-form  .el-form-item {
+    margin-left: 15px;
+  }
   .match-company-box {
     margin: 10px;
   }

@@ -1,7 +1,7 @@
 <template>
-  <div class="blank20">
+  <div class="blank20 full-height">
     <div class="right-content vcenter-container">
-      <div class="content-box" v-loading="isLoading">
+      <div class="content-box full-height" v-loading="isLoading">
         <div class="item clearfix" v-for="(d, index) in itemList" :key="index"
           @click="removeRedDot(index)">
           <div class="left">
@@ -77,7 +77,7 @@
               self.query.totalCount = response.data.meta.pagination.total
               for (let i = 0; i < data.length; i++) {
                 let item = data[i]
-                data[i]['created_at'] = item.created_at.date_format().format('yy-MM-dd hh:mm')
+                data[i]['created_at'] = item.created_at.date_format().format('yyyy-MM-dd hh:mm')
                 data[i]['not_read'] = false
               }
               self.itemList = data
