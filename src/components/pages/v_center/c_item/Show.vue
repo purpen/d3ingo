@@ -109,7 +109,7 @@
                     <span class="tc-6 fw-normal quota-btn">&nbsp;&nbsp;<a
                     class="tc-red" href="javascript:void(0);"
                     @click="showQuotaBtn(quotation)">详情>></a></span></p>
-                    <p class="tc-2 protrude">报价说明: <span class="tc-6 fw-normal">
+                    <p class="tc-2 protrude">项目目标及报价说明: <span class="tc-6 fw-normal">
                       {{ quotation.summary }}</span></p>
                   </div>
 
