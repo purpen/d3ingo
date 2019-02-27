@@ -46,8 +46,9 @@
                 </el-col>
                 
                 <el-col :xs="24" :sm="10" :md="6" :lg="6">
-                    <el-form-item label="创建时间" prop="phone">
-                        <el-input v-model.trim="query.phone" size="mini" :maxlength="40"></el-input>
+                  
+                    <el-form-item label="状态" prop="execute_user">
+                        <el-input v-model.trim="query.execute_user" size="mini" :maxlength="40"></el-input>
                     </el-form-item>
                 </el-col>
                 
@@ -71,16 +72,27 @@
                     </el-form-item>
                 </el-col>
                 
-                <el-col :xs="24" :sm="10" :md="6" :lg="6">
-                    <el-form-item label="状态" prop="execute_user">
-                        <el-input v-model.trim="query.execute_user" size="mini" :maxlength="40"></el-input>
+                <el-col :xs="24" :sm="10" :md="10" :lg="10" class="search-data">
+                    <el-form-item label="创建时间" prop="phone">
+                      <div class="select-data">
+                        <el-date-picker
+                          v-model="query.valueDate"
+                          type="daterange"
+                          size="small"
+                          range-separator="-"
+                          start-placeholder="开始日期"
+                          end-placeholder="结束日期"
+                          :default-time="['00:00:00', '23:59:59']"
+                          @change="getDate">
+                        </el-date-picker>
+                      </div>
                     </el-form-item>
                 </el-col>
               </el-row>
               
               <div class="flex">
-                  <el-button type="danger">搜索</el-button>
-                  <el-button>清空</el-button>
+                  <el-button type="danger" size="mini">搜索</el-button>
+                  <el-button size="mini">清空</el-button>
               </div>
               <!-- <el-form-item style="width: 20%;">
                 <el-input v-model="query.val" placeholder="Search..." size="small"></el-input>
@@ -693,7 +705,7 @@ export default {
 }
 .select-data {
   width: 206px;
-  margin-left: 10px;
+  /* margin-left: 10px; */
 }
 .admin-header-right {
   width: 36%;
@@ -866,6 +878,9 @@ export default {
 }
 .search-form .el-form-item__content .el-input .el-input__inner {
   width: 150px;
+}
+.search-data .el-input .el-input__inner {
+  /* max-width: 280px; */
 }
 .search-form .el-form-item__label {
   width: 68px;

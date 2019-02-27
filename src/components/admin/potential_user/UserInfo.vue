@@ -142,10 +142,10 @@
           </div>
           <div class="card-body">
               <div class="card-body-header" v-if="currentId !== ''">
-                <span @click="changeOption('user')" :class="{'active': option === 'user'}">用户档案</span>
-                <span @click="changeOption('project')" :class="{'active': option === 'project'}">项目档案</span>
-                <span @click="changeOption('progress')" :class="{'active': option === 'progress'}">合作意向</span>
                 <span @click="changeOption('followLog')" :class="{'active': option === 'followLog'}">跟进记录</span>
+                <span @click="changeOption('project')" :class="{'active': option === 'project'}">项目档案</span>
+                <span @click="changeOption('user')" :class="{'active': option === 'user'}">用户档案</span>
+                <span @click="changeOption('progress')" :class="{'active': option === 'progress'}">合作意向</span>
               </div>
 
 
@@ -385,10 +385,10 @@
                         <el-row :gutter="20">
                           <el-col :xs="24" :sm="20" :md="8" :lg="8">
                             <p v-if="!boolEditProject || currentProjectId !== item.item_id">
-                              <span>需求类别: </span>{{item.type_value}}
+                              <span>设计类型: </span>{{item.type_value}}
                             </p>
-                            <el-form-item v-if="boolEditProject && currentProjectId === item.item_id" label="需求类别" prop="type">
-                              <el-select v-model="projectForm.type" placeholder="请选择需求类别">
+                            <el-form-item v-if="boolEditProject && currentProjectId === item.item_id" label="设计类型" prop="type">
+                              <el-select v-model="projectForm.type" placeholder="请选择设计类型">
                                 <el-option
                                   v-for="(d, index) in typeOptions"
                                   :key="index"
@@ -400,9 +400,9 @@
                           </el-col>
                           <el-col :xs="24" :sm="20" :md="8" :lg="8">
                             <p v-if="!boolEditProject || currentProjectId !== item.item_id">
-                              <span>所属行业: </span>{{item.industry_value}}
+                              <span>行业领域: </span>{{item.industry_value}}
                             </p>
-                            <el-form-item v-if="boolEditProject && currentProjectId === item.item_id" label="所属行业" prop="industry">
+                            <el-form-item v-if="boolEditProject && currentProjectId === item.item_id" label="行业领域" prop="industry">
                               <el-select v-model.number="projectForm.industry" placeholder="请选择">
                                 <el-option
                                   v-for="(d, index) in industryOptions"
@@ -447,12 +447,12 @@
                           </el-col>
                           <el-col :xs="24" :sm="20" :md="16" :lg="16">
                             <p v-if="!boolEditProject || currentProjectId !== item.item_id">
-                              <span>工作地点: </span>{{item.item_province_value}}{{item.item_city_value}}
+                              <span>项目工作地点: </span>{{item.item_province_value}}{{item.item_city_value}}
                             </p>
                             <div v-show="boolEditProject && currentProjectId === item.item_id">
                               <region-picker  :provinceProp="projectForm.item_province"
                                   :cityProp="projectForm.item_city" propStyle="margin:0;"
-                                  :isFirstProp="isFirstRegion" titleProp="工作地址"
+                                  :isFirstProp="isFirstRegion" titleProp="项目工作地点"
                                   @onchange="changeProject"
                                   :twoSelect="true"
                                   >
@@ -682,8 +682,8 @@
                       </el-row>
                       <el-row :gutter="20">
                         <el-col :xs="24" :sm="24" :md="8" :lg="8">
-                          <el-form-item label="需求类别" prop="type">
-                            <el-select v-model="projectForm.type" placeholder="请选择需求类别">
+                          <el-form-item label="设计类型" prop="type">
+                            <el-select v-model="projectForm.type" placeholder="请选择设计类型">
                               <el-option
                                 v-for="(d, index) in typeOptions"
                                 :key="index"
@@ -694,7 +694,7 @@
                           </el-form-item>
                         </el-col>
                         <el-col :xs="24" :sm="24" :md="8" :lg="8">
-                          <el-form-item label="所属行业" prop="industry">
+                          <el-form-item label="行业领域" prop="industry">
                             <el-select v-model.number="projectForm.industry" placeholder="请选择">
                               <el-option
                                 v-for="(d, index) in industryOptions"
@@ -736,7 +736,7 @@
                         <el-col :xs="24" :sm="16" :md="16" :lg="16">
                           <region-picker :provinceProp="clientForm.province" 
                                 :cityProp="clientForm.city" propStyle="margin:0;"
-                                :isFirstProp="isFirstRegion" titleProp="工作地址"
+                                :isFirstProp="isFirstRegion" titleProp="项目工作地点"
                                 @onchange="changeProject" class="margin-b22"
                                 :twoSelect="true"
                                 >
@@ -982,7 +982,7 @@ export default {
       ruleProjectForm: {
         name: [{ required: true, message: '请填写企业名称', trigger: 'blur' }],
         grate: [{ type: 'number', required: true, message: '请选择项目紧急度', trigger: 'blur' }],
-        type: [{ type: 'number', required: true, message: '请选择需求类别', trigger: 'blur' }]
+        type: [{ type: 'number', required: true, message: '请选择设计类型', trigger: 'blur' }]
       },
       ruleDesignCompanyForm: {
         company_name: [{ required: true, message: '请填写设计服务商名称', trigger: 'blur' }],
@@ -1912,7 +1912,7 @@ export default {
         return []
       }
     },
-    industryOptions() { // 所属行业下拉选项
+    industryOptions() { // 行业领域下拉选项
       if (typeData) {
         return typeData.INDUSTRY
       } else {
