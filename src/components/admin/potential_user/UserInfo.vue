@@ -13,7 +13,14 @@
         </div>
         <div class="card-box">
           <div class="card-header">
-
+            <div class="margin-b15" v-if="currentId">
+              <el-button type="primary" @click="setClueStatus(3)">无效</el-button>
+              <el-button type="danger" @click="setClueStatus(4)">流失</el-button>
+              <div class="fr">
+                <a @click="getPreviousUser">上一条</a>
+                <a @click="getNextUser">下一条</a>
+              </div>
+            </div>
             <div class="user-info-top clearfix">
               <div class="fl clearfix flex-a-c">
                 <div class="user-name fl margin-r20">
@@ -30,13 +37,13 @@
               </div>
               
               <div :class="['user-status', 'fr', {
-                  'status1': userForm.status === 1,
-                  'status2': userForm.status === 2,
-                  'status3': userForm.status === 3,
-                  'status4': userForm.status === 4,
-                  'status5': userForm.status === 5
+                  'status1': userForm.new_status === 1,
+                  'status2': userForm.new_status === 2,
+                  'status3': userForm.new_status === 3,
+                  'status4': userForm.new_status === 4,
+                  'status5': userForm.new_status === 5
                   }]">
-                <el-select v-model.number="userForm.status" :disabled="!isHasPower" @change="isUpdatedStatus">
+                <el-select v-model.number="userForm.new_status" disabled @change="isUpdatedStatus">
                   <el-option
                     v-for="(item, index) in userStatus"
                     :key="index"
@@ -59,20 +66,19 @@
               <div class="source fl">
                 <span>用户来源 :</span>
                 <el-select 
-                    v-model.trim="userForm.source"
+                    v-model.number="userForm.source"
                     size="small"
                     filterable
                     :disabled="!isHasPower"
-                    placeholder="请选择或者新建用户来源"
                     @change="isUpdatedSource"
                     default-first-option
                     :allow-create="isAdmin>=15">
                   <el-option
-                    v-for="(item, index) in sourceArr"
-                    :key="index"
-                    :label="item"
-                    :value="item">
-                    <span style="float: left">{{item}}</span>
+                    v-for="(item, i) in sourceArr"
+                    :key="i"
+                    :label="item.label"
+                    :value="item.value">
+                    <!-- <span style="float: left">{{item.lable}}</span> -->
                   </el-option>
                 </el-select>
               </div>
@@ -91,20 +97,7 @@
               <div class="call-status fl">
                 <span>通话状态 :</span>
                 <div class="call-status-select">
-                  <el-select v-model="userForm.call_status" 
-                              size="small"
-                              filterable
-                              :allow-create="isAdmin>=15"
-                              default-first-option
-                              :disabled="!isHasPower"
-                              @change="isUpdatedCallStatus">
-                    <el-option
-                      v-for="(item, index) in callStatus"
-                      :key="index"
-                      :label="item"
-                      :value="item">
-                    </el-option>
-                  </el-select>
+                  <span>{{userForm.call_status_value}}</span>
                 </div>
               </div>
               <el-popover
@@ -258,7 +251,6 @@
                         <span class="inline-width50"> QQ号: </span>{{clientList.qq}}
                       </p>
                     </el-col>
-                    
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <p>
                         <span class="inline-width50">邮箱: </span>{{clientList.email}}
@@ -991,16 +983,49 @@ export default {
       },
       userForm: {
         rank: 1,
-        call_status: '',
-        status: '',
+        new_call_status: '',
         source: '',
+        new_status: '',
         tag: [],
         execute_user_id: '',
         execute: []
       },
       baseInfo: {}, // 第一次加载时头部的基本信息
       createdTime: '',
-      sourceArr: [],
+      sourceArr: [
+        {
+          value: 1,
+          label: '今日头条'
+        },
+        {
+          value: 2,
+          label: '京东'
+        },
+        {
+          value: 3,
+          label: '360'
+        },
+        {
+          value: 4,
+          label: '百度'
+        },
+        {
+          value: 5,
+          label: '官网'
+        },
+        {
+          value: 6,
+          label: '知乎'
+        },
+        {
+          value: 7,
+          label: '自媒体'
+        },
+        {
+          value: 8,
+          label: '其他'
+        }
+      ],
       userStatus: [ // 客户状态
         {
           value: 1,
@@ -1009,22 +1034,22 @@ export default {
         },
         {
           value: 2,
-          label: '真实需求',
+          label: '对接设计',
           color: '#65A6FF'
         },
         {
           value: 5,
-          label: '对接设计',
+          label: '签约合作',
           color: '#65a6ff'
         },
         {
           value: 3,
-          label: '签订合作',
+          label: '无效客户',
           color: '#00AC84'
         },
         {
           value: 4,
-          label: '对接失败',
+          label: '流失客户',
           color: '#FF5A5F'
         }
       ],
@@ -1161,20 +1186,20 @@ export default {
       }
       console.log(clipboard)
     },
-    getTypeList() { // 类别列表: 来源; 通话状态; 标签
-      this.$http.get(api.adminClueTypeList, {}).then(res => {
-        if (res.data.meta.status_code === 200) {
-          const data = res.data.data
-          this.sourceArr = [...data.source]
-          this.callStatus = data.call_status
-          // this.dynamicTags = data.tag
-        } else {
-          this.$message.error(res.data.meta.message)
-        }
-      }).catch(error => {
-        this.$message.error(error.message)
-      })
-    },
+    // getTypeList() { // 类别列表: 来源; 通话状态; 标签
+    //   this.$http.get(api.adminClueTypeList, {}).then(res => {
+    //     if (res.data.meta.status_code === 200) {
+    //       const data = res.data.data
+    //       this.sourceArr = [...data.source]
+    //       this.callStatus = data.new_call_status
+    //       // this.dynamicTags = data.tag
+    //     } else {
+    //       this.$message.error(res.data.meta.message)
+    //     }
+    //   }).catch(error => {
+    //     this.$message.error(error.message)
+    //   })
+    // },
     getAdminVoIpList() { // 业务人员列表
       this.$http.get(api.adminClueVoIpList, {}).then(res => {
         if (res.data.meta.status_code === 200) {
@@ -1199,7 +1224,7 @@ export default {
       if (val !== this.baseInfo.source) {
         this.updatedBaseInfo()
         if (!this.isExistArray(val, this.sourceArr)) {
-          this.getTypeList()
+          // this.getTypeList()
         }
       }
     },
@@ -1217,10 +1242,10 @@ export default {
     },
     isUpdatedCallStatus(val) {
       if (!this.currentId) return
-      if (val !== this.baseInfo.call_status) {
+      if (val !== this.baseInfo.new_call_status) {
         this.updatedBaseInfo()
         if (!this.isExistArray(val, this.callStatus)) {
-          this.getTypeList()
+          // this.getTypeList()
         }
       }
     },
@@ -1253,6 +1278,32 @@ export default {
         this.updatedBaseInfo()
       }
     },
+    getNextUser() {
+      if (this.currentId) {
+        let index = this.potentialIds.indexOf(this.currentId - 0)
+        if (index === 49) {
+          this.$message.info('返回列表页,获取最新数据')
+          this.$router.push({name: 'adminPotentialUserList'})
+        }
+        if (index !== -1) {
+          this.currentId = this.potentialIds[index + 1]
+          this.getUserInfo(this.currentId)
+        }
+      }
+    },
+    getPreviousUser() {
+      if (this.currentId) {
+        let index = this.potentialIds.indexOf(this.currentId - 0)
+        if (index === 0) {
+          this.$message.info('已经是第一条,返回列表页,获取最新数据')
+          return
+        }
+        if (index !== -1) {
+          this.currentId = this.potentialIds[index - 1]
+          this.getUserInfo(this.currentId)
+        }
+      }
+    },
     getUserInfo() { // 查看用户档案
       let row = {
         clue_id: this.currentId
@@ -1260,23 +1311,24 @@ export default {
       this.$http.get(api.adminClueShow, {params: row}).then(res => {
         if (res.data.meta.status_code === 200) {
           const data = res.data.data
-          const {source, rank, status, execute_user_id, call_status} = res.data.data
+          const {new_source, rank, new_status, execute_user_id, new_call_status} = res.data.data
           this.baseInfo = {
             rank,
-            source,
-            status,
+            source: new_source,
+            new_status,
             execute_user_id,
-            call_status
+            new_call_status
           }
           this.currentUser = data.name
           this.userForm = {
             name: data.name,
             phone: data.phone,
             rank: data.rank,
-            source: data.source || '',
-            status: data.status,
+            source: data.new_source || '',
+            new_status: data.new_status,
+            call_status_value: data.call_status_value,
             execute_user_id: data.execute_user_id,
-            call_status: data.call_status || ''
+            new_call_status: data.new_call_status || ''
           }
           this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm:ss')
           if (data.tag.length === 1 && data.tag[0] === '') {
@@ -1299,6 +1351,22 @@ export default {
             position: data.position
           }
           this.clientList = JSON.parse(JSON.stringify(this.clientForm))
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+      })
+    },
+    setClueStatus(status) { // 标记客户状态
+      let row = {
+        new_status: status,
+        clue_ids: [this.currentId]
+      }
+      this.$http.post(api.adminClueSetClueStatus, row).then(res => {
+        if (res.data.meta.status_code === 200) {
+          console.log('标记成功')
+          this.$message.success('标记成功')
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -1939,6 +2007,9 @@ export default {
     userId() {
       return this.$store.state.event.user.id
     },
+    potentialIds() {
+      return this.$store.state.task.potentialIds
+    },
     isHasPower() { // 是否有权限编辑
       if (this.currentId) {
         if (this.userId === this.userForm.execute_user_id || this.isAdmin >= 15) {
@@ -1979,7 +2050,7 @@ export default {
       this.currentId = this.$route.params.id
       this.getUserInfo()
     }
-    this.getTypeList()
+    // this.getTypeList()
     this.getAdminVoIpList()
   },
   directives: {Clickoutside},

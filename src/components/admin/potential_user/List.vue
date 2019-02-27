@@ -5,98 +5,8 @@
       <v-menu selectedName="potentialUserList"></v-menu>
       <el-col :span="20">
         <div class="content">
-          <div class="">
-            <el-form :inline="true" :model="query" class="search-form" label-position="left" size="mini">
-              <el-row :gutter="10">
-                <el-col :xs="24" :sm="10" :md="6" :lg="6">
-                    <el-form-item label="编号" prop="number">
-                        <el-input v-model.trim="query.number" size="mini" :maxlength="40"></el-input>
-                    </el-form-item>
-                </el-col>
-                
-                <el-col :xs="24" :sm="10" :md="6" :lg="6">
-                    <el-form-item label="姓名" prop="name">
-                        <el-input v-model.trim="query.name" size="mini" :maxlength="40"></el-input>
-                    </el-form-item>
-                </el-col>
-                
-                <el-col :xs="24" :sm="10" :md="6" :lg="6">
-                    <el-form-item label="联系电话" prop="phone">
-                        <el-input v-model.trim="query.phone" size="mini" :maxlength="40"></el-input>
-                    </el-form-item>
-                </el-col>
-                
-                <el-col :xs="24" :sm="10" :md="6" :lg="6">
-                    <el-form-item label="负责人" prop="execute_user">
-                        <el-input v-model.trim="query.execute_user" size="mini" :maxlength="40"></el-input>
-                    </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row :gutter="10">
-                <el-col :xs="24" :sm="10" :md="6" :lg="6">
-                    <el-form-item label="项目名称" prop="name">
-                        <el-input v-model.trim="query.name" size="mini" :maxlength="40"></el-input>
-                    </el-form-item>
-                </el-col>
-                
-                <el-col :xs="24" :sm="10" :md="6" :lg="6">
-                    <el-form-item label="对接公司" prop="name">
-                        <el-input v-model.trim="query.name" size="mini" :maxlength="40"></el-input>
-                    </el-form-item>
-                </el-col>
-                
-                <el-col :xs="24" :sm="10" :md="6" :lg="6">
-                  
-                    <el-form-item label="状态" prop="execute_user">
-                        <el-input v-model.trim="query.execute_user" size="mini" :maxlength="40"></el-input>
-                    </el-form-item>
-                </el-col>
-                
-                <el-col :xs="24" :sm="10" :md="6" :lg="6">
-                    <el-form-item label="客户级别" prop="execute_user">
-                        <el-input v-model.trim="query.execute_user" size="mini" :maxlength="40"></el-input>
-                    </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row :gutter="10">
-                
-                <el-col :xs="24" :sm="10" :md="6" :lg="6">
-                    <el-form-item label="沟通状态" prop="name">
-                        <el-input v-model.trim="query.name" size="mini" :maxlength="40"></el-input>
-                    </el-form-item>
-                </el-col>
-                
-                <el-col :xs="24" :sm="10" :md="6" :lg="6">
-                    <el-form-item label="来源渠道" prop="phone">
-                        <el-input v-model.trim="query.phone" size="mini" :maxlength="40"></el-input>
-                    </el-form-item>
-                </el-col>
-                
-                <el-col :xs="24" :sm="10" :md="10" :lg="10" class="search-data">
-                    <el-form-item label="创建时间" prop="phone">
-                      <div class="select-data">
-                        <el-date-picker
-                          v-model="query.valueDate"
-                          type="daterange"
-                          size="small"
-                          range-separator="-"
-                          start-placeholder="开始日期"
-                          end-placeholder="结束日期"
-                          :default-time="['00:00:00', '23:59:59']"
-                          @change="getDate">
-                        </el-date-picker>
-                      </div>
-                    </el-form-item>
-                </el-col>
-              </el-row>
-              
-              <div class="flex">
-                  <el-button type="danger" size="mini">搜索</el-button>
-                  <el-button size="mini">清空</el-button>
-              </div>
-              <!-- <el-form-item style="width: 20%;">
-                <el-input v-model="query.val" placeholder="Search..." size="small"></el-input>
-              </el-form-item>
+          <div class="admin-header clearfix">
+            <el-form :inline="true" :model="query" class="select-query fl">
               <el-form-item>
                 <span class="fl line-height30 fz-12">选择日期</span>
                 <div class="fr select-data">
@@ -128,9 +38,9 @@
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="onSearch" size="mini">搜索</el-button>
-              </el-form-item> -->
+              </el-form-item>
             </el-form>
-            <!-- <div class="admin-header-right fr clearfix">
+            <div class="admin-header-right fr clearfix">
               <div class="fl">
                 <div class="add-user">
                   <span class="add-voip-user">
@@ -139,6 +49,19 @@
                   <div class="drop-down">
                     <span @click="$router.push({name: 'adminPotentialUserCreated'})">添加潜在用户</span>
                     <span @click="showDialogVoIpUser">添加商务成员</span>
+                    <el-upload
+                      class="upload-demo"
+                      :action="uploadUrl"
+                      :on-preview="handlePreview"
+                      :on-success="handleAvatarSuccess"
+                      :before-upload="beforeAvatarUpload"
+                      :on-error="uploadError"
+                      :data="{'token': token}"
+                      accept=".xlsx"
+                      :show-file-list="false"
+                      :file-list="file">
+                      <span class="upload-file">导入文件</span>
+                    </el-upload>
                   </div>
                 </div>
 
@@ -146,11 +69,12 @@
               <a href="javascript:void(0);"  @click="multipleDelItem" class="fr line-height30 height30"><i class="fx fx-icon-delete2"></i></a>
               <el-button size="small" class="fl margin-l-10" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button>
               <a href="javascript:void(0);" class="line-height30 height30 margin-l-10" @click="exportForm">导出表格</a>
-            </div> -->
-          </div>
-          
+            </div>
+          </div>       
           <div class="btn-list">
-            <button size="small" type="danger" class="is-custom red-button small-button">添加客户</button>
+            <button size="small" type="danger" 
+              @click="$router.push({name: 'adminPotentialUserCreated'})" 
+              class="is-custom red-button small-button">添加客户</button>
             <el-upload
               class="upload-demo"
               :action="uploadUrl"
@@ -177,22 +101,21 @@
             @selection-change="handleSelectionChange"
             @filter-change="filterList"
             style="width: 100%"
-            :row-class-name="tableRowClassName">
+            :row-class-name="tableRowClassName"
+            @row-click="getLookUserInfo">
             <el-table-column
               type="selection"
               width="40">
             </el-table-column>
             <el-table-column
               label="编号"
-              prop="id"
-              width="80">
+              prop="number"
+              width="123">
             </el-table-column>
             <el-table-column
+              prop="name"
               label="姓名"
-              width="100">
-            <template slot-scope="scope">
-              <p class="cursor-p" @click="editUserInfo(scope.row.id, scope.row.name)">{{scope.row.name}}</p>
-            </template>
+              width="80">
             </el-table-column>
             <el-table-column
               width="105"
@@ -212,7 +135,7 @@
             </el-table-column>
             
             <el-table-column
-              prop="source"
+              prop="new_source"
               width="90"
               label="用户来源">
             </el-table-column>
@@ -226,30 +149,15 @@
             <el-table-column
               width="120"
               label="通话状态"
-              prop="new_call_status">
-              <template slot-scope="scope">
-                <p v-if="scope.new_call_status === 1">待初次沟通</p>
-                <p v-else-if="scope.new_call_status === 2">待匹配设计公司</p>
-                <p v-else-if="scope.new_call_status === 3">待回访</p>
-                <p v-else-if="scope.new_call_status === 4">预约回访</p>
-                <p v-else-if="scope.new_call_status === 5">推送未响应</p>
-                <p v-else-if="scope.new_call_status === 6">拒绝合作</p>
-                <p v-else-if="scope.new_call_status === 7">拒绝合作</p>
-                <p v-else-if="scope.new_call_status === 8">确认合作意向</p>
-                <p v-else-if="scope.new_call_status === 9">对接成功</p>
-                <p v-else-if="scope.new_call_status === 10">对接失败</p>
-                <p v-else-if="scope.new_call_status === 11">项目沟通中</p>
-                <p v-else-if="scope.new_call_status === 12">项目进行中</p>
-                <p v-else-if="scope.new_call_status === 13">项目已关闭</p>
-              </template>
+              prop="call_status_value">
             </el-table-column>
             <el-table-column
-              width="110"
+              width="90"
               label="最后跟进日"
-              prop="next_time">
+              prop="end_time">
             </el-table-column>
             <el-table-column
-              prop="status"
+              prop="new_status"
               width="90"
               label="状态"
               :filters="[
@@ -262,10 +170,10 @@
               :filter-multiple="false"
               filter-placement="bottom-end">
                 <template slot-scope="scope">
-                  <p class="status1 status" v-if="scope.row.status === 1">潜在客户</p>
-                  <p class="status2 status"  v-else-if="scope.row.status === 2">对接设计</p>
-                  <p class="status3 status"  v-else-if="scope.row.status === 3">无效客户</p>
-                  <p class="status4 status"  v-else-if="scope.row.status === 4">流失客户</p>
+                  <p class="status1 status" v-if="scope.row.new_status === 1">潜在客户</p>
+                  <p class="status2 status"  v-else-if="scope.row.new_status === 2">对接设计</p>
+                  <p class="status3 status"  v-else-if="scope.row.new_status === 3">无效客户</p>
+                  <p class="status4 status"  v-else-if="scope.row.new_status === 4">流失客户</p>
                   <p class="status5 status"  v-else>签约合作</p>
                 </template>
             </el-table-column>
@@ -352,11 +260,12 @@ export default {
       multipleSelection: [],
       query: {
         page: 1,
-        per_page: 10,
+        per_page: 50,
         evt: '',
-        val: '',
-        status: '',
-        totalCount: 0,
+        sort: 2,
+        // new_status: 6,
+        status: 6,
+        // totalCount: 0,
         valueDate: []
       },
       dateArr: [], // 格式化
@@ -396,22 +305,22 @@ export default {
       let value = Object.values(row).toString()
       switch (value) {
         case '1':
-          this.query.status = 1
+          this.query.new_status = 1
           break
         case '2':
-          this.query.status = 2
+          this.query.new_status = 2
           break
         case '3':
-          this.query.status = 3
+          this.query.new_status = 3
           break
         case '4':
-          this.query.status = 4
+          this.query.new_status = 4
           break
         case '5':
-          this.query.status = 5
+          this.query.new_status = 5
           break
         default:
-          this.query.status = 6
+          this.query.new_status = 6
       }
       this.getClueList()
     },
@@ -474,9 +383,14 @@ export default {
           if (res.data.data.length) {
             this.noAllot = res.data.data[0].no_allot
           }
+          let ids = []
           this.tableData.forEach(item => {
             item.created_at = item.created_at.date_format().format('yyyy-MM-dd')
+            if (item.id) {
+              ids.push(item.id)
+            }
           })
+          this.$store.commit('setPotentialIds', ids)
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -489,6 +403,15 @@ export default {
       this.query.id = id
       this.query.name = name
       // this.$router.push({path: `/admin/potential_user/userinfo/${id}`, query: {page: this.query.page}})
+      const {href} = this.$router.resolve({
+        path: `/admin/potential_user/userinfo/${id}`,
+        query: {page: this.query.page}
+      })
+      window.open(href, '_blank')
+    },
+    getLookUserInfo({id = {}, name = {}}) {
+      this.query.id = id
+      this.query.name = name
       const {href} = this.$router.resolve({
         path: `/admin/potential_user/userinfo/${id}`,
         query: {page: this.query.page}
