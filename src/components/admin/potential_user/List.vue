@@ -697,7 +697,7 @@ export default {
   /* float: left; */
   margin: 0 0 10px 0;
 }
-. {
+.select-query {
   width: 64%;
 }
 .select-info {
