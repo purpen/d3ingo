@@ -15,7 +15,12 @@
   "env": {
     "test": {
       "presets": ["env", "stage-2"],
-      "plugins": ["istanbul", "transform-runtime"]
+      "plugins": ["istanbul", "transform-runtime", ["component", 
+        [{
+          "libraryName": "element-ui",
+          "styleLibraryName": "~src/assets/css/theme"
+        }]
+      ]]
     }
   }
 }
