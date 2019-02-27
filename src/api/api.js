@@ -586,6 +586,7 @@ export default {
   appAdd: '/wechat/demand/userAdd',   // POST APP
   userMessage: '/wechat/demand/users',   // POST APP消息滚动
   usersCount: '/wechat/demand/usersCount',   // GET 人员数量
+  generalize: '/generalize/create', // POST 推广统计
   // 服务号
   fwhUser: '/fwh/user' // GET 获取服务号用户信息
 }
