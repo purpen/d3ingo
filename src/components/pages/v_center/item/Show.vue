@@ -131,7 +131,7 @@
                     <p class="tc-2 protrude">项目报价:  <span class="tc-6 p-price fw-normal">{{ d.quotation.price }} 元</span> <span class="quota-btn tc-6 fw-normal">&nbsp;&nbsp;<a
                     class="tc-red"
                     href="javascript:void(0);" @click="showQuotaBtn(d.quotation)">详情>></a></span></p>
-                    <p class="tc-2 protrude">报价说明: <span class="tc-6 fw-normal">{{ d.quotation.summary }}</span></p>
+                    <p class="tc-2 protrude">项目目标及报价说明: <span class="tc-6 fw-normal">{{ d.quotation.summary }}</span></p>
                   </div>
 
                   <div class="btn" v-if="d.item_status === 0 && d.design_company_status === 2">
@@ -195,7 +195,7 @@
                     <p>项目报价:  <span class="p-price">{{ cooperateCompany.quotation.price }} 元</span> <span class="quota-btn">&nbsp;&nbsp;<a
                     class="tc-red"
                     href="javascript:void(0);" @click="showQuotaBtn(cooperateCompany.quotation)">详情>></a></span></p>
-                    <p>报价说明:  {{ cooperateCompany.quotation.summary }}</p>
+                    <p>项目目标及报价说明:  {{ cooperateCompany.quotation.summary }}</p>
                   </div>
 
                 </div>
