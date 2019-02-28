@@ -121,6 +121,12 @@
 .line-height1_5 {
   line-height: 1.5
 }
+.height30 {
+  height: 30px;
+}
+.border-t10 {
+  border: 10px solid transparent;
+}
 .main .border-b-no {
   border-bottom: none;
 }
