@@ -133,7 +133,7 @@
     methods: {
       publish() {
         if (this.matchCount === 0) {
-          this.comfirmMessage = '您填写的信息没有匹配到合适的设计公司，确认发布？'
+          this.comfirmMessage = '您填写的信息没有匹配到合适的设计服务商，确认发布？'
           this.comfirmDialog = true
         } else {
           this.publishSubmit()
@@ -255,7 +255,7 @@
                 },
                 {
                   name: '',
-                  key: '项目周期',
+                  key: '交付时间',
                   value: row.cycle_value
                 },
                 {
@@ -376,10 +376,6 @@
 
   .form-btn {
     float: right;
-  }
-
-  .form-btn button {
-    /* padding: 10px 30px; */
   }
 
   .slide-img {

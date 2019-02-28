@@ -1,6 +1,6 @@
 <template>
-  <div v-if="boolProjectInfo">
-    <div class="dialog">
+  <div class="dialog">
+    <div class="dialog-content" v-if="boolProjectInfo">
       <h4>绑定确认</h4>
       <div class="dialog-b">
         <div class="project-info" v-if="projectInfo.data_type === 1">
@@ -114,16 +114,16 @@ export default {
 }
 </script>
 <style scoped>
-.dialog {
-  position: relative;
+.dialog-content {
+  /* position: relative;
   top: -160px;
   left: 50%;
-  transform: translateX(-50%);
-  width: 92%;
+  transform: translateX(-50%); */
+  /* width: 92%; */
   background-color: #fff;
   border-radius: 5px;
 }
-.dialog > h4 {
+.dialog-content > h4 {
   height: 60px;
   line-height: 60px;
   text-align: center;
@@ -168,7 +168,7 @@ export default {
   border-bottom: 1px solid #E6E6E6;
 }
 footer {
-  margin-top: -130px;
+  margin-top: 15px;
 }
 footer > p {
   text-align: center;
@@ -180,7 +180,7 @@ footer > p {
   height: 55px;
   width: 92%;
   margin-left: 4%;
-  margin-top: 30px;
+  margin-top: 15px;
   color: #fff;
   font-size: 1.8rem;
   border-radius: 5px;

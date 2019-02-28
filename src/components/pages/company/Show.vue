@@ -8,7 +8,7 @@
           <div class="info">
             <img class="avatar" v-if="item.logo_url" :src="item.logo_url" width="100"/>
             <img class="avatar" v-else :src="require('assets/images/avatar_100.png')" width="100"/>
-            <h3>{{ item.company_abbreviation }}</h3>
+            <h3>{{ item.company_name }}</h3>
             <p><i class="fx-icon-location"></i><span>{{ item.province_value }}</span><span>{{ item.city_value }}</span></p>
           </div>
 
@@ -53,7 +53,7 @@
                     <div class="image-box">
                       <router-link :to="{name: 'vcenterDesignCaseShow', params: {id: d.id}}"
                                    :target="isMob ? '_self' : '_blank'">
-                        <img v-if="d.cover" :src="d.cover.file">
+                        <img v-if="d.cover" :src="d.cover.middle">
                       </router-link>
                     </div>
                     <el-tooltip :content="d.title" placement="bottom">

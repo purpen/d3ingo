@@ -58,7 +58,7 @@
             <el-table-column
               prop="created_at"
               label="创建时间"
-              width="80">
+              width="100">
             </el-table-column>
             <el-table-column
               label="状态"
@@ -85,6 +85,7 @@
           </el-table>
 
           <el-pagination
+            v-if="tableData.length && query.totalCount > query.pageSize"
             class="pagination"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"

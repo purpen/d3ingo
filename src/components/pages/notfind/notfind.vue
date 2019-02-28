@@ -28,7 +28,6 @@
   h1 {
     color: #666;
     font-size: 48px;
-    height: 100%;
     padding-top: 30%;
   }
 

@@ -36,7 +36,7 @@
             <el-table-column
               prop="id"
               label="ID"
-              width="60">
+              width="50">
             </el-table-column>
             <el-table-column
               label="公司信息"
@@ -53,7 +53,7 @@
             </el-table-column>
             <el-table-column
               label="项目信息"
-              min-width="100">
+              min-width="105">
               <template slot-scope="scope">
                 <router-link :to="{name: 'adminItemShow', params: {id: scope.row.item_id}}"><p>项目名称：{{ scope.row.item_name }}</p></router-link>
                 <p>项目阶段：{{ scope.row.item_stage_name }}</p>
@@ -80,7 +80,8 @@
             <el-table-column
               align="center"
               prop="user_id"
-              label="操作用户">
+              label="操作用户"
+              width="50">
             </el-table-column>
             <el-table-column
               align="center"
@@ -99,7 +100,7 @@
             <el-table-column
               align="center"
               prop="created_at"
-              width="80"
+              width="100"
               label="创建时间">
             </el-table-column>
             <el-table-column
@@ -107,7 +108,7 @@
               width="100"
               label="操作">
               <template slot-scope="scope">
-                <!--是设计设计公司&&已开发票&&是收发票-->
+                <!--是设计设计服务商&&已开发票&&是收发票-->
                 <el-button v-if="scope.row.type === 1 && scope.row.status===2 && scope.row.company_type===2" type="success" size="mini" @click="confirmReceipt(scope.row, 2)">确认收到发票</el-button>
                 <el-button v-if="scope.row.type === 2 && scope.row.status===1 && scope.row.company_type===1" type="success" size="mini" @click="OpenReceipt(scope.row, scope.$index)">确认开出发票</el-button>
               </template>
@@ -236,6 +237,7 @@
             </div>
           </el-dialog>
           <el-pagination
+            v-if="tableData.length && query.totalCount > query.pageSize"
             class="pagination"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
@@ -465,14 +467,14 @@
         this.verify.companytype = companytype
         this.dialogVisible = !this.dialogVisible
       },
-      // 判断需求方还是设计公司收到发票/发出发票
+      // 判断需求方还是设计服务商收到发票/发出发票
       setVerify (id, refuseRease) {
         this.test = id
         this.dialogVisible = false
         const self = this
         var confirmInvoice = ''
         if (self.verify.companytype === 2) {
-          // 设计公司
+          // 设计服务商
           confirmInvoice = api.adminCompanyConfirmInvoice
         } else {
           confirmInvoice = api.adminDemandCompanyConfirmSendInvoice
@@ -511,7 +513,7 @@
         // 判断访问接口
         var adminCompanyInvoice = ''
         if (self.routerName === 'adminReceiveInvoicetList') {
-          // 设计公司
+          // 设计服务商
           adminCompanyInvoice = api.adminCompanyInvoice
         } else {
           adminCompanyInvoice = api.adminDemandCompanyInvoice
@@ -548,7 +550,7 @@
               if (item.company_type === 1) {
                 companyType = '需求公司'
               } else {
-                companyType = '设计公司'
+                companyType = '设计服务商'
               }
               item['companyType'] = companyType
               // 纳税类型

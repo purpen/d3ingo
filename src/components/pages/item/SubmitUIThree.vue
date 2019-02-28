@@ -34,8 +34,8 @@
                 </el-checkbox-group>
               </el-form-item>
 
-              <el-form-item label="项目周期" prop="cycle" class="fullwidth">
-                <el-select v-model.number="form.cycle" placeholder="请选择项目周期">
+              <el-form-item label="交付时间" prop="cycle" class="fullwidth">
+                <el-select v-model.number="form.cycle" placeholder="请选择交付时间">
                   <el-option
                     v-for="(item, index) in cycleOptions"
                     :label="item.label"
@@ -116,18 +116,18 @@
                 <p class="slide-str error"><img src="../../../assets/images/icon/item_stick_fail.png" width="25"/> 匹配失败
                 </p>
                 <p class="slide-des error">可能出现的原因：</p>
-                <p class="slide-des error">当前项目设计周期太短，无法匹配有效的设计服务供应商，请重新设置项目周期。</p>
-                <p class="slide-des error">当前项目设计项目设计服务费预算过低，无法匹配有效的设计服务供应商，请重新设置项目设计服务费。</p>
-                <p class="slide-des error">选择当前的城市没有对应的设计公司。</p>
+                <p class="slide-des error">当前项目设计周期太短，无法匹配有效的设计服务商，请重新设置交付时间。</p>
+                <p class="slide-des error">当前项目设计项目设计服务费预算过低，无法匹配有效的设计服务商，请重新设置项目设计服务费。</p>
+                <p class="slide-des error">选择当前的城市没有对应的设计服务商。</p>
               </div>
               <div v-else-if="matchCount > 0">
                 <p class="slide-str success"><img src="../../../assets/images/icon/item_stick.png" width="25"/>
                   {{ matchCount }} 家推荐</p>
-                <p class="slide-des">根据您在当前页面填写的项目需求详情，SaaS平台会为您精心筛选，呈现与您的项目需求匹配度最高的设计服务供应商。</p>
+                <p class="slide-des">根据您在当前页面填写的项目需求详情，SaaS平台会为您精心筛选，呈现与您的项目需求匹配度最高的设计服务商。</p>
               </div>
               <div v-else>
                 <p class="slide-str">系统推荐中..</p>
-                <p class="slide-des">根据您在当前页面填写的项目需求详情，太火鸟会为您精心筛选，呈现与您的项目需求匹配度最高的设计服务供应商。</p>
+                <p class="slide-des">根据您在当前页面填写的项目需求详情，太火鸟会为您精心筛选，呈现与您的项目需求匹配度最高的设计服务商。</p>
               </div>
 
             </div>
@@ -139,7 +139,7 @@
               <div class="blank20"></div>
               <p>项目预算设置</p>
               <p class="slide-des">
-                产品研发费用通常是由产品设计、结构设计、硬件开发、样机、模具等费用构成，以普通消费电子产品为例设计费用占到产品研发费用10-20%，设置有竞争力的项目预算，能吸引到实力强的设计公司参与到项目中，建议预算设置到产品研发费用的20-30%。</p>
+                产品研发费用通常是由产品设计、结构设计、硬件开发、样机、模具等费用构成，以普通消费电子产品为例设计费用占到产品研发费用10-20%，设置有竞争力的项目预算，能吸引到实力强的设计服务商参与到项目中，建议预算设置到产品研发费用的20-30%。</p>
             </div>
           </div>
         </el-col>
@@ -207,7 +207,7 @@
             {type: 'number', required: true, message: '请选择所属行业', trigger: 'change'}
           ],
           cycle: [
-            {type: 'number', required: true, message: '请选择项目周期', trigger: 'change'}
+            {type: 'number', required: true, message: '请选择交付时间', trigger: 'change'}
           ],
           stage: [
             {type: 'number', required: true, message: '请选择项目进展阶段', trigger: 'change'}

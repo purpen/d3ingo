@@ -14,7 +14,7 @@
             </div> -->
 
             <div class="taking-info">
-              <p class="des"><i>*</i> 我们将根据设计公司的业务优势以及接单价格区间，来精准匹配推送项目。</p>
+              <p class="des"><i>*</i> 我们将根据设计服务商的业务优势以及接单价格区间，来精准匹配推送项目。</p>
               <!-- <p>设置设计类别的接单价格区间</p> -->
             </div>
             <div>
@@ -62,61 +62,65 @@
                   }">{{c.name}}</div>
                 <el-form :model="form" :ref="'ruleForm' + indexc">
                   <el-row class="edit-designType" v-for="(dt,indexdt) in c.designType" :key="indexdt">
-                    <el-col :span="typePhone = isMob ? 7 : 4">
-                      {{dt.name}}
-                    </el-col>
-                    <el-col :span="typePhone = isMob ? 7 : 4">
-                      项目平均周期
-                    </el-col>
-                    <el-col :span="typePhone = isMob ? 7 : 12">
-                        <el-form-item :prop="'project_cycle'" 
+                    <el-row>
+                      <el-col :span="typePhone === isMob ? 7 : 4">
+                        {{dt.name}}
+                      </el-col>
+                      <el-col :span="typePhone === isMob ? 7 : 4">
+                        项目平均周期
+                      </el-col>
+                      <el-col :span="typePhone === isMob ? 7 : 5">
+                          <el-form-item :prop="'project_cycle'" 
+                            v-if="isedit.index === indexc&&isedit.indexd ===indexdt"
+                            :rules="{
+                                required: true, type: 'number', message: '请选择项目平均周期', trigger: 'change'
+                              }"
+                            >
+                            <el-select v-model.number="form.project_cycle" placeholder="请选择平均周期">
+                              <el-option
+                                v-for="item in projectCycleOptions"
+                                :label="item.label"
+                                :key="item.index"
+                                :value="item.value">
+                              </el-option>
+                            </el-select>
+                          </el-form-item>
+                          <span v-else>
+                            {{ items['item_'+ (indexc+1) +'_'+ (indexdt+1)] | cycleval}}
+                          </span>
+                      </el-col>
+                      <el-col :span="typePhone === isMob ? 3 : 4" :offset="7">
+                        <div class="editbt">
+                          <span v-if="isedit.index === indexc&&isedit.indexd ===indexdt" 
+                            @click="submit('ruleForm' + indexc)">保存</span>
+                          <span v-else @click="editType(items['item_'+ (indexc+1) +'_'+ (indexdt+1)],indexdt,indexc)">编辑</span>
+                        </div>
+                      </el-col>
+                    </el-row>
+                    <el-row>
+                      <el-col :span="typePhone === isMob ? 10 : 4" :offset="4">
+                        项目最低接单价格
+                      </el-col>
+                      <el-col :span="5">
+                        <el-form-item :prop="'min_price'" 
                           v-if="isedit.index === indexc&&isedit.indexd ===indexdt"
                           :rules="{
-                              required: true, type: 'number', message: '请选择项目平均周期', trigger: 'change'
-                            }"
+                            required: true, type: 'number', message: '请选择最低接单价格', trigger: 'change'
+                          }"
                           >
-                          <el-select v-model.number="form.project_cycle" placeholder="请选择平均周期">
+                          <el-select v-model.number="form.min_price" placeholder="请选择最低接单价格">
                             <el-option
-                              v-for="item in projectCycleOptions"
+                              v-for="item in minPriceOptions"
                               :label="item.label"
                               :key="item.index"
-                              :value="item.value">
+                              :value="item.value"
+                              >
                             </el-option>
                           </el-select>
                         </el-form-item>
-                        <span v-else>
-                          {{ items['item_'+ (indexc+1) +'_'+ (indexdt+1)] | cycleval}}
-                        </span>
-                    </el-col>
-                    <el-col :span="typePhone = isMob ? 3 : 4">
-                      <div class="editbt">
-                        <span v-if="isedit.index === indexc&&isedit.indexd ===indexdt" 
-                          @click="submit('ruleForm' + indexc)">保存</span>
-                        <span v-else @click="editType(items['item_'+ (indexc+1) +'_'+ (indexdt+1)],indexdt,indexc)">编辑</span>
-                      </div>
-                    </el-col>
-                    <el-col :span="typePhone = isMob ? 10 : 4" :offset="4" class="m-t-20">
-                      项目最低接单价格
-                    </el-col>
-                    <el-col :span="10" class="m-t-20">
-                      <el-form-item :prop="'min_price'" 
-                        v-if="isedit.index === indexc&&isedit.indexd ===indexdt"
-                        :rules="{
-                          required: true, type: 'number', message: '请选择最低接单价格', trigger: 'change'
-                        }"
-                        >
-                        <el-select v-model.number="form.min_price" placeholder="请选择最低接单价格">
-                          <el-option
-                            v-for="item in minPriceOptions"
-                            :label="item.label"
-                            :key="item.index"
-                            :value="item.value"
-                            >
-                          </el-option>
-                        </el-select>
-                      </el-form-item>
-                      <span v-else>{{ items['item_'+ (indexc+1) +'_'+ (indexdt+1)] | minPrice}}</span>
-                    </el-col>
+                        <span v-else>{{ items['item_'+ (indexc+1) +'_'+ (indexdt+1)] | minPrice}}</span>
+                      </el-col>
+                    </el-row>
                   </el-row>
                 </el-form>
               </div>
@@ -240,7 +244,7 @@
           label: '3-4个月'
         }, {
           value: 5,
-          label: '5个月以上'
+          label: '4个月以上'
         }],
         userId: this.$store.state.event.user.id,
         form: {
@@ -279,7 +283,7 @@
           if (!val.min_price || val.min_price === '') {
             return '未设置'
           }
-          return val.min_price
+          return val.min_price + ' 元'
         } else {
           return '未设置'
         }

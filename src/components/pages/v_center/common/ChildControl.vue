@@ -29,7 +29,7 @@
       'vcenter-right': leftWidth === 2,
         'vcenter-right-mob': isMob}">
       <div class="vcenter-container" v-loading="isLoading">
-        <div :class="['content-item-box', isMob ? 'content-item-box-m' : '']">
+        <div :class="['content-item-box', isMob ? 'content-item-box-m blank50' : '']">
           <div class="item ing" v-for="(d, index) in itemIngList" :key="index">
             <div class="banner">
               <p>
@@ -84,7 +84,7 @@
               <h3>公司认证</h3>
               <p class="item-title">提交公司认证信息</p>
               <p class="item-btn">
-                <router-link :to="{name: 'vcenterComputerAccreditation'}">{{ item.verify_label }}</router-link>
+                <router-link :to="{name: 'vcenterComputerBase', params: {id: 2}}">{{ item.verify_label }}</router-link>
               </p>
             </div>
 
@@ -111,13 +111,13 @@
             <div class="form-title">
               <span>提示信息</span>
             </div>
-            <p class="alert-title"><span>*</span> 在{{custom.info}}平台发布需求前，请先完善以下信息并完成公司认证，便于系统精准匹配设计服务供应商。</p>
+            <p class="alert-title"><span>*</span> 在{{custom.info}}平台发布需求前，请先完善以下信息并完成公司认证，便于系统精准匹配设计服务商。</p>
 
             <div class="item clearfix" v-show="item.demand_info_status === 0">
               <h3>完善公司信息</h3>
               <p class="item-title">填写公司基本信息</p>
               <p class="item-btn">
-                <router-link :to="{name: 'vcenterComputerBase'}">编辑</router-link>
+                <router-link :to="{name: 'vcenterDComputerBase'}">编辑</router-link>
               </p>
             </div>
 
@@ -125,7 +125,7 @@
               <h3>公司认证</h3>
               <p class="item-title">提交公司认证信息</p>
               <p class="item-btn">
-                <router-link :to="{name: 'vcenterComputerAccreditation'}">去认证</router-link>
+                <router-link :to="{name: 'vcenterDComputerBase', params: {id: 1}}">去认证</router-link>
               </p>
             </div>
 
@@ -497,6 +497,7 @@
   }
 
   .banner {
+    width: 100%;
     height: 40px;
     line-height: 20px;
     border-bottom: 1px solid #ccc;

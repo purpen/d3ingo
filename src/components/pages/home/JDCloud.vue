@@ -101,13 +101,13 @@
                       </el-form-item>
                     </el-col>
                   </el-row>
-                  <el-row :gutter="10">
-                    <el-col :span="10" :offset="2">
+                  <el-row>
+                    <el-col :span="20" :offset="2">
                       <el-form-item prop="account">
                         <el-input v-model="form.account" ref="account" placeholder="手机号码"></el-input>
                       </el-form-item>
                     </el-col>
-                    <el-col :span="10">
+                    <!-- <el-col :span="10">
                       <el-form-item prop="smsCode">
                         <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码" class="send-bt bt-chage-ele">
                           <template slot="append">
@@ -116,7 +116,7 @@
                           </template>
                         </el-input>
                       </el-form-item>
-                    </el-col>
+                    </el-col> -->
                   </el-row>
                   <el-col>
                     <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt">
@@ -170,7 +170,7 @@
         </el-row>
         <div class="container">
           <el-row class="pad-top-50" style="margin-left: 5px;
-    margin-right: 5px;">
+            margin-right: 5px;">
             <el-col :span="24" class="four-img"></el-col>
           </el-row>
         </div>
@@ -322,7 +322,7 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
+          <!-- <el-row>
             <el-col :span="20" :offset="2">
               <el-form-item prop="smsCode" class="call-ele">
                 <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
@@ -333,7 +333,7 @@
                 </el-input>
               </el-form-item>
             </el-col>
-          </el-row>
+          </el-row> -->
           <el-row>
             <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt height-40 mar-20-30">
               免费发布项目需求
@@ -404,7 +404,7 @@
                 <el-col :span="15" class="phone-four-text">
                   <div class="text-text">
                     敲定设计细节
-                    匹配设计公司
+                    匹配设计服务商
                   </div>
                 </el-col>
               </div>
@@ -536,14 +536,14 @@
             <el-form-item prop="account" class="pad-bot-15">
               <el-input v-model="form1.account" ref="account" placeholder="手机号码"></el-input>
             </el-form-item>
-            <el-form-item prop="smsCode" class="wap-disabled-btn pad-bot-20 call-ele">
+            <!-- <el-form-item prop="smsCode" class="wap-disabled-btn pad-bot-20 call-ele">
               <el-input class="" v-model="form1.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
                 <template slot="append">
                   <el-button  @click="fetchCode1" :disabled="time > 0">{{ codeMsg }}
                   </el-button>
                 </template>
               </el-input>
-            </el-form-item>
+            </el-form-item> -->
           </el-form>
         </div>
         <div class="bt-center">
@@ -659,7 +659,7 @@ export default {
         },
         {
           img: require('assets/images/home/jd/2.png'),
-          title: '集成零售流量需求方与设计服务供应商，以及背后的制造业生态链'
+          title: '集成零售流量需求方与设计服务商，以及背后的制造业生态链'
         },
         {
           img: require('assets/images/home/jd/3.png'),
@@ -708,7 +708,7 @@ export default {
       colList2: [
         {
           img: require('assets/images/home/jd/7.png'),
-          title: '聚合1000+领先设计服务供应商',
+          title: '聚合1000+领先设计服务商',
           title2: '兼顾成果原创性、创新性与可行性'
         },
         {
@@ -729,7 +729,7 @@ export default {
       colList2_yw: [
         {
           img: require('assets/images/home/jd/7-yw.png'),
-          title: '聚合1000+领先设计服务供应商',
+          title: '聚合1000+领先设计服务商',
           title2: '兼顾成果原创性、创新性与可行性',
           title0: '100+国内顶尖设计机构'
         },
@@ -771,7 +771,7 @@ export default {
         },
         {
           img: require('assets/images/home/jd/15.png'),
-          title: '匹配设计服务供应商'
+          title: '匹配设计服务商'
         },
         {
           img: require('assets/images/home/jd/16.png'),
@@ -799,7 +799,7 @@ export default {
         },
         {
           img: require('assets/images/home/jd/15-yw.png'),
-          title: '匹配设计服务供应商'
+          title: '匹配设计服务商'
         },
         {
           img: require('assets/images/home/jd/16-yw.png'),
@@ -898,15 +898,17 @@ export default {
       isLoadingBtn: false,
       userList: [],   // 消息列表
       form: {
-        smsCode: '',  // 验证码
         demand: '',   // 需求
         account: '',  // 手机号
         contact: ''   // 联系人
       },
       form1: {
-        smsCode: '',  // 验证码
         account: '',  // 手机号
         name: ''      // app 联系人
+      },
+      query: {
+        from: 2,
+        mark: ''
       },
       // swiper
       // swiperOption: {
@@ -972,10 +974,10 @@ export default {
     let that = this
     if (that.$store.state.event.prod.id === 0) {
       that.$router.replace({name: 'home'})
+      return
     }
-    if (!that.$route.query || !that.$route.query.from) {
-      that.$router.push({name: 'SaaSIndex', query: {from: 2}})
-    }
+    this.formatQuery(this.$route.query)
+    this.generalize(this.query)
   },
   mounted () {
     let that = this
@@ -1046,7 +1048,7 @@ export default {
     // pc 右下角
     contact () {
       if (this.phone) {
-        this.$http.post(api.pcAdd, {phone: this.phone, from: 3, new_from: this.$route.query.from, device: this.isMob ? 2 : 1, url: window.location.href})
+        this.$http.post(api.pcAdd, {phone: this.phone, from: 5})
           .then(res => {
             if (res.data.meta.status_code === 200) {
               this.$message.success('提交成功')
@@ -1095,11 +1097,7 @@ export default {
           let row = {
             user_name: this.form1.name,
             phone: this.form1.account,
-            sms_code: this.form1.smsCode,
-            new_from: this.$route.query.from, // 1. 小程序 2. 默认/铟果 3. 艺火 4. 360 5. 头条号 6. 优客
-            device: this.isMob ? 2 : 1, // 1.PC 2.Phone
-            from: 4,
-            url: window.location.href
+            from: 4
           }
           this.$http.post(api.pcAdd, row)
             .then(res => {
@@ -1124,11 +1122,10 @@ export default {
             user_name: this.form.contact,   // 联系人
             phone: this.form.account,        // 手机号
             item_name: this.form.demand,   // 需求
-            new_from: this.$route.query.from, // 1. 小程序 2. 默认/铟果 3. 艺火 4. 360 5. 头条号 6. 优客
-            device: this.isMob ? 2 : 1, // 1.PC 2.Phone
-            from: 2,   // 小程序or网页
-            sms_code: this.form.smsCode,   // 小程序or网页
-            url: window.location.href
+            from: 5   // 小程序or网页
+          }
+          if (this.isMob) {
+            row.from = 4
           }
           this.$http.post(api.pcAdd, row)
             .then(res => {
@@ -1144,7 +1141,7 @@ export default {
               this.$message.error(error)
             })
         } else {
-          this.$message.error('请填写信息')
+          // this.$message.error('请填写信息')
         }
       })
     },
@@ -1153,6 +1150,27 @@ export default {
       if (this.user.type === 1) {
       } else {
         this.$message.error('请使用需求公司账号登录')
+      }
+    },
+    generalize(query) {
+      this.$http.post(api.generalize, {
+        url: location.href,
+        son_source: query.mark,
+        device: this.isMob ? 2 : 1,
+        new_from: query.from
+      }).then(res => {
+        console.log(res)
+      }).catch(err => {
+        console.error(err)
+      })
+    },
+    formatQuery(query) {
+      Object.assign(this.query, query)
+      if (typeof this.query.from !== 'number') {
+        this.query.from = 2
+      }
+      if (this.query.from < 1) {
+        this.query.from = 2
       }
     }
   },

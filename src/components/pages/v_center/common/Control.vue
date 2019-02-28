@@ -17,7 +17,9 @@
                   <h3>完善公司信息</h3>
                   <p class="item-title">填写公司基本信息、公司简介、荣誉奖励</p>
                   <p class="item-btn">
-                    <router-link :to="{name: 'vcenterComputerBase'}">编辑</router-link>
+                    <router-link :to="{name: 'vcenterComputerBase'}">
+                      <button class="small-button red-button">编辑</button>
+                    </router-link>
                   </p>
                 </div>
 
@@ -25,7 +27,7 @@
                   <h3>公司认证</h3>
                   <p class="item-title">提交公司认证信息</p>
                   <p class="item-btn">
-                    <router-link :to="{name: 'vcenterComputerAccreditation'}">
+                    <router-link :to="{name: 'vcenterComputerBase', params: {id: 2}}">
                       <button class="small-button red-button">{{ item.verify_label }}</button>
                     </router-link>
                   </p>
@@ -58,7 +60,7 @@
                 <div class="form-title">
                   <span>提示信息</span>
                 </div>
-                <p class="alert-title"><span>*</span> 在{{custom.info}}平台发布需求前，请先完善以下信息并完成公司认证，便于系统精准匹配设计服务供应商。</p>
+                <p class="alert-title"><span>*</span> 在{{custom.info}}平台发布需求前，请先完善以下信息并完成公司认证，便于系统精准匹配设计服务商。</p>
 
                 <div class="item clearfix" v-show="item.demand_info_status === 0">
                   <h3>完善公司信息</h3>
@@ -72,7 +74,7 @@
                   <h3>公司认证</h3>
                   <p class="item-title">提交公司认证信息</p>
                   <p class="item-btn">
-                    <router-link :to="{name: 'vcenterComputerAccreditation'}">去认证</router-link>
+                    <router-link :to="{name: 'vcenterComputerBase', params: {id: 2}}">去认证</router-link>
                   </p>
                 </div>
 
@@ -658,7 +660,7 @@
 
   p.alert-title {
     line-height: 30px;
-    font-size: 12px;
+    font-size: 1.4rem;
     margin:0 -20px 20px;
     color: #666;
     /* background:#f7f7f7; */

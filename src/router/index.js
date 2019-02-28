@@ -91,7 +91,7 @@ let routes = [
     path: '/server_design',
     name: 'serverDesign',
     meta: {
-      title: '服务-设计公司'
+      title: '服务-设计服务商'
     },
     component: require('@/components/pages/home/ServerDesign')
   },
@@ -485,7 +485,7 @@ let routes = [
     path: '/projects/compare/:id',
     name: 'projectCompare',
     meta: {
-      title: '设计公司比较',
+      title: '设计服务商比较',
       requireAuth: true,
       hideHeader: true,
       hideFooter: true,
@@ -755,7 +755,7 @@ let routes = [
     path: '/promote/youke',
     name: 'youke',
     meta: {
-      title: '优鲜集'
+      title: '优客工场'
     },
     component: require('@/components/pages/promote/Promote3')
   },

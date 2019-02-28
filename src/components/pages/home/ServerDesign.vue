@@ -15,7 +15,7 @@
 
     <div class="banner" :style="{height : calcHeight}">
       <div class="banner-contant">
-        <h3 :class="{'m-h3' : isMob}">成为铟果设计服务商</h3>
+        <h3 :class="{'m-h3' : isMob}">成为太火鸟设计服务商</h3>
         <p :class="{'m-p' : isMob}">洞察市场需求，运用专业设计与技术，提供更好的产品和服务，助力客户成长，帮助企业赢得挑战。</p>
       </div>
     </div>
@@ -50,7 +50,7 @@
     </div>
 
     <div class="container">
-      <div class="pub-title">入驻设计服务供应商</div>
+      <div class="pub-title">入驻设计服务商</div>
       <div class="design-company">
         <img src="../../../assets/images/company_logo/logo_pinwu.jpg"/>
         <img src="../../../assets/images/company_logo/logo_muma.jpg"/>

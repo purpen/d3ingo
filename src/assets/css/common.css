@@ -10,6 +10,9 @@
 .clear {
   clear: both;
 }
+.block {
+  display: block
+}
 .flex {
   display: flex;
 }
@@ -118,6 +121,12 @@
 .line-height1_5 {
   line-height: 1.5
 }
+.height30 {
+  height: 30px;
+}
+.border-t10 {
+  border: 10px solid transparent;
+}
 .main .border-b-no {
   border-bottom: none;
 }
@@ -159,7 +168,9 @@
 .blank60 {
   padding-top: 60px;
 }
-
+.margin0 {
+  margin: 0
+}
 .margin-r-15 {
   margin-right: 15px!important;
 }

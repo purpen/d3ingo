@@ -119,7 +119,7 @@
             </el-table-column>
             <el-table-column
               prop="item.created_at"
-              width="80"
+              width="100"
               label="创建时间">
             </el-table-column>
             <el-table-column
@@ -139,6 +139,7 @@
           </el-table>
 
           <el-pagination
+            v-if="tableData.length && query.totalCount > query.pageSize"
             class="pagination"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
@@ -397,7 +398,12 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+  .admin-search-form > form {
+    font-size: 0;
+  }
+  .admin-search-form  .el-form-item {
+    margin-left: 15px;
+  }
   .match-company-box {
     margin: 10px;
   }

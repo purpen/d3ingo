@@ -32,22 +32,22 @@ module.exports = [
     },
     component: require('@/components/b_admin/order/List')
   },
-  // 设计公司列表
+  // 设计服务商列表
   {
     path: '/b_admin/company/list',
     name: 'bAdminCompanyList',
     meta: {
-      title: '设计公司列表',
+      title: '设计服务商列表',
       requireAuth: true
     },
     component: require('@/components/b_admin/company/List')
   },
-  // 设计公司详情
+  // 设计服务商详情
   {
     path: '/b_admin/company/show/:id',
     name: 'bAdminCompanyShow',
     meta: {
-      title: '设计公司详情',
+      title: '设计服务商详情',
       requireAuth: true
     },
     component: require('@/components/b_admin/company/Show')

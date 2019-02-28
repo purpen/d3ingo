@@ -42,7 +42,7 @@
             text: [
               {text: '第'},
               {text: '    ' + d.sort + '   ', style: 'write'},
-              {text: '阶段：设计方在'},
+              {text: '阶段：设计服务商在'},
               {text: '    ' + d.time + '   ', style: 'write'},
               {text: '个工作日内提交'},
               {text: '    ' + d.title + '   ', style: 'write'},
@@ -82,7 +82,7 @@
             {text: '电话: ' + this.form.demand_company_phone, style: 'p'},
 
             {text: ' ', style: 'p'},
-            {text: '乙方（设计方）：', style: 'p'},
+            {text: '乙方（设计服务商）：', style: 'p'},
             {text: '公司名称: ' + this.form.design_company_name, style: 'p'},
             {text: '地址: ' + this.form.design_company_address, style: 'p'},
             {text: '联系人: ' + this.form.design_company_legal_person, style: 'p'},

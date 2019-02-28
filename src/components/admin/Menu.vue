@@ -20,7 +20,7 @@
             <el-menu-item index="itemSltem" :route="{name:'adminItemSltem'}">小程序</el-menu-item>
         </el-submenu>
         <el-submenu index="3">
-          <template slot="title"><i class="fa fa-product-hunt"></i> 设计公司管理</template>
+          <template slot="title"><i class="fa fa-product-hunt"></i> 设计服务商管理</template>
             <el-menu-item index="companyList" :route="{name: 'adminCompanyList'}">列表</el-menu-item>
         </el-submenu>
         <el-submenu index="4">

@@ -191,22 +191,22 @@ module.exports = [
     },
     component: require('@/components/admin/invoice/List')
   },
-  // 设计公司列表
+  // 设计服务商列表
   {
     path: '/admin/company/list',
     name: 'adminCompanyList',
     meta: {
-      title: '设计公司列表',
+      title: '设计服务商列表',
       requireAuth: true
     },
     component: require('@/components/admin/company/List')
   },
-  // 设计公司详情
+  // 设计服务商详情
   {
     path: '/admin/company/show/:id',
     name: 'adminCompanyShow',
     meta: {
-      title: '设计公司详情',
+      title: '设计服务商详情',
       requireAuth: true
     },
     component: require('@/components/admin/company/Show')

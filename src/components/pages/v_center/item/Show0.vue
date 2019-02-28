@@ -73,7 +73,7 @@
           <!-- <div class="select-item-box clearfix" v-if="statusLabel.selectCompany"> -->
           <div class="select-item-box clearfix" v-if="false">
             <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
-              <el-collapse-item title="选择系统推荐的设计公司" name="3">
+              <el-collapse-item title="选择系统推荐的设计服务商" name="3">
                 <div class="select-company-item clearfix" v-for="(d, index) in stickCompany" :key="index">
                   <el-checkbox class="check-box" v-model="stickCompanyIds" :label="d.id">
                     <el-row class="content">
@@ -114,9 +114,9 @@
                 <div class="clear"></div>
                 <div class="pub-btn clearfix" v-if="item.status === 3">
                   <el-button class="is-custom" @click="stickCompanySubmit" :loading="isLoadingBtn"
-                             :disabled="this.stickCompanyIds.length <= 0" type="primary">发送项目需求
+                             :disabled="this.stickCompanyIds.length <= 0" type="primary">发送项目邀约
                   </el-button>
-                  <p class="send-company-des">项目需求详情将发送给已选中的设计服务供应商</p>
+                  <p class="send-company-des">项目需求详情将发送给已选中的设计服务商</p>
                 </div>
               </el-collapse-item>
             </el-collapse>
@@ -124,7 +124,7 @@
 
           <div class="select-item-box clearfix" v-if="statusLabel.trueCompany">
             <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
-              <el-collapse-item title="已选择的设计公司" name="4" class="partnersDesign">
+              <el-collapse-item title="已选择的设计服务商" name="4" class="partnersDesign">
                 <div class="offer-company-item clearfix" v-for="(d, index) in offerCompany" :key="index">
 
                   <div class="item-logo">
@@ -189,7 +189,7 @@
 
           <div class="select-item-box clearfix" v-if="statusLabel.cooperateCompany">
             <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
-              <el-collapse-item title="合作的设计公司" name="5" class="partnersDesign">
+              <el-collapse-item title="合作的设计服务商" name="5" class="partnersDesign">
                 <div class="offer-company-item clearfix" v-if="cooperateCompany">
 
                   <div class="item-logo">
@@ -304,11 +304,11 @@
             <el-collapse v-model="selectCompanyCollapse" @change="selectCompanyboxChange">
               <el-collapse-item title="项目管理" name="11">
                 <div class="manage-item clearfix" v-if="item.status === 9">
-                  <p class="wait-begin">等待设计公司开始项目</p>
+                  <p class="wait-begin">等待设计服务商开始项目</p>
                 </div>
                 <div class="manage-item add-stage clearfix" v-else>
                   <div class="manage-item" v-if="stages.length === 0">
-                    <p class="wait-begin">项目进行中，等待设计方提交阶段文件</p>
+                    <p class="wait-begin">项目进行中，等待设计服务商提交阶段文件</p>
                   </div>
                   <div class="clearfix" v-else>
                      <div class="stage-item clearfix" v-for="(d, index) in stages" :key="index">
@@ -534,9 +534,9 @@ export default {
         .then(function(response) {
           self.isLoadingBtn = false
           if (response.data.meta.status_code === 200) {
-            self.$message.success('操作成功，等待设计公司接单!')
+            self.$message.success('操作成功，等待设计服务商接单!')
             self.item.status = 4
-            self.item.status_value = '等待设计公司接单'
+            self.item.status_value = '等待设计服务商接单'
             self.statusLabel.selectCompany = false
             self.statusLabel.trueCompany = true
             self.checkSubmitCompany()
@@ -588,7 +588,7 @@ export default {
       console.log(this.quota)
       this.quotaDialog = true
     },
-    // 拒绝设计公司报价提交
+    // 拒绝设计服务商报价提交
     refuseCompanySubmit() {
       let currentIndex = this.$refs.currentIndex.value
       let companyId = this.$refs.companyId.value
@@ -604,7 +604,7 @@ export default {
             self.comfirmDialog = false
             self.$message.success('操作成功!')
             self.offerCompany[currentIndex].item_status = -1
-            self.offerCompany[currentIndex].status_value = '已拒绝设计公司报价'
+            self.offerCompany[currentIndex].status_value = '已拒绝设计服务商报价'
           } else {
             self.comfirmLoadingBtn = false
             self.$message.error(response.data.meta.message)
@@ -615,7 +615,7 @@ export default {
           self.comfirmLoadingBtn = false
         })
     },
-    // 同意设计公司报价, 开始合作
+    // 同意设计服务商报价, 开始合作
     agreeCompanySubmit() {
       let companyId = this.$refs.companyId.value
       let self = this
@@ -630,7 +630,7 @@ export default {
             self.comfirmDialog = false
             self.$message.success('操作成功!')
             self.item.status = 5
-            self.item.status_value = '已确认合作，等待设计公司提交合同'
+            self.item.status_value = '已确认合作，等待设计服务商提交合同'
             self.cooperCompany()
           } else {
             self.comfirmLoadingBtn = false
@@ -727,7 +727,7 @@ export default {
           self.$message.error(error.message)
         })
     },
-    // 查看已合作的设计公司
+    // 查看已合作的设计服务商
     cooperCompany() {
       this.progressButt = 2
       this.progressContract = 0
@@ -743,7 +743,7 @@ export default {
       this.$refs.comfirmType.value = 4
       this.$refs.confirmTargetId.value = stageId
       this.$refs.currentIndex.value = index
-      this.comfirmMessage = '确认验收阶段成果？验收成功后该阶段项目款将进入设计服务供应商账户。'
+      this.comfirmMessage = '确认验收阶段成果？验收成功后该阶段项目款将进入设计服务商账户。'
       this.comfirmDialog = true
     },
     // 阶段确认通过
@@ -768,7 +768,7 @@ export default {
           self.comfirmLoadingBtn = false
         })
     },
-    // 评价设计公司
+    // 评价设计服务商
     evaluateSubmit() {
       if (this.evaluate.score === 0) {
         this.$message.error('请选择分数！')
@@ -856,7 +856,7 @@ export default {
       return
     }
     let uType = this.$store.state.event.user.type
-    // 如果是设计公司，跳到设计公司项目详情
+    // 如果是设计服务商，跳到设计服务商项目详情
     if (uType === 2) {
       this.$router.replace({ name: 'vcenterCItemShow' })
       return
@@ -899,14 +899,14 @@ export default {
               self.progressItem = -1
               self.statusIconUrl = require('@/assets/images/item/match_company.png')
               break
-            case 3: // 获取系统推荐的设计公司,选择设计公司
+            case 3: // 获取系统推荐的设计服务商,选择设计服务商
               self.progressButt = 1
               self.progressContract = -1
               self.progressItem = -1
               self.statusLabel.selectCompany = true
               self.statusIconUrl = require('@/assets/images/item/chose_company.png')
               break
-            case 4: // 查看已提交报价的设计公司, 提交报价单
+            case 4: // 查看已提交报价的设计服务商, 提交报价单
               self.checkSubmitCompany()
               break
             case 5: // 等待提交合同
@@ -1015,7 +1015,7 @@ export default {
             default:
           }
 
-          // 获取系统推荐的设计公司
+          // 获取系统推荐的设计服务商
           if (self.statusLabel.selectCompany) {
             self.$http
               .get(api.recommendListId.format(self.item.id), {})
@@ -1157,7 +1157,7 @@ export default {
               title: self.item.design_cost_value
             },
             {
-              name: '项目周期',
+              name: '交付时间',
               title: self.item.cycle_value
             },
             {
@@ -1428,10 +1428,6 @@ export default {
   color: #00ac84;
 }
 
-.capital-item .capital-btn {
-  /* padding: 10px 30px 10px 30px; */
-}
-
 .manage-item {
   min-height: 80px;
   text-align: center;
@@ -1450,10 +1446,6 @@ export default {
   margin-top: 30px;
   margin-bottom: 20px;
   text-align: center;
-}
-
-.finish-item-btn button {
-  /* padding: 10px 60px 10px 60px; */
 }
 
 .finish-item {
@@ -1538,10 +1530,6 @@ p.contact {
 
 p.ev-c-content {
   padding: 10px 50px;
-}
-
-p.ev-c-btn button {
-  /* padding: 10px 50px; */
 }
 
 .evaluate-report .ev-c-name {
@@ -1664,19 +1652,12 @@ section ul li a {
     margin-right: 16px;
   }
 }
-
-.quota-btn {
-
-}
 .quota-btn a {
   font-size: 12px;
   color: #FF5A5F;
 }
 .dialog-footer.btn {
   margin-right: 30px;
-}
-.dialog-footer.btn button {
-  /* padding: 10px 30px; */
 }
 .alert-line-height {
   text-align: center

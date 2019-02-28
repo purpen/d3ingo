@@ -42,7 +42,7 @@
             text: [
               {text: '第'},
               {text: '    ' + d.sort + '   ', style: 'write'},
-              {text: '阶段：设计方在'},
+              {text: '阶段：设计服务商在'},
               {text: '    ' + d.time + '   ', style: 'write'},
               {text: '个工作日内提交'},
               {text: '    ' + d.title + '   ', style: 'write'},
@@ -85,7 +85,7 @@
             {text: '联系人: ' + this.form.thn_company_legal_person, style: 'p'},
             {text: '电话: ' + this.form.thn_company_phone, style: 'p'},
             {text: '', style: 'marTB'},
-            {text: '乙方(设计公司)：', style: 'p'},
+            {text: '乙方(设计服务商)：', style: 'p'},
             {text: '公司名称: ' + this.form.design_company_name, style: 'p'},
             {text: '地址: ' + this.form.design_company_address, style: 'p'},
             {text: '联系人: ' + this.form.design_company_legal_person, style: 'p'},
@@ -201,7 +201,7 @@
             {text: '4、任何一方如遇政府法令或法律程序要求向第三方提供上述资料，可按规定提供，但应尽快将此项事实通知对方。', style: 'p'},
 
             {text: '七、违约责任', style: 'title'},
-            {text: '1、如乙方未按本合同约定提交相应的设计内容，甲方有权中止本合同，不再继续支付剩余款项，乙方亦不退还已付项目执行设计公司的款项；', style: 'p'},
+            {text: '1、如乙方未按本合同约定提交相应的设计内容，甲方有权中止本合同，不再继续支付剩余款项，乙方亦不退还已付项目执行设计服务商的款项；', style: 'p'},
             {text: '2、如设计过程中甲方不能积极配合乙方工作，严重影响乙方的工作安排，在收到乙方书面通知后仍不能积极配合，则乙方有权中止合同，甲方已支付款项不予退还；', style: 'p'},
             {text: '3、如甲方不能按照合同规定向乙方支付相关费用，乙方有权中止合同；', style: 'p'},
             {text: '4、如甲方未付清该合同全部设计款项，则该项目所有设计方案之知识产权仍归乙方所有；', style: 'p'},
@@ -340,7 +340,7 @@
                 // if (item.source === 1) {
                 //   let uType = that.$store.state.event.user.type
                 //   console.log(uType)
-                //   // 如果是设计公司
+                //   // 如果是设计服务商
                 //   if (uType === 2) {
                 //     that.$router.replace({name: 'vcenterContractJdDesignDown', params: {unique_id: uniqueId}})
                 //   } else {

@@ -25,7 +25,7 @@
                   <el-row>
                     <el-col :span="20" :offset="2">
                       <el-form-item prop="contact">
-                        <el-input v-model="form.contact" ref="contact" placeholder="请输入联系人"></el-input>
+                        <el-input v-model="form.contact" ref="contact" placeholder="请输入姓名"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -98,7 +98,7 @@
       </el-row>
       <div class="container">
         <el-row class="pad-top-50" style="margin-left: 5px;
-    margin-right: 5px;">
+          margin-right: 5px;">
           <el-col :span="24" class="four-img"></el-col>
         </el-row>
       </div>
@@ -266,7 +266,7 @@
         <el-row>
           <el-col :span="20" :offset="2">
             <el-form-item prop="contact">
-              <el-input v-model="form.contact" ref="contact" placeholder="请输入联系人"></el-input>
+              <el-input v-model="form.contact" ref="contact" placeholder="请输入姓名"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -359,7 +359,7 @@
               <el-col :span="15" class="phone-four-text">
                 <div class="text-text">
                   敲定设计细节
-                  匹配设计公司
+                  匹配设计服务商
                 </div>
               </el-col>
             </div>
@@ -550,7 +550,7 @@
       <div class="form mtop_40">
         <el-form :model="form1" :rules="ruleForm" ref="ruleForm1" class="pad-20" @submit.native.prevent>
           <el-form-item prop="name" class="pad-bot-15">
-            <el-input v-model="form1.name" name="username" placeholder="请输入联系人"></el-input>
+            <el-input v-model="form1.name" name="username" placeholder="请输入姓名"></el-input>
           </el-form-item>
           <el-form-item prop="account" class="pad-bot-15">
             <el-input v-model="form1.account" ref="account" placeholder="手机号码"></el-input>
@@ -611,15 +611,15 @@
         isLoadingBtn: false,
         userList: [],   // 消息列表
         form: {
-          smsCode: '',  // 验证码
-          demand: '',   // 需求
-          account: '',  // 手机号
-          contact: ''  // 联系人
+          demand: '', // 需求
+          account: '', // 手机号
+          contact: '', // 姓名
+          smsCode: ''
         },
         form1: {
-          account: '',  // 手机号
-          smsCode: '',  // 验证码
-          name: ''      // app 联系人
+          account: '', // 手机号
+          name: '', // app 姓名
+          smsCode: ''
         },
         // swiper
         swiperOption: {
@@ -648,7 +648,7 @@
             { required: true, message: '请输入您的需求', trigger: 'blur' }
           ],
           contact: [
-            {required: true, message: '请输入联系人', trigger: 'blur'}
+            {required: true, message: '请输入姓名', trigger: 'blur'}
           ],
           smsCode: [
             {required: true, message: '请输入验证码', trigger: 'blur'}
@@ -657,6 +657,10 @@
           name: [
             { required: true, message: '请输入您的姓名', trigger: 'blur' }
           ]
+        },
+        query: {
+          from: 5,
+          mark: ''
         }
       }
     },
@@ -747,10 +751,8 @@
               user_name: this.form1.name,
               phone: this.form1.account,
               sms_code: this.form1.smsCode,
-              new_from: this.$route.query.from, // 1. 小程序 2. 默认/铟果 3. 艺火 4. 360 5. 头条号 6. 优客
-              device: this.isMob ? 2 : 1, // 1.PC 2.Phone
-              from: 4,
-              url: window.location.href
+              source: this.query.from,
+              son_source: this.query.mark
             }
             this.$http.post(api.pcAdd, row)
               .then(res => {
@@ -772,14 +774,15 @@
         this.$refs[form].validate(valid => {
           if (valid) {
             let row = {
-              user_name: this.form.contact, // 联系人
+              user_name: this.form.contact, // 姓名
               phone: this.form.account, // 手机号
               item_name: this.form.demand, // 需求
-              new_from: this.$route.query.from, // 1. 小程序 2. 默认/铟果 3. 艺火 4. 360 5. 头条号 6. 优客
-              device: this.isMob ? 2 : 1, // 1.PC 2.Phone
-              from: 2, // 小程序or网页
-              sms_code: this.form.smsCode, // 小程序or网页
-              url: window.location.href
+              source: this.query.from,
+              son_source: this.query.mark,
+              sms_code: this.form.smsCode
+            }
+            if (this.isMob) {
+              row.from = 4
             }
             this.$http.post(api.pcAdd, row)
               .then(res => {
@@ -795,16 +798,38 @@
                 this.$message.error(error)
               })
           } else {
-            this.$message.error('请填写信息')
+            // this.$message.error('请填写信息')
           }
         })
+      },
+      generalize(query) {
+        this.$http.post(api.generalize, {
+          url: location.href,
+          son_source: query.mark,
+          device: this.isMob ? 2 : 1,
+          new_from: query.from
+        }).then(res => {
+          console.log(res)
+        }).catch(err => {
+          console.error(err)
+        })
+      },
+      formatQuery(query) {
+        Object.assign(this.query, query)
+        if (typeof this.query.from !== 'number') {
+          this.query.from = 5
+        }
+        if (this.query.from < 1) {
+          this.query.from = 5
+        }
       }
     },
     created () {
-      let that = this
-      if (!that.$route.query || !that.$route.query.from) {
-        that.$router.push({name: 'promote', query: {from: 2}})
-      }
+      /* eslint-disable */
+      (function(b,a,e,h,f,c,g,s){b[h]=b[h]||function(){(b[h].c=b[h].c||[]).push(arguments)};b[h].s=!!c;g=a.getElementsByTagName(e)[0];s=a.createElement(e);s.src="//s.union.360.cn/"+f+".js";s.defer=!0;s.async=!0;g.parentNode.insertBefore(s,g)})(window,document,"script","_qha",290883,false);
+      /* eslint-disable */
+      this.formatQuery(this.$route.query)
+      this.generalize(this.query)
     },
     mounted () {
       let that = this

@@ -12,7 +12,7 @@
             <section class="verify" v-if="item.verify_status === 0">
               <img :src="require('assets/images/item/authentication@2x.png')" alt="未认证">
               <h3>您还没有实名认证</h3>
-              <router-link :to="{name: 'vcenterDCompanyIdentification'}" class="item">
+              <router-link :to="{name: 'vcenterDComputerBase', params: {id: 1}}" class="item">
                 <el-button class="is-custom" type="primary">马上去认证</el-button>
               </router-link>
             </section>
@@ -21,7 +21,7 @@
               <img :src="require('assets/images/item/to-examine@2x.png')" alt="认证中">
               <h3>您的实名认证正在审核中</h3>
               <p>请耐心等待...</p>
-              <router-link :to="{name: 'vcenterDCompanyIdentification'}" class="item">
+              <router-link :to="{name: 'vcenterDComputerBase', params: {id: 1}}" class="item">
                 <el-button class="is-custom" type="primary">重新修改</el-button>
               </router-link>
             </section>
@@ -35,7 +35,7 @@
               <img :src="require('assets/images/item/authentication-error@2x.png')" alt="认证失败">
               <h3>对不起，您的实名认证失败了...</h3>
               <p>{{item.verify_summary}}</p>
-              <router-link :to="{name: 'vcenterDCompanyIdentification'}" class="item">
+              <router-link :to="{name: 'vcenterDComputerBase', params: {id: 1}}" class="item">
                 <el-button class="is-custom" type="primary">重新认证</el-button>
               </router-link>
             </section>
@@ -181,9 +181,9 @@
     methods: {},
     created: function () {
       let uType = this.$store.state.event.user.type
-      // 如果是设计公司，跳到设计公司
+      // 如果是设计服务商，跳到设计服务商
       if (uType === 2) {
-        this.$router.replace({name: 'vcenterComputerAccreditation'})
+        this.$router.replace({name: 'vcenterComputerBase'})
         return
       }
       const that = this
