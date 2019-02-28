@@ -766,7 +766,7 @@ export default {
   font-size: 12px;
   margin-right: 2px;
 }
-.select-query .el-form-item {
+.admin-header .select-query .el-form-item {
   margin-bottom: 0 !important;
 }
 .select-data .el-range-editor--small.el-input__inner {
