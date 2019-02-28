@@ -13,7 +13,14 @@
         </div>
         <div class="card-box">
           <div class="card-header">
-
+            <div class="margin-b15" v-if="currentId">
+              <el-button type="primary" @click="showClueDialog(3)">无效</el-button>
+              <el-button type="danger" @click="showClueDialog(4)">流失</el-button>
+              <div class="fr">
+                <a class="pointer border-t10" @click="getPreviousUser">上一条</a>
+                <a class="pointer border-t10" @click="getNextUser">下一条</a>
+              </div>
+            </div>
             <div class="user-info-top clearfix">
               <div class="fl clearfix flex-a-c">
                 <div class="user-name fl margin-r20">
@@ -29,14 +36,14 @@
                 </div>
               </div>
               
-              <div :class="['user-status', 'fr', {
-                  'status1': userForm.status === 1,
-                  'status2': userForm.status === 2,
-                  'status3': userForm.status === 3,
-                  'status4': userForm.status === 4,
-                  'status5': userForm.status === 5
+              <!-- <div :class="['user-status', 'fr', {
+                  'status1': userForm.new_status === 1,
+                  'status2': userForm.new_status === 2,
+                  'status3': userForm.new_status === 3,
+                  'status4': userForm.new_status === 4,
+                  'status5': userForm.new_status === 5
                   }]">
-                <el-select v-model.number="userForm.status" :disabled="!isHasPower" @change="isUpdatedStatus">
+                <el-select v-model.number="userForm.new_status" disabled @change="isUpdatedStatus">
                   <el-option
                     v-for="(item, index) in userStatus"
                     :key="index"
@@ -53,31 +60,44 @@
                     <span style="float: left">{{ item.label }}</span>
                   </el-option>
                 </el-select>
+              </div> -->
+              <div class="fr line-height30">
+                  <span v-if="!currentId">潜在客户</span>
+                  <div v-else>
+                    <span v-if="userForm.new_status === 1">潜在客户</span>
+                    <span v-if="userForm.new_status === 2">对接设计</span>
+                    <span v-if="userForm.new_status === 3">无效客户</span>
+                    <span v-if="userForm.new_status === 4">流失客户</span>
+                    <span v-if="userForm.new_status === 5">签约合作</span>
+                  </div>
               </div>
             </div>
             <div class="user-info-center clearfix">
               <div class="source fl">
                 <span>用户来源 :</span>
-                <el-select 
-                    v-model.trim="userForm.source"
+                <el-select
+                    v-model.number="userForm.new_source"
                     size="small"
                     filterable
                     :disabled="!isHasPower"
-                    placeholder="请选择或者新建用户来源"
                     @change="isUpdatedSource"
                     default-first-option
                     :allow-create="isAdmin>=15">
                   <el-option
-                    v-for="(item, index) in sourceArr"
-                    :key="index"
-                    :label="item"
-                    :value="item">
-                    <span style="float: left">{{item}}</span>
+                    v-for="(item, i) in sourceArr"
+                    :key="i"
+                    :label="item.label"
+                    :value="item.value">
                   </el-option>
                 </el-select>
               </div>
+              <div class="fl flex-a-c height30 son-source">
+                <span>子来源: </span>
+                <span v-if="currentId">{{userForm.son_source}}</span>
+                <el-input v-else type="text" v-model="userForm.son_source" size="small"></el-input>
+              </div>
               <div class="belong fl">
-                <span>所属人 :</span>
+                <span>负责人 :</span>
                 <el-select v-model="userForm.execute_user_id" size="small" @change="isUpdatedExecute" :disabled="isAdmin<15">
                   <el-option
                     v-for="(item, index) in adminVoIpList"
@@ -91,20 +111,8 @@
               <div class="call-status fl">
                 <span>通话状态 :</span>
                 <div class="call-status-select">
-                  <el-select v-model="userForm.call_status" 
-                              size="small"
-                              filterable
-                              :allow-create="isAdmin>=15"
-                              default-first-option
-                              :disabled="!isHasPower"
-                              @change="isUpdatedCallStatus">
-                    <el-option
-                      v-for="(item, index) in callStatus"
-                      :key="index"
-                      :label="item"
-                      :value="item">
-                    </el-option>
-                  </el-select>
+                  <span v-if="currentId">{{userForm.call_status_value}}</span>
+                  <span v-else>待初次沟通</span>
                 </div>
               </div>
               <el-popover
@@ -142,10 +150,10 @@
           </div>
           <div class="card-body">
               <div class="card-body-header" v-if="currentId !== ''">
-                <span @click="changeOption('user')" :class="{'active': option === 'user'}">用户档案</span>
-                <span @click="changeOption('project')" :class="{'active': option === 'project'}">项目档案</span>
-                <span @click="changeOption('progress')" :class="{'active': option === 'progress'}">合作意向</span>
                 <span @click="changeOption('followLog')" :class="{'active': option === 'followLog'}">跟进记录</span>
+                <span @click="changeOption('project')" :class="{'active': option === 'project'}">项目档案</span>
+                <span @click="changeOption('user')" :class="{'active': option === 'user'}">用户档案</span>
+                <!-- <span @click="changeOption('progress')" :class="{'active': option === 'progress'}">合作意向</span> -->
               </div>
 
 
@@ -258,7 +266,6 @@
                         <span class="inline-width50"> QQ号: </span>{{clientList.qq}}
                       </p>
                     </el-col>
-                    
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <p>
                         <span class="inline-width50">邮箱: </span>{{clientList.email}}
@@ -385,10 +392,10 @@
                         <el-row :gutter="20">
                           <el-col :xs="24" :sm="20" :md="8" :lg="8">
                             <p v-if="!boolEditProject || currentProjectId !== item.item_id">
-                              <span>需求类别: </span>{{item.type_value}}
+                              <span>设计类型: </span>{{item.type_value}}
                             </p>
-                            <el-form-item v-if="boolEditProject && currentProjectId === item.item_id" label="需求类别" prop="type">
-                              <el-select v-model="projectForm.type" placeholder="请选择需求类别">
+                            <el-form-item v-if="boolEditProject && currentProjectId === item.item_id" label="设计类型" prop="type">
+                              <el-select v-model="projectForm.type" placeholder="请选择设计类型">
                                 <el-option
                                   v-for="(d, index) in typeOptions"
                                   :key="index"
@@ -400,9 +407,9 @@
                           </el-col>
                           <el-col :xs="24" :sm="20" :md="8" :lg="8">
                             <p v-if="!boolEditProject || currentProjectId !== item.item_id">
-                              <span>所属行业: </span>{{item.industry_value}}
+                              <span>行业领域: </span>{{item.industry_value}}
                             </p>
-                            <el-form-item v-if="boolEditProject && currentProjectId === item.item_id" label="所属行业" prop="industry">
+                            <el-form-item v-if="boolEditProject && currentProjectId === item.item_id" label="行业领域" prop="industry">
                               <el-select v-model.number="projectForm.industry" placeholder="请选择">
                                 <el-option
                                   v-for="(d, index) in industryOptions"
@@ -447,12 +454,12 @@
                           </el-col>
                           <el-col :xs="24" :sm="20" :md="16" :lg="16">
                             <p v-if="!boolEditProject || currentProjectId !== item.item_id">
-                              <span>工作地点: </span>{{item.item_province_value}}{{item.item_city_value}}
+                              <span>项目工作地点: </span>{{item.item_province_value}}{{item.item_city_value}}
                             </p>
                             <div v-show="boolEditProject && currentProjectId === item.item_id">
                               <region-picker  :provinceProp="projectForm.item_province"
                                   :cityProp="projectForm.item_city" propStyle="margin:0;"
-                                  :isFirstProp="isFirstRegion" titleProp="工作地址"
+                                  :isFirstProp="isFirstRegion" titleProp="项目工作地点"
                                   @onchange="changeProject"
                                   :twoSelect="true"
                                   >
@@ -682,8 +689,8 @@
                       </el-row>
                       <el-row :gutter="20">
                         <el-col :xs="24" :sm="24" :md="8" :lg="8">
-                          <el-form-item label="需求类别" prop="type">
-                            <el-select v-model="projectForm.type" placeholder="请选择需求类别">
+                          <el-form-item label="设计类型" prop="type">
+                            <el-select v-model="projectForm.type" placeholder="请选择设计类型">
                               <el-option
                                 v-for="(d, index) in typeOptions"
                                 :key="index"
@@ -694,7 +701,7 @@
                           </el-form-item>
                         </el-col>
                         <el-col :xs="24" :sm="24" :md="8" :lg="8">
-                          <el-form-item label="所属行业" prop="industry">
+                          <el-form-item label="行业领域" prop="industry">
                             <el-select v-model.number="projectForm.industry" placeholder="请选择">
                               <el-option
                                 v-for="(d, index) in industryOptions"
@@ -736,7 +743,7 @@
                         <el-col :xs="24" :sm="16" :md="16" :lg="16">
                           <region-picker :provinceProp="clientForm.province" 
                                 :cityProp="clientForm.city" propStyle="margin:0;"
-                                :isFirstProp="isFirstRegion" titleProp="工作地址"
+                                :isFirstProp="isFirstRegion" titleProp="项目工作地点"
                                 @onchange="changeProject" class="margin-b22"
                                 :twoSelect="true"
                                 >
@@ -824,12 +831,12 @@
                                 <a v-if="item.status === 1 && (!boolEditLog || item.id !== currrentLogId)" @click="showLogStatusDialog(item.id, 3)">取消</a>
                                 <a v-if="item.status === 1 && (!boolEditLog || item.id !== currrentLogId)" @click="showLogStatusDialog(item.id, 2)">完成</a>
                               </p>
-                              <div class="edit-log fr" v-if="isHasPower &&(item.status === 0 || item.status === 1)">
+                              <!-- <div class="edit-log fr" v-if="isHasPower &&(item.status === 0 || item.status === 1)">
                                 <div class="edit-log-tag">
                                   <p @click="showlogInput(item)">编辑</p>
                                   <p @click="deletelog(item.id)">删除</p>
                                 </div>
-                              </div>
+                              </div> -->
                           </div>
                         </el-col>
                       </el-row>
@@ -930,7 +937,18 @@
             <el-button type="primary" @click="changeLogStatus">确 定</el-button>
           </span>
         </el-dialog>
-
+        
+        <el-dialog 
+          title="确认"
+          :visible.sync="boolClueStatus"
+          width="380px">
+            <p>{{ClueStatusRemarks}}</p>
+            <el-input v-model.trim="followVal" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"></el-input>
+            <span slot="footer" class="dialog-footer">
+              <el-button @click="boolClueStatus = false">取 消</el-button>
+              <el-button type="primary" @click="setClueStatus">确 定</el-button>
+          </span>
+        </el-dialog>
       </el-col>
     </el-row>
   </div>
@@ -982,7 +1000,7 @@ export default {
       ruleProjectForm: {
         name: [{ required: true, message: '请填写企业名称', trigger: 'blur' }],
         grate: [{ type: 'number', required: true, message: '请选择项目紧急度', trigger: 'blur' }],
-        type: [{ type: 'number', required: true, message: '请选择需求类别', trigger: 'blur' }]
+        type: [{ type: 'number', required: true, message: '请选择设计类型', trigger: 'blur' }]
       },
       ruleDesignCompanyForm: {
         company_name: [{ required: true, message: '请填写设计服务商名称', trigger: 'blur' }],
@@ -991,16 +1009,49 @@ export default {
       },
       userForm: {
         rank: 1,
-        call_status: '',
-        status: '',
-        source: '',
+        new_call_status: '',
+        new_source: '',
+        new_status: '',
         tag: [],
         execute_user_id: '',
         execute: []
       },
       baseInfo: {}, // 第一次加载时头部的基本信息
       createdTime: '',
-      sourceArr: [],
+      sourceArr: [
+        {
+          value: 1,
+          label: '今日头条'
+        },
+        {
+          value: 2,
+          label: '京东'
+        },
+        {
+          value: 3,
+          label: '360'
+        },
+        {
+          value: 4,
+          label: '百度'
+        },
+        {
+          value: 5,
+          label: '官网'
+        },
+        {
+          value: 6,
+          label: '知乎'
+        },
+        {
+          value: 7,
+          label: '自媒体'
+        },
+        {
+          value: 0,
+          label: '其他'
+        }
+      ],
       userStatus: [ // 客户状态
         {
           value: 1,
@@ -1009,22 +1060,22 @@ export default {
         },
         {
           value: 2,
-          label: '真实需求',
+          label: '对接设计',
           color: '#65A6FF'
         },
         {
           value: 5,
-          label: '对接设计',
+          label: '签约合作',
           color: '#65a6ff'
         },
         {
           value: 3,
-          label: '签订合作',
+          label: '无效客户',
           color: '#00AC84'
         },
         {
           value: 4,
-          label: '对接失败',
+          label: '流失客户',
           color: '#FF5A5F'
         }
       ],
@@ -1099,7 +1150,11 @@ export default {
       loading: false,
       states: [],
 
-      projectSchedule: []
+      projectSchedule: [],
+
+      boolClueStatus: false,
+      currentStatus: '',
+      ClueStatusRemarks: '' // 更改状态备注
     }
   },
   methods: {
@@ -1161,20 +1216,20 @@ export default {
       }
       console.log(clipboard)
     },
-    getTypeList() { // 类别列表: 来源; 通话状态; 标签
-      this.$http.get(api.adminClueTypeList, {}).then(res => {
-        if (res.data.meta.status_code === 200) {
-          const data = res.data.data
-          this.sourceArr = [...data.source]
-          this.callStatus = data.call_status
-          // this.dynamicTags = data.tag
-        } else {
-          this.$message.error(res.data.meta.message)
-        }
-      }).catch(error => {
-        this.$message.error(error.message)
-      })
-    },
+    // getTypeList() { // 类别列表: 来源; 通话状态; 标签
+    //   this.$http.get(api.adminClueTypeList, {}).then(res => {
+    //     if (res.data.meta.status_code === 200) {
+    //       const data = res.data.data
+    //       this.sourceArr = [...data.source]
+    //       this.callStatus = data.new_call_status
+    //       // this.dynamicTags = data.tag
+    //     } else {
+    //       this.$message.error(res.data.meta.message)
+    //     }
+    //   }).catch(error => {
+    //     this.$message.error(error.message)
+    //   })
+    // },
     getAdminVoIpList() { // 业务人员列表
       this.$http.get(api.adminClueVoIpList, {}).then(res => {
         if (res.data.meta.status_code === 200) {
@@ -1199,7 +1254,7 @@ export default {
       if (val !== this.baseInfo.source) {
         this.updatedBaseInfo()
         if (!this.isExistArray(val, this.sourceArr)) {
-          this.getTypeList()
+          // this.getTypeList()
         }
       }
     },
@@ -1217,10 +1272,10 @@ export default {
     },
     isUpdatedCallStatus(val) {
       if (!this.currentId) return
-      if (val !== this.baseInfo.call_status) {
+      if (val !== this.baseInfo.new_call_status) {
         this.updatedBaseInfo()
         if (!this.isExistArray(val, this.callStatus)) {
-          this.getTypeList()
+          // this.getTypeList()
         }
       }
     },
@@ -1253,6 +1308,32 @@ export default {
         this.updatedBaseInfo()
       }
     },
+    getNextUser() {
+      if (this.currentId) {
+        let index = this.potentialIds.indexOf(this.currentId - 0)
+        if (index === 49) {
+          this.$message.info('返回列表页,获取最新数据')
+          this.$router.push({name: 'adminPotentialUserList'})
+        }
+        if (index !== -1) {
+          this.currentId = this.potentialIds[index + 1]
+          this.getUserInfo(this.currentId)
+        }
+      }
+    },
+    getPreviousUser() {
+      if (this.currentId) {
+        let index = this.potentialIds.indexOf(this.currentId - 0)
+        if (index === 0) {
+          this.$message.info('已经是第一条,返回列表页,获取最新数据')
+          return
+        }
+        if (index !== -1) {
+          this.currentId = this.potentialIds[index - 1]
+          this.getUserInfo(this.currentId)
+        }
+      }
+    },
     getUserInfo() { // 查看用户档案
       let row = {
         clue_id: this.currentId
@@ -1260,23 +1341,25 @@ export default {
       this.$http.get(api.adminClueShow, {params: row}).then(res => {
         if (res.data.meta.status_code === 200) {
           const data = res.data.data
-          const {source, rank, status, execute_user_id, call_status} = res.data.data
+          const {new_source, rank, new_status, execute_user_id, new_call_status} = res.data.data
           this.baseInfo = {
             rank,
-            source,
-            status,
+            source: new_source,
+            new_status,
             execute_user_id,
-            call_status
+            new_call_status
           }
           this.currentUser = data.name
           this.userForm = {
             name: data.name,
             phone: data.phone,
             rank: data.rank,
-            source: data.source || '',
-            status: data.status,
+            new_source: data.new_source || '',
+            son_source: data.son_source || '',
+            new_status: data.new_status,
+            call_status_value: data.call_status_value,
             execute_user_id: data.execute_user_id,
-            call_status: data.call_status || ''
+            new_call_status: data.new_call_status || ''
           }
           this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm:ss')
           if (data.tag.length === 1 && data.tag[0] === '') {
@@ -1299,6 +1382,40 @@ export default {
             position: data.position
           }
           this.clientList = JSON.parse(JSON.stringify(this.clientForm))
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+      })
+      this.getLogList()
+    },
+    showClueDialog(status) {
+      this.boolClueStatus = true
+      this.currentStatus = status
+      if (status === 3) {
+        this.ClueStatusRemarks = '无效客户备注'
+      } else {
+        this.ClueStatusRemarks = '流失客户备注'
+      }
+    },
+    setClueStatus(status) { // 标记客户状态
+      if (!this.followVal) {
+        this.$message.error('请填写备注')
+        return
+      }
+      let row = {
+        new_status: this.currentStatus,
+        clue_ids: [this.currentId],
+        log: this.followVal
+      }
+      this.$http.post(api.adminClueSetClueStatus, row).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.$message.success('标记成功')
+          this.followVal = ''
+          this.boolClueStatus = false
+          this.getUserInfo()
+          this.getLogList()
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -1460,6 +1577,7 @@ export default {
       this.$http.post(request, row).then(res => {
         if (res.data.meta.status_code === 200) {
           this.getUserProject()
+          this.getUserInfo()
           this.boolAddProject = false
         } else {
           this.$message.error(res.data.meta.message)
@@ -1492,6 +1610,7 @@ export default {
             if (res.data.meta.status_code === 200) {
               this.boolDesignCompany = false
               this.getUserProject()
+              this.getUserInfo()
             } else {
               this.$message.error(res.data.meta.message)
             }
@@ -1658,6 +1777,7 @@ export default {
         if (res.data.meta.status_code === 200) {
           this.BoolmarkFailure = false
           this.getUserProject()
+          this.getUserInfo()
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -1825,6 +1945,7 @@ export default {
       this.$http.post(api.adminClueRelateItem, row).then(res => {
         if (res.data.meta.status_code === 200) {
           this.getUserProject()
+          this.getUserInfo()
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -1912,7 +2033,7 @@ export default {
         return []
       }
     },
-    industryOptions() { // 所属行业下拉选项
+    industryOptions() { // 行业领域下拉选项
       if (typeData) {
         return typeData.INDUSTRY
       } else {
@@ -1938,6 +2059,9 @@ export default {
     },
     userId() {
       return this.$store.state.event.user.id
+    },
+    potentialIds() {
+      return this.$store.state.task.potentialIds
     },
     isHasPower() { // 是否有权限编辑
       if (this.currentId) {
@@ -1977,9 +2101,14 @@ export default {
     }
     if (this.$route.params && this.$route.params.id) {
       this.currentId = this.$route.params.id
+      if (this.currentId) {
+        this.option = 'followLog'
+      }
       this.getUserInfo()
+    } else {
+      this.userForm.execute_user_id = this.userId
     }
-    this.getTypeList()
+    // this.getTypeList()
     this.getAdminVoIpList()
   },
   directives: {Clickoutside},
@@ -2072,6 +2201,9 @@ export default {
 .user-name, .user-phone, .source, .belong, .call-status {
   display: flex;
   align-items: center;
+}
+.call-status {
+  line-height: 30px;
 }
 .user-name, .user-phone {
   height: 30px;
@@ -2550,6 +2682,9 @@ export default {
   background-color: #FF5A5F !important;
   color: #fff !important;
 }
+.son-source > span:first-child {
+  white-space:nowrap;
+}
 </style>
 <style>
 .card-header .el-input__inner {
@@ -2563,7 +2698,7 @@ export default {
   width: 150px;
 }
 .source .el-select {
-  width: 194px;
+  width: 150px;
 }
 .user-status > .el-select > .el-input > input {
   padding-left: 40px;
@@ -2596,7 +2731,9 @@ export default {
 .user-info-center .call-status-select .el-select {
   width: 136px;
 }
-
+.son-source .el-input--small .el-input__inner {
+  width: 136px;
+}
 .card-body-center .active .el-textarea__inner {
   min-height: 70px !important;
   border: none;
