@@ -23,14 +23,10 @@
                 </div>
               </el-form-item>
               <el-form-item class="select-info">
-                <el-select v-model="query.evt" placeholder="选择条件..." size="small">
-                  <el-option label="按姓名" value="1"></el-option>
+                <el-select v-model="query.search" placeholder="选择条件..." size="small">
+                  <el-option label="用户名称" value="1"></el-option>
                   <el-option label="按电话" value="2"></el-option>
-                  <el-option label="按所属人" value="3"></el-option>
-                  <el-option label="客户级别" value="4"></el-option>
-                  <el-option label="项目名称 " value="5"></el-option>
-                  <el-option label="对接公司 " value="6"></el-option>
-                  <el-option label="用户来源" value="7"></el-option>
+                  <el-option label="按负责人" value="3"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item style="width: 20%;">
@@ -42,13 +38,12 @@
             </el-form>
             <div class="admin-header-right fr clearfix">
               <div class="fl">
-                <div class="add-user">
+                <!-- <div class="add-user">
                   <span class="add-voip-user">
                     <i class="fx fx-icon-plus"></i>添加用户
                   </span>
                   <div class="drop-down">
                     <span @click="$router.push({name: 'adminPotentialUserCreated'})">添加潜在用户</span>
-                    <span @click="showDialogVoIpUser">添加商务成员</span>
                     <el-upload
                       class="upload-demo"
                       :action="uploadUrl"
@@ -63,18 +58,19 @@
                       <span class="upload-file">导入文件</span>
                     </el-upload>
                   </div>
-                </div>
+                </div> -->
 
               </div>
               <a href="javascript:void(0);"  @click="multipleDelItem" class="fr line-height30 height30"><i class="fx fx-icon-delete2"></i></a>
-              <el-button size="small" class="fl margin-l-10" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button>
-              <a href="javascript:void(0);" class="line-height30 height30 margin-l-10" @click="exportForm">导出表格</a>
+              <!-- <el-button size="small" class="fl margin-l-10" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button> -->
+              <!-- <a href="javascript:void(0);" class="line-height30 height30 margin-l-10" @click="exportForm">导出表格</a> -->
             </div>
           </div>       
           <div class="btn-list">
-            <button size="small" type="danger" 
+            <button size="small" type="danger"
               @click="$router.push({name: 'adminPotentialUserCreated'})" 
               class="is-custom red-button small-button">添加客户</button>
+            <el-button size="small" @click="showDialogVoIpUser">添加商务成员</el-button>
             <el-upload
               class="upload-demo"
               :action="uploadUrl"
@@ -91,7 +87,9 @@
             </el-upload>
             <!-- <el-button size="small" type="primary">批量导入</el-button> -->
             <el-button size="small" type="primary"  @click="exportForm">导出</el-button>
-            <el-button size="small" type="primary">分配</el-button>
+            <el-button size="small" type="primary"  @click="exportForm(2)">导出模板</el-button>
+            <el-button size="small" class="margin-l-10" :disabled="isAdmin < 15" @click="randomAssign = true">分配</el-button>
+            <el-button size="small" type="primary" @click="showClueDialog">无效</el-button>
           </div>
 
           <el-table
@@ -100,6 +98,7 @@
             class="admin-table"
             @selection-change="handleSelectionChange"
             @filter-change="filterList"
+            @header-click="sortChange"
             style="width: 100%"
             :row-class-name="tableRowClassName"
             @row-click="getLookUserInfo">
@@ -109,16 +108,19 @@
             </el-table-column>
             <el-table-column
               label="编号"
+              sortable
               prop="number"
-              width="123">
+              width="121">
             </el-table-column>
             <el-table-column
               prop="name"
+              sortable
               label="姓名"
               width="80">
             </el-table-column>
             <el-table-column
               width="105"
+              sortable
               label="客户级别">
                  <template slot-scope="scope">
                   <el-rate
@@ -130,31 +132,47 @@
             </el-table-column>
             <el-table-column
               prop="created_at"
+              sortable
               width="120"
               label="创建时间">
             </el-table-column>
             
             <el-table-column
-              prop="new_source"
-              width="90"
+              width="95"
+              sortable
               label="用户来源">
+              <template slot-scope="scope">
+                <p v-if="scope.row.new_source === 1">今日头条</p>
+                <p v-if="scope.row.new_source === 2">京东</p>
+                <p v-if="scope.row.new_source === 3">360</p>
+                <p v-if="scope.row.new_source === 4">百度</p>
+                <p v-if="scope.row.new_source === 5">官网</p>
+                <p v-if="scope.row.new_source === 6">知乎</p>
+                <p v-if="scope.row.new_source === 7">自媒体</p>
+                <p v-if="scope.row.new_source === 0">其他</p>
+              </template>
             </el-table-column>
             
             <el-table-column
-              width="123"
+              width="118"
+              sortable
               prop="execute_user_name"
               label="负责人">
             </el-table-column>
             
             <el-table-column
-              width="120"
+              width="105"
+              sortable
               label="通话状态"
               prop="call_status_value">
             </el-table-column>
             <el-table-column
-              width="90"
-              label="最后跟进日"
-              prop="end_time">
+              width="105"
+              sortable
+              label="最后跟进日">
+              <template slot-scope="scope">
+                <p v-if="scope.row.end_time">{{scope.row.end_time.slice(0, 10)}}</p>
+              </template>
             </el-table-column>
             <el-table-column
               prop="new_status"
@@ -195,13 +213,24 @@
       </el-col>
     </el-row>
 
+    <el-dialog
+      title="确认"
+      :visible.sync="boolClueStatus"
+      width="380px">
+        <p>无效客户备注原因</p>
+        <el-input v-model.trim="followVal" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"></el-input>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="boolClueStatus = false">取 消</el-button>
+          <el-button type="primary" @click="setClueStatus">确 定</el-button>
+      </span>
+    </el-dialog>
 
     <el-dialog
       title="随机分配"
       :visible.sync="randomAssign"
       width="300px">
-      <span v-if="noAllot">有{{noAllot}}个潜在用户等待分配所属人，是否确认随机分配？</span>
-      <span v-else>没有所属人待分配</span>
+      <span v-if="noAllot">有{{noAllot}}个潜在用户等待分配负责人，是否确认随机分配？</span>
+      <span v-else>没有负责人待分配</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="randomAssign = false">取 消</el-button>
         <el-button type="primary" @click="randomAllot" :disabled="!noAllot">确 定</el-button>
@@ -231,7 +260,7 @@
       title="移除业务人员"
       :visible.sync="deleteDialogVoIpUser"
       center>
-      <span class="d-d-content">改商务成员负责{{belongIdLength}}个潜在用户, 删除商务成员后,将清空潜在客户所属人?</span>
+      <span class="d-d-content">改商务成员负责{{belongIdLength}}个潜在用户, 删除商务成员后,将清空潜在客户负责人?</span>
       <div slot="footer" class="dialog-footer">
         <el-button @click="deleteDialogVoIpUser = false">取 消</el-button>
         <el-button type="primary" @click="deleteVoIpUser">确 定</el-button>
@@ -257,15 +286,17 @@ export default {
       file: [],
       randomAssign: false,
       BoolAddVoIpUser: false,
+      boolClueStatus: false,
       multipleSelection: [],
       query: {
         page: 1,
         per_page: 50,
-        evt: '',
+        evt: 7,
         sort: 2,
         // new_status: 6,
         status: 6,
         // totalCount: 0,
+        search: '',
         valueDate: []
       },
       dateArr: [], // 格式化
@@ -275,21 +306,29 @@ export default {
       },
       tableData: [],
       adminUserList: [],
-      noAllot: 0, // 没有所属人的个数
+      noAllot: 0, // 没有负责人的个数
       deleteDialogVoIpUser: false,
       currentVoIpUserId: '',
-      belongIdLength: ''
+      belongIdLength: '',
+      followVal: ''
     }
   },
   methods: {
     tableRowClassName({row, index}) {
-      if (row.next_time) {
-        if (this.dateCompare(row.next_time) === false) { // 没到期
-          return 'has-date'
-        }
-        if (this.dateCompare(row.next_time)) { // 到期
-          return 'over-date'
-        }
+      // if (row.next_time) {
+      //   if (this.dateCompare(row.next_time) === false) { // 没到期
+      //     return 'has-date'
+      //   }
+      //   if (this.dateCompare(row.next_time)) { // 到期
+      //     return 'over-date'
+      //   }
+      // }
+      let callStatus = row.new_call_status - 0
+      if (callStatus < 9) {
+        return 'over-date'
+      } else if (callStatus === 10 || callStatus === 9) {
+        return 'has-date'
+      } else {
       }
     },
     dateCompare(next) {
@@ -305,22 +344,22 @@ export default {
       let value = Object.values(row).toString()
       switch (value) {
         case '1':
-          this.query.new_status = 1
+          this.query.status = 1
           break
         case '2':
-          this.query.new_status = 2
+          this.query.status = 2
           break
         case '3':
-          this.query.new_status = 3
+          this.query.status = 3
           break
         case '4':
-          this.query.new_status = 4
+          this.query.status = 4
           break
         case '5':
-          this.query.new_status = 5
+          this.query.status = 5
           break
         default:
-          this.query.new_status = 6
+          this.query.status = 6
       }
       this.getClueList()
     },
@@ -372,6 +411,41 @@ export default {
     closePanel() { // 关闭潜在用户面板
       this.isAddPanel = false
     },
+    sortChange(column) { // 排序
+      switch (column.label) {
+        case '编号':
+          this.query.evt = 1
+          break
+        case '姓名':
+          this.query.evt = 2
+          break
+        case '客户级别':
+          this.query.evt = 3
+          break
+        case '创建时间':
+          this.query.evt = 4
+          break
+        case '来源渠道':
+          this.query.evt = 5
+          break
+        case '负责人':
+          this.query.evt = 6
+          break
+        case '沟通状态':
+          this.query.evt = 7
+          break
+        default:
+          this.query.evt = 8
+      }
+      let sort = parseInt(this.query.sort)
+      if (sort === 2) {
+        this.query.sort = 1
+      }
+      if (sort === 1) {
+        this.query.sort = 2
+      }
+      this.getClueList()
+    },
     getClueList() {
       let row = {}
       Object.assign(row, this.query)
@@ -391,6 +465,36 @@ export default {
             }
           })
           this.$store.commit('setPotentialIds', ids)
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+      })
+    },
+    showClueDialog() {
+      if (this.multipleSelection.length === 0) {
+        this.$message.error('至少选择一个潜在用户')
+        return false
+      }
+      this.boolClueStatus = true
+    },
+    setClueStatus() { // 多选标记无效
+      if (!this.followVal) {
+        this.$message.error('请填写备注原因')
+        return
+      }
+      let idArr = this.arrayExportIds()
+      let row = {
+        new_status: 3,
+        clue_ids: idArr,
+        log: this.followVal
+      }
+      this.$http.post(api.adminClueSetClueStatus, row).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.$message.success('标记成功')
+          this.boolClueStatus = false
+          this.getClueList()
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -507,7 +611,7 @@ export default {
       this.query.page = parseInt(val)
       this.$router.push({ name: this.$route.name, query: {page: this.query.page} })
     },
-    exportForm() { // 导出
+    exportForm(type) { // 导出
       // if (this.multipleSelection.length === 0) {
       //   this.$message.error('至少选择一个要导出的潜在用户')
       //   return false
@@ -523,19 +627,19 @@ export default {
       }
       let downloadUrl = url + '?'
       let urlStr = ''
-      idArr.forEach((item, i) => {
-        if (i === 0) {
-          urlStr = 'clue_id[' + i + ']=' + idArr[i]
-        } else {
-          urlStr += '&clue_id[' + i + ']=' + idArr[i]
-        }
-      })
+      if (type === 2) {
+        urlStr = 'type=2'
+      } else {
+        idArr.forEach((item, i) => {
+          if (i === 0) {
+            urlStr = 'clue_id[' + i + ']=' + idArr[i]
+          } else {
+            urlStr += '&clue_id[' + i + ']=' + idArr[i]
+          }
+        })
+      }
       downloadUrl = url + '?' + urlStr
       window.open(decodeURI(downloadUrl))
-      // this.$http.post(api.adminClueExportExcel, {clue_id: idArr}).then(res => {
-      //   if (res.data.meta.status_code === 200) {
-      //   }
-      // })
     },
     arrayExportIds() {
       var idArr = []

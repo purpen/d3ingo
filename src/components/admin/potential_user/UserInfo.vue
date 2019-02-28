@@ -14,11 +14,11 @@
         <div class="card-box">
           <div class="card-header">
             <div class="margin-b15" v-if="currentId">
-              <el-button type="primary" @click="setClueStatus(3)">无效</el-button>
-              <el-button type="danger" @click="setClueStatus(4)">流失</el-button>
+              <el-button type="primary" @click="showClueDialog(3)">无效</el-button>
+              <el-button type="danger" @click="showClueDialog(4)">流失</el-button>
               <div class="fr">
-                <a @click="getPreviousUser">上一条</a>
-                <a @click="getNextUser">下一条</a>
+                <a class="pointer border-t10" @click="getPreviousUser">上一条</a>
+                <a class="pointer border-t10" @click="getNextUser">下一条</a>
               </div>
             </div>
             <div class="user-info-top clearfix">
@@ -36,7 +36,7 @@
                 </div>
               </div>
               
-              <div :class="['user-status', 'fr', {
+              <!-- <div :class="['user-status', 'fr', {
                   'status1': userForm.new_status === 1,
                   'status2': userForm.new_status === 2,
                   'status3': userForm.new_status === 3,
@@ -60,13 +60,23 @@
                     <span style="float: left">{{ item.label }}</span>
                   </el-option>
                 </el-select>
+              </div> -->
+              <div class="fr line-height30">
+                  <span v-if="!currentId">潜在客户</span>
+                  <div v-else>
+                    <span v-if="userForm.new_status === 1">潜在客户</span>
+                    <span v-if="userForm.new_status === 2">对接设计</span>
+                    <span v-if="userForm.new_status === 3">无效客户</span>
+                    <span v-if="userForm.new_status === 4">流失客户</span>
+                    <span v-if="userForm.new_status === 5">签约合作</span>
+                  </div>
               </div>
             </div>
             <div class="user-info-center clearfix">
               <div class="source fl">
                 <span>用户来源 :</span>
-                <el-select 
-                    v-model.number="userForm.source"
+                <el-select
+                    v-model.number="userForm.new_source"
                     size="small"
                     filterable
                     :disabled="!isHasPower"
@@ -78,12 +88,16 @@
                     :key="i"
                     :label="item.label"
                     :value="item.value">
-                    <!-- <span style="float: left">{{item.lable}}</span> -->
                   </el-option>
                 </el-select>
               </div>
+              <div class="fl flex-a-c height30 son-source">
+                <span>子来源: </span>
+                <span v-if="currentId">{{userForm.son_source}}</span>
+                <el-input v-else type="text" v-model="userForm.son_source" size="small"></el-input>
+              </div>
               <div class="belong fl">
-                <span>所属人 :</span>
+                <span>负责人 :</span>
                 <el-select v-model="userForm.execute_user_id" size="small" @change="isUpdatedExecute" :disabled="isAdmin<15">
                   <el-option
                     v-for="(item, index) in adminVoIpList"
@@ -97,7 +111,8 @@
               <div class="call-status fl">
                 <span>通话状态 :</span>
                 <div class="call-status-select">
-                  <span>{{userForm.call_status_value}}</span>
+                  <span v-if="currentId">{{userForm.call_status_value}}</span>
+                  <span v-else>待初次沟通</span>
                 </div>
               </div>
               <el-popover
@@ -138,7 +153,7 @@
                 <span @click="changeOption('followLog')" :class="{'active': option === 'followLog'}">跟进记录</span>
                 <span @click="changeOption('project')" :class="{'active': option === 'project'}">项目档案</span>
                 <span @click="changeOption('user')" :class="{'active': option === 'user'}">用户档案</span>
-                <span @click="changeOption('progress')" :class="{'active': option === 'progress'}">合作意向</span>
+                <!-- <span @click="changeOption('progress')" :class="{'active': option === 'progress'}">合作意向</span> -->
               </div>
 
 
@@ -816,12 +831,12 @@
                                 <a v-if="item.status === 1 && (!boolEditLog || item.id !== currrentLogId)" @click="showLogStatusDialog(item.id, 3)">取消</a>
                                 <a v-if="item.status === 1 && (!boolEditLog || item.id !== currrentLogId)" @click="showLogStatusDialog(item.id, 2)">完成</a>
                               </p>
-                              <div class="edit-log fr" v-if="isHasPower &&(item.status === 0 || item.status === 1)">
+                              <!-- <div class="edit-log fr" v-if="isHasPower &&(item.status === 0 || item.status === 1)">
                                 <div class="edit-log-tag">
                                   <p @click="showlogInput(item)">编辑</p>
                                   <p @click="deletelog(item.id)">删除</p>
                                 </div>
-                              </div>
+                              </div> -->
                           </div>
                         </el-col>
                       </el-row>
@@ -922,7 +937,18 @@
             <el-button type="primary" @click="changeLogStatus">确 定</el-button>
           </span>
         </el-dialog>
-
+        
+        <el-dialog 
+          title="确认"
+          :visible.sync="boolClueStatus"
+          width="380px">
+            <p>{{ClueStatusRemarks}}</p>
+            <el-input v-model.trim="followVal" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"></el-input>
+            <span slot="footer" class="dialog-footer">
+              <el-button @click="boolClueStatus = false">取 消</el-button>
+              <el-button type="primary" @click="setClueStatus">确 定</el-button>
+          </span>
+        </el-dialog>
       </el-col>
     </el-row>
   </div>
@@ -984,7 +1010,7 @@ export default {
       userForm: {
         rank: 1,
         new_call_status: '',
-        source: '',
+        new_source: '',
         new_status: '',
         tag: [],
         execute_user_id: '',
@@ -1022,7 +1048,7 @@ export default {
           label: '自媒体'
         },
         {
-          value: 8,
+          value: 0,
           label: '其他'
         }
       ],
@@ -1124,7 +1150,11 @@ export default {
       loading: false,
       states: [],
 
-      projectSchedule: []
+      projectSchedule: [],
+
+      boolClueStatus: false,
+      currentStatus: '',
+      ClueStatusRemarks: '' // 更改状态备注
     }
   },
   methods: {
@@ -1324,7 +1354,8 @@ export default {
             name: data.name,
             phone: data.phone,
             rank: data.rank,
-            source: data.new_source || '',
+            new_source: data.new_source || '',
+            son_source: data.son_source || '',
             new_status: data.new_status,
             call_status_value: data.call_status_value,
             execute_user_id: data.execute_user_id,
@@ -1357,16 +1388,34 @@ export default {
       }).catch(error => {
         this.$message.error(error.message)
       })
+      this.getLogList()
+    },
+    showClueDialog(status) {
+      this.boolClueStatus = true
+      this.currentStatus = status
+      if (status === 3) {
+        this.ClueStatusRemarks = '无效客户备注'
+      } else {
+        this.ClueStatusRemarks = '流失客户备注'
+      }
     },
     setClueStatus(status) { // 标记客户状态
+      if (!this.followVal) {
+        this.$message.error('请填写备注')
+        return
+      }
       let row = {
-        new_status: status,
-        clue_ids: [this.currentId]
+        new_status: this.currentStatus,
+        clue_ids: [this.currentId],
+        log: this.followVal
       }
       this.$http.post(api.adminClueSetClueStatus, row).then(res => {
         if (res.data.meta.status_code === 200) {
-          console.log('标记成功')
           this.$message.success('标记成功')
+          this.followVal = ''
+          this.boolClueStatus = false
+          this.getUserInfo()
+          this.getLogList()
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -1528,6 +1577,7 @@ export default {
       this.$http.post(request, row).then(res => {
         if (res.data.meta.status_code === 200) {
           this.getUserProject()
+          this.getUserInfo()
           this.boolAddProject = false
         } else {
           this.$message.error(res.data.meta.message)
@@ -1560,6 +1610,7 @@ export default {
             if (res.data.meta.status_code === 200) {
               this.boolDesignCompany = false
               this.getUserProject()
+              this.getUserInfo()
             } else {
               this.$message.error(res.data.meta.message)
             }
@@ -1726,6 +1777,7 @@ export default {
         if (res.data.meta.status_code === 200) {
           this.BoolmarkFailure = false
           this.getUserProject()
+          this.getUserInfo()
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -1893,6 +1945,7 @@ export default {
       this.$http.post(api.adminClueRelateItem, row).then(res => {
         if (res.data.meta.status_code === 200) {
           this.getUserProject()
+          this.getUserInfo()
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -2048,7 +2101,12 @@ export default {
     }
     if (this.$route.params && this.$route.params.id) {
       this.currentId = this.$route.params.id
+      if (this.currentId) {
+        this.option = 'followLog'
+      }
       this.getUserInfo()
+    } else {
+      this.userForm.execute_user_id = this.userId
     }
     // this.getTypeList()
     this.getAdminVoIpList()
@@ -2143,6 +2201,9 @@ export default {
 .user-name, .user-phone, .source, .belong, .call-status {
   display: flex;
   align-items: center;
+}
+.call-status {
+  line-height: 30px;
 }
 .user-name, .user-phone {
   height: 30px;
@@ -2621,6 +2682,9 @@ export default {
   background-color: #FF5A5F !important;
   color: #fff !important;
 }
+.son-source > span:first-child {
+  white-space:nowrap;
+}
 </style>
 <style>
 .card-header .el-input__inner {
@@ -2634,7 +2698,7 @@ export default {
   width: 150px;
 }
 .source .el-select {
-  width: 194px;
+  width: 150px;
 }
 .user-status > .el-select > .el-input > input {
   padding-left: 40px;
@@ -2667,7 +2731,9 @@ export default {
 .user-info-center .call-status-select .el-select {
   width: 136px;
 }
-
+.son-source .el-input--small .el-input__inner {
+  width: 136px;
+}
 .card-body-center .active .el-textarea__inner {
   min-height: 70px !important;
   border: none;
