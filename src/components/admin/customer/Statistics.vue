@@ -525,15 +525,18 @@
               <div class='select-opt fl'>
                 <el-select v-model="allCustomer.city" placeholder="请选择">
                   <el-option
-                    v-for="ff in optionsFrom"
+                    v-for="ff in optionsCity"
                     :key="ff.value+'fff'"
                     :label="ff.label"
                     :value="ff.value">
                   </el-option>
                 </el-select>
               </div>
-              <div class='select-opt fl'>
+              <div class='select-opt3 fl'>
                 <el-select v-model="allCustomer.type" placeholder="请选择">
+                  <el-option :value="0" label="全部项目类型">
+
+                  </el-option>
                   <el-option
                     v-for="item in companyTypes"
                     :key="item.value"
@@ -657,7 +660,7 @@ export default {
         from: 0, // 来自
         date: 10, // 时段
         city: 0, // 城市
-        type: 1, // 类型
+        type: 0, // 类型
         budget: 0, // 预算
         show: false
       }, // 所有客户筛选
@@ -1170,6 +1173,12 @@ export default {
           address: '10%'
         }
       ],
+      optionsCity: [
+        {
+          value: 0,
+          label: '全部地区'
+        }
+      ],
       optionsBudget: [
         {
           value: 0,
@@ -1381,7 +1390,6 @@ export default {
     },
     // 获取下方数据
     getClueSearchStatistics(type) {
-      console.log('type', type)
       this.$http.get(api.adminClueSearchStatistics, {params: {type: type}}).then((response) => {
         if (response.data.meta.status_code === 200) {
           let res = response.data.data
@@ -1421,13 +1429,9 @@ export default {
             this.polar2.series[1].data = valueAdd
             this.polar2.series[2].data = valueInvalid
             this.polar2.series[3].data = valueLoss
-            // 客户数量
-            console.log(this.polar2)
-            // console.log('2', response.data.data)
           } else if (type === 3) {
             // 来源渠道
             this.polar3.series[0].data = [res.headlines, res.zhihu, res.qihoo360, res.baidu, res.too_firebird, res.self_media, res.other, res.jd]
-            // console.log('3', response.data.data)
           } else if (type === 4) {
             let object = {
               product: '产品设计',
@@ -1447,7 +1451,6 @@ export default {
             }
             this.polar4.series[0].data = arr
           } else if (type === 5) {
-            console.log('地区', res)
             let cityArr = []
             let seriesData = []
             let cityOther = {}
@@ -1504,7 +1507,6 @@ export default {
             this.polar6.series[7].data = jd6
             this.polar6.series[8].data = alls
           } else if (type === 0) {
-            console.log('分析', res)
             let cumulativeList = []
             let arr = []
             cumulativeList = res.cumulative.map(function (item) {
