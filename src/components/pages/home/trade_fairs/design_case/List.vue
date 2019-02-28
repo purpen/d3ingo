@@ -193,6 +193,7 @@
           per_page: 50 // 每页数量
         },
         isLoading: false,
+        verify: '',
         designCases: [], // 成果列表
         designId: '', // 修改状态id
         inCase: '', // 当前id
@@ -463,6 +464,7 @@
         this.$http.get(api.surveyDesignCompanySurvey, {})
         .then(res => {
           if (res.data.meta.status_code === 200) {
+            this.verify = res.data.data.design_verify_status
             this.$store.commit(CHANGE_USER_VERIFY_STATUS, res.data.data)
           }
         }).catch(err => {
@@ -515,9 +517,6 @@
       }
     },
     computed: {
-      verify() {
-        return this.$store.state.event.user.design_verify_status
-      },
       isMob() {
         return this.$store.state.event.isMob
       },
