@@ -115,7 +115,7 @@
                           <p class="th">
                           来源渠道
                           </p>
-                          <ul>
+                          <ul class="scroll-bar">
                             <li v-for="from in optionsFrom" :key="from.value">
                               {{from.label}}
                             </li>
@@ -132,11 +132,8 @@
                         <el-col :span="4">
                           <p class="th">地区</p>
                           <ul class="scroll-bar">
-                            <li>
-                              北京
-                            </li>
-                            <li>
-                              上海
+                            <li v-for="city in optionsCity" :key="city.value">
+                              {{city.label}}
                             </li>
                           </ul>
                         </el-col>
@@ -1388,6 +1385,9 @@ export default {
         this.$message.error(error.message)
       })
     },
+    // 搜索
+    update() {
+    },
     // 获取下方数据
     getClueSearchStatistics(type) {
       this.$http.get(api.adminClueSearchStatistics, {params: {type: type}}).then((response) => {
@@ -1419,7 +1419,6 @@ export default {
               valueInvalid = res.invalid.map(function (inva) {
                 return inva.value
               })
-              console.log(333)
               valueLoss = res.loss.map(function (l) {
                 return l.value
               })
@@ -1451,9 +1450,11 @@ export default {
             }
             this.polar4.series[0].data = arr
           } else if (type === 5) {
+            // 地区
             let cityArr = []
             let seriesData = []
             let cityOther = {}
+            let option = []
             for (let c in res) {
               if (!res[c].city_value) {
                 cityOther = {
@@ -1468,8 +1469,13 @@ export default {
                   name: res[c].city_value,
                   value: res[c].value
                 })
+                option.push({
+                  'value': res[c].city,
+                  'label': res[c].city_value
+                })
               }
             }
+            this.optionsCity = option
             if (JSON.stringify(cityOther) !== '{}') {
               cityArr.push(cityOther.name)
               seriesData.push(cityOther)
