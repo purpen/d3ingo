@@ -7,8 +7,8 @@
         <div class="content">
           <div class="admin-header clearfix">
             <el-form :inline="true" :model="query" class="select-query fl">
-              <el-form-item class="margin0">
-                <span class="fl line-height30 fz-12">选择日期</span>
+              <el-form-item>
+                <span class="fl line-height30 fz-12 margin-r-15">选择日期</span>
                 <div class="fr select-data">
                   <el-date-picker
                     v-model="query.valueDate"
@@ -29,8 +29,8 @@
                   <el-option label="按负责人" value="3"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item class="margin0" style="width: 20%;">
-                <el-input v-model="query.val" placeholder="Search..." size="small"></el-input>
+              <el-form-item style="width: 20%;">
+                <el-input v-model="query.val" placeholder="搜索..." size="small"></el-input>
               </el-form-item>
               <el-form-item class="margin0">
                 <el-button type="primary" @click="onSearch" size="mini">搜索</el-button>
@@ -61,15 +61,15 @@
                 </div> -->
 
               </div>
-              <a href="javascript:void(0);"  @click="multipleDelItem" class="fr line-height30 height30"><i class="fx fx-icon-delete2"></i></a>
+              <!-- <a href="javascript:void(0);"  @click="multipleDelItem" class="fr line-height30 height30"><i class="fx fx-icon-delete2"></i></a> -->
               <!-- <el-button size="small" class="fl margin-l-10" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button> -->
               <!-- <a href="javascript:void(0);" class="line-height30 height30 margin-l-10" @click="exportForm">导出表格</a> -->
             </div>
           </div>       
           <div class="btn-list">
-            <button size="small" type="danger"
+            <el-button size="small"
               @click="$router.push({name: 'adminPotentialUserCreated'})" 
-              class="is-custom red-button small-button">添加客户</button>
+              class="">添加客户</el-button>
             <el-button size="small" @click="showDialogVoIpUser">添加商务成员</el-button>
             <el-upload
               class="upload-demo"
@@ -83,13 +83,13 @@
               :show-file-list="false"
               :file-list="file">
               <!-- <span class="upload-file">批量导入</span> -->
-              <el-button size="small" type="primary">批量导入</el-button>
+              <el-button size="small" >批量导入</el-button>
             </el-upload>
             <!-- <el-button size="small" type="primary">批量导入</el-button> -->
-            <el-button size="small" type="primary"  @click="exportForm">导出</el-button>
-            <el-button size="small" type="primary"  @click="exportForm(2)">导出模板</el-button>
-            <el-button size="small" class="margin-l-10" :disabled="isAdmin < 15" @click="randomAssign = true">分配</el-button>
-            <el-button size="small" type="primary" @click="showClueDialog">无效</el-button>
+            <el-button size="small" @click="exportForm">导出</el-button>
+            <el-button size="small"  @click="exportForm(2)">导出模板</el-button>
+            <el-button size="small" class="" :disabled="isAdmin < 15" @click="randomAssign = true">分配</el-button>
+            <el-button size="small" @click="showClueDialog">无效</el-button>
           </div>
 
           <el-table
@@ -140,7 +140,7 @@
             <el-table-column
               width="95"
               sortable
-              label="用户来源">
+              label="来源渠道">
               <template slot-scope="scope">
                 <p v-if="scope.row.new_source === 1">今日头条</p>
                 <p v-if="scope.row.new_source === 2">京东</p>
@@ -163,7 +163,7 @@
             <el-table-column
               width="105"
               sortable
-              label="通话状态"
+              label="沟通状态"
               prop="call_status_value">
             </el-table-column>
             <el-table-column
@@ -291,7 +291,7 @@ export default {
       query: {
         page: 1,
         per_page: 50,
-        evt: 7,
+        evt: '',
         sort: 2,
         // new_status: 6,
         status: 6,
@@ -744,6 +744,10 @@ export default {
 }
 .btn-list {
   padding: 15px 0 20px 0;
+}
+.btn-list .el-button {
+  margin-left: 0;
+  margin-right: 15px;
 }
 .upload-demo {
   display: inline-block;
