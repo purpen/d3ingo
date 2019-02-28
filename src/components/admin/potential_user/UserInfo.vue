@@ -12,15 +12,15 @@
 
         </div>
         <div class="card-box">
-          <div class="card-header">
-            <div class="margin-b15" v-if="currentId">
-              <el-button type="primary" @click="showClueDialog(3)">无效</el-button>
-              <el-button type="danger" @click="showClueDialog(4)">流失</el-button>
-              <div class="fr">
-                <a class="pointer border-t10" @click="getPreviousUser">上一条</a>
-                <a class="pointer border-t10" @click="getNextUser">下一条</a>
-              </div>
+          <div class="padding10" v-if="currentId">
+            <el-button type="primary" class="margin-r-15" size="mini" @click="showClueDialog(3)">无效</el-button>
+            <el-button type="danger" size="mini" @click="showClueDialog(4)">流失</el-button>
+            <div class="fr line-height30">
+              <a class="pointer border-t10" @click="getPreviousUser">上一条</a>
+              <a class="pointer border-t10" @click="getNextUser">下一条</a>
             </div>
+          </div>
+          <div class="card-header">
             <div class="user-info-top clearfix">
               <div class="fl clearfix flex-a-c">
                 <div class="user-name fl margin-r20">
@@ -61,7 +61,7 @@
                   </el-option>
                 </el-select>
               </div> -->
-              <div class="fr line-height30">
+              <div class="fr line-height30 fz-14 tc-red">
                   <span v-if="!currentId">潜在客户</span>
                   <div v-else>
                     <span v-if="userForm.new_status === 1">潜在客户</span>
@@ -74,7 +74,7 @@
             </div>
             <div class="user-info-center clearfix">
               <div class="source fl">
-                <span>用户来源 :</span>
+                <span class="fz-14">用户来源 :</span>
                 <el-select
                     v-model.number="userForm.new_source"
                     size="small"
@@ -91,13 +91,13 @@
                   </el-option>
                 </el-select>
               </div>
-              <div class="fl flex-a-c height30 son-source">
+              <div class="fl flex-a-c height30 son-source fz-14">
                 <span>子来源: </span>
                 <span v-if="currentId">{{userForm.son_source}}</span>
                 <el-input v-else type="text" v-model="userForm.son_source" size="small"></el-input>
               </div>
               <div class="belong fl">
-                <span>负责人 :</span>
+                <span class="fz-14">负责人 :</span>
                 <el-select v-model="userForm.execute_user_id" size="small" @change="isUpdatedExecute" :disabled="isAdmin<15">
                   <el-option
                     v-for="(item, index) in adminVoIpList"
@@ -108,20 +108,20 @@
                   </el-option>
                 </el-select>
               </div>
-              <div class="call-status fl">
-                <span>通话状态 :</span>
-                <div class="call-status-select">
+              <div class="call-status fl fz-14">
+                <span class="fz-14">通话状态 :</span>
+                <div class="call-status-select tc-red">
                   <span v-if="currentId">{{userForm.call_status_value}}</span>
                   <span v-else>待初次沟通</span>
                 </div>
               </div>
-              <el-popover
+              <!-- <el-popover
                 placement="bottom"
                 width="100"
                 trigger="click">
                 <img :src="QRCode" alt="正在生成二维码" class="qrcode">
                 <el-button v-if="currentId" type="danger" class="btn-link fr" @click="getLink" slot="reference">生成二维码</el-button>
-              </el-popover>
+              </el-popover> -->
 
             </div>
             <p class="p-label">
@@ -942,7 +942,7 @@
           title="确认"
           :visible.sync="boolClueStatus"
           width="380px">
-            <p>{{ClueStatusRemarks}}</p>
+            <p class="line-height30">{{ClueStatusRemarks}}</p>
             <el-input v-model.trim="followVal" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"></el-input>
             <span slot="footer" class="dialog-footer">
               <el-button @click="boolClueStatus = false">取 消</el-button>
@@ -2148,6 +2148,9 @@ export default {
 }
 .padding20 {
   padding: 20px;
+}
+.padding10 {
+  padding: 10px;
 }
 .flex-a-c {
   display: flex;
