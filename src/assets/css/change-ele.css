@@ -1020,7 +1020,10 @@
     padding-right: 25px;
   }
   .chart-block .el-date-editor .el-range-separator {
-    padding: 0;
+    padding: 0 0;
+  }
+  .chart .el-input--suffix .el-input__inner {
+    padding-right: 25px;
   }
   .el-picker-panel__sidebar .el-picker-panel__shortcut:hover {
     color: #ff5a5f;
