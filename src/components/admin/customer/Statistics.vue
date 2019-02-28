@@ -30,7 +30,7 @@
                       </el-col>
                        <el-col :span="8">
                         <div class="header-title">
-                          <p class="fz-24">{{bigStatistics.rising_proportion}}</p>
+                          <p class="fz-24">{{bigStatistics.rising_proportion}}%</p>
                           <p class="tc-6">上涨</p>
                         </div>
                       </el-col>
@@ -1806,5 +1806,8 @@ export default {
     line-height: 82px;
     border-right: 1px solid #e6e6e6;
     border-bottom: 1px solid #e6e6e6;
+  }
+  .header-title>p:first-child {
+    margin-bottom: 5px;
   }
 </style>
