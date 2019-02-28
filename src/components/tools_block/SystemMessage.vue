@@ -69,7 +69,7 @@
     },
     methods: {
       markRead() {
-        this.$http.put(api.allTrueRead)
+        this.$http.put(api.trueAllRead)
         .then(res => {
           if (res.data && res.data.meta.status_code === 200) {
             this.itemList.forEach(item => {

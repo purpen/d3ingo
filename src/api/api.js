@@ -496,7 +496,7 @@ export default {
   designNoticeLists: '/designNotice/lists', // GET 列表
   designNoticeTrueRead: '/designNotice/trueRead', // PUT 确认阅读
   designNoticeDelete: '/designNotice/delete', // DELETE 删除
-  allTrueRead: '/designNotice/allTrueRead', // PUT 一键已读
+  trueAllRead: '/message/trueAllRead', // PUT 一键已读
 
   // jd账号
   jdAccount: '/jd/jdAccount', // GET 获取京东account
