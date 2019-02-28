@@ -215,6 +215,8 @@ export default {
   adminClueDelRelateItem: '/admin/clue/delRelateItem', // DELETE 删除关联项目
   AdminCueGetUrl: '/admin/clue/getUrl', // GET 潜在客户-根据客户/项目id生成url
   adminClueShowFeedback: '/admin/clue/showFeedback', // 潜在客户-查看项目进度
+  adminClueStatistics: '/admin/clue/statistics', // GET 潜在客户-统计列表上方
+  adminClueSearchStatistics: '/admin/clue/searchStatistics', // GET 搜索/统计列表
 
   // WxClue - 微信潜在客户
   wxClueUrlValue: '/wxClue/urlValue', // GET 微信潜在客户 根据string查看客户/项目id
