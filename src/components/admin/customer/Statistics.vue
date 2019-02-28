@@ -30,7 +30,7 @@
                       </el-col>
                        <el-col :span="8">
                         <div class="header-title">
-                          <p class="fz-24">{{bigStatistics.rising_proportion}}%</p>
+                          <p class="fz-24">{{bigStatistics.rising_proportion}}<span class="fz-16">%</span></p>
                           <p class="tc-6">上涨</p>
                         </div>
                       </el-col>
