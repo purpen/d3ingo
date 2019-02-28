@@ -231,6 +231,8 @@ export default {
               }
             }
           }
+        } else {
+          that.$message.error(response.data.meta.message)
         }
       })
       .catch (function (error) {

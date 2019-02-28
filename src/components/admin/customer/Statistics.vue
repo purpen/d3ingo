@@ -11,26 +11,26 @@
               <el-col :span="10">
                 <div class="s_header">
                   <div class="header-title">
-                    <p class="tc-red fz-30">111</p>
+                    <p class="tc-red fz-30">{{bigStatistics.total_customer}}</p>
                     <p class="tc-6">潜在客户</p>
                   </div>
                   <div>
                     <el-row>
                       <el-col :span="8">
                         <div class="header-title">
-                          <p class="fz-24 tc-3 bd-right">111</p>
+                          <p class="fz-24 tc-3 bd-right">{{bigStatistics.yesterday_add}}</p>
                           <p class="tc-6 bd-right">昨日新增</p>
                         </div>
                       </el-col>
                       <el-col :span="8">
                         <div class="header-title">
-                          <p class="fz-24 bd-right">111</p>
+                          <p class="fz-24 bd-right">{{bigStatistics.today_add}}</p>
                           <p class="tc-6 bd-right">今日新增</p>
                         </div>
                       </el-col>
                        <el-col :span="8">
                         <div class="header-title">
-                          <p class="fz-24">111</p>
+                          <p class="fz-24">{{bigStatistics.rising_proportion}}%</p>
                           <p class="tc-6">上涨</p>
                         </div>
                       </el-col>
@@ -44,19 +44,19 @@
                   <el-row>
                     <el-col :span="8">
                       <div class="header-title">
-                        <p class="fz-30 tc-red">111</p>
+                        <p class="fz-30 tc-red">{{bigStatistics.total_maintain}}</p>
                         <p class="tc-6">维护客户</p>
                       </div>
                     </el-col>
                     <el-col :span="8">
                       <div class="header-title">
-                        <p class="fz-30 tc-green">111</p>
+                        <p class="fz-30 tc-green">{{bigStatistics.total_loss}}</p>
                         <p class="tc-6">流失客户</p>
                       </div>
                     </el-col>
                       <el-col :span="8">
                       <div class="header-title">
-                        <p class="fz-30">111</p>
+                        <p class="fz-30">{{bigStatistics.total_invalid}}</p>
                         <p class="tc-6">无效客户</p>
                       </div>
                     </el-col>
@@ -64,25 +64,25 @@
                    <el-row>
                       <el-col :span="6">
                         <div class="header-title">
-                          <p class="fz-24 tc-3 bd-right">111</p>
+                          <p class="fz-24 tc-3 bd-right">{{bigStatistics.total_follow_up}}</p>
                           <p class="tc-6 bd-right">已跟进</p>
                         </div>
                       </el-col>
                       <el-col :span="6">
                         <div class="header-title">
-                          <p class="fz-24 bd-right">111</p>
+                          <p class="fz-24 bd-right">{{bigStatistics.total_three_days}}</p>
                           <p class="tc-6 bd-right">3天内未跟进</p>
                         </div>
                       </el-col>
                        <el-col :span="6">
                         <div class="header-title">
-                          <p class="fz-24 bd-right">111</p>
+                          <p class="fz-24 bd-right">{{bigStatistics.total_sever_days}}</p>
                           <p class="tc-6 bd-right">7天内未跟进</p>
                         </div>
                       </el-col>
                       <el-col :span="6">
                         <div class="header-title">
-                          <p class="fz-24">111</p>
+                          <p class="fz-24">{{bigStatistics.total_thirty_days}}</p>
                           <p class="tc-6">30天内未跟进</p>
                         </div>
                       </el-col>
@@ -203,29 +203,88 @@
                 </div>
               </el-col>
               <el-col :span="12">
-                <el-table
-                  :data="tableData"
-                  border
-                  style="width: 100%">
-                  <el-table-column
-                    prop="name"
-                    label="转化环节"
-                    >
-                  </el-table-column>
-                  <el-table-column
-                    prop="date"
-                    label="客户数量"
-                    >
-                  </el-table-column>
-                  <el-table-column
-                    prop="address"
-                    label="上一步转化率">
-                  </el-table-column>
-                  <el-table-column
-                    prop="address"
-                    label="整体转化率">
-                  </el-table-column>
-                </el-table>
+                <div class="table-header">
+                  <el-row>
+                    <el-col :span="6">
+                      <p>转化环节</p>
+                    </el-col>
+                    <el-col :span="6">
+                      <p>客户数量</p>
+                    </el-col>
+                    <el-col :span="6">
+                      <p>上一步转化率</p>
+                    </el-col>
+                    <el-col :span="6">
+                      <p>整体转化率</p>
+                    </el-col>
+                  </el-row>
+                </div>
+                <div class="table-content">
+                  <el-row>
+                    <el-col :span="6">
+                      <p>潜在客户</p>
+                    </el-col>
+                    <el-col :span="6">
+                      <p>
+                        {{chanceList.total_customer.number}}
+                      </p>
+                    </el-col>
+                    <el-col :span="6">
+                      <p>
+                        {{chanceList.total_customer.conversion}}
+                      </p>
+                    </el-col>
+                    <el-col :span="6">
+                      <p>
+                        {{chanceList.total_customer.total_conversion}}
+                      </p>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="6">
+                      <p>
+                        对接设计
+                      </p>
+                    </el-col>
+                    <el-col :span="6">
+                      <p>
+                        {{chanceList.total_maintain.number}}
+                      </p>
+                    </el-col>
+                    <el-col :span="6">
+                      <p>
+                        {{chanceList.total_maintain.conversion}}
+                      </p>
+                    </el-col>
+                    <el-col :span="6">
+                      <p>
+                        {{chanceList.total_maintain.total_conversion}}
+                      </p>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="6">
+                      <p>
+                        签订合作
+                      </p>
+                    </el-col>
+                    <el-col :span="6">
+                      <p>
+                        {{chanceList.cooperation.number}}
+                      </p>
+                    </el-col>
+                    <el-col :span="6">
+                      <p>
+                        {{chanceList.cooperation.conversion}}
+                      </p>
+                    </el-col>
+                    <el-col :span="6">
+                      <p>
+                        {{chanceList.cooperation.total_conversion}}
+                      </p>
+                    </el-col>
+                  </el-row>
+                </div>
               </el-col>
             </el-row>
           </div>
@@ -512,24 +571,24 @@
                   >
                 </el-table-column>
                 <el-table-column
-                  prop="count"
+                  prop="cumulative"
                   label="累计客户"
                   >
                 </el-table-column>
                 <el-table-column
-                  prop="newCount"
+                  prop="add"
                   label="新增客户">
                 </el-table-column>
                 <el-table-column
-                  prop="noCount"
+                  prop="invalid"
                   label="无效客户">
                 </el-table-column>
                 <el-table-column
-                  prop="notCount"
+                  prop="loss"
                   label="流失客户">
                 </el-table-column>
                 <el-table-column
-                  prop="address"
+                  prop="wastage_rate"
                   label="流失率">
                 </el-table-column>
               </el-table>
@@ -543,7 +602,7 @@
 </template>
 
 <script>
-// import api from '@/api/api'
+import api from '@/api/api'
 import {COMPANY_TYPE} from '@/config'
 import REGION_DATA from 'china-area-data' // 地区数据库
 import ECharts from 'vue-echarts'
@@ -559,6 +618,37 @@ export default {
   data () {
     let color2 = ['#000000', '#333333', '#666666', '#999999', '#CCCCCC', '#EEEEEE']
     return {
+      bigStatistics: {
+        rising_proportion: 0, // 上涨比例
+        today_add: 0, // 今日新增客户
+        total_customer: 0, // 潜在客户总数
+        total_follow_up: 0, // 跟进客户总数
+        total_invalid: 0, // 无效客户总数
+        total_loss: 0, // 流失客户总数
+        total_maintain: 0, // 维护客户总数
+        total_sever_days: 0, // 七天未跟进客户
+        total_thirty_days: 0, // 三十天未跟进客户
+        total_three_days: 0, // 三天未跟进客户
+        yesterday_add: 0 // 昨日新增
+      }, // 上方总统计
+      chanceList: {
+        cooperation: {
+          conversion: 0,
+          number: 0,
+          total_conversion: 0
+        },
+        total_customer: {
+          conversion: 0,
+          number: 0,
+          total_conversion: 0
+        },
+        total_maintain: {
+          conversion: 0,
+          number: 0,
+          total_conversion: 0
+        }
+      }, // 商机列表
+      type: 1, // 1:商机转化 2:客户数量 3:来源渠道 4:项目类型 5:地区 6:项目预算
       ischance: false, // 全部商机弹窗
       region: REGION_DATA, // 地区
       allCustomer: {
@@ -616,20 +706,31 @@ export default {
           {
             name: '商机转化',
             type: 'funnel',
-            left: '-20%',
+            left: '10%',
             top: 0,
             bottom: 60,
-            width: '140%',
+            width: '80%',
             min: 0,
             max: 100,
             minSize: '0%',
             maxSize: '100%',
             sort: 'descending',
-            gap: 2,
+            // gap: 2,
             label: {
               show: true,
-              formatter: '{c}\n{b}',
-              position: 'inside'
+              formatter: '{big|{b}}\n{normal|{c}}',
+              position: 'inside',
+              lineHeight: 20,
+              rich: {
+                big: {
+                  fontSize: 22,
+                  color: '#fff'
+                },
+                normal: {
+                  fontSize: 14,
+                  color: '#fff'
+                }
+              }
             },
             labelLine: {
               show: true,
@@ -649,12 +750,12 @@ export default {
               }
             },
             data: [
-              {value: 60, name: '潜在用户'},
-              {value: 40, name: '对接设计'},
-              {value: 20, name: '签订合作'}
+              {value: 60, name: '潜在用户', total_conversion: '0%'},
+              {value: 40, name: '对接设计', total_conversion: '0%'},
+              {value: 20, name: '签订合作', total_conversion: '0%'}
             ],
             tooltip: {
-              formatter: '{b}<br />&nbsp;&nbsp;&nbsp;客户数量: {c}<br />&nbsp;&nbsp;&nbsp;转化率: 10%'
+              formatter: '{b}<br />&nbsp;&nbsp;&nbsp;客户数量: {c}<br />&nbsp;&nbsp;&nbsp;转化率: {d}%'
             }
           }
         ]
@@ -674,7 +775,7 @@ export default {
         xAxis: {
           type: 'category',
           boundaryGap: false,
-          data: ['2011-01-01', '2011-02-01', '2011-03-01', '2011-04-01', '2011-05-01', '2011-06-01', '2011-07-01', '2011-08-01', '2011-09-01', '2011-10-01', '2011-11-01', '2011-12-01', '2012-01-01', '2012-02-01', '2012-03-01', '2012-04-01', '2012-05-01', '2012-06-01', '2012-07-01', '2012-08-01', '2012-09-01', '2012-10-01', '2012-11-01', '2012-12-01', '2013-01-01', '2013-02-01', '2013-03-01', '2013-04-01', '2013-05-01', '2013-06-01'],
+          data: [],
           axisTick: {
             // show: false
             alignWithLabel: true,
@@ -682,11 +783,10 @@ export default {
           },
           axisLine: {
             // show: false
-          },
-          splitNumber: 5
+          }
+          // splitNumber: 5
         },
         yAxis: {
-          // name: '单位: 位',
           type: 'value',
           axisTick: {
             show: false
@@ -706,37 +806,35 @@ export default {
             type: 'line',
             top: 0,
             showSymbol: false,
-            data: [120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134, 90, 230, 210, 120, 132, 101, 134, 90, 230, 210]
+            data: []
           },
           {
             name: '新增客户',
             type: 'line',
             top: 0,
             showSymbol: false,
-            data: [220, 182, 191, 234, 290, 330, 310, 220, 182, 191, 234, 290, 330, 310, 220, 182, 191, 234, 290, 330, 310, 220, 182, 191, 234, 290, 330, 310, 220, 182, 191, 234, 290, 330, 310, 220, 182, 191, 234, 290, 330, 310]
+            data: []
           },
           {
             name: '无效客户',
             type: 'line',
             top: 0,
             showSymbol: false,
-            data: [150, 232, 201, 154, 190, 330, 410, 150, 232, 201, 154, 190, 330, 410, 150, 232, 201, 154, 190, 330, 410, 150, 232, 201, 154, 190, 330, 410, 150, 232, 201, 154, 190, 330, 410, 150, 232, 201, 154, 190, 330, 410]
+            data: []
           },
           {
             name: '流失客户',
             type: 'line',
-            // stack: '总量',
             top: 0,
             showSymbol: false,
-            data: [320, 332, 301, 334, 390, 330, 320, 320, 332, 301, 334, 390, 330, 320, 320, 332, 301, 334, 390, 330, 320, 320, 332, 301, 334, 390, 330, 320, 320, 332, 301, 334, 390, 330, 320, 320, 332, 301, 334, 390, 330, 320]
+            data: []
           }
-        ],
-        animation: false
+        ]
       }, // 客户数量图
       polar3: {
         color: ['#3398DB'],
         tooltip: {
-          trigger: 'item',
+          trigger: 'axis',
           axisPointer: {
             type: 'shadow'
           }
@@ -747,7 +845,7 @@ export default {
         xAxis: [
           {
             type: 'category',
-            data: ['今日头条', '知乎', '360', '百度', '官网', '小程序', '第三方推荐'],
+            data: ['今日头条', '知乎', '360', '百度', '官网', '自媒体', '第三方推荐', '京东'],
             axisTick: {
               inside: true
             }
@@ -765,10 +863,10 @@ export default {
         ],
         series: [
           {
-            name: '直接访问',
+            name: '客户总数',
             type: 'bar',
             barWidth: '60%',
-            data: [10, 52, 200, 334, 390, 330, 220],
+            data: [0, 0, 0, 0, 0, 0, 0],
             tooltip: {
               formatter: '{b}<br />潜在用户: 123<br />对接设计: 123<br />签订合作: 222'
             },
@@ -798,19 +896,19 @@ export default {
             radius: '55%',
             center: ['50%', '40%'],
             data: [
-              {value: 335, name: '产品设计'},
-              {value: 310, name: '平面设计'},
-              {value: 234, name: '包装设计'},
-              {value: 135, name: '插画设计'},
-              {value: 1548, name: 'UI/UX'},
-              {value: 133, name: 'H5'}
+              {value: 0, name: '产品设计'},
+              {value: 0, name: '平面设计'},
+              {value: 0, name: '包装设计'},
+              {value: 0, name: '插画设计'},
+              {value: 0, name: 'UI/UX'},
+              {value: 0, name: 'H5'}
             ],
             tooltip: {
               formatter: '{b}<br />项目数量: {c}<br />项目占比: {d}%'
             }
           }
         ]
-      },
+      }, // 项目类型
       imgUrl: '',
       imgUrl2: '',
       polar5: {
@@ -830,7 +928,7 @@ export default {
         },
         legend: {
           bottom: 10,
-          data: ['北京', '上海', '宁波', '深圳', '顺德', '合肥']
+          data: []
         },
         series: [
           {
@@ -839,12 +937,6 @@ export default {
             radius: '55%',
             center: ['50%', '40%'],
             data: [
-              {value: 335, name: '北京'},
-              {value: 310, name: '上海'},
-              {value: 234, name: '宁波'},
-              {value: 135, name: '深圳'},
-              {value: 1548, name: '顺德'},
-              {value: 133, name: '合肥'}
             ],
             tooltip: {
               formatter: '{b}<br />客户数量: {c}<br />客户占比: {d}%'
@@ -863,17 +955,20 @@ export default {
         legend: {
           orient: 'vertical',
           x: 'right',
-          data: ['今日头条', '知乎', '360', '百度', '官网', '小程序', '第三方推荐']
+          data: ['今日头条', '知乎', '360', '百度', '官网', '自媒体', '第三方推荐', '京东']
         },
         grid: {
           top: 20
         },
         xAxis: {
-          type: 'value'
+          type: 'value',
+          splitLine: {
+            show: false
+          }
         },
         yAxis: {
           type: 'category',
-          data: ['无明确预算', '5万以下', '5-10万', '10万-20万', '20万-50万', '50万以上']
+          data: ['无明确预算', '5万以下', '5-10万', '10万-20万', '20万-30万', '30万-50万', '50万以上']
         },
         series: [
           {
@@ -881,87 +976,83 @@ export default {
             type: 'bar',
             stack: '总量',
             label: {
-              // normal: {
-              //   show: true,
-              //   position: 'insideRight'
-              // }
             },
-            data: [320, 302, 301, 334, 390, 330]
+            data: [0, 0, 0, 0, 0, 0, 0]
           },
           {
             name: '知乎',
             type: 'bar',
             stack: '总量',
             label: {
-              // normal: {
-              //   show: true,
-              //   position: 'insideRight'
-              // }
             },
-            data: [120, 132, 101, 134, 90, 230]
+            data: [0, 0, 0, 0, 0, 0, 0]
           },
           {
             name: '360',
             type: 'bar',
             stack: '总量',
             label: {
-              // normal: {
-              //   show: true,
-              //   position: 'insideRight'
-              // }
             },
-            data: [220, 182, 191, 234, 290, 330]
+            data: [0, 0, 0, 0, 0, 0, 0]
           },
           {
             name: '百度',
             type: 'bar',
             stack: '总量',
             label: {
-              // normal: {
-              //   show: true,
-              //   position: 'insideRight'
-              // }
             },
-            data: [150, 212, 201, 154, 190, 330]
+            data: [0, 0, 0, 0, 0, 0, 0]
           },
           {
             name: '官网',
             type: 'bar',
             stack: '总量',
             label: {
-              // normal: {
-              //   show: true,
-              //   position: 'insideRight'
-              // }
             },
-            data: [820, 832, 901, 934, 1290, 1330]
+            data: [0, 0, 0, 0, 0, 0, 0]
           },
           {
-            name: '小程序',
+            name: '自媒体',
             type: 'bar',
             stack: '总量',
             label: {
-              // normal: {
-              //   show: true,
-              //   position: 'insideRight'
-              // }
             },
-            data: [820, 832, 901, 934, 1290, 1330]
+            data: [0, 0, 0, 0, 0, 0, 0]
           },
           {
             name: '第三方推荐',
             type: 'bar',
             stack: '总量',
+            // label: {
+            //   formatter: '2222',
+            //   show: true,
+            //   position: 'right'
+            // },
+            data: [0, 0, 0, 0, 0, 0, 0]
+          },
+          {
+            name: '京东',
+            type: 'bar',
+            stack: '总量',
+            // label: {
+            //   formatter: '2222',
+            //   show: true,
+            //   position: 'right'
+            // },
+            data: [0, 0, 0, 0, 0, 0, 0]
+          },
+          {
+            name: '合计',
+            type: 'bar',
+            stack: '总量',
             label: {
-              formatter: '2222',
-              show: true,
-              position: 'right'
-              // normal: {
-              //   show: true,
-              //   position: 'insideRight'
-              // }
+              normal: {
+                show: true,
+                position: 'right'
+              },
+              formatter: ''
             },
-            data: [820, 832, 901, 934, 1290, 1330]
+            data: [0, 0, 0, 0, 0, 0, 0]
           }
         ]
       },
@@ -1079,23 +1170,6 @@ export default {
           address: '10%'
         }
       ],
-      tableData: [
-        {
-          date: '1',
-          name: '潜在客户',
-          address: '10%'
-        },
-        {
-          date: '2',
-          name: '对接设计',
-          address: '10%'
-        },
-        {
-          date: '3',
-          name: '签订合作',
-          address: '10%'
-        }
-      ], // 商机转化列表
       optionsBudget: [
         {
           value: 0,
@@ -1187,11 +1261,15 @@ export default {
         },
         {
           value: 6,
-          label: '小程序'
+          label: '自媒体'
         },
         {
           value: 7,
           label: '第三方推荐'
+        },
+        {
+          value: 8,
+          label: '京东'
         }
       ], // 客户来源
       optionsCustomer: [
@@ -1288,6 +1366,175 @@ export default {
   },
   directives: {Clickoutside},
   methods: {
+    // 获取统计列表上方数据
+    getClueStatistics() {
+      this.$http.get(api.adminClueStatistics).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          this.bigStatistics = response.data.data
+        } else {
+          this.$message.error(response.data.meta.message)
+        }
+      })
+      .catch (function (error) {
+        this.$message.error(error.message)
+      })
+    },
+    // 获取下方数据
+    getClueSearchStatistics(type) {
+      console.log('type', type)
+      this.$http.get(api.adminClueSearchStatistics, {params: {type: type}}).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          let res = response.data.data
+          res
+          if (type === 1) {
+            // 商机转化
+            this.polar.series[0].data = [
+              {name: '潜在用户', value: res.total_customer.number, total_conversion: res.total_customer.total_conversion},
+              {name: '对接设计', value: res.total_maintain.number, total_conversion: res.total_maintain.total_conversion},
+              {name: '签订合作', value: res.cooperation.number, total_conversion: res.cooperation.total_conversion}
+            ]
+            this.chanceList = res
+          } else if (type === 2) {
+            let dateList = []
+            let valueAdd = []
+            let valueCumulative = []
+            let valueInvalid = []
+            let valueLoss = []
+            if (res.add && res.add.length) {
+              dateList = res.add.map(function (item) {
+                valueAdd.push(item.value)
+                return item.date
+              })
+              valueCumulative = res.cumulative.map(function (c) {
+                return c.value
+              })
+              valueInvalid = res.invalid.map(function (inva) {
+                return inva.value
+              })
+              console.log(333)
+              valueLoss = res.loss.map(function (l) {
+                return l.value
+              })
+            }
+            this.polar2.xAxis.data = dateList
+            this.polar2.series[0].data = valueCumulative
+            this.polar2.series[1].data = valueAdd
+            this.polar2.series[2].data = valueInvalid
+            this.polar2.series[3].data = valueLoss
+            // 客户数量
+            console.log(this.polar2)
+            // console.log('2', response.data.data)
+          } else if (type === 3) {
+            // 来源渠道
+            this.polar3.series[0].data = [res.headlines, res.zhihu, res.qihoo360, res.baidu, res.too_firebird, res.self_media, res.other, res.jd]
+            // console.log('3', response.data.data)
+          } else if (type === 4) {
+            let object = {
+              product: '产品设计',
+              plane: '平面设计',
+              illustration: '插画设计',
+              h5: 'H5',
+              packing: '包装设计',
+              ui: 'UI/UX'
+            }
+            let arr = []
+            for (let kk in res) {
+              res[kk].name = object[kk]
+              arr.push({
+                name: object[kk],
+                value: res[kk].num
+              })
+            }
+            this.polar4.series[0].data = arr
+          } else if (type === 5) {
+            console.log('地区', res)
+            let cityArr = []
+            let seriesData = []
+            let cityOther = {}
+            for (let c in res) {
+              if (!res[c].city_value) {
+                cityOther = {
+                  value: res[c].value,
+                  name: '其他',
+                  probability: res[c].probability
+                }
+              }
+              if (res[c].city_value) {
+                cityArr.push(res[c].city_value)
+                seriesData.push({
+                  name: res[c].city_value,
+                  value: res[c].value
+                })
+              }
+            }
+            if (JSON.stringify(cityOther) !== '{}') {
+              cityArr.push(cityOther.name)
+              seriesData.push(cityOther)
+            }
+            this.polar5.series[0].data = seriesData
+            this.polar5.legend.data = cityArr
+          } else if (type === 6) {
+            let headlines6 = []
+            let jd6 = []
+            let qihoo3606 = []
+            let baidu6 = []
+            let tooFirebird6 = []
+            let zhihu6 = []
+            let selfMedia6 = []
+            let other6 = []
+            let alls = []
+            for (let k in res) {
+              headlines6.push(res[k].headlines)
+              jd6.push(res[k].jd)
+              qihoo3606.push(res[k].qihoo360)
+              baidu6.push(res[k].baidu)
+              tooFirebird6.push(res[k].too_firebird)
+              zhihu6.push(res[k].zhihu)
+              selfMedia6.push(res[k].self_media)
+              other6.push(res[k].other)
+              alls.push(res[k].headlines + res[k].jd + res[k].qihoo360 + res[k].baidu + res[k].too_firebird + res[k].zhihu + res[k].self_media + res[k].other)
+            }
+            this.polar6.series[0].data = headlines6
+            this.polar6.series[1].data = zhihu6
+            this.polar6.series[2].data = qihoo3606
+            this.polar6.series[3].data = baidu6
+            this.polar6.series[4].data = tooFirebird6
+            this.polar6.series[5].data = selfMedia6
+            this.polar6.series[6].data = other6
+            this.polar6.series[7].data = jd6
+            this.polar6.series[8].data = alls
+          } else if (type === 0) {
+            console.log('分析', res)
+            let cumulativeList = []
+            let arr = []
+            cumulativeList = res.cumulative.map(function (item) {
+              arr.push(item.value)
+              return item.date
+            })
+            this.polar7.xAxis.data = cumulativeList
+            this.polar7.series[0].data = arr
+            let table = []
+            for (let i = 0; i < res.add.length; i++) {
+              let row = {
+                'add': res.add[i].value,
+                'cumulative': res.cumulative[i].value,
+                'invalid': res.invalid[i].value,
+                'loss': res.loss[i].value,
+                'wastage_rate': res.wastage_rate[i].value + '%',
+                'date': res.add[i].date
+              }
+              table.push(row)
+            }
+            this.tableData3 = table
+          }
+        } else {
+          this.$message.error(response.data.meta.message)
+        }
+      })
+      .catch (function (error) {
+        this.$message.error(error.message)
+      })
+    },
     // 更改显示隐藏
     hideEcharts(val) {
       this.$set(this[val], 'show', false)
@@ -1325,6 +1572,10 @@ export default {
     }
   },
   created: function() {
+    this.getClueStatistics()
+    for (let i = 0; i < 7; i++) {
+      this.getClueSearchStatistics(i)
+    }
   }
 }
 </script>
@@ -1388,7 +1639,7 @@ export default {
     vertical-align: -webkit-baseline-middle;
   }
   .chart-block .el-date-editor {
-    width: 220px;
+    width: 230px;
   }
   .select-opt {
     width: 120px;
@@ -1537,5 +1788,26 @@ export default {
   }
   .edit-btn li:hover {
     background: #f7f7f7;
+  }
+  .table-header, .table-content {
+    border-top: 1px solid #e6e6e6;
+    border-left: 1px solid #e6e6e6;
+    text-align: center;
+    color: #333;
+  }
+  .table-header p {
+    background-color: #f7f7f7;
+    height: 40px;
+    line-height: 40px;
+    border-right: 1px solid #e6e6e6;
+  }
+  .table-content p {
+    height: 83px;
+    line-height: 82px;
+    border-right: 1px solid #e6e6e6;
+    border-bottom: 1px solid #e6e6e6;
+  }
+  .header-title>p:first-child {
+    margin-bottom: 5px;
   }
 </style>
