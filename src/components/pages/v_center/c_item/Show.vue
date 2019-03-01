@@ -278,7 +278,7 @@
                         <div class="contract-left flex1">
                           <img src="../../../../assets/images/icon/pdf2x.png" width="30"/>
                           <div class="contract-content">
-                            <p>{{ asset.name }}</p>
+                            <p>{{ sliceImgName(asset.name) }}</p>
                             <p class="contract-des">{{ asset.created_at.date_format().format('yyyy-MM-dd') }}</p>
                           </div>
                         </div>
@@ -628,6 +628,7 @@
   import api from '@/api/api'
   import typeData from '@/config'
   import vItemProgress from '@/components/block/ItemProgress'
+  import {sliceImgName} from '@/assets/js/common'
   const vQuoteSubmit = () => import('@/components/block/QuoteSubmit')
   const vQuoteView = () => import('@/components/block/QuoteView')
   export default {
@@ -1226,6 +1227,9 @@
       handlePreview(file) {
       },
       handleChange(file) {
+      },
+      sliceImgName(params) {
+        return sliceImgName(params)
       }
     },
     computed: {
