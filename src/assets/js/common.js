@@ -62,3 +62,13 @@ export function nameToAvatar(val) {
     }
   }
 }
+
+export function sliceImgName(val) { // 截取图片长度
+  if (val) {
+    if (val.length < 26) {
+      return val
+    } else {
+      return val.substr(0, 10) + '...' + val.substr(val.length - 13)
+    }
+  }
+}
