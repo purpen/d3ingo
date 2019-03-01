@@ -88,8 +88,9 @@
             <!-- <el-button size="small" type="primary">批量导入</el-button> -->
             <el-button size="small" @click="exportForm">导出</el-button>
             <el-button size="small"  @click="exportForm(2)">导出模板</el-button>
-            <el-button size="small" class="" :disabled="isAdmin < 15" @click="randomAssign = true">分配</el-button>
+            <el-button size="small" class="" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button>
             <el-button size="small" @click="showClueDialog">无效</el-button>
+            <!-- @header-click="sortChange" -->
           </div>
 
           <el-table
@@ -98,7 +99,7 @@
             class="admin-table"
             @selection-change="handleSelectionChange"
             @filter-change="filterList"
-            @header-click="sortChange"
+            @sort-change="sortChange"
             style="width: 100%"
             :row-class-name="tableRowClassName"
             @row-click="getLookUserInfo">
@@ -108,19 +109,19 @@
             </el-table-column>
             <el-table-column
               label="编号"
-              sortable
+              sortable="custom"
               prop="number"
               width="121">
             </el-table-column>
             <el-table-column
               prop="name"
-              sortable
+              sortable="custom"
               label="姓名"
               width="80">
             </el-table-column>
             <el-table-column
               width="105"
-              sortable
+              sortable="custom"
               label="客户级别">
                  <template slot-scope="scope">
                   <el-rate
@@ -132,14 +133,14 @@
             </el-table-column>
             <el-table-column
               prop="created_at"
-              sortable
+              sortable="custom"
               width="120"
               label="创建时间">
             </el-table-column>
             
             <el-table-column
               width="95"
-              sortable
+              sortable="custom"
               label="来源渠道">
               <template slot-scope="scope">
                 <p v-if="scope.row.new_source === 1">今日头条</p>
@@ -411,7 +412,9 @@ export default {
     closePanel() { // 关闭潜在用户面板
       this.isAddPanel = false
     },
-    sortChange(column) { // 排序
+    sortChange({column}) { // 排序
+      console.log(column)
+      if (!column) return
       switch (column.label) {
         case '编号':
           this.query.evt = 1
@@ -444,7 +447,7 @@ export default {
       if (sort === 1) {
         this.query.sort = 2
       }
-      this.getClueList()
+      // this.getClueList()
     },
     getClueList() {
       let row = {}
