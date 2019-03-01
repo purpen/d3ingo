@@ -233,8 +233,9 @@
                 </el-col>
                 <el-col :span="spanVal">
                   <p><a class="block" v-for="(d, index) in item.license_image" :key="index" :href="d.file" target="_blank">
-                    <span v-if="d.name.length < 23">{{d.name}}</span>
-                    <span v-else>{{ d.name.substr(0, 10) + '...' + d.name.substr(d.name.length - 13) }}</span>
+                    <!-- <span v-if="d.name.length < 23">{{d.name}}</span> -->
+                    <span>{{sliceImgName(d.name)}}</span>
+                    <!-- <span v-else>{{ d.name.substr(0, 10) + '...' + d.name.substr(d.name.length - 13) }}</span> -->
                   </a></p>
                 </el-col>
                 <el-col :span="spanOpt">
@@ -420,6 +421,7 @@
 <script>
 import api from '@/api/api'
 import vMenu from '@/components/admin/Menu'
+import {sliceImgName} from '@/assets/js/common'
 export default {
   name: 'admin_company_show',
   components: {
@@ -487,6 +489,9 @@ export default {
         self.setTestLoadingBtn = false
         self.$message.error(error.message)
       })
+    },
+    sliceImgName(params) {
+      return sliceImgName(params)
     }
   },
   created: function() {
