@@ -167,7 +167,7 @@
                 </el-form-item>
                 <el-form-item prop="smsCode">
                   <div class="pc-code-90-round">
-                    <input type="text" class="pc-code-90" placeholder="验证码" v-model="form3.smsCode" name="smsCode">
+                    <input type="text" class="pc-code-90 border-none" placeholder="验证码" v-model="form3.smsCode" name="smsCode">
                   <div class="pc-code-90-send" @click="fetchCode3" :disabled="time > 0">{{ codeMsg }}</div>
                   </div>
                 </el-form-item>
@@ -231,7 +231,7 @@
             <div class="dialog-req">验证码</div>
             <div class="dialog-code-round">
               <el-form-item prop="smsCode">
-                <input type="text" class="dialog-code" placeholder="请填写验证码" v-model="form2.smsCode" name="smsCode">
+                <input type="text" class="dialog-code border-none" placeholder="请填写验证码" v-model="form2.smsCode" name="smsCode">
               </el-form-item>
               <div class="dialog-code-send">
                 <div class="dialog-code-text" @click="fetchCode2" :disabled="time > 0">{{ codeMsg }}</div>
@@ -269,7 +269,7 @@
           </el-form-item>
           <el-form-item prop="smsCode">
             <div class="code1-send">
-              <input type="text" placeholder="验证码" class="code-input-phone mar-left-5" v-model="form.smsCode" name="smsCode">
+              <input type="text" placeholder="验证码" class="code-input-phone mar-left-5 border-none" v-model="form.smsCode" name="smsCode">
               <div class="send-code" @click="fetchCode" :disabled="time > 0">{{ codeMsg }}</div>
             </div>
           </el-form-item>
@@ -430,7 +430,7 @@
           </el-form-item>
           <el-form-item prop="smsCode">
             <div class="code-round margin-top-10">
-              <input type="text" placeholder="验证码" class="code-input" v-model="form1.smsCode" name="smsCode">
+              <input type="text border-none" placeholder="验证码" class="code-input" v-model="form1.smsCode" name="smsCode">
               <div class="send-code" @click="fetchCode1" :disabled="time > 0">{{ codeMsg }}</div>
             </div>
           </el-form-item>
@@ -585,7 +585,7 @@
           ]
         },
         query: {
-          from: 2,
+          from: 5,
           mark: ''
         }
       }
@@ -948,10 +948,12 @@
     margin-top: 20px;
   }
   .logo-btn:hover {
+    background-color: #ff5a5f;
     background: url("../../../assets/images/new_promote/pc/ButtonHover@2x.png") no-repeat;
     background-size: 100% 100%;
   }
   .logo-btn:active {
+    background-color: #ff5a5f;
     background: url("../../../assets/images/new_promote/pc/ButtonClick@2x.png") no-repeat;
     background-size: 100% 100%;
   }
@@ -2178,6 +2180,9 @@
   }
   .bot-0 {
     padding-bottom: 0;
+  }
+  .border-none {
+    border: none;
   }
 </style>
 
