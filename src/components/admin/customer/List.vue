@@ -507,9 +507,9 @@ export default {
       // this.$router.push({name: 'adminPotentialUserInfo', params: {id: id, name: name}})
       this.query.id = id
       this.query.name = name
-      // this.$router.push({path: `/admin/potential_user/userinfo/${id}`, query: {page: this.query.page}})
+      // this.$router.push({path: `/admin/customer/userinfo/${id}`, query: {page: this.query.page}})
       const {href} = this.$router.resolve({
-        path: `/admin/potential_user/userinfo/${id}`,
+        path: `/admin/customer/userinfo/${id}`,
         query: {page: this.query.page}
       })
       window.open(href, '_blank')
@@ -518,7 +518,7 @@ export default {
       this.query.id = id
       this.query.name = name
       const {href} = this.$router.resolve({
-        path: `/admin/potential_user/userinfo/${id}`,
+        path: `/admin/customer/userinfo/${id}`,
         query: {page: this.query.page}
       })
       window.open(href, '_blank')
