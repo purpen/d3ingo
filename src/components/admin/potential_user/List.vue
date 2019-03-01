@@ -90,7 +90,6 @@
             <el-button size="small"  @click="exportForm(2)">导出模板</el-button>
             <el-button size="small" class="" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button>
             <el-button size="small" @click="showClueDialog">无效</el-button>
-            <!-- @header-click="sortChange" -->
           </div>
 
           <el-table
@@ -156,20 +155,20 @@
             
             <el-table-column
               width="118"
-              sortable
+              sortable="custom"
               prop="execute_user_name"
               label="负责人">
             </el-table-column>
             
             <el-table-column
               width="105"
-              sortable
+              sortable="custom"
               label="沟通状态"
               prop="call_status_value">
             </el-table-column>
             <el-table-column
               width="105"
-              sortable
+              sortable="custom"
               label="最后跟进日">
               <template slot-scope="scope">
                 <p v-if="scope.row.end_time">{{scope.row.end_time.slice(0, 10)}}</p>
@@ -413,7 +412,6 @@ export default {
       this.isAddPanel = false
     },
     sortChange({column}) { // 排序
-      console.log(column)
       if (!column) return
       switch (column.label) {
         case '编号':
@@ -447,7 +445,7 @@ export default {
       if (sort === 1) {
         this.query.sort = 2
       }
-      // this.getClueList()
+      this.getClueList()
     },
     getClueList() {
       let row = {}
