@@ -904,7 +904,12 @@
     box-shadow: none;
     border: 1px solid #d2d2d2;
   }
-
+  .dig-send-code .el-dialog__header {
+    padding: 15px 20px;
+  }
+  .dig-send-code .el-dialog__body {
+    padding: 20px;
+  }
   .inner-place .el-input__inner {
     line-height: 0;
     padding: 15px;

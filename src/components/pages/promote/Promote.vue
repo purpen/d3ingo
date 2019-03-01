@@ -7,9 +7,7 @@
         <div class="header-text-one">智能匹配，<span class="one-min">一分钟</span>智能报价</div>
         <div class="spectrum-img"></div>
         <div class="header-text-two">现在<span class="one-min">发布设计</span>项目需求，有机会获得投资孵化，进驻<span class="one-min">小米商城</span></div>
-        <div class="logo-btn">
-          <div class="logo-btn-text">免费发布项目需求</div>
-          <div class="logo-btn-shadow"></div>
+        <div class="logo-btn" @click="sendReq = true">
         </div>
         <div class="header-two-img">
           <div class="two-img1"></div>
@@ -154,18 +152,20 @@
       <div class="pc-wait-round">
         <div class="wait">您还在等什么？快来发布需求吧！</div>
         <div class="wait-intro">
-          <div class="pc-wait-border-title"><span class="red-text">免费</span>发布项目需求</div>
-          <input type="text" class="pc-wait-input-round" placeholder="请输入您的需求">
-          <input type="text" class="pc-wait-input-round mar-top-20" placeholder="请输入联系人">
-          <div class="pc-send-code-90">
-            <input type="text" class="pc-wait-input-round2" placeholder="手机号码">
-            <div class="pc-code-90-round">
-              <input type="text" class="pc-code-90" placeholder="验证码">
-              <div class="pc-code-90-send">发送验证码</div>
+          <div class="z-index-5">
+            <div class="pc-wait-border-title"><span class="red-text">免费</span>发布项目需求</div>
+            <input type="text" class="pc-wait-input-round" placeholder="请输入您的需求">
+            <input type="text" class="pc-wait-input-round mar-top-20" placeholder="请输入联系人">
+            <div class="pc-send-code-90">
+              <input type="text" class="pc-wait-input-round2" placeholder="手机号码">
+              <div class="pc-code-90-round">
+                <input type="text" class="pc-code-90" placeholder="验证码">
+                <div class="pc-code-90-send">发送验证码</div>
+              </div>
             </div>
-          </div>
-          <div class="pc-send-btn-2">
-            <div class="pc-send-btn-text2">立即发布需求</div>
+            <div class="pc-send-btn-2">
+              <div class="pc-send-btn-text2">立即发布需求</div>
+            </div>
           </div>
         </div>
         <div class="pc-new-curstomer">最新报名客户</div>
@@ -187,6 +187,30 @@
         <div class="pc-call">拨打电话</div>
       </div>
       <div class="pc-bot-bg"></div>
+      <el-dialog
+        title="发布项目需求"
+        :visible.sync="sendReq"
+        width="380px"
+        class="dig-send-code">
+        <div>
+          <div class="dialog-req">项目需求</div>
+          <input type="text" class="dialog-input" placeholder="请输入您的项目需求">
+          <div class="dialog-req pad-top-20">联系人</div>
+          <input type="text" class="dialog-input" placeholder="请输入联系人名称">
+          <div class="dialog-req pad-top-20">手机号</div>
+          <input type="text" class="dialog-input" placeholder="请输入您的手机号">
+          <div class="dialog-req pad-top-20">验证码</div>
+          <div class="dialog-code-round">
+            <input type="text" class="dialog-code" placeholder="请输入您的手机号">
+            <div class="dialog-code-send">
+              <div class="dialog-code-text">获取验证码</div>
+            </div>
+          </div>
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="dialogVisible = false">免费发布需求</el-button>
+        </span>
+      </el-dialog>
     </div>
     <!-- phone -->
     <div v-else>
@@ -434,6 +458,7 @@
         phone: '', // 底部联系电话
         time: 0,
         calcHeight: '',
+        sendReq: false,
         isLoadingBtn: false,
         userList: [],   // 消息列表
         form: {
@@ -751,33 +776,21 @@
     line-height: 20px;
   }
   .logo-btn {
-    cursor: pointer;
-    z-index: 2;
-    position: relative;
+    height: 57px;
     width: 240px;
-    height: 50px;
-    background: rgba(250,105,113,1);
-    border-radius: 4px;
+    cursor: pointer;
+    background: url("../../../assets/images/new_promote/pc/Button@2x.png") no-repeat;
+    background-size: 100% 100%;
     margin: 0 auto;
     margin-top: 20px;
   }
-  .logo-btn-shadow {
-    position: absolute;
-    width: 240px;
-    height: 5px;
-    background: rgba(209,59,67,1);
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-    left: 0;
-    right: 0;
-    top: 47px;
+  .logo-btn:hover {
+    background: url("../../../assets/images/new_promote/pc/ButtonHover@2x.png") no-repeat;
+    background-size: 100% 100%;
   }
-  .logo-btn-text {
-    font-size: 20px;
-    font-family: PingFangSC-Regular;
-    font-weight: 400;
-    color: rgba(255,255,255,1);
-    line-height: 50px;
+  .logo-btn:active {
+    background: url("../../../assets/images/new_promote/pc/ButtonClick@2x.png") no-repeat;
+    background-size: 100% 100%;
   }
   .header-two-img {
     position: relative;
@@ -1152,6 +1165,11 @@
     background: url("../../../assets/images/new_promote/pc/invest/T07@2x.png") no-repeat;
     background-size: 100% 100%;
   }
+  .z-index-5 {
+    z-index: 5;
+    position: relative;
+    height: 100%;
+  }
   .wait {
     font-size: 30px;
     font-family: PingFangSC-Medium;
@@ -1352,6 +1370,53 @@
     background: url("../../../assets/images/new_promote/pc/IllustrationFoot.png") no-repeat;
     background-size: 100% 100%;
     margin-top: 47px;
+  }
+  .dialog-req {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(102,102,102,1);
+    line-height: 20px;
+  }
+  .dialog-input {
+    width: 340px;
+    height: 40px;
+    background: rgba(255,255,255,1);
+    border-radius: 4px;
+    border:1px solid  rgba(230,230,230,1);
+    margin-top: 10px;
+    padding: 15px;
+  }
+  .pad-top-20 {
+    padding-top: 20px;
+  }
+  .dialog-code-round {
+    display: flex;
+    padding-top: 10px;
+  }
+  .dialog-code {
+    width: 210px;
+    height: 40px;
+    background: rgba(255,255,255,1);
+    border-radius: 4px;
+    border: 1px solid rgba(230,230,230,1);
+    margin-right: 10px;
+    padding: 15px;
+  }
+  .dialog-code-send {
+    width: 120px;
+    height: 40px;
+    border-radius: 4px;
+    border: 1px solid rgba(255,90,95,1);
+    text-align: center;
+    cursor: pointer;
+  }
+  .dialog-code-text {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(255,90,95,1);
+    line-height: 38px;
   }
 
 
