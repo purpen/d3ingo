@@ -335,7 +335,7 @@
                   :picker-options="pickerOptions2">
                 </el-date-picker>
               </div>
-              <!-- <div class='select-opt2 fr'>
+              <div class='select-opt2 fr'>
                 <el-select v-model="customerNumber.count" @change="updatecustomer" placeholder="请选择">
                   <el-option
                     v-for="item in optionsCustomer"
@@ -344,7 +344,7 @@
                     :value="item.value">
                   </el-option>
                 </el-select>
-              </div> -->
+              </div>
             </div>
             <div>
               <ECharts :options="polar2" class="line-echarts">
@@ -469,7 +469,7 @@
                   <li>不看此项</li>
                 </ul> -->
               </div>
-              <!-- <div class='select-opt fr'>
+              <div class='select-opt fr'>
                 <el-select v-model="itemBudget.data.source" @change="updateBudget" placeholder="请选择">
                   <el-option
                     v-for="item in optionsFrom"
@@ -478,7 +478,7 @@
                     :value="item.value">
                   </el-option>
                 </el-select>
-              </div> -->
+              </div>
               <div class="chart-block fr">
                 <el-date-picker
                   v-model="itemBudget.times"
@@ -695,7 +695,7 @@ export default {
     COMPANY_TYPE
   },
   data () {
-    let color2 = ['#000000', '#333333', '#666666', '#999999', '#CCCCCC', '#EEEEEE']
+    let color2 = ['#FF686A', '#65A6FF', '#6CE1A8', '#FFE583', '#CD6DE0', '#82C8FF', '#73D13D', '#F8E71C', '#FF5AB0', '#4EE9DF', '#6CE1A8', '#FFBB96', '#FFADD2', '#00CBCB', '#D3F261', '#D53E53', '#413385', '#129C4F', '#FFC330', '#999999']
     return {
       bigStatistics: {
         rising_proportion: 0, // 上涨比例
@@ -1547,6 +1547,7 @@ export default {
           }
         }
       }
+      console.log('this.polar6.series', this.polar6.series)
     },
     // 筛选客户
     updatecustomer(val) {
@@ -1606,6 +1607,7 @@ export default {
         this.polar2.series[1].data = valueAdd
         this.polar2.series[2].data = valueInvalid
         this.polar2.series[3].data = valueLoss
+        this.polar2.legend.data = ['累计客户', '新增客户', '无效客户', '流失客户']
       } else if (val === 1) {
         this.polar2.series[0].data = valueCumulative
         this.polar2.series[0].name = '累计客户'
@@ -1752,6 +1754,7 @@ export default {
               {name: '签订合作', value: res.cooperation.number, total_conversion: res.cooperation.total_conversion}
             ]
             this.chanceList = res
+            this.updatecustomer(this.chance.count)
           } else if (type === 2) {
             let dateList = []
             let valueAdd = []
@@ -1837,35 +1840,40 @@ export default {
           } else if (type === 6) {
             // 项目预算
             this.budgetList = res
-            let headlines6 = []
-            let jd6 = []
-            let qihoo3606 = []
-            let baidu6 = []
-            let tooFirebird6 = []
-            let zhihu6 = []
-            let selfMedia6 = []
-            let other6 = []
-            // let alls = 0
-            for (let k in res) {
-              headlines6.push(res[k].headlines)
-              jd6.push(res[k].jd)
-              qihoo3606.push(res[k].qihoo360)
-              baidu6.push(res[k].baidu)
-              tooFirebird6.push(res[k].too_firebird)
-              zhihu6.push(res[k].zhihu)
-              selfMedia6.push(res[k].self_media)
-              other6.push(res[k].other)
-              // alls += (res[k].headlines + res[k].jd + res[k].qihoo360 + res[k].baidu + res[k].too_firebird + res[k].zhihu + res[k].self_media + res[k].other)
+            if (this.itemBudget.data.source) {
+              console.log(this.itemBudget.data.source)
+              this.updateBudget(this.itemBudget.data.source)
+            } else {
+              let headlines6 = []
+              let jd6 = []
+              let qihoo3606 = []
+              let baidu6 = []
+              let tooFirebird6 = []
+              let zhihu6 = []
+              let selfMedia6 = []
+              let other6 = []
+              // let alls = 0
+              for (let k in res) {
+                headlines6.push(res[k].headlines)
+                jd6.push(res[k].jd)
+                qihoo3606.push(res[k].qihoo360)
+                baidu6.push(res[k].baidu)
+                tooFirebird6.push(res[k].too_firebird)
+                zhihu6.push(res[k].zhihu)
+                selfMedia6.push(res[k].self_media)
+                other6.push(res[k].other)
+                // alls += (res[k].headlines + res[k].jd + res[k].qihoo360 + res[k].baidu + res[k].too_firebird + res[k].zhihu + res[k].self_media + res[k].other)
+              }
+              this.polar6.series[0].data = headlines6
+              this.polar6.series[1].data = zhihu6
+              this.polar6.series[2].data = qihoo3606
+              this.polar6.series[3].data = baidu6
+              this.polar6.series[4].data = tooFirebird6
+              this.polar6.series[5].data = selfMedia6
+              this.polar6.series[6].data = other6
+              this.polar6.series[7].data = jd6
+              // this.polar6.series[7].label.formatter = alls + ''
             }
-            this.polar6.series[0].data = headlines6
-            this.polar6.series[1].data = zhihu6
-            this.polar6.series[2].data = qihoo3606
-            this.polar6.series[3].data = baidu6
-            this.polar6.series[4].data = tooFirebird6
-            this.polar6.series[5].data = selfMedia6
-            this.polar6.series[6].data = other6
-            this.polar6.series[7].data = jd6
-            // this.polar6.series[7].label.formatter = alls + ''
           } else if (type === 0) {
             let cumulativeList = []
             let arr = []
