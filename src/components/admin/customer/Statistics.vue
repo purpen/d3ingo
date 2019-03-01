@@ -1461,7 +1461,74 @@ export default {
         other6.push(this.budgetList[k].other)
       }
       let dataList = [headlines6, zhihu6, qihoo3606, baidu6, tooFirebird6, selfMedia6, other6, jd6]
-      if (val === 0) {
+      if (parseInt(val) === 0) {
+        this.polar6.series = [
+          {
+            name: '今日头条',
+            type: 'bar',
+            stack: '总量',
+            label: {
+            },
+            data: [0, 0, 0, 0, 0, 0, 0]
+          },
+          {
+            name: '知乎',
+            type: 'bar',
+            stack: '总量',
+            label: {
+            },
+            data: [0, 0, 0, 0, 0, 0, 0]
+          },
+          {
+            name: '360',
+            type: 'bar',
+            stack: '总量',
+            label: {
+            },
+            data: [0, 0, 0, 0, 0, 0, 0]
+          },
+          {
+            name: '百度',
+            type: 'bar',
+            stack: '总量',
+            label: {
+            },
+            data: [0, 0, 0, 0, 0, 0, 0]
+          },
+          {
+            name: '官网',
+            type: 'bar',
+            stack: '总量',
+            label: {
+            },
+            data: [0, 0, 0, 0, 0, 0, 0]
+          },
+          {
+            name: '自媒体',
+            type: 'bar',
+            stack: '总量',
+            label: {
+            },
+            data: [0, 0, 0, 0, 0, 0, 0]
+          },
+          {
+            name: '第三方推荐',
+            type: 'bar',
+            stack: '总量',
+            data: [0, 0, 0, 0, 0, 0, 0]
+          },
+          {
+            name: '京东',
+            type: 'bar',
+            stack: '总量',
+            label: {
+              show: true,
+              position: 'right',
+              formatter: ''
+            },
+            data: [0, 0, 0, 0, 0, 0, 0]
+          }
+        ]
         this.polar6.series[0].data = headlines6
         this.polar6.series[1].data = zhihu6
         this.polar6.series[2].data = qihoo3606
@@ -1505,6 +1572,36 @@ export default {
       }
       this.polar2.xAxis.data = dateList
       if (val === 0) {
+        this.polar2.series = [
+          {
+            name: '累计客户',
+            type: 'line',
+            top: 0,
+            showSymbol: false,
+            data: []
+          },
+          {
+            name: '新增客户',
+            type: 'line',
+            top: 0,
+            showSymbol: false,
+            data: []
+          },
+          {
+            name: '无效客户',
+            type: 'line',
+            top: 0,
+            showSymbol: false,
+            data: []
+          },
+          {
+            name: '流失客户',
+            type: 'line',
+            top: 0,
+            showSymbol: false,
+            data: []
+          }
+        ]
         this.polar2.series[0].data = valueCumulative
         this.polar2.series[1].data = valueAdd
         this.polar2.series[2].data = valueInvalid
