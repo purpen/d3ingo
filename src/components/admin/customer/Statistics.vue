@@ -1763,7 +1763,7 @@ export default {
         if (response.data.meta.status_code === 200) {
           if (response.data.data && response.data.data.length) {
             let from = ['其他', '今日头条', '京东', '360', '百度', '官网', '知乎', '自媒体(公众号.头条号)', '其他']
-            let device = ['', 'pc', '移动端', 'app']
+            let device = ['', 'pc端', '移动端', 'app']
             response.data.data.forEach(item => {
               item.new_from = from[item.new_from]
               item.device = device[item.device]
