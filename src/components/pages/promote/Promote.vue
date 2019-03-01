@@ -180,21 +180,30 @@
         </div>
         <div class="pc-new-curstomer">最新报名客户</div>
         <div class="pc-person">
-          <div class="pc-person-left">
-            <div class="pc-person-text">丁先生</div>
-            <div class="pc-person-text">12312341234</div>
-            <div class="pc-person-text">32分钟前</div>
-          </div>
+          <swiper class="swiper-con pc-bot-hei-125" :options="swiperOption3">
+            <swiper-slide v-for="(item, index) of userList" :key="index">
+              <div class="pc-person-left">
+                <div v-text="item.user_name" class="pc-person-text"></div>
+                <div class="pc-person-text" v-text="item.phone"></div>
+                <div class="pc-person-text">{{item.created_at}}分钟前</div>
+              </div>
+            </swiper-slide>
+          </swiper>
           <div class="border-2"></div>
-          <div class="pc-person-left">
-            <div class="pc-person-text">丁先生</div>
-            <div class="pc-person-text">12312341234</div>
-            <div class="pc-person-text">32分钟前</div>
-          </div>
+          <swiper class="swiper-con pc-bot-hei-125" :options="swiperOption3">
+            <swiper-slide v-for="(item, index) of userList2" :key="index">
+              <div class="pc-person-left">
+                <div v-text="item.user_name" class="pc-person-text"></div>
+                <div class="pc-person-text" v-text="item.phone"></div>
+                <div class="pc-person-text">{{item.created_at}}分钟前</div>
+              </div>
+            </swiper-slide>
+          </swiper>
         </div>
       </div>
       <div class="pc-call-btn">
-        <div class="pc-call">拨打电话</div>
+        <div class="pc-call">太火鸟设计服务热线</div>
+        <div class="pc-call">13031154842</div>
       </div>
       <div class="pc-bot-bg"></div>
       <el-dialog
@@ -447,9 +456,9 @@
             </swiper-slide>
           </swiper>
         </div>
-        <div class="send-code-btn">
-          <div class="send-code-text">拨打电话</div>
-        </div>
+        <!-- <div class="send-code-btn">
+          <div href="tel:13031154842" class="send-code-text">拨打电话</div>
+        </div> -->
       </div>
       <div class="bg-bot-img"></div>
     </div>
@@ -495,6 +504,7 @@
         isLoadingBtn: false,
         isLoadingBtn2: false,
         userList: [],   // 消息列表
+        userList2: [],
         form: {
           demand: '',   // 需求
           account: '',  // 手机号
@@ -530,6 +540,17 @@
           direction: 'vertical',
           autoplay: 1000,
           slidesPerView: 3,
+          // observer: true,
+          spaceBetween: 0,
+          paginationClickable: true,
+          loop: true
+        },
+        // pc
+        swiperOption3: {
+          lazyLoading: true,
+          direction: 'vertical',
+          autoplay: 1000,
+          slidesPerView: 2,
           // observer: true,
           spaceBetween: 0,
           paginationClickable: true,
@@ -808,6 +829,10 @@
             let resData = res.data.data
             this.userList = resData
             this.userList.forEach(item => {
+              item.created_at = parseInt((date - item.created_at) / 60)
+            })
+            this.userList2 = resData
+            this.userList2.forEach(item => {
               item.created_at = parseInt((date - item.created_at) / 60)
             })
           }
@@ -1451,7 +1476,7 @@
   .pc-person {
     width: 880px;
     display: flex;
-    height: 125px;
+    height: 110px;
     margin: 0 auto;
   }
   .pc-person-left {
@@ -1472,14 +1497,9 @@
     margin: 0 60px;
   }
   .pc-call-btn {
-    cursor: pointer;
-    width: 180px;
-    height: 46px;
-    background: rgba(255,102,107,1);
-    border-radius: 23px;
     margin: 0 auto;
     margin-top: 42px;
-    text-align: center;
+    display: flex;
   }
   .pc-call {
     font-size: 16px;
@@ -2086,6 +2106,9 @@
   }
   .center-form2 {
     padding: 0 50px;
+  }
+  .pc-bot-hei-125 {
+    height: 125px;
   }
 </style>
 
