@@ -456,9 +456,9 @@
             </swiper-slide>
           </swiper>
         </div>
-        <!-- <div class="send-code-btn">
+        <div class="send-code-btn">
           <div href="tel:13031154842" class="send-code-text">拨打电话</div>
-        </div> -->
+        </div>
       </div>
       <div class="bg-bot-img"></div>
     </div>
