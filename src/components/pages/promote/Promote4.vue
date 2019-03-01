@@ -1,21 +1,4 @@
 <template>
-<<<<<<< HEAD:src/components/pages/promote/Promote.vue
-  <section class="back-bg">
-    <div v-if="!isMob">
-      <div class="pc-header">
-        <div class="logo">
-        </div>
-        <div class="header-text-one">智能匹配，<span class="one-min">一分钟</span>智能报价</div>
-        <div class="spectrum-img"></div>
-        <div class="header-text-two">现在<span class="one-min">发布设计</span>项目需求，有机会获得投资孵化，进驻<span class="one-min">小米商城</span></div>
-        <div class="logo-btn" @click="sendReq = true">
-        </div>
-        <div class="header-two-img">
-          <div class="two-img1"></div>
-          <div class="two-img2"></div>
-          <div class="two-img3"></div>
-        </div>
-=======
   <section>
     <div class="round-backgound" v-if="!isMob">
       <div class="bg1">
@@ -72,7 +55,6 @@
               </el-col>
             </el-col>
         </el-row>
->>>>>>> origin/lzh-dev:src/components/pages/promote/Promote4.vue
       </div>
       <div class="header-title">太火鸟设计服务的项目</div>
       <div class="six-img-round">
@@ -277,13 +259,6 @@
       <div class="release-text">
         现在<span>发布需求</span>，有机会获得投资孵化，进驻<span>小米商城</span>
       </div>
-<<<<<<< HEAD:src/components/pages/promote/Promote.vue
-      <el-form @submit.native.prevent :model="form" :rules="ruleForm" ref="ruleForm" class="phone-form1">
-        <div>
-          <el-form-item prop="demand">
-            <div class="release-input put-top-15">
-              <input v-model="form.demand" name="username" placeholder="请输入您的需求" class="release-form">
-=======
       <el-form @submit.native.prevent :model="form" :rules="ruleForm" ref="ruleForm" class="text-center pad-top-28">
         <el-row>
           <el-col :span="20" :offset="2">
@@ -330,7 +305,6 @@
             <div class="pho-six-col">
               <img src="../../../assets/images/promote/design-type/productdesign@2x.png" alt="">
               <p>产品外观设计</p>
->>>>>>> origin/lzh-dev:src/components/pages/promote/Promote4.vue
             </div>
           </el-form-item>
           <el-form-item prop="contact">

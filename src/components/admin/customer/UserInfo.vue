@@ -110,9 +110,12 @@
               </div>
               <div class="call-status fl fz-14">
                 <span class="fz-14">通话状态 :</span>
-                <div class="call-status-select tc-red">
-                  <span v-if="currentId">{{userForm.call_status_value}}</span>
-                  <span v-else>待初次沟通</span>
+                <div class="call-status-select tc-2">
+                  <span v-if="currentId" :class="{
+                    'tc-red': userForm.new_call_status <= 8,
+                    'tc-orange': userForm.new_call_status === 9 || userForm.new_call_status === 10
+                  }" >{{userForm.call_status_value}}</span>
+                  <span class="tc-red" v-else>待初次沟通</span>
                 </div>
               </div>
               <!-- <el-popover
@@ -889,7 +892,7 @@
                     :maxlength="500">
                   </el-input>
                   <div class="send clearfix" v-if="focusHeight">
-                    <div class="date-picker fl" style="width: 180px;">
+                    <div v-if="isFollowTime" class="date-picker fl" style="width: 180px;">
                         <el-date-picker
                           v-model="followTime"
                           type="date"
@@ -1359,6 +1362,7 @@ export default {
             new_status: data.new_status,
             call_status_value: data.call_status_value,
             execute_user_id: data.execute_user_id,
+            created_at: data.created_at,
             new_call_status: data.new_call_status || ''
           }
           this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm:ss')
@@ -2071,6 +2075,11 @@ export default {
       } else {
         return true
       }
+    },
+    isFollowTime() {
+      console.log(this.userForm.created_at)
+      console.log(this.userForm.created_at + (10 * 24 * 60 * 60) < new Date().getTime().toString().substr(0, 10))
+      return this.userForm.created_at + (10 * 24 * 60 * 60) < new Date().getTime().toString().substr(0, 10)
     }
   },
   watch: {
