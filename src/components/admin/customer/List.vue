@@ -87,7 +87,7 @@
             </el-upload>
             <!-- <el-button size="small" type="primary">批量导入</el-button> -->
             <el-button size="small" @click="exportForm">导出</el-button>
-            <el-button size="small"  @click="exportForm(2)">导入模板模板</el-button>
+            <el-button size="small"  @click="exportForm(2)">导入模板下载</el-button>
             <el-button size="small" class="" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button>
             <el-button size="small" @click="showClueDialog">无效</el-button>
           </div>
@@ -361,6 +361,7 @@ export default {
         default:
           this.query.status = 6
       }
+      this.query.page = 1
       this.getClueList()
     },
     // 多选

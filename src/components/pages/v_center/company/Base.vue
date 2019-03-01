@@ -1033,6 +1033,7 @@
           city: '',
           area: ''
         },
+        beforeAddress: {},
         dialogLicense: false,
         dialogLicenseImageUrl: ''
       }
@@ -1684,6 +1685,11 @@
                   that.$store.commit(CHANGE_USER_VERIFY_STATUS, {verify_status: 3})
                   that.$set(that.form, 'verify_status', 3)
                   that.$message.success('提交成功,等待审核')
+                  that.beforeAddress = {
+                    province: row.province,
+                    area: row.area,
+                    city: row.city
+                  }
                   // that.getdesignCompanyInfo()
                   that.dialogVisible = false
                 } else {
@@ -1826,7 +1832,12 @@
         })
       },
       showLegalizeDialog() {
-        const d = this.currentAddress
+        let d = {}
+        if (Object.keys(this.beforeAddress).length === 0) {
+          d = this.currentAddress
+        } else {
+          d = this.beforeAddress
+        }
         this.dialogVisible = true
         this.$nextTick(_ => {
           this.$set(this.form, 'province', d.province === 0 ? '' : d.province)

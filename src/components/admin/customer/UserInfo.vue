@@ -1490,7 +1490,7 @@ export default {
       row.tag = this.dynamicTags.length ? this.dynamicTags : ''
       this.$http.post(api.adminClueCreate, row).then(res => {
         if (res.data.meta.status_code === 200) {
-          this.$message.success('成功')
+          this.$message.success(res.data.meta.message)
           this.$router.push({name: 'adminPotentialUserList'})
         } else {
           this.$message.error(res.data.meta.message)
