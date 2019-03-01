@@ -96,11 +96,11 @@
               <span class="chart-title">商机转化</span>
               <div class="fr edit-btn" @blur="hideEcharts('chance')" tabindex="-1">
                 <i @click="onOff('chance')"></i>
-                <ul v-if="chance.show">
-                  <li>刷新数据</li>
-                  <!-- <li>导出图表</li>
-                  <li>不看此项</li> -->
-                </ul>
+                <!-- <ul v-if="chance.show">
+                  <li @click="updateAll('chance')">刷新数据</li>
+                  <li>导出图表</li>
+                  <li>不看此项</li>
+                </ul> -->
               </div>
               <div class="fr">
                 <div class="select-chance" v-clickoutside="downchance">
@@ -305,11 +305,11 @@
               <span class="chart-title">客户数量</span>
               <div class="fr edit-btn" @blur="hideEcharts('customerNumber')" tabindex="-1">
                 <i @click="onOff('customerNumber')"></i>
-                <ul v-if="customerNumber.show">
-                  <li>刷新数据</li>
-                  <!-- <li>导出图表</li>
-                  <li>不看此项</li> -->
-                </ul>
+                <!-- <ul v-if="customerNumber.show">
+                  <li @click="updateAll('customerNumber')">刷新数据</li>
+                  <li>导出图表</li>
+                  <li>不看此项</li>
+                </ul> -->
               </div>
               <div class='select-opt fr'>
                 <el-select v-model="customerNumber.data.source" @change="update($event, 'customerNumber')" placeholder="请选择">
@@ -335,7 +335,7 @@
                   :picker-options="pickerOptions2">
                 </el-date-picker>
               </div>
-              <div class='select-opt2 fr'>
+              <!-- <div class='select-opt2 fr'>
                 <el-select v-model="customerNumber.count" @change="updatecustomer" placeholder="请选择">
                   <el-option
                     v-for="item in optionsCustomer"
@@ -344,7 +344,7 @@
                     :value="item.value">
                   </el-option>
                 </el-select>
-              </div>
+              </div> -->
             </div>
             <div>
               <ECharts :options="polar2" class="line-echarts">
@@ -356,11 +356,11 @@
               <span class="chart-title">来源渠道</span>
               <div class="fr edit-btn" @blur="hideEcharts('place')" tabindex="-1">
                 <i @click="onOff('place')"></i>
-                <ul v-if="place.show">
-                  <li>刷新数据</li>
-                  <!-- <li>导出图表</li>
-                  <li>不看此项</li> -->
-                </ul>
+                <!-- <ul v-if="place.show">
+                  <li @click="updateAll('place')">刷新数据</li>
+                  <li>导出图表</li>
+                  <li>不看此项</li>
+                </ul> -->
               </div>
               <div class='select-opt fr'>
                 <el-select v-model="place.data.time" @change="update($event, 'place')" placeholder="请选择">
@@ -399,11 +399,11 @@
                   <span class="chart-title">项目类型</span>
                   <div class="fr edit-btn" @blur="hideEcharts('itemType')" tabindex="-1">
                     <i @click="onOff('itemType')"></i>
-                    <ul v-if="itemType.show">
-                      <li>刷新数据</li>
-                      <!-- <li>导出图表</li>
-                      <li>不看此项</li> -->
-                    </ul>
+                    <!-- <ul v-if="itemType.show">
+                      <li @click="updateAll('itemType')">刷新数据</li>
+                      <li>导出图表</li>
+                      <li>不看此项</li>
+                    </ul> -->
                   </div>
                   <div class="chart-block fr">
                     <el-date-picker
@@ -428,11 +428,11 @@
                   <span class="chart-title">地区</span>
                   <div class="fr edit-btn" @blur="hideEcharts('area')" tabindex="-1">
                     <i @click="onOff('area')"></i>
-                    <ul   v-if="area.show">
-                      <li>刷新数据</li>
-                      <!-- <li>导出图表</li>
-                      <li>不看此项</li> -->
-                    </ul>
+                    <!-- <ul v-if="area.show">
+                      <li @click="updateAll('area')">刷新数据</li>
+                      <li>导出图表</li>
+                      <li>不看此项</li>
+                    </ul> -->
                   </div>
                   <div class="chart-block fr">
                     <el-date-picker
@@ -463,13 +463,13 @@
               <span class="chart-title">项目预算</span>
               <div class="fr edit-btn" @blur="hideEcharts('itemBudget')" tabindex="-1">
                 <i @click="onOff('itemBudget')"></i>
-                <ul v-if="itemBudget.show">
-                  <li>刷新数据</li>
-                  <!-- <li>导出图表</li>
-                  <li>不看此项</li> -->
-                </ul>
+                <!-- <ul v-if="itemBudget.show">
+                  <li @click="updateAll('itemBudget')">刷新数据</li>
+                  <li>导出图表</li>
+                  <li>不看此项</li>
+                </ul> -->
               </div>
-              <div class='select-opt fr'>
+              <!-- <div class='select-opt fr'>
                 <el-select v-model="itemBudget.data.source" @change="updateBudget" placeholder="请选择">
                   <el-option
                     v-for="item in optionsFrom"
@@ -478,7 +478,7 @@
                     :value="item.value">
                   </el-option>
                 </el-select>
-              </div>
+              </div> -->
               <div class="chart-block fr">
                 <el-date-picker
                   v-model="itemBudget.times"
@@ -504,11 +504,11 @@
               <span class="chart-title">全部客户分析</span>
               <div class="fr edit-btn" @blur="hideEcharts('allCustomer')" tabindex="-1">
                 <i @click="onOff('allCustomer')"></i>
-                <ul v-show="allCustomer.show">
-                  <li>刷新数据</li>
-                  <!-- <li>导出图表</li>
-                  <li>不看此项</li> -->
-                </ul>
+                <!-- <ul v-show="allCustomer.show">
+                  <li @click="updateAll('allCustomer')">刷新数据</li>
+                  <li>导出图表</li>
+                  <li>不看此项</li>
+                </ul> -->
               </div>
             </div>
             <div class="chart-header2">
@@ -1720,6 +1720,15 @@ export default {
       }
       this.getClueSearchStatistics(this[form].data.type, this[form].data)
     },
+    // 刷新数据
+    updateAll(form) {
+      let type = 0
+      type = this[form].type
+      this[form] = {
+        'type': type
+      }
+      this.getClueSearchStatistics(type)
+    },
     // 获取下方数据
     getClueSearchStatistics(type, from) {
       let row = {
@@ -2066,6 +2075,7 @@ export default {
     font-size: 14px;
     margin-left: 15px;
     padding-left: 10px;
+    color: #999;
   }
   .select-chance i {
     display: inline-block;
