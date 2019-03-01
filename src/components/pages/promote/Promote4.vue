@@ -201,7 +201,7 @@
               <input type="text" class="pc-wait-input-round2" placeholder="手机号码">
               <div class="pc-code-90-round">
                 <input type="text" class="pc-code-90" placeholder="验证码">
-                <div class="pc-code-90-send">发送验证码</div>
+                <div class="pc-code-90-send">获取验证码</div>
               </div>
             </div>
             <div class="pc-send-btn-2">
@@ -498,7 +498,7 @@
         <input type="text" placeholder="手机号码" class="input-style margin-top-10">
         <div class="code-round margin-top-10">
           <input type="text" placeholder="验证码" class="code-input">
-          <div class="send-code">发送验证码</div>
+          <div class="send-code">获取验证码</div>
         </div>
         <div class="send-code-btn">
           <div class="send-code-text">立即发布需求</div>
@@ -656,7 +656,7 @@
           }
         }
       },
-      // 点击发送验证码
+      // 点击获取验证码
       fetchCode() {
         if (!this.form.account) {
           this.$message.error('请输入手机号')
@@ -818,7 +818,7 @@
         return user
       },
       codeMsg() {
-        return this.time > 0 ? '重新发送' + this.time + 's' : '发送验证码'
+        return this.time > 0 ? '重新发送' + this.time + 's' : '获取验证码'
       },
       isMob() {
         return this.$store.state.event.isMob

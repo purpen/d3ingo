@@ -898,7 +898,7 @@
     padding: 15px 20px;
   }
   .dig-send-code .el-dialog__body {
-    padding: 20px;
+    padding: 20px 20px 0 20px;
   }
   .inner-place .el-input__inner {
     line-height: 0;
