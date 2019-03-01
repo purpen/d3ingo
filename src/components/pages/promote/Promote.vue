@@ -168,7 +168,8 @@
                 <el-form-item prop="smsCode">
                   <div class="pc-code-90-round">
                     <input type="text" class="pc-code-90 border-none" placeholder="验证码" v-model="form3.smsCode" name="smsCode">
-                  <div class="pc-code-90-send" @click="fetchCode3" :disabled="time > 0">{{ codeMsg }}</div>
+                  <div class="pc-code-90-send" v-if="time > 0">{{ codeMsg }}</div>
+                  <div class="pc-code-90-send" @click="fetchCode3" v-else>{{ codeMsg }}</div>
                   </div>
                 </el-form-item>
               </div>
@@ -234,7 +235,8 @@
                 <input type="text" class="dialog-code border-none" placeholder="请填写验证码" v-model="form2.smsCode" name="smsCode">
               </el-form-item>
               <div class="dialog-code-send">
-                <div class="dialog-code-text" @click="fetchCode2" :disabled="time > 0">{{ codeMsg }}</div>
+                <div class="dialog-code-text" v-if="time > 0">{{ codeMsg }}</div>
+                <div class="dialog-code-text" @click="fetchCode2" v-else>{{ codeMsg }}</div>
               </div>
             </div>
           </el-form>
@@ -270,7 +272,8 @@
           <el-form-item prop="smsCode">
             <div class="code1-send">
               <input type="text" placeholder="验证码" class="code-input-phone mar-left-5 border-none" v-model="form.smsCode" name="smsCode">
-              <div class="send-code" @click="fetchCode" :disabled="time > 0">{{ codeMsg }}</div>
+              <div class="send-code" v-if="time > 0">{{ codeMsg }}</div>
+              <div class="send-code" @click="fetchCode" v-else>{{ codeMsg }}</div>
             </div>
           </el-form-item>
         </div>
@@ -430,8 +433,9 @@
           </el-form-item>
           <el-form-item prop="smsCode">
             <div class="code-round margin-top-10">
-              <input type="text border-none" placeholder="验证码" class="code-input" v-model="form1.smsCode" name="smsCode">
-              <div class="send-code" @click="fetchCode1" :disabled="time > 0">{{ codeMsg }}</div>
+              <input type="text" placeholder="验证码" class="code-input border-none" v-model="form1.smsCode" name="smsCode">
+              <div class="send-code" v-if="time > 0">{{ codeMsg }}</div>
+              <div class="send-code" @click="fetchCode1" v-else>{{ codeMsg }}</div>
             </div>
           </el-form-item>
         </el-form>
@@ -942,20 +946,15 @@
     height: 57px;
     width: 240px;
     cursor: pointer;
-    background: url("../../../assets/images/new_promote/pc/Button@2x.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../../../assets/images/new_promote/pc/Button@2x.png") no-repeat center / contain #ff5a5f;
     margin: 0 auto;
     margin-top: 20px;
   }
   .logo-btn:hover {
-    background-color: #ff5a5f;
-    background: url("../../../assets/images/new_promote/pc/ButtonHover@2x.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../../../assets/images/new_promote/pc/ButtonHover@2x.png") no-repeat center / contain #ff6f80;
   }
   .logo-btn:active {
-    background-color: #ff5a5f;
-    background: url("../../../assets/images/new_promote/pc/ButtonClick@2x.png") no-repeat;
-    background-size: 100% 100%;
+    background: url("../../../assets/images/new_promote/pc/ButtonClick@2x.png") no-repeat center / contain #ff4d61;
   }
   .header-two-img {
     position: relative;
