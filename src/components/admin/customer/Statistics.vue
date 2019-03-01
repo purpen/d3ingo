@@ -117,7 +117,7 @@
                           </p>
                           <ul class="scroll-bar">
                             <li v-for="from in optionsFrom" :key="from.value" v-if="from.value > 0"
-                              @click="updataform('source', from.value)"
+                              @click="updataform('source', from.value, from.label)"
                               :class="{'bg-f7':chance.data.source ===from.value}"
                               >
                               {{from.label}}
@@ -129,7 +129,7 @@
                           <ul>
                             <li v-for="date in optionsDate" 
                               v-if="date.value !== 0"
-                              @click="updataform('time', date.value)"
+                              @click="updataform('time', date.value, date.label)"
                               :class="{'bg-f7':chance.data.time ===date.value}"
                               :key="date.value">
                               {{date.label}}
@@ -140,7 +140,7 @@
                           <p class="th">地区</p>
                           <ul class="scroll-bar">
                             <li v-for="city in optionsCity"
-                              @click="updataform('region', city.value)"
+                              @click="updataform('region', city.value, city.label)"
                               :class="{'bg-f7':chance.data.region ===city.value}"
                               :key="city.value">
                               {{city.label}}
@@ -152,7 +152,7 @@
                           <ul>
                             <li v-for="types in companyTypes"
                               v-if="types.value>0"
-                              @click="updataform('project_type', types.value)"
+                              @click="updataform('project_type', types.value, types.label)"
                               :class="{'bg-f7':chance.data.project_type ===types.value}"
                               :key="types.value">
                               {{types.label}}
@@ -164,7 +164,7 @@
                           <ul>
                             <li v-for="budget in optionsBudget"
                               v-if="budget.value>0"
-                              @click="updataform('project_budget', budget.value)"
+                              @click="updataform('project_budget', budget.value, budget.label)"
                               :class="{'bg-f7':chance.data.project_budget ===budget.value}"
                               :key="budget.value">
                               {{budget.label}}
@@ -175,9 +175,9 @@
                     </div>
                     <div class="dialog-footer">
                       <div class="fl from-list">
-                        <span v-for="(ff,kk) in chance.data" :key="kk" v-if="kk!=='start_time' &&kk!=='type'&&kk!=='end_time'&&parseInt(ff)!==0">
-                          {{ff}}
-                          <i @click="deleteForm(kk)"></i>
+                        <span v-for="(ff, kk) in onChance" :key="kk">
+                          {{ff.label}}
+                          <i @click="deleteForm(ff)"></i>
                         </span>
                       </div>
                       <div class="fr">
@@ -189,7 +189,7 @@
                         </el-button>
                       </div>
                     </div>
-                  </div>好
+                  </div>
                 </div>
               </div>
               <div class="chart-block fr">
@@ -678,6 +678,7 @@ export default {
         }
       }, // 商机列表
       type: 1, // 1:商机转化 2:客户数量 3:来源渠道 4:项目类型 5:地区 6:项目预算
+      onChance: [], // 当前的操作
       ischance: false, // 全部商机弹窗
       region: REGION_DATA, // 地区
       allCustomer: {
@@ -1441,17 +1442,53 @@ export default {
         start_time: '',
         type: 1
       })
+      this.onChance = []
     },
     // 更新搜索条件
-    updataform(k, val) {
+    updataform(k, val, label) {
       this.$set(this.chance.data, k, val)
+      if (this.onChance.length) {
+        let nameList = this.onChance.map(m => {
+          return m.name
+        })
+        if (nameList.indexOf(k) === -1) {
+          this.onChance.push({
+            'value': val,
+            'label': label,
+            'name': k
+          })
+          return
+        } else {
+          this.onChance.forEach((item, index) => {
+            if (item.name === k) {
+              item.value = val
+              item.label = label
+              this.$set(this.onChance, index, item)
+              return
+            }
+          })
+        }
+      } else {
+        this.onChance.push({
+          'value': val,
+          'label': label,
+          'name': k
+        })
+      }
     },
     // 删除更新条件
-    deleteForm(kk) {
-      if (kk !== 'time') {
-        this.$set(this.chance.data, kk, '0')
+    deleteForm(ff) {
+      if (ff.name === 'time') {
+        this.$set(this.chance.data, ff.name, '0')
       } else {
-        this.$set(this.chance.data, kk, 0)
+        this.$set(this.chance.data, ff.name, 0)
+      }
+      if (this.onChance.length) {
+        this.onChance.forEach((item, index) => {
+          if (item.name === ff.name) {
+            this.onChance.splice(index, 1)
+          }
+        })
       }
     },
     // 获取统计列表上方数据
@@ -1470,7 +1507,7 @@ export default {
     // 地区搜索
     update(val, form) {
       if (this[form].data.type === 1) {
-        this.chance.show = false
+        this.ischance = false
       }
       this.getClueSearchStatistics(this[form].data.type, this[form].data)
     },
