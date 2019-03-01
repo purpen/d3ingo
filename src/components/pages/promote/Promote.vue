@@ -218,23 +218,33 @@
       <div class="release-text">
         现在<span>发布需求</span>，有机会获得投资孵化，进驻<span>小米商城</span>
       </div>
-      <div>
-        <div class="release-input">
-          <input type="text" class="release-form" placeholder="请输入您的需求">
+      <el-form @submit.native.prevent :model="form" :rules="ruleForm" ref="ruleForm" class="phone-form1">
+        <div>
+          <el-form-item prop="demand">
+            <div class="release-input put-top-15">
+              <input v-model="form.demand" name="username" placeholder="请输入您的需求" class="release-form">
+            </div>
+          </el-form-item>
+          <el-form-item prop="contact">
+            <div class="release-input">
+              <input type="text" class="release-form" placeholder="请输入联系人" v-model="form.contact" ref="contact">
+            </div>
+          </el-form-item>
+          <el-form-item prop="account">
+            <div class="release-input">
+              <input type="text" class="release-form" placeholder="手机号码" v-model="form.account" ref="account">
+            </div>
+          </el-form-item>
+          <el-form-item prop="smsCode">
+            <div class="code1-send">
+              <input type="text" placeholder="验证码" class="code-input mar-left-5" v-model="form.smsCode" name="smsCode">
+              <div class="send-code" @click="fetchCode" :disabled="time > 0">{{ codeMsg }}</div>
+            </div>
+          </el-form-item>
         </div>
-        <div class="release-input">
-          <input type="text" class="release-form" placeholder="请输入联系人">
-        </div>
-        <div class="release-input">
-          <input type="text" class="release-form" placeholder="手机号码">
-        </div>
-        <div class="code1-send">
-          <input type="text" placeholder="验证码" class="code-input mar-left-5">
-          <div class="send-code">发送验证码</div>
-        </div>
-      </div>
+      </el-form>
       <div class="round-btn">
-        <div class="release-btn">免费发布项目需求</div>
+        <div class="release-btn" :loading="isLoadingBtn" @click="submit('ruleForm')">免费发布项目需求</div>
       </div>
       <div class="img-round-text">太火鸟设计服务的项目</div>
       <div class="img-round">
@@ -392,26 +402,20 @@
           <div class="right"></div>
         </div>
         <div class="person-round">
-          <div class="person">
-            <div class="person-text">苏先生</div>
-            <div class="person-text">1365139068</div>
-            <div class="person-text">52分钟前</div>
-          </div>
-          <div class="person">
-            <div class="person-text">苏先生</div>
-            <div class="person-text">1365139068</div>
-            <div class="person-text">52分钟前</div>
-          </div>
-          <div class="person">
-            <div class="person-text">苏先生</div>
-            <div class="person-text">1365139068</div>
-            <div class="person-text">52分钟前</div>
-          </div>
-          <div class="person">
-            <div class="person-text">苏先生</div>
-            <div class="person-text">1365139068</div>
-            <div class="person-text">52分钟前</div>
-          </div>
+          <!-- <div class="person" v-for="(item, index) in userList" :key="index">
+            <div class="person-text">{{item.user_name}}</div>
+            <div class="person-text">{{item.phone}}</div>
+            <div class="person-text">{{item.created_at}}分钟</div>
+          </div> -->
+          <swiper class="swiper-con" :options="swiperOption2">
+            <swiper-slide v-for="(item, index) of userList" :key="index">
+              <div class="person">
+                <div v-text="item.user_name" class="person-text"></div>
+                <div class="person-text" v-text="item.phone"></div>
+                <div class="person-text">{{item.created_at}}分钟前</div>
+              </div>
+            </swiper-slide>
+          </swiper>
         </div>
         <div class="send-code-btn">
           <div class="send-code-text">拨打电话</div>
@@ -453,12 +457,11 @@
         }
       }
       return {
-        isShowBounced: false, // 弹窗
+        sendReq: false, // 弹窗
         quantity: '', // 数量
         phone: '', // 底部联系电话
         time: 0,
         calcHeight: '',
-        sendReq: false,
         isLoadingBtn: false,
         userList: [],   // 消息列表
         form: {
@@ -476,16 +479,17 @@
           paginationClickable: true,
           lazyLoading: true,
           // autoplay: 5000,
-          spaceBetween: 0,
+          spaceBetween: 20,
           loop: true
         },
         // 底部
         swiperOption2: {
           lazyLoading: true,
           direction: 'vertical',
-          autoplay: 800,
-          slidesPerView: 8,
+          autoplay: 1000,
+          slidesPerView: 3,
           // observer: true,
+          spaceBetween: 0,
           paginationClickable: true,
           loop: true
         },
@@ -514,10 +518,6 @@
       }
     },
     methods: {
-      // 关闭弹窗
-      closeBounced () {
-        this.isShowBounced = false
-      },
       direct(path) {
         if (!this.user || this.user.type === 1) {
           this.$router.push({name: path})
@@ -545,23 +545,6 @@
               this.$message.error('手机号长度应为11位')
             }
           }
-        }
-      },
-      // pc 右下角
-      contact () {
-        if (this.phone) {
-          this.$http.post(api.pcAdd, {phone: this.phone, from: 3, new_from: this.$route.query.from, device: this.isMob ? 2 : 1, url: window.location.href})
-            .then(res => {
-              if (res.data.meta.status_code === 200) {
-                this.$message.success('提交成功')
-                this.phone = ''
-              } else {
-                this.$message.error(res.data.meta.message)
-              }
-            })
-            .catch(error => {
-              this.$message.error(error)
-            })
         }
       },
       // 点击发送验证码
@@ -1442,7 +1425,6 @@
     color: #FF5A5F;
   }
   .release-input {
-    padding-top: 15px;
     text-align: center;
   }
   .release-form {
@@ -1462,7 +1444,6 @@
     flex-direction: row;
     align-items: center;
     margin: 0 auto;
-    margin-top: 15px;
   }
   .round-btn {
     padding-top: 20px;
@@ -1925,8 +1906,8 @@
     border: 1px solid #E6E6E6;
   }
   .person-round {
-    padding-top: 6px;
-    height: 160px;
+    padding-top: 20px;
+    height: 180px;
   }
   .person {
     display: flex;
@@ -1949,6 +1930,17 @@
   }
   .mar-left-5 {
     margin-left: 5px;
+  }
+  .swiper-con {
+    height: 140px;
+    display: flex;
+    flex-direction: column;
+  }
+  .phone-form1 {
+    text-align: center;
+  }
+  .put-top-15 {
+    padding-top: 15px;
   }
 </style>
 
