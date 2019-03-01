@@ -1442,6 +1442,7 @@ export default {
         start_time: '',
         type: 1
       })
+      this.onChance = []
     },
     // 更新搜索条件
     updataform(k, val, label) {
