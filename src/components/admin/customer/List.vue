@@ -88,7 +88,7 @@
             <!-- <el-button size="small" type="primary">批量导入</el-button> -->
             <el-button size="small" @click="exportForm">导出</el-button>
             <el-button size="small"  @click="exportForm(2)">导出模板</el-button>
-            <el-button size="small" class="" :disabled="isAdmin < 15" @click="randomAssign = true">分配</el-button>
+            <el-button size="small" class="" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button>
             <el-button size="small" @click="showClueDialog">无效</el-button>
           </div>
 
@@ -98,7 +98,7 @@
             class="admin-table"
             @selection-change="handleSelectionChange"
             @filter-change="filterList"
-            @header-click="sortChange"
+            @sort-change="sortChange"
             style="width: 100%"
             :row-class-name="tableRowClassName"
             @row-click="getLookUserInfo">
@@ -108,19 +108,19 @@
             </el-table-column>
             <el-table-column
               label="编号"
-              sortable
+              sortable="custom"
               prop="number"
               width="121">
             </el-table-column>
             <el-table-column
               prop="name"
-              sortable
+              sortable="custom"
               label="姓名"
               width="80">
             </el-table-column>
             <el-table-column
               width="105"
-              sortable
+              sortable="custom"
               label="客户级别">
                  <template slot-scope="scope">
                   <el-rate
@@ -132,14 +132,14 @@
             </el-table-column>
             <el-table-column
               prop="created_at"
-              sortable
+              sortable="custom"
               width="120"
               label="创建时间">
             </el-table-column>
             
             <el-table-column
               width="95"
-              sortable
+              sortable="custom"
               label="来源渠道">
               <template slot-scope="scope">
                 <p v-if="scope.row.new_source === 1">今日头条</p>
@@ -155,20 +155,20 @@
             
             <el-table-column
               width="118"
-              sortable
+              sortable="custom"
               prop="execute_user_name"
               label="负责人">
             </el-table-column>
             
             <el-table-column
               width="105"
-              sortable
+              sortable="custom"
               label="沟通状态"
               prop="call_status_value">
             </el-table-column>
             <el-table-column
               width="105"
-              sortable
+              sortable="custom"
               label="最后跟进日">
               <template slot-scope="scope">
                 <p v-if="scope.row.end_time">{{scope.row.end_time.slice(0, 10)}}</p>
@@ -230,7 +230,7 @@
       :visible.sync="randomAssign"
       width="300px">
       <span v-if="noAllot">有{{noAllot}}个潜在用户等待分配负责人，是否确认随机分配？</span>
-      <span v-else>没有负责人待分配</span>
+      <span v-else>没有潜在用户待分配</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="randomAssign = false">取 消</el-button>
         <el-button type="primary" @click="randomAllot" :disabled="!noAllot">确 定</el-button>
@@ -411,7 +411,8 @@ export default {
     closePanel() { // 关闭潜在用户面板
       this.isAddPanel = false
     },
-    sortChange(column) { // 排序
+    sortChange({column}) { // 排序
+      if (!column) return
       switch (column.label) {
         case '编号':
           this.query.evt = 1
@@ -506,9 +507,9 @@ export default {
       // this.$router.push({name: 'adminPotentialUserInfo', params: {id: id, name: name}})
       this.query.id = id
       this.query.name = name
-      // this.$router.push({path: `/admin/potential_user/userinfo/${id}`, query: {page: this.query.page}})
+      // this.$router.push({path: `/admin/customer/userinfo/${id}`, query: {page: this.query.page}})
       const {href} = this.$router.resolve({
-        path: `/admin/potential_user/userinfo/${id}`,
+        path: `/admin/customer/userinfo/${id}`,
         query: {page: this.query.page}
       })
       window.open(href, '_blank')
@@ -517,7 +518,7 @@ export default {
       this.query.id = id
       this.query.name = name
       const {href} = this.$router.resolve({
-        path: `/admin/potential_user/userinfo/${id}`,
+        path: `/admin/customer/userinfo/${id}`,
         query: {page: this.query.page}
       })
       window.open(href, '_blank')
@@ -885,6 +886,9 @@ export default {
   border: none;
 }
 
+.admin-table {
+  cursor: pointer;
+}
 .admin-table .has-date .el-table-column--selection {
   border-left: 4px solid #FFA64B;
 }

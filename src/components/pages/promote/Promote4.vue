@@ -1,19 +1,60 @@
 <template>
-  <section class="back-bg">
-    <div v-if="!isMob">
-      <div class="pc-header">
-        <div class="logo">
-        </div>
-        <div class="header-text-one">智能匹配，<span class="one-min">一分钟</span>智能报价</div>
-        <div class="spectrum-img"></div>
-        <div class="header-text-two">现在<span class="one-min">发布设计</span>项目需求，有机会获得投资孵化，进驻<span class="one-min">小米商城</span></div>
-        <div class="logo-btn" @click="sendReq = true">
-        </div>
-        <div class="header-two-img">
-          <div class="two-img1"></div>
-          <div class="two-img2"></div>
-          <div class="two-img3"></div>
-        </div>
+  <section>
+    <div class="round-backgound" v-if="!isMob">
+      <div class="bg1">
+      </div>
+      <div class="container">
+        <el-row :gutter="10" type="flex" align="middle" class="head-round">
+            <el-col :span="13">
+                <el-col :span="20" class="design-font">设计从未如此简单</el-col>
+                <el-col :span="20" class="free-round"><span class="free-font">免费</span>发布需求，全程管家服务</el-col>
+            </el-col>
+            <el-col :span="11">
+              <el-col :span="24" class="header-style">
+                <el-col :span="24" class="ius-round">
+                  <span class="free-color">免费</span>发布项目需求
+                </el-col>
+                <el-form @submit.native.prevent :model="form" :rules="ruleForm" ref="ruleForm" class="text-center">
+                  <el-row>
+                    <el-col :span="20" :offset="2">
+                      <el-form-item prop="demand">
+                        <el-input v-model="form.demand" name="username" placeholder="请输入您的需求"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="20" :offset="2">
+                      <el-form-item prop="contact">
+                        <el-input v-model="form.contact" ref="contact" placeholder="请输入姓名"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row :gutter="10">
+                    <el-col :span="10" :offset="2">
+                      <el-form-item prop="account">
+                        <el-input v-model="form.account" ref="account" placeholder="手机号码"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="10">
+                      <el-form-item prop="smsCode">
+                        <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码" class="send-bt bt-chage-ele">
+                          <template slot="append">
+                            <el-button @click="fetchCode" :disabled="time > 0" class="get-btn">{{ codeMsg }}
+                            </el-button>
+                          </template>
+                        </el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt">
+                      免费发布项目需求
+                    </button>
+                  </el-row>
+                </el-form>
+              </el-col>
+            </el-col>
+        </el-row>
       </div>
       <div class="header-title">太火鸟设计服务的项目</div>
       <div class="six-img-round">
@@ -218,11 +259,52 @@
       <div class="release-text">
         现在<span>发布需求</span>，有机会获得投资孵化，进驻<span>小米商城</span>
       </div>
-      <el-form @submit.native.prevent :model="form" :rules="ruleForm" ref="ruleForm" class="phone-form1">
-        <div>
-          <el-form-item prop="demand">
-            <div class="release-input put-top-15">
-              <input v-model="form.demand" name="username" placeholder="请输入您的需求" class="release-form">
+      <el-form @submit.native.prevent :model="form" :rules="ruleForm" ref="ruleForm" class="text-center pad-top-28">
+        <el-row>
+          <el-col :span="20" :offset="2">
+            <el-form-item prop="demand">
+              <el-input v-model="form.demand" name="username" placeholder="请输入您的需求"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="20" :offset="2">
+            <el-form-item prop="contact">
+              <el-input v-model="form.contact" ref="contact" placeholder="请输入姓名"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="20" :offset="2">
+            <el-form-item prop="account">
+              <el-input v-model="form.account" ref="account" placeholder="手机号码"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="20" :offset="2">
+            <el-form-item prop="smsCode" class="call-ele">
+              <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
+                <template slot="append">
+                  <el-button @click="fetchCode" :disabled="time > 0" class="get-btn">{{ codeMsg }}
+                  </el-button>
+                </template>
+              </el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt height-40 mar-20-30">
+            免费发布项目需求
+          </button>
+        </el-row>
+      </el-form>
+      <div class="pad-10">
+        <el-row :gutter="10" class="phone-six mar-bot-6">
+          <el-col :span="8">
+            <div class="pho-six-col">
+              <img src="../../../assets/images/promote/design-type/productdesign@2x.png" alt="">
+              <p>产品外观设计</p>
             </div>
           </el-form-item>
           <el-form-item prop="contact">
@@ -353,58 +435,73 @@
         <div class="trust-text">顺德第二季创新设计成果交易会</div>
         <div class="trust-img3"></div>
       </div>
-      <div class="serve-customer">
-        <div class="serve-text">服务过的客户</div>
-        <div class="serve-flex">
-          <div class="serve-img1"></div>
-          <div class="serve-img2"></div>
-          <div class="serve-img3"></div>
-          <div class="serve-img4"></div>
-        </div>
-        <div class="serve-flex margin-top-10">
-          <div class="serve-img5"></div>
-          <div class="serve-img6"></div>
-          <div class="serve-img7"></div>
-          <div class="serve-img8"></div>
-        </div>
-        <div class="serve-text">明星投资方</div>
-        <div class="serve-flex">
-          <div class="invest-img1"></div>
-          <div class="invest-img2"></div>
-          <div class="invest-img3"></div>
-          <div class="invest-img4"></div>
-        </div>
-        <div class="serve-flex margin-top-10">
-          <div class="invest-img5"></div>
-          <div class="invest-img6"></div>
-          <div class="invest-img7"></div>
-          <div class="invest-img8"></div>
-        </div>
+      <div class="pad-10">
+        <el-row :gutter="5" class="mar-bot-6">
+          <el-col :span="8">
+            <div class="pho-photo-one"></div>
+          </el-col>
+          <el-col :span="8">
+            <div class="pho-photo-two"></div>
+          </el-col>
+          <el-col :span="8">
+            <div class="pho-photo-three"></div>
+          </el-col>
+        </el-row>
+      </div>
+      <div class="pad-10">
+        <el-row :gutter="5">
+          <div>
+            <el-col :span="8">
+              <div class="pho-photo-four"></div>
+            </el-col>
+            <el-col :span="8">
+              <div class="pho-photo-five"></div>
+            </el-col>
+            <el-col :span="8">
+              <div class="pho-photo-six"></div>
+            </el-col>
+          </div>
+        </el-row>
+      </div>
+      <div class="call-we">联系我们</div>
+      <div class="call-phone">客服电话：13031154842</div>
+      <div class="btn-center">
+        <a href="tel:13031154842"><button class="btn-style">拨打电话</button></a>
+      </div>
+      <div class="or-text">或者</div>
+      <div class="or-text pad-bot-15">输入您的电话，我们会尽快给您回电</div>
+      <div class="form mtop_40">
+        <el-form :model="form1" :rules="ruleForm" ref="ruleForm1" class="pad-20" @submit.native.prevent>
+          <el-form-item prop="name" class="pad-bot-15">
+            <el-input v-model="form1.name" name="username" placeholder="请输入姓名"></el-input>
+          </el-form-item>
+          <el-form-item prop="account" class="pad-bot-15">
+            <el-input v-model="form1.account" ref="account" placeholder="手机号码"></el-input>
+          </el-form-item>
+          <el-form-item prop="smsCode" class="wap-disabled-btn pad-bot-20 call-ele">
+            <el-input class="" v-model="form1.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
+              <template slot="append">
+                <el-button  @click="fetchCode1" :disabled="time > 0">{{ codeMsg }}
+                </el-button>
+              </template>
+            </el-input>
+          </el-form-item>
+        </el-form>
       </div>
       <div class="later">
         <div class="later-text">您还在等什么？</div>
         <div class="release-text margin-top-15">
           现在<span>发布需求</span>，有机会获得投资孵化，进驻<span>小米商城</span>
         </div>
-        <el-form @submit.native.prevent :model="form1" :rules="ruleForm" ref="ruleForm1" class="text-center">
-          <el-form-item prop="demand">
-            <input type="text" placeholder="请输入您的需求" class="input-style mar-top-20" v-model="form1.demand" name="username">
-          </el-form-item>
-          <el-form-item prop="contact">
-            <input type="text" placeholder="请输入联系人" class="input-style margin-top-10" v-model="form1.contact" ref="contact">
-          </el-form-item>
-          <el-form-item prop="account">
-            <input type="text" placeholder="手机号码" class="input-style margin-top-10" v-model="form1.account" ref="account">
-          </el-form-item>
-          <el-form-item prop="smsCode">
-            <div class="code-round margin-top-10">
-              <input type="text" placeholder="验证码" class="code-input" v-model="form1.smsCode" name="smsCode">
-              <div class="send-code" @click="fetchCode1" :disabled="time > 0">{{ codeMsg }}</div>
-            </div>
-          </el-form-item>
-        </el-form>
+        <input type="text" placeholder="请输入您的需求" class="input-style">
+        <input type="text" placeholder="请输入联系人" class="input-style margin-top-10">
+        <input type="text" placeholder="手机号码" class="input-style margin-top-10">
+        <div class="code-round margin-top-10">
+          <input type="text" placeholder="验证码" class="code-input">
+          <div class="send-code">发送验证码</div>
+        </div>
         <div class="send-code-btn">
-          <div class="send-code-text" :loading="isLoadingBtn2" @click="submit_app('ruleForm1')">立即发布需求</div>
+          <div class="send-code-text">立即发布需求</div>
         </div>
         <div class="new-top">
           <div class="left"></div>
@@ -473,17 +570,17 @@
         time: 0,
         calcHeight: '',
         isLoadingBtn: false,
-        isLoadingBtn2: false,
         userList: [],   // 消息列表
         form: {
-          demand: '',   // 需求
-          account: '',  // 手机号
-          contact: ''  // 联系人
+          demand: '', // 需求
+          account: '', // 手机号
+          contact: '', // 姓名
+          smsCode: ''
         },
         form1: {
-          demand: '',   // 需求
-          account: '',  // 手机号
-          contact: ''  // 联系人
+          account: '', // 手机号
+          name: '', // app 姓名
+          smsCode: ''
         },
         // swiper
         swiperOption: {
@@ -513,14 +610,18 @@
             { required: true, message: '请输入您的需求', trigger: 'blur' }
           ],
           contact: [
-            {required: true, message: '请输入联系人', trigger: 'blur'}
+            {required: true, message: '请输入姓名', trigger: 'blur'}
           ],
           smsCode: [
             {required: true, message: '请输入验证码', trigger: 'blur'}
+          ],
+          // app
+          name: [
+            { required: true, message: '请输入您的姓名', trigger: 'blur' }
           ]
         },
         query: {
-          from: 2,
+          from: 5,
           mark: ''
         }
       }
@@ -588,12 +689,11 @@
         this.$refs[form].validate(valid => {
           if (valid) {
             let row = {
-              user_name: this.form.contact, // 姓名
-              phone: this.form.account, // 手机号
-              item_name: this.form.demand, // 需求
+              user_name: this.form1.name,
+              phone: this.form1.account,
+              sms_code: this.form1.smsCode,
               source: this.query.from,
-              son_source: this.query.mark,
-              sms_code: this.form.smsCode
+              son_source: this.query.mark
             }
             this.$http.post(api.pcAdd, row)
               .then(res => {
@@ -1866,6 +1966,7 @@
     background: rgba(255,255,255,1);
     border-radius: 8px;
     border: 2px solid rgba(230,230,230,1);
+    margin-top: 20px;
     padding: 15px;
   }
   .code-round {

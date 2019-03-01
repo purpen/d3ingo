@@ -8,12 +8,12 @@
         </el-submenu>
         <el-submenu index="10">
           <template slot="title"><i class="fx-icon-red-packets1"></i>客户管理</template>
+          <el-menu-item index="potentialUserList" :route="{name: 'adminPotentialUserList'}">客户列表</el-menu-item>
           <el-menu-item index="customerStatistics" :route="{name: 'adminCustomerStatistics'}">客户统计</el-menu-item>
         </el-submenu>
-        <el-submenu index="9">
+        <!-- <el-submenu index="9">
           <template slot="title"><i class="fx-icon-red-packets1"></i>潜在客户</template>
-          <el-menu-item index="potentialUserList" :route="{name: 'adminPotentialUserList'}">列表</el-menu-item>
-        </el-submenu>
+        </el-submenu> -->
         <el-submenu index="2">
           <template slot="title"><i class="fa fa-file-text"></i> 项目管理</template>
             <el-menu-item index="itemList" :route="{name:'adminItemList'}">列表</el-menu-item>
