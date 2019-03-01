@@ -36,9 +36,15 @@
         <el-menu class="el-menu-info" mode="horizontal" router v-if="prod.name === ''">
           <el-submenu index="2" :popper-append-to-body="false">
             <template slot="title">
-              <img class="avatar2" v-if="eventUser.avatar" :src="eventUser.avatar.logo"/>
-              <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
-              <span v-if="eventUser.company && eventUser.company.company_abbreviation" class="b-nickname">{{ eventUser.company.company_abbreviation }}</span>
+              <template v-if="eventUser.type === 1">
+                <img class="avatar2" v-if="eventUser.avatar" :src="eventUser.avatar.logo"/>
+                <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
+              </template>
+              <template v-else>
+                <img class="avatar2" v-if="eventUser.design_company_logo_image" :src="eventUser.design_company_logo_image.logo"/>
+                <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
+              </template>
+              <span v-if="eventUser.company && eventUser.company.company_name" class="b-nickname">{{ eventUser.company.company_name }}</span>
               <span v-else class="b-nickname">{{ eventUser.realname || eventUser.account }}</span>
             </template>
             <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
@@ -55,8 +61,14 @@
         <el-menu class="el-menu-info" mode="horizontal" router v-if="prod.name !== ''">
           <el-submenu index="2" :popper-append-to-body="false">
             <template slot="title">
-              <img class="avatar2" v-if="eventUser.avatar" :src="eventUser.avatar.logo"/>
-              <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
+              <template v-if="eventUser.type === 1">
+                <img class="avatar2" v-if="eventUser.avatar" :src="eventUser.avatar.logo"/>
+                <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
+              </template>
+              <template v-else>
+                <img class="avatar2" v-if="eventUser.design_company_logo_image" :src="eventUser.design_company_logo_image.logo"/>
+                <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
+              </template>
               <span v-if="eventUser.realname" class="b-nickname">{{ eventUser.realname }}</span>
               <span v-else class="b-nickname">{{ eventUser.account }}</span>
             </template>
@@ -72,8 +84,14 @@
 
       <div v-if="isMob" class="menu-right">
         <router-link :to="{name: 'vcenterControl'}">
-          <span v-if="eventUser.avatar" class="avatar" :style="{background: `url(${eventUser.avatar.logo}) no-repeat center / contain`}"></span>
-          <span v-else class="avatar" :style="{background: `url(${require('@/assets/images/avatar_100.png')}) no-repeat center / contain`}"></span>
+          <template v-if="eventUser.type === 1">
+            <span v-if="eventUser.avatar" class="avatar" :style="{background: `url(${eventUser.avatar.logo}) no-repeat center / contain`}"></span>
+            <span v-else class="avatar" :style="{background: `url(${require('@/assets/images/avatar_100.png')}) no-repeat center / contain`}"></span>
+          </template>
+          <template v-else>
+            <span v-if="eventUser.design_company_logo_image" class="avatar" :style="{background: `url(${eventUser.design_company_logo_image.logo}) no-repeat center / contain`}"></span>
+            <span v-else class="avatar" :style="{background: `url(${require('@/assets/images/avatar_100.png')}) no-repeat center / contain`}"></span>
+          </template>
         </router-link>
       </div>
     </header>
@@ -92,11 +110,11 @@
               <el-tooltip
                 v-if="eventUser.company"
                 class="item" :effect="DarkorLight"
-                :content="eventUser.company.company_name"
+                :content="eventUser.company.company_name || eventUser.account"
                 placement="right">
               <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" 
                 v-if="isMob">
-                {{eventUser.company.company_name}}
+                {{eventUser.company.company_name || eventUser.account}}
               </a>
               </el-tooltip>
               <el-tooltip class="item" :effect="DarkorLight" content="交易会" placement="right" v-if="prod.name === ''">
@@ -110,7 +128,7 @@
             <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist" v-else>
                 <el-tooltip :effect="DarkorLight"
                   v-if="eventUser.company"
-                  :content="eventUser.company.company_name" placement="right">
+                  :content="eventUser.company.company_name || eventUser.account" placement="right">
                   <div class="computer-btn"
                     v-if="isCompany && !isMob && eventUser.design_company_logo_image"
                     @click="redirectCompany"> 
@@ -150,7 +168,7 @@
               </el-tooltip>
               <a :class="['item', {'is-active': currentName === 'company'    }]" @click="redirectCompany" 
                 v-if="isMob && eventUser.company">
-                {{eventUser.company.company_name}}
+                {{eventUser.company.company_name || eventUser.account}}
               </a>
             </div>
           </div>
@@ -193,19 +211,19 @@
               </a>
               <a :class="['item', {'is-active': currentName === 'company'}]" @click="redirectCompany" 
                 v-if="isMob && eventUser.company">
-                {{eventUser.company.company_name}}
+                {{eventUser.company.company_name || eventUser.account}}
               </a>
             </div>
             <!-- 默认设计服务商 -->
             <div :class="['menu-list', 'clearfix', isMob ? 'Mmenulist' : '']" ref="Mmenulist" v-else>
               <el-tooltip :effect="DarkorLight"
                 v-if="eventUser.company"
-                :content="eventUser.company.company_name" placement="right">
+                :content="eventUser.company.company_name || eventUser.account" placement="right">
                 <div class="computer-btn"
                   v-if="isCompany && !isMob && eventUser.company &&eventUser.design_company_logo_image"
                   @click="redirectCompany">
                   <span :style="{background: `url(${eventUser.design_company_logo_image.logo}) no-repeat center / cover #222`}"></span>
-                  {{eventUser.company.company_name}}
+                  {{eventUser.company.company_name || eventUser.account}}
                 </div>
               </el-tooltip>
               <a @click="alick" :to="'/vcenter/control'"
@@ -695,7 +713,8 @@
   } */
   .logo-icon img {
     width: auto;
-    height: 50px;
+    height: 74px;
+    margin-top: -7px;
   }
   .other .logo-icon img {
     width: auto;

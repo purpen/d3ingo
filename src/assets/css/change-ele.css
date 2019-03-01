@@ -159,18 +159,14 @@
   .el-pagination .btn-prev {
     border-color: #e6e6e6
   }
-  .el-pager li:hover,
   .el-pagination button:hover {
-    /* color: #ff5a5f */
+    color: #ff5a5f
   }
   .view-button {
     background: #fff;
     border: 1px solid #ff5a5f;
     border-radius: 4px;
     color: #ff5a5f;
-  }
-  ul.el-pager li.number.active:hover {
-    /* color: #fff */
   }
   .el-radio-button__orig-radio:checked+.el-radio-button__inner {
     background-color: #ff5a5f;
@@ -390,12 +386,6 @@
   .seen-deta .el-dialog--tiny {
     width: 480px
   }
-  .el-dialog {
-    /* width: 380px */
-  }
-  /* .el-dialog--tiny .el-dialog__header {
-    padding: 10px 20px;
-  } */
   .el-dialog--tiny .el-dialog__headerbtn {
     font-size: 14px;
   }
@@ -1030,6 +1020,18 @@
   }
   .receipt-form .el-dialog__body {
     padding: 0;
+  }
+  .select-opt2 .el-select .el-input__inner {
+    padding-right: 25px;
+  }
+  .chart-block .el-date-editor .el-range-separator {
+    padding: 0 0;
+  }
+  .chart .el-input--suffix .el-input__inner {
+    padding-right: 25px;
+  }
+  .el-picker-panel__sidebar .el-picker-panel__shortcut:hover {
+    color: #ff5a5f;
   }
 @media screen and (max-width: 767px) {
   .el-dialog--large,

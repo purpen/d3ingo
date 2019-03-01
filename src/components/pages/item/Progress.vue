@@ -121,10 +121,6 @@
     min-width: 860px;
   }
 
-  .progress-box p {
-
-  }
-
   .el-col {
     line-height: 60px;
     height: 60px;
@@ -182,9 +178,6 @@
     color: #00AC84;
   }
 
-  .active p {
-  }
-
   p.over {
     background: url('../../../assets/images/item/step_over.png') no-repeat;
     background-size: contain;
@@ -194,14 +187,6 @@
     background: url('../../../assets/images/item/step_over_active.png') no-repeat;
     background-size: contain;
     color: #fff;
-  }
-
-  p.over {
-
-  }
-
-  p.over.active p {
-
   }
 
   @media screen and (min-width: 1180px) {

@@ -65,6 +65,9 @@ mallache.write_user = function (user) {
       }
     }
   }
+  console.log(user)
+  console.log('======================')
+  console.log(userInfo.avatar)
   // 写入localStorage
   store.commit(USER_INFO, userInfo)
 }

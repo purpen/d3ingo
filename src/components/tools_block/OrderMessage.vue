@@ -1,6 +1,13 @@
 <template>
-  <div class="blank20 full-height">
+  <div class="full-height">
     <div class="right-content vcenter-container">
+      <div class="header clearfix" v-if="msgCount.quantity">
+        <p class="fl">共 <span class="">{{msgCount.quantity}}</span> 条信息, 其中 <span>未读消息</span>
+        <span>{{msgCount['message'] || 0}}</span> 条</p>
+        <p class="fr">
+          <button class="middle-button white-button" @click="markRead">全部标记为已读</button>
+        </p>
+      </div>
       <div class="content-box full-height" v-loading="isLoading">
         <div class="item" v-for="(d, index) in itemList" @click="showDes(d, index)" :key="index">
           <div class="banner2">
@@ -57,6 +64,22 @@
       }
     },
     methods: {
+      markRead() {
+        this.$http.put(api.trueAllRead)
+        .then(res => {
+          if (res.data && res.data.meta.status_code === 200) {
+            this.itemList.forEach(item => {
+              item.is_read = 1
+            })
+            this.$store.commit(MSG_COUNT, {})
+            this.itemList.forEach(item => {
+              item.status = 1
+            })
+          } else {
+            this.$message.error(res.data.meta.message)
+          }
+        })
+      },
       loadList() {
         const self = this
         self.isLoading = true
@@ -242,6 +265,9 @@
       },
       user() {
         return this.$store.state.event.user
+      },
+      msgCount() {
+        return this.$store.state.event.msgCount
       }
     },
     created: function () {
@@ -255,12 +281,22 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .header {
+    height: 50px;
+    padding: 10px 0;
+    line-height: 30px;
+    color: #999
+  }
+  .header button {
+    height: 30px;
+    line-height: 30px;
+  }
   .vcenter-container {
     overflow: hidden;
   }
 
   .right-content .content-box {
-    padding: 0 0 50px 0;
+    padding: 0;
     border: none;
   }
 

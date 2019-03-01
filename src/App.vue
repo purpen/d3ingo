@@ -156,7 +156,6 @@ export default {
       })
     },
     getVersion() {
-      console.warn('getVersion160', FWH)
       this.$http.get(api.getVersion)
       .then(res => {
         let version = localStorage.getItem('version')
@@ -285,7 +284,7 @@ export default {
                 return true
               }
             } else {
-              this.alertTitle.title = '填写公司基本信息、公司简介、荣誉奖励'
+              this.alertTitle.title = '填写公司基本信息、公司简介'
               this.alertTitle.path = '/vcenter/company/base'
               // console.log('设计服务商基础信息：未完善')
               return true

@@ -1712,9 +1712,6 @@ export default {
   height: 26px;
   background: url('../../../../assets/images/item/CompleteBig@2x.png') no-repeat center center / contain
 }
-.capital-item .capital-btn {
-  /* padding: 10px 30px 10px 30px; */
-}
 
 .manage-item {
   min-height: 80px;
@@ -1734,10 +1731,6 @@ export default {
   margin-top: 30px;
   margin-bottom: 20px;
   text-align: center;
-}
-
-.finish-item-btn button {
-  /* padding: 10px 60px 10px 60px; */
 }
 
 .finish-item {
@@ -1824,10 +1817,6 @@ p.contact {
 
 p.ev-c-content {
   padding: 10px 50px;
-}
-
-p.ev-c-btn button {
-  /* padding: 10px 50px; */
 }
 
 .evaluate-report .ev-c-name {
@@ -1950,19 +1939,12 @@ section ul li a {
     margin-right: 16px;
   }
 }
-
-.quota-btn {
-
-}
 .quota-btn a {
   font-size: 12px;
   color: #FF5A5F;
 }
 .dialog-footer.btn {
   margin-right: 30px;
-}
-.dialog-footer.btn button {
-  /* padding: 10px 30px; */
 }
 .alert-line-height {
   text-align: center

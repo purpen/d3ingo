@@ -378,10 +378,6 @@
     float: right;
   }
 
-  .form-btn button {
-    /* padding: 10px 30px; */
-  }
-
   .slide-img {
     padding-top: 20px;
   }

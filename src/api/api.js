@@ -215,6 +215,9 @@ export default {
   adminClueDelRelateItem: '/admin/clue/delRelateItem', // DELETE 删除关联项目
   AdminCueGetUrl: '/admin/clue/getUrl', // GET 潜在客户-根据客户/项目id生成url
   adminClueShowFeedback: '/admin/clue/showFeedback', // 潜在客户-查看项目进度
+  adminClueSetClueStatus: 'admin/clue/setClueStatus', // POST 潜在客户状态标记失败
+  adminClueStatistics: '/admin/clue/statistics', // GET 潜在客户-统计列表上方
+  adminClueSearchStatistics: '/admin/clue/searchStatistics', // GET 搜索/统计列表
 
   // WxClue - 微信潜在客户
   wxClueUrlValue: '/wxClue/urlValue', // GET 微信潜在客户 根据string查看客户/项目id
@@ -496,6 +499,7 @@ export default {
   designNoticeLists: '/designNotice/lists', // GET 列表
   designNoticeTrueRead: '/designNotice/trueRead', // PUT 确认阅读
   designNoticeDelete: '/designNotice/delete', // DELETE 删除
+  trueAllRead: '/message/trueAllRead', // PUT 一键已读
 
   // jd账号
   jdAccount: '/jd/jdAccount', // GET 获取京东account
@@ -586,6 +590,7 @@ export default {
   appAdd: '/wechat/demand/userAdd',   // POST APP
   userMessage: '/wechat/demand/users',   // POST APP消息滚动
   usersCount: '/wechat/demand/usersCount',   // GET 人员数量
+  generalize: '/generalize/create', // POST 推广统计
   // 服务号
   fwhUser: '/fwh/user' // GET 获取服务号用户信息
 }

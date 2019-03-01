@@ -281,7 +281,7 @@ export default {
               that.isLoadingBtn = false
               if (response.data.meta.status_code === 200) {
                 that.$message.success('提交成功,等待审核')
-                that.$router.push({ name: 'vcenterComputerAccreditation' })
+                that.$router.push({ name: 'vcenterComputerBase'})
                 return false
               } else {
                 that.$message.error(response.data.meta.message)

@@ -48,10 +48,17 @@
             <el-menu class="el-menu-info" mode="horizontal" router>
               <el-submenu index="2" :popper-append-to-body="false" text-color="#999">
                 <template slot="title">
-                  <img class="avatar2" v-if="eventUser.avatar" :src="eventUser.avatar.logo"/>
-                  <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
-                  <span v-if="eventUser.company && eventUser.company.company_abbreviation" class="b-nickname">{{ eventUser.company.company_abbreviation }}</span>
-                  <span v-else class="b-nickname">{{ eventUser.realname || eventUser.account }}</span>
+                  <template v-if="eventUser.type === 1">
+                    <img class="avatar" v-if="eventUser.avatar" :src="eventUser.avatar.logo"/>
+                    <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
+                  </template>
+                  <template v-else>
+                    <img class="avatar" v-if="eventUser.design_company_logo_image" :src="eventUser.design_company_logo_image.logo"/>
+                    <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
+                  </template>
+                  <span v-if="eventUser.company && eventUser.company.company_name" class="b-nickname">{{ eventUser.company.company_name }}</span>
+                  <!-- <span v-else class="b-nickname">{{ eventUser.realname || eventUser.account }}</span> -->
+                  <span v-else class="b-nickname">{{ eventUser.account }}</span>
                 </template>
                 <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心</el-menu-item>
                 <!-- <el-menu-item index="/vcenter/company/base" v-if="!isOrdinaryCompanyAdmin"><i class="fx-4 fx-icon-company"></i><i class="fx-4 fx-icon-company-hover"></i>公司设置 </el-menu-item> -->
@@ -126,8 +133,14 @@
         </div>
         <div class="m-Nav-right" v-if="isLogin">
           <router-link to="/vcenter/control">
-            <img class="avatar" v-if="eventUser.avatar" :src="eventUser.avatar.logo"/>
-            <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
+            <template v-if="eventUser.type === 1">
+              <img class="avatar" v-if="eventUser.avatar" :src="eventUser.avatar.logo"/>
+              <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
+            </template>
+            <template v-else>
+              <img class="avatar" v-if="eventUser.design_company_logo_image" :src="eventUser.design_company_logo_image.logo"/>
+              <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
+            </template>
           </router-link>
         </div>
       </div>
@@ -174,9 +187,15 @@
             <el-menu class="el-menu-info" mode="horizontal" router>
               <el-submenu index="2" :popper-append-to-body="false" text-color="#999">
                 <template slot="title">
-                  <img class="avatar2" v-if="eventUser.avatar" :src="eventUser.avatar.logo"/>
-                  <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
-                  <span class="b-nickname">{{ eventUser.realname || eventUser.account }}</span>
+                  <template v-if="eventUser.type === 1">
+                    <img class="avatar" v-if="eventUser.avatar" :src="eventUser.avatar.logo"/>
+                    <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
+                  </template>
+                  <template v-else>
+                    <img class="avatar" v-if="eventUser.design_company_logo_image" :src="eventUser.design_company_logo_image.logo"/>
+                    <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
+                  </template>
+                  <span class="b-nickname">{{ eventUser.account }}</span>
                 </template>
                 <el-menu-item index="/vcenter/control"><i class="fx-4 fx-icon-personal-center"></i><i class="fx-4 fx-icon-combined-shape-hover"></i>个人中心 
                 </el-menu-item>
@@ -250,8 +269,14 @@
         </div>
         <div class="m-Nav-right" v-if="isLogin">
           <router-link to="/vcenter/control">
-            <img class="avatar" v-if="eventUser.avatar" :src="eventUser.avatar.logo"/>
-            <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
+            <template v-if="eventUser.type === 1">
+              <img class="avatar" v-if="eventUser.avatar" :src="eventUser.avatar.logo"/>
+              <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
+            </template>
+            <template v-else>
+              <img class="avatar" v-if="eventUser.design_company_logo_image" :src="eventUser.design_company_logo_image.logo"/>
+              <img class="avatar" v-else :src="require('assets/images/avatar_100.png')"/>
+            </template>
           </router-link>
         </div>
       </div>
@@ -301,7 +326,6 @@
     watch: {
       $route (to, from) {
         // 对路由变化作出响应...
-        this.navdefact()
         this.showCover = ''
         this.showCover2 = ''
       }
@@ -309,11 +333,6 @@
     methods: {
       initPage() {
         this.$store.commit('INIT_PAGE')
-      },
-      navdefact() {
-        // 设置router函数跳转
-        // this.menuactive = this.$route.path.split('/')[1]
-        console.log(this.menuactive)
       },
       logout() {
         auth.logout()
@@ -593,13 +612,14 @@
 
   .m-Nav-right {
     position: absolute;
-    top: 15px;
-    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 15px;
   }
 
   .m-Nav-right .avatar {
-    width: 30px;
-    height: 30px;
+    width: 36px;
+    height: 36px;
   }
 
   .container {
@@ -708,7 +728,8 @@
   } */
   .el-menu-item.logo img {
     width: auto;
-    height: 50px;
+    height: 74px;
+    margin-top: -7px;
   }
   .jdc .el-menu-item.logo img {
     width: auto;

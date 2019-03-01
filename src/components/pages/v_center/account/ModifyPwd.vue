@@ -119,10 +119,6 @@
         that.$refs[formName].validate((valid) => {
           // 验证通过，提交
           if (valid) {
-            if (that.form.old_password === that.form.password) {
-              that.$message.error('新密码与旧密码一致！')
-              return
-            }
             let row = {
               old_password: that.form.old_password,
               password: that.form.password
@@ -135,10 +131,8 @@
                 if (response.data.meta.status_code === 200) {
                   that.$message.success('操作成功！')
                   that.$refs[formName].resetFields()
-                  // 更新token
-                  let token = response.data.data.token
                   // 写入localStorage
-                  auth.write_token(token)
+                  auth.logout(true)
                   // that.$router.push({name: 'home'})
                 } else {
                   that.$message.error(response.data.meta.message)

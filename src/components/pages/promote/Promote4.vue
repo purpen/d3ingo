@@ -1,5 +1,21 @@
-<!-- 不用 -->
 <template>
+<<<<<<< HEAD:src/components/pages/promote/Promote.vue
+  <section class="back-bg">
+    <div v-if="!isMob">
+      <div class="pc-header">
+        <div class="logo">
+        </div>
+        <div class="header-text-one">智能匹配，<span class="one-min">一分钟</span>智能报价</div>
+        <div class="spectrum-img"></div>
+        <div class="header-text-two">现在<span class="one-min">发布设计</span>项目需求，有机会获得投资孵化，进驻<span class="one-min">小米商城</span></div>
+        <div class="logo-btn" @click="sendReq = true">
+        </div>
+        <div class="header-two-img">
+          <div class="two-img1"></div>
+          <div class="two-img2"></div>
+          <div class="two-img3"></div>
+        </div>
+=======
   <section>
     <div class="round-backgound" v-if="!isMob">
       <div class="bg1">
@@ -26,17 +42,17 @@
                   <el-row>
                     <el-col :span="20" :offset="2">
                       <el-form-item prop="contact">
-                        <el-input v-model="form.contact" ref="contact" placeholder="请输入联系人"></el-input>
+                        <el-input v-model="form.contact" ref="contact" placeholder="请输入姓名"></el-input>
                       </el-form-item>
                     </el-col>
                   </el-row>
                   <el-row :gutter="10">
-                    <el-col :span="20" :offset="2">
+                    <el-col :span="10" :offset="2">
                       <el-form-item prop="account">
                         <el-input v-model="form.account" ref="account" placeholder="手机号码"></el-input>
                       </el-form-item>
                     </el-col>
-                    <!-- <el-col :span="10">
+                    <el-col :span="10">
                       <el-form-item prop="smsCode">
                         <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码" class="send-bt bt-chage-ele">
                           <template slot="append">
@@ -45,7 +61,7 @@
                           </template>
                         </el-input>
                       </el-form-item>
-                    </el-col> -->
+                    </el-col>
                   </el-row>
                   <el-row>
                     <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt">
@@ -56,206 +72,218 @@
               </el-col>
             </el-col>
         </el-row>
+>>>>>>> origin/lzh-dev:src/components/pages/promote/Promote4.vue
       </div>
-      <el-row :gutter="10" class="six-img">
-        <div class="container">
-          <el-col :span="4">
-            <div class="six-col">
-              <img src="../../../assets/images/promote/design-type/productdesign@2x.png" alt="">
-              <p>产品外观设计</p>
+      <div class="header-title">太火鸟设计服务的项目</div>
+      <div class="six-img-round">
+        <div class="six-one-round">
+          <div class="six-border">
+            <div class="border-pad">
+              <div class="six-img1"></div>
+              <div class="six-text1">
+                <div class="six-img1-1"></div>
+                <div class="six-img1-jian">件</div>
+                <div class="six-img1-sales">销售量</div>
+              </div>
+              <div class="six-text2">飞行鱼-亚特兰蒂斯号FiFish Atl</div>
             </div>
-          </el-col>
-          <el-col :span="4">
-          <div class="six-col">
-            <img src="../../../assets/images/promote/design-type/structure.png" alt="">
-            <p>产品结构设计</p>
+          </div>
+          <div class="six-border">
+            <div class="border-pad">
+              <div class="six-img2"></div>
+              <div class="six-text1">
+                <div class="six-img1-2"></div>
+                <div class="six-img1-jian pad-6-10">亿</div>
+                <div class="six-img1-sales">2018年销售额</div>
+              </div>
+              <div class="six-text2">素士声波电动牙刷</div>
             </div>
-          </el-col>
-          <el-col :span="4">
-            <div class="six-col">
-              <img src="../../../assets/images/promote/design-type/Packing.png" alt="">
-              <p>包装设计</p>
+          </div>
+          <div class="six-border">
+            <div class="border-pad">
+              <div class="six-img2"></div>
+              <div class="six-text1">
+                <div class="six-img1-3"></div>
+                <div class="six-img1-jian pad-10-10">万</div>
+                <div class="six-img1-sales">销售额</div>
+              </div>
+              <div class="six-text2">美妆镜 Amiro</div>
             </div>
-          </el-col>
-          <el-col :span="4">
-            <div class="six-col">
-              <img src="../../../assets/images/promote/design-type/Graphic.png" alt="">
-              <p>平面设计</p>
-            </div>
-          </el-col>
-          <el-col :span="4">
-            <div class="six-col">
-              <img src="../../../assets/images/promote/design-type/brand.png" alt="">
-              <p>品牌设计</p>
-            </div>
-          </el-col>
-          <el-col :span="4">
-            <div class="six-col">
-              <img src="../../../assets/images/promote/design-type/VI.png" alt="">
-              <p>VI设计</p>
-            </div>
-          </el-col>
-        </div>
-      </el-row>
-      <div class="container">
-        <el-row class="pad-top-50" style="margin-left: 5px;
-          margin-right: 5px;">
-          <el-col :span="24" class="four-img"></el-col>
-        </el-row>
-      </div>
-      <el-row :gutter="10" class="pad-top-50">
-        <div class="container">
-          <el-col :span="12">
-            <div class="two-img1"></div>
-          </el-col>
-          <el-col :span="12">
-            <div class="two-img2"></div>
-          </el-col>
-        </div>
-      </el-row>
-      <div class="container">
-        <el-row class="one pad-top-50 z-index-111" type="flex" align="middle">
-          <div class="bg2"></div>
-          <el-col :span="6" :offset="1" class="thousand z-index-111"></el-col>
-          <el-col :span="14" :offset="2" class="thousand-img z-index-111"></el-col>
-        </el-row>
-      </div>
-      <div class="container">
-        <el-row class="two z-index-111" type="flex" align="middle">
-          <el-col :span="14" :offset="1" class="prize-img"></el-col>
-          <el-col :span="6" :offset="2" class="prize prize-hei"></el-col>
-        </el-row>
-      </div>
-      <div class="container">
-        <el-row class="three z-index-111" type="flex" align="middle">
-          <el-col :span="6" :offset="1" class="customer"></el-col>
-          <el-col :span="14" :offset="2" class="customer-img"></el-col>
-        </el-row>
-      </div>
-      <div class="design-product">
-        <div class="container">
-          <h2 class="public-h2">太火鸟设计服务的项目</h2>
-          <div class="design-product-list">
-            <el-row :gutter="20" class="m-b-20">
-              <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                <el-card>
-                  <div class="design-product-img">
-                    <img src="../../../assets/images/promote/design-product/case01@2x.png" alt="飞行鱼-亚特兰蒂斯号FiFish Atlantis">
-                    <p>飞行鱼-亚特兰蒂斯号FiFish Atlantis</p>
-                  </div>
-                </el-card>
-              </el-col>
-              <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                <el-card>
-                  <div class="design-product-img">
-                    <img src="../../../assets/images/promote/design-product/case02@2x.png" alt="素士声波电动牙刷">
-                    <p>素士声波电动牙刷</p>
-                  </div>
-                </el-card>
-              </el-col>
-              <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                <el-card>
-                  <div class="design-product-img">
-                    <img src="../../../assets/images/promote/design-product/case03@2x.png" alt="美妆镜 Amiro">
-                    <p>美妆镜 Amiro</p>
-                  </div>
-                </el-card>
-              </el-col>
-            </el-row>
-            <el-row :gutter="20">
-              <div class="bg2"></div>
-              <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                <el-card class="z-index-111">
-                  <div class="design-product-img z-index-111">
-                    <img src="../../../assets/images/promote/design-product/case04@2x.png" alt="美妆镜 Amiro">
-                    <p>麋鹿庄园品牌设计</p>
-                  </div>
-                </el-card>
-              </el-col>
-              <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                <el-card class="z-index-111">
-                  <div class="design-product-img z-index-111">
-                    <img src="../../../assets/images/promote/design-product/case05@2x.png" alt="凡曦 | 御蜜粒卫生巾包装">
-                    <p>凡曦 | 御蜜粒卫生巾包装</p>
-                  </div>
-                </el-card>
-              </el-col>
-              <el-col :xs="24" :sm="8" :md="8" :lg="8">
-                <el-card class="z-index-111">
-                  <div class="design-product-img z-index-111">
-                    <img src="../../../assets/images/promote/design-product/case06@2x.png" alt="插画设计">
-                    <p>插画设计</p>
-                  </div>
-                </el-card>
-              </el-col>
-            </el-row>
           </div>
         </div>
       </div>
-      <div>
-        <el-row :gutter="15" class="pad-right-left">
-          <div class="container">
-            <el-col :span="4">
-              <div class="photo1"></div>
-            </el-col>
-            <el-col :span="4">
-              <div class="photo2"></div>
-            </el-col>
-            <el-col :span="4">
-              <div class="photo3"></div>
-            </el-col>
-            <el-col :span="4">
-              <div class="photo4"></div>
-            </el-col>
-            <el-col :span="4">
-              <div class="photo5"></div>
-            </el-col>
-            <el-col :span="4">
-              <div class="photo6"></div>
-            </el-col>
+      <div class="six-img-round">
+        <div class="six-one-round">
+          <div class="six-border">
+            <div class="border-pad">
+              <div class="six-img4"></div>
+              <div class="six-text1">
+                <div class="six-img1-4"></div>
+                <div class="six-img1-jian pad-6-10">万</div>
+                <div class="six-img1-sales">众筹</div>
+              </div>
+              <div class="six-text2">云马智能电单车</div>
+            </div>
           </div>
-        </el-row>
-      </div>
-      <div class="desigb-about">
-        <div class="container z-index-111">
-          <el-row :gutter="145">
-            <el-col :xs="24" :sm="8" :md="8" :lg="8">
-              <img src="../../../assets/images/promote2/pc/call/Release.png" alt="">
-              <p class="desigb-about-p">立即发布需求</p>
-              <span class="desigb-about-span">注册并发布项目需求</span>
-              <div>
-                <a @click="direct('projectCreate')"><button class="design-btn">免费发布项目需求</button></a>
+          <div class="six-border">
+            <div class="border-pad">
+              <div class="six-img5"></div>
+              <div class="six-text1">
+                <div class="six-img1-5"></div>
+                <div class="six-img1-jian">件</div>
+                <div class="six-img1-sales">月销</div>
               </div>
-            </el-col>
-            <el-col :xs="24" :sm="8" :md="8" :lg="8">
-              <img src="../../../assets/images/promote2/pc/call/Phone.png" alt="">
-              <p class="desigb-about-p">联系我们</p>
-              <span class="desigb-about-span" style="font-size: 24px">13031154842</span>
-              <div>
-                <a href="mailto:gengting@taihuoniao.com"><button class="design-btn">发送邮件</button></a>
+              <div class="six-text2">FIU优雅不倒杯</div>
+            </div>
+          </div>
+          <div class="six-border">
+            <div class="border-pad">
+              <div class="six-img6"></div>
+              <div class="six-text1">
+                <div class="six-img1-6"></div>
+                <div class="six-img1-jian pad-5-10">件</div>
+                <div class="six-img1-sales">日单</div>
               </div>
-            </el-col>
-            <el-col :xs="24" :sm="8" :md="8" :lg="8">
-              <img src="../../../assets/images/promote2/pc/call/YourPhone.png" alt="">
-              <p class="desigb-about-p">输入您的电话</p>
-              <span class="desigb-about-span">我们会尽快给您回电</span>
-              <div class="input-phone">
-                <el-input placeholder="请输入您的电话号" v-model="phone">
-                  <template slot="append"><span  @click="footerContact" class="footer-contact">快速沟通</span></template>
-                </el-input>
-              </div>
-            </el-col>
-          </el-row>
+              <div class="six-text2">洒哇地卡无线手持电动擦地机</div>
+            </div>
+          </div>
         </div>
-        <div class="bg3"></div>
       </div>
+      <div class="pc-can">
+        <div class="pc-can-text">太火鸟赋能</div>
+        <div class="pc-can-round">
+          <div class="pc-can-border">
+            <div class="pc-can-img1"></div>
+            <div class="pc-can-text1">孵化营销</div>
+            <div class="pc-can-text2">营销赋能创新产品及品牌</div>
+          </div>
+          <div class="pc-can-border">
+            <div class="pc-can-img2"></div>
+            <div class="pc-can-text1">渠道销售</div>
+            <div class="pc-can-text2">精准化社群及精选电商分销</div>
+          </div>
+          <div class="pc-can-border">
+            <div class="pc-can-img3"></div>
+            <div class="pc-can-text1">营销推广</div>
+            <div class="pc-can-text2">专业团队进行原创性内容传播</div>
+          </div>
+        </div>
+      </div>
+      <div class="pc-trust-round">
+        <div class="pc-trust">值得信赖</div>
+        <div class="pc-trust-three">
+          <div class="pc-trust-img-round">
+            <div class="pc-trust-1"></div>
+            <div class="pc-trust-text">WIDC2018世界工业设计大会TIA设计服务平台大奖</div>
+          </div>
+          <div class="pc-trust-img-round">
+            <div class="pc-trust-2"></div>
+            <div class="pc-trust-text">顺德第二季创新设计成果交易会</div>
+          </div>
+          <div class="pc-trust-img-round">
+            <div class="pc-trust-3"></div>
+            <div class="pc-trust-text">国际科技设计产业合作联盟成立仪式</div>
+          </div>
+        </div>
+      </div>
+      <div class="pc-customer">
+        <div class="pc-customer-title">服务过的客户</div>
+        <div class="pc-customer-imgs">
+          <div class="pc-customer-img1"></div>
+          <div class="pc-customer-img2"></div>
+          <div class="pc-customer-img3"></div>
+          <div class="pc-customer-img4"></div>
+          <div class="pc-customer-img5"></div>
+          <div class="pc-customer-img6"></div>
+          <div class="pc-customer-img7"></div>
+        </div>
+        <div class="pc-customer-title">明星投资方</div>
+        <div class="pc-customer-imgs">
+          <div class="pc-invest-img1"></div>
+          <div class="pc-invest-img2"></div>
+          <div class="pc-invest-img3"></div>
+          <div class="pc-invest-img4"></div>
+          <div class="pc-invest-img5"></div>
+          <div class="pc-invest-img6"></div>
+          <div class="pc-invest-img7"></div>
+        </div>
+      </div>
+      <div class="pc-wait-round">
+        <div class="wait">您还在等什么？快来发布需求吧！</div>
+        <div class="wait-intro">
+          <div class="z-index-5">
+            <div class="pc-wait-border-title"><span class="red-text">免费</span>发布项目需求</div>
+            <input type="text" class="pc-wait-input-round" placeholder="请输入您的需求">
+            <input type="text" class="pc-wait-input-round mar-top-20" placeholder="请输入联系人">
+            <div class="pc-send-code-90">
+              <input type="text" class="pc-wait-input-round2" placeholder="手机号码">
+              <div class="pc-code-90-round">
+                <input type="text" class="pc-code-90" placeholder="验证码">
+                <div class="pc-code-90-send">发送验证码</div>
+              </div>
+            </div>
+            <div class="pc-send-btn-2">
+              <div class="pc-send-btn-text2">立即发布需求</div>
+            </div>
+          </div>
+        </div>
+        <div class="pc-new-curstomer">最新报名客户</div>
+        <div class="pc-person">
+          <div class="pc-person-left">
+            <div class="pc-person-text">丁先生</div>
+            <div class="pc-person-text">12312341234</div>
+            <div class="pc-person-text">32分钟前</div>
+          </div>
+          <div class="border-2"></div>
+          <div class="pc-person-left">
+            <div class="pc-person-text">丁先生</div>
+            <div class="pc-person-text">12312341234</div>
+            <div class="pc-person-text">32分钟前</div>
+          </div>
+        </div>
+      </div>
+      <div class="pc-call-btn">
+        <div class="pc-call">拨打电话</div>
+      </div>
+      <div class="pc-bot-bg"></div>
+      <el-dialog
+        title="发布项目需求"
+        :visible.sync="sendReq"
+        width="380px"
+        class="dig-send-code">
+        <div>
+          <div class="dialog-req">项目需求</div>
+          <input type="text" class="dialog-input" placeholder="请输入您的项目需求">
+          <div class="dialog-req pad-top-20">联系人</div>
+          <input type="text" class="dialog-input" placeholder="请输入联系人名称">
+          <div class="dialog-req pad-top-20">手机号</div>
+          <input type="text" class="dialog-input" placeholder="请输入您的手机号">
+          <div class="dialog-req pad-top-20">验证码</div>
+          <div class="dialog-code-round">
+            <input type="text" class="dialog-code" placeholder="请输入您的手机号">
+            <div class="dialog-code-send">
+              <div class="dialog-code-text">获取验证码</div>
+            </div>
+          </div>
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="dialogVisible = false">免费发布需求</el-button>
+        </span>
+      </el-dialog>
     </div>
     <!-- phone -->
-    <div class="phone-round" v-else>
-      <div class="phead-text">
-        <div class="phone-des">设计从未如此简单</div>
-        <div class="phone-isu"><span class="phone-free">免费</span>发布需求，全程管家服务</div>
+    <div v-else>
+      <div class="phone-head"></div>
+      <div class="release-text">
+        现在<span>发布需求</span>，有机会获得投资孵化，进驻<span>小米商城</span>
       </div>
+<<<<<<< HEAD:src/components/pages/promote/Promote.vue
+      <el-form @submit.native.prevent :model="form" :rules="ruleForm" ref="ruleForm" class="phone-form1">
+        <div>
+          <el-form-item prop="demand">
+            <div class="release-input put-top-15">
+              <input v-model="form.demand" name="username" placeholder="请输入您的需求" class="release-form">
+=======
       <el-form @submit.native.prevent :model="form" :rules="ruleForm" ref="ruleForm" class="text-center pad-top-28">
         <el-row>
           <el-col :span="20" :offset="2">
@@ -267,7 +295,7 @@
         <el-row>
           <el-col :span="20" :offset="2">
             <el-form-item prop="contact">
-              <el-input v-model="form.contact" ref="contact" placeholder="请输入联系人"></el-input>
+              <el-input v-model="form.contact" ref="contact" placeholder="请输入姓名"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -278,7 +306,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <!-- <el-row>
+        <el-row>
           <el-col :span="20" :offset="2">
             <el-form-item prop="smsCode" class="call-ele">
               <el-input v-model="form.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
@@ -289,7 +317,7 @@
               </el-input>
             </el-form-item>
           </el-col>
-        </el-row> -->
+        </el-row>
         <el-row>
           <button :loading="isLoadingBtn" @click="submit('ruleForm')" class="issue-bt height-40 mar-20-30">
             免费发布项目需求
@@ -302,216 +330,136 @@
             <div class="pho-six-col">
               <img src="../../../assets/images/promote/design-type/productdesign@2x.png" alt="">
               <p>产品外观设计</p>
+>>>>>>> origin/lzh-dev:src/components/pages/promote/Promote4.vue
             </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="pho-six-col">
-              <img src="../../../assets/images/promote/design-type/structure.png" alt="">
-              <p>产品结构设计</p>
+          </el-form-item>
+          <el-form-item prop="contact">
+            <div class="release-input">
+              <input type="text" class="release-form" placeholder="请输入联系人" v-model="form.contact" ref="contact">
             </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="pho-six-col">
-              <img src="../../../assets/images/promote/design-type/Packing.png" alt="">
-              <p>包装设计</p>
+          </el-form-item>
+          <el-form-item prop="account">
+            <div class="release-input">
+              <input type="text" class="release-form" placeholder="手机号码" v-model="form.account" ref="account">
             </div>
-          </el-col>
-        </el-row>
+          </el-form-item>
+          <el-form-item prop="smsCode">
+            <div class="code1-send">
+              <input type="text" placeholder="验证码" class="code-input mar-left-5" v-model="form.smsCode" name="smsCode">
+              <div class="send-code" @click="fetchCode" :disabled="time > 0">{{ codeMsg }}</div>
+            </div>
+          </el-form-item>
+        </div>
+      </el-form>
+      <div class="round-btn">
+        <div class="release-btn" :loading="isLoadingBtn" @click="submit('ruleForm')">免费发布项目需求</div>
       </div>
-      <div class="pad-10">
-        <el-row :gutter="10" class="phone-six">
-          <el-col :span="8">
-            <div class="pho-six-col">
-              <img src="../../../assets/images/promote/design-type/Graphic.png" alt="">
-              <p>平面设计</p>
+      <div class="img-round-text">太火鸟设计服务的项目</div>
+      <div class="img-round">
+        <div class="border-round">
+          <div class="border">
+            <div class="in-border">
+              <div class="img1"></div>
+              <div class="img-text">
+                <div class="img1-1"></div>
+                <div class="img-jian">件</div>
+                <div class="img-sales">销售量</div>
+              </div>
+              <div class="img-bot-text">飞行鱼-亚特兰蒂斯号FiFish Atl</div>
             </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="pho-six-col">
-              <img src="../../../assets/images/promote/design-type/brand.png" alt="">
-              <p>品牌设计</p>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="pho-six-col">
-              <img src="../../../assets/images/promote/design-type/VI.png" alt="">
-              <p>VI设计</p>
-            </div>
-          </el-col>
-        </el-row>
-      </div>
-      <div class="finish-des">4步完成设计</div>
-      <div class="pad-10">
-        <el-row :gutter="10" class="margin-bot-8">
-          <el-col :span="12">
-            <div class="four-one">
-              <el-col :span="9" class="phone-four-one"></el-col>
-              <el-col :span="15" class="phone-four-text">
-                <div class="text-text">
-                  提交设计需求
-                  设计顾问跟进
-                </div>
-              </el-col>
-            </div>
-          </el-col>
-          <el-col :span="12">
-            <div class="four-one">
-              <el-col :span="9" class="phone-four-two"></el-col>
-              <el-col :span="15" class="phone-four-text">
-                <div class="text-text">
-                  敲定设计细节
-                  匹配设计服务商
-                </div>
-              </el-col>
-            </div>
-          </el-col>
-        </el-row>
-      </div>
-      <div class="pad-10">
-        <el-row :gutter="10">
-          <el-col :span="12">
-            <div class="four-one">
-              <el-col :span="9" class="phone-four-three"></el-col>
-              <el-col :span="15" class="phone-four-text">
-                <div class="text-text">
-                  设计项目启动
-                  客户分段验收
-                </div>
-              </el-col>
-            </div>
-          </el-col>
-          <el-col :span="12">
-            <div class="four-one">
-              <el-col :span="9" class="phone-four-four"></el-col>
-              <el-col :span="15" class="phone-four-text">
-                <div class="text-text">
-                  交付设计方案
-                  项目评价打分
-                </div>
-              </el-col>
-            </div>
-          </el-col>
-        </el-row>
-      </div>
-      <div class="pad-10">
-        <el-row :gutter="10">
-          <el-col :span="24">
-          <div class="two-one"></div>
-          <div class="two-two"></div>
-          </el-col>
-        </el-row>
-      </div>
-      <div class="pad-10">
-        <el-row :gutter="10" class="pad-top-50">
-          <div>
-            <el-col :span="10">
-              <div class="three-one-left"></div>
-            </el-col>
-            <el-col :span="14">
-              <el-row type="flex" align="middle" class="mid-hei">
-                <el-col>
-                  <div class="three-one-right"></div>
-                </el-col>
-              </el-row>
-            </el-col>
           </div>
-        </el-row>
-      </div>
-      <div class="pad-10">
-        <el-row :gutter="10" class="pad-top-20">
-          <div>
-            <el-col :span="13" :offset="1">
-              <el-row type="flex" align="middle" class="mid-hei">
-                <el-col>
-                  <div class="three-two-left"></div>
-                </el-col>
-              </el-row>
-            </el-col>
-            <el-col :span="10">
-              <div class="three-two-right"></div>
-            </el-col>
-          </div>
-        </el-row>
-      </div>
-      <div class="pad-10">
-        <el-row :gutter="10" class="pad-top-20">
-          <div>
-            <el-col :span="10">
-              <div class="three-three-left"></div>
-            </el-col>
-            <el-col :span="14">
-              <el-row type="flex" align="middle" class="mid-hei">
-                <el-col>
-                  <div class="three-three-right"></div>
-                </el-col>
-              </el-row>
-            </el-col>
-          </div>
-        </el-row>
-      </div>
-      <div class="design-product-pho">
-        <div class="container">
-          <h2 class="public-h2 font-size-20">太火鸟设计服务的项目</h2>
-          <div class="design-product-list">
-            <el-row :gutter="10" class="m-b-20">
-              <el-col :span="12">
-                <el-card>
-                  <div class="design-product-p">
-                    <img src="../../../assets/images/promote/design-product/case01@2x.png" alt="FiFish飞行鱼">
-                    <p>FiFish飞行鱼</p>
-                  </div>
-                </el-card>
-              </el-col>
-              <el-col :span="12">
-                <el-card>
-                  <div class="design-product-p">
-                    <img src="../../../assets/images/promote/design-product/case02@2x.png" alt="素士声波电动牙刷">
-                    <p>素士声波电动牙刷</p>
-                  </div>
-                </el-card>
-              </el-col>
-            </el-row>
-            <el-row :gutter="10" class="m-b-20">
-              <el-col :span="12">
-                <el-card>
-                  <div class="design-product-p">
-                    <img src="../../../assets/images/promote/design-product/case04@2x.png" alt="麋鹿庄园品牌设计">
-                    <p>麋鹿庄园品牌设计</p>
-                  </div>
-                </el-card>
-              </el-col>
-              <el-col :span="12">
-                <el-card>
-                  <div class="design-product-p">
-                    <img src="../../../assets/images/promote/design-product/case05@2x.png" alt="凡曦 | 御蜜粒卫生巾包装">
-                    <p>凡曦 | 御蜜粒卫生巾包装</p>
-                  </div>
-                </el-card>
-              </el-col>
-            </el-row>
-            <el-row :gutter="10">
-              <el-col :span="12">
-                <el-card>
-                  <div class="design-product-p">
-                    <img src="../../../assets/images/promote/design-product/case03@2x.png" alt="美妆镜 Amiro">
-                    <p>美妆镜 Amiro</p>
-                  </div>
-                </el-card>
-              </el-col>
-              <el-col :span="12">
-                <el-card>
-                  <div class="design-product-p">
-                    <img src="../../../assets/images/promote/design-product/case06@2x.png" alt="插画设计">
-                    <p>插画设计</p>
-                  </div>
-                </el-card>
-              </el-col>
-            </el-row>
+          <div class="border">
+            <div class="in-border">
+              <div class="img2"></div>
+              <div class="img-text">
+                <div class="img2-1"></div>
+                <div class="img-jian">亿</div>
+                <div class="img-sales">2018年销售额</div>
+              </div>
+              <div class="img-bot-text">素士声波电动牙刷</div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="with-pho">
-        合照
+      <div class="img-round margin-top-10">
+        <div class="border-round">
+          <div class="border">
+            <div class="in-border">
+              <div class="img3"></div>
+              <div class="img-text">
+                <div class="img3-1"></div>
+                <div class="img-jian">万</div>
+                <div class="img-sales">销售额</div>
+              </div>
+              <div class="img-bot-text">美妆镜 Amiro</div>
+            </div>
+          </div>
+          <div class="border">
+            <div class="in-border">
+              <div class="img4"></div>
+              <div class="img-text">
+                <div class="img4-1"></div>
+                <div class="img-jian">万</div>
+                <div class="img-sales">众筹</div>
+              </div>
+              <div class="img-bot-text">云马智能电单车</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="img-round margin-top-10">
+        <div class="border-round">
+          <div class="border">
+            <div class="in-border">
+              <div class="img5"></div>
+              <div class="img-text">
+                <div class="img5-1"></div>
+                <div class="img-jian">件</div>
+                <div class="img-sales">月销</div>
+              </div>
+              <div class="img-bot-text">FIU优雅不倒杯</div>
+            </div>
+          </div>
+          <div class="border">
+            <div class="in-border">
+              <div class="img6"></div>
+              <div class="img-text">
+                <div class="img6-1"></div>
+                <div class="img-jian">件</div>
+                <div class="img-sales">日单</div>
+              </div>
+              <div class="img-bot-text">洒哇地卡无线手持电动擦地机</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="fu-can">
+        <div class="can-text">太火鸟赋能</div>
+        <div class="can-img">
+          <div class="can-border">
+            <div class="border-img1"></div>
+            <div class="can-text1-1">孵化营销</div>
+            <div class="can-text1-2">营销赋能创新产品及品牌</div>
+          </div>
+          <div class="can-border">
+            <div class="border-img2"></div>
+            <div class="can-text1-1">渠道销售</div>
+            <div class="can-text1-2">精准化社群及精选电商分销</div>
+          </div>
+          <div class="can-border">
+            <div class="border-img3"></div>
+            <div class="can-text1-1">营销推广</div>
+            <div class="can-text1-2">专业团队进行原创性内容传播</div>
+          </div>
+        </div>
+      </div>
+      <div class="trust-around">
+        <div class="trust">值得信赖</div>
+        <div class="trust-img1"></div>
+        <div class="trust-text">WIDC2018世界工业设计大会TIA设计服务平台大奖</div>
+        <div class="trust-img2"></div>
+        <div class="trust-text">顺德第二季创新设计成果交易会</div>
+        <div class="trust-img3"></div>
       </div>
       <div class="pad-10">
         <el-row :gutter="5" class="mar-bot-6">
@@ -551,24 +499,62 @@
       <div class="form mtop_40">
         <el-form :model="form1" :rules="ruleForm" ref="ruleForm1" class="pad-20" @submit.native.prevent>
           <el-form-item prop="name" class="pad-bot-15">
-            <el-input v-model="form1.name" name="username" placeholder="请输入联系人"></el-input>
+            <el-input v-model="form1.name" name="username" placeholder="请输入姓名"></el-input>
           </el-form-item>
           <el-form-item prop="account" class="pad-bot-15">
             <el-input v-model="form1.account" ref="account" placeholder="手机号码"></el-input>
           </el-form-item>
-          <!-- <el-form-item prop="smsCode" class="wap-disabled-btn pad-bot-20 call-ele">
+          <el-form-item prop="smsCode" class="wap-disabled-btn pad-bot-20 call-ele">
             <el-input class="" v-model="form1.smsCode" name="smsCode" ref="smsCode" placeholder="验证码">
               <template slot="append">
                 <el-button  @click="fetchCode1" :disabled="time > 0">{{ codeMsg }}
                 </el-button>
               </template>
             </el-input>
-          </el-form-item> -->
+          </el-form-item>
         </el-form>
       </div>
-      <div class="bt-center">
-        <button class="btn-style" @click="submit_app('ruleForm1')">快速沟通</button>
+      <div class="later">
+        <div class="later-text">您还在等什么？</div>
+        <div class="release-text margin-top-15">
+          现在<span>发布需求</span>，有机会获得投资孵化，进驻<span>小米商城</span>
+        </div>
+        <input type="text" placeholder="请输入您的需求" class="input-style">
+        <input type="text" placeholder="请输入联系人" class="input-style margin-top-10">
+        <input type="text" placeholder="手机号码" class="input-style margin-top-10">
+        <div class="code-round margin-top-10">
+          <input type="text" placeholder="验证码" class="code-input">
+          <div class="send-code">发送验证码</div>
+        </div>
+        <div class="send-code-btn">
+          <div class="send-code-text">立即发布需求</div>
+        </div>
+        <div class="new-top">
+          <div class="left"></div>
+          <div class="new-text">最新报名客户</div>
+          <div class="right"></div>
+        </div>
+        <div class="person-round">
+          <!-- <div class="person" v-for="(item, index) in userList" :key="index">
+            <div class="person-text">{{item.user_name}}</div>
+            <div class="person-text">{{item.phone}}</div>
+            <div class="person-text">{{item.created_at}}分钟</div>
+          </div> -->
+          <swiper class="swiper-con" :options="swiperOption2">
+            <swiper-slide v-for="(item, index) of userList" :key="index">
+              <div class="person">
+                <div v-text="item.user_name" class="person-text"></div>
+                <div class="person-text" v-text="item.phone"></div>
+                <div class="person-text">{{item.created_at}}分钟前</div>
+              </div>
+            </swiper-slide>
+          </swiper>
+        </div>
+        <div class="send-code-btn">
+          <div class="send-code-text">拨打电话</div>
+        </div>
       </div>
+      <div class="bg-bot-img"></div>
     </div>
   </section>
 </template>
@@ -604,7 +590,7 @@
         }
       }
       return {
-        isShowBounced: false, // 弹窗
+        sendReq: false, // 弹窗
         quantity: '', // 数量
         phone: '', // 底部联系电话
         time: 0,
@@ -612,13 +598,15 @@
         isLoadingBtn: false,
         userList: [],   // 消息列表
         form: {
-          demand: '',   // 需求
-          account: '',  // 手机号
-          contact: ''  // 联系人
+          demand: '', // 需求
+          account: '', // 手机号
+          contact: '', // 姓名
+          smsCode: ''
         },
         form1: {
-          account: '',  // 手机号
-          name: ''      // app 联系人
+          account: '', // 手机号
+          name: '', // app 姓名
+          smsCode: ''
         },
         // swiper
         swiperOption: {
@@ -626,16 +614,17 @@
           paginationClickable: true,
           lazyLoading: true,
           // autoplay: 5000,
-          spaceBetween: 0,
+          spaceBetween: 20,
           loop: true
         },
         // 底部
         swiperOption2: {
           lazyLoading: true,
           direction: 'vertical',
-          autoplay: 800,
-          slidesPerView: 8,
+          autoplay: 1000,
+          slidesPerView: 3,
           // observer: true,
+          spaceBetween: 0,
           paginationClickable: true,
           loop: true
         },
@@ -647,7 +636,7 @@
             { required: true, message: '请输入您的需求', trigger: 'blur' }
           ],
           contact: [
-            {required: true, message: '请输入联系人', trigger: 'blur'}
+            {required: true, message: '请输入姓名', trigger: 'blur'}
           ],
           smsCode: [
             {required: true, message: '请输入验证码', trigger: 'blur'}
@@ -658,16 +647,12 @@
           ]
         },
         query: {
-          from: 2,
+          from: 5,
           mark: ''
         }
       }
     },
     methods: {
-      // 关闭弹窗
-      closeBounced () {
-        this.isShowBounced = false
-      },
       direct(path) {
         if (!this.user || this.user.type === 1) {
           this.$router.push({name: path})
@@ -695,23 +680,6 @@
               this.$message.error('手机号长度应为11位')
             }
           }
-        }
-      },
-      // pc 右下角
-      contact () {
-        if (this.phone) {
-          this.$http.post(api.pcAdd, {phone: this.phone, from: 3, new_from: this.$route.query.from, device: this.isMob ? 2 : 1, url: window.location.href})
-            .then(res => {
-              if (res.data.meta.status_code === 200) {
-                this.$message.success('提交成功')
-                this.phone = ''
-              } else {
-                this.$message.error(res.data.meta.message)
-              }
-            })
-            .catch(error => {
-              this.$message.error(error)
-            })
         }
       },
       // 点击发送验证码
@@ -749,10 +717,9 @@
             let row = {
               user_name: this.form1.name,
               phone: this.form1.account,
-              new_form: this.$route.query.from, // 1. 小程序 2. 默认/铟果 3. 艺火 4. 360 5. 头条号 6. 优客
-              device: this.isMob ? 2 : 1, // 1.PC 2.Phone
-              from: 4,
-              url: window.location.href
+              sms_code: this.form1.smsCode,
+              source: this.query.from,
+              son_source: this.query.mark
             }
             this.$http.post(api.pcAdd, row)
               .then(res => {
@@ -774,10 +741,12 @@
         this.$refs[form].validate(valid => {
           if (valid) {
             let row = {
-              user_name: this.form.contact, // 联系人
+              user_name: this.form.contact, // 姓名
               phone: this.form.account, // 手机号
               item_name: this.form.demand, // 需求
-              from: 2   // 小程序or网页
+              source: this.query.from,
+              son_source: this.query.mark,
+              sms_code: this.form.smsCode
             }
             if (this.isMob) {
               row.from = 4
@@ -799,13 +768,35 @@
             // this.$message.error('请填写信息')
           }
         })
+      },
+      generalize(query) {
+        this.$http.post(api.generalize, {
+          url: location.href,
+          son_source: query.mark,
+          device: this.isMob ? 2 : 1,
+          new_from: query.from
+        }).then(res => {
+          console.log(res)
+        }).catch(err => {
+          console.error(err)
+        })
+      },
+      formatQuery(query) {
+        Object.assign(this.query, query)
+        if (typeof this.query.from !== 'number') {
+          this.query.from = 5
+        }
+        if (this.query.from < 1) {
+          this.query.from = 5
+        }
       }
     },
     created () {
       /* eslint-disable */
       (function(b,a,e,h,f,c,g,s){b[h]=b[h]||function(){(b[h].c=b[h].c||[]).push(arguments)};b[h].s=!!c;g=a.getElementsByTagName(e)[0];s=a.createElement(e);s.src="//s.union.360.cn/"+f+".js";s.defer=!0;s.async=!0;g.parentNode.insertBefore(s,g)})(window,document,"script","_qha",290883,false);
       /* eslint-disable */
-      Object.assign(this.query, this.$route.query)
+      this.formatQuery(this.$route.query)
+      this.generalize(this.query)
     },
     mounted () {
       let that = this
@@ -862,559 +853,1252 @@
   }
 </script>
 <style scoped>
-  .round-backgound {
-    background: url("../../../assets/images/promote2/pc/bg/BG.jpg") no-repeat;
-    background-size: cover;
+  .back-bg {
+    background-color: #3052AC;
     margin-bottom: -50px;
   }
-  .design-font {
-    font-family: PingFangSC-Light;
-    font-size: 60px;
-    color: #FFFFFF;
+  /* PC端 */
+  .pc-header {
+    text-align: center;
   }
-  .head-round {
-    padding-top: 60px;
+  .logo {
+    height: 120px;
+    width: 120px;
+    background: url("../../../assets/images/new_promote/pc/logo.png") no-repeat;
+    background-size: 100% 100%;
+    margin: 0 auto;
+    position: relative;
   }
-  .free-round {
-    font-family: PingFangSC-Light;
-    font-size: 30px;
-    color: #FFFFFF;
-    padding-top: 20px;
+  .logo:after {
+    content: '';
+    height: 31px;
+    width: 121px;
+    position: absolute;
+    background: url("../../../assets/images/new_promote/pc/header/cloud01@2x.png") no-repeat;
+    background-size: 100% 100%;
+    right: 0;
+    bottom: 20px;
+    left: 230px;
   }
-  .free-font {
-    color: #FFFF00;
+
+  .logo:before {
+    content: '';
+    height: 28px;
+    width: 121px;
+    position: absolute;
+    background: url("../../../assets/images/new_promote/pc/header/cloud01@2x.png") no-repeat;
+    background-size: 100% 100%;
+    right: 0;
+    bottom: -15px;
+    left: -280px;
   }
-  .header-style {
-    background: #FFFFFF;
-    border: 1px solid #E6E6E6;
-    box-shadow: 0 0 10px 0 rgba(0,0,0,0.20);
-    border-radius: 4px;
+  .header-text-one {
+    font-size: 20px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(255,255,255,1);
+    line-height: 28px;
   }
-  .issue-bt {
+  .one-min {
+    color: #FF5A5F;
+  }
+  .spectrum-img {
+    height: 110px;
+    width: 858px;
+    background: url("../../../assets/images/new_promote/pc/header/title@2x.png") no-repeat;
+    background-size: 100% 100%;
+    margin: 0 auto;
+  }
+  .header-text-two {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(255,255,255,1);
+    line-height: 20px;
+  }
+  .logo-btn {
+    height: 57px;
+    width: 240px;
     cursor: pointer;
-    height: 47px;
-    width: 180px;
-    background-image: linear-gradient(-133deg, #6983F9 0%, #9D61DB 100%);
-    box-shadow: 0 0 20px 0 rgba(0,0,0,0.05);
-    border-radius: 30px;
-    color: #fff;
+    background: url("../../../assets/images/new_promote/pc/Button@2x.png") no-repeat;
+    background-size: 100% 100%;
+    margin: 0 auto;
+    margin-top: 20px;
+  }
+  .logo-btn:hover {
+    background: url("../../../assets/images/new_promote/pc/ButtonHover@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .logo-btn:active {
+    background: url("../../../assets/images/new_promote/pc/ButtonClick@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .header-two-img {
+    position: relative;
+    margin-top: 10px;
+    height: 244px;
+    background: url("../../../assets/images/new_promote/pc/IllustrationHead.png") no-repeat;
+    background-size: 100% 100%;
+    display: flex;
+    flex-direction: row;
+  }
+  .header-two-img:before {
+    content: '';
+    height: 31px;
+    width: 121px;
+    position: absolute;
+    background: url("../../../assets/images/new_promote/pc/header/cloud01@2x.png") no-repeat;
+    background-size: 100% 100%;
+    left: 90px;
+    top: -50px;
+  }
+  .header-title {
+    font-size: 30px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(255,255,255,1);
+    line-height: 42px;
+    margin-top: 30px;
+    text-align: center;
+  }
+  .six-img-round {
+    width: 1180px;
+    padding-top: 30px;
+    margin: 0 auto;
+  }
+  .six-one-round {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .six-border {
+    flex: 1;
+    margin: 0 10px;
+    height: 340px;
+    background: rgba(255,255,255,1);
+    border-radius: 4px;
+    border: 1px solid rgba(230,230,230,1);
+  }
+  .border-pad {
+    padding: 11px;
+  }
+  .six-text1 {
+    padding-top: 7px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end
+  }
+  .six-img1-jian {
+    font-size: 22px;
     font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(34,34,34,1);
+    line-height: 36px;
+    padding: 0 10px 0 22px;
+  }
+  .six-img1-sales {
     font-size: 16px;
-    letter-spacing: 1px;
-    text-align: center;
-    margin: 22px 0;
-    border: 1px solid #fff;
-  }
-  .ius-round {
-    font-family: PingFangSC-Light;
-    font-size: 28px;
-    color: #101010;
-    text-align: center;
-    line-height: 35px;
-    padding: 30px 0 20px 0;
-  }
-  .free-color {
-    color: #7F75EC;
-  }
-  .text-center {
-    text-align: center;
-  }
-  .six-img {
-    padding-top: 60px;
-  }
-  .six-img p{
     font-family: PingFangSC-Regular;
-    font-size: 18px;
-    color: #FFFFFF;
-    letter-spacing: 0;
+    font-weight: 400;
+    color: rgba(153,153,153,1);
+    line-height: 30px;
   }
-  .six-img .six-col{
-    text-align: center;
-    /* opacity: 0.75; */
-    background-image: linear-gradient(-180deg, rgba(140,39,205, 0.5) 4%, rgba(58,17,185, 0.5) 100%);
-    height: 180px;
+  .six-text2 {
+    font-size: 16px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(34,34,34,1);
+    line-height: 36px;
   }
-  .six-col img {
-    height: 120px;
-    margin-bottom: 16px;
-  }
-  .four-img {
-    height: 120px;
-    background: url("../../../assets/images/promote2/pc/four/FourSteps@2x.png") no-repeat;
+  .six-img1 {
+    height: 242px;
+    background: url("../../../assets/images/new_promote/pc/product/01fifish@2x.png") no-repeat;
     background-size: 100% 100%;
   }
-  .two-img1 {
-    height: 155px;
-    background: url("../../../assets/images/promote2/pc/two/IntelligentMatching.png") no-repeat;
+  .six-img1-1 {
+    height: 36px;
+    width: 60px;
+    background: url("../../../assets/images/new_promote/pc/product/number/1000@2x.png") no-repeat;
     background-size: 100% 100%;
   }
-  .two-img2 {
-    height: 155px;
-    background: url("../../../assets/images/promote2/pc/two/proMan.png") no-repeat;
+  .six-img2 {
+    height: 242px;
+    background: url("../../../assets/images/new_promote/pc/product/02shushi@2x.png") no-repeat;
     background-size: 100% 100%;
   }
-  .thousand {
-    height: 170px;
-    background: url("../../../assets/images/promote2/pc/logo/1000+DesignCompany.png") no-repeat;
+  .six-img1-2 {
+    height: 36px;
+    width: 17px;
+    background: url("../../../assets/images/new_promote/pc/product/number/6@2x.png") no-repeat;
     background-size: 100% 100%;
   }
-  .thousand-img {
-    height: 80px;
-    background: url("../../../assets/images/promote2/pc/logo/DesignCompanyLogos.png") no-repeat;
+  .six-img3 {
+    height: 242px;
+    background: url("../../../assets/images/new_promote/pc/product/03Amiro@2x.png") no-repeat;
     background-size: 100% 100%;
   }
-  .prize-img {
-    height: 80px;
-    background: url("../../../assets/images/promote2/pc/logo/PrizeLogos.png") no-repeat;
+  .six-img1-3 {
+    height: 36px;
+    width: 60px;
+    background: url("../../../assets/images/new_promote/pc/product/number/1000@2x.png") no-repeat;
     background-size: 100% 100%;
   }
-  .prize {
-    height: 170px;
-    background: url("../../../assets/images/promote2/pc/logo/300+prize.png") no-repeat;
+  .six-img4 {
+    height: 242px;
+    background: url("../../../assets/images/new_promote/pc/product/04yunma@2x.png") no-repeat;
     background-size: 100% 100%;
   }
-  .customer {
-    height: 170px;
-    background: url("../../../assets/images/promote2/pc/logo/1000+Customer.png") no-repeat;
+  .six-img1-4 {
+    height: 36px;
+    width: 65px;
+    background: url("../../../assets/images/new_promote/pc/product/number/3000@2x.png") no-repeat;
     background-size: 100% 100%;
   }
-  .customer-img {
-    height: 80px;
-    background: url("../../../assets/images/promote2/pc/logo/CustomerLogos.png") no-repeat;
+  .six-img5 {
+    height: 242px;
+    background: url("../../../assets/images/new_promote/pc/product/05FIUbudaobei@2x.png") no-repeat;
     background-size: 100% 100%;
   }
-  .design-product {
-    padding: 50px 0 60px 0;
-    text-align: left;
+  .six-img1-5 {
+    height: 36px;
+    width: 60px;
+    background: url("../../../assets/images/new_promote/pc/product/number/1000@2x.png") no-repeat;
+    background-size: 100% 100%;
   }
-  .design-product-list {
+  .six-img6 {
+    height: 242px;
+    background: url("../../../assets/images/new_promote/pc/product/06sawwadika@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .six-img1-6 {
+    height: 36px;
+    width: 50px;
+    background: url("../../../assets/images/new_promote/pc/product/number/500@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .pad-5-10 {
+    padding: 0 10px 0 5px;
+  }
+  .pad-6-10 {
+    padding: 0 10px 0 6px;
+  }
+  .pad-10-10 {
+    padding: 0 10px;
+  }
+  .pc-can {
+    height: 443px;
+    background: rgba(255,255,255,0.1);
     margin-top: 40px;
+    text-align: center;
   }
-  .design-product-img img {
+  .pc-can-text {
+    padding-top: 40px;
+    font-size: 30px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(255,255,255,1);
+    line-height: 42px;
+  }
+  .pc-can-round {
+    height: 293px;
+    width: 1180px;
+    padding-top: 30px;
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto;
+  }
+  .pc-can-border {
+    flex: 1;
+    height:293px;
+    background:rgba(255,255,255,1);
+    border-radius:4px;
+    margin: 0 10px;
+    text-align: center;
+  }
+  .pc-can-img1 {
+    margin: 0 auto;
+    height: 180px;
+    width: 200px;
+    background: url("../../../assets/images/new_promote/pc/can/1MarketingIncubation.png") no-repeat;
+    background-size: 100% 100%;
+    padding-top: 14px;
+  }
+  .pc-can-img2 {
+    margin: 0 auto;
+    height: 180px;
+    width: 200px;
+    background: url("../../../assets/images/new_promote/pc/can/2ChannelSales.png") no-repeat;
+    background-size: 100% 100%;
+    padding-top: 14px;
+  }
+  .pc-can-img3 {
+    margin: 0 auto;
+    height: 180px;
+    width: 200px;
+    background: url("../../../assets/images/new_promote/pc/can/3MarketingPromotion.png") no-repeat;
+    background-size: 100% 100%;
+    padding-top: 14px;
+  }
+  .pc-can-text1 {
+    font-size: 20px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(21,55,140,1);
+    line-height: 28px;
+    padding-top: 7px;
+  }
+  .pc-can-text2 {
+    padding-top: 12px;
+    font-size: 16px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(34,34,34,1);
+    line-height: 22px;
+  }
+  .pc-trust-round {
+    text-align: center;
+  }
+  .pc-trust {
+    padding: 40px 0 30px 0;
+    font-size: 30px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(255,255,255,1);
+    line-height: 42px;
+  }
+  .pc-trust-three {
+    display: flex;
+    width: 1180px;
+    margin: 0 auto;
+    height: 275px;
+  }
+  .pc-trust-img-round {
+    flex: 1;
+    margin: 0 10px;
+  }
+  .pc-trust-1 {
     width: 100%;
+    height: 240px;
+    background: url("../../../assets/images/new_promote/trust/TIA@2x.png") no-repeat;
+    background-size: 100% 100%;
   }
-  .design-product-img p {
+  .pc-trust-2 {
+    width: 100%;
+    height: 240px;
+    background: url("../../../assets/images/new_promote/trust/shunde@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .pc-trust-3 {
+    width: 100%;
+    height: 240px;
+    background: url("../../../assets/images/new_promote/trust/DTech@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .pc-trust-text {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(255,255,255,1);
+    line-height: 20px;
+    padding-top: 15px;
+  }
+  .pc-customer {
+    margin-top: 40px;
+    height: 410px;
+    background:rgba(255,255,255,0.1);
+    text-align: center;
+  }
+  .pc-customer-title {
+    font-size: 30px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(255,255,255,1);
+    line-height: 42px;
+    padding: 40px 0;
+  }
+  .pc-customer-imgs {
+    width: 1180px;
+    display: flex;
+    margin: 0 auto;
     height: 60px;
-    padding-left: 20px;
-    border: 1px solid #E6E6E6;
-    border-top: none;
-    font-size: 18px;
-    color: #222222;
-    line-height: 60px;
   }
-  .m-b-20 {
-    margin-bottom: 20px;
+  .pc-customer-img1 {
+    flex: 1;
+    margin: 0 11px;
+    background: url("../../../assets/images/new_promote/pc/customer/01@2x.png") no-repeat;
+    background-size: 100% 100%;
   }
-  .desigb-about {
-    padding: 50px 0 60px 0;
+  .pc-customer-img2 {
+    flex: 1;
+    margin: 0 11px;
+    background: url("../../../assets/images/new_promote/pc/customer/02@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .pc-customer-img3{
+    flex: 1;
+    margin: 0 11px;
+    background: url("../../../assets/images/new_promote/pc/customer/03@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .pc-customer-img4 {
+    flex: 1;
+    margin: 0 11px;
+    background: url("../../../assets/images/new_promote/pc/customer/04@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .pc-customer-img5 {
+    flex: 1;
+    margin: 0 11px;
+    background: url("../../../assets/images/new_promote/pc/customer/05@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .pc-customer-img6 {
+    flex: 1;
+    margin: 0 11px;
+    background: url("../../../assets/images/new_promote/pc/customer/06@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .pc-customer-img7 {
+    flex: 1;
+    margin: 0 11px;
+    background: url("../../../assets/images/new_promote/pc/customer/07@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .pc-invest-img1 {
+    flex: 1;
+    margin: 0 11px;
+    background: url("../../../assets/images/new_promote/pc/invest/T01@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .pc-invest-img2 {
+    flex: 1;
+    margin: 0 11px;
+    background: url("../../../assets/images/new_promote/pc/invest/T02@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .pc-invest-img3{
+    flex: 1;
+    margin: 0 11px;
+    background: url("../../../assets/images/new_promote/pc/invest/T03@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .pc-invest-img4 {
+    flex: 1;
+    margin: 0 11px;
+    background: url("../../../assets/images/new_promote/pc/invest/T04@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .pc-invest-img5 {
+    flex: 1;
+    margin: 0 11px;
+    background: url("../../../assets/images/new_promote/pc/invest/T05@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .pc-invest-img6 {
+    flex: 1;
+    margin: 0 11px;
+    background: url("../../../assets/images/new_promote/pc/invest/T06@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .pc-invest-img7 {
+    flex: 1;
+    margin: 0 11px;
+    background: url("../../../assets/images/new_promote/pc/invest/T07@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .z-index-5 {
+    z-index: 5;
+    position: relative;
+    height: 100%;
+  }
+  .wait {
+    font-size: 30px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(255,255,255,1);
+    line-height: 42px;
+    padding-top: 40px;
     text-align: center;
     position: relative;
   }
-  .desigb-about img {
-    width: 120px;
-  }
-  .desigb-about-p {
-    font-family: PingFangSC-Regular;
-    margin: 20px 0 12px 0;
-    font-size: 22px;
-    color: #fff;
-    line-height: 36px;
-  }
-  .desigb-about-span {
-    font-family: PingFangSC-Regular;
-    font-size: 16px;
-    color: #fff;
-    line-height: 36px;
-  }
-  .design-btn {
-    width: 180px;
-    height: 50px;
-    border-radius: 30px;
-    line-height: 1;
-    color: #ffffff;
-    background-image: linear-gradient(-133deg, #6983F9 0%, #9D61DB 100%);
-    box-shadow: 0 10px 20px 0 rgba(0,0,0,0.05);
-    margin-top: 13px;
-    font-size: 16px;
-    cursor: pointer;
-    border: 1px solid #fff;
-  }
-  .input-phone {
-    height: 50px;
-    margin-top: 13px;
-  }
-  .input-phone .el-input {
-    height: 50px;
-  }
-  .input-phone input {
-    height: 50px;
-  }
-  .photo1 {
-    height: 140px;
-    background: url("../../../assets/images/promote2/pc/photo/01.png") no-repeat;
+  .wait:after {
+    content: '';
+    height: 31px;
+    width: 121px;
+    position: absolute;
+    background: url("../../../assets/images/new_promote/pc/header/cloud03@2x.png") no-repeat;
     background-size: 100% 100%;
-  }
-  .photo2 {
-    height: 140px;
-    background: url("../../../assets/images/promote2/pc/photo/02.png") no-repeat;
-    background-size: 100% 100%;
-  }
-  .photo3 {
-    height: 140px;
-    background: url("../../../assets/images/promote2/pc/photo/03.png") no-repeat;
-    background-size: 100% 100%;
-  }
-  .photo4 {
-    height: 140px;
-    background: url("../../../assets/images/promote2/pc/photo/04.png") no-repeat;
-    background-size: 100% 100%;
-  }
-  .photo5 {
-    height: 140px;
-    background: url("../../../assets/images/promote2/pc/photo/05.png") no-repeat;
-    background-size: 100% 100%;
-  }
-  .photo6 {
-    height: 140px;
-    background: url("../../../assets/images/promote2/pc/photo/06.png") no-repeat;
-    background-size: 100% 100%;
-  }
-  .pad-top-50 {
-    padding-top: 50px;
-  }
-  .public-h2 {
-    font-family: PingFangSC-Regular;
-    font-size: 30px;
-    color: #FFFFFF;
-    text-align: center;
-  }
-  .font-size-20 {
-    font-size: 20px;
+    right: 0;
+    bottom: -80px;
+    left: 60px;
+
   }
 
-  /* phone */
-  .phone-round {
-    background: url("../../../assets/images/promote2/phone/bg/BG@2x.jpg") no-repeat;
-    background-size: cover;
-    margin-bottom: -50px;
-    overflow-x: hidden;
-  }
-  .phead-text {
-    padding-top: 78px;
-  }
-  .phone-des {
-    font-family: PingFangSC-Light;
-    font-size: 40px;
-    color: #FFFFFF;
+  .wait-intro {
+    width:600px;
+    height:300px;
+    background:rgba(255,255,255,1);
+    box-shadow:0px 0px 20px 0px rgba(0,0,0,0.06);
+    border-radius:4px;
+    margin: 0 auto;
+    margin-top: 30px;
     text-align: center;
+    position: relative;
   }
-  .phone-isu {
-    font-family: PingFangSC-Medium;
-    font-size: 20px;
-    color: #fff;
-    text-align: center;
-    padding-top: 11px;
+  .wait-intro:before {
+    content: '';
+    height: 28px;
+    width: 121px;
+    position: absolute;
+    background: url("../../../assets/images/new_promote/pc/header/cloud03@2x.png") no-repeat;
+    background-size: 100% 100%;
+    right: 0;
+    bottom: 10px;
+    left: -100px;
   }
-  .phone-free {
-    font-family: PingFangSC-Medium;
-    font-size: 20px;
-    color: #F0FF00;
-    text-align: center;
+  .wait-intro:after {
+    content: '';
+    height: 28px;
+    width: 121px;
+    position: absolute;
+    background: url("../../../assets/images/new_promote/pc/header/cloud03@2x.png") no-repeat;
+    background-size: 100% 100%;
+    right: -295px;
+    bottom: 44px;
   }
-  .height-40 {
-    height: 40px
+  .pc-wait-border-title {
+    padding-top: 20px;
+    font-size: 16px;
+    font-family: PingFangSC-Semibold;
+    font-weight: 600;
+    color: #222222;
+    line-height: 22px;
+    position: relative;
   }
-  .pad-top-28 {
-    padding-top: 28px;
+  .pc-wait-border-title:after {
+    content: '';
+    height: 28px;
+    width: 121px;
+    position: absolute;
+    background: url("../../../assets/images/new_promote/pc/header/clouds02@2x.png") no-repeat;
+    background-size: 100% 100%;
+    right: -80px;
+    bottom: -40px;
   }
-  .mar-20-30 {
-    margin: 20px 0 30px 0
+  .red-text {
+    color: #FF5A5F;
   }
-  .phone-six p {
-    font-family: PingFangSC-Regular;
+  .pc-wait-input-round {
+    width: 500px;
+    height: 40px;
+    background: rgba(255,255,255,1);
+    border-radius: 4px;
+    border: 1px solid rgba(230,230,230,1);
+    margin-top: 18px;
+    padding: 15px;
+  }
+  .mar-top-20 {
+    margin-top: 20px
+  }
+  .pc-send-code-90 {
+    display: flex;
+    width: 500px;
+    margin: 0 auto;
+    margin-top: 20px;
+  }
+  .pc-wait-input-round2 {
+    width: 310px;
+    height: 40px;
+    background: rgba(255,255,255,1);
+    border-radius: 4px;
+    border: 1px solid rgba(230,230,230,1);
+    padding: 15px;
+    margin-right: 10px;
+  }
+  .pc-code-90-round {
+    width: 180px;
+    height: 40px;
+    background: rgba(255,255,255,1);
+    border-radius: 4px;
+    border:1px solid  rgba(230,230,230,1);
+    display: flex;
+    align-items: center;
+  }
+  .pc-code-90 {
+    width: 90px;
+    border: none;
+    padding: 0 10px;
+  }
+  .pc-code-90-send {
+    flex: 1 1 auto;
+    height: 20px;
     font-size: 14px;
-    color: #FFFFFF;
-    letter-spacing: 0;
-    text-align: center;
-  }
-  .phone-six .pho-six-col {
-    border-radius: 6px;
-    height: 122px;
-    text-align: center;
-    /* opacity: 0.6; */
-    background-image: linear-gradient(-180deg, rgba(140,39,205, 0.6) 4%, rgba(58,17,185, 0.6) 100%);
-  }
-  .pho-six-col img {
-    height: 74px;
-    margin: 10px 0 5px 0;
-  }
-  .mar-bot-6 {
-    margin-bottom: 6px;
-  }
-  .finish-des {
-    font-family: PingFangSC-Medium;
-    font-size: 20px;
-    color: #FFFFFF;
-    text-align: center;
-    padding: 30px 0 20px 0;
-  }
-  .four-one {
-    height: 64px;
-    text-align: center;
-    /* opacity: 0.5; */
-    background-image: linear-gradient(-180deg, rgba(140,39,205, 0.5) 4%, rgba(58,17,185, 0.5) 100%);
-    border-radius: 6px;
-  }
-  .phone-four-one {
-    height: 64px;
-    background: url("../../../assets/images/promote2/phone/four/01.png") no-repeat;
-    background-size: 100% 100%;
-  }
-  .phone-four-two {
-    height: 64px;
-    background: url("../../../assets/images/promote2/phone/four/02.png") no-repeat;
-    background-size: 100% 100%;
-  }
-  .phone-four-three {
-    height: 64px;
-    background: url("../../../assets/images/promote2/phone/four/03.png") no-repeat;
-    background-size: 100% 100%;
-  }
-  .phone-four-four {
-    height: 64px;
-    background: url("../../../assets/images/promote2/phone/four/04.png") no-repeat;
-    background-size: 100% 100%;
-  }
-  .phone-four-text {
-    height: 64px;
-  }
-  .text-text {
-    max-width: 87px;
-    padding-top: 12px;
     font-family: PingFangSC-Regular;
-    font-size: 13px;
-    color: #FFFFFF;
-    letter-spacing: 0;
-    line-height: 18px;
+    font-weight: 400;
+    color: rgba(102,102,102,1);
+    line-height: 20px;
+    text-align: center;
+    border-left: 1px solid #E6E6E6
   }
-  .margin-bot-8 {
-    margin-bottom: 8px;
+  .pc-send-btn-2 {
+    cursor: pointer;
+    width: 180px;
+    height: 40px;
+    background: rgba(255,90,95,1);
+    box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.05);
+    border-radius: 30px;
+    margin: 0 auto;
+    margin-top: 20px;
   }
-  .phone-two {
-    padding: 40px 0 30px 0;
+  .pc-send-btn-text2 {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(255,255,255,1);
+    line-height: 40px;
   }
-  .two-one {
-    height: 110px;
-    background: url("../../../assets/images/promote2/phone/two/IntelligentMatching@2x.png") no-repeat;
+  .pc-new-curstomer {
+    font-size: 30px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(255,255,255,1);
+    line-height: 42px;
+    text-align: center;
+    padding: 48px 0 30px 0;
+  }
+  .pc-person {
+    width: 880px;
+    display: flex;
+    height: 125px;
+    margin: 0 auto;
+  }
+  .pc-person-left {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .pc-person-text {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight:  400;
+    color: rgba(255,255,255,1);
+    line-height: 20px;
+  }
+  .border-2 {
+    border: 1px solid #FFFFFF;
+    margin: 0 60px;
+  }
+  .pc-call-btn {
+    cursor: pointer;
+    width: 180px;
+    height: 46px;
+    background: rgba(255,102,107,1);
+    border-radius: 23px;
+    margin: 0 auto;
+    margin-top: 42px;
+    text-align: center;
+  }
+  .pc-call {
+    font-size: 16px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(255,255,255,1);
+    line-height: 46px;
+  }
+  .pc-bot-bg {
+    height: 170px;
+    background: url("../../../assets/images/new_promote/pc/IllustrationFoot.png") no-repeat;
     background-size: 100% 100%;
-    margin: 40px 0 30px 0;
+    margin-top: 47px;
   }
-  .two-two {
-    height: 110px;
-    background: url("../../../assets/images/promote2/phone/two/proMan@2x.png") no-repeat;
-    background-size: 100% 100%;
+  .dialog-req {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(102,102,102,1);
+    line-height: 20px;
   }
-  .three-one-left {
-    height: 90px;
-    background: url("../../../assets/images/promote2/pc/logo/1000+DesignCompany.png") no-repeat;
-    background-size: 100% 100%;
-  }
-  .three-one-right {
-    height: 70px;
-    background: url("../../../assets/images/promote2/phone/logo/DesignCompanyLogos.png") no-repeat;
-    background-size: 100% 100%;
-  }
-  .three-two-left {
-    height: 70px;
-    background: url("../../../assets/images/promote2/phone/logo/PrizeLogos.png") no-repeat;
-    background-size: 100% 100%;
-  }
-  .three-two-right {
-    height: 90px;
-    background: url("../../../assets/images/promote2/pc/logo/300+prize.png") no-repeat;
-    background-size: 100% 100%;
-  }
-  .three-three-left {
-    height: 90px;
-    background: url("../../../assets/images/promote2/pc/logo/1000+Customer.png") no-repeat;
-    background-size: 100% 100%;
-  }
-  .three-three-right {
-    height: 70px;
-    background: url("../../../assets/images/promote2/phone/logo/CustomerLogos.png") no-repeat;
-    background-size: 100% 100%;
-  }
-  .mid-hei {
-    height: 90px;
+  .dialog-input {
+    width: 340px;
+    height: 40px;
+    background: rgba(255,255,255,1);
+    border-radius: 4px;
+    border:1px solid  rgba(230,230,230,1);
+    margin-top: 10px;
+    padding: 15px;
   }
   .pad-top-20 {
     padding-top: 20px;
   }
-  .design-product-p p {
-    height: 30px;
-    padding-left: 9px;
-    border-top: none;
-    font-size: 10px;
-    color: #222222;
-    line-height: 30px;
+  .dialog-code-round {
+    display: flex;
+    padding-top: 10px;
   }
-  .design-product-p img {
-    width: 100%;
+  .dialog-code {
+    width: 210px;
+    height: 40px;
+    background: rgba(255,255,255,1);
+    border-radius: 4px;
+    border: 1px solid rgba(230,230,230,1);
+    margin-right: 10px;
+    padding: 15px;
   }
-  .with-pho {
-    font-family: PingFangSC-Medium;
-    font-size: 20px;
-    color: #FFFFFF;
+  .dialog-code-send {
+    width: 120px;
+    height: 40px;
+    border-radius: 4px;
+    border: 1px solid rgba(255,90,95,1);
     text-align: center;
-    padding-bottom: 20px;
+    cursor: pointer;
+  }
+  .dialog-code-text {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(255,90,95,1);
+    line-height: 38px;
+  }
+
+
+
+
+  /* 移动端 */
+  .phone-head {
+    height: 335px;
+    background: url("../../../assets/images/new_promote/phone/H5Head@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .release-text {
+    height: 20px;
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(255,255,255,1);
+    line-height: 20px;
+    text-align: center;
+    margin-top: 20px;
+  }
+  .release-text span {
+    color: #FF5A5F;
+  }
+  .release-input {
+    text-align: center;
+  }
+  .release-form {
+    padding: 15px;
+    width: 345px;
+    height: 40px;
+    border: none;
+    background: rgba(255,255,255,1);
+    border-radius: 8px;
+  }
+  .code1-send {
+    width: 345px;
+    height: 40px;
+    background: rgba(255,255,255,1);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0 auto;
+  }
+  .round-btn {
     padding-top: 20px;
   }
-  .design-product-pho {
-    padding: 30px 10px 20px 10px;
-    text-align: left;
-  }
-  .pho-photo-one {
-    height: 80px;
-    background: url("../../../assets/images/promote2/pc/photo/03.png") no-repeat;
-    background-size: 100% 100%;
-  }
-  .pho-photo-two {
-    height: 80px;
-    background: url("../../../assets/images/promote2/pc/photo/04.png") no-repeat;
-    background-size: 100% 100%;
-  }
-  .pho-photo-three {
-    height: 80px;
-    background: url("../../../assets/images/promote2/pc/photo/05.png") no-repeat;
-    background-size: 100% 100%;
-  }
-  .pho-photo-four {
-    height: 80px;
-    background: url("../../../assets/images/promote2/pc/photo/02.png") no-repeat;
-    background-size: 100% 100%;
-  }
-  .pho-photo-five {
-    height: 80px;
-    background: url("../../../assets/images/promote2/pc/photo/01.png") no-repeat;
-    background-size: 100% 100%;
-  }
-  .pho-photo-six {
-    height: 80px;
-    background: url("../../../assets/images/promote2/pc/photo/06.png") no-repeat;
-    background-size: 100% 100%;
-  }
-  .call-we {
-    font-family: PingFangSC-Medium;
-    font-size: 20px;
-    color: #FFFFFF;
-    text-align: center;
-    padding: 30px 0 17px 0;
-  }
-  .call-phone {
-    font-family: PingFangSC-Regular;
-    font-size: 16px;
-    color: #FFFFFF;
-    text-align: center;
-    padding-bottom: 20px;
-  }
-  .btn-style {
-    background-image: linear-gradient(-133deg, #6983F9 0%, #9D61DB 100%);
-    border: 1px solid #FFFFFF;
-    box-shadow: 0 0 50px 0 rgba(0,0,0,0.05);
-    border-radius: 30px;
-    height: 40px;
+  .release-btn {
     width: 180px;
-    font-family: PingFangSC-Regular;
+    height: 40px;
+    background: rgba(255,90,95,1);
+    box-shadow: 0px 0px 100px 0px rgba(0,0,0,0.05);
+    border-radius: 60px;
+    margin: 0 auto;
+    text-align: center;
+    line-height: 40px;
     font-size: 16px;
-    color: #FFFFFF;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(255,255,255,1);
     letter-spacing: 1px;
+  }
+  .img-round-text {
+    margin-top: 30px;
+    width: 400px;
+    height: 28px;
+    font-size: 20px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(255,255,255,1);
+    line-height: 28px;
     text-align: center;
   }
-  .btn-center {
-    text-align: center;
-    padding-bottom: 18px;
+  .img-round {
+    margin-top: 20px;
+    height: 160px;
   }
-  .or-text {
-    font-family: PingFangSC-Regular;
-    font-size: 16px;
-    color: #FFFFFF;
-    text-align: center;
-    line-height: 25px;
+  .margin-top-10 {
+    margin-top: 10px;
   }
-  .pad-bot-15 {
-    padding-bottom: 15px;
-  }
-  .pad-20 {
-    padding: 0 20px;
-  }
-  .pad-bot-20 {
-    padding-bottom: 20px;
-  }
-  .bt-center {
-    text-align: center;
-    padding-bottom: 30px;
-  }
-  .pad-10 {
+  .border-round {
     padding: 0 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
   }
-  .bg1 {
-    width: 588px;
-    height: 355px;
-    background: url("../../../assets/images/promote2/pc/bg/element01.png") no-repeat center/contain;
-    position: absolute;
-    left: 0;
-    top: 0;
+  .border {
+    width: 46%;
+    background:rgba(255,255,255,1);
+    border-radius:4px;
+    border:1px solid rgba(230,230,230,1);
+    height: 160px;
   }
-  .bg2 {
-    width: 884px;
-    height: 562px;
-    background: url("../../../assets/images/promote2/pc/bg/element02.png") no-repeat center/contain;
-    position: absolute;
-    left: -400px;
-    top: 0;
+  .in-border {
+    margin: 5px;
+    height: 150px;
   }
-  .z-index-111 {
-    z-index: 1;
-    position: relative;
+  .img-text {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end
   }
-  .bg3 {
-    height: 250px;
+  .img-jian {
+    font-size: 12px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(34,34,34,1);
+    line-height: 18px;
+    padding: 0 5px;
+  }
+  .img-sales {
+    font-size: 10px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(153,153,153,1);
+    line-height: 18px;
+  }
+  .img-bot-text {
+    font-size: 10px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(34,34,34,1);
+    line-height: 16px;
+  }
+  .img1 {
+    height: 110px;
+    background: url("../../../assets/images/new_promote/01fifish@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .img1-1 {
+    height: 24px;
+    width: 48px;
+    background: url("../../../assets/images/new_promote/number/10000@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .img2 {
+    height: 110px;
+    background: url("../../../assets/images/new_promote/02shushi@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .img2-1 {
+    height: 24px;
+    width: 11px;
+    background: url("../../../assets/images/new_promote/number/6@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .img3 {
+    height: 110px;
+    background: url("../../../assets/images/new_promote/03Amiro@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .img3-1 {
+    height: 24px;
+    width: 37px;
+    background: url("../../../assets/images/new_promote/number/1000@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .img4 {
+    height: 110px;
+    background: url("../../../assets/images/new_promote/04yunma@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .img4-1 {
+    height: 24px;
+    width: 41px;
+    background: url("../../../assets/images/new_promote/number/3000@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .img5 {
+    height: 110px;
+    background: url("../../../assets/images/new_promote/05FIUbudaobei@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .img5-1 {
+    height: 24px;
+    width: 48px;
+    background: url("../../../assets/images/new_promote/number/10000@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .img6 {
+    height: 110px;
+    background: url("../../../assets/images/new_promote/06sawwadika@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .img6-1 {
+    height: 24px;
+    width: 31px;
+    background: url("../../../assets/images/new_promote/number/500@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .fu-can {
+    margin-top: 30px;
+    height: 243px;
+    background: rgba(255,255,255,0.1);
+  }
+  .can-text {
+    text-align: center;
+    padding-top: 30px;
+    font-size: 20px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(255,255,255,1);
+    line-height: 28px;
+  }
+  .can-img {
+    margin: 15px 15px;
+    height: 140px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .can-border {
+    height: 140px;
+    width: 32%;
+    background: rgba(255,255,255,1);
+    border-radius:4px;
+  }
+  .border-img1 {
+    height: 77px;
+    width: 85px;
+    background: url("../../../assets/images/new_promote/1MarketingIncubation.png") no-repeat;
+    background-size: 100% 100%;
+    margin: 0 auto;
+  }
+  .border-img2 {
+    height: 77px;
+    width: 85px;
+    background: url("../../../assets/images/new_promote/2ChannelSales.png") no-repeat;
+    background-size: 100% 100%;
+    margin: 0 auto;
+  }
+  .border-img3 {
+    height: 77px;
+    width: 85px;
+    background: url("../../../assets/images/new_promote/3MarketingPromotion.png") no-repeat;
+    background-size: 100% 100%;
+    margin: 0 auto;
+  }
+  .can-text1-1 {
+    font-size: 15px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(21,55,140,1);
+    line-height: 21px;
+    text-align: center;
+  }
+  .can-text1-2 {
+    width: 85px;
+    font-size: 9px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(34,34,34,1);
+    line-height: 14px;
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 5px;
+  }
+  .trust-around {
+    padding: 0 15px;
+    text-align: center;
+  }
+  .trust {
+    font-size: 20px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(255,255,255,1);
+    line-height: 28px;
+    padding-top: 30px;
+  }
+  .trust-img1 {
+    height: 218px;
+    background: url("../../../assets/images/new_promote/trust/TIA@2x.png") no-repeat;
+    background-size: 100% 100%;
+    margin-top: 20px;
+  }
+  .trust-img2 {
+    height: 218px;
+    background: url("../../../assets/images/new_promote/trust/shunde@2x.png") no-repeat;
+    background-size: 100% 100%;
+    margin-top: 20px;
+  }
+  .trust-img3 {
+    height: 218px;
+    background: url("../../../assets/images/new_promote/trust/DTech@2x.png") no-repeat;
+    background-size: 100% 100%;
+    margin-top: 20px;
+  }
+  .trust-text {
+    margin-top: 20px;
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(255,255,255,1);
+    line-height: 20px;
+  }
+  .serve-customer {
+    height: 325px;
+    background: rgba(255,255,255,0.1);
+    text-align: center;
+    margin-top: 30px;
+  }
+  .serve-text {
+    font-size: 20px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(255,255,255,1);
+    line-height: 28px;
+    padding-top: 30px;
+  }
+  .serve-flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 20px 15px 0 15px;
+  }
+  .margin-top-10 {
+    margin-top: 10px;
+  }
+  .serve-img1 {
+    width: 22%;
+    height: 30px;
+    background: url("../../../assets/images/new_promote/phone/serve/01@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .serve-img2 {
+    width: 22%;
+    height: 30px;
+    background: url("../../../assets/images/new_promote/phone/serve/02@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .serve-img3 {
+    width: 22%;
+    height: 30px;
+    background: url("../../../assets/images/new_promote/phone/serve/03@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .serve-img4 {
+    width: 22%;
+    height: 30px;
+    background: url("../../../assets/images/new_promote/phone/serve/04@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .serve-img5 {
+    width: 22%;
+    height: 30px;
+    background: url("../../../assets/images/new_promote/phone/serve/05@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .serve-img6 {
+    width: 22%;
+    height: 30px;
+    background: url("../../../assets/images/new_promote/phone/serve/06@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .serve-img7 {
+    width: 22%;
+    height: 30px;
+    background: url("../../../assets/images/new_promote/phone/serve/07@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .serve-img8 {
+    width: 22%;
+    height: 30px;
+    background: url("../../../assets/images/new_promote/phone/serve/08@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .invest-img1 {
+    width: 22%;
+    height: 30px;
+    background: url("../../../assets/images/new_promote/phone/invest/T01@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .invest-img2 {
+    width: 22%;
+    height: 30px;
+    background: url("../../../assets/images/new_promote/phone/invest/T02@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .invest-img3 {
+    width: 22%;
+    height: 30px;
+    background: url("../../../assets/images/new_promote/phone/invest/T03@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .invest-img4 {
+    width: 22%;
+    height: 30px;
+    background: url("../../../assets/images/new_promote/phone/invest/T04@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .invest-img5 {
+    width: 22%;
+    height: 30px;
+    background: url("../../../assets/images/new_promote/phone/invest/T05@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .invest-img6 {
+    width: 22%;
+    height: 30px;
+    background: url("../../../assets/images/new_promote/phone/invest/T06@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .invest-img7 {
+    width: 22%;
+    height: 30px;
+    background: url("../../../assets/images/new_promote/phone/invest/T07@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .invest-img8 {
+    width: 22%;
+    height: 30px;
+  }
+  .later {
+    padding: 0 15px;
+    text-align: center;
+  }
+  .later-text {
+    font-size: 20px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(255,255,255,1);
+    line-height: 28px;
+    margin-top: 30px;
+  }
+  .margin-top-15 {
+    margin-top: 15px;
+  }
+  .input-style {
     width: 100%;
-    background: url("../../../assets/images/promote2/pc/bg/bottom.png") no-repeat center/cover;
-    position: absolute;
-    left: 0;
-    bottom: 0;
+    height: 40px;
+    background: rgba(255,255,255,1);
+    border-radius: 8px;
+    border: 2px solid rgba(230,230,230,1);
+    margin-top: 20px;
+    padding: 15px;
   }
-  /* @media screen and (min-width: 1081px) {
-    .pad-right-left {
-      padding: 0 40px;
-    }
+  .code-round {
+    width: 100%;
+    height: 40px;
+    background: rgba(255,255,255,1);
+    border-radius: 8px;
+    border: 2px solid rgba(230,230,230,1);
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center
   }
-  @media screen and (min-width: 1440px) {
-    .pad-right-left {
-      padding: 0 100px;
-    }
+  .code-input {
+    height: 36px;
+    padding: 15px;
+    width: 70%;
   }
-  @media screen and (min-width: 1660px) {
-    .pad-right-left {
-      padding: 0 150px;
-    }
-  } */
-  @media screen and (max-width: 1440px) {
-    .two-img1 {
-      height: 140px;
-    }
-    .two-img2 {
-      height: 140px;
-    }
-    .four-img {
-      height: 110px;
-    }
+  .send-code {
+    width: 29%;
+    height: 30px;
+    border-left: 2px solid rgba(230,230,230,1);
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(102,102,102,1);
+    line-height: 30px;
+    text-align: center;
   }
-  /* @media screen and (max-width: 1080px) {
-    .pad-right-left {
-      padding: 0 20px;
-    }
-  } */
+  .send-code-btn {
+    width: 180px;
+    height: 40px;
+    background: rgba(255,90,95,1);
+    box-shadow: 0px 0px 100px 0px rgba(0,0,0,0.05);
+    border-radius: 60px;
+    margin: 0 auto;
+    margin-top: 20px;
+  }
+  .send-code-text {
+    font-size: 16px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(255,255,255,1);
+    line-height: 40px;
+    letter-spacing: 1px;
+  }
+  .new-top {
+    padding-top: 30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .new-text {
+    width: 32%;
+    font-size: 14px;
+    font-family: PingFangSC-Medium;
+    font-weight: 500;
+    color: rgba(255,255,255,1);
+    line-height: 20px;
+  }
+  .left {
+    width: 32%;
+    height: 2px;
+    border: 1px solid #E6E6E6;
+  }
+  .right {
+    width: 32%;
+    height: 2px;
+    border: 1px solid #E6E6E6;
+  }
+  .person-round {
+    padding-top: 20px;
+    height: 180px;
+  }
+  .person {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 14px;
+  }
+  .person-text {
+    font-size: 14px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(255,255,255,1);
+    line-height: 24px;
+  }
+  .bg-bot-img {
+    margin-top: 30px;
+    height: 100px;
+    background: url("../../../assets/images/new_promote/phone/H5Foot@2x.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .mar-left-5 {
+    margin-left: 5px;
+  }
+  .swiper-con {
+    height: 140px;
+    display: flex;
+    flex-direction: column;
+  }
+  .phone-form1 {
+    text-align: center;
+  }
+  .put-top-15 {
+    padding-top: 15px;
+  }
 </style>
 

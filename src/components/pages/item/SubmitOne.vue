@@ -237,10 +237,6 @@
     font-size: 2rem;
   }
 
-  .pub-btn p button {
-    /* padding: 10px 40px 10px 40px; */
-  }
-
   .pub-btn .des {
     font-size: 14px;
     color: #999;

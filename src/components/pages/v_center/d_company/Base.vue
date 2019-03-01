@@ -160,7 +160,7 @@
               </el-col>
             </el-row>
 
-            <el-row :gutter="gutter" :class="['item', 'border-b-no', isMob ? 'item-m' : '']">
+            <el-row :gutter="gutter" :class="['item', isMob ? 'item-m' : '']">
               <el-col :span="titleSpan" class="title">
                 <p>网址</p>
               </el-col>
@@ -179,7 +179,7 @@
               </el-col>
             </el-row>
             
-            <el-row :gutter="gutter" :class="['item', isMob ? 'item-m no-border' : '']">
+            <el-row :gutter="gutter" :class="['item', 'border-b-no', isMob ? 'item-m no-border' : '']">
               <el-col :span="titleSpan" class="title">
                 <p>公司实名认证</p>
               </el-col>
@@ -189,15 +189,15 @@
                 </div>
                 <div v-if="form.verify_status === 3">
                   <a class="a-message">认证中</a>
-                  <el-button @click="showLegalizeDialog" size="mini">修改认证</el-button> 
+                  <el-button class="white-to-red-button" @click="showLegalizeDialog" size="mini">修改认证</el-button> 
                 </div>
                 <div v-if="form.verify_status === 1">
                   <a class="a-success">认证成功</a>
-                  <el-button @click="showLegalizeDialog" size="mini">修改认证</el-button> 
+                  <el-button class="white-to-red-button" @click="showLegalizeDialog" size="mini">修改认证</el-button> 
                 </div>
                 <div v-if="form.verify_status === 2">
                   <a class="a-default">认证失败</a>
-                  <el-button @click="showLegalizeDialog" size="mini">重新认证</el-button>
+                  <el-button class="white-to-red-button" @click="showLegalizeDialog" size="mini">重新认证</el-button>
                 </div>
               </el-col>
             </el-row>
@@ -350,6 +350,10 @@
               </el-row>
             </el-form>
           </el-dialog>
+
+          <el-dialog :visible.sync="dialogLicense">
+            <img width="100%" :src="dialogLicenseImageUrl" alt="">
+          </el-dialog>
         </div>
       </div>
     </el-row>
@@ -435,9 +439,6 @@
           registration_number: [
             {validator: checkNumber, trigger: 'blur'}
           ],
-          legal_person: [
-            {required: true, message: '请填写法人真实姓名', trigger: 'blur'}
-          ],
           contact_name: [
             {required: true, message: '请填写联系人姓名', trigger: 'blur'}
           ],
@@ -481,6 +482,7 @@
           area: '',
           test: ''
         },
+        formDCompanyAttest: {}, // 服务器返回的实名认证信息
         fileList: [],
         filePersonList: [],
         isLoadingBtn: false,
@@ -489,7 +491,9 @@
           province: '',
           city: '',
           area: ''
-        }
+        },
+        dialogLicense: false,
+        dialogLicenseImageUrl: ''
       }
     },
     computed: {
@@ -630,10 +634,9 @@
         let that = this
         that.$http.get(api.user, {})
           .then(function (response) {
-            if (response.data.meta.status_code === 200) {
-              if (response.data.data) {
-                auth.write_user(response.data.data)
-              }
+            if (response.data && response.data.meta.status_code === 200) {
+              console.log(response.data.data)
+              auth.write_user(response.data.data)
             }
           })
           .catch(function (error) {
@@ -674,6 +677,10 @@
               that.$message.error('请选择所在城市')
               return false
             }
+            if (!that.form.area) {
+              that.$message.error('请选择所在区县')
+              return false
+            }
             if (!that.fileList.length) {
               that.$message.error('请上传营业执照')
               return false
@@ -702,6 +709,11 @@
               }
             }
             that.isLoadingBtn = true
+            if (that.form.license_image === that.fileList && JSON.stringify(row) === JSON.stringify(that.formDCompanyAttest)) {
+              that.isLoadingBtn = false
+              that.dialogVisible = false
+              return
+            }
             that.$http({method: 'PUT', url: api.demandCompany, data: row})
               .then(function (response) {
                 that.isLoadingBtn = false
@@ -769,6 +781,8 @@
       },
       handlePreview(file) {
         console.log(file)
+        this.dialogLicenseImageUrl = file.url
+        this.dialogLicense = true
       },
       handleChange(value) {
         console.log(value)
@@ -844,6 +858,7 @@
                   this.form = response.data.data
                   this.form.company_size = this.form.company_size === 0 ? '' : this.form.company_size
                   this.form.company_property = this.form.company_property === 0 ? '' : this.form.company_property
+                  this.form.company_type = this.form.company_type === 0 ? '' : this.form.company_type
                   this.companyId = response.data.data.id
                   this.uploadParam['x:target_id'] = response.data.data.id
                   this.form.province = ''
@@ -876,6 +891,22 @@
                     this.form.verify_status_label = '认证失败'
                   }
                 })
+                this.formDCompanyAttest = {
+                  registration_number: dataDemand.registration_number,
+                  company_name: dataDemand.company_name,
+                  company_type: dataDemand.company_type,
+                  contact_name: dataDemand.contact_name,
+                  position: dataDemand.position,
+                  phone: dataDemand.phone + '',
+                  email: dataDemand.email,
+                  address: dataDemand.address,
+                  province: dataDemand.province,
+                  area: dataDemand.area,
+                  city: dataDemand.city,
+                  account_name: dataDemand.account_name,
+                  bank_name: dataDemand.bank_name,
+                  account_number: dataDemand.account_number
+                }
               }
             }
           })
@@ -966,17 +997,8 @@
     padding: 0;
   }
 
-  .item .content {
-  }
-
   .item .edit {
     text-align: right;
-  }
-
-  .item-m .edit {
-  }
-
-  .item p {
   }
 
   .title {

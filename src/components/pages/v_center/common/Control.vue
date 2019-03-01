@@ -27,7 +27,7 @@
                   <h3>公司认证</h3>
                   <p class="item-title">提交公司认证信息</p>
                   <p class="item-btn">
-                    <router-link :to="{name: 'vcenterComputerBase', query: {legalize: 2}}">
+                    <router-link :to="{name: 'vcenterComputerBase', params: {id: 2}}">
                       <button class="small-button red-button">{{ item.verify_label }}</button>
                     </router-link>
                   </p>
@@ -74,7 +74,7 @@
                   <h3>公司认证</h3>
                   <p class="item-title">提交公司认证信息</p>
                   <p class="item-btn">
-                    <router-link :to="{name: 'vcenterComputerBase', query: {legalize: 2}}">去认证</router-link>
+                    <router-link :to="{name: 'vcenterComputerBase', params: {id: 2}}">去认证</router-link>
                   </p>
                 </div>
 
@@ -660,7 +660,7 @@
 
   p.alert-title {
     line-height: 30px;
-    font-size: 12px;
+    font-size: 1.4rem;
     margin:0 -20px 20px;
     color: #666;
     /* background:#f7f7f7; */
