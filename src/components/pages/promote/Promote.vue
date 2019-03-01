@@ -180,8 +180,8 @@
         </div>
         <div class="pc-new-curstomer">最新报名客户</div>
         <div class="pc-person">
-          <swiper class="swiper-con pc-bot-hei-125" :options="swiperOption3">
-            <swiper-slide v-for="(item, index) of userList" :key="index">
+          <swiper class="pc-bot-hei-125" :options="swiperOption3">
+            <swiper-slide v-for="(item, index) of userList" :key="index" class="wip-style">
               <div class="pc-person-left">
                 <div v-text="item.user_name" class="pc-person-text"></div>
                 <div class="pc-person-text" v-text="item.phone"></div>
@@ -190,8 +190,8 @@
             </swiper-slide>
           </swiper>
           <div class="border-2"></div>
-          <swiper class="swiper-con pc-bot-hei-125" :options="swiperOption3">
-            <swiper-slide v-for="(item, index) of userList2" :key="index">
+          <swiper class="pc-bot-hei-125" :options="swiperOption4">
+            <swiper-slide v-for="(item, index) of userList" :key="index" class="wip-style">
               <div class="pc-person-left">
                 <div v-text="item.user_name" class="pc-person-text"></div>
                 <div class="pc-person-text" v-text="item.phone"></div>
@@ -202,8 +202,11 @@
         </div>
       </div>
       <div class="pc-call-btn">
-        <div class="pc-call">太火鸟设计服务热线</div>
-        <div class="pc-call">13031154842</div>
+        <div class="pc-call-text protrude">太火鸟设计服务热线</div>
+        <div class="pc-call-img">
+          <div class="call-phone-img"></div>
+          <div class="call-phone-text">13031154842</div>
+        </div>
       </div>
       <div class="pc-bot-bg"></div>
       <el-dialog
@@ -244,11 +247,11 @@
     <!-- phone -->
     <div v-else>
       <div class="phone-head"></div>
-      <div class="release-text">
+      <div class="release-text pad-10-phone">
         现在<span>发布需求</span>，有机会获得投资孵化，进驻<span>小米商城</span>
       </div>
       <el-form @submit.native.prevent :model="form" :rules="ruleForm" ref="ruleForm" class="phone-form1">
-        <div>
+        <div class="phone-form-round">
           <el-form-item prop="demand">
             <div class="release-input put-top-15">
               <input v-model="form.demand" name="username" placeholder="请输入您的需求" class="release-form">
@@ -266,7 +269,7 @@
           </el-form-item>
           <el-form-item prop="smsCode">
             <div class="code1-send">
-              <input type="text" placeholder="验证码" class="code-input mar-left-5" v-model="form.smsCode" name="smsCode">
+              <input type="text" placeholder="验证码" class="code-input-phone mar-left-5" v-model="form.smsCode" name="smsCode">
               <div class="send-code" @click="fetchCode" :disabled="time > 0">{{ codeMsg }}</div>
             </div>
           </el-form-item>
@@ -550,10 +553,21 @@
           lazyLoading: true,
           direction: 'vertical',
           autoplay: 1000,
-          slidesPerView: 2,
+          slidesPerView: 3,
           // observer: true,
           spaceBetween: 0,
           paginationClickable: true,
+          loop: true
+        },
+        swiperOption4: {
+          lazyLoading: true,
+          direction: 'vertical',
+          autoplay: 1000,
+          slidesPerView: 3,
+          // observer: true,
+          spaceBetween: 0,
+          paginationClickable: true,
+          initialSlide: 6,
           loop: true
         },
         ruleForm: {
@@ -827,14 +841,14 @@
         .then(res => {
           if (res.data.meta.status_code === 200) {
             let resData = res.data.data
-            this.userList = resData
+            this.userList = [...resData]
+            // this.userList2 = [...resData].reverse()
             this.userList.forEach(item => {
               item.created_at = parseInt((date - item.created_at) / 60)
             })
-            this.userList2 = resData
-            this.userList2.forEach(item => {
-              item.created_at = parseInt((date - item.created_at) / 60)
-            })
+            // this.userList2.forEach(item => {
+            //   item.created_at = parseInt((date - item.created_at) / 60)
+            // })
           }
         })
     },
@@ -1500,13 +1514,38 @@
     margin: 0 auto;
     margin-top: 42px;
     display: flex;
+    width: 440px;
   }
-  .pc-call {
-    font-size: 16px;
+  .pc-call-text {
+    font-size: 22px;
     font-family: PingFangSC-Regular;
     font-weight: 400;
-    color: rgba(255,255,255,1);
+    color: #fff;
     line-height: 46px;
+    padding-right: 10px;
+  }
+  .pc-call-img {
+    height: 36px;
+    width: 220px;
+    background: url("../../../assets/images/new_promote/long@2x.png") no-repeat;
+    background-size: 100% 100%;
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+  }
+  .call-phone-img {
+    height: 30px;
+    width: 30px;
+    background: url("../../../assets/images/new_promote/Telephone@2x.png") no-repeat;
+    background-size: 100% 100%;
+    margin: 0 10px 3px 20px;
+  }
+  .call-phone-text {
+    font-size: 24px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: #fff;
+    line-height: 36px;
   }
   .pc-bot-bg {
     height: 170px;
@@ -1589,14 +1628,13 @@
   }
   .release-form {
     padding: 15px;
-    width: 345px;
+    width: 100%;
     height: 40px;
     border: none;
     background: rgba(255,255,255,1);
     border-radius: 8px;
   }
   .code1-send {
-    width: 345px;
     height: 40px;
     background: rgba(255,255,255,1);
     border-radius: 8px;
@@ -1625,7 +1663,6 @@
   }
   .img-round-text {
     margin-top: 30px;
-    width: 400px;
     height: 28px;
     font-size: 20px;
     font-family: PingFangSC-Medium;
@@ -1684,6 +1721,9 @@
     font-weight: 400;
     color: rgba(34,34,34,1);
     line-height: 16px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
   .img1 {
     height: 110px;
@@ -2002,7 +2042,6 @@
     background: rgba(255,255,255,1);
     border-radius: 8px;
     border: 2px solid rgba(230,230,230,1);
-    margin-top: 20px;
     display: flex;
     flex-direction: row;
     align-items: center
@@ -2010,6 +2049,11 @@
   .code-input {
     height: 36px;
     padding: 15px;
+    width: 70%;
+  }
+  .code-input-phone {
+    height: 36px;
+    padding: 15px 15px 15px 10px;
     width: 70%;
   }
   .send-code {
@@ -2108,7 +2152,17 @@
     padding: 0 50px;
   }
   .pc-bot-hei-125 {
-    height: 125px;
+    height: 110px;
+  }
+  .phone-form-round {
+    width: 100%;
+    padding: 10px 10px 0 10px;
+  }
+  .pad-10-phone {
+    padding: 0 10px;
+  }
+  .pc-person .wip-style {
+    width: 350px
   }
 </style>
 
