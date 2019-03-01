@@ -109,7 +109,7 @@
                     <span class="tc-6 fw-normal quota-btn">&nbsp;&nbsp;<a
                     class="tc-red" href="javascript:void(0);"
                     @click="showQuotaBtn(quotation)">详情>></a></span></p>
-                    <p class="tc-2 protrude">报价说明: <span class="tc-6 fw-normal">
+                    <p class="tc-2 protrude">项目目标及报价说明: <span class="tc-6 fw-normal">
                       {{ quotation.summary }}</span></p>
                   </div>
 
@@ -278,7 +278,7 @@
                         <div class="contract-left flex1">
                           <img src="../../../../assets/images/icon/pdf2x.png" width="30"/>
                           <div class="contract-content">
-                            <p>{{ asset.name }}</p>
+                            <p>{{ sliceImgName(asset.name) }}</p>
                             <p class="contract-des">{{ asset.created_at.date_format().format('yyyy-MM-dd') }}</p>
                           </div>
                         </div>
@@ -628,6 +628,7 @@
   import api from '@/api/api'
   import typeData from '@/config'
   import vItemProgress from '@/components/block/ItemProgress'
+  import {sliceImgName} from '@/assets/js/common'
   const vQuoteSubmit = () => import('@/components/block/QuoteSubmit')
   const vQuoteView = () => import('@/components/block/QuoteView')
   export default {
@@ -1226,6 +1227,9 @@
       handlePreview(file) {
       },
       handleChange(file) {
+      },
+      sliceImgName(params) {
+        return sliceImgName(params)
       }
     },
     computed: {
@@ -1606,11 +1610,11 @@
                   title: self.item.name
                 },
                 {
-                  name: '项目类型',
+                  name: '设计类型',
                   title: self.item.type_value
                 },
                 {
-                  name: '设计类别',
+                  name: '设计项目类型',
                   title: self.item.design_types_value.join(', ')
                 },
                 {
@@ -1618,11 +1622,11 @@
                   title: self.item.product_features
                 },
                 {
-                  name: '产品领域',
+                  name: '产品类别',
                   title: self.item.field_value
                 },
                 {
-                  name: '所属行业',
+                  name: '行业领域',
                   title: self.item.industry_value
                 }
               ]
@@ -1633,11 +1637,11 @@
                   title: self.item.name
                 },
                 {
-                  name: '项目类型',
+                  name: '设计类型',
                   title: self.item.type_value
                 },
                 {
-                  name: '设计类别',
+                  name: '设计项目类型',
                   title: self.item.design_types_value.join(', ')
                 },
                 {
@@ -1653,7 +1657,7 @@
               name: '交付时间',
               title: self.item.cycle_value
             }, {
-              name: '工作地点',
+              name: '项目工作地点',
               title: self.item.province_value + ', ' + self.item.city_value
             }, {
               name: '相关附件',

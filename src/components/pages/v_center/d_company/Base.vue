@@ -492,6 +492,7 @@
           city: '',
           area: ''
         },
+        beforeAddress: {},
         dialogLicense: false,
         dialogLicenseImageUrl: ''
       }
@@ -701,7 +702,7 @@
               bank_name: that.form.bank_name,
               account_number: that.form.account_number
             }
-
+            console.log(that.form.province)
             if (that.companyId) {
             } else {
               if (that.uploadParam['x:random']) {
@@ -721,6 +722,11 @@
                   that.$store.commit(CHANGE_USER_VERIFY_STATUS, {demand_verify_status: 3})
                   that.$set(that.form, 'verify_status', 3)
                   that.$message.success('提交成功,等待审核')
+                  that.beforeAddress = {
+                    province: row.province,
+                    area: row.area,
+                    city: row.city
+                  }
                   that.dialogVisible = false
                 } else {
                   that.$message.error(response.data.meta.message)
@@ -829,7 +835,12 @@
         }
       },
       showLegalizeDialog() {
-        let d = this.currentAddress
+        let d = {}
+        if (Object.keys(this.beforeAddress).length === 0) {
+          d = this.currentAddress
+        } else {
+          d = this.beforeAddress
+        }
         this.dialogVisible = true
         this.$nextTick(_ => {
           this.$set(this.form, 'province', d.province === 0 ? '' : d.province)

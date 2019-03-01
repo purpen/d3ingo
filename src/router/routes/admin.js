@@ -12,35 +12,45 @@ module.exports = [
     },
     component: require('@/components/admin/DashBoard')
   },
+  // 客户管理
+  {
+    path: '/admin/customer/statistics',
+    name: 'adminCustomerStatistics',
+    meta: {
+      title: '客户统计',
+      requireAuth: true
+    },
+    component: require('@/components/admin/customer/Statistics')
+  },
   // 潜在用户列表
   {
-    path: '/admin/potential_user/list',
+    path: '/admin/customer/list',
     name: 'adminPotentialUserList',
     meta: {
       title: '潜在用户列表',
       requireAuth: true
     },
-    component: require('@/components/admin/potential_user/List')
+    component: require('@/components/admin/customer/List')
   },
   // 编辑潜在用户信息
   {
-    path: '/admin/potential_user/userinfo/:id',
+    path: '/admin/customer/userinfo/:id',
     name: 'adminPotentialUserInfo',
     meta: {
       title: '潜在用户编辑',
       requireAuth: true
     },
-    component: require('@/components/admin/potential_user/UserInfo')
+    component: require('@/components/admin/customer/UserInfo')
   },
   // 编辑潜在用户信息
   {
-    path: '/admin/potential_user/userinfo',
+    path: '/admin/customer/userinfo',
     name: 'adminPotentialUserCreated',
     meta: {
       title: '潜在用户编辑',
       requireAuth: true
     },
-    component: require('@/components/admin/potential_user/UserInfo')
+    component: require('@/components/admin/customer/UserInfo')
   },
   // 添加栏目
   {

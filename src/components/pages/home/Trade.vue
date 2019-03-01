@@ -28,7 +28,7 @@
 
         <div class="trade-text in-foot gray">
           <h3>版权保护</h3>
-          <p>{{custom.info}}保证设计服务供应商的产品版权，以切实有效的法律手段避免侵权事件发生。</p>
+          <p>{{custom.info}}保证设计服务商的产品版权，以切实有效的法律手段避免侵权事件发生。</p>
         </div>
 
       </div>

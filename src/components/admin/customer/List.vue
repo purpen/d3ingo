@@ -7,8 +7,8 @@
         <div class="content">
           <div class="admin-header clearfix">
             <el-form :inline="true" :model="query" class="select-query fl">
-              <el-form-item class="margin0">
-                <span class="fl line-height30 fz-12">选择日期</span>
+              <el-form-item>
+                <span class="fl line-height30 fz-12 margin-r-15">选择日期</span>
                 <div class="fr select-data">
                   <el-date-picker
                     v-model="query.valueDate"
@@ -22,19 +22,15 @@
                   </el-date-picker>
                 </div>
               </el-form-item>
-              <el-form-item class="margin0 select-info">
-                <el-select v-model="query.evt" placeholder="选择条件..." size="small">
-                  <el-option label="按姓名" value="1"></el-option>
+              <el-form-item class="select-info">
+                <el-select v-model="query.search" placeholder="选择条件..." size="small">
+                  <el-option label="用户名称" value="1"></el-option>
                   <el-option label="按电话" value="2"></el-option>
-                  <el-option label="按所属人" value="3"></el-option>
-                  <el-option label="客户级别" value="4"></el-option>
-                  <el-option label="项目名称 " value="5"></el-option>
-                  <el-option label="对接公司 " value="6"></el-option>
-                  <el-option label="用户来源" value="7"></el-option>
+                  <el-option label="按负责人" value="3"></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item class="margin0" style="width: 20%;">
-                <el-input v-model="query.val" placeholder="Search..." size="small"></el-input>
+              <el-form-item style="width: 20%;">
+                <el-input v-model="query.val" placeholder="搜索..." size="small"></el-input>
               </el-form-item>
               <el-form-item class="margin0">
                 <el-button type="primary" @click="onSearch" size="mini">搜索</el-button>
@@ -42,13 +38,12 @@
             </el-form>
             <div class="admin-header-right fr clearfix">
               <div class="fl">
-                <div class="add-user">
+                <!-- <div class="add-user">
                   <span class="add-voip-user">
                     <i class="fx fx-icon-plus"></i>添加用户
                   </span>
                   <div class="drop-down">
                     <span @click="$router.push({name: 'adminPotentialUserCreated'})">添加潜在用户</span>
-                    <span @click="showDialogVoIpUser">添加商务成员</span>
                     <el-upload
                       class="upload-demo"
                       :action="uploadUrl"
@@ -63,15 +58,39 @@
                       <span class="upload-file">导入文件</span>
                     </el-upload>
                   </div>
-                </div>
+                </div> -->
 
               </div>
-              <el-button size="mini" class="fl margin-l-10" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button>
-              <a href="javascript:void(0);" class="line-height30 height30 margin-l-10" @click="exportForm">导出表格</a>
-              <a href="javascript:void(0);"  @click="multipleDelItem" class="fr line-height30 height30"><i class="fx fx-icon-delete2"></i></a>
+              <!-- <a href="javascript:void(0);"  @click="multipleDelItem" class="fr line-height30 height30"><i class="fx fx-icon-delete2"></i></a> -->
+              <!-- <el-button size="small" class="fl margin-l-10" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button> -->
+              <!-- <a href="javascript:void(0);" class="line-height30 height30 margin-l-10" @click="exportForm">导出表格</a> -->
             </div>
+          </div>       
+          <div class="btn-list">
+            <el-button size="small"
+              @click="$router.push({name: 'adminPotentialUserCreated'})" 
+              class="">添加客户</el-button>
+            <el-button size="small" @click="showDialogVoIpUser">添加商务成员</el-button>
+            <el-upload
+              class="upload-demo"
+              :action="uploadUrl"
+              :on-preview="handlePreview"
+              :on-success="handleAvatarSuccess"
+              :before-upload="beforeAvatarUpload"
+              :on-error="uploadError"
+              :data="{'token': token}"
+              accept=".xlsx"
+              :show-file-list="false"
+              :file-list="file">
+              <!-- <span class="upload-file">批量导入</span> -->
+              <el-button size="small" >批量导入</el-button>
+            </el-upload>
+            <!-- <el-button size="small" type="primary">批量导入</el-button> -->
+            <el-button size="small" @click="exportForm">导出</el-button>
+            <el-button size="small"  @click="exportForm(2)">导入模板下载</el-button>
+            <el-button size="small" class="" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button>
+            <el-button size="small" @click="showClueDialog">无效</el-button>
           </div>
-
 
           <el-table
             :data="tableData"
@@ -79,45 +98,29 @@
             class="admin-table"
             @selection-change="handleSelectionChange"
             @filter-change="filterList"
+            @sort-change="sortChange"
             style="width: 100%"
-            :row-class-name="tableRowClassName">
+            :row-class-name="tableRowClassName"
+            @row-click="getLookUserInfo">
             <el-table-column
               type="selection"
               width="40">
             </el-table-column>
             <el-table-column
+              label="编号"
+              sortable="custom"
+              prop="number"
+              width="121">
+            </el-table-column>
+            <el-table-column
+              prop="name"
+              sortable="custom"
               label="姓名"
-              width="60">
-            <template slot-scope="scope">
-              <p class="cursor-p" @click="editUserInfo(scope.row.id, scope.row.name)">{{scope.row.name}}</p>
-            </template>
+              width="80">
             </el-table-column>
             <el-table-column
-              label="项目名称"
-              width="122">
-              <template slot-scope="scope">
-                <div v-for="(item, i) in scope.row.item_name" :key="i">
-                  <p>{{item}}</p>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="phone"
-              width="100"
-              label="电话">
-            </el-table-column>
-            <el-table-column
-              width="101"
-              prop="execute_user_name"
-              label="所属人">
-            </el-table-column>
-            <el-table-column
-              width="70"
-              label="通话状态"
-              prop="call_status">
-            </el-table-column>
-            <el-table-column
-              width="95"
+              width="105"
+              sortable="custom"
               label="客户级别">
                  <template slot-scope="scope">
                   <el-rate
@@ -128,49 +131,68 @@
                 </template>
             </el-table-column>
             <el-table-column
-              prop="source"
-              width="75"
-              label="用户来源">
+              prop="created_at"
+              sortable="custom"
+              width="120"
+              label="创建时间">
+            </el-table-column>
+            
+            <el-table-column
+              width="95"
+              sortable="custom"
+              label="来源渠道">
+              <template slot-scope="scope">
+                <p v-if="scope.row.new_source === 1">今日头条</p>
+                <p v-if="scope.row.new_source === 2">京东</p>
+                <p v-if="scope.row.new_source === 3">360</p>
+                <p v-if="scope.row.new_source === 4">百度</p>
+                <p v-if="scope.row.new_source === 5">官网</p>
+                <p v-if="scope.row.new_source === 6">知乎</p>
+                <p v-if="scope.row.new_source === 7">自媒体</p>
+                <p v-if="scope.row.new_source === 0">其他</p>
+              </template>
+            </el-table-column>
+            
+            <el-table-column
+              width="118"
+              sortable="custom"
+              prop="execute_user_name"
+              label="负责人">
+            </el-table-column>
+            
+            <el-table-column
+              width="105"
+              sortable="custom"
+              label="沟通状态"
+              prop="call_status_value">
             </el-table-column>
             <el-table-column
-              width="85"
-              label="设计服务商"
-              prop="design_company_count">
-              <!-- <template slot-scope="scope">
-                <div v-if="scope.row.item_name && scope.row.item_name.length" v-for="(item, i) in scope.row.design_company_name" :key="i">
-                  <p>{{item}}</p>
-                </div>
-              </template> -->
+              width="105"
+              sortable="custom"
+              label="最后跟进日">
+              <template slot-scope="scope">
+                <p v-if="scope.row.end_time">{{scope.row.end_time.slice(0, 10)}}</p>
+              </template>
             </el-table-column>
             <el-table-column
-              prop="logs"
-              width="70"
-              label="根进次数">
-            </el-table-column>
-            <el-table-column
-              prop="next_time"
+              prop="new_status"
               width="90"
-              label="次回根进">
-            </el-table-column>
-            <el-table-column
-              prop="status"
-              width="70"
               label="状态"
               :filters="[
                 {text: '潜在客户', value: '1' },
-                { text: '真实需求', value: '2' },
-                { text: '对接设计', value: '5' },
-                { text: '签订合作', value: '3' },
-                { text: '对接失败', value: '4' }
+                { text: '对接设计', value: '2' },
+                { text: '签约合作', value: '5' },
+                { text: '无效客户', value: '3' },
+                { text: '流失客户', value: '4' }
               ]"
               :filter-multiple="false"
               filter-placement="bottom-end">
                 <template slot-scope="scope">
-                  <p class="status1 status" v-if="scope.row.status === 1">潜在客户</p>
-                  <p class="status2 status"  v-else-if="scope.row.status === 2">真实需求</p>
-                  <p class="status3 status"  v-else-if="scope.row.status === 3">签订合作</p>
-                  <p class="status4 status"  v-else-if="scope.row.status === 4">对接失败</p>
-                  <p class="status5 status"  v-else>对接设计</p>
+                  <p class="status1 status" v-if="scope.row.new_status === 1">潜在客户</p>
+                  <p class="status2 status"  v-else-if="scope.row.new_status === 2">对接设计</p>
+                  <p class="status3 status"  v-else-if="scope.row.new_status === 3">无效客户</p>
+                  <p class="status4 status"  v-else-if="scope.row.new_status === 4">流失客户</p>
+                  <p class="status5 status"  v-else>签约合作</p>
                 </template>
             </el-table-column>
           </el-table>
@@ -191,13 +213,24 @@
       </el-col>
     </el-row>
 
+    <el-dialog
+      title="确认"
+      :visible.sync="boolClueStatus"
+      width="380px">
+        <p class="line-height30">无效客户备注原因</p>
+        <el-input v-model.trim="followVal" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"></el-input>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="boolClueStatus = false">取 消</el-button>
+          <el-button type="primary" @click="setClueStatus">确 定</el-button>
+      </span>
+    </el-dialog>
 
     <el-dialog
       title="随机分配"
       :visible.sync="randomAssign"
       width="300px">
-      <span v-if="noAllot">有{{noAllot}}个潜在用户等待分配所属人，是否确认随机分配？</span>
-      <span v-else>没有所属人待分配</span>
+      <span v-if="noAllot">有{{noAllot}}个潜在用户等待分配负责人，是否确认随机分配？</span>
+      <span v-else>没有潜在用户待分配</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="randomAssign = false">取 消</el-button>
         <el-button type="primary" @click="randomAllot" :disabled="!noAllot">确 定</el-button>
@@ -227,7 +260,7 @@
       title="移除业务人员"
       :visible.sync="deleteDialogVoIpUser"
       center>
-      <span class="d-d-content">改商务成员负责{{belongIdLength}}个潜在用户, 删除商务成员后,将清空潜在客户所属人?</span>
+      <span class="d-d-content">该商务成员负责{{belongIdLength}}个潜在用户, 删除商务成员后,将清空潜在客户负责人</span>
       <div slot="footer" class="dialog-footer">
         <el-button @click="deleteDialogVoIpUser = false">取 消</el-button>
         <el-button type="primary" @click="deleteVoIpUser">确 定</el-button>
@@ -253,14 +286,17 @@ export default {
       file: [],
       randomAssign: false,
       BoolAddVoIpUser: false,
+      boolClueStatus: false,
       multipleSelection: [],
       query: {
         page: 1,
-        per_page: 10,
+        per_page: 50,
         evt: '',
-        val: '',
-        status: '',
-        totalCount: 0,
+        sort: 2,
+        // new_status: 6,
+        status: 6,
+        // totalCount: 0,
+        search: '',
         valueDate: []
       },
       dateArr: [], // 格式化
@@ -270,21 +306,29 @@ export default {
       },
       tableData: [],
       adminUserList: [],
-      noAllot: 0, // 没有所属人的个数
+      noAllot: 0, // 没有负责人的个数
       deleteDialogVoIpUser: false,
       currentVoIpUserId: '',
-      belongIdLength: ''
+      belongIdLength: '',
+      followVal: ''
     }
   },
   methods: {
     tableRowClassName({row, index}) {
-      if (row.next_time) {
-        if (this.dateCompare(row.next_time) === false) { // 没到期
-          return 'has-date'
-        }
-        if (this.dateCompare(row.next_time)) { // 到期
-          return 'over-date'
-        }
+      // if (row.next_time) {
+      //   if (this.dateCompare(row.next_time) === false) { // 没到期
+      //     return 'has-date'
+      //   }
+      //   if (this.dateCompare(row.next_time)) { // 到期
+      //     return 'over-date'
+      //   }
+      // }
+      let callStatus = row.new_call_status - 0
+      if (callStatus < 9) {
+        return 'over-date'
+      } else if (callStatus === 10 || callStatus === 9) {
+        return 'has-date'
+      } else {
       }
     },
     dateCompare(next) {
@@ -317,6 +361,7 @@ export default {
         default:
           this.query.status = 6
       }
+      this.query.page = 1
       this.getClueList()
     },
     // 多选
@@ -362,10 +407,47 @@ export default {
       }
     },
     onSearch() {
+      this.query.page = 1
       this.getClueList()
     },
     closePanel() { // 关闭潜在用户面板
       this.isAddPanel = false
+    },
+    sortChange({column}) { // 排序
+      if (!column) return
+      switch (column.label) {
+        case '编号':
+          this.query.evt = 1
+          break
+        case '姓名':
+          this.query.evt = 2
+          break
+        case '客户级别':
+          this.query.evt = 3
+          break
+        case '创建时间':
+          this.query.evt = 4
+          break
+        case '来源渠道':
+          this.query.evt = 5
+          break
+        case '负责人':
+          this.query.evt = 6
+          break
+        case '沟通状态':
+          this.query.evt = 7
+          break
+        default:
+          this.query.evt = 8
+      }
+      let sort = parseInt(this.query.sort)
+      if (sort === 2) {
+        this.query.sort = 1
+      }
+      if (sort === 1) {
+        this.query.sort = 2
+      }
+      this.getClueList()
     },
     getClueList() {
       let row = {}
@@ -378,6 +460,45 @@ export default {
           if (res.data.data.length) {
             this.noAllot = res.data.data[0].no_allot
           }
+          let ids = []
+          this.tableData.forEach(item => {
+            item.created_at = item.created_at.date_format().format('yyyy-MM-dd')
+            if (item.id) {
+              ids.push(item.id)
+            }
+          })
+          this.$store.commit('setPotentialIds', ids)
+        } else {
+          this.$message.error(res.data.meta.message)
+        }
+      }).catch(error => {
+        this.$message.error(error.message)
+      })
+    },
+    showClueDialog() {
+      if (this.multipleSelection.length === 0) {
+        this.$message.error('至少选择一个潜在用户')
+        return false
+      }
+      this.boolClueStatus = true
+    },
+    setClueStatus() { // 多选标记无效
+      if (!this.followVal) {
+        this.$message.error('请填写备注原因')
+        return
+      }
+      let idArr = this.arrayExportIds()
+      let row = {
+        new_status: 3,
+        clue_ids: idArr,
+        log: this.followVal
+      }
+      this.$http.post(api.adminClueSetClueStatus, row).then(res => {
+        if (res.data.meta.status_code === 200) {
+          this.$message.success('标记成功')
+          this.boolClueStatus = false
+          this.followVal = ''
+          this.getClueList()
         } else {
           this.$message.error(res.data.meta.message)
         }
@@ -389,9 +510,18 @@ export default {
       // this.$router.push({name: 'adminPotentialUserInfo', params: {id: id, name: name}})
       this.query.id = id
       this.query.name = name
-      // this.$router.push({path: `/admin/potential_user/userinfo/${id}`, query: {page: this.query.page}})
+      // this.$router.push({path: `/admin/customer/userinfo/${id}`, query: {page: this.query.page}})
       const {href} = this.$router.resolve({
-        path: `/admin/potential_user/userinfo/${id}`,
+        path: `/admin/customer/userinfo/${id}`,
+        query: {page: this.query.page}
+      })
+      window.open(href, '_blank')
+    },
+    getLookUserInfo({id = {}, name = {}}) {
+      this.query.id = id
+      this.query.name = name
+      const {href} = this.$router.resolve({
+        path: `/admin/customer/userinfo/${id}`,
         query: {page: this.query.page}
       })
       window.open(href, '_blank')
@@ -485,7 +615,7 @@ export default {
       this.query.page = parseInt(val)
       this.$router.push({ name: this.$route.name, query: {page: this.query.page} })
     },
-    exportForm() { // 导出
+    exportForm(type) { // 导出
       // if (this.multipleSelection.length === 0) {
       //   this.$message.error('至少选择一个要导出的潜在用户')
       //   return false
@@ -501,19 +631,19 @@ export default {
       }
       let downloadUrl = url + '?'
       let urlStr = ''
-      idArr.forEach((item, i) => {
-        if (i === 0) {
-          urlStr = 'clue_id[' + i + ']=' + idArr[i]
-        } else {
-          urlStr += '&clue_id[' + i + ']=' + idArr[i]
-        }
-      })
+      if (type === 2) {
+        urlStr = 'type=2'
+      } else {
+        idArr.forEach((item, i) => {
+          if (i === 0) {
+            urlStr = 'clue_id[' + i + ']=' + idArr[i]
+          } else {
+            urlStr += '&clue_id[' + i + ']=' + idArr[i]
+          }
+        })
+      }
       downloadUrl = url + '?' + urlStr
       window.open(decodeURI(downloadUrl))
-      // this.$http.post(api.adminClueExportExcel, {clue_id: idArr}).then(res => {
-      //   if (res.data.meta.status_code === 200) {
-      //   }
-      // })
     },
     arrayExportIds() {
       var idArr = []
@@ -595,7 +725,7 @@ export default {
 }
 .admin-header {
   width: 100%;
-  float: left;
+  /* float: left; */
   margin: 0 0 10px 0;
 }
 .select-query {
@@ -606,7 +736,7 @@ export default {
 }
 .select-data {
   width: 206px;
-  margin-left: 10px;
+  /* margin-left: 10px; */
 }
 .admin-header-right {
   width: 36%;
@@ -615,6 +745,16 @@ export default {
 }
 .line-height30 {
   line-height: 30px
+}
+.btn-list {
+  padding: 15px 0 20px 0;
+}
+.btn-list .el-button {
+  margin-left: 0;
+  margin-right: 15px;
+}
+.upload-demo {
+  display: inline-block;
 }
 .user-list {
   height: 50px;
@@ -724,7 +864,10 @@ export default {
 .d-d-content {
   line-height: 20px;
 }
-
+.flex {
+  display: flex;
+  justify-content: center;
+}
 
 </style>
 
@@ -746,6 +889,9 @@ export default {
   border: none;
 }
 
+.admin-table {
+  cursor: pointer;
+}
 .admin-table .has-date .el-table-column--selection {
   border-left: 4px solid #FFA64B;
 }
@@ -767,10 +913,25 @@ export default {
   font-size: 12px;
   margin-right: 2px;
 }
-.select-query .el-form-item {
+.admin-header .select-query .el-form-item {
   margin-bottom: 0 !important;
 }
 .select-data .el-range-editor--small.el-input__inner {
   height: 30px;
+}
+.search-form .el-form-item__content .el-input .el-input__inner {
+  width: 150px;
+}
+.search-data .el-input .el-input__inner {
+  /* max-width: 280px; */
+}
+.search-form .el-form-item__label {
+  width: 68px;
+}
+.search-form .el-row {
+  margin-bottom: 10px;
+}
+.select-data .el-range-editor--small .el-range-separator {
+  line-height: 20px;
 }
 </style>

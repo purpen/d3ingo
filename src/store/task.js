@@ -1,3 +1,11 @@
+let getPotentialIds = function () {
+  let ids = localStorage.getItem('potentialIds')
+  if (ids) {
+    return JSON.parse(ids)
+  } else {
+    return false
+  }
+}
 let state = {
   displayObj: {
     itemList: [],
@@ -21,8 +29,10 @@ let state = {
   showMessage: '',
   myView: '',
   showMine: '',
-  mineView: ''
+  mineView: '',
+  potentialIds: getPotentialIds() || []
 }
+
 let mutations = {
   setDisplayObj(state, array) {
     if (!array) {
@@ -236,6 +246,9 @@ let mutations = {
   },
   changeMineView(state, str) {
     state.mineView = str
+  },
+  setPotentialIds(state, ids) {
+    state.potentialIds = window.localStorage.setItem('potentialIds', JSON.stringify(ids))
   }
 }
 export default {
