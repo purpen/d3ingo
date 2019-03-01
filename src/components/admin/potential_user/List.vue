@@ -230,7 +230,7 @@
       :visible.sync="randomAssign"
       width="300px">
       <span v-if="noAllot">有{{noAllot}}个潜在用户等待分配负责人，是否确认随机分配？</span>
-      <span v-else>没有负责人待分配</span>
+      <span v-else>没有潜在用户待分配</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="randomAssign = false">取 消</el-button>
         <el-button type="primary" @click="randomAllot" :disabled="!noAllot">确 定</el-button>
@@ -880,6 +880,9 @@ export default {
   border: none;
 }
 
+.admin-table {
+  cursor: pointer;
+}
 .admin-table .has-date .el-table-column--selection {
   border-left: 4px solid #FFA64B;
 }
@@ -901,7 +904,7 @@ export default {
   font-size: 12px;
   margin-right: 2px;
 }
-.el-form-item {
+.select-query .el-form-item {
   margin-bottom: 0 !important;
 }
 .select-data .el-range-editor--small.el-input__inner {
