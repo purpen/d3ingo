@@ -470,7 +470,7 @@
                 </ul>
               </div>
               <div class='select-opt fr'>
-                <el-select v-model="itemBudget.data.source" @change="update($event, 'itemBudget')" placeholder="请选择">
+                <el-select v-model="itemBudget.data.source" @change="updateBudget" placeholder="请选择">
                   <el-option
                     v-for="item in optionsFrom"
                     :key="item.value"
@@ -711,6 +711,7 @@ export default {
         yesterday_add: 0 // 昨日新增
       }, // 上方总统计
       chanceData: [], // 商机列表
+      budgetList: [], // 项目预算
       chanceList: {
         cooperation: {
           conversion: 0,
@@ -1439,6 +1440,47 @@ export default {
   },
   directives: {Clickoutside},
   methods: {
+    // 筛选预算
+    updateBudget(val) {
+      let headlines6 = []
+      let jd6 = []
+      let qihoo3606 = []
+      let baidu6 = []
+      let tooFirebird6 = []
+      let zhihu6 = []
+      let selfMedia6 = []
+      let other6 = []
+      for (let k in this.budgetList) {
+        headlines6.push(this.budgetList[k].headlines)
+        jd6.push(this.budgetList[k].jd)
+        qihoo3606.push(this.budgetList[k].qihoo360)
+        baidu6.push(this.budgetList[k].baidu)
+        tooFirebird6.push(this.budgetList[k].too_firebird)
+        zhihu6.push(this.budgetList[k].zhihu)
+        selfMedia6.push(this.budgetList[k].self_media)
+        other6.push(this.budgetList[k].other)
+      }
+      let dataList = [headlines6, zhihu6, qihoo3606, baidu6, tooFirebird6, selfMedia6, other6, jd6]
+      if (val === 0) {
+        this.polar6.series[0].data = headlines6
+        this.polar6.series[1].data = zhihu6
+        this.polar6.series[2].data = qihoo3606
+        this.polar6.series[3].data = baidu6
+        this.polar6.series[4].data = tooFirebird6
+        this.polar6.series[5].data = selfMedia6
+        this.polar6.series[6].data = other6
+        this.polar6.series[7].data = jd6
+      } else {
+        let types = ['今日头条', '知乎', '360', '百度', '官网', '自媒体', '第三方推荐', '京东']
+        for (let p = 1; p < 9; p++) {
+          if (p === parseInt(val)) {
+            this.polar6.series[0].name = types[p - 1]
+            this.polar6.series[0].data = dataList[p - 1]
+            this.polar6.series.splice(1)
+          }
+        }
+      }
+    },
     // 筛选客户
     updatecustomer(val) {
       let dateList = []
@@ -1475,16 +1517,16 @@ export default {
       } else if (val === 2) {
         this.polar2.series[0].data = valueAdd
         this.polar2.series[0].name = '新增客户'
-        this.polar2.series.splice(2)
+        this.polar2.series.splice(1)
         this.polar2.legend.data = ['新增客户']
       } else if (val === 3) {
         this.polar2.series[0].data = valueInvalid
-        this.polar2.series.splice(3)
+        this.polar2.series.splice(1)
         this.polar2.series[0].name = '无效客户'
         this.polar2.legend.data = ['无效客户']
       } else if (val === 4) {
         this.polar2.series[0].data = valueLoss
-        this.polar2.series.splice(4)
+        this.polar2.series.splice(1)
         this.polar2.series[0].name = '流失客户'
         this.polar2.legend.data = ['流失客户']
       }
@@ -1635,6 +1677,7 @@ export default {
             // 来源渠道
             this.polar3.series[0].data = [res.headlines, res.zhihu, res.qihoo360, res.baidu, res.too_firebird, res.self_media, res.other, res.jd]
           } else if (type === 4) {
+            // 项目类型
             let object = {
               product: '产品设计',
               plane: '平面设计',
@@ -1686,6 +1729,8 @@ export default {
             this.polar5.series[0].data = seriesData
             this.polar5.legend.data = cityArr
           } else if (type === 6) {
+            // 项目预算
+            this.budgetList = res
             let headlines6 = []
             let jd6 = []
             let qihoo3606 = []
