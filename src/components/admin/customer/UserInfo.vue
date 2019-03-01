@@ -629,19 +629,19 @@
                             <el-row :gutter="20">
                               <el-col :xs="24" :sm="24" :md="8" :lg="8">
                                 <el-form-item label="联系人名称" prop="contact_name">
-                                  <el-input v-model="designCompanyForm.contact_name" :maxlength="40" placeholder="请填写项目名称"></el-input>
+                                  <el-input v-model="designCompanyForm.contact_name" :maxlength="40" placeholder="请填写联系人名称"></el-input>
                                 </el-form-item>
                               </el-col>
                               
                               <el-col :xs="24" :sm="24" :md="8" :lg="8">
                                 <el-form-item label="联系人电话" prop="phone">
-                                  <el-input v-model="designCompanyForm.phone" :maxlength="40" placeholder="请填写项目名称"></el-input>
+                                  <el-input v-model="designCompanyForm.phone" :maxlength="40" placeholder="请填写联系人电话"></el-input>
                                 </el-form-item>
                               </el-col>
                               
                               <el-col :xs="24" :sm="24" :md="8" :lg="8">
                                 <el-form-item label="微信号" prop="wx">
-                                  <el-input v-model="designCompanyForm.wx" :maxlength="40" placeholder="请填写项目名称"></el-input>
+                                  <el-input v-model="designCompanyForm.wx" :maxlength="40" placeholder="请填写联系人微信号"></el-input>
                                 </el-form-item>
                               </el-col>
                             </el-row>
@@ -678,7 +678,7 @@
                         </el-col>
                         <el-col :xs="24" :sm="20" :md="8" :lg="8">
                           <el-form-item label="项目紧急度" prop="grate">
-                            <el-select v-model="projectForm.grate" placeholder="请选择">
+                            <el-select v-model="projectForm.grate" placeholder="请选择项目紧急度">
                               <el-option
                                 v-for="(d, index) in grateArr"
                                 :key="index"
@@ -704,7 +704,7 @@
                         </el-col>
                         <el-col :xs="24" :sm="24" :md="8" :lg="8">
                           <el-form-item label="行业领域" prop="industry">
-                            <el-select v-model.number="projectForm.industry" placeholder="请选择">
+                            <el-select v-model.number="projectForm.industry" placeholder="请选择行业领域">
                               <el-option
                                 v-for="(d, index) in industryOptions"
                                 :key="index"
@@ -717,7 +717,7 @@
                         
                         <el-col :xs="24" :sm="24" :md="8" :lg="8">
                           <el-form-item label="项目预算" prop="design_cost">
-                            <el-select v-model="projectForm.design_cost" placeholder="请选择">
+                            <el-select v-model="projectForm.design_cost" placeholder="请选择项目预算">
                               <el-option
                                 v-for="(d, index) in designCostOptions"
                                 :key="index"
@@ -732,7 +732,7 @@
                       <el-row :gutter="20">
                         <el-col :xs="24" :sm="12" :md="8" :lg="8">
                           <el-form-item label="交付时间" prop="cycle">
-                            <el-select v-model="projectForm.cycle" placeholder="请选择">
+                            <el-select v-model="projectForm.cycle" placeholder="请选择交付时间">
                               <el-option
                                 v-for="(d, index) in cycleOptions"
                                 :key="index"
@@ -1016,6 +1016,7 @@ export default {
         new_status: '',
         tag: [],
         execute_user_id: '',
+        son_source: '',
         execute: []
       },
       baseInfo: {}, // 第一次加载时头部的基本信息
@@ -2760,6 +2761,9 @@ export default {
 .card-body-center .active .el-textarea__inner {
   min-height: 70px !important;
   border: none;
+}
+.add-design .el-button {
+  font-size: 12px;
 }
 </style>
 

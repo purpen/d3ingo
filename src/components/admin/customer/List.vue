@@ -87,7 +87,7 @@
             </el-upload>
             <!-- <el-button size="small" type="primary">批量导入</el-button> -->
             <el-button size="small" @click="exportForm">导出</el-button>
-            <el-button size="small"  @click="exportForm(2)">导出模板</el-button>
+            <el-button size="small"  @click="exportForm(2)">导入模板下载</el-button>
             <el-button size="small" class="" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button>
             <el-button size="small" @click="showClueDialog">无效</el-button>
           </div>
@@ -217,7 +217,7 @@
       title="确认"
       :visible.sync="boolClueStatus"
       width="380px">
-        <p>无效客户备注原因</p>
+        <p class="line-height30">无效客户备注原因</p>
         <el-input v-model.trim="followVal" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"></el-input>
         <span slot="footer" class="dialog-footer">
           <el-button @click="boolClueStatus = false">取 消</el-button>
@@ -260,7 +260,7 @@
       title="移除业务人员"
       :visible.sync="deleteDialogVoIpUser"
       center>
-      <span class="d-d-content">改商务成员负责{{belongIdLength}}个潜在用户, 删除商务成员后,将清空潜在客户负责人?</span>
+      <span class="d-d-content">该商务成员负责{{belongIdLength}}个潜在用户, 删除商务成员后,将清空潜在客户负责人</span>
       <div slot="footer" class="dialog-footer">
         <el-button @click="deleteDialogVoIpUser = false">取 消</el-button>
         <el-button type="primary" @click="deleteVoIpUser">确 定</el-button>
@@ -361,6 +361,7 @@ export default {
         default:
           this.query.status = 6
       }
+      this.query.page = 1
       this.getClueList()
     },
     // 多选
@@ -496,6 +497,7 @@ export default {
         if (res.data.meta.status_code === 200) {
           this.$message.success('标记成功')
           this.boolClueStatus = false
+          this.followVal = ''
           this.getClueList()
         } else {
           this.$message.error(res.data.meta.message)
@@ -928,5 +930,8 @@ export default {
 }
 .search-form .el-row {
   margin-bottom: 10px;
+}
+.select-data .el-range-editor--small .el-range-separator {
+  line-height: 20px;
 }
 </style>
