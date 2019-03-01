@@ -341,7 +341,7 @@
           this.$message.error('请使用需求公司账号登录')
         }
       },
-      // 点击发送验证码
+      // 点击获取验证码
       fetchCode() {
         if (!this.form.account) {
           this.$message.error('请输入手机号')
@@ -436,7 +436,7 @@
         return user
       },
       codeMsg() {
-        return this.time > 0 ? '重新发送' + this.time + 's' : '发送验证码'
+        return this.time > 0 ? '重新发送' + this.time + 's' : '获取验证码'
       },
       isMob() {
         return this.$store.state.event.isMob
