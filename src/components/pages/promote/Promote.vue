@@ -26,7 +26,7 @@
                 <div class="six-img1-jian">件</div>
                 <div class="six-img1-sales">销售量</div>
               </div>
-              <div class="six-text2">飞行鱼-亚特兰蒂斯号FiFish Atl</div>
+              <div class="six-text2">飞行鱼 FIFISH P3</div>
             </div>
           </div>
           <div class="six-border">
@@ -289,7 +289,7 @@
                 <div class="img-jian">件</div>
                 <div class="img-sales">销售量</div>
               </div>
-              <div class="img-bot-text">飞行鱼-亚特兰蒂斯号FiFish Atl</div>
+              <div class="img-bot-text">飞行鱼 FIFISH P3</div>
             </div>
           </div>
           <div class="border">
@@ -449,7 +449,7 @@
             <div class="person-text">{{item.phone}}</div>
             <div class="person-text">{{item.created_at}}分钟</div>
           </div> -->
-          <swiper class="swiper-con" :options="swiperOption2">
+          <swiper class="swiper-con bot-0" :options="swiperOption2">
             <swiper-slide v-for="(item, index) of userList" :key="index">
               <div class="person">
                 <div v-text="item.user_name" class="person-text"></div>
@@ -542,7 +542,7 @@
           lazyLoading: true,
           direction: 'vertical',
           autoplay: 1000,
-          slidesPerView: 3,
+          slidesPerView: 4,
           // observer: true,
           spaceBetween: 0,
           paginationClickable: true,
@@ -553,7 +553,7 @@
           lazyLoading: true,
           direction: 'vertical',
           autoplay: 1000,
-          slidesPerView: 3,
+          slidesPerView: 4,
           // observer: true,
           spaceBetween: 0,
           paginationClickable: true,
@@ -563,7 +563,7 @@
           lazyLoading: true,
           direction: 'vertical',
           autoplay: 1000,
-          slidesPerView: 3,
+          slidesPerView: 4,
           // observer: true,
           spaceBetween: 0,
           paginationClickable: true,
@@ -2153,6 +2153,7 @@
   }
   .pc-bot-hei-125 {
     height: 110px;
+    padding-bottom: 0;
   }
   .phone-form-round {
     width: 100%;
@@ -2163,6 +2164,9 @@
   }
   .pc-person .wip-style {
     width: 350px
+  }
+  .bot-0 {
+    padding-bottom: 0;
   }
 </style>
 
