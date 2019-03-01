@@ -406,6 +406,7 @@ export default {
       }
     },
     onSearch() {
+      this.query.page = 1
       this.getClueList()
     },
     closePanel() { // 关闭潜在用户面板

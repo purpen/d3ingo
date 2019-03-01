@@ -79,10 +79,9 @@
                     v-model.number="userForm.new_source"
                     size="small"
                     filterable
-                    :disabled="!isHasPower"
-                    @change="isUpdatedSource"
                     default-first-option
-                    :allow-create="isAdmin>=15">
+                    :disabled="!isHasPower"
+                    >
                   <el-option
                     v-for="(item, i) in sourceArr"
                     :key="i"
@@ -94,7 +93,7 @@
               <div class="fl flex-a-c height30 son-source fz-14">
                 <span>子来源: </span>
                 <span v-if="currentId">{{userForm.son_source}}</span>
-                <el-input v-else type="text" v-model="userForm.son_source" size="small"></el-input>
+                <el-input v-else type="text" v-model.trim="userForm.son_source" size="small"></el-input>
               </div>
               <div class="belong fl">
                 <span class="fz-14">负责人 :</span>
@@ -278,7 +277,7 @@
                   <el-row :gutter="20">
                     <el-col :xs="24" :sm="8" :md="8" :lg="8">
                       <p>
-                        <span class="inline-width70">所在城市: </span>{{clientList.province_value}}{{clientList.city_value}}
+                        <span class="inline-width70">企业地址: </span>{{clientList.province_value}}{{clientList.city_value}}
                       </p>
                     </el-col>
                   </el-row>
@@ -359,7 +358,7 @@
                                  item.item_id) && isHasPower">
                               <div class="edit-project-tag">
                                 <p @click="markProjectFailure(item.item_id)">标记为失败</p>
-                                <p v-if="item.item_status < 7" @click="deleteProject(item.item_id)">删除项目</p>
+                                <!-- <p v-if="item.item_status < 7" @click="deleteProject(item.item_id)">删除项目</p> -->
                                 <p @click="editProject(item)">编辑项目</p>
                               </div>
                             </div>
@@ -378,7 +377,7 @@
                               <span v-if="item.grate === 1">未知</span>
                               <span v-else-if="item.grate === 2">普通</span>
                               <span v-else-if="item.grate === 3">紧急</span>
-                              <span v-else>紧急</span>
+                              <span v-else>非常紧急</span>
                             </p>
                             <el-form-item v-if="boolEditProject && currentProjectId === item.item_id" label="项目紧急度" prop="grate">
                               <el-select v-model="projectForm.grate" placeholder="请选择">
@@ -860,7 +859,7 @@
                     <div class="edit-progress" v-if="boolEditLog && item.id === currrentLogId">
                       <el-input type="textarea"
                         placeholder="添加跟进内容"
-                        v-model="editFollowVal"
+                        v-model.trim="editFollowVal"
                         @keydown.native.enter.shift="quick"
                         :autosize="{ minRows: 3, maxRows: 10}"
                         :maxlength="500"
@@ -884,7 +883,7 @@
                 <div class="progress">
                   <el-input type="textarea"
                     placeholder="添加跟进内容"
-                    v-model="followVal"
+                    v-model.trim="followVal"
                     @focus="focusInput"
                     @keydown.native.enter.shift="quickSubmit"
                     :autosize="{ minRows: 1, maxRows: 10}"
@@ -1451,6 +1450,10 @@ export default {
     handleInputConfirm() {
       let inputValue = this.inputValue
       if (inputValue) {
+        if (inputValue.length > 7) {
+          this.$message.error('标签最长输入7个字')
+          return
+        }
         if (this.dynamicTags.length >= 5) {
           this.$message.warning('最多只能添加5个标签')
         } else {
@@ -1461,9 +1464,13 @@ export default {
       this.inputVisible = false
       this.inputValue = ''
     },
-    submitUserForm() {
+    submitUserForm() { // 生成用户
       if (!this.userForm.name) {
         this.$message.error('请填写联系人姓名')
+        return
+      }
+      if (this.userForm.name.length >= 20) {
+        this.$message.error('联系人姓名最多20个字符')
         return
       }
       if (!this.userForm.phone) {
@@ -1472,6 +1479,10 @@ export default {
       }
       if (!(/^\d{6,11}$/.test(this.userForm.phone))) {
         this.$message.error('请输入有效的手机号')
+        return
+      }
+      if (this.userForm.son_source.length > 10) {
+        this.$message.error('子来源最多10个字符')
         return
       }
       let row = Object.assign({}, this.clientForm, this.userForm)
