@@ -152,21 +152,31 @@
       <div class="pc-wait-round">
         <div class="wait">您还在等什么？快来发布需求吧！</div>
         <div class="wait-intro">
-          <div class="z-index-5">
-            <div class="pc-wait-border-title"><span class="red-text">免费</span>发布项目需求</div>
-            <input type="text" class="pc-wait-input-round" placeholder="请输入您的需求">
-            <input type="text" class="pc-wait-input-round mar-top-20" placeholder="请输入联系人">
-            <div class="pc-send-code-90">
-              <input type="text" class="pc-wait-input-round2" placeholder="手机号码">
-              <div class="pc-code-90-round">
-                <input type="text" class="pc-code-90" placeholder="验证码">
-                <div class="pc-code-90-send">发送验证码</div>
+          <el-form @submit.native.prevent :model="form3" :rules="ruleForm" ref="ruleForm3" class="center-form2">
+            <div class="z-index-5">
+              <div class="pc-wait-border-title"><span class="red-text">免费</span>发布项目需求</div>
+              <el-form-item prop="demand">
+                <input v-model="form3.demand" name="username" type="text" class="pc-wait-input-round mar-top-20" placeholder="请输入您的需求">
+              </el-form-item>
+              <el-form-item prop="contact">
+                <input type="text" class="pc-wait-input-round" placeholder="请输入联系人" v-model="form3.contact" ref="contact">
+              </el-form-item>
+              <div class="pc-send-code-90">
+                <el-form-item prop="account">
+                  <input type="text" class="pc-wait-input-round2" placeholder="手机号码" v-model="form3.account" ref="account">
+                </el-form-item>
+                <el-form-item prop="smsCode">
+                  <div class="pc-code-90-round">
+                    <input type="text" class="pc-code-90" placeholder="验证码" v-model="form3.smsCode" name="smsCode">
+                  <div class="pc-code-90-send" @click="fetchCode3" :disabled="time > 0">{{ codeMsg }}</div>
+                  </div>
+                </el-form-item>
+              </div>
+              <div class="pc-send-btn-2">
+                <div class="pc-send-btn-text2" :loading="isLoadingBtn" @click="submit('ruleForm3')">立即发布需求</div>
               </div>
             </div>
-            <div class="pc-send-btn-2">
-              <div class="pc-send-btn-text2">立即发布需求</div>
-            </div>
-          </div>
+          </el-form>
         </div>
         <div class="pc-new-curstomer">最新报名客户</div>
         <div class="pc-person">
@@ -193,22 +203,32 @@
         width="380px"
         class="dig-send-code">
         <div>
-          <div class="dialog-req">项目需求</div>
-          <input type="text" class="dialog-input" placeholder="请输入您的项目需求">
-          <div class="dialog-req pad-top-20">联系人</div>
-          <input type="text" class="dialog-input" placeholder="请输入联系人名称">
-          <div class="dialog-req pad-top-20">手机号</div>
-          <input type="text" class="dialog-input" placeholder="请输入您的手机号">
-          <div class="dialog-req pad-top-20">验证码</div>
-          <div class="dialog-code-round">
-            <input type="text" class="dialog-code" placeholder="请输入您的手机号">
-            <div class="dialog-code-send">
-              <div class="dialog-code-text">获取验证码</div>
+          <el-form @submit.native.prevent :model="form2" :rules="ruleForm" ref="ruleForm2">
+            <div class="dialog-req">项目需求</div>
+            <el-form-item prop="demand">
+              <input type="text" class="dialog-input" placeholder="请输入您的项目需求" v-model="form2.demand" name="username">
+            </el-form-item>
+            <div class="dialog-req">联系人</div>
+            <el-form-item prop="contact">
+              <input type="text" class="dialog-input" placeholder="请输入联系人名称" v-model="form2.contact" ref="contact">
+            </el-form-item>
+            <div class="dialog-req">手机号</div>
+            <el-form-item prop="account">
+              <input type="text" class="dialog-input" placeholder="请输入您的手机号" v-model="form2.account" ref="account">
+            </el-form-item>
+            <div class="dialog-req">验证码</div>
+            <div class="dialog-code-round">
+              <el-form-item prop="smsCode">
+                <input type="text" class="dialog-code" placeholder="请填写验证码" v-model="form2.smsCode" name="smsCode">
+              </el-form-item>
+              <div class="dialog-code-send">
+                <div class="dialog-code-text" @click="fetchCode2" :disabled="time > 0">{{ codeMsg }}</div>
+              </div>
             </div>
-          </div>
+          </el-form>
         </div>
         <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="dialogVisible = false">免费发布需求</el-button>
+          <el-button type="primary" :loading="isLoadingBtn" @click="submit2('ruleForm2')">免费发布需求</el-button>
         </span>
       </el-dialog>
     </div>
@@ -244,7 +264,7 @@
         </div>
       </el-form>
       <div class="round-btn">
-        <div class="release-btn" :loading="isLoadingBtn" @click="submit('ruleForm')">免费发布项目需求</div>
+        <div class="release-btn" :loading="isLoadingBtn" @click="submit_app('ruleForm')">免费发布项目需求</div>
       </div>
       <div class="img-round-text">太火鸟设计服务的项目</div>
       <div class="img-round">
@@ -404,7 +424,7 @@
           </el-form-item>
         </el-form>
         <div class="send-code-btn">
-          <div class="send-code-text" :loading="isLoadingBtn2" @click="submit_app('ruleForm1')">立即发布需求</div>
+          <div class="send-code-text" :loading="isLoadingBtn2" @click="submit_app1('ruleForm1')">立即发布需求</div>
         </div>
         <div class="new-top">
           <div class="left"></div>
@@ -481,6 +501,16 @@
           contact: ''  // 联系人
         },
         form1: {
+          demand: '',   // 需求
+          account: '',  // 手机号
+          contact: ''  // 联系人
+        },
+        form2: {
+          demand: '',   // 需求
+          account: '',  // 手机号
+          contact: ''  // 联系人
+        },
+        form3: {
           demand: '',   // 需求
           account: '',  // 手机号
           contact: ''  // 联系人
@@ -578,28 +608,50 @@
             this.timer()
           })
       },
+      fetchCode2() {
+        if (!this.form2.account) {
+          this.$message.error('请输入手机号')
+          return
+        }
+        this.$http.post(api.fetch_wx_code, {phone: this.form2.account})
+          .then(res => {
+            this.time = this.second
+            this.timer()
+          })
+      },
+      fetchCode3() {
+        if (!this.form3.account) {
+          this.$message.error('请输入手机号')
+          return
+        }
+        this.$http.post(api.fetch_wx_code, {phone: this.form3.account})
+          .then(res => {
+            this.time = this.second
+            this.timer()
+          })
+      },
       timer() {
         if (this.time > 0) {
           this.time = this.time - 1
           setTimeout(this.timer, 1000)
         }
       },
-      submit_app (form) {
+      submit (form) {
         this.$refs[form].validate(valid => {
           if (valid) {
             let row = {
-              user_name: this.form.contact, // 姓名
-              phone: this.form.account, // 手机号
-              item_name: this.form.demand, // 需求
+              user_name: this.form3.contact, // 姓名
+              phone: this.form3.account, // 手机号
+              item_name: this.form3.demand, // 需求
               source: this.query.from,
               son_source: this.query.mark,
-              sms_code: this.form.smsCode
+              sms_code: this.form3.smsCode
             }
             this.$http.post(api.pcAdd, row)
               .then(res => {
                 if (res.data.meta.status_code === 200) {
                   this.$message.success('提交成功')
-                  this.form1 = {}
+                  this.form3 = {}
                   this.time = 0
                 } else {
                   this.$message.error(res.data.meta.message)
@@ -611,7 +663,37 @@
           }
         })
       },
-      submit (form) {
+      submit2 (form) {
+        this.$refs[form].validate(valid => {
+          if (valid) {
+            let row = {
+              user_name: this.form2.contact, // 姓名
+              phone: this.form2.account, // 手机号
+              item_name: this.form2.demand, // 需求
+              source: this.query.from,
+              son_source: this.query.mark,
+              sms_code: this.form2.smsCode
+            }
+            this.$http.post(api.pcAdd, row)
+              .then(res => {
+                if (res.data.meta.status_code === 200) {
+                  this.$message.success('提交成功')
+                  this.form2 = {}
+                  this.time = 0
+                  this.sendReq = false
+                } else {
+                  this.sendReq = false
+                  this.$message.error(res.data.meta.message)
+                }
+              })
+              .catch(error => {
+                this.sendReq = false
+                this.$message.error(error)
+              })
+          }
+        })
+      },
+      submit_app (form) {
         this.$refs[form].validate(valid => {
           if (valid) {
             let row = {
@@ -640,6 +722,33 @@
               })
           } else {
             // this.$message.error('请填写信息')
+          }
+        })
+      },
+      submit_app1 (form) {
+        this.$refs[form].validate(valid => {
+          if (valid) {
+            let row = {
+              user_name: this.form1.contact, // 姓名
+              phone: this.form1.account, // 手机号
+              item_name: this.form1.demand, // 需求
+              source: this.query.from,
+              son_source: this.query.mark,
+              sms_code: this.form1.smsCode
+            }
+            this.$http.post(api.pcAdd, row)
+              .then(res => {
+                if (res.data.meta.status_code === 200) {
+                  this.$message.success('提交成功')
+                  this.form1 = {}
+                  this.time = 0
+                } else {
+                  this.$message.error(res.data.meta.message)
+                }
+              })
+              .catch(error => {
+                this.$message.error(error)
+              })
           }
         })
       },
@@ -1256,7 +1365,7 @@
     position: absolute;
     background: url("../../../assets/images/new_promote/pc/header/clouds02@2x.png") no-repeat;
     background-size: 100% 100%;
-    right: -80px;
+    right: -140px;
     bottom: -40px;
   }
   .red-text {
@@ -1268,7 +1377,6 @@
     background: rgba(255,255,255,1);
     border-radius: 4px;
     border: 1px solid rgba(230,230,230,1);
-    margin-top: 18px;
     padding: 15px;
   }
   .mar-top-20 {
@@ -1304,6 +1412,7 @@
     padding: 0 10px;
   }
   .pc-code-90-send {
+    cursor: pointer;
     flex: 1 1 auto;
     height: 20px;
     font-size: 14px;
@@ -1322,7 +1431,6 @@
     box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.05);
     border-radius: 30px;
     margin: 0 auto;
-    margin-top: 20px;
   }
   .pc-send-btn-text2 {
     font-size: 14px;
@@ -1972,6 +2080,12 @@
   }
   .put-top-15 {
     padding-top: 15px;
+  }
+  .center-text {
+    text-align: center;
+  }
+  .center-form2 {
+    padding: 0 50px;
   }
 </style>
 
