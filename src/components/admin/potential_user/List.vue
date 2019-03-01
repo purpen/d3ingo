@@ -32,7 +32,7 @@
               <el-form-item style="width: 20%;">
                 <el-input v-model="query.val" placeholder="搜索..." size="small"></el-input>
               </el-form-item>
-              <el-form-item>
+              <el-form-item class="margin0">
                 <el-button type="primary" @click="onSearch" size="mini">搜索</el-button>
               </el-form-item>
             </el-form>
@@ -739,6 +739,11 @@ export default {
 }
 .admin-header-right {
   width: 36%;
+  display: flex;
+  justify-content: space-between;
+}
+.line-height30 {
+  line-height: 30px
 }
 .btn-list {
   padding: 15px 0 20px 0;
@@ -907,7 +912,7 @@ export default {
   font-size: 12px;
   margin-right: 2px;
 }
-.select-query .el-form-item {
+.admin-header .select-query .el-form-item {
   margin-bottom: 0 !important;
 }
 .select-data .el-range-editor--small.el-input__inner {

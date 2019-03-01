@@ -132,7 +132,7 @@
                   </el-table-column>
                   <el-table-column
                     prop="item.created_at"
-                    width="90"
+                    width="100"
                     label="创建时间">
                   </el-table-column>
                 </el-table>

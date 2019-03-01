@@ -10,6 +10,9 @@
 .clear {
   clear: both;
 }
+.block {
+  display: block
+}
 .flex {
   display: flex;
 }
@@ -165,7 +168,9 @@
 .blank60 {
   padding-top: 60px;
 }
-
+.margin0 {
+  margin: 0
+}
 .margin-r-15 {
   margin-right: 15px!important;
 }

@@ -114,9 +114,9 @@
                 <div class="clear"></div>
                 <div class="pub-btn clearfix" v-if="item.status === 3">
                   <el-button class="is-custom" @click="stickCompanySubmit" :loading="isLoadingBtn"
-                             :disabled="this.stickCompanyIds.length <= 0" type="primary">发送项目需求
+                             :disabled="this.stickCompanyIds.length <= 0" type="primary">发送项目邀约
                   </el-button>
-                  <p class="send-company-des">项目需求详情将发送给已选中的设计服务供应商</p>
+                  <p class="send-company-des">项目需求详情将发送给已选中的设计服务商</p>
                 </div>
               </el-collapse-item>
             </el-collapse>
@@ -743,7 +743,7 @@ export default {
       this.$refs.comfirmType.value = 4
       this.$refs.confirmTargetId.value = stageId
       this.$refs.currentIndex.value = index
-      this.comfirmMessage = '确认验收阶段成果？验收成功后该阶段项目款将进入设计服务供应商账户。'
+      this.comfirmMessage = '确认验收阶段成果？验收成功后该阶段项目款将进入设计服务商账户。'
       this.comfirmDialog = true
     },
     // 阶段确认通过
@@ -1157,7 +1157,7 @@ export default {
               title: self.item.design_cost_value
             },
             {
-              name: '项目周期',
+              name: '交付时间',
               title: self.item.cycle_value
             },
             {

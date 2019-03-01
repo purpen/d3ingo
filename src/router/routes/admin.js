@@ -12,6 +12,16 @@ module.exports = [
     },
     component: require('@/components/admin/DashBoard')
   },
+  // 客户管理
+  {
+    path: '/admin/customer/statistics',
+    name: 'adminCustomerStatistics',
+    meta: {
+      title: '客户统计',
+      requireAuth: true
+    },
+    component: require('@/components/admin/customer/Statistics')
+  },
   // 潜在用户列表
   {
     path: '/admin/potential_user/list',

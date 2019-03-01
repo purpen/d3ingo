@@ -930,6 +930,9 @@
     border-top: 1px solid #d2d2d2;
     border-bottom: 1px solid #d2d2d2;
   }
+  .dl-body-center .el-dialog__body{
+    text-align: center;
+  }
   /*推广页*/
   .input-phone input {
     height: 50px;
@@ -1012,6 +1015,18 @@
   }
   .receipt-form .el-dialog__body {
     padding: 0;
+  }
+  .select-opt2 .el-select .el-input__inner {
+    padding-right: 25px;
+  }
+  .chart-block .el-date-editor .el-range-separator {
+    padding: 0 0;
+  }
+  .chart .el-input--suffix .el-input__inner {
+    padding-right: 25px;
+  }
+  .el-picker-panel__sidebar .el-picker-panel__shortcut:hover {
+    color: #ff5a5f;
   }
 @media screen and (max-width: 767px) {
   .el-dialog--large,

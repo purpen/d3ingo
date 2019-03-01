@@ -131,7 +131,7 @@
                     <p class="tc-2 protrude">项目报价:  <span class="tc-6 p-price fw-normal">{{ d.quotation.price }} 元</span> <span class="quota-btn tc-6 fw-normal">&nbsp;&nbsp;<a
                     class="tc-red"
                     href="javascript:void(0);" @click="showQuotaBtn(d.quotation)">详情>></a></span></p>
-                    <p class="tc-2 protrude">报价说明: <span class="tc-6 fw-normal">{{ d.quotation.summary }}</span></p>
+                    <p class="tc-2 protrude">项目目标及报价说明: <span class="tc-6 fw-normal">{{ d.quotation.summary }}</span></p>
                   </div>
 
                   <div class="btn" v-if="d.item_status === 0 && d.design_company_status === 2">
@@ -195,7 +195,7 @@
                     <p>项目报价:  <span class="p-price">{{ cooperateCompany.quotation.price }} 元</span> <span class="quota-btn">&nbsp;&nbsp;<a
                     class="tc-red"
                     href="javascript:void(0);" @click="showQuotaBtn(cooperateCompany.quotation)">详情>></a></span></p>
-                    <p>报价说明:  {{ cooperateCompany.quotation.summary }}</p>
+                    <p>项目目标及报价说明:  {{ cooperateCompany.quotation.summary }}</p>
                   </div>
 
                 </div>
@@ -1324,11 +1324,11 @@ export default {
                 title: self.item.name
               },
               {
-                name: '项目类型',
+                name: '设计类型',
                 title: self.item.type_value
               },
               {
-                name: '设计类别',
+                name: '设计项目类型',
                 title: self.item.design_types_value.join(', ')
               },
               {
@@ -1336,11 +1336,11 @@ export default {
                 title: self.item.product_features
               },
               {
-                name: '产品领域',
+                name: '产品类别',
                 title: self.item.field_value
               },
               {
-                name: '所属行业',
+                name: '行业领域',
                 title: self.item.industry_value
               }
             ]
@@ -1351,11 +1351,11 @@ export default {
                 title: self.item.name
               },
               {
-                name: '项目类型',
+                name: '设计类型',
                 title: self.item.type_value
               },
               {
-                name: '设计类别',
+                name: '设计项目类型',
                 title: self.item.design_types_value.join(', ')
               },
               {
@@ -1370,11 +1370,11 @@ export default {
               title: self.item.design_cost_value
             },
             {
-              name: '项目周期',
+              name: '交付时间',
               title: self.item.cycle_value
             },
             {
-              name: '工作地点',
+              name: '项目工作地点',
               title: self.item.province_value + ', ' + self.item.city_value
             },
             {
