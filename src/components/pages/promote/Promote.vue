@@ -1600,6 +1600,17 @@
     color: rgba(255,90,95,1);
     line-height: 38px;
   }
+  .dialog-code-send:hover {
+    background-color: rgba(255,90,95,0.30);
+    border-radius: 4px;
+
+  }
+  .dialog-code-send:active {
+    background: #FF5A5F;
+  }
+  .dialog-code-text:active {
+    color: #fff;
+  }
 
 
 
