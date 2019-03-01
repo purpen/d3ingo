@@ -110,13 +110,16 @@
                   </div>
                   <div v-if="ischance" class="chance-dialog">
                     <div class="chance-content">
-                      <el-row>
+                      <el-row :gutter="60">
                         <el-col :span="5">
                           <p class="th">
                           来源渠道
                           </p>
                           <ul class="scroll-bar">
-                            <li v-for="from in optionsFrom" :key="from.value">
+                            <li v-for="from in optionsFrom" :key="from.value" v-if="from.value > 0"
+                              @click="updataform('source', from.value)"
+                              :class="{'bg-f7':chance.data.source ===from.value}"
+                              >
                               {{from.label}}
                             </li>
                           </ul>
@@ -124,7 +127,11 @@
                         <el-col :span="5">
                           <p class="th">时段</p>
                           <ul>
-                            <li v-for="date in optionsDate" :key="date.value">
+                            <li v-for="date in optionsDate" 
+                              v-if="date.value !== 0"
+                              @click="updataform('time', date.value)"
+                              :class="{'bg-f7':chance.data.time ===date.value}"
+                              :key="date.value">
                               {{date.label}}
                             </li>
                           </ul>
@@ -132,7 +139,10 @@
                         <el-col :span="4">
                           <p class="th">地区</p>
                           <ul class="scroll-bar">
-                            <li v-for="city in optionsCity" :key="city.value">
+                            <li v-for="city in optionsCity"
+                              @click="updataform('region', city.value)"
+                              :class="{'bg-f7':chance.data.region ===city.value}"
+                              :key="city.value">
                               {{city.label}}
                             </li>
                           </ul>
@@ -140,7 +150,11 @@
                         <el-col :span="5">
                           <p class="th">项目类型</p>
                           <ul>
-                            <li v-for="types in companyTypes" :key="types.value">
+                            <li v-for="types in companyTypes"
+                              v-if="types.value>0"
+                              @click="updataform('project_type', types.value)"
+                              :class="{'bg-f7':chance.data.project_type ===types.value}"
+                              :key="types.value">
                               {{types.label}}
                             </li>
                           </ul>
@@ -148,7 +162,11 @@
                         <el-col :span="5">
                           <p class="th">项目预算</p>
                           <ul>
-                            <li v-for="budget in optionsBudget" :key="budget.value">
+                            <li v-for="budget in optionsBudget"
+                              v-if="budget.value>0"
+                              @click="updataform('project_budget', budget.value)"
+                              :class="{'bg-f7':chance.data.project_budget ===budget.value}"
+                              :key="budget.value">
                               {{budget.label}}
                             </li>
                           </ul>
@@ -157,34 +175,31 @@
                     </div>
                     <div class="dialog-footer">
                       <div class="fl from-list">
-                        <span>
-                          360
-                        </span>
-                        <span>
-                          百度
-                        </span>
-                        <span>
-                          知乎
+                        <span v-for="(ff,kk) in chance.data" :key="kk" v-if="kk!=='start_time' &&kk!=='type'&&kk!=='end_time'&&parseInt(ff)!==0">
+                          {{ff}}
+                          <i @click="deleteForm(kk)"></i>
                         </span>
                       </div>
                       <div class="fr">
-                        <span>
+                        <span class="reset-btn" @click="resetAll">
                           重置条件 
                         </span>
-                        <el-button class=" full-red-button">
+                        <el-button class=" full-red-button" @click="update(1, 'chance')">
                           开始筛选
                         </el-button>
                       </div>
                     </div>
-                  </div>
+                  </div>好
                 </div>
               </div>
               <div class="chart-block fr">
                 <el-date-picker
-                  v-model="chance.time"
+                  v-model="chance.times"
                   type="daterange"
                   align="right"
                   unlink-panels
+                  @change="updateTime($event, 'chance')"
+                  value-format="yyyy-MM-dd"
                   range-separator="-"
                   start-placeholder="开始日期"
                   end-placeholder="结束日期"
@@ -297,7 +312,7 @@
                 </ul>
               </div>
               <div class='select-opt fr'>
-                <el-select v-model="customerNumber.from" placeholder="请选择">
+                <el-select v-model="customerNumber.data.source" @change="update($event, 'customerNumber')" placeholder="请选择">
                   <el-option
                     v-for="f in optionsFrom"
                     :key="f.value"
@@ -308,10 +323,12 @@
               </div>
               <div class="chart-block fr">
                 <el-date-picker
-                  v-model="customerNumber.time"
+                  v-model="customerNumber.times"
                   type="daterange"
                   align="right"
+                  @change="updateTime($event, 'customerNumber')"
                   unlink-panels
+                  value-format="yyyy-MM-dd"
                   range-separator="-"
                   start-placeholder="开始日期"
                   end-placeholder="结束日期"
@@ -346,7 +363,7 @@
                 </ul>
               </div>
               <div class='select-opt fr'>
-                <el-select v-model="place.from" placeholder="请选择">
+                <el-select v-model="place.data.source" @change="update($event, 'place')" placeholder="请选择">
                   <el-option
                     v-for="from in optionsFrom"
                     :key="from.value"
@@ -357,10 +374,12 @@
               </div>
               <div class="chart-block fr">
                 <el-date-picker
-                  v-model="place.time"
+                  v-model="place.times"
                   type="daterange"
                   align="right"
                   unlink-panels
+                  @change="updateTime($event, 'place')"
+                  value-format="yyyy-MM-dd"
                   range-separator="-"
                   start-placeholder="开始日期"
                   end-placeholder="结束日期"
@@ -388,11 +407,13 @@
                   </div>
                   <div class="chart-block fr">
                     <el-date-picker
-                      v-model="itemType.time"
+                      v-model="itemType.times"
                       type="daterange"
                       align="right"
                       unlink-panels
                       range-separator="-"
+                      @change="updateTime($event, 'itemType')"
+                      value-format="yyyy-MM-dd"
                       start-placeholder="开始日期"
                       end-placeholder="结束日期"
                       :picker-options="pickerOptions2">
@@ -415,10 +436,12 @@
                   </div>
                   <div class="chart-block fr">
                     <el-date-picker
-                      v-model="area.time"
+                      v-model="area.times"
                       type="daterange"
                       align="right"
                       unlink-panels
+                      @change="updateTime($event, 'area')"
+                      value-format="yyyy-MM-dd"
                       range-separator="-"
                       start-placeholder="开始日期"
                       end-placeholder="结束日期"
@@ -447,7 +470,7 @@
                 </ul>
               </div>
               <div class='select-opt fr'>
-                <el-select v-model="itemBudget.from" placeholder="请选择">
+                <el-select v-model="itemBudget.data.source" @change="update($event, 'itemBudget')" placeholder="请选择">
                   <el-option
                     v-for="item in optionsFrom"
                     :key="item.value"
@@ -458,11 +481,13 @@
               </div>
               <div class="chart-block fr">
                 <el-date-picker
-                  v-model="itemBudget.time"
+                  v-model="itemBudget.times"
                   type="daterange"
                   align="right"
                   unlink-panels
                   range-separator="-"
+                  @change="updateTime($event, 'itemBudget')"
+                  value-format="yyyy-MM-dd"
                   start-placeholder="开始日期"
                   end-placeholder="结束日期"
                   :picker-options="pickerOptions2">
@@ -489,18 +514,20 @@
             <div class="chart-header2">
               <div class="chart-block fl">
                 <el-date-picker
-                  v-model="allCustomer.time"
+                  v-model="allCustomer.times"
                   type="daterange"
                   align="right"
                   unlink-panels
                   range-separator="-"
                   start-placeholder="开始日期"
                   end-placeholder="结束日期"
+                  @change="updateTime($event, 'allCustomer')"
+                  value-format="yyyy-MM-dd"
                   :picker-options="pickerOptions2">
                 </el-date-picker>
               </div>
               <div class='select-opt fl'>
-                <el-select v-model="allCustomer.from" placeholder="请选择">
+                <el-select v-model="allCustomer.data.source" @change="update($event, 'allCustomer')" placeholder="请选择">
                   <el-option
                     v-for="item in optionsFrom"
                     :key="item.value+'if'"
@@ -510,7 +537,7 @@
                 </el-select>
               </div>
               <div class='select-opt fl'>
-                <el-select v-model="allCustomer.date" placeholder="请选择">
+                <el-select v-model="allCustomer.data.time" @change="update($event, 'allCustomer')" placeholder="请选择">
                   <el-option
                     v-for="date in optionsDate"
                     :key="date.value+'d'"
@@ -520,7 +547,7 @@
                 </el-select>
               </div>
               <div class='select-opt fl'>
-                <el-select v-model="allCustomer.city" placeholder="请选择">
+                <el-select v-model="allCustomer.data.region" @change="update($event, 'allCustomer')" placeholder="请选择">
                   <el-option
                     v-for="ff in optionsCity"
                     :key="ff.value+'fff'"
@@ -530,7 +557,7 @@
                 </el-select>
               </div>
               <div class='select-opt3 fl'>
-                <el-select v-model="allCustomer.type" placeholder="请选择">
+                <el-select v-model="allCustomer.data.project_type" @change="update($event, 'allCustomer')" placeholder="请选择">
                   <el-option :value="0" label="全部项目类型">
 
                   </el-option>
@@ -543,7 +570,9 @@
                 </el-select>
               </div>
               <div class='select-opt3 fl'>
-                <el-select v-model="allCustomer.budget" placeholder="请选择">
+                <el-select v-model="allCustomer.data.project_budget"
+                  @change="update($event, 'allCustomer')"
+                  placeholder="请选择">
                   <el-option
                     v-for="bud in optionsBudget"
                     :key="bud.value + 'bb'"
@@ -652,41 +681,76 @@ export default {
       ischance: false, // 全部商机弹窗
       region: REGION_DATA, // 地区
       allCustomer: {
+        data: {
+          type: 0,
+          start_time: '', // 时间范围
+          end_time: '', // 时间范围
+          time: 0, // 时段
+          region: 0, // 城市
+          source: '0', // 来自
+          project_type: 0, // 类型
+          project_budget: 0 // 预算
+        },
         isTable: false,
-        time: '', // 时间范围
-        from: 0, // 来自
-        date: 10, // 时段
-        city: 0, // 城市
-        type: 0, // 类型
-        budget: 0, // 预算
         show: false
       }, // 所有客户筛选
       chance: {
-        time: '',
+        data: {
+          type: 1,
+          start_time: '',
+          end_time: '',
+          source: 0
+        },
+        times: '',
         show: false
       }, // 商机转化
       customerNumber: {
+        data: {
+          type: 2,
+          start_time: '',
+          end_time: '',
+          source: '0'
+        },
         count: 0,
-        time: '',
-        from: 0,
+        times: '',
         show: false
       }, // 客户数量
       place: {
-        from: 0,
-        time: '',
+        data: {
+          type: 3,
+          source: '0',
+          start_time: '',
+          end_time: ''
+        },
+        times: '',
         show: false
       }, // 来源渠道
       itemType: {
-        time: '', // 项目类型时间
+        data: {
+          type: 4,
+          start_time: '',
+          end_time: ''
+        },
+        times: '', // 项目类型时间
         show: false
       }, // 项目类型
       area: {
-        time: '', // 地区时间
+        data: {
+          type: 5,
+          start_time: '',
+          end_time: ''
+        },
+        times: '', // 地区时间
         show: false
       }, // 地区
       itemBudget: {
-        from: 0,
-        time: '',
+        data: {
+          type: 6,
+          source: '0',
+          start_time: '',
+          end_time: ''
+        },
+        times: '',
         show: false
       }, // 项目预算
       polar: {
@@ -1034,26 +1098,19 @@ export default {
             name: '京东',
             type: 'bar',
             stack: '总量',
-            // label: {
-            //   formatter: '2222',
-            //   show: true,
-            //   position: 'right'
-            // },
-            data: [0, 0, 0, 0, 0, 0, 0]
-          },
-          {
-            name: '合计',
-            type: 'bar',
-            stack: '总量',
             label: {
-              normal: {
-                show: true,
-                position: 'right'
-              },
+              show: true,
+              position: 'right',
               formatter: ''
             },
             data: [0, 0, 0, 0, 0, 0, 0]
           }
+          // {
+          //   name: '合计',
+          //   type: 'bar',
+          //   stack: '总量',
+          //   data: [0, 0, 0, 0, 0, 0, 0]
+          // }
         ]
       },
       polar7: {
@@ -1208,73 +1265,73 @@ export default {
       ], // 预算
       optionsDate: [
         {
-          value: 10,
+          value: 0,
           label: '全部时段'
         },
         {
-          value: 1,
+          value: '00:00,08:00',
           label: '00:00-08:00'
         },
         {
-          value: 2,
+          value: '08:00,11:00',
           label: '08:00-11:00'
         },
         {
-          value: 3,
+          value: '11:00,14:00',
           label: '11:00-14:00'
         },
         {
-          value: 4,
+          value: '14:00,17:00',
           label: '14:00-17:00'
         },
         {
-          value: 5,
+          value: '17:00,20:00',
           label: '17:00-20:00'
         },
         {
-          value: 6,
+          value: '20:00,22:00',
           label: '20:00-22:00'
         },
         {
-          value: 7,
+          value: '22:00,24:00',
           label: '22:00-24:00'
         }
       ], // 时段
       optionsFrom: [
         {
-          value: 0,
+          value: '0',
           label: '全部来源'
         },
         {
-          value: 1,
+          value: '1',
           label: '今日头条'
         },
         {
-          value: 2,
+          value: '2',
           label: '知乎'
         },
         {
-          value: 3,
+          value: '3',
           label: '360'
         },
         {
-          value: 4,
+          value: '4',
           label: '百度'
         },
         {
-          value: 5,
+          value: '5',
           label: '官网'
         },
         {
-          value: 6,
+          value: '6',
           label: '自媒体'
         },
         {
-          value: 7,
+          value: '7',
           label: '第三方推荐'
         },
         {
-          value: 8,
+          value: '8',
           label: '京东'
         }
       ], // 客户来源
@@ -1372,6 +1429,31 @@ export default {
   },
   directives: {Clickoutside},
   methods: {
+    // 重置列表
+    resetAll() {
+      this.$set(this.chance, 'data', {
+        project_budget: 0,
+        project_type: 0,
+        region: 0,
+        time: 0,
+        source: 0,
+        end_time: '',
+        start_time: '',
+        type: 1
+      })
+    },
+    // 更新搜索条件
+    updataform(k, val) {
+      this.$set(this.chance.data, k, val)
+    },
+    // 删除更新条件
+    deleteForm(kk) {
+      if (kk !== 'time') {
+        this.$set(this.chance.data, kk, '0')
+      } else {
+        this.$set(this.chance.data, kk, 0)
+      }
+    },
     // 获取统计列表上方数据
     getClueStatistics() {
       this.$http.get(api.adminClueStatistics).then((response) => {
@@ -1385,12 +1467,36 @@ export default {
         this.$message.error(error.message)
       })
     },
-    // 搜索
-    update() {
+    // 地区搜索
+    update(val, form) {
+      if (this[form].data.type === 1) {
+        this.chance.show = false
+      }
+      this.getClueSearchStatistics(this[form].data.type, this[form].data)
+    },
+    // 日期搜索
+    updateTime(val, form) {
+      if (val) {
+        this.$set(this[form].data, 'start_time', val[0])
+        this.$set(this[form].data, 'end_time', val[1])
+      } else {
+        this.$set(this[form].data, 'start_time', null)
+        this.$set(this[form].data, 'end_time', null)
+      }
+      this.getClueSearchStatistics(this[form].data.type, this[form].data)
     },
     // 获取下方数据
-    getClueSearchStatistics(type) {
-      this.$http.get(api.adminClueSearchStatistics, {params: {type: type}}).then((response) => {
+    getClueSearchStatistics(type, from) {
+      let row = {
+        'type': type
+      }
+      if (from) {
+        row = {...from}
+        if (row.source === '0') {
+          delete row.source
+        }
+      }
+      this.$http.get(api.adminClueSearchStatistics, {params: row}).then((response) => {
         if (response.data.meta.status_code === 200) {
           let res = response.data.data
           res
@@ -1491,7 +1597,7 @@ export default {
             let zhihu6 = []
             let selfMedia6 = []
             let other6 = []
-            let alls = []
+            // let alls = 0
             for (let k in res) {
               headlines6.push(res[k].headlines)
               jd6.push(res[k].jd)
@@ -1501,7 +1607,7 @@ export default {
               zhihu6.push(res[k].zhihu)
               selfMedia6.push(res[k].self_media)
               other6.push(res[k].other)
-              alls.push(res[k].headlines + res[k].jd + res[k].qihoo360 + res[k].baidu + res[k].too_firebird + res[k].zhihu + res[k].self_media + res[k].other)
+              // alls += (res[k].headlines + res[k].jd + res[k].qihoo360 + res[k].baidu + res[k].too_firebird + res[k].zhihu + res[k].self_media + res[k].other)
             }
             this.polar6.series[0].data = headlines6
             this.polar6.series[1].data = zhihu6
@@ -1511,7 +1617,7 @@ export default {
             this.polar6.series[5].data = selfMedia6
             this.polar6.series[6].data = other6
             this.polar6.series[7].data = jd6
-            this.polar6.series[8].data = alls
+            // this.polar6.series[7].label.formatter = alls + ''
           } else if (type === 0) {
             let cumulativeList = []
             let arr = []
@@ -1750,7 +1856,7 @@ export default {
     position: relative;
     margin-right: 15px;
   }
-  .from-list span::after {
+  .from-list span i {
     content: '';
     position: absolute;
     top:-6px;
@@ -1758,8 +1864,10 @@ export default {
     width: 12px;
     height: 12px;
     display: block;
-    background: #333;
+    /* background: #333; */
     border-radius: 50%;
+    background: url('../../../assets/images/member/2x.png') no-repeat center/ contain;
+    cursor: pointer;
   }
   .edit-btn {
     padding-top: 5px;
@@ -1817,5 +1925,15 @@ export default {
   }
   .header-title>p:first-child {
     margin-bottom: 5px;
+  }
+  .bg-f7 {
+    background-color: #f7f7f7;
+  }
+  .reset-btn {
+    padding: 8px 10px;
+    cursor: pointer;
+  }
+  .reset-btn:hover {
+    color: #FF7575;
   }
 </style>
