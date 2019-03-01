@@ -386,15 +386,25 @@
         <div class="release-text margin-top-15">
           现在<span>发布需求</span>，有机会获得投资孵化，进驻<span>小米商城</span>
         </div>
-        <input type="text" placeholder="请输入您的需求" class="input-style">
-        <input type="text" placeholder="请输入联系人" class="input-style margin-top-10">
-        <input type="text" placeholder="手机号码" class="input-style margin-top-10">
-        <div class="code-round margin-top-10">
-          <input type="text" placeholder="验证码" class="code-input">
-          <div class="send-code">发送验证码</div>
-        </div>
+        <el-form @submit.native.prevent :model="form1" :rules="ruleForm" ref="ruleForm1" class="text-center">
+          <el-form-item prop="demand">
+            <input type="text" placeholder="请输入您的需求" class="input-style mar-top-20" v-model="form1.demand" name="username">
+          </el-form-item>
+          <el-form-item prop="contact">
+            <input type="text" placeholder="请输入联系人" class="input-style margin-top-10" v-model="form1.contact" ref="contact">
+          </el-form-item>
+          <el-form-item prop="account">
+            <input type="text" placeholder="手机号码" class="input-style margin-top-10" v-model="form1.account" ref="account">
+          </el-form-item>
+          <el-form-item prop="smsCode">
+            <div class="code-round margin-top-10">
+              <input type="text" placeholder="验证码" class="code-input" v-model="form1.smsCode" name="smsCode">
+              <div class="send-code" @click="fetchCode1" :disabled="time > 0">{{ codeMsg }}</div>
+            </div>
+          </el-form-item>
+        </el-form>
         <div class="send-code-btn">
-          <div class="send-code-text">立即发布需求</div>
+          <div class="send-code-text" :loading="isLoadingBtn2" @click="submit_app('ruleForm1')">立即发布需求</div>
         </div>
         <div class="new-top">
           <div class="left"></div>
@@ -463,6 +473,7 @@
         time: 0,
         calcHeight: '',
         isLoadingBtn: false,
+        isLoadingBtn2: false,
         userList: [],   // 消息列表
         form: {
           demand: '',   // 需求
@@ -470,8 +481,9 @@
           contact: ''  // 联系人
         },
         form1: {
+          demand: '',   // 需求
           account: '',  // 手机号
-          name: ''      // app 联系人
+          contact: ''  // 联系人
         },
         // swiper
         swiperOption: {
@@ -505,10 +517,6 @@
           ],
           smsCode: [
             {required: true, message: '请输入验证码', trigger: 'blur'}
-          ],
-          // app
-          name: [
-            { required: true, message: '请输入您的姓名', trigger: 'blur' }
           ]
         },
         query: {
@@ -580,12 +588,12 @@
         this.$refs[form].validate(valid => {
           if (valid) {
             let row = {
-              user_name: this.form1.name,
-              phone: this.form1.account,
-              new_form: this.$route.query.from, // 1. 小程序 2. 默认/铟果 3. 艺火 4. 360 5. 头条号 6. 优客
-              device: this.isMob ? 2 : 1, // 1.PC 2.Phone
-              from: 4,
-              url: window.location.href
+              user_name: this.form.contact, // 姓名
+              phone: this.form.account, // 手机号
+              item_name: this.form.demand, // 需求
+              source: this.query.from,
+              son_source: this.query.mark,
+              sms_code: this.form.smsCode
             }
             this.$http.post(api.pcAdd, row)
               .then(res => {
@@ -607,10 +615,12 @@
         this.$refs[form].validate(valid => {
           if (valid) {
             let row = {
-              user_name: this.form.contact, // 联系人
+              user_name: this.form.contact, // 姓名
               phone: this.form.account, // 手机号
               item_name: this.form.demand, // 需求
-              from: 2   // 小程序or网页
+              source: this.query.from,
+              son_source: this.query.mark,
+              sms_code: this.form.smsCode
             }
             if (this.isMob) {
               row.from = 4
@@ -632,13 +642,35 @@
             // this.$message.error('请填写信息')
           }
         })
+      },
+      generalize(query) {
+        this.$http.post(api.generalize, {
+          url: location.href,
+          son_source: query.mark,
+          device: this.isMob ? 2 : 1,
+          new_from: query.from
+        }).then(res => {
+          console.log(res)
+        }).catch(err => {
+          console.error(err)
+        })
+      },
+      formatQuery(query) {
+        Object.assign(this.query, query)
+        if (typeof this.query.from !== 'number') {
+          this.query.from = 5
+        }
+        if (this.query.from < 1) {
+          this.query.from = 5
+        }
       }
     },
     created () {
       /* eslint-disable */
       (function(b,a,e,h,f,c,g,s){b[h]=b[h]||function(){(b[h].c=b[h].c||[]).push(arguments)};b[h].s=!!c;g=a.getElementsByTagName(e)[0];s=a.createElement(e);s.src="//s.union.360.cn/"+f+".js";s.defer=!0;s.async=!0;g.parentNode.insertBefore(s,g)})(window,document,"script","_qha",290883,false);
       /* eslint-disable */
-      Object.assign(this.query, this.$route.query)
+      this.formatQuery(this.$route.query)
+      this.generalize(this.query)
     },
     mounted () {
       let that = this
@@ -1834,7 +1866,6 @@
     background: rgba(255,255,255,1);
     border-radius: 8px;
     border: 2px solid rgba(230,230,230,1);
-    margin-top: 20px;
     padding: 15px;
   }
   .code-round {
