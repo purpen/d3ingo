@@ -243,7 +243,7 @@
       },
       // 未认证
       notverify() {
-        this.$message.error('请先去认证 入驻铟果')
+        this.$message.error('请先去认证 入驻太火鸟')
       },
       // 编辑成果
       toUpdateUrl(id) {

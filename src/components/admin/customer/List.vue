@@ -219,7 +219,7 @@
       title="确认"
       :visible.sync="boolClueStatus"
       width="380px">
-        <p>无效客户备注原因</p>
+        <p class="line-height30">无效客户备注原因</p>
         <el-input v-model.trim="followVal" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"></el-input>
         <span slot="footer" class="dialog-footer">
           <el-button @click="boolClueStatus = false">取 消</el-button>
@@ -502,6 +502,7 @@ export default {
         if (res.data.meta.status_code === 200) {
           this.$message.success('标记成功')
           this.boolClueStatus = false
+          this.followVal = ''
           this.getClueList()
         } else {
           this.$message.error(res.data.meta.message)
