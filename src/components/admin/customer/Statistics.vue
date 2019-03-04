@@ -2144,7 +2144,7 @@ export default {
   } 
   .line-echarts {
     width: 100%;
-    height: 380px;
+    height: 350px;
   }
   .up-details {
     text-align: center;
