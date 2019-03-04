@@ -17,6 +17,7 @@
                     range-separator="-"
                     start-placeholder="开始日期"
                     end-placeholder="结束日期"
+                    unlink-panels
                     :default-time="['00:00:00', '23:59:59']"
                     @change="getDate">
                   </el-date-picker>
@@ -27,6 +28,8 @@
                   <el-option label="用户名称" value="1"></el-option>
                   <el-option label="按电话" value="2"></el-option>
                   <el-option label="按负责人" value="3"></el-option>
+                  <el-option label="来源渠道" value="4"></el-option>
+                  <el-option label="客户级别" value="5"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item style="width: 20%;">
@@ -87,8 +90,8 @@
             </el-upload>
             <!-- <el-button size="small" type="primary">批量导入</el-button> -->
             <el-button size="small" @click="exportForm">导出</el-button>
-            <el-button size="small"  @click="exportForm(2)">导出模板</el-button>
-            <el-button size="small" class="" :disabled="isAdmin < 15" @click="randomAssign = true">分配</el-button>
+            <el-button size="small"  @click="exportForm(2)">导入模板下载</el-button>
+            <el-button size="small" class="" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button>
             <el-button size="small" @click="showClueDialog">无效</el-button>
           </div>
 
@@ -98,7 +101,7 @@
             class="admin-table"
             @selection-change="handleSelectionChange"
             @filter-change="filterList"
-            @header-click="sortChange"
+            @sort-change="sortChange"
             style="width: 100%"
             :row-class-name="tableRowClassName"
             @row-click="getLookUserInfo">
@@ -108,19 +111,19 @@
             </el-table-column>
             <el-table-column
               label="编号"
-              sortable
+              sortable="custom"
               prop="number"
               width="121">
             </el-table-column>
             <el-table-column
               prop="name"
-              sortable
+              sortable="custom"
               label="姓名"
               width="80">
             </el-table-column>
             <el-table-column
               width="105"
-              sortable
+              sortable="custom"
               label="客户级别">
                  <template slot-scope="scope">
                   <el-rate
@@ -132,14 +135,14 @@
             </el-table-column>
             <el-table-column
               prop="created_at"
-              sortable
-              width="120"
+              sortable="custom"
+              width="100"
               label="创建时间">
             </el-table-column>
             
             <el-table-column
               width="95"
-              sortable
+              sortable="custom"
               label="来源渠道">
               <template slot-scope="scope">
                 <p v-if="scope.row.new_source === 1">今日头条</p>
@@ -155,20 +158,20 @@
             
             <el-table-column
               width="118"
-              sortable
+              sortable="custom"
               prop="execute_user_name"
               label="负责人">
             </el-table-column>
             
             <el-table-column
-              width="105"
-              sortable
+              width="125"
+              sortable="custom"
               label="沟通状态"
               prop="call_status_value">
             </el-table-column>
             <el-table-column
               width="105"
-              sortable
+              sortable="custom"
               label="最后跟进日">
               <template slot-scope="scope">
                 <p v-if="scope.row.end_time">{{scope.row.end_time.slice(0, 10)}}</p>
@@ -217,7 +220,7 @@
       title="确认"
       :visible.sync="boolClueStatus"
       width="380px">
-        <p>无效客户备注原因</p>
+        <p class="line-height30">无效客户备注原因</p>
         <el-input v-model.trim="followVal" type="textarea" :autosize="{ minRows: 2, maxRows: 4}"></el-input>
         <span slot="footer" class="dialog-footer">
           <el-button @click="boolClueStatus = false">取 消</el-button>
@@ -230,7 +233,7 @@
       :visible.sync="randomAssign"
       width="300px">
       <span v-if="noAllot">有{{noAllot}}个潜在用户等待分配负责人，是否确认随机分配？</span>
-      <span v-else>没有负责人待分配</span>
+      <span v-else>没有潜在用户待分配</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="randomAssign = false">取 消</el-button>
         <el-button type="primary" @click="randomAllot" :disabled="!noAllot">确 定</el-button>
@@ -260,7 +263,7 @@
       title="移除业务人员"
       :visible.sync="deleteDialogVoIpUser"
       center>
-      <span class="d-d-content">改商务成员负责{{belongIdLength}}个潜在用户, 删除商务成员后,将清空潜在客户负责人?</span>
+      <span class="d-d-content">该商务成员负责{{belongIdLength}}个潜在用户, 删除商务成员后,将清空潜在客户负责人</span>
       <div slot="footer" class="dialog-footer">
         <el-button @click="deleteDialogVoIpUser = false">取 消</el-button>
         <el-button type="primary" @click="deleteVoIpUser">确 定</el-button>
@@ -361,6 +364,7 @@ export default {
         default:
           this.query.status = 6
       }
+      this.query.page = 1
       this.getClueList()
     },
     // 多选
@@ -403,15 +407,19 @@ export default {
         const startDate = val[0].format('yyyy-MM-dd hh:mm:ss')
         const endDate = val[1].format('yyyy-MM-dd hh:mm:ss')
         this.dateArr = [startDate, endDate]
+      } else {
+        this.dateArr = ''
       }
     },
     onSearch() {
+      this.query.page = 1
       this.getClueList()
     },
     closePanel() { // 关闭潜在用户面板
       this.isAddPanel = false
     },
-    sortChange(column) { // 排序
+    sortChange({column}) { // 排序
+      if (!column) return
       switch (column.label) {
         case '编号':
           this.query.evt = 1
@@ -444,6 +452,7 @@ export default {
       if (sort === 1) {
         this.query.sort = 2
       }
+      this.query.page = 1
       this.getClueList()
     },
     getClueList() {
@@ -494,6 +503,7 @@ export default {
         if (res.data.meta.status_code === 200) {
           this.$message.success('标记成功')
           this.boolClueStatus = false
+          this.followVal = ''
           this.getClueList()
         } else {
           this.$message.error(res.data.meta.message)
@@ -506,9 +516,9 @@ export default {
       // this.$router.push({name: 'adminPotentialUserInfo', params: {id: id, name: name}})
       this.query.id = id
       this.query.name = name
-      // this.$router.push({path: `/admin/potential_user/userinfo/${id}`, query: {page: this.query.page}})
+      // this.$router.push({path: `/admin/customer/userinfo/${id}`, query: {page: this.query.page}})
       const {href} = this.$router.resolve({
-        path: `/admin/potential_user/userinfo/${id}`,
+        path: `/admin/customer/userinfo/${id}`,
         query: {page: this.query.page}
       })
       window.open(href, '_blank')
@@ -517,7 +527,7 @@ export default {
       this.query.id = id
       this.query.name = name
       const {href} = this.$router.resolve({
-        path: `/admin/potential_user/userinfo/${id}`,
+        path: `/admin/customer/userinfo/${id}`,
         query: {page: this.query.page}
       })
       window.open(href, '_blank')
@@ -725,17 +735,17 @@ export default {
   margin: 0 0 10px 0;
 }
 .select-query {
-  width: 64%;
+  width: 70%;
 }
 .select-info {
   width: 16%;
 }
 .select-data {
-  width: 206px;
+  width: 220px;
   /* margin-left: 10px; */
 }
 .admin-header-right {
-  width: 36%;
+  width: 30%;
   display: flex;
   justify-content: space-between;
 }
@@ -885,6 +895,9 @@ export default {
   border: none;
 }
 
+.admin-table {
+  cursor: pointer;
+}
 .admin-table .has-date .el-table-column--selection {
   border-left: 4px solid #FFA64B;
 }
@@ -923,5 +936,8 @@ export default {
 }
 .search-form .el-row {
   margin-bottom: 10px;
+}
+.select-data .el-range-editor--small .el-range-separator {
+  line-height: 20px;
 }
 </style>

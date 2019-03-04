@@ -1029,6 +1029,7 @@
   }
   .chart .el-input--suffix .el-input__inner {
     padding-right: 25px;
+    color: #999;
   }
   .el-picker-panel__sidebar .el-picker-panel__shortcut:hover {
     color: #ff5a5f;

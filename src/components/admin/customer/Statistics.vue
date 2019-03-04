@@ -97,7 +97,7 @@
               <div class="fr edit-btn" @blur="hideEcharts('chance')" tabindex="-1">
                 <i @click="onOff('chance')"></i>
                 <ul v-if="chance.show">
-                  <li>刷新数据</li>
+                  <li @click="updateAll('chance')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
                   <!-- <li>导出图表</li>
                   <li>不看此项</li> -->
                 </ul>
@@ -110,13 +110,16 @@
                   </div>
                   <div v-if="ischance" class="chance-dialog">
                     <div class="chance-content">
-                      <el-row>
+                      <el-row :gutter="60">
                         <el-col :span="5">
                           <p class="th">
                           来源渠道
                           </p>
                           <ul class="scroll-bar">
-                            <li v-for="from in optionsFrom" :key="from.value">
+                            <li v-for="from in optionsFrom" :key="from.value" v-if="from.value > 0"
+                              @click="updataform('source', from.value, from.label)"
+                              :class="{'bg-f7':chance.data.source ===from.value}"
+                              >
                               {{from.label}}
                             </li>
                           </ul>
@@ -124,7 +127,11 @@
                         <el-col :span="5">
                           <p class="th">时段</p>
                           <ul>
-                            <li v-for="date in optionsDate" :key="date.value">
+                            <li v-for="date in optionsDate" 
+                              v-if="date.value !== 0"
+                              @click="updataform('time', date.value, date.label)"
+                              :class="{'bg-f7':chance.data.time ===date.value}"
+                              :key="date.value">
                               {{date.label}}
                             </li>
                           </ul>
@@ -132,7 +139,10 @@
                         <el-col :span="4">
                           <p class="th">地区</p>
                           <ul class="scroll-bar">
-                            <li v-for="city in optionsCity" :key="city.value">
+                            <li v-for="city in optionsCity"
+                              @click="updataform('region', city.value, city.label)"
+                              :class="{'bg-f7':chance.data.region ===city.value}"
+                              :key="city.value">
                               {{city.label}}
                             </li>
                           </ul>
@@ -140,7 +150,11 @@
                         <el-col :span="5">
                           <p class="th">项目类型</p>
                           <ul>
-                            <li v-for="types in companyTypes" :key="types.value">
+                            <li v-for="types in companyTypes"
+                              v-if="types.value>0"
+                              @click="updataform('project_type', types.value, types.label)"
+                              :class="{'bg-f7':chance.data.project_type ===types.value}"
+                              :key="types.value">
                               {{types.label}}
                             </li>
                           </ul>
@@ -148,7 +162,11 @@
                         <el-col :span="5">
                           <p class="th">项目预算</p>
                           <ul>
-                            <li v-for="budget in optionsBudget" :key="budget.value">
+                            <li v-for="budget in optionsBudget"
+                              v-if="budget.value>0"
+                              @click="updataform('project_budget', budget.value, budget.label)"
+                              :class="{'bg-f7':chance.data.project_budget ===budget.value}"
+                              :key="budget.value">
                               {{budget.label}}
                             </li>
                           </ul>
@@ -157,21 +175,16 @@
                     </div>
                     <div class="dialog-footer">
                       <div class="fl from-list">
-                        <span>
-                          360
-                        </span>
-                        <span>
-                          百度
-                        </span>
-                        <span>
-                          知乎
+                        <span v-for="(ff, kk) in onChance" :key="kk">
+                          {{ff.label}}
+                          <i @click="deleteForm(ff)"></i>
                         </span>
                       </div>
                       <div class="fr">
-                        <span>
+                        <span class="reset-btn" @click="resetAll">
                           重置条件 
                         </span>
-                        <el-button class=" full-red-button">
+                        <el-button class="full-red-button" @click="update(1, 'chance')">
                           开始筛选
                         </el-button>
                       </div>
@@ -181,10 +194,12 @@
               </div>
               <div class="chart-block fr">
                 <el-date-picker
-                  v-model="chance.time"
+                  v-model="chance.times"
                   type="daterange"
                   align="right"
                   unlink-panels
+                  @change="updateTime($event, 'chance')"
+                  value-format="yyyy-MM-dd"
                   range-separator="-"
                   start-placeholder="开始日期"
                   end-placeholder="结束日期"
@@ -233,7 +248,7 @@
                     </el-col>
                     <el-col :span="6">
                       <p>
-                        {{chanceList.total_customer.total_conversion}}
+                        {{chanceList.total_customer.total_conversion}}%
                       </p>
                     </el-col>
                   </el-row>
@@ -255,7 +270,7 @@
                     </el-col>
                     <el-col :span="6">
                       <p>
-                        {{chanceList.total_maintain.total_conversion}}
+                        {{chanceList.total_maintain.total_conversion}}%
                       </p>
                     </el-col>
                   </el-row>
@@ -277,7 +292,7 @@
                     </el-col>
                     <el-col :span="6">
                       <p>
-                        {{chanceList.cooperation.total_conversion}}
+                        {{chanceList.cooperation.total_conversion}}%
                       </p>
                     </el-col>
                   </el-row>
@@ -291,13 +306,13 @@
               <div class="fr edit-btn" @blur="hideEcharts('customerNumber')" tabindex="-1">
                 <i @click="onOff('customerNumber')"></i>
                 <ul v-if="customerNumber.show">
-                  <li>刷新数据</li>
+                  <li @click="updateAll('customerNumber')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
                   <!-- <li>导出图表</li>
                   <li>不看此项</li> -->
                 </ul>
               </div>
               <div class='select-opt fr'>
-                <el-select v-model="customerNumber.from" placeholder="请选择">
+                <el-select v-model="customerNumber.data.source" @change="update($event, 'customerNumber')" placeholder="请选择">
                   <el-option
                     v-for="f in optionsFrom"
                     :key="f.value"
@@ -308,10 +323,12 @@
               </div>
               <div class="chart-block fr">
                 <el-date-picker
-                  v-model="customerNumber.time"
+                  v-model="customerNumber.times"
                   type="daterange"
                   align="right"
+                  @change="updateTime($event, 'customerNumber')"
                   unlink-panels
+                  value-format="yyyy-MM-dd"
                   range-separator="-"
                   start-placeholder="开始日期"
                   end-placeholder="结束日期"
@@ -319,7 +336,7 @@
                 </el-date-picker>
               </div>
               <div class='select-opt2 fr'>
-                <el-select v-model="customerNumber.count" placeholder="请选择">
+                <el-select v-model="customerNumber.count" @change="updatecustomer" placeholder="请选择">
                   <el-option
                     v-for="item in optionsCustomer"
                     :key="item.value"
@@ -340,15 +357,15 @@
               <div class="fr edit-btn" @blur="hideEcharts('place')" tabindex="-1">
                 <i @click="onOff('place')"></i>
                 <ul v-if="place.show">
-                  <li>刷新数据</li>
+                  <li @click="updateAll('place')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
                   <!-- <li>导出图表</li>
                   <li>不看此项</li> -->
                 </ul>
               </div>
               <div class='select-opt fr'>
-                <el-select v-model="place.from" placeholder="请选择">
+                <el-select v-model="place.data.time" @change="update($event, 'place')" placeholder="请选择">
                   <el-option
-                    v-for="from in optionsFrom"
+                    v-for="from in optionsDate"
                     :key="from.value"
                     :label="from.label"
                     :value="from.value">
@@ -357,10 +374,12 @@
               </div>
               <div class="chart-block fr">
                 <el-date-picker
-                  v-model="place.time"
+                  v-model="place.times"
                   type="daterange"
                   align="right"
                   unlink-panels
+                  @change="updateTime($event, 'place')"
+                  value-format="yyyy-MM-dd"
                   range-separator="-"
                   start-placeholder="开始日期"
                   end-placeholder="结束日期"
@@ -381,18 +400,20 @@
                   <div class="fr edit-btn" @blur="hideEcharts('itemType')" tabindex="-1">
                     <i @click="onOff('itemType')"></i>
                     <ul v-if="itemType.show">
-                      <li>刷新数据</li>
+                      <li @click="updateAll('itemType')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
                       <!-- <li>导出图表</li>
                       <li>不看此项</li> -->
                     </ul>
                   </div>
                   <div class="chart-block fr">
                     <el-date-picker
-                      v-model="itemType.time"
+                      v-model="itemType.times"
                       type="daterange"
                       align="right"
                       unlink-panels
                       range-separator="-"
+                      @change="updateTime($event, 'itemType')"
+                      value-format="yyyy-MM-dd"
                       start-placeholder="开始日期"
                       end-placeholder="结束日期"
                       :picker-options="pickerOptions2">
@@ -407,18 +428,20 @@
                   <span class="chart-title">地区</span>
                   <div class="fr edit-btn" @blur="hideEcharts('area')" tabindex="-1">
                     <i @click="onOff('area')"></i>
-                    <ul   v-if="area.show">
-                      <li>刷新数据</li>
+                    <ul v-if="area.show">
+                      <li @click="updateAll('area')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
                       <!-- <li>导出图表</li>
                       <li>不看此项</li> -->
                     </ul>
                   </div>
                   <div class="chart-block fr">
                     <el-date-picker
-                      v-model="area.time"
+                      v-model="area.times"
                       type="daterange"
                       align="right"
                       unlink-panels
+                      @change="updateTime($event, 'area')"
+                      value-format="yyyy-MM-dd"
                       range-separator="-"
                       start-placeholder="开始日期"
                       end-placeholder="结束日期"
@@ -441,13 +464,13 @@
               <div class="fr edit-btn" @blur="hideEcharts('itemBudget')" tabindex="-1">
                 <i @click="onOff('itemBudget')"></i>
                 <ul v-if="itemBudget.show">
-                  <li>刷新数据</li>
+                  <li @click="updateAll('itemBudget')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
                   <!-- <li>导出图表</li>
                   <li>不看此项</li> -->
                 </ul>
               </div>
               <div class='select-opt fr'>
-                <el-select v-model="itemBudget.from" placeholder="请选择">
+                <el-select v-model="itemBudget.data.source" @change="updateBudget" placeholder="请选择">
                   <el-option
                     v-for="item in optionsFrom"
                     :key="item.value"
@@ -458,11 +481,13 @@
               </div>
               <div class="chart-block fr">
                 <el-date-picker
-                  v-model="itemBudget.time"
+                  v-model="itemBudget.times"
                   type="daterange"
                   align="right"
                   unlink-panels
                   range-separator="-"
+                  @change="updateTime($event, 'itemBudget')"
+                  value-format="yyyy-MM-dd"
                   start-placeholder="开始日期"
                   end-placeholder="结束日期"
                   :picker-options="pickerOptions2">
@@ -480,7 +505,7 @@
               <div class="fr edit-btn" @blur="hideEcharts('allCustomer')" tabindex="-1">
                 <i @click="onOff('allCustomer')"></i>
                 <ul v-show="allCustomer.show">
-                  <li>刷新数据</li>
+                  <li @click="updateAll('allCustomer')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
                   <!-- <li>导出图表</li>
                   <li>不看此项</li> -->
                 </ul>
@@ -489,18 +514,20 @@
             <div class="chart-header2">
               <div class="chart-block fl">
                 <el-date-picker
-                  v-model="allCustomer.time"
+                  v-model="allCustomer.times"
                   type="daterange"
                   align="right"
                   unlink-panels
                   range-separator="-"
                   start-placeholder="开始日期"
                   end-placeholder="结束日期"
+                  @change="updateTime($event, 'allCustomer')"
+                  value-format="yyyy-MM-dd"
                   :picker-options="pickerOptions2">
                 </el-date-picker>
               </div>
               <div class='select-opt fl'>
-                <el-select v-model="allCustomer.from" placeholder="请选择">
+                <el-select v-model="allCustomer.data.source" @change="update($event, 'allCustomer')" placeholder="请选择">
                   <el-option
                     v-for="item in optionsFrom"
                     :key="item.value+'if'"
@@ -510,7 +537,7 @@
                 </el-select>
               </div>
               <div class='select-opt fl'>
-                <el-select v-model="allCustomer.date" placeholder="请选择">
+                <el-select v-model="allCustomer.data.time" @change="update($event, 'allCustomer')" placeholder="请选择">
                   <el-option
                     v-for="date in optionsDate"
                     :key="date.value+'d'"
@@ -520,7 +547,7 @@
                 </el-select>
               </div>
               <div class='select-opt fl'>
-                <el-select v-model="allCustomer.city" placeholder="请选择">
+                <el-select v-model="allCustomer.data.region" @change="update($event, 'allCustomer')" placeholder="请选择">
                   <el-option
                     v-for="ff in optionsCity"
                     :key="ff.value+'fff'"
@@ -530,7 +557,7 @@
                 </el-select>
               </div>
               <div class='select-opt3 fl'>
-                <el-select v-model="allCustomer.type" placeholder="请选择">
+                <el-select v-model="allCustomer.data.project_type" @change="update($event, 'allCustomer')" placeholder="请选择">
                   <el-option :value="0" label="全部项目类型">
 
                   </el-option>
@@ -543,7 +570,9 @@
                 </el-select>
               </div>
               <div class='select-opt3 fl'>
-                <el-select v-model="allCustomer.budget" placeholder="请选择">
+                <el-select v-model="allCustomer.data.project_budget"
+                  @change="update($event, 'allCustomer')"
+                  placeholder="请选择">
                   <el-option
                     v-for="bud in optionsBudget"
                     :key="bud.value + 'bb'"
@@ -594,6 +623,56 @@
               </el-table>
             </div>
           </div>
+          <div class="chart">
+            <div class="chart-header">
+              <div class="chart-title">
+                落地页点击统计列表
+              </div>
+            </div>
+            <div>
+              <el-table
+                :data="tableData4"
+                border
+                style="width: 100%">
+                <el-table-column
+                  prop="new_from"
+                  label="来源"
+                  >
+                </el-table-column>
+                <el-table-column
+                  prop="son_source"
+                  label="子来源">
+                </el-table-column>
+                <el-table-column
+                  prop="url"
+                  width="285"
+                  label="来源链接"
+                  >
+                </el-table-column>
+                <!-- <el-table-column
+                  prop="device"
+                  label="设备">
+                </el-table-column> -->
+                <el-table-column
+                  prop="app_count"
+                  label="app数量"
+                  >
+                </el-table-column>
+                <el-table-column
+                  prop="pc_count"
+                  label="pc端数量">
+                </el-table-column>
+                <el-table-column
+                  prop="wap_count"
+                  label="移动端数量">
+                </el-table-column>
+                <el-table-column
+                  prop="total_count"
+                  label="总数">
+                </el-table-column>
+              </el-table>
+            </div>
+          </div>
         </div>
       </el-col>
     </el-row>
@@ -616,7 +695,7 @@ export default {
     COMPANY_TYPE
   },
   data () {
-    let color2 = ['#000000', '#333333', '#666666', '#999999', '#CCCCCC', '#EEEEEE']
+    let color2 = ['#EF747D', '#C86AC4', '#6C5ADE', '#3E95EB', '#01B4BD', '#6DD3A0', '#FDD27A', '#FFA64B']
     return {
       bigStatistics: {
         rising_proportion: 0, // 上涨比例
@@ -631,6 +710,8 @@ export default {
         total_three_days: 0, // 三天未跟进客户
         yesterday_add: 0 // 昨日新增
       }, // 上方总统计
+      chanceData: [], // 商机列表
+      budgetList: [], // 项目预算
       chanceList: {
         cooperation: {
           conversion: 0,
@@ -649,47 +730,85 @@ export default {
         }
       }, // 商机列表
       type: 1, // 1:商机转化 2:客户数量 3:来源渠道 4:项目类型 5:地区 6:项目预算
+      onChance: [], // 当前的操作
       ischance: false, // 全部商机弹窗
       region: REGION_DATA, // 地区
       allCustomer: {
+        data: {
+          type: 0,
+          start_time: '', // 时间范围
+          end_time: '', // 时间范围
+          time: 0, // 时段
+          region: 0, // 城市
+          source: '0', // 来自
+          project_type: 0, // 类型
+          project_budget: 0 // 预算
+        },
+        times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
         isTable: false,
-        time: '', // 时间范围
-        from: 0, // 来自
-        date: 10, // 时段
-        city: 0, // 城市
-        type: 0, // 类型
-        budget: 0, // 预算
         show: false
       }, // 所有客户筛选
       chance: {
-        time: '',
+        data: {
+          type: 1,
+          start_time: '',
+          end_time: '',
+          source: 0
+        },
+        times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
         show: false
       }, // 商机转化
       customerNumber: {
+        data: {
+          type: 2,
+          start_time: '',
+          end_time: '',
+          source: '0'
+        },
         count: 0,
-        time: '',
-        from: 0,
+        times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
         show: false
       }, // 客户数量
       place: {
-        from: 0,
-        time: '',
+        data: {
+          type: 3,
+          time: 0,
+          start_time: '',
+          end_time: ''
+        },
+        times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
         show: false
       }, // 来源渠道
       itemType: {
-        time: '', // 项目类型时间
+        data: {
+          type: 4,
+          start_time: '',
+          end_time: ''
+        },
+        times: [new Date(new Date().getTime() - 86400000 * 30), new Date()], // 项目类型时间
         show: false
       }, // 项目类型
       area: {
-        time: '', // 地区时间
+        data: {
+          type: 5,
+          start_time: '',
+          end_time: ''
+        },
+        times: [new Date(new Date().getTime() - 86400000 * 30), new Date()], // 地区时间
         show: false
       }, // 地区
       itemBudget: {
-        from: 0,
-        time: '',
+        data: {
+          type: 6,
+          source: '0',
+          start_time: '',
+          end_time: ''
+        },
+        times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
         show: false
       }, // 项目预算
       polar: {
+        color: ['#FFCDCF', '#FF9C9F', '#FF5A5F'],
         title: {
           text: '',
           subtext: ''
@@ -720,10 +839,10 @@ export default {
               show: true,
               formatter: '{big|{b}}\n{normal|{c}}',
               position: 'inside',
-              lineHeight: 20,
+              lineHeight: 24,
               rich: {
                 big: {
-                  fontSize: 22,
+                  fontSize: 20,
                   color: '#fff'
                 },
                 normal: {
@@ -750,9 +869,9 @@ export default {
               }
             },
             data: [
-              {value: 60, name: '潜在用户', total_conversion: '0%'},
-              {value: 40, name: '对接设计', total_conversion: '0%'},
-              {value: 20, name: '签订合作', total_conversion: '0%'}
+              // {value: 60, name: '潜在用户', total_conversion: '0%'},
+              // {value: 40, name: '对接设计', total_conversion: '0%'},
+              // {value: 20, name: '签订合作', total_conversion: '0%'}
             ],
             tooltip: {
               formatter: '{b}<br />&nbsp;&nbsp;&nbsp;客户数量: {c}<br />&nbsp;&nbsp;&nbsp;转化率: {d}%'
@@ -761,7 +880,7 @@ export default {
         ]
       }, // 商机转化图
       polar2: {
-        color: ['#FF7575', '#000000', '#666666', '#999999'],
+        color: ['#FF6F7C', '#00AC84', '#FFA64B', '#999999'],
         tooltip: {
           trigger: 'axis'
         },
@@ -832,7 +951,7 @@ export default {
         ]
       }, // 客户数量图
       polar3: {
-        color: ['#3398DB'],
+        color: ['#FFCDCF'],
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -894,7 +1013,7 @@ export default {
             name: '访问来源',
             type: 'pie',
             radius: '55%',
-            center: ['50%', '40%'],
+            center: ['50%', '50%'],
             data: [
               {value: 0, name: '产品设计'},
               {value: 0, name: '平面设计'},
@@ -935,7 +1054,7 @@ export default {
             name: '访问来源',
             type: 'pie',
             radius: '55%',
-            center: ['50%', '40%'],
+            center: ['50%', '50%'],
             data: [
             ],
             tooltip: {
@@ -1034,26 +1153,19 @@ export default {
             name: '京东',
             type: 'bar',
             stack: '总量',
-            // label: {
-            //   formatter: '2222',
-            //   show: true,
-            //   position: 'right'
-            // },
-            data: [0, 0, 0, 0, 0, 0, 0]
-          },
-          {
-            name: '合计',
-            type: 'bar',
-            stack: '总量',
             label: {
-              normal: {
-                show: true,
-                position: 'right'
-              },
+              show: true,
+              position: 'right',
               formatter: ''
             },
             data: [0, 0, 0, 0, 0, 0, 0]
           }
+          // {
+          //   name: '合计',
+          //   type: 'bar',
+          //   stack: '总量',
+          //   data: [0, 0, 0, 0, 0, 0, 0]
+          // }
         ]
       },
       polar7: {
@@ -1107,67 +1219,25 @@ export default {
       },
       tableData3: [
         {
-          date: '2016-05-03',
-          name: '王小虎',
-          count: '10',
-          newCount: '5',
-          noCount: '22',
-          notCount: '33',
-          address: '10%'
-        },
+          date: '2019-09-09',
+          name: '',
+          count: '',
+          newCount: '',
+          noCount: '',
+          notCount: '',
+          address: '0%'
+        }
+      ],
+      tableData4: [
         {
-          date: '2016-05-02',
-          name: '王小虎',
-          count: '10',
-          newCount: '5',
-          noCount: '22',
-          notCount: '33',
-          address: '10%'
-        },
-        {
-          date: '2016-05-04',
-          name: '王小虎',
-          count: '10',
-          newCount: '5',
-          noCount: '22',
-          notCount: '33',
-          address: '10%'
-        },
-        {
-          date: '2016-05-01',
-          name: '王小虎',
-          count: '10',
-          newCount: '5',
-          noCount: '22',
-          notCount: '33',
-          address: '10%'
-        },
-        {
-          date: '2016-05-08',
-          name: '王小虎',
-          count: '10',
-          newCount: '5',
-          noCount: '22',
-          notCount: '33',
-          address: '10%'
-        },
-        {
-          date: '2016-05-06',
-          name: '王小虎',
-          count: '10',
-          newCount: '5',
-          noCount: '22',
-          notCount: '33',
-          address: '10%'
-        },
-        {
-          date: '2016-05-07',
-          name: '王小虎',
-          count: '10',
-          newCount: '5',
-          noCount: '22',
-          notCount: '33',
-          address: '10%'
+          app_count: 0,
+          pc_count: 0,
+          new_from: 0,
+          son_source: 0,
+          url: '',
+          wap_count: 0,
+          device: 0,
+          total_count: 0
         }
       ],
       optionsCity: [
@@ -1208,73 +1278,73 @@ export default {
       ], // 预算
       optionsDate: [
         {
-          value: 10,
+          value: 0,
           label: '全部时段'
         },
         {
-          value: 1,
+          value: '00:00,08:00',
           label: '00:00-08:00'
         },
         {
-          value: 2,
+          value: '08:00,11:00',
           label: '08:00-11:00'
         },
         {
-          value: 3,
+          value: '11:00,14:00',
           label: '11:00-14:00'
         },
         {
-          value: 4,
+          value: '14:00,17:00',
           label: '14:00-17:00'
         },
         {
-          value: 5,
+          value: '17:00,20:00',
           label: '17:00-20:00'
         },
         {
-          value: 6,
+          value: '20:00,22:00',
           label: '20:00-22:00'
         },
         {
-          value: 7,
+          value: '22:00,24:00',
           label: '22:00-24:00'
         }
       ], // 时段
       optionsFrom: [
         {
-          value: 0,
+          value: '0',
           label: '全部来源'
         },
         {
-          value: 1,
+          value: '1',
           label: '今日头条'
         },
         {
-          value: 2,
+          value: '2',
           label: '知乎'
         },
         {
-          value: 3,
+          value: '3',
           label: '360'
         },
         {
-          value: 4,
+          value: '4',
           label: '百度'
         },
         {
-          value: 5,
+          value: '5',
           label: '官网'
         },
         {
-          value: 6,
+          value: '6',
           label: '自媒体'
         },
         {
-          value: 7,
+          value: '7',
           label: '第三方推荐'
         },
         {
-          value: 8,
+          value: '8',
           label: '京东'
         }
       ], // 客户来源
@@ -1329,7 +1399,7 @@ export default {
             }
           },
           {
-            text: '过去一个月',
+            text: '过去30月',
             onClick(picker) {
               const end = new Date()
               const start = new Date()
@@ -1338,7 +1408,7 @@ export default {
             }
           },
           {
-            text: '过去三个月',
+            text: '过去90月',
             onClick(picker) {
               const end = new Date()
               const start = new Date()
@@ -1372,6 +1442,257 @@ export default {
   },
   directives: {Clickoutside},
   methods: {
+    // 筛选预算
+    updateBudget(val) {
+      let headlines6 = []
+      let jd6 = []
+      let qihoo3606 = []
+      let baidu6 = []
+      let tooFirebird6 = []
+      let zhihu6 = []
+      let selfMedia6 = []
+      let other6 = []
+      for (let k in this.budgetList) {
+        headlines6.push(this.budgetList[k].headlines)
+        jd6.push(this.budgetList[k].jd)
+        qihoo3606.push(this.budgetList[k].qihoo360)
+        baidu6.push(this.budgetList[k].baidu)
+        tooFirebird6.push(this.budgetList[k].too_firebird)
+        zhihu6.push(this.budgetList[k].zhihu)
+        selfMedia6.push(this.budgetList[k].self_media)
+        other6.push(this.budgetList[k].other)
+      }
+      let dataList = [headlines6, zhihu6, qihoo3606, baidu6, tooFirebird6, selfMedia6, other6, jd6]
+      if (parseInt(val) === 0) {
+        this.polar6.series = [
+          {
+            name: '今日头条',
+            type: 'bar',
+            stack: '总量',
+            label: {
+            },
+            data: [0, 0, 0, 0, 0, 0, 0]
+          },
+          {
+            name: '知乎',
+            type: 'bar',
+            stack: '总量',
+            label: {
+            },
+            data: [0, 0, 0, 0, 0, 0, 0]
+          },
+          {
+            name: '360',
+            type: 'bar',
+            stack: '总量',
+            label: {
+            },
+            data: [0, 0, 0, 0, 0, 0, 0]
+          },
+          {
+            name: '百度',
+            type: 'bar',
+            stack: '总量',
+            label: {
+            },
+            data: [0, 0, 0, 0, 0, 0, 0]
+          },
+          {
+            name: '官网',
+            type: 'bar',
+            stack: '总量',
+            label: {
+            },
+            data: [0, 0, 0, 0, 0, 0, 0]
+          },
+          {
+            name: '自媒体',
+            type: 'bar',
+            stack: '总量',
+            label: {
+            },
+            data: [0, 0, 0, 0, 0, 0, 0]
+          },
+          {
+            name: '第三方推荐',
+            type: 'bar',
+            stack: '总量',
+            data: [0, 0, 0, 0, 0, 0, 0]
+          },
+          {
+            name: '京东',
+            type: 'bar',
+            stack: '总量',
+            label: {
+              show: true,
+              position: 'right',
+              formatter: ''
+            },
+            data: [0, 0, 0, 0, 0, 0, 0]
+          }
+        ]
+        this.polar6.series[0].data = headlines6
+        this.polar6.series[1].data = zhihu6
+        this.polar6.series[2].data = qihoo3606
+        this.polar6.series[3].data = baidu6
+        this.polar6.series[4].data = tooFirebird6
+        this.polar6.series[5].data = selfMedia6
+        this.polar6.series[6].data = other6
+        this.polar6.series[7].data = jd6
+      } else {
+        let types = ['今日头条', '知乎', '360', '百度', '官网', '自媒体', '第三方推荐', '京东']
+        for (let p = 1; p < 9; p++) {
+          if (p === parseInt(val)) {
+            this.polar6.series[0].name = types[p - 1]
+            this.polar6.series[0].data = dataList[p - 1]
+            this.polar6.series.splice(1)
+          }
+        }
+      }
+      console.log('this.polar6.series', this.polar6.series)
+    },
+    // 筛选客户
+    updatecustomer(val) {
+      let dateList = []
+      let valueAdd = []
+      let valueCumulative = []
+      let valueInvalid = []
+      let valueLoss = []
+      if (this.chanceData.add && this.chanceData.add.length) {
+        dateList = this.chanceData.add.map(function (item) {
+          valueAdd.push(item.value)
+          return item.date
+        })
+        valueCumulative = this.chanceData.cumulative.map(function (c) {
+          return c.value
+        })
+        valueInvalid = this.chanceData.invalid.map(function (inva) {
+          return inva.value
+        })
+        valueLoss = this.chanceData.loss.map(function (l) {
+          return l.value
+        })
+      }
+      this.polar2.xAxis.data = dateList
+      if (val === 0) {
+        this.polar2.series = [
+          {
+            name: '累计客户',
+            type: 'line',
+            top: 0,
+            showSymbol: false,
+            data: []
+          },
+          {
+            name: '新增客户',
+            type: 'line',
+            top: 0,
+            showSymbol: false,
+            data: []
+          },
+          {
+            name: '无效客户',
+            type: 'line',
+            top: 0,
+            showSymbol: false,
+            data: []
+          },
+          {
+            name: '流失客户',
+            type: 'line',
+            top: 0,
+            showSymbol: false,
+            data: []
+          }
+        ]
+        this.polar2.series[0].data = valueCumulative
+        this.polar2.series[1].data = valueAdd
+        this.polar2.series[2].data = valueInvalid
+        this.polar2.series[3].data = valueLoss
+        this.polar2.legend.data = ['累计客户', '新增客户', '无效客户', '流失客户']
+      } else if (val === 1) {
+        this.polar2.series[0].data = valueCumulative
+        this.polar2.series[0].name = '累计客户'
+        this.polar2.series.splice(1)
+        this.polar2.legend.data = ['累计客户']
+      } else if (val === 2) {
+        this.polar2.series[0].data = valueAdd
+        this.polar2.series[0].name = '新增客户'
+        this.polar2.series.splice(1)
+        this.polar2.legend.data = ['新增客户']
+      } else if (val === 3) {
+        this.polar2.series[0].data = valueInvalid
+        this.polar2.series.splice(1)
+        this.polar2.series[0].name = '无效客户'
+        this.polar2.legend.data = ['无效客户']
+      } else if (val === 4) {
+        this.polar2.series[0].data = valueLoss
+        this.polar2.series.splice(1)
+        this.polar2.series[0].name = '流失客户'
+        this.polar2.legend.data = ['流失客户']
+      }
+    },
+    // 重置列表
+    resetAll() {
+      this.$set(this.chance, 'data', {
+        project_budget: 0,
+        project_type: 0,
+        region: 0,
+        time: 0,
+        source: 0,
+        end_time: '',
+        start_time: '',
+        type: 1
+      })
+      this.onChance = []
+    },
+    // 更新搜索条件
+    updataform(k, val, label) {
+      this.$set(this.chance.data, k, val)
+      if (this.onChance.length) {
+        let nameList = this.onChance.map(m => {
+          return m.name
+        })
+        if (nameList.indexOf(k) === -1) {
+          this.onChance.push({
+            'value': val,
+            'label': label,
+            'name': k
+          })
+          return
+        } else {
+          this.onChance.forEach((item, index) => {
+            if (item.name === k) {
+              item.value = val
+              item.label = label
+              this.$set(this.onChance, index, item)
+              return
+            }
+          })
+        }
+      } else {
+        this.onChance.push({
+          'value': val,
+          'label': label,
+          'name': k
+        })
+      }
+    },
+    // 删除更新条件
+    deleteForm(ff) {
+      if (ff.name === 'time') {
+        this.$set(this.chance.data, ff.name, '0')
+      } else {
+        this.$set(this.chance.data, ff.name, 0)
+      }
+      if (this.onChance.length) {
+        this.onChance.forEach((item, index) => {
+          if (item.name === ff.name) {
+            this.onChance.splice(index, 1)
+          }
+        })
+      }
+    },
     // 获取统计列表上方数据
     getClueStatistics() {
       this.$http.get(api.adminClueStatistics).then((response) => {
@@ -1385,23 +1706,153 @@ export default {
         this.$message.error(error.message)
       })
     },
-    // 搜索
-    update() {
+    // 地区搜索
+    update(val, form) {
+      if (this[form].data.type === 1) {
+        this.ischance = false
+      }
+      this.getClueSearchStatistics(this[form].data.type, this[form].data)
+    },
+    // 日期搜索
+    updateTime(val, form) {
+      if (val) {
+        this.$set(this[form].data, 'start_time', val[0])
+        this.$set(this[form].data, 'end_time', val[1])
+      } else {
+        this.$set(this[form].data, 'start_time', null)
+        this.$set(this[form].data, 'end_time', null)
+      }
+      this.getClueSearchStatistics(this[form].data.type, this[form].data)
+    },
+    // 刷新数据
+    updateAll(form) {
+      let type = 0
+      type = this[form].data.type
+      if (form === 'chance') {
+        this[form] = {
+          data: {
+            type: 1,
+            start_time: '',
+            end_time: '',
+            source: 0
+          },
+          times: '',
+          show: false
+        }
+      } else if (form === 'customerNumber') {
+        this[form] = {
+          data: {
+            type: 2,
+            start_time: '',
+            end_time: '',
+            source: '0'
+          },
+          count: 0,
+          times: '',
+          show: false
+        }
+      } else if (form === 'place') {
+        this[form] = {
+          data: {
+            type: 3,
+            time: 0,
+            start_time: '',
+            end_time: ''
+          },
+          times: '',
+          show: false
+        }
+      } else if (form === 'itemType') {
+        this[form] = {
+          data: {
+            type: 4,
+            start_time: '',
+            end_time: ''
+          },
+          times: '', // 项目类型时间
+          show: false
+        }
+      } else if (form === 'area') {
+        this[form] = {
+          data: {
+            type: 5,
+            start_time: '',
+            end_time: ''
+          },
+          times: '', // 地区时间
+          show: false
+        }
+      } else if (form === 'itemBudget') {
+        this[form] = {
+          data: {
+            type: 6,
+            source: '0',
+            start_time: '',
+            end_time: ''
+          },
+          times: '',
+          show: false
+        }
+      }
+      this.getClueSearchStatistics(type)
     },
     // 获取下方数据
-    getClueSearchStatistics(type) {
-      this.$http.get(api.adminClueSearchStatistics, {params: {type: type}}).then((response) => {
+    getClueSearchStatistics(type, from) {
+      let row = {
+        'type': type
+      }
+      if (from) {
+        row = {...from}
+        if (row.source === '0') {
+          delete row.source
+        }
+      }
+      this.$http.get(api.adminClueSearchStatistics, {params: row}).then((response) => {
         if (response.data.meta.status_code === 200) {
           let res = response.data.data
           res
           if (type === 1) {
             // 商机转化
-            this.polar.series[0].data = [
-              {name: '潜在用户', value: res.total_customer.number, total_conversion: res.total_customer.total_conversion},
-              {name: '对接设计', value: res.total_maintain.number, total_conversion: res.total_maintain.total_conversion},
-              {name: '签订合作', value: res.cooperation.number, total_conversion: res.cooperation.total_conversion}
+            console.log('res111', res)
+            let arr = [
+              {name: '潜在用户', value: 90, number: res.total_customer.number, total_maintain: res.total_customer.conversion, total_conversion: res.total_customer.total_conversion},
+              {name: '对接设计', value: 60, number: res.total_maintain.number, total_maintain: res.total_maintain.conversion, total_conversion: res.total_maintain.total_conversion},
+              {name: '签订合作', value: 30, number: res.cooperation.number, total_maintain: res.cooperation.conversion, total_conversion: res.cooperation.total_conversion}
             ]
+            let sum = 0
+            let percentALL = 100
+            arr.forEach(m => {
+              sum += m.number
+            })
+            arr.forEach((s, k) => {
+              if (s.number === 0) {
+                s.percentSum = 0
+              } else if (k === arr.length - 1) {
+                s.percentSum = percentALL
+              } else {
+                s.percentSum = (s.number / sum * 100).toFixed(2)
+                percentALL -= s.percentSum
+              }
+            })
+            this.polar.series[0].data = arr
+            this.polar.series[0].label.formatter = function(params) {
+              let par = {}
+              par = arr.find(item => {
+                return item.name === params.name
+              })
+              return '{big|' + par.name + '}\n{normal|' + par.number + '}'
+            }
+            this.polar.series[0].tooltip.formatter = function(params) {
+              let par2 = {}
+              par2 = arr.find(item2 => {
+                return item2.name === params.name
+              })
+              let radius1 = '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#FFCDCF;"></span>'
+              let radius2 = '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#FF5A5F;"></span>'
+              return par2.name + '<br />' + radius1 + '客户数量: ' + par2.number + '<br />' + radius2 + '转化率: ' + par2.percentSum + '%'
+            }
             this.chanceList = res
+            this.updatecustomer(this.chance.count)
           } else if (type === 2) {
             let dateList = []
             let valueAdd = []
@@ -1428,10 +1879,12 @@ export default {
             this.polar2.series[1].data = valueAdd
             this.polar2.series[2].data = valueInvalid
             this.polar2.series[3].data = valueLoss
+            this.chanceData = res
           } else if (type === 3) {
             // 来源渠道
             this.polar3.series[0].data = [res.headlines, res.zhihu, res.qihoo360, res.baidu, res.too_firebird, res.self_media, res.other, res.jd]
           } else if (type === 4) {
+            // 项目类型
             let object = {
               product: '产品设计',
               plane: '平面设计',
@@ -1483,35 +1936,42 @@ export default {
             this.polar5.series[0].data = seriesData
             this.polar5.legend.data = cityArr
           } else if (type === 6) {
-            let headlines6 = []
-            let jd6 = []
-            let qihoo3606 = []
-            let baidu6 = []
-            let tooFirebird6 = []
-            let zhihu6 = []
-            let selfMedia6 = []
-            let other6 = []
-            let alls = []
-            for (let k in res) {
-              headlines6.push(res[k].headlines)
-              jd6.push(res[k].jd)
-              qihoo3606.push(res[k].qihoo360)
-              baidu6.push(res[k].baidu)
-              tooFirebird6.push(res[k].too_firebird)
-              zhihu6.push(res[k].zhihu)
-              selfMedia6.push(res[k].self_media)
-              other6.push(res[k].other)
-              alls.push(res[k].headlines + res[k].jd + res[k].qihoo360 + res[k].baidu + res[k].too_firebird + res[k].zhihu + res[k].self_media + res[k].other)
+            // 项目预算
+            this.budgetList = res
+            if (this.itemBudget.data.source) {
+              console.log(this.itemBudget.data.source)
+              this.updateBudget(this.itemBudget.data.source)
+            } else {
+              let headlines6 = []
+              let jd6 = []
+              let qihoo3606 = []
+              let baidu6 = []
+              let tooFirebird6 = []
+              let zhihu6 = []
+              let selfMedia6 = []
+              let other6 = []
+              // let alls = 0
+              for (let k in res) {
+                headlines6.push(res[k].headlines)
+                jd6.push(res[k].jd)
+                qihoo3606.push(res[k].qihoo360)
+                baidu6.push(res[k].baidu)
+                tooFirebird6.push(res[k].too_firebird)
+                zhihu6.push(res[k].zhihu)
+                selfMedia6.push(res[k].self_media)
+                other6.push(res[k].other)
+                // alls += (res[k].headlines + res[k].jd + res[k].qihoo360 + res[k].baidu + res[k].too_firebird + res[k].zhihu + res[k].self_media + res[k].other)
+              }
+              this.polar6.series[0].data = headlines6
+              this.polar6.series[1].data = zhihu6
+              this.polar6.series[2].data = qihoo3606
+              this.polar6.series[3].data = baidu6
+              this.polar6.series[4].data = tooFirebird6
+              this.polar6.series[5].data = selfMedia6
+              this.polar6.series[6].data = other6
+              this.polar6.series[7].data = jd6
+              // this.polar6.series[7].label.formatter = alls + ''
             }
-            this.polar6.series[0].data = headlines6
-            this.polar6.series[1].data = zhihu6
-            this.polar6.series[2].data = qihoo3606
-            this.polar6.series[3].data = baidu6
-            this.polar6.series[4].data = tooFirebird6
-            this.polar6.series[5].data = selfMedia6
-            this.polar6.series[6].data = other6
-            this.polar6.series[7].data = jd6
-            this.polar6.series[8].data = alls
           } else if (type === 0) {
             let cumulativeList = []
             let arr = []
@@ -1554,6 +2014,27 @@ export default {
     downchance() {
       this.ischance = false
     },
+    // 落地页统计列表
+    getList() {
+      this.$http.get(api.adminGeneralizeLists).then((response) => {
+        if (response.data.meta.status_code === 200) {
+          if (response.data.data && response.data.data.length) {
+            let from = ['其他', '今日头条', '京东', '360', '百度', '官网', '知乎', '自媒体(公众号.头条号)', '其他']
+            // let device = ['', 'pc端', '移动端', 'app']
+            response.data.data.forEach(item => {
+              item.new_from = from[item.new_from]
+              // item.device = device[item.device]
+            })
+          }
+          this.tableData4 = response.data.data
+        } else {
+          this.$message.error(response.data.meta.message)
+        }
+      })
+      .catch (function (error) {
+        this.$message.error(error.message)
+      })
+    },
     // 下载
     download() {
       this.$nextTick(() => {
@@ -1561,7 +2042,6 @@ export default {
           pixelRatio: 2,
           backgroundColor: '#fff'
         })
-        console.log('img', this.imgUrl)
       })
     }
   },
@@ -1580,6 +2060,7 @@ export default {
     }
   },
   created: function() {
+    this.getList()
     this.getClueStatistics()
     for (let i = 0; i < 7; i++) {
       this.getClueSearchStatistics(i)
@@ -1700,6 +2181,7 @@ export default {
     font-size: 14px;
     margin-left: 15px;
     padding-left: 10px;
+    color: #999;
   }
   .select-chance i {
     display: inline-block;
@@ -1729,10 +2211,16 @@ export default {
   }
   .chance-content .th {
     border-bottom: 1px solid #e6e6e6;
+    color: #666;
   }
   .chance-content ul {
     height: 320px;
     overflow-y: auto;
+    color: #666;
+    cursor: pointer;
+  }
+  .chance-content li:hover {
+    background-color: #f7f7f7;
   }
   .dialog-footer {
     padding-top: 10px;
@@ -1750,7 +2238,7 @@ export default {
     position: relative;
     margin-right: 15px;
   }
-  .from-list span::after {
+  .from-list span i {
     content: '';
     position: absolute;
     top:-6px;
@@ -1758,8 +2246,10 @@ export default {
     width: 12px;
     height: 12px;
     display: block;
-    background: #333;
+    /* background: #333; */
     border-radius: 50%;
+    background: url('../../../assets/images/member/2x.png') no-repeat center/ contain;
+    cursor: pointer;
   }
   .edit-btn {
     padding-top: 5px;
@@ -1817,5 +2307,15 @@ export default {
   }
   .header-title>p:first-child {
     margin-bottom: 5px;
+  }
+  .bg-f7 {
+    background-color: #f7f7f7;
+  }
+  .reset-btn {
+    padding: 8px 10px;
+    cursor: pointer;
+  }
+  .reset-btn:hover {
+    color: #FF7575;
   }
 </style>

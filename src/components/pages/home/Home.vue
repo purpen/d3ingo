@@ -492,6 +492,15 @@
       prod() {
         return this.$store.state.event.prod
       }
+    },
+    components: {
+      swiper: (resolve) => {
+        require(['vue-awesome-swiper/src/swiper'], resolve)
+      },
+      swiperSlide: require('vue-awesome-swiper/src/slide')
+      // swiperSlide: (resolve) => {
+      //   require(['vue-awesome-swiper/src/slide'], resolve)
+      // }
     }
   }
 </script>
