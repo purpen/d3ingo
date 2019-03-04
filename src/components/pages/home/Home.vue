@@ -416,7 +416,45 @@
     data() {
       return {
         calcHeight: '',
-        solveType: 1
+        solveType: 1,
+        caseSlideList: [
+          {
+            clickUrl: 'http://d3ingo.taihuoniao.com/article/show/26',
+            company: '洒哇地咔',
+            companyLogo: require('@/assets/images/home/logo_swdk.png'),
+            title: '洒哇地咔智能拖地机器人',
+            sales: '单周销量1500台',
+            intro: '由太火鸟科技对接产品需求与设计服务，促成项目实现并通过太火鸟自媒体独家销售及独家专款产品首发，头部大号一条主推家电商品，曝光率100w＋，3个月出货量近5000台。',
+            image: require ('@/assets/images/home/case_swdk.jpg')
+          },
+          {
+            clickUrl: 'http://d3ingo.taihuoniao.com/article/show/25',
+            company: '',
+            companyLogo: require('@/assets/images/home/micoe&WOW@2x.png'),
+            title: '四季沐歌不插电的WOW净水机',
+            sales: '众筹总额高达23,134,254元',
+            intro: '众筹纪录创造者，产品由太火鸟运营众筹，3月27日众筹正式开始便展现了惊人的潜力，众筹表现38分钟众筹金额破百万、4天破千万。经过一个月的众筹，最终的众筹总额高达23,134,254元，支持人数14,804人，2313%完成众筹目标。',
+            image: require ('@/assets/images/home/micoe&WOW.jpg')
+          },
+          {
+            clickUrl: 'http://d3ingo.taihuoniao.com/article/show/24',
+            company: '小蚁',
+            companyLogo: require('@/assets/images/home/xiaoyi@2x.png'),
+            title: '小蚁智能行车记录仪',
+            sales: '众筹总额高达16,191,730元',
+            intro: '2015年，太火鸟联合小蚁智能行车记录仪的出品公司小蚁科技，在淘宝众筹首发小蚁智能行车记录仪。太火鸟社区发起“募百人首批小蚁样机体验团”试用活动，申请使用人数突破2300人，3天众筹金额突破1000万。',
+            image: require ('@/assets/images/home/yi.jpg')
+          },
+          {
+            clickUrl: 'http://d3ingo.taihuoniao.com/article/show/23',
+            company: '婴萌科技',
+            companyLogo: require('@/assets/images/home/ingmeng.png'),
+            title: '婴萌智能配奶机',
+            sales: '众筹总额超过320万人民币',
+            intro: '北京婴萌科技有限公司设计研发的智能配奶机由太火鸟全程孵化运营，配合卖点提炼、市场定位和针对性营销规划。至今产品已在淘宝众筹平台共筹集320多万人民币，649%达成众筹目标，获得3794多人支持。',
+            image: require ('@/assets/images/home/ingmeng.jpg')
+          }
+        ]
       }
     },
     mounted() {
