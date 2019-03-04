@@ -96,11 +96,11 @@
               <span class="chart-title">商机转化</span>
               <div class="fr edit-btn" @blur="hideEcharts('chance')" tabindex="-1">
                 <i @click="onOff('chance')"></i>
-                <!-- <ul v-if="chance.show">
-                  <li @click="updateAll('chance')">刷新数据</li>
-                  <li>导出图表</li>
-                  <li>不看此项</li>
-                </ul> -->
+                <ul v-if="chance.show">
+                  <li @click="updateAll('chance')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
+                  <!-- <li>导出图表</li>
+                  <li>不看此项</li> -->
+                </ul>
               </div>
               <div class="fr">
                 <div class="select-chance" v-clickoutside="downchance">
@@ -184,7 +184,7 @@
                         <span class="reset-btn" @click="resetAll">
                           重置条件 
                         </span>
-                        <el-button class=" full-red-button" @click="update(1, 'chance')">
+                        <el-button class="full-red-button" @click="update(1, 'chance')">
                           开始筛选
                         </el-button>
                       </div>
@@ -248,7 +248,7 @@
                     </el-col>
                     <el-col :span="6">
                       <p>
-                        {{chanceList.total_customer.total_conversion}}
+                        {{chanceList.total_customer.total_conversion}}%
                       </p>
                     </el-col>
                   </el-row>
@@ -270,7 +270,7 @@
                     </el-col>
                     <el-col :span="6">
                       <p>
-                        {{chanceList.total_maintain.total_conversion}}
+                        {{chanceList.total_maintain.total_conversion}}%
                       </p>
                     </el-col>
                   </el-row>
@@ -292,7 +292,7 @@
                     </el-col>
                     <el-col :span="6">
                       <p>
-                        {{chanceList.cooperation.total_conversion}}
+                        {{chanceList.cooperation.total_conversion}}%
                       </p>
                     </el-col>
                   </el-row>
@@ -305,11 +305,11 @@
               <span class="chart-title">客户数量</span>
               <div class="fr edit-btn" @blur="hideEcharts('customerNumber')" tabindex="-1">
                 <i @click="onOff('customerNumber')"></i>
-                <!-- <ul v-if="customerNumber.show">
-                  <li @click="updateAll('customerNumber')">刷新数据</li>
-                  <li>导出图表</li>
-                  <li>不看此项</li>
-                </ul> -->
+                <ul v-if="customerNumber.show">
+                  <li @click="updateAll('customerNumber')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
+                  <!-- <li>导出图表</li>
+                  <li>不看此项</li> -->
+                </ul>
               </div>
               <div class='select-opt fr'>
                 <el-select v-model="customerNumber.data.source" @change="update($event, 'customerNumber')" placeholder="请选择">
@@ -356,11 +356,11 @@
               <span class="chart-title">来源渠道</span>
               <div class="fr edit-btn" @blur="hideEcharts('place')" tabindex="-1">
                 <i @click="onOff('place')"></i>
-                <!-- <ul v-if="place.show">
-                  <li @click="updateAll('place')">刷新数据</li>
-                  <li>导出图表</li>
-                  <li>不看此项</li>
-                </ul> -->
+                <ul v-if="place.show">
+                  <li @click="updateAll('place')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
+                  <!-- <li>导出图表</li>
+                  <li>不看此项</li> -->
+                </ul>
               </div>
               <div class='select-opt fr'>
                 <el-select v-model="place.data.time" @change="update($event, 'place')" placeholder="请选择">
@@ -399,11 +399,11 @@
                   <span class="chart-title">项目类型</span>
                   <div class="fr edit-btn" @blur="hideEcharts('itemType')" tabindex="-1">
                     <i @click="onOff('itemType')"></i>
-                    <!-- <ul v-if="itemType.show">
-                      <li @click="updateAll('itemType')">刷新数据</li>
-                      <li>导出图表</li>
-                      <li>不看此项</li>
-                    </ul> -->
+                    <ul v-if="itemType.show">
+                      <li @click="updateAll('itemType')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
+                      <!-- <li>导出图表</li>
+                      <li>不看此项</li> -->
+                    </ul>
                   </div>
                   <div class="chart-block fr">
                     <el-date-picker
@@ -428,11 +428,11 @@
                   <span class="chart-title">地区</span>
                   <div class="fr edit-btn" @blur="hideEcharts('area')" tabindex="-1">
                     <i @click="onOff('area')"></i>
-                    <!-- <ul v-if="area.show">
-                      <li @click="updateAll('area')">刷新数据</li>
-                      <li>导出图表</li>
-                      <li>不看此项</li>
-                    </ul> -->
+                    <ul v-if="area.show">
+                      <li @click="updateAll('area')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
+                      <!-- <li>导出图表</li>
+                      <li>不看此项</li> -->
+                    </ul>
                   </div>
                   <div class="chart-block fr">
                     <el-date-picker
@@ -463,11 +463,11 @@
               <span class="chart-title">项目预算</span>
               <div class="fr edit-btn" @blur="hideEcharts('itemBudget')" tabindex="-1">
                 <i @click="onOff('itemBudget')"></i>
-                <!-- <ul v-if="itemBudget.show">
-                  <li @click="updateAll('itemBudget')">刷新数据</li>
-                  <li>导出图表</li>
-                  <li>不看此项</li>
-                </ul> -->
+                <ul v-if="itemBudget.show">
+                  <li @click="updateAll('itemBudget')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
+                  <!-- <li>导出图表</li>
+                  <li>不看此项</li> -->
+                </ul>
               </div>
               <div class='select-opt fr'>
                 <el-select v-model="itemBudget.data.source" @change="updateBudget" placeholder="请选择">
@@ -504,11 +504,11 @@
               <span class="chart-title">全部客户分析</span>
               <div class="fr edit-btn" @blur="hideEcharts('allCustomer')" tabindex="-1">
                 <i @click="onOff('allCustomer')"></i>
-                <!-- <ul v-show="allCustomer.show">
-                  <li @click="updateAll('allCustomer')">刷新数据</li>
-                  <li>导出图表</li>
-                  <li>不看此项</li>
-                </ul> -->
+                <ul v-show="allCustomer.show">
+                  <li @click="updateAll('allCustomer')"><span class="fz-12 fx-icon-refresh"></span>刷新数据</li>
+                  <!-- <li>导出图表</li>
+                  <li>不看此项</li> -->
+                </ul>
               </div>
             </div>
             <div class="chart-header2">
@@ -626,7 +626,7 @@
           <div class="chart">
             <div class="chart-header">
               <div class="chart-title">
-                落地页统计列表
+                落地页点击统计列表
               </div>
             </div>
             <div>
@@ -649,6 +649,10 @@
                   label="来源链接"
                   >
                 </el-table-column>
+                <!-- <el-table-column
+                  prop="device"
+                  label="设备">
+                </el-table-column> -->
                 <el-table-column
                   prop="app_count"
                   label="app数量"
@@ -660,11 +664,7 @@
                 </el-table-column>
                 <el-table-column
                   prop="wap_count"
-                  label="wap端数量">
-                </el-table-column>
-                 <el-table-column
-                  prop="device"
-                  label="设备">
+                  label="移动端数量">
                 </el-table-column>
                 <el-table-column
                   prop="total_count"
@@ -695,7 +695,7 @@ export default {
     COMPANY_TYPE
   },
   data () {
-    let color2 = ['#FF686A', '#65A6FF', '#6CE1A8', '#FFE583', '#CD6DE0', '#82C8FF', '#73D13D', '#F8E71C', '#FF5AB0', '#4EE9DF', '#6CE1A8', '#FFBB96', '#FFADD2', '#00CBCB', '#D3F261', '#D53E53', '#413385', '#129C4F', '#FFC330', '#999999']
+    let color2 = ['#EF747D', '#C86AC4', '#6C5ADE', '#3E95EB', '#01B4BD', '#6DD3A0', '#FDD27A', '#FFA64B']
     return {
       bigStatistics: {
         rising_proportion: 0, // 上涨比例
@@ -744,6 +744,7 @@ export default {
           project_type: 0, // 类型
           project_budget: 0 // 预算
         },
+        times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
         isTable: false,
         show: false
       }, // 所有客户筛选
@@ -754,7 +755,7 @@ export default {
           end_time: '',
           source: 0
         },
-        times: '',
+        times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
         show: false
       }, // 商机转化
       customerNumber: {
@@ -765,7 +766,7 @@ export default {
           source: '0'
         },
         count: 0,
-        times: '',
+        times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
         show: false
       }, // 客户数量
       place: {
@@ -775,7 +776,7 @@ export default {
           start_time: '',
           end_time: ''
         },
-        times: '',
+        times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
         show: false
       }, // 来源渠道
       itemType: {
@@ -784,7 +785,7 @@ export default {
           start_time: '',
           end_time: ''
         },
-        times: '', // 项目类型时间
+        times: [new Date(new Date().getTime() - 86400000 * 30), new Date()], // 项目类型时间
         show: false
       }, // 项目类型
       area: {
@@ -793,7 +794,7 @@ export default {
           start_time: '',
           end_time: ''
         },
-        times: '', // 地区时间
+        times: [new Date(new Date().getTime() - 86400000 * 30), new Date()], // 地区时间
         show: false
       }, // 地区
       itemBudget: {
@@ -803,10 +804,11 @@ export default {
           start_time: '',
           end_time: ''
         },
-        times: '',
+        times: [new Date(new Date().getTime() - 86400000 * 30), new Date()],
         show: false
       }, // 项目预算
       polar: {
+        color: ['#FFCDCF', '#FF9C9F', '#FF5A5F'],
         title: {
           text: '',
           subtext: ''
@@ -840,7 +842,7 @@ export default {
               lineHeight: 24,
               rich: {
                 big: {
-                  fontSize: 22,
+                  fontSize: 20,
                   color: '#fff'
                 },
                 normal: {
@@ -878,7 +880,7 @@ export default {
         ]
       }, // 商机转化图
       polar2: {
-        color: ['#FF7575', '#000000', '#666666', '#999999'],
+        color: ['#FF6F7C', '#00AC84', '#FFA64B', '#999999'],
         tooltip: {
           trigger: 'axis'
         },
@@ -949,7 +951,7 @@ export default {
         ]
       }, // 客户数量图
       polar3: {
-        color: ['#3398DB'],
+        color: ['#FFCDCF'],
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -1397,7 +1399,7 @@ export default {
             }
           },
           {
-            text: '过去一个月',
+            text: '过去30月',
             onClick(picker) {
               const end = new Date()
               const start = new Date()
@@ -1406,7 +1408,7 @@ export default {
             }
           },
           {
-            text: '过去三个月',
+            text: '过去90月',
             onClick(picker) {
               const end = new Date()
               const start = new Date()
@@ -1725,9 +1727,72 @@ export default {
     // 刷新数据
     updateAll(form) {
       let type = 0
-      type = this[form].type
-      this[form] = {
-        'type': type
+      type = this[form].data.type
+      if (form === 'chance') {
+        this[form] = {
+          data: {
+            type: 1,
+            start_time: '',
+            end_time: '',
+            source: 0
+          },
+          times: '',
+          show: false
+        }
+      } else if (form === 'customerNumber') {
+        this[form] = {
+          data: {
+            type: 2,
+            start_time: '',
+            end_time: '',
+            source: '0'
+          },
+          count: 0,
+          times: '',
+          show: false
+        }
+      } else if (form === 'place') {
+        this[form] = {
+          data: {
+            type: 3,
+            time: 0,
+            start_time: '',
+            end_time: ''
+          },
+          times: '',
+          show: false
+        }
+      } else if (form === 'itemType') {
+        this[form] = {
+          data: {
+            type: 4,
+            start_time: '',
+            end_time: ''
+          },
+          times: '', // 项目类型时间
+          show: false
+        }
+      } else if (form === 'area') {
+        this[form] = {
+          data: {
+            type: 5,
+            start_time: '',
+            end_time: ''
+          },
+          times: '', // 地区时间
+          show: false
+        }
+      } else if (form === 'itemBudget') {
+        this[form] = {
+          data: {
+            type: 6,
+            source: '0',
+            start_time: '',
+            end_time: ''
+          },
+          times: '',
+          show: false
+        }
       }
       this.getClueSearchStatistics(type)
     },
@@ -1748,11 +1813,44 @@ export default {
           res
           if (type === 1) {
             // 商机转化
-            this.polar.series[0].data = [
-              {name: '潜在用户', value: res.total_customer.number, total_conversion: res.total_customer.total_conversion},
-              {name: '对接设计', value: res.total_maintain.number, total_conversion: res.total_maintain.total_conversion},
-              {name: '签订合作', value: res.cooperation.number, total_conversion: res.cooperation.total_conversion}
+            console.log('res111', res)
+            let arr = [
+              {name: '潜在用户', value: 90, number: res.total_customer.number, total_maintain: res.total_customer.conversion, total_conversion: res.total_customer.total_conversion},
+              {name: '对接设计', value: 60, number: res.total_maintain.number, total_maintain: res.total_maintain.conversion, total_conversion: res.total_maintain.total_conversion},
+              {name: '签订合作', value: 30, number: res.cooperation.number, total_maintain: res.cooperation.conversion, total_conversion: res.cooperation.total_conversion}
             ]
+            let sum = 0
+            let percentALL = 100
+            arr.forEach(m => {
+              sum += m.number
+            })
+            arr.forEach((s, k) => {
+              if (s.number === 0) {
+                s.percentSum = 0
+              } else if (k === arr.length - 1) {
+                s.percentSum = percentALL
+              } else {
+                s.percentSum = (s.number / sum * 100).toFixed(2)
+                percentALL -= s.percentSum
+              }
+            })
+            this.polar.series[0].data = arr
+            this.polar.series[0].label.formatter = function(params) {
+              let par = {}
+              par = arr.find(item => {
+                return item.name === params.name
+              })
+              return '{big|' + par.name + '}\n{normal|' + par.number + '}'
+            }
+            this.polar.series[0].tooltip.formatter = function(params) {
+              let par2 = {}
+              par2 = arr.find(item2 => {
+                return item2.name === params.name
+              })
+              let radius1 = '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#FFCDCF;"></span>'
+              let radius2 = '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#FF5A5F;"></span>'
+              return par2.name + '<br />' + radius1 + '客户数量: ' + par2.number + '<br />' + radius2 + '转化率: ' + par2.percentSum + '%'
+            }
             this.chanceList = res
             this.updatecustomer(this.chance.count)
           } else if (type === 2) {
@@ -1922,10 +2020,10 @@ export default {
         if (response.data.meta.status_code === 200) {
           if (response.data.data && response.data.data.length) {
             let from = ['其他', '今日头条', '京东', '360', '百度', '官网', '知乎', '自媒体(公众号.头条号)', '其他']
-            let device = ['', 'pc端', '移动端', 'app']
+            // let device = ['', 'pc端', '移动端', 'app']
             response.data.data.forEach(item => {
               item.new_from = from[item.new_from]
-              item.device = device[item.device]
+              // item.device = device[item.device]
             })
           }
           this.tableData4 = response.data.data
@@ -2046,7 +2144,7 @@ export default {
   } 
   .line-echarts {
     width: 100%;
-    height: 350px;
+    height: 380px;
   }
   .up-details {
     text-align: center;
@@ -2113,10 +2211,16 @@ export default {
   }
   .chance-content .th {
     border-bottom: 1px solid #e6e6e6;
+    color: #666;
   }
   .chance-content ul {
     height: 320px;
     overflow-y: auto;
+    color: #666;
+    cursor: pointer;
+  }
+  .chance-content li:hover {
+    background-color: #f7f7f7;
   }
   .dialog-footer {
     padding-top: 10px;
