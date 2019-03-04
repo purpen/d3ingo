@@ -899,7 +899,7 @@
                           :picker-options="pickerOptions1">
                         </el-date-picker>
                     </div>
-                    <el-button class="fr" :disabled="!isHasPower" type="primary" @click="sendProgressVal">发布</el-button>
+                    <el-button class="fr" :disabled="!isHasPower" :loading="boolFollowLog" type="primary" @click="sendProgressVal">发布</el-button>
                   </div>
                 </div>
               </div>
@@ -983,6 +983,7 @@ export default {
       BoolEditUserInfo: false,
       focusHeight: false,
       BoolmarkFailure: false,
+      boolFollowLog: false,
       adminVoIpList: [], // 业务人员列表
       clientList: {},
       clientForm: {
@@ -1694,11 +1695,13 @@ export default {
         this.$message.error('请输入跟进记录')
         return
       }
+      this.boolFollowLog = true
       let row = {
         clue_id: this.currentId,
         log: this.followVal,
         next_time: ''
       }
+      this.followVal = ''
       if (this.followTime) {
         const nextTime = (new Date(this.followTime)).format('yyyy-MM-dd')
         row.next_time = nextTime
@@ -1706,9 +1709,9 @@ export default {
       this.focusHeight = false
       this.$http.post(api.adminClueAddTrackLog, row).then(res => {
         if (res.data.meta.status_code === 200) {
-          this.getLogList()
-          this.followVal = ''
+          this.boolFollowLog = false
           this.followTime = ''
+          this.getLogList()
         } else {
           this.$message.error(res.data.meta.message)
         }
