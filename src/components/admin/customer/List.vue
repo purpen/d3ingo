@@ -17,6 +17,7 @@
                     range-separator="-"
                     start-placeholder="开始日期"
                     end-placeholder="结束日期"
+                    unlink-panels
                     :default-time="['00:00:00', '23:59:59']"
                     @change="getDate">
                   </el-date-picker>
@@ -734,7 +735,7 @@ export default {
   margin: 0 0 10px 0;
 }
 .select-query {
-  width: 66%;
+  width: 70%;
 }
 .select-info {
   width: 16%;
@@ -744,7 +745,7 @@ export default {
   /* margin-left: 10px; */
 }
 .admin-header-right {
-  width: 34%;
+  width: 30%;
   display: flex;
   justify-content: space-between;
 }
