@@ -714,7 +714,6 @@
   .logo-icon img {
     width: auto;
     height: 74px;
-    margin-top: -7px;
   }
   .other .logo-icon img {
     width: auto;
