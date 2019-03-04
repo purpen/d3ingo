@@ -1323,6 +1323,7 @@ export default {
         if (index !== -1) {
           this.currentId = this.potentialIds[index + 1]
           this.getUserInfo(this.currentId)
+          this.getUserProject()
         }
       }
     },
@@ -1331,11 +1332,13 @@ export default {
         let index = this.potentialIds.indexOf(this.currentId - 0)
         if (index === 0) {
           this.$message.info('已经是第一条,返回列表页,获取最新数据')
+          this.$router.push({name: 'adminPotentialUserList'})
           return
         }
         if (index !== -1) {
           this.currentId = this.potentialIds[index - 1]
           this.getUserInfo(this.currentId)
+          this.getUserProject()
         }
       }
     },
