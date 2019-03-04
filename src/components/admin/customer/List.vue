@@ -734,7 +734,7 @@ export default {
   margin: 0 0 10px 0;
 }
 .select-query {
-  width: 66%;
+  width: 70%;
 }
 .select-info {
   width: 16%;
@@ -744,7 +744,7 @@ export default {
   /* margin-left: 10px; */
 }
 .admin-header-right {
-  width: 34%;
+  width: 30%;
   display: flex;
   justify-content: space-between;
 }

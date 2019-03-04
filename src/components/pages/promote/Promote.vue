@@ -173,8 +173,11 @@
                   </div>
                 </el-form-item>
               </div>
-              <div class="pc-send-btn-2">
-                <div class="pc-send-btn-text2" :loading="isLoadingBtn" @click="submit('ruleForm3')">立即发布需求</div>
+              <div class="pc-send-btn-2 cursor-wait" v-if="btn3">
+                <div class="pc-send-btn-text2">立即发布需求</div>
+              </div>
+              <div class="pc-send-btn-2" v-else>
+                <div class="pc-send-btn-text2" @click="submit('ruleForm3')">立即发布需求</div>
               </div>
             </div>
           </el-form>
@@ -232,7 +235,7 @@
             <div class="dialog-req">验证码</div>
             <div class="dialog-code-round">
               <el-form-item prop="smsCode">
-                <input type="text" class="dialog-code border-none" placeholder="请填写验证码" v-model="form2.smsCode" name="smsCode">
+                <input type="text" class="dialog-code" placeholder="请填写验证码" v-model="form2.smsCode" name="smsCode">
               </el-form-item>
               <div class="dialog-code-send">
                 <div class="dialog-code-text" v-if="time > 0">{{ codeMsg }}</div>
@@ -279,7 +282,8 @@
         </div>
       </el-form>
       <div class="round-btn">
-        <div class="release-btn" :loading="isLoadingBtn" @click="submit_app('ruleForm')">免费发布项目需求</div>
+        <div class="release-btn color-666" v-if="appBtn">免费发布项目需求</div>
+        <div class="release-btn" @click="submit_app('ruleForm')" v-else>免费发布项目需求</div>
       </div>
       <div class="img-round-text">太火鸟设计服务的项目</div>
       <div class="img-round">
@@ -439,8 +443,11 @@
             </div>
           </el-form-item>
         </el-form>
-        <div class="send-code-btn">
-          <div class="send-code-text" :loading="isLoadingBtn2" @click="submit_app1('ruleForm1')">立即发布需求</div>
+        <div class="send-code-btn color-666" v-if="appBtn2">
+          <div class="send-code-text">立即发布需求</div>
+        </div>
+        <div class="send-code-btn" v-else>
+          <div class="send-code-text" @click="submit_app1('ruleForm1')">立即发布需求</div>
         </div>
         <div class="new-top">
           <div class="left"></div>
@@ -509,7 +516,9 @@
         time: 0,
         calcHeight: '',
         isLoadingBtn: false,
-        isLoadingBtn2: false,
+        btn3: false,
+        appBtn: false,
+        appBtn2: false,
         userList: [],   // 消息列表
         userList2: [],
         form: {
@@ -686,17 +695,21 @@
               son_source: this.query.mark,
               sms_code: this.form3.smsCode
             }
+            this.btn3 = true
             this.$http.post(api.pcAdd, row)
               .then(res => {
                 if (res.data.meta.status_code === 200) {
                   this.$message.success('提交成功')
                   this.form3 = {}
                   this.time = 0
+                  this.btn3 = false
                 } else {
+                  this.btn3 = false
                   this.$message.error(res.data.meta.message)
                 }
               })
               .catch(error => {
+                this.btn3 = false
                 this.$message.error(error)
               })
           }
@@ -713,19 +726,23 @@
               son_source: this.query.mark,
               sms_code: this.form2.smsCode
             }
+            this.isLoadingBtn = true
             this.$http.post(api.pcAdd, row)
               .then(res => {
                 if (res.data.meta.status_code === 200) {
                   this.$message.success('提交成功')
                   this.form2 = {}
                   this.time = 0
+                  this.isLoadingBtn = false
                   this.sendReq = false
                 } else {
+                  this.isLoadingBtn = false
                   this.sendReq = false
                   this.$message.error(res.data.meta.message)
                 }
               })
               .catch(error => {
+                this.isLoadingBtn = false
                 this.sendReq = false
                 this.$message.error(error)
               })
@@ -746,17 +763,21 @@
             if (this.isMob) {
               row.from = 4
             }
+            this.appBtn = true
             this.$http.post(api.pcAdd, row)
               .then(res => {
                 if (res.data.meta.status_code === 200) {
                   this.$message.success('发布成功')
                   this.form = {}
                   this.time = 0
+                  this.appBtn = false
                 } else {
+                  this.appBtn = false
                   this.$message.error(res.data.meta.message)
                 }
               })
               .catch(error => {
+                this.appBtn = false
                 this.$message.error(error)
               })
           } else {
@@ -775,17 +796,21 @@
               son_source: this.query.mark,
               sms_code: this.form1.smsCode
             }
+            this.appBtn2 = true
             this.$http.post(api.pcAdd, row)
               .then(res => {
                 if (res.data.meta.status_code === 200) {
                   this.$message.success('提交成功')
                   this.form1 = {}
                   this.time = 0
+                  this.appBtn2 = false
                 } else {
+                  this.appBtn2 = false
                   this.$message.error(res.data.meta.message)
                 }
               })
               .catch(error => {
+                this.appBtn2 = false
                 this.$message.error(error)
               })
           }
@@ -1472,6 +1497,9 @@
     border-radius: 30px;
     margin: 0 auto;
   }
+  .cursor-wait {
+    cursor: wait
+  }
   .pc-send-btn-text2 {
     font-size: 14px;
     font-family: PingFangSC-Regular;
@@ -1672,6 +1700,9 @@
     font-weight: 400;
     color: rgba(255,255,255,1);
     letter-spacing: 1px;
+  }
+  .color-666 {
+    background-color: #c8c8c8;
   }
   .img-round-text {
     margin-top: 30px;
@@ -2182,6 +2213,9 @@
   }
   .border-none {
     border: none;
+  }
+  .color-666 {
+    background-color: #c8c8c8;
   }
 </style>
 
