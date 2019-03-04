@@ -408,6 +408,109 @@
         <div class="intro-text">立即入驻</div>
       </div>
     </div>
+    <div class="anli-round">
+      <div class="anli pad-top-60">
+        <div class="container">
+          <h3 class="anli-title">成功案例</h3>
+        </div>
+        <swiper :options="swiperOption" class="clearfix pad-top-40">
+          <swiper-slide v-for="(ele, index) in caseSlideList" :key="index" class="clearfix">
+            <div class="slide-content container">
+              <div class="slide-left">
+                <div class="slide-left_c">
+                  <p :class="['slide-company', 'slide' + index]"><img v-lazy="ele.companyLogo" :alt="ele.title" width="40px">{{ele.company}}</p>
+                  <h4 class="slide-title">{{ele.title}}</h4>
+                  <p class="slide-sales">{{ele.sales}}</p>
+                  <p class="slide-intro">{{ele.intro}}</p>
+                </div>
+              </div>
+              <a class="slide-right" :href="ele.clickUrl">
+                <img v-lazy="ele.image" :alt="ele.title">
+              </a>
+            </div>
+          </swiper-slide>
+          <div class="swiper-pagination" slot="pagination"></div>
+          <div v-if="!isMob" class="swiper-button-prev" slot="button-prev">
+            <i class="el-icon-arrow-left"></i>
+          </div>
+          <div v-if="!isMob" class="swiper-button-next" slot="button-next">
+            <i class="el-icon-arrow-right"></i>
+          </div>
+        </swiper>
+      </div>
+    </div>
+    <div class="new">
+      <div class="new-title pad-top-60">太火鸟产品创新</div>
+      <div class="pad-top-80">
+        <el-row :gutter="10">
+          <el-col :span="8">
+            <div class="new-round">
+              <div class="new-img1"></div>
+              <div class="new-text pad-top-15">专业设计服务商</div>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="new-round mar-auto">
+              <div class="new-img2"></div>
+              <div class="new-text pad-top-15">成交项目</div>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="new-round fr">
+              <div class="new-img3"></div>
+              <div class="new-text pad-top-15">成交金额</div>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+    </div>
+    <div class="security-round">
+      <div class="security pad-top-90">
+        <div class="security-text pad-top-60">服务保障</div>
+        <el-row :gutter="10">
+          <el-col :span="8">
+            <div class="security-img mar-auto">
+              <div class="security-img1"></div>
+              <div class="carry-img-title">保证交易完成</div>
+              <div class="carry-img-text">服务商未在约定工期内完成工作时，雇主有权发起维权并申请赔付，若判定成立，雇主将获得赔付（赔付由服务商的保证金赔付和服务商需退还的交易款项两部分共同构成）</div>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="security-img mar-auto">
+              <div class="security-img2"></div>
+              <div class="carry-img-title">保证原创</div>
+              <div class="carry-img-text">太火鸟平台担保版权。交易完成一年内，如设计需求方发现交易产品非原创，有权发起维权。经判定非原创事实，需求方将获得赔付。</div>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="security-img mar-auto">
+              <div class="security-img3"></div>
+              <div class="carry-img-title">版权保护</div>
+              <div class="carry-img-text">太火鸟保证设计服务供应商的产品版权，以切实有效的法律手段避免侵权事件发生。</div>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+    </div>
+    <div class="friend">
+      <div class="friend-title">合作伙伴</div>
+      <div class="friend-round pad-top-40">
+        <div class="friend-img">
+          <div class="friend-img1"></div>
+          <div class="friend-img2"></div>
+          <div class="friend-img3"></div>
+          <div class="friend-img4"></div>
+          <div class="friend-img5"></div>
+        </div>
+        <div class="friend-img pad-top-15">
+          <div class="friend-img6"></div>
+          <div class="friend-img7"></div>
+          <div class="friend-img8"></div>
+          <div class="friend-img9"></div>
+          <div class="friend-img10"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -417,16 +520,17 @@
       return {
         calcHeight: '',
         solveType: 1,
+        swiperOption: {
+          pagination: '.swiper-pagination',
+          paginationClickable: true,
+          lazyLoading: true,
+          autoplay: 5000,
+          prevButton: '.swiper-button-prev',
+          nextButton: '.swiper-button-next',
+          spaceBetween: 0,
+          loop: true
+        },
         caseSlideList: [
-          {
-            clickUrl: 'http://d3ingo.taihuoniao.com/article/show/26',
-            company: '洒哇地咔',
-            companyLogo: require('@/assets/images/home/logo_swdk.png'),
-            title: '洒哇地咔智能拖地机器人',
-            sales: '单周销量1500台',
-            intro: '由太火鸟科技对接产品需求与设计服务，促成项目实现并通过太火鸟自媒体独家销售及独家专款产品首发，头部大号一条主推家电商品，曝光率100w＋，3个月出货量近5000台。',
-            image: require ('@/assets/images/home/case_swdk.jpg')
-          },
           {
             clickUrl: 'http://d3ingo.taihuoniao.com/article/show/25',
             company: '',
@@ -494,9 +598,10 @@
       }
     },
     components: {
-      swiper: (resolve) => {
-        require(['vue-awesome-swiper/src/swiper'], resolve)
-      },
+      // swiper: (resolve) => {
+      //   require(['vue-awesome-swiper/src/swiper'], resolve)
+      // },
+      swiper: require('vue-awesome-swiper/src/swiper'),
       swiperSlide: require('vue-awesome-swiper/src/slide')
       // swiperSlide: (resolve) => {
       //   require(['vue-awesome-swiper/src/slide'], resolve)
@@ -1139,120 +1244,366 @@
   .in-img1 {
     flex: 1;
     height: 80px;
-    width: 8px;
+    width: 80px;
     background: url("../../../assets/images/new_home/home/in/01@2x.png") no-repeat center / contain;
   }
   .in-img2{
     flex: 1;
     height: 80px;
-    width: 8px;
+    width: 80px;
     background: url("../../../assets/images/new_home/home/in/02@2x.png") no-repeat center / contain;
   }
   .in-img3 {
     flex: 1;
     height: 80px;
-    width: 8px;
+    width: 80px;
     background: url("../../../assets/images/new_home/home/in/03@2x.png") no-repeat center / contain;
   }
   .in-img4 {
     flex: 1;
     height: 80px;
-    width: 8px;
+    width: 80px;
     background: url("../../../assets/images/new_home/home/in/04@2x.png") no-repeat center / contain;
   }
   .in-img5 {
     flex: 1;
     height: 80px;
-    width: 8px;
+    width: 80px;
     background: url("../../../assets/images/new_home/home/in/05@2x.png") no-repeat center / contain;
   }
   .in-img6 {
     flex: 1;
     height: 80px;
-    width: 8px;
+    width: 80px;
     background: url("../../../assets/images/new_home/home/in/06@2x.png") no-repeat center / contain;
   }
   .in-img7 {
     flex: 1;
     height: 80px;
-    width: 8px;
+    width: 80px;
     background: url("../../../assets/images/new_home/home/in/07@2x.png") no-repeat center / contain;
   }
   .in-img8 {
     flex: 1;
     height: 80px;
-    width: 8px;
+    width: 80px;
     background: url("../../../assets/images/new_home/home/in/08@2x.png") no-repeat center / contain;
   }
   .in-img9 {
     flex: 1;
     height: 80px;
-    width: 8px;
+    width: 80px;
     background: url("../../../assets/images/new_home/home/in/09@2x.png") no-repeat center / contain;
   }
   .in-img10 {
     flex: 1;
     height: 80px;
-    width: 8px;
+    width: 80px;
     background: url("../../../assets/images/new_home/home/in/10@2x.png") no-repeat center / contain;
   }
   .in-img12 {
     flex: 1;
     height: 80px;
-    width: 8px;
+    width: 80px;
     background: url("../../../assets/images/new_home/home/in/12@2x.png") no-repeat center / contain;
   }
   .in-img13 {
     flex: 1;
     height: 80px;
-    width: 8px;
+    width: 80px;
     background: url("../../../assets/images/new_home/home/in/13@2x.png") no-repeat center / contain;
   }
   .in-img14 {
     flex: 1;
     height: 80px;
-    width: 8px;
+    width: 80px;
     background: url("../../../assets/images/new_home/home/in/14@2x.png") no-repeat center / contain;
   }
   .in-img15 {
     flex: 1;
     height: 80px;
-    width: 8px;
+    width: 80px;
     background: url("../../../assets/images/new_home/home/in/15@2x.png") no-repeat center / contain;
   }
   .in-img16 {
     flex: 1;
     height: 80px;
-    width: 8px;
+    width: 80px;
     background: url("../../../assets/images/new_home/home/in/16@2x.png") no-repeat center / contain;
   }
   .in-img17 {
     flex: 1;
     height: 80px;
-    width: 8px;
+    width: 80px;
     background: url("../../../assets/images/new_home/home/in/17@2x.png") no-repeat center / contain;
   }
   .in-img18 {
     flex: 1;
     height: 80px;
-    width: 8px;
+    width: 80px;
     background: url("../../../assets/images/new_home/home/in/18@2x.png") no-repeat center / contain;
   }
   .in-img19 {
     flex: 1;
     height: 80px;
-    width: 8px;
+    width: 80px;
     background: url("../../../assets/images/new_home/home/in/19@2x.png") no-repeat center / contain;
   }
+  .anli-round {
+    min-height: 610px;
+    background: rgba(250,250,250,1);
+  }
+  .anli {
+    overflow: hidden;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .anli-title {
+    font-size: 30px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(34,34,34,1);
+    text-align: center;
+  }
+    .slide-content {
+    display: flex;
+  }
+
+  .slide-left, .slide-right {
+    /* flex: 1 0 auto; */
+    display: block;
+    width: 50%;
+    padding: 10px 15px;
+  }
+
+  .slide-left {
+    display: flex;
+    align-items: center;
+  }
+  .slide-left_c {
+    width: 100%;
+    padding-bottom: 60px;
+  }
+
+  .slide-right img {
+    width: calc(100% - 60px);
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .slide-company {
+    font-size: 18px;
+    color: #222;
+    display: flex;
+    align-items: center;
+    padding-bottom: 20px;
+
+  }
+  .slide1 img, .slide4 img {
+    height: 30px;
+    width: auto
+  }
+
+  .slide3 img {
+    height: 40px;
+    width: auto
+  }
+
+  .slide-company img{
+    padding-right: 10px;
+  }
+
+  .slide-title {
+    font-size: 30px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(34,34,34,1);
+    padding-bottom: 10px;
+  }
+
+  .slide-sales {
+    font-size: 20px;
+    font-family: PingFangSC-Light;
+    font-weight: 300;
+    color: rgba(102,102,102,1);
+    padding-bottom: 10px;
+  }
+
+  .slide-intro {
+    font-size: 16px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(34,34,34,1);
+    line-height: 24px;
+  }
+  .swiper-pagination .swiper-pagination-bullet {
+    margin-right: 8px;
+  }
+
+  .swiper-pagination-fraction,
+  .swiper-pagination-custom,
+  .swiper-container-horizontal > .swiper-pagination-bullets {
+    width: 100%;
+  }
+  .new {
+    text-align: center;
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+  .new-title {
+    font-size: 30px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(34,34,34,1);
+  }
+  .new-round {
+    max-width: 126px;
+  }
+  .new-img1 {
+    width: 106px;
+    height: 60px;
+    background: url("../../../assets/images/new_home/home/new/200@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+  }
+  .new-img2 {
+    width: 106px;
+    height: 60px;
+    background: url("../../../assets/images/new_home/home/new/130@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+  }
+  .new-img3 {
+    width: 106px;
+    height: 60px;
+    background: url("../../../assets/images/new_home/home/new/1200@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+  }
+  .new-text {
+    font-size: 18px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(34,34,34,1);
+  }
+  .security-round {
+    background: rgba(250,250,250,1);
+    margin-top: 90px;
+    height: 520px;
+  }
+  .security {
+    margin: 0 auto;
+    max-width: 1180px;
+  }
+  .security-text {
+    font-size: 30px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(34,34,34,1);
+    text-align: center;
+    padding-bottom: 65px;
+  }
+  .security-img {
+    max-width: 300px;
+    text-align: center;
+  }
+  .security-img1 {
+    height: 120px;
+    width: 120px;
+    background: url("../../../assets/images/new_home/home/carry/matching@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+  }
+  .security-img2 {
+    height: 120px;
+    width: 120px;
+    background: url("../../../assets/images/new_home/home/carry/matching@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+  }
+  .security-img3 {
+    height: 120px;
+    width: 120px;
+    background: url("../../../assets/images/new_home/home/carry/matching@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+  }
+  .friend {
+    text-align: center;
+  }
+  .friend-title {
+    font-size: 30px;
+    font-family: PingFangSC-Regular;
+    font-weight: 400;
+    color: rgba(34,34,34,1);
+    padding-top: 45px;
+  }
+  .friend-round {
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+  .friend-img {
+    display: flex;
+    justify-content: space-between;
+  }
+  .friend-img1 {
+    height: 60px;
+    width: 144px;
+    background: url("../../../assets/images/new_home/home/friend/01@2x.png") no-repeat center / contain;
+  }
+  .friend-img2 {
+    height: 60px;
+    width: 144px;
+    background: url("../../../assets/images/new_home/home/friend/02@2x.png") no-repeat center / contain;
+  }
+  .friend-img3 {
+    height: 60px;
+    width: 144px;
+    background: url("../../../assets/images/new_home/home/friend/03@2x.png") no-repeat center / contain;
+  }
+  .friend-img4 {
+    height: 60px;
+    width: 144px;
+    background: url("../../../assets/images/new_home/home/friend/04@2x.png") no-repeat center / contain;
+  }
+  .friend-img5 {
+    height: 60px;
+    width: 144px;
+    background: url("../../../assets/images/new_home/home/friend/05@2x.png") no-repeat center / contain;
+  }
+  .friend-img6 {
+    height: 60px;
+    width: 144px;
+    background: url("../../../assets/images/new_home/home/friend/06@2x.png") no-repeat center / contain;
+  }
+  .friend-img7 {
+    height: 60px;
+    width: 144px;
+    background: url("../../../assets/images/new_home/home/friend/07@2x.png") no-repeat center / contain;
+  }
+  .friend-img8 {
+    height: 60px;
+    width: 144px;
+    background: url("../../../assets/images/new_home/home/friend/08@2x.png") no-repeat center / contain;
+  }
+  .friend-img9 {
+    height: 60px;
+    width: 144px;
+    background: url("../../../assets/images/new_home/home/friend/09@2x.png") no-repeat center / contain;
+  }
+  .friend-img10 {
+    height: 60px;
+    width: 144px;
+    background: url("../../../assets/images/new_home/home/friend/10@2x.png") no-repeat center / contain;
+  }
+  
+  
 
 
 
 
 
 
-
-
-
+  .mar-auto {
+    margin: 0 auto;
+  }
+  .pad-top-80 {
+    padding-top: 80px;
+  }
   .pad-top-70 {
     padding-top: 70px;
   }
