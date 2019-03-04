@@ -570,9 +570,10 @@
       swiper: (resolve) => {
         require(['vue-awesome-swiper/src/swiper'], resolve)
       },
-      swiperSlide: (resolve) => {
-        require(['vue-awesome-swiper/src/slide'], resolve)
-      }
+      swiperSlide: require('vue-awesome-swiper/src/slide')
+      // swiperSlide: (resolve) => {
+      //   require(['vue-awesome-swiper/src/slide'], resolve)
+      // }
     }
   }
 </script>
