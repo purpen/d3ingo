@@ -282,7 +282,8 @@
         </div>
       </el-form>
       <div class="round-btn">
-        <div class="release-btn" @click="submit_app('ruleForm')">免费发布项目需求</div>
+        <div class="release-btn color-666" v-if="appBtn">免费发布项目需求</div>
+        <div class="release-btn" @click="submit_app('ruleForm')" v-else>免费发布项目需求</div>
       </div>
       <div class="img-round-text">太火鸟设计服务的项目</div>
       <div class="img-round">
@@ -442,7 +443,10 @@
             </div>
           </el-form-item>
         </el-form>
-        <div class="send-code-btn">
+        <div class="send-code-btn color-666" v-if="appBtn2">
+          <div class="send-code-text">立即发布需求</div>
+        </div>
+        <div class="send-code-btn" v-else>
           <div class="send-code-text" @click="submit_app1('ruleForm1')">立即发布需求</div>
         </div>
         <div class="new-top">
@@ -513,6 +517,8 @@
         calcHeight: '',
         isLoadingBtn: false,
         btn3: false,
+        appBtn: false,
+        appBtn2: false,
         userList: [],   // 消息列表
         userList2: [],
         form: {
@@ -757,17 +763,21 @@
             if (this.isMob) {
               row.from = 4
             }
+            this.appBtn = true
             this.$http.post(api.pcAdd, row)
               .then(res => {
                 if (res.data.meta.status_code === 200) {
                   this.$message.success('发布成功')
                   this.form = {}
                   this.time = 0
+                  this.appBtn = false
                 } else {
+                  this.appBtn = false
                   this.$message.error(res.data.meta.message)
                 }
               })
               .catch(error => {
+                this.appBtn = false
                 this.$message.error(error)
               })
           } else {
@@ -786,17 +796,21 @@
               son_source: this.query.mark,
               sms_code: this.form1.smsCode
             }
+            this.appBtn2 = true
             this.$http.post(api.pcAdd, row)
               .then(res => {
                 if (res.data.meta.status_code === 200) {
                   this.$message.success('提交成功')
                   this.form1 = {}
                   this.time = 0
+                  this.appBtn2 = false
                 } else {
+                  this.appBtn2 = false
                   this.$message.error(res.data.meta.message)
                 }
               })
               .catch(error => {
+                this.appBtn2 = false
                 this.$message.error(error)
               })
           }
@@ -1687,6 +1701,9 @@
     color: rgba(255,255,255,1);
     letter-spacing: 1px;
   }
+  .color-666 {
+    background-color: #c8c8c8;
+  }
   .img-round-text {
     margin-top: 30px;
     height: 28px;
@@ -2196,6 +2213,9 @@
   }
   .border-none {
     border: none;
+  }
+  .color-666 {
+    background-color: #c8c8c8;
   }
 </style>
 
