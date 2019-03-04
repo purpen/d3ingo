@@ -79,6 +79,7 @@
                     v-model.number="userForm.new_source"
                     size="small"
                     filterable
+                    @change="isUpdatedSource"
                     default-first-option
                     :disabled="!isHasPower"
                     >
@@ -1255,7 +1256,7 @@ export default {
     },
     isUpdatedSource(val) {
       if (!this.currentId) return
-      if (val !== this.baseInfo.source) {
+      if (val !== this.baseInfo.new_source) {
         this.updatedBaseInfo()
         if (!this.isExistArray(val, this.sourceArr)) {
           // this.getTypeList()

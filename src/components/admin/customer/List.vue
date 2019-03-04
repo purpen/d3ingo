@@ -27,6 +27,8 @@
                   <el-option label="用户名称" value="1"></el-option>
                   <el-option label="按电话" value="2"></el-option>
                   <el-option label="按负责人" value="3"></el-option>
+                  <el-option label="来源渠道" value="4"></el-option>
+                  <el-option label="客户级别" value="5"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item style="width: 20%;">
@@ -133,7 +135,7 @@
             <el-table-column
               prop="created_at"
               sortable="custom"
-              width="120"
+              width="100"
               label="创建时间">
             </el-table-column>
             
@@ -161,7 +163,7 @@
             </el-table-column>
             
             <el-table-column
-              width="105"
+              width="125"
               sortable="custom"
               label="沟通状态"
               prop="call_status_value">
@@ -404,10 +406,13 @@ export default {
         const startDate = val[0].format('yyyy-MM-dd hh:mm:ss')
         const endDate = val[1].format('yyyy-MM-dd hh:mm:ss')
         this.dateArr = [startDate, endDate]
+      } else {
+        this.dateArr = ''
       }
     },
     onSearch() {
       this.query.page = 1
+      
       this.getClueList()
     },
     closePanel() { // 关闭潜在用户面板
@@ -447,6 +452,7 @@ export default {
       if (sort === 1) {
         this.query.sort = 2
       }
+      this.query.page = 1
       this.getClueList()
     },
     getClueList() {
@@ -728,17 +734,17 @@ export default {
   margin: 0 0 10px 0;
 }
 .select-query {
-  width: 64%;
+  width: 66%;
 }
 .select-info {
   width: 16%;
 }
 .select-data {
-  width: 206px;
+  width: 220px;
   /* margin-left: 10px; */
 }
 .admin-header-right {
-  width: 36%;
+  width: 34%;
   display: flex;
   justify-content: space-between;
 }
