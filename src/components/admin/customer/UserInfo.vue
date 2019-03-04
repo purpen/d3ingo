@@ -109,7 +109,7 @@
                 </el-select>
               </div>
               <div class="call-status fl fz-14">
-                <span class="fz-14">通话状态 :</span>
+                <span class="fz-14">沟通状态 :</span>
                 <div class="call-status-select tc-2">
                   <span v-if="currentId" :class="{
                     'tc-red': userForm.new_call_status <= 8,
@@ -127,7 +127,7 @@
               </el-popover> -->
 
             </div>
-            <p class="p-label">
+            <!-- <p class="p-label">
               <span>标签</span>
               <el-tag
                   :key="i"
@@ -149,7 +149,7 @@
               </el-input>
               <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 添加标签</el-button>
               <span v-if="currentId" class="fr u-c-time">创建时间:&nbsp;&nbsp;{{createdTime}}</span>
-            </p>
+            </p> -->
           </div>
           <div class="card-body">
               <div class="card-body-header" v-if="currentId !== ''">
@@ -292,7 +292,7 @@
                   </el-row>
                 </div>
                 <p class="user-btn clearfix padding20" v-show="option === 'user'">
-                  <el-button v-if="!currentId" type="primary" class="fr" @click="submitUserForm('ruleClientForm')">生成用户
+                  <el-button v-if="!currentId" type="primary" class="fr" :loading="boolCreateUser" @click="submitUserForm('ruleClientForm')">生成用户
                   </el-button>
                   <el-button v-if="currentId && !BoolEditUserInfo" type="primary" class="fr" :disabled="!isHasPower" @click="editUserInfo">编辑
                   </el-button>
@@ -763,7 +763,7 @@
                       </el-row>
 
                     <p class="add-project-btn clearfix margin-b22">
-                      <el-button type="primary" class="fr" @click="createProjectForm('ruleProjectForm')">保存
+                      <el-button type="primary" class="fr" :loading="boolCreateProject" @click="createProjectForm('ruleProjectForm')">保存
                       </el-button>
                       <el-button class="fr" @click="boolAddProject = false">取消</el-button>
                     </p>
@@ -985,6 +985,8 @@ export default {
       focusHeight: false,
       BoolmarkFailure: false,
       boolFollowLog: false,
+      boolCreateProject: false,
+      boolCreateUser: false,
       adminVoIpList: [], // 业务人员列表
       clientList: {},
       clientForm: {
@@ -1103,9 +1105,9 @@ export default {
           label: '非常紧急'
         }
       ],
-      dynamicTags: [],
-      inputVisible: false,
-      inputValue: '',
+      // dynamicTags: [],
+      // inputVisible: false,
+      // inputValue: '',
       isFirstRegion: true,
 
       projectList: [],
@@ -1289,7 +1291,7 @@ export default {
       if (!this.currentId) return
       let row = {}
       Object.assign(row, this.userForm)
-      row.tag = this.dynamicTags.length ? this.dynamicTags : ''
+      // row.tag = this.dynamicTags.length ? this.dynamicTags : ''
       row.clue_id = this.currentId
       this.$http.post(api.adminClueUpdate, row).then(res => {
         if (res.data.meta.status_code === 200) {
@@ -1322,6 +1324,7 @@ export default {
         }
         if (index !== -1) {
           this.currentId = this.potentialIds[index + 1]
+          this.option = 'followLog'
           this.getUserInfo(this.currentId)
           this.getUserProject()
         }
@@ -1337,6 +1340,7 @@ export default {
         }
         if (index !== -1) {
           this.currentId = this.potentialIds[index - 1]
+          this.option = 'followLog'
           this.getUserInfo(this.currentId)
           this.getUserProject()
         }
@@ -1371,11 +1375,11 @@ export default {
             new_call_status: data.new_call_status || ''
           }
           this.createdTime = data.created_at.date_format().format('yyyy-MM-dd hh:mm:ss')
-          if (data.tag.length === 1 && data.tag[0] === '') {
-            this.dynamicTags.length = 0
-          } else {
-            this.dynamicTags = data.tag
-          }
+          // if (data.tag.length === 1 && data.tag[0] === '') {
+          //   this.dynamicTags.length = 0
+          // } else {
+          //   this.dynamicTags = data.tag
+          // }
           this.clientForm = {
             company: data.company,
             name: data.name,
@@ -1443,33 +1447,33 @@ export default {
       this.$set(this.projectForm, 'item_province', obj.province)
       this.$set(this.projectForm, 'item_city', obj.city)
     },
-    handleClose(tag) { // 关闭标签是触发事件
-      this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
-      this.updatedBaseInfo()
-    },
-    showInput() {
-      this.inputVisible = true
-      this.$nextTick(_ => {
-        this.$refs.saveTagInput.$refs.input.focus()
-      })
-    },
-    handleInputConfirm() {
-      let inputValue = this.inputValue
-      if (inputValue) {
-        if (inputValue.length > 7) {
-          this.$message.error('标签最长输入7个字')
-          return
-        }
-        if (this.dynamicTags.length >= 5) {
-          this.$message.warning('最多只能添加5个标签')
-        } else {
-          this.dynamicTags.push(inputValue)
-          this.updatedBaseInfo()
-        }
-      }
-      this.inputVisible = false
-      this.inputValue = ''
-    },
+    // handleClose(tag) { // 关闭标签是触发事件
+    //   this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1)
+    //   this.updatedBaseInfo()
+    // },
+    // showInput() {
+    //   this.inputVisible = true
+    //   this.$nextTick(_ => {
+    //     this.$refs.saveTagInput.$refs.input.focus()
+    //   })
+    // },
+    // handleInputConfirm() {
+    //   let inputValue = this.inputValue
+    //   if (inputValue) {
+    //     if (inputValue.length > 7) {
+    //       this.$message.error('标签最长输入7个字')
+    //       return
+    //     }
+    //     if (this.dynamicTags.length >= 5) {
+    //       this.$message.warning('最多只能添加5个标签')
+    //     } else {
+    //       this.dynamicTags.push(inputValue)
+    //       this.updatedBaseInfo()
+    //     }
+    //   }
+    //   this.inputVisible = false
+    //   this.inputValue = ''
+    // },
     submitUserForm() { // 生成用户
       if (!this.userForm.name) {
         this.$message.error('请填写联系人姓名')
@@ -1491,11 +1495,13 @@ export default {
         this.$message.error('子来源最多10个字符')
         return
       }
+      this.boolCreateUser = true
       let row = Object.assign({}, this.clientForm, this.userForm)
-      row.tag = this.dynamicTags.length ? this.dynamicTags : ''
+      // row.tag = this.dynamicTags.length ? this.dynamicTags : ''
       this.$http.post(api.adminClueCreate, row).then(res => {
         if (res.data.meta.status_code === 200) {
           this.$message.success(res.data.meta.message)
+          this.boolCreateUser = false
           this.$router.push({name: 'adminPotentialUserList'})
         } else {
           this.$message.error(res.data.meta.message)
@@ -1551,6 +1557,7 @@ export default {
             this.$message.error('请选择项目需求类边')
             return
           }
+          this.boolCreateProject = true
           let row = { // 传空字段
             summary: this.projectForm.summary || '',
             type: this.projectForm.type || '',
@@ -1600,6 +1607,7 @@ export default {
           this.getUserProject()
           this.getUserInfo()
           this.boolAddProject = false
+          this.boolCreateProject = false
         } else {
           this.$message.error(res.data.meta.message)
         }
