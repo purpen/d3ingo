@@ -1046,6 +1046,10 @@
     width: 100%;
   }
 
+  .three-serve .el-row--flex.is-align-middle {
+    justify-content: center;
+  }
+
 }
 .el-pager li:hover,
 .el-pager li.active {
