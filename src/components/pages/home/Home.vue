@@ -19,20 +19,20 @@
       <div class="header-bot">
         <div class="header-bot-left">受到500+企业信赖</div>
         <div class="header-bot-right">
-          <el-row :gutter="15" align="middle" class="header-row" type="flex" >
-            <el-col :xs="8" :md="4">
+          <el-row align="middle" class="header-row" type="flex">
+            <el-col :xs="8" :md="4" class="phone-pad-rig-5">
               <div class="bot-right-img1"></div>
             </el-col>
-            <el-col :xs="8" :md="4">
+            <el-col :xs="8" :md="4" class="phone-pad-rig-5">
               <div class="bot-right-img2"></div>
             </el-col>
             <el-col :xs="8" :md="4">
               <div class="bot-right-img3"></div>
             </el-col>
-            <el-col :xs="8" :md="4">
+            <el-col :xs="8" :md="4" class="phone-pad-rig-5">
               <div class="bot-right-img4"></div>
             </el-col>
-            <el-col :xs="8" :md="4">
+            <el-col :xs="8" :md="4" class="phone-pad-rig-5">
               <div class="bot-right-img5"></div>
             </el-col>
             <el-col :xs="8" :md="4">
@@ -153,7 +153,7 @@
           <div class="solve-datail" v-show="solveType === 1">
             <div class="solve-datail-text">链接制造企业/品牌方/创业团队/流量平台等有设计创新需求的利益相关方，与平台上1000+顶尖设计服务商进行精准匹配，提供高效的AI-D产品创新引擎协助项目精准定义，帮助创新项目从0到1的快速启动。</div>
             <div class="solve-img-round pad-top-60">
-              <el-row :gutter="10">
+              <el-row>
                 <el-col :xs="12" :sm="6">
                   <div class="solve-img">
                     <div class="solve-img1"></div>
@@ -429,7 +429,7 @@
     <div class="in">
       <div class="in-title">入驻设计服务供应商</div>
       <div class="in-round pad-top-60">
-        <el-row :gutter="10">
+        <el-row>
           <el-col :xs="8" :sm="4">
             <div class="in-img1"></div>
           </el-col>
@@ -526,7 +526,7 @@
     <div class="new">
       <div class="new-title pad-top-60">太火鸟产品创新</div>
       <div class="pad-top-80">
-        <el-row :gutter="10">
+        <el-row>
           <el-col :span="8">
             <div class="new-round">
               <div class="new-img1"></div>
@@ -551,7 +551,7 @@
     <div class="security-round">
       <div class="security pad-top-90">
         <div class="security-text pad-top-60">服务保障</div>
-        <el-row :gutter="10">
+        <el-row>
           <el-col :xs="24" :sm="8">
             <div class="security-img mar-auto mar-top-10">
               <div class="security-img1"></div>
@@ -1924,6 +1924,9 @@
     }
     .fri-img-round {
       width: 50%
+    }
+    .phone-pad-rig-5 {
+      padding-right: 5px;
     }
   }
 </style>
