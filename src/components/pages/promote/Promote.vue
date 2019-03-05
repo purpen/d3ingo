@@ -831,10 +831,10 @@
       formatQuery(query) {
         Object.assign(this.query, query)
         if (typeof this.query.from !== 'number') {
-          this.query.from = 5
+          this.query.from = 0
         }
-        if (this.query.from < 1) {
-          this.query.from = 5
+        if (this.query.from < 0) {
+          this.query.from = 0
         }
       }
     },

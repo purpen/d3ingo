@@ -459,7 +459,9 @@
                             <p v-if="!boolEditProject || currentProjectId !== item.item_id">
                               <span>项目工作地点: </span>{{item.item_province_value}}{{item.item_city_value}}
                             </p>
-                            <div v-show="boolEditProject && currentProjectId === item.item_id">
+                            <div v-if="boolEditProject && currentProjectId === item.item_id">
+                              item_province{{projectForm.item_province}}
+                              item_city{{projectForm.item_city}}
                               <region-picker  :provinceProp="projectForm.item_province"
                                   :cityProp="projectForm.item_city" propStyle="margin:0;"
                                   :isFirstProp="isFirstRegion" titleProp="项目工作地点"
@@ -744,8 +746,8 @@
                           </el-form-item>
                         </el-col>
                         <el-col :xs="24" :sm="16" :md="16" :lg="16">
-                          <region-picker :provinceProp="clientForm.province" 
-                                :cityProp="clientForm.city" propStyle="margin:0;"
+                          <region-picker :provinceProp="projectForm.item_province" 
+                                :cityProp="projectForm.item_city" propStyle="margin:0;"
                                 :isFirstProp="isFirstRegion" titleProp="项目工作地点"
                                 @onchange="changeProject" class="margin-b22"
                                 :twoSelect="true"
@@ -1770,7 +1772,6 @@ export default {
       }
       const id = d.item_id
       if (d && id) {
-        this.boolEditProject = true
         this.currentProjectId = id
         this.projectList.forEach(item => {
           if (item.item_id === id) {
@@ -1785,6 +1786,7 @@ export default {
             this.$set(this.projectForm, 'industry', d.industry)
           }
         })
+        this.boolEditProject = true
       }
     },
     markProjectFailure(id) { // 标记项目失败
