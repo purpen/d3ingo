@@ -72,7 +72,7 @@
           <div class="btn-list">
             <el-button size="small"
               @click="$router.push({name: 'adminPotentialUserCreated'})" 
-              class="">添加客户</el-button>
+              class="white-to-red-button">添加客户</el-button>
             <el-button size="small" @click="showDialogVoIpUser">添加商务成员</el-button>
             <el-upload
               class="upload-demo"
@@ -88,7 +88,6 @@
               <!-- <span class="upload-file">批量导入</span> -->
               <el-button size="small" >批量导入</el-button>
             </el-upload>
-            <!-- <el-button size="small" type="primary">批量导入</el-button> -->
             <el-button size="small" @click="exportForm">导出</el-button>
             <el-button size="small"  @click="exportForm(2)">导入模板下载</el-button>
             <el-button size="small" class="" :disabled="isAdmin < 15" @click="randomAssign = true">随机分配</el-button>
