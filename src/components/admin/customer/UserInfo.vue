@@ -1323,6 +1323,7 @@ export default {
         if (index === 49) {
           this.$message.info('返回列表页,获取最新数据')
           this.$router.push({name: 'adminPotentialUserList'})
+          return
         }
         if (index !== -1) {
           this.currentId = this.potentialIds[index + 1]

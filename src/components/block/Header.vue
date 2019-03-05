@@ -17,12 +17,12 @@
               <el-menu-item index="/innovation_index" :route="menu.innovation_index">创新指数</el-menu-item>
               <el-menu-item index="/trade_fairs" :route="menu.home_page" v-if="!token">成果交易会</el-menu-item>
               <el-menu-item index="/trade_fairs" :route="menu.demand_login" v-if="token">成果交易会</el-menu-item> -->
-              <a class="el-menu-item logo">
+              <a class="el-menu-item logo cursor-def">
                 <img :src="custom.logo" :alt="custom.info">
                 <span class="logo-text">设计交易</span>
               </a>
               <el-menu-item index="/home" :route="menu.home">首页</el-menu-item>
-              <el-menu-item index="/commonly_sites" :route="menu.commonly_sites">设计案例</el-menu-item>
+              <el-menu-item index="/commonly_sites" :route="menu.design_general_list">设计案例</el-menu-item>
               <el-menu-item index="/commonly_sites" :route="menu.commonly_sites">设计服务商入驻</el-menu-item>
               <el-menu-item index="/innovation_index" :route="menu.innovation_index">创新指数</el-menu-item>
               <el-menu-item index="/trade_fairs" :route="menu.home_page" v-if="!token">成果交易会</el-menu-item>
@@ -125,7 +125,7 @@
               <router-link :to="menu.innovation_index">创新指数</router-link>
             </li> -->
             <li @click="closeMenu">
-              <router-link :to="menu.innovation_index">设计案例</router-link>
+              <router-link :to="menu.design_general_list">设计案例</router-link>
             </li>
             <li @click="closeMenu" v-show="!isLogin">
               <router-link :to="menu.design">设计服务商入驻</router-link>
@@ -267,7 +267,7 @@
               <router-link :to="menu.commonly_sites">设计工具</router-link>
             </li> -->
             <li @click="closeMenu">
-              <router-link :to="menu.innovation_index">设计案例</router-link>
+              <router-link :to="menu.design_general_list">设计案例</router-link>
             </li>
             <li @click="closeMenu" v-show="!isLogin">
               <router-link :to="menu.design">设计服务商入驻</router-link>
@@ -331,6 +331,7 @@
           home_page: {path: '/shunde/trade_fairs/home_page'}, // 交易会未登录首页
           demand_login: {path: '/shunde/trade_fairs/demand_login'}, // 交易会登录后首页
           mobile_login: {path: '/shunde/trade_fairs/trade_fairs_mobile/mobile_login'}, // 交易会移动端首页
+          design_general_list: {path: '/design_case/general_list'},
           // demand_login: {path: '/shunde/trade_fairs/saleResult/workDatails'},
           // design_case: {path: '/design_case/general_list'},
           // commonly_sites: {path: '/vcenter/commonly_sites'},

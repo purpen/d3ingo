@@ -938,6 +938,9 @@
   .dl-body-center .el-dialog__body{
     text-align: center;
   }
+  .nav-header .cursor-def {
+    cursor: default;
+  }
   /*推广页*/
   .input-phone input {
     height: 50px;

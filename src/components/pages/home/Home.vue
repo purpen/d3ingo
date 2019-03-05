@@ -10,7 +10,7 @@
             <router-link to="/item/submit_one">免费发布项目需求</router-link>
           </div>
           <div class="draw">
-            <img :src="require('assets/images/new_home/home/Illustration@2x.png')" width="90%" height="auto" alt="">
+            <img :src="require('assets/images/new_home/home/BGheader@2x.png')" width="100%" height="auto" alt="">
           </div>
         </div>
       </div>
@@ -387,7 +387,7 @@
       </div>
     </div>
     <div class="intro-round">
-      <div class="intro-btn">
+      <div class="intro-btn" @click="release">
         <div class="intro-text">发布项目需求</div>
       </div>
     </div>
@@ -488,7 +488,7 @@
       </div>
     </div>
     <div class="intro-round pad-top-70">
-      <div class="intro-btn">
+      <div class="intro-btn" @click="toServer">
         <div class="intro-text">立即入驻</div>
       </div>
     </div>
@@ -670,6 +670,14 @@
             image: require ('@/assets/images/home/yunma.jpg')
           }
         ]
+      }
+    },
+    methods: {
+      toServer() {
+        this.$router.push({name: 'serverDesign'})
+      },
+      release() {
+        this.$router.push({name: 'itemSubmitOne'})
       }
     },
     mounted() {
