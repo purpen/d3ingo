@@ -744,8 +744,8 @@
                           </el-form-item>
                         </el-col>
                         <el-col :xs="24" :sm="16" :md="16" :lg="16">
-                          <region-picker :provinceProp="clientForm.province" 
-                                :cityProp="clientForm.city" propStyle="margin:0;"
+                          <region-picker :provinceProp="projectForm.item_province" 
+                                :cityProp="projectForm.item_city" propStyle="margin:0;"
                                 :isFirstProp="isFirstRegion" titleProp="项目工作地点"
                                 @onchange="changeProject" class="margin-b22"
                                 :twoSelect="true"
