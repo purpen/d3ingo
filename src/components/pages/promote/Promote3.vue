@@ -391,7 +391,7 @@
           url: location.href,
           son_source: '优客',
           device: 2,
-          new_from: 8
+          new_from: 0
         }).then(res => {
           console.log(res)
         }).catch(err => {
