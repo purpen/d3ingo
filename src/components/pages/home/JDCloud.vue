@@ -1167,10 +1167,10 @@ export default {
     formatQuery(query) {
       Object.assign(this.query, query)
       if (typeof this.query.from !== 'number') {
-        this.query.from = 2
+        this.query.from = 0
       }
-      if (this.query.from < 1) {
-        this.query.from = 2
+      if (this.query.from < 0) {
+        this.query.from = 0
       }
     }
   },
