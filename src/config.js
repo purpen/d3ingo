@@ -1556,6 +1556,10 @@ const COMMONLY_SITE_TYPE = [
     name: '设计奖项'
   },
   {
+    id: 6,
+    name: '设计素材'
+  },
+  {
     id: 99,
     name: '其它'
   }
