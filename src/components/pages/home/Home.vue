@@ -19,23 +19,23 @@
       <div class="header-bot">
         <div class="header-bot-left">受到500+企业信赖</div>
         <div class="header-bot-right">
-          <el-row :gutter="15" align="middle" class="header-row" type="flex">
-            <el-col :span="4">
+          <el-row :gutter="15" align="middle" class="header-row" type="flex" >
+            <el-col :xs="8" :md="4">
               <div class="bot-right-img1"></div>
             </el-col>
-            <el-col :span="4">
+            <el-col :xs="8" :md="4">
               <div class="bot-right-img2"></div>
             </el-col>
-            <el-col :span="4">
+            <el-col :xs="8" :md="4">
               <div class="bot-right-img3"></div>
             </el-col>
-            <el-col :span="4">
+            <el-col :xs="8" :md="4">
               <div class="bot-right-img4"></div>
             </el-col>
-            <el-col :span="4">
+            <el-col :xs="8" :md="4">
               <div class="bot-right-img5"></div>
             </el-col>
-            <el-col :span="4">
+            <el-col :xs="8" :md="4">
               <div class="bot-right-img6"></div>
             </el-col>
           </el-row>
@@ -44,8 +44,8 @@
     </div>
     <div class="three-serve">
       <el-row type="flex" justify="space-around" align="middle" class="three-serve-row">
-        <el-col :span="8">
-          <el-row type="flex" align="middle">
+        <el-col :xs="24" :sm="8">
+          <el-row type="flex" align="middle" class="phone-mar-10">
             <div class="three-serve-img1"></div>
             <div class="three-serve-round">
               <div class="three-serve-top">专业服务</div>
@@ -53,8 +53,8 @@
             </div>
           </el-row>
         </el-col>
-        <el-col :span="8">
-          <el-row type="flex" align="middle" justify="center">
+        <el-col :xs="24" :sm="8">
+          <el-row type="flex" align="middle" justify="center" class="phone-mar-10">
             <div class="three-serve-img2"></div>
             <div class="three-serve-round">
               <div class="three-serve-top">智能精准</div>
@@ -62,8 +62,8 @@
             </div>
           </el-row>
         </el-col>
-        <el-col :span="8">
-          <el-row type="flex" align="middle" justify="end">
+        <el-col :xs="24" :sm="8">
+          <el-row type="flex" align="middle" justify="end" class="phone-mar-10">
             <div class="three-serve-img3"></div>
             <div class="three-serve-round">
               <div class="three-serve-top">优质设计</div>
@@ -79,7 +79,7 @@
       <div class="search-text">选择您需要的服务级别。</div>
       <div class="serve-level">
         <el-row :gutter="20">
-          <el-col :span="6">
+          <el-col :xs="24" :sm="6">
             <div class="level-border">
               <div class="level-top">
                 <div class="level-top-btn">
@@ -93,7 +93,7 @@
               </div>
             </div>
           </el-col>
-           <el-col :span="6">
+           <el-col :xs="24" :sm="6">
             <div class="level-border">
               <div class="level-top">
                 <div class="level-top-btn">
@@ -108,7 +108,7 @@
               </div>
             </div>
           </el-col>
-           <el-col :span="6">
+           <el-col :xs="24" :sm="6">
             <div class="level-border">
               <div class="level-top">
                 <div class="level-top-btn">
@@ -122,7 +122,7 @@
               </div>
             </div>
           </el-col>
-           <el-col :span="6">
+           <el-col :xs="24" :sm="6">
             <div class="level-border">
               <div class="level-top">
                 <div class="level-top-btn">
@@ -147,108 +147,148 @@
           <div class="solve-border" @click="solveType = 1" :class="{'solve-bg' : solveType === 1}">制造企业</div>
           <div class="solve-border" @click="solveType = 2" :class="{'solve-bg' : solveType === 2}">众创空间</div>
           <div class="solve-border" @click="solveType = 3" :class="{'solve-bg' : solveType === 3}">电商平台</div>
-          <div class="solve-border" @click="solveType = 4" :class="{'solve-bg' : solveType === 4}">政府</div>
+          <div class="solve-border bor-right" @click="solveType = 4" :class="{'solve-bg' : solveType === 4}">政府</div>
         </div>
         <div class="pad-top-30">
           <div class="solve-datail" v-show="solveType === 1">
             <div class="solve-datail-text">链接制造企业/品牌方/创业团队/流量平台等有设计创新需求的利益相关方，与平台上1000+顶尖设计服务商进行精准匹配，提供高效的AI-D产品创新引擎协助项目精准定义，帮助创新项目从0到1的快速启动。</div>
             <div class="solve-img-round pad-top-60">
-              <div class="solve-img">
-                <div class="solve-img1"></div>
-                <div class="solve-img-title">设计交易</div>
-                <div class="solve-img-text">企业按需发布项目需求，支付项目设计费用。</div>
-              </div>
-              <div class="solve-img">
-                <div class="solve-img2"></div>
-                <div class="solve-img-title">投资孵化</div>
-                <div class="solve-img-text">联合投资孵化创业团队， 打造平台产品生态链。</div>
-              </div>
-              <div class="solve-img">
-                <div class="solve-img3"></div>
-                <div class="solve-img-title">营销推广</div>
-                <div class="solve-img-text">根据平台大数据与设计公司、太火鸟联合开发产品。</div>
-              </div>
-              <div class="solve-img">
-                <div class="solve-img4"></div>
-                <div class="solve-img-title">需求定义</div>
-                <div class="solve-img-text">联合投资孵化创业团队， 打造平台产品生态链。</div>
-              </div>
+              <el-row :gutter="10">
+                <el-col :xs="12" :sm="6">
+                  <div class="solve-img">
+                    <div class="solve-img1"></div>
+                    <div class="solve-img-title">设计交易</div>
+                    <div class="solve-img-text">企业按需发布项目需求，支付项目设计费用。</div>
+                  </div>
+                </el-col>
+                <el-col :xs="12" :sm="6">
+                  <div class="solve-img">
+                    <div class="solve-img2"></div>
+                    <div class="solve-img-title">投资孵化</div>
+                    <div class="solve-img-text">联合投资孵化创业团队， 打造平台产品生态链。</div>
+                  </div>
+                </el-col>
+                <el-col :xs="12" :sm="6">
+                  <div class="solve-img phone-pad-20">
+                    <div class="solve-img3"></div>
+                    <div class="solve-img-title">营销推广</div>
+                    <div class="solve-img-text">根据平台大数据与设计公司、太火鸟联合开发产品。</div>
+                  </div>
+                </el-col>
+                <el-col :xs="12" :sm="6">
+                  <div class="solve-img phone-pad-20">
+                    <div class="solve-img4"></div>
+                    <div class="solve-img-title">需求定义</div>
+                    <div class="solve-img-text">联合投资孵化创业团队， 打造平台产品生态链。</div>
+                  </div>
+                </el-col>
+              </el-row>
             </div>
           </div>
           <div class="solve-datail" v-show="solveType === 2">
             <div class="solve-datail-text">汲取太火鸟多年产品创新和投资孵化经验</div>
             <div class="solve-datail-text">帮助众创空间里初创企业、创业团队构建产品创新体系。</div>
             <div class="solve-img-round pad-top-60">
-              <div class="solve-img">
-                <div class="solve2-img1"></div>
-                <div class="solve-img-title">设计服务</div>
-                <div class="solve-img-text">海量专业设计服务商 帮助创业团队解决项目设计需求</div>
-              </div>
-              <div class="solve-img">
-                <div class="solve2-img2"></div>
-                <div class="solve-img-title">用户画像</div>
-                <div class="solve-img-text">借助京东云对消费者的洞察 为创业者提供用户画像咨询</div>
-              </div>
-              <div class="solve-img">
-                <div class="solve2-img3"></div>
-                <div class="solve-img-title">产品定义</div>
-                <div class="solve-img-text">基于销售大数据 洞察消费市场 重新定义创新产品及品类</div>
-              </div>
-              <div class="solve-img">
-                <div class="solve2-img4"></div>
-                <div class="solve-img-title">营销推广</div>
-                <div class="solve-img-text">营销赋能创新产品及品牌 精准化社群及精选电商分销</div>
-              </div>
+              <el-row :gutter="10">
+                <el-col :xs="12" :sm="6">
+                  <div class="solve-img">
+                    <div class="solve2-img1"></div>
+                    <div class="solve-img-title">设计服务</div>
+                    <div class="solve-img-text">海量专业设计服务商 帮助创业团队解决项目设计需求</div>
+                  </div>
+                </el-col>
+                <el-col :xs="12" :sm="6">
+                  <div class="solve-img">
+                    <div class="solve2-img2"></div>
+                    <div class="solve-img-title">用户画像</div>
+                    <div class="solve-img-text">借助京东云对消费者的洞察 为创业者提供用户画像咨询</div>
+                  </div>
+                </el-col>
+                <el-col :xs="12" :sm="6">
+                  <div class="solve-img">
+                    <div class="solve2-img3"></div>
+                    <div class="solve-img-title">产品定义</div>
+                    <div class="solve-img-text">基于销售大数据 洞察消费市场 重新定义创新产品及品类</div>
+                  </div>
+                </el-col>
+                <el-col :xs="12" :sm="6">
+                  <div class="solve-img">
+                    <div class="solve2-img4"></div>
+                    <div class="solve-img-title">营销推广</div>
+                    <div class="solve-img-text">营销赋能创新产品及品牌 精准化社群及精选电商分销</div>
+                  </div>
+                </el-col>
+              </el-row>
             </div>
           </div>
           <div class="solve-datail" v-show="solveType === 3">
             <div class="solve-datail-text">联合精准零售渠道进行联合加速，对于相对成熟的创新项目，将以股权投资以及交易聚集的模式，生成具有爆品潜质的创新产品，并逐渐形成爆款单品集群，建立以“设计+投资+销售”为核心驱动的涵盖各品类的创新产品平台。</div>
             <div class="solve-img-round pad-top-60">
-              <div class="solve-img">
-                <div class="solve3-img1"></div>
-                <div class="solve-img-title">设计交易</div>
-                <div class="solve-img-text">企业按需发布项目需求，支付项目设计费用。</div>
-              </div>
-              <div class="solve-img">
-                <div class="solve3-img2"></div>
-                <div class="solve-img-title">定向邀约</div>
-                <div class="solve-img-text">邀请知名设计公司，设计代表企业方价值主张的产品。</div>
-              </div>
-              <div class="solve-img">
-                <div class="solve3-img3"></div>
-                <div class="solve-img-title">联合开发</div>
-                <div class="solve-img-text">根据平台大数据与设计公司、太火鸟联合开发产品。</div>
-              </div>
-              <div class="solve-img">
-                <div class="solve3-img4"></div>
-                <div class="solve-img-title">投资孵化</div>
-                <div class="solve-img-text">联合投资孵化创业团队 打造平台产品生态链</div>
-              </div>
+              <el-row :gutter="10">
+                <el-col :xs="12" :sm="6">
+                  <div class="solve-img">
+                    <div class="solve3-img1"></div>
+                    <div class="solve-img-title">设计交易</div>
+                    <div class="solve-img-text">企业按需发布项目需求，支付项目设计费用。</div>
+                  </div>
+                </el-col>
+                <el-col :xs="12" :sm="6">
+                  <div class="solve-img">
+                    <div class="solve3-img2"></div>
+                    <div class="solve-img-title">定向邀约</div>
+                    <div class="solve-img-text">邀请知名设计公司，设计代表企业方价值主张的产品。</div>
+                  </div>
+                </el-col>
+                <el-col :xs="12" :sm="6">
+                  <div class="solve-img">
+                    <div class="solve3-img3"></div>
+                    <div class="solve-img-title">联合开发</div>
+                    <div class="solve-img-text">根据平台大数据与设计公司、太火鸟联合开发产品。</div>
+                  </div>
+                </el-col>
+                <el-col :xs="12" :sm="6">
+                  <div class="solve-img">
+                    <div class="solve3-img4"></div>
+                    <div class="solve-img-title">投资孵化</div>
+                    <div class="solve-img-text">联合投资孵化创业团队 打造平台产品生态链</div>
+                  </div>
+                </el-col>
+              </el-row>
             </div>
           </div>
           <div class="solve-datail" v-show="solveType === 4">
             <div class="solve-datail-text">太火鸟联合京东云，通过设计创新实现“资源共享、能力互补、供需对接”，构建完善的“产品设计-生产制造-终端销售”全产业链条。助力地方产业转型升级与创新要素聚集。</div>
             <div class="solve-img-round pad-top-60">
-              <div class="solve-img">
-                <div class="solve4-img1"></div>
-                <div class="solve-img-title">投资孵化</div>
-                <div class="solve-img-text">通过投资、孵化特色产业中最具活力的高增长企业。</div>
-              </div>
-              <div class="solve-img">
-                <div class="solve4-img2"></div>
-                <div class="solve-img-title">协同创新</div>
-                <div class="solve-img-text">整合太火鸟及京东云资源，共建协同创新中心，补齐地方产业新体系要素。</div>
-              </div>
-              <div class="solve-img">
-                <div class="solve4-img3"></div>
-                <div class="solve-img-title">品牌打造</div>
-                <div class="solve-img-text">持续传播产业创新要素、创新人才产品等，打造区域产业品牌。</div>
-              </div>
-              <div class="solve-img">
-                <div class="solve4-img4"></div>
-                <div class="solve-img-title">人才培养</div>
-                <div class="solve-img-text">组建创业导师和专家团队，引入行业创新资源，培养优秀创新人才。</div>
-              </div>
+              <el-row :gutter="10">
+                <el-col :xs="12" :sm="6">
+                  <div class="solve-img">
+                    <div class="solve4-img1"></div>
+                    <div class="solve-img-title">投资孵化</div>
+                    <div class="solve-img-text">通过投资、孵化特色产业中最具活力的高增长企业。</div>
+                  </div>
+                </el-col>
+                <el-col :xs="12" :sm="6">
+                  <div class="solve-img">
+                    <div class="solve4-img2"></div>
+                    <div class="solve-img-title">协同创新</div>
+                    <div class="solve-img-text">整合太火鸟及京东云资源，共建协同创新中心，补齐地方产业新体系要素。</div>
+                  </div>
+                </el-col>
+                <el-col :xs="12" :sm="6">
+                  <div class="solve-img">
+                    <div class="solve4-img3"></div>
+                    <div class="solve-img-title">品牌打造</div>
+                    <div class="solve-img-text">持续传播产业创新要素、创新人才产品等，打造区域产业品牌。</div>
+                  </div>
+                </el-col>
+                <el-col :xs="12" :sm="6">
+                  <div class="solve-img">
+                    <div class="solve4-img4"></div>
+                    <div class="solve-img-title">人才培养</div>
+                    <div class="solve-img-text">组建创业导师和专家团队，引入行业创新资源，培养优秀创新人才。</div>
+                  </div>
+                </el-col>
+              </el-row>
             </div>
           </div>
         </div>
@@ -257,37 +297,45 @@
     <div class="case pad-top-60">
       <div class="case-title">设计案例</div>
       <div class="case-border-round">
-        <div class="case-border">
-          <div class="case-header">智能硬件 <span class="case-span">></span></div>
-          <div class="case-center"></div>
-          <div class="case-center-round">
-            <div class="case-center-title">产品名称产品名称产品名称产品名称产品名称产品名称产品名称产品名称</div>
-            <div class="case-center-text">产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品</div>
-          </div>
-        </div>
-        <div class="case-border">
-          <div class="case-header">智能硬件 <span class="case-span">></span></div>
-          <div class="case-center"></div>
-          <div class="case-center-round">
-            <div class="case-center-title">产品名称产品名称产品名称产品名称产品名称产品名称产品名称产品名称</div>
-            <div class="case-center-text">产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品</div>
-          </div>
-        </div>
-        <div class="case-border">
-          <div class="case-header">智能硬件 <span class="case-span">></span></div>
-          <div class="case-center"></div>
-          <div class="case-center-round">
-            <div class="case-center-title">产品名称产品名称产品名称产品名称产品名称产品名称产品名称产品名称</div>
-            <div class="case-center-text">产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品</div>
-          </div>
-        </div>
+        <el-row :gutter="20" class="case-row">
+          <el-col :xs="24" :sm="8">
+            <div class="case-border">
+              <div class="case-header">智能硬件 <span class="case-span">></span></div>
+              <div class="case-center"></div>
+              <div class="case-center-round">
+                <div class="case-center-title">产品名称产品名称产品名称产品名称产品名称产品名称产品名称产品名称</div>
+                <div class="case-center-text">产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品</div>
+              </div>
+            </div>
+          </el-col>
+          <el-col :xs="24" :sm="8">
+            <div class="case-border">
+              <div class="case-header">智能硬件 <span class="case-span">></span></div>
+              <div class="case-center"></div>
+              <div class="case-center-round">
+                <div class="case-center-title">产品名称产品名称产品名称产品名称产品名称产品名称产品名称产品名称</div>
+                <div class="case-center-text">产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品</div>
+              </div>
+            </div>
+          </el-col>
+          <el-col :xs="24" :sm="8">
+            <div class="case-border">
+              <div class="case-header">智能硬件 <span class="case-span">></span></div>
+              <div class="case-center"></div>
+              <div class="case-center-round">
+                <div class="case-center-title">产品名称产品名称产品名称产品名称产品名称产品名称产品名称产品名称</div>
+                <div class="case-center-text">产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品描述产品</div>
+              </div>
+            </div>
+          </el-col>
+        </el-row>
       </div>
     </div>
     <div class="innovation">
       <div class="innovation-title">为创新者提供高效的设计交易服务</div>
       <div class="innovation-round">
         <el-row :gutter="10">
-          <el-col :span="4">
+          <el-col :xs="12" :sm="4">
             <div class="innovation-border">
               <div class="pad-top-15">
                 <div class="innovation-img1"></div>
@@ -295,7 +343,7 @@
               </div>
             </div>
           </el-col>
-          <el-col :span="4">
+          <el-col :xs="12" :sm="4">
             <div class="innovation-border">
               <div class="pad-top-15">
                 <div class="innovation-img2"></div>
@@ -303,7 +351,7 @@
               </div>
             </div>
           </el-col>
-          <el-col :span="4">
+          <el-col :xs="12" :sm="4">
             <div class="innovation-border">
               <div class="pad-top-15">
                 <div class="innovation-img3"></div>
@@ -311,7 +359,7 @@
               </div>
             </div>
           </el-col>
-          <el-col :span="4">
+          <el-col :xs="12" :sm="4">
             <div class="innovation-border">
               <div class="pad-top-15">
                 <div class="innovation-img4"></div>
@@ -319,7 +367,7 @@
               </div>
             </div>
           </el-col>
-          <el-col :span="4">
+          <el-col :xs="12" :sm="4">
             <div class="innovation-border">
               <div class="pad-top-15">
                 <div class="innovation-img5"></div>
@@ -327,7 +375,7 @@
               </div>
             </div>
           </el-col>
-          <el-col :span="4">
+          <el-col :xs="12" :sm="4">
             <div class="innovation-border">
               <div class="pad-top-15">
                 <div class="innovation-img6"></div>
@@ -345,31 +393,31 @@
     </div>
     <div class="carry">
       <div class="carry-title">项目如何开展工作</div>
-      <div class="carry-round pad-top-60">
+      <div class="carry-round pad-top-50">
         <el-row :gutter="10">
-          <el-col :span="6">
-            <div class="carry-img">
+          <el-col :xs="12" :sm="6">
+            <div class="carry-img pad-top-10">
               <div class="carry-img1"></div>
               <div class="carry-img-title">发布项目需求</div>
               <div class="carry-img-text">告诉我们您的项目需求。我们将您与全国各地或最近的顶尖设计服务商联系起来。</div>
             </div>
           </el-col>
-          <el-col :span="6">
-            <div class="carry-img">
+          <el-col :xs="12" :sm="6">
+            <div class="carry-img pad-top-10">
               <div class="carry-img2"></div>
               <div class="carry-img-title">智能匹配设计服务商</div>
               <div class="carry-img-text">在24小时内为你智能匹配推荐设计服务商。比较出价，评分和之前的设计案例。选择最合适您的服务商。</div>
             </div>
           </el-col>
-          <el-col :span="6">
-            <div class="carry-img">
+          <el-col :xs="12" :sm="6">
+            <div class="carry-img pad-top-10">
               <div class="carry-img3"></div>
               <div class="carry-img-title">轻松协作管理项目进度</div>
               <div class="carry-img-text">使用项目管理软件，及时查看设计服务商分阶段提交的项目文件，跟踪项目进度并及时沟通项目进度。</div>
             </div>
           </el-col>
-          <el-col :span="6">
-            <div class="carry-img">
+          <el-col :xs="12" :sm="6">
+            <div class="carry-img pad-top-10">
               <div class="carry-img4"></div>
               <div class="carry-img-title">项目评价</div>
               <div class="carry-img-text">分阶段确认项目，直到项目结束。针对服务商在项目过程中的服务做出评价。</div>
@@ -381,26 +429,62 @@
     <div class="in">
       <div class="in-title">入驻设计服务供应商</div>
       <div class="in-round pad-top-60">
-          <div class="in-img1"></div>
-          <div class="in-img2"></div>
-          <div class="in-img3"></div>
-          <div class="in-img4"></div>
-          <div class="in-img5"></div>
-          <div class="in-img6"></div>
-          <div class="in-img7"></div>
-          <div class="in-img8"></div>
-          <div class="in-img9"></div>
-      </div>
-      <div class="in-round pad-top-40">
-        <div class="in-img10"></div>
-        <div class="in-img12"></div>
-        <div class="in-img13"></div>
-        <div class="in-img14"></div>
-        <div class="in-img15"></div>
-        <div class="in-img16"></div>
-        <div class="in-img17"></div>
-        <div class="in-img18"></div>
-        <div class="in-img19"></div>
+        <el-row :gutter="10">
+          <el-col :xs="8" :sm="4">
+            <div class="in-img1"></div>
+          </el-col>
+          <el-col :xs="8" :sm="4">
+            <div class="in-img2"></div>
+          </el-col>
+          <el-col :xs="8" :sm="4">
+            <div class="in-img3"></div>
+          </el-col>
+          <el-col :xs="8" :sm="4">
+            <div class="in-img4"></div>
+          </el-col>
+          <el-col :xs="8" :sm="4">
+            <div class="in-img5"></div>
+          </el-col>
+          <el-col :xs="8" :sm="4">
+            <div class="in-img6"></div>
+          </el-col>
+          <el-col :xs="8" :sm="4">
+            <div class="in-img7"></div>
+          </el-col>
+          <el-col :xs="8" :sm="4">
+            <div class="in-img8"></div>
+          </el-col>
+          <el-col :xs="8" :sm="4">
+            <div class="in-img9"></div>
+          </el-col>
+          <el-col :xs="8" :sm="4">
+            <div class="in-img10"></div>
+          </el-col>
+          <el-col :xs="8" :sm="4">
+            <div class="in-img12"></div>
+          </el-col>
+          <el-col :xs="8" :sm="4">
+            <div class="in-img13"></div>
+          </el-col>
+          <el-col :xs="8" :sm="4">
+            <div class="in-img14"></div>
+          </el-col>
+          <el-col :xs="8" :sm="4">
+            <div class="in-img15"></div>
+          </el-col>
+          <el-col :xs="8" :sm="4">
+            <div class="in-img16"></div>
+          </el-col>
+          <el-col :xs="8" :sm="4">
+            <div class="in-img17"></div>
+          </el-col>
+          <el-col :xs="8" :sm="4">
+            <div class="in-img18"></div>
+          </el-col>
+          <el-col :xs="8" :sm="4">
+            <div class="in-img19"></div>
+          </el-col>
+        </el-row>
       </div>
     </div>
     <div class="intro-round pad-top-70">
@@ -496,18 +580,36 @@
       <div class="friend-title">合作伙伴</div>
       <div class="friend-round pad-top-40">
         <div class="friend-img">
-          <div class="friend-img1"></div>
-          <div class="friend-img2"></div>
-          <div class="friend-img3"></div>
-          <div class="friend-img4"></div>
-          <div class="friend-img5"></div>
-        </div>
-        <div class="friend-img pad-top-15">
-          <div class="friend-img6"></div>
-          <div class="friend-img7"></div>
-          <div class="friend-img8"></div>
-          <div class="friend-img9"></div>
-          <div class="friend-img10"></div>
+          <div class="fri-img-round">
+            <div class="friend-img1"></div>
+          </div>
+          <div class="fri-img-round">
+            <div class="friend-img2"></div>
+          </div>
+          <div class="fri-img-round">
+            <div class="friend-img3"></div>
+          </div>
+          <div class="fri-img-round">
+            <div class="friend-img4"></div>
+          </div>
+          <div class="fri-img-round">
+            <div class="friend-img5"></div>
+          </div>
+          <div class="fri-img-round">
+            <div class="friend-img6"></div>
+          </div>
+          <div class="fri-img-round">
+            <div class="friend-img7"></div>
+          </div>
+          <div class="fri-img-round">
+            <div class="friend-img8"></div>
+          </div>
+          <div class="fri-img-round">
+            <div class="friend-img9"></div>
+          </div>
+          <div class="fri-img-round">
+            <div class="friend-img10"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -673,7 +775,7 @@
     align-items: center
   }
   .header-bot-round {
-    height: 120px;
+    min-height: 120px;
     background-color: #222222;
   }
   .header-bot {
@@ -719,6 +821,7 @@
   }
   .header-row {
     min-height: 120px;
+    flex-wrap: wrap;
   }
   .three-serve {
     min-height: 120px;
@@ -728,6 +831,7 @@
     min-height: 120px;
     max-width: 1180px;
     margin: 0 auto;
+    flex-wrap: wrap;
   }
   .three-serve-img1 {
     height: 60px;
@@ -762,7 +866,7 @@
     line-height: 22px;
   }
   .search {
-    height: 700px;
+    min-height: 700px;
     text-align: center;
   }
   .search-title {
@@ -784,7 +888,7 @@
     padding-top: 20px;
   }
   .serve-level {
-    height: 434px;
+    min-height: 434px;
     padding-top: 30px;
     max-width: 1180px;
     margin: 0 auto;
@@ -842,7 +946,7 @@
     line-height: 24px;
   }
   .solve {
-    height: 642px;
+    min-height: 642px;
     background: rgba(250,250,250,1);
     text-align: center;
   }
@@ -858,7 +962,8 @@
     font-family: PingFangSC-Regular;
     font-weight: 400;
     color: rgba(102,102,102,1);
-    padding-top: 30px;
+    padding: 30px 30px 0 30px;
+    line-height: 24px;
   }
   .solve-round {
     max-width: 884px;
@@ -866,9 +971,6 @@
     margin: 0 auto;
     display: flex;
     align-items: center;
-  }
-  .solve-round:nth-last-child(1) {
-    border-right: 1px solid rgba(230,230,230,1);
   }
   .solve-border {
     cursor: pointer;
@@ -883,6 +985,9 @@
     color: rgba(102,102,102,1);
     border-right: none;
   }
+  .bor-right {
+    border-right: 1px solid rgba(230,230,230,1);
+  }
   .solve-border:hover {
     color:rgba(255,255,255,1);
     background:rgba(254,91,132,1);
@@ -892,7 +997,7 @@
     background:rgba(254,91,132,1);
   }
   .solve-datail {
-    height: 300px;
+    min-height: 300px;
     max-width: 884px;
     text-align: center;
     margin: 0 auto;
@@ -938,19 +1043,19 @@
   .solve2-img1 {
     height: 90px;
     width: 90px;
-    background: url("../../../assets/images/new_home/home/solve/transaction@2x.png") no-repeat center / contain;
+    background: url("../../../assets/images/new_home/home/solve/DesignServices@2x.png") no-repeat center / contain;
     margin: 0 auto;
   }
   .solve2-img2 {
     height: 90px;
     width: 90px;
-    background: url("../../../assets/images/new_home/home/solve/hatch@2x.png") no-repeat center / contain;
+    background: url("../../../assets/images/new_home/home/solve/UserPortrait@2x.png") no-repeat center / contain;
     margin: 0 auto;
   }
   .solve2-img3 {
     height: 90px;
     width: 90px;
-    background: url("../../../assets/images/new_home/home/solve/Marketing@2x.png") no-repeat center / contain;
+    background: url("../../../assets/images/new_home/home/solve/ProductDefinition@2x.png") no-repeat center / contain;
     margin: 0 auto;
   }
   .solve2-img4 {
@@ -1004,7 +1109,7 @@
   .solve4-img4 {
     height: 90px;
     width: 90px;
-    background: url("../../../assets/images/new_home/home/solve/Marketing@2x.png") no-repeat center / contain;
+    background: url("../../../assets/images/new_home/home/solve/PersonnelTraining@2x.png") no-repeat center / contain;
     margin: 0 auto;
   }
   .solve-img-title {
@@ -1026,6 +1131,7 @@
     text-align: center;
     max-width: 1180px;
     margin: 0 auto;
+    padding: 0 10px;
   }
   .case-title {
     font-size: 30px;
@@ -1033,16 +1139,12 @@
     font-weight: 400;
     color: rgba(34,34,34,1);
   }
-  .case-border-round {
-    display: flex;
-    justify-content: space-between;
-  }
   .case-border {
-    flex: 1;
-    height: 460px;
-    max-width: 320px;
+    height: 490px;
+    max-width: 380px;
     text-align: left;
     padding-top: 40px;
+    margin: 0 auto;
   }
   .case-header {
     font-size: 18px;
@@ -1097,6 +1199,7 @@
     font-weight: 400;
     color: rgba(34,34,34,1);
     text-align: center;
+    line-height: 38px;
   }
   .innovation-round {
     padding-top: 30px;
@@ -1247,116 +1350,132 @@
   .in-round {
     max-width: 1180px;
     margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
   }
   .in-img1 {
-    flex: 1;
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/01@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+    margin-top: 10px;
   }
   .in-img2{
-    flex: 1;
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/02@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+    margin-top: 10px;
   }
   .in-img3 {
-    flex: 1;
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/03@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+    margin-top: 10px;
   }
   .in-img4 {
-    flex: 1;
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/04@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+    margin-top: 10px;
   }
   .in-img5 {
-    flex: 1;
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/05@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+    margin-top: 10px;
   }
   .in-img6 {
-    flex: 1;
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/06@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+    margin-top: 10px;
   }
   .in-img7 {
-    flex: 1;
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/07@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+    margin-top: 10px;
   }
   .in-img8 {
-    flex: 1;
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/08@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+    margin-top: 10px;
   }
   .in-img9 {
-    flex: 1;
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/09@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+    margin-top: 10px;
   }
   .in-img10 {
-    flex: 1;
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/10@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+    margin-top: 10px;
   }
   .in-img12 {
-    flex: 1;
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/12@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+    margin-top: 10px;
   }
   .in-img13 {
-    flex: 1;
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/13@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+    margin-top: 10px;
   }
   .in-img14 {
-    flex: 1;
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/14@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+    margin-top: 10px;
   }
   .in-img15 {
-    flex: 1;
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/15@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+    margin-top: 10px;
   }
   .in-img16 {
-    flex: 1;
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/16@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+    margin-top: 10px;
   }
   .in-img17 {
-    flex: 1;
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/17@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+    margin-top: 10px;
   }
   .in-img18 {
-    flex: 1;
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/18@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+    margin-top: 10px;
   }
   .in-img19 {
-    flex: 1;
     height: 80px;
     width: 80px;
     background: url("../../../assets/images/new_home/home/in/19@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+    margin-top: 10px;
   }
   .anli-round {
     min-height: 610px;
@@ -1496,7 +1615,7 @@
   .security-round {
     background: rgba(250,250,250,1);
     margin-top: 90px;
-    height: 520px;
+    min-height: 520px;
   }
   .security {
     margin: 0 auto;
@@ -1517,19 +1636,19 @@
   .security-img1 {
     height: 120px;
     width: 120px;
-    background: url("../../../assets/images/new_home/home/carry/matching@2x.png") no-repeat center / contain;
+    background: url("../../../assets/images/new_home/home/serve/service@2x.png") no-repeat center / contain;
     margin: 0 auto;
   }
   .security-img2 {
     height: 120px;
     width: 120px;
-    background: url("../../../assets/images/new_home/home/carry/matching@2x.png") no-repeat center / contain;
+    background: url("../../../assets/images/new_home/home/serve/Original@2x.png") no-repeat center / contain;
     margin: 0 auto;
   }
   .security-img3 {
     height: 120px;
     width: 120px;
-    background: url("../../../assets/images/new_home/home/carry/matching@2x.png") no-repeat center / contain;
+    background: url("../../../assets/images/new_home/home/serve/copyright@2x.png") no-repeat center / contain;
     margin: 0 auto;
   }
   .friend {
@@ -1549,55 +1668,69 @@
   .friend-img {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .fri-img-round {
+    width: 20%
   }
   .friend-img1 {
     height: 60px;
-    width: 144px;
     background: url("../../../assets/images/new_home/home/friend/01@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+    margin-top: 10px;
   }
   .friend-img2 {
     height: 60px;
-    width: 144px;
     background: url("../../../assets/images/new_home/home/friend/02@2x.png") no-repeat center / contain;
+    margin: 0 auto;
+    margin-top: 10px;
   }
   .friend-img3 {
     height: 60px;
-    width: 144px;
+    margin: 0 auto;
+    margin-top: 10px;
     background: url("../../../assets/images/new_home/home/friend/03@2x.png") no-repeat center / contain;
   }
   .friend-img4 {
     height: 60px;
-    width: 144px;
+    margin: 0 auto;
+    margin-top: 10px;
     background: url("../../../assets/images/new_home/home/friend/04@2x.png") no-repeat center / contain;
   }
   .friend-img5 {
     height: 60px;
-    width: 144px;
+    margin: 0 auto;
+    margin-top: 10px;
     background: url("../../../assets/images/new_home/home/friend/05@2x.png") no-repeat center / contain;
   }
   .friend-img6 {
     height: 60px;
-    width: 144px;
+    margin: 0 auto;
+    margin-top: 10px;
     background: url("../../../assets/images/new_home/home/friend/06@2x.png") no-repeat center / contain;
   }
   .friend-img7 {
     height: 60px;
-    width: 144px;
+    margin: 0 auto;
+    margin-top: 10px;
     background: url("../../../assets/images/new_home/home/friend/07@2x.png") no-repeat center / contain;
   }
   .friend-img8 {
     height: 60px;
-    width: 144px;
+    margin: 0 auto;
+    margin-top: 10px;
     background: url("../../../assets/images/new_home/home/friend/08@2x.png") no-repeat center / contain;
   }
   .friend-img9 {
     height: 60px;
-    width: 144px;
+    margin: 0 auto;
+    margin-top: 10px;
     background: url("../../../assets/images/new_home/home/friend/09@2x.png") no-repeat center / contain;
   }
   .friend-img10 {
     height: 60px;
-    width: 144px;
+    margin: 0 auto;
+    margin-top: 10px;
     background: url("../../../assets/images/new_home/home/friend/10@2x.png") no-repeat center / contain;
   }
   
@@ -1618,6 +1751,9 @@
     padding-top: 70px;
   }
   .pad-top-60 {
+    padding-top: 60px;
+  }
+  .pad-top-50 {
     padding-top: 60px;
   }
   .pad-top-40 {
@@ -1686,6 +1822,79 @@
     }
     .slide h3 {
       font-size: 2.2rem;
+    }
+    .header-bot {
+      display: block;
+    }
+    .header-bot-left {
+      text-align: center;
+      width: 100%;
+      line-height: 16px;
+      padding-top: 20px;
+    }
+    .header-bot-right {
+      width: 100%;
+    }
+    .header-row {
+      padding: 10px;
+    }
+    .header-bot-round {
+      min-height: 90px;
+    }
+    .three-serve-row {
+      justify-content: center;
+    }
+    .phone-mar-10 {
+      margin-top: 10px;
+    }
+    .level-border {
+      margin-top: 10px;
+    }
+    .solve, .case {
+      margin: 30px 0;
+    }
+    .solve-img-round {
+      padding-top: 30px;
+    }
+    .phone-pad-20 {
+      padding-top: 20px;
+    }
+    .solve-datail-text {
+      padding: 0 10px;
+    }
+    .solve-round {
+      height: 40px;
+      padding: 0 10px;
+    }
+    .solve-border {
+      font-size: 14px;
+    }
+    .search-title {
+      font-size: 26px;
+      line-height: 45px;
+      padding-top: 40px;
+    }
+    .innovation {
+      padding-top: 30px;
+    }
+    .innovation-round {
+      padding: 20px 10px 10px 10px;
+    }
+    .innovation-border {
+      margin-top: 10px;
+    }
+    .serve-level {
+      padding: 0 10px;
+    }
+    .carry-round {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+    .in-round {
+      padding-top: 50px;
+    }
+    .fri-img-round {
+      width: 50%
     }
   }
 </style>
