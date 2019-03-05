@@ -7,7 +7,7 @@
             <h3 :class="{'m-h3' : isMob}">太火鸟</h3>
             <p :class="{'m-p' : isMob}">工业设计和产品创新SaaS平台</p>
             <p :class="{'m-p' : isMob}">为创新者提供高效的设计交易服务</p>
-            <router-link v-if="uType !== 2 && !isMob" to="/item/submit_one">免费发布项目需求</router-link>
+            <router-link to="/item/submit_one">免费发布项目需求</router-link>
           </div>
           <div class="draw">
             <img :src="require('assets/images/new_home/home/Illustration@2x.png')" width="90%" height="auto" alt="">
@@ -552,22 +552,22 @@
       <div class="security pad-top-90">
         <div class="security-text pad-top-60">服务保障</div>
         <el-row :gutter="10">
-          <el-col :span="8">
-            <div class="security-img mar-auto">
+          <el-col :xs="24" :sm="8">
+            <div class="security-img mar-auto mar-top-10">
               <div class="security-img1"></div>
               <div class="carry-img-title">保证交易完成</div>
               <div class="carry-img-text">服务商未在约定工期内完成工作时，雇主有权发起维权并申请赔付，若判定成立，雇主将获得赔付（赔付由服务商的保证金赔付和服务商需退还的交易款项两部分共同构成）</div>
             </div>
           </el-col>
-          <el-col :span="8">
-            <div class="security-img mar-auto">
+          <el-col :xs="24" :sm="8">
+            <div class="security-img mar-auto mar-top-10">
               <div class="security-img2"></div>
               <div class="carry-img-title">保证原创</div>
               <div class="carry-img-text">太火鸟平台担保版权。交易完成一年内，如设计需求方发现交易产品非原创，有权发起维权。经判定非原创事实，需求方将获得赔付。</div>
             </div>
           </el-col>
-          <el-col :span="8">
-            <div class="security-img mar-auto">
+          <el-col :xs="24" :sm="8">
+            <div class="security-img mar-auto mar-top-10">
               <div class="security-img3"></div>
               <div class="carry-img-title">版权保护</div>
               <div class="carry-img-text">太火鸟保证设计服务供应商的产品版权，以切实有效的法律手段避免侵权事件发生。</div>
@@ -850,6 +850,7 @@
   }
   .three-serve-round {
     padding-left: 16px;
+    min-width: 200px;
   }
   .three-serve-top {
     font-size: 18px;
@@ -1627,7 +1628,7 @@
     font-weight: 400;
     color: rgba(34,34,34,1);
     text-align: center;
-    padding-bottom: 65px;
+    padding-bottom: 55px;
   }
   .security-img {
     max-width: 300px;
@@ -1733,6 +1734,21 @@
     margin-top: 10px;
     background: url("../../../assets/images/new_home/home/friend/10@2x.png") no-repeat center / contain;
   }
+  /* swiper css*/
+
+  .swiper-container {
+    overflow: visible;
+  }
+
+  .swiper-pagination .swiper-pagination-bullet {
+    margin-right: 8px;
+  }
+
+  .swiper-pagination-fraction,
+  .swiper-pagination-custom,
+  .swiper-container-horizontal > .swiper-pagination-bullets {
+    width: 100%;
+  }
   
   
 
@@ -1743,6 +1759,9 @@
 
   .mar-auto {
     margin: 0 auto;
+  }
+  .mar-top-10 {
+    margin-top: 10px;
   }
   .pad-top-80 {
     padding-top: 80px;
@@ -1822,6 +1841,16 @@
     }
     .slide h3 {
       font-size: 2.2rem;
+    }
+    .slide-left,.slide-right{
+    	width:auto
+    }
+		.slide-right img{
+			width:100%
+    }
+    .slide-content {
+      display: flex;
+      flex-direction: column-reverse;
     }
     .header-bot {
       display: block;
