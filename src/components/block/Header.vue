@@ -27,7 +27,7 @@
               <el-menu-item index="/innovation_index" :route="menu.innovation_index">创新指数</el-menu-item>
               <el-menu-item index="/trade_fairs" :route="menu.home_page" v-if="!token">成果交易会</el-menu-item>
               <el-menu-item index="/trade_fairs" :route="menu.demand_login" v-if="token">成果交易会</el-menu-item>
-              <el-menu-item>帮助</el-menu-item>
+              <el-menu-item index="/innovation_index" :route="menu.innovation_index">帮助</el-menu-item>
 
             </el-menu>
           </hgroup>
