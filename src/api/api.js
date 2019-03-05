@@ -180,6 +180,24 @@ export default {
   adminUserSetRole: '/admin/user/changeRole', // POST 修改用户角色
   adminUserChangeSourceAdmin: '/admin/user/changeSourceAdmin', // POST 修改来源管理员
 
+  // 帮助中心后台
+  adminCategoryShowList: '/admin/category/showList', // GET 帮助中心分类列表
+  adminAssistUpdate: '/admin/assist/update', // POST 帮助中心修改帮助
+  adminAssistDelAssist: '/admin/assist/delAssist', // POST 帮助中心删除帮助
+  adminAssistChangeStatus: '/admin/assist/changeStatus', // POST 帮助中心变更状态
+  adminAssistShowList: '/admin/assist/showList', // GET 帮助中心帮助列表
+  adminAssistCreate: '/admin/assist/create', // POST 帮助中心添加帮助
+  adminCategoryDelCategory: '/admin/category/delCategory', // DELETE 帮助中心删除分类
+  adminCategoryCreate: '/admin/category/create', // POST 帮助中心添加分类
+  adminAssistShowInfo: '/admin/assist/showInfo', // GET 帮助中心查看详情
+
+  // 帮助中心
+  assistAssistSearch: '/assist/assistSearch', // GET 帮助中心搜索
+  assistAssistInfo: '/assist/assistInfo', // GET 帮助中心文章详情
+  assistAssistList: '/assist/assistList', // GET 帮助中心类别下文章列表
+  assistCategoryList: '/assist/categoryList', // GET 帮助中心类别列表
+  assistAllList: '/assist/allList', // GET 帮助中心全部列表
+
   // 潜在客户
   adminClueClueList: '/admin/clue/clueList', // GET 潜在客户列表
   adminClueAdminUser: '/admin/clue/adminUser', // 后台人员列表
