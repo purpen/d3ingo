@@ -557,6 +557,15 @@
             sales: '众筹总额超过320万人民币',
             intro: '北京婴萌科技有限公司设计研发的智能配奶机由太火鸟全程孵化运营，配合卖点提炼、市场定位和针对性营销规划。至今产品已在淘宝众筹平台共筹集320多万人民币，649%达成众筹目标，获得3794多人支持。',
             image: require ('@/assets/images/home/ingmeng.jpg')
+          },
+          {
+            clickUrl: 'http://d3ingo.taihuoniao.com/article/show/18',
+            company: '云马',
+            companyLogo: require('@/assets/images/home/uma.png'),
+            title: '云马C1智能电单车',
+            sales: '太火鸟运营发布的爆款“鼻祖”',
+            intro: '2015年10月15日，太火鸟协助国内电单车品牌云造科技正式发布云马 C1智能电单车，同步上线淘宝众筹，并助其拓展线上线下及海外营销渠道，不到一个月时间即完成众筹金额破千万的成绩。截止众筹结束，云马C1智行车共取得5879粉丝支持，筹得资金¥11597621，1159%完成众筹目标，渠道直采4万台。',
+            image: require ('@/assets/images/home/yunma.jpg')
           }
         ]
       }
@@ -1352,6 +1361,7 @@
   .anli-round {
     min-height: 610px;
     background: rgba(250,250,250,1);
+    margin-top: 60px;
   }
   .anli {
     overflow: hidden;
