@@ -10,7 +10,7 @@
             <router-link to="/item/submit_one">免费发布项目需求</router-link>
           </div>
           <div class="draw">
-            <img :src="require('assets/images/new_home/home/BGheader@2x.png')" width="90%" height="auto" alt="">
+            <img :src="require('assets/images/new_home/home/BGheader@2x.png')" width="100%" height="auto" alt="">
           </div>
         </div>
       </div>

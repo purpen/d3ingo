@@ -17,7 +17,7 @@
               <el-menu-item index="/innovation_index" :route="menu.innovation_index">创新指数</el-menu-item>
               <el-menu-item index="/trade_fairs" :route="menu.home_page" v-if="!token">成果交易会</el-menu-item>
               <el-menu-item index="/trade_fairs" :route="menu.demand_login" v-if="token">成果交易会</el-menu-item> -->
-              <a class="el-menu-item logo">
+              <a class="el-menu-item logo cursor-def">
                 <img :src="custom.logo" :alt="custom.info">
                 <span class="logo-text">设计交易</span>
               </a>
