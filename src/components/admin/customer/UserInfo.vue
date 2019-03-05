@@ -1267,7 +1267,7 @@ export default {
     },
     isUpdatedStatus(val) {
       if (!this.currentId) return
-      if (val !== this.baseInfo.status) {
+      if (val !== this.baseInfo.new_status) {
         this.updatedBaseInfo()
       }
     },
@@ -1356,7 +1356,7 @@ export default {
           const {new_source, rank, new_status, execute_user_id, new_call_status} = res.data.data
           this.baseInfo = {
             rank,
-            source: new_source,
+            new_source,
             new_status,
             execute_user_id,
             new_call_status
@@ -1366,8 +1366,8 @@ export default {
             name: data.name,
             phone: data.phone,
             rank: data.rank,
-            new_source: data.new_source || '',
-            son_source: data.son_source || '',
+            new_source: data.new_source,
+            son_source: data.son_source,
             new_status: data.new_status,
             call_status_value: data.call_status_value,
             execute_user_id: data.execute_user_id,
