@@ -291,7 +291,7 @@
     color: #999;
   }
   .copy-right p {
-    line-height: 1;
+    line-height: 20px;
     font-size: 12px;
   }
   .qrcode {

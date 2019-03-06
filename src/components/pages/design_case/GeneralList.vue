@@ -77,6 +77,7 @@ export default {
       this.loadList(this.$route.query.type)
     },
     clickLoad(type) {
+      this.query.page = 1
       this.$router.push({name: this.$route.name, query: {page: 1, type: type}})
       this.loadList(this.$route.query.type)
     },

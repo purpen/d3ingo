@@ -301,7 +301,7 @@
           <el-col :xs="24" :sm="8" v-for="(item, index) in caseList" :key="index">
             <div class="case-border">
               <div class="case-header">{{item.field_val}} <span class="case-span">></span></div>
-              <div class="case-center text-a-center">
+              <div class="case-center text-a-center" @click="caseDetail(item.id)">
                 <img :src="item.cover.file" width="auto" height="100%" class="max-width-100">
               </div>
               <div class="case-center-round">
@@ -677,6 +677,9 @@
         .catch(err => {
           this.$message.error (err.message)
         })
+      },
+      caseDetail(id) {
+        this.$router.push({name: 'vcenterDesignCaseShow', params: {id: id}})
       }
     },
     mounted() {
@@ -1167,8 +1170,9 @@
   .case-center {
     height: 320px;
     background: #fff;
-    border:1px solid  rgba(230,230,230,1);
+    border:1px solid rgba(230,230,230,1);
     margin-top: 30px;
+    cursor: pointer;
   }
   .case-center-round {
     max-width:380px;
