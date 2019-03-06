@@ -400,6 +400,7 @@ export default {
 }
 footer {
   position: relative;
+  margin-bottom: -50px;
 }
 footer > img {
   width: 100%;
