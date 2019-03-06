@@ -325,7 +325,7 @@
                               <p v-if="item.item" class="link-item">
                                 关联项目 : 
                                 <span class="link-item-name">{{item.item_name}}
-                                  <i v-if="isHasPower" class="close-icon-solid" @click="deleteLinkProject(item)"></i>
+                                  <i v-if="isHasPower" class="close-icon-solid"></i>
                                 </span>
                               </p>
                               <div v-else>
@@ -2568,11 +2568,11 @@ export default {
 	border-radius: 18px;
   color: #ffffff;
 }
-.link-item-name:hover i {
+/* .link-item-name:hover i {
   background: rgba(0,0,0,.6);
   color: #ffffff;
   opacity: 1;
-}
+} */
 
 .p-t-summary {
   line-height: 1.5;
