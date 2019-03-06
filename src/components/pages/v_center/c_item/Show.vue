@@ -1165,18 +1165,30 @@
         let assetIndex = parseInt(event.currentTarget.getAttribute('asset_index'))
         this.stages[stageIndex].item_stage_image.splice(assetIndex, 1)
         const that = this
-        that.$http.delete(api.asset.format(assetId), {})
-          .then(function (response) {
-            if (response.data.meta.status_code === 200) {
-              that.$message.success('删除成功')
-            } else {
-              that.$message.error(response.data.meta.message)
-            }
-          })
-          .catch(function (error) {
-            that.$message.error(error.message)
+        that.$http.get(api.confirmItemDelete, {params: {item_stage_id: assetId}})
+        .then(res => {
+          if (res.data && res.data.meta.status_code === 200) {
+            that.$http.delete(api.asset.format(assetId), {})
+              .then(function (response) {
+                if (response.data.meta.status_code === 200) {
+                  that.$message.success('删除成功')
+                } else {
+                  that.$message.error(response.data.meta.message)
+                }
+              })
+              .catch(function (error) {
+                that.$message.error(error.message)
+                return false
+              })
+          } else {
+            that.$message.error(res.data.meta.message)
             return false
-          })
+          }
+        })
+        .catch(function (error) {
+          that.$message.error(error.message)
+          return false
+        })
       },
       // 上传阶段附件
       uplaodStageBtn(event) {
