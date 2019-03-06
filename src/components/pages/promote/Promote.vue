@@ -53,7 +53,7 @@
           </div>
           <div class="six-border">
             <div class="border-pad">
-              <div class="six-img2"></div>
+              <div class="six-img3"></div>
               <div class="six-text1">
                 <div class="six-img1-3"></div>
                 <div class="six-img1-jian pad-10-10">万</div>
@@ -299,7 +299,7 @@
       <div class="img-round-text">太火鸟设计服务的项目</div>
       <div class="img-round">
         <div class="border-round">
-          <div class="border">
+          <div class="border mar-right-10">
             <div class="in-border">
               <div class="img1"></div>
               <div class="img-text">
@@ -325,7 +325,7 @@
       </div>
       <div class="img-round margin-top-10">
         <div class="border-round">
-          <div class="border">
+          <div class="border mar-right-10">
             <div class="in-border">
               <div class="img3"></div>
               <div class="img-text">
@@ -351,7 +351,7 @@
       </div>
       <div class="img-round margin-top-10">
         <div class="border-round">
-          <div class="border">
+          <div class="border mar-right-10">
             <div class="in-border">
               <div class="img5"></div>
               <div class="img-text">
@@ -436,7 +436,7 @@
         <div class="release-text margin-top-15">
           现在<span>发布需求</span>，有机会获得投资孵化，进驻<span>小米商城</span>
         </div>
-        <el-form @submit.native.prevent :model="form1" :rules="ruleForm" ref="ruleForm1" class="text-center">
+        <el-form @submit.native.prevent :model="form1" :rules="ruleForm" ref="ruleForm1" class="text-center phone-el-pad-bot">
           <el-form-item prop="demand">
             <input type="text" placeholder="请输入您的需求" class="input-style mar-top-20" v-model="form1.demand" name="username">
           </el-form-item>
@@ -1052,7 +1052,7 @@
     font-weight: 400;
     color: rgba(34,34,34,1);
     line-height: 36px;
-    padding: 0 10px 0 22px;
+    padding: 0 10px 0 5px;
   }
   .six-img1-sales {
     font-size: 16px;
@@ -1726,7 +1726,7 @@
     margin: 0 auto;
   }
   .round-btn {
-    padding-top: 20px;
+    padding-top: 10px;
   }
   .release-btn {
     width: 180px;
@@ -1770,7 +1770,7 @@
     justify-content: space-around;
   }
   .border {
-    width: 46%;
+    width: 50%;
     background:rgba(255,255,255,1);
     border-radius:4px;
     border:1px solid rgba(230,230,230,1);
@@ -2218,6 +2218,9 @@
   }
   .mar-left-5 {
     margin-left: 5px;
+  }
+  .mar-right-10 {
+    margin-right: 10px;
   }
   .swiper-con {
     height: 140px;
