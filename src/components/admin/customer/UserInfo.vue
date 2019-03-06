@@ -28,7 +28,7 @@
                   <span v-else>{{userForm.name}}</span>
                 </div>
                 <div class="user-phone fl margin-r20">
-                  <el-input v-if="!currentId" v-model.trim="userForm.phone" placeholder="请填写用户手机号" size="small"></el-input>
+                  <el-input v-if="!currentId" v-model.trim="userForm.phone" maxlength="11" placeholder="请填写用户手机号" size="small"></el-input>
                   <span v-else>{{userForm.phone}}</span>
                 </div>
                 <div class="">
